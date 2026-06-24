@@ -15,6 +15,7 @@ Names:
 - `DLNFibre.DLN.Aoyagi.IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.of_concreteSourcePullback`
 - `DLNFibre.DLN.Aoyagi.IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump`
 - `DLNFibre.DLN.Aoyagi.Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback`
+- `DLNFibre.DLN.Aoyagi.Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.of_case1SelectedOldSourcePullback`
 
 ## Statement
 
@@ -34,7 +35,9 @@ mulStepAt factoredBase.step u (J+J1).
 
 The displayed Case 1(2) selected-old pullback boundary can therefore use this
 concrete source state instead of a separately supplied `source` recurrence
-state.
+state.  The supplied chart-family boundary can use the same concrete source
+state while still carrying the local handoff and chart-family regularity data
+as assumptions.
 
 ## Proved
 
@@ -46,6 +49,8 @@ state.
   `mulStepAt factoredBase.step u (J+J1)`.
 - A row-strip pullback boundary constructor instantiates the abstract source
   field with this concrete state.
+- A supplied chart-family boundary constructor lifts the same concrete source
+  state through the existing chart-family package.
 
 ## Assumed
 
@@ -54,6 +59,9 @@ state.
 - The row-strip boundary wrapper still assumes the local handoff, post-state,
   exponent post-data, and finite matrix transition data already packaged by
   `Case1DisplayedRowStripSuppliedTransitionBoundary`.
+- The chart-family wrapper still assumes
+  `Case1CenterChartFamilyBoundary`; it does not prove chart regularity or
+  transition regularity.
 
 ## Cited
 

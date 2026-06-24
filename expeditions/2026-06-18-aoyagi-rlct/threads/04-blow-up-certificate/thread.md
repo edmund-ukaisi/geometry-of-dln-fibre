@@ -5385,6 +5385,7 @@ IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback
 IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.of_concreteSourcePullback
 IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump
 Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback
+Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.of_case1SelectedOldSourcePullback
 ```
 
 The concrete source state keeps `factoredBase.level`, replaces only the
@@ -5395,8 +5396,10 @@ first-jump hypotheses, has step function
 `mulStepAt factoredBase.step u (J+J1)`.
 
 This removes one supplied recurrence-state boundary from the displayed
-selected-old row-strip package.  It is still recurrence bookkeeping only: it
-does not construct `factoredBase`, the post-state, exponent post-data, raw
-source-coordinate provenance, the selected-old chart, chart coverage,
-transition regularity, analytic Jacobian/volume control, normal crossings,
-termination, pole order, or RLCT extraction.
+selected-old row-strip package, including the supplied chart-family wrapper
+that still carries chart-family regularity as supplied data.  It is still
+recurrence bookkeeping only: it does not construct `factoredBase`, the
+post-state, exponent post-data, raw source-coordinate provenance, the
+selected-old chart, chart coverage, transition regularity, analytic
+Jacobian/volume control, normal crossings, termination, pole order, or RLCT
+extraction.

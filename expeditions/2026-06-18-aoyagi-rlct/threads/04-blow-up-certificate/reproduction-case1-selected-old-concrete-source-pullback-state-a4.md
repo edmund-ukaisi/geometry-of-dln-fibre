@@ -78,11 +78,23 @@ concrete source state:
 Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback
 ```
 
+The supplied chart-family boundary has the same lift:
+
+```text
+Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.of_case1SelectedOldSourcePullback
+```
+
+This second wrapper adds no chart construction.  It only combines the concrete
+source-pullback recurrence state with the already supplied local handoff and
+the already supplied finite chart-family regularity package.
+
 ## Caveats
 
 - This does not construct `factoredBase`, the displayed row-strip post-state,
   exponent post-data, or the local handoff.
 - This does not construct the selected-old affine chart.
+- This does not prove chart-family regularity or transition regularity; the
+  chart-family wrapper still carries those as supplied data.
 - This does not identify the finite `Unit` center token with a source label by
   itself.
 - This does not prove raw-coordinate provenance of `old = u * old'`.

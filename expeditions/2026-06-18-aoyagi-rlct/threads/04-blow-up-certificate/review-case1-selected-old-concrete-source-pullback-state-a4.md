@@ -1,6 +1,6 @@
 # Review - A4 Case 1 selected-old concrete source-pullback state
 
-Reviewer: xhigh subagent `Schrodinger`
+Reviewers: xhigh subagents `Schrodinger`, `Nietzsche`
 
 Status: passed after documentation consistency fix.
 
@@ -11,6 +11,11 @@ Status: passed after documentation consistency fix.
   it existed, while the statement card still said the review was pending.  This
   file resolves that mismatch, and the statement card now records the passed
   review.
+- Follow-on chart-family lift review: no blocking findings.  The wrapper takes
+  the supplied local handoff and supplied `Case1CenterChartFamilyBoundary`,
+  fixes `source` to the concrete source-pullback recurrence state, delegates
+  `pullback` to the concrete pullback constructor, and stores `chartFamily`
+  verbatim.
 
 ## Reviewed Lean Names
 
@@ -22,6 +27,7 @@ IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_var_of_ne
 IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.of_concreteSourcePullback
 IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump
 Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback
+Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary.of_case1SelectedOldSourcePullback
 ```
 
 ## Boundary Check
@@ -36,6 +42,10 @@ The row-strip wrapper still takes the local handoff as supplied data and uses
 it only to instantiate the concrete `sourcePullback`.  It does not construct
 the selected-old chart, raw source-coordinate provenance, post-state, exponent
 data, normal crossings, pole order, or RLCT extraction.
+
+The supplied chart-family wrapper only adds the existing
+`Case1CenterChartFamilyBoundary` field to the same concrete pullback.  It does
+not prove chart-family regularity or transition regularity.
 
 ## Verification Observed by Controller
 

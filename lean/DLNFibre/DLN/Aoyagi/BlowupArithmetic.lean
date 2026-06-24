@@ -7125,6 +7125,37 @@ structure Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
 
 namespace Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary
 
+/-- Concrete selected-old source-pullback chart-family wrapper for the displayed
+Case 1(2) row-strip boundary.
+
+This chooses the source recurrence state to be
+`factoredBase.case1SelectedOldSourcePullback s0 k0 u`.  The local handoff and
+finite chart-family regularity data are still supplied. -/
+theorem of_case1SelectedOldSourcePullback
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : Case1CenterGenerator → Prop}
+    {TransitionRegular : Case1CenterGenerator → Case1CenterGenerator → Prop}
+    (handoff :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0
+        factoredBase.level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u)
+    (chartFamily :
+      Case1CenterChartFamilyBoundary n S J J1 ChartRegular TransitionRegular) :
+    Case1DisplayedRowStripSelectedOldSuppliedChartFamilyBoundary R L n S J J1
+      s0 k0 t t' numerator numerator' leastValue leastValue'
+      (factoredBase.case1SelectedOldSourcePullback s0 k0 u)
+      factoredBase post u ChartRegular TransitionRegular where
+  pullback :=
+    Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback
+      handoff
+  chartFamily := chartFamily
+
 /-- The supplied boundary still records the chosen old source label as an
 introduced label through the pullback data, not through the `Unit` token alone. -/
 theorem sourcePullback_selectedIntroduced
