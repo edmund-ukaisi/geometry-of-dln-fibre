@@ -53,7 +53,6 @@ theorem
         data.ceilWidth m C (layerWidth label) (T label))
     (hlabelBlock : ∀ label ∈ TC.terminalMinimumLabels,
       C.block (pOf label) label.1)
-    (hlast : C.point (N + 1) ≤ L + 1)
     (hactual :
       ∀ i : Fin (N + 1), ∀ r : ℕ,
         C.point i.val ≤ r → r < C.point (i.val + 1) →
@@ -127,7 +126,7 @@ theorem
   TC.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze
     data C pOf labelAlphaOf layerWidth T strictBranches alphaOf value upper
     lower baseValue (Ssrc.selected_strict_of_eq_selectedReducedWidths hm) hT
-    hlabelBlock hlast hactual hlabelFormula hlabel_ne_base hpAlpha_inj
+    hlabelBlock Ssrc.lastPoint_le hactual hlabelFormula hlabel_ne_base hpAlpha_inj
     baseValue_mem halpha_image hvalue hupper hlower halpha_inj branchCoord
     hstrictCoord hupperCoord hlowerCoord hfamily hbranchS hbranchK hbaseLabel
 

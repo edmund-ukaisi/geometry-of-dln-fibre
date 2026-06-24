@@ -2840,3 +2840,12 @@ endpoint-family payloads, injectivity, branch synchronisation, and terminal
 data explicit.  It proves no selected-cutpoint existence, Definition 3
 source-data existence, Eq5 construction, Lemma 5 exactness, chart production,
 normal crossings, pole order, or RLCT.
+
+A6 Definition 3 Eq5 `hlast` bridge has now landed:
+`threads/06-dln-translation/reproduction-definition3-eq5-hlast-bridge-a6.md`.
+Lean adds `AoyagiDefinition3SourceData.lastPoint_le` and removes the duplicated
+terminal endpoint source-range hypothesis from the Definition 3-specific Eq5
+terminal-order wrapper by passing `Ssrc.lastPoint_le`.  The generic Eq5 APIs
+still keep `hlast` explicit.  This proves no selected-cutpoint existence,
+Definition 3 source-data existence, Eq5 construction, Lemma 5 exactness, chart
+production, normal crossings, pole order, or RLCT.

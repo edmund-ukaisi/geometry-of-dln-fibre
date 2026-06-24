@@ -7125,6 +7125,21 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-eq5-hsource-bridge-a6.md`.
 
+Latest A6 Definition 3 Eq5 `hlast` bridge:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.lastPoint_le`.  The Definition 3-specific Eq5
+terminal-order wrapper in `Lemma5Eq5TerminalOrderDefinition3Bridge.lean` now
+uses that theorem instead of taking `hlast : C.point (N+1) <= L+1` as an
+extra input.  Generic Eq5 APIs still keep `hlast` explicit.  It proves no
+selected-cutpoint existence, Definition 3 source-data existence, Eq5
+construction, Lemma 5 exactness, chart production, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-eq5-hlast-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-eq5-hlast-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-eq5-hlast-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

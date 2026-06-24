@@ -7386,6 +7386,19 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-eq5-hsource-bridge-a6.md`.
 
+A6 Definition 3 Eq5 `hlast` bridge:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.lastPoint_le`, deriving `C.point ell <= L+1`
+from the stored `cut_le` field.  The Definition 3-specific Eq5 terminal-order
+wrapper now passes `Ssrc.lastPoint_le` instead of taking `hlast` separately.
+The generic Eq5 APIs keep `hlast` explicit because they do not receive
+Definition 3 source data.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-eq5-hlast-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-eq5-hlast-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-eq5-hlast-bridge-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

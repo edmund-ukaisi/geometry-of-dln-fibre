@@ -433,6 +433,15 @@ theorem selected_strict_of_eq_selectedReducedWidths
   subst hm
   exact S.selected_strict_selectedReducedWidths
 
+/-- The last selected cutpoint lies in the source range, as recorded by
+Definition 3 source data. -/
+theorem lastPoint_le
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData L ell H r C) :
+    C.point ell ≤ L + 1 := by
+  simpa [AoyagiSelectedCutpoints.point, Fin.last] using S.cut_le (Fin.last ell)
+
 /-- Supplied Definition 3 source data determines the ceiling/residue datum and
 retains the strict selected inequality for downstream arithmetic. -/
 theorem exists_ceilData
