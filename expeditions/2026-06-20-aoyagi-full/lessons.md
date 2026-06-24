@@ -912,3 +912,12 @@ ops + the recurring branch-switch / off-branch-commit hazard. **PROTOCOL: after 
 if it's in main, immediately CONTAIN it (message: no git ops, no `lake build DLNFibre`, keep work in a named
 scratch file, report-don't-integrate) or stop+re-spawn isolated.** Pairs with the spawn-switches-main-branch
 lesson — the controller's main checkout is not guaranteed exclusive across spawns/resumes; verify + contain.
+
+LESSON (2026-06-24, worktree-BASE hazard — same theme, different failure): an `isolation: worktree` agent's
+worktree is NOT guaranteed to be branched off `expedition/aoyagi-full` HEAD — observed `a680d65d` branched
+off an infra commit `2ca5e07a` (origin/dev-ish), LACKING the entire `lean/DLNFibre/DLN/RLCT/` tree, so the
+target files did not exist (while a sibling tide `a11ac` spawned in the same message WAS off the correct
+`dfb8997b` — inconsistent). The tide self-corrected by `git merge origin/expedition/aoyagi-full`. **PROTOCOL
+(now in tide briefs): STEP 0 — verify `ls` the target file exists; if not, `git merge origin/expedition/aoyagi-full`
+(union the DLNFibre.lean imports) before proceeding.** When integrating such a tide, copy ONLY the target
+files it edited — NOT its merge-union `DLNFibre.lean` (the controller is single-writer of the aggregator).

@@ -292,6 +292,24 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
 - **R1/L2 remaining map:** L2 = PIN1+PIN2 (unblocking) → L=1 smooth base + wiring (steps 4-5) → gate falls.
   R1 = hdiv (L=2 building; L≥3 gauge chain) + hfin (the full coupled resolution — THE long pole, dominant).
 
+**★ UPDATE-8 (2026-06-24) — L2 PIN2 structurally unblocked + integrated; PIN1 fix REFUTED→pivot-compatible frame; l2-pins-close driving both.**
+- **PIN2 unblock INTEGRATED @4e6a9b2b (green 3752).** `l2-pins-unblock` found a hidden enumeration mismatch
+  (deepestRoleIndexEquiv used opaque Fintype.equivFin vs the explicit regGaugeIdxSplit) blocking the round-trip
+  cancellation; REBUILT it through the shared enumeration → the round-trip is now definitionally reachable.
+  Remaining for PIN2: concrete deepestSplit def + the readX/Y/Z index-chase + the banked endpoint/reindex/comparability.
+- **PIN1 fix REFUTED → the honest fix is a pivot-compatible frame.** The proposed ₂₂-invertibility strengthening
+  is IMPOSSIBLE under rank_normal_form_right_only's hypotheses (counterexample r=1,A=[0 1]); ∃F:≃L is false from
+  IsUnit(Qf last) alone. F block-structure recorded: invertible iff IsUnit A (hPf) ∧ IsUnit B₂₂. Honest fix:
+  make the deepest last layer pivot-compatible (first r cols independent ⟹ B₂₂=I via Q=[[A11⁻¹,−A11⁻¹A12],[0,I]]).
+  SOUND (RLCT is coordinate-invariant — a column-choice is a smooth coord change — so the headline value is
+  preserved), provided the deepestPoint construction can satisfy the clause (it has frame freedom). The
+  overclaiming PIN1 docstring was corrected.
+- **`l2-pins-close` tide (aadbe…) driving BOTH** (PIN2 close + PIN1 pivot-compatible implementation), with a
+  base-check (the worktree-base hazard — a680 was branched off an infra commit, self-corrected by merging
+  aoyagi-full; lesson banked) + a hard soundness gate (no IsDeepLayers change without re-verifying the headline
+  axioms; surface if the construction can't satisfy the clause). Concurrent with `r1-wedge-l2-build` (R1 hdiv L=2).
+- **L2 remaining after PINs:** L=1 smooth base + wiring → gate falls. R1 unchanged (hdiv L=2 building; hfin long pole).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
