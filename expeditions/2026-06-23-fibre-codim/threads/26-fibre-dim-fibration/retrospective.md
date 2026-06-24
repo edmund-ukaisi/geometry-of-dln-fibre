@@ -1,0 +1,82 @@
+# Thread 26 — H4 fibre-dimension count: retrospective + precise routing
+
+**Type:** formalisation (tide). **Status:** SPECIFY complete + one substantive brick landed; the
+**full identity `codim(fibre E) = C + δ` is a controller route-commitment decision** (expedition-scale
+hard direction). Banked: the SPECIFY probe (pinned handles + Codex verdict) and the base-stratum Krull
+dimension brick. Branch `expedition/fibre-codimension`.
+
+## What landed (green, sorry-free, axiom-clean substrate)
+
+1. **`Core.FibreDimFibrationProbe`** (un-aggregated, probe convention) — every engine handle the count
+   consumes, pinned as compiling `example` contracts: `codim Σ̄^r = C`, the δ thermometer, H1 retarget,
+   the `FibreCodim` one-sided bound, the primality-gated catenary closer, affine-domain
+   equidimensionality, the no-going-down height inequality (Stacks 00OM), base-stratum primality.
+
+2. **`Core.FibreDimFibration.ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta`** —
+   `ringKrullDim O(Mat^{≤r}_{m×n}) = δ = r(n+m−r)` (`[IsAlgClosed][CharZero]`, `r≤n`, `r≤m`). Lifts the
+   LANDED thermometer `varietyDim = δ` (an `unbotD`-of-`ringKrullDim`) to the genuine `WithBot ℕ∞`
+   Krull dimension, using primality (nontrivial domain quotient ⟹ `ringKrullDim ≠ ⊥`). Flatness-free.
+   The base-dimension input both the going-down/00OM route and any height-additivity route consume.
+
+## The decorrelated Codex verdict (xhigh, `codex/answer-realization.md`) — the load-bearing finding
+
+The thread spec's premise was: the fibration `mult|_{Σ̄^r} ↠ Mat^{≤r}` + generic-fibre-dimension via
+the trdeg toolkit gives `dim(fibre E) = dim Σ̄^r − dim Mat^{≤r} = card−C−δ`, sidestepping the
+thread-20 flatness wall. **Codex (and an independent grep) refute the "sidestep" for the CLOSED fibre:**
+
+- `trdeg_add_eq` computes only the **GENERIC fibre** (fibre over the generic point of `Spec O(base)`).
+  Connecting it to the **closed** fibre over `E` (a closed, rank-exactly-`r` point) needs a **no-jump**
+  statement = local flatness / going-down / product-triviality on the exact-rank chart.
+- **Mathlib v4.29 has NO packaged generic-flatness theorem** (grep-confirmed). The only height-
+  additivity *equality* `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` (Stacks 00ON) needs
+  `Algebra.HasGoingDown ⟸` flatness — and `mult` is **not** globally flat (the fibre dimension *jumps*
+  as the rank drops: `(2,2,2)` rank-1 fibre dim 4 vs rank-0 fibre `Σ̄^0` dim 5). So the closed-fibre
+  count routes through the **same** flatness wall threads 09/14/20 hit.
+
+So the thread's stated route ("fibration sidesteps thread-20") is **only half-true**: it sidesteps the
+wall for the *generic* fibre, not the *closed* fibre over `E`.
+
+## The two directions, precisely located
+
+- **Easy `codim(fibre E) ≤ C+δ` — FLATNESS-FREE, reachable.** Via the no-going-down inequality
+  `Ideal.height_le_height_add_of_liesOver` (Stacks 00OM, present, no flatness). Descend `deepBaseComap`
+  to `O(Mat^{≤r}) →ₐ[k] O(Σ̄^r)` (via the LANDED `deepBaseComap_sigmaIdeal_le` + `Ideal.quotientMapₐ`);
+  for a fibre component `P` minimal over `m_E·(O Σ̄^r)`, lying over the maximal `m_E`:
+  `height_{O Σ̄^r} P ≤ height(m_E) + 0 = δ`; catenary through a top component `W` of Σ̄^r (codim `C`)
+  ⟹ `codim(that component) ≤ C+δ` ⟹ `min ≤ C+δ`. A multi-lemma build (~5–7 lemmas: descended algebra,
+  `m_E` maximal + `height = δ`, lies-over, relative-height-0, catenary-through-`W`, reindex), but every
+  step is reachable from landed engines. This is the half worth landing if the controller opts for
+  land-the-half.
+
+- **Hard `codim(fibre E) ≥ C+δ` — the genuine no-jump residual.** Needs *every* fibre component to
+  have dim ≤ card−C−δ. By upper-semicontinuity of fibre *dimension*, the fibre over a *special* point
+  can be larger (codim smaller); that `E` (rank-exactly-`r`, dense-open stratum) lies in the good
+  locus is exactly **generic flatness / Chevalley** — absent from Mathlib v4.29. The flatness-free
+  substitute is route B (generic smoothness, engine substrate present: `SmoothPointRegular`,
+  `SmoothLocalRelativeDimension.ringKrullDim_localizationAtPrime_eq_of_isSmoothAt`, `FibreJacobian`
+  H3a): show `rank(fibreJacobian) ≥ C+δ` at a generic point of *every* component ⟹ every component dim
+  ≤ card−C−δ. The H3 cert's "lower-dim components carry HIGHER rank" is consistent with a **uniform**
+  Jacobian-rank lower bound `≥ C+δ` over the whole fibre — a potentially clean, component-free claim,
+  but unproven and the hard rung. This is dimension-dependent and multi-rung — **expedition-scale**,
+  the same wall threads 01/09/14/20 located, now pinned to the uniform-Jacobian-rank / generic-flatness
+  statement.
+
+## Recommendation (controller decision)
+
+The full `codim = C+δ` is not one-tide reachable at v4.29 (the hard direction = the recurring wall).
+Options, mirroring the prior gate contracts:
+- **(a) Land the easy half** `codim(fibre E) ≤ C+δ` (flatness-free, the ~5–7-lemma build above) +
+  the base-δ brick, name the hard direction as the precisely-located certified-true residual. Pairs
+  with the LANDED `FibreCodim` `codim ≥ C` to bracket `C ≤ codim ≤ C+δ`.
+- **(b) Commit route B** (generic-smoothness uniform-Jacobian-rank) as a multi-rung sub-build for the
+  hard direction `≥ C+δ`. Residual risk on the uniform `rank ≥ C+δ` lemma; needs a dedicated probe.
+- **(c) Keep `BundleShiftInterface` Cited**, bank the base-δ brick + SPECIFY routing as the deliverable.
+
+No result here discharges `BundleShiftInterface`. The `+C` (catenary, Brick A) and `+δ` (this brick)
+are both in hand on the *base* side; only the closed-fibre no-jump (`≥`) blocks the full identity.
+
+## Codex consult
+
+`codex/prompt-realization.md` + `codex/answer-realization.md` (gpt-5.5, xhigh, read-only). Verdict:
+Route B (per-component height) over Route A (global varietyDim); the fibration count is NOT carried by
+`trdeg_add_eq` to the closed fibre; build the no-jump explicitly or name it the hard rung.
