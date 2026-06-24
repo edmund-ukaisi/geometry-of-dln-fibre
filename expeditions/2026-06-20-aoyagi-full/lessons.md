@@ -895,3 +895,9 @@ commit/push**, and treat "Everything up-to-date" after a fresh commit as a red f
 another branch). Pairs with the routestep-build main-checkout-branch-switch lesson (a non-isolated agent did
 the same) — the controller's branch is not stable across spawns; re-assert it each commit. Cheap check,
 prevents a silent off-branch commit + a confusing "up-to-date" push.
+
+LESSON (Lean v4.29 gotcha, reported by the Core-lemma tide 2026-06-24; not yet independently controller-
+verified): the `ᵀ` transpose postfix notation can FAIL TO PARSE in some Core files' import set (e.g.
+`DLNFibre/Core/Matrix/RankNormalForm.lean`) — use explicit `Matrix.transpose A` (`Aᵀ.rank` cost one build
+cycle). Recorded here rather than in `lean/CLAUDE.md` (controller does not edit a CLAUDE.md on a peer's
+suggestion); operator/controller may promote it to lean/CLAUDE.md's Mathlib-gotchas section deliberately.

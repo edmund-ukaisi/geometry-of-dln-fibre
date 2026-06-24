@@ -252,7 +252,8 @@ Both efforts reported.
   matches IsDeepLayers' existing 2≤L guard); L=1 is the smooth-quadratic base (`prod=A`, `‖A−B‖²` → rank-r
   normal form + sum-of-squares RLCT, a genuine direct proof, NOT vacuous). `product_reduction` is ALREADY PROVEN
   modulo `deepest_regular_core_normal_form` (the gate sorry, Skeleton:1124 = regular/2 + lambdaCore(H−r)).
-  Unblock sequence: (1) Core one-sided normal-form lemma (BUILDING, `l2-gauge-chart-work` resumed) → (2) refine
+  Unblock sequence: (1) Core one-sided normal-form lemma — LANDED @1cdfd2aa (rank_normal_form_left_only/right_only,
+  sorry-free, axioms [propext,Classical.choice,Quot.sound], wired+green 3715; `l2-rearch` tide now driving 2–3) → (2) refine
   deepestPoint_frame_exists (2≤L boundary identities) → (3) restrict gauge chain to 2≤L, fill 831/832→624→443
   → (4) L=1 smooth base → (5) wire GaugeChart:365 + aggregator. Then the L2 gate falls.
 
