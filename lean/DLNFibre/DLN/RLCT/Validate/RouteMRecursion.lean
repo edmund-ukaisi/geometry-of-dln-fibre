@@ -194,7 +194,21 @@ the achiever `T*` (the rank-pattern read). Realizability (that the chart path re
 manufactured here — it lives in the `IsRouteMCover` COVER (#104, `cover_le`/`cover_ge_div` catch a
 fabricated `(d,k,h)`), so the `branch`'s admissible-`PivotWitness M₀` is honest-by-construction with the
 cover as the honesty-gate. The concrete anchors `(2,2,2)`/`(3,2,3)` are `Case222RouteStep`/decidable; the
-general achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable`, #116) at #104. -/
+general achiever-leaf-existence rides the cascade realizability (`Core.CascadeRealizable`, #116) at #104.
+
+**BINDING-COUPLED FIDELITY (the `diag(b)` reconciliation, `verify-r1-diagb-334.md`/`-4422.md`).** The
+committed per-cell `codim : ℕ` is the geometric `Mval M₀ T` (the `PivotWitness M₀` field), read from the
+CLOSED Aoyagi form ROOT-anchored — it is NOT a per-row divisor multiplicity. So the obstruction the
+resolution certificate identifies (a per-row-multiplicity recursion mishandles a coupled corank-≥2 residual
+block, computing the WRONG core RLCT) does NOT bind this datum: the sharing identity is never re-derived
+per-row; it is encoded once, globally, in `Mval`. Decidable anchors LOCK this. `(3,3,4)` is the BINDING
+coupled witness — its unique minimiser is a corank-`(2,2)` partial drop, a per-row recursion gives `3`, the
+true value is `4`; `Case334RouteStep.case334_routeStep_value` folds the committed datum to `4` (`= ½·8`,
+reading `Mval M₀ (1,0) = 8` directly). `(4,4,2,2)` is the NON-binding contrast — its corank-2 branch carries
+`Mval = 7` but the CLEAN binder `t=(4,2,0)` sets the value at `2`; `case4422_routeStep_value` folds to `2`
+(the `min` correctly takes the clean binder, NOT `7/2`). The no-undershoot `codim ≥ minAdm` is automatic from
+`minAdm = inf_{T∈Adm M₀} Mval M₀ T` (`PivotWitness.minAdm_le`), so even a wrong dispatcher CANNOT undershoot
+the binding value — only over-emit non-binding cells (caught by the cover `≤`-leg). -/
 noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep M₀ M :=
   if _hleaf : isLeafNode M then
     -- LEAF (`isLeafNode M`, the degenerate boundary `∃ s, M_s = 0`, `isLeafNode_iff_width_zero`). The ⊤
