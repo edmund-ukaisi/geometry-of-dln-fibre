@@ -2321,6 +2321,23 @@ old-top rows, source suffixes, source production of `Csucc` or `C'^(S+1)`,
 chart coverage, transition invariance, analytic Jacobian data, normal
 crossings, pole order, termination, or RLCT.
 
+The current A4 Case 1 selected-old concrete source-pullback slice is
+`threads/04-blow-up-certificate/reproduction-case1-selected-old-concrete-source-pullback-state-a4.md`.
+Lean now constructs
+`IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback`, proves it
+supplies
+`IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData`, and exposes
+the first-jump recurrence theorem
+`IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump`.
+The wrapper
+`Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback`
+instantiates the displayed Case 1(2) pullback boundary with this concrete
+source state.  This removes one abstract source-pullback recurrence-state
+field, but it is still recurrence bookkeeping only: it does not construct the
+factored-base state, post-state, exponent post-data, raw source-coordinate
+provenance, selected-old chart, chart coverage, transition regularity,
+analytic Jacobian data, normal crossings, pole order, termination, or RLCT.
+
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

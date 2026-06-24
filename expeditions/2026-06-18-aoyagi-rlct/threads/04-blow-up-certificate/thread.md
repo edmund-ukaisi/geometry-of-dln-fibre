@@ -5367,3 +5367,36 @@ top rows, a source suffix, source production of the residual representative or
 `Csucc`, a full successor `C'^(S+1)`, chart coverage, transition invariance,
 analytic Jacobian/volume control, normal-crossing certificate production, pole
 order, termination, or RLCT extraction.
+
+## 2026-06-24 Lean Case 1 selected-old concrete source-pullback state
+
+Reproduction:
+`reproduction-case1-selected-old-concrete-source-pullback-state-a4.md`.
+Statement card:
+`statement-card-a4-case1-selected-old-concrete-source-pullback-state.md`.
+Review artifact:
+`review-case1-selected-old-concrete-source-pullback-state-a4.md`.
+
+Lean now constructs the recurrence-only source pullback for the selected-old
+Case 1(2) substitution:
+
+```text
+IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback
+IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.of_concreteSourcePullback
+IntroducedLabelRecurrenceState.case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump
+Case1DisplayedRowStripSelectedOldPullbackBoundary.of_case1SelectedOldSourcePullback
+```
+
+The concrete source state keeps `factoredBase.level`, replaces only the
+selected old recurrence-label variable by `u * factoredBase.var s0 k0`, and
+keeps every other recurrence-label variable unchanged.  It therefore supplies
+the existing abstract source-pullback data and, under the already supplied
+first-jump hypotheses, has step function
+`mulStepAt factoredBase.step u (J+J1)`.
+
+This removes one supplied recurrence-state boundary from the displayed
+selected-old row-strip package.  It is still recurrence bookkeeping only: it
+does not construct `factoredBase`, the post-state, exponent post-data, raw
+source-coordinate provenance, the selected-old chart, chart coverage,
+transition regularity, analytic Jacobian/volume control, normal crossings,
+termination, pole order, or RLCT extraction.

@@ -4180,6 +4180,45 @@ def case2ResidualRowWeight {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
     (i : Case2ResidualRowIndex n S J) : α :=
   state.weight (case2ResidualRowLevel n S J i)
 
+/-- Concrete selected-old source-pullback recurrence state for Case 1(2).
+
+It keeps the factored-base levels, replaces the selected old recurrence
+variable by `u * old'`, and leaves every other recurrence-label variable
+unchanged.  This is the pulled-back recurrence assignment only, not a chart
+construction theorem. -/
+def case1SelectedOldSourcePullback {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α)
+    (s0 k0 : ℕ) (u : α) : IntroducedLabelRecurrenceState L n S J α where
+  level s k := factoredBase.level s k
+  var s k := if (s, k) = (s0, k0) then u * factoredBase.var s0 k0
+    else factoredBase.var s k
+
+@[simp] theorem case1SelectedOldSourcePullback_level
+    {L : ℕ} {n : ℕ → ℕ} {S J s k s0 k0 : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    (factoredBase.case1SelectedOldSourcePullback s0 k0 u).level s k =
+      factoredBase.level s k := rfl
+
+@[simp] theorem case1SelectedOldSourcePullback_var_selected
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α) (u : α) :
+    (factoredBase.case1SelectedOldSourcePullback s0 k0 u).var s0 k0 =
+      u * factoredBase.var s0 k0 := by
+  simp [case1SelectedOldSourcePullback]
+
+/-- Away from the selected label, the concrete selected-old source-pullback
+keeps the factored-base recurrence-label variable. -/
+theorem case1SelectedOldSourcePullback_var_of_ne
+    {L : ℕ} {n : ℕ → ℕ} {S J s k s0 k0 : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    (hne : (s, k) ≠ (s0, k0)) :
+    (factoredBase.case1SelectedOldSourcePullback s0 k0 u).var s k =
+      factoredBase.var s k := by
+  have hne' : ¬ (s = s0 ∧ k = k0) := by
+    rintro ⟨rfl, rfl⟩
+    exact hne rfl
+  simp [case1SelectedOldSourcePullback, hne']
+
 /-- Supplied same-domain source substitution data for the old selected Case 1
 exceptional variable.
 
@@ -4204,6 +4243,22 @@ structure Case1SelectedOldFactoredBaseData
       source.var s k = factoredBase.var s k
 
 namespace Case1SelectedOldFactoredBaseData
+
+/-- The concrete selected-old source-pullback state supplies the abstract
+factored-base substitution data. -/
+theorem of_concreteSourcePullback
+    {L : ℕ} {n : ℕ → ℕ} {S J s0 k0 : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    (hsel : introducedLabel L n S J s0 k0) :
+    Case1SelectedOldFactoredBaseData
+      (factoredBase.case1SelectedOldSourcePullback s0 k0 u)
+      factoredBase s0 k0 u where
+  selectedIntroduced := hsel
+  level_eq := rfl
+  var_selected := by simp
+  var_old := by
+    intro s k _hintro hne
+    exact factoredBase.case1SelectedOldSourcePullback_var_of_ne u hne
 
 /-- At the selected old label's level, the substituted source recurrence factor
 is the factored-base recurrence factor multiplied by the selected chart
@@ -4289,6 +4344,18 @@ theorem step_eq_mulStepAt_of_firstJump
   rw [data.step_eq_mulStepAt_selectedLevel, hfirst.selectedLevel]
 
 end Case1SelectedOldFactoredBaseData
+
+/-- First-jump specialization for the concrete selected-old source-pullback
+recurrence state. -/
+theorem case1SelectedOldSourcePullback_step_eq_mulStepAt_of_firstJump
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    (factoredBase : IntroducedLabelRecurrenceState L n S J α) (u : α)
+    {vector : ℕ → ℕ → ℕ → ℤ}
+    (hfirst : Case1FirstJumpHypotheses L n S J J1 s0 k0 factoredBase.level vector) :
+    (factoredBase.case1SelectedOldSourcePullback s0 k0 u).step =
+      mulStepAt factoredBase.step u (J + J1) :=
+  (Case1SelectedOldFactoredBaseData.of_concreteSourcePullback
+    factoredBase u hfirst.selectedIntroduced).step_eq_mulStepAt_of_firstJump hfirst
 
 namespace Case1SelectedOldLevelMoveData
 
@@ -6766,6 +6833,34 @@ structure Case1DisplayedRowStripSelectedOldPullbackBoundary
       source factoredBase s0 k0 u
 
 namespace Case1DisplayedRowStripSelectedOldPullbackBoundary
+
+/-- Concrete selected-old source-pullback wrapper for the displayed Case 1(2)
+row-strip boundary.
+
+The local handoff still supplies the chart-local transition, post-state, and
+exponent data.  This constructor removes only the abstract source-pullback
+recurrence state by using `factoredBase.case1SelectedOldSourcePullback s0 k0 u`.
+-/
+theorem of_case1SelectedOldSourcePullback
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {factoredBase : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    (handoff :
+      Case1DisplayedRowStripSuppliedTransitionBoundary R L n S J J1 s0 k0
+        factoredBase.level
+        t t' numerator numerator' leastValue leastValue' factoredBase post u) :
+    Case1DisplayedRowStripSelectedOldPullbackBoundary R L n S J J1 s0 k0
+      t t' numerator numerator' leastValue leastValue'
+      (factoredBase.case1SelectedOldSourcePullback s0 k0 u)
+      factoredBase post u where
+  handoff := handoff
+  sourcePullback :=
+    IntroducedLabelRecurrenceState.Case1SelectedOldFactoredBaseData.of_concreteSourcePullback
+      factoredBase u handoff.firstJump.selectedIntroduced
 
 /-- The bundled local handoff supplies first-jump data on the recurrence-state
 level map of the factored-base state. -/
