@@ -91,6 +91,23 @@ controller reviews its output rigorously on report (vacuity risk). BIG REMAINING
 the L2-PIN soundness reconciliation (DEFERRED — split-reindex's #120 EPivot correction vs the base's
 fold3-close version; per-file cherry-pick at L2-wiring), D1 ≥-leg, RRR-Lean (#17), the θ analytic seam (A2).
 
+**ROUTESTEP FIRST-TIDE INTEGRATED @b37f5116 (routestep-build, reviewer-passed, green 3708 jobs).**
+(A) RECONCILIATION (verified in-code, RouteMBranchRead:32): the RouteStep per-cell codim:ℕ is the GEOMETRIC
+(Mval M₀ T).toNat (root-anchored PivotWitness), NOT a per-row multiplicity — so the per-row obstruction
+does NOT bind the datum; no support:Gen→Finset DivVar field is needed ON the datum. The coupled diag(b)
+geometry lives in the OPEN dispatcher PROOF (per-chart codim=Mval), not a datum field. Consistent with the
+r1-design cert (which ruled out the per-row RECURSION the build correctly avoids).
+(B) 3 decidable anchors (Case334RouteStep.lean, 0 sorry/axiom, S2-only, genuine RouteStep.branch):
+(3,3,4)→4 binding, (4,4,2,2)→2 non-binding, (3,3,5,4)→4 L=3 deep-sharing (closes the deferred leg).
+THE R1 CRUX NOW = the GENERAL-M dispatcher (#135): the rank-pattern READ producer (RouteMBranchRead M₀ M for
+arbitrary non-leaf M) + the routeAtlas-folds-to-codims (cover/reachability) proof — where the per-chart
+coupled-diag(b) resolution must be proven for general M. resolution_charts (Skeleton:1017) stays honest-sorry
+until this lands; NO degenerate single-cell fill (trap-iii forbidden). LIKELY needs a general-M COVER DESIGN
+pass (pen-and-paper) BEFORE the Lean tide (design-before-lines) — the per-branch value is certified, the
+general-M COMPLETENESS/cover is the open geometry (the "R1.6 mountain" of lessons.md). PROCESS NOTE: spawn the
+next R1 formaliser with isolation:worktree (routestep-build worked in the main checkout + switched its branch
+uncommitted; recovered cleanly @b37f5116, but worktree isolation avoids the recurrence).
+
 **★ INTEGRATION #6 IN PROGRESS (controller, sole merger; branch-recon → integration-recon.md).** Goal:
 one coherent base (clear the scattered-branch debt). NOTE: all 4 Skeleton gates remain sorry after merging
 everything — the merge is CONSOLIDATION of supporting modules, NOT headline-closing. Progress:
