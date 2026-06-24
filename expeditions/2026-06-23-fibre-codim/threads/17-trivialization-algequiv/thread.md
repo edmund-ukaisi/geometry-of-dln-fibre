@@ -58,3 +58,30 @@ Don't edit the aggregator — report the import line. **You are the SOLE write-t
 (`height m_B = δ` + minimal-prime relative-height-0) and R2-6 (`+C` assembly + reducibility fold) are
 later tides. Report to `main`: theorem/def names + signatures; green/sorries/axioms; module path +
 aggregator line; the tensor-descent lemma used; v4.29 friction.
+
+---
+
+## VERDICT (formalisation tide, 2026-06-24) — route-(b) chain DELIVERED; deep iso = R2-3b (deferred)
+
+**Reachability:** the FULL deep `S ≃ₐ[R] R ⊗_k F_E` is a MULTI-TIDE wall, not one tide (decorrelated
+xhigh Codex + my analysis converged). The engine has NO deep localized total ring — G2-2's
+`blockAlgEquivLoc`/`basePresentationEquiv` are all `N=1` (single matrix `dStratum`); the deep `mult`
+is a degree-N product whose rank ideal FACTORS, so the B22-graph trick does NOT port. No shorter route
+to `F_E` reduced: reducedness does not descend through arbitrary quotients/special fibres
+(`k[t,x]/(x²−t)` obstruction); the injection `R⊗F_E ↪ Sred` IS the hard half of the trivialization.
+
+**Delivered (committed `91c77ff0`, card `996bb363`):** `lean/DLNFibre/Core/FibreReducedTrivialization.lean`
+— the two ends of the route-(b) chain + the radical-collapse closer, wired against the trivialization
+`e : S ≃ₐ[k] R ⊗_k F_B` + `IsReduced S` as an explicit HYPOTHESIS (not a sorry):
+- `isReduced_of_tensor` — the tensor-with-a-field reducedness DESCENT (the one open dependency,
+  now a proved Core lemma): `includeRight_injective` + `isReduced_of_injective`, needs only `[Nontrivial R]`.
+- `fibreGenIdeal_isRadical_of_trivialization` — the full chain (S reduced → R⊗F reduced → F reduced →
+  `fibreGenIdeal` radical).
+- `vanishingIdeal_fibre_eq_fibreGenIdeal_of_trivialization` — the radical-collapse of MultComorphism
+  pt 4 (the `radical(·)` wrapper drops). The R2-5/R2-6 consumer.
+Green, sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`. Non-vacuity in-file.
+**Aggregator line (main):** `import DLNFibre.Core.FibreReducedTrivialization`.
+
+**Deferred → R2-3b:** the deep endpoint-normalization product iso `e` itself (new scheme-free affine
+scaffolding). Fully de-risked downstream — every consumer of `e` is proved here against the hypothesis.
+Codex's build order saved in `codex/algequiv-answer.md`.
