@@ -2586,3 +2586,13 @@ normal crossings, pole order, or RLCT.  The next ambitious A4 moves should
 either use this package to reduce a concrete successor/following production
 obligation, or feed it into a source-facing chart-certificate construction
 only where the remaining analytic/chart-production hypotheses are explicit.
+
+The displayed-overlap handoff has now landed at
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-frontier-a4.md`.
+It transitions an arbitrary all-pivot source chart to the displayed top-left
+chart on the `x_(J+1,J+1) != 0` overlap, then instantiates the existing
+displayed frontier package and continuing certificate at the generated
+displayed data.  This is the current best source-frontier reducer.  A clean
+next finite target is the separate substitution-block rewrite identified in
+the review scout: the transition-generated displayed substitution block should
+equal the source-side selected-entry substitution block.

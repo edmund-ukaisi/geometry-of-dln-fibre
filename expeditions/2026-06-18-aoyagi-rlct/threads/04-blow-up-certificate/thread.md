@@ -5902,3 +5902,37 @@ only.  It does not prove analytic transition regularity, chart coverage,
 source-displayed all-pivot atlas, chart-produced recurrence or exponent
 post-data, successor residual/following-factor production, normal crossings,
 pole order, RLCT extraction, or repair of the printed Case 2 vector mismatch.
+
+## 2026-06-24 Lean Case 2 transition-generated displayed frontier
+
+Reproduction:
+`reproduction-case2-transition-generated-displayed-frontier-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-generated-displayed-frontier.md`.
+Review:
+`review-case2-transition-generated-displayed-frontier-a4.md`.
+
+Lean now gives the displayed-overlap source-frontier handoff:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.displayedChartIndex
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finsetSubtypeChartEquiv_displayedChartIndex
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_frontierBoundaryPackages_of_displayed_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingCertificate_of_displayed_normalized_ne_zero
+```
+
+On the overlap where the displayed normalized coordinate
+`x_(J+1,J+1)` is nonzero, an arbitrary all-pivot source chart transitions to
+the displayed top-left chart with `targetU = u*x_(J+1,J+1)` and
+`targetResidual q = x_q/x_(J+1,J+1)`.  The displayed transition point has the
+same finite chart map as the original source point, and the
+transition-generated displayed data satisfy the existing displayed
+source-chart frontier package.  Under `J+2 <= M(S+1)`, they also satisfy the
+displayed continuing reindexed source-chart certificate.
+
+This is finite selected-entry/source-frontier algebra only.  It is not
+analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, source production of a global successor object or suffixes, normal
+crossings, pole order, or RLCT extraction.  It is also not the separate
+substitution-block rewrite identifying the transition-generated displayed
+substitution block with a source-side selected-entry substitution block.

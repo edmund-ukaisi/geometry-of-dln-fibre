@@ -6915,6 +6915,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-qp-package-a4.md`.
 
+Latest A4 Case 2 transition-generated displayed frontier:
+`SelectedEntryNormalCrossing.lean` now proves the finite handoff from an
+arbitrary all-pivot selected-entry source chart to the displayed top-left
+source-chart frontier on the overlap where the displayed normalized coordinate
+is nonzero.  The target data are `targetU = u*d` and
+`targetResidual q = x_q/d`, with `d = x_(J+1,J+1)`.  Lean records finite
+chart-map equality back to the original source chart point, then instantiates
+the existing displayed frontier package and, under the continuing guard, the
+displayed continuing reindexed source-chart certificate.  This does not prove
+analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, source-produced successor or suffix data, normal crossings, pole order,
+or RLCT, and it is not the separate substitution-block rewrite.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-frontier-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-displayed-frontier-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

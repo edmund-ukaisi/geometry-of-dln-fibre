@@ -6683,6 +6683,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-qp-package-a4.md`.
 
+Latest A4 Case 2 transition-generated displayed frontier:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.displayedChartIndex`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finsetSubtypeChartEquiv_displayedChartIndex`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_frontierBoundaryPackages_of_displayed_normalized_ne_zero`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingCertificate_of_displayed_normalized_ne_zero`.
+These theorems transition arbitrary all-pivot source chart data to displayed
+top-left data on the normalized displayed-coordinate overlap, keep finite
+chart-map equality to the original source chart point, and instantiate the
+existing displayed frontier/continuing packages at the generated data.  This
+is finite selected-entry/source-frontier algebra only: no analytic transition
+regularity, chart coverage, source-displayed all-pivot atlas, source-produced
+successor or suffix data, normal crossings, pole order, or RLCT.  The
+separate transition-generated substitution-block rewrite remains open.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-frontier-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-frontier.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-displayed-frontier-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
