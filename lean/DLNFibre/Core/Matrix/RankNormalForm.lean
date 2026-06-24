@@ -7,6 +7,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Dimension.Free
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+import Mathlib.LinearAlgebra.Matrix.SchurComplement
 
 /-!
 # `DLNFibre.Core.Matrix.RankNormalForm` — generic rank normal form
@@ -423,5 +424,35 @@ theorem exists_pivot_cols_of_rank {K : Type*} [Field K] {r c : ℕ}
     rw [hcoleq]; exact hJli
   -- A square matrix with independent columns is a unit.
   exact Matrix.linearIndependent_cols_iff_isUnit.mp hcols
+
+/-- **Pivot-front right-frame forces an invertible ₂₂ block** (the keystone of the boundary-frame
+`B22`-invertibility for PIN1). Split the rank-`r` row factor with its `r` pivot columns in front:
+`V = [VJ | VK]`, `VJ : Fin r × Fin r` a unit (`hVJ`). If a unit frame `Q`, block-split the SAME way,
+carries `V·Q` to the corner `[I_r | 0]` — `VJ·Q11 + VK·Q21 = 1` (`htop1`), `VJ·Q12 + VK·Q22 = 0`
+(`htop2`) — then `Q22` is a unit. Proof: `W := [[VJ, VK], [0, 1]]` is a unit (block-triangular,
+`VJ` and `1` units; `isUnit_fromBlocks_zero₂₁`), and `W·Q = [[1, 0], [Q21, Q22]]` (the two top
+hypotheses), a unit (product of units), so `isUnit_fromBlocks_zero₁₂` gives `IsUnit Q22`. Pivots front
+is load-bearing: without it `VJ` is singular and the conclusion fails (the `B22`-singular obstruction
+documented in PIN1). Network-free; holds for any frame `Q` with this corner form. -/
+theorem toBlocks22_isUnit_of_pivot_corner {r m : ℕ}
+    (VJ : Matrix (Fin r) (Fin r) ℝ) (VK : Matrix (Fin r) (Fin m) ℝ)
+    (Q11 : Matrix (Fin r) (Fin r) ℝ) (Q12 : Matrix (Fin r) (Fin m) ℝ)
+    (Q21 : Matrix (Fin m) (Fin r) ℝ) (Q22 : Matrix (Fin m) (Fin m) ℝ)
+    (hVJ : IsUnit VJ) (hQ : IsUnit (Matrix.fromBlocks Q11 Q12 Q21 Q22))
+    (htop1 : VJ * Q11 + VK * Q21 = 1) (htop2 : VJ * Q12 + VK * Q22 = 0) :
+    IsUnit Q22 := by
+  -- `W := [[VJ, VK], [0, 1]]` (zero at the ₂₁ block) is a unit iff `VJ` and `1` are.
+  have hW : IsUnit (Matrix.fromBlocks VJ VK (0 : Matrix (Fin m) (Fin r) ℝ)
+      (1 : Matrix (Fin m) (Fin m) ℝ)) :=
+    Matrix.isUnit_fromBlocks_zero₂₁.mpr ⟨hVJ, isUnit_one⟩
+  -- `W · Q = [[VJ Q11 + VK Q21, VJ Q12 + VK Q22], [Q21, Q22]] = [[1, 0], [Q21, Q22]]`.
+  have hWQ : Matrix.fromBlocks VJ VK (0 : Matrix (Fin m) (Fin r) ℝ)
+        (1 : Matrix (Fin m) (Fin m) ℝ) * Matrix.fromBlocks Q11 Q12 Q21 Q22
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 Q21 Q22 := by
+    rw [Matrix.fromBlocks_multiply, htop1, htop2]; simp
+  -- `W · Q` is a unit (units multiply); the corner block form then gives `IsUnit Q22`.
+  have hprod : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 Q21 Q22) := by
+    rw [← hWQ]; exact hW.mul hQ
+  exact (Matrix.isUnit_fromBlocks_zero₁₂.mp hprod).2
 
 end DLNFibre.Core.Matrix
