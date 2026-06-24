@@ -10,7 +10,8 @@
 > to the quotient.
 >
 > - **Lean (defs):** `DLNFibre.Core.repStratumEquiv`, `deepBaseComap`, `ΔPdeep`, `IadDeep`, `Sred`
->   (`lean/DLNFibre/Core/DeepChartRing.lean` @ `85824f9f`)
+>   (`lean/DLNFibre/Core/DeepChartRing.lean` @ `4345e9e9`)
+> - **Lean (reducedness):** `DLNFibre.Core.IadDeep_isRadical`, `isReduced_Sred` (same file/SHA)
 > - **Lean (transport):** `DLNFibre.Core.deepBaseComap_detPivot` (same file/SHA)
 > - **Lean (ideal direction):** `DLNFibre.Core.deepBaseComap_sigmaIdeal_le`,
 >   `DLNFibre.Core.Iad_le_comap_IadDeep` (same file/SHA)
@@ -44,15 +45,23 @@
 >     `baseQuotMap ∘ basePresentationEquiv.symm`.
 >   - `sredSchurAlgebra` / `sredSchur_isScalarTower` — the induced `SchurLoc`-algebra structure on
 >     `Sred` (`RingHom.toAlgebra`) and the `k → SchurLoc → Sred` scalar tower.
+>   - `IadDeep_isRadical [IsAlgClosed k]` — `(IadDeep d r).IsRadical`: the localized image of the
+>     radical `sigmaIdeal` is radical (`IsLocalization.map_radical` + `vanishingIdeal_isRadical`).
+>   - `isReduced_Sred [IsAlgClosed k]` — `IsReduced (Sred d r)`: a quotient by a radical ideal is
+>     reduced (`Ideal.isRadical_iff_quotient_reduced`). This justifies the name `Sred` and **is**
+>     R2-3a's `hSred : IsReduced S` for `S = Sred`.
 >
 > - **Proved (unconditional).** All of the above as stated. The two crux lemmas Codex flagged as the
 >   hardest walls — `deepBaseComap_detPivot` (the pivot-minor transport making `Away.mapₐ` well-typed)
 >   and `deepBaseComap_sigmaIdeal_le` (the base→deep `sigmaIdeal` direction making `quotientMapₐ`
 >   well-typed) — are both proved, the latter **without** the circular `sigmaIdeal ≤ fibreGenIdeal`.
->   `baseQuotMap` needs no `[IsAlgClosed]`/`[CharZero]`; `schurToSred` needs them only for
->   `basePresentationEquiv`. Sorry-free; axiom-clean `[propext, Classical.choice, Quot.sound]`;
+>   **`isReduced_Sred`** (over `[IsAlgClosed k]`) makes the name `Sred` honest and discharges R2-3a's
+>   `hSred` outright (the localized radical `sigmaIdeal` ⟹ radical `IadDeep` ⟹ reduced quotient; no
+>   quotient↔localization interchange iso). `baseQuotMap` needs no `[IsAlgClosed]`/`[CharZero]`;
+>   `schurToSred` needs them only for `basePresentationEquiv`; `IadDeep_isRadical`/`isReduced_Sred`
+>   need only `[IsAlgClosed k]`. Sorry-free; axiom-clean `[propext, Classical.choice, Quot.sound]`;
 >   non-vacuity witnesses in-file at the `N = 1` stratum `dStratum 2 2`, `r = 1` over
->   `AlgebraicClosure ℚ`.
+>   `AlgebraicClosure ℚ` (including `IsReduced (Sred …)`).
 >
 > - **Assumed.** None — every result is unconditional in `(d, r, hp, hq)` (`schurToSred`,
 >   `sredSchurAlgebra` carry the standing `[IsAlgClosed k] [CharZero k]` of the `N = 1` base
@@ -72,8 +81,12 @@
 >   descent to the reduced chart quotient — R2-3b-4, the hard rung that discharges R2-3a's `e`. **No
 >   result here claims `codim (fibre) = C + δ` or discharges `BundleShiftInterface`** — `e` is not yet
 >   built; this tide supplies the chart ring it lives on and the base→total map giving it its
->   `R`-algebra structure.
+>   `R`-algebra structure. **R2-3a's *other* hypothesis `IsReduced S` is no longer deferred** —
+>   `isReduced_Sred` discharges it, so R2-3b-4 builds only `e` itself.
 >
 > - **Status.** sorry-free + reviewed (reviewer fidelity PASS on all six axes + decorrelated Codex
->   FIDELITY-PASS, `threads/18-deep-chart-ring/codex/fidelity-review-*.md`). Awaiting aggregator
->   wiring — `import DLNFibre.Core.DeepChartRing`.
+>   FIDELITY-PASS, `threads/18-deep-chart-ring/codex/fidelity-review-*.md`); aggregator wired
+>   (`DLNFibre.lean` imports `DLNFibre.Core.DeepChartRing`). The `isReduced_Sred` /
+>   `IadDeep_isRadical` augmentation (banked after the review) is a straightforward
+>   `IsLocalization.map_radical` + `isRadical_iff_quotient_reduced` chain — fidelity self-evident from
+>   the gloss; flag for a re-skim if the reviewer wants it in scope.
