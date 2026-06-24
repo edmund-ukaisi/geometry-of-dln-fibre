@@ -78,6 +78,19 @@ refinement (not blocking): an L≥3 binding deep-factor-sharing witness (the sup
 it — the non-binding (4,4,2,2) t=(2,1,0) demo exhibited shared-C³-via-u). Folded into reproduction §3.4
 (with the (4,4,2,2) correction).
 
+**★ PHASE TRANSITION (2026-06-24): design/validation COMPLETE → implementation (routeStep mountain) STARTED.**
+The entire design/validation arc is certified + banked: reproduction airtight+red-teamed (§0–§5+ledger,
+(4,4,2,2) corrected); R1 = coupled diag(b) CERTIFIED ((3,3,4) binds 4 vs threshold-only 3); integration
+phase-1 (R1-side) green @0bd03ad2/e1735700/8026c80d. Now driving the IMPLEMENTATION: `routestep-build`
+(fresh lean-formaliser, background) on resolution_charts / the general routeStep dispatcher (RouteMRecursion
+:198 honest sorry) as the coupled diag(b) recursion, briefed with the CERTIFIED data-structure spec
+(support : Gen → Finset DivVar) + the (3,3,4)/(4,4,2,2) worked examples + STRICT anti-vacuity discipline
+(do NOT fabricate the body — the trap-iii lesson; honest sorry if unreachable; inhabitant-test signatures).
+THE MOUNTAIN — honest partial progress + a precise blocker report is success; a fabricated green is failure;
+controller reviews its output rigorously on report (vacuity risk). BIG REMAINING COMMITMENTS after/alongside:
+the L2-PIN soundness reconciliation (DEFERRED — split-reindex's #120 EPivot correction vs the base's
+fold3-close version; per-file cherry-pick at L2-wiring), D1 ≥-leg, RRR-Lean (#17), the θ analytic seam (A2).
+
 **★ INTEGRATION #6 IN PROGRESS (controller, sole merger; branch-recon → integration-recon.md).** Goal:
 one coherent base (clear the scattered-branch debt). NOTE: all 4 Skeleton gates remain sorry after merging
 everything — the merge is CONSOLIDATION of supporting modules, NOT headline-closing. Progress:
