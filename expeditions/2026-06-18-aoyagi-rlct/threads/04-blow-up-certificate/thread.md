@@ -6394,3 +6394,51 @@ This is finite transition/source-substitution/stack packaging only.  It does
 not source-produce `Csucc` or `C'^(S+1)`, construct suffixes or successor
 charts, prove transition regularity or coverage, prove normal crossings, pole
 order, termination, RLCT, or repair the printed Case 2 vector mismatch.
+
+## 2026-06-24 Controller audit - post-constructed `Cprime` boundary
+
+Audit:
+`audit-case2-post-constructed-cprime-source-production-boundary-a4.md`.
+
+Controller decision: after the constructed old-top/free-`Cprime` transition
+stack theorem, further Case 2 product or microcertificate specializations are
+low-value unless a downstream theorem directly consumes that exact wrapper.
+The landed theorem already uses the canonical formula-level
+`SourceProductionObligation` constructor with the constructed terminal stack.
+
+A non-redundant next A4 interface must contain fields that cannot be filled by
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`, such
+as produced successor chart data, suffix production, real coverage/transition
+regularity, or coordinate-produced post-data.  If a proposed source-production
+interface is inhabited by the current constructor plus `simpa`, it is an API
+wrapper rather than source progress.
+
+Near-term: either reproduce actual successor chart/source production data from
+Aoyagi pp. 19-22, with precise produced fields and kill conditions, or switch
+to a different final-Theorem-2 obligation such as A2 source-hypothesis/rank-
+stratum handling.  Do not call more finite `Q/P` or stack packaging source
+production.
+
+## 2026-06-24 Reproduction - selected-entry analytic atlas boundary
+
+Reproduction:
+`reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
+Review:
+`review-selected-entry-analytic-atlas-boundary-a4.md`.
+
+The reproduction separates the finite selected-entry certificate spine from
+the missing analytic atlas producer.  Lean already has
+`AoyagiNormalCrossingChartCertificate` and the selected-entry all-pivot
+certificate feeding it with finite chart maps, one active coordinate per
+chart, monomial loss, formal Jacobian/prior determinant, unit witnesses,
+finite ratio `|center|/2`, chartwise count `1`, and finite order `1`.
+
+The missing A4 atlas fields are analytic chart domains, coverage, regular
+chart maps, transition regularity, unit nonvanishing on domains, analytic
+Jacobian/volume-form compatibility, source-produced successor/suffix data, and
+branch/termination coverage.  A future `SelectedEntryAnalyticAtlasBoundary`
+must contain fields of this kind; if it can be inhabited by the trivial chart-
+family boundaries or formula-level `SourceProductionObligation`, it is not the
+right interface.

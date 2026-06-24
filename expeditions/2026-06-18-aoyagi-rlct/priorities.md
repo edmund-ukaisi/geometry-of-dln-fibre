@@ -19,6 +19,37 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Current controller decision - 2026-06-24
+
+After the constructed old-top/free-`Cprime` transition stack theorem, A4 Case 2
+wrapper work is parked unless it forces genuinely produced fields.  The audit
+is
+`threads/04-blow-up-certificate/audit-case2-post-constructed-cprime-source-production-boundary-a4.md`.
+
+Kill condition for any proposed "source-production" interface: if it can be
+inhabited by
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` plus
+definitional choices of `Csucc`/`Cterm`, it is only API packaging.  Real A4
+progress must produce successor chart/source data, suffix data, coverage,
+transition regularity, or coordinate post-data.
+
+Next-highest value if A4 remains source-blocked: switch to A2
+source-hypothesis/rank-stratum handling or selected-cutpoint/Definition-3
+provenance with a fresh pen-and-paper reproduction.  Avoid A5 exactness unless
+the Lemma 5 obstruction is explicitly repaired, and avoid A3 Theorem 4 unless
+we independently reproduce the needed local route.
+
+Immediate A4 next artifact:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.
+Independent check passed.  The next Lean slice should be a minimal supplied
+`SelectedEntryAnalyticAtlasBoundary` whose fields feed the A0 chart-certificate
+final socket without being trivially inhabitable.  Do not add a constructor
+that fills these fields from the finite selected-entry certificate alone.
+
 ## Current A0 checkpoint - 2026-06-23
 
 The finite normal-crossing exponent interface has landed in

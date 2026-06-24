@@ -4611,3 +4611,26 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-transition-constructed-oldtop-cprime-source-current-stack.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
+Current A4 boundary claim after the constructed old-top `Cprime` stack:
+do not count any theorem as source production if its proof only chooses
+formula-level `Csucc`/`Cterm`, invokes
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` or
+`SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack`,
+uses `ob.Csucc_eq_formula`, or packages arbitrary `Cold`, `Cprime`, and
+`Ctail` inputs.  Such theorems are compatibility adapters.  The durable audit
+is
+`threads/04-blow-up-certificate/audit-case2-post-constructed-cprime-source-production-boundary-a4.md`.
+
+Next A4 source-moving claim to investigate: the selected-entry finite
+chart-certificate layer already feeds the A0 certificate spine with chart maps,
+one active coordinate, monomial loss, formal Jacobian/prior determinant, unit
+factors, exponent ratios, and chart counts.  It still does not prove analytic
+atlas coverage, transition regularity, source production of successor/suffix
+data, analytic Jacobian/volume-form compatibility, global normal crossings,
+termination, pole order, or RLCT.  The next reproduction target is
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
+The matching statement card is
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.

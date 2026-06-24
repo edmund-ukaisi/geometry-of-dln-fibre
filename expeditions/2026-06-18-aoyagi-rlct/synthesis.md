@@ -7257,6 +7257,38 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
 
+Post-constructed-`Cprime` controller boundary audit:
+`threads/04-blow-up-certificate/audit-case2-post-constructed-cprime-source-production-boundary-a4.md`.
+Decision: pause A4 Case 2 wrapper accumulation.  A constructed
+`reindexedNextSourceProduct` specialization or another selected-entry
+microcertificate wrapper is redundant unless a downstream theorem directly
+consumes it.  A non-redundant source-production interface must have fields
+that cannot be inhabited by
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows`, such
+as produced successor charts, suffix production, coverage/transition
+regularity, or coordinate-produced post-data.  If those fields cannot be
+reproduced from Aoyagi pp. 19-22 without independent atlas machinery, pivot to
+A2 source-hypothesis/rank-stratum handling or selected-cutpoint/Definition-3
+provenance.
+
+New A4 reproduction target:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.
+It records the next lane: the finite selected-entry chart-certificate spine
+already supplies `AoyagiNormalCrossingChartCertificate`-level algebra
+(chart maps, coordinates, monomial loss, formal Jacobian/prior determinant,
+units, one active coordinate, ratio `|center|/2`, chartwise count `1`, finite
+order `1`).  The missing producer is an analytic atlas boundary with real
+domains, coverage, transition regularity, unit nonvanishing on domains,
+analytic Jacobian/volume-form compatibility, source-produced successor/suffix
+data, and branch/termination coverage.  The proposed next statement-card
+target is a `SelectedEntryAnalyticAtlasBoundary` whose fields cannot be filled
+by trivial chart-family boundaries or formula-level
+`SourceProductionObligation` constructors.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
