@@ -72,6 +72,19 @@ theorem ringKrullDim_quotient_map_ringEquiv {T : Type*} [CommRing T] (e : T ≃+
     ringKrullDim (T ⧸ I) = ringKrullDim (T ⧸ I.map (e : T →+* T)) :=
   ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv I (I.map e) e rfl)
 
+/-- **`ringKrullDim` of a quotient is invariant under a `comap` along a ring isomorphism.** For
+`e : R ≃+* S` and an ideal `I` of `S`, `ringKrullDim (R ⧸ I.comap e) = ringKrullDim (S ⧸ I)` — the
+quotient by the pullback ideal is isomorphic to the original (`Ideal.quotientEquiv`). The `comap`
+form (the shape a coordinate-change `vanishingIdeal` transport produces, e.g. the engine's
+`vanishingIdeal_image_smul`). -/
+theorem ringKrullDim_quotient_comap_ringEquiv {R S : Type*} [CommRing R] [CommRing S]
+    (e : R ≃+* S) (I : Ideal S) :
+    ringKrullDim (R ⧸ I.comap (e : R →+* S)) = ringKrullDim (S ⧸ I) := by
+  have h : (I.comap (e : R →+* S)).map (e : R →+* S) = I :=
+    Ideal.map_comap_of_surjective (e : R →+* S) e.surjective I
+  exact ringKrullDim_eq_of_ringEquiv
+    (Ideal.quotientEquiv (I.comap (e : R →+* S)) I e h.symm)
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: in `ℚ[X]`, the square `(X)^2` of the prime `(X)` shares its radical, so the
