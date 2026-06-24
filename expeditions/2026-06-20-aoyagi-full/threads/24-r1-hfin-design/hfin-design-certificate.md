@@ -336,14 +336,26 @@ the degenerate `phi334`'s replacement = the per-node atom at depth 1), so buildi
 first step of EITHER path, and the general-`L` `hfin` is then "iterate the same atom up the tree + the
 refinement lemma."
 
-**Caveat (the one place the legs could fail to share).** The two Lean FIELD SHAPES differ: `hfin` is a
-SUM over all leaves finite on the box `(−1,1)^N`; `hdiv` is ONE leaf's integral `= ⊤` on every small cube
-`[−ε,ε]^N`. The achiever leaf serves both, BUT the `hdiv` divergence needs the achiever chart's image to
-contain a positive-measure piece of EVERY cube `[−ε,ε]^N` (the `ε`-uniformity) — a containment the
-degenerate `phi334` lacked (null image). The shared honest chart fixes this (its image is full-measure
-off null), so the caveat is discharged BY the shared atom — but it is the precise extra the `hdiv` leg
-needs beyond "same chart," and it must be checked, not assumed. (No case found where the `hfin` cover
-fails to contain the `hdiv` diverging chart — the achiever leaf is in the cover by construction.)
+**Two caveats (the precise places the unification must be honest — both decorrelated-Codex-confirmed).**
+
+1. *The shared cover must be the FULL resolved atlas, not the generic-`a` shear chart.* The unification
+   holds **only if** the `hfin` cover is the genuine resolved atlas (all pivot/blow-up subcharts),
+   not the lone generic-`a≠0` Schur chart. Codex's sharpening: in a given blow-up subchart `a = u·â`,
+   the singular term becomes `a⁻¹bS = â⁻¹b̂S` — regular **on the subchart where `â` is invertible**, but
+   if the achiever direction has `â` singular in that subchart, THAT subchart is not the diverging one
+   and the atlas must include the adjacent pivot/blow-up chart (or a further blow-up). A generic-shear or
+   null-center shortcut would NOT contain the lower-bound witness — which is exactly why `phi334` (a lone
+   chart) failed. So the shared atom is specifically the **full per-node resolved atlas** (the family of
+   argmax-pivot subcharts, which `argmaxCellOn_cover` already enumerates), not a single chart.
+2. *The Lean field shapes differ.* `hfin` is a SUM over all leaves finite on `(−1,1)^N`; `hdiv` is ONE
+   leaf's integral `= ⊤` on every cube `[−ε,ε]^N`. The achiever leaf serves both, but the `hdiv`
+   divergence needs the achiever chart's image to contain a positive-measure piece of EVERY `[−ε,ε]^N`
+   (the `ε`-uniformity) — a containment the degenerate `phi334` lacked (null image). The shared honest
+   chart fixes this (full-measure image off null), so it is discharged BY the shared atom — but it is the
+   precise extra the `hdiv` leg needs beyond "same chart," to be checked not assumed.
+
+No case found where the `hfin` cover fails to contain the `hdiv` diverging chart, PROVIDED the cover is
+the full resolved atlas (caveat 1) — the achiever leaf is then in the cover by construction.
 
 ---
 
