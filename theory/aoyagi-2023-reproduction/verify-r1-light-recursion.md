@@ -24,8 +24,11 @@ insufficient the moment a peel along the binding branch has **corank ≥ 2 in bo
 
 It **HOLDS** (the light route is sound and is the real win) exactly for branches whose every peel is
 **clean**: layer-1 residual codim `c₁ = 0` (full rank in the smaller dimension) **or** `corank ≤ 1`
-(`Δ` a single scalar `δ`, one weighted row, no sharing ambiguity). The rank-1 chains and all the
-controller-named partial-rank witnesses except `(4,4,2,2)`-type land here.
+(`Δ` a single scalar `δ`, one weighted row, no sharing ambiguity). The rank-1 chains and the
+controller-named partial-rank witnesses (`(3,2,2,2)`, `(3,3,2,2)` — corank-1 scalar) land here. The
+break is exercised, *at a binder*, by `(3,3,4)`-type vectors (corank-`(2,2)` partial drop is the
+**unique minimiser**); `(4,4,2,2)` has a corank-2 branch too but it is **non-binding** (its binder is
+clean) — see the corrected witness note below.
 
 The split is the **same boundary** the existing `verify-r1-shortcut.md` found ("sub-case A `c₁=0` /
 rank-1 = clean; sub-case B `c₁>0` = coupled `diag(b)`"), now sharpened with the *exact mechanism of
@@ -90,19 +93,31 @@ weight variable (one shared `δ`, or two independent) is lost by multiplicities.
 A genuine `Δ`-block produces clean pivots `Aᵢ` and *common* `ε·Bᵢ` generators that a per-row multiset
 cannot predict.
 
-**Direct DLN witness — `(4,4,2,2)`, `t=(2,1,0)`, `Mval=7`, target `rlct=7/2`.** Unique minimizer;
-layer-1 corank `(M¹−t₁, M²−t₁) = (2,2)` — `Δ` is a genuine `2×2` block. Peel (verified
-`/tmp/r1light_4422.py`): `F ~ ‖T C³‖² + ‖Δ S C³‖²`, all `2×2` free, sharing `C³`; the deep "weight"
-`Δ·S` is itself a `(2,2,2)`-product layer, not a scalar. My *naive threshold-only cascade* on this
-gives `2`, **not** `7/2` (`/tmp/r1light_coupled_resolve.py`) — i.e. the light route **undercounts the
-true value by 3/2**. No `corank ≤ 1` peel reaches the (unique) minimizer, so threshold-only cannot
-even recover the *value* by a clean branch. **Hard break.**
+**Direct DLN witness — `(3,3,4)`, `t=(1,0)`, `Mval=8`, true `rlct=4` (BINDING).**
+*(CORRECTED 2026-06-24 — the earlier `(4,4,2,2)→7/2` claim was a min-over-branches error; see below
+and `verify-r1-diagb-4422.md` / `verify-r1-diagb-334.md`.)* `(3,3,4)` is the **smallest** reduced-width
+vector whose **unique** minimiser is a genuine corank-`(2,2)` partial-drop branch (`/tmp/diagb_genuine_coupling.py`).
+Peel `C¹` at `t₁=1` (verified `/tmp/c334_peel.py`): `F ∼ ‖T‖² + ‖Δ S‖²`, `T` clean `1×4`, `Δ` free
+`2×2`, `S` free `2×4` (disjoint variable sets). True value `rlct = rlct(‖T‖²) + rlct(‖ΔS‖²) = 2 + 2 = 4`
+(the `(2,2,4)` core `‖ΔS‖²` resolves radially to `2`; anchored to the **published Aoyagi-Watanabe
+(2005) RRR closed form**, `/tmp/c334_rrr_published.py`). A **threshold-only / per-row-multiplicity**
+recursion models the two bottom rows as independent-scalar-weighted (`δ₁,δ₂`), giving DS-part `½+½=1`,
+hence `2+1 = 3 ≠ 4` (`/tmp/c334_ds_precise.py`, decorrelated Codex `/tmp/codex_334_answer.md`). Because
+`t=(1,0)` is the **minimiser**, threshold-only reports the **wrong RLCT (`3`)** — the symbolic shared-`Δ`
+support is **necessary at a genuinely-binding branch**. **Hard break, at a binder.**
 
-(The discrepancy `2 ≠ 7/2` also shows a hand-rolled cascade is unsafe in general — it silently drops
-generators. The certified value `7/2 = ½·min Mval` is the established input; MC at `rlct=3.5` is a poor
-guide (slope plateaus ~2.0 even at 6×10⁷ samples, while it tracks `(2,2,2)→1.5` and `(3,3,2,2)→2.0`
-cleanly at the same budget — `/tmp/r1light_value_audit.py`). MC is a guide only; here it is near-useless
-at high RLCT and is **not** the basis of any verdict.)
+(MC is useless here — rlct `4` is beyond the resolvable `ε` window — consistent with MC being a guide
+only, near-useless at high RLCT, never a verdict basis.)
+
+**Why NOT `(4,4,2,2)` (the corrected witness).** The earlier draft named `(4,4,2,2)`, `t=(2,1,0)`,
+`Mval=7`, "unique minimizer, target `7/2`." That is a **min-over-branches error**: `t=(2,1,0)` has
+`Mval=7` but is **non-binding** — the binder of `(4,4,2,2)` is the *clean* branch `t=(4,2,0)`, `Mval=4`,
+`rlct=2` (resolved by a single radial-`C³` blow-up; exact + MC→1.98 + two decorrelated Codex runs;
+`verify-r1-diagb-4422.md`). So `rlct_core(4,4,2,2)=2`, and *threshold-only gets it RIGHT* (via the clean
+binder), even though it mishandles the non-binding corank-2 branch `t=(2,1,0)` (whose isolated value is
+`7/2`). `(4,4,2,2)` therefore exhibits the corank-2 mechanism but does **not** force the coupled support
+*for the value*; `(3,3,4)` does. The hand-rolled `2` for the old `(4,4,2,2)` cascade was itself the
+correct global value reached by accident — another reason a hand cascade is unsafe.
 
 ---
 
@@ -149,12 +164,15 @@ setup (its conclusion was withheld in the prompt); no rubber stamp.
 Two sound options, the value-match holds under both:
 
 - **(i) Hybrid (lighter where it can be).** Build the **clean disjoint divisor+core recursion** for
-  `c₁=0` / corank-`≤1` peels (where threshold-only is faithful — covers `(2,2,2)`, `(2,2,2,2)`,
+  `c₁=0` / corank-`≤1` peels (where threshold-only is faithful — covers `(2,2,2,2)`,
   `(3,2,2,2)`, `(3,3,2,2)`, `(3,3,2,2,2)`, …), and handle `corank ≥ 2` branches by the **value
   directly** (codim + the cited `½·codim` cap), not by a chart recursion. Viable **iff** a clean peel
-  reaches *some* minimizer for every width vector — **`(4,4,2,2)` shows this FAILS**: its unique
-  minimizer needs a corank-2 peel. So (i) is **not** general-`L`/all-widths on its own; it covers a
-  scoped family (no corank-2 binding branch).
+  reaches *some* minimizer for every width vector — this **FAILS**: clean-reachability of the minimiser
+  is false (exact census `/tmp/diagb_cleanreach.py` — counterexamples `(2,2,2)` and `(2,2,3,3)`, whose
+  minimisers are all corank-`≥1`; `(3,3,4)`'s unique minimiser is corank-`(2,2)`). So (i) is **not**
+  general-`L`/all-widths on its own; it covers a scoped family (no corank-`≥2` binding branch).
+  *(Correction: `(4,4,2,2)` does **not** witness this failure — its binder `t=(4,2,0)` is clean, so
+  clean-reach holds there. The genuine corank-`≥2`-binding witnesses are `(3,3,4)`/`(2,2,3,3)`.)*
 - **(ii) Commit to the coupled `diag(b)` recursion** (Aoyagi's actual structure — the symbolic support
   carried per generator). This is the **only route that is faithful general-`L`, all branch types**.
   Heavier than threshold-only, but it is the honest mechanism; the existing
@@ -171,9 +189,11 @@ corank-`≤1` family and take the corank-`≥2` branches by the value (option i,
 ## Scope, caveats, separation of levels
 
 - **Levels kept separate.** This certificate is about the **resolution mechanism / chart family**
-  `(ι,d,k,h)` that R1 must produce. The **value** `½·min Mval` is the established input (not
-  re-derived; `(4,4,2,2)`'s `7/2` is taken as given). The `rlct = ½·codim` *reading* still rides on
-  the cited analytic bound — unchanged here.
+  `(ι,d,k,h)` that R1 must produce. The **value** `½·min Mval` is the established input. *(Correction
+  2026-06-24: `(4,4,2,2)`'s core value is `2`, **not** `7/2` — `7/2` is the non-binding `t=(2,1,0)`
+  branch; `verify-r1-diagb-4422.md`. The genuinely-binding coupled value witness is `(3,3,4)→4`,
+  `verify-r1-diagb-334.md`.)* The `rlct = ½·codim` *reading* still rides on the cited analytic bound —
+  unchanged here.
 - **Proved vs inferred vs verified-by-enumeration.** *Verified exact:* the four obstruction RLCTs
   (½, 1, 1, 3/2) — two independent computations (my Newton-LP machine + Codex) agree to the rational;
   the peel identities (sympy); the clean-chain `3/2` at all depths; the `(3,3,2,2)` corank-1 value `2`.
@@ -182,11 +202,14 @@ corank-`≤1` family and take the corank-`≥2` branches by the value (option i,
   *Established input (not re-checked here):* `½·min Mval` is the true core RLCT.
 - **The one thing most likely to break this:** if a clean (corank-`≤1`) peel provably reaches *some*
   minimizer for *every* width vector, then option (i) would be general after all and the "BREAKS"
-  would soften to "BREAKS only for the chart-recursion, not the value." `(4,4,2,2)` already refutes
-  that (unique minimizer needs corank-2), so as stated the break stands — but a *weaker* clean-reach
-  claim (clean peel reaches the minimizer whenever one exists at corank `≤1`) is the right follow-up
-  to pin the exact scope of option (i).
-- **Next construction that would settle the open part:** a certified (not cascade-rule) exact RLCT for
-  one corank-2 DLN core — e.g. resolve `(4,4,2,2)` `t=(2,1,0)` fully via the `diag(b)` recursion and
-  confirm `7/2` — would both close the value-input for the witness and exhibit the minimal `diag(b)`
-  data the Lean build needs, in one worked example.
+  would soften to "BREAKS only for the chart-recursion, not the value." The exact census
+  (`/tmp/diagb_cleanreach.py`) refutes clean-reachability — `(2,2,2)`, `(2,2,3,3)` have no corank-0
+  minimiser, and `(3,3,4)`'s unique minimiser is corank-`(2,2)` — so the break stands. *(The earlier
+  draft cited `(4,4,2,2)` as the refutation; that was wrong — `(4,4,2,2)`'s minimiser `t=(4,2,0)` is
+  clean. The refutation is `(3,3,4)`/`(2,2,3,3)`.)*
+- **Next construction (DONE):** a certified (not cascade-rule) exact RLCT for one corank-`≥2`
+  **binding** DLN core — `(3,3,4)` `t=(1,0)`, resolved via the `diag(b)` recursion to `4` and shown to
+  break threshold-only (which gives `3`) — is in `verify-r1-diagb-334.md`. It both anchors the value
+  (against the published Aoyagi-Watanabe RRR formula) and exhibits the minimal `diag(b)` support the
+  Lean build needs. *Remaining open leg:* the same at `L=3` (a binder with corank-`≥2` **and** a shared
+  deep factor `Cˢ`), to exercise deep-factor sharing as well as the `Δ`-internal shear.

@@ -623,8 +623,11 @@ not force the coupled structure (and threshold-only there gives the \emph{correc
 coupled-binding witness is \textbf{$(3,3,4)$ [an $L{=}2$ RRR core]}: $\Mval(t_1)=(3{-}t_1)^2+4t_1=9,8,9,12$,
 so the minimiser is $t{=}(1,0)$, $\Mval{=}8$, $\rlct{=}4$, layer-1 corank $(2,2)$ --- and the clean
 branches $t_1{\in}\{0,3\}$ give $9,12>8$, so \emph{no} $\operatorname{corank}\le1$ peel reaches the
-minimiser. There the threshold-only recursion must miss the value; the explicit coupled resolution
-certifying this binds is in flight (\texttt{verify-r1-diagb-4422}, follow-up).
+minimiser. \textbf{This is now CERTIFIED} (\texttt{verify-r1-diagb-334.md}, PROVED $+$ decorrelated Codex
+$+$ Aoyagi--Watanabe 2005 RRR anchor): the explicit coupled $\operatorname{diag}(b)$ resolution gives
+$\rlct{=}4{=}\tfrac12\Mval$, while a threshold-only (per-row multiplicity) recursion gives $3$ --- so the
+obstruction \emph{binds} at a genuinely-binding DLN branch, and the symbolic $\operatorname{diag}(b)$
+support is NECESSARY (the test $(4,4,2,2)$ failed to provide, its binder being clean).
 \gnote{\textbf{R1 Lean shape --- DECIDED: option (ii), the coupled $\operatorname{diag}(b)$ recursion}
 (Aoyagi's actual structure). Minimal sufficient invariant $=$ the per-generator \emph{symbolic divisor
 support $+$ sharing relations}, up to unit equivalence (numeric coefficients / analytic unit changes need
@@ -637,10 +640,13 @@ dimension-conserving \emph{clean} recursion is false --- telescopes to ambient$/
 $(2,2,2)$): the coupled recursion is necessary, not over-engineering. (The DECISION rests on the abstract
 $\ideal{\delta x,\delta y}$-vs-$\ideal{\delta_1 x,\delta_2 y}$ obstruction $+$ clean-reachability failing
 at a genuine corank-$2$ minimiser --- confirmed for $(3,3,4)$, \emph{not} $(4,4,2,2)$ per the correction
-above.) \emph{Next construction to feed the Lean build:} a certified (non-cascade)
-$\operatorname{diag}(b)$ resolution of $(3,3,4)\,t{=}(1,0)\to4$ (the corrected binding witness;
-\texttt{verify-r1-diagb-4422} follow-up, in flight) --- confirming the obstruction \emph{binds} and
-exhibiting the exact symbolic support the routeStep datum must carry.}
+above.) \emph{The Lean build's spec is now CERTIFIED} (\texttt{verify-r1-diagb-334.md} §3): the
+$(3,3,4)\,t{=}(1,0)\to4$ binding resolution exhibits the exact symbolic support the routeStep datum must
+carry --- \texttt{support : Gen}$\to$\texttt{Finset DivVar} (which exceptional $u$-vars divide which
+generator) with the sharing identity load-bearing (it raises the $\Delta$-block contribution from $1$ to
+$2$). \emph{Optional refinement (not blocking):} an $L\ge3$ binding witness exercising a \emph{shared
+deep factor} $C^{(s)}$ rather than the $\Delta$-internal shear --- the support field already accommodates
+it (the non-binding $(4,4,2,2)\,t{=}(2,1,0)$ demo exhibited the shared-$C^{(3)}$-via-$u$ structure).}
 
 \gnote{\textbf{The earlier ``hard design questions'' are now settled} (\#18, decorrelated $+$ Codex):
 (1) the \S8 single-binding-divisor one-shot does \emph{not} reproduce $\min M_{s,k}$ for $L\ge3$ (refuted,

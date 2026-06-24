@@ -62,17 +62,21 @@ NON-BINDING — rlct(4,4,2,2)=2 (the CLEAN branch t=(4,2,0) Mval=4 binds via one
 Mval=7 is non-binding; threshold-only there gives the CORRECT 2). The genuine coupled-binding witness is
 (3,3,4) [an L=2 RRR core]: Mval(t₁)=(3−t₁)²+4t₁=9,8,9,12 → minimiser t=(1,0), Mval=8, rlct=4, corank-(2,2);
 clean t₁∈{0,3} give 9,12>8, so NOT clean-reachable. The BREAK still holds (the abstract obstruction +
-(3,3,4)'s corank-2 minimiser); explicit coupled-resolution certification on (3,3,4) is in flight (#26/#27).
+(3,3,4)'s corank-2 minimiser). NOW CERTIFIED (verify-r1-diagb-334.md, #26/#27 DONE): (3,3,4) binds at 4
+while threshold-only gives 3 → the obstruction BINDS at a genuinely-binding DLN branch; coupled diag(b)
+support is NECESSARY (literature-anchored to Aoyagi-Watanabe 2005 RRR + decorrelated Codex).
 **R1 Lean shape DECIDED = option (ii), the coupled diag(b) recursion**
 (minimal sufficient invariant = per-generator symbolic divisor support + sharing relations, up to unit
 equivalence). The "hybrid" option (i) is NOT one-citation-viable — it would import the forbidden
 rlct=½·codim cite for the corank≥2 branches. So the coupled recursion is the ONLY sound general-L route
 under the S2-only constraint, which **VINDICATES the routeStep/GeneralR1Recursion dispatcher as necessary,
 not over-engineering** (its SOUNDNESS NOTE already had the clean-recursion-is-false lesson: ambient/2=4≠3/2
-for (2,2,2)). Guards against any future "lighten R1" drift. High-value next R1-build input (in flight #26/#27): a
-certified (non-cascade) diag(b) resolution of (3,3,4) t=(1,0)→4 (the corrected binding witness) +
-proof that threshold-only MISSES it, exhibiting the exact symbolic support the routeStep datum must
-carry. Folded into reproduction §3.4 (with the (4,4,2,2) correction).
+for (2,2,2)). Guards against any future "lighten R1" drift. R1-BUILD SPEC CERTIFIED (verify-r1-diagb-334.md §3):
+the (3,3,4)→4 binding resolution + threshold-only-gives-3 proof exhibit the routeStep datum's
+support : Gen → Finset DivVar field (sharing identity load-bearing, raises Δ-block 1→2). Optional
+refinement (not blocking): an L≥3 binding deep-factor-sharing witness (the support field already covers
+it — the non-binding (4,4,2,2) t=(2,1,0) demo exhibited shared-C³-via-u). Folded into reproduction §3.4
+(with the (4,4,2,2) correction).
 
 **★ INTEGRATION #6 IN PROGRESS (controller, sole merger; branch-recon → integration-recon.md).** Goal:
 one coherent base (clear the scattered-branch debt). NOTE: all 4 Skeleton gates remain sorry after merging
