@@ -116,3 +116,7 @@ import DLNFibre.Core.GraphIdealHeight
 -- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C detSchurS).
 -- The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
 import DLNFibre.Core.DeterminantalBaseElimination
+-- G2-2 COMPLETE: the localized base presentation `basePresentationEquiv : A_loc/Iad ≅ₐ[k] Sd`
+-- (free Schur localization, regular dim δ), via the bordered-minor identity (*) + the height squeeze
+-- Iad = J (earned honestly, not assumed). Feeds G2-3 (the total presentation + flatness).
+import DLNFibre.Core.DeterminantalBasePresentation

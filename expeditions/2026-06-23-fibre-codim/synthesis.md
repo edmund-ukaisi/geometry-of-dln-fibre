@@ -404,3 +404,33 @@ tree / collide with another session. **Mitigation (now in tide specs):** every t
 `…/.claude/worktrees/<wt>/lean` explicitly for EVERY Bash call; never `git add -A`. The G2-2b tide hit this
 (a file briefly landed in main), caught + cleaned it, left aoyagi's work untouched; controller verified
 read-only — no collateral damage.
+
+## G2-2 COMPLETE (rung 2 of ~6) — the localized base presentation (2026-06-24)
+
+`Core.DeterminantalBasePresentation.basePresentationEquiv [IsAlgClosed k][CharZero k] : A_loc/Iad ≅ₐ[k]
+Sd` — the localized determinantal base ring mod its base ideal IS the free Schur localization (regular,
+dim δ). Green, sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`; reviewer fidelity PASS
++ controller fidelity-read; aggregated. **Correctness guard verified satisfied:** the hard direction
+`Iad ⊆ J` is EARNED by the height squeeze (`J ⊆ Ψ(Iad)` easy + `height J = height Ψ(Iad) = C` + both
+prime ⟹ `Iad = J` via `height_strict_mono_of_is_prime`), NOT assumed — and the two heights come from
+INDEPENDENT engines (`height Iad` from the codim/cCodim engine `height_map_sigmaIdeal_away_eq_cCodim`;
+`height J` from the graph-ideal-height engine), so no circularity. The honest discharge.
+
+**Reusable bedrock banked across G2-2** (threads 10–13): `DeterminantalChart` (Schur rank criterion +
+block-diag rank additivity), `DeterminantalChartRing` (bordered Schur minor over any CommRing, universal-
+coefficient route), `MvPolynomialKerAeval` (`ker_aeval = graphIdeal`, arbitrary ι), `GraphIdealHeight`
+(catenary `height_graphIdeal_eq` + the localized transport), `DeterminantalBaseElimination` (reindex +
+detΔ bridge + `blockAlgEquiv_detPivot`), `DeterminantalBasePresentation` (the localized Ψ + the (*)
+bordered-minor identity + the squeeze + the equiv).
+
+**Process note:** G2-2's elimination half (threads 12/13) saw heavy multi-tide coordination churn (3
+collisions, a shutdown, message-crossings) — all from the controller spawning/re-engaging a second tide
+on the same residual. **Zero damage** (branch coherent + green throughout, every committed seam axiom-
+clean, no lost work — `g2-2c` preserved its work as a committed module). Lesson, now firm: ONE tide per
+rung, run to natural completion/checkpoint, never a second tide on the same work until the first is
+confirmed terminated. Applied from G2-3 on.
+
+## Build ladder status (the determinantal-presentation route for Lemma 4.6)
+- G1 (reduce-to-E) ✓ · G2-1 (chart Schur criterion) ✓ · **G2-2 (localized base presentation `A_loc/Iad ≅
+  Sd`) ✓** · **G2-3 NEXT — the TOTAL presentation + flatness (the genuine wall)** · G2-4 (height-additivity
+  → codim_{Σ̄^r}(fibre)=δ) · G2-5 (reducibility/min-prime) · G3/G4 (assembly + discharge BundleShiftInterface).
