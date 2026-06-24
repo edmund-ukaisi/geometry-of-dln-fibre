@@ -251,7 +251,9 @@ No such claim is formalisation-ready until both fields are filled.
   canonical product-difference regular-chart source at
   `threads/03-block-product-reduction/reproduction-a2-canonical-product-difference-regular-chart-source.md`;
   regular-suspension coordinate index at
-  `threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-index.md`.
+  `threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-index.md`;
+  product-difference coordinate source data at
+  `threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -275,7 +277,11 @@ No such claim is formalisation-ready until both fields are filled.
   regular-variable source-rank shift checked by xhigh `Helmholtz the 2nd` in
   `threads/03-block-product-reduction/review-a2-regular-variable-source-rank-shift.md`;
   regular-variable rank-width shift checked by xhigh `Ramanujan the 3rd` in
-  `threads/03-block-product-reduction/review-a2-regular-variable-rank-width-shift.md`.
+  `threads/03-block-product-reduction/review-a2-regular-variable-rank-width-shift.md`;
+  product-difference coordinate source-data checked by xhigh
+  `Descartes the 3rd` in
+  `threads/03-block-product-reduction/review-a2-product-difference-coordinate-source-data.md`
+  after a source-anchor wording repair.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -5600,6 +5606,34 @@ Nonclaims: no exact-rank or source-rank openness, no analytic germ-ideal
 transport, no regular-suspension chart construction, no coverage, no Jacobian
 compatibility, no exponent shift, no normal crossings, no pole-order theorem,
 and no RLCT theorem.
+
+Latest A2 product-difference coordinate source data:
+Lean now packages the cleaned p. 13 product-difference ideal-level family as
+`AoyagiProductDifferenceCoordinateIndex`, combining the regular scalar
+coordinates for `S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L` with the
+residual scalar coordinates for `S.D`.  It proves the combined scalar ideal is
+the cleaned four-block entry ideal, projects centered continuity, exposes a
+source-stratum guarded product-difference coordinate ideal neighborhood, and
+adds the endpoint product-entry count `H 1 * H(N+1)` to
+`PaperEndpointFixedBaseRegularCoordinateSourceData`.
+
+Lean names:
+`AoyagiProductDifferenceCoordinateIndex`,
+`AoyagiProductDifferenceCoordinateIndex.entryIdeal_eq_fourMatrixEntryIdeal`,
+`AoyagiProductDifferenceCoordinateIndex.value_centered_continuousAt`,
+`AoyagiProductDifferenceCoordinateIndex.card_eq_endpointProductEntryCount`,
+`paperEndpointProductDifferenceCoordinateIndex_card_eq_endpointProductEntryCount`,
+`PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks.canonicalProductDifferenceEntryIdeal_eq_productDifferenceCoordinateIdeal`,
+`PaperEndpointFixedBaseProductDifferenceCoordinateIdealSourceNeighborhood`,
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_productDifferenceCoordinateIdeal_source_neighborhood`,
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.productDifferenceScalarCoordinates_centered_continuousAt`,
+and
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.productDifferenceCoordinateIndex_card_eq_endpointProductEntryCount`.
+
+Nonclaims: no exact-rank or source-rank openness, no analytic coordinate
+chart, no regular-suspension chart construction, no analytic germ-ideal
+transport, no coverage, no transition regularity, no Jacobian compatibility,
+no normal crossings, no pole-order theorem, and no RLCT theorem.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

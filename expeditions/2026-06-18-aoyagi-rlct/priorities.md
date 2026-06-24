@@ -459,6 +459,19 @@ Xhigh review passed in
 after a wording repair from source/target residual labels to row/column
 left/right endpoint residual labels.
 
+A2 product-difference coordinate source data is in progress:
+`threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`.
+Lean scalarizes the cleaned p. 13 ideal-level generator family
+`C1-Er`, `F2`, `F3`, and `prod_s C^(s)` as
+`AoyagiProductDifferenceCoordinateIndex`, proves its scalar ideal is the
+four-block entry ideal, projects centered continuity, and proves the endpoint
+product-entry count `H 1 * H(N+1)`.  Treat this as finite source-coordinate
+bookkeeping only.  It does not construct an analytic chart, a
+regular-suspension certificate, normal crossings, pole order, or RLCT.
+Xhigh review passed after repairing the reproduction's source anchor to
+separate the literal signed/corrected p. 13 display from the cleaned
+entry-ideal family.
+
 A2 regular-suspension normal-crossing construction is not Lean-ready:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`.
 Do not add `PaperEndpointFixedBaseRegularCoordinateSourceData -> exists Cfull`
