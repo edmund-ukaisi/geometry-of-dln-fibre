@@ -2551,3 +2551,30 @@ Boundary: real finite topology for the actual fixed-base scalar coordinate
 map.  This does not prove source-rank openness, analytic coordinate status,
 source coverage, analytic ideal transport, Fubini/polar regular-variable
 shift, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 fixed-base literal-cleaned square-sum comparison
+
+Reproduction:
+`reproduction-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Statement card:
+`statement-card-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Review:
+`review-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+
+Lean now defines the actual fixed-base literal signed/corrected p. 13 scalar
+coordinate family:
+
+```text
+paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+```
+
+and proves that, under real
+`PaperEndpointFixedBaseRegularCoordinateSourceData`, its square-sum and the
+cleaned `paperEndpointFixedBaseProductDifferenceCoordinateMap` square-sum are
+eventually mutually bounded by factor `2`, both in ambient `nhds x0` and in
+the source-rank `nhdsWithin` filter.  Directional projection theorems expose
+each inequality separately.
+
+Boundary: finite real square-sum comparison only.  This does not prove
+analytic ideal transport, chart construction, source coverage, source-rank
+openness, normal crossings, pole order, or RLCT.

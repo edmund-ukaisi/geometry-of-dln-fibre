@@ -2120,6 +2120,47 @@ def paperEndpointFixedBaseProductDifferenceCoordinateMap
   AoyagiProductDifferenceCoordinateIndex.value
     (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D
 
+/-- The Pi-valued map collecting the literal signed/corrected p. 13
+product-difference coordinates:
+`Ctop - 1`, `-B`, `lowerLeftBlock L`, and `D - F3 * F2`.
+
+This is finite scalar bookkeeping for the literal block, not analytic
+generator transport. -/
+def paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    AoyagiProductDifferenceCoordinateIndex
+      (Fin (Module.finrank K U₀))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+        (Fin.last N))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) → K :=
+  let E : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState (Fin (Module.finrank K U₀))
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        K (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  AoyagiProductDifferenceCoordinateIndex.literalValue
+    (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D
+
 set_option linter.unusedSectionVars false in
 /-- The fixed-base cleaned product-difference coordinate map is the disjoint
 sum of the regular block coordinate map and the residual coordinate map. -/
@@ -2517,6 +2558,222 @@ theorem regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one_nhdsWithin_s
         (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀)
       (regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
         (W := W) (B := B) sourceData)
+
+set_option linter.unusedSectionVars false in
+/-- For the actual real fixed-base product-difference coordinate maps, the
+literal signed/corrected square-sum and the cleaned square-sum are locally
+equivalent up to factor `2`. -/
+theorem literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+          2 * aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ∧
+        aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+          2 * aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  have hsmall :=
+    regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
+      (W := W) (B := B) sourceData
+  filter_upwards [hsmall] with x hxsmall
+  let E : ∀ p : Fin N,
+      Matrix
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) ℝ :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState ι
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        ℝ (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  have hsmallS :
+      aoyagiCoordinateSquareSum
+          (fun ij : ι × ν => (-(S.B)) ij.1 ij.2) +
+        aoyagiCoordinateSquareSum
+          (fun ij : μ × ι => lowerLeftBlock S.L ij.1 ij.2) ≤
+          1 := by
+    simpa [paperEndpointFixedBaseRegularBlockCoordinateMap, E, S, ι, μ, ν] using hxsmall
+  constructor
+  · simpa [paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap,
+      paperEndpointFixedBaseProductDifferenceCoordinateMap, E, S, ι, μ, ν] using
+      AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_le_two_mul_coordinateSquareSum_of_f2_f3_squareSum_add_le_one
+          (X := S.Ctop - 1) (F2 := -(S.B)) (F3 := lowerLeftBlock S.L) (D := S.D)
+          hsmallS
+  · simpa [paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap,
+      paperEndpointFixedBaseProductDifferenceCoordinateMap, E, S, ι, μ, ν] using
+      AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_le_two_mul_literalCoordinateSquareSum_of_f2_f3_squareSum_add_le_one
+          (X := S.Ctop - 1) (F2 := -(S.B)) (F3 := lowerLeftBlock S.L) (D := S.D)
+          hsmallS
+
+set_option linter.unusedSectionVars false in
+/-- Directional form of the local factor-`2` comparison: the literal
+signed/corrected square-sum is bounded by twice the cleaned square-sum. -/
+theorem literalProductDifferenceCoordinateMap_squareSum_eventually_le_two_mul_productDifferenceCoordinateMap_squareSum
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two
+      (W := W) (B := B) sourceData).mono (fun _ hx => hx.1)
+
+set_option linter.unusedSectionVars false in
+/-- Directional form of the local factor-`2` comparison: the cleaned square-sum
+is bounded by twice the literal signed/corrected square-sum. -/
+theorem productDifferenceCoordinateMap_squareSum_eventually_le_two_mul_literalProductDifferenceCoordinateMap_squareSum
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two
+      (W := W) (B := B) sourceData).mono (fun _ hx => hx.2)
+
+set_option linter.unusedSectionVars false in
+/-- The same factor-`2` comparison holds relative to the source-rank stratum,
+as a filter weakening of the ambient comparison. -/
+theorem literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+          2 * aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ∧
+        aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+          2 * aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    (inf_le_left :
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀)
+      (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two
+        (W := W) (B := B) sourceData)
+
+set_option linter.unusedSectionVars false in
+/-- Relative directional form: on the source-rank stratum filter, the literal
+signed/corrected square-sum is bounded by twice the cleaned square-sum. -/
+theorem literalProductDifferenceCoordinateMap_squareSum_eventually_le_two_mul_productDifferenceCoordinateMap_squareSum_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+      (W := W) (B := B) sourceData).mono (fun _ hx => hx.1)
+
+set_option linter.unusedSectionVars false in
+/-- Relative directional form: on the source-rank stratum filter, the cleaned
+square-sum is bounded by twice the literal signed/corrected square-sum. -/
+theorem productDifferenceCoordinateMap_squareSum_eventually_le_two_mul_literalProductDifferenceCoordinateMap_squareSum_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+      (W := W) (B := B) sourceData).mono (fun _ hx => hx.2)
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 

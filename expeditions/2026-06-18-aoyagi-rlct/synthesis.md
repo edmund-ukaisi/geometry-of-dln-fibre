@@ -8710,6 +8710,33 @@ prove source-rank openness, analytic chart status, source coverage, analytic
 ideal transport, Fubini/polar regular-variable shift, normal crossings, pole
 order, or RLCT.
 
+Latest A2 fixed-base literal-cleaned square-sum comparison:
+`RegularSuspensionCoordinates.lean` now defines
+`paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap`, the actual
+fixed-base literal signed/corrected p. 13 coordinate family.  It also proves
+the real source-data local comparison:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two
+PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+```
+
+and four directional wrappers for ambient and source-rank `nhdsWithin`
+filters.  The proof uses the fixed-base `F2/F3` smallness theorem and the
+finite factor-`2` comparison with `X = S.Ctop - 1`, `F2 = -(S.B)`,
+`F3 = lowerLeftBlock S.L`, and `D = S.D`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+
+This is finite real square-sum comparison only.  It does not prove analytic
+ideal transport, chart construction, source coverage, source-rank openness,
+normal crossings, pole order, or RLCT.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

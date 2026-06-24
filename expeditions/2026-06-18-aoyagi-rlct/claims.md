@@ -5926,6 +5926,32 @@ Nonclaims: no source-rank openness, no analytic regular-coordinate chart, no
 source coverage, no analytic ideal transport, no Fubini/polar shift, no normal
 crossings, no pole-order theorem, and no RLCT theorem.
 
+Latest A2 fixed-base literal-cleaned square-sum comparison:
+Lean now defines the actual fixed-base literal signed/corrected scalar family
+`paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap` and proves that
+under real `PaperEndpointFixedBaseRegularCoordinateSourceData`, its square-sum
+and the cleaned `paperEndpointFixedBaseProductDifferenceCoordinateMap`
+square-sum are eventually mutually bounded by factor `2`, in both ambient
+`nhds x0` and the source-rank `nhdsWithin` filter.  Directional wrappers expose
+each inequality separately.
+
+Lean names include
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two`,
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source`,
+and the four directional projection wrappers with
+`literalProductDifferenceCoordinateMap_squareSum...` /
+`productDifferenceCoordinateMap_squareSum...`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+
+Nonclaims: no analytic ideal transport, no analytic chart construction, no
+source coverage, no source-rank openness, no normal crossings, no pole-order
+theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

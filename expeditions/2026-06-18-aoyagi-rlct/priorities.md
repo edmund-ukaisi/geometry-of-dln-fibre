@@ -571,6 +571,16 @@ regular-suspension certificate or Fubini/polar regular-variable shift; do not
 read the `nhdsWithin` wrapper as source-rank openness or analytic chart
 construction.
 
+A2 fixed-base literal-cleaned square-sum comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-literal-cleaned-square-sum-comparison.md`.
+Lean defines `paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap` and
+uses the previous fixed-base smallness theorem to prove local factor-`2`
+comparability with the cleaned product-difference coordinate map, both
+ambiently and in the source-rank `nhdsWithin` filter.  This closes the finite
+source-data loss-comparison handoff.  Remaining A2 work is still analytic:
+regular-suspension certificate production or a properly stated Fubini/polar
+regular-variable shift theorem.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds
