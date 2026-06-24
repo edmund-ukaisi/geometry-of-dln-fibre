@@ -386,3 +386,21 @@ bookkeeping + per-component reducibility (G2-5), NOT absent machinery.
 — on the chart the fibre is cut by `C+δ` coordinate equations (C for Σ̄^r + δ for E), so `height = C+δ` by
 direct poly/localization transport, no flat-local dimension formula, no catenary. Trades the localization
 bookkeeping for a stronger explicit total presentation in G2-3 (built anyway). Decide G2-4's route after G2-3.
+
+## G2-2 D2 progress + a process gotcha (2026-06-24)
+
+**Landed (aggregated, whole-lib green 3706, sorries 0, axiom-clean):** three new reusable modules from the
+elimination tide — `MvPolynomialKerAeval` (`ker_aeval_eq_graphIdeal` for arbitrary ι, via the translation
+identity — no `Finite`; + `graphIdealQuotientEquiv`, `graphIdeal_isPrime`), `GraphIdealHeight`
+(`height_graphIdeal_eq = #eliminated vars`, field catenary), `DeterminantalBaseElimination` (the reindex +
+detΔ bridge: `repCoordReindex`, `blockAlgEquiv`, **`blockAlgEquiv_detPivot`** = `detΔ ↦ C detSchurS`).
+G2-2 remaining = the final localized transport + `Iad=J` + the equiv `A_loc/Iad ≅ Sd` (thread 13).
+
+**PROCESS GOTCHA (record for future worktree-based expeditions; promote to a policy at close):** a
+controller running from a worktree (via `EnterWorktree`) spawns teammates whose **Bash default cwd is the
+MAIN checkout**, not the worktree — and the main checkout may be on a *different live session's branch*
+(here `expedition/aoyagi-full`). A teammate's first `scripts/lb`/file-write/commit can land in the wrong
+tree / collide with another session. **Mitigation (now in tide specs):** every teammate `cd`s into
+`…/.claude/worktrees/<wt>/lean` explicitly for EVERY Bash call; never `git add -A`. The G2-2b tide hit this
+(a file briefly landed in main), caught + cleaned it, left aoyagi's work untouched; controller verified
+read-only — no collateral damage.

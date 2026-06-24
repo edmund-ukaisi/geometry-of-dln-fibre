@@ -107,3 +107,12 @@ import DLNFibre.Core.DeterminantalChart
 -- vanishes on Mat^{rk≤r}. The generator-free handle for the localized base presentation (dodges
 -- determinantal-ideal theory, absent at v4.29).
 import DLNFibre.Core.DeterminantalChartRing
+-- ker of a multivariate aeval = the graph ideal (reusable, arbitrary index type), + the elimination
+-- quotient equiv + graph-ideal primality. The generator-free elimination engine (G2-2).
+import DLNFibre.Core.MvPolynomialKerAeval
+-- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C` engine (G2-2).
+import DLNFibre.Core.GraphIdealHeight
+-- Reindex + detΔ-localization bridge for the determinantal base: repCoordReindex, blockAlgEquiv
+-- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C detSchurS).
+-- The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
+import DLNFibre.Core.DeterminantalBaseElimination
