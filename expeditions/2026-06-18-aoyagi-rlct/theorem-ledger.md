@@ -6909,6 +6909,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` source-current stack:
+`BlowupArithmetic.lean` now proves
+`sourceChartMap_continuingOldTopSourceSuffixConstructedWithOldTopFromCprimeStack_withoutChartFamily`.
+It specializes the upstream continuing source-current stack theorem to the
+constructed source following factor with arbitrary old-top rows and free
+displayed `Cprime`.  The current stack contains the reconstructed old residual
+block `case2DisplayedPaperConstructedFollowingFactor ... Cprime`; the
+successor stack contains `Cprime`.  The suffix is supplied, and the row
+operation witness remains existential.  This proves no source production,
+suffix production, chart coverage, transition regularity, normal crossings,
+pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

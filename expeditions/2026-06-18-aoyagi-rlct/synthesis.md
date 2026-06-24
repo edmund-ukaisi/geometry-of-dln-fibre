@@ -7128,6 +7128,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` source-current stack:
+`BlowupArithmetic.lean` now adds
+`sourceChartMap_continuingOldTopSourceSuffixConstructedWithOldTopFromCprimeStack_withoutChartFamily`.
+It instantiates the existing continuing source-current stack theorem with the
+constructed old-top/free-`Cprime` source following factor.  The specialized
+left block is `[Cold; case2DisplayedPaperConstructedFollowingFactor ...
+Cprime]`, i.e. the displayed pivot-first `Q*Cprime`, while the successor block
+is `[Cold; Cprime]`.  The row-operation witness remains existential after
+specialization, and the suffix matrices are supplied inputs.  This is finite
+stack specialization only; it does not construct a `SourceProductionObligation`,
+`Csucc`, suffixes, successor chart families, transition regularity, coverage,
+normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.

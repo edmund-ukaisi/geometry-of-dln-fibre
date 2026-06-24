@@ -6221,3 +6221,31 @@ This is finite source-coordinate construction only.  It does not construct a
 suffix, produce recurrence or exponent post-data, prove transition
 regularity, chart coverage, normal crossings, pole order, termination, or
 RLCT.
+
+## 2026-06-24 Lean Case 2 constructed old-top `Cprime` source-current stack
+
+Reproduction:
+`reproduction-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
+Lean now specializes the continuing source-current stack theorem to the
+constructed old-top/free-`Cprime` source following factor:
+
+```text
+sourceChartMap_continuingOldTopSourceSuffixConstructedWithOldTopFromCprimeStack_withoutChartFamily
+```
+
+The left current row block is
+`[Cold; case2DisplayedPaperConstructedFollowingFactor ... Cprime]`, i.e. the
+displayed pivot-first old residual block `Q*Cprime`.  The right formula-level
+successor row block is `[Cold; Cprime]`.  The theorem keeps the row-operation
+witness existential after specializing to `Cold` and `Cprime`, and it takes
+the suffix matrices `Ctail` as supplied inputs.
+
+This is finite stack specialization only.  It does not construct a
+`SourceProductionObligation`, source-produce `Csucc`, produce suffixes,
+construct successor chart families, prove chart coverage, transition
+regularity, normal crossings, pole order, termination, or RLCT.

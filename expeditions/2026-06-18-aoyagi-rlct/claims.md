@@ -4509,3 +4509,19 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-source-following-factor-with-old-top.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.
+
+Latest A4 Case 2 constructed old-top `Cprime` source-current stack:
+`BlowupArithmetic.lean` now specializes the continuing source-current stack
+theorem to the constructed old-top/free-`Cprime` source following factor.  The
+left current row block is
+`[Cold; case2DisplayedPaperConstructedFollowingFactor ... Cprime]`; the right
+formula-level successor block is `[Cold; Cprime]`.  The theorem keeps `q`
+existential and takes suffix matrices as supplied inputs.  This is finite stack
+specialization only: no `SourceProductionObligation`, `Csucc`, suffix
+production, successor chart family, chart coverage, transition regularity,
+normal crossings, pole order, termination, or RLCT is constructed.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
