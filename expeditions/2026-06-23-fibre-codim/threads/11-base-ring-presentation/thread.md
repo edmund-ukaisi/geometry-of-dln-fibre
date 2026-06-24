@@ -77,3 +77,20 @@ Validated (SPECIFY probes, all type-check):
 - **The `J` side (`Iad = J` + `AlgEquiv` + `height J = C`) is the bulk**: the genuinely-large construction. `height J = C` follows from the explicit presentation `Ad/J ≅ free Schur localization` (Codex's reindex dodge); the `AlgEquiv` (direction-B comorphism + explicit inverse) is the load-bearing build.
 
 Banked two hole-free seams; checkpointing before opening the large `AlgEquiv` construction. The composition stays on the height-additivity architecture (engine has `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`).
+
+### Sub-rung 2 step (b₀) — `height Iad = C`. **LANDED** (commit `a6bd7c25`, pushed).
+The localized base ideal has the same height as the base ideal (= C), via localization-height
+transport at the pivot minor + the realizer witness `diag(I_r,0)`:
+- `detPivotPoly`, `chartWitness` (+ `mult_chartWitness`, `rank_chartWitness_le`, `chartWitness_mem`),
+  `mult_chartWitness_pivot_submatrix`, `detPivot_chartWitness`, `detPivotPoly_notMem_sigmaIdeal`,
+  `height_map_sigmaIdeal_away` (= height sigmaIdeal), `height_map_sigmaIdeal_away_eq_cCodim` (= cCodim = C).
+- Generalised `eval_det_submatrix_multPoly` to any minor index type `ι`.
+All sorry-free, axiom-clean. The EASY half of `Iad = J`; feeds the G2-4 height-additivity chain.
+Friction resolved: the `mult = A 0` dependent-`Fin` wall (the `Fin.last 1` vs `Fin.succ 0` codomain
+mismatch) — solved by stating the witness helper about `mult ... submatrix` directly (not `A 0`).
+
+### NEXT — step (b)-(e): the graph-ideal elimination. **NOT started.**
+Per controller Q2: `J` = graph ideal of `B22 = Schur/detΔ`; eliminate B22 ⟹ `Ad/J ≅ k[Δ,B12,B21]_detΔ`,
+`height J = #(B22 vars) = C` falls out. Expose facts `{Iad = J, A_loc regular dim δ}`, not a bundled
+`AlgEquiv`. (i) ψ + `J ⊆ Iad` (≈done from step a); (ii) elimination iso; (iii) `Iad = J` by height
+comparison (uses landed `height Iad = C` + (ii)'s `height J = C`). The genuine remaining bulk.
