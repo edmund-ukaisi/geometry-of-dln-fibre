@@ -83,6 +83,26 @@ finite-type-as-algebra over the base localization, rung 2 needs the algebra-fini
 (roadmapped), not this module case. Whether the chart map is module-finite is a rung-2/rung-3
 question (the chart ring is not yet formalised on this branch).
 
+## Rung-2 entry point (precise flat-bridge)
+
+Rung 2 consumes `Module.exists_flat_localizedModule_of_isDomain`. The bridge from this *module*
+flatness to the *ring-map* flatness `Algebra.HasGoingDown.of_flat` wants:
+
+- Take `M := S` = the chart ring, as a module over the base `R` (module-finite — see scope caveat).
+  The theorem yields `Module.Flat (Localization (.powers r)) (LocalizedModule (.powers r) S)` for a
+  nonzero `r` in the base.
+- **When the module IS the ring, `Module.Flat = Algebra.Flat`.** Mathlib represents flatness of a
+  ring map `A → B` as `Module.Flat A B` (the target ring regarded as an `A`-module). So
+  `Module.Flat (R_r) (S_r)` is exactly `Algebra.Flat (R_r) (S_r)` once `S_r` carries the
+  `Algebra (R_r)` instance — no conceptual gap. Feed to `Algebra.HasGoingDown.of_flat` → the LANDED
+  `Core.FlatQuasiFiniteHeight` (`Ideal.height_eq_under_of_flat_quasiFiniteAt`) /
+  `Core.SmoothLocalRelativeDimension`.
+- **One Lean pitfall (Codex):** if rung 2's localized chart ring is a *different type* than
+  `LocalizedModule (.powers r) S`, transport flatness across the relevant `AlgEquiv`/`LinearEquiv`,
+  or define the localized chart via `LocalizedModule` from the start so the instances line up.
+- Prefer `Localization (.powers r)` / `Submonoid.powers r` consistently over `Localization.Away r`
+  (morally identical, but mixing causes avoidable unification work).
+
 ## Non-circularity
 
 Generic freeness is a general commutative-algebra theorem with no reference to the DLN setup, type-A
