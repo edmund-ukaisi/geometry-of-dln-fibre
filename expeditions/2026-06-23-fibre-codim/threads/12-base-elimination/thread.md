@@ -71,3 +71,34 @@ green/sorries/axioms; module path(s) + aggregator line(s); v4.29 friction for th
 ## Scope
 **G2-2 completion** (Deliverables 1 + 2). G2-3 (the TOTAL presentation + flatness — the genuine wall),
 G2-4, G2-5, G3/G4 are later tides.
+
+---
+
+## PROGRESS LOG (tide G2-2b)
+
+### Deliverable 1 — `ker_aeval_eq_graphIdeal`. **LANDED** (commit `e4b85042`).
+`Core/MvPolynomialKerAeval.lean`. `RingHom.ker (aeval c).toRingHom = graphIdeal c` for an
+**arbitrary** index type `ι` (NO `Finite`/`Fintype`). Dodged the predecessor's universe friction:
+instead of `Finite.induction_empty_option`+`optionEquivLeft`, used the **translation identity**
+`p − C (aeval c p) ∈ graphIdeal c` proved by `MvPolynomial.induction_on` (mul_X step:
+`p·Xᵢ − C(v·cᵢ) = p·(Xᵢ − C cᵢ) + (p − C v)·C cᵢ`). Exposed: `graphIdeal`, `graphIdealQuotientEquiv`
+(`MvPolynomial ι R ⧸ graphIdeal c ≃ₐ[R] R`, the elimination), `graphIdeal_isPrime [IsDomain R]`,
+`aeval_surjective`. Sorry-free, axiom-clean.
+
+### `height_graphIdeal_eq` (the `height J ≥ C` engine). **LANDED** (commit `096291ba`).
+`Core/GraphIdealHeight.lean`. `(graphIdeal c).height = Nat.card σ` for `c : σ → MvPolynomial τ k`
+(`k` field, `σ τ` finite): the block graph ideal eliminating the `σ`-block of
+`MvPolynomial σ (MvPolynomial τ k)` has height `#σ`. Via the LANDED field catenary
+`height_add_ringKrullDim_quotient_eq_card` on `MvPolynomial (σ ⊕ τ) k` (sumAlgEquiv) + quotient dim
+`#τ` (Deliverable 1) ⟹ `height = (#σ+#τ) − #τ = #σ`. Avoids the localization-preserves-dimension
+subtlety. Sorry-free, axiom-clean. Codex consult saved: `codex/heightJ-{prompt,answer}.md` (picked
+this coordinate-ideal/catenary route over routes A/B).
+
+### NEXT — the localized transport (the reindex-heavy bulk). **IN PROGRESS / awaiting interface decision.**
+To reach `height J = C` for `J ⊆ A_loc = Localization.Away detΔ`: (a) the `RepCoord (dStratum q p)
+≃ B22block ⊕ SchurVar` reindex (renameEquiv + sumAlgEquiv; `multPoly (dStratum q p) r c = X ⟨0,(r,c)⟩`
+so the entries ARE the coordinate vars — `detΔ` lives in the SchurVar block); (b) localization
+transport of `height_graphIdeal_eq` from the field ring to the `Sd`-based ring. Then `Iad = J` by
+`height_strict_mono_of_is_prime` (cheap: landed `height Iad = C` + `height J = C`) + regularity.
+Interface question to controller (re-asked): expose literal `J ⊆ A_loc`, or just `A_loc/Iad ≅ Sd`
+(regular dim δ)? The latter halves the transport bookkeeping.
