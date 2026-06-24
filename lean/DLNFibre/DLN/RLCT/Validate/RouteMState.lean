@@ -317,7 +317,42 @@ in the `foldDivisors`/`codimsOf` form): `le_antisymm` of the C≥ lower bound (`
 `foldFamily_threshold_ge_of_pivotWitness`) and the achiever upper bound (`iInf_le` at the achiever leaf,
 `foldFamily_achiever`). Driver-agnostic — over any abstract family, NOT tied to `routeMIota` (which is
 gated on the `routeStep` realizability). The binding-leaf `(k,h)=(1, m₀−1)` is automatic: `appendDivisor`
-sets every pivot axis to `(1, c−1)`, so `m₀ ∈ codimsOf i₀` already encodes the codim-`m₀` binding divisor. -/
+sets every pivot axis to `(1, c−1)`, so `m₀ ∈ codimsOf i₀` already encodes the codim-`m₀` binding divisor.
+
+### PINNED leaf-value semantics (#108(b), pp2 g236, controller-settled canonical — anchored, not verbal)
+
+`foldFamily` value `= ⨅` over LEAF PATHS of `foldDivisors (codimsOf path)`; `codimsOf` ACCUMULATES at BRANCH
+nodes via `MonoData.appendDivisor`; the `⊤`-TERMINAL appends NOTHING. The value rides the accumulated
+branch-divisors (`[4,3]` for `(2,2,2)` → `3/2`). This is the COMBINATORIAL `½·minAdm` (`= lambdaCore`, the
+`B = 0` CORE). Settling a 5× oscillation, the canonical pin:
+
+1. **The `0`-BINDING-TRAP is WHY `⊤` not a `0`-leaf (the soundness reason).** A `0`-binding terminal would
+   collapse `⨅ = 0` (WRONG); `⊤` (`leafMonoData_threshold`) is the honest "this resolved chart contributes no
+   further divisor." So `leafMonoData 0` is forced — not a cosmetic choice.
+
+2. **`routeStep` = CORE; `nReg/2` is L2's OUTSIDE shift; `#70` = degenerate-ROOT only.** ROOT-vs-TERMINAL
+   case-split (clean, the no-double-count): the recursion is entered ONLY under `hMid` (non-degenerate root →
+   branches); a degenerate node MID-recursion is a `⊤`-TERMINATOR. `#70` handles the degenerate ROOT
+   (`¬hMid` — recursion never entered; a degenerate root → empty branch-accumulation → core-fold `⊤`, which is
+   WHY `#70` is a SEPARATE headline branch). The two NEVER overlap, so `nReg/2` enters exactly ONCE
+   (`aoyagiLambda = nReg/2 + lambdaCore`; L2's `nReg/2` on a non-degenerate root, `#70` on a degenerate root).
+
+The two `⊤`s the oscillation conflated are DIFFERENT objects: (i) the GEOMETRIC `rlctAtOn (dlnLoss M 0) = ⊤`
+at a degenerate NODE (true — `dlnLoss ≡ 0` there — but NOT what this fold claims); (ii) the leaf's
+FOLD-contribution `⊤` (a non-binding terminator). `foldFamily` is (ii). The GEOMETRIC↔combinatorial honesty
+(root `rlctAtOn = ½·minAdm`) is the COVER's job (`IsRouteMCover`, #104), NOT `foldFamily`. ANCHORED:
+`Case222RouteStep` compiles to `3/2` (codims `[4,3]`, `⊤` terminal).
+
+### PINNED — the ROOT-ANCHORED codim (controller, 2026-06-23; preventive against the reduced-minAdm conflation)
+
+`codimsOf accumulates ROOT-ANCHORED Mval(M₀, ·) at branch nodes; the ½·minAdm = foldDivisors of these
+root-anchored codims, NOT per-node reduced minAdm.` The decl basis: the `RouteStep.branch` cell witness is
+`PivotWitness M₀ (codim c) = ⟨T, hAdm : T ∈ Adm M₀, hCodim : c = (Mval M₀ T).toNat⟩` — anchored at the FIXED
+root `M₀`, NOT `(schurState M)`. Reading `minAdm` mid-recursion as the REDUCED-state `minAdm(schurState M)`
+would undershoot and silently break the (C≥) lower bound: e.g. on the `(3,2,3)` chain the 2nd branch node
+`(2,1,3)` has reduced-state `minAdm = 2`, but its APPENDED codim is the root `Mval(M₀, T) = 6 ≥ minAdm = 5`;
+using the reduced `2` would undershoot `5`. Root-anchoring exists for exactly this; named here so it is not
+re-derived wrong (the same conflation class as the `(3,2,3)` node-count + leaf-arm-`d` fixes). -/
 theorem foldFamily_iInf_eq_half_minAdm {ι : Type*} [Nonempty ι] (M : Fin (L + 1) → ℕ)
     (codimsOf : ι → List ℕ) (hm₀ : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
     (hwit : ∀ i, ∀ c ∈ codimsOf i, PivotWitness M c)
