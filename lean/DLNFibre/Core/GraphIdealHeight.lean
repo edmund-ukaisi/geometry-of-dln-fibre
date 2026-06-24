@@ -129,4 +129,33 @@ theorem height_coordIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
     (Submonoid.powers (C f : MvPolynomial σ (MvPolynomial τ k))) K0 hdisj, hK0g]
   exact height_graphIdeal_eq _
 
+/-- The **translation automorphism** `X b ↦ X b + C (c b)` of `MvPolynomial σ R`, an `AlgEquiv` with
+inverse `X b ↦ X b − C (c b)`. It carries the coordinate ideal `span (range X)` to `graphIdeal c`
+(used to transport heights: a graph ideal is a translated coordinate ideal). -/
+noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
+    MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R :=
+  AlgEquiv.ofAlgHom (aeval (fun b ↦ X b + C (c b))) (aeval (fun b ↦ X b - C (c b)))
+    (by apply MvPolynomial.algHom_ext; intro b; simp)
+    (by apply MvPolynomial.algHom_ext; intro b; simp)
+
+/-- **The height of a graph ideal over a localized coefficient ring is `Nat.card σ`.** For `c : σ →
+Sd` with `Sd = Localization.Away f` (`f ≠ 0` in `MvPolynomial τ k`), `(graphIdeal c).height =
+Nat.card σ`. The translation automorphism `translateAux (−c)` carries the `σ`-coordinate ideal of
+`MvPolynomial σ Sd` to `graphIdeal c`, and the coordinate ideal has height `Nat.card σ`
+(`height_coordIdeal_localization_eq`). This is the engine the determinantal elimination's
+`height J = C` step uses (`σ = B22block`, `Sd = Localization.Away detSchurS`). -/
+theorem height_graphIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
+    (Sd : Type u) [CommRing Sd] [Algebra (MvPolynomial τ k) Sd] [IsLocalization.Away f Sd]
+    (c : σ → Sd) : (graphIdeal c).height = (Nat.card σ : ℕ∞) := by
+  have htrans : (Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd))).map
+      ((translateAux (fun b ↦ - c b) : MvPolynomial σ Sd ≃ₐ[Sd] MvPolynomial σ Sd) :
+        MvPolynomial σ Sd →+* MvPolynomial σ Sd) = graphIdeal c := by
+    rw [Ideal.map_span, graphIdeal]
+    congr 1
+    ext z
+    constructor
+    · rintro ⟨_, ⟨b, rfl⟩, rfl⟩; exact ⟨b, by simp [translateAux, map_neg]; ring⟩
+    · rintro ⟨b, rfl⟩; exact ⟨X b, ⟨b, rfl⟩, by simp [translateAux, map_neg]; ring⟩
+  rw [← htrans, height_map_algEquiv, height_coordIdeal_localization_eq f hf Sd]
+
 end DLNFibre.Core
