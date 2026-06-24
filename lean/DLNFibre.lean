@@ -166,3 +166,8 @@ import DLNFibre.Core.FibreCodimMinPrimes
 -- the sweep dim-identity `hSweep` (the residual) + the Cited density `hClosure` (LR 4.4/4.5) as explicit
 -- hypotheses; the catenary hyps discharged via RadicalCatenary. Honest: no hypothesis = the conclusion.
 import DLNFibre.Core.RouteCAssembly
+-- (b)-build rung 1 — generic freeness (Grothendieck's lemma, MODULE case): a f.g. module over a
+-- (Noetherian) domain is free/flat after inverting one nonzero element (via the Mathlib substrate
+-- `exists_free_localizedModule_powers` + FractionRing-is-a-field). Reusable general lemma + a stepping
+-- stone for the finite-type-ALGEBRA case (EGA IV 6.9.1, the positive-relative-dim case the fibre needs).
+import DLNFibre.Core.GenericFreeness

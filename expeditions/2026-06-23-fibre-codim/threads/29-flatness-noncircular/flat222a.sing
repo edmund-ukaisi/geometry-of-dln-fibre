@@ -1,0 +1,10 @@
+ring r = 0, (a11,a12,a21,a22, b11,b12,b21,b22), dp;
+poly P11 = b11*a11 + b12*a21;
+poly P12 = b11*a12 + b12*a22;
+poly P21 = b21*a11 + b22*a21;
+poly P22 = b21*a12 + b22*a22;
+poly detP = P11*P22 - P12*P21;
+ideal Isig = detP;
+ideal G = std(Isig);
+"dim Sigmabar:"; dim(G);
+"deg/codim of Isig (height):"; nvars(r) - dim(G);
