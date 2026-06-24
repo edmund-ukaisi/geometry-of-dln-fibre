@@ -428,6 +428,12 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   several hundred lines, on the banked frame algebra) — the next focused tide, HELD until `pivot-frame-reviewer` passes
   the frame fact (a) (gating the large migration on a verified foundation; the area is soundness-subtle — 2 corrections).
 - 2 tides + 1 reviewer: r1-cov-cov (R1 c-o-v), pivot-frame-reviewer (frame fact fidelity); l2-geometry stood down.
+- **UPDATE: pivot-frame-reviewer returned SURVIVES** — frame fact (a) cleared as bedrock (statement=intent vs the
+  consumer; NO hidden B-restriction — verified against a genuinely non-front-pivot witness r=2 J={1,2} Q≠I, B22=1
+  real; axioms clean; decorrelated Codex agrees). So the L2 (b)(c) **migration is UNBLOCKED + commissioned**
+  (`l2-migration` a0a2ace0): the non-incremental rThresholdSplit→pivotThresholdSplit J migration → PIN1 (Leibniz
+  fderiv collapse) + PIN2 (read→raw + telescoping + reindex) on the verified frame fact, shared-J tripwire. Closes
+  the L2 gauge chart (then L=1 base + wire, incl. the continuous_dlnLoss dedupe). 2 tides: r1-cov-cov, l2-migration.
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
