@@ -104,3 +104,19 @@ Two new wrinkles surfaced over R2-3a → R2-3b-1+2, both resolved with ZERO dama
   *inside* the `shutdown_request` reason, not in a separate message afterward. (A revived idle tide is
   harmless if it doesn't write, but it burns context and muddies the one-write-baton picture; re-terminate
   with another `shutdown_request`, never a chat message.)
+- **(I) Spawned agents default to the MAIN-checkout cwd, not the controller's worktree.** A pen-and-paper
+  wrote its `certificate.md` to `…/geometry-of-dln-fibre/expeditions/…` (the main checkout) instead of the
+  worktree `…/.claude/worktrees/fibre-codim/expeditions/…`. Formaliser tides avoid this for *builds*
+  because their brief says "cd into the worktree lean dir every call", but DOC writes (certificates,
+  findings, cards) silently land in the main checkout — polluting another session's branch + leaving the
+  deliverable off the controller's branch. **Fix:** every teammate brief must give the WORKTREE-prefixed
+  absolute path for any file it writes (`…/.claude/worktrees/fibre-codim/expeditions/…`), not the bare
+  repo path. The controller re-homes any stray artefact onto its own branch from the agent's message
+  content (never by reaching into the main checkout).
+- **(J) Build/aggregate caveat: witness-name collisions surface only at aggregation.** A new module's
+  witness `tupleWitnessQ` clashed with `Core.Gabriel.tupleWitnessQ` (both `DLNFibre.Core`) — invisible to
+  the tide (Gabriel isn't a dep, so the isolated `scripts/lb <module>` build is clean) and only erroring
+  when the controller adds the import to the aggregator (both then in one environment). Same class as the
+  earlier `genericTuple` dup. **Fix:** tide briefs say "prefix witness/scratch defs with the module name"
+  (`fibreJac…`, not `tupleWitnessQ`); the controller resolves any residual clash at the green-gate (a
+  rename is the controller's aggregation responsibility).

@@ -672,3 +672,33 @@ Reusable, LANDED: `MultComorphism`, `SigmaCodim` (`codim Σ̄^r = C`), the therm
 
 **Discipline (operator steer):** build it, multi-round; explore details per-rung as reached, not as one
 upfront gate; break a hard piece smaller rather than declaring a wall. Starting H1+H2 now.
+
+## H3 CERTIFICATE → route REFINED to the FIBRATION dim count (thread 25, 2026-06-24)
+
+H1+H2+H3a LANDED (green, axiom-clean): `codim(fibre)=height(fibreGenIdeal)` (H1, radical-insensitive);
+`d(mult)` + Jacobian-entry brick (H2); the fibre Jacobian + `finrank(ker)+rank=card` + tangent=ker (H3a,
+`Core.FibreJacobian`). The pen-and-paper (thread 25) then **certified** `dim mult⁻¹(E) = card−C−δ` two
+exact ways (Singular Krull dim, 13 cases incl. N=3; sympy Jacobian rank) and **refined the route**:
+
+- **PRIMARY route = the FIBRATION dim count** (not the per-component Jacobian rank): `mult|_{Σ̄^r} : Σ̄^r ↠
+  Mat^{≤r}` is dominant, `E` generic (rank-exactly-r), so generic-fibre-dim ⟹ `dim F = dim Σ̄^r − dim
+  Mat^{≤r} = (card−C) − δ`. Reuses LANDED `dim Σ̄^r = card−C` (`SigmaCodim`) + `dim Mat^{≤r} = δ`
+  (thermometer `DeterminantalStratumDim`). **No flatness** (generic flatness is free) — sidesteps the
+  thread-20 wall AND the per-component rank bookkeeping. `+C` = Σ̄^r codim (Kostant/Ext), `+δ` = the target
+  rank-locus dim.
+- **Scope correction (load-bearing):** the fibre is REDUCIBLE; `rank = C+δ` holds only at a generic point
+  of a **TOP** component (lower-dim components carry higher rank, up to `d_N·d_0`). So the Jacobian-rank
+  route (H3b/H3c) is dimension-dependent + fiddly — **superseded** for the codim by the fibration. H3a
+  stays banked (a clean reusable module; `rank=C+δ` is a corollary via `card−dim`, not the target).
+- **Kill-condition:** `r ≤ min_i d_i` (E realizable / dominance). Only **generic-reducedness of the top
+  component** needed (NOT global reducedness — thread-20 stays off-path). Decorrelated Codex confirmed the
+  fibration count + corrected a false tangent-bound. Certificate: `threads/25-jacobian-rank-cert/certificate.md`.
+
+**REMAINING critical path (H4→H5→discharge):**
+- **H4 — `varietyDim(fibre over E) = card − C − δ`** via the fibration (dominant `mult|_{Σ̄^r} ↠ Mat^{≤r}`
+  + the engine's dimension toolkit: `AffineNoetherRank` (`ringKrullDim = trdeg`), `AffineDomainDimension`
+  (equidim `height p + dim(R/p) = dim R`), the catenary `NullstellensatzCodim`, + landed `dim Σ̄^r`, `dim
+  Mat^{≤r}`). The substantive AG rung — break into pieces, build, don't wall.
+- **H5 — catenary closer:** `height(fibreGenIdeal) = card − varietyDim(fibre) = C+δ` (min-prime / top-comp
+  dim, reducibility via Brick A `minimalPrimes_sigmaIdeal_eq`), combine with H1 ⟹ `codim(fibre)=C+δ`. Then
+  G4: discharge `BundleShiftInterface`.
