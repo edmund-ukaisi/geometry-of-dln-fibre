@@ -69,6 +69,20 @@ Module: `lean/DLNFibre/DLN/RLCT/Validate/RRR.lean` @ `3f00e68f` (worktree branch
 
 ---
 
+## Review verdict — PASS (fidelity, 2026-06-24)
+
+Independent reviewer (decorrelated Codex): **PASS** on all five checks. `aoyagi_rrr` confirmed
+literally `aoyagi_learning_coefficient (L := 2)` (verified by elaboration probe); general-`L`-first
+confirmed (RRR imports the general API, never the reverse; no def/proof depends on RRR); non-vacuity
+inhabitant-tested; `#print axioms` machine-confirmed the Proved/Assumed/Cited/Deferred split
+(`aoyagi_rrr`→`sorryAx`; `_222`→S2 only; `_212`→axiom-clean; `rrrTheta`→no axioms); ground truth
+reproduced by an independent Python re-implementation of the `Mval`/`Adm` minimisation. The dropped
+weak θ-order theorem judged the honest call. **Status: sorry-free + reviewed.**
+
+One awareness note (not a defect): `hr : ∀ s, r ≤ H s` also demands `r ≤ H¹` (inner width), slightly
+stronger than minimal rank-feasibility — but it is exactly the general headline's `hr` being
+instanced (conservative; restricts domain, never weakens conclusion). Tighten upstream if ever.
+
 ## Fidelity notes for the reviewer
 
 - **General-`L`-first preserved.** `rrrLambda := aoyagiLambda`, `aoyagi_rrr := aoyagi_learning_coefficient
