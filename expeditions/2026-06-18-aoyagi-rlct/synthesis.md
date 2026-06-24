@@ -6815,6 +6815,21 @@ chart coverage, source-displayed all-pivot atlas, successor/following-factor
 production, normal crossings, pole order, or RLCT.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
 
+The latest finite-atlas step is now
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-cocycle-a4.md`.
+Lean proves the generic normalized-coordinate cocycle and the generic/Case 2
+chart-point cocycle for finite selected-entry transitions.  With source,
+middle, and target pivots `p,q,r`, the hypotheses are source-normalized
+nonzero coordinates `x_q != 0` and `x_r != 0`; the middle-to-target
+denominator is `x_r/x_q`, and the two-step selected variable and residual
+coordinates reduce to `u*x_r` and `x_i/x_r`.  The statement is deliberately a
+chart-point identity over the target chart, not raw ambient residual-function
+equality.  This closes the immediate finite self/inverse/cocycle algebra
+without analytic transition regularity, chart coverage, source-displayed
+all-pivot atlas, successor/following-factor production, normal crossings, pole
+order, or RLCT.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

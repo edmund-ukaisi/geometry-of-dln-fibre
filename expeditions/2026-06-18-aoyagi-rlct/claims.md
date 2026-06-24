@@ -4214,6 +4214,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
 
+Latest A4 selected-entry transition cocycle:
+`BlowupArithmetic.lean` now proves
+`selectedEntryNormalizedMap_transition_target_ne_zero_of_source_ne_zero` and
+`selectedEntryNormalizedMap_transition_transition_eq_div_of_ne_zero`.
+`SelectedEntryNormalCrossing.lean` proves the generic and Case 2 chart-point
+cocycle laws
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_cocycle_of_target_normalized_ne_zero`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_cocycle_of_target_normalized_ne_zero`.
+The hypotheses are the source normalized nonzero coordinates for the middle
+and target pivots, and the conclusion is a target chart-point identity for
+source-to-middle-to-target versus source-to-target.  This is finite
+selected-entry coordinate algebra only: no analytic transition regularity,
+chart coverage, open-neighbourhood gluing, source-displayed all-pivot atlas,
+successor/following-factor production, normal crossings, pole order, or RLCT
+extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-cocycle-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-cocycle.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

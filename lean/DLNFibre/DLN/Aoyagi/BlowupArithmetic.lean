@@ -1909,6 +1909,67 @@ theorem selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zer
           selectedEntryNormalizedMap sourcePivot residual targetPivot)
       hi]
 
+/-- A target coordinate that is nonzero in the source chart remains nonzero
+after transition through a nonzero middle normalized coordinate. -/
+theorem selectedEntryNormalizedMap_transition_target_ne_zero_of_source_ne_zero
+    {K : Type*} [Field K]
+    {sourcePivot middlePivot targetPivot : ι} (residual : ι → K)
+    (hmiddle : selectedEntryNormalizedMap sourcePivot residual middlePivot ≠ 0)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0) :
+    let middleDenom := selectedEntryNormalizedMap sourcePivot residual middlePivot
+    let middleResidual : ι → K :=
+      fun r ↦ selectedEntryNormalizedMap sourcePivot residual r / middleDenom
+    selectedEntryNormalizedMap middlePivot middleResidual targetPivot ≠ 0 := by
+  dsimp only
+  rw [selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+    residual hmiddle targetPivot]
+  exact div_ne_zero htarget hmiddle
+
+/-- Cocycle formula for finite selected-entry normalized coordinates.
+
+Passing source-normalized coordinates through a middle pivot and then a target
+pivot gives the same target-normalized coordinate as passing directly from the
+source pivot to the target pivot. -/
+theorem selectedEntryNormalizedMap_transition_transition_eq_div_of_ne_zero
+    {K : Type*} [Field K]
+    {sourcePivot middlePivot targetPivot : ι} (residual : ι → K)
+    (hmiddle : selectedEntryNormalizedMap sourcePivot residual middlePivot ≠ 0)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0)
+    (i : ι) :
+    let middleDenom := selectedEntryNormalizedMap sourcePivot residual middlePivot
+    let targetDenom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+    let middleResidual : ι → K :=
+      fun r ↦ selectedEntryNormalizedMap sourcePivot residual r / middleDenom
+    let middleToTargetDenom :=
+      selectedEntryNormalizedMap middlePivot middleResidual targetPivot
+    let targetResidual : ι → K :=
+      fun r ↦ selectedEntryNormalizedMap middlePivot middleResidual r /
+        middleToTargetDenom
+    selectedEntryNormalizedMap targetPivot targetResidual i =
+      selectedEntryNormalizedMap sourcePivot residual i / targetDenom := by
+  dsimp only
+  have hmidTarget :
+      selectedEntryNormalizedMap middlePivot
+          (fun r ↦
+            selectedEntryNormalizedMap sourcePivot residual r /
+              selectedEntryNormalizedMap sourcePivot residual middlePivot)
+          targetPivot ≠ 0 :=
+    selectedEntryNormalizedMap_transition_target_ne_zero_of_source_ne_zero
+      residual hmiddle htarget
+  rw [selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+    (sourcePivot := middlePivot) (targetPivot := targetPivot)
+    (residual := fun r ↦
+      selectedEntryNormalizedMap sourcePivot residual r /
+        selectedEntryNormalizedMap sourcePivot residual middlePivot)
+    hmidTarget i]
+  rw [selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+    (sourcePivot := sourcePivot) (targetPivot := middlePivot)
+    residual hmiddle i]
+  rw [selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+    (sourcePivot := sourcePivot) (targetPivot := middlePivot)
+    residual hmiddle targetPivot]
+  field_simp [hmiddle, htarget]
+
 /-- Every transformed center generator is divisible by the selected pivot variable. -/
 theorem selectedEntryChartMap_pivot_dvd
     (pivot : ι) (u : α) (residual : ι → α) (i : ι) :

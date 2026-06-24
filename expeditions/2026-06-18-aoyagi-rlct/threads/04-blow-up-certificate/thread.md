@@ -5810,3 +5810,36 @@ adapter.  This remains finite selected-entry algebra only: no analytic
 transition regularity, chart coverage, source-displayed all-pivot atlas,
 successor matrix or suffix production, analytic Jacobian/volume theorem,
 global normal crossings, pole order, or RLCT extraction is proved.
+
+## 2026-06-24 Lean selected-entry transition cocycle
+
+Reproduction:
+`reproduction-selected-entry-transition-cocycle-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-transition-cocycle.md`.
+Review:
+`review-selected-entry-transition-cocycle-a4.md`.
+
+Lean now proves finite selected-entry transition cocycle laws:
+
+```text
+selectedEntryNormalizedMap_transition_target_ne_zero_of_source_ne_zero
+selectedEntryNormalizedMap_transition_transition_eq_div_of_ne_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_cocycle_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_cocycle_of_target_normalized_ne_zero
+```
+
+For source, middle, and target pivots `p,q,r`, source normalized coordinates
+`x_i`, and nonzero source normalized coordinates `x_q` and `x_r`, the
+two-step transition sends
+
+```text
+u -> u*x_q -> (u*x_q)*(x_r/x_q) = u*x_r
+x_i -> x_i/x_q -> (x_i/x_q)/(x_r/x_q) = x_i/x_r.
+```
+
+The theorem is chart-point equality, not equality of arbitrary raw ambient
+residual functions.  This remains finite selected-entry coordinate algebra
+only: no analytic transition regularity, chart coverage, open-neighbourhood
+gluing, source-displayed all-pivot atlas, successor/following-factor
+production, normal crossings, pole order, or RLCT extraction.

@@ -2458,6 +2458,20 @@ division theorem, or to tying these finite inverse laws more tightly to the
 Schur-compatible `Q/P` overlap data.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
 
+The newest finite-atlas step is now
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-cocycle-a4.md`.
+Lean proves the finite selected-entry cocycle law: on the triple overlap where
+the source normalized middle and target coordinates are both nonzero, the
+source-to-middle-to-target chart point equals the direct source-to-target chart
+point.  This completes the immediate finite groupoid-style algebra after
+self/inverse laws, still without analytic transition regularity, chart
+coverage, source-displayed all-pivot atlas, successor/following-factor
+production, normal crossings, pole order, or RLCT.  Next A4 work should either
+connect these finite atlas laws to the Schur-compatible `Q/P` overlap data or
+move toward source production of the successor residual/following objects with
+these finite transition facts available as support.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate
