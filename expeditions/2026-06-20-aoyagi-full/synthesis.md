@@ -565,6 +565,25 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   if it can't land). PIN2-proof may stay a migrated sorry (target PIN1 green, per the prior Codex call).
 - 2 background agents: pp-r1-genM (R1 #135 general-M chart design), l2-pivot-migrate (L2 Stage C+D → PIN1). Non-overlapping.
 
+**★ UPDATE-23 (2026-06-24) — R1 #135 verdict: the (3,3,4) achiever mechanism GENERALIZES (3 witnesses); build + uniform-φ_M design commissioned.**
+- **pp-r1-genM verdict (cert @ec2acefc):** the (3,3,4) achiever-chart mechanism GENERALIZES to all positive M — verified
+  exactly (rate + V-bound + det≠0) on (3,3,4) [banked], (4,4,2,2) [L=3 pure-radial], (3,3,3,3) [L=3, the decisive
+  nonzero-intermediate-codim "shared deep factor" regime]. The mechanism: after the Aoyagi Schur gauge the achiever loss
+  is a SUM-of-squares F~Σg_i² (CORRECTS thread 22's "product axis"), radialized by one pivot → F∘φ=u_p²·V,
+  |det Dφ|=|u_p|^{minAdm−1}·spectator, binding axis at threshold EXACTLY ½·minAdm. The atom's "(2,2,2) phiUnit does not
+  generalise" docstring is now REFUTED at the mechanism level. **Atom REACHABLE**; residual = a uniform closed φ_M
+  (construction effort, NOT a math obstruction; the codim-0-stay case is the boundary).
+- **Levels kept HONESTLY separate (pp-r1-genM):** this is the LOWER/box-divergence leg only (cover_ge_div, rlctAtOn ≤
+  ½·minAdm). The upper `cover_le` (corank-sensitive) is NOT addressed — still needs the full coupled cover or the cited
+  Aoyagi/Watanabe bound. The VALUE ⨅monomialThreshold=½·minAdm is already PROVEN; rlct=½·codim rides the cited S2 bound.
+- **Commissioned (pp-r1-genM's recommended order):** `r1-node-bundle` (aef6a73b, formaliser) — the reusable
+  `NodeAchieverChart M` bundle (the (3,3,4) L2AchieverChart fields generalized) + the M-agnostic atom assembly + the
+  (4,4,2,2) instance (verify det≠0; bank the det=u_p^{minAdm−1} radial-blowup lemma); reuses ParamsReshapeMP. AND
+  pp-r1-genM CONTINUES on the uniform closed φ_M (strictly-decreasing class) + a clean codim-0-stay frame — the design
+  that, with the banked bundle, instantiates the GENERAL atom.
+- 3 background agents: l2-pivot-migrate (L2 PIN1, Stage C+D), r1-node-bundle (R1 NodeAchieverChart + (4,4,2,2)),
+  pp-r1-genM (R1 uniform φ_M design). Non-overlapping (L2 / R1-build / R1-design).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
