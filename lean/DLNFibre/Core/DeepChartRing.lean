@@ -186,10 +186,11 @@ theorem aeval_deepBaseComap (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
   exact DFunLike.congr_fun hgen f
 
 /-- **The base→deep `sigmaIdeal` direction** (non-circular): `deepBaseComap d` maps the base
-`sigmaIdeal (dStratum q p) r` into the deep `sigmaIdeal d r`. Via `Ideal.map_le_iff_le_comap`: a base
-generator `f` vanishing on `Σ̄^r_{(q,p)}` pulls back to a polynomial vanishing on `Σ̄^r_d`, because a
-**deep** total point `A ∈ Σ̄^r_d` maps by `mult` to a single-matrix **base** point in
-`Σ̄^r_{(q,p)}` (`mult_singleTuple`, `rank (mult d A) ≤ r`), where `f` vanishes (`aeval_deepBaseComap`).
+`sigmaIdeal (dStratum q p) r` into the deep `sigmaIdeal d r`. Via `Ideal.map_le_iff_le_comap`: a
+base generator `f` vanishing on `Σ̄^r_{(q,p)}` pulls back to a polynomial vanishing on `Σ̄^r_d`,
+because a **deep** total point `A ∈ Σ̄^r_d` maps by `mult` to a single-matrix **base** point in
+`Σ̄^r_{(q,p)}` (`mult_singleTuple`, `rank (mult d A) ≤ r`), where `f` vanishes
+(`aeval_deepBaseComap`).
 Does **not** assume the circular `sigmaIdeal ≤ fibreGenIdeal`. -/
 theorem deepBaseComap_sigmaIdeal_le (d : Fin (N + 1) → ℕ) (r : ℕ) :
     (sigmaIdeal (k := k) (dStratum (d 0) (d (Fin.last N))) r).map
@@ -320,7 +321,8 @@ The endpoint-normalization `AlgEquiv` for R2-3b-3 is an `aeval`-substitution on 
 `MvPolynomial (RepCoord d) R` over an **arbitrary** coefficient ring `R` (Codex: NOT
 `baseChangeAlgEquiv`, which carries `[Infinite k]` from polynomial-function ext). The contract — two
 `aeval` substitutions that round-trip on generators, assembled by `AlgEquiv.ofAlgHom` — is pinned
-here so R2-3b-3 inherits the exact shape. (`example`: the contract, not the genuine substitution.) -/
+here so R2-3b-3 inherits the exact shape. (`example`: the contract, not the genuine
+substitution.) -/
 
 /-- **R2-3b-3 pre-stage contract.** Two coordinate substitutions `toSub`, `fromSub : RepCoord d →
 MvPolynomial (RepCoord d) R` over an arbitrary commutative ring `R`, mutually inverse on the
@@ -349,8 +351,9 @@ noncomputable example {R : Type u} [CommRing R] (d : Fin (N + 1) → ℕ)
 The deep constructions fire on the `N = 1` specialization `(d 0, d last) = (q, p)`, where they
 reproduce the `N = 1` base data. We exhibit (i) the type bridge at `(2, 2)`, (ii) `deepBaseComap` /
 `deepBaseComap_detPivot` at the `N = 1` stratum `dStratum 2 2`, `r = 1`, where the deep pivot minor
-**is** the `N = 1` `detPivotPoly` (`deepBaseComap` is the identity-up-to-rename there), and (iii) the
-localized base→total quotient map `baseQuotMap` available at that anchor over `AlgebraicClosure ℚ`. -/
+**is** the `N = 1` `detPivotPoly` (`deepBaseComap` is the identity-up-to-rename there), and (iii)
+the localized base→total quotient map `baseQuotMap` available at that anchor over
+`AlgebraicClosure ℚ`. -/
 
 section Witness
 
@@ -379,7 +382,8 @@ example (h : (1 : ℕ) ≤ 2) :
 `CharZero`; `schurToSred` composes this with `basePresentationEquiv.symm`.) -/
 noncomputable example (h : (1 : ℕ) ≤ 2) :
     (Localization.Away
-          (detPivotPoly (k := AlgebraicClosure ℚ) (dStratum 2 2 0) (dStratum 2 2 (Fin.last 1)) 1 h h)
+          (detPivotPoly (k := AlgebraicClosure ℚ)
+            (dStratum 2 2 0) (dStratum 2 2 (Fin.last 1)) 1 h h)
         ⧸ Iad (k := AlgebraicClosure ℚ) (dStratum 2 2 0) (dStratum 2 2 (Fin.last 1)) 1 h h)
       →ₐ[AlgebraicClosure ℚ] Sred (k := AlgebraicClosure ℚ) (dStratum 2 2) 1 h h :=
   baseQuotMap (dStratum 2 2) 1 h h
