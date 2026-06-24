@@ -499,6 +499,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   pending the verdict (do NOT build the big coupled write on an unverified foundation — the exact mistake the frame-fact-gap was).
 - 3 background agents: a4e79a2 (R1 cov residual), ac2db524 (L=1 base), rv-stageA (Stage A review). Migration tide held.
 
+**★ UPDATE-19 (2026-06-24) — R1 (3,3,4) hdiv anchor FULLY SORRY-FREE + axiom-target-clean; the reusable reshape-MP banked.**
+- **`routeM334_box_diverges` INTEGRATED sorry-free @b72c7364** — `#print axioms` = exactly
+  `[propext, Classical.choice, Quot.sound, monomial_rlct]` (the single S2 leaf, no sorryAx). The genuine c-o-v
+  `phi334_cov` (det `|u₀|⁷·|u₁|²` = leafH334, reviewer-SURVIVED + Codex-corroborated) + the last trivial residual
+  `Q334CLM_abs_det` (|det Q|=1 for the outer coord reshape) both closed. Full library green (3718 jobs); sorry total 10→9.
+- **Reusable reshape-MP banked (`Foundations/ParamsReshapeMP.lean`, axiom-clean, 143 LoC):**
+  `measurePreserving_paramsPack_of_flatIdxEquiv` (reshape by an explicit computable `Fin N ≃ FlatIdx H` is MP — the
+  computable replacement for the opaque `Fintype.equivFin`) + `continuousLinearMap_abs_det_eq_one_of_measurePreserving`
+  (MP linear self-map has |det|=1). This is the "bank once, share across all hfin per-node charts" fact — cost driver 2
+  of the hfin tree is now retired. The (3,3,4) anchor also banks the reusable c-o-v TEMPLATE (Schur-shear det-1 +
+  chain-rule composite det + reshape pull-out + the null-slice assembly).
+- **What this means for R1:** the hdiv leg's concrete (3,3,4) binding-node anchor is DONE end-to-end — the full c-o-v
+  machinery demonstrated with only `monomial_rlct` cited. Remaining R1: the general-M hdiv atom
+  (`routeMCore_box_diverges_achiever`, RouteMLayerCoverGE's 1 sorry) + the hfin tree (general-L), both reusing this
+  banked reshape-MP + template. Task #44 COMPLETE.
+- 2 background agents now: ac2db524 (L=1 base), rv-stageA (Stage A review). Migration tide still held pending rv-stageA.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
