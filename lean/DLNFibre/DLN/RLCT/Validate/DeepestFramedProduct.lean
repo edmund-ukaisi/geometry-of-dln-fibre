@@ -82,20 +82,33 @@ theorem contDiff_readZ_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
   simp only [readZ, Matrix.of_apply]
   exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
 
-/-- **The per-layer framed normal-form matrix** `C_s = fromBlocks (1 + X_s) Y_s Z_s T_s`, reindexed
-from the block split `Fin r ⊕ Fin (H_s − r)` to the layer dimension `Fin (H_s)` (via `rThresholdSplit`),
-so it types as a `Params H` layer `Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ`. The gauge blocks
-`(X_s, Y_s, Z_s)` are the regular/spectator gauge entries (off `gaugeSlotRead`); `T_s` is the reduced
-core block. -/
+/-- **The per-layer FRAME-CONJUGATED normal-form matrix** (#80 frame-wiring). The deepest-point block
+corner `corM = reindex(fromBlocks 1 0 0 0)` PLUS the frame-conjugated raw deviation
+`P_s · reindex(fromBlocks X_s Y_s Z_s T_s) · Q_s`, where `(P_s, Q_s)` is the per-layer gauge frame
+(supplied explicitly so this def stays free of the rank machinery / `Classical.choose`). The gauge
+blocks `(X_s, Y_s, Z_s)` are the regular/spectator gauge DEVIATION entries (off `gaugeSlotRead`); `T_s`
+is the reduced-core deviation block.
+
+The frame is wired into the READING (not the MP `split`): at the deepest gauge slot the deviation is
+`0` so `framedLayer = corM` (frame-INDEPENDENT base, preserving the idempotent fold), and away from it
+the deviation is frame-conjugated to MATCH the endpoint-telescoped product
+(`framedLayer (frame) (raw deviation blocks of w) = P_s · (paramsSymm w)_s · Q_s` via
+`P_s · deepestPoint_s · Q_s = corM`). With `P = Q = 1` it degenerates to the old additive chart
+`corM + reindex(fromBlocks X Y Z T)`. -/
 noncomputable def framedLayer (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (s : Fin L)
+    (P : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (X : Matrix (Fin r) (Fin r) ℝ) (Y : Matrix (Fin r) (Fin (H s.succ - r)) ℝ)
     (Z : Matrix (Fin (H s.castSucc - r)) (Fin r) ℝ)
     (T : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ) :
     Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ :=
   Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
-    (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-    (Matrix.fromBlocks (1 + X) Y Z T)
+      (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    + P * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+        (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+        (Matrix.fromBlocks X Y Z T) * Q
 
 /-- **The framed parameter tuple** `C : Params H` reconstructed from a `DeepestSplit` point: each layer
 is `framedLayer` of the gauge blocks `(X_s, Y_s, Z_s)` (read off the reg+spectator slot via
@@ -105,9 +118,11 @@ The framed product `∏C = prod H (framedParams q)` is the shared object; `dlnLo
 product `∏C` is well-defined regardless of (iii)/(B); those affect how it relates to `dlnLoss`/`Ereg`). -/
 noncomputable def framedParams (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (q : DeepestSplit H r (deepestNGauge H r)) : Params H :=
   fun s =>
-    framedLayer H r hr s
+    framedLayer H r hr s (P s) (Q s)
       (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
       (readZ H r hr hL (q.1, q.2.2) s)
       ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
@@ -120,9 +135,11 @@ core-INDEPENDENT pivot part, per the #115/g222 cert). Each layer is `framedLayer
 `Fin nReg` pack convention (the open obstruction), only on the gauge read `readX/Y/Z`. -/
 noncomputable def framedParamsReg (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) : Params H :=
   fun s =>
-    framedLayer H r hr s
+    framedLayer H r hr s (P s) (Q s)
       (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
       (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
 
@@ -130,40 +147,82 @@ noncomputable def framedParamsReg (H : Fin (L + 1) → ℕ) (r : ℕ)
 `framedLayer 0 0 0 0 = reindex (fromBlocks 1 0 0 0)` (the deepest value `blockdiag[I_r, 0]`). The base
 fact for `deepestEPivot`'s `_base` (the residual of `∏ blockdiag[I_r,0]` is `0`). -/
 theorem framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    framedParamsReg H r hr hL 0 s
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L) :
+    framedParamsReg H r hr hL P Q 0 s
       = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
           (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  -- At the deepest gauge slot the deviation `fromBlocks 0 0 0 0 = 0`, so the frame term
+  -- `P · reindex 0 · Q = 0` vanishes and `framedLayer = corM` (frame-INDEPENDENT base).
   simp only [framedParamsReg, framedLayer, readX_zero H r hr hL s, readY_zero H r hr hL s,
-    readZ_zero H r hr hL s, add_zero]
+    readZ_zero H r hr hL s]
+  rw [show Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 = 0 from by
+      ext a b; rcases a with a | a <;> rcases b with b | b <;> rfl]
+  simp [Matrix.reindex_apply, Matrix.submatrix_zero]
 
 /-- Each `framedParamsReg` layer ENTRY is `ContDiff ⊤` in the `(reg, gauge)` slots: the entry is a
 `fromBlocks (1+X) Y Z 0` block entry (reindexed), i.e. `1+readX` / `readY` / `readZ` / `0`, each
 `ContDiff` (the read entries + `const`). The `_contdiff` layer input to `contDiff_prod_entry`. -/
 theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L)
     (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
-    ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL p s i j) := by
-  -- The entry is `(fromBlocks (1+X) Y Z 0) (e₁.symm i) (e₂.symm j)`; case-split on the sum indices.
-  have hentry : (fun p => framedParamsReg H r hr hL p s i j)
-      = fun p => Matrix.fromBlocks (1 + readX H r hr hL p s) (readY H r hr hL p s)
-          (readZ H r hr hL p s) (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
-          ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) i)
-          ((rThresholdSplit r (H s.succ) (hr s.succ)) j) := by
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL P Q p s i j) := by
+  -- The entry is `corM i j + (P · reindex(fromBlocks X Y Z 0) · Q) i j`. `corM i j` is a constant;
+  -- the frame term expands by `Matrix.mul_apply` to `∑ m, ∑ n, P i m · reindex(...) m n · Q n j` with
+  -- `P, Q` constant and each `reindex(...) m n` a block read (`readX/Y/Z` entry, ContDiff) or `0`.
+  -- Each entry of the raw-deviation matrix `D(p) = reindex(fromBlocks (readX) (readY) (readZ) 0)` is
+  -- ContDiff (block read).
+  have hD : ∀ (m : Fin (H s.castSucc)) (n : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun p => (Matrix.reindex
+          (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+            (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ))) m n) := by
+    intro m n
+    have hmn : (fun p => (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+            (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ))) m n)
+        = fun p => Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s)
+            (readZ H r hr hL p s) (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+            ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m)
+            ((rThresholdSplit r (H s.succ) (hr s.succ)) n) := by
+      funext p
+      simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
+    rw [hmn]
+    rcases (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m with a | a <;>
+      rcases (rThresholdSplit r (H s.succ) (hr s.succ)) n with b | b <;>
+      simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
+        Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]
+    · exact contDiff_readX_entry H r hr hL s a b
+    · exact contDiff_readY_entry H r hr hL s a b
+    · exact contDiff_readZ_entry H r hr hL s a b
+    · exact contDiff_const
+  -- The framedParamsReg entry = `corM i j + (P s * D(p) * Q s) i j`; the latter is a double sum of
+  -- (const · D-entry · const) by `Matrix.mul_apply`.
+  have hentry : (fun p => framedParamsReg H r hr hL P Q p s i j)
+      = fun p =>
+          (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+              (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) i j
+          + (P s * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+                  (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+                  (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s)
+                    (readZ H r hr hL p s)
+                    (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)) * Q s) i j := by
     funext p
-    simp only [framedParamsReg, framedLayer, Matrix.reindex_apply, Matrix.submatrix_apply,
-      Equiv.symm_symm]
+    simp only [framedParamsReg, framedLayer, Matrix.add_apply]
   rw [hentry]
-  rcases (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) i with a | a <;>
-    rcases (rThresholdSplit r (H s.succ) (hr s.succ)) j with b | b <;>
-    simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
-      Matrix.fromBlocks_apply₂₂, Matrix.add_apply, Matrix.one_apply, Matrix.zero_apply]
-  · -- (1 + X) entry: `(if a = b then 1 else 0) + readX … a b` — the `if` is a constant in `p`.
-    exact contDiff_const.add (contDiff_readX_entry H r hr hL s a b)
-  · exact contDiff_readY_entry H r hr hL s a b
-  · exact contDiff_readZ_entry H r hr hL s a b
-  · exact contDiff_const
+  refine contDiff_const.add ?_
+  -- `(P · D · Q) i j = ∑ n, (P · D) i n · Q n j = ∑ n, (∑ m, P i m · D m n) · Q n j`.
+  simp only [Matrix.mul_apply]
+  refine ContDiff.sum (fun n _ => ?_)
+  refine ContDiff.mul (ContDiff.sum (fun m _ => ?_)) contDiff_const
+  exact contDiff_const.mul (hD m n)
 
 /-! ## PIN 2 frame bridge — the telescoping (#80, next chunk)
 

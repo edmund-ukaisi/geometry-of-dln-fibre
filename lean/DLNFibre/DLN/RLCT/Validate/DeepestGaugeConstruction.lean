@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
+import DLNFibre.DLN.RLCT.Validate.DeepestRegSliceFderiv
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 
@@ -350,60 +351,55 @@ the SHARED coupling object — defined once, consumed by both pins. Its three pr
 expansion `∏(I+X_s) − I` read off the gauge slots, certified `dE(0) = id` (pp2 #91, general L). -/
 
 /-- The pack equivalence `Fin nReg ≃ (r×r) ⊕ ((r×M_L) ⊕ (M_0×r))` — the THREE regular residual blocks
-`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates (dimension count:
-`r·r + r·M_L + M_0·r = r(H_0+H_L−r)`). A CARDINALITY bijection (`Fintype.equivFin`-based) — the
-specific index alignment is the open `_deriv` obstruction (crux2's fork), but `_base`/`_contdiff` need
-ONLY that it is a coordinate bijection (linear, `0 ↦ 0`). -/
+`(P11−I, P12, P21)` of `∏C` flatten into the `nReg = r(H_0+H_L−r)` reg coordinates. **#120 explicit:**
+`:= regPivotFinEquiv` (the TRANSPARENT `finProdFinEquiv`/`finSumFinEquiv` enumeration in
+`DeepestSplitReindex`), SHARED with `regGaugeIdxSplit`'s reg-half (which routes via
+`regBoundaryToRegGauge ∘ regPivotFinEquiv`), so the two cancel and the gauge-zero reg-slice derivative is
+`id` by construction. `_base`/`_contdiff` need only that it is a coordinate bijection (it is, an `Equiv`). -/
 noncomputable def regResidualPack (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) :
     Fin (deepestNReg H r)
-      ≃ (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r)) := by
-  refine (finCongr ?_).trans (Fintype.equivFin _).symm
-  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
-  show deepestNReg H r = r * r + (r * (H (Fin.last L) - r) + (H 0 - r) * r)
-  -- `r(a+b−r) = r² + r(b−r) + (a−r)r` for `a, b ≥ r` (exact nat subtractions).
-  obtain ⟨a', ha'⟩ := Nat.le.dest (hr 0)
-  obtain ⟨b', hb'⟩ := Nat.le.dest (hr (Fin.last L))
-  unfold deepestNReg
-  rw [← ha', ← hb']
-  simp only [Nat.add_sub_cancel_left]
-  rw [show r + a' + (r + b') - r = r + (a' + b') by omega]
-  ring
+      ≃ (Fin r × Fin r) ⊕ ((Fin r × Fin (H (Fin.last L) - r)) ⊕ (Fin (H 0 - r) × Fin r)) :=
+  regPivotFinEquiv H r hr
 
 /-- The regular residual blocks `(P11 − I, P12, P21)` of the framed product `∏C|_{T=0}`, packed into
 `Fin nReg → ℝ` via `regResidualPack`. `P = ∏ (framedParamsReg p)` reindexed to `r ⊕ M` block shape;
 `P11 = toBlocks₁₁`, `P12 = toBlocks₁₂`, `P21 = toBlocks₂₁`; the residual is `(P11−1, P12, P21)`. -/
 noncomputable def deepestEPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
     (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ) → (Fin (deepestNReg H r) → ℝ) :=
   fun p =>
     let P := Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L))
-      (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL p))
+      (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL Pf Qf p))
     fun i => match regResidualPack H r hr i with
       | Sum.inl (a, b) => (P.toBlocks₁₁ - 1) a b
       | Sum.inr (Sum.inl (a, b)) => P.toBlocks₁₂ a b
       | Sum.inr (Sum.inr (a, b)) => P.toBlocks₂₁ a b
 
 theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL) := by
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    ContDiff ℝ (⊤ : ℕ∞) (deepestEPivot H r hr hL Pf Qf) := by
   -- Each layer entry of `framedParamsReg` is `ContDiff` (`contDiff_framedParamsReg_entry`), so each
   -- entry of `prod H (framedParamsReg ·)` is `ContDiff` (`contDiff_prod_entry`).
   have hlayer : ∀ (s : Fin L) (a : Fin (H s.castSucc)) (b : Fin (H s.succ)),
-      ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL p s a b) :=
-    contDiff_framedParamsReg_entry H r hr hL
+      ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL Pf Qf p s a b) :=
+    contDiff_framedParamsReg_entry H r hr hL Pf Qf
   have hprod : ∀ (a : Fin (H 0)) (b : Fin (H (Fin.last L))),
-      ContDiff ℝ (⊤ : ℕ∞) (fun p => prod H (framedParamsReg H r hr hL p) a b) :=
-    fun a b => contDiff_prod_entry H (framedParamsReg H r hr hL) hlayer a b
+      ContDiff ℝ (⊤ : ℕ∞) (fun p => prod H (framedParamsReg H r hr hL Pf Qf p) a b) :=
+    fun a b => contDiff_prod_entry H (framedParamsReg H r hr hL Pf Qf) hlayer a b
   -- `deepestEPivot p` is a `Fin nReg → ℝ` whose each coordinate is (a `prod`-entry, reindexed) − const.
   refine contDiff_pi.2 (fun i => ?_)
   -- The `i`-coordinate selects one match-arm (independent of `p`); rewrite to that arm, then it is a
   -- reindexed `prod`-entry (minus the constant `1` on the `inl` arm).
-  have hcoord : (fun p => deepestEPivot H r hr hL p i)
+  have hcoord : (fun p => deepestEPivot H r hr hL Pf Qf p i)
       = fun p =>
         let P := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
-          (prod H (framedParamsReg H r hr hL p))
+          (prod H (framedParamsReg H r hr hL Pf Qf p))
         match regResidualPack H r hr i with
         | Sum.inl (a, b) => (P.toBlocks₁₁ - 1) a b
         | Sum.inr (Sum.inl (a, b)) => P.toBlocks₁₂ a b
@@ -420,18 +416,30 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
       Equiv.symm_symm]
     exact hprod _ _
 
-/-- **`deepestEPivot`'s reg-block derivative at `0` is the IDENTITY** (the #91 analytic crux,
-g213-pin1-de0). Restricted to the regular slice `r ↦ deepestEPivot (r, 0)`, the strict derivative at
-`0` is `id` — the idempotent-sandwich `dP|_0 = Σ_s corner·δC_s·corner` with the gauge slot held at `0`
-keeps ONLY the `(0,0)`-block `X`-pivot (which equals the reg-input on the pivot coords). This is the
-single analytic obligation of `_deriv`; everything else (the product strict-derivative, the shear-CLE
-packaging) is banked. **OBLIGATION:** the `regResidualPack` ↔ `(X_first, Y_last, Z_first)` pivot-coord
-correspondence at the gauge-zero slice (the #91 transcription / pp2 coordinate cert). -/
-theorem deepestEPivot_regSlice_fderiv_id (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
-        deepestEPivot H r hr hL (r0, 0))
-      (ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ)) 0 :=
+/-- **`deepestEPivot`'s reg-block derivative at `0` is an INVERTIBLE FRAME FACTOR** (the #91 analytic
+crux, post frame-conjugation — NOT `id`). With the frame-conjugate `framedLayer = corM + Pf·dev·Qf`,
+the gauge-zero reg-slice `r0 ↦ deepestEPivot Pf Qf (r0, 0)` has strict derivative a constant INVERTIBLE
+CLM `F`: by the idempotent sandwich `dP|_0(δ) = Σ_s corM^{<s}·dC_s·corM^{>s}` with
+`dC_s = Pf_s·reindex(fromBlocks dX_s dY_s dZ_s 0)·Qf_s`, only `s = firstLayer` (X,Z) / `s = lastLayer`
+(Y) survive (the alignment bedrock), and the boundary frames' `r`-corner action ∘ the shared
+`regPivotFinEquiv` cancel gives the invertible `F` (from `IsUnit (Pf firstLayer)` / `IsUnit
+(Qf lastLayer)`). **OBLIGATION (the #91 frame-decorated transcription):** the `prodAuxEntryDeriv`
+Leibniz value collapsed by the corner sandwich + the cancel. -/
+theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1) :
+    ∃ F : (Fin (deepestNReg H r) → ℝ) ≃L[ℝ] (Fin (deepestNReg H r) → ℝ),
+      HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          deepestEPivot H r hr hL Pf Qf (r0, 0))
+        (F : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+  -- The #91 frame-decorated sandwich (analytic fill in progress). Reuses (`DeepestRegSliceFderiv`):
+  -- `prodAuxEntryDeriv` (the explicit Leibniz product-fold derivative), the alignment cancel
+  -- (`regGaugeSlotEquiv_regSlice_boundary` — reg-coords route to boundary pivots), the layer slices
+  -- (X/Z only at firstLayer, Y only at lastLayer), and the scalar cross-term `mul_zero` helpers; the
+  -- boundary-frame invertibility `hPf`/`hQf` builds the invertible `F`.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -443,20 +451,26 @@ on `DeepestSplit`, det 1, invertible). Bundled: `∃ D_E (e : ≃L), HasStrictFD
 identity `deepestEPivot_regSlice_fderiv_id` (the #91 crux), and the generic shear-CLE
 `regStraightenTotalCLM_equiv_of_regBlock_id`. -/
 theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1) :
     ∃ (D_E : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ]
         (Fin (deepestNReg H r) → ℝ))
       (e : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ] DeepestSplit H r (deepestNGauge H r)),
-      HasStrictFDerivAt (deepestEPivot H r hr hL) D_E 0 ∧
+      HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E 0 ∧
       (e : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
         = regStraightenTotalCLM D_E := by
-  -- `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`); its reg-block is `id` (the #91 fact),
-  -- so `regStraightenTotalCLM D_E` is the invertible shear (`regStraightenTotalCLM_equiv_of_regBlock_id`).
-  set D_E := fderiv ℝ (deepestEPivot H r hr hL) 0 with hD_E
-  have hsd : HasStrictFDerivAt (deepestEPivot H r hr hL) D_E 0 :=
-    (deepestEPivot_contdiff H r hr hL).hasStrictFDerivAt (by simp)
-  -- The reg-block: `D_E.comp regInCLM = id`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
-  -- derivative `D_E.comp regInCLM` (chain rule) AND `id` (#91), so they agree.
+  -- `D_E := fderiv ℝ deepestEPivot 0` (free from `_contdiff`); its reg-block is the INVERTIBLE frame
+  -- factor `F` (the #91 post-frame fact), so `regStraightenTotalCLM D_E` is the invertible shear
+  -- (`regStraightenTotalCLM_equiv_of_regBlock_isUnit`).
+  set D_E := fderiv ℝ (deepestEPivot H r hr hL Pf Qf) 0 with hD_E
+  have hsd : HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E 0 :=
+    (deepestEPivot_contdiff H r hr hL Pf Qf).hasStrictFDerivAt (by simp)
+  -- The reg-block: `D_E.comp regInCLM = ↑F`. The reg-slice `r ↦ deepestEPivot (r,0)` has strict
+  -- derivative `D_E.comp regInCLM` (chain rule) AND `↑F` (#91 frame factor), so they agree.
+  obtain ⟨F, hF⟩ := deepestEPivot_regSlice_fderiv H r hr hL Pf Qf hPf hQf hQf0 hPfL
   have hregIn : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => ((r0, 0) :
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)))
       (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
@@ -465,31 +479,34 @@ theorem deepestEPivot_deriv (H : Fin (L + 1) → ℕ) (r : ℕ)
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt (x := 0)
     simpa [regInCLM] using this
   have hcomp : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
-      deepestEPivot H r hr hL (r0, 0)) (D_E.comp regInCLM) 0 := by
-    have hsd0 : HasStrictFDerivAt (deepestEPivot H r hr hL) D_E
+      deepestEPivot H r hr hL Pf Qf (r0, 0)) (D_E.comp regInCLM) 0 := by
+    have hsd0 : HasStrictFDerivAt (deepestEPivot H r hr hL Pf Qf) D_E
         (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))) := hsd
     exact hsd0.comp (x := (0 : Fin (deepestNReg H r) → ℝ)) hregIn
+  -- `D_E.comp regInCLM = ↑F` (fderiv uniqueness against `hF`).
   have hblock : D_E.comp (regInCLM : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
       (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-      = ContinuousLinearMap.id ℝ (Fin (deepestNReg H r) → ℝ) := by
+      = (F : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) := by
     have h1 := hcomp.hasFDerivAt.fderiv
-    have h2 := (deepestEPivot_regSlice_fderiv_id H r hr hL).hasFDerivAt.fderiv
+    have h2 := hF.hasFDerivAt.fderiv
     rw [← h1, ← h2]
-  obtain ⟨e, he⟩ := regStraightenTotalCLM_equiv_of_regBlock_id (C := Fin (flatDim (deepestM H r)) → ℝ)
-    D_E hblock
+  obtain ⟨e, he⟩ := regStraightenTotalCLM_equiv_of_regBlock_isUnit
+    (C := Fin (flatDim (deepestM H r)) → ℝ) D_E F hblock.symm
   exact ⟨D_E, e, hsd, he⟩
 
 theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
-    deepestEPivot H r hr hL 0 = 0 := by
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    deepestEPivot H r hr hL Pf Qf 0 = 0 := by
   -- At the origin slot, `∏(framedParamsReg 0)` is the reindexed corner `fromBlocks 1 0 0 0`
   -- (`prod_framedParamsReg_zero`); the outer `reindex` in `P` cancels it, so `P = fromBlocks 1 0 0 0`.
   funext i
   -- The matrix `P` defining the coordinates is the cancelled corner.
   have hP : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L))
-        (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL 0)))
+        (hr (Fin.last L))) (prod H (framedParamsReg H r hr hL Pf Qf 0)))
       = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
-    rw [prodAux_framedParamsReg_zero H r hr hL, ← Matrix.reindex_symm,
+    rw [prodAux_framedParamsReg_zero H r hr hL Pf Qf, ← Matrix.reindex_symm,
       Equiv.apply_symm_apply]
   -- Each coordinate reads a block of `P`; all blocks of `fromBlocks 1 0 0 0` give `0` in the residual.
   simp only [deepestEPivot, hP, Pi.zero_apply]
@@ -497,6 +514,114 @@ theorem deepestEPivot_base (H : Fin (L + 1) → ℕ) (r : ℕ)
     simp only [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.sub_apply,
       Matrix.of_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
       Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, sub_self]
+
+/-- **The reg-residual energy IS the block energy** (the #80 Φ-reg identification, BLOCK-LEVEL). The sum
+of squares of `deepestEPivot p` over `Fin nReg` equals the three residual-block energies of
+`P = reindex(prod(framedParamsReg p))` — `∑(P11−1)² + ∑P12² + ∑P21²`. Via `regResidualPack` as a SUMMING
+bijection (`Equiv.sum_comp`) + `Fintype.sum_sum_type`/`Fintype.sum_prod_type`: NO per-coordinate value of
+`regResidualPack` is used (only its bijectivity), so this is STABLE under the #120 value-changing swap
+(`regResidualPack := regPivotFinEquiv`) — the sum is the same for any bijection of the same type. -/
+theorem deepestEPivot_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    (∑ i, (deepestEPivot H r hr hL Pf Qf p i) ^ 2)
+      = (∑ a, ∑ b, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL Pf Qf p))).toBlocks₁₁ - 1) a b) ^ 2)
+        + ((∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL Pf Qf p))).toBlocks₁₂ a b) ^ 2)
+          + (∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+              (prod H (framedParamsReg H r hr hL Pf Qf p))).toBlocks₂₁ a b) ^ 2)) := by
+  -- Reindex the `Fin nReg` sum along `regResidualPack` (a bijection — value-irrelevant), then split the
+  -- NESTED sum-type `blk1 ⊕ (blk2 ⊕ blk3)` (`Fintype.sum_sum_type` twice + `Fintype.sum_prod_type`).
+  rw [← Equiv.sum_comp (regResidualPack H r hr).symm (fun i => (deepestEPivot H r hr hL Pf Qf p i) ^ 2),
+    Fintype.sum_sum_type]
+  congr 1
+  · rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+    simp only [deepestEPivot, Equiv.apply_symm_apply]
+  · rw [Fintype.sum_sum_type]
+    congr 1 <;>
+      (rw [Fintype.sum_prod_type]
+       refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+       simp only [deepestEPivot, Equiv.apply_symm_apply])
+
+/-- **The frame-bridge cert** (#80, ruling (b) — the ONE geometric input of the loss squeeze). Packages
+the constant endpoint frames `P0, QL` (with inverses `Pi, Qi`, `Pi·P0 = 1 ∧ QL·Qi = 1`) and a `leak`
+charge constant `t`, and a neighborhood `U` of the deepest point where for each `w ∈ U` the loss matrix
+`N = ∏(paramsSymm w) − B`, conjugated by the endpoint frames and reindexed to `r ⊕ M` block shape, is
+the framed-block form `fromBlocks (P00−1) P01 P10 P11`, with the regular blocks `(P00, P01, P10)` IDENTIFIED
+with the `framedParamsReg` product blocks `Preg = reindex(∏(framedParamsReg (split w).reg, (split w).spec))`
+(the `deepestEPivot` source), the Schur leak charged `∑leak² ≤ t²·∑E²`, and the CORE COMPARABILITY
+`∑(P11 − P10⅟P00 P01)² ≍ deepestCoreF (coreAbsorb (split w)).2.1` (TWO-SIDED, not an equality: the
+full-product Schur core leaks into the regular blocks — g156 — so it agrees with the absorbed per-layer
+core only modulo regular leakage, folded into `c₁/c₂`; the RLCT value stays exact).
+
+This is cobuild's OWN cert (a DIFFERENT object from deriv-fm's #120 reg-slice-of-`deepestEPivot`): it
+is built on `split`/`deepestRoleIndexEquiv` + the core + the gauge, via `endpoint_telescoping`
+(`deepestPoint_frame` boundary frames + interior-interface vanishing) and the `framedParams`/`framedParamsReg`
+identification. **Isolated `sorry` (route-first):** the chain below is sorry-free GIVEN this cert; the
+cert itself is the g164 boundary-frame extraction + the split-reg-half structured-equiv (the
+`regBoundaryEmbed` technique, per deriv-fm). -/
+theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r)) :
+    ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+      (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+      (Pi : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+      (Qi : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+      (t γ₁ γ₂ : ℝ),
+      Pi * P0 = 1 ∧ QL * Qi = 1 ∧ 0 < γ₁ ∧ 0 < γ₂ ∧
+      0 < (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) ∧
+      0 < (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) ∧
+      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ w ∈ U,
+          ∃ (P00 : Matrix (Fin r) (Fin r) ℝ)
+            (P01 : Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ)
+            (P10 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (P11 : Matrix (Fin (H 0 - r)) (Fin (H (Fin.last L) - r)) ℝ)
+            (_hP00 : Invertible P00),
+            letI : Invertible P00 := _hP00
+            (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)
+              = Matrix.fromBlocks (P00 - 1) P01 P10 P11)
+            ∧ (P00 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₁₁)
+            ∧ (P01 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₁₂)
+            ∧ (P10 = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+                (prod H (framedParamsReg H r hr hL (fun s => (deepestPoint_frame H r B hB hr hL s).1) (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)))).toBlocks₂₁)
+            ∧ ((∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
+                ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2)))
+            ∧ ((∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
+                ≤ γ₂ * deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)
+            ∧ (deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
+                ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+  -- FRAME-WIRING DONE (the design call, implemented): `framedLayer` now reconstructs the raw layer
+  -- `reindex(fromBlocks X Y Z T)` and frame-conjugates it `P_s · raw · Q_s` (added to the corM base),
+  -- so `framedParamsReg`'s blocks (here instantiated with `deepestPoint_frame`) are the FRAME-CONJUGATED
+  -- product's regular blocks — matching `reindex(P0·N·QL)`'s telescoped form. `split` stays frameless/MP.
+  --
+  -- REMAINING (the genuine geometric content): close this cert via
+  --   (1) the round-trip `framedParams(split w) s = P_s · (paramsSymm w)_s · Q_s` — needs
+  --       `readX/Y/Z (split w)` = the raw-deviation block of `(paramsSymm w − deepestPoint)_s` (the
+  --       `regGaugeSlotEquiv ∘ regGaugeIdxSplit ∘ roleSplitIdx ∘ paramsEquivFlat` cancellation through
+  --       `subRight deepestFlat`) + `deepestPoint_frame_normal` (`P·deepestPoint·Q = corM`);
+  --   (2) `endpoint_telescoping` on `deepestPoint_frame` (interior interfaces vanish) →
+  --       `prod(framedParams(split w)) = P0 · prod(paramsSymm w) · QL`;
+  --   (3) `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r) ⟹ the `fromBlocks
+  --       (P00−1) P01 P10 P11` shape; (4) `core_comparability_squeeze` (#54) for the core comparability.
+  sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
 is two-sidedly bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1`.
@@ -514,7 +639,9 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
     (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
     (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
-      (regStraighten q).1 = deepestEPivot H r hr hL (q.1, q.2.2))
+      (regStraighten q).1 = deepestEPivot H r hr hL
+        (fun s => (deepestPoint_frame H r B hB hr hL s).1)
+        (fun s => (deepestPoint_frame H r B hB hr hL s).2) (q.1, q.2.2))
     (hcoreabs : coreAbsorb = deepestCoreAbsorb H r hr hL) :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
       ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -527,7 +654,107 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
           dlnLoss H B ((paramsEquivFlat H).symm w)
             ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  sorry
+  -- **ASSEMBLY (B), Codex-designed (loss-squeeze-wire-answer, option iii).** The frame-bridge cert
+  -- `framedParams_split_eq_frame_raw` is the ONE geometric input; the wiring below is sorry-free.
+  classical
+  obtain ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, hP, hQ, hγ₁, hγ₂, hKP_pos, hKi_pos, U, hU, hbr⟩ :=
+    framedParams_split_eq_frame_raw H r B hB hr hL split
+  -- Endpoint-frame energies (the conjugation constants). `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²`.
+  set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
+  set Ki := (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) with hKi
+  -- `Klo = 2(1+t²)·KP`, `Kup = Ki·(2+2t²)`; both positive (the cert supplies `0 < KP`, `0 < Ki`).
+  set Klo := 2 * (1 + t ^ 2) * KP with hKlo
+  set Kup := Ki * (2 + 2 * t ^ 2) with hKup
+  have hKlo_pos : 0 < Klo := by rw [hKlo]; positivity
+  have hKup_pos : 0 < Kup := by rw [hKup]; positivity
+  have hKup_nonneg : 0 ≤ Kup := le_of_lt hKup_pos
+  -- The two squeeze constants (Codex's, fixed up for the comparability-not-equality core).
+  refine ⟨((1 + γ₁) * Klo)⁻¹, Kup * (1 + γ₂), ?_, ?_, U, hU, ?_⟩
+  · positivity
+  · positivity
+  -- Per-`w` bound.
+  intro w hw
+  obtain ⟨P00, P01, P10, P11, hP00, hconj, h00, h01, h10, hleak, hcore_le, hcore_ge⟩ := hbr w hw
+  letI : Invertible P00 := hP00
+  -- The framed two-sided loss bound on `N = ∏(paramsSymm w) − B` (the banked leaf core).
+  obtain ⟨hlo, hhi⟩ := dlnLoss_two_sided_of_frame
+    (prod H ((paramsEquivFlat H).symm w) - B) P0 QL Pi Qi hP hQ
+    (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+    P00 P01 P10 P11 t hconj hleak
+  -- Name the energies. `Sreg` = the three regular blocks; `Score` = the Schur core; `NN` = loss.
+  set Sreg := ((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+      + (∑ i, ∑ j, (P10 i j) ^ 2)
+    with hSreg
+  set Score := (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2) with hScore
+  set NN := ∑ i, ∑ j, ((prod H ((paramsEquivFlat H).symm w) - B) i j) ^ 2 with hNN
+  -- `dlnLoss = NN` (def-unfold).
+  have hloss_eq : dlnLoss H B ((paramsEquivFlat H).symm w) = NN := rfl
+  -- `Sreg = ∑ i, (regStraighten (split w)).1 i ^ 2` (the Φ-reg identification): via `hregval` →
+  -- `deepestEPivot_sq_sum_eq_blocks` → the block identifications `h00/h01/h10`.
+  have hSreg_eq : Sreg = ∑ i, (regStraighten (split w)).1 i ^ 2 := by
+    rw [hregval (split w)]
+    rw [deepestEPivot_sq_sum_eq_blocks H r hr hL
+      (fun s => (deepestPoint_frame H r B hB hr hL s).1)
+      (fun s => (deepestPoint_frame H r B hB hr hL s).2) ((split w).1, (split w).2.2)]
+    rw [hSreg, h00, h01, h10]; ring
+  -- The core-comparability + leak bound fold into the squeeze. `coreΦ = deepestCoreF (coreAbsorb)`.
+  rw [hcoreabs]
+  set coreΦ := deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1 with hcoreΦ
+  -- Nonnegativity facts.
+  have hSreg_nn : 0 ≤ Sreg := by
+    rw [hSreg]; positivity
+  have hScore_nn : 0 ≤ Score := by rw [hScore]; positivity
+  have hcoreΦ_nn : 0 ≤ coreΦ := by rw [hcoreΦ]; exact dlnLoss_nonneg _ _ _
+  -- `cleanE = Sreg + Score`; the leaf bounds are `cleanE ≤ Klo·NN` and `NN ≤ Kup·cleanE`.
+  -- (the leaf lemma states them with the explicit constants; identify them with Klo/Kup.)
+  have hlo' : Sreg + Score ≤ Klo * NN := by
+    rw [hKlo, hKP]; exact hlo
+  have hhi' : NN ≤ Kup * (Sreg + Score) := by
+    rw [hKup, hKi, mul_assoc]; exact hhi
+  -- The target Φ for this `w`.
+  set Φ := (∑ i, (regStraighten (split w)).1 i ^ 2) + coreΦ with hΦ
+  have hΦ_nn : 0 ≤ Φ := by
+    rw [hΦ]; refine add_nonneg ?_ hcoreΦ_nn
+    exact Finset.sum_nonneg fun i _ => sq_nonneg _
+  -- `Sreg = ∑(regStraighten …)²`, so `Φ = Sreg + coreΦ`.
+  have hΦ_eq : Φ = Sreg + coreΦ := by rw [hΦ, hSreg_eq]
+  refine ⟨hΦ_nn, ?_, ?_⟩
+  · -- LOWER: `c₁·Φ ≤ dlnLoss = NN`. `Φ = Sreg + coreΦ ≤ Sreg + γ₁·Score ≤ (1+γ₁)(Sreg+Score)
+    -- ≤ (1+γ₁)·Klo·NN`. So `((1+γ₁)Klo)⁻¹·Φ ≤ NN`.
+    rw [hloss_eq]
+    have hstep1 : Φ ≤ Sreg + γ₁ * Score := by
+      rw [hΦ_eq]; linarith [hcore_ge]
+    have hstep2 : Sreg + γ₁ * Score ≤ (1 + γ₁) * (Sreg + Score) := by
+      have hexp : (1 + γ₁) * (Sreg + Score) - (Sreg + γ₁ * Score) = γ₁ * Sreg + Score := by ring
+      have hpos : 0 ≤ γ₁ * Sreg + Score :=
+        add_nonneg (mul_nonneg (le_of_lt hγ₁) hSreg_nn) hScore_nn
+      linarith [hexp, hpos]
+    have hstep3 : (1 + γ₁) * (Sreg + Score) ≤ (1 + γ₁) * (Klo * NN) :=
+      mul_le_mul_of_nonneg_left hlo' (by positivity)
+    have hΦle : Φ ≤ (1 + γ₁) * Klo * NN := by
+      calc Φ ≤ Sreg + γ₁ * Score := hstep1
+        _ ≤ (1 + γ₁) * (Sreg + Score) := hstep2
+        _ ≤ (1 + γ₁) * (Klo * NN) := hstep3
+        _ = (1 + γ₁) * Klo * NN := by ring
+    -- multiply `hΦle : Φ ≤ (1+γ₁)·Klo·NN` by `c₁ = ((1+γ₁)·Klo)⁻¹ ≥ 0`; `c₁·((1+γ₁)·Klo) = 1`.
+    have hden_pos : 0 < (1 + γ₁) * Klo := by positivity
+    have hc₁ := mul_le_mul_of_nonneg_left hΦle (le_of_lt (inv_pos.mpr hden_pos))
+    rw [show ((1 + γ₁) * Klo)⁻¹ * ((1 + γ₁) * Klo * NN) = NN from by
+      field_simp] at hc₁
+    exact hc₁
+  · -- UPPER: `dlnLoss = NN ≤ Kup·(Sreg + Score) ≤ Kup·(Sreg + γ₂·coreΦ) ≤ Kup·(1+γ₂)·Φ`.
+    rw [hloss_eq]
+    have hstep1 : Sreg + Score ≤ Sreg + γ₂ * coreΦ := by linarith [hcore_le]
+    have hstep2 : Sreg + γ₂ * coreΦ ≤ (1 + γ₂) * Φ := by
+      rw [hΦ_eq]
+      have hexp : (1 + γ₂) * (Sreg + coreΦ) - (Sreg + γ₂ * coreΦ) = γ₂ * Sreg + coreΦ := by ring
+      have hpos : 0 ≤ γ₂ * Sreg + coreΦ :=
+        add_nonneg (mul_nonneg (le_of_lt hγ₂) hSreg_nn) hcoreΦ_nn
+      linarith [hexp, hpos]
+    calc NN ≤ Kup * (Sreg + Score) := hhi'
+      _ ≤ Kup * (Sreg + γ₂ * coreΦ) := mul_le_mul_of_nonneg_left hstep1 hKup_nonneg
+      _ ≤ Kup * ((1 + γ₂) * Φ) := mul_le_mul_of_nonneg_left hstep2 hKup_nonneg
+      _ = Kup * (1 + γ₂) * Φ := by ring
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
 `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
@@ -576,6 +803,13 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `split` (obligation (i), MP reindex carrying the deepest point to `0`).
   obtain ⟨split, hsplit_mp, hsplit_base⟩ :=
     deepestSplit_exists H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+  -- The per-layer gauge frame family (constant, the fixed deepest-point rank-normal-form frames). The
+  -- READING side carries it (the #80 frame-wiring); `split` stays frameless/MP. Bound as plain `let`
+  -- (NOT `set`) so it stays definitionally the inlined lambda that `deepest_loss_squeeze`'s `hregval` uses.
+  let Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ :=
+    fun s => (deepestPoint_frame H r B hB hr hL s).1
+  let Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ :=
+    fun s => (deepestPoint_frame H r B hB hr hL s).2
   -- PIN 0: the CONCRETE `coreAbsorb = deepestCoreAbsorb` (the cutoff Schur shear) + its
   -- slot-fix/basepoint/rlct (Option A: concrete, so PIN 2 sees the same map).
   set coreAbsorb := deepestCoreAbsorb H r hr hL with hca_def
@@ -583,12 +817,26 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- PIN 1: `regStraighten` (the (C)-fallback total-fn E-straightening) + its props (against `coreAbsorb`).
   -- The reg-output is the shared `deepestEPivot` (the PIN1↔PIN2 coupling object); its three analytic
   -- props feed PIN 1's IFT peel, its concrete value feeds PIN 2's squeeze.
-  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ := deepestEPivot_deriv H r hr hL
+  -- The boundary frames are invertible (`deepestPoint_frame_invertible`), so the #91 reg-slice fderiv
+  -- frame factor is invertible.
+  have hPf : IsUnit (Pf (firstLayer hL)) :=
+    (deepestPoint_frame_invertible H r B hB hr hL (firstLayer hL)).1
+  have hQf : IsUnit (Qf (lastLayer hL)) :=
+    (deepestPoint_frame_invertible H r B hB hr hL (lastLayer hL)).2
+  -- ⚠ COBUILD (frame-family wiring): the boundary-inner-trivial conditions `Qf(firstLayer) = 1`
+  -- (layer-0 right-frame, `deepestPoint_layer0_cols_vanish`) and `Pf(lastLayer) = 1` (layer-(L-1)
+  -- left-frame, `deepestPoint_layerLast_rows_vanish`) — the #95-(I) facts. The raw `deepestPoint_frame`
+  -- does NOT guarantee these; cobuild's refined `deepestFrameFamily` does (Pf=Qf=1 off the two
+  -- boundary-carrying slots). Swap `Pf/Qf` to `deepestFrameFamily` + discharge these from its lemmas.
+  have hQf0 : Qf (firstLayer hL) = 1 := by sorry
+  have hPfL : Pf (lastLayer hL) = 1 := by sorry
+  obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ :=
+    deepestEPivot_deriv H r hr hL Pf Qf hPf hQf hQf0 hPfL
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
       (deepestCoreAbsorb_mp H r hr hL) hca_base hca_reg hca_spec
-      (deepestEPivot H r hr hL) (deepestEPivot_contdiff H r hr hL)
-      D_E hEp_deriv eShear he_shear (deepestEPivot_base H r hr hL)
+      (deepestEPivot H r hr hL Pf Qf) (deepestEPivot_contdiff H r hr hL Pf Qf)
+      D_E hEp_deriv eShear he_shear (deepestEPivot_base H r hr hL Pf Qf)
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`'s defining identities).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
     deepest_loss_squeeze H r B hB hr hL split coreAbsorb regStraighten hsplit_base

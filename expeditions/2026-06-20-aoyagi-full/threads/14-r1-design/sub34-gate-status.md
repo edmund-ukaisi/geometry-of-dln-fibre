@@ -24,9 +24,22 @@ NOT a kernel-application or short wire):
   sorry → `regStraightenTotalCLM_equiv_of_regBlock_id` gives the invertible shear `e`. The SINGLE
   remaining obligation, now fully isolated: `deepestEPivot_regSlice_fderiv_id :
   HasStrictFDerivAt (fun r0 => deepestEPivot (r0,0)) id 0` — the #91 idempotent-sandwich (gauge-zero
-  slice → (0,0) X-pivot = reg-input). Named wall (Codex): the `regResidualPack` ↔ `(X_first,Y_last,Z_first)`
-  pivot-coord exposure. Standalone — a clean (a) grind / (b) pp2-cert handoff target.
-  Consult: `codex/fold2-deriv-route-{prompt,answer}.md`.
+  slice → (0,0) X-pivot = reg-input). Consult: `codex/fold2-deriv-route-{prompt,answer}.md`.
+
+  **DECISIVE VERDICT (regslice-fm, fm/regslice-id @531b986; deriv-fm @fb174f0 converges):** the
+  reg-slice-id is **NOT provable — nor generically TRUE — under the current opaque packs.**
+  `deepestEPivot(r0,0)`'s reg input is distributed over per-layer X_s/Y_s/Z_s via the opaque
+  `regGaugeSlotEquiv` (`= regGaugeIdxSplit = Fintype.equivFin ∘ …`); the output is packed by an
+  INDEPENDENT opaque `regResidualPack` (`Fintype.equivFin`) onto the 3 boundary blocks. The slice map
+  `r0 ↦ pack(Σ_s X_s, Y_L, Z_1)` is two unrelated `equivFin` permutations around a SUM-X + DROP-interior
+  middle; `= id` requires `regGaugeIdxSplit` to map reg EXACTLY onto the boundary generators AND
+  `regResidualPack` to be the matching inverse — neither implied by `Fintype.equivFin` (structure-blind,
+  no computation rule). If a reg coord lands on a dropped interior Y/Z the map is rank-deficient.
+  **FIX (the real #120, cobuild's files):** replace the two opaque `Fintype.equivFin` packings
+  (`regResidualPack` here + `regGaugeIdxSplit` in `DeepestSplitReindex`) with ONE STRUCTURED
+  boundary-block bijection reg → (X-corner, Y_last, Z_first), interior → gauge — with computation rules
+  so the correspondence is `simp`-exposable. deriv-fm's `IsRegShearDeriv` + the reg-slice-id both hinge
+  on it. Awaiting controller call on whether cobuild takes the structured-equiv refactor.
 - **`deepest_loss_squeeze` (FOLD3, #80):** the two-sided Frobenius bound. SIGNATURE FIXED @46295ef —
   caught a g161-class confound: the lemma took `regStraighten`/`coreAbsorb` OPAQUE (only `hsplit_base`),
   so the bound was unprovable for arbitrary maps. Restated to thread the concrete-map identities
