@@ -2766,3 +2766,47 @@ threshold definition, no `+ k/2` shift, no polar-coordinate estimate, no
 bounded-density theorem, no p.13 analytic chart or Jacobian theorem, no
 normal-crossing construction, no pole-order theorem, and no RLCT theorem is
 proved.
+
+## 2026-06-24 A2 radial finite-side integrability
+
+Reproduction:
+`reproduction-a2-radial-finite-side-integrability.md`.
+Statement card:
+`statement-card-a2-radial-finite-side-integrability.md`.
+Review:
+`review-a2-radial-finite-side-integrability.md`.
+
+Lean now proves the first punctured radial finite-side estimate for the
+regular-square theorem in `RegularSuspensionIntegrability.lean`:
+
+```text
+integrable_norm_rpow_neg_indicator_Ioo
+integrable_norm_sq_add_rpow_neg_indicator_Ioo
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top
+```
+
+The radial model uses Mathlib's additive-Haar radial integrability theorem to
+reduce
+
+```text
+x |-> 1_(0,R)(||x||) * ||x||^(-t)
+```
+
+to one-dimensional integrability of `r^(d-1-t)` on `(0,R)`, hence proves
+finiteness under `t < d = finrank_R(E)`.  The shifted quadratic estimate
+dominates
+
+```text
+(||x||^2 + a)^(-s)
+```
+
+by `||x||^(-2s)` on the punctured interval, for `a >= 0` and `s >= 0`, and
+therefore proves integrability under `2*s < d`.  The final theorem only
+transfers the real-valued integrability statement to finiteness of the
+`ENNReal.ofReal` lower integral.
+
+Boundary: finite side on `1_(0,R)(||x||)` only.  No ball/null-origin transfer,
+endpoint theorem, lower/divergence theorem, uniform asymptotic in `a`,
+bounded-density theorem, product-coordinate `+k/2` threshold, Aoyagi p.13
+analytic chart/Jacobian theorem, normal-crossing construction, pole order, or
+RLCT theorem is proved.

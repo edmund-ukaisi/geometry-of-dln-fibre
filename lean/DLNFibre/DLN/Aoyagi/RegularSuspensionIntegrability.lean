@@ -1,4 +1,6 @@
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Constructions.HaarToSphere
+import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 
 /-!
@@ -8,9 +10,9 @@ This file records a narrow Tonelli/comparison brick toward the regular-square
 suspension theorem.  It proves that adding a nonnegative ENNReal term over a
 finite extra factor preserves finiteness of a nonnegative singular integral.
 
-It does not prove a threshold shift, a polar-coordinate estimate, a
-regular-coordinate additivity theorem, a p. 13 analytic chart, or any RLCT
-extraction.
+It does not prove a threshold shift, a Euclidean ball polar-coordinate equality
+or asymptotic, a regular-coordinate additivity theorem, a p. 13 analytic chart,
+or any RLCT extraction.
 -/
 
 noncomputable section
@@ -76,6 +78,106 @@ theorem lintegral_rpow_neg_add_right_restrict_lt_top_of_lintegral_rpow_neg_restr
   exact
     lintegral_rpow_neg_add_right_lt_top_of_lintegral_rpow_neg_lt_top
       (μ := μ.restrict u) (ν := ν.restrict t) (a := a) (q := q) ha hs hbase
+
+section RadialFiniteSide
+
+/-- Radial punctured-ball integrability for the model `r^(-t)` below the
+finite-dimensional critical exponent. -/
+theorem integrable_norm_rpow_neg_indicator_Ioo
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {t R : ℝ}
+    (hR : 0 < R) (ht : t < (Module.finrank ℝ E : ℝ)) :
+    Integrable (fun x : E =>
+      (Set.Ioo (0 : ℝ) R).indicator (fun y : ℝ => y ^ (-t)) ‖x‖) μ := by
+  rw [integrable_fun_norm_addHaar (μ := μ)]
+  rw [← Set.indicator_smul]
+  rw [IntegrableOn]
+  rw [integrable_indicator_iff measurableSet_Ioo]
+  have hpow : IntegrableOn
+      (fun y : ℝ => y ^ ((Module.finrank ℝ E : ℝ) - 1 - t)) (Set.Ioo 0 R) := by
+    rw [intervalIntegral.integrableOn_Ioo_rpow_iff hR]
+    linarith
+  refine (hpow.restrict (t := Set.Ioi (0 : ℝ))).congr_fun ?_ measurableSet_Ioo
+  intro y hy
+  have hy0 : 0 < y := hy.1
+  have hdimpos : 0 < Module.finrank ℝ E := Module.finrank_pos
+  have hdimle : 1 ≤ Module.finrank ℝ E := Nat.succ_le_of_lt hdimpos
+  have hcast : ((Module.finrank ℝ E - 1 : ℕ) : ℝ) =
+      (Module.finrank ℝ E : ℝ) - 1 := by
+    rw [Nat.cast_sub hdimle]
+    norm_num
+  calc
+    y ^ ((Module.finrank ℝ E : ℝ) - 1 - t)
+        = y ^ (((Module.finrank ℝ E : ℝ) - 1) + (-t)) := by ring_nf
+    _ = y ^ ((Module.finrank ℝ E : ℝ) - 1) * y ^ (-t) := by
+          rw [Real.rpow_add hy0]
+    _ = y ^ (((Module.finrank ℝ E - 1 : ℕ) : ℝ)) * y ^ (-t) := by
+          rw [hcast]
+    _ = y ^ (Module.finrank ℝ E - 1) • y ^ (-t) := by
+          simp [Real.rpow_natCast]
+
+/-- Finite-side radial integrability for `(r^2+a)^(-s)` on a punctured ball,
+under the critical inequality `2*s < finrank`. -/
+theorem integrable_norm_sq_add_rpow_neg_indicator_Ioo
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    Integrable (fun x : E =>
+      (Set.Ioo (0 : ℝ) R).indicator
+        (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖) μ := by
+  have hmodel := integrable_norm_rpow_neg_indicator_Ioo
+    (E := E) (μ := μ) (t := 2 * s) (R := R) hR hcrit
+  refine hmodel.mono' ?_ (Filter.Eventually.of_forall fun x => ?_)
+  · apply Measurable.aestronglyMeasurable
+    exact (Measurable.indicator
+      (((measurable_id.pow_const (2 : ℕ)).add measurable_const).pow_const (-s))
+      measurableSet_Ioo).comp continuous_norm.measurable
+  · by_cases hxI : ‖x‖ ∈ Set.Ioo (0 : ℝ) R
+    · simp only [Set.indicator_of_mem hxI, Real.norm_eq_abs]
+      have hx0 : 0 < ‖x‖ := hxI.1
+      have hle_base : ‖x‖ ^ 2 ≤ ‖x‖ ^ 2 + a := by linarith [ha]
+      have hpow_le : (‖x‖ ^ 2 + a) ^ (-s) ≤ (‖x‖ ^ 2) ^ (-s) :=
+        Real.rpow_le_rpow_of_nonpos (sq_pos_of_pos hx0) hle_base (by linarith)
+      have hsq_pow : (‖x‖ ^ 2) ^ (-s) = ‖x‖ ^ (-(2 * s)) := by
+        rw [← Real.rpow_natCast, ← Real.rpow_mul (le_of_lt hx0)]
+        ring_nf
+      have hadd_pos : 0 < ‖x‖ ^ 2 + a := by positivity
+      have hnonneg_left : 0 ≤ (‖x‖ ^ 2 + a) ^ (-s) :=
+        Real.rpow_nonneg (le_of_lt hadd_pos) _
+      rw [abs_of_nonneg hnonneg_left]
+      exact hpow_le.trans_eq hsq_pow
+    · simp only [Set.indicator_of_notMem hxI, norm_zero, le_refl]
+
+/-- `ENNReal.ofReal` lower-integral handoff for the finite-side radial
+quadratic estimate. -/
+theorem lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    (∫⁻ x : E, ENNReal.ofReal
+      ((Set.Ioo (0 : ℝ) R).indicator
+        (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖) ∂μ) < ∞ := by
+  have h := integrable_norm_sq_add_rpow_neg_indicator_Ioo
+    (E := E) (μ := μ) (a := a) (s := s) (R := R) hR ha hs hcrit
+  have hnonneg : ∀ x : E, 0 ≤
+      (Set.Ioo (0 : ℝ) R).indicator
+        (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖ := by
+    intro x
+    by_cases hxI : ‖x‖ ∈ Set.Ioo (0 : ℝ) R
+    · simp only [Set.indicator_of_mem hxI]
+      have hx0 : 0 < ‖x‖ := hxI.1
+      have hadd_pos : 0 < ‖x‖ ^ 2 + a := by positivity
+      exact Real.rpow_nonneg (le_of_lt hadd_pos) _
+    · simp only [Set.indicator_of_notMem hxI, le_refl]
+  rw [← lintegral_enorm_of_nonneg hnonneg]
+  exact h.hasFiniteIntegral
+
+end RadialFiniteSide
 
 end Aoyagi
 end DLN

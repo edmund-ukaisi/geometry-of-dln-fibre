@@ -284,7 +284,9 @@ No such claim is formalisation-ready until both fields are filled.
   regular square-suspension integrability target at
   `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`;
   one-sided regular-suspension integrability brick at
-  `threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`.
+  `threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`;
+  radial finite-side integrability brick at
+  `threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -323,7 +325,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`;
   one-sided regular-suspension integrability brick reviewed by xhigh
   `Copernicus the 4th` in
-  `threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`.
+  `threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`;
+  radial finite-side integrability brick reviewed by xhigh `Volta the 4th` in
+  `threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6048,6 +6052,32 @@ Nonclaims: this does not define a local integrability threshold, prove the
 regular-variable `+k/2` shift, prove a polar-coordinate estimate, prove a
 bounded-density theorem, construct Aoyagi's p.13 analytic chart or Jacobian,
 produce normal crossings, prove pole order, or prove RLCT.
+
+Latest A2 radial finite-side integrability:
+Lean now proves the punctured radial finite side in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+The radial model theorem
+`integrable_norm_rpow_neg_indicator_Ioo` shows that
+`1_(0,R)(||x||) * ||x||^(-t)` is integrable for a nontrivial
+finite-dimensional real normed space with additive Haar measure when
+`R>0` and `t < finrank_R(E)`.  The shifted quadratic theorem
+`integrable_norm_sq_add_rpow_neg_indicator_Ioo` applies the comparison
+`(||x||^2+a)^(-s) <= ||x||^(-2s)` on the punctured radial interval and proves
+integrability under `a>=0`, `s>=0`, and `2*s < finrank_R(E)`.  The handoff
+`lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top` records
+finiteness of the corresponding `ENNReal.ofReal` lower integral.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-radial-finite-side-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`.
+
+Nonclaims: this does not remove the puncture at the origin, prove a ball
+integrability theorem, prove endpoint behavior, prove a lower/divergence side,
+give uniform asymptotics in `a`, prove a bounded-density theorem, prove the
+product-coordinate `+k/2` threshold theorem, construct Aoyagi's p.13 analytic
+chart/Jacobian, produce normal crossings, prove pole order, or prove RLCT.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

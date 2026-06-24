@@ -3692,3 +3692,15 @@ bookkeeping, but it is not the `+k/2` threshold shift.  The next serious A2
 analytic target remains a radial/polar estimate for
 `(||u||^2 + a)^(-s)` and the resulting product-coordinate threshold theorem,
 or the actual p.13 analytic chart/density construction.
+
+A2 radial finite-side integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`.
+Lean proves in `RegularSuspensionIntegrability.lean` that on a punctured
+radial interval `0 < ||u|| < R`, the model `||u||^(-t)` is integrable under
+`t < finrank`, and `(||u||^2+a)^(-s)` is integrable under `a>=0`, `s>=0`, and
+`2*s < finrank`.  This is the finite side only and uses `ENNReal.ofReal` only
+as a lower-integral handoff.  It still does not prove ball/null-origin
+transfer, endpoint behavior, lower/divergence, uniform asymptotics in `a`,
+bounded-density transport, the product-coordinate `+k/2` threshold theorem,
+Aoyagi's p.13 analytic chart/Jacobian construction, normal crossings, pole
+order, or RLCT.

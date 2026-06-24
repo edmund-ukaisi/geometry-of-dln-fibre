@@ -8943,6 +8943,36 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`.
 
+Latest A2 radial finite-side integrability:
+`RegularSuspensionIntegrability.lean` now proves a punctured radial
+finite-side estimate for the regular-square theorem:
+
+```text
+integrable_norm_rpow_neg_indicator_Ioo
+integrable_norm_sq_add_rpow_neg_indicator_Ioo
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top
+```
+
+For a nontrivial finite-dimensional real normed space with additive Haar
+measure, the first theorem reduces the radial model
+`1_(0,R)(||x||) * ||x||^(-t)` to one-dimensional integrability of
+`r^(d-1-t)` on `(0,R)`, hence proves finite real integrability under
+`t < d`.  The shifted quadratic theorem uses the pointwise comparison
+`(||x||^2+a)^(-s) <= ||x||^(-2s)` on `0 < ||x||`, so `a>=0`, `s>=0`, and
+`2*s < d` imply integrability.  The final theorem is only an
+`ENNReal.ofReal` lower-integral finiteness handoff from real integrability.
+
+This does not remove the puncture at the origin, prove a ball theorem, prove
+endpoint or divergent behavior, give uniform asymptotics in `a`, handle
+bounded densities, prove the product-coordinate `+k/2` threshold theorem,
+construct Aoyagi's p.13 analytic chart/Jacobian, produce normal crossings,
+prove pole order, or prove RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-radial-finite-side-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
