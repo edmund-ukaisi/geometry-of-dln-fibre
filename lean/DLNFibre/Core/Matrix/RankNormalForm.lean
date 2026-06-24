@@ -251,4 +251,131 @@ theorem rank_normal_form_exists {a b r : ℕ} (A : Matrix (Fin a) (Fin b) ℝ) (
       _ = Matrix.of (fun (i : Fin a) (j : Fin b) =>
               if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := hBlock
 
+/-- **One-sided (left-only) rank normal form for a tail-columns-zero matrix.** If a rank-`r` matrix
+`A` has all columns indexed `j ≥ r` equal to zero, a single regular row operation (invertible `P`,
+with `Q = 1`) carries it to the block-normal form `diag(E_r, 0)`: `P · A = corM`. The frame acts
+only on the left. The math: the first `r` columns of `A` span its `r`-dim column space, so they are
+linearly independent; extend them to a codomain basis whose change-of-basis matrix is `P`, and the
+domain stays standard (`Q = 1`). The deepest point's layer-0 boundary frame needs exactly this
+(its tail columns vanish) — strictly stronger than `rank_normal_form_exists` on such a matrix. -/
+theorem rank_normal_form_left_only {a b r : ℕ}
+    (A : Matrix (Fin a) (Fin b) ℝ) (hA : A.rank = r)
+    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (j : ℕ) → A i j = 0) :
+    ∃ P : Matrix (Fin a) (Fin a) ℝ, IsUnit P ∧
+      P * A = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  classical
+  have hrb : r ≤ b := by rw [← hA]; exact A.rank_le_width
+  have hra : r ≤ a := by rw [← hA]; exact A.rank_le_height
+  have hjb : ∀ j : Fin r, (j : ℕ) < b := fun j => Nat.lt_of_lt_of_le j.isLt hrb
+  have hja : ∀ j : Fin r, (j : ℕ) < a := fun j => Nat.lt_of_lt_of_le j.isLt hra
+  -- The first `r` columns of `A` (vectors in `Fin a → ℝ`; the column index `j < r ≤ b`).
+  set w : Fin r → (Fin a → ℝ) := fun j => A.col ⟨(j : ℕ), hjb j⟩ with hw
+  -- They are linearly independent: they span `A`'s column space (tail columns vanish), of dim `r`.
+  have hindep : LinearIndependent ℝ w := by
+    rw [linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]
+    have hspan : Submodule.span ℝ (Set.range w) = Submodule.span ℝ (Set.range A.col) := by
+      apply le_antisymm
+      · apply Submodule.span_mono; rintro x ⟨j, rfl⟩; exact ⟨⟨(j : ℕ), hjb j⟩, rfl⟩
+      · rw [Submodule.span_le]; rintro x ⟨j, rfl⟩
+        by_cases hj : (j : ℕ) < r
+        · apply Submodule.subset_span; exact ⟨⟨(j : ℕ), hj⟩, by simp [hw, Matrix.col]⟩
+        · have : A.col j = 0 := by ext i; exact htail i j (by omega)
+          rw [this]; exact Submodule.zero_mem _
+    unfold Set.finrank; rw [hspan, ← Matrix.rank_eq_finrank_span_cols, hA]
+  -- Extend the family to a `Fin a`-indexed codomain basis whose first `r` vectors are `w`.
+  set S := Basis.sumExtendIndex hindep with hS
+  haveI : Finite S := by
+    haveI : Finite (Fin r ⊕ S) := Module.Finite.finite_basis (Basis.sumExtend hindep)
+    exact Finite.of_injective (β := Fin r ⊕ S) Sum.inr Sum.inr_injective
+  haveI : Fintype S := Fintype.ofFinite S
+  have hScard : Fintype.card S = a - r := by
+    have hb : Fintype.card (Fin r ⊕ S) = Module.finrank ℝ (Fin a → ℝ) :=
+      (Module.finrank_eq_card_basis (Basis.sumExtend hindep)).symm
+    simp only [Fintype.card_sum, Fintype.card_fin, Module.finrank_fintype_fun_eq_card,
+      Fintype.card_fin] at hb
+    omega
+  let eS : S ≃ Fin (a - r) := Fintype.equivFinOfCardEq hScard
+  let e : (Fin r ⊕ S) ≃ Fin a :=
+    (Equiv.sumCongr (Equiv.refl (Fin r)) eS).trans (finSumFinEquiv.trans (finCongr (by omega)))
+  have he_inl : ∀ j : Fin r, e (Sum.inl j) = ⟨(j : ℕ), hja j⟩ := by
+    intro j
+    simp only [e, Equiv.trans_apply, Equiv.sumCongr_apply, Equiv.refl_apply, Sum.map_inl,
+      finSumFinEquiv_apply_left, finCongr_apply]
+    apply Fin.ext; simp [Fin.castAdd, Fin.castLE]
+  let bCod : Module.Basis (Fin a) ℝ (Fin a → ℝ) := (Basis.sumExtend hindep).reindex e
+  have hbCod_lt : ∀ j : Fin r, bCod ⟨(j : ℕ), hja j⟩ = w j := by
+    intro j
+    have hei : e (Sum.inl j) = ⟨(j : ℕ), hja j⟩ := he_inl j
+    rw [show (⟨(j : ℕ), hja j⟩ : Fin a) = e (Sum.inl j) from hei.symm]
+    simp only [bCod, Basis.coe_reindex, Function.comp_apply, Equiv.symm_apply_apply]
+    change (Basis.sumExtend hindep) (Sum.inl j) = w j
+    rw [Basis.sumExtend]
+    simp only [Basis.coe_reindex, Function.comp_apply, Equiv.symm_symm]
+    change (Basis.extend hindep.linearIndepOn_id)
+        (((Equiv.ofInjective w hindep.injective).sumCongr (Equiv.refl _)).trans
+          (Equiv.Set.sumDiffSubset (hindep.linearIndepOn_id.subset_extend _))
+            (Sum.inl j)) = _
+    rw [Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Equiv.Set.sumDiffSubset_apply_inl,
+      Basis.extend_apply_self, Equiv.ofInjective_apply]
+  let stdW : Module.Basis (Fin a) ℝ (Fin a → ℝ) := Pi.basisFun ℝ (Fin a)
+  let stdV : Module.Basis (Fin b) ℝ (Fin b → ℝ) := Pi.basisFun ℝ (Fin b)
+  -- `P := bCod.toMatrix stdW` is invertible; `P · A = toMatrix stdV bCod A.mulVecLin`, entrywise.
+  refine ⟨bCod.toMatrix stdW, ?_, ?_⟩
+  · letI := Module.Basis.invertibleToMatrix bCod stdW
+    exact isUnit_of_invertible _
+  · have hPA : bCod.toMatrix stdW * A = LinearMap.toMatrix stdV bCod A.mulVecLin := by
+      have h := basis_toMatrix_mul bCod stdW stdV A
+      rw [h, Matrix.toLin_eq_toLin', Matrix.toLin'_apply']
+    rw [hPA]
+    ext i j
+    rw [LinearMap.toMatrix_apply]
+    simp only [Matrix.of_apply]
+    have hcol : A.mulVecLin (stdV j) = A.col j := by
+      ext k; simp [stdV, Matrix.mulVecLin, Pi.basisFun_apply, Matrix.mulVec_single, Matrix.col]
+    rw [hcol]
+    by_cases hjr : (j : ℕ) < r
+    · -- `A.col j = w ⟨j,_⟩ = bCod ⟨j,_⟩`, whose repr is the `j`-th standard vector.
+      have hcolw : A.col j = bCod ⟨(j : ℕ), by omega⟩ := by
+        have h := hbCod_lt ⟨(j : ℕ), hjr⟩
+        rw [hw] at h; simp only at h
+        rw [← h]
+      rw [hcolw, Basis.repr_self, Finsupp.single_apply]
+      have hiff : ((⟨(j : ℕ), by omega⟩ : Fin a) = i) ↔ ((i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r) := by
+        constructor
+        · intro h; have hv := Fin.val_eq_of_eq h
+          exact ⟨by simpa using hv.symm, by simpa using hv ▸ hjr⟩
+        · intro ⟨h1, _⟩; apply Fin.ext; simpa using h1.symm
+      simp only [hiff]
+    · -- Tail column is zero, so its representation is zero.
+      have : A.col j = 0 := by ext k; exact htail k j (by omega)
+      rw [this, map_zero, Finsupp.coe_zero, Pi.zero_apply]
+      rw [if_neg (by rintro ⟨_, h2⟩; omega)]
+
+/-- **One-sided (right-only) rank normal form for a tail-rows-zero matrix.** If a rank-`r` matrix
+`A` has all rows indexed `i ≥ r` equal to zero, a single regular column operation (invertible `Q`,
+with `P = 1`) carries it to the block-normal form: `A · Q = corM`. The dual of
+`rank_normal_form_left_only`, obtained by transposing (`Matrix.rank_transpose`,
+`Matrix.transpose_mul`). The boundary frame at the deepest point's last layer needs exactly this
+(its tail rows vanish). -/
+theorem rank_normal_form_right_only {a b r : ℕ}
+    (A : Matrix (Fin a) (Fin b) ℝ) (hA : A.rank = r)
+    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → A i j = 0) :
+    ∃ Q : Matrix (Fin b) (Fin b) ℝ, IsUnit Q ∧
+      A * Q = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  have hAT : (Matrix.transpose A).rank = r := by rw [Matrix.rank_transpose]; exact hA
+  have htailT : ∀ (i : Fin b) (j : Fin a), r ≤ (j : ℕ) → Matrix.transpose A i j = 0 := by
+    intro i j hj; rw [Matrix.transpose_apply]; exact htail j i hj
+  obtain ⟨P, hP, hPeq⟩ := rank_normal_form_left_only (Matrix.transpose A) hAT htailT
+  refine ⟨Matrix.transpose P, by rwa [Matrix.isUnit_transpose], ?_⟩
+  have hAPt : A * Matrix.transpose P = Matrix.transpose (P * Matrix.transpose A) := by
+    rw [Matrix.transpose_mul, Matrix.transpose_transpose]
+  rw [hAPt, hPeq]
+  ext i j
+  simp only [Matrix.transpose_apply, Matrix.of_apply]
+  by_cases h : (i : ℕ) = (j : ℕ)
+  · simp [h]
+  · rw [if_neg (fun hc => h hc.1.symm), if_neg (fun hc => h hc.1)]
+
 end DLNFibre.Core.Matrix
