@@ -266,12 +266,13 @@ theorem blockAlgEquivLoc_algebraMap (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
         (M := Submonoid.powers (detSchurS (k := k) q p r)) (S := SchurLoc (k := k) q p r))
   exact IsLocalization.algEquivOfAlgEquiv_eq _ x
 
-/-- The localized base ideal `Iad = (sigmaIdeal …).map (algebraMap A_eng A_loc)` — abbreviation for
-readability. -/
-local notation3 "Iad(" q ", " p ", " r ", " hp ", " hq ")" =>
+/-- The localized base ideal `Iad = (sigmaIdeal …).map (algebraMap A_eng A_loc)`: the determinantal
+base ideal pushed into the localized base ring `A_loc = Localization.Away detΔ`. -/
+noncomputable def Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    Ideal (Localization.Away (detPivotPoly (k := k) q p r hp hq)) :=
   (sigmaIdeal (dStratum q p) r).map
     (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
-      (Localization.Away (detPivotPoly q p r hp hq)))
+      (Localization.Away (detPivotPoly (k := k) q p r hp hq)))
 
 /-- **The cleared Schur relation in `Q = MvPolynomial B22block Sd`.** The unit `C (algebraMap
 detSchurS)` times the graph generator `X (a',b') − C (forcedB22 (a',b'))` equals
@@ -301,12 +302,12 @@ graph ideal lies in `Ψ(Iad)`: it is the unit `C (algebraMap detSchurS)⁻¹` ti
 bordered minor (which is in `Iad`, `borderMinor_mem_sigmaIdeal`). -/
 theorem graphIdeal_forcedB22_le_map_Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
     graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r))
-      ≤ (Iad(q, p, r, hp, hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) := by
+      ≤ ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) := by
   rw [graphIdeal, Ideal.span_le]
   rintro _ ⟨ab, rfl⟩
   obtain ⟨a', b'⟩ := ab
   show X (a', b') - C (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r) (a', b'))
-      ∈ (Iad(q, p, r, hp, hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
+      ∈ ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
   -- the generator, times the unit `C (algebraMap detSchurS)`, is `Ψ (algebraMap borderMinor) ∈ Ψ(Iad)`
   have hunit : IsUnit (C (algebraMap (MvPolynomial (SchurVar q p r) k) (SchurLoc (k := k) q p r)
       (detSchurS (k := k) q p r)) : MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)) :=
@@ -314,5 +315,78 @@ theorem graphIdeal_forcedB22_le_map_Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤
       (C : SchurLoc (k := k) q p r →+* _)
   rw [← Ideal.unit_mul_mem_iff_mem _ hunit, unit_mul_graphGen_eq_psi_borderMinor q p r hp hq a' b']
   exact Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (borderMinor_mem_sigmaIdeal q p r hp hq a' b'))
+
+/-! ## Step (3): the height squeeze `Iad = J` and the presentation `A_loc/Iad ≅ Sd`
+
+Both `Ψ(Iad)` and `J = graphIdeal forcedB22` are prime of height `C`, and `J ⊆ Ψ(Iad)`
+(step 2). `Ideal.height_strict_mono_of_is_prime` rules out `J ⊊ Ψ(Iad)`, so `J = Ψ(Iad)` — this
+**earns** the hard direction `Iad ⊆ Ψ.symm J` (= injectivity). The presentation `A_loc/Iad ≅ Sd`
+then follows from `graphIdealQuotientEquiv`. -/
+
+/-- **`Ψ(Iad) = J`** (`[IsAlgClosed k] [CharZero k]`): the height squeeze. Both ideals are prime; the
+landed `height Iad = C` (transported by `Ψ`) and `height J = C` are equal; `J ⊆ Ψ(Iad)` (step 2)
+plus `height_strict_mono_of_is_prime` forces equality. This is the honest hard direction. -/
+theorem map_Iad_eq_graphIdeal_forcedB22 [IsAlgClosed k] [CharZero k] (q p r : ℕ)
+    (hp : r ≤ p) (hq : r ≤ q) :
+    ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
+      = graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)) := by
+  set Q := MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)
+  set K : Ideal Q := ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) with hK
+  set J : Ideal Q := graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)) with hJ
+  -- both ideals are prime
+  haveI hsigmaPrime : (sigmaIdeal (k := k) (dStratum q p) r).IsPrime := by
+    rw [sigmaIdeal]; exact isPrime_vanishingIdeal_productRankLocusLE_stratum q p r hq hp
+  haveI hIadPrime : ((Iad (k := k) q p r hp hq)).IsPrime := by
+    have hdisj := (Ideal.disjoint_powers_iff_notMem
+        (detPivotPoly (k := k) q p r hp hq) hsigmaPrime.isRadical).2
+      (detPivotPoly_notMem_sigmaIdeal q p r hp hq)
+    exact IsLocalization.isPrime_of_isPrime_disjoint
+      (S := Localization.Away (detPivotPoly (k := k) q p r hp hq))
+      (Submonoid.powers (detPivotPoly q p r hp hq))
+      (sigmaIdeal (dStratum q p) r) hsigmaPrime hdisj
+  haveI hKprime : K.IsPrime := Ideal.map_isPrime_of_equiv (blockAlgEquivLoc (k := k) q p r hp hq)
+  haveI : IsDomain (SchurLoc (k := k) q p r) :=
+    IsLocalization.isDomain_of_le_nonZeroDivisors (SchurLoc (k := k) q p r)
+      (powers_le_nonZeroDivisors_of_noZeroDivisors (detSchurS_ne_zero (k := k) q p r))
+  haveI hJprime : J.IsPrime := graphIdeal_isPrime _
+  -- `height K = height Iad` (Ψ an equiv); `height Iad = C` (landed); `height J = C` (landed)
+  have hKIad : K.height = ((Iad (k := k) q p r hp hq)).height :=
+    height_map_algEquiv (blockAlgEquivLoc (k := k) q p r hp hq) ((Iad (k := k) q p r hp hq))
+  have hIadC : ((Iad (k := k) q p r hp hq)).height = ((q - r) * (p - r) : ℕ) := by
+    rw [Iad, height_map_sigmaIdeal_away_eq_cCodim q p r hp hq
+        (kostantPartitions_stratum_nonempty q p r hq hp), cCodim_stratum_eq q p r hq hp
+        (kostantPartitions_stratum_nonempty q p r hq hp), Int.toNat_natCast]
+  have hheightJ : J.height = ((p - r) * (q - r) : ℕ) :=
+    height_graphIdeal_forcedB22_eq q p r (SchurLoc (k := k) q p r)
+  have hJK : J.height = K.height := by
+    rw [hheightJ, hKIad, hIadC, Nat.mul_comm]
+  -- the squeeze: `J ⊆ K`, equal finite heights, both prime ⟹ `J = K`
+  refine (eq_of_le_of_not_lt (graphIdeal_forcedB22_le_map_Iad q p r hp hq) (fun hlt ↦ ?_)).symm
+  haveI : J.FiniteHeight := by
+    rw [Ideal.finiteHeight_iff]; right; rw [hheightJ]; exact ENat.coe_ne_top _
+  exact absurd ((Ideal.height_strict_mono_of_is_prime hlt).trans_le hJK.ge)
+    (lt_irrefl _)
+
+/-- **The localized base presentation `A_loc / Iad ≅ₐ[k] Sd`** (`G2-2`). The localized determinantal
+base ring `A_loc = Localization.Away detΔ`, modulo its base ideal `Iad = (sigmaIdeal …).map …`, is
+the free Schur localization `Sd = Localization.Away detSchurS` — a regular ring of dimension `δ`. Via
+the height squeeze `Ψ(Iad) = J` (`map_Iad_eq_graphIdeal_forcedB22`) and the graph-ideal quotient
+`Q ⧸ J ≅ Sd` (`graphIdealQuotientEquiv`, the `B22`-block elimination). -/
+noncomputable def basePresentationEquiv [IsAlgClosed k] [CharZero k] (q p r : ℕ)
+    (hp : r ≤ p) (hq : r ≤ q) :
+    (Localization.Away (detPivotPoly (k := k) q p r hp hq) ⧸ (Iad (k := k) q p r hp hq))
+      ≃ₐ[k] SchurLoc (k := k) q p r := by
+  have e₁ : (Localization.Away (detPivotPoly (k := k) q p r hp hq) ⧸ (Iad (k := k) q p r hp hq))
+      ≃ₐ[k] (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)
+        ⧸ graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r))) :=
+    Ideal.quotientEquivAlg ((Iad (k := k) q p r hp hq))
+      (graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)))
+      (blockAlgEquivLoc (k := k) q p r hp hq)
+      (map_Iad_eq_graphIdeal_forcedB22 q p r hp hq).symm
+  have e₂ : (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)
+        ⧸ graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)))
+      ≃ₐ[k] SchurLoc (k := k) q p r :=
+    (graphIdealQuotientEquiv (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r))).restrictScalars k
+  exact e₁.trans e₂
 
 end DLNFibre.Core
