@@ -7087,6 +7087,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-substitution-block-a4.md`.
 
+Latest A4 Case 2 transition source-current stack supplied successor:
+`SelectedEntryNormalCrossing.lean` now adds
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+It is the source-current stack analogue of the supplied-successor reindexed
+product wrapper: on the displayed normalized overlap, it consumes explicit
+target data `targetU = u*d` and `targetResidual q = x_q/d`, a continuing
+guard, and a `SourceProductionObligation` for those target data.  It returns
+chart-map equality, the displayed target substitution block rewritten to the
+original source selected block, and the full supplied-`Csucc` source-current
+stack package.  Only the lower-left substitution block is source-rewritten;
+post-pivot residual, displayed paper matrices, weights, `Csucc`, and center
+outputs remain target-displayed.  This proves no source production, successor
+chart construction, transition regularity, chart coverage, normal crossings,
+pole order, termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-source-current-stack-supplied-successor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-source-current-stack-supplied-successor.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-source-current-stack-supplied-successor-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.

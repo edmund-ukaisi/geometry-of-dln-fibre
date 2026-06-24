@@ -6162,3 +6162,31 @@ This is only finite congruence inside the stack identity.  It does not
 construct the obligation, construct/source-produce `Csucc`, produce suffixes
 or successor charts, prove transition regularity, chart coverage, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-24 Lean Case 2 transition source-current stack supplied successor
+
+Reproduction:
+`reproduction-case2-transition-source-current-stack-supplied-successor-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-source-current-stack-supplied-successor.md`.
+Review:
+`review-case2-transition-source-current-stack-supplied-successor-a4.md`.
+
+Lean now proves the displayed-overlap transition wrapper for the continuing
+source-current stack with a supplied successor:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero
+```
+
+The theorem takes explicit transition-generated target data
+`targetU = u*d`, `targetResidual q = x_q/d`, the continuing guard, and a
+`SourceProductionObligation` for those target data.  It returns displayed
+chart-map equality, rewrites the displayed target substitution block to the
+original source selected substitution block, and applies the supplied-`Csucc`
+source-current stack consumer with that source-side block.
+
+This is only finite transition-plus-consumer stack bookkeeping.  It does not
+construct the obligation, construct/source-produce `Csucc`, produce suffixes
+or successor charts, prove transition regularity, chart coverage, normal
+crossings, pole order, termination, or RLCT.

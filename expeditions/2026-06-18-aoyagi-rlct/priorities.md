@@ -2676,6 +2676,18 @@ it constructs neither the obligation nor `Csucc`, and it does not produce
 suffixes, successor charts, transition regularity, chart coverage, normal
 crossings, pole order, or RLCT.
 
+The transition wrapper for that source-current stack consumer has now landed in
+`threads/04-blow-up-certificate/reproduction-case2-transition-source-current-stack-supplied-successor-a4.md`.
+Lean proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+It consumes transition-generated displayed target data, the continuing guard,
+and a `SourceProductionObligation` for those target data, rewrites only the
+lower-left substitution block to the original source selected block, and keeps
+the stack's post-pivot data and center/principalization outputs target-
+displayed.  This is not construction of the obligation or `Csucc`, suffix
+production, successor chart construction, transition regularity, coverage,
+normal crossings, pole order, termination, or RLCT.
+
 The displayed transition microcertificate contribution package has now landed
 in
 `threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.

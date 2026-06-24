@@ -6854,6 +6854,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-substitution-block-a4.md`.
 
+Latest A4 Case 2 transition source-current stack supplied successor:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+On the displayed normalized overlap, it consumes explicit target data, the
+continuing guard, and a `SourceProductionObligation` for those target data.
+It packages chart-map equality, rewrites only the displayed target
+substitution block to the source selected block, and returns the full
+supplied-`Csucc` source-current stack package.  The theorem keeps target
+post-pivot and center/principalization outputs target-displayed.  It does not
+construct the obligation, `Csucc`, `Cterm`, suffixes, successor charts,
+transition regularity, chart coverage, normal crossings, pole order,
+termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-source-current-stack-supplied-successor-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-source-current-stack-supplied-successor.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-source-current-stack-supplied-successor-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
