@@ -164,6 +164,20 @@ after the migration. Each R1 dead-end (per-node Morse / §8 / threshold-only-cor
 was caught honestly before building on it; the keystone is the first R1 piece to LAND. RRR (#17) also COMPLETE
 + integrated @0eef1154 (green, AUDIT-passed).
 
+**★ R1 UPDATE-2 (2026-06-24) — VALUE LANE DONE; gate reduced to ONE obligation (the analytic cover).** The
+migration (layersplit-migrate, PARALLEL approach, reviewer-SURVIVED) made a key Codex-confirmed finding: in
+`resolution_charts = (rlctAtOn(core) = ⨅ monomialThreshold)`, the VALUE (=½·minAdm) and the ANALYTIC COVER
+(rlctAtOn=⨅, the measure-theoretic IsRouteMCover) are ORTHOGONAL. RouteMLayerValue.lean (merged+wired
+@ff9702e6, green 3711, reviewer-SURVIVED): `routeLayerAtlas_value_eq_lambdaCore` (⨅ = ½·minAdm, S2-only, NO
+sorryAx) + `resolution_charts_of_layerCover` (resolution_charts REDUCED to EXACTLY the layer-family
+IsRouteMCover, clean-three). So R1 = VALUE LANE DONE + the ANALYTIC COVER (#104) as the ONE remaining crisp
+obligation. The analytic cover (general-M IsRouteMCover: cover_le finiteness + cover_ge_div divergence, the
+explicit blow-up/Jacobian generalizing the (2,2,2) Case222RouteMCover atoms via the proven layer-peel descent)
+is COMMISSIONED — `r1-analytic-cover` (formaliser, worktree, validate-first). resolution_charts_of_layerCover
+closes the R1 gate the moment it lands. This is the genuine resolution-of-singularities geometry — the LOWER
+bound, the last R1 mountain. After R1: L2 (gauge chart + PIN reconciliation), D1. The old ChainDimSplit routeStep
+arm is superseded by the layer atlas (off the headline path; documented sorry).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
