@@ -23,8 +23,8 @@ then reduces the full cover to the two remaining analytic atoms via a sorry-free
   unit box, for ANY `(d, k, h, c')`. The per-leaf positivity the `cover_le` RHS-positivity rides
   (generalizes the `(2,2,2)`-specific `routeM222_rhs_ne_zero`).
 - `layerCover_rhs_ne_zero` — the leaf-sum RHS `≠ 0` for the layer family, for general `M` (the easy half
-  of `cover_le`, fully discharged here). Via `monomialIntegrand_pos_on_interior` on the achiever leaf's
-  positive-measure interior box.
+  of `cover_le`, fully discharged here). Via `monomialIntegrand_pos_on_interior` on ANY leaf's
+  positive-measure interior box (the family is `Nonempty`; one positive term suffices).
 - `routeMLayerCover_of_atoms` — the `IsRouteMCover` ASSEMBLY: given the two residual analytic atoms
   (`hfin` below-threshold finiteness, `hdiv` ε-uniform box divergence) for `routeMCore M` over the layer
   family, the full `IsRouteMCover` holds. The three structural fields + the RHS positivity are supplied
