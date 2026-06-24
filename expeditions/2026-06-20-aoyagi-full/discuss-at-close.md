@@ -58,3 +58,27 @@ DeepestTelescoping. So this is NOT a clean cherry-pick — replacing the base's 
 breaking the 5 consumers. PLAN: do it as a DELIBERATE controller-supervised step during the L2 gate-drive
 (an active gauge-chart build surfaces what the proof needs), verifying name=content (the _deriv spec is the
 shear-CLE, not =fst) + that all 5 consumers still build. NOT rushed in parallel with the R1 long-pole.
+
+### Item 1 — RESOLVED (2026-06-24 ~12:10): #120 merge LANDED, soundness-POSITIVE.
+l2-branch-mapper's decorrelated map found the base PIN1 (`deepestEPivot_regSlice_fderiv_id = id`) is
+FALSE-as-stated ("id only up to an opaque relabel"; the repo's own 2c9c492f/12846aae + Codex confirm).
+Merged `fm/deriv-frame-resume` (the #120 shear-CLE family): ONE conflict (DeepestTelescoping → took incoming
+sorry-free FOLD3), the consumers merged clean (shared base `7e1ab44c` is an ancestor of HEAD — a near-
+ancestor, not the divergent rewrite the 5-consumer assessment feared). @ab4fc740, builds green (3752). L2 is
+re-based onto the CORRECT frame-sandwich statements (`deepestEPivot_regSlice_fderiv : ∃ F : ≃L, …`, invertible
+frame factor, not id); remaining = the gauge-chart sorries (PIN1 443 / PIN2 624 / frame-endpoint 831-832 /
+GaugeChart 365 / NormalFormWiring), being closed by the `l2-gauge-close` tide. NO operator action; resolved.
+
+### Item 6 — R1 ROUTE ADJUDICATED (2026-06-24 ~12:30): Route A (cover) is the spine; `hfin` corank-risk is THE R1 watch-item.
+Decorrelated pen-and-paper (+ Codex gpt-5.5 xhigh) adjudicated the two R1 routes. Route B (the per-node
+squeeze `hnode`) is corank-≥2-UNPROVABLE: at the RRR cores `(n,n,p)` n≥3 (14/64 ≈22%, e.g. (3,3,4)) the
+reduced core is a *product singularity*, not the width-chain smooth leaf — the rlct VALUES coincide but the
+GERMS are not measure-preservingly homeomorphic, so a general-M `hnode` would force the forbidden value-only
+degenerate `redEmbed`. (This corrected the controller's own earlier lean toward Route B — the decorrelation
+earned its keep.) So R1 closes via Route A (cover): `hdiv_achiever` (lower bound, achiever-path box
+divergence, corank-IMMUNE — BUILDING via the proven squeeze on one leaf) + `hfin` (completeness / upper
+bound). **KEY OPEN RISK for R1 from-scratch completability:** if `hfin` ALSO needs the coupled-`diag(b)`
+corank-≥2 chart structure, the upper bound is as hard as the refuted route — the honest move is then to
+commit to Aoyagi's coupled-`diag(b)` recursion as the chart producer for BOTH bounds (the prior Decision
+option ii; still S2-only, from-scratch, but a larger build). The next R1 probe (after `hdiv` lands) tests
+`hfin`'s corank-sensitivity. NOT a wall — a named risk on the long pole, flagged for operator awareness.
