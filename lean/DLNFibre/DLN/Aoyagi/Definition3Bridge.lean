@@ -39,6 +39,33 @@ structure AoyagiDefinition3SourceData
         ∑ j : Fin (ell + 1), aoyagiReducedWidthInt H r (C.cut j) ≤
           ((ell : ℤ) - 1) * aoyagiReducedWidthInt H r s
 
+/-- Definition 3's strict selected inequality and nonselected upper inequality
+force selected widths to be strictly smaller than a nonselected width, provided
+the selected width is nonnegative. -/
+theorem aoyagiDefinition3_selected_lt_of_selectedStrict_nonselectedLe
+    {ell : ℕ} {selected width total : ℤ}
+    (hell : 0 < ell)
+    (hselected_nonneg : 0 ≤ selected)
+    (hstrict : (ell : ℤ) * selected < total)
+    (hnonselected : total ≤ ((ell : ℤ) - 1) * width) :
+    selected < width := by
+  have hchain : (ell : ℤ) * selected < ((ell : ℤ) - 1) * width :=
+    lt_of_lt_of_le hstrict hnonselected
+  by_contra hnot
+  have hwidth_le : width ≤ selected := le_of_not_gt hnot
+  have hcoef_nonneg : 0 ≤ ((ell : ℤ) - 1) := by
+    omega
+  have hprod_le :
+      ((ell : ℤ) - 1) * width ≤ ((ell : ℤ) - 1) * selected :=
+    mul_le_mul_of_nonneg_left hwidth_le hcoef_nonneg
+  have hbad : (ell : ℤ) * selected < ((ell : ℤ) - 1) * selected :=
+    lt_of_lt_of_le hchain hprod_le
+  have hsplit :
+      (ell : ℤ) * selected = ((ell : ℤ) - 1) * selected + selected := by
+    ring
+  rw [hsplit] at hbad
+  omega
+
 namespace AoyagiDefinition3CeilData
 
 /-- A positive `ell` determines Definition 3's ceiling/residue datum for any
@@ -342,6 +369,45 @@ theorem lemma5Eq3_localData_of_sourceSelectedInequality_and_slack
 end AoyagiDefinition3CeilData
 
 namespace AoyagiDefinition3SourceData
+
+/-- Constructor for Definition 3 source data when the strict selected
+inequality, nonselected upper inequality, and source-range rank-width
+hypothesis are supplied.
+
+The `selected_lt_nonselected` field is derived by elementary integer
+arithmetic; selected cutpoints and the remaining Definition 3 inequalities
+remain supplied. -/
+theorem of_selectedStrict_nonselectedLe_rankWidth
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (hell : 0 < ell)
+    (hcut_le : ∀ j : Fin (ell + 1), C.cut j ≤ L + 1)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s)
+    (hselected_strict :
+      ∀ i : Fin (ell + 1),
+        (ell : ℤ) * aoyagiReducedWidthInt H r (C.cut i) <
+          ∑ j : Fin (ell + 1), aoyagiReducedWidthInt H r (C.cut j))
+    (hnonselected_le :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s ∉
+          Finset.univ.image
+            (fun j : Fin (ell + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) →
+        ∑ j : Fin (ell + 1), aoyagiReducedWidthInt H r (C.cut j) ≤
+          ((ell : ℤ) - 1) * aoyagiReducedWidthInt H r s) :
+    AoyagiDefinition3SourceData L ell H r C where
+  ell_pos := hell
+  cut_le := hcut_le
+  selected_strict := hselected_strict
+  selected_lt_nonselected := by
+    intro i s hs1 hsL hnot
+    exact
+      aoyagiDefinition3_selected_lt_of_selectedStrict_nonselectedLe
+        hell
+        (aoyagiReducedWidthInt_nonneg_of_rank_le H
+          (hr (C.cut i) (C.pos i) (hcut_le i)))
+        (hselected_strict i)
+        (hnonselected_le s hs1 hsL hnot)
+  nonselected_le := hnonselected_le
 
 /-- The strict selected-width inequality from Definition 3, rewritten for the
 selected reduced-width family used by the final formula layer. -/

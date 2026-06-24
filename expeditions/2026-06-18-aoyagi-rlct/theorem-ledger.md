@@ -7086,6 +7086,26 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
 
+Latest A6 Definition 3 selected/nonselected redundancy:
+`Definition3Bridge.lean` proves
+`aoyagiDefinition3_selected_lt_of_selectedStrict_nonselectedLe` and
+`AoyagiDefinition3SourceData.of_selectedStrict_nonselectedLe_rankWidth`.
+The first is the elementary integer implication from strict selected and
+nonselected upper inequalities plus selected nonnegativity; the second uses
+source-range rank-width to derive that nonnegativity at selected cutpoints and
+therefore constructs `AoyagiDefinition3SourceData` without a separately
+supplied `selected_lt_nonselected` field.  It still supplies selected
+cutpoints, cutpoint bounds, rank-width, strict selected inequalities, and
+nonselected upper inequalities.  It proves no selected-cutpoint existence,
+Definition 3 source-data existence from arbitrary dimensions, Lemma 5 family
+realisation, chart production, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-selected-lt-from-nonselected-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-selected-lt-from-nonselected.md`.
+Review:
+`threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

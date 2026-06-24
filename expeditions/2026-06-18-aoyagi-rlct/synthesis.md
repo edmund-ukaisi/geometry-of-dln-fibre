@@ -7351,6 +7351,24 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
 
+A6 Definition 3 selected/nonselected redundancy:
+`Definition3Bridge.lean` now contains
+`aoyagiDefinition3_selected_lt_of_selectedStrict_nonselectedLe` and
+`AoyagiDefinition3SourceData.of_selectedStrict_nonselectedLe_rankWidth`.
+The pure arithmetic theorem says that if `ell>0`, a selected reduced width is
+nonnegative, `ell*selected < total`, and
+`total <= (ell-1)*nonselected`, then `selected < nonselected`.  The constructor
+uses source-range rank-width at selected cutpoints to supply nonnegativity and
+therefore fills `selected_lt_nonselected` from the strict selected and
+nonselected upper inequalities.  It does not construct selected cutpoints,
+prove source-data existence from dimensions, or derive Lemma 5 Eq5
+position-level off-selected dominance.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-selected-lt-from-nonselected-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-selected-lt-from-nonselected.md`.
+Review:
+`threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

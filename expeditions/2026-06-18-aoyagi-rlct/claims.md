@@ -4689,3 +4689,19 @@ Statement card:
 `threads/06-dln-translation/statement-card-a6-definition3-source-rank-final-handoff.md`.
 Review:
 `threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
+
+Latest A6 Definition 3 selected/nonselected redundancy:
+`Definition3Bridge.lean` now proves
+`aoyagiDefinition3_selected_lt_of_selectedStrict_nonselectedLe` and
+`AoyagiDefinition3SourceData.of_selectedStrict_nonselectedLe_rankWidth`.
+The constructor derives the `selected_lt_nonselected` field from the strict
+selected inequality, the nonselected upper inequality, and source-range
+rank-width nonnegativity at selected cutpoints.  It still supplies selected
+cutpoints, cutpoint bounds, rank-width, strict selected inequalities, and
+nonselected upper inequalities; it does not prove selected-cutpoint existence
+or `exists C, AoyagiDefinition3SourceData ... C`.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-selected-lt-from-nonselected-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-selected-lt-from-nonselected.md`.
+Review:
+`threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.

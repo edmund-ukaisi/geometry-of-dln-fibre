@@ -2816,3 +2816,14 @@ explicit dimension convention.  Do not continue with projection or pair-form
 variants.  The next A6 source-moving target should either reduce a different
 genuine source hypothesis or move back to selected-cutpoint/Definition-3
 existence; avoid further wrapper accumulation.
+
+A small Definition 3 source-data reduction has now landed:
+`threads/06-dln-translation/reproduction-definition3-selected-lt-from-nonselected-a6.md`.
+Lean derives the `selected_lt_nonselected` field from strict selected
+inequalities, nonselected upper inequalities, and rank-width nonnegativity,
+via `AoyagiDefinition3SourceData.of_selectedStrict_nonselectedLe_rankWidth`.
+This confirms that full selected-cutpoint/source-data existence remains out of
+scope, but one internal Definition 3 field is redundant under rank-width.
+Next work should not target Lemma 5 Eq5 position-level off-selected dominance
+from Definition 3 alone: existing notes contain a value-level/position-level
+counterexample.
