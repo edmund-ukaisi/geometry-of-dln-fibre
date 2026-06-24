@@ -416,15 +416,16 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
       Equiv.symm_symm]
     exact hprod _ _
 
-/-- **`deepestEPivot`'s reg-block derivative at `0` is an INVERTIBLE FRAME FACTOR** (the #91 analytic
-crux, post frame-conjugation — NOT `id`). With the frame-conjugate `framedLayer = corM + Pf·dev·Qf`,
-the gauge-zero reg-slice `r0 ↦ deepestEPivot Pf Qf (r0, 0)` has strict derivative a constant INVERTIBLE
-CLM `F`: by the idempotent sandwich `dP|_0(δ) = Σ_s corM^{<s}·dC_s·corM^{>s}` with
-`dC_s = Pf_s·reindex(fromBlocks dX_s dY_s dZ_s 0)·Qf_s`, only `s = firstLayer` (X,Z) / `s = lastLayer`
-(Y) survive (the alignment bedrock), and the boundary frames' `r`-corner action ∘ the shared
-`regPivotFinEquiv` cancel gives the invertible `F` (from `IsUnit (Pf firstLayer)` / `IsUnit
-(Qf lastLayer)`). **OBLIGATION (the #91 frame-decorated transcription):** the `prodAuxEntryDeriv`
-Leibniz value collapsed by the corner sandwich + the cancel. -/
+/-- **`deepestEPivot`'s reg-block derivative at `0` is a constant frame factor** (the #91 analytic
+crux, post frame-conjugation — NOT `id`). The gauge-zero reg-slice `r0 ↦ deepestEPivot Pf Qf (r0, 0)`
+has a constant strict derivative `F` by the idempotent sandwich (only `firstLayer` X,Z / `lastLayer` Y
+survive; the quadratic cross term `devXZ_corner_devY` has derivative 0). **The `∃ F : ≃L` conclusion is
+NOT PROVABLE from the stated hypotheses** (`IsUnit (Pf first)` / `IsUnit (Qf last)`): `F`'s
+invertibility needs `IsUnit (reindex (Qf last)).toBlocks₂₂`, which a unit `Qf last` does not force (a
+unit can have a singular ₂₂ block), and which the deepest-point frame as chosen from `IsDeepLayers`
+(vanishing tail rows) does not supply — see the sharpened sub-blocker in the proof body
+(counterexample `r=1, A=[0 1]`). Carried as a correctly-stated `sorry`: the frame must be strengthened
+pivot-compatibly (a new `IsDeepLayers` clause) for the conclusion to hold. -/
 theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
@@ -445,16 +446,43 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- values), `devXZ_corner_devY` (the cross block), `regStraightenTotalCLM_equiv_of_regBlock_isUnit`
   -- (the shear-CLE from an invertible reg-block).
   --
-  -- SUB-BLOCKER (precise, honest): invertibility of `F` is NOT derivable from `hPf`/`hQf`
-  -- (`IsUnit (Pf first)` / `IsUnit (Qf last)`) ALONE. After reindexing `Qf last` to `r ⊕ M` blocks,
-  -- the Y-residual sees `Y · (Qf last).toBlocks₂₂`; `IsUnit (Qf last)` does NOT force
-  -- `(Qf last).toBlocks₂₂` invertible (e.g. `Qf = [[0,1],[1,0]]` is a unit with zero ₂₂ block). The
-  -- refined frame's `Pf last = 1` (hPfL) trivialises the P-side, but the surviving `Qf last`
-  -- lower-right block needs its OWN invertibility fact — either a strengthened `deepestPoint_frame`
-  -- lemma (the `rank_normal_form_right_only` frame's `toBlocks₂₂` is a unit) or an added hypothesis
-  -- `IsUnit ((reindex … (Qf last)).toBlocks₂₂)`. The product-value + quadratic-derivative-zero half is
-  -- reachable on the banked lemmas (~120 lines); the invertible-`F` half (the `∃ F : ≃L` conclusion)
-  -- needs that block-unit fact first, so the goal does not split without it.
+  -- SUB-BLOCKER (precise, honest; sharpened 2026-06-24, Codex `xhigh` decorrelated):
+  --
+  -- (1) THE STATEMENT AS GIVEN IS NOT PROVABLE — `∃ F : ≃L` is FALSE from `hPf`/`hQf`
+  -- (`IsUnit (Pf first)` / `IsUnit (Qf last)`) alone. Writing `A := reindex (Pf first)`,
+  -- `B := reindex (Qf last)` in `r ⊕ (·−r)` blocks (`hPfL` gives `Pf last = 1`; `hQf0` gives
+  -- `Qf first = 1`), the linear part collapses (banked `devXZ_corner_devY` kills the quadratic
+  -- `X·Y`, `Z·Y` cross term — derivative 0 at 0) to, in residual-block order `(P11−I, P12, P21)`:
+  --     F(X,Y,Z) = ( A₁₁·X + A₁₂·Z + Y·B₂₁ ,   Y·B₂₂ ,   A₂₁·X + A₂₂·Z ).
+  -- This is block-triangular in the groups `(Y)` and `(X,Z)`: invert `Y` from `P12` via `B₂₂⁻¹`,
+  -- subtract `Y·B₂₁` from `P11`, then recover `[X;Z]` via `A⁻¹`. So `F` invertible ⟺
+  --   `IsUnit A` (= `IsUnit (reindex (Pf first))`, FROM `hPf`)  AND  `IsUnit B₂₂` (= the lower-right
+  --   block of `reindex (Qf last)`). The second is NOT `IsUnit (Qf last)`: a unit `Qf last` can have
+  --   a SINGULAR ₂₂ block.
+  --
+  -- (2) THE BRIEF'S PROPOSED FIX IS REFUTED. Strengthening `rank_normal_form_right_only` to also
+  -- yield `IsUnit (reindex Q).toBlocks₂₂` is IMPOSSIBLE under its current hypothesis (rank `r`,
+  -- tail ROWS `i ≥ r` vanish). COUNTEREXAMPLE (`r = 1`): `A = [0 1]` has rank 1, tail rows vanish,
+  -- and ANY `Q` with `A·Q = corM = [1 0]` forces row-2 of `Q` to be `[1 0]`, so `Q₂₂ = 0` — no
+  -- witness has invertible ₂₂. The deepest LAST layer is `embM·V` with vanishing tail rows but its
+  -- PIVOT column need not be among the first `r` columns, so the same obstruction bites: the frame as
+  -- chosen from `IsDeepLayers` (vanishing tail rows) does NOT force `Qf last` ₂₂-invertible.
+  --
+  -- (3) HONEST WAY FORWARD (genuinely moves the boundary; for the controller/a follow-on tide):
+  --   (a) STRENGTHEN THE FRAME, not the rank-normal-form lemma — choose the last-layer right-frame
+  --       PIVOT-COMPATIBLY (first `r` final columns ARE the pivot columns), so `B₂₂ = I` by the
+  --       explicit witness `Q = [[A11⁻¹, −A11⁻¹A12],[0, I]]` (cheap via `fromBlocks_multiply`). This
+  --       needs a NEW pivot-compatibility clause on `IsDeepLayers` (the deepest last layer's first `r`
+  --       columns are linearly independent / pivot) — NOT in the current API.
+  --   (b) Failing a frame strengthening, add the genuinely-needed hypothesis to THIS statement:
+  --       `(hB22 : IsUnit ((reindex (rThresholdSplit r (H (lastLayer hL).succ) _) … (Qf (lastLayer hL))).toBlocks₂₂))`
+  --       and close under it (the value-fold + the block-triangular inverse above; consumer is
+  --       `regStraightenTotalCLM_equiv_of_regBlock_isUnit`). The `sorry` then MOVES to the call site
+  --       (discharging `hB22` from the frame), which is route (a) again.
+  -- The product-value + quadratic-derivative-zero half is reachable on the banked lemmas
+  -- (`prodAux_regSlice_through_first`, `framedParamsReg_regSlice_{first,last,interior}`,
+  -- `readY_regSlice_last`, `devXZ_corner_devY`; ~120 lines); the `∃ F : ≃L` conclusion is BLOCKED on
+  -- the frame strengthening (3a) — without it the conclusion is not just unproven but FALSE.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -637,17 +665,31 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   --   (3) `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r) ⟹ the `fromBlocks
   --       (P00−1) P01 P10 P11` shape; (4) `core_comparability_squeeze` (#54) for the core comparability.
   --
-  -- UNBLOCKED by the refined frame (this tide): step (2)'s `endpoint_telescoping` `hinterface` is now
+  -- UNBLOCKED by the refined frame (prior tide): step (2)'s `endpoint_telescoping` `hinterface` is now
   -- dischargeable at `2 ≤ L` — interior frames `= 1` (`deepestPoint_interior_frame_id`), boundary-inner
   -- `Qf first = 1` / `Pf last = 1` (`deepestPoint_frame_Qf/Pf_eq_one`), so all adjacent interfaces
-  -- `Q_s = 1 ∧ P_{s+1} = 1` collapse. SUB-BLOCKER (precise, honest): step (1) — the round-trip
-  -- `readX/Y/Z (split w) = (raw deviation of (paramsSymm w − deepest))_s` — is NOT provable for the
-  -- `split` AS PASSED (an arbitrary `(Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit` argument). It needs `split`'s
-  -- DECODE semantics (the `regGaugeSlotEquiv ∘ regGaugeIdxSplit ∘ roleSplitIdx ∘ paramsEquivFlat`
-  -- cancellation through `subRight deepestFlat`), which `deepestSplit_exists` produces only as a bare
-  -- existential — the cert is stated over a generic `split` but its content requires the concrete
-  -- `deepestSplit` map. Closing it needs either `deepestSplit_exists` strengthened to EXPOSE the decode
-  -- (a `split_readX/Y/Z` lemma family) or the cert re-stated against the concrete `deepestSplit` map.
+  -- `Q_s = 1 ∧ P_{s+1} = 1` collapse.
+  --
+  -- ENUMERATION MISMATCH FIXED (this tide, 2026-06-24, Codex `xhigh` decorrelated): `deepestRoleIndexEquiv`
+  -- now routes its reg/gauge half through `regGaugeIdxSplit` (was the OPAQUE `Fintype.equivFin`), the SAME
+  -- explicit split `regGaugeSlotEquiv` un-flattens through (`DeepestSplitReindex`). So the step-(1)
+  -- round-trip `readX/Y/Z (deepestSplit w) = raw-deviation block of (w − flatDeepest)` is now
+  -- DEFINITIONALLY reachable (the two enumerations cancel; before, with `Fintype.equivFin`, that
+  -- cancellation was not definitional and the round-trip could not be proved). The whole downstream chain
+  -- (incl. `deepestSplit_exists`) still builds green after the swap.
+  --
+  -- SUB-BLOCKER (precise, honest; remaining content of the cert):
+  --   (i) The cert is stated over a GENERIC `split` argument; the round-trip content needs the CONCRETE
+  --       `deepestSplit` map. Closing PIN2 needs the concrete map named (`def deepestSplit := the
+  --       translation∘relabel∘unpack of `deepestSplit_exists`) + accessor lemmas `deepestSplit_readX/Y/Z`
+  --       proving the round-trip, then either restate this cert against `deepestSplit` or add a
+  --       `split = deepestSplit …` hypothesis. With the enumeration now shared, the accessor proof is an
+  --       equiv-composition chase across `sumPiEquivProdPi` / `piCongrLeft` / `sumAssoc` / `sumComm` /
+  --       `Equiv.Set.sumCompl` (each with its `_apply` lemma) — intricate but no longer blocked on a
+  --       conceptual mismatch (the `piCongrLeft` cast friction is the main Lean hazard).
+  --   (ii) Then steps (2)–(4): `endpoint_telescoping` (interfaces collapse, banked), `reindex(P0·B·QL) =
+  --        fromBlocks 1 0 0 0` (B gauge-normalised at rank r), and `core_comparability_squeeze` (#54,
+  --        banked). These are reachable once (i) lands.
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
