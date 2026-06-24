@@ -36,6 +36,13 @@ dimension brick. Branch `expedition/fibre-codimension`.
    minimal prime `height ≥ v`) + one witness (`height ≤ v`). Pure `ℕ∞` lattice over `Ideal.height =
    ⨅ minimalPrimes primeHeight`.
 
+7. **`Core.FibreDimHeadlineProbe.codimRepCanonical_fibre_eq_of_minimalPrimes_height_bounds`**
+   (un-aggregated) — **the pre-staged headline**, with thread 27's per-component facts as explicit
+   hypotheses: given every minimal prime of `fibreGenIdeal d B` has `height ≥ v` and one has
+   `height ≤ v`, then `codimRepCanonical (fibre d B) = v`. With `v = C+δ` this IS the headline. Proved
+   by wiring H1 + the H5 closer. So the final tide is a **thin substitution** of thread 27's facts;
+   every other step is machine-checked. Axiom-clean.
+
 **The assembly skeleton is COMPLETE on the engine side.** The full `codimRepCanonical(fibre E) = C+δ`
 factors as: **bridge** `height P + dim(R⧸P) = card` (LANDED `NullstellensatzCodim.height_add_
 ringKrullDim_quotient_eq_card`) — converts per-component dim to height; **closer**
