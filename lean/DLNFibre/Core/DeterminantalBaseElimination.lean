@@ -93,6 +93,15 @@ def repCoordReindex (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
         (Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
           (blockRearrange q p r)
 
+/-- `finSplit` sends a non-pivot index `cast (natAdd r a)` (`≥ r`) to `Sum.inr a`. -/
+@[simp] theorem finSplit_natAdd {n r : ℕ} (h : r ≤ n) (a : Fin (n - r)) :
+    finSplit h (Fin.cast (show r + (n - r) = n by omega) (Fin.natAdd r a)) = Sum.inr a := by
+  rw [finSplit, Equiv.trans_apply,
+    show (finCongr (show n = r + (n - r) by omega))
+        (Fin.cast (show r + (n - r) = n by omega) (Fin.natAdd r a)) = Fin.natAdd r a from by
+      apply Fin.ext; simp [finCongr, Fin.natAdd],
+    finSumFinEquiv_symm_apply_natAdd]
+
 /-- A pivot coordinate `⟨0, (castLE i, castLE j)⟩` (pivot row `i`, pivot column `j`, both `< r`)
 maps under the reindex into the `Δ`-block of `SchurVar`: `Sum.inr (Sum.inl (i, j))`. So the pivot
 minor `detΔ` is a polynomial in the `SchurVar` coordinates only. -/
@@ -104,6 +113,22 @@ theorem repCoordReindex_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j :
       (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
         ((finSplit hp (Fin.castLE hp i), finSplit hq (Fin.castLE hq j)))) = _
   rw [finSplit_castLE, finSplit_castLE]
+  rfl
+
+/-- A `B22` coordinate `⟨0, (cast (natAdd r a), cast (natAdd r b))⟩` (non-pivot row `a`, column `b`)
+maps under the reindex to the outer `B22block`: `Sum.inl (a, b)`. So the `B22` entries become the
+outer (eliminated) coordinates under `blockAlgEquiv`. -/
+theorem repCoordReindex_b22 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (b : Fin (q - r)) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a),
+             Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩
+      = Sum.inl (a, b) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a)),
+          finSplit hq (Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))))) = _
+  rw [finSplit_natAdd, finSplit_natAdd]
   rfl
 
 /-! ## The generic product entries are the coordinate variables (`N = 1`) -/
