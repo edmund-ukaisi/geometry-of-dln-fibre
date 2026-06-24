@@ -550,3 +550,57 @@ aim for the full deep iso"):
 - Then **R2-5/R2-6/G3/G4** as before (height-additivity → +C assembly → lift via G1 → discharge the
   interface). The full reviewer + decorrelated Codex soundness gate lives at the DISCHARGE (G4), not the
   conditional pre-builds.
+
+## EXPEDITION OUTCOME (2026-06-24) — WALL at R2-3b-4; Lemma 4.6 geometry REDUCED to a certified residual
+
+**The planned determinantal-trivialization route does NOT close Lemma 4.6's geometry in Lean at v4.29.**
+R2-3b-4 (the deep product iso `e`) walled at the mandatory SPECIFY checkpoint — *before* any grind — on a
+**certified, decorrelated-Codex-concurred circularity** (thread 20 + its xhigh Codex + the prior thread-17
+Codex all locate the same obstacle; the controller independently verified the logic). This is a negative
+deliverable, not a failure: the geometry is reduced to a single, precisely-located, certified-true residual,
+with everything else machine-checked.
+
+**The circularity (why `e` cannot be built as a Lean *strategy*).** The iso `e : Sred ≃ₐ SchurLoc ⊗_k
+FibreAlg d E` can hold only if `SchurLoc ⊗_k FibreAlg d E` is reduced (it is `≅` the reduced `Sred`), which
+forces `FibreAlg d E` reduced ⟺ `fibreGenIdeal d E` radical. So **any genuine `e` proves the radicality as
+a byproduct** — `e` is *equivalent* to the radicality, not a path to it. Concretely: the forward map
+`Sred → SchurLoc ⊗ FibreAlg` is well-defined only given `sigmaIdeal d r ≤ ker φ` (the rank/pointwise facts
+give only `≤ (ker φ).radical`; strengthening = the radicality, = thread-17's `sigmaIdeal ≤ fibreGenIdeal`
+circularity); the reverse map's injectivity forces `FibreAlg d E` reduced. Route (b) — "derive `FibreAlg`
+reduced *from* `Sred` reduced *via* `e`" — is circular as a Lean construction. (The thread-16 *mechanism*,
+"reducedness inherited via faithfully-flat local triviality", is mathematically valid — but that *local
+triviality IS* `e`, so it cannot be the Lean route to `e`.) The height-via-radical-insensitivity escape
+(`codim(fibre) = height(fibreGenIdeal)` needs no radicality) does **not** dodge `e` either: the
+height-additivity `codim_{Σ̄^r}(fibre) = δ` routes through the *same* flat trivialization (going-down).
+
+**THE RESIDUAL (single, named, certified TRUE).** The deep product trivialization `e` ⟺ the radicality of
+the deep fibre ideal `fibreGenIdeal d E` (`N ≥ 1`, normal form `E`) ⟺ the **deep flat/smooth
+trivialization of `Σ̄^r` over its rank base**. Certified TRUE pen-and-paper (thread 16: Singular
+`primdecGTZ` on 11 cases + the type-A rank-locus reducedness mechanism, Buch–Fulton / Kinser–Rajchgot). Its
+Lean proof needs a **deep localized flat trivialization** — a ≥2-module from-scratch AG sub-project; the
+engine's determinantal machinery (`basePresentationEquiv`, `SchurLoc`) is **`N = 1` only**, and the deep
+(`N ≥ 1`) product's rank ideal *factors*, so the N=1 graph/Schur trick does not port. This is the same wall
+located progressively by threads 01 (morphism-fibre-dim, ~8–15 modules), 09 (G2a flatness NO-GO), 14/15
+(R2-2 = L), 16 (the "one dep" that is in fact this) — now pinned exactly.
+
+**BANKED, unconditional + axiom-clean** (the expedition's positive deliverable — the engine *toward* the
+bundle-shift): `Core.DeepChartRing` (the deep chart ring `Sred` for general `d`; `isReduced_Sred`; the
+non-circular `deepBaseComap_sigmaIdeal_le`; `schurToSred` + the `SchurLoc`-algebra structure),
+`Core.EndpointNormalization` (`gaugeEquiv` + `gaugeEquiv_multPoly`, the `baseChange` gauge over arbitrary
+`CommRing`), and `Core.FibreReducedTrivialization` (R2-3a: the route-(b) reducedness chain + radical-collapse
++ `isReduced_of_tensor`), all conditional on `e`. The day a deep-flat-trivialization tide proves `e` (or the
+radicality directly), the chain closes with **zero further reducedness work** — every consumer of `e` is
+already proved against it, and `hSred` is already discharged (`isReduced_Sred`).
+
+**HONESTY (no overclaim).** `BundleShiftInterface.cited_bundle_shift` in `DLN.RlctPayoffGeneral` remains an
+**Assumed/Cited interface — NOT discharged.** Lemma 4.6's geometric content (`codim(fibre) = C + δ`) is
+**not proved in Lean**; it is reduced to the named residual above. Nothing is named to suggest otherwise.
+
+**THE FORK (operator decision — surfaced, signal-and-wait).** (a) **Close the expedition here** — bank the
+engine + the conditional chain + the precisely-located certified residual as the deliverable; `Lemma 4.6
+geometry` stays reduced-to-residual on the ROADMAP. (b) **Authorize a deep-flat-trivialization sub-project**
+— a substantial fresh expedition (deep localized flat trivialization / type-A rank-locus reducedness in
+Lean; likely needs scaffolding Mathlib v4.29 lacks). **Controller recommendation: (a).** The residual is a
+genuine new layer, not "filling the current one"; it deserves its own scoping, not an autonomous launch on
+top of a walled route. The current result — a certified, Codex-concurred residual with the entire
+surrounding engine machine-checked — is strong and honest.

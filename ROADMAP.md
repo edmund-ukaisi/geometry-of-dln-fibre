@@ -92,6 +92,24 @@ $\theta=\operatorname{cTheta}((\underline d-r)\circ\operatorname{sort})$ for any
 geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is **Proved**
 (Bundle 2 / `voigt-discharge`).
 
+**Lemma 4.6 bundle-shift `codim(fibre B) = C + r(d₀+d_N−r)` — status after expedition `fibre-codim`
+(2026-06-24): REDUCED to one certified residual; NOT proved; `BundleShiftInterface` stays Assumed/Cited.**
+The expedition built the determinantal-trivialization engine toward it (all **Proved**, axiom-clean): the
+rank normal-form reduction `Core.FibreNormalForm` (G1); the N=1 localized base presentation
+`Core.DeterminantalBasePresentation` (G2-2); the **deep chart ring** `Core.DeepChartRing` (`Sred` for
+general `d` + `isReduced_Sred` + the non-circular base→deep `sigmaIdeal` map + the `SchurLoc`-algebra
+structure); the **endpoint gauge** `Core.EndpointNormalization` (`gaugeEquiv` + `gaugeEquiv_multPoly` over
+arbitrary `CommRing`); and the **conditional** route-(b) reducedness chain + radical-collapse
+`Core.FibreReducedTrivialization` (R2-3a), wired against the deep product iso `e` as an explicit
+hypothesis. **The single residual** (`e` ⟺ radicality of the deep fibre ideal `fibreGenIdeal d E`, `N≥1`
+⟺ the **deep flat/smooth trivialization of `Σ̄^r` over its rank base**) is **certified TRUE** (Singular +
+type-A rank-locus reducedness) but **circular as a Lean route** (building `e` proves the radicality it
+would establish) — its honest Lean proof is a **≥2-module from-scratch AG sub-project** (the engine's
+determinantal machinery is `N=1` only; the deep product's rank ideal factors). **Future expedition
+(roadmap):** the deep localized flat trivialization / type-A rank-locus reducedness. Until then the
+RLCT payoff `DLN.RlctPayoffGeneral` rests on `BundleShiftInterface.cited_bundle_shift` (Assumed) — named
+as such, never as Proved. Full record: `expeditions/2026-06-23-fibre-codim/synthesis.md` §EXPEDITION OUTCOME.
+
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
 orbits = isomorphism classes (Thm 2.4), Gabriel's interval-module decomposition (Thm 2.5), orbits ↔ Kostant
