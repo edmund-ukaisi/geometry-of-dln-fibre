@@ -27,9 +27,28 @@ dimension brick. Branch `expedition/fibre-codimension`.
    `O(Mat^{≤r}) →ₐ[k] O(Σ̄^r)` (`deepBaseComap` through both `sigmaIdeal`s via the LANDED
    `deepBaseComap_sigmaIdeal_le` + `Ideal.quotientMapₐ`). Foundation of the 00OM easy direction.
 
-**Aggregation:** `Core.FibreDimFibration` (bricks 2+3) is reusable bedrock and wants the aggregator
+5. **`Core.FibreDimFibration.affine_domain_height_add_ringKrullDim_quotient_eq_fintype`** — the
+   `Fintype`-indexed affine-domain equidim (transport of the `Fin n` engine lemma via `renameEquiv`).
+   The nested-catenary / per-component `height ↔ dim` engine.
+
+6. **`Core.FibreDimEasyProbe.height_eq_of_minimalPrimes_bounds`** (un-aggregated) — the **H5
+   min-over-components closer**, interface-agnostic: `height I = v` from a uniform lower bound (every
+   minimal prime `height ≥ v`) + one witness (`height ≤ v`). Pure `ℕ∞` lattice over `Ideal.height =
+   ⨅ minimalPrimes primeHeight`.
+
+**The assembly skeleton is COMPLETE on the engine side.** The full `codimRepCanonical(fibre E) = C+δ`
+factors as: **bridge** `height P + dim(R⧸P) = card` (LANDED `NullstellensatzCodim.height_add_
+ringKrullDim_quotient_eq_card`) — converts per-component dim to height; **closer**
+`height_eq_of_minimalPrimes_bounds` (landed) — `⨅` collapse to `C+δ`; **retarget** H1 (landed). The
+**only open input** is thread 27's per-minimal-prime facts: `dim(R⧸P) ≤ card−C−δ` for every component
+(⟹ `height P ≥ C+δ`) and `= card−C−δ` for the top (⟹ `height P ≤ C+δ`), i.e. `rank(fibreJacobian) ≥
+C+δ` generically on every component (the no-jump residual). When thread 27 lands that, the headline
+closes by wiring these landed bricks — no further engine work.
+
+**Aggregation:** `Core.FibreDimFibration` (bricks 2,3,5) is reusable bedrock and wants the aggregator
 import line `import DLNFibre.Core.FibreDimFibration` (controller's single-writer call). The two probes
-stay un-aggregated (probe convention).
+(`FibreDimFibrationProbe`, `FibreDimEasyProbe`) stay un-aggregated (probe convention) — though the H5
+closer (brick 6) and `sigmaQuotComap` could promote into `FibreDimFibration` once the headline wires.
 
 ## The decorrelated Codex verdict (xhigh, `codex/answer-realization.md`) — the load-bearing finding
 
