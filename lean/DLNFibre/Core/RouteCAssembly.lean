@@ -40,8 +40,8 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-- **Route-c assembly: `codim(fibre d B) = C + δ` (conditional bank).** For a rank-`r` target `B`
 (`N ≥ 1`, alg-closed char 0), the geometric codimension of the fibre `mult⁻¹(B)` is `C = cCodim d r`
 plus the matrix-stratum shift `δ = r·(d_N + d_0 − r)` — carrying the homogeneous-sweep dimension
-identity `hSweep`, the Cited closure bridge `hClosure`, and the two reducible-locus catenary relations
-`hCatFibre`/`hCatSigma` as explicit named hypotheses. The proof is the additive chain
+identity `hSweep`, the Cited closure bridge `hClosure`, and the two reducible-locus catenary
+relations `hCatFibre`/`hCatSigma` as explicit named hypotheses. The proof is the additive chain
 `C + δ + dim F = C + dim Σ̄^r = card = codim F + dim F`, cancelling the finite `dim F`. -/
 theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [IsAlgClosed k] [CharZero k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
