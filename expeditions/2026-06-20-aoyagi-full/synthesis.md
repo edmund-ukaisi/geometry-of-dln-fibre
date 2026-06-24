@@ -677,8 +677,12 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   product_reduction; L=1 base DONE), R1 hdiv (design-closed + bundle + (4,4,2,2); remaining = (3,3,3,3) + the general
   closed-φ_M chaining → the general atom), R1 hfin (the recursive coupled cover — the biggest single piece, recipe in
   hand, pp-r1-genM spec'ing build-ready lemmas #54), D1 (≥-leg, L2-gated), the headline assembly.
-- 2 background agents: l2-pin1-final (L2 PIN1, the dominant L2 bottleneck), pp-r1-genM (hfin recStep build-ready spec, #54).
-  hdiv-general build still held (commission after the hfin spec / l2 report / bandwidth).
+- **hdiv-general UN-HELD (feasibility resolved):** commissioned `r1-node-3333` (af879315) — the (3,3,3,3) NodeAchieverChart
+  instance (the decisive MULTI-PIVOT case, LDU-core + B/C chaining per the closed-φ_M cert), validating the bundle beyond
+  (4,4,2,2)'s pure radial + banking the LDU/chaining det machinery (the input to the eventual general chaining lemma).
+  Reuses NodeAchieverChart + pivotBlowupOn_abs_det + ParamsReshapeMP; det≠0 guard + independent review required.
+  Productive use of capacity while L2 PIN1 (can't parallelize the one coupled write) + the hfin spec run.
+- 3 background agents: l2-pin1-final (L2 PIN1, dominant), pp-r1-genM (hfin recStep spec #54), r1-node-3333 (R1 hdiv (3,3,3,3)).
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
