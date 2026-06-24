@@ -584,6 +584,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 3 background agents: l2-pivot-migrate (L2 PIN1, Stage C+D), r1-node-bundle (R1 NodeAchieverChart + (4,4,2,2)),
   pp-r1-genM (R1 uniform φ_M design). Non-overlapping (L2 / R1-build / R1-design).
 
+**★ UPDATE-24 (2026-06-24) — soundness: hpos STRENGTHENED to `r < H s` (strict); resolution_charts read resolves the milestone-route question.**
+- **hpos strengthened `0 < H s` → `∀ s, r < H s` (strict) @15fc3913.** Reading `resolution_charts` (Skeleton:1228)
+  showed it requires `hMid : 0 < M s` (all layers), docstring: "the headline supplies it in H-form (∀ s, r < H s)".
+  The L2 core reduction routes through resolution_charts, so the earlier `0 < H s` was INSUFFICIENT — it fixed the L=1
+  loss-empty case but missed the L≥2 CORE degeneracy (at r=H_s, M_s=0 ⟹ reduced prod≡0 ⟹ rlctAtOn=⊤ ≠ finite
+  aoyagiLambda). Strengthened across the L2 chain + headline + aoyagi_rrr; D1 (deepest_point_reduction) deliberately
+  UNCHANGED (deepest point stays the minimizer at r=H_s; only the L2 split-value breaks). Full build green (3719).
+  Refines the paper's r≤min to the realisable non-degenerate domain. (Two re-scopings now: the over-claim is closed.)
+- **The flagged milestone-route question is RESOLVED:** `resolution_charts` (the R1 gate) = `rlctAtOn(core) = ⨅ monomialThreshold`
+  needs BOTH legs — `layerCover_hdiv` (≤ ½·minAdm, the general-M achiever atom, what #135/pp-r1-genM/r1-node-bundle are
+  building) AND `cover_le` (≥ ½·minAdm, corank-SENSITIVE). The headline (even the L=2/RRR milestone, via the 2≤L L2 core
+  → resolution_charts) needs the FULL resolution_charts = BOTH legs. So the general-M hdiv is only HALF of R1.
+- **OPEN/RECONCILE (next R1 tick):** `cover_le` status — task #45 ("the R1 hfin atlas, cover_le, THE R1 LONG POLE") is
+  marked completed, but pp-r1-genM reports cover_le is "NOT addressed; needs the full coupled cover or the cited
+  Aoyagi/Watanabe bound". Resolve the discrepancy (is cover_le proven, sorry'd, or open?) before claiming R1 reachable
+  as a whole — the hdiv leg (being built) is necessary but not sufficient. The VALUE ⨅monomialThreshold=½·minAdm IS proven.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

@@ -196,3 +196,16 @@ degenerate `r = 0` zero-width corner, which is not a DLN. Aoyagi's result is for
 now reads "for any rank-`r` `B` with every width positive and `≥ r`". No soundness debt remains here; full build green
 (3719). The self-correction (tide catches over-claim → controller re-scopes before proofs lock in) is the precision
 discipline working — and a reason the headline statement was worth pinning down NOW, not at assembly.
+
+**STRENGTHENED (2026-06-24 @15fc3913): `hpos` is `∀ s, r < H s` (STRICT), not `0 < H s`.** A read of
+`resolution_charts` (Skeleton:1228) — which the L2 core reduction routes through — showed it requires `hMid : 0 < M s`
+(all layers), with its own docstring stating "the headline supplies it in H-form (`∀ s, r < H s`)". The earlier
+`0 < H s` fixed only the `L = 1` loss-empty case; it MISSED the `L ≥ 2` CORE degeneracy: at `r = H s` (zero reduced
+width `M s = H s − r = 0`) the reduced core `dlnLoss M 0` has `prod ≡ 0` so `rlctAtOn = ⊤`, while `aoyagiLambda` is
+finite — `deepest_regular_core_normal_form`'s split is FALSE there. Strengthened `hpos` to `r < H s` (subsumes
+`0 < H s`) across `deepest_regular_core_normal_form` / `product_reduction` / `aoyagi_learning_coefficient` /
+`aoyagi_rrr`. D1 (`deepest_point_reduction`) deliberately UNCHANGED — the deepest point stays the minimizer (finite
+RLCT) at `r = H s`; only the L2 split-value formula breaks, so only the L2 chain carries `hpos`. This refines the
+paper's non-strict `r ≤ min H` to the realisable non-degenerate domain (the `resolution_charts` carve-out; sound
+within it, not a verbatim Aoyagi assumption). **Operator: the deliverable's domain is `r < H s` (strict).** Net of
+the two re-scopings: the headline is now correctly scoped; the over-claim is closed.
