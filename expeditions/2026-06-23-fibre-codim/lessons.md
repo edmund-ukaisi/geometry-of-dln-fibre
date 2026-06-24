@@ -120,3 +120,17 @@ Two new wrinkles surfaced over R2-3a → R2-3b-1+2, both resolved with ZERO dama
   earlier `genericTuple` dup. **Fix:** tide briefs say "prefix witness/scratch defs with the module name"
   (`fibreJac…`, not `tupleWitnessQ`); the controller resolves any residual clash at the green-gate (a
   rename is the controller's aggregation responsibility).
+- **(K) Never spawn a successor write-tide before the predecessor's `teammate_terminated` is confirmed —
+  reinforced the hard way.** Under a mid-tide ROUTE PIVOT (route B → route c), the controller shut down the
+  H4 tide and *immediately spawned a fresh route-c tide* — but H4 was busy (hadn't processed the shutdown)
+  and was still building route-c scaffolding, so TWO write-tides converged on the same branch/work. Zero
+  damage only because the H4 tide had exemplary collision-discipline: it detected the conflicting task owner,
+  **deleted its uncommitted (sorry-bearing) work to protect the branch, and held all Lean writes** until the
+  controller clarified. Compounded by the revive-wrinkle (H): messaging H4 to redirect it *revived* it, after
+  which it processed its stale shutdown and re-terminated. **Fix (binds the controller):** on a mid-tide route
+  pivot, REDIRECT the existing alive tide (one message changing its task) — do NOT shut it down + spawn a
+  parallel one; if you do shut it down, WAIT for `teammate_terminated` before spawning the successor; and
+  never message a tide that has a pending shutdown (it revives then re-terminates, muddying the picture). When
+  the route changes, the cheapest correct move is usually a single redirect message to the live tide, not a
+  new spawn. Net here: a lot of churn, zero damage, branch stayed green throughout — but the churn was
+  avoidable and is the controller's error, not the substrate's.

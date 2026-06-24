@@ -198,6 +198,71 @@ but on orbit dimension, not flatness.
 - **Generic reducedness of `(mult−E)`** is NOT needed for route c (only for the abandoned route B). It
   was certified true separately (thread-16) but route c does not consume it.
 
+## 6b. ADDENDUM (2026-06-24) — the lead's sharpened decomposition + G1-one-point reduction
+
+The controller sharpened the target twice: (1) the `+C` is a **linear-independence** (`rank ≥ δ` and
+`rank ≥ C` separately give only `max`); the content is `image(d mult_A) = (δ-dirs) ⊕ (C-dirs)`,
+direct sum, in `T(Mat)`. (2) **G1 unlock** (`codimRepCanonical_fibre_eq_of_rank_of_height_bounds_
+at_witness`): the bound at ONE rank-`r` point transports to all. Both are right; here is the exact
+status after testing.
+
+**The decomposition is a verified THEOREM (exact, uniform over every A ∈ F).** Let
+`V_orbit := T_E Mat^{≤r} = {M ∈ Mat_{d_N×d_0} : bottom-right (d_N−r)×(d_0−r) block = 0}`, dim `δ`, and
+`π_BR : Mat → BR-block ≅ Mat/V_orbit`. Then:
+- **(a)** `V_orbit ⊆ image(d mult_A)` for **every** `A ∈ F` (char-free, no genericity): the endpoint
+  orbit-tangent identity `d mult_A(δ⁰_A(X,Y)) = X·E − E·Y`
+  (`OrbitDifferential.orbitAction_eps_eq_deformationδ` at the two end vertices), and
+  `{X E − E Y : X∈gl_{d_N}, Y∈gl_{d_0}} = V_orbit` exactly (verified `dim = δ`,
+  `check_orbit_tangent.py`). **VERIFIED `image ∩ V_orbit = δ` at every E-point** (`decomp_atE.py`).
+- **(b)** Hence `rank(d mult_A) = δ + dim π_BR(image)` — a genuine **direct sum**
+  `image = V_orbit ⊕ (image ∩ BR-directions)`. The lead's `(δ-dirs) ⊕ (C-dirs)` geometry is correct:
+  the `δ`-dirs are `V_orbit` (always present), the extra dirs live in the BR block.
+  **VERIFIED at every E-point** of `(2,2,2)r1`, `(3,3,3)r{1,2}`, `(3,2,3)r1`, `(2,2,3)r1`.
+
+So the entire `+C` reduces to: **`(★C) dim π_BR(image) ≥ C`**, i.e.
+`rank(d g_A) ≥ C` where `g := π_BR ∘ mult` is the local **`Σ̄^r`-defining map** in the `E`-chart
+(`g = 0 ⟺` BR Schur block vanishes `⟺` rank `≤ r`). At a genuine top point (e.g. `(3,3,3)r1` factor
+ranks `[2,2]`, rank 8) `dim π_BR(image) = C` exactly; on lower components it is `> C`; at deep
+**singular** points (e.g. `(3,3,3)r1` both factors rank 1) it is `0 < C`. **So `(★C)` is NOT
+uniform** — same lesson as §1.2.
+
+**Why `(★C)` is still essentially circular for a clean Jacobian proof (the precise wall).** With G1 +
+the decomposition, the target tightens to: *at one well-chosen rank-`r` point `A`, `rank(d g_A) = C`*.
+The natural witness is **a smooth point of a TOP component of `Σ̄^r` whose product has rank exactly
+`r`** (exists by: `codim Σ̄^{r−1} > codim Σ̄^r = C` ⟹ a top component not inside `Σ̄^{r−1}` ⟹ its
+smooth, rank-exactly-`r` locus is dense; then `GL×GL` moves the target to `E`). **BUT** `rank(d g_A) =
+C` at a smooth point of *reduced* `Σ̄^r` is **NOT automatic** (the `x↦x²` pathology: reduced zero-locus
+smooth of codim 1, defining-map differential rank 0). It holds iff the BR equations `g` cut `Σ̄^r`
+**generically reduced / lci** along that top component — and that lemma "is very close to the desired
+`+C` statement" (decorrelated Codex, third consult, concurred). So the Jacobian route — even with the
+decomposition and G1 — bottoms out at a **generic-reducedness/conormal lemma for the determinantal
+defining equations**, which is essentially the `+C` itself. This is the same flavour of wall as the
+thread-20 radicality circularity.
+
+**Conditional closing logic (valid IF `rank(d g_A) = C` is granted, Codex-confirmed):** at such an
+`A`, `mult|_{Σ̄^r} : Σ̄^r → Mat^{=r}` is a submersion (the `δ` orbit-directions surject onto
+`T_E Mat^{=r}`, by (a)), so the fibre is smooth of codim `δ` inside `Σ̄^r`, hence smooth of codim
+`C+δ` in `Rep_d`; and `rank(d mult_A) = δ + rank(d g_A) = δ + C` by (b). Clean — but gated on the
+generic-lci lemma.
+
+**Net (unchanged recommendation, now with the wall pinned).** The lead's decomposition is a real,
+clean, reusable THEOREM and is the right *structural understanding* of `rank = δ + (Σ̄^r-defining
+rank)`. It does **not** by itself make the `+C` independently provable — the Jacobian route still
+needs a generic-reducedness/lci lemma for the BR determinantal equations, ≈ the `+C` itself. **Route c
+(homogeneous sweep) remains strictly preferable**: it derives `dim Σ^r = δ + dim F` from orbit
+dimension and never touches `g`'s reducedness, generic smoothness, or the conormal space. Three
+decorrelated Codex consults + all exact computation concur: use the sweep for the codimension; use the
+Jacobian decomposition only if a *rank* statement is independently wanted.
+
+**Formaliser-facing (decomposition, if wanted as reusable bedrock — it IS clean and true):**
+```
+-- THEOREM (uniform, every A in fibre d E):  V_orbit ⊆ image(fibreJacobian), and
+--   (fibreJacobianMatrix d E A).rank = δ + rank(π_BR ∘ d mult_A)
+-- where V_orbit = T_E Mat^{≤r}, via OrbitDifferential.orbitAction_eps_eq_deformationδ at end vertices.
+-- This is BEDROCK (a clean rank decomposition); but the +C lower bound rank(π_BR∘dmult) ≥ C is the
+-- generic-lci wall — do NOT build the hard direction on it; use the sweep (route c).
+```
+
 ## 7. Reproduction (exact artefacts, this thread)
 
 - `validate_rank.py` — refutes `rank = δ + codim Ō_M` at orbit-generic points (the FALSE formula).
@@ -208,6 +273,14 @@ but on orbit dimension, not flatness.
   genuine TOP component; `> C+δ` on lower components.
 - `verify_fibration_identity.py` — `dim Σ̄^r − dim F = δ` and `codim Σ̄^r = C` (9 cases, all OK).
 - `verify_sweep.py` — `dim H − dim K = δ` (closed form + linearised stabilizer rank, all OK).
-- `codex/general-rank-{prompt,answer}.md`, `codex/reframed-{prompt,answer}.md` — two decorrelated
-  xhigh consults; both rank route c first, route B last (circular), and flag the `Σ^r` vs `Σ̄^r`
-  subtlety.
+- `decomp_atE.py` — the decomposition theorem at E-pinned points: `V_orbit ⊆ image` (cap = δ) and
+  `rank = δ + dim π_BR(image)`, ALL E-points OK (the lead's direct-sum, verified).
+- `check_orbit_tangent.py` — `dim{XE−EY} = δ` and `= V_orbit` exactly (the orbit-tangent identity).
+- `dissect_top.py`, `test_directsum3.py` — `dim π_BR(image) = C` at genuine TOP points; `> C` lower.
+- `universal_decomp.py` + `debug_piBR.py` — the confound (the decomposition is in E-coords; random
+  factor points have product `B ≠ E`, so fixed-BR projection is meaningless there) + the fix.
+- `test_piBR_meaning.py` — `dim π_BR(image) ≥ C` on section-built E-points, min = C; FAILS (`<C`) at
+  deep singular points (`(★C)` not uniform).
+- `codex/general-rank-{prompt,answer}.md`, `codex/reframed-{prompt,answer}.md`, `codex/plusC-{prompt,
+  answer}.md` — THREE decorrelated xhigh consults; all rank route c first, the Jacobian route last
+  (circular / generic-lci wall), and flag the `Σ^r` vs `Σ̄^r` subtlety.
