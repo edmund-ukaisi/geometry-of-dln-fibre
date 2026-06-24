@@ -6926,6 +6926,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal rows:
+`BlowupArithmetic.lean` now proves
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_oldRow`,
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_pivotRow`,
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv`,
+`case2DisplayedSourceTerminalCprimeCandidate_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv`,
+`SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime`, and
+`case2DisplayedSourceTerminalProductReindexedCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStack_mul`.
+The result specializes terminal transported rows for the constructed
+old-top/free-`Cprime` source following factor to
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`, and consumes the explicit
+terminal matrix in the stopped source-row product candidate.  This is finite
+terminal-row and product-form bookkeeping only: no source-produced
+`C'^(S+1)`, terminal chart data, suffix production, transition regularity,
+coverage, normal crossings, pole order, termination, or RLCT is proved.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-rows.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

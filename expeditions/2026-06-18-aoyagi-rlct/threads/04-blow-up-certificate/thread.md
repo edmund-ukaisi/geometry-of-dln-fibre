@@ -6249,3 +6249,38 @@ This is finite stack specialization only.  It does not construct a
 `SourceProductionObligation`, source-produce `Csucc`, produce suffixes,
 construct successor chart families, prove chart coverage, transition
 regularity, normal crossings, pole order, termination, or RLCT.
+
+## 2026-06-24 Lean Case 2 constructed old-top `Cprime` terminal rows
+
+Reproduction:
+`reproduction-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-oldtop-cprime-terminal-rows.md`.
+Review:
+`review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+
+Lean now specializes the stopped terminal transported-row presentation to the
+constructed old-top/free-`Cprime` source following factor.  New names:
+
+```text
+case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_oldRow
+case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_pivotRow
+case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+case2DisplayedSourceTerminalCprimeCandidate_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime
+case2DisplayedSourceTerminalProductReindexedCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStack_mul
+```
+
+For the constructed factor, terminal rows reindexed by
+`case2SourceTerminalRowEquiv J` are
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`.  This is intentionally not
+`[Cold; Cprime]`: the latter is correct for the source-current/successor row
+block under `case2SourceOldTopPaperCprimeRowEquiv`, while terminal rows keep
+only the old rows plus the surviving pivot row.  The explicit source-row matrix
+also supplies a `SuppliedTerminalCprimeBridge` and a stopped terminal product
+rewrite.
+
+This is finite terminal-row bookkeeping only.  It does not construct source
+data, terminal chart data, `Csucc`, suffixes, successor chart families,
+transition regularity, chart coverage, normal crossings, pole order,
+termination, RLCT, or a repair of the printed Case 2 vector mismatch.

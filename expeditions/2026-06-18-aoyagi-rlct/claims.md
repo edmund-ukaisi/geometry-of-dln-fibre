@@ -4525,3 +4525,22 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-current-stack.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
+Latest A4 Case 2 constructed old-top `Cprime` terminal rows:
+`BlowupArithmetic.lean` now proves that, for the constructed
+old-top/free-`Cprime` source following factor, the stopped terminal transported
+rows reindexed by `case2SourceTerminalRowEquiv J` are
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`.  The terminal candidate has
+the same reindexed presentation, the explicit source-row matrix supplies
+`SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime`, and the
+stopped terminal product candidate rewrites through this explicit terminal
+matrix.  This is not the source-current `[Cold; Cprime]` block theorem: the
+terminal theorem keeps only the old rows plus the top row of `Cprime`.  No
+source production, terminal chart construction, suffix production, transition
+regularity, chart coverage, normal crossings, pole order, termination, or RLCT
+is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-rows.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.

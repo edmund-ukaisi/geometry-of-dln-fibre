@@ -7165,6 +7165,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal rows:
+`BlowupArithmetic.lean` now adds the constructed terminal-row specialization.
+For the constructed old-top/free-`Cprime` source following factor, the stopped
+terminal transported rows reindexed by `case2SourceTerminalRowEquiv J` are
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`; the source-row terminal
+candidate has the same reindexed form; the explicit source-row matrix supplies
+`SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime`; and the
+stopped terminal product candidate rewrites through that explicit terminal
+matrix.  This is terminal-row bookkeeping only.  It does not identify the
+terminal rows with the source-current `[Cold; Cprime]` block, and it does not
+construct source production, terminal charts, suffixes, transition regularity,
+coverage, normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-rows.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

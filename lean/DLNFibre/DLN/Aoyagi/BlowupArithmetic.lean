@@ -17322,6 +17322,165 @@ def of_originalRows_width_next_eq
 
 end SuppliedTerminalCprimeBridge
 
+set_option linter.style.longLine false in
+/-- Old terminal transported rows of the constructed old-top/free-`C'` source
+following factor are the supplied old-top rows. -/
+theorem case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_oldRow
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (i : case2SourceOldTopRowIndex J) (a : τ) :
+    case2DisplayedSourceTerminalTransportedRows n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)
+        (case2SourceTerminalRowEquiv J (Sum.inl i)) a =
+      Cold i a := by
+  have hne : i.1 ≠ J + 1 := by
+    have hi_le : i.1 ≤ J := (Finset.mem_Icc.mp i.2).2
+    omega
+  have hold :
+      case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime i.1 a =
+        Cold i a := by
+    have hblock :=
+      case2DisplayedSourceOldTopBlock_constructedWithOldTopFromCprime
+        n hS hcont residual Cold Cprime
+    simpa [case2DisplayedSourceOldTopBlock] using
+      congrFun (congrFun hblock i) a
+  simpa [case2DisplayedSourceTerminalTransportedRows, hne] using hold
+
+set_option linter.style.longLine false in
+/-- The surviving pivot terminal transported row of the constructed
+old-top/free-`C'` source following factor is the top row of the free `C'`. -/
+theorem case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_pivotRow
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (a : τ) :
+    case2DisplayedSourceTerminalTransportedRows n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)
+        (case2SourceTerminalRowEquiv J (Sum.inr ())) a =
+      case2DisplayedFreeCprimeTop n hS hcont Cprime () a := by
+  let C :=
+    case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+      n hS hcont residual Cold Cprime
+  have hcprime :
+      case2DisplayedPaperCprime n hS hcont residual C = Cprime := by
+    simpa [C] using
+      case2DisplayedPaperCprime_of_constructedSourceFollowingFactorWithOldTopFromCprime
+        n hS hcont residual Cold Cprime
+  have htop :
+      case2DisplayedPaperCprimeTop n hS hcont residual C =
+        case2DisplayedFreeCprimeTop n hS hcont Cprime := by
+    ext u a
+    simpa [case2DisplayedPaperCprimeTop, case2DisplayedFreeCprimeTop] using
+      congrFun (congrFun hcprime (Sum.inl u)) a
+  simp [C, case2DisplayedSourceTerminalTransportedRows, htop]
+
+set_option linter.style.longLine false in
+/-- Reindexing the constructed old-top/free-`C'` transported terminal rows by
+old rows plus the pivot row gives `[Cold; top(C')]`.
+
+This is finite row bookkeeping only; it does not construct a source-produced
+terminal following matrix. -/
+theorem case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2DisplayedSourceTerminalTransportedRows n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)).submatrix
+        (case2SourceTerminalRowEquiv J) id =
+      verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime) := by
+  ext i a
+  rcases i with i | u
+  · exact
+      case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_oldRow
+        n hS hcont residual Cold Cprime i a
+  · cases u
+    exact
+      case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_pivotRow
+        n hS hcont residual Cold Cprime a
+
+set_option linter.style.longLine false in
+/-- The source-row terminal candidate of the constructed old-top/free-`C'`
+source following factor reindexes to `[Cold; top(C')]`. -/
+theorem case2DisplayedSourceTerminalCprimeCandidate_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2DisplayedSourceTerminalCprimeCandidate n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)).submatrix
+        (case2SourceTerminalRowEquiv J) id =
+      verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime) := by
+  rw [case2DisplayedSourceTerminalCprimeCandidate_eq_transportedRows]
+  exact
+    case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+      n hS hcont residual Cold Cprime
+
+namespace SuppliedTerminalCprimeBridge
+
+variable {τ R : Type*} [CommRing R]
+
+set_option linter.style.longLine false in
+/-- The explicit old-top-plus-free-top terminal rows supply a terminal `C'`
+bridge for the constructed old-top/free-`C'` source following factor.
+
+The terminal matrix is indexed by source terminal rows `1,...,J+1`; it is the
+source-row reindexing of `[Cold; top(C')]`.  This is not chart/source
+production of terminal data. -/
+def of_constructedWithOldTopFromCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    SuppliedTerminalCprimeBridge n hS hcont residual
+      (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+        n hS hcont residual Cold Cprime) where
+  Cterm :=
+    (verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime)).submatrix
+      (case2SourceTerminalRowEquiv J).symm id
+  oldRow := by
+    intro i a
+    have hrow :
+        case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+            n hS hcont residual Cold Cprime i.1 a =
+          Cold i a := by
+      have hblock :=
+        case2DisplayedSourceOldTopBlock_constructedWithOldTopFromCprime
+          n hS hcont residual Cold Cprime
+      simpa [case2DisplayedSourceOldTopBlock] using
+        congrFun (congrFun hblock i) a
+    simp [hrow]
+  pivotRow := by
+    intro a
+    have hpiv :
+        case2DisplayedPaperCprimeTop n hS hcont residual
+            (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+              n hS hcont residual Cold Cprime) () a =
+          case2DisplayedFreeCprimeTop n hS hcont Cprime () a := by
+      simpa [case2DisplayedSourceTerminalTransportedRows] using
+        case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_pivotRow
+          n hS hcont residual Cold Cprime a
+    simpa [case2DisplayedSourceTerminalTransportedRows] using hpiv.symm
+
+end SuppliedTerminalCprimeBridge
+
 /-- The source-row terminal `C'^(S+1)` reindexes back to the stacked
 old-top-plus-pivot-row candidate. -/
 theorem case2DisplayedSourceTerminalCprimeCandidate_submatrix_terminalRowEquiv
@@ -17535,6 +17694,37 @@ theorem terminalProduct_eq_weight_mul_Cterm_mul
     Wold n hS hcont b0 residual C F bridge.Cterm bridge.oldRow bridge.pivotRow
 
 end SuppliedTerminalCprimeBridge
+
+set_option linter.style.longLine false in
+/-- The stopped source-row terminal product candidate for the constructed
+old-top/free-`C'` source following factor rewrites to the explicit terminal
+matrix `[Cold; top(C')]`.
+
+This is a consumer of the finite terminal-row bridge.  It does not construct
+terminal charts, source-produced terminal data, normal crossings, pole order,
+or RLCT data. -/
+theorem case2DisplayedSourceTerminalProductReindexedCandidate_constructedWithOldTopFromCprime_eq_weight_mul_terminalStack_mul
+    {υ τ R : Type*} [CommRing R] [Fintype τ]
+    {J : ℕ}
+    (Wold :
+      Matrix (case2SourceOldTopRowIndex J) (case2SourceOldTopRowIndex J) R)
+    (n : ℕ → ℕ) {S : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R) (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (F : Matrix τ υ R) :
+    case2DisplayedSourceTerminalProductReindexedCandidate Wold n hS hcont
+        b0 residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) F =
+      (case2DisplayedSourceTerminalWeight Wold b0 *
+        (verticalBlock Cold (case2DisplayedFreeCprimeTop n hS hcont Cprime)).submatrix
+          (case2SourceTerminalRowEquiv J).symm id) * F :=
+  SuppliedTerminalCprimeBridge.terminalProduct_eq_weight_mul_Cterm_mul
+    (SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime
+      n hS hcont residual Cold Cprime)
+    Wold b0 F
 
 /-- Terminal-prefix-row version of the stopped displayed Case 2 source terminal
 weight candidate.  This only reindexes the already named source-row terminal

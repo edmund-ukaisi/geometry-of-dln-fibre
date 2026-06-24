@@ -2699,3 +2699,13 @@ ratio/minimum/count/order summary.  This is chart-certificate plumbing only:
 Aoyagi prints the displayed chart, while the all-pivot wrapper is our formal
 finite cover device; no source production, analytic transition regularity,
 coverage, global A0 normal crossings, pole order, or RLCT is proved.
+
+The constructed old-top/free-`Cprime` terminal-row specialization has now
+landed in
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-rows-a4.md`.
+Lean proves that the transported terminal rows of the constructed factor
+reindex to `[Cold; top(Cprime)]`, packages the explicit terminal source-row
+matrix as a `SuppliedTerminalCprimeBridge`, and rewrites the stopped terminal
+product candidate through it.  This is terminal-row bookkeeping only; do not
+read it as source production of `C'^(S+1)` or as the source-current
+`[Cold; Cprime]` block theorem.
