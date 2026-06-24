@@ -480,6 +480,25 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 3 tides, non-overlapping files: r1-cov-final (a4e79a2, R1 cov), l2-frame-pivot-rearch (a9c7dfa, L2 2≤L Stage A+B),
   l2-base-L1 (ac2db524, L2 L=1 base).
 
+**★ UPDATE-18 (2026-06-24) — L2 Stage A "connected bedrock" BANKED+INTEGRATED (axiom-clean); R1 cov reduced to the trivial reshape; the additive decomposition WORKS.**
+- **R1 cov (a4e79a2):** the GENUINE c-o-v `phi334_cov` is PROVEN + reviewer-SURVIVED + Codex-corroborated — det `|u₀|⁷·|u₁|²`
+  (matching leafH334), the chain rule, the two-sided null-slice drop. The soundness-critical content is DONE. The whole-c-o-v
+  sorry collapsed to ONE narrow residual: `Q334CLM_abs_det` (|det Q|=1 for the outer coord-reshape, trivially true). Tide
+  RESUMED to close it via the reusable reshape-MP (banks once for ALL hfin nodes). → fully-sorry-free (3,3,4) anchor next.
+- **L2 Stage A INTEGRATED @c1ca836e (axiom-clean [propext,Classical.choice,Quot.sound], headline green 2723 jobs):**
+  `deepestPoint_frame_pivot_exists` — the CONNECTION the frame-fact-gap demanded: the whole per-layer frame family with
+  first/interior = `deepestPoint_frame` (threshold corner, existing lemmas verbatim), last-layer = the pivot Q (PIVOT corner
+  `fromBlocks 1 0 0 0` + unit B22). Plus item-1 `pivot_devY_read_toBlocks₁₂` (the Y·B22 L1-soundness gate). **The Stage-A/B
+  additive decomposition WORKED** — Stage A green-banked as designed (breaks the prior 7-tide all-or-nothing).
+- **The next L2 layer (Stage B finding, Codex-verified, no false progress):** `framedLayer` hardcodes `rThresholdSplit` on the
+  column side, so the origin product lands the THRESHOLD corner frame-independently → a naive migration makes
+  `deepestEPivot_base` FALSE. The migration needs a **pivot-aware origin-product lemma** (re-derive
+  `prodAux_framedParamsReg_zero` → pivot corner) FIRST (Stage C, additive/green-bankable), THEN the coupled consumer migration
+  + value-fold → PIN1 (Stage D, the cast-wall-budget red-span).
+- **SEQUENCING (disciplined):** `rv-stageA` reviewing Stage A's bundle-soundness now; the Stage C+D migration tide is HELD
+  pending the verdict (do NOT build the big coupled write on an unverified foundation — the exact mistake the frame-fact-gap was).
+- 3 background agents: a4e79a2 (R1 cov residual), ac2db524 (L=1 base), rv-stageA (Stage A review). Migration tide held.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
