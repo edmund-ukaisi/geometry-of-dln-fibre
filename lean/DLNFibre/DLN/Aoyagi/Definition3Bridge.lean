@@ -662,6 +662,88 @@ theorem sourceRangeRankWidth_of_constant_reducedWidth
   unfold aoyagiReducedWidthInt at hnonneg
   exact_mod_cast (sub_nonneg.mp hnonneg)
 
+/-- The all-source strict selected inequalities force source-range rank-width.
+
+For a fixed source index, sum the strict inequalities over the other `L`
+source indices.  Since there are exactly `L` of them and `0 < L`, cancellation
+shows the fixed reduced width is positive. -/
+theorem sourceRangeRankWidth_of_all_selected_strict
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hL : 0 < L)
+    (hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        (L : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (j.val + 1)) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s := by
+  classical
+  intro s hs1 hsL
+  let i : Fin (L + 1) := ⟨s - 1, by omega⟩
+  let f : Fin (L + 1) → ℤ :=
+    fun j ↦ aoyagiReducedWidthInt H r (j.val + 1)
+  let T : ℤ := ∑ j : Fin (L + 1), f j
+  have hi_val : i.val + 1 = s := by
+    dsimp [i]
+    omega
+  have hstrict_fin : ∀ j : Fin (L + 1), (L : ℤ) * f j < T := by
+    intro j
+    dsimp [f, T]
+    exact hstrict (j.val + 1) (by omega) (by omega)
+  let k : Fin (L + 1) := if i.val = 0 then Fin.last L else 0
+  have hk_ne : k ≠ i := by
+    by_cases hi0 : i.val = 0
+    · dsimp [k]
+      rw [if_pos hi0]
+      intro hki
+      have hval : L = 0 := by
+        have := congrArg Fin.val hki
+        simp [hi0] at this
+        omega
+      omega
+    · dsimp [k]
+      rw [if_neg hi0]
+      intro hki
+      exact hi0 (congrArg Fin.val hki).symm
+  have hk_mem : k ∈ Finset.univ.erase i := by
+    simp [hk_ne]
+  have hsum_erase_lt :
+      ∑ j ∈ (Finset.univ.erase i), (L : ℤ) * f j <
+        ∑ _j ∈ (Finset.univ.erase i), T := by
+    exact Finset.sum_lt_sum
+      (fun j _hj ↦ le_of_lt (hstrict_fin j))
+      ⟨k, hk_mem, hstrict_fin k⟩
+  have hcard_erase : (Finset.univ.erase i).card = L := by
+    rw [Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ, Fintype.card_fin]
+    omega
+  have hleft :
+      ∑ j ∈ (Finset.univ.erase i), (L : ℤ) * f j =
+        (L : ℤ) * ∑ j ∈ (Finset.univ.erase i), f j := by
+    rw [Finset.mul_sum]
+  have hright :
+      ∑ _j ∈ (Finset.univ.erase i), T = (L : ℤ) * T := by
+    rw [Finset.sum_const, hcard_erase]
+    norm_num [nsmul_eq_mul]
+  have hmul :
+      (L : ℤ) * (∑ j ∈ (Finset.univ.erase i), f j) < (L : ℤ) * T := by
+    rwa [hleft, hright] at hsum_erase_lt
+  have hLz_pos : (0 : ℤ) < (L : ℤ) := by
+    exact_mod_cast hL
+  have herase_lt_T : ∑ j ∈ (Finset.univ.erase i), f j < T :=
+    lt_of_mul_lt_mul_left hmul (le_of_lt hLz_pos)
+  have hsum_univ :
+      T = f i + ∑ j ∈ (Finset.univ.erase i), f j := by
+    dsimp [T]
+    rw [← Finset.sum_erase_add _ _ (Finset.mem_univ i)]
+    ring
+  have hfi_pos : 0 < f i := by
+    rw [hsum_univ] at herase_lt_T
+    omega
+  have hred_pos : 0 < aoyagiReducedWidthInt H r s := by
+    dsimp [f] at hfi_pos
+    rwa [hi_val] at hfi_pos
+  unfold aoyagiReducedWidthInt at hred_pos
+  have hri : (r : ℤ) < (H s : ℤ) := by omega
+  exact_mod_cast le_of_lt hri
+
 /-- Diagnostic obstruction: the printed Definition 3 inequalities do not
 produce source data for the reduced-width profile `1,2,100`.
 
@@ -1115,6 +1197,33 @@ theorem exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_r
   rcases S.exists_selectedReducedWidthCeilData_of_rankWidth hr with
     ⟨m, data, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg⟩
   exact ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg⟩
+
+/-- All-source selected source data and ceiling package from strictness alone.
+
+The all-source strict inequalities already force the source-range rank-width
+bound used to rewrite reduced widths as natural layer-width differences. -/
+theorem exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hL : 0 < L)
+    (hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        (L : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (j.val + 1)) :
+    ∃ (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) := by
+  exact exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth
+    hL hstrict
+    (sourceRangeRankWidth_of_all_selected_strict hL hstrict)
 
 /-- For `L=2`, pairwise distinct source-range reduced widths force any
 Definition 3 source-data choice to use `ell=2`.

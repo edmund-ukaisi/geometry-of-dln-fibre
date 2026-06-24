@@ -577,6 +577,15 @@ rank-width hypothesis.  This closes the finite `L=2` source-data
 classification lane; do not add ceiling-data/final-socket wrappers from it
 unless a concrete downstream theorem needs them.
 
+A6 Definition 3 all-source strict rank-width has now landed:
+`threads/06-dln-translation/reproduction-definition3-all-source-strict-rank-width-a6.md`.
+Lean proves that the all-source strict selected inequalities imply
+source-range rank-width, and uses it to remove the explicit rank-width input
+from the all-source selected ceiling-data package.  This is a source-hypothesis
+reducer for the all-source branch only, not branch selection, not a closed
+Theorem 2 formula, and not a final socket.  Xhigh review passed in
+`threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
+
 ## Current A0 checkpoint - 2026-06-23
 
 The finite normal-crossing exponent interface has landed in

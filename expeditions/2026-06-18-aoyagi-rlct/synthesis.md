@@ -8516,6 +8516,18 @@ chart argument: full/reduced generator families, scalar entries as analytic
 regular coordinates, chart coverage, Jacobian/prior shift, unit conditions,
 and extraction for the actual full certificate.
 
+Latest A6 all-source strict-rank update:
+`Definition3Bridge.lean` now proves that the all-source strict selected
+inequalities imply source-range rank-width:
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict`.
+It also adds
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict`,
+which removes the separate `hr` input from the all-source ceiling-data package.
+This is still only the explicit all-source branch; it does not choose a branch
+for arbitrary Definition 3 data, compute the ceiling datum, or touch the
+analytic/final sockets.  Review passed in
+`threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

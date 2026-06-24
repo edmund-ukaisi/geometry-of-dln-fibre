@@ -5600,3 +5600,18 @@ Nonclaims: no exact-rank or source-rank openness, no analytic germ-ideal
 transport, no regular-suspension chart construction, no coverage, no Jacobian
 compatibility, no exponent shift, no normal crossings, no pole-order theorem,
 and no RLCT theorem.
+
+Latest A6 Definition 3 all-source strict rank-width:
+Proved that in the explicit all-source branch, the strict selected inequalities
+already force source-range rank-width.  For each source index `s`, the proof
+sums the inequalities for the other `L` indices, cancels the positive `L`, and
+gets `0 < H(s)-r`, hence `r <= H(s)`.
+
+Lean names:
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict`.
+
+Nonclaims: no arbitrary branch selection, no branch-independent Theorem 2
+payload, no closed form for `ceilWidth` or `aParam`, no source-rank/final
+socket wrapper, no Eq5 payloads, no chart production, no pole-order theorem,
+and no RLCT theorem.

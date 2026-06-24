@@ -7416,6 +7416,20 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-chart-local-suffix-state-field-continuity.md`.
 
+Latest A6 Definition 3 all-source strict rank-width:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict`.
+The first theorem derives source-range rank-width from the all-source strict
+selected inequalities by summing over the complement of a fixed source index.
+The second theorem uses that derived rank-width to call the existing
+`_rankWidth` all-source selected ceiling-data package.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-all-source-strict-rank-width-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-all-source-strict-rank-width.md`.
+Review:
+`threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

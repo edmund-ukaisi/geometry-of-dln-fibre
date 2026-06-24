@@ -1558,3 +1558,31 @@ Boundary: finite Definition 3/Theorem 2 formula diagnostics only.  This is not
 a pole-order theorem, not an analytic RLCT ambiguity claim, and not chart
 production, Eq5 payload construction, normal crossings, pole order, or RLCT
 extraction.
+
+## Current slice - 2026-06-24, all-source strict rank-width
+
+Reproduction:
+`reproduction-definition3-all-source-strict-rank-width-a6.md`.
+Statement card:
+`statement-card-a6-definition3-all-source-strict-rank-width.md`.
+Review:
+`review-definition3-all-source-strict-rank-width-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict
+AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict
+```
+
+For the explicit all-source branch `ell=L`, `C.cut j=j+1`, the strict
+selected inequalities already imply `r <= H(s)` for every source-range index.
+The proof fixes one source index, sums the strict inequalities over the other
+`L` indices, cancels the positive factor `L`, and obtains positivity of the
+fixed reduced width `H(s)-r`.
+
+The package theorem removes the separate source-range rank-width input from
+the existing all-source selected ceiling-data package.  It still does not
+choose the all-source branch for arbitrary Definition 3 data, compute
+`ceilWidth` or `aParam`, construct Eq5 payloads or charts, prove normal
+crossings, identify pole order, or extract RLCT.
