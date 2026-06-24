@@ -1,6 +1,7 @@
 import DLNFibre.Core.FibreDimFibration
 import DLNFibre.Core.FibreDimEasyProbe
 import DLNFibre.Core.FibreHeightDirect
+import DLNFibre.Core.FibreNormalForm
 
 /-!
 # `DLNFibre.Core.FibreDimHeadlineProbe` — the pre-staged headline wiring (H5)
@@ -39,5 +40,30 @@ theorem codimRepCanonical_fibre_eq_of_minimalPrimes_height_bounds [IsAlgClosed k
     codimRepCanonical (fibre d B) = v := by
   rw [codimRepCanonical_fibre_eq_height_fibreGenIdeal]
   exact height_eq_of_minimalPrimes_bounds (fibreGenIdeal d B) v hge hle
+
+/-! ## G1-transported headline: the per-component bound at ONE rank-r point suffices
+
+`Core.FibreNormalForm.codimRepCanonical_fibre_eq_of_rank_eq` (LANDED, flatness-free, via the GL×GL
+endpoint action) makes the fibre codimension **constant over all rank-`r` targets**. So thread 27 need
+prove the per-component height bounds at only ONE tractable rank-`r` point `B*` (e.g. the normal form
+`E`, or whichever fibre is cleanest); G1 then transports `codim(fibre B*) = codim(fibre B)` to every
+rank-`r` `B`. This is the "no-jump" — already proved, not via flatness. -/
+
+/-- **G1-transported headline.** Over an infinite algebraically closed field with `N ≥ 1`, if the
+per-component height bounds (every minimal prime `height ≥ v`, one `≤ v`) hold for the fibre over SOME
+rank-`r` target `B*`, then **every** rank-`r` target `B` has `codimRepCanonical (fibre d B) = v`. The
+H5 closer gives `codim(fibre B*) = v`; G1 (`codimRepCanonical_fibre_eq_of_rank_eq`) transports it.
+Thread 27 supplies the bounds at one tractable `B*`; this delivers the value at all rank-`r` `B`. -/
+theorem codimRepCanonical_fibre_eq_of_rank_of_height_bounds_at_witness
+    [IsAlgClosed k] [Infinite k] (d : Fin (N + 1) → ℕ) (hN : (0 : Fin (N + 1)) ≠ Fin.last N)
+    (Bstar B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) {r : ℕ}
+    (hBstar : Bstar.rank = r) (hB : B.rank = r) (v : ℕ∞)
+    (hge : ∀ J ∈ (fibreGenIdeal d Bstar).minimalPrimes, v ≤ J.height)
+    (hle : ∃ J ∈ (fibreGenIdeal d Bstar).minimalPrimes, J.height ≤ v) :
+    codimRepCanonical (fibre d B) = v := by
+  have hstar : codimRepCanonical (fibre d Bstar) = v :=
+    codimRepCanonical_fibre_eq_of_minimalPrimes_height_bounds d Bstar v hge hle
+  rw [codimRepCanonical_fibre_eq_of_rank_eq d hN B Bstar (by rw [hB, hBstar])]
+  exact hstar
 
 end DLNFibre.Core
