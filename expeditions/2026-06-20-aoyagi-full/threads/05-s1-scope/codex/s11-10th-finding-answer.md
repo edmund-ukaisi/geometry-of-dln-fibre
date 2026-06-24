@@ -1,0 +1,5 @@
+1. **CONFIRMED.** If `K = π⁻¹ {w*} = ∅`, then `Ω = ∅` is allowed, the integral is `0`, and every `c' ≥ 0` is admissible, so the threshold is `⊤` in the extended-real sense. The LHS can be finite, e.g. `F(x)=|x-w*|` with unit weight gives threshold `1` in dimension one.
+
+2. **CONFIRMED.** The Cantor staircase example is valid: `id + C` is proper, strictly increasing, differentiable off the null Cantor set with derivative `1`, but maps that null set to positive measure. Properness does not rescue this, and the Jacobian weight does not see mass carried by `π(E)` because `E` has zero domain measure.
+
+3. **INSUFFICIENT as stated.** `Surjective π` plus `volume (π '' E)=0` fixes those two gaps, but the listed hypotheses still do not by themselves give the needed change-of-variables/area formula. Add a real CoV hypothesis, for example suitable local `C¹`/locally Lipschitz regularity off `E` plus the area formula, or assume the required transport-of-integrals statement directly.

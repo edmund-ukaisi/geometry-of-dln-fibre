@@ -1,0 +1,5 @@
+1. **CONFIRMED, with a localization caveat:** choose `V` non-measurable modulo null in every neighborhood of `wstar`; then for `F ≡ 1` locally and two distinct positive values of `u`, every `c' > 0` gives a non-AEStronglyMeasurable two-valued integrand, so only `c'=0` is admissible.
+
+2. **CONFIRMED:** `IntegrableOn` implies `AEStronglyMeasurable` for the restricted measure; the subtlety is that `V` must not be a.e. equal to a measurable set on the chosen neighborhood. Mere pointwise non-measurability on a null-modification would not suffice.
+
+3. **REFUTED as minimal, CONFIRMED as sufficient:** global `Measurable u` is stronger than needed; local a.e. measurability of `|u|`/`u` plus the unit bounds is enough. At the use-site, an analytic unit is continuous, hence measurable and a.e. measurable.
