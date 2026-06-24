@@ -4551,6 +4551,25 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
 
+Latest A2 product-reduction triangular coordinate chart:
+`ProductReduction.lean` now defines
+`ProductReductionStepRawCoordinates`,
+`ProductReductionStepChartCoordinates`, their determinant-chart predicates,
+the p. 13 forward map and inverse map, determinant-domain preservation, and
+the two inverse identities.  The variables are dimension-balanced by retaining
+passive `D`, `A1`, and `A3`; the formulas invert `A1` and `Ctop`/`C1*A1` but
+never invert `D`.  This reproduces the elementary triangular variable change
+behind the p. 13 regular variables.  It is not analytic coordinate-chart
+construction, exact-rank/source-rank openness, block-difference wrapper
+transport, regular-suspension construction, analytic germ transport, coverage,
+Jacobian compatibility, normal crossings, pole order, or RLCT extraction.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-triangular-coordinate-chart.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-triangular-coordinate-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-triangular-coordinate-chart.md`.
+
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.

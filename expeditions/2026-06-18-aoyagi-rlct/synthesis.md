@@ -8564,6 +8564,30 @@ chart argument: full/reduced generator families, scalar entries as analytic
 regular coordinates, chart coverage, Jacobian/prior shift, unit conditions,
 and extraction for the actual full certificate.
 
+Latest A2 product-reduction triangular coordinate chart:
+`ProductReduction.lean` now defines the one-step raw and chart coordinate
+packages
+`ProductReductionStepRawCoordinates` and
+`ProductReductionStepChartCoordinates`, their determinant-chart predicates,
+the forward map `toChart`, inverse map `toRaw`, determinant-domain
+preservation lemmas, and forward/inverse identities.  The forward formulas are
+`Ctop=C1*A1`, `F2=-(A1⁻¹*A2)`,
+`F3=F3old-D*A3*(C1*A1)⁻¹`, and `C=A4-A3*A1⁻¹*A2`; the inverse keeps the
+passive variables `D`, `A1`, and `A3`, and never uses `D⁻¹`.  This is the
+source-faithful elementary coordinate algebra behind the p. 13 displayed
+regular variables, not an analytic chart or regular-suspension theorem.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-triangular-coordinate-chart.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-triangular-coordinate-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-triangular-coordinate-chart.md`.
+Next wrapper target: connect these structure-level coordinates to
+`productReduction_chartLocalInductionStep_fromBlocks_indexed`,
+`triangularBlockProductDifference_fromBlocks_indexed`, and the entry-ideal
+cleanup, without claiming analytic coverage, Jacobian compatibility, normal
+crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

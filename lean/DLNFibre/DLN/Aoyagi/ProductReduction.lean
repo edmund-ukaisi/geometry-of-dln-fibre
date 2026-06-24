@@ -529,6 +529,156 @@ theorem productReduction_chartLocalInductionStep_fromBlocks_indexed
     _ = fromBlocks (C1 * A1) 0 0 (D * (A4 - A3 * A1⁻¹ * A2)) := by
       rw [hSchur]
 
+/-- Raw one-step variables for the p. 13 triangular product-reduction
+coordinate change.
+
+The fields `D`, `F3`, `A1`, and `A3` are retained as chart variables; in
+particular the inverse formulas below never invert `D`. -/
+structure ProductReductionStepRawCoordinates
+    (ρ π μ ν : Type*) (K : Type*) where
+  C1 : Matrix ρ ρ K
+  D : Matrix π μ K
+  F3 : Matrix π ρ K
+  A1 : Matrix ρ ρ K
+  A2 : Matrix ρ ν K
+  A3 : Matrix μ ρ K
+  A4 : Matrix μ ν K
+
+/-- Target one-step variables for the p. 13 triangular product-reduction
+coordinate change.
+
+`C` is the new residual block `A4 - A3 A1^{-1} A2`; the fields `D`, `A1`, and
+`A3` are passive variables. -/
+structure ProductReductionStepChartCoordinates
+    (ρ π μ ν : Type*) (K : Type*) where
+  Ctop : Matrix ρ ρ K
+  D : Matrix π μ K
+  A1 : Matrix ρ ρ K
+  A3 : Matrix μ ρ K
+  F2 : Matrix ρ ν K
+  F3 : Matrix π ρ K
+  C : Matrix μ ν K
+
+namespace ProductReductionStepRawCoordinates
+
+/-- Determinant-chart domain for the raw one-step variables. -/
+def detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) : Prop :=
+  IsUnit x.C1.det ∧ IsUnit x.A1.det
+
+/-- Forward p. 13 triangular coordinate change for one product-reduction step. -/
+def toChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepChartCoordinates ρ π μ ν K where
+  Ctop := x.C1 * x.A1
+  D := x.D
+  A1 := x.A1
+  A3 := x.A3
+  F2 := -(x.A1⁻¹ * x.A2)
+  F3 := x.F3 - x.D * x.A3 * (x.C1 * x.A1)⁻¹
+  C := x.A4 - x.A3 * x.A1⁻¹ * x.A2
+
+end ProductReductionStepRawCoordinates
+
+namespace ProductReductionStepChartCoordinates
+
+/-- Determinant-chart domain for the target one-step variables. -/
+def detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) : Prop :=
+  IsUnit y.Ctop.det ∧ IsUnit y.A1.det
+
+/-- Inverse p. 13 triangular coordinate change for one product-reduction step.
+
+Only `A1` and `Ctop` are inverted.  The previous residual block `D` is passive
+and is not inverted. -/
+def toRaw
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepRawCoordinates ρ π μ ν K where
+  C1 := y.Ctop * y.A1⁻¹
+  D := y.D
+  F3 := y.F3 + y.D * y.A3 * y.Ctop⁻¹
+  A1 := y.A1
+  A2 := -y.A1 * y.F2
+  A3 := y.A3
+  A4 := y.C - y.A3 * y.F2
+
+end ProductReductionStepChartCoordinates
+
+/-- The forward p. 13 coordinate change preserves determinant-chart
+membership. -/
+theorem ProductReductionStepRawCoordinates.detChart_toChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hx : x.detChart) :
+    (x.toChart).detChart := by
+  constructor
+  · simpa [ProductReductionStepRawCoordinates.toChart, Matrix.det_mul] using
+      hx.1.mul hx.2
+  · simpa [ProductReductionStepRawCoordinates.toChart] using hx.2
+
+/-- The inverse p. 13 coordinate change preserves determinant-chart
+membership. -/
+theorem ProductReductionStepChartCoordinates.detChart_toRaw
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K)
+    (hy : y.detChart) :
+    (y.toRaw).detChart := by
+  constructor
+  · have hA1inv : IsUnit (y.A1⁻¹).det :=
+      y.A1.isUnit_nonsing_inv_det hy.2
+    simpa [ProductReductionStepChartCoordinates.toRaw, Matrix.det_mul] using
+      hy.1.mul hA1inv
+  · simpa [ProductReductionStepChartCoordinates.toRaw] using hy.2
+
+/-- Forward followed by inverse recovers the raw one-step coordinates.
+
+This is stated on the raw determinant chart, where `C1`, `A1`, and hence
+`C1 * A1` are determinant units.  The algebraic cancellation in the proof uses
+the `A1` component; the `C1` component records the source chart needed to treat
+`(C1 * A1)^{-1}` as a regular expression.  No inverse of the passive residual
+block `D` is used. -/
+theorem productReductionStepCoordinate_left_inverse
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hx : x.detChart) :
+    (ProductReductionStepRawCoordinates.toChart x).toRaw = x := by
+  cases x with
+  | mk C1 D F3 A1 A2 A3 A4 =>
+      suffices hneg : - -A2 = A2 by
+        simpa [ProductReductionStepRawCoordinates.toChart,
+          ProductReductionStepChartCoordinates.toRaw,
+          Matrix.mul_nonsing_inv_cancel_left, hx.2, Matrix.mul_assoc,
+          sub_eq_add_neg] using hneg
+      exact neg_neg A2
+
+/-- Inverse followed by forward recovers the target one-step coordinates.
+
+The statement includes the determinant-unit condition for `Ctop`, matching the
+source chart where `Ctop^{-1}` is a regular expression.  The algebraic
+cancellations in this finite inverse check use only the `A1` chart condition. -/
+theorem productReductionStepCoordinate_right_inverse
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K)
+    (hA1 : IsUnit y.A1.det) (_hCtop : IsUnit y.Ctop.det) :
+    (ProductReductionStepChartCoordinates.toRaw y).toChart = y := by
+  cases y with
+  | mk Ctop D A1 A3 F2 F3 C =>
+      suffices hneg : - -F2 = F2 by
+        simpa [ProductReductionStepRawCoordinates.toChart,
+          ProductReductionStepChartCoordinates.toRaw, hA1, Matrix.mul_assoc,
+          sub_eq_add_neg] using hneg
+      exact neg_neg F2
+
 /-- One suffix step for chart-local product reduction with a supplied transformed edge. -/
 theorem productReduction_chartLocal_suffixStep_fromBlocks_indexed
     {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π] [DecidableEq π]

@@ -7434,6 +7434,32 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-chart-local-suffix-state-field-continuity.md`.
 
+Latest A2 product-reduction triangular coordinate chart:
+`ProductReduction.lean` now proves the one-step p. 13 triangular
+coordinate-change package:
+`ProductReductionStepRawCoordinates`,
+`ProductReductionStepChartCoordinates`,
+`ProductReductionStepRawCoordinates.detChart`,
+`ProductReductionStepChartCoordinates.detChart`,
+`ProductReductionStepRawCoordinates.toChart`,
+`ProductReductionStepChartCoordinates.toRaw`,
+`ProductReductionStepRawCoordinates.detChart_toChart`,
+`ProductReductionStepChartCoordinates.detChart_toRaw`,
+`productReductionStepCoordinate_left_inverse`, and
+`productReductionStepCoordinate_right_inverse`.  This packages the formulas
+`Ctop=C1*A1`, `F2=-(A1⁻¹*A2)`,
+`F3=F3old-D*A3*(C1*A1)⁻¹`, and `C=A4-A3*A1⁻¹*A2`, with inverse formulas that
+retain passive `D`, `A1`, and `A3` and never invert `D`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-triangular-coordinate-chart.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-reduction-triangular-coordinate-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-reduction-triangular-coordinate-chart.md`.
+Nonclaims: no analytic coordinate-chart construction, exact-rank/source-rank
+openness, block-difference wrapper, regular-suspension construction,
+analytic germ transport, coverage, Jacobian compatibility, normal crossings,
+pole order, or RLCT extraction.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

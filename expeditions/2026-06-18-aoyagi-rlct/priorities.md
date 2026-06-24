@@ -3104,14 +3104,16 @@ least-coordinate tie-breaker is not Aoyagi's classifier and does not prove
 injection, no-extra coverage, back-to-label coverage, terminal exactness, pole
 order, normal crossings, or RLCT.
 
-Next A2 source-moving target from xhigh scouting: reproduce the p. 13
-product-reduction triangular coordinate chart, not a full regular-suspension
-certificate.  The reproduction should pin the forward and inverse formulas for
-`C^(S+1)`, `F2''`, `F3''`, and `C1''`, keep passive variables for dimension
-balance, verify the displayed product-difference block
-`C1-Er`, `-F2`, `-F3`, `prod C^(s)-F3F2`, and check that no inverse of `D_S`
-is used.  Only after review should a Lean slice such as
-`ProductReductionChart.lean` be attempted.
+The current A2 product-reduction triangular coordinate chart slice is
+`threads/03-block-product-reduction/reproduction-a2-product-reduction-triangular-coordinate-chart.md`.
+Lean now packages the one-step p. 13 forward/inverse coordinate formulas and
+determinant-domain preservation in `ProductReduction.lean`, retaining passive
+`D`, `A1`, and `A3` and never inverting `D`.  Next A2 source-moving target:
+wrap these coordinates around the existing one-step block diagonalisation and
+product-difference block identity, with lower-right correction `F3*F2`, not
+`F2*F3`.  Keep this as elementary block algebra; do not turn it into analytic
+coverage, regular-suspension construction, normal crossings, pole order, or
+RLCT.
 
 Next A4 finite-atlas target from xhigh scouting: if returning to Case 2 chart
 family plumbing, define fixed raw-pivot finite selected-entry algebra

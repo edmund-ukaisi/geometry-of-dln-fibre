@@ -2127,3 +2127,40 @@ normal crossings, pole order, or RLCT is proved.
 Xhigh review by `Descartes the 3rd` passed after repairing the reproduction's
 source anchor to distinguish the literal signed/corrected p. 13 display from
 the cleaned four-family entry-ideal generator package.
+
+## 2026-06-24 A2 product-reduction triangular coordinate chart
+
+Reproduction:
+`reproduction-a2-product-reduction-triangular-coordinate-chart.md`.
+Statement card:
+`statement-card-a2-product-reduction-triangular-coordinate-chart.md`.
+Review:
+`review-a2-product-reduction-triangular-coordinate-chart.md`.
+
+Lean now packages the one-step p. 13 triangular variable change in
+`ProductReduction.lean`:
+
+```text
+ProductReductionStepRawCoordinates
+ProductReductionStepChartCoordinates
+ProductReductionStepRawCoordinates.detChart
+ProductReductionStepChartCoordinates.detChart
+ProductReductionStepRawCoordinates.toChart
+ProductReductionStepChartCoordinates.toRaw
+ProductReductionStepRawCoordinates.detChart_toChart
+ProductReductionStepChartCoordinates.detChart_toRaw
+productReductionStepCoordinate_left_inverse
+productReductionStepCoordinate_right_inverse
+```
+
+The raw variables are `C1, D, F3, A1, A2, A3, A4`; the chart variables are
+`Ctop, D, A1, A3, F2, F3, C`.  The forward formulas are
+`Ctop=C1*A1`, `F2=-(A1⁻¹*A2)`,
+`F3=F3old-D*A3*(C1*A1)⁻¹`, and `C=A4-A3*A1⁻¹*A2`, with inverse formulas that
+retain passive `D`, `A1`, and `A3` and never invert `D`.
+
+Boundary: elementary determinant-chart coordinate algebra only.  It does not
+prove analytic coordinate chart status, exact-rank/source-rank openness,
+regular-suspension chart construction, block-difference wrapper transport,
+analytic germ-ideal transport, coverage, Jacobian compatibility, normal
+crossings, pole order, or RLCT extraction.
