@@ -650,6 +650,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   feasibility risk under validation. The headline is honest-conditional on hfin until the recursive cover is built.
 - 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 hdiv bundle + (4,4,2,2)), pp-r1-genM (R1 hfin {V=0}-recursion validation).
 
+**★ UPDATE-28 (2026-06-24) — R1 hdiv bundle + (4,4,2,2) INTEGRATED (reviewer-SURVIVED); hdiv-general HELD pending the hfin verdict.**
+- **R1 hdiv infrastructure INTEGRATED @fd08d958** (r1-node-bundle, reviewer-SURVIVED, full build green 8347 jobs):
+  `NodeAchieverChart M` (the (3,3,4) L2AchieverChart fields generalized) + `routeMCore_box_diverges_of_nodeChart` (the
+  REUSABLE M-agnostic assembly — discharges the box-divergence atom for ANY M from a bundle) + `pivotBlowupOn_abs_det`
+  (the reusable radial-blowup det lemma) + the (4,4,2,2) instance (`routeMCore_box_diverges_achiever_4422`, det=|u₀|³,
+  degenerate-chart guard passed). Wired (RouteM family, no dup). Axioms = [propext, Classical.choice, Quot.sound,
+  monomial_rlct]. Honestly named (the (4,4,2,2) instance, NOT the general atom).
+- **hdiv-general HELD:** the (3,3,3,3) instance + the general closed-φ_M chaining lemma → the general-M atom
+  (RouteMLayerCoverGE:120, still sorry) is the remaining hdiv build. Holding it pending the hfin S2-only feasibility
+  verdict (pp-r1-genM #51) — that gates the whole R1 strategy (if hfin needs a cite, the "full from-scratch R1"
+  investment changes). The hdiv leg is design-closed + bundle-banked + (4,4,2,2)-validated — no urgency to build more
+  instances while the gating questions (hfin feasibility, L2 PIN1) resolve.
+- 2 background agents: l2-pin1-final (L2 PIN1, the dominant bottleneck), pp-r1-genM (R1 hfin {V=0}-recursion feasibility — THE decisive R1 question).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
