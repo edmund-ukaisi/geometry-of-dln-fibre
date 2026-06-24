@@ -106,3 +106,14 @@ The wedge-design adjudication (pen-and-paper + decorrelated Codex) settled both 
   hfin as a named Deferred); (iii) — only if the operator chooses — relax the one-citation constraint for
   hfin specifically (cite the upper bound, prove the geometric codimension = the new content). Default
   (mine, until the operator says otherwise): pursue (i), banking (ii) as the guaranteed milestone.
+
+## 7. Process: an unattributed edit to `.agent-team/roles/controller.md` appeared + was reverted (2026-06-24)
+A working-tree modification to `.agent-team/roles/controller.md` appeared (1 line, an on-message elaboration:
+"Holds the executive position. Holds the *vision*… meditatively let the sea rise. Responsible for breaking
+problems into dissolvable chunks, but also meticulous in asking teammates to check whether details and
+project design are viable at each stage. Responsible for maintaining project hygiene."). Provenance unknown —
+most likely the stopped in-main wedge tide (a12ac) overreaching while reading role files; NOT made by me.
+Per discipline (don't silently accept unauthorized edits to role/config files of unknown provenance), I
+REVERTED it to the committed version. The content is benign + aligned with the disposition. **Operator: if
+this edit was yours (or you want it), re-apply it deliberately — I preserved the text here.** Related: the
+in-main wedge tide also left transient `lean/.codex-consult/` scratch (untracked, not committed) — harmless.
