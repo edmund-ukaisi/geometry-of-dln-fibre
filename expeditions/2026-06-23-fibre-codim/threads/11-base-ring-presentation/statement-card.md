@@ -13,7 +13,7 @@ determinantal-ideal generating-set theory (absent in Mathlib v4.29). Module:
 > corner `d`) equals `d · det Δ − v ⬝ adjugate Δ ⬝ u`. No invertibility of `Δ`.
 >
 > - **Lean:** `DLNFibre.Core.det_fromBlocks_scalar_eq`
->   (`lean/DLNFibre/Core/DeterminantalChartRing.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/DeterminantalChartRing.lean` @ `eec3f774`)
 > - **Gloss.** For `Δ : Matrix (Fin r) (Fin r) α`, `u : Matrix (Fin r) Unit α`,
 >   `v : Matrix Unit (Fin r) α`, `d : Matrix Unit Unit α` over a `CommRing α`,
 >   `(fromBlocks Δ u v d).det = d () () * Δ.det − (v * adjugate Δ * u) () ()` (packaged as
@@ -38,7 +38,7 @@ determinantal-ideal generating-set theory (absent in Mathlib v4.29). Module:
 > expression `M a b · det M[pr,pc] − (M[a,pc] ⬝ adjugate M[pr,pc] ⬝ M[pr,b])` is zero.
 >
 > - **Lean:** `DLNFibre.Core.schur_expr_eq_zero_of_rank_le`
->   (`lean/DLNFibre/Core/DeterminantalChartRing.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/DeterminantalChartRing.lean` @ `eec3f774`)
 > - **Gloss.** The Schur expression is the determinant of the bordered `(r+1)×(r+1)` submatrix
 >   (`det_fromBlocks_scalar_eq`), which vanishes because it is an `(r+1)`-minor of a rank-`≤ r`
 >   matrix (`submatrix_det_eq_zero_of_rank_le`, landed in `Core.RankLocusClosed`).
