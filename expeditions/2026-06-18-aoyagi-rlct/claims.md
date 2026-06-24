@@ -4183,6 +4183,21 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
 
+Latest A4 chart-index residual-subtype Schur transition:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_mul_sq`.
+This is the chart-indexed residual-row/residual-column subtype version of the
+Case 2 denominator-cleared selected-entry Schur transition, reading target
+lower-right `Q/P` block indices through source labels `i.1.1` and `j.1.1`.
+It remains finite coordinate algebra only: no analytic transition regularity,
+chart coverage, source-displayed all-pivot atlas, successor/following-factor
+production, normal crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-index-residual-subtype-schur-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

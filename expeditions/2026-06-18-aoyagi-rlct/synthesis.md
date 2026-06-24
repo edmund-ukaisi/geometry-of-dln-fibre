@@ -6790,6 +6790,19 @@ regularity or chart coverage, source-produce `Csucc` or `C'^(S+1)`, produce
 suffixes, or prove normal crossings, pole order, or RLCT.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
 
+The latest A4 chart-index residual-subtype Schur transition is
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+Lean now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_mul_sq`,
+the chart-index wrapper of the residual-subtype denominator-cleared Schur
+formula for the target lower-right `Q/P` block.  This connects the finite
+all-pivot selected-entry chart indices to the residual-row/residual-column
+subtype indexing used by the displayed Case 2 Schur block, without claiming
+analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, successor/following-factor production, normal crossings, pole order, or
+RLCT.  Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

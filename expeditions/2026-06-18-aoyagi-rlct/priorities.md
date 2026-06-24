@@ -2434,6 +2434,19 @@ transition data toward inverse/cocycle laws and Schur-compatible `Q/P`
 overlaps before attempting branchwise successor production.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
 
+The newest A4 chart-index residual-subtype Schur transition is
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+Lean now has the `Q/P` lower-right block version of the denominator-cleared
+Schur overlap identity for chart-indexed Case 2 pivots and residual-row /
+residual-column subtype complement indices.  This is a better next bridge than
+inverse/cocycle laws for the immediate A4 frontier because it connects the
+finite selected-entry transition data to the residual block used by the
+displayed Case 2 `Q/P` calculation, while still avoiding any source-production
+or analytic-transition claim.  Next finite-atlas work can now move to the
+generic normalized-coordinate inverse/cocycle laws, then tie those laws back to
+Schur-compatible `Q/P` overlap data.  Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

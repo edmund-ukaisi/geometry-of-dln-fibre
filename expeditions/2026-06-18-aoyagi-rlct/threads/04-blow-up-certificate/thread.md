@@ -5728,6 +5728,31 @@ gluing, analytic transition regularity, source production of `Csucc` or
 `C'^(S+1)`, suffix production, recurrence/exponent post-data, normal
 crossings, pole order, or RLCT extraction.
 
+## 2026-06-24 Lean Case 2 chart-index residual-subtype Schur transition
+
+Reproduction:
+`reproduction-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+Statement card:
+`statement-card-a4-case2-chart-index-residual-subtype-schur-transition.md`.
+Review:
+`review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
+
+Lean now exposes the denominator-cleared Schur-overlap identity for the Case 2
+all-pivot selected-entry chart indices with the target lower-right `Q/P` block
+indexed by residual-row and residual-column subtype complements:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_mul_sq
+```
+
+For source chart pivot `p`, target chart pivot `q=(a,b)`, normalized target
+coordinate `x_ab != 0`, and residual-subtype off-pivot indices `i,j`, it proves
+`x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj`, reading the source labels as `i.1.1`
+and `j.1.1`.  This is finite `Q/P` residual-block coordinate algebra only: no
+analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, successor/following-factor production, normal crossings, pole order, or
+RLCT extraction.
+
 ## 2026-06-24 Lean Case 2 chart-index Schur transition
 
 Reproduction:
