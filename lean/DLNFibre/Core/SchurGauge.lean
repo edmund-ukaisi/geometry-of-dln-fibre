@@ -139,6 +139,22 @@ noncomputable def endpointGauge (d : Fin (N + 1) → ℕ) (r : ℕ)
       cast (by rw [hvl]) (isUnit_Lmat (k := k) (d 0) (d (Fin.last N)) r hp).unit⁻¹
     else 1
 
+/-- The source-vertex unit of the endpoint gauge is `H` (the `cast` at `v = 0` is the identity). -/
+theorem endpointGauge_zero (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
+    (endpointGauge (k := k) d r hp hq) 0
+      = (isUnit_Hmat (k := k) (d 0) (d (Fin.last N)) r hq).unit := by
+  unfold endpointGauge; rw [dif_pos rfl]; rfl
+
+/-- The target-vertex unit of the endpoint gauge is `L⁻¹` (the `cast` at `v = last N` is the
+identity; needs `N ≥ 1` so `last N ≠ 0`). -/
+theorem endpointGauge_last {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
+    (endpointGauge (k := k) d r hp hq) (Fin.last (N + 1))
+      = (isUnit_Lmat (k := k) (d 0) (d (Fin.last (N + 1))) r hp).unit⁻¹ := by
+  unfold endpointGauge
+  rw [dif_neg Fin.last_pos.ne', dif_pos rfl]; rfl
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: at `(q,p,r) = (2,2,1)` over `ℚ`, the `1×1` pivot block over `SchurLoc` is
