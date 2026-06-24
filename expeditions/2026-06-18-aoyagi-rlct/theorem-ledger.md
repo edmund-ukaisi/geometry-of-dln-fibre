@@ -7065,6 +7065,27 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.
 
+Latest A6 source-rank final handoff:
+`Theorem2SourceRankFinalBridge.lean` proves
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_sourceRankStratum`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_sourceRankStratum`.
+`Theorem2SourceRankEq5Bridge.lean` proves
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_sourceRankStratum_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_sourceRankStratum_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`.
+These wrappers specialize `L=N`, use the A2 source-rank stratum and dimension
+convention to produce the source-range rank-width hypothesis, and call the
+existing final/Eq5 `_of_rankWidth` wrappers.  They prove no selected-cutpoint
+existence, Definition 3 source-data existence, exact-rank openness, Eq5
+family construction, Lemma 5 exactness, finite formula, chart production,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-rank-final-handoff-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-rank-final-handoff.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -124,4 +124,6 @@ import DLNFibre.DLN.Aoyagi.ProductReductionEntryIdealBoundary
 import DLNFibre.DLN.Aoyagi.Lemma5Eq5TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderEqualityBridge
 import DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge
+import DLNFibre.DLN.Aoyagi.Theorem2SourceRankFinalBridge
+import DLNFibre.DLN.Aoyagi.Theorem2SourceRankEq5Bridge
 import DLNFibre.DLN.Aoyagi.RegularVariableShift

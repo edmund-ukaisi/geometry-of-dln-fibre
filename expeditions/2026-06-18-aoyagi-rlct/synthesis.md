@@ -7333,6 +7333,24 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.
 
+A6 source-rank final handoff follow-through:
+`Theorem2SourceRankFinalBridge.lean` and `Theorem2SourceRankEq5Bridge.lean`
+now contain exactly four source-rank-stratum variants of the existing
+Definition 3 source-data final-boundary and Eq5 terminal-order handoffs.  The
+new wrappers specialize `L=N`, derive the source-range rank-width hypothesis
+from `paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth W B hx hH`,
+and then invoke the existing `_of_rankWidth` wrappers.  This removes a
+repeated final-socket hypothesis when A2 source-rank stratum membership and the
+dimension convention are already available.  It does not construct selected
+cutpoints, Definition 3 source data, Eq5 endpoint families, Lemma 5 exactness,
+active-ratio/chart-count facts, charts, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-rank-final-handoff-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-rank-final-handoff.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

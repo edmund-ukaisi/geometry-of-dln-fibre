@@ -2806,3 +2806,13 @@ explicit dimension convention `H(k+1)=finrank K (W k)` are supplied.  Next A6
 rank-provenance work can connect this to the final-boundary and Eq5 handoffs
 only where it removes a real repeated hypothesis; do not clone all wrappers by
 default.
+
+That narrow final-handoff connection has now landed:
+`threads/06-dln-translation/reproduction-definition3-source-rank-final-handoff-a6.md`.
+Lean adds only four leaf wrappers in `Theorem2SourceRankFinalBridge.lean` and
+`Theorem2SourceRankEq5Bridge.lean`, replacing repeated source-range rank-width
+inputs at final-boundary/Eq5 sockets by the A2 source-rank stratum and the
+explicit dimension convention.  Do not continue with projection or pair-form
+variants.  The next A6 source-moving target should either reduce a different
+genuine source hypothesis or move back to selected-cutpoint/Definition-3
+existence; avoid further wrapper accumulation.

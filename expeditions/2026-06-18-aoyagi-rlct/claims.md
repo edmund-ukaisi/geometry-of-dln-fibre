@@ -4673,3 +4673,19 @@ Statement card:
 `threads/06-dln-translation/statement-card-a6-definition3-source-range-rank-width.md`.
 Review:
 `threads/06-dln-translation/review-definition3-source-range-rank-width-a6.md`.
+
+Latest A6 source-rank final handoff:
+`Theorem2SourceRankFinalBridge.lean` and `Theorem2SourceRankEq5Bridge.lean`
+now provide source-rank-stratum variants of the four existing Definition 3
+final-boundary/Eq5 handoffs.  They specialize the final layer count to `N`,
+derive the source-range rank-width hypothesis from
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth W B hx hH`, and
+then call the existing `_of_rankWidth` wrappers.  They do not construct
+selected cutpoints or Definition 3 source data, prove exact-rank openness,
+construct Eq5 families, prove Lemma 5 exactness, active-ratio/chart-count
+facts, chart production, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-rank-final-handoff-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-rank-final-handoff.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-rank-final-handoff-a6.md`.
