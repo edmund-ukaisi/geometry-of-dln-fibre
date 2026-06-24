@@ -617,6 +617,24 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   sorries intact) + Stage F (value-fold → PIN1, coupled, honest red-state if it can't land). The additive-prefix pattern again.
 - 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 bundle + (4,4,2,2)), pp-r1-genM (R1 uniform φ_M).
 
+**★ UPDATE-26 (2026-06-24) — R1 general-M LOWER atom (hdiv) DESIGN-CLOSED; cover_le reconciled → the hfin UPPER atom is the remaining R1 long pole; pp-r1-genM dispatched to adjudicate it.**
+- **hdiv DESIGN-CLOSED (pp-r1-genM @22c21bb1):** the UNIFORM closed-form φ_M (closed in M + the descent path; LDU-core
+  compressed-transition + unit-tri B/C chaining; one radial residual slot → genuine diffeo ninputs=flatDim;
+  F∘φ=u²·V; |det Dφ|=|u|^{minAdm−1}·∏|q|^… with q's k=0 spectators → threshold exactly ½·minAdm). Verified from
+  scratch on 5 witnesses incl the (2,3,4,2) codim-0-stay boundary (which broke every naive frame — now a genuine
+  diffeo under ONE recipe, no separate roadmap). Instantiates NodeAchieverChart `phi`; r1-node-bundle formalising.
+- **cover_le RECONCILED (#50, my read):** `routeMLayerCover_of_atoms` (RouteMLayerCover:155) takes BOTH `hdiv`
+  (→cover_ge_div, the lower bound, design-closed) AND `hfin` (→cover_le via `routeM_coverLe_of_finiteness`, the UPPER
+  bound). #45's "completed" = the cover_le WIRING; the **hfin ATOM (the resolution-atlas COMPLETENESS, rlctAtOn ≥
+  ½·minAdm) is OPEN + corank-sensitive** — the remaining R1 long pole, needed for resolution_charts (BOTH options),
+  proven-from-scratch S2-only (the Aoyagi/Watanabe cite is NOT allowed by the hero task). So closing hdiv is necessary
+  but NOT sufficient — hfin is the other half.
+- **pp-r1-genM dispatched to adjudicate hfin (#51):** does routeLayerAtlas COVER the base nbhd (incl corank directions)
+  + a per-chart upper c-o-v? Witness (the completeness design) / obstruction (the uncovered corank stratum). THE
+  decisive R1 reachability question — determines whether R1 is fully reachable from scratch or hfin is the genuine
+  headline obstruction.
+- 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 hdiv bundle + (4,4,2,2)), pp-r1-genM (R1 hfin adjudication).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
