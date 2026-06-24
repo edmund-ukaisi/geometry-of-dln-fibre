@@ -206,6 +206,35 @@ integration map (which branch fills each sorry, what #120 changes, the cleanest 
 reconciliation). Next: R1 adjudication → build the squeeze route's load-bearing atom; L2 map → controller merge;
 then D1 → headline.
 
+**★ R1 UPDATE-4 + L2 (2026-06-24) — route ADJUDICATED (Route A is the spine); #120 L2 merge LANDED; hdiv_achiever BUILDING.**
+Both efforts reported.
+- **L2 #120 merge LANDED (@ab4fc740, soundness-POSITIVE).** `l2-branch-mapper`'s decorrelated map found the base
+  PIN1 (`deepestEPivot_regSlice_fderiv_id = id`) is FALSE-as-stated (id only up to an opaque relabel; repo's own
+  2c9c492f/12846aae + Codex confirm). Merged `fm/deriv-frame-resume` (the #120 shear-CLE family): replaces it with
+  the CORRECT frame-sandwich `deepestEPivot_regSlice_fderiv : ∃ F : ≃L[ℝ], HasStrictFDerivAt … F 0` (invertible
+  frame factor, not id). One conflict (DeepestTelescoping.lean → took incoming sorry-free FOLD3). Builds green
+  (3752). HONEST post-merge L2 landscape (the map UNDERCOUNTED "2"; verified true count): DeepestGaugeConstruction
+  has 4 sorries — PIN1 (443, frame-sandwich, analytic), PIN2 (624, framedParams_split_eq_frame_raw, 4 sub-steps),
+  + 2 frame-endpoint wiring facts (831/832, dischargeable via the refined deepestFrameFamily) — plus pre-existing
+  DeepestGaugeChart:365 + DeepestNormalFormWiring. NOT yet in the aggregator (deferred to product_reduction wiring).
+- **R1 route ADJUDICATED — Route A (cover) is the general-M spine.** `r1-route-adjudicator` (pen-and-paper +
+  decorrelated Codex gpt-5.5 xhigh) CORRECTED the controller's Route-B lean: Route B's `hnode` is unprovable at
+  corank-≥2 binding branches (the RRR-core family `(n,n,p)`, n≥3, 14/64 ≈22% — the (3,3,4) obstruction). At (3,3,4)
+  the reduced core is a (2,2,4) PRODUCT singularity, not the (1,4) smooth leaf — rlct values coincide (2=2) but the
+  germs are NOT MP-homeomorphic, so `redEmbed` would be the forbidden value-only degenerate fill. The value lane
+  stays corank-robust (reads the closed Mval form at the root); the obstruction bites ONLY the analytic `rlctAtOn=⨅`
+  content = the cover's 2 atoms.
+- **hdiv_achiever BUILDING (the load-bearing R1 atom).** `r1-hdiv-achiever` (formaliser, worktree, validate-first)
+  is building the achiever-path box-integral divergence: for the achiever leaf i⋆ (monomialThreshold = ½·minAdm),
+  ∀ c'≥½·minAdm ∀ ε>0, `∫ cubeBox |routeMCore|^{−c'} = ⊤`. The lower bound `rlctAtOn ≤ ½·minAdm`. ONE leaf suffices
+  (the min-threshold achiever's divergence forces the whole), so it is IMMUNE to the corank obstruction (coupling
+  only helps divergence). The proven GeneralR1Recursion squeeze is the right instrument here (single-path), even
+  though it was the wrong shape for the full per-node cover. Discharges `cover_ge_div` via banked
+  `routeM_coverGeDiv_of_boxDiverges`. **Next R1 probe after hdiv: is `hfin` (completeness/upper bound) ALSO
+  corank-sensitive?** (the adjudicator's flagged risk — if yes, commit to Aoyagi's coupled diag(b) charts for both
+  bounds). Critical path: hdiv_achiever → hfin probe → resolution_charts (via routeMLayerCover_of_atoms); L2 close
+  (PIN1/PIN2 + frame-endpoint + wire) → D1 → headline.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
