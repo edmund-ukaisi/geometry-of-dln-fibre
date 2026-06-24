@@ -1,0 +1,73 @@
+# thread 12 — base ring elimination (G2-2 completion, formalisation / tide)
+
+**Type:** formalisation (tide) · `OPENED → (land ker_aeval) → (elimination) → AUDIT`. Completes G2-2:
+the localized base coordinate ring presentation. Thread 11 banked the base-**codimension** content
+(3 seams: bordered-minor identity, the `(r+1)`-minor lift, `height Iad = C`); this tide builds the
+localized graph-ideal **elimination** → `Iad = J` + `A_loc regular of dim δ`. Fully de-risked by
+thread 11 (no wall; the route + all Mathlib API confirmed). Fresh tide for clean context — the
+elimination is large + reindex-heavy.
+
+## Read first
+- **`expeditions/2026-06-23-fibre-codim/threads/11-base-ring-presentation/thread.md`** — the parent
+  thread; its PROGRESS LOG has the validated decomposition plan + the banked seams.
+- **The saved Codex consults** `threads/11-base-ring-presentation/codex/g2-2-elimination-{prompt,answer}.md`
+  + `g2-2-encoding-{prompt,answer}.md` — the validated elimination architecture.
+- `Core/DeterminantalChartRing.lean` (thread 11's module: `det_fromBlocks_scalar_eq`,
+  `det_submatrix_multPoly_mem_sigmaIdeal`, `detPivotPoly`, `height_map_sigmaIdeal_away_eq_cCodim`).
+- `Core/DeterminantalStratumDim.lean` (`isPrime_…`/`varietyDim_…=δ` — `A_loc` domain + dim δ engine-landed).
+- `lean/CLAUDE.md` (zero sorry/axiom/native_decide; `decide +kernel`; `↦`; name=content; bedrock).
+
+## Deliverable 1 (FIRST, self-contained, reusable) — `ker_aeval_eq_graphIdeal`
+New module `Core/MvPolynomialKerAeval.lean`. The general missing-from-Mathlib fact:
+
+> `ker (aeval c : MvPolynomial ι R →ₐ[R] R) = Ideal.span (Set.range fun i ↦ X i − C (c i))`  (`[Finite ι]`).
+
+- `⊇` is easy (each `X i − C (c i) ∈ ker`; probe-confirmed in thread 11).
+- `⊆` is the induction: `Finite.induction_empty_option` + `optionEquivLeft` + `Polynomial.ker_evalRingHom`.
+  **Thread 11 hit universe friction at the base case** (`PEmpty : Type (u+1)` vs `Type u`) + the
+  intricate `Option`-step kernel transport — it's a genuine ~60–100 LoC build. **Likely fix:** dodge the
+  universe-crossing by working through `Fin n` + an `Equiv` (`Fintype.equivFin`), or `ULift`, or handle
+  the empty case via `MvPolynomial.isEmptyRingEquiv`. This is the genuine bulk; land it as a clean
+  standalone seam first.
+
+## Deliverable 2 — the localized base presentation → `Iad = J` + `A_loc regular dim δ`
+(In `DeterminantalChartRing` or a new presentation module.) Using Deliverable 1:
+1. **Block reindex** `RepCoord (dStratum q p) ≃ B22block ⊕ rest`: `finCongr` + `finSumFinEquiv` give
+   `Fin p ≃ Fin r ⊕ Fin (p−r)`; `Equiv.sumProdDistrib`/`prodSumDistrib` give the 4-way block split;
+   `MvPolynomial.renameEquiv` + `sumAlgEquiv` isolate the B22 variables. (Use `renameEquiv`+`sumAlgEquiv`,
+   NOT per-index `aeval` — the `dStratum`-Fin `omega` tax is real, per thread 11 + Codex.)
+2. **The elimination** `Ad/J ≅ k[Δ,B12,B21]_detΔ` (free Schur localization): `J` = graph ideal of
+   `B22 = (Schur expr)/detΔ`; via Deliverable 1, `J` is the kernel of the `aeval` sending each B22
+   variable to its forced value, so `Ad/J ≅` (the rest) — eliminating the B22 vars.
+3. `height J = C` from the iso (poly bridge: `height J = #vars − dim(Ad/J) = #(B22 vars) = (p−r)(q−r) = C`);
+   `J` prime (kernel of a map to a domain).
+4. **`Iad = J`** by height comparison: `J ⊆ Iad` (≈ from thread 11's `det_submatrix_multPoly_mem_sigmaIdeal`,
+   mapped to the localization) + `height J = C` + `height Iad = C` (LANDED, thread 11) + both prime ⟹ equal
+   (`Ideal.height_strict_mono_of_is_prime` rules out `J ⊊ Iad`).
+5. **`A_loc regular of dim δ`** (`A_loc = Ad/Iad = Ad/J ≅` free Schur localization, regular).
+
+**Expose the FACTS `{Iad = J, A_loc regular of dim δ}`** (the minimal downstream interface for G2-3/G2-4) —
+a fully-bundled `AlgEquiv` term is optional if exposing the facts directly is lower friction.
+
+## Do NOT re-explore (dead ends, thread 11 + Codex)
+- The **Q3 Krull-squeeze** (collapse `Iad = J` without the iso) FAILS: `Ideal.height_le_spanFinrank`
+  gives only `height J ≤ C`, the same direction as `J ⊆ Iad` — no lower bound. The elimination iso is
+  genuinely needed for `height J = C`.
+- Determinantal-ideal generating-set theory is absent at v4.29 — the generator-free Schur-graph route
+  (thread 11) is the way; do not attempt determinantal generators.
+
+## Process / rules
+SPECIFY-first; bank hole-free seams (land Deliverable 1 standalone first); checkpoint to `main` if the
+elimination iso or the localization bookkeeping walls. Build via `scripts/lb` (NEVER bare `lake
+build`/`cache get`). Zero sorry/axiom/native_decide. `↦`; `decide +kernel`; name=content. **Core only —
+never import `DLNFibre.DLN`.** Don't edit the aggregator — report the import line(s). Don't touch other
+worktrees/stash. In-repo memory only.
+
+## AUDIT gate
+`scripts/lb` whole-library green; `scripts/sorries` 0; `#print axioms` on headlines = `[propext,
+Classical.choice, Quot.sound]`. Witness: `(2,2,2), r=1`. Report to `main`: names + signatures;
+green/sorries/axioms; module path(s) + aggregator line(s); v4.29 friction for the gotchas log.
+
+## Scope
+**G2-2 completion** (Deliverables 1 + 2). G2-3 (the TOTAL presentation + flatness — the genuine wall),
+G2-4, G2-5, G3/G4 are later tides.
