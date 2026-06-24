@@ -472,7 +472,13 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   verify #print axioms unchanged.
 - **`l2-frame-pivot-rearch` (a9c7dfa) commissioned** with this Stage-A/Stage-B brief. The L2 magnitude (Item 11,
   ~1500-2500 LoC) is unchanged — the re-architecture is *within* it, now correctly targeted (not the J-migration).
-- 2 tides: r1-cov-final (a4e79a2, R1 cov — still running), l2-frame-pivot-rearch (a9c7dfa, L2 Stage A+B). Non-overlapping.
+- **L=1 BASE parallelized (`l2-base-L1`, ac2db524):** the OTHER arm of deepest_regular_core_normal_form (the L=1
+  smooth-Morse case) is INDEPENDENT of the gauge chart + has all prereqs banked (Core one-sided normal form +
+  smoothBlockND_rlct + the lambdaCore-at-L=1 arithmetic), proven as a standalone lemma in a new file (Skeleton:1130
+  can't import the downstream 2≤L helper — import order; wiring happens later). ZERO citations, import-clean (no
+  continuous_dlnLoss dup). Fills the L2 gate's L=1 arm while the 2≤L gauge chart grinds.
+- 3 tides, non-overlapping files: r1-cov-final (a4e79a2, R1 cov), l2-frame-pivot-rearch (a9c7dfa, L2 2≤L Stage A+B),
+  l2-base-L1 (ac2db524, L2 L=1 base).
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
