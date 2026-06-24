@@ -151,6 +151,19 @@ started. R1 is the genuine LONG POLE; the headline stays honest-conditional on i
 recursion, value ½·minAdm) is validated; the Lean carrier needed re-architecting. NOT a wall — a precise
 re-arch path. (Recorded discuss-at-close item 6.)
 
+**★ R1 UPDATE (2026-06-24) — carrier blocker RESOLVED; keystone BANKED; migration commissioned.** Lane 1
+landed its hardest piece: `RouteMLayerSplit.lean` (657 LoC, 0 sorry, merged+aggregator-wired @8afeedc0,
+green 3707, axiom-clean S2-only, fidelity-reviewer SURVIVED 7/7) proves the LayerSplit layer-collapsing
+carrier + the KEYSTONE `minAdmRec_eq_minAdm` (layer-peeling recursion = brute-force minAdm) + value-fold =
+½·minAdm + the descent-cert to the collapsed chain (the #18 peel); found+defused a 5th wall (additive-fold
+vs min-fold → accumulate to one leaf divisor = Mval). So the hardest R1 MATH is DONE+banked. REMAINING: (a)
+the MIGRATION — wire `routeLayerAtlas` into `resolution_charts`, migrate ~17 consumers off ChainDimSplit
+(staged surgery) — COMMISSIONED (layersplit-migrate, worktree, assess parallel-vs-in-place then migrate
+incrementally, preserve green); (b) the general-M `IsRouteMCover` (2nd lane, only (2,2,2) atoms) — separate,
+after the migration. Each R1 dead-end (per-node Morse / §8 / threshold-only-corank≥2 / ChainDimSplit carrier)
+was caught honestly before building on it; the keystone is the first R1 piece to LAND. RRR (#17) also COMPLETE
++ integrated @0eef1154 (green, AUDIT-passed).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
