@@ -35,9 +35,18 @@ itself, together with the reducedness `IsReduced S` of the chart ring — as an 
    radical (fibreGenIdeal d B) = fibreGenIdeal d B` — the `radical (·)` wrapper drops. This is the
    identity the height-squeeze (R2-5/R2-6, `height m_B = δ`) consumes.
 
-The deep trivialization `e` (the endpoint-normalization product iso, built from a deep localized
-chart ring) is the residual `G2-3` wall — a separate rung. Every consumer of it is **already proved
-here against the hypothesis**, so landing `e` closes the chain with no further reducedness work.
+**What is Proved vs Assumed here.** Everything above is proved sorry-free *given* the trivialization
+`e : S ≃ₐ[k] R ⊗_k F_B` and `IsReduced S`, which are carried as **explicit hypotheses** — never as a
+`sorry` or a global axiom. The deep trivialization `e` itself (the endpoint-normalization product
+iso, built from a deep localized chart ring `S = O(Σ̄^r ∩ chart)`) is **not** constructed here: it
+is the **open residual `G2-3` wall, R2-3b** (new scheme-free affine scaffolding — no deep localized
+total ring exists in the engine yet, G2-2's machinery is `N = 1` only; ~5–8 modules). No downstream
+result may claim `codim (fibre) = C + δ` or discharge `BundleShiftInterface` on the strength of
+these conditional theorems while `e` is a hypothesis — that discharge waits for R2-3b to prove `e`.
+The theorems here are an honest, clearly-labelled *conditional* pre-build of the downstream: every
+consumer of `e` is **already proved against the hypothesis**, so R2-3b closes the chain with no
+further reducedness work. (Codex's recommended build order for `e` is recorded in the thread's
+`codex/algequiv-answer.md`.)
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
