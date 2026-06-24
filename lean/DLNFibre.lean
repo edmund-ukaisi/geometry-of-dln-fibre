@@ -117,6 +117,7 @@ import DLNFibre.DLN.Aoyagi.Case2Theorem2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case2Theorem2ChartFinalBridge
 import DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
 import DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasFinalBridge
+import DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasCase2FinalBridge
 import DLNFibre.DLN.Aoyagi.Case1FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case1Theorem2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case1Theorem2ChartFinalBridge
@@ -128,3 +129,9 @@ import DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Theorem2SourceRankFinalBridge
 import DLNFibre.DLN.Aoyagi.Theorem2SourceRankEq5Bridge
 import DLNFibre.DLN.Aoyagi.RegularVariableShift
+import DLNFibre.DLN.Aoyagi.Theorem2RankWidthRegularShiftBridge
+import DLNFibre.DLN.Aoyagi.Theorem2SourceRankRegularShiftBridge
+import DLNFibre.DLN.Aoyagi.RegularSuspensionInterface
+import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
+import DLNFibre.DLN.Aoyagi.RegularSuspensionAlgebraicSource
+import DLNFibre.DLN.Aoyagi.Theorem2RegularSuspensionFinalBridge

@@ -129,6 +129,43 @@ theorem exists_selectedReducedWidthCeilData_of_sourceRankStratum
   S.exists_selectedReducedWidthCeilData_of_rankWidth
     (paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth W B hx hH)
 
+omit [CompleteSpace K] [∀ i, IsTopologicalAddGroup (W i)]
+  [∀ i, T2Space (W i)] [∀ i, ContinuousSMul K (W i)] in
+/-- All-source selected Definition 3 data plus an A2 source-rank stratum
+membership produce the selected reduced-width family and ceiling datum.
+
+The source-rank stratum is used only to discharge the source-range rank-width
+hypothesis for the all-source ceiling-data package.  The strict all-source
+selected inequality remains an explicit input. -/
+theorem exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_sourceRankStratum
+    {α : Type*}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ} {x : α} {H : ℕ → ℕ}
+    (hN : 0 < N)
+    (hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ N + 1 →
+        (N : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (N + 1), aoyagiReducedWidthInt H r (j.val + 1))
+    (hx : x ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge)
+    (hH : ∀ k : Fin (N + 1),
+      H (k.val + 1) = Module.finrank K (W k)) :
+    ∃ (C : AoyagiSelectedCutpoints N)
+        (m : Fin (N + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData N m),
+      (∀ j : Fin (N + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData N N H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (N + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (N + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (N + 1),
+        (N : ℤ) * m i < ∑ j : Fin (N + 1), m j) ∧
+      (∀ i : Fin (N + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat N m i) :=
+  exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth
+    (L := N) (H := H) (r := r) hN hstrict
+    (paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth W B hx hH)
+
 end AoyagiDefinition3SourceData
 
 end RankWidth

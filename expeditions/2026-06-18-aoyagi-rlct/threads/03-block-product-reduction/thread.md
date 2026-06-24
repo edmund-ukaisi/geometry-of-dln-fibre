@@ -1427,3 +1427,660 @@ Artifacts:
 `statement-card-a2-transformed-edge-rank-stratum-bridge.md`.
 Review:
 `review-a2-transformed-edge-rank-stratum-bridge.md`.
+
+## 2026-06-24 A2 regular-variable source-rank shift
+
+Connected the A2 source-rank boundary to the regular-variable finite shift.
+The existing regular-variable shift required endpoint rank-width assumptions
+`r <= H 1` and `r <= H (N+1)`.  The new slice derives those assumptions from
+source-rank-stratum membership and the explicit dimension convention
+`H(k+1)=finrank(W k)`.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/RegularVariableShift.lean`:
+
+- `paperEndpointFixedBaseSourceRankStratum_regularVariableEndpointBounds`;
+- `AoyagiNormalCrossingExponentData.exponentMinimum_jacobianPriorLossShift_regularVariableCount_of_sourceRankStratum`;
+- `AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_jacobianPriorLossShift_regularVariableCount_of_sourceRankStratum`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift_sourceRankStratum`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift_sourceRankStratum`.
+
+Scope caveats: this is endpoint rank-width provenance and finite
+certificate arithmetic only.  It does not prove exact-rank openness, regular
+suspension chart construction, analytic ideal transport, Aoyagi Lemma 1,
+normal-crossing chart production, pole order, RLCT, or a connection from the
+supplied reduced certificate to the A2 geometry.
+
+Artifacts:
+`reproduction-a2-regular-variable-source-rank-shift.md` and
+`statement-card-a2-regular-variable-source-rank-shift.md`.
+Review:
+`review-a2-regular-variable-source-rank-shift.md`.
+
+## 2026-06-24 A2 regular-variable rank-width shift
+
+The regular-variable finite shift has been weakened from A2 source-rank
+stratum data to the source-range rank-width hypothesis already used by
+Definition 3:
+
+```text
+forall s, 1 <= s -> s <= L+1 -> r <= H s.
+```
+
+The finite shift still needs only the endpoint projections `r <= H 1` and
+`r <= H (L+1)`.  The final Definition 3 handoff, however, keeps the full
+source-range rank-width hypothesis because selected-width side facts use
+rank-width at every selected cutpoint.
+
+New Lean artifacts in `lean/DLNFibre/DLN/Aoyagi/RegularVariableShift.lean`:
+
+- `sourceRangeRankWidth_regularVariableEndpointBounds`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift_rankWidth`;
+- `AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift_rankWidth`.
+
+The older source-rank finite constructors remain as leaf wrappers but now
+delegate through the rank-width constructors.
+
+Scope caveats: finite exponent-array arithmetic and rank-width provenance
+only.  This does not prove regular-suspension chart construction, analytic
+ideal transport, Aoyagi Lemma 1, active-ratio or chart-count facts,
+normal-crossing production, pole order, or RLCT.
+
+Artifacts:
+`reproduction-a2-regular-variable-rank-width-shift.md` and
+`statement-card-a2-regular-variable-rank-width-shift.md`.
+Review:
+`review-a2-regular-variable-rank-width-shift.md`.
+
+## 2026-06-24 A2 supplied regular-suspension interface
+
+The p. 13 regular-variable step has been pinned to a conservative boundary:
+Aoyagi supplies the block algebra and the count, while a genuine full
+regular-suspension normal-crossing chart remains supplied.  The intended Lean
+socket carries a reduced chart certificate and a full chart certificate
+possibly over different parameter/coefficient types, named abstract
+obligations for source/ideal/coverage/Jacobian compatibility, and the finite
+exponent equality
+
+```text
+Cfull.exponentData =
+  Cred.exponentData.jacobianPriorLossShift regularCount.
+```
+
+The extraction hypothesis is required for `Cfull`, not for `Cred` with an
+after-the-fact `c/2` addition.  Finite consequences then build the existing
+`AoyagiTheorem2SuppliedChartFinalBoundary Cfull ...` from reduced
+minimum-plus-regular-term and order equalities, without routing through a
+boundary for the synthetic shifted certificate.
+
+Artifacts:
+`reproduction-a2-regular-suspension-interface.md` and
+`statement-card-a2-regular-suspension-interface.md`.
+Review:
+`review-a2-regular-suspension-interface.md`.
+
+## 2026-06-24 Lean chart-local suffix-state field continuity
+
+Reproduction:
+`reproduction-a2-chart-local-suffix-state-field-continuity.md`.
+Statement card:
+`statement-card-a2-chart-local-suffix-state-field-continuity.md`.
+Review:
+`review-a2-chart-local-suffix-state-field-continuity.md`.
+
+Lean now extends the chart-local topology API in `ChartTopology.lean`:
+
+```text
+continuousAt_chartLocalSuffixState_step_fields
+continuousAt_chartLocalSuffixState_suffixState_fields
+```
+
+The one-step theorem proves fieldwise continuity of `L`, `B`, `Ctop`, and
+`D`, and carries the next `IsUnit Ctop.det` invariant.  The suffix theorem
+descends through the deterministic recursion under the same recursive
+determinant-chart hypotheses as the existing `B` theorem, returning the
+basepoint `Ctop.det` unit and fieldwise continuity for every `i <= j`.
+
+This is only continuity of deterministic matrix fields at the basepoint.  It
+does not prove analytic regularity, exact-rank openness, source-rank-stratum
+openness, local source-neighborhood construction, regular suspension, ideal
+transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 fixed-base suffix-state field continuity handoff
+
+Reproduction:
+`reproduction-a2-fixed-base-suffix-state-field-continuity.md`.
+Statement card:
+`statement-card-a2-fixed-base-suffix-state-field-continuity.md`.
+Review:
+`review-a2-fixed-base-suffix-state-field-continuity.md`.
+
+Lean now applies the generic suffix-state field-continuity theorem to the
+endpoint-coordinate matrix family fixed from the base paper chain `B`:
+
+```text
+paperEndpointFixedBaseContinuousEdges_recursiveSuffixState_fields_continuousAt
+```
+
+The theorem defines the fixed-base coordinate edge family from a continuous
+reversed-edge family `Cedge`, proves this matrix family is continuous by
+fixed-basis coordinate continuity, rewrites the recursive determinant-chart
+hypotheses, and returns `IsUnit Ctop.det` plus continuity of `L`, `B`,
+`Ctop`, and `D` for every suffix state ending at `Fin.last N`.
+
+Boundary: fixed-base continuity handoff only.  This does not prove analytic
+regularity, exact-rank/source-rank openness, chart coverage, regular
+suspension, ideal transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 canonical product-difference coefficient fields
+
+Reproduction:
+`reproduction-a2-canonical-product-difference-coefficient-fields.md`.
+Statement card:
+`statement-card-a2-canonical-product-difference-coefficient-fields.md`.
+Review:
+`review-a2-canonical-product-difference-coefficient-fields.md`.
+
+Lean now exposes the p. 13 product-difference entry-ideal equality with the
+deterministic suffix-state fields instead of existential triangular witnesses:
+
+```text
+ChartLocalSuffixState.productDifferenceEntryIdeal_eq_fourMatrixEntryIdeal
+PaperEndpointFixedBaseProductReductionCertificate.productDifferenceEntryIdeal_eq_fourMatrixEntryIdeal_canonicalFields
+```
+
+The generic theorem starts from a suffix-state block-diagonal invariant
+
+```text
+S.L * P(i,j) * [I -S.B; 0 I] = [S.Ctop 0; 0 S.D]
+```
+
+and proves the scalar matrix-entry ideal of
+`P(i,j) - [I 0; 0 0]` is the four-block ideal generated by
+`S.Ctop - I`, `-S.B`, `lowerLeftBlock S.L`, and `S.D`.  The proof uses
+`suffixState_L_eq_lowerUnitriangular` to rewrite `S.L` as
+`[I 0; lowerLeftBlock S.L I]`, then delegates to the existing
+`matrixEntryIdeal_triangularBlockProductDifference_eq_fourMatrixEntryIdeal`.
+
+The fixed-base theorem applies this pointwise to the endpoint matrix family
+from `PaperEndpointFixedBaseProductReductionCertificate`, rewriting the
+endpoint total matrix to the chain-map family with
+`paperEndpointFixedBaseTotalMatrixOfReverseEdges_eq_chainMapMatrix`.
+
+Boundary: rank-free algebraic entry-ideal handoff only.  This does not prove
+source-rank neighborhood construction, exact-rank/source-rank openness,
+analytic regularity, analytic germ-ideal transport, chart coverage, normal
+crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 canonical product-difference coefficient-field continuity
+
+Reproduction:
+`reproduction-a2-canonical-product-difference-field-continuity.md`.
+Statement card:
+`statement-card-a2-canonical-product-difference-field-continuity.md`.
+Review:
+`review-a2-canonical-product-difference-field-continuity.md`.
+
+Lean now proves that the deterministic fields used in the canonical
+product-difference entry-ideal boundary are continuous fixed-base local
+functions, and that they are centered at the self-base chain:
+
+```text
+paperEndpointFixedBaseContinuousEdges_productDifferenceCoefficientFields_continuousAt
+paperEndpointFixedBaseContinuousEdges_selfBase_productDifferenceCoefficientFields_continuousAt
+paperEndpointFixedBaseContinuousEdges_selfBase_productDifferenceCoefficientFields_centered_continuousAt
+```
+
+The explicit-chart theorem assumes a continuous reversed-edge family together
+with the recursive determinant-chart hypotheses at `x0`; the self-base theorem
+derives those hypotheses from `Cedge x0 = reverseEdge W B`.  The returned
+fields are exactly the canonical p. 13 fields
+
+```text
+S.Ctop - 1,  -S.B,  lowerLeftBlock S.L,  S.D.
+```
+
+together with `IsUnit ((S x0).Ctop.det)`.  The centered self-base theorem also
+proves the four basepoint equalities
+
+```text
+(S x0).Ctop - 1 = 0,
+-(S x0).B = 0,
+lowerLeftBlock (S x0).L = 0,
+(S x0).D = 0.
+```
+
+Boundary: continuity and basepoint centering only.  This does not prove
+analytic regularity, exact-rank/source-rank openness, chart coverage, analytic
+ideal or germ transport, a regular-suspension certificate, normal crossings,
+pole order, or RLCT.
+
+## 2026-06-24 A2 canonical product-difference local certificate
+
+Reproduction:
+`reproduction-a2-canonical-product-difference-local-certificate.md`.
+Statement card:
+`statement-card-a2-canonical-product-difference-local-certificate.md`.
+Review:
+`review-a2-canonical-product-difference-local-certificate.md`.
+
+Lean now packages the centered continuous canonical fields with the local
+source-rank product-difference boundary:
+
+```text
+PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks
+PaperEndpointFixedBaseProductReductionCertificate.toCanonicalProductDifferenceSourceRanks
+paperEndpointFixedBaseCanonicalProductDifferenceSourceRanks_selfBase_mem_nhdsWithin_source
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate
+paperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate_of_isCompl
+PaperEndpointCanonicalProductDifferenceLocalCertificate
+exists_paperEndpointCanonicalProductDifferenceLocalCertificate
+```
+
+The pointwise source-rank predicate uses the deterministic fields
+
+```text
+S.Ctop - 1,  -S.B,  lowerLeftBlock S.L,  S.D
+```
+
+in the `fourMatrixEntryIdeal` equality and carries the residual-rank formulas
+`rank residualBlock_p = rEdge p - r`.  The fixed-base local certificate also
+stores the self-base centered-continuity theorem for those same four fields.
+The local conclusion is relative to `paperEndpointFixedBaseSourceRankStratum`
+via `nhdsWithin`.
+
+Boundary: canonical local packaging only.  This does not assert exact-rank or
+source-rank openness, analytic regularity, chart coverage, analytic ideal or
+germ transport, a regular-suspension certificate, normal crossings, pole
+order, or RLCT.
+
+## 2026-06-24 A2 canonical product-difference local source certificate
+
+Reproduction:
+`reproduction-a2-canonical-product-difference-local-source-certificate.md`.
+Statement card:
+`statement-card-a2-canonical-product-difference-local-source-certificate.md`.
+Review:
+`review-a2-canonical-product-difference-local-source-certificate.md`.
+
+Target: pair the canonical product-difference local certificate with basepoint
+membership in Aoyagi's source-shaped rank stratum, under supplied source rank
+data for the base product and base edges.  This removes the vacuity caveat for
+the base chain without claiming exact-rank/source-rank openness.
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
+paperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate_of_isCompl
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_source_neighborhood
+PaperEndpointCanonicalProductDifferenceLocalSourceCertificate
+exists_paperEndpointCanonicalProductDifferenceLocalSourceCertificate
+```
+
+Boundary: nonvacuity/source-rank packaging only.  The local conclusion remains
+`nhdsWithin` the source-shaped rank stratum, and the explicit neighborhood
+projection keeps source-rank membership as a guard.  This does not prove the
+stratum is open, construct regular-suspension charts, transport analytic
+ideals, prove normal crossings, identify pole order, or extract RLCT.
+
+## 2026-06-24 A2 canonical product-difference regular-chart source
+
+Reproduction:
+`reproduction-a2-canonical-product-difference-regular-chart-source.md`.
+Statement card:
+`statement-card-a2-canonical-product-difference-regular-chart-source.md`.
+Review:
+`review-a2-canonical-product-difference-regular-chart-source.md`.
+
+Target: make the supplied regular-suspension boundary consume the A2 local
+source certificate directly for its `regular_chart_source` field, without
+claiming the analytic regular-suspension construction.
+
+Lean now has:
+
+```text
+AoyagiCanonicalProductDifferenceRegularChartSource
+AoyagiSuppliedRegularSuspensionBoundary.of_canonicalProductDifferenceRegularChartSource
+```
+
+The source predicate is definitionally the existing
+`PaperEndpointCanonicalProductDifferenceLocalSourceCertificate W B x0 Cedge r
+rEdge`, viewed as a predicate on `Cred`, `Cfull`, and `regularCount`.  The
+constructor fills only `regular_chart_source`; ideal transport, coverage,
+Jacobian compatibility, and the exponent-data shift equality remain supplied.
+
+Boundary: A2 source-predicate handoff only.  This does not scalarize the
+regular variables, prove the regular count, construct `Cfull`, prove analytic
+ideal/germ transport, prove chart coverage, prove Jacobian compatibility,
+produce normal crossings, identify pole order, or extract RLCT.
+
+Next stronger A2 target from xhigh scout: scalarize the p. 13 regular blocks
+`S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L`, prove their centered
+continuity as finite scalar coordinates, and prove the coordinate count is
+`aoyagiTheorem2RegularVariableCount`.
+
+## 2026-06-24 A2 regular-suspension coordinate index
+
+Reproduction:
+`reproduction-a2-regular-suspension-coordinate-index.md`.
+Statement card:
+`statement-card-a2-regular-suspension-coordinate-index.md`.
+Review:
+`review-a2-regular-suspension-coordinate-index.md`.
+
+Lean now scalarizes the p. 13 regular block families:
+
+```text
+AoyagiRegularBlockCoordinateIndex
+AoyagiRegularBlockCoordinateIndex.card
+AoyagiRegularBlockCoordinateIndex.value
+AoyagiRegularBlockCoordinateIndex.value_centered_continuousAt
+AoyagiRegularBlockCoordinateIndex.card_eq_aoyagiTheorem2RegularVariableCount
+paperEndpointEndpointComplementIndex_card_eq_layerSubRank
+paperEndpointRegularBlockCoordinateIndex_card_eq_regularVariableCount
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.regularBlockScalarCoordinates_centered_continuousAt
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.regularBlockCoordinateIndex_card_eq_regularVariableCount
+```
+
+The coordinate index is the finite disjoint union of entries of
+`Ctop - 1`, `F2`, and `F3`.  The local-certificate projection applies the
+existing centered continuity of `S.Ctop - 1`, `-S.B`, and
+`lowerLeftBlock S.L` to every scalar coordinate.  The residual field `S.D` is
+excluded.  The endpoint-compatible count theorem now derives the source and
+target residual cardinalities from the fixed-base endpoint complement
+construction, base product rank, and dimension convention.
+
+Boundary: finite coordinate bookkeeping and componentwise continuity only.
+This does not construct analytic regular coordinates, construct `Cfull`, prove
+the four-block ideal split, prove ideal transport, prove chart coverage, prove
+Jacobian compatibility, produce normal crossings, identify pole order, or
+extract RLCT.
+
+## 2026-06-24 A2 regular/residual ideal split
+
+Reproduction:
+`reproduction-a2-regular-residual-ideal-split.md`.
+Statement card:
+`statement-card-a2-regular-residual-ideal-split.md`.
+Review:
+`review-a2-regular-residual-ideal-split.md`.
+
+Lean now names the regular block-entry ideal and exposes the algebraic split
+from the four-block product-difference ideal:
+
+```text
+regularBlockEntryIdeal
+fourMatrixEntryIdeal_eq_regularBlockEntryIdeal_sup_matrixEntryIdeal
+matrixEntryIdeal_triangularBlockProductDifference_eq_regular_sup_residual
+ChartLocalSuffixState.productDifferenceEntryIdeal_eq_regularBlockEntryIdeal_sup_matrixEntryIdeal
+PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks.canonicalProductDifferenceEntryIdeal_eq_regularBlockEntryIdeal_sup_matrixEntryIdeal
+```
+
+The canonical fixed-base theorem rewrites the product-difference entry ideal as
+
+```text
+regularBlockEntryIdeal (S.Ctop - 1) (-S.B) (lowerLeftBlock S.L) ⊔
+  matrixEntryIdeal S.D.
+```
+
+Boundary: scalar ideal regrouping only.  `S.D` remains residual, not part of
+the regular-coordinate index.  This does not prove analytic germ-ideal
+transport, regular-suspension chart construction, coverage, Jacobian
+compatibility, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 regular-coordinate ideal bridge
+
+Reproduction:
+`reproduction-a2-regular-coordinate-ideal-bridge.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-ideal-bridge.md`.
+Review:
+`review-a2-regular-coordinate-ideal-bridge.md`.
+
+Lean now connects the scalar coordinate index to the regular block-entry ideal:
+
+```text
+AoyagiRegularBlockCoordinateIndex.entryIdeal
+AoyagiRegularBlockCoordinateIndex.entryIdeal_eq_regularBlockEntryIdeal
+PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks.canonicalProductDifferenceEntryIdeal_eq_regularCoordinateIdeal_sup_matrixEntryIdeal
+```
+
+The theorem proves that the ideal generated by the scalar values of
+`AoyagiRegularBlockCoordinateIndex.value X F2 F3` is exactly
+`regularBlockEntryIdeal X F2 F3`.  The fixed-base canonical theorem composes
+this with the regular/residual split, rewriting the product-difference entry
+ideal as the scalar regular-coordinate ideal joined with `matrixEntryIdeal S.D`.
+
+Boundary: algebraic ideal bookkeeping only.  The scalar-coordinate ideal theorem
+is valid without finite index assumptions; the finite Aoyagi use is supplied by
+the count theorems.  The residual block `D` is not part of the scalar
+regular-coordinate index.  This does not construct analytic regular
+coordinates, transport analytic germ ideals, prove chart coverage or Jacobian
+compatibility, produce normal crossings, identify pole order, or extract RLCT.
+
+## 2026-06-24 A2 local source regular-coordinate ideal split
+
+Reproduction:
+`reproduction-a2-local-source-regular-coordinate-ideal-split.md`.
+Statement card:
+`statement-card-a2-local-source-regular-coordinate-ideal-split.md`.
+Review:
+`review-a2-local-source-regular-coordinate-ideal-split.md`.
+
+Lean now upgrades the fixed-base local source certificate to a neighborhood
+statement using scalar regular coordinates:
+
+```text
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_regularCoordinateIdeal_source_neighborhood
+```
+
+For points in the returned neighborhood that also lie in the source-shaped rank
+stratum, the product-difference entry ideal is the scalar regular-coordinate
+ideal generated by `S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L`, joined with
+the residual ideal `matrixEntryIdeal S.D`.
+
+Boundary: local source-side algebraic bookkeeping only.  The source-stratum
+guard remains explicit; this does not prove source-rank openness, analytic
+germ-ideal transport, regular-suspension chart construction, coverage,
+Jacobian compatibility, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 regular-coordinate ideal source predicate
+
+Reproduction:
+`reproduction-a2-regular-coordinate-ideal-source-predicate.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-ideal-source-predicate.md`.
+Review:
+`review-a2-regular-coordinate-ideal-source-predicate.md`.
+
+Lean now names the source predicate needed by a later supplied
+regular-suspension chart:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateIdealSourceNeighborhood
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.regularCoordinateIdealSourceNeighborhood
+AoyagiCanonicalProductDifferenceRegularCoordinateIdealSource
+aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource_of_localSourceCertificate
+AoyagiSuppliedRegularSuspensionBoundary.of_canonicalProductDifferenceRegularCoordinateIdealSource
+```
+
+The fixed-base predicate records a neighborhood where, on the source-shaped
+rank stratum, the canonical product-difference ideal is the scalar
+regular-coordinate ideal joined with the residual `S.D` ideal.  The
+regular-suspension source predicate existentially chooses the fixed endpoint
+base certificate and carries both the local source certificate and the named
+regular-coordinate/residual ideal neighborhood.
+
+The boundary constructor fills only `regular_chart_source`.  Ideal transport,
+coverage, Jacobian compatibility, and the exponent-shift equality are still
+supplied.  This keeps the stronger algebraic source information available
+without importing the coordinate file back into `RegularSuspensionInterface`.
+
+Boundary: source-side algebraic source predicate only.  No source-rank
+openness, analytic germ-ideal transport, construction of `Cfull`, coverage,
+Jacobian compatibility, exponent shift, normal crossings, pole order, or RLCT
+is proved.
+
+## 2026-06-24 A2 regular-coordinate ideal source existence
+
+Reproduction:
+`reproduction-a2-regular-coordinate-ideal-source-existence.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-ideal-source-existence.md`.
+Review:
+`review-a2-regular-coordinate-ideal-source-existence.md`.
+
+Lean now gives the raw-hypothesis constructor for the stronger source
+predicate:
+
+```text
+exists_aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource
+```
+
+It takes a continuous reversed-edge family based at `B`, the supplied base
+product rank, supplied base edge ranks, and the supplied rank bounds
+`r <= rEdge p`.  It first uses
+`exists_paperEndpointCanonicalProductDifferenceLocalSourceCertificate` to
+choose the endpoint complement and local source certificate, then applies
+`aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource_of_localSourceCertificate`.
+
+Boundary: composition of existing source-side algebra only.  No source-rank
+openness, analytic germ-ideal transport, construction of `Cfull`, ideal
+transport, coverage, Jacobian compatibility, exponent shift, normal crossings,
+pole order, or RLCT is proved.
+
+## 2026-06-24 A2 base product rank bounded by edge ranks
+
+Reproduction:
+`reproduction-a2-base-product-rank-le-edge-rank.md`.
+Statement card:
+`statement-card-a2-base-product-rank-le-edge-rank.md`.
+Review:
+`review-a2-base-product-rank-le-edge-rank.md`.
+
+Lean now proves the elementary base-chain rank inequality:
+
+```text
+paperTotalMap_finrank_range_le_reverseEdge_finrank_range
+```
+
+For each edge `p`, the full reversed product factors through
+`reverseEdge W B p`, so its range finrank is bounded by the edge range
+finrank.  The basepoint source-rank-stratum API now has a no-`hle` constructor:
+
+```text
+paperEndpointFixedBaseSourceRankStratum_selfBase_mem_of_rank_eq
+```
+
+and the source-certificate path has matching no-`hle` wrappers:
+
+```text
+paperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate_of_isCompl_of_rank_eq
+exists_paperEndpointCanonicalProductDifferenceLocalSourceCertificate_of_rank_eq
+exists_aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource_of_rank_eq
+```
+
+Boundary: basepoint rank packaging only.  This removes the redundant base
+inequality input from the new wrappers, but it does not prove exact-rank or
+source-rank openness, analytic germ-ideal transport, `Cfull`, ideal transport,
+coverage, Jacobian compatibility, exponent shift, normal crossings, pole
+order, or RLCT.
+
+## 2026-06-24 A2 regular-coordinate source data
+
+Reproduction:
+`reproduction-a2-regular-coordinate-source-data.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-source-data.md`.
+Review:
+`review-a2-regular-coordinate-source-data.md`.
+
+Lean now packages the source-produced p. 13 regular-coordinate data in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+PaperEndpointFixedBaseRegularBlockScalarCoordinatesCenteredContinuousAt
+PaperEndpointFixedBaseRegularCoordinateSourceData
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.regularCoordinateSourceData
+exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq
+```
+
+The rank-equality theorem starts from a continuous reversed-edge family based
+at `B`, base product rank `r`, base edge ranks `rEdge`, and the dimension
+convention `H(k+1)=finrank(W k)`.  It chooses a total-kernel complement and
+returns a fixed-base package containing the local source certificate, the
+source-stratum guarded regular/residual ideal split, centered continuous
+scalar coordinates for `S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L`, and the
+cardinality equality with `aoyagiTheorem2RegularVariableCount N H r`.
+
+Boundary: source-side regular-coordinate data only.  No exact-rank or
+source-rank openness, analytic germ-ideal transport, regular-suspension chart
+construction, coverage, Jacobian compatibility, exponent shift, normal
+crossings, pole order, or RLCT is proved.
+
+## 2026-06-24 A2 regular-suspension normal-crossing boundary audit
+
+Audit:
+`audit-a2-regular-suspension-normal-crossing-boundary.md`.
+
+Controller inspection and xhigh scout `Locke the 3rd` agree that the current
+APIs cannot construct a full regular-suspension normal-crossing certificate
+`Cfull` from `PaperEndpointFixedBaseRegularCoordinateSourceData`.
+
+The reason is precise.  The source-data package proves centered continuous
+scalar regular-coordinate functions and a source-stratum guarded ideal split,
+but it does not prove those scalar functions form analytic coordinates.  The
+current `AoyagiNormalCrossingChartCertificate` records finite monomial chart
+data and supports certificate algebra such as `jacobianPriorLossShift`; it
+does not encode analytic chart coverage, coordinate invertibility, generator
+transport, or regular-coordinate additivity.
+
+Do not add a theorem
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData -> exists Cfull, ...
+```
+
+and do not introduce source-anchored analytic obligation predicates whose
+fields are empty, `True`, or merely renamed arbitrary predicates.  A Lean
+boundary for regular suspension is worthwhile only after a pen-and-paper
+reproduction identifies concrete full/reduced generator families, analytic
+regular coordinates, coverage, Jacobian/prior shift, units, and extraction for
+the actual full certificate.
+
+## 2026-06-24 A2 residual-coordinate source data
+
+Reproduction:
+`reproduction-a2-residual-coordinate-source-data.md`.
+Statement card:
+`statement-card-a2-residual-coordinate-source-data.md`.
+Review:
+`review-a2-residual-coordinate-source-data.md`.
+
+Lean now also scalarizes the residual p. 13 block in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+AoyagiResidualBlockCoordinateIndex
+AoyagiResidualBlockCoordinateIndex.entryIdeal_eq_matrixEntryIdeal
+AoyagiResidualBlockCoordinateIndex.value_centered_continuousAt
+paperEndpointResidualBlockCoordinateIndex_card_eq_endpointResidualEntryCount
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.residualBlockScalarCoordinates_centered_continuousAt
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.residualBlockCoordinateIndex_card_eq_endpointResidualEntryCount
+PaperEndpointFixedBaseResidualBlockScalarCoordinatesCenteredContinuousAt
+```
+
+The existing `PaperEndpointFixedBaseRegularCoordinateSourceData` structure now
+also carries centered continuity for scalar entries of `S.D` and the residual
+endpoint entry count `(H 1-r)*(H(N+1)-r)`.  This makes the reduced block side
+of the regular/residual split explicit while keeping it separate from the
+regular-coordinate index and the regular-variable finite shift.
+
+Boundary: source-side residual-coordinate bookkeeping only.  No analytic
+residual chart, normal-crossing certificate, germ-ideal transport, coverage,
+Jacobian compatibility, exponent shift, regular-coordinate additivity, pole
+order, or RLCT is proved.
+
+Xhigh review by `Curie the 3rd` passed after repairing prose that called the
+row/left and column/right residual endpoint indices "source" and "target".
+The formulas were correct before the wording repair.

@@ -1041,6 +1041,238 @@ theorem chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
   funext i
   exact congrFun htransition i.1
 
+end selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+
+/-- Concrete finite selected-entry affine-overlap certificate for one ordered
+pair of charts.
+
+This records the actual finite transition formula, selected-coordinate formula,
+chart-map agreement on the normalised target-coordinate overlap, and inverse
+transition for the selected pair.  It is only finite affine overlap algebra; it
+is not analytic transition regularity, chart coverage, source production,
+normal crossings, pole order, or RLCT extraction. -/
+structure SelectedEntryFiniteAffineTransitionRegularPair
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center)
+    (sourceChart targetChart : Fin center.card) : Prop where
+  transitionPoint_formula :
+    ∀ (u : K) (residual : ι → K),
+      let denom :=
+        selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1
+      selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+          hcenter chartEquiv sourceChart
+            targetChart u residual =
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+          hcenter chartEquiv targetChart (u * denom)
+            (fun i ↦
+              selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i /
+                denom)
+  coord_transition :
+    ∀ (u : K) (residual : ι → K),
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).coord targetChart
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+            hcenter chartEquiv sourceChart
+              targetChart u residual) (0 : Fin 1) =
+        u * selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1
+  chartMap_transition :
+    ∀ (u : K) (residual : ι → K),
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1 ≠ 0 →
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).chartMap targetChart
+            (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+              hcenter chartEquiv sourceChart
+                targetChart u residual) =
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).chartMap sourceChart
+              (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+                hcenter chartEquiv sourceChart u residual)
+  inverse_transition :
+    ∀ (u : K) (residual : ι → K),
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1 ≠ 0 →
+        let denom :=
+          selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+            (chartEquiv targetChart).1
+        let targetResidual : ι → K :=
+          fun i ↦
+            selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i /
+              denom
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+            hcenter chartEquiv targetChart
+              sourceChart (u * denom) targetResidual =
+          selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+            hcenter chartEquiv sourceChart u residual
+
+/-- Concrete finite selected-entry affine-overlap certificate for an all-pivot
+chart family.
+
+This is the natural chart-family form: it records the pairwise transition
+formulas for all source and target chart indices, the self-transition identity,
+and the finite triple-overlap cocycle.  It can instantiate a finite
+selected-entry `TransitionRegular` predicate when that predicate is explicitly
+chosen to mean these algebraic overlap identities.  It does not instantiate
+the missing analytic atlas transition-regularity field by itself. -/
+structure SelectedEntryFiniteAffineTransitionRegularFamily
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) : Prop where
+  transitionPoint_formula :
+    ∀ (sourceChart targetChart : Fin center.card)
+      (u : K) (residual : ι → K),
+      let denom :=
+        selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1
+      selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+          hcenter chartEquiv sourceChart
+            targetChart u residual =
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+          hcenter chartEquiv targetChart (u * denom)
+            (fun i ↦
+              selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i /
+                denom)
+  coord_transition :
+    ∀ (sourceChart targetChart : Fin center.card)
+      (u : K) (residual : ι → K),
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).coord targetChart
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+            hcenter chartEquiv sourceChart
+              targetChart u residual) (0 : Fin 1) =
+        u * selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1
+  chartMap_transition :
+    ∀ (sourceChart targetChart : Fin center.card)
+      (u : K) (residual : ι → K),
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1 ≠ 0 →
+        (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) hcenter chartEquiv).chartMap targetChart
+            (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+              hcenter chartEquiv sourceChart
+                targetChart u residual) =
+          (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) hcenter chartEquiv).chartMap sourceChart
+              (selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+                hcenter chartEquiv sourceChart u residual)
+  inverse_transition :
+    ∀ (sourceChart targetChart : Fin center.card)
+      (u : K) (residual : ι → K),
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1 ≠ 0 →
+        let denom :=
+          selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+            (chartEquiv targetChart).1
+        let targetResidual : ι → K :=
+          fun i ↦
+            selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i /
+              denom
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+            hcenter chartEquiv targetChart
+              sourceChart (u * denom) targetResidual =
+          selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+            hcenter chartEquiv sourceChart u residual
+  self_transition :
+    ∀ (sourceChart : Fin center.card) (u : K) (residual : ι → K),
+      selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+          hcenter chartEquiv sourceChart
+            sourceChart u residual =
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+          hcenter chartEquiv sourceChart u residual
+  cocycle :
+    ∀ (sourceChart middleChart targetChart : Fin center.card)
+      (u : K) (residual : ι → K),
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv middleChart).1 ≠ 0 →
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+          (chartEquiv targetChart).1 ≠ 0 →
+        let middleDenom :=
+          selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+            (chartEquiv middleChart).1
+        let middleResidual : ι → K :=
+          fun i ↦
+            selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i /
+              middleDenom
+        let middleToTargetDenom :=
+          selectedEntryNormalizedMap (chartEquiv middleChart).1 middleResidual
+            (chartEquiv targetChart).1
+        let middleTargetResidual : ι → K :=
+          fun i ↦
+            selectedEntryNormalizedMap (chartEquiv middleChart).1
+              middleResidual i / middleToTargetDenom
+        selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+            hcenter chartEquiv targetChart
+              ((u * middleDenom) * middleToTargetDenom) middleTargetResidual =
+          selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+            hcenter chartEquiv sourceChart
+              targetChart u residual
+
+namespace SelectedEntryFiniteAffineTransitionRegularFamily
+
+/-- Extract the finite ordered-pair overlap certificate from a family
+certificate. -/
+theorem pair
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} {hcenter : center.Nonempty}
+    {chartEquiv : Fin center.card ≃ center}
+    (H : SelectedEntryFiniteAffineTransitionRegularFamily
+      (K := K) hcenter chartEquiv)
+    (sourceChart targetChart : Fin center.card) :
+    SelectedEntryFiniteAffineTransitionRegularPair (K := K) hcenter chartEquiv
+      sourceChart targetChart where
+  transitionPoint_formula := H.transitionPoint_formula sourceChart targetChart
+  coord_transition := H.coord_transition sourceChart targetChart
+  chartMap_transition := H.chartMap_transition sourceChart targetChart
+  inverse_transition := H.inverse_transition sourceChart targetChart
+
+end SelectedEntryFiniteAffineTransitionRegularFamily
+
+namespace selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+
+/-- The all-pivot selected-entry chart family satisfies the concrete finite
+affine-overlap certificate.
+
+This packages already-proved selected-entry transition formulas.  It is not an
+analytic transition-regularity theorem. -/
+theorem finiteAffineTransitionRegular
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) :
+    SelectedEntryFiniteAffineTransitionRegularFamily (K := K) hcenter chartEquiv where
+  transitionPoint_formula := by
+    intro sourceChart targetChart u residual
+    rfl
+  coord_transition := by
+    intro sourceChart targetChart u residual
+    exact coord_sourceChartTransitionPoint_eq hcenter chartEquiv
+      sourceChart targetChart u residual
+  chartMap_transition := by
+    intro sourceChart targetChart u residual htarget
+    exact chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
+      hcenter chartEquiv sourceChart targetChart u residual htarget
+  inverse_transition := by
+    intro sourceChart targetChart u residual htarget
+    exact sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+      hcenter chartEquiv sourceChart targetChart u residual htarget
+  self_transition := by
+    intro sourceChart u residual
+    exact sourceChartTransitionPoint_self hcenter chartEquiv sourceChart
+      u residual
+  cocycle := by
+    intro sourceChart middleChart targetChart u residual hmiddle htarget
+    exact sourceChartTransitionPoint_cocycle_of_target_normalized_ne_zero
+      hcenter chartEquiv sourceChart middleChart targetChart u residual
+      hmiddle htarget
+
+set_option linter.style.longLine false in
 /-- In a fixed chart of the all-pivot selected-entry family, a finite center
 value whose selected pivot coordinate is nonzero has a preimage.
 
@@ -1057,9 +1289,10 @@ theorem exists_chartPoint_chartMap_eq_value_of_chart_pivot_ne_zero
       (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
         (K := K) hcenter chartEquiv).chartMap c x = value := by
   simpa [selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
-    exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+    selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
       (K := K) (chartEquiv c) value hpivot
 
+set_option linter.style.longLine false in
 /-- The all-pivot selected-entry family covers every finite center value.
 
 If the value is zero, any pivot chart maps a zero chart point to it.  Otherwise
@@ -1083,7 +1316,7 @@ theorem exists_chartPoint_chartMap_eq_value
     let c : Fin center.card := chartEquiv.symm ⟨p, hp⟩
     refine ⟨c, ?_⟩
     simpa [c, selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
-      exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero
+      selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_forall_eq_zero
         (K := K) (chartEquiv c) value hzero
   · have hnonzero : ∃ i : center, value i ≠ 0 := by
       by_contra hnone
@@ -1096,7 +1329,7 @@ theorem exists_chartPoint_chartMap_eq_value
     have hc : chartEquiv c = p := by simp [c]
     refine ⟨c, ?_⟩
     simpa [c, hc, selectedEntryCenterSqFormalJacobianChartFamilyCertificate] using
-      exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
+      selectedEntryCenterSqFormalJacobianChartCertificate.exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
         (K := K) (chartEquiv c) value (by simpa [hc] using hp)
 
 /-- The all-pivot selected-entry family covers every finite center value by a
@@ -1126,11 +1359,36 @@ theorem exists_sourceChartPoint_chartMap_eq_value
       sourceChartPoint hcenter chartEquiv c u residual = (u, residualSub) := by
     change
       (u, fun p : ((center.erase (chartEquiv c).1 : Finset ι)) ↦
-        selectedEntryErasedResidual pivot residualSub p.1) = (u, residualSub)
+      selectedEntryErasedResidual pivot residualSub p.1) = (u, residualSub)
     congr
     funext p
     simp [selectedEntryErasedResidual, pivot]
   simpa [hpoint] using hx
+
+/-- The all-pivot selected-entry family covers every finite center value by a
+source point, and the unique finite certificate coordinate of that witness is
+the selected variable `u`.
+
+This is finite selected-entry source-point bookkeeping only.  It is not
+analytic atlas coverage, transition regularity, source production, normal
+crossings, pole order, or RLCT extraction. -/
+theorem exists_sourceChartPoint_chartMap_eq_value_and_coord_zero_eq
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (value : center → K) :
+    ∃ c : Fin center.card, ∃ u : K, ∃ residual : ι → K,
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).chartMap c
+          (sourceChartPoint hcenter chartEquiv c u residual) = value ∧
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).coord c
+          (sourceChartPoint hcenter chartEquiv c u residual) (0 : Fin 1) = u := by
+  rcases exists_sourceChartPoint_chartMap_eq_value
+      (K := K) hcenter chartEquiv value with
+    ⟨c, u, residual, hmap⟩
+  exact ⟨c, u, residual, hmap,
+    coord_sourceChartPoint_eq hcenter chartEquiv c u residual⟩
 
 /-- At an all-pivot family source point, the finite loss is the selected-entry
 center square in the selected pivot chart. -/
@@ -3139,6 +3397,47 @@ noncomputable def displayedChartIndex
       (displayedChartIndex (K := K) n hS hcont)).1 = (J + 1, J + 1) := by
   classical
   simp [displayedChartIndex]
+
+/-- The Case 2 residual-block all-pivot selected-entry certificate satisfies
+the concrete finite affine-overlap family certificate.
+
+This is only finite residual-block selected-entry overlap algebra.  It is not
+the missing analytic atlas transition-regularity field and does not source
+produce successor matrices. -/
+theorem finiteAffineTransitionRegular
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    SelectedEntryFiniteAffineTransitionRegularFamily
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) := by
+  simpa [case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+
+/-- Displayed-pivot convenience form of the Case 2 finite affine-overlap
+certificate, with target chart the top-left residual-block pivot `(J+1,J+1)`.
+
+This is only a finite indexing specialisation of the all-pivot overlap
+certificate. -/
+theorem finiteAffineTransitionRegular_displayedPair
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (sourceChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts) :
+    SelectedEntryFiniteAffineTransitionRegularPair
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      sourceChart (displayedChartIndex (K := K) n hS hcont) :=
+  SelectedEntryFiniteAffineTransitionRegularFamily.pair (K := K)
+    (finiteAffineTransitionRegular (K := K) n hS hcont) sourceChart
+    (displayedChartIndex (K := K) n hS hcont)
 
 /-- The displayed source-substitution block is the supplied selected-entry
 substitution block for the displayed pivot `(J+1,J+1)`.

@@ -142,6 +142,23 @@ must still verify them against the PDF.
 The source inventory thread must replace this with page-pinned, source-faithful
 entries.
 
+## Latest A6 Source Audit
+
+`threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`
+records the independent xhigh audit of Aoyagi Definition 3 / Theorem 2 on
+PDF pp. 8-9 after the branch-overlap diagnostics.  The audit found no printed
+tie-breaker: the selected set is value-level, Theorem 2 computes from the
+already chosen `ell,S_j`, and pp. 8-9 do not impose minimal `ell`, maximal
+`ell`, all-source selection, distinct selected values, or another canonical
+branch.  The equal-width example uses `ell=L`, so distinct-value/minimal-`ell`
+conventions are not source-backed.
+
+Controller consequence: final A6 statements must keep selected source data
+supplied or produce it in a source-backed branch.  Arbitrary
+`AoyagiDefinition3SourceData` quantification is unsafe because the same
+`L=2` width profile can carry multiple valid packages with different finite
+lambda/order payloads.
+
 ## Lean shape hypothesis
 
 Likely modules, subject to source inventory:
@@ -447,6 +464,217 @@ then applies the existing finite `jacobianPriorLossShift` socket with that
 count.  This is not a regular-suspension chart construction, analytic ideal
 transport, Aoyagi Lemma 1, regular-coordinate RLCT additivity,
 normal-crossing production, pole order, or RLCT.
+
+Latest A2 source-rank refinement: `RegularVariableShift.lean` now also derives
+the endpoint rank-width bounds `r <= H 1` and `r <= H (N+1)` from
+`paperEndpointFixedBaseSourceRankStratum` plus the dimension convention
+`H(k+1)=finrank(W k)`.  New names:
+`paperEndpointFixedBaseSourceRankStratum_regularVariableEndpointBounds`,
+`AoyagiNormalCrossingExponentData.exponentMinimum_jacobianPriorLossShift_regularVariableCount_of_sourceRankStratum`,
+`AoyagiNormalCrossingChartCertificate.exponentData_exponentMinimum_jacobianPriorLossShift_regularVariableCount_of_sourceRankStratum`,
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift_sourceRankStratum`,
+and
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift_sourceRankStratum`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-variable-source-rank-shift.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-variable-source-rank-shift.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-variable-source-rank-shift.md`.
+This is still finite/certificate arithmetic and source-rank endpoint-bound
+provenance only; it does not connect the supplied reduced certificate to the
+A2 geometry or prove analytic transport, regular-suspension charts, normal
+crossings, pole order, or RLCT.
+
+Latest A6 source-rank regular-shift bridge:
+`Theorem2SourceRankRegularShiftBridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_sourceRankStratum_regularVariableCountShift`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_sourceRankStratum_regularVariableCountShift`.
+These route Definition 3 source data plus source-rank-stratum membership into
+the existing final sockets for the finite regular-variable shifted exponent
+datum/certificate.  The extraction hypothesis is explicitly for the shifted
+object; reduced minimum plus regular term and reduced order remain supplied.
+Reproduction:
+`threads/06-dln-translation/reproduction-theorem2-source-rank-regular-shift-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-theorem2-source-rank-regular-shift-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-source-rank-regular-shift-bridge-a6.md`.
+This is final-socket composition only: no construction of the shifted
+certificate, no regular-suspension chart construction, no analytic ideal
+transport or Aoyagi Lemma 1, no exact-rank openness, no normal-crossing chart
+production, no active-ratio/chart-count proof, no pole order, and no RLCT.
+
+Latest A2/A6 rank-width regular-shift reduction:
+`RegularVariableShift.lean` now exposes
+`sourceRangeRankWidth_regularVariableEndpointBounds`,
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_regularVariableCountShift_rankWidth`,
+and
+`AoyagiTheorem2FiniteExponentFormulaHypothesis.of_chart_regularVariableCountShift_rankWidth`.
+The finite regular-variable shift now depends on the source-range rank-width
+hypothesis `hr` rather than directly on A2 source-rank-stratum data.  The
+endpoint bounds `r <= H 1` and `r <= H (L+1)` are projected internally from
+`hr`.
+
+`Theorem2RankWidthRegularShiftBridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_regularVariableCountShift`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_regularVariableCountShift`.
+These combine Definition 3 source data, full source-range rank-width, shifted
+extraction, and supplied reduced minimum/order obligations.  The existing
+source-rank regular-shift bridge now derives `hr` from the A2 source-rank
+stratum and delegates to the rank-width bridge.  This is API hardening and
+source-hypothesis reduction only; it still does not construct regular
+suspension charts, analytic ideal transport, active-ratio/chart-count facts,
+normal crossings, pole order, or RLCT.
+Reproductions:
+`threads/03-block-product-reduction/reproduction-a2-regular-variable-rank-width-shift.md`
+and
+`threads/06-dln-translation/reproduction-theorem2-rank-width-regular-shift-bridge-a6.md`.
+Statement cards:
+`threads/03-block-product-reduction/statement-card-a2-regular-variable-rank-width-shift.md`
+and
+`threads/06-dln-translation/statement-card-a6-theorem2-rank-width-regular-shift-bridge.md`.
+Reviews:
+`threads/03-block-product-reduction/review-a2-regular-variable-rank-width-shift.md`
+and
+`threads/06-dln-translation/review-theorem2-rank-width-regular-shift-bridge-a6.md`.
+
+Latest A6 Definition 3 terminal counted-datum classifier bridge:
+`Theorem2TerminalOrderBridge.lean` now also contains
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier`
+and
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier`.
+These route Definition 3 source data plus a source-range rank-width hypothesis
+into the existing terminal counted-datum classifier final sockets for the
+produced `m,data`.  The classifier, branch-label injectivity, active-ratio
+certificate, displayed-ratio chart-count certificate, and A0 extraction
+hypothesis remain supplied.  This is source-data/final-socket composition
+only: no classifier construction, branch-label proof, chart production, pole
+order without A0, or RLCT extraction.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-terminal-countdatum-classifier-final-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-terminal-countdatum-classifier-final-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-terminal-countdatum-classifier-final-bridge-a6.md`.
+
+Latest A6 Definition 3 all-source selected source-data constructor:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_consecutive_of_all_selected_strict`.
+For `0<L`, if every source-range reduced width satisfies the strict
+all-source selected inequality against
+`sum_j aoyagiReducedWidthInt H r (j.val+1)`, Lean constructs consecutive
+cutpoints with `ell=L` and `C.cut j = j.val+1`, then proves
+`AoyagiDefinition3SourceData L L H r C`.  Since every source-range value has
+one of those selected cutpoints as a witness, the nonselected clauses are
+discharged by contradiction.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-all-source-selected-source-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-all-source-selected-source-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-all-source-selected-source-data-a6.md`.
+This is a restricted source-data constructor and a genuine generalisation of
+the equal-width consecutive lane.  It is not arbitrary selected-cutpoint
+existence, a Definition 3 classification theorem, a ceiling-data constructor,
+Eq5 payload construction, chart production, pole-order identification, or RLCT
+extraction.
+
+Latest A6 Definition 3 all-source selected ceiling-data package:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth`.
+It first constructs consecutive all-source cutpoints and
+`AoyagiDefinition3SourceData L L H r C` from the strict all-source selected
+inequality, then applies the existing rank-width ceiling-data package to
+produce `m` and `data : AoyagiDefinition3CeilData L m` with Nat-width
+rewrites, nonnegativity, strict selected inequalities, selected upper bounds,
+and Nat selected-width nonnegativity.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-all-source-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-all-source-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-all-source-ceil-data-a6.md`.
+Rank-width remains explicit; the theorem does not compute `ceilWidth` or
+`aParam`, construct arbitrary cutpoints, classify Definition 3, build Eq5
+payloads, produce charts, identify pole order, or extract RLCT.
+
+Latest A6 Definition 3 all-source source-rank ceiling-data package:
+`Definition3RankWidthBridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_sourceRankStratum`.
+It replaces the explicit source-range rank-width input in the all-source
+ceiling-data package by
+`paperEndpointFixedBaseSourceRankStratum_sourceRangeRankWidth W B hx hH`.
+The strict all-source selected inequality remains explicit.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-all-source-source-rank-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-all-source-source-rank-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-all-source-source-rank-ceil-data-a6.md`.
+This is a single A2/A6 provenance wrapper.  Do not clone final-socket variants
+without a concrete consumer.  It does not prove the strict inequality,
+source-rank membership, exact-rank openness, chart coverage, closed-form
+ceiling data, Eq5 payloads, finite exponent formulas, pole order, or RLCT.
+
+Latest A6 Definition 3 nonconstant example:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_consecutive_nonconstant_widths_one_two_two_selectedReducedWidthCeilData`.
+For `L=2`, `r=0`, and source-range reduced widths `(1,2,2)`, Lean constructs
+consecutive all-source cutpoints, Definition 3 source data, selected reduced
+widths, and a ceiling datum; it also records `m 0 = 1`, `m 1 = 2`,
+`m 2 = 2`, and `m 0 != m 1`.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-nonconstant-one-two-two-example-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-nonconstant-one-two-two-example.md`.
+Review:
+`threads/06-dln-translation/review-definition3-nonconstant-one-two-two-example-a6.md`.
+This is a diagnostic example showing the all-source lane is broader than the
+equal-width lane.  It is not arbitrary source-data existence, a Definition 3
+classification theorem, closed-form ceiling data, Eq5 construction, chart
+production, pole order, or RLCT.
+
+Latest A6 Definition 3 three-width triangle constructor:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth`.
+For `L=2`, if the three source-range reduced widths are `w1,w2,w3` and satisfy
+`2*w_i < w1+w2+w3` for each `i`, then consecutive all-source cutpoints produce
+Definition 3 source data, selected reduced widths, and a ceiling datum under
+the explicit source-range rank-width hypothesis.  The output records
+`m 0=w1`, `m 1=w2`, and `m 2=w3`.  The `(1,2,2)` theorem now factors through
+this constructor.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-three-width-triangle-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-three-width-triangle.md`.
+Review:
+`threads/06-dln-translation/review-definition3-three-width-triangle-a6.md`.
+The xhigh review passed and confirmed the theorem is correctly restricted to
+the all-source `L=2` case.  This is a three-source-layer all-source constructor
+only; it is not arbitrary source-data existence, a Definition 3 classification
+theorem, closed-form ceiling data, Eq5 construction, chart production, pole
+order, or RLCT.
+
+Latest A6 Definition 3 `L=2` pairwise-distinct classification:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct`,
+`AoyagiDefinition3SourceData.cut_eq_consecutive_of_L_eq_two`, and
+`AoyagiDefinition3SourceData.exists_sourceData_iff_allSourceStrict_of_L_eq_two_rankWidth_pairwiseDistinct`.
+The proof uses the existing `ell=1` obstruction and pairwise distinctness to
+rule out the two-cutpoint case, then forces the three cutpoints to be
+`1,2,3`; the remaining Definition 3 condition is exactly the all-source strict
+selected inequalities.  Repeated-width profiles remain unclassified.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-pairwise-distinct-classification-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-pairwise-distinct-classification.md`.
+Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-pairwise-distinct-classification-a6.md`.
+This is finite Definition 3 structure only: no ceiling closed form, Eq5
+construction, chart production, source production, pole order, or RLCT.
 
 ## Latest A5 Update
 
@@ -7332,6 +7560,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-coordinate-postdata-a4.md`.
 
+Source-point coverage/coordinate follow-through:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value_and_coord_zero_eq`.
+It packages the existing generic finite source-point preimage theorem with the
+coordinate projection for the same witness: every finite center value is the
+chart map of some `sourceChartPoint c u residual`, and the unique certificate
+coordinate `(0 : Fin 1)` at that point is `u`.  The independent reviewer
+recommended the explicit `coord_zero_eq` name and not adding a Case 1 wrapper
+until a downstream theorem needs it.  This is finite selected-entry
+source-coordinate bookkeeping only, not analytic atlas coverage, transition
+regularity, source production, Jacobian control, normal crossings, pole order,
+termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-source-point-coverage-coordinate-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-source-point-coverage-coordinate.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-source-point-coverage-coordinate-a4.md`.
+
 A6/A2 rank-width provenance follow-through:
 `Definition3RankWidthBridge.lean` now proves
 `paperTotalMap_rank_le_layer_finrank`,
@@ -7486,6 +7732,789 @@ Statement card:
 `threads/06-dln-translation/statement-card-a6-definition3-equal-width-ceil-data.md`.
 Review:
 `threads/06-dln-translation/review-definition3-equal-width-ceil-data-a6.md`.
+
+A6 Definition 3 equal-width explicit ceiling data:
+`Definition3Bridge.lean` now also contains
+`AoyagiDefinition3CeilData.equalWidthOfDecomposition` and
+`AoyagiDefinition3SourceData.exists_consecutive_explicitCeilData_of_constant_reducedWidth_decomposition`.
+Under a positive-remainder decomposition `w = L*q + a` with `0<a<=L`, the
+constant selected-width family has the explicit Definition 3 values
+`ceilWidth = w + q + 1` and `aParam = a`.  The source-facing theorem combines
+this with consecutive equal-width cutpoints and returns the usual selected
+reduced-width package with the explicit fields.  This is still equal-width
+finite arithmetic only: no arbitrary source-data existence, uniqueness of
+the ceiling datum, automatic quotient/remainder construction, Eq5 payload,
+finite exponent formula, chart production, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-explicit-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-explicit-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-explicit-ceil-data-a6.md`.
+
+## Latest A4 No-Go Update
+
+The selected-entry transition coordinate contribution wrapper was considered
+and explicitly parked.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-coordinate-contribution-a4.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-coordinate-contribution-a4.md`.
+
+The candidate would only conjoin
+`coord_sourceChartTransitionPoint_eq_sourceSelected` with
+`sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
+Independent xhigh review rejected it as redundant finite plumbing under the
+current A4 kill conditions.  Do not formalise it unless a downstream theorem
+directly consumes that exact conjunction.  The next non-redundant A4 work
+would need produced successor/source/chart fields, suffix production,
+coverage, transition regularity, or coordinate-derived postdata not fillable
+from the formula-level `SourceProductionObligation` constructor.
+
+Latest A4 selected-entry finite affine-overlap certificate:
+`SelectedEntryNormalCrossing.lean` now proves
+`SelectedEntryFiniteAffineTransitionRegularFamily`,
+`SelectedEntryFiniteAffineTransitionRegularPair`,
+`SelectedEntryFiniteAffineTransitionRegularFamily.pair`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular_displayedPair`.
+The family-level certificate records the actual selected-entry transition
+point formula, target coordinate formula, finite chart-map equality on the
+normalised target-coordinate overlap, inverse transition, self-transition, and
+cocycle.  The displayed theorem is only pair extraction at
+`displayedChartIndex`.  This can support a finite selected-entry
+transition predicate explicitly defined as these identities, but it is not the
+analytic atlas transition-regularity field and does not prove coverage, source
+production, normal crossings, pole order, termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-affine-transition-regularity-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-affine-transition-regularity.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-affine-transition-regularity-a4.md`.
+Verification:
+`LEAN_NUM_THREADS=1 lake env lean DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`,
+`LEAN_NUM_THREADS=1 lake build DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing`,
+full `LEAN_NUM_THREADS=1 lake build DLNFibre` (`3910 jobs`),
+`lean/scripts/sorries` with `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check`.
+
+Latest verification in the Aoyagi worktree passed after the all-source
+source-rank ceiling-data package and the nonconstant `(1,2,2)` diagnostic
+example: full `LEAN_NUM_THREADS=1 lake build DLNFibre` completed successfully
+(`3910 jobs`), covering `Definition3Bridge.lean`,
+`Definition3RankWidthBridge.lean`,
+`Theorem2RankWidthRegularShiftBridge.lean`, and
+`Theorem2SourceRankRegularShiftBridge.lean`; `lean/scripts/sorries` reported
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`; `git diff --check` passed.  These
+checks used bare `lake` with `LEAN_NUM_THREADS=1` because this sandbox cannot
+write the global `lb` semaphore under `~/.lake-shared`.
+
+Latest focused verification after the three-width triangle constructor passed:
+`LEAN_NUM_THREADS=1 lake env lean DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`,
+`LEAN_NUM_THREADS=1 lake build DLNFibre.DLN.Aoyagi.Definition3Bridge`,
+`lean/scripts/sorries` with `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check`.
+
+Latest focused verification after the `L=2` pairwise-distinct classification
+also passed: `LEAN_NUM_THREADS=1 lake env lean
+DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`, `LEAN_NUM_THREADS=1 lake build
+DLNFibre.DLN.Aoyagi.Definition3Bridge`, `lean/scripts/sorries` with
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and `git diff --check`.
+Full `LEAN_NUM_THREADS=1 lake build DLNFibre` also completed successfully
+after this slice (`3910 jobs`).
+
+Latest A6 Definition 3 positive-remainder ceiling data:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder`.  From a supplied
+finite decomposition
+
+```text
+sum_j m_j = ell * ceilPred + a,        0 < a <= ell,
+```
+
+it constructs an `AoyagiDefinition3CeilData` with
+`ceilWidth = ceilPred + 1` and `aParam = a`.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-positive-remainder-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-positive-remainder-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-positive-remainder-ceil-data-a6.md`.
+
+This is finite ceiling/residue arithmetic only.  Following xhigh scout
+feedback, the source-facing explicit wrapper was not added; it should wait for
+a downstream theorem that actually needs explicit `ceilWidth`/`aParam` fields.
+
+Verification after the positive-remainder ceiling-data slice passed:
+`LEAN_NUM_THREADS=1 lake env lean DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`,
+`LEAN_NUM_THREADS=1 lake build DLNFibre.DLN.Aoyagi.Definition3Bridge`, full
+`LEAN_NUM_THREADS=1 lake build DLNFibre` (`3910 jobs`),
+`lean/scripts/sorries` with `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check`.
+
+Latest A6 Definition 3 repeated-width `L=2` classification:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one`,
+`AoyagiDefinition3SourceData.of_ell_eq_one_selectedValueSet_covers`,
+`AoyagiDefinition3SourceData.exists_ell_one_of_L_eq_two_positive_repeated`,
+and
+`AoyagiDefinition3SourceData.exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two`.
+For `L=2`, bare Definition 3 source-data existence is equivalent to either
+the repeated-positive branch
+
+```text
+0<w1, 0<w2, 0<w3, and at least two of w1,w2,w3 are equal
+```
+
+or the all-source triangle branch.  No rank-width hypothesis is needed for
+this finite source-data classification; rank-width remains needed only by
+downstream Nat-width/ceiling packages.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-repeated-width-classification-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-repeated-width-classification.md`.
+Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-repeated-width-classification-a6.md`.
+
+Verification after the repeated-width `L=2` classification passed:
+`LEAN_NUM_THREADS=1 lake env lean DLNFibre/DLN/Aoyagi/Definition3Bridge.lean`,
+`LEAN_NUM_THREADS=1 lake build DLNFibre.DLN.Aoyagi.Definition3Bridge`, full
+`LEAN_NUM_THREADS=1 lake build DLNFibre` (`3910 jobs`),
+`lean/scripts/sorries` with `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check`.
+
+Latest A2 supplied regular-suspension interface:
+`RegularSuspensionInterface.lean` now packages the conservative full-chart
+boundary for the p. 13 regular-variable step.  A supplied
+`AoyagiSuppliedRegularSuspensionBoundary` carries reduced and full chart
+certificates, possibly over different parameter/coefficient types, abstract
+source/ideal/coverage/Jacobian obligations, and the finite equality
+
+```text
+Cfull.exponentData =
+  Cred.exponentData.jacobianPriorLossShift regularCount.
+```
+
+It proves finite projections
+`full_exponentMinimum_eq_reduced_add_half_regularCount`,
+`full_exponentOrder_eq_reduced`, and
+`full_exponentMinimum_eq_reduced_add_regularTerm`.  With extraction supplied
+for `Cfull`, the wrapper
+`AoyagiSuppliedRegularSuspensionCertificate.theorem2SuppliedChartFinalBoundary_of_regularVariableCount`
+returns `AoyagiTheorem2SuppliedChartFinalBoundary Cfull ...` exactly.  This is
+not a construction of `Cfull`, not analytic ideal transport, not Aoyagi
+Lemma 1, not regular-coordinate additivity, not normal-crossing production,
+and not an RLCT theorem beyond the full-certificate extraction hypothesis.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-interface.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-interface.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-interface.md`.
+
+Latest A6 Theorem 2 supplied regular-suspension final bridge:
+`Theorem2RegularSuspensionFinalBridge.lean` now composes Definition 3
+source-data provenance with the supplied full regular-suspension certificate.
+The rank-width theorem
+`AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_suppliedRegularSuspension`
+returns the existing chart-final socket for `Cfull` exactly; the source-rank
+variant derives the source-range rank-width hypothesis and delegates to it.
+The reduced certificate supplies only finite min/order obligations, and
+extraction remains on `Cfull`.
+
+This is chart-level final-socket composition only.  It is not source-data
+construction, not construction of `Cfull`, not a proof of the abstract
+regular-suspension predicates, not analytic ideal transport, not Aoyagi
+Lemma 1, not regular-coordinate additivity, not normal-crossing production,
+and not an RLCT theorem beyond the supplied full-certificate extraction
+hypothesis.  Reproduction:
+`threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-theorem2-regular-suspension-final-bridge.md`.
+Review:
+`threads/06-dln-translation/review-theorem2-regular-suspension-final-bridge-a6.md`.
+
+Latest A4 selected-entry analytic atlas Case 2 source final socket:
+`SelectedEntryAnalyticAtlasCase2FinalBridge.lean` now adds
+`SelectedEntryCase2DisplayedA0SourceProductionData`,
+`SelectedEntryCase2DisplayedA0SourceProduction`, and
+`SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_case2DisplayedA0SourceProduction`.
+The source-production predicate carries a displayed continuing Case 2
+source-chart center-square/formal-Jacobian certificate, a coordinate of the
+same supplied chart certificate, and an A0 exponent-coordinate bridge for
+that coordinate.  The final theorem consumes this payload plus explicit
+selected-width provenance, extraction, center-card/lambda equality,
+active-ratio lower bound, chart-count equality, and chart-count upper bound,
+then delegates to the existing Case 2/A0 chart-final bridge.
+
+This is non-vacuous final-socket composition, not construction of the analytic
+atlas.  It does not prove coverage, transition regularity, analytic
+Jacobian/volume-form compatibility, source successor/suffix production,
+normal crossings, pole order, or RLCT beyond the explicit extraction
+hypothesis.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-case2-source-final-socket-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-case2-source-final-socket.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-case2-source-final-socket-a4.md`.
+
+Latest A2 chart-local suffix-state field continuity:
+`ChartTopology.lean` now proves
+`continuousAt_chartLocalSuffixState_step_fields` and
+`continuousAt_chartLocalSuffixState_suffixState_fields`.  The one-step theorem
+shows continuity of the deterministic fields `L`, `B`, `Ctop`, and `D` and
+carries the next basepoint `Ctop.det` unit.  The suffix theorem descends
+through `ChartLocalSuffixState.suffixState` under the same recursive
+determinant-chart hypotheses as the existing `B` theorem, returning fieldwise
+continuity plus `IsUnit Ctop.det` for every `i <= j`.
+
+This closes a concrete topology gap for the product-reduction multiplier
+fields but remains only continuity at the basepoint.  It is not analytic
+regularity, exact-rank openness, source-rank-stratum openness, local source
+neighborhood construction, regular suspension, ideal transport, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-chart-local-suffix-state-field-continuity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-chart-local-suffix-state-field-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-chart-local-suffix-state-field-continuity.md`.
+
+Latest A2 fixed-base suffix-state field continuity handoff:
+`FixedBasepointChart.lean` now proves
+`paperEndpointFixedBaseContinuousEdges_recursiveSuffixState_fields_continuousAt`.
+It applies the generic suffix-state field-continuity theorem to the
+source-facing continuous-linear-map family `Cedge` expressed in endpoint bases
+fixed from the base paper chain `B`.  The proof builds the fixed-base matrix
+family `E`, proves `ContinuousAt E x0` using `continuous_linearMap_toMatrix`,
+rewrites the recursive determinant-chart hypotheses, and returns `IsUnit
+Ctop.det` plus `ContinuousAt` for `L`, `B`, `Ctop`, and `D` for every suffix
+state ending at `Fin.last N`.
+
+This is a legitimate fixed-base topology handoff, not a new product-reduction
+identity or analytic chart theorem.  It does not prove analytic regularity,
+exact-rank/source-rank openness, chart coverage, regular suspension, ideal
+transport, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-suffix-state-field-continuity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-base-suffix-state-field-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-base-suffix-state-field-continuity.md`.
+
+Latest A6 Definition 3 `L=2` all-source triangle formula package:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_remainder_rankWidth`.
+For the all-source triangle branch with widths `w1,w2,w3` and a supplied
+positive-remainder decomposition
+
+```text
+w1 + w2 + w3 = 2*ceilPred + a,   0 < a <= 2,
+```
+
+Lean constructs consecutive cutpoints, source data, selected widths, explicit
+ceiling data with `ceilWidth = ceilPred+1` and `aParam = a`, Nat-width and
+nonnegativity provenance, the order formula `a*(2-a)+1`, the selected pair sum
+`w1*w2 + w1*w3 + w2*w3`, and the corresponding finite Theorem 2 lambda
+expression.
+
+This is finite formula packaging for the all-source `ell=2` branch only.  It
+does not cover the repeated-positive `ell=1` branch, add a source-rank or
+final-socket wrapper, construct Eq5 payloads or charts, prove normal
+crossings, identify pole order, or extract RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-triangle-formula-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-triangle-formula.md`.
+Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-triangle-formula-a6.md`.
+
+Latest A6 Definition 3 `L=2`, `ell=1` selected-pair formula package:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth`.
+For an exposed selected pair `C : AoyagiSelectedCutpoints 1`, positive selected
+values `u,v`, selected-value cover of all three source widths, source-range
+rank-width, and a supplied decomposition `u+v=ceilPred+1`, Lean constructs
+Definition 3 source data, selected widths, explicit ceiling data with
+`ceilWidth=ceilPred+1` and `aParam=1`, Nat-width/nonnegativity/strictness
+provenance, order formula `1`, selected pair sum `u*v`, and finite Theorem 2
+lambda `regularTerm + u*v/2`.
+
+This is the safe repeated-positive branch interface because it exposes the
+selected pair instead of claiming a canonical pair from a repeated-width
+disjunction.  It does not add source-rank/final wrappers, Eq5 payloads,
+charts, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-one-selected-pair-formula-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-one-selected-pair-formula.md`.
+Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-ell-one-selected-pair-formula-a6.md`.
+
+Latest A6 Definition 3 `ell=1` automatic ceiling and `L=2`
+repeated-positive formula package:
+`Definition3Bridge.lean` now proves the preferred no-remainder finite
+repeated-positive API:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_rankWidth
+```
+
+For an exposed `ell=1` selected pair with selected values `u,v`, Lean
+constructs Definition 3 ceiling data directly with `ceilWidth=u+v` and
+`aParam=1`, then proves order `1`, selected pair sum `u*v`, and finite lambda
+`regularTerm+u*v/2`.  For the `L=2` repeated-positive branch, Lean consumes
+only positive widths, a repeated-equality disjunction, and source-range
+rank-width; it chooses `(1,3)` in the `w1=w2` branch and `(1,2)` in the
+`w1=w3`/`w2=w3` branches, returning the selected pair existentially.
+
+The older
+`AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_remainder_rankWidth`
+remains compatibility only.  This slice is finite Definition 3/Theorem 2
+formula arithmetic: no unique/canonical selected pair, no source-rank wrapper,
+no final socket, no Eq5 payloads, no chart production, no pole order, and no
+RLCT.
+
+Latest A6 Definition 3 general `L`, `ell=1` selected-pair formula package:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth_general`.
+For arbitrary depth `L`, an exposed selected pair
+`C : AoyagiSelectedCutpoints 1`, positive selected values `u,v`, value-level
+cover of every source-range reduced width, and source-range rank-width, Lean
+constructs Definition 3 source data, selected widths, direct `ell=1` ceiling
+data with `ceilWidth=u+v` and `aParam=1`, Nat-width/nonnegativity/strictness
+provenance, order formula `1`, pair sum `u*v`, and finite lambda
+`aoyagiTheorem2RegularTerm L H r + u*v/2`.
+
+This is the arbitrary-depth exposed-pair API, not a branch-selection theorem.
+It does not claim a canonical selected pair, branch-independent finite
+payloads for arbitrary Definition 3 source data, source-rank/final wrappers,
+Eq5 payloads, charts, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-ell-one-selected-pair-cover-formula-general-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-ell-one-selected-pair-cover-formula-general.md`.
+Review:
+`threads/06-dln-translation/review-definition3-ell-one-selected-pair-cover-formula-general-a6.md`.
+
+Latest A6 Definition 3 `ell=1` ceiling-data simplification:
+`Definition3Bridge.lean` now proves constructor-independent finite arithmetic
+for any `AoyagiDefinition3CeilData 1 m`:
+
+```text
+AoyagiDefinition3CeilData.aParam_eq_one_of_ell_eq_one
+AoyagiDefinition3CeilData.selectedSum_eq_ceilWidth_of_ell_eq_one
+AoyagiDefinition3CeilData.ceilWidth_eq_selectedSum_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2OrderFormula_eq_one_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2Lambda_fromCeilData_eq_regularTerm_add_pairSum_half_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2Lambda_fromCeilData_eq_regularTerm_add_selectedPair_half_of_ell_eq_one
+```
+
+For `ell=1`, the residue bounds force `aParam=1`, the selected-sum identity
+forces `ceilWidth=sum_j m_j`, and the lambda formula simplifies to
+`regularTerm + aoyagiSelectedWidthPairSum 1 m / 2`; with selected values `u,v`
+it is `regularTerm+u*v/2`.  This is reusable finite arithmetic only, not a
+selected-cutpoint constructor, branch-choice theorem, final-socket wrapper,
+pole-order theorem, or RLCT theorem.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-ell-one-ceil-data-simplification-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-ell-one-ceil-data-simplification.md`.
+Review:
+`threads/06-dln-translation/review-definition3-ell-one-ceil-data-simplification-a6.md`.
+
+Latest A6 Definition 3 `L=2` triangle parity formula package:
+`Definition3Bridge.lean` now proves parity refinements of the all-source
+triangle formula package:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_odd_rankWidth
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
+```
+
+For total selected width `T=w1+w2+w3`, the odd branch uses
+`T=2*(T/2)+1`, hence `ceilWidth=T/2+1`, `aParam=1`, and order `2`.  The even
+branch uses triangle strictness to ensure `T>0`, then
+`T=2*(T/2-1)+2`, hence `ceilWidth=T/2`, `aParam=2`, and order `1`.  Both
+theorems keep the all-source cutpoints, selected-width provenance, pair-sum
+formula, and finite Theorem 2 lambda expression.
+
+This removes the supplied positive-remainder decomposition from the `L=2`
+triangle branch when parity is known.  Nonclaims: no `L>2` classification, no
+combined repeated/triangle branch theorem, no source-rank wrapper, no final
+socket, no Eq5 payloads, no chart production, no pole-order theorem, and no
+RLCT theorem.
+
+Latest A6 Definition 3 branch-overlap diagnostic:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_L_eq_two_two_three_three_formula_disagreement`.
+For the concrete profile `L=2,r=0,M=(2,3,3)`, Lean constructs both the `ell=1`
+repeated-positive package and the `ell=2` all-source triangle package for the
+same source-range widths.  The finite Theorem 2 lambda formula values are `3`
+and `5/2`, respectively, while both finite order formulas are `1`.
+Xhigh scout work also checked the general overlap arithmetic and ruled out a
+branch-agreement theorem.  Treat this as a guardrail for final assembly: do
+not quantify over arbitrary Definition 3 source-data choices in an overlapping
+profile unless a source-backed selection convention is added.  This is finite
+formula diagnostics only, not an analytic RLCT ambiguity claim.
+
+`Definition3Bridge.lean` also now proves
+`AoyagiDefinition3SourceData.exists_L_eq_two_one_two_two_order_disagreement`.
+For the concrete profile `L=2,r=0,M=(1,2,2)`, Lean constructs the same two
+branch types and proves both finite lambda values are `1`, while the finite
+order formulas are `1` and `2`.  This complements `(2,3,3)`: branch overlap can
+change lambda, and even when lambda agrees it can change the finite order
+payload.  This remains finite formula diagnostics only, not a pole-order or
+analytic RLCT claim.
+
+Latest A2 canonical deterministic product-difference coefficient fields:
+`ProductReductionEntryIdealBoundary.lean` now proves
+`ChartLocalSuffixState.productDifferenceEntryIdeal_eq_fourMatrixEntryIdeal`
+and
+`PaperEndpointFixedBaseProductReductionCertificate.productDifferenceEntryIdeal_eq_fourMatrixEntryIdeal_canonicalFields`.
+The generic theorem turns a suffix-state block-diagonal invariant directly
+into the p. 13 scalar product-difference entry-ideal equality with canonical
+fields
+
+```text
+F2 = -S.B,   F3 = lowerLeftBlock S.L,   Ctop = S.Ctop,   D = S.D.
+```
+
+The fixed-base theorem applies this to the endpoint matrix family from the
+existing product-reduction certificate.  This removes the need for downstream
+consumers to unpack existential triangular witnesses when they only need the
+deterministic coefficient fields.
+
+This is rank-free scalar entry-ideal algebra only.  It does not prove
+source-rank neighborhood construction, exact-rank openness, analytic
+regularity, analytic germ-ideal transport, chart coverage, normal crossings,
+pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-canonical-product-difference-coefficient-fields.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-canonical-product-difference-coefficient-fields.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-canonical-product-difference-coefficient-fields.md`.
+
+Latest A2 canonical product-difference coefficient-field continuity:
+`ProductReductionEntryIdealBoundary.lean` now also proves
+`paperEndpointFixedBaseContinuousEdges_productDifferenceCoefficientFields_continuousAt`,
+`paperEndpointFixedBaseContinuousEdges_selfBase_productDifferenceCoefficientFields_continuousAt`,
+and
+`paperEndpointFixedBaseContinuousEdges_selfBase_productDifferenceCoefficientFields_centered_continuousAt`.
+The first theorem assumes the explicit recursive determinant-chart hypotheses;
+the self-base theorem derives them from
+`Cedge x0 = fun p => LinearMap.toContinuousLinearMap (reverseEdge W B p)`.
+Both expose continuity at `x0` for the actual canonical coefficient fields
+
+```text
+S.Ctop - 1,   -S.B,   lowerLeftBlock S.L,   S.D.
+```
+
+and preserve `IsUnit ((S x0).Ctop.det)`.  The centered self-base theorem also
+proves that all four fields vanish at `x0`.  The centering proof uses the
+self-base total matrix `fromBlocks 1 0 0 0`, the lower-unitriangular form of
+`S.L`, and block comparison; it does not identify `S.D` with an untransformed
+raw product.
+
+This is a continuity/basepoint-centering handoff for the deterministic p. 13
+fields.  It is not analytic regularity, exact-rank/source-rank openness, chart
+coverage, analytic ideal or germ transport, a regular-suspension certificate,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-canonical-product-difference-field-continuity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-canonical-product-difference-field-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-canonical-product-difference-field-continuity.md`.
+
+Latest A2 canonical product-difference local certificate:
+`ProductReductionEntryIdealBoundary.lean` now packages the centered continuous
+canonical fields together with the local source-rank product-difference
+boundary.  New names:
+
+```text
+PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks
+PaperEndpointFixedBaseProductReductionCertificate.toCanonicalProductDifferenceSourceRanks
+paperEndpointFixedBaseCanonicalProductDifferenceSourceRanks_selfBase_mem_nhdsWithin_source
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate
+paperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate_of_isCompl
+PaperEndpointCanonicalProductDifferenceLocalCertificate
+exists_paperEndpointCanonicalProductDifferenceLocalCertificate
+```
+
+The pointwise predicate uses the deterministic ideal equality
+
+```text
+fourMatrixEntryIdeal (S.Ctop - 1) (-S.B) (lowerLeftBlock S.L) S.D
+```
+
+and includes the source residual-rank formulas.  The fixed-base local
+certificate stores the self-base centered-continuity theorem for the same four
+fields and a `nhdsWithin` conclusion relative to
+`paperEndpointFixedBaseSourceRankStratum`.
+
+This is the current preferred A2 handoff for later regular-suspension work,
+but remains a local elementary/topological boundary only: no exact-rank or
+source-rank openness, analytic regularity, chart coverage, analytic ideal or
+germ transport, regular-suspension construction, normal crossings, pole order,
+or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-canonical-product-difference-local-certificate.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-canonical-product-difference-local-certificate.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-canonical-product-difference-local-certificate.md`.
+
+Latest A2 canonical product-difference regular-chart source:
+`RegularSuspensionInterface.lean` now defines
+`AoyagiCanonicalProductDifferenceRegularChartSource` as the A2 canonical local
+source certificate viewed as the source predicate for a supplied
+regular-suspension boundary.  It also proves
+`AoyagiSuppliedRegularSuspensionBoundary.of_canonicalProductDifferenceRegularChartSource`.
+This constructor fills only `regular_chart_source`; it still requires supplied
+`RegularIdealTransport`, `RegularCoverage`, `RegularJacobianCompatible`, and
+`Cfull.exponentData = Cred.exponentData.jacobianPriorLossShift regularCount`.
+
+This is a source-predicate bridge only.  It is not scalar regular-coordinate
+production, not a regular-count theorem, not analytic ideal/germ transport,
+not chart coverage, not Jacobian compatibility, not exponent-shift production,
+not normal-crossing production, and not pole order or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-canonical-product-difference-regular-chart-source.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-canonical-product-difference-regular-chart-source.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-canonical-product-difference-regular-chart-source.md`.
+
+The scalar regular-coordinate target below closes that next step.  The next A2
+source-moving target after it is the four-block ideal split and its
+instantiation on the canonical local source certificate.
+
+Latest A2 regular-suspension coordinate index:
+`RegularSuspensionCoordinates.lean` now defines
+`AoyagiRegularBlockCoordinateIndex ι μ ν` as the finite disjoint union of
+entries of the three regular p. 13 blocks `Ctop - 1`, `F2`, and `F3`, with
+coordinate-value projection `AoyagiRegularBlockCoordinateIndex.value`.
+It proves the abstract card formula and
+`AoyagiRegularBlockCoordinateIndex.card_eq_aoyagiTheorem2RegularVariableCount`
+under explicit endpoint-cardinality identifications
+`card ι = r`, `card μ = H 1 - r`, and `card ν = H (L+1)-r`.  The same file now
+proves the fixed-base endpoint complement counts from the complement
+construction, base product rank, and dimension convention, and packages the
+endpoint-compatible coordinate count for the local source certificate.
+
+The module also proves
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate.regularBlockScalarCoordinates_centered_continuousAt`,
+projecting the existing local certificate's centered continuity of
+`S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L` to every scalar regular
+coordinate.  The residual block `S.D` is intentionally not included.
+
+This is finite coordinate bookkeeping and componentwise continuity only.  It
+does not construct analytic regular coordinates, construct `Cfull`, prove the
+four-block ideal split, prove ideal transport, coverage, Jacobian
+compatibility, exponent shift, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-index.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-coordinate-index.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-coordinate-index.md`.
+
+Latest A2 regular/residual ideal split:
+`EntryIdeal.lean` now defines `regularBlockEntryIdeal X F2 F3` as the ideal
+generated by entries of the three regular p. 13 blocks.  The four-block ideal
+is definitionally the join of that regular ideal with the residual
+`matrixEntryIdeal D`, exposed as
+`fourMatrixEntryIdeal_eq_regularBlockEntryIdeal_sup_matrixEntryIdeal`.
+
+`ProductReductionEntryIdealBoundary.lean` now also has generic,
+suffix-state, and fixed-base canonical corollaries.  The canonical theorem
+rewrites the product-difference entry ideal as
+
+```text
+regularBlockEntryIdeal (S.Ctop - 1) (-S.B) (lowerLeftBlock S.L) ⊔
+  matrixEntryIdeal S.D.
+```
+
+This is scalar ideal regrouping only.  It does not add `S.D` to the
+regular-coordinate index, construct analytic regular coordinates, transport
+analytic germ ideals, produce a regular-suspension chart, prove normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-residual-ideal-split.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-residual-ideal-split.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-residual-ideal-split.md`.
+
+Latest A2 regular-coordinate ideal bridge:
+`RegularSuspensionCoordinates.lean` now defines the scalar regular-coordinate
+ideal
+
+```text
+AoyagiRegularBlockCoordinateIndex.entryIdeal X F2 F3
+```
+
+as the span of the values of the regular coordinate index, and proves
+
+```text
+AoyagiRegularBlockCoordinateIndex.entryIdeal X F2 F3 =
+  regularBlockEntryIdeal X F2 F3.
+```
+
+The file also composes this with the regular/residual ideal split, proving that
+the canonical fixed-base source-rank product-difference ideal is the scalar
+regular-coordinate ideal joined with `matrixEntryIdeal S.D`.
+
+This is algebraic ideal bookkeeping between the scalar coordinate index and the
+regular block-entry ideal.  The scalar ideal equality is valid without finite
+index assumptions; the finite Aoyagi use is supplied by the count theorems.  It
+does not include `D` in the scalar regular-coordinate ideal and does not
+construct analytic regular coordinates, transport analytic germ ideals, prove
+coverage/Jacobian compatibility, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-ideal-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-coordinate-ideal-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-coordinate-ideal-bridge.md`.
+
+Latest A2 local source regular-coordinate ideal split:
+`RegularSuspensionCoordinates.lean` now proves
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_regularCoordinateIdeal_source_neighborhood`.
+It takes the existing fixed-base local source certificate and returns an
+ordinary neighborhood `U`; for every `x in U` lying in the source-shaped rank
+stratum, the canonical product-difference entry ideal is
+
+```text
+AoyagiRegularBlockCoordinateIndex.entryIdeal
+  (S.Ctop - 1) (-S.B) (lowerLeftBlock S.L) ⊔ matrixEntryIdeal S.D.
+```
+
+This is the current strongest A2 algebraic source-side package for the
+regular-suspension step.  It preserves the source-stratum guard and does not
+prove source-rank openness, analytic germ-ideal transport, regular-suspension
+chart construction, coverage, Jacobian compatibility, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-local-source-regular-coordinate-ideal-split.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-local-source-regular-coordinate-ideal-split.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-local-source-regular-coordinate-ideal-split.md`.
+
+Latest A2 regular-coordinate ideal source predicate:
+`RegularSuspensionCoordinates.lean` now exposes the local source split as the
+named predicate `PaperEndpointFixedBaseRegularCoordinateIdealSourceNeighborhood`,
+and `RegularSuspensionAlgebraicSource.lean` packages it as
+`AoyagiCanonicalProductDifferenceRegularCoordinateIdealSource`.
+
+The new regular-suspension boundary constructor
+`AoyagiSuppliedRegularSuspensionBoundary.of_canonicalProductDifferenceRegularCoordinateIdealSource`
+fills only the `regular_chart_source` field from the canonical local source
+certificate and the scalar regular-coordinate/residual ideal neighborhood.
+The other regular-suspension fields remain supplied:
+
+```text
+regular_ideal_transport
+regular_coverage
+regular_jacobian_compatible
+exponentData_eq_shift
+```
+
+This is a source-predicate bridge only.  It does not construct `Cfull`,
+transport analytic germ ideals, prove chart coverage, prove Jacobian
+compatibility, prove the exponent shift, produce normal crossings, determine
+pole order, or extract RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-ideal-source-predicate.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-coordinate-ideal-source-predicate.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-coordinate-ideal-source-predicate.md`.
+
+Latest A2 regular-coordinate ideal source existence:
+`RegularSuspensionAlgebraicSource.lean` now proves
+`exists_aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource`.
+It takes the raw continuous-family/base-rank hypotheses used by
+`exists_paperEndpointCanonicalProductDifferenceLocalSourceCertificate` and
+returns the stronger
+`AoyagiCanonicalProductDifferenceRegularCoordinateIdealSource` predicate by
+composition with
+`aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource_of_localSourceCertificate`.
+
+This is source-side algebraic assembly only.  The supplied hypothesis
+`r <= rEdge p` remains explicit; source-rank openness, analytic ideal
+transport, `Cfull`, ideal transport, coverage, Jacobian compatibility,
+exponent shift, normal crossings, pole order, and RLCT remain outside the
+theorem.  Peirce's xhigh follow-up target is to derive the base rank bound
+from product and edge rank equalities.
+
+Latest A2 base product rank bounded by edge ranks:
+`ProductReductionBoundary.lean` now proves
+`paperTotalMap_finrank_range_le_reverseEdge_finrank_range`.  The proof splits
+the reversed total chain at `p.castSucc` and `p.succ`, rewrites the middle
+one-edge composite as `reverseEdge W B p`, and applies rank-of-composite
+inequalities before converting cardinal rank back to finite `finrank`.
+
+The no-`hle` basepoint/source path is now available through
+`paperEndpointFixedBaseSourceRankStratum_selfBase_mem_of_rank_eq`,
+`paperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate_of_isCompl_of_rank_eq`,
+`exists_paperEndpointCanonicalProductDifferenceLocalSourceCertificate_of_rank_eq`,
+and
+`exists_aoyagiCanonicalProductDifferenceRegularCoordinateIdealSource_of_rank_eq`.
+These wrappers derive only the base inequalities; source-rank openness,
+analytic ideal transport, regular-suspension chart construction, normal
+crossings, pole order, and RLCT remain outside the theorem.
+
+Latest A2 regular-coordinate source data:
+`RegularSuspensionCoordinates.lean` now exposes the fixed-base package
+`PaperEndpointFixedBaseRegularCoordinateSourceData` and the source-rank
+constructor
+`exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq`.
+
+The package is the current strongest source-side input for a later concrete
+regular-suspension construction.  It contains the chosen local source
+certificate, the source-stratum guarded scalar regular-coordinate/residual
+ideal split, centered continuous scalar coordinates for the three regular
+families `S.Ctop - 1`, `-S.B`, and `lowerLeftBlock S.L`, the dimension
+convention, and the count
+`aoyagiTheorem2RegularVariableCount N H r`.
+
+Latest A2 residual-coordinate source-data update: the same file now also
+exposes `AoyagiResidualBlockCoordinateIndex`, proves its scalar ideal equals
+`matrixEntryIdeal D`, projects centered continuity of the residual `S.D` block
+to every scalar residual coordinate, and proves the residual endpoint entry
+count `(H 1-r)*(H(N+1)-r)`.  `PaperEndpointFixedBaseRegularCoordinateSourceData`
+now carries these residual-side fields as well.  This makes the reduced block
+entries explicit without adding them to the regular-coordinate index or the
+regular-variable finite shift.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-coordinate-source-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-coordinate-source-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-coordinate-source-data.md`.
+Curie found the formulas correct and requested a prose repair from
+source/target residual labels to row/column left/right endpoint residual
+labels; that repair is applied.
+
+This is still not an analytic transport theorem.  It does not prove exact-rank
+or source-rank openness, construct a regular-suspension chart, prove chart
+coverage, prove Jacobian compatibility, prove exponent shift, produce normal
+crossings, determine pole order, or extract RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-source-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-coordinate-source-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-coordinate-source-data.md`.
+
+Latest A2 regular-suspension construction audit:
+`threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
+records that a full regular-suspension normal-crossing certificate `Cfull`
+cannot yet be constructed from `PaperEndpointFixedBaseRegularCoordinateSourceData`.
+The source-data package gives centered continuous scalar functions and a
+source-stratum guarded regular/residual ideal split, but not analytic
+regular-coordinate charts.  The current `AoyagiNormalCrossingChartCertificate`
+can store finite monomial chart data and perform finite certificate algebra,
+but it does not encode analytic coverage, local coordinate invertibility,
+generator transport, or regular-coordinate additivity.
+
+Do not introduce a theorem
+`PaperEndpointFixedBaseRegularCoordinateSourceData -> exists Cfull, ...`, and
+do not add source-anchored analytic obligation predicates whose fields are
+empty, `True`, or only renamed arbitrary predicates.  The next source-moving A2
+work is pen-and-paper reproduction of the actual p. 13 regular-suspension
+chart argument: full/reduced generator families, scalar entries as analytic
+regular coordinates, chart coverage, Jacobian/prior shift, unit conditions,
+and extraction for the actual full certificate.
 
 ## Drift guard
 

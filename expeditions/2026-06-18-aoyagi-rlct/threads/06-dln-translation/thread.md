@@ -19,6 +19,25 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## 2026-06-24 source audit - Definition 3 branch selection
+
+Independent source auditor `Einstein the 3rd` checked Aoyagi Definition 3 and
+Theorem 2 on PDF pp. 8-9 after the `(2,3,3)` and `(1,2,2)` overlap
+diagnostics.  The audit is saved at
+`source-audit-definition3-branch-selection-a6.md`.
+
+Verdict: no source-backed tie-breaker is printed.  Definition 3 uses
+value-level membership in the selected value set, and Theorem 2 computes from
+the already chosen `ell,S_j`; pp. 8-9 do not impose minimal `ell`, maximal
+`ell`, all-source selection, distinct selected values, or any canonical branch.
+The equal-width example uses `ell=L`, so distinct-value/minimal-`ell`
+conventions are not source-backed.
+
+Controller consequence: keep selected source data supplied, or work in a
+source-produced branch.  Do not state branch-independent finite lambda/order
+payloads for arbitrary Definition 3 source-data choices unless a new source
+convention is found.
+
 ## Current slice - 2026-06-22
 
 The first A6 Lean layer is
@@ -508,6 +527,35 @@ counted-datum classifiers, branch-label injectivity, Lemma 5 exactness, pole
 order without A0, normal crossings, or RLCT extraction.  The next source-moving
 frontier remains A4/A0 chart/source production.
 
+## Current slice - 2026-06-24, Definition 3 terminal counted-datum classifier final bridge
+
+The Definition 3 source-data handoff now has terminal counted-datum classifier
+variants in `lean/DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean`:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier
+```
+
+These first use Definition 3 source data plus the explicit source-range
+rank-width hypothesis to produce the selected reduced-width family and ceiling
+datum.  For that produced `m,data`, a supplied terminal counted-datum
+classifier, supplied branch-label injectivity, supplied active-ratio
+certificate, supplied displayed-ratio chart-count certificate, and the A0
+extraction hypothesis build the supplied final boundary.  The chart theorem is
+the same handoff for `AoyagiTheorem2SuppliedChartFinalBoundary`.
+
+Artifacts:
+
+- `reproduction-definition3-terminal-countdatum-classifier-final-bridge-a6.md`;
+- `statement-card-a6-definition3-terminal-countdatum-classifier-final-bridge.md`;
+- `review-definition3-terminal-countdatum-classifier-final-bridge-a6.md`.
+
+Boundary: this is finite source-data/final-socket plumbing only.  It does not
+construct the counted-datum classifier, prove branch-label injectivity, prove
+Eq3/Eq4/Eq5 families, prove active-ratio or chart-count facts, construct
+normal-crossing charts, prove pole order without A0, or extract RLCT.
+
 ## Current slice - 2026-06-22, remaining source obligations boundary map
 
 Roadmap artifact:
@@ -911,3 +959,602 @@ Boundary: mostly packaging plus the rank-width arithmetic consequence.  It
 does not compute `ceilWidth` or `aParam`, prove arbitrary Definition 3 source
 data, construct Eq5 payloads, prove finite exponent formulas, produce charts,
 identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 equal-width explicit ceiling data
+
+Reproduction:
+`reproduction-definition3-equal-width-explicit-ceil-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-equal-width-explicit-ceil-data.md`.
+Review artifact:
+`review-definition3-equal-width-explicit-ceil-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3CeilData.equalWidthOfDecomposition
+AoyagiDefinition3SourceData.exists_consecutive_explicitCeilData_of_constant_reducedWidth_decomposition
+```
+
+The first constructor is the finite arithmetic from Aoyagi's equal-width
+example: for `w = L*q + a` with `0 < a <= L`, the constant selected-width
+family has `ceilWidth = w + q + 1` and `aParam = a`.  The source-facing theorem
+combines this explicit datum with the equal-width consecutive source-data
+constructor, returning the selected reduced-width package with explicit
+`ceilWidth` and `aParam` fields.
+
+Boundary: equal-width finite arithmetic only.  This does not prove arbitrary
+Definition 3 source-data existence, uniqueness of the ceiling datum, existence
+of the positive-remainder decomposition for every `L,w`, Eq5 payloads, finite
+exponent formulas, chart production, normal crossings, pole order, or RLCT.
+
+## Current slice - 2026-06-24, Definition 3 all-source selected source data
+
+Reproduction:
+`reproduction-definition3-all-source-selected-source-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-all-source-selected-source-data.md`.
+Review artifact:
+`review-definition3-all-source-selected-source-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_of_all_selected_strict
+```
+
+It chooses consecutive cutpoints `C.cut j = j.val+1` and proves
+`AoyagiDefinition3SourceData L L H r C` from the strict all-source selected
+inequality
+
+```text
+(L : Int) * M^(s) < sum_j M^(j.val+1)
+```
+
+for every source-range `s`.  This removes the constant-width assumption from
+the equal-width source-data lane.  The nonselected clauses are vacuous because
+every source-range reduced-width value belongs to the selected value image.
+
+Boundary: restricted source-data constructor only.  It does not prove
+arbitrary selected-cutpoint existence, classify Definition 3, produce a
+ceiling datum, construct Eq5 payloads, produce charts, identify pole order, or
+extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 all-source selected ceiling data
+
+Reproduction:
+`reproduction-definition3-all-source-ceil-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-all-source-ceil-data.md`.
+Review artifact:
+`review-definition3-all-source-ceil-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth
+```
+
+It combines the all-source selected source-data constructor with the existing
+rank-width selected reduced-width ceiling-data package.  Under source-range
+rank-width and the strict all-source selected inequality, consecutive
+cutpoints produce `S : AoyagiDefinition3SourceData L L H r C`, selected
+reduced widths `m`, and a Definition 3 ceiling datum `data`, with the Nat-width
+rewrites, nonnegativity, strict selected inequalities, selected upper bounds,
+and Nat selected-width nonnegativity already used by later A6 sockets.
+
+Boundary: provenance packaging only.  Rank-width remains explicit.  There is
+no closed-form `ceilWidth`/`aParam`, arbitrary selected-cutpoint existence,
+Definition 3 classification, Eq5 construction, chart production, pole order,
+or RLCT extraction.
+
+## Current slice - 2026-06-24, Definition 3 all-source source-rank ceiling data
+
+Reproduction:
+`reproduction-definition3-all-source-source-rank-ceil-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-all-source-source-rank-ceil-data.md`.
+Review artifact:
+`review-definition3-all-source-source-rank-ceil-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_sourceRankStratum
+```
+
+It is the source-rank-stratum version of the all-source ceiling-data package.
+The theorem derives source-range rank-width from
+`paperEndpointFixedBaseSourceRankStratum` and the dimension convention
+`H(k.val+1)=finrank(W k)`, then invokes the all-source strict/rank-width
+package.  The strict all-source selected inequality remains explicit.
+
+Boundary: one source-rank provenance wrapper only.  Do not clone it into
+final-socket variants without a downstream consumer.  It does not prove the
+strict inequality, exact-rank openness, chart coverage, closed-form ceiling
+data, Eq5 payloads, finite exponent formulas, pole order, or RLCT.
+
+## Current slice - 2026-06-24, Definition 3 nonconstant `(1,2,2)` example
+
+Reproduction:
+`reproduction-definition3-nonconstant-one-two-two-example-a6.md`.
+Statement card:
+`statement-card-a6-definition3-nonconstant-one-two-two-example.md`.
+Review artifact:
+`review-definition3-nonconstant-one-two-two-example-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_nonconstant_widths_one_two_two_selectedReducedWidthCeilData
+```
+
+It proves that for `L=2`, `r=0`, and source-range reduced widths `(1,2,2)`,
+consecutive all-source cutpoints produce Definition 3 source data, selected
+reduced widths, and a Definition 3 ceiling datum.  The returned selected-width
+family has `m 0 = 1`, `m 1 = 2`, `m 2 = 2`, so `m 0 != m 1`.  This witnesses
+that the all-source selected constructor is broader than the equal-width lane
+while complementing the existing negative `(1,2,100)` guardrail.
+
+Boundary: diagnostic/example theorem only.  It does not prove arbitrary
+source-data existence, classify Definition 3, prove uniqueness of cutpoints or
+ceiling data, compute closed-form `ceilWidth`/`aParam`, construct Eq5
+payloads, produce charts, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 three-width triangle constructor
+
+Reproduction:
+`reproduction-definition3-three-width-triangle-a6.md`.
+Statement card:
+`statement-card-a6-definition3-three-width-triangle.md`.
+Review artifact:
+`review-definition3-three-width-triangle-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth
+```
+
+For `L=2`, if the three source-range reduced widths are `w1,w2,w3` and the
+three strict triangle inequalities `2*w_i < w1+w2+w3` hold, consecutive
+all-source cutpoints produce Definition 3 source data, selected reduced widths,
+and a Definition 3 ceiling datum under the explicit source-range rank-width
+hypothesis.  The theorem also returns `m 0=w1`, `m 1=w2`, and `m 2=w3`.
+
+Boundary: small all-source constructor only.  It generalises the `(1,2,2)`
+example, but it does not prove arbitrary selected-cutpoint/source-data
+existence, classify Definition 3 profiles, compute closed-form ceiling data,
+construct Eq5 payloads, produce charts, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 `L=2` pairwise-distinct classification
+
+Reproduction:
+`reproduction-definition3-l-eq-two-pairwise-distinct-classification-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-pairwise-distinct-classification.md`.
+Review artifact:
+`review-definition3-l-eq-two-pairwise-distinct-classification-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct
+AoyagiDefinition3SourceData.cut_eq_consecutive_of_L_eq_two
+AoyagiDefinition3SourceData.exists_sourceData_iff_allSourceStrict_of_L_eq_two_rankWidth_pairwiseDistinct
+```
+
+For `L=2`, source-range rank-width and pairwise distinct source-range reduced
+widths force any Definition 3 source-data witness to have `ell=2` and
+consecutive cutpoints.  Therefore source-data existence is equivalent to the
+all-source strict selected inequalities.
+
+Boundary: finite Definition 3 structure only.  It does not classify
+repeated-width profiles, compute closed-form ceiling data, construct Eq5
+payloads, produce charts, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, Theorem 2 source-rank regular-shift bridge
+
+Reproduction:
+`reproduction-theorem2-source-rank-regular-shift-bridge-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-source-rank-regular-shift-bridge.md`.
+Review artifact:
+`review-theorem2-source-rank-regular-shift-bridge-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_sourceRankStratum_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_sourceRankStratum_regularVariableCountShift
+```
+
+These compose Definition 3 source data, A2 source-rank-stratum rank-width
+provenance, and the finite regular-variable shift into the existing supplied
+final sockets for the shifted exponent datum or shifted chart certificate.  The
+extraction hypothesis is explicitly for the shifted object, and the reduced
+minimum-plus-regular-term and reduced order obligations remain supplied.
+
+Boundary: source-facing final-socket composition only.  This is not
+regular-suspension construction, analytic ideal transport, Aoyagi Lemma 1,
+exact-rank openness, normal-crossing chart production, active-ratio/chart-count
+proof, pole order, or RLCT.
+
+## Current slice - 2026-06-24, Theorem 2 rank-width regular-shift bridge
+
+Reproduction:
+`reproduction-theorem2-rank-width-regular-shift-bridge-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-rank-width-regular-shift-bridge.md`.
+Review artifact:
+`review-theorem2-rank-width-regular-shift-bridge-a6.md`.
+
+Lean now has a rank-width-level bridge in
+`DLNFibre.DLN.Aoyagi.Theorem2RankWidthRegularShiftBridge`:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_rankWidth_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_regularVariableCountShift
+```
+
+This is the actual source-hypothesis reduction under the previous source-rank
+regular-shift wrapper.  It takes Definition 3 source data and source-range
+rank-width `hr` directly, uses `hr` both for selected-width side facts and for
+the endpoint bounds in the finite regular-variable shift, and keeps the
+shifted extraction hypothesis plus reduced minimum/order obligations supplied.
+
+`Theorem2SourceRankRegularShiftBridge.lean` now derives `hr` from the A2
+source-rank stratum and delegates to this rank-width bridge.
+
+Boundary: finite/final-socket composition only.  This does not construct
+regular-suspension charts, analytic ideal transport, Aoyagi Lemma 1,
+normal-crossing charts, active-ratio lower bounds, chart-count facts, pole
+order, or RLCT.
+
+## 2026-06-24 Theorem 2 supplied regular-suspension final bridge
+
+The regular-variable final handoff is now being restated through the supplied
+full-certificate boundary rather than the synthetic shifted certificate.  The
+source-data/rank-width layer produces `m,data` as before.  The supplied
+regular-suspension certificate then gives the existing chart-final socket for
+`Cfull` exactly, with extraction applied to `Cfull`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_suppliedRegularSuspension
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_sourceRankStratum_suppliedRegularSuspension
+```
+
+Artifacts:
+`reproduction-theorem2-regular-suspension-final-bridge-a6.md` and
+`statement-card-a6-theorem2-regular-suspension-final-bridge.md`.
+Review artifact:
+`review-theorem2-regular-suspension-final-bridge-a6.md`.
+
+Boundary: chart-level final-socket composition only.  It does not construct
+`Cfull`, prove the abstract regular-suspension predicates, analytic ideal
+transport, Aoyagi Lemma 1, regular-coordinate additivity, normal-crossing
+charts, active-ratio lower bounds, chart-count facts, pole order, or RLCT
+beyond the supplied extraction hypothesis for `Cfull`.
+
+## Current slice - 2026-06-24, Definition 3 positive-remainder ceiling data
+
+Reproduction:
+`reproduction-definition3-positive-remainder-ceil-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-positive-remainder-ceil-data.md`.
+Review artifact:
+`review-definition3-positive-remainder-ceil-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder
+```
+
+This pure finite-arithmetic constructor turns a supplied positive-remainder
+decomposition
+
+```text
+sum_j m_j = ell * ceilPred + a,        0 < a <= ell
+```
+
+into `AoyagiDefinition3CeilData ell m` with
+`ceilWidth = ceilPred + 1` and `aParam = a`.  It is the general version of the
+ceiling/residue arithmetic behind Definition 3 and the equal-width explicit
+constructor, but it does not add a source-facing wrapper until a downstream
+theorem needs the explicit fields.
+
+Boundary: finite ceiling/residue arithmetic only.  This does not prove
+uniqueness, automatic quotient/remainder construction, selected-cutpoint
+existence, Definition 3 classification, Eq5 payloads, chart production, pole
+order, normal crossings, or RLCT.
+
+## Current slice - 2026-06-24, Definition 3 `L=2` repeated-width classification
+
+Reproduction:
+`reproduction-definition3-l-eq-two-repeated-width-classification-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-repeated-width-classification.md`.
+Review artifact:
+`review-definition3-l-eq-two-repeated-width-classification-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+AoyagiDefinition3SourceData.of_ell_eq_one_selectedValueSet_covers
+AoyagiDefinition3SourceData.exists_ell_one_of_L_eq_two_positive_repeated
+AoyagiDefinition3SourceData.exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
+```
+
+For `L=2`, source-data existence is now classified without rank-width
+hypotheses.  Either all three reduced-width values are positive and at least
+two are equal, in which case an `ell=1` selected value set covers all three
+source values, or the three all-source triangle inequalities hold, in which
+case `ell=2` and all source layers are selected.  The old rank-width
+`ell=1` necessary-condition theorem remains as a compatibility wrapper over
+the new rank-width-free theorem.
+
+Boundary: finite Definition 3 source-data structure only.  This does not
+classify `L>2`, produce source data from concrete matrices, package ceiling
+data, construct Eq5 payloads, produce charts, identify pole order, prove
+normal crossings, or extract RLCT.
+
+## Queued candidate - 2026-06-24, `L=2` all-source triangle formula package
+
+An xhigh explorer recommended the next A6 slice after the `L=2`
+classification: add an explicit all-source triangle formula package in
+`Definition3Bridge.lean`, with a supplied positive-remainder decomposition
+
+```text
+w1 + w2 + w3 = 2 * ceilPred + a,    0 < a <= 2.
+```
+
+The target should reuse the landed all-source triangle source-data/ceiling
+package and `AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder`, then
+project explicit fields such as `ceilWidth = ceilPred + 1`, `aParam = a`, the
+order formula `a * (2 - a) + 1`, the selected pair sum
+`w1*w2 + w1*w3 + w2*w3`, and the corresponding Theorem 2 lambda expression.
+
+Boundary: rank-width-level finite formula package only.  Do not add a
+source-rank or final-socket wrapper without a concrete consumer.  Do not
+attempt the repeated-positive `ell=1` branch in this slice; its selected pair
+is noncanonical and needs a separate case split.
+
+Outcome: landed and reviewed.  Lean now has
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_remainder_rankWidth
+```
+
+The theorem constructs consecutive all-source cutpoints, explicit
+positive-remainder ceiling data, Nat-width/nonnegativity/strictness
+provenance, `m=(w1,w2,w3)`, the order formula, the selected pair sum, and the
+corresponding finite Theorem 2 lambda expression.  It remains exactly the
+all-source triangle branch and proves no source-rank wrapper, final socket,
+repeated-positive branch, Eq5 payload, chart construction, pole order, or
+RLCT.
+
+Artifacts:
+`reproduction-definition3-l-eq-two-triangle-formula-a6.md`,
+`statement-card-a6-definition3-l-eq-two-triangle-formula.md`, and
+`review-definition3-l-eq-two-triangle-formula-a6.md`.
+
+## Current slice - 2026-06-24, `L=2`, `ell=1` selected-pair formula package
+
+Reproduction:
+`reproduction-definition3-l-eq-two-ell-one-selected-pair-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-ell-one-selected-pair-formula.md`.
+Review:
+`review-definition3-l-eq-two-ell-one-selected-pair-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+```
+
+The theorem exposes the selected pair `C : AoyagiSelectedCutpoints 1` and, from
+positive selected values, selected-value cover, rank-width, and
+`u+v=ceilPred+1`, constructs source data, selected widths, explicit
+remainder-one ceiling data, Nat-width/nonnegativity/strictness provenance, the
+order formula `1`, the pair sum `u*v`, and the finite Theorem 2 lambda
+expression `regularTerm + u*v/2`.
+
+Boundary: finite selected-pair formula packaging only.  It does not choose a
+canonical pair from a repeated-width disjunction, add source-rank or final
+wrappers, construct Eq5 payloads or charts, prove normal crossings, identify
+pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, `ell=1` automatic ceiling and `L=2` repeated-positive formula
+
+Reproductions:
+`reproduction-definition3-ell-one-automatic-ceil-formula-a6.md` and
+`reproduction-definition3-l-eq-two-repeated-positive-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-repeated-positive-formula.md`.
+Review:
+`review-definition3-l-eq-two-repeated-positive-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_rankWidth
+```
+
+The first theorem removes the unnecessary remainder input from the exposed
+`ell=1` selected-pair formula package.  For selected values `u,v`, it constructs
+the Definition 3 ceiling datum directly with `ceilWidth = u+v` and `aParam=1`,
+then proves order `1`, pair sum `u*v`, and finite lambda
+`regularTerm+u*v/2`.
+
+The second theorem uses the positive repeated-width branch for `L=2` to choose
+an `ell=1` selected pair by cases: `w1=w2` selects `(1,3)`, while `w1=w3` and
+`w2=w3` select `(1,2)`.  It returns the selected cutpoints and values
+existentially, so it does not assert a canonical selected pair.
+
+The older
+`AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_remainder_rankWidth`
+remains as a compatibility theorem for callers that already provide a
+branch-compatible `ceilPred` equation.
+
+Boundary: finite Definition 3/Theorem 2 formula arithmetic only.  This does not
+add a source-rank wrapper or final socket, construct Eq5 payloads or charts,
+prove normal crossings, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, general `L`, `ell=1` selected-pair formula
+
+Reproduction:
+`reproduction-definition3-ell-one-selected-pair-cover-formula-general-a6.md`.
+Statement card:
+`statement-card-a6-definition3-ell-one-selected-pair-cover-formula-general.md`.
+Review:
+`review-definition3-ell-one-selected-pair-cover-formula-general-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth_general
+```
+
+This lifts the exposed selected-pair formula from `L=2` to arbitrary source
+depth `L`.  The theorem keeps the selected pair `C : AoyagiSelectedCutpoints 1`
+as input, assumes positive selected values, value-level cover of all
+source-range reduced widths, and source-range rank-width, then constructs
+Definition 3 source data, selected widths, the direct `ell=1` ceiling datum
+`ceilWidth=u+v`, `aParam=1`, Nat-width/nonnegativity/strictness provenance,
+order formula `1`, pair sum `u*v`, and finite lambda
+`aoyagiTheorem2RegularTerm L H r + u*v/2`.
+
+Boundary: finite selected-pair formula packaging only.  It does not choose a
+canonical selected pair, assert branch-independent payloads for arbitrary
+Definition 3 source-data choices, add source-rank or final wrappers, construct
+Eq5 payloads or charts, prove normal crossings, identify pole order, or
+extract RLCT.
+
+## Current slice - 2026-06-24, `ell=1` ceiling-data simplification
+
+Reproduction:
+`reproduction-definition3-ell-one-ceil-data-simplification-a6.md`.
+Statement card:
+`statement-card-a6-definition3-ell-one-ceil-data-simplification.md`.
+Review:
+`review-definition3-ell-one-ceil-data-simplification-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3CeilData.aParam_eq_one_of_ell_eq_one
+AoyagiDefinition3CeilData.selectedSum_eq_ceilWidth_of_ell_eq_one
+AoyagiDefinition3CeilData.ceilWidth_eq_selectedSum_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2OrderFormula_eq_one_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2Lambda_fromCeilData_eq_regularTerm_add_pairSum_half_of_ell_eq_one
+AoyagiDefinition3CeilData.theorem2Lambda_fromCeilData_eq_regularTerm_add_selectedPair_half_of_ell_eq_one
+```
+
+These are finite arithmetic facts for any supplied
+`AoyagiDefinition3CeilData 1 m`: the residue parameter is forced to be `1`,
+the selected sum is the ceiling integer, the order formula is `1`, and the
+finite lambda formula is the regular term plus half the selected pair sum.  If
+`m 0=u` and `m 1=v`, this becomes `regularTerm+u*v/2`.
+
+Boundary: this does not construct selected cutpoints or source data, choose a
+branch, add final-socket wrappers, construct Eq5 payloads or charts, prove
+normal crossings, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, `L=2` triangle parity formula package
+
+Reproduction:
+`reproduction-definition3-l-eq-two-triangle-parity-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-triangle-parity-formula.md`.
+Review:
+`review-definition3-l-eq-two-triangle-parity-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_odd_rankWidth
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
+```
+
+These are parity refinements of the all-source `L=2`, `ell=2` triangle formula
+package.  The odd-total theorem derives the positive-remainder data
+`ceilPred=T/2`, `aParam=1`, so `ceilWidth=T/2+1` and order `2`.  The even-total
+theorem uses `ceilPred=T/2-1`, `aParam=2`, so `ceilWidth=T/2` and order `1`.
+Both retain the all-source cutpoint construction, selected-width provenance,
+pair-sum formula, and finite Theorem 2 lambda expression.
+
+Boundary: finite Definition 3/Theorem 2 parity arithmetic only.  This does not
+classify `L>2`, choose between repeated-positive and triangle branches, add a
+source-rank wrapper or final socket, construct Eq5 payloads or charts, prove
+normal crossings, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, `L=2` branch formula disagreement diagnostic
+
+Reproduction:
+`reproduction-definition3-l-eq-two-branch-formula-disagreement-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-branch-formula-disagreement.md`.
+Review:
+`review-definition3-l-eq-two-branch-formula-disagreement-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_two_three_three_formula_disagreement
+```
+
+This theorem records a concrete overlap diagnostic for the printed Definition
+3 conditions as currently formalised.  For `L=2`, `r=0`, and reduced widths
+`(2,3,3)`, the `ell=1` repeated-positive branch and the `ell=2` all-source
+triangle branch both produce valid source-data packages for the same concrete
+`H`.  Their finite Theorem 2 lambda formula values differ:
+
+```text
+lambda_ell1 = 3,
+lambda_ell2 = 5/2.
+```
+
+Both finite order formulas are `1`.  An xhigh scout also checked the general
+overlap arithmetic and found that a branch-agreement theorem would be false.
+
+Boundary: finite Definition 3/Theorem 2 formula diagnostics only.  This is not
+a correction of Aoyagi's theorem, not an analytic RLCT ambiguity claim, and not
+chart production, Eq5 payload construction, normal crossings, pole order, or
+RLCT extraction.
+
+## Current slice - 2026-06-24, `L=2` branch order disagreement diagnostic
+
+Reproduction:
+`reproduction-definition3-l-eq-two-order-disagreement-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-order-disagreement.md`.
+Review:
+`review-definition3-l-eq-two-order-disagreement-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_one_two_two_order_disagreement
+```
+
+For `L=2`, `r=0`, and reduced widths `(1,2,2)`, the `ell=1`
+repeated-positive branch and the `ell=2` all-source triangle branch both
+produce valid source-data packages for the same concrete `H`.  Their finite
+Theorem 2 lambda formula values agree, but their finite order formulas differ:
+
+```text
+lambda_ell1 = lambda_ell2 = 1,
+order_ell1 = 1,
+order_ell2 = 2.
+```
+
+Boundary: finite Definition 3/Theorem 2 formula diagnostics only.  This is not
+a pole-order theorem, not an analytic RLCT ambiguity claim, and not chart
+production, Eq5 payload construction, normal crossings, pole order, or RLCT
+extraction.

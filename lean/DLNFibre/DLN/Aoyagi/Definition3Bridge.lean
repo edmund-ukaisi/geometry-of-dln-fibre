@@ -126,6 +126,52 @@ theorem nonempty_of_ell_pos
         simp [e]
         ring
 
+/-- Explicit Definition 3 ceiling datum from a positive-remainder
+decomposition of the selected-width sum.
+
+The integer `ceilPred` is the predecessor `ceilWidth - 1`; the source
+ceiling integer is therefore `ceilPred + 1`. -/
+def ofSelectedSumPositiveRemainder
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) (ceilPred : ℤ) (a : ℕ)
+    (hell : 0 < ell) (ha_pos : 0 < a) (ha_le : a ≤ ell)
+    (hsum :
+      (∑ j : Fin (ell + 1), m j) = (ell : ℤ) * ceilPred + (a : ℤ)) :
+    AoyagiDefinition3CeilData ell m where
+  ell_pos := hell
+  ceilWidth := ceilPred + 1
+  aParam := a
+  selectedSum_eq := by
+    rw [hsum]
+    ring
+  aParam_pos := ha_pos
+  aParam_le := ha_le
+
+/-- Explicit Definition 3 ceiling datum for the equal-width selected family.
+
+If the common selected width has positive-remainder decomposition
+`w = L * q + a` with `0 < a <= L`, then Aoyagi's equal-width example has
+`ceilWidth = w + q + 1` and `aParam = a`. -/
+def equalWidthOfDecomposition
+    (L w q a : ℕ) (ha_pos : 0 < a) (ha_le : a ≤ L)
+    (hw : w = L * q + a) :
+    AoyagiDefinition3CeilData L (fun _ : Fin (L + 1) ↦ (w : ℤ)) where
+  ell_pos := lt_of_lt_of_le ha_pos ha_le
+  ceilWidth := (w : ℤ) + (q : ℤ) + 1
+  aParam := a
+  selectedSum_eq := by
+    have hwz : (w : ℤ) = (L : ℤ) * (q : ℤ) + (a : ℤ) := by
+      exact_mod_cast hw
+    calc
+      (∑ _j : Fin (L + 1), (w : ℤ)) =
+          ((L + 1 : ℕ) : ℤ) * (w : ℤ) := by
+        simp [Finset.sum_const, Fintype.card_fin]
+      _ = (L : ℤ) * (((w : ℤ) + (q : ℤ) + 1) - 1) + (a : ℤ) := by
+        rw [hwz]
+        norm_num [Nat.cast_add, Nat.cast_one]
+        ring
+  aParam_pos := ha_pos
+  aParam_le := ha_le
+
 /-- Definition 3's ceiling datum has a positive selected-count parameter. -/
 theorem one_le_ell {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) :
@@ -137,6 +183,65 @@ theorem one_le_aParam {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) :
     1 ≤ data.aParam :=
   data.aParam_pos
+
+/-- For `ell = 1`, Definition 3's residue parameter is forced to be `1`. -/
+theorem aParam_eq_one_of_ell_eq_one {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) :
+    data.aParam = 1 := by
+  have hpos : 0 < data.aParam := data.aParam_pos
+  have hle : data.aParam ≤ 1 := data.aParam_le
+  omega
+
+/-- For `ell = 1`, Definition 3's selected sum is exactly the ceiling
+integer. -/
+theorem selectedSum_eq_ceilWidth_of_ell_eq_one {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) :
+    (∑ j : Fin (1 + 1), m j) = data.ceilWidth := by
+  have ha := data.aParam_eq_one_of_ell_eq_one
+  calc
+    (∑ j : Fin (1 + 1), m j) =
+        (1 : ℤ) * (data.ceilWidth - 1) + (1 : ℤ) := by
+      simpa [ha] using data.selectedSum_eq
+    _ = data.ceilWidth := by ring
+
+/-- For `ell = 1`, the ceiling integer is the selected sum. -/
+theorem ceilWidth_eq_selectedSum_of_ell_eq_one {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) :
+    data.ceilWidth = ∑ j : Fin (1 + 1), m j :=
+  data.selectedSum_eq_ceilWidth_of_ell_eq_one.symm
+
+/-- For `ell = 1`, Definition 3's order formula is forced to be `1`. -/
+theorem theorem2OrderFormula_eq_one_of_ell_eq_one {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) :
+    data.theorem2OrderFormula = 1 := by
+  simp [AoyagiDefinition3CeilData.theorem2OrderFormula,
+    data.aParam_eq_one_of_ell_eq_one]
+
+/-- For `ell = 1`, the Theorem 2 finite lambda formula is the regular term
+plus half the selected pair sum, for every Definition 3 ceiling datum. -/
+theorem theorem2Lambda_fromCeilData_eq_regularTerm_add_pairSum_half_of_ell_eq_one
+    (L : ℕ) (H : ℕ → ℕ) (r : ℕ) {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) :
+    aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+      aoyagiTheorem2RegularTerm L H r + aoyagiSelectedWidthPairSum 1 m / 2 := by
+  have ha := data.aParam_eq_one_of_ell_eq_one
+  unfold aoyagiTheorem2Lambda_fromCeilData aoyagiTheorem2Lambda_ceil
+  rw [ha]
+  ring
+
+/-- For `ell = 1`, if the selected widths are `u` and `v`, the Theorem 2
+finite lambda formula is `regularTerm + u*v/2`. -/
+theorem theorem2Lambda_fromCeilData_eq_regularTerm_add_selectedPair_half_of_ell_eq_one
+    (L : ℕ) (H : ℕ → ℕ) (r : ℕ) {m : Fin (1 + 1) → ℤ}
+    (data : AoyagiDefinition3CeilData 1 m) {u v : ℕ}
+    (hm0 : m (0 : Fin (1 + 1)) = (u : ℤ))
+    (hm1 : m (1 : Fin (1 + 1)) = (v : ℤ)) :
+    aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+      aoyagiTheorem2RegularTerm L H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  rw [data.theorem2Lambda_fromCeilData_eq_regularTerm_add_pairSum_half_of_ell_eq_one]
+  congr 1
+  unfold aoyagiSelectedWidthPairSum
+  simp [Fin.sum_univ_two, hm0, hm1]
 
 /-- Definition 3's selected-sum identity makes the Lemma 4 terminal endpoint
 vanish. -/
@@ -476,6 +581,72 @@ theorem exists_consecutive_of_constant_reducedWidth_pos
     · intro s hs1 hsL hnot
       exact False.elim (hnot (hselected_mem s hs1 hsL))
 
+/-- Source data when all source layers are selected.
+
+This chooses consecutive cutpoints `C.cut j = j.val + 1`.  The nonselected
+fields are vacuous because every source-range reduced-width value belongs to
+the selected value set. -/
+theorem exists_consecutive_of_all_selected_strict
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hL : 0 < L)
+    (hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        (L : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (j.val + 1)) :
+    ∃ C : AoyagiSelectedCutpoints L,
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+        AoyagiDefinition3SourceData L L H r C := by
+  classical
+  let C : AoyagiSelectedCutpoints L :=
+    { cut := fun j ↦ j.val + 1
+      pos := by
+        intro j
+        omega
+      strict := by
+        intro j
+        simp [Fin.val_succ, Fin.val_castSucc] }
+  have hselected_mem :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s ∈
+          Finset.univ.image
+            (fun j : Fin (L + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+    intro s hs1 hsL
+    let j : Fin (L + 1) := ⟨s - 1, by omega⟩
+    refine Finset.mem_image.mpr ⟨j, Finset.mem_univ _, ?_⟩
+    have hcut : C.cut j = s := by
+      dsimp [C, j]
+      omega
+    rw [hcut]
+  refine ⟨C, ?_, ?_⟩
+  · intro j
+    rfl
+  · refine
+      { ell_pos := hL
+        cut_le := ?_
+        selected_strict := ?_
+        selected_lt_nonselected := ?_
+        nonselected_le := ?_ }
+    · intro j
+      dsimp [C]
+      omega
+    · intro i
+      have hi1 : 1 ≤ C.cut i := C.pos i
+      have hiL : C.cut i ≤ L + 1 := by
+        dsimp [C]
+        omega
+      have hsum :
+          (∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+            ∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+        refine Finset.sum_congr rfl ?_
+        intro j _hj
+        rfl
+      rw [hsum]
+      exact hstrict (C.cut i) hi1 hiL
+    · intro _i s hs1 hsL hnot
+      exact False.elim (hnot (hselected_mem s hs1 hsL))
+    · intro s hs1 hsL hnot
+      exact False.elim (hnot (hselected_mem s hs1 hsL))
+
 /-- A constant Nat-valued reduced-width identity implies the source-range
 rank-width bound used by the selected-width ceiling package. -/
 theorem sourceRangeRankWidth_of_constant_reducedWidth
@@ -639,19 +810,16 @@ theorem not_exists_widths_one_two_hundred :
     norm_num [aoyagiReducedWidthInt, H, h2] at hstrict
 
 /-- For `ell = 1`, Definition 3 source data has no genuinely nonselected
-source-range reduced-width value, provided source-range reduced widths are
-nonnegative.
+source-range reduced-width value.
 
-The printed nonselected inequality has coefficient `ell - 1 = 0`; combined
-with nonnegative selected reduced widths and the strict selected inequality,
-this forces every source-range reduced-width value to lie in the selected
-value set.  This is only a necessary condition for supplied source data, not a
-selected-cutpoint existence theorem. -/
-theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+The printed nonselected inequality has coefficient `ell - 1 = 0`; the two
+strict selected inequalities already force the selected sum to be positive,
+so a genuine nonselected value is impossible.  This is only a necessary
+condition for supplied source data, not selected-cutpoint construction. -/
+theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one
     {L : ℕ} {H : ℕ → ℕ} {r s : ℕ}
     {C : AoyagiSelectedCutpoints 1}
     (S : AoyagiDefinition3SourceData L 1 H r C)
-    (hr : ∀ t : ℕ, 1 ≤ t → t ≤ L + 1 → r ≤ H t)
     (hs1 : 1 ≤ s) (hsL : s ≤ L + 1) :
     aoyagiReducedWidthInt H r s ∈
       Finset.univ.image
@@ -662,25 +830,70 @@ theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
       (∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j)) ≤ 0 := by
     norm_num at hle ⊢
     simpa using hle
-  have h0_nonneg :
-      0 ≤ aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) :=
-    aoyagiReducedWidthInt_nonneg_of_rank_le H
-      (hr (C.cut (0 : Fin (1 + 1))) (C.pos _) (S.cut_le _))
-  have h1_nonneg :
-      0 ≤ aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) :=
-    aoyagiReducedWidthInt_nonneg_of_rank_le H
-      (hr (C.cut (1 : Fin (1 + 1))) (C.pos _) (S.cut_le _))
-  have hsum_nonneg :
-      0 ≤ ∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j) := by
+  have h0pos : 0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (1 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have h1pos : 0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (0 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have hsum_pos :
+      0 < ∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j) := by
     rw [Fin.sum_univ_two]
     omega
-  have hsum0 :
-      (∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j)) = 0 :=
-    le_antisymm hle0 hsum_nonneg
-  have hstrict := S.selected_strict (0 : Fin (1 + 1))
-  rw [hsum0] at hstrict
-  norm_num at hstrict
   omega
+
+/-- Rank-width version of the `ell = 1` necessary condition.
+
+The rank-width hypothesis is retained for callers that already provide it, but
+it is no longer needed by the proof. -/
+theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+    {L : ℕ} {H : ℕ → ℕ} {r s : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    (_hr : ∀ t : ℕ, 1 ≤ t → t ≤ L + 1 → r ≤ H t)
+    (hs1 : 1 ≤ s) (hsL : s ≤ L + 1) :
+    aoyagiReducedWidthInt H r s ∈
+      Finset.univ.image
+        (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) :=
+  S.reducedWidth_mem_selectedValueSet_of_ell_eq_one hs1 hsL
+
+/-- Constructor for `ell = 1` source data when the two selected values are
+positive and cover every source-range reduced-width value.
+
+The nonselected clauses are vacuous because the supplied cover is by value,
+matching Aoyagi Definition 3's selected value set. -/
+theorem of_ell_eq_one_selectedValueSet_covers
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ L + 1)
+    (h0pos : 0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))))
+    (h1pos : 0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))))
+    (hcover : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+      aoyagiReducedWidthInt H r s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j))) :
+    AoyagiDefinition3SourceData L 1 H r C where
+  ell_pos := by norm_num
+  cut_le := hcut_le
+  selected_strict := by
+    intro i
+    fin_cases i
+    · rw [Fin.sum_univ_two]
+      norm_num
+      omega
+    · rw [Fin.sum_univ_two]
+      norm_num
+      omega
+  selected_lt_nonselected := by
+    intro _i s hs1 hsL hnot
+    exact False.elim (hnot (hcover s hs1 hsL))
+  nonselected_le := by
+    intro s hs1 hsL hnot
+    exact False.elim (hnot (hcover s hs1 hsL))
 
 /-- The strict selected-width inequality from Definition 3, rewritten for the
 selected reduced-width family used by the final formula layer. -/
@@ -870,6 +1083,1679 @@ theorem exists_selectedReducedWidthCeilData_of_rankWidth
     exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
       H (r := r) (i := i) C hrSelected
 
+/-- All-source selected source data together with the downstream selected
+reduced-width ceiling package.
+
+This packages the all-source selected constructor with the rank-width
+hypothesis needed to rewrite reduced widths as natural layer-width
+differences.  It does not compute the ceiling datum in closed form. -/
+theorem exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hL : 0 < L)
+    (hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        (L : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (j.val + 1))
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) := by
+  rcases exists_consecutive_of_all_selected_strict
+      (L := L) (H := H) (r := r) hL hstrict with
+    ⟨C, hC, S⟩
+  rcases S.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg⟩
+  exact ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg⟩
+
+/-- For `L=2`, pairwise distinct source-range reduced widths force any
+Definition 3 source-data choice to use `ell=2`.
+
+The only other possible positive value is `ell=1`; the existing `ell=1`
+obstruction says every source-range reduced-width value would then lie in the
+two selected values, contradicting pairwise distinctness of the three source
+values. -/
+theorem ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s)
+    (h12 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 2)
+    (h13 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 3)
+    (h23 : aoyagiReducedWidthInt H r 2 ≠ aoyagiReducedWidthInt H r 3) :
+    ell = 2 := by
+  have hell_le : ell ≤ 2 := by
+    by_contra hnot
+    have hell3 : 3 ≤ ell := by omega
+    have h0pos :
+        1 ≤ C.cut (⟨0, by omega⟩ : Fin (ell + 1)) := C.pos _
+    have h01 :
+        C.cut (⟨0, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨1, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (0 : ℕ) < 1
+        norm_num)
+    have h12cut :
+        C.cut (⟨1, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨2, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (1 : ℕ) < 2
+        norm_num)
+    have h23cut :
+        C.cut (⟨2, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨3, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (2 : ℕ) < 3
+        norm_num)
+    have h3le :
+        C.cut (⟨3, by omega⟩ : Fin (ell + 1)) ≤ 3 := by
+      simpa using S.cut_le (⟨3, by omega⟩ : Fin (ell + 1))
+    omega
+  have hell_pos : 0 < ell := S.ell_pos
+  interval_cases ell
+  · have hmem1 :
+        aoyagiReducedWidthInt H r 1 ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦
+              aoyagiReducedWidthInt H r (C.cut j)) :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+        hr (by norm_num) (by norm_num)
+    have hmem2 :
+        aoyagiReducedWidthInt H r 2 ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦
+              aoyagiReducedWidthInt H r (C.cut j)) :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+        hr (by norm_num) (by norm_num)
+    have hmem3 :
+        aoyagiReducedWidthInt H r 3 ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦
+              aoyagiReducedWidthInt H r (C.cut j)) :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+        hr (by norm_num) (by norm_num)
+    have h0pos : 1 ≤ C.cut (0 : Fin (1 + 1)) := C.pos _
+    have h0le : C.cut (0 : Fin (1 + 1)) ≤ 3 := by
+      simpa using S.cut_le (0 : Fin (1 + 1))
+    have h1pos : 1 ≤ C.cut (1 : Fin (1 + 1)) := C.pos _
+    have h1le : C.cut (1 : Fin (1 + 1)) ≤ 3 := by
+      simpa using S.cut_le (1 : Fin (1 + 1))
+    have h01 : C.cut (0 : Fin (1 + 1)) < C.cut (1 : Fin (1 + 1)) :=
+      C.cut_strictMono (by
+        change (0 : ℕ) < 1
+        norm_num)
+    have h0_cases :
+        C.cut (0 : Fin (1 + 1)) = 1 ∨
+          C.cut (0 : Fin (1 + 1)) = 2 ∨
+          C.cut (0 : Fin (1 + 1)) = 3 := by
+      omega
+    have h1_cases :
+        C.cut (1 : Fin (1 + 1)) = 1 ∨
+          C.cut (1 : Fin (1 + 1)) = 2 ∨
+          C.cut (1 : Fin (1 + 1)) = 3 := by
+      omega
+    rcases h0_cases with h0 | h0 | h0
+    · rcases h1_cases with h1 | h1 | h1
+      · omega
+      · have hnot3 :
+            aoyagiReducedWidthInt H r 3 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H r (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j
+          · exact h13 (by simpa [h0] using hj)
+          · exact h23 (by simpa [h1] using hj)
+        exact False.elim (hnot3 hmem3)
+      · have hnot2 :
+            aoyagiReducedWidthInt H r 2 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H r (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j
+          · exact h12 (by simpa [h0] using hj)
+          · exact h23 (by simpa [h1] using hj.symm)
+        exact False.elim (hnot2 hmem2)
+    · rcases h1_cases with h1 | h1 | h1
+      · omega
+      · omega
+      · have hnot1 :
+            aoyagiReducedWidthInt H r 1 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H r (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j
+          · exact h12 (by simpa [h0] using hj.symm)
+          · exact h13 (by simpa [h1] using hj.symm)
+        exact False.elim (hnot1 hmem1)
+    · rcases h1_cases with h1 | h1 | h1 <;> omega
+  · rfl
+
+/-- With `L=2` and `ell=2`, any Definition 3 source-data cutpoints are the
+consecutive source layers `1,2,3`. -/
+theorem cut_eq_consecutive_of_L_eq_two
+    {H : ℕ → ℕ} {r : ℕ} {C : AoyagiSelectedCutpoints 2}
+    (S : AoyagiDefinition3SourceData 2 2 H r C) :
+    ∀ j : Fin (2 + 1), C.cut j = j.val + 1 := by
+  have h0pos : 1 ≤ C.cut (0 : Fin (2 + 1)) := C.pos _
+  have h01 : C.cut (0 : Fin (2 + 1)) < C.cut (1 : Fin (2 + 1)) :=
+    C.cut_strictMono (by
+      change (0 : ℕ) < 1
+      norm_num)
+  have h12cut : C.cut (1 : Fin (2 + 1)) < C.cut (2 : Fin (2 + 1)) :=
+    C.cut_strictMono (by
+      change (1 : ℕ) < 2
+      norm_num)
+  have h2le : C.cut (2 : Fin (2 + 1)) ≤ 3 := by
+    simpa using S.cut_le (2 : Fin (2 + 1))
+  have h0 : C.cut (0 : Fin (2 + 1)) = 1 := by omega
+  have h1 : C.cut (1 : Fin (2 + 1)) = 2 := by omega
+  have h2 : C.cut (2 : Fin (2 + 1)) = 3 := by omega
+  intro j
+  fin_cases j <;> simp [h0, h1, h2]
+
+/-- For `L=2` and pairwise distinct source-range reduced widths, existence of
+Definition 3 source data is equivalent to the all-source strict selected
+inequalities.
+
+This is a finite Definition 3 classification only for the pairwise-distinct
+three-layer source range.  It does not classify repeated-width profiles. -/
+theorem exists_sourceData_iff_allSourceStrict_of_L_eq_two_rankWidth_pairwiseDistinct
+    {H : ℕ → ℕ} {r : ℕ}
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s)
+    (h12 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 2)
+    (h13 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 3)
+    (h23 : aoyagiReducedWidthInt H r 2 ≠ aoyagiReducedWidthInt H r 3) :
+    (∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+      AoyagiDefinition3SourceData 2 ell H r C) ↔
+      ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        (2 : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+  constructor
+  · rintro ⟨ell, C, S⟩
+    have hell :
+        ell = 2 :=
+      S.ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct hr h12 h13 h23
+    subst ell
+    have hC : ∀ j : Fin (2 + 1), C.cut j = j.val + 1 :=
+      S.cut_eq_consecutive_of_L_eq_two
+    have hsum :
+        (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+          ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+      refine Finset.sum_congr rfl ?_
+      intro j _hj
+      rw [hC j]
+    intro s hs1 hsL
+    let j : Fin (2 + 1) := ⟨s - 1, by omega⟩
+    have hcut : C.cut j = s := by
+      rw [hC j]
+      dsimp [j]
+      omega
+    have hstrict := S.selected_strict j
+    rw [hcut, hsum] at hstrict
+    simpa using hstrict
+  · intro hstrict
+    rcases exists_consecutive_of_all_selected_strict
+        (L := 2) (H := H) (r := r) (by norm_num) hstrict with
+      ⟨C, _hC, S⟩
+    exact ⟨2, C, S⟩
+
+/-- Positive repeated reduced widths give an `ell = 1` Definition 3 source-data
+witness for `L=2`.
+
+The selected cutpoints are chosen so that their two values cover all three
+source-range reduced-width values. -/
+theorem exists_ell_one_of_L_eq_two_positive_repeated
+    {H : ℕ → ℕ} {r : ℕ}
+    (hpos1 : 0 < aoyagiReducedWidthInt H r 1)
+    (hpos2 : 0 < aoyagiReducedWidthInt H r 2)
+    (hpos3 : 0 < aoyagiReducedWidthInt H r 3)
+    (hrep :
+      aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 2 ∨
+        aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 3 ∨
+        aoyagiReducedWidthInt H r 2 = aoyagiReducedWidthInt H r 3) :
+    ∃ C : AoyagiSelectedCutpoints 1,
+      AoyagiDefinition3SourceData 2 1 H r C := by
+  rcases hrep with h12 | h13 | h23
+  · let C : AoyagiSelectedCutpoints 1 :=
+      { cut := fun j ↦ if j = (0 : Fin (1 + 1)) then 1 else 3
+        pos := by
+          intro j
+          fin_cases j <;> simp
+        strict := by
+          intro j
+          fin_cases j
+          simp }
+    refine ⟨C, ?_⟩
+    refine of_ell_eq_one_selectedValueSet_covers
+      (L := 2) (H := H) (r := r) (C := C) ?_ ?_ ?_ ?_
+    · intro j
+      fin_cases j <;> norm_num [C]
+    · simpa [C] using hpos1
+    · simpa [C] using hpos3
+    · intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      rcases hs with rfl | rfl | rfl
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simpa [C] using h12
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+  · let C : AoyagiSelectedCutpoints 1 :=
+      { cut := fun j ↦ j.val + 1
+        pos := by
+          intro j
+          omega
+        strict := by
+          intro j
+          fin_cases j
+          simp }
+    refine ⟨C, ?_⟩
+    refine of_ell_eq_one_selectedValueSet_covers
+      (L := 2) (H := H) (r := r) (C := C) ?_ ?_ ?_ ?_
+    · intro j
+      fin_cases j <;> norm_num [C]
+    · simpa [C] using hpos1
+    · simpa [C] using hpos2
+    · intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      rcases hs with rfl | rfl | rfl
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simpa [C] using h13
+  · let C : AoyagiSelectedCutpoints 1 :=
+      { cut := fun j ↦ j.val + 1
+        pos := by
+          intro j
+          omega
+        strict := by
+          intro j
+          fin_cases j
+          simp }
+    refine ⟨C, ?_⟩
+    refine of_ell_eq_one_selectedValueSet_covers
+      (L := 2) (H := H) (r := r) (C := C) ?_ ?_ ?_ ?_
+    · intro j
+      fin_cases j <;> norm_num [C]
+    · simpa [C] using hpos1
+    · simpa [C] using hpos2
+    · intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      rcases hs with rfl | rfl | rfl
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simpa [C] using h23
+
+/-- Complete finite classification of Definition 3 source-data existence for
+`L=2`.
+
+Either two source-range reduced-width values repeat and all three values are
+positive, realized by `ell=1`, or the three all-source triangle inequalities
+hold, realized by `ell=2`. -/
+theorem exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
+    {H : ℕ → ℕ} {r : ℕ} :
+    (∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+      AoyagiDefinition3SourceData 2 ell H r C) ↔
+      (((0 : ℤ) < aoyagiReducedWidthInt H r 1 ∧
+        (0 : ℤ) < aoyagiReducedWidthInt H r 2 ∧
+        (0 : ℤ) < aoyagiReducedWidthInt H r 3 ∧
+        (aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 2 ∨
+          aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 3 ∨
+          aoyagiReducedWidthInt H r 2 = aoyagiReducedWidthInt H r 3)) ∨
+       ((2 : ℤ) * aoyagiReducedWidthInt H r 1 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3 ∧
+        (2 : ℤ) * aoyagiReducedWidthInt H r 2 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3 ∧
+        (2 : ℤ) * aoyagiReducedWidthInt H r 3 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3)) := by
+  constructor
+  · rintro ⟨ell, C, S⟩
+    have hell_le : ell ≤ 2 := by
+      by_contra hnot
+      have hell3 : 3 ≤ ell := by omega
+      have h0pos :
+          1 ≤ C.cut (⟨0, by omega⟩ : Fin (ell + 1)) := C.pos _
+      have h01 :
+          C.cut (⟨0, by omega⟩ : Fin (ell + 1)) <
+            C.cut (⟨1, by omega⟩ : Fin (ell + 1)) :=
+        C.cut_strictMono (by
+          change (0 : ℕ) < 1
+          norm_num)
+      have h12cut :
+          C.cut (⟨1, by omega⟩ : Fin (ell + 1)) <
+            C.cut (⟨2, by omega⟩ : Fin (ell + 1)) :=
+        C.cut_strictMono (by
+          change (1 : ℕ) < 2
+          norm_num)
+      have h23cut :
+          C.cut (⟨2, by omega⟩ : Fin (ell + 1)) <
+            C.cut (⟨3, by omega⟩ : Fin (ell + 1)) :=
+        C.cut_strictMono (by
+          change (2 : ℕ) < 3
+          norm_num)
+      have h3le :
+          C.cut (⟨3, by omega⟩ : Fin (ell + 1)) ≤ 3 := by
+        simpa using S.cut_le (⟨3, by omega⟩ : Fin (ell + 1))
+      omega
+    have hell_pos : 0 < ell := S.ell_pos
+    interval_cases ell
+    · left
+      have hmem1 :=
+        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+          (s := 1) (by norm_num) (by norm_num)
+      have hmem2 :=
+        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+          (s := 2) (by norm_num) (by norm_num)
+      have hmem3 :=
+        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+          (s := 3) (by norm_num) (by norm_num)
+      have hsel0pos :
+          0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+        have hstrict := S.selected_strict (1 : Fin (1 + 1))
+        rw [Fin.sum_univ_two] at hstrict
+        norm_num at hstrict
+        omega
+      have hsel1pos :
+          0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+        have hstrict := S.selected_strict (0 : Fin (1 + 1))
+        rw [Fin.sum_univ_two] at hstrict
+        norm_num at hstrict
+        omega
+      have hpos_of_mem : ∀ {s : ℕ},
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) →
+          0 < aoyagiReducedWidthInt H r s := by
+        intro s hm
+        rw [Finset.mem_image] at hm
+        rcases hm with ⟨j, _hjmem, hj⟩
+        fin_cases j
+        · exact hj ▸ hsel0pos
+        · exact hj ▸ hsel1pos
+      refine ⟨hpos_of_mem hmem1, hpos_of_mem hmem2, hpos_of_mem hmem3, ?_⟩
+      rw [Finset.mem_image] at hmem1 hmem2 hmem3
+      rcases hmem1 with ⟨j1, _hj1mem, hj1⟩
+      rcases hmem2 with ⟨j2, _hj2mem, hj2⟩
+      rcases hmem3 with ⟨j3, _hj3mem, hj3⟩
+      have hpigeon : j1 = j2 ∨ j1 = j3 ∨ j2 = j3 := by
+        fin_cases j1 <;> fin_cases j2 <;> fin_cases j3 <;> simp
+      rcases hpigeon with h12j | h13j | h23j
+      · left
+        subst j2
+        exact hj1.symm.trans hj2
+      · right
+        left
+        subst j3
+        exact hj1.symm.trans hj3
+      · right
+        right
+        subst j3
+        exact hj2.symm.trans hj3
+    · right
+      have hC : ∀ j : Fin (2 + 1), C.cut j = j.val + 1 :=
+        S.cut_eq_consecutive_of_L_eq_two
+      have hsum :
+          (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+            aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+              aoyagiReducedWidthInt H r 3 := by
+        rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+        simp [hC]
+        ring
+      constructor
+      · have hstrict := S.selected_strict (0 : Fin (2 + 1))
+        have hcut0 : C.cut (0 : Fin (2 + 1)) = 1 := by
+          simpa using hC (0 : Fin (2 + 1))
+        rw [hcut0, hsum] at hstrict
+        simpa using hstrict
+      constructor
+      · have hstrict := S.selected_strict (1 : Fin (2 + 1))
+        have hcut1 : C.cut (1 : Fin (2 + 1)) = 2 := by
+          simpa using hC (1 : Fin (2 + 1))
+        rw [hcut1, hsum] at hstrict
+        simpa using hstrict
+      · have hstrict := S.selected_strict (2 : Fin (2 + 1))
+        have hcut2 : C.cut (2 : Fin (2 + 1)) = 3 := by
+          simpa using hC (2 : Fin (2 + 1))
+        rw [hcut2, hsum] at hstrict
+        simpa using hstrict
+  · rintro (hrep | htri)
+    · rcases hrep with ⟨hpos1, hpos2, hpos3, hrep⟩
+      rcases exists_ell_one_of_L_eq_two_positive_repeated
+          (H := H) (r := r) hpos1 hpos2 hpos3 hrep with
+        ⟨C, S⟩
+      exact ⟨1, C, S⟩
+    · have hstrict :
+          ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+            (2 : ℤ) * aoyagiReducedWidthInt H r s <
+              ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+        intro s hs1 hsL
+        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+        have hsum :
+            (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
+              aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+                aoyagiReducedWidthInt H r 3 := by
+          rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+          norm_num
+          ring
+        rcases htri with ⟨htri1, htri2, htri3⟩
+        rcases hs with rfl | rfl | rfl
+        · rw [hsum]
+          exact htri1
+        · rw [hsum]
+          exact htri2
+        · rw [hsum]
+          exact htri3
+      rcases exists_consecutive_of_all_selected_strict
+          (L := 2) (H := H) (r := r) (by norm_num) hstrict with
+        ⟨C, _hC, S⟩
+      exact ⟨2, C, S⟩
+
+/-- For three source layers (`L = 2`), the all-source selected constructor is
+controlled by the three strict triangle-type inequalities
+`2 w_i < w_1 + w_2 + w_3`.
+
+This packages the source-facing special case used by small examples.  It is
+still an all-source constructor, not an arbitrary Definition 3 source-data
+classification. -/
+theorem exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth
+    {H : ℕ → ℕ} {r : ℕ} {w1 w2 w3 : ℤ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = w1)
+    (hw2 : aoyagiReducedWidthInt H r 2 = w2)
+    (hw3 : aoyagiReducedWidthInt H r 3 = w3)
+    (htri1 : (2 : ℤ) * w1 < w1 + w2 + w3)
+    (htri2 : (2 : ℤ) * w2 < w1 + w2 + w3)
+    (htri3 : (2 : ℤ) * w3 < w1 + w2 + w3)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = w1 ∧
+      m (1 : Fin (2 + 1)) = w2 ∧
+      m (2 : Fin (2 + 1)) = w3 := by
+  have hsum :
+      (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
+        w1 + w2 + w3 := by
+    rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+    norm_num [hw1, hw2, hw3]
+    ring
+  have hstrict :
+      ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        (2 : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    rcases hs with rfl | rfl | rfl
+    · rw [hw1, hsum]
+      exact htri1
+    · rw [hw2, hsum]
+      exact htri2
+    · rw [hw3, hsum]
+      exact htri3
+  rcases exists_consecutive_selectedReducedWidthCeilData_of_all_selected_strict_rankWidth
+      (L := 2) (H := H) (r := r) (by norm_num) hstrict hr with
+    ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg⟩
+  have hm0 : m (0 : Fin (2 + 1)) = w1 := by
+    have hcut0 : C.cut (0 : Fin (2 + 1)) = 1 := by
+      simpa using hC (0 : Fin (2 + 1))
+    rw [hm, aoyagiSelectedReducedWidths_apply, hcut0, hw1]
+  have hm1 : m (1 : Fin (2 + 1)) = w2 := by
+    have hcut1 : C.cut (1 : Fin (2 + 1)) = 2 := by
+      simpa using hC (1 : Fin (2 + 1))
+    rw [hm, aoyagiSelectedReducedWidths_apply, hcut1, hw2]
+  have hm2 : m (2 : Fin (2 + 1)) = w3 := by
+    have hcut2 : C.cut (2 : Fin (2 + 1)) = 3 := by
+      simpa using hC (2 : Fin (2 + 1))
+    rw [hm, aoyagiSelectedReducedWidths_apply, hcut2, hw3]
+  exact
+    ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg,
+      hm0, hm1, hm2⟩
+
+/-- For three source layers (`L = 2`), the all-source triangle branch with a
+supplied positive-remainder decomposition gives explicit Theorem 2 finite
+formula data.
+
+This is only the all-source triangle branch; the repeated-positive `ell = 1`
+branch is intentionally not included. -/
+theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_remainder_rankWidth
+    {H : ℕ → ℕ} {r w1 w2 w3 ceilPred a : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3)
+    (ha_pos : 0 < a) (ha_le : a ≤ 2)
+    (hsum : w1 + w2 + w3 = 2 * ceilPred + a)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (ceilPred : ℤ) + 1 ∧
+      data.aParam = a ∧
+      data.theorem2OrderFormula = a * (2 - a) + 1 ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((a : ℚ) * ((2 : ℚ) - (a : ℚ))) / 8 -
+          (((ceilPred : ℚ) + (a : ℚ) / 2) ^ 2) / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+  classical
+  have hsumWidths :
+      (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
+        (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+    norm_num [hw1, hw2, hw3]
+    ring
+  have htri1z : (2 : ℤ) * (w1 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri1
+  have htri2z : (2 : ℤ) * (w2 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri2
+  have htri3z : (2 : ℤ) * (w3 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri3
+  have hstrictSource :
+      ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        (2 : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    rcases hs with rfl | rfl | rfl
+    · rw [hw1, hsumWidths]
+      exact htri1z
+    · rw [hw2, hsumWidths]
+      exact htri2z
+    · rw [hw3, hsumWidths]
+      exact htri3z
+  rcases exists_consecutive_of_all_selected_strict
+      (L := 2) (H := H) (r := r) (by norm_num) hstrictSource with
+    ⟨C, hC, S⟩
+  let m : Fin (2 + 1) → ℤ := aoyagiSelectedReducedWidths H r C
+  have hm0 : m (0 : Fin (2 + 1)) = (w1 : ℤ) := by
+    have hcut0 : C.cut (0 : Fin (2 + 1)) = 1 := by
+      simpa using hC (0 : Fin (2 + 1))
+    dsimp [m]
+    rw [hcut0, hw1]
+  have hm1 : m (1 : Fin (2 + 1)) = (w2 : ℤ) := by
+    have hcut1 : C.cut (1 : Fin (2 + 1)) = 2 := by
+      simpa using hC (1 : Fin (2 + 1))
+    dsimp [m]
+    rw [hcut1, hw2]
+  have hm2 : m (2 : Fin (2 + 1)) = (w3 : ℤ) := by
+    have hcut2 : C.cut (2 : Fin (2 + 1)) = 3 := by
+      simpa using hC (2 : Fin (2 + 1))
+    dsimp [m]
+    rw [hcut2, hw3]
+  have hsumz :
+      (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) =
+        (2 : ℤ) * (ceilPred : ℤ) + (a : ℤ) := by
+    exact_mod_cast hsum
+  have hsum_m :
+      (∑ j : Fin (2 + 1), m j) =
+        (2 : ℤ) * (ceilPred : ℤ) + (a : ℤ) := by
+    calc
+      (∑ j : Fin (2 + 1), m j) = (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+        rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+        norm_num [hm0, hm1, hm2]
+        ring
+      _ = (2 : ℤ) * (ceilPred : ℤ) + (a : ℤ) := hsumz
+  let data : AoyagiDefinition3CeilData 2 m :=
+    AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder
+      2 m (ceilPred : ℤ) a (by norm_num) ha_pos ha_le hsum_m
+  have hceil : data.ceilWidth = (ceilPred : ℤ) + 1 := rfl
+  have hceilQ : (data.ceilWidth : ℚ) = (ceilPred : ℚ) + 1 := by
+    rw [hceil]
+    norm_num
+  have haParam : data.aParam = a := rfl
+  have horder : data.theorem2OrderFormula = a * (2 - a) + 1 := by
+    simp [AoyagiDefinition3CeilData.theorem2OrderFormula, haParam]
+  have hstrict_m :
+      ∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j :=
+    S.selected_strict_of_eq_selectedReducedWidths rfl
+  have hrSelected : ∀ j : Fin (2 + 1), r ≤ H (C.cut j) :=
+    fun j ↦ hr (C.cut j) (C.pos j) (S.cut_le j)
+  have hnat : ∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ) := by
+    intro j
+    exact aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le H r C hrSelected j
+  have hnonneg : ∀ j : Fin (2 + 1), 0 ≤ m j := by
+    intro j
+    exact aoyagiSelectedReducedWidths_nonneg_of_rank_le H r C hrSelected j
+  have hle : ∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1 := by
+    intro i
+    exact data.selectedWidth_le_pred_of_sourceSelectedInequality hstrict_m i
+  have hnatNonneg : ∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i := by
+    intro i
+    exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
+      H (r := r) (i := i) C hrSelected
+  have hpair :
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) := by
+    unfold aoyagiSelectedWidthPairSum
+    simp [Fin.sum_univ_three, hm0, hm1, hm2]
+  have hlambda :
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((a : ℚ) * ((2 : ℚ) - (a : ℚ))) / 8 -
+          (((ceilPred : ℚ) + (a : ℚ) / 2) ^ 2) / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+    unfold aoyagiTheorem2Lambda_fromCeilData aoyagiTheorem2Lambda_ceil
+    rw [hpair, haParam, hceilQ]
+    ring
+  refine
+    ⟨C, m, data, hC, S, rfl, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+
+/-- Odd-total version of the `L = 2` all-source triangle formula package.
+
+For total selected width `T = w1+w2+w3`, the hypothesis `T % 2 = 1`
+constructs the Definition 3 ceiling data with `ceilPred = T/2` and
+`aParam = 1`, instead of requiring a supplied positive-remainder
+decomposition. -/
+theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_odd_rankWidth
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3)
+    (hodd : (w1 + w2 + w3) % 2 = 1)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) + 1 ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 2 ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((1 : ℚ) * ((2 : ℚ) - (1 : ℚ))) / 8 -
+          ((((w1 + w2 + w3) / 2 : ℕ) : ℚ) + (1 : ℚ) / 2) ^ 2 / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+  classical
+  have hsum : w1 + w2 + w3 = 2 * ((w1 + w2 + w3) / 2) + 1 := by
+    omega
+  rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_remainder_rankWidth
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      (ceilPred := (w1 + w2 + w3) / 2) (a := 1)
+      hw1 hw2 hw3 htri1 htri2 htri3 (by norm_num) (by norm_num) hsum hr with
+    ⟨C, m, data, hC, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m,
+      hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+  have horder' : data.theorem2OrderFormula = 2 := by
+    simpa using horder
+  exact
+    ⟨C, m, data, hC, S, hm, hceil, haParam, horder', hnat, hnonneg, hstrict_m,
+      hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+
+/-- Even-total version of the `L = 2` all-source triangle formula package.
+
+For total selected width `T = w1+w2+w3`, the hypothesis `T % 2 = 0`
+constructs the Definition 3 ceiling data with `ceilPred = T/2 - 1` and
+`aParam = 2`, instead of requiring a supplied positive-remainder
+decomposition. -/
+theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3)
+    (heven : (w1 + w2 + w3) % 2 = 0)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) ∧
+      data.aParam = 2 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((2 : ℚ) * ((2 : ℚ) - (2 : ℚ))) / 8 -
+          ((((w1 + w2 + w3) / 2 - 1 : ℕ) : ℚ) + (2 : ℚ) / 2) ^ 2 / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+  classical
+  have hsum :
+      w1 + w2 + w3 = 2 * ((w1 + w2 + w3) / 2 - 1) + 2 := by
+    omega
+  rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_remainder_rankWidth
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      (ceilPred := (w1 + w2 + w3) / 2 - 1) (a := 2)
+      hw1 hw2 hw3 htri1 htri2 htri3 (by norm_num) (by norm_num) hsum hr with
+    ⟨C, m, data, hC, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m,
+      hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+  have hceil' : data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) := by
+    rw [hceil]
+    have hnat : (w1 + w2 + w3) / 2 - 1 + 1 = (w1 + w2 + w3) / 2 := by
+      omega
+    exact_mod_cast hnat
+  have horder' : data.theorem2OrderFormula = 1 := by
+    simpa using horder
+  exact
+    ⟨C, m, data, hC, S, hm, hceil', haParam, horder', hnat, hnonneg, hstrict_m,
+      hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+
+/-- For `L = 2` and an exposed `ell = 1` selected pair, a positive selected
+pair cover with a supplied remainder-one decomposition gives explicit Theorem
+2 finite formula data.
+
+This is the safe repeated-positive branch interface: the selected pair is part
+of the input, so the theorem does not choose a canonical pair from a repeated
+width disjunction. -/
+theorem exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+    {H : ℕ → ℕ} {r u v ceilPred : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1)
+    (hu : aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (u : ℤ))
+    (hv : aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (v : ℤ))
+    (hu_pos : 0 < u) (hv_pos : 0 < v)
+    (hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+      aoyagiReducedWidthInt H r s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)))
+    (hsum : u + v = ceilPred + 1)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiDefinition3SourceData 2 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (ceilPred : ℤ) + 1 ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  have hu_pos_z :
+      0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+    rw [hu]
+    exact_mod_cast hu_pos
+  have hv_pos_z :
+      0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+    rw [hv]
+    exact_mod_cast hv_pos
+  let S : AoyagiDefinition3SourceData 2 1 H r C :=
+    of_ell_eq_one_selectedValueSet_covers
+      (L := 2) (H := H) (r := r) (C := C)
+      hcut_le hu_pos_z hv_pos_z hcover
+  let m : Fin (1 + 1) → ℤ := aoyagiSelectedReducedWidths H r C
+  have hm0 : m (0 : Fin (1 + 1)) = (u : ℤ) := by
+    dsimp [m]
+    rw [hu]
+  have hm1 : m (1 : Fin (1 + 1)) = (v : ℤ) := by
+    dsimp [m]
+    rw [hv]
+  have hsumz :
+      (u : ℤ) + (v : ℤ) = (ceilPred : ℤ) + (1 : ℤ) := by
+    exact_mod_cast hsum
+  have hsum_m :
+      (∑ j : Fin (1 + 1), m j) =
+        (1 : ℤ) * (ceilPred : ℤ) + (1 : ℤ) := by
+    calc
+      (∑ j : Fin (1 + 1), m j) = (u : ℤ) + (v : ℤ) := by
+        rw [Fin.sum_univ_two]
+        norm_num [hm0, hm1]
+      _ = (1 : ℤ) * (ceilPred : ℤ) + (1 : ℤ) := by
+        rw [hsumz]
+        ring
+  let data : AoyagiDefinition3CeilData 1 m :=
+    AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder
+      1 m (ceilPred : ℤ) 1 (by norm_num) (by norm_num) (by norm_num) hsum_m
+  have hceil : data.ceilWidth = (ceilPred : ℤ) + 1 := rfl
+  have haParam : data.aParam = 1 := rfl
+  have horder : data.theorem2OrderFormula = 1 := by
+    simp [AoyagiDefinition3CeilData.theorem2OrderFormula, haParam]
+  have hstrict_m :
+      ∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j :=
+    S.selected_strict_of_eq_selectedReducedWidths rfl
+  have hrSelected : ∀ j : Fin (1 + 1), r ≤ H (C.cut j) :=
+    fun j ↦ hr (C.cut j) (C.pos j) (hcut_le j)
+  have hnat : ∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ) := by
+    intro j
+    exact aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le H r C hrSelected j
+  have hnonneg : ∀ j : Fin (1 + 1), 0 ≤ m j := by
+    intro j
+    exact aoyagiSelectedReducedWidths_nonneg_of_rank_le H r C hrSelected j
+  have hle : ∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1 := by
+    intro i
+    exact data.selectedWidth_le_pred_of_sourceSelectedInequality hstrict_m i
+  have hnatNonneg : ∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i := by
+    intro i
+    exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
+      H (r := r) (i := i) C hrSelected
+  have hpair :
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) := by
+    unfold aoyagiSelectedWidthPairSum
+    simp [Fin.sum_univ_two, hm0, hm1]
+  have hlambda :
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+    unfold aoyagiTheorem2Lambda_fromCeilData aoyagiTheorem2Lambda_ceil
+    rw [hpair, haParam]
+    ring
+  exact
+    ⟨m, data, S, rfl, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- For arbitrary `L` and an exposed `ell = 1` selected pair, a positive
+selected-pair cover gives explicit Theorem 2 finite formula data with the
+`ell = 1` ceiling datum chosen directly.
+
+The selected pair is part of the input, so this theorem does not choose a
+canonical branch from repeated selected values. -/
+theorem exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth_general
+    {L : ℕ} {H : ℕ → ℕ} {r u v : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ L + 1)
+    (hu : aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (u : ℤ))
+    (hv : aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (v : ℤ))
+    (hu_pos : 0 < u) (hv_pos : 0 < v)
+    (hcover : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+      aoyagiReducedWidthInt H r s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)))
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s) :
+    ∃ (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiDefinition3SourceData L 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+        aoyagiTheorem2RegularTerm L H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  have hu_pos_z :
+      0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+    rw [hu]
+    exact_mod_cast hu_pos
+  have hv_pos_z :
+      0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+    rw [hv]
+    exact_mod_cast hv_pos
+  let S : AoyagiDefinition3SourceData L 1 H r C :=
+    of_ell_eq_one_selectedValueSet_covers
+      (L := L) (H := H) (r := r) (C := C)
+      hcut_le hu_pos_z hv_pos_z hcover
+  let m : Fin (1 + 1) → ℤ := aoyagiSelectedReducedWidths H r C
+  have hm0 : m (0 : Fin (1 + 1)) = (u : ℤ) := by
+    dsimp [m]
+    rw [hu]
+  have hm1 : m (1 : Fin (1 + 1)) = (v : ℤ) := by
+    dsimp [m]
+    rw [hv]
+  have hsum : u + v = (u + v - 1) + 1 := by
+    omega
+  have hsumz :
+      (u : ℤ) + (v : ℤ) = ((u + v - 1 : ℕ) : ℤ) + (1 : ℤ) := by
+    exact_mod_cast hsum
+  have hsum_m :
+      (∑ j : Fin (1 + 1), m j) =
+        (1 : ℤ) * ((u + v - 1 : ℕ) : ℤ) + (1 : ℤ) := by
+    calc
+      (∑ j : Fin (1 + 1), m j) = (u : ℤ) + (v : ℤ) := by
+        rw [Fin.sum_univ_two]
+        norm_num [hm0, hm1]
+      _ = (1 : ℤ) * ((u + v - 1 : ℕ) : ℤ) + (1 : ℤ) := by
+        rw [hsumz]
+        ring
+  let data : AoyagiDefinition3CeilData 1 m :=
+    AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder
+      1 m ((u + v - 1 : ℕ) : ℤ) 1 (by norm_num) (by norm_num) (by norm_num)
+      hsum_m
+  have hceil : data.ceilWidth = ((u + v - 1 : ℕ) : ℤ) + 1 := rfl
+  have hceil_uv : data.ceilWidth = (u : ℤ) + (v : ℤ) := by
+    rw [hceil]
+    have hnat : u + v - 1 + 1 = u + v := by
+      omega
+    have hz : ((u + v - 1 : ℕ) : ℤ) + 1 = ((u + v : ℕ) : ℤ) := by
+      exact_mod_cast hnat
+    simpa [Nat.cast_add] using hz
+  have haParam : data.aParam = 1 := rfl
+  have horder : data.theorem2OrderFormula = 1 := by
+    simp [AoyagiDefinition3CeilData.theorem2OrderFormula, haParam]
+  have hstrict_m :
+      ∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j :=
+    S.selected_strict_of_eq_selectedReducedWidths rfl
+  have hrSelected : ∀ j : Fin (1 + 1), r ≤ H (C.cut j) :=
+    fun j ↦ hr (C.cut j) (C.pos j) (hcut_le j)
+  have hnat : ∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ) := by
+    intro j
+    exact aoyagiSelectedReducedWidths_eq_natCast_sub_of_rank_le H r C hrSelected j
+  have hnonneg : ∀ j : Fin (1 + 1), 0 ≤ m j := by
+    intro j
+    exact aoyagiSelectedReducedWidths_nonneg_of_rank_le H r C hrSelected j
+  have hle : ∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1 := by
+    intro i
+    exact data.selectedWidth_le_pred_of_sourceSelectedInequality hstrict_m i
+  have hnatNonneg : ∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i := by
+    intro i
+    exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
+      H (r := r) (i := i) C hrSelected
+  have hpair :
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) := by
+    unfold aoyagiSelectedWidthPairSum
+    simp [Fin.sum_univ_two, hm0, hm1]
+  have hlambda :
+      aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+        aoyagiTheorem2RegularTerm L H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+    unfold aoyagiTheorem2Lambda_fromCeilData aoyagiTheorem2Lambda_ceil
+    rw [hpair, haParam]
+    ring
+  exact
+    ⟨m, data, S, rfl, hceil_uv, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- For `L = 2` and an exposed `ell = 1` selected pair, a positive selected
+pair cover gives explicit Theorem 2 finite formula data with the `ell = 1`
+ceiling datum chosen directly.
+
+For `ell = 1`, no quotient/remainder input is needed: the selected sum is
+`u + v`, so Definition 3 can take `ceilWidth = u + v` and `aParam = 1`. -/
+theorem exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+    {H : ℕ → ℕ} {r u v : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1)
+    (hu : aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (u : ℤ))
+    (hv : aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (v : ℤ))
+    (hu_pos : 0 < u) (hv_pos : 0 < v)
+    (hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+      aoyagiReducedWidthInt H r s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)))
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiDefinition3SourceData 2 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  have hsum : u + v = (u + v - 1) + 1 := by omega
+  rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+      (H := H) (r := r) (u := u) (v := v) (ceilPred := u + v - 1) (C := C)
+      hcut_le hu hv hu_pos hv_pos hcover hsum hr with
+    ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hpair, hlambda⟩
+  have hceil_uv : data.ceilWidth = (u : ℤ) + (v : ℤ) := by
+    rw [hceil]
+    have hnat : u + v - 1 + 1 = u + v := by omega
+    have hz : ((u + v - 1 : ℕ) : ℤ) + 1 = ((u + v : ℕ) : ℤ) := by
+      exact_mod_cast hnat
+    simpa [Nat.cast_add] using hz
+  exact
+    ⟨m, data, S, hm, hceil_uv, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- For `L = 2`, a positive repeated reduced-width profile gives an `ell = 1`
+Theorem 2 finite formula package, with the selected pair constructed from the
+repeated-equality branch.
+
+The repeated branch is not made canonical: the input disjunction includes the
+branch-compatible remainder decomposition for the pair selected in that branch.
+This theorem only removes the previously supplied selected pair/cover data. -/
+theorem exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_remainder_rankWidth
+    {H : ℕ → ℕ} {r w1 w2 w3 ceilPred : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (hw1_pos : 0 < w1) (hw2_pos : 0 < w2) (hw3_pos : 0 < w3)
+    (hrep :
+      (w1 = w2 ∧ w1 + w3 = ceilPred + 1) ∨
+        (w1 = w3 ∧ w1 + w2 = ceilPred + 1) ∨
+          (w2 = w3 ∧ w1 + w2 = ceilPred + 1))
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 1)
+        (u v : ℕ)
+        (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      0 < u ∧
+      0 < v ∧
+      u + v = ceilPred + 1 ∧
+      AoyagiDefinition3SourceData 2 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (ceilPred : ℤ) + 1 ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  rcases hrep with h12branch | hrest
+  · rcases h12branch with ⟨h12, hsum⟩
+    let C : AoyagiSelectedCutpoints 1 :=
+      { cut := fun j ↦ if j = (0 : Fin (1 + 1)) then 1 else 3
+        pos := by
+          intro j
+          fin_cases j <;> simp
+        strict := by
+          intro j
+          fin_cases j
+          simp }
+    have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+      intro j
+      fin_cases j <;> norm_num [C]
+    have hu : aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+      simp [C, hw1]
+    have hv : aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w3 : ℤ) := by
+      simp [C, hw3]
+    have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        aoyagiReducedWidthInt H r s ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+      intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      rcases hs with rfl | rfl | rfl
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C, hw1, hw2, h12]
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+    rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+        (H := H) (r := r) (u := w1) (v := w3) (ceilPred := ceilPred)
+        (C := C) hcut_le hu hv hw1_pos hw3_pos hcover hsum hr with
+      ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+        hnatNonneg, hm0, hm1, hpair, hlambda⟩
+    exact
+      ⟨C, w1, w3, m, data, hw1_pos, hw3_pos, hsum, S, hm, hceil, haParam,
+        horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair,
+        hlambda⟩
+  · rcases hrest with h13branch | h23branch
+    · rcases h13branch with ⟨h13, hsum⟩
+      let C : AoyagiSelectedCutpoints 1 :=
+        { cut := fun j ↦ j.val + 1
+          pos := by
+            intro j
+            omega
+          strict := by
+            intro j
+            fin_cases j
+            simp }
+      have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+        intro j
+        fin_cases j <;> norm_num [C]
+      have hu :
+          aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+        simp [C, hw1]
+      have hv :
+          aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w2 : ℤ) := by
+        simp [C, hw2]
+      have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+        intro s hs1 hsL
+        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+        rcases hs with rfl | rfl | rfl
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C, hw1, hw3, h13]
+      rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+          (H := H) (r := r) (u := w1) (v := w2) (ceilPred := ceilPred)
+          (C := C) hcut_le hu hv hw1_pos hw2_pos hcover hsum hr with
+        ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+          hnatNonneg, hm0, hm1, hpair, hlambda⟩
+      exact
+        ⟨C, w1, w2, m, data, hw1_pos, hw2_pos, hsum, S, hm, hceil, haParam,
+          horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair,
+          hlambda⟩
+    · rcases h23branch with ⟨h23, hsum⟩
+      let C : AoyagiSelectedCutpoints 1 :=
+        { cut := fun j ↦ j.val + 1
+          pos := by
+            intro j
+            omega
+          strict := by
+            intro j
+            fin_cases j
+            simp }
+      have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+        intro j
+        fin_cases j <;> norm_num [C]
+      have hu :
+          aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+        simp [C, hw1]
+      have hv :
+          aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w2 : ℤ) := by
+        simp [C, hw2]
+      have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+        intro s hs1 hsL
+        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+        rcases hs with rfl | rfl | rfl
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C, hw2, hw3, h23]
+      rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_remainder_rankWidth
+          (H := H) (r := r) (u := w1) (v := w2) (ceilPred := ceilPred)
+          (C := C) hcut_le hu hv hw1_pos hw2_pos hcover hsum hr with
+        ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+          hnatNonneg, hm0, hm1, hpair, hlambda⟩
+      exact
+        ⟨C, w1, w2, m, data, hw1_pos, hw2_pos, hsum, S, hm, hceil, haParam,
+          horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair,
+          hlambda⟩
+
+/-- For `L = 2`, a positive repeated reduced-width profile gives an `ell = 1`
+Theorem 2 finite formula package, with the selected pair constructed from the
+repeated-equality branch.
+
+This is the preferred repeated-positive interface.  Unlike the compatibility
+`..._remainder_rankWidth` version, it does not ask for quotient/remainder data:
+for `ell = 1`, the ceiling datum is constructed directly with
+`ceilWidth = u + v` and `aParam = 1`. -/
+theorem exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_rankWidth
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (hw1_pos : 0 < w1) (hw2_pos : 0 < w2) (hw3_pos : 0 < w3)
+    (hrep : w1 = w2 ∨ w1 = w3 ∨ w2 = w3)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s) :
+    ∃ (C : AoyagiSelectedCutpoints 1)
+        (u v : ℕ)
+        (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      0 < u ∧
+      0 < v ∧
+      AoyagiDefinition3SourceData 2 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  rcases hrep with h12 | hrest
+  · let C : AoyagiSelectedCutpoints 1 :=
+      { cut := fun j ↦ if j = (0 : Fin (1 + 1)) then 1 else 3
+        pos := by
+          intro j
+          fin_cases j <;> simp
+        strict := by
+          intro j
+          fin_cases j
+          simp }
+    have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+      intro j
+      fin_cases j <;> norm_num [C]
+    have hu : aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+      simp [C, hw1]
+    have hv : aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w3 : ℤ) := by
+      simp [C, hw3]
+    have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        aoyagiReducedWidthInt H r s ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+      intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      rcases hs with rfl | rfl | rfl
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+      · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C, hw1, hw2, h12]
+      · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+        simp [C]
+    rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+        (H := H) (r := r) (u := w1) (v := w3) (C := C)
+        hcut_le hu hv hw1_pos hw3_pos hcover hr with
+      ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+        hnatNonneg, hm0, hm1, hpair, hlambda⟩
+    exact
+      ⟨C, w1, w3, m, data, hw1_pos, hw3_pos, S, hm, hceil, haParam, horder,
+        hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+  · rcases hrest with h13 | h23
+    · let C : AoyagiSelectedCutpoints 1 :=
+        { cut := fun j ↦ j.val + 1
+          pos := by
+            intro j
+            omega
+          strict := by
+            intro j
+            fin_cases j
+            simp }
+      have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+        intro j
+        fin_cases j <;> norm_num [C]
+      have hu :
+          aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+        simp [C, hw1]
+      have hv :
+          aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w2 : ℤ) := by
+        simp [C, hw2]
+      have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+        intro s hs1 hsL
+        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+        rcases hs with rfl | rfl | rfl
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C, hw1, hw3, h13]
+      rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+          (H := H) (r := r) (u := w1) (v := w2) (C := C)
+          hcut_le hu hv hw1_pos hw2_pos hcover hr with
+        ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+          hnatNonneg, hm0, hm1, hpair, hlambda⟩
+      exact
+        ⟨C, w1, w2, m, data, hw1_pos, hw2_pos, S, hm, hceil, haParam, horder,
+          hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+    · let C : AoyagiSelectedCutpoints 1 :=
+        { cut := fun j ↦ j.val + 1
+          pos := by
+            intro j
+            omega
+          strict := by
+            intro j
+            fin_cases j
+            simp }
+      have hcut_le : ∀ j : Fin (1 + 1), C.cut j ≤ 2 + 1 := by
+        intro j
+        fin_cases j <;> norm_num [C]
+      have hu :
+          aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (w1 : ℤ) := by
+        simp [C, hw1]
+      have hv :
+          aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (w2 : ℤ) := by
+        simp [C, hw2]
+      have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+        intro s hs1 hsL
+        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+        rcases hs with rfl | rfl | rfl
+        · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C]
+        · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+          simp [C, hw2, hw3, h23]
+      rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+          (H := H) (r := r) (u := w1) (v := w2) (C := C)
+          hcut_le hu hv hw1_pos hw2_pos hcover hr with
+        ⟨m, data, S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+          hnatNonneg, hm0, hm1, hpair, hlambda⟩
+      exact
+        ⟨C, w1, w2, m, data, hw1_pos, hw2_pos, S, hm, hceil, haParam, horder,
+          hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- Diagnostic: the printed `L = 2` Definition 3 conditions can admit both the
+`ell = 1` repeated-positive branch and the `ell = 2` all-source triangle branch
+with different finite Theorem 2 lambda formula values.
+
+For reduced widths `(2,3,3)` and `r = 0`, the selected pair `(2,3)` gives
+lambda `3`, while the all-source even triangle branch gives lambda `5/2`.
+This records finite formula ambiguity only; it is not an analytic RLCT claim. -/
+theorem exists_L_eq_two_two_three_three_formula_disagreement :
+    let H : ℕ → ℕ :=
+      fun s ↦ if s = 1 then 2 else if s = 2 then 3 else if s = 3 then 3 else 0
+    ∃ (C1 : AoyagiSelectedCutpoints 1)
+        (m1 : Fin (1 + 1) → ℤ)
+        (data1 : AoyagiDefinition3CeilData 1 m1)
+        (C2 : AoyagiSelectedCutpoints 2)
+        (m2 : Fin (2 + 1) → ℤ)
+        (data2 : AoyagiDefinition3CeilData 2 m2),
+      AoyagiDefinition3SourceData 2 1 H 0 C1 ∧
+      m1 = aoyagiSelectedReducedWidths H 0 C1 ∧
+      AoyagiDefinition3SourceData 2 2 H 0 C2 ∧
+      m2 = aoyagiSelectedReducedWidths H 0 C2 ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H 0 m1 data1 = 3 ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H 0 m2 data2 = (5 : ℚ) / 2 ∧
+      data1.theorem2OrderFormula = 1 ∧
+      data2.theorem2OrderFormula = 1 ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H 0 m1 data1 ≠
+        aoyagiTheorem2Lambda_fromCeilData 2 2 H 0 m2 data2 := by
+  classical
+  let H : ℕ → ℕ :=
+    fun s ↦ if s = 1 then 2 else if s = 2 then 3 else if s = 3 then 3 else 0
+  let C1 : AoyagiSelectedCutpoints 1 :=
+    { cut := fun j ↦ j.val + 1
+      pos := by
+        intro j
+        omega
+      strict := by
+        intro j
+        fin_cases j
+        simp }
+  have hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → 0 ≤ H s := by
+    intro s _hs1 _hsL
+    exact Nat.zero_le (H s)
+  have hw1 : aoyagiReducedWidthInt H 0 1 = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw2 : aoyagiReducedWidthInt H 0 2 = (3 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw3 : aoyagiReducedWidthInt H 0 3 = (3 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hcut_le : ∀ j : Fin (1 + 1), C1.cut j ≤ 2 + 1 := by
+    intro j
+    fin_cases j <;> norm_num [C1]
+  have hu : aoyagiReducedWidthInt H 0 (C1.cut (0 : Fin (1 + 1))) = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H, C1]
+  have hv : aoyagiReducedWidthInt H 0 (C1.cut (1 : Fin (1 + 1))) = (3 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H, C1]
+  have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+      aoyagiReducedWidthInt H 0 s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H 0 (C1.cut j)) := by
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    rcases hs with rfl | rfl | rfl
+    · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+    · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+    · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+  rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+      (H := H) (r := 0) (u := 2) (v := 3) (C := C1)
+      hcut_le hu hv (by norm_num) (by norm_num) hcover hr with
+    ⟨m1, data1, S1, hm1, _hceil1, _haParam1, horder1, _hnat1, _hnonneg1,
+      _hstrict1, _hle1, _hnatNonneg1, _hm10, _hm11, _hpair1, hlambda1⟩
+  rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
+      (H := H) (r := 0) (w1 := 2) (w2 := 3) (w3 := 3)
+      hw1 hw2 hw3 (by norm_num) (by norm_num) (by norm_num) (by norm_num) hr with
+    ⟨C2, m2, data2, _hC2, S2, hm2, _hceil2, _haParam2, horder2, _hnat2,
+      _hnonneg2, _hstrict2, _hle2, _hnatNonneg2, _hm20, _hm21, _hm22, _hpair2,
+      hlambda2⟩
+  have hlambda1' :
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H 0 m1 data1 = 3 := by
+    rw [hlambda1]
+    norm_num [aoyagiTheorem2RegularTerm, H]
+  have hlambda2' :
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H 0 m2 data2 = (5 : ℚ) / 2 := by
+    rw [hlambda2]
+    norm_num [aoyagiTheorem2RegularTerm, H]
+  refine
+    ⟨C1, m1, data1, C2, m2, data2, S1, hm1, S2, hm2, hlambda1', hlambda2',
+      horder1, horder2, ?_⟩
+  rw [hlambda1', hlambda2']
+  norm_num
+
+/-- Diagnostic: the printed `L = 2` Definition 3 conditions can admit both the
+`ell = 1` repeated-positive branch and the `ell = 2` all-source triangle branch
+with the same finite Theorem 2 lambda formula value but different finite order
+formula values.
+
+For reduced widths `(1,2,2)` and `r = 0`, the selected pair `(1,2)` and the
+all-source odd triangle branch both give lambda `1`, while their order formulas
+are `1` and `2`.  This records finite formula ambiguity only; it is not an
+analytic RLCT or pole-order claim. -/
+theorem exists_L_eq_two_one_two_two_order_disagreement :
+    let H : ℕ → ℕ :=
+      fun s ↦ if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 2 else 0
+    ∃ (C1 : AoyagiSelectedCutpoints 1)
+        (m1 : Fin (1 + 1) → ℤ)
+        (data1 : AoyagiDefinition3CeilData 1 m1)
+        (C2 : AoyagiSelectedCutpoints 2)
+        (m2 : Fin (2 + 1) → ℤ)
+        (data2 : AoyagiDefinition3CeilData 2 m2),
+      AoyagiDefinition3SourceData 2 1 H 0 C1 ∧
+      m1 = aoyagiSelectedReducedWidths H 0 C1 ∧
+      AoyagiDefinition3SourceData 2 2 H 0 C2 ∧
+      m2 = aoyagiSelectedReducedWidths H 0 C2 ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H 0 m1 data1 = 1 ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H 0 m2 data2 = 1 ∧
+      data1.theorem2OrderFormula = 1 ∧
+      data2.theorem2OrderFormula = 2 ∧
+      data1.theorem2OrderFormula ≠ data2.theorem2OrderFormula := by
+  classical
+  let H : ℕ → ℕ :=
+    fun s ↦ if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 2 else 0
+  let C1 : AoyagiSelectedCutpoints 1 :=
+    { cut := fun j ↦ j.val + 1
+      pos := by
+        intro j
+        omega
+      strict := by
+        intro j
+        fin_cases j
+        simp }
+  have hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → 0 ≤ H s := by
+    intro s _hs1 _hsL
+    exact Nat.zero_le (H s)
+  have hw1 : aoyagiReducedWidthInt H 0 1 = (1 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw2 : aoyagiReducedWidthInt H 0 2 = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw3 : aoyagiReducedWidthInt H 0 3 = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hcut_le : ∀ j : Fin (1 + 1), C1.cut j ≤ 2 + 1 := by
+    intro j
+    fin_cases j <;> norm_num [C1]
+  have hu : aoyagiReducedWidthInt H 0 (C1.cut (0 : Fin (1 + 1))) = (1 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H, C1]
+  have hv : aoyagiReducedWidthInt H 0 (C1.cut (1 : Fin (1 + 1))) = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H, C1]
+  have hcover : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+      aoyagiReducedWidthInt H 0 s ∈
+        Finset.univ.image
+          (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H 0 (C1.cut j)) := by
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    rcases hs with rfl | rfl | rfl
+    · refine Finset.mem_image.mpr ⟨(0 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+    · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+    · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
+      norm_num [aoyagiReducedWidthInt, H, C1]
+  rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth
+      (H := H) (r := 0) (u := 1) (v := 2) (C := C1)
+      hcut_le hu hv (by norm_num) (by norm_num) hcover hr with
+    ⟨m1, data1, S1, hm1, _hceil1, _haParam1, horder1, _hnat1, _hnonneg1,
+      _hstrict1, _hle1, _hnatNonneg1, _hm10, _hm11, _hpair1, hlambda1⟩
+  rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_odd_rankWidth
+      (H := H) (r := 0) (w1 := 1) (w2 := 2) (w3 := 2)
+      hw1 hw2 hw3 (by norm_num) (by norm_num) (by norm_num) (by norm_num) hr with
+    ⟨C2, m2, data2, _hC2, S2, hm2, _hceil2, _haParam2, horder2, _hnat2,
+      _hnonneg2, _hstrict2, _hle2, _hnatNonneg2, _hm20, _hm21, _hm22, _hpair2,
+      hlambda2⟩
+  have hlambda1' :
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H 0 m1 data1 = 1 := by
+    rw [hlambda1]
+    norm_num [aoyagiTheorem2RegularTerm, H]
+  have hlambda2' :
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H 0 m2 data2 = 1 := by
+    rw [hlambda2]
+    norm_num [aoyagiTheorem2RegularTerm, H]
+  refine
+    ⟨C1, m1, data1, C2, m2, data2, S1, hm1, S2, hm2, hlambda1', hlambda2',
+      horder1, horder2, ?_⟩
+  rw [horder1, horder2]
+  norm_num
+
+/-- A concrete nonconstant all-source Definition 3 example.
+
+For `L=2`, `r=0`, and reduced widths `(1,2,2)`, all source layers can be
+selected and the selected-width family is nonconstant.  This is only a
+diagnostic example; it is not arbitrary source-data existence or a
+classification of Definition 3 profiles. -/
+theorem exists_consecutive_nonconstant_widths_one_two_two_selectedReducedWidthCeilData :
+    let H : ℕ → ℕ :=
+      fun s ↦ if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 2 else 0
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H 0 C ∧
+      m = aoyagiSelectedReducedWidths H 0 C ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - 0 : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = 1 ∧
+      m (1 : Fin (2 + 1)) = 2 ∧
+      m (2 : Fin (2 + 1)) = 2 ∧
+      m (0 : Fin (2 + 1)) ≠ m (1 : Fin (2 + 1)) := by
+  let H : ℕ → ℕ :=
+    fun s ↦ if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 2 else 0
+  have hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → 0 ≤ H s := by
+    intro _s _hs1 _hsL
+    omega
+  have hw1 : aoyagiReducedWidthInt H 0 1 = (1 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw2 : aoyagiReducedWidthInt H 0 2 = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  have hw3 : aoyagiReducedWidthInt H 0 3 = (2 : ℤ) := by
+    norm_num [aoyagiReducedWidthInt, H]
+  rcases exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth
+      (H := H) (r := 0) (w1 := 1) (w2 := 2) (w3 := 2)
+      hw1 hw2 hw3 (by norm_num) (by norm_num) (by norm_num) hr with
+    ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg,
+      hm0, hm1, hm2⟩
+  refine
+    ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg,
+      hm0, hm1, hm2, ?_⟩
+  rw [hm0, hm1]
+  norm_num
+
 /-- Equal-width source data together with the downstream selected reduced-width
 ceiling package.
 
@@ -907,6 +2793,80 @@ theorem exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth
   intro j
   rw [hm, aoyagiSelectedReducedWidths_apply]
   exact hconst (C.cut j) (C.pos j) (S.cut_le j)
+
+/-- Equal-width source data with the explicit Definition 3 ceiling datum.
+
+This is the closed-form equal-width lane: if the common reduced width satisfies
+`w = L * q + a` with `0 < a <= L`, the selected-width family is constant `w`,
+`ceilWidth = w + q + 1`, and `aParam = a`. -/
+theorem exists_consecutive_explicitCeilData_of_constant_reducedWidth_decomposition
+    {L : ℕ} {H : ℕ → ℕ} {r w q a : ℕ}
+    (ha_pos : 0 < a) (ha_le : a ≤ L)
+    (hw : w = L * q + a)
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∃ (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = (w : ℤ)) ∧
+      data.ceilWidth = (w : ℤ) + (q : ℤ) + 1 ∧
+      data.aParam = a ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) := by
+  classical
+  have hL : 0 < L := lt_of_lt_of_le ha_pos ha_le
+  have hw_pos : 0 < w := by
+    rw [hw]
+    omega
+  rcases exists_consecutive_of_constant_reducedWidth_pos
+      (L := L) (H := H) (r := r) (w := w) hL hw_pos hconst with
+    ⟨C, hC, S⟩
+  let m : Fin (L + 1) → ℤ := fun _ ↦ (w : ℤ)
+  let data : AoyagiDefinition3CeilData L m :=
+    AoyagiDefinition3CeilData.equalWidthOfDecomposition L w q a ha_pos ha_le hw
+  have hm : m = aoyagiSelectedReducedWidths H r C := by
+    funext j
+    dsimp [m]
+    exact (hconst (C.cut j) (C.pos j) (S.cut_le j)).symm
+  have hr :=
+    sourceRangeRankWidth_of_constant_reducedWidth
+      (L := L) (H := H) (r := r) (w := w) hconst
+  have hstrict :
+      ∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j :=
+    S.selected_strict_of_eq_selectedReducedWidths hm
+  refine
+    ⟨C, m, data, hC, S, hm, ?_, rfl, rfl, ?_, ?_, hstrict, ?_, ?_⟩
+  · intro j
+    rfl
+  · intro j
+    dsimp [m]
+    calc
+      (w : ℤ) = aoyagiReducedWidthInt H r (C.cut j) :=
+        (hconst (C.cut j) (C.pos j) (S.cut_le j)).symm
+      _ = ((H (C.cut j) - r : ℕ) : ℤ) :=
+        aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H
+          (hr (C.cut j) (C.pos j) (S.cut_le j))
+  · intro j
+    dsimp [m]
+    exact_mod_cast Nat.zero_le w
+  · intro i
+    exact data.selectedWidth_le_pred_of_sourceSelectedInequality hstrict i
+  · intro i
+    by_cases hi : i < L + 1
+    · rw [aoyagiSelectedWidthNat_of_lt hi]
+      dsimp [m]
+      exact_mod_cast Nat.zero_le w
+    · unfold aoyagiSelectedWidthNat
+      simp [hi]
 
 end AoyagiDefinition3SourceData
 

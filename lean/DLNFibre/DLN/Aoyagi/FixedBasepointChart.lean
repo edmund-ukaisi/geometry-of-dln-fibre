@@ -1091,6 +1091,90 @@ theorem
         simpa [E, Bprev, ChartLocalSuffixState.transformedEdge] using hchart₀ p)
   simpa [E, Bprev, ChartLocalSuffixState.transformedEdge] using hnhds
 
+/-- In endpoint bases fixed from `B`, the deterministic suffix-state fields vary
+continuously with a continuous reversed-edge family. -/
+theorem paperEndpointFixedBaseContinuousEdges_recursiveSuffixState_fields_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hchart₀ : ∀ p : Fin N,
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (fun q : Fin N ↦
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+              (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+          p
+          (ChartLocalSuffixState.suffixState
+            (fun q : Fin N ↦
+              LinearMap.toMatrix
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+            (Fin.last N) p.succ p.succ.le_last))) :
+    let E : α → ∀ p : Fin N,
+        Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+      fun x p ↦
+        LinearMap.toMatrix
+          (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+          (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+    ∀ i : Fin (N + 1), ∀ hi : i ≤ Fin.last N,
+      IsUnit ((ChartLocalSuffixState.suffixState (E x₀) (Fin.last N) i hi).Ctop.det) ∧
+        ContinuousAt
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) (Fin.last N) i hi).L) x₀ ∧
+        ContinuousAt
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) (Fin.last N) i hi).B) x₀ ∧
+        ContinuousAt
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) (Fin.last N) i hi).Ctop) x₀ ∧
+        ContinuousAt
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) (Fin.last N) i hi).D) x₀ := by
+  classical
+  let E : α → ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun x p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  have hE : ContinuousAt E x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro p
+    have hCedge_p : ContinuousAt (fun x : α ↦ Cedge x p) x₀ :=
+      (continuous_apply p).continuousAt.comp hCedge
+    have hcoord : Continuous
+        (fun f : reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦
+          LinearMap.toMatrix
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+            (f : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) :=
+      continuous_linearMap_toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+    simpa [E] using hcoord.continuousAt.comp hCedge_p
+  have hchartE : ∀ (p : Fin N) (hpj : p.succ ≤ Fin.last N),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (E x₀) p
+          (ChartLocalSuffixState.suffixState (E x₀) (Fin.last N) p.succ hpj)) := by
+    intro p hpj
+    simpa [E] using hchart₀ p
+  simpa [E] using
+    continuousAt_chartLocalSuffixState_suffixState_fields E hE hchartE
+
 /-- If the base parameter is the fixed paper chain `B`, the recursive transformed determinant
 charts required by the suffix-state topology handoff hold automatically. -/
 theorem

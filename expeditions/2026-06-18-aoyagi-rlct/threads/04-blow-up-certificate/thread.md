@@ -6487,3 +6487,118 @@ required for actual overlap, chart-map equality, inverse transition, and
 analytic transition claims.  This proves no chart coverage, transition
 regularity, source production, analytic Jacobian theorem, normal crossings,
 pole order, termination, or RLCT.
+
+## 2026-06-24 Lean selected-entry source-point coverage with coordinate
+
+Reproduction:
+`reproduction-selected-entry-source-point-coverage-coordinate-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-source-point-coverage-coordinate.md`.
+Review:
+`review-selected-entry-source-point-coverage-coordinate-a4.md`.
+
+Lean now combines finite source-point coverage with the coordinate projection:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value_and_coord_zero_eq
+```
+
+For every finite center value in the generic all-pivot selected-entry family,
+it returns a chart index, selected variable `u`, and ambient residual
+coordinates whose `sourceChartPoint` maps to that value, and whose unique
+certificate coordinate `(0 : Fin 1)` is `u`.  The independent reviewer
+recommended the explicit `coord_zero_eq` name and recommended not adding a
+Case 1 wrapper until a downstream theorem directly consumes it.
+
+This is finite chart-map/source-coordinate bookkeeping only.  It is not
+analytic atlas coverage, transition regularity, source production, analytic
+Jacobian control, normal crossings, pole order, termination, or RLCT.
+
+## 2026-06-24 Parked candidate - selected-entry transition coordinate contribution
+
+Reproduction:
+`reproduction-selected-entry-transition-coordinate-contribution-a4.md`.
+Review:
+`review-selected-entry-transition-coordinate-contribution-a4.md`.
+
+The candidate theorem would have added the transition target coordinate value
+`coord = u * denom` to the existing displayed-overlap microcertificate
+contribution summary.  Independent xhigh review rejected it as redundant:
+it only conjoins the already landed coordinate postdata with the existing
+displayed contribution theorem.
+
+Do not formalise this wrapper unless a downstream theorem directly consumes
+exactly that conjunction.  It does not produce successor chart/source data,
+suffix data, analytic transition regularity, coverage, coordinate-derived
+postdata, normal crossings, pole order, termination, or RLCT.
+
+## 2026-06-24 Lean selected-entry finite affine-overlap certificate
+
+Reproduction:
+`reproduction-selected-entry-affine-transition-regularity-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-affine-transition-regularity.md`.
+Review:
+`review-selected-entry-affine-transition-regularity-a4.md`.
+
+Lean now packages the actual finite selected-entry overlap algebra as a
+family-level certificate:
+
+```text
+SelectedEntryFiniteAffineTransitionRegularFamily
+SelectedEntryFiniteAffineTransitionRegularPair
+SelectedEntryFiniteAffineTransitionRegularFamily.pair
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteAffineTransitionRegular_displayedPair
+```
+
+The family certificate records the transition point formula
+`targetU = u * N_source(target)` and
+`targetResidual(i) = N_source(i) / N_source(target)`, the target coordinate
+formula, finite chart-map equality on the normalised target-coordinate overlap,
+the inverse transition, self-transition, and the triple-overlap cocycle.  The
+displayed theorem is only a pair extraction with target
+`displayedChartIndex`.
+
+The overlap hypothesis is the nonvanishing of the normalised target coordinate,
+not nonvanishing of the ambient center value `u * denom`, so exceptional
+divisor points with `u = 0` remain in scope.
+
+This is finite selected-entry affine-overlap algebra only.  It can instantiate
+a finite selected-entry transition predicate when that predicate is explicitly
+chosen to mean these identities, but it is not analytic transition regularity,
+atlas coverage, source production, normal crossings, pole order, termination,
+or RLCT.
+
+## 2026-06-24 Lean selected-entry analytic atlas Case 2 source final socket
+
+Reproduction:
+`reproduction-selected-entry-analytic-atlas-case2-source-final-socket-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-analytic-atlas-case2-source-final-socket.md`.
+Review:
+`review-selected-entry-analytic-atlas-case2-source-final-socket-a4.md`.
+
+Lean now adds a non-vacuous source-production predicate for the supplied
+selected-entry analytic-atlas boundary:
+
+```text
+SelectedEntryCase2DisplayedA0SourceProductionData
+SelectedEntryCase2DisplayedA0SourceProduction
+SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_case2DisplayedA0SourceProduction
+```
+
+The payload carries a displayed continuing Case 2 source-chart
+center-square/formal-Jacobian certificate, a coordinate of the same supplied
+chart certificate, and a
+`Case2DisplayedContinuingA0ExponentCoordinateBridge` for that coordinate in
+`B.chartCertificate.exponentData`.  The final theorem unwraps this payload and
+calls the existing Case 2/A0 chart-final bridge.
+
+The final-socket hypotheses remain explicit: selected-width provenance,
+chart-level extraction, the displayed center-card/lambda equality, global
+active-ratio lower bound, chart-count equality, and chart-count upper bound.
+This proves no analytic atlas construction, coverage, transition regularity,
+analytic Jacobian theorem, source successor/suffix production, normal
+crossings, pole order, or RLCT.

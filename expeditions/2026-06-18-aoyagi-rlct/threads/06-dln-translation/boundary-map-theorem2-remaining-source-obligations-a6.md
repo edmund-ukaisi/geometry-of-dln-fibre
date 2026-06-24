@@ -33,6 +33,11 @@ the terminal-order upper bound through a supplied
    `m = aoyagiSelectedReducedWidths H r C`, the ceiling data
    `AoyagiDefinition3CeilData`, rank-width hypotheses, and the strict
    source-selected inequality from Aoyagi's DLN dimension/rank assumptions.
+   The branch-selection source audit
+   `source-audit-definition3-branch-selection-a6.md` records that pp. 8-9
+   contain no tie-breaker making arbitrary Definition 3 source-data choices
+   branch-independent.  A final theorem must therefore either keep `C,ell`
+   supplied or produce them inside a source-backed branch.
 
 2. Normal-crossing certificate production.
 

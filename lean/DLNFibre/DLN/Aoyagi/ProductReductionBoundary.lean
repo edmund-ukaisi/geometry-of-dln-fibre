@@ -158,6 +158,61 @@ def paperEndpointFixedBaseSourceRankStratum
     x ∈ paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge ∧
     ∀ p : Fin N, r ≤ rEdge p}
 
+omit [CompleteSpace K] [∀ i, TopologicalSpace (W i)]
+  [∀ i, IsTopologicalAddGroup (W i)]
+  [∀ i, T2Space (W i)] [∀ i, ContinuousSMul K (W i)] in
+/-- The base total product factors through every base edge, so its rank is
+bounded by that edge rank. -/
+theorem paperTotalMap_finrank_range_le_reverseEdge_finrank_range
+    [∀ j, FiniteDimensional K (W j)]
+    (p : Fin N) :
+    Module.finrank K (LinearMap.range (paperTotalMap W B)) ≤
+      Module.finrank K (LinearMap.range (reverseEdge W B p)) := by
+  let P :=
+    chainMap (reverseVertex W) (reverseEdge W B) 0 p.castSucc
+      (Fin.zero_le p.castSucc)
+  let E := reverseEdge W B p
+  let S :=
+    chainMap (reverseVertex W) (reverseEdge W B) p.succ (Fin.last N)
+      p.succ.le_last
+  let T :=
+    chainMap (reverseVertex W) (reverseEdge W B) 0 (Fin.last N)
+      (Fin.zero_le (Fin.last N))
+  have hfactor : T = S.comp (E.comp P) := by
+    have hsplit₀ :
+        T =
+          (chainMap (reverseVertex W) (reverseEdge W B) p.castSucc (Fin.last N)
+            p.castSucc.le_last).comp P := by
+      simpa [T, P] using
+        (chainMap_trans (reverseVertex W) (reverseEdge W B) 0
+          (Fin.zero_le p.castSucc) p.castSucc.le_last)
+    have hsplit₁ :
+        chainMap (reverseVertex W) (reverseEdge W B) p.castSucc (Fin.last N)
+            p.castSucc.le_last =
+          S.comp E := by
+      have h :=
+        chainMap_trans (reverseVertex W) (reverseEdge W B) p.castSucc
+          (Fin.castSucc_le_succ p) p.succ.le_last
+      rw [chainMap_edge (reverseVertex W) (reverseEdge W B) p
+        (Fin.castSucc_le_succ p)] at h
+      simpa [S, E] using h
+    rw [hsplit₀, hsplit₁, LinearMap.comp_assoc]
+  have hrank : LinearMap.rank T ≤ LinearMap.rank E := by
+    rw [hfactor]
+    exact (LinearMap.rank_comp_le_right (E.comp P) S).trans
+      (LinearMap.rank_comp_le_left P E)
+  have hfin :
+      Module.finrank K (LinearMap.range T) ≤
+        Module.finrank K (LinearMap.range E) := by
+    refine Module.finrank_le_finrank_of_rank_le_rank ?_ ?_
+    · simpa [LinearMap.rank] using hrank
+    · exact Module.rank_lt_aleph0 K (LinearMap.range E)
+  have htotal : paperTotalMap W B = T := by
+    simpa [T, paperTotalMap] using
+      (chainMap_reverse_eq_paper W B 0 (Fin.last N) (Fin.zero_le (Fin.last N))).symm
+  rw [htotal]
+  simpa [E] using hfin
+
 /-- The base parameter lies in the source-shaped rank stratum once the source
 rank equalities and inequalities are supplied explicitly.  This proves
 basepoint membership only; it is not exact-rank openness. -/
@@ -190,6 +245,31 @@ theorem paperEndpointFixedBaseSourceRankStratum_selfBase_mem
         hpCLM
   rw [hp]
   exact hedge p
+
+/-- The base parameter lies in the source-shaped rank stratum once the product
+and edge rank equalities are supplied.  The inequalities `r ≤ rEdge p` are
+derived from the factorization of the base product through each base edge. -/
+theorem paperEndpointFixedBaseSourceRankStratum_selfBase_mem_of_rank_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} {x₀ : α}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hprod :
+      Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge :
+      ∀ p : Fin N,
+        Module.finrank K (LinearMap.range (reverseEdge W B p)) = rEdge p) :
+    x₀ ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge := by
+  refine paperEndpointFixedBaseSourceRankStratum_selfBase_mem
+    (W := W) (B := B) hbase hprod hedge ?_
+  intro p
+  calc
+    r = Module.finrank K (LinearMap.range (paperTotalMap W B)) := hprod.symm
+    _ ≤ Module.finrank K (LinearMap.range (reverseEdge W B p)) :=
+      paperTotalMap_finrank_range_le_reverseEdge_finrank_range W B p
+    _ = rEdge p := hedge p
 
 /-- Residual-rank equalities after restricting the product-reduction certificate to
 the exact edge-rank stratum. -/
