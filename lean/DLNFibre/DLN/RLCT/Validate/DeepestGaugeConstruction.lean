@@ -571,20 +571,40 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   --     but `deepestEPivot`'s codomain split is on `Fin (H (Fin.last L))`. They are EQUAL by `H_lastLayer_succ`
   --     (a `congr`, NOT defeq), so the thread needs a `finCongr (H_lastLayer_succ H hL)` bridge on `J` (the
   --     same cast `readY_regSlice_last` already carries on its Y column index).
-  --   • THE F-INVERTIBILITY CONSUMER — BEDROCK BANKED (this tide, `DeepestRegBlockInvertible`, axiom-clean
-  --     `[propext, Classical.choice, Quot.sound]`): `mulRightUnitCLE M hM : (· * M)` is a `≃L` (the `Y↦Y·B₂₂`
-  --     arm, invertible from `IsUnit B₂₂`); `shearCLE g : (u,v)↦(u+g v, v)` is a `≃L` (shears the `Y·B₂₁`
-  --     cross term out of `P11`). With these + a `·A`-conjugation `≃L` for the `[X;Z]`-pair, the linear part
-  --     `F(X,Y,Z) = (A₁₁X+A₁₂Z+Y·B₂₁, Y·B₂₂, A₂₁X+A₂₂Z)` assembles into the `≃L` that
-  --     `regStraightenTotalCLM_equiv_of_regBlock_isUnit` consumes.
-  --   • REMAINING (the genuine bulk, ~350-700 LoC, NOT yet written): the value-fold strict-derivative
-  --     ASSEMBLY — `prodAux_regSlice_through_first` (banked) gives `prodAux (L-1) = firstShapeF`; extend it
-  --     through the last layer (`prod = firstShapeF (L-1) · C_last`, `C_last`'s `.succ` side pivot-split),
-  --     read the three residual blocks off the pivot-reindexed product, kill the quadratic cross term
-  --     (`devXZ_corner_devY` + `hasStrictFDerivAt_sum_mul_zero`, banked), and IDENTIFY the linear part WITH
-  --     the assembled `F` above. Then the API thread of `J`/`eLast` through `deepestEPivot_contdiff/_base/
-  --     _sq_sum_eq_blocks/_deriv` + `deepest_loss_squeeze`'s statement + PIN2 (shared-J reconciliation, the
-  --     SAME `J`). One atomic single-writer write; build is red between the coupled steps until it lands.
+  --   • THE F-INVERTIBILITY CONSUMER — FULLY BEDROCK BANKED (`DeepestRegBlockInvertible`, axiom-clean
+  --     `[propext, Classical.choice, Quot.sound]`, NO sorryAx). The COMPLETE assembled `≃L` is now banked
+  --     (l2-pin tide, 2026-06-24) — the next tide consumes it directly, NOT re-derives it:
+  --       `regBlockCLE e0 A hA B21 B22 hB22 : (YSp × (XSp × ZSp)) ≃L (YSp × (XSp × ZSp))` realises
+  --       `(Y, (X, Z)) ↦ (Y·B₂₂, (A₁₁X+A₁₂Z + Y·B₂₁, A₂₁X+A₂₂Z))` (its `regBlockCLE_apply` is `rfl`-level),
+  --       block-triangular: invertible from `IsUnit A` + `IsUnit B₂₂`. Built from the banked arm bricks
+  --       `mulRightUnitCLE B₂₂` (Y-arm, `Y↦Y·B₂₂`), `mulLeftUnitCLE A`/`stackRowsCLE e0`/`mulBlockPairCLE e0 A`
+  --       (the `·A`-conjugation arm `(X,Z)↦(A₁₁X+A₁₂Z, A₂₁X+A₂₂Z)`, `mulBlockPairCLE_apply` gives the block
+  --       products), and the explicit `Y·B₂₁` cross fold (the `shearCLE`-shaped move, done inline in the
+  --       direct forward/inverse). NOTE the residual layout `regResidualPack` packs is
+  --       `(P11=X) ⊕ ((P12=Y) ⊕ (P21=Z))`; `regBlockCLE` is stated on `(Y, (X, Z))`, so the value-fold's
+  --       `D_E`-match composes a fixed `regResidualPack`-permutation `≃L` (a `Fin nReg → ℝ ≃L (YSp×(XSp×ZSp))`)
+  --       around `regBlockCLE` to land the `F : (Fin nReg → ℝ) ≃L (Fin nReg → ℝ)` that
+  --       `regStraightenTotalCLM_equiv_of_regBlock_isUnit` consumes.
+  --   • REMAINING (the genuine bulk, NOT yet written; the value-fold strict-derivative + the J-migration):
+  --     (i) THE PRODUCT-COLLAPSE CAST WALL (l2-pin tide, 2026-06-24, two attempts, the documented multi-cycle
+  --         friction): `prodAux_regSlice_through_first` (banked) gives `prodAux k = firstShapeF k` at the
+  --         `Nat`-index `k` with codomain `Fin (H ⟨k, hk⟩)`; the last-layer fold `prod = prodAux L =
+  --         prodAux (L-1) · layer(L-1)` needs `firstShapeF (L-1)`'s codomain `Fin (H ⟨L-1, _⟩)` to UNIFY with
+  --         `framedParamsReg … lastLayer`'s domain `Fin (H (lastLayer.castSucc))` for the matrix `*` — NOT
+  --         defeq (`⟨(lastLayer.castSucc).val, _⟩` does not reduce to `lastLayer.castSucc` through `firstShapeF`'s
+  --         `Nat`-arg). The fix is a `firstShapeF`-at-`Fin`-index restatement or an explicit `cast`/`Fin.ext`
+  --         bridge at the fold (the same friction `prodAux_framedParamsReg_zero` resolved with a trailing
+  --         `congr 1` at `k = L`; the Y-layer variant needs the bridge threaded through the `*`, harder).
+  --     (ii) the strict-derivative: readX/readY/readZ are LINEAR coordinate reads of `r0` (constant deriv),
+  --         the X·Y/Z·Y cross term has deriv 0 (`devXZ_corner_devY` + `hasStrictFDerivAt_sum_mul_zero`, banked),
+  --         so `deepestEPivot (·,0) = const + (regBlockCLE-shaped linear) + (quad, deriv 0)`; differentiate via
+  --         `(hasStrictFDerivAt_const).add (CLM.hasStrictFDerivAt).add (quad-deriv-0)` (Codex skeleton 3b).
+  --     (iii) the API thread of `J`/`eLast` through `deepestEPivot` (route (a): ADD `(J) (hQf22 : IsUnit
+  --         ((reindex (pivotThresholdSplit r (H last) (hr last) J)² (Qf last)).toBlocks₂₂))`, J-parametrise the
+  --         last-layer codomain split) + `_contdiff`/`_base`/`_sq_sum_eq_blocks`/`_deriv` + `deepest_loss_squeeze`'s
+  --         statement + PIN2 (shared-J reconciliation, the SAME `J`); discharge `J`/`hQf22` at the
+  --         `deepest_gauge_construction` call site from `exists_deepest_lastLayer_pivotFrame`. One atomic
+  --         single-writer write; build is red between the coupled steps until it lands.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
