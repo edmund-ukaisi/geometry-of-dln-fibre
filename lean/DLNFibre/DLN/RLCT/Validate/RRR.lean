@@ -80,15 +80,15 @@ the general headline is (the two named open obligations of the general assembly)
 /-- **Aoyagi Theorem 1 (RRR), value form — the `L = 2` instance of the headline.** The global
 learning coefficient (the infimum of the local RLCT over the fibre `mult⁻¹(B)`) of the three-layer
 deep-linear square-Frobenius loss equals Aoyagi's RRR closed form `rrrLambda H r`, for any rank-`r`
-target `B` with every width positive and `≥ r` (`hpos` is load-bearing — at a zero width the loss is
-identically `0`, so the RLCT is `⊤` while the closed form is finite). Literally
-`aoyagi_learning_coefficient (L := 2)` — the
+target `B` with `r < H s` at every layer (`hpos`, the strict reduced-width positivity `0 < M s`; at
+`r = H s` the reduced core degenerates so the formula is false — see the headline's `hpos` note).
+Literally `aoyagi_learning_coefficient (L := 2)` — the
 general-`L`-first instance, *not* a parallel proof. **Proof-state:** inherits the general headline's
 two named open obligations transitively (`deepest_regular_core_normal_form`,
 `rlctAt_deepest_le_of_optimal`); no new `sorry`. -/
 theorem aoyagi_rrr (H : Fin 3 → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin 3, r ≤ H s) (hpos : ∀ s : Fin 3, 0 < H s) :
+    (hr : ∀ s : Fin 3, r ≤ H s) (hpos : ∀ s : Fin 3, r < H s) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (rrrLambda H r) :=
   aoyagi_learning_coefficient (L := 2) H r B hB hr (by norm_num) hpos
 
