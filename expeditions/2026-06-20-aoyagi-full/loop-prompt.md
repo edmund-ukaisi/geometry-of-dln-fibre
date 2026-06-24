@@ -32,6 +32,15 @@ Explicit charts (not AG machinery); cite S2 only; `aoyagiλ` via minimisation; v
 build what Mathlib lacks; θ secondary; on a wall isolate a minimal named gap + report (never halt/hide);
 push the branch freely to origin (PR/merge operator-gated).
 
+## Autonomous mode (operator away, from 2026-06-24)
+Operator mandate: CHARGE AHEAD ambitiously by default; decide autonomously; record items needing eventual
+operator review in `discuss-at-close.md` (don't block on them). Integrate landed tides yourself
+(bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build →
+commit → push `origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or
+switched the main checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`. PRs +
+dev/master remain operator-gated — hold them. Current critical path: R1 #135 (general-M dispatcher: design
+→ build), the L2-PIN soundness reconciliation, RRR-Lean (#17), D1 ≥-leg.
+
 ## Flush before yielding
 Land new state in synthesis.md / priorities.md (thread progress in thread.md). **In-repo only — never
 write to ~/.claude global memory** (CLAUDE.md § Memory); remind teammates of the same.
