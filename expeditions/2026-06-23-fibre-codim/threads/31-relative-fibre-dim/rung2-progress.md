@@ -38,6 +38,22 @@ pivot-chart explicit.*
 
 ## Status
 
-Foundation + first gauge seam landed, green, non-circular (shield holds). Next: the `L`/`H` block
-units + normalization (easier), then the GATED ideal-split SPECIFY checkpoint. Import lines to
-aggregate at the next seam: `import DLNFibre.Core.VarietyDimRadical`, `import DLNFibre.Core.SchurGauge`.
+### Gauge-construction layer COMPLETE (banked, green, axiom-clean) — `SchurGauge.lean`
+- `schurΔLoc`/`det_schurΔLoc`/`isUnit_det_schurΔLoc`/`isUnit_schurΔLoc` — pivot block unit.
+- `schurB12Loc`/`schurB21Loc` — off-diagonal Schur blocks over `SchurLoc`.
+- `LblockSum`/`HblockSum`, `Lmat`/`Hmat`, `isUnit_Lmat`/`isUnit_Hmat` — endpoint normalizing units
+  `L = [[I,0],[B21 Δ⁻¹,I]]` (p×p), `H = [[Δ,B12],[0,I]]` (q×q), reindexed to `Fin n`.
+- `endpointGauge` — the `BaseChangeGroup (k := SchurLoc) d` (H at v=0, L⁻¹ at v=last N, 1 interior,
+  dependent dimension cast-aligned). `gaugeEquiv_multPoly` applies to it (confirmed).
+
+### Remaining HARD CORE (coupled, SPECIFIED — controller checkpoint here)
+1. **Normalization `L⁻¹·M·H⁻¹ = E`** on the fibre (Schur-complement identity `M22 = M21 Δ⁻¹ M12`,
+   through `gaugeEquiv_multPoly`). RISK: the `endpointGauge` `cast` must reduce through `liftGauge` at
+   the endpoints. ~1-2 modules.
+2. **Localized gauged chart ideal SPLITS up to radical** (the make-or-break):
+   `((gaugeEquiv endpointGauge).map chartIdeal).radical = splitBaseFibreIdeal.radical`, then
+   `Ideal.quotientEquivAlg` + `ringKrullDim_quotient_eq_of_radical_eq` (LANDED). The R2-3b-4 descent
+   at radical level — non-circular (shield), the real risk. ~2-3 modules. **Fallback: option-B cite.**
+Then product/poly-extension dim + glue → `hSweep`. ~2-3 modules.
+
+Import lines aggregated: `import DLNFibre.Core.VarietyDimRadical`, `import DLNFibre.Core.SchurGauge`.
