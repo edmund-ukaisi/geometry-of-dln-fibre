@@ -498,10 +498,31 @@ and the local RLCT is constant over it (a single GL gauge orbit). It is *not exh
 λ-attaining set (the full set is larger — residual freedom), which is why we key D1/L2 to ONE
 constructed `deepestPoint` rather than this `∀`-predicate. (The discarded per-partial-product form
 was *too weak* — `(2,2,2)`, `(A¹=0, A² invertible)` has all partial products rank `0` but local RLCT
-`2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces. -/
+`2 ≠ 3/2`.) Used only to characterize the witness `deepestPoint_exists` produces.
+
+**Block-normal structure** (conjuncts 3–5, #95, condition (I) — controller + cobuild sympy `L=3`):
+interior `= corM` ALONE is insufficient (the interfaces `G_s = Q_s⁻¹·P_{s+1}⁻¹` leave the layer-0 RIGHT
+and layer-(L−1) LEFT frames surviving), so the complete condition is:
+- (3) *strict-interior* (`0 < s ∧ s+1 < L`): `w s = corM`-shape verbatim (the corner block, not merely
+  rank-`r`) — so interior frames are `P_s = Q_s = I`. Vacuous `L ≤ 2`, bites `L ≥ 3`.
+- (4) *layer 0* RIGHT-frame `= I`: `w 0`'s last `H_1 − r` columns vanish (`r ≤ j ⟹ w 0 i j = 0`).
+- (5) *layer (L−1)* LEFT-frame `= I`: `w (L−1)`'s last `H_{L−1} − r` rows vanish (`r ≤ i ⟹ w (L−1) i j = 0`).
+The `wLayers` witness HAS all three: interior layers ARE `corM`; layer 0 `= U·projM` (last cols 0);
+layer (L−1) `= embM·V` (last rows 0). Only the endpoint frames `P_0, Q_{L−1}` survive → the framed
+product `∏A = P_0⁻¹·(∏corM)·Q_{L−1}⁻¹` (cobuild's `conjugation_frobenius_comparable` closes both PINs). -/
 def IsDeepLayers (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (w : Params H) : Prop :=
-  w ∈ optimalSet H B ∧ ∀ s : Fin L, (w s).rank = r
+  w ∈ optimalSet H B ∧ (∀ s : Fin L, (w s).rank = r) ∧
+    (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+      w s = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+        if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) ∧
+    -- boundary-inner (I), for `L ≥ 2` (distinct boundary layers): layer-0 RIGHT-frame = I (its last
+    -- `H_1 − r` columns vanish) …
+    (∀ s : Fin L, 2 ≤ L → (s : ℕ) = 0 → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (j : ℕ) → w s i j = 0) ∧
+    -- … and layer-(L−1) LEFT-frame = I (its last `H_{L−1} − r` rows vanish).
+    ∀ s : Fin L, 2 ≤ L → (s : ℕ) + 1 = L → ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      r ≤ (i : ℕ) → w s i j = 0
 
 /-- `[I_r|0] · [I_r;0] = I_r`: projection ∘ embedding (a left inverse) on `Fin r`. -/
 private theorem proj_emb_eq_one {N r : ℕ} (hrN : r ≤ N) :
@@ -640,6 +661,24 @@ private theorem rank_embM_mul {c : ℕ} (N r : ℕ) (hrN : r ≤ N) (V : Matrix 
   calc V.rank = (projM r N * (embM N r * V)).rank := by
         rw [← Matrix.mul_assoc, projM_embM N r hrN, Matrix.one_mul]
     _ ≤ (embM N r * V).rank := Matrix.rank_mul_le_right _ _
+
+/-- `U * projM` has its last `N − r` columns zero: `r ≤ j ⟹ (U * projM r N) i j = 0` (the layer-0
+RIGHT-frame = I structure — `projM`'s column `j ≥ r` is the zero vector). -/
+private theorem mul_projM_col_vanish {a : ℕ} (r N : ℕ) (U : Matrix (Fin a) (Fin r) ℝ)
+    (i : Fin a) (j : Fin N) (hj : r ≤ (j : ℕ)) : (U * projM r N) i j = 0 := by
+  simp only [projM, Matrix.mul_apply, Matrix.of_apply]
+  apply Finset.sum_eq_zero
+  intro k _
+  rw [if_neg (by intro he; omega), mul_zero]
+
+/-- `embM * V` has its last `N − r` rows zero: `r ≤ i ⟹ (embM N r * V) i j = 0` (the layer-(L−1)
+LEFT-frame = I structure — `embM`'s row `i ≥ r` is the zero vector). -/
+private theorem embM_mul_row_vanish {c : ℕ} (N r : ℕ) (V : Matrix (Fin r) (Fin c) ℝ)
+    (i : Fin N) (j : Fin c) (hi : r ≤ (i : ℕ)) : (embM N r * V) i j = 0 := by
+  simp only [embM, Matrix.mul_apply, Matrix.of_apply]
+  apply Finset.sum_eq_zero
+  intro k _
+  rw [if_neg (by intro he; omega), zero_mul]
 
 /-- The corner block has rank exactly `r` (when `r ≤ m, n`). -/
 private theorem corM_rank {m n r : ℕ} (hrm : r ≤ m) (hrn : r ≤ n) : (corM r m n).rank = r := by
@@ -854,6 +893,13 @@ private theorem rank_heq {m1 n1 m2 n2 : ℕ} (A : Matrix (Fin m1) (Fin n1) ℝ)
     (B : Matrix (Fin m2) (Fin n2) ℝ) (hm : m1 = m2) (hn : n1 = n2) (h : HEq A B) :
     A.rank = B.rank := by subst hm; subst hn; rw [eq_of_heq h]
 
+/-- HEq-transport for a single entry: if `A` and `B` are HEq across `m1=m2`, `n1=n2`, an entry of `A`
+equals the corresponding cast entry of `B`. (Entry-level twin of `rank_heq`.) -/
+private theorem entry_heq {m1 n1 m2 n2 : ℕ} (A : Matrix (Fin m1) (Fin n1) ℝ)
+    (B : Matrix (Fin m2) (Fin n2) ℝ) (hm : m1 = m2) (hn : n1 = n2) (h : HEq A B)
+    (i : Fin m1) (j : Fin n1) : A i j = B (Fin.cast hm i) (Fin.cast hn j) := by
+  subst hm; subst hn; rw [eq_of_heq h]; rfl
+
 
 
 /-- The deepest layers exist for a rank-`r` target (PROVEN). `r = 0` ⟹ the origin / all-zero
@@ -872,10 +918,19 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
   rcases Nat.eq_zero_or_pos r with hr0 | hrpos
   · -- r = 0: the all-zero tuple is deep (prod = 0 = B since B.rank = 0).
     subst hr0
-    refine ⟨⟨fun _ => 0, ?_, ?_⟩⟩
+    refine ⟨⟨fun _ => 0, ?_, ?_, ?_, ?_, ?_⟩⟩
     · show prod H (fun _ => 0) = B
       rw [prod_zero H hL, rank_zero_eq_zero B hB]
     · intro s; show ((0 : Matrix _ _ ℝ)).rank = 0; exact Matrix.rank_zero
+    · -- interior block-normality at r = 0: `corM 0`-shape is the zero matrix, and `w s = 0`.
+      intro s _ _
+      show (0 : Matrix _ _ ℝ) = _
+      ext i j; simp only [Matrix.of_apply, Matrix.zero_apply]
+      rw [if_neg (by rintro ⟨_, h⟩; exact absurd h (Nat.not_lt_zero _))]
+    · -- layer-0 cols vanish at r = 0: every entry of `w s = 0` is `0`.
+      intro s _ _ i j _; rfl
+    · -- layer-(L−1) rows vanish at r = 0: same.
+      intro s _ _ i j _; rfl
   · -- r > 0: rank factorization B = U·V distributed as rank-exactly-r layers (verified 484/484).
     obtain ⟨P, Q, hP, hQ, hPBQ⟩ := block_elimination H r B hB
     set U : Matrix (Fin (H 0)) (Fin r) ℝ := P⁻¹ * embM (H 0) r with hU
@@ -886,39 +941,92 @@ theorem deepestPoint_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     rcases Nat.lt_or_ge L 2 with hL1 | hL2
     · -- L = 1: the sole layer is B itself.
       obtain rfl : L = 1 := by omega
-      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_⟩⟩
-      rintro ⟨sv, hsvlt⟩
-      obtain rfl : sv = 0 := by omega
-      have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
-        Fin.ext (by simp [Fin.castSucc])
-      have hsucc : (⟨0, hsvlt⟩ : Fin 1).succ = Fin.last 1 := Fin.ext (by simp [Fin.succ])
-      rw [rank_heq (wSingle H B ⟨0, hsvlt⟩) B (congrArg H hcast) (congrArg H hsucc)
-        (by unfold wSingle; rw [dif_pos (show ((⟨0, hsvlt⟩ : Fin 1) : ℕ) = 0 from rfl)]
-            exact mpr_heq _ _)]
-      exact hB
+      refine ⟨⟨wSingle H B, prod_wSingle H B, ?_, ?_, ?_, ?_⟩⟩
+      · rintro ⟨sv, hsvlt⟩
+        obtain rfl : sv = 0 := by omega
+        have hcast : (⟨0, hsvlt⟩ : Fin 1).castSucc = (0 : Fin (1 + 1)) :=
+          Fin.ext (by simp [Fin.castSucc])
+        have hsucc : (⟨0, hsvlt⟩ : Fin 1).succ = Fin.last 1 := Fin.ext (by simp [Fin.succ])
+        rw [rank_heq (wSingle H B ⟨0, hsvlt⟩) B (congrArg H hcast) (congrArg H hsucc)
+          (by unfold wSingle; rw [dif_pos (show ((⟨0, hsvlt⟩ : Fin 1) : ℕ) = 0 from rfl)]
+              exact mpr_heq _ _)]
+        exact hB
+      · -- interior block-normality is vacuous at L = 1 (no strict-interior layer: `s+1 < 1`).
+        rintro ⟨sv, hsvlt⟩ _ hlt; omega
+      · -- layer-0 boundary-inner is vacuous at L = 1 (`2 ≤ L` is false).
+        intro _ hL2 _; omega
+      · -- layer-(L−1) boundary-inner is vacuous at L = 1 (`2 ≤ L` is false).
+        intro _ hL2 _; omega
     · -- L ≥ 2: boundary layers (0 and L-1) plus the corner middle chain.
-      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_⟩⟩
-      rintro ⟨sv, hsvlt⟩
-      have hk : sv + 1 < L + 1 := by omega
-      rcases Nat.eq_zero_or_pos sv with hs0 | hspos
-      · -- layer 0: rank (U · [I_r|0]) = rank U = r.
+      refine ⟨⟨wLayers H r U V, prod_wLayers_ge2 H r U V hr hL2 B hUV, ?_, ?_, ?_, ?_⟩⟩
+      · rintro ⟨sv, hsvlt⟩
+        have hk : sv + 1 < L + 1 := by omega
+        rcases Nat.eq_zero_or_pos sv with hs0 | hspos
+        · -- layer 0: rank (U · [I_r|0]) = rank U = r.
+          subst hs0
+          rw [rank_heq (wLayers H r U V ⟨0, hsvlt⟩) (U * projM r (H ⟨0 + 1, hk⟩))
+            rfl rfl (heq_layer0 H r U V hk)]
+          rw [rank_mul_projM r (H ⟨0 + 1, hk⟩) (hr _), hUr]
+        · rcases Nat.lt_or_ge sv (L - 1) with hslt | hsge
+          · -- middle layer: corner block, rank r.
+            rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩)
+              (corM r (H ⟨sv, Nat.lt_of_succ_lt hk⟩) (H ⟨sv + 1, hk⟩))
+              rfl rfl (heq_layerMid H r U V sv hk hspos hslt)]
+            exact corM_rank (hr _) (hr _)
+          · -- last layer (sv = L-1): rank ([I_r;0] · V) = rank V = r.
+            have hsL : sv = L - 1 := by omega
+            rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+              rfl (congrArg H (show (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L from
+                Fin.ext (by simp [Fin.succ]; omega)))
+              (heq_layerLast H r U V sv hk hsL hspos)]
+            rw [rank_embM_mul (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r (hr _), hVr]
+      · -- interior block-normality: strict-interior layers ARE the corner block (the `heq_layerMid`
+        -- HEq already used for the middle rank, converted to an `=` against the inlined corM-shape).
+        rintro ⟨sv, hsvlt⟩ hspos hslt1
+        simp only [Fin.val_mk] at hslt1
+        have hk : sv + 1 < L + 1 := by omega
+        have hspos' : 0 < sv := hspos
+        have hslt : sv < L - 1 := by omega
+        have hheq := heq_layerMid H r U V sv hk hspos' hslt
+        -- `corM r (H ⟨sv,…⟩) (H ⟨sv+1,…⟩) = corM r (H s.castSucc) (H s.succ)` (Fin.ext rfl casts),
+        -- and the latter is the inlined `Matrix.of …`-shape; so `eq_of_heq` closes it.
+        have hc : (⟨sv, Nat.lt_of_succ_lt hk⟩ : Fin (L + 1)) = (⟨sv, hsvlt⟩ : Fin L).castSucc :=
+          Fin.ext rfl
+        have hs : (⟨sv + 1, hk⟩ : Fin (L + 1)) = (⟨sv, hsvlt⟩ : Fin L).succ :=
+          Fin.ext rfl
+        rw [hc, hs] at hheq
+        exact eq_of_heq hheq
+      · -- layer-0 RIGHT-frame = I: `w 0 = U · projM r (H 1)` has its last `H_1 − r` columns 0.
+        rintro ⟨sv, hsvlt⟩ _ hs0 i j hj
+        simp only [Fin.val_mk] at hs0
         subst hs0
-        rw [rank_heq (wLayers H r U V ⟨0, hsvlt⟩) (U * projM r (H ⟨0 + 1, hk⟩))
-          rfl rfl (heq_layer0 H r U V hk)]
-        rw [rank_mul_projM r (H ⟨0 + 1, hk⟩) (hr _), hUr]
-      · rcases Nat.lt_or_ge sv (L - 1) with hslt | hsge
-        · -- middle layer: corner block, rank r.
-          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩)
-            (corM r (H ⟨sv, Nat.lt_of_succ_lt hk⟩) (H ⟨sv + 1, hk⟩))
-            rfl rfl (heq_layerMid H r U V sv hk hspos hslt)]
-          exact corM_rank (hr _) (hr _)
-        · -- last layer (sv = L-1): rank ([I_r;0] · V) = rank V = r.
-          have hsL : sv = L - 1 := by omega
-          rw [rank_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
-            rfl (congrArg H (show (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L from
-              Fin.ext (by simp [Fin.succ]; omega)))
-            (heq_layerLast H r U V sv hk hsL hspos)]
-          rw [rank_embM_mul (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r (hr _), hVr]
+        have hk : 0 + 1 < L + 1 := by omega
+        have hw0 : wLayers H r U V ⟨0, hsvlt⟩ = U * projM r (H ⟨0 + 1, hk⟩) := by
+          have hc : (⟨0 + 1, hk⟩ : Fin (L + 1)) = (⟨0, hsvlt⟩ : Fin L).succ := Fin.ext rfl
+          have hheq := heq_layer0 H r U V hk
+          rw [hc] at hheq
+          exact eq_of_heq hheq
+        rw [hw0]
+        exact mul_projM_col_vanish r (H ⟨0 + 1, hk⟩) U i j hj
+      · -- layer-(L−1) LEFT-frame = I: `w (L−1) = embM (H (L−1)) r · V` has its last `H_{L−1} − r` rows 0.
+        rintro ⟨sv, hsvlt⟩ _ hsL i j hi
+        simp only [Fin.val_mk] at hsL
+        have hk : sv + 1 < L + 1 := by omega
+        have hpos : 0 < sv := by omega
+        have hsL' : sv = L - 1 := by omega
+        -- transport the entry through the `heq_layerLast` HEq: `w s i j` is, after the row/col casts
+        -- (`s.castSucc = ⟨sv,_⟩` rfl; `s.succ = Fin.last L` since `sv+1=L`), the vanishing
+        -- `(embM·V)`-entry.  `rank_heq`'s style: rewrite the entry as a HEq congruence.
+        have hsucc : (⟨sv, hsvlt⟩ : Fin L).succ = Fin.last L := Fin.ext (by simp [Fin.succ]; omega)
+        have hgoal : (wLayers H r U V ⟨sv, hsvlt⟩ : Matrix _ _ ℝ) i j
+            = (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+                (Fin.cast (congrArg H (rfl : (⟨sv, hsvlt⟩ : Fin L).castSucc = _)) i)
+                (Fin.cast (congrArg H hsucc) j) := by
+          exact entry_heq (wLayers H r U V ⟨sv, hsvlt⟩) (embM (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r * V)
+            (congrArg H (rfl : (⟨sv, hsvlt⟩ : Fin L).castSucc = _)) (congrArg H hsucc)
+            (heq_layerLast H r U V sv hk hsL' hpos) i j
+        rw [hgoal]
+        exact embM_mul_row_vanish (H ⟨sv, Nat.lt_of_succ_lt hk⟩) r V _ _ (by simpa using hi)
 
 /-- **The deepest singular point** of the fibre `mult⁻¹(B)` (Rung-0c FLAG, load-bearing — pp + Codex
 adjudicated). A **single constructed** witness: every layer at the minimal rank `r` (the
@@ -941,18 +1049,100 @@ theorem deepestPoint_isDeep (H : Fin (L + 1) → ℕ) (r : ℕ)
     IsDeepLayers H r B (deepestPoint H r B hB hr hL) :=
   (Classical.choice (deepestPoint_exists H r B hB hr hL)).2
 
+/-- **`Mval ≥ 0` on the admissible cone** (the L2 wiring prerequisite). Every admissible exponent
+vector's codimension `Mval M T` is `≥ 0`: each summand `(tPrev − T j)(M_{j+1} − T j)` has both factors
+`≥ 0` (the weak-decrease `tPrev ≥ T j` and the block bound `M_{j+1} ≥ T j` from `admPred`). Re-derived
+from `admPred` at the `Lambda`/Skeleton level (the downstream `Mval_nonneg_adm` lives in
+`ResolutionAtlas`, below this file; #28 should dedup these to one `Lambda`-level home). -/
+theorem Mval_nonneg_of_adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T ∈ Adm M) (hL : 1 ≤ L) :
+    0 ≤ Mval M T := by
+  rw [Adm, Finset.mem_filter] at hT
+  obtain ⟨_, hbound, hdec, _⟩ := hT
+  unfold Mval
+  apply Finset.sum_nonneg
+  intro j _
+  refine mul_nonneg (sub_nonneg.2 ?_) (sub_nonneg.2 ?_)
+  · unfold tPrev
+    rcases Nat.eq_zero_or_pos j.val with hj0 | hjpos
+    · rw [if_pos hj0]
+      have hb := hbound j; unfold admBound at hb; rw [if_pos hj0] at hb
+      exact_mod_cast le_trans hb (min_le_left _ _)
+    · rw [if_neg (by omega)]
+      have hle : T j ≤ T ⟨j.val - 1, by omega⟩ :=
+        hdec ⟨j.val - 1, by omega⟩ j (Fin.mk_le_of_le_val (by omega))
+      exact_mod_cast hle
+  · have hb := hbound j; unfold admBound at hb
+    rcases Nat.eq_zero_or_pos j.val with hj0 | hjpos
+    · rw [if_pos hj0] at hb
+      have h1 : (j.succ : Fin (L + 1)) = 1 := by
+        apply Fin.ext
+        have : ((1 : Fin (L + 1)) : ℕ) = 1 := Fin.val_one' (L + 1) ▸ Nat.mod_eq_of_lt (by omega)
+        rw [Fin.val_succ, hj0, this]
+      rw [h1]; exact_mod_cast le_trans hb (min_le_right _ _)
+    · rw [if_neg (by omega)] at hb; exact_mod_cast hb
+
+/-- **L2 arithmetic wiring** (the closed-form recombination). The regular shift `nReg/2`
+(`nReg = r(H⁰+Hᴸ−r)`, `ℝ≥0∞`) plus the singular core `ofReal(lambdaCore M)` (`M = H−r`) recombines to
+`ofReal(aoyagiLambda H r)`. Pure `ℚ`/`ℝ≥0∞` cast arithmetic; uses `Mval_nonneg_of_adm` for
+`lambdaCore M ≥ 0` (so `ofReal` splits additively) and `r ≤ H s` for the `nReg` natural-subtraction. -/
+theorem reg_shift_add_core_eq_aoyagiLambda (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ)
+      = ENNReal.ofReal (aoyagiLambda H r : ℝ) := by
+  set M := fun s => H s - r with hM
+  have h0 : r ≤ H 0 := hr 0
+  have hl : r ≤ H (Fin.last L) := hr (Fin.last L)
+  set nReg : ℕ := r * (H 0 + H (Fin.last L) - r) with hnReg
+  have hsplit : (aoyagiLambda H r : ℝ) = (nReg : ℝ) / 2 + (lambdaCore M : ℝ) := by
+    unfold aoyagiLambda
+    rw [Rat.cast_add, Rat.cast_div]
+    congr 1
+    rw [hnReg, Nat.cast_mul, Nat.cast_sub (by omega : r ≤ H 0 + H (Fin.last L))]; push_cast; ring
+  have hcore_nn : (0 : ℝ) ≤ (lambdaCore M : ℝ) := by
+    rw [show (0 : ℝ) = ((0 : ℚ) : ℝ) by norm_num, Rat.cast_le]; unfold lambdaCore
+    have : (0 : ℤ) ≤ (Adm M).inf' (Adm_nonempty M) (Mval M) := by
+      obtain ⟨T, hT, he⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+      rw [he]; exact Mval_nonneg_of_adm M T hT hL
+    positivity
+  rw [hsplit, ENNReal.ofReal_add (by positivity) hcore_nn]
+  congr 1
+  rw [ENNReal.ofReal_div_of_pos (by norm_num), ENNReal.ofReal_natCast,
+      show ENNReal.ofReal (2 : ℝ) = 2 by
+        rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.ofReal_natCast]; rfl]
+
+/-- **L2 deepest-point normal form (the heavy gauge-slice geometry — NAMED `sorry`).** At the deepest
+point (every layer rank exactly `r`), the local RLCT of `dlnLoss H B` splits as the regular shift
+`nReg/2` (`nReg = r(H⁰+Hᴸ−r)` nondegenerate gauge directions, Fubini-additive `S1.5`) plus the singular
+core `lambdaCore` on the reduced widths `M = H−r`. The split is the rank-`r` gauge-slice change of
+variables `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]` (regular coords = the output residual blocks
+`P₁₁−I_r, P₁₂, P₂₁`; reduced core = `‖∏C'_s‖² = dlnLoss M 0`). The gauge slice is NOT measure-preserving
+(unit Jacobian, not `det ±1`), so it routes through `rlctAtOn_unit_invariant_aux` + germ-locality, NOT
+`rlctAtOn_comp_homeomorph` — its own substantial lemma (Codex g146; ~600–1500 lines; consult-gated, task
+#44). The `nReg`-count `r(H⁰+Hᴸ−r) = r² + r(Hᴸ−r) + (H⁰−r)r` (the `r²` overlap counted once). This is
+the ONE open geometric obligation of L2; the wiring above it is green. -/
+theorem deepest_regular_core_normal_form (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
+  sorry
+
 /-- **L2 (Theorem 3, product reduction).** The local RLCT of the loss **at the deepest point**
 as the regular-part shift `[−r²+r(H¹+Hᴸ⁺¹)]/2` plus the singular-core `lambdaCore` over the reduced
 widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r`: it equals `aoyagiLambda H r` (cast to `ℝ≥0∞`). (Rung-0c FLAG: keyed to the
 single constructed `deepestPoint`, **not** `∀ optimal w` — an over-claim — nor a
 `∀`-deepest-predicate — the per-partial-product form was too weak. The local RLCT varies over the
 fibre, equalling the closed form at the deepest point.) Non-vacuous: equates the local RLCT at
-`deepestPoint` to the closed form. -/
+`deepestPoint` to the closed form. **WIRING (crux2 #41):** `deepest_regular_core_normal_form` (the heavy
+gauge-slice normal form, #44) ▸ `reg_shift_add_core_eq_aoyagiLambda` (the closed-form recombination,
+proven). The L2 wiring is GREEN; the single open obligation is the named normal form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
-  sorry
+  rw [deepest_regular_core_normal_form H r B hB hr hL, reg_shift_add_core_eq_aoyagiLambda H r hr hL]
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
@@ -962,14 +1152,21 @@ loss at the deepest point is `≤` that at every other fibre point `v`. This is 
 
 **Dependency (named, not vague):** the engine is `rlctAt_mono` (`Rlct.lean`), which compares two
 functions at ONE point via `|G| ≤ |F|` near `w*`. Here we have the SAME loss `dlnLoss H B` at TWO
-points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. Bridging the two points
-needs the loss in its **homogeneous normal form** — the L2 decomposition (`product_reduction`:
-regular shift + singular core `lambdaCore` on reduced widths `M = H − r`, via `S1Fubini`), under
-which the deepest point's core pointwise-dominates the core at any other fibre point. With `B ≠ 0`
-the raw `dlnLoss B` is not homogeneous, so this domination is **L2-downstream**. Open: whether the
-homogeneous domination is provable from L1 `block_elimination` (green) + the deepest-point structure
-ALONE (R1-separable, value-independent) or genuinely needs the resolution value — a scoping question
-for the controller / pp-hall. -/
+points (`deepestPoint` vs `v`), so `rlctAt_mono` does not apply directly. The bridge (Aoyagi 2013
+Thm 2; cert #112, decorrelated pp-hall + Codex) is HOMOGENEITY: at `v` a local constant-rank chart
+splits the germ as `Q(x)` (regular block, contributes `q/2 ≥ 0` via `smoothBlockND_rlct`) ⊕ a
+HOMOGENEOUS residual core `K_res(y)`; the radial scaling `Σ t^{2nᵢ}fᵢ'² ≤ Σ fᵢ'²` (`|t|<1`) feeds
+`rlctAt_mono` (= Aoyagi Lemma 1(1), green #51), and the fibre cone `prod (t•A) = t^L · prod A` puts
+the all-zero deepest core in every stratum's closure.
+
+**Scoping (RESOLVED, cert #112):** D1≥ is **VALUE-FREE** — independent of R1's resolution value
+`⨅ monomialThreshold = lambdaCore`. It closes PARALLEL to R1, gated NOT on the value but on two
+EXISTENCE obligations: **(a)** the homogeneous-residual chart at an arbitrary `v` (a local
+constant-rank / Morse split), and **(b)** the fibre-cone closure (pure algebra). Scope boundary
+(Aoyagi Example 3): apply to the HOMOGENEOUS core, never the raw `B ≠ 0` loss. Obligation (a) is the
+SAME constant-rank chart machinery as `deepest_regular_core_normal_form` (#44) — both are
+Morse-with-parameters reductions — so (a) is not yet banked and shares the heavy gauge-slice
+existence with #44. -/
 theorem rlctAt_deepest_le_of_optimal (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)

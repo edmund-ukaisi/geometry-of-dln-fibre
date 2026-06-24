@@ -678,14 +678,14 @@ theorem prod_one_layer (M : Fin 2 → ℕ) (A : Params M)
     prod M A i j = A 0 i j := by
   unfold prod
   simp only [prodAux, eq_mpr_eq_cast]
-  convert congrFun (congrFun (Matrix.one_mul (cast (by rfl) (cast (by rfl) (A 0)))) i) j using 2 <;>
-    simp [Fin.cast]
+  convert congrFun (congrFun (Matrix.one_mul (cast (by rfl) (cast (by rfl) (A 0)))) i) j using 2
 
-/-- **L=1 base — the smooth-block leaf.** At `L = 1` and the deepest point `B = 0`, the loss is the
-pure entrywise sum of squares of the single layer matrix `A 0` — already the smooth-block normal form
-(`nReg = M0·M1` regular generators, empty reduced chain). This terminates the Schur recursion: there
-is nothing left to pivot. (The genuine Schur split is for `B ≠ 0` of rank `r` via `block_elimination`;
-at the deepest point `rank 0 = 0`, the regular `E_r` block is empty, the whole loss is smooth.) -/
+/-- **L=1 base — the smooth-block leaf.** At `L = 1` and the deepest point `B = 0`, the loss is
+the pure entrywise sum of squares of the single layer matrix `A 0` — already the smooth-block
+normal form (`nReg = M0·M1` regular generators, empty reduced chain). This terminates the Schur
+recursion: there is nothing left to pivot. (The genuine Schur split is for `B ≠ 0` of rank `r` via
+`block_elimination`; at the deepest point `rank 0 = 0`, the regular `E_r` block is empty, the whole
+loss is smooth.) -/
 theorem dlnLoss_one_layer_deepest (M : Fin 2 → ℕ) (A : Params M) :
     dlnLoss M 0 A = ∑ i, ∑ j, (A 0 i j) ^ 2 := by
   unfold dlnLoss

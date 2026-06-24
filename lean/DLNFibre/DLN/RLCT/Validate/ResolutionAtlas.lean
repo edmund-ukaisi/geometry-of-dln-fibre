@@ -5,31 +5,28 @@ import DLNFibre.DLN.RLCT.Skeleton
 
 The R1.6 residual (cover-exhaustiveness) pinned as a precise Lean-grade obligation
 (`IsResolutionAtlas`) and the value it delivers (`resolution_value_of_atlas`), per pp2's #133
-obligation card. The chart-tree of the (C2) resolution is an instance of `resolution_charts`'s
-existential witness `(ι, d, k, h)` PLUS a `stratum` tag (the rank stratum each path's binding
-min-codim center cuts). The obligation has four conjuncts:
+obligation card SHARPENED by the #134 (S-min) witness sketch. The chart-tree of the resolution is an
+instance of `resolution_charts`'s existential witness `(ι, d, k, h)`. The obligation is the two clauses
+that `le_antisymm` consumes, both keyed to the minimal codimension `m₀ = (Adm M).inf' Mval`:
 
-- **(A) `stratum_admissible`** — every path's binding center is an admissible rank stratum
-  (structural: the recursion pivots only on `{∏C = 0}`; certified #132).
-- **(S) `stratum_surjective`** — every admissible stratum is REACHED by some path (the cover-
-  exhaustiveness; *the single residual open obligation* — adjudicated pp2/pp3, formalises later).
-- **(K) `mult_one`** — multiplicity 1 on every exceptional divisor (`k_E = 1`, multilinearity #132).
-- **(C) `threshold_eq`** — per-path threshold `= ½·(its binding stratum's codim)` (#131 Schur codim +
-  `axisRatio_regularSeq` + S2 `monomial_rlct`).
+- **(C≥) `threshold_ge`** — UNIFORM: every path's threshold is `≥ ½·m₀` (no undershoot; from `k = 1`
+  multiplicity + admissibility, via `monomialThreshold_ge_of_mult'`).
+- **(C=∃) `achiever`** — SOME path realises `= ½·m₀` (no over-estimate; the binding divisor over a
+  MINIMISING stratum). *The single residual open obligation* — and the (S-min) sharpening shows only
+  the MINIMISER need be reached, strictly weaker than full surjectivity onto `Adm M`.
 
-`resolution_value_of_atlas` takes the atlas as a hypothesis and proves
-`⨅ monomialThreshold = ofReal(lambdaCore M)` SORRY-FREE. It is the pure `⨅`-rearrangement: the image
-of `stratum` is exactly `Adm M` (A: image ⊆ Adm; S: image ⊇ Adm), so the `⨅`-over-paths of
-`½·Mval(stratum)` is `½·min_{T∈Adm} Mval = lambdaCore M`. Surjectivity (S) is EXACTLY what makes
-`min`-over-image = `min`-over-`Adm` (without it the `⨅` could miss the minimiser and over-estimate —
-the incomplete-cover failure).
+`resolution_value_of_atlas` takes the atlas and proves `⨅ monomialThreshold = ofReal(lambdaCore M)`
+SORRY-FREE + S2-FREE: `le_antisymm` ((C≥) ⟹ `⨅ ≥ ½·m₀`, (C=∃) ⟹ `⨅ ≤ ½·m₀`), then `½·m₀ = lambdaCore M`
+definitionally (`lambdaCore := ½·inf' Mval`). The geometric residual is isolated entirely into the
+atlas's `achiever` field — an explicit `Prop`, not a buried sorry.
+
+`IsResolutionAtlas.of_mult_and_achiever` builds the atlas from the underlying certified facts: the
+(K)+(A) uniform multiplicity bound `m₀·k ≤ h+1` (⟹ C≥) and the achiever's binding divisor
+`(k, h) = (1, m₀−1)` (⟹ C=∃) — showing the two clauses are honestly derived, not assumed. S2
+(`monomial_rlct`) enters only the per-chart bracket lemmas, never the value lemma's own proof.
 
 **Scope: core-only** (`rlctAtOn(dlnLoss M 0) 0`, `M = H − r`). The regular `[−r²+r(H⁰+Hᴸ)]/2` shift is
 L2/Fubini (`product_reduction`), NOT here — `IsResolutionAtlas` carries no `nReg`.
-
-This file states the obligation + proves the value consequence; it does NOT prove (S) (the open
-combinatorial core, via `Core.RankPattern`/Gabriel). The four conjuncts are all `Prop` fields, so
-`resolution_value_of_atlas` is sorry-free conditional on an atlas EXISTING — not a buried sorry.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -83,26 +80,64 @@ theorem Mval_nonneg_adm (M : Fin (L + 1) → ℕ) (T : Fin L → ℕ) (hT : T �
   intro j _
   exact mul_nonneg (by linarith [Tle_tPrev M T hT j]) (by linarith [Tle_Msucc M T hT j])
 
-/-! ## The atlas obligation -/
+/-! ## Per-chart threshold bracket (spectators allowed; the `Case222CoverGE` pattern, generalised)
 
-/-- **The R1.6 resolution-atlas obligation (#133).** The chart-tree data `(d, k, h)` of the (C2)
-resolution, plus a `stratum` tag (each path's binding min-codim rank stratum), satisfying the four
-conjuncts A/S/K/C. An instance of this over the resolution's pivot-tree paths `ι` discharges
-`resolution_charts` via `resolution_value_of_atlas`. -/
+The two green-lemma seeds the (S-min) value-match consumes. `monomialThreshold_ge_of_mult` (Skeleton)
+needs `k j ≥ 1` on EVERY axis; the resolution charts carry spectator coords (`k = 0`), so re-prove the
+`≥` with the spectator/binding split (the `Case222CoverGE.unitMonomialThreshold_ge` shape). Self-contained
+here (imports only `Skeleton`) rather than depending on the parallel `GeneralR1Value` lane. -/
+
+/-- **Spectator axis ratio is `⊤`.** `axisRatio h 0 = (h+1)/(2·0) = ⊤` — a `k = 0` axis imposes no
+threshold bound. -/
+private theorem axisRatio_spectator (h : ℕ) : axisRatio h 0 = ⊤ := by
+  unfold axisRatio; simp [ENNReal.div_zero]
+
+/-- **Per-chart lower bound, spectators allowed.** Every axis obeying `m·(k j) ≤ h j + 1` (binding
+axes `k j ≥ 1` use `axisRatio_ge_of_mult`; spectator `k j = 0` axes give `⊤`) ⟹ threshold `≥ m/2`. -/
+theorem monomialThreshold_ge_of_mult' (d : ℕ) (k h : Fin d → ℕ) (m : ℕ)
+    (hmult : ∀ j, m * k j ≤ h j + 1) :
+    (m : ℝ≥0∞) / 2 ≤ monomialThreshold d k h := by
+  rw [(monomial_rlct d k h).1]
+  refine le_iInf (fun j => ?_)
+  rcases Nat.eq_zero_or_pos (k j) with h0 | hpos
+  · rw [h0, axisRatio_spectator]; exact le_top
+  · exact axisRatio_ge_of_mult (h j) (k j) m hpos (hmult j)
+
+/-- **Per-chart value from the bracket.** Axes all obeying `m·(k j) ≤ h j + 1` (lower) + one binding
+axis `(k j₀, h j₀) = (1, m−1)` (upper) ⟹ threshold `= m/2`. -/
+theorem monomialThreshold_eq_half_of_binding (d : ℕ) (k h : Fin d → ℕ) (m : ℕ) (hm : 1 ≤ m)
+    (hmult : ∀ j, m * k j ≤ h j + 1) (j₀ : Fin d) (hk0 : k j₀ = 1) (hh0 : h j₀ = m - 1) :
+    monomialThreshold d k h = (m : ℝ≥0∞) / 2 :=
+  le_antisymm (monomialThreshold_le_regularSeq d k h m hm j₀ hk0 hh0)
+    (monomialThreshold_ge_of_mult' d k h m hmult)
+
+/-! ## The atlas obligation — the (S-min) form (pp2 #134)
+
+The #133 obligation, sharpened per pp2's #134 witness sketch: instead of full surjectivity + a per-path
+`threshold_eq` (which needs `stratum` to be the binding min-codim center — fiddly), state the value
+content as the two clauses that `le_antisymm` actually consumes, both keyed to the minimal codimension
+`m₀ = min_{T∈Adm} Mval(T) = (Adm M).inf' Mval`:
+
+- **(C≥) `threshold_ge`** — UNIFORM lower bound: every path's threshold is `≥ ½·m₀`. The no-undershoot
+  half; from (K) `k_E = 1` + every center admissible (A) ⟹ each divisor ratio `= codim/2 ≥ ½·m₀`. Built
+  uniformly via `monomialThreshold_ge_of_mult'` — no per-path stratum bookkeeping.
+- **(C=∃) `achiever`** — ONE path realises `= ½·m₀`: the binding divisor over a MINIMISING stratum.
+  The no-over-estimate half. This is where exhaustiveness bites, but only the MINIMISER need be reached
+  ((S-min), strictly weaker than full surjectivity onto `Adm M`).
+
+The single OPEN obligation is `achiever` (the minimising stratum's binding branch exists) — carried as a
+`Prop` field, not a buried sorry. `m₀` is `((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat` so the value
+lands definitionally on `lambdaCore M = ½·m₀`. -/
 structure IsResolutionAtlas (M : Fin (L + 1) → ℕ)
-    (ι : Type) [Fintype ι] (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ)
-    (stratum : ι → (Fin L → ℕ)) : Prop where
-  /-- (A) admissibility: every path's binding center is an admissible rank stratum (codim = Mval). -/
-  stratum_admissible : ∀ i, stratum i ∈ Adm M
-  /-- (S) SURJECTIVITY = EXHAUSTIVENESS (the residual real work): every admissible stratum is reached
-  by some path ⟹ no missed branch ⟹ the `⨅` is not an over-estimate. -/
-  stratum_surjective : ∀ T ∈ Adm M, ∃ i, stratum i = T
-  /-- (K) multiplicity 1 on every exceptional divisor (`F = x²·reduced`, multilinearity #132). -/
-  mult_one : ∀ i, ∀ j : Fin (d i), k i j = 1
-  /-- (C) per-path codim-match: the path's monomial threshold `= ½·(its binding stratum's codim)`
-  (the regular-sequence binding divisor `(k,h) = (1, Mval−1)` realising `Mval/2`). -/
-  threshold_eq : ∀ i, monomialThreshold (d i) (k i) (h i)
-                        = (1 / 2 : ℝ≥0∞) * ((Mval M (stratum i)).toNat : ℝ≥0∞)
+    (ι : Type) [Fintype ι] (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ) : Prop where
+  /-- (C≥) UNIFORM no-undershoot: every path's monomial threshold is `≥ ½·m₀`
+  (`m₀ = (Adm M).inf' Mval`). From (K) `k = 1` + admissibility, via `monomialThreshold_ge_of_mult'`. -/
+  threshold_ge : ∀ i, ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2
+                        ≤ monomialThreshold (d i) (k i) (h i)
+  /-- (C=∃) / (S-min) no-over-estimate: SOME path realises `= ½·m₀` — the binding divisor over a
+  minimising stratum (the single open obligation; only the MINIMISER need be reached). -/
+  achiever : ∃ i, monomialThreshold (d i) (k i) (h i)
+                    = ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2
 
 /-! ## The value consequence (sorry-free, conditional on the atlas) -/
 
@@ -111,7 +146,7 @@ structure IsResolutionAtlas (M : Fin (L + 1) → ℕ)
 so `(inf').toNat` round-trips. The definitional bridge `resolution_value_of_atlas` lands on. -/
 theorem ofReal_lambdaCore_eq_half_inf (M : Fin (L + 1) → ℕ) :
     ENNReal.ofReal (lambdaCore M : ℝ)
-      = (1 / 2 : ℝ≥0∞) * (((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞) := by
+      = ((((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat : ℝ≥0∞)) / 2 := by
   -- the `inf'` is achieved at some admissible T₀, hence ≥ 0.
   obtain ⟨T₀, hT₀mem, hT₀eq⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
   have hinf_nonneg : 0 ≤ (Adm M).inf' (Adm_nonempty M) (Mval M) := by
@@ -127,81 +162,83 @@ theorem ofReal_lambdaCore_eq_half_inf (M : Fin (L + 1) → ℕ) :
       rw [show ((I.toNat : ℝ)) = (((I.toNat : ℤ) : ℝ)) by push_cast; ring,
         Int.toNat_of_nonneg hinf_nonneg]]
     ring
-  -- RHS: ½·(I.toNat : ℝ≥0∞) = ofReal((I.toNat : ℝ)/2). Push everything through `ofReal`.
-  have hR : (1 / 2 : ℝ≥0∞) * ((I.toNat : ℝ≥0∞)) = ENNReal.ofReal ((I.toNat : ℝ) / 2) := by
-    rw [show (1 / 2 : ℝ≥0∞) = ENNReal.ofReal (1 / 2 : ℝ) by
-          rw [ENNReal.ofReal_div_of_pos (by norm_num), ENNReal.ofReal_one,
-            show ENNReal.ofReal (2 : ℝ) = 2 by
-              rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.ofReal_natCast,
-                Nat.cast_ofNat]],
-      ← ENNReal.ofReal_natCast (I.toNat), ← ENNReal.ofReal_mul (by norm_num)]
-    congr 1; ring
+  -- RHS: (I.toNat : ℝ≥0∞)/2 = ofReal((I.toNat : ℝ)/2). Push the cast + the `2` through `ofReal`.
+  have hR : ((I.toNat : ℝ≥0∞)) / 2 = ENNReal.ofReal ((I.toNat : ℝ) / 2) := by
+    rw [ENNReal.ofReal_div_of_pos (by norm_num), ENNReal.ofReal_natCast,
+      show ENNReal.ofReal (2 : ℝ) = 2 by
+        rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.ofReal_natCast, Nat.cast_ofNat]]
   rw [hL, hR]
 
-/-- **`resolution_value_of_atlas` (#133).** Given a resolution atlas, the `⨅`-over-paths of the chart
-monomial thresholds equals `ofReal(lambdaCore M)`. Sorry-free, conditional on the atlas. The pure
-`⨅`-rearrangement via `le_antisymm`:
-- `≤`: the achiever stratum `T*` (the `inf'` minimiser, in `Adm`) is reached by some path (S); that
-  path's threshold `= ½·Mval(T*) = ½·inf' = lambdaCore`, so the `⨅ ≤ lambdaCore` (`iInf_le`).
-- `≥`: every path's stratum is admissible (A), so `Mval(stratum) ≥ inf'`, hence its threshold
-  `= ½·Mval(stratum) ≥ ½·inf' = lambdaCore` (`le_iInf`).
-S is where surjectivity bites (the `≤` direction needs the minimiser reached); A is the `≥`. -/
+/-- **The atlas constructor from the geometry (A)/(K) + the achiever (S-min).** Builds an
+`IsResolutionAtlas` from the underlying certified facts: (K)+(A) as a uniform per-chart multiplicity
+bound `m₀·(k i j) ≤ h i j + 1` (regular sequence `k = 1` ⟹ `m₀ ≤ h+1`, with `m₀ = (inf' Mval).toNat`
+the min codim) — which yields (C≥) via `monomialThreshold_ge_of_mult'`; and the achiever as a single
+path `i₀` with a binding regular-sequence divisor `(k i₀ j₀, h i₀ j₀) = (1, m₀−1)` — which yields (C=∃)
+via `monomialThreshold_le_regularSeq`. Shows the two `IsResolutionAtlas` clauses are honestly DERIVED
+from the geometry, not assumed; the cover supplies the multiplicity bound (A+K) and the achiever path
+(S-min). -/
+theorem IsResolutionAtlas.of_mult_and_achiever (M : Fin (L + 1) → ℕ)
+    (ι : Type) [Fintype ι] (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ)
+    (hmult : ∀ i, ∀ j : Fin (d i),
+      ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat * k i j ≤ h i j + 1)
+    (i₀ : ι) (j₀ : Fin (d i₀)) (hm₀pos : 1 ≤ ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat)
+    (hk₀ : k i₀ j₀ = 1)
+    (hh₀ : h i₀ j₀ = ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat - 1) :
+    IsResolutionAtlas M ι d k h where
+  threshold_ge i := monomialThreshold_ge_of_mult' (d i) (k i) (h i) _ (hmult i)
+  achiever := ⟨i₀, monomialThreshold_eq_half_of_binding (d i₀) (k i₀) (h i₀) _ hm₀pos
+    (hmult i₀) j₀ hk₀ hh₀⟩
+
+/-- **`resolution_value_of_atlas` (#133, S-min form).** Given a resolution atlas, the `⨅`-over-paths of
+the chart monomial thresholds equals `ofReal(lambdaCore M)`. Sorry-free + S2-free, conditional on the
+atlas. Pure `le_antisymm`: (C≥) `threshold_ge` gives `⨅ ≥ ½·m₀` (`le_iInf`); (C=∃) `achiever` gives
+`⨅ ≤ ½·m₀` (`iInf_le`); then `½·m₀ = ofReal(lambdaCore M)` definitionally (`ofReal_lambdaCore_eq_half_inf`).
+The whole geometric residual is isolated into the atlas's `achiever` (the S-min open obligation). -/
 theorem resolution_value_of_atlas (M : Fin (L + 1) → ℕ)
     (ι : Type) [Fintype ι] (d : ι → ℕ) (k h : (i : ι) → Fin (d i) → ℕ)
-    (stratum : ι → (Fin L → ℕ)) (hatlas : IsResolutionAtlas M ι d k h stratum) :
+    (hatlas : IsResolutionAtlas M ι d k h) :
     (⨅ i : ι, monomialThreshold (d i) (k i) (h i)) = ENNReal.ofReal (lambdaCore M : ℝ) := by
-  set I : ℤ := (Adm M).inf' (Adm_nonempty M) (Mval M) with hI
-  have hinf_le : ∀ T ∈ Adm M, I ≤ Mval M T := fun T hT => Finset.inf'_le _ hT
-  -- the achiever T* with Mval T* = I.
-  obtain ⟨Tstar, hTstar_mem, hTstar_eq⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
-  have hIeq : I = Mval M Tstar := hTstar_eq
-  have hI_nonneg : 0 ≤ I := by rw [hIeq]; exact Mval_nonneg_adm M Tstar hTstar_mem
   rw [ofReal_lambdaCore_eq_half_inf]
-  -- the target RHS, rewritten with hI.
-  show (⨅ i : ι, monomialThreshold (d i) (k i) (h i))
-      = (1 / 2 : ℝ≥0∞) * ((I.toNat : ℝ≥0∞))
-  apply le_antisymm
-  · -- ≤ : the achiever path realises the value.
-    obtain ⟨i₀, hi₀⟩ := hatlas.stratum_surjective Tstar hTstar_mem
-    refine iInf_le_of_le i₀ ?_
-    rw [hatlas.threshold_eq i₀, hi₀, ← hIeq]
-  · -- ≥ : every path's threshold ≥ the value.
-    refine le_iInf (fun i => ?_)
-    rw [hatlas.threshold_eq i]
-    apply mul_le_mul_left'
-    -- (I.toNat : ℝ≥0∞) ≤ (Mval (stratum i)).toNat, from I ≤ Mval (stratum i) (both ≥ 0).
-    have hle : I ≤ Mval M (stratum i) := hinf_le _ (hatlas.stratum_admissible i)
-    have hmono : I.toNat ≤ (Mval M (stratum i)).toNat := by omega
-    exact_mod_cast hmono
+  refine le_antisymm ?_ (le_iInf hatlas.threshold_ge)
+  obtain ⟨i₀, hi₀⟩ := hatlas.achiever
+  exact iInf_le_of_le i₀ (le_of_eq hi₀)
 
-/-! ## Non-vacuity witness (the four conjuncts are jointly satisfiable)
+/-! ## Non-vacuity witness (the two clauses are satisfiable)
 
-`IsResolutionAtlas` is not a vacuous predicate: for `M = ![1,1]` (`L = 1`, the smooth-block leaf, one
-admissible stratum `Adm = {0}`, `Mval 0 = 1`, `lambdaCore = ½`) a one-path atlas (`ι = Unit`, `d = 1`,
-`k = ![1]`, `h = ![0]` — the binding regular-sequence divisor `(1, 0) = (1, Mval−1)`) satisfies all four
-conjuncts, so an atlas exists and `resolution_value_of_atlas` returns `½`. The witness shown in-file
-(bedrock: the predicate has a model, the value lemma is non-vacuous). -/
-example : IsResolutionAtlas (![1, 1] : Fin 2 → ℕ) Unit (fun _ => 1)
-    (fun _ => (![1] : Fin 1 → ℕ)) (fun _ => (![0] : Fin 1 → ℕ)) (fun _ => (fun _ => 0)) where
-  stratum_admissible := by
-    intro _
-    rw [show (Adm (![1, 1] : Fin 2 → ℕ)) = {(fun _ => 0)} from by decide]
-    exact Finset.mem_singleton.2 rfl
-  stratum_surjective := by
-    intro T hT
-    rw [show (Adm (![1, 1] : Fin 2 → ℕ)) = {(fun _ => 0)} from by decide,
-      Finset.mem_singleton] at hT
-    exact ⟨(), hT.symm⟩
-  mult_one := by intro _ j; fin_cases j; rfl
-  threshold_eq := by
-    intro _
-    rw [show Mval (![1, 1] : Fin 2 → ℕ) (fun _ => 0) = 1 from by decide]
-    -- monomialThreshold 1 ![1] ![0] = axisRatio 0 1 = 1/2 = ½·(1).toNat.
-    rw [(monomial_rlct 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ)).1, iInf_unique]
-    show axisRatio ((![0] : Fin 1 → ℕ) default) ((![1] : Fin 1 → ℕ) default) = _
-    rw [show ((![0] : Fin 1 → ℕ) default) = 0 from rfl,
-      show ((![1] : Fin 1 → ℕ) default) = 1 from rfl]
-    rw [show axisRatio 0 1 = (1 : ℝ≥0∞) / 2 from by unfold axisRatio; norm_num]
-    norm_num
+`IsResolutionAtlas` is not a vacuous predicate: for `M = ![1,1]` (`L = 1`, the smooth-block leaf — one
+admissible stratum `Adm = {0}`, `Mval 0 = 1`, so `m₀ = 1` and `lambdaCore = ½`) a one-path atlas
+(`ι = Unit`, `d = 1`, `k = ![1]`, `h = ![0]` — the binding regular-sequence divisor `(1, 0) = (1, m₀−1)`)
+satisfies both clauses via the `of_mult_and_achiever` constructor (the multiplicity bound `1·1 ≤ 0+1` and
+the achiever `(k,h) = (1, 0)`), so an atlas exists and `resolution_value_of_atlas` returns `½`. The witness
+shown in-file (bedrock: the predicate has a model, the value lemma is non-vacuous). -/
+/-- The single `M = ![1,1]` chart's threshold value: `monomialThreshold 1 ![1] ![0] = ½`
+(the binding regular-sequence divisor `(k,h) = (1,0)`, `axisRatio 0 1 = 1/2`). -/
+theorem monomialThreshold_M11 :
+    monomialThreshold 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ) = (1 : ℝ≥0∞) / 2 := by
+  have hmult : ∀ j : Fin 1, 1 * (![1] : Fin 1 → ℕ) j ≤ (![0] : Fin 1 → ℕ) j + 1 := by decide
+  rw [monomialThreshold_eq_half_of_binding 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ) 1
+    (le_refl 1) hmult 0 rfl rfl, Nat.cast_one]
+
+/-- The `M = ![1,1]` one-path atlas (`ι = Unit`, `d = 1`, `k = ![1]`, `h = ![0]`). `m₀ = (inf' Mval).toNat
+= 1`, so both clauses reduce to `monomialThreshold 1 ![1] ![0] = ½ = (1)/2` (`monomialThreshold_M11`).
+The in-file model proving `IsResolutionAtlas` non-vacuous. -/
+theorem isResolutionAtlas_M11 :
+    IsResolutionAtlas (![1, 1] : Fin 2 → ℕ) Unit (fun _ => 1)
+      (fun _ => (![1] : Fin 1 → ℕ)) (fun _ => (![0] : Fin 1 → ℕ)) := by
+  have hm₀ : ((Adm (![1, 1] : Fin 2 → ℕ)).inf' (Adm_nonempty _)
+      (Mval (![1, 1] : Fin 2 → ℕ))).toNat = 1 := by decide
+  have hval : ∀ _ : Unit,
+      monomialThreshold 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ)
+        = ((((Adm (![1, 1] : Fin 2 → ℕ)).inf' (Adm_nonempty _)
+            (Mval (![1, 1] : Fin 2 → ℕ))).toNat : ℝ≥0∞)) / 2 := by
+    intro _; rw [hm₀, monomialThreshold_M11, Nat.cast_one]
+  exact ⟨fun i => le_of_eq (hval i).symm, ⟨(), hval ()⟩⟩
+
+/-- The non-vacuity value: the `M = ![1,1]` atlas yields `⨅ monomialThreshold = ofReal(lambdaCore)`
+(`= ofReal(½)`). Confirms `resolution_value_of_atlas` is non-vacuous end-to-end. -/
+example : (⨅ _ : Unit, monomialThreshold 1 (![1] : Fin 1 → ℕ) (![0] : Fin 1 → ℕ))
+    = ENNReal.ofReal (lambdaCore (![1, 1] : Fin 2 → ℕ) : ℝ) :=
+  resolution_value_of_atlas (![1, 1] : Fin 2 → ℕ) Unit (fun _ => 1)
+    (fun _ => (![1] : Fin 1 → ℕ)) (fun _ => (![0] : Fin 1 → ℕ)) isResolutionAtlas_M11
 
 end DLNFibre.DLN.RLCT
