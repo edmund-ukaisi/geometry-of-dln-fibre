@@ -523,17 +523,30 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   --       the three residual blocks, is the bulk (several hundred lines), gated on the frame-conjugate
   --       `framedLayer` rewrite having landed. Banked shape-independent: `prodAuxEntryDeriv` (explicit
   --       Leibniz), `hasStrictFDerivAt_sum_mul_zero` (cross-term deriv 0), `devXZ_corner_devY`.
-  --   (A) THE FRAME FACT `deepestPoint_frame_lastBlock_isUnit … J`. Take `J := exists_pivot_cols_of_rank` of
-  --       the last-interface rank-`r` row factor `V`; the column-permuted last layer has pivots front, so
-  --       `rank_normal_form_right_only` on it gives a unit `Q` with `V·Q` at the corner, and the KEYSTONE
-  --       `toBlocks22_isUnit_of_pivot_corner` makes `B22` (= `(reindex (pivotThresholdSplit … J) Q)₂₂`) a
-  --       unit — the keystone hypotheses `htop1/htop2` are the top blocks of `(reindex V)·(reindex Q)`. This
-  --       lemma is now de-risked to "reindex/submatrix algebra around the keystone" (no remaining math gap).
+  --   (A) THE FRAME FACT — BANKED (l2-pin tide, 2026-06-24, `DeepestPivotFrame`, axiom-clean
+  --       `[propext, Classical.choice, Quot.sound]`, NO sorryAx):
+  --         • `exists_pivotFrame_lastBlock_isUnit` (abstract): for any rank-`r` `A : Fin a × Fin b` with
+  --             tail rows vanishing, `∃ J Q, IsUnit Q ∧ IsUnit ((reindex (pivotThresholdSplit r b J)² Q)₂₂)
+  --             ∧ reindex (rThresholdSplit r a) (pivotThresholdSplit r b J) (A·Q) = fromBlocks 1 0 0 0`.
+  --         • `exists_deepest_lastLayer_pivotFrame` (deepest-point instance, `2 ≤ L`): the same for
+  --             `A := deepestPoint … (lastLayer hL)`.
+  --       CONSTRUCTION CORRECTION (Codex `xhigh` decorrelated design, ×2): the brief's "feed
+  --       `rank_normal_form_right_only` the column-permuted `A·Pπ`" route is UNSOUND — `corM` is
+  --       threshold-indexed (identity in the FIRST `r` columns) while the keystone needs identity in the
+  --       chosen PIVOT columns, so the generic right-only frame's ₂₂-block is singular precisely when `B`'s
+  --       pivots are not front (the documented obstruction). The banked construction is the EXPLICIT
+  --       pivot-aligned frame `Q := reindex e.symm e.symm (fromBlocks VJ⁻¹ (−VJ⁻¹·VK) 0 1)` (`e =
+  --       pivotThresholdSplit r b J`, `VJ`/`VK` the pivot/complement columns of the top-`r`-rows factor
+  --       `V`), realising `B22 = 1` directly — NO restriction on rank-`r` `A`, the keystone sidestepped.
   --   (B) thread that `J` into `deepestEPivot`'s split (replace `rThresholdSplit r (H last)` by
-  --       `pivotThresholdSplit r (H last) J`) + build `F` from `A` whole-unit
-  --       (`deepestPoint_frame_invertible.1`) + `B22`-invertible (A) → existing consumer
-  --       `regStraightenTotalCLM_equiv_of_regBlock_isUnit`. (C) the SAME `J` must reach
-  --       `framedParams_split_eq_frame_raw` (PIN2, the shared-J reconciliation) — see line 737.
+  --       `pivotThresholdSplit r (H last) J`, AND re-target `deepestPoint_frame`'s last-layer arm at the
+  --       banked frame `Q`) + build `F` from `A` whole-unit (`deepestPoint_frame_invertible.1`) +
+  --       `B22`-invertible (A) → existing consumer `regStraightenTotalCLM_equiv_of_regBlock_isUnit`.
+  --       (C) the SAME `J` must reach `framedParams_split_eq_frame_raw` (PIN2, the shared-J reconciliation)
+  --       — see line 737. (B)+(C) are the coordinated `rThresholdSplit → pivotThresholdSplit J` migration
+  --       through `deepestEPivot`/`framedLayer`/`framedParamsReg`/the residual pack/telescoping + the
+  --       deepest-point frame re-architecture: single-writer-sensitive, several hundred lines, NOT a
+  --       thread-J. The frame algebra it stands on (A) is now banked.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -769,16 +782,20 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- LEFT for the shared-J reconciliation: parametrize on the PIN1 boundary frame / J rather than choosing one.
   -- core comparability is `core_comparability_squeeze` (#54, banked, J-independent).
   --
-  -- BEDROCK BANKED (the l2-pin tide): the shared `J` is now constructible+typed via
-  -- `Core.Matrix.exists_pivot_cols_of_rank` (B-determined pivot column set, no restriction on rank-`r` B)
-  -- and `pivotThresholdSplit r (H last) … J` (the Π_J split, with `pivotThresholdSplit_symm_inl_mem_range`
-  -- + the `_castLE = rThresholdSplit` reduction). The shared-J reconciliation = use the IDENTICAL
-  -- `pivotThresholdSplit r (H last) J` here (step (3) column reindex of B) AND in PIN1's frame/`deepestEPivot`
-  -- split. Pivot(B)=pivot(V) (`B = U·V`, `U` injective ⟹ `rank(B_J)=rank(V_J)=r`) makes the SAME
-  -- J valid for both. The `B22`-invertibility math is now banked too (`toBlocks22_isUnit_of_pivot_corner`,
-  -- RankNormalForm) — it is the SAME keystone PIN1's frame fact uses, so the two sides cannot disagree on the
-  -- B22 fact. Threading a single `J` from `deepest_gauge_construction` to both makes divergence a compile-time
-  -- tripwire (`hSreg_eq`'s `rw [h01]` fails to typecheck if the column index types differ).
+  -- BEDROCK BANKED (the l2-pin tide): the shared `J` AND the FULL frame fact are now banked in
+  -- `DeepestPivotFrame` (axiom-clean `[propext, Classical.choice, Quot.sound]`):
+  --   `exists_deepest_lastLayer_pivotFrame H r B hB hr hL hL2` produces `⟨J, Q, IsUnit Q,
+  --    IsUnit ((reindex (pivotThresholdSplit r (H last) J)² Q)₂₂),
+  --    reindex (rThresholdSplit r (H last)) (pivotThresholdSplit r (H last) J)
+  --        (deepestPoint … (lastLayer) · Q) = fromBlocks 1 0 0 0⟩`.
+  -- This is the SINGLE shared object to thread to BOTH PIN1 (the last-layer frame + `deepestEPivot` split)
+  -- and here (step (3) column reindex of B). The shared-J reconciliation = pass the SAME `J`, `Q` to both;
+  -- pivot(B)=pivot(V) (`B = U·V`, `U` injective ⟹ `rank(B_J)=rank(V_J)=r`) makes the SAME `J` valid for the
+  -- target normalization. The `reindex(P0·B·QL)=fromBlocks 1 0 0 0` step uses the SAME
+  -- `pivotThresholdSplit r (H last) J`. Threading a single `J` from `deepest_gauge_construction` to both
+  -- makes divergence a compile-time tripwire (`hSreg_eq`'s `rw [h01]` fails to typecheck if the column
+  -- index types differ). NOTE the frame `Q` is now the EXPLICIT pivot-aligned frame (corrected from the
+  -- unsound generic-corM route — see PIN1 note (A)); the deepest-point frame's last-layer arm must adopt it.
   -- REMAINING (the genuine geometric content, NOT yet written): the J-independent readX/Y/Z→raw block chain
   -- (the sigma-trans `.symm` chase, ~30-50 LoC/arm, only "probed convergent" — see the SUB-BLOCKER above) +
   -- the entry-wise `reindex(fromBlocks readX readY readZ Tcore) = (paramsEquivFlat.symm w − deepestPoint) s`
