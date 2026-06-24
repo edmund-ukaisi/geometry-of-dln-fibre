@@ -479,3 +479,35 @@ reducedness is LOAD-BEARING (if not radical, the trivialization connects to a no
 reduced?) via exact algebra (Gröbner on the anchor + general argument) + decorrelated Codex, and certify
 the Lean-buildable mechanism (route (a) direct-radical vs (b) deferred-via-F_E-reduced) — BEFORE any
 formaliser builds the R2-3 AlgEquiv. Don't build on an unproven reducedness.
+
+## THREAD 16 CERTIFICATE (pen-and-paper, 2026-06-24) — cut ideal RADICAL / F_E REDUCED; route (b)
+
+Clean verdict (no hedge): `I_E = (mult(Ã)−E)` is RADICAL, `F_E = k[Ã]/I_E` REDUCED, for every N≥1 / dim
+vector / target (depends only on rank E). Certified: Singular `primdecGTZ`+`radical` over ℚ on 11 cases
+(anchor `(2,2,2)r1` + generic-E + N=3 `(2,2,2,2)` + `(3,2,3)`/`(2,3,2)`/`(1,2,1)` + E=I + r=0 + `(3,3,3)r1`)
+— ALL radical, NO embedded/nilpotent primes; reducible + non-equidim for low r but always reduced. Component
+count = type-A rank-pair rule. Decorrelated xhigh Codex converged + predicted the `(3,3,3)` data.
+
+**Mechanism (load-bearing): reducedness INHERITED from the reduced ambient rank locus `Z_r` (type-A quiver
+rank locus, known reduced — Buch–Fulton / Kinser–Rajchgot) via faithfully-flat local triviality.** NOT
+smoothness/CM (fibre non-equidim/non-CM for low r — that route is wrong).
+
+**Correction (important):** `sigmaIdeal = sInf(orbitIdeals) = vanishingIdeal` is radical-but-**REDUCIBLE**
+on the chain (`Σ̄^1 = {detA₁·detA₂=0}`, 2 comps); prime ONLY on the single-matrix base `dStratum`. The
+R2-2 prompt's "sigmaIdeal prime over IsAlgClosed" was wrong; the fix removes the worried tension.
+
+**ROUTE (b), deferred — recommended (don't do route a / up-front primary decomp):**
+1. R2-3 AlgEquiv `S ≅ₐ[R] R ⊗_k F_E` (endpoint normalization).
+2. `Sred = (P/sigmaIdeal)[1/ΔP]` reduced — engine `vanishingIdeal_isRadical` (`NullstellensatzCodim:69`).
+3. `Sred ≅ S` ⟹ `R⊗F_E` reduced ⟹ (k→R faithfully flat, char 0) `F_E` reduced ⟹ `I_E` radical.
+So `Scut = Sred` is the CONCLUSION. Cleanest new lemma: the radical-collapse of `MultComorphism` pt 4
+(`fibreGenIdeal = radical(fibreGenIdeal) = vanishingIdeal(fibre)` — the `radical(...)` wrapper drops).
+
+**Confirmed engine handles:** `vanishingIdeal_isRadical` (NullstellensatzCodim:69),
+`vanishingIdeal(fibre)=radical(fibreGenIdeal)` (MultComorphism pt4), `sigmaIdeal=vanishingIdeal`
+(SigmaComponents:130). **One open dependency to pin:** the Mathlib tensor-with-a-field reducedness-descent
+`F_E reduced ⟸ R ⊗_k F_E reduced` (char 0 ⟹ standard; `Algebra.TensorProduct` / faithfully-flat IsReduced).
+
+**NEXT: R2-3 (thread 17)** — the endpoint-normalization AlgEquiv + the route-(b) reducedness chain. The
+recon's HIGH-risk rung, now DE-RISKED (reducedness certified true; mechanism + handles confirmed). Then
+R2-4 (flat/going-down, one-liner) → R2-5 (height) → R2-6 (+C assembly).
