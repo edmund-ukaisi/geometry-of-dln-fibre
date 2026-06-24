@@ -6737,6 +6737,21 @@ finite chart-map algebra only, not analytic transition regularity, chart
 coverage, Q/P reduced-block transition, successor/suffix production, global
 normal crossings, pole order, or RLCT.
 
+The current A4 Case 2 source-selected Schur-complement slice is
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-schur-complement-a4.md`.
+Lean now proves
+`pivotFirstSchurComplement_apply`,
+`selectedEntryNormalizedMap_schurComplement_transition_mul_sq`, and
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply`.
+This is the entrywise finite `Q/P` reduced-block coordinate algebra: in a
+normalised pivot-first block the lower-right entry is `D_ij - x_i*y_j`, and
+on a selected-entry overlap the target Schur coordinate satisfies
+`x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj` under `x_ab != 0`.  This does not supply
+successor residual/following-factor production, analytic transition
+regularity, chart coverage, Jacobians, normal crossings, pole order, or RLCT.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

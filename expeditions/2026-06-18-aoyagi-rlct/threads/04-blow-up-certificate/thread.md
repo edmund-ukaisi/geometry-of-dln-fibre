@@ -5636,3 +5636,35 @@ This is finite selected-entry chart-map algebra only.  It does not prove
 analytic transition regularity, chart coverage, an open-domain atlas, Q/P
 reduced-block transition formulas, source production of successor matrices or
 suffixes, global normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 source-selected Schur complement
+
+Reproduction:
+`reproduction-case2-source-selected-schur-complement-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-selected-schur-complement.md`.
+Review artifact:
+`review-case2-source-selected-schur-complement-a4.md`.
+
+Lean now proves the entrywise finite Schur-complement algebra behind the
+selected-pivot `Q/P` lower-right block:
+
+```text
+pivotFirstSchurComplement_apply
+selectedEntryNormalizedMap_schurComplement_transition_mul_sq
+case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply
+```
+
+The generic ring theorem projects
+`pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A` to the
+scalar formula `A_i_j - A_i_col * A_row_j`.  The product-indexed field theorem
+formalises the denominator-cleared overlap identity
+`x_ab^2 * z_ij = x_ab*x_ij - x_ib*x_aj` under the normalized-coordinate
+condition `x_ab != 0`.  The Case 2 wrapper states the scalar formula in
+source-coordinate names for a supplied residual-block pivot.
+
+This advances the finite `Q/P` reduced-block coordinate algebra beyond the
+previous finite chart-map transition slice.  It is still not a full Case 2
+transition invariant: no analytic transition regularity, chart coverage,
+successor matrix or suffix production, analytic Jacobian/volume theorem,
+global normal crossings, pole order, or RLCT extraction is proved.

@@ -2375,6 +2375,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
 
+The current A4 Case 2 source-selected Schur-complement slice is
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-schur-complement-a4.md`.
+`BlowupArithmetic.lean` now proves the scalar finite `D - x*y` projection
+`pivotFirstSchurComplement_apply`, the selected-entry overlap identity
+`selectedEntryNormalizedMap_schurComplement_transition_mul_sq`, and the Case 2
+source-coordinate wrapper
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply`.
+This closes the elementary entrywise Schur-coordinate part of the source
+`Q/P` calculation, including the denominator-cleared formula
+`x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj` under `x_ab != 0`.  It still does not
+construct successor residual matrices or following factors, prove analytic
+transition regularity, chart coverage, Jacobians, normal crossings, pole
+order, or RLCT.  Next A4 work should use this coordinate algebra only where a
+separate production theorem supplies the target residual/following data.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

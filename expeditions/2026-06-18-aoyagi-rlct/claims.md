@@ -4108,6 +4108,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
 
+Latest A4 Case 2 source-selected Schur complement:
+`BlowupArithmetic.lean` now proves
+`pivotFirstSchurComplement_apply`,
+`selectedEntryNormalizedMap_schurComplement_transition_mul_sq`, and
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply`.
+The first theorem is the finite ring-level scalar identity for the
+lower-right block `D - x*y` after selected-pivot `Q` normalisation.  The second
+formalises the denominator-cleared overlap calculation
+`x_ab^2 * z_ij = x_ab*x_ij - x_ib*x_aj` under the normalized-coordinate
+condition `x_ab != 0`.  The third is the Case 2 source-coordinate wrapper for
+a supplied residual-block pivot.  This is finite matrix/field algebra only:
+it does not prove analytic transition regularity, chart coverage, source
+production of successor matrices or suffixes, global normal crossings, pole
+order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-schur-complement-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-schur-complement.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

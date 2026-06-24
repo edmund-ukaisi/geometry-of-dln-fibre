@@ -6493,6 +6493,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
 
+Latest A4 Case 2 source-selected Schur complement:
+`BlowupArithmetic.lean` now proves
+`pivotFirstSchurComplement_apply`,
+`selectedEntryNormalizedMap_schurComplement_transition_mul_sq`, and
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply`.
+These record the elementary Case 2 pp. 20-21 finite Schur-coordinate
+calculation: the lower-right block after the selected-pivot `Q` operation is
+entrywise `D_ij - x_i*y_j`, and on a selected-entry overlap the
+denominator-cleared target Schur coordinate satisfies
+`x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj` under `x_ab != 0`.  This is finite
+matrix/field algebra only and does not prove chart coverage, analytic
+transition regularity, successor/following-factor production, Jacobians,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-schur-complement-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-schur-complement.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

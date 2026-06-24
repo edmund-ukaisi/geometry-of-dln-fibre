@@ -5381,6 +5381,81 @@ def pivotFirstD {ι κ R : Type*} (rowPivot : ι) (colPivot : κ) (A : Matrix ι
     Matrix (pivotComplement rowPivot) (pivotComplement colPivot) R :=
   fun i j ↦ A i.1 j.1
 
+omit [Fintype κ] [DecidableEq κ] in
+/-- Entrywise form of the pivot-first lower-right Schur complement.
+
+This is only the scalar finite algebra in the already-normalised pivot block:
+it does not prove chart production, regularity, Jacobians, normal crossings,
+or RLCT extraction. -/
+theorem pivotFirstSchurComplement_apply
+    {ι κ R : Type*} [CommRing R]
+    {rowPivot : ι} {colPivot : κ}
+    (A : Matrix ι κ R)
+    (i : pivotComplement rowPivot) (j : pivotComplement colPivot) :
+    (pivotFirstD rowPivot colPivot A -
+        pivotFirstX rowPivot colPivot A * pivotFirstY rowPivot colPivot A) i j =
+      A i.1 j.1 - A i.1 colPivot * A rowPivot j.1 := by
+  simp [pivotFirstD, pivotFirstX, pivotFirstY, Matrix.mul_apply]
+
+omit [Fintype κ] in
+/-- Denominator-cleared entrywise Schur formula on a selected-entry overlap.
+
+If a second product-indexed pivot has nonzero normalised coordinate in the
+source selected chart, then the target chart divides every normalised center
+coordinate by that denominator.  The target lower-right Schur entry therefore
+satisfies the finite identity
+`x_ab^2 z_ij = x_ab x_ij - x_ib x_aj`.  This is only a field-algebra chart-map
+calculation; it is not analytic transition regularity, chart coverage,
+Jacobian control, normal crossings, or RLCT extraction. -/
+theorem selectedEntryNormalizedMap_schurComplement_transition_mul_sq
+    {ρ κ K : Type*} [Field K] [DecidableEq ρ] [DecidableEq κ]
+    {sourcePivot targetPivot : ρ × κ}
+    (residual : ρ × κ → K)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0)
+    (i : pivotComplement targetPivot.1) (j : pivotComplement targetPivot.2) :
+    let denom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+    let targetResidual : ρ × κ → K :=
+      fun q ↦ selectedEntryNormalizedMap sourcePivot residual q / denom
+    let A : Matrix ρ κ K :=
+      fun r c ↦ selectedEntryNormalizedMap targetPivot targetResidual (r, c)
+    denom ^ 2 *
+        (pivotFirstD targetPivot.1 targetPivot.2 A -
+          pivotFirstX targetPivot.1 targetPivot.2 A *
+            pivotFirstY targetPivot.1 targetPivot.2 A) i j =
+      denom * selectedEntryNormalizedMap sourcePivot residual (i.1, j.1) -
+        selectedEntryNormalizedMap sourcePivot residual (i.1, targetPivot.2) *
+          selectedEntryNormalizedMap sourcePivot residual (targetPivot.1, j.1) := by
+  dsimp
+  have hij_ne : (i.1, j.1) ≠ targetPivot := by
+    intro h
+    exact i.2 (congrArg Prod.fst h)
+  have hib_ne : (i.1, targetPivot.2) ≠ targetPivot := by
+    intro h
+    exact i.2 (congrArg Prod.fst h)
+  have haj_ne : (targetPivot.1, j.1) ≠ targetPivot := by
+    intro h
+    exact j.2 (congrArg Prod.snd h)
+  simp [pivotFirstD, pivotFirstX, pivotFirstY, Matrix.mul_apply,
+    selectedEntryNormalizedMap_of_ne
+      (residual :=
+        fun q : ρ × κ ↦
+          selectedEntryNormalizedMap sourcePivot residual q /
+            selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      hij_ne,
+    selectedEntryNormalizedMap_of_ne
+      (residual :=
+        fun q : ρ × κ ↦
+          selectedEntryNormalizedMap sourcePivot residual q /
+            selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      hib_ne,
+    selectedEntryNormalizedMap_of_ne
+      (residual :=
+        fun q : ρ × κ ↦
+          selectedEntryNormalizedMap sourcePivot residual q /
+            selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      haj_ne]
+  field_simp [htarget]
+
 /-- Reindex a following factor so its rows match the pivot-first column order. -/
 def pivotFirstFollowingFactor {κ τ R : Type*} [DecidableEq κ]
     (colPivot : κ) (C : Matrix κ τ R) :
@@ -9224,6 +9299,31 @@ theorem case2SourceSelectedSubstitutionBlockOfMem_eq_selectedSubstitutionMatrixO
       (case2ResidualBlockPivotRowOfMem hp)
       (case2ResidualBlockPivotColOfMem hp) = u := by
   simp [case2SourceSelectedSubstitutionMatrixOfMem, case2SelectedSubstitutionMatrix]
+
+/-- Entrywise source-coordinate Schur-complement formula for a supplied Case 2
+residual-block pivot.
+
+This projects the finite lower-right block
+`D - x*y` appearing after the selected-pivot `Q/P` algebra to source
+coordinates.  It is not a chart-production theorem, transition-regularity
+statement, Jacobian computation, normal-crossing statement, or RLCT extraction. -/
+theorem case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R)
+    (i : pivotComplement (case2ResidualBlockPivotRowOfMem hp))
+    (j : pivotComplement (case2ResidualBlockPivotColOfMem hp)) :
+    let row := case2ResidualBlockPivotRowOfMem hp
+    let col := case2ResidualBlockPivotColOfMem hp
+    let A := case2SourceSelectedNormalizedBlockOfMem hp residual
+    (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A) i j =
+      case2SourceSelectedNormalizedMapOfMem hp residual (i.1.1, j.1.1) -
+        case2SourceSelectedNormalizedMapOfMem hp residual (i.1.1, p.2) *
+          case2SourceSelectedNormalizedMapOfMem hp residual (p.1, j.1.1) := by
+  dsimp
+  simpa [case2SourceSelectedNormalizedBlockOfMem] using
+    (pivotFirstSchurComplement_apply
+      (case2SourceSelectedNormalizedBlockOfMem hp residual) i j)
 
 /-- Source-coordinate Case 2 selected-pivot `Q/P` identity for a source pivot
 pair known to lie in the residual-block center and an old recurrence state
