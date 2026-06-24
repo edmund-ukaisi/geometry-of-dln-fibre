@@ -317,6 +317,88 @@ theorem aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta
       simpa [aoyagiHtildeIntervalValueSetNat,
         aoyagiLemma5InteriorCoord, hj_lt] using hmem
 
+/-- Interior coordinates where a supplied terminal chain differs from the
+supplied base value.
+
+The guard in the predicate carries the membership proof needed to view the
+Nat coordinate as a member of `Fin (ell+1)`. -/
+def aoyagiLemma5InteriorNonbaseCoordSet (ell : ℕ)
+    (H : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ) : Finset ℕ :=
+  (Finset.Icc 1 (ell - 1)).filter fun j ↦
+    if hj : j ∈ Finset.Icc 1 (ell - 1) then
+      H (aoyagiLemma5InteriorCoord ell j hj) ≠ baseValue j
+    else
+      False
+
+/-- The first nonbase interior counted datum, or the base datum if the supplied
+terminal chain agrees with the supplied base values on every interior
+coordinate.
+
+This is a Lean tie-breaker for finite bookkeeping.  It is not Aoyagi's missing
+Lemma 5 classifier and carries no injectivity or back-to-label assertion. -/
+noncomputable def aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase
+    (ell : ℕ) (H : Fin (ell + 1) → ℤ) (baseValue : ℕ → ℤ) :
+    AoyagiLemma5CountDatum := by
+  classical
+  exact
+    if hnonempty : (aoyagiLemma5InteriorNonbaseCoordSet ell H baseValue).Nonempty then
+      let j := (aoyagiLemma5InteriorNonbaseCoordSet ell H baseValue).min' hnonempty
+      if hj : j ∈ Finset.Icc 1 (ell - 1) then
+        some (Sigma.mk j (H (aoyagiLemma5InteriorCoord ell j hj)))
+      else
+        none
+    else
+      none
+
+/-- The first-nonbase-or-base selector maps terminal binary-prefix-delta chain
+data into the counted interval datum set.
+
+If no interior coordinate differs from the supplied base values, the selected
+datum is `none`.  Otherwise the least differing coordinate is mapped by the
+single-coordinate terminal binary maps-to theorem above. -/
+theorem aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ r : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H r = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H r = 1) :
+    aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase ell H baseValue ∈
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  classical
+  by_cases hnonempty :
+      (aoyagiLemma5InteriorNonbaseCoordSet ell H baseValue).Nonempty
+  · let j :=
+      (aoyagiLemma5InteriorNonbaseCoordSet ell H baseValue).min' hnonempty
+    have hmem :
+        j ∈ aoyagiLemma5InteriorNonbaseCoordSet ell H baseValue := by
+      dsimp [j]
+      exact Finset.min'_mem _ _
+    have hmem_filter :
+        j ∈ Finset.Icc 1 (ell - 1) ∧
+          (if hj : j ∈ Finset.Icc 1 (ell - 1) then
+            H (aoyagiLemma5InteriorCoord ell j hj) ≠ baseValue j
+          else
+            False) := by
+      simpa [aoyagiLemma5InteriorNonbaseCoordSet] using
+        (Finset.mem_filter.mp hmem)
+    have hj : j ∈ Finset.Icc 1 (ell - 1) := hmem_filter.1
+    have hne_base :
+        H (aoyagiLemma5InteriorCoord ell j hj) ≠ baseValue j := by
+      simpa [hj] using hmem_filter.2
+    have hdatum :
+        some (Sigma.mk j (H (aoyagiLemma5InteriorCoord ell j hj))) ∈
+          aoyagiLemma5CountDatumSet ell a M m baseValue :=
+      aoyagiLemma5CountDatumSet_mem_of_terminalH_binaryIncrementPrefixDelta
+        ell a M m H baseValue hj ha hH0 hHlast hselected hbin hne_base
+    simpa [aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase,
+      hnonempty, j, hj] using hdatum
+  · simpa [aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase, hnonempty] using
+      none_mem_aoyagiLemma5CountDatumSet ell a M m baseValue
+
 /-- Filtering out elements with value `y` maps to erasing `y` from the image.
 
 This is finite-set bookkeeping for turning full coordinate-value coverage into

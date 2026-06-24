@@ -6726,6 +6726,23 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
 
+Latest A5 terminal binary first-nonbase selector:
+`Lemma5SuppliedFamily.lean` now defines
+`aoyagiLemma5InteriorNonbaseCoordSet` and
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase`, and proves
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta`.
+The selector scans `Icc 1 (ell-1)` for the least coordinate where the supplied
+terminal chain differs from `baseValue`; if the scan is empty it returns
+`none`.  Under terminal binary-prefix-delta hypotheses, the selected datum
+belongs to `aoyagiLemma5CountDatumSet`.  This is a finite maps-to adapter, not
+classifier/injection/no-extra exactness and not pole-order, normal-crossing,
+or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-binary-first-nonbase-selector.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.

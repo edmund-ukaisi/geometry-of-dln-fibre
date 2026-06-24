@@ -5542,3 +5542,32 @@ with explicit base-chain bounds plus a coordinate equality.  It does not
 construct the base chain from Aoyagi's printed Eq3/Eq4/Eq5, prove source-label
 legality, no-extra coverage, injectivity, back-to-label coverage, terminal
 exactness, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-24 Lean Lemma 5 terminal binary first-nonbase selector
+
+Reproduction:
+`reproduction-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-terminal-binary-first-nonbase-selector.md`.
+Review artifact:
+`review-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+
+Lean now adds a finite first-nonbase-or-base selector in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`:
+
+```text
+aoyagiLemma5InteriorNonbaseCoordSet
+aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase
+aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta
+```
+
+It scans the interior coordinate range `Icc 1 (ell-1)` for the least coordinate
+where a supplied terminal chain value differs from `baseValue`; if none exists
+it returns the base datum `none`.  Under the same terminal binary-prefix-delta
+hypotheses as the existing one-coordinate maps-to theorem, the selected datum
+belongs to `aoyagiLemma5CountDatumSet`.
+
+This is a total finite maps-to adapter only.  The "first" choice is a Lean
+tie-breaker, not Aoyagi's source classifier.  It proves no injection,
+back-to-label map, no-extra coverage, Eq3/Eq4/Eq5 branch construction,
+terminal exactness, pole order, normal crossings, or RLCT extraction.

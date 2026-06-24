@@ -7086,6 +7086,26 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
 
+Latest A5 terminal binary first-nonbase selector:
+`Lemma5SuppliedFamily.lean` now defines
+`aoyagiLemma5InteriorNonbaseCoordSet` and
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase`, then proves
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta`.
+The selector returns `none` when the supplied terminal chain agrees with
+`baseValue` on all interior coordinates, and otherwise returns the least
+interior nonbase coordinate-value datum.  Under terminal binary-prefix-delta
+hypotheses, this datum belongs to the counted-datum set by either base
+membership or the existing single-coordinate terminal binary maps-to theorem.
+This is finite selector bookkeeping only; the least-coordinate choice is not a
+source classifier and proves no injection, back-to-label map, no-extra
+coverage, Eq3/Eq4/Eq5 branch construction, terminal exactness, pole order,
+normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-binary-first-nonbase-selector.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

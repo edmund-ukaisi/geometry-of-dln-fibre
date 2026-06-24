@@ -3094,6 +3094,32 @@ normal crossings, pole order, or RLCT.  Future A5 work should use this as a
 constructor input for endpoint-family payloads when convenient; it should not
 displace the A4/A0 and A2 source-moving priorities.
 
+The current A5 terminal binary first-nonbase selector slice is
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+Lean adds a deterministic finite selector from a supplied terminal binary chain
+to either the base counted datum or the least nonbase interior coordinate-value
+datum, and proves this selected datum lands in
+`aoyagiLemma5CountDatumSet`.  Treat this as maps-to infrastructure only: the
+least-coordinate tie-breaker is not Aoyagi's classifier and does not prove
+injection, no-extra coverage, back-to-label coverage, terminal exactness, pole
+order, normal crossings, or RLCT.
+
+Next A2 source-moving target from xhigh scouting: reproduce the p. 13
+product-reduction triangular coordinate chart, not a full regular-suspension
+certificate.  The reproduction should pin the forward and inverse formulas for
+`C^(S+1)`, `F2''`, `F3''`, and `C1''`, keep passive variables for dimension
+balance, verify the displayed product-difference block
+`C1-Er`, `-F2`, `-F3`, `prod C^(s)-F3F2`, and check that no inverse of `D_S`
+is used.  Only after review should a Lean slice such as
+`ProductReductionChart.lean` be attempted.
+
+Next A4 finite-atlas target from xhigh scouting: if returning to Case 2 chart
+family plumbing, define fixed raw-pivot finite selected-entry algebra
+predicates in `SelectedEntryNormalCrossing.lean` and prove the boundary using
+the landed finite affine transition certificate.  Do not use the old
+`exists_trivial` path, do not call the predicates analytic regularity, and do
+not claim Aoyagi prints all raw-pivot charts.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

@@ -4531,6 +4531,26 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
 
+Latest A5 terminal binary first-nonbase selector:
+`Lemma5SuppliedFamily.lean` now proves a total finite maps-to adapter for a
+supplied terminal binary-prefix-delta chain:
+`aoyagiLemma5InteriorNonbaseCoordSet`,
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase`, and
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta`.
+The selector returns the base datum when all interior chain values agree with
+`baseValue`, otherwise the least nonbase interior coordinate-value datum.  The
+membership proof is exactly base insertion in the first case and the existing
+single-coordinate terminal binary maps-to theorem in the second.  This is not
+the Lemma 5 source classifier: no injection, no no-extra coverage, no
+back-to-label map, no Eq3/Eq4/Eq5 branch construction, no terminal exactness,
+no pole order, no normal crossings, and no RLCT extraction are proved.
+Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-terminal-binary-first-nonbase-selector.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-terminal-binary-first-nonbase-selector-a5.md`.
+
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
