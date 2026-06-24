@@ -51,10 +51,36 @@ base presentation (`Iad = J`, `height J = C`) and the G2-3 total presentation.
   gives `height = 1 = C`. (Concrete witness probe to be added once the reindex lands.)
 - **Axioms:** `[propext, Classical.choice, Quot.sound]`.
 
-## Remaining (the localized transport — NOT yet landed)
-`height J = C` for `J ⊆ A_loc = Localization.Away detΔ` needs, stacked on Seam 2: (a) the
-`RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar` reindex; (b) localization transport of the
-graph-ideal height to the `Sd`-based ring (Mathlib's `MvPolynomial.isLocalization` instance +
-`IsLocalization.height_map_of_disjoint`). Then `Iad = J` by `height_strict_mono_of_is_prime` (landed
-`height Iad = C` + `height J = C`) + regularity. Interface (literal `J` vs `A_loc/Iad ≅ Sd`) pending
-controller. **Awaiting reviewer fidelity read on Seams 1 + 2.**
+## Seam 2b — `height_coordIdeal_eq` (the coordinate-ideal-height target)
+
+`Core/GraphIdealHeight.lean` (commit `6f7f2b35`). `height_coordIdeal_eq : (Ideal.span (Set.range
+fun i ↦ X i) : Ideal (MvPolynomial σ (MvPolynomial τ k))).height = Nat.card σ` — the `σ`-block
+coordinate ideal has height `#σ` (it is `graphIdeal (fun _ ↦ 0)`). The target the elimination's
+translation automorphism transports the Schur graph ideal `J` to. Sorry-free, axiom-clean.
+
+## Seam 3 — the reindex + detΔ-localization bridge (`DeterminantalBaseElimination.lean`)
+
+Commits `36817e5f`, `8784c8af`, `cce4016e`, `c0cd6e2f`. All sorry-free, axiom-clean.
+
+| Name | Statement | Status |
+|---|---|---|
+| `B22block` / `SchurVar` | the eliminated / free Schur coordinate types | def |
+| `card_B22block` / `card_SchurVar` | `#B22block = (p−r)(q−r) = C` / `#SchurVar = r(p+q−r) = δ` | Proved |
+| `finSplit` (+`_castLE`) | `Fin n ≃ Fin r ⊕ Fin (n−r)`; pivot ↦ `Sum.inl` | def / Proved |
+| `repCoordReindex` (+`_pivot`) | `RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar`; pivot coord ↦ Δ-block | def / Proved |
+| `mult_stratum_eq` / `multPoly_stratum_apply` | `mult (dStratum q p) A = A 0`; `multPoly … a b = X ⟨0,(a,b)⟩` | Proved |
+| `detSchurS` | `det` of the Δ-coordinate matrix in `MvPolynomial SchurVar k` | def |
+| `renameEquiv_detPivot` | `detΔ ↦ rename Sum.inr detSchurS` (SchurVar-only) | Proved |
+| `blockAlgEquiv` | `A_eng ≃ₐ[k] MvPolynomial B22block (MvPolynomial SchurVar k)` | def |
+| `blockAlgEquiv_detPivot` | `detΔ ↦ C detSchurS` (detΔ lives in the SchurVar coefficients) | **Proved** |
+
+## Handed off to thread 13 (`base-elimination-transport`) — NOT landed here
+The final localization transport assembling the above into the public interface: localize
+`blockAlgEquiv` at `detΔ`/`detSchurS` ⟹ `A_loc ≃ₐ MvPolynomial B22block Sd` (`Sd = Localization.Away
+detSchurS`, via `MvPolynomial.isLocalization` + `IsLocalization.Away.awayMapₐ`); `height J = C` via
+the translation auto + `height_coordIdeal_eq` + `IsLocalization.height_map_of_disjoint`; `Iad = J` by
+`Ideal.height_strict_mono_of_is_prime` (landed `height Iad = C` + `height J = C`, the honest hard
+direction `Iad ⊆ J`); expose `A_loc/Iad ≅ₐ[k] Sd` (J stays internal; {domain, dim δ} derive from the
+equiv). Interface resolved by controller: expose the equiv. All three modules aggregated into
+`DLNFibre.lean` (controller, lines 110–118). Seams 1+2 reviewer-audited FIDELITY PASS; Seam 3 +
+Seam 2b awaiting fidelity read.
