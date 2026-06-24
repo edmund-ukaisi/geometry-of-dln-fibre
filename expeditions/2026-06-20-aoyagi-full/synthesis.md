@@ -325,6 +325,22 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
 - **3 tides running:** `r1-wedge-l2-build` (R1 hdiv L=2), `l2-pin2-close` (PIN2 matrix-block), `l2-pin1-designer`
   (PIN1 design-validation). Non-overlapping. hfin long pole + L2 L=1 base + wiring still queued.
 
+**★ UPDATE-10 (2026-06-24) — R1 hdiv (3,3,4) anchor BANKED (reviewed); L2 PIN J-independent atoms banked + PIN1 fully specced; coordinated L2-close + anchor-finish building.**
+- **R1 hdiv (3,3,4) achiever box-divergence INTEGRATED @c1bf8ba4 (REVIEWED, green 3716).** `routeM334_box_diverges`:
+  the binding corank-2 headline obstruction, L=2. Soundness-critical math SORRY-FREE (exact F∘φ=u₀²·U via Schur
+  shear + weighted blow-up, sympy-verified; threshold 4=½·minAdm; the assembly). 3 sorries = geometric
+  measure-plumbing (c-o-v Jacobian u⁷, image containment, a.e.-positivity). Sub-reviewer confirmed fidelity +
+  soundness. `r1-334-residuals` (ad05d8a5) closing the 3 → fully-sorry-free anchor.
+- **L2 PIN1 build plan COMPLETE (thread-23, @4f90bfb1) + PIN2 J-independent atoms banked @99c18329** (DeepestFrameRaw:
+  the read→raw chain; DeepestSplitConcrete: the index round-trip — both sorry-free). So both PINs are now
+  fully-specced + de-risked. `l2-pins-coordinated` (a4406e39) building BOTH on a SINGLE shared LastPivot J
+  (exists_pivot_cols_of_rank Core brick → pivotThresholdSplit → frame B22-invertible → PIN1 via
+  regStraightenTotalCLM_equiv_of_regBlock_isUnit → PIN2 J-dependent tail → assembly tripwire).
+- **WORKTREE-BASE HAZARD is SYSTEMATIC** (a680, a11ac both off 2ca5e07a not aoyagi-full; both self-corrected via
+  the STEP-0 base-check now in every brief). The base-check mitigation works.
+- **2 tides driving:** l2-pins-coordinated (L2 close: PIN1+PIN2 on shared J), r1-334-residuals (anchor finish).
+  After L2 PINs: L=1 smooth base + wiring → L2 gate. R1: (3,3,4) anchor → general-(M₀,M₁,M₂) lift + hfin (long pole).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
