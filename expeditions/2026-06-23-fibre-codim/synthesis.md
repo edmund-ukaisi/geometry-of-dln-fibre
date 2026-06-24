@@ -434,3 +434,34 @@ confirmed terminated. Applied from G2-3 on.
 - G1 (reduce-to-E) ✓ · G2-1 (chart Schur criterion) ✓ · **G2-2 (localized base presentation `A_loc/Iad ≅
   Sd`) ✓** · **G2-3 NEXT — the TOTAL presentation + flatness (the genuine wall)** · G2-4 (height-additivity
   → codim_{Σ̄^r}(fibre)=δ) · G2-5 (reducibility/min-prime) · G3/G4 (assembly + discharge BundleShiftInterface).
+
+## G2-3 RECON VERDICT (thread 14, 2026-06-24) — REACHABLE, materially harder than G2-2 (~7–10 modules)
+
+Scout + decorrelated Codex converged. No Mathlib gap; the wall is a from-scratch affine-AG construction.
+
+**Route — endpoint normalization (NOT G2-2's graph trick — it doesn't port).** In `Rep_d` the product
+entries are degree-N polys and the total rank ideal FACTORS (reducible: e.g. `det(A₂A₁)=detA₁·detA₂` for
+(2,2,2)r1) — so the base's B22-graph-elimination fails. Instead: `R := Sd` (G2-2's output, regular dim δ),
+`S := O(Σ̄^r ∩ chart)`. Write the chart target `B = L·E·H` (L,H unipotent); normalize ONLY the endpoint
+factors `Ã₁ = A₁H⁻¹`, `Ã_N = L⁻¹A_N` (middles unchanged) ⟹ `mult(A)=B ⟺ mult(Ã)=E` ⟹ `S ≅ₐ[R] R ⊗_k F_E`
+with `F_E = k[Ã]/(mult(Ã)−E)` (E constant, uniform in N). Free over k ⟹ flat ⟹ HasGoingDown ⟹ the LANDED
+`height_eq_height_add_of_liesOver_of_hasGoingDown` ⟹ `codim_{Σ̄^r}(fibre)=δ`. LEH transport verified exact
+on the (2,2,2),r=1 anchor; the 5 flatness/going-down closers compile at v4.29 (throwaway probe).
+
+**Single chart covers the whole fibre at E** (pivot=1≠0). The `+C` (to `codim_Rep = C+δ`) is a SEPARATE
+assembly rung reusing Brick A `minimalPrimes_sigmaIdeal_eq`; G2-4/G2-5 (reducibility) FOLD into it.
+
+**DEAD route (killed, don't re-explore):** the CI / `d_N·d_0` shortcut is a CONFOUND — `(d_N−r)(d_0−r) =
+C_single` (target-matrix codim) ≠ `C = cCodim_Rep(Σ̄^r)` (quiver codim); they differ at r=0 (landed
+`codimRepCanonical(fibre d222 0)=3` ≠ `d_N·d_0=4`), so `mult⁻¹(0)` is NOT a CI. Codex independently rejected.
+
+**Rung-ladder (R2-1..R2-6):** R2-1 localized total ring `S` (low) → **R2-2 base-change graph presentation
+`S ≅ R[Ã]/(mult(Ã)−B_univ)` (M–L, the swing factor)** → **R2-3 endpoint-normalization AlgEquiv `S ≅ R ⊗_k
+F_E` (HIGH — the wall, built on R2-2)** → R2-4 flat/going-down closer (low, one-liner once the AlgEquiv
+exists) → R2-5 `height m_B=δ` + minimal-prime relative-height-0 (med) → R2-6 `+C` assembly + reducibility
+fold (med). The wall (R2-2/R2-3) is new scheme-free affine scaffolding (the engine carries O(Σ̄^r) only as
+a `vanishingIdeal`); everything else reuses landed engines.
+
+**Plan (recon's, adopted):** spec R2-2 FIRST as a SPECIFY-first probe-tide — it decides M (reuses G2-2's
+`blockAlgEquivLoc`/`IsLocalization.Away` machinery ⟹ R2-3 solid) vs L (needs new affine presentation ⟹
+pen-and-paper certify the R2-3 ideal-transport before any formaliser commits). One write-tide at a time.
