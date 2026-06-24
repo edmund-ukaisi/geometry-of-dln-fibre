@@ -131,6 +131,34 @@ theorem repCoordReindex_b22 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
   rw [finSplit_natAdd, finSplit_natAdd]
   rfl
 
+/-- A `B12` coordinate (pivot row `i`, non-pivot column `b`) maps to the `B12`-block of `SchurVar`:
+`Sum.inr (Sum.inr (Sum.inl (i, b)))`. -/
+theorem repCoordReindex_b12 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (i : Fin r) (b : Fin (q - r)) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.castLE hp i, Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩
+      = Sum.inr (Sum.inr (Sum.inl (i, b))) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.castLE hp i),
+          finSplit hq (Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))))) = _
+  rw [finSplit_castLE, finSplit_natAdd]
+  rfl
+
+/-- A `B21` coordinate (non-pivot row `a`, pivot column `i`) maps to the `B21`-block of `SchurVar`:
+`Sum.inr (Sum.inr (Sum.inr (a, i)))`. -/
+theorem repCoordReindex_b21 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (i : Fin r) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a), Fin.castLE hq i)⟩
+      = Sum.inr (Sum.inr (Sum.inr (a, i))) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a)),
+          finSplit hq (Fin.castLE hq i)))) = _
+  rw [finSplit_natAdd, finSplit_castLE]
+  rfl
+
 /-! ## The generic product entries are the coordinate variables (`N = 1`) -/
 
 variable {k : Type u} [Field k]
