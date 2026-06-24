@@ -424,8 +424,11 @@ NOT PROVABLE from the stated hypotheses** (`IsUnit (Pf first)` / `IsUnit (Qf las
 invertibility needs `IsUnit (reindex (Qf last)).toBlocks₂₂`, which a unit `Qf last` does not force (a
 unit can have a singular ₂₂ block), and which the deepest-point frame as chosen from `IsDeepLayers`
 (vanishing tail rows) does not supply — see the sharpened sub-blocker in the proof body
-(counterexample `r=1, A=[0 1]`). Carried as a correctly-stated `sorry`: the frame must be strengthened
-pivot-compatibly (a new `IsDeepLayers` clause) for the conclusion to hold. -/
+(counterexample `r=1, A=[0 1]`). The naive "last layer first `r` columns independent" clause is ALSO
+refuted (decorrelated Codex ×2): it silently restricts `B` (forces `B`'s first `r` columns independent),
+so it is NOT a sound spec change. The genuine fix is a `B`-determined PIVOT-ALIGNED output-coordinate
+permutation of the residual pack (measure-preserving, RLCT- and `nReg`-preserving) — a coordinated
+re-architecture out of this tide's scope. Carried as a correctly-stated `sorry`. -/
 theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
@@ -468,21 +471,34 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- PIVOT column need not be among the first `r` columns, so the same obstruction bites: the frame as
   -- chosen from `IsDeepLayers` (vanishing tail rows) does NOT force `Qf last` ₂₂-invertible.
   --
-  -- (3) HONEST WAY FORWARD (genuinely moves the boundary; for the controller/a follow-on tide):
-  --   (a) STRENGTHEN THE FRAME, not the rank-normal-form lemma — choose the last-layer right-frame
-  --       PIVOT-COMPATIBLY (first `r` final columns ARE the pivot columns), so `B₂₂ = I` by the
-  --       explicit witness `Q = [[A11⁻¹, −A11⁻¹A12],[0, I]]` (cheap via `fromBlocks_multiply`). This
-  --       needs a NEW pivot-compatibility clause on `IsDeepLayers` (the deepest last layer's first `r`
-  --       columns are linearly independent / pivot) — NOT in the current API.
-  --   (b) Failing a frame strengthening, add the genuinely-needed hypothesis to THIS statement:
-  --       `(hB22 : IsUnit ((reindex (rThresholdSplit r (H (lastLayer hL).succ) _) … (Qf (lastLayer hL))).toBlocks₂₂))`
-  --       and close under it (the value-fold + the block-triangular inverse above; consumer is
-  --       `regStraightenTotalCLM_equiv_of_regBlock_isUnit`). The `sorry` then MOVES to the call site
-  --       (discharging `hB22` from the frame), which is route (a) again.
+  -- (3) THE BRIEF'S "first `r` columns independent" CLAUSE IS ALSO REFUTED — it is UNSATISFIABLE for
+  -- general `B` (decorrelated Codex `xhigh` ×2, 2026-06-24). The deepest last layer is `embM·V` with
+  -- `V = projM·Q⁻¹` a rank-`r` factor of `B = U·V` (`U` full column rank). Its first `r` columns are
+  -- independent ⟺ `V`'s first `r` columns are ⟺ (since `B_{:,<r} = U·V_{:,<r}`, `U` injective)
+  -- `B`'s OWN first `r` columns are independent. That is FALSE for valid rank-`r` targets (e.g. `r=1`,
+  -- `B = [0, b]`, `b ≠ 0`: column 0 is zero). So a `deepestPoint`/`IsDeepLayers` clause "last layer's
+  -- first `r` columns independent" would SILENTLY EXCLUDE valid `B` — it does NOT preserve the headline's
+  -- generality, hence is NOT a sound spec change (the brief's STOP gate: the construction genuinely
+  -- CANNOT satisfy it for arbitrary `B`). Per the binding soundness gate, this clause is NOT committed.
+  --
+  -- THE SOUND FIX (the genuine boundary move; large, for the controller/a follow-on tide): PIVOT-ALIGN
+  -- the residual coordinatization. `nReg = r(H₀+Hᴸ−r)` is gauge-invariant, but `deepestEPivot`'s
+  -- `(P11−I, P12, P21)` split assumes the rank-`r` pivot sits in the FIRST `r` output coordinates; when
+  -- `B`'s pivot columns are elsewhere, the `P12 = Y·B₂₂` direction is misaligned (`B₂₂` singular) and `F`
+  -- is genuinely non-invertible AT THIS PACK — not because the headline is false, but because the pack is
+  -- not pivot-aligned. The fix threads a `B`-determined output-coordinate permutation `σ` (a measure-
+  -- preserving linear iso of `Params H`, leaving the RLCT and the `nReg/2` count unchanged) so the chosen
+  -- `r` pivot columns lead; then `B₂₂ = I` by `Q = [[V₁⁻¹, −V₁⁻¹V₂],[0,I]]` and `F` is invertible. This
+  -- touches `deepestEPivot`'s `regResidualPack` (or `wLayers`/`projM`/`embM`/frame/telescoping in concert)
+  -- — a coordinated re-architecture, NOT a localized clause; out of this tide's scope.
+  --   (b) Failing the permutation re-architecture, add the genuinely-needed hypothesis to THIS statement:
+  --       `(hB22 : IsUnit ((reindex … (Qf (lastLayer hL))).toBlocks₂₂))` and close under it (the value-fold
+  --       + block-triangular inverse above; consumer `regStraightenTotalCLM_equiv_of_regBlock_isUnit`).
+  --       The `sorry` then MOVES to the call site — which needs the pivot-aligned permutation to discharge.
   -- The product-value + quadratic-derivative-zero half is reachable on the banked lemmas
   -- (`prodAux_regSlice_through_first`, `framedParamsReg_regSlice_{first,last,interior}`,
   -- `readY_regSlice_last`, `devXZ_corner_devY`; ~120 lines); the `∃ F : ≃L` conclusion is BLOCKED on
-  -- the frame strengthening (3a) — without it the conclusion is not just unproven but FALSE.
+  -- the pivot-aligned reparametrisation — without it the conclusion is FALSE at non-pivot-aligned packs.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -678,18 +694,28 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- cancellation was not definitional and the round-trip could not be proved). The whole downstream chain
   -- (incl. `deepestSplit_exists`) still builds green after the swap.
   --
-  -- SUB-BLOCKER (precise, honest; remaining content of the cert):
-  --   (i) The cert is stated over a GENERIC `split` argument; the round-trip content needs the CONCRETE
-  --       `deepestSplit` map. Closing PIN2 needs the concrete map named (`def deepestSplit := the
-  --       translation∘relabel∘unpack of `deepestSplit_exists`) + accessor lemmas `deepestSplit_readX/Y/Z`
-  --       proving the round-trip, then either restate this cert against `deepestSplit` or add a
-  --       `split = deepestSplit …` hypothesis. With the enumeration now shared, the accessor proof is an
-  --       equiv-composition chase across `sumPiEquivProdPi` / `piCongrLeft` / `sumAssoc` / `sumComm` /
-  --       `Equiv.Set.sumCompl` (each with its `_apply` lemma) — intricate but no longer blocked on a
-  --       conceptual mismatch (the `piCongrLeft` cast friction is the main Lean hazard).
-  --   (ii) Then steps (2)–(4): `endpoint_telescoping` (interfaces collapse, banked), `reindex(P0·B·QL) =
+  -- PROGRESS (this tide, 2026-06-24): the CONCRETE `deepestSplit` map + the round-trip INDEX HALF are
+  -- BANKED sorry-free in `DeepestSplitConcrete` (axiom-clean `[propext, Classical.choice, Quot.sound]`):
+  --   • `deepestSplit` (the named `deepestSplit_exists` witness) + `deepestSplit_mp_basepoint`;
+  --   • `regGaugeSlotEquiv_deepestSplit`: `regGaugeSlotEquiv ((deepestSplit w).reg, .gauge) idx
+  --       = (w − wstar) (deepestRoleIndexEquiv.symm (regGaugeRecombine (regGaugeIdxSplit idx)))`
+  --     — the `piCongrLeft`/`sumPiEquivProdPi` cancellation chase (the HIGHEST-RISK Lean step, the two
+  --     `regGaugeIdxSplit` enumerations cancelling through the `Sum.rec` recombination), now DONE;
+  --   • `readX/Y/Z_deepestSplit`: the X/Y/Z-arm specializations.
+  --
+  -- SUB-BLOCKER (precise; remaining content, on TOP of the banked round-trip index half):
+  --   (i-matrix) Join the round-trip INDEX coordinate `(w − wstar)(eIdx.symm (regGaugeRecombine …))` to
+  --       the RAW LAYER ENTRY: `eIdx.symm (regGaugeRecombine (regGaugeIdxSplit ⟨s, X/Y/Z-arm⟩))
+  --       = Fintype.equivFin (FlatIdx H) (roleSplitIdx.symm (Sum.inl ⟨s, X/Y/Z-arm⟩))`, whose
+  --       `(w − wstar)`-value IS the `(i,j)` block entry of layer `s` of `(paramsEquivFlat.symm w −
+  --       deepestPoint)` — needs `roleSplitIdx_symm`/`paramsEquivFlat`-apply unfolds (the FlatIdx → layer
+  --       entry decode). Then `framedLayer (frame) (readX/Y/Z (deepestSplit w)) = P_s·(paramsSymm w)_s·Q_s`
+  --       via `deepestPoint_frame_normal` (the corM base = `P_s·deepest_s·Q_s`) + additive split.
+  --   (ii) Restate this cert against `deepestSplit` (or thread a `split = deepestSplit` hyp from
+  --       `deepest_gauge_construction`'s `deepestSplit_exists` site).
+  --   (iii) Then steps (2)–(4): `endpoint_telescoping` (interfaces collapse, banked), `reindex(P0·B·QL) =
   --        fromBlocks 1 0 0 0` (B gauge-normalised at rank r), and `core_comparability_squeeze` (#54,
-  --        banked). These are reachable once (i) lands.
+  --        banked). Reachable once (i-matrix)+(ii) land. Est. remaining ~200-300 lines (Codex `xhigh`).
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
