@@ -901,3 +901,14 @@ verified): the `ᵀ` transpose postfix notation can FAIL TO PARSE in some Core f
 `DLNFibre/Core/Matrix/RankNormalForm.lean`) — use explicit `Matrix.transpose A` (`Aᵀ.rank` cost one build
 cycle). Recorded here rather than in `lean/CLAUDE.md` (controller does not edit a CLAUDE.md on a peer's
 suggestion); operator/controller may promote it to lean/CLAUDE.md's Mathlib-gotchas section deliberately.
+
+LESSON (2026-06-24, isolation hazard recurrence): a background agent spawned with `isolation: worktree`
+may end up operating in the controller's MAIN checkout — observed after an API-529 rest + SendMessage
+RESUME (the resumed agent `a12ac7cb9da480e71` had NO entry in `git worktree list` and was actively writing
+`lean/DLNFibre/Scratch_L2.lean` in main). Root cause likely the resume not re-binding the worktree (or the
+worktree never created during the 529-era instability). RISK: clashes with the controller's main-checkout
+ops + the recurring branch-switch / off-branch-commit hazard. **PROTOCOL: after spawning OR resuming an
+`isolation: worktree` agent, verify it actually has a worktree (`git worktree list | grep agent-<id>`);
+if it's in main, immediately CONTAIN it (message: no git ops, no `lake build DLNFibre`, keep work in a named
+scratch file, report-don't-integrate) or stop+re-spawn isolated.** Pairs with the spawn-switches-main-branch
+lesson — the controller's main checkout is not guaranteed exclusive across spawns/resumes; verify + contain.
