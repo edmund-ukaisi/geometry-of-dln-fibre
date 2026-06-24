@@ -1,5 +1,6 @@
 import DLNFibre.Core.DeterminantalChartRing
 import DLNFibre.Core.GraphIdealHeight
+import Mathlib.RingTheory.MvPolynomial.Localization
 
 /-!
 # `DLNFibre.Core.DeterminantalBaseElimination` — the localized base presentation (`Iad = J`)
@@ -196,5 +197,43 @@ theorem detSchurS_ne_zero (q p r : ℕ) : detSchurS (k := k) q p r ≠ 0 := by
     Ne, rename_eq_zero_iff_of_injective]
   · exact det_mvPolynomialX_ne_zero (Fin r) k
   · intro a b hab; simpa using hab
+
+/-! ## The forced `B22` value and its graph ideal `J` (`height J = C`)
+
+On the pivot chart the Schur relation forces `B22 = B21 Δ⁻¹ B12`. The forced value lives in
+`Sd = Localization.Away detSchurS`: `forcedB22 a b = (B21 · adjugate Δ · B12)_{ab} / detSchurS`
+(using `adjugate`, not `inv`, so the numerator is a genuine polynomial). The graph ideal `J =
+graphIdeal forcedB22` of `MvPolynomial B22block Sd` has height `(p−r)(q−r) = C` — the lower bound
+the `Iad = J` height-squeeze consumes (the inclusion `J ⊆ Iad` alone only gives `≤ C`). -/
+
+/-- The Schur numerator `B21 · adjugate Δ · B12` in the free coordinate ring
+`MvPolynomial SchurVar k` (`Δ`, `B12`, `B21` the generic free blocks). `adjugate`, not `inv`, keeps
+it polynomial. -/
+noncomputable def forcedNum (q p r : ℕ) :
+    Matrix (Fin (p - r)) (Fin (q - r)) (MvPolynomial (SchurVar q p r) k) :=
+  (Matrix.of fun a i ↦ X (Sum.inr (Sum.inr (a, i)))) *
+    (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).adjugate
+    * (Matrix.of fun i j ↦ X (Sum.inr (Sum.inl (i, j))))
+
+/-- The forced `B22` value in `Sd = Localization.Away detSchurS`: the Schur numerator divided by
+`detSchurS` (`= B21 Δ⁻¹ B12` once the pivot det is inverted). The graph map whose ideal `J` the
+localized determinantal ideal `Iad` equals. -/
+noncomputable def forcedB22 (q p r : ℕ) (Sd : Type u) [CommRing Sd]
+    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+    B22block q p r → Sd :=
+  fun ab ↦ IsLocalization.mk' Sd ((forcedNum (k := k) q p r) ab.1 ab.2)
+    (⟨detSchurS q p r, Submonoid.mem_powers _⟩ : Submonoid.powers (detSchurS (k := k) q p r))
+
+/-- **`height J = C`** for the forced Schur graph ideal `J = graphIdeal forcedB22` in
+`MvPolynomial B22block Sd`: it eliminates the `B22` block, so its height is
+`#B22block = (p−r)(q−r) = C` (`height_graphIdeal_localization_eq` at `Sd = Localization.Away
+detSchurS`, `detSchurS ≠ 0`). The lower bound the `Iad = J` squeeze needs. -/
+theorem height_graphIdeal_forcedB22_eq (q p r : ℕ) (Sd : Type u) [CommRing Sd]
+    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+    (graphIdeal (forcedB22 (k := k) q p r Sd)).height = ((p - r) * (q - r) : ℕ) := by
+  rw [height_graphIdeal_localization_eq (k := k) (detSchurS q p r) (detSchurS_ne_zero q p r) Sd,
+    card_B22block]
 
 end DLNFibre.Core
