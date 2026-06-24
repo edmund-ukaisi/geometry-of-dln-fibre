@@ -2,6 +2,8 @@ import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.DeterminantalStratumDim
 import DLNFibre.Core.FibreCodim
 import DLNFibre.Core.FibreHeightDirect
+import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.OrbitTangentCotangent
 
 /-!
 # `DLNFibre.Core.FibreDimFibration` — the fibre-dimension count toward Lemma 4.6 (H4)
@@ -74,5 +76,29 @@ theorem ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta [IsAlgClosed k] [C
   rw [← hw, WithBot.unbotD_coe] at hvd
   rw [← hw, hvd]
   norm_cast
+
+/-! ## The base-stratum closed-point height: `height m = δ` for any maximal ideal of `O(Mat^{≤r})`
+
+By equidimensionality at a closed point (`OrbitTangentCotangent.height_eq_ringKrullDim_of_isMaximal_fintype`,
+`Fintype`-indexed) and the base Krull dimension `= δ` just established: every maximal ideal of the
+irreducible base `O(Mat^{≤r})` has height `δ`. The base-side input to the going-down/00OM easy
+direction. -/
+
+/-- **The base-stratum closed-point height `= δ`.** For `r ≤ n`, `r ≤ m`, every maximal ideal `𝔪` of
+the base coordinate ring `O(Mat^{≤r}_{m×n}) = MvPolynomial (RepCoord (dStratum n m)) k ⧸
+vanishingIdeal(…)` has height `δ = r(n + m − r)` — equidimensionality at a closed point of the
+irreducible determinantal base, with `ringKrullDim O(Mat^{≤r}) = δ`. -/
+theorem height_maximal_quotient_vanishingIdeal_stratum_eq_delta [IsAlgClosed k] [CharZero k]
+    (n m r : ℕ) (hn : r ≤ n) (hm : r ≤ m)
+    (𝔪 : Ideal (MvPolynomial (RepCoord (dStratum n m)) k ⧸
+        MvPolynomial.vanishingIdeal (σ := RepCoord (dStratum n m)) (K := k) k
+          (canonicalCoord (dStratum n m) '' productRankLocusLE (k := k) (dStratum n m) r)))
+    [𝔪.IsMaximal] :
+    (𝔪.height : WithBot ℕ∞) = (r * (n + m - r) : ℕ) := by
+  haveI : (MvPolynomial.vanishingIdeal (σ := RepCoord (dStratum n m)) (K := k) k
+      (canonicalCoord (dStratum n m) '' productRankLocusLE (k := k) (dStratum n m) r)).IsPrime :=
+    isPrime_vanishingIdeal_productRankLocusLE_stratum (k := k) n m r hn hm
+  rw [height_eq_ringKrullDim_of_isMaximal_fintype,
+    ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta n m r hn hm]
 
 end DLNFibre.Core
