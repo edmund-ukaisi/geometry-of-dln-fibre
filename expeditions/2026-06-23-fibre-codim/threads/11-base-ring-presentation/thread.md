@@ -151,16 +151,25 @@ Build on `DeterminantalChartRing` (Core only; never import `DLNFibre.DLN`). `δ 
 - `sigmaIdeal (dStratum q p) r` and `Iad` are PRIME (`isPrime_vanishingIdeal_productRankLocusLE_stratum`, `[IsAlgClosed k]`; for `Iad`, localize a prime not meeting the monoid).
 
 **Step 1 — the reusable graph-ideal kernel lemma `ker_aeval_eq_graphIdeal` (the genuinely-new core).**
+Land this STANDALONE in its own small Core module **`Core/MvPolynomialKerAeval.lean`** (controller
+directive, 2026-06-24): it is a general, reusable, missing-from-Mathlib fact (ker of multivariate
+`aeval` = graph ideal), and **G2-3's total presentation is likely to reuse it** — so it should not be
+buried in the chart module. Pure `MvPolynomial`, no DLN/RepCoord dependency.
 `ker (aeval c : MvPolynomial ι R →ₐ[R] R) = Ideal.span (Set.range fun i ↦ X i − C (c i))`, `[Finite ι]`.
 - Easy `⊇` is DONE (probe): `Ideal.span_le` + `simp [RingHom.mem_ker]`.
-- `⊆` is the induction: `Finite.induction_empty_option`. **Universe caveat:** the base case uses
-  `PEmpty : Type (u+1)`; state the predicate carefully (`P : ∀ (α) [Fintype α], Prop`, with `c` quantified
-  inside) and watch universes. `Option` step: `MvPolynomial.optionEquivLeft` turns `MvPolynomial (Option α)`
-  into `Polynomial (MvPolynomial α)`; peel the `none` variable via `Polynomial.ker_evalRingHom`
-  (`= span {X − C x}`, in `RingTheory/Polynomial/Ideal.lean`) and the `some` variables via the IH.
-  Confirmed API: `MvPolynomial.isEmptyAlgEquiv`, `optionEquivLeft`/`_X_some`/`_X_none`/`_C`,
-  `Polynomial.ker_evalRingHom`, `Finite.induction_empty_option`. ~60-100 LoC; the long pole.
-- Best as its own small module `Core/MvPolynomialGraphIdeal.lean` (reusable, pure MvPolynomial, no DLN/RepCoord).
+- `⊆` is the induction: `Finite.induction_empty_option`. `Option` step: `MvPolynomial.optionEquivLeft`
+  turns `MvPolynomial (Option α)` into `Polynomial (MvPolynomial α)`; peel the `none` variable via
+  `Polynomial.ker_evalRingHom` (`= span {X − C x}`, in `RingTheory/Polynomial/Ideal.lean`) and the
+  `some` variables via the IH. Confirmed API: `MvPolynomial.isEmptyAlgEquiv`,
+  `optionEquivLeft`/`_X_some`/`_X_none`/`_C`, `Polynomial.ker_evalRingHom`,
+  `Finite.induction_empty_option`. ~60-100 LoC; the long pole.
+- **Universe friction HIT (record + fix):** the base case of `Finite.induction_empty_option` is
+  `PEmpty : Type (u+1)`, which clashed with a `c : ι → R` at `ι : Type u` (the probe errored:
+  "`c` has type `Type u → R` but is expected `PEmpty.{?u+1} → R`"). **Likely fix:** prove the lemma
+  first for `ι = Fin n` (`Type 0`, no universe-crossing) by `Nat`-induction (or via the `Fin (n+1) ≃
+  Option (Fin n)` + `optionEquivLeft` recursion directly on `Fin`), then transport to any `[Finite ι]`
+  via `Fintype.equivFin`/`MvPolynomial.renameEquiv` + an `Equiv` of the variable type. Alternatively
+  `ULift` the base, but the `Fin n` route is cleaner and is what the downstream relabeling already uses.
 - Consequences: `J` prime via `RingHom.ker_isPrime (aeval …)` (needs `IsDomain` of the base — for `Sd`
   use `IsLocalization.isDomain_of_le_nonZeroDivisors` + `powers_le_nonZeroDivisors_of_noZeroDivisors`
   + `detΔS ≠ 0` which is `det_mvPolynomialX`-style nonzero); and the quotient iso
