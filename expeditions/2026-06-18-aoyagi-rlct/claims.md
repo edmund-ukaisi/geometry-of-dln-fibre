@@ -4368,3 +4368,19 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-qp-source-substitution-continuing.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+
+Latest A4 Case 2 displayed reindexed product source-substitution:
+`BlowupArithmetic.lean` now provides a supplied-block variant of the displayed
+reindexed next-source product, and `SelectedEntryNormalCrossing.lean` applies
+it to transition-generated displayed data on the overlap
+`x_(J+1,J+1) != 0`.  The resulting theorem rewrites only the left
+substitution block to the original source selected-entry block.  The right
+side remains displayed transition-generated data with formula-level successor
+following factor; this is not source production of `Csucc`, suffixes,
+successor charts, transition regularity, chart coverage, normal crossings,
+pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-reindexed-product-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-reindexed-product-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.

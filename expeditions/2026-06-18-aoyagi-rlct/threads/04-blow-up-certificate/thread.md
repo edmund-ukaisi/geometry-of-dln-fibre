@@ -6031,3 +6031,38 @@ This is finite packaging only.  It does not prove the deeper displayed
 reindexed next-source product with the source-side substitution block, and it
 does not prove source production of `Csucc` or suffixes, analytic transition
 regularity, chart coverage, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 displayed reindexed product source-substitution
+
+Reproduction:
+`reproduction-case2-displayed-reindexed-product-source-substitution-a4.md`.
+Statement card:
+`statement-card-a4-case2-displayed-reindexed-product-source-substitution.md`.
+Review:
+`review-case2-displayed-reindexed-product-source-substitution-a4.md`.
+
+Lean now proves the displayed-overlap reindexed next-source product with the
+left substitution block rewritten to the original source selected-entry
+substitution block:
+
+```text
+Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock
+sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.case2DisplayedSourceSubstitutionBlock_transition_eq_sourceSelectedSubstitutionBlockOfMem_of_displayed_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_sourceSubstitution_of_displayed_normalized_ne_zero
+```
+
+On the overlap where the displayed normalized coordinate
+`d = x_(J+1,J+1)` is nonzero, the transition-generated displayed data are
+`targetU = u*d` and `targetResidual q = x_q/d`.  The displayed reindexed
+next-source product is applied to those target data, and only its left lower
+substitution block is rewritten from
+`DisplayedSub(targetU,targetResidual)` to the original source selected block
+`Sub_p(u,x)`.
+
+The product's right side remains displayed transition-generated data:
+`pre.case2Succ targetU`, the displayed post-pivot residual block, and the
+formula-level `case2DisplayedSourceSuccessorFollowingFactor targetResidual C`.
+This is finite product bookkeeping only.  It does not source-produce `Csucc`,
+suffixes, successor charts, source residual blocks, transition regularity,
+chart coverage, normal crossings, pole order, or RLCT extraction.

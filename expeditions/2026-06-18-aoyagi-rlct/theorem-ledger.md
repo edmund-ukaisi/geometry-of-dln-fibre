@@ -6757,6 +6757,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
 
+Latest A4 Case 2 displayed reindexed product source-substitution:
+`BlowupArithmetic.lean` now proves the generic supplied-block wrapper
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq`
+for `Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock`, and
+`SelectedEntryNormalCrossing.lean` proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_sourceSubstitution_of_displayed_normalized_ne_zero`.
+The theorem uses the displayed overlap denominator
+`d = x_(J+1,J+1) != 0`, applies the displayed reindexed next-source product
+to `targetU = u*d` and `targetResidual q = x_q/d`, and rewrites only the
+left substitution block to the original source selected-entry substitution
+block.  The post state, post-pivot residual block, and successor following
+factor remain displayed transition-generated data.  This is finite
+bookkeeping only: no source production, analytic transition regularity, chart
+coverage, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-reindexed-product-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-reindexed-product-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

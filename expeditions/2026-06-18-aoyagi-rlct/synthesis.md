@@ -6984,6 +6984,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
 
+Latest A4 Case 2 displayed reindexed product source-substitution:
+`BlowupArithmetic.lean` now adds
+`Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock` and
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq`;
+`SelectedEntryNormalCrossing.lean` adds the displayed transition adapter
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.case2DisplayedSourceSubstitutionBlock_transition_eq_sourceSelectedSubstitutionBlockOfMem_of_displayed_normalized_ne_zero`
+and the product wrapper
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_sourceSubstitution_of_displayed_normalized_ne_zero`.
+On the displayed normalized overlap, this applies the existing displayed
+reindexed next-source product to `targetU = u*d` and
+`targetResidual q = x_q/d`, then rewrites only the left substitution block to
+the original source selected block.  The right-hand side remains displayed
+transition-generated data with the formula-level successor following factor.
+This is finite product bookkeeping only, not source production of `Csucc`,
+suffixes, successor charts, analytic transition regularity, chart coverage,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-reindexed-product-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-reindexed-product-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

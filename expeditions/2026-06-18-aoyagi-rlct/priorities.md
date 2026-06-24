@@ -2618,3 +2618,16 @@ transition from an arbitrary all-pivot source chart to the displayed
 it on the same transition-generated displayed data as the frontier package and
 continuing certificate.  This remains finite packaging, not source production
 or analytic transition regularity.
+
+That displayed specialization has landed, and the next finite product-level
+target has also landed:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-reindexed-product-source-substitution-a4.md`.
+Lean now rewrites only the left substitution block inside the displayed
+reindexed next-source product, replacing
+`DisplayedSub(targetU,targetResidual)` by the original source selected block
+`Sub_p(u,x)` on the overlap `x_(J+1,J+1) != 0`.  The right side remains
+displayed transition-generated data with formula-level successor following
+factor.  The next higher-value A4 target should not pretend this is source
+production; it should either attack actual successor/following-factor
+production with the remaining obligations explicit, or assemble a chart
+certificate only under explicit analytic/chart-production hypotheses.
