@@ -653,7 +653,8 @@ Theorem~\ref{thm:main} is two nested minimisations: an \emph{inner} balance with
 Fix the selected set $\mathcal M=\{M^{(S_1)},\dots,M^{(S_{\ell+1})}\}$, $P:=\sum_k M^{(S_k)}$, and recall
 $\Ms-1<P/\ell\le\Ms$, $a=P-(\Ms-1)\ell$. The terminal branches that can bind the minimum differ only in
 how Aoyagi's local-coordinate construction distributes the split; parametrised by an integer
-$b\in\{0,\dots,\ell-1\}$, the bound is the one-variable quadratic (p.24)
+$b\in\{0,\dots,\ell-1\}$ (Lemma~3's hypothesis is $0\le a,b\le\ell-1$, so $\ell-a\ge1$), the bound is the
+one-variable quadratic (p.24)
 \[
  A(b)=b(\ell-a)^2+(\ell-1-b)a^2+\big(b(\ell-a)-(\ell-1-b)a\big)^2
       =\ell^2 b^2+\ell^2(1-2a)b+a^2\ell(\ell-1),
@@ -710,12 +711,23 @@ expression where Def.~3 applies. \emph{Do not transcribe Def.~3's inequalities a
 
 The order $\rorder$ --- the multiplicity of the largest pole of the zeta function
 $\int|F|^{-2c}\varphi\,dw$, geometrically the number of top-dimensional components of the exceptional fibre
-over the binding stratum --- is counted combinatorially. With the partial sums
-$\widetilde H_j=\sum_{l=1}^{j+1}M^{(S_l)}-jM$ (so $\widetilde H_1=\widetilde H_\ell=0$), Lemma~4
-characterises which terminal branch-vectors $T_{s,k}$ attain the minimum: those lying in the range
-$\widetilde T\le T_{s,k}\le\widetilde T'$ cut out by the $(\widetilde H_j)$ --- precisely the balanced
-splits tying in Lemma~3. Lemma~5 counts them over the index range
-$\min\{a,\ell-a\}<j\le\max\{a,\ell-a\}$, giving
+over the binding stratum --- is counted combinatorially (p.25--26). Write $M:=\Ms$. The minimising
+terminal branch-vectors are pinned between \emph{two} two-piece partial-sum envelopes:
+\begin{align*}
+ \widetilde H_j &= \textstyle\sum_{l=1}^{j+1}M^{(S_l)}-jM &&(1\le j\le a), &
+ \widetilde H_j &= \textstyle\sum_{l=1}^{j+1}M^{(S_l)}-aM-(j-a)(M-1) &&(a< j\le\ell),\\
+ \widetilde H'_j &= \textstyle\sum_{l=1}^{j+1}M^{(S_l)}-j(M-1) &&(1\le j\le\ell-a), &
+ \widetilde H'_j &= \textstyle\sum_{l=1}^{j+1}M^{(S_l)}-(\ell-a)(M-1)-(j-\ell+a)M &&(\ell-a< j\le\ell),
+\end{align*}
+with only the \emph{terminal} equality $\widetilde H_\ell=\widetilde H'_\ell=0$ (\emph{not}
+$\widetilde H_1=0$ in general --- e.g.\ $(2,2,2)$ gives $\widetilde H_1=1$). Lemma~4 characterises the
+binding branch-vectors $T_{s,k}$ by \textbf{two} conditions: the envelope
+$\widetilde T\le T_{s,k}\le\widetilde T'$ \emph{and} the local-increment condition
+$H_{j-1}-H_j+M^{(S_{j+1})}\in\{M-1,M\}$ (the second forces the $a$ steps of size $M$ and the $\ell-a$
+steps of size $M-1$). Lemma~5 then bounds the count \emph{above} by the union
+$\bigcup_{j=1}^{\ell-1}\{H:\widetilde H_j\le H\le\widetilde H'_j\}$ together with the Case-1(2)
+$J$-increment, giving $\rorder\le a(\ell-a)+1$, and an explicit local-coordinate construction attains it
+(a two-sided argument, \emph{not} a single interval count). Hence
 \[
  \rorder=a(\ell-a)+1.
 \]
@@ -727,8 +739,11 @@ that needs meromorphic continuation, which Mathlib lacks.}
 pole multiplicity'' is the named at-risk seam (brief standing decision~6): it rides inside the S2 interface
 for $\rlct$, but as an independent statement for $\rorder$ it needs the order-tracking form of the monomial
 rule. Flag, do not hide --- $\rorder$ is the second deliverable, driven only as far as it cleanly reaches.
-The reproduction of Lemmas 4--5 here is at statement$+$structure fidelity (p.25--26); the index-level
-bookkeeping is referenced to the images, not re-transcribed, as $\rorder$ is off the $\rlct$ critical path.}
+The reproduction of Lemmas 4--5 here transcribes the two partial-sum envelopes, the two-condition Lemma~4
+characterisation, and the two-sided (upper-union $+$ explicit-construction) Lemma~5 count
+(p.25--26, red-team-verified \texttt{verify-repro-s4s5.md} after an initial single-family/single-range
+prose was caught and corrected); the full Case-1(2) increment bookkeeping is referenced to the images, as
+$\rorder$ is off the $\rlct$ critical path.}
 
 % =====================================================================
 \section{The $L=2$ / reduced-rank-regression case, fully worked}
