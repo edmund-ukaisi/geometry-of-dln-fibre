@@ -601,6 +601,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   Aoyagi/Watanabe bound". Resolve the discrepancy (is cover_le proven, sorry'd, or open?) before claiming R1 reachable
   as a whole — the hdiv leg (being built) is necessary but not sufficient. The VALUE ⨅monomialThreshold=½·minAdm IS proven.
 
+**★ UPDATE-25 (2026-06-24) — L2 PIN1: Stage C+D bedrock INTEGRATED (reviewer-PASSED); the 2 final blockers scoped+de-risked; closer commissioned.**
+- **l2-pivot-migrate banked + INTEGRATED @147fef09** (reviewer + Codex PASS, axiom-clean, no hidden B restriction):
+  Stage C `DeepestFramedProductPivot.lean` (`prodAux_framedParamsRegPivot_zero` — the pivot origin product SOLVING the
+  framedLayer threshold-corner trap; additive, framedLayer unmutated) + Stage D bedrock (`reindex_prodAux_framedParamsRegPivot_zero`
+  — the `deepestEPivot_base` consumer + the finCongr cast bridge SOLVED via `pivotJSucc J = J`) + `DeepestRegSliceFderivPivot.lean`
+  (`prod_framedParamsRegPivot_regSlice_collapse` — the value the PIN1 strict-derivative fold differentiates). The naive
+  coupled migration was done then REVERTED (can't land green in-session; no fragment) — honest, no false progress.
+- **PIN1's 2 remaining blockers (scoped + de-risked — mechanically reachable from the banked bricks, bulk not unknown):**
+  (1) frame-family rewiring (~150 LoC, single-writer): `deepest_loss_squeeze`/PIN2 HARDCODE `deepestPoint_frame`, but PIN1's
+  hQf22 comes from `deepestPoint_frame_pivot_exists` (different last-layer Q) → parametrize them on `(Pf,Qf)` + thread the
+  bundle's pivot frame at the call site (this is where the RLCT-invariance carry-forward surfaced — under-scoped in the
+  prior brief). (2) the value-fold (~300 LoC): strict-deriv on the banked collapse → regBlockCLE → PIN1.
+- **`l2-pin1-final` (a8759c33) commissioned:** Stage E (frame-family rewiring, GREEN-BANKABLE refactor + threading, PIN
+  sorries intact) + Stage F (value-fold → PIN1, coupled, honest red-state if it can't land). The additive-prefix pattern again.
+- 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 bundle + (4,4,2,2)), pp-r1-genM (R1 uniform φ_M).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
