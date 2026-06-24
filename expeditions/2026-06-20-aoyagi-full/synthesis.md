@@ -635,6 +635,21 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   headline obstruction.
 - 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 hdiv bundle + (4,4,2,2)), pp-r1-genM (R1 hfin adjudication).
 
+**★ UPDATE-27 (2026-06-24) — R1 hfin ADJUDICATED: reachable from scratch ONLY via the recursive coupled cover (the largest R1 build); ONE feasibility risk under validation.**
+- **hfin verdict (pp-r1-genM @e62c9e5e, exact + Codex):** OBSTRUCTION from the combinatorial atlas alone. The
+  combinatorial `routeLayerAtlas` (single-divisor leaves) does NOT supply hfin; it needs the unit bounded BELOW on the
+  whole chart (normal-crossing), but the #135 φ_M's unit VANISHES on a deeper in-chart corank sublocus {V=0} (hdiv was
+  immune — its slice avoided {V=0}; hfin must resolve {V=0} RECURSIVELY). hfin = a recursive coupled cover generalising
+  the (2,2,2) Lean `Case222CoverGETail` (already a recStep cover for (2,2,2)) — per-cell = #135 φ_M + coupled diag(b)
+  sub-charts for corank-≥2 cells. The LARGEST remaining R1 build; needed for resolution_charts at ANY L (both options).
+- **THE feasibility risk (hero-task level):** does the {V=0} recursion TERMINATE with S2-only normal-crossing leaves?
+  YES → R1 fully from-scratch (hero-task feasible, hfin "just" the long pole). NO → R1-upper needs a non-S2 cite
+  (Aoyagi/Watanabe) → S2-only infeasible for the full headline (operator decision). pp-r1-genM dispatched to validate
+  (option b) on (3,3,4) + a corank-≥2 case — THE decisive question. Flagged: discuss-at-close Item 13.
+- **R1 net:** hdiv DESIGN-CLOSED (#135, formalising via r1-node-bundle); hfin REACHABLE but the long pole + the one
+  feasibility risk under validation. The headline is honest-conditional on hfin until the recursive cover is built.
+- 3 background agents: l2-pin1-final (L2 PIN1), r1-node-bundle (R1 hdiv bundle + (4,4,2,2)), pp-r1-genM (R1 hfin {V=0}-recursion validation).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

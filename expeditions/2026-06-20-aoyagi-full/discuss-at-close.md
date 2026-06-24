@@ -209,3 +209,25 @@ RLCT) at `r = H s`; only the L2 split-value formula breaks, so only the L2 chain
 paper's non-strict `r ≤ min H` to the realisable non-degenerate domain (the `resolution_charts` carve-out; sound
 within it, not a verbatim Aoyagi assumption). **Operator: the deliverable's domain is `r < H s` (strict).** Net of
 the two re-scopings: the headline is now correctly scoped; the over-claim is closed.
+
+## 13. R1 STATE + hero-task feasibility (2026-06-24): hdiv design-closed; hfin = the largest build + ONE feasibility risk.
+A decorrelated adjudication (pp-r1-genM, exact + Codex) settled R1's remaining shape:
+- **hdiv (R1 lower bound, rlctAtOn ≤ ½·minAdm): DESIGN-CLOSED** — the #135 uniform closed-form φ_M (verified on 5
+  witnesses incl the codim-0 boundary). Being formalised (r1-node-bundle: the NodeAchieverChart bundle + (4,4,2,2)).
+- **hfin (R1 upper bound, rlctAtOn ≥ ½·minAdm): REACHABLE from scratch (S2-only) but the LARGEST remaining R1 build.**
+  The combinatorial `routeLayerAtlas` (single-divisor leaves) does NOT supply it; hfin needs the unit bounded BELOW on
+  the whole chart (normal-crossing), but the #135 φ_M's unit VANISHES on a deeper in-chart corank sublocus {V=0}. So
+  hfin needs a RECURSIVE coupled cover (generalising the (2,2,2) Lean `Case222CoverGETail`, which already does it for
+  (2,2,2)) — per-cell = #135 φ_M (top stratum) + coupled diag(b) sub-charts resolving {V=0} for corank-≥2 cells. Smooth
+  (corank-≤1) cover suffices only for near-trivial M; almost all width-≥3 M need the coupled resolution.
+- **THE ONE FEASIBILITY RISK (operator-relevant):** hfin's per-cell upper c-o-v on a corank-≥2 cell needs {V=0} resolved
+  recursively. pp-r1-genM is hard-validating (on (3,3,4) + a corank-≥2 case) whether that recursion TERMINATES with
+  **S2-only** normal-crossing leaves. **If YES** → R1 is fully provable from scratch, hero-task feasible (the S2-only
+  constraint holds), and hfin is "just" the largest build. **If NO** → R1's upper bound needs a non-S2 cite (the
+  rlct≥½·codim / Aoyagi–Watanabe bound), and the hero task's "everything from scratch except S2" is INFEASIBLE for the
+  full headline — the operator would then choose: relax S2-only to allow the Aoyagi/Watanabe upper bound (R1-upper
+  becomes cited-conditional), or accept the headline as honest-conditional on the unbuilt recursive cover.
+- **Scope-decision impact:** hfin (the recursive cover) is needed for resolution_charts at ANY L, so BOTH options
+  (i full general-L, ii L=2/RRR milestone) need it; the (2,2,2) hfin is done but the general is the long pole. The
+  headline is honest-conditional on hfin until the recursive coupled cover is built. **No operator action required
+  mid-flight** — pp-r1-genM's validation (in progress) resolves the feasibility risk; flagged here for the close.
