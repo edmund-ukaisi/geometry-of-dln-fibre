@@ -46,14 +46,23 @@ pivot-chart explicit.*
 - `endpointGauge` — the `BaseChangeGroup (k := SchurLoc) d` (H at v=0, L⁻¹ at v=last N, 1 interior,
   dependent dimension cast-aligned). `gaugeEquiv_multPoly` applies to it (confirmed).
 
-### Remaining HARD CORE (coupled, SPECIFIED — controller checkpoint here)
-1. **Normalization `L⁻¹·M·H⁻¹ = E`** on the fibre (Schur-complement identity `M22 = M21 Δ⁻¹ M12`,
-   through `gaugeEquiv_multPoly`). RISK: the `endpointGauge` `cast` must reduce through `liftGauge` at
-   the endpoints. ~1-2 modules.
-2. **Localized gauged chart ideal SPLITS up to radical** (the make-or-break):
-   `((gaugeEquiv endpointGauge).map chartIdeal).radical = splitBaseFibreIdeal.radical`, then
-   `Ideal.quotientEquivAlg` + `ringKrullDim_quotient_eq_of_radical_eq` (LANDED). The R2-3b-4 descent
-   at radical level — non-circular (shield), the real risk. ~2-3 modules. **Fallback: option-B cite.**
-Then product/poly-extension dim + glue → `hSweep`. ~2-3 modules.
+### #1 cast-tell POSITIVE + #1 CORE landed
+- `endpointGauge_zero`/`endpointGauge_last` — the `cast` reduces by `rfl` (identity casts at both
+  endpoints). No `cast`-elimination fight.
+- `schurComplement_normal_form` — **the matrix heart of #1**, LANDED sorry-free: for `Δ` invertible
+  and the Schur relation `B22 = B21 Δ⁻¹ B12`, `L⁻¹·M·H⁻¹ = diag(I_r,0)`. Network-free, any `CommRing`.
+
+### Remaining HARD CORE (coupled; #1 plumbing folds into #2)
+- **#1 remaining plumbing**: connect `schurComplement_normal_form` to `gaugeEquiv (endpointGauge)
+  (multPoly a b) = E a b` — express `of (multPoly)` in block form, match `Lmat⁻¹`/`Hmat⁻¹` to the
+  explicit `L⁻¹`/`H⁻¹` blocks through the `finSplit` reindex, and the fibre condition as the on-fibre
+  statement. This plumbing is COUPLED to #2 (the block form + fibre condition + coordinate separation
+  ARE the split). ~1-2 modules.
+- **#2 the localized ideal SPLITS up to radical** (the make-or-break): `((gaugeEquiv endpointGauge).map
+  IadDeep).radical = splitBaseFibreIdeal.radical`, then `Ideal.quotientEquivAlg` +
+  `ringKrullDim_quotient_eq_of_radical_eq` (LANDED). The R2-3b-4 descent at radical level —
+  non-circular (shield), the real risk. ~2-3 modules. **Fallback: option-B cite.**
+- Then product/poly-extension dim (`MvPolynomial.krullDim_of_isNoetherianRing` + localization,
+  `detΔ≠0`) + glue → `hSweep`. ~2-3 modules.
 
 Import lines aggregated: `import DLNFibre.Core.VarietyDimRadical`, `import DLNFibre.Core.SchurGauge`.
