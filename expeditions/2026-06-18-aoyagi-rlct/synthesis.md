@@ -7108,6 +7108,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-source-current-stack-supplied-successor-a4.md`.
 
+Latest A4 Case 2 constructed source following factor with old top rows:
+`BlowupArithmetic.lean` now adds
+`case2DisplayedConstructedSourceFollowingFactorWithOldTop`, its old-top and
+residual-block projection lemmas, a generic transported-block theorem
+identifying `paperCprime` with `Q^-1*Csrc`, and the free-`Cprime`
+specialization
+`case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime`.  The
+source-current row wrappers prove that the constructed current block reindexes
+to `[Cold; Q*Cprime]`, while the formula-level successor block reindexes to
+`[Cold; Cprime]`.  This is finite source-coordinate bookkeeping that attacks
+the old-top-row gap in constructed-coordinate source data; it does not
+construct a `SourceProductionObligation`, successor chart family, suffixes,
+recurrence or exponent post-data, transition regularity, coverage, normal
+crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-source-following-factor-with-old-top-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-source-following-factor-with-old-top.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.

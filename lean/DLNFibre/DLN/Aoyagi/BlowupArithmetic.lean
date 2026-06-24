@@ -12075,6 +12075,135 @@ theorem case2DisplayedPaperCprime_of_constructedSourceFollowingFactor
   exact case2DisplayedPaperCprime_of_constructedFollowingFactor
     n hS hcont residual Cprime
 
+/-- Construct a source-coordinate following factor with free old-top rows and
+a supplied pivot-first residual-column block.
+
+The old-top rows `1,...,J` are read from `Cold`; the residual columns
+`J+1,...,n(S+1)` are read from `Csrc` after the displayed pivot-first
+reindexing; all other rows are zero.  This is finite source-coordinate
+bookkeeping only, not source production of a successor chart. -/
+noncomputable def case2DisplayedConstructedSourceFollowingFactorWithOldTop
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ℕ → τ → R :=
+  fun j a =>
+    if hjold : j ∈ Finset.Icc 1 J then
+      Cold ⟨j, hjold⟩ a
+    else if hj : j ∈ case2ResidualBlockCols n S J then
+      Csrc ((pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont)).symm
+        ⟨j, hj⟩) a
+    else 0
+
+/-- The constructed source following factor has the prescribed old-top rows. -/
+theorem case2DisplayedSourceOldTopBlock_constructedWithOldTop
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceOldTopBlock (J := J)
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+          n hS hcont Cold Csrc) =
+      Cold := by
+  ext i a
+  simp [case2DisplayedSourceOldTopBlock,
+    case2DisplayedConstructedSourceFollowingFactorWithOldTop, i.2]
+
+/-- The constructed source following factor has the prescribed residual block
+after displayed pivot-first reindexing. -/
+theorem case2DisplayedSourceFollowingFactor_constructedWithOldTop
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceFollowingFactor n hS hcont
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+          n hS hcont Cold Csrc) =
+      Csrc := by
+  ext i a
+  let col := case2DisplayedPivotCol n hS hcont
+  let j : Case2ResidualColIndex n S J := pivotFirstIndexEquiv col i
+  have hnot_old : j.1 ∉ Finset.Icc 1 J := by
+    rw [Finset.mem_Icc]
+    have hj := (mem_case2ResidualBlockCols n S J j.1).mp j.2
+    omega
+  simp [case2DisplayedSourceFollowingFactor, case2DisplayedFollowingFactor,
+    pivotFirstFollowingFactor, case2SourceFollowingFactor,
+    case2DisplayedConstructedSourceFollowingFactorWithOldTop, col, j,
+    hnot_old]
+
+/-- For arbitrary supplied residual-column data, the constructed source
+following factor transports to `Q⁻¹ * Csrc`; old-top rows are not read by
+Aoyagi's displayed `Q⁻¹` operation. -/
+theorem case2DisplayedPaperCprime_of_constructedSourceFollowingFactorWithOldTop
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedPaperCprime n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+          n hS hcont Cold Csrc) =
+      case2DisplayedPaperQinv n hS hcont residual * Csrc := by
+  rw [case2DisplayedPaperCprime]
+  rw [case2DisplayedSourceFollowingFactor_constructedWithOldTop]
+
+/-- Construct source-coordinate following data from free old-top rows and a
+free displayed Case 2 chart-coordinate following factor `C'`.
+
+The residual-column block is reconstructed as `Q * C'`. -/
+noncomputable def case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ℕ → τ → R :=
+  case2DisplayedConstructedSourceFollowingFactorWithOldTop n hS hcont Cold
+    (case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime)
+
+/-- The free-`C'` source following constructor has the prescribed old-top rows. -/
+theorem case2DisplayedSourceOldTopBlock_constructedWithOldTopFromCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceOldTopBlock (J := J)
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) =
+      Cold := by
+  simpa [case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime]
+    using
+      case2DisplayedSourceOldTopBlock_constructedWithOldTop
+        n hS hcont Cold
+        (case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime)
+
+/-- The free-`C'` source following constructor recovers the chart coordinate
+under Aoyagi's displayed inverse operation. -/
+theorem case2DisplayedPaperCprime_of_constructedSourceFollowingFactorWithOldTopFromCprime
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedPaperCprime n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) =
+      Cprime := by
+  rw [case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime,
+    case2DisplayedPaperCprime]
+  rw [case2DisplayedSourceFollowingFactor_constructedWithOldTop]
+  exact case2DisplayedPaperCprime_of_constructedFollowingFactor
+    n hS hcont residual Cprime
+
 /-- Reverse-coordinate form of Aoyagi's displayed Case 2 `Q` operation:
 with `C = Q * C'`, multiplying `D'' = D_chart * Q` by `C'` is the same as
 multiplying the original normalised block by the constructed old following
@@ -15084,6 +15213,98 @@ theorem case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
         case2DisplayedPaperCprimeTail_apply n hS hcont residual C j a
       simpa [case2SourceSuccessorFollowingBlock, case2DisplayedPaperCprimeTail]
         using hsucc.trans htail.symm
+
+/-- The current source-row block of the constructed following factor reindexes
+to the supplied old-top rows stacked over the supplied residual block. -/
+theorem case2SourceCurrentFollowingBlock_constructedWithOldTop_submatrix_oldTopPaperCprimeRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Csrc : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2SourceCurrentFollowingBlock n S
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+          n hS hcont Cold Csrc)).submatrix
+        (case2SourceOldTopPaperCprimeRowEquiv n hS hcont) id =
+      verticalBlock Cold Csrc := by
+  have hstack :=
+    case2SourceCurrentFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+      n hS hcont
+      (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+        n hS hcont Cold Csrc)
+  have hold :
+      case2DisplayedSourceOldTopBlock (J := J)
+          (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+            n hS hcont Cold Csrc) =
+        Cold :=
+    case2DisplayedSourceOldTopBlock_constructedWithOldTop n hS hcont Cold Csrc
+  have hsrc :
+      case2DisplayedSourceFollowingFactor n hS hcont
+          (case2DisplayedConstructedSourceFollowingFactorWithOldTop
+            n hS hcont Cold Csrc) =
+        Csrc :=
+    case2DisplayedSourceFollowingFactor_constructedWithOldTop n hS hcont Cold Csrc
+  simpa [hold, hsrc] using hstack
+
+set_option linter.style.longLine false in
+/-- The current source-row block of the free-`C'` constructor reindexes to the
+supplied old-top rows stacked over the reconstructed old residual block
+`Q * C'`. -/
+theorem case2SourceCurrentFollowingBlock_constructedWithOldTopFromCprime_submatrix_oldTopPaperCprimeRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2SourceCurrentFollowingBlock n S
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)).submatrix
+        (case2SourceOldTopPaperCprimeRowEquiv n hS hcont) id =
+      verticalBlock Cold
+        (case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime) := by
+  simpa [case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime]
+    using
+      case2SourceCurrentFollowingBlock_constructedWithOldTop_submatrix_oldTopPaperCprimeRowEquiv
+        n hS hcont Cold
+        (case2DisplayedPaperConstructedFollowingFactor n hS hcont residual Cprime)
+
+set_option linter.style.longLine false in
+/-- The successor source-row block of the free-`C'` constructor reindexes to
+the supplied old-top rows stacked over the free chart-coordinate block. -/
+theorem case2SourceSuccessorFollowingBlock_constructedWithOldTopFromCprime_submatrix_oldTopPaperCprimeRowEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2SourceSuccessorFollowingBlock n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime)).submatrix
+        (case2SourceOldTopPaperCprimeRowEquiv n hS hcont) id =
+      verticalBlock Cold Cprime := by
+  have hstack :=
+    case2SourceSuccessorFollowingBlock_submatrix_oldTopPaperCprimeRowEquiv
+      n hS hcont residual
+      (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+        n hS hcont residual Cold Cprime)
+  have hold :
+      case2DisplayedSourceOldTopBlock (J := J)
+          (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+            n hS hcont residual Cold Cprime) =
+        Cold :=
+    case2DisplayedSourceOldTopBlock_constructedWithOldTopFromCprime
+      n hS hcont residual Cold Cprime
+  have hcprime :
+      case2DisplayedPaperCprime n hS hcont residual
+          (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+            n hS hcont residual Cold Cprime) =
+        Cprime :=
+    case2DisplayedPaperCprime_of_constructedSourceFollowingFactorWithOldTopFromCprime
+      n hS hcont residual Cold Cprime
+  simpa [hold, hcprime] using hstack
 
 /-- Continuing displayed source-chart stack boundary in source-current row
 coordinates, without the chart-family boundary.

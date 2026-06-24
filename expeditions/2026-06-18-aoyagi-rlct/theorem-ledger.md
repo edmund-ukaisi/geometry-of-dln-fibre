@@ -6891,6 +6891,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.
 
+Latest A4 Case 2 constructed source following factor with old top rows:
+`BlowupArithmetic.lean` now proves a finite source-coordinate constructor
+with arbitrary old-top rows `Cold` and arbitrary displayed residual-column
+data `Csrc`.  The constructor recovers both projections, transports generic
+residual data to `Q^-1*Csrc`, and in the special case `Csrc=Q*Cprime`
+recovers the free chart coordinate `Cprime`.  The row-reindexing wrappers
+identify the constructed current source block as `[Cold; Q*Cprime]` and the
+formula-level successor block as `[Cold; Cprime]`.  This is a bounded
+constructed-coordinate slice only: no `SourceProductionObligation`,
+successor chart family, suffix production, recurrence/exponent post-data,
+transition regularity, coverage, normal crossings, pole order, termination,
+or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-source-following-factor-with-old-top-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-source-following-factor-with-old-top.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

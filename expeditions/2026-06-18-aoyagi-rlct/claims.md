@@ -4491,3 +4491,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-displayed-transition-microcertificate-contribution.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.
+
+Latest A4 Case 2 constructed source following factor with old top rows:
+`BlowupArithmetic.lean` now adds a finite source-coordinate constructor with
+free carried old-top rows and free displayed residual-column data.  It proves
+that old-top restriction recovers `Cold`, displayed residual restriction
+recovers `Csrc`, generic `paperCprime` is `Q^-1*Csrc`, and the specialized
+choice `Csrc=Q*Cprime` recovers `Cprime`.  The source-current row wrappers
+then identify the current stacked block as `[Cold; Q*Cprime]` and the
+formula-level successor stacked block as `[Cold; Cprime]`.  This does not
+construct `SourceProductionObligation`, source-produce a successor chart or
+suffix, produce recurrence/exponent post-data, prove chart coverage,
+transition regularity, normal crossings, pole order, termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-source-following-factor-with-old-top-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-source-following-factor-with-old-top.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-source-following-factor-with-old-top-a4.md`.

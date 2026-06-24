@@ -6190,3 +6190,34 @@ This is only finite transition-plus-consumer stack bookkeeping.  It does not
 construct the obligation, construct/source-produce `Csucc`, produce suffixes
 or successor charts, prove transition regularity, chart coverage, normal
 crossings, pole order, termination, or RLCT.
+
+## 2026-06-24 Lean Case 2 constructed source following factor with old top rows
+
+Reproduction:
+`reproduction-case2-constructed-source-following-factor-with-old-top-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-source-following-factor-with-old-top.md`.
+Review:
+`review-case2-constructed-source-following-factor-with-old-top-a4.md`.
+
+Lean now constructs a total source-coordinate following factor from arbitrary
+carried old-top rows `Cold` and arbitrary displayed pivot-first residual block
+`Csrc`:
+
+```text
+case2DisplayedConstructedSourceFollowingFactorWithOldTop
+```
+
+The constructor recovers `Cold` under `case2DisplayedSourceOldTopBlock` and
+recovers `Csrc` under `case2DisplayedSourceFollowingFactor`.  For generic
+`Csrc`, the transported block is `Q^-1*Csrc`; for the specialized residual
+block `Q*Cprime`, the transported block is the free chart coordinate
+`Cprime`.  The existing source-current row reindexing APIs then give the
+finite stacked identities `[Cold; Q*Cprime]` for the current block and
+`[Cold; Cprime]` for the formula-level successor block.
+
+This is finite source-coordinate construction only.  It does not construct a
+`SourceProductionObligation`, source-produce a successor chart family or
+suffix, produce recurrence or exponent post-data, prove transition
+regularity, chart coverage, normal crossings, pole order, termination, or
+RLCT.
