@@ -8663,6 +8663,26 @@ This is real finite topology only.  It is not yet a p. 13 source-data wrapper,
 not a source-stratum neighborhood theorem, not analytic coordinate status, not
 Fubini/polar regular-variable shift, not normal crossings, and not RLCT.
 
+Latest A2 regular-coordinate F2/F3 smallness projection:
+`RegularSuspensionCoordinates.lean` now proves
+`AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt`.
+It applies the generic two-family real smallness theorem to the `F2` and `F3`
+subfamilies inside `AoyagiRegularBlockCoordinateIndex`.  The hypothesis is
+only that every tagged scalar coordinate is centered and continuous at `x0`;
+the conclusion is ambient eventual
+`squareSum(F2)+squareSum(F3) <= 1` in `nhds x0`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+
+This is finite p. 13 tag projection only.  It is not a fixed-base source-data
+wrapper, not a source-stratum theorem, not analytic regular-coordinate status,
+not Fubini/polar regular-variable shift, not normal crossings, and not RLCT.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

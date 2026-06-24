@@ -5882,6 +5882,27 @@ shrink, no analytic coordinate chart, no Fubini/polar theorem, no
 regular-coordinate RLCT shift, no chart coverage, no Jacobian compatibility,
 no normal crossings, no pole-order theorem, and no RLCT theorem.
 
+Latest A2 regular-coordinate F2/F3 smallness projection:
+Lean specialises the generic two-family smallness theorem to the p. 13
+regular-coordinate tags.  If every coordinate in
+`AoyagiRegularBlockCoordinateIndex iota mu nu` is centered and continuous at
+`x0`, then eventually in ambient `nhds x0` the `F2` and `F3` tagged
+subfamilies have total square-sum at most `1`.
+
+Lean name:
+`AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+
+Nonclaims: no fixed-base source-data wrapper, no source-stratum neighborhood,
+no analytic regular-coordinate status, no Fubini/polar shift, no chart
+coverage, no Jacobian compatibility, no normal crossings, no pole-order
+theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

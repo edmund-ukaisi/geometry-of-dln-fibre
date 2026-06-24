@@ -410,6 +410,29 @@ theorem f3SquareSum_le_regularSquareSum
   rw [hsplit]
   nlinarith
 
+/-- Centered continuity of all scalar regular coordinates gives a neighborhood
+where the `F2` and `F3` square-sums have total at most `1`. -/
+theorem f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt
+    [Fintype ι] [Fintype μ] [Fintype ν] [TopologicalSpace α]
+    {coord : α → AoyagiRegularBlockCoordinateIndex ι μ ν → ℝ} {x₀ : α}
+    (hcoord :
+      ∀ c : AoyagiRegularBlockCoordinateIndex ι μ ν,
+        coord x₀ c = 0 ∧ ContinuousAt (fun x : α => coord x c) x₀) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum
+          (fun ij : ι × ν =>
+            coord x (Sum.inr (α := ι × ι) (Sum.inl (β := μ × ι) ij))) +
+        aoyagiCoordinateSquareSum
+          (fun ij : μ × ι =>
+            coord x (Sum.inr (α := ι × ι) (Sum.inr (α := ι × ν) ij))) ≤
+          1 := by
+  exact
+    aoyagiCoordinateSquareSum_add_eventually_le_one_of_forall_centered_continuousAt
+      (fun ij : ι × ν =>
+        hcoord (Sum.inr (α := ι × ι) (Sum.inl (β := μ × ι) ij)))
+      (fun ij : μ × ι =>
+        hcoord (Sum.inr (α := ι × ι) (Sum.inr (α := ι × ν) ij)))
+
 /-- The abstract scalar regular-coordinate count matches Aoyagi's p. 13 count
 once the three index-cardinalities are identified with `r`, `H(L+1)-r`, and
 `H(1)-r`.

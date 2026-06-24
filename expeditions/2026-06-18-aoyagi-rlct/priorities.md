@@ -549,6 +549,16 @@ version needed for `squareSum(F2)+squareSum(F3) <= 1`.  The next A2 work is
 therefore a p. 13/source-stratum wrapper around this generic lemma, then the
 Fubini/polar regular-variable shift or full regular-suspension certificate.
 
+A2 regular-coordinate F2/F3 smallness projection has now landed:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Lean adds
+`AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt`,
+the finite p. 13 tag projection from all centered continuous tagged regular
+coordinates to ambient eventual `squareSum(F2)+squareSum(F3) <= 1`.  This
+discharges the pure tag-projection part of the previous next step.  Remaining
+A2 work is still the fixed-base/source-stratum wrapper and then the genuine
+regular-suspension certificate or Fubini/polar regular-variable shift.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds

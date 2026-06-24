@@ -2492,3 +2492,35 @@ the p. 13 source-data maps or weakened to the source-rank stratum, and it does
 not prove analytic regular-coordinate status, source-rank openness,
 Fubini/polar regular-variable shift, chart coverage, Jacobian compatibility,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 regular-coordinate F2/F3 smallness projection
+
+Reproduction:
+`reproduction-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+Review:
+`review-a2-regular-coordinate-f2-f3-smallness-projection.md`.
+
+Lean now projects the generic two-family smallness theorem through the p. 13
+regular-coordinate tags:
+
+```text
+AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt
+```
+
+For a finite real tagged family
+`coord : alpha -> AoyagiRegularBlockCoordinateIndex iota mu nu -> real`, if
+every tagged coordinate is centered and continuous at `x0`, then eventually in
+`nhds x0` the square-sums of the `F2` and `F3` tagged subfamilies have total at
+most `1`.
+
+Boundary: finite real tag projection only.  This is not yet specialised to the
+actual fixed-base source-data map and not weakened to a source-rank stratum.
+It does not prove analytic regular-coordinate status, source-rank openness,
+Fubini/polar regular-variable shift, chart coverage, Jacobian compatibility,
+normal crossings, pole order, or RLCT.
+
+Xhigh review passed.  The reviewer confirmed the narrow theorem shape, the
+focused module build, and the need for explicit nested-sum type annotations for
+the `F2` and `F3` tags.
