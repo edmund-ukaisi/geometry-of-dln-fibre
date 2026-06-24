@@ -15984,6 +15984,45 @@ abbrev Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock
       (case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) Csucc)
   )
 
+/-- Variant of `Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock`
+where the successor following factor on the right-hand side is supplied
+explicitly.
+
+This proposition is only a consumer shape: a caller must separately provide
+`Csucc = case2DisplayedSourceSuccessorFollowingFactor ...`.  It does not
+construct that supplied successor object. -/
+abbrev Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlockAndCsucc
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (C Csucc : ℕ → τ → R)
+    (B : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R) : Prop :=
+  let row := case2DisplayedPivotRow n hS hcont
+  let col := case2DisplayedPivotCol n hS hcont
+  let A := case2DisplayedPaperDchart n hS hcont residual
+  let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+  let post := pre.case2Succ upivot
+  ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+        (diagonal (fun i ↦ pre.case2ResidualRowWeight i) * B).submatrix
+          (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+    verticalBlock (case2DisplayedSourceOldTopBlock (J := J) C)
+      (case2DisplayedSourceFollowingFactor n hS hcont C)).submatrix
+      (case2SourceOldTopSuccResidualRowEquiv n hS hcont).symm id =
+  fromBlocks (case2DisplayedSourceOldTopWeight (J := J + 1) post) 0 0
+    (diagonal
+      (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+        post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+        (case2DisplayedPostPivotSourceResidual n hS hcont residual)) *
+    verticalBlock
+      (case2DisplayedSourceOldTopBlock (J := J + 1) Csucc)
+      (case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) Csucc)
+  )
+
 set_option maxHeartbeats 800000 in
 -- This congruence theorem elaborates the large displayed product identity with
 -- a supplied lower-left substitution block.
@@ -16035,6 +16074,65 @@ theorem sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData
     ⟨q, hq, hexp, hlevel, hleast, hgap⟩
   refine ⟨q, ?_, hexp, hlevel, hleast, hgap⟩
   simpa [Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock, hB] using hq
+
+set_option maxHeartbeats 800000 in
+-- This congruence theorem rewrites only the right-hand successor object in the
+-- large displayed reindexed-product identity.
+set_option linter.style.longLine false in
+/-- Reindexed displayed source product with both a supplied substitution block
+and a supplied successor following factor.
+
+This consumes the explicit equality
+`Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C` and rewrites the
+right-hand side of
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq`.
+It does not construct `Csucc`, source-produce the successor, produce suffixes
+or successor charts, prove transition regularity, normal crossings, pole
+order, or RLCT data. -/
+theorem sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq_of_Csucc_eq
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (C Csucc : ℕ → τ → R)
+    (B : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (hB :
+      case2DisplayedSourceSubstitutionBlock n hS hcont u residual = B)
+    (hCsucc :
+      Csucc = case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) :
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    (∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlockAndCsucc
+        pre u residual hS hcont C Csucc B q ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelRecurrenceState.case2Gap post) := by
+  dsimp only
+  rcases
+      sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq
+        pre u residual hS hSL hcont exponentPre levelInv leastValueGap
+        C B hB with
+    ⟨q, hq, hexp, hlevel, hleast, hgap⟩
+  refine ⟨q, ?_, hexp, hlevel, hleast, hgap⟩
+  simpa [Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlockAndCsucc,
+    Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlock, hCsucc] using hq
 
 /-- Fielded local certificate for the displayed continuing Case 2 source chart.
 
@@ -21450,6 +21548,75 @@ theorem continuing_Csucc_currentFollowingBlock_eq_formula
         residual C := by
   rw [ob.Csucc_eq_formula]
   rfl
+
+set_option maxHeartbeats 800000 in
+-- This wrapper feeds the obligation's supplied successor equality into the
+-- displayed reindexed-product congruence theorem.
+set_option linter.style.longLine false in
+/-- Reindexed displayed source product stated with the
+`SourceProductionObligation`'s supplied successor following factor.
+
+This is a consumer of `SourceProductionObligation`: it uses only
+`ob.Csucc_eq_formula` to rewrite the right-hand side of the already-proved
+displayed reindexed product.  It does not construct `Csucc`, a suffix,
+successor charts, transition regularity, normal crossings, pole order, or
+RLCT data. -/
+theorem reindexedNextSourceProduct_of_substitutionBlock_eq
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    {residual : ℕ × ℕ → R}
+    {κ : Fin (L + 1) → Type uκ} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    {hSuffix : S + 1 ≤ L}
+    {C : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+    {Csucc : ℕ → κ (sourceLayerIndex L (S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix)) → R}
+    {Cterm :
+      Matrix (case2SourceTerminalRowIndex J)
+        (κ (sourceLayerIndex L (S + 2)
+          (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R}
+    (ob :
+      SourceProductionObligation data residual κ hSuffix C Ctail Csucc Cterm)
+    (B : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R)
+    (hB :
+      case2DisplayedSourceSubstitutionBlock n data.stage_pos data.continuation
+        u residual = B) :
+    let upivot :=
+      case2DisplayedSourceChartMap n data.stage_pos data.continuation u residual
+        (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    (∃ q : pivotComplement (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlockAndCsucc
+        pre u residual data.stage_pos data.continuation C Csucc B q ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelRecurrenceState.case2Gap post) := by
+  exact
+    sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq_of_Csucc_eq
+      pre u residual data.stage_pos data.stage_le data.continuation
+      data.exponentPre data.levelInv data.leastValueGap C Csucc B hB
+      ob.Csucc_eq_formula
 
 /-- Continuing source-current stack boundary stated with the supplied
 successor following factor.

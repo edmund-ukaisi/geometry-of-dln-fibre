@@ -6803,6 +6803,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-microcertificate-evaluation-a4.md`.
 
+Latest A4 Case 2 supplied-successor reindexed product:
+`BlowupArithmetic.lean` now adds
+`Case2DisplayedReindexedNextSourceProductEqWithSubstitutionBlockAndCsucc`,
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq_of_Csucc_eq`,
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.reindexedNextSourceProduct_of_substitutionBlock_eq`.
+Given a supplied substitution-block equality and a supplied equality
+`Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C`, the displayed
+reindexed product is restated with `Csucc` on the right-hand side.  This is a
+finite congruence consumer only, not source production of `Csucc`, suffix
+production, successor chart construction, transition regularity, normal
+crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-supplied-successor-reindexed-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

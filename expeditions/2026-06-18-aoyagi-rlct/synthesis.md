@@ -7031,6 +7031,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-microcertificate-evaluation-a4.md`.
 
+Latest A4 Case 2 supplied-successor reindexed product:
+`BlowupArithmetic.lean` now proves a finite consumer version of the displayed
+reindexed next-source product whose right-hand side is written with a supplied
+successor following factor `Csucc`, under the explicit hypothesis
+`Csucc = case2DisplayedSourceSuccessorFollowingFactor ... C`.  The generic
+theorem is
+`sourceChartMap_reindexedNextSourceProduct_fromCase2SuccCorrectedPostData_of_substitutionBlock_eq_of_Csucc_eq`;
+the `SourceProductionObligation` wrapper is
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.reindexedNextSourceProduct_of_substitutionBlock_eq`
+and uses only `ob.Csucc_eq_formula`.  This is exactly a congruence consumer:
+same row-operation witness, same corrected exponent/level/gap post-data, no
+construction of `Csucc`, suffixes, successor chart families, transition
+regularity, chart coverage, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-supplied-successor-reindexed-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

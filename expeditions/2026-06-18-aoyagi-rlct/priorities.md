@@ -2643,3 +2643,12 @@ determinant remain target-chart data.  The next higher-value A4 target is to
 use these adapters only under explicit chart-production/analytic hypotheses;
 do not treat them as transition regularity, source production, or a global A0
 normal-crossing certificate.
+
+The supplied-successor reindexed-product consumer has now landed in
+`threads/04-blow-up-certificate/reproduction-case2-supplied-successor-reindexed-product-a4.md`.
+Lean can restate the displayed reindexed product with a supplied `Csucc` once
+the equality to the formula-level successor is explicit, including the
+`SourceProductionObligation` wrapper that feeds in `ob.Csucc_eq_formula`.
+This is not source production; the next real source-moving work must still
+construct or reduce the remaining `Csucc`/suffix/successor-chart obligations,
+or else proceed only under explicit chart-production hypotheses.
