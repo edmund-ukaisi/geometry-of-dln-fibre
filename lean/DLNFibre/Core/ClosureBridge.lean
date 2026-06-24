@@ -4,6 +4,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.RadicalCatenary
 import DLNFibre.Core.FibreCodim
+import DLNFibre.Core.RouteCAssembly
 
 /-!
 # `DLNFibre.Core.ClosureBridge` — `hClosure`: `varietyDim Σ^r = varietyDim Σ̄^r`
@@ -150,5 +151,24 @@ theorem varietyDim_productRankLocus_eq_productRankLocusLE [IsAlgClosed k] [CharZ
         + varietyDim (canonicalCoord d '' productRankLocusLE (k := k) d r) := by
     rw [hcatSigBar, ← hcod, hcatSig]
   exact ENat.add_right_injective_of_ne_top hcodne key
+
+/-- **Route-c assembly with `hClosure` discharged: `codim(fibre d B) = C + δ` carrying ONLY
+`hSweep`.** Wires the in-repo `hClosure` (`varietyDim_productRankLocus_eq_productRankLocusLE`) into
+`RouteCAssembly.codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep'`, so the only remaining named
+hypothesis is the homogeneous-sweep dimension identity `hSweep`. Zero-cite: the closure bridge is
+proved, not assumed. -/
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep_closure
+    [IsAlgClosed k] [CharZero k]
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
+    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (hB : B.rank = r)
+    (hFne : (canonicalCoord d '' fibre d B).Nonempty)
+    (hSigmaNe : (canonicalCoord d '' productRankLocusLE (k := k) d r).Nonempty)
+    (hSweep : varietyDim (canonicalCoord d '' productRankLocus (k := k) d r)
+        = ((r * (d (Fin.last N) + d 0 - r) : ℕ) : ℕ∞)
+          + varietyDim (canonicalCoord d '' fibre d B)) :
+    codimRepCanonical (fibre d B)
+      = ((cCodim d r h).toNat : ℕ∞) + ((r * (d (Fin.last N) + d 0 - r) : ℕ) : ℕ∞) :=
+  codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep' d r h B hB hFne hSigmaNe hSweep
+    (varietyDim_productRankLocus_eq_productRankLocusLE d r h)
 
 end DLNFibre.Core
