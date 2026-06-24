@@ -5546,6 +5546,70 @@ theorem selectedEntryNormalizedMap_schurComplement_transition_mul_sq
       haj_ne]
   field_simp [htarget]
 
+/-- Route-independence of the finite selected-entry target Schur block.
+
+On a normalized triple overlap, computing target-normalized coordinates by
+`source -> middle -> target` gives the same lower-right target Schur entry as
+computing them directly by `source -> target`.  This is finite selected-entry
+coordinate algebra only; it is not analytic transition regularity, chart
+coverage, successor/following-factor production, normal crossings, pole order,
+or RLCT extraction. -/
+theorem selectedEntryNormalizedMap_schurComplement_transition_cocycle
+    {ρ κ K : Type*} [Field K] [DecidableEq ρ] [DecidableEq κ]
+    {sourcePivot middlePivot targetPivot : ρ × κ}
+    (residual : ρ × κ → K)
+    (hmiddle : selectedEntryNormalizedMap sourcePivot residual middlePivot ≠ 0)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0)
+    (i : pivotComplement targetPivot.1) (j : pivotComplement targetPivot.2) :
+    let middleDenom := selectedEntryNormalizedMap sourcePivot residual middlePivot
+    let targetDenom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+    let middleResidual : ρ × κ → K :=
+      fun q ↦ selectedEntryNormalizedMap sourcePivot residual q / middleDenom
+    let middleToTargetDenom :=
+      selectedEntryNormalizedMap middlePivot middleResidual targetPivot
+    let middleTargetResidual : ρ × κ → K :=
+      fun q ↦ selectedEntryNormalizedMap middlePivot middleResidual q /
+        middleToTargetDenom
+    let directTargetResidual : ρ × κ → K :=
+      fun q ↦ selectedEntryNormalizedMap sourcePivot residual q / targetDenom
+    let middleA : Matrix ρ κ K :=
+      fun r c ↦ selectedEntryNormalizedMap targetPivot middleTargetResidual (r, c)
+    let directA : Matrix ρ κ K :=
+      fun r c ↦ selectedEntryNormalizedMap targetPivot directTargetResidual (r, c)
+    (pivotFirstD targetPivot.1 targetPivot.2 middleA -
+        pivotFirstX targetPivot.1 targetPivot.2 middleA *
+          pivotFirstY targetPivot.1 targetPivot.2 middleA) i j =
+      (pivotFirstD targetPivot.1 targetPivot.2 directA -
+        pivotFirstX targetPivot.1 targetPivot.2 directA *
+          pivotFirstY targetPivot.1 targetPivot.2 directA) i j := by
+  dsimp only
+  let middleDenom := selectedEntryNormalizedMap sourcePivot residual middlePivot
+  let targetDenom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+  let middleResidual : ρ × κ → K :=
+    fun q ↦ selectedEntryNormalizedMap sourcePivot residual q / middleDenom
+  let middleToTargetDenom :=
+    selectedEntryNormalizedMap middlePivot middleResidual targetPivot
+  let middleTargetResidual : ρ × κ → K :=
+    fun q ↦ selectedEntryNormalizedMap middlePivot middleResidual q /
+      middleToTargetDenom
+  let directTargetResidual : ρ × κ → K :=
+    fun q ↦ selectedEntryNormalizedMap sourcePivot residual q / targetDenom
+  have hA :
+      (fun r c ↦ selectedEntryNormalizedMap targetPivot middleTargetResidual (r, c)) =
+        fun r c ↦ selectedEntryNormalizedMap targetPivot directTargetResidual (r, c) := by
+    funext r c
+    have htwo :=
+      selectedEntryNormalizedMap_transition_transition_eq_div_of_ne_zero
+        (sourcePivot := sourcePivot) (middlePivot := middlePivot)
+        (targetPivot := targetPivot) residual hmiddle htarget (r, c)
+    have hone :=
+      selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+        (sourcePivot := sourcePivot) (targetPivot := targetPivot)
+        residual htarget (r, c)
+    simpa [middleDenom, targetDenom, middleResidual, middleToTargetDenom,
+      middleTargetResidual, directTargetResidual] using htwo.trans hone.symm
+  rw [hA]
+
 /-- Reindex a following factor so its rows match the pivot-first column order. -/
 def pivotFirstFollowingFactor {κ τ R : Type*} [DecidableEq κ]
     (colPivot : κ) (C : Matrix κ τ R) :
@@ -9496,6 +9560,113 @@ theorem case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_s
     pivotFirstD, pivotFirstX, pivotFirstY, Matrix.mul_apply] using
     (case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq
       hsource htargetMem residual htarget iNat jNat)
+
+/-- Source-coordinate Case 2 route-independence for the finite target Schur
+block.
+
+On a normalized triple overlap, the lower-right target Schur entry computed
+after `source -> middle -> target` agrees with the one computed directly after
+`source -> target`.  This is finite selected-entry coordinate algebra only; it
+does not prove analytic transition regularity, chart coverage,
+successor/following-factor production, normal crossings, pole order, or RLCT
+extraction. -/
+theorem case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle
+    {n : ℕ → ℕ} {S J : ℕ}
+    {sourcePivot middlePivot targetPivot : ℕ × ℕ}
+    (hsource : sourcePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (hmiddleMem : middlePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (htargetMem : targetPivot ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (residual : ℕ × ℕ → K)
+    (hmiddle :
+      case2SourceSelectedNormalizedMapOfMem hsource residual middlePivot ≠ 0)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot ≠ 0)
+    (i : pivotComplement targetPivot.1) (j : pivotComplement targetPivot.2) :
+    let middleDenom := case2SourceSelectedNormalizedMapOfMem hsource residual middlePivot
+    let targetDenom := case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot
+    let middleResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / middleDenom
+    let middleToTargetDenom :=
+      case2SourceSelectedNormalizedMapOfMem hmiddleMem middleResidual targetPivot
+    let middleTargetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hmiddleMem middleResidual q /
+        middleToTargetDenom
+    let directTargetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / targetDenom
+    let middleA : Matrix ℕ ℕ K :=
+      fun r c ↦ case2SourceSelectedNormalizedMapOfMem htargetMem
+        middleTargetResidual (r, c)
+    let directA : Matrix ℕ ℕ K :=
+      fun r c ↦ case2SourceSelectedNormalizedMapOfMem htargetMem
+        directTargetResidual (r, c)
+    (pivotFirstD targetPivot.1 targetPivot.2 middleA -
+        pivotFirstX targetPivot.1 targetPivot.2 middleA *
+          pivotFirstY targetPivot.1 targetPivot.2 middleA) i j =
+      (pivotFirstD targetPivot.1 targetPivot.2 directA -
+        pivotFirstX targetPivot.1 targetPivot.2 directA *
+          pivotFirstY targetPivot.1 targetPivot.2 directA) i j := by
+  simpa [case2SourceSelectedNormalizedMapOfMem] using
+    (selectedEntryNormalizedMap_schurComplement_transition_cocycle
+      (sourcePivot := sourcePivot) (middlePivot := middlePivot)
+      (targetPivot := targetPivot) (residual := residual)
+      (by simpa [case2SourceSelectedNormalizedMapOfMem] using hmiddle)
+      (by simpa [case2SourceSelectedNormalizedMapOfMem] using htarget)
+      i j)
+
+/-- Residual-block subtype form of the Case 2 target Schur route-independence
+law.
+
+This is the residual-row/residual-column subtype adapter for
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle`.
+It proves only finite selected-entry coordinate algebra; it is not analytic
+transition regularity, chart coverage, successor/following-factor production,
+normal crossings, pole order, or RLCT extraction. -/
+theorem case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_cocycle
+    {n : ℕ → ℕ} {S J : ℕ}
+    {sourcePivot middlePivot targetPivot : ℕ × ℕ}
+    (hsource : sourcePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (hmiddleMem : middlePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (htargetMem : targetPivot ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (residual : ℕ × ℕ → K)
+    (hmiddle :
+      case2SourceSelectedNormalizedMapOfMem hsource residual middlePivot ≠ 0)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot ≠ 0)
+    (i : pivotComplement (case2ResidualBlockPivotRowOfMem htargetMem))
+    (j : pivotComplement (case2ResidualBlockPivotColOfMem htargetMem)) :
+    let middleDenom := case2SourceSelectedNormalizedMapOfMem hsource residual middlePivot
+    let targetDenom := case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot
+    let middleResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / middleDenom
+    let middleToTargetDenom :=
+      case2SourceSelectedNormalizedMapOfMem hmiddleMem middleResidual targetPivot
+    let middleTargetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hmiddleMem middleResidual q /
+        middleToTargetDenom
+    let directTargetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / targetDenom
+    let row := case2ResidualBlockPivotRowOfMem htargetMem
+    let col := case2ResidualBlockPivotColOfMem htargetMem
+    let middleA := case2SourceSelectedNormalizedBlockOfMem htargetMem middleTargetResidual
+    let directA := case2SourceSelectedNormalizedBlockOfMem htargetMem directTargetResidual
+    (pivotFirstD row col middleA -
+        pivotFirstX row col middleA * pivotFirstY row col middleA) i j =
+      (pivotFirstD row col directA -
+        pivotFirstX row col directA * pivotFirstY row col directA) i j := by
+  let iNat : pivotComplement targetPivot.1 :=
+    ⟨i.1.1, by
+      intro hi
+      exact i.2 (Subtype.ext (by simpa using hi))⟩
+  let jNat : pivotComplement targetPivot.2 :=
+    ⟨j.1.1, by
+      intro hj
+      exact j.2 (Subtype.ext (by simpa using hj))⟩
+  simpa [case2SourceSelectedNormalizedBlockOfMem, iNat, jNat,
+    pivotFirstD, pivotFirstX, pivotFirstY, Matrix.mul_apply] using
+    (case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle
+      hsource hmiddleMem htargetMem residual hmiddle htarget iNat jNat)
 
 /-- Source-coordinate Case 2 selected-pivot `Q/P` identity for a source pivot
 pair known to lie in the residual-block center and an old recurrence state

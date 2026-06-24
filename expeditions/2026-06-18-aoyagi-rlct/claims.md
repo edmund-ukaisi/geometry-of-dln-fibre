@@ -4236,6 +4236,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
 
+Latest A4 selected-entry Schur transition cocycle:
+`BlowupArithmetic.lean` now proves
+`selectedEntryNormalizedMap_schurComplement_transition_cocycle`,
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle`,
+and
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_cocycle`.
+`SelectedEntryNormalCrossing.lean` proves the chart-indexed residual-subtype
+wrapper
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_cocycle`.
+These theorems say that the target lower-right Schur entry in the finite
+selected-pivot `Q/P` block is route-independent on normalized triple overlaps:
+source-to-middle-to-target and source-to-target give the same target Schur
+entry.  This is finite selected-entry coordinate algebra only, not analytic
+transition regularity, chart coverage, source production of successor
+residual/following factors, normal crossings, pole order, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-schur-transition-cocycle-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-schur-transition-cocycle.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-schur-transition-cocycle-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

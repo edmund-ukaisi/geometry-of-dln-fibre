@@ -5843,3 +5843,32 @@ residual functions.  This remains finite selected-entry coordinate algebra
 only: no analytic transition regularity, chart coverage, open-neighbourhood
 gluing, source-displayed all-pivot atlas, successor/following-factor
 production, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean selected-entry Schur transition cocycle
+
+Reproduction:
+`reproduction-selected-entry-schur-transition-cocycle-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-schur-transition-cocycle.md`.
+Review:
+`review-selected-entry-schur-transition-cocycle-a4.md`.
+
+Lean now proves finite selected-entry route-independence for the target
+lower-right Schur entry used by the selected-pivot `Q/P` calculation:
+
+```text
+selectedEntryNormalizedMap_schurComplement_transition_cocycle
+case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle
+case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_cocycle
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_cocycle
+```
+
+On a normalized triple overlap with source, middle, and target pivots `p,q,r`,
+the target-normalized entries reached through `p -> q -> r` equal those reached
+directly through `p -> r`; hence the finite Schur expression
+`D - X*Y` at target off-pivot row and column indices is the same by both
+routes.  This is a convenience/API corollary of the finite selected-entry
+cocycle, not new analytic bedrock.  It proves no analytic transition
+regularity, chart coverage, open-neighbourhood gluing, source-displayed
+all-pivot atlas, successor/following-factor production, normal crossings, pole
+order, or RLCT extraction.

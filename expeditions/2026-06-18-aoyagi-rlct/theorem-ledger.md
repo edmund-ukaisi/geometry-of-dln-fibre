@@ -6626,6 +6626,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
 
+Latest A4 selected-entry Schur transition cocycle:
+`BlowupArithmetic.lean` now proves
+`selectedEntryNormalizedMap_schurComplement_transition_cocycle`,
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_cocycle`,
+and
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_cocycle`.
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelectedBlock_schurComplement_transition_cocycle`.
+These state route-independence of the finite target lower-right Schur entry on
+normalized selected-entry triple overlaps, with a Case 2 chart-indexed
+residual-subtype wrapper for the target `Q/P` block.  This remains finite
+coordinate algebra only: no analytic transition regularity, chart coverage,
+source-displayed all-pivot atlas, successor/following-factor production,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-schur-transition-cocycle-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-schur-transition-cocycle.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-schur-transition-cocycle-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

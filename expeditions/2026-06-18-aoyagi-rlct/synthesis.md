@@ -6830,6 +6830,19 @@ all-pivot atlas, successor/following-factor production, normal crossings, pole
 order, or RLCT.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
 
+The latest finite Schur-compatible atlas step is
+`threads/04-blow-up-certificate/reproduction-selected-entry-schur-transition-cocycle-a4.md`.
+Lean proves that the finite target lower-right Schur entry is independent of
+the route through a middle selected-entry chart on normalized triple overlaps.
+The generic theorem compares the Schur expression built from the target
+normalized matrix after `source -> middle -> target` with the one after direct
+`source -> target`; Case 2 wrappers expose both source-coordinate and
+chart-indexed residual-subtype forms.  This is a convenience/API corollary of
+the selected-entry cocycle, not a source-production theorem and not analytic
+transition regularity, coverage, normal crossings, pole order, or RLCT.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-schur-transition-cocycle-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

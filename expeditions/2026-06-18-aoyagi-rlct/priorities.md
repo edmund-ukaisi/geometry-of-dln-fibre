@@ -2472,6 +2472,18 @@ move toward source production of the successor residual/following objects with
 these finite transition facts available as support.  Review:
 `threads/04-blow-up-certificate/review-selected-entry-transition-cocycle-a4.md`.
 
+The newest finite Schur-compatible atlas step is
+`threads/04-blow-up-certificate/reproduction-selected-entry-schur-transition-cocycle-a4.md`.
+Lean now transports the selected-entry cocycle through the finite lower-right
+Schur expression used by the Case 2 `Q/P` block.  This is explicitly a
+route-independence/API corollary, not source production.  It gives downstream
+`Q/P` consumers a chart-indexed residual-subtype theorem after the finite
+transition data have been constructed.  Next A4 work can either package the
+transition-generated target data with the existing source-selected `Q/P`
+boundary theorem, or return to source production of successor residual and
+following objects while keeping this as finite overlap support.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-schur-transition-cocycle-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate
