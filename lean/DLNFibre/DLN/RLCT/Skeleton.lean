@@ -1123,7 +1123,8 @@ variables `C_s = [[I_r+X_s, Y_s],[Z_s, T_s]]` (regular coords = the output resid
 the ONE open geometric obligation of L2; the wiring above it is green. -/
 theorem deepest_regular_core_normal_form (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), 0 < H s) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
@@ -1140,9 +1141,10 @@ gauge-slice normal form, #44) ▸ `reg_shift_add_core_eq_aoyagiLambda` (the clos
 proven). The L2 wiring is GREEN; the single open obligation is the named normal form. -/
 theorem product_reduction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), 0 < H s) :
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL) = ENNReal.ofReal (aoyagiLambda H r) := by
-  rw [deepest_regular_core_normal_form H r B hB hr hL, reg_shift_add_core_eq_aoyagiLambda H r hr hL]
+  rw [deepest_regular_core_normal_form H r B hB hr hL hpos, reg_shift_add_core_eq_aoyagiLambda H r hr hL]
 
 /-! ## D1 — reduction to the deepest singular point (Aoyagi 2013, Thm 4; design-spec §7.2) -/
 
@@ -1710,15 +1712,20 @@ theorem aoyagiTheta_eq (M : Fin (L + 1) → ℕ) :
 over the optimal set (fibre `mult⁻¹(B)`) — equals Aoyagi's closed form `aoyagiLambda H r`, for any
 target `B` of rank `r` with every width `≥ r` (`hr`, the well-definedness + nonemptiness domain:
 `hr` makes the reduced widths `M⁽ˢ⁾ = H⁽ˢ⁾ − r` non-truncating and the fibre nonempty, so the `⨅` is
-not the degenerate `⊤` over an empty set). Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core) ▸ R1
+not the degenerate `⊤` over an empty set) and **every width positive** (`hpos`). The positivity is
+load-bearing, not cosmetic: at a degenerate zero-width layer (`H s = 0`, reachable at `r = 0` under
+`hr`) the loss is identically `0`, so the local RLCT is `⊤` (`rlctAtOn_zero_eq_top`) while the closed
+form `aoyagiLambda` is finite — the L2 leg (`product_reduction` / `deepest_regular_core_normal_form`)
+is FALSE there, so both carry `hpos` too. Assembled: D1 (→ deepest point) ▸ L2 (→ reg + core) ▸ R1
 (→ charts) ▸ S2 (→ min ratio) ▸ A1 (→ clean form = `aoyagiLambda`). -/
 theorem aoyagi_learning_coefficient (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), 0 < H s) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
   -- assemble: D1 (⨅ = rlctAt at the constructed deepestPoint) ▸ L2 (= closed form there).
   rw [deepest_point_reduction H r B hB hr hL]
-  exact product_reduction H r B hB hr hL
+  exact product_reduction H r B hB hr hL hpos
 
 /-! ## A1 (`lambdaCore_eq_clean`) — the genuine clean closed form, built here.
 
