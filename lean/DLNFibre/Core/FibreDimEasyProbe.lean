@@ -54,4 +54,21 @@ theorem height_eq_of_minimalPrimes_bounds {R : Type*} [CommRing R] (I : Ideal R)
     rw [← Ideal.height_eq_primeHeight]
     exact hge J hJ
 
+/-! ## The assembly skeleton (contract): from per-component dim to `codim = C+δ`
+
+The complete H5 assembly, end-to-end, given the per-component dimension facts the Jacobian-rank route
+(thread 27) supplies, factors as:
+* **bridge** `height P + dim (R ⧸ P) = card` — LANDED catenary `height_add_ringKrullDim_quotient_eq_card`
+  (`NullstellensatzCodim`); converts a component-dimension bound to a height bound (`ℕ∞` arithmetic);
+* **closer** `height_eq_of_minimalPrimes_bounds` (above) — `⨅` collapse to `C+δ`;
+* **retarget** `codimRepCanonical_fibre_eq_height_fibreGenIdeal` (H1, LANDED).
+Only thread 27's per-minimal-prime `dim (R ⧸ P)`/`rank(Jacobian)` facts are the open input. The
+contract is the LANDED bridge itself (no new probe needed). -/
+
+/-- LANDED bridge re-pinned: `height P + dim (R ⧸ P) = card` for a prime `P` of `MvPolynomial σ k`
+(`σ` finite). The per-component dim→height conversion the assembly runs on. -/
+example {σ : Type*} [Finite σ] (P : Ideal (MvPolynomial σ k)) [P.IsPrime] :
+    (P.height : WithBot ℕ∞) + ringKrullDim (MvPolynomial σ k ⧸ P) = (Nat.card σ : WithBot ℕ∞) :=
+  height_add_ringKrullDim_quotient_eq_card P
+
 end DLNFibre.Core
