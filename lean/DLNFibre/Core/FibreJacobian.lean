@@ -12,8 +12,8 @@ does **not** invoke genericity or smoothness (H3c). No result here claims `codim
 The fibre generators are `g_{(r,c)} = multPoly d r c − C (B r c)`
 (`Core.MultComorphism.fibreGenSet`), one per output entry `(r, c) : Fin d_N × Fin d_0`. Presenting
 them as the **product-indexed family** `fibreGen d B` (rather than the `Set.range` of
-`fibreGenSet`) lets them plug into `Core.CotangentJacobian.jacobianMatrix`, whose row index is now an
-arbitrary `Fintype` (generalised from `Fin m`): the rows of the fibre Jacobian *are* the output
+`fibreGenSet`) lets them plug into `Core.CotangentJacobian.jacobianMatrix`, whose row index is now
+an arbitrary `Fintype` (generalised from `Fin m`): the rows of the fibre Jacobian *are* the output
 entries `(r, c)`, its columns the coordinate variables `⟨i, s, t⟩ : RepCoord d`.
 
 Deliverables, for `d : Fin (N+1) → ℕ` and a target `B`:
@@ -27,7 +27,8 @@ Deliverables, for `d : Fin (N+1) → ℕ` and a target `B`:
   the entry is exactly `Core.MultDifferential.eval_pderiv_multPoly`).
 * **`finrank_cotangentSpace_fibre_eq_finrank_ker`** (the tangent = ker identity) — the local
   cotangent space of the fibre ring at `A` has `k`-dimension `= finrank (ker (fibreJacobian))`,
-  unconditionally (no smoothness; `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`).
+  unconditionally (no smoothness), reusing
+  `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`.
 * **`finrank_ker_add_rank_fibreJacobianMatrix`** — the card-rank reading
   `finrank (ker) + rank(matrix) = card (RepCoord d)`, into which H3b plugs `rank = C + δ` to read
   `finrank (ker) = card − C − δ`.
@@ -105,11 +106,11 @@ theorem fibreJacobianMatrix_apply (d : Fin (N + 1) → ℕ)
 /-! ## The tangent = ker identity (unconditional) and the card-rank reading -/
 
 /-- **Tangent = ker Jacobian.** For a tuple `A` in the fibre (`mult d A = B`), the local cotangent
-space of the fibre coordinate ring at the rational point `canonicalCoord d A` has `k`-dimension equal
-to `finrank (ker (fibreJacobian d B A))`. Unconditional (no smoothness, no genericity) — reuses
-`Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`. The localised ideal is
-`maxIdealAt (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the localisation of
-`fibreGenIdeal d B` (`span (range (fibreGen d B)) = fibreGenIdeal d B`) at the point `A`. -/
+space of the fibre coordinate ring at the rational point `canonicalCoord d A` has `k`-dimension
+equal to `finrank (ker (fibreJacobian d B A))`. Unconditional (no smoothness, no genericity),
+reusing `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`. The localised
+ideal is `maxIdealAt (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the
+localisation of `fibreGenIdeal d B` (`span (range (fibreGen d B)) = fibreGenIdeal d B`) at `A`. -/
 theorem finrank_cotangentSpace_fibre_eq_finrank_ker (d : Fin (N + 1) → ℕ)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (A : Tuple (k := k) d)
     (hA : mult d A = B) :
@@ -130,7 +131,7 @@ theorem finrank_ker_add_rank_fibreJacobianMatrix (d : Fin (N + 1) → ℕ)
       = Fintype.card (RepCoord d) := by
   have h : finrank k (LinearMap.range (fibreJacobian d B A))
       + finrank k (LinearMap.ker (fibreJacobian d B A)) = Fintype.card (RepCoord d) := by
-    rw [LinearMap.finrank_range_add_finrank_ker]; simp [Module.finrank_pi]
+    rw [LinearMap.finrank_range_add_finrank_ker]; simp
   have hr : finrank k (LinearMap.range (fibreJacobian d B A)) = (fibreJacobianMatrix d B A).rank :=
     rfl
   omega
@@ -139,8 +140,8 @@ theorem finrank_ker_add_rank_fibreJacobianMatrix (d : Fin (N + 1) → ℕ)
 
 section Witness
 
-/-- The witness tuple `(A₁, A₂)` over `ℚ` (the `(2,2,2)` witness of `Core.Setup`, over a field so the
-fibre Jacobian — gated by `[Field k]` for the cotangent identity — instantiates). -/
+/-- The witness tuple `(A₁, A₂)` over `ℚ` (the `(2,2,2)` witness of `Core.Setup`, over a field so
+the fibre Jacobian — gated by `[Field k]` for the cotangent identity — instantiates). -/
 def tupleWitnessQ : Tuple (k := ℚ) dWitness := fun i ↦
   match i with
   | 0 => !![1, 2; 0, 1]
