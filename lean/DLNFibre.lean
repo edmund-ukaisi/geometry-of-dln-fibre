@@ -171,3 +171,9 @@ import DLNFibre.Core.RouteCAssembly
 -- `exists_free_localizedModule_powers` + FractionRing-is-a-field). Reusable general lemma + a stepping
 -- stone for the finite-type-ALGEBRA case (EGA IV 6.9.1, the positive-relative-dim case the fibre needs).
 import DLNFibre.Core.GenericFreeness
+-- (b)-build route-c foundation: `VarietyDimRadical` — the non-circularity SHIELD `ringKrullDim_quotient_radical`
+-- (Krull dim radical-insensitive ⟹ the varietyDim build never re-enters the R2-3b-4 reducedness circularity)
+-- + `varietyDim_eq_of_coordRingAlgEquiv` (transport varietyDim across a coordinate-ring AlgEquiv). `SchurGauge`
+-- — the Schur pivot block is a SchurLoc-unit (det = the inverted detSchurS), the unit the gauge L/H blocks use.
+import DLNFibre.Core.VarietyDimRadical
+import DLNFibre.Core.SchurGauge
