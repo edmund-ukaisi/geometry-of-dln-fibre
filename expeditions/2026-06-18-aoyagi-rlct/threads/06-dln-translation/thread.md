@@ -827,3 +827,29 @@ selected cutpoints, prove rank-width from matrix data, construct Eq5 endpoint
 families, prove Lemma 5 exactness, prove active-ratio lower bounds, prove
 displayed-ratio chart-count facts, produce normal-crossing charts, identify
 pole order without A0, or extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 ell=1 nonselected obstruction
+
+Reproduction:
+`reproduction-definition3-ell-one-nonselected-obstruction-a6.md`.
+Statement card:
+`statement-card-a6-definition3-ell-one-nonselected-obstruction.md`.
+Review artifact:
+`review-definition3-ell-one-nonselected-obstruction-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+```
+
+Under `S : AoyagiDefinition3SourceData L 1 H r C` and explicit source-range
+rank-width nonnegativity, every source-range reduced-width value lies in the
+two selected values.  The proof isolates the general `ell=1` mechanism from
+the `1,2,100` diagnostic: the printed nonselected upper inequality has
+coefficient `ell-1=0`, forcing the selected sum to vanish, which contradicts
+the strict selected inequality and selected nonnegativity.
+
+Boundary: necessary condition only.  This does not construct selected
+cutpoints, classify `ell>1`, repair Definition 3, construct Eq5 families,
+prove Lemma 5 exactness, produce charts, identify pole order, or extract RLCT.

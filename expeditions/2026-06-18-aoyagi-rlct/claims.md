@@ -3518,8 +3518,9 @@ No such claim is formalisation-ready until both fields are filled.
   source-data final-boundary handoff, conditional finite-exponent bridge,
   terminal-order equality-bridge, Eq5 terminal-order bridge, Definition 3 Eq5
   `hsource`/`hlast` bridges, Definition 3 source-data Eq5 terminal-order
-  bridge, and Definition 3 arbitrary source-data obstruction slices have
-  landed, but the final RLCT theorem remains open.
+  bridge, Definition 3 arbitrary source-data obstruction, and Definition 3
+  `ell=1` nonselected obstruction slices have landed, but the final RLCT
+  theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3564,6 +3565,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-definition3-eq5-hlast-bridge-a6.md`;
   Definition 3 arbitrary source-data obstruction reproduced at
   `threads/06-dln-translation/reproduction-definition3-source-data-obstruction-a6.md`;
+  Definition 3 `ell=1` nonselected obstruction reproduced at
+  `threads/06-dln-translation/reproduction-definition3-ell-one-nonselected-obstruction-a6.md`;
   Definition 3 source-data Eq5 terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reproduced at
@@ -3608,6 +3611,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-definition3-eq5-hlast-bridge-a6.md`;
   Definition 3 arbitrary source-data obstruction reviewed at
   `threads/06-dln-translation/review-definition3-source-data-obstruction-a6.md`;
+  Definition 3 `ell=1` nonselected obstruction reviewed at
+  `threads/06-dln-translation/review-definition3-ell-one-nonselected-obstruction-a6.md`;
   Definition 3 source-data Eq5 terminal-order bridge reviewed at
   `threads/06-dln-translation/review-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reviewed at
@@ -3667,6 +3672,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selected_strict_of_eq_selectedReducedWidths`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lastPoint_le`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.not_exists_widths_one_two_hundred`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selectedWidth_le_pred_of_ceilData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.htildeLowerNat_add_one_labelBounds_of_ceilData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lemma5Eq4_localData_of_ceilData`,
@@ -3865,7 +3871,12 @@ No such claim is formalisation-ready until both fields are filled.
   `r=0`, and reduced widths `1,2,100`, no `ell,C` satisfy
   `AoyagiDefinition3SourceData 2 ell H 0 C`.  This blocks a blanket
   source-data existence theorem under the printed inequalities; it is not a
-  corrected Definition 3 or a classification of source-data existence.
+  corrected Definition 3 or a classification of source-data existence.  Also
+  proved the general `ell=1` necessary condition: under source-range
+  rank-width nonnegativity, `AoyagiDefinition3SourceData L 1 H r C` forces
+  every source-range reduced-width value to belong to the selected value set.
+  This isolates the `ell=1` branch of the obstruction and is not selected-
+  cutpoint construction or an `ell>1` classification.
 - **Assumed.** cited analytic interface A0 and source hypotheses.
 - **Cited.** A0 only, if expedition succeeds as intended.
 - **Deferred.** existence and uniqueness of the selected cutpoints and selected

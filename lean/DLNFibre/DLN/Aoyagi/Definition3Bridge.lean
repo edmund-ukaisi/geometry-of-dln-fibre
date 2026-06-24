@@ -556,6 +556,50 @@ theorem not_exists_widths_one_two_hundred :
     rw [hsum] at hstrict
     norm_num [aoyagiReducedWidthInt, H, h2] at hstrict
 
+/-- For `ell = 1`, Definition 3 source data has no genuinely nonselected
+source-range reduced-width value, provided source-range reduced widths are
+nonnegative.
+
+The printed nonselected inequality has coefficient `ell - 1 = 0`; combined
+with nonnegative selected reduced widths and the strict selected inequality,
+this forces every source-range reduced-width value to lie in the selected
+value set.  This is only a necessary condition for supplied source data, not a
+selected-cutpoint existence theorem. -/
+theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
+    {L : ℕ} {H : ℕ → ℕ} {r s : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    (hr : ∀ t : ℕ, 1 ≤ t → t ≤ L + 1 → r ≤ H t)
+    (hs1 : 1 ≤ s) (hsL : s ≤ L + 1) :
+    aoyagiReducedWidthInt H r s ∈
+      Finset.univ.image
+        (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+  by_contra hnot
+  have hle := S.nonselected_le s hs1 hsL hnot
+  have hle0 :
+      (∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j)) ≤ 0 := by
+    norm_num at hle ⊢
+    simpa using hle
+  have h0_nonneg :
+      0 ≤ aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) :=
+    aoyagiReducedWidthInt_nonneg_of_rank_le H
+      (hr (C.cut (0 : Fin (1 + 1))) (C.pos _) (S.cut_le _))
+  have h1_nonneg :
+      0 ≤ aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) :=
+    aoyagiReducedWidthInt_nonneg_of_rank_le H
+      (hr (C.cut (1 : Fin (1 + 1))) (C.pos _) (S.cut_le _))
+  have hsum_nonneg :
+      0 ≤ ∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j) := by
+    rw [Fin.sum_univ_two]
+    omega
+  have hsum0 :
+      (∑ j : Fin (1 + 1), aoyagiReducedWidthInt H r (C.cut j)) = 0 :=
+    le_antisymm hle0 hsum_nonneg
+  have hstrict := S.selected_strict (0 : Fin (1 + 1))
+  rw [hsum0] at hstrict
+  norm_num at hstrict
+  omega
+
 /-- The strict selected-width inequality from Definition 3, rewritten for the
 selected reduced-width family used by the final formula layer. -/
 theorem selected_strict_selectedReducedWidths

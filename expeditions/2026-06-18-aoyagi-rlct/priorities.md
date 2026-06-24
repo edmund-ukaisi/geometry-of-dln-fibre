@@ -2859,3 +2859,14 @@ the tempting arbitrary selected-cutpoint/source-data existence route under the
 printed inequalities.  Continue treating `AoyagiDefinition3SourceData` as
 supplied unless its hypotheses are proved in a specific context; do not patch
 the printed inequality by fiat.
+
+A6 Definition 3 `ell=1` nonselected obstruction has now landed:
+`threads/06-dln-translation/reproduction-definition3-ell-one-nonselected-obstruction-a6.md`.
+Lean proves
+`AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth`.
+Under source-range rank-width nonnegativity, any
+`S : AoyagiDefinition3SourceData L 1 H r C` forces every source-range
+reduced-width value into the selected value set.  This is a necessary
+condition for supplied source data, not selected-cutpoint construction,
+`ell>1` classification, a correction of Definition 3, Eq5 construction,
+Lemma 5 exactness, chart production, pole order, or RLCT.

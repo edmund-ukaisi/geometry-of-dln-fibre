@@ -7414,6 +7414,23 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-data-obstruction-a6.md`.
 
+A6 Definition 3 `ell=1` nonselected obstruction:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth`.
+It proves that under source-range rank-width nonnegativity, Definition 3
+source data with `ell=1` permits no genuinely nonselected source-range
+reduced-width value.  The proof uses the printed nonselected upper inequality
+with coefficient `ell-1=0`, selected nonnegativity, and the strict selected
+inequality.  This is a necessary condition only; it does not construct
+cutpoints, classify `ell>1`, repair Definition 3, construct Eq5 families,
+prove Lemma 5 exactness, produce charts, identify pole order, or extract RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-ell-one-nonselected-obstruction-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-ell-one-nonselected-obstruction.md`.
+Review:
+`threads/06-dln-translation/review-definition3-ell-one-nonselected-obstruction-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
