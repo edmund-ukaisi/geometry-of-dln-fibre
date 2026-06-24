@@ -2726,3 +2726,14 @@ old-top/free-`Cprime` source following factor.  The source side is
 `[Cold; top(Cprime)]` followed by the supplied raw `sourceSuffixProduct`.
 This still does not source-produce `Csucc`, `C'^(S+1)`, suffixes, charts,
 transition regularity, coverage, normal crossings, pole order, or RLCT.
+
+The constructed old-top/free-`Cprime` source-production-obligation package has
+now landed in
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+Lean proves the unreindexed terminal-row equality to the source-row reindexing
+of `[Cold; top(Cprime)]`, then transports
+`SourceProductionObligation.of_formulaSuccessor_transportTerminalRows` to get
+`SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack`.
+This is only an interface specialization; it still does not source-produce
+`Csucc` or `C'^(S+1)`, construct suffixes or successor charts, prove transition
+regularity, coverage, normal crossings, pole order, termination, or RLCT.

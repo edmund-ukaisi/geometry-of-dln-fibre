@@ -4574,3 +4574,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+
+Latest A4 Case 2 constructed old-top `Cprime` source-production obligation:
+`BlowupArithmetic.lean` now packages the constructed old-top/free-`Cprime`
+following factor into `SourceProductionObligation` with explicit terminal
+matrix equal to the source-row reindexing of `[Cold; top(Cprime)]`.
+The landed names are
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack`.
+This proves only finite interface packaging from the canonical formula-level
+constructor; no source production of `Csucc` or `C'^(S+1)`, suffix construction,
+successor chart construction, transition regularity, chart coverage, normal
+crossings, pole order, termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-production-obligation.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.

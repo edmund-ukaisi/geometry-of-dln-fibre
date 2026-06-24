@@ -6338,3 +6338,29 @@ followed by the supplied raw `sourceSuffixProduct`.
 This is finite entry-ideal consumer bookkeeping only.  It does not construct
 `Csucc`, `C'^(S+1)`, suffixes, successor charts, transition regularity, chart
 coverage, normal crossings, pole order, termination, or RLCT.
+
+## 2026-06-24 Lean Case 2 constructed old-top `Cprime` source-production obligation
+
+Reproduction:
+`reproduction-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-oldtop-cprime-source-production-obligation.md`.
+Review:
+`review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+
+Lean now packages the constructed old-top/free-`Cprime` source following
+factor into the existing `SourceProductionObligation` interface:
+
+```text
+case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack
+Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack
+```
+
+The terminal matrix is the source-row reindexing of
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`.  The obligation's successor
+following factor remains the formula-level
+`case2DisplayedSourceSuccessorFollowingFactor ... C`, and the suffix family is
+still supplied.  This is interface packaging only: it does not source-produce
+`Csucc` or `C'^(S+1)`, construct suffixes or successor charts, prove transition
+regularity or coverage, prove normal crossings, pole order, termination, or
+RLCT.

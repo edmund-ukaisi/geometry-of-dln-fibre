@@ -7218,6 +7218,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` source-production obligation:
+`BlowupArithmetic.lean` now proves
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack`.
+The first theorem gives the unreindexed terminal-row equality whose right-hand
+side is the source-row reindexing of `[Cold; top(Cprime)]`.  The second theorem
+packages the constructed old-top/free-`Cprime` following factor into the
+existing `SourceProductionObligation` by transporting the canonical
+formula-level constructor along that equality.  This is not source production:
+no `Csucc`/`C'^(S+1)` construction, suffix construction, successor chart
+construction, transition regularity, coverage, normal crossings, pole order,
+termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-production-obligation.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

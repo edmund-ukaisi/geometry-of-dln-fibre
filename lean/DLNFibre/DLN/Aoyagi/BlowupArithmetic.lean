@@ -17413,6 +17413,31 @@ theorem case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCpr
         n hS hcont residual Cold Cprime a
 
 set_option linter.style.longLine false in
+/-- The constructed old-top/free-`C'` transported terminal rows are the
+source-row reindexing of `[Cold; top(C')]`.
+
+This is finite row bookkeeping only; it does not construct source-produced
+terminal data. -/
+theorem case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J) τ R)
+    (Cprime : Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    case2DisplayedSourceTerminalTransportedRows n hS hcont residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n hS hcont residual Cold Cprime) =
+      (verticalBlock Cold
+        (case2DisplayedFreeCprimeTop n hS hcont Cprime)).submatrix
+        (case2SourceTerminalRowEquiv J).symm id := by
+  have hstack :=
+    case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
+      n hS hcont residual Cold Cprime
+  ext i a
+  simpa using congrFun (congrFun hstack ((case2SourceTerminalRowEquiv J).symm i)) a
+
+set_option linter.style.longLine false in
 /-- The source-row terminal candidate of the constructed old-top/free-`C'`
 source following factor reindexes to `[Cold; top(C')]`. -/
 theorem case2DisplayedSourceTerminalCprimeCandidate_constructedWithOldTopFromCprime_submatrix_terminalRowEquiv
@@ -22140,6 +22165,66 @@ theorem of_formulaSuccessor_transportTerminalRows
     exact frontier.rowExhaustedSourceSuffix κ hSuffix C Ctail hrow
   · intro _hrow
     rfl
+
+set_option linter.style.longLine false in
+/-- Canonical source-production obligation specialized to the constructed
+old-top/free-`C'` source following factor and the explicit terminal stack
+`[Cold; top(C')]`.
+
+This is an interface-specialization theorem.  It does not construct source
+data, suffixes, successor charts, transition regularity, normal crossings,
+pole order, or RLCT data. -/
+theorem of_constructedWithOldTopFromCprime_terminalStack
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    {data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular}
+    (residual : ℕ × ℕ → R)
+    (κ : Fin (L + 1) → Type uκ) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (Cold : Matrix (case2SourceOldTopRowIndex J)
+      (κ (sourceLayerIndex L (S + 2)
+        (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n data.stage_pos data.continuation))
+      (κ (sourceLayerIndex L (S + 2)
+        (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    SourceProductionObligation data residual κ hSuffix
+      (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+        n data.stage_pos data.continuation residual Cold Cprime)
+      Ctail
+      (case2DisplayedSourceSuccessorFollowingFactor n data.stage_pos data.continuation residual
+        (case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+          n data.stage_pos data.continuation residual Cold Cprime))
+      ((verticalBlock Cold
+        (case2DisplayedFreeCprimeTop n data.stage_pos data.continuation Cprime)).submatrix
+        (case2SourceTerminalRowEquiv J).symm id) := by
+  let C :=
+    case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+      n data.stage_pos data.continuation residual Cold Cprime
+  have hterm :
+      case2DisplayedSourceTerminalTransportedRows
+          n data.stage_pos data.continuation residual C =
+        (verticalBlock Cold
+          (case2DisplayedFreeCprimeTop n data.stage_pos data.continuation Cprime)).submatrix
+          (case2SourceTerminalRowEquiv J).symm id := by
+    simpa [C] using
+      case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack
+        n data.stage_pos data.continuation residual Cold Cprime
+  have hob :=
+    SourceProductionObligation.of_formulaSuccessor_transportTerminalRows
+      (data := data) residual κ hSuffix C Ctail
+  simpa [C, hterm] using hob
 
 /-- The supplied successor following factor has the same next same-stage tail
 as the old following factor.

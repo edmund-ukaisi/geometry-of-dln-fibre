@@ -6981,6 +6981,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` source-production obligation:
+`BlowupArithmetic.lean` now proves
+`case2DisplayedSourceTerminalTransportedRows_constructedWithOldTopFromCprime_eq_terminalStack`
+and
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack`.
+It transports the canonical formula-level source-production obligation to the
+explicit source-row reindexing of `[Cold; top(Cprime)]` for the constructed
+old-top/free-`Cprime` source following factor.  This is a finite obligation
+package only: no source production, suffix construction, chart construction,
+transition regularity, coverage, normal crossings, pole order, termination, or
+RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-production-obligation.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
