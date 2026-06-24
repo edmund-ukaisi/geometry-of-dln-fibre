@@ -178,6 +178,34 @@ closes the R1 gate the moment it lands. This is the genuine resolution-of-singul
 bound, the last R1 mountain. After R1: L2 (gauge chart + PIN reconciliation), D1. The old ChainDimSplit routeStep
 arm is superseded by the layer atlas (off the headline path; documented sorry).
 
+**★ R1 UPDATE-3 (2026-06-24) — cover lane HONEST PARTIAL; R1 terrain-mapped; squeeze (Route B) is the sanctioned route.**
+`r1-analytic-cover` (the cover lane, Route A) reported HONEST PARTIAL, reviewer-FAITHFUL: it banked the
+cover-ASSEMBLY sorry-free (`routeMLayerCover_of_atoms` — the full layer-family `IsRouteMCover` GIVEN two atoms;
+merged + wired @5db401fa, green 3713) and pinned the residual to EXACTLY two honest analytic atoms (`hfin` =
+global completeness "charts cover the box up to null"; `hdiv` = box-integral divergence) as HYPOTHESES, not
+sorries, no smuggle. `resolution_charts` still carries sorryAx — the gate is NOT closed via Route A.
+**Controller terrain-map (`theory/aoyagi-2023-reproduction/verify-r1-route-adjudication.md`):** there are TWO
+routes. Route A (cover) is WALLED on `hfin`/`hdiv` (the (2,2,2) single-chart `monomial·unit` is a depth-2
+miracle; for L>1 the Jacobian tower is non-triangular; the proven squeeze is additive — wrong shape for the
+box-integral `=⊤`). **Route B (the per-node squeeze, `GeneralR1Recursion` 699 LoC 0 sorry) is SANCTIONED** —
+the clean measure-preserving-chart route was RETRACTED as unsound (telescopes to `ambient/2=4 ≠ 3/2`; pp2 #129:
+transvection is det-1 but loss not invariant). Proven machinery: `rlctAtOn_squeeze` (same-point sandwich, NO
+chart), `schur_straighten_squeeze_exists` (per-node datum exists GIVEN `hnode`), `rlctAtOn_reduced_transport`
+(recursion-closing link), `dlnLoss_one_layer_deepest` (L=1 base). Residual = **`hnode`** (the loss in Schur form
+after the measure-preserving det-1 GL-straightening — LOCAL, explicit, near deepest pt) + the recursion assembly
+(via keystone `minAdmRec_eq_minAdm`) + re-routing `resolution_charts` through the squeeze (off the cover).
+LAUNCHED (both background): (1) `r1-route-adjudicator` (pen-and-paper, decorrelated Codex) — adjudicate Route A
+vs B, work a small general-M case past depth-2, scope whether `hnode` is provable, recommend ONE route + the
+single load-bearing atom. SOUNDNESS GATE: no re-intro of the retracted MP-chart route; no value-correct
+degenerate `hnode`. (2) `l2-branch-mapper` (scout) — map the L2 integration.
+**L2 CLARIFIED (not "7 sorries"):** base `DeepestGaugeConstruction` has 2 sorry bodies — line ~435
+`deepestEPivot_regSlice_fderiv_id` (PIN1), line ~530 `deepest_loss_squeeze` (PIN2). Fills completed on
+un-integrated branches; the L2-drive is the deferred **integration #6** (controller, soundness-sensitive: the
+#120 EPivot shear-CLE correction + dE(0)=id fix across ~5 consumers). `l2-branch-mapper` producing the
+integration map (which branch fills each sorry, what #120 changes, the cleanest merge path + the manual
+reconciliation). Next: R1 adjudication → build the squeeze route's load-bearing atom; L2 map → controller merge;
+then D1 → headline.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
