@@ -4198,6 +4198,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
 
+Latest A4 selected-entry transition inverse:
+`BlowupArithmetic.lean` now proves
+`selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero`,
+and `SelectedEntryNormalCrossing.lean` proves generic and Case 2 chart-point
+self/inverse laws for `sourceChartTransitionPoint`.  The inverse theorem keeps
+the denominator as the normalized target coordinate `x_q != 0` and returns the
+source chart point, avoiding any raw ambient residual-function equality claim.
+This is finite coordinate algebra only: no analytic transition regularity,
+chart coverage, source-displayed all-pivot atlas, successor/following-factor
+production, normal crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-inverse-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-inverse.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

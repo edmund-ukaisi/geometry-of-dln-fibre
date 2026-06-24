@@ -6584,6 +6584,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
 
+Latest A4 selected-entry transition inverse:
+`BlowupArithmetic.lean` now proves
+`selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero`.
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_self`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_self`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero`.
+The inverse is a chart-point identity under normalized denominator `x_q != 0`,
+not equality of arbitrary raw residual functions.  This is not analytic
+transition regularity, chart coverage, source-displayed all-pivot atlas,
+successor/following-factor production, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-inverse-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-inverse.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

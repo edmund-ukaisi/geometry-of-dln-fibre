@@ -5753,6 +5753,33 @@ analytic transition regularity, chart coverage, source-displayed all-pivot
 atlas, successor/following-factor production, normal crossings, pole order, or
 RLCT extraction.
 
+## 2026-06-24 Lean selected-entry transition inverse
+
+Reproduction:
+`reproduction-selected-entry-transition-inverse-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-transition-inverse.md`.
+Review:
+`review-selected-entry-transition-inverse-a4.md`.
+
+Lean now proves the finite selected-entry normalized-coordinate transition
+formula and chart-point inverse laws:
+
+```text
+selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_self
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_self
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+```
+
+The inverse theorem uses the normalized denominator `x_q != 0` and returns the
+source chart point; it deliberately does not assert equality of arbitrary raw
+ambient residual functions.  This remains finite selected-entry coordinate
+algebra only: no analytic transition regularity, chart coverage,
+source-displayed all-pivot atlas, successor/following-factor production,
+normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-24 Lean Case 2 chart-index Schur transition
 
 Reproduction:

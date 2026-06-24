@@ -6803,6 +6803,18 @@ atlas, successor/following-factor production, normal crossings, pole order, or
 RLCT.  Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
 
+The latest finite-atlas step is
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-inverse-a4.md`.
+Lean now proves the generic normalized-coordinate transition formula and
+generic/Case 2 chart-point self/inverse laws for finite selected-entry
+transitions.  The inverse theorem is deliberately chart-point level, not raw
+ambient residual-function equality, and uses the normalized denominator
+`x_q != 0`, not `u*x_q != 0`.  This gives finite inverse data for the
+all-pivot selected-entry calculus without analytic transition regularity,
+chart coverage, source-displayed all-pivot atlas, successor/following-factor
+production, normal crossings, pole order, or RLCT.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

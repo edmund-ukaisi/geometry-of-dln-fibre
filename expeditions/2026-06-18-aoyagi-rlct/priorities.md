@@ -2447,6 +2447,17 @@ generic normalized-coordinate inverse/cocycle laws, then tie those laws back to
 Schur-compatible `Q/P` overlap data.  Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-residual-subtype-schur-transition-a4.md`.
 
+The newest finite-atlas step is
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-inverse-a4.md`.
+Lean now proves normalized-coordinate transition and inverse laws for finite
+selected-entry chart points, generically and in the Case 2 residual-block
+certificate.  This closes the immediate inverse-law part of the finite atlas
+calculus without claiming analytic transition regularity or chart coverage.
+Next A4 work can move either to cocycle laws using the normalized-coordinate
+division theorem, or to tying these finite inverse laws more tightly to the
+Schur-compatible `Q/P` overlap data.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-inverse-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

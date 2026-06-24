@@ -724,6 +724,100 @@ def sourceChartTransitionPoint
     (fun i ↦
       selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i / denom)
 
+/-- The self-transition of a finite selected-entry chart point is the original
+source chart point.
+
+This is a chart-point identity for the finite selected-entry coordinates; it is
+not analytic transition regularity or chart coverage. -/
+@[simp] theorem sourceChartTransitionPoint_self
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center)
+    (c : Fin center.card) (u : K) (residual : ι → K) :
+    sourceChartTransitionPoint hcenter chartEquiv c c u residual =
+      sourceChartPoint hcenter chartEquiv c u residual := by
+  apply Prod.ext
+  · simp [sourceChartTransitionPoint, sourceChartPoint,
+      selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint,
+      selectedEntryNormalizedMap]
+  · funext p
+    have hpne : p.1 ≠ (chartEquiv c).1 := (Finset.mem_erase.mp p.2).1
+    simp [sourceChartTransitionPoint, sourceChartPoint,
+      selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint,
+      selectedEntryNormalizedMap, hpne]
+
+/-- The finite selected-entry transition point is inverted by the reverse
+transition on the normalized target-coordinate overlap.
+
+This is a chart-point identity for finite selected-entry coordinates.  It is
+not analytic transition regularity, chart coverage, source production, normal
+crossings, pole order, or RLCT extraction. -/
+theorem sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center)
+    (sourceChart targetChart : Fin center.card)
+    (u : K) (residual : ι → K)
+    (htarget :
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+        (chartEquiv targetChart).1 ≠ 0) :
+    let denom :=
+      selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual
+        (chartEquiv targetChart).1
+    let targetResidual : ι → K :=
+      fun i ↦ selectedEntryNormalizedMap (chartEquiv sourceChart).1 residual i / denom
+    sourceChartTransitionPoint hcenter chartEquiv targetChart sourceChart
+        (u * denom) targetResidual =
+      sourceChartPoint hcenter chartEquiv sourceChart u residual := by
+  dsimp only
+  let sourcePivot := (chartEquiv sourceChart).1
+  let targetPivot := (chartEquiv targetChart).1
+  let denom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+  let targetResidual : ι → K :=
+    fun i ↦ selectedEntryNormalizedMap sourcePivot residual i / denom
+  have hdenom : denom ≠ 0 := by
+    simpa [sourcePivot, targetPivot, denom] using htarget
+  have hback :
+      selectedEntryNormalizedMap targetPivot targetResidual sourcePivot = 1 / denom := by
+    have h :=
+      selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+        (sourcePivot := sourcePivot) (targetPivot := targetPivot)
+        residual hdenom sourcePivot
+    simpa [sourcePivot, targetPivot, denom, targetResidual] using h
+  change
+    sourceChartPoint hcenter chartEquiv sourceChart
+        ((u * denom) *
+          selectedEntryNormalizedMap targetPivot targetResidual sourcePivot)
+        (fun i ↦
+          selectedEntryNormalizedMap targetPivot targetResidual i /
+            selectedEntryNormalizedMap targetPivot targetResidual sourcePivot) =
+      sourceChartPoint hcenter chartEquiv sourceChart u residual
+  apply Prod.ext
+  · change
+      u * denom * selectedEntryNormalizedMap targetPivot targetResidual sourcePivot = u
+    rw [hback]
+    field_simp [hdenom]
+  · funext p
+    have hpne : p.1 ≠ sourcePivot := by
+      simpa [sourcePivot] using (Finset.mem_erase.mp p.2).1
+    have hcoord :
+        selectedEntryNormalizedMap targetPivot targetResidual p.1 =
+          selectedEntryNormalizedMap sourcePivot residual p.1 / denom := by
+      have h :=
+        selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+          (sourcePivot := sourcePivot) (targetPivot := targetPivot)
+          residual hdenom p.1
+      simpa [sourcePivot, targetPivot, denom, targetResidual] using h
+    change
+      selectedEntryNormalizedMap targetPivot targetResidual p.1 /
+          selectedEntryNormalizedMap targetPivot targetResidual sourcePivot =
+        residual p.1
+    rw [hcoord, hback]
+    rw [selectedEntryNormalizedMap_of_ne (pivot := sourcePivot) residual hpne]
+    field_simp [hdenom]
+
 /-- The finite selected-entry target chart point has the same chart map as the
 source point on the normalized target-coordinate overlap.
 
@@ -1305,6 +1399,80 @@ noncomputable def sourceChartTransitionPoint
     (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
     (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
     sourceChart targetChart u residual
+
+set_option linter.unnecessarySimpa false in
+/-- The self-transition of a Case 2 all-pivot selected-entry chart point is the
+original source chart point.
+
+This is finite selected-entry chart-point algebra only; it is not analytic
+transition regularity, chart coverage, normal crossings, pole order, or RLCT
+extraction. -/
+@[simp] theorem sourceChartTransitionPoint_self
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (u : K) (residual : ℕ × ℕ → K) :
+    sourceChartTransitionPoint n hS hcont c c u residual =
+      sourceChartPoint n hS hcont c u residual := by
+  simpa [sourceChartTransitionPoint, sourceChartPoint,
+    case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_self
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      c u residual
+
+set_option linter.style.longLine false in
+/-- The Case 2 finite selected-entry transition point is inverted by the reverse
+transition on the normalized target-coordinate overlap.
+
+This is chart-point algebra for the residual-block all-pivot certificate.  It
+does not prove analytic transition regularity, chart coverage, source
+production, normal crossings, pole order, or RLCT extraction. -/
+theorem sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (sourceChart targetChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (u : K) (residual : ℕ × ℕ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          targetChart).1 ≠ 0) :
+    let denom :=
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          targetChart).1
+    let targetResidual : ℕ × ℕ → K :=
+      fun r ↦
+        case2SourceSelectedNormalizedMapOfMem
+          ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+            sourceChart).2
+          residual r / denom
+    sourceChartTransitionPoint n hS hcont targetChart sourceChart
+        (u * denom) targetResidual =
+      sourceChartPoint n hS hcont sourceChart u residual := by
+  simpa [sourceChartTransitionPoint, sourceChartPoint,
+    case2SourceSelectedNormalizedMapOfMem,
+    case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_inverse_of_target_normalized_ne_zero
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      sourceChart targetChart u residual
+      (by
+        simpa [case2SourceSelectedNormalizedMapOfMem] using htarget)
 
 set_option linter.style.longLine false in
 /-- The Case 2 all-pivot target chart point has the same finite residual-center

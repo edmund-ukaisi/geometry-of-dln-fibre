@@ -1880,6 +1880,35 @@ theorem selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero
     rw [selectedEntryChartMap_eq_mul_normalized sourcePivot u residual i]
     field_simp [htarget]
 
+/-- Normalised-coordinate formula for a finite selected-entry chart transition.
+
+After passing from `sourcePivot` to `targetPivot`, every target-normalised
+coordinate is the corresponding source-normalised coordinate divided by the
+normalised target coordinate.  This is finite coordinate algebra only; it is not
+analytic transition regularity or chart coverage. -/
+theorem selectedEntryNormalizedMap_transition_eq_div_of_target_normalized_ne_zero
+    {K : Type*} [Field K]
+    {sourcePivot targetPivot : ι} (residual : ι → K)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0)
+    (i : ι) :
+    let denom := selectedEntryNormalizedMap sourcePivot residual targetPivot
+    let targetResidual : ι → K :=
+      fun r ↦ selectedEntryNormalizedMap sourcePivot residual r / denom
+    selectedEntryNormalizedMap targetPivot targetResidual i =
+      selectedEntryNormalizedMap sourcePivot residual i / denom := by
+  dsimp only
+  by_cases hi : i = targetPivot
+  · subst i
+    rw [selectedEntryNormalizedMap_pivot]
+    field_simp [htarget]
+  · rw [selectedEntryNormalizedMap_of_ne
+      (pivot := targetPivot)
+      (i := i)
+      (residual := fun r ↦
+        selectedEntryNormalizedMap sourcePivot residual r /
+          selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      hi]
+
 /-- Every transformed center generator is divisible by the selected pivot variable. -/
 theorem selectedEntryChartMap_pivot_dvd
     (pivot : ι) (u : α) (residual : ι → α) (i : ι) :
