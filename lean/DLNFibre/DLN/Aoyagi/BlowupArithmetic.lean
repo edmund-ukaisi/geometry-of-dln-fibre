@@ -9325,6 +9325,43 @@ theorem case2SourceSelectedNormalizedBlockOfMem_schurComplement_apply
     (pivotFirstSchurComplement_apply
       (case2SourceSelectedNormalizedBlockOfMem hp residual) i j)
 
+/-- Source-coordinate Case 2 form of the denominator-cleared selected-entry
+Schur-complement overlap identity.
+
+For supplied residual-block pivots `sourcePivot` and `targetPivot`, this is
+the finite formula `x_ab^2 * z_ij = x_ab*x_ij - x_ib*x_aj` on the normalised
+target-coordinate overlap.  It is not analytic transition regularity, chart
+coverage, successor/following-factor production, normal crossings, pole order,
+or RLCT extraction. -/
+theorem case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq
+    {n : ℕ → ℕ} {S J : ℕ} {sourcePivot targetPivot : ℕ × ℕ}
+    (hsource : sourcePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (htargetMem : targetPivot ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (residual : ℕ × ℕ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot ≠ 0)
+    (i : pivotComplement targetPivot.1) (j : pivotComplement targetPivot.2) :
+    let denom := case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / denom
+    let A : Matrix ℕ ℕ K :=
+      fun r c ↦ case2SourceSelectedNormalizedMapOfMem htargetMem targetResidual (r, c)
+    denom ^ 2 *
+        (pivotFirstD targetPivot.1 targetPivot.2 A -
+          pivotFirstX targetPivot.1 targetPivot.2 A *
+            pivotFirstY targetPivot.1 targetPivot.2 A) i j =
+      denom * case2SourceSelectedNormalizedMapOfMem hsource residual (i.1, j.1) -
+        case2SourceSelectedNormalizedMapOfMem hsource residual (i.1, targetPivot.2) *
+          case2SourceSelectedNormalizedMapOfMem hsource residual
+            (targetPivot.1, j.1) := by
+  simpa [case2SourceSelectedNormalizedMapOfMem] using
+    (selectedEntryNormalizedMap_schurComplement_transition_mul_sq
+      (sourcePivot := sourcePivot) (targetPivot := targetPivot)
+      (residual := residual)
+      (by simpa [case2SourceSelectedNormalizedMapOfMem] using htarget)
+      i j)
+
 /-- Source-coordinate Case 2 selected-pivot `Q/P` identity for a source pivot
 pair known to lie in the residual-block center and an old recurrence state
 satisfying the Case 2 gap.  This is a wrapper around finite algebra for a

@@ -2392,6 +2392,21 @@ separate production theorem supplies the target residual/following data.
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
 
+The current A4 Case 2 chart-index Schur transition slice is
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-schur-transition-a4.md`.
+Lean now exposes the denominator-cleared Schur-overlap identity through the
+supplied-pivot wrapper
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq` and
+the chart-indexed adapter
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_schurComplement_transition_mul_sq`.
+This is useful when downstream chart-certificate work has chart indices rather
+than raw supplied pivots.  The off-pivot row/column indices are ambient
+`ℕ` complements; add a residual-subtype adapter only when a consumer requires
+one.  This still does not construct successor residual/following data or prove
+analytic transition regularity, chart coverage, Jacobians, normal crossings,
+pole order, or RLCT.  Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

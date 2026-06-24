@@ -4128,6 +4128,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
 
+Latest A4 Case 2 chart-index Schur transition:
+`BlowupArithmetic.lean` now proves
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq`,
+and `SelectedEntryNormalCrossing.lean` exposes the chart-indexed adapter
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_schurComplement_transition_mul_sq`.
+These are supplied-pivot and chart-indexed wrappers for the denominator-cleared
+finite identity `x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj` under the normalized
+coordinate hypothesis `x_ab != 0`.  The chart-indexed form gets both pivot
+memberships from `finsetSubtypeChartEquiv`.  Its off-pivot row/column indices
+are ambient `ℕ` complements, not residual-row/residual-column subtype
+complements.  This is finite selected-entry algebra only: no analytic
+transition regularity, chart coverage, successor/following-factor production,
+global normal crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-schur-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-chart-index-schur-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

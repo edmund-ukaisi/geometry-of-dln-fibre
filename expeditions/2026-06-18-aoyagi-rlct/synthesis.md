@@ -6752,6 +6752,20 @@ regularity, chart coverage, Jacobians, normal crossings, pole order, or RLCT.
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-schur-complement-a4.md`.
 
+The current A4 Case 2 chart-index Schur transition slice is
+`threads/04-blow-up-certificate/reproduction-case2-chart-index-schur-transition-a4.md`.
+Lean now proves the supplied-pivot wrapper
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq` and
+the chart-indexed adapter
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_schurComplement_transition_mul_sq`.
+These expose the denominator-cleared Schur-overlap identity in Case 2
+source-coordinate names and chart-indexed names.  The off-pivot row/column
+indices are ambient `ℕ` complements, not residual-block subtype complements.
+This remains finite selected-entry algebra only; no analytic transition
+regularity, chart coverage, successor/following-factor production, normal
+crossings, pole order, or RLCT is proved.  Review:
+`threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

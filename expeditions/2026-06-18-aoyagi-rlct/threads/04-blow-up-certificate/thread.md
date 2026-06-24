@@ -5668,3 +5668,34 @@ previous finite chart-map transition slice.  It is still not a full Case 2
 transition invariant: no analytic transition regularity, chart coverage,
 successor matrix or suffix production, analytic Jacobian/volume theorem,
 global normal crossings, pole order, or RLCT extraction is proved.
+
+## 2026-06-24 Lean Case 2 chart-index Schur transition
+
+Reproduction:
+`reproduction-case2-chart-index-schur-transition-a4.md`.
+Statement card:
+`statement-card-a4-case2-chart-index-schur-transition.md`.
+Review artifact:
+`review-case2-chart-index-schur-transition-a4.md`.
+
+Lean now exposes the denominator-cleared Schur-overlap identity in Case 2
+source-coordinate and all-pivot chart-indexed names:
+
+```text
+case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_schurComplement_transition_mul_sq
+```
+
+These wrappers state that, for supplied residual-block source and target
+pivots and normalized target coordinate `x_ab != 0`, the target Schur
+coordinate satisfies `x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj`.  The chart-indexed
+form obtains both pivot memberships from
+`finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)`.
+
+The off-pivot row and column indices are ambient `ℕ` complements of the target
+row and column.  This is sound for the total source-coordinate normalised map,
+but a residual-row/residual-column subtype consumer will need a separate
+adapter.  This remains finite selected-entry algebra only: no analytic
+transition regularity, chart coverage, source-displayed all-pivot atlas,
+successor matrix or suffix production, analytic Jacobian/volume theorem,
+global normal crossings, pole order, or RLCT extraction is proved.
