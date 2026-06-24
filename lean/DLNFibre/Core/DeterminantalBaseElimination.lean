@@ -105,4 +105,27 @@ theorem repCoordReindex_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j :
   rw [finSplit_castLE, finSplit_castLE]
   rfl
 
+/-! ## The generic product entries are the coordinate variables (`N = 1`) -/
+
+variable {k : Type u} [Field k]
+
+/-- At `N = 1`, the product `mult (dStratum q p) A` is the lone factor `A 0` (the empty prefix
+product is the identity). General over any commutative ring. -/
+theorem mult_stratum_eq {R : Type*} [CommRing R] (q p : ℕ) (A : Tuple (k := R) (dStratum q p)) :
+    mult (dStratum q p) A = A 0 := by
+  have hdef : mult (dStratum q p) A
+      = A 0 * multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1)) := rfl
+  have h1 : multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1))
+      = (1 : Matrix (Fin (dStratum q p (Fin.castSucc (0 : Fin 1))))
+            (Fin (dStratum q p (Fin.castSucc (0 : Fin 1)))) R) := rfl
+  rw [hdef, h1]; exact Matrix.mul_one _
+
+/-- The generic single-matrix product entries are the coordinate variables:
+`multPoly (dStratum q p) a b = X ⟨0, (a, b)⟩`. -/
+theorem multPoly_stratum_apply (q p : ℕ) (a : Fin p) (b : Fin q) :
+    (Matrix.of (multPoly (k := k) (dStratum q p))) a b
+      = (X ⟨0, (a, b)⟩ : MvPolynomial (RepCoord (dStratum q p)) k) := by
+  rw [Matrix.of_apply, multPoly, mult_stratum_eq q p (genericTuple (dStratum q p))]
+  rfl
+
 end DLNFibre.Core
