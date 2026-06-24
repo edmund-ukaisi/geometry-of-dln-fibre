@@ -7106,6 +7106,25 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.
 
+Latest A6 Definition 3 Eq5 `hsource` bridge:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.selected_strict_of_eq_selectedReducedWidths`.
+`Lemma5Eq5TerminalOrderDefinition3Bridge.lean` proves
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze_of_definition3SourceData`.
+The first theorem rewrites Definition 3 source data's strict selected-width
+field along `m = aoyagiSelectedReducedWidths H r C`; the second passes that
+derived inequality to the existing Eq5 endpoint-family block-width
+cardinal-squeeze theorem.  The Eq5 actual-width/block hypothesis, endpoint
+payloads, injectivity, branch synchronisation, and terminal data remain
+explicit.  It proves no selected-cutpoint existence, Definition 3 source-data
+existence, Eq5 construction, Lemma 5 exactness, chart production, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-eq5-hsource-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-eq5-hsource-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-eq5-hsource-bridge-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

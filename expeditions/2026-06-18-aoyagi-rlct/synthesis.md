@@ -7369,6 +7369,23 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.
 
+A6 Definition 3 Eq5 `hsource` bridge:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.selected_strict_of_eq_selectedReducedWidths`, and
+`Lemma5Eq5TerminalOrderDefinition3Bridge.lean` contains the Eq5 terminal-order
+wrapper
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze_of_definition3SourceData`.
+The bridge rewrites the strict selected-width field already stored in
+`AoyagiDefinition3SourceData` along
+`m = aoyagiSelectedReducedWidths H r C` and feeds it to the existing Eq5
+block-width cardinal-squeeze theorem.  It keeps `hactual`, Eq5 payloads,
+injectivity, branch data, and terminal-family data explicit.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-eq5-hsource-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-eq5-hsource-bridge.md`.
+Review:
+`threads/06-dln-translation/review-definition3-eq5-hsource-bridge-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

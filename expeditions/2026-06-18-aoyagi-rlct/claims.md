@@ -3516,9 +3516,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Status.** open.  Formula-notation, Definition 3 bridge, Definition 3
   source-data ceiling, Definition 3 source-data local wrappers, Definition 3
   source-data final-boundary handoff, conditional finite-exponent bridge,
-  terminal-order equality-bridge, Eq5 terminal-order bridge, and Definition 3
-  source-data Eq5 terminal-order bridge slices have landed, but the final RLCT
-  theorem remains open.
+  terminal-order equality-bridge, Eq5 terminal-order bridge, Definition 3 Eq5
+  `hsource` bridge, and Definition 3 source-data Eq5 terminal-order bridge
+  slices have landed, but the final RLCT theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
 - **Evidence/source.** Aoyagi Theorem 2, PDF pp. 8-9. Aoyagi Theorem 1
@@ -3557,6 +3557,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-theorem2-terminal-order-equality-bridge-a6.md`;
   Eq5 terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-theorem2-eq5-terminal-order-bridge-a6.md`;
+  Definition 3 Eq5 `hsource` bridge reproduced at
+  `threads/06-dln-translation/reproduction-definition3-eq5-hsource-bridge-a6.md`;
   Definition 3 source-data Eq5 terminal-order bridge reproduced at
   `threads/06-dln-translation/reproduction-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reproduced at
@@ -3595,6 +3597,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-theorem2-terminal-order-equality-bridge-a6.md`;
   Eq5 terminal-order bridge reviewed at
   `threads/06-dln-translation/review-theorem2-eq5-terminal-order-bridge-a6.md`;
+  Definition 3 Eq5 `hsource` bridge reviewed at
+  `threads/06-dln-translation/review-definition3-eq5-hsource-bridge-a6.md`;
   Definition 3 source-data Eq5 terminal-order bridge reviewed at
   `threads/06-dln-translation/review-definition3-source-data-eq5-terminal-order-bridge-a6.md`;
   Case 2 finite-formula wrapper reviewed at
@@ -3651,6 +3655,7 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.lemma5Eq3_localData_of_sourceSelectedInequality_and_slack`
   plus source-data local wrappers
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selected_strict_selectedReducedWidths`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selected_strict_of_eq_selectedReducedWidths`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.selectedWidth_le_pred_of_ceilData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.htildeLowerNat_add_one_labelBounds_of_ceilData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.lemma5Eq4_localData_of_ceilData`,
@@ -3717,6 +3722,9 @@ No such claim is formalisation-ready until both fields are filled.
   Eq5 terminal-order bridge:
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload.terminalMinimumLabels_card_eq_theorem2OrderFormula`,
+  Definition 3 Eq5 `hsource` bridge:
+  `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_eq_theorem2OrderFormula_of_eq5EndpointFamily_branchCoordVal_blockWidth_cardSqueeze_of_definition3SourceData`
+  in `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalOrderDefinition3Bridge.lean`,
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`,
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedFinalBoundary_of_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`,
   `DLNFibre.DLN.Aoyagi.AoyagiLemma5SuppliedTerminalCandidateFamily.theorem2SuppliedChartFinalBoundary_of_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload`,
@@ -3820,6 +3828,15 @@ No such claim is formalisation-ready until both fields are filled.
   selected cutpoints carried by the supplied Eq5 payload.  This is not a
   source proof of Eq5 families, Lemma 5 exactness, active-ratio bounds, chart
   counts, chart production, pole order, or RLCT.  Also proved a Definition 3
+  Eq5 `hsource` bridge: the strict selected-width inequality consumed by the
+  Eq5 terminal-order block-width cardinal squeeze is derived from
+  `AoyagiDefinition3SourceData` after rewriting
+  `m = aoyagiSelectedReducedWidths H r C`; the blockwise actual-width
+  hypothesis, Eq5 endpoint-family payload, injectivity, branch data, and
+  terminal-family data remain explicit.  This is not selected-cutpoint
+  construction, Definition 3 source-data existence, actual-width dominance,
+  Eq5 construction, Lemma 5 exactness, chart production, pole order, or RLCT.
+  Also proved a Definition 3
   source-data Eq5 terminal-order bridge: source data and a source-range
   rank-width hypothesis existentially produce `m,data`, and a supplied Eq5
   payload/active-ratio/chart-count callback for that produced pair builds the

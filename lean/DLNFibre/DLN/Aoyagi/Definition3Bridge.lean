@@ -420,6 +420,19 @@ theorem selected_strict_selectedReducedWidths
         ∑ j : Fin (ell + 1), aoyagiSelectedReducedWidths H r C j := by
   simpa [aoyagiSelectedReducedWidths] using S.selected_strict
 
+/-- The strict selected-width inequality from Definition 3, rewritten along a
+supplied equality identifying an arbitrary selected-width family with Aoyagi's
+selected reduced widths. -/
+theorem selected_strict_of_eq_selectedReducedWidths
+    {L ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell} {m : Fin (ell + 1) → ℤ}
+    (S : AoyagiDefinition3SourceData L ell H r C)
+    (hm : m = aoyagiSelectedReducedWidths H r C) :
+    ∀ i : Fin (ell + 1),
+      (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j := by
+  subst hm
+  exact S.selected_strict_selectedReducedWidths
+
 /-- Supplied Definition 3 source data determines the ceiling/residue datum and
 retains the strict selected inequality for downstream arithmetic. -/
 theorem exists_ceilData

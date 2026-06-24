@@ -2827,3 +2827,16 @@ scope, but one internal Definition 3 field is redundant under rank-width.
 Next work should not target Lemma 5 Eq5 position-level off-selected dominance
 from Definition 3 alone: existing notes contain a value-level/position-level
 counterexample.
+
+A6 Definition 3 Eq5 `hsource` bridge has now landed:
+`threads/06-dln-translation/reproduction-definition3-eq5-hsource-bridge-a6.md`.
+Lean adds
+`AoyagiDefinition3SourceData.selected_strict_of_eq_selectedReducedWidths` and
+the Eq5 terminal-order leaf wrapper in
+`Lemma5Eq5TerminalOrderDefinition3Bridge.lean`.  This removes the repeated
+strict selected-width `hsource` hypothesis when the Eq5 selected-width family
+is identified with Aoyagi's selected reduced widths.  It keeps `hactual`, Eq5
+endpoint-family payloads, injectivity, branch synchronisation, and terminal
+data explicit.  It proves no selected-cutpoint existence, Definition 3
+source-data existence, Eq5 construction, Lemma 5 exactness, chart production,
+normal crossings, pole order, or RLCT.

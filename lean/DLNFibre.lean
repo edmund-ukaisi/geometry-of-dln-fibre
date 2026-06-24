@@ -122,6 +122,7 @@ import DLNFibre.DLN.Aoyagi.Case1Theorem2FiniteExponentBridge
 import DLNFibre.DLN.Aoyagi.Case1Theorem2ChartFinalBridge
 import DLNFibre.DLN.Aoyagi.ProductReductionEntryIdealBoundary
 import DLNFibre.DLN.Aoyagi.Lemma5Eq5TerminalOrderBridge
+import DLNFibre.DLN.Aoyagi.Lemma5Eq5TerminalOrderDefinition3Bridge
 import DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderEqualityBridge
 import DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge
 import DLNFibre.DLN.Aoyagi.Theorem2SourceRankFinalBridge
