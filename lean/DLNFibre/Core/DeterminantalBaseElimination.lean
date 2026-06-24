@@ -232,6 +232,45 @@ theorem blockAlgEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
   have hs := congrArg (fun f ↦ f (detSchurS (k := k) q p r)) h
   simpa using hs
 
+/-! ### `blockAlgEquiv` on the four block coordinate variables
+
+Under `blockAlgEquiv`, a `B22` coordinate becomes the outer (eliminated) variable `X (a,b)`; the
+three free-block coordinates (`Δ`, `B12`, `B21`) become inner constants `C (X …)` from the
+`SchurVar` coefficient ring. These are the entry-images the bordered-minor identity uses. -/
+
+/-- `blockAlgEquiv` sends a `B22` coordinate to the outer eliminated variable `X (a, b)`. -/
+theorem blockAlgEquiv_X_b22 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (b : Fin (q - r)) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a),
+                Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩)
+      = X (a, b) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b22]
+  exact sumToIter_Xl k _ _ _
+
+/-- `blockAlgEquiv` sends a `Δ`-pivot coordinate to the inner constant `C (X (Sum.inl (i, j)))`. -/
+theorem blockAlgEquiv_X_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j : Fin r) :
+    blockAlgEquiv (k := k) q p r hp hq (X ⟨0, (Fin.castLE hp i, Fin.castLE hq j)⟩)
+      = C (X (Sum.inl (i, j))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_pivot]
+  exact sumToIter_Xr k _ _ _
+
+/-- `blockAlgEquiv` sends a `B12` coordinate to `C (X (Sum.inr (Sum.inl (i, b))))`. -/
+theorem blockAlgEquiv_X_b12 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i : Fin r) (b : Fin (q - r)) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.castLE hp i, Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩)
+      = C (X (Sum.inr (Sum.inl (i, b)))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b12]
+  exact sumToIter_Xr k _ _ _
+
+/-- `blockAlgEquiv` sends a `B21` coordinate to `C (X (Sum.inr (Sum.inr (a, i))))`. -/
+theorem blockAlgEquiv_X_b21 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (a : Fin (p - r)) (i : Fin r) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a), Fin.castLE hq i)⟩)
+      = C (X (Sum.inr (Sum.inr (a, i)))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b21]
+  exact sumToIter_Xr k _ _ _
+
 /-- `detSchurS ≠ 0`: it is the determinant of the generic `Δ`-coordinate matrix (a renamed
 `mvPolynomialX`), nonzero by `det_mvPolynomialX_ne_zero`. So `Sd = Localization.Away detSchurS` is a
 nontrivial localization (a domain), and `detSchurS` is a valid localization element. -/
