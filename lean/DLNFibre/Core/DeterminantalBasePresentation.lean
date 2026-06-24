@@ -7,9 +7,9 @@ import Mathlib.RingTheory.Localization.Away.Basic
 # `DLNFibre.Core.DeterminantalBasePresentation` — the localized base presentation `A_loc/Iad ≅ Sd`
 
 The final identification of `G2-2`: the localized determinantal base ring `A_loc = Localization.Away
-detΔ`, modulo its base ideal `Iad`, is the free Schur localization `Sd = Localization.Away detSchurS`
-— a regular ring of dimension `δ`. The eliminated `B22` block (`B22 = B21 Δ⁻¹ B12`) is forced by the
-Schur relation once `detΔ` is inverted.
+detΔ`, modulo its base ideal `Iad`, is the free Schur localization `Sd` (`= Localization.Away
+detSchurS`) — a regular ring of dimension `δ`. The eliminated `B22` block (`B22 = B21 Δ⁻¹ B12`) is
+forced by the Schur relation once `detΔ` is inverted.
 
 **The route (Codex-vetted, thread-13 `codex-g22c-route` consult).** The localized block equivalence
 `Ψ : A_loc ≃ₐ[k] MvPolynomial B22block Sd` (localizing the LANDED `blockAlgEquiv` at `detΔ ↦
@@ -52,7 +52,7 @@ abbrev SchurLoc (q p r : ℕ) : Type u :=
   Localization.Away (detSchurS (k := k) q p r)
 
 /-- **The localized block equivalence** `Ψ : A_loc ≃ₐ[k] MvPolynomial B22block Sd`, localizing the
-LANDED `blockAlgEquiv` at `detΔ` (which maps to `C detSchurS`). `Sd = Localization.Away detSchurS`. -/
+LANDED `blockAlgEquiv` at `detΔ` (which maps to `C detSchurS`). -/
 noncomputable def blockAlgEquivLoc (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
     Localization.Away (detPivotPoly (k := k) q p r hp hq)
       ≃ₐ[k] MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r) := by
@@ -157,7 +157,7 @@ theorem borderMinor_eq_fromBlocks (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
       Matrix.fromBlocks_apply₂₂, Matrix.submatrix_apply, Sum.elim_inl, Sum.elim_inr,
       borderΔ, borderU, borderV, borderD, Matrix.of_apply]
 
-/-- **The bordered minor lies in the base ideal `sigmaIdeal`** (it is an `(r+1)`-minor of the generic
+/-- **The bordered minor lies in the base ideal `sigmaIdeal`** (it is an `(r+1)`-minor of the
 product, `det_submatrix_multPoly_mem_sigmaIdeal` after the `Fin r ⊕ Unit ≃ Fin (r+1)` reindex). -/
 theorem borderMinor_mem_sigmaIdeal (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
     (a' : Fin (p - r)) (b' : Fin (q - r)) :
@@ -168,7 +168,7 @@ theorem borderMinor_mem_sigmaIdeal (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
   rw [← det_submatrix_equiv_self e.symm, submatrix_submatrix]
   exact det_submatrix_multPoly_mem_sigmaIdeal (dStratum q p) _ _
 
-/-- Each bordered block maps under `blockAlgEquiv` to the `C`-image of its `SchurVar`-side block (the
+/-- Each bordered block maps under `blockAlgEquiv` to the `C`-image of its `SchurVar`-side block
 landed coordinate-image lemmas), or to the `B22` corner variable. -/
 theorem blockAlgEquiv_borderΔ (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
     (borderΔ (k := k) q p r hp hq).map (blockAlgEquiv (k := k) q p r hp hq)
@@ -233,7 +233,7 @@ theorem blockAlgEquiv_borderMinor (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
 
 `Ψ` carries `algebraMap A_eng A_loc x` to `algebraMap B Q (blockAlgEquiv x)`
 (`algEquivOfAlgEquiv_eq`). Each generator `X (a',b') − C (forcedB22 (a',b'))` of `J`, multiplied by
-the unit `C (algebraMap detSchurS)`, is the `Ψ`-image of the bordered minor (in `Iad`), so it lies in
+the unit `C (algebraMap detSchurS)`, is the `Ψ`-image of the bordered minor (in `Iad`), so it
 `Ψ(Iad)`; dividing by the unit gives the generator. -/
 
 /-- `Ψ` intertwines the two localization maps: `Ψ (algebraMap A_eng A_loc x) = algebraMap B Q
@@ -277,7 +277,8 @@ noncomputable def Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
 /-- **The cleared Schur relation in `Q = MvPolynomial B22block Sd`.** The unit `C (algebraMap
 detSchurS)` times the graph generator `X (a',b') − C (forcedB22 (a',b'))` equals
 `Ψ (algebraMap A_eng A_loc (borderMinor …))` — the `Ψ`-image of a bordered minor (hence in
-`Ψ(Iad)`). The `mk'` denominator clears: `algebraMap detSchurS · forcedB22 = algebraMap forcedNum`. -/
+`Ψ(Iad)`). The `mk'` denominator clears: `algebraMap detSchurS · forcedB22 = algebraMap
+forcedNum`. -/
 theorem unit_mul_graphGen_eq_psi_borderMinor (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
     (a' : Fin (p - r)) (b' : Fin (q - r)) :
     C (algebraMap (MvPolynomial (SchurVar q p r) k) (SchurLoc (k := k) q p r)
@@ -308,13 +309,14 @@ theorem graphIdeal_forcedB22_le_map_Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤
   obtain ⟨a', b'⟩ := ab
   show X (a', b') - C (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r) (a', b'))
       ∈ ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
-  -- the generator, times the unit `C (algebraMap detSchurS)`, is `Ψ (algebraMap borderMinor) ∈ Ψ(Iad)`
+  -- the generator × the unit `C (algebraMap detSchurS)` is `Ψ (algebraMap borderMinor) ∈ Ψ(Iad)`
   have hunit : IsUnit (C (algebraMap (MvPolynomial (SchurVar q p r) k) (SchurLoc (k := k) q p r)
       (detSchurS (k := k) q p r)) : MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)) :=
     (IsLocalization.Away.algebraMap_isUnit (detSchurS (k := k) q p r)).map
       (C : SchurLoc (k := k) q p r →+* _)
   rw [← Ideal.unit_mul_mem_iff_mem _ hunit, unit_mul_graphGen_eq_psi_borderMinor q p r hp hq a' b']
-  exact Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (borderMinor_mem_sigmaIdeal q p r hp hq a' b'))
+  exact Ideal.mem_map_of_mem _
+    (Ideal.mem_map_of_mem _ (borderMinor_mem_sigmaIdeal q p r hp hq a' b'))
 
 /-! ## Step (3): the height squeeze `Iad = J` and the presentation `A_loc/Iad ≅ Sd`
 
@@ -323,7 +325,7 @@ Both `Ψ(Iad)` and `J = graphIdeal forcedB22` are prime of height `C`, and `J �
 **earns** the hard direction `Iad ⊆ Ψ.symm J` (= injectivity). The presentation `A_loc/Iad ≅ Sd`
 then follows from `graphIdealQuotientEquiv`. -/
 
-/-- **`Ψ(Iad) = J`** (`[IsAlgClosed k] [CharZero k]`): the height squeeze. Both ideals are prime; the
+/-- **`Ψ(Iad) = J`** (`[IsAlgClosed k] [CharZero k]`): the height squeeze. Both ideals are prime;
 landed `height Iad = C` (transported by `Ψ`) and `height J = C` are equal; `J ⊆ Ψ(Iad)` (step 2)
 plus `height_strict_mono_of_is_prime` forces equality. This is the honest hard direction. -/
 theorem map_Iad_eq_graphIdeal_forcedB22 [IsAlgClosed k] [CharZero k] (q p r : ℕ)
@@ -331,7 +333,8 @@ theorem map_Iad_eq_graphIdeal_forcedB22 [IsAlgClosed k] [CharZero k] (q p r : �
     ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
       = graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)) := by
   set Q := MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)
-  set K : Ideal Q := ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) with hK
+  set K : Ideal Q :=
+    ((Iad (k := k) q p r hp hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) with hK
   set J : Ideal Q := graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r)) with hJ
   -- both ideals are prime
   haveI hsigmaPrime : (sigmaIdeal (k := k) (dStratum q p) r).IsPrime := by
@@ -369,8 +372,8 @@ theorem map_Iad_eq_graphIdeal_forcedB22 [IsAlgClosed k] [CharZero k] (q p r : �
 
 /-- **The localized base presentation `A_loc / Iad ≅ₐ[k] Sd`** (`G2-2`). The localized determinantal
 base ring `A_loc = Localization.Away detΔ`, modulo its base ideal `Iad = (sigmaIdeal …).map …`, is
-the free Schur localization `Sd = Localization.Away detSchurS` — a regular ring of dimension `δ`. Via
-the height squeeze `Ψ(Iad) = J` (`map_Iad_eq_graphIdeal_forcedB22`) and the graph-ideal quotient
+the free Schur localization `Sd = Localization.Away detSchurS` — a regular ring of dimension `δ`.
+Via the height squeeze `Ψ(Iad) = J` (`map_Iad_eq_graphIdeal_forcedB22`) and the graph-ideal quotient
 `Q ⧸ J ≅ Sd` (`graphIdealQuotientEquiv`, the `B22`-block elimination). -/
 noncomputable def basePresentationEquiv [IsAlgClosed k] [CharZero k] (q p r : ℕ)
     (hp : r ≤ p) (hq : r ≤ q) :
@@ -388,5 +391,26 @@ noncomputable def basePresentationEquiv [IsAlgClosed k] [CharZero k] (q p r : �
       ≃ₐ[k] SchurLoc (k := k) q p r :=
     (graphIdealQuotientEquiv (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r))).restrictScalars k
   exact e₁.trans e₂
+
+/-! ## Non-vacuity witness — `(q, p, r) = (2, 2, 1)`
+
+The `2 × 2` rank-`≤ 1` determinantal base: `#B22block = (2−1)(2−1) = 1 = C` eliminated coordinate,
+`#SchurVar = 1·(2 + 2 − 1) = 3 = δ` free coordinates. The presentation exhibits `A_loc/Iad` as the
+free Schur localization `Sd` (a regular ring of dimension `δ = 3`). -/
+
+/-- **Witness (`2 × 2`, `r = 1`).** `#B22block = 1 = C` (one eliminated `B22` coordinate),
+`#SchurVar = 3 = δ` (three free Schur coordinates). -/
+example : Nat.card (B22block 2 2 1) = 1 ∧ Nat.card (SchurVar 2 2 1) = 3 := by
+  refine ⟨?_, ?_⟩
+  · rw [card_B22block]
+  · rw [card_SchurVar 2 2 1 (by norm_num) (by norm_num)]
+
+/-- The presentation equivalence is available at `(2, 2, 1)` for any algebraically closed field of
+characteristic `0` — non-vacuous. -/
+noncomputable example [IsAlgClosed k] [CharZero k]
+    (h : (1 : ℕ) ≤ 2) :
+    (Localization.Away (detPivotPoly (k := k) 2 2 1 h h) ⧸ Iad (k := k) 2 2 1 h h)
+      ≃ₐ[k] SchurLoc (k := k) 2 2 1 :=
+  basePresentationEquiv 2 2 1 h h
 
 end DLNFibre.Core
