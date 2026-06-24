@@ -1072,6 +1072,42 @@ theorem exponentData_exponentOrder_eq_one
         (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
         (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
 
+/-- If the cited chart-level extraction hypothesis is supplied for the concrete
+Case 2 residual-block all-pivot finite selected-entry certificate, it reports
+the finite selected-coordinate count divided by two and local finite order one.
+
+This consumes the extraction hypothesis; it does not construct analytic chart
+coverage, transition regularity, source production, global A0 data, or a global
+DLN RLCT theorem. -/
+theorem lambda_and_poleOrder_eq_selectedCoordinateCount_div_two_and_one_of_extractionHypothesis
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC :
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).ExtractionHypothesis lambda poleOrder) :
+    lambda =
+        (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+      poleOrder = 1 := by
+  constructor
+  · calc
+      lambda =
+          (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) n hS hcont).exponentData.exponentMinimum :=
+        AoyagiNormalCrossingChartCertificate.ExtractionHypothesis.lambda_eq_exponentMinimum hNC
+      _ =
+          (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 :=
+        exponentData_exponentMinimum_eq_selectedCoordinateCount_div_two
+          (K := K) n hS hcont
+  · calc
+      poleOrder =
+          (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) n hS hcont).exponentData.exponentOrder :=
+        AoyagiNormalCrossingChartCertificate.ExtractionHypothesis.theta_eq_exponentOrder hNC
+      _ = 1 :=
+        exponentData_exponentOrder_eq_one (K := K) n hS hcont
+
 /-- The Case 2 residual-block all-pivot finite selected-entry family covers
 every finite residual-block center value.
 

@@ -3987,3 +3987,20 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case1-case2-selected-entry-finite-coverage.md`.
 Review:
 `threads/04-blow-up-certificate/review-case1-case2-selected-entry-finite-coverage-a4.md`.
+
+Latest A4/A0 Case 2 selected-entry extraction handoff:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lambda_and_poleOrder_eq_selectedCoordinateCount_div_two_and_one_of_extractionHypothesis`.
+It consumes a supplied chart-level extraction hypothesis for the concrete Case
+2 residual-block all-pivot finite selected-entry certificate and rewrites the
+reported `lambda` to
+`(((prefixMinNat n S - J) * (n(S+1)-J)) : Q) / 2`, with local finite
+`poleOrder = 1`.  This is not construction of the extraction hypothesis,
+chart coverage, transition regularity, arbitrary-pivot source production,
+global A0 data, Aoyagi Theorem 2 order data, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-extraction-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-extraction-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.

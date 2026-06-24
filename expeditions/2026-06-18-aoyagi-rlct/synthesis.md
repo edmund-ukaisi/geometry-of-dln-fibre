@@ -6616,6 +6616,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case1-case2-selected-entry-finite-coverage-a4.md`.
 
+Latest A4/A0 Case 2 selected-entry extraction handoff:
+`SelectedEntryNormalCrossing.lean` now contains
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lambda_and_poleOrder_eq_selectedCoordinateCount_div_two_and_one_of_extractionHypothesis`.
+Given a supplied chart-level `ExtractionHypothesis` for the concrete Case 2
+residual-block all-pivot finite selected-entry certificate, it reports
+`lambda = (((prefixMinNat n S - J) * (n(S+1)-J)) : Q) / 2` and local finite
+`poleOrder = 1`.  The proof is only the extraction-interface projections plus
+the existing finite minimum/order facts.  It does not construct the extraction
+hypothesis, analytic coverage, transition regularity, arbitrary-pivot source
+production, global A0 data, Theorem 2 order data, or RLCT extraction.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-extraction-handoff-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-extraction-handoff.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

@@ -2287,6 +2287,20 @@ source-coordinate formulas for arbitrary pivots, analytic atlas coverage,
 transition regularity, source production, normal-crossing certificate
 production, pole order, or RLCT.
 
+The current A4/A0 Case 2 selected-entry extraction handoff slice is
+`threads/04-blow-up-certificate/reproduction-case2-selected-entry-extraction-handoff-a4.md`.
+Lean now consumes an explicit chart-level `ExtractionHypothesis` for the
+concrete Case 2 residual-block all-pivot finite selected-entry certificate and
+rewrites its reported `lambda` to
+`(((prefixMinNat n S - J) * (n(S+1)-J)) : Q) / 2`, with local finite
+`poleOrder = 1`.  This removes a local handoff boundary from supplied
+extraction to finite selected-entry arithmetic.  It should not be treated as
+construction of extraction data, chart coverage, transition regularity,
+arbitrary-pivot source production, global A0 lower bounds or chart counts,
+Theorem 2 order data, or RLCT extraction.  The next source-moving A4/A0 work
+should still target actual certificate production or monomial/unit data, not
+another consumer of a supplied extraction hypothesis.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

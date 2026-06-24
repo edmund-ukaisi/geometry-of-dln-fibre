@@ -5403,3 +5403,35 @@ post-state, exponent post-data, raw source-coordinate provenance, the
 selected-old chart, chart coverage, transition regularity, analytic
 Jacobian/volume control, normal crossings, termination, pole order, or RLCT
 extraction.
+
+## 2026-06-24 Lean Case 2 selected-entry extraction handoff
+
+Reproduction:
+`reproduction-case2-selected-entry-extraction-handoff-a4.md`.
+Statement card:
+`statement-card-a4-case2-selected-entry-extraction-handoff.md`.
+Review artifact:
+`review-case2-selected-entry-extraction-handoff-a4.md`.
+
+Lean now proves the conditional extraction handoff for the concrete Case 2
+residual-block all-pivot finite selected-entry certificate:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lambda_and_poleOrder_eq_selectedCoordinateCount_div_two_and_one_of_extractionHypothesis
+```
+
+Given an explicit chart-level extraction hypothesis for this certificate, the
+external `lambda` is the finite selected-coordinate count divided by two,
+
+```text
+(((prefixMinNat n S - J) * (n(S+1)-J)) : Q) / 2,
+```
+
+and the local finite `poleOrder` is `1`.  The proof only composes the
+extraction-hypothesis projections with the already proved Case 2 finite
+minimum and finite order facts.
+
+This consumes the extraction hypothesis; it does not construct chart
+coverage, transition regularity, arbitrary-pivot source production, global A0
+data, Aoyagi Theorem 2 active-ratio lower bounds or chart counts, a global
+pole-order formula, or RLCT extraction.
