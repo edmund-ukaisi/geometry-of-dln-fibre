@@ -6766,6 +6766,18 @@ regularity, chart coverage, successor/following-factor production, normal
 crossings, pole order, or RLCT is proved.  Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
 
+The current A4 Case 2 residual-subtype Schur transition slice is
+`threads/04-blow-up-certificate/reproduction-case2-residual-subtype-schur-transition-a4.md`.
+Lean now proves
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_sq`.
+This adapts the denominator-cleared source-selected Schur-overlap formula to
+residual-row/residual-column subtype complements, so downstream lower-right
+`Q/P` block statements can consume the formula without returning to ambient
+row/column complements.  The adapter is finite bookkeeping only and proves no
+successor/following-factor production, analytic transition regularity, chart
+coverage, normal crossings, pole order, or RLCT.  Review:
+`threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

@@ -2407,6 +2407,19 @@ analytic transition regularity, chart coverage, Jacobians, normal crossings,
 pole order, or RLCT.  Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
 
+The current A4 Case 2 residual-subtype Schur transition slice is
+`threads/04-blow-up-certificate/reproduction-case2-residual-subtype-schur-transition-a4.md`.
+Lean now proves
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_sq`.
+This is the residual-row/residual-column subtype adapter for the
+denominator-cleared Schur-overlap identity, matching the lower-right block
+indices of the source-selected `Q/P` theorem.  It is finite bookkeeping only:
+no successor/following-factor production, analytic transition regularity,
+chart coverage, Jacobians, normal crossings, pole order, or RLCT.  Use it
+only after a separate theorem supplies the relevant target residual block.
+Review:
+`threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

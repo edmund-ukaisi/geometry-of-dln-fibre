@@ -9362,6 +9362,51 @@ theorem case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq
       (by simpa [case2SourceSelectedNormalizedMapOfMem] using htarget)
       i j)
 
+/-- Residual-block subtype form of the Case 2 denominator-cleared
+selected-entry Schur-complement overlap identity.
+
+This is the same finite formula as
+`case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq`, but
+with the target lower-right Schur block indexed by residual-row and
+residual-column subtypes.  It is only a type adapter for finite algebra; it is
+not analytic transition regularity, chart coverage, successor/following-factor
+production, normal crossings, pole order, or RLCT extraction. -/
+theorem case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_sq
+    {n : ℕ → ℕ} {S J : ℕ} {sourcePivot targetPivot : ℕ × ℕ}
+    (hsource : sourcePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (htargetMem : targetPivot ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (residual : ℕ × ℕ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot ≠ 0)
+    (i : pivotComplement (case2ResidualBlockPivotRowOfMem htargetMem))
+    (j : pivotComplement (case2ResidualBlockPivotColOfMem htargetMem)) :
+    let denom := case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / denom
+    let row := case2ResidualBlockPivotRowOfMem htargetMem
+    let col := case2ResidualBlockPivotColOfMem htargetMem
+    let A := case2SourceSelectedNormalizedBlockOfMem htargetMem targetResidual
+    denom ^ 2 *
+        (pivotFirstD row col A -
+          pivotFirstX row col A * pivotFirstY row col A) i j =
+      denom * case2SourceSelectedNormalizedMapOfMem hsource residual (i.1.1, j.1.1) -
+        case2SourceSelectedNormalizedMapOfMem hsource residual (i.1.1, targetPivot.2) *
+          case2SourceSelectedNormalizedMapOfMem hsource residual
+            (targetPivot.1, j.1.1) := by
+  let iNat : pivotComplement targetPivot.1 :=
+    ⟨i.1.1, by
+      intro hi
+      exact i.2 (Subtype.ext (by simpa using hi))⟩
+  let jNat : pivotComplement targetPivot.2 :=
+    ⟨j.1.1, by
+      intro hj
+      exact j.2 (Subtype.ext (by simpa using hj))⟩
+  simpa [case2SourceSelectedNormalizedBlockOfMem, iNat, jNat,
+    pivotFirstD, pivotFirstX, pivotFirstY, Matrix.mul_apply] using
+    (case2SourceSelectedNormalizedMapOfMem_schurComplement_transition_mul_sq
+      hsource htargetMem residual htarget iNat jNat)
+
 /-- Source-coordinate Case 2 selected-pivot `Q/P` identity for a source pivot
 pair known to lie in the residual-block center and an old recurrence state
 satisfying the Case 2 gap.  This is a wrapper around finite algebra for a

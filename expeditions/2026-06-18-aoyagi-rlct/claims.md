@@ -4147,6 +4147,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-schur-transition-a4.md`.
 
+Latest A4 Case 2 residual-subtype Schur transition:
+`BlowupArithmetic.lean` now proves
+`case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_sq`.
+It adapts the denominator-cleared Schur-overlap identity
+`x_ab^2*z_ij = x_ab*x_ij - x_ib*x_aj` from ambient off-pivot complements to
+the residual-row/residual-column subtype complements used by the
+source-selected lower-right `Q/P` block.  The proof is only a finite adapter:
+it reads the source labels as `i.1.1` and `j.1.1` and invokes the
+supplied-pivot source-coordinate theorem.  The denominator is still the
+normalized target coordinate `x_ab`, not `u*x_ab`.  This is not
+successor/following-factor production, analytic transition regularity, chart
+coverage, normal crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-residual-subtype-schur-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-residual-subtype-schur-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

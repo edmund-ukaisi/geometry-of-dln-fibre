@@ -5669,6 +5669,36 @@ transition invariant: no analytic transition regularity, chart coverage,
 successor matrix or suffix production, analytic Jacobian/volume theorem,
 global normal crossings, pole order, or RLCT extraction is proved.
 
+## 2026-06-24 Lean Case 2 residual-subtype Schur transition
+
+Reproduction:
+`reproduction-case2-residual-subtype-schur-transition-a4.md`.
+Statement card:
+`statement-card-a4-case2-residual-subtype-schur-transition.md`.
+Review artifact:
+`review-case2-residual-subtype-schur-transition-a4.md`.
+
+Lean now proves the residual-row/residual-column subtype adapter:
+
+```text
+case2SourceSelectedNormalizedBlockOfMem_schurComplement_transition_mul_sq
+```
+
+This theorem reuses the supplied-pivot denominator-cleared Schur-overlap
+identity but states it for the lower-right `Q/P` residual block indexed by
+`pivotComplement (case2ResidualBlockPivotRowOfMem htargetMem)` and
+`pivotComplement (case2ResidualBlockPivotColOfMem htargetMem)`.  The proof
+turns each residual subtype complement into the corresponding ambient
+off-target row or column complement and then applies the previous
+source-coordinate theorem.
+
+The denominator remains the normalized target coordinate `x_ab`, not the
+finite center value `u*x_ab`.  This is finite type/index bookkeeping only:
+no source production of successor residual matrices or following factors,
+analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, analytic Jacobian/volume theorem, global normal crossings, pole order,
+or RLCT extraction is proved.
+
 ## 2026-06-24 Lean Case 2 chart-index Schur transition
 
 Reproduction:
