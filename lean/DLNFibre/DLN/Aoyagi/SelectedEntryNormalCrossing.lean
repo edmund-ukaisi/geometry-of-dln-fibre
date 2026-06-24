@@ -759,6 +759,39 @@ theorem exists_chartPoint_chartMap_eq_value
       exists_oneChartPoint_chartMap_eq_value_of_pivot_ne_zero
         (K := K) (chartEquiv c) value (by simpa [hc] using hp)
 
+/-- The all-pivot selected-entry family covers every finite center value by a
+source point written in ambient residual coordinates.
+
+This is the same finite selected-entry inverse as
+`exists_chartPoint_chartMap_eq_value`, but with the witness normalized to the
+`sourceChartPoint` adapter used by source-coordinate specializations.  It is
+not analytic atlas coverage, transition regularity, or source production for
+any later recurrence state. -/
+theorem exists_sourceChartPoint_chartMap_eq_value
+    {ι K : Type*} [DecidableEq ι] [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K]
+    {center : Finset ι} (hcenter : center.Nonempty)
+    (chartEquiv : Fin center.card ≃ center) (value : center → K) :
+    ∃ c : Fin center.card, ∃ u : K, ∃ residual : ι → K,
+      (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) hcenter chartEquiv).chartMap c
+          (sourceChartPoint hcenter chartEquiv c u residual) = value := by
+  rcases exists_chartPoint_chartMap_eq_value (K := K) hcenter chartEquiv value with
+    ⟨c, x, hx⟩
+  rcases x with ⟨u, residualSub⟩
+  let pivot := chartEquiv c
+  let residual : ι → K := selectedEntryErasedResidual pivot residualSub
+  refine ⟨c, u, residual, ?_⟩
+  have hpoint :
+      sourceChartPoint hcenter chartEquiv c u residual = (u, residualSub) := by
+    change
+      (u, fun p : ((center.erase (chartEquiv c).1 : Finset ι)) ↦
+        selectedEntryErasedResidual pivot residualSub p.1) = (u, residualSub)
+    congr
+    funext p
+    simp [selectedEntryErasedResidual, pivot]
+  simpa [hpoint] using hx
+
 /-- At an all-pivot family source point, the finite loss is the selected-entry
 center square in the selected pivot chart. -/
 theorem loss_sourceChartPoint_eq_centerSq
@@ -1184,6 +1217,38 @@ theorem chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem
         (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
         (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
         c u residual
+
+/-- Every finite Case 2 residual-block center value is produced by some
+source-selected chart of the all-pivot selected-entry family.
+
+The produced chart index chooses a residual-block pivot and the source map is
+`case2SourceSelectedChartMapOfMem` for that pivot.  This is finite
+selected-entry source-coordinate production only: it is not analytic atlas
+coverage, transition regularity, source production of successor matrices or
+suffixes, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_sourceSelectedChartMap_eq_value
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (value : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → K) :
+    ∃ c : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts,
+      ∃ u : K, ∃ residual : ℕ × ℕ → K,
+        (fun p : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} ↦
+          case2SourceSelectedChartMapOfMem
+            ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c).2
+            u residual p.1) = value := by
+  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
+  rcases exists_sourceChartPoint_chartMap_eq_value
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      value with
+    ⟨c, u, residual, hmap⟩
+  refine ⟨c, u, residual, ?_⟩
+  rw [← chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem
+    n hS hcont c u residual]
+  exact hmap
 
 /-- In chart `c` of the Case 2 all-pivot selected-entry certificate, the
 finite residual-block center ideal in source-selected chart-map names is

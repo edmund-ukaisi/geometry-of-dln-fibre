@@ -2342,6 +2342,20 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-source-selected-boundary-qp-a4.md`.
 
+The A4 Case 2 source-selected finite chart production slice is now landed:
+`SelectedEntryNormalCrossing.lean` proves that every finite residual-block
+center value is produced by some all-pivot source-selected chart,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceSelectedChartMap_eq_value`.
+This is finite source-coordinate production, not analytic atlas coverage or
+successor/source production.  It is more source-moving than the prior
+membership wrappers because the witness contains a chart index, selected
+variable, and ambient residual coordinates.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-chart-production-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-finite-chart-production.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-finite-chart-production-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

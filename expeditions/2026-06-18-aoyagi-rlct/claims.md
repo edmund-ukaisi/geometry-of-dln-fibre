@@ -4071,6 +4071,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-chart-index-source-selected-boundary-qp-a4.md`.
 
+Latest A4 Case 2 source-selected finite chart production:
+`SelectedEntryNormalCrossing.lean` now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceSelectedChartMap_eq_value`.
+The generic theorem upgrades the existing finite selected-entry chart coverage
+to witnesses written as `sourceChartPoint` with ambient residual coordinates.
+The Case 2 theorem specializes this to the residual-block center and rewrites
+the produced chart map in `case2SourceSelectedChartMapOfMem` names for the
+chart-selected pivot.  This is finite source-coordinate production for center
+values only; it does not prove analytic atlas coverage, transition regularity,
+source production of recurrence successors or suffixes, global normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-chart-production-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-finite-chart-production.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-finite-chart-production-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

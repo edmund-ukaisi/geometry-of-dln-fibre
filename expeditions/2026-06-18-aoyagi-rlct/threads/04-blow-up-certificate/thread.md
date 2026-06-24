@@ -5576,3 +5576,33 @@ label updates.  It is not arbitrary-pivot source production, a claim that
 Aoyagi displays non-top-left charts, chart coverage, analytic atlas
 construction, transition regularity, analytic Jacobian/volume control, global
 normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 source-selected finite chart production
+
+Reproduction:
+`reproduction-case2-source-selected-finite-chart-production-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-selected-finite-chart-production.md`.
+Review artifact:
+`review-case2-source-selected-finite-chart-production-a4.md`.
+
+Lean now proves the finite selected-entry inverse in source-coordinate form:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceSelectedChartMap_eq_value
+```
+
+The generic theorem starts from the existing finite coverage theorem, then
+normalizes the witness to a `sourceChartPoint` with ambient residual
+coordinates.  The Case 2 theorem specializes this to
+`case2ResidualBlockPivotEntries n S J` and rewrites the chart map through
+`case2SourceSelectedChartMapOfMem` for the pivot enumerated by the chart
+index.
+
+This is the first all-pivot Case 2 theorem that produces source-selected
+finite center values rather than merely consuming supplied pivot membership.
+It is still finite selected-entry production only: no analytic atlas coverage,
+open-domain statement, transition regularity, source production of successor
+matrices or suffixes, analytic Jacobian/volume theorem, global normal
+crossings, pole order, or RLCT extraction is proved.

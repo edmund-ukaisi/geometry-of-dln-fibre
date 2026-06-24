@@ -6709,6 +6709,22 @@ next source-moving A4/A0 work should target actual certificate production or
 total-loss monomial/unit extension, rather than another wrapper over supplied
 boundary data.
 
+The current A4 Case 2 source-selected finite chart production slice is
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-chart-production-a4.md`.
+Lean now proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceSelectedChartMap_eq_value`.
+This upgrades finite selected-entry coverage to source-coordinate witnesses:
+for every finite residual-block center value, there is a chart index, selected
+variable, and ambient residual coordinate function whose
+`case2SourceSelectedChartMapOfMem` equals that value.  This is source-moving
+finite chart production, but still not analytic atlas coverage, transition
+regularity, successor/suffix production, a full DLN loss certificate, global
+normal crossings, pole order, or RLCT.  The next A4 source-moving target can
+reasonably be finite transition-map production on overlaps, or a carefully
+scoped A0 total-loss/unit extension if the needed unit factors are explicit.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.
