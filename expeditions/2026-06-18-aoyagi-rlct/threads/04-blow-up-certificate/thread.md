@@ -6452,3 +6452,38 @@ projects to the carried finite exponent data; it does not provide a constructor
 from finite selected-entry certificates or from `SourceProductionObligation`.
 Focused build passed:
 `cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing`.
+
+## 2026-06-24 Lean selected-entry coordinate postdata
+
+Reproduction:
+`reproduction-selected-entry-coordinate-postdata-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-coordinate-postdata.md`.
+Review:
+`review-selected-entry-coordinate-postdata-a4.md`.
+
+Lean now records the unique-coordinate values for the finite selected-entry
+chart-family certificate.  The generic selected-entry theorems are:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq
+```
+
+They state that the certificate coordinate at a source chart point is `u`, and
+at a transition-generated target point is `u` times the source chart's
+normalized target entry.  The Case 2 source-selected wrappers are:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq_sourceSelected
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq_sourceSelected
+```
+
+These are finite coordinate postdata only.  Aoyagi pp. 19-22 support the
+displayed top-left pivot chart; the arbitrary all-pivot statement is Lean's
+finite selected-entry generalization.  No denominator nonvanishing hypothesis
+is needed for the formal coordinate-value statement, but nonvanishing remains
+required for actual overlap, chart-map equality, inverse transition, and
+analytic transition claims.  This proves no chart coverage, transition
+regularity, source production, analytic Jacobian theorem, normal crossings,
+pole order, termination, or RLCT.

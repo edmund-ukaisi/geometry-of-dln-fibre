@@ -53,6 +53,16 @@ This Lean slice has now landed in `SelectedEntryNormalCrossing.lean`; next
 work should be a consumer/projection into the A0/A6 chart-final socket or a
 genuine proof of one of the supplied fields.
 
+The selected-entry coordinate postdata slice has also landed:
+`threads/04-blow-up-certificate/reproduction-selected-entry-coordinate-postdata-a4.md`.
+It records the finite fact that the unique certificate coordinate is `u` at a
+source chart point and `u * normalized_target` at a transition-generated target
+point.  Treat it as chart-certificate plumbing only.  It is not coverage,
+regularity, source production, an analytic Jacobian theorem, normal crossings,
+pole order, or RLCT.  The next A4 work should consume it only under explicit
+analytic-atlas/source-production hypotheses or else move to a different
+source-moving obligation.
+
 ## Current A0 checkpoint - 2026-06-23
 
 The finite normal-crossing exponent interface has landed in

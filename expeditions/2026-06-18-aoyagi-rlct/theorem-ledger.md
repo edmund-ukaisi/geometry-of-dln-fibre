@@ -7050,6 +7050,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
 
+Latest A4 selected-entry coordinate postdata:
+`SelectedEntryNormalCrossing.lean` proves
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq_sourceSelected`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq_sourceSelected`.
+The source-point coordinate is `u`; the transition-generated target-point
+coordinate is `u` times the source chart's normalized target entry.  Aoyagi's
+source support is the displayed top-left Case 2 chart on PDF pp. 19-22; the
+all-pivot statement is Lean's finite selected-entry generalization.  This is
+coordinate postdata only, not an overlap theorem without denominator
+nonvanishing, and not chart coverage, transition regularity, source
+production, analytic Jacobian control, normal crossings, pole order,
+termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-coordinate-postdata-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-coordinate-postdata.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-coordinate-postdata-a4.md`.
+
 Latest A6/A2 source-range rank-width bridge:
 `Definition3RankWidthBridge.lean` proves
 `paperTotalMap_rank_le_layer_finrank`,

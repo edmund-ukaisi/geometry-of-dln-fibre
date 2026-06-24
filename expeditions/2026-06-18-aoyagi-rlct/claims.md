@@ -4705,6 +4705,27 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
 
+Latest A4 selected-entry coordinate postdata:
+`SelectedEntryNormalCrossing.lean` now proves the generic coordinate
+equalities
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq`
+and
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq`,
+plus the Case 2 source-selected wrappers
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartPoint_eq_sourceSelected`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.coord_sourceChartTransitionPoint_eq_sourceSelected`.
+The coordinate is `u` at a source chart point and `u` times the normalized
+target entry at a transition-generated target chart point.  This is finite
+postdata only; no nonzero denominator, overlap, transition regularity,
+analytic atlas, source production, Jacobian theorem, normal crossings, pole
+order, termination, or RLCT result is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-coordinate-postdata-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-coordinate-postdata.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-coordinate-postdata-a4.md`.
+
 Latest A6/A2 source-range rank-width bridge:
 `Definition3RankWidthBridge.lean` now proves
 `paperTotalMap_rank_le_layer_finrank`,
