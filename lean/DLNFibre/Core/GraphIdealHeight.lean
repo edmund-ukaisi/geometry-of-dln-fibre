@@ -1,5 +1,6 @@
 import DLNFibre.Core.MvPolynomialKerAeval
 import DLNFibre.Core.NullstellensatzCodim
+import Mathlib.RingTheory.MvPolynomial.Localization
 
 /-!
 # `DLNFibre.Core.GraphIdealHeight` — the height of a block graph ideal over a field
@@ -93,5 +94,39 @@ theorem height_coordIdeal_eq :
         = graphIdeal (fun _ : σ ↦ (0 : MvPolynomial τ k)) from by
       simp only [graphIdeal, map_zero, sub_zero]]
   exact height_graphIdeal_eq (fun _ : σ ↦ (0 : MvPolynomial τ k))
+
+attribute [local instance] MvPolynomial.algebraMvPolynomial
+
+/-- **The coordinate ideal height is preserved under localizing the coefficient ring.** For `f ≠ 0`
+in `MvPolynomial τ k` and `Sd = Localization.Away f`, the `σ`-block coordinate ideal of
+`MvPolynomial σ Sd` still has height `Nat.card σ`. Transport: `MvPolynomial σ Sd` is the
+localization of `MvPolynomial σ (MvPolynomial τ k)` at `powers (C f)` (the `isLocalization`
+instance), the coordinate ideal is the `map` of the un-localized one, and `C f ∉` the coordinate
+prime (`f ≠ 0`), so `IsLocalization.height_map_of_disjoint` + `height_coordIdeal_eq` give it. The
+localized target the determinantal elimination's height-squeeze uses (`det ≠ 0`). -/
+theorem height_coordIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
+    (Sd : Type u) [CommRing Sd] [Algebra (MvPolynomial τ k) Sd] [IsLocalization.Away f Sd] :
+    (Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd))).height = (Nat.card σ : ℕ∞) := by
+  set K0 : Ideal (MvPolynomial σ (MvPolynomial τ k)) :=
+    Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ (MvPolynomial τ k))) with hK0def
+  have hK0g : K0 = graphIdeal (fun _ : σ ↦ (0 : MvPolynomial τ k)) := by
+    simp only [hK0def, graphIdeal, map_zero, sub_zero]
+  have hK0prime : K0.IsPrime := by rw [hK0g]; exact graphIdeal_isPrime _
+  have hCf : (C f : MvPolynomial σ (MvPolynomial τ k)) ∉ K0 := by
+    rw [hK0g, ← ker_aeval_eq_graphIdeal]
+    exact fun hmem ↦ hf (by simpa using RingHom.mem_ker.mp hmem)
+  have hdisj := (Ideal.disjoint_powers_iff_notMem (C f : MvPolynomial σ (MvPolynomial τ k))
+    hK0prime.isRadical).2 hCf
+  haveI : IsLocalization (Submonoid.powers (C f : MvPolynomial σ (MvPolynomial τ k)))
+      (MvPolynomial σ Sd) := by
+    simpa [Submonoid.map_powers] using
+      (MvPolynomial.isLocalization (σ := σ) (M := Submonoid.powers f) (S := Sd))
+  have hKmap : K0.map (algebraMap (MvPolynomial σ (MvPolynomial τ k)) (MvPolynomial σ Sd))
+      = Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd)) := by
+    rw [hK0def, Ideal.map_span, ← Set.range_comp']
+    congr 1; funext b; simp [MvPolynomial.algebraMap_def]
+  rw [← hKmap, IsLocalization.height_map_of_disjoint
+    (Submonoid.powers (C f : MvPolynomial σ (MvPolynomial τ k))) K0 hdisj, hK0g]
+  exact height_graphIdeal_eq _
 
 end DLNFibre.Core
