@@ -275,6 +275,23 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
   (the long pole). L2 = `l2-rearch` building the 2≤L gauge close; D1 = L2-gated. Active tides: l2-rearch (L2),
   r1-hdiv-l2-wedge (R1 hdiv L=2). hfin (the long pole) is the next major design-first effort.
 
+**★ UPDATE-7 (2026-06-24) — L2 INTEGRATED to 2 PINs (831/832 closed, refined frame); wedge re-spawned; isolation incident handled.**
+- **L2 gauge chart INTEGRATED @dfb8997b (green 3752): 4 sorries → 2.** The `l2-rearch` tide refined
+  `deepestPoint_frame_exists` with 2≤L boundary conjuncts (via my new Core lemmas, case-split: layer-0
+  left-only / layer-(L−1) right-only / interior-L1 generic), CLOSED 831/832 (hQf0/hPfL), threaded hL2:2≤L,
+  banked readY_regSlice_last + devXZ_corner_devY. Remaining: PIN1 (458, deepestEPivot_regSlice_fderiv — the
+  ∃F:≃L invertibility does NOT follow from IsUnit(Qf last) alone: a unit Qf can have singular ₂₂ block;
+  needs a Qf-₂₂ invertibility fact, NOT smuggled) + PIN2 (651, framedParams_split_eq_frame_raw — needs
+  deepestSplit_exists to expose its concrete decode). Both sharp, tractable ("strengthen an existence lemma").
+- **ISOLATION INCIDENT (handled, lesson @68dd764f):** the resumed wedge tide (a12ac…) lost its worktree on
+  resume + was operating in the MAIN checkout (writing Scratch_L2.lean). Stopped it, preserved its L=2
+  validation (threads/22/scratch-L2-wip.lean), re-spawned ISOLATED. Protocol banked: verify worktree presence
+  after spawn/resume; contain if in main.
+- **2 isolated tides driving (sharp sub-blockers):** `r1-wedge-l2-build` (a11ac, hdiv L=2 single weighted
+  blow-up, covers (3,3,4)) + `l2-pins-unblock` (a680, PIN1 frame-₂₂-invertibility + PIN2 deepestSplit-decode).
+- **R1/L2 remaining map:** L2 = PIN1+PIN2 (unblocking) → L=1 smooth base + wiring (steps 4-5) → gate falls.
+  R1 = hdiv (L=2 building; L≥3 gauge chain) + hfin (the full coupled resolution — THE long pole, dominant).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
