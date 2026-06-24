@@ -231,3 +231,15 @@ A decorrelated adjudication (pp-r1-genM, exact + Codex) settled R1's remaining s
   (i full general-L, ii L=2/RRR milestone) need it; the (2,2,2) hfin is done but the general is the long pole. The
   headline is honest-conditional on hfin until the recursive coupled cover is built. **No operator action required
   mid-flight** — pp-r1-genM's validation (in progress) resolves the feasibility risk; flagged here for the close.
+
+  **RESOLVED (2026-06-24 @a194f1e4) — FEASIBLE, no infeasibility flag.** The decisive validation came back **S2-only
+  YES**: the corank-r determinantal core's {V=0} recursion (radial Δ=a·R → rank-stratified Morse-block ⊕ lower-core)
+  TERMINATES at bounded depth (≤ corank) with leaves that are monomial divisors (S2) + Euclidean Morse blocks (S2-FREE,
+  Mathlib `radial_ball_iff` — the same terminal the existing (2,2,2) Lean hfin already uses). The recursion threshold
+  λ_{r,p} reproduces ½·minAdm EXACTLY (10/10, incl corank-3). So R1's upper bound is provable from scratch, S2-only —
+  the Aoyagi/Watanabe cite is NOT required and the **hero-task S2-only constraint is FEASIBLE for the full headline**.
+  (Decorrelated Codex red-team caught + repaired an over-clean first pass — the intermediate-rank strata genuinely bind;
+  the conclusion survives the stratified repair, cross-checked.) **Net: no operator scope/citation decision is forced
+  by feasibility.** The remaining R1 hfin work is the bounded Lean build of the recursive coupled cover (the long pole),
+  with the explicit per-cell recipe now in hand (radial Δ=a·R + rank-stratified Schur + Morse/monomial leaves + the
+  radial disjoint-sum lemma) — pp-r1-genM is spec'ing it build-ready for the formaliser.

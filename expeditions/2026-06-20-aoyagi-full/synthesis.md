@@ -664,6 +664,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   instances while the gating questions (hfin feasibility, L2 PIN1) resolve.
 - 2 background agents: l2-pin1-final (L2 PIN1, the dominant bottleneck), pp-r1-genM (R1 hfin {V=0}-recursion feasibility — THE decisive R1 question).
 
+**★ UPDATE-29 (2026-06-24) — DECISIVE: R1 hfin S2-only FEASIBLE. The WHOLE programme is provable from scratch; remaining = bounded Lean builds.**
+- **hfin feasibility DECIDED @a194f1e4 (pp-r1-genM (b), decorrelated-Codex-red-teamed): S2-only YES.** The corank-r
+  determinantal core's {V=0} recursion (radial Δ=a·R → rank-stratified Morse-block ⊕ strictly-lower corank core)
+  TERMINATES at bounded depth (≤ corank) — leaves = monomial divisors (S2) + Euclidean Morse blocks (S2-FREE, Mathlib
+  `radial_ball_iff`, the SAME terminal the (2,2,2) Lean hfin already uses). The recursion threshold λ_{r,p} = ½·minAdm
+  EXACTLY (10/10, incl corank-3 (3,3,3)→7/2, (3,3,4)→4). **R1's upper bound is provable from scratch, S2-only — NO
+  Aoyagi/Watanabe cite. HERO TASK FEASIBLE.** The red-team caught + repaired an over-clean first pass (intermediate
+  strata bind); the conclusion survives. discuss-at-close Item 13 RESOLVED (no operator infeasibility flag).
+- **THE PROGRAMME IS NOW CONFIRMED FROM-SCRATCH-FEASIBLE (S2-only) end-to-end.** No conceptual walls remain; the
+  remaining is LARGE BOUNDED Lean builds: L2 (PIN1 closing via l2-pin1-final; then PIN2 + the case-split wire +
+  product_reduction; L=1 base DONE), R1 hdiv (design-closed + bundle + (4,4,2,2); remaining = (3,3,3,3) + the general
+  closed-φ_M chaining → the general atom), R1 hfin (the recursive coupled cover — the biggest single piece, recipe in
+  hand, pp-r1-genM spec'ing build-ready lemmas #54), D1 (≥-leg, L2-gated), the headline assembly.
+- 2 background agents: l2-pin1-final (L2 PIN1, the dominant L2 bottleneck), pp-r1-genM (hfin recStep build-ready spec, #54).
+  hdiv-general build still held (commission after the hfin spec / l2 report / bandwidth).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
