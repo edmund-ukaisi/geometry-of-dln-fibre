@@ -8917,6 +8917,32 @@ normal-crossing certificate, Theorem 4, pole order, or RLCT.
 Next A2 target: the genuine analytic regular-suspension construction or a
 properly stated/proved Fubini-polar regular-variable shift theorem.
 
+Latest A2 one-sided regular-suspension integrability:
+`RegularSuspensionIntegrability.lean` now proves a narrow ENNReal
+finite-factor comparison:
+
+```text
+lintegral_rpow_neg_add_right_le_prod_fst
+lintegral_rpow_neg_add_right_lt_top_of_lintegral_rpow_neg_lt_top
+lintegral_rpow_neg_add_right_restrict_lt_top_of_lintegral_rpow_neg_restrict_lt_top
+```
+
+For `s >= 0`, adding a nonnegative ENNReal term in a second variable makes
+`(a x + q y)^(-s)` pointwise no larger than `(a x)^(-s)`.  If the second
+measure is finite and the base singular integral is finite, Tonelli's product
+formula gives finiteness after adding the extra term; the restricted version
+uses `nu t < infinity` for `nu.restrict t`.
+
+This is not the regular-variable `+k/2` threshold shift.  It contains no
+threshold definition, no polar estimate, no density theorem, no p.13 analytic
+chart/Jacobian construction, no normal crossings, no pole order, and no RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-one-sided-regular-suspension-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

@@ -3682,3 +3682,13 @@ and cocycle, all on the normalised denominator overlap.  It is not analytic
 atlas transition regularity or source production.  Future consumers may use it
 only for finite transition predicates explicitly defined to mean these
 algebraic identities.
+
+A2 one-sided regular-suspension integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`.
+Lean proves in `RegularSuspensionIntegrability.lean` that adding a
+nonnegative ENNReal term over a finite extra measure preserves finiteness of a
+pulled-back negative-power singular integral.  This is useful analytic
+bookkeeping, but it is not the `+k/2` threshold shift.  The next serious A2
+analytic target remains a radial/polar estimate for
+`(||u||^2 + a)^(-s)` and the resulting product-coordinate threshold theorem,
+or the actual p.13 analytic chart/density construction.

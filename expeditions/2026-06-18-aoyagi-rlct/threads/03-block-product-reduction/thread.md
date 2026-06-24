@@ -2730,3 +2730,39 @@ integral_0^eps r^(k-1) (r^2 + a)^(-t) dr.
 This theorem is not yet formalised.  It is separate from normal-crossing
 extraction and still needs actual Aoyagi p.13 product-chart/density hypotheses
 before it can be applied.
+
+## 2026-06-24 A2 one-sided regular-suspension integrability
+
+Reproduction:
+`reproduction-a2-one-sided-regular-suspension-integrability.md`.
+Statement card:
+`statement-card-a2-one-sided-regular-suspension-integrability.md`.
+Review:
+`review-a2-one-sided-regular-suspension-integrability.md`.
+
+Lean now proves the first narrow ENNReal product-measure brick toward the
+regular-square theorem:
+
+```text
+lintegral_rpow_neg_add_right_le_prod_fst
+lintegral_rpow_neg_add_right_lt_top_of_lintegral_rpow_neg_lt_top
+lintegral_rpow_neg_add_right_restrict_lt_top_of_lintegral_rpow_neg_restrict_lt_top
+```
+
+The pointwise estimate is
+
+```text
+(a x + q y)^(-s) <= (a x)^(-s)
+```
+
+for `s >= 0`, proved in `ENNReal` by monotonicity of positive powers and
+inverse order reversal.  If the extra measure is finite and the base integral
+of `(a x)^(-s)` is finite, Tonelli's product formula gives finiteness of the
+integral after adding the extra nonnegative term.  The restricted version uses
+`nu t < infinity` to make `nu.restrict t` finite.
+
+Boundary: one-sided finite-factor integrability preservation only.  No
+threshold definition, no `+ k/2` shift, no polar-coordinate estimate, no
+bounded-density theorem, no p.13 analytic chart or Jacobian theorem, no
+normal-crossing construction, no pole-order theorem, and no RLCT theorem is
+proved.

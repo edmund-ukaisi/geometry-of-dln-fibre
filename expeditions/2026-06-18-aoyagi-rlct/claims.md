@@ -282,7 +282,9 @@ No such claim is formalisation-ready until both fields are filled.
   source-stratum literal regular/residual square-sum comparison at
   `threads/03-block-product-reduction/reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`;
   regular square-suspension integrability target at
-  `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`.
+  `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`;
+  one-sided regular-suspension integrability brick at
+  `threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -318,7 +320,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-p13-source-regular-suspension-boundary.md`;
   supplied regular-suspension extraction projection and source-stratum literal
   regular/residual square-sum comparison reviewed by xhigh `Tesla the 4th` in
-  `threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`.
+  `threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`;
+  one-sided regular-suspension integrability brick reviewed by xhigh
+  `Copernicus the 4th` in
+  `threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6018,6 +6023,31 @@ Nonclaims: no analytic regularity, no analytic Jacobian determinant
 calculation, no source-rank openness, no source coverage, no ideal-germ
 transport, no regular-suspension certificate, no normal crossings, no
 pole-order theorem, and no RLCT theorem.
+
+Latest A2 one-sided regular-suspension integrability:
+Lean now proves the first ENNReal product-measure brick toward the regular
+square-suspension theorem in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+For `s >= 0`,
+`lintegral_rpow_neg_add_right_le_prod_fst` proves
+`(a x + q y)^(-s) <= (a x)^(-s)` after integration over `mu.prod nu`.  The
+finite-factor theorem
+`lintegral_rpow_neg_add_right_lt_top_of_lintegral_rpow_neg_lt_top` uses
+Tonelli's product formula to show that if `nu` is finite and
+`∫ a^(-s) dmu < infinity`, then
+`∫ (a x + q y)^(-s) d(mu.prod nu) < infinity`; the restricted theorem applies
+the same result to `mu.restrict u` and `nu.restrict t` under `nu t < infinity`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-one-sided-regular-suspension-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`.
+
+Nonclaims: this does not define a local integrability threshold, prove the
+regular-variable `+k/2` shift, prove a polar-coordinate estimate, prove a
+bounded-density theorem, construct Aoyagi's p.13 analytic chart or Jacobian,
+produce normal crossings, prove pole order, or prove RLCT.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
