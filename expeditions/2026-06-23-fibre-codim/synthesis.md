@@ -767,3 +767,29 @@ named Cited residual — close with `codim=C+δ` proved modulo one isolated cert
 hole-free result; or (b) commit the ~8–12-module exact-rank chart-trivialization + flatness + going-down
 build (the stalled lineage, eyes open about cost). The RLCT payoff `rlct = ½·codim` stays Cited (Aoyagi)
 regardless; `BundleShiftInterface` stays Assumed until (b) is built.
+
+## ROUTE-C INTEGRATED + operator chose to BUILD hSweep (2026-06-24)
+
+`codimRepCanonical(fibre d B) = C+δ` for rank-r B is now **PROVED IN LEAN modulo exactly TWO named
+residuals** (`Core.RouteCAssembly.codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep'`, aggregated
+`edaa1573`, green/axiom-clean; controller fidelity-read PASS — the conditional bank is honest, no
+hypothesis = the conclusion, the thread-27 circularity trap avoided):
+- **`hSweep`** = the homogeneous-sweep dim identity `varietyDim Σ^r = δ + varietyDim F` (the `+δ` bundle
+  shift = `cited_bundle_shift`).
+- **`hClosure`** = `varietyDim Σ^r = varietyDim Σ̄^r` (the ONE Cited density bridge, LR 4.4/4.5).
+The reducible-locus catenary hyps are PROVED (`Core.RadicalCatenary`, unconditional in radicality); the
+sweep structure `Σ^r = H·F` is proved (`Core.EndBaseChangeSweep`).
+
+**Operator chose (b): BUILD `hSweep` unconditionally.** The non-circular route (thread 29 pen-and-paper +
+Codex): **generic freeness** (at a generic flat-locus point — Grothendieck's lemma, standard + reusable,
+Mathlib v4.29-ABSENT, ~3–5 modules) + a **relative fibre-dimension formula** (~2–3 modules, reuses the
+landed going-down `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`) + **GL×GL homogeneity
+transport** (G1, LANDED — generic-point fibre dim ⟹ E's fibre dim). This DODGES the R2-3b-4
+reducedness-circularity (only fibre *isomorphism*, no scheme iso `e`) AND the absent product-trdeg. The
+flatness-at-E route is circular (re-enters R2-3b-4); generic freeness is the non-circular substitute.
+
+**Build ladder (b):** (1) generic freeness [the load-bearing new rung] → (2) relative fibre-dim → (3)
+transport (landed) ⟹ `hSweep` → plug into `..._of_sweep'` ⟹ unconditional `codim F = C+δ` (modulo
+`hClosure`) → (4) hClosure (prove via density/openness, or keep Cited) → (5) G4: discharge
+`DLN.BundleShiftInterface.cited_bundle_shift` (full reviewer + Codex gate). Next tide: generic freeness,
+SPECIFY-first (thorough Mathlib check — confirm it's genuinely absent — + the dévissage/filtration proof).
