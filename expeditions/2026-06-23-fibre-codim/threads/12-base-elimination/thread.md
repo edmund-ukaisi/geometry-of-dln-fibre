@@ -131,11 +131,27 @@ interface decision rather than ground speculatively at the wrong target.
   (`detΔ ↦ rename Sum.inr detSchurS`); `blockAlgEquiv : A_eng ≃ₐ MvPolynomial B22block
   (MvPolynomial SchurVar k)`; `blockAlgEquiv_detPivot` (`detΔ ↦ C detSchurS`).
 
-### REMAINING — localization transport + Iad = J + regularity (steps iii-iv). **NOT started.**
-The final ~80-100 LoC; all components de-risked; the heaviest localization bookkeeping. Localize
-`blockAlgEquiv` at `detΔ`/`detSchurS` (`A_loc ≃ₐ MvPolynomial B22block Sd`, `Sd = Localization.Away
-detSchurS`, via `blockAlgEquiv_detPivot` + `MvPolynomial.isLocalization`); `height J = C` via
-`height_graphIdeal_eq` over `Sd` (translation auto + `height_map_of_disjoint`); `J ⊆ Iad`
-(`det_submatrix_multPoly_mem_sigmaIdeal`, landed) ⟹ `Iad = J` by `height_strict_mono_of_is_prime`
-(landed `height Iad = C` + `height J = C`); regularity `A_loc/Iad ≅ Sd` via `graphIdealQuotientEquiv`.
-Natural fresh-tide boundary (G2-3-adjacent); the landed infra is the complete spec.
+### Height-transport infrastructure. **LANDED** (8ad18d88, 7a250485) — the heaviest infra done.
+- `height_coordIdeal_localization_eq` (GraphIdealHeight.lean): coord-ideal height = `#σ` over
+  `Sd = Localization.Away f` (`f ≠ 0`). The localized transport (Codex-vetted, `localtransport`
+  consult): `MvPolynomial σ Sd` = localization of `MvPolynomial σ (MvPolynomial τ k)` at `powers (C f)`
+  (`MvPolynomial.isLocalization`), coord ideal = `map` of the un-localized, `C f ∉` coord prime
+  (`f ≠ 0`) ⟹ `height_map_of_disjoint` + `height_coordIdeal_eq`.
+- `detSchurS_ne_zero` (DeterminantalBaseElimination.lean): `Sd` is a domain / valid localization.
+- The localized AlgEquiv `A_loc ≃ₐ Localization.Away (C detSchurS)` via
+  `IsLocalization.algEquivOfAlgEquiv (blockAlgEquiv) (Submonoid.map_powers + blockAlgEquiv_detPivot)`
+  — SPECIFY-probe-confirmed (typechecks).
+
+### REMAINING — the final identification (~50-70 LoC; (1)/(3) clean, (2) the involved step).
+Define `forcedB22 : B22block → Sd` (Schur value `B21·adjΔ·B12 / detΔ`) and `J = graphIdeal forcedB22`
+in `MvPolynomial B22block Sd`. Then:
+1. **`height J = C`** — `translateAux forcedB22` (probe-confirmed AlgEquiv) maps `J` to the coord
+   ideal ⟹ `height J = height_coordIdeal_localization_eq detSchurS detSchurS_ne_zero = #B22block = C`.
+   CLEAN given the infra.
+2. **`J ⊆ Ψ(Iad)`** (the one involved step) — trace the Schur minor relation
+   (`detΔ·B22 − B21 adjΔ B12 ∈ sigmaIdeal`, the LANDED `det_submatrix_multPoly_mem_sigmaIdeal`)
+   through the localized `Ψ`, or pull `J`'s generators back through `Ψ⁻¹` into `Iad`. Carries the
+   actual Schur content — be careful (the correctness guard's hard-direction seed).
+3. **`Iad = J`** by `Ideal.height_strict_mono_of_is_prime` (`Ψ`-transported `height Iad = C` +
+   `height J = C`, both prime) — honestly proves `Iad ⊆ J`. Then `A_loc/Iad ≅ Sd` via
+   `graphIdealQuotientEquiv`. Expose ONLY the equiv (J internal); {domain, dim δ} derive from it.
