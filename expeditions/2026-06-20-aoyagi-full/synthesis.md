@@ -414,6 +414,21 @@ two-axis L2AchieverChart bundle + the sorry-free assembly = the REUSABLE shared 
 `r1-cov-cov` (a531fc6) closing the cov. So R1's geometry crux is DONE+validated; the remaining is measure-plumbing.
 The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geometry (PIN bodies), r1-cov-cov (the c-o-v).
 
+**★ UPDATE-15 (2026-06-24) — L2 frame fact (a) BANKED (sorry-free); 2nd keystone-route soundness correction; latent-dup L2-close blocker flagged.**
+- **Frame fact (a) banked @c73f6ec5** (DeepestPivotFrame.lean, sorry-free): `exists_pivotFrame_lastBlock_isUnit` +
+  `exists_deepest_lastLayer_pivotFrame` (the shared J/Q for PIN1+PIN2). l2-geometry CLOSED (a); punted (b)(c) honestly.
+- **SOUNDNESS CORRECTION #2 (Codex xhigh ×2):** my brief's "feed rank_normal_form_right_only A·Pπ" route is UNSOUND
+  (corM threshold-indexed, but B22-invertibility needs pivot-indexed → singular ₂₂ for non-pivot-front B). ac6eed46's
+  keystone is VALID but its pivots-front hypothesis was NOT met by threshold-front corM (an over-claim). The sound
+  route: explicit pivot-aligned Q = fromBlocks VJ⁻¹ (−VJ⁻¹VK) 0 1 (B22=1 directly, no B-restriction; keystone sidestepped).
+- **DeepestPivotFrame UN-WIRED** (deliberate): wiring it pulls the un-wired L2 family (DeepestGaugeChart) → surfaces a
+  LATENT DUPLICATE — `continuous_dlnLoss` in BOTH DeepestGaugeChart AND Foundations.LossContinuity (fatal once both in
+  build). *** L2-CLOSE BLOCKER: dedupe continuous_dlnLoss before wiring the L2 family. *** Built explicitly (2712); DLNFibre green (3716).
+- **(b) PIN1 body + (c) PIN2 cert = the non-incremental rThresholdSplit→pivotThresholdSplit migration** (all-or-nothing,
+  several hundred lines, on the banked frame algebra) — the next focused tide, HELD until `pivot-frame-reviewer` passes
+  the frame fact (a) (gating the large migration on a verified foundation; the area is soundness-subtle — 2 corrections).
+- 2 tides + 1 reviewer: r1-cov-cov (R1 c-o-v), pivot-frame-reviewer (frame fact fidelity); l2-geometry stood down.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
