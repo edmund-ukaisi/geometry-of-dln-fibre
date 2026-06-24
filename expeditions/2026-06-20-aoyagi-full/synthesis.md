@@ -235,6 +235,27 @@ Both efforts reported.
   bounds). Critical path: hdiv_achiever → hfin probe → resolution_charts (via routeMLayerCover_of_atoms); L2 close
   (PIN1/PIN2 + frame-endpoint + wire) → D1 → headline.
 
+**★ UPDATE-5 (2026-06-24) — hdiv leg INTEGRATED (reduced to the achiever-wedge atom); L2-close DECISION (gauge=2≤L, L=1 smooth base).**
+- **R1 hdiv leg INTEGRATED (@a642f945, green 3714).** `RouteMLayerCoverGE`: the cover_ge_div leg, wiring
+  SORRY-FREE (S2-only) — `layerCover_hdiv` discharges `routeMLayerCover_of_atoms`'s hdiv field; achiever-only-
+  suffices VERIFIED in Lean. Reduced to ONE honest atom `routeMCore_box_diverges_achiever` (full-fidelity).
+  The tide AVOIDED the trap: the squeeze gives only the point-RLCT bound `rlctAtOn ≤ ½·minAdm` (sSup bound on
+  c'>t), strictly weaker than the sharp BOUNDARY box-divergence at c'=½·minAdm; faking `=⊤` from it would be
+  the forbidden fill (Codex named it; not done). Open content: a general-M **achiever geometric chart/wedge**
+  (`|routeMCore ∘ φ| ≤ C·monomial` on a positive-measure box) — the (2,2,2) phiUnit is a depth-2 miracle that
+  doesn't generalise. NEXT R1 lower-bound step: the achiever wedge/tube (curve γ(t)→0, F(γ(t))≲t^minAdm,
+  tubular Fubini divergence — Codex's lighter route than a full chart).
+- **L2 close BLOCKED → DECISION banked (`theory/aoyagi-2023-reproduction/verify-l2-gauge-architecture.md`).**
+  `l2-gauge-close` closed none (faked nothing) + surfaced a real blocker: the 4 GaugeConstruction sorries
+  (831/832/443/624) share the boundary-frame-triviality keystone (Qf(first)=1, Pf(last)=1), FALSE at L=1
+  (first=last). DECISION: the gauge chart is a `2 ≤ L` construction (straightens a product of ≥2 matrices;
+  matches IsDeepLayers' existing 2≤L guard); L=1 is the smooth-quadratic base (`prod=A`, `‖A−B‖²` → rank-r
+  normal form + sum-of-squares RLCT, a genuine direct proof, NOT vacuous). `product_reduction` is ALREADY PROVEN
+  modulo `deepest_regular_core_normal_form` (the gate sorry, Skeleton:1124 = regular/2 + lambdaCore(H−r)).
+  Unblock sequence: (1) Core one-sided normal-form lemma (BUILDING, `l2-gauge-chart-work` resumed) → (2) refine
+  deepestPoint_frame_exists (2≤L boundary identities) → (3) restrict gauge chain to 2≤L, fill 831/832→624→443
+  → (4) L=1 smooth base → (5) wire GaugeChart:365 + aggregator. Then the L2 gate falls.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
