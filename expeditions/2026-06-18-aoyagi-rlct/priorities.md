@@ -2782,3 +2782,14 @@ argument from the source-current transition stack path, but it still leaves
 source production of `Csucc`/`C'^(S+1)`, suffix construction, successor chart
 construction, transition regularity, coverage, normal crossings, pole order,
 termination, and RLCT outside the theorem.
+
+The selected-entry analytic atlas final-socket adapter has now landed:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-final-socket-a4.md`.
+Lean proves
+`SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_selectedWidths_eq_reduced_of_extractionHypothesis_of_finiteExponentFormula`
+in `SelectedEntryAnalyticAtlasFinalBridge.lean`.  This is downstream plumbing
+only: it projects the supplied boundary's `chartCertificate` into the existing
+chart-final Theorem 2 socket after selected-width provenance, the chart-level
+extraction hypothesis, and finite Theorem 2 exponent formula are supplied.
+It does not prove atlas existence, coverage, regularity, source production,
+finite formulas, pole order, termination, or RLCT.

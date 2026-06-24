@@ -7298,6 +7298,21 @@ projection is `SelectedEntryAnalyticAtlasBoundary.exponentData`; no constructor
 from finite selected-entry certificates or formula-level source obligations is
 provided.  Focused build passed via `scripts/lb`.
 
+Final-socket follow-through: `SelectedEntryAnalyticAtlasFinalBridge.lean` now
+proves
+`SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_selectedWidths_eq_reduced_of_extractionHypothesis_of_finiteExponentFormula`.
+This is deliberately only a projection from the supplied boundary's
+`chartCertificate` to `AoyagiTheorem2SuppliedChartFinalBoundary`: selected
+width provenance, the chart-level extraction hypothesis, and the finite
+Theorem 2 exponent formula remain explicit inputs.  It proves no atlas
+existence, coverage, regularity, source production, finite formula, pole
+order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-final-socket-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-final-socket.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

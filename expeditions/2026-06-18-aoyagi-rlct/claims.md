@@ -4639,3 +4639,19 @@ Lean now defines `SelectedEntryAnalyticAtlasBoundary` and
 `SelectedEntryNormalCrossing.lean`.  This is a supplied boundary only: no
 coverage, regularity, source production, termination, normal crossings, pole
 order, or RLCT theorem is proved.
+
+Latest A4 selected-entry analytic atlas final-socket adapter:
+`SelectedEntryAnalyticAtlasFinalBridge.lean` now proves
+`SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_selectedWidths_eq_reduced_of_extractionHypothesis_of_finiteExponentFormula`.
+It consumes a supplied `SelectedEntryAnalyticAtlasBoundary`, selected-width
+provenance, an explicit `B.chartCertificate.ExtractionHypothesis`, and an
+explicit `AoyagiTheorem2FiniteExponentFormulaHypothesis B.exponentData ...`,
+then returns the existing chart-final Theorem 2 boundary for
+`B.chartCertificate`.  This proves no analytic atlas existence, extraction
+hypothesis, finite formula, active-ratio lower bound, chart count, source
+production, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-final-socket-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-final-socket.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.

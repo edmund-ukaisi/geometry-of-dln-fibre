@@ -7034,6 +7034,20 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.
 
+Latest A4 selected-entry analytic atlas final socket:
+`SelectedEntryAnalyticAtlasFinalBridge.lean` proves
+`SelectedEntryAnalyticAtlasBoundary.theorem2SuppliedChartFinalBoundary_of_selectedWidths_eq_reduced_of_extractionHypothesis_of_finiteExponentFormula`.
+It fills `AoyagiTheorem2SuppliedChartFinalBoundary B.chartCertificate ...`
+from selected-width provenance, explicit chart-level extraction, and an
+explicit finite Theorem 2 exponent formula over `B.exponentData`.  This is a
+projection/adapter only; no analytic atlas, extraction theorem, finite formula,
+source production, pole order, termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-final-socket-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-final-socket.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
