@@ -52,6 +52,22 @@ reproduction (§4/§5) + RRR write-up as the operator asked; then re-engage the 
 vacuity on fm3/routem, integration #6, D1 #7). Standing process fix: re-ground (synthesis + brief) after
 EVERY compaction before acting — banked as a lesson.
 
+**★ R1 LIGHT-vs-COUPLED FORK — DECISIVELY RESOLVED (r1-design-light, verify-r1-light-recursion.md;
+Newton-LP + decorrelated Codex, exact).** The threshold-only (per-row weight multiplicity, no symbolic
+support) recursion is **provably insufficient**: it BREAKS at corank≥2 (genuine ≥2×2 residual Δ-block),
+because a per-row multiplicity cannot encode WHICH divisor variables are shared, and sharing changes the
+Newton polytope/RLCT. Obstruction: ⟨δx,δy⟩ rlct=½ vs ⟨δ₁x,δ₂y⟩ rlct=1 (identical light data). Direct DLN
+witness (4,4,2,2) t=(2,1,0), Mval=7→7/2: UNIQUE minimiser at corank-(2,2), no corank≤1 peel reaches it,
+threshold-only undercounts to 2. **R1 Lean shape DECIDED = option (ii), the coupled diag(b) recursion**
+(minimal sufficient invariant = per-generator symbolic divisor support + sharing relations, up to unit
+equivalence). The "hybrid" option (i) is NOT one-citation-viable — it would import the forbidden
+rlct=½·codim cite for the corank≥2 branches. So the coupled recursion is the ONLY sound general-L route
+under the S2-only constraint, which **VINDICATES the routeStep/GeneralR1Recursion dispatcher as necessary,
+not over-engineering** (its SOUNDNESS NOTE already had the clean-recursion-is-false lesson: ambient/2=4≠3/2
+for (2,2,2)). Guards against any future "lighten R1" drift. High-value next R1-build input (logged): a
+certified (non-cascade) diag(b) resolution of (4,4,2,2)→7/2 exhibiting the exact symbolic support the
+routeStep datum must carry. Folded into reproduction §3.4.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

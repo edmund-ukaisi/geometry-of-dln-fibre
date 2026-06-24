@@ -604,12 +604,32 @@ invariant; the disjoint factorisation fails (witness $(3,3,2,2)$, $c_1{=}1$, val
 evaluates to exactly $\tfrac12\Mval(\text{branch})$ by ideal-preservation, so
 $\rlct_{\mathrm{core}}=\tfrac12\min_t\Mval(t)$ --- safe to build the headline on. The clean disjoint
 \emph{mechanism} holds for $c_1{=}0$ and rank-1 peels; $c_1{>}0$ needs the coupled recursion.}
-\qmark{\textbf{The one remaining R1-Lean design fork} (value certified either way, so non-blocking):
-does a clean ($c_1{=}0$ / rank-1) peel always reach \emph{some} minimiser? Holds for
-$(2,2,2,2)/(2,3,2,2)/(3,2,2,2)$; \emph{fails} for $(3,3,2,2)$'s binding $t{=}(2,1,0)$ ($c_1{=}1$). If
-``clean-peel-reaches-a-minimiser'' holds general-$L$, R1 builds the \emph{light} disjoint recursion
-(option (i)); else option (ii) (coupled $\operatorname{diag}(b)$) is mandatory for those branches. Settle
-before pinning the routeStep datum.}
+\paragraph{The light-vs-coupled fork --- RESOLVED: R1 must carry the coupled $\operatorname{diag}(b)$
+support (\texttt{verify-r1-light-recursion.md}, \#18 cont'd; Newton-LP $+$ decorrelated Codex, exact to
+the rational).} A \emph{threshold-only} invariant (residual widths $+$ a per-output-row weight
+\emph{multiplicity}, no symbolic matrix support) is \textbf{provably insufficient}. It is faithful only
+when every binding-branch peel has $\operatorname{corank}\le1$ (the residual block $\Delta$ is a scalar,
+its monomial support \emph{forced} by widths$+$branch$+$weight) --- covering the rank-$1$ chains,
+$(3,2,2,2)$, and even $(3,3,2,2)\,t{=}(2,1,0)$ ($\Delta=\delta$ scalar). It \textbf{BREAKS at
+$\operatorname{corank}\ge2$} (genuine $\ge2\times2$ $\Delta$-block): a per-row multiplicity cannot encode
+\emph{which} divisor variables are SHARED, and sharing changes the Newton polytope hence the RLCT. Exact
+obstruction (two independent computations agree): $\ideal{\delta x,\delta y}$ has $\rlct=\tfrac12$ vs
+$\ideal{\delta_1 x,\delta_2 y}$ has $\rlct=1$ --- \emph{identical} light data, different value.
+\textbf{Direct DLN witness $(4,4,2,2)$, $t{=}(2,1,0)$, $\Mval{=}7$, target $\tfrac72$}: \emph{unique}
+minimiser, layer-1 corank $(2,2)$ ($\Delta$ a genuine $2\times2$ block), and \emph{no}
+$\operatorname{corank}\le1$ peel reaches it; the threshold-only cascade undercounts to $2$.
+\gnote{\textbf{R1 Lean shape --- DECIDED: option (ii), the coupled $\operatorname{diag}(b)$ recursion}
+(Aoyagi's actual structure). Minimal sufficient invariant $=$ the per-generator \emph{symbolic divisor
+support $+$ sharing relations}, up to unit equivalence (numeric coefficients / analytic unit changes need
+not be carried). The ``hybrid'' option (i) --- clean for $\operatorname{corank}\le1$, corank-$\ge2$
+branches ``by the value $=\tfrac12\codim$'' --- is \textbf{not one-citation-viable}: it would import the
+forbidden $\rlct=\tfrac12\codim$ cite for exactly the hard branches (brief: S2 only). So the coupled
+recursion is the \emph{only} sound general-$L$ route under our constraint. This \textbf{vindicates} the
+build's \texttt{GeneralR1Recursion}/routeStep dispatcher (whose SOUNDNESS NOTE already records that the
+dimension-conserving \emph{clean} recursion is false --- telescopes to ambient$/2{=}4\ne\tfrac32$ for
+$(2,2,2)$): the coupled recursion is necessary, not over-engineering. \emph{Next construction to feed the
+Lean build:} a certified (non-cascade) $\operatorname{diag}(b)$ resolution of $(4,4,2,2)\to\tfrac72$,
+exhibiting the exact symbolic support the routeStep datum must carry.}
 
 \gnote{\textbf{The earlier ``hard design questions'' are now settled} (\#18, decorrelated $+$ Codex):
 (1) the \S8 single-binding-divisor one-shot does \emph{not} reproduce $\min M_{s,k}$ for $L\ge3$ (refuted,

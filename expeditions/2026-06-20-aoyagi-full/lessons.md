@@ -827,3 +827,24 @@ recommendation sitting in a thread doc. (Pairs with the branch-divergence lesson
 file-read is not evidence a result is unproven or a claim is live — the durable docs + the task descriptions
 are the divergence-aware record.) Banked as the standing post-compaction protocol; the controller now reads
 synthesis+brief before any first action on a fresh/compacted session.
+
+## "Mechanism settled" ≠ "the optimization question settled"; a thread mid-valuable-work may outrun a stand-down profitably (2026-06-23)
+
+Post-compaction I stood down `r1-design-light` (a pen-and-paper I'd spawned to ask "is there a lighter
+threshold-only R1 recursion?") on the grounds that "the R1 mechanism is already SETTLED (g152/g153 det-1
+Schur peel + pp2 #68 cert)." That was half-right and half-premature. The MECHANISM (coupled recursion is
+the route) was settled; but whether a LIGHTER coarsening (per-row weight multiplicity, no symbolic support)
+could SUFFICE was NOT — and the agent, continuing past my stand-down, proved it CANNOT: threshold-only
+BREAKS at corank≥2 (the (4,4,2,2) unique-corank-2-minimiser witness; ⟨δx,δy⟩ vs ⟨δ₁x,δ₂y⟩ obstruction),
+so the coupled diag(b) support is the MINIMAL sufficient invariant. That sharpened "coupled is the route"
+into "coupled is provably NECESSARY (no lighter route exists under one-citation)" — a strictly stronger,
+drift-guarding result.
+
+TWO lessons: (1) **Distinguish "the mechanism is settled" from "the design-optimization question is
+settled."** When you cite prior settled work to close a NEW question, check the new question is actually
+the same one — here "what mechanism?" (settled) vs "does a lighter coarsening suffice?" (open). I conflated
+them. (2) **A thread close to a sharp result may be worth letting finish even under a stand-down** — the
+marginal cost was low and the result hardened a load-bearing decision (R1 = coupled, no shortcut). When
+standing a thread down, gauge whether it's near a sharp deliverable; if so, let it land. (Pairs with the
+"spawn fresh, don't resume drifted" lesson: the tension is real — resumed agents drift, but a focused
+in-flight thread near a verdict is different from a stale resume.) Controller owned both; Bayesian update.
