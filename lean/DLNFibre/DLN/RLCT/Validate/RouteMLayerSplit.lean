@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.Lambda
 import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
+import DLNFibre.DLN.RLCT.Validate.RouteMState
+import DLNFibre.DLN.RLCT.Validate.RouteMLeaf
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit` — the LAYER-COLLAPSING carrier + recursion (R1 re-arch)
@@ -455,6 +457,194 @@ theorem rlctAtOn_layerReduced_transport (t : ℕ) (M : Fin (L + 1 + 1 + 1) → �
   have hpull : (fun y => G y ^ 2) = (fun y => dlnLoss (redChain t M) 0 (redEmbed y)) := by
     funext y; exact hredCore y
   rw [hpull, rlctAtOn_comp_homeomorph redEmbed hmp hemb (dlnLoss (redChain t M) 0) 0, hzero]
+
+/-! ## The layer-collapsing leaf-codim recursion `layerLeafCodims` (the re-architected value structure)
+
+The genuine layer-collapsing leaf structure, recursing on the ARITY (not `ΣM`): the set of root-to-leaf
+PATHS, each accumulating its per-layer block codims `(M₀−t)(M₁−t)` ADDITIVELY into the path total
+`Mval M₀ T` (the cascade-assembled stratum), so each leaf carries ONE divisor of codim `= path total`.
+
+**THE RECONCILIATION (a genuine 5th wall, validated `/tmp/check_layercollapse.py`).** The value-fold over
+the existing `monomialThreshold`/`foldDivisors` machinery is a `min`-of-axis-ratios — it computes `½·(min
+codim on a path)`. But the layer-peeling value composes ADDITIVELY: down a path the per-layer block
+exponents SUM to `Mval M₀ T` (the Watanabe disjoint-product `rlct = Σ nReg/2`, exact-certified
+`Σ block = Mval`, 0/10k). So the per-leaf codim list must be the SINGLE accumulated `[Mval M₀ T]` (one
+divisor), NOT the per-layer block exponents `min`-folded. The naive per-layer `appendDivisor` of block
+exponents gives `0` (the `t=min(M₀,M₁)` cell has block `0`, collapsing the `min`-fold). `layerLeafCodims`
+accumulates the additive `Mval M₀ T` as a singleton list per leaf — matching the existing value-side
+(`foldFamily_iInf_eq_half_minAdm` with codims = root-anchored `Mval M₀ T`, the achiever path's `minAdm`). -/
+
+/-- **The layer-collapsing leaf-codim MINIMUM (additive accumulation).** The minimal accumulated path codim
+from a node `M` with running total `acc`: at a leaf (`Fin 2`/`Fin 1`) the single path total `acc`; at a
+`≥3`-width node the `min` over leading-pivot ranks `t` of the recursion on `redChain t M` with the block
+codim `(M₀−t)(M₁−t)` ADDED to `acc`. This is the additive (Watanabe) composition the cover's `⨅` binds on:
+each path's codim is the SUM of its per-layer block exponents `= Mval M₀ T`, and the min is over paths. -/
+def layerLeafMin : {L : ℕ} → (M : Fin (L + 1) → ℕ) → (acc : ℕ) → ℕ
+  | 0, _, acc => acc                    -- vacuous one-width chain (never genuine): contributes nothing
+  | 1, M, acc => acc + M 0 * M 1        -- two-width leaf: adds its own pivot-product codim
+  | (_ + 1 + 1), M, acc =>
+      (Finset.range (min (M 0) (M 1) + 1)).inf' (by simp)
+        (fun t => layerLeafMin (redChain t M) (acc + (M 0 - t) * (M 1 - t)))
+
+/-- **The leaf-codim minimum is `acc + minAdm M`.** The additive layer-collapsing path-min equals the
+running total plus the minimal admissible codim: `layerLeafMin M acc = acc + minAdm M`. The reconciliation
+of the cover's additive accumulation with the layer-peeling recursion — at `acc = 0` the cover's `⨅` is
+`½·minAdm M` (the headline). Proven by arity induction: the leaf bases are immediate; the step pushes `acc`
+through the `inf'` (`+` distributes over `min`) and applies `minAdmRec_eq_minAdm` per cell. -/
+theorem layerLeafMin_eq : {L : ℕ} → (M : Fin (L + 1) → ℕ) → (acc : ℕ) →
+    layerLeafMin M acc = acc + minAdm M
+  | 0, M, acc => by
+      simp only [layerLeafMin, minAdm]
+      have hz : ((Adm M).inf' (Adm_nonempty M) (Mval M)).toNat = 0 := by
+        obtain ⟨T, _, hT⟩ := Finset.exists_mem_eq_inf' (Adm_nonempty M) (Mval M)
+        rw [hT]; simp [Mval]
+      rw [hz]; omega
+  | 1, M, acc => by
+      -- Leaf: minAdm M = M 0 * M 1 = minAdmRec M (= minAdmRec_eq_minAdm), acc + that.
+      simp only [layerLeafMin]
+      rw [← minAdmRec_eq_minAdm M, minAdmRec_leaf]
+  | (L + 1 + 1), M, acc => by
+      -- Step: layerLeafMin = inf'_t (acc + block_t + minAdm(redChain t)) = acc + inf'_t(...) = acc + minAdm.
+      simp only [layerLeafMin]
+      rw [show (fun t => layerLeafMin (redChain t M) (acc + (M 0 - t) * (M 1 - t)))
+          = (fun t => acc + ((M 0 - t) * (M 1 - t) + minAdm (redChain t M))) from by
+        funext t; rw [layerLeafMin_eq (redChain t M)]; ring]
+      -- `inf'` of `acc + f t` is `acc + inf' f` (add-left distributes over `min = ⊓`).
+      have hcomp := Finset.comp_inf'_eq_inf'_comp
+        (s := Finset.range (min (M 0) (M 1) + 1)) (by simp)
+        (f := fun t => (M 0 - t) * (M 1 - t) + minAdm (redChain t M)) (g := (acc + ·))
+        (fun x y => by show acc + min x y = min (acc + x) (acc + y); omega)
+      rw [show (fun t => acc + ((M 0 - t) * (M 1 - t) + minAdm (redChain t M)))
+          = ((acc + ·) ∘ fun t => (M 0 - t) * (M 1 - t) + minAdm (redChain t M)) from rfl,
+        ← hcomp, LayerSplit_value_eq_minAdm M]
+
+/-! ## The value-correct layer-collapsing chart family `routeLayerAtlas` (additive single-divisor leaves)
+
+The chart family the value-bridge consumes, built ADDITIVELY (the reconciliation): each leaf accumulates its
+per-layer block codims into ONE divisor `= Mval M₀ T` (the path total), so the `monomialThreshold`-fold is
+`½·(min over leaves of path total) = ½·minAdm M` (via `layerLeafMin_eq`). This is the CORRECT composition —
+NOT the per-layer `appendDivisor` min-fold (which collapses at the `block = 0` cell, the 5th-wall trap). -/
+
+/-- The layer-collapsing chart family at a node: the leaf index set + the per-leaf `MonoData`. Mirrors
+`NodeChartFamily` (the value-bridge consumes this shape). -/
+structure LayerChartFamily where
+  ι : Type
+  fintype : Fintype ι
+  nonempty : Nonempty ι
+  data : ι → MonoData
+
+/-- **The value-correct layer-collapsing chart family.** Threads the additive accumulator `acc` (the
+running path codim); each leaf carries the SINGLE divisor `foldDivisors [acc']` of its accumulated path
+total `acc' = Mval M₀ T`. The `monomialThreshold`-fold over leaves is `½·(min path total) = ½·minAdm`. -/
+def routeLayerAtlasAcc : {L : ℕ} → (M : Fin (L + 1) → ℕ) → (acc : ℕ) → LayerChartFamily
+  | 0, _, acc =>
+      { ι := PUnit, fintype := inferInstance, nonempty := inferInstance,
+        data := fun _ => MonoData.foldDivisors [acc] }
+  | 1, M, acc =>
+      { ι := PUnit, fintype := inferInstance, nonempty := inferInstance,
+        data := fun _ => MonoData.foldDivisors [acc + M 0 * M 1] }
+  | (_ + 1 + 1), M, acc =>
+      let cells := Fin (min (M 0) (M 1) + 1)
+      let child : cells → LayerChartFamily :=
+        fun c => routeLayerAtlasAcc (redChain c.val M) (acc + (M 0 - c.val) * (M 1 - c.val))
+      { ι := Σ c : cells, (child c).ι
+        fintype := by
+          classical
+          letI : ∀ c : cells, Fintype ((child c).ι) := fun c => (child c).fintype
+          infer_instance
+        nonempty := by
+          letI : ∀ c : cells, Nonempty ((child c).ι) := fun c => (child c).nonempty
+          exact ⟨⟨0, (child 0).nonempty.some⟩⟩
+        data := fun x => (child x.1).data x.2 }
+
+/-- The chart family at a node `M` (root accumulator `0`): the genuine re-architected `routeAtlas`. -/
+def routeLayerAtlas (M : Fin (L + 1) → ℕ) : LayerChartFamily := routeLayerAtlasAcc M 0
+
+/-- The `monomialThreshold` of a single-divisor leaf `foldDivisors [c]` is `c/2` (for `c ≥ 1`). -/
+theorem monomialThreshold_singleton (c : ℕ) (hc : 1 ≤ c) :
+    monomialThreshold (MonoData.foldDivisors [c]).d (MonoData.foldDivisors [c]).k
+        (MonoData.foldDivisors [c]).h = (c : ℝ≥0∞) / 2 := by
+  have hmem : ∀ c' ∈ [c], 1 ≤ c' := by
+    intro c' hc'; simp only [List.mem_singleton] at hc'; omega
+  rw [monomialThreshold_foldDivisors [c] hmem]
+  simp [ratioMinFold]
+
+/-- The leaves of `routeLayerAtlasAcc M acc` carry single-divisor `MonoData`s whose codims are exactly the
+accumulated path totals — so the chart-family threshold-fold reduces to `layerLeafMin`. Stated as the bridge
+the value-side consumes; the per-leaf threshold is `½·(path total)` (`monomialThreshold_singleton`), the `⨅`
+binds at `layerLeafMin M acc = acc + minAdm M` (`layerLeafMin_eq`). -/
+theorem routeLayerAtlasAcc_leaf_singleton : {L : ℕ} → (M : Fin (L + 1) → ℕ) → (acc : ℕ) →
+    ∀ i : (routeLayerAtlasAcc M acc).ι, ∃ c : ℕ,
+      (routeLayerAtlasAcc M acc).data i = MonoData.foldDivisors [c] ∧ layerLeafMin M acc ≤ c
+  | 0, _, acc => fun _ => ⟨acc, rfl, by simp only [layerLeafMin]; exact le_rfl⟩
+  | 1, M, acc => fun _ => ⟨acc + M 0 * M 1, rfl, by simp only [layerLeafMin]; exact le_rfl⟩
+  | (_ + 1 + 1), M, acc => by
+      rintro ⟨t, i⟩
+      obtain ⟨c, hcdata, hcge⟩ := routeLayerAtlasAcc_leaf_singleton (redChain t.val M)
+        (acc + (M 0 - t.val) * (M 1 - t.val)) i
+      refine ⟨c, hcdata, ?_⟩
+      simp only [layerLeafMin]
+      exact le_trans (Finset.inf'_le _ (by rw [Finset.mem_range]; exact t.isLt)) hcge
+
+/-- An achiever leaf realizes `c = layerLeafMin M acc` (the path-min is attained). -/
+theorem routeLayerAtlasAcc_achiever : {L : ℕ} → (M : Fin (L + 1) → ℕ) → (acc : ℕ) →
+    ∃ (i : (routeLayerAtlasAcc M acc).ι),
+      (routeLayerAtlasAcc M acc).data i = MonoData.foldDivisors [layerLeafMin M acc]
+  | 0, _, acc => ⟨PUnit.unit, by simp only [routeLayerAtlasAcc, layerLeafMin]⟩
+  | 1, M, acc => ⟨PUnit.unit, by simp only [routeLayerAtlasAcc, layerLeafMin]⟩
+  | (_ + 1 + 1), M, acc => by
+      -- the `inf'`-achieving t, then its child achiever.
+      obtain ⟨t, htmem, hteq⟩ := Finset.exists_mem_eq_inf'
+        (Finset.nonempty_range_iff.mpr (Nat.succ_ne_zero _))
+        (fun t => layerLeafMin (redChain t M) (acc + (M 0 - t) * (M 1 - t)))
+      rw [Finset.mem_range] at htmem
+      obtain ⟨i, hi⟩ := routeLayerAtlasAcc_achiever (redChain t M)
+        (acc + (M 0 - t) * (M 1 - t))
+      refine ⟨⟨⟨t, htmem⟩, i⟩, ?_⟩
+      simp only [routeLayerAtlasAcc]
+      rw [hi]
+      have : layerLeafMin M acc = layerLeafMin (redChain t M) (acc + (M 0 - t) * (M 1 - t)) := by
+        simp only [layerLeafMin]; rw [hteq]
+      rw [this]
+
+/-- **The value-correct atlas folds to `½·minAdm M`.** The `⨅` over the chart family's leaves of
+`monomialThreshold (data leaf)` is `½·minAdm M` (for non-degenerate `1 ≤ minAdm M`). This is the
+`routeM_rlctAtOn_eq_iInf` target value, delivered by the LAYER-COLLAPSING atlas: every leaf's single
+divisor is its accumulated path total `≥ minAdm` (`_leaf_ge`), and the achiever leaf hits `minAdm`
+(`_achiever`), so the `⨅` binds at `½·minAdm` (`le_antisymm`). The additive composition (`layerLeafMin_eq`)
+is the reconciliation of the cover with the layer-peeling recursion. -/
+theorem routeLayerAtlas_value (M : Fin (L + 1) → ℕ) (hpos : 1 ≤ minAdm M) :
+    (⨅ i : (routeLayerAtlas M).ι,
+        monomialThreshold ((routeLayerAtlas M).data i).d
+          ((routeLayerAtlas M).data i).k ((routeLayerAtlas M).data i).h)
+      = (minAdm M : ℝ≥0∞) / 2 := by
+  unfold routeLayerAtlas
+  haveI : Nonempty (routeLayerAtlasAcc M 0).ι := (routeLayerAtlasAcc M 0).nonempty
+  have hmin0 : layerLeafMin M 0 = minAdm M := by rw [layerLeafMin_eq]; omega
+  apply le_antisymm
+  · -- achiever leaf ≤ ½·minAdm.
+    obtain ⟨i, hi⟩ := routeLayerAtlasAcc_achiever M 0
+    refine le_of_le_of_eq (iInf_le _ i) ?_
+    rw [hi, hmin0]
+    exact monomialThreshold_singleton (minAdm M) hpos
+  · -- every leaf ≥ ½·minAdm.
+    refine le_iInf (fun i => ?_)
+    obtain ⟨c, hc, hcge⟩ := routeLayerAtlasAcc_leaf_singleton M 0 i
+    have hge : minAdm M ≤ c := by rwa [hmin0] at hcge
+    rw [hc, monomialThreshold_singleton c (le_trans hpos hge)]
+    exact ENNReal.div_le_div_right (by exact_mod_cast hge) 2
+
+/-- **Non-vacuity: the layer-collapsing atlas folds `(2,2,2)` to `3/2`.** The re-architected atlas's value
+`⨅ monomialThreshold = ½·minAdm(2,2,2) = 3/2 = lambdaCore(2,2,2)` — fires on the worked anchor, confirming
+the carrier + value-fold are non-vacuous and reproduce the headline. -/
+theorem routeLayerAtlas_value_M222 :
+    (⨅ i : (routeLayerAtlas (![2, 2, 2] : Fin 3 → ℕ)).ι,
+        monomialThreshold ((routeLayerAtlas (![2, 2, 2] : Fin 3 → ℕ)).data i).d
+          ((routeLayerAtlas (![2, 2, 2] : Fin 3 → ℕ)).data i).k
+          ((routeLayerAtlas (![2, 2, 2] : Fin 3 → ℕ)).data i).h)
+      = 3 / 2 := by
+  rw [routeLayerAtlas_value (![2, 2, 2] : Fin 3 → ℕ) (by decide)]
+  norm_num [show minAdm (![2, 2, 2] : Fin 3 → ℕ) = 3 from by decide]
 
 -- ANCHOR CHECKS: layer-peeling recursion = brute-force minAdm (incl. binding-coupled witnesses).
 example : minAdmRec (![2, 2, 2] : Fin 3 → ℕ) = 3 := by decide

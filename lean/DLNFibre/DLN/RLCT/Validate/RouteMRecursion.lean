@@ -235,11 +235,25 @@ noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep
     --   • `split` is geometrically load-bearing: `RouteMNodeDescent`/`RouteMO1Bridge` require
     --     `(split c).red = schurState M` (a SINGLE-width peel); a `split` independent of the witness is
     --     the smuggle (one chart claimed to span all strata, unproven).
-    -- MINIMAL UNBLOCK (controller decision — re-architecture, NOT a leaf fill): replace `ChainDimSplit M`
-    -- with a layer-collapsing carrier (`LayerSplit M : Σ L' < L, {red : Fin (L'+1) → ℕ // collapse}`),
-    -- refactor `routeAtlas` to recurse on `(L', red)`, and generalise the descent certificate to
-    -- `dlnLoss red` for the collapsed chain. Then the block recursion above encodes directly; the leaf
-    -- arm + dispatch are CONCRETE and unaffected.
+    -- UNBLOCK RESOLVED AT THE CARRIER LEVEL (`RouteMLayerSplit.lean`, agent-a5df tide 2026-06-24).
+    -- The layer-collapsing carrier + recursion + value-fold + descent are BANKED there (0 sorry, axioms =
+    -- {propext, Classical.choice, Quot.sound, monomial_rlct} — only the S2 cited threshold):
+    --   • `redChain t M` / `LayerSplit M` — the layer-collapsing carrier (reduced chain `Fin (L+1+1)`,
+    --     ONE FEWER LAYER than the parent `Fin (L+1+1+1)`); resolves the encoding `ChainDimSplit` could not.
+    --   • `minAdmRec_eq_minAdm` — the KEYSTONE: the layer-peeling recursion `min_t [(M₀−t)(M₁−t) +
+    --     minAdm(redChain t M)]` PROVABLY equals the brute-force `minAdm = (Adm M).inf' Mval`.
+    --   • `routeLayerAtlas` + `routeLayerAtlas_value` — the re-architected atlas folds to `½·minAdm M`
+    --     (anchor `routeLayerAtlas_value_M222 = 3/2`). The reconciliation: the cover composes block codims
+    --     ADDITIVELY into one leaf divisor `= Mval M₀ T` (`layerLeafMin_eq`), NOT a per-layer `min`-fold
+    --     (the 5th-wall trap — a per-layer `appendDivisor` collapses at the `block=0` cell to `⨅ = 0`).
+    --   • `rlctAtOn_layerReduced_transport` — the descent cert generalised to `dlnLoss (redChain t M)`.
+    -- WHAT REMAINS (the controller's INTEGRATION, not a leaf fill): MIGRATE this file's `RouteStep`/
+    -- `routeStep`/`routeAtlas` (and the ~17 consumers: `RouteMValue`/`RouteMExtraction`/`Case*RouteStep`/…)
+    -- from the fixed-arity `ChainDimSplit M` to `RouteMLayerSplit.routeLayerAtlas`. The fixed-arity
+    -- `RouteStep.branch` (`split : cells → ChainDimSplit M`) cannot carry the layer-collapse; re-pointing it
+    -- to `LayerSplit` changes the inductive's index types and breaks the anchor/value/cover consumers, so
+    -- the migration is staged surgery (controller-gated), not an in-place leaf fill. Until then this arm is
+    -- the documented blocker; the genuine machinery is sorry-free in `RouteMLayerSplit`.
     sorry
 
 /-- **The Route-M chart-family recursion (the G1 deliverable, rebased onto `ChainDimSplit`).** With the
