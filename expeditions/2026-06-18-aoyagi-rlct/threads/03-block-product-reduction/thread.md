@@ -2643,3 +2643,90 @@ Boundary: source-data packaging plus finite real square-sum comparison only.
 No analytic regular-coordinate chart, source coverage, ideal-germ transport,
 Jacobian/prior shift, full normal-crossing certificate, Theorem 4 reduction,
 pole order, or RLCT equality is proved.
+
+## 2026-06-24 A2 supplied regular-suspension extraction projection
+
+Reproduction:
+`reproduction-a2-supplied-regular-suspension-extraction-projection.md`.
+Statement card:
+`statement-card-a2-supplied-regular-suspension-extraction-projection.md`.
+Review:
+`review-a2-regular-suspension-projections-and-loss-shape.md`.
+
+Lean now hardens the supplied full-certificate boundary in
+`RegularSuspensionInterface.lean`:
+
+```text
+AoyagiSuppliedRegularSuspensionCertificate.
+  lambda_eq_reduced_add_half_regularCount
+AoyagiSuppliedRegularSuspensionCertificate.
+  poleOrder_eq_reduced_exponentOrder
+AoyagiSuppliedRegularSuspensionCertificate.
+  lambda_eq_reduced_add_regularTerm
+AoyagiSuppliedRegularSuspensionCertificate.
+  lambda_and_poleOrder_eq_reduced_add_regularTerm
+```
+
+These project `Cfull.ExtractionHypothesis lambda poleOrder` through the
+supplied finite equality
+`Cfull.exponentData = Cred.exponentData.jacobianPriorLossShift regularCount`.
+The result is that the external `lambda` equals the reduced finite minimum
+plus `regularCount/2`, the external `poleOrder` equals the reduced finite
+order, and under the p.13 count with endpoint bounds the shift is Aoyagi's
+displayed `aoyagiTheorem2RegularTerm`.
+
+Boundary: extraction remains on `Cfull`.  This does not construct `Cfull`,
+extract from `Cred`, prove Fubini/polar regular-variable shift, prove Aoyagi
+Lemma 1 or Theorem 4, produce normal crossings, or prove an RLCT theorem beyond
+the supplied full-certificate extraction hypothesis.
+
+## 2026-06-24 A2 source-stratum literal regular/residual square-sum
+
+Reproduction:
+`reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`.
+Statement card:
+`statement-card-a2-source-stratum-literal-regular-residual-square-sum.md`.
+Review:
+`review-a2-regular-suspension-projections-and-loss-shape.md`.
+
+Lean now proves
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.
+  literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source
+```
+
+in `RegularSuspensionCoordinates.lean`.  It composes the existing
+source-stratum literal/cleaned factor-`2` comparison with the cleaned
+product-difference square-sum split:
+
+```text
+cleanedSquareSum = regularBlockSquareSum + residualBlockSquareSum.
+```
+
+Thus, eventually on the source-rank stratum, the literal p.13 square-sum is
+mutually bounded by factor `2` with
+`regularBlockSquareSum + residualBlockSquareSum`.
+
+Boundary: finite source-side square-sum comparison only.  No analytic chart,
+Fubini/polar shift, normal-crossing certificate construction, pole order, or
+RLCT extraction is proved.
+
+## 2026-06-24 A2 regular square-suspension integrability target
+
+Reproduction target:
+`reproduction-a2-regular-square-suspension-integrability-target.md`.
+
+The next genuine analytic target is now pinned as an independent Euclidean
+product-coordinate theorem: if a full loss is locally comparable to
+`|u|^2 + g(y)` with bounded positive density on `R^k x R^m`, then adding the
+regular square variables shifts the local power-integrability threshold by
+`k/2`.  The proof route is Fubini plus polar-coordinate estimates for
+
+```text
+integral_0^eps r^(k-1) (r^2 + a)^(-t) dr.
+```
+
+This theorem is not yet formalised.  It is separate from normal-crossing
+extraction and still needs actual Aoyagi p.13 product-chart/density hypotheses
+before it can be applied.

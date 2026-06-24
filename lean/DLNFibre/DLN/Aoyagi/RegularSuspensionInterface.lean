@@ -242,6 +242,86 @@ variable {RegularChartSource RegularIdealTransport RegularCoverage
       AoyagiNormalCrossingChartCertificate.{uFull} ParamFull RFull →
         ℕ → Prop}
 
+/-- The extracted learning coefficient of a supplied full
+regular-suspension certificate is the reduced finite minimum shifted by half
+of the supplied regular count.
+
+The extraction hypothesis is for `Cfull`; this theorem only projects that
+full-certificate extraction through the supplied finite exponent equality. -/
+theorem lambda_eq_reduced_add_half_regularCount
+    {lambda : ℚ} {poleOrder : ℕ}
+    (S : AoyagiSuppliedRegularSuspensionCertificate Cred Cfull regularCount
+      RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible lambda poleOrder) :
+    lambda =
+      Cred.exponentData.exponentMinimum + (regularCount : ℚ) / 2 := by
+  calc
+    lambda = Cfull.exponentData.exponentMinimum :=
+      AoyagiNormalCrossingChartCertificate.ExtractionHypothesis.lambda_eq_exponentMinimum
+        S.extractionHypothesis
+    _ = Cred.exponentData.exponentMinimum + (regularCount : ℚ) / 2 :=
+      S.boundary.full_exponentMinimum_eq_reduced_add_half_regularCount
+
+/-- The extracted pole order of a supplied full regular-suspension
+certificate is the reduced finite order.
+
+The extraction hypothesis is for `Cfull`; this theorem only projects that
+full-certificate extraction through the supplied finite exponent equality. -/
+theorem poleOrder_eq_reduced_exponentOrder
+    {lambda : ℚ} {poleOrder : ℕ}
+    (S : AoyagiSuppliedRegularSuspensionCertificate Cred Cfull regularCount
+      RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible lambda poleOrder) :
+    poleOrder = Cred.exponentData.exponentOrder := by
+  calc
+    poleOrder = Cfull.exponentData.exponentOrder :=
+      AoyagiNormalCrossingChartCertificate.ExtractionHypothesis.theta_eq_exponentOrder
+        S.extractionHypothesis
+    _ = Cred.exponentData.exponentOrder :=
+      S.boundary.full_exponentOrder_eq_reduced
+
+/-- When the supplied regular count is Aoyagi's p. 13 block-entry count, the
+extracted learning coefficient of the supplied full certificate is the reduced
+finite minimum plus Aoyagi's displayed regular term.
+
+The extraction hypothesis remains on `Cfull`; this is not an extraction or
+additivity theorem for the reduced certificate alone. -/
+theorem lambda_eq_reduced_add_regularTerm
+    {lambda : ℚ} {poleOrder : ℕ}
+    (S : AoyagiSuppliedRegularSuspensionCertificate Cred Cfull regularCount
+      RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible lambda poleOrder)
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hcount :
+      regularCount = aoyagiTheorem2RegularVariableCount L H r)
+    (hsource : r ≤ H 1) (htarget : r ≤ H (L + 1)) :
+    lambda =
+      Cred.exponentData.exponentMinimum + aoyagiTheorem2RegularTerm L H r := by
+  calc
+    lambda = Cfull.exponentData.exponentMinimum :=
+      AoyagiNormalCrossingChartCertificate.ExtractionHypothesis.lambda_eq_exponentMinimum
+        S.extractionHypothesis
+    _ = Cred.exponentData.exponentMinimum + aoyagiTheorem2RegularTerm L H r :=
+      S.boundary.full_exponentMinimum_eq_reduced_add_regularTerm
+        hcount hsource htarget
+
+/-- Pair form of the supplied full-certificate regular-suspension extraction
+projection. -/
+theorem lambda_and_poleOrder_eq_reduced_add_regularTerm
+    {lambda : ℚ} {poleOrder : ℕ}
+    (S : AoyagiSuppliedRegularSuspensionCertificate Cred Cfull regularCount
+      RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible lambda poleOrder)
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hcount :
+      regularCount = aoyagiTheorem2RegularVariableCount L H r)
+    (hsource : r ≤ H 1) (htarget : r ≤ H (L + 1)) :
+    lambda =
+        Cred.exponentData.exponentMinimum + aoyagiTheorem2RegularTerm L H r ∧
+      poleOrder = Cred.exponentData.exponentOrder :=
+  ⟨S.lambda_eq_reduced_add_regularTerm hcount hsource htarget,
+    S.poleOrder_eq_reduced_exponentOrder⟩
+
 /-- Build the existing chart-final Theorem 2 boundary for the supplied full
 regular-suspension certificate.
 

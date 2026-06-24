@@ -235,7 +235,14 @@ No such claim is formalisation-ready until both fields are filled.
   RLCT shift remains an unproved analytic regular-suspension assertion. Lean
   now also packages the source-data constructor with the source-stratum
   factor-`2` comparison between the literal and cleaned p. 13 finite
-  square-sums. The full source Theorem 3/RLCT claim remains blocked.
+  square-sums. The supplied regular-suspension extraction projection now also
+  exposes that extraction on `Cfull` gives the reduced finite minimum plus the
+  regular count shift and the reduced finite order. The source-stratum
+  literal p.13 square-sum is now also compared directly with
+  regular-block square-sum plus residual-block square-sum. The full source
+  Theorem 3/RLCT claim remains blocked on the analytic product-coordinate
+  regular-square suspension theorem and the actual p.13 chart/density
+  construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -269,7 +276,13 @@ No such claim is formalisation-ready until both fields are filled.
   one-step determinant-chart coordinate equivalence at
   `threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`;
   p. 13 source regular-suspension boundary at
-  `threads/03-block-product-reduction/reproduction-a2-p13-source-regular-suspension-boundary.md`.
+  `threads/03-block-product-reduction/reproduction-a2-p13-source-regular-suspension-boundary.md`;
+  supplied regular-suspension extraction projection at
+  `threads/03-block-product-reduction/reproduction-a2-supplied-regular-suspension-extraction-projection.md`;
+  source-stratum literal regular/residual square-sum comparison at
+  `threads/03-block-product-reduction/reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`;
+  regular square-suspension integrability target at
+  `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -302,7 +315,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`;
   p. 13 source regular-suspension boundary reviewed by xhigh `Gibbs the 4th`
   in
-  `threads/03-block-product-reduction/review-a2-p13-source-regular-suspension-boundary.md`.
+  `threads/03-block-product-reduction/review-a2-p13-source-regular-suspension-boundary.md`;
+  supplied regular-suspension extraction projection and source-stratum literal
+  regular/residual square-sum comparison reviewed by xhigh `Tesla the 4th` in
+  `threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -594,7 +610,15 @@ No such claim is formalisation-ready until both fields are filled.
   `exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq`,
   which chooses fixed-base regular-coordinate source data from real rank/source
   hypotheses and returns the existing `nhdsWithin` source-rank factor-`2`
-  comparison between the literal and cleaned p. 13 finite square-sums.
+  comparison between the literal and cleaned p. 13 finite square-sums. Also
+  proved supplied full-certificate extraction projections
+  `AoyagiSuppliedRegularSuspensionCertificate.lambda_eq_reduced_add_half_regularCount`,
+  `...poleOrder_eq_reduced_exponentOrder`,
+  `...lambda_eq_reduced_add_regularTerm`, and
+  `...lambda_and_poleOrder_eq_reduced_add_regularTerm`. Also proved
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source`,
+  which rewrites the source-stratum literal/cleaned factor-`2` comparison as a
+  comparison with the regular-block square-sum plus residual-block square-sum.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

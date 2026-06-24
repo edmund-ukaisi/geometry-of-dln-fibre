@@ -7917,8 +7917,14 @@ Cfull.exponentData =
 It proves finite projections
 `full_exponentMinimum_eq_reduced_add_half_regularCount`,
 `full_exponentOrder_eq_reduced`, and
-`full_exponentMinimum_eq_reduced_add_regularTerm`.  With extraction supplied
-for `Cfull`, the wrapper
+`full_exponentMinimum_eq_reduced_add_regularTerm`.  It now also projects the
+supplied full-certificate extraction through this finite equality:
+`lambda_eq_reduced_add_half_regularCount`,
+`poleOrder_eq_reduced_exponentOrder`,
+`lambda_eq_reduced_add_regularTerm`, and
+`lambda_and_poleOrder_eq_reduced_add_regularTerm` show that extraction on
+`Cfull` yields the reduced minimum plus the regular shift and the reduced
+order.  With extraction supplied for `Cfull`, the wrapper
 `AoyagiSuppliedRegularSuspensionCertificate.theorem2SuppliedChartFinalBoundary_of_regularVariableCount`
 returns `AoyagiTheorem2SuppliedChartFinalBoundary Cfull ...` exactly.  This is
 not a construction of `Cfull`, not analytic ideal transport, not Aoyagi
@@ -7926,10 +7932,45 @@ Lemma 1, not regular-coordinate additivity, not normal-crossing production,
 and not an RLCT theorem beyond the full-certificate extraction hypothesis.
 Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-regular-suspension-interface.md`.
+Projection reproduction:
+`threads/03-block-product-reduction/reproduction-a2-supplied-regular-suspension-extraction-projection.md`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-regular-suspension-interface.md`.
+Projection statement card:
+`threads/03-block-product-reduction/statement-card-a2-supplied-regular-suspension-extraction-projection.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-regular-suspension-interface.md`.
+
+Latest A2 supplied regular-suspension extraction projection:
+`RegularSuspensionInterface.lean` now has
+`AoyagiSuppliedRegularSuspensionCertificate.lambda_eq_reduced_add_half_regularCount`,
+`...poleOrder_eq_reduced_exponentOrder`,
+`...lambda_eq_reduced_add_regularTerm`, and
+`...lambda_and_poleOrder_eq_reduced_add_regularTerm`.  These theorems project
+`Cfull.ExtractionHypothesis` through the supplied finite exponent equality;
+they do not extract from `Cred` or construct `Cfull`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-supplied-regular-suspension-extraction-projection.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`.
+
+Latest A2 source-stratum literal regular/residual square-sum comparison:
+`RegularSuspensionCoordinates.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source`.
+It composes the source-stratum literal/cleaned factor-`2` comparison with the
+cleaned square-sum split into regular-block plus residual-block square-sums.
+This is the finite p.13 loss-shape input for a later Fubini/polar theorem, not
+analytic regular-coordinate status, chart production, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-projections-and-loss-shape.md`.
+
+Latest A2 analytic target clarification:
+`threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`
+states the independent Euclidean product-coordinate theorem that would shift a
+local power-integrability threshold by `k/2` after adding `k` regular square
+variables.  This remains unformalised and still needs actual Aoyagi p.13
+product-chart and bounded-density hypotheses before application.
 
 Latest A6 Theorem 2 supplied regular-suspension final bridge:
 `Theorem2RegularSuspensionFinalBridge.lean` now composes Definition 3

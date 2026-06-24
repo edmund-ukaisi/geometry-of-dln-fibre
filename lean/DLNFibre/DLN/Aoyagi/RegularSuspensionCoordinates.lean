@@ -2722,6 +2722,54 @@ theorem literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_fact
         (W := W) (B := B) sourceData)
 
 set_option linter.unusedSectionVars false in
+/-- On the source-rank stratum filter, the literal signed/corrected p. 13
+square-sum is locally equivalent up to factor `2` to the sum of the regular
+block square-sum and the residual block square-sum.
+
+This is a source-side finite loss comparison only.  It does not assert
+regular-coordinate analytic status, prove a Fubini/polar shift, construct a
+full regular-suspension chart, or extract an RLCT. -/
+theorem literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+        aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        2 * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  refine
+    (literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+      (W := W) (B := B) sourceData).mono ?_
+  intro x hx
+  rw [paperEndpointFixedBaseProductDifferenceCoordinateMap_squareSum_eq_regular_add_residual
+    (K := ℝ) W B U₀ hU₀ Cedge x] at hx
+  exact hx
+
+set_option linter.unusedSectionVars false in
 /-- Relative directional form: on the source-rank stratum filter, the literal
 signed/corrected square-sum is bounded by twice the cleaned square-sum. -/
 theorem literalProductDifferenceCoordinateMap_squareSum_eventually_le_two_mul_productDifferenceCoordinateMap_squareSum_nhdsWithin_source

@@ -605,6 +605,35 @@ Next A2 work is the genuine analytic regular-suspension construction or a
 proper Fubini/polar regular-variable shift theorem, not another finite
 source-data wrapper.
 
+A2 supplied regular-suspension extraction projection has now landed:
+`threads/03-block-product-reduction/reproduction-a2-supplied-regular-suspension-extraction-projection.md`.
+Lean adds projection theorems in `RegularSuspensionInterface.lean` showing that
+extraction on the supplied full certificate `Cfull` gives
+`lambda = Cred.exponentData.exponentMinimum + regularCount/2`,
+`poleOrder = Cred.exponentData.exponentOrder`, and, under the p.13 count and
+endpoint bounds, `lambda = Cred.exponentData.exponentMinimum +
+aoyagiTheorem2RegularTerm L H r`.  This hardens the extraction placement: it
+does not extract from `Cred`, construct `Cfull`, or prove the missing
+Fubini/polar regular-variable theorem.
+
+A2 source-stratum literal regular/residual square-sum comparison has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`.
+Lean proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source`,
+rewriting the existing literal/cleaned factor-`2` comparison by the cleaned
+regular-plus-residual square-sum split.  This is the finite p.13 loss-shape
+input for later Fubini work; it is not analytic regular-coordinate status,
+chart production, a Fubini theorem, normal crossings, pole order, or RLCT.
+
+The next genuine A2 analytic target is now pinned at
+`threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
+prove an abstract Euclidean product-coordinate theorem that adding `k`
+regular square variables shifts the local power-integrability threshold by
+`k/2`.  This should be formalised separately from normal-crossing extraction
+and still requires actual Aoyagi p.13 chart/density hypotheses before it can
+be applied.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds
