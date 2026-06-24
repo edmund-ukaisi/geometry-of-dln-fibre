@@ -46,15 +46,49 @@ false `cov = ⊤`). Lean file `lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerCoverG
 >   consumes the bundle; the factorization/threshold/leaf-integrand/image are sorry-free.
 > - **Deferred (ONE honest `sorry`, no longer FALSE).** The `cov` change-of-variables (the genuine
 >   Jacobian c-o-v, Mathlib `lintegral_image_eq_lintegral_abs_det_fderiv_mul`). The determinant
->   value `det Dφ = −u₀⁷·u₁²` is verified-exact (sympy `genuine_chart_334c.py` + Codex `xhigh` +
->   the structural `b=aβ` det-`a²` ∘ shear det-`1` ∘ `pivotBlowup8` det-`u₀⁷`), matching `leafH334`.
->   The Lean obstruction is precise: **`paramsEquivFlat M334` is a `piCurry`/`arrowCongr'` reindex
->   using the OPAQUE `Fintype.equivFin (FlatIdx M334)`, with no `ContinuousLinearEquiv`/fderiv/
->   det-`±1` lemma** — so `phi334`'s fderiv cannot yet be factored through it. Building that
->   `paramsEquivFlat`-as-linear-iso is the heavy per-node measure-plumbing atom the `hfin`
->   certificate flags (cost driver 2). `routeM334_box_diverges` axioms: `[propext, sorryAx,
->   Classical.choice, Quot.sound, monomial_rlct]`.
+>   value `det Dφ = −u₀⁷·u₁²` is verified-exact on the ACTUAL Lean `chartA334`/`chartC334` entries
+>   (independent sympy recomputation in the tide-25 fidelity review; Codex `xhigh`; the structural
+>   `b=aβ` det-`a²` ∘ shear det-`1` ∘ `pivotBlowup8` det-`u₀⁷`), matching `leafH334`. **Provenance
+>   caveat:** the exploratory `genuine_chart_334c.py`/`334h.py` predate the `b=aβ` chart and give
+>   `−u₀⁷` / `u₀¹⁰` respectively — they are STALE; trust the recomputation on the Lean entries.
+>   `routeM334_box_diverges` axioms: `[propext, sorryAx, Classical.choice, Quot.sound, monomial_rlct]`.
 > - **Status.** sorry-free EXCEPT the single `cov` residual; awaiting reviewer fidelity check.
+
+## The `paramsEquivFlat`-as-linear-iso atom (BANKED this tide; the prior `cov` blocker, CLOSED)
+
+The prior `cov` obstruction was named precisely: **`paramsEquivFlat M334` is a `piCurry`/`arrowCongr'`
+reindex through the OPAQUE `Fintype.equivFin (FlatIdx M334)`, with no `ContinuousLinearEquiv`/fderiv/
+det lemma** — so `phi334`'s fderiv could not be factored through it. This tide closes that blocker.
+
+> **Claim (linear-iso atom).** `paramsEquivFlat H` is packaged as an honest ℝ-linear / continuous-linear
+> iso, with the constant fderiv of the flattening and the sup-norm structure on `Params H`.
+>
+> - **Lean (`Foundations/ParamsFlatLinear.lean`, fully general in `H`/`L`, axiom-clean
+>   `[propext, Classical.choice, Quot.sound]`):**
+>   - `paramsEquivFlatLinear H : Params H ≃ₗ[ℝ] (Fin (flatDim H) → ℝ)` (the `LinearEquiv`, from
+>     `LinearEquiv.piCurry` ×2 + `LinearEquiv.funCongrLeft`);
+>   - `paramsEquivFlatCLE H : Params H ≃L[ℝ] (Fin (flatDim H) → ℝ)` (its `ContinuousLinearEquiv`, via
+>     `LinearEquiv.toContinuousLinearEquiv`);
+>   - `paramsEquivFlatLinear_coe` / `paramsEquivFlatCLE_coe`: SAME underlying function as
+>     `paramsEquivFlat H` — both by `rfl` (the linear pieces share the `Equiv` of the measurable ones);
+>   - `hasFDerivAt_paramsEquivFlat H P`: `HasFDerivAt (paramsEquivFlat H) (paramsEquivFlatCLE H).toCLM P`
+>     (the reindex CLM is the flattening's constant fderiv);
+>   - `instNormedAddCommGroupParams`/`instNormedSpaceParams`/`instFiniteDimensionalParams` on `Params H`
+>     (the sup-norm via the unfolded `Pi`-of-`Pi`-of-`ℝ`), with `instTopologicalSpaceParams_eq_norm`:
+>     the norm-topology is the existing product topology by `rfl` (NO diamond — Codex flagged this as
+>     the suspected wall; it is `rfl`-compatible because `Matrix` is definitionally a function space).
+> - **Reusable for general `M`** — the per-node SHARED `hfin` measure-plumbing atom (cost driver 2),
+>   built once for any `H`.
+
+## What remains for `cov` (the NARROWED residual)
+
+With the reindex closed, the genuine c-o-v reduces to the self-map `Ψ := chartParams334 ∘
+(paramsEquivFlat M334).symm : Params M334 → Params M334` (peel the outer reindex by
+`MeasurePreserving.setLIntegral_comp_emb`; `Ψ` operates in matrix-entry coordinates, OFF the reindex):
+the inner polynomial chart's `HasFDerivWithinAt`/`InjOn` (each entry a monomial; `hasFDerivAt_pi` +
+`HasFDerivAt.mul`), the structural det `|det DΨ| = |u₀|⁷·|u₁|²` (reusing BANKED `pivotBlowupOnDeriv_det`
+`= u₀⁷`, `det(shear)=1`, `det(b-subst)=u₁²` — NOT a 21×21 `Matrix.det`), and the `{u₁=0}` two-sided
+null slice. Codex `xhigh` estimate: ~400–600 lines, the structural-det c-o-v.
 
 ## What changed vs the prior degenerate state
 
@@ -65,3 +99,6 @@ false `cov = ⊤`). Lean file `lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerCoverG
   forms reading all 21 coords; `loss_schur_blowup_factor` and the assembly reused unchanged.
 - The bundle `L2AchieverChart` generalised to carry the genuine two-axis Jacobian `|u₀|⁷·|u₁|²`
   (was the false single-axis `|u_p|⁷`); threshold unchanged at 4.
+- **This tide:** banked the `paramsEquivFlat`-as-linear-iso atom (`ParamsFlatLinear.lean`), CLOSING
+  the named `cov` blocker (no `ContinuousLinearEquiv`/fderiv for the reindex); narrowed the `cov`
+  residual to the inner structural-det c-o-v + null slice (off the reindex).

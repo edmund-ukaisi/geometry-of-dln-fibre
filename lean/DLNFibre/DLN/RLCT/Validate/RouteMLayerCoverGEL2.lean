@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGE
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 
 /-!
 # `RouteMLayerCoverGEL2` — the `L = 2` achiever box-divergence (single weighted radial blow-up)
@@ -714,29 +715,38 @@ noncomputable def achieverChart334 : L2AchieverChart where
     -- it was `0 = ⊤` for the degenerate `phi334`, it is now a TRUE statement awaiting plumbing).
     -- `phi334` is a genuine diffeo off `{u 0 = 0} ∪ {u 1 = 0}` (both null): it reads all 21 coords
     -- (`chartA334_reads_u2`), is `InjOn` there (`phi334_injOn`, BANKED sorry-free — all 21 coords
-    -- recovered from the flat image), and `HasFDerivAt` with `|det Dφ| = |u 0|⁷·|u 1|²` (sympy-exact
-    -- `−u₀⁷·u₁²`, `genuine_chart_334c.py` + Codex `xhigh`; STRUCTURAL: `b = aβ` det-`a²` ∘ Schur-shear
-    -- det-`1` ∘ `pivotBlowup8` det-`u₀⁷`), which is EXACTLY the bundle weight
-    -- `∏_j |u_j|^{leafH334 j} = |u 0|⁷·|u 1|²` (`leafH334_prod_eq`).
+    -- recovered from the flat image), and `HasFDerivAt` with `|det Dφ| = |u 0|⁷·|u 1|²`. The det
+    -- `−u₀⁷·u₁²` is sympy-exact on the ACTUAL `chartA334`/`chartC334` entries (independently recomputed
+    -- in the tide-25 fidelity review; STRUCTURAL: `b = aβ` det-`a²` ∘ Schur-shear det-`1` ∘
+    -- `pivotBlowup8` det-`u₀⁷`). NB: the exploratory `genuine_chart_334c.py` predates the `b = aβ`
+    -- chart and gives only `−u₀⁷` (no `·u₁²`); trust the recomputation on the Lean entries, not that
+    -- script. The det is EXACTLY the bundle weight `∏_j |u_j|^{leafH334 j} = |u 0|⁷·|u 1|²`
+    -- (`leafH334_prod_eq`).
     --
-    -- The residual is the FORMALISATION of Mathlib's `lintegral_image_eq_lintegral_abs_det_fderiv_mul`
-    -- on the diffeo-domain `V \ {u 0 = 0}`, which needs:
-    --   (i) the explicit `HasFDerivWithinAt phi334 (Dφ u) (V\{u₀=0}) u` as a `ContinuousLinearMap`;
-    --   (ii) `(Dφ u).det = −u₀⁷·u₁²` via the structural factorisation `phi334 = (paramsEquivFlat
-    --        reindex) ∘ shear ∘ b-subst ∘ pivotBlowup8`, reusing the BANKED `pivotBlowupOnDeriv_det`
-    --        (`= u₀⁷` for the 8-active set) and `det(shear)=1`, `det(b-subst)=a²` — NOT a 21×21
-    --        `Matrix.det` (which times out, see the file note);
-    --   (iii) apply the c-o-v on `V \ ({u 0 = 0} ∪ {u 1 = 0})` (where `phi334_injOn` BANKED gives
-    --        InjOn), then add back the `{u 1 = 0}` slice as a TWO-SIDED null contribution: its image
-    --        lies in the null hyperplane `{A(0,0) = u 1 = 0}` (LHS null) and the RHS weight
-    --        `|u 1|² = 0` kills the integrand there (RHS null) — NOT an InjOn extension.
-    -- THE MISSING INFRASTRUCTURE (the precise obstruction): `paramsEquivFlat M334` is a `piCurry` /
-    -- `arrowCongr'` coordinate reindex with NO existing `ContinuousLinearEquiv` / fderiv / det-`±1`
-    -- lemma in Mathlib or this repo — so `phi334`'s fderiv cannot yet be factored through it. Building
-    -- that `paramsEquivFlat`-as-linear-iso (fderiv + `|det| = 1`, measure-preserving) is the per-node
-    -- measure-plumbing the `hfin` certificate flags as the heavy SHARED atom (cost driver 2). The
-    -- ALGEBRA (det value, factorization, threshold, InjOn) is verified-exact / banked; only this
-    -- fderiv-through-`paramsEquivFlat` plumbing remains. HONEST `sorry` with the precise obstruction.
+    -- BANKED THIS TIDE (`Foundations.ParamsFlatLinear`, the SHARED general-`M` `hfin` atom — cost
+    -- driver 2, the prior precise obstruction): `paramsEquivFlat H` is now packaged as an honest
+    -- ℝ-linear iso `paramsEquivFlatLinear H : Params H ≃ₗ[ℝ] (Fin (flatDim H) → ℝ)` and continuous
+    -- linear equiv `paramsEquivFlatCLE H` (`*_coe`: SAME underlying function, by `rfl`), with the
+    -- constant fderiv `hasFDerivAt_paramsEquivFlat H` (the reindex CLM). The blocking gap — "no
+    -- `ContinuousLinearEquiv`/fderiv for the reindex" — is CLOSED. `Params H` also carries the sup-norm
+    -- `NormedAddCommGroup`/`NormedSpace`/`FiniteDimensional` (`inst*Params`), `rfl`-compatible with the
+    -- existing product topology (`instTopologicalSpaceParams_eq_norm`) — no diamond.
+    --
+    -- REMAINING (the narrowed residual, no longer the reindex): the genuine Jacobian c-o-v of the
+    -- SELF-map `Ψ := chartParams334 ∘ (paramsEquivFlat M334).symm : Params M334 → Params M334`, after
+    -- peeling the outer reindex by `MeasurePreserving.setLIntegral_comp_emb` (off the reindex det
+    -- entirely — `Ψ` operates in matrix-entry coordinates, where the structural det is explicit):
+    --   (i) `HasFDerivWithinAt`/`InjOn` of the inner polynomial matrix map `chartParams334` (each of
+    --       the 21 entries a monomial; `hasFDerivAt_pi` + `HasFDerivAt.mul`);
+    --   (ii) `|det DΨ| = |u 0|⁷·|u 1|²` via the structural factorisation in the matrix-entry basis,
+    --        reusing the BANKED `pivotBlowupOnDeriv_det` (`u₀⁷`), `det(shear)=1`, `det(b-subst)=a²=u₁²`
+    --        — NOT a 21×21 `Matrix.det` (which times out, see the file note);
+    --   (iii) c-o-v on `V \ ({u 0 = 0} ∪ {u 1 = 0})` (`phi334_injOn` BANKED), then add back the
+    --        `{u 1 = 0}` slice as a TWO-SIDED null contribution (LHS image in the null hyperplane
+    --        `{A(0,0) = u 1 = 0}`; RHS weight `|u 1|² = 0`) — NOT an InjOn extension.
+    -- The ALGEBRA (det value, factorization, threshold, InjOn) and the linear-iso/fderiv are
+    -- verified-exact / BANKED; the structural-det c-o-v + measure-plumbing is the remaining build
+    -- (Codex `xhigh`: ~400-600 lines). HONEST `sorry` with the narrowed obstruction.
     sorry
   image_subset := phi334_image_subset_cubeBox
 
