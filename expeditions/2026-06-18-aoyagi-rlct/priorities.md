@@ -2569,3 +2569,20 @@ The repository was inspected while the checkout was on
 worktree now exists separately. Use surgical staging inside the Aoyagi worktree;
 do not use `git add -A` from the main checkout while unrelated expedition
 artifacts are present.
+
+## Current A4 finite overlap frontier - 2026-06-24
+
+The newest A4 Case 2 finite-atlas/`Q/P` handoff is
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-package-a4.md`.
+Lean now packages the selected-entry source-to-target transition point with
+the existing supplied target-pivot source-selected `Q/P` identity and the
+denominator-cleared target lower-right Schur formula:
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
+
+This is the right finite support for later chart-production work, but it does
+not itself produce successor residual matrices, following factors, recurrence
+post-data, exponent post-data, analytic transition regularity, chart coverage,
+normal crossings, pole order, or RLCT.  The next ambitious A4 moves should
+either use this package to reduce a concrete successor/following production
+obligation, or feed it into a source-facing chart-certificate construction
+only where the remaining analytic/chart-production hypotheses are explicit.

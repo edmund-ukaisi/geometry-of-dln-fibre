@@ -6665,6 +6665,24 @@ Statement card:
 Review:
 `threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
 
+Latest A4 Case 2 transition-generated Q/P package:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
+For source chart data and target chart with normalized target coordinate
+`d != 0`, it sets `targetU = u*d` and `targetResidual r = x_r/d`, then records
+chart-map equality, the existing supplied target-pivot source-selected `Q/P`
+identity, and the denominator-cleared residual-subtype lower-right Schur
+formula for those same target data.  This is finite coordinate algebra only:
+no analytic transition regularity, chart coverage, source-displayed all-pivot
+atlas, chart-produced post-data, successor/following-factor production,
+normal crossings, pole order, RLCT extraction, or printed-vector repair.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-package-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-package.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-package-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

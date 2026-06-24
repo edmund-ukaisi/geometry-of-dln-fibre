@@ -6897,6 +6897,24 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-source-data-eq5-terminal-order-bridge-a6.md`.
 
+Latest A4 Case 2 transition-generated Q/P package:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
+It combines three finite overlap facts for the same transition-generated
+target chart data: source/target chart-map equality, the existing supplied
+target-pivot source-selected `Q/P` identity, and the denominator-cleared
+target residual-subtype lower-right Schur formula.  The denominator is the
+normalized target coordinate `d`, so the target data are `targetU = u*d` and
+`targetResidual r = x_r/d`.  This is a useful A4 finite-atlas/`Q/P` handoff,
+not source production of successor residual or following factors and not
+analytic transition regularity, chart coverage, normal crossings, pole order,
+or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-package-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-package.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-package-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

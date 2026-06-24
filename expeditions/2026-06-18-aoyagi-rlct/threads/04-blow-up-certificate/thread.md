@@ -5872,3 +5872,33 @@ cocycle, not new analytic bedrock.  It proves no analytic transition
 regularity, chart coverage, open-neighbourhood gluing, source-displayed
 all-pivot atlas, successor/following-factor production, normal crossings, pole
 order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 transition-generated Q/P package
+
+Reproduction:
+`reproduction-case2-transition-generated-qp-package-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-generated-qp-package.md`.
+Review:
+`review-case2-transition-generated-qp-package-a4.md`.
+
+Lean now packages the finite selected-entry source-to-target transition data
+with the supplied target-pivot source-selected `Q/P` theorem and the
+target lower-right Schur overlap formula:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero
+```
+
+For source chart data `(u, residual)`, target chart `q`, and normalized target
+coordinate `d = x_q != 0`, the transition-generated target data are
+`targetU = u*d` and `targetResidual r = x_r/d`.  The theorem records, for
+that same target data, chart-map equality with the source chart point, the
+existing supplied target-pivot `Q/P` identity, and the
+denominator-cleared residual-subtype lower-right Schur formula.
+
+This is finite selected-entry and residual-block `Q/P` coordinate algebra
+only.  It does not prove analytic transition regularity, chart coverage,
+source-displayed all-pivot atlas, chart-produced recurrence or exponent
+post-data, successor residual/following-factor production, normal crossings,
+pole order, RLCT extraction, or repair of the printed Case 2 vector mismatch.

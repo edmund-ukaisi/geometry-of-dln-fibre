@@ -4272,3 +4272,22 @@ Statement card:
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-base-value-interval-membership.md`.
 Review:
 `threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
+
+Latest A4 Case 2 transition-generated Q/P package:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
+For a source-to-target finite selected-entry transition with normalized target
+coordinate `d != 0`, it uses the transition-generated target data
+`targetU = u*d` and `targetResidual r = x_r/d` to package three facts:
+chart-map equality with the source chart point, the existing supplied
+target-pivot source-selected `Q/P` identity, and the denominator-cleared
+target lower-right Schur formula.  This is finite selected-entry and
+residual-block coordinate algebra only: no analytic transition regularity,
+chart coverage, source-displayed all-pivot atlas, chart-produced post-data,
+successor/following-factor production, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-package-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-package.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-package-a4.md`.
