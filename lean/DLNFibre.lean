@@ -90,5 +90,6 @@ import DLNFibre.DLN.RLCT.Validate.RRR
 -- LayerSplit re-architecture: the layer-collapsing carrier + keystone `minAdmRec_eq_minAdm` (R1 carrier
 -- blocker resolved; not yet wired into routeStep — the controller-gated migration). Aggregator-gated.
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerValue
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
