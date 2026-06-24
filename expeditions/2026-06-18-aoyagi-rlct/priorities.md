@@ -49,6 +49,9 @@ Independent check passed.  The next Lean slice should be a minimal supplied
 `SelectedEntryAnalyticAtlasBoundary` whose fields feed the A0 chart-certificate
 final socket without being trivially inhabitable.  Do not add a constructor
 that fills these fields from the finite selected-entry certificate alone.
+This Lean slice has now landed in `SelectedEntryNormalCrossing.lean`; next
+work should be a consumer/projection into the A0/A6 chart-final socket or a
+genuine proof of one of the supplied fields.
 
 ## Current A0 checkpoint - 2026-06-23
 

@@ -4634,3 +4634,8 @@ The matching statement card is
 `threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.
+Lean now defines `SelectedEntryAnalyticAtlasBoundary` and
+`SelectedEntryAnalyticAtlasBoundary.exponentData` in
+`SelectedEntryNormalCrossing.lean`.  This is a supplied boundary only: no
+coverage, regularity, source production, termination, normal crossings, pole
+order, or RLCT theorem is proved.

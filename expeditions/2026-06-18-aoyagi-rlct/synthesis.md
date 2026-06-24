@@ -7289,6 +7289,15 @@ target is a `SelectedEntryAnalyticAtlasBoundary` whose fields cannot be filled
 by trivial chart-family boundaries or formula-level
 `SourceProductionObligation` constructors.
 
+Lean follow-through: `SelectedEntryNormalCrossing.lean` now defines
+`SelectedEntryAnalyticAtlasBoundary` as a supplied, data-bearing boundary over
+a carried `AoyagiNormalCrossingChartCertificate`, with separate predicates for
+coverage, chart regularity, transition regularity, unit regularity, analytic
+Jacobian compatibility, source production, and branch termination.  The only
+projection is `SelectedEntryAnalyticAtlasBoundary.exponentData`; no constructor
+from finite selected-entry certificates or formula-level source obligations is
+provided.  Focused build passed via `scripts/lb`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

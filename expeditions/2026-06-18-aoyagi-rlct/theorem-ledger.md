@@ -7017,6 +7017,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
 
+Latest A4 selected-entry analytic atlas boundary:
+`SelectedEntryNormalCrossing.lean` now defines
+`SelectedEntryAnalyticAtlasBoundary` and the projection
+`SelectedEntryAnalyticAtlasBoundary.exponentData`.  The structure carries a
+supplied `AoyagiNormalCrossingChartCertificate` and separate supplied fields
+for coverage, chart regularity, transition regularity, unit regularity,
+analytic Jacobian compatibility, source production, and branch termination.
+This is a boundary interface only; no constructor from finite selected-entry
+certificates, trivial chart-family boundaries, or `SourceProductionObligation`
+is provided, and no coverage, regularity, normal-crossing, termination, pole
+order, or RLCT theorem is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-boundary.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-boundary-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

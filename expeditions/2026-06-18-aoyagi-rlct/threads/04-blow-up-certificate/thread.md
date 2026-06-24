@@ -6442,3 +6442,13 @@ branch/termination coverage.  A future `SelectedEntryAnalyticAtlasBoundary`
 must contain fields of this kind; if it can be inhabited by the trivial chart-
 family boundaries or formula-level `SourceProductionObligation`, it is not the
 right interface.
+
+Lean now adds `SelectedEntryAnalyticAtlasBoundary` in
+`SelectedEntryNormalCrossing.lean`.  It carries a supplied
+`AoyagiNormalCrossingChartCertificate` together with proofs of coverage, chart
+regularity, transition regularity, unit regularity, analytic Jacobian
+compatibility, source production, and branch termination predicates.  It only
+projects to the carried finite exponent data; it does not provide a constructor
+from finite selected-entry certificates or from `SourceProductionObligation`.
+Focused build passed:
+`cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing`.

@@ -1,6 +1,6 @@
 # Statement card - A4 selected-entry analytic atlas boundary
 
-Status: proposed next Lean-facing boundary, not yet formalised.
+Status: Lean boundary structure landed.
 
 Reproduction:
 `reproduction-selected-entry-analytic-atlas-boundary-a4.md`.
@@ -11,7 +11,7 @@ reproduction before this statement card was written.
 
 ## Target
 
-Introduce a boundary structure, provisionally named
+Introduce a boundary structure named
 
 ```text
 SelectedEntryAnalyticAtlasBoundary
@@ -74,13 +74,44 @@ SourceProductionObligation.of_constructedWithOldTopFromCprime_terminalStack
 If the proposed Lean structure can be filled by one of these constructors plus
 `simpa`, the statement is an API wrapper and should be rejected.
 
-## First Lean Slice
+## Lean Slice
 
-The first Lean implementation should be a supplied boundary structure with
-clear fields and no constructor pretending to produce them.  A later theorem
-may project the supplied `AoyagiNormalCrossingChartCertificate` to the existing
-A0 final socket, but should not claim analytic extraction beyond the explicit
+Lean now adds `SelectedEntryAnalyticAtlasBoundary` in
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`.  It is a
+data-bearing supplied boundary with fields:
+
+```text
+chartCertificate
+coverage
+chart_regular
+transition_regular
+unit_regular
+analytic_jacobian_compatible
+source_production
+branch_termination
+```
+
+It also provides the projection
+
+```text
+SelectedEntryAnalyticAtlasBoundary.exponentData
+```
+
+to the carried chart certificate's finite exponent data.  No constructor is
+provided from the finite selected-entry certificate, the trivial chart-family
+boundaries, or `SourceProductionObligation`.
+
+A later theorem may project the supplied `chartCertificate` to the existing A0
+final socket, but should not claim analytic extraction beyond the explicit
 `ExtractionHypothesis` citation boundary.
+
+Focused verification:
+
+```text
+cd lean && scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryNormalCrossing
+```
+
+passed on 2026-06-24.
 
 ## Kill Conditions
 

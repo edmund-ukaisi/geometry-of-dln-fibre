@@ -18,6 +18,57 @@ namespace Aoyagi
 open scoped BigOperators
 open Case2DisplayedSuppliedChartFamilyBoundary
 
+universe uAtlas
+
+/-- Supplied analytic-atlas boundary for a selected-entry normal-crossing
+producer.
+
+The finite selected-entry certificates below can provide the chart-certificate
+algebra, but not analytic domains, coverage, transition regularity, analytic
+Jacobian/volume-form control, source-produced successor data, or termination.
+This boundary names those missing fields without constructing them.  In
+particular, this structure has no constructor from the finite selected-entry
+certificate alone and no constructor from `SourceProductionObligation`. -/
+structure SelectedEntryAnalyticAtlasBoundary
+    (Param R : Type*) [CommMonoid R]
+    (Coverage ChartRegular TransitionRegular UnitRegular
+      AnalyticJacobianCompatible SourceProduction BranchTermination :
+        AoyagiNormalCrossingChartCertificate.{uAtlas} Param R → Prop) where
+  chartCertificate : AoyagiNormalCrossingChartCertificate.{uAtlas} Param R
+  coverage : Coverage chartCertificate
+  chart_regular : ChartRegular chartCertificate
+  transition_regular : TransitionRegular chartCertificate
+  unit_regular : UnitRegular chartCertificate
+  analytic_jacobian_compatible :
+    AnalyticJacobianCompatible chartCertificate
+  source_production : SourceProduction chartCertificate
+  branch_termination : BranchTermination chartCertificate
+
+namespace SelectedEntryAnalyticAtlasBoundary
+
+variable {Param R : Type*} [CommMonoid R]
+variable {Coverage ChartRegular TransitionRegular UnitRegular
+  AnalyticJacobianCompatible SourceProduction BranchTermination :
+    AoyagiNormalCrossingChartCertificate.{uAtlas} Param R → Prop}
+
+/-- The finite exponent data carried by a supplied selected-entry analytic
+atlas boundary. -/
+def exponentData
+    (B : SelectedEntryAnalyticAtlasBoundary Param R Coverage ChartRegular
+      TransitionRegular UnitRegular AnalyticJacobianCompatible
+      SourceProduction BranchTermination) :
+    AoyagiNormalCrossingExponentData :=
+  B.chartCertificate.exponentData
+
+@[simp] theorem exponentData_eq
+    (B : SelectedEntryAnalyticAtlasBoundary Param R Coverage ChartRegular
+      TransitionRegular UnitRegular AnalyticJacobianCompatible
+      SourceProduction BranchTermination) :
+    B.exponentData = B.chartCertificate.exponentData :=
+  rfl
+
+end SelectedEntryAnalyticAtlasBoundary
+
 /-- Extend the non-pivot residual coordinates of a finite selected-entry chart
 to an ambient function so the existing selected-entry square-sum lemma can be
 reused.  Values outside the erased center are irrelevant to the certificate. -/
