@@ -140,3 +140,46 @@ not assumed — `height J = C` is the discharge).
 
 **Note for the operator:** two tracked scratch files `Core/{FlatTrivialProductProbe,ChartFlatnessProbe}.lean`
 exist (NOT thread 12's — likely a G2-3 flatness probe); worth pruning if abandoned.
+
+---
+
+## UPDATE (thread 12 finisher pass, 2026-06-24) — MORE landed; refined residual
+
+Pushed further toward the equiv. NOW LANDED (HEAD `1bb0fdf5`, all sorry-free/axiom-clean):
+- The FOUR `blockAlgEquiv_X_{b22,pivot,b12,b21}` entry-image lemmas: under `blockAlgEquiv`, a B22
+  coord ↦ outer `X (a,b)`; Δ/B12/B21 coords ↦ inner `C (X …)`. (Via `repCoordReindex_*` +
+  `sumToIter_Xl`/`sumToIter_Xr`.) These ARE the `(*)` entry-images.
+
+### Refined residual for `(*)` (the bordered-minor identity) — pieces 1+2 validated, piece 3 is the wall
+State `(*)` with the bordered minor as an explicit `Matrix.fromBlocks` det (NOT `submatrix`), so
+`det_fromBlocks_scalar_eq` applies in `A_eng` directly:
+`blockAlgEquiv (det (fromBlocks Δ u v d)) = C detSchurS · X (a,b) − C (forcedNum a b)` where
+Δ = pivot submatrix of `multPoly` (`= detPivotPoly`'s matrix, `rfl`), d = the (natAdd a, natAdd b)
+B22 entry, u = the B12 border col, v = the B21 border row. Proof: `rw [det_fromBlocks_scalar_eq,
+map_sub, map_mul]` then:
+- **Piece 1 (VALIDATED):** `blockAlgEquiv (d () ()) = X (a,b)` via `Matrix.of_apply` +
+  `multPoly_stratum_apply` + `blockAlgEquiv_X_b22` (use `exact blockAlgEquiv_X_b22 …`, not `rw` — the
+  `Fin.cast` elaborated-proof args don't match a `rw` pattern but `exact` unifies).
+- **Piece 2 (VALIDATED):** `blockAlgEquiv (Δ.det) = C detSchurS` via `show Δ.det = detPivotPoly … from
+  rfl` + `blockAlgEquiv_detPivot`.
+- **Piece 3 (THE WALL — the matrix-hom push):** `blockAlgEquiv ((v · adjΔ · u) () ()) = C (forcedNum
+  a b)`. Push `blockAlgEquiv` through the scalar entry: `blockAlgEquiv (M () ()) =
+  (blockAlgEquiv.toRingHom.mapMatrix M) () ()` (`rfl`), then `RingHom.mapMatrix_apply`, `Matrix.map_mul`
+  (×2), `← RingHom.map_adjugate`; the mapped entries are `C (B21S)`, `C (adjΔS) = adjugate (C-mapped
+  ΔS)`, `C (B12S)`, and the product `() ()` = `C ((B21S · adjΔS · B12S) a b) = C (forcedNum a b)` (C
+  is a ring hom commuting with `*`/`adjugate`/entry). **Watch the parenthesization** of
+  `blockAlgEquiv ((M) () ())` — `(M () ())` must bind as the scalar BEFORE `blockAlgEquiv` (parse trap
+  hit twice). Likely cleanest: a helper `(M.map f) () () = f (M () ())` lemma stated cleanly, or
+  `Matrix.map_apply` + the entrywise `forcedNum` expansion. ~15-25 LoC; the one genuinely-fiddly bit.
+
+### `Ψ` (localized AlgEquiv) — instance note
+`Ψ : Localization.Away detΔ ≃ₐ[k] MvPolynomial B22block Sd` (Sd = `Localization.Away detSchurS`, the
+CONCRETE Localization — abstract `Sd` breaks the auto instances) via
+`IsLocalization.algEquivOfAlgEquiv _ _ (blockAlgEquiv …) hmap`, `hmap` = `Submonoid.map_powers` +
+`blockAlgEquiv_detPivot`. The `IsLocalization (powers (C detSchurS)) (MvPolynomial B22block Sd)`
+instance: `simpa [Submonoid.map_powers] using MvPolynomial.isLocalization (σ := B22block) (M :=
+powers detSchurS) (S := Sd)`. The REMAINING instance gap: `algEquivOfAlgEquiv` (as a `k`-AlgEquiv)
+needs `IsScalarTower k (MvPolynomial B22block (MvPolynomial SchurVar k)) (MvPolynomial B22block Sd)`
+— NOT automatic (the polynomial-ring-over-the-tower); construct it (or do the height/ideal work with
+the underlying `RingEquiv` via `RingEquiv.height_map`, deferring the k-AlgEquiv to the final
+`A_loc/Iad ≅ Sd`). g2-2c's `blockAlgEquivLoc` reportedly wired this — reuse if available.
