@@ -42,3 +42,43 @@
   worktree** — two `lb` in the *same* worktree could race the `rm -rf`/`ln -s`. Benign in intended use
   (one build per worktree at a time; distinct worktrees have distinct `.lake`). Fix on the box: wrap the
   self-heal in a per-worktree `flock` (separate fd from the global build pool).
+
+## Multi-tide coordination — the G2-2 collisions, and protocol-level fixes (2026-06-24)
+
+**Failure mode.** G2-2's elimination half saw THREE collisions: two formaliser tides grinding the SAME
+residual in the SAME shared worktree. Zero damage (committed-seam discipline + the tides halting on
+collision saved it), but heavy wasted effort + controller overhead.
+
+**Root causes (mechanism, not carelessness):**
+1. **Shared worktree.** All tides ran in the controller's one worktree ⟹ `.lake/build` races, git-index
+   races, and an untracked in-flight `.lean` pollutes the whole-package build (duplicate decls) for the
+   other tide. (`scripts/lb` builds every `.lean` in the package, tracked or not.)
+2. **No reliable hard-stop.** `TaskStop` did not reach the `Agent`-spawned background tides (by name or
+   `name@session`); only a `shutdown_request` worked — and a busy tide doesn't process it promptly.
+3. **Message latency vs fast tides.** "stop / go / actually finish" messages crossed the tides'
+   continued commits. The controller's model of "tide X is at state S" was always stale on arrival;
+   tides commit + idle on their own cadence, not on a mid-burst message.
+
+**Higher-level fixes (adopt as protocol):**
+- **(A) One write-baton per branch.** Exactly one tide holds the write-baton for a module/branch.
+  Issued on spawn; returned ONLY by *confirmed termination* (shutdown-approved / process-gone), never by
+  a "standing down" message. Successor spawned only after the baton is returned. ⟹ terminate-then-spawn,
+  never overlap.
+- **(B) Hand-offs are terminate-then-spawn.** A tide that safety-valves commits a clean partial, is shut
+  down (controller waits for the shutdown-approved event), THEN the successor reads the committed state +
+  handoff doc. No "fresh tide for the residual" while the original is alive.
+- **(C) Strictly serial formaliser tides in a shared worktree.** Until per-teammate worktree isolation
+  exists, ONE write-tide at a time, full stop. (Scouts/reviewers that don't WRITE Lean may overlap —
+  they don't touch `.lake/build` or commit source.)
+- **(D) Act on committed state, not messages.** Source of truth = `git log` / the branch, not in-flight
+  tide messages (stale by arrival). Redirect only at a tide's self-reported committed checkpoint.
+- **(E) Never leave an untracked `.lean` in the package; commit partials frequently.** A hand-off is
+  always from a clean committed state; an untracked in-flight module breaks the other tide's build.
+- **(F) Don't re-scope a tide mid-flight via crossing messages.** If scope changes, wait for the tide's
+  next checkpoint and re-spec then.
+
+**For the operator at expedition end (harness asks):** (i) per-teammate worktree isolation for a
+*worktree-based* controller — the real fix to (C), = ROADMAP Uplift B (currently teammate `isolation:
+worktree` collapses onto the controller's worktree); (ii) a reliable controller hard-stop for background
+tides (`TaskStop` didn't reach `Agent`-spawned ones). With (A)–(F) the collisions are structurally
+impossible (never two write-tides on one branch), but (i)+(ii) would make it cheap rather than disciplined.
