@@ -2849,3 +2849,13 @@ terminal-order wrapper by passing `Ssrc.lastPoint_le`.  The generic Eq5 APIs
 still keep `hlast` explicit.  This proves no selected-cutpoint existence,
 Definition 3 source-data existence, Eq5 construction, Lemma 5 exactness, chart
 production, normal crossings, pole order, or RLCT.
+
+A6 Definition 3 arbitrary source-data obstruction has now landed:
+`threads/06-dln-translation/reproduction-definition3-source-data-obstruction-a6.md`.
+Lean proves `AoyagiDefinition3SourceData.not_exists_widths_one_two_hundred`,
+showing that the printed Definition 3 inequalities do not yield source data for
+the fixed profile `H(1),H(2),H(3)=1,2,100` with `L=2` and `r=0`.  This closes
+the tempting arbitrary selected-cutpoint/source-data existence route under the
+printed inequalities.  Continue treating `AoyagiDefinition3SourceData` as
+supplied unless its hypotheses are proved in a specific context; do not patch
+the printed inequality by fiat.

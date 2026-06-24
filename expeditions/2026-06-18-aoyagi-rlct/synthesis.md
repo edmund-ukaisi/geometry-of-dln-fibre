@@ -7399,6 +7399,21 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-eq5-hlast-bridge-a6.md`.
 
+A6 Definition 3 arbitrary source-data obstruction:
+`Definition3Bridge.lean` now contains
+`AoyagiDefinition3SourceData.not_exists_widths_one_two_hundred`.  It proves
+that the printed Definition 3 inequalities cannot supply source data for the
+fixed reduced-width profile `1,2,100` with `L=2` and `r=0`.  The theorem is a
+guardrail against arbitrary selected-cutpoint/source-data existence: strict
+cutpoints force `ell=1` or `ell=2`; the `ell=1` cases contradict the printed
+nonselected inequality because `ell-1=0`, and the `ell=2` case contradicts
+`2*100 < 103`.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-source-data-obstruction-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-source-data-obstruction.md`.
+Review:
+`threads/06-dln-translation/review-definition3-source-data-obstruction-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

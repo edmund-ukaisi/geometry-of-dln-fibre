@@ -409,6 +409,153 @@ theorem of_selectedStrict_nonselectedLe_rankWidth
         (hnonselected_le s hs1 hsL hnot)
   nonselected_le := hnonselected_le
 
+/-- Diagnostic obstruction: the printed Definition 3 inequalities do not
+produce source data for the reduced-width profile `1,2,100`.
+
+This is a guardrail against proving arbitrary selected-cutpoint/source-data
+existence from the printed inequalities.  It is not a statement about all
+width profiles, and it does not affect the supplied-source-data API. -/
+theorem not_exists_widths_one_two_hundred :
+    let H : ℕ → ℕ :=
+      fun s ↦
+        if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 100 else 0
+    ¬ ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+      AoyagiDefinition3SourceData 2 ell H 0 C := by
+  let H : ℕ → ℕ :=
+    fun s ↦
+      if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 100 else 0
+  change ¬ ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+    AoyagiDefinition3SourceData 2 ell H 0 C
+  rintro ⟨ell, C, S⟩
+  have hell_le : ell ≤ 2 := by
+    by_contra hnot
+    have hell3 : 3 ≤ ell := by omega
+    have h0pos : 1 ≤ C.cut (⟨0, by omega⟩ : Fin (ell + 1)) :=
+      C.pos _
+    have h01 :
+        C.cut (⟨0, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨1, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (0 : ℕ) < 1
+        norm_num)
+    have h12 :
+        C.cut (⟨1, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨2, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (1 : ℕ) < 2
+        norm_num)
+    have h23 :
+        C.cut (⟨2, by omega⟩ : Fin (ell + 1)) <
+          C.cut (⟨3, by omega⟩ : Fin (ell + 1)) :=
+      C.cut_strictMono (by
+        change (2 : ℕ) < 3
+        norm_num)
+    have h3le : C.cut (⟨3, by omega⟩ : Fin (ell + 1)) ≤ 3 := by
+      simpa using S.cut_le (⟨3, by omega⟩ : Fin (ell + 1))
+    omega
+  have hell_pos : 0 < ell := S.ell_pos
+  interval_cases ell
+  · have h0pos : 1 ≤ C.cut (0 : Fin 2) := C.pos _
+    have h0le : C.cut (0 : Fin 2) ≤ 3 := by
+      simpa using S.cut_le (0 : Fin 2)
+    have h1pos : 1 ≤ C.cut (1 : Fin 2) := C.pos _
+    have h1le : C.cut (1 : Fin 2) ≤ 3 := by
+      simpa using S.cut_le (1 : Fin 2)
+    have h01 : C.cut (0 : Fin 2) < C.cut (1 : Fin 2) :=
+      C.cut_strictMono (by
+        change (0 : ℕ) < 1
+        norm_num)
+    have h0_cases :
+        C.cut (0 : Fin 2) = 1 ∨ C.cut (0 : Fin 2) = 2 ∨
+          C.cut (0 : Fin 2) = 3 := by
+      omega
+    have h1_cases :
+        C.cut (1 : Fin 2) = 1 ∨ C.cut (1 : Fin 2) = 2 ∨
+          C.cut (1 : Fin 2) = 3 := by
+      omega
+    rcases h0_cases with h0 | h0 | h0
+    · rcases h1_cases with h1 | h1 | h1
+      · omega
+      · have hnot :
+            aoyagiReducedWidthInt H 0 3 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H 0 (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j <;> norm_num [aoyagiReducedWidthInt, H, h0, h1] at hj
+        have hle := S.nonselected_le 3 (by norm_num) (by norm_num) hnot
+        have hsum :
+            (∑ x : Fin (1 + 1), aoyagiReducedWidthInt H 0 (C.cut x)) = 3 := by
+          rw [Fin.sum_univ_two]
+          norm_num [aoyagiReducedWidthInt, H, h0, h1]
+        rw [hsum] at hle
+        norm_num [aoyagiReducedWidthInt, H] at hle
+      · have hnot :
+            aoyagiReducedWidthInt H 0 2 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H 0 (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j <;> norm_num [aoyagiReducedWidthInt, H, h0, h1] at hj
+        have hle := S.nonselected_le 2 (by norm_num) (by norm_num) hnot
+        have hsum :
+            (∑ x : Fin (1 + 1), aoyagiReducedWidthInt H 0 (C.cut x)) = 101 := by
+          rw [Fin.sum_univ_two]
+          norm_num [aoyagiReducedWidthInt, H, h0, h1]
+        rw [hsum] at hle
+        norm_num [aoyagiReducedWidthInt, H] at hle
+    · rcases h1_cases with h1 | h1 | h1
+      · omega
+      · omega
+      · have hnot :
+            aoyagiReducedWidthInt H 0 1 ∉
+              Finset.univ.image
+                (fun j : Fin (1 + 1) ↦
+                  aoyagiReducedWidthInt H 0 (C.cut j)) := by
+          intro hm
+          rw [Finset.mem_image] at hm
+          rcases hm with ⟨j, -, hj⟩
+          fin_cases j <;> norm_num [aoyagiReducedWidthInt, H, h0, h1] at hj
+        have hle := S.nonselected_le 1 (by norm_num) (by norm_num) hnot
+        have hsum :
+            (∑ x : Fin (1 + 1), aoyagiReducedWidthInt H 0 (C.cut x)) = 102 := by
+          rw [Fin.sum_univ_two]
+          norm_num [aoyagiReducedWidthInt, H, h0, h1]
+        rw [hsum] at hle
+        norm_num [aoyagiReducedWidthInt, H] at hle
+    · rcases h1_cases with h1 | h1 | h1 <;> omega
+  · have h0pos : 1 ≤ C.cut (0 : Fin 3) := C.pos _
+    have h0le : C.cut (0 : Fin 3) ≤ 3 := by
+      simpa using S.cut_le (0 : Fin 3)
+    have h1pos : 1 ≤ C.cut (1 : Fin 3) := C.pos _
+    have h1le : C.cut (1 : Fin 3) ≤ 3 := by
+      simpa using S.cut_le (1 : Fin 3)
+    have h2pos : 1 ≤ C.cut (2 : Fin 3) := C.pos _
+    have h2le : C.cut (2 : Fin 3) ≤ 3 := by
+      simpa using S.cut_le (2 : Fin 3)
+    have h01 : C.cut (0 : Fin 3) < C.cut (1 : Fin 3) :=
+      C.cut_strictMono (by
+        change (0 : ℕ) < 1
+        norm_num)
+    have h12 : C.cut (1 : Fin 3) < C.cut (2 : Fin 3) :=
+      C.cut_strictMono (by
+        change (1 : ℕ) < 2
+        norm_num)
+    have h0 : C.cut (0 : Fin 3) = 1 := by omega
+    have h1 : C.cut (1 : Fin 3) = 2 := by omega
+    have h2 : C.cut (2 : Fin 3) = 3 := by omega
+    have hstrict := S.selected_strict (2 : Fin 3)
+    have hsum :
+        (∑ x : Fin (2 + 1), aoyagiReducedWidthInt H 0 (C.cut x)) = 103 := by
+      rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+      norm_num [aoyagiReducedWidthInt, H, h0, h1, h2]
+    rw [hsum] at hstrict
+    norm_num [aoyagiReducedWidthInt, H, h2] at hstrict
+
 /-- The strict selected-width inequality from Definition 3, rewritten for the
 selected reduced-width family used by the final formula layer. -/
 theorem selected_strict_selectedReducedWidths
