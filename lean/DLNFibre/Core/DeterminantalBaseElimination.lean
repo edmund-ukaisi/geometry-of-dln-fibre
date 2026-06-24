@@ -69,19 +69,40 @@ def blockRearrange (q p r : ℕ) :
   left_inv := by rintro (⟨d|b12⟩|⟨b21|b22⟩) <;> rfl
   right_inv := by rintro (b22|⟨d|⟨b12|b21⟩⟩) <;> rfl
 
+/-- The pivot split `Fin n ≃ Fin r ⊕ Fin (n−r)` (first `r` ↦ left). -/
+def finSplit {n r : ℕ} (h : r ≤ n) : Fin n ≃ Fin r ⊕ Fin (n - r) :=
+  (finCongr (show n = r + (n - r) by omega)).trans finSumFinEquiv.symm
+
+/-- `finSplit` sends a pivot index `castLE i` (`i < r`) to `Sum.inl i`. -/
+@[simp] theorem finSplit_castLE {n r : ℕ} (h : r ≤ n) (i : Fin r) :
+    finSplit h (Fin.castLE h i) = Sum.inl i := by
+  rw [finSplit, Equiv.trans_apply,
+    show (finCongr (show n = r + (n - r) by omega)) (Fin.castLE h i) = Fin.castAdd (n - r) i from by
+      apply Fin.ext; simp [finCongr, Fin.castLE, Fin.castAdd],
+    finSumFinEquiv_symm_apply_castAdd]
+
 /-- The full block reindex `RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar`. Drops the `Σ _ : Fin 1`
-(`Equiv.uniqueSigma`), splits `Fin p ≃ Fin r ⊕ Fin (p−r)` and `Fin q ≃ Fin r ⊕ Fin (q−r)`,
-distributes the product, then rearranges (`blockRearrange`). -/
+(`Equiv.uniqueSigma`), splits `Fin p ≃ Fin r ⊕ Fin (p−r)` and `Fin q ≃ Fin r ⊕ Fin (q−r)`
+(`finSplit`), distributes the product, then rearranges (`blockRearrange`). -/
 def repCoordReindex (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
     RepCoord (dStratum q p) ≃ B22block q p r ⊕ SchurVar q p r :=
-  let ep : Fin p ≃ Fin r ⊕ Fin (p - r) :=
-    (finCongr (by omega : p = r + (p - r))).trans finSumFinEquiv.symm
-  let eq : Fin q ≃ Fin r ⊕ Fin (q - r) :=
-    (finCongr (by omega : q = r + (q - r))).trans finSumFinEquiv.symm
   (Equiv.uniqueSigma _).trans <|
-    (Equiv.prodCongr ep eq).trans <|
+    (Equiv.prodCongr (finSplit hp) (finSplit hq)).trans <|
       (Equiv.sumProdDistrib _ _ _).trans <|
         (Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
           (blockRearrange q p r)
+
+/-- A pivot coordinate `⟨0, (castLE i, castLE j)⟩` (pivot row `i`, pivot column `j`, both `< r`)
+maps under the reindex into the `Δ`-block of `SchurVar`: `Sum.inr (Sum.inl (i, j))`. So the pivot
+minor `detΔ` is a polynomial in the `SchurVar` coordinates only. -/
+theorem repCoordReindex_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j : Fin r) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.castLE hp i, Fin.castLE hq j)⟩
+      = Sum.inr (Sum.inl (i, j)) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.castLE hp i), finSplit hq (Fin.castLE hq j)))) = _
+  rw [finSplit_castLE, finSplit_castLE]
+  rfl
 
 end DLNFibre.Core
