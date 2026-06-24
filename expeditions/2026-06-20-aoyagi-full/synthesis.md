@@ -364,6 +364,27 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
   a=0 / pivot-vanishing crux)? If so, one hard construction (not two) — the key R1 scope question; its magnitude
   verdict now addresses the unified hdiv+hfin resolution. R1 is harder than the (3,3,4) "milestone" suggested.
 
+**★ UPDATE-12 (2026-06-24) — hfin MAGNITUDE VERDICT: BOUNDED-and-formalizable (NOT a multi-month AG mountain). R1 is REACHABLE.**
+`r1-hfin-designer` + decorrelated Codex (independent same decomposition/crux/magnitude): hfin (the dominant residual)
+is **person-weeks of toric/monomial-principalization combinatorics**, NOT general determinantal resolution of
+singularities. Cert: `threads/24-r1-hfin-design/hfin-design-certificate.md`. Decomposition:
+- **COMPLETENESS — BANKED** (argmaxCellOn_cover + coordZero_null + recStep, sorry-free network-free): recStep is an
+  EQUALITY ⟹ completeness step-by-step, NO monolithic surjectivity (the half a naive read fears doesn't bind).
+- **TERMINATION** — lexicographic μ=(μ_mat,μ_vec,μ_mon), coupled-block area drops a+b−1 per Schur step; branch tree
+  bounded by Adm(M) (DLN product structure, NOT Hironaka). (2,2,2) is fixed-depth; general-M needs the (L,M) induction.
+- **PER-LEAF THRESHOLD (the CRUX)** — the monomial-sum refinement: a disjoint sum's additive rlct (2+2=4) vs a single
+  chart's naive min{2,2}=2 UNDERSHOOT; fix = blow up the corank plane once more → single dominant monomial (h+1=8=Mval,
+  threshold 4). This IS the corank-≥2 diag(b) content. Newton-LP + Codex exact. Soundness: every leaf = Mval/2 ≥ ½·minAdm
+  (Mval ≥ minAdm definitional); S2 at the leaf only, no rlct≥½·codim smuggled.
+- **UNIFICATION CONFIRMED:** the (3,3,4) chart redesign (task #44) IS the reusable per-node c-o-v atom hfin iterates.
+  So the dominant cost is the per-node measure-c-o-v, front-loaded on that one chart.
+- **Cleanest path:** (1) the genuine-diffeo (3,3,4) chart [the per-node atom — `r1-hfin-designer` now spec'ing it
+  precisely, validate-det≠0-on-paper, then a build tide], (2) the monomial-sum-refinement lemma (standalone toric),
+  (3) termination + chart-tree assembly induction. (4) completeness banked.
+- **SCOPE (operator, discuss-at-close Item 6/8):** general-L hfin is REACHABLE + bounded (person-weeks); OR bank the
+  L=2/RRR milestone (clean, sound, S2-only, sidesteps the recursion — at L=2 the single Schur+blow-up node IS the leaf,
+  no monomial-sum refinement / termination induction needed). My default: pursue the full resolution, milestone as floor.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

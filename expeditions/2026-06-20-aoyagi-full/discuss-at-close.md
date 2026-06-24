@@ -131,3 +131,19 @@ to `r1-hfin-designer`): does ONE coupled resolution serve BOTH bounds?** If yes,
 — this is the central input to the **operator R1 scope decision** (Item 6: pursue the full general-L resolution
 vs bank the L=2/RRR milestone). Process note: this surfaced because I over-claimed a milestone on a
 factorization-only review; corrected promptly (the soundness vigilance held — the next tide + Codex caught it).
+
+## 9. hfin MAGNITUDE VERDICT (2026-06-24): BOUNDED — the full general-L R1 is REACHABLE (decision refined).
+`r1-hfin-designer` + decorrelated Codex (independent agreement): the unified hdiv+hfin resolution is
+**BOUNDED-and-formalizable — person-weeks of toric/monomial-principalization combinatorics, NOT a multi-month
+AG resolution-of-singularities**. Completeness is BANKED (the recStep equality, step-by-step); termination is a
+lexicographic measure bounded by Adm(M); the one crux is the monomial-sum refinement (toric, exact). The
+dominant cost is the per-node measure-change-of-variables, front-loaded on the (3,3,4) genuine-diffeo chart
+(task #44, being spec'd). **So the R1 scope decision is now better-informed:**
+- **Option (i) — full general-L (my default):** REACHABLE + bounded (person-weeks / several focused threads),
+  S2-only, from scratch. Risk is formalisation surface, not conceptual.
+- **Option (ii) — bank the L=2/RRR milestone:** clean, sound, S2-only; sidesteps the entire hfin recursion (at
+  L=2 the single Schur+blow-up node IS the leaf — no monomial-sum refinement, no termination induction). The
+  guaranteed floor.
+Both are honest + citation-clean. **Operator: pick (i) drive the full resolution, or (ii) bank the milestone +
+defer general-L.** Default until you say otherwise: pursue (i), with (ii) as the banked floor. The earlier
+"hfin = the dominant difficulty, possibly multi-month" fear is RETIRED — it's bounded.
