@@ -117,3 +117,17 @@ Per discipline (don't silently accept unauthorized edits to role/config files of
 REVERTED it to the committed version. The content is benign + aligned with the disposition. **Operator: if
 this edit was yours (or you want it), re-apply it deliberately — I preserved the text here.** Related: the
 in-main wedge tide also left transient `lean/.codex-consult/` scratch (untracked, not committed) — harmless.
+
+## 8. R1 re-assessment (2026-06-24): the (3,3,4) hdiv "milestone" had a DEGENERATE chart; BOTH R1 legs need the resolution.
+**Correcting Item 6's "hdiv build-ready at L=2".** The (3,3,4) hdiv wedge I integrated as a reviewed milestone
+(@c1bf8ba4) had a DEGENERATE chart: `phi334` dropped 2 coords ⟹ Jacobian `det ≡ 0`, null image ⟹ the c-o-v
+field asserted `0 = ⊤` (FALSE). The factorization + assembly are sound + reusable; the box-divergence STATEMENT
+is plausibly true; only the chart's measure-change-of-variables is broken. The honest fix (b free + Schur shear
+back to flat) hits the **a=0 obstruction** — the achiever curve passes through the blow-up center where the
+shear is singular — which is **genuine resolution geometry**. So `hdiv` is NOT a "light wedge": **both R1 legs
+(hdiv chart + hfin cover) need the coupled-`diag(b)` resolution.** Net: R1 is harder than the milestone
+suggested; the dominant difficulty is the resolution geometry, shared by both bounds. **Key open question (fed
+to `r1-hfin-designer`): does ONE coupled resolution serve BOTH bounds?** If yes, one hard construction (not two)
+— this is the central input to the **operator R1 scope decision** (Item 6: pursue the full general-L resolution
+vs bank the L=2/RRR milestone). Process note: this surfaced because I over-claimed a milestone on a
+factorization-only review; corrected promptly (the soundness vigilance held — the next tide + Codex caught it).

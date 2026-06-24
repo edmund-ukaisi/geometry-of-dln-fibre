@@ -344,6 +344,26 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
   atlas + the completeness proof structure + an honest MAGNITUDE assessment (bounded-formalizable vs deep-AG-mountain)
   to inform the operator's R1 scope decision (discuss-at-close Item 6: full resolution vs L=2/RRR milestone).
 
+**★ UPDATE-11 (2026-06-24) — SOUNDNESS CORRECTION: the (3,3,4) hdiv chart is DEGENERATE; both R1 legs need the resolution.**
+- **CORRECTING UPDATE-10's "(3,3,4) anchor REVIEWED, soundness-critical sorry-free" — OVERSTATED.** r1-334-residuals
+  + Codex xhigh found `achieverChart334.cov` is FALSE-as-stated: `chartParams334` pins A(0,1)=A(0,2)=0 + never reads
+  u2,u3 ⟹ phi334:ℝ²¹→ℝ²¹ has Jacobian det≡0 (rank 19) + Lebesgue-null image ⟹ cov asserts 0=⊤. So
+  routeM334_box_diverges has NO honest proof via this chart. The factorization (routeMCore_phi334) + assembly are
+  sorry-free + sound; only the CHART is broken. The STATEMENT is plausibly true; the PROOF route is broken. Honest
+  correction committed @d7bcf936 (file documents det≡0 / null image / 0=⊤ + the fix sketch). cov is now a documented
+  WRONG-STATEMENT sorry.
+- **The prior sub-reviewer MISSED it** (verified the algebraic factorization F∘φ=u₀²·U but NOT the chart's
+  non-degeneracy / the c-o-v Jacobian ≠ 0); I integrated @c1bf8ba4 on that review. Lesson banked (a factorization-only
+  review ≠ soundness; verify the measure-c-o-v / chart is a genuine diffeo).
+- **R1 RE-ASSESSMENT (corrects the wedge designer's "hdiv = light wedge, corank-immune"):** right about the VALUE
+  (achiever is the min) but UNDERESTIMATED the chart's measure-change-of-variables. The honest hdiv chart fix
+  (b free + Schur shear back to flat) hits the a=0 obstruction (achiever through the blow-up center, shear singular)
+  — genuine resolution geometry. So **BOTH R1 legs (hdiv chart + hfin cover) need the resolution**; the hdiv/hfin
+  asymmetry (one wedge vs full cover) was WRONG.
+- **UNIFICATION question fed to r1-hfin-designer:** does ONE coupled-diag(b) resolution serve BOTH bounds (shared
+  a=0 / pivot-vanishing crux)? If so, one hard construction (not two) — the key R1 scope question; its magnitude
+  verdict now addresses the unified hdiv+hfin resolution. R1 is harder than the (3,3,4) "milestone" suggested.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

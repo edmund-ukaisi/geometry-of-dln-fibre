@@ -921,3 +921,17 @@ target files did not exist (while a sibling tide `a11ac` spawned in the same mes
 (now in tide briefs): STEP 0 — verify `ls` the target file exists; if not, `git merge origin/expedition/aoyagi-full`
 (union the DLNFibre.lean imports) before proceeding.** When integrating such a tide, copy ONLY the target
 files it edited — NOT its merge-union `DLNFibre.lean` (the controller is single-writer of the aggregator).
+
+LESSON (2026-06-24, SOUNDNESS — a factorization-only review MISSES a degenerate chart). The (3,3,4) hdiv
+wedge (`RouteMLayerCoverGEL2`) was integrated @c1bf8ba4 as "REVIEWED, soundness-critical sorry-free" — its
+building tide's sub-reviewer verified the EXACT algebraic factorization `F∘φ = u₀²·U` (sympy) but did NOT
+verify the chart `phi334` is a GENUINE DIFFEO. `phi334` dropped 2 input coords ⟹ Jacobian `det ≡ 0`, null
+image ⟹ the change-of-variables field `cov` asserted `0 = ⊤` (a FALSE statement masquerading as a "geometric
+residual"). Caught only by the NEXT tide (r1-334-residuals + Codex xhigh). **LESSON: for any integral
+change-of-variables / chart-based claim (a `*_box_diverges` / `cov` lemma), confirming the integrand
+factorization is NECESSARY but NOT SUFFICIENT — the review (and the controller's integration check) MUST also
+verify the chart's Jacobian det is not `≡ 0` (genuine local diffeo / measurable embedding), the image is not
+null, and `InjOn` where Mathlib's c-o-v needs it.** A false `cov` sorry still shows `sorryAx` — the axiom
+footprint looked NORMAL, so footprint-checking did not flag it. "Green + factorization-reviewed" ≠ "sound" for
+a measure-c-o-v. Pairs with "name results for what they are" / "green ≠ right": I over-claimed the milestone on
+a partial review; correct such claims promptly when the gap surfaces.
