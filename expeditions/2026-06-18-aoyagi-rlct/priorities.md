@@ -2664,6 +2664,18 @@ does not construct the obligation, source-produce `Csucc`, produce suffixes,
 construct successor charts, prove transition regularity, chart coverage,
 normal crossings, pole order, or RLCT.
 
+The source-current stack substitution-block consumer has now landed in
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-substitution-block-a4.md`.
+Lean proves
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc_of_substitutionBlock_eq`,
+which restates the continuing source-current stack with a supplied lower-left
+block `B` after the explicit equality
+`case2DisplayedSourceSubstitutionBlock ... = B` is supplied.  This is only a
+finite congruence wrapper around the existing supplied-`Csucc` stack theorem:
+it constructs neither the obligation nor `Csucc`, and it does not produce
+suffixes, successor charts, transition regularity, chart coverage, normal
+crossings, pole order, or RLCT.
+
 The displayed transition microcertificate contribution package has now landed
 in
 `threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.

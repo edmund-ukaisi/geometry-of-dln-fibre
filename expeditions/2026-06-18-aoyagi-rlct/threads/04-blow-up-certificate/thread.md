@@ -6134,3 +6134,31 @@ This is only a finite transition-plus-consumer adapter.  It does not construct
 the obligation, construct or source-produce `Csucc`, produce suffixes or
 successor charts, prove transition regularity, chart coverage, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-24 Lean Case 2 source-current stack substitution block
+
+Reproduction:
+`reproduction-case2-source-current-stack-substitution-block-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-current-stack-substitution-block.md`.
+Review:
+`review-case2-source-current-stack-substitution-block-a4.md`.
+
+Lean now proves the continuing source-current stack consumer with a supplied
+lower-left substitution block:
+
+```text
+Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc_of_substitutionBlock_eq
+```
+
+It consumes the existing `SourceProductionObligation`, the continuing guard,
+and an explicit equality
+`case2DisplayedSourceSubstitutionBlock ... = B`, then restates the
+source-current stack with `B` in the lower-left block and supplied `Csucc` on
+the right.  The proof reuses the same row-operation witness and all corrected
+post-data from `continuing_sourceCurrentStack_suppliedCsucc`.
+
+This is only finite congruence inside the stack identity.  It does not
+construct the obligation, construct/source-produce `Csucc`, produce suffixes
+or successor charts, prove transition regularity, chart coverage, normal
+crossings, pole order, or RLCT.

@@ -7070,6 +7070,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 source-current stack substitution block:
+`BlowupArithmetic.lean` now adds
+`Case2DisplayedSuppliedChartFamilyBoundary.SourceProductionObligation.continuing_sourceCurrentStack_suppliedCsucc_of_substitutionBlock_eq`.
+It consumes the existing `SourceProductionObligation`, the continuing guard,
+and an explicit equality from the displayed source substitution block to a
+supplied matrix `B`, then restates the source-current stack with `B` in the
+lower-left block and the same supplied `Csucc` on the right.  This is finite
+congruence only: it does not construct the obligation, construct or
+source-produce `Csucc`, produce suffixes or successor charts, prove transition
+regularity, chart coverage, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-current-stack-substitution-block-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-current-stack-substitution-block.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-current-stack-substitution-block-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
