@@ -1392,3 +1392,38 @@ Artifacts:
 `statement-card-a2-regular-variable-count.md`.
 Review:
 `review-a2-regular-variable-count.md`.
+
+## 2026-06-24 A2 transformed-edge rank-stratum bridge
+
+Returned to the source-rank boundary after the product-difference entry-ideal
+package.  The recursive Schur-residual product applies Lemma 2 to transformed
+edges of the form
+
+```text
+[I Bprev; 0 I] * E_p.
+```
+
+Because `[I Bprev; 0 I]` is determinant-unit block-unitriangular, the
+transformed edge has the same rank as the original fixed-base source edge.
+
+New Lean artifact in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionBoundary.lean`:
+
+- `paperEndpointFixedBase_transformedEdgeRanks_iff_edgeRankStratum`.
+
+The theorem identifies the transformed-edge rank predicate used by
+`ChartLocalSuffixState.transformedEdge` and `suffixState` with the already
+named `paperEndpointFixedBaseEdgeRankStratum`.  This removes an ambiguity at
+the A2 source-rank boundary: the recursion's transformed-edge exact-rank
+condition is not an extra rank hypothesis beyond the fixed-base edge-rank
+component of Aoyagi's source-shaped rank stratum.
+
+Scope caveats: no exact-rank openness, source-stratum nonemptiness, chart
+production, analytic ideal transport, regular-suspension/RLCT additivity,
+normal-crossing production, pole order, or RLCT.
+
+Artifacts:
+`reproduction-a2-transformed-edge-rank-stratum-bridge.md` and
+`statement-card-a2-transformed-edge-rank-stratum-bridge.md`.
+Review:
+`review-a2-transformed-edge-rank-stratum-bridge.md`.

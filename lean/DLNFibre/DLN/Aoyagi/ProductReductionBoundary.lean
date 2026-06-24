@@ -65,6 +65,86 @@ def paperEndpointFixedBaseEdgeRankStratum
       (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
         rEdge p}
 
+set_option linter.unusedSectionVars false in
+/-- The transformed-edge ranks used by the recursive Schur-residual construction
+are exactly the source edge-rank stratum.  The accumulated left multiplier is
+block-unitriangular, so it does not change matrix rank.  This is only a
+rank-predicate bridge; it does not assert that exact-rank strata are open. -/
+theorem paperEndpointFixedBase_transformedEdgeRanks_iff_edgeRankStratum
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (rEdge : Fin N → ℕ) (x : α) :
+    (let E : ∀ p : Fin N,
+        reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+        fun p ↦
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+     let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+     ∀ p : Fin N,
+       (ChartLocalSuffixState.transformedEdge EMat p
+          (ChartLocalSuffixState.suffixState EMat
+            (Fin.last N) p.succ p.succ.le_last)).rank = rEdge p) ↔
+      x ∈ paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge := by
+  classical
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+  change
+    (∀ p : Fin N,
+      (ChartLocalSuffixState.transformedEdge EMat p
+        (ChartLocalSuffixState.suffixState EMat
+          (Fin.last N) p.succ p.succ.le_last)).rank = rEdge p) ↔
+      x ∈ paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge
+  have hsame : ∀ p : Fin N,
+      (ChartLocalSuffixState.transformedEdge EMat p
+        (ChartLocalSuffixState.suffixState EMat
+          (Fin.last N) p.succ p.succ.le_last)).rank =
+        (EMat p).rank := by
+    intro p
+    let S :=
+      ChartLocalSuffixState.suffixState EMat
+        (Fin.last N) p.succ p.succ.le_last
+    let A : Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ) K :=
+      fromBlocks (1 : Matrix (Fin (Module.finrank K U₀))
+          (Fin (Module.finrank K U₀)) K) S.B 0
+        (1 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ) K)
+    have hA : IsUnit A.det := by
+      exact (Matrix.isUnit_iff_isUnit_det (A := A)).mp
+        ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+    simp [ChartLocalSuffixState.transformedEdge, S, A,
+      Matrix.rank_mul_eq_right_of_isUnit_det A (EMat p) hA]
+  constructor
+  · intro h p
+    have hraw : (EMat p).rank = rEdge p := (hsame p).symm.trans (h p)
+    have hrange :=
+      rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+        W B U₀ hU₀ E p
+    exact (by
+      simpa [E] using hrange.symm.trans hraw)
+  · intro h p
+    have hrange :=
+      rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+        W B U₀ hU₀ E p
+    have hsrc :
+        Module.finrank K (LinearMap.range (E p)) = rEdge p := by
+      simpa [E] using h p
+    exact (hsame p).trans (hrange.trans hsrc)
+
 /-- Aoyagi's source-shaped rank stratum: the fixed base product has rank `r`, the
 nearby layer edges have ranks `rEdge`, and the source inequalities `r ≤ rEdge p`
 are recorded.  This is a restriction set, not an asserted neighborhood. -/

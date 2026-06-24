@@ -202,7 +202,10 @@ No such claim is formalisation-ready until both fields are filled.
   fixed-base certificate exposes regular `[I 0; F3 I]` and `[I F2; 0 I]`
   factors with proof witness `F2 = -S.B`. The fixed-base/source-rank-stratum
   endpoint wrapper now bundles that triangular residual-product form with the
-  residual-rank formulas `rEdge p - r`. The local source-rank endpoint package
+  residual-rank formulas `rEdge p - r`. The transformed-edge rank predicate
+  used by the recursive Schur-residual process is proved equivalent to the
+  source edge-rank stratum by determinant-unit rank preservation for
+  `[I Bprev; 0 I] * E_p`. The local source-rank endpoint package
   now lifts that pointwise shape into a `nhdsWithin` conclusion relative to
   the source rank stratum, with an existential wrapper choosing the
   total-kernel complement. The p. 13 block product-difference algebra is also
@@ -228,6 +231,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/through-layer-basis-reproduction.md`;
   triangular endpoint wrapper at
   `threads/03-block-product-reduction/reproduction-a2-triangular-block-diagonal.md`;
+  transformed-edge rank-stratum bridge at
+  `threads/03-block-product-reduction/reproduction-a2-transformed-edge-rank-stratum-bridge.md`;
   local source-rank endpoint package at
   `threads/03-block-product-reduction/reproduction-a2-local-source-rank-endpoint-package.md`;
   pointwise block product-difference algebra at

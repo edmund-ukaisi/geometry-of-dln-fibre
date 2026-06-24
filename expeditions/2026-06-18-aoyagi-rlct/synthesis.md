@@ -346,6 +346,21 @@ not an ambient open neighborhood, nonemptiness theorem, or source-produced
 regular-corner chart theorem.  Do not rewrite the residual product as a raw or
 paper-order block product without a separate orientation bridge.
 
+The transformed-edge rank-stratum bridge has now landed.  New Lean name in
+`ProductReductionBoundary.lean`:
+`paperEndpointFixedBase_transformedEdgeRanks_iff_edgeRankStratum`.  It proves
+that the exact rank predicate on the recursive transformed edge
+`ChartLocalSuffixState.transformedEdge EMat p (suffixState ...)` is equivalent
+to `paperEndpointFixedBaseEdgeRankStratum`.  The proof is the source
+calculation that the accumulated multiplier `[I Bprev; 0 I]` is
+determinant-unit block-unitriangular and hence preserves rank.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-transformed-edge-rank-stratum-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-transformed-edge-rank-stratum-bridge.md`.
+This is a rank-predicate bridge only: it is not exact-rank openness, source
+chart production, analytic ideal transport, normal-crossing production, pole
+order, or RLCT.
+
 The local source-rank endpoint package has now landed on top of that pointwise
 wrapper.  New Lean names in `ProductReductionBoundary.lean`:
 `paperEndpointFixedBaseSourceRankStratum_selfBase_mem`,

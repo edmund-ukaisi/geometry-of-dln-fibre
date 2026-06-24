@@ -2093,8 +2093,13 @@ Immediate order:
    `paperEndpointFixedBaseTriangularSourceRanks_selfBase_mem_nhdsWithin_source`
    and `PaperEndpointTriangularSourceRanksLocalCertificate`; it is still a
    relative-stratum package, not exact-rank openness or source-stratum
-   nonemptiness. The separate p. 13 block-difference algebra has now landed
-   purely algebraically as
+   nonemptiness. The transformed-edge rank predicate used by the recursive
+   Schur-residual process is now Lean-proved equivalent to
+   `paperEndpointFixedBaseEdgeRankStratum` by
+   `paperEndpointFixedBase_transformedEdgeRanks_iff_edgeRankStratum`; this is
+   only determinant-unit rank preservation for `[I Bprev; 0 I] * E_p`, not
+   exact-rank openness. The separate p. 13 block-difference algebra has now
+   landed purely algebraically as
    `triangularBlockProductDifference_fromBlocks_indexed`: after the triangular
    endpoint form, subtracting `[I 0; 0 0]` produces the displayed
    `[Ctop - I, -F2; -F3, D - F3 * F2]` block matrix. That postponed endpoint
