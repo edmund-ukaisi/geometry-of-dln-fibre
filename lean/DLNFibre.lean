@@ -97,5 +97,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGEL2
 import DLNFibre.Core.Matrix.RankNormalForm
 import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
+import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
+import DLNFibre.DLN.RLCT.Validate.RouteM4422
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
