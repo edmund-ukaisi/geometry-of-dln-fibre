@@ -27,9 +27,9 @@ namespace DLNFibre.Core
 
 open MvPolynomial
 
-universe u
+universe u v w
 
-variable {k : Type u} [Field k] {σ τ : Type u} [Finite σ] [Finite τ]
+variable {k : Type u} [Field k] {σ : Type v} {τ : Type w} [Finite σ] [Finite τ]
 
 omit [Finite σ] in
 /-- The quotient of `MvPolynomial σ (MvPolynomial τ k)` by the block graph ideal `graphIdeal c` has
