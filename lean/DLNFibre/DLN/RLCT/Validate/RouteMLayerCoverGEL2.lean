@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGE
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
+import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 
 /-!
 # `RouteMLayerCoverGEL2` — the `L = 2` achiever box-divergence (single weighted radial blow-up)
@@ -22,15 +23,24 @@ chart bundle, feeding the single cited leaf atom `monomial_rlct`).
 **The chart now passes the anti-`phi334` gate** (genuine-diffeo validation, all sorry-free):
 reads ALL 21 coords (`chartA334_reads_u2` — `A(0,1) = u 1·u 2` depends on `u 2`); `phi334 0 = 0`
 (`phi334_zero`, reaches the deepest point); continuous (`continuous_phi334`); image into `cubeBox 21 ε`
-(`phi334_image_subset_cubeBox`). The Jacobian determinant is `−u₀⁷·u₁²` (sympy-exact, Codex `xhigh`) —
-genuinely `≠ 0`, the two-axis weight `|u 0|⁷·|u 1|²` carried by `leafH334`.
+(`phi334_image_subset_cubeBox`); `HasFDerivAt` with the genuine structural Jacobian determinant
+`|det Dφ| = |u 0|⁷·|u 1|²` (`phi334_abs_det`, the product `pb334`-`u₀⁷` ∘ `shear334`-`1` ∘
+`bsubst334`-`u₁²`, all sorry-free), the two-axis weight carried by `leafH334`.
 
-**ONE residual `sorry` remains in `achieverChart334`** — the `cov` genuine geometric
-change-of-variables (NO LONGER FALSE): Mathlib `lintegral_image_eq_lintegral_abs_det_fderiv_mul` +
-the structural determinant `−u₀⁷·u₁²`. The `Ubound` a.e.-positivity is now PROVED (`Uval334 ≥ a² > 0`
-off the null `{u 1 = 0}`). The `cov` is the per-node measure-plumbing atom the `hfin` certificate flags
-(cost driver 2). No other axiom / `native_decide`; the exact `F = u²·U`, the determinant value, and the
-threshold are PROVEN, not faked.
+**The `cov` change-of-variables is PROVEN** (`phi334_cov`, sorry-free): the Jacobian c-o-v
+(`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) on the doubly-punctured set off `{u 0=0} ∪ {u 1=0}`
+(`phi334_injOn`), with the genuine determinant `|u 0|⁷·|u 1|²`, plus the two-sided `{u 1=0}` null-slice
+drop. The `Ubound` a.e.-positivity is PROVED (`Uval334 ≥ a² > 0` off the null `{u 1 = 0}`).
+
+**FULLY sorry-free.** The outer-reshape Jacobian factor `|det Q334| = 1` (`Q334CLM_abs_det`,
+`Q334 = paramsEquivFlat ∘ pack334` a coordinate permutation of the 21 flat coords) is now PROVEN via the
+reusable reshape measure-preservation `measurePreserving_pack334`
+(`measurePreserving_paramsPack_of_flatIdxEquiv` at the explicit slot bijection `fin21EquivFlatIdx334`,
+`Foundations/ParamsReshapeMP.lean`) + `continuousLinearMap_abs_det_eq_one_of_measurePreserving`. So
+`routeM334_box_diverges` is axiom-clean `[propext, Classical.choice, Quot.sound, monomial_rlct]` (no
+`sorryAx`; `monomial_rlct` the single cited S2 leaf). The SOUNDNESS-critical structural determinant
+`|u 0|⁷·|u 1|²` (matching `leafH334`) is used genuinely throughout. No `native_decide`; the exact
+`F = u²·U`, the structural determinant, the factorization, and the threshold are PROVEN, not faked.
 
 ## The construction (concrete `(3,3,4)`, the binding corank-2 anchor; `minAdm = 8`)
 
@@ -668,6 +678,521 @@ theorem phi334_image_subset_cubeBox (ε : ℝ) (hε : 0 < ε) :
   rw [Set.mem_Icc]
   exact ⟨hi.1.le, hi.2.le⟩
 
+/-! ## The genuine geometric change-of-variables for `phi334` (the `cov` discharge)
+
+The `cov` field of `achieverChart334` is the genuine Jacobian change-of-variables for `phi334`. The
+soundness-critical determinant is `|det Dφ| = |u 0|⁷·|u 1|²` (sympy-exact, recomputed on the actual
+`chartA334`/`chartC334` entries). The route (Codex `xhigh`, 2026-06-24):
+
+* `phi334 = paramsEquivFlat M334 ∘ chartParams334`; `chartParams334 = pack334 ∘ T334` where
+  `T334 = bsubst334 ∘ shear334 ∘ pb334` is a flat-to-flat composite of the `(3,3,4)` semantic
+  blow-up/shear/substitution and `pack334` reshapes the 21 flat coords into the `Params` matrix
+  entries (in the semantic chart order). So `phi334 = Q334 ∘ T334` with `Q334 = paramsEquivFlat ∘ pack334`
+  a measure-preserving linear iso (`|det Q334| = 1`).
+* The structural determinant is the product `|det Dφ| = |det Q334| · |det DT334| = 1 · (|u 0|⁷ · |u 1|²)`,
+  the pivot blow-up `pb334` contributing `|u 0|⁷` (`pivotBlowupOnDeriv_det`, 8 active coords), the
+  `b = aβ` substitution `bsubst334` contributing `|u 1|²` (3 active coords), the shear det `1`.
+* `phi334` is `InjOn` off `{u 0 = 0} ∪ {u 1 = 0}` (`phi334_injOn`); the c-o-v runs on
+  `(V \ {u 0 = 0}) \ {u 1 = 0}`, then the `{u 1 = 0}` slice is added back as a TWO-SIDED null
+  contribution (LHS image null since `phi334` is C¹ and `{u 1 = 0}` is null; RHS weight `|u 1|² = 0`).
+-/
+
+/-- **`pack334`** — the reshape `(Fin 21 → ℝ) → Params M334` sending the 21 flat coords (in the
+SEMANTIC chart order) to the two matrix entries, matching `chartParams334`'s OUTPUT layout. The
+post-`T334` packing: coord `0 ↦ C(0,0)` base, `1 ↦ A(0,0)`, etc. — chosen so that
+`chartParams334 = pack334 ∘ T334`. Linear (each output entry is one input coord). -/
+noncomputable def pack334 (w : Fin 21 → ℝ) : Params (![3, 3, 4] : Fin 3 → ℕ) :=
+  Fin.cons
+    (!![w 1, w 2, w 3; w 4, w 6, w 7; w 5, w 8, w 9] : Matrix (Fin 3) (Fin 3) ℝ)
+    (Fin.cons
+      (!![w 0, w 10, w 11, w 12; w 13, w 14, w 15, w 16; w 17, w 18, w 19, w 20]
+        : Matrix (Fin 3) (Fin 4) ℝ)
+      (fun i => i.elim0))
+
+/-- **The `(3,3,4)` pivot blow-up** `pb334 = pivotBlowupOn {0,6,7,8,9,10,11,12} 0`: blow up the 8 normal
+coords (the `C(0,0)` base `0` and the 7 normal directions `6..12`) by the pivot `u 0`. `det = u₀⁷`. -/
+noncomputable def pb334 : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
+  pivotBlowupOn ({0, 6, 7, 8, 9, 10, 11, 12} : Finset (Fin 21)) 0
+
+/-- **The `(3,3,4)` `b = aβ` substitution** `bsubst334 = pivotBlowupOn {1,2,3} 1`: multiply the
+cross-strip coords `2,3` by the pivot-minor `u 1 = a`. `det = u₁²`. -/
+noncomputable def bsubst334 : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
+  pivotBlowupOn ({1, 2, 3} : Finset (Fin 21)) 1
+
+/-- **The `(3,3,4)` Schur shear** `shear334`: a det-`1` unitriangular shear that adds to the 8
+blow-up coords `{0,6,7,8,9,10,11,12}` bilinear terms in the KEPT coords (the inverse Schur shear
+absorbing `β·S` into `C`-row-0 and the residual `c·β` into `E`). Each modified coordinate reads only
+KEPT coords (never itself), so the Jacobian is `I + M` with `M² = 0` — det `1`. -/
+noncomputable def shear334 (p : Fin 21 → ℝ) : Fin 21 → ℝ :=
+  fun i =>
+    if i = 0 then p 0 - (p 2 * p 13 + p 3 * p 17)
+    else if i = 6 then p 6 + p 4 * p 2
+    else if i = 7 then p 7 + p 4 * p 3
+    else if i = 8 then p 8 + p 5 * p 2
+    else if i = 9 then p 9 + p 5 * p 3
+    else if i = 10 then p 10 - (p 2 * p 14 + p 3 * p 18)
+    else if i = 11 then p 11 - (p 2 * p 15 + p 3 * p 19)
+    else if i = 12 then p 12 - (p 2 * p 16 + p 3 * p 20)
+    else p i
+
+/-- **The flat composite** `T334 = bsubst334 ∘ shear334 ∘ pb334 : (Fin 21 → ℝ) → (Fin 21 → ℝ)`, the
+`(3,3,4)` semantic blow-up/shear/substitution in flat coordinates. `pack334 ∘ T334 = chartParams334`
+(`chartParams334_eq_pack_T`); `det DT334 = u₀⁷·u₁²`. -/
+noncomputable def T334 : (Fin 21 → ℝ) → (Fin 21 → ℝ) :=
+  bsubst334 ∘ shear334 ∘ pb334
+
+/-- **`pb334` as an explicit vector** (per-coordinate `if`-reduction by `decide`). -/
+theorem pb334_apply (u : Fin 21 → ℝ) :
+    pb334 u = ![u 0, u 1, u 2, u 3, u 4, u 5, u 0 * u 6, u 0 * u 7, u 0 * u 8, u 0 * u 9,
+      u 0 * u 10, u 0 * u 11, u 0 * u 12, u 13, u 14, u 15, u 16, u 17, u 18, u 19, u 20] := by
+  funext i
+  fin_cases i <;> simp [pb334, pivotBlowupOn, Matrix.cons_val]
+
+/-- **`shear334 ∘ pb334` as an explicit vector.** -/
+theorem shear_pb334_apply (u : Fin 21 → ℝ) :
+    shear334 (pb334 u)
+      = ![u 0 - (u 2 * u 13 + u 3 * u 17), u 1, u 2, u 3, u 4, u 5,
+          u 0 * u 6 + u 4 * u 2, u 0 * u 7 + u 4 * u 3, u 0 * u 8 + u 5 * u 2, u 0 * u 9 + u 5 * u 3,
+          u 0 * u 10 - (u 2 * u 14 + u 3 * u 18), u 0 * u 11 - (u 2 * u 15 + u 3 * u 19),
+          u 0 * u 12 - (u 2 * u 16 + u 3 * u 20), u 13, u 14, u 15, u 16, u 17, u 18, u 19, u 20] := by
+  rw [pb334_apply]
+  funext i
+  fin_cases i <;> simp [shear334, Matrix.cons_val] <;> ring
+
+/-- **`T334` as an explicit vector.** -/
+theorem T334_apply (u : Fin 21 → ℝ) :
+    T334 u
+      = ![u 0 - (u 2 * u 13 + u 3 * u 17), u 1, u 1 * u 2, u 1 * u 3, u 4, u 5,
+          u 0 * u 6 + u 4 * u 2, u 0 * u 7 + u 4 * u 3, u 0 * u 8 + u 5 * u 2, u 0 * u 9 + u 5 * u 3,
+          u 0 * u 10 - (u 2 * u 14 + u 3 * u 18), u 0 * u 11 - (u 2 * u 15 + u 3 * u 19),
+          u 0 * u 12 - (u 2 * u 16 + u 3 * u 20), u 13, u 14, u 15, u 16, u 17, u 18, u 19, u 20] := by
+  show bsubst334 (shear334 (pb334 u)) = _
+  rw [shear_pb334_apply]
+  funext i
+  fin_cases i <;> simp [bsubst334, pivotBlowupOn, Matrix.cons_val] <;> ring
+
+/-! ## The structural Jacobian determinant `|det DT334| = |u 0|⁷·|u 1|²`
+
+`T334 = bsubst334 ∘ shear334 ∘ pb334` (all flat self-maps), so `DT334 = D(bsubst) ∘ D(shear) ∘ D(pb)`
+and `det DT334 = det D(bsubst) · det D(shear) · det D(pb)`. The blow-up dets are banked
+(`pivotBlowupOnDeriv_det`): `det D(pb334) = u₀⁷`, `det D(bsubst334) = u₁²` (at `shear(pb u)`, coord `1`
+fixed `= u 1`); the shear det is `1` (`shear334Deriv_det`, the unitriangular `I + M`, `M² = 0`). -/
+
+/-- The explicit fderiv of `shear334`: the arrow CLM whose row `i` is `eᵢ` plus, on the 8 modified
+coords `{0,6,7,8,9,10,11,12}`, the gradient of the added bilinear term (reading only KEPT coords). -/
+noncomputable def shear334Deriv (p : Fin 21 → ℝ) : (Fin 21 → ℝ) →L[ℝ] (Fin 21 → ℝ) :=
+  ContinuousLinearMap.pi (fun i =>
+    if i = 0 then (ContinuousLinearMap.proj (R := ℝ) 0)
+        - (((p 2) • ContinuousLinearMap.proj 13 + (p 13) • ContinuousLinearMap.proj 2)
+          + ((p 3) • ContinuousLinearMap.proj 17 + (p 17) • ContinuousLinearMap.proj 3))
+    else if i = 6 then (ContinuousLinearMap.proj (R := ℝ) 6)
+        + ((p 4) • ContinuousLinearMap.proj 2 + (p 2) • ContinuousLinearMap.proj 4)
+    else if i = 7 then (ContinuousLinearMap.proj (R := ℝ) 7)
+        + ((p 4) • ContinuousLinearMap.proj 3 + (p 3) • ContinuousLinearMap.proj 4)
+    else if i = 8 then (ContinuousLinearMap.proj (R := ℝ) 8)
+        + ((p 5) • ContinuousLinearMap.proj 2 + (p 2) • ContinuousLinearMap.proj 5)
+    else if i = 9 then (ContinuousLinearMap.proj (R := ℝ) 9)
+        + ((p 5) • ContinuousLinearMap.proj 3 + (p 3) • ContinuousLinearMap.proj 5)
+    else if i = 10 then (ContinuousLinearMap.proj (R := ℝ) 10)
+        - (((p 2) • ContinuousLinearMap.proj 14 + (p 14) • ContinuousLinearMap.proj 2)
+          + ((p 3) • ContinuousLinearMap.proj 18 + (p 18) • ContinuousLinearMap.proj 3))
+    else if i = 11 then (ContinuousLinearMap.proj (R := ℝ) 11)
+        - (((p 2) • ContinuousLinearMap.proj 15 + (p 15) • ContinuousLinearMap.proj 2)
+          + ((p 3) • ContinuousLinearMap.proj 19 + (p 19) • ContinuousLinearMap.proj 3))
+    else if i = 12 then (ContinuousLinearMap.proj (R := ℝ) 12)
+        - (((p 2) • ContinuousLinearMap.proj 16 + (p 16) • ContinuousLinearMap.proj 2)
+          + ((p 3) • ContinuousLinearMap.proj 20 + (p 20) • ContinuousLinearMap.proj 3))
+    else ContinuousLinearMap.proj i)
+
+/-- The factorization on layer `0` (the `A`-block): `chartParams334 u 0 = pack334 (T334 u) 0`. -/
+theorem chartParams334_eq_pack_T_layer0 (u : Fin 21 → ℝ) :
+    (chartParams334 u) 0 = (pack334 (T334 u)) 0 := by
+  rw [show (chartParams334 u) 0 = chartA334 u from rfl]
+  have hp : (pack334 (T334 u)) 0
+      = (!![(T334 u) 1, (T334 u) 2, (T334 u) 3; (T334 u) 4, (T334 u) 6, (T334 u) 7;
+          (T334 u) 5, (T334 u) 8, (T334 u) 9] : Matrix (Fin 3) (Fin 3) ℝ) := rfl
+  rw [hp, T334_apply]
+  funext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [chartA334, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.of_apply, Matrix.cons_val] <;> ring
+
+/-- The factorization on layer `1` (the `C`-block): `chartParams334 u 1 = pack334 (T334 u) 1`. -/
+theorem chartParams334_eq_pack_T_layer1 (u : Fin 21 → ℝ) :
+    (chartParams334 u) 1 = (pack334 (T334 u)) 1 := by
+  rw [show (chartParams334 u) 1 = chartC334 u from rfl]
+  have hp : (pack334 (T334 u)) 1
+      = (!![(T334 u) 0, (T334 u) 10, (T334 u) 11, (T334 u) 12;
+          (T334 u) 13, (T334 u) 14, (T334 u) 15, (T334 u) 16;
+          (T334 u) 17, (T334 u) 18, (T334 u) 19, (T334 u) 20] : Matrix (Fin 3) (Fin 4) ℝ) := rfl
+  rw [hp, T334_apply]
+  funext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [chartC334, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.of_apply, Matrix.cons_val]
+
+/-- **The factorization identity** `chartParams334 = pack334 ∘ T334` (the load-bearing diffeo
+factorization; per-layer `funext` + `fin_cases` + `ring` on the 21 entries). -/
+theorem chartParams334_eq_pack_T (u : Fin 21 → ℝ) :
+    chartParams334 u = pack334 (T334 u) := by
+  funext s
+  fin_cases s
+  · exact chartParams334_eq_pack_T_layer0 u
+  · exact chartParams334_eq_pack_T_layer1 u
+
+/-- **`shear334` has fderiv `shear334Deriv`** (each component: the 13 unmodified coords are projections;
+the 8 modified coords are sums/differences of products of projections — `HasFDerivAt.sub`/`.add`/`.mul`
+of `hasFDerivAt_apply`). -/
+theorem shear334_hasFDerivAt (p : Fin 21 → ℝ) :
+    HasFDerivAt shear334 (shear334Deriv p) p := by
+  apply hasFDerivAt_pi''
+  intro i
+  have hap : ∀ k : Fin 21, HasFDerivAt (fun y : Fin 21 → ℝ => y k)
+      (ContinuousLinearMap.proj (R := ℝ) k) p := fun k => hasFDerivAt_apply (𝕜 := ℝ) k p
+  rw [shear334Deriv, ContinuousLinearMap.proj_pi]
+  fin_cases i <;>
+    simp only [shear334] <;>
+    first
+      | exact hap _
+      | exact (hap 0).sub (((hap 2).mul (hap 13)).add ((hap 3).mul (hap 17)))
+      | exact (hap 6).add ((hap 4).mul (hap 2))
+      | exact (hap 7).add ((hap 4).mul (hap 3))
+      | exact (hap 8).add ((hap 5).mul (hap 2))
+      | exact (hap 9).add ((hap 5).mul (hap 3))
+      | exact (hap 10).sub (((hap 2).mul (hap 14)).add ((hap 3).mul (hap 18)))
+      | exact (hap 11).sub (((hap 2).mul (hap 15)).add ((hap 3).mul (hap 19)))
+      | exact (hap 12).sub (((hap 2).mul (hap 16)).add ((hap 3).mul (hap 20)))
+
+/-- **Kept-row entry of `shear334Deriv`.** For a coordinate `i` NOT in the modified set
+`{0,6,7,8,9,10,11,12}`, the `i`-th row of `shear334Deriv` is the projection `proj i`, so
+`(shear334Deriv p) (Pi.single j 1) i = δ_{ij}` — and `= 0` when `i ≠ j`. -/
+theorem shear334Deriv_kept_row (p : Fin 21 → ℝ) (i j : Fin 21)
+    (hbi : i ∉ ({0,6,7,8,9,10,11,12} : Finset (Fin 21))) (hji : i ≠ j) :
+    (shear334Deriv p) (Pi.single j 1) i = 0 := by
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hbi
+  obtain ⟨n0, n6, n7, n8, n9, n10, n11, n12⟩ := hbi
+  rw [shear334Deriv, ContinuousLinearMap.pi_apply,
+    if_neg n0, if_neg n6, if_neg n7, if_neg n8, if_neg n9, if_neg n10, if_neg n11, if_neg n12]
+  simp [ContinuousLinearMap.proj_apply, Pi.single_apply, Ne.symm hji]
+
+set_option maxHeartbeats 4000000 in
+/-- **The Schur shear determinant is `1`** (`det Dshear334 = 1`). The Jacobian is `I + N` with the
+nonzero off-diagonal entries running only from a modified row (`{0,6,7,8,9,10,11,12}`) to a KEPT
+column — so under the two-block order (modified `< ` kept) the matrix is block-triangular with both
+diagonal blocks the identity. (`Matrix.BlockTriangular.det` + each `toSquareBlock = 1`.) -/
+theorem shear334Deriv_det (p : Fin 21 → ℝ) : (shear334Deriv p).det = 1 := by
+  rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix']
+  set M := LinearMap.toMatrix' (shear334Deriv p : (Fin 21 → ℝ) →ₗ[ℝ] (Fin 21 → ℝ)) with hM
+  set b : Fin 21 → ℕ := fun i => if i ∈ ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) then 0 else 1
+    with hb
+  have hentry : ∀ i j : Fin 21, M i j = (shear334Deriv p) (Pi.single j 1) i := by
+    intro i j; rw [hM, LinearMap.toMatrix'_apply]; rfl
+  -- within a block (`b i = b j`) the entry is the Kronecker delta
+  have hblock : ∀ i j : Fin 21, b i = b j → M i j = if i = j then 1 else 0 := by
+    intro i j hbij
+    rw [hentry]
+    by_cases hi : i ∈ ({0,6,7,8,9,10,11,12} : Finset (Fin 21))
+    · have hj : j ∈ ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) := by
+        by_contra h
+        have e1 : b i = 0 := by simp only [hb, if_pos hi]
+        have e2 : b j = 1 := by simp only [hb, if_neg h]
+        rw [e1, e2] at hbij; exact absurd hbij (by norm_num)
+      rw [shear334Deriv, ContinuousLinearMap.pi_apply]
+      fin_cases hi <;> fin_cases hj <;>
+        simp [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+          ContinuousLinearMap.smul_apply, ContinuousLinearMap.proj_apply, Pi.single_apply]
+    · -- kept row: `proj i`, value `δ`
+      by_cases hij : i = j
+      · subst hij
+        rw [if_pos rfl]
+        -- diagonal kept entry: row `i` is `proj i`, value `single i 1 i = 1`
+        simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hi
+        obtain ⟨n0, n6, n7, n8, n9, n10, n11, n12⟩ := hi
+        rw [shear334Deriv, ContinuousLinearMap.pi_apply,
+          if_neg n0, if_neg n6, if_neg n7, if_neg n8, if_neg n9, if_neg n10, if_neg n11, if_neg n12]
+        simp [ContinuousLinearMap.proj_apply, Pi.single_apply]
+      · rw [if_neg hij, shear334Deriv_kept_row p i j hi hij]
+  -- block-triangular: a strictly-lower entry (`b j < b i`) is a kept row reading a mod column = 0
+  have htri : M.BlockTriangular b := by
+    intro i j hij
+    rw [hentry]
+    have hbi : i ∉ ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) := by
+      by_contra h
+      have e1 : b i = 0 := by simp only [hb, if_pos h]
+      rw [e1] at hij; exact absurd hij (Nat.not_lt_zero _)
+    have hbj : j ∈ ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) := by
+      by_contra h
+      have e1 : b i = 1 := by simp only [hb, if_neg hbi]
+      have e2 : b j = 1 := by simp only [hb, if_neg h]
+      rw [e1, e2] at hij; exact absurd hij (by norm_num)
+    exact shear334Deriv_kept_row p i j hbi (fun heq => hbi (heq ▸ hbj))
+  rw [htri.det]
+  apply Finset.prod_eq_one
+  intro a _
+  have hid : M.toSquareBlock b a = 1 := by
+    ext ⟨i, hi⟩ ⟨j, hj⟩
+    have hMij : M.toSquareBlock b a ⟨i, hi⟩ ⟨j, hj⟩ = M i j := rfl
+    rw [hMij, hblock i j (by rw [hi, hj]), Matrix.one_apply]
+    by_cases h : i = j
+    · subst h; simp
+    · rw [if_neg h, if_neg (by rw [Subtype.mk_eq_mk]; exact h)]
+  rw [hid, Matrix.det_one]
+
+/-- The composite fderiv of `T334 = bsubst334 ∘ shear334 ∘ pb334` at `u` (the chain rule CLM). -/
+noncomputable def T334Deriv (u : Fin 21 → ℝ) : (Fin 21 → ℝ) →L[ℝ] (Fin 21 → ℝ) :=
+  (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 21)) 1 (shear334 (pb334 u))).comp
+    ((shear334Deriv (pb334 u)).comp
+      (pivotBlowupOnDeriv ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) 0 u))
+
+/-- **`T334` has fderiv `T334Deriv`** (chain rule: `bsubst334` and `pb334` are `pivotBlowupOn`
+blow-ups, `shear334` the Schur shear). -/
+theorem T334_hasFDerivAt (u : Fin 21 → ℝ) : HasFDerivAt T334 (T334Deriv u) u := by
+  have hpb : HasFDerivAt pb334 (pivotBlowupOnDeriv ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) 0 u) u :=
+    hasFDerivWithinAt_univ.mp (pivotBlowupOn_hasFDerivWithinAt _ _ Set.univ u)
+  have hsh : HasFDerivAt shear334 (shear334Deriv (pb334 u)) (pb334 u) := shear334_hasFDerivAt _
+  have hbs : HasFDerivAt bsubst334
+      (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 21)) 1 (shear334 (pb334 u)))
+      (shear334 (pb334 u)) :=
+    hasFDerivWithinAt_univ.mp (pivotBlowupOn_hasFDerivWithinAt _ _ Set.univ (shear334 (pb334 u)))
+  exact (hbs.comp u (hsh.comp u hpb))
+
+/-- **The structural Jacobian determinant** `|det DT334| = |u 0|⁷·|u 1|²` — the product of the three
+factors: `det D(pb334) = u₀⁷` (`pivotBlowupOnDeriv_det`, 8 active coords), `det D(shear334) = 1`
+(`shear334Deriv_det`), `det D(bsubst334) = u₁²` (`pivotBlowupOnDeriv_det`, 3 active coords; coord `1`
+fixed by shear/pb). -/
+theorem T334Deriv_abs_det (u : Fin 21 → ℝ) :
+    |(T334Deriv u).det| = |u 0| ^ 7 * |u 1| ^ 2 := by
+  have hpbdet : (pivotBlowupOnDeriv ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) 0 u).det = (u 0) ^ 7 := by
+    rw [pivotBlowupOnDeriv_det _ _ (by decide)]
+    norm_num [show ({0,6,7,8,9,10,11,12} : Finset (Fin 21)).card = 8 from by decide]
+  have hbsdet : (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 21)) 1 (shear334 (pb334 u))).det
+      = (u 1) ^ 2 := by
+    rw [pivotBlowupOnDeriv_det _ _ (by decide)]
+    have hc1 : (shear334 (pb334 u)) 1 = u 1 := by rw [shear_pb334_apply]; rfl
+    rw [hc1]; norm_num [show ({1,2,3} : Finset (Fin 21)).card = 3 from by decide]
+  have hshdet : (shear334Deriv (pb334 u)).det = 1 := shear334Deriv_det _
+  rw [T334Deriv]
+  rw [show ((pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 21)) 1 (shear334 (pb334 u))).comp
+        ((shear334Deriv (pb334 u)).comp
+          (pivotBlowupOnDeriv ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) 0 u))).det
+      = (pivotBlowupOnDeriv ({1,2,3} : Finset (Fin 21)) 1 (shear334 (pb334 u))).det
+          * ((shear334Deriv (pb334 u)).det
+            * (pivotBlowupOnDeriv ({0,6,7,8,9,10,11,12} : Finset (Fin 21)) 0 u).det) by
+      simp only [ContinuousLinearMap.det, ContinuousLinearMap.coe_comp, LinearMap.det_comp]]
+  rw [hbsdet, hshdet, hpbdet, one_mul, abs_mul, abs_pow, abs_pow, mul_comm]
+
+/-! ## The outer reindex `Q334 = paramsEquivFlat ∘ pack334` and `phi334 = Q334 ∘ T334`
+
+`phi334 = paramsEquivFlat ∘ chartParams334 = paramsEquivFlat ∘ pack334 ∘ T334 = Q334 ∘ T334`, where
+`Q334 : (Fin 21 → ℝ) → (Fin 21 → ℝ)` is the measure-preserving linear coordinate reshape
+`paramsEquivFlat ∘ pack334`. Its Jacobian determinant has `|det| = 1` (a coordinate reshape), so the
+genuine chart determinant is `|det Dφ334| = |det Q334| · |det DT334| = 1 · (|u 0|⁷·|u 1|²)`. -/
+
+/-- `pack334` as a continuous ℝ-linear map `(Fin 21 → ℝ) →L[ℝ] Params M334` (each output matrix entry
+is one input coordinate — linear). Its coercion is `pack334`. -/
+noncomputable def pack334CLM : (Fin 21 → ℝ) →L[ℝ] Params (![3, 3, 4] : Fin 3 → ℕ) :=
+  ContinuousLinearMap.pi (fun s =>
+    match s with
+    | ⟨0, _⟩ => ContinuousLinearMap.pi (fun i => ContinuousLinearMap.pi (fun j =>
+        ContinuousLinearMap.proj
+          (![![1, 2, 3], ![4, 6, 7], ![5, 8, 9]] i j : Fin 21)))
+    | ⟨1, _⟩ => ContinuousLinearMap.pi (fun i => ContinuousLinearMap.pi (fun j =>
+        ContinuousLinearMap.proj
+          (![![0, 10, 11, 12], ![13, 14, 15, 16], ![17, 18, 19, 20]] i j : Fin 21)))
+    | ⟨n + 2, h⟩ => absurd h (by omega))
+
+/-- `pack334CLM` has underlying function `pack334`. -/
+theorem pack334CLM_coe : ⇑pack334CLM = pack334 := by
+  funext w s
+  fin_cases s
+  · funext i j; fin_cases i <;> fin_cases j <;> rfl
+  · funext i j; fin_cases i <;> fin_cases j <;> rfl
+
+/-- **The outer-reindex CLM** `Q334CLM = paramsEquivFlatCLE ∘ pack334CLM : (Fin 21→ℝ) →L (Fin 21→ℝ)`,
+the constant fderiv of `Q334 = paramsEquivFlat ∘ pack334`. -/
+noncomputable def Q334CLM : (Fin 21 → ℝ) →L[ℝ] (Fin 21 → ℝ) :=
+  (paramsEquivFlatCLE (![3, 3, 4] : Fin 3 → ℕ)).toContinuousLinearMap.comp pack334CLM
+
+/-- The explicit slot bijection `Fin 21 ≃ FlatIdx M334`, pinning `pack334`'s flat-coord → matrix-slot
+order (the COMPUTABLE replacement for `Fintype.equivFin`, so the reshape MP avoids the opaque enumeration).
+`toFun`/`invFun` are the explicit slot tables; the inverses are `decide` (kernel). -/
+noncomputable def fin21EquivFlatIdx334 : Fin 21 ≃ FlatIdx (![3, 3, 4] : Fin 3 → ℕ) where
+  toFun := fun k =>
+    match k with
+    | ⟨0,_⟩ => ⟨⟨⟨1,by decide⟩,⟨0,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨1,_⟩ => ⟨⟨⟨0,by decide⟩,⟨0,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨2,_⟩ => ⟨⟨⟨0,by decide⟩,⟨0,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨3,_⟩ => ⟨⟨⟨0,by decide⟩,⟨0,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨4,_⟩ => ⟨⟨⟨0,by decide⟩,⟨1,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨5,_⟩ => ⟨⟨⟨0,by decide⟩,⟨2,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨6,_⟩ => ⟨⟨⟨0,by decide⟩,⟨1,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨7,_⟩ => ⟨⟨⟨0,by decide⟩,⟨1,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨8,_⟩ => ⟨⟨⟨0,by decide⟩,⟨2,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨9,_⟩ => ⟨⟨⟨0,by decide⟩,⟨2,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨10,_⟩ => ⟨⟨⟨1,by decide⟩,⟨0,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨11,_⟩ => ⟨⟨⟨1,by decide⟩,⟨0,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨12,_⟩ => ⟨⟨⟨1,by decide⟩,⟨0,by decide⟩⟩,⟨3,by decide⟩⟩
+    | ⟨13,_⟩ => ⟨⟨⟨1,by decide⟩,⟨1,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨14,_⟩ => ⟨⟨⟨1,by decide⟩,⟨1,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨15,_⟩ => ⟨⟨⟨1,by decide⟩,⟨1,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨16,_⟩ => ⟨⟨⟨1,by decide⟩,⟨1,by decide⟩⟩,⟨3,by decide⟩⟩
+    | ⟨17,_⟩ => ⟨⟨⟨1,by decide⟩,⟨2,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨18,_⟩ => ⟨⟨⟨1,by decide⟩,⟨2,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨19,_⟩ => ⟨⟨⟨1,by decide⟩,⟨2,by decide⟩⟩,⟨2,by decide⟩⟩
+    | ⟨20,_⟩ => ⟨⟨⟨1,by decide⟩,⟨2,by decide⟩⟩,⟨3,by decide⟩⟩
+    | ⟨n+21,h⟩ => absurd h (by omega)
+  invFun := fun q =>
+    match q with
+    | ⟨⟨⟨0,_⟩,⟨0,_⟩⟩,⟨0,_⟩⟩ => 1 | ⟨⟨⟨0,_⟩,⟨0,_⟩⟩,⟨1,_⟩⟩ => 2 | ⟨⟨⟨0,_⟩,⟨0,_⟩⟩,⟨2,_⟩⟩ => 3
+    | ⟨⟨⟨0,_⟩,⟨1,_⟩⟩,⟨0,_⟩⟩ => 4 | ⟨⟨⟨0,_⟩,⟨1,_⟩⟩,⟨1,_⟩⟩ => 6 | ⟨⟨⟨0,_⟩,⟨1,_⟩⟩,⟨2,_⟩⟩ => 7
+    | ⟨⟨⟨0,_⟩,⟨2,_⟩⟩,⟨0,_⟩⟩ => 5 | ⟨⟨⟨0,_⟩,⟨2,_⟩⟩,⟨1,_⟩⟩ => 8 | ⟨⟨⟨0,_⟩,⟨2,_⟩⟩,⟨2,_⟩⟩ => 9
+    | ⟨⟨⟨1,_⟩,⟨0,_⟩⟩,⟨0,_⟩⟩ => 0 | ⟨⟨⟨1,_⟩,⟨0,_⟩⟩,⟨1,_⟩⟩ => 10 | ⟨⟨⟨1,_⟩,⟨0,_⟩⟩,⟨2,_⟩⟩ => 11
+    | ⟨⟨⟨1,_⟩,⟨0,_⟩⟩,⟨3,_⟩⟩ => 12 | ⟨⟨⟨1,_⟩,⟨1,_⟩⟩,⟨0,_⟩⟩ => 13 | ⟨⟨⟨1,_⟩,⟨1,_⟩⟩,⟨1,_⟩⟩ => 14
+    | ⟨⟨⟨1,_⟩,⟨1,_⟩⟩,⟨2,_⟩⟩ => 15 | ⟨⟨⟨1,_⟩,⟨1,_⟩⟩,⟨3,_⟩⟩ => 16 | ⟨⟨⟨1,_⟩,⟨2,_⟩⟩,⟨0,_⟩⟩ => 17
+    | ⟨⟨⟨1,_⟩,⟨2,_⟩⟩,⟨1,_⟩⟩ => 18 | ⟨⟨⟨1,_⟩,⟨2,_⟩⟩,⟨2,_⟩⟩ => 19 | ⟨⟨⟨1,_⟩,⟨2,_⟩⟩,⟨3,_⟩⟩ => 20
+  left_inv := by decide
+  right_inv := by decide
+
+/-- **The slot equation** `pack334 w q.1.1 q.1.2 q.2 = w (fin21EquivFlatIdx334.symm q)` — `pack334`
+reads the matrix slot `q` from the flat coordinate `fin21EquivFlatIdx334.symm q` (the `invFun` table, by
+`rfl` per slot). The `hpack` hypothesis of `measurePreserving_paramsPack_of_flatIdxEquiv`. -/
+theorem hpack334 (w : Fin 21 → ℝ) (q : FlatIdx (![3, 3, 4] : Fin 3 → ℕ)) :
+    pack334 w q.1.1 q.1.2 q.2 = w (fin21EquivFlatIdx334.symm q) := by
+  obtain ⟨⟨s, i⟩, j⟩ := q
+  fin_cases s <;> fin_cases i <;> fin_cases j <;> rfl
+
+/-- **`pack334` is measure-preserving** — the reusable reshape-MP
+(`measurePreserving_paramsPack_of_flatIdxEquiv`) instantiated at `fin21EquivFlatIdx334`. -/
+theorem measurePreserving_pack334 :
+    MeasurePreserving pack334 (volume : Measure (Fin 21 → ℝ))
+      (volume : Measure (Params (![3, 3, 4] : Fin 3 → ℕ))) :=
+  measurePreserving_paramsPack_of_flatIdxEquiv (![3, 3, 4] : Fin 3 → ℕ)
+    fin21EquivFlatIdx334 pack334 hpack334
+
+/-- **`Q334CLM = paramsEquivFlat ∘ pack334` is measure-preserving** (compose the banked
+`measurePreserving_paramsEquivFlat` with `measurePreserving_pack334`). -/
+theorem measurePreserving_Q334CLM :
+    MeasurePreserving (Q334CLM : (Fin 21 → ℝ) → (Fin 21 → ℝ))
+      (volume : Measure (Fin 21 → ℝ)) volume := by
+  have hcomp : (Q334CLM : (Fin 21 → ℝ) → (Fin 21 → ℝ))
+      = (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)) ∘ pack334 := by
+    funext w
+    have h1 : Q334CLM w = paramsEquivFlatCLE (![3, 3, 4] : Fin 3 → ℕ) (pack334CLM w) := rfl
+    rw [Function.comp_apply, h1, paramsEquivFlatCLE_coe, pack334CLM_coe]
+  rw [hcomp]
+  exact (measurePreserving_paramsEquivFlat _).comp measurePreserving_pack334
+
+/-- **`|det Q334CLM| = 1`** — `Q334 = paramsEquivFlat ∘ pack334` is a measure-preserving linear
+coordinate reshape (a permutation of the 21 flat coordinates), hence `|det| = 1`. The outer-reshape
+Jacobian factor of the genuine chart determinant: `|det Dφ| = |det Q334|·|det DT334| = 1·(|u 0|⁷·|u 1|²)`.
+Via the reusable `continuousLinearMap_abs_det_eq_one_of_measurePreserving` + `measurePreserving_Q334CLM`. -/
+theorem Q334CLM_abs_det : |LinearMap.det (Q334CLM : (Fin 21 → ℝ) →ₗ[ℝ] (Fin 21 → ℝ))| = 1 :=
+  continuousLinearMap_abs_det_eq_one_of_measurePreserving Q334CLM measurePreserving_Q334CLM
+
+/-- **The genuine chart fderiv** `phi334Deriv u = Q334CLM ∘L T334Deriv u`, the chain rule for
+`phi334 = Q334 ∘ T334`. -/
+noncomputable def phi334Deriv (u : Fin 21 → ℝ) : (Fin 21 → ℝ) →L[ℝ] (Fin 21 → ℝ) :=
+  Q334CLM.comp (T334Deriv u)
+
+/-- `pack334` (linear) has constant fderiv `pack334CLM`. -/
+theorem pack334_hasFDerivAt (w : Fin 21 → ℝ) : HasFDerivAt pack334 pack334CLM w := by
+  have h : HasFDerivAt (⇑pack334CLM) pack334CLM w := pack334CLM.hasFDerivAt
+  exact h.congr_of_eventuallyEq (by filter_upwards with v; rw [pack334CLM_coe])
+
+/-- **`phi334` has fderiv `phi334Deriv`** — the chain rule for `phi334 = paramsEquivFlat ∘ pack334 ∘ T334`
+(`= Q334 ∘ T334`). `T334` has fderiv `T334Deriv` (`T334_hasFDerivAt`); `pack334` and `paramsEquivFlat`
+are linear (their own constant fderivs), composing to `Q334CLM`. -/
+theorem phi334_hasFDerivAt (u : Fin 21 → ℝ) : HasFDerivAt phi334 (phi334Deriv u) u := by
+  -- phi334 = paramsEquivFlat ∘ (pack334 ∘ T334) = paramsEquivFlat ∘ chartParams334
+  have hchart : HasFDerivAt chartParams334 (pack334CLM.comp (T334Deriv u)) u := by
+    have hcomp : HasFDerivAt (fun v => pack334 (T334 v)) (pack334CLM.comp (T334Deriv u)) u :=
+      (pack334_hasFDerivAt (T334 u)).comp u (T334_hasFDerivAt u)
+    exact hcomp.congr_of_eventuallyEq (by filter_upwards with v; rw [chartParams334_eq_pack_T])
+  have hflat : HasFDerivAt (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ))
+      ((paramsEquivFlatCLE (![3, 3, 4] : Fin 3 → ℕ)).toContinuousLinearMap) (chartParams334 u) :=
+    hasFDerivAt_paramsEquivFlat _ _
+  have : HasFDerivAt (fun u => paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ) (chartParams334 u))
+      (((paramsEquivFlatCLE (![3, 3, 4] : Fin 3 → ℕ)).toContinuousLinearMap).comp
+        (pack334CLM.comp (T334Deriv u))) u :=
+    hflat.comp u hchart
+  rw [phi334Deriv, Q334CLM]
+  exact this
+
+/-- **The genuine chart Jacobian determinant** `|det Dφ334| = |u 0|⁷·|u 1|²` — the soundness-critical
+weight, matching `leafH334`. The composite `phi334Deriv = Q334CLM ∘ T334Deriv` has
+`|det| = |det Q334CLM|·|det T334Deriv| = 1·(|u 0|⁷·|u 1|²)` (`Q334CLM_abs_det` + `T334Deriv_abs_det`). -/
+theorem phi334_abs_det (u : Fin 21 → ℝ) :
+    |(phi334Deriv u).det| = |u 0| ^ 7 * |u 1| ^ 2 := by
+  rw [phi334Deriv, ContinuousLinearMap.det, ContinuousLinearMap.coe_comp, LinearMap.det_comp,
+    abs_mul, Q334CLM_abs_det, one_mul, ← ContinuousLinearMap.det, T334Deriv_abs_det]
+
+/-- `phi334` is differentiable (the genuine chart is C¹ — a composite of the polynomial `chartParams334`
+and the linear `paramsEquivFlat`). -/
+theorem differentiable_phi334 : Differentiable ℝ phi334 :=
+  fun u => (phi334_hasFDerivAt u).differentiableAt
+
+/-- **The `{u 1 = 0}` slice image is null.** The image of `(V \ {u 0 = 0}) ∩ {u 1 = 0}` under the C¹
+map `phi334` is Lebesgue-null (a C¹ image of a null set; `addHaar_image_eq_zero_of_differentiableOn_…`),
+since `{u 1 = 0}` is null (`coordZero_null 1`). The LHS half of the two-sided slice drop. -/
+theorem phi334_slice_image_null (V : Set (Fin 21 → ℝ)) :
+    (volume : Measure (Fin 21 → ℝ))
+        (phi334 '' ((V \ {x | x 0 = 0}) ∩ {x | x 1 = 0})) = 0 := by
+  refine MeasureTheory.addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume
+    differentiable_phi334.differentiableOn ?_
+  exact measure_mono_null Set.inter_subset_right (coordZero_null 1)
+
+/-- **The genuine geometric change-of-variables for `phi334`** (the `cov` field, sorry-free MODULO
+`Q334CLM_abs_det`). For measurable `V`,
+`∫⁻_{phi334 '' (V \ {u 0=0})} g = ∫⁻_{V \ {u 0=0}} ofReal(|u 0|⁷·|u 1|²)·g(phi334 u)`.
+
+Route (Codex `xhigh`): apply the Jacobian c-o-v (`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) on
+the doubly-punctured `(V \ {u 0=0}) \ {u 1=0}` (where `phi334` is `InjOn` — `phi334_injOn`), with
+`|det Dφ| = |u 0|⁷·|u 1|²` (`phi334_abs_det`); then add back the `{u 1=0}` slice as a TWO-SIDED null
+contribution (LHS image null — `phi334_slice_image_null`; RHS weight `|u 1|² = 0`, the slice itself
+null — `coordZero_null 1`). -/
+theorem phi334_cov (V : Set (Fin 21 → ℝ)) (hV : MeasurableSet V) (g : (Fin 21 → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in phi334 '' (V \ {x | x 0 = 0}), g x
+      = ∫⁻ u in V \ {x | x 0 = 0}, ENNReal.ofReal (|u 0| ^ 7 * |u 1| ^ 2) * g (phi334 u) := by
+  set S := V \ {x : Fin 21 → ℝ | x 0 = 0} with hS
+  set Sg := S \ {x : Fin 21 → ℝ | x 1 = 0} with hSg
+  have hSmeas : MeasurableSet S :=
+    hV.diff (measurableSet_eq_fun (measurable_pi_apply 0) measurable_const)
+  have hSgmeas : MeasurableSet Sg :=
+    hSmeas.diff (measurableSet_eq_fun (measurable_pi_apply 1) measurable_const)
+  -- the c-o-v on the doubly-punctured `Sg`
+  have hcov : ∫⁻ x in phi334 '' Sg, g x
+      = ∫⁻ u in Sg, ENNReal.ofReal |(phi334Deriv u).det| * g (phi334 u) := by
+    refine lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hSgmeas
+      (fun x _ => (phi334_hasFDerivAt x).hasFDerivWithinAt) ?_ g
+    -- `InjOn phi334 Sg` (off `{u 0=0} ∪ {u 1=0}`, `phi334_injOn`)
+    intro x hx y hy hxy
+    exact phi334_injOn ⟨hx.1.2, hx.2⟩ ⟨hy.1.2, hy.2⟩ hxy
+  -- rewrite the determinant weight
+  have hcov' : ∫⁻ x in phi334 '' Sg, g x
+      = ∫⁻ u in Sg, ENNReal.ofReal (|u 0| ^ 7 * |u 1| ^ 2) * g (phi334 u) := by
+    rw [hcov]; refine setLIntegral_congr_fun hSgmeas (fun u _ => ?_); rw [phi334_abs_det]
+  -- LHS: `phi334 '' S =ᵐ phi334 '' Sg` (the `{u 1=0}` slice image is null)
+  have hLHS : ∫⁻ x in phi334 '' S, g x = ∫⁻ x in phi334 '' Sg, g x := by
+    refine setLIntegral_congr ?_
+    rw [ae_eq_set]
+    constructor
+    · -- `phi334 '' S \ phi334 '' Sg` is null (⊆ the null slice image)
+      refine measure_mono_null ?_ (phi334_slice_image_null V)
+      rintro y ⟨⟨x, hxS, rfl⟩, hy⟩
+      by_cases hx1 : x 1 = 0
+      · exact ⟨x, ⟨hxS, hx1⟩, rfl⟩
+      · exact absurd ⟨x, ⟨hxS, hx1⟩, rfl⟩ hy
+    · -- `phi334 '' Sg \ phi334 '' S = ∅` (Sg ⊆ S)
+      rw [show phi334 '' Sg \ phi334 '' S = ∅ from by
+        rw [Set.diff_eq_empty]; exact Set.image_mono Set.diff_subset]
+      exact measure_empty
+  -- RHS: `Sg =ᵐ S` (`{u 1=0}` null)
+  have hRHS : ∫⁻ u in Sg, ENNReal.ofReal (|u 0| ^ 7 * |u 1| ^ 2) * g (phi334 u)
+      = ∫⁻ u in S, ENNReal.ofReal (|u 0| ^ 7 * |u 1| ^ 2) * g (phi334 u) := by
+    refine setLIntegral_congr (MeasureTheory.diff_ae_eq_self.2 ?_)
+    exact measure_mono_null Set.inter_subset_right (coordZero_null 1)
+  rw [hLHS, hcov', hRHS]
+
 /-- **The `(3,3,4)` HONEST achiever chart bundle** (`phi = phi334` the `b = a·β` genuine diffeo,
 binding axis `0`, unit `Ufun334`, the two-axis Jacobian `|u 0|⁷·|u 1|²`).
 
@@ -676,17 +1201,17 @@ binding axis `0`, unit `Ufun334`, the two-axis Jacobian `|u 0|⁷·|u 1|²`).
 Codex `xhigh`); the `b = a·β` substitution clears the Schur-shear `a⁻¹` pole, so `phi334` is a
 polynomial map reaching the deepest point (`phi334 0 = 0`, `phi334_zero`). The factorization
 `F∘phi334 = u₀²·Uval334` (SAME unit, `routeMCore_phi334`), the threshold `4` (`leafMonomialThreshold334_le`),
-the leaf-integrand (`leaf_integrand334`, two-axis), the `U ≤ B` upper bound (`Ufun334_le_on_box`), and
-the image containment (`phi334_image_subset_cubeBox`) are all banked sorry-free.
+the leaf-integrand (`leaf_integrand334`, two-axis), the `U ≤ B` upper bound (`Ufun334_le_on_box`), the
+image containment (`phi334_image_subset_cubeBox`), the `Ubound` a.e.-positivity, and the `cov`
+change-of-variables (`phi334_cov`) are all banked sorry-free.
 
-**ONE residual remains — the `cov` change-of-variables (`Ubound`'s a.e.-positivity rides on it).** It
-is the genuine geometric c-o-v (Mathlib `lintegral_image_eq_lintegral_abs_det_fderiv_mul` on
-`{u 0 ≠ 0}`): the chart is `InjOn` off `{u 0 = 0} ∪ {u 1 = 0}` and `HasFDerivAt` with `|det| =
-|u 0|⁷·|u 1|²`. The residual is the FORMALISATION of that determinant via the structural route
-(`b = aβ` det-`a²` ∘ Schur-shear det-`1` ∘ `pivotBlowup8` det-`u₀⁷`) and the InjOn/measurability
-plumbing — the per-node measure-plumbing the design certificate flags as the heavy `hfin` atom (cost
-driver 2). It is no longer FALSE (as it was for the degenerate `phi334`): the determinant is genuinely
-`−u₀⁷·u₁²`, matching `leafH334`. Left an HONEST `sorry` with this precise obstruction. -/
+**The `cov` field is PROVEN by `phi334_cov` (FULLY sorry-free).** The genuine geometric c-o-v
+(`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) on the doubly-punctured set off
+`{u 0 = 0} ∪ {u 1 = 0}` (`phi334_injOn`, `phi334_hasFDerivAt`) with the genuine structural determinant
+`|det Dφ| = |u 0|⁷·|u 1|²` (`phi334_abs_det`, the `b = aβ` det-`a²` ∘ Schur-shear det-`1` ∘
+`pivotBlowup8` det-`u₀⁷` factorisation), plus the two-sided `{u 1 = 0}` null-slice drop. The
+outer-reshape factor `|det Q334| = 1` (`Q334CLM_abs_det`) is proven via the reusable reshape
+measure-preservation. The structural determinant matching `leafH334` is genuine, not faked. -/
 noncomputable def achieverChart334 : L2AchieverChart where
   phi := phi334
   Ufun := Ufun334
@@ -710,44 +1235,7 @@ noncomputable def achieverChart334 : L2AchieverChart where
 
   Umeas := continuous_Ufun334.measurable
   leaf_integrand := leaf_integrand334
-  cov := by
-    -- RESIDUAL — the genuine geometric change-of-variables for the HONEST chart (NO LONGER FALSE;
-    -- it was `0 = ⊤` for the degenerate `phi334`, it is now a TRUE statement awaiting plumbing).
-    -- `phi334` is a genuine diffeo off `{u 0 = 0} ∪ {u 1 = 0}` (both null): it reads all 21 coords
-    -- (`chartA334_reads_u2`), is `InjOn` there (`phi334_injOn`, BANKED sorry-free — all 21 coords
-    -- recovered from the flat image), and `HasFDerivAt` with `|det Dφ| = |u 0|⁷·|u 1|²`. The det
-    -- `−u₀⁷·u₁²` is sympy-exact on the ACTUAL `chartA334`/`chartC334` entries (independently recomputed
-    -- in the tide-25 fidelity review; STRUCTURAL: `b = aβ` det-`a²` ∘ Schur-shear det-`1` ∘
-    -- `pivotBlowup8` det-`u₀⁷`). NB: the exploratory `genuine_chart_334c.py` predates the `b = aβ`
-    -- chart and gives only `−u₀⁷` (no `·u₁²`); trust the recomputation on the Lean entries, not that
-    -- script. The det is EXACTLY the bundle weight `∏_j |u_j|^{leafH334 j} = |u 0|⁷·|u 1|²`
-    -- (`leafH334_prod_eq`).
-    --
-    -- BANKED THIS TIDE (`Foundations.ParamsFlatLinear`, the SHARED general-`M` `hfin` atom — cost
-    -- driver 2, the prior precise obstruction): `paramsEquivFlat H` is now packaged as an honest
-    -- ℝ-linear iso `paramsEquivFlatLinear H : Params H ≃ₗ[ℝ] (Fin (flatDim H) → ℝ)` and continuous
-    -- linear equiv `paramsEquivFlatCLE H` (`*_coe`: SAME underlying function, by `rfl`), with the
-    -- constant fderiv `hasFDerivAt_paramsEquivFlat H` (the reindex CLM). The blocking gap — "no
-    -- `ContinuousLinearEquiv`/fderiv for the reindex" — is CLOSED. `Params H` also carries the sup-norm
-    -- `NormedAddCommGroup`/`NormedSpace`/`FiniteDimensional` (`inst*Params`), `rfl`-compatible with the
-    -- existing product topology (`instTopologicalSpaceParams_eq_norm`) — no diamond.
-    --
-    -- REMAINING (the narrowed residual, no longer the reindex): the genuine Jacobian c-o-v of the
-    -- SELF-map `Ψ := chartParams334 ∘ (paramsEquivFlat M334).symm : Params M334 → Params M334`, after
-    -- peeling the outer reindex by `MeasurePreserving.setLIntegral_comp_emb` (off the reindex det
-    -- entirely — `Ψ` operates in matrix-entry coordinates, where the structural det is explicit):
-    --   (i) `HasFDerivWithinAt`/`InjOn` of the inner polynomial matrix map `chartParams334` (each of
-    --       the 21 entries a monomial; `hasFDerivAt_pi` + `HasFDerivAt.mul`);
-    --   (ii) `|det DΨ| = |u 0|⁷·|u 1|²` via the structural factorisation in the matrix-entry basis,
-    --        reusing the BANKED `pivotBlowupOnDeriv_det` (`u₀⁷`), `det(shear)=1`, `det(b-subst)=a²=u₁²`
-    --        — NOT a 21×21 `Matrix.det` (which times out, see the file note);
-    --   (iii) c-o-v on `V \ ({u 0 = 0} ∪ {u 1 = 0})` (`phi334_injOn` BANKED), then add back the
-    --        `{u 1 = 0}` slice as a TWO-SIDED null contribution (LHS image in the null hyperplane
-    --        `{A(0,0) = u 1 = 0}`; RHS weight `|u 1|² = 0`) — NOT an InjOn extension.
-    -- The ALGEBRA (det value, factorization, threshold, InjOn) and the linear-iso/fderiv are
-    -- verified-exact / BANKED; the structural-det c-o-v + measure-plumbing is the remaining build
-    -- (Codex `xhigh`: ~400-600 lines). HONEST `sorry` with the narrowed obstruction.
-    sorry
+  cov := phi334_cov
   image_subset := phi334_image_subset_cubeBox
 
 /-- **The `(3,3,4)` achiever box-divergence** — `∫⁻_{cubeBox 21 ε} |routeMCore M334|^{−c'} = ⊤` for
@@ -762,14 +1250,23 @@ the binding-monomial threshold `4` (`leafMonomialThreshold334_le`), and the dive
 `monomialIntegrand_lintegral_box_eq_top`).
 
 **Proof state (honest `b = a·β` chart).** The degenerate `phi334` is REPLACED by a genuine diffeo:
-it reads ALL 21 coords (`chartA334_reads_u2`), reaches the origin (`phi334_zero`), is continuous, is
-`InjOn` off the null center (`phi334_injOn`), and the loss/threshold/leaf-integrand/image-containment/
-`Ubound` are sorry-free. ONE residual remains inside `achieverChart334` — the `cov` genuine geometric
-change-of-variables (NO LONGER a FALSE statement — the determinant is honestly `−u₀⁷·u₁² ≠ 0`,
-matching `leafH334`): Mathlib `lintegral_image_eq_lintegral_abs_det_fderiv_mul` + the structural
-determinant. It is the per-node measure-plumbing atom the `hfin` certificate flags (cost driver 2); the
-ALGEBRA is verified-exact. So `routeM334_box_diverges` is proven MODULO that measure-plumbing (down
-from a soundness-wall `sorry` to honest c-o-v plumbing). -/
+it reads ALL 21 coords (`chartA334_reads_u2`), reaches the origin (`phi334_zero`), is continuous,
+`InjOn` off the null center (`phi334_injOn`), `HasFDerivAt` with the genuine structural Jacobian
+`|det Dφ| = |u 0|⁷·|u 1|²` (`phi334_abs_det`, the product `pb334`-`u₀⁷` ∘ `shear334`-`1` ∘
+`bsubst334`-`u₁²`, all sorry-free), and the `cov` change-of-variables itself is PROVEN
+(`phi334_cov`: the Jacobian c-o-v on the doubly-punctured set off `{u 0=0} ∪ {u 1=0}` + the two-sided
+`{u 1=0}` null-slice drop). The loss/threshold/leaf-integrand/image-containment/`Ubound` are
+sorry-free.
+
+**FULLY sorry-free.** The outer-reshape factor `|det Q334| = 1` (`Q334CLM_abs_det`,
+`Q334 = paramsEquivFlat ∘ pack334` a coordinate permutation of the 21 flat coordinates) is proven via the
+reusable reshape measure-preservation `measurePreserving_pack334`
+(`measurePreserving_paramsPack_of_flatIdxEquiv` at the explicit slot bijection `fin21EquivFlatIdx334`,
+`Foundations/ParamsReshapeMP.lean`) + `continuousLinearMap_abs_det_eq_one_of_measurePreserving` (the
+per-node measure-plumbing the `hfin` certificate flags as cost driver 2 — banked once, shared across all
+binding nodes). The SOUNDNESS-critical structural determinant `|u 0|⁷·|u 1|²` (matching `leafH334`) is
+used genuinely throughout. `routeM334_box_diverges` is axiom-clean:
+`[propext, Classical.choice, Quot.sound, monomial_rlct]` (the single cited S2 leaf). -/
 theorem routeM334_box_diverges (c' : NNReal) (hc' : (4 : ℝ≥0∞) ≤ (c' : ℝ≥0∞))
     (ε : ℝ) (hε : 0 < ε) :
     ∫⁻ x in cubeBox 21 ε,
