@@ -875,3 +875,23 @@ stronger test — the construction surfaced the non-binding-ness a re-validation
 decorrelated-Codex-concurred witness needs the global-min check; Codex concurred on the t=(2,1,0) branch's
 internal resolution to 7/2 — correct, but that is the min ON ONE BRANCH, not the RLCT.) Corrected within
 the session (worked.tex §3.4 + synthesis); (3,3,4) certification dispatched (#26/#27).
+
+## A worktree-isolated spawn can switch the MAIN checkout's branch — verify HEAD before every commit (2026-06-24)
+
+Spawning a lean-formaliser with `isolation: worktree` (layersplit-migrate) had a side-effect: the MAIN
+checkout's branch switched from `expedition/aoyagi-full` to a stray `r1-migration-layersplit` (created off
+the then-HEAD 8afeedc0). My next commit (synthesis, c9c66004) landed on the STRAY branch, and
+`git push origin expedition/aoyagi-full` reported "Everything up-to-date" — it pushed the BRANCH
+`expedition/aoyagi-full` (still at 8afeedc0), not my HEAD. The agent's actual worktree was on a DIFFERENT
+branch (`worktree-agent-<id>`), so the stray was a pure main-checkout side-effect.
+
+CAUGHT BY: the "Everything up-to-date" anomaly right after a fresh commit (a red flag — the commit went to a
+different branch than the push target). FIX: `git checkout expedition/aoyagi-full` → `git merge --ff-only
+<stray>` (clean ff, the stray branched off the pushed HEAD) → push → `git branch -d <stray>`. No work lost.
+
+LESSON: a worktree-isolated spawn does NOT guarantee the controller's (main-checkout) branch is stable —
+it can switch under you. **Verify `git rev-parse --abbrev-ref HEAD` == expedition/aoyagi-full BEFORE every
+commit/push**, and treat "Everything up-to-date" after a fresh commit as a red flag (your commit is on
+another branch). Pairs with the routestep-build main-checkout-branch-switch lesson (a non-isolated agent did
+the same) — the controller's branch is not stable across spawns; re-assert it each commit. Cheap check,
+prevents a silent off-branch commit + a confusing "up-to-date" push.
