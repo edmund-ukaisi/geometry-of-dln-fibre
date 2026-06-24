@@ -82,3 +82,25 @@ collision saved it), but heavy wasted effort + controller overhead.
 worktree` collapses onto the controller's worktree); (ii) a reliable controller hard-stop for background
 tides (`TaskStop` didn't reach `Agent`-spawned ones). With (A)–(F) the collisions are structurally
 impossible (never two write-tides on one branch), but (i)+(ii) would make it cheap rather than disciplined.
+
+## R2-3a/b coordination near-misses (2026-06-24) — two refinements
+
+Two new wrinkles surfaced over R2-3a → R2-3b-1+2, both resolved with ZERO damage but worth protocol:
+
+- **(G) The controller must not commit a tide's *uncommitted* work in a shared worktree.** Twice a tide
+  finished a small addition (a docstring; then `isReduced_Sred`) and went **idle leaving it uncommitted**
+  in the working tree. The controller (green-gater) committed it directly to keep the branch clean. It
+  worked — the second time the tide even saw the controller's commit and built its card on top — but in a
+  **shared worktree the controller and the tide share one index**, so committing a tide's in-flight file
+  while the tide is still alive can race a `git add` the tide is about to issue. **Fix:** the write-baton
+  holder (the tide) commits its own work; if it idles with an uncommitted module, the controller sends a
+  one-line "commit it + report SHA" rather than committing on its behalf. Tightens (A)/(E): the controller
+  green-gates *committed* state, it does not author commits into a live tide's worktree. (Reinforces the
+  spec line now in every tide brief: **"commit finished work BEFORE going idle."**)
+- **(H) Messaging a shut-down teammate REVIVES it.** A courtesy "thanks, stand down" SendMessage to a
+  tide that had already approved its shutdown **resumed the process** (re-loaded with all prior messages
+  as a fresh prompt). To terminate cleanly: send the `shutdown_request`, get the `shutdown-approved` /
+  `teammate_terminated` event, then send **no further messages** to that teammate. Put the thanks/closure
+  *inside* the `shutdown_request` reason, not in a separate message afterward. (A revived idle tide is
+  harmless if it doesn't write, but it burns context and muddies the one-write-baton picture; re-terminate
+  with another `shutdown_request`, never a chat message.)
