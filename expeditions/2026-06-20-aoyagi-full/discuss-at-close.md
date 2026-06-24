@@ -169,3 +169,17 @@ it is NOT a cheap floor. **Honest realistic remaining (either option): person-we
 conceptual walls** — L2 value-fold (~1500-2500) + R1 cov (~400-600) + L=1 smooth base + wiring + D1 (L2-gated);
 general-L additionally needs the R1 hfin tree (which reuses the banked general-M per-node atom). This refines
 Items 6/9: "bounded" is correct, but the bound is person-weeks of grinding, front-loaded on the L2 value-fold.
+
+### Item 11 — REFINED (2026-06-24 ~20:50): the L2 PIN1 real bottleneck is the deepest-point-frame PIVOT RE-ARCHITECTURE.
+A decorrelated (Codex-xhigh) finding sharpened the L2 PIN1 picture, with no false progress (zero Lean edits). The
+frame fact `exists_deepest_lastLayer_pivotFrame` — banked + reviewer-SURVIVED, and which I'd reported above as the
+"reviewer-SURVIVED frame fact" foundation — certifies an ABSTRACT pivot frame; it is **not connected** to the actual
+deepest-point frame (`deepestPoint_frame`, which is rThreshold-aligned). The PIN1 close therefore needs a
+**deepest-point-frame pivot re-architecture** (re-target the last-layer arm to the pivot-aligned Q so the normal-form
+lands the pivot corner) BEFORE the J-migration + value-fold are mechanical. **Operator-relevant honesty:** this is the
+dominant L2 effort (7 chip-tides banked components but not the coupled core); the math is settled + the foundations
+banked, and the re-architecture is now correctly targeted + decomposed (Stage A additive/green-bankable = the
+connection itself; Stage B = the coupled migration). It does NOT change the magnitude (~1500-2500 LoC) or the option
+(i)/(ii) decision — both still need the L2 gauge chart — but it is the realistic L2 bottleneck to weigh when picking
+scope. No operator action required mid-flight; flagged for the close. The self-correction (over-credited abstract fact
+→ named for what it is → re-targeted) is the precision discipline working.

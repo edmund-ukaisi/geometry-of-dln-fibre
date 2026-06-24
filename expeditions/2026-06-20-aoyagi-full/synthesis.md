@@ -449,6 +449,31 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   + wiring (+ continuous_dlnLoss dedupe) + D1 (L2-gated) + the R1 hfin tree (general-L, reusing the banked per-node atom).
 - 2 tides: r1-cov-final (R1 cov), l2-pin1-valuefold (L2 PIN1 value-fold). Non-overlapping.
 
+**★ UPDATE-17 (2026-06-24) — L2 PIN1 REAL UNIT identified (frame-fact-connection gap): the deepest-point-frame PIVOT RE-ARCHITECTURE. Honest correction of the "frame fact cleared the migration" framing.**
+- **The finding (l2-pin1-converge @aff1bfff, Codex-xhigh-verified, ZERO false-progress edits):** the J-migration is
+  **NOT green-bankable** — and the blocker is deeper than framed. The frame fact `exists_deepest_lastLayer_pivotFrame`
+  (DeepestPivotFrame:233, which I'd celebrated as "reviewer-SURVIVED bedrock cleared for the migration") certifies an
+  **ABSTRACT** pivot frame Q with IsUnit B22 — but the call site uses `Qf last := (deepestPoint_frame …).2`, whose
+  `deepestPoint_frame_normal` (DeepestFrame:162) carries to the **rThreshold** corner `corM`, NOT the pivot Q. So
+  `hQf22` is NOT dischargeable at the call site, and changing `deepestEPivot`'s codomain split breaks
+  `deepestEPivot_base` (the origin product = the rThreshold corner, frame-INDEPENDENTLY, via
+  `prodAux_framedParamsReg_zero`). **HONEST CORRECTION:** the frame fact is *sound* but *not connected* to the actual
+  deepest-point frame; the connection is the unbuilt core. (Names results for what they are — the abstract fact was
+  over-credited as "cleared the migration".)
+- **The real unit = the deepest-point-frame pivot RE-ARCHITECTURE** (slots into `verify-l2-gauge-architecture.md`
+  unblock step 2, refined): re-target `deepestPoint_frame_exists`'s last-layer arm to the pivot-aligned Q so
+  `deepestPoint_frame_normal` lands the PIVOT corner; THEN the migration + value-fold + PIN2 are mechanical.
+- **RE-DECOMPOSITION (breaks the 7-tide all-or-nothing revert pattern):** **Stage A** = a NEW *additive* lemma
+  `deepestPoint_frame_pivot_exists` (the deepest point admits a pivot-aligned last-layer frame, B22=1; first/interior
+  arms unchanged — last-layer-only) — GREEN-BANKABLE on its own (doesn't touch the existing rThreshold lemma), and it
+  IS the connection the finding demands (abstract fact → actual deepest point). **Stage B** = the coupled consumer
+  migration (deepestEPivot split + _base + _sq_sum + PIN1 + PIN2), red-spanning, attempt-PIN1, honest red-state report
+  if it can't land (no revert, no no-op). Soundness: same deepest point, different (pivot) frame — RLCT-invariant;
+  verify #print axioms unchanged.
+- **`l2-frame-pivot-rearch` (a9c7dfa) commissioned** with this Stage-A/Stage-B brief. The L2 magnitude (Item 11,
+  ~1500-2500 LoC) is unchanged — the re-architecture is *within* it, now correctly targeted (not the J-migration).
+- 2 tides: r1-cov-final (a4e79a2, R1 cov — still running), l2-frame-pivot-rearch (a9c7dfa, L2 Stage A+B). Non-overlapping.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
