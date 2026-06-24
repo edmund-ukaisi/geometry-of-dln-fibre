@@ -8854,8 +8854,27 @@ Boundary: finite determinant-chart topology only.  No analytic regularity,
 analytic Jacobian determinant calculation, source-rank openness, source
 coverage, ideal-germ transport, regular-suspension certificate, normal
 crossings, pole order, or RLCT is proved.
-Next A2 target: probe the actual p. 13 regular-suspension chart/source
-production argument rather than adding another finite ideal regrouping wrapper.
+
+Latest A2 p.13 source regular-suspension boundary:
+`threads/03-block-product-reduction/reproduction-a2-p13-source-regular-suspension-boundary.md`
+pins the source split on pp. 10-14.  The p.13 literal lower-right block is
+`prod_s C^(s)-F3F2`, while the reduced residual family is `D=prod_s C^(s)`;
+the displayed RLCT shift by the regular-variable count remains a source
+assertion requiring analytic regular-suspension work, and the p.14 reduction
+to `r(s)=r` depends on Theorem 4.  Review passed in
+`threads/03-block-product-reduction/review-a2-p13-source-regular-suspension-boundary.md`.
+
+Lean adds only the source-side wrapper
+`exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq`
+in `RegularSuspensionCoordinates.lean`: from real rank/source hypotheses it
+chooses fixed-base regular-coordinate source data and returns the existing
+source-rank `nhdsWithin` factor-`2` comparison between the literal and cleaned
+p.13 finite square-sums.  This is not analytic regular-coordinate status,
+source coverage, ideal-germ transport, Jacobian/prior shift, a full
+normal-crossing certificate, Theorem 4, pole order, or RLCT.
+
+Next A2 target: the genuine analytic regular-suspension construction or a
+properly stated/proved Fubini-polar regular-variable shift theorem.
 
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected

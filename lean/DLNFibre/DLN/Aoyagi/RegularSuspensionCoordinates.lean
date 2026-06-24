@@ -2777,6 +2777,57 @@ theorem productDifferenceCoordinateMap_squareSum_eventually_le_two_mul_literalPr
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
+set_option linter.unusedSectionVars false in
+/-- Source rank data produce fixed-base regular-coordinate source data and the
+source-stratum factor-`2` comparison between the literal and cleaned p. 13
+product-difference square-sums.
+
+This is only a source-side finite square-sum wrapper.  It does not construct a
+regular-suspension chart, prove analytic ideal transport, compute a Jacobian,
+produce normal crossings, or extract an RLCT. -/
+theorem exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (H : ℕ → ℕ) (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hprod :
+      Module.finrank ℝ (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge :
+      ∀ p : Fin N,
+        Module.finrank ℝ (LinearMap.range (reverseEdge W B p)) = rEdge p)
+    (hH : ∀ k : Fin (N + 1),
+      H (k.val + 1) = Module.finrank ℝ (W k)) :
+    ∃ U₀ : Submodule ℝ (reverseVertex W 0),
+      ∃ hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)),
+        PaperEndpointFixedBaseRegularCoordinateSourceData
+            (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge ∧
+          ∀ᶠ x in
+            nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge),
+            aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+                2 * aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseProductDifferenceCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ Cedge x) ∧
+              aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseProductDifferenceCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+                2 * aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  rcases exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq
+      (K := ℝ) W B Cedge H r rEdge hCedge hbase hprod hedge hH with
+    ⟨U₀, hU₀, sourceData⟩
+  exact
+    ⟨U₀, hU₀, sourceData,
+      PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+          (W := W) (B := B) sourceData⟩
+
 end FixedBaseRealSmallness
 
 end Aoyagi

@@ -2609,3 +2609,37 @@ Boundary: finite determinant-chart topology only.  This does not prove
 analytic regularity, an analytic Jacobian determinant calculation,
 source-rank openness, source coverage, ideal-germ transport, a
 regular-suspension certificate, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 p.13 source regular-suspension boundary
+
+Reproduction:
+`reproduction-a2-p13-source-regular-suspension-boundary.md`.
+Statement card:
+`statement-card-a2-p13-source-regular-suspension-boundary.md`.
+Review:
+`review-a2-p13-source-regular-suspension-boundary.md`.
+
+The source audit pins the p. 13 split: after Theorem 3 the literal
+target-centered block is
+`[C1-Er, -F2; -F3, prod_s C^(s)-F3F2]`, while the reduced residual family is
+the entries of `D = prod_s C^(s)`.  Aoyagi then states the displayed RLCT
+shift by the regular count, but pp. 10-14 do not give the analytic
+regular-suspension construction, Jacobian/prior computation, coverage, or
+normal-crossing lift.  The p. 14 reduction to `r(s)=r` is also via Theorem 4,
+not Theorem 3 alone.
+
+Lean now adds only the reviewed source-side wrapper
+
+```text
+exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq
+```
+
+in `RegularSuspensionCoordinates.lean`.  From real rank/source data it chooses
+the existing fixed-base regular-coordinate source data and returns the existing
+source-rank-stratum factor-`2` comparison between the literal p. 13 square-sum
+and the cleaned square-sum.
+
+Boundary: source-data packaging plus finite real square-sum comparison only.
+No analytic regular-coordinate chart, source coverage, ideal-germ transport,
+Jacobian/prior shift, full normal-crossing certificate, Theorem 4 reduction,
+pole order, or RLCT equality is proved.

@@ -229,8 +229,13 @@ No such claim is formalisation-ready until both fields are filled.
   membership and the explicit dimension convention when `L=N`; the reduced
   certificate and its minimum/order facts remain supplied. The one-step
   determinant-chart coordinate change is now proved to be a homeomorphism
-  between the raw and chart determinant domains. The full source Theorem 3
-  claim remains blocked.
+  between the raw and chart determinant domains. The p. 13 source
+  regular-suspension boundary is now pinned: the lower-right literal block is
+  `prod_s C^(s)-F3F2`, the residual block is `prod_s C^(s)`, and the displayed
+  RLCT shift remains an unproved analytic regular-suspension assertion. Lean
+  now also packages the source-data constructor with the source-stratum
+  factor-`2` comparison between the literal and cleaned p. 13 finite
+  square-sums. The full source Theorem 3/RLCT claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -262,7 +267,9 @@ No such claim is formalisation-ready until both fields are filled.
   product-difference coordinate source data at
   `threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`;
   one-step determinant-chart coordinate equivalence at
-  `threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+  `threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`;
+  p. 13 source regular-suspension boundary at
+  `threads/03-block-product-reduction/reproduction-a2-p13-source-regular-suspension-boundary.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -292,7 +299,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-product-difference-coordinate-source-data.md`
   after a source-anchor wording repair; one-step determinant-chart coordinate
   equivalence reviewed by xhigh `Herschel the 4th` in
-  `threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+  `threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`;
+  p. 13 source regular-suspension boundary reviewed by xhigh `Gibbs the 4th`
+  in
+  `threads/03-block-product-reduction/review-a2-p13-source-regular-suspension-boundary.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -579,7 +589,12 @@ No such claim is formalisation-ready until both fields are filled.
   `aoyagiTheorem2RegularVariableCount`, its half-equality with the displayed
   regular term under endpoint rank-width bounds, and the finite
   `jacobianPriorLossShift` consequences for exponent minimum, finite order,
-  chart-certificate projections, and supplied finite-formula hypotheses.
+  chart-certificate projections, and supplied finite-formula hypotheses. Also
+  proved the source-side wrapper
+  `exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq`,
+  which chooses fixed-base regular-coordinate source data from real rank/source
+  hypotheses and returns the existing `nhdsWithin` source-rank factor-`2`
+  comparison between the literal and cleaned p. 13 finite square-sums.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

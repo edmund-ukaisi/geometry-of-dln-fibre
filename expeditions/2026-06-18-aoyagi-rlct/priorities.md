@@ -591,6 +591,20 @@ one-step change.  It is not analytic regularity, an analytic Jacobian theorem,
 source-rank openness, source coverage, ideal-germ transport, a
 regular-suspension certificate, pole order, normal crossings, or RLCT.
 
+A2 p.13 source regular-suspension boundary has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-source-regular-suspension-boundary.md`.
+The source audit pins the lower-right literal block as
+`prod_s C^(s)-F3F2`, separates the reduced residual family `prod_s C^(s)`,
+and records that the p.13 RLCT shift is asserted but not analytically proved
+on pp. 10-14; the p.14 `r(s)=r` step is Theorem 4-dependent.  Lean adds only
+`exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source_of_rank_eq`,
+which chooses the fixed-base regular-coordinate source data from real
+rank/source hypotheses and returns the existing source-rank `nhdsWithin`
+factor-`2` comparison between the literal and cleaned finite square-sums.
+Next A2 work is the genuine analytic regular-suspension construction or a
+proper Fubini/polar regular-variable shift theorem, not another finite
+source-data wrapper.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds
