@@ -7493,8 +7493,29 @@ Statement card:
 `threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
-Nonclaims: no specialization to actual `suffixState` yet, no analytic chart,
-no ideal transport, no normal crossings, pole order, or RLCT extraction.
+Nonclaims: this arbitrary-state adapter does not itself choose the actual
+recursive `suffixState`; that specialization is recorded in the next A2 slice.
+No analytic chart, ideal transport, normal crossings, pole order, or RLCT
+extraction is proved here.
+
+Latest A2 suffix-state step coordinate specialization:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_triangularBlockProduct`
+and
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_productDifference`.
+They specialize the arbitrary suffix-state adapter to the actual recursive
+`suffixState E j p.succ hpj`, choose the lower-unitriangular witness for `S.L`
+from `suffixState_L_eq_lowerUnitriangular`, and produce the p. 13 triangular
+product and signed product-difference identities for
+`P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj)`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-specialization.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-specialization.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-specialization.md`.
+Nonclaims: no derivation of `S.BlockDiagonal` from global chart hypotheses,
+no analytic chart, no ideal transport, no normal crossings, pole order, or
+RLCT extraction.
 
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves

@@ -47,10 +47,9 @@ No inverse of `S.D` is used.
 
 ## Deferred
 
-This does not yet specialize the adapter to the actual recursive
-`suffixState` by invoking `suffixState_L_eq_lowerUnitriangular`; that remains
-a small later wrapper.  The coordinate-ideal naming bridge remains in the
-ideal/coordinate layer.
+The actual recursive `suffixState` specialization is recorded separately in
+`statement-card-a2-suffix-state-step-coordinate-specialization.md`.  The
+coordinate-ideal naming bridge remains in the ideal/coordinate layer.
 
 ## Nonclaims
 

@@ -2229,3 +2229,33 @@ Boundary: finite block algebra only.  `BlockDiagonal` alone does not prove
 `S.L` is lower unitriangular; the adapter takes that witness as an input.
 The determinant chart is on `transformedEdge E p S`, not raw `E p`, and no
 inverse of `S.D` is used.
+
+## 2026-06-24 A2 suffix-state step coordinate specialization
+
+Reproduction:
+`reproduction-a2-suffix-state-step-coordinate-specialization.md`.
+Statement card:
+`statement-card-a2-suffix-state-step-coordinate-specialization.md`.
+Review:
+`review-a2-suffix-state-step-coordinate-specialization.md`.
+
+Lean now specializes the previous arbitrary-suffix-state coordinate adapter to
+the actual recursive state:
+
+```text
+ChartLocalSuffixState.suffixState_stepRawCoordinates_triangularBlockProduct
+ChartLocalSuffixState.suffixState_stepRawCoordinates_productDifference
+```
+
+For `S = suffixState E j p.succ hpj`, the wrappers keep the local hypotheses
+`S.BlockDiagonal P hpj` and
+`identityCornerDetChart (transformedEdge E p S)`, choose the lower-left
+witness `F3prev` from `suffixState_L_eq_lowerUnitriangular`, and apply the
+generic `stepRawCoordinates_*` theorems.  The product matrix is still
+`P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj)`, while the raw
+coordinate corners come from `transformedEdge E p S`.
+
+Boundary: finite block algebra only.  This does not derive `S.BlockDiagonal`
+from global recursion hypotheses, and it does not prove analytic chart
+coverage, ideal transport, regular-suspension construction, normal crossings,
+pole order, or RLCT.

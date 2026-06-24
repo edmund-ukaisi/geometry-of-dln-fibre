@@ -1469,6 +1469,78 @@ theorem suffixState_blockDiagonal
     simpa [motive] using hcanon
   simpa [BlockDiagonal, hPproof hij (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))] using hcanon'
 
+/-- For the actual recursive suffix state, the p. 13 raw-step coordinates give
+the next triangular block product. -/
+theorem suffixState_stepRawCoordinates_triangularBlockProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (hS : (suffixState E j p.succ hpj).BlockDiagonal P hpj)
+    (hM : identityCornerDetChart
+      (transformedEdge E p (suffixState E j p.succ hpj))) :
+    ∃ F3prev : Matrix (κ j) ρ K,
+      let S : ChartLocalSuffixState ρ κ K j p.succ := suffixState E j p.succ hpj
+      let x := stepRawCoordinates E p S F3prev
+      let y : ProductReductionStepChartCoordinates ρ (κ j) (κ p.succ) (κ p.castSucc) K :=
+        x.toChart
+      fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix (κ j) (κ j) K) *
+          P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) *
+          fromBlocks (1 : Matrix ρ ρ K) y.F2 0
+            (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+      fromBlocks y.Ctop 0 0 (y.D * y.C) := by
+  let S : ChartLocalSuffixState ρ κ K j p.succ := suffixState E j p.succ hpj
+  have hS' : S.BlockDiagonal P hpj := by
+    simpa [S] using hS
+  have hM' : identityCornerDetChart (transformedEdge E p S) := by
+    simpa [S] using hM
+  rcases suffixState_L_eq_lowerUnitriangular (K := K) E hpj with ⟨F3prev, hSL⟩
+  refine ⟨F3prev, ?_⟩
+  simpa [S] using
+    stepRawCoordinates_triangularBlockProduct
+      (E := E) (P := P) hsuccRight p hpj S F3prev hS' hSL hM'
+
+/-- For the actual recursive suffix state, the p. 13 raw-step coordinates give
+the signed product-difference block. -/
+theorem suffixState_stepRawCoordinates_productDifference
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (hS : (suffixState E j p.succ hpj).BlockDiagonal P hpj)
+    (hM : identityCornerDetChart
+      (transformedEdge E p (suffixState E j p.succ hpj))) :
+    ∃ F3prev : Matrix (κ j) ρ K,
+      let S : ChartLocalSuffixState ρ κ K j p.succ := suffixState E j p.succ hpj
+      let x := stepRawCoordinates E p S F3prev
+      let y : ProductReductionStepChartCoordinates ρ (κ j) (κ p.succ) (κ p.castSucc) K :=
+        x.toChart
+      fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix (κ j) (κ j) K) *
+          (P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) -
+            fromBlocks (1 : Matrix ρ ρ K) 0
+              (0 : Matrix (κ j) ρ K) (0 : Matrix (κ j) (κ p.castSucc) K)) *
+          fromBlocks (1 : Matrix ρ ρ K) y.F2 0
+            (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+        fromBlocks (y.Ctop - 1) (-y.F2) (-y.F3) (y.D * y.C - y.F3 * y.F2) := by
+  let S : ChartLocalSuffixState ρ κ K j p.succ := suffixState E j p.succ hpj
+  have hS' : S.BlockDiagonal P hpj := by
+    simpa [S] using hS
+  have hM' : identityCornerDetChart (transformedEdge E p S) := by
+    simpa [S] using hM
+  rcases suffixState_L_eq_lowerUnitriangular (K := K) E hpj with ⟨F3prev, hSL⟩
+  refine ⟨F3prev, ?_⟩
+  simpa [S] using
+    stepRawCoordinates_productDifference
+      (E := E) (P := P) hsuccRight p hpj S F3prev hS' hSL hM'
+
 /-- A deterministic block-diagonal suffix state gives Aoyagi-style triangular multipliers. -/
 theorem suffixState_blockDiagonal_exists_triangularBlockDiagonal
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}

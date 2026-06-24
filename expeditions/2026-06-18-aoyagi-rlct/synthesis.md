@@ -8623,9 +8623,24 @@ Statement card:
 `threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
-Next A2 target: specialize from arbitrary `S` plus lower-unitriangular witness
-to the actual recursive `suffixState` using
-`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`.
+
+Latest A2 suffix-state step coordinate specialization:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_triangularBlockProduct`
+and
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_productDifference`.
+These wrappers set `S = suffixState E j p.succ hpj`, choose `F3prev` using
+`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`, and apply the
+generic `stepRawCoordinates_*` product identities.  They deliberately keep
+`S.BlockDiagonal P hpj` and the transformed-edge determinant chart as local
+hypotheses; global recursion inputs are for outer callers.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-specialization.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-specialization.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-specialization.md`.
+Next A2 target: the coordinate-ideal naming bridge in the later
+ideal/coordinate layer.
 
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected

@@ -212,6 +212,11 @@ No such claim is formalisation-ready until both fields are filled.
   proved pointwise: after the triangular endpoint form, subtracting
   `fromBlocks 1 0 0 0` gives
   `fromBlocks (Ctop - 1) (-F2) (-F3) (D - F3 * F2)`. The scalar
+  p. 13 coordinate package is now connected to the deterministic suffix-state
+  step: the actual recursive `suffixState` supplies the lower-unitriangular
+  left witness existentially, and the one-step wrappers produce the next
+  triangular product and signed product-difference identities for
+  `P p.castSucc j`. The
   matrix-entry-ideal consequence of that product-difference matrix is now also
   packaged at the fixed-base/source-rank boundary: determinant-unit triangular
   multiplication transports the entry ideal of `T - T0` to the cleaned
@@ -4604,6 +4609,26 @@ Statement card:
 `threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
+
+Latest A2 suffix-state step coordinate specialization:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_triangularBlockProduct`
+and
+`ChartLocalSuffixState.suffixState_stepRawCoordinates_productDifference`.
+These wrappers specialize the arbitrary `S` adapter to
+`S = suffixState E j p.succ hpj`, use
+`suffixState_L_eq_lowerUnitriangular` to choose `F3prev`, and keep only the
+local inputs `S.BlockDiagonal P hpj` and the determinant chart for
+`transformedEdge E p S`.  The product matrix is
+`P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj)`, not the transformed
+edge.  This is finite block algebra only: no global chart derivation, analytic
+coverage, ideal transport, normal crossings, pole order, or RLCT extraction.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-specialization.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-specialization.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-specialization.md`.
 
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
