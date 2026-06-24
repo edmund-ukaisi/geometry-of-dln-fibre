@@ -10,7 +10,7 @@
 > to the quotient.
 >
 > - **Lean (defs):** `DLNFibre.Core.repStratumEquiv`, `deepBaseComap`, `ΔPdeep`, `IadDeep`, `Sred`
->   (`lean/DLNFibre/Core/DeepChartRing.lean` @ `5cb77d77`)
+>   (`lean/DLNFibre/Core/DeepChartRing.lean` @ `85824f9f`)
 > - **Lean (transport):** `DLNFibre.Core.deepBaseComap_detPivot` (same file/SHA)
 > - **Lean (ideal direction):** `DLNFibre.Core.deepBaseComap_sigmaIdeal_le`,
 >   `DLNFibre.Core.Iad_le_comap_IadDeep` (same file/SHA)
@@ -74,5 +74,6 @@
 >   built; this tide supplies the chart ring it lives on and the base→total map giving it its
 >   `R`-algebra structure.
 >
-> - **Status.** sorry-free, axiom-clean (awaiting reviewer fidelity check + aggregator wiring —
->   `import DLNFibre.Core.DeepChartRing`).
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS on all six axes + decorrelated Codex
+>   FIDELITY-PASS, `threads/18-deep-chart-ring/codex/fidelity-review-*.md`). Awaiting aggregator
+>   wiring — `import DLNFibre.Core.DeepChartRing`.
