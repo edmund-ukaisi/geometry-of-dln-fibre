@@ -7237,6 +7237,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
 
+Latest A4 Case 2 transition constructed old-top `Cprime` source-current stack:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_constructedWithOldTopFromCprime_sourceSubstitution_of_displayed_normalized_ne_zero`.
+It instantiates the displayed-overlap continuing source-current stack wrapper
+with the constructed old-top/free-`Cprime` `SourceProductionObligation`.  The
+exposed current following factor is the constructed `[Cold; Q*Cprime]` block,
+and the successor following factor is the formula-level
+`case2DisplayedSourceSuccessorFollowingFactor ... C`; the proof-local terminal
+matrix inside the obligation remains the source-row reindexing of
+`[Cold; top(Cprime)]`.  This is transition/source-substitution/stack
+bookkeeping only: no source production of `Csucc` or `C'^(S+1)`, suffix
+construction, successor chart construction, transition regularity, coverage,
+normal crossings, pole order, termination, RLCT, or printed-vector repair is
+proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

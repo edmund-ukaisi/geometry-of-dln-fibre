@@ -6998,6 +6998,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
 
+Latest A4 Case 2 transition constructed old-top `Cprime` source-current stack:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_constructedWithOldTopFromCprime_sourceSubstitution_of_displayed_normalized_ne_zero`.
+On the displayed normalized overlap, it constructs the
+`SourceProductionObligation` for arbitrary old-top rows `Cold`, free displayed
+`Cprime`, and supplied suffix matrices `Ctail`, then consumes the existing
+supplied-`Csucc` transition stack theorem.  It keeps the current following
+factor as the constructed `[Cold; Q*Cprime]` data, keeps the successor as the
+formula-level `case2DisplayedSourceSuccessorFollowingFactor ... C`, and keeps
+the constructed obligation's terminal matrix as the source-row reindexing of
+`[Cold; top(Cprime)]`.  This is not source production, suffix construction,
+chart construction, transition regularity, coverage, normal crossings, pole
+order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

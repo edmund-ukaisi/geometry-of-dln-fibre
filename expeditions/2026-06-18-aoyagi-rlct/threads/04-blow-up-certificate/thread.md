@@ -6364,3 +6364,33 @@ still supplied.  This is interface packaging only: it does not source-produce
 `Csucc` or `C'^(S+1)`, construct suffixes or successor charts, prove transition
 regularity or coverage, prove normal crossings, pole order, termination, or
 RLCT.
+
+## 2026-06-24 Lean Case 2 transition constructed old-top `Cprime` source-current stack
+
+Reproduction:
+`reproduction-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+
+Lean now specializes the displayed-overlap continuing source-current stack
+transition wrapper to the constructed old-top/free-`Cprime` source following
+factor:
+
+```text
+sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_constructedWithOldTopFromCprime_sourceSubstitution_of_displayed_normalized_ne_zero
+```
+
+The theorem constructs the needed `SourceProductionObligation` from `Cold`,
+`Cprime`, and the supplied suffix family `Ctail`, using the proof-local terminal
+matrix given by the source-row reindexing of
+`[Cold; case2DisplayedFreeCprimeTop ... Cprime]`.  It then consumes the
+existing supplied-`Csucc` transition stack theorem.  The exposed following
+factor is the constructed `C = [Cold; Q*Cprime]`, while the successor is only
+the formula-level `case2DisplayedSourceSuccessorFollowingFactor ... C`.
+
+This is finite transition/source-substitution/stack packaging only.  It does
+not source-produce `Csucc` or `C'^(S+1)`, construct suffixes or successor
+charts, prove transition regularity or coverage, prove normal crossings, pole
+order, termination, RLCT, or repair the printed Case 2 vector mismatch.

@@ -2737,3 +2737,14 @@ of `[Cold; top(Cprime)]`, then transports
 This is only an interface specialization; it still does not source-produce
 `Csucc` or `C'^(S+1)`, construct suffixes or successor charts, prove transition
 regularity, coverage, normal crossings, pole order, termination, or RLCT.
+
+The constructed old-top/free-`Cprime` transition stack wrapper has now landed in
+`threads/04-blow-up-certificate/reproduction-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Lean proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_constructedWithOldTopFromCprime_sourceSubstitution_of_displayed_normalized_ne_zero`.
+This consumes the constructed `SourceProductionObligation` package inside the
+displayed-overlap transition wrapper.  It removes one supplied-obligation
+argument from the source-current transition stack path, but it still leaves
+source production of `Csucc`/`C'^(S+1)`, suffix construction, successor chart
+construction, transition regularity, coverage, normal crossings, pole order,
+termination, and RLCT outside the theorem.

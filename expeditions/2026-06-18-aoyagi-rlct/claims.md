@@ -4592,3 +4592,22 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-source-production-obligation.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-source-production-obligation-a4.md`.
+
+Latest A4 Case 2 transition constructed old-top `Cprime` source-current stack:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_constructedWithOldTopFromCprime_sourceSubstitution_of_displayed_normalized_ne_zero`.
+It constructs the required `SourceProductionObligation` from arbitrary `Cold`,
+free displayed `Cprime`, and supplied suffix matrices `Ctail`, then consumes
+the existing supplied-`Csucc` displayed-overlap source-current stack theorem.
+The source-current side uses the constructed following factor
+`[Cold; Q*Cprime]`; the successor side is the formula-level successor for that
+factor; the lower-left substitution block is rewritten to the original
+source-selected block.  This proves no source production of `Csucc` or
+`C'^(S+1)`, no suffix construction, no successor charts, no transition
+regularity, no chart coverage, no normal crossings, no pole order, no
+termination, and no RLCT consequence.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-constructed-oldtop-cprime-source-current-stack.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-constructed-oldtop-cprime-source-current-stack-a4.md`.
