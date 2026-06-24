@@ -17,11 +17,18 @@ ASSEMBLY `routeM334_box_diverges_of_chart` (sorry-free FROM the chart bundle, fe
 leaf atom `monomial_rlct`). The capstone `routeM334_box_diverges` (and the `(3,3,4)` cross-check at
 `c' = 4`) follow by applying the assembly to the chart `achieverChart334`.
 
-The THREE residual `sorry`s are all in `achieverChart334`, the GEOMETRIC chart construction (the
-equidimensional Jacobian-`u⁷` change-of-variables, the image containment, and the a.e.-positivity of
-the unit) — the measure-plumbing, isolated with precise sub-blockers (Codex `l2-cov-answer.md`: the
-factored c-o-v `measurePreserving_shearAt`-shear ∘ `pivotBlowupOn`-det route). No other axiom /
-`native_decide`; the exact `F = u²·U` is PROVEN, not faked.
+The THREE residual `sorry`s are all in `achieverChart334`, the GEOMETRIC chart construction. No other
+axiom / `native_decide`; the exact `F = u²·U` is PROVEN, not faked.
+
+**⛔ SOUNDNESS FLAW (2026-06-24).** One of those three — the `cov` change-of-variables — is a FALSE
+statement, so the chart bundle `achieverChart334` is VACUOUS and the capstone `routeM334_box_diverges`
+HAS NO HONEST PROOF as currently architected (it builds only via the `sorry` in `cov`). The chart
+`chartParams334` pins `A(0,1)=A(0,2)=0` and drops the input coords `u₂,u₃`, so `phi334 : ℝ²¹ → ℝ²¹`
+has Jacobian `det ≡ 0` (rank 19) and Lebesgue-null image; the `cov` field then asserts `0 = ⊤`.
+Confirmed by sympy + independent Codex `xhigh`. The headline STATEMENT may still be true; this is a
+broken proof route, needing a controller-level chart redesign (make `b=(u₂,u₃)` free + shear back to
+flat coords, see the `achieverChart334` docstring). Details + the re-triage of all three residuals are
+in that docstring and the inline `cov` sub-blocker.
 
 ## The construction (concrete `(3,3,4)`, the binding corank-2 anchor; `minAdm = 8`)
 
@@ -462,26 +469,45 @@ theorem leaf_integrand334 (c : ℝ) (u : Fin 21 → ℝ) :
   ring
 
 /-- **The `(3,3,4)` achiever chart bundle** (`phi = phi334`, binding axis `p = 0`, unit `Ufun334`).
-The factorization / bounds / measurability / leaf-integrand are banked sorry-free; the geometric
-c-o-v (`cov`, the equidimensional chart Jacobian `|det Dφ| = |u₀|⁷` via the Schur shear ∘
-`pivotBlowupOn`) and the image containment (`image_subset`) are the residual obligations.
+The factorization / bounds / measurability / leaf-integrand are banked sorry-free.
 
-**RESIDUAL (the three honest `sorry`s, with precise sub-blockers — all in `achieverChart334`, the
-geometric chart construction; the soundness-critical algebra and the divergence assembly are
-sorry-free):** the `Ubound` a.e.-positivity (the vanishing locus `{U=0}` is null), the `cov`
-(equidimensional chart Jacobian `|det| = |u₀|⁷`), and the `image_subset` (chart image containment).
-- `cov`: the change-of-variables for `phi334 = paramsEquivFlat M334 ∘ chartParams334`. SUB-BLOCKER:
-  factor `chartParams334` (in flat coords, via `paramsEquivFlat`) as `schurShear ∘ pivotBlowupOn
-  active₈ 0` where `active₈` is the 8-element flat active set (the `Δ`+`τ`+pivot coordinates), the
-  Schur shear is measure-preserving (`measurePreserving_shearAt` ×8, the `T = y + a⁻¹bS` / `D = E −
-  ca⁻¹b` transvections), and `pivotBlowupOnDeriv_det` gives `|det| = |u₀|⁷`. The factored c-o-v
-  (`measurePreserving` shear + `perChart` on the blow-up) discharges it (Codex `l2-cov-answer.md`).
-- `image_subset`: `phi334 '' [0,δ]²¹ ⊆ cubeBox 21 ε` for small `δ`. SUB-BLOCKER: `phi334` is
-  continuous (`paramsEquivFlat` continuous ∘ `chartParams334` polynomial) and `phi334 0 = 0` (EVERY
-  chart entry vanishes at `u = 0`: the minor `a = u 1 = 0`, the cross strips `0`, the blown-up entries
-  carry `u 0 = 0`), so the preimage of the open cube `(−ε,ε)²¹` is an open nbhd of `0` and contains a
-  `cubeBox 21 δ` (`cubeBox_subset_of_isOpen`), exactly as `phiUnit_image_subset_cubeBox` (the `(2,2,2)`
-  analog). The continuity of the `Params`-valued `chartParams334` is the one piece of plumbing. -/
+**SOUNDNESS FLAW (found 2026-06-24, confirmed by sympy + independent Codex `xhigh`): the `cov`
+field is a FALSE statement, so this bundle is VACUOUS and `routeM334_box_diverges` cannot be honestly
+completed with `phi334` as currently defined. This is an ARCHITECTURAL defect, not measure-plumbing.**
+
+  Reason. `chartParams334` pins the two `A`-entries `A(0,1) = A(0,2) = 0` to CONSTANTS and never
+  reads the input coords `u 2`, `u 3`. So as a map `phi334 : (Fin 21 → ℝ) → (Fin 21 → ℝ)`:
+  • its 21×21 Jacobian is rank `19`, `det ≡ 0` (NOT `|u₀|⁷`) — kernel directions `∂/∂u₂, ∂/∂u₃`;
+  • its image lies in the codim-2 set `{x | x_{A01} = x_{A02} = 0}`, which is Lebesgue-NULL in `ℝ²¹`;
+  • it is `InjOn` on no positive-measure set.
+  The `cov` field asserts `∫⁻_{phi '' (V\{x₀=0})} g = ∫⁻_{V\{x₀=0}} ofReal(|u₀|⁷)·g(phi u)`. The LHS
+  integrates over a null image set, so `= 0` for the assembly's `g ≥ 0`; the RHS carries weight
+  `|u₀|⁷ > 0` a.e. and is the DIVERGENT monomial integral (`= ⊤`). The field therefore asserts
+  `0 = ⊤`. Mathlib's `lintegral_image_eq_lintegral_abs_det_fderiv_mul` requires `InjOn` + the actual
+  derivative `det`; here that `det ≡ 0`, so it yields `∫_{image} g = ∫ ofReal(0)·g(phi) = 0`, never
+  `|u₀|⁷`. The forbidden-to-touch sorry-free assembly `routeM334_box_diverges_of_chart` is correct
+  GIVEN a bundle; it is the bundle (this chart) that cannot exist. The HEADLINE STATEMENT may still
+  be true — this is a broken proof route, not a refutation — but it has no honest Lean proof here.
+
+  Minimal fix (controller-level redesign; NOT done here — it changes the soundness-critical
+  `dlnLoss_chartParams334` / `routeMCore_phi334`, which this thread is gated against altering):
+  make `b = (u₂,u₃)` GENUINELY FREE and use the Schur shear back to flat coords (`T = y − a⁻¹bS`,
+  `D = E + ca⁻¹b`) composed with the 8-coord pivot blow-up (`y = u₀·(1,τ)`, `E = u₀·Δ`). The product
+  is still `A·C = [[a·y],[c·y + E·S]]` so the loss factor `u₀²·U` SURVIVES, while `b` stays a coord
+  and the map becomes a genuine diffeo with `|det| = |u₀|⁷`. CAVEAT (Codex): the shear is regular only
+  off `{a = u₁ ≠ 0}`, but the achiever curve passes through the origin (`a = 0`); the `a⁻¹bS` terms
+  then create a separate `image_subset` / exceptional-locus obstruction that the redesign must resolve
+  (e.g. shift `a` away from `0`, or take the shear's exceptional locus into the dropped null set).
+
+**RESIDUALS, re-triaged against the flaw:**
+- `cov`: FALSE as stated (see above). NOT closable with this `phi334`. Honest `sorry` retained; this
+  is the soundness wall surfaced to the controller.
+- `image_subset` (`phi334 '' [0,δ]²¹ ⊆ cubeBox 21 ε`): independently TRUE and closable (continuity +
+  `phi334 0 = 0`; image-null does not block set-containment) — but stated against the to-be-redesigned
+  `phi334`, so left `sorry` pending the chart redesign rather than proved against a chart that changes.
+- `Ubound` a.e.-positivity (`0 < Ufun334` a.e.): independently TRUE and closable (`Ufun334 ≥ (u₁)²`,
+  vanishing locus a proper subvariety) — `Ufun334` SURVIVES the redesign; left `sorry` for the same
+  reason (kept with the bundle it belongs to). -/
 noncomputable def achieverChart334 : L2AchieverChart where
   phi := phi334
   p := 0
@@ -490,28 +516,40 @@ noncomputable def achieverChart334 : L2AchieverChart where
     obtain ⟨B, hB1, hBle⟩ := Ufun334_le_on_box δ
     refine ⟨B, lt_of_lt_of_le one_pos hB1, hBle, ?_⟩
     -- RESIDUAL: `0 < Ufun334` a.e. on `[0,δ]²¹` — i.e. the vanishing locus `{Ufun334 = 0}` is null.
-    -- SUB-BLOCKER: `Ufun334 = Uval334(u1,…) ≥ 0` vanishes only on the proper algebraic subvariety
-    -- `{u1 = 0 ∧ c·(1,τ)+Δ·S = 0}` (codim ≥ 1, a measure-zero set, independent of the pivot `u 0`);
-    -- `ae_iff` + `measure_mono_null` onto that subvariety (a finite union of coordinate-defined
-    -- determinantal loci, each null by `addHaar`-of-proper-submanifold).
+    -- This residual is independently TRUE and closable: `Ufun334 = Uval334(u1,…) ≥ 0` vanishes only
+    -- on the proper algebraic subvariety `{u1 = 0 ∧ c·(1,τ)+Δ·S = 0}` (codim ≥ 1, measure-zero,
+    -- independent of the pivot `u 0`); `ae_iff` + `measure_mono_null` onto that subvariety (a finite
+    -- union of coordinate-defined determinantal loci, each null by `addHaar`-of-proper-submanifold).
+    -- LEFT `sorry`: the bundle is VACUOUS (the `cov` field below is a FALSE statement — see the
+    -- `achieverChart334` docstring), so closing this honest field cannot make the headline sound;
+    -- the chart needs a controller-level redesign that will change `phi334` (and may change this
+    -- field's surrounding chart, though `Ufun334` itself survives). Not proved against a chart that
+    -- is to be replaced.
     sorry
   Umeas := continuous_Ufun334.measurable
   leaf_integrand := leaf_integrand334
   cov := by
-    -- RESIDUAL: the equidimensional change-of-variables for `phi334 = paramsEquivFlat M334 ∘
-    -- chartParams334`, Jacobian `|det Dφ| = |u₀|⁷`. SUB-BLOCKER: factor (in flat coords, conjugating
-    -- by the measure-preserving `paramsEquivFlat`) as `schurShear ∘ pivotBlowupOn active₈ 0` —
-    -- `active₈` the 8-element flat active set (the `τ`+`Δ`+pivot coords); the Schur shear
-    -- `T = y + a⁻¹bS`, `D = E − ca⁻¹b` is measure-preserving (`measurePreserving_shearAt` ×8); the
-    -- pivot blow-up carries `|det| = |u₀|^{8−1} = |u₀|⁷` (`pivotBlowupOnDeriv_det`). The factored
-    -- c-o-v (`perChart` on the blow-up + the m.p. shear, off the null `{u₀=0}`) discharges it.
+    -- ⛔ SOUNDNESS WALL — this field is a FALSE statement; it has NO honest proof with this `phi334`.
+    -- `phi334 = paramsEquivFlat M334 ∘ chartParams334` pins `A(0,1)=A(0,2)=0` (constants) and never
+    -- reads `u 2`, `u 3`, so its 21×21 Jacobian has `det ≡ 0` (rank 19, NOT `|u₀|⁷`) and its image
+    -- is Lebesgue-NULL in `ℝ²¹`. The field then asserts `0 = ⊤` (null-image LHS vs the divergent
+    -- weighted RHS). Confirmed by sympy (`det J = 0`, rank 19) + independent Codex `xhigh`. The
+    -- earlier sub-blocker (factor `chartParams334 = schurShear ∘ pivotBlowupOn active₈ 0`) is WRONG:
+    -- `chartParams334` is not such a composite — `b = (u₂,u₃)` are dropped, not shear-absorbed. The
+    -- FIX is a controller-level chart redesign (make `b` free, shear back to flat; see the
+    -- `achieverChart334` docstring), which alters the gated soundness-critical `dlnLoss_chartParams334`
+    -- / `routeMCore_phi334` and so is OUT OF SCOPE for this thread. Honest `sorry` retained.
     sorry
   image_subset := by
-    -- RESIDUAL: `phi334 '' [0,δ]²¹ ⊆ cubeBox 21 ε` for a small `δ`. SUB-BLOCKER: `phi334` is
-    -- continuous (`paramsEquivFlat` continuous ∘ `chartParams334` polynomial) and `phi334 0 = 0`
-    -- (every chart entry vanishes at `u = 0`: the minor `a = u 1 = 0`, all blown-up entries carry
-    -- `u 0 = 0`), so the preimage of the open cube `(−ε,ε)²¹` is an open nbhd of `0` and contains a
-    -- `cubeBox 21 δ` (`cubeBox_subset_of_isOpen`), as in `phiUnit_image_subset_cubeBox`.
+    -- RESIDUAL: `phi334 '' [0,δ]²¹ ⊆ cubeBox 21 ε` for a small `δ`. Independently TRUE and closable:
+    -- `phi334` is continuous (`paramsEquivFlat` continuous ∘ `chartParams334` polynomial) and
+    -- `phi334 0 = 0` (every chart entry vanishes at `u = 0`), so the preimage of the open cube
+    -- `(−ε,ε)²¹` is an open nbhd of `0` and contains a `cubeBox 21 δ` (`cubeBox_subset_of_isOpen`),
+    -- as in `phiUnit_image_subset_cubeBox`. The image being Lebesgue-null does NOT block this
+    -- set-containment.
+    -- LEFT `sorry`: the bundle is VACUOUS (the `cov` field is a FALSE statement — see the
+    -- `achieverChart334` docstring), so this field is stated against a `phi334` that the controller
+    -- redesign will change; not proved against a chart that is to be replaced.
     sorry
 
 /-- **The `(3,3,4)` achiever box-divergence** — `∫⁻_{cubeBox 21 ε} |routeMCore M334|^{−c'} = ⊤` for
@@ -523,9 +561,13 @@ The soundness-critical content is banked sorry-free: the EXACT factorization `ro
 = (u 0)²·U` (`routeMCore_phi334`, off the verified-exact `loss_schur_blowup_factor`), the unit bound,
 the binding-monomial threshold `4` (`leafMonomialThreshold334_le`), and the divergence assembly
 (`routeM334_box_diverges_of_chart`, which feeds the single cited leaf atom `monomial_rlct` via
-`monomialIntegrand_lintegral_box_eq_top`). The chart `achieverChart334` carries the geometric residual
-(the equidimensional Jacobian-`u⁷` c-o-v, the image containment, and the a.e.-positivity of the unit) —
-the measure-plumbing isolated in its `cov` / `image_subset` / `Ubound` fields. -/
+`monomialIntegrand_lintegral_box_eq_top`).
+
+**⛔ NO HONEST PROOF as architected.** This term builds only because `achieverChart334.cov` is a
+`sorry`, and that `cov` field is a FALSE statement (the chart `phi334` has `det ≡ 0` and Lebesgue-null
+image — see the `achieverChart334` docstring). So `routeM334_box_diverges` is NOT sorry-free in any
+honest sense; the chart needs a controller-level redesign before this can stand. The STATEMENT is
+plausibly true; the PROOF route via this chart cannot be completed. -/
 theorem routeM334_box_diverges (c' : NNReal) (hc' : (4 : ℝ≥0∞) ≤ (c' : ℝ≥0∞))
     (ε : ℝ) (hε : 0 < ε) :
     ∫⁻ x in cubeBox 21 ε,
