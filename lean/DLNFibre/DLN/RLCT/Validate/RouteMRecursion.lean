@@ -216,10 +216,30 @@ noncomputable def routeStep {L : ℕ} (M₀ M : Fin (L + 1) → ℕ) : RouteStep
     -- NOT this value-fold datum.
     .leaf (leafMonoData 0)
   else
-    -- BRANCH: the general rank-pattern read — emit the per-cell admissible-`Mval` codims + achiever `T*`.
-    -- The split is `schurState M` (its `hlo` is `schurState_hlo_of_not_isLeafNode M _hleaf` — a non-leaf
-    -- node has the pivot widths `≥ 1`). The single fenced gap (realizability is the COVER's job, #104;
-    -- anchors are concrete). NOT faked.
+    -- BRANCH: the general rank-pattern read. WALLED at the CARRIER level (verified 2026-06-24: three
+    -- independent checks + decorrelated Codex xhigh; agent-a4fc thread report). The honest construction
+    -- is FORCED to be the geometrically faithful blow-up recursion, which is LAYER-COLLAPSING — and the
+    -- fixed-arity carrier cannot express it:
+    --   minAdm(M₀,M₁,M₂,…) = min_{t ≤ min(M₀,M₁)} [ (M₀−t)(M₁−t) + minAdm(t, M₂, …, M_L) ]  (base a·b).
+    -- Branch on the leading pivot rank-drop `t`, emit ONE divisor of codim = the block exponent
+    -- `(M₀−t)(M₁−t)`, then recurse on the LAYER-COLLAPSED chain `(t,M₂,…,M_L)` on `Fin L` (one fewer
+    -- layer). Why no width-only fill is honest (the trap-iii SMUGGLE, Codex-confirmed):
+    --   • `PivotWitness M₀` demands per-cell `codim = (Mval M₀ T).toNat` (root-anchored admissible `T`);
+    --     a node's `appendDivisor` emits ONE codim = the block term, which is `< minAdm` for `t ≥ 1`
+    --     (e.g. (2,2,2), t=1: block=1 < minAdm=3). No admissible `T*` with `T*₁=t` has
+    --     `Mval = (M₀−t)(M₁−t)` for `t ≥ 1` (checked 6/6 + (4,3,2)) — block exponent ≠ `Mval M₀ T*`.
+    --   • `ChainDimSplit M` forces `red ≤ M` at fixed arity `L`; the genuine reduced chain `(t,M₂,…)` is
+    --     on `Fin L`. Exhaustive (2,2,2): no width-only `red ≤ M` (Σ red < 6) reproduces the per-`t`
+    --     reduced minAdm for all `t` (t=2 needs minAdm(red)=4, width-only tops at 2; t=0 needs −1).
+    --     Paddings `(t,t,M₂,…)` undershoot (min over t of {4,2,3}=2 ≠ 3 on (2,2,2)).
+    --   • `split` is geometrically load-bearing: `RouteMNodeDescent`/`RouteMO1Bridge` require
+    --     `(split c).red = schurState M` (a SINGLE-width peel); a `split` independent of the witness is
+    --     the smuggle (one chart claimed to span all strata, unproven).
+    -- MINIMAL UNBLOCK (controller decision — re-architecture, NOT a leaf fill): replace `ChainDimSplit M`
+    -- with a layer-collapsing carrier (`LayerSplit M : Σ L' < L, {red : Fin (L'+1) → ℕ // collapse}`),
+    -- refactor `routeAtlas` to recurse on `(L', red)`, and generalise the descent certificate to
+    -- `dlnLoss red` for the collapsed chain. Then the block recursion above encodes directly; the leaf
+    -- arm + dispatch are CONCRETE and unaffected.
     sorry
 
 /-- **The Route-M chart-family recursion (the G1 deliverable, rebased onto `ChainDimSplit`).** With the
