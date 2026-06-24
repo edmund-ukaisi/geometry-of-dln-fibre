@@ -119,6 +119,26 @@ theorem isUnit_Hmat (q p r : ℕ) (hq : r ≤ q) : IsUnit (Hmat (k := k) q p r h
   rw [HblockSum, isUnit_fromBlocks_zero₂₁]
   exact ⟨isUnit_schurΔLoc q p r, isUnit_one⟩
 
+/-! ## The endpoint gauge as a `BaseChangeGroup` over `SchurLoc`
+
+The pivot-cell factorization `M = L · E · H` is realized as a base-change datum acting on `Tuple d`
+over `SchurLoc`: the source-vertex unit (`v = 0`, dimension `d 0 = q`) is `H`, the target-vertex
+unit (`v = last N`, dimension `d (last N) = p`) is `L⁻¹`, and every interior vertex is `1` (those
+units telescope away in `mult`). The dependent dimension `Fin (d v)` is aligned to `Fin q`/`Fin p`
+by a `cast` along `v = 0` / `v = last N`. -/
+
+/-- **The endpoint normalizing gauge** as a `BaseChangeGroup` over `SchurLoc`: `H` at the source
+vertex, `L⁻¹` at the target vertex, `1` interior. -/
+noncomputable def endpointGauge (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
+    BaseChangeGroup (k := SchurLoc (k := k) (d 0) (d (Fin.last N)) r) d :=
+  fun v ↦
+    if hv0 : v = 0 then
+      cast (by rw [hv0]) (isUnit_Hmat (k := k) (d 0) (d (Fin.last N)) r hq).unit
+    else if hvl : v = Fin.last N then
+      cast (by rw [hvl]) (isUnit_Lmat (k := k) (d 0) (d (Fin.last N)) r hp).unit⁻¹
+    else 1
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: at `(q,p,r) = (2,2,1)` over `ℚ`, the `1×1` pivot block over `SchurLoc` is
