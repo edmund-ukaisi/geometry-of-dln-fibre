@@ -604,3 +604,32 @@ Lean; likely needs scaffolding Mathlib v4.29 lacks). **Controller recommendation
 genuine new layer, not "filling the current one"; it deserves its own scoping, not an autonomous launch on
 top of a walled route. The current result — a certified, Codex-concurred residual with the entire
 surrounding engine machine-checked — is strong and honest.
+
+## PHASE 2 (2026-06-24) — operator authorized the follow-on; RECON-FIRST (map math + Lean-API paths)
+
+Operator chose the AMBITIOUS fork: **build the residual.** Directive: "work out the details, plan both
+the math paths AND the lean API pathways; you hold the broader picture, ask teammates to map details."
+So Phase 2 is **recon-first**, not a blind tide at the wall.
+
+**Controller's broader-picture hypothesis (the lead candidate to stress-test):** the residual may be best
+attacked NOT as the (circular) trivialization, but as the **SMOOTHNESS / SUBMERSION** statement — `mult`
+is a submersion onto `Σ̄^r` on the rank-`r` chart (`d(mult) = Σ A_N···(dA_i)···A₁` full-rank onto the
+tangent of the rank locus) ⟹ the fibre is **smooth** of dimension `dim Rep − C − δ` ⟹ **reduced + codim
+`C + δ`**, potentially **closing the whole thing directly and bypassing the iso `e`**. Crucially the engine
+ALREADY built the smoothness/Jacobian/regular-dimension machinery for the ORBIT codim (Voigt discharge):
+`Core.MatrixKaehler.derivMatrix_mul_apply` (the derivative of a matrix PRODUCT — literally `d(mult)`),
+`Core.SmoothPointRegular` (`smooth_point_isRegularLocalRing`, cotangent finrank), `Core.SmoothLocalRelative
+Dimension`, `Core.CotangentJacobian`, `Core.JacobianTrdeg`. The question is whether this ORBIT machinery
+ports to the FIBRE of `mult`.
+
+**Recon dispatched (parallel, decorrelated, read-only — no Lean writes):**
+- **thread 21 (`scout-residual-math`):** enumerate + RANK the math routes — the submersion/smoothness route
+  (evaluate hardest: is `d(mult)` surjective on the chart? does smooth ⟹ reduced + codim, bypassing `e`?
+  how does the reducibility of `Σ̄^r` interact?), the type-A rank-locus reducedness route, others.
+  Decorrelated Codex.
+- **thread 22 (`scout-residual-leanapi`):** map the engine's smoothness/Jacobian machinery (does it port
+  orbit→fibre?) + Mathlib v4.29 (Jacobian⟹smooth criterion, regular⟹reduced, flat/going-down) — reusable
+  handles, gaps, module-count per route. Decorrelated Codex.
+
+**Next:** synthesize the two findings into a concrete plan (the chosen math route + the Lean-API rung
+ladder), present it, then execute via serial formaliser tides (one write-tide; SPECIFY-first + checkpoints).
