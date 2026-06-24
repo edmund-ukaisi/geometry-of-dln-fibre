@@ -511,3 +511,42 @@ So `Scut = Sred` is the CONCLUSION. Cleanest new lemma: the radical-collapse of 
 **NEXT: R2-3 (thread 17)** — the endpoint-normalization AlgEquiv + the route-(b) reducedness chain. The
 recon's HIGH-risk rung, now DE-RISKED (reducedness certified true; mechanism + handles confirmed). Then
 R2-4 (flat/going-down, one-liner) → R2-5 (height) → R2-6 (+C assembly).
+
+## R2-3a LANDED + R2-3b DECOMPOSED (thread 17 → thread 18, 2026-06-24)
+
+**R2-3a — the route-(b) reducedness chain is BANKED, conditionally** (`Core.FibreReducedTrivialization`,
+green/sorry-free/axiom-clean `[propext, Classical.choice, Quot.sound]`; aggregated `ef9b78c9`; controller
+fidelity-read PASS). Three headlines, ALL wired against the deep product iso `e : S ≃ₐ[k] R ⊗_k F_B` +
+`IsReduced S` as **explicit hypotheses** (not sorry, not axiom):
+- `isReduced_of_tensor` — the tensor-with-a-field reducedness descent (the one pinned Mathlib dependency
+  thread 16 flagged), CLOSED OUTRIGHT via `Algebra.TensorProduct.includeRight_injective` +
+  `isReduced_of_injective` (needs only `[Nontrivial R]`, not char 0 / faithful flatness).
+- `fibreGenIdeal_isRadical_of_trivialization` — the full chain (S reduced → R⊗F reduced → F reduced →
+  `fibreGenIdeal` radical).
+- `vanishingIdeal_fibre_eq_fibreGenIdeal_of_trivialization` — the radical-collapse of MultComorphism pt4.
+
+**Honest current status (the crux):** the ENTIRE bundle-shift `codim(fibre) = cCodim + δ` now rests on
+the SINGLE open object `e` — the deep product trivialization. Everything else is banked: G1, G2-1, G2-2,
+R2-3a (this conditional chain), and the engine codim `cCodim d r`. `e` is certified TRUE on paper (thread
+16). The expedition either (a) builds `e` and fully discharges `BundleShiftInterface`, or (b) closes with
+`e` as the single named open hypothesis — a clean honest reduction, recorded for end-of-expedition review.
+**No downstream result discharges `BundleShiftInterface` on `e` until R2-3b proves it.**
+
+**R2-3b decomposition** (Codex build order, `threads/17/codex/algequiv-answer.md` — "one tide should not
+aim for the full deep iso"):
+- **R2-3b-1+2 (thread 18, NEXT/in-flight):** the deep chart ring `Sred = Localization.Away(ΔP) ⧸ IadDeep`
+  for general `d` (the engine's `basePresentationEquiv`/`SchurLoc` are N=1 only — genuinely new) + the
+  `RepCoord`↔stratum-coord/endpoint bridges + the localized base→total map (`multComap` /
+  `IsLocalization.Away.mapₐ` / `Ideal.quotientMapₐ` ∘ `basePresentationEquiv.symm`) giving `Sred` its
+  `SchurLoc`-algebra structure. The foundational rungs.
+- **R2-3b-3:** the endpoint-normalization AlgEquiv on the UNQUOTIENTED poly ring over arbitrary `R`
+  (`aeval` substitution `Ã₁=A₁H⁻¹, Ã_N=L⁻¹A_N` via `AlgEquiv.ofAlgHom` + explicit inverse — avoid
+  `baseChangeAlgEquiv`'s `[Infinite k]` baggage).
+- **R2-3b-4 (the hard rung):** the normalized product iso DESCENDS to the reduced chart quotient
+  (`Sred ≃ₐ[R] R ⊗_k F_E`) — discharges R2-3a's hypothesis `e`. Codex: "that leaves one precise missing
+  rung." Walls Codex flagged: `RepCoord (dStratum q p)` ↔ `Fin p × Fin q` bridge; endpoint indexing at
+  N≥1; `IsScalarTower`/localization instances around `SchurLoc`; `multComap` maps base `sigmaIdeal` into
+  the deep one; avoid the circular `sigmaIdeal ≤ fibreGenIdeal`.
+- Then **R2-5/R2-6/G3/G4** as before (height-additivity → +C assembly → lift via G1 → discharge the
+  interface). The full reviewer + decorrelated Codex soundness gate lives at the DISCHARGE (G4), not the
+  conditional pre-builds.
