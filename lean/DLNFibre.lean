@@ -151,3 +151,18 @@ import DLNFibre.Core.MultDifferential
 -- (`finrank_ker_add_rank_fibreJacobianMatrix`: finrank ker + rank = card). H3b supplies rank = C+δ at a
 -- generic point; H3c supplies generic smoothness ⟹ ker finrank = local fibre dim.
 import DLNFibre.Core.FibreJacobian
+-- Route-c sweep structure (homogeneous sweep): `Σ^r = H·F` (`productRankLocus_eq_iUnion_smul_fibre`)
+-- via `mult_smul` + `exists_baseChange_of_rank_eq`; every translate same codim (G1). The reachable part
+-- of the bundle-shift; the sweep dim-identity `dim Σ^r = δ + dim F` (hSweep) is the residual (= the
+-- generic-freeness build, thread 29).
+import DLNFibre.Core.EndBaseChangeSweep
+-- Reducible-locus catenary: `height I + ringKrullDim(R⧸I) = card` for ANY proper I (no radicality), and
+-- `codimRepCanonical Z + varietyDim Z = card` for nonempty Z. Discharges the catenary hyps of RouteCAssembly.
+import DLNFibre.Core.RadicalCatenary
+-- H5 per-component→codim closer (reusable): `height_eq_of_minimalPrimes_bounds` (height I = v from the
+-- per-minimal-prime bounds) + the codim retarget at v = C+δ + G1-transport (one rank-r witness ⟹ all B).
+import DLNFibre.Core.FibreCodimMinPrimes
+-- Route-c assembly (conditional bank): `codimRepCanonical(fibre d B) = C + δ` for rank-r B, carrying ONLY
+-- the sweep dim-identity `hSweep` (the residual) + the Cited density `hClosure` (LR 4.4/4.5) as explicit
+-- hypotheses; the catenary hyps discharged via RadicalCatenary. Honest: no hypothesis = the conclusion.
+import DLNFibre.Core.RouteCAssembly

@@ -1,6 +1,7 @@
 import DLNFibre.Core.EndBaseChangeSweep
 import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.NullstellensatzCodim
+import DLNFibre.Core.RadicalCatenary
 
 /-!
 # `DLNFibre.Core.RouteCAssembly` — route-c assembly `codim(fibre d B) = C + δ` (conditional bank)
@@ -16,10 +17,10 @@ matrix-stratum shift `δ`:
 identity `varietyDim Σ^r = δ + varietyDim F` (`hSweep`) — and the Cited closure/density bridge
 `varietyDim Σ^r = varietyDim Σ̄^r` (`hClosure`, Lehalleur–Rimányi 4.4/4.5) are carried as **explicit
 named hypotheses**, so everything *around* them is machine-checked. The two dimension/codimension
-relations `codimRepCanonical Z + varietyDim Z = card` are also carried as named hypotheses
-`hCatFibre`/`hCatSigma`; these are the reducible-locus catenary (true for any nonempty subset of
-affine space over an algebraically closed field), discharged separately as general bedrock. Nothing
-in this module claims the sweep or the closure.
+relations `codimRepCanonical Z + varietyDim Z = card` are carried as named hypotheses
+`hCatFibre`/`hCatSigma` in the base theorem; the primed variant discharges them from the
+reducible-locus catenary `Core.RadicalCatenary` (true for any nonempty subset of affine space),
+leaving ONLY the sweep + closure. Nothing in this module claims the sweep or the closure.
 
 The arithmetic is **purely additive** (no `ℕ∞` truncated subtraction): chaining
 `C + δ + dim F = C + dim Σ̄^r = card = codim F + dim F` and cancelling the finite `dim F`.
@@ -89,5 +90,29 @@ theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [IsAlgClosed k] [Ch
             + (((cCodim d r h).toNat : ℕ∞) + ((r * (d (Fin.last N) + d 0 - r) : ℕ) : ℕ∞)) := by
           rw [← add_assoc, add_comm]
   exact ENat.add_right_injective_of_ne_top hdimF_ne key
+
+/-! ## The catenary hypotheses discharged (only the sweep + closure remain) -/
+
+/-- **Route-c assembly with the catenary hypotheses discharged.** For a rank-`r` target `B`
+(`N ≥ 1`, alg-closed char 0), `codimRepCanonical (fibre d B) = C + δ`, carrying ONLY the
+homogeneous-sweep dimension identity `hSweep` and the Cited closure bridge `hClosure` as named
+hypotheses — the two reducible-locus catenary relations are now **proved** from
+`codimRepCanonical_add_varietyDim_eq_card_of_nonempty` (`Core.RadicalCatenary`), given that the
+fibre and `Σ̄^r` are nonempty (their canonical flattenings have a point). -/
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep' [IsAlgClosed k] [CharZero k]
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
+    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (hB : B.rank = r)
+    (hFne : (canonicalCoord d '' fibre d B).Nonempty)
+    (hSigmaNe : (canonicalCoord d '' productRankLocusLE (k := k) d r).Nonempty)
+    (hSweep : varietyDim (canonicalCoord d '' productRankLocus (k := k) d r)
+        = ((r * (d (Fin.last N) + d 0 - r) : ℕ) : ℕ∞)
+          + varietyDim (canonicalCoord d '' fibre d B))
+    (hClosure : varietyDim (canonicalCoord d '' productRankLocus (k := k) d r)
+        = varietyDim (canonicalCoord d '' productRankLocusLE (k := k) d r)) :
+    codimRepCanonical (fibre d B)
+      = ((cCodim d r h).toNat : ℕ∞) + ((r * (d (Fin.last N) + d 0 - r) : ℕ) : ℕ∞) :=
+  codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep d r h B hB hSweep hClosure
+    (codimRepCanonical_add_varietyDim_eq_card_of_nonempty hFne)
+    (codimRepCanonical_add_varietyDim_eq_card_of_nonempty hSigmaNe)
 
 end DLNFibre.Core
