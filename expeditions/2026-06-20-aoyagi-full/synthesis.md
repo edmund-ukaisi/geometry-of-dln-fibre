@@ -435,6 +435,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   fderiv collapse) + PIN2 (read→raw + telescoping + reindex) on the verified frame fact, shared-J tripwire. Closes
   the L2 gauge chart (then L=1 base + wire, incl. the continuous_dlnLoss dedupe). 2 tides: r1-cov-cov, l2-migration.
 
+**★ UPDATE-16 (2026-06-24) — both gates: foundations fully banked+verified; remaining = LARGE formalisation-surface writes.**
+- **R1 linear-iso atom banked @349bffa3** (paramsEquivFlat-as-linear-iso, FULLY GENERAL, reviewer-SOUND, rfl-compatible
+  normed-Params). cov narrowed to the c-o-v measure-plumbing (~400-600 LoC) — `r1-cov-final` (a4e79a2) building it.
+- **L2 PIN1 consumer bricks banked @9acee389** (mulRightUnitCLE + shearCLE → the F ≃L) + architecture VALIDATED
+  (Codex ×2 + green Lean check): the pivot twist is LAST-LAYER-ONLY (first/interior + regResidualPack SURVIVE);
+  toBlocks₁₂ identity green; finCongr caveat. **L2 MAGNITUDE: ~1500-2500 LoC** (value-fold ~350-700 unwritten
+  strict-derivative geometry + PIN2 ~500-900 + the API thread). `l2-pin1-valuefold` (a0d8733a) building the value-fold
+  → PIN1 green (PIN2 follow-on, per Codex PIN1-green-PIN2-sorry).
+- **Net (the honest state):** the MATH is fully settled + the FOUNDATIONS banked+reviewer-verified for BOTH gates
+  (R1: chart+linear-iso; L2: frame fact+bricks+keystone+consumer bricks+validated architecture). What remains is LARGE
+  formalisation surface — person-weeks, NO conceptual walls: L2 value-fold (~1500-2500) + R1 cov (~400-600) + L=1 base
+  + wiring (+ continuous_dlnLoss dedupe) + D1 (L2-gated) + the R1 hfin tree (general-L, reusing the banked per-node atom).
+- 2 tides: r1-cov-final (R1 cov), l2-pin1-valuefold (L2 PIN1 value-fold). Non-overlapping.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

@@ -157,3 +157,15 @@ statement). routeM334_box_diverges went 3 sorries (one FALSE) → 1 honest sorry
 paramsEquivFlat-as-linear-iso measure-plumbing, being closed by r1-cov-cov). No operator action; the
 self-correction (catch → unification → honest chart) is the soundness discipline working as intended. The
 honest chart is also the reusable shared hfin per-node atom (the unification's single hard construction).
+
+## 11. Scope magnitude datum (2026-06-24): the L2 gauge-chart close is ~1500-2500 LoC — needed by BOTH options.
+Codex-xhigh estimate (matching the prior tides' notes): the L2 PIN1+PIN2 close is ~1500-2500 LoC of coupled,
+single-writer geometry (PIN1 value-fold ~350-700 unwritten strict-derivative geometry + PIN2 bridge ~500-900 +
+the API thread). The MATH is settled + the foundation is banked + reviewer-verified (bricks, keystone, the
+reviewer-SURVIVED frame fact, the consumer bricks, the validated last-layer-only architecture); what remains is
+the large coordinated write. **Both scope options need this** — the L=2/RRR milestone floor uses the L2 gauge
+chart (product_reduction → deepest_regular_core_normal_form, 2≤L), so the L2 value-fold is required either way;
+it is NOT a cheap floor. **Honest realistic remaining (either option): person-weeks of formalisation, no
+conceptual walls** — L2 value-fold (~1500-2500) + R1 cov (~400-600) + L=1 smooth base + wiring + D1 (L2-gated);
+general-L additionally needs the R1 hfin tree (which reuses the banked general-M per-node atom). This refines
+Items 6/9: "bounded" is correct, but the bound is person-weeks of grinding, front-loaded on the L2 value-fold.
