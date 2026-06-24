@@ -8601,6 +8601,24 @@ literal-loss comparison plus Fubini/polar regular-variable theorem:
 `threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
 This is not yet proved in Lean.
 
+Latest A2 literal product-difference square-sum update:
+`RegularSuspensionCoordinates.lean` now defines
+`AoyagiProductDifferenceCoordinateIndex.literalValue`, the scalar coordinate
+family attached to the literal signed/corrected p. 13 block
+`fromBlocks X (-F2) (-F3) (D - F3*F2)`.  Lean also proves
+`AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_eq_regular_add_correctedResidual`,
+which expands the literal square-sum as regular square-sum plus the corrected
+residual square-sum of `D - F3*F2`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-literal-product-difference-square-sum.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-literal-product-difference-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-literal-product-difference-square-sum.md`.
+
+This still does not compare `D - F3*F2` with `D`, prove local loss
+comparability, analytic generator transport, regular-coordinate chart status,
+Jacobian compatibility, normal crossings, pole order, or RLCT.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

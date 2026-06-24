@@ -2359,3 +2359,42 @@ cleaned square-sum with the literal signed/corrected p. 13 Frobenius loss,
 does not prove analytic generator transport or loss comparability, and does
 not construct charts, prove Jacobian compatibility, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-24 A2 literal product-difference square-sum
+
+Reproduction:
+`reproduction-a2-literal-product-difference-square-sum.md`.
+Statement card:
+`statement-card-a2-literal-product-difference-square-sum.md`.
+Review:
+`review-a2-literal-product-difference-square-sum.md`.
+
+Lean now names the scalar coordinate family attached to the literal
+signed/corrected p. 13 block:
+
+```text
+AoyagiProductDifferenceCoordinateIndex.literalValue
+AoyagiProductDifferenceCoordinateIndex.literalValue_regular
+AoyagiProductDifferenceCoordinateIndex.literalValue_residual
+```
+
+and proves the finite square-sum split
+
+```text
+AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_eq_regular_add_correctedResidual
+```
+
+for
+
+```text
+fromBlocks X (-F2) (-F3) (D - F3 * F2).
+```
+
+The theorem expands the literal square-sum as regular square-sum plus the
+corrected residual square-sum for `D - F3 * F2`; the signs disappear by
+`(-a)^2 = a^2`.
+
+Boundary: finite square-sum bookkeeping only.  It does not compare
+`D - F3*F2` with `D`, prove local loss comparability, prove analytic generator
+transport, construct charts, prove Jacobian compatibility, normal crossings,
+pole order, or RLCT.

@@ -5806,6 +5806,30 @@ no analytic generator transport or loss comparability, no analytic coordinate
 chart, no chart coverage, no Jacobian compatibility, no normal crossings, no
 pole-order theorem, and no RLCT theorem.
 
+Latest A2 literal product-difference square-sum:
+Lean now names the scalar coordinate family attached to the literal
+signed/corrected p. 13 block
+`fromBlocks X (-F2) (-F3) (D - F3*F2)` and proves its finite square-sum splits
+as the regular square-sum plus the corrected residual square-sum for
+`D - F3*F2`.
+
+Lean names:
+`AoyagiProductDifferenceCoordinateIndex.literalValue`,
+`AoyagiProductDifferenceCoordinateIndex.literalValue_regular`,
+`AoyagiProductDifferenceCoordinateIndex.literalValue_residual`, and
+`AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_eq_regular_add_correctedResidual`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-literal-product-difference-square-sum.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-literal-product-difference-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-literal-product-difference-square-sum.md`.
+
+Nonclaims: no comparison between `D - F3*F2` and `D`, no local loss
+comparability, no analytic generator transport, no regular-coordinate chart
+construction, no Jacobian compatibility, no normal crossings, no pole-order
+theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

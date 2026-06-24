@@ -521,6 +521,15 @@ local comparison with `||regular||^2 + ||prod C||^2`, and state the independent
 Fubini/polar theorem that adding `c` regular square variables shifts RLCT by
 `c/2` and preserves pole order.  Do not cite this theorem as already proved.
 
+A2 literal product-difference square-sum has now landed:
+`threads/03-block-product-reduction/reproduction-a2-literal-product-difference-square-sum.md`.
+Lean names the scalar family of the literal p. 13 block
+`[X, -F2; -F3, D - F3F2]` and proves its square-sum is the regular
+square-sum plus the corrected residual square-sum for `D - F3F2`.  This is
+still finite algebra only.  The next A2 work remains the local analytic
+comparison between the literal loss and the cleaned loss, followed by the
+Fubini/polar regular-variable theorem.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds
