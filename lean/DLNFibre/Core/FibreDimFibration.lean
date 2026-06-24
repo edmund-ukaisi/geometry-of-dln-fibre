@@ -101,4 +101,39 @@ theorem height_maximal_quotient_vanishingIdeal_stratum_eq_delta [IsAlgClosed k] 
   rw [height_eq_ringKrullDim_of_isMaximal_fintype,
     ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta n m r hn hm]
 
+/-! ## Affine-domain equidimensionality over a `Fintype` coordinate index
+
+`affine_domain_height_add_ringKrullDim_quotient_eq` is over `MvPolynomial (Fin n) k`. Transport it to
+`MvPolynomial σ k` (`σ` finite) through `renameEquiv`, exactly as
+`height_eq_ringKrullDim_of_isMaximal_fintype` does for the maximal corollary. This is the engine the
+nested catenary `height P = height Q + height_{R/Q}(P/Q)` (the `+C` composition for the easy
+direction) is built from. -/
+
+/-- **Affine-domain equidimensionality, finite index.** For `σ` finite, `I` a prime of
+`MvPolynomial σ k`, the domain `A = MvPolynomial σ k ⧸ I`, and a prime `p` of `A`:
+`height p + ringKrullDim (A ⧸ p) = ringKrullDim A`. Transports
+`affine_domain_height_add_ringKrullDim_quotient_eq` through `renameEquiv` and the induced quotient
+algebra equivalences. -/
+theorem affine_domain_height_add_ringKrullDim_quotient_eq_fintype {σ : Type*} [Finite σ]
+    (I : Ideal (MvPolynomial σ k)) [I.IsPrime] (p : Ideal (MvPolynomial σ k ⧸ I)) [p.IsPrime] :
+    (p.height : WithBot ℕ∞) + ringKrullDim ((MvPolynomial σ k ⧸ I) ⧸ p)
+      = ringKrullDim (MvPolynomial σ k ⧸ I) := by
+  classical
+  haveI : Fintype σ := Fintype.ofFinite _
+  set e : MvPolynomial σ k ≃ₐ[k] MvPolynomial (Fin (Fintype.card σ)) k :=
+    MvPolynomial.renameEquiv k (Fintype.equivFin σ) with he
+  set J : Ideal (MvPolynomial (Fin (Fintype.card σ)) k) := I.map (e : _ →+* _) with hJ
+  haveI : J.IsPrime := by rw [hJ]; exact Ideal.map_isPrime_of_equiv e
+  -- the induced quotient algebra equivalence `A ≃ₐ[k] A'`
+  set Φ : (MvPolynomial σ k ⧸ I) ≃ₐ[k] (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) :=
+    Ideal.quotientEquivAlg I J e rfl with hΦ
+  -- transport `p` to a prime `p'` of `A'`
+  set p' : Ideal (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) := p.map (Φ : _ →+* _) with hp'
+  haveI : p'.IsPrime := by rw [hp']; exact Ideal.map_isPrime_of_equiv Φ
+  have hL := affine_domain_height_add_ringKrullDim_quotient_eq k (Fintype.card σ) J p'
+  -- transport the three terms back along `Φ` (heights, both quotient Krull dims) and `e`.
+  rw [hp', height_map_algEquiv Φ p,
+    ringKrullDim_quotient_map_algEquiv Φ p, hJ, ringKrullDim_quotient_map_algEquiv e I] at hL
+  exact hL
+
 end DLNFibre.Core
