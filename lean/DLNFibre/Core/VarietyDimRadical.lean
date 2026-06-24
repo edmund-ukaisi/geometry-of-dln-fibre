@@ -62,6 +62,16 @@ theorem varietyDim_eq_of_coordRingAlgEquiv {k : Type u} [Field k] {σ τ : Type 
   unfold varietyDim
   rw [ringKrullDim_eq_of_ringEquiv e.toRingEquiv]
 
+/-- **`ringKrullDim` of a quotient is invariant under a ring automorphism applied to the ideal.**
+For a `RingEquiv e : T ≃+* T` and an ideal `I`, `ringKrullDim (T ⧸ I) = ringKrullDim (T ⧸ I.map e)`
+— the quotient by the image ideal is isomorphic to the original quotient (`Ideal.quotientEquiv`).
+This is the free half of the chart route: applying the normalizing gauge `AlgEquiv` to the chart
+ideal preserves the chart dimension, so the work is only to identify the *gauged* ideal, not to
+recompute its dimension. -/
+theorem ringKrullDim_quotient_map_ringEquiv {T : Type*} [CommRing T] (e : T ≃+* T) (I : Ideal T) :
+    ringKrullDim (T ⧸ I) = ringKrullDim (T ⧸ I.map (e : T →+* T)) :=
+  ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv I (I.map e) e rfl)
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: in `ℚ[X]`, the square `(X)^2` of the prime `(X)` shares its radical, so the
