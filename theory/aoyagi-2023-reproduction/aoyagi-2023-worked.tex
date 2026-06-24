@@ -615,9 +615,16 @@ $\operatorname{corank}\ge2$} (genuine $\ge2\times2$ $\Delta$-block): a per-row m
 \emph{which} divisor variables are SHARED, and sharing changes the Newton polytope hence the RLCT. Exact
 obstruction (two independent computations agree): $\ideal{\delta x,\delta y}$ has $\rlct=\tfrac12$ vs
 $\ideal{\delta_1 x,\delta_2 y}$ has $\rlct=1$ --- \emph{identical} light data, different value.
-\textbf{Direct DLN witness $(4,4,2,2)$, $t{=}(2,1,0)$, $\Mval{=}7$, target $\tfrac72$}: \emph{unique}
-minimiser, layer-1 corank $(2,2)$ ($\Delta$ a genuine $2\times2$ block), and \emph{no}
-$\operatorname{corank}\le1$ peel reaches it; the threshold-only cascade undercounts to $2$.
+\textbf{Correction (\texttt{verify-r1-diagb-4422}; exact $\times3$ methods $+$ decorrelated Codex):
+$(4,4,2,2)$ is NOT the binding witness.} Its $\rlct$ is $2$, not $\tfrac72$ --- the \emph{clean} branch
+$t{=}(4,2,0)$ ($\Mval{=}4$) binds via one radial $C^{(3)}$ blow-up; the corank-$2$ branch $t{=}(2,1,0)$
+($\Mval{=}7$) is \emph{non-binding} (the RLCT is the min over \emph{all} branches). So that branch does
+not force the coupled structure (and threshold-only there gives the \emph{correct} $2$). The genuinely
+coupled-binding witness is \textbf{$(3,3,4)$ [an $L{=}2$ RRR core]}: $\Mval(t_1)=(3{-}t_1)^2+4t_1=9,8,9,12$,
+so the minimiser is $t{=}(1,0)$, $\Mval{=}8$, $\rlct{=}4$, layer-1 corank $(2,2)$ --- and the clean
+branches $t_1{\in}\{0,3\}$ give $9,12>8$, so \emph{no} $\operatorname{corank}\le1$ peel reaches the
+minimiser. There the threshold-only recursion must miss the value; the explicit coupled resolution
+certifying this binds is in flight (\texttt{verify-r1-diagb-4422}, follow-up).
 \gnote{\textbf{R1 Lean shape --- DECIDED: option (ii), the coupled $\operatorname{diag}(b)$ recursion}
 (Aoyagi's actual structure). Minimal sufficient invariant $=$ the per-generator \emph{symbolic divisor
 support $+$ sharing relations}, up to unit equivalence (numeric coefficients / analytic unit changes need
@@ -627,8 +634,12 @@ forbidden $\rlct=\tfrac12\codim$ cite for exactly the hard branches (brief: S2 o
 recursion is the \emph{only} sound general-$L$ route under our constraint. This \textbf{vindicates} the
 build's \texttt{GeneralR1Recursion}/routeStep dispatcher (whose SOUNDNESS NOTE already records that the
 dimension-conserving \emph{clean} recursion is false --- telescopes to ambient$/2{=}4\ne\tfrac32$ for
-$(2,2,2)$): the coupled recursion is necessary, not over-engineering. \emph{Next construction to feed the
-Lean build:} a certified (non-cascade) $\operatorname{diag}(b)$ resolution of $(4,4,2,2)\to\tfrac72$,
+$(2,2,2)$): the coupled recursion is necessary, not over-engineering. (The DECISION rests on the abstract
+$\ideal{\delta x,\delta y}$-vs-$\ideal{\delta_1 x,\delta_2 y}$ obstruction $+$ clean-reachability failing
+at a genuine corank-$2$ minimiser --- confirmed for $(3,3,4)$, \emph{not} $(4,4,2,2)$ per the correction
+above.) \emph{Next construction to feed the Lean build:} a certified (non-cascade)
+$\operatorname{diag}(b)$ resolution of $(3,3,4)\,t{=}(1,0)\to4$ (the corrected binding witness;
+\texttt{verify-r1-diagb-4422} follow-up, in flight) --- confirming the obstruction \emph{binds} and
 exhibiting the exact symbolic support the routeStep datum must carry.}
 
 \gnote{\textbf{The earlier ``hard design questions'' are now settled} (\#18, decorrelated $+$ Codex):

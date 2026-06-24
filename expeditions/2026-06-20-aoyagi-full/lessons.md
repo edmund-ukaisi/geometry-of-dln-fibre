@@ -848,3 +848,30 @@ marginal cost was low and the result hardened a load-bearing decision (R1 = coup
 standing a thread down, gauge whether it's near a sharp deliverable; if so, let it land. (Pairs with the
 "spawn fresh, don't resume drifted" lesson: the tension is real — resumed agents drift, but a focused
 in-flight thread near a verdict is different from a stale resume.) Controller owned both; Bayesian update.
+
+## A "decisive" witness must be BINDING (the global min over ALL branches), not just the min on a focal branch (2026-06-24)
+
+The R1 light-vs-coupled fork was "DECISIVELY RESOLVED" (committed 42a933ee, propagated to worked.tex §3.4
++ synthesis + the lesson above) on r1-design-light's claim that **(4,4,2,2) t=(2,1,0), Mval=7, is the
+UNIQUE minimiser → rlct 7/2, a genuine corank-2 coupled branch no clean peel reaches**. The very next
+decorrelated construction (r1-diagb-4422, dispatched to actually RESOLVE (4,4,2,2)→7/2) found the premise
+FALSE: **rlct(4,4,2,2)=2**, because the CLEAN branch t=(4,2,0) (Mval=4) binds via one radial blow-up —
+t=(2,1,0) (Mval=7) is NON-BINDING. r1-design-light had taken the min on a focal (interesting, corank-2)
+branch as the global min, missing a smaller clean branch. Three exact methods + decorrelated Codex agree
+on 2. So the "decisive" witness collapsed; threshold-only actually gives the RIGHT answer (2) there.
+
+The DECISION (R1 needs coupled diag(b)) SURVIVED — but only because (a) the abstract monomial obstruction
+⟨δx,δy⟩=½ vs ⟨δ₁x,δ₂y⟩=1 stands independent of any DLN witness, and (b) a CORRECT binding witness exists:
+(3,3,4) [an L=2 RRR core], Mval(t₁)=(3−t₁)²+4t₁=9,8,9,12 → minimiser t=(1,0), corank-(2,2), rlct=4, NOT
+clean-reachable (clean give 9,12>8). The support was wrong; the conclusion was (probably) right.
+
+LESSON: when a witness is the load-bearing SUPPORT for a design decision, verify it is actually BINDING —
+the GLOBAL min over ALL admissible branches, not the min on the focal/interesting branch that motivated
+the design. "Min over branches" means enumerate them; a branch being structurally interesting (it
+exercises the coupled corank-2 block) does NOT make it the minimiser. The confident "unique minimiser"
+was the confound — *the confident headline is where to look for it*. And the refutation-dialectic earned
+its keep: dispatching a teammate to CONSTRUCT/RESOLVE the claimed value (not merely re-validate it) is a
+stronger test — the construction surfaced the non-binding-ness a re-validation might have echoed. (Even a
+decorrelated-Codex-concurred witness needs the global-min check; Codex concurred on the t=(2,1,0) branch's
+internal resolution to 7/2 — correct, but that is the min ON ONE BRANCH, not the RLCT.) Corrected within
+the session (worked.tex §3.4 + synthesis); (3,3,4) certification dispatched (#26/#27).

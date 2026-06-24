@@ -56,17 +56,48 @@ EVERY compaction before acting — banked as a lesson.
 Newton-LP + decorrelated Codex, exact).** The threshold-only (per-row weight multiplicity, no symbolic
 support) recursion is **provably insufficient**: it BREAKS at corank≥2 (genuine ≥2×2 residual Δ-block),
 because a per-row multiplicity cannot encode WHICH divisor variables are shared, and sharing changes the
-Newton polytope/RLCT. Obstruction: ⟨δx,δy⟩ rlct=½ vs ⟨δ₁x,δ₂y⟩ rlct=1 (identical light data). Direct DLN
-witness (4,4,2,2) t=(2,1,0), Mval=7→7/2: UNIQUE minimiser at corank-(2,2), no corank≤1 peel reaches it,
-threshold-only undercounts to 2. **R1 Lean shape DECIDED = option (ii), the coupled diag(b) recursion**
+Newton polytope/RLCT. Obstruction: ⟨δx,δy⟩ rlct=½ vs ⟨δ₁x,δ₂y⟩ rlct=1 (identical light data). **CORRECTION
+(r1-diagb-4422, exact ×3 methods + Codex):** the original DLN witness (4,4,2,2) t=(2,1,0)→7/2 was
+NON-BINDING — rlct(4,4,2,2)=2 (the CLEAN branch t=(4,2,0) Mval=4 binds via one radial blow-up; t=(2,1,0)
+Mval=7 is non-binding; threshold-only there gives the CORRECT 2). The genuine coupled-binding witness is
+(3,3,4) [an L=2 RRR core]: Mval(t₁)=(3−t₁)²+4t₁=9,8,9,12 → minimiser t=(1,0), Mval=8, rlct=4, corank-(2,2);
+clean t₁∈{0,3} give 9,12>8, so NOT clean-reachable. The BREAK still holds (the abstract obstruction +
+(3,3,4)'s corank-2 minimiser); explicit coupled-resolution certification on (3,3,4) is in flight (#26/#27).
+**R1 Lean shape DECIDED = option (ii), the coupled diag(b) recursion**
 (minimal sufficient invariant = per-generator symbolic divisor support + sharing relations, up to unit
 equivalence). The "hybrid" option (i) is NOT one-citation-viable — it would import the forbidden
 rlct=½·codim cite for the corank≥2 branches. So the coupled recursion is the ONLY sound general-L route
 under the S2-only constraint, which **VINDICATES the routeStep/GeneralR1Recursion dispatcher as necessary,
 not over-engineering** (its SOUNDNESS NOTE already had the clean-recursion-is-false lesson: ambient/2=4≠3/2
-for (2,2,2)). Guards against any future "lighten R1" drift. High-value next R1-build input (logged): a
-certified (non-cascade) diag(b) resolution of (4,4,2,2)→7/2 exhibiting the exact symbolic support the
-routeStep datum must carry. Folded into reproduction §3.4.
+for (2,2,2)). Guards against any future "lighten R1" drift. High-value next R1-build input (in flight #26/#27): a
+certified (non-cascade) diag(b) resolution of (3,3,4) t=(1,0)→4 (the corrected binding witness) +
+proof that threshold-only MISSES it, exhibiting the exact symbolic support the routeStep datum must
+carry. Folded into reproduction §3.4 (with the (4,4,2,2) correction).
+
+**★ INTEGRATION #6 IN PROGRESS (controller, sole merger; branch-recon → integration-recon.md).** Goal:
+one coherent base (clear the scattered-branch debt). NOTE: all 4 Skeleton gates remain sorry after merging
+everything — the merge is CONSOLIDATION of supporting modules, NOT headline-closing. Progress:
+- **Merge 1 DONE @9cf2035c** — `crux2/r1-222-wrap` (R1 RouteM* + Schur* + ResolutionAtlas/RouteMBridge/
+  LossHomogeneity/NodeHomogeneity modules). Clean, reproduction files verified intact, green-gating.
+- **Merges 2–4 DONE** (R1-side consolidation; green-gating @bjt25cs1p): merge 2 `fm3/routem` @be15fd9c
+  (RouteMNReg/Scaffold/Value + geometric-codim bridge), merge 3 `fm3/routem-ga-transport` @c93e1243
+  (MvalMultSum add/add conflict → took fm3/routem's 376-line FULL proof; theirs was a 60-line specify-stub),
+  merge 4 `crux2/fold3-close` @0bd03ad2 (DeepestTelescoping PROVEN 362L + DeepestRegAbsorbIFT/SchurShift/
+  SplitReindex). Reproduction verified intact at every step. Base now = coherent R1-side + PARTIAL L2-PIN set.
+- **Merge 5 (L2-PIN reconciliation) DEFERRED — soundness-sensitive, do NOT blind-merge.** After 1–4 the base
+  ALREADY carries fold3-close's versions of DeepestSplitReindex (343L)/RegAbsorbIFT/SchurShift. But:
+  (a) HEAD's DeepestSplitReindex (343L) appears to LACK the #120 EPivot shear-CLE correction (0 shear/CLE
+  matches) that `fm2/split-reindex` (382L) carries; sub34's is 478L — three divergent versions. (b)
+  `fm2/deepest-gauge-chart-sub34` and `fm/deriv-frame-resume-cont` now CONFLICT vs HEAD (divergent Deepest*
+  versions); `fm2/split-reindex` previews clean. So the L2-PIN modules on the base may be an UNCORRECTED
+  version — INERT now (gates sorry) but MUST be reconciled to the CORRECTED specs (the #120 _deriv
+  =fst→shear-CLE fix; the dE(0)=id overclaim fix) BEFORE wiring the L2 gate. RESOLUTION: careful per-file
+  reconciliation at L2-wiring (cherry-pick split-reindex's corrections onto the chosen base version, verify
+  name=content), NOT a blind merge. Flagged for operator input. **Integration phase-1 (R1-side) is the
+  scoped 'clear the mess' deliverable; phase-2 (L2-PIN) is wiring-time work.**
+- VACUITY DISCIPLINE: merged supporting modules are inert (gates stay sorry) until WIRED; the routeStep
+  body's soundness (the trap-iii vacuity risk, latest lesson) gets verified when R1's resolution_charts is
+  wired, not at merge time.
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
