@@ -120,3 +120,8 @@ import DLNFibre.Core.DeterminantalBaseElimination
 -- (free Schur localization, regular dim δ), via the bordered-minor identity (*) + the height squeeze
 -- Iad = J (earned honestly, not assumed). Feeds G2-3 (the total presentation + flatness).
 import DLNFibre.Core.DeterminantalBasePresentation
+-- Route-(b) reducedness chain for G2-3 (R2-3a): the tensor-with-a-field reducedness descent (PROVED),
+-- and — CONDITIONAL on the trivialization `e : S ≃ₐ[k] R ⊗ F_B` + `IsReduced S` (explicit hypotheses,
+-- the open R2-3b wall) — `fibreGenIdeal` radical + the radical-collapse of MultComorphism pt4. The
+-- final BundleShiftInterface discharge WAITS for R2-3b to prove `e`.
+import DLNFibre.Core.FibreReducedTrivialization
