@@ -91,5 +91,6 @@ import DLNFibre.DLN.RLCT.Validate.RRR
 -- blocker resolved; not yet wired into routeStep — the controller-gated migration). Aggregator-gated.
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerValue
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerCover
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
