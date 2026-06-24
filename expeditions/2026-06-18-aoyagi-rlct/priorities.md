@@ -1424,7 +1424,13 @@ Immediate order:
    into updated row weights before the pivot-first `Q/P` theorem is applied.
    The displayed `Q^{-1}C` transported following factor and a row-index
    monomial-recurrence `Q/P` wrapper are Lean-proved, but they assume the row
-   weights have already been represented in that recurrence form. The finite
+   weights have already been represented in that recurrence form. The same
+   row-index recurrence wrapper now also has the source-substitution left side,
+   so the selected-entry substituted block can be fed directly into the
+   displayed row-index `Q/P` theorem. The finite all-pivot selected-entry
+   certificate is also linked chartwise to the existing source-selected Case 2
+   chart maps, giving a finite source-coordinate adapter for every selected
+   pivot in the printed residual-block center. The finite
    source-block tail lift is also Lean-proved: displayed residual-tail
    identities can be reattached below unchanged top rows using `fromBlocks` and
    `verticalBlock`, still without arbitrary-pivot coverage or full source chart

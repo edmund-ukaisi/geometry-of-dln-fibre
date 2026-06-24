@@ -5435,3 +5435,76 @@ This consumes the extraction hypothesis; it does not construct chart
 coverage, transition regularity, arbitrary-pivot source production, global A0
 data, Aoyagi Theorem 2 active-ratio lower bounds or chart counts, a global
 pole-order formula, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 all-pivot source-selected chart adapter
+
+Reproduction:
+`reproduction-case2-all-pivot-source-selected-chart-adapter-a4.md`.
+Statement card:
+`statement-card-a4-case2-all-pivot-source-selected-chart-adapter.md`.
+Review artifact:
+`review-case2-all-pivot-and-rowindex-source-bridges-a4.md`.
+
+Lean now connects the Case 2 residual-block all-pivot selected-entry finite
+certificate to the existing source-selected finite chart map for a supplied
+residual-block pivot:
+
+```text
+Case2ResidualBlockSelectedEntryChartFamilyData.standard_value_eq_sourceSelectedChartMapOfMem
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem
+```
+
+For chart index `c`, the finite chart enumeration selects a pivot
+`p_c` in `case2ResidualBlockPivotEntries n S J`.  The all-pivot certificate
+chart map at the standard source point `(u, residual)` is the same
+selected-entry formula as
+`case2SourceSelectedChartMapOfMem p_c.2 u residual`.
+
+This is finite selected-entry coordinate algebra.  It does not claim that
+Aoyagi displays every non-top-left chart, and it does not prove successor
+matrix production, suffix products, recurrence/exponent post-data, analytic
+chart coverage, transition regularity, Jacobian/volume control, normal
+crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 row-index source-substitution Q/P bridge
+
+Reproduction:
+`reproduction-case2-rowindex-source-substitution-qp-a4.md`.
+Statement card:
+`statement-card-a4-case2-rowindex-source-substitution-qp.md`.
+Review artifact:
+`review-case2-all-pivot-and-rowindex-source-bridges-a4.md`.
+
+Lean now proves the displayed top-left Case 2 `Q/P` identity in
+source-substitution form with row-index monomial recurrence weights:
+
+```text
+exists_case2DisplayedQP_mul_sourceSubstitution_of_rowIndex_monomialRec
+exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_rowIndex_monomialRec
+```
+
+The proof rewrites
+
+```text
+diagonal (monomialRec step rowLevel) * case2DisplayedSubstitutionMatrix
+```
+
+in pivot-first coordinates as the row-weight diagonal
+
+```text
+weightedPivotDiagonal
+  (u * monomialRec step (J+1))
+  (i |-> u * monomialRec step rowLevel_i)
+```
+
+times the normalized pivot-first matrix, then applies the existing
+row-index monomial `Q/P` theorem.  The vertical-block wrapper reattaches
+unchanged top rows.
+
+This is finite displayed-pivot matrix algebra.  It assumes row-index
+monomial weights and supplies quotient witnesses by residual-row divisibility.
+It does not generalize to arbitrary pivots and does not prove source-produced
+recurrence weights, successor matrices, terminal products, transition
+invariance, chart coverage, Jacobian arithmetic, normal crossings, pole
+order, or RLCT.

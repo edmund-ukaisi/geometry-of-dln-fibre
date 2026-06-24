@@ -1305,11 +1305,23 @@ No such claim is formalisation-ready until both fields are filled.
   `case2ResidualRowLevel_displayedPivotRow`,
   `case2DisplayedTransportedFollowingFactor`, and
   `exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`.
+  Added the row-index source-substitution form
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_rowIndex_monomialRec`,
+  which keeps the source-substituted displayed block on the left while using
+  row-index recurrence divisibility for the `P` quotient witnesses.
   Added the finite source-block tail-lift API `verticalBlock`,
   `fromBlocks_mul_verticalBlock`, `fromBlocks_mul_verticalBlock_eq_of_tail`,
   `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`,
+  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_rowIndex_monomialRec`,
   and
   `exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`.
+  Added all-pivot finite selected-entry/source-chart adapters
+  `Case2ResidualBlockSelectedEntryChartFamilyData.standard_value_eq_sourceSelectedChartMapOfMem`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint`,
+  and
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem`,
+  connecting each all-pivot certificate chart to the existing
+  source-selected Case 2 chart map.
   Added the displayed Case 2 recurrence-gap row-weight bridge
   `monomialTail_eq_one_of_forall_eq_one`,
   `monomialRec_eq_of_step_eq_one_on_Ico`,

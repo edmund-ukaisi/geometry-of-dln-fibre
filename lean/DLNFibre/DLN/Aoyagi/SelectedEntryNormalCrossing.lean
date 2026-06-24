@@ -1133,6 +1133,58 @@ theorem exists_chartPoint_chartMap_eq_value
       (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
       value
 
+/-- The source point in chart `c` of the Case 2 all-pivot selected-entry
+certificate, written with the same source residual coordinates used by the
+source-selected Case 2 algebra.
+
+This is a finite selected-entry chart point only; it is not source production
+for the successor matrix. -/
+noncomputable def sourceChartPoint
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).ChartPoint c :=
+  selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint
+    (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+    (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+    c u residual
+
+/-- In chart `c`, the Case 2 all-pivot selected-entry certificate chart map
+at the source point is exactly the source-selected Case 2 chart map for the
+pivot enumerated by `c`.
+
+This connects the all-pivot finite normal-crossing microcertificate to the
+source-coordinate chart algebra.  It does not claim that Aoyagi displays every
+non-top-left pivot chart, and it does not prove chart coverage, source
+production, transition regularity, normal crossings, pole order, or RLCT. -/
+theorem chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (c :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (u : K) (residual : ℕ × ℕ → K) :
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).chartMap c
+        (sourceChartPoint n hS hcont c u residual) =
+      fun p : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} ↦
+        case2SourceSelectedChartMapOfMem
+          ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c).2
+          u residual p.1 := by
+  simpa [sourceChartPoint, case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate,
+    case2SourceSelectedChartMapOfMem] using
+      selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq
+        (K := K)
+        (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+        (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        c u residual
+
 /-- Any chart of the Case 2 residual-block all-pivot finite certificate has
 the same finite selected-entry exponent pattern as the displayed Case 2
 continuing bridge.

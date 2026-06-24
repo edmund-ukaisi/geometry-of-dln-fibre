@@ -1106,17 +1106,34 @@ crossings, pole order, or RLCT content.
   divisibility using the residual source-row bound `J+1 <= rowLevel`. It
   assumes the row weights already have the form `u * monomialRec step rowLevel`;
   it does not prove the source recurrence or the full transition.
+  The source-substitution version of the same row-index theorem is now
+  Lean-proved as
+  `exists_case2DisplayedQP_mul_sourceSubstitution_of_rowIndex_monomialRec`:
+  the selected-entry substituted block is rewritten into updated row weights
+  and the existing row-index `Q/P` theorem is applied. This removes the need
+  to first flatten the displayed weights, but it is still only displayed-pivot
+  finite matrix algebra and not arbitrary-pivot source production.
   The displayed Case 2 source-block tail lift is now Lean-proved:
   `verticalBlock`, `fromBlocks_mul_verticalBlock`, and
   `fromBlocks_mul_verticalBlock_eq_of_tail` lift a residual-tail identity
   through unchanged top rows, while
-  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`
+  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights`,
+  `exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_rowIndex_monomialRec`,
   and
   `exists_case2DisplayedQP_verticalBlock_transportedFollowingFactor_of_rowIndex_monomialRec`
   apply this to the displayed source-substitution and row-index recurrence
   tail identities. This closes only the finite top-row reattachment
   bookkeeping; arbitrary pivots, source recurrence production, source chart
   regularity, exponent updates, and transition invariants remain open.
+  The all-pivot selected-entry certificate is now connected to the
+  source-selected Case 2 chart maps:
+  `Case2ResidualBlockSelectedEntryChartFamilyData.standard_value_eq_sourceSelectedChartMapOfMem`,
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartPoint`,
+  and
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartPoint_eq_sourceSelectedChartMapOfMem`.
+  This is finite selected-entry coordinate algebra for the standard all-pivot
+  chart family over Aoyagi's printed center, not a claim that Aoyagi displays
+  every non-top-left chart.
   The displayed Case 2 recurrence-gap row-weight bridge is also Lean-proved:
   `monomialTail_eq_one_of_forall_eq_one` and
   `monomialRec_eq_of_step_eq_one_on_Ico` prove constancy across a recurrence

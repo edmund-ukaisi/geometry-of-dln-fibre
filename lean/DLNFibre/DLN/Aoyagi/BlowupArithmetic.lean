@@ -10911,6 +10911,19 @@ def case2DisplayedSourceChartMap
 
 namespace Case2ResidualBlockSelectedEntryChartFamilyData
 
+/-- The standard Case 2 selected-entry chart-family data at any residual-block
+pivot is the corresponding source-selected chart map.
+
+This is only the finite selected-entry coordinate formula for the supplied
+pivot; it is not a chart-coverage or source-production theorem. -/
+@[simp] theorem standard_value_eq_sourceSelectedChartMapOfMem
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) (q : ℕ × ℕ) :
+    (standard n S J R).value ⟨p, hp⟩ (u, residual) q =
+      case2SourceSelectedChartMapOfMem hp u residual q :=
+  rfl
+
 /-- The standard Case 2 selected-entry chart-family data specializes at
 Aoyagi's displayed pivot to the existing displayed source chart map. -/
 @[simp] theorem standard_value_displayedPivot_eq_sourceChartMap
@@ -21162,6 +21175,58 @@ theorem exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monom
       (C := case2DisplayedFollowingFactor n hS hcont C)
       (fun i ↦ Or.inr (case2ResidualRowLevel_ge n S J i.1))
 
+/-- Displayed Case 2 `Q/P` identity in source-substitution form when the old
+row weights are a monomial recurrence indexed by residual source row.
+
+This is the same finite displayed-pivot algebra as
+`exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec`,
+but its left side uses the source-substituted block
+`diagonal weight * case2DisplayedSubstitutionMatrix`.  It is not an
+arbitrary-pivot, source-production, transition-invariant, normal-crossing, or
+RLCT theorem. -/
+theorem exists_case2DisplayedQP_mul_sourceSubstitution_of_rowIndex_monomialRec
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      (weightedPivotBlockRowOp q
+          (fun i ↦
+            pivotFirstX
+              (case2DisplayedPivotRow n hS hcont)
+              (case2DisplayedPivotCol n hS hcont)
+              (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+          (diagonal
+              (fun i : Case2ResidualRowIndex n S J ↦
+                monomialRec step (case2ResidualRowLevel n S J i)) *
+            case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+            (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+            (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          case2DisplayedFollowingFactor n hS hcont C =
+        (weightedPivotDiagonal
+            (u * monomialRec step (J + 1))
+            (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+              u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD
+                (case2DisplayedPivotRow n hS hcont)
+                (case2DisplayedPivotCol n hS hcont)
+                (case2DisplayedNormalizedMatrix n hS hcont residual) -
+              pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                pivotFirstY
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          case2DisplayedTransportedFollowingFactor n hS hcont residual C := by
+  rcases exists_case2DisplayedQP_mul_transportedFollowingFactor_of_rowIndex_monomialRec
+      step n hS hcont u residual C with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  rw [case2Displayed_diagonal_mul_substitutionMatrix_pivotFirst]
+  simpa [case2ResidualRowLevel_displayedPivotRow, Matrix.mul_assoc] using hq
+
 /-- Displayed Case 2 source-substitution tail identity lifted through an
 unchanged top block.  This is block-diagonal bookkeeping for the displayed
 pivot chart, not arbitrary-pivot coverage or a full transition theorem. -/
@@ -21212,6 +21277,59 @@ theorem exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_flat_weights
   refine ⟨q, ?_⟩
   exact fromBlocks_mul_verticalBlock_eq_of_tail Atop _ _ Ctop _ _
     (by simpa [case2DisplayedTransportedFollowingFactor] using hq)
+
+/-- Displayed Case 2 source-substitution identity with row-index monomial
+recurrence weights, lifted through unchanged top rows.
+
+This keeps the source-substituted block on the left and the transported
+following factor `Q⁻¹ C` on the right.  It is finite block-matrix bookkeeping
+for the displayed pivot only. -/
+theorem exists_case2DisplayedQP_verticalBlock_sourceSubstitution_of_rowIndex_monomialRec
+    {ι : Type*} [Fintype ι]
+    (Atop : Matrix ι ι R) (Ctop : Matrix ι τ R)
+    (step : ℕ → R) (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1)) (u : R)
+    (residual : Case2ResidualRowIndex n S J → Case2ResidualColIndex n S J → R)
+    (C : Matrix (Case2ResidualColIndex n S J) τ R) :
+    ∃ q : pivotComplement (case2DisplayedPivotRow n hS hcont) → R,
+      fromBlocks Atop 0 0
+          (weightedPivotBlockRowOp q
+              (fun i ↦
+                pivotFirstX
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) i ()) *
+            (diagonal
+                (fun i : Case2ResidualRowIndex n S J ↦
+                  monomialRec step (case2ResidualRowLevel n S J i)) *
+              case2DisplayedSubstitutionMatrix n hS hcont u residual).submatrix
+              (pivotFirstIndexEquiv (case2DisplayedPivotRow n hS hcont))
+              (pivotFirstIndexEquiv (case2DisplayedPivotCol n hS hcont))) *
+          verticalBlock Ctop (case2DisplayedFollowingFactor n hS hcont C) =
+        fromBlocks Atop 0 0
+          (weightedPivotDiagonal
+              (u * monomialRec step (J + 1))
+              (fun i : pivotComplement (case2DisplayedPivotRow n hS hcont) ↦
+                u * monomialRec step (case2ResidualRowLevel n S J i.1)) *
+            weightedPivotClearedBlock
+              (pivotFirstD
+                  (case2DisplayedPivotRow n hS hcont)
+                  (case2DisplayedPivotCol n hS hcont)
+                  (case2DisplayedNormalizedMatrix n hS hcont residual) -
+                pivotFirstX
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual) *
+                  pivotFirstY
+                    (case2DisplayedPivotRow n hS hcont)
+                    (case2DisplayedPivotCol n hS hcont)
+                    (case2DisplayedNormalizedMatrix n hS hcont residual))) *
+          verticalBlock Ctop
+            (case2DisplayedTransportedFollowingFactor n hS hcont residual C) := by
+  rcases exists_case2DisplayedQP_mul_sourceSubstitution_of_rowIndex_monomialRec
+      step n hS hcont u residual C with ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  exact fromBlocks_mul_verticalBlock_eq_of_tail Atop _ _ Ctop _ _ hq
 
 /-- Displayed Case 2 row-index recurrence tail identity lifted through an
 unchanged top block.  The row weights are assumed to already have the
