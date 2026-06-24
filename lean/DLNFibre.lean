@@ -102,3 +102,8 @@ import DLNFibre.Core.FibreNormalForm
 -- rank (fromBlocks Δ B12 B21 B22) = card m ↔ B22 = B21·Δ⁻¹·B12, the explicit chart parametrization
 -- Mat^{rk=r}∩U ≅ GL_r × Mat × Mat, + reusable block-diag rank additivity. Feeds G2-3 (the Schur AlgEquiv).
 import DLNFibre.Core.DeterminantalChart
+-- Bordered Schur minor (G2-2 sub-rung 1): det [[Δ,u],[v,d]] = d·detΔ − v·adjΔ·u over ANY CommRing
+-- (universal-coefficient route, no invertible pivot), and the Schur expression = an (r+1)-minor ⟹
+-- vanishes on Mat^{rk≤r}. The generator-free handle for the localized base presentation (dodges
+-- determinantal-ideal theory, absent at v4.29).
+import DLNFibre.Core.DeterminantalChartRing
