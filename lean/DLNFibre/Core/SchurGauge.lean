@@ -75,6 +75,50 @@ noncomputable def schurB21Loc (q p r : ℕ) :
   Matrix.of fun i j ↦ algebraMap (MvPolynomial (SchurVar q p r) k) _
     (X (Sum.inr (Sum.inr (i, j))))
 
+/-! ## The endpoint normalizing units `L`, `H`
+
+The pivot-cell factorization `M = L · E · H` (`M` the rank-`r` generic product over `SchurLoc`):
+- `L` (`p × p`, the `d_N`-vertex unit): lower-unitriangular `[[I, 0], [B21 · Δ⁻¹, I]]`.
+- `H` (`q × q`, the `d_0`-vertex unit): upper-triangular `[[Δ, B12], [0, I]]`.
+
+Each is built block-wise over `Fin r ⊕ Fin (n−r)` (where `isUnit_fromBlocks_zero₁₂/₂₁` makes
+invertibility immediate from the diagonal blocks), then reindexed to `Fin n` by the pivot split
+`finSplit`. Both are units over `SchurLoc` — `Δ⁻¹` exists there (`isUnit_schurΔLoc`). -/
+
+/-- The lower-unitriangular `L` block, `[[I, 0], [B21 · Δ⁻¹, I]]`, on `Fin r ⊕ Fin (p−r)`. -/
+noncomputable def LblockSum (q p r : ℕ) :
+    Matrix (Fin r ⊕ Fin (p - r)) (Fin r ⊕ Fin (p - r)) (SchurLoc (k := k) q p r) :=
+  Matrix.fromBlocks 1 0 (schurB21Loc q p r * (schurΔLoc q p r)⁻¹) 1
+
+/-- The upper-triangular `H` block, `[[Δ, B12], [0, I]]`, on `Fin r ⊕ Fin (q−r)`. -/
+noncomputable def HblockSum (q p r : ℕ) :
+    Matrix (Fin r ⊕ Fin (q - r)) (Fin r ⊕ Fin (q - r)) (SchurLoc (k := k) q p r) :=
+  Matrix.fromBlocks (schurΔLoc q p r) (schurB12Loc q p r) 0 1
+
+/-- `L` as a `p × p` matrix over `SchurLoc` (the `LblockSum` reindexed by the pivot split). -/
+noncomputable def Lmat (q p r : ℕ) (hp : r ≤ p) :
+    Matrix (Fin p) (Fin p) (SchurLoc (k := k) q p r) :=
+  reindexAlgEquiv (SchurLoc (k := k) q p r) (SchurLoc (k := k) q p r) (finSplit hp).symm
+    (LblockSum q p r)
+
+/-- `H` as a `q × q` matrix over `SchurLoc` (the `HblockSum` reindexed by the pivot split). -/
+noncomputable def Hmat (q p r : ℕ) (hq : r ≤ q) :
+    Matrix (Fin q) (Fin q) (SchurLoc (k := k) q p r) :=
+  reindexAlgEquiv (SchurLoc (k := k) q p r) (SchurLoc (k := k) q p r) (finSplit hq).symm
+    (HblockSum q p r)
+
+/-- `L` is a unit: lower-unitriangular (diagonal `I`, `I`), reindexing preserves units. -/
+theorem isUnit_Lmat (q p r : ℕ) (hp : r ≤ p) : IsUnit (Lmat (k := k) q p r hp) := by
+  apply IsUnit.map
+  rw [LblockSum, isUnit_fromBlocks_zero₁₂]
+  exact ⟨isUnit_one, isUnit_one⟩
+
+/-- `H` is a unit: upper-triangular with diagonal `Δ` (a unit) and `I`. -/
+theorem isUnit_Hmat (q p r : ℕ) (hq : r ≤ q) : IsUnit (Hmat (k := k) q p r hq) := by
+  apply IsUnit.map
+  rw [HblockSum, isUnit_fromBlocks_zero₂₁]
+  exact ⟨isUnit_schurΔLoc q p r, isUnit_one⟩
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: at `(q,p,r) = (2,2,1)` over `ℚ`, the `1×1` pivot block over `SchurLoc` is
