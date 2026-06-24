@@ -530,6 +530,17 @@ still finite algebra only.  The next A2 work remains the local analytic
 comparison between the literal loss and the cleaned loss, followed by the
 Fubini/polar regular-variable theorem.
 
+A2 finite literal-vs-cleaned loss comparison has now landed in draft:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Lean proves the finite ordered-ring comparison between the literal square-sum
+`X,F2,F3,D-F3F2` and the cleaned square-sum `X,F2,F3,D`: under
+`squareSum(F2)+squareSum(F3) <= 1`, each is at most twice the other.  The proof
+includes the row-column finite Cauchy-Schwarz estimate for `squareSum(F3*F2)`.
+The next A2 analytic work is now sharper: derive this smallness neighborhood
+from centered continuity in the source-stratum setting, then prove or encode
+the Fubini/polar regular-variable shift theorem for genuine analytic product
+coordinates.  Do not treat either as completed by the finite comparison.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds

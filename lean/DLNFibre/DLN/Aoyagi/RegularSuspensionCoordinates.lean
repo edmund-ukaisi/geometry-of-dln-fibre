@@ -1,3 +1,4 @@
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 import DLNFibre.DLN.Aoyagi.ProductReductionEntryIdealBoundary
 import DLNFibre.DLN.Aoyagi.FinalFormula
 import DLNFibre.DLN.Aoyagi.Definition3RankWidthBridge
@@ -50,6 +51,63 @@ theorem aoyagiCoordinateSquareSum_sumElim
     aoyagiCoordinateSquareSum (Sum.elim f g) =
       aoyagiCoordinateSquareSum f + aoyagiCoordinateSquareSum g := by
   simp [aoyagiCoordinateSquareSum, Fintype.sum_sum_type]
+
+/-- A finite coordinate square-sum is nonnegative over an ordered scalar
+ring. -/
+theorem aoyagiCoordinateSquareSum_nonneg
+    {η R : Type*} [Fintype η] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    (f : η → R) :
+    0 ≤ aoyagiCoordinateSquareSum f := by
+  exact Finset.sum_nonneg (fun c _ => sq_nonneg (f c))
+
+/-- Pointwise square estimate used to compare corrected and uncorrected
+finite square-sums. -/
+theorem aoyagi_sq_sub_le_two_mul_sq_add_two_mul_sq
+    {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R] (a b : R) :
+    (a - b) ^ 2 ≤ 2 * a ^ 2 + 2 * b ^ 2 := by
+  nlinarith [sq_nonneg (a + b)]
+
+/-- Pointwise square estimate for a sum. -/
+theorem aoyagi_sq_add_le_two_mul_sq_add_two_mul_sq
+    {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R] (a b : R) :
+    (a + b) ^ 2 ≤ 2 * a ^ 2 + 2 * b ^ 2 := by
+  nlinarith [sq_nonneg (a - b)]
+
+/-- Finite square-sum estimate for coordinatewise subtraction. -/
+theorem aoyagiCoordinateSquareSum_sub_le_two_mul_add_two_mul
+    {η R : Type*} [Fintype η] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    (f g : η → R) :
+    aoyagiCoordinateSquareSum (fun c => f c - g c) ≤
+      2 * aoyagiCoordinateSquareSum f + 2 * aoyagiCoordinateSquareSum g := by
+  classical
+  unfold aoyagiCoordinateSquareSum
+  calc
+    ∑ c, (f c - g c) ^ 2 ≤
+        ∑ c, (2 * f c ^ 2 + 2 * g c ^ 2) := by
+      exact Finset.sum_le_sum
+        (fun c _ => aoyagi_sq_sub_le_two_mul_sq_add_two_mul_sq (f c) (g c))
+    _ = (∑ c, 2 * f c ^ 2) + ∑ c, 2 * g c ^ 2 := by
+      rw [Finset.sum_add_distrib]
+    _ = 2 * (∑ c, f c ^ 2) + 2 * ∑ c, g c ^ 2 := by
+      rw [← Finset.mul_sum, ← Finset.mul_sum]
+
+/-- Finite square-sum estimate for coordinatewise addition. -/
+theorem aoyagiCoordinateSquareSum_add_le_two_mul_add_two_mul
+    {η R : Type*} [Fintype η] [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    (f g : η → R) :
+    aoyagiCoordinateSquareSum (fun c => f c + g c) ≤
+      2 * aoyagiCoordinateSquareSum f + 2 * aoyagiCoordinateSquareSum g := by
+  classical
+  unfold aoyagiCoordinateSquareSum
+  calc
+    ∑ c, (f c + g c) ^ 2 ≤
+        ∑ c, (2 * f c ^ 2 + 2 * g c ^ 2) := by
+      exact Finset.sum_le_sum
+        (fun c _ => aoyagi_sq_add_le_two_mul_sq_add_two_mul_sq (f c) (g c))
+    _ = (∑ c, 2 * f c ^ 2) + ∑ c, 2 * g c ^ 2 := by
+      rw [Finset.sum_add_distrib]
+    _ = 2 * (∑ c, f c ^ 2) + 2 * ∑ c, g c ^ 2 := by
+      rw [← Finset.mul_sum, ← Finset.mul_sum]
 
 /-- Scalar coordinates for the three regular block families
 `Ctop - 1`, `F2`, and `F3`.
@@ -201,6 +259,55 @@ theorem value_centered_continuousAt
           · exact
               ((continuous_apply j).continuousAt.comp
                 ((continuous_apply i).continuousAt.comp hF3))
+
+/-- The regular-coordinate square-sum splits into the three displayed p. 13
+regular block square-sums. -/
+theorem coordinateSquareSum_eq_ctop_add_f2_add_f3
+    [CommSemiring R] [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) :
+    aoyagiCoordinateSquareSum (value X F2 F3) =
+      aoyagiCoordinateSquareSum (fun ij : ι × ι => X ij.1 ij.2) +
+        (aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) +
+          aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2)) := by
+  simp [aoyagiCoordinateSquareSum, value, Fintype.sum_sum_type]
+
+/-- The `F2` square-sum is bounded by the full regular-coordinate square-sum. -/
+theorem f2SquareSum_le_regularSquareSum
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) :
+    aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (value X F2 F3) := by
+  let SX := aoyagiCoordinateSquareSum (fun ij : ι × ι => X ij.1 ij.2)
+  let SF2 := aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2)
+  let SF3 := aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2)
+  have hsplit : aoyagiCoordinateSquareSum (value X F2 F3) = SX + (SF2 + SF3) := by
+    simpa [SX, SF2, SF3] using coordinateSquareSum_eq_ctop_add_f2_add_f3 X F2 F3
+  have hSX : 0 ≤ SX := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : ι × ι => X ij.1 ij.2)
+  have hSF3 : 0 ≤ SF3 := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : μ × ι => F3 ij.1 ij.2)
+  rw [hsplit]
+  nlinarith
+
+/-- The `F3` square-sum is bounded by the full regular-coordinate square-sum. -/
+theorem f3SquareSum_le_regularSquareSum
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) :
+    aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (value X F2 F3) := by
+  let SX := aoyagiCoordinateSquareSum (fun ij : ι × ι => X ij.1 ij.2)
+  let SF2 := aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2)
+  let SF3 := aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2)
+  have hsplit : aoyagiCoordinateSquareSum (value X F2 F3) = SX + (SF2 + SF3) := by
+    simpa [SX, SF2, SF3] using coordinateSquareSum_eq_ctop_add_f2_add_f3 X F2 F3
+  have hSX : 0 ≤ SX := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : ι × ι => X ij.1 ij.2)
+  have hSF2 : 0 ≤ SF2 := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : ι × ν => F2 ij.1 ij.2)
+  rw [hsplit]
+  nlinarith
 
 /-- The abstract scalar regular-coordinate count matches Aoyagi's p. 13 count
 once the three index-cardinalities are identified with `r`, `H(L+1)-r`, and
@@ -491,6 +598,332 @@ theorem literalCoordinateSquareSum_eq_regular_add_correctedResidual
           (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2)) := by
   simp [aoyagiCoordinateSquareSum, literalValue, AoyagiRegularBlockCoordinateIndex.value,
     AoyagiResidualBlockCoordinateIndex.value, Fintype.sum_sum_type]
+
+/-- The corrected residual square-sum is bounded by twice the cleaned residual
+square-sum plus twice the product-correction square-sum.
+
+This is a finite ordered-ring estimate only. -/
+theorem correctedResidualSquareSum_le_two_mul_residual_add_two_mul_product
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) (D : Matrix μ ν R) :
+    aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2)) ≤
+      2 * aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value D) +
+        2 * aoyagiCoordinateSquareSum
+          (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) := by
+  simpa [AoyagiResidualBlockCoordinateIndex.value] using
+    (aoyagiCoordinateSquareSum_sub_le_two_mul_add_two_mul
+      (AoyagiResidualBlockCoordinateIndex.value D)
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)))
+
+/-- The cleaned residual square-sum is bounded by twice the corrected residual
+square-sum plus twice the product-correction square-sum.
+
+This is the reverse finite estimate needed for two-sided comparison. -/
+theorem residualSquareSum_le_two_mul_correctedResidual_add_two_mul_product
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) (D : Matrix μ ν R) :
+    aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value D) ≤
+      2 * aoyagiCoordinateSquareSum
+          (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2)) +
+        2 * aoyagiCoordinateSquareSum
+          (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) := by
+  simpa [AoyagiResidualBlockCoordinateIndex.value] using
+    (aoyagiCoordinateSquareSum_add_le_two_mul_add_two_mul
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)))
+
+/-- Frobenius-style finite matrix-product estimate for the p. 13 product
+correction. -/
+theorem productCorrectionSquareSum_le_f3SquareSum_mul_f2SquareSum
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (F2 : Matrix ι ν R) (F3 : Matrix μ ι R) :
+    aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) ≤
+      aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2) *
+        aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) := by
+  classical
+  unfold aoyagiCoordinateSquareSum AoyagiResidualBlockCoordinateIndex.value
+  calc
+    ∑ ij : μ × ν, (F3 * F2) ij.1 ij.2 ^ 2 ≤
+        ∑ ij : μ × ν,
+          (∑ k : ι, F3 ij.1 k ^ 2) * ∑ k : ι, F2 k ij.2 ^ 2 := by
+      exact Finset.sum_le_sum (fun ij _ => by
+        simpa [Matrix.mul_apply] using
+          (Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset ι)
+            (fun k => F3 ij.1 k) (fun k => F2 k ij.2)))
+    _ =
+        (∑ ij : μ × ι, F3 ij.1 ij.2 ^ 2) *
+          ∑ ij : ι × ν, F2 ij.1 ij.2 ^ 2 := by
+      simp only [Fintype.sum_prod_type]
+      calc
+        ∑ i : μ, ∑ j : ν,
+            (∑ k : ι, F3 i k ^ 2) * ∑ k : ι, F2 k j ^ 2 =
+            ∑ i : μ, (∑ k : ι, F3 i k ^ 2) *
+              ∑ j : ν, ∑ k : ι, F2 k j ^ 2 := by
+          simp [Finset.mul_sum]
+        _ =
+            (∑ i : μ, ∑ k : ι, F3 i k ^ 2) *
+              ∑ j : ν, ∑ k : ι, F2 k j ^ 2 := by
+          rw [Finset.sum_mul]
+        _ =
+            (∑ i : μ, ∑ k : ι, F3 i k ^ 2) *
+              ∑ k : ι, ∑ j : ν, F2 k j ^ 2 := by
+          have hcomm :
+              (∑ j : ν, ∑ k : ι, F2 k j ^ 2) =
+                ∑ k : ι, ∑ j : ν, F2 k j ^ 2 := by
+            rw [Finset.sum_comm]
+          rw [hcomm]
+
+/-- If the `F2` and `F3` square-sums are small, then the product correction is
+controlled by one quarter of the regular-coordinate square-sum. -/
+theorem four_mul_productCorrectionSquareSum_le_regular_of_f2_f3_squareSum_add_le_one
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (hsmall :
+      aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) +
+          aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2) ≤
+        1) :
+    4 * aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) ≤
+      aoyagiCoordinateSquareSum
+        (AoyagiRegularBlockCoordinateIndex.value X F2 F3) := by
+  let A :=
+    aoyagiCoordinateSquareSum
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  let SF2 := aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2)
+  let SF3 := aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2)
+  let P :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  have hP : P ≤ SF3 * SF2 := by
+    simpa [P, SF2, SF3] using
+      productCorrectionSquareSum_le_f3SquareSum_mul_f2SquareSum F2 F3
+  have hSF20 : 0 ≤ SF2 := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : ι × ν => F2 ij.1 ij.2)
+  have hSF30 : 0 ≤ SF3 := by
+    exact aoyagiCoordinateSquareSum_nonneg (fun ij : μ × ι => F3 ij.1 ij.2)
+  have hsum_small : SF2 + SF3 ≤ 1 := by
+    simpa [SF2, SF3] using hsmall
+  have hfour_prod : 4 * (SF3 * SF2) ≤ SF2 + SF3 := by
+    have hfour_le_sq : 4 * SF3 * SF2 ≤ (SF2 + SF3) ^ 2 := by
+      nlinarith [sq_nonneg (SF2 - SF3)]
+    have hsumsq_le : (SF2 + SF3) ^ 2 ≤ SF2 + SF3 := by
+      nlinarith
+    nlinarith
+  have hsum_le_A : SF2 + SF3 ≤ A := by
+    let SX := aoyagiCoordinateSquareSum (fun ij : ι × ι => X ij.1 ij.2)
+    have hsplit : A = SX + (SF2 + SF3) := by
+      simpa [A, SX, SF2, SF3] using
+        AoyagiRegularBlockCoordinateIndex.coordinateSquareSum_eq_ctop_add_f2_add_f3 X F2 F3
+    have hSX : 0 ≤ SX := by
+      exact aoyagiCoordinateSquareSum_nonneg (fun ij : ι × ι => X ij.1 ij.2)
+    rw [hsplit]
+    nlinarith
+  nlinarith
+
+/-- Conditional finite comparison: if the product correction `F3 * F2` is
+controlled by the regular square-sum, then the literal p. 13 square-sum is at
+most three times the cleaned square-sum.
+
+This theorem does not prove the required local small-neighborhood control of
+`F3 * F2`; it only records the finite algebra once that control is supplied. -/
+theorem literalCoordinateSquareSum_le_three_mul_coordinateSquareSum_of_product_le_regular
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R)
+    (hproduct :
+      aoyagiCoordinateSquareSum
+          (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) ≤
+        aoyagiCoordinateSquareSum
+          (AoyagiRegularBlockCoordinateIndex.value X F2 F3)) :
+    aoyagiCoordinateSquareSum (literalValue X F2 F3 D) ≤
+      3 * aoyagiCoordinateSquareSum (value X F2 F3 D) := by
+  let A :=
+    aoyagiCoordinateSquareSum
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  let B :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value D)
+  let P :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  let E :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  have hE : E ≤ 2 * B + 2 * P := by
+    simpa [E, B, P] using
+      correctedResidualSquareSum_le_two_mul_residual_add_two_mul_product F2 F3 D
+  have hP : P ≤ A := by
+    simpa [A, P] using hproduct
+  have hB0 : 0 ≤ B := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiResidualBlockCoordinateIndex.value D)
+  calc
+    aoyagiCoordinateSquareSum (literalValue X F2 F3 D) = A + E := by
+      simpa [A, E] using
+        literalCoordinateSquareSum_eq_regular_add_correctedResidual X F2 F3 D
+    _ ≤ A + (2 * B + 2 * P) := by
+      linarith
+    _ ≤ A + (2 * B + 2 * A) := by
+      linarith
+    _ ≤ 3 * (A + B) := by
+      nlinarith
+    _ = 3 * aoyagiCoordinateSquareSum (value X F2 F3 D) := by
+      rw [coordinateSquareSum_eq_regular_add_residual X F2 F3 D]
+
+/-- Conditional finite comparison in the reverse direction: under the same
+product-control hypothesis, the cleaned square-sum is at most three times the
+literal p. 13 square-sum. -/
+theorem coordinateSquareSum_le_three_mul_literalCoordinateSquareSum_of_product_le_regular
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R)
+    (hproduct :
+      aoyagiCoordinateSquareSum
+          (AoyagiResidualBlockCoordinateIndex.value (F3 * F2)) ≤
+        aoyagiCoordinateSquareSum
+          (AoyagiRegularBlockCoordinateIndex.value X F2 F3)) :
+    aoyagiCoordinateSquareSum (value X F2 F3 D) ≤
+      3 * aoyagiCoordinateSquareSum (literalValue X F2 F3 D) := by
+  let A :=
+    aoyagiCoordinateSquareSum
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  let B :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value D)
+  let P :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  let E :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  have hB : B ≤ 2 * E + 2 * P := by
+    simpa [B, E, P] using
+      residualSquareSum_le_two_mul_correctedResidual_add_two_mul_product F2 F3 D
+  have hP : P ≤ A := by
+    simpa [A, P] using hproduct
+  have hE0 : 0 ≤ E := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  calc
+    aoyagiCoordinateSquareSum (value X F2 F3 D) = A + B := by
+      simpa [A, B] using
+        coordinateSquareSum_eq_regular_add_residual X F2 F3 D
+    _ ≤ A + (2 * E + 2 * P) := by
+      linarith
+    _ ≤ A + (2 * E + 2 * A) := by
+      linarith
+    _ ≤ 3 * (A + E) := by
+      nlinarith
+    _ = 3 * aoyagiCoordinateSquareSum (literalValue X F2 F3 D) := by
+      rw [literalCoordinateSquareSum_eq_regular_add_correctedResidual X F2 F3 D]
+
+/-- Small-neighborhood finite comparison: if the sum of the `F2` and `F3`
+regular square-sums is at most `1`, then the literal p. 13 square-sum is
+bounded by twice the cleaned square-sum. -/
+theorem literalCoordinateSquareSum_le_two_mul_coordinateSquareSum_of_f2_f3_squareSum_add_le_one
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R)
+    (hsmall :
+      aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) +
+          aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2) ≤
+        1) :
+    aoyagiCoordinateSquareSum (literalValue X F2 F3 D) ≤
+      2 * aoyagiCoordinateSquareSum (value X F2 F3 D) := by
+  let A :=
+    aoyagiCoordinateSquareSum
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  let B :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value D)
+  let P :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  let E :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  have hE : E ≤ 2 * B + 2 * P := by
+    simpa [E, B, P] using
+      correctedResidualSquareSum_le_two_mul_residual_add_two_mul_product F2 F3 D
+  have hP4 : 4 * P ≤ A := by
+    simpa [P, A] using
+      four_mul_productCorrectionSquareSum_le_regular_of_f2_f3_squareSum_add_le_one
+        X F2 F3 hsmall
+  have hP0 : 0 ≤ P := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  have hA0 : 0 ≤ A := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  calc
+    aoyagiCoordinateSquareSum (literalValue X F2 F3 D) = A + E := by
+      simpa [A, E] using
+        literalCoordinateSquareSum_eq_regular_add_correctedResidual X F2 F3 D
+    _ ≤ A + (2 * B + 2 * P) := by
+      linarith
+    _ ≤ 2 * (A + B) := by
+      nlinarith
+    _ = 2 * aoyagiCoordinateSquareSum (value X F2 F3 D) := by
+      rw [coordinateSquareSum_eq_regular_add_residual X F2 F3 D]
+
+/-- Reverse small-neighborhood finite comparison: if the sum of the `F2` and
+`F3` regular square-sums is at most `1`, then the cleaned square-sum is bounded
+by twice the literal p. 13 square-sum. -/
+theorem coordinateSquareSum_le_two_mul_literalCoordinateSquareSum_of_f2_f3_squareSum_add_le_one
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R)
+    (hsmall :
+      aoyagiCoordinateSquareSum (fun ij : ι × ν => F2 ij.1 ij.2) +
+          aoyagiCoordinateSquareSum (fun ij : μ × ι => F3 ij.1 ij.2) ≤
+        1) :
+    aoyagiCoordinateSquareSum (value X F2 F3 D) ≤
+      2 * aoyagiCoordinateSquareSum (literalValue X F2 F3 D) := by
+  let A :=
+    aoyagiCoordinateSquareSum
+      (AoyagiRegularBlockCoordinateIndex.value X F2 F3)
+  let B :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value D)
+  let P :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  let E :=
+    aoyagiCoordinateSquareSum
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  have hB : B ≤ 2 * E + 2 * P := by
+    simpa [B, E, P] using
+      residualSquareSum_le_two_mul_correctedResidual_add_two_mul_product F2 F3 D
+  have hP4 : 4 * P ≤ A := by
+    simpa [P, A] using
+      four_mul_productCorrectionSquareSum_le_regular_of_f2_f3_squareSum_add_le_one
+        X F2 F3 hsmall
+  have hP0 : 0 ≤ P := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiResidualBlockCoordinateIndex.value (F3 * F2))
+  have hE0 : 0 ≤ E := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2))
+  calc
+    aoyagiCoordinateSquareSum (value X F2 F3 D) = A + B := by
+      simpa [A, B] using
+        coordinateSquareSum_eq_regular_add_residual X F2 F3 D
+    _ ≤ A + (2 * E + 2 * P) := by
+      linarith
+    _ ≤ 2 * (A + E) := by
+      nlinarith
+    _ = 2 * aoyagiCoordinateSquareSum (literalValue X F2 F3 D) := by
+      rw [literalCoordinateSquareSum_eq_regular_add_correctedResidual X F2 F3 D]
 
 /-- The cleaned p. 13 product-difference scalar-coordinate count is the
 endpoint product entry count. -/

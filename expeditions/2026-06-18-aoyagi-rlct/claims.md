@@ -5830,6 +5830,36 @@ comparability, no analytic generator transport, no regular-coordinate chart
 construction, no Jacobian compatibility, no normal crossings, no pole-order
 theorem, and no RLCT theorem.
 
+Latest A2 finite literal-vs-cleaned loss comparison:
+Lean proves finite ordered-ring square-sum comparison between the literal
+signed/corrected p. 13 square-sum and the cleaned square-sum.  It first proves
+finite coordinatewise sum/subtraction estimates, splits the regular
+square-sum into the `X`, `F2`, and `F3` block square-sums, proves the
+row-column Cauchy-Schwarz estimate
+`squareSum(F3*F2) <= squareSum(F3) * squareSum(F2)`, and derives
+`4*squareSum(F3*F2) <= regularSquareSum` from
+`squareSum(F2)+squareSum(F3) <= 1`.  Under this hypothesis, Lean proves
+factor-`2` comparison in both directions between the literal and cleaned
+finite square-sums.
+
+Lean names include
+`AoyagiProductDifferenceCoordinateIndex.productCorrectionSquareSum_le_f3SquareSum_mul_f2SquareSum`,
+`AoyagiProductDifferenceCoordinateIndex.four_mul_productCorrectionSquareSum_le_regular_of_f2_f3_squareSum_add_le_one`,
+`AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_le_two_mul_coordinateSquareSum_of_f2_f3_squareSum_add_le_one`,
+and
+`AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_le_two_mul_literalCoordinateSquareSum_of_f2_f3_squareSum_add_le_one`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+
+Nonclaims: no continuity-to-neighborhood shrink, no analytic coordinate chart,
+no Fubini/polar theorem, no regular-coordinate RLCT shift, no chart coverage,
+no Jacobian compatibility, no normal crossings, no pole-order theorem, and no
+RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

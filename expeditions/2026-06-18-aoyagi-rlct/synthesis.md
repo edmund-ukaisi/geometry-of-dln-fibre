@@ -8619,6 +8619,26 @@ This still does not compare `D - F3*F2` with `D`, prove local loss
 comparability, analytic generator transport, regular-coordinate chart status,
 Jacobian compatibility, normal crossings, pole order, or RLCT.
 
+Latest A2 finite literal-vs-cleaned loss comparison update:
+`RegularSuspensionCoordinates.lean` now proves the finite ordered-ring
+comparison between the literal p. 13 square-sum and the cleaned square-sum.
+The new finite lemmas prove coordinatewise sum/sub square estimates, split the
+regular square-sum into `X`, `F2`, and `F3`, prove
+`squareSum(F3*F2) <= squareSum(F3) * squareSum(F2)`, and derive two-sided
+factor-`2` comparison under the smallness hypothesis
+`squareSum(F2)+squareSum(F3) <= 1`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+
+This is still finite loss comparison only.  It does not prove the
+continuity-to-neighborhood shrink in the source-stratum setting, does not
+prove that the regular scalar maps are analytic coordinates, and does not
+prove the Fubini/polar regular-variable shift, chart coverage, Jacobian
+compatibility, normal crossings, pole order, or RLCT.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

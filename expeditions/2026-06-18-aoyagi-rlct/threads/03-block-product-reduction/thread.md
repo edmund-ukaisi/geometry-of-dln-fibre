@@ -2398,3 +2398,62 @@ Boundary: finite square-sum bookkeeping only.  It does not compare
 `D - F3*F2` with `D`, prove local loss comparability, prove analytic generator
 transport, construct charts, prove Jacobian compatibility, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-24 A2 regular-suspension finite loss comparison
+
+Reproduction:
+`reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Statement card:
+`statement-card-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+Review:
+`review-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+
+Lean now proves the finite ordered-ring square-sum comparison between the
+literal p. 13 scalar family
+
+```text
+X, -F2, -F3, D - F3 * F2
+```
+
+and the cleaned scalar family
+
+```text
+X, F2, F3, D.
+```
+
+The key new Lean names include:
+
+```text
+aoyagiCoordinateSquareSum_sub_le_two_mul_add_two_mul
+aoyagiCoordinateSquareSum_add_le_two_mul_add_two_mul
+AoyagiRegularBlockCoordinateIndex.coordinateSquareSum_eq_ctop_add_f2_add_f3
+AoyagiProductDifferenceCoordinateIndex.productCorrectionSquareSum_le_f3SquareSum_mul_f2SquareSum
+AoyagiProductDifferenceCoordinateIndex.four_mul_productCorrectionSquareSum_le_regular_of_f2_f3_squareSum_add_le_one
+AoyagiProductDifferenceCoordinateIndex.literalCoordinateSquareSum_le_two_mul_coordinateSquareSum_of_f2_f3_squareSum_add_le_one
+AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_le_two_mul_literalCoordinateSquareSum_of_f2_f3_squareSum_add_le_one
+```
+
+Under the finite smallness hypothesis
+
+```text
+squareSum(F2) + squareSum(F3) <= 1,
+```
+
+Lean proves both
+
+```text
+literalSquareSum <= 2 * cleanedSquareSum,
+cleanedSquareSum <= 2 * literalSquareSum.
+```
+
+The proof includes the finite row-column Cauchy-Schwarz estimate
+`squareSum(F3*F2) <= squareSum(F3) * squareSum(F2)`.
+
+Boundary: finite ordered-ring square-sum comparison only.  The neighborhood
+shrink from centered continuity, analytic regular-coordinate status,
+Fubini/polar regular-variable shift, chart coverage, Jacobian compatibility,
+normal crossings, pole order, and RLCT remain unproved.
+
+Review passed after wording repairs: the factor-`2` theorem docstrings now
+state the combined hypothesis `squareSum(F2)+squareSum(F3) <= 1`, and the
+statement card no longer claims sharpness of the constant.
