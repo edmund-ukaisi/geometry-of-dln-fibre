@@ -8,6 +8,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 import DLNFibre.DLN.RLCT.Validate.DeepestRegSliceFderiv
+import DLNFibre.DLN.RLCT.Validate.DeepestRegBlockInvertible
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 
@@ -547,6 +548,43 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   --       through `deepestEPivot`/`framedLayer`/`framedParamsReg`/the residual pack/telescoping + the
   --       deepest-point frame re-architecture: single-writer-sensitive, several hundred lines, NOT a
   --       thread-J. The frame algebra it stands on (A) is now banked.
+  --
+  -- ARCHITECTURE VALIDATED (l2-pin-migration tide, 2026-06-24, Codex `xhigh` decorrelated ×2 + a
+  -- sorry-free Lean discriminating check that BUILT GREEN). The migration shape is now mechanical:
+  --   • USE THE LOCALIZED "LAST-LAYER-ONLY" PIVOT TWIST (option L1, NOT a global `framedLayer` rewrite —
+  --     L2 "twist only the final read" is UNSOUND: it yields the MIXED block `Y·(reindex rThreshold eJ Q)₂₂`,
+  --     not the certified `Y·(reindex eJ eJ Q)₂₂`). Concretely: the last layer's `.succ`-side reindex
+  --     AND `deepestEPivot`'s final-read codomain split BOTH use `eLast := pivotThresholdSplit r (H last) J`;
+  --     first/interior layers KEEP `rThresholdSplit r (H s.succ)` (at the gauge-zero slice their `.succ`
+  --     side is only ever the corner `fromBlocks 1 0 0 0`, so `framedParamsReg_regSlice_{first,interior}`
+  --     and `readX/Y/Z_regSlice_*` SURVIVE UNCHANGED — they read the DOMAIN slot via `regGaugeIdxSplit`,
+  --     `regResidualPack` stays FROZEN `:= regPivotFinEquiv`). Only `framedParamsReg_regSlice_LAST` needs a
+  --     pivot variant (insert `readY` into pivot-complement columns).
+  --   • THE DISCRIMINATING IDENTITY (verified green): for the last-layer Y-deviation, with row split `eR`
+  --     and pivot column split `eJ`,
+  --       `(reindex eR eJ ((reindex eR.symm eJ.symm (fromBlocks 0 Y 0 0)) * Q)).toBlocks₁₂
+  --          = Y * (reindex eJ eJ Q).toBlocks₂₂`,
+  --     so the `P12` residual derivative block is exactly `Y · B₂₂` with `B₂₂ = (reindex eJ eJ (Qf last))₂₂`
+  --     — the block `exists_deepest_lastLayer_pivotFrame` certifies `IsUnit`. Proof idiom: split the product
+  --     at the middle index `eJ` via `submatrix_mul_equiv`, then `fromBlocks_toBlocks` + `fromBlocks_multiply`.
+  --   • CAST CAVEAT (genuine, multi-cycle): `J` from the frame fact lives on `Fin (H ((lastLayer hL).succ))`,
+  --     but `deepestEPivot`'s codomain split is on `Fin (H (Fin.last L))`. They are EQUAL by `H_lastLayer_succ`
+  --     (a `congr`, NOT defeq), so the thread needs a `finCongr (H_lastLayer_succ H hL)` bridge on `J` (the
+  --     same cast `readY_regSlice_last` already carries on its Y column index).
+  --   • THE F-INVERTIBILITY CONSUMER — BEDROCK BANKED (this tide, `DeepestRegBlockInvertible`, axiom-clean
+  --     `[propext, Classical.choice, Quot.sound]`): `mulRightUnitCLE M hM : (· * M)` is a `≃L` (the `Y↦Y·B₂₂`
+  --     arm, invertible from `IsUnit B₂₂`); `shearCLE g : (u,v)↦(u+g v, v)` is a `≃L` (shears the `Y·B₂₁`
+  --     cross term out of `P11`). With these + a `·A`-conjugation `≃L` for the `[X;Z]`-pair, the linear part
+  --     `F(X,Y,Z) = (A₁₁X+A₁₂Z+Y·B₂₁, Y·B₂₂, A₂₁X+A₂₂Z)` assembles into the `≃L` that
+  --     `regStraightenTotalCLM_equiv_of_regBlock_isUnit` consumes.
+  --   • REMAINING (the genuine bulk, ~350-700 LoC, NOT yet written): the value-fold strict-derivative
+  --     ASSEMBLY — `prodAux_regSlice_through_first` (banked) gives `prodAux (L-1) = firstShapeF`; extend it
+  --     through the last layer (`prod = firstShapeF (L-1) · C_last`, `C_last`'s `.succ` side pivot-split),
+  --     read the three residual blocks off the pivot-reindexed product, kill the quadratic cross term
+  --     (`devXZ_corner_devY` + `hasStrictFDerivAt_sum_mul_zero`, banked), and IDENTIFY the linear part WITH
+  --     the assembled `F` above. Then the API thread of `J`/`eLast` through `deepestEPivot_contdiff/_base/
+  --     _sq_sum_eq_blocks/_deriv` + `deepest_loss_squeeze`'s statement + PIN2 (shared-J reconciliation, the
+  --     SAME `J`). One atomic single-writer write; build is red between the coupled steps until it lands.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -801,6 +839,15 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- the entry-wise `reindex(fromBlocks readX readY readZ Tcore) = (paramsEquivFlat.symm w − deepestPoint) s`
   -- + `endpoint_telescoping` + the J-dependent `reindex(P0·B·QL)=fromBlocks 1 0 0 0` (uses the new `J`) +
   -- `core_comparability_squeeze` (banked). This is several hundred lines of unwritten geometry, not a thread-J.
+  --
+  -- ARCHITECTURE VALIDATED (l2-pin-migration tide, 2026-06-24): the codomain-split convention is the
+  -- LOCALIZED "last-layer-only" pivot twist — see the PIN1 note (`deepestEPivot_regSlice_fderiv`) for the
+  -- L1-vs-L2 verdict (L2 is UNSOUND) + the discriminating identity + the cast caveat (`finCongr
+  -- (H_lastLayer_succ H hL)` bridges `J` from `Fin (H ((lastLayer hL).succ))` to `Fin (H (Fin.last L))`).
+  -- The `h00/h01/h10` block identifications here MUST read the product through the SAME
+  -- `eLast := pivotThresholdSplit r (H last) J` (matching `deepestEPivot_sq_sum_eq_blocks`'s codomain
+  -- split), and step (3) `reindex(P0·B·QL)=fromBlocks 1 0 0 0` uses the SAME `eLast` from the frame fact
+  -- `exists_deepest_lastLayer_pivotFrame` — divergence is a typecheck tripwire (`hSreg_eq`'s `rw [h01]`).
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
