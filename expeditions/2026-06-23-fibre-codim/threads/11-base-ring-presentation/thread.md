@@ -94,3 +94,22 @@ Per controller Q2: `J` = graph ideal of `B22 = Schur/detΔ`; eliminate B22 ⟹ `
 `height J = #(B22 vars) = C` falls out. Expose facts `{Iad = J, A_loc regular dim δ}`, not a bundled
 `AlgEquiv`. (i) ψ + `J ⊆ Iad` (≈done from step a); (ii) elimination iso; (iii) `Iad = J` by height
 comparison (uses landed `height Iad = C` + (ii)'s `height J = C`). The genuine remaining bulk.
+
+### Step (ii) the elimination — DE-RISKED, concrete route (Codex elimination consult, saved).
+Q3 squeeze (Krull `height ≤ #gens` to collapse `Iad=J` without the iso) **FAILS** — Krull only gives
+the upper bound `height J ≤ C`, and `J ⊆ Iad` gives the same direction; no lower bound, no squeeze.
+So the full iso is genuinely needed for `height J = C`. The Codex-validated lowest-friction route:
+1. **`ker_aeval_eq_graphIdeal`** (reusable, new): `ker (aeval c : MvPolynomial ι R →ₐ R) = span (range
+   fun i ↦ X i − C (c i))`, `[Finite ι]`. By `Finite.induction_empty_option` + `optionEquivLeft` +
+   `Polynomial.ker_evalRingHom`. The easy `⊇` is done (probe); the `⊆` is the induction (the meat).
+   ⟹ `J` prime (`RingHom.ker_isPrime`, needs `IsDomain Sd`) + `MvPolynomial B22 Sd / J ≅ₐ Sd`
+   (`quotientKerAlgEquivOfSurjective`, surjective onto constants).
+2. **Block relabeling** (NOT per-index aeval — the `dStratum`-Fin `omega` tax is real): `Equiv.uniqueSigma`
+   (drop `Σ_:Fin 1`), `finCongr`+`finSumFinEquiv.symm`, `Equiv.prodCongr`/`sumProdDistrib`/`prodSumDistrib`/
+   `sumAssoc`/`sumComm`, then `renameEquiv` + `sumAlgEquiv` (orientation: make the sum `B22 ⊕ SchurVar`).
+3. `height J = #B22 = (p−r)(q−r) = C` from the iso (poly bridge / `MvPolynomial.ringKrullDim`).
+4. `Iad = J` by `le_antisymm hJI` + `by_contra` + `Ideal.height_strict_mono_of_is_prime` (uses landed
+   `height Iad = C` + step-3 `height J = C`).
+5. Regularity `A_loc/Iad ≅ Sd` ⟹ regular dim δ: `IsRegularLocalRing` (no global API) via
+   `Localization.AtPrime` + `IsLocalization.AtPrime.ringKrullDim_eq_height` + `MvPolynomial.ringKrullDim`.
+Mathlib lemmas all confirmed present. `ker_aeval_eq_graphIdeal`'s `⊆`-induction is the genuine bulk.
