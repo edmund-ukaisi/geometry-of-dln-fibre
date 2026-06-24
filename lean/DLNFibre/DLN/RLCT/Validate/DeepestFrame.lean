@@ -45,11 +45,44 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
         IsUnit P ∧ IsUnit Q ∧
           P * (deepestPoint H r B hB hr hL s) * Q
             = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
-                if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+                if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
+          ∧ (2 ≤ L → (s : ℕ) = 0 →
+              Q = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ))
+          ∧ (2 ≤ L → (s : ℕ) + 1 = L →
+              P = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)) := by
   intro s
   have hrank : (deepestPoint H r B hB hr hL s).rank = r :=
     (deepestPoint_isDeep H r B hB hr hL).2.1 s
-  exact Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
+  by_cases hfirst : 2 ≤ L ∧ (s : ℕ) = 0
+  · -- Boundary layer 0 (`2 ≤ L`): tail COLUMNS vanish, so a LEFT-only frame `P` with `Q = 1`.
+    obtain ⟨hL2, hs0⟩ := hfirst
+    have htail : ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), r ≤ (j : ℕ) →
+        deepestPoint H r B hB hr hL s i j = 0 :=
+      fun i j hj => (deepestPoint_isDeep H r B hB hr hL).2.2.2.1 s hL2 hs0 i j hj
+    obtain ⟨P, hP, hPeq⟩ :=
+      Core.Matrix.rank_normal_form_left_only (deepestPoint H r B hB hr hL s) hrank htail
+    refine ⟨P, 1, hP, isUnit_one, ?_, ?_, ?_⟩
+    · rw [Matrix.mul_one]; exact hPeq
+    · intro _ _; rfl
+    · intro _ hsL; omega
+  · by_cases hlast : 2 ≤ L ∧ (s : ℕ) + 1 = L
+    · -- Boundary layer `L-1` (`2 ≤ L`): tail ROWS vanish, so a RIGHT-only frame `Q` with `P = 1`.
+      obtain ⟨hL2, hsL⟩ := hlast
+      have htail : ∀ (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), r ≤ (i : ℕ) →
+          deepestPoint H r B hB hr hL s i j = 0 :=
+        fun i j hi => (deepestPoint_isDeep H r B hB hr hL).2.2.2.2 s hL2 hsL i j hi
+      obtain ⟨Q, hQ, hQeq⟩ :=
+        Core.Matrix.rank_normal_form_right_only (deepestPoint H r B hB hr hL s) hrank htail
+      refine ⟨1, Q, isUnit_one, hQ, ?_, ?_, ?_⟩
+      · rw [Matrix.one_mul]; exact hQeq
+      · intro _ hs0; omega
+      · intro _ _; rfl
+    · -- Interior layer (or `L = 1`): the generic two-sided frame; both boundary conjuncts vacuous.
+      obtain ⟨P, Q, hP, hQ, hPQeq⟩ :=
+        Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
+      refine ⟨P, Q, hP, hQ, hPQeq, ?_, ?_⟩
+      · intro hL2 hs0; exact absurd ⟨hL2, hs0⟩ hfirst
+      · intro hL2 hsL; exact absurd ⟨hL2, hsL⟩ hlast
 
 /-- **Interior layers ARE the block-normal corner** (#95, the (iii) fix). On every strict-interior
 layer (`0 < s ∧ s+1 < L`), the constructed deepest point equals the corner block `diag(I_r, 0)`
@@ -133,7 +166,7 @@ theorem deepestPoint_frame_normal (H : Fin (L + 1) → ℕ) (r : ℕ)
         * (deepestPoint_frame H r B hB hr hL s).2
       = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
           if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) :=
-  (Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2
+  (Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.1
 
 /-- Both frame units `P_s, Q_s` are invertible (`IsUnit`). -/
 theorem deepestPoint_frame_invertible (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -143,5 +176,29 @@ theorem deepestPoint_frame_invertible (H : Fin (L + 1) → ℕ) (r : ℕ)
       ∧ IsUnit (deepestPoint_frame H r B hB hr hL s).2 := by
   have h := Classical.choose_spec (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))
   exact ⟨h.1, h.2.1⟩
+
+/-- **Layer-0 RIGHT-frame is the identity** (`2 ≤ L`). At the deepest point's layer 0 (`(s:ℕ) = 0`,
+distinct boundary layers), the last `H_1 − r` columns vanish (`deepestPoint_layer0_cols_vanish`), so
+the rank-normal-form needs only a LEFT frame: the right unit `Q_0 = 1`. The boundary-triviality the
+gauge-chart `endpoint_telescoping` interface-collapse consumes (`hQf0`). -/
+theorem deepestPoint_frame_Qf_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (hL2 : 2 ≤ L) (hs0 : (s : ℕ) = 0) :
+    (deepestPoint_frame H r B hB hr hL s).2
+      = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+  (Classical.choose_spec
+    (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.2.1 hL2 hs0
+
+/-- **Layer-(L−1) LEFT-frame is the identity** (`2 ≤ L`). At the deepest point's layer `L−1`
+(`(s:ℕ) + 1 = L`, distinct boundary layers), the last `H_{L−1} − r` rows vanish
+(`deepestPoint_layerLast_rows_vanish`), so the rank-normal-form needs only a RIGHT frame: the left
+unit `P_{L−1} = 1`. The boundary-triviality the gauge-chart `endpoint_telescoping` consumes (`hPfL`). -/
+theorem deepestPoint_frame_Pf_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (hL2 : 2 ≤ L) (hsL : (s : ℕ) + 1 = L) :
+    (deepestPoint_frame H r B hB hr hL s).1
+      = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) :=
+  (Classical.choose_spec
+    (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.2.2 hL2 hsL
 
 end DLNFibre.DLN.RLCT

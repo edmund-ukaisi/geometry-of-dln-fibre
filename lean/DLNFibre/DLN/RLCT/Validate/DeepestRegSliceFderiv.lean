@@ -185,6 +185,23 @@ theorem readY_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ 
   exact regGaugeSlotEquiv_regSlice_zero_of_notMem H r hr hL r0 _
     (by rw [range_regBoundaryEmbed_eq]; exact notMem_Y_of_ne_last H r hL s hs a b)
 
+/-- `readY (r0,0) (lastLayer) a b` reads back `r0` at the Y-pivot coordinate (the missing sibling of
+`readX/readZ_regSlice_first`). The column index carries the `finCongr` of `H_lastLayer_succ` from the
+Y-routing (`regBoundaryToRegGauge`'s `inr ∘ inl` arm). -/
+theorem readY_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (a : Fin r)
+    (b : Fin (H (lastLayer hL).succ - r)) :
+    readY H r hr hL (r0, 0) (lastLayer hL) a b
+      = r0 ((regPivotFinEquiv H r hr).symm
+          (Sum.inr (Sum.inl (a, (finCongr (by rw [H_lastLayer_succ H hL])).symm b)))) := by
+  simp only [readY, Matrix.of_apply]
+  have hidx : (⟨lastLayer hL, Sum.inl (Sum.inr (a, b))⟩ : RegGaugeIdx H r)
+      = regBoundaryToRegGauge H r hL
+          (Sum.inr (Sum.inl (a, (finCongr (by rw [H_lastLayer_succ H hL])).symm b))) := by
+    simp only [regBoundaryToRegGauge, Sigma.mk.injEq, heq_eq_eq, true_and]
+    congr 1
+  rw [hidx, regGaugeSlotEquiv_regSlice_boundary]
+
 /-! ## The framed-layer reg-slice values (frame-conjugate shape: interiors are the corner) -/
 
 /-- An INTERIOR layer (`s ≠ firstLayer`, `s ≠ lastLayer`) of the reg-slice is the constant corner
@@ -311,6 +328,34 @@ theorem devXZ_mul_corner {a b c r : ℕ}
   congr 1 <;>
     · simp only [Matrix.mul_zero, add_zero]
       try exact Matrix.mul_one _
+
+/-- **The first-layer-X/Z · corner · last-layer-Y cross block product** (the genuine quadratic term of
+the framed reg-slice product, #91). `reindex(fromBlocks X 0 Z 0) · reindex(fromBlocks 1 0 0 0) ·
+reindex(fromBlocks 0 Y 0 0) = reindex(fromBlocks 0 (X·Y) 0 (Z·Y))`: the corner kills the right columns
+of the X/Z deviation, and the resulting `fromBlocks X 0 Z 0 · fromBlocks 0 Y 0 0` lands the `X·Y` /
+`Z·Y` products in the right block-column. Each entry is quadratic in `r0` (`X,Y,Z` linear, vanishing at
+`0`), so its strict derivative at `0` is `0` — the cross term drops out of the reg-slice fderiv. -/
+theorem devXZ_corner_devY {a b c d r : ℕ}
+    (eA : Fin a ≃ Fin r ⊕ Fin (a - r)) (eB : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (eC : Fin c ≃ Fin r ⊕ Fin (c - r)) (eD : Fin d ≃ Fin r ⊕ Fin (d - r))
+    (X : Matrix (Fin r) (Fin r) ℝ) (Z : Matrix (Fin (a - r)) (Fin r) ℝ)
+    (Y : Matrix (Fin r) (Fin (d - r)) ℝ) :
+    (Matrix.reindex eA.symm eB.symm (Matrix.fromBlocks X 0 Z 0))
+        * (Matrix.reindex eB.symm eC.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+        * (Matrix.reindex eC.symm eD.symm (Matrix.fromBlocks 0 Y 0 0))
+      = Matrix.reindex eA.symm eD.symm (Matrix.fromBlocks 0 (X * Y) 0 (Z * Y)) := by
+  rw [devXZ_mul_corner eA eB eC X Z]
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  have hblk : Matrix.fromBlocks X (0 : Matrix (Fin r) (Fin (c-r)) ℝ) Z 0
+            * Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y
+                (0 : Matrix (Fin (c-r)) (Fin r) ℝ) (0 : Matrix (Fin (c-r)) (Fin (d-r)) ℝ)
+        = Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) (X * Y) 0 (Z * Y) := by
+    rw [Matrix.fromBlocks_multiply]
+    congr 1 <;> simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
+  rw [← hblk]
+  exact (Matrix.submatrix_mul_equiv (Matrix.fromBlocks X (0 : Matrix (Fin r) (Fin (c-r)) ℝ) Z 0)
+      (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y
+        (0 : Matrix (Fin (c-r)) (Fin r) ℝ) (0 : Matrix (Fin (c-r)) (Fin (d-r)) ℝ)) (⇑eA) eC (⇑eD))
 
 /-- Through the first layer (`1 ≤ k`, `k + 1 ≤ L`, `L ≥ 2`, `Qf firstLayer = 1`): the running product
 is `firstShapeF` — the first layer's frame-conjugated `X/Z` deviation rides on the corner; the later

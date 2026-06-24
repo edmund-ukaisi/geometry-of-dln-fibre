@@ -435,11 +435,26 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
       HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
           deepestEPivot H r hr hL Pf Qf (r0, 0))
         (F : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
-  -- The #91 frame-decorated sandwich (analytic fill in progress). Reuses (`DeepestRegSliceFderiv`):
-  -- `prodAuxEntryDeriv` (the explicit Leibniz product-fold derivative), the alignment cancel
-  -- (`regGaugeSlotEquiv_regSlice_boundary` — reg-coords route to boundary pivots), the layer slices
-  -- (X/Z only at firstLayer, Y only at lastLayer), and the scalar cross-term `mul_zero` helpers; the
-  -- boundary-frame invertibility `hPf`/`hQf` builds the invertible `F`.
+  -- The #91 frame-decorated sandwich. ROUTE (Codex `xhigh`, validated): the full reg-slice product
+  -- `prod(framedParamsReg (r0,0))` is constant-corner + LINEAR + genuine QUADRATIC in `r0`; the
+  -- quadratic part (the cross term `Pf·reindex(fromBlocks 0 (X·Y) 0 (Z·Y))·Qf`, value computed by the
+  -- banked `devXZ_corner_devY`) has strict derivative `0` at `0` (each factor `X,Y,Z` vanishes at `0`;
+  -- `hasStrictFDerivAt_sum_mul_zero`), so `deepestEPivot (·,0) = F·(·) + quad` with `F` the LINEAR
+  -- part. Banked for it: `prodAux_regSlice_through_first` (running product through first layer),
+  -- `readY_regSlice_last` + `framedParamsReg_regSlice_{first,last,interior}` (the boundary slice
+  -- values), `devXZ_corner_devY` (the cross block), `regStraightenTotalCLM_equiv_of_regBlock_isUnit`
+  -- (the shear-CLE from an invertible reg-block).
+  --
+  -- SUB-BLOCKER (precise, honest): invertibility of `F` is NOT derivable from `hPf`/`hQf`
+  -- (`IsUnit (Pf first)` / `IsUnit (Qf last)`) ALONE. After reindexing `Qf last` to `r ⊕ M` blocks,
+  -- the Y-residual sees `Y · (Qf last).toBlocks₂₂`; `IsUnit (Qf last)` does NOT force
+  -- `(Qf last).toBlocks₂₂` invertible (e.g. `Qf = [[0,1],[1,0]]` is a unit with zero ₂₂ block). The
+  -- refined frame's `Pf last = 1` (hPfL) trivialises the P-side, but the surviving `Qf last`
+  -- lower-right block needs its OWN invertibility fact — either a strengthened `deepestPoint_frame`
+  -- lemma (the `rank_normal_form_right_only` frame's `toBlocks₂₂` is a unit) or an added hypothesis
+  -- `IsUnit ((reindex … (Qf last)).toBlocks₂₂)`. The product-value + quadratic-derivative-zero half is
+  -- reachable on the banked lemmas (~120 lines); the invertible-`F` half (the `∃ F : ≃L` conclusion)
+  -- needs that block-unit fact first, so the goal does not split without it.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -621,6 +636,18 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   --       `prod(framedParams(split w)) = P0 · prod(paramsSymm w) · QL`;
   --   (3) `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (B gauge-normalised at rank r) ⟹ the `fromBlocks
   --       (P00−1) P01 P10 P11` shape; (4) `core_comparability_squeeze` (#54) for the core comparability.
+  --
+  -- UNBLOCKED by the refined frame (this tide): step (2)'s `endpoint_telescoping` `hinterface` is now
+  -- dischargeable at `2 ≤ L` — interior frames `= 1` (`deepestPoint_interior_frame_id`), boundary-inner
+  -- `Qf first = 1` / `Pf last = 1` (`deepestPoint_frame_Qf/Pf_eq_one`), so all adjacent interfaces
+  -- `Q_s = 1 ∧ P_{s+1} = 1` collapse. SUB-BLOCKER (precise, honest): step (1) — the round-trip
+  -- `readX/Y/Z (split w) = (raw deviation of (paramsSymm w − deepest))_s` — is NOT provable for the
+  -- `split` AS PASSED (an arbitrary `(Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit` argument). It needs `split`'s
+  -- DECODE semantics (the `regGaugeSlotEquiv ∘ regGaugeIdxSplit ∘ roleSplitIdx ∘ paramsEquivFlat`
+  -- cancellation through `subRight deepestFlat`), which `deepestSplit_exists` produces only as a bare
+  -- existential — the cert is stated over a generic `split` but its content requires the concrete
+  -- `deepestSplit` map. Closing it needs either `deepestSplit_exists` strengthened to EXPOSE the decode
+  -- (a `split_readX/Y/Z` lemma family) or the cert re-stated against the concrete `deepestSplit` map.
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss
@@ -756,13 +783,17 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
       _ ≤ Kup * ((1 + γ₂) * Φ) := mul_le_mul_of_nonneg_left hstep2 hKup_nonneg
       _ = Kup * (1 + γ₂) * Φ := by ring
 
-/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation). Assembles the
-`split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
+/-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation, `2 ≤ L`). Assembles
+the `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
 `regAbsorb` (`deepest_regAbsorb_exists`, PIN 1), and the `loss_squeeze` (`deepest_loss_squeeze`,
-PIN 2) into the bundled existence the structure consumes. -/
+PIN 2) into the bundled existence the structure consumes. The `2 ≤ L` hypothesis makes the two
+boundary layers distinct, so the deepest point's layer-0 right-frame and layer-(L−1) left-frame are
+the identity (`deepestPoint_frame_Qf_eq_one` / `_Pf_eq_one`) — the boundary-triviality the
+`endpoint_telescoping` interface-collapse needs. (The gauge chart straightens a product of `≥ 2`
+matrices; `L = 1` is the separate smooth base case.) -/
 theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
       (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
       (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
@@ -823,13 +854,16 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestPoint_frame_invertible H r B hB hr hL (firstLayer hL)).1
   have hQf : IsUnit (Qf (lastLayer hL)) :=
     (deepestPoint_frame_invertible H r B hB hr hL (lastLayer hL)).2
-  -- ⚠ COBUILD (frame-family wiring): the boundary-inner-trivial conditions `Qf(firstLayer) = 1`
-  -- (layer-0 right-frame, `deepestPoint_layer0_cols_vanish`) and `Pf(lastLayer) = 1` (layer-(L-1)
-  -- left-frame, `deepestPoint_layerLast_rows_vanish`) — the #95-(I) facts. The raw `deepestPoint_frame`
-  -- does NOT guarantee these; cobuild's refined `deepestFrameFamily` does (Pf=Qf=1 off the two
-  -- boundary-carrying slots). Swap `Pf/Qf` to `deepestFrameFamily` + discharge these from its lemmas.
-  have hQf0 : Qf (firstLayer hL) = 1 := by sorry
-  have hPfL : Pf (lastLayer hL) = 1 := by sorry
+  -- The boundary-inner-trivial conditions `Qf(firstLayer) = 1` (layer-0 right-frame) and
+  -- `Pf(lastLayer) = 1` (layer-(L-1) left-frame) — the #95-(I) facts. At `2 ≤ L` the boundary layers
+  -- are distinct, so the refined `deepestPoint_frame_exists` produces one-sided boundary frames
+  -- (`rank_normal_form_left_only`/`_right_only`): the layer-0 tail-COLUMNS vanish ⟹ `Q_0 = 1`, the
+  -- layer-(L-1) tail-ROWS vanish ⟹ `P_{L-1} = 1`. Discharged from `deepestPoint_frame_Qf/Pf_eq_one`.
+  have hQf0 : Qf (firstLayer hL) = 1 :=
+    deepestPoint_frame_Qf_eq_one H r B hB hr hL (firstLayer hL) hL2 (by simp [firstLayer])
+  have hPfL : Pf (lastLayer hL) = 1 :=
+    deepestPoint_frame_Pf_eq_one H r B hB hr hL (lastLayer hL) hL2
+      (by simp only [lastLayer]; omega)
   obtain ⟨D_E, eShear, hEp_deriv, he_shear⟩ :=
     deepestEPivot_deriv H r hr hL Pf Qf hPf hQf hQf0 hPfL
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
@@ -845,15 +879,17 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     hca_base, hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct,
     c₁, c₂, hc₁, hc₂, U, hU, hsq⟩
 
-/-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`). Destructures
-the bundled construction into the structure. crux2 wires `deepest_gauge_squeeze_exists := this`. -/
+/-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
+Destructures the bundled construction into the structure. The `2 ≤ L` hypothesis (distinct boundary
+layers) is what `deepest_gauge_construction` needs for the endpoint-frame triviality; crux2 wires
+`deepest_gauge_squeeze_exists := this` on the `2 ≤ L` branch (`L = 1` is the smooth base case). -/
 theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
   obtain ⟨nGauge, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base, hca_reg,
     hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
-    deepest_gauge_construction H r B hB hr hL
+    deepest_gauge_construction H r B hB hr hL hL2
   exact ⟨{
     nGauge := nGauge
     split := split
