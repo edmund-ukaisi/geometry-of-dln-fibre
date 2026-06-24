@@ -2193,3 +2193,39 @@ Boundary: finite block algebra only.  No inverse of `D` is used.  The
 lower-right correction is `F3*F2`.  The suffix-state adapter from
 `ChartLocalSuffixState.BlockDiagonal` and the coordinate-ideal naming bridge
 remain separate later wrappers.
+
+## 2026-06-24 A2 suffix-state step coordinate adapter
+
+Reproduction:
+`reproduction-a2-suffix-state-step-coordinate-adapter.md`.
+Statement card:
+`statement-card-a2-suffix-state-step-coordinate-adapter.md`.
+Review:
+`review-a2-suffix-state-step-coordinate-adapter.md`.
+
+Lean now exposes the one-step deterministic suffix-state adapter:
+
+```text
+ChartLocalSuffixState.stepRawCoordinates
+ChartLocalSuffixState.stepRawCoordinates_detChart
+ChartLocalSuffixState.stepRawCoordinates_toChart_Ctop
+ChartLocalSuffixState.stepRawCoordinates_toChart_F2
+ChartLocalSuffixState.stepRawCoordinates_toChart_C
+ChartLocalSuffixState.stepRawCoordinates_toChart_D_mul_C
+ChartLocalSuffixState.stepRawCoordinates_toChart_F3_of_L_eq_lowerUnitriangular
+ChartLocalSuffixState.stepRawCoordinates_priorProduct
+ChartLocalSuffixState.stepRawCoordinates_triangularBlockProduct
+ChartLocalSuffixState.stepRawCoordinates_productDifference
+```
+
+The adapter builds raw p. 13 coordinates from `S.Ctop`, `S.D`, a witnessed
+lower-left block `F3prev` of `S.L`, and the four corners of
+`transformedEdge E p S`.  It proves that `S.BlockDiagonal P hpj` supplies the
+prior product hypothesis for `T = P p.castSucc j`, then applies the p. 13
+coordinate wrappers to get the triangular product and signed
+product-difference block.
+
+Boundary: finite block algebra only.  `BlockDiagonal` alone does not prove
+`S.L` is lower unitriangular; the adapter takes that witness as an input.
+The determinant chart is on `transformedEdge E p S`, not raw `E p`, and no
+inverse of `S.D` is used.

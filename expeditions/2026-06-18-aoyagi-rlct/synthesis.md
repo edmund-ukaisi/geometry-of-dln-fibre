@@ -8609,6 +8609,24 @@ Next A2 target: instantiate the prior triangular product hypothesis from
 `ChartLocalSuffixState.BlockDiagonal`, then add the coordinate-ideal naming
 bridge in the later ideal/coordinate layer.
 
+Latest A2 suffix-state step coordinate adapter:
+`ProductReduction.lean` now defines `ChartLocalSuffixState.stepRawCoordinates`
+and proves determinant-chart membership, chart-field bridges to `step E p S`,
+the prior product identity from `S.BlockDiagonal P hpj`, and the resulting
+triangular product/product-difference identities.  The key source-fidelity
+points are explicit: the raw `A1..A4` blocks are the corners of
+`transformedEdge E p S`, while the matrix `T` in the p. 13 wrapper is
+`P p.castSucc j`; the determinant chart is on the transformed edge; and no
+inverse of `S.D` is used.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-adapter.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
+Next A2 target: specialize from arbitrary `S` plus lower-unitriangular witness
+to the actual recursive `suffixState` using
+`ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

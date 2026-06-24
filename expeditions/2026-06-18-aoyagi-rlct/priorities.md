@@ -3122,6 +3122,13 @@ product hypothesis and produce the next diagonal product plus the signed p. 13
 product-difference block `D*C - F3*F2`.  The suffix-state adapter and the
 coordinate-ideal naming bridge remain next targets.
 
+Latest A2 suffix-state adapter landed in `ProductReduction.lean`:
+`ChartLocalSuffixState.stepRawCoordinates*` now instantiates the prior product
+hypothesis from `S.BlockDiagonal P hpj` and a lower-unitriangular witness for
+`S.L`.  Next A2 target: specialize this adapter to actual recursive
+`suffixState` using `suffixState_L_eq_lowerUnitriangular`, then add the
+coordinate-ideal naming bridge in the later ideal/coordinate layer.
+
 Next A4 finite-atlas target from xhigh scouting: if returning to Case 2 chart
 family plumbing, define fixed raw-pivot finite selected-entry algebra
 predicates in `SelectedEntryNormalCrossing.lean` and prove the boundary using

@@ -7477,6 +7477,25 @@ Review:
 Nonclaims: no suffix-state adapter, no analytic coordinate-chart construction,
 no ideal transport, no normal crossings, pole order, or RLCT extraction.
 
+Latest A2 suffix-state step coordinate adapter:
+`ProductReduction.lean` now proves the `ChartLocalSuffixState` adapter:
+`stepRawCoordinates`, `stepRawCoordinates_detChart`,
+`stepRawCoordinates_toChart_Ctop`, `stepRawCoordinates_toChart_F2`,
+`stepRawCoordinates_toChart_C`, `stepRawCoordinates_toChart_D_mul_C`,
+`stepRawCoordinates_toChart_F3_of_L_eq_lowerUnitriangular`,
+`stepRawCoordinates_priorProduct`,
+`stepRawCoordinates_triangularBlockProduct`, and
+`stepRawCoordinates_productDifference`.  This connects
+`S.BlockDiagonal P hpj` plus a lower-unitriangular witness for `S.L` to the
+p. 13 coordinate/product-difference wrappers.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-adapter.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
+Nonclaims: no specialization to actual `suffixState` yet, no analytic chart,
+no ideal transport, no normal crossings, pole order, or RLCT extraction.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

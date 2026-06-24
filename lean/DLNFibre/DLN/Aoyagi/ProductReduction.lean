@@ -867,6 +867,268 @@ def step
     Ctop := S.Ctop * topLeftCorner M
     D := S.D * schurResidualBlock M }
 
+/-- Raw p. 13 coordinates attached to one deterministic suffix-state step. -/
+def stepRawCoordinates
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K) :
+    ProductReductionStepRawCoordinates ρ (κ j) (κ p.succ) (κ p.castSucc) K :=
+  let M := transformedEdge E p S
+  { C1 := S.Ctop
+    D := S.D
+    F3 := F3prev
+    A1 := topLeftCorner M
+    A2 := upperRightBlock M
+    A3 := lowerLeftBlock M
+    A4 := lowerRightBlock M }
+
+/-- The suffix-state raw step coordinates lie on the determinant chart whenever
+the previous `Ctop` block and the transformed edge top-left block do. -/
+theorem stepRawCoordinates_detChart
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hCtop : IsUnit S.Ctop.det)
+    (hM : identityCornerDetChart (transformedEdge E p S)) :
+    (stepRawCoordinates E p S F3prev).detChart := by
+  exact ⟨hCtop, by
+    simpa [stepRawCoordinates, identityCornerDetChart] using hM⟩
+
+/-- The chart top block of the raw suffix-step coordinates is the next
+suffix-state top block. -/
+theorem stepRawCoordinates_toChart_Ctop
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K) :
+    ((stepRawCoordinates E p S F3prev).toChart).Ctop = (step E p S).Ctop := by
+  rfl
+
+/-- The chart right block of the raw suffix-step coordinates is the negative
+of the next suffix-state right parameter. -/
+theorem stepRawCoordinates_toChart_F2
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K) :
+    ((stepRawCoordinates E p S F3prev).toChart).F2 = -(step E p S).B := by
+  rfl
+
+/-- The chart residual block of the raw suffix-step coordinates is the Schur
+residual block of the transformed edge. -/
+theorem stepRawCoordinates_toChart_C
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K) :
+    ((stepRawCoordinates E p S F3prev).toChart).C =
+      schurResidualBlock (transformedEdge E p S) := by
+  rfl
+
+/-- The chart lower-right product of the raw suffix-step coordinates is the
+next suffix-state residual block. -/
+theorem stepRawCoordinates_toChart_D_mul_C
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K) :
+    ((stepRawCoordinates E p S F3prev).toChart).D *
+        ((stepRawCoordinates E p S F3prev).toChart).C =
+      (step E p S).D := by
+  rfl
+
+/-- If the previous suffix-state left multiplier is lower unitriangular with
+lower block `F3prev`, then the chart lower block of the raw suffix-step
+coordinates is the lower-left block of the next suffix-state left multiplier. -/
+theorem stepRawCoordinates_toChart_F3_of_L_eq_lowerUnitriangular
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hSL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K)) :
+    ((stepRawCoordinates E p S F3prev).toChart).F3 =
+      lowerLeftBlock (step E p S).L := by
+  let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K := transformedEdge E p S
+  let X : Matrix (κ j) ρ K :=
+    -(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)
+  have hL :
+      (step E p S).L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (X + F3prev)
+          (1 : Matrix (κ j) (κ j) K) := by
+    dsimp [step, M]
+    rw [hSL]
+    simpa [X, M] using
+      lowerUnitriangular_mul_fromBlocks_one_zero_indexed (K := K) X F3prev
+  dsimp [ProductReductionStepRawCoordinates.toChart, stepRawCoordinates, M]
+  rw [hL]
+  ext i j
+  simp [lowerLeftBlock, X, M, sub_eq_add_neg, add_comm]
+
+/-- A suffix-state block-diagonal invariant supplies the prior triangular
+product hypothesis for the p. 13 raw step coordinates. -/
+theorem stepRawCoordinates_priorProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hS : S.BlockDiagonal P hpj)
+    (hSL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K)) :
+    let x := stepRawCoordinates E p S F3prev
+    fromBlocks (1 : Matrix ρ ρ K) 0 x.F3 (1 : Matrix (κ j) (κ j) K) *
+        P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+      fromBlocks x.C1 0 0 x.D * fromBlocks x.A1 x.A2 x.A3 x.A4 := by
+  let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K := transformedEdge E p S
+  let Rprev : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K :=
+    fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0 (1 : Matrix (κ p.succ) (κ p.succ) K)
+  have hfactor : E p = Rprev * M := by
+    calc
+      E p = (1 : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K) * E p := by
+        rw [Matrix.one_mul]
+      _ =
+        (fromBlocks (1 : Matrix ρ ρ K) (-S.B) 0
+            (1 : Matrix (κ p.succ) (κ p.succ) K) *
+          fromBlocks (1 : Matrix ρ ρ K) S.B 0
+            (1 : Matrix (κ p.succ) (κ p.succ) K)) * E p := by
+          rw [upperUnitriangular_neg_mul_upperUnitriangular S.B]
+      _ = Rprev * M := by
+          simp [Rprev, M, transformedEdge, Matrix.mul_assoc]
+  have hblocks :
+      fromBlocks (topLeftCorner M) (upperRightBlock M) (lowerLeftBlock M)
+        (lowerRightBlock M) = M :=
+    fromBlocks_corners M
+  rcases hS with ⟨_, _, hprev⟩
+  dsimp [stepRawCoordinates]
+  calc
+    fromBlocks (1 : Matrix ρ ρ K) 0 F3prev (1 : Matrix (κ j) (κ j) K) *
+        P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+      fromBlocks (1 : Matrix ρ ρ K) 0 F3prev (1 : Matrix (κ j) (κ j) K) *
+        (P p.succ j hpj * E p) := by
+          rw [hsuccRight]
+    _ =
+      fromBlocks (1 : Matrix ρ ρ K) 0 F3prev (1 : Matrix (κ j) (κ j) K) *
+        P p.succ j hpj * (Rprev * M) := by
+          rw [hfactor]
+          simp [Matrix.mul_assoc]
+    _ =
+      (fromBlocks (1 : Matrix ρ ρ K) 0 F3prev (1 : Matrix (κ j) (κ j) K) *
+          P p.succ j hpj * Rprev) * M := by
+          simp [Matrix.mul_assoc]
+    _ = (S.L * P p.succ j hpj * Rprev) * M := by
+          rw [← hSL]
+    _ = fromBlocks S.Ctop 0 0 S.D * M := by
+          rw [hprev]
+    _ =
+      fromBlocks S.Ctop 0 0 S.D *
+        fromBlocks (topLeftCorner M) (upperRightBlock M)
+          (lowerLeftBlock M) (lowerRightBlock M) := by
+          rw [hblocks]
+
+/-- A suffix-state step, expressed in p. 13 raw coordinates, gives the next
+triangular block product. -/
+theorem stepRawCoordinates_triangularBlockProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hS : S.BlockDiagonal P hpj)
+    (hSL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K))
+    (hM : identityCornerDetChart (transformedEdge E p S)) :
+    let x := stepRawCoordinates E p S F3prev
+    let y : ProductReductionStepChartCoordinates ρ (κ j) (κ p.succ) (κ p.castSucc) K :=
+      x.toChart
+    fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix (κ j) (κ j) K) *
+        P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) *
+        fromBlocks (1 : Matrix ρ ρ K) y.F2 0
+          (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+      fromBlocks y.Ctop 0 0 (y.D * y.C) := by
+  let x := stepRawCoordinates E p S F3prev
+  have hx : x.detChart := by
+    exact stepRawCoordinates_detChart E p S F3prev hS.2.1 hM
+  have hprior :
+      fromBlocks (1 : Matrix ρ ρ K) 0 x.F3 (1 : Matrix (κ j) (κ j) K) *
+          P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        fromBlocks x.C1 0 0 x.D * fromBlocks x.A1 x.A2 x.A3 x.A4 := by
+    simpa [x] using
+      stepRawCoordinates_priorProduct E P hsuccRight p hpj S F3prev hS hSL
+  simpa [x] using
+    productReductionStepCoordinate_triangularBlockProduct
+      (x := x) hx (P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj)) hprior
+
+/-- A suffix-state step, expressed in p. 13 raw coordinates, gives the signed
+product-difference block. -/
+theorem stepRawCoordinates_productDifference
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (P : ∀ i j : Fin (N + 1), i ≤ j → Matrix (ρ ⊕ κ j) (ρ ⊕ κ i) K)
+    (hsuccRight : ∀ (p : Fin N) (j : Fin (N + 1)) (hpj : p.succ ≤ j),
+      P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        P p.succ j hpj * E p)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hS : S.BlockDiagonal P hpj)
+    (hSL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K))
+    (hM : identityCornerDetChart (transformedEdge E p S)) :
+    let x := stepRawCoordinates E p S F3prev
+    let y : ProductReductionStepChartCoordinates ρ (κ j) (κ p.succ) (κ p.castSucc) K :=
+      x.toChart
+    fromBlocks (1 : Matrix ρ ρ K) 0 y.F3 (1 : Matrix (κ j) (κ j) K) *
+        (P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) -
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ j) ρ K) (0 : Matrix (κ j) (κ p.castSucc) K)) *
+        fromBlocks (1 : Matrix ρ ρ K) y.F2 0
+          (1 : Matrix (κ p.castSucc) (κ p.castSucc) K) =
+      fromBlocks (y.Ctop - 1) (-y.F2) (-y.F3) (y.D * y.C - y.F3 * y.F2) := by
+  let x := stepRawCoordinates E p S F3prev
+  have hx : x.detChart := by
+    exact stepRawCoordinates_detChart E p S F3prev hS.2.1 hM
+  have hprior :
+      fromBlocks (1 : Matrix ρ ρ K) 0 x.F3 (1 : Matrix (κ j) (κ j) K) *
+          P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj) =
+        fromBlocks x.C1 0 0 x.D * fromBlocks x.A1 x.A2 x.A3 x.A4 := by
+    simpa [x] using
+      stepRawCoordinates_priorProduct E P hsuccRight p hpj S F3prev hS hSL
+  simpa [x] using
+    productReductionStepCoordinate_productDifference
+      (x := x) hx (P p.castSucc j ((Fin.castSucc_le_succ p).trans hpj)) hprior
+
 /-- The terminal deterministic suffix state at the right endpoint. -/
 def terminal
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}

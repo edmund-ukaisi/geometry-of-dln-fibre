@@ -4587,6 +4587,24 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-product-reduction-step-product-difference-wrapper.md`.
 
+Latest A2 suffix-state step coordinate adapter:
+`ProductReduction.lean` now proves the local `ChartLocalSuffixState`
+adapter from a block-diagonal suffix-state invariant to the p. 13 coordinate
+wrappers:
+`stepRawCoordinates`, determinant and field bridge lemmas,
+`stepRawCoordinates_priorProduct`,
+`stepRawCoordinates_triangularBlockProduct`, and
+`stepRawCoordinates_productDifference`.  The raw `A` blocks come from
+`transformedEdge E p S`; the matrix `T` in the product wrapper is
+`P p.castSucc j`.  The adapter takes a lower-unitriangular witness for `S.L`
+as input, uses the transformed-edge determinant chart, and never inverts
+`S.D`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-suffix-state-step-coordinate-adapter.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-adapter.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-adapter.md`.
+
 Latest A4 Case 2 transition-generated Q/P package:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`.
