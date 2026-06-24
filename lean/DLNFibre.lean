@@ -136,3 +136,12 @@ import DLNFibre.Core.DeepChartRing
 -- + the transport `gaugeEquiv (multPoly) = P_last·M·P_0⁻¹` (endpoint gauge P_0=H, P_last=L⁻¹ ⟹ L⁻¹·M·H⁻¹).
 -- The coordinate change that turns `mult(A)=LEH` into `mult(Ã)=E`. Feeds R2-3b-4 (instantiate + descend).
 import DLNFibre.Core.EndpointNormalization
+-- HEIGHT-DIRECT route, rung H1 (radical-insensitive retarget): `Ideal.height_radical` (height(radical I)
+-- = height I, no hypotheses) + `codimRepCanonical_fibre_eq_height_fibreGenIdeal` (codim of the fibre =
+-- height of the cut ideal, [IsAlgClosed k] only — NO radicality). Decouples the codim from the (off-path)
+-- radicality wall: the RLCT payoff needs only this height.
+import DLNFibre.Core.FibreHeightDirect
+-- HEIGHT-DIRECT rung H2 (the differential of mult): `multSuffix` (suffix product, mirror of multPrefix) +
+-- `pderiv_multPoly`/`eval_pderiv_multPoly` — d(mult) entry = (suffix column s)·(prefix row t), the rank-one
+-- outer product per factor. The Jacobian-entry brick H3 (generic Jacobian rank) consumes.
+import DLNFibre.Core.MultDifferential
