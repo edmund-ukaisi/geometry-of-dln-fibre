@@ -5,6 +5,8 @@ import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 import Mathlib.RingTheory.Localization.FractionRing
 import Mathlib.Algebra.MvPolynomial.Rename
 import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.MultComorphism
+import DLNFibre.Core.SigmaComponents
 
 /-!
 # `DLNFibre.Core.DeterminantalChartRing` — the bordered Schur minor (G2-2 foundation)
@@ -212,5 +214,46 @@ theorem schur_expr_eq_zero_of_rank_le {k : Type u} [Field k] {p q r : ℕ}
     rw [← det_submatrix_equiv_self e.symm, submatrix_submatrix]
     exact submatrix_det_eq_zero_of_rank_le hr _ _
   rw [hid] at hzero; exact hzero
+
+/-! ## Step (a): the `(r+1)`-minor of the generic product lies in the base ideal `sigmaIdeal d r`
+
+Lifting the per-point vanishing to the polynomial ring `MvPolynomial (RepCoord d) k`: the generic
+product matrix `multPoly d` (`Core.MultComorphism`) evaluates at `canonicalCoord A` to `mult d A`
+(`eval_multPoly`), so an `(r+1)`-minor of `multPoly d` evaluates to the corresponding minor of
+`mult d A`, which vanishes on `Σ̄^r = productRankLocusLE d r` (rank `≤ r`). General in `N`. This is
+the bridge feeding the localized Schur graph ideal `J`. -/
+
+/-- Evaluating an `(r+1)`-minor of the generic product matrix `multPoly d` at the coordinates of a
+tuple `A` gives the corresponding `(r+1)`-minor of the actual product `mult d A` (`eval_multPoly`
+entrywise through `det`/`submatrix`). -/
+theorem eval_det_submatrix_multPoly {k : Type u} [Field k] {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (A : Tuple (k := k) d) {r : ℕ} (br : Fin (r + 1) → Fin (d (Fin.last N)))
+    (bc : Fin (r + 1) → Fin (d 0)) :
+    eval (canonicalCoord d A) (((Matrix.of (multPoly d)).submatrix br bc).det)
+      = ((mult d A).submatrix br bc).det := by
+  rw [RingHom.map_det (eval (canonicalCoord d A))]
+  congr 1
+  ext i j
+  simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, Matrix.of_apply]
+  exact eval_multPoly d A (br i) (bc j)
+
+/-- **Step (a): the determinantal base ideal contains every `(r+1)`-minor of the generic product.**
+For any choice of `r+1` rows `br` and `r+1` columns `bc`, the `(r+1)×(r+1)` minor
+`det ((multPoly d).submatrix br bc)` lies in `sigmaIdeal d r` (the vanishing ideal of
+`Σ̄^r = productRankLocusLE d r`): it evaluates on every `A ∈ Σ̄^r` to an `(r+1)`-minor of the
+rank-`≤ r` matrix `mult d A`, which is `0`. General in `N`. -/
+theorem det_submatrix_multPoly_mem_sigmaIdeal {k : Type u} [Field k] {N : ℕ}
+    (d : Fin (N + 1) → ℕ) {r : ℕ} (br : Fin (r + 1) → Fin (d (Fin.last N)))
+    (bc : Fin (r + 1) → Fin (d 0)) :
+    ((Matrix.of (multPoly d)).submatrix br bc).det ∈ sigmaIdeal (k := k) d r := by
+  rw [sigmaIdeal, mem_vanishingIdeal_iff]
+  rintro x ⟨A, hA, rfl⟩
+  rw [mem_productRankLocusLE] at hA
+  -- `aeval (canonicalCoord A) p = eval (canonicalCoord A) p` (pointwise)
+  rw [show aeval (R := k) (canonicalCoord d A) ((Matrix.of (multPoly d)).submatrix br bc).det
+        = eval (canonicalCoord d A) ((Matrix.of (multPoly d)).submatrix br bc).det from by
+        rw [aeval_def, eval]; rfl]
+  rw [eval_det_submatrix_multPoly d A br bc]
+  exact submatrix_det_eq_zero_of_rank_le hA br bc
 
 end DLNFibre.Core
