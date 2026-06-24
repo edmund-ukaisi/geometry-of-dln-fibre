@@ -2596,3 +2596,11 @@ displayed data.  This is the current best source-frontier reducer.  A clean
 next finite target is the separate substitution-block rewrite identified in
 the review scout: the transition-generated displayed substitution block should
 equal the source-side selected-entry substitution block.
+
+That substitution-block rewrite has now landed through review:
+`case2SourceSelectedSubstitutionBlockOfMem_transition_eq_of_target_normalized_ne_zero`
+and the chart-indexed wrapper state the arbitrary all-pivot finite identity
+`Sub_q(u*d,x/d) = Sub_p(u,x)` on the normalized target-coordinate overlap.
+The next higher-value A4 target is to use the substitution-block rewrite inside
+a source-facing `Q/P` reducer while keeping the target Schur-complement rewrite
+and source-production obligations explicit.

@@ -9372,6 +9372,38 @@ def case2SourceSelectedSubstitutionBlockOfMem
     Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
   fun i j ↦ case2SourceSelectedChartMapOfMem hp u residual (i.1, j.1)
 
+/-- Source-coordinate substitution blocks agree on a finite selected-entry
+overlap after the usual transition-generated change of selected variable and
+normalised residual coordinates.
+
+This is the residual-block matrix form of
+`selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero`.  It is
+finite algebra only: no analytic transition regularity, chart coverage,
+source production, normal crossings, pole order, or RLCT extraction. -/
+theorem case2SourceSelectedSubstitutionBlockOfMem_transition_eq_of_target_normalized_ne_zero
+    {n : ℕ → ℕ} {S J : ℕ} {sourcePivot targetPivot : ℕ × ℕ}
+    (hsource : sourcePivot ∈ case2ResidualBlockPivotEntries n S J)
+    (htargetMem : targetPivot ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (u : K) (residual : ℕ × ℕ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot ≠ 0) :
+    let denom := case2SourceSelectedNormalizedMapOfMem hsource residual targetPivot
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem hsource residual q / denom
+    case2SourceSelectedSubstitutionBlockOfMem htargetMem (u * denom) targetResidual =
+      case2SourceSelectedSubstitutionBlockOfMem hsource u residual := by
+  dsimp only
+  ext i j
+  simpa [case2SourceSelectedSubstitutionBlockOfMem,
+    case2SourceSelectedChartMapOfMem, case2SourceSelectedNormalizedMapOfMem] using
+    congrFun
+      (selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero
+        (sourcePivot := sourcePivot) (targetPivot := targetPivot)
+        (u := u) (residual := residual)
+        (by simpa [case2SourceSelectedNormalizedMapOfMem] using htarget))
+      (i.1, j.1)
+
 /-- Source-coordinate normalised selected-entry block for a supplied Case 2
 pivot, restricted to residual rows and columns. -/
 def case2SourceSelectedNormalizedBlockOfMem

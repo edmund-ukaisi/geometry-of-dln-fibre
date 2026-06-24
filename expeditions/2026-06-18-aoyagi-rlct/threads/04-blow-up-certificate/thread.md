@@ -5936,3 +5936,35 @@ atlas, source production of a global successor object or suffixes, normal
 crossings, pole order, or RLCT extraction.  It is also not the separate
 substitution-block rewrite identifying the transition-generated displayed
 substitution block with a source-side selected-entry substitution block.
+
+## 2026-06-24 Lean Case 2 transition-generated substitution-block rewrite
+
+Reproduction:
+`reproduction-case2-transition-generated-substitution-block-rewrite-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-generated-substitution-block-rewrite.md`.
+Review:
+`review-case2-transition-generated-substitution-block-rewrite-a4.md`.
+
+Lean now proves the finite residual-block substitution equality:
+
+```text
+case2SourceSelectedSubstitutionBlockOfMem_transition_eq_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_normalized_ne_zero
+```
+
+For source pivot `p`, target pivot `q`, source-normalized coordinates `x_r`,
+and `d = x_q != 0`, the transition-generated target data
+`targetU = u*d` and `targetResidual r = x_r/d` satisfy
+
+```text
+Sub_q(u*d, x/d) = Sub_p(u, x).
+```
+
+This is finite selected-entry substitution-block algebra only.  It is not
+equality of normalized blocks, not the target Schur-complement or `Q/P`
+reduced-block rewrite, not analytic transition regularity, chart coverage,
+source-displayed all-pivot atlas, source production of a global successor
+object or suffixes, normal crossings, pole order, or RLCT extraction.
+The arbitrary target-pivot statement is Lean's finite all-pivot abstraction;
+the displayed pivot is the directly Aoyagi-facing special case.

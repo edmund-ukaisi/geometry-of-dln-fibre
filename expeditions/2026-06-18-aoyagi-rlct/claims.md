@@ -4314,3 +4314,22 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-frontier.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-displayed-frontier-a4.md`.
+
+Latest A4 Case 2 transition-generated substitution-block rewrite:
+`BlowupArithmetic.lean` now proves
+`case2SourceSelectedSubstitutionBlockOfMem_transition_eq_of_target_normalized_ne_zero`,
+and `SelectedEntryNormalCrossing.lean` proves the chart-indexed wrapper
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_normalized_ne_zero`.
+On the overlap where the target normalized coordinate `d = x_q` is nonzero,
+the transition-generated target data `targetU = u*d` and
+`targetResidual r = x_r/d` have the same finite residual-block substitution
+matrix as the original source chart: `Sub_q(u*d,x/d) = Sub_p(u,x)`.  This is
+finite selected-entry substitution-block algebra only: no normalized-block
+equality, target Schur-complement rewrite, analytic transition regularity,
+chart coverage, source production, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-substitution-block-rewrite-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-substitution-block-rewrite.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-substitution-block-rewrite-a4.md`.

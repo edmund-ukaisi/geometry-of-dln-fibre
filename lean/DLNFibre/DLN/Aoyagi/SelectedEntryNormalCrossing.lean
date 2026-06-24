@@ -2376,6 +2376,53 @@ theorem sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized
       sourceSelectedBlock_schurComplement_transition_mul_sq
         n hS hcont sourceChart targetChart residual htarget i j
 
+set_option linter.style.longLine false in
+/-- Substitution-block form of the selected-entry transition for chart-family
+indices.
+
+Starting from source chart coordinates `(u, residual)` and a target chart with
+nonzero source-normalised target coordinate, the transition-generated target
+selected variable `targetU = u*d` and target residuals `x_/d` give the same
+finite source-coordinate substitution block as the original source chart.
+This is finite residual-block algebra only; it is not the target Schur-block
+rewrite, analytic transition regularity, chart coverage, source production,
+normal crossings, pole order, or RLCT extraction. -/
+theorem sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_normalized_ne_zero
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {n : ℕ → ℕ} {S J : ℕ}
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (sourceChart targetChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (u : K) (residual : ℕ × ℕ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          targetChart).1 ≠ 0) :
+    let sourcePivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart
+    let targetPivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        targetChart
+    let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+    case2SourceSelectedSubstitutionBlockOfMem targetPivot.2 (u * denom) targetResidual =
+      case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual := by
+  dsimp only
+  exact
+    case2SourceSelectedSubstitutionBlockOfMem_transition_eq_of_target_normalized_ne_zero
+      ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart).2
+      ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        targetChart).2
+      u residual htarget
+
 /-- The chart index of the displayed top-left Case 2 pivot `(J+1,J+1)` inside
 the all-pivot selected-entry certificate.
 
