@@ -229,4 +229,90 @@ theorem blockAlgEquiv_borderMinor (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
       (RingHom.map_adjugate _ _).symm,
     ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply, schurNum_eq_forcedNum, mul_comm]
 
+/-! ## Step (2): `J ⊆ Ψ(Iad)` — the localized inclusion
+
+`Ψ` carries `algebraMap A_eng A_loc x` to `algebraMap B Q (blockAlgEquiv x)`
+(`algEquivOfAlgEquiv_eq`). Each generator `X (a',b') − C (forcedB22 (a',b'))` of `J`, multiplied by
+the unit `C (algebraMap detSchurS)`, is the `Ψ`-image of the bordered minor (in `Iad`), so it lies in
+`Ψ(Iad)`; dividing by the unit gives the generator. -/
+
+/-- `Ψ` intertwines the two localization maps: `Ψ (algebraMap A_eng A_loc x) = algebraMap B Q
+(blockAlgEquiv x)`. (`Ψ = IsLocalization.algEquivOfAlgEquiv blockAlgEquiv`.) -/
+theorem blockAlgEquivLoc_algebraMap (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (x : MvPolynomial (RepCoord (dStratum q p)) k) :
+    blockAlgEquivLoc (k := k) q p r hp hq
+        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+          (Localization.Away (detPivotPoly (k := k) q p r hp hq)) x)
+      = algebraMap (MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k))
+          (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r))
+          (blockAlgEquiv (k := k) q p r hp hq x) := by
+  haveI tower : IsScalarTower k (MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k))
+      (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)) := by
+    refine IsScalarTower.of_algebraMap_eq (fun y ↦ ?_)
+    have hkB : (algebraMap k (MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k))) y
+        = C (algebraMap k (MvPolynomial (SchurVar q p r) k) y) := by
+      rw [IsScalarTower.algebraMap_apply k (MvPolynomial (SchurVar q p r) k)
+        (MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k))]; rfl
+    have hkQ : (algebraMap k (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r))) y
+        = C (algebraMap k (SchurLoc (k := k) q p r) y) := by
+      rw [IsScalarTower.algebraMap_apply k (SchurLoc (k := k) q p r)
+        (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r))]; rfl
+    rw [hkB, hkQ, algebraMap_def, MvPolynomial.map_C]; congr 1
+  haveI hloc : IsLocalization (Submonoid.powers (C (detSchurS (k := k) q p r) :
+      MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k)))
+      (MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)) := by
+    simpa [Submonoid.map_powers] using
+      (MvPolynomial.isLocalization (σ := B22block q p r)
+        (M := Submonoid.powers (detSchurS (k := k) q p r)) (S := SchurLoc (k := k) q p r))
+  exact IsLocalization.algEquivOfAlgEquiv_eq _ x
+
+/-- The localized base ideal `Iad = (sigmaIdeal …).map (algebraMap A_eng A_loc)` — abbreviation for
+readability. -/
+local notation3 "Iad(" q ", " p ", " r ", " hp ", " hq ")" =>
+  (sigmaIdeal (dStratum q p) r).map
+    (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+      (Localization.Away (detPivotPoly q p r hp hq)))
+
+/-- **The cleared Schur relation in `Q = MvPolynomial B22block Sd`.** The unit `C (algebraMap
+detSchurS)` times the graph generator `X (a',b') − C (forcedB22 (a',b'))` equals
+`Ψ (algebraMap A_eng A_loc (borderMinor …))` — the `Ψ`-image of a bordered minor (hence in
+`Ψ(Iad)`). The `mk'` denominator clears: `algebraMap detSchurS · forcedB22 = algebraMap forcedNum`. -/
+theorem unit_mul_graphGen_eq_psi_borderMinor (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a' : Fin (p - r)) (b' : Fin (q - r)) :
+    C (algebraMap (MvPolynomial (SchurVar q p r) k) (SchurLoc (k := k) q p r)
+          (detSchurS (k := k) q p r))
+        * (X (a', b') - C (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r) (a', b')))
+      = blockAlgEquivLoc (k := k) q p r hp hq
+          (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+            (Localization.Away (detPivotPoly (k := k) q p r hp hq))
+            (borderMinor q p r hp hq a' b')) := by
+  rw [blockAlgEquivLoc_algebraMap, blockAlgEquiv_borderMinor, map_sub, map_mul]
+  simp only [algebraMap_def, MvPolynomial.map_C, MvPolynomial.map_X]
+  rw [mul_sub]
+  congr 1
+  rw [← C_mul]
+  congr 1
+  rw [forcedB22,
+    IsLocalization.mk'_spec' (SchurLoc (k := k) q p r) ((forcedNum (k := k) q p r) a' b')
+      (⟨detSchurS q p r, Submonoid.mem_powers _⟩ : Submonoid.powers (detSchurS (k := k) q p r))]
+
+/-- **Step (2): `J ⊆ Ψ(Iad)`.** Each generator `X (a',b') − C (forcedB22 (a',b'))` of the forced
+graph ideal lies in `Ψ(Iad)`: it is the unit `C (algebraMap detSchurS)⁻¹` times the `Ψ`-image of the
+bordered minor (which is in `Iad`, `borderMinor_mem_sigmaIdeal`). -/
+theorem graphIdeal_forcedB22_le_map_Iad (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    graphIdeal (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r))
+      ≤ (Iad(q, p, r, hp, hq)).map (blockAlgEquivLoc (k := k) q p r hp hq) := by
+  rw [graphIdeal, Ideal.span_le]
+  rintro _ ⟨ab, rfl⟩
+  obtain ⟨a', b'⟩ := ab
+  show X (a', b') - C (forcedB22 (k := k) q p r (SchurLoc (k := k) q p r) (a', b'))
+      ∈ (Iad(q, p, r, hp, hq)).map (blockAlgEquivLoc (k := k) q p r hp hq)
+  -- the generator, times the unit `C (algebraMap detSchurS)`, is `Ψ (algebraMap borderMinor) ∈ Ψ(Iad)`
+  have hunit : IsUnit (C (algebraMap (MvPolynomial (SchurVar q p r) k) (SchurLoc (k := k) q p r)
+      (detSchurS (k := k) q p r)) : MvPolynomial (B22block q p r) (SchurLoc (k := k) q p r)) :=
+    (IsLocalization.Away.algebraMap_isUnit (detSchurS (k := k) q p r)).map
+      (C : SchurLoc (k := k) q p r →+* _)
+  rw [← Ideal.unit_mul_mem_iff_mem _ hunit, unit_mul_graphGen_eq_psi_borderMinor q p r hp hq a' b']
+  exact Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ (borderMinor_mem_sigmaIdeal q p r hp hq a' b'))
+
 end DLNFibre.Core
