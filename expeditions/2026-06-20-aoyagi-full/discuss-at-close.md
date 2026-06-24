@@ -82,3 +82,27 @@ corank-≥2 chart structure, the upper bound is as hard as the refuted route —
 commit to Aoyagi's coupled-`diag(b)` recursion as the chart producer for BOTH bounds (the prior Decision
 option ii; still S2-only, from-scratch, but a larger build). The next R1 probe (after `hdiv` lands) tests
 `hfin`'s corank-sensitivity. NOT a wall — a named risk on the long pole, flagged for operator awareness.
+
+### Item 6 — VERDICT (2026-06-24 ~13:30): the `hfin` risk is CONFIRMED. R1's long pole = the full coupled-`diag(b)` resolution; hdiv build-ready at L=2.
+The wedge-design adjudication (pen-and-paper + decorrelated Codex) settled both R1 legs:
+- **hdiv (lower bound, `cover_ge_div`) is BUILD-READY at L=2** — a single weighted radial blow-up gives
+  `F∘φ = u²·U` (sympy-exact), Jacobian `u^{minAdm−1}`, binding axis `(1,minAdm−1)` feeding
+  `monomialIntegrand_lintegral_box_eq_top`; covers the binding corank-2 `(3,3,4)`; corank-IMMUNE. The L=2
+  case is BUILDING (`r1-hdiv-l2-wedge`). L≥3 = a recursive gauge chain (heavier; ship L=2 first).
+- **hfin (upper bound, `cover_le`, `rlctAtOn ≥ ½·minAdm`) is CORANK-SENSITIVE — CONFIRMED.** It must control
+  EVERY stratum incl. corank-≥2; a threshold-only cover mis-resolves `(3,3,4)` (codim 3 not 8). The only
+  honest from-scratch route is **the full coupled-`diag(b)` resolution atlas covering U up to null** — "as
+  hard as the route that refuted `hnode`" (prior Decision option ii). `F ≥ dist²` just relocates to the
+  determinantal codim. **This is THE R1 long pole and the dominant remaining difficulty of the whole
+  expedition.**
+- **CITATION DECISION (OPERATOR'S — I hold the constraint as binding):** the alternative to the full
+  resolution is citing `rlct ≥ ½·codim_min` (Aoyagi/Watanabe) — but that is a SECOND citation, forbidden by
+  the one-citation brief (S2 only), and is exactly the "cites away the new content" move `lessons.md`
+  rejected. **I am NOT relaxing this.** Flagging for the operator: the realistic path to the FULL general-L
+  headline requires building the full coupled-`diag(b)` resolution for hfin from scratch — a large effort
+  (prior design exists: `verify-r1-diagb-334.md`, tasks #26–#30, the coupled resolution = 4 at (3,3,4)).
+  Options the operator may want to weigh at close: (i) commit to the full resolution (large, from-scratch,
+  honest); (ii) bank an L=2/RRR milestone (hdiv L=2 + L2 gauge + D1 give the L=2 headline, with general-L
+  hfin as a named Deferred); (iii) — only if the operator chooses — relax the one-citation constraint for
+  hfin specifically (cite the upper bound, prove the geometric codimension = the new content). Default
+  (mine, until the operator says otherwise): pursue (i), banking (ii) as the guaranteed milestone.

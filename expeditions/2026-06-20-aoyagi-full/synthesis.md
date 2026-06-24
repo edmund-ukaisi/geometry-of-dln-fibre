@@ -257,6 +257,24 @@ Both efforts reported.
   deepestPoint_frame_exists (2≤L boundary identities) → (3) restrict gauge chain to 2≤L, fill 831/832→624→443
   → (4) L=1 smooth base → (5) wire GaugeChart:365 + aggregator. Then the L2 gate falls.
 
+**★ UPDATE-6 (2026-06-24) — R1 shape PINNED: hdiv build-ready at L=2 (building); hfin = the full coupled resolution (THE long pole).**
+The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled both R1 cover legs:
+- **hdiv (cover_ge_div, lower bound) BUILD-READY at L=2.** A single weighted radial blow-up: `F∘φ = u²·U`
+  (sympy-exact), Jacobian `u^{minAdm−1}`, binding axis `(1,minAdm−1)` → `monomialIntegrand_lintegral_box_eq_top`
+  (same chain as routeM222_box_diverges). Covers the binding corank-2 (3,3,4); corank-IMMUNE (the clean block
+  bounds U below on a positive-measure slice; coupling only adds). `r1-hdiv-l2-wedge` BUILDING the L=2 case
+  (#44). L≥3 = a recursive gauge chain (heavier; ship L=2 first).
+- **hfin (cover_le, upper bound, rlctAtOn ≥ ½·minAdm) CORANK-SENSITIVE — CONFIRMED. THE R1 LONG POLE (#45).**
+  Must control EVERY stratum incl corank-≥2; threshold-only mis-resolves (3,3,4) (codim 3 not 8). The only
+  honest from-scratch route is the **full coupled-diag(b) resolution atlas covering U up to null** — "as hard
+  as the route that refuted hnode". REQUIRED from scratch: citing rlct ≥ ½·codim is a forbidden 2nd citation
+  (held binding). The dominant remaining difficulty of the expedition. Prior design exists (verify-r1-diagb-334.md,
+  #26-#30). Operator-discussion item (discuss-at-close Item 6 VERDICT): default = pursue the full resolution;
+  bank an L=2/RRR milestone as the guaranteed floor.
+- **R1 shape now precise:** hdiv = the wedge (L=2 building, L≥3 gauge chain); hfin = the full coupled resolution
+  (the long pole). L2 = `l2-rearch` building the 2≤L gauge close; D1 = L2-gated. Active tides: l2-rearch (L2),
+  r1-hdiv-l2-wedge (R1 hdiv L=2). hfin (the long pole) is the next major design-first effort.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
