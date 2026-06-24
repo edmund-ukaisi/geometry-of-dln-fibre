@@ -125,3 +125,9 @@ import DLNFibre.Core.DeterminantalBasePresentation
 -- the open R2-3b wall) — `fibreGenIdeal` radical + the radical-collapse of MultComorphism pt4. The
 -- final BundleShiftInterface discharge WAITS for R2-3b to prove `e`.
 import DLNFibre.Core.FibreReducedTrivialization
+-- Deep chart ring (R2-3b-1+2, the residual G2-3 wall foundation): `Sred = Localization.Away(ΔPdeep) ⧸
+-- IadDeep` for general d (the engine's base presentation is N=1 only), the RepCoord↔stratum/endpoint
+-- bridges, and the localized base→total map `schurToSred : SchurLoc → Sred` giving Sred its
+-- SchurLoc-algebra structure (R2-3a's R = SchurLoc, S = Sred). The crux containments (det transport,
+-- base→deep sigmaIdeal, NON-circular) proved. Feeds R2-3b-3 (endpoint AlgEquiv) + R2-3b-4 (the iso e).
+import DLNFibre.Core.DeepChartRing
