@@ -112,6 +112,101 @@ bundled existence and need no change beyond the new shared data flowing through.
 is a WHOLE unit ⟹ the `(X,Z)→(P11,P21)` block of `F` (left-mult by full `A`) is always invertible. The
 first interface needs no permutation.
 
+## Build plan (lemma-granularity) — coordinated PIN1+PIN2 tide
+
+The objective: thread one B-determined pivot set `J` so the last-interface `Fin (H_L) ≃ Fin r ⊕ Fin (H_L−r)`
+split is `Π_J`-twisted *identically* in the three places that read B's columns as "pivot", and the rest of
+the architecture inherits it. References below are to real signatures (verified in-repo this tide).
+
+### (1) The shared `LastPivot` datum
+
+A single threaded object (pass it everywhere; never re-derive a pivot set downstream):
+
+    structure LastPivot (H : Fin (L+1) → ℕ) (r : ℕ) where
+      J     : Fin r ↪ Fin (H (Fin.last L))          -- the r pivot column indices (an embedding)
+      hpiv  : -- the chosen r columns of the last-interface factor V are independent
+              -- (equivalently: (reindex V).submatrix id J has rank r / is column-injective)
+
+Building-block obligation (Core, network-free; standard "column rank = rank"): for a rank-`r` matrix
+`V : Fin r × Fin c`, `∃ J : Fin r ↪ Fin c, (V.submatrix id J) ∈ GL_r`. Likely a small new
+`Core.Matrix` lemma — `Matrix.exists_pivot_cols_of_rank` — Mathlib has `Matrix.rank` ↔ column-span
+finrank (`rank_eq_finrank_span_cols`) but not the packaged embedding; ~30-50 lines. NOT a soundness gap
+(the fact is elementary); flag it as the one genuinely-new brick.
+
+Derive `Π_J : Fin (H_L) ≃ Fin r ⊕ Fin (H_L − r)` from `J` — `J`'s image to `Fin r`, complement to
+`Fin (H_L − r)` (an `Equiv.Set.sumCompl`-style construction; the *replacement* for `rThresholdSplit r (H_L)`
+at the last interface). Call it `pivotThresholdSplit r (H_L) J`. At `J = id` it is `rThresholdSplit` (so the
+unpermuted case is the existing behaviour — a clean specialization, good for the L=1 / pivot-already-front path).
+
+### (2) Threading `Π_J` to the three objects
+
+**(2i) `regResidualPack` last-interface split.** `BoundaryPivotIdx` (`DeepestSplitReindex:218`) hard-codes
+the Y-block as `Fin r × Fin (H_L − r)`; `regResidualPack := regPivotFinEquiv` (`:238`) and `deepestEPivot`'s
+`toBlocks₁₂` read against `rThresholdSplit r (H_L)`. Replace `rThresholdSplit r (H_L)` by
+`pivotThresholdSplit r (H_L) J` in: `deepestEPivot`'s `P` reindex (the `toBlocks₁₁/₁₂` column side); the
+`regBoundaryToRegGauge` Y-arm `finCongr` (`:273`) becomes the `Π_J` relabel. `regPivotFinEquiv`'s sum-type
+*shape* is unchanged (still `(r×r)⊕((r×(H_L−r))⊕((H_0−r)×r))` — `Π_J` only changes which physical column an
+index points to). So `card_boundaryPivotIdx` and `deepestNReg` are untouched (the `nReg` count is `Π_J`-blind).
+
+**(2ii) the V·Π_J frame** (B22 invertible). `deepestPoint_frame_exists` (`DeepestFrame:39`) calls
+`rank_normal_form_right_only` (`RankNormalForm:361`) on the deepest last layer (tail rows vanish). Re-target it
+at `(reindex-by-Π_J of the last layer)`: feed `rank_normal_form_right_only` the *column-permuted* matrix
+`A_last · Pπ` (pivots front), so the resulting `Q'` has `(reindex Q')₂₂` invertible. Concretely the explicit
+frame `Q' = fromBlocks (V_J⁻¹) (−V_J⁻¹ V_K) 0 I` realizes `B22 = I`, but
+`rank_normal_form_right_only`-on-`A_last·Pπ` already gives invertible `B22` (the kernel-graph argument,
+`pin1_structure.py`) — the proof needs only invertibility. New frame fact:
+`deepestPoint_frame_lastBlock_isUnit … (J) : IsUnit ((reindex (pivotThresholdSplit … J) (Qf last)).toBlocks₂₂)`.
+The asymmetry holds: NO change to layer-0 / the first interface (`A = reindex(Pf first)` is a whole unit).
+
+**(2iii) the target normalization** `reindex(P0·B·QL) = fromBlocks 1 0 0 0` in
+`framedParams_split_eq_frame_raw` (`DeepestGaugeConstruction:629`, step (3) of its sorry). Use the SAME
+`pivotThresholdSplit r (H_L) J` for the column reindex of `B`. CONSISTENT because pivot(B)=pivot(V): `B=U·V`,
+`U` injective, `rank(B_J)=rank(U·V_J)=rank(V_J)=r` (so `J` valid for both). The corner target stays
+`fromBlocks 1 0 0 0`.
+
+### (3) How `deepestEPivot_regSlice_fderiv` then CLOSES
+
+Statement stays as-is (still `∃ F : ≃L, HasStrictFDerivAt (reg-slice) F 0`) — the `J` flows in via the
+`Pf/Qf` it already takes (now the `Π_J`-frame). The reachable half is unchanged: `prodAux_regSlice_through_first`
++ `framedParamsReg_regSlice_{first,last,interior}` + `readY_regSlice_last` + `devXZ_corner_devY` give the
+linear part `F(X,Y,Z) = (A11 X+A12 Z+Y B21, Y B22, A21 X+A22 Z)` (quadratic-deriv-0 from
+`hasStrictFDerivAt_sum_mul_zero`). Build `F` from:
+- `A` whole-unit (from `hPf` — existing `deepestPoint_frame_invertible.1`);
+- `B22` invertible (the NEW `deepestPoint_frame_lastBlock_isUnit … J` from 2ii);
+then hand to the EXISTING consumer `regStraightenTotalCLM_equiv_of_regBlock_isUnit`
+(`DeepestRegSliceFderiv:554`) — it already takes `F : ≃L` whose coercion is `D_E.comp regInCLM`. The
+block-triangular inverse is `det F = (det A)^{H_L−r}·(det B22)^r` (`pin1_Finv.py`): solve `Y` from `P12`
+via `B22⁻¹`, subtract `Y·B21` from `P11`, recover `[X;Z]` via whole-`A⁻¹`. So `deepestEPivot_deriv`
+(`:512`) — which already assembles `D_E.comp regInCLM = ↑F` and calls
+`regStraightenTotalCLM_equiv_of_regBlock_isUnit` — needs NO structural change; it just receives an
+invertible `F` instead of a `sorry`.
+
+### (4) The PIN2 consistency obligation (the one non-negotiable)
+
+PIN2's energy identification `hSreg_eq` (`deepest_loss_squeeze`, `DeepestGaugeConstruction:789`) chains
+`hregval → deepestEPivot_sq_sum_eq_blocks → h00/h01/h10`. For it to stay valid, the residual blocks
+`(P11,P12,P21)` of `deepestEPivot` (2i) and the framed blocks `(P00,P01,P10)` of the cert
+`framedParams_split_eq_frame_raw` (2iii) must refer to the SAME column decomposition — i.e. the SAME `J`.
+- `deepestEPivot_sq_sum_eq_blocks` (`:583`) is `Π_J`-STABLE: its proof uses `regResidualPack` only as a
+  summing bijection (`Equiv.sum_comp`; value-irrelevant, per its own docstring). ✓ unchanged.
+- The block-energy reindex-invariance is `frobenius_sum_reindex` / `frobenius_sq_eq_blocks`
+  (`DeepestGaugeBlocks:481/500`) — invariant under ANY index equiv, so `Π_J`-stable. ✓
+- The cert's `dlnLoss_block_squeeze` (`DeepestGaugeBlocks:516`) takes the block split `e₂` as a parameter;
+  pass `e₂ := pivotThresholdSplit r (H_L) J` (the SAME as `deepestEPivot`'s). ✓
+- **Obligation to STATE explicitly:** `framedParams_split_eq_frame_raw`'s `h01` (the `P01 = (reindex
+  (pivotThresholdSplit … J) (prod (framedParamsReg …)))₁₂`) and `deepestEPivot`'s `toBlocks₁₂` use the
+  IDENTICAL `pivotThresholdSplit … J`. If a future edit lets them diverge, `hSreg_eq`'s `rw [h01]` fails to
+  typecheck (the column index types differ) — a compile-time tripwire, not a silent unsoundness. Make `J`
+  a single value passed to both `deepestEPivot_deriv` and `framedParams_split_eq_frame_raw` from
+  `deepest_gauge_construction` (`:862`) so divergence is unrepresentable.
+
+### Build order (suggested)
+1. Core: `Matrix.exists_pivot_cols_of_rank` (the one new brick) + `pivotThresholdSplit` + its `J=id` spec.
+2. Frame: `deepestPoint_frame_lastBlock_isUnit … J` (re-target `rank_normal_form_right_only`).
+3. PIN1: close `deepestEPivot_regSlice_fderiv` (build `F`, hand to the existing isUnit consumer).
+4. PIN2: thread the SAME `J` into `framedParams_split_eq_frame_raw` (step (3) of its sorry) + `e₂`.
+5. Assembly: thread `J` through `deepest_gauge_construction`; verify `hSreg_eq` typechecks (the tripwire).
+
 ## Artefacts
 - sympy: `/tmp/pin1_F.py`, `pin1_B22.py`, `pin1_freedom.py`, `pin1_structure.py`, `pin1_perm.py`,
   `pin1_pivotalign.py`, `pin1_Finv.py`, `pin1_coupling.py`, `pin1_rlct.py`, `pin1_core.py`,
