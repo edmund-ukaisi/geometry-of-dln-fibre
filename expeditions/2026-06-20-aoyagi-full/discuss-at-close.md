@@ -183,3 +183,16 @@ connection itself; Stage B = the coupled migration). It does NOT change the magn
 (i)/(ii) decision — both still need the L2 gauge chart — but it is the realistic L2 bottleneck to weigh when picking
 scope. No operator action required mid-flight; flagged for the close. The self-correction (over-credited abstract fact
 → named for what it is → re-targeted) is the precision discipline working.
+
+## 12. Headline RE-SCOPED to all-widths-positive (2026-06-24 @9c96786a): a genuine over-claim caught + fixed.
+The L=1 base tide caught (Codex-corroborated) that `deepest_regular_core_normal_form` — hence `product_reduction`,
+`aoyagi_learning_coefficient` (the headline T), and `aoyagi_rrr` (the L=2 RRR deliverable) — was **mathematically
+FALSE at a degenerate zero-width layer** (`H s = 0`, reachable at `r = 0` under the stated `hr`): there the loss is
+identically `0`, so the local RLCT is `⊤` (`rlctAtOn_zero_eq_top`) while the closed form `aoyagiLambda` is finite.
+**Fix (controller, banked):** added `(hpos : ∀ s, 0 < H s)` to all four lemmas + threaded the call sites + caveat in
+the docstrings. **This is a STATEMENT change to the deliverable** the operator should be aware of, but it is the
+honest, expected scoping: at `r ≥ 1`, `hpos` is automatic from `hr` (so no real restriction); it bites ONLY the
+degenerate `r = 0` zero-width corner, which is not a DLN. Aoyagi's result is for positive-width networks. The headline
+now reads "for any rank-`r` `B` with every width positive and `≥ r`". No soundness debt remains here; full build green
+(3719). The self-correction (tide catches over-claim → controller re-scopes before proofs lock in) is the precision
+discipline working — and a reason the headline statement was worth pinning down NOW, not at assembly.

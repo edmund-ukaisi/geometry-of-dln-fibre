@@ -516,6 +516,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   banked reshape-MP + template. Task #44 COMPLETE.
 - 2 background agents now: ac2db524 (L=1 base), rv-stageA (Stage A review). Migration tide still held pending rv-stageA.
 
+**★ UPDATE-20 (2026-06-24) — L2 L=1 base BANKED (citation-free); a genuine SOUNDNESS over-claim caught + the headline re-scoped all-widths-positive.**
+- **L=1 base @173557a6:** `deepest_regular_core_normal_form_L1` PROVEN sorry-free + axiom-clean
+  `[propext,Classical.choice,Quot.sound]` — NOT even `monomial_rlct` (the L=1 base needs no resolution; the single
+  layer is a full nondegenerate sum of H0·H1 squares, RLCT H0·H1/2, + lambdaCore=H0·H1/2 at one reduced layer).
+  Reusable: `sumSq_rlctAtOn_finN` (full quadratic on Fin n has RLCT n/2). The non-gauge-chart arm of
+  deepest_regular_core_normal_form is DONE; the Skeleton:1124 case-split (L=1→this / 2≤L→gauge) is the later wire.
+- **SOUNDNESS over-claim CAUGHT (the L=1 tide's flag, Codex-corroborated) + FIXED @9c96786a:** the parent
+  `deepest_regular_core_normal_form` — hence `product_reduction`, `aoyagi_learning_coefficient`, `aoyagi_rrr` —
+  was FALSE at a degenerate zero-width layer (`H s = 0`, reachable at r=0 under hr): the loss is identically 0 so
+  rlctAt = ⊤ (`rlctAtOn_zero_eq_top`) while the closed form is finite. Added `(hpos : ∀ s, 0 < H s)` to all four +
+  threaded the call sites + caveat in the docstrings. At r≥1 hpos is automatic from hr, so this restricts ONLY the
+  degenerate r=0 zero-width corner — the honest DLN-positive-widths scoping. Full build green (3719); headline axiom
+  footprint unchanged. (Precision discipline working: a tide caught the over-claim, the controller re-scoped before
+  the proofs lock in.) Flagged for the operator (discuss-at-close Item 12 — a statement change to the deliverable).
+- 1 background agent now: rv-stageA (Stage A review). Migration tide held pending its verdict. L2 status: Stage A
+  bedrock banked + the L=1 arm DONE; remaining = the Stage C+D migration (held) + PIN2 + the case-split wire.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
