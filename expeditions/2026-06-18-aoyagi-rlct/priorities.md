@@ -581,6 +581,16 @@ source-data loss-comparison handoff.  Remaining A2 work is still analytic:
 regular-suspension certificate production or a properly stated Fubini/polar
 regular-variable shift theorem.
 
+A2 one-step determinant-chart coordinate equivalence has now landed:
+`threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Lean proves `productReductionStepCoordinate_detChart_homeomorph` in
+`ChartTopology.lean`, after adding product-topology instances and determinant
+subtype continuity lemmas for the raw/chart one-step coordinate structures.
+This is the preferred finite topological coordinate API for the p. 13
+one-step change.  It is not analytic regularity, an analytic Jacobian theorem,
+source-rank openness, source coverage, ideal-germ transport, a
+regular-suspension certificate, pole order, normal crossings, or RLCT.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds

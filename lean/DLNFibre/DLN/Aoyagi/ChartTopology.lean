@@ -128,6 +128,507 @@ theorem continuousAt_matrix_inv_of_isUnit_det
     rw [Ring.inverse_eq_inv']
     exact continuousAt_inv₀ hA.ne_zero)
 
+/-- Matrix inversion is continuous along a family whose determinant is a unit
+at every point. -/
+theorem continuous_matrix_inv_of_forall_isUnit_det
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {A : α → Matrix ι ι K}
+    (hA : Continuous A) (hunit : ∀ x, IsUnit (A x).det) :
+    Continuous (fun x ↦ (A x)⁻¹) := by
+  rw [continuous_iff_continuousAt]
+  intro x
+  exact ContinuousAt.comp
+    (x := x) (f := A) (g := Inv.inv)
+    (continuousAt_matrix_inv_of_isUnit_det (A := A x) (hunit x))
+    hA.continuousAt
+
+namespace ProductReductionStepRawCoordinates
+
+/-- Product coordinates used to topologize raw one-step product-reduction variables. -/
+abbrev TopologyTuple (ρ π μ ν : Type*) (K : Type*) :=
+  Matrix ρ ρ K ×
+    (Matrix π μ K ×
+      (Matrix π ρ K ×
+        (Matrix ρ ρ K ×
+          (Matrix ρ ν K ×
+            (Matrix μ ρ K × Matrix μ ν K)))))
+
+/-- Tuple of matrix fields for raw one-step product-reduction variables. -/
+def topologyTuple {ρ π μ ν K : Type*}
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    TopologyTuple ρ π μ ν K :=
+  (x.C1, (x.D, (x.F3, (x.A1, (x.A2, (x.A3, x.A4))))))
+
+/-- Raw one-step product-reduction variables carry the product topology on
+their matrix fields. -/
+instance instTopologicalSpace {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    TopologicalSpace (ProductReductionStepRawCoordinates ρ π μ ν K) :=
+  TopologicalSpace.induced topologyTuple inferInstance
+
+theorem continuous_topologyTuple {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous
+      (topologyTuple :
+        ProductReductionStepRawCoordinates ρ π μ ν K →
+          TopologyTuple ρ π μ ν K) := by
+  exact continuous_induced_dom
+
+@[continuity, fun_prop]
+theorem continuous_C1 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.C1) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+
+@[continuity, fun_prop]
+theorem continuous_D {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.D) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))
+
+@[continuity, fun_prop]
+theorem continuous_F3 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.F3) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))))
+
+@[continuity, fun_prop]
+theorem continuous_A1 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.A1) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))))
+
+@[continuity, fun_prop]
+theorem continuous_A2 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.A2) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_snd.comp
+              (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))))))
+
+@[continuity, fun_prop]
+theorem continuous_A3 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.A3) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_snd.comp
+              (continuous_snd.comp
+                (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))))))
+
+@[continuity, fun_prop]
+theorem continuous_A4 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun x : ProductReductionStepRawCoordinates ρ π μ ν K ↦ x.A4) := by
+  have htuple :
+      Continuous
+        (topologyTuple :
+          ProductReductionStepRawCoordinates ρ π μ ν K →
+            TopologyTuple ρ π μ ν K) :=
+    continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+  have h1 := continuous_snd.comp htuple
+  have h2 := continuous_snd.comp h1
+  have h3 := continuous_snd.comp h2
+  have h4 := continuous_snd.comp h3
+  have h5 := continuous_snd.comp h4
+  have h6 := continuous_snd.comp h5
+  simpa [topologyTuple] using h6
+
+end ProductReductionStepRawCoordinates
+
+namespace ProductReductionStepChartCoordinates
+
+/-- Product coordinates used to topologize chart one-step product-reduction variables. -/
+abbrev TopologyTuple (ρ π μ ν : Type*) (K : Type*) :=
+  Matrix ρ ρ K ×
+    (Matrix π μ K ×
+      (Matrix ρ ρ K ×
+        (Matrix μ ρ K ×
+          (Matrix ρ ν K ×
+            (Matrix π ρ K × Matrix μ ν K)))))
+
+/-- Tuple of matrix fields for chart one-step product-reduction variables. -/
+def topologyTuple {ρ π μ ν K : Type*}
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    TopologyTuple ρ π μ ν K :=
+  (y.Ctop, (y.D, (y.A1, (y.A3, (y.F2, (y.F3, y.C))))))
+
+/-- Chart one-step product-reduction variables carry the product topology on
+their matrix fields. -/
+instance instTopologicalSpace {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    TopologicalSpace (ProductReductionStepChartCoordinates ρ π μ ν K) :=
+  TopologicalSpace.induced topologyTuple inferInstance
+
+theorem continuous_topologyTuple {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous
+      (topologyTuple :
+        ProductReductionStepChartCoordinates ρ π μ ν K →
+          TopologyTuple ρ π μ ν K) := by
+  exact continuous_induced_dom
+
+@[continuity, fun_prop]
+theorem continuous_Ctop {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.Ctop) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+
+@[continuity, fun_prop]
+theorem continuous_D {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.D) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))
+
+@[continuity, fun_prop]
+theorem continuous_A1 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.A1) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))))
+
+@[continuity, fun_prop]
+theorem continuous_A3 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.A3) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))))
+
+@[continuity, fun_prop]
+theorem continuous_F2 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.F2) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_snd.comp
+              (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))))))
+
+@[continuity, fun_prop]
+theorem continuous_F3 {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.F3) := by
+  simpa [topologyTuple] using
+    (continuous_fst.comp
+      (continuous_snd.comp
+        (continuous_snd.comp
+          (continuous_snd.comp
+            (continuous_snd.comp
+              (continuous_snd.comp
+                (continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))))))
+
+@[continuity, fun_prop]
+theorem continuous_C {ρ π μ ν K : Type*} [TopologicalSpace K] :
+    Continuous (fun y : ProductReductionStepChartCoordinates ρ π μ ν K ↦ y.C) := by
+  have htuple :
+      Continuous
+        (topologyTuple :
+          ProductReductionStepChartCoordinates ρ π μ ν K →
+            TopologyTuple ρ π μ ν K) :=
+    continuous_topologyTuple (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+  have h1 := continuous_snd.comp htuple
+  have h2 := continuous_snd.comp h1
+  have h3 := continuous_snd.comp h2
+  have h4 := continuous_snd.comp h3
+  have h5 := continuous_snd.comp h4
+  have h6 := continuous_snd.comp h5
+  simpa [topologyTuple] using h6
+
+end ProductReductionStepChartCoordinates
+
+namespace ProductReductionStepRawCoordinates
+
+/-- On the determinant chart, the forward one-step p. 13 coordinate change is continuous.
+
+This is finite determinant-chart topology only; it does not assert analytic
+regularity or a Jacobian calculation. -/
+theorem continuous_toChart_detChart_subtype
+    {ρ π μ ν K : Type*} [NontriviallyNormedField K]
+    [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ] [Fintype ν] :
+    Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.toChart) := by
+  let raw :
+      {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} →
+        ProductReductionStepRawCoordinates ρ π μ ν K := fun x ↦ x.1
+  have hraw : Continuous raw := continuous_subtype_val
+  have hC1 : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.C1) :=
+    (continuous_C1 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hD : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.D) :=
+    (continuous_D (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hF3old :
+      Continuous
+        (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+          x.1.F3) :=
+    (continuous_F3 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hA1 : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.A1) :=
+    (continuous_A1 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hA2 : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.A2) :=
+    (continuous_A2 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hA3 : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.A3) :=
+    (continuous_A3 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hA4 : Continuous (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      x.1.A4) :=
+    (continuous_A4 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hraw
+  have hCtop : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.C1 * x.1.A1) := by
+    have hmul : Continuous (fun q : Matrix ρ ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hC1.prodMk hA1)
+  have hA1inv : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        (x.1.A1)⁻¹) :=
+    continuous_matrix_inv_of_forall_isUnit_det hA1 (fun x ↦ x.2.2)
+  have hCtopInv : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        (x.1.C1 * x.1.A1)⁻¹) :=
+    continuous_matrix_inv_of_forall_isUnit_det hCtop (fun x ↦ by
+      simpa [Matrix.det_mul] using x.2.1.mul x.2.2)
+  have hF2 : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        -(x.1.A1⁻¹ * x.1.A2)) := by
+    have hmul : Continuous (fun q : Matrix ρ ρ K × Matrix ρ ν K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact (hmul.comp (hA1inv.prodMk hA2)).neg
+  have hD_A3 : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.D * x.1.A3) := by
+    have hmul : Continuous (fun q : Matrix π μ K × Matrix μ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hD.prodMk hA3)
+  have hD_A3_CtopInv : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.D * x.1.A3 * (x.1.C1 * x.1.A1)⁻¹) := by
+    have hmul : Continuous (fun q : Matrix π ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hD_A3.prodMk hCtopInv)
+  have hF3 : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.F3 - x.1.D * x.1.A3 * (x.1.C1 * x.1.A1)⁻¹) :=
+    hF3old.sub hD_A3_CtopInv
+  have hA3_A1inv : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.A3 * x.1.A1⁻¹) := by
+    have hmul : Continuous (fun q : Matrix μ ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hA3.prodMk hA1inv)
+  have hA3_A1inv_A2 : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.A3 * x.1.A1⁻¹ * x.1.A2) := by
+    have hmul : Continuous (fun q : Matrix μ ρ K × Matrix ρ ν K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hA3_A1inv.prodMk hA2)
+  have hC : Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        x.1.A4 - x.1.A3 * x.1.A1⁻¹ * x.1.A2) :=
+    hA4.sub hA3_A1inv_A2
+  apply continuous_induced_rng.2
+  change Continuous
+    (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+      (x.1.C1 * x.1.A1,
+        (x.1.D,
+          (x.1.A1,
+            (x.1.A3,
+              (-(x.1.A1⁻¹ * x.1.A2),
+                (x.1.F3 - x.1.D * x.1.A3 * (x.1.C1 * x.1.A1)⁻¹,
+                  x.1.A4 - x.1.A3 * x.1.A1⁻¹ * x.1.A2)))))))
+  exact
+    hCtop.prodMk
+      (hD.prodMk
+        (hA1.prodMk
+          (hA3.prodMk
+            (hF2.prodMk
+              (hF3.prodMk hC)))))
+
+/-- The forward one-step coordinate change is continuous as a map between
+determinant-chart subtypes. -/
+theorem continuous_detChart_toChart
+    {ρ π μ ν K : Type*} [NontriviallyNormedField K]
+    [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ] [Fintype ν] :
+    Continuous
+      (fun x : {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ↦
+        (⟨x.1.toChart, x.1.detChart_toChart x.2⟩ :
+          {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart})) := by
+  exact
+    continuous_toChart_detChart_subtype
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) |>.subtype_mk _
+
+end ProductReductionStepRawCoordinates
+
+namespace ProductReductionStepChartCoordinates
+
+/-- On the determinant chart, the inverse one-step p. 13 coordinate change is continuous.
+
+This is finite determinant-chart topology only; it does not assert analytic
+regularity or a Jacobian calculation. -/
+theorem continuous_toRaw_detChart_subtype
+    {ρ π μ ν K : Type*} [NontriviallyNormedField K]
+    [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ] [Fintype ν] :
+    Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.toRaw) := by
+  let chart :
+      {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} →
+        ProductReductionStepChartCoordinates ρ π μ ν K := fun y ↦ y.1
+  have hchart : Continuous chart := continuous_subtype_val
+  have hCtop : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.Ctop) :=
+    (continuous_Ctop (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hD : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.D) :=
+    (continuous_D (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hA1 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.A1) :=
+    (continuous_A1 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hA3 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.A3) :=
+    (continuous_A3 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hF2 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.F2) :=
+    (continuous_F2 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hF3 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.F3) :=
+    (continuous_F3 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hC : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.C) :=
+    (continuous_C (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).comp hchart
+  have hA1inv : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        (y.1.A1)⁻¹) :=
+    continuous_matrix_inv_of_forall_isUnit_det hA1 (fun y ↦ y.2.2)
+  have hCtopInv : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        (y.1.Ctop)⁻¹) :=
+    continuous_matrix_inv_of_forall_isUnit_det hCtop (fun y ↦ y.2.1)
+  have hC1 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.Ctop * y.1.A1⁻¹) := by
+    have hmul : Continuous (fun q : Matrix ρ ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hCtop.prodMk hA1inv)
+  have hD_A3 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.D * y.1.A3) := by
+    have hmul : Continuous (fun q : Matrix π μ K × Matrix μ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hD.prodMk hA3)
+  have hD_A3_CtopInv : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.D * y.1.A3 * y.1.Ctop⁻¹) := by
+    have hmul : Continuous (fun q : Matrix π ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hD_A3.prodMk hCtopInv)
+  have hF3old : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.F3 + y.1.D * y.1.A3 * y.1.Ctop⁻¹) :=
+    hF3.add hD_A3_CtopInv
+  have hA2 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        -y.1.A1 * y.1.F2) := by
+    have hmul : Continuous (fun q : Matrix ρ ρ K × Matrix ρ ν K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hA1.neg.prodMk hF2)
+  have hA3_F2 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.A3 * y.1.F2) := by
+    have hmul : Continuous (fun q : Matrix μ ρ K × Matrix ρ ν K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.comp (hA3.prodMk hF2)
+  have hA4 : Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        y.1.C - y.1.A3 * y.1.F2) :=
+    hC.sub hA3_F2
+  apply continuous_induced_rng.2
+  change Continuous
+    (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+      (y.1.Ctop * y.1.A1⁻¹,
+        (y.1.D,
+          (y.1.F3 + y.1.D * y.1.A3 * y.1.Ctop⁻¹,
+            (y.1.A1,
+              (-y.1.A1 * y.1.F2,
+                (y.1.A3,
+                  y.1.C - y.1.A3 * y.1.F2)))))))
+  exact
+    hC1.prodMk
+      (hD.prodMk
+        (hF3old.prodMk
+          (hA1.prodMk
+            (hA2.prodMk
+              (hA3.prodMk hA4)))))
+
+/-- The inverse one-step coordinate change is continuous as a map between
+determinant-chart subtypes. -/
+theorem continuous_detChart_toRaw
+    {ρ π μ ν K : Type*} [NontriviallyNormedField K]
+    [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ] [Fintype ν] :
+    Continuous
+      (fun y : {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} ↦
+        (⟨y.1.toRaw, y.1.detChart_toRaw y.2⟩ :
+          {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart})) := by
+  exact
+    continuous_toRaw_detChart_subtype
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) |>.subtype_mk _
+
+end ProductReductionStepChartCoordinates
+
+/-- The one-step p. 13 product-reduction coordinate change is a homeomorphism
+between the two determinant-chart domains.
+
+This is a finite topological coordinate statement.  It does not assert
+analytic regularity, source-rank openness, chart coverage, ideal-germ
+transport, a regular-suspension normal-crossing certificate, pole order, or
+RLCT extraction. -/
+def productReductionStepCoordinate_detChart_homeomorph
+    {ρ π μ ν K : Type*} [NontriviallyNormedField K]
+    [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ] [Fintype ν] :
+    {x : ProductReductionStepRawCoordinates ρ π μ ν K // x.detChart} ≃ₜ
+      {y : ProductReductionStepChartCoordinates ρ π μ ν K // y.detChart} where
+  toFun x := ⟨x.1.toChart, x.1.detChart_toChart x.2⟩
+  invFun y := ⟨y.1.toRaw, y.1.detChart_toRaw y.2⟩
+  left_inv x := by
+    ext
+    exact productReductionStepCoordinate_left_inverse x.1 x.2
+  right_inv y := by
+    ext
+    exact productReductionStepCoordinate_right_inverse y.1 y.2.2 y.2.1
+  continuous_toFun :=
+    ProductReductionStepRawCoordinates.continuous_detChart_toChart
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+  continuous_invFun :=
+    ProductReductionStepChartCoordinates.continuous_detChart_toRaw
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+
 /-- The accumulated upper block produced by one deterministic suffix-state step varies
 continuously with the edge and the previous accumulated upper block. -/
 theorem continuousAt_chartLocalSuffixState_step_B

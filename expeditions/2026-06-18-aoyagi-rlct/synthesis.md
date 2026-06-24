@@ -8830,6 +8830,30 @@ Statement card:
 `threads/03-block-product-reduction/statement-card-a2-suffix-state-step-coordinate-specialization.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-suffix-state-step-coordinate-specialization.md`.
+
+Latest A2 one-step determinant-chart coordinate equivalence:
+`ChartTopology.lean` now topologizes `ProductReductionStepRawCoordinates` and
+`ProductReductionStepChartCoordinates` by their matrix-field product
+topologies and proves
+`productReductionStepCoordinate_detChart_homeomorph`.  Supporting continuity
+lemmas are
+`ProductReductionStepRawCoordinates.continuous_toChart_detChart_subtype`,
+`ProductReductionStepRawCoordinates.continuous_detChart_toChart`,
+`ProductReductionStepChartCoordinates.continuous_toRaw_detChart_subtype`, and
+`ProductReductionStepChartCoordinates.continuous_detChart_toRaw`.  This
+upgrades the one-step p. 13 coordinate change from algebraic inverse formulas
+to a finite topological determinant-chart coordinate equivalence.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+
+Boundary: finite determinant-chart topology only.  No analytic regularity,
+analytic Jacobian determinant calculation, source-rank openness, source
+coverage, ideal-germ transport, regular-suspension certificate, normal
+crossings, pole order, or RLCT is proved.
 Next A2 target: probe the actual p. 13 regular-suspension chart/source
 production argument rather than adding another finite ideal regrouping wrapper.
 

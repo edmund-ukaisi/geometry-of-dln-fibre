@@ -2578,3 +2578,34 @@ each inequality separately.
 Boundary: finite real square-sum comparison only.  This does not prove
 analytic ideal transport, chart construction, source coverage, source-rank
 openness, normal crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 one-step determinant-chart coordinate equivalence
+
+Reproduction:
+`reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Statement card:
+`statement-card-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Review:
+`review-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+
+Lean now topologizes the raw and chart one-step product-reduction coordinate
+structures by their matrix-field product topologies and proves the p. 13
+one-step determinant-chart coordinate change is a homeomorphism:
+
+```text
+ProductReductionStepRawCoordinates.continuous_toChart_detChart_subtype
+ProductReductionStepRawCoordinates.continuous_detChart_toChart
+ProductReductionStepChartCoordinates.continuous_toRaw_detChart_subtype
+ProductReductionStepChartCoordinates.continuous_detChart_toRaw
+productReductionStepCoordinate_detChart_homeomorph
+```
+
+The theorem uses the existing algebraic inverse identities from
+`ProductReduction.lean` and the matrix-inversion continuity helper in
+`ChartTopology.lean`.  The right-inverse proof passes the chart determinant
+pair in the required order: `A1` unit first, then `Ctop` unit.
+
+Boundary: finite determinant-chart topology only.  This does not prove
+analytic regularity, an analytic Jacobian determinant calculation,
+source-rank openness, source coverage, ideal-germ transport, a
+regular-suspension certificate, normal crossings, pole order, or RLCT.

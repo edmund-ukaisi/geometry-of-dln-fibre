@@ -227,8 +227,10 @@ No such claim is formalisation-ready until both fields are filled.
   socket without asserting analytic additivity. The endpoint rank-width bounds
   needed by that finite shift are now derived from source-rank-stratum
   membership and the explicit dimension convention when `L=N`; the reduced
-  certificate and its minimum/order facts remain supplied. The full source
-  Theorem 3 claim remains blocked.
+  certificate and its minimum/order facts remain supplied. The one-step
+  determinant-chart coordinate change is now proved to be a homeomorphism
+  between the raw and chart determinant domains. The full source Theorem 3
+  claim remains blocked.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -258,7 +260,9 @@ No such claim is formalisation-ready until both fields are filled.
   regular-suspension coordinate index at
   `threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-index.md`;
   product-difference coordinate source data at
-  `threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`.
+  `threads/03-block-product-reduction/reproduction-a2-product-difference-coordinate-source-data.md`;
+  one-step determinant-chart coordinate equivalence at
+  `threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -286,7 +290,9 @@ No such claim is formalisation-ready until both fields are filled.
   product-difference coordinate source-data checked by xhigh
   `Descartes the 3rd` in
   `threads/03-block-product-reduction/review-a2-product-difference-coordinate-source-data.md`
-  after a source-anchor wording repair.
+  after a source-anchor wording repair; one-step determinant-chart coordinate
+  equivalence reviewed by xhigh `Herschel the 4th` in
+  `threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -5951,6 +5957,28 @@ Review:
 Nonclaims: no analytic ideal transport, no analytic chart construction, no
 source coverage, no source-rank openness, no normal crossings, no pole-order
 theorem, and no RLCT theorem.
+
+Latest A2 one-step determinant-chart coordinate equivalence:
+Lean now gives product-topology instances for the raw and chart one-step
+product-reduction coordinate structures and proves the determinant-chart
+subtype maps continuous in both directions.  The bundled homeomorphism is
+`productReductionStepCoordinate_detChart_homeomorph` in
+`ChartTopology.lean`, with supporting lemmas
+`ProductReductionStepRawCoordinates.continuous_toChart_detChart_subtype`,
+`ProductReductionStepRawCoordinates.continuous_detChart_toChart`,
+`ProductReductionStepChartCoordinates.continuous_toRaw_detChart_subtype`, and
+`ProductReductionStepChartCoordinates.continuous_detChart_toRaw`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-one-step-determinant-chart-coordinate-equivalence.md`.
+
+Nonclaims: no analytic regularity, no analytic Jacobian determinant
+calculation, no source-rank openness, no source coverage, no ideal-germ
+transport, no regular-suspension certificate, no normal crossings, no
+pole-order theorem, and no RLCT theorem.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
