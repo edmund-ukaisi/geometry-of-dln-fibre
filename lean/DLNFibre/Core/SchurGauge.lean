@@ -51,6 +51,30 @@ theorem isUnit_det_schurΔLoc (q p r : ℕ) : IsUnit (schurΔLoc (k := k) q p r)
   rw [det_schurΔLoc]
   exact IsLocalization.Away.algebraMap_isUnit (detSchurS q p r)
 
+/-- The pivot block is invertible as a matrix over `SchurLoc` (det is a unit, in a commutative
+ring). -/
+theorem isUnit_schurΔLoc (q p r : ℕ) : IsUnit (schurΔLoc (k := k) q p r) :=
+  (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_det_schurΔLoc (k := k) q p r)
+
+/-! ## The Schur off-diagonal blocks `B12`, `B21` over `SchurLoc`
+
+The `SchurVar` coordinate type is `(Fin r × Fin r) ⊕ ((Fin r × Fin (q−r)) ⊕ (Fin (p−r) × Fin r))`:
+the pivot `Δ` is `Sum.inl`, the `B12` block is `Sum.inr ∘ Sum.inl`, the `B21` block is
+`Sum.inr ∘ Sum.inr`. We read each off-diagonal block directly off those coordinates, pushed into
+`SchurLoc`. -/
+
+/-- The `B12` block (`Fin r × Fin (q−r)`) over `SchurLoc`, from the `Sum.inr ∘ Sum.inl` coords. -/
+noncomputable def schurB12Loc (q p r : ℕ) :
+    Matrix (Fin r) (Fin (q - r)) (SchurLoc (k := k) q p r) :=
+  Matrix.of fun i j ↦ algebraMap (MvPolynomial (SchurVar q p r) k) _
+    (X (Sum.inr (Sum.inl (i, j))))
+
+/-- The `B21` block (`Fin (p−r) × Fin r`) over `SchurLoc`, from the `Sum.inr ∘ Sum.inr` coords. -/
+noncomputable def schurB21Loc (q p r : ℕ) :
+    Matrix (Fin (p - r)) (Fin r) (SchurLoc (k := k) q p r) :=
+  Matrix.of fun i j ↦ algebraMap (MvPolynomial (SchurVar q p r) k) _
+    (X (Sum.inr (Sum.inr (i, j))))
+
 end DLNFibre.Core
 
 /-- Non-vacuity witness: at `(q,p,r) = (2,2,1)` over `ℚ`, the `1×1` pivot block over `SchurLoc` is
