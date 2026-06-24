@@ -340,6 +340,9 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
   the STEP-0 base-check now in every brief). The base-check mitigation works.
 - **2 tides driving:** l2-pins-coordinated (L2 close: PIN1+PIN2 on shared J), r1-334-residuals (anchor finish).
   After L2 PINs: L=1 smooth base + wiring → L2 gate. R1: (3,3,4) anchor → general-(M₀,M₁,M₂) lift + hfin (long pole).
+  **hfin DESIGN now in flight** (`r1-hfin-designer`, decorrelated): scoping the general coupled-diag(b) resolution
+  atlas + the completeness proof structure + an honest MAGNITUDE assessment (bounded-formalizable vs deep-AG-mountain)
+  to inform the operator's R1 scope decision (discuss-at-close Item 6: full resolution vs L=2/RRR milestone).
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
