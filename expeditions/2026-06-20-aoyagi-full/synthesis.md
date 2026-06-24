@@ -550,6 +550,21 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   general atlas? (code-read, not yet done.)
 - 2 background agents: rv-stageA (L2 Stage A review), pp-r1-genM (R1 #135 general-M chart design). Migration held.
 
+**★ UPDATE-22 (2026-06-24) — Stage A SURVIVED (bundle SUFFICIENT, gate GREEN); the L2 PIN1 migration COMMISSIONED on the verified foundation.**
+- **rv-stageA verdict: SURVIVED, bundle SUFFICIENT** (decorrelated-Codex-corroborated). `deepestPoint_frame_pivot_exists`
+  supplies exactly `regBlockCLE`'s two invertibility inputs (`IsUnit A` first-arm + new `IsUnit B22`, square
+  `Fin (H last.succ − r)`); the rThreshold-row/pivot-column asymmetry matches framedLayer; corner `fromBlocks 1 0 0 0`
+  + B22 mutually consistent; B21/B12 read off Q directly (no bundling needed); "RLCT-invariant" is justification prose,
+  not a statement over-claim. NOTHING must be added to the lemma. Two carry-forwards the MIGRATION owns (not bundle
+  fixes): (i) the `finCongr (H_lastLayer_succ)` cast bridge (J/Q on `Fin (H lastLayer.succ)` vs the split on
+  `Fin (H (Fin.last L))`); (ii) the RLCT/nReg-invariance argument for the last-layer-only frame swap.
+- **`l2-pivot-migrate` (ab63e543) COMMISSIONED** on the verified foundation: **Stage C** (additive pivot-aware framed-product
+  origin lemma — re-derive `prodAux_framedParamsReg_zero` → pivot corner; green-bankable, solves the framedLayer
+  threshold-corner trap) + **Stage D** (coupled consumer migration: deepestEPivot split→pivot + _base via the pivot origin
+  product + _sq_sum + PIN2 shape + the value-fold → PIN1, with the two carry-forwards; cast-wall budget, honest red-state
+  if it can't land). PIN2-proof may stay a migrated sorry (target PIN1 green, per the prior Codex call).
+- 2 background agents: pp-r1-genM (R1 #135 general-M chart design), l2-pivot-migrate (L2 Stage C+D → PIN1). Non-overlapping.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
