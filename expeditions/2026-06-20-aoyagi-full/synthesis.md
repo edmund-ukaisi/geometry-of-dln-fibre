@@ -385,6 +385,22 @@ singularities. Cert: `threads/24-r1-hfin-design/hfin-design-certificate.md`. Dec
   L=2/RRR milestone (clean, sound, S2-only, sidesteps the recursion — at L=2 the single Schur+blow-up node IS the leaf,
   no monomial-sum refinement / termination induction needed). My default: pursue the full resolution, milestone as floor.
 
+**★ UPDATE-13 (2026-06-24) — L2 bricks + keystone BANKED; both gates' remaining = LARGE Lean geometry bodies (math settled).**
+- **L2 foundation complete + banked:** the bricks `exists_pivot_cols_of_rank` + `pivotThresholdSplit` (@88855a96) and
+  the keystone `toBlocks22_isUnit_of_pivot_corner` (@969fbedf, numerically-verified, generic-frame B22 invertibility
+  — the explicit Q' is NOT needed). PIN1's frame-fact MATH gap is CLOSED.
+- **SCOPE FINDING (two tides + decorrelated Codex):** the L2 PINs are NOT "thread one J onto the bricks" — both PIN
+  bodies are LARGE UNWRITTEN GEOMETRIC PROOFS: PIN1 = the per-layer Leibniz product-fderiv collapse across all L
+  layers (the prior tide DEFERRED it; prodAux_regSlice_through_first only does the Y=0/first-layer slice — the
+  last-layer readY + framedLayer rewrite is unwritten); PIN2 = the readX/Y/Z→raw chain + telescoping. Several hundred
+  lines each, J-threading + the (mechanical) frame-fact reindex bridging folded in at the end.
+- **Net: both gates' remaining work is LARGE Lean geometry bodies, the MATH fully settled** (consistent with hfin's
+  "cost is formalisation surface, not conceptual"). R1: the per-node genuine-diffeo chart (Layer 1 verified + Layer 2
+  a=0 orbitStraighten). L2: PIN1 fderiv collapse + PIN2 raw chain (+ the frame fact, mechanical). Then L=1 base +
+  wiring → L2 gate; D1 (L2-gated); R1 hfin tree (general-L). Person-weeks of formalisation, no conceptual walls.
+- **2 large-geometry tides running:** `l2-geometry` (a6c94a1: frame fact → PIN1 collapse → PIN2 chain, geometry-budgeted),
+  `r1-pernode-chart` (af399d4: the (3,3,4) chart Layer 1+2). Non-overlapping.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
