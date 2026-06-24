@@ -5903,6 +5903,29 @@ no analytic regular-coordinate status, no Fubini/polar shift, no chart
 coverage, no Jacobian compatibility, no normal crossings, no pole-order
 theorem, and no RLCT theorem.
 
+Latest A2 fixed-base regular-coordinate F2/F3 smallness:
+Lean now applies the p. 13 tag-projection smallness theorem to the actual real
+fixed-base regular-coordinate map supplied by
+`PaperEndpointFixedBaseRegularCoordinateSourceData`.  The ambient theorem
+proves eventual `squareSum(F2)+squareSum(F3) <= 1` in `nhds x0`; the relative
+theorem proves the same event in `nhdsWithin` the source-rank stratum by
+filter weakening only.
+
+Lean names:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one_nhdsWithin_source`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+
+Nonclaims: no source-rank openness, no analytic regular-coordinate chart, no
+source coverage, no analytic ideal transport, no Fubini/polar shift, no normal
+crossings, no pole-order theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

@@ -2524,3 +2524,30 @@ normal crossings, pole order, or RLCT.
 Xhigh review passed.  The reviewer confirmed the narrow theorem shape, the
 focused module build, and the need for explicit nested-sum type annotations for
 the `F2` and `F3` tags.
+
+## 2026-06-24 A2 fixed-base regular-coordinate F2/F3 smallness
+
+Reproduction:
+`reproduction-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Statement card:
+`statement-card-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Review:
+`review-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+
+Lean now specialises the p. 13 `F2/F3` smallness theorem to the actual real
+fixed-base regular-coordinate map in
+`PaperEndpointFixedBaseRegularCoordinateSourceData`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one_nhdsWithin_source
+```
+
+The ambient theorem uses the source-data package's centered-continuous
+Pi-valued regular-coordinate map.  The relative theorem is only a weakening to
+`nhdsWithin` the source-rank stratum.
+
+Boundary: real finite topology for the actual fixed-base scalar coordinate
+map.  This does not prove source-rank openness, analytic coordinate status,
+source coverage, analytic ideal transport, Fubini/polar regular-variable
+shift, normal crossings, pole order, or RLCT.

@@ -8683,6 +8683,33 @@ This is finite p. 13 tag projection only.  It is not a fixed-base source-data
 wrapper, not a source-stratum theorem, not analytic regular-coordinate status,
 not Fubini/polar regular-variable shift, not normal crossings, and not RLCT.
 
+Latest A2 fixed-base regular-coordinate F2/F3 smallness:
+`RegularSuspensionCoordinates.lean` now proves the real source-data wrapper
+for the actual fixed-base scalar regular-coordinate map:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one_nhdsWithin_source
+```
+
+The proof uses `regularBlockCoordinateMap_centered_continuousAt` from
+`PaperEndpointFixedBaseRegularCoordinateSourceData`, converts Pi-valued
+centering/continuity into coordinatewise centered-continuity, and applies the
+tag-projection theorem.  The `nhdsWithin` version is only the consequence of
+`nhdsWithin x0 S <= nhds x0`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+
+This closes the finite-topology source-data smallness handoff.  It does not
+prove source-rank openness, analytic chart status, source coverage, analytic
+ideal transport, Fubini/polar regular-variable shift, normal crossings, pole
+order, or RLCT.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

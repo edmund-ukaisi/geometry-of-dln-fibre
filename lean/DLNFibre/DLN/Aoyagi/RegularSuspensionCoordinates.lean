@@ -2407,6 +2407,121 @@ theorem exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq
 
 end FixedBaseCanonicalCertificate
 
+section FixedBaseRealSmallness
+
+variable {N : ℕ}
+  (W : Fin (N + 1) → Type v) [∀ i, AddCommGroup (W i)]
+  [∀ i, TopologicalSpace (W i)] [∀ i, IsTopologicalAddGroup (W i)]
+  [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
+  [∀ i, ContinuousSMul ℝ (W i)]
+  (B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc)
+
+namespace PaperEndpointFixedBaseRegularCoordinateSourceData
+
+set_option linter.unusedSectionVars false in
+/-- The real fixed-base source-data package gives a neighborhood where the
+actual p. 13 `F2` and `F3` regular-coordinate square-sums are jointly small. -/
+theorem regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    let ι := Fin (Module.finrank ℝ U₀)
+    let μ :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+    let ν :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum
+          (fun ij : ι × ν =>
+            paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x
+              (Sum.inr (α := ι × ι) (Sum.inl (β := μ × ι) ij))) +
+        aoyagiCoordinateSquareSum
+          (fun ij : μ × ι =>
+            paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x
+              (Sum.inr (α := ι × ι) (Sum.inr (α := ι × ν) ij))) ≤
+          1 := by
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let coord : α → AoyagiRegularBlockCoordinateIndex ι μ ν → ℝ :=
+    paperEndpointFixedBaseRegularBlockCoordinateMap (K := ℝ) W B U₀ hU₀ Cedge
+  have hcenter :
+      coord x₀ = 0 ∧ ContinuousAt coord x₀ := by
+    simpa [coord, ι, μ, ν] using
+      regularBlockCoordinateMap_centered_continuousAt
+        (W := W) (B := B) sourceData
+  have hcoord :
+      ∀ c : AoyagiRegularBlockCoordinateIndex ι μ ν,
+        coord x₀ c = 0 ∧ ContinuousAt (fun x : α => coord x c) x₀ := by
+    intro c
+    exact
+      ⟨congrFun hcenter.1 c,
+        (continuous_apply c).continuousAt.comp hcenter.2⟩
+  simpa [coord, ι, μ, ν] using
+    AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_eventually_le_one_of_forall_centered_continuousAt
+        (coord := coord) (x₀ := x₀) hcoord
+
+set_option linter.unusedSectionVars false in
+/-- The same smallness conclusion holds relative to the source-rank stratum,
+because it has already been proved in an ambient neighborhood. -/
+theorem regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    let ι := Fin (Module.finrank ℝ U₀)
+    let μ :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+    let ν :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      aoyagiCoordinateSquareSum
+          (fun ij : ι × ν =>
+            paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x
+              (Sum.inr (α := ι × ι) (Sum.inl (β := μ × ι) ij))) +
+        aoyagiCoordinateSquareSum
+          (fun ij : μ × ι =>
+            paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x
+              (Sum.inr (α := ι × ι) (Sum.inr (α := ι × ν) ij))) ≤
+          1 := by
+  exact
+    (inf_le_left :
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀)
+      (regularBlockCoordinateMap_f2_f3_squareSum_eventually_le_one
+        (W := W) (B := B) sourceData)
+
+end PaperEndpointFixedBaseRegularCoordinateSourceData
+
+end FixedBaseRealSmallness
+
 end Aoyagi
 end DLN
 end DLNFibre

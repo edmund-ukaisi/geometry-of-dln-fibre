@@ -559,6 +559,18 @@ discharges the pure tag-projection part of the previous next step.  Remaining
 A2 work is still the fixed-base/source-stratum wrapper and then the genuine
 regular-suspension certificate or Fubini/polar regular-variable shift.
 
+A2 fixed-base regular-coordinate F2/F3 smallness has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-regular-coordinate-f2-f3-smallness.md`.
+Lean applies the tag-projection theorem to
+`paperEndpointFixedBaseRegularBlockCoordinateMap` under real
+`PaperEndpointFixedBaseRegularCoordinateSourceData`, and also exposes the
+`nhdsWithin` source-rank-stratum weakening.  The smallness hypothesis needed by
+the finite literal-vs-cleaned comparison is now available for the actual
+fixed-base source-data coordinate map.  Remaining A2 work is the genuine
+regular-suspension certificate or Fubini/polar regular-variable shift; do not
+read the `nhdsWithin` wrapper as source-rank openness or analytic chart
+construction.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds
