@@ -2420,6 +2420,20 @@ only after a separate theorem supplies the relevant target residual block.
 Review:
 `threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
 
+The current A4 selected-entry transition-point slice is
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-point-a4.md`.
+Lean now constructs finite target chart points on selected-entry overlaps and
+proves chart-map equality under the normalized target-coordinate nonzero
+hypothesis, both generically and for the Case 2 residual-block all-pivot
+certificate.  This is source-moving relative to pure formula wrappers because
+it builds transition data between finite chart points, but it is still not an
+analytic atlas, transition regularity theorem, source-produced successor
+following object, suffix construction, normal-crossing theorem, pole-order
+theorem, or RLCT extraction.  Next A4 work should extend this finite
+transition data toward inverse/cocycle laws and Schur-compatible `Q/P`
+overlaps before attempting branchwise successor production.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

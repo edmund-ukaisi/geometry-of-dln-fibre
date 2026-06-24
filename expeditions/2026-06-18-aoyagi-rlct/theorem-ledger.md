@@ -6548,6 +6548,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
 
+Latest A4 selected-entry transition point:
+`SelectedEntryNormalCrossing.lean` now proves the generic and Case 2
+finite transition-point constructors
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint`,
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero`,
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero`.
+They construct the target selected-entry chart point with selected variable
+`u*x_q` and residual coordinates `x_e/x_q`, and prove finite chart-map
+equality under `x_q != 0`.  This is not analytic atlas coverage, transition
+regularity, source production of successor/following-factor data, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-point-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-point.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

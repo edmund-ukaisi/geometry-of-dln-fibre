@@ -6778,6 +6778,18 @@ successor/following-factor production, analytic transition regularity, chart
 coverage, normal crossings, pole order, or RLCT.  Review:
 `threads/04-blow-up-certificate/review-case2-residual-subtype-schur-transition-a4.md`.
 
+The current A4 selected-entry transition-point slice is
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-point-a4.md`.
+Lean now defines finite target chart points for selected-entry overlap maps
+and proves their chart maps agree with the source chart map when the
+normalized target coordinate is nonzero.  The Case 2 wrapper specializes this
+to the residual-block all-pivot selected-entry certificate.  This moves the
+frontier from formula-only overlap identities toward concrete finite
+transition data, but it does not construct an analytic atlas, prove transition
+regularity or chart coverage, source-produce `Csucc` or `C'^(S+1)`, produce
+suffixes, or prove normal crossings, pole order, or RLCT.  Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-point-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

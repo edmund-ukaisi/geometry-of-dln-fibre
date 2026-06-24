@@ -5699,6 +5699,35 @@ analytic transition regularity, chart coverage, source-displayed all-pivot
 atlas, analytic Jacobian/volume theorem, global normal crossings, pole order,
 or RLCT extraction is proved.
 
+## 2026-06-24 Lean selected-entry transition point
+
+Reproduction:
+`reproduction-selected-entry-transition-point-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-transition-point.md`.
+Review:
+`review-selected-entry-transition-point-a4.md`.
+
+Lean now constructs finite target chart points on selected-entry chart
+overlaps and proves that their chart maps agree with the source chart map on
+the normalized target-coordinate overlap:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
+```
+
+For source chart coordinates `d_e = u*x_e` and target pivot `q`, the
+constructed target point uses `u_q = u*x_q` and `y_e = x_e/x_q`; under
+`x_q != 0` this represents the same finite center value.  This is the first
+finite chart-point transition construction for the selected-entry all-pivot
+certificate.  It still proves no analytic atlas coverage, open-neighbourhood
+gluing, analytic transition regularity, source production of `Csucc` or
+`C'^(S+1)`, suffix production, recurrence/exponent post-data, normal
+crossings, pole order, or RLCT extraction.
+
 ## 2026-06-24 Lean Case 2 chart-index Schur transition
 
 Reproduction:
