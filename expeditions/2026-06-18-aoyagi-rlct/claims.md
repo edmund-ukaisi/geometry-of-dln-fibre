@@ -5855,10 +5855,32 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
 
-Nonclaims: no continuity-to-neighborhood shrink, no analytic coordinate chart,
-no Fubini/polar theorem, no regular-coordinate RLCT shift, no chart coverage,
-no Jacobian compatibility, no normal crossings, no pole-order theorem, and no
-RLCT theorem.
+Latest A2 continuity-to-small-loss neighborhood:
+Lean proves the generic real topology behind the finite comparison's smallness
+hypothesis.  For finite real coordinate families, centered `ContinuousAt`
+implies eventually in the ambient filter `nhds x0` that the square-sum is at
+most `1`; for two centered families, the sum of their square-sums is eventually
+at most `1`.
+
+Lean names:
+`aoyagiCoordinateSquareSum_continuousAt`,
+`aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero`, and
+`aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero`, plus
+the coordinatewise-data wrappers
+`aoyagiCoordinateSquareSum_eventually_le_one_of_forall_centered_continuousAt`
+and
+`aoyagiCoordinateSquareSum_add_eventually_le_one_of_forall_centered_continuousAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-continuity-to-small-loss-neighborhood.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-continuity-to-small-loss-neighborhood.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-continuity-to-small-loss-neighborhood.md`.
+
+Nonclaims: no p. 13 source-stratum wrapper for the generic real neighborhood
+shrink, no analytic coordinate chart, no Fubini/polar theorem, no
+regular-coordinate RLCT shift, no chart coverage, no Jacobian compatibility,
+no normal crossings, no pole-order theorem, and no RLCT theorem.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

@@ -2449,11 +2449,46 @@ cleanedSquareSum <= 2 * literalSquareSum.
 The proof includes the finite row-column Cauchy-Schwarz estimate
 `squareSum(F3*F2) <= squareSum(F3) * squareSum(F2)`.
 
-Boundary: finite ordered-ring square-sum comparison only.  The neighborhood
-shrink from centered continuity, analytic regular-coordinate status,
-Fubini/polar regular-variable shift, chart coverage, Jacobian compatibility,
-normal crossings, pole order, and RLCT remain unproved.
+Boundary: finite ordered-ring square-sum comparison only.  The generic real
+ambient-neighborhood shrink from centered continuity is a separate entry
+below; analytic regular-coordinate status, Fubini/polar regular-variable
+shift, chart coverage, Jacobian compatibility, normal crossings, pole order,
+and RLCT remain unproved.
 
 Review passed after wording repairs: the factor-`2` theorem docstrings now
 state the combined hypothesis `squareSum(F2)+squareSum(F3) <= 1`, and the
 statement card no longer claims sharpness of the constant.
+
+## 2026-06-24 A2 continuity-to-small-loss neighborhood
+
+Reproduction:
+`reproduction-a2-continuity-to-small-loss-neighborhood.md`.
+Statement card:
+`statement-card-a2-continuity-to-small-loss-neighborhood.md`.
+Review:
+`review-a2-continuity-to-small-loss-neighborhood.md`.
+
+Lean now proves the generic real topology that supplies the finite
+comparison's smallness hypothesis from centered continuity:
+
+```text
+aoyagiCoordinateSquareSum_continuousAt
+aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero
+aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero
+aoyagiCoordinateSquareSum_eventually_le_one_of_forall_centered_continuousAt
+aoyagiCoordinateSquareSum_add_eventually_le_one_of_forall_centered_continuousAt
+```
+
+The one-family theorem says that if `f : alpha -> eta -> real` is continuous at
+`x0` and `f x0 = 0`, then eventually in `nhds x0`,
+`aoyagiCoordinateSquareSum (f x) <= 1`.  The two-family theorem applies this
+to a disjoint-sum family and proves eventual
+`squareSum(f x) + squareSum(g x) <= 1`.  The coordinatewise variants first
+assemble per-coordinate centering and continuity into Pi-valued centered
+continuity.
+
+Boundary: ambient real finite topology only.  This is not yet specialised to
+the p. 13 source-data maps or weakened to the source-rank stratum, and it does
+not prove analytic regular-coordinate status, source-rank openness,
+Fubini/polar regular-variable shift, chart coverage, Jacobian compatibility,
+normal crossings, pole order, or RLCT.

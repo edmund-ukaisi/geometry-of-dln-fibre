@@ -8599,7 +8599,8 @@ Review:
 Leibniz's source scout identified the next true analytic target as the
 literal-loss comparison plus Fubini/polar regular-variable theorem:
 `threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
-This is not yet proved in Lean.
+The finite comparison part is now proved in Lean; the Fubini/polar
+regular-variable theorem remains open.
 
 Latest A2 literal product-difference square-sum update:
 `RegularSuspensionCoordinates.lean` now defines
@@ -8633,11 +8634,34 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
 
-This is still finite loss comparison only.  It does not prove the
-continuity-to-neighborhood shrink in the source-stratum setting, does not
-prove that the regular scalar maps are analytic coordinates, and does not
-prove the Fubini/polar regular-variable shift, chart coverage, Jacobian
-compatibility, normal crossings, pole order, or RLCT.
+This is still finite loss comparison only.  The generic real
+continuity-to-neighborhood shrink is now proved separately, but the p. 13
+source-stratum wrapper, analytic regular-coordinate status, Fubini/polar
+regular-variable shift, chart coverage, Jacobian compatibility, normal
+crossings, pole order, and RLCT remain open.
+
+Latest A2 continuity-to-small-loss neighborhood:
+`RegularSuspensionCoordinates.lean` now proves
+`aoyagiCoordinateSquareSum_continuousAt`,
+`aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero`, and
+`aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero`, plus
+the coordinatewise-data wrappers
+`aoyagiCoordinateSquareSum_eventually_le_one_of_forall_centered_continuousAt`
+and
+`aoyagiCoordinateSquareSum_add_eventually_le_one_of_forall_centered_continuousAt`.
+For a finite real coordinate family continuous at `x0` and zero at `x0`, the
+finite square-sum is eventually at most `1` in the ambient `nhds x0` filter.
+For two such families, the sum of their finite square-sums is eventually at
+most `1`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-continuity-to-small-loss-neighborhood.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-continuity-to-small-loss-neighborhood.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-continuity-to-small-loss-neighborhood.md`.
+
+This is real finite topology only.  It is not yet a p. 13 source-data wrapper,
+not a source-stratum neighborhood theorem, not analytic coordinate status, not
+Fubini/polar regular-variable shift, not normal crossings, and not RLCT.
 
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`

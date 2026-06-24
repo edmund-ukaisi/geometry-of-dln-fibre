@@ -114,10 +114,14 @@ Equivalently, on the neighborhood where
 (1/2) L_clean <= L_lit <= 2 L_clean.
 ```
 
-This comparison uses no smallness of `X` or `D`.  In the later source-stratum
-setting, centered continuity of the `F2` and `F3` coordinate maps should be
-enough to shrink to such a neighborhood; that neighborhood shrink is not
-proved in this slice.
+This comparison uses no smallness of `X` or `D`.  The separate real-topology
+slice
+`reproduction-a2-continuity-to-small-loss-neighborhood.md`
+now proves the generic ambient-neighborhood shrink from centered continuity of
+finite real coordinate families to
+`squareSum(F2)+squareSum(F3) <= 1`.  A later p. 13 wrapper should apply that
+generic lemma to the actual fixed-base source-data maps and then intersect or
+weaken it to the source-rank stratum.
 
 ## Regular-Variable Fubini Boundary
 
@@ -165,7 +169,7 @@ Lean formalises the finite ordered-ring square-sum part:
 - No analytic coordinate chart or local inverse.
 - No proof that centered continuous scalar maps are genuine analytic regular
   coordinates.
-- No neighborhood shrink from continuity to `||F2||^2+||F3||^2 <= 1`.
+- No p. 13 source-stratum wrapper for the generic real neighborhood shrink.
 - No Fubini/polar theorem in Lean.
 - No chart coverage, Jacobian/prior compatibility, normal crossings, pole
   order, or RLCT extraction.

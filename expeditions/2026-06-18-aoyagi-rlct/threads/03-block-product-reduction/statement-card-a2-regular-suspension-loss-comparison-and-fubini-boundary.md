@@ -10,6 +10,9 @@ Lean file:
 
 ```text
 aoyagiCoordinateSquareSum_nonneg
+aoyagiCoordinateSquareSum_continuousAt
+aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero
+aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero
 aoyagi_sq_sub_le_two_mul_sq_add_two_mul_sq
 aoyagi_sq_add_le_two_mul_sq_add_two_mul_sq
 aoyagiCoordinateSquareSum_sub_le_two_mul_add_two_mul
@@ -63,9 +66,12 @@ two square-sums are mutually bounded with factor `3`.
 
 Finite ordered-ring square-sum algebra only.  The row-column Cauchy-Schwarz
 estimate is formalised as a finite-sum inequality for matrix multiplication.
+The three real-topology lemmas listed above are a separate ambient
+continuity-to-smallness slice; they do not depend on the p. 13 matrix
+structure.
 
 ## Nonclaims
 
-No analytic chart, local inverse, continuity-to-neighborhood shrink,
+No analytic chart, local inverse, p. 13 source-stratum smallness wrapper,
 regular-coordinate theorem, Fubini/polar shift theorem, normal-crossing
 certificate construction, pole-order theorem, or RLCT extraction is proved.

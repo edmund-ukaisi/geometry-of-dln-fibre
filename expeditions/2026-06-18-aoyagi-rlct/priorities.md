@@ -541,6 +541,14 @@ from centered continuity in the source-stratum setting, then prove or encode
 the Fubini/polar regular-variable shift theorem for genuine analytic product
 coordinates.  Do not treat either as completed by the finite comparison.
 
+A2 generic real continuity-to-smallness has now landed:
+`threads/03-block-product-reduction/reproduction-a2-continuity-to-small-loss-neighborhood.md`.
+Lean proves that centered `ContinuousAt` finite real coordinate families are
+eventually small in the ambient `nhds` filter, and proves the two-family
+version needed for `squareSum(F2)+squareSum(F3) <= 1`.  The next A2 work is
+therefore a p. 13/source-stratum wrapper around this generic lemma, then the
+Fubini/polar regular-variable shift or full regular-suspension certificate.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds

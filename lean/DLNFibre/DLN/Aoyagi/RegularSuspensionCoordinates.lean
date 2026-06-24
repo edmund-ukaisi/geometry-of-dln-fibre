@@ -109,6 +109,107 @@ theorem aoyagiCoordinateSquareSum_add_le_two_mul_add_two_mul
     _ = 2 * (∑ c, f c ^ 2) + 2 * ∑ c, g c ^ 2 := by
       rw [← Finset.mul_sum, ← Finset.mul_sum]
 
+/-- A finite real coordinate square-sum is continuous at a point when the
+coordinate family is continuous there. -/
+theorem aoyagiCoordinateSquareSum_continuousAt
+    {η α : Type*} [Fintype η] [TopologicalSpace α]
+    {f : α → η → ℝ} {x₀ : α}
+    (hf : ContinuousAt f x₀) :
+    ContinuousAt (fun x : α => aoyagiCoordinateSquareSum (f x)) x₀ := by
+  classical
+  unfold aoyagiCoordinateSquareSum
+  change ContinuousAt (fun x : α => ∑ c : η, (f x c) ^ 2) x₀
+  refine Finset.induction_on (s := (Finset.univ : Finset η)) ?_ ?_
+  · simpa using (continuousAt_const : ContinuousAt (fun _ : α => (0 : ℝ)) x₀)
+  · intro c s hcs ih
+    have hterm : ContinuousAt (fun x : α => (f x c) ^ 2) x₀ :=
+      (((continuous_apply c).continuousAt.comp hf).pow 2)
+    simpa [Finset.sum_insert, hcs] using hterm.add ih
+
+/-- Centered continuity lets one shrink to a neighborhood where the finite real
+coordinate square-sum is at most `1`. -/
+theorem aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero
+    {η α : Type*} [Fintype η] [TopologicalSpace α]
+    {f : α → η → ℝ} {x₀ : α}
+    (h0 : f x₀ = 0)
+    (hf : ContinuousAt f x₀) :
+    ∀ᶠ x in nhds x₀, aoyagiCoordinateSquareSum (f x) ≤ 1 := by
+  have hs :
+      ContinuousAt (fun x : α => aoyagiCoordinateSquareSum (f x)) x₀ :=
+    aoyagiCoordinateSquareSum_continuousAt hf
+  have hcenter :
+      aoyagiCoordinateSquareSum (f x₀) = (0 : ℝ) := by
+    simp [aoyagiCoordinateSquareSum, h0]
+  have hsmall :
+      ∀ᶠ y in nhds (aoyagiCoordinateSquareSum (f x₀)), y ≤ (1 : ℝ) := by
+    simpa [hcenter] using (eventually_le_nhds (show (0 : ℝ) < 1 by norm_num))
+  exact hs.eventually hsmall
+
+/-- Centered continuity of two finite real coordinate families gives a
+neighborhood where their square-sums have total at most `1`. -/
+theorem aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero
+    {η κ α : Type*} [Fintype η] [Fintype κ] [TopologicalSpace α]
+    {f : α → η → ℝ} {g : α → κ → ℝ} {x₀ : α}
+    (hf0 : f x₀ = 0)
+    (hg0 : g x₀ = 0)
+    (hf : ContinuousAt f x₀)
+    (hg : ContinuousAt g x₀) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum (f x) + aoyagiCoordinateSquareSum (g x) ≤ 1 := by
+  let F : α → (η ⊕ κ) → ℝ := fun x => Sum.elim (f x) (g x)
+  have hF0 : F x₀ = 0 := by
+    funext c
+    cases c <;> simp [F, hf0, hg0]
+  have hF : ContinuousAt F x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro c
+    cases c with
+    | inl c =>
+        exact ((continuous_apply c).continuousAt.comp hf)
+    | inr c =>
+        exact ((continuous_apply c).continuousAt.comp hg)
+  have hsmall :
+      ∀ᶠ x in nhds x₀, aoyagiCoordinateSquareSum (F x) ≤ 1 :=
+    aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero hF0 hF
+  filter_upwards [hsmall] with x hx
+  simpa [F, aoyagiCoordinateSquareSum_sumElim] using hx
+
+/-- Scalar centered-continuity data for each coordinate is enough to shrink to
+a neighborhood where the finite real square-sum is at most `1`. -/
+theorem aoyagiCoordinateSquareSum_eventually_le_one_of_forall_centered_continuousAt
+    {η α : Type*} [Fintype η] [TopologicalSpace α]
+    {f : α → η → ℝ} {x₀ : α}
+    (hf : ∀ c, f x₀ c = 0 ∧ ContinuousAt (fun x : α => f x c) x₀) :
+    ∀ᶠ x in nhds x₀, aoyagiCoordinateSquareSum (f x) ≤ 1 := by
+  have h0 : f x₀ = 0 := by
+    funext c
+    exact (hf c).1
+  have hcont : ContinuousAt f x₀ :=
+    continuousAt_pi' (fun c => (hf c).2)
+  exact aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero h0 hcont
+
+/-- Scalar centered-continuity data for two finite real coordinate families is
+enough to shrink to a neighborhood where their square-sums total at most `1`. -/
+theorem aoyagiCoordinateSquareSum_add_eventually_le_one_of_forall_centered_continuousAt
+    {η κ α : Type*} [Fintype η] [Fintype κ] [TopologicalSpace α]
+    {f : α → η → ℝ} {g : α → κ → ℝ} {x₀ : α}
+    (hf : ∀ c, f x₀ c = 0 ∧ ContinuousAt (fun x : α => f x c) x₀)
+    (hg : ∀ c, g x₀ c = 0 ∧ ContinuousAt (fun x : α => g x c) x₀) :
+    ∀ᶠ x in nhds x₀,
+      aoyagiCoordinateSquareSum (f x) + aoyagiCoordinateSquareSum (g x) ≤ 1 := by
+  have hf0 : f x₀ = 0 := by
+    funext c
+    exact (hf c).1
+  have hg0 : g x₀ = 0 := by
+    funext c
+    exact (hg c).1
+  have hfcont : ContinuousAt f x₀ :=
+    continuousAt_pi' (fun c => (hf c).2)
+  have hgcont : ContinuousAt g x₀ :=
+    continuousAt_pi' (fun c => (hg c).2)
+  exact aoyagiCoordinateSquareSum_add_eventually_le_one_of_continuousAt_zero
+    hf0 hg0 hfcont hgcont
+
 /-- Scalar coordinates for the three regular block families
 `Ctop - 1`, `F2`, and `F3`.
 
