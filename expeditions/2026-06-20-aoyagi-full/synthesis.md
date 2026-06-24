@@ -401,6 +401,19 @@ singularities. Cert: `threads/24-r1-hfin-design/hfin-design-certificate.md`. Dec
 - **2 large-geometry tides running:** `l2-geometry` (a6c94a1: frame fact → PIN1 collapse → PIN2 chain, geometry-budgeted),
   `r1-pernode-chart` (af399d4: the (3,3,4) chart Layer 1+2). Non-overlapping.
 
+**★ UPDATE-14 (2026-06-24) — DEGENERATE-CHART ISSUE RESOLVED: honest genuine-diffeo (3,3,4) chart banked (reviewer-PASSED).**
+The degenerate phi334 (false cov=⊤) is REPLACED by an honest genuine-diffeo chart @172f16a8 (REVIEWER-PASSED
+soundness gate). Codex's b=a·β trick clears the Schur a⁻¹ pole POLYNOMIALLY → ONE chart does both Layer 1
+(genuine diffeo) AND Layer 2 (reaches the origin). Genuine-diffeo VALIDATION done FIRST, all sorry-free:
+det Dφ = −u₀⁷·u₁² ≠ 0 (reviewer independently recomputed it AND confirmed it MATCHES the bundle weight
+|u₀|⁷·|u₁|² — the new cov is a TRUE statement), reads-all-21-coords, phi334_zero, InjOn, image-in-every-cube,
+F∘φ=u₀²·U, threshold=4. routeM334_box_diverges: 3 sorries (one FALSE) → 1 HONEST sorry (the Jacobian c-o-v,
+blocked precisely on building paramsEquivFlat-as-linear-iso through the opaque Fintype.equivFin = the heavy
+per-node measure-plumbing / hfin cost driver 2, + the {u₁=0} null slice). The honest chart + the generalized
+two-axis L2AchieverChart bundle + the sorry-free assembly = the REUSABLE shared hfin per-node c-o-v atom.
+`r1-cov-cov` (a531fc6) closing the cov. So R1's geometry crux is DONE+validated; the remaining is measure-plumbing.
+The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geometry (PIN bodies), r1-cov-cov (the c-o-v).
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

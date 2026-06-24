@@ -147,3 +147,13 @@ dominant cost is the per-node measure-change-of-variables, front-loaded on the (
 Both are honest + citation-clean. **Operator: pick (i) drive the full resolution, or (ii) bank the milestone +
 defer general-L.** Default until you say otherwise: pursue (i), with (ii) as the banked floor. The earlier
 "hfin = the dominant difficulty, possibly multi-month" fear is RETIRED — it's bounded.
+
+## 10. Item 8 RESOLVED (2026-06-24): the degenerate (3,3,4) chart is FIXED — honest genuine-diffeo chart banked.
+The degenerate-chart soundness issue from Item 8 is RESOLVED @172f16a8: an honest genuine-diffeo (3,3,4)
+chart replaces phi334 (Codex's b=a·β clears the a⁻¹ shear pole polynomially — one chart does both Layer 1
+and the Layer-2 origin reach), with the genuine-diffeo VALIDATION done first + sorry-free + REVIEWER-PASSED
+(det Dφ = −u₀⁷·u₁² ≠ 0, independently recomputed, matching the bundle weight — the new cov is a TRUE
+statement). routeM334_box_diverges went 3 sorries (one FALSE) → 1 honest sorry (the Jacobian c-o-v / the
+paramsEquivFlat-as-linear-iso measure-plumbing, being closed by r1-cov-cov). No operator action; the
+self-correction (catch → unification → honest chart) is the soundness discipline working as intended. The
+honest chart is also the reusable shared hfin per-node atom (the unification's single hard construction).
