@@ -533,6 +533,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 1 background agent now: rv-stageA (Stage A review). Migration tide held pending its verdict. L2 status: Stage A
   bedrock banked + the L=1 arm DONE; remaining = the Stage C+D migration (held) + PIN2 + the case-split wire.
 
+**★ UPDATE-21 (2026-06-24) — R1 #135 (general-M achiever chart) DESIGN commissioned; the "does not generalise" docstring is STALE.**
+- With L2 gated on rv-stageA, drove the next named critical-path item: **R1 #135** (general-M dispatcher, the atom
+  `routeMCore_box_diverges_achiever`, RouteMLayerCoverGE's single honest sorry). Its docstring's
+  "the (2,2,2) chart phiUnit does not generalise / does not exist on the layer atlas" is **STALE** — it predates the
+  (3,3,4) anchor, which IS a fully-proven achiever chart (a DIFFERENT, coupled-`diag(b)` chart) + banks the reusable
+  reshape-MP + c-o-v template. #135 = generalize the (3,3,4) chart to arbitrary M.
+- **`pp-r1-genM` commissioned** (pen-and-paper, witness seat, decorrelated Codex): adjudicate whether the (3,3,4)
+  coupled-`diag(b)` chart generalizes — the general-M chart construction + Jacobian (verify det≠0, the degenerate-chart
+  cautionary tale) + the box-divergence argument tied to ½·minAdm M, VALIDATED on witnesses beyond (3,3,4) ((2,2,2),
+  (3,3,3), (4,4,2,2), asymmetric). Output: a build-ready general-M chart spec OR the characterized M-class + obstruction
+  boundary. Design-first (soundness-sensitive); a formaliser builds it after (reusing the banked machinery).
+- R1 #135 is option-(i)-flavoured (the L=2/RRR milestone needs only the concrete anchor + resolution_charts wiring),
+  but per the autonomous mandate + loop-prompt naming it critical path, charging ahead on the default (option i).
+  Open question for the next R1 read: does resolution_charts admit a single-node route for the milestone, or need the
+  general atlas? (code-read, not yet done.)
+- 2 background agents: rv-stageA (L2 Stage A review), pp-r1-genM (R1 #135 general-M chart design). Migration held.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
