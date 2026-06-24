@@ -4351,3 +4351,20 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-source-substitution.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.
+
+Latest A4 Case 2 displayed `Q/P` source-substitution continuing handoff:
+`SelectedEntryNormalCrossing.lean` now specializes the transition-generated
+target-pivot `Q/P` source-substitution package to the displayed chart
+`(J+1,J+1)` and bundles it with the displayed frontier package and, under the
+continuing guard, the displayed continuing reindexed source-chart certificate.
+Only the left substituted residual block in the `Q/P` identity is rewritten to
+the original source selected substitution block; the normalized block, Schur
+block, successor weights, transported following factor, and continuing
+certificate remain displayed target data.  The deeper displayed reindexed
+next-source product with the source-side substitution block is not proved in
+this slice.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-qp-source-substitution-continuing.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.

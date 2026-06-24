@@ -6739,6 +6739,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.
 
+Latest A4 Case 2 displayed `Q/P` source-substitution continuing handoff:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_QP_sourceSubstitution_frontierBoundaryPackages_of_displayed_normalized_ne_zero`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_QP_sourceSubstitution_continuingCertificate_of_displayed_normalized_ne_zero`,
+with the notation adapter
+`case2DisplayedSourceSubstitutionBlock_eq_sourceSelectedSubstitutionBlockOfMem_displayed`.
+These specialize the target-pivot `Q/P` source-substitution package to the
+displayed chart `(J+1,J+1)` and bundle it with displayed frontier/continuing
+finite data.  The reindexed next-source product with the source-side
+substitution block remains the next target, not a proved theorem here.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-qp-source-substitution-continuing.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -2591,6 +2591,22 @@ noncomputable def displayedChartIndex
   classical
   simp [displayedChartIndex]
 
+/-- The displayed source-substitution block is the supplied selected-entry
+substitution block for the displayed pivot `(J+1,J+1)`.
+
+This is only a finite notation adapter between the displayed API and the
+arbitrary selected-entry API. -/
+theorem case2DisplayedSourceSubstitutionBlock_eq_sourceSelectedSubstitutionBlockOfMem_displayed
+    {R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2DisplayedSourceSubstitutionBlock n hS hcont u residual =
+      case2SourceSelectedSubstitutionBlockOfMem
+        (case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont)
+        u residual := by
+  rfl
+
 set_option linter.style.longLine false in
 /-- Transition an arbitrary all-pivot Case 2 source chart to the displayed
 top-left chart and feed the transition-generated displayed data into the
@@ -2741,6 +2757,259 @@ theorem sourceChartTransitionPoint_displayed_continuingCertificate_of_displayed_
                   sourceChart).2
                 residual (J + 1, J + 1))
         hS hSL hcont hnext exponentPre levelInv leastValueGap C
+
+set_option maxHeartbeats 800000 in
+-- The displayed wrapper restates the large dependent `Q/P` package at the
+-- displayed chart and elaboration unfolds several finite-index definitions.
+set_option linter.style.longLine false in
+/-- Displayed specialization of the transition-generated `Q/P`
+source-substitution package, bundled with the displayed source-chart frontier.
+
+The target chart is the displayed pivot `(J+1,J+1)`.  On the overlap where the
+displayed normalized coordinate is nonzero, this records the finite chart-map
+equality, the substitution-block equality, the target-pivot `Q/P` identity
+with only its left substituted block rewritten to the original source block,
+the denominator-cleared displayed Schur formula, and the displayed frontier
+package for the same transition-generated displayed data.  It is finite
+selected-entry/source-frontier packaging only; it is not analytic transition
+regularity, coverage, source production, normal crossings, pole order, or
+RLCT extraction. -/
+theorem sourceChartTransitionPoint_displayed_QP_sourceSubstitution_frontierBoundaryPackages_of_displayed_normalized_ne_zero
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (sourceChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → K) (C : ℕ → τ → K)
+    (hdisplayed :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual (J + 1, J + 1) ≠ 0) :
+    let displayedChart := displayedChartIndex (K := K) n hS hcont
+    let sourcePivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart
+    let targetPivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        displayedChart
+    let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+    let targetU := u * denom
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).chartMap displayedChart
+        (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).chartMap sourceChart
+          (sourceChartPoint n hS hcont sourceChart u residual)
+    ∧
+    case2SourceSelectedSubstitutionBlockOfMem targetPivot.2 targetU targetResidual =
+      case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual
+    ∧
+    (let data :=
+      sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+        (K := K) (L := L) (n := n) (S := S) (J := J)
+        (t := t) (numerator := numerator) (leastValue := leastValue)
+        pre targetU hS hSL hcont displayedChart exponentPre levelInv leastValueGap
+        chartFamily
+    let row := case2ResidualBlockPivotRowOfMem data.pivot_mem
+    let col := case2ResidualBlockPivotColOfMem data.pivot_mem
+    let A := case2SourceSelectedNormalizedBlockOfMem data.pivot_mem targetResidual
+    let Csrc := case2SourceSelectedFollowingFactorOfMem data.pivot_mem C
+    let Ctr :=
+      case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem targetResidual C
+    ∃ q : pivotComplement row → K,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (Matrix.diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal
+            ((pre.case2Succ targetU).weight (case2ResidualRowLevel n S J row))
+            (fun i : pivotComplement row ↦
+              (pre.case2Succ targetU).weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr)
+    ∧
+    (∀ (i : pivotComplement
+          (case2ResidualBlockPivotRowOfMem targetPivot.2))
+        (j : pivotComplement
+          (case2ResidualBlockPivotColOfMem targetPivot.2)),
+      let row := case2ResidualBlockPivotRowOfMem targetPivot.2
+      let col := case2ResidualBlockPivotColOfMem targetPivot.2
+      let A := case2SourceSelectedNormalizedBlockOfMem targetPivot.2 targetResidual
+      denom ^ 2 *
+          (pivotFirstD row col A -
+            pivotFirstX row col A * pivotFirstY row col A) i j =
+        denom * case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual (i.1.1, j.1.1) -
+          case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (i.1.1, targetPivot.1.2) *
+            case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (targetPivot.1.1, j.1.1))
+    ∧
+    SourceChartFrontierBoundaryPackages K L n S J t numerator leastValue
+      pre targetU targetResidual hS hcont := by
+  dsimp only
+  have htarget :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          (displayedChartIndex (K := K) n hS hcont)).1 ≠ 0 := by
+    simpa using hdisplayed
+  have hpkg :=
+    sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero
+      pre u hS hSL hcont sourceChart
+      (displayedChartIndex (K := K) n hS hcont)
+      exponentPre levelInv leastValueGap chartFamily residual C htarget
+  have hfrontier :=
+    sourceChartTransitionPoint_displayed_frontierBoundaryPackages_of_displayed_normalized_ne_zero
+      pre u hS hSL hcont sourceChart exponentPre levelInv leastValueGap residual hdisplayed
+  rcases hpkg with ⟨hmap, hsub, hqp, hschur⟩
+  rcases hfrontier with ⟨_, hfrontier⟩
+  exact ⟨hmap, hsub, hqp, hschur,
+    by simpa [finsetSubtypeChartEquiv_displayedChartIndex] using hfrontier⟩
+
+set_option maxHeartbeats 800000 in
+-- The continuing wrapper restates the large dependent `Q/P` package at the
+-- displayed chart and elaboration unfolds several finite-index definitions.
+set_option linter.style.longLine false in
+/-- Continuing-branch version of the displayed transition-generated `Q/P`
+source-substitution package.
+
+This specializes the arbitrary target-pivot source-substitution `Q/P` package
+to the displayed pivot `(J+1,J+1)` and places it on the same
+transition-generated displayed data as the continuing reindexed source-chart
+certificate.  The continuing certificate is the existing finite displayed
+certificate; this theorem does not construct successor source data, suffixes,
+analytic transitions, normal crossings, pole order, or RLCT data. -/
+theorem sourceChartTransitionPoint_displayed_QP_sourceSubstitution_continuingCertificate_of_displayed_normalized_ne_zero
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (sourceChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → K) (C : ℕ → τ → K)
+    (hdisplayed :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual (J + 1, J + 1) ≠ 0) :
+    let displayedChart := displayedChartIndex (K := K) n hS hcont
+    let sourcePivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart
+    let targetPivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        displayedChart
+    let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+    let targetU := u * denom
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).chartMap displayedChart
+        (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).chartMap sourceChart
+          (sourceChartPoint n hS hcont sourceChart u residual)
+    ∧
+    case2SourceSelectedSubstitutionBlockOfMem targetPivot.2 targetU targetResidual =
+      case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual
+    ∧
+    (let data :=
+      sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+        (K := K) (L := L) (n := n) (S := S) (J := J)
+        (t := t) (numerator := numerator) (leastValue := leastValue)
+        pre targetU hS hSL hcont displayedChart exponentPre levelInv leastValueGap
+        chartFamily
+    let row := case2ResidualBlockPivotRowOfMem data.pivot_mem
+    let col := case2ResidualBlockPivotColOfMem data.pivot_mem
+    let A := case2SourceSelectedNormalizedBlockOfMem data.pivot_mem targetResidual
+    let Csrc := case2SourceSelectedFollowingFactorOfMem data.pivot_mem C
+    let Ctr :=
+      case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem targetResidual C
+    ∃ q : pivotComplement row → K,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (Matrix.diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal
+            ((pre.case2Succ targetU).weight (case2ResidualRowLevel n S J row))
+            (fun i : pivotComplement row ↦
+              (pre.case2Succ targetU).weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr)
+    ∧
+    (∀ (i : pivotComplement
+          (case2ResidualBlockPivotRowOfMem targetPivot.2))
+        (j : pivotComplement
+          (case2ResidualBlockPivotColOfMem targetPivot.2)),
+      let row := case2ResidualBlockPivotRowOfMem targetPivot.2
+      let col := case2ResidualBlockPivotColOfMem targetPivot.2
+      let A := case2SourceSelectedNormalizedBlockOfMem targetPivot.2 targetResidual
+      denom ^ 2 *
+          (pivotFirstD row col A -
+            pivotFirstX row col A * pivotFirstY row col A) i j =
+        denom * case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual (i.1.1, j.1.1) -
+          case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (i.1.1, targetPivot.1.2) *
+            case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (targetPivot.1.1, j.1.1))
+    ∧
+    Case2DisplayedContinuingReindexedSourceChartCertificate
+      L n S J t numerator leastValue pre targetU targetResidual hS hcont C := by
+  dsimp only
+  have htarget :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          (displayedChartIndex (K := K) n hS hcont)).1 ≠ 0 := by
+    simpa using hdisplayed
+  have hpkg :=
+    sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero
+      pre u hS hSL hcont sourceChart
+      (displayedChartIndex (K := K) n hS hcont)
+      exponentPre levelInv leastValueGap chartFamily residual C htarget
+  have hcert :=
+    sourceChartTransitionPoint_displayed_continuingCertificate_of_displayed_normalized_ne_zero
+      pre u hS hSL hcont hnext sourceChart exponentPre levelInv leastValueGap
+      residual C hdisplayed
+  rcases hpkg with ⟨hmap, hsub, hqp, hschur⟩
+  rcases hcert with ⟨_, hcert⟩
+  exact ⟨hmap, hsub, hqp, hschur,
+    by simpa [finsetSubtypeChartEquiv_displayedChartIndex] using hcert⟩
 
 /-- Any chart of the Case 2 residual-block all-pivot finite certificate has
 the same finite selected-entry exponent pattern as the displayed Case 2

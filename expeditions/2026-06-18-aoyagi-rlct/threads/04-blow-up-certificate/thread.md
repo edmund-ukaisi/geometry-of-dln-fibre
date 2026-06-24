@@ -5998,3 +5998,36 @@ weights, and transported following factor remain target-pivot data.  It proves
 no source production of successor residuals or following factors, analytic
 transition regularity, chart coverage, source-displayed all-pivot atlas,
 normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 displayed Q/P source-substitution continuing handoff
+
+Reproduction:
+`reproduction-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-generated-displayed-qp-source-substitution-continuing.md`.
+Review:
+`review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+
+Lean now proves the displayed specialization:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_QP_sourceSubstitution_frontierBoundaryPackages_of_displayed_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_QP_sourceSubstitution_continuingCertificate_of_displayed_normalized_ne_zero
+```
+
+with the notation adapter:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.case2DisplayedSourceSubstitutionBlock_eq_sourceSelectedSubstitutionBlockOfMem_displayed
+```
+
+On the overlap where the displayed normalized coordinate
+`d = x_(J+1,J+1)` is nonzero, the transition-generated displayed data
+`targetU = u*d` and `targetResidual q = x_q/d` carry the target-pivot `Q/P`
+source-substitution package, the displayed frontier package, and, under the
+continuing guard, the displayed continuing reindexed source-chart certificate.
+
+This is finite packaging only.  It does not prove the deeper displayed
+reindexed next-source product with the source-side substitution block, and it
+does not prove source production of `Csucc` or suffixes, analytic transition
+regularity, chart coverage, normal crossings, pole order, or RLCT extraction.

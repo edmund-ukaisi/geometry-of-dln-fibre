@@ -2605,9 +2605,16 @@ The next higher-value A4 target is to use the substitution-block rewrite inside
 a source-facing `Q/P` reducer while keeping the target Schur-complement rewrite
 and source-production obligations explicit.
 
-That reducer is now in progress and targeted-build clean:
+That reducer has now landed through review and full build:
 `sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero`
 rewrites only the left substituted residual block in the target-pivot `Q/P`
 identity to the original source substitution block.  Review it with the
 explicit boundary that the normalized block, target Schur block, target
 successor weights, and transported following factor remain target-pivot data.
+
+The next finite A4 target is the displayed specialization of this reducer:
+transition from an arbitrary all-pivot source chart to the displayed
+`(J+1,J+1)` chart, carry the same source-substitution `Q/P` package, and put
+it on the same transition-generated displayed data as the frontier package and
+continuing certificate.  This remains finite packaging, not source production
+or analytic transition regularity.

@@ -6967,6 +6967,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.
 
+Latest A4 Case 2 displayed `Q/P` source-substitution continuing handoff:
+`SelectedEntryNormalCrossing.lean` now proves the displayed specialization of
+the transition-generated source-substitution `Q/P` package and places it on
+the same transition-generated displayed data as the displayed frontier package
+and, under `J+2 <= prefixMinNat n (S+1)`, the displayed continuing reindexed
+source-chart certificate.  This is still finite packaging: only the
+substituted residual block is source-side, while the target normalized block,
+Schur block, successor weights, transported following factor, and continuing
+certificate stay displayed target data.  The next finite target is the deeper
+displayed reindexed next-source product with that same source-side
+substitution block; this slice does not prove it.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-displayed-qp-source-substitution-continuing.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-displayed-qp-source-substitution-continuing-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
