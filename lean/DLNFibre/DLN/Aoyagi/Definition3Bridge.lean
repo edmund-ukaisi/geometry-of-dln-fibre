@@ -409,6 +409,73 @@ theorem of_selectedStrict_nonselectedLe_rankWidth
         (hnonselected_le s hs1 hsL hnot)
   nonselected_le := hnonselected_le
 
+/-- Equal-width source data for Aoyagi's Definition 3.
+
+If every source-range reduced width is the same positive value `w`, Aoyagi's
+equal-width example chooses `ell = L` and all consecutive source layers as
+selected cutpoints.  This is only the equal-width example, not arbitrary
+selected-cutpoint existence. -/
+theorem exists_consecutive_of_constant_reducedWidth_pos
+    {L : ℕ} {H : ℕ → ℕ} {r w : ℕ}
+    (hL : 0 < L) (hw : 0 < w)
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∃ C : AoyagiSelectedCutpoints L,
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+        AoyagiDefinition3SourceData L L H r C := by
+  classical
+  let C : AoyagiSelectedCutpoints L :=
+    { cut := fun j ↦ j.val + 1
+      pos := by
+        intro j
+        omega
+      strict := by
+        intro j
+        simp [Fin.val_succ, Fin.val_castSucc] }
+  refine ⟨C, ?_, ?_⟩
+  · intro j
+    rfl
+  · have hsum :
+        (∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+          ((L + 1 : ℕ) : ℤ) * (w : ℤ) := by
+      calc
+        (∑ j : Fin (L + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+            ∑ _j : Fin (L + 1), (w : ℤ) := by
+          refine Finset.sum_congr rfl ?_
+          intro j _hj
+          exact hconst (C.cut j) (C.pos j) (by dsimp [C]; omega)
+        _ = ((L + 1 : ℕ) : ℤ) * (w : ℤ) := by
+          simp [Finset.sum_const, Fintype.card_fin]
+    have hselected_mem :
+        ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+          aoyagiReducedWidthInt H r s ∈
+            Finset.univ.image
+              (fun j : Fin (L + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+      intro s hs1 hsL
+      rw [hconst s hs1 hsL]
+      refine Finset.mem_image.mpr ⟨(0 : Fin (L + 1)), Finset.mem_univ _, ?_⟩
+      exact hconst (C.cut (0 : Fin (L + 1))) (C.pos _) (by dsimp [C]; omega)
+    refine
+      { ell_pos := hL
+        cut_le := ?_
+        selected_strict := ?_
+        selected_lt_nonselected := ?_
+        nonselected_le := ?_ }
+    · intro j
+      dsimp [C]
+      omega
+    · intro i
+      rw [hconst (C.cut i) (C.pos i) (by dsimp [C]; omega), hsum]
+      have hwz : (0 : ℤ) < (w : ℤ) := by exact_mod_cast hw
+      have hlt : (L : ℤ) * (w : ℤ) < ((L : ℤ) + 1) * (w : ℤ) := by
+        nlinarith
+      simpa [Nat.cast_add, Nat.cast_one] using hlt
+    · intro _i s hs1 hsL hnot
+      exact False.elim (hnot (hselected_mem s hs1 hsL))
+    · intro s hs1 hsL hnot
+      exact False.elim (hnot (hselected_mem s hs1 hsL))
+
 /-- Diagnostic obstruction: the printed Definition 3 inequalities do not
 produce source data for the reduced-width profile `1,2,100`.
 

@@ -2880,3 +2880,14 @@ reduced-width value into the selected value set.  This is a necessary
 condition for supplied source data, not selected-cutpoint construction,
 `ell>1` classification, a correction of Definition 3, Eq5 construction,
 Lemma 5 exactness, chart production, pole order, or RLCT.
+
+A6 Definition 3 equal-width source-data construction has now landed:
+`threads/06-dln-translation/reproduction-definition3-equal-width-source-data-a6.md`.
+Lean proves
+`AoyagiDefinition3SourceData.exists_consecutive_of_constant_reducedWidth_pos`.
+This is the positive equal-width example from Aoyagi pp. 8-9: if all
+source-range reduced widths are a positive constant `w`, take `ell=L` and all
+consecutive source layers as selected cutpoints.  Treat this as a narrow
+source-moving constructor only.  It does not reopen arbitrary Definition 3
+source-data existence; the recent obstruction theorems remain active
+guardrails.

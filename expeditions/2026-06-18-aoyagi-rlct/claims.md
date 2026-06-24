@@ -4775,3 +4775,19 @@ Statement card:
 `threads/06-dln-translation/statement-card-a6-definition3-selected-lt-from-nonselected.md`.
 Review:
 `threads/06-dln-translation/review-definition3-selected-lt-from-nonselected-a6.md`.
+
+Latest A6 Definition 3 equal-width source data:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_consecutive_of_constant_reducedWidth_pos`.
+For the positive equal-width source-range profile, it constructs consecutive
+cutpoints `C.cut j = j.val+1` with `ell=L` and proves
+`AoyagiDefinition3SourceData L L H r C`.  This is source-data existence only
+for Aoyagi's equal-width example.  It does not prove arbitrary selected
+cutpoint existence, repair Definition 3's printed inequalities, construct Eq5
+families, prove Lemma 5 exactness, produce charts, identify pole order, or
+extract RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-source-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-source-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.

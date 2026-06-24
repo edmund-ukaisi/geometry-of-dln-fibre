@@ -7195,6 +7195,21 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-ell-one-nonselected-obstruction-a6.md`.
 
+Latest A6 Definition 3 equal-width source data:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.exists_consecutive_of_constant_reducedWidth_pos`.
+If all source-range reduced widths are the same positive integer `w`, then the
+consecutive cutpoints `C.cut j = j.val+1` give
+`AoyagiDefinition3SourceData L L H r C`.  This formalizes Aoyagi's
+equal-width example `ell=L`; it is not arbitrary selected-cutpoint existence,
+not a correction of Definition 3, not Eq5 construction, not Lemma 5 exactness,
+and not chart production, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-source-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-source-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

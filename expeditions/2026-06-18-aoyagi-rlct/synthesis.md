@@ -7450,6 +7450,23 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-ell-one-nonselected-obstruction-a6.md`.
 
+A6 Definition 3 equal-width source-data construction:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_consecutive_of_constant_reducedWidth_pos`.
+For `0<L`, `0<w`, and constant source-range reduced width
+`aoyagiReducedWidthInt H r s = w` on `1<=s<=L+1`, Lean constructs
+`C : AoyagiSelectedCutpoints L` with `C.cut j = j.val+1` and proves
+`AoyagiDefinition3SourceData L L H r C`.  The selected sum is `(L+1)w`, so the
+strict selected inequality is `Lw < (L+1)w`; the nonselected hypotheses are
+contradictory because every source-range width value is the selected value
+`w`.  This is exactly the equal-width lane, not arbitrary source-data
+existence or an `ell>1` classification.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-source-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-source-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

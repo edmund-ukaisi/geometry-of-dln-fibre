@@ -853,3 +853,32 @@ the strict selected inequality and selected nonnegativity.
 Boundary: necessary condition only.  This does not construct selected
 cutpoints, classify `ell>1`, repair Definition 3, construct Eq5 families,
 prove Lemma 5 exactness, produce charts, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, Definition 3 equal-width source data
+
+Reproduction:
+`reproduction-definition3-equal-width-source-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-equal-width-source-data.md`.
+Review artifact:
+`review-definition3-equal-width-source-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_of_constant_reducedWidth_pos
+```
+
+If `0 < L`, `0 < w`, and every source-range reduced width
+`aoyagiReducedWidthInt H r s` for `1 <= s <= L+1` equals `w`, then there are
+consecutive selected cutpoints `C.cut j = j.val+1` and
+`AoyagiDefinition3SourceData L L H r C`.  This formalizes Aoyagi's
+equal-width example with `ell = L`.  The strict selected inequality is
+`L*w < (L+1)*w`; the nonselected fields are vacuous because the Lean structure
+uses value-level selected-width membership and every source-range width value
+is the selected value `w`.
+
+Boundary: equal-width source-data constructor only.  This is not arbitrary
+selected-cutpoint existence, not an `ell>1` classification, not a repair of
+Definition 3's printed inequalities, not Eq5 construction or Lemma 5
+exactness, and not chart production, normal crossings, pole order, or RLCT.
