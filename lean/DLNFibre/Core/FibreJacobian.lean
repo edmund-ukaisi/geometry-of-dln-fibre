@@ -142,7 +142,7 @@ section Witness
 
 /-- The witness tuple `(A₁, A₂)` over `ℚ` (the `(2,2,2)` witness of `Core.Setup`, over a field so
 the fibre Jacobian — gated by `[Field k]` for the cotangent identity — instantiates). -/
-def tupleWitnessQ : Tuple (k := ℚ) dWitness := fun i ↦
+def fibreJacWitnessQ : Tuple (k := ℚ) dWitness := fun i ↦
   match i with
   | 0 => !![1, 2; 0, 1]
   | 1 => !![1, 0; 3, 1]
@@ -152,10 +152,10 @@ generator `multPoly 0 0 − C (B 0 0)` w.r.t. `X ⟨0,0,0⟩` (the `(0,0)` entry
 equals `(suffix from 1) 0 0 · (prefix to 0) 0 0 = (A₁) 0 0 · 1 = 1` — a genuine, nonzero
 fibre-Jacobian entry, so the assembly is non-vacuous. -/
 example :
-    fibreJacobianMatrix dWitness (!![1, 2; 3, 7]) tupleWitnessQ
+    fibreJacobianMatrix dWitness (!![1, 2; 3, 7]) fibreJacWitnessQ
         (⟨0, by decide⟩, ⟨0, by decide⟩) ⟨0, ⟨0, by decide⟩, ⟨0, by decide⟩⟩ = 1 := by
   rw [fibreJacobianMatrix_apply]
-  unfold multSuffix multPrefix tupleWitnessQ dWitness
+  unfold multSuffix multPrefix fibreJacWitnessQ dWitness
   decide +kernel
 
 end Witness

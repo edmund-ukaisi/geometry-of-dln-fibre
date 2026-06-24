@@ -145,3 +145,9 @@ import DLNFibre.Core.FibreHeightDirect
 -- `pderiv_multPoly`/`eval_pderiv_multPoly` — d(mult) entry = (suffix column s)·(prefix row t), the rank-one
 -- outer product per factor. The Jacobian-entry brick H3 (generic Jacobian rank) consumes.
 import DLNFibre.Core.MultDifferential
+-- HEIGHT-DIRECT rung H3a (assemble the fibre Jacobian): `fibreGen`/`fibreJacobianMatrix`/`fibreJacobian`
+-- (entry = eval_pderiv_multPoly = multSuffix·multPrefix), the UNCONDITIONAL tangent = ker(Jacobian)
+-- identity (`finrank_cotangentSpace_fibre_eq_finrank_ker`) + the card-rank reading
+-- (`finrank_ker_add_rank_fibreJacobianMatrix`: finrank ker + rank = card). H3b supplies rank = C+δ at a
+-- generic point; H3c supplies generic smoothness ⟹ ker finrank = local fibre dim.
+import DLNFibre.Core.FibreJacobian
