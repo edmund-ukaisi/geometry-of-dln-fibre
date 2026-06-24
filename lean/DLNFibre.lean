@@ -177,3 +177,11 @@ import DLNFibre.Core.GenericFreeness
 -- — the Schur pivot block is a SchurLoc-unit (det = the inverted detSchurS), the unit the gauge L/H blocks use.
 import DLNFibre.Core.VarietyDimRadical
 import DLNFibre.Core.SchurGauge
+-- (b)-build route-c: generator-free varietyDim transport. `varietyDim_baseChange_image` (varietyDim
+-- invariant under the GL×GL base-change image, no determinantal-ideal theorem) +
+-- `varietyDim_fibre_endpoint_conj_eq` (constant fibre dim along the endpoint orbit).
+import DLNFibre.Core.VarietyDimBaseChange
+-- hClosure PROVED (thread-32 codim sandwich, zero-cite): varietyDim Σ^r = varietyDim Σ̄^r via
+-- codim Σ^r = codim Σ̄^r = C (irreducibility-free catenary + ONE corner-r witness orbit), wired into
+-- RouteCAssembly so codim(fibre)=C+δ now carries ONLY hSweep.
+import DLNFibre.Core.ClosureBridge
