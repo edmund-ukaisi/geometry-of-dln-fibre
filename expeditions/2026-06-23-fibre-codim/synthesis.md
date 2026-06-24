@@ -465,3 +465,17 @@ a `vanishingIdeal`); everything else reuses landed engines.
 **Plan (recon's, adopted):** spec R2-2 FIRST as a SPECIFY-first probe-tide — it decides M (reuses G2-2's
 `blockAlgEquivLoc`/`IsLocalization.Away` machinery ⟹ R2-3 solid) vs L (needs new affine presentation ⟹
 pen-and-paper certify the R2-3 ideal-transport before any formaliser commits). One write-tide at a time.
+
+## R2-2 = L (thread 15, 2026-06-24) — routing pen-and-paper for the cut-ideal radical certification
+
+R2-2 (swing-factor probe) returned **L** (tide + decorrelated Codex converged; clean STOP, no library
+Lean, no sorry). The localized total-ring presentation does NOT cleanly reuse G2-2: the engine carries
+`O(Σ̄^r∩chart)` only as the REDUCED `Sred = (MvPol/sigmaIdeal)[1/ΔP]`, but the endpoint-normalization
+route wants the CUT presentation `Scut = R[Ã]/(mult(Ã)−B_univ)`. **`Scut = Sred` ⟺ the cut ideal
+`(mult(Ã)−B_univ)` is RADICAL** (⟺ `F_E` reduced) — genuinely-new content, no engine/Mathlib lemma. This
+reducedness is LOAD-BEARING (if not radical, the trivialization connects to a non-reduced object — a hole).
+
+**Routed to pen-and-paper (thread 16)** to adjudicate the truth-value (is the cut ideal radical / `F_E`
+reduced?) via exact algebra (Gröbner on the anchor + general argument) + decorrelated Codex, and certify
+the Lean-buildable mechanism (route (a) direct-radical vs (b) deferred-via-F_E-reduced) — BEFORE any
+formaliser builds the R2-3 AlgEquiv. Don't build on an unproven reducedness.
