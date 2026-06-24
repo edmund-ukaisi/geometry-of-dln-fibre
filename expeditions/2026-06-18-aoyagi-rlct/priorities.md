@@ -481,6 +481,17 @@ product-difference coordinate ideal.  This closes the naming bridge; the next
 A2 source-moving work is the regular-suspension chart argument itself, not
 another finite ideal regrouping wrapper.
 
+A2 regular-suspension coordinate map source data has now landed:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-map-source-data.md`.
+Lean adds Pi-valued maps for the regular, residual, and combined
+product-difference coordinate families, and proves from
+`PaperEndpointFixedBaseRegularCoordinateSourceData` that each map is zero at
+the base point and continuous there.  Treat this as product-topology packaging
+of existing scalar source fields only.  It does not discharge the actual
+regular-suspension chart argument, source-rank openness, analytic ideal
+transport, coverage, Jacobian compatibility, normal crossings, pole order, or
+RLCT.
+
 A2 regular-suspension normal-crossing construction is not Lean-ready:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`.
 Do not add `PaperEndpointFixedBaseRegularCoordinateSourceData -> exists Cfull`

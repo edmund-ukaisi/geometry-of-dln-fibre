@@ -5751,6 +5751,34 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-literal-product-difference-coordinate-ideal-bridge.md`.
 
+Latest A2 regular-suspension coordinate map source data:
+Lean now packages the existing scalar p. 13 source-data fields as Pi-valued
+coordinate maps for the regular block coordinates, the residual `D` block, and
+the combined cleaned product-difference coordinate family.  From
+`PaperEndpointFixedBaseRegularCoordinateSourceData`, Lean proves each map
+vanishes at the base point and is continuous there.  This is only the
+componentwise product-topology repackaging of the already proved scalar
+centered-continuity fields.
+
+Lean names:
+`paperEndpointFixedBaseRegularBlockCoordinateMap`,
+`paperEndpointFixedBaseResidualBlockCoordinateMap`,
+`paperEndpointFixedBaseProductDifferenceCoordinateMap`,
+`PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_centered_continuousAt`,
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualBlockCoordinateMap_centered_continuousAt`,
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.productDifferenceCoordinateMap_centered_continuousAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-map-source-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-coordinate-map-source-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-coordinate-map-source-data.md`.
+
+Nonclaims: no analytic coordinate chart, no local inverse, no source-rank
+openness, no analytic germ-ideal transport, no chart coverage, no Jacobian
+compatibility, no normal crossings, no pole-order theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

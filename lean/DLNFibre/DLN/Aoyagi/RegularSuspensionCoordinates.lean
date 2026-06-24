@@ -1378,6 +1378,117 @@ def PaperEndpointFixedBaseProductDifferenceScalarCoordinatesCenteredContinuousAt
           AoyagiProductDifferenceCoordinateIndex.value
             ((S x).Ctop - 1) (-(S x).B) (lowerLeftBlock (S x).L) ((S x).D) c) x₀
 
+/-- The Pi-valued map collecting the p. 13 regular block coordinates from the
+fixed-base canonical product-difference suffix state.
+
+This is only the coordinate family as a function into a product type.  It does
+not assert that these coordinates form a chart. -/
+def paperEndpointFixedBaseRegularBlockCoordinateMap
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank K U₀))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) → K :=
+  let E : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState (Fin (Module.finrank K U₀))
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        K (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  AoyagiRegularBlockCoordinateIndex.value
+    (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L)
+
+/-- The Pi-valued map collecting the residual `D`-block coordinates from the
+fixed-base canonical product-difference suffix state. -/
+def paperEndpointFixedBaseResidualBlockCoordinateMap
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    AoyagiResidualBlockCoordinateIndex
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+        (Fin.last N))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) → K :=
+  let E : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState (Fin (Module.finrank K U₀))
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        K (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  AoyagiResidualBlockCoordinateIndex.value S.D
+
+/-- The Pi-valued map collecting the cleaned p. 13 product-difference
+coordinates: regular block coordinates together with the residual `D` block. -/
+def paperEndpointFixedBaseProductDifferenceCoordinateMap
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    AoyagiProductDifferenceCoordinateIndex
+      (Fin (Module.finrank K U₀))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+        (Fin.last N))
+      (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0) → K :=
+  let E : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState (Fin (Module.finrank K U₀))
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        K (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  AoyagiProductDifferenceCoordinateIndex.value
+    (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D
+
 /-- Fixed-base source data for Aoyagi's p. 13 scalar regular coordinates.
 
 This packages the source-produced local certificate, the regular/residual ideal
@@ -1440,6 +1551,97 @@ structure PaperEndpointFixedBaseRegularCoordinateSourceData
           (throughSubspaceEndpointComplementIndex
             (reverseVertex W) (reverseEdge W B) U₀ 0)) =
       H 1 * H (N + 1)
+
+namespace PaperEndpointFixedBaseRegularCoordinateSourceData
+
+set_option linter.unusedSectionVars false in
+/-- The source-data package supplies a centered continuous Pi-valued regular
+block coordinate map. -/
+theorem regularBlockCoordinateMap_centered_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    paperEndpointFixedBaseRegularBlockCoordinateMap W B U₀ hU₀ Cedge x₀ = 0 ∧
+      ContinuousAt
+        (paperEndpointFixedBaseRegularBlockCoordinateMap W B U₀ hU₀ Cedge)
+        x₀ := by
+  constructor
+  · funext c
+    simpa [paperEndpointFixedBaseRegularBlockCoordinateMap,
+      PaperEndpointFixedBaseRegularBlockScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.scalarCoordinates_centered_continuousAt c).1
+  · refine continuousAt_pi.2 ?_
+    intro c
+    simpa [paperEndpointFixedBaseRegularBlockCoordinateMap,
+      PaperEndpointFixedBaseRegularBlockScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.scalarCoordinates_centered_continuousAt c).2
+
+set_option linter.unusedSectionVars false in
+/-- The source-data package supplies a centered continuous Pi-valued residual
+block coordinate map. -/
+theorem residualBlockCoordinateMap_centered_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x₀ = 0 ∧
+      ContinuousAt
+        (paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge)
+        x₀ := by
+  constructor
+  · funext c
+    simpa [paperEndpointFixedBaseResidualBlockCoordinateMap,
+      PaperEndpointFixedBaseResidualBlockScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.residualScalarCoordinates_centered_continuousAt c).1
+  · refine continuousAt_pi.2 ?_
+    intro c
+    simpa [paperEndpointFixedBaseResidualBlockCoordinateMap,
+      PaperEndpointFixedBaseResidualBlockScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.residualScalarCoordinates_centered_continuousAt c).2
+
+set_option linter.unusedSectionVars false in
+/-- The source-data package supplies a centered continuous Pi-valued
+product-difference coordinate map. -/
+theorem productDifferenceCoordinateMap_centered_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    paperEndpointFixedBaseProductDifferenceCoordinateMap W B U₀ hU₀ Cedge x₀ = 0 ∧
+      ContinuousAt
+        (paperEndpointFixedBaseProductDifferenceCoordinateMap W B U₀ hU₀ Cedge)
+        x₀ := by
+  constructor
+  · funext c
+    simpa [paperEndpointFixedBaseProductDifferenceCoordinateMap,
+      PaperEndpointFixedBaseProductDifferenceScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.productDifferenceScalarCoordinates_centered_continuousAt c).1
+  · refine continuousAt_pi.2 ?_
+    intro c
+    simpa [paperEndpointFixedBaseProductDifferenceCoordinateMap,
+      PaperEndpointFixedBaseProductDifferenceScalarCoordinatesCenteredContinuousAt] using
+      (sourceData.productDifferenceScalarCoordinates_centered_continuousAt c).2
+
+end PaperEndpointFixedBaseRegularCoordinateSourceData
 
 namespace PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
 

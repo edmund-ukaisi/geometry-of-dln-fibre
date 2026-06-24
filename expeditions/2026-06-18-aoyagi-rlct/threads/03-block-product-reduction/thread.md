@@ -2290,3 +2290,38 @@ Boundary: finite block algebra only.  This does not derive `S.BlockDiagonal`
 from global recursion hypotheses, and it does not prove analytic chart
 coverage, ideal transport, regular-suspension construction, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-24 A2 regular-suspension coordinate map source data
+
+Reproduction:
+`reproduction-a2-regular-suspension-coordinate-map-source-data.md`.
+Statement card:
+`statement-card-a2-regular-suspension-coordinate-map-source-data.md`.
+Review:
+`review-a2-regular-suspension-coordinate-map-source-data.md`.
+
+Lean now packages the existing scalar p. 13 source-data fields as Pi-valued
+coordinate maps:
+
+```text
+paperEndpointFixedBaseRegularBlockCoordinateMap
+paperEndpointFixedBaseResidualBlockCoordinateMap
+paperEndpointFixedBaseProductDifferenceCoordinateMap
+```
+
+and proves that the existing fixed-base source-data package supplies centered
+continuity for each map:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularBlockCoordinateMap_centered_continuousAt
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualBlockCoordinateMap_centered_continuousAt
+PaperEndpointFixedBaseRegularCoordinateSourceData.productDifferenceCoordinateMap_centered_continuousAt
+```
+
+The proofs are componentwise: basepoint vanishing is function extensionality
+from the scalar source fields, and continuity uses `continuousAt_pi`.
+
+Boundary: finite/topological packaging only.  This does not construct an
+analytic coordinate chart, local inverse, source-rank-open neighborhood,
+analytic ideal transport, chart coverage, Jacobian compatibility, normal
+crossings, pole order, or RLCT.

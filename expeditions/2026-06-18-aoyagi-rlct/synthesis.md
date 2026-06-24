@@ -8555,6 +8555,26 @@ chart or regular-suspension chart, prove analytic germ-ideal transport, prove
 coverage or transition regularity, prove Jacobian compatibility, produce
 normal crossings, determine pole order, or extract RLCT.
 
+Latest A2 regular-suspension coordinate map source-data update:
+`RegularSuspensionCoordinates.lean` now exposes Pi-valued maps collecting the
+same scalar p. 13 source data:
+`paperEndpointFixedBaseRegularBlockCoordinateMap`,
+`paperEndpointFixedBaseResidualBlockCoordinateMap`, and
+`paperEndpointFixedBaseProductDifferenceCoordinateMap`.
+From `PaperEndpointFixedBaseRegularCoordinateSourceData`, Lean proves each map
+is zero at the base point and continuous at the base point via function
+extensionality and `continuousAt_pi`.
+
+This is only product-topology packaging of already proved scalar
+centered-continuity fields.  It does not prove an analytic coordinate chart,
+local inverse, source-rank openness, analytic ideal transport, coverage,
+Jacobian compatibility, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-coordinate-map-source-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-coordinate-map-source-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-coordinate-map-source-data.md`.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`
