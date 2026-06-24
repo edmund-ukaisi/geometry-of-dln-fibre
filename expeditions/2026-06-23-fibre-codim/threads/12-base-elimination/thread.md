@@ -118,3 +118,24 @@ Interface question to controller (re-asked): expose literal `J ⊆ A_loc`, or ju
   carries the height to the `Sd`-based ring.
 The remaining build is mechanical (the chained reindex/localization transports) — held pending the
 interface decision rather than ground speculatively at the wrong target.
+
+### D2 reindex + detΔ-localization infrastructure. **LANDED** (36817e5f, 8784c8af, cce4016e, c0cd6e2f).
+`Core/DeterminantalBaseElimination.lean` (new module, all sorry-free, axiom-clean):
+- `B22block` (#=C), `SchurVar` (#=δ); `card_B22block`, `card_SchurVar`.
+- `finSplit`/`finSplit_castLE`, `blockRearrange`, `repCoordReindex : RepCoord (dStratum q p) ≃
+  B22block ⊕ SchurVar`; `repCoordReindex_pivot` (pivot coord ↦ Δ-block; `change` to the defeq
+  forward-computation form dodges the `uniqueSigma` `.rec` / Fin-1 friction).
+- `mult_stratum_eq` (N=1 product = lone factor A 0, any CommRing), `multPoly_stratum_apply`
+  (`multPoly (dStratum q p) a b = X ⟨0,(a,b)⟩`).
+- `detSchurS` (det of the Δ-coordinate matrix in `MvPolynomial SchurVar k`); `renameEquiv_detPivot`
+  (`detΔ ↦ rename Sum.inr detSchurS`); `blockAlgEquiv : A_eng ≃ₐ MvPolynomial B22block
+  (MvPolynomial SchurVar k)`; `blockAlgEquiv_detPivot` (`detΔ ↦ C detSchurS`).
+
+### REMAINING — localization transport + Iad = J + regularity (steps iii-iv). **NOT started.**
+The final ~80-100 LoC; all components de-risked; the heaviest localization bookkeeping. Localize
+`blockAlgEquiv` at `detΔ`/`detSchurS` (`A_loc ≃ₐ MvPolynomial B22block Sd`, `Sd = Localization.Away
+detSchurS`, via `blockAlgEquiv_detPivot` + `MvPolynomial.isLocalization`); `height J = C` via
+`height_graphIdeal_eq` over `Sd` (translation auto + `height_map_of_disjoint`); `J ⊆ Iad`
+(`det_submatrix_multPoly_mem_sigmaIdeal`, landed) ⟹ `Iad = J` by `height_strict_mono_of_is_prime`
+(landed `height Iad = C` + `height J = C`); regularity `A_loc/Iad ≅ Sd` via `graphIdealQuotientEquiv`.
+Natural fresh-tide boundary (G2-3-adjacent); the landed infra is the complete spec.
