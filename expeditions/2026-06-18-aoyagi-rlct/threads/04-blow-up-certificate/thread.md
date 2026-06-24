@@ -6066,3 +6066,42 @@ formula-level `case2DisplayedSourceSuccessorFollowingFactor targetResidual C`.
 This is finite product bookkeeping only.  It does not source-produce `Csucc`,
 suffixes, successor charts, source residual blocks, transition regularity,
 chart coverage, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean selected-entry transition microcertificate evaluation
+
+Reproduction:
+`reproduction-selected-entry-transition-microcertificate-evaluation-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-transition-microcertificate-evaluation.md`.
+Review:
+`review-selected-entry-transition-microcertificate-evaluation-a4.md`.
+
+Lean now proves finite selected-entry chart-certificate evaluations at
+transition-generated target chart points:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartTransitionPoint_eq_centerSq_of_target_normalized_ne_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartTransitionPoint_eq
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartTransitionPoint_eq_det
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartTransitionPoint_of_target_normalized_ne_zero
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartTransitionPoint
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartTransitionPoint_eq_sourceSelectedCenterSq_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.lossUnit_sourceChartTransitionPoint_eq_sourceSelectedUnitFactor
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_sourceChartTransitionPoint_eq_sourceSelectedDet
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_monomial_sourceChartTransitionPoint_sourceSelected_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.jacobianPrior_monomial_sourceChartTransitionPoint_sourceSelected
+```
+
+For a source chart with normalized coordinates `x_r` and target pivot `q`,
+the transition-generated target data are `targetU = u*x_q` and
+`targetResidual r = x_r/x_q`.  On the overlap `x_q != 0`, the target chart
+map equals the source chart map, so the loss can be read as the source
+selected center square.  The target loss unit and target formal
+Jacobian/prior determinant remain target-chart quantities: the unit is the
+target normalized center-square factor and the determinant is the target
+pivot-first formal determinant.
+
+This is finite selected-entry chart algebra only.  It does not prove source
+and target units equal, does not source-produce successor or following-factor
+data, and does not prove analytic transition regularity, chart coverage,
+normal crossings, pole order, or RLCT extraction.

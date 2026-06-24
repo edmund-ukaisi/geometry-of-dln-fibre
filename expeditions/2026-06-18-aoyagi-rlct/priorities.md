@@ -2631,3 +2631,15 @@ factor.  The next higher-value A4 target should not pretend this is source
 production; it should either attack actual successor/following-factor
 production with the remaining obligations explicit, or assemble a chart
 certificate only under explicit analytic/chart-production hypotheses.
+
+The selected-entry transition microcertificate evaluation has now landed in
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-microcertificate-evaluation-a4.md`.
+Lean evaluates the finite loss, target loss unit, target formal
+Jacobian/prior determinant, and monomial identities at
+`sourceChartTransitionPoint`, with Case 2 source-selected wrappers.  This is
+useful for chart-certificate plumbing: the loss becomes source-facing only via
+the normalized-overlap chart-map equality, while the unit and formal
+determinant remain target-chart data.  The next higher-value A4 target is to
+use these adapters only under explicit chart-production/analytic hypotheses;
+do not treat them as transition regularity, source production, or a global A0
+normal-crossing certificate.

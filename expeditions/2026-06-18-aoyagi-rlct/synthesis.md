@@ -7006,6 +7006,31 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.
 
+Latest A4 selected-entry transition microcertificate evaluation:
+`SelectedEntryNormalCrossing.lean` now proves generic selected-entry and Case
+2 source-selected adapters evaluating the finite chart-certificate fields at
+`sourceChartTransitionPoint`.  On the normalized target-coordinate overlap,
+the target chart point has the same chart-map value as the source chart point,
+so Lean rewrites the loss to the source selected center square.  The loss unit
+and formal Jacobian/prior determinant remain target-pivot quantities, with
+target data `targetU = u*d` and `targetResidual q = x_q/d`.  New theorem
+families are
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartTransitionPoint_eq_centerSq_of_target_normalized_ne_zero`,
+`lossUnit_sourceChartTransitionPoint_eq`,
+`jacobianPrior_sourceChartTransitionPoint_eq_det`,
+`loss_monomial_sourceChartTransitionPoint_of_target_normalized_ne_zero`,
+`jacobianPrior_monomial_sourceChartTransitionPoint`, and the corresponding
+Case 2 source-selected wrappers in
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate`.
+This is finite selected-entry chart algebra only: no source-target unit
+equality, source production, analytic transition regularity, chart coverage,
+global A0 certificate, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-microcertificate-evaluation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-microcertificate-evaluation.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-microcertificate-evaluation-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

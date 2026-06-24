@@ -4384,3 +4384,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-displayed-reindexed-product-source-substitution.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.
+
+Latest A4 selected-entry transition microcertificate evaluation:
+`SelectedEntryNormalCrossing.lean` now evaluates the finite selected-entry
+normal-crossing microcertificate at transition-generated target chart points.
+The generic selected-entry family proves source-facing loss, target loss-unit,
+target formal-Jacobian, and monomial adapters for `sourceChartTransitionPoint`;
+the Case 2 residual-block namespace exposes the same facts in
+source-selected names.  The denominator remains the normalized target
+coordinate `x_q`, and the target unit/formal determinant are not rewritten to
+source-chart data.  This is finite selected-entry chart algebra only: no
+source-target unit equality, analytic transition regularity, chart coverage,
+source production, global A0 normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-microcertificate-evaluation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-microcertificate-evaluation.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-microcertificate-evaluation-a4.md`.

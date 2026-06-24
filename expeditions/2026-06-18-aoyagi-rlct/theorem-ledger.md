@@ -6777,6 +6777,32 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-displayed-reindexed-product-source-substitution-a4.md`.
 
+Latest A4 selected-entry transition microcertificate evaluation:
+`SelectedEntryNormalCrossing.lean` now proves transition-point evaluation
+adapters for the finite selected-entry microcertificate:
+`selectedEntryCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartTransitionPoint_eq_centerSq_of_target_normalized_ne_zero`,
+`lossUnit_sourceChartTransitionPoint_eq`,
+`jacobianPrior_sourceChartTransitionPoint_eq_det`,
+`loss_monomial_sourceChartTransitionPoint_of_target_normalized_ne_zero`,
+`jacobianPrior_monomial_sourceChartTransitionPoint`, and the Case 2
+source-selected wrappers
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.loss_sourceChartTransitionPoint_eq_sourceSelectedCenterSq_of_target_normalized_ne_zero`,
+`lossUnit_sourceChartTransitionPoint_eq_sourceSelectedUnitFactor`,
+`jacobianPrior_sourceChartTransitionPoint_eq_sourceSelectedDet`,
+`loss_monomial_sourceChartTransitionPoint_sourceSelected_of_target_normalized_ne_zero`,
+and
+`jacobianPrior_monomial_sourceChartTransitionPoint_sourceSelected`.
+The source-facing loss statement uses the normalized target-coordinate
+nonzero hypothesis and chart-map equality; the target unit and formal
+determinant remain target-pivot data.  This is finite chart-certificate
+algebra only: no analytic transition regularity, chart coverage, source
+production, global normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-transition-microcertificate-evaluation-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-transition-microcertificate-evaluation.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-transition-microcertificate-evaluation-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
