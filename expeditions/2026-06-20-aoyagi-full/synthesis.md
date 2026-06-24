@@ -133,6 +133,24 @@ everything — the merge is CONSOLIDATION of supporting modules, NOT headline-cl
   body's soundness (the trap-iii vacuity risk, latest lesson) gets verified when R1's resolution_charts is
   wired, not at merge time.
 
+**★ RRR (#17) COMPLETE @0eef1154** — Aoyagi Thm 1 as the L=2 instance of the headline (general-L-first),
+sorry-free anchors (3/2, 1), combinatorial rrrTheta; AUDIT-passed (5/5+Codex), aggregator-wired, green 3703.
+The weak-existential θ theorem was caught + dropped (controller); analytic θ-binding = flagged seam.
+
+**★ R1 ESCALATION (honest) — the gate is TWO MOUNTAINS, not the bounded construction the #135 cert hoped.**
+routestep-read (formaliser, triple+Codex) found r1-135-design's "bounded READ" over-optimistic: the existing
+`ChainDimSplit` carrier is FIXED-ARITY (width-only) and CANNOT express the LAYER-COLLAPSING minAdm recursion
+`minAdm(M₀,…,M_L)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…,M_L)]` (reduced chain Fin L, one fewer layer = Aoyagi's
+layer-peeling, matches #18 depth-recursion). The cert's `codim=(M₀−t)(M₁−t)` is the per-EDGE term, not the
+per-path Mval (conflated). Blocker doc merged in-file @9c9fcb89 (RouteMRecursion:219-246). honest sorry kept,
+NO fabrication. **Two R1 mountains:** (1) the **LayerSplit re-architecture** (layer-collapsing carrier +
+routeAtlas recurse on (L',red) + the descent cert generalised to dlnLoss-of-collapsed-chain — the #18
+geometry) — BUILDING (layersplit-rearch, validate-first, worktree); (2) the **general-M IsRouteMCover**
+(only (2,2,2) atoms exist; routeM_rlctAtOn_eq_iInf takes it as a hypothesis) — separate second lane, not yet
+started. R1 is the genuine LONG POLE; the headline stays honest-conditional on it. The MATH (layer-collapsing
+recursion, value ½·minAdm) is validated; the Lean carrier needed re-architecting. NOT a wall — a precise
+re-arch path. (Recorded discuss-at-close item 6.)
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

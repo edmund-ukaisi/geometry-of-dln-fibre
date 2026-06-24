@@ -35,3 +35,17 @@ aoyagi_learning_coefficient` shows only `[propext, Classical.choice, Quot.sound,
 sorryAx, no native_decide) — the closing criterion.
 
 (Append items as they arise during the autonomous charge.)
+
+## 6. R1 is the LONG POLE — two mountains (controller charging ahead; for awareness)
+The R1 gate (`resolution_charts` / general-M `routeStep`) is the genuine long pole. `routestep-read`
+(triple+Codex) found the existing `ChainDimSplit` carrier is fixed-arity and cannot express the
+layer-collapsing minAdm recursion `minAdm(M₀,…,M_L)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…,M_L)]` —
+r1-135-design's "bounded construction" was over-optimistic. The MATH is validated (layer-collapsing =
+Aoyagi's layer-peeling + the #18 depth-recursion); the Lean CARRIER needs re-architecting. TWO lanes:
+(1) the **LayerSplit re-architecture** (layer-collapsing carrier + routeAtlas recurse on (L',red) + the
+descent cert generalised to the collapsed chain) — BUILDING (`layersplit-rearch`, validate-first);
+(2) the **general-M `IsRouteMCover`** (only the (2,2,2) atoms exist) — separate, not yet started. The
+headline `aoyagi_learning_coefficient` stays honest-conditional on R1. I'm driving both lanes; flagging
+because R1 closing is the main remaining effort and may take significant time. NOT a wall — a precise
+re-arch path; each prior R1 dead-end (per-node Morse, §8 one-shot, threshold-only-corank≥2, ChainDimSplit
+carrier) was caught honestly before building on it.
