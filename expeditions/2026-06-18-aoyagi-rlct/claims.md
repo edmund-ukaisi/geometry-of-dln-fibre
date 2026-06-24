@@ -5615,3 +5615,19 @@ Nonclaims: no arbitrary branch selection, no branch-independent Theorem 2
 payload, no closed form for `ceilWidth` or `aParam`, no source-rank/final
 socket wrapper, no Eq5 payloads, no chart production, no pole-order theorem,
 and no RLCT theorem.
+
+Latest A6 Definition 3 `ell=1` source-data formula:
+Proved that a supplied `AoyagiDefinition3SourceData L 1 H r C`, together with
+source-range rank-width, supplies all hypotheses needed by the arbitrary-depth
+`ell=1` selected-pair formula package.  The selected widths are
+`u=H(C.cut 0)-r` and `v=H(C.cut 1)-r`, and the finite formula data has
+`ceilWidth=u+v`, `aParam=1`, order `1`, pair sum `u*v`, and lambda
+`regularTerm+u*v/2`.
+
+Lean name:
+`AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general`.
+
+Nonclaims: no theorem infers `ell=1`, no canonical selected pair, no
+branch-independent payload for arbitrary Definition 3 data, no source-rank or
+final-socket wrapper, no Eq5 payloads, no chart production, no pole-order
+theorem, and no RLCT theorem.

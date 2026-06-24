@@ -586,6 +586,15 @@ reducer for the all-source branch only, not branch selection, not a closed
 Theorem 2 formula, and not a final socket.  Xhigh review passed in
 `threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
 
+A6 Definition 3 `ell=1` source-data formula has now landed:
+`threads/06-dln-translation/reproduction-definition3-ell-one-source-data-formula-a6.md`.
+Lean now removes the duplicated selected-cover, positivity, selected-value,
+and cut-bound inputs from the arbitrary-depth `ell=1` selected-pair formula
+when `AoyagiDefinition3SourceData L 1 H r C` is already supplied.  This remains
+a supplied-`ell=1` finite formula theorem, not branch selection or a final
+socket.  Xhigh review passed in
+`threads/06-dln-translation/review-definition3-ell-one-source-data-formula-a6.md`.
+
 ## Current A0 checkpoint - 2026-06-23
 
 The finite normal-crossing exponent interface has landed in

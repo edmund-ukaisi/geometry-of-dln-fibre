@@ -1586,3 +1586,29 @@ the existing all-source selected ceiling-data package.  It still does not
 choose the all-source branch for arbitrary Definition 3 data, compute
 `ceilWidth` or `aParam`, construct Eq5 payloads or charts, prove normal
 crossings, identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-24, `ell=1` source-data formula
+
+Reproduction:
+`reproduction-definition3-ell-one-source-data-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-ell-one-source-data-formula.md`.
+Review:
+`review-definition3-ell-one-source-data-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general
+```
+
+For supplied `S : AoyagiDefinition3SourceData L 1 H r C` and source-range
+rank-width, Lean now derives the existing arbitrary-`L`, `ell=1` selected-pair
+finite Theorem 2 formula without asking separately for selected-value cover,
+selected positivity, selected value equalities, or cutpoint bounds.  The two
+selected widths are exposed as `u=H(C.cut 0)-r` and `v=H(C.cut 1)-r`.
+
+This is still only a supplied-`ell=1` branch result.  It does not infer
+`ell=1`, choose a canonical pair, prove branch-independent formula payloads,
+add a final socket, construct Eq5 payloads or charts, prove normal crossings,
+identify pole order, or extract RLCT.

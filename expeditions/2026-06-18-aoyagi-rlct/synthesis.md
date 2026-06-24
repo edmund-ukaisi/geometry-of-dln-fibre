@@ -8528,6 +8528,15 @@ for arbitrary Definition 3 data, compute the ceiling datum, or touch the
 analytic/final sockets.  Review passed in
 `threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
 
+Latest A6 `ell=1` source-data formula update:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general`.
+It removes duplicated selected-cover/positivity/cut-bound inputs when an
+`ell=1` Definition 3 source-data package is already supplied.  This is still a
+supplied-branch finite formula theorem; no branch choice, final socket, or
+analytic extraction is involved.  Review passed in
+`threads/06-dln-translation/review-definition3-ell-one-source-data-formula-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

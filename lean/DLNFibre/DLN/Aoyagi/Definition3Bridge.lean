@@ -2257,6 +2257,87 @@ theorem exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth_general
     ⟨m, data, S, rfl, hceil_uv, haParam, horder, hnat, hnonneg, hstrict_m, hle,
       hnatNonneg, hm0, hm1, hpair, hlambda⟩
 
+/-- A supplied `ell = 1` Definition 3 source datum gives the explicit finite
+Theorem 2 formula for its two selected widths.
+
+This theorem removes the separate selected-value cover and positivity inputs
+from the exposed selected-pair formula package; `ell = 1` remains supplied. -/
+theorem exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    (hr : ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s) :
+    ∃ (u v : ℕ)
+        (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      u = H (C.cut (0 : Fin (1 + 1))) - r ∧
+      v = H (C.cut (1 : Fin (1 + 1))) - r ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+        aoyagiTheorem2RegularTerm L H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  classical
+  let u : ℕ := H (C.cut (0 : Fin (1 + 1))) - r
+  let v : ℕ := H (C.cut (1 : Fin (1 + 1))) - r
+  have hrSelected : ∀ j : Fin (1 + 1), r ≤ H (C.cut j) :=
+    fun j ↦ hr (C.cut j) (C.pos j) (S.cut_le j)
+  have hu :
+      aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) = (u : ℤ) := by
+    dsimp [u]
+    exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H
+      (hrSelected (0 : Fin (1 + 1)))
+  have hv :
+      aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) = (v : ℤ) := by
+    dsimp [v]
+    exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H
+      (hrSelected (1 : Fin (1 + 1)))
+  have hu_red_pos :
+      0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (1 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have hv_red_pos :
+      0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (0 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have hu_pos : 0 < u := by
+    have hzu : 0 < (u : ℤ) := by
+      rwa [hu] at hu_red_pos
+    exact_mod_cast hzu
+  have hv_pos : 0 < v := by
+    have hzv : 0 < (v : ℤ) := by
+      rwa [hv] at hv_red_pos
+    exact_mod_cast hzv
+  have hcover :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) := by
+    intro s hs1 hsL
+    exact S.reducedWidth_mem_selectedValueSet_of_ell_eq_one hs1 hsL
+  rcases exists_ell_one_selectedPair_theorem2Formula_of_cover_rankWidth_general
+      (L := L) (H := H) (r := r) (u := u) (v := v) (C := C)
+      S.cut_le hu hv hu_pos hv_pos hcover hr with
+    ⟨m, data, _S, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m,
+      hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+  exact
+    ⟨u, v, m, data, rfl, rfl, hm, hceil, haParam, horder, hnat, hnonneg,
+      hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
 /-- For `L = 2` and an exposed `ell = 1` selected pair, a positive selected
 pair cover gives explicit Theorem 2 finite formula data with the `ell = 1`
 ceiling datum chosen directly.

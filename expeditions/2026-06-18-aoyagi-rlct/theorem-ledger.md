@@ -7430,6 +7430,19 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-all-source-strict-rank-width-a6.md`.
 
+Latest A6 Definition 3 `ell=1` source-data formula:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general`.
+The theorem starts from supplied `AoyagiDefinition3SourceData L 1 H r C` and
+source-range rank-width, derives selected positivity and value-set cover from
+`S`, and delegates to the existing arbitrary-`L` selected-pair formula
+package.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-ell-one-source-data-formula-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-ell-one-source-data-formula.md`.
+Review:
+`threads/06-dln-translation/review-definition3-ell-one-source-data-formula-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
