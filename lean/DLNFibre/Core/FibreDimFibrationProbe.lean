@@ -90,4 +90,16 @@ example [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
       Ideal (MvPolynomial (RepCoord (dStratum (d 0) (d (Fin.last N)))) k)).IsPrime :=
   isPrime_vanishingIdeal_productRankLocusLE_stratum (d 0) (d (Fin.last N)) r hq hp
 
+/-! ## Candidate: the base ringKrullDim = δ (the brick the going-down/00OM route consumes)
+
+`ringKrullDim (O(Mat^{≤r})) = δ` over `[IsAlgClosed][CharZero]`, where `O(Mat^{≤r}) =
+MvPolynomial (RepCoord stratum) k ⧸ vanishingIdeal(…)`. From the thermometer (varietyDim = δ) which
+unfolds to exactly `(ringKrullDim (… ⧸ vanishingIdeal …)).unbotD 0`, plus the quotient is nontrivial
+(prime ideal) so the dim is not `⊥`. -/
+
+/-- `varietyDim` unfolds to the `unbotD 0` of the quotient `ringKrullDim`. -/
+example (Z : Set (RepCoord (dStratum 2 2) → k)) :
+    varietyDim Z = (ringKrullDim (MvPolynomial (RepCoord (dStratum 2 2)) k ⧸
+      MvPolynomial.vanishingIdeal (K := k) k Z)).unbotD 0 := rfl
+
 end DLNFibre.Core
