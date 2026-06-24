@@ -55,3 +55,25 @@ Classical.choice, Quot.sound]`. Witness: the `(2,2,2), r=1` base chart.
 G2-3 (total + Schur AlgEquiv + flatness), G2-4, G2-5, G3/G4 are later. Report to `main`: theorem names +
 signatures; green/sorries/axioms; module path + aggregator line; the determinantal-ideal Mathlib status;
 the decorrelated-Codex read (incl. the composition sanity-check); v4.29 friction. Commit when green.
+
+---
+
+## PROGRESS LOG (formaliser)
+
+### Sub-rung 1 — bordered Schur minor foundation. **LANDED** (commit `eec3f774`, aggregated `9e7ce92c`).
+`DLNFibre.Core.DeterminantalChartRing`:
+- `det_fromBlocks_scalar_eq` — `det[[Δ,u],[v,d]] = d·detΔ − v·adjΔ·u` over any CommRing (universal-coefficient route).
+- `schur_expr_eq_zero_of_rank_le` — the Schur expression is an (r+1)-minor, vanishes on `Mat^{rk≤r}`.
+Sorry-free, axiom-clean. Statement card written. The generator-free handle replacing determinantal-ideal theory.
+
+### Sub-rung 2 step (a) — lift to the base ideal. **LANDED** (commit `ccaab34d`, pushed).
+- `eval_det_submatrix_multPoly` — `eval(canonicalCoord A)` of a minor of the generic product `multPoly d` = the minor of `mult d A`.
+- `det_submatrix_multPoly_mem_sigmaIdeal` — that `(r+1)`-minor ∈ `sigmaIdeal d r`. General in N. Uses the engine's `eval_multPoly` bridge (sidesteps the `mult = A 0` dependent-Fin wall). Sorry-free, axiom-clean.
+
+### Sub-rung 2 steps (b)–(e) — the localized presentation proper. **SPECIFY done, GRIND not started (checkpoint).**
+Validated (SPECIFY probes, all type-check):
+- `detPivotPoly` (top-left r×r minor of `multPoly (dStratum q p)`), `Localization.Away`, the `IsLocalization.Away` instance, the localized base ideal `Iad = sigmaIdeal.map (algebraMap)`.
+- **`height Iad = C` is the EASY half**: `IsLocalization.height_map_of_disjoint` + engine `height sigmaIdeal = C` (Brick A) + `sigmaIdeal` prime (`isPrime_vanishingIdeal_productRankLocusLE_stratum`). Needs `detΔ ∉ sigmaIdeal` (a witness: a rank-≤r matrix with invertible top-left block, e.g. the realizer `diag(I_r,0)`).
+- **The `J` side (`Iad = J` + `AlgEquiv` + `height J = C`) is the bulk**: the genuinely-large construction. `height J = C` follows from the explicit presentation `Ad/J ≅ free Schur localization` (Codex's reindex dodge); the `AlgEquiv` (direction-B comorphism + explicit inverse) is the load-bearing build.
+
+Banked two hole-free seams; checkpointing before opening the large `AlgEquiv` construction. The composition stays on the height-additivity architecture (engine has `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`).
