@@ -128,4 +128,54 @@ theorem multPoly_stratum_apply (q p : ℕ) (a : Fin p) (b : Fin q) :
   rw [Matrix.of_apply, multPoly, mult_stratum_eq q p (genericTuple (dStratum q p))]
   rfl
 
+/-! ## The pivot minor `detΔ` lives in the `SchurVar` block
+
+Under the block reindex `Φ = renameEquiv (repCoordReindex)`, the pivot minor `detΔ = detPivotPoly`
+maps to `rename Sum.inr detSchurS` — a polynomial in the `SchurVar` (specifically `Δ`) coordinates
+only. Pushing further through `sumAlgEquiv` (with `B22block` outermost), `detΔ` becomes the constant
+`C detSchurS`, so localizing `A_eng` at `detΔ` is localizing the coefficient ring at `detSchurS`. -/
+
+/-- The pivot determinant in the free Schur coordinate ring: `det` of the `Δ`-block coordinate
+matrix `(i, j) ↦ X (Sum.inl (i, j))` in `MvPolynomial (SchurVar q p r) k`. This is `detΔ` after
+eliminating the `B22` block — the localization element on the Schur side. -/
+noncomputable def detSchurS (q p r : ℕ) : MvPolynomial (SchurVar q p r) k :=
+  (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).det
+
+/-- Under the reindex `renameEquiv (repCoordReindex)`, the pivot minor `detΔ` maps to
+`rename Sum.inr (detSchurS)`: it is a polynomial in the `SchurVar` coordinates only. (`det` commutes
+with the algebra maps; each pivot entry `X ⟨0, (castLE i, castLE j)⟩` maps to the `Δ`-coordinate
+`X (Sum.inr (Sum.inl (i, j)))`, by `repCoordReindex_pivot`.) -/
+theorem renameEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    (renameEquiv k (repCoordReindex q p r hp hq)) (detPivotPoly (k := k) q p r hp hq)
+      = rename Sum.inr (detSchurS (k := k) q p r) := by
+  rw [detPivotPoly, detSchurS, AlgEquiv.map_det, AlgHom.map_det (rename Sum.inr)]
+  congr 1
+  funext i j
+  rw [AlgEquiv.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply,
+    Matrix.submatrix_apply, multPoly_stratum_apply, renameEquiv_apply, rename_X, Matrix.of_apply,
+    rename_X]
+  congr 1
+  exact repCoordReindex_pivot q p r hp hq i j
+
+/-- The full block algebra equivalence
+`A_eng ≃ₐ[k] MvPolynomial B22block (MvPolynomial SchurVar k)`: relabel the coordinates
+(`renameEquiv (repCoordReindex)`) then split off the `B22` block (`sumAlgEquiv`, `B22block`
+outermost). -/
+noncomputable def blockAlgEquiv (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    MvPolynomial (RepCoord (dStratum q p)) k
+      ≃ₐ[k] MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k) :=
+  (renameEquiv k (repCoordReindex q p r hp hq)).trans (sumAlgEquiv k _ _)
+
+/-- Under `blockAlgEquiv`, the pivot minor `detΔ` becomes the constant `C detSchurS`: it lives
+purely in the `SchurVar` coefficient ring (`sumAlgEquiv` sends `rename Sum.inr` into the constants).
+So localizing `A_eng` at `detΔ` corresponds to localizing the `SchurVar` coefficient ring at
+`detSchurS`. -/
+theorem blockAlgEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    blockAlgEquiv (k := k) q p r hp hq (detPivotPoly (k := k) q p r hp hq)
+      = C (detSchurS (k := k) q p r) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_detPivot]
+  have h := sumAlgEquiv_comp_rename_inr (R := k) (S₁ := B22block q p r) (S₂ := SchurVar q p r)
+  have hs := congrArg (fun f ↦ f (detSchurS (k := k) q p r)) h
+  simpa using hs
+
 end DLNFibre.Core
