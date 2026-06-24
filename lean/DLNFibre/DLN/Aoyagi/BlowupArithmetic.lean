@@ -18780,6 +18780,101 @@ theorem exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProd
           (case2DisplayedSourceOldTopWeight pre) hstop (post.weight (J + 1))
           (sourceSuffixProduct κ Ctail S hSuffix)]
 
+set_option linter.style.longLine false in
+/-- Terminal-prefix-row stopped source old-top/source suffix theorem for the
+constructed old-top/free-`C'` source following factor.
+
+The source side uses old-top rows `Cold` and the reconstructed old residual
+block `Q*Cprime`.  The terminal side is the stopped-prefix reindexing of the
+source-row reindexing of `[Cold; top(Cprime)]`, followed by the supplied source
+suffix.  This is only a finite entry-ideal consumer; it does not construct
+source-produced terminal data, the source suffix, successor charts, normal
+crossings, pole order, or RLCT data. -/
+theorem exists_sourceOldTopSourceSuffix_entryIdeal_eq_constructedOldTopFromCprimeTerminalPrefixProduct_of_not_next_cont
+    {R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    {pre : IntroducedLabelRecurrenceState L n S J R}
+    {post : IntroducedLabelRecurrenceState L n S (J + 1) R}
+    {u : R}
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (data :
+      Case2DisplayedSuppliedChartFamilyBoundary R L n S J
+        t t' numerator numerator' leastValue leastValue'
+        pre post u ChartRegular TransitionRegular)
+    (κ : Fin (L + 1) → Type*) [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
+    (hSuffix : S + 1 ≤ L)
+    (hstop : ¬ J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cold : Matrix (case2SourceOldTopRowIndex J)
+      (κ (sourceLayerIndex L (S + 2)
+        (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R)
+    (Cprime : Matrix
+      (Unit ⊕ pivotComplement (case2DisplayedPivotCol n data.stage_pos data.continuation))
+      (κ (sourceLayerIndex L (S + 2)
+        (Nat.succ_le_succ (Nat.zero_le (S + 1))) (Nat.succ_le_succ hSuffix))) R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) :
+    ∃ q : pivotComplement
+        (case2DisplayedPivotRow n data.stage_pos data.continuation) → R,
+      matrixEntryIdeal
+          ((fromBlocks (case2DisplayedSourceOldTopWeight pre) 0 0
+              (weightedPivotBlockRowOp q
+                    (fun i ↦
+                      pivotFirstX
+                        (case2DisplayedPivotRow n data.stage_pos data.continuation)
+                        (case2DisplayedPivotCol n data.stage_pos data.continuation)
+                        (case2DisplayedPaperDchart n data.stage_pos data.continuation
+                          residual) i ()) *
+                  (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+                    case2DisplayedSourceSubstitutionBlock n data.stage_pos
+                      data.continuation u residual).submatrix
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotRow n data.stage_pos data.continuation))
+                    (pivotFirstIndexEquiv
+                      (case2DisplayedPivotCol n data.stage_pos data.continuation))) *
+              verticalBlock Cold
+                (case2DisplayedPaperConstructedFollowingFactor n data.stage_pos
+                  data.continuation residual Cprime)) *
+            sourceSuffixProduct κ Ctail S hSuffix) =
+      matrixEntryIdeal
+          ((case2DisplayedSourceTerminalWeightPrefixCandidate
+              (case2DisplayedSourceOldTopWeight pre)
+              n data.continuation hstop (post.weight (J + 1)) *
+            ((verticalBlock Cold
+                (case2DisplayedFreeCprimeTop n data.stage_pos data.continuation Cprime)).submatrix
+              (case2SourceTerminalRowEquiv J).symm id).submatrix
+              (case2SourceTerminalRowEquivPrefixOfNotNext n data.continuation hstop).symm
+              id) * sourceSuffixProduct κ Ctail S hSuffix) := by
+  let C :=
+    case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime
+      n data.stage_pos data.continuation residual Cold Cprime
+  let bridge :=
+    SuppliedTerminalCprimeBridge.of_constructedWithOldTopFromCprime
+      n data.stage_pos data.continuation residual Cold Cprime
+  rcases
+      data.exists_sourceOldTopSourceSuffix_entryIdeal_eq_suppliedTerminalPrefixProduct_of_not_next_cont
+        κ hSuffix hstop residual C Ctail bridge with
+    ⟨q, hq⟩
+  refine ⟨q, ?_⟩
+  have hold :
+      case2DisplayedSourceOldTopBlock (J := J) C = Cold := by
+    simpa [C] using
+      case2DisplayedSourceOldTopBlock_constructedWithOldTopFromCprime
+        n data.stage_pos data.continuation residual Cold Cprime
+  have hfollowing :
+      case2DisplayedSourceFollowingFactor n data.stage_pos data.continuation C =
+        case2DisplayedPaperConstructedFollowingFactor n data.stage_pos
+          data.continuation residual Cprime := by
+    simpa [C, case2DisplayedConstructedSourceFollowingFactorWithOldTopFromCprime]
+      using
+        case2DisplayedSourceFollowingFactor_constructedWithOldTop
+          n data.stage_pos data.continuation Cold
+          (case2DisplayedPaperConstructedFollowingFactor n data.stage_pos
+            data.continuation residual Cprime)
+  simpa [C, bridge, hold, hfollowing] using hq
+
 /-- Terminal-prefix-row stopped source old-top/source suffix theorem in the
 current-prefix row-exhausted branch.
 

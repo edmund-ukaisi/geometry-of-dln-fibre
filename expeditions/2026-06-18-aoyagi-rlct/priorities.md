@@ -2716,3 +2716,13 @@ landed in
 It requires `hstop` and reindexes `[Cold; top(Cprime)]` to terminal-prefix
 rows, then rewrites the terminal-prefix product candidate.  It still does not
 use actual-width collapse or source-produce terminal data.
+
+The source-suffix consumer for that constructed terminal-prefix data has now
+landed in
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+It specializes the stopped source-suffix entry-ideal theorem to the constructed
+old-top/free-`Cprime` source following factor.  The source side is
+`[Cold; Q*Cprime]`; the terminal side is the double reindexing of
+`[Cold; top(Cprime)]` followed by the supplied raw `sourceSuffixProduct`.
+This still does not source-produce `Csucc`, `C'^(S+1)`, suffixes, charts,
+transition regularity, coverage, normal crossings, pole order, or RLCT.

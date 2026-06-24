@@ -4559,3 +4559,18 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
+
+Latest A4 Case 2 constructed old-top `Cprime` terminal-prefix source suffix:
+`BlowupArithmetic.lean` now specializes the stopped terminal-prefix
+source-suffix entry-ideal consumer to the constructed old-top/free-`Cprime`
+source following factor.  The source side is `[Cold; Q*Cprime]`; the terminal
+side is the stopped-prefix reindexing of the source-row reindexing of
+`[Cold; top(Cprime)]`, followed by the supplied raw `sourceSuffixProduct`.
+This proves no actual-width collapse, source production of `Csucc` or
+`C'^(S+1)`, suffix construction, successor charts, transition regularity,
+coverage, normal crossings, pole order, termination, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.

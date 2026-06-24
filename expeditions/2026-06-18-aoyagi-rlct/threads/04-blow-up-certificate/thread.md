@@ -6312,3 +6312,29 @@ does not collapse the transported pivot row to an original source row, and it
 does not construct source data, terminal charts, suffixes, transition
 regularity, chart coverage, normal crossings, pole order, termination, or
 RLCT.
+
+## 2026-06-24 Lean Case 2 constructed old-top `Cprime` terminal-prefix source suffix
+
+Reproduction:
+`reproduction-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+Statement card:
+`statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix.md`.
+Review:
+`review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+
+Lean now specializes the stopped terminal-prefix source-suffix entry-ideal
+consumer to the constructed old-top/free-`Cprime` following factor:
+
+```text
+exists_sourceOldTopSourceSuffix_entryIdeal_eq_constructedOldTopFromCprimeTerminalPrefixProduct_of_not_next_cont
+```
+
+The source product uses old-top rows `Cold` stacked over the reconstructed
+old residual block `case2DisplayedPaperConstructedFollowingFactor ... Cprime`
+(`Q*Cprime`).  The terminal product uses the stopped-prefix reindexing of the
+source-row reindexing of `[Cold; case2DisplayedFreeCprimeTop ... Cprime]`,
+followed by the supplied raw `sourceSuffixProduct`.
+
+This is finite entry-ideal consumer bookkeeping only.  It does not construct
+`Csucc`, `C'^(S+1)`, suffixes, successor charts, transition regularity, chart
+coverage, normal crossings, pole order, termination, or RLCT.

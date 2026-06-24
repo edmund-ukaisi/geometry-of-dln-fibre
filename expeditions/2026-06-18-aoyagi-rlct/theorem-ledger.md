@@ -6964,6 +6964,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal-prefix source suffix:
+`BlowupArithmetic.lean` now proves
+`exists_sourceOldTopSourceSuffix_entryIdeal_eq_constructedOldTopFromCprimeTerminalPrefixProduct_of_not_next_cont`.
+This is the stopped terminal-prefix source-suffix entry-ideal consumer
+specialized to the constructed old-top/free-`Cprime` source following factor.
+The source side uses `[Cold; Q*Cprime]`; the terminal side uses the double
+reindexing of `[Cold; top(Cprime)]` and the supplied raw
+`sourceSuffixProduct`.  It proves no actual-width original-row collapse,
+source production, suffix construction, chart construction, transition
+regularity, coverage, normal crossings, pole order, termination, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

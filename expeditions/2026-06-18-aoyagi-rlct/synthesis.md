@@ -7201,6 +7201,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-a4.md`.
 
+Latest A4 Case 2 constructed old-top `Cprime` terminal-prefix source suffix:
+`BlowupArithmetic.lean` now proves
+`exists_sourceOldTopSourceSuffix_entryIdeal_eq_constructedOldTopFromCprimeTerminalPrefixProduct_of_not_next_cont`.
+It specializes the stopped terminal-prefix source-suffix entry-ideal consumer
+to the constructed old-top/free-`Cprime` following factor.  The source side is
+the old-top/free-`Cprime` source block `[Cold; Q*Cprime]`; the terminal side is
+the stopped-prefix reindexing of the source-row reindexing of
+`[Cold; top(Cprime)]`, followed by the supplied raw source suffix.  This is
+finite consumer bookkeeping only; no actual-width collapse, source production,
+suffix construction, successor charts, transition regularity, coverage, normal
+crossings, pole order, termination, or RLCT is proved.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-constructed-oldtop-cprime-terminal-prefix-source-suffix-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
