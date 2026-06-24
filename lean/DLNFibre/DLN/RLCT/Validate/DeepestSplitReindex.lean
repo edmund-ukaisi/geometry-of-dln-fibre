@@ -251,6 +251,51 @@ theorem pivotThresholdSplit_castLE (r a : ℕ) (ha : r ≤ a) :
         omega
     rw [← h]
 
+/-- **The pivot-split P12 discriminating identity** (Stage B item-1, the cheapest discriminating
+check; L1-soundness gate). For a row split `eR : Fin a ≃ Fin r ⊕ Fin (a−r)`, a (pivot) column split
+`eJ : Fin b ≃ Fin r ⊕ Fin (b−r)` shared between the deviation insertion AND the read, and any frame
+`Q : Matrix (Fin b)²`, the top-right (`P12`, `Fin r × Fin (b−r)`) block of the read of the
+Y-deviation-conjugated `Q` is exactly `Y · (reindex eJ eJ Q).toBlocks₂₂`:
+
+    (reindex eR eJ ((reindex eR.symm eJ.symm (fromBlocks 0 Y 0 0)) * Q)).toBlocks₁₂
+      = Y * (reindex eJ eJ Q).toBlocks₂₂.
+
+This is the certified `Y · B₂₂` shape (with `B₂₂ = (reindex eJ eJ Q).toBlocks₂₂`) PIN1's reg-slice
+fderiv needs. CRITICAL (L1 vs L2): the SAME `eJ` appears on the `.symm` insertion side and the read
+side; with the threshold `.succ` split on the insertion and `eJ` only on the outer read, the block
+is the MIXED `Y · (reindex eThreshold eJ Q).toBlocks₂₂` — NOT this certified form (the documented L2
+unsoundness). Proof: split the product at the middle index `eJ` (`submatrix_mul_equiv`), the outer
+reindex cancels the inserted reindex, then `fromBlocks_multiply` on `fromBlocks 0 Y 0 0`. -/
+theorem pivot_devY_read_toBlocks₁₂ {a b r : ℕ}
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eJ : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (Y : Matrix (Fin r) (Fin (b - r)) ℝ) (Q : Matrix (Fin b) (Fin b) ℝ) :
+    (Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)).toBlocks₁₂
+      = Y * (Matrix.reindex eJ eJ Q).toBlocks₂₂ := by
+  -- Split the product at the middle index `eJ`. Unfold every `reindex` to `submatrix`; with
+  -- `Q = (reindex eJ eJ Q).submatrix eJ eJ`, the outer `submatrix _ eR.symm eJ.symm` of the product
+  -- merges by `submatrix_mul_equiv` (middle `eJ`) into `fromBlocks 0 Y 0 0 * reindex eJ eJ Q`.
+  have hsplit : Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)
+      = (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0)
+          * (Matrix.reindex eJ eJ Q) := by
+    -- Rewrite `Q` as the round-trip `(reindex eJ eJ Q).submatrix eJ eJ` so the product is two
+    -- submatrices sharing the middle index `eJ`.
+    have hQ : Q = (Matrix.reindex eJ eJ Q).submatrix eJ eJ := by
+      simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+        Matrix.submatrix_id_id]
+    simp only [Matrix.reindex_apply, Equiv.symm_symm]
+    conv_lhs => rw [hQ]
+    rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0)
+        (Matrix.reindex eJ eJ Q) eR eJ eJ, Matrix.submatrix_submatrix,
+      Equiv.self_comp_symm, Equiv.self_comp_symm, Matrix.submatrix_id_id]
+    rfl
+  rw [hsplit]
+  -- `(fromBlocks 0 Y 0 0 * M).toBlocks₁₂ = Y · M.toBlocks₂₂`: expand `M` into its blocks, multiply.
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eJ eJ Q)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₂]
+  simp only [Matrix.zero_mul, zero_add]
+
 /-- The per-layer entry split: a layer's entry index `Fin a × Fin b` (rows × cols) splits, by the
 `r`-threshold on both, into the **three regular blocks** `(X = r×r) ⊕ (Y = r×(b−r)) ⊕ (Z = (a−r)×r)`
 collected on the left, and the **reduced `T`-block** `MM = (a−r)×(b−r)` isolated on the right. The
