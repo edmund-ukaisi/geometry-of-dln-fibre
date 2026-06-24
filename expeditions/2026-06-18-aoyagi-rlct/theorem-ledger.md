@@ -7210,6 +7210,24 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.
 
+Latest A6 Definition 3 equal-width ceiling data:
+`Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_constant_reducedWidth`
+and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos`.
+The helper derives source-range rank-width from constant Nat-valued
+integer reduced width.  The package theorem then produces consecutive
+cutpoints, equal-width source data, selected reduced widths, a Definition 3
+ceiling datum, Nat-width rewrites, nonnegativity, strict selected inequalities,
+selected-width upper bounds, and `m j = w`.  This is equal-width plumbing only,
+not arbitrary source-data existence, Eq5 construction, finite formula proof,
+chart production, pole order, or RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-ceil-data-a6.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

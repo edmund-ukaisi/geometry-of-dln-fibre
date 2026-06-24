@@ -4791,3 +4791,22 @@ Statement card:
 `threads/06-dln-translation/statement-card-a6-definition3-equal-width-source-data.md`.
 Review:
 `threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.
+
+Latest A6 Definition 3 equal-width ceiling data:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_constant_reducedWidth`
+and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos`.
+The first theorem derives source-range rank-width from the constant
+Nat-valued reduced-width equality; the second packages that with the
+equal-width source-data constructor and the existing selected reduced-width
+ceiling-data theorem.  This removes repeated supplied rank-width/source-data
+inputs in the equal-width lane only.  It proves no arbitrary selected-cutpoint
+existence, no closed form for `ceilWidth` or `aParam`, no Eq5 payload, no
+finite exponent formula, no chart production, no pole order, and no RLCT.
+Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-ceil-data-a6.md`.

@@ -7467,6 +7467,26 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-equal-width-source-data-a6.md`.
 
+A6 Definition 3 equal-width ceiling-data package:
+`Definition3Bridge.lean` now proves
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_constant_reducedWidth`
+and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos`.
+The helper derives the source-range rank-width bound from the constant
+integer reduced-width equality.  The package theorem then combines the
+equal-width source-data constructor with the existing selected reduced-width
+ceiling-data package, returning consecutive cutpoints, source data, `m,data`,
+the Nat-width rewrites, nonnegativity, strict selected inequalities,
+selected-width upper bounds, and `m j = w`.  This is mostly downstream
+plumbing for the equal-width lane; it does not compute `ceilWidth` or
+`aParam`, prove arbitrary source-data existence, construct Eq5 payloads,
+produce charts, identify pole order, or extract RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-definition3-equal-width-ceil-data-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-ceil-data.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-ceil-data-a6.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

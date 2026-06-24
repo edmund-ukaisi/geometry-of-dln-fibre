@@ -2891,3 +2891,13 @@ consecutive source layers as selected cutpoints.  Treat this as a narrow
 source-moving constructor only.  It does not reopen arbitrary Definition 3
 source-data existence; the recent obstruction theorems remain active
 guardrails.
+
+A6 Definition 3 equal-width ceiling-data package has now landed:
+`threads/06-dln-translation/reproduction-definition3-equal-width-ceil-data-a6.md`.
+Lean proves
+`AoyagiDefinition3SourceData.sourceRangeRankWidth_of_constant_reducedWidth`
+and
+`AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos`.
+This removes the separate rank-width/source-data bundle for the equal-width
+lane by deriving `r<=H s` from the constant integer reduced-width equality.
+Treat it as useful plumbing, not new general source-data existence.

@@ -476,6 +476,21 @@ theorem exists_consecutive_of_constant_reducedWidth_pos
     · intro s hs1 hsL hnot
       exact False.elim (hnot (hselected_mem s hs1 hsL))
 
+/-- A constant Nat-valued reduced-width identity implies the source-range
+rank-width bound used by the selected-width ceiling package. -/
+theorem sourceRangeRankWidth_of_constant_reducedWidth
+    {L : ℕ} {H : ℕ → ℕ} {r w : ℕ}
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s := by
+  intro s hs1 hsL
+  have hnonneg : 0 ≤ aoyagiReducedWidthInt H r s := by
+    rw [hconst s hs1 hsL]
+    exact_mod_cast Nat.zero_le w
+  unfold aoyagiReducedWidthInt at hnonneg
+  exact_mod_cast (sub_nonneg.mp hnonneg)
+
 /-- Diagnostic obstruction: the printed Definition 3 inequalities do not
 produce source data for the reduced-width profile `1,2,100`.
 
@@ -854,6 +869,44 @@ theorem exists_selectedReducedWidthCeilData_of_rankWidth
   · intro i
     exact aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le
       H (r := r) (i := i) C hrSelected
+
+/-- Equal-width source data together with the downstream selected reduced-width
+ceiling package.
+
+This packages the equal-width example's consecutive cutpoints and derives the
+source-range rank-width bound from the same constant reduced-width hypothesis.
+It does not compute the ceiling datum in closed form. -/
+theorem exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos
+    {L : ℕ} {H : ℕ → ℕ} {r w : ℕ}
+    (hL : 0 < L) (hw : 0 < w)
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∃ (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = (w : ℤ)) ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) := by
+  rcases exists_consecutive_of_constant_reducedWidth_pos
+      (L := L) (H := H) (r := r) (w := w) hL hw hconst with
+    ⟨C, hC, S⟩
+  have hr :=
+    sourceRangeRankWidth_of_constant_reducedWidth
+      (L := L) (H := H) (r := r) (w := w) hconst
+  rcases S.exists_selectedReducedWidthCeilData_of_rankWidth hr with
+    ⟨m, data, hm, hnat, hnonneg, hstrict, hle, hnatNonneg⟩
+  refine ⟨C, m, data, hC, S, hm, ?_, hnat, hnonneg, hstrict, hle, hnatNonneg⟩
+  intro j
+  rw [hm, aoyagiSelectedReducedWidths_apply]
+  exact hconst (C.cut j) (C.pos j) (S.cut_le j)
 
 end AoyagiDefinition3SourceData
 

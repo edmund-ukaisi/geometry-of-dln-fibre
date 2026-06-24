@@ -882,3 +882,32 @@ Boundary: equal-width source-data constructor only.  This is not arbitrary
 selected-cutpoint existence, not an `ell>1` classification, not a repair of
 Definition 3's printed inequalities, not Eq5 construction or Lemma 5
 exactness, and not chart production, normal crossings, pole order, or RLCT.
+
+## Current slice - 2026-06-24, Definition 3 equal-width ceiling data
+
+Reproduction:
+`reproduction-definition3-equal-width-ceil-data-a6.md`.
+Statement card:
+`statement-card-a6-definition3-equal-width-ceil-data.md`.
+Review artifact:
+`review-definition3-equal-width-ceil-data-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_constant_reducedWidth
+AoyagiDefinition3SourceData.exists_consecutive_selectedReducedWidthCeilData_of_constant_reducedWidth_pos
+```
+
+The helper proves that if `aoyagiReducedWidthInt H r s = (w : Int)` on the
+source range, then `r <= H s` there.  The package theorem combines this helper
+with the equal-width consecutive source-data constructor and the existing
+`exists_selectedReducedWidthCeilData_of_rankWidth` theorem.  It produces
+consecutive cutpoints, equal-width source data, selected reduced widths, a
+Definition 3 ceiling datum, the Nat-width rewrites, nonnegativity, strict
+selected inequalities, selected-width upper bounds, and `m j = w`.
+
+Boundary: mostly packaging plus the rank-width arithmetic consequence.  It
+does not compute `ceilWidth` or `aParam`, prove arbitrary Definition 3 source
+data, construct Eq5 payloads, prove finite exponent formulas, produce charts,
+identify pole order, or extract RLCT.
