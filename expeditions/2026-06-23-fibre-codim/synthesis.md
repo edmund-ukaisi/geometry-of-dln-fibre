@@ -633,3 +633,42 @@ ports to the FIBRE of `mult`.
 
 **Next:** synthesize the two findings into a concrete plan (the chosen math route + the Lean-API rung
 ladder), present it, then execute via serial formaliser tides (one write-tide; SPECIFY-first + checkpoints).
+
+## PHASE 2 RECON CONVERGED → the HEIGHT-DIRECT route (build it, multi-round)
+
+Both scouts (21 math, 22 Lean-API) + their decorrelated Codices **converge**, and the operator's steer
+(2026-06-24) is to stop declaring walls and **break the hard thing into manageable pieces while holding
+the big picture — let the sea rise**. The reframe:
+
+**The codim is RADICAL-INSENSITIVE.** `codimRepCanonical(fibre) = height(vanishingIdeal(fibre)) =
+height(radical(fibreGenIdeal)) = height(fibreGenIdeal)` — independent of whether `fibreGenIdeal` is
+radical. So the **thread-20 wall (the scheme iso `e` / cut-ideal radicality) is OFF the critical path for
+the codim** — it was a red herring; the RLCT payoff needs only the codim. The R2-3b-4 "WALL" does not
+block the goal.
+
+**The singularity at `E` is dodged by working at GENERIC points.** `d(mult)` rank drops at `E` (the fibre
+is reducible + singular there — scout 21's Jacobian), so global smoothness is false. But every variety is
+**generically smooth** (char 0): read the dimension at a **generic point of each top component**, where
+`d(mult)` has full rank `C + δ` and the tangent space `= ker d(mult)` has dim `card − C − δ`. No global
+smoothness, no flatness, no trivialization `e` needed.
+
+**HEIGHT-DIRECT rung ladder (`codimRepCanonical(fibre d E) = C + δ`):**
+- **H1 (retarget):** `codimRepCanonical(fibre d B) = height(fibreGenIdeal d B)` unconditionally
+  (radical-insensitive; `MultComorphism` pt4 + `height(radical I) = height I`). Banks the decoupling.
+- **H2 (differential):** `dmult` via `MatrixKaehler.derivMatrix_mul_apply` (product rule
+  `d(A_N···A₁) = Σ A_N···dA_i···A₁`) — the brick (none exists yet).
+- **H3 (generic Jacobian rank):** at a generic point of each top component of the fibre, `d(mult)` has
+  rank `C + δ` (tangent `= ker d(mult)`, dim `card − C − δ`) — linear-algebra/combinatorial, the engine's
+  strength; reuses `CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian` (tangent = ker
+  Jacobian, NO smoothness needed).
+- **H4 (local dim = tangent dim at a generic smooth point):** generic smoothness ⟹ component dim =
+  `card − C − δ` (reuse `SmoothPointRegular`/`SmoothLocalRelativeDimension`, both fully generic per scout 22).
+- **H5 (assembly):** `dim(fibre) = max_component = card − C − δ` ⟹ `codim = C + δ`; reducibility via Brick A
+  (`minimalPrimes_sigmaIdeal_eq`). Combine with H1.
+
+Reusable, LANDED: `MultComorphism`, `SigmaCodim` (`codim Σ̄^r = C`), the thermometer
+(`DeterminantalStratumDim`, `dim Mat^{rk=r} = δ`), the going-down/affine-domain height engine, the gauge
+(`EndpointNormalization`), `Sred` (`DeepChartRing`). Module estimate (scout 22): ~4–6.
+
+**Discipline (operator steer):** build it, multi-round; explore details per-rung as reached, not as one
+upfront gate; break a hard piece smaller rather than declaring a wall. Starting H1+H2 now.
