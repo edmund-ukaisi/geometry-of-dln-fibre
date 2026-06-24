@@ -87,5 +87,8 @@ import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
 -- RRR (L=2 / reduced-rank-regression): Aoyagi Thm 1 as the L=2 instance of the general headline
 -- (`aoyagi_rrr`) + sorry-free anchors (3/2, 1) + combinatorial `rrrTheta`. General-L-first.
 import DLNFibre.DLN.RLCT.Validate.RRR
+-- LayerSplit re-architecture: the layer-collapsing carrier + keystone `minAdmRec_eq_minAdm` (R1 carrier
+-- blocker resolved; not yet wired into routeStep — the controller-gated migration). Aggregator-gated.
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
