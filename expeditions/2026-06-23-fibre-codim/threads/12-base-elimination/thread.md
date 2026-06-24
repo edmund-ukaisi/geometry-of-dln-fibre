@@ -186,12 +186,11 @@ the landed objects. The remaining work is ONLY steps (1)/(2)/(3) of the "REMAINI
 (Submonoid.map_powers ▸ blockAlgEquiv_detPivot)` (SPECIFY-confirmed). `MvPolynomial.isLocalization`
 identifies `Localization.Away (C detSchurS)` with `MvPolynomial B22block Sd`.
 
-**(1) `height J = C`** — `forcedB22 b := IsLocalization.mk' Sd (forcedNum b) ⟨detSchurS, …⟩` (Schur
-value; **adjugate not inv**; the Codex `g22c-route` consult in thread-13 flags the denominator trap:
-`forced = forcedNum/detSchurS`, NOT the localization of `graphIdeal forcedNum`). `J := graphIdeal
-forcedB22` in `MvPolynomial B22block Sd`. `translateAux forcedB22` (an `AlgEquiv`, inverse
-`translateAux (−forcedB22)`; `(span {X b}).map (translateAux (−c)) = graphIdeal c`, probe-confirmed)
-⟹ `height J = (LANDED height_coordIdeal_localization_eq detSchurS detSchurS_ne_zero) = #B22block = C`.
+**(1) `height J = C` — LANDED (commit 3a736f4f).** `forcedNum`, `forcedB22` (= `forcedNum/detSchurS`
+via `IsLocalization.mk'`; **adjugate not inv**; denominator-correct, NOT a localized numerator graph
+ideal), and `height_graphIdeal_forcedB22_eq : (graphIdeal (forcedB22 q p r Sd)).height = (p−r)(q−r)`.
+Built on the LANDED reusable `height_graphIdeal_localization_eq` (`GraphIdealHeight.lean`:
+`translateAux` translation auto + `height_coordIdeal_localization_eq` + `detSchurS_ne_zero`). DONE.
 
 **(2) `J ⊆ Ψ(Iad)`** (the one involved step — carries the Schur content, the correctness-guard seed):
 the generator `X_{ab} − C(forcedB22 ab)` pulls back through `Ψ⁻¹` to (the localization of) the Schur
