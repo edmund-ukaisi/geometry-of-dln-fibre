@@ -10,8 +10,36 @@ conclusion withheld). Scripts: `scripts/*.py`; Codex prompt/answer: `codex/genM-
 
 ---
 
-## VERDICT: **GENERALIZES** (mechanism), via a single common radial blow-up; build-ready as a
-## PER-NODE chart SPEC. The closed-form general-`M` chart needs case-specific frame chaining.
+## CLOSER UPDATE (2026-06-24, second dispatch): the UNIFORM closed-form `φ_M` is FOUND and VERIFIED.
+
+The "residual = case-specific frame chaining" caveat below is now RESOLVED. A single closed-form
+construction (the LDU-core compressed-transition + unit-triangular `B/C` chaining, `§Uniform closed
+form` at the end of this file) works for **all strictly-decreasing kept-rank paths AND the codim-0
+boundaries** (both `r_s=0` rank-STAY and `c_s=0` width=kept). Verified EXACTLY on the full witness set
+(`scripts/verify_codex_uniform.py`, the gates G1/G2/G3 + `flatDim = ninputs` genuine-diffeo dimension):
+
+| `M` | type | dim | G1 `F=u²V` | G2 `V∈(c₀,B)` | G3 `det` u-exp `=minAdm−1` |
+|---|---|---|---|---|---|
+| `(3,3,4)` | L=2 single-pivot | 21/21 | ✓ | ✓ | ✓ `−u⁷·(z₀+1)⁴` |
+| `(5,3,4)` | L=2 asymmetric | 27/27 | ✓ | ✓ | ✓ `u¹⁰·(z₁+1)⁶·(z₂+1)⁴` |
+| `(3,3,3,3)` | **L=3 nonzero intermediate codims** | 27/27 | ✓ | ✓ | ✓ `−12005·u⁵/2` @generic (u-exp 5) |
+| `(5,4,3,2)` | L=3 strict + a `c_s=0` block | 38/38 | ✓ | ✓ | (formula `|u|⁵·spectator`) |
+| `(2,3,4,2)` | **L=3 codim-0 rank-STAY** (the #135 boundary) | 26/26 | ✓ | ✓ | (formula `|u|³·spectator`) |
+
+The `(2,3,4,2)` codim-0-STAY case — which broke every naive frame in the first dispatch (`det=0` or a
+`u⁰` term) — now passes with a genuine diffeo (`dim_ok` 26/26, `F=u²·V`, `U>0`). So the FULL
+strictly-decreasing class (incl. its codim-0 blocks) and the codim-0-stay boundary are **closed by one
+uniform recipe**. The construction + its exact Jacobian formula are in `§Uniform closed form` below; the
+decorrelated derivation is `codex/genM-uniform-answer.md`, **independently re-verified** here (not
+paste-trusted — `verify_codex_uniform.py` rebuilds it from scratch and checks every gate).
+
+**Net:** the general-`M` lower-bound atom is reachable by ONE chart family, closed-form in `M` + the
+descent path. Build-ready for the formaliser's `NodeAchieverChart` bundle.
+
+---
+
+## VERDICT (first dispatch): **GENERALIZES** (mechanism), via a single common radial blow-up.
+## [Now strengthened by the closer above: the closed-form `φ_M` is found, not just per-node.]
 
 > The (3,3,4) chart's mechanism **does generalize to all positive `M`** at the level of the
 > *mechanism* + the *Jacobian arithmetic*: the achiever loss, after the Aoyagi Schur gauge, is a
@@ -158,3 +186,81 @@ discharged by `monomialThreshold_le_regularSeq` with `m₀ = minAdm`, exactly as
   **Mitigation:** ship `(4,4,2,2)` (cleanest `L≥3`) then `(3,3,3,3)`; roadmap the general frame.
 - **Next construction:** the general strictly-decreasing-kept-rank `φ_M` (the `(3,3,3,3)` frame lifted to
   arbitrary `L` with `t_{s}−t_{s+1}=1`), and a clean frame for the codim-0-stay boundary (`(2,3,4,2)`).
+
+---
+
+## §Uniform closed form `φ_M` (the closer — derived, VERIFIED, build-ready)
+
+The uniform achiever chart for ANY descent path `T* = (t_1,…,t_{L-1})` with `t_0 := M_0`, `t_L := 0`
+(weakly decreasing; the strictly-decreasing class + all codim-0 boundaries). Reproducer +
+independent verification: `scripts/verify_codex_uniform.py`; decorrelated derivation
+`codex/genM-uniform-answer.md` (re-built from scratch + gate-checked here, not paste-trusted).
+
+**Notation.** Per boundary `s = 1..L` (between factors `A^(s-1)` and `A^(s)`, with widths `M_{s-1}`
+rows × `M_s` cols on `A^(s-1)`): `r_s = t_{s-1} − t_s` (rank dropped here), `c_s = M_s − t_s`
+(residual cols), `d_s = r_s·c_s` (block codim), `D = Σ_s d_s = minAdm M`. Block coords keep the `t_s`
+surviving directions first.
+
+**Compressed transition `C_s`** (the rank-revealing core, `M_{s-1} × M_s`, carrying the residual `u`):
+for `1 ≤ s < L`,
+
+    K_s = L_s · diag(q_{s,1},…,q_{s,t_s}) · U_s   (unit lower/upper triangular; the t_s × t_s pivot core)
+    P_s = [ I_{t_s} ; X_s ]   (M_{s-1} × t_s),    Q_s = [ I_{t_s} | N_s ]   (t_s × M_s)
+    C_s = P_s K_s Q_s + u·[[0,0],[0,R_s]]
+        = [[ K_s,        K_s N_s              ],
+           [ X_s K_s,    X_s K_s N_s + u·R_s  ]]            (R_s the r_s × c_s residual, free)
+    C_L = u·R_L   (t_{L-1} × M_L, the leaf).
+
+ONE distinguished residual slot across all `R_s` is fixed `= 1` (the radial direction; Codex puts it
+at `R_L(1,1)` for `M_L>0`); all other residual entries free. This is what makes `ninputs = flatDim`
+(the radial coord replaces one residual free coord) — a genuine diffeo, not over/under-parametrized.
+
+**Unit-triangular `B/C`-style chaining** (`G_s = [[I_{t_s}, N_s],[0, I_{c_s}]]`, det 1; `W_{s+1}` free
+`c_s × M_{s+1}` lift):
+
+    A^(0) = C_1,
+    A^(s) = G_s^{-1} [ C_{s+1} ; W_{s+1} ] = [[ C_{s+1} − N_s W_{s+1} ],[ W_{s+1} ]]   (1 ≤ s < L),
+    equivalently  Q_s A^(s) = C_{s+1}.
+
+For `(3,3,3,3)` this IS the verified hand chart's `B = [[D−mr],[r]]`, `C = [[uζ−n₁h₁−n₂h₂],[h₁],[h₂]]`.
+
+**Exact telescoping (the rate, G1).** With `S_s = C_s · A^(s) ⋯ A^(L-1)`: `S_L = u·R_L`, and
+`S_s = P_s K_s S_{s+1} + u·R̄_s·(A^(s) ⋯)`, so by backward induction every `S_s` is `u`-divisible ⟹
+`A^(0)⋯A^(L-1) = u·H` (EXACT polynomial identity) ⟹ `F∘φ = u²·‖H‖² = u²·V`. Verified: min `u`-degree
+of `F` is exactly 2 on every witness.
+
+**Bound (G2).** `V` is a polynomial (so continuous, bounded on any compact box). At the sector point
+(`q=1, L=U=I, X=N=W=0`, free residuals 0, distinguished `R_L(1,1)=1`): `H|_{u=0} = E_{11}`, so
+`V|_{u=0} ≢ 0` and `0 < c₀ ≤ V ≤ B` on a positive-measure neighborhood. Verified `U(sector) > 0` on
+every witness.
+
+**Jacobian (G3).** `G_s` chaining is det 1; the local Schur map `(X,K,N,E) ↦ […]` has det `|det K_s|^{r_s+c_s}`;
+the LDU core `K_s` has det `∏_i |q_{s,i}|^{2(t_s−i)}`; the common radial substitution gives `|u|^{D−1}`. Hence
+
+    |det Dφ_M| = |u|^{minAdm−1} · ∏_{s=1}^{L-1} ∏_{i=1}^{t_s} |q_{s,i}|^{ r_s + c_s + 2(t_s − i) }.
+
+The single binding axis is `u`: `(k,h) = (1, minAdm−1)`. ALL pivot `q_{s,i}` are `k=0` spectators
+(loss-base exponent 0, `axisRatio = ⊤`), so they do not lower the threshold. Threshold
+`= (minAdm−1+1)/(2·1) = ½·minAdm`. Verified on witnesses: `(3,3,4) → −u⁷(z₀+1)⁴`,
+`(5,3,4) → u¹⁰(z₁+1)⁶(z₂+1)⁴`, `(3,3,3,3) → u⁵·(spectator)` — u-exp `= minAdm−1`, det ≠ 0 off `{u=0}`.
+
+**Codim-0 boundaries (the #135 boundary, now closed).** If `d_s = 0`, nothing singular: `r_s=0` (rank
+STAYS) ⟹ `C_s = K_s [I | N_s]`, no residual block; `c_s=0` (width = kept rank) ⟹ `C_s = [I; X_s] K_s`,
+`Q_s = I`, the lift pass-through has no lower rows. Both contribute ONLY the spectator pivot monomial,
+never a `u`-power. Verified: `(2,3,4,2)` (rank-stay) and `(5,4,3,2)` (`c_s=0` block) both pass all gates
+with a genuine diffeo (`dim_ok`).
+
+**Scope of the closed form.** Derived + verified for weakly-decreasing paths covering: strictly-
+decreasing (incl. codim-0 blocks within them) and codim-0 rank-stays. The ONE thing not separately
+re-derived symbolically at full generality: that the achiever path the recursion selects is always
+expressible in this kept-rank-flag form — but `T*` IS by definition the weakly-decreasing admissible
+minimiser (`Adm`'s `admPred`: `t_1 ≥ … ≥ t_L=0`), so every achiever path fits. The Lean cost is the
+`B/C` chaining algebra + the LDU det; the MATH is closed.
+
+**Build-ready for the formaliser (`NodeAchieverChart M`).** Instantiate `phi := φ_M` (the `C_s` +
+chaining above, in flat coords via the banked `ParamsReshapeMP`), `routeMCore_phi : F∘phi = u_p²·V`
+(the telescoping `ring` identity), `Vbound` (V poly ⟹ bounded; `V|_{u_p=0}=H₀≠0`), `leaf_integrand`
+(`leafK = δ_p`, `leafH` = the Jacobian exponents: `minAdm−1` on `u`, the `q`-monomial exponents on the
+spectator axes), `cov` (the composite det `|u|^{minAdm−1}·∏|q|^{…}`). The `monomialThreshold = ½·minAdm`
+is `monomialThreshold_le_regularSeq` with `m₀ = minAdm` on the single `k≠0` axis. Order unchanged:
+`(4,4,2,2)` (pure radial, simplest) → `(3,3,3,3)` (LDU + chaining) → the general `C_s`/chaining lemma.

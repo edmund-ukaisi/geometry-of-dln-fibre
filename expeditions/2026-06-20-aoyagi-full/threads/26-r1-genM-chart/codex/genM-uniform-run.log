@@ -1,0 +1,488 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efbd3-256c-7ba3-bde4-97d996c1318a
+--------
+user
+<task>
+Build a UNIFORM closed-form change-of-variables chart for a deep-linear-network achiever divergence,
+parametric in the width vector. You earlier gave an explicit chart for M=(3,3,3,3) (reproduced below);
+I verified it EXACTLY. I now need the GENERAL strictly-decreasing-kept-rank construction (a single
+recipe for arbitrary L and arbitrary strictly-decreasing achiever path), not a per-case chart.
+
+SETUP. Widths M=(M_0,...,M_L), factors A^(s) of shape M_s x M_{s+1} (s=0..L-1), loss
+F = ||A^(0) A^(1) ... A^(L-1)||_F^2, near A=0. Descent/achiever path T*=(t_1,...,t_{L-1}), with
+t_0:=M_0, t_L:=0, STRICTLY DECREASING: M_0 = t_0 > t_1 > t_2 > ... > t_{L-1} > t_L = 0.
+Kept ranks p_s = t_s. Block sizes d_s = (t_{s-1}-t_s)(M_s - t_s),  sum_s d_s = minAdm(M).
+Want a polynomial diffeo Phi : R^N -> R^N (N = sum_s M_s M_{s+1} = flatDim) with:
+  (G1) F(Phi(u)) = u_p^2 * V(u), V a polynomial bounded in (c0, B) on a positive-measure box
+       (so the achiever RATE is u_p^2 -- min u_p-degree of F is exactly 2, no u_p^0 term);
+  (G2) V|_{u_p=0} not identically 0, > 0 at an explicit sector point;
+  (G3) |det D Phi| = |u_p|^{minAdm-1} * (spectator monomial in the k=0 frame coords), det != 0 off
+       {u_p=0}.  The single binding axis u_p has (loss-base k, Jacobian h)=(1, minAdm-1), threshold
+       (minAdm-1+1)/2 = minAdm/2.
+
+YOUR VERIFIED (3,3,3,3) CHART (for reference, path (2,1,0), blocks (1,2,3)):
+  K=[[a, a*alpha],[gamma*a, gamma*a*alpha+delta]];  m=(m1,m2)^T; lambda=(lam1,lam2);
+  A = [[I2],[lambda]] K [I2 | m] + u E_{33};
+  w=(1,n1,n2); p=(1,ell)^T; Y=[[0,0,0],[0,eta1,eta2]];  D = p b w + u Y;
+  r free 1x3;  B = [[D - m r],[r]]  (so (I2|m) B = D);
+  h1,h2,zeta free 1x3;  C = [[u zeta - n1 h1 - n2 h2],[h1],[h2]]  (so w C = u zeta);
+  Then ABC = u H,  F = u^2 ||H||^2,  |det DPhi| = |u|^5 |a|^4 |delta|^2 |b|^3.
+
+WHAT I FOUND (the obstruction to a NAIVE uniform recipe). A per-boundary local Schur frame
+(scale only the drop-row x drop-col residual by u, keep the beta/gamma shears O(1)) does NOT compose:
+the inter-factor coupling produces a u^0 term (rate broken) and the wrong det exponent. Your (3,3,3,3)
+chart works because of GLOBAL chaining (the "B = [[D-mr],[r]]" makes the kept projection land exactly,
+and "C row = u zeta - sum n_i h_i" makes the kept combination = u zeta). I need the GENERAL version of
+this chaining: a closed recipe for the frames {G_s}, the residual placement, and the chaining inverses,
+for arbitrary strictly-decreasing kept ranks, such that (G1)-(G3) hold.
+
+THE QUESTIONS:
+  (1) Give the general construction: for each factor A^(s), the explicit frame + residual + chaining,
+      as a function of M and the path, so that the product telescopes to u*H with F=u^2*V (no u^0),
+      |det| = u^{minAdm-1} * spectator.  Ideally a telescoping form A^(s) = (frame_s)(core_s(u))(frame_{s+1}^{-1})
+      or your B/C-style chaining generalised to L factors.
+  (2) Confirm (or correct) the Jacobian exponent: that scaling exactly the d_s residual blocks by ONE
+      common radial u, with the rest free frames, gives det u-exponent minAdm-1 (one radial absorbed),
+      with a spectator monomial in the pivot-determinant coords (like |a|^4|delta|^2|b|^3 for (3,3,3,3)).
+  (3) The codim-0 case: a block d_s=0 occurs when t_{s-1}=t_s (kept rank STAYS, e.g. M=(2,3,4,2) path
+      (1,1,0)) OR when M_s=t_s (e.g. M=(5,4,3,2) path (4,2,0), block 0). Does your construction handle
+      d_s=0 boundaries cleanly (no residual to scale there, just a frame pass-through), or do they need
+      special handling?  Give the recipe for a d_s=0 boundary.
+</task>
+
+<output_contract>
+1. The general strictly-decreasing construction (frames + residual + chaining), closed-form in M and
+   the path. Explicit enough to verify symbolically (I will).
+2. The Jacobian-exponent confirmation/correction (minAdm-1 + spectator), with the spectator monomial's
+   form in general.
+3. The d_s=0 (codim-0) boundary recipe.
+4. Distinguish derived vs conjectured; flag any step you are unsure of. Exact algebra for G1-G3.
+</output_contract>
+
+<grounding_rules>
+- F(Phi) = u^2 V must be an exact polynomial identity (min u-degree exactly 2). State it as such.
+- |det| computation must be exact. The spectator monomial sits on k=0 (loss-base-0) axes so it does
+  not change the binding-axis threshold minAdm/2.
+- The threshold of the product monomial prod x_i^{2 k_i} with Jacobian weight prod x_i^{h_i} is
+  min_{k_i != 0} (h_i+1)/(2 k_i).
+- I am withholding my tentative telescoping idea. Reason from the (3,3,3,3) chart's structure.
+
+codex
+I’ll formalize the verified \(3,3,3,3\) chart into invariant linear-algebra pieces first, then check the determinant bookkeeping. The main point is to separate the “chain maps” that telescope from the scaled residual blocks that carry the Jacobian power.
+codex
+**Derived Construction**
+
+Let
+\[
+r_s=t_{s-1}-t_s,\qquad c_s=M_s-t_s,\qquad d_s=r_sc_s,\qquad D=\sum_{s=1}^L d_s=\operatorname{minAdm}(M).
+\]
+Use block coordinates with the kept \(t_s\) coordinates first.
+
+For each \(1\le s<L\), choose
+\[
+X_s\in \mathbb R^{r_s\times t_s},\quad N_s\in \mathbb R^{t_s\times c_s},
+\]
+and an invertible-core chart
+\[
+K_s=\mathcal L_s\operatorname{diag}(q_{s,1},\dots,q_{s,t_s})\mathcal U_s,
+\]
+where \(\mathcal L_s,\mathcal U_s\) are unit lower/upper triangular. Define
+\[
+P_s=\begin{bmatrix}I_{t_s}\\ X_s\end{bmatrix},\qquad
+Q_s=\begin{bmatrix}I_{t_s}&N_s\end{bmatrix}.
+\]
+
+Pick one residual slot in a positive \(d_s\)-block and set its coefficient equal to \(1\); all other residual coefficients are free. For strict paths with \(M_L>0\), take this slot in the final block \(s=L\). Write the resulting coefficient blocks as \(R_s\), with exactly one fixed entry among all \(R_s\)’s.
+
+For \(1\le s<L\), define the compressed transition
+\[
+C_s
+=
+P_sK_sQ_s
++
+u\begin{bmatrix}
+0&0\\
+0&R_s
+\end{bmatrix}
+=
+\begin{bmatrix}
+K_s&K_sN_s\\
+X_sK_s&X_sK_sN_s+uR_s
+\end{bmatrix}.
+\]
+For the final boundary,
+\[
+C_L=uR_L\in \mathbb R^{t_{L-1}\times M_L}.
+\]
+
+Now chain these compressed transitions into the actual factors. Define
+\[
+G_s=\begin{bmatrix}I_{t_s}&N_s\\0&I_{c_s}\end{bmatrix},
+\qquad 1\le s<L.
+\]
+Let \(W_{s+1}\in\mathbb R^{c_s\times M_{s+1}}\) be free lift variables. Then
+\[
+A^{(0)}=C_1,
+\]
+and for \(1\le s<L\),
+\[
+A^{(s)}
+=
+G_s^{-1}
+\begin{bmatrix}
+C_{s+1}\\
+W_{s+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+C_{s+1}-N_sW_{s+1}\\
+W_{s+1}
+\end{bmatrix}.
+\]
+Equivalently,
+\[
+Q_sA^{(s)}=C_{s+1}.
+\]
+This is the uniform \(B/C\)-style chaining. In your \((3,3,3,3)\) chart, this gives exactly
+\[
+B=\begin{bmatrix}D-mr\\ r\end{bmatrix},\qquad
+C=\begin{bmatrix}u\zeta-n_1h_1-n_2h_2\\ h_1\\ h_2\end{bmatrix}.
+\]
+
+**Exact Telescoping**
+
+Let
+\[
+S_s=C_sA^{(s)}A^{(s+1)}\cdots A^{(L-1)}.
+\]
+Then \(S_L=C_L=uR_L\). For \(s<L\),
+\[
+S_s
+=
+(P_sK_sQ_s+u\bar R_s)A^{(s)}\cdots A^{(L-1)}
+=
+P_sK_sS_{s+1}
++
+u\bar R_sA^{(s)}\cdots A^{(L-1)}.
+\]
+By backward induction, every \(S_s\) is divisible by \(u\). Hence
+\[
+A^{(0)}A^{(1)}\cdots A^{(L-1)}=uH
+\]
+as an exact polynomial identity. Therefore
+\[
+F(\Phi(u))=u^2\|H\|_F^2=u^2V.
+\]
+
+At the sector point
+\[
+q_{s,i}=1,\quad \mathcal L_s=\mathcal U_s=I,\quad X_s=N_s=W_s=0,
+\]
+all free residuals \(0\), and the distinguished final residual entry \(R_L(1,1)=1\), we get \(H|_{u=0}=E_{11}\). Thus
+\[
+V|_{u=0}\not\equiv 0,
+\]
+and on a small positive-measure box around this point,
+\[
+0<c_0<V<B.
+\]
+So the minimum \(u\)-degree of \(F\) is exactly \(2\).
+
+**Jacobian**
+
+For the unscaled local Schur map
+\[
+(X,K,N,E)\mapsto
+\begin{bmatrix}
+K&KN\\
+XK&XKN+E
+\end{bmatrix},
+\]
+the exact Jacobian is
+\[
+|\det K|^{r_s+c_s}.
+\]
+For the LDU core chart,
+\[
+K_s=\mathcal L_s\operatorname{diag}(q_{s,1},\dots,q_{s,t_s})\mathcal U_s,
+\]
+the exact Jacobian is
+\[
+\prod_{i=1}^{t_s}|q_{s,i}|^{2(t_s-i)}.
+\]
+The chaining map
+\[
+(C_{s+1},W_{s+1})\mapsto A^{(s)}
+\]
+has determinant \(1\), since \(G_s\) is unit triangular.
+
+The common radial residual substitution gives
+\[
+(y_\ast,y_j)=(u,u\rho_j),
+\]
+so its Jacobian is exactly
+\[
+|u|^{D-1}.
+\]
+
+Hence
+\[
+\boxed{
+|\det D\Phi|
+=
+|u|^{\operatorname{minAdm}(M)-1}
+\prod_{s=1}^{L-1}
+\prod_{i=1}^{t_s}
+|q_{s,i}|^{\,r_s+c_s+2(t_s-i)}
+}.
+\]
+For \((3,3,3,3)\), this gives
+\[
+|u|^5|a|^4|\delta|^2|b|^3.
+\]
+
+Thus the binding axis has
+\[
+(k_u,h_u)=(1,\operatorname{minAdm}(M)-1),
+\]
+and all pivot variables are \(k=0\) spectators. The threshold is
+\[
+\frac{\operatorname{minAdm}(M)-1+1}{2}
+=
+\frac{\operatorname{minAdm}(M)}2.
+\]
+
+**Codimension-Zero Boundaries**
+
+If \(d_s=0\), nothing singular happens.
+
+If \(r_s=0\), rank stays:
+\[
+C_s=K_s\begin{bmatrix}I&N_s\end{bmatrix}.
+\]
+No residual block appears.
+
+If \(c_s=0\), width equals kept rank:
+\[
+C_s=\begin{bmatrix}I\\X_s\end{bmatrix}K_s,
+\qquad Q_s=I.
+\]
+Then the next chaining lift has no lower rows, so the factor simply passes through.
+
+If both vanish, \(C_s=K_s\). These cases contribute only the spectator pivot monomial above, never a \(u\)-power.
+
+Everything above is derived algebraically. The only terminology correction is that \(\Phi\) is a polynomial chart that is a diffeomorphism on the sector \(u\ne0\), \(q_{s,i}\ne0\); it necessarily has vanishing Jacobian on \(u=0\).
+tokens used
+25,728
+**Derived Construction**
+
+Let
+\[
+r_s=t_{s-1}-t_s,\qquad c_s=M_s-t_s,\qquad d_s=r_sc_s,\qquad D=\sum_{s=1}^L d_s=\operatorname{minAdm}(M).
+\]
+Use block coordinates with the kept \(t_s\) coordinates first.
+
+For each \(1\le s<L\), choose
+\[
+X_s\in \mathbb R^{r_s\times t_s},\quad N_s\in \mathbb R^{t_s\times c_s},
+\]
+and an invertible-core chart
+\[
+K_s=\mathcal L_s\operatorname{diag}(q_{s,1},\dots,q_{s,t_s})\mathcal U_s,
+\]
+where \(\mathcal L_s,\mathcal U_s\) are unit lower/upper triangular. Define
+\[
+P_s=\begin{bmatrix}I_{t_s}\\ X_s\end{bmatrix},\qquad
+Q_s=\begin{bmatrix}I_{t_s}&N_s\end{bmatrix}.
+\]
+
+Pick one residual slot in a positive \(d_s\)-block and set its coefficient equal to \(1\); all other residual coefficients are free. For strict paths with \(M_L>0\), take this slot in the final block \(s=L\). Write the resulting coefficient blocks as \(R_s\), with exactly one fixed entry among all \(R_s\)’s.
+
+For \(1\le s<L\), define the compressed transition
+\[
+C_s
+=
+P_sK_sQ_s
++
+u\begin{bmatrix}
+0&0\\
+0&R_s
+\end{bmatrix}
+=
+\begin{bmatrix}
+K_s&K_sN_s\\
+X_sK_s&X_sK_sN_s+uR_s
+\end{bmatrix}.
+\]
+For the final boundary,
+\[
+C_L=uR_L\in \mathbb R^{t_{L-1}\times M_L}.
+\]
+
+Now chain these compressed transitions into the actual factors. Define
+\[
+G_s=\begin{bmatrix}I_{t_s}&N_s\\0&I_{c_s}\end{bmatrix},
+\qquad 1\le s<L.
+\]
+Let \(W_{s+1}\in\mathbb R^{c_s\times M_{s+1}}\) be free lift variables. Then
+\[
+A^{(0)}=C_1,
+\]
+and for \(1\le s<L\),
+\[
+A^{(s)}
+=
+G_s^{-1}
+\begin{bmatrix}
+C_{s+1}\\
+W_{s+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+C_{s+1}-N_sW_{s+1}\\
+W_{s+1}
+\end{bmatrix}.
+\]
+Equivalently,
+\[
+Q_sA^{(s)}=C_{s+1}.
+\]
+This is the uniform \(B/C\)-style chaining. In your \((3,3,3,3)\) chart, this gives exactly
+\[
+B=\begin{bmatrix}D-mr\\ r\end{bmatrix},\qquad
+C=\begin{bmatrix}u\zeta-n_1h_1-n_2h_2\\ h_1\\ h_2\end{bmatrix}.
+\]
+
+**Exact Telescoping**
+
+Let
+\[
+S_s=C_sA^{(s)}A^{(s+1)}\cdots A^{(L-1)}.
+\]
+Then \(S_L=C_L=uR_L\). For \(s<L\),
+\[
+S_s
+=
+(P_sK_sQ_s+u\bar R_s)A^{(s)}\cdots A^{(L-1)}
+=
+P_sK_sS_{s+1}
++
+u\bar R_sA^{(s)}\cdots A^{(L-1)}.
+\]
+By backward induction, every \(S_s\) is divisible by \(u\). Hence
+\[
+A^{(0)}A^{(1)}\cdots A^{(L-1)}=uH
+\]
+as an exact polynomial identity. Therefore
+\[
+F(\Phi(u))=u^2\|H\|_F^2=u^2V.
+\]
+
+At the sector point
+\[
+q_{s,i}=1,\quad \mathcal L_s=\mathcal U_s=I,\quad X_s=N_s=W_s=0,
+\]
+all free residuals \(0\), and the distinguished final residual entry \(R_L(1,1)=1\), we get \(H|_{u=0}=E_{11}\). Thus
+\[
+V|_{u=0}\not\equiv 0,
+\]
+and on a small positive-measure box around this point,
+\[
+0<c_0<V<B.
+\]
+So the minimum \(u\)-degree of \(F\) is exactly \(2\).
+
+**Jacobian**
+
+For the unscaled local Schur map
+\[
+(X,K,N,E)\mapsto
+\begin{bmatrix}
+K&KN\\
+XK&XKN+E
+\end{bmatrix},
+\]
+the exact Jacobian is
+\[
+|\det K|^{r_s+c_s}.
+\]
+For the LDU core chart,
+\[
+K_s=\mathcal L_s\operatorname{diag}(q_{s,1},\dots,q_{s,t_s})\mathcal U_s,
+\]
+the exact Jacobian is
+\[
+\prod_{i=1}^{t_s}|q_{s,i}|^{2(t_s-i)}.
+\]
+The chaining map
+\[
+(C_{s+1},W_{s+1})\mapsto A^{(s)}
+\]
+has determinant \(1\), since \(G_s\) is unit triangular.
+
+The common radial residual substitution gives
+\[
+(y_\ast,y_j)=(u,u\rho_j),
+\]
+so its Jacobian is exactly
+\[
+|u|^{D-1}.
+\]
+
+Hence
+\[
+\boxed{
+|\det D\Phi|
+=
+|u|^{\operatorname{minAdm}(M)-1}
+\prod_{s=1}^{L-1}
+\prod_{i=1}^{t_s}
+|q_{s,i}|^{\,r_s+c_s+2(t_s-i)}
+}.
+\]
+For \((3,3,3,3)\), this gives
+\[
+|u|^5|a|^4|\delta|^2|b|^3.
+\]
+
+Thus the binding axis has
+\[
+(k_u,h_u)=(1,\operatorname{minAdm}(M)-1),
+\]
+and all pivot variables are \(k=0\) spectators. The threshold is
+\[
+\frac{\operatorname{minAdm}(M)-1+1}{2}
+=
+\frac{\operatorname{minAdm}(M)}2.
+\]
+
+**Codimension-Zero Boundaries**
+
+If \(d_s=0\), nothing singular happens.
+
+If \(r_s=0\), rank stays:
+\[
+C_s=K_s\begin{bmatrix}I&N_s\end{bmatrix}.
+\]
+No residual block appears.
+
+If \(c_s=0\), width equals kept rank:
+\[
+C_s=\begin{bmatrix}I\\X_s\end{bmatrix}K_s,
+\qquad Q_s=I.
+\]
+Then the next chaining lift has no lower rows, so the factor simply passes through.
+
+If both vanish, \(C_s=K_s\). These cases contribute only the spectator pivot monomial above, never a \(u\)-power.
+
+Everything above is derived algebraically. The only terminology correction is that \(\Phi\) is a polynomial chart that is a diffeomorphism on the sector \(u\ne0\), \(q_{s,i}\ne0\); it necessarily has vanishing Jacobian on \(u=0\).

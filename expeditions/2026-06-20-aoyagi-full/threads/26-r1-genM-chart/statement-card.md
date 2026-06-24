@@ -24,17 +24,28 @@ depth-independent.
 - **Verified exactly (combinatorial):** block sizes `d_j=(t_{j−1}−t_j)(M_j−t_j)`, `Σd_j=minAdm=Mval(M,T*)`;
   codim-`d` radial-blow-up exponent `d−1`; leaf exponent `−1` at `c'=½·minAdm`; the unradicalized form
   is a SUM `Σg_i²` (not a product — corrects thread 22).
-- **Structural (NOT a closed certificate):** a UNIFORM general-`M` `φ_M` formula. The MECHANISM
-  generalizes; the per-node chart is build-ready as a SPEC, instantiated case-by-case (mirroring (3,3,4)).
-  Boundary: codim-0-intermediate-stay descents (`(2,3,4,2)`) need a careful frame (naive ⟹ `det=0`,
-  the degenerate-chart trap) — construction effort, not a math obstruction.
+- **CLOSER (2026-06-24, 2nd dispatch): the UNIFORM closed-form `φ_M` is FOUND + VERIFIED** (was the
+  one structural gap). The LDU-core compressed-transition `C_s = P_s K_s Q_s + u·R_s` + unit-triangular
+  `B/C` chaining `A^(s) = G_s^{-1}[C_{s+1};W_{s+1}]` (closed-form in `M` + the descent path). Telescopes
+  to `∏A = u·H` ⟹ `F=u²·V`; `|det Dφ_M| = |u|^{minAdm−1}·∏_{s,i}|q_{s,i}|^{r_s+c_s+2(t_s−i)}` (spectator
+  on `k=0` axes). Verified G1/G2/G3 + genuine-diffeo dimension (`flatDim=ninputs`) on the FULL witness
+  set incl. codim-0 boundaries: `(3,3,4)`,`(5,3,4)`,`(3,3,3,3)`,`(5,4,3,2)` [`c_s=0` block],`(2,3,4,2)`
+  [codim-0 rank-STAY — the #135 boundary, now CLOSED]. Codim-0 handled by `r_s=0`/`c_s=0` pass-through
+  (only spectator monomial, no `u`-power). Decorrelated derivation `codex/genM-uniform-answer.md`,
+  re-built+gate-checked in `scripts/verify_codex_uniform.py` (NOT paste-trusted).
+- **Remaining structural note:** that the recursion's selected achiever path always fits the
+  kept-rank-flag form — but `T*` is by definition the weakly-decreasing admissible minimiser (`admPred`:
+  `t_1≥…≥t_L=0`), so every achiever path fits. The Lean cost is the `B/C` chaining + LDU det; the math
+  is closed.
 
 ## Build-ready handoff (formaliser)
 A `NodeAchieverChart M` bundle (the (3,3,4) `L2AchieverChart` fields, generalized): `phi`,
 `routeMCore_phi : F∘phi = u_p²·V`, `Vbound` (V poly ⟹ bounded; `V|_{u_p=0}` nonzero), `leaf_integrand`,
 `cov`. Discharges the atom by the M-agnostic (3,3,4) assembly (`leaf334_box_div` chain). Reuses banked
-`Foundations/ParamsReshapeMP.lean`. **Order:** `(4,4,2,2)` (cleanest L≥3) → `(3,3,3,3)` (decisive) →
-general strictly-decreasing-kept-rank class; roadmap codim-0-stay frames.
+`Foundations/ParamsReshapeMP.lean`. The closed-form `φ_M` (the LDU-core `C_s` + `B/C` chaining,
+`thread.md §Uniform closed form`) instantiates `phi` directly. **Order:** `(4,4,2,2)` (cleanest L≥3,
+pure radial) → `(3,3,3,3)` (LDU + chaining) → the general `C_s`/chaining lemma. Codim-0 boundaries are
+NOT a separate roadmap item — the uniform `r_s=0`/`c_s=0` pass-through covers them (verified).
 
 ## Levels / caveats
 - Adjudicates the **lower / box-divergence** leg only (`cover_ge_div`). The upper `cover_le` (global
