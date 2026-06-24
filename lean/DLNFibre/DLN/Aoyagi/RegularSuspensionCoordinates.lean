@@ -33,6 +33,24 @@ set_option linter.style.longLine false
 
 universe uι uμ uν
 
+/-- Finite algebraic square-sum attached to a scalar coordinate family.
+
+This is the square-sum convention for a finite generator family.  It is not an
+analytic norm, chart statement, or RLCT statement. -/
+def aoyagiCoordinateSquareSum
+    {η R : Type*} [Fintype η] [CommSemiring R] (f : η → R) : R :=
+  ∑ c, f c ^ 2
+
+/-- The square-sum over a disjoint sum of coordinate indices is the sum of the
+two square-sums. -/
+@[simp]
+theorem aoyagiCoordinateSquareSum_sumElim
+    {η κ R : Type*} [Fintype η] [Fintype κ] [CommSemiring R]
+    (f : η → R) (g : κ → R) :
+    aoyagiCoordinateSquareSum (Sum.elim f g) =
+      aoyagiCoordinateSquareSum f + aoyagiCoordinateSquareSum g := by
+  simp [aoyagiCoordinateSquareSum, Fintype.sum_sum_type]
+
 /-- Scalar coordinates for the three regular block families
 `Ctop - 1`, `F2`, and `F3`.
 
@@ -417,6 +435,17 @@ theorem value_centered_continuousAt
       exact
         AoyagiResidualBlockCoordinateIndex.value_centered_continuousAt
           D hD0 hD c
+
+/-- The cleaned product-difference coordinate square-sum splits into the
+regular-coordinate square-sum plus the residual-coordinate square-sum. -/
+theorem coordinateSquareSum_eq_regular_add_residual
+    [CommSemiring R] [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R) :
+    aoyagiCoordinateSquareSum (value X F2 F3 D) =
+      aoyagiCoordinateSquareSum (AoyagiRegularBlockCoordinateIndex.value X F2 F3) +
+        aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value D) := by
+  simp [aoyagiCoordinateSquareSum, value, Fintype.sum_sum_type]
 
 /-- The cleaned p. 13 product-difference scalar-coordinate count is the
 endpoint product entry count. -/
@@ -1488,6 +1517,52 @@ def paperEndpointFixedBaseProductDifferenceCoordinateMap
       (Fin.zero_le (Fin.last N))
   AoyagiProductDifferenceCoordinateIndex.value
     (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D
+
+set_option linter.unusedSectionVars false in
+/-- The fixed-base cleaned product-difference coordinate map is the disjoint
+sum of the regular block coordinate map and the residual coordinate map. -/
+theorem paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_sumElim
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    paperEndpointFixedBaseProductDifferenceCoordinateMap W B U₀ hU₀ Cedge x =
+      Sum.elim
+        (paperEndpointFixedBaseRegularBlockCoordinateMap W B U₀ hU₀ Cedge x)
+        (paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x) := by
+  funext c
+  cases c <;>
+    simp [paperEndpointFixedBaseProductDifferenceCoordinateMap,
+      paperEndpointFixedBaseRegularBlockCoordinateMap,
+      paperEndpointFixedBaseResidualBlockCoordinateMap]
+
+set_option linter.unusedSectionVars false in
+/-- The fixed-base cleaned product-difference coordinate square-sum splits into
+the regular coordinate square-sum plus the residual coordinate square-sum.
+
+This is only finite square-sum bookkeeping for the cleaned p. 13 coordinate
+family; it is not analytic generator transport from the literal signed block. -/
+theorem paperEndpointFixedBaseProductDifferenceCoordinateMap_squareSum_eq_regular_add_residual
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseProductDifferenceCoordinateMap W B U₀ hU₀ Cedge x) =
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseRegularBlockCoordinateMap W B U₀ hU₀ Cedge x) +
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x) := by
+  rw [paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_sumElim]
+  exact aoyagiCoordinateSquareSum_sumElim
+    (paperEndpointFixedBaseRegularBlockCoordinateMap W B U₀ hU₀ Cedge x)
+    (paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x)
 
 /-- Fixed-base source data for Aoyagi's p. 13 scalar regular coordinates.
 

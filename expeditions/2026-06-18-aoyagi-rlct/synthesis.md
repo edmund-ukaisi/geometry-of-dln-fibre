@@ -8575,6 +8575,32 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-regular-suspension-coordinate-map-source-data.md`.
 
+Latest A2 cleaned coordinate square-sum update:
+`RegularSuspensionCoordinates.lean` now defines
+`aoyagiCoordinateSquareSum` and proves `aoyagiCoordinateSquareSum_sumElim`.
+For the cleaned p. 13 product-difference coordinate index, Lean proves
+`AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_eq_regular_add_residual`.
+For the fixed-base coordinate maps, Lean proves
+`paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_sumElim` and
+`paperEndpointFixedBaseProductDifferenceCoordinateMap_squareSum_eq_regular_add_residual`.
+
+This names the finite square-sum decomposition for the cleaned generator
+family `C1-Er, F2, F3, prod_s C^(s)`.  It deliberately does not compare this
+cleaned square-sum to the literal p. 13 loss with lower-right term
+`prod C - F3F2`, and it does not prove analytic generator transport, local
+loss comparability, regular-coordinate chart status, Jacobian compatibility,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-cleaned-coordinate-square-sum.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-cleaned-coordinate-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-cleaned-coordinate-square-sum.md`.
+
+Leibniz's source scout identified the next true analytic target as the
+literal-loss comparison plus Fubini/polar regular-variable theorem:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`.
+This is not yet proved in Lean.
+
 Latest A2 regular-suspension construction audit:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`
 records that a full regular-suspension normal-crossing certificate `Cfull`

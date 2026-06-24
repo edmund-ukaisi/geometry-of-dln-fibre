@@ -5779,6 +5779,33 @@ Nonclaims: no analytic coordinate chart, no local inverse, no source-rank
 openness, no analytic germ-ideal transport, no chart coverage, no Jacobian
 compatibility, no normal crossings, no pole-order theorem, and no RLCT theorem.
 
+Latest A2 cleaned coordinate square-sum:
+Lean now names the finite algebraic square-sum attached to a scalar coordinate
+family and proves that the cleaned p. 13 product-difference coordinate family
+splits as regular square-sum plus residual square-sum.  The fixed-base
+product-difference coordinate map is also identified with `Sum.elim` of the
+regular and residual coordinate maps, so the same square-sum split holds for
+the source-side maps.
+
+Lean names:
+`aoyagiCoordinateSquareSum`,
+`aoyagiCoordinateSquareSum_sumElim`,
+`AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_eq_regular_add_residual`,
+`paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_sumElim`,
+and
+`paperEndpointFixedBaseProductDifferenceCoordinateMap_squareSum_eq_regular_add_residual`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-cleaned-coordinate-square-sum.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-cleaned-coordinate-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-cleaned-coordinate-square-sum.md`.
+
+Nonclaims: no equality with the literal signed/corrected p. 13 Frobenius loss,
+no analytic generator transport or loss comparability, no analytic coordinate
+chart, no chart coverage, no Jacobian compatibility, no normal crossings, no
+pole-order theorem, and no RLCT theorem.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

@@ -2325,3 +2325,37 @@ Boundary: finite/topological packaging only.  This does not construct an
 analytic coordinate chart, local inverse, source-rank-open neighborhood,
 analytic ideal transport, chart coverage, Jacobian compatibility, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-24 A2 cleaned coordinate square-sum
+
+Reproduction:
+`reproduction-a2-cleaned-coordinate-square-sum.md`.
+Statement card:
+`statement-card-a2-cleaned-coordinate-square-sum.md`.
+Review:
+`review-a2-cleaned-coordinate-square-sum.md`.
+
+Lean now names the finite algebraic square-sum of a scalar coordinate family:
+
+```text
+aoyagiCoordinateSquareSum
+aoyagiCoordinateSquareSum_sumElim
+```
+
+and proves the cleaned p. 13 product-difference coordinate family splits over
+the regular/residual disjoint sum:
+
+```text
+AoyagiProductDifferenceCoordinateIndex.coordinateSquareSum_eq_regular_add_residual
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_sumElim
+paperEndpointFixedBaseProductDifferenceCoordinateMap_squareSum_eq_regular_add_residual
+```
+
+This gives the exact square-sum decomposition for the cleaned coordinate
+family `C1-Er, F2, F3, prod_s C^(s)`.
+
+Boundary: finite square-sum bookkeeping only.  It does not identify this
+cleaned square-sum with the literal signed/corrected p. 13 Frobenius loss,
+does not prove analytic generator transport or loss comparability, and does
+not construct charts, prove Jacobian compatibility, normal crossings, pole
+order, or RLCT.

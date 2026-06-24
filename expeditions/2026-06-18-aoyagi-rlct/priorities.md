@@ -492,6 +492,17 @@ regular-suspension chart argument, source-rank openness, analytic ideal
 transport, coverage, Jacobian compatibility, normal crossings, pole order, or
 RLCT.
 
+A2 cleaned coordinate square-sum has now landed:
+`threads/03-block-product-reduction/reproduction-a2-cleaned-coordinate-square-sum.md`.
+Lean names the finite square-sum of a scalar coordinate family and proves that
+the cleaned p. 13 product-difference square-sum splits as regular square-sum
+plus residual square-sum, including the fixed-base coordinate-map
+specialization.  Treat this as source-side loss bookkeeping only.  It does not
+identify the literal signed/corrected p. 13 Frobenius loss with the cleaned
+loss, prove analytic generator transport or local comparability, construct a
+chart, compute a Jacobian/prior shift, prove normal crossings, pole order, or
+RLCT.
+
 A2 regular-suspension normal-crossing construction is not Lean-ready:
 `threads/03-block-product-reduction/audit-a2-regular-suspension-normal-crossing-boundary.md`.
 Do not add `PaperEndpointFixedBaseRegularCoordinateSourceData -> exists Cfull`
@@ -501,6 +512,14 @@ regular-suspension chart argument: full and reduced generator families,
 analytic regular-coordinate status of the scalar entries, coverage,
 Jacobian/prior exponent shift, units, and extraction for the actual full
 certificate.
+
+After the square-sum slice, the next concrete pen-and-paper artifact should be
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-loss-comparison-and-fubini-boundary.md`:
+state the literal p. 13 loss
+`||C1-Er||^2 + ||F2||^2 + ||F3||^2 + ||prod C - F3F2||^2`, prove/plan the
+local comparison with `||regular||^2 + ||prod C||^2`, and state the independent
+Fubini/polar theorem that adding `c` regular square variables shifts RLCT by
+`c/2` and preserves pole order.  Do not cite this theorem as already proved.
 
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
