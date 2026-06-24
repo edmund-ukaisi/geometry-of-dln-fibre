@@ -5606,3 +5606,33 @@ It is still finite selected-entry production only: no analytic atlas coverage,
 open-domain statement, transition regularity, source production of successor
 matrices or suffixes, analytic Jacobian/volume theorem, global normal
 crossings, pole order, or RLCT extraction is proved.
+
+## 2026-06-24 Lean Case 2 source-selected finite transition
+
+Reproduction:
+`reproduction-case2-source-selected-finite-transition-a4.md`.
+Statement card:
+`statement-card-a4-case2-source-selected-finite-transition.md`.
+Review artifact:
+`review-case2-source-selected-finite-transition-a4.md`.
+
+Lean now proves the finite selected-entry overlap identity in generic,
+Case 2 supplied-pivot, and Case 2 chart-indexed forms:
+
+```text
+selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero
+case2SourceSelectedChartMapOfMem_transition_eq_of_target_normalized_ne_zero
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_transition_chartMap_eq_of_target_normalized_ne_zero
+```
+
+If the source chart has normalized coordinates `x_i` and finite center values
+`d_i = u*x_i`, then on the overlap `x_q != 0` the target chart data are
+`u_q = u*x_q` and `y_i = x_i/x_q`; these represent the same finite center
+value.  The denominator is deliberately the normalized coordinate `x_q`, not
+the finite center value `u*x_q`, so exceptional-divisor points with `u = 0`
+are not wrongly excluded.
+
+This is finite selected-entry chart-map algebra only.  It does not prove
+analytic transition regularity, chart coverage, an open-domain atlas, Q/P
+reduced-block transition formulas, source production of successor matrices or
+suffixes, global normal crossings, pole order, or RLCT extraction.

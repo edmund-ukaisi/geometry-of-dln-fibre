@@ -6473,6 +6473,26 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-chart-production-a4.md`.
 
+Latest A4 Case 2 source-selected finite transition:
+`BlowupArithmetic.lean` now proves the generic finite overlap identity
+`selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero`.
+Case 2 wrappers are
+`case2SourceSelectedChartMapOfMem_transition_eq_of_target_normalized_ne_zero`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_transition_chartMap_eq_of_target_normalized_ne_zero`.
+These theorems transform source normalized coordinates `x_i` to target
+normalized coordinates `y_i = x_i/x_q` with selected variable
+`u_q = u*x_q`, assuming `x_q != 0`.  The denominator is normalized, not the
+finite center value `u*x_q`.  This is finite selected-entry chart-map algebra
+only; it does not prove analytic transition regularity, chart coverage, Q/P
+reduced-block transition, successor/suffix production, global normal
+crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-finite-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns

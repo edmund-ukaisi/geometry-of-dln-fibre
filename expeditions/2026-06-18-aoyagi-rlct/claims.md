@@ -4090,6 +4090,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-chart-production-a4.md`.
 
+Latest A4 Case 2 source-selected finite transition:
+`BlowupArithmetic.lean` and `SelectedEntryNormalCrossing.lean` now prove
+`selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero`,
+`case2SourceSelectedChartMapOfMem_transition_eq_of_target_normalized_ne_zero`,
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_transition_chartMap_eq_of_target_normalized_ne_zero`.
+These are finite selected-entry overlap identities.  The denominator is the
+target normalized coordinate, not the finite center value `u` times that
+coordinate, so the statement does not exclude exceptional-divisor overlap
+points.  This is not analytic transition regularity, chart coverage, Q/P
+reduced-block transition, successor/suffix production, global normal
+crossings, pole order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-finite-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now proves
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

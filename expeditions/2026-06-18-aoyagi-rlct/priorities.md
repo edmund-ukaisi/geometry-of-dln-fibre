@@ -2356,6 +2356,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-selected-finite-chart-production-a4.md`.
 
+The A4 Case 2 source-selected finite transition slice is now landed:
+`BlowupArithmetic.lean` proves the generic selected-entry overlap identity
+`selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero`, and
+Case 2 wrappers expose it as
+`case2SourceSelectedChartMapOfMem_transition_eq_of_target_normalized_ne_zero`
+and
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceSelected_transition_chartMap_eq_of_target_normalized_ne_zero`.
+This is finite chart-map production on normalized overlaps.  It is source
+moving because it gives explicit target chart data from source chart data:
+`u_q = u*x_q` and `y_i = x_i/x_q`.  The denominator condition is `x_q != 0`,
+not `u*x_q != 0`.  It is still not analytic transition regularity, chart
+coverage, Q/P reduced-block transition, successor/source production, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-transition-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-source-selected-finite-transition.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-source-selected-finite-transition-a4.md`.
+
 The current A5 base-value interval-membership cleanup is
 `threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
 Lean now proves that explicit base-chain bounds plus an interior-coordinate

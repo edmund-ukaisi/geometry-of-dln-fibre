@@ -6725,6 +6725,18 @@ normal crossings, pole order, or RLCT.  The next A4 source-moving target can
 reasonably be finite transition-map production on overlaps, or a carefully
 scoped A0 total-loss/unit extension if the needed unit factors are explicit.
 
+The current A4 Case 2 source-selected finite transition slice is
+`threads/04-blow-up-certificate/reproduction-case2-source-selected-finite-transition-a4.md`.
+Lean now proves finite selected-entry overlap identities in generic,
+supplied-pivot Case 2, and chart-indexed Case 2 forms.  The source chart
+normalised coordinates `x_i` and finite values `d_i = u*x_i` transition to
+the target pivot `q` by `u_q = u*x_q` and `y_i = x_i/x_q`, under the explicit
+normalised overlap condition `x_q != 0`.  This records the correct
+exceptional-divisor behaviour: the denominator is not `u*x_q`.  The result is
+finite chart-map algebra only, not analytic transition regularity, chart
+coverage, Q/P reduced-block transition, successor/suffix production, global
+normal crossings, pole order, or RLCT.
+
 Latest A5 base-value interval-membership cleanup:
 `Lemma5SuppliedFamily.lean` now contains
 `aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.

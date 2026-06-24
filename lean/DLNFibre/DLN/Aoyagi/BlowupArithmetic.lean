@@ -1844,6 +1844,42 @@ theorem selectedEntryChartMap_eq_mul_normalized
       u * selectedEntryNormalizedMap pivot residual i :=
   rfl
 
+/-- Finite overlap formula between two selected-entry presentations on the
+normalised target-coordinate overlap.
+
+If the target normalised coordinate is nonzero in the source presentation,
+then the same finite value function is obtained in the target chart by
+selecting `u` times that normalised coordinate and dividing all normalised
+coordinates by it.  This is only the elementary finite chart-map identity; it
+does not prove analytic transition regularity or chart coverage. -/
+theorem selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero
+    {K : Type*} [Field K]
+    {sourcePivot targetPivot : ι} (u : K) (residual : ι → K)
+    (htarget : selectedEntryNormalizedMap sourcePivot residual targetPivot ≠ 0) :
+    let targetU := u * selectedEntryNormalizedMap sourcePivot residual targetPivot
+    let targetResidual : ι → K :=
+      fun i ↦
+        selectedEntryNormalizedMap sourcePivot residual i /
+          selectedEntryNormalizedMap sourcePivot residual targetPivot
+    (fun i ↦ selectedEntryChartMap targetPivot targetU targetResidual i) =
+      selectedEntryChartMap sourcePivot u residual := by
+  dsimp only
+  funext i
+  by_cases hi : i = targetPivot
+  · subst i
+    rw [selectedEntryChartMap_pivot]
+    exact (selectedEntryChartMap_eq_mul_normalized sourcePivot u residual targetPivot).symm
+  · rw [selectedEntryChartMap_of_ne
+      (pivot := targetPivot)
+      (i := i)
+      (u := u * selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      (residual := fun i ↦
+        selectedEntryNormalizedMap sourcePivot residual i /
+          selectedEntryNormalizedMap sourcePivot residual targetPivot)
+      hi]
+    rw [selectedEntryChartMap_eq_mul_normalized sourcePivot u residual i]
+    field_simp [htarget]
+
 /-- Every transformed center generator is divisible by the selected pivot variable. -/
 theorem selectedEntryChartMap_pivot_dvd
     (pivot : ι) (u : α) (residual : ι → α) (i : ι) :
@@ -9042,6 +9078,39 @@ theorem case2SourceSelectedChartMapOfMem_eq_mul_normalized
     case2SourceSelectedChartMapOfMem hp u residual q =
       u * case2SourceSelectedNormalizedMapOfMem hp residual q :=
   rfl
+
+/-- Finite overlap formula for two source-selected Case 2 residual-block
+pivots on the normalised target-coordinate overlap.
+
+If the target normalised residual-block coordinate is nonzero in the source
+selected chart, then selecting `u` times that coordinate and dividing all
+normalised coordinates by it gives the same finite residual-block value
+function.  This is only a finite chart-map identity; it is not analytic
+transition regularity, chart coverage, or successor/source production. -/
+theorem case2SourceSelectedChartMapOfMem_transition_eq_of_target_normalized_ne_zero
+    {n : ℕ → ℕ} {S J : ℕ} {p q : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (hq : q ∈ case2ResidualBlockPivotEntries n S J)
+    {K : Type*} [Field K]
+    (u : K) (residual : ℕ × ℕ → K)
+    (htarget : case2SourceSelectedNormalizedMapOfMem hp residual q ≠ 0) :
+    let targetU := u * case2SourceSelectedNormalizedMapOfMem hp residual q
+    let targetResidual : ℕ × ℕ → K :=
+      fun r ↦
+        case2SourceSelectedNormalizedMapOfMem hp residual r /
+          case2SourceSelectedNormalizedMapOfMem hp residual q
+    (fun r : {r : ℕ × ℕ // r ∈ case2ResidualBlockPivotEntries n S J} ↦
+      case2SourceSelectedChartMapOfMem hq targetU targetResidual r.1) =
+      fun r : {r : ℕ × ℕ // r ∈ case2ResidualBlockPivotEntries n S J} ↦
+        case2SourceSelectedChartMapOfMem hp u residual r.1 := by
+  dsimp only
+  funext r
+  simpa [case2SourceSelectedChartMapOfMem, case2SourceSelectedNormalizedMapOfMem] using
+    congrFun
+      (selectedEntryChartMap_transition_eq_of_target_normalized_ne_zero
+        (sourcePivot := p) (targetPivot := q) (u := u) (residual := residual)
+        (by simpa [case2SourceSelectedNormalizedMapOfMem] using htarget))
+      r.1
 
 omit [CommRing R] [Fintype κ] [DecidableEq κ] in
 /-- Equality with the supplied source pair is the same as equality with the
