@@ -74,3 +74,69 @@ signatures; green/sorries/axioms; module path(s) + aggregator line(s); v4.29 fri
 ## Scope
 **G2-2 completion** (the equiv + interface). Then G2-3 (the TOTAL presentation + flatness — the genuine
 wall) is the next rung. This closes rung 2 of ~6.
+
+---
+
+## HANDOFF FROM THREAD 12 (2026-06-24) — the landed state + the precise residual
+
+Thread 12 landed FAR more than the original brief assumed: the entire reindex + detΔ-localization
+bridge AND the height-transport infra AND `height J = C` AND all four coordinate-image lemmas. On
+`origin/expedition/fibre-codimension` HEAD `8ecc821c`, all sorry-free, axiom-clean, aggregated.
+**Start from the bordered-minor identity `(*)` — do NOT rebuild any of the below.**
+
+### Complete landed engine set (the fresh tide builds ON these)
+- `Core/MvPolynomialKerAeval.lean`: `ker_aeval_eq_graphIdeal` (arbitrary ι), `graphIdeal`,
+  `graphIdealQuotientEquiv` (`MvPolynomial ι R ⧸ graphIdeal c ≃ₐ[R] R`), `graphIdeal_isPrime`.
+- `Core/GraphIdealHeight.lean`: `height_graphIdeal_eq`, `height_coordIdeal_eq`,
+  `height_coordIdeal_localization_eq`, `translateAux` (the translation auto, an `AlgEquiv`),
+  `height_graphIdeal_localization_eq` (`(graphIdeal c).height = #σ` for `c : σ → Localization.Away f`).
+- `Core/DeterminantalBaseElimination.lean`: `B22block`/`SchurVar` (+`card_*` = C/δ); `finSplit`
+  (+`_castLE`/`_natAdd`); `repCoordReindex` + the FOUR coordinate-image lemmas
+  `repCoordReindex_{pivot,b22,b12,b21}`; `mult_stratum_eq`/`multPoly_stratum_apply`
+  (`multPoly (dStratum q p) a b = X ⟨0,(a,b)⟩`); `detSchurS` (+`_ne_zero`); `renameEquiv_detPivot`;
+  `blockAlgEquiv` (`A_eng ≃ₐ MvPolynomial B22block (MvPolynomial SchurVar k)`) + `blockAlgEquiv_detPivot`
+  (`detΔ ↦ C detSchurS`); `forcedNum` (`B21·adjΔ·B12`, adjugate); `forcedB22` (= `forcedNum/detSchurS`
+  via `IsLocalization.mk'`); **`height_graphIdeal_forcedB22_eq`** (`height (graphIdeal forcedB22) =
+  (p−r)(q−r) = C`).
+- `Core/DeterminantalChartRing.lean` (predecessor): `det_fromBlocks_scalar_eq` (the bordered Schur
+  minor identity over any CommRing), `det_submatrix_multPoly_mem_sigmaIdeal` (`(r+1)`-minor ∈
+  sigmaIdeal), `height_map_sigmaIdeal_away_eq_cCodim` (**`height Iad = C`**).
+
+### The localized AlgEquiv `Ψ` (SPECIFY-confirmed; typechecks)
+`Ψ : Localization.Away detΔ ≃ₐ[k] Localization.Away (C detSchurS)` :=
+`IsLocalization.algEquivOfAlgEquiv _ _ (blockAlgEquiv q p r hp hq) hmap` where
+`hmap : Submonoid.map blockAlgEquiv.toAlgHom (powers detΔ) = powers (C detSchurS)` is
+`Submonoid.map_powers` + `blockAlgEquiv_detPivot` (`congr 1; exact blockAlgEquiv_detPivot …`).
+`MvPolynomial.isLocalization` identifies `Localization.Away (C detSchurS)` with `MvPolynomial B22block Sd`.
+
+### The residual — (1) DONE; (2) the careful step; (3) mechanical
+**(1) `height J = C`** — DONE (`height_graphIdeal_forcedB22_eq`).
+
+**(2) `J ⊆ Ψ(Iad)` — the friction-heavy, CONTENT-CARRYING step (the correctness-guard seed; be
+careful).** Forward route (`Ideal.mem_map_of_mem`). The spine is the **bordered-minor identity** `(*)`:
+`blockAlgEquiv (minorPoly_ab) = C detSchurS · X_{ab} − C (forcedNum_{ab})`, where `minorPoly_ab` =
+the bordered `(r+1)`-minor of `multPoly` at (pivot rows ∪ {row `cast (natAdd r a)`}, pivot cols ∪
+{col `cast (natAdd r b)`}). Prove `(*)` via `AlgHom.map_det` + `det_fromBlocks_scalar_eq` (LANDED) +
+the four `repCoordReindex_*` coordinate lemmas (the entries map to coord/SchurVar vars); the
+`Fin r ⊕ Unit ≃ Fin (r+1)` reindex via `det_submatrix_equiv_self` + `submatrix_submatrix` (the exact
+pattern is in `schur_expr_eq_zero_of_rank_le`). `minorPoly_ab ∈ sigmaIdeal` is LANDED
+`det_submatrix_multPoly_mem_sigmaIdeal` ⟹ its `A_loc`-image ∈ `Iad` ⟹ `Ψ` of it ∈ `Ψ(Iad)`.
+**Unit-divide:** `C detSchurS` is a unit in `MvPolynomial B22block Sd`
+(`IsLocalization.Away.algebraMap_isUnit` + `RingHom.isUnit_map C`); `forcedNum = detSchurS · forcedB22`
+by `IsLocalization.mk'_spec'`; so `(*) = C detSchurS · (X_{ab} − C(forcedB22 ab))`, and
+`Ideal.unit_mul_mem_iff_mem` ⟹ `X_{ab} − C(forcedB22 ab) ∈ Ψ(Iad)` ⟹ `J ⊆ Ψ(Iad)`.
+Codex consult with the full recipe: `../12-base-elimination/codex/inclusion-answer.md`.
+
+**(3) `Iad = J` + the equiv — mechanical.** `K := Iad.map (Ψ : … →+* …)`; `height K = height Iad = C`
+(`height_map_algEquiv Ψ Iad`); `K` prime (`Ideal.map_isPrime_of_equiv Ψ`). Squeeze: `le_antisymm`
+(J ⊆ K from (2)) + `Ideal.height_strict_mono_of_is_prime` (rules out `J ⊊ K`: `height J = C =
+height K`) ⟹ `K = J`. Equiv: `Ideal.quotientEquivAlg Iad J Ψ hKJ.symm : A_loc ⧸ Iad ≃ₐ[k] T ⧸ J`,
+then `(graphIdealQuotientEquiv forcedB22).restrictScalars k : T ⧸ J ≃ₐ[k] Sd`; compose.
+{domain, dim δ} derive from the equiv. Codex Q4 chain in `inclusion-answer.md`.
+
+**Interface (controller, settled):** expose ONLY `A_loc/Iad ≅ₐ[k] Sd` + reuse landed `height Iad = C`;
+`J` internal. **Guard:** the `Iad ⊆ J` hard direction is earned by (2)+(3)'s squeeze (load-bearing,
+not assumed — `height J = C` is the discharge).
+
+**Note for the operator:** two tracked scratch files `Core/{FlatTrivialProductProbe,ChartFlatnessProbe}.lean`
+exist (NOT thread 12's — likely a G2-3 flatness probe); worth pruning if abandoned.
