@@ -252,4 +252,86 @@ theorem exists_deepest_lastLayer_pivotFrame {L : ℕ} (H : Fin (L + 1) → ℕ) 
   exact exists_pivotFrame_lastBlock_isUnit (hr _) (hr _)
     (deepestPoint H r B hB hr hL (lastLayer hL)) hrank htail
 
+/-! ## Stage A — the pivot-aligned deepest-point frame family (the connected bedrock)
+
+`exists_deepest_lastLayer_pivotFrame` certifies an ABSTRACT pivot frame `Q` for the deepest point's
+LAST layer. The consumers (`deepestEPivot` / the gauge construction) need this frame as part of the
+WHOLE per-layer frame family `(P_s, Q_s)`, with the last-layer arm being that pivot `Q` and the
+first/interior arms unchanged (the existing `deepestPoint_frame`). `deepestPoint_frame_pivot_exists`
+produces exactly that family + a `B`-determined pivot set `J`, bundling:
+- the first/interior arms carried to the threshold corner `corM` (so the existing telescoping /
+  normal-form lemmas apply VERBATIM there);
+- the boundary triviality `Q (firstLayer) = 1`, `P (lastLayer) = 1`;
+- the LAST layer carried to the PIVOT corner (`fromBlocks 1 0 0 0` under the pivot split), with a
+  UNIT `B22` block (the `IsUnit ((reindex (pivotThresholdSplit r (H last) J)² (Q last)).toBlocks₂₂)`
+  that PIN1's reg-slice fderiv needs).
+
+SOUNDNESS: it is the SAME deepest point, a DIFFERENT (pivot-aligned) LAST-LAYER frame choice. The
+first/interior arms are literally `deepestPoint_frame`; only the last-layer arm is twisted (the
+pivot twist is last-layer-only). RLCT-invariant (a frame is a per-layer change of basis). -/
+theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
+    ∃ (J : Fin r ↪ Fin (H ((lastLayer hL).succ)))
+      (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+      (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ),
+      (∀ s : Fin L, IsUnit (P s)) ∧ (∀ s : Fin L, IsUnit (Q s)) ∧
+      Q (firstLayer hL)
+          = (1 : Matrix (Fin (H (firstLayer hL).succ)) (Fin (H (firstLayer hL).succ)) ℝ) ∧
+      P (lastLayer hL)
+          = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ) ∧
+      (∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+        P s * (deepestPoint H r B hB hr hL s) * Q s
+          = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+              if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) ∧
+      IsUnit ((Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (Q (lastLayer hL))).toBlocks₂₂) ∧
+      Matrix.reindex (rThresholdSplit r (H ((lastLayer hL).castSucc)) (hr _))
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          ((deepestPoint H r B hB hr hL (lastLayer hL)) * Q (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+  classical
+  -- The abstract pivot frame for the deepest point's last layer.
+  obtain ⟨J, QL, hQLunit, hB22, hcorner⟩ :=
+    exists_deepest_lastLayer_pivotFrame H r B hB hr hL hL2
+  -- The frame family: the existing `deepestPoint_frame` off the last layer; the pivot `QL` on it.
+  -- Last-layer detection by the DEPENDENT `dite` on `s = lastLayer hL` (gives the equality in scope
+  -- to rewrite `H s.succ = H ((lastLayer hL).succ)`, so `QL` fits the slot type). The pivot twist is
+  -- last-layer-ONLY; all other arms are `deepestPoint_frame.2` unchanged.
+  set Qpiv : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ :=
+    fun s => if h : s = lastLayer hL then h ▸ QL else (deepestPoint_frame H r B hB hr hL s).2
+    with hQpiv
+  -- `Qpiv (lastLayer) = QL` (the `dif_pos` branch with `rfl`-equality collapses the cast).
+  have hQlast : Qpiv (lastLayer hL) = QL := by
+    simp only [hQpiv, dif_pos rfl]
+  refine ⟨J,
+    fun s => (deepestPoint_frame H r B hB hr hL s).1, Qpiv,
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `IsUnit (P s)`: the first arm is always `deepestPoint_frame.1`.
+    intro s; exact (deepestPoint_frame_invertible H r B hB hr hL s).1
+  · -- `IsUnit (Q s)`: pivot `QL` on the last layer, `deepestPoint_frame.2` elsewhere.
+    intro s
+    by_cases hs : s = lastLayer hL
+    · subst hs; rw [hQlast]; exact hQLunit
+    · simp only [hQpiv, dif_neg hs]; exact (deepestPoint_frame_invertible H r B hB hr hL s).2
+  · -- `Q (firstLayer) = 1`: `firstLayer ≠ lastLayer` (`2 ≤ L`), so it is `deepestPoint_frame.2`.
+    have hfirst : firstLayer hL ≠ lastLayer hL := by
+      intro h; have := congrArg (Fin.val) h; simp only [firstLayer, lastLayer] at this; omega
+    simp only [hQpiv, dif_neg hfirst]
+    exact deepestPoint_frame_Qf_eq_one H r B hB hr hL (firstLayer hL) hL2 (by simp [firstLayer])
+  · -- `P (lastLayer) = 1`: the first arm is `deepestPoint_frame.1`, trivial on the last layer.
+    exact deepestPoint_frame_Pf_eq_one H r B hB hr hL (lastLayer hL) hL2
+      (by simp only [lastLayer]; omega)
+  · -- First/interior threshold normal form `P s · deepestPoint s · Q s = corM` for `(s:ℕ)+1 ≠ L`.
+    intro s hs
+    have hsl : s ≠ lastLayer hL := by
+      intro h; subst h; simp only [lastLayer] at hs; omega
+    simp only [hQpiv, dif_neg hsl]
+    exact deepestPoint_frame_normal H r B hB hr hL s
+  · -- `B22` unit on the last layer. `Qpiv (lastLayer) = QL`, then `hB22`.
+    rw [hQlast]; exact hB22
+  · -- The last-layer pivot corner. `Qpiv (lastLayer) = QL`, then `hcorner`.
+    rw [hQlast]; exact hcorner
+
 end DLNFibre.DLN.RLCT
