@@ -102,3 +102,19 @@ transport of `height_graphIdeal_eq` from the field ring to the `Sd`-based ring. 
 `height_strict_mono_of_is_prime` (cheap: landed `height Iad = C` + `height J = C`) + regularity.
 Interface question to controller (re-asked): expose literal `J ⊆ A_loc`, or just `A_loc/Iad ≅ Sd`
 (regular dim δ)? The latter halves the transport bookkeeping.
+
+**Route DE-RISKED (probes typecheck, no wall — just sizable):**
+- The reindex components assemble: `Fin p ≃ Fin r ⊕ Fin (p−r)` via `(finCongr ..).trans
+  finSumFinEquiv.symm`; same for `q`.
+- `multPoly (dStratum q p) r c = X ⟨0,(r,c)⟩` (the `mult = A 0` reduction at `N=1`), so the generic
+  product entries ARE the `RepCoord` coordinate vars — `detΔ` lives purely in the `Δ ⊆ SchurVar`
+  block, and the reindex is a pure relabelling.
+- **Translation automorphism** `translateAux c := aeval (fun b ↦ X b + C (c b))` is an
+  `AlgEquiv` (inverse = `translateAux (−c)`; `comp = id` both ways by `MvPolynomial.algHom_ext`), and
+  `(span {X b}).map (translateAux (−c)) = graphIdeal c` (by `Ideal.map_span` + the `aeval_X` rewrite).
+  ⟹ `height (graphIdeal c) = height (coordinate ideal)` by `height_map_algEquiv`. CONFIRMED to
+  typecheck. This is the bridge from `height_graphIdeal_eq` (graph ideal) to the coordinate ideal,
+  whose localization-transport (`MvPolynomial.isLocalization` + `IsLocalization.height_map_of_disjoint`)
+  carries the height to the `Sd`-based ring.
+The remaining build is mechanical (the chained reindex/localization transports) — held pending the
+interface decision rather than ground speculatively at the wrong target.
