@@ -6821,6 +6821,24 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 displayed transition microcertificate contribution:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
+The theorem consumes a displayed normalized-coordinate nonzero hypothesis,
+constructs the displayed continuing finite center-square/formal-Jacobian
+certificate for transition-generated displayed data, and bundles finite
+loss/unit/formal-determinant monomial identities with the all-pivot wrapper's
+local ratio/minimum/count/order summary.  This is finite selected-entry
+chart-certificate plumbing only; Aoyagi prints the displayed chart, while the
+all-pivot source chart is our finite wrapper.  It is not source production,
+analytic transition regularity, coverage, normal crossings, pole order, or
+RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-transition-microcertificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

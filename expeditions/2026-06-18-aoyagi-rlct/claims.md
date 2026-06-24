@@ -4422,3 +4422,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-supplied-successor-reindexed-product.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
+
+Latest A4 Case 2 displayed transition microcertificate contribution:
+`SelectedEntryNormalCrossing.lean` now adds
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
+It packages the transition from a chart in the finite all-pivot selected-entry
+wrapper to Aoyagi's displayed Case 2 chart, constructs the displayed
+continuing finite center-square/formal-Jacobian certificate for the
+transition-generated displayed data, and records finite loss/unit/formal
+Jacobian-prior identities plus local finite ratio/minimum/count/order facts.
+This is finite chart-certificate plumbing; it does not claim that Aoyagi
+printed the all-pivot atlas, and it does not prove source production, analytic
+transition regularity, chart coverage, global A0 normal crossings, pole order,
+or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-transition-microcertificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.

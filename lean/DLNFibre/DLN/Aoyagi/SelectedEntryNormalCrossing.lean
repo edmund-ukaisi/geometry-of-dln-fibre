@@ -3674,6 +3674,207 @@ theorem localChartFamilyCertificateContribution_summary
   · exact exponentData_minCountInChart_eq_one (K := K) n hS hcont c
   · exact exponentData_exponentOrder_eq_one (K := K) n hS hcont
 
+set_option maxHeartbeats 800000 in
+-- This packages several already-proved transition and finite-contribution
+-- facts at once; unfolding the displayed chart index is elaboration-heavy.
+set_option linter.style.longLine false in
+/-- Displayed-overlap finite microcertificate contribution summary.
+
+On the overlap where the displayed normalized coordinate is nonzero, an
+arbitrary all-pivot source chart transitions to the displayed chart.  This
+package constructs the displayed continuing finite center-square/formal
+Jacobian certificate for the transition-generated displayed data, evaluates
+the all-pivot microcertificate at the transition point, and records the
+displayed chart's finite exponent contribution summary.
+
+This is finite chart-certificate bookkeeping only.  It does not construct
+analytic charts, prove transition regularity or coverage, source-produce
+successor data, prove global normal crossings, pole order, or RLCT. -/
+theorem sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (sourceChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    (residual : ℕ × ℕ → K) (C : ℕ → τ → K)
+    (hdisplayed :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual (J + 1, J + 1) ≠ 0) :
+    let Cnc := case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont
+    let displayedChart := displayedChartIndex (K := K) n hS hcont
+    let sourcePivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart
+    let targetPivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        displayedChart
+    let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+    let targetU := u * denom
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+    ∃ cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre targetU targetResidual hS hcont C,
+      Cnc.chartMap displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        Cnc.chartMap sourceChart
+          (sourceChartPoint n hS hcont sourceChart u residual) ∧
+      Cnc.loss
+          (Cnc.chartMap displayedChart
+            (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual)) =
+        selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+          (case2SourceSelectedChartMapOfMem sourcePivot.2 u residual) ∧
+      Cnc.lossUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        selectedEntryCenterSqUnitFactor
+          ((case2ResidualBlockPivotEntries n S J).erase targetPivot.1)
+          targetResidual ∧
+      Cnc.jacobianPrior displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        (selectedEntryPivotFirstJacobian
+          (κ := {p // p ∈ (case2ResidualBlockPivotEntries n S J).erase targetPivot.1})
+          targetU (fun p ↦ targetResidual p.1)).det ∧
+      selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+          (case2SourceSelectedChartMapOfMem sourcePivot.2 u residual) =
+        Cnc.lossUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) *
+          ∏ j : Fin Cnc.numCoords,
+            Cnc.coord displayedChart
+              (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) j ^
+              (2 * Cnc.lossExp displayedChart j) ∧
+      (selectedEntryPivotFirstJacobian
+          (κ := {p // p ∈ (case2ResidualBlockPivotEntries n S J).erase targetPivot.1})
+          targetU (fun p ↦ targetResidual p.1)).det =
+        Cnc.jacobianPriorUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) *
+          ∏ j : Fin Cnc.numCoords,
+            Cnc.coord displayedChart
+              (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) j ^
+              Cnc.jacobianPriorExp displayedChart j ∧
+      Case2DisplayedContinuingExponentCoordinateBridge cert
+        Cnc.exponentData (displayedChart, (0 : Fin 1)) ∧
+      Cnc.exponentData.ratioAt (displayedChart, (0 : Fin 1)) =
+        (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+      Cnc.exponentData.exponentMinimum =
+        (((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2 ∧
+      Cnc.exponentData.countInChartAtRatio
+        ((((prefixMinNat n S - J) * (n (S + 1) - J) : ℕ) : ℚ) / 2)
+          displayedChart = 1 ∧
+      Cnc.exponentData.minCountInChart displayedChart = 1 ∧
+      Cnc.exponentData.exponentOrder = 1 := by
+  dsimp only
+  let displayedChart := displayedChartIndex (K := K) n hS hcont
+  let sourcePivot :=
+    (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      sourceChart
+  let targetPivot :=
+    (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      displayedChart
+  let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+  let targetU := u * denom
+  let targetResidual : ℕ × ℕ → K :=
+    fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+  have htarget :
+      case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1 ≠ 0 := by
+    simpa [displayedChart, targetPivot, sourcePivot,
+      finsetSubtypeChartEquiv_displayedChartIndex] using hdisplayed
+  let cert :
+      Case2DisplayedContinuingReindexedSourceChartCenterSqFormalJacobianCertificate
+        L n S J t numerator leastValue pre targetU targetResidual hS hcont C :=
+    sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily
+      pre targetU targetResidual hS hSL hcont hnext exponentPre levelInv leastValueGap C
+  have hmap :
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).chartMap displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).chartMap sourceChart
+            (sourceChartPoint n hS hcont sourceChart u residual) :=
+    chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
+      n hS hcont sourceChart displayedChart u residual htarget
+  have hloss :
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).loss
+          ((case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+            (K := K) n hS hcont).chartMap displayedChart
+              (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual)) =
+        selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+          (case2SourceSelectedChartMapOfMem sourcePivot.2 u residual) := by
+    simpa [displayedChart, sourcePivot] using
+      loss_sourceChartTransitionPoint_eq_sourceSelectedCenterSq_of_target_normalized_ne_zero
+        n hS hcont sourceChart displayedChart u residual htarget
+  have hunit :
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).lossUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        selectedEntryCenterSqUnitFactor
+          ((case2ResidualBlockPivotEntries n S J).erase targetPivot.1)
+          targetResidual := by
+    simpa [displayedChart, sourcePivot, targetPivot, denom, targetResidual] using
+      lossUnit_sourceChartTransitionPoint_eq_sourceSelectedUnitFactor
+        n hS hcont sourceChart displayedChart u residual
+  have hjac :
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).jacobianPrior displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) =
+        (selectedEntryPivotFirstJacobian
+          (κ := {p // p ∈ (case2ResidualBlockPivotEntries n S J).erase targetPivot.1})
+          targetU (fun p ↦ targetResidual p.1)).det := by
+    simpa [displayedChart, sourcePivot, targetPivot, denom, targetU, targetResidual] using
+      jacobianPrior_sourceChartTransitionPoint_eq_sourceSelectedDet
+        n hS hcont sourceChart displayedChart u residual
+  have hlossMono :
+      selectedEntryCenterSq (case2ResidualBlockPivotEntries n S J)
+          (case2SourceSelectedChartMapOfMem sourcePivot.2 u residual) =
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).lossUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) *
+          ∏ j : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+              (K := K) n hS hcont).numCoords,
+            (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+              (K := K) n hS hcont).coord displayedChart
+              (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) j ^
+              (2 *
+                (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+                  (K := K) n hS hcont).lossExp displayedChart j) := by
+    simpa [displayedChart, sourcePivot] using
+      loss_monomial_sourceChartTransitionPoint_sourceSelected_of_target_normalized_ne_zero
+        n hS hcont sourceChart displayedChart u residual htarget
+  have hjacMono :
+      (selectedEntryPivotFirstJacobian
+          (κ := {p // p ∈ (case2ResidualBlockPivotEntries n S J).erase targetPivot.1})
+          targetU (fun p ↦ targetResidual p.1)).det =
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).jacobianPriorUnit displayedChart
+          (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) *
+          ∏ j : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+              (K := K) n hS hcont).numCoords,
+            (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+              (K := K) n hS hcont).coord displayedChart
+              (sourceChartTransitionPoint n hS hcont sourceChart displayedChart u residual) j ^
+              (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+                (K := K) n hS hcont).jacobianPriorExp displayedChart j := by
+    simpa [displayedChart, sourcePivot, targetPivot, denom, targetU, targetResidual] using
+      jacobianPrior_monomial_sourceChartTransitionPoint_sourceSelected
+        n hS hcont sourceChart displayedChart u residual
+  rcases localChartFamilyCertificateContribution_summary cert displayedChart with
+    ⟨hbridge, hratio, hmin, hcount, hminCount, horder⟩
+  exact
+    ⟨cert, hmap, hloss, hunit, hjac, hlossMono, hjacMono,
+      hbridge, hratio, hmin, hcount, hminCount, horder⟩
+
 end case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
 
 /-- Case 1 all-pivot finite selected-entry chart-family certificate for the

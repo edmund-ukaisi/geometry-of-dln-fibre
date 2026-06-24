@@ -2652,3 +2652,15 @@ the equality to the formula-level successor is explicit, including the
 This is not source production; the next real source-moving work must still
 construct or reduce the remaining `Csucc`/suffix/successor-chart obligations,
 or else proceed only under explicit chart-production hypotheses.
+
+The displayed transition microcertificate contribution package has now landed
+in
+`threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.
+It transitions an arbitrary chart from our finite all-pivot wrapper to
+Aoyagi's displayed Case 2 chart, constructs the displayed continuing finite
+center-square/formal-Jacobian certificate for the transition-generated data,
+and bundles finite loss/unit/formal-determinant evaluations with the local
+ratio/minimum/count/order summary.  This is chart-certificate plumbing only:
+Aoyagi prints the displayed chart, while the all-pivot wrapper is our formal
+finite cover device; no source production, analytic transition regularity,
+coverage, global A0 normal crossings, pole order, or RLCT is proved.

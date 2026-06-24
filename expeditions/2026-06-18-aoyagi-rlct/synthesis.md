@@ -7051,6 +7051,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 displayed transition microcertificate contribution:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
+On the displayed normalized overlap, it transitions a chart from the finite
+all-pivot selected-entry wrapper to Aoyagi's displayed Case 2 chart,
+constructs the displayed continuing finite center-square/formal-Jacobian
+certificate for the transition-generated data, and bundles source-facing loss
+evaluation, target displayed unit/formal-determinant identities, monomial
+identities, and the local finite ratio/minimum/count/order summary.  Aoyagi
+prints the displayed top-left chart; the all-pivot source chart is our finite
+formal wrapper.  This is not analytic transition regularity, chart coverage,
+source production, global A0 normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-displayed-transition-microcertificate-contribution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-displayed-transition-microcertificate-contribution-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
