@@ -192,17 +192,31 @@ ideal), and `height_graphIdeal_forcedB22_eq : (graphIdeal (forcedB22 q p r Sd)).
 Built on the LANDED reusable `height_graphIdeal_localization_eq` (`GraphIdealHeight.lean`:
 `translateAux` translation auto + `height_coordIdeal_localization_eq` + `detSchurS_ne_zero`). DONE.
 
-**(2) `J ⊆ Ψ(Iad)`** (the one involved step — carries the Schur content, the correctness-guard seed):
-the generator `X_{ab} − C(forcedB22 ab)` pulls back through `Ψ⁻¹` to (the localization of) the Schur
-expression `detΔ⁻¹·(detΔ·B22 − (B21 adjΔ B12))_{ab}`, which is in `Iad` because `detΔ·B22 − B21 adjΔ
-B12` is the bordered `(r+1)`-minor — LANDED `det_submatrix_multPoly_mem_sigmaIdeal` (the
-`(r+1)`-minor ∈ `sigmaIdeal`), and `Iad = sigmaIdeal.map`. (Or push forward; pull-back through `Ψ⁻¹`
-is likely lower friction.)
+**(2) `J ⊆ Ψ(Iad)`** (the one involved step — the Schur content, correctness-guard seed). FULLY
+recipe'd in `codex/inclusion-answer.md` (forward route, `Ideal.mem_map_of_mem`):
+- **Coordinate-image lemmas — LANDED** (6252c876): `repCoordReindex_pivot` (Δ-block),
+  `repCoordReindex_b22` (B22block), `finSplit_castLE`/`finSplit_natAdd`. Still need the B12/B21 mixed
+  ones (pivot row × non-pivot col ↦ `Sum.inr (Sum.inr (Sum.inl …))`; non-pivot row × pivot col ↦
+  `Sum.inr (Sum.inr (Sum.inr …))`) — same `change` + `finSplit_*` pattern.
+- **The bordered-minor identity `(*)`** `blockAlgEquiv (minorPoly_ab) = C detSchurS · X_{ab} −
+  C(forcedNum_{ab})`, `minorPoly_ab` = bordered `(r+1)`-minor of `multPoly` (pivot rows ∪ {row
+  `cast (natAdd r a)`}, pivot cols ∪ {col `cast (natAdd r b)`}). Spine: `AlgEquiv.map_det` +
+  `det_fromBlocks_scalar_eq` (LANDED) + the coord-image lemmas; `Fin r ⊕ Unit ≃ Fin (r+1)` via
+  `det_submatrix_equiv_self`+`submatrix_submatrix` (as in `schur_expr_eq_zero_of_rank_le`).
+  `minorPoly_ab ∈ sigmaIdeal` is LANDED `det_submatrix_multPoly_mem_sigmaIdeal` ⟹ image ∈ `Iad` ⟹
+  `Ψ` of it ∈ `Ψ(Iad)`.
+- **Unit-divide:** `C detSchurS` a unit in `MvPolynomial B22block Sd`
+  (`IsLocalization.Away.algebraMap_isUnit` + `RingHom.isUnit_map C`); `forcedNum = detSchurS ·
+  forcedB22` by `IsLocalization.mk'_spec'`; so `(*) = C detSchurS · (X_{ab} − C(forcedB22 ab))`, and
+  `Ideal.unit_mul_mem_iff_mem` ⟹ `X_{ab} − C(forcedB22 ab) ∈ Ψ(Iad)`.
 
-**(3) `Iad = J` + the equiv** — `height_strict_mono_of_is_prime` (`Ψ`-transported `height Iad = C`
-[from LANDED `height_map_sigmaIdeal_away_eq_cCodim` + AlgEquiv height transport] + step-1
-`height J = C`, both prime, `J ⊆ Ψ(Iad)`) ⟹ `Ψ(Iad) = J` ⟹ `Iad = Ψ⁻¹ J`. Then
-`A_loc/Iad ≅ (MvPolynomial B22block Sd)/J ≅ Sd` via `graphIdealQuotientEquiv`.
+**(3) `Iad = J` + the equiv** (Codex Q4 chain) — `K := Iad.map (Ψ : A_loc →+* T)`,
+`height K = height Iad = C` (`height_map_algEquiv Ψ Iad`), `K` prime (`Ideal.map_isPrime_of_equiv Ψ`).
+Squeeze: `le_antisymm` (J ⊆ K from step 2) + `Ideal.height_strict_mono_of_is_prime` (rules out
+`J ⊊ K` via `height J = C` [LANDED `height_graphIdeal_forcedB22_eq`] = `height K`) ⟹ `K = J`. Then
+the equiv: `Ideal.quotientEquivAlg Iad J Ψ (hKJ.symm) : A_loc ⧸ Iad ≃ₐ[k] T ⧸ J`, then
+`(graphIdealQuotientEquiv forcedB22).restrictScalars k : T ⧸ J ≃ₐ[k] Sd`; compose. {domain, dim δ}
+derive from the equiv.
 
 **INTERFACE (controller, settled):** expose ONLY `A_loc/Iad ≅ₐ[k] Sd` + reuse landed `height Iad = C`.
 `J` stays INTERNAL. {domain, dim δ} derive from the equiv (`Sd` = a poly localization). **GUARD
