@@ -6821,6 +6821,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 transition supplied-successor reindexed product:
+`SelectedEntryNormalCrossing.lean` now adds
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+On the displayed normalized overlap, the theorem consumes explicit target data
+`targetU = u*d`, `targetResidual q = x_q/d`, and a
+`SourceProductionObligation` for those data.  It combines chart-map equality,
+the displayed substitution-block transition rewrite to `Sub_p(u,x)`, and the
+supplied-`Csucc` reindexed product consumer.  This is finite bookkeeping only:
+no construction of the obligation or `Csucc`, no suffix/source production,
+successor chart construction, transition regularity, normal crossings, pole
+order, or RLCT extraction.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-supplied-successor-reindexed-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-supplied-successor-reindexed-product-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.

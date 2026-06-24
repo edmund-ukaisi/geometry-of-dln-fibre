@@ -6105,3 +6105,32 @@ This is finite selected-entry chart algebra only.  It does not prove source
 and target units equal, does not source-produce successor or following-factor
 data, and does not prove analytic transition regularity, chart coverage,
 normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-24 Lean Case 2 transition supplied-successor reindexed product
+
+Reproduction:
+`reproduction-case2-transition-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-supplied-successor-reindexed-product.md`.
+Review:
+`review-case2-transition-supplied-successor-reindexed-product-a4.md`.
+
+Lean now proves the displayed-overlap transition wrapper for the
+supplied-successor reindexed product:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero
+```
+
+The theorem takes explicit transition-generated target data
+`targetU = u*d`, `targetResidual q = x_q/d`, and a
+`SourceProductionObligation` for those target data.  It returns the displayed
+chart-map equality, the displayed target substitution block rewritten to the
+original source selected substitution block, and the reindexed next-source
+product with the right-hand successor following object written as the supplied
+`Csucc`.
+
+This is only a finite transition-plus-consumer adapter.  It does not construct
+the obligation, construct or source-produce `Csucc`, produce suffixes or
+successor charts, prove transition regularity, chart coverage, normal
+crossings, pole order, or RLCT.

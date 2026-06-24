@@ -2653,6 +2653,17 @@ This is not source production; the next real source-moving work must still
 construct or reduce the remaining `Csucc`/suffix/successor-chart obligations,
 or else proceed only under explicit chart-production hypotheses.
 
+The transition wrapper for that supplied-successor consumer has now landed in
+`threads/04-blow-up-certificate/reproduction-case2-transition-supplied-successor-reindexed-product-a4.md`.
+Lean takes transition-generated displayed data `targetU = u*d` and
+`targetResidual q = x_q/d`, consumes an explicit `SourceProductionObligation`
+for those same target data, rewrites the left substitution block to the
+original source selected block, and states the right side with supplied
+`Csucc`.  This is only a finite transition-plus-consumer adapter; it still
+does not construct the obligation, source-produce `Csucc`, produce suffixes,
+construct successor charts, prove transition regularity, chart coverage,
+normal crossings, pole order, or RLCT.
+
 The displayed transition microcertificate contribution package has now landed
 in
 `threads/04-blow-up-certificate/reproduction-case2-displayed-transition-microcertificate-contribution-a4.md`.

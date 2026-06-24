@@ -4423,6 +4423,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 transition supplied-successor reindexed product:
+`SelectedEntryNormalCrossing.lean` now adds
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+It consumes transition-generated displayed target data and a supplied
+`SourceProductionObligation` for those data, then combines the displayed
+substitution-block transition equality with the supplied-`Csucc` reindexed
+product consumer.  This is a finite adapter only.  It does not construct the
+obligation, construct or source-produce `Csucc`, produce suffixes or successor
+charts, prove analytic transition regularity, chart coverage, normal
+crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-supplied-successor-reindexed-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-supplied-successor-reindexed-product-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now adds
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.

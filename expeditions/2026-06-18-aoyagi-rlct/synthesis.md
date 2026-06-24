@@ -7051,6 +7051,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-supplied-successor-reindexed-product-a4.md`.
 
+Latest A4 Case 2 transition supplied-successor reindexed product:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_reindexedNextSourceProduct_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.
+The theorem accepts explicit transition-generated displayed target data
+`targetU = u*d` and `targetResidual q = x_q/d`, plus a
+`SourceProductionObligation` for those same target data.  It records the
+displayed chart-map equality, rewrites the displayed target substitution block
+to the original source selected substitution block, and applies the
+supplied-obligation reindexed-product consumer so the right-hand successor is
+the supplied `Csucc`.  This is finite transition/source-substitution/product
+bookkeeping only; it constructs neither the obligation nor `Csucc`, and proves
+no suffix production, successor chart construction, transition regularity,
+coverage, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-supplied-successor-reindexed-product-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-supplied-successor-reindexed-product.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-supplied-successor-reindexed-product-a4.md`.
+
 Latest A4 Case 2 displayed transition microcertificate contribution:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_microcertificateContribution_summary_of_displayed_normalized_ne_zero`.
