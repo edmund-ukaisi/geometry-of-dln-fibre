@@ -177,6 +177,121 @@ theorem lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top
   rw [← lintegral_enorm_of_nonneg hnonneg]
   exact h.hasFiniteIntegral
 
+/-- A radial puncture at the origin can be removed almost everywhere for a
+nonatomic measure.  This is only an equality of representatives, not a
+pointwise statement at the origin. -/
+theorem ae_eq_norm_indicator_Ioo_Iio
+    {β E : Type*} [Zero β] [NormedAddCommGroup E] [MeasurableSpace E]
+    {μ : Measure E} [NoAtoms μ] (R : ℝ) (φ : ℝ → β) :
+    (fun x : E => (Set.Ioo (0 : ℝ) R).indicator φ ‖x‖) =ᵐ[μ]
+      (fun x : E => (Set.Iio R).indicator φ ‖x‖) := by
+  filter_upwards [Measure.ae_ne μ (0 : E)] with x hx
+  have hxnorm : ‖x‖ ≠ 0 := fun h0 => hx (norm_eq_zero.mp h0)
+  have hxpos : 0 < ‖x‖ := lt_of_le_of_ne (norm_nonneg x) (Ne.symm hxnorm)
+  by_cases hxR : ‖x‖ < R
+  · have hxIoo : ‖x‖ ∈ Set.Ioo (0 : ℝ) R := ⟨hxpos, hxR⟩
+    have hxIio : ‖x‖ ∈ Set.Iio R := hxR
+    simp only [Set.indicator_of_mem hxIoo, Set.indicator_of_mem hxIio]
+  · have hxIoo : ‖x‖ ∉ Set.Ioo (0 : ℝ) R := fun h => hxR h.2
+    have hxIio : ‖x‖ ∉ Set.Iio R := hxR
+    simp only [Set.indicator_of_notMem hxIoo, Set.indicator_of_notMem hxIio]
+
+/-- Nonpunctured radial-support version of the finite-side quadratic estimate.
+The origin is included only through a.e. congruence from the punctured theorem. -/
+theorem integrable_norm_sq_add_rpow_neg_indicator_Iio
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    Integrable (fun x : E =>
+      (Set.Iio R).indicator
+        (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖) μ := by
+  exact (integrable_norm_sq_add_rpow_neg_indicator_Ioo
+    (E := E) (μ := μ) (a := a) (s := s) (R := R) hR ha hs hcrit).congr
+      (ae_eq_norm_indicator_Ioo_Iio
+        (E := E) (μ := μ) (R := R)
+        (φ := fun y : ℝ => (y ^ 2 + a) ^ (-s)))
+
+/-- `ENNReal.ofReal` lower-integral handoff for the nonpunctured radial-support
+quadratic estimate. -/
+theorem lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Iio_lt_top
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    (∫⁻ x : E, ENNReal.ofReal
+      ((Set.Iio R).indicator
+        (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖) ∂μ) < ∞ := by
+  have hpunct := lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Ioo_lt_top
+    (E := E) (μ := μ) (a := a) (s := s) (R := R) hR ha hs hcrit
+  have hlin := lintegral_congr_ae
+    ((ae_eq_norm_indicator_Ioo_Iio
+      (E := E) (μ := μ) (R := R)
+      (φ := fun y : ℝ => (y ^ 2 + a) ^ (-s))).mono
+        fun _ hx => by simpa using congrArg ENNReal.ofReal hx)
+  rwa [← hlin]
+
+/-- Pointwise rewrite from open-ball support to radial `Iio` support. -/
+theorem norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio
+    {E : Type*} [NormedAddCommGroup E] {a s R : ℝ} :
+    (fun x : E =>
+      (Metric.ball (0 : E) R).indicator
+        (fun x : E => (‖x‖ ^ 2 + a) ^ (-s)) x) =
+      fun x : E =>
+        (Set.Iio R).indicator
+          (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖ := by
+  funext x
+  have hball : Metric.ball (0 : E) R = (fun x : E => ‖x‖) ⁻¹' Set.Iio R := by
+    ext x
+    simp [Metric.mem_ball, dist_zero_right]
+  rw [hball]
+  exact Set.indicator_comp_right
+    (s := Set.Iio R) (f := fun x : E => ‖x‖)
+    (g := fun y : ℝ => (y ^ 2 + a) ^ (-s)) (x := x)
+
+/-- Open-ball support version of the finite-side quadratic estimate. -/
+theorem integrable_norm_sq_add_rpow_neg_indicator_ball
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    Integrable (fun x : E =>
+      (Metric.ball (0 : E) R).indicator
+        (fun x : E => (‖x‖ ^ 2 + a) ^ (-s)) x) μ := by
+  rw [norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio]
+  exact integrable_norm_sq_add_rpow_neg_indicator_Iio
+    (E := E) (μ := μ) (a := a) (s := s) (R := R) hR ha hs hcrit
+
+/-- `ENNReal.ofReal` lower-integral handoff for the open-ball support quadratic
+estimate. -/
+theorem lintegral_ofReal_norm_sq_add_rpow_neg_indicator_ball_lt_top
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 ≤ a) (hs : 0 ≤ s)
+    (hcrit : 2 * s < (Module.finrank ℝ E : ℝ)) :
+    (∫⁻ x : E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun x : E => (‖x‖ ^ 2 + a) ^ (-s)) x) ∂μ) < ∞ := by
+  have hpoint := norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio
+    (E := E) (a := a) (s := s) (R := R)
+  have hlin :
+      (∫⁻ x : E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun x : E => (‖x‖ ^ 2 + a) ^ (-s)) x) ∂μ) =
+      (∫⁻ x : E, ENNReal.ofReal
+        ((Set.Iio R).indicator
+          (fun y : ℝ => (y ^ 2 + a) ^ (-s)) ‖x‖) ∂μ) := by
+    apply lintegral_congr
+    intro x
+    exact congrArg ENNReal.ofReal (congrFun hpoint x)
+  rw [hlin]
+  exact lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Iio_lt_top
+    (E := E) (μ := μ) (a := a) (s := s) (R := R) hR ha hs hcrit
+
 end RadialFiniteSide
 
 end Aoyagi

@@ -2810,3 +2810,38 @@ endpoint theorem, lower/divergence theorem, uniform asymptotic in `a`,
 bounded-density theorem, product-coordinate `+k/2` threshold, Aoyagi p.13
 analytic chart/Jacobian theorem, normal-crossing construction, pole order, or
 RLCT theorem is proved.
+
+## 2026-06-24 A2 null-origin radial integrability
+
+Reproduction:
+`reproduction-a2-null-origin-radial-integrability.md`.
+Statement card:
+`statement-card-a2-null-origin-radial-integrability.md`.
+Review:
+`review-a2-null-origin-radial-integrability.md`.
+
+Lean now removes the radial puncture at the origin by a.e. congruence in
+`RegularSuspensionIntegrability.lean`:
+
+```text
+ae_eq_norm_indicator_Ioo_Iio
+integrable_norm_sq_add_rpow_neg_indicator_Iio
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Iio_lt_top
+norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio
+integrable_norm_sq_add_rpow_neg_indicator_ball
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_ball_lt_top
+```
+
+The primitive theorem says that for a nonatomic measure, the radial
+indicator-extensions by zero for `(0,R)` and `(-infinity,R)` agree almost
+everywhere.  The only possible disagreement is at `x=0`, which is null.
+The quadratic integrability and `ENNReal.ofReal` lower-integral results then
+transfer from the punctured radial theorem under the same finite-side
+hypotheses `R>0`, `a>=0`, `s>=0`, and `2*s < finrank`.  The open-ball wrapper
+is a pointwise rewrite of `x in Metric.ball 0 R` as `||x|| < R`.
+
+Boundary: a.e. representative transfer only.  No pointwise regularity at the
+origin, closed-ball theorem, boundary-sphere nullity, endpoint theorem,
+lower/divergence theorem, uniform asymptotic in `a`, bounded-density theorem,
+product-coordinate `+k/2` threshold, Aoyagi p.13 analytic chart/Jacobian
+theorem, normal-crossing construction, pole order, or RLCT theorem is proved.

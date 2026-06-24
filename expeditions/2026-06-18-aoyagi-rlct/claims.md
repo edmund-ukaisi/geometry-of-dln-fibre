@@ -286,7 +286,9 @@ No such claim is formalisation-ready until both fields are filled.
   one-sided regular-suspension integrability brick at
   `threads/03-block-product-reduction/reproduction-a2-one-sided-regular-suspension-integrability.md`;
   radial finite-side integrability brick at
-  `threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`.
+  `threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`;
+  null-origin radial integrability transfer at
+  `threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -327,7 +329,9 @@ No such claim is formalisation-ready until both fields are filled.
   `Copernicus the 4th` in
   `threads/03-block-product-reduction/review-a2-one-sided-regular-suspension-integrability.md`;
   radial finite-side integrability brick reviewed by xhigh `Volta the 4th` in
-  `threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`.
+  `threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`;
+  null-origin radial integrability transfer reviewed by xhigh `Jason the 4th` in
+  `threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6078,6 +6082,33 @@ integrability theorem, prove endpoint behavior, prove a lower/divergence side,
 give uniform asymptotics in `a`, prove a bounded-density theorem, prove the
 product-coordinate `+k/2` threshold theorem, construct Aoyagi's p.13 analytic
 chart/Jacobian, produce normal crossings, prove pole order, or prove RLCT.
+
+Latest A2 null-origin radial integrability:
+Lean now proves a narrow a.e. representative transfer in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+The generic theorem `ae_eq_norm_indicator_Ioo_Iio` says that, for a nonatomic
+measure, the radial indicator-extensions by zero on `(0,R)` and
+`(-infinity,R)` agree almost everywhere.  The quadratic corollaries
+`integrable_norm_sq_add_rpow_neg_indicator_Iio` and
+`lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Iio_lt_top` transfer the
+finite-side result from the punctured theorem under the same hypotheses
+`R>0`, `a>=0`, `s>=0`, and `2*s < finrank_R(E)`.  The open-ball wrappers
+`norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio`,
+`integrable_norm_sq_add_rpow_neg_indicator_ball`, and
+`lintegral_ofReal_norm_sq_add_rpow_neg_indicator_ball_lt_top` use only the
+pointwise identity `x in Metric.ball 0 R iff ||x|| < R`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-null-origin-radial-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`.
+
+Nonclaims: no pointwise regularity at the origin, no closed-ball theorem or
+boundary-sphere nullity, no endpoint behavior, no lower/divergence side, no
+uniform asymptotics in `a`, no bounded-density theorem, no product-coordinate
+`+k/2` threshold theorem, no Aoyagi p.13 analytic chart/Jacobian construction,
+no normal crossings, no pole order, and no RLCT.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

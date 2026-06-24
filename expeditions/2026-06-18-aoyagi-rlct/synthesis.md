@@ -8973,6 +8973,37 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`.
 
+Latest A2 null-origin radial integrability:
+`RegularSuspensionIntegrability.lean` now removes the radial puncture by
+almost-everywhere congruence:
+
+```text
+ae_eq_norm_indicator_Ioo_Iio
+integrable_norm_sq_add_rpow_neg_indicator_Iio
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_Iio_lt_top
+norm_sq_add_rpow_neg_indicator_ball_eq_indicator_Iio
+integrable_norm_sq_add_rpow_neg_indicator_ball
+lintegral_ofReal_norm_sq_add_rpow_neg_indicator_ball_lt_top
+```
+
+The primitive theorem needs only a nonatomic measure and says that the
+indicator-extensions by zero on `(0,R)` and `(-infinity,R)` agree a.e. after
+composition with `||x||`; their only disagreement can occur at `x=0`.  The
+quadratic `Iio` and open-ball corollaries transfer the finite-side result
+under the same hypotheses as the punctured radial theorem, and the open-ball
+form is only the pointwise rewrite `x in Metric.ball 0 R iff ||x|| < R`.
+
+This is not pointwise regularity at the origin, not a closed-ball or
+boundary-sphere theorem, not endpoint or divergence analysis, not uniform
+asymptotics in `a`, not bounded-density transport, not the product-coordinate
+`+k/2` threshold theorem, not Aoyagi's p.13 chart/Jacobian construction, not
+normal crossings, not pole order, and not RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-null-origin-radial-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

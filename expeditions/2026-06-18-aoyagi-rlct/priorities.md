@@ -3704,3 +3704,15 @@ transfer, endpoint behavior, lower/divergence, uniform asymptotics in `a`,
 bounded-density transport, the product-coordinate `+k/2` threshold theorem,
 Aoyagi's p.13 analytic chart/Jacobian construction, normal crossings, pole
 order, or RLCT.
+
+A2 null-origin radial integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`.
+Lean proves in `RegularSuspensionIntegrability.lean` that, for a nonatomic
+measure, radial indicator-extensions by zero on `(0,R)` and `(-infinity,R)`
+agree almost everywhere.  It transfers the finite-side quadratic estimate to
+the nonpunctured radial support and to the equivalent open-ball support under
+the same hypotheses.  This is only a null-origin/a.e. representative transfer:
+no pointwise origin regularity, closed-ball or boundary-sphere theorem,
+endpoint behavior, lower/divergence, density transport, product-coordinate
+threshold, p.13 analytic chart/Jacobian construction, normal crossings, pole
+order, or RLCT.
