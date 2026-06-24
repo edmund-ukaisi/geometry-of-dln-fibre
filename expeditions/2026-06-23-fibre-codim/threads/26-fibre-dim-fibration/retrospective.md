@@ -18,6 +18,19 @@ dimension brick. Branch `expedition/fibre-codimension`.
    Krull dimension, using primality (nontrivial domain quotient ⟹ `ringKrullDim ≠ ⊥`). Flatness-free.
    The base-dimension input both the going-down/00OM route and any height-additivity route consume.
 
+3. **`Core.FibreDimFibration.height_maximal_quotient_vanishingIdeal_stratum_eq_delta`** — every maximal
+   ideal of the irreducible base `O(Mat^{≤r})` has height `δ`. Equidimensionality at a closed point
+   (reusing the `Fintype`-indexed `OrbitTangentCotangent.height_eq_ringKrullDim_of_isMaximal_fintype`)
+   with brick 2. The base-side `height(m_E) = δ` the 00OM easy direction consumes. Flatness-free.
+
+4. **`Core.FibreDimEasyProbe.sigmaQuotComap`** (un-aggregated) — the descended base→total algebra map
+   `O(Mat^{≤r}) →ₐ[k] O(Σ̄^r)` (`deepBaseComap` through both `sigmaIdeal`s via the LANDED
+   `deepBaseComap_sigmaIdeal_le` + `Ideal.quotientMapₐ`). Foundation of the 00OM easy direction.
+
+**Aggregation:** `Core.FibreDimFibration` (bricks 2+3) is reusable bedrock and wants the aggregator
+import line `import DLNFibre.Core.FibreDimFibration` (controller's single-writer call). The two probes
+stay un-aggregated (probe convention).
+
 ## The decorrelated Codex verdict (xhigh, `codex/answer-realization.md`) — the load-bearing finding
 
 The thread spec's premise was: the fibration `mult|_{Σ̄^r} ↠ Mat^{≤r}` + generic-fibre-dimension via
