@@ -424,19 +424,56 @@ theorem deepestEPivot_contdiff (H : Fin (L + 1) → ℕ) (r : ℕ)
       Equiv.symm_symm]
     exact hprod _ _
 
-/-- **`deepestEPivot`'s reg-block derivative at `0` is a constant frame factor** (the #91 analytic
-crux, post frame-conjugation — NOT `id`). The gauge-zero reg-slice `r0 ↦ deepestEPivot Pf Qf (r0, 0)`
-has a constant strict derivative `F` by the idempotent sandwich (only `firstLayer` X,Z / `lastLayer` Y
-survive; the quadratic cross term `devXZ_corner_devY` has derivative 0). **The `∃ F : ≃L` conclusion is
-NOT PROVABLE from the stated hypotheses** (`IsUnit (Pf first)` / `IsUnit (Qf last)`): `F`'s
-invertibility needs `IsUnit (reindex (Qf last)).toBlocks₂₂`, which a unit `Qf last` does not force (a
-unit can have a singular ₂₂ block), and which the deepest-point frame as chosen from `IsDeepLayers`
-(vanishing tail rows) does not supply — see the sharpened sub-blocker in the proof body
-(counterexample `r=1, A=[0 1]`). The naive "last layer first `r` columns independent" clause is ALSO
-refuted (decorrelated Codex ×2): it silently restricts `B` (forces `B`'s first `r` columns independent),
-so it is NOT a sound spec change. The genuine fix is a `B`-determined PIVOT-ALIGNED output-coordinate
-permutation of the residual pack (measure-preserving, RLCT- and `nReg`-preserving) — a coordinated
-re-architecture out of this tide's scope. Carried as a correctly-stated `sorry`. -/
+/-- **The pivot-split P11 cross-read** (the `Y · B₂₁` analogue of `pivot_devY_read_toBlocks₁₂`). The
+top-left (`P11`, `Fin r × Fin r`) block of the read of the Y-deviation-conjugated `Q` is
+`Y · (reindex eJ eJ Q).toBlocks₂₁` — the cross term that `regBlockCLE`'s `+ Y · B₂₁` consumes in the
+`P11` block. Proof idiom identical to the banked `toBlocks₁₂` keystone: split at the middle index `eJ`
+(`submatrix_mul_equiv`), the outer reindex cancels the inserted one, then `fromBlocks_multiply`. -/
+theorem pivot_devY_read_toBlocks₁₁ {a b r : ℕ}
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eJ : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (Y : Matrix (Fin r) (Fin (b - r)) ℝ) (Q : Matrix (Fin b) (Fin b) ℝ) :
+    (Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)).toBlocks₁₁
+      = Y * (Matrix.reindex eJ eJ Q).toBlocks₂₁ := by
+  have hsplit : Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)
+      = (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0)
+          * (Matrix.reindex eJ eJ Q) := by
+    have hQ : Q = (Matrix.reindex eJ eJ Q).submatrix eJ eJ := by
+      simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+        Matrix.submatrix_id_id]
+    simp only [Matrix.reindex_apply, Equiv.symm_symm]
+    conv_lhs => rw [hQ]
+    rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0)
+        (Matrix.reindex eJ eJ Q) eR eJ eJ, Matrix.submatrix_submatrix,
+      Equiv.self_comp_symm, Equiv.self_comp_symm, Matrix.submatrix_id_id]
+    rfl
+  rw [hsplit]
+  -- `(fromBlocks 0 Y 0 0 * M).toBlocks₁₁ = Y · M.toBlocks₂₁`: expand `M` into its blocks, multiply.
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eJ eJ Q)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁]
+  simp only [Matrix.zero_mul, zero_add]
+
+/-- The matrix-to-pi reshape `≃L` `Matrix (Fin a) (Fin b) ℝ ≃L (Fin a × Fin b → ℝ)` (finite-dim, so the
+`LinearEquiv` upgrades to a `≃L`). The reg-residual decode reads `r0` into the three block matrices
+through `regResidualPack`; this is the per-block reshape brick. -/
+noncomputable def matrixPiCLE (a b : ℕ) :
+    Matrix (Fin a) (Fin b) ℝ ≃L[ℝ] (Fin a × Fin b → ℝ) :=
+  (((Matrix.ofLinearEquiv ℝ).symm.trans
+    (LinearEquiv.curry ℝ ℝ (Fin a) (Fin b)).symm) : Matrix (Fin a) (Fin b) ℝ ≃ₗ[ℝ]
+      (Fin a × Fin b → ℝ)).toContinuousLinearEquiv
+
+@[simp] theorem matrixPiCLE_apply (a b : ℕ) (M : Matrix (Fin a) (Fin b) ℝ) (p : Fin a × Fin b) :
+    matrixPiCLE a b M p = M p.1 p.2 := rfl
+
+/-- **`deepestEPivot`'s reg-block derivative at `0` is the invertible frame factor `F`** (the #91
+analytic crux, PIVOT-aligned). On the pivot path the reg-slice `r0 ↦ deepestEPivot J Pf Qf (r0, 0)` has
+constant strict derivative `F` (the idempotent sandwich: only `firstLayer` X,Z / `lastLayer` Y survive;
+the quadratic cross term `devXZ_corner_devY` has derivative 0). The linear part is the `regBlockCLE`
+shape `(X,Y,Z) ↦ (A₁₁X+A₁₂Z + Y·B₂₁, Y·B₂₂, A₂₁X+A₂₂Z)` with `A = reindex (Pf first)` (unit, `hPf`) and
+`B₂₂ = (reindex eJ eJ (Qf last))₂₂` (unit, `hQf22` — the genuinely-needed pivot hypothesis the threshold
+path lacked, discharged at the call site from the pivot-aligned deepest-point frame). Block-triangular,
+so invertible from `IsUnit A` + `IsUnit B₂₂` (`regBlockCLE`). -/
 theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L)))
