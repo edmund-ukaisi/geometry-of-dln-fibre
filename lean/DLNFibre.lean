@@ -131,3 +131,8 @@ import DLNFibre.Core.FibreReducedTrivialization
 -- SchurLoc-algebra structure (R2-3a's R = SchurLoc, S = Sred). The crux containments (det transport,
 -- base→deep sigmaIdeal, NON-circular) proved. Feeds R2-3b-3 (endpoint AlgEquiv) + R2-3b-4 (the iso e).
 import DLNFibre.Core.DeepChartRing
+-- Endpoint-normalization gauge AlgEquiv (R2-3b-3): the vertex-unit conjugation `Aᵢ ↦ P_{i+1}·Aᵢ·P_i⁻¹`
+-- (= landed `BaseChange.baseChange`) on the generic tuple, `gaugeEquiv d P`, over arbitrary CommRing R,
+-- + the transport `gaugeEquiv (multPoly) = P_last·M·P_0⁻¹` (endpoint gauge P_0=H, P_last=L⁻¹ ⟹ L⁻¹·M·H⁻¹).
+-- The coordinate change that turns `mult(A)=LEH` into `mult(Ã)=E`. Feeds R2-3b-4 (instantiate + descend).
+import DLNFibre.Core.EndpointNormalization
