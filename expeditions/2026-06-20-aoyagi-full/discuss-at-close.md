@@ -49,3 +49,12 @@ headline `aoyagi_learning_coefficient` stays honest-conditional on R1. I'm drivi
 because R1 closing is the main remaining effort and may take significant time. NOT a wall — a precise
 re-arch path; each prior R1 dead-end (per-node Morse, §8 one-shot, threshold-only-corank≥2, ChainDimSplit
 carrier) was caught honestly before building on it.
+
+### Item 1 — L2-PIN reconciliation ASSESSED (heartbeat 2026-06-24 ~09:43)
+The #120 EPivot shear-CLE correction + the dE(0)=id overclaim fix span BOTH `DeepestGaugeChart` and
+`DeepestSplitReindex` (split-reindex also adds `deepestSplitHomeo` + MP/basepoint theorems). FIVE base
+modules consume these: DeepestSchurShift, DeepestFramedProduct, DeepestGaugeChart, DeepestGaugeConstruction,
+DeepestTelescoping. So this is NOT a clean cherry-pick — replacing the base's (fold3-close) versions risks
+breaking the 5 consumers. PLAN: do it as a DELIBERATE controller-supervised step during the L2 gate-drive
+(an active gauge-chart build surfaces what the proof needs), verifying name=content (the _deriv spec is the
+shear-CLE, not =fst) + that all 5 consumers still build. NOT rushed in parallel with the R1 long-pole.
