@@ -2301,6 +2301,17 @@ Theorem 2 order data, or RLCT extraction.  The next source-moving A4/A0 work
 should still target actual certificate production or monomial/unit data, not
 another consumer of a supplied extraction hypothesis.
 
+The current A5 base-value interval-membership cleanup is
+`threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
+Lean now proves that explicit base-chain bounds plus an interior-coordinate
+equality supply the recurring `baseValue_mem` input for the Lemma 5 counted
+datum codomain.  This is a useful finite supplied-field reduction, but it does
+not unfreeze Lemma 5 exactness: it does not construct Eq3/Eq4/Eq5 branches,
+source-label legality, no-extra coverage, injectivity, terminal exactness,
+normal crossings, pole order, or RLCT.  Future A5 work should use this as a
+constructor input for endpoint-family payloads when convenient; it should not
+displace the A4/A0 and A2 source-moving priorities.
+
 The current A4 Case 2 source-chart frontier package API-hardening slice is
 `threads/04-blow-up-certificate/reproduction-case2-frontier-boundary-packages-without-chart-family-a4.md`.
 Lean now constructs

@@ -6412,6 +6412,25 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
 
+Latest A5 base-value interval-membership cleanup:
+`Lemma5SuppliedFamily.lean` now proves
+`aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.  It turns
+explicit base-chain bounds
+`aoyagiHtildeLowerChain ell a M m <= baseH <= aoyagiHtildeUpperChain ell a M m`
+plus the supplied interior-coordinate equality
+`baseH(aoyagiLemma5InteriorCoord ell j hj) = baseValue j` into the recurring
+membership
+`baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j`.
+This is finite interval bookkeeping only.  It does not construct the base
+chain from Aoyagi's printed Eq3/Eq4/Eq5, prove source-label legality,
+no-extra coverage, injectivity, back-to-label coverage, terminal exactness,
+pole order, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-base-value-interval-membership.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

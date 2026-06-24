@@ -6633,6 +6633,21 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
 
+Latest A5 base-value interval-membership cleanup:
+`Lemma5SuppliedFamily.lean` now contains
+`aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.
+It derives the recurring `baseValue_mem` membership for Lemma 5 counted data
+from explicit base-chain lower/upper bounds and a supplied equality between
+the base chain's interior selected coordinates and `baseValue`.  This is not
+a construction of the base chain from Eq3/Eq4/Eq5, source-label legality,
+no-extra coverage, injectivity, back-to-label coverage, terminal exactness,
+pole order, normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-base-value-interval-membership.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
+
 Latest A6 Eq5 terminal-order bridge:
 `Theorem2Eq5TerminalOrderBridge.lean` now contains
 `AoyagiLemma5SuppliedEq5EndpointBlockWidthOrderPayload`,

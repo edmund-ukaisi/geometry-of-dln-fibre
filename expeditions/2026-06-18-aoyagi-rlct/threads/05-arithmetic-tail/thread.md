@@ -5515,3 +5515,30 @@ This is a thin finite handoff.  It does not source-construct the Eq5 endpoint
 family, terminal Eq5 payloads, endpoint-family equality, terminal
 `(p, alpha)` injectivity, branch-label injectivity, no-extra coverage, pole
 order, normal crossings, or RLCT.
+
+## 2026-06-24 Lean Lemma 5 base-value interval membership
+
+Reproduction:
+`reproduction-lemma5-base-value-interval-membership-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-base-value-interval-membership.md`.
+Review artifact:
+`review-lemma5-base-value-interval-membership-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds
+```
+
+If a supplied base chain `baseH : Fin (ell+1) -> Int` is squeezed between
+Aoyagi's displayed lower and upper `Htilde` chains, and the supplied
+`baseValue j` agrees with `baseH` at every interior selected coordinate, then
+`baseValue j` lies in the Nat-indexed interval value set used by the Lemma 5
+counted-datum codomain.
+
+This removes one recurring naked `baseValue_mem` obligation by replacing it
+with explicit base-chain bounds plus a coordinate equality.  It does not
+construct the base chain from Aoyagi's printed Eq3/Eq4/Eq5, prove source-label
+legality, no-extra coverage, injectivity, back-to-label coverage, terminal
+exactness, pole order, normal crossings, or RLCT extraction.

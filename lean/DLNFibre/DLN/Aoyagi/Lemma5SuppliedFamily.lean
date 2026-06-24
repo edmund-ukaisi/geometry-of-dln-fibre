@@ -25,6 +25,38 @@ def aoyagiLemma5InteriorCoord (ell j : ℕ)
     have hjle : j ≤ ell - 1 := (Finset.mem_Icc.mp hj).2
     omega⟩
 
+/-- Explicit base-chain bounds imply the supplied base values lie in the
+Nat-indexed Lemma 5 interval value sets.
+
+This only replaces a bare `baseValue` interval-membership hypothesis by
+componentwise bounds for a supplied base chain plus a supplied coordinate
+equality.  It does not construct the base branch or prove Lemma 5 exactness. -/
+theorem aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds
+    (ell a : ℕ) (M : ℤ) (m baseH : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hlower : aoyagiHtildeLowerChain ell a M m ≤ baseH)
+    (hupper : baseH ≤ aoyagiHtildeUpperChain ell a M m)
+    (hbase :
+      ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+        baseH (aoyagiLemma5InteriorCoord ell j hj) = baseValue j) :
+    ∀ {j : ℕ}, (hj : j ∈ Finset.Icc 1 (ell - 1)) →
+      baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j := by
+  intro j hj
+  have hmem :
+      baseH (aoyagiLemma5InteriorCoord ell j hj) ∈
+        aoyagiHtildeIntervalValueSet ell a M m
+          (aoyagiLemma5InteriorCoord ell j hj) :=
+    aoyagiHtildeChainBounds_mem_intervalValueSet ell a M m baseH
+      ha hlower hupper (aoyagiLemma5InteriorCoord ell j hj)
+  have hj_lt : j < ell + 1 := (aoyagiLemma5InteriorCoord ell j hj).2
+  have hmemNat :
+      baseH (aoyagiLemma5InteriorCoord ell j hj) ∈
+        aoyagiHtildeIntervalValueSetNat ell a M m j := by
+    simpa [aoyagiHtildeIntervalValueSetNat, hj_lt, aoyagiLemma5InteriorCoord]
+      using hmem
+  simpa [hbase hj] using hmemNat
+
 /-- Counted data for Aoyagi Lemma 5's interval upper-bound codomain.
 
 The `none` datum is the base datum standing for the supplied base branch.  A

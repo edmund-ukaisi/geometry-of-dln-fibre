@@ -4004,3 +4004,18 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-selected-entry-extraction-handoff.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-selected-entry-extraction-handoff-a4.md`.
+
+Latest A5 base-value interval-membership cleanup:
+`Lemma5SuppliedFamily.lean` now proves
+`aoyagiLemma5BaseValue_mem_intervalValueSetNat_of_baseChainBounds`.
+It replaces a bare `baseValue_mem` assumption by explicit supplied
+base-chain bounds and a supplied equality identifying the interior base-chain
+coordinates with `baseValue`.  This remains finite interval bookkeeping only:
+no base branch construction from Eq3/Eq4/Eq5, source-label legality, no-extra
+coverage, injectivity, back-to-label coverage, terminal exactness, pole order,
+normal crossings, or RLCT extraction.  Reproduction:
+`threads/05-arithmetic-tail/reproduction-lemma5-base-value-interval-membership-a5.md`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-base-value-interval-membership.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-base-value-interval-membership-a5.md`.
