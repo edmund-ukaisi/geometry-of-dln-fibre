@@ -178,4 +178,23 @@ theorem blockAlgEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
   have hs := congrArg (fun f ↦ f (detSchurS (k := k) q p r)) h
   simpa using hs
 
+/-- `detSchurS ≠ 0`: it is the determinant of the generic `Δ`-coordinate matrix (a renamed
+`mvPolynomialX`), nonzero by `det_mvPolynomialX_ne_zero`. So `Sd = Localization.Away detSchurS` is a
+nontrivial localization (a domain), and `detSchurS` is a valid localization element. -/
+theorem detSchurS_ne_zero (q p r : ℕ) : detSchurS (k := k) q p r ≠ 0 := by
+  rw [detSchurS]
+  have hren : (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k)))
+      = (mvPolynomialX (Fin r) (Fin r) k).map
+          (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) := by
+    ext i j; simp [mvPolynomialX_apply, rename_X]
+  rw [hren,
+    show ((mvPolynomialX (Fin r) (Fin r) k).map
+        (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r)))).det
+      = rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))
+          (mvPolynomialX (Fin r) (Fin r) k).det from
+      (AlgHom.map_det (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) _).symm,
+    Ne, rename_eq_zero_iff_of_injective]
+  · exact det_mvPolynomialX_ne_zero (Fin r) k
+  · intro a b hab; simpa using hab
+
 end DLNFibre.Core
