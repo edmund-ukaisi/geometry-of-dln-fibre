@@ -6723,6 +6723,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-substitution-block-rewrite-a4.md`.
 
+Latest A4 Case 2 transition-generated `Q/P` source-substitution package:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero`.
+It combines the transition-generated target-pivot `Q/P` identity with the
+substitution-block rewrite so that the left substituted residual block is
+`Sub_p(u,x)` rather than `Sub_q(u*d,x/d)`.  The normalized block, Schur block,
+successor weights, and transported following factor remain target-pivot data.
+This is finite coordinate algebra only: no source production, analytic
+transition regularity, chart coverage, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

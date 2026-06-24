@@ -5968,3 +5968,33 @@ source-displayed all-pivot atlas, source production of a global successor
 object or suffixes, normal crossings, pole order, or RLCT extraction.
 The arbitrary target-pivot statement is Lean's finite all-pivot abstraction;
 the displayed pivot is the directly Aoyagi-facing special case.
+
+## 2026-06-24 Lean Case 2 transition-generated Q/P source-substitution package
+
+Reproduction:
+`reproduction-case2-transition-generated-qp-source-substitution-a4.md`.
+Statement card:
+`statement-card-a4-case2-transition-generated-qp-source-substitution.md`.
+Review:
+`review-case2-transition-generated-qp-source-substitution-a4.md`.
+
+Lean now proves the finite package:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero
+```
+
+On the overlap where the target normalized coordinate `d = x_q` is nonzero,
+the transition-generated target data `targetU = u*d` and
+`targetResidual r = x_r/d` satisfy chart-map equality and
+`Sub_q(u*d,x/d) = Sub_p(u,x)`.  The target-pivot `Q/P` identity is then
+restated with only its left substituted residual block rewritten to
+`Sub_p(u,x)`, and the denominator-cleared target Schur formula is carried
+along.
+
+This is finite coordinate algebra only.  It is not a fully source-facing
+`Q/P` theorem: the normalized block, target Schur block, target successor
+weights, and transported following factor remain target-pivot data.  It proves
+no source production of successor residuals or following factors, analytic
+transition regularity, chart coverage, source-displayed all-pivot atlas,
+normal crossings, pole order, or RLCT extraction.

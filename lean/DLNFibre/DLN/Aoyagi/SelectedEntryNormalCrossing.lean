@@ -2423,6 +2423,148 @@ theorem sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_
         targetChart).2
       u residual htarget
 
+set_option linter.style.longLine false in
+/-- Transition-generated target chart data packaged with a source-facing
+substitution block on the left side of the target-pivot `Q/P` identity.
+
+This refines
+`sourceChartTransitionPoint_sourceSelectedQP_package_of_target_normalized_ne_zero`
+by using the finite substitution-block transition equality to rewrite only the
+left substituted residual block from the transition-generated target chart
+back to the original source chart.  The target normalised block, transported
+following factor, and denominator-cleared Schur formula remain target-pivot
+objects.  This is finite coordinate algebra only; it is not source production
+of successor matrices or suffixes, analytic transition regularity, chart
+coverage, normal crossings, pole order, or RLCT extraction. -/
+theorem sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J K) (u : K)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (sourceChart targetChart :
+      Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts)
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (residual : ℕ × ℕ → K) (C : ℕ → τ → K)
+    (htarget :
+      case2SourceSelectedNormalizedMapOfMem
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          sourceChart).2
+        residual
+        ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+          targetChart).1 ≠ 0) :
+    let sourcePivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        sourceChart
+    let targetPivot :=
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+        targetChart
+    let denom := case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual targetPivot.1
+    let targetU := u * denom
+    let targetResidual : ℕ × ℕ → K :=
+      fun q ↦ case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual q / denom
+    (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).chartMap targetChart
+        (sourceChartTransitionPoint n hS hcont sourceChart targetChart u residual) =
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).chartMap sourceChart
+          (sourceChartPoint n hS hcont sourceChart u residual)
+    ∧
+    case2SourceSelectedSubstitutionBlockOfMem targetPivot.2 targetU targetResidual =
+      case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual
+    ∧
+    (let data :=
+      sourceSelectedBoundary_of_chart_case2Succ_updateSelected
+        (K := K) (L := L) (n := n) (S := S) (J := J)
+        (t := t) (numerator := numerator) (leastValue := leastValue)
+        pre targetU hS hSL hcont targetChart exponentPre levelInv leastValueGap
+        chartFamily
+    let row := case2ResidualBlockPivotRowOfMem data.pivot_mem
+    let col := case2ResidualBlockPivotColOfMem data.pivot_mem
+    let A := case2SourceSelectedNormalizedBlockOfMem data.pivot_mem targetResidual
+    let Csrc := case2SourceSelectedFollowingFactorOfMem data.pivot_mem C
+    let Ctr :=
+      case2SourceSelectedTransportedFollowingFactorOfMem data.pivot_mem targetResidual C
+    ∃ q : pivotComplement row → K,
+      (weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (Matrix.diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2SourceSelectedSubstitutionBlockOfMem sourcePivot.2 u residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          Csrc =
+        (weightedPivotDiagonal
+            ((pre.case2Succ targetU).weight (case2ResidualRowLevel n S J row))
+            (fun i : pivotComplement row ↦
+              (pre.case2Succ targetU).weight (case2ResidualRowLevel n S J i.1)) *
+          weightedPivotClearedBlock
+            (pivotFirstD row col A - pivotFirstX row col A * pivotFirstY row col A)) *
+          Ctr)
+    ∧
+    (∀ (i : pivotComplement
+          (case2ResidualBlockPivotRowOfMem targetPivot.2))
+        (j : pivotComplement
+          (case2ResidualBlockPivotColOfMem targetPivot.2)),
+      let row := case2ResidualBlockPivotRowOfMem targetPivot.2
+      let col := case2ResidualBlockPivotColOfMem targetPivot.2
+      let A := case2SourceSelectedNormalizedBlockOfMem targetPivot.2 targetResidual
+      denom ^ 2 *
+          (pivotFirstD row col A -
+            pivotFirstX row col A * pivotFirstY row col A) i j =
+        denom * case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual (i.1.1, j.1.1) -
+          case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (i.1.1, targetPivot.1.2) *
+            case2SourceSelectedNormalizedMapOfMem sourcePivot.2 residual
+              (targetPivot.1.1, j.1.1)) := by
+  dsimp only
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact
+      chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
+        n hS hcont sourceChart targetChart u residual htarget
+  · exact
+      sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_normalized_ne_zero
+        hS hcont sourceChart targetChart u residual htarget
+  · have hsub :=
+      sourceChartTransitionPoint_sourceSelectedSubstitutionBlock_eq_of_target_normalized_ne_zero
+        hS hcont sourceChart targetChart u residual htarget
+    have hqp :=
+      sourceSelectedQP_sourceChartMap_of_chart_case2Succ_updateSelected
+        pre
+        (u *
+          case2SourceSelectedNormalizedMapOfMem
+            ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+              sourceChart).2
+            residual
+            ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+              targetChart).1)
+        hS hSL hcont targetChart exponentPre levelInv leastValueGap
+        chartFamily
+        (fun q ↦
+          case2SourceSelectedNormalizedMapOfMem
+            ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+              sourceChart).2
+            residual q /
+              case2SourceSelectedNormalizedMapOfMem
+                ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+                  sourceChart).2
+                residual
+                ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+                  targetChart).1)
+        C
+    rcases hqp with ⟨q, hq⟩
+    exact ⟨q, by simpa [hsub] using hq⟩
+  · intro i j
+    exact
+      sourceSelectedBlock_schurComplement_transition_mul_sq
+        n hS hcont sourceChart targetChart residual htarget i j
+
 /-- The chart index of the displayed top-left Case 2 pivot `(J+1,J+1)` inside
 the all-pivot selected-entry certificate.
 

@@ -4333,3 +4333,21 @@ Statement card:
 `threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-substitution-block-rewrite.md`.
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-substitution-block-rewrite-a4.md`.
+
+Latest A4 Case 2 transition-generated `Q/P` source-substitution package:
+`SelectedEntryNormalCrossing.lean` now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero`.
+On a normalized source-to-target selected-entry overlap, it records chart-map
+equality, the substitution-block equality, the target-pivot `Q/P` identity
+with only its left substituted residual block rewritten to the original source
+substitution block, and the denominator-cleared target Schur formula.  The
+normalized block, target Schur block, target successor weights, and
+transported following factor remain target-pivot data.  This is finite
+coordinate algebra only: no source production, analytic transition regularity,
+chart coverage, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.

@@ -6950,6 +6950,23 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-transition-generated-substitution-block-rewrite-a4.md`.
 
+Latest A4 Case 2 transition-generated `Q/P` source-substitution package:
+`SelectedEntryNormalCrossing.lean` now proves the finite reducer that combines
+the transition-generated target-pivot `Q/P` identity with the
+substitution-block transition equality.  It records chart-map equality,
+`Sub_q(u*d,x/d) = Sub_p(u,x)`, the target-pivot `Q/P` identity with only the
+left substituted residual block rewritten to `Sub_p(u,x)`, and the
+denominator-cleared target Schur formula.  This is not a fully source-facing
+`Q/P` theorem: the normalized block, Schur block, successor weights, and
+transported following factor remain target-pivot data.  It proves no source
+production, analytic transition regularity, chart coverage, normal crossings,
+pole order, or RLCT.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-case2-transition-generated-qp-source-substitution-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-case2-transition-generated-qp-source-substitution.md`.
+Review:
+`threads/04-blow-up-certificate/review-case2-transition-generated-qp-source-substitution-a4.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

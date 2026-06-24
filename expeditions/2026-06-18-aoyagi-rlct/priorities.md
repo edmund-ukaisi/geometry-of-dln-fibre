@@ -2604,3 +2604,10 @@ and the chart-indexed wrapper state the arbitrary all-pivot finite identity
 The next higher-value A4 target is to use the substitution-block rewrite inside
 a source-facing `Q/P` reducer while keeping the target Schur-complement rewrite
 and source-production obligations explicit.
+
+That reducer is now in progress and targeted-build clean:
+`sourceChartTransitionPoint_sourceSelectedQP_sourceSubstitution_package_of_target_normalized_ne_zero`
+rewrites only the left substituted residual block in the target-pivot `Q/P`
+identity to the original source substitution block.  Review it with the
+explicit boundary that the normalized block, target Schur block, target
+successor weights, and transported following factor remain target-pivot data.
