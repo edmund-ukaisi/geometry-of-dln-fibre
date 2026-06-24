@@ -103,7 +103,7 @@ theorem routeLayerAtlas_isResolutionAtlas (M : Fin (L + 1) → ℕ) (hpos : 1 �
       rw [show ((routeLayerAtlas M).data i) = MonoData.foldDivisors [c] from hc]
       exact monomialThreshold_singleton c (le_trans hpos hge)
     -- m₀ = ((Adm M).inf' Mval).toNat = minAdm M (defeq).
-    show (((minAdm M : ℕ) : ℝ≥0∞)) / 2 ≤ _
+    change (((minAdm M : ℕ) : ℝ≥0∞)) / 2 ≤ _
     rw [hthr]
     exact ENNReal.div_le_div_right (by exact_mod_cast hge) 2
   achiever := by
@@ -116,7 +116,7 @@ theorem routeLayerAtlas_isResolutionAtlas (M : Fin (L + 1) → ℕ) (hpos : 1 �
       rw [show ((routeLayerAtlas M).data i)
           = MonoData.foldDivisors [layerLeafMin M 0] from hi, hmin0]
       exact monomialThreshold_singleton (minAdm M) hpos
-    show monomialThreshold (layerD M i) (layerK M i) (layerH M i) = (((minAdm M : ℕ) : ℝ≥0∞)) / 2
+    change monomialThreshold (layerD M i) (layerK M i) (layerH M i) = (((minAdm M : ℕ) : ℝ≥0∞)) / 2
     exact hthr
 
 /-! ## The migrated value lane: `⨅ monomialThreshold = ofReal(lambdaCore M)` -/
@@ -139,7 +139,7 @@ matching `routeLayerAtlas_value` directly. -/
 theorem routeLayerAtlas_value_eq_half_minAdm (M : Fin (L + 1) → ℕ) (hpos : 1 ≤ minAdm M) :
     (⨅ i : (routeLayerAtlas M).ι, monomialThreshold (layerD M i) (layerK M i) (layerH M i))
       = (minAdm M : ℝ≥0∞) / 2 := by
-  show (⨅ i : (routeLayerAtlas M).ι,
+  change (⨅ i : (routeLayerAtlas M).ι,
       monomialThreshold ((routeLayerAtlas M).data i).d
         ((routeLayerAtlas M).data i).k ((routeLayerAtlas M).data i).h) = _
   exact routeLayerAtlas_value M hpos
