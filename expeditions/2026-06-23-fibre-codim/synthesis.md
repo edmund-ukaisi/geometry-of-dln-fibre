@@ -728,3 +728,42 @@ exact ways (Singular Krull dim, 13 cases incl. N=3; sympy Jacobian rank) and **r
 `codimRepCanonical(fibre d B) = C+δ` (Core). Then a final DLN tide discharges `BundleShiftInterface` (G4,
 full reviewer + Codex gate). The H4 Jacobian capstones are off the proof-path (route B circular) but the
 base-δ/equidim/`SigmaCodim`/closer bricks are route c's substrate. Cert: `threads/27-.../certificate.md`.
+
+## VERDICT — route c collapses to `cited_bundle_shift`; the `+δ` is the exhaustively-confirmed residual (thread 28, 2026-06-24)
+
+The route-c "one new rung" (the sweep dim-identity `varietyDim Σ^r = δ + varietyDim F`) is **(b) Mathlib-
+absent AND logically equal to `BundleShiftInterface.cited_bundle_shift` itself** — engine-grounded scout
+verdict + decorrelated Codex (`threads/28-.../sweepdim-reachability.md`). The engine computes `varietyDim`
+exactly ONE way: for a SINGLE `G_d`-orbit, `Z_M = dim G − dim Stab` via `orbitPullback M : R → O(G_d)`
+whose range is a DOMAIN (`OrbitPullbackDim:74`→`AffineNoetherRank:81`→`VoigtDischarge:38`). `Σ^r = H·F` is
+an **associated bundle** `H ×^Stab F` (a *family* of H-orbits; `F` reducible, `O(F)` not a domain), so
+the sweep needs **product-trdeg** `trdeg(O(H)⊗O(F))` — absent from Mathlib v4.29 (the engine has only
+tower-additivity). And Step D (`varietyDim Σ̄^r = card−C`) is ALSO not landed (the catenary bridge is
+prime-gated, `Σ̄^r` reducible). Both gaps isolated as named hyps `hSweepDim`/`hFcat` in
+`Core.FibreCodimSweepAssembly` (the assembly arithmetic machine-checked). Route c **does not shorten the
+path** — its rung IS the bundle shift, reframed.
+
+**EXHAUSTIVE finding (5+ routes, 3+ decorrelated Codices):** the `+δ` — the geometric heart of LR Lemma
+4.6, `codim(fibre B) = codim Σ̄^r + δ`, = `cited_bundle_shift` — is irreducibly a **~8–12-module from-scratch
+AG sub-project**: the exact-rank chart trivialization `R_total ≃ R_base ⊗ F_E` + flatness + going-down (the
+threads 09/14/20/R2-3b lineage). It is walled on EVERY route: flatness (mult not globally flat), Jacobian
+(circular — `rank = card−dim` at a smooth pt; the `+C` is a generic-lci lemma ≈ the thread-20 radicality
+wall), homogeneous-sweep (collapses to itself, product-trdeg absent). A general product/fibre-dim theorem
+is ≥ comparable (10–18 modules) and still wouldn't handle the Stab quotient. This is thread-01's original
+blocker, now confirmed from every angle. NOT a premature wall-call — a thoroughly-decomposed, multiply-
+verified structural fact.
+
+**BANKED (the expedition's positive deliverable — enormous bedrock + the precise reduction):** the
+radical-insensitive retarget `codim(fibre)=height(fibreGenIdeal)` (H1); the differential `d(mult)` +
+Jacobian (`MultDifferential`/`FibreJacobian`); the per-component→codim assembly + the conditional capstone +
+G1-transport; the base-δ/equidim bricks; the sweep structure `Σ^r = H·F` (`EndBaseChangeSweep`); the
+decomposition theorem `rank(d mult_A) = δ + dim π_BR(image)` (thread 27 §6b); and `FibreCodimSweepAssembly`
+reducing `codim=C+δ` to the two named hyps. So `BundleShiftInterface` is reduced from **fully Cited (the
+whole of Lemma 4.6's geometry)** to **one isolated, certified-true dimension interface** with all
+surrounding machinery machine-checked.
+
+**FORK (operator decision — surfaced):** (a) accept `cited_bundle_shift` (= `hSweepDim`/`hFcat`) as the
+named Cited residual — close with `codim=C+δ` proved modulo one isolated certified interface, a strong
+hole-free result; or (b) commit the ~8–12-module exact-rank chart-trivialization + flatness + going-down
+build (the stalled lineage, eyes open about cost). The RLCT payoff `rlct = ½·codim` stays Cited (Aoyagi)
+regardless; `BundleShiftInterface` stays Assumed until (b) is built.
