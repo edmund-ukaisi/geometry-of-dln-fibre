@@ -1,10 +1,12 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Matrix.Basis
 import Mathlib.LinearAlgebra.Matrix.Rank
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Dimension.Free
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
 /-!
 # `DLNFibre.Core.Matrix.RankNormalForm` — generic rank normal form
@@ -377,5 +379,49 @@ theorem rank_normal_form_right_only {a b r : ℕ}
   by_cases h : (i : ℕ) = (j : ℕ)
   · simp [h]
   · rw [if_neg (fun hc => h hc.1.symm), if_neg (fun hc => h hc.1)]
+
+/-- **Pivot columns of a full-row-rank matrix.** For a rank-`r` matrix `V : Fin r × Fin c` (so
+`r ≤ c`, full ROW rank), there exist `r` column indices — packaged as an embedding
+`J : Fin r ↪ Fin c` — whose `r × r` submatrix `V.submatrix id J` is invertible. The math:
+`rank V = r` is the column-span dimension, so a maximal linearly-independent subfamily of the
+columns has exactly `r` members; reindexed to `Fin r` they give the embedding `J`, the selected
+columns stay independent, a square matrix with independent columns is a unit. The new Core brick for
+the boundary-frame pivot alignment (the last interface's `B22` block invertible). Any field. -/
+theorem exists_pivot_cols_of_rank {K : Type*} [Field K] {r c : ℕ}
+    (V : Matrix (Fin r) (Fin c) K) (hV : V.rank = r) :
+    ∃ J : Fin r ↪ Fin c,
+      IsUnit (V.submatrix (_root_.id : Fin r → Fin r) (J : Fin r → Fin c)) := by
+  classical
+  -- A maximal independent subfamily of the columns, with the SAME span.
+  obtain ⟨κ, a, ha_inj, ha_span, ha_li⟩ := exists_linearIndependent' K V.col
+  haveI : Finite κ := ha_li.finite
+  haveI : Fintype κ := Fintype.ofFinite κ
+  -- `finrank (span columns) = rank V = r`.
+  have hrank : Module.finrank K (Submodule.span K (Set.range V.col)) = r := by
+    rw [← Matrix.rank_eq_finrank_span_cols V, hV]
+  -- The independent subfamily has cardinal `r`.
+  have hcard : Fintype.card κ = r := by
+    have hfin : Module.finrank K (Submodule.span K (Set.range (V.col ∘ a))) = Fintype.card κ :=
+      finrank_span_eq_card ha_li
+    rw [ha_span] at hfin
+    exact hfin.symm.trans hrank
+  -- Reindex `κ ≃ Fin r`, build the embedding.
+  let e : κ ≃ Fin r := Fintype.equivFinOfCardEq hcard
+  let J : Fin r ↪ Fin c :=
+    ⟨fun i => a (e.symm i), fun i j hij => e.symm.injective (ha_inj hij)⟩
+  refine ⟨J, ?_⟩
+  -- The selected columns stay independent (reindex along `e.symm`).
+  have hJli : LinearIndependent K (fun i : Fin r => V.col (J i)) := by
+    have := ha_li.comp (e.symm : Fin r → κ) e.symm.injective
+    simpa [J, Function.comp_def] using this
+  -- `(V.submatrix id J).col = fun i => V.col (J i)`, so the submatrix's columns are independent.
+  have hcols : LinearIndependent K
+      (V.submatrix (_root_.id : Fin r → Fin r) (J : Fin r → Fin c)).col := by
+    have hcoleq : (V.submatrix (_root_.id : Fin r → Fin r) (J : Fin r → Fin c)).col
+        = fun i => V.col (J i) := by
+      funext k i; rfl
+    rw [hcoleq]; exact hJli
+  -- A square matrix with independent columns is a unit.
+  exact Matrix.linearIndependent_cols_iff_isUnit.mp hcols
 
 end DLNFibre.Core.Matrix

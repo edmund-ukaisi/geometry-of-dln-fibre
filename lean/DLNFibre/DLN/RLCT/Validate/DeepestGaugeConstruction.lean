@@ -500,6 +500,25 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- (`prodAux_regSlice_through_first`, `framedParamsReg_regSlice_{first,last,interior}`,
   -- `readY_regSlice_last`, `devXZ_corner_devY`; ~120 lines); the `∃ F : ≃L` conclusion is BLOCKED on
   -- the pivot-aligned reparametrisation — without it the conclusion is FALSE at non-pivot-aligned packs.
+  --
+  -- BEDROCK BANKED (this tide, 2026-06-24, l2-pin tide): the TWO foundational bricks the pivot-aligned
+  -- re-architecture stands on are now sorry-free + axiom-clean (`[propext, Classical.choice, Quot.sound]`):
+  --   • `Core.Matrix.exists_pivot_cols_of_rank` (RankNormalForm) — for a rank-`r` matrix `V : Fin r × Fin c`
+  --       there is `J : Fin r ↪ Fin c` with `IsUnit (V.submatrix id J)`: the B-determined pivot column set.
+  --   • `pivotThresholdSplit r a ha J` (DeepestSplitReindex) + `pivotThresholdSplit_symm_inl/inr`,
+  --       `pivotThresholdSplit_symm_inl_mem_range` (left block ⊆ range J), and the `J = "first r"`
+  --       reduction `pivotThresholdSplit_castLE = rThresholdSplit` (so the unpermuted path reuses
+  --       existing proofs verbatim). The Π_J-twisted replacement for `rThresholdSplit r (H last)`.
+  -- REMAINING (the genuinely-large coordinated step, NOT bedrock — the frame fact + threading):
+  --   (A) `deepestPoint_frame_lastBlock_isUnit … J : IsUnit ((reindex (pivotThresholdSplit r (H last) … J)
+  --       (Qf last)).toBlocks₂₂)` — re-target `rank_normal_form_right_only` at the column-PERMUTED last
+  --       layer (pivots front via the SAME J = `exists_pivot_cols_of_rank` of the last-interface rank-`r`
+  --       row factor V); B22 then invertible. Soundness crux: J is B-determined ⟹ no restriction on B.
+  --   (B) thread that J into `deepestEPivot`'s `regResidualPack` last-interface split (replace
+  --       `rThresholdSplit r (H last)` by `pivotThresholdSplit r (H last) J`) + build `F` from `A`
+  --       whole-unit (`deepestPoint_frame_invertible.1`) + B22-invertible (A) → existing consumer
+  --       `regStraightenTotalCLM_equiv_of_regBlock_isUnit`. (C) the SAME J must reach
+  --       `framedParams_split_eq_frame_raw` (PIN2 step (3), the shared-J reconciliation) — see line 737.
   sorry
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
@@ -734,6 +753,17 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- set J as PIN1's frame, else they misalign (controller coupling alert, 2026-06-24). So this step is
   -- LEFT for the shared-J reconciliation: parametrize on the PIN1 boundary frame / J rather than choosing one.
   -- core comparability is `core_comparability_squeeze` (#54, banked, J-independent).
+  --
+  -- BEDROCK BANKED (this tide, 2026-06-24): the shared `J` is now constructible+typed via
+  -- `Core.Matrix.exists_pivot_cols_of_rank` (B-determined pivot column set, no restriction on rank-`r` B)
+  -- and `pivotThresholdSplit r (H last) … J` (the Π_J split, with `pivotThresholdSplit_symm_inl_mem_range`
+  -- + the `_castLE = rThresholdSplit` reduction). The shared-J reconciliation = use the IDENTICAL
+  -- `pivotThresholdSplit r (H last) J` here (step (3) column reindex of B) AND in PIN1's frame/`deepestEPivot`
+  -- split (line 503). Pivot(B)=pivot(V) (`B = U·V`, `U` injective ⟹ `rank(B_J)=rank(V_J)=r`) makes the SAME
+  -- J valid for both. Threading a single `J` from `deepest_gauge_construction` (:862) to both makes
+  -- divergence a compile-time tripwire (`hSreg_eq`'s `rw [h01]` fails to typecheck if the column index
+  -- types differ). REMAINING: the J-independent readX/Y/Z→raw chain (banked atoms, ~30-50 LoC/arm) +
+  -- the J-dependent `reindex(P0·B·QL)=fromBlocks 1 0 0 0` (uses the new `J`) + telescoping.
   sorry
 
 /-- **PIN 2 — the loss squeeze** (the geometric heart). Near the deepest point (flat coords), the loss

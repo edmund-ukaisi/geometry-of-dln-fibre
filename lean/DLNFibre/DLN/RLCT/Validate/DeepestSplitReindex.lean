@@ -139,6 +139,118 @@ role-respecting block decomposition. -/
 noncomputable def rThresholdSplit (r a : ℕ) (ha : r ≤ a) : Fin a ≃ Fin r ⊕ Fin (a - r) :=
   (finCongr (by omega : a = r + (a - r))).trans finSumFinEquiv.symm
 
+/-! ## The B-pivot-twisted threshold split (PIN1, the shared-J column alignment)
+
+`rThresholdSplit` always sends the FIRST `r` indices to the left block. PIN1's reg-slice fderiv
+needs the LAST-interface column split to align with `B`'s actual pivot columns (so the `B22` block of
+the boundary frame is invertible). `pivotThresholdSplit r a ha J` is the generalization: its left
+block is exactly the `r` PIVOT columns `Set.range J` (in sorted order), the right block is the
+complement. At the "first `r`" embedding `Fin.castLE` it reduces to `rThresholdSplit`
+(`pivotThresholdSplit_castLE`), so the unpermuted / pivot-already-front path reuses existing proofs.
+`J` is `B`-DETERMINED (the chosen pivot set), so there is no restriction on the rank-`r` target `B`. -/
+
+/-- The pivot support: the image of the pivot embedding `J` as a finset of `Fin a` (cardinality `r`). -/
+noncomputable def pivotSupport (r a : ℕ) (J : Fin r ↪ Fin a) : Finset (Fin a) :=
+  Finset.univ.map J
+
+/-- The pivot support has cardinality `r` (`J` injective). -/
+theorem pivotSupport_card (r a : ℕ) (J : Fin r ↪ Fin a) :
+    (pivotSupport r a J).card = r := by
+  simp [pivotSupport]
+
+/-- The complement of the pivot support has cardinality `a − r`. -/
+theorem pivotSupport_compl_card (r a : ℕ) (ha : r ≤ a) (J : Fin r ↪ Fin a) :
+    (pivotSupport r a J)ᶜ.card = a - r := by
+  rw [Finset.card_compl, pivotSupport_card]; simp
+
+/-- **The B-pivot-twisted threshold split** `Fin a ≃ Fin r ⊕ Fin (a − r)`: the left block enumerates
+the `r` pivot columns `Set.range J` (sorted), the right block the complement. The `.symm` of
+`finSumEquivOfFinset` on the pivot finset. The replacement for `rThresholdSplit r a` at the last
+interface where the rank-`r` target's pivot columns need not sit first. -/
+noncomputable def pivotThresholdSplit (r a : ℕ) (ha : r ≤ a) (J : Fin r ↪ Fin a) :
+    Fin a ≃ Fin r ⊕ Fin (a - r) :=
+  (finSumEquivOfFinset (pivotSupport_card r a J) (pivotSupport_compl_card r a ha J)).symm
+
+/-- The left block of `pivotThresholdSplit` enumerates the pivot columns (sorted): its inverse on
+`Sum.inl i` is the `i`-th smallest pivot column. -/
+theorem pivotThresholdSplit_symm_inl (r a : ℕ) (ha : r ≤ a) (J : Fin r ↪ Fin a) (i : Fin r) :
+    (pivotThresholdSplit r a ha J).symm (Sum.inl i)
+      = (pivotSupport r a J).orderEmbOfFin (pivotSupport_card r a J) i := by
+  rw [pivotThresholdSplit, Equiv.symm_symm, finSumEquivOfFinset_inl]
+
+/-- The right block of `pivotThresholdSplit` enumerates the non-pivot columns (sorted complement). -/
+theorem pivotThresholdSplit_symm_inr (r a : ℕ) (ha : r ≤ a) (J : Fin r ↪ Fin a)
+    (i : Fin (a - r)) :
+    (pivotThresholdSplit r a ha J).symm (Sum.inr i)
+      = (pivotSupport r a J)ᶜ.orderEmbOfFin (pivotSupport_compl_card r a ha J) i := by
+  rw [pivotThresholdSplit, Equiv.symm_symm, finSumEquivOfFinset_inr]
+
+/-- **Every left-block index is a pivot column** — `(pivotThresholdSplit … J).symm (Sum.inl i)` lies in
+`Set.range J`. The semantic fact the frame uses: the left block selects exactly the pivot columns. -/
+theorem pivotThresholdSplit_symm_inl_mem_range (r a : ℕ) (ha : r ≤ a) (J : Fin r ↪ Fin a)
+    (i : Fin r) :
+    (pivotThresholdSplit r a ha J).symm (Sum.inl i) ∈ Set.range J := by
+  rw [pivotThresholdSplit_symm_inl]
+  have hmem := (pivotSupport r a J).orderEmbOfFin_mem (pivotSupport_card r a J) i
+  simp only [pivotSupport, Finset.mem_map, Finset.mem_univ, true_and,
+    Function.Embedding.coeFn_mk] at hmem
+  obtain ⟨x, hx⟩ := hmem
+  exact ⟨x, hx⟩
+
+/-- **The pivot split at the "first `r`" embedding IS `rThresholdSplit`.** When `J = Fin.castLE` (the
+unpermuted / pivot-already-front case), the sorted pivot set is `{0,…,r−1}` and the sorted complement
+is `{r,…,a−1}`, so the pivot split coincides with the plain threshold split. Lets the existing
+reachable-half proofs reuse verbatim on the unpermuted path. -/
+theorem pivotThresholdSplit_castLE (r a : ℕ) (ha : r ≤ a) :
+    pivotThresholdSplit r a ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩ = rThresholdSplit r a ha := by
+  -- Compare the two `.symm`s on each arm (each lands on the explicit threshold formula).
+  apply Equiv.symm_bijective.injective
+  apply Equiv.ext
+  intro x
+  rcases x with i | i
+  · -- inl: the sorted pivot set `{0,…,r−1}` orderEmbeds to `castLE`.
+    rw [pivotThresholdSplit_symm_inl]
+    have hcastLE : (rThresholdSplit r a ha).symm (Sum.inl i) = i.castLE ha := by
+      unfold rThresholdSplit
+      simp only [Equiv.symm_trans_apply, finCongr_symm, Equiv.symm_symm,
+        finSumFinEquiv_apply_left, finCongr_apply]
+      apply Fin.ext; simp [Fin.castLE, Fin.castAdd]
+    rw [hcastLE]
+    have h : (fun j : Fin r => j.castLE ha)
+        = (pivotSupport r a ⟨Fin.castLE ha, Fin.castLE_injective ha⟩).orderEmbOfFin
+            (pivotSupport_card r a _) := by
+      apply Finset.orderEmbOfFin_unique
+      · intro y
+        simp only [pivotSupport, Finset.mem_map, Finset.mem_univ, true_and,
+          Function.Embedding.coeFn_mk]
+        exact ⟨y, rfl⟩
+      · exact Fin.strictMono_castLE ha
+    rw [← h]
+  · -- inr: the sorted complement `{r,…,a−1}` orderEmbeds to `r + ·`.
+    rw [pivotThresholdSplit_symm_inr]
+    have hnat : (rThresholdSplit r a ha).symm (Sum.inr i) = ⟨r + i, by omega⟩ := by
+      unfold rThresholdSplit
+      simp only [Equiv.symm_trans_apply, finCongr_symm, Equiv.symm_symm,
+        finSumFinEquiv_apply_right, finCongr_apply]
+      apply Fin.ext; simp [Fin.natAdd]
+    rw [hnat]
+    have h : (fun j : Fin (a - r) => (⟨r + j, by omega⟩ : Fin a))
+        = (pivotSupport r a ⟨Fin.castLE ha, Fin.castLE_injective ha⟩)ᶜ.orderEmbOfFin
+            (pivotSupport_compl_card r a ha _) := by
+      apply Finset.orderEmbOfFin_unique
+      · intro y
+        simp only [pivotSupport, Finset.mem_compl, Finset.mem_map, Finset.mem_univ, true_and,
+          Function.Embedding.coeFn_mk, not_exists]
+        intro z hz
+        have hz2 : (z.castLE ha : ℕ) < r := z.isLt
+        rw [Fin.ext_iff] at hz
+        simp only [Fin.castLE] at hz
+        omega
+      · intro x y hxy
+        simp only [Fin.lt_def]
+        omega
+    rw [← h]
+
 /-- The per-layer entry split: a layer's entry index `Fin a × Fin b` (rows × cols) splits, by the
 `r`-threshold on both, into the **three regular blocks** `(X = r×r) ⊕ (Y = r×(b−r)) ⊕ (Z = (a−r)×r)`
 collected on the left, and the **reduced `T`-block** `MM = (a−r)×(b−r)` isolated on the right. The
