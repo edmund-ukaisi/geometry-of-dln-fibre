@@ -2306,6 +2306,21 @@ on `ChartRegular`, `TransitionRegular`, and
 regularity, coordinate-produced corrected post-data, normal crossings, pole
 order, termination, or RLCT.
 
+The current A4 Case 2 weighted source-residual successor-following slice is
+`threads/04-blow-up-certificate/reproduction-case2-weighted-source-residual-successor-following-product-a4.md`.
+Lean now rewrites the weighted displayed lower-row product through the
+source-coordinate post-pivot residual representative and the formula-level
+successor following factor:
+`case2WeightedDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_succFollowing`
+and
+`sourceChartMap_weightedLowerRows_sourceResidualSucc_withCorrectedPostData`.
+This closes the downstream variant explicitly left open in the earlier bare
+source-residual/successor-following slice.  It is still only finite lower-row
+algebra with corrected post-data projection; it does not add pivot-row or
+old-top rows, source suffixes, source production of `Csucc` or `C'^(S+1)`,
+chart coverage, transition invariance, analytic Jacobian data, normal
+crossings, pole order, termination, or RLCT.
+
 8. Review/hardener cadence. Gate every broad theorem name, every universal
    case-split/exhaustiveness claim, and the final theorem.
 

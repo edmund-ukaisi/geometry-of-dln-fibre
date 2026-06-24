@@ -14613,6 +14613,55 @@ theorem case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_succ
   rw [case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_sourceFollowingFactor]
   rw [case2SourceFollowingFactor_successorFollowingFactor_succ]
 
+/-- Weighted lower-row product in source-residual/source-successor notation.
+
+This is the weighted version of
+`case2DisplayedPaperDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_successorFollowingFactor`.
+The diagonal is still only the post-pivot lower-row diagonal.  The theorem
+does not include the pivot row, old top rows, a suffix product, or any
+source-production/transition assertion for the successor data. -/
+theorem case2WeightedDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_succFollowing
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (b0 : R)
+    (b : pivotComplement (case2DisplayedPivotRow n hS hcont) → R)
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ((weightedPivotDiagonal b0 b *
+        case2DisplayedPaperDppp n hS hcont residual) *
+        case2DisplayedPaperCprime n hS hcont residual C).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            b ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i)) *
+        (case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+            (case2DisplayedPostPivotSourceResidual n hS hcont residual) *
+          case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+            (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)) := by
+  let Cprime := case2DisplayedPaperCprime n hS hcont residual C
+  have htail :
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime =
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C := by
+    simpa [Cprime] using
+      case2DisplayedPostPivotFreeFollowingFactor_paperCprime_eq_sourceFollowingFactor_succ
+        n hS hcont residual C
+  have hsucc :
+      case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+          (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C) =
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1) C :=
+    case2SourceFollowingFactor_successorFollowingFactor_succ
+      n hS hcont residual C
+  have hres :
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+          (case2DisplayedPostPivotSourceResidual n hS hcont residual) =
+        case2DisplayedPostPivotResidualBlock n hS hcont residual :=
+    case2SourceResidualBlock_postPivotSourceResidual n hS hcont residual
+  simpa [Cprime, htail, hsucc, hres] using
+    case2DisplayedWeightedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+      n hS hcont b0 b residual Cprime
+
 set_option linter.flexible false in
 
 /-- Reindex old top rows, the surviving displayed pivot row, and post-pivot
@@ -15737,6 +15786,76 @@ theorem sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCo
     exact case2SourceFollowingFactor_successorFollowingFactor_succ
       n hS hcont residual C
   simpa [htail] using hq
+
+/-- Concrete displayed source-chart lower-row handoff rewritten in
+source-residual/source-successor notation.
+
+This is the source-coordinate residual version of
+`sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData`.
+It carries the same corrected post-data fields, but still only states a
+lower-row formula-level identity. -/
+theorem sourceChartMap_weightedLowerRows_sourceResidualSucc_withCorrectedPostData
+    {τ R : Type*} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J R) (u : R)
+    (residual : ℕ × ℕ → R)
+    (hS : 1 ≤ S) (hSL : S ≤ L)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates L n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants L n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap L n S J leastValue)
+    {ChartRegular : ℕ × ℕ → Prop}
+    {TransitionRegular : ℕ × ℕ → ℕ × ℕ → Prop}
+    (chartFamily :
+      Case2ResidualBlockChartFamilyBoundary n S J ChartRegular TransitionRegular)
+    (C : ℕ → τ → R) :
+    let row := case2DisplayedPivotRow n hS hcont
+    let col := case2DisplayedPivotCol n hS hcont
+    let A := case2DisplayedPaperDchart n hS hcont residual
+    let upivot := case2DisplayedSourceChartMap n hS hcont u residual (J + 1, J + 1)
+    let post := pre.case2Succ upivot
+    ∃ q : pivotComplement row → R,
+      (((weightedPivotBlockRowOp q (fun i ↦ pivotFirstX row col A i ()) *
+          (diagonal (fun i ↦ pre.case2ResidualRowWeight i) *
+            case2DisplayedSourceSubstitutionBlock n hS hcont upivot residual).submatrix
+            (pivotFirstIndexEquiv row) (pivotFirstIndexEquiv col)) *
+          case2DisplayedSourceFollowingFactor n hS hcont C).submatrix
+          (fun i ↦
+            Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+          id) =
+        diagonal
+          (fun i : Case2ResidualRowIndex n S (J + 1) ↦
+            post.weight (case2ResidualRowLevel n S (J + 1) i)) *
+          (case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+              (case2DisplayedPostPivotSourceResidual n hS hcont residual) *
+            case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+              (case2DisplayedSourceSuccessorFollowingFactor n hS hcont residual C)) ∧
+      IntroducedLabelExponentCertificates L n S (J + 1)
+        (updateSelectedLabelVector S (J + 1) (correctedCase2PivotVector n S J) t)
+        (updateSelectedLabelScalar S (J + 1)
+          (((prefixMinNat n S : ℤ) - (J : ℤ)) *
+            ((n (S + 1) : ℤ) - (J : ℤ))) numerator)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      IntroducedLabelLevelInvariants L n S (J + 1)
+        post.level
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      case2IntroducedLabelLeastValueGap L n S (J + 1)
+        (updateSelectedLabelScalar S (J + 1) (J : ℤ) leastValue) ∧
+      post.case2Gap := by
+  rcases
+      sourceChartMap_paperCprimeWeightedLowerRows_withSuccFollowingFactorAndCorrectedData
+        pre u residual hS hSL hcont exponentPre levelInv leastValueGap
+        chartFamily C with
+    ⟨q, hq, hexp, hlevel, hgap, hcase2⟩
+  refine ⟨q, ?_, hexp, hlevel, hgap, hcase2⟩
+  have hres :
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+          (case2DisplayedPostPivotSourceResidual n hS hcont residual) =
+        case2DisplayedPostPivotResidualBlock n hS hcont residual :=
+    case2SourceResidualBlock_postPivotSourceResidual n hS hcont residual
+  simpa [hres] using hq
 
 /-- Continuing displayed source-chart lower-row handoff after right
 multiplication by a supplied following product, rewritten through the

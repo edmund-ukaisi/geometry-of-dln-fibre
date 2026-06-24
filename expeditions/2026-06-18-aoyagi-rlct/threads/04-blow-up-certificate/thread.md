@@ -5335,3 +5335,35 @@ This is finite chart-map coverage only: no arbitrary-pivot source production,
 no analytic atlas coverage, no transition regularity, no analytic
 Jacobian/volume-form control, no normal-crossing certificate production, no
 pole order, and no RLCT extraction.
+
+## 2026-06-23 Lean Case 2 weighted source-residual successor following product
+
+Reproduction:
+`reproduction-case2-weighted-source-residual-successor-following-product-a4.md`.
+Statement card:
+`statement-card-a4-case2-weighted-source-residual-successor-following-product.md`.
+Review artifact:
+`review-case2-weighted-source-residual-successor-following-product-a4.md`.
+
+Lean now rewrites the weighted displayed Case 2 lower-row product in
+source-residual/source-successor notation:
+
+```text
+case2WeightedDppp_mul_Cprime_postPivot_eq_sourceResidualBlock_succFollowing
+sourceChartMap_weightedLowerRows_sourceResidualSucc_withCorrectedPostData
+```
+
+The first theorem rewrites the lower rows of
+`(weightedPivotDiagonal b0 b * D''') * C'` as the post-pivot lower-row
+diagonal times
+`case2SourceResidualBlock(postPivotSourceResidual) *
+case2SourceFollowingFactor(S,J+1,Csucc)`.  The second theorem applies the
+same rewrite to the displayed source-chart `Q/P` handoff while preserving the
+existing corrected exponent, level, least-value-gap, and recurrence-gap
+post-data fields.
+
+This is finite lower-row algebra only.  It does not include the pivot row, old
+top rows, a source suffix, source production of the residual representative or
+`Csucc`, a full successor `C'^(S+1)`, chart coverage, transition invariance,
+analytic Jacobian/volume control, normal-crossing certificate production, pole
+order, termination, or RLCT extraction.
