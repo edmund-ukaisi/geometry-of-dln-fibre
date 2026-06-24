@@ -310,6 +310,21 @@ The wedge-design cert (@2ea5e25d, pen-and-paper + decorrelated Codex) settled bo
   axioms; surface if the construction can't satisfy the clause). Concurrent with `r1-wedge-l2-build` (R1 hdiv L=2).
 - **L2 remaining after PINs:** L=1 smooth base + wiring → gate falls. R1 unchanged (hdiv L=2 building; hfin long pole).
 
+**★ UPDATE-9 (2026-06-24) — PIN2 index round-trip BANKED (sorry-free); PIN1 2nd refutation → B-determined permutation under validation.**
+- **PIN2 highest-risk piece BANKED + integrated @10274c59 (green 3753):** `DeepestSplitConcrete.lean` (sorry-free,
+  axiom-clean) — concrete `deepestSplit` + the `piCongrLeft` index round-trip Codex flagged as hardest. PIN2's
+  remainder (~200-300 LoC matrix-block assembly) is UNBLOCKED → `l2-pin2-close` tide building it.
+- **PIN1 fix REFUTED a 2nd time (decorrelated):** the pivot-compatible "first r cols independent" clause is
+  B-determined → would restrict the rank-r target B → breaks headline generality (correctly NOT forced; my
+  coordinate-invariance reasoning missed the B-determination). Honest fix proposed: a B-determined pivot-aligned
+  PERMUTATION of the residual pack (per-B, so no restriction; measure/RLCT-preserving). `l2-pin1-designer`
+  (pen-and-paper, decorrelated) STRESS-TESTING it before any build (2 refutations ⟹ validate-on-paper-first).
+- **L2 PIN1 is harder than it first looked** — a coordinated residual-pack re-architecture (if the permutation
+  survives) or a different gauge-chart architecture (if refuted). Potential 2nd hard residual alongside R1 hfin;
+  will frame for the operator once `l2-pin1-designer` reports SURVIVES/REFUTED.
+- **3 tides running:** `r1-wedge-l2-build` (R1 hdiv L=2), `l2-pin2-close` (PIN2 matrix-block), `l2-pin1-designer`
+  (PIN1 design-validation). Non-overlapping. hfin long pole + L2 L=1 base + wiring still queued.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
