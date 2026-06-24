@@ -155,3 +155,58 @@ in `MvPolynomial B22block Sd`. Then:
 3. **`Iad = J`** by `Ideal.height_strict_mono_of_is_prime` (`Ψ`-transported `height Iad = C` +
    `height J = C`, both prime) — honestly proves `Iad ⊆ J`. Then `A_loc/Iad ≅ Sd` via
    `graphIdealQuotientEquiv`. Expose ONLY the equiv (J internal); {domain, dim δ} derive from it.
+
+---
+
+## CLOSEOUT (thread 12) — 2026-06-24. **CLOSED.**
+
+**Status:** the COMPLETE engine + height-transport infrastructure for the determinantal base
+elimination is landed (sorry-free, axiom-clean, aggregated by controller at `07096546`, pushed —
+HEAD `b8bb0c30` on `origin/expedition/fibre-codimension`). Working tree clean. Only the final
+`forcedB22`/`Iad = J`/`A_loc/Iad ≅ Sd` identification remains; split to a fresh tide.
+
+### Landed (3 modules)
+| Module | Headlines | Reviewer |
+|---|---|---|
+| `Core/MvPolynomialKerAeval.lean` | `ker_aeval_eq_graphIdeal` (arbitrary ι), `graphIdeal`, `graphIdealQuotientEquiv`, `graphIdeal_isPrime`, `aeval_surjective` | FIDELITY PASS |
+| `Core/GraphIdealHeight.lean` | `height_graphIdeal_eq`, `ringKrullDim_quotient_graphIdeal_eq`, `height_coordIdeal_eq`, **`height_coordIdeal_localization_eq`** (the localized transport) | seam 2 PASS; localized-transport fresh |
+| `Core/DeterminantalBaseElimination.lean` | `B22block`/`SchurVar` (+`card_*`), `finSplit`(+`_castLE`), `blockRearrange`, `repCoordReindex`(+`_pivot`), `mult_stratum_eq`, `multPoly_stratum_apply`, `detSchurS`(+`_ne_zero`), `renameEquiv_detPivot`, **`blockAlgEquiv`**(+`_detPivot`) | fresh — needs fidelity read |
+
+Codex consults: `codex/heightJ-{prompt,answer}.md`, `codex/localtransport-{prompt,answer}.md`. Statement card: `statement-card.md`.
+
+## HANDOFF → fresh tide (G2-2c: the final identification only — NOT the reindex, that's DONE)
+
+**Do NOT rebuild the reindex / blockAlgEquiv / height infra — it is all LANDED above.** Start from
+the landed objects. The remaining work is ONLY steps (1)/(2)/(3) of the "REMAINING" section above:
+
+**Setup (landed, ready):** `A_loc := Localization.Away (detPivotPoly q p r hp hq)`;
+`Sd := Localization.Away (detSchurS q p r)` (`detSchurS_ne_zero` ⟹ `Sd` a domain);
+`blockAlgEquiv_detPivot : blockAlgEquiv detΔ = C detSchurS` gives the localized
+`Ψ : A_loc ≃ₐ[k] Localization.Away (C detSchurS)` via `IsLocalization.algEquivOfAlgEquiv blockAlgEquiv
+(Submonoid.map_powers ▸ blockAlgEquiv_detPivot)` (SPECIFY-confirmed). `MvPolynomial.isLocalization`
+identifies `Localization.Away (C detSchurS)` with `MvPolynomial B22block Sd`.
+
+**(1) `height J = C`** — `forcedB22 b := IsLocalization.mk' Sd (forcedNum b) ⟨detSchurS, …⟩` (Schur
+value; **adjugate not inv**; the Codex `g22c-route` consult in thread-13 flags the denominator trap:
+`forced = forcedNum/detSchurS`, NOT the localization of `graphIdeal forcedNum`). `J := graphIdeal
+forcedB22` in `MvPolynomial B22block Sd`. `translateAux forcedB22` (an `AlgEquiv`, inverse
+`translateAux (−forcedB22)`; `(span {X b}).map (translateAux (−c)) = graphIdeal c`, probe-confirmed)
+⟹ `height J = (LANDED height_coordIdeal_localization_eq detSchurS detSchurS_ne_zero) = #B22block = C`.
+
+**(2) `J ⊆ Ψ(Iad)`** (the one involved step — carries the Schur content, the correctness-guard seed):
+the generator `X_{ab} − C(forcedB22 ab)` pulls back through `Ψ⁻¹` to (the localization of) the Schur
+expression `detΔ⁻¹·(detΔ·B22 − (B21 adjΔ B12))_{ab}`, which is in `Iad` because `detΔ·B22 − B21 adjΔ
+B12` is the bordered `(r+1)`-minor — LANDED `det_submatrix_multPoly_mem_sigmaIdeal` (the
+`(r+1)`-minor ∈ `sigmaIdeal`), and `Iad = sigmaIdeal.map`. (Or push forward; pull-back through `Ψ⁻¹`
+is likely lower friction.)
+
+**(3) `Iad = J` + the equiv** — `height_strict_mono_of_is_prime` (`Ψ`-transported `height Iad = C`
+[from LANDED `height_map_sigmaIdeal_away_eq_cCodim` + AlgEquiv height transport] + step-1
+`height J = C`, both prime, `J ⊆ Ψ(Iad)`) ⟹ `Ψ(Iad) = J` ⟹ `Iad = Ψ⁻¹ J`. Then
+`A_loc/Iad ≅ (MvPolynomial B22block Sd)/J ≅ Sd` via `graphIdealQuotientEquiv`.
+
+**INTERFACE (controller, settled):** expose ONLY `A_loc/Iad ≅ₐ[k] Sd` + reuse landed `height Iad = C`.
+`J` stays INTERNAL. {domain, dim δ} derive from the equiv (`Sd` = a poly localization). **GUARD
+(non-negotiable):** the equiv needs the HARD direction `Iad ⊆ J` (= injectivity `Iad ∩ Sd = 0`);
+step (2)+(3) prove it HONESTLY (not assumed — the squeeze is load-bearing: if `J ⊊ Iad`, `height J`
+would be `< C` and the proof fails). Do NOT ship the equiv with it skipped.
