@@ -21,7 +21,8 @@ The deliverables, with `q = d 0` (source dimension) and `p = d (Fin.last N)` (ta
 2. `IadDeep d r hp hq` — the localized base ideal `(sigmaIdeal d r).map (algebraMap …)` pushed into
    `Localization.Away (ΔPdeep …)` (the deep analog of `Iad`).
 3. `Sred d r hp hq := Localization.Away (ΔPdeep …) ⧸ IadDeep …` — the deep chart quotient ring, with
-   its `CommRing` / `Algebra k` instances inherited.
+   its `CommRing` / `Algebra k` instances inherited, and `isReduced_Sred` : `IsReduced (Sred …)`
+   (over `[IsAlgClosed k]`, justifying the name — this is R2-3a's `hSred`, now discharged).
 4. The **type bridge** `repStratumEquiv : RepCoord (dStratum q p) ≃ Fin p × Fin q` (the
    single-matrix stratum coords), via `Equiv.uniqueSigma` (the `Sigma` over the `Unique` base
    `Fin 1`), and the deep base comorphism `deepBaseComap d` carrying the `N = 1` base coordinate
@@ -46,10 +47,11 @@ The deliverables, with `q = d 0` (source dimension) and `p = d (Fin.last N)` (ta
 **Scope (what is NOT here).** The full product iso `e : Sred ≃ₐ[k] SchurLoc ⊗_k FibreAlg`, the
 endpoint-normalization `AlgEquiv`, and the descent of the iso to the reduced chart quotient are
 **R2-3b-3 and R2-3b-4** (later tides). No result here claims `codim (fibre) = C + δ` or discharges
-`BundleShiftInterface` — `e` is not yet built. The R2-3b-3 endpoint-normalization
-`aeval`-substitution contract is pre-staged below as an `example` block (an arbitrary coefficient
-ring `R`, via
-`AlgEquiv.ofAlgHom`, **not** `baseChangeAlgEquiv` which carries `[Infinite k]`).
+`BundleShiftInterface` — `e` is not yet built. (R2-3a's *other* hypothesis, `IsReduced S`, **is**
+discharged here: `isReduced_Sred`, so R2-3b-4 needs only `e` itself.) The R2-3b-3
+endpoint-normalization `aeval`-substitution contract is pre-staged below as an `example` block (an
+arbitrary coefficient ring `R`, via `AlgEquiv.ofAlgHom`, **not** `baseChangeAlgEquiv` which carries
+`[Infinite k]`).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -122,6 +124,39 @@ chart quotient of the rank-`≤ r` product locus for general `d`, on the pivot c
 noncomputable abbrev Sred (d : Fin (N + 1) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) : Type u :=
   Localization.Away (ΔPdeep (k := k) d r hp hq) ⧸ IadDeep (k := k) d r hp hq
+
+/-! ## R2-3b-1 — `Sred` is reduced (justifying the name; discharges R2-3a's `hSred`)
+
+The name `Sred` asserts reducedness, and that reducedness is precisely R2-3a's second hypothesis
+`hSred : IsReduced S` (`Core.FibreReducedTrivialization.fibreGenIdeal_isRadical_of_trivialization`).
+It is **cheap** here: `IadDeep = (sigmaIdeal d r).map (algebraMap …)` is radical because
+`sigmaIdeal` is radical (`vanishingIdeal_isRadical`, over `[IsAlgClosed k]`) and localization
+carries radical
+ideals to radical ideals (`IsLocalization.map_radical`); a quotient by a radical ideal is reduced
+(`Ideal.isRadical_iff_quotient_reduced`). No quotient↔localization interchange iso is needed. -/
+
+/-- **`IadDeep` is radical** (`[IsAlgClosed k]`): the localized image of the radical determinantal
+base ideal `sigmaIdeal d r`. Via `IsLocalization.map_radical`
+(`(I.map …).radical = I.radical.map …`) and `sigmaIdeal`'s radicality
+(`vanishingIdeal_isRadical`). -/
+theorem IadDeep_isRadical [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
+    (IadDeep (k := k) d r hp hq).IsRadical := by
+  have hsig : (sigmaIdeal (k := k) d r).IsRadical := by
+    rw [sigmaIdeal]; exact vanishingIdeal_isRadical _
+  rw [← Ideal.radical_eq_iff, IadDeep,
+    ← IsLocalization.map_radical (M := Submonoid.powers (ΔPdeep (k := k) d r hp hq)),
+    hsig.radical]
+
+/-- **`Sred` is reduced** (`[IsAlgClosed k]`), justifying the name.
+`Sred = Localization.Away ΔPdeep ⧸ IadDeep` with `IadDeep` radical (`IadDeep_isRadical`); a quotient
+by a radical ideal is reduced
+(`Ideal.isRadical_iff_quotient_reduced`). This is exactly R2-3a's `hSred : IsReduced S` for
+`S = Sred` — so R2-3b-4 needs to build only `e` itself, not also `IsReduced S`. -/
+theorem isReduced_Sred [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
+    IsReduced (Sred (k := k) d r hp hq) :=
+  (Ideal.isRadical_iff_quotient_reduced _).mp (IadDeep_isRadical d r hp hq)
 
 /-! ## R2-3b-2 — the load-bearing transports
 
@@ -387,6 +422,12 @@ noncomputable example (h : (1 : ℕ) ≤ 2) :
         ⧸ Iad (k := AlgebraicClosure ℚ) (dStratum 2 2 0) (dStratum 2 2 (Fin.last 1)) 1 h h)
       →ₐ[AlgebraicClosure ℚ] Sred (k := AlgebraicClosure ℚ) (dStratum 2 2) 1 h h :=
   baseQuotMap (dStratum 2 2) 1 h h
+
+/-- `Sred` is reduced at the `N = 1` anchor `dStratum 2 2`, `r = 1`, over `AlgebraicClosure ℚ` — the
+name is honest there, and R2-3a's `hSred` is discharged. -/
+example (h : (1 : ℕ) ≤ 2) :
+    IsReduced (Sred (k := AlgebraicClosure ℚ) (dStratum 2 2) 1 h h) :=
+  isReduced_Sred (dStratum 2 2) 1 h h
 
 end Witness
 
