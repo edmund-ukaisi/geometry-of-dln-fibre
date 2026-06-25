@@ -1073,6 +1073,8 @@ Lean names:
 `case2DisplayedFreeCprime_eq_verticalBlock`,
 `case2DisplayedPostPivotFreeFollowingFactor`,
 `case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`,
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct`,
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct`,
 `Case2DisplayedSuppliedChartFamilyBoundary.postPivotFreeCprimeNextSameStageProduct`,
 and
 `sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData`.
@@ -1085,6 +1087,12 @@ Nonclaims remain: no source production of `Cprime`, no chart coverage or
 arbitrary-pivot coverage, no chart-produced recurrence/exponent data, no
 transition invariant, no terminal relabeling, no normal crossings/RLCT, and no
 repair of the printed Case 2 vector mismatch.
+
+The 2026-06-25 residual-factor frontier recheck adds only the two-edge product
+name and alias theorem above.  Xhigh source/API scouts advised against making
+the primary bridge a dependent `residualFactorProduct` statement; that route
+adds finite-type assumptions and obscures the already source-faithful
+nondependent product identity.
 
 The next local product package has also landed.  Reproduction:
 `threads/04-blow-up-certificate/reproduction-case2-free-cprime-local-product-package-a4.md`.

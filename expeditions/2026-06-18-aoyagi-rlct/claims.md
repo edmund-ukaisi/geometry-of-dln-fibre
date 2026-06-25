@@ -4986,6 +4986,22 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-case2-source-current-stack-substitution-block-a4.md`.
 
+Latest A4 Case 2 free-`Cprime` two-edge factor-product naming:
+`BlowupArithmetic.lean` now names the already-proved displayed lower-row
+product as
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct`, with alias theorem
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct`.
+This exposes the finite product as post-pivot residual block followed by the
+transported free following-factor tail, without forcing a dependent
+`residualFactorProduct` statement.  It is vocabulary only: no ambient p.13
+factor-family construction, source production of `Cprime`, source coverage,
+residual-index equivalence, normal crossings, pole order, or RLCT.  Updated
+reproduction/statement/review:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-continuing-branch-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-free-cprime-continuing-branch.md`,
+and
+`threads/04-blow-up-certificate/review-case2-free-cprime-continuing-branch-a4.md`.
+
 Latest A4 Case 2 transition source-current stack supplied successor:
 `SelectedEntryNormalCrossing.lean` now proves
 `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.sourceChartTransitionPoint_displayed_continuingSourceCurrentStack_suppliedCsucc_sourceSubstitution_of_displayed_normalized_ne_zero`.

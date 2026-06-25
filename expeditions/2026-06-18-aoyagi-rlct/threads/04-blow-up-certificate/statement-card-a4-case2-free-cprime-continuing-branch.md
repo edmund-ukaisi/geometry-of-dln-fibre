@@ -13,6 +13,8 @@ Expected names:
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPostPivotFreeFollowingFactor`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedFreeCprime_eq_verticalBlock`
 - `DLNFibre.DLN.Aoyagi.case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPostPivotFreeTwoEdgeFactorProduct`
+- `DLNFibre.DLN.Aoyagi.case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct`
 - `DLNFibre.DLN.Aoyagi.Case2DisplayedSuppliedChartFamilyBoundary.postPivotFreeCprimeNextSameStageProduct`
 - `DLNFibre.DLN.Aoyagi.sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData`
 
@@ -34,6 +36,8 @@ existing corrected post-data fields.
   `(D-x*y) * C'_tail`.
 - The row and column complement equivalences reindex this product to the
   next same-stage domains.
+- The RHS is also named as the displayed two-edge factor product: post-pivot
+  residual block followed by the transported free following-factor tail.
 
 ## Assumed
 

@@ -12624,6 +12624,40 @@ theorem case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
       (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm
       (Equiv.refl τ)).symm
 
+/-- The displayed two-factor product in the continuing Case 2 branch:
+post-pivot residual block followed by the transported free following-factor
+tail.
+
+This is a naming layer for the finite product already displayed in Aoyagi's
+Case 2 calculation.  It is not a source-production statement and does not
+package a full p.13 residual-factor family. -/
+noncomputable def case2DisplayedPostPivotFreeTwoEdgeFactorProduct
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    Matrix (Case2ResidualRowIndex n S (J + 1)) τ R :=
+  case2DisplayedPostPivotResidualBlock n hS hcont residual *
+    case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime
+
+/-- The lower rows of `D''' * C'` are exactly the displayed Case 2 two-edge
+factor product. -/
+theorem case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    (case2DisplayedPaperDppp n hS hcont residual * Cprime).submatrix
+        (fun i ↦
+          Sum.inr ((case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont).symm i))
+        id =
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
+  simpa [case2DisplayedPostPivotFreeTwoEdgeFactorProduct] using
+    case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+      n hS hcont residual Cprime
+
 /-- Lower rows of the weighted displayed Case 2 product
 `weightedPivotDiagonal * D''' * C'` reindex to the lower-row weight diagonal
 times the post-pivot free-`C'` product.

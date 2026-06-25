@@ -2977,6 +2977,23 @@ Blocked audit:
 Review artifact:
 `threads/04-blow-up-certificate/review-case2-post-pivot-source-following-product-a4.md`.
 
+Latest A4 update: the displayed Case 2 free-`Cprime` lower-row product now
+has a nondependent two-edge factor-product name in
+`lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.  The proved Lean names are
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct` and
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct`.
+They name the already-proved RHS
+`case2DisplayedPostPivotResidualBlock * case2DisplayedPostPivotFreeFollowingFactor`
+without introducing a dependent residual-factor family.  This is a vocabulary
+boundary for later residual-factor sockets only: it does not construct the
+ambient p.13 factor family, source-produce `Cprime`, prove source coverage,
+construct a residual-index equivalence, or prove normal crossings/RLCT.
+Updated artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-free-cprime-continuing-branch-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-free-cprime-continuing-branch.md`,
+and
+`threads/04-blow-up-certificate/review-case2-free-cprime-continuing-branch-a4.md`.
+
 Latest A4 update: the displayed Case 2 constructed-`Cprime` coordinate
 direction has landed in `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
 The proved Lean names are

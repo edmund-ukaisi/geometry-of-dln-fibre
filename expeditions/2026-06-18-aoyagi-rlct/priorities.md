@@ -1842,6 +1842,13 @@ arbitrary pivot-first chart-coordinate following factor `Cprime`, plus a
 narrow source-chart package with corrected supplied post-data:
 `case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`
 and
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct`
+name the same finite displayed lower-row identity; the latter exposes the RHS
+as `case2DisplayedPostPivotFreeTwoEdgeFactorProduct`.  Use this nondependent
+name when connecting to the residual-factor frontier.  Do not force this Case
+2 bridge through a dependent `Fin 3` `residualFactorProduct` family unless a
+downstream theorem explicitly requires it.
+The source-chart package remains
 `sourceChartMap_postPivotFreeCprimeNextSameStageProduct_withCorrectedPostData`.
 Keep this as finite displayed-pivot block algebra.  It does not source-produce
 `Cprime`, construct chart coverage or arbitrary-pivot coverage, produce

@@ -58,3 +58,22 @@ post-pivot following-factor tail and a free-`C'` lower-row theorem.  The
 landed implementation uses an explicit top/tail split mirroring the existing
 source-produced theorem; this is equivalent in scope to the scout's direct
 `Cprime.submatrix` proposal.
+
+## 2026-06-25 factor-product vocabulary check
+
+Xhigh source scout `Epicurus` and Lean/API scout `Anscombe` rechecked the
+residual-factor frontier.  Verdict: the main Case 2 bridge should stay
+nondependent.  The source-backed finite product is the displayed product of
+the post-pivot residual block with the transported free following-factor tail.
+
+The added names
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct
+case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct
+```
+
+are accepted as vocabulary for that product.  They deliberately avoid a
+dependent `Fin 3 -> Type` residual-factor family and add no source-production,
+coverage, residual-index equivalence, normal-crossing, pole-order, or RLCT
+claim.

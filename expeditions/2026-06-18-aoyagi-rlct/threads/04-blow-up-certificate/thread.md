@@ -6602,3 +6602,26 @@ active-ratio lower bound, chart-count equality, and chart-count upper bound.
 This proves no analytic atlas construction, coverage, transition regularity,
 analytic Jacobian theorem, source successor/suffix production, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-25 Case 2 free-Cprime two-edge factor-product naming
+
+Updated artifacts:
+`reproduction-case2-free-cprime-continuing-branch-a4.md`,
+`statement-card-a4-case2-free-cprime-continuing-branch.md`, and
+`review-case2-free-cprime-continuing-branch-a4.md`.
+
+Lean now names the displayed free-`Cprime` lower-row RHS as
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct
+case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct
+```
+
+This is the same finite identity as
+`case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct`,
+but with the RHS named as post-pivot residual block followed by the transported
+free following-factor tail.  The recheck by xhigh source/API scouts recommends
+this nondependent bridge over a primary `residualFactorProduct` statement.
+No source production of `Cprime`, ambient p.13 factor-family construction,
+residual-index equivalence, chart coverage, normal crossings, pole order, or
+RLCT is claimed.

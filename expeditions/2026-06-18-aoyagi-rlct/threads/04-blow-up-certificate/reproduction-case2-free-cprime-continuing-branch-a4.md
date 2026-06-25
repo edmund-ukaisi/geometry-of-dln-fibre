@@ -105,6 +105,8 @@ Lean should add:
 case2DisplayedPostPivotFreeFollowingFactor
 case2DisplayedFreeCprime_eq_verticalBlock
 case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_nextSameStageProduct
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct
+case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct
 ```
 
 and, if the low-level theorem lands cleanly, a source-chart package:
@@ -117,6 +119,31 @@ The package may combine the free-`C'` product identity with the existing
 corrected exponent, level, least-value-gap, and `case2Gap` fields.  It must
 not claim chart coverage, successor chart-family construction, or source
 production of `C'`.
+
+## Two-edge factor naming update
+
+The later residual-factor frontier needs the product shape visible without
+forcing a dependent `Fin 3` residual-factor family.  The source-faithful
+finite identity is therefore also named as
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct
+```
+
+with theorem
+
+```text
+case2DisplayedPaperDppp_mul_freeCprime_postPivot_eq_freeTwoEdgeFactorProduct.
+```
+
+This is only a nondependent name for the already reproduced product
+
+```text
+case2DisplayedPostPivotResidualBlock * case2DisplayedPostPivotFreeFollowingFactor.
+```
+
+It does not construct the ambient p.13 residual-factor family and does not
+assert a `residualFactorProduct` theorem.
 
 ## Kill Conditions
 
