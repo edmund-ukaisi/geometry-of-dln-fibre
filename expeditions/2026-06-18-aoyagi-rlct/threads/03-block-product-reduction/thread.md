@@ -4168,3 +4168,36 @@ original endpoint bases with fixed adapted endpoint bases, prove a positive
 basis-change lower bound for this loss, identify a statistical/KL/covariance
 loss, construct a product chart, transport density/Jacobian factors, produce
 normal crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 endpoint loss comparison
+
+Reproduction:
+`reproduction-a2-endpoint-loss-comparison.md`.
+Statement card:
+`statement-card-a2-endpoint-loss-comparison.md`.
+Review:
+`review-a2-endpoint-loss-comparison.md`.
+
+Lean now proves the finite endpoint basis-comparison bridge in the new module
+`DLNFibre.DLN.Aoyagi.EndpointLossComparison`:
+
+```text
+chainMapMatrixFrobeniusLoss_eq_toMatrix_sub_squareSum
+exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_chainMapFrobeniusLoss
+exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN_chainMapMatrixTuple
+```
+
+For a variable reversed-edge family `E` and base chain `B`, the fixed adapted
+endpoint Frobenius loss is the square-sum of the endpoint matrix of
+`T(E)-T(B)` in the fixed adapted endpoint bases.  The finite basis-change
+comparison gives a constant `c > 0` such that this adapted loss times `c` is
+bounded by the same endpoint Frobenius square in any fixed original endpoint
+bases.  The `lossDLN` corollary then applies the chain-map loss bridge to the
+tuple `chainMapMatrixTuple b E`.
+
+Boundary: this is a square-Frobenius endpoint loss theorem only.  The target
+matrix in `lossDLN` is the base endpoint map expressed in the same original
+endpoint bases; it is not the adapted block matrix reused in original
+coordinates.  There is no arbitrary-tuple comparison, no statistical/KL or
+covariance loss comparison, no chart construction, no density/Jacobian
+transport, no normal crossings, no pole order, and no RLCT extraction.

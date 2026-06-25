@@ -4160,3 +4160,16 @@ positive comparison between this original endpoint Frobenius loss and the
 fixed adapted endpoint Frobenius loss, using the finite basis-change theorem;
 statistical/covariance losses and analytic chart/density transport remain
 separate.
+
+A2 endpoint loss comparison has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-endpoint-loss-comparison.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.EndpointLossComparison` that a positive
+constant times the fixed adapted endpoint Frobenius loss is bounded by the
+original endpoint Frobenius loss, uniformly over the edge family, because both
+are coordinate square-sums of the same endpoint map difference in two fixed
+endpoint basis pairs.  The `lossDLN` corollary applies only to
+`chainMapMatrixTuple b E`, with target matrix `[T(B)]` in the same original
+endpoint bases.  This closes the finite original square-Frobenius comparison
+needed for the already-conditional adapted-loss handoff.  Statistical/KL or
+covariance losses, arbitrary tuples, chart construction, density/Jacobian
+transport, normal crossings, pole order, and RLCT extraction remain separate.

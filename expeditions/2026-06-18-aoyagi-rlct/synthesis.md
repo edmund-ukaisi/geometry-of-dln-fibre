@@ -9659,6 +9659,19 @@ the remaining finite loss step is to apply the basis-change square-sum
 comparison between this original endpoint Frobenius loss and the fixed adapted
 endpoint Frobenius loss.
 
+Latest A2 endpoint loss comparison update:
+`DLNFibre.DLN.Aoyagi.EndpointLossComparison` now proves that the fixed adapted
+endpoint Frobenius loss is controlled, up to a positive constant, by the
+original endpoint Frobenius loss in any fixed endpoint bases.  The proof uses
+`exists_pos_const_forall_linearMap_toMatrix_squareSum_le_of_basis_change` on
+the endpoint map difference `T(E)-T(B)` and then rewrites the original side to
+`lossDLN` for `chainMapMatrixTuple b E`.  This closes the finite
+square-Frobenius comparison needed to instantiate the earlier supplied
+`c0 * adapted <= loss` handoff for this specific original loss.  The target
+matrix must be `[T(B)]` in the original endpoint bases; the theorem does not
+apply to arbitrary tuples, statistical/KL/covariance losses, chart or density
+transport, normal crossings, pole order, or RLCT extraction.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

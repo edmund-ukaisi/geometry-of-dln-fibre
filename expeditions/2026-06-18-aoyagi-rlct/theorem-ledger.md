@@ -7867,6 +7867,25 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-ell-one-source-data-formula-a6.md`.
 
+Latest A2 endpoint loss comparison:
+`EndpointLossComparison.lean` proves
+`chainMapMatrixFrobeniusLoss_eq_toMatrix_sub_squareSum`,
+`exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_chainMapFrobeniusLoss`,
+and
+`exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN_chainMapMatrixTuple`.
+The result compares the fixed adapted endpoint Frobenius loss with the
+original square-Frobenius `lossDLN` only for tuples of the form
+`chainMapMatrixTuple b E`, with target matrix the base endpoint map expressed
+in the same original endpoint bases.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-endpoint-loss-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-endpoint-loss-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-endpoint-loss-comparison.md`.
+Nonclaims: no arbitrary-tuple comparison, no statistical/KL/covariance loss,
+no chart construction, no density/Jacobian transport, no normal crossings,
+pole order, or RLCT extraction.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
