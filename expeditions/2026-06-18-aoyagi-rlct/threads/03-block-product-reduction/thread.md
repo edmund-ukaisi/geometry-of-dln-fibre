@@ -4868,6 +4868,34 @@ not construct source coverage, source-stratum equality, source-measure
 transport, local lower bounds, normal crossings, pole order, RLCT, or a
 multi-edge selected-entry residual product.
 
+## 2026-06-25 A2 single-edge selected-entry determinant-ball readout
+
+Reproduction:
+`reproduction-a2-single-edge-selected-entry-determinant-ball-readout.md`.
+Statement card:
+`statement-card-a2-single-edge-selected-entry-determinant-ball-readout.md`.
+Review:
+`review-a2-single-edge-selected-entry-determinant-ball-readout.md`.
+
+Lean now proves:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEuclidean_readout
+```
+
+For any positive `Rmax`, the theorem chooses `0<R<=Rmax` so that every regular
+coordinate `u` in `ball(0,R)` satisfies the determinant-chart condition for
+`Ctop(u)`.  On that ball, the previous one-edge selected-entry pointwise
+readouts apply uniformly in the selected-entry parameter `y`: regular
+coordinates read as `u`, residual coordinates read as
+`chartMap pivot y (residualCoordEquiv c)`, and the residual square-sum is
+`SelectedEntrySignedBox.CenterCoord.residual pivot y`.
+
+Boundary: this is one-edge determinant-neighborhood plumbing.  It does not
+construct the residual-index equivalence, source coverage, source-stratum
+equality, source-measure transport, local lower bounds, normal crossings, pole
+order, RLCT, or a multi-edge selected-entry residual product.
+
 ## 2026-06-25 A2 multi-edge residual-product preservation
 
 Reproduction:

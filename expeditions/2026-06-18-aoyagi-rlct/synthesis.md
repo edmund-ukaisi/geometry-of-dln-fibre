@@ -10102,6 +10102,23 @@ This is source-neutral finite algebra only: it does not prove source coverage,
 source-measure transport, local lower bounds, normal crossings, pole order,
 RLCT, or a multi-edge selected-entry residual product.
 
+Latest A2 single-edge selected-entry determinant-ball readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`exists_pos_radius_le_forall_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEuclidean_readout`.
+It combines the existing `Ctop` determinant-neighborhood theorem with the
+one-edge selected-entry coordinate and square-sum readouts.  Given `0<Rmax`,
+the theorem returns `0<R<=Rmax` such that every `u` in the regular-coordinate
+ball has regular readout `u`, selected-entry residual-coordinate readout
+through the supplied `residualCoordEquiv`, and the scalar selected-entry
+residual identity.  Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-selected-entry-determinant-ball-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-single-edge-selected-entry-determinant-ball-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-single-edge-selected-entry-determinant-ball-readout.md`.
+This is source-neutral one-edge determinant-chart plumbing only: no source
+coverage, source-measure transport, local lower bound, normal crossings, pole
+order, RLCT, or multi-edge selected-entry residual product.
+
 Latest A2 multi-edge residual-product preservation:
 `ProductReduction.lean` now proves the residual-product congruence and p.13
 specialization:

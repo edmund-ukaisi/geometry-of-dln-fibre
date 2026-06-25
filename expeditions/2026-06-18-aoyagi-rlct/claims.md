@@ -6806,6 +6806,19 @@ coverage, source-stratum equality, source-measure transport, local lower
 bounds, normal crossings, pole order, RLCT, or a multi-edge selected-entry
 residual product.
 
+Latest A2 single-edge selected-entry determinant-ball readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`exists_pos_radius_le_forall_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEuclidean_readout`.
+For any `0<Rmax`, it chooses `0<R<=Rmax` using the existing determinant
+neighborhood theorem for `Ctop(u)`, and on `Metric.ball 0 R` gives the
+one-edge selected-entry regular readout, residual-coordinate readout, and
+scalar square-sum readout without a separate pointwise determinant hypothesis.
+This is source-neutral determinant-chart plumbing only: one-edge, local near
+`u=0`, with `residualCoordEquiv` still supplied; no source coverage,
+source-stratum equality, source-measure transport, local lower bound, normal
+crossings, pole order, RLCT, or multi-edge selected-entry residual product is
+proved.
+
 Latest A2 selected-entry chart-image characterization:
 `SelectedEntrySignedBoxMeasure.lean` now proves
 `SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.

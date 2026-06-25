@@ -491,6 +491,91 @@ theorem aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateM
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- On a sufficiently small regular-coordinate ball, the one-edge
+selected-entry product-coordinate family has regular, residual, and scalar
+residual square-sum readout without separately supplying the determinant-unit
+hypothesis. -/
+theorem exists_pos_radius_le_forall_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEuclidean_readout
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+        V Bv pivot U₀ hU₀ residualCoordEquiv
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      (∀ (y : center → ℝ) (u : EuclideanSpace ℝ ρ),
+        u ∈ Metric.ball 0 R →
+          paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) =
+            fun c ↦ u c) ∧
+      (∀ (y : center → ℝ) (u : EuclideanSpace ℝ ρ) c,
+        u ∈ Metric.ball 0 R →
+          paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) c =
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) ∧
+      (∀ (y : center → ℝ) (u : EuclideanSpace ℝ ρ),
+        u ∈ Metric.ball 0 R →
+          aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u)) =
+            SelectedEntrySignedBox.CenterCoord.residual pivot y) := by
+  classical
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  dsimp only
+  constructor
+  · intro y u hu
+    exact
+      (paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+        (V := V) (Bv := Bv) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+        (residualCoordEquiv := residualCoordEquiv) (y := y) (u := u)
+        (hunit u hu)).1
+  constructor
+  · intro y u c hu
+    exact
+      (paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+        (V := V) (Bv := Bv) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+        (residualCoordEquiv := residualCoordEquiv) (y := y) (u := u)
+        (hunit u hu)).2 c
+  · intro y u hu
+    exact
+      aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+        (V := V) (Bv := Bv) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+        (residualCoordEquiv := residualCoordEquiv) (y := y) (u := u)
+        (hunit u hu)
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- The one-edge selected-entry product-coordinate edge family is continuous
 in the selected-entry chart parameter and the regular coordinates. -/
 theorem continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
