@@ -109,21 +109,21 @@ theorem ringKrullDim_localizationAway_eq_of_fg_domain (D : Type u) [CommRing D] 
 /-! ## The shared abstract no-drop over a (possibly reducible) f.g. `k`-algebra -/
 
 /-- **Inverting an element that avoids a top-dimensional component does not drop the dimension.**
-For a finitely-generated `k`-algebra `R` (Noetherian, finite Krull dimension) and `g : R`, if `g`
-avoids a *top-dimensional* minimal prime `p₀` of `R` (`ringKrullDim (R ⧸ p₀) = ringKrullDim R` and
-`g ∉ p₀`), then `ringKrullDim (Localization.Away g R) = ringKrullDim R`.
+For a finitely-generated `k`-algebra `R` (Noetherian) and `g : R`, if `g` avoids a *top-dimensional*
+prime `p₀` of `R` (`ringKrullDim (R ⧸ p₀) = ringKrullDim R` and `g ∉ p₀`), then
+`ringKrullDim (Localization.Away g R) = ringKrullDim R`.
 
 The `≤` direction is the always-true `ringKrullDim_localization_le`. For `≥`: the away-localization
 `R[1/g] ↠ (R ⧸ p₀)[1/ḡ]` is surjective (`Localization.awayMap` of the quotient, surjective because
 the quotient map is), so its target has `≤` dimension; and `R ⧸ p₀` is a f.g. `k`-domain with
 `ḡ ≠ 0` (since `g ∉ p₀`), so `dim ((R ⧸ p₀)[1/ḡ]) = dim (R ⧸ p₀) = dim R` by the affine-domain
-no-drop. This is the shared lemma feeding route-(c) step-4 (source, `g = detΔ`) and step-5
+no-drop. (The witness `p₀` need only be a *prime* carrying the full dimension — minimality is not
+used.) This is the shared lemma feeding route-(c) step-4 (source, `g = detΔ`) and step-5
 (poly-extension, `g = detSchurS`); the two differ only in the avoidance witness `p₀`. -/
-theorem ringKrullDim_localizationAway_eq_of_avoids_top_minimalPrime (R : Type u) [CommRing R]
+theorem ringKrullDim_localizationAway_eq_of_avoids_top_prime (R : Type u) [CommRing R]
     [IsNoetherianRing R] [Algebra k R] [Algebra.FiniteType k R] (g : R) (p₀ : Ideal R)
-    (hp₀ : p₀ ∈ minimalPrimes R) (htop : ringKrullDim (R ⧸ p₀) = ringKrullDim R) (hg : g ∉ p₀) :
+    [p₀.IsPrime] (htop : ringKrullDim (R ⧸ p₀) = ringKrullDim R) (hg : g ∉ p₀) :
     ringKrullDim (Localization.Away g) = ringKrullDim R := by
-  haveI : p₀.IsPrime := hp₀.1.1
   -- `R ⧸ p₀` is a f.g. `k`-domain
   haveI : IsDomain (R ⧸ p₀) := Ideal.Quotient.isDomain p₀
   haveI : Algebra.FiniteType k (R ⧸ p₀) :=
