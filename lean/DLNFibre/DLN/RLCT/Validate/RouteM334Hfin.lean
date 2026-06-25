@@ -1381,7 +1381,9 @@ REMAINING GAP (`hratiofin`, the ratio residual `∫_{[−1,1]^8} angA1Int (e.sym
 A1-row permute MP on the symmetric box) + the BANKED `angularA1_integral_le` (the zero-guarded schur
 comparability `∫_{A1} frobSq(R·A1)^{−c'} ≤ (1/5)^{−c'}·∫_{A1} (∑T²+frobSq(Δ·S))^{−c'}`) feed the
 box-enlarged `resolved334_box_lt_top 3` via the raw↦Δ / row0↦T translation change-of-variables. -/
-theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9) :
+theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9)
+    (hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
+        angA1Int c' p ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z))) < ⊤) :
     ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin 9)) p \ pivotZeroOn p,
         ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin 9)) p y).det|
           * flatBox334.indicator (gFlat334 c') (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y)
@@ -1485,13 +1487,9 @@ theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin
     refine lt_of_le_of_lt (le_trans (lintegral_mono_set (Set.subset_univ _)) (le_of_eq ?_))
       (radialAxis334_lt_top c' (by linarith))
     rw [setLIntegral_univ, lintegral_indicator measurableSet_Icc]
-  -- the ratio residual `∫_{box8} angA1Int(e.symm (0,z))` is finite — the REMAINING GAP. The route
-  -- (BANKED atoms `angularA1_integral_le`/`ofReal_rpow_neg_antitone_of_imp`): per `z`, the per-pivot
-  -- row/col permutation to `(0,0)` normal form + `angularA1_integral_le` feed the box-enlarged
-  -- `resolved334_box_lt_top 3` (the raw↦Δ / row0↦T translation change-of-variables).
-  have hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
-        angA1Int c' p (e.symm (0, z))) < ⊤ := by
-    sorry
+  -- the ratio residual `∫_{box8} angA1Int(e.symm (0,z))` is finite — supplied as `hratiofin`
+  -- (discharged by `RouteM334Ratiofin.ratioResidual_lt_top`: the per-pivot row/col permutation to the
+  -- `(0,0)` normal form + `angularA1_integral_le` feeding the box-enlarged `resolved334_box_lt_top 3`).
   -- assemble: ∫_{a≠0} ∫_{box8} radInd(a)·H(z) = (∫ radInd)·(∫ H) < ⊤
   have hinner : ∀ a : ℝ,
       (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), g (e.symm (a, z)))
@@ -1506,119 +1504,5 @@ theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin
   rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
   exact ENNReal.mul_lt_top hradfin hratiofin
 
-/-- **The blow-up bridge, the `2 < c'` core.** `∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'} < ⊤` for
-`2 < c' < 4`. The full `0 < c' < 4` statement reduces to this via the exponent-bump
-(`matBox334_blowup_lt_top`). The 9-chart A0-entry radial cover assembly: flatten A0 (`matToFlatEquiv 3 3`,
-MP), cover the inner `A0`-integral by the 9 max-modulus-entry charts (`recStep` on `univ : Finset (Fin 9)`,
-folding the box indicator), each chart finite (`matBox334_chart_lt_top`), summed by `ENNReal.sum_lt_top`.
-The cover-to-sum is proven here; the per-chart finiteness is the named transport gap. -/
-theorem matBox334_blowup_lt_top_gt2 (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
-    ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
-      ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) < ⊤ := by
-  -- Reindex A0 to the flat `Fin 9` carrier (MP), then `recStep` (univ argmax-cover) splits the
-  -- A0-integral into the 9 max-modulus-entry chart sum; each chart is finite, summed by `sum_lt_top`.
-  rw [matBox334_outer_flat c']
-  rw [recStep (Finset.univ : Finset (Fin 9)) 0 (Finset.mem_univ 0)
-      flatBox334 flatBox334_measurableSet (gFlat334 c')]
-  exact ENNReal.sum_lt_top.2 (fun p _ => matBox334_chart_lt_top c' hc2 hc4 p)
-
-theorem matBox334_blowup_lt_top (c' : ℝ) (hc0 : 0 < c') (hc4 : c' < 4) :
-    ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
-      ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) < ⊤ := by
-  rcases le_or_gt c' 2 with hc2 | hc2
-  · -- 0 < c' ≤ 2: bump the exponent to c'' = 3 ∈ (2,4) by the pointwise `F^{−c'} ≤ 1 + F^{−3}` bound.
-    -- ∫∫ F^{−c'} ≤ ∫∫ 1 + ∫∫ F^{−3} = vol·vol + (the 2<c'' cover) < ⊤.
-    have hbump : ∀ (A0 : Fin 3 → Fin 3 → ℝ) (A1 : Fin 3 → Fin 4 → ℝ),
-        ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
-        ≤ 1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
-      intro A0 A1
-      have h := rpow_neg_le_one_add_rpow_neg (frobSq (rmatMul A0 A1)) (frobSq_nonneg _) c' 3 hc0
-        (by linarith)
-      calc ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
-          ≤ ENNReal.ofReal (1 + (frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := ENNReal.ofReal_le_ofReal h
-        _ = 1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
-            rw [ENNReal.ofReal_add (by norm_num) (Real.rpow_nonneg (frobSq_nonneg _) _),
-              ENNReal.ofReal_one]
-    -- the c'' = 3 cover
-    have hcover3 := matBox334_blowup_lt_top_gt2 3 (by norm_num) (by norm_num)
-    -- the constant-1 integral over the two boxes
-    have hvolfin : ∀ p n : ℕ, volume (matBox p n 1) < ⊤ := by
-      intro p n
-      have hcpt : IsCompact (matBox p n (1 : ℝ)) := by
-        have heq : matBox p n (1 : ℝ)
-            = Set.univ.pi (fun _ : Fin p => Set.univ.pi (fun _ : Fin n => Set.Icc (-1 : ℝ) 1)) := by
-          ext X; simp only [matBox, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
-        rw [heq]; exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_Icc))
-      exact hcpt.measure_lt_top
-    have hvol : ∫⁻ _A0 in matBox 3 3 1, ∫⁻ _A1 in matBox 3 4 1, (1 : ℝ≥0∞) < ⊤ := by
-      rw [setLIntegral_const, setLIntegral_const]
-      exact ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.one_lt_top (hvolfin 3 4)) (hvolfin 3 3)
-    -- the c'' = 3 inner-integral measurability (for `lintegral_add`)
-    have hmeas3 : ∀ A0 : Fin 3 → Fin 3 → ℝ, Measurable (fun A1 : Fin 3 → Fin 4 → ℝ =>
-        ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ)))) := by
-      intro A0
-      apply ENNReal.measurable_ofReal.comp
-      apply Measurable.comp (g := fun t : ℝ => t ^ (-(3 : ℝ))) (by fun_prop)
-      unfold frobSq rmatMul; fun_prop
-    -- combine
-    calc ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
-            ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
-        ≤ ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
-            (1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ)))) :=
-          lintegral_mono fun A0 => lintegral_mono fun A1 => hbump A0 A1
-      _ = (∫⁻ _A0 in matBox 3 3 1, ∫⁻ _A1 in matBox 3 4 1, (1 : ℝ≥0∞))
-            + ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
-                ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
-          rw [← lintegral_add_left' (by
-            exact (Measurable.lintegral_prod_right (measurable_const)).aemeasurable) _]
-          refine setLIntegral_congr_fun (matBox_measurableSet 3 3 1) (fun A0 _ => ?_)
-          rw [← lintegral_add_left' (measurable_const).aemeasurable]
-      _ < ⊤ := ENNReal.add_lt_top.2 ⟨hvol, hcover3⟩
-  · exact matBox334_blowup_lt_top_gt2 c' hc2 hc4
-
-/-- **The `(3,3,4)` hfin upper bound (the N4 depth-2 instance, GAP = the blow-up bridge ONLY).** For
-`c' < ½·minAdm M334 = 4`, `∫⁻_{routeMBaseNbhd M334} |routeMCore M334 x|^{−c'} < ⊤`. The rank-stratified
-analog of `routeMCore_M4422_threshold_lt_top`.
-
-The additive-threshold composition `4 = 2 + 2` is **BUILT** (`resolved334_lt_top`, axiom-clean S2-free): the
-`‖T‖²` Morse-spectator peel (`core_T_peel_le_ae`, threshold `2`) feeds the corank-2 core `frobSq (Δ·S)` at
-the shifted exponent `c'' = c' − 2 < 2`, resolved by the S-first transpose-fibre route (`core334_lt_top`,
-threshold `λ_{2,4} = 2`, avoiding the radial minor-pivot recursion). The core-`> 0`-a.e. fact the T-peel
-rides on is BUILT (`frobSq_core334_ne_zero_ae`, via the polynomial `corePoly334` + the MP flatten
-`flat334`).
-
-GAP (`sorry`): the FRAME TRANSPORT alone — a measure-preserving cover-up-to-null of `routeMBaseNbhd M334 =
-(−1,1)^21` bringing the flat `routeMCore M334 = frobSq(A0·A1)` (A0 3×3, A1 3×4) into the `‖T‖² ⊕ frobSq(Δ·S)`
-normal form of `resolved334_lt_top`, via the Schur-frame blow-up `g5_pivotNode`/`recStep` atlas (the
-`(2,2,2)` `myF222_threshold_lt_top'` analog at the `r²`-chart scale). The singularity binds at the
-A1-rank-drop locus (nonlinear/rank-local — no elementary global reparametrization). The achiever chart
-`chartParams334`/`Uval334` (`RouteMLayerCoverGEL2`) realises this transport on the lower-bound side; the
-UPPER-bound full cover is the remaining measure-theoretic long pole. Everything DOWNSTREAM of the transport
-(`resolved334_lt_top` + the T-peel + the core resolution + the null set) is BANKED sorry-free, axiom-clean. -/
-theorem routeMCore_M334_threshold_lt_top (c' : NNReal)
-    (hc' : (c' : ℝ) < (minAdm (![3, 3, 4] : Fin 3 → ℕ) : ℝ) / 2) :
-    ∫⁻ x in routeMBaseNbhd (![3, 3, 4] : Fin 3 → ℕ),
-      ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-(c' : ℝ))) < ⊤ := by
-  rw [minAdm_M334_eq] at hc'
-  have hc4 : (c' : ℝ) < 4 := by linarith
-  rcases eq_or_lt_of_le (c'.2 : (0 : ℝ) ≤ (c' : ℝ)) with hc0 | hc0
-  · -- c' = 0: integrand is (·)^0 = 1, integral = volume(box) < ⊤.
-    have hzero : (c' : ℝ) = 0 := hc0.symm
-    have hone : ∀ x, ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-(c' : ℝ))) = 1 := by
-      intro x; rw [hzero]; simp [Real.rpow_zero]
-    simp only [hone]
-    rw [setLIntegral_const]
-    refine ENNReal.mul_lt_top ENNReal.one_lt_top ?_
-    rw [routeMBaseNbhd]
-    have hopen_sub : flatOpenBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ))
-        ⊆ cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1 := by
-      intro x hx i _
-      have := hx i (Set.mem_univ i); rw [Set.mem_Ioo] at this
-      rw [Set.mem_Icc]; exact ⟨le_of_lt this.1, le_of_lt this.2⟩
-    refine lt_of_le_of_lt (measure_mono hopen_sub) ?_
-    exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
-  · -- 0 < c' < 4: reduce to the two-matrix-box integral, then the blow-up bridge.
-    exact lt_of_le_of_lt (routeMCore_M334_le_matBox (c' : ℝ) hc0)
-      (matBox334_blowup_lt_top (c' : ℝ) hc0 hc4)
 
 end DLNFibre.DLN.RLCT
