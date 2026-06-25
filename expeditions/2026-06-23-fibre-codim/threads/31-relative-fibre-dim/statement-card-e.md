@@ -7,8 +7,10 @@
 > regular chart `AlgEquiv`, route-β). `k` alg-closed char 0; `N ≥ 1` (as `Fin (N+2)`); `r ≤ d 0`,
 > `r ≤ d (last)`.
 
-- **Lean:** `DLNFibre.Core.ChartLocalizedAlgEquiv.chartLocalizedAlgEquiv`
-  (`lean/DLNFibre/Core/ChartLocalizedAlgEquiv.lean` @ `40219477`)
+- **Lean:** `DLNFibre.Core.chartLocalizedAlgEquiv`
+  (`lean/DLNFibre/Core/ChartLocalizedAlgEquiv.lean` @ `66029094`)
+  (the file is `ChartLocalizedAlgEquiv.lean` but its `namespace` is `DLNFibre.Core`, so the module
+  name is not a namespace segment — the fully-qualified decl is `DLNFibre.Core.chartLocalizedAlgEquiv`.)
 - **Gloss.** For a dimension vector `d : Fin (N+2) → ℕ` and `r` with `hp : r ≤ d (last)`, `hq : r ≤ d 0`,
   over an `Infinite` field `k`, there is a `k`-algebra equivalence
   `Localization.Away (chartDsig k d r hp hq) ≃ₐ[k] Localization.Away (chartGfib k d r hp hq)`, where
@@ -34,4 +36,7 @@
   varietyDim F`. That needs `e` fed (with the two no-drops `hsig`/`hP` + `hF`) into
   `ChartSweepWiring.sweep_of_localizedChartAlgEquiv`; the source no-drop `hsig` (the pp-nodrop cert,
   Fact B `detΔ ∉ P`) is NOT yet built (task #59).
-- **Status.** sorry-free (fidelity review requested, not yet confirmed)
+- **Status.** sorry-free + reviewed (controller-spawned reviewer, verdict PASS: statement fidelity,
+  honest non-vacuous AlgEquiv with both round-trips genuinely proved, 0 sorry/axiom library-wide
+  (`[propext, Classical.choice, Quot.sound]`), both descents avoid the generator-ideal wall, `[Infinite
+  k]` benign — all confirmed; the Proved/Assumed/Cited/Deferred split confirmed accurate).
