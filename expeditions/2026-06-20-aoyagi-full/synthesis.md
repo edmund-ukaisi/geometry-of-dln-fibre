@@ -886,6 +886,16 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-65 (2026-06-25) — (3,3,4) hfin down to ONE sorry (hratiofin); radial separation built @acd5c4e2; both poles' last pieces building.**
+- **r1-chart banked:** the per-chart radial separation is PROVEN (piFinSuccAbove MP + Fubini + radialAxis discharge; `angularA1_integral_le`
+  the integral-level schur comparability + the zero-guard). `matBox334_chart_lt_top`'s gap narrowed to the lone `hratiofin` (the ratio
+  residual: per-pivot permutation + Step-C translation-CoV → the banked `angularA1_integral_le` + `resolved334_box_lt_top 3`).
+- **r1-ratiofin LAUNCHED** (a22cef05) — closes `hratiofin` (clean interface). On close → routeMCore_M334_threshold_lt_top fully
+  `[propext, Classical.choice, Quot.sound]` → **the (3,3,4) hfin is a COMPLETE S2-free proof.** pp-r1-genM-2 on-call.
+- **L2:** l2-leak-core (ab31f89e) building the producer leak+core (eventually_leak + the core charge via the banked S5c atom) → on close
+  the L2 body (chart) complete for front pivot → then the WLOG/final-wire (discharge hJfront + squeeze-exists relocation + case-split).
+- Active: l2-leak-core (L2 producer) + r1-ratiofin (R1 (3,3,4) last sorry). pp seats on-call. General hdiv + general lifts + D1 ahead.
+
 **★ UPDATE-64 (2026-06-25) — L2 (b)-route B LANDED @2077d929: (b) EXACT under front pivot; hproducer down to leak+core; both gates near. ★**
 - **l2-broute landed:** the B insight realized — under `hJfront` (J=frontEmbed) the producer's (b)-conjunct is the EXACT equality
   `∑deepestEFull²=Sreg` (δ₁=δ₂=1), no Pπ-telescope/FACT2/germ-Taylor. PROVEN inside hproducer: (a) block-decomp + (b)-EXACT + S5a.
