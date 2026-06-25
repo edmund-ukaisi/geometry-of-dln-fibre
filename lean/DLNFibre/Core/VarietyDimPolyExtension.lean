@@ -45,7 +45,7 @@ The Krull dimension of a free polynomial extension over a Noetherian base gains 
 (`MvPolynomial.ringKrullDim_of_isNoetherianRing` — **no domain hypothesis**, so the reducible `O(F)`
 is fine); the `unbotD 0` wrappers are matched because the fibre coordinate ring is a finite-type
 `k`-algebra (Noetherian) that is nontrivial whenever `F`'s vanishing ideal is proper. -/
-theorem varietyDim_eq_of_polyExtensionAlgEquiv {k : Type u} [Field k] {σ τ : Type u} {ι : Type u}
+theorem varietyDim_eq_of_polyExtensionAlgEquiv {k : Type u} [Field k] {σ τ ι : Type*}
     [Finite σ] [Finite ι] {F : Set (σ → k)} {W : Set (τ → k)}
     (hF : (vanishingIdeal k F : Ideal (MvPolynomial σ k)) ≠ ⊤)
     (e : (MvPolynomial τ k ⧸ vanishingIdeal k W) ≃ₐ[k]
