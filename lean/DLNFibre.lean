@@ -140,3 +140,4 @@ import DLNFibre.DLN.Aoyagi.MonomialChartIntegrability
 import DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 import DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+import DLNFibre.DLN.Aoyagi.ChainMapTupleBridge

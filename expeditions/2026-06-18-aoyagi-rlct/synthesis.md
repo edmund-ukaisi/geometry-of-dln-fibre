@@ -9635,6 +9635,18 @@ square in original bases, and only then can the finite basis-change theorem
 connect original endpoint coordinates to the fixed adapted endpoint
 Frobenius square.
 
+Latest A2 chain-map tuple product update:
+`DLNFibre.DLN.Aoyagi.ChainMapTupleBridge` now proves the prerequisite
+product-coordinate bridge.  For fixed bases, `chainMapMatrixTuple` turns the
+edge family into a core `Tuple d`; `submult_chainMapMatrixTuple` identifies
+interval products with interval `chainMap` matrices, and
+`mult_toMatrix_chainMap` identifies the total `mult` with the zero-to-last
+chain-map matrix.  The reverse-vertex wrapper
+`mult_toMatrix_chainMap_reverseVertex` is the Aoyagi specialization.  This is
+still only finite linear algebra: no theorem yet compares fixed adapted
+endpoint Frobenius loss with `lossDLN`, because the target matrix and
+basis-change/loss comparison wrappers must still be wired.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

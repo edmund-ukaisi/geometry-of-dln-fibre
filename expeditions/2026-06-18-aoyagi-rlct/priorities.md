@@ -4137,3 +4137,14 @@ finite basis-norm ingredient only.  The remaining prerequisite before any
 `b j : Basis (Fin (d j)) ℝ (reverseVertex W j)`, prove that `mult` of the
 tuple `fun p => toMatrix (b p.castSucc) (b p.succ) (E p)` is
 `toMatrix (b 0) (b last) (chainMap ... E 0 last)`.
+
+A2 chain-map tuple product bridge has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-chainmap-tuple-product-bridge.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.ChainMapTupleBridge` that the core
+`submult` and `mult` of edge matrices in fixed bases are the matrices of the
+corresponding `chainMap` interval and total composite.  The reverse-vertex
+wrapper gives the Aoyagi specialization.  This removes the tuple/product
+orientation blocker.  The next loss-comparison step is still to choose the
+target matrix in the same endpoint bases and unfold `lossDLN` as the
+Frobenius square of `mult d A - B`; no adapted-to-original basis comparison or
+statistical/covariance loss comparison is proved by this bridge.

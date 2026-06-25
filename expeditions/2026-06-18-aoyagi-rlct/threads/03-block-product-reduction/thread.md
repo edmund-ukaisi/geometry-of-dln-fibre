@@ -4099,3 +4099,39 @@ comparison, and not an analytic chart, density/Jacobian, normal-crossing,
 pole-order, or RLCT theorem.  The next bridge prerequisite is a theorem that a
 tuple built from chosen bases has `mult` equal to the corresponding chain-map
 matrix.
+
+## 2026-06-25 A2 chain-map tuple product bridge
+
+Reproduction:
+`reproduction-a2-chainmap-tuple-product-bridge.md`.
+Statement card:
+`statement-card-a2-chainmap-tuple-product-bridge.md`.
+Review:
+`review-a2-chainmap-tuple-product-bridge.md`.
+
+Lean now proves the product-coordinate bridge in the new module
+`DLNFibre.DLN.Aoyagi.ChainMapTupleBridge`:
+
+```text
+chainMapMatrixTuple
+submult_chainMapMatrixTuple
+multPrefix_chainMapMatrixTuple
+mult_chainMapMatrixTuple
+mult_toMatrix_chainMap
+mult_toMatrix_chainMap_reverseVertex
+```
+
+For a chain `A p : V p.castSucc -> V p.succ` and fixed bases
+`b j : Basis (Fin (d j)) K (V j)`, `chainMapMatrixTuple b A` is the core
+`Tuple d` whose factors are the edge matrices.  The interval theorem proves
+`submult d (chainMapMatrixTuple b A) i j = [chainMap(i,j)]_{b_i,b_j}`, and the
+total theorem specializes this to
+`mult d (chainMapMatrixTuple b A) = [chainMap(0,last)]_{b_0,b_last}`.  The
+reverse-vertex wrapper instantiates this with `V = reverseVertex W`.
+
+Boundary: this is only the finite product-coordinate identity.  It does not
+unfold `lossDLN`, choose the target matrix, compare fixed adapted endpoint
+coordinates with original endpoint coordinates, prove a statistical/KL or
+covariance loss comparison, construct a product chart, transport
+density/Jacobian factors, produce normal crossings, compute pole order, or
+extract an RLCT.
