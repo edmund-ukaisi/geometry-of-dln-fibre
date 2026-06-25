@@ -2920,3 +2920,33 @@ Aoyagi p.13 analytic chart/Jacobian theorem, normal-crossing construction,
 pole order, or RLCT theorem is proved.  The next analytic target is the
 Japanese-bracket/Haar-scaling supercritical fiber bound recorded in the scout
 route probe.
+
+## 2026-06-25 A2 Japanese-bracket supercritical integrability
+
+Reproduction:
+`reproduction-a2-japanese-bracket-supercritical-integrability.md`.
+Statement card:
+`statement-card-a2-japanese-bracket-supercritical-integrability.md`.
+Review:
+`review-a2-japanese-bracket-supercritical-integrability.md`.
+
+Lean now proves the global supercritical finite-side model package in
+`RegularSuspensionIntegrability.lean`:
+
+```text
+integrable_one_add_norm_sq_rpow_neg
+lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top
+```
+
+If `finrank_R(E)/2 < s`, the Japanese-bracket model
+`(1+||x||^2)^(-s)` is integrable and has finite `ENNReal.ofReal` lower
+integral.  For each fixed `a>0`, `(a+||x||^2)^(-s)` has finite lower integral
+by comparison with `min(a,1)^(-s)*(1+||x||^2)^(-s)`.
+
+Boundary: fixed-parameter supercritical finite side only.  No sharp
+`a^(finrank/2-s)` dependence, no base-product theorem where `a(y)` approaches
+zero, no `+dim(E)/2` threshold shift, no endpoint, lower/divergence, uniform
+asymptotic in `a`, bounded-density/prior theorem, Aoyagi p.13 analytic
+chart/Jacobian theorem, normal-crossing construction, pole order, or RLCT
+theorem is proved.

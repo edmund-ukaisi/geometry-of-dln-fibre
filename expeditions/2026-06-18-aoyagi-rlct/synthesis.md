@@ -9061,6 +9061,34 @@ Review:
 Lean-route probe for the next threshold-shift theorem:
 `threads/03-block-product-reduction/scout-a2-regular-square-threshold-shift-lean-route.md`.
 
+Latest A2 Japanese-bracket supercritical integrability:
+`RegularSuspensionIntegrability.lean` now proves the first supercritical
+finite-side model package:
+
+```text
+integrable_one_add_norm_sq_rpow_neg
+lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top
+```
+
+Under `finrank_R(E)/2 < s`, the Japanese-bracket model
+`(1+||x||^2)^(-s)` is integrable and has finite `ENNReal.ofReal` lower
+integral.  For each fixed `a>0`, the positive-parameter model
+`(a+||x||^2)^(-s)` has finite lower integral by comparison with
+`min(a,1)^(-s)*(1+||x||^2)^(-s)`.
+
+This is supercritical finite-side control only.  It does not prove the sharp
+`a^(finrank/2-s)` dependence, a base-product theorem where `a(y)` approaches
+zero, the `+dim(E)/2` threshold shift, endpoint behavior, divergence, uniform
+asymptotics, bounded-density/prior transport, Aoyagi's p.13 analytic
+chart/Jacobian construction, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-japanese-bracket-supercritical-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-japanese-bracket-supercritical-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-japanese-bracket-supercritical-integrability.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

@@ -1,6 +1,7 @@
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Constructions.HaarToSphere
 import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+import Mathlib.Analysis.SpecialFunctions.JapaneseBracket
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 
 /-!
@@ -403,6 +404,89 @@ theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_p
         (f := fun _ : α => (1 : ℝ≥0∞)) (g := g) aemeasurable_const hg)
   exact lt_of_le_of_lt hmono
     (by rw [hprod]; exact ENNReal.mul_lt_top (measure_lt_top μ Set.univ) hgfin)
+
+/-- Real integrability of the Japanese-bracket square model on the
+supercritical side `finrank / 2 < s`. -/
+theorem integrable_one_add_norm_sq_rpow_neg
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {s : ℝ}
+    (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
+    Integrable (fun x : E => ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) μ := by
+  have hdim : (Module.finrank ℝ E : ℝ) < 2 * s := by linarith
+  have hint0 := integrable_rpow_neg_one_add_norm_sq
+    (E := E) (μ := μ) (r := 2 * s) hdim
+  have hfun :
+      (fun x : E => ((1 : ℝ) + ‖x‖ ^ 2) ^ (-(2 * s) / 2)) =
+        (fun x : E => ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) := by
+    funext x
+    congr 1
+    ring
+  simpa [hfun] using hint0
+
+/-- Global Japanese-bracket model lower integral for the supercritical side
+`finrank / 2 < s`.  This is the finite constant needed before a scaled
+positive-parameter fiber bound. -/
+theorem lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {s : ℝ}
+    (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
+    (∫⁻ x : E, ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) ∂ μ) < ∞ := by
+  have hint := integrable_one_add_norm_sq_rpow_neg (E := E) (μ := μ) hs
+  have hnonneg : ∀ x : E, 0 ≤ ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s) := by
+    intro x
+    exact Real.rpow_nonneg (by positivity) _
+  rw [← lintegral_enorm_of_nonneg hnonneg]
+  exact hint.hasFiniteIntegral
+
+/-- Positive-parameter global finite-side estimate in the supercritical
+regime.  This proves finiteness for each fixed `a > 0`; it does not yet give
+the sharp dependence on `a` needed for the threshold-shift theorem. -/
+theorem lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s : ℝ}
+    (ha : 0 < a) (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
+    (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ) < ∞ := by
+  let c : ℝ := min a 1
+  have hcpos : 0 < c := lt_min ha zero_lt_one
+  have hclea : c ≤ a := min_le_left _ _
+  have hcle1 : c ≤ 1 := min_le_right _ _
+  have hs_nonneg : 0 ≤ s := by
+    have hdim_nonneg : 0 ≤ (Module.finrank ℝ E : ℝ) := Nat.cast_nonneg _
+    linarith
+  have hmodel := integrable_one_add_norm_sq_rpow_neg (E := E) (μ := μ) hs
+  have hdom : Integrable
+      (fun x : E => c ^ (-s) * ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) μ :=
+    hmodel.const_mul (c ^ (-s))
+  have hint : Integrable (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) μ := by
+    refine hdom.mono' ?_ (Filter.Eventually.of_forall fun x => ?_)
+    · apply Measurable.aestronglyMeasurable
+      exact (measurable_const.add
+        (continuous_norm.measurable.pow_const (2 : ℕ))).pow_const (-s)
+    · have hx2 : 0 ≤ ‖x‖ ^ 2 := sq_nonneg ‖x‖
+      have hbase_pos : 0 < a + ‖x‖ ^ 2 := by positivity
+      have hmodel_pos : 0 < (1 : ℝ) + ‖x‖ ^ 2 := by positivity
+      have hcbase_pos : 0 < c * ((1 : ℝ) + ‖x‖ ^ 2) := mul_pos hcpos hmodel_pos
+      have hlebase : c * ((1 : ℝ) + ‖x‖ ^ 2) ≤ a + ‖x‖ ^ 2 := by
+        nlinarith
+      have hpow_le :
+          (a + ‖x‖ ^ 2) ^ (-s) ≤ (c * ((1 : ℝ) + ‖x‖ ^ 2)) ^ (-s) :=
+        Real.rpow_le_rpow_of_nonpos hcbase_pos hlebase (by linarith [hs_nonneg])
+      have hmul :
+          (c * ((1 : ℝ) + ‖x‖ ^ 2)) ^ (-s) =
+            c ^ (-s) * ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s) := by
+        rw [Real.mul_rpow (le_of_lt hcpos) (le_of_lt hmodel_pos)]
+      have hnonneg_left : 0 ≤ (a + ‖x‖ ^ 2) ^ (-s) :=
+        Real.rpow_nonneg (le_of_lt hbase_pos) _
+      rw [Real.norm_eq_abs, abs_of_nonneg hnonneg_left]
+      exact hpow_le.trans_eq hmul
+  have hnonneg : ∀ x : E, 0 ≤ (a + ‖x‖ ^ 2) ^ (-s) := by
+    intro x
+    exact Real.rpow_nonneg (by positivity) _
+  rw [← lintegral_enorm_of_nonneg hnonneg]
+  exact hint.hasFiniteIntegral
 
 end RadialFiniteSide
 

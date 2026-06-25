@@ -6163,6 +6163,31 @@ lower/divergence side, no uniform asymptotics, no bounded-density/prior
 theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
 crossings, no pole order, and no RLCT.
 
+Latest A2 Japanese-bracket supercritical integrability:
+Lean now proves the global supercritical finite-side model in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+The theorems
+`integrable_one_add_norm_sq_rpow_neg`,
+`lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top`, and
+`lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top` say that if
+`finrank_R(E)/2 < s`, then `(1+||x||^2)^(-s)` is integrable and has finite
+`ENNReal.ofReal` lower integral, and for each fixed `a>0`,
+`(a+||x||^2)^(-s)` has finite `ENNReal.ofReal` lower integral.  The proof uses
+Mathlib's Japanese-bracket integrability theorem and compares the fixed
+positive-parameter model against `min(a,1)^(-s)*(1+||x||^2)^(-s)`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-japanese-bracket-supercritical-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-japanese-bracket-supercritical-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-japanese-bracket-supercritical-integrability.md`.
+
+Nonclaims: no sharp `a^(finrank/2-s)` dependence, no product theorem with a
+base function approaching zero, no regular-variable `+dim(E)/2` threshold
+shift, no endpoint behavior, no lower/divergence side, no uniform asymptotics,
+no bounded-density/prior theorem, no Aoyagi p.13 analytic chart/Jacobian
+construction, no normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof
