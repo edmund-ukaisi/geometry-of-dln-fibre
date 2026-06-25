@@ -933,6 +933,65 @@ theorem residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLo
       (by simpa [residual] using hbase_chart)
 
 set_option linter.unusedSectionVars false in
+/-- Weighted signed-box residual source hypotheses with the residual positive
+set measurability derived from a measurable residual coordinate map. -/
+theorem residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_residual
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [MeasurableSpace α] [Fintype ι]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source : Set α} {μ : Measure α}
+    {chart : (ι → ℝ) → α} {density : (ι → ℝ) → ℝ}
+    {t c C : ℝ} {R : ι → ℝ} {h k : ι → ℕ}
+    (hres_meas :
+      Measurable
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge))
+    (hdensity_aemeas :
+      AEMeasurable (fun y : ι → ℝ => ENNReal.ofReal (density y))
+        (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hchart : AEMeasurable chart
+      (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hmap :
+      μ.restrict source =
+        Measure.map chart
+          ((Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+            (fun y : ι → ℝ => ENNReal.ofReal (density y))))
+    (hc : 0 < c) (hC : 0 ≤ C) (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < (h i : ℝ) + 1)
+    (hlower : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      c * ∏ i, (|y i|) ^ (2 * (k i : ℝ)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y)))
+    (hdensity_nonneg : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      0 ≤ density y)
+    (hdensity_le : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      density y ≤ C * ∏ i, (|y i|) ^ (h i : ℝ)) :
+    (∀ᵐ x ∂ μ.restrict source,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t := by
+  exact
+    residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (source := source) (μ := μ)
+      (chart := chart) (density := density)
+      (t := t) (c := c) (C := C) (R := R) (h := h) (k := k)
+      hdensity_aemeas hchart hmap
+      (measurableSet_residualSquareSum_pos_of_measurable
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) hres_meas)
+      hc hC ht hR hcrit hlower hdensity_nonneg hdensity_le
+
+set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied
 source-stratum residual integrability and supplied uniform-in-fiber loss/density
 bounds.

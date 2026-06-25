@@ -3778,3 +3778,31 @@ base-only self-base comparison, construct a product chart, prove source
 coverage, transport Jacobian/prior density, prove residual
 positivity/integrability, compare original `lossDLN`, produce normal crossings,
 compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 residual positive-set measurability handoff
+
+Reproduction:
+`reproduction-a2-residual-positive-set-measurability-handoff.md`.
+Statement card:
+`statement-card-a2-residual-positive-set-measurability-handoff.md`.
+Review:
+`review-a2-residual-positive-set-measurability-handoff.md`.
+
+Lean now proves
+
+```text
+measurable_aoyagiCoordinateSquareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.measurableSet_residualSquareSum_pos_of_measurable
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_residual
+```
+
+The first theorem is generic finite square-sum measurability.  The second
+derives measurability of the residual square-sum positive set from global
+measurability of the p.13 residual coordinate map.  The third removes the
+explicit `hpos_meas` premise from the weighted signed-box residual source
+constructor under that same residual-coordinate measurability assumption.
+
+Boundary: this does not prove global residual-coordinate measurability from the
+edge family or suffix-state recursion, residual positivity/integrability by
+itself, the weighted pushforward identity, chart construction, density/Jacobian
+transport, original-loss comparison, normal crossings, pole order, or RLCT.

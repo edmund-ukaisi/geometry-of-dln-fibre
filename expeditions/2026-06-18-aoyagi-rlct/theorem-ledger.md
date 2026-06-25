@@ -7645,6 +7645,27 @@ Nonclaims: no proof of Aoyagi actual chart-side bounds, no analytic
 density/Jacobian transport, no chart coverage, no endpoint/divergent-side or
 threshold equality theorem, no normal crossings, pole order, or RLCT.
 
+Latest A2 residual positive-set measurability handoff:
+`RegularSuspensionCoordinates.lean` proves generic finite square-sum
+measurability and the p.13 residual positive-set measurability theorem
+`PaperEndpointFixedBaseRegularCoordinateSourceData.measurableSet_residualSquareSum_pos_of_measurable`
+from a globally measurable residual coordinate map.  `RegularSuspensionLocalMeasure.lean`
+adds
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_residual`,
+which removes the explicit `hpos_meas` input from the weighted signed-box
+residual source-measure constructor under that measurability assumption.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-positive-set-measurability-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-positive-set-measurability-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-positive-set-measurability-handoff.md`.
+Nonclaims: no proof of residual-coordinate measurability from the suffix-state
+recursion, no residual positivity/integrability without the signed-box
+pushforward and monomial bounds, no chart construction, no density/Jacobian
+transport, no original-loss comparison, no normal crossings, pole order, or
+RLCT.
+
 Latest A2 p.13 half loss lower bound:
 `RegularSuspensionCoordinates.lean` proves
 `PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source`,

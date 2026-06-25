@@ -247,6 +247,18 @@ theorem aoyagiCoordinateSquareSum_continuousAt
       (((continuous_apply c).continuousAt.comp hf).pow 2)
     simpa [Finset.sum_insert, hcs] using hterm.add ih
 
+/-- A finite real coordinate square-sum is measurable when the coordinate
+family is measurable. -/
+theorem measurable_aoyagiCoordinateSquareSum
+    {η α : Type*} [Fintype η] [MeasurableSpace α]
+    {f : α → η → ℝ} (hf : Measurable f) :
+    Measurable (fun x : α => aoyagiCoordinateSquareSum (f x)) := by
+  classical
+  unfold aoyagiCoordinateSquareSum
+  simpa [pow_two] using
+    Finset.measurable_sum Finset.univ fun c _ =>
+      ((measurable_pi_apply c).comp hf).mul ((measurable_pi_apply c).comp hf)
+
 /-- A continuous real-valued function is locally bounded above by its value
 plus one. -/
 theorem continuousAt_eventually_le_self_add_one
@@ -3062,6 +3074,32 @@ theorem paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_ev
           (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀) hKmul⟩
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
+
+set_option linter.unusedSectionVars false in
+/-- Measurability of the residual square-sum positive set follows from
+measurability of the residual coordinate map. -/
+theorem measurableSet_residualSquareSum_pos_of_measurable
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [MeasurableSpace α]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    (hmeas :
+      Measurable
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge)) :
+    MeasurableSet {x : α |
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)} := by
+  have hsquare :
+      Measurable (fun x : α =>
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) :=
+    measurable_aoyagiCoordinateSquareSum hmeas
+  simpa [Set.preimage] using hsquare measurableSet_Ioi
 
 set_option linter.unusedSectionVars false in
 /-- The real fixed-base source-data package gives a neighborhood where the

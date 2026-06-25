@@ -4019,3 +4019,15 @@ finite-integral bridge.  This is measure plumbing only: chart construction,
 the pushforward identity, Jacobian/density transport, monomial residual
 control, original-loss comparison, normal crossings, pole order, and RLCT
 remain open/supplied.
+
+A2 residual positive-set measurability handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-positive-set-measurability-handoff.md`.
+Lean proves generic finite square-sum measurability and uses it to derive
+measurability of the p.13 residual square-sum positive set from global
+measurability of the residual coordinate map.  The weighted signed-box
+residual source-measure constructor now has a variant that removes the
+explicit `hpos_meas` premise under this `hres_meas` assumption.  This does not
+prove residual-coordinate measurability from the deterministic suffix-state
+recursion, residual positivity/integrability by itself, chart construction,
+pushforward identity, density/Jacobian transport, original-loss comparison,
+normal crossings, pole order, or RLCT.

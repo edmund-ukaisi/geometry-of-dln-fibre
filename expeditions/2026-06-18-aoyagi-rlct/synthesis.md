@@ -9502,6 +9502,19 @@ product-chart/loss-identification plumbing only; it does not construct the
 chart, prove Jacobian/prior transport, prove residual hypotheses, compare
 original `lossDLN`, or extract normal crossings, pole order, or RLCT.
 
+Latest A2 residual positive-set measurability handoff:
+`RegularSuspensionCoordinates.lean` now proves
+`measurable_aoyagiCoordinateSquareSum` and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.measurableSet_residualSquareSum_pos_of_measurable`.
+`RegularSuspensionLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_residual`.
+This removes the explicit positive-set measurability input from the weighted
+signed-box residual constructor when the p.13 residual coordinate map is
+globally measurable.  It does not prove that global measurability from the
+edge-family/suffix-state recursion, and it does not prove residual positivity
+or integrability without the existing signed-box pushforward and monomial
+bounds.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
