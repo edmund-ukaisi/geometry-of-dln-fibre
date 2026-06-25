@@ -10083,6 +10083,25 @@ This is one-edge finite coordinate algebra only: it does not construct source
 coverage, source-measure transport, normal crossings, pole order, RLCT, or a
 multi-edge arbitrary-terminal-residual theorem.
 
+Latest A2 single-edge selected-entry square-sum readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean`.
+The theorem composes the one-edge selected-entry coordinate readout with
+finite reindexing of `aoyagiCoordinateSquareSum` and the selected-entry
+identity
+`residual pivot y = aoyagiCoordinateSquareSum (CenterCoord.chartMap pivot y)`.
+It gives the scalar residual equality for the one-edge product-coordinate
+family at `(y,u)`, under the same explicit determinant-unit condition and
+supplied residual-coordinate equivalence.  Reproduction, statement card, and
+review:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-selected-entry-square-sum-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-single-edge-selected-entry-square-sum-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-single-edge-selected-entry-square-sum-readout.md`.
+This is source-neutral finite algebra only: it does not prove source coverage,
+source-measure transport, local lower bounds, normal crossings, pole order,
+RLCT, or a multi-edge selected-entry residual product.
+
 Latest A2 multi-edge residual-product preservation:
 `ProductReduction.lean` now proves the residual-product congruence and p.13
 specialization:

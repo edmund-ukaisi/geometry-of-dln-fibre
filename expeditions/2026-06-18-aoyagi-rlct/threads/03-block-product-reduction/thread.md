@@ -4835,6 +4835,39 @@ It does not invert the selected-entry chart, construct source coverage,
 transport measures, produce normal crossings, prove pole order, or extract
 RLCT.
 
+## 2026-06-25 A2 single-edge selected-entry square-sum readout
+
+Reproduction:
+`reproduction-a2-single-edge-selected-entry-square-sum-readout.md`.
+Statement card:
+`statement-card-a2-single-edge-selected-entry-square-sum-readout.md`.
+Review:
+`review-a2-single-edge-selected-entry-square-sum-readout.md`.
+
+Lean now proves:
+
+```text
+aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+```
+
+The theorem turns the previous one-edge selected-entry coordinate readout into
+the scalar residual equality
+
+```text
+aoyagiCoordinateSquareSum (residualBlockCoordinateMap (y,u))
+  = SelectedEntrySignedBox.CenterCoord.residual pivot y.
+```
+
+The proof is finite: use the pointwise readout through the supplied
+`residualCoordEquiv`, reindex the finite sum of squares, and apply
+`CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap`.  The determinant
+unit hypothesis is inherited from the coordinate readout.
+
+Boundary: this is source-neutral one-edge finite square-sum algebra.  It does
+not construct source coverage, source-stratum equality, source-measure
+transport, local lower bounds, normal crossings, pole order, RLCT, or a
+multi-edge selected-entry residual product.
+
 ## 2026-06-25 A2 multi-edge residual-product preservation
 
 Reproduction:

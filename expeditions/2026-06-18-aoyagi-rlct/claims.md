@@ -6793,6 +6793,19 @@ and there is no inverse chart, source coverage, source-measure transport,
 normal crossings, pole order, RLCT, or multi-edge arbitrary-terminal-residual
 theorem.
 
+Latest A2 single-edge selected-entry square-sum readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean`.
+It composes the one-edge selected-entry coordinate readout with finite
+reindexing of `aoyagiCoordinateSquareSum`, giving the scalar identity
+`aoyagiCoordinateSquareSum (residualBlockCoordinateMap (y,u)) =
+SelectedEntrySignedBox.CenterCoord.residual pivot y` under the same explicit
+`IsUnit det(Ctop(u))` hypothesis and supplied `residualCoordEquiv`.  This is
+source-neutral one-edge finite algebra only: it does not construct source
+coverage, source-stratum equality, source-measure transport, local lower
+bounds, normal crossings, pole order, RLCT, or a multi-edge selected-entry
+residual product.
+
 Latest A2 selected-entry chart-image characterization:
 `SelectedEntrySignedBoxMeasure.lean` now proves
 `SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.

@@ -417,6 +417,80 @@ theorem paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSe
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- The one-edge selected-entry product-coordinate family has scalar residual
+square-sum equal to the center-indexed selected-entry residual. -/
+theorem aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (y : center → ℝ)
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det) :
+    let CedgeProd :=
+      paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+        V Bv pivot U₀ hU₀ residualCoordEquiv
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u)) =
+      SelectedEntrySignedBox.CenterCoord.residual pivot y := by
+  intro CedgeProd
+  have hfull :=
+    paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+      (V := V) (Bv := Bv) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+      (residualCoordEquiv := residualCoordEquiv) (y := y) (u := u) hCtop
+  have hread :
+      ∀ c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) c =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c) := by
+    simpa [CedgeProd] using hfull.2
+  have hpoint :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) =
+        fun c ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+          (residualCoordEquiv c) := by
+    funext c
+    exact hread c
+  calc
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u)) =
+        aoyagiCoordinateSquareSum
+          (fun c ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c)) := by
+      rw [hpoint]
+    _ = aoyagiCoordinateSquareSum
+        (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) :=
+      aoyagiCoordinateSquareSum_comp_equiv residualCoordEquiv
+        (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)
+    _ = SelectedEntrySignedBox.CenterCoord.residual pivot y :=
+      (SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap
+        pivot y).symm
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- The one-edge selected-entry product-coordinate edge family is continuous
 in the selected-entry chart parameter and the regular coordinates. -/
 theorem continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
