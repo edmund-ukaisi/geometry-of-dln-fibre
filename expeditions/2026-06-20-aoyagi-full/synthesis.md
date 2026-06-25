@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-64 (2026-06-25) — L2 (b)-route B LANDED @2077d929: (b) EXACT under front pivot; hproducer down to leak+core; both gates near. ★**
+- **l2-broute landed:** the B insight realized — under `hJfront` (J=frontEmbed) the producer's (b)-conjunct is the EXACT equality
+  `∑deepestEFull²=Sreg` (δ₁=δ₂=1), no Pπ-telescope/FACT2/germ-Taylor. PROVEN inside hproducer: (a) block-decomp + (b)-EXACT + S5a.
+  NEW `FrontPivotProducer.lean` (front-pivot alignment + S5a moved upstream, circular import fixed); `deepestEFull_sq_sum_eq_blocks`
+  + the clean per-w telescope `hS1'_front/hS2_front`. The chart now carries `hJfront` (discharged by the WLOG at squeeze-exists).
+  PIN1 clean; headline sorryAx unchanged from baseline; no monomial_rlct. The giant hproducer sorry SHRANK to 3 narrow
+  pivot-agnostic ones (leak (c) + folded core (d')/(e')).
+- **l2-leak-core LAUNCHED** (ab31f89e) — closes the producer: (c) `eventually_leak` (sub-mult, P01/P10→0, ⅟P00 bounded from S5a) +
+  (d')/(e') `eventually_core_comparable` (the per-layer↔global Schur charge via the BANKED `schur_core_germ_comparability`) + the
+  coupled-U. pp-pin2-rearch on-call. On close → the L2 body (the chart) is COMPLETE for front pivot (only the 2 vacuous-at-L2 interior).
+- **L2-gate remaining after the producer:** the WLOG transfer (b-wlog 1-5: front_pivot_perm + dlnLoss_colPerm_eq + the coordinate-perm
+  MP + the ⨅-transfer via banked rlctAtOn_comp_homeomorph + headline rw) discharging `hJfront` + the squeeze-exists downstream
+  relocation + the case-split (L=1 base/2≤L) + product_reduction → the L2 gate. (Controller-coordinated final wire.)
+- **R1 (3,3,4):** r1-chart (ae1cc7f4) building the final lemma `matBox334_chart_lt_top` → on close the (3,3,4) hfin is complete S2-free.
+- Active: l2-leak-core (L2 producer completion) + r1-chart (R1 (3,3,4) final lemma). pp seats on-call. General hdiv + general lifts + D1 ahead.
+
 **UPDATE-63 (2026-06-25) — R1 (3,3,4) hfin is ONE lemma from complete; matBox cover banked @99e7bb04; r1-chart on the final lemma.**
 - **r1-matbox banked** (+349 LoC, aggregator green 8370): the 9-chart A0 cover assembly is built; `matBox334_blowup_lt_top` is PROVED
   modulo the lone `matBox334_chart_lt_top`. Sorry-free, S2-free: the exponent-bump (0<c'<4 → 2<c'<4), the box-radius-K resolved
