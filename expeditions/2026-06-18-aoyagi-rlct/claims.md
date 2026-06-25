@@ -6759,6 +6759,23 @@ lower-right-block identity, not a multi-edge arbitrary-terminal-residual
 realisation theorem, and not source coverage, source-measure transport, normal
 crossings, pole order, or RLCT.
 
+Latest A2 single-edge source-dependent residual-matrix family:
+`ChartTopology.lean` now proves `continuous_productCoordinateSingleEdgeMatrix`.
+`RegularSuspensionCoordinates.lean` now defines
+`paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean`
+and proves
+`paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeProductCoordinateEuclidean_residualMatrix`
+and
+`continuousAt_paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean`.
+For `Dbase x`, the one-edge p.13 product-coordinate edge family reads regular
+coordinates as `u` and residual coordinates as
+`AoyagiResidualBlockCoordinateIndex.value (Dbase x)`, under the explicit
+`IsUnit det(Ctop(u))` hypothesis; under `Continuous Dbase`, the realised edge
+family is continuous at `(x₀,u₀)`.  This is one-edge finite algebra only: no
+construction of `Dbase`, no source chart or source coverage, no source-measure
+transport, no normal crossings, pole order, RLCT, or multi-edge
+arbitrary-terminal-residual theorem.
+
 Latest A2 selected-entry chart-image characterization:
 `SelectedEntrySignedBoxMeasure.lean` now proves
 `SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.

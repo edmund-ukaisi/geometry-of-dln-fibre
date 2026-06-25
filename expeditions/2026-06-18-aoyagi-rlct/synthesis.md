@@ -10039,6 +10039,27 @@ a raw lower-right-block identity, does not choose `D` from source data, does
 not construct a product chart or source-measure transport, and does not prove
 normal crossings, pole order, or RLCT.
 
+Latest A2 single-edge source-dependent residual-matrix family:
+`ChartTopology.lean` now proves `continuous_productCoordinateSingleEdgeMatrix`.
+`RegularSuspensionCoordinates.lean` now defines
+`paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean`
+and proves
+`paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeProductCoordinateEuclidean_residualMatrix`
+and
+`continuousAt_paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean`.
+For a residual matrix family `Dbase x`, the one-edge p.13 product-coordinate
+edge at `(x,u)` has regular-coordinate readout `u` and residual-coordinate
+readout `value (Dbase x)`, under `IsUnit det(Ctop(u))`.  If `Dbase` is
+continuous, the realised fixed-base edge family is continuous at `(x₀,u₀)`.
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-source-dependent-residual-matrix-family.md`,
+`threads/03-block-product-reduction/statement-card-a2-single-edge-source-dependent-residual-matrix-family.md`,
+and
+`threads/03-block-product-reduction/review-a2-single-edge-source-dependent-residual-matrix-family.md`.
+This is one-edge finite algebra only: it does not construct `Dbase`, source
+coverage, source-measure transport, normal crossings, pole order, RLCT, or a
+multi-edge arbitrary-terminal-residual theorem.
+
 Latest A2 multi-edge residual-product preservation:
 `ProductReduction.lean` now proves the residual-product congruence and p.13
 specialization:

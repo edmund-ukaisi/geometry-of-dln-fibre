@@ -4773,6 +4773,36 @@ realisation theorem.  It does not choose `D` from source data, construct a
 source chart, transport measures, produce normal crossings, prove pole order,
 or extract RLCT.
 
+## 2026-06-25 A2 single-edge source-dependent residual-matrix family
+
+Reproduction:
+`reproduction-a2-single-edge-source-dependent-residual-matrix-family.md`.
+Statement card:
+`statement-card-a2-single-edge-source-dependent-residual-matrix-family.md`.
+Review:
+`review-a2-single-edge-source-dependent-residual-matrix-family.md`.
+
+Lean now packages the one-edge p.13 product-coordinate family when the
+residual matrix is allowed to depend on a base point:
+
+```text
+continuous_productCoordinateSingleEdgeMatrix
+paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean
+paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeProductCoordinateEuclidean_residualMatrix
+continuousAt_paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean
+```
+
+At `(x,u)`, the raw edge matrix uses `Dbase x`, and under
+`IsUnit det(Ctop(u))` the fixed-base coordinate readout has regular part `u`
+and residual part `AoyagiResidualBlockCoordinateIndex.value (Dbase x)`.
+If `Dbase` is continuous, the realised fixed-base edge family is continuous at
+`(x₀,u₀)`.
+
+Boundary: this is one-edge finite algebra plus continuity under a supplied
+`Continuous Dbase` hypothesis.  It does not construct `Dbase`, prove source
+coverage, source-measure transport, normal crossings, pole order, or RLCT.  It
+also does not weaken the multi-edge intermediate-factor obstruction.
+
 ## 2026-06-25 A2 multi-edge residual-product preservation
 
 Reproduction:

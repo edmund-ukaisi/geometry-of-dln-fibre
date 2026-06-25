@@ -459,6 +459,34 @@ theorem continuous_productCoordinateLeftEndpointMatrix
     hCtop.matrix_fromBlocks hmul.neg continuous_const hC0
   simpa [ChartLocalSuffixState.productCoordinateLeftEndpointMatrix] using hfrom
 
+/-- The one-edge p. 13 raw matrix pattern is continuous in `F2`, `F3`,
+`Ctop`, and the residual block. -/
+theorem continuous_productCoordinateSingleEdgeMatrix
+    {α : Type*} [TopologicalSpace α] {ρ μ ν : Type*}
+    [Fintype ρ] {F2 : α → Matrix ρ ν K}
+    {F3 : α → Matrix μ ρ K} {Ctop : α → Matrix ρ ρ K}
+    {C0 : α → Matrix μ ν K}
+    (hF2 : Continuous F2) (hF3 : Continuous F3)
+    (hCtop : Continuous Ctop) (hC0 : Continuous C0) :
+    Continuous
+      (fun x : α ↦
+        ChartLocalSuffixState.productCoordinateSingleEdgeMatrix
+          (K := K) (F2 x) (F3 x) (Ctop x) (C0 x)) := by
+  have hCtopF2 : Continuous (fun x : α ↦ Ctop x * F2 x) :=
+    hCtop.matrix_mul hF2
+  have hF3Ctop : Continuous (fun x : α ↦ F3 x * Ctop x) :=
+    hF3.matrix_mul hCtop
+  have hF3CtopF2 : Continuous (fun x : α ↦ F3 x * Ctop x * F2 x) :=
+    hF3Ctop.matrix_mul hF2
+  have hlowerRight : Continuous (fun x : α ↦ C0 x + F3 x * Ctop x * F2 x) :=
+    hC0.add hF3CtopF2
+  have hfrom : Continuous
+      (fun x : α ↦
+        fromBlocks (Ctop x) (-(Ctop x * F2 x)) (-(F3 x * Ctop x))
+          (C0 x + F3 x * Ctop x * F2 x)) :=
+    hCtop.matrix_fromBlocks hCtopF2.neg hF3Ctop.neg hlowerRight
+  simpa [ChartLocalSuffixState.productCoordinateSingleEdgeMatrix, Matrix.mul_assoc] using hfrom
+
 namespace ProductReductionStepRawCoordinates
 
 /-- Product coordinates used to topologize raw one-step product-reduction variables. -/
