@@ -54,6 +54,27 @@ theorem away_mk'_pow_eq_zero_iff_exists_pow_mul_mem {σ : Type u} (Z : Set (σ �
     rwa [← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
 
 variable (k) in
+/-- **The `chartDsig`-native Σ-side away zero-test.** For the source localizing element
+`dsig = chartDsig` (`= mk (vanishingIdeal sweepSigma) ΔPdeep`): `mk' (mk a) (dsig ^ n) = 0` iff some
+`ΔPdeep`-power kills `a` modulo `vanishingIdeal sweepSigma`. Proved via the **abstract-base** away
+zero-test `away_mk'_eq_zero_iff_exists_pow_mul_eq_zero` over `O(Σ)` (keeping `chartDsig` abstract — no
+unfolding through the away-localization instances), then transporting `chartDsig ^ m * mk a = 0` to
+`ΔPdeep ^ m * a ∈ vanishingIdeal sweepSigma` (`mk` a ring hom, `Quotient.eq_zero_iff_mem`). -/
+theorem away_chartDsig_pow_eq_zero_iff (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (a : MvPolynomial (RepCoord d) k) (n : ℕ) :
+    (IsLocalization.mk' (Localization.Away (chartDsig k d r hp hq))
+        (Ideal.Quotient.mk (vanishingIdeal k (sweepSigma k d r)) a)
+        (⟨chartDsig k d r hp hq ^ n, n, rfl⟩ : Submonoid.powers (chartDsig k d r hp hq)) = 0)
+      ↔ ∃ m : ℕ, ΔPdeep d r hp hq ^ m * a ∈ vanishingIdeal k (sweepSigma k d r) := by
+  rw [away_mk'_eq_zero_iff_exists_pow_mul_eq_zero (chartDsig k d r hp hq)
+    (Localization.Away (chartDsig k d r hp hq))
+    (Ideal.Quotient.mk (vanishingIdeal k (sweepSigma k d r)) a) n]
+  -- `chartDsig ^ m * mk a = mk (ΔPdeep ^ m * a)` (ring hom), zero iff `ΔPdeep^m·a ∈ vanishingIdeal`.
+  refine exists_congr (fun m ↦ ?_)
+  rw [chartDsig, ← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
+
+variable (k) in
 /-- **The Schur data of a chart point** `A`: the `SchurVar → k` assignment reading the block entries
 of the product matrix `mult d A` at the pivot rows/cols (`castLE`, the Δ-block) and the bordering
 rows/cols (`natAdd`, the `B12`/`B21` blocks). The Φ-side analog of the Ψ-side's given chart point
