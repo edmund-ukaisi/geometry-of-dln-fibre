@@ -15,6 +15,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestRegSliceFderivPivot
 import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrame
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -1805,10 +1806,27 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
             ∧ ((∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
                 ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                     + (∑ i, ∑ j, (P10 i j) ^ 2)))
-            ∧ ((∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
-                ≤ γ₂ * deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)
-            ∧ (deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
-                ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+            -- **FOLDED CORE COMPARABILITY (L2-PIN2 corrected, thread 31, 2026-06-25).** The earlier
+            -- UNIFORM two-sided MULTIPLICATIVE form `∑Rcore² ≤ γ₂·coreΦ ∧ coreΦ ≤ γ₁·∑Rcore²` is
+            -- **FALSE for M > 1** (decorrelated Codex `xhigh` + numeric witness `s5c_germ_counterex.py`:
+            -- the germ path `W = I+η·E₁₂`, `S0 = ε·e₁(e₁ᵀ−η·e₂ᵀ)`, `S1 = ε·e₂e₁ᵀ` gives `Rcore = 0`
+            -- but `∏S = −ε²η·E₁₁ ≠ 0`, so `coreΦ ≤ γ₁·0` is violated arbitrarily near the deepest point).
+            -- The TRUE germ form is the **regular-energy-FOLDED** comparability `Sreg + ∑Rcore² ≍
+            -- Sreg + coreΦ` (the `core_comparability_squeeze` shape, via the built S5c germ atom
+            -- `schur_core_germ_comparability` + the `|∑Rcore² − coreΦ| ≤ C·Sreg` charge): with
+            -- `Sreg := ∑(P00−1)² + ∑P01² + ∑P10²` and `Score := ∑Rcore²`, both sides fold `Sreg`.
+            ∧ ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2))
+                  + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
+                ≤ γ₂ * (((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2)))
+                  + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1))
+            ∧ (((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2)))
+                  + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
+                ≤ γ₁ * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                    + (∑ i, ∑ j, (P10 i j) ^ 2))
+                  + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
   -- **ASSEMBLY (2026-06-25, thread 31; partial — see the remaining `sorry`s).** The cert is stated TRUE
   -- (the frame hypotheses above + `hL2`/`hpos`/`hinterface` added this tide). The body is the banked
   -- S0–S5 decomposition (`framedbody-cert.md`). **LANDED this tide:** the endpoint-frame units +
@@ -1910,7 +1928,20 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                 (readZ H r hr hL ((split w).1, (split w).2.2) (lastLayer hL))
                 ((paramsEquivFlat (deepestM H r)).symm (split w).2.1 (lastLayer hL))))
           * Qf (lastLayer hL) := by
-    sorry
+    intro w
+    -- `F w last = framedParamsPivot (split w) last`, unfolded by `framedParamsPivot_last` into the
+    -- raw corner `reindex(fromBlocks 1 0 0 0)` plus the pivot-reindexed reads `Pf·reads·Qf`.
+    rw [hF]; simp only
+    rw [framedParamsPivot_last H r hr hL J Pf Qf (split w)]
+    -- The raw corner `reindex(rThr.symm, pivotThr.symm)(fromBlocks 1 0 0 0)` equals `deepest_last · Qf`
+    -- by inverting `hcorner`, and `Pf_last = 1` (`hPfL`) makes it `Pf_last · deepest_last · Qf_last`.
+    have hcornerInv : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+          (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+        = deepestPoint H r B hB hr hL (lastLayer hL) * Qf (lastLayer hL) := by
+      rw [← hcorner, ← Matrix.reindex_symm, Equiv.symm_apply_apply]
+    rw [hcornerInv]
+    simp only [hPfL, Matrix.one_mul]
   -- **S0/interface — adjacent interior frames are identity** (`framedbody-cert.md` S0/S2): the telescope
   -- `hinterface` input is now a hypothesis (see the signature) — every strictly-interior interface
   -- `(Qf s, Pf (s+1))` is `(1, 1)`, the input `endpoint_telescoping_eq` consumes for the interface collapse.
@@ -2032,9 +2063,34 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- permutation `π_J` (refuted hS1'). The FINAL identity is expected to survive (the SAME outer
   -- `reindex(rThr, pivotThr J)` is on BOTH `deepestEFull` and `Sreg`, so `π_J` should cancel), but the
   -- producer's S4 step must thread that cancellation (verdict option A: fold the orthogonal `Pπ` into
-  -- `QL`/the `B`-pivot normalization). This is the genuine open design (verify the cancellation), so the
-  -- whole producer is a single named `sorry` with the CORRECT statement below. (The S5c core germ atom
-  -- `schur_core_germ_comparability` of `s5c-r2-cert.md` is the other half — also not yet built.)
+  -- `QL`/the `B`-pivot normalization). This is the genuine open design (verify the cancellation).
+  --
+  -- **S5c STATUS — the abstract germ atom is BUILT** (`DeepestSchurComparability.lean`,
+  -- `schur_core_germ_comparability`): the exact remainder identity `Rcore − ∏S = −S0·K·S1`, the
+  -- Frobenius sub-multiplicative remainder bound `frobSq(Rcore−∏S) ≤ frobSq S0·frobSq K·frobSq S1`, and
+  -- the difference-of-squared-Frobenius split `frobSq Rcore = frobSq ∏S + 2·⟨∏S, Rcore−∏S⟩ +
+  -- frobSq(Rcore−∏S)` with the cross term Cauchy–Schwarz-bounded. All network-free, axiom-clean.
+  --
+  -- **KILL-CONDITION FOUND (thread 31, 2026-06-25; decorrelated Codex `xhigh` + numeric witness
+  -- `/tmp/s5c_germ_counterex.py`):** conjuncts (d)/(e) BELOW — the UNIFORM two-sided MULTIPLICATIVE
+  -- comparability `∑Rcore² ≤ γ₂·coreΦ` AND `coreΦ ≤ γ₁·∑Rcore²` over a fixed `U` — are **FALSE for
+  -- M > 1** (the matrix core). GERM counterexample (all deviations → 0): `W = I + η·E₁₂` (a TILTED
+  -- kernel, realizable by `Z1 = √η·e₁`, `Y0 = −√η·e₂ᵀ`, both `O(√η) → 0`, with `A = a0a1 = I`),
+  -- `S1 = ε·e₂e₁ᵀ`, `S0 = ε·e₁(e₁ᵀ − η·e₂ᵀ)`: then `Rcore = S0·W·S1 = 0` EXACTLY while
+  -- `∏S = S0·S1 = −ε²η·E₁₁ ≠ 0`, so `coreΦ = ε⁴η² > 0` but `∑Rcore² = 0` — conjunct (e)
+  -- `coreΦ ≤ γ₁·0` is violated for every finite `γ₁`, arbitrarily close to the deepest point. (My first
+  -- random-direction numerics MISSED this — the witness is a measure-zero aligned `S0 ⟂ W·S1` direction;
+  -- the empty generic hunt is not a proof. The cert's `W[k,k]=0` witness is off-germ, but this
+  -- tilted-kernel one is a genuine germ path.)
+  --
+  -- **RESTATED (thread 31, 2026-06-25):** the multiplicative (d)/(e) are now REPLACED by the FOLDED
+  -- germ form `Sreg + ∑Rcore² ≤ γ₂·(Sreg + coreΦ)` and `Sreg + coreΦ ≤ γ₁·(Sreg + ∑Rcore²)` (matching
+  -- the parent cert's restated conclusion + `deepest_loss_squeeze`'s rewired squeeze). The folded form is
+  -- the `core_comparability_squeeze` shape, derivable from the built S5c germ atom
+  -- `schur_core_germ_comparability` + the `|∑Rcore² − coreΦ| ≤ C·Sreg` charge (`Y0,Z1 ≤ √Sreg`). The
+  -- remaining `sorry` is the per-`w` block decomposition (a) + the reg-energy identity (b) + the leak (c)
+  -- + the π_J cancellation + the `𝓝` construction (S5a det-open ∩ S5b leak-nbhd ∩ S5c germ-nbhd) — the
+  -- genuine open geometry. (d')/(e') themselves reduce to the now-built atom + the charge.
   have hproducer :
       ∃ (t γ₁ γ₂ : ℝ), 0 < γ₁ ∧ 0 < γ₂ ∧
         ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -2055,10 +2111,18 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
               ∧ ((∑ i, ∑ j, ((P10 * ⅟P00 * P01) i j) ^ 2)
                   ≤ t ^ 2 * (((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                       + (∑ i, ∑ j, (P10 i j) ^ 2)))
-              ∧ ((∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
-                  ≤ γ₂ * deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)
-              ∧ (deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
-                  ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
+              ∧ ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                      + (∑ i, ∑ j, (P10 i j) ^ 2))
+                    + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)
+                  ≤ γ₂ * (((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                      + (∑ i, ∑ j, (P10 i j) ^ 2)))
+                    + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1))
+              ∧ (((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                      + (∑ i, ∑ j, (P10 i j) ^ 2)))
+                    + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
+                  ≤ γ₁ * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
+                      + (∑ i, ∑ j, (P10 i j) ^ 2))
+                    + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
     sorry
   obtain ⟨t, γ₁, γ₂, hγ₁, hγ₂, U, hU, hbody⟩ := hproducer
   exact ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, hPP, hQQ, hγ₁, hγ₂, hKP_pos, hKi_pos, U, hU, hbody⟩
@@ -2131,8 +2195,10 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hKlo_pos : 0 < Klo := by rw [hKlo]; positivity
   have hKup_pos : 0 < Kup := by rw [hKup]; positivity
   have hKup_nonneg : 0 ≤ Kup := le_of_lt hKup_pos
-  -- The two squeeze constants (Codex's, fixed up for the comparability-not-equality core).
-  refine ⟨((1 + γ₁) * Klo)⁻¹, Kup * (1 + γ₂), ?_, ?_, U, hU, ?_⟩
+  -- The two squeeze constants for the FOLDED comparability `Sreg + Score ≍ Sreg + coreΦ` (thread 31).
+  -- LOWER `c₁ = (γ₁·Klo)⁻¹`: `Φ = Sreg+coreΦ ≤ γ₁·(Sreg+Score) ≤ γ₁·Klo·NN`. UPPER `c₂ = Kup·γ₂`:
+  -- `NN ≤ Kup·(Sreg+Score) ≤ Kup·γ₂·(Sreg+coreΦ) = Kup·γ₂·Φ`.
+  refine ⟨(γ₁ * Klo)⁻¹, Kup * γ₂, ?_, ?_, U, hU, ?_⟩
   · positivity
   · positivity
   -- Per-`w` bound.
@@ -2183,42 +2249,29 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `Sreg = ∑(regStraighten …)²`, so `Φ = Sreg + coreΦ`.
   have hΦ_eq : Φ = Sreg + coreΦ := by rw [hΦ, hSreg_eq]
   refine ⟨hΦ_nn, ?_, ?_⟩
-  · -- LOWER: `c₁·Φ ≤ dlnLoss = NN`. `Φ = Sreg + coreΦ ≤ Sreg + γ₁·Score ≤ (1+γ₁)(Sreg+Score)
-    -- ≤ (1+γ₁)·Klo·NN`. So `((1+γ₁)Klo)⁻¹·Φ ≤ NN`.
+  · -- LOWER: `c₁·Φ ≤ dlnLoss = NN`. FOLDED: `Φ = Sreg + coreΦ ≤ γ₁·(Sreg + Score) ≤ γ₁·Klo·NN`
+    -- (`hcore_ge` is now the folded `Sreg + coreΦ ≤ γ₁·(Sreg + Score)`). So `(γ₁·Klo)⁻¹·Φ ≤ NN`.
     rw [hloss_eq]
-    have hstep1 : Φ ≤ Sreg + γ₁ * Score := by
-      rw [hΦ_eq]; linarith [hcore_ge]
-    have hstep2 : Sreg + γ₁ * Score ≤ (1 + γ₁) * (Sreg + Score) := by
-      have hexp : (1 + γ₁) * (Sreg + Score) - (Sreg + γ₁ * Score) = γ₁ * Sreg + Score := by ring
-      have hpos : 0 ≤ γ₁ * Sreg + Score :=
-        add_nonneg (mul_nonneg (le_of_lt hγ₁) hSreg_nn) hScore_nn
-      linarith [hexp, hpos]
-    have hstep3 : (1 + γ₁) * (Sreg + Score) ≤ (1 + γ₁) * (Klo * NN) :=
-      mul_le_mul_of_nonneg_left hlo' (by positivity)
-    have hΦle : Φ ≤ (1 + γ₁) * Klo * NN := by
-      calc Φ ≤ Sreg + γ₁ * Score := hstep1
-        _ ≤ (1 + γ₁) * (Sreg + Score) := hstep2
-        _ ≤ (1 + γ₁) * (Klo * NN) := hstep3
-        _ = (1 + γ₁) * Klo * NN := by ring
-    -- multiply `hΦle : Φ ≤ (1+γ₁)·Klo·NN` by `c₁ = ((1+γ₁)·Klo)⁻¹ ≥ 0`; `c₁·((1+γ₁)·Klo) = 1`.
-    have hden_pos : 0 < (1 + γ₁) * Klo := by positivity
+    have hstep1 : Φ ≤ γ₁ * (Sreg + Score) := by
+      rw [hΦ_eq]; exact hcore_ge
+    have hstep2 : γ₁ * (Sreg + Score) ≤ γ₁ * (Klo * NN) :=
+      mul_le_mul_of_nonneg_left hlo' (le_of_lt hγ₁)
+    have hΦle : Φ ≤ γ₁ * Klo * NN := by
+      calc Φ ≤ γ₁ * (Sreg + Score) := hstep1
+        _ ≤ γ₁ * (Klo * NN) := hstep2
+        _ = γ₁ * Klo * NN := by ring
+    -- multiply `hΦle : Φ ≤ γ₁·Klo·NN` by `c₁ = (γ₁·Klo)⁻¹ ≥ 0`; `c₁·(γ₁·Klo) = 1`.
+    have hden_pos : 0 < γ₁ * Klo := by positivity
     have hc₁ := mul_le_mul_of_nonneg_left hΦle (le_of_lt (inv_pos.mpr hden_pos))
-    rw [show ((1 + γ₁) * Klo)⁻¹ * ((1 + γ₁) * Klo * NN) = NN from by
-      field_simp] at hc₁
+    rw [show (γ₁ * Klo)⁻¹ * (γ₁ * Klo * NN) = NN from by field_simp] at hc₁
     exact hc₁
-  · -- UPPER: `dlnLoss = NN ≤ Kup·(Sreg + Score) ≤ Kup·(Sreg + γ₂·coreΦ) ≤ Kup·(1+γ₂)·Φ`.
+  · -- UPPER: `dlnLoss = NN ≤ Kup·(Sreg + Score) ≤ Kup·γ₂·(Sreg + coreΦ) = Kup·γ₂·Φ` (FOLDED:
+    -- `hcore_le` is now `Sreg + Score ≤ γ₂·(Sreg + coreΦ)`).
     rw [hloss_eq]
-    have hstep1 : Sreg + Score ≤ Sreg + γ₂ * coreΦ := by linarith [hcore_le]
-    have hstep2 : Sreg + γ₂ * coreΦ ≤ (1 + γ₂) * Φ := by
-      rw [hΦ_eq]
-      have hexp : (1 + γ₂) * (Sreg + coreΦ) - (Sreg + γ₂ * coreΦ) = γ₂ * Sreg + coreΦ := by ring
-      have hpos : 0 ≤ γ₂ * Sreg + coreΦ :=
-        add_nonneg (mul_nonneg (le_of_lt hγ₂) hSreg_nn) hcoreΦ_nn
-      linarith [hexp, hpos]
+    have hstep1 : γ₂ * (Sreg + coreΦ) = γ₂ * Φ := by rw [hΦ_eq]
     calc NN ≤ Kup * (Sreg + Score) := hhi'
-      _ ≤ Kup * (Sreg + γ₂ * coreΦ) := mul_le_mul_of_nonneg_left hstep1 hKup_nonneg
-      _ ≤ Kup * ((1 + γ₂) * Φ) := mul_le_mul_of_nonneg_left hstep2 hKup_nonneg
-      _ = Kup * (1 + γ₂) * Φ := by ring
+      _ ≤ Kup * (γ₂ * (Sreg + coreΦ)) := mul_le_mul_of_nonneg_left hcore_le hKup_nonneg
+      _ = Kup * γ₂ * Φ := by rw [hstep1]; ring
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation, `2 ≤ L`). Assembles
 the `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
