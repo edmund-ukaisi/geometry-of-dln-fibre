@@ -163,4 +163,24 @@ theorem normalize_chart_matrix (M : Matrix (Fin p) (Fin q) k) (hp : r ≤ p) (hq
   rw [hMblocks, hSchur]
   exact schurComplement_normal_form Δ B12 B21 hΔ
 
+/-- **The chart factorization** `M = L · E · H` — the converse of `normalize_chart_matrix`. For a
+chart matrix `M` of `rank ≤ r` (pivot `Δ` invertible), the gauge units recover `M` from the normal
+form: `(Lmatk M) · diag(I_r,0) · (Hmatk M) = M`. Obtained by left/right multiplying the
+normalization `L⁻¹ M H⁻¹ = E` by the units `L`, `H` (`isUnit_Lmatk`/`isUnit_Hmatk`). -/
+theorem factor_chart_matrix (M : Matrix (Fin p) (Fin q) k) (hp : r ≤ p) (hq : r ≤ q)
+    (hΔ : IsUnit (chartΔ M hp hq).det) (hrank : M.rank ≤ r) :
+    Lmatk M hp hq * normalForm p q r hp hq * Hmatk M hp hq = M := by
+  have hnf := normalize_chart_matrix M hp hq hΔ hrank
+  have hLd : IsUnit (Lmatk M hp hq).det :=
+    (Matrix.isUnit_iff_isUnit_det _).mp (isUnit_Lmatk M hp hq)
+  have hHd : IsUnit (Hmatk M hp hq).det :=
+    (Matrix.isUnit_iff_isUnit_det _).mp (isUnit_Hmatk M hp hq hΔ)
+  -- from `L⁻¹ M H⁻¹ = E`: `L · E · H = L · (L⁻¹ · M · H⁻¹) · H = M`.
+  rw [← hnf]
+  have hL1 : Lmatk M hp hq * (Lmatk M hp hq)⁻¹ = 1 := Matrix.mul_nonsing_inv _ hLd
+  have hH1 : (Hmatk M hp hq)⁻¹ * Hmatk M hp hq = 1 := Matrix.nonsing_inv_mul _ hHd
+  rw [show Lmatk M hp hq * ((Lmatk M hp hq)⁻¹ * M * (Hmatk M hp hq)⁻¹) * Hmatk M hp hq
+      = (Lmatk M hp hq * (Lmatk M hp hq)⁻¹) * M * ((Hmatk M hp hq)⁻¹ * Hmatk M hp hq) from by
+        simp only [Matrix.mul_assoc], hL1, hH1, Matrix.one_mul, Matrix.mul_one]
+
 end DLNFibre.Core
