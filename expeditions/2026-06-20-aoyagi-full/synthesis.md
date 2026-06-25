@@ -748,6 +748,25 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   generality adjudication). Queued: close the (4,4,2,2) reshape sorry, the general hfin (route TBD by pp-r1-genM), the
   general hdiv chaining, L2 PIN2 + wiring, D1.
 
+**★ UPDATE-34 (2026-06-25) — iterfibre route does NOT generalize: HYBRID verdict. CORRECTS UPDATE-33 — the corank-≥2 rank-stratified cover REMAINS the hfin long pole.**
+- **pp-r1-genM verdict (@3976d339):** the iterated-fibre route is STRICTLY WEAKER at the corank-≥2 binding cores. The
+  per-peel threshold p/2 sees only ONE column of Y (no rank/coupling), so `best_iterfibre(M) = max_s min(...)` = O(max
+  single width), which undershoots ½·minAdm (a SUM of block codims) whenever the singularity ACCUMULATES across layers.
+  CLASSIFICATION (exact): MATCH (iterfibre suffices, single-factor-concentrated) = (2,1,2),(2,2,4),(4,4,2,2),…; WEAKER
+  (needs rank-stratified) = (3,3,4),(3,3,3),(4,4,4),(3,3,3,3),… [ALL corank-≥2 binding]. VERDICT: **HYBRID** — dispatch by
+  the decidable `best_iterfibre(M) =?= ½·minAdm`; iterfibre for its class (cheap, S2-free), rank-stratified {V=0} for the rest.
+- **CORRECTION of UPDATE-33:** the iterated-fibre did NOT cheapen the long pole — it is a MATCH-class SHORTCUT, not a
+  replacement. The corank-≥2 rank-stratified {V=0} cover (the #54 spec, the HIGH-risk r²-chart) **REMAINS the hfin long
+  pole**. The (4,4,2,2) build is sound (it IS in the MATCH class). Hero-task feasibility UNCHANGED (rank-stratified covers
+  all M; iterfibre reduces, not eliminates, its build scope).
+- **pp-r1-genM RELEASED** — its hfin design arc is comprehensively complete (adjudication → feasibility → #54 cover spec
+  → iterfibre-generality verdict → hybrid). On-call for the one trigger: the rank-stratified build's HIGH-risk r²-chart step.
+- **The next hfin BUILD = the rank-stratified cover (#55, the corank-≥2 long pole), HELD for bandwidth** — commission when
+  aeb04fc2 (PIN1) or r1-node-3333 (hdiv (3,3,3,3)) reports; anchor on (3,3,4) hfin via the {V=0} recursion (#53-validated),
+  reusing the banked L1.1 (radial_morse) terminal. The r²-chart cover is HIGH-risk → wants full controller attention, not a
+  3rd concurrent grind. The (4,4,2,2) reshape sorry (MATCH class) is a low-priority concrete finish.
+- 2 background BUILD agents: aeb04fc2 (L2 PIN1 finish), r1-node-3333 (R1 hdiv (3,3,3,3)). pp-r1-genM released/on-call.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
