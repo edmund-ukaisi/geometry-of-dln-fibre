@@ -886,6 +886,28 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-46 (2026-06-25) — S5c FULLY CLOSED; the framedParams-body design is complete; L2 is now BUILD-bound. ★**
+- **S5c fully closed** (r≥2 matrix-PIVOT LDU confirmed): `R = S0·W·S1·…`, `W = I − Z₁A⁻¹Y₀ → I`, germ orders survive with a
+  matrix pivot (X-linear term absorbed by the pivot block, not the off-diagonal). Both orthogonal generalizations done
+  (matrix core M=2 + matrix pivot r=2); the LDU is uniform in r,M,L. Germ atom `schur_core_germ_comparability` unchanged.
+- **The entire framedParams-body decomposition (S0–S5) is now adjudicated + build-ready** — framedbody-cert (S0–S5 + S1'
+  pre-derivation + the S3b `hcorner`-about-`deepestPoint` resolution) + s5c-cert + s5c-r2-cert, with the readX/Y/Z decode
+  ALREADY BANKED and the germ-not-box scoping pinned. No open design gaps.
+- **pp-pin2-rearch RELEASED** — its PIN2/framedbody design arc is comprehensively complete (transfer → framedbody → s5c →
+  s5c-r2 → matrix-pivot confirm; the germ-vs-box catch + readX/Y/Z-banked de-risk along the way). On-call for a body-build
+  design snag or the later r≥2 R1 work.
+- **L2 is now BUILD-bound, not design-bound.** Two remaining builds:
+  1. **l2-htilde** (in flight): hTilde → `deepest_gauge_squeeze_exists`.
+  2. **framedParams-body formaliser tide** (UNBLOCKED, HELD): edits `DeepestGaugeConstruction.lean` — the SAME file as
+     l2-htilde's hTilde. SERIALIZED to avoid a copy-integration clobber: commission off l2-htilde's integrated HEAD.
+  then the L=1/2≤L case-split wire + `product_reduction` → the L2 gate.
+- **R1 parallelization plan (deliberate sequencing decision):** R1 hfin build (the other long pole, design-closed, #54 spec in
+  thread 27 — Vzero-termination + iterfibre + statement-card) is HELD this tick to keep focus on the L2 close. PLAN: launch it
+  in parallel WHEN the body tide launches (independent files — RouteM*/ResolutionAtlas vs Deepest* — so no conflict; the body
+  tide is a long build during which R1 fills parallel capacity), pp-r1-genM on-call for the HIGH-risk r²-chart step. Not now:
+  the hardest build deserves focused integration attention, and the critical path to the headline runs through L2→D1 first.
+- Active: l2-htilde (build). pp-pin2-rearch released. pp-r1-genM on-call (R1, held → next to launch).
+
 **UPDATE-45 (2026-06-25) — S5c matrix-core: TRUE but GERM-scoped (box bound would be unsound); last residual dispatched.**
 - pp-pin2-rearch + Codex closed the r≥2 matrix-core S5c (`s5c-r2-cert.md`): exact middle-factor `R = S0·W·S1·…`,
   `W_s = I − Z_{s+1}A⁻¹Y_s → I` at the deepest point. **Codex caught a real confound the first MC missed:** the two-sided BOX
