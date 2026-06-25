@@ -3917,3 +3917,14 @@ positivity to a null-zero-locus input.  It does not prove that nullity, and it
 does not prove residual negative-power integrability, source-measure transport,
 original-loss comparison, density/Jacobian transport, normal crossings, pole
 order, or RLCT.
+
+A2 residual source-measure map handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-source-measure-map-handoff.md`.
+Lean proves that an explicitly supplied pushforward identity
+`mu.restrict source = Measure.map chart nu`, together with chart-side residual
+positivity and chart-side residual negative-power integrability, gives the
+residual positivity/integrability pair consumed by the p.13 local
+finite-integral bridge.  This is measure plumbing only: chart construction,
+the pushforward identity, Jacobian/density transport, monomial residual
+control, original-loss comparison, normal crossings, pole order, and RLCT
+remain open/supplied.

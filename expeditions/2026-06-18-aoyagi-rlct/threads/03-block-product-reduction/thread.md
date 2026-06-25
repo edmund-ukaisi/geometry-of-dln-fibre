@@ -3577,3 +3577,37 @@ zero-locus nullity itself is still a real chart/source-measure input.
 Boundary: this does not prove residual zero-locus nullity, residual
 negative-power integrability, source-measure transport, the original-loss lower
 comparison, density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 residual source-measure map handoff
+
+Reproduction:
+`reproduction-a2-residual-source-measure-map-handoff.md`.
+Statement card:
+`statement-card-a2-residual-source-measure-map-handoff.md`.
+Review:
+`review-a2-residual-source-measure-map-handoff.md`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map
+```
+
+This is a source-measure transport constructor for the two residual inputs of
+the p.13 local finite-integral bridge.  If `mu.restrict source` is supplied as
+`Measure.map chart nu`, and residual positivity plus residual negative-power
+integrability are supplied after pulling back along `chart`, then the source
+side has:
+
+```text
+residualSquareSum > 0 a.e.,
+residualNegPowerIntegrableOn ...
+```
+
+The proof uses `ae_map_iff` for the a.e. positivity statement and
+`lintegral_map_le` for the lower-integral finiteness statement.
+
+Boundary: this does not construct the chart, prove the pushforward identity,
+compute a Jacobian, bound a density, prove monomial residual lower control,
+compare the original DLN loss, produce normal crossings, compute pole order, or
+extract an RLCT.

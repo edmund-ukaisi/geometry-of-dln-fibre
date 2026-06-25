@@ -1,6 +1,7 @@
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 import DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
+import Mathlib.MeasureTheory.Integral.Lebesgue.Map
 
 /-!
 # Local a.e. handoffs for p. 13 regular-suspension source comparisons
@@ -545,6 +546,70 @@ theorem residualSourceHypotheses_mono_of_zero_set_null
         (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
         (Cedge := Cedge) (source := source) (μ := μ) hzero)
       hbase
+
+set_option linter.unusedSectionVars false in
+/-- Residual positivity and negative-power integrability from an explicitly
+supplied source-measure pushforward.
+
+This is only measure-transport plumbing.  The chart map, the equality
+`μ.restrict source = Measure.map chart ν`, residual positivity after pulling
+back along the chart, and chart-side residual integrability are all supplied. -/
+theorem residualSourceHypotheses_of_measure_map
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source : Set α} {μ : Measure α} {ν : Measure β} {chart : β → α} {t : ℝ}
+    (hchart : AEMeasurable chart ν)
+    (hmap : μ.restrict source = Measure.map chart ν)
+    (hpos_meas :
+      MeasurableSet {x : α |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)})
+    (hpos_chart :
+      ∀ᵐ y ∂ ν,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y)))
+    (hbase_chart :
+      (∫⁻ y : β, ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y))) ^ (-t)) ∂ ν) < ∞) :
+    (∀ᵐ x ∂ μ.restrict source,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t := by
+  constructor
+  · have hpos_map :
+        ∀ᵐ x ∂ Measure.map chart ν,
+          0 < aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) :=
+      (ae_map_iff hchart hpos_meas).2 hpos_chart
+    simpa [hmap] using hpos_map
+  · have hle :
+        (∫⁻ x : α, ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t))
+            ∂ Measure.map chart ν) ≤
+          (∫⁻ y : β, ENNReal.ofReal
+            ((aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge (chart y))) ^ (-t)) ∂ ν) := by
+      exact lintegral_map_le
+        (fun x : α => ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t)))
+        chart
+    exact lt_of_le_of_lt (by simpa [residualNegPowerIntegrableOn, hmap] using hle) hbase_chart
 
 set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied
