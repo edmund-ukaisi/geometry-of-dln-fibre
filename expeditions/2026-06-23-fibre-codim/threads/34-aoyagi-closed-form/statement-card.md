@@ -1,10 +1,11 @@
 # Statement card — Aoyagi closed-form bridge (`DLN.Aoyagi.ClosedForm`)
 
-**Status:** reviewed — sorry-free, axiom-clean (`[propext, Classical.choice, Quot.sound]`). Fidelity
+**Status:** original 5 theorems reviewed; **`paper`-prefix def-by-def recovery (theorems 6–9) is
+sorry-free + axiom-clean, AWAITING fidelity review** (does `paperEll`/`IsAoyagiEll` faithfully
+realise Aoyagi's Definition 3, and is the corrected `(ℓ−1)→ℓ` reading sound?). Original fidelity
 review PASS on all of A–D (reviewer: λ-defs transcribe Aoyagi Thm 2 term-by-term, confirmed by
-decorrelated Codex; `hr` proven sharp by a 2842-case sweep; `k:Type` pin a non-weakening; surrogate
-note honest, (1,1,2) and 2994-case value agreement confirmed; helpers non-vacuous; no overclaiming
-names). Docstring polish applied (lambda/lambdaCore now flag the surrogate inline).
+decorrelated Codex; `hr` proven sharp by a 2842-case sweep; `k:Type` pin a non-weakening; helpers
+non-vacuous; no overclaiming names).
 **File:** `lean/DLNFibre/DLN/Aoyagi/ClosedForm.lean`.
 **Commit:** branch `dev` worktree `fibre-codim` (controller to pin SHA at integration).
 
@@ -52,14 +53,48 @@ Plus `..._eq_aoyagiCodimOfTarget` (rank filled from `B.rank`).
   algebraically closed char-0 field (ℂ, ℚ̄ ∈ Type 0); it is the universe the geometric codim identity
   already lives at. Was an auto-bound universe before; pinning is required to apply the dependency.
 
-## Fidelity note (carried from the module docstring)
+## Fidelity gap CLOSED — definition-by-definition Aoyagi recovery (`paper`-prefix surface)
 
-`ell = qipM`, `ceilingM`, `residueA` are the LR-engine surrogates (built from `qipM`/`qipS`/`qipRound`
-on `shiftedSorted`), **not** Aoyagi's Definition 3. They yield the same λ *value* (part (1) + (2),
-verified 0 mismatches on ~3000 inputs) but `ell = qipM` need not equal Aoyagi's `Card(𝓜) − 1`
-pointwise (e.g. sorted widths `(1,1,2)`: `qipM = 2`, Aoyagi `ℓ = 1`; same λ). This is a *value* bridge,
-not a *definition-by-definition* match — reviewer should confirm the surrogate framing is acceptable
-for the intended downstream use (the RLCT payoff reads only the λ value).
+The original `ell = qipM` surface is a *value* bridge: it yields Aoyagi's λ value but `ell = qipM`
+differs pointwise from Aoyagi's own Definition-3 `ℓ` (e.g. sorted widths `(1,1,2)`: `qipM = 2`,
+Aoyagi `ℓ = 1`). A new `paper`-prefixed surface closes that gap, replacing value-equivalence with a
+theorem and a definition-by-definition match. All objects over the monotone `M := shiftedSorted d r`;
+`qipA M l = (∑_{i=0}^l M_i) − l·M_l` is the (landed `Core`) active threshold.
+
+- **`paperEll M := Nat.findGreatest (fun l ↦ 1 ≤ qipA M l) N`** — Aoyagi's Definition-3 active-set
+  size (last index where the active threshold `T_l > l·M_l` is *strict*), vs `qipM`'s `≥ 0`.
+- **`coreFormula M ℓ`** — Aoyagi's displayed zero-rank core as a function of cutoff `ℓ`;
+  `lambdaCore d r = coreFormula M (qipM M)` and `paperLambdaCore d r = coreFormula M (paperEll M)`
+  (both `rfl`/definitional). `paperLambda := lambdaShift + paperLambdaCore` (shift is ℓ-independent,
+  shared).
+
+Certification + capstone (all `hN : 1 ≤ N`, `hM0 : 1 ≤ M 0` where the active set is non-degenerate):
+
+6. **`isAoyagiEll_paperEll`** / **`paperEll_unique`**: `paperEll M` is the *unique* solution of
+   `IsAoyagiEll M l := 1 ≤ qipA M l ∧ (l = N ∨ qipA M (l+1) ≤ 0)` — Aoyagi's Definition 3 read
+   through its binding cases under sortedness (active `qipA ℓ ≥ 1`, inactive `qipA (ℓ+1) ≤ 0`), with
+   the source misprint `(ℓ−1)→ℓ` corrected to match her Theorem-1 case rule. Uniqueness rides on
+   `qipA_antitone` (monotone `M`).
+7. **`paperLambdaCore_eq_lambdaCore`** (unconditional): the two cutoffs give the *same* core. Crux is
+   **`coreFormula_step_invariant`** — `coreFormula M ℓ = coreFormula M (ℓ+1)` when `qipA M (ℓ+1) = 0`
+   (`1 ≤ ℓ`): the running average `M_{ℓ+1} = T_ℓ/ℓ` is then an integer, both residue terms vanish
+   (`a = ℓ`, `a' = ℓ+1`), and the quadratic-term change `−(ℓ/2)(T_ℓ/ℓ)²` cancels the `½·pairSum`
+   gain `+(ℓ/2)(T_ℓ/ℓ)²`. Telescoped up the zero-run `paperEll → qipM` (length can exceed 1, e.g.
+   `M=[1,1,2,2,2]`: `paperEll=1, qipM=4`). The `M 0 = 0` case: `paperEll = 0` and both cores `0`
+   (via **`cValue_eq_zero_of_corner_zero`**, the singleton feasible face `{0}`).
+8. **`paperLambda_eq_lambda`** (unconditional): `paperLambda d r = lambda d r`.
+9. **`codimRepCanonical_fibre_eq_two_paperLambda`** (`k : Type`): **the headline** —
+   `((codimRepCanonical (fibre d B)).toNat : ℚ) = 2 · paperLambda d r`, i.e. codim = 2·(Aoyagi's λ
+   with her own Definition-3 ℓ). Rewrites theorem (5) by `paperLambda_eq_lambda`.
+
+`ell = qipM` is retained as the computationally-convenient equal-valued handle.
+
+New reusable `qipA` lemmas (local, lift to `Core` on a second use): `qipA_succ` (general successor
+recurrence `qipA (l+1) = qipA l − l(M_{l+1}−M_l)`, generalising `Core.qipA_succ_qipM`),
+`qipA_succ_le` / `qipA_antitone` (monotone `M`).
+
+Lean values cross-checked by kernel `decide`: `(1,1,2) ↦ qipM=2, paperEll=1`;
+`(1,1,2,2,2) ↦ paperEll=1, qipM=4`.
 
 ## New reusable lemmas (kept local; lift to Core on a second use)
 
@@ -69,6 +104,10 @@ for the intended downstream use (the RLCT payoff reads only the λ value).
 
 ## Verification
 
-`scripts/lb` (whole library) green; `scripts/sorries` = 0/0/0/0; `#print axioms` on all five theorems =
-`[propext, Classical.choice, Quot.sound]`. Numerical truth of every statement pre-verified by the
-controller (`expeditions/2026-06-23-fibre-codim/aoyagi_check.py`, `aoyagi_shift.py`).
+`scripts/lb` (whole library) green (3765 jobs); `scripts/sorries` = 0/0/0/0; `#print axioms` on all
+theorems (5 original + `paperLambda_eq_lambda`, `codimRepCanonical_fibre_eq_two_paperLambda`,
+`isAoyagiEll_paperEll`, `paperEll_unique`, `coreFormula_step_invariant`,
+`cValue_eq_zero_of_corner_zero`) = `[propext, Classical.choice, Quot.sound]`. Numerical truth of every
+statement pre-verified by the controller (`aoyagi_check.py`, `aoyagi_shift.py`, `paperell_check.py` —
+the last checks the zero-run, `paperLambdaCore == lambdaCore` incl. M₀=0, `IsAoyagiEll` uniqueness,
+and the corrected-Definition-3 match: 0 violations across 2994 monotone shifted-width vectors).

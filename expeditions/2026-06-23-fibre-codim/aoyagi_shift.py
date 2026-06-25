@@ -1,7 +1,8 @@
-import itertools
+import itertools, os
 from fractions import Fraction as F
-# reuse engine
-exec(open('/tmp/aoyagi_check.py').read().split('# ---- enumerate')[0])
+# reuse engine — read the committed sibling (reproducible from a clean checkout)
+_here = os.path.dirname(os.path.abspath(__file__))
+exec(open(os.path.join(_here, 'aoyagi_check.py')).read().split('# ---- enumerate')[0])
 
 def shiftedSorted(d, r):
     return sorted(max(x-r,0) for x in d)   # dminus (truncated) then ascending sort
