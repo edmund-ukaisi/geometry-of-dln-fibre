@@ -282,3 +282,8 @@ import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 -- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r ↔
 -- exact =r at the top-dim minimal-prime level), via the unconditional recovery + corner-monotonicity.
 import DLNFibre.Core.TopDimMinPrimesW0
+-- θ-components (count composition): W1 survival + avoidances, the W2 survival, and the headline
+-- numTop(fibre d E_r) = cTheta(d−r) composing the count chain (the `_of` form; hW2 supplied by W2).
+import DLNFibre.Core.TopDimMinPrimesW1W2
+import DLNFibre.Core.TopDimMinPrimesW2
+import DLNFibre.Core.FibreThetaCount
