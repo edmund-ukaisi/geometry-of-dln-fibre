@@ -4803,6 +4803,38 @@ Boundary: this is one-edge finite algebra plus continuity under a supplied
 coverage, source-measure transport, normal crossings, pole order, or RLCT.  It
 also does not weaken the multi-edge intermediate-factor obstruction.
 
+## 2026-06-25 A2 single-edge selected-entry product-coordinate readout
+
+Reproduction:
+`reproduction-a2-single-edge-selected-entry-product-coordinate-readout.md`.
+Statement card:
+`statement-card-a2-single-edge-selected-entry-product-coordinate-readout.md`.
+Review:
+`review-a2-single-edge-selected-entry-product-coordinate-readout.md`.
+
+Lean now specializes the one-edge residual-matrix family to the finite
+selected-entry chart coordinates:
+
+```text
+paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+```
+
+The supplied residual matrix is
+`AoyagiResidualBlockCoordinateIndex.matrix (fun c =>
+SelectedEntrySignedBox.CenterCoord.chartMap pivot y (residualCoordEquiv c))`.
+Under `IsUnit det(Ctop(u))`, the readout has regular part `u` and residual
+coordinate `c` equal to the selected-entry chart coordinate at
+`residualCoordEquiv c`.  The family is continuous because `CenterCoord.chartMap`
+is continuous and matrices are continuous entrywise.
+
+Boundary: this is one-edge finite coordinate readout only.  The
+`residualCoordEquiv` alignment and determinant-unit hypothesis are explicit.
+It does not invert the selected-entry chart, construct source coverage,
+transport measures, produce normal crossings, prove pole order, or extract
+RLCT.
+
 ## 2026-06-25 A2 multi-edge residual-product preservation
 
 Reproduction:

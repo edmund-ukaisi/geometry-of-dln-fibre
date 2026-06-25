@@ -6776,6 +6776,23 @@ construction of `Dbase`, no source chart or source coverage, no source-measure
 transport, no normal crossings, pole order, RLCT, or multi-edge
 arbitrary-terminal-residual theorem.
 
+Latest A2 single-edge selected-entry product-coordinate readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now defines
+`paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean`
+and proves
+`paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean`
+and
+`continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean`.
+This sets the one-edge `Dbase y` to the residual matrix built from
+`SelectedEntrySignedBox.CenterCoord.chartMap pivot y` through a supplied
+`residualCoordEquiv`.  Under `IsUnit det(Ctop(u))`, the readout has regular
+coordinates `u` and residual coordinates equal to the selected-entry chart
+coordinates after `residualCoordEquiv`.  This is one-edge finite coordinate
+algebra only: the index equivalence and determinant condition are explicit,
+and there is no inverse chart, source coverage, source-measure transport,
+normal crossings, pole order, RLCT, or multi-edge arbitrary-terminal-residual
+theorem.
+
 Latest A2 selected-entry chart-image characterization:
 `SelectedEntrySignedBoxMeasure.lean` now proves
 `SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.

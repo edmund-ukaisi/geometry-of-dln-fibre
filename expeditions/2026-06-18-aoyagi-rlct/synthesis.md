@@ -10060,6 +10060,29 @@ This is one-edge finite algebra only: it does not construct `Dbase`, source
 coverage, source-measure transport, normal crossings, pole order, RLCT, or a
 multi-edge arbitrary-terminal-residual theorem.
 
+Latest A2 single-edge selected-entry product-coordinate readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now defines
+`paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean`
+and proves
+`paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean`
+and
+`continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean`.
+This specializes the one-edge residual-matrix family by taking
+`Dbase y = AoyagiResidualBlockCoordinateIndex.matrix (fun c =>
+SelectedEntrySignedBox.CenterCoord.chartMap pivot y (residualCoordEquiv c))`.
+Under `IsUnit det(Ctop(u))`, the fixed-base coordinate readout has regular
+part `u` and residual coordinate `c` equal to the selected-entry chart
+coordinate at `residualCoordEquiv c`.  The realized edge family is continuous
+because the selected-entry chart map is continuous.  Reproduction, statement
+card, and review:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-selected-entry-product-coordinate-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-single-edge-selected-entry-product-coordinate-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-single-edge-selected-entry-product-coordinate-readout.md`.
+This is one-edge finite coordinate algebra only: it does not construct source
+coverage, source-measure transport, normal crossings, pole order, RLCT, or a
+multi-edge arbitrary-terminal-residual theorem.
+
 Latest A2 multi-edge residual-product preservation:
 `ProductReduction.lean` now proves the residual-product congruence and p.13
 specialization:

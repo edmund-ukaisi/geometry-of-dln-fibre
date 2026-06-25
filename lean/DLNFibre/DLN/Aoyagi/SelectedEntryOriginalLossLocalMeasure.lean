@@ -297,6 +297,179 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- One-edge p.13 product-coordinate edge family whose supplied residual
+matrix is the finite selected-entry chart coordinate matrix.
+
+This is only a finite selected-entry specialization of the one-edge
+source-dependent residual-matrix family. -/
+def paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center) :
+    (center → ℝ) × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)) →
+      ∀ p : Fin 1, reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ :=
+  paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean
+    V Bv U₀ hU₀
+    (fun y : center → ℝ =>
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c)))
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
+/-- The one-edge selected-entry product-coordinate family reads out the
+selected-entry chart coordinates on the residual block. -/
+theorem paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeSelectedEntryProductCoordinateEuclidean
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (y : center → ℝ)
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det) :
+    let CedgeProd :=
+      paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+        V Bv pivot U₀ hU₀ residualCoordEquiv
+    (paperEndpointFixedBaseRegularBlockCoordinateMap
+        (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) = fun c ↦ u c) ∧
+      (∀ c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) c =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c)) := by
+  intro CedgeProd
+  let Dbase : (center → ℝ) → Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0) ℝ :=
+    fun y ↦
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c))
+  have hfull :=
+    paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_singleEdgeProductCoordinateEuclidean_residualMatrix
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (Dbase := Dbase) (x := y) (u := u) hCtop
+  constructor
+  · simpa [CedgeProd, Dbase,
+      paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean] using
+      hfull.1
+  · intro c
+    have hres :
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 1) V Bv U₀ hU₀ CedgeProd (y, u) c =
+          AoyagiResidualBlockCoordinateIndex.value (Dbase y) c := by
+      simpa [CedgeProd, Dbase,
+        paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean] using
+        congrFun hfull.2 c
+    have hmatrix :
+        AoyagiResidualBlockCoordinateIndex.value (Dbase y) c =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c) := by
+      simpa [Dbase] using congrFun
+        (AoyagiResidualBlockCoordinateIndex.value_matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) c
+    exact hres.trans hmatrix
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
+/-- The one-edge selected-entry product-coordinate edge family is continuous
+in the selected-entry chart parameter and the regular coordinates. -/
+theorem continuousAt_paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (y₀ : center → ℝ)
+    (u₀ : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    ContinuousAt
+      (paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean
+        V Bv pivot U₀ hU₀ residualCoordEquiv) (y₀, u₀) := by
+  let Dbase : (center → ℝ) → Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0) ℝ :=
+    fun y ↦
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c))
+  have hDbase : Continuous Dbase := by
+    refine continuous_matrix ?_
+    intro i j
+    simpa [Dbase] using
+      (continuous_apply (residualCoordEquiv (i, j))).comp
+        (SelectedEntrySignedBox.CenterCoord.continuous_chartMap pivot)
+  simpa [Dbase,
+    paperEndpointFixedBaseSingleEdgeSelectedEntryProductCoordinateEdgeFamilyEuclidean] using
+    continuousAt_paperEndpointFixedBaseSingleEdgeProductCoordinateEdgeFamilyOfResidualMatrixEuclidean
+      (V := V) (Bv := Bv) (x₀ := y₀) U₀ hU₀ u₀ Dbase hDbase
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- Selected-entry finite chart-image handoff for the original square-Frobenius
 `lossDLN`.
 
