@@ -9598,15 +9598,21 @@ No product chart, density/Jacobian transport, original-loss comparison,
 normal-crossing certificate, pole-order theorem, or RLCT extraction is
 inferred.
 
-Next A2 frontier from xhigh scouting:
-`threads/03-block-product-reduction/scout-a2-adapted-to-frobenius-loss-comparison-next.md`.
-The next substantive target should be the finite-dimensional comparison behind
-`c0 * adaptedProductDifferenceSquareSum <= loss`, first for an
-endpoint/Frobenius square loss.  Required reproduction: identify the endpoint
-matrix represented by the adapted p.13 coordinates, match orientation and
-`reverseEdge` product conventions, and prove the basis/norm comparison before
-stating anything about `lossDLN`.  Statistical/KL losses require additional
-covariance/noise assumptions.
+Latest A2 fixed-base endpoint Frobenius update:
+`RegularSuspensionCoordinates.lean` now proves
+`paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum`.
+The base reversed-edge total matrix in fixed adapted endpoint bases is
+`[[I,0],[0,0]]`, the adapted product-difference square-sum is the entrywise
+square-sum of `T(x)-T(base)`, and finite real matrix arithmetic gives
+`trace((T-T0)^T*(T-T0)) = sum entries (T-T0)^2`.  Frobenius-form wrappers have
+also been added for the existing product-reduction lower bounds.
+
+This closes the fixed-endpoint Frobenius part of the previous frontier, but
+only at the coordinate level.  It is not an original `lossDLN` comparison, not
+a statistical/KL loss theorem, and not a basis-change norm-equivalence theorem
+for original network coordinates.  The remaining loss-comparison frontier is
+the map from the paper endpoint matrix object to the original DLN tuple/product
+coordinates, with all covariance or basis-norm constants explicit.
 
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected

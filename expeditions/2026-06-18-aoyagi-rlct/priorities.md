@@ -4113,11 +4113,14 @@ density/Jacobian transport, product-coordinate adapted lower bound,
 adapted-to-original-loss comparison, normal crossings, pole order, and RLCT
 remain open or supplied.
 
-Next A2 target after this front end:
-`threads/03-block-product-reduction/scout-a2-adapted-to-frobenius-loss-comparison-next.md`.
-The remaining high-value hypothesis is the actual finite-dimensional
-comparison from the adapted fixed-base product-difference square-sum to an
-endpoint/Frobenius square loss.  Start with a pen-and-paper reproduction of
-the endpoint matrix comparison, basis/norm equivalence, orientation, and any
-map needed before mentioning `lossDLN`.  Do not build another finite-integral
-wrapper unless a downstream theorem directly consumes it.
+A2 fixed-base adapted endpoint Frobenius comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-adapted-endpoint-frobenius-comparison.md`.
+Lean identifies the adapted product-difference square-sum with
+`trace((T-T0)^T*(T-T0))` for the fixed adapted endpoint total matrix, proves
+the base endpoint block `T0 = [[I,0],[0,0]]`, and adds Frobenius-form wrappers
+for the existing p.13 product-reduction bounds.  Treat this as a fixed-basis
+endpoint loss only.  It is not `lossDLN`, not a statistical/KL loss, and not an
+original-coordinate basis-norm comparison.  The remaining high-value
+loss-comparison frontier is the map from the paper endpoint matrix object to
+the original DLN tuple/product coordinates, with any covariance or basis-norm
+constants made explicit.

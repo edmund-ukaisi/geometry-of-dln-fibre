@@ -4021,3 +4021,45 @@ bound, source-density bounds, product-coordinate adapted lower bound, and
 adapted-to-loss comparison remain explicit.  No product chart,
 density/Jacobian transport, original-loss comparison, normal crossings, pole
 order, or RLCT is proved.
+
+## 2026-06-25 A2 fixed-base adapted endpoint Frobenius comparison
+
+Reproduction:
+`reproduction-a2-fixed-base-adapted-endpoint-frobenius-comparison.md`.
+Statement card:
+`statement-card-a2-fixed-base-adapted-endpoint-frobenius-comparison.md`.
+Review:
+`review-a2-fixed-base-adapted-endpoint-frobenius-comparison.md`.
+
+Lean now proves the fixed-basis endpoint Frobenius identity
+
+```text
+paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+```
+
+in `RegularSuspensionCoordinates.lean`, plus the base matrix identity
+
+```text
+paperEndpointFixedBaseTotalMatrixOfReverseEdges_selfBase_eq_fromBlocks_one_zero_zero
+paperEndpointFixedBaseAdaptedProductDifferenceSquareSum_eq_baseRelative_totalMatrix_squareSum
+```
+
+and Frobenius-form wrappers for the existing p.13 product-reduction bounds:
+
+```text
+PaperEndpointFixedBaseProductReductionCertificate.const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceFrobeniusLoss
+PaperEndpointFixedBaseProductReductionCertificate.const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_nhdsWithin_source
+PaperEndpointFixedBaseRegularCoordinateSourceData.half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_of_productReductionCertificate_nhdsWithin_source
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_selfBase_nhdsWithin_source
+```
+
+The key finite arithmetic theorem is
+`matrix_trace_transpose_mul_self_eq_aoyagiCoordinateSquareSum`: for a real
+finite matrix `M`, `trace(M^T*M)` is the entrywise square-sum.  Applying this
+to `M = T(x)-[[I,0],[0,0]]` identifies the adapted square-sum with the fixed
+adapted endpoint Frobenius square.
+
+Boundary: this is not the original `lossDLN`, not a statistical loss, and not a
+basis-change comparison with original network-coordinate Frobenius norm.  No
+product chart, density/Jacobian transport, source-rank openness,
+regular-suspension theorem, normal crossings, pole order, or RLCT is proved.

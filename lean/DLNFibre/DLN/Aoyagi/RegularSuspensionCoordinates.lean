@@ -60,6 +60,24 @@ theorem aoyagiCoordinateSquareSum_nonneg
     0 ≤ aoyagiCoordinateSquareSum f := by
   exact Finset.sum_nonneg (fun c _ => sq_nonneg (f c))
 
+/-- For a real matrix, the trace form `Tr(MᵀM)` is the entrywise finite
+coordinate square-sum. -/
+theorem matrix_trace_transpose_mul_self_eq_aoyagiCoordinateSquareSum
+    {m n : Type*} [Fintype m] [Fintype n] (M : Matrix m n ℝ) :
+    ((Mᵀ * M).trace : ℝ) =
+      aoyagiCoordinateSquareSum (fun ij : m × n => M ij.1 ij.2) := by
+  classical
+  calc
+    ((Mᵀ * M).trace : ℝ) =
+        ∑ j : n, ∑ i : m, M i j * M i j := by
+      simp [Matrix.trace, Matrix.mul_apply]
+    _ = ∑ i : m, ∑ j : n, M i j * M i j := by
+      rw [Finset.sum_comm]
+    _ = ∑ ij : m × n, M ij.1 ij.2 ^ 2 := by
+      simp [Fintype.sum_prod_type, pow_two]
+    _ = aoyagiCoordinateSquareSum (fun ij : m × n => M ij.1 ij.2) := by
+      rw [aoyagiCoordinateSquareSum]
+
 /-- Pointwise square estimate used to compare corrected and uncorrected
 finite square-sums. -/
 theorem aoyagi_sq_sub_le_two_mul_sq_add_two_mul_sq
@@ -2768,6 +2786,79 @@ theorem exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq
     ⟨U₀, hU₀,
       cert.regularCoordinateSourceData (W := W) (B := B) hH⟩
 
+set_option linter.unusedSectionVars false in
+omit [CompleteSpace K] [∀ i, TopologicalSpace (W i)]
+  [∀ i, IsTopologicalAddGroup (W i)]
+  [∀ i, T2Space (W i)] [∀ i, ContinuousSMul K (W i)] in
+/-- In the fixed adapted endpoint bases, the base reversed total product is
+the rank block `[I,0;0,0]`. -/
+theorem paperEndpointFixedBaseTotalMatrixOfReverseEdges_selfBase_eq_fromBlocks_one_zero_zero
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ (reverseEdge W B) =
+      fromBlocks
+        (1 : Matrix (Fin (Module.finrank K U₀)) (Fin (Module.finrank K U₀)) K)
+        (0 : Matrix (Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0)
+          K)
+        (0 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (Fin (Module.finrank K U₀)) K)
+        (0 : Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ 0)
+          K) := by
+  simpa [paperEndpointFixedBaseTotalMatrixOfReverseEdges, paperEndpointAdaptedTotalMatrix,
+    paperTotalMap, chainMap_reverse_eq_paper] using
+      paperEndpointAdaptedTotalMatrix_eq_fromBlocks_one_zero_zero W B U₀ hU₀
+
+set_option linter.unusedSectionVars false in
+/-- The adapted product-difference square-sum is the coordinate square-sum of
+the variable endpoint total matrix minus the base endpoint total matrix, both
+in the fixed adapted endpoint bases. -/
+theorem paperEndpointFixedBaseAdaptedProductDifferenceSquareSum_eq_baseRelative_totalMatrix_squareSum
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+        (K := K) W B U₀ hU₀ Cedge x =
+      aoyagiCoordinateSquareSum
+        (fun ij :
+          (Fin (Module.finrank K U₀) ⊕
+              throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)) ×
+            (Fin (Module.finrank K U₀) ⊕
+              throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0) =>
+          (paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀
+              (fun p : Fin N =>
+                (Cedge x p :
+                  reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) -
+            paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀
+              (reverseEdge W B)) ij.1 ij.2) := by
+  classical
+  let ι := Fin (Module.finrank K U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  rw [paperEndpointFixedBaseTotalMatrixOfReverseEdges_selfBase_eq_fromBlocks_one_zero_zero
+    (W := W) (B := B) U₀ hU₀]
+  simp [paperEndpointFixedBaseAdaptedProductDifferenceSquareSum]
+
 end FixedBaseCanonicalCertificate
 
 section FixedBaseRealSmallness
@@ -2778,6 +2869,98 @@ variable {N : ℕ}
   [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
   [∀ i, ContinuousSMul ℝ (W i)]
   (B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc)
+
+set_option linter.unusedSectionVars false in
+/-- The square-Frobenius endpoint product-difference loss in fixed adapted
+endpoint bases.
+
+This is the trace form of the same p. 13 adapted endpoint matrix used by
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum`.  It is not the
+original `lossDLN` on a `Tuple d`, and no basis-change or chart comparison is
+asserted here. -/
+def paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (x : α) : ℝ :=
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)
+  let T : Matrix (ι ⊕ μ) (ι ⊕ ν) ℝ :=
+    paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E
+  let T0 : Matrix (ι ⊕ μ) (ι ⊕ ν) ℝ :=
+    fromBlocks (1 : Matrix ι ι ℝ) 0
+      (0 : Matrix μ ι ℝ) (0 : Matrix μ ν ℝ)
+  (((T - T0)ᵀ * (T - T0)).trace : ℝ)
+
+set_option linter.unusedSectionVars false in
+/-- The fixed adapted endpoint Frobenius loss is exactly the adapted
+product-difference coordinate square-sum.
+
+This is finite matrix arithmetic in the fixed endpoint bases.  It does not
+compare that fixed-basis endpoint loss with `lossDLN` or any statistical loss
+in original network coordinates. -/
+theorem paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (x : α) :
+    paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+        W B U₀ hU₀ Cedge x =
+      paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+        (K := ℝ) W B U₀ hU₀ Cedge x := by
+  classical
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)
+  let T : Matrix (ι ⊕ μ) (ι ⊕ ν) ℝ :=
+    paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E
+  let T0 : Matrix (ι ⊕ μ) (ι ⊕ ν) ℝ :=
+    fromBlocks (1 : Matrix ι ι ℝ) 0
+      (0 : Matrix μ ι ℝ) (0 : Matrix μ ν ℝ)
+  simpa [paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss,
+    paperEndpointFixedBaseAdaptedProductDifferenceSquareSum, E, T, T0, ι, μ, ν] using
+    (matrix_trace_transpose_mul_self_eq_aoyagiCoordinateSquareSum (M := T - T0))
+
+set_option linter.unusedSectionVars false in
+/-- Pointwise comparison form for the existing adapted-loss handoff when the
+loss is chosen to be the fixed adapted endpoint Frobenius loss. -/
+theorem one_mul_adaptedProductDifferenceSquareSum_le_frobeniusLoss
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (x : α) :
+    (1 : ℝ) *
+        paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤
+      paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+        W B U₀ hU₀ Cedge x := by
+  rw [one_mul, paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum]
 
 set_option linter.unusedSectionVars false in
 /-- The fixed-base residual `D`-block coordinate map is measurable whenever
@@ -2938,6 +3121,40 @@ theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProd
     paperEndpointFixedBaseAdaptedProductDifferenceSquareSum, E, EMat, S, ι, μ, ν] using hraw
 
 set_option linter.unusedSectionVars false in
+/-- Frobenius-loss form of the pointwise fixed-base product-reduction bound.
+
+This is the same finite p. 13 comparison as
+`const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum`,
+after rewriting the adapted endpoint square-sum as the fixed-basis Frobenius
+trace form.  It is not a comparison with the original DLN/statistical loss. -/
+theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceFrobeniusLoss
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ} {x : α}
+    (cert :
+      PaperEndpointFixedBaseProductReductionCertificate
+        (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hbound :
+      paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+        (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    c * aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+      paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+        W B U₀ hU₀ Cedge x := by
+  rw [paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+    (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge) (x := x)]
+  exact
+    const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum
+      (W := W) (B := B) cert hc_nonneg hcK hbound
+
+set_option linter.unusedSectionVars false in
 /-- Source-filter form of the pointwise fixed-base adapted product-difference
 bound.
 
@@ -2976,6 +3193,47 @@ theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_
   exact
     const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum
       (W := W) (B := B) hcert_x hc_nonneg hcK hbound_x
+
+set_option linter.unusedSectionVars false in
+/-- Source-filter Frobenius-loss form of the fixed-base product-reduction
+bound.
+
+This only rewrites the adapted endpoint square-sum by the fixed-basis
+Frobenius identity.  It does not compare to `lossDLN` or a statistical loss in
+original coordinates. -/
+theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hcert :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    (hbound :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge),
+      c * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+          W B U₀ hU₀ Cedge x := by
+  filter_upwards [
+    const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_adaptedProductDifferenceSquareSum_nhdsWithin_source
+      (W := W) (B := B) hc_nonneg hcK hcert hbound] with x hx
+  rw [paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+    (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge) (x := x)]
+  exact hx
 
 end PaperEndpointFixedBaseProductReductionCertificate
 
@@ -3627,6 +3885,55 @@ theorem half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferen
       (W := W) (B := B) sourceData hc_nonneg hloss
 
 set_option linter.unusedSectionVars false in
+/-- Frobenius-loss form of the source-rank fixed-base product-reduction
+lower bound.
+
+This composes the finite p. 13 literal/cleaned comparison with the
+product-reduction certificate and then rewrites the adapted endpoint
+square-sum as the fixed-basis Frobenius trace form.  It is not an
+original-coordinate DLN loss comparison. -/
+theorem half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_of_productReductionCertificate_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hcert :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    (hbound :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge),
+      (c / 2) *
+        (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+        paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+          W B U₀ hU₀ Cedge x := by
+  filter_upwards [
+    half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productReductionCertificate_nhdsWithin_source
+      (W := W) (B := B) sourceData hc_nonneg hcK hcert hbound] with x hx
+  rw [paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+    (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge) (x := x)]
+  exact hx
+
+set_option linter.unusedSectionVars false in
 /-- At a continuous fixed-base paper chain, the adapted fixed-base
 product-difference square-sum is locally bounded below by a positive constant
 times the cleaned regular-plus-residual p. 13 square-sum.
@@ -3691,6 +3998,49 @@ theorem exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adapt
     ⟨c, hc_pos,
       half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productReductionCertificate_nhdsWithin_source
         (W := W) (B := B) sourceData hc_nonneg hcK hcert hbound⟩
+
+set_option linter.unusedSectionVars false in
+/-- At a continuous fixed-base paper chain, the fixed adapted endpoint
+Frobenius product-difference loss is locally bounded below by a positive
+constant times the cleaned regular-plus-residual p. 13 square-sum.
+
+This is the fixed-basis Frobenius rewrite of the existing adapted square-sum
+lower bound.  It does not compare with the original DLN/statistical loss. -/
+theorem exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_selfBase_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        (c / 2) *
+          (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x) +
+            aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+          paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+            W B U₀ hU₀ Cedge x := by
+  rcases
+      exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_selfBase_nhdsWithin_source
+        (W := W) (B := B) sourceData hCedge hbase with
+    ⟨c, hc_pos, hbound⟩
+  refine ⟨c, hc_pos, ?_⟩
+  filter_upwards [hbound] with x hx
+  rw [paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum
+    (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge) (x := x)]
+  exact hx
 
 set_option linter.unusedSectionVars false in
 /-- Relative directional form: on the source-rank stratum filter, the literal
