@@ -30,8 +30,13 @@ This module proves the abstract descent; the chart instantiation (`ν` = the Sch
 is downstream. Kept network-free and chart-free so it is reusable for both the `Ψ` and `Φ` directions.
 
 ## Main results
-- `away_eq_zero_of_mul_pow_mem_vanishingIdeal` — clearing-denominators: a fraction over `O(Z)` is
-  `0` in `O(Z)[1/f]` iff some `f`-power times its numerator lies in `vanishingIdeal Z`.
+- `away_eq_zero_iff_exists_pow_mul_mem` — clearing-denominators over a `vanishingIdeal`-quotient: a
+  fraction over `O(Z)` is `0` in `O(Z)[1/f]` iff some `f`-power times its numerator lies in
+  `vanishingIdeal Z` (the Σ-side zero-test).
+- `away_mk'_eq_zero_iff_exists_pow_mul_eq_zero` — the general away zero-test over **any** base ring:
+  `mk' x (gⁿ) = 0 ↔ ∃ m, gᵐ·x = 0`. The target-side (`Ψ`-direction) zero-test, where the localized
+  ring `Localization.Away gF` is a localization of `P = MvPolynomial SchurVar O(F)` (a polynomial ring
+  over a quotient — *not* itself a `vanishingIdeal`-quotient), so the Σ-side primitive does not apply.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -72,5 +77,26 @@ theorem away_eq_zero_iff_exists_pow_mul_mem {σ : Type u} (Z : Set (σ → k))
         * (Ideal.Quotient.mk (vanishingIdeal k Z) a) = 0
     rw [← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
     exact hn
+
+/-- **The general away zero-test** (target-side, for the `Ψ`-direction descent). For **any** base
+commutative ring `P`, away-localizing element `g : P`, and away-localization `S = Localization.Away g`,
+a fraction `mk' S x (gⁿ)` is `0` iff some `g`-power annihilates the numerator:
+
+> `IsLocalization.mk' S x ⟨gⁿ, n, rfl⟩ = 0 ↔ ∃ m : ℕ, g ^ m * x = 0`.
+
+This is the analog of `away_eq_zero_iff_exists_pow_mul_mem` over an *arbitrary* base — the `Ψ`-direction
+target `Localization.Away gF` localizes `P = MvPolynomial SchurVar O(F)` (a polynomial ring over the
+fibre coordinate ring, **not** itself a `vanishingIdeal`-quotient), so the Σ-side primitive does not
+apply. Pure `IsLocalization.mk'_eq_zero_iff` + unwrapping `Submonoid.powers`. -/
+theorem away_mk'_eq_zero_iff_exists_pow_mul_eq_zero {P : Type*} [CommRing P] (g : P)
+    (S : Type*) [CommRing S] [Algebra P S] [IsLocalization.Away g S] (x : P) (n : ℕ) :
+    (IsLocalization.mk' S x (⟨g ^ n, n, rfl⟩ : Submonoid.powers g) = 0)
+      ↔ ∃ m : ℕ, g ^ m * x = 0 := by
+  rw [IsLocalization.mk'_eq_zero_iff]
+  constructor
+  · rintro ⟨⟨s, m, hm⟩, hs⟩
+    exact ⟨m, by simpa [← hm] using hs⟩
+  · rintro ⟨m, hm⟩
+    exact ⟨⟨g ^ m, m, rfl⟩, by simpa using hm⟩
 
 end DLNFibre.Core
