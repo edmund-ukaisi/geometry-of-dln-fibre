@@ -863,6 +863,29 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   comparability re-architecture (the open heart) — not a body-fill.** Then the case-split wire + product_reduction.
 - 1 design agent: pp-pin2-rearch (PIN2 comparability re-architecture). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-40 (2026-06-25) — PIN2 option-2 (comparability) REFUTED; the SAFE repair = full-reg regStraighten; the PIN1/fderiv consumer is the open gate.**
+- **pp-pin2-rearch (decorrelated Codex + exact algebra) REFUTED my option-2 (comparability) lean** [UPDATE-39 was wrong]:
+  the Y0·T1 leak is DEGREE-2 (same order as the signal, exact cancellation), NOT higher-order. `Sreg ≍ ∑deepestEPivot²`
+  fails BOTH directions (counterexamples on 2 lines). And `loss_squeeze` ITSELF is false as typed (the harness g161 note
+  confirmed — the T=0 reg slot can't fix an INTER-layer leak; deepestEPivot didn't fix it). Comparability can't be the
+  instrument.
+- **The SAFE repair (option-1-flavoured, spec'd thread 31): repoint `regStraighten` to the FULL-product reg blocks.**
+  Then `∑(regStraighten·).1² = Sreg` becomes an IDENTITY (both = the full reg blocks from hconj), and the squeeze becomes
+  the BANKED leaf lemma `dlnLoss_two_sided_of_frame`'s TRUE comparability `dlnLoss ≍ Sreg+Score`. Delete the T=0
+  `h00/h01/h10` (cert) + `hSreg_eq` (squeeze) + `deepestEPivot_sq_sum_eq_blocks` from the path. The full reg blocks have
+  unit transversal Jacobian (the 3=nReg dirs; leaks pure-quadratic), so `dE(0)=id` plausibly survives. core_comparability_squeeze,
+  endpoint_telescoping, exists_deepest_lastLayer_pivotFrame all stay sound.
+- **THE OPEN GATE (being adjudicated, pp-pin2-rearch re-engaged): the PIN1 consumer.** PIN1 `deepestEPivot_regSlice_fderiv`
+  is CLOSED but reads the T=0 `deepestEPivot` fderiv; the repair repoints to the full product. Hypothesis (pp-pin2-rearch):
+  PIN1's fderiv at 0 is UNCHANGED (leak is quadratic → 1st-order at 0 unaffected → `dE(0)=id` survives), so PIN1 is re-used
+  or trivially re-pointed. Adjudicating exactly (witness/obstruction) + finalizing the build-ready full-reg spec incl PIN1.
+  This is the GATE before I commission the repair build.
+- **Path:** PIN1-risk adjudication (pp-pin2-rearch) → the full-reg repair build (regStraighten full-product + loss_squeeze
+  = leaf lemma + PIN2 simplified + PIN1 resolved) → the L=1/2≤L case-split wire + product_reduction → the L2 gate.
+- Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
+  leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
+- 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
