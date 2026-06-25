@@ -26,35 +26,45 @@ The additive threshold is reached by the residual-power convolution atom `radial
 `c'' = c' − 2 < 2` via the `r² = 4`-chart Δ-blow-up cover (a-axis divisor `r²/2 = 2` ⊗ the rank-1 N2a
 leaf `(∑col²)·‖row·S‖²`). Threshold equivalence: `c' < 4 ⟺ c'' < 2 = λ_{2,4}`.
 
-## STATUS — partial (the WHOLE additive-threshold composition banked; the frame transport the ONE gap)
+## STATUS — partial (the headline reduces to ONE gap: the `A0` radial-chart cover; gap NARROWED)
+
+The headline `routeMCore_M334_threshold_lt_top` is no longer itself a `sorry`: it reduces, via the banked
+clean MP plumbing `routeMCore_M334_le_matBox`, to the `A0` radial-chart cover `matBox334_blowup_lt_top`
+(the sole remaining `sorry`), and the trivial `c' = 0` case. The blow-up's algebraic heart + the radial
+divisor + the resolved normal form are all banked sorry-free.
 
 * **Banked (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`, S2-FREE):**
-  - `matTranspose`/`measurePreserving_matTranspose` — the matrix-transpose MP (the documented thrashing
-    piece, the S-first fibre's plumbing).
-  - `core_T_peel_le` + `core_T_peel_le_ae` — the residual-power `‖T‖²`-peel (Tonelli, threshold `2`),
-    the latter null-set-aware (the core vanishes on `{Δ·S = 0}`), built on the banked
-    `radial_morse_residual_power_le`.
-  - `core334_S_fibre_le` + `core334_lt_top` — the corank-2 core finiteness `∫_{Δ,S} frobSq(Δ·S)^{−c''} < ⊤`
-    for `c'' < 2`, via the S-FIRST transpose-fibre route (`frobSq_rmatMul_transpose` → `fibre_lintegral_mul_le`
-    at `p/2 = 4/2 = 2` → the `2×2` Morse leaf `frobSq22_box_lt_top`), AVOIDING the radial minor-pivot
-    recursion / `schur_minorPivot_split`.
-  - `corePoly334`/`corePoly334_ne_zero`/`flat334`/`measurePreserving_flat334`/`frobSq_core334_ne_zero_ae` —
-    the `{frobSq(Δ·S) = 0}` null set (the polynomial-zero-set route via the MP flatten).
-  - `resolved334_lt_top` — the KEYSTONE: the full `4 = 2 + 2` composition
-    `∫_{Δ,S,T} (∑ Tᵢ² + frobSq(Δ·S))^{−c'} < ⊤` for `2 < c' < 4`. The end-to-end additive-threshold
-    verification, all the above wired together.
-* **Gap (ONE precisely-named `sorry`):** `routeMCore_M334_threshold_lt_top` rests ONLY on the FRAME
-  TRANSPORT — the measure-preserving cover-up-to-null bringing the flat `frobSq(A0·A1)` (A0 3×3, A1 3×4,
-  over `(−1,1)^21`) into the `‖T‖² ⊕ frobSq(Δ·S)` normal form of `resolved334_lt_top`, via the Schur-frame
-  `g5_pivotNode`/`recStep` atlas (the `(2,2,2)` `myF222_threshold_lt_top'` analog at the `r²`-chart scale).
-  The singularity is the A1-rank-drop (nonlinear/rank-local — no elementary global reparametrization). The
-  achiever chart `chartParams334`/`Uval334` (`RouteMLayerCoverGEL2`) realises it on the LOWER-bound side; the
-  UPPER-bound full cover is the remaining measure-theoretic long pole.
+  - The corank-2 resolution (the RHS of the gap): `matTranspose`/`measurePreserving_matTranspose`,
+    `core_T_peel_le`(`_ae`), `core334_S_fibre_le`/`core334_lt_top` (S-first transpose-fibre, AVOIDING the
+    minor-pivot recursion), `corePoly334`/`flat334`/`frobSq_core334_ne_zero_ae` (null set), and the KEYSTONE
+    `resolved334_lt_top` — the `4 = 2 + 2` composition `∫_{Δ,S,T} (∑ Tᵢ² + frobSq(Δ·S))^{−c'} < ⊤`.
+  - The clean MP plumbing (THIS file, new): `dlnLoss_M334_eq_frobSq`, `prod_M334_eq_rmatMul`, the MP
+    reshape `eParams334` + `paramsBox334` + the preimage lemmas, and `routeMCore_M334_le_matBox` —
+    dominate `(−1,1)^21` by `[−1,1]^21`, transport through `paramsEquivFlat` (MP) to the `Params` box,
+    reshape (MP) to the two layer boxes, Tonelli. Mirrors `RouteM4422Hfin` steps 1–3. Axiom-clean.
+  - The Schur-shear algebraic heart (THIS file, new — decorrelated-Codex `xhigh` route, sympy-verified):
+    `lgammaShear_col_ge` (the per-column SOS bound), `frobSq_lgammaShear_ge` (the `L_γ` Frobenius
+    comparability `≥ (1/5)·frobSq`), `rmatMul_angularR_eq` (the exact shear identity `R·A1 = L_γ·[T;Δ·S]`),
+    `frobSq_schurNF_eq` (the `‖T‖² ⊕ frobSq(Δ·S)` split), and the combined `frobSq_angularR_ge`
+    (`frobSq(R·A1) ≥ (1/5)·(∑T² + frobSq(Δ·S))`, ratios `|γ| ≤ 1`). Axiom-clean.
+  - The radial divisor atom (THIS file, new): `radialAxis334_lt_top` — `∫_{[−1,1]} |a|^{8−2c'} < ⊤` for
+    `c' < 9/2` (the `r²−1 = 8` blow-up Jacobian; threshold `9/2 > 4`, so never binding). Axiom-clean.
+* **Gap (ONE precisely-named `sorry`):** `matBox334_blowup_lt_top` — the `A0` 9-chart radial cover assembly.
+  Decompose: (i) cover `matBox 3 3 1 \ {A0=0}` by the `9` max-modulus-entry charts (`argmaxCellOn`/
+  `univ_ae_cover` on flattened-A0, `coordZero_null` for the null complement); (ii) per chart, the radial
+  c-o-v with Jacobian `|a|^8` (`pivotBlowupOn`/`g5_pivotNode`/`recStep`), the row/col permutation putting
+  the pivot at `(0,0)` (frobSq permutation-invariant), the det-1 shear `T = y + β·S`; (iii) apply the banked
+  `frobSq_angularR_ge` to lower-bound the integrand by the normal form, Tonelli-separate the radial factor
+  (`radialAxis334_lt_top`), and rescale the residual box to feed `resolved334_lt_top`; (iv) `ENNReal.sum_lt_top`
+  over the `9` charts (finite subadditivity — ties harmless). The highest-risk step (decorrelated-Codex):
+  the radial-chart c-o-v + box-rescale (ii)+(iii). The achiever chart `chartParams334`/`Uval334`
+  (`RouteMLayerCoverGEL2`) realises this transport for ONE pivot on the lower-bound side.
 
 ## S2-hygiene
-The hfin CONCLUSION is S2-FREE (Morse leaves, the residual-power atom, Tonelli, the rank-1 leaf, the
-transpose-fibre, the polynomial null set). Every banked piece above is `#print axioms`-clean
-`[propext, Classical.choice, Quot.sound]` — NO `monomial_rlct`, NO new axiom.
+The hfin CONCLUSION is S2-FREE. Every banked piece above is `#print axioms`-clean
+`[propext, Classical.choice, Quot.sound]` — NO `monomial_rlct`, NO new axiom. The headline currently
+carries `sorryAx` (from the lone `matBox334_blowup_lt_top` gap, NOT an axiom); closing the cover makes it
+`[propext, Classical.choice, Quot.sound]`.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -511,7 +521,387 @@ theorem resolved334_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
   rw [hresid]
   exact core334_lt_top (c' - 2) (by linarith) (by linarith)
 
-/-- **The `(3,3,4)` hfin upper bound (the N4 depth-2 instance, GAP = the frame transport ONLY).** For
+/-! ## The `Params M334` ↔ two-matrix-box reshape (the clean MP plumbing, mirrors `RouteM4422Hfin`)
+
+The connecting plumbing identifying the flat-box integral of `routeMCore M334` with the two-matrix-box
+integral `∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'}`. The flat box `(−1,1)^21` is dominated by the closed
+cube `[−1,1]^21`, transported through `paramsEquivFlat` (MP) to the `Params M334` box, then split into
+the two per-layer matrix boxes via `eParams334` (an MP `piFinSuccAbove`/`piUnique` reshape) — peeling the
+layers in the order `(A0, A1)`. This part is decision-independent (the blow-up bridge is separate). -/
+
+/-- The flat decode `paramsEquivFlat H A (equivFin idx) = A idx.1.1 idx.1.2 idx.2` — a flat coordinate
+reads back the layer matrix entry. (Re-derived locally to avoid importing `RouteM4422Hfin`, which would
+collide on the `minAdm_M4422` dup; the `arrowCongr'`/`piCurry`/`Sigma.uncurry` unfold.) -/
+theorem paramsEquivFlat_decode {L : ℕ} (H : Fin (L + 1) → ℕ) (A : Params H) (idx : FlatIdx H) :
+    paramsEquivFlat H A (Fintype.equivFin (FlatIdx H) idx) = A idx.1.1 idx.1.2 idx.2 := by
+  unfold paramsEquivFlat
+  erw [MeasurableEquiv.trans_apply, MeasurableEquiv.trans_apply]
+  simp only [MeasurableEquiv.coe_piCurry_symm]
+  erw [Equiv.arrowCongr_apply]
+  simp only [Function.comp_apply]
+  erw [Equiv.symm_apply_apply]
+  rfl
+
+/-- `dlnLoss M334 0 A = frobSq (prod M334 A)` (the loss at target `0` is the squared Frobenius norm of
+the layer product). -/
+theorem dlnLoss_M334_eq_frobSq (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
+    dlnLoss (![3, 3, 4] : Fin 3 → ℕ) 0 A = frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) := by
+  unfold dlnLoss frobSq
+  refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
+  simp only [Matrix.sub_apply, Matrix.zero_apply, sub_zero]
+
+/-- **General `L = 2` layer-product entry form** `(prod M A) i j = ∑ₖ A₀ᵢₖ·A₁ₖⱼ` (re-derived locally;
+the same `prodAux` dependent-`Fin`-cast closer as `Case222Algebra.prod_two_layer`). -/
+theorem prod_two_layer334 (M : Fin 3 → ℕ) (A : Params M) (i : Fin (M 0)) (j : Fin (M 2)) :
+    prod M A i j = ∑ k : Fin (M 1), A 0 i k * A 1 k j := by
+  unfold prod
+  simp only [prodAux, Matrix.mul_apply, eq_mpr_eq_cast]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  congr 1
+  convert congrFun (congrFun (Matrix.one_mul (cast (by rfl) (cast (by rfl) (A 0)))) i) k using 2
+
+/-- The layer product `prod M334 A` as the raw matrix product `rmatMul (A 0) (A 1)` (entrywise, via
+`prod_two_layer334`; `A 0` is `3×3`, `A 1` is `3×4`). -/
+theorem prod_M334_eq_rmatMul (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
+    (fun i j => prod (![3, 3, 4] : Fin 3 → ℕ) A i j)
+      = rmatMul (fun i k => A 0 i k) (fun k j => A 1 k j) := by
+  funext i j
+  rw [prod_two_layer334 (![3, 3, 4] : Fin 3 → ℕ) A i j]
+  rfl
+
+/-- The `Fin 1` tail family after peeling layer `0` (the layer-`1` fiber). -/
+abbrev TailFam334 : Fin 1 → Type :=
+  fun s : Fin 1 => Fin ((![3, 3, 4] : Fin 3 → ℕ) ((0 : Fin 2).succAbove s).castSucc) →
+    Fin ((![3, 3, 4] : Fin 3 → ℕ) ((0 : Fin 2).succAbove s).succ) → ℝ
+
+/-- **The `Params M334` split into the two layer matrix boxes, in `(A0, A1)` order.** Peel layer `0`
+(A0) then collapse the singleton `Fin 1` tail (A1) via `piUnique`. An MP reshape, with components
+`(eParams334 A).1 = A 0`, `.2 = A 1` (both definitional). -/
+noncomputable def eParams334 :
+    Params (![3, 3, 4] : Fin 3 → ℕ) ≃ᵐ (Fin 3 → Fin 3 → ℝ) × (Fin 3 → Fin 4 → ℝ) :=
+  (MeasurableEquiv.piFinSuccAbove
+      (fun s : Fin 2 => Fin ((![3, 3, 4] : Fin 3 → ℕ) s.castSucc) →
+        Fin ((![3, 3, 4] : Fin 3 → ℕ) s.succ) → ℝ) 0).trans
+    (MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (MeasurableEquiv.piUnique TailFam334))
+
+theorem measurePreserving_eParams334 :
+    MeasurePreserving eParams334 (volume : Measure (Params (![3, 3, 4] : Fin 3 → ℕ))) volume := by
+  unfold eParams334
+  refine (volume_preserving_piFinSuccAbove _ 0).trans ?_
+  have hp := (MeasurePreserving.id (volume : Measure (Fin 3 → Fin 3 → ℝ))).prod
+    (volume_preserving_piUnique TailFam334)
+  rw [show (volume : Measure ((Fin 3 → Fin 3 → ℝ) × (Fin 3 → Fin 4 → ℝ)))
+    = volume.prod volume from rfl]
+  exact hp
+
+/-- The `Params M334` box: all matrix entries in `[−1,1]` (the image of the closed flat cube box). -/
+def paramsBox334 : Set (Params (![3, 3, 4] : Fin 3 → ℕ)) := {A | ∀ s i j, A s i j ∈ Set.Icc (-1 : ℝ) 1}
+
+/-- `eParams334 ⁻¹' (matBox 3 3 1 ×ˢ matBox 3 4 1) = paramsBox334` (the two layer boxes pull back to the
+all-entries-bounded `Params` box; `fin_cases` on the layer index). -/
+theorem eParams334_preimage_box :
+    eParams334 ⁻¹' (matBox 3 3 1 ×ˢ matBox 3 4 1) = paramsBox334 := by
+  ext A
+  simp only [Set.mem_preimage, Set.mem_prod, matBox, paramsBox334, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨h0, h1⟩ s i j
+    fin_cases s
+    · exact h0 i j
+    · exact h1 i j
+  · intro h
+    exact ⟨fun i j => h 0 i j, fun i j => h 1 i j⟩
+
+/-- `paramsEquivFlat M334 ⁻¹' (cubeBox 21 1) = paramsBox334` (the closed flat cube box pulls back to the
+all-entries-bounded `Params` box; the flat decode ranges over all entries). -/
+theorem paramsEquivFlat_preimage_box334 :
+    paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ) ⁻¹' (cubeBox (flatDim (![3, 3, 4] : Fin 3 → ℕ)) 1)
+      = paramsBox334 := by
+  ext A
+  simp only [Set.mem_preimage, cubeBox, paramsBox334, Set.mem_pi, Set.mem_univ, true_implies,
+    Set.mem_setOf_eq]
+  constructor
+  · intro h s i j
+    have := h (Fintype.equivFin (FlatIdx (![3, 3, 4] : Fin 3 → ℕ)) ⟨⟨s, i⟩, j⟩)
+    rwa [paramsEquivFlat_decode (![3, 3, 4] : Fin 3 → ℕ) A ⟨⟨s, i⟩, j⟩] at this
+  · intro h k
+    obtain ⟨idx, rfl⟩ := (Fintype.equivFin (FlatIdx (![3, 3, 4] : Fin 3 → ℕ))).surjective k
+    rw [paramsEquivFlat_decode (![3, 3, 4] : Fin 3 → ℕ) A idx]
+    exact h idx.1.1 idx.1.2 idx.2
+
+theorem measurableSet_paramsBox334 : MeasurableSet paramsBox334 := by
+  rw [← paramsEquivFlat_preimage_box334]
+  exact ((by rw [cubeBox]; exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc)) :
+    MeasurableSet (cubeBox (flatDim (![3, 3, 4] : Fin 3 → ℕ)) 1)).preimage
+    (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)).measurable
+
+/-- The integrand identity: `frobSq (prod M334 A) = frobSq (rmatMul A0 A1)` read off the `eParams334`
+components (`A0, A1` are `(eParams334 A).1, .2`). Via `prod_M334_eq_rmatMul`. -/
+theorem frobSq_prod_eq_eParams334 (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
+    frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A)
+      = frobSq (rmatMul (eParams334 A).1 (eParams334 A).2) := by
+  change frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) = frobSq (rmatMul (A 0) (A 1))
+  have h := prod_M334_eq_rmatMul A
+  unfold frobSq
+  refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
+  rw [show prod (![3, 3, 4] : Fin 3 → ℕ) A i j
+      = rmatMul (fun i k => A 0 i k) (fun k j => A 1 k j) i j from congrFun (congrFun h i) j]
+
+/-- `routeMCore M334` is nonnegative (the loss is a squared Frobenius norm). -/
+theorem routeMCore_M334_nonneg (x : Fin (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) → ℝ) :
+    0 ≤ routeMCore (![3, 3, 4] : Fin 3 → ℕ) x := by
+  rw [routeMCore, dlnLoss_M334_eq_frobSq]; exact frobSq_nonneg _
+
+/-- **The two-matrix-box reduction (the clean MP plumbing, S2-FREE).** For `0 < c'`,
+`∫⁻_{routeMBaseNbhd M334} |routeMCore M334|^{−c'} ≤ ∫⁻_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'}`.
+Mirrors `RouteM4422Hfin` steps 1–3 (dominate the open box by the closed cube, transport through
+`paramsEquivFlat` MP to the `Params` box, reshape through `eParams334` MP to the two matrix boxes,
+Tonelli). The blow-up bridge (the corank-2 resolution) is the SEPARATE step bounding the RHS. -/
+theorem routeMCore_M334_le_matBox (c' : ℝ) (hc0 : 0 < c') :
+    ∫⁻ x in routeMBaseNbhd (![3, 3, 4] : Fin 3 → ℕ),
+        ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-c'))
+      ≤ ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+          ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) := by
+  have hopen_sub : flatOpenBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ))
+      ⊆ cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1 := by
+    intro x hx i _
+    have := hx i (Set.mem_univ i); rw [Set.mem_Ioo] at this
+    rw [Set.mem_Icc]; exact ⟨le_of_lt this.1, le_of_lt this.2⟩
+  -- Step 1: |routeMCore| = routeMCore, dominate the open box by the closed cube box.
+  have hbound : ∫⁻ x in routeMBaseNbhd (![3, 3, 4] : Fin 3 → ℕ),
+        ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-c'))
+      ≤ ∫⁻ x in cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1,
+          ENNReal.ofReal (routeMCore (![3, 3, 4] : Fin 3 → ℕ) x ^ (-c')) := by
+    rw [routeMBaseNbhd]
+    refine le_trans (lintegral_mono_set hopen_sub) (le_of_eq ?_)
+    refine setLIntegral_congr_fun (by
+      rw [cubeBox]; exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc)) (fun x _ => ?_)
+    rw [abs_of_nonneg (routeMCore_M334_nonneg x)]
+  refine le_trans hbound (le_of_eq ?_)
+  -- Step 2: transport the closed cube box via paramsEquivFlat (MP) to paramsBox334.
+  have hcore : ∀ A : Params (![3, 3, 4] : Fin 3 → ℕ),
+      routeMCore (![3, 3, 4] : Fin 3 → ℕ) (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ) A)
+        = frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) := by
+    intro A
+    rw [congrFun (routeMCore_comp_paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)) A, dlnLoss_M334_eq_frobSq]
+  have hmpF := measurePreserving_paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)
+  have hstep2 : ∫⁻ x in cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1,
+        ENNReal.ofReal (routeMCore (![3, 3, 4] : Fin 3 → ℕ) x ^ (-c'))
+      = ∫⁻ A in paramsBox334,
+          ENNReal.ofReal (frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) ^ (-c')) := by
+    have hpre := hmpF.setLIntegral_comp_preimage_emb
+      (MeasurableEquiv.measurableEmbedding (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)))
+      (fun x => ENNReal.ofReal (routeMCore (![3, 3, 4] : Fin 3 → ℕ) x ^ (-c')))
+      (cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1)
+    calc ∫⁻ x in cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1,
+            ENNReal.ofReal (routeMCore (![3, 3, 4] : Fin 3 → ℕ) x ^ (-c'))
+        = ∫⁻ A in (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)) ⁻¹'
+              cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1,
+            ENNReal.ofReal (routeMCore (![3, 3, 4] : Fin 3 → ℕ)
+              (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ) A) ^ (-c')) := hpre.symm
+      _ = ∫⁻ A in paramsBox334,
+            ENNReal.ofReal (frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) ^ (-c')) := by
+          rw [show (paramsEquivFlat (![3, 3, 4] : Fin 3 → ℕ)) ⁻¹'
+              cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1 = paramsBox334
+            from paramsEquivFlat_preimage_box334]
+          refine setLIntegral_congr_fun measurableSet_paramsBox334 (fun A _ => ?_)
+          rw [hcore A]
+  rw [hstep2]
+  -- Step 3: transport paramsBox334 via eParams334 (MP) to the two layer matrix boxes.
+  have hmpP := measurePreserving_eParams334
+  have hstep3 : ∫⁻ A in paramsBox334,
+        ENNReal.ofReal (frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) ^ (-c'))
+      = ∫⁻ p in (matBox 3 3 1 ×ˢ matBox 3 4 1),
+          ENNReal.ofReal ((frobSq (rmatMul p.1 p.2)) ^ (-c')) := by
+    have hpre := hmpP.setLIntegral_comp_preimage_emb
+      (MeasurableEquiv.measurableEmbedding eParams334)
+      (fun p : (Fin 3 → Fin 3 → ℝ) × (Fin 3 → Fin 4 → ℝ) =>
+        ENNReal.ofReal ((frobSq (rmatMul p.1 p.2)) ^ (-c')))
+      (matBox 3 3 1 ×ˢ matBox 3 4 1)
+    calc ∫⁻ A in paramsBox334,
+            ENNReal.ofReal (frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) ^ (-c'))
+        = ∫⁻ A in eParams334 ⁻¹' (matBox 3 3 1 ×ˢ matBox 3 4 1),
+            ENNReal.ofReal ((frobSq (rmatMul (eParams334 A).1 (eParams334 A).2)) ^ (-c')) := by
+          rw [eParams334_preimage_box]
+          refine setLIntegral_congr_fun measurableSet_paramsBox334 (fun A _ => ?_)
+          rw [frobSq_prod_eq_eParams334 A]
+      _ = ∫⁻ p in (matBox 3 3 1 ×ˢ matBox 3 4 1),
+            ENNReal.ofReal ((frobSq (rmatMul p.1 p.2)) ^ (-c')) := hpre
+  rw [hstep3]
+  -- Step 4: Tonelli into the iterated integral ∫_{A0}∫_{A1}.
+  have hmeas : Measurable (fun p : (Fin 3 → Fin 3 → ℝ) × (Fin 3 → Fin 4 → ℝ) =>
+      ENNReal.ofReal ((frobSq (rmatMul p.1 p.2)) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    unfold frobSq rmatMul; fun_prop
+  rw [Measure.volume_eq_prod (Fin 3 → Fin 3 → ℝ) (Fin 3 → Fin 4 → ℝ),
+    setLIntegral_prod _ hmeas.aemeasurable]
+
+/-! ## The Schur-shear algebraic atoms (BANKED sorry-free — the verified heart of the blow-up bridge)
+
+The decorrelated-Codex `xhigh` route's algebraic core, verified exact by sympy (frame-transport cert):
+on an `A0` max-modulus-entry chart with pivot `(0,0)`, `A0 = a·R` with `R = [[1,β],[γ,Δ+γβ]]` (`β` 1×2,
+`γ` 2×1, `Δ` 2×2, all ratios `|·| ≤ 1`). With `A1 = [y; S]` and the Schur shear `T = y + β·S` (det-1),
+
+    R·A1 = L_γ · [T; Δ·S],   L_γ = [[1,0,0],[γ₀,1,0],[γ₁,0,1]]   (exact, sympy-verified).
+
+`L_γ` is invertible with `det 1`, and on the bounded chart `|γ₀|,|γ₁| ≤ 1` it satisfies the uniform
+Frobenius comparability `frobSq(L_γ·M) ≥ (1/5)·frobSq(M)` (smallest singular value `σ_min(L_γ)² ≥ 2−√3 >
+1/5`; the column SOS certificate `25·(per-col) = (5γ₀v₀+4v₁)²+(5γ₁v₀+4v₂)²+ (16−5γ₀²−5γ₁²)v₀²` clears at
+`γ² ≤ 1`). This is the comparability the per-chart c-o-v rides on. -/
+
+/-- **The `L_γ`-shear column lower bound** (the `nlinarith` atom, verified SOS). For `|g0|,|g1| ≤ 1` and
+any `v0 v1 v2`, the squared norm of `L_γ·(v0,v1,v2) = (v0, g0·v0+v1, g1·v0+v2)` dominates `(1/5)·‖v‖²`:
+
+    v0² + (g0·v0 + v1)² + (g1·v0 + v2)² ≥ (1/5)·(v0² + v1² + v2²).
+
+The per-column form of `frobSq(L_γ·M) ≥ (1/5)·frobSq(M)`. -/
+theorem lgammaShear_col_ge (g0 g1 v0 v1 v2 : ℝ) (hg0 : g0 ^ 2 ≤ 1) (hg1 : g1 ^ 2 ≤ 1) :
+    (1 / 5 : ℝ) * (v0 ^ 2 + v1 ^ 2 + v2 ^ 2)
+      ≤ v0 ^ 2 + (g0 * v0 + v1) ^ 2 + (g1 * v0 + v2) ^ 2 := by
+  nlinarith [sq_nonneg (5 * g0 * v0 + 4 * v1), sq_nonneg (5 * g1 * v0 + 4 * v2),
+    mul_nonneg (sub_nonneg.2 hg0) (sq_nonneg v0), mul_nonneg (sub_nonneg.2 hg1) (sq_nonneg v0),
+    sq_nonneg v0]
+
+/-- The `L_γ`-shear matrix `[[1,0,0],[γ₀,1,0],[γ₁,0,1]]` acting on a `3×4` block `M`: row `0` passes
+through, row `1 = γ₀·(row 0) + (row 1 of M)`, row `2 = γ₁·(row 0) + (row 2 of M)`. The bounded det-1
+left factor that the Schur shear leaves. -/
+noncomputable def lgammaShear (g0 g1 : ℝ) (M : Fin 3 → Fin 4 → ℝ) : Fin 3 → Fin 4 → ℝ :=
+  fun i j => if i = 0 then M 0 j else if i = 1 then g0 * M 0 j + M 1 j else g1 * M 0 j + M 2 j
+
+/-- **The `L_γ`-shear Frobenius comparability** (BANKED, the verified heart). For `|γ₀|, |γ₁| ≤ 1`,
+`frobSq(L_γ·M) ≥ (1/5)·frobSq(M)` — summing the per-column SOS bound `lgammaShear_col_ge` over the `4`
+columns. The uniform comparability the per-chart c-o-v consumes (`C = 1/5 < σ_min(L_γ)² = 2−√3`). -/
+theorem frobSq_lgammaShear_ge (g0 g1 : ℝ) (hg0 : g0 ^ 2 ≤ 1) (hg1 : g1 ^ 2 ≤ 1)
+    (M : Fin 3 → Fin 4 → ℝ) :
+    (1 / 5 : ℝ) * frobSq M ≤ frobSq (lgammaShear g0 g1 M) := by
+  -- frobSq sums over rows then columns; regroup as a column-sum of the per-column 3-vector norms
+  have hrow : ∀ N : Fin 3 → Fin 4 → ℝ, frobSq N = ∑ j : Fin 4, (N 0 j ^ 2 + N 1 j ^ 2 + N 2 j ^ 2) := by
+    intro N; unfold frobSq; rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl (fun j _ => ?_); rw [Fin.sum_univ_three]
+  rw [hrow M, hrow (lgammaShear g0 g1 M), Finset.mul_sum]
+  refine Finset.sum_le_sum (fun j _ => ?_)
+  have h0 : lgammaShear g0 g1 M 0 j = M 0 j := by simp [lgammaShear]
+  have h1 : lgammaShear g0 g1 M 1 j = g0 * M 0 j + M 1 j := by simp [lgammaShear]
+  have h2 : lgammaShear g0 g1 M 2 j = g1 * M 0 j + M 2 j := by simp [lgammaShear]
+  rw [h0, h1, h2]
+  exact lgammaShear_col_ge g0 g1 (M 0 j) (M 1 j) (M 2 j) hg0 hg1
+
+/-- The angular matrix `R = [[1,β],[γ,Δ+γβ]]` (`β = (b0,b1)`, `γ = (g0,g1)`, `Δ = (d00,d01,d10,d11)`):
+the `pivot-(0,0) = 1` blow-up direction of `A0 = a·R`. Top-left `1`, top row `(1,b0,b1)`, left column
+`(1,g0,g1)`, lower-right `Δ + γβ`. -/
+noncomputable def angularR (b0 b1 g0 g1 d00 d01 d10 d11 : ℝ) : Fin 3 → Fin 3 → ℝ :=
+  fun i k =>
+    !![1, b0, b1;
+       g0, d00 + g0 * b0, d01 + g0 * b1;
+       g1, d10 + g1 * b0, d11 + g1 * b1] i k
+
+/-- The Schur normal form `[T; Δ·S]` (`3×4`): top row `T = y + β·S` (the spectator row, `y = A1` row 0,
+`S = A1` rows 1,2), bottom block `Δ·S` (`2×4`). The `‖T‖² ⊕ frobSq(Δ·S)` shape `resolved334_lt_top`
+consumes. -/
+noncomputable def schurNF (b0 b1 d00 d01 d10 d11 : ℝ) (A1 : Fin 3 → Fin 4 → ℝ) : Fin 3 → Fin 4 → ℝ :=
+  fun i j =>
+    if i = 0 then A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)
+    else if i = 1 then d00 * A1 1 j + d01 * A1 2 j
+    else d10 * A1 1 j + d11 * A1 2 j
+
+/-- **The Schur-shear identity** `R·A1 = L_γ · [T; Δ·S]` (entrywise, sympy-verified exact). The angular
+matrix times `A1` equals the bounded `L_γ`-shear of the Schur normal form: row `0 = T = y + β·S`, rows
+`1,2 = γ·T + Δ·S`. Pure `ring` per entry (the cross terms `γβ·S` and `β·S` regroup). -/
+theorem rmatMul_angularR_eq (b0 b1 g0 g1 d00 d01 d10 d11 : ℝ) (A1 : Fin 3 → Fin 4 → ℝ) :
+    rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1
+      = lgammaShear g0 g1 (schurNF b0 b1 d00 d01 d10 d11 A1) := by
+  funext i j
+  have hrow : ∀ i : Fin 3, rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1 i j
+      = lgammaShear g0 g1 (schurNF b0 b1 d00 d01 d10 d11 A1) i j := by
+    intro i
+    unfold rmatMul angularR lgammaShear schurNF
+    rw [Fin.sum_univ_three]
+    fin_cases i <;>
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply,
+        Matrix.cons_val, Matrix.head_fin_const, Matrix.cons_val', Fin.isValue,
+        Fin.mk_zero, Fin.mk_one] <;>
+      norm_num [Fin.ext_iff] <;> ring
+  exact hrow i
+
+/-- `frobSq (schurNF …) = ∑_j T_j² + frobSq(Δ·S)` — the normal form splits into the spectator row `T`
+(`∑_j T_j²`, the `‖T‖²` Morse block) plus the corank-2 core `frobSq(Δ·S)` (rows `1,2`). The split the
+disjoint-sum `resolved334_lt_top` integrand reads. -/
+theorem frobSq_schurNF_eq (b0 b1 d00 d01 d10 d11 : ℝ) (A1 : Fin 3 → Fin 4 → ℝ) :
+    frobSq (schurNF b0 b1 d00 d01 d10 d11 A1)
+      = (∑ j, (A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)) ^ 2)
+        + frobSq (rmatMul (!![d00, d01; d10, d11] : Matrix (Fin 2) (Fin 2) ℝ)
+            (fun k j => A1 (k.succ) j)) := by
+  unfold frobSq schurNF rmatMul
+  rw [Finset.sum_comm]
+  rw [show (∑ j : Fin 4, ∑ i : Fin 3,
+        (if i = 0 then A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)
+         else if i = 1 then d00 * A1 1 j + d01 * A1 2 j else d10 * A1 1 j + d11 * A1 2 j) ^ 2)
+      = ∑ j : Fin 4, ((A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)) ^ 2
+          + ((d00 * A1 1 j + d01 * A1 2 j) ^ 2 + (d10 * A1 1 j + d11 * A1 2 j) ^ 2)) from
+    Finset.sum_congr rfl (fun j _ => by rw [Fin.sum_univ_three]; simp; ring)]
+  rw [Finset.sum_add_distrib]
+  congr 1
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [Fin.sum_univ_two, Fin.sum_univ_two, Fin.sum_univ_two]
+  simp [Matrix.cons_val_zero, Matrix.cons_val_one, Fin.succ]
+
+/-- **The per-chart algebraic comparability (BANKED — the combined heart).** On an `A0` max-entry chart
+`A0 = a·R` (`R = angularR`, ratios `|γ| ≤ 1`), the product Frobenius square dominates the disjoint-sum
+normal form:
+
+    frobSq(R·A1) ≥ (1/5)·(∑_j T_j² + frobSq(Δ·S)),   T = y + β·S.
+
+Compose the shear identity (`rmatMul_angularR_eq`), the `L_γ` comparability (`frobSq_lgammaShear_ge`),
+and the normal-form split (`frobSq_schurNF_eq`). The bound the per-chart c-o-v feeds into
+`resolved334_lt_top` (after the radial `a²` peel and the box rescale). -/
+theorem frobSq_angularR_ge (b0 b1 g0 g1 d00 d01 d10 d11 : ℝ)
+    (hg0 : g0 ^ 2 ≤ 1) (hg1 : g1 ^ 2 ≤ 1) (A1 : Fin 3 → Fin 4 → ℝ) :
+    (1 / 5 : ℝ) * ((∑ j, (A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)) ^ 2)
+        + frobSq (rmatMul (!![d00, d01; d10, d11] : Matrix (Fin 2) (Fin 2) ℝ)
+            (fun k j => A1 (k.succ) j)))
+      ≤ frobSq (rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1) := by
+  rw [rmatMul_angularR_eq, ← frobSq_schurNF_eq]
+  exact frobSq_lgammaShear_ge g0 g1 hg0 hg1 _
+
+/-- **The `(3,3,4)` radial `a`-axis divisor finiteness** (BANKED, the threshold `9/2` atom). For
+`c' < 9/2`, `∫⁻_{[−1,1]} |a|^{8−2c'} < ⊤` — the `r²−1 = 8`-dimensional radial Jacobian divisor of the
+`A0 = a·R` blow-up integrates over the pivot axis exactly when `8 − 2c' > −1 ⟺ c' < 9/2`. Since the
+threshold is `4 < 9/2`, the `a`-axis is NEVER the binding factor (the corank-2 core's `λ_{2,4} = 2 ⊕ 2`
+binds first). The radial factor the per-chart c-o-v Tonelli-separates. -/
+theorem radialAxis334_lt_top (c' : ℝ) (hc' : c' < 9 / 2) :
+    ∫⁻ a in Set.Icc (-1 : ℝ) 1, ENNReal.ofReal (|a| ^ (8 - 2 * c')) < ⊤ :=
+  abs_rpow_lintegral_Icc_lt_top 1 one_pos (8 - 2 * c') (by linarith)
+
+/-! ## The blow-up bridge (the ONE remaining gap — the `A0` radial-chart cover)
+
+`∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'} < ⊤` for `0 < c' < 4`. The corank-2 resolution: the pure
+fibre route caps at `3r/2 ≤ 3/2 ≪ 4` (the rank-`r` fibre threshold), so a Jacobian-weighted blow-up
+is genuinely forced (no MP global reparametrization lands the normal form — decorrelated-Codex
+confirmed). The route (frame-transport cert §"A0 radial chart", decorrelated-Codex `xhigh`):
+
+- Cover `{A0 ≠ 0}` by the `9` max-modulus-entry charts of `A0` (`{A0 ≠ 0}` complement null); on the
+  chart with pivot `(i,j)`, write `A0 = a·R` (`a = A0ᵢⱼ`, `R` the bounded angular matrix, `Rᵢⱼ = 1`).
+  Radial Jacobian `|a|^{9−1} = |a|^8`.
+- After a (det-1) row/column permutation putting the pivot at `(0,0)` and the Schur shear `T = y + β·S`
+  on `A1`'s top row (Jacobian `1`), `R·A1 = L_γ · [T; Δ·S]` with `L_γ = [[1,0],[γ,I]]` bounded on the
+  chart. So `frobSq(A0·A1) = a²·frobSq(R·A1) ≥ C·a²·(‖T‖² + frobSq(Δ·S))` (uniform Frobenius
+  comparability, `γ` bounded).
+- The chart contribution `≤ (∫ |a|^{8−2c'} da) · (∫ (‖T‖² + frobSq(Δ·S))^{−c'} dT dS dΔ)` — the `a`-axis
+  finite for `c' < 9/2` (so for `c' < 4`), the residual `= resolved334_lt_top` (a scaled-box rescale).
+  Finite subadditivity over the `9` charts (NOT a disjoint partition — ties harmless).
+
+GAP (`sorry`): this `A0` radial-chart cover. Highest-risk step (decorrelated-Codex): the radial-chart
+c-o-v on the max-entry cells (cover-up-to-null, injectivity off `{a = 0}`, Jacobian `|a|^8`, the sheared
+target boxes → enlarged boxes consumable by a scaled `resolved334_lt_top`). Everything DOWNSTREAM of the
+RHS (`resolved334_lt_top` + the T-peel + the core resolution + the null set) is BANKED sorry-free; the
+clean MP plumbing (`routeMCore_M334_le_matBox`) reducing the headline to THIS is banked sorry-free too. -/
+theorem matBox334_blowup_lt_top (c' : ℝ) (hc0 : 0 < c') (hc4 : c' < 4) :
+    ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+      ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) < ⊤ := by
+  sorry
+
+/-- **The `(3,3,4)` hfin upper bound (the N4 depth-2 instance, GAP = the blow-up bridge ONLY).** For
 `c' < ½·minAdm M334 = 4`, `∫⁻_{routeMBaseNbhd M334} |routeMCore M334 x|^{−c'} < ⊤`. The rank-stratified
 analog of `routeMCore_M4422_threshold_lt_top`.
 
@@ -536,9 +926,24 @@ theorem routeMCore_M334_threshold_lt_top (c' : NNReal)
       ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-(c' : ℝ))) < ⊤ := by
   rw [minAdm_M334_eq] at hc'
   have hc4 : (c' : ℝ) < 4 := by linarith
-  -- The remaining gap: the frame transport reducing this to `resolved334_lt_top` (for `2 < c' < 4`)
-  -- + the trivial `c' ≤ 2` finiteness. All downstream pieces (`resolved334_lt_top`,
-  -- `core334_lt_top`, `core_T_peel_le_ae`, `frobSq_core334_ne_zero_ae`) are banked sorry-free.
-  sorry
+  rcases eq_or_lt_of_le (c'.2 : (0 : ℝ) ≤ (c' : ℝ)) with hc0 | hc0
+  · -- c' = 0: integrand is (·)^0 = 1, integral = volume(box) < ⊤.
+    have hzero : (c' : ℝ) = 0 := hc0.symm
+    have hone : ∀ x, ENNReal.ofReal (|routeMCore (![3, 3, 4] : Fin 3 → ℕ) x| ^ (-(c' : ℝ))) = 1 := by
+      intro x; rw [hzero]; simp [Real.rpow_zero]
+    simp only [hone]
+    rw [setLIntegral_const]
+    refine ENNReal.mul_lt_top ENNReal.one_lt_top ?_
+    rw [routeMBaseNbhd]
+    have hopen_sub : flatOpenBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ))
+        ⊆ cubeBox (routeMAmbient (![3, 3, 4] : Fin 3 → ℕ)) 1 := by
+      intro x hx i _
+      have := hx i (Set.mem_univ i); rw [Set.mem_Ioo] at this
+      rw [Set.mem_Icc]; exact ⟨le_of_lt this.1, le_of_lt this.2⟩
+    refine lt_of_le_of_lt (measure_mono hopen_sub) ?_
+    exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
+  · -- 0 < c' < 4: reduce to the two-matrix-box integral, then the blow-up bridge.
+    exact lt_of_le_of_lt (routeMCore_M334_le_matBox (c' : ℝ) hc0)
+      (matBox334_blowup_lt_top (c' : ℝ) hc0 hc4)
 
 end DLNFibre.DLN.RLCT
