@@ -10564,3 +10564,30 @@ Xhigh review `Linnaeus` passed after wording fixes; review artifact:
   component-count convention.
 - Universal or exhaustive case-split claims need decorrelated counterexample
   hunting or a proof of completeness before being treated as established.
+
+## Post-merge A6 closed-form boundary - 2026-06-25
+
+After the `ClosedForm.lean` merge, xhigh source/API/hardening scouts checked
+whether the `paperEll` closed-form layer can become the next Aoyagi-only
+frontier.  The decision is conservative:
+
+- `ClosedForm.lean` is currently a Core/LR-dependent comparison bridge, not
+  independent Aoyagi proof input.  It imports Core codimension infrastructure
+  and its `paperEll` reading repairs the printed Definition 3 inactive
+  coefficient from `ell-1` to `ell`.
+- The existing `AoyagiDefinition3SourceData` remains the printed source-data
+  guardrail with the printed nonselected inequality; do not silently replace
+  it by the repaired cutoff.
+- A future repaired-cutoff module is acceptable only if it is explicitly named
+  as corrected/repaired finite arithmetic and avoids fibre-codimension
+  theorems.
+- Safe immediate A6 work is source formula bookkeeping in `FinalFormula.lean`
+  and supplied-source-data consequences in `Definition3Bridge.lean`.
+
+The first safe follow-up landed as finite indexing arithmetic:
+`aoyagiSelectedWidthPairSum_eq_range_Icc_selectedWidthNat` rewrites Theorem 2's
+selected-width pair sum from the `Fin`/indicator form to a Nat-indexed
+`range`/`Icc` strict upper-triangle form.  Reproduction and statement card:
+`threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-selected-width-pair-sum-range-icc.md`.

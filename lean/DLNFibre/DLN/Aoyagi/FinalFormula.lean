@@ -194,6 +194,46 @@ def aoyagiSelectedWidthPairSum (ell : ℕ) (m : Fin (ell + 1) → ℤ) : ℚ :=
   ∑ i : Fin (ell + 1), ∑ j : Fin (ell + 1),
     if i.val < j.val then (m i : ℚ) * (m j : ℚ) else 0
 
+/-- The selected-width pair sum, rewritten with Nat indices and the total
+selected-width accessor.
+
+This is only an indexing conversion.  It is useful when comparing the
+source-facing Theorem 2 formula with range/Icc summation APIs. -/
+theorem aoyagiSelectedWidthPairSum_eq_range_Icc_selectedWidthNat
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) :
+    aoyagiSelectedWidthPairSum ell m =
+      ∑ i ∈ Finset.range (ell + 1), ∑ j ∈ Finset.Icc (i + 1) ell,
+        (aoyagiSelectedWidthNat ell m i : ℚ) *
+          (aoyagiSelectedWidthNat ell m j : ℚ) := by
+  classical
+  unfold aoyagiSelectedWidthPairSum
+  set w : ℕ → ℤ := aoyagiSelectedWidthNat ell m with hw
+  have hw_fin : ∀ i : Fin (ell + 1), w i.val = m i := by
+    intro i
+    rw [hw]
+    exact aoyagiSelectedWidthNat_of_lt i.isLt
+  have hrewrite :
+      (∑ i : Fin (ell + 1), ∑ j : Fin (ell + 1),
+          if i.val < j.val then (m i : ℚ) * (m j : ℚ) else 0) =
+      (∑ i : Fin (ell + 1), ∑ j : Fin (ell + 1),
+          if i.val < j.val then (w i.val : ℚ) * (w j.val : ℚ) else 0) := by
+    refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+    refine Finset.sum_congr rfl (fun j _ ↦ ?_)
+    rw [hw_fin i, hw_fin j]
+  rw [hrewrite]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun i ↦ ∑ j : Fin (ell + 1),
+      if i < j.val then (w i : ℚ) * (w j.val : ℚ) else 0) (ell + 1)]
+  refine Finset.sum_congr rfl (fun i hi ↦ ?_)
+  rw [Finset.mem_range] at hi
+  rw [Fin.sum_univ_eq_sum_range
+    (fun j ↦ if i < j then (w i : ℚ) * (w j : ℚ) else 0) (ell + 1)]
+  rw [Finset.sum_ite, Finset.sum_const_zero, add_zero]
+  refine Finset.sum_congr ?_ (fun _ _ ↦ rfl)
+  ext j
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+  omega
+
 /-- First source-facing display for Aoyagi Theorem 2's `lambda`, using the
 selected-width average. -/
 def aoyagiTheorem2Lambda_average

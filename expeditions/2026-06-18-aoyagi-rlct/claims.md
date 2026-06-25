@@ -3689,9 +3689,14 @@ No such claim is formalisation-ready until both fields are filled.
   three-width `L=2` triangle-inequality all-source constructor, and the `L=2`
   pairwise-distinct and repeated-positive/triangle finite classifications,
   repeated-positive/triangle finite formula packages, and a branch-overlap
-  finite formula/order disagreement diagnostic have landed.  A follow-up
-  source audit confirms that Aoyagi PDF pp. 8-9 contain no branch-selection
-  tie-breaker, so arbitrary Definition 3 source-data quantification is unsafe.
+  finite formula/order disagreement diagnostic, and the Theorem 2
+  selected-width pair-sum range/Icc indexing conversion have landed.  A
+  follow-up source audit confirms that Aoyagi PDF pp. 8-9 contain no
+  branch-selection tie-breaker, so arbitrary Definition 3 source-data
+  quantification is unsafe.  A separate closed-form cutoff boundary now records
+  that `ClosedForm.lean` is a Core/LR-dependent comparison bridge unless and
+  until its repaired-cutoff arithmetic is split into an explicitly quarantined
+  import-light module.
   The final RLCT theorem remains open.
 - **Kill-condition.** Any source hypothesis, rank bound, dimension convention,
   or pole-order convention is lost in translation.
@@ -3701,6 +3706,10 @@ No such claim is formalisation-ready until both fields are filled.
 - **Pen-and-paper reproduction.** Definition 3/Theorem 2 formula translation
   reproduced at
   `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`;
+  Theorem 2 selected-width pair-sum range/Icc conversion reproduced at
+  `threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`;
+  corrected closed-form cutoff boundary recorded at
+  `threads/06-dln-translation/boundary-paper-closed-form-corrected-cutoff-a6.md`;
   dimension/rank convention map reproduced at
   `threads/06-dln-translation/reproduction-dimension-rank-convention-a6.md`;
   source-data ceiling reproduced at
@@ -3784,6 +3793,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/boundary-map-theorem2-remaining-source-obligations-a6.md`.
 - **Reproduction check.** xhigh source/API checks incorporated in
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
+  Theorem 2 selected-width pair-sum range/Icc conversion reviewed at
+  `threads/06-dln-translation/review-theorem2-selected-width-pair-sum-range-icc-a6.md`;
   source-data ceiling reviewed at
   `threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`;
   source-data local wrappers reviewed at
@@ -3882,6 +3893,8 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_ell_one_of_L_eq_two_positive_repeated`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData.exists_ceilData`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthPairSum`,
+  `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthPairSum_eq_range_Icc_selectedWidthNat`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_average`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_ceil`,
   `DLNFibre.DLN.Aoyagi.aoyagiTheorem2Lambda_expanded`,
@@ -4042,9 +4055,10 @@ No such claim is formalisation-ready until both fields are filled.
 - **Proved.** formula-only arithmetic: integer reduced-width notation,
   pointwise rank-width conversion/nonnegativity for reduced widths and
   selected reduced widths under explicit rank-width hypotheses,
-  Definition 3 selected-sum average rewrite, equality of the average and
-  ceiling displayed lambda formulas under supplied ceiling data, and equality
-  of the ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
+  Definition 3 selected-sum average rewrite, Nat-indexed range/Icc reindexing
+  of Theorem 2's selected-width pair sum, equality of the average and ceiling
+  displayed lambda formulas under supplied ceiling data, and equality of the
+  ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
   proved Definition 3 positivity wrappers, selected-sum wrappers for Lemma 4
   terminal endpoint zero, lower/upper Htilde terminal zero, a
   chain-bounds-to-terminal-zero wrapper, finite interval-count/order-formula

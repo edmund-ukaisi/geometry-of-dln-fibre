@@ -4587,3 +4587,14 @@ raw scalar `hresidual_eq`.  This is preferred over adding new callers to the
 scalar socket.  The next genuine frontier is still to construct the
 fixed-base readout or a weaker residual lower-bound bridge from actual
 source-chart data; source coverage remains explicit.
+
+A6 formula-layer reorientation after the `ClosedForm.lean` merge:
+`threads/06-dln-translation/boundary-paper-closed-form-corrected-cutoff-a6.md`
+records the current boundary.  `ClosedForm.lean` is a Core/LR-dependent
+comparison bridge, not Aoyagi-only proof input, because its repaired
+`paperEll` cutoff corrects the printed inactive inequality and imports Core
+codimension infrastructure.  Safe Aoyagi-only work should stay in the supplied
+formula layer unless a future module explicitly quarantines repaired-cutoff
+finite arithmetic and avoids fibre-codimension theorems.  The first such safe
+formula bookkeeping slice is the selected-width pair-sum range/Icc conversion:
+`threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`.
