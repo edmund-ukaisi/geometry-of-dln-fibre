@@ -4173,3 +4173,17 @@ endpoint bases.  This closes the finite original square-Frobenius comparison
 needed for the already-conditional adapted-loss handoff.  Statistical/KL or
 covariance losses, arbitrary tuples, chart construction, density/Jacobian
 transport, normal crossings, pole order, and RLCT extraction remain separate.
+
+A2 original loss local-measure handoff has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-local-measure.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure` that the
+adapted-loss p.13 local finite-integral front ends specialize to original
+square-Frobenius `lossDLN` for tuples of the form
+`chainMapMatrixTuple b (CedgeProd z)`, with target matrix `[T(B)]` in the same
+original endpoint bases.  Prefer the signed-box continuous-edge theorem here
+as the current strongest local finite-integral front end for original
+`lossDLN`.  The chart/pushforward, residual monomial lower bound, product
+density, and product-coordinate adapted lower bound remain supplied; arbitrary
+tuples, statistical/KL/covariance losses, product-chart construction,
+density/Jacobian transport, normal crossings, pole order, and RLCT extraction
+remain outside this theorem.

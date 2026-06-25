@@ -9672,6 +9672,30 @@ matrix must be `[T(B)]` in the original endpoint bases; the theorem does not
 apply to arbitrary tuples, statistical/KL/covariance losses, chart or density
 transport, normal crossings, pole order, or RLCT extraction.
 
+Latest A2 original loss local-measure update:
+`DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure` now instantiates the adapted-loss
+local-measure handoffs with the concrete original square-Frobenius loss
+
+```text
+lossDLN d [T(B)]_b (chainMapMatrixTuple b (CedgeProd z)).
+```
+
+The wrappers use
+`exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN_chainMapMatrixTuple`
+and `paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum`
+to build the formerly supplied `c0 * adapted <= loss` comparison, then
+delegate to the existing continuous-density helper and the top signed-box
+continuous-edge adapted-loss theorem.  This is the current strongest A2 local
+finite-integral front end whose conclusion contains original `lossDLN`.
+
+Boundary remains important: the signed-box chart and weighted pushforward,
+residual monomial lower bound, source-density bounds, positive continuous
+product density, global `Continuous Cedge`, and product-coordinate adapted
+lower bound are still hypotheses.  No arbitrary tuple theorem,
+statistical/KL/covariance comparison, product chart, density/Jacobian
+transport, normal-crossing certificate, pole order, or RLCT extraction is
+proved.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

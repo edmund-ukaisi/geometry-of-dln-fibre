@@ -143,3 +143,4 @@ import DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
 import DLNFibre.DLN.Aoyagi.ChainMapTupleBridge
 import DLNFibre.DLN.Aoyagi.ChainMapLossBridge
 import DLNFibre.DLN.Aoyagi.EndpointLossComparison
+import DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure

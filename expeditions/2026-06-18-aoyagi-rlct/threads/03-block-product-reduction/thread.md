@@ -4201,3 +4201,42 @@ endpoint bases; it is not the adapted block matrix reused in original
 coordinates.  There is no arbitrary-tuple comparison, no statistical/KL or
 covariance loss comparison, no chart construction, no density/Jacobian
 transport, no normal crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-25 A2 original loss local measure handoff
+
+Reproduction:
+`reproduction-a2-original-loss-local-measure.md`.
+Statement card:
+`statement-card-a2-original-loss-local-measure.md`.
+Review:
+`review-a2-original-loss-local-measure.md`.
+
+Lean now proves the concrete original square-Frobenius local-measure bridge in
+the new module `DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_adaptedProductDifferenceSquareSum_lower_continuousAt_pos_density
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_continuousEdge_adaptedProductDifferenceSquareSum_lower_continuousAt_pos_density
+```
+
+The wrappers instantiate the existing adapted-loss finite-integral handoffs
+with
+
+```text
+loss z = lossDLN d [T(B)]_b (chainMapMatrixTuple b (CedgeProd z)).
+```
+
+The missing comparison hypothesis is proved from the endpoint loss comparison
+and the fixed adapted Frobenius/square-sum identification.  The top theorem is
+now the preferred A2 finite-integral front end when the tuple really comes
+from the product-coordinate edge family and the desired loss is original
+`lossDLN`.
+
+Boundary: the p.13 product-coordinate adapted lower bound, signed-box source
+chart and weighted pushforward, residual monomial lower bound,
+source-density bounds, positive continuous transported density, and global
+`Continuous Cedge` hypothesis remain explicit.  This does not handle
+arbitrary tuples, statistical/KL/covariance losses, product-chart
+construction, density/Jacobian transport, normal crossings, pole order, or
+RLCT extraction.
