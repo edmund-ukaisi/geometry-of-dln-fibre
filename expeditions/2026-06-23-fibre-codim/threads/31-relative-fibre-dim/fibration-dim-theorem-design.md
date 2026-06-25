@@ -903,3 +903,47 @@ quotient so the Σ-side primitive applies directly; NO `[Infinite k]` needed via
    z = 0` — the packaged numerator-extraction + zero-test (the Δ(A)=0 locus killed by the ΔPdeep
    factor). The descent: apply at `z = chartPhiFibAeval p`, pointwise-zero from (5)+(6)+
    `chartGauge_mem_fibre` + `p` vanishing on F.
+
+---
+
+## Tide progress log — update 18 (SEAM D + E COMPLETE: `e` is an honest AlgEquiv)
+
+**`e` LANDED** (task #58). The localized chart `AlgEquiv`
+`chartLocalizedAlgEquiv : Localization.Away dsig ≃ₐ[k] Localization.Away gF`
+(`Core.ChartLocalizedAlgEquiv`, commit `40219477`) is sorry-free, axiom-clean, whole-library green
+(3757 jobs). Both directions + both round-trips proved.
+
+**Seam D (Φ → `chartPhiLoc`), banked sorry-free:**
+- `Core.ChartPhiSubstitution` — `sigmaCoordT`, `chartPhiVarSub` (SchurVar → deep product blocks),
+  `chartPhiSchurAeval` + `_detSchurS`, `schurToDsig` (mirror of `schurToGfib`).
+- `Core.ChartPhiFibCoord` — `chartPhiTower`/`chartPhiFibSub`/`chartPhiFibAeval` (FORWARD gauge).
+- `Core.ChartSigmaAwayZero` — `away_chartDsig_pow_eq_zero_iff` (Σ-side zero-test via the ABSTRACT-base
+  lemma, dodging the divergent whnf), `schurOfMult` + `eval_schurOfMult_detSchurS`.
+- `Core.ChartSigmaEval` / `ChartSigmaEvalGauge` — `evalSigmaAway` + var/coeff legs.
+- `Core.ChartSigmaEvalRealize` — the Φ chart-eval lemma `evalSigmaAway_chartPhiFibAeval`.
+- `Core.ChartSigmaGaugeBridge` — `map_nonsing_inv_of_isUnit` + **`evalGauge_endpointGauge_eq_chartGauge`**
+  (Codex's flagged break point, PROVED).
+- `Core.ChartPhiDescent` — `chartPhi_vanishingIdeal_le` (descent) → `chartPhiCoeff` → `chartPhiAeval`.
+- `Core.ChartPhiLoc` — `chartPhi_gF_isUnit` + `chartPhiLoc : Away gF →ₐ[k] Away dsig`.
+
+**Seam E (glue `e` + round-trips), banked sorry-free:**
+- `Core.ChartGaugeTower` — `aevalTower_gaugeSub_gaugeSub` (the gauge group law at the tower level,
+  the reusable round-trip engine).
+- `Core.ChartRoundTrip` — the Φ∘Ψ legs + `chartPhiLoc_chartPsiSub` (h2 per-generator).
+- `Core.ChartRoundTripH1` — the B12/B21 block read-offs, the SchurVar var leg
+  `chartPsiLoc_chartPhiVarSub`, the O(F)-coeff leg mirror, and `chartPsiLoc_comp_chartPhiAeval` (the
+  h1 heart).
+- `Core.ChartLocalizedAlgEquiv` — h2 (`chartPhiLoc_comp_chartPsiLoc`) + h1
+  (`chartPsiLoc_comp_chartPhiLoc`) + `chartLocalizedAlgEquiv` (= `e`).
+
+**Round-trip mechanism (decorrelated Codex xhigh confirmed):** the cross-ring composition
+`chartPhiLoc ∘ chartPsiTower = aevalTower schurToDsig chartPhiFibSub` (and its mirror) reduces, by
+`MvPolynomial.algHom_ext'`, to the gauge group law collapsing `eg⁻¹ * eg = 1` (resp. `eg * eg⁻¹`) at
+the `MvPolynomial (RepCoord d) SchurLoc` level. NO localization fractions opened.
+
+**REMAINING for `hSweep` (then unconditional codim):**
+- `hsig` (#59) — `ringKrullDim_localizationAway_eq_of_avoids_top_prime` at R = O(Σ^r), g = ΔPdeep,
+  p₀ = P/I_eq (the pp-nodrop cert: I_eq⊆P FREE, Fact B `detΔ ∉ P` the one real build). ~2.5-3 modules.
+- final wiring — feed `(chartDsig, chartGfib, chartLocalizedAlgEquiv, hsig, hP [SchurSideNoDrop], hF)`
+  into `sweep_of_localizedChartAlgEquiv` → `hSweep` → `RouteCAssembly._of_sweep'` → unconditional
+  `codim(fibre d B) = C + δ`. ~1 module, mechanical once `hsig` lands.
