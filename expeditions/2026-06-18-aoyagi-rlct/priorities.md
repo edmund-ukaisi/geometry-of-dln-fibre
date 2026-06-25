@@ -4124,3 +4124,16 @@ original-coordinate basis-norm comparison.  The remaining high-value
 loss-comparison frontier is the map from the paper endpoint matrix object to
 the original DLN tuple/product coordinates, with any covariance or basis-norm
 constants made explicit.
+
+A2 finite basis-change square-sum comparison has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-finite-basis-change-square-sum-comparison.md`.
+Lean proves that fixed left/right coordinate multiplication compares finite
+coordinate square-sums by a positive constant, and packages the result for
+`LinearMap.toMatrix` under two fixed source/target basis pairs.  Both pointwise
+and uniform forms are recorded; in the uniform forms the constant depends only
+on the fixed basis-change matrices, not on the varying map.  This is the
+finite basis-norm ingredient only.  The remaining prerequisite before any
+`lossDLN` statement is the product-coordinate bridge: given bases
+`b j : Basis (Fin (d j)) ℝ (reverseVertex W j)`, prove that `mult` of the
+tuple `fun p => toMatrix (b p.castSucc) (b p.succ) (E p)` is
+`toMatrix (b 0) (b last) (chainMap ... E 0 last)`.

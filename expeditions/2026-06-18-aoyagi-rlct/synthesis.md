@@ -9614,6 +9614,27 @@ for original network coordinates.  The remaining loss-comparison frontier is
 the map from the paper endpoint matrix object to the original DLN tuple/product
 coordinates, with all covariance or basis-norm constants explicit.
 
+Latest A2 finite basis-change update:
+`RegularSuspensionCoordinates.lean` now proves
+`exists_pos_const_matrixCoordinateSquareSum_le_of_mul_eq` and
+`exists_pos_const_linearMap_toMatrix_squareSum_le_of_basis_change`, plus the
+uniform variants
+`exists_pos_const_forall_matrixCoordinateSquareSum_le_mul` and
+`exists_pos_const_forall_linearMap_toMatrix_squareSum_le_of_basis_change`.
+This formalises the global finite fact that a fixed change of source and target
+bases compares coordinate square-sums by a positive constant; the uniform forms
+make the constant depend only on the basis-change matrices, not on the varying
+map.  It is not a local theorem and needs no continuity or rank-stratum
+hypothesis.
+
+Lean scouting identifies the next precise loss-bridge prerequisite:
+`mult_toMatrix_chainMap` for a tuple formed by taking each reversed edge
+`E p` to its matrix in chosen bases.  This should be proved before any theorem
+mentions `lossDLN`; then `lossDLN` can be unfolded to a chain-map Frobenius
+square in original bases, and only then can the finite basis-change theorem
+connect original endpoint coordinates to the fixed adapted endpoint
+Frobenius square.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

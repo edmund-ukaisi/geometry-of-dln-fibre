@@ -248,6 +248,157 @@ theorem const_mul_matrixCoordinateSquareSum_le_of_mul_eq_of_multiplierSquareSum_
       exact mul_le_mul_of_nonneg_right hcK hSM
     _ = SM := one_mul SM
 
+/-- Fixed left and right multiplication compare finite coordinate square-sums
+up to a positive constant. -/
+theorem exists_pos_const_matrixCoordinateSquareSum_le_of_mul_eq
+    {ι μ ν κ : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [Fintype κ]
+    {L : Matrix μ ι ℝ} {M : Matrix ι ν ℝ} {Rmat : Matrix ν κ ℝ}
+    {T : Matrix μ κ ℝ}
+    (hT : L * M * Rmat = T) :
+    ∃ c : ℝ, 0 < c ∧
+      c * aoyagiCoordinateSquareSum (fun ij : μ × κ => T ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2) := by
+  classical
+  let Kmul : ℝ :=
+    max 1
+      (aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+        aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2))
+  let c : ℝ := Kmul⁻¹
+  have hKmul_pos : 0 < Kmul := by
+    exact lt_of_lt_of_le zero_lt_one (le_max_left (1 : ℝ) _)
+  have hc_pos : 0 < c := inv_pos.mpr hKmul_pos
+  have hc_nonneg : 0 ≤ c := le_of_lt hc_pos
+  have hcK : c * Kmul ≤ 1 := by
+    dsimp [c]
+    rw [inv_mul_cancel₀ (ne_of_gt hKmul_pos)]
+  have hbound :
+      aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+          aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2) ≤
+        Kmul := by
+    exact le_max_right (1 : ℝ) _
+  exact
+    ⟨c, hc_pos,
+      const_mul_matrixCoordinateSquareSum_le_of_mul_eq_of_multiplierSquareSum_mul_le
+        (L := L) (M := M) (Rmat := Rmat) (T := T)
+        hc_nonneg hcK hbound hT⟩
+
+/-- Uniform version of
+`exists_pos_const_matrixCoordinateSquareSum_le_of_mul_eq`: the comparison
+constant depends only on the fixed left and right multipliers. -/
+theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul
+    {ι μ ν κ : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [Fintype κ]
+    (L : Matrix μ ι ℝ) (Rmat : Matrix ν κ ℝ) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ M : Matrix ι ν ℝ,
+        c * aoyagiCoordinateSquareSum
+          (fun ij : μ × κ => (L * M * Rmat) ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2) := by
+  classical
+  let Kmul : ℝ :=
+    max 1
+      (aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+        aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2))
+  let c : ℝ := Kmul⁻¹
+  have hKmul_pos : 0 < Kmul := by
+    exact lt_of_lt_of_le zero_lt_one (le_max_left (1 : ℝ) _)
+  have hc_pos : 0 < c := inv_pos.mpr hKmul_pos
+  have hc_nonneg : 0 ≤ c := le_of_lt hc_pos
+  have hcK : c * Kmul ≤ 1 := by
+    dsimp [c]
+    rw [inv_mul_cancel₀ (ne_of_gt hKmul_pos)]
+  have hbound :
+      aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+          aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2) ≤
+        Kmul := by
+    exact le_max_right (1 : ℝ) _
+  refine ⟨c, hc_pos, ?_⟩
+  intro M
+  exact
+    const_mul_matrixCoordinateSquareSum_le_of_mul_eq_of_multiplierSquareSum_mul_le
+      (L := L) (M := M) (Rmat := Rmat) (T := L * M * Rmat)
+      hc_nonneg hcK hbound rfl
+
+/-- Changing finite bases in the domain and codomain compares the coordinate
+square-sum of a linear map up to a positive constant.
+
+The constant depends only on the two fixed basis-change matrices. -/
+theorem exists_pos_const_linearMap_toMatrix_squareSum_le_of_basis_change
+    {E F : Type*} [AddCommGroup E] [Module ℝ E] [AddCommGroup F] [Module ℝ F]
+    {ι ι' κ κ' : Type*} [Fintype ι] [Fintype ι'] [Fintype κ] [Fintype κ']
+    [DecidableEq ι] [DecidableEq ι']
+    (bE : Module.Basis ι ℝ E) (bE' : Module.Basis ι' ℝ E)
+    (bF : Module.Basis κ ℝ F) (bF' : Module.Basis κ' ℝ F)
+    (f : E →ₗ[ℝ] F) :
+    ∃ c : ℝ, 0 < c ∧
+      c * aoyagiCoordinateSquareSum
+        (fun ij : κ × ι => (LinearMap.toMatrix bE bF f) ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum
+        (fun ij : κ' × ι' => (LinearMap.toMatrix bE' bF' f) ij.1 ij.2) := by
+  classical
+  let L : Matrix κ κ' ℝ :=
+    LinearMap.toMatrix bF' bF (LinearMap.id : F →ₗ[ℝ] F)
+  let M : Matrix κ' ι' ℝ :=
+    LinearMap.toMatrix bE' bF' f
+  let Rmat : Matrix ι' ι ℝ :=
+    LinearMap.toMatrix bE bE' (LinearMap.id : E →ₗ[ℝ] E)
+  let T : Matrix κ ι ℝ :=
+    LinearMap.toMatrix bE bF f
+  have hright :
+      LinearMap.toMatrix bE bF' f = M * Rmat := by
+    simp [M, Rmat]
+  have hleft :
+      LinearMap.toMatrix bE bF f = L * LinearMap.toMatrix bE bF' f := by
+    simp [L]
+  have hT : L * M * Rmat = T := by
+    calc
+      L * M * Rmat = L * (M * Rmat) := by rw [Matrix.mul_assoc]
+      _ = L * LinearMap.toMatrix bE bF' f := by rw [← hright]
+      _ = LinearMap.toMatrix bE bF f := by rw [← hleft]
+      _ = T := rfl
+  simpa [L, M, Rmat, T] using
+    exists_pos_const_matrixCoordinateSquareSum_le_of_mul_eq
+      (L := L) (M := M) (Rmat := Rmat) (T := T) hT
+
+/-- Uniform basis-change comparison for coordinate square-sums of linear maps:
+the comparison constant depends only on the two fixed pairs of bases, not on
+the map. -/
+theorem exists_pos_const_forall_linearMap_toMatrix_squareSum_le_of_basis_change
+    {E F : Type*} [AddCommGroup E] [Module ℝ E] [AddCommGroup F] [Module ℝ F]
+    {ι ι' κ κ' : Type*} [Fintype ι] [Fintype ι'] [Fintype κ] [Fintype κ']
+    [DecidableEq ι] [DecidableEq ι']
+    (bE : Module.Basis ι ℝ E) (bE' : Module.Basis ι' ℝ E)
+    (bF : Module.Basis κ ℝ F) (bF' : Module.Basis κ' ℝ F) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ f : E →ₗ[ℝ] F,
+        c * aoyagiCoordinateSquareSum
+          (fun ij : κ × ι => (LinearMap.toMatrix bE bF f) ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum
+          (fun ij : κ' × ι' => (LinearMap.toMatrix bE' bF' f) ij.1 ij.2) := by
+  classical
+  let L : Matrix κ κ' ℝ :=
+    LinearMap.toMatrix bF' bF (LinearMap.id : F →ₗ[ℝ] F)
+  let Rmat : Matrix ι' ι ℝ :=
+    LinearMap.toMatrix bE bE' (LinearMap.id : E →ₗ[ℝ] E)
+  rcases exists_pos_const_forall_matrixCoordinateSquareSum_le_mul L Rmat with
+    ⟨c, hc_pos, hc⟩
+  refine ⟨c, hc_pos, ?_⟩
+  intro f
+  let M : Matrix κ' ι' ℝ :=
+    LinearMap.toMatrix bE' bF' f
+  have hright :
+      LinearMap.toMatrix bE bF' f = M * Rmat := by
+    simp [M, Rmat]
+  have hleft :
+      LinearMap.toMatrix bE bF f = L * LinearMap.toMatrix bE bF' f := by
+    simp [L]
+  have hT :
+      L * M * Rmat = LinearMap.toMatrix bE bF f := by
+    calc
+      L * M * Rmat = L * (M * Rmat) := by rw [Matrix.mul_assoc]
+      _ = L * LinearMap.toMatrix bE bF' f := by rw [← hright]
+      _ = LinearMap.toMatrix bE bF f := by rw [← hleft]
+  simpa [M, L, Rmat, hT] using hc M
+
 /-- A finite real coordinate square-sum is continuous at a point when the
 coordinate family is continuous there. -/
 theorem aoyagiCoordinateSquareSum_continuousAt

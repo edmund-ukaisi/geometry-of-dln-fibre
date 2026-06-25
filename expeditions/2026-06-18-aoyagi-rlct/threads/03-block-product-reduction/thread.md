@@ -4063,3 +4063,39 @@ Boundary: this is not the original `lossDLN`, not a statistical loss, and not a
 basis-change comparison with original network-coordinate Frobenius norm.  No
 product chart, density/Jacobian transport, source-rank openness,
 regular-suspension theorem, normal crossings, pole order, or RLCT is proved.
+
+## 2026-06-25 A2 finite basis-change square-sum comparison
+
+Reproduction:
+`reproduction-a2-finite-basis-change-square-sum-comparison.md`.
+Statement card:
+`statement-card-a2-finite-basis-change-square-sum-comparison.md`.
+Review:
+`review-a2-finite-basis-change-square-sum-comparison.md`.
+
+Lean now proves the finite coordinate comparison
+
+```text
+exists_pos_const_matrixCoordinateSquareSum_le_of_mul_eq
+exists_pos_const_forall_matrixCoordinateSquareSum_le_mul
+exists_pos_const_linearMap_toMatrix_squareSum_le_of_basis_change
+exists_pos_const_forall_linearMap_toMatrix_squareSum_le_of_basis_change
+```
+
+in `RegularSuspensionCoordinates.lean`.
+
+The pointwise matrix theorem says that if `T = L*M*R`, then some `c > 0`
+satisfies `c*squareSum(T) <= squareSum(M)`.  The proof uses the existing
+submultiplicativity estimate and the constant
+`c = max(1, squareSum(L)*squareSum(R))^{-1}`, so zero-dimensional matrix-index
+cases are covered.  The uniform matrix theorem fixes `L` and `R` once and for
+all.  The basis-change theorems apply these estimates to two fixed pairs of
+bases for the source and target of a real linear map, with the uniform version
+recording that the comparison constant does not depend on the map.
+
+Boundary: this is global finite-dimensional coordinate algebra.  It is not a
+`lossDLN` theorem, not a tuple/product bridge, not a statistical/KL/covariance
+comparison, and not an analytic chart, density/Jacobian, normal-crossing,
+pole-order, or RLCT theorem.  The next bridge prerequisite is a theorem that a
+tuple built from chosen bases has `mult` equal to the corresponding chain-map
+matrix.
