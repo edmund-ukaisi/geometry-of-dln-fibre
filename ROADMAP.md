@@ -92,23 +92,30 @@ $\theta=\operatorname{cTheta}((\underline d-r)\circ\operatorname{sort})$ for any
 geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is **Proved**
 (Bundle 2 / `voigt-discharge`).
 
-**Lemma 4.6 bundle-shift `codim(fibre B) = C + r(d₀+d_N−r)` — status after expedition `fibre-codim`
-(2026-06-24): REDUCED to one certified residual; NOT proved; `BundleShiftInterface` stays Assumed/Cited.**
-The expedition built the determinantal-trivialization engine toward it (all **Proved**, axiom-clean): the
-rank normal-form reduction `Core.FibreNormalForm` (G1); the N=1 localized base presentation
-`Core.DeterminantalBasePresentation` (G2-2); the **deep chart ring** `Core.DeepChartRing` (`Sred` for
-general `d` + `isReduced_Sred` + the non-circular base→deep `sigmaIdeal` map + the `SchurLoc`-algebra
-structure); the **endpoint gauge** `Core.EndpointNormalization` (`gaugeEquiv` + `gaugeEquiv_multPoly` over
-arbitrary `CommRing`); and the **conditional** route-(b) reducedness chain + radical-collapse
-`Core.FibreReducedTrivialization` (R2-3a), wired against the deep product iso `e` as an explicit
-hypothesis. **The single residual** (`e` ⟺ radicality of the deep fibre ideal `fibreGenIdeal d E`, `N≥1`
-⟺ the **deep flat/smooth trivialization of `Σ̄^r` over its rank base**) is **certified TRUE** (Singular +
-type-A rank-locus reducedness) but **circular as a Lean route** (building `e` proves the radicality it
-would establish) — its honest Lean proof is a **≥2-module from-scratch AG sub-project** (the engine's
-determinantal machinery is `N=1` only; the deep product's rank ideal factors). **Future expedition
-(roadmap):** the deep localized flat trivialization / type-A rank-locus reducedness. Until then the
-RLCT payoff `DLN.RlctPayoffGeneral` rests on `BundleShiftInterface.cited_bundle_shift` (Assumed) — named
-as such, never as Proved. Full record: `expeditions/2026-06-23-fibre-codim/synthesis.md` §EXPEDITION OUTCOME.
+**Lemma 4.6 bundle-shift `codim(fibre B) = C + r(d₀+d_N−r)` — PROVED unconditionally, zero-cite for the
+geometry (expedition `fibre-codim`, 2026-06-25).** `Core.FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift`:
+for any rank-`r` `B` over an algebraically closed char-0 field (`k : Type 0`),
+`codimRepCanonical (fibre d B) = (cCodim d r h).toNat + r·(d_N + d_0 − r)` — **no Cited interface for the
+geometry**. Build green, `scripts/sorries` 0, `#print axioms = [propext, Classical.choice, Quot.sound]`
+(no `sorryAx`). Minimal-hyp form: only `[IsAlgClosed][CharZero]` + `h : (kostantPartitions d r).Nonempty`
++ `B.rank = r`. **Double-gated by independent decorrelated review:** `e`-fidelity (#67 PASS) and codim↔paper
+fidelity (#68 PASS — matches LR Lemma 4.6, `(2,2,2)` checked by hand+`decide`, no overclaim;
+`reviews/68-codim-final-fidelity.md`).
+**The route that broke the earlier residual (route-β):** the `BundleShiftInterface` residual — the deep
+flat/smooth trivialization of `Σ̄^r`, left by the 2026-06-24 outcome as a "circular-as-a-Lean-route,
+≥2-module from-scratch AG sub-project" — was BUILT directly as the **localized chart `AlgEquiv`**
+`Core.ChartLocalizedAlgEquiv.chartLocalizedAlgEquiv : O(Σ^r)[1/Δ] ≃ₐ[k] O(F)⊗stratum[1/g]`, staying
+**radical-insensitive (vanishingIdeal-side) throughout** so the `IsReduced`-then-build circularity never
+arises. Seams A–E (the Ψ/Φ comorphism descents + the gauge-group-law round-trips, the matrix-inverse wall
+sidestepped at the units level); fed with the **source no-drop** `Core.SourceNoDrop` (Fact B `detΔ∉P` +
+the ℕ∞ catenary, riding only the *free* orbit-in-Σ^r containment — no closure-density entanglement) through
+`Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv` → **hSweep** (`varietyDim Σ^r = δ + varietyDim F`,
+now a Proved lemma) → the route-c assembly `Core.RouteCAssembly` (carries the in-repo `hClosure`).
+**Scope:** `k : Type 0` (the DLN field — ℝ/ℂ; a universe lift is roadmap-able, loses nothing for the
+application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanabe). **Next (#52):** discharge
+`DLN.BundleShiftInterface.cited_bundle_shift` from this Proved codim result → complete the RLCT payoff
+`DLN.RlctPayoffGeneral` (`rlct = C/2`, cap still Cited). Full record:
+`expeditions/2026-06-23-fibre-codim/synthesis.md`.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,

@@ -793,3 +793,49 @@ transport (landed) ⟹ `hSweep` → plug into `..._of_sweep'` ⟹ unconditional 
 `hClosure`) → (4) hClosure (prove via density/openness, or keep Cited) → (5) G4: discharge
 `DLN.BundleShiftInterface.cited_bundle_shift` (full reviewer + Codex gate). Next tide: generic freeness,
 SPECIFY-first (thorough Mathlib check — confirm it's genuinely absent — + the dévissage/filtration proof).
+
+## CENTRAL RESULT ACHIEVED — codim(fibre)=C+δ PROVED, zero-cite (2026-06-25)
+
+The hSweep build (option b) landed end-to-end. **`codimRepCanonical (fibre d B) = (cCodim d r).toNat +
+r·(d_N + d_0 − r)`** for any rank-`r` `B` is **PROVED IN LEAN with no Cited interface for the geometry** —
+`Core.FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift`, minimal-hyp form (only
+`[IsAlgClosed][CharZero]` + `(kostantPartitions d r).Nonempty` + `B.rank = r`), tip `538dea7a`.
+
+**Verified (controller, independent of the tides' green reports):** whole-library `./scripts/lb` green
+(3763 jobs); `scripts/sorries` = 0 sorry / 0 axiom / 0 native_decide; `#print axioms
+codimRepCanonical_fibre_eq_cCodim_add_shift` = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
+
+**Double-gated by decorrelated, controller-commissioned review** (a builder-spawned review was treated as
+supporting evidence, not the gate):
+- **#67 — `e` (chartLocalizedAlgEquiv) fidelity:** PASS. Honest, non-vacuous, axiom-clean; both descents
+  ride only `vanishingIdeal` — the R2-3b-4 generator-ideal wall structurally avoided.
+- **#68 — codim↔paper fidelity:** PASS. Matches LR Lemma 4.6 (`lem:rank_vs_fibers`): `cCodim`=`C` (Cor 3.5
+  form), shift=`δ`, `Fin(N+2)` depth correct (no off-by-one), achievability hyp = the paper's `r ≤ min d`,
+  `(2,2,2)` checked by hand+`decide`, NO overclaim (codim, not rlct). `reviews/68-codim-final-fidelity.md`.
+
+**How the R2-3b-4 wall fell (route-β).** The residual `e` — the deep flat/smooth trivialization that the
+§EXPEDITION OUTCOME left as "certified TRUE but circular as a Lean route, a ≥2-module from-scratch AG
+sub-project" — was built directly as the **localized chart `AlgEquiv`** over the rank-=r ring,
+**radical-insensitive (vanishingIdeal-side) throughout**, so the "build `e` ⟺ prove the radicality `e`
+would establish" circularity never arises. Seams: A (target-side eval + chart-eval lemma), B (principal-open
+zero-test), C (Ψ descent → `chartPsiLoc`, incl. the det-assembly `chartPsiAeval ΔPdeep = detSchurS`-image,
+a unit), D (Φ descent → `chartPhiLoc`), E (`AlgEquiv.ofAlgHom` glue + gauge-group-law round-trips, the
+matrix-inverse wall sidestepped at the units level). Then `Core.SourceNoDrop` (`hsig`) + the wiring → hSweep
+→ route-c assembly (`hClosure` in-repo).
+
+**Process notes (banked lessons).** (1) A per-module green build is NOT a whole-library green build —
+aggregating `FibreCodimFinal` surfaced a NAME COLLISION (it reused the bare name of the older CONDITIONAL
+min-primes theorem); fixed by renaming the conditional one `…_of_height_bounds`. The controller re-verified
+every gate (build / sorries / `#print axioms`) itself rather than trusting "green" reports. (2) Push-safety:
+a tide's `git push` silently failed for several commits (local-ahead, unpushed) — the controller backed them
+up via fetch+push each cycle. (3) The minimal-hyp tightening (#69) dropped `hp/hq/hN` (derived from `h` /
+vacuous), a strict strengthening that preserves fidelity.
+
+**Caveats (next to the claim).** `k : Type 0` (the DLN payoff field — ℝ/ℂ; universe lift roadmap-able);
+the `kostantPartitions`-nonempty achievability hypothesis is carried (reviewer-confirmed = `r ≤ min d`,
+non-vacuous); **`rlct = ½·codim` stays Cited** (Aoyagi/Watanabe) — the geometric codimension is the new
+zero-cite content.
+
+**Remaining (post-central-result).** #52 — discharge `DLN.BundleShiftInterface.cited_bundle_shift` from the
+Proved codim result → complete the RLCT payoff (`rlct = C/2`, cap Cited). #54 — θ-count fidelity for
+`(3,3,3)`. Opening/merging the PR is operator-gated (signal-and-wait).
