@@ -5,31 +5,35 @@ Successor to the codim hero expedition. Central question: the order **θ** + the
 
 ## Status: kickoff threads returned (2 decorrelated certificates + controller assessment)
 
-### Headline finding (CANDIDATE — under verification): Aoyagi (2023) Thm 2's order formula may be wrong for deep nets
+### Headline (RESOLVED, thread 03 + controller-verified): three distinct θ-invariants; Aoyagi correct; LR's printed rlcm off by one
 
-Thread 01 (pen-and-paper, decorrelated + Codex-concurred) adjudicated the two θ's:
-- **θ_LR = C(m,|δ|)** (the Lean `cTheta` = #top-dim irreducible components) vs **θ_Aoyagi = a(ℓ−a)+1**.
-- They **diverge for |δ|≥2**; agree iff |δ|≤1. Witness **(2,2,2,2,2), r=0: 6 vs 5**, with the component
-  count = 6 confirmed by THREE independent ground truths (QIP brute force, Kostant stratification, LR
-  closed form). λ (the RLCT) agrees exactly on all differing cases.
-- Mechanism: `a(ℓ−a)+1` = first-order (single-transposition) neighborhood of the rounding vertex;
-  `C(m,|δ|)` = the full closest-lattice-point set (type-A_m Voronoi). Coincide only through first order.
-- Thread-01 verdict: **Aoyagi's formula undercounts — a published arithmetic error**; `C(m,|δ|)` is correct.
+Thread 01 (witness seat) reached a CANDIDATE "Aoyagi erred" verdict; thread 03 (obstruction seat,
+decorrelated + Codex) **REFUTED it**, and the controller verified the key claim against LR `main.tex`. (The
+decorrelated dialectic worked exactly as intended — the confident headline was wrong; the skeptical seat
+caught it.) Settled picture — **three distinct invariants**, agreeing iff `|δ|≤1`, diverging for `|δ|≥2`
+(witness `(2,2,2,2,2)` r=0):
 
-**Controller assessment — do NOT bank "Aoyagi erred" yet.** The verdict rests on the dictionary
-**"#top-dim components = the SLT pole multiplicity (the order)."** The three ground truths confirm
-*#components = 6*; they do not independently confirm the *pole multiplicity = 6* (that step uses the
-dictionary). Two live hypotheses survive:
-- **H1** — Aoyagi's `a(ℓ−a)+1` is an arithmetic error; the order = #components = `C(m,|δ|)`. *(thread-01)*
-- **H2** — the SLT order genuinely = `a(ℓ−a)+1` (Aoyagi correct), and #top-dim components `C(m,|δ|)` is a
-  *different, larger* invariant (order ≠ #components for |δ|≥2; LR's "θ" is a geometric count, not the order).
+| invariant | formula | what it is | (2,2,2,2,2) r=0 |
+|---|---|---|---|
+| `cTheta` (Lean / LR `k`) | `C(m,\|δ\|)` | # top-dim irreducible components | 6 ✓ correct |
+| rlcm / pole order (Aoyagi) | `a(ℓ−a)+1` | the SLT multiplicity | 5 ✓ correct |
+| LR's *printed* rlcm (`:1895`) | `a(ℓ−a)` | = θ−1, the log-log coefficient | 4 ✗ off by one |
 
-The germ-invariance argument shows the order is *well-defined*; it does not show #components = order — so
-H2 is not excluded. **Decisive tests (commissioned, thread 03):** (i) does LR rigorously *prove*
-#top-components = the SLT pole multiplicity, or *define* θ := #components? (ii) compute the pole multiplicity
-for (2,2,2,2,2) independently of component-counting — ideally via Aoyagi's *own* Thm-1 resolution count
-(`θ = max_u Card{j : (h_j+1)/(2k_j)=λ}`, the k_j/h_j). If 6 ⟹ Aoyagi internally inconsistent (H1); if 5 ⟹
-H2. Either outcome is a real precision/fidelity result (correct the literature, or distinguish two θ's).
+- **Aoyagi (2023) is NOT in error.** `a(ℓ−a)+1` is the genuine pole order — internally consistent (Thm 1 /
+  Thm 2 / equal-width Example agree) and cross-checked against the peer-reviewed Aoyagi–Watanabe (2005)
+  reduced-rank-regression multiplicity (1127 cases, 0 mismatch).
+- **`cTheta = C(m,|δ|)` is correct as a component count.** LR's own Remark (`:1934`) says there is "no simple
+  relationship" between rlcm and the component count `k` — so #components ≠ the order; genuinely different
+  invariants (general counterexample `F=xy(x−y)`: 3 components, pole order 1).
+- **LR's *printed* rlcm (`:1895`) is off by one.** LR define (`:1808`) `rlcm ∈ ℕ` = the order of the largest
+  pole (≥1), but the printed `m²{S̃/m}(1−{S̃/m})` = `a(ℓ−a)` is **0 at `|δ|=0`** — impossible for a pole
+  order. The correct rlcm, by their own definition, is `a(ℓ−a)+1` = Aoyagi's; the printed expression is the
+  log-log coefficient θ−1. **Controller-verified against the source** (certificate-strength via the
+  definition-vs-formula contradiction; pinpointing the dropped `+1` in their resolution proof is the one open
+  sub-question).
+- **The `rlct = codim/2` (λ) story is UNAFFECTED** — λ agrees exactly; this touches only the secondary
+  multiplicity. **This resolves #54:** the Lean `cTheta` is the correct component count; the "θ" confusion
+  was conflating the component count with the pole order.
 
 ### Build terrain (thread 02, scout)
 
@@ -53,17 +57,21 @@ H2. Either outcome is a real precision/fidelity result (correct the literature, 
 The expedition has three separable pieces, in rough dependency/value order:
 1. **Fibre θ-count + bijection (scope-2 backbone)** — likely **cheap via the (A) decoupling** (transport
    through `e`), avoiding the reducedness wall *if* the kill-condition holds. High-value, near-term.
-2. **The θ-formula finding** — a precision contribution: correct Aoyagi (H1) or distinguish the two θ's
-   (H2). Verify first (thread 03); it reshapes how θ is stated, not the codim/λ results.
+2. **The θ-formula findings (RESOLVED)** — a precision contribution: (i) `cTheta`/component count and the
+   rlcm/pole order are *distinct* invariants (formalise both, named distinctly — never conflate); (ii) LR's
+   *printed* rlcm is off by one (correct rlcm = `a(ℓ−a)+1`). Does not touch the codim/λ results. #54 resolved.
 3. **The full bundle + smoothness (scope-3, "rest of Lemma 4.6 B")** — the heavy lift: reducedness wall +
    hand-built bundle + smooth-locus scoping. This is where the consolidation design goal lives; it is a
    **strict scope increase, not a free consolidation** — `e` likely stays a load-bearing lemma.
 
-Sequencing: resolve H1/H2 (thread 03) + the (A) kill-condition (thread 04) **first** — they decide both the
-correct θ statement and whether the backbone is cheap. Then the bundle/smoothness heavy lift.
+Sequencing: the θ-formula question is settled (above). The (A) kill-condition (thread 04) decides whether the
+fibre-θ backbone is cheap; then the bundle/smoothness heavy lift. The off-by-one warrants surfacing to the
+operator (a precision finding on the paper being formalised — possible erratum/correspondence; operator call).
 
 ## Threads
 - **01** θ adjudication (pen-and-paper) — DONE; certificate `threads/01-theta-adjudication/findings.md`.
+  (Candidate verdict "Aoyagi erred" — REFUTED by thread 03.)
 - **02** terrain map (scout) — DONE; `threads/02-terrain-map/findings.md`.
-- **03** H1-vs-H2 stress-test (pen-and-paper, obstruction) — launched 2026-06-25.
-- **04** (A)-decoupling kill-condition + `fibreGenIdeal` primary decomposition — launched 2026-06-25.
+- **03** H1-vs-H2 stress-test (pen-and-paper, obstruction) — DONE; H1 REFUTED, three distinct invariants, LR
+  printed rlcm off-by-one (controller-verified vs `main.tex`). Certificate `threads/03-theta-h1-h2/findings.md`.
+- **04** (A)-decoupling kill-condition + `fibreGenIdeal` primary decomposition — running.
