@@ -6322,6 +6322,36 @@ side or threshold equality, no bounded-density or prior theorem, no Aoyagi
 p.13 analytic chart/Jacobian construction, no normal crossings, no pole order,
 and no RLCT.
 
+Latest A2 negative-power lower-bound comparison:
+Lean now proves the model-loss comparison theorem in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.  If `c>0`,
+`0<=t`, `a(x)>0` a.e., `c*a(x)<=b(x)` a.e., and
+
+```text
+∫⁻ x, ENNReal.ofReal ((a x)^(-t)) dmu < infinity,
+```
+
+then
+
+```text
+∫⁻ x, ENNReal.ofReal ((b x)^(-t)) dmu < infinity.
+```
+
+Lean name:
+`lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-negative-power-lower-bound-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-negative-power-lower-bound-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-negative-power-lower-bound-comparison.md`.
+
+Nonclaims: no lower-bound construction for Aoyagi's product residual, no
+monomial integrability theorem, no finite chart cover theorem, no density or
+prior transport theorem, no endpoint behavior, no lower/divergence side or
+threshold equality, no Aoyagi p.13 analytic chart/Jacobian construction, no
+normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

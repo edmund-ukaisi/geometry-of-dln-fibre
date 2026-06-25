@@ -80,6 +80,41 @@ theorem lintegral_rpow_neg_add_right_restrict_lt_top_of_lintegral_rpow_neg_restr
     lintegral_rpow_neg_add_right_lt_top_of_lintegral_rpow_neg_lt_top
       (μ := μ.restrict u) (ν := ν.restrict t) (a := a) (q := q) ha hs hbase
 
+/-- Negative-power lower-integrability transfers across an a.e. lower bound
+by a positive constant multiple. -/
+theorem lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le
+    {α : Type*} [MeasurableSpace α] {μ : Measure α}
+    {a b : α → ℝ} {c t : ℝ}
+    (hc : 0 < c) (ht : 0 ≤ t)
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x)
+    (hle : ∀ᵐ x ∂μ, c * a x ≤ b x)
+    (hbase : (∫⁻ x : α, ENNReal.ofReal ((a x) ^ (-t)) ∂μ) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal ((b x) ^ (-t)) ∂μ) < ∞ := by
+  have hmono :
+      (∫⁻ x : α, ENNReal.ofReal ((b x) ^ (-t)) ∂μ) ≤
+        ∫⁻ x : α,
+          ENNReal.ofReal (c ^ (-t)) *
+            ENNReal.ofReal ((a x) ^ (-t)) ∂μ := by
+    apply lintegral_mono_ae
+    filter_upwards [ha_pos, hle] with x hax hxle
+    have hcax : 0 < c * a x := mul_pos hc hax
+    have hpow_le : (b x) ^ (-t) ≤ (c * a x) ^ (-t) :=
+      Real.rpow_le_rpow_of_nonpos hcax hxle (by linarith)
+    have hmul : (c * a x) ^ (-t) = c ^ (-t) * (a x) ^ (-t) := by
+      rw [Real.mul_rpow hc.le hax.le]
+    calc
+      ENNReal.ofReal ((b x) ^ (-t)) ≤
+          ENNReal.ofReal ((c * a x) ^ (-t)) :=
+        ENNReal.ofReal_le_ofReal hpow_le
+      _ = ENNReal.ofReal (c ^ (-t) * (a x) ^ (-t)) := by
+        rw [hmul]
+      _ = ENNReal.ofReal (c ^ (-t)) *
+          ENNReal.ofReal ((a x) ^ (-t)) := by
+        rw [ENNReal.ofReal_mul (Real.rpow_nonneg hc.le _)]
+  refine lt_of_le_of_lt hmono ?_
+  rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hbase
+
 section RadialFiniteSide
 
 /-- Radial punctured-ball integrability for the model `r^(-t)` below the

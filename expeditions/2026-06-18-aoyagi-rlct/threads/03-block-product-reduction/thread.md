@@ -3121,3 +3121,41 @@ coordinates, does not cover zero-dimensional residual blocks, and does not
 prove endpoint/divergence, threshold equality, bounded-density/prior
 transport, p.13 analytic chart/Jacobian construction, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-25 A2 negative-power lower-bound comparison
+
+Reproduction:
+`reproduction-a2-negative-power-lower-bound-comparison.md`.
+Statement card:
+`statement-card-a2-negative-power-lower-bound-comparison.md`.
+Review:
+`review-a2-negative-power-lower-bound-comparison.md`.
+
+Lean now proves a reusable residual-base comparison theorem in
+`RegularSuspensionIntegrability.lean`:
+
+```text
+lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le
+```
+
+If `c>0`, `0<=t`, `a(x)>0` a.e., `c*a(x)<=b(x)` a.e., and
+
+```text
+∫⁻ x, ENNReal.ofReal (a(x)^(-t)) dmu < infinity,
+```
+
+then
+
+```text
+∫⁻ x, ENNReal.ofReal (b(x)^(-t)) dmu < infinity.
+```
+
+The pointwise calculation is
+`b^(-t) <= (c*a)^(-t) = c^(-t)*a^(-t)`, using nonpositive exponent
+monotonicity and positive-factor multiplicativity.
+
+Boundary: this is only a comparison theorem.  It does not construct a lower
+bound for Aoyagi's product residual, does not prove monomial integrability,
+does not prove a finite chart cover theorem, and does not prove
+bounded-density/prior transport, endpoint/divergence, threshold equality, p.13
+analytic chart/Jacobian construction, normal crossings, pole order, or RLCT.

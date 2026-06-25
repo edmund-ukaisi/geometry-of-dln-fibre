@@ -9254,6 +9254,31 @@ blocks, and does not prove endpoint/divergence, threshold equality,
 bounded-density/prior transport, p.13 analytic chart/Jacobian construction,
 normal crossings, pole order, or RLCT.
 
+Latest A2 negative-power lower-bound comparison:
+`RegularSuspensionIntegrability.lean` now proves
+
+```text
+lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le
+```
+
+This is the comparison brick for future monomial-chart residual estimates.  If
+`b(x)` is a.e. bounded below by `c*a(x)` for some `c>0`, and `a(x)>0` a.e.,
+then finite negative `t`-power lower integrability of `a` transfers to `b`
+for `0<=t`.  The proof is the pointwise inequality
+`b^(-t) <= (c*a)^(-t) = c^(-t)*a^(-t)` plus lower-integral monotonicity and
+constant extraction.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-negative-power-lower-bound-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-negative-power-lower-bound-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-negative-power-lower-bound-comparison.md`.
+
+This does not construct any lower bound for Aoyagi's product residual, prove
+monomial integrability, cover finitely many charts, transport density/prior
+factors, or prove endpoint/divergence, threshold equality, p.13 analytic
+chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

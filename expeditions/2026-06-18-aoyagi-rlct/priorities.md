@@ -3772,12 +3772,19 @@ Lean specialises the threshold bridge to
 `AoyagiResidualBlockCoordinateIndex.value (D x)`, with positivity and
 negative-power integrability still explicit hypotheses.
 
-A2 Euclidean coordinate square-sum base integrability is in progress:
+A2 Euclidean coordinate square-sum base integrability has now landed:
 `threads/03-block-product-reduction/reproduction-a2-euclidean-coordinate-square-sum-base-integrability.md`.
 Lean proves the local negative-power theorem for the free Euclidean coordinate
 model `a(x)=sum_i x_i^2`, plus a composed square-suspension product corollary.
 Treat this as a base-case analytic brick only: it does not prove the residual
 negative-power hypothesis for Aoyagi's product residual `D=prod_s C^(s)`.
+
+A2 negative-power lower-bound comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-negative-power-lower-bound-comparison.md`.
+Lean proves that if `b(x) >= c*a(x)` a.e. with `c>0`, `a(x)>0` a.e.,
+`0<=t`, and `a^(-t)` has finite lower integral, then `b^(-t)` has finite
+lower integral.  Treat this as comparison plumbing for monomial-chart residual
+work, not as monomial integrability or a chart theorem.
 
 Updated next A2 analytic target: prove, for the reduced residual model itself,
 the residual negative-power hypothesis `∫ ofReal(a(x)^(-t)) < infinity` in
