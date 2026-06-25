@@ -5549,3 +5549,38 @@ the residual-product identity, construct the residual-index equivalence, or
 prove source image/coverage.
 Independent xhigh review passed after wording fixes to avoid implying that the
 theorem packages a source chart.
+
+## 2026-06-25 A2 residual-product factor frontier
+
+Reproductions:
+`reproduction-a2-residual-factor-product.md` and
+`reproduction-a2-product-coordinate-residual-product-preservation.md`.
+Statement cards:
+`statement-card-a2-residual-factor-product.md` and
+`statement-card-a2-product-coordinate-residual-product-preservation.md`.
+Review:
+`review-a2-residual-product-factor-frontier.md`.
+
+Lean now defines
+`ChartLocalSuffixState.residualFactorProduct`, the explicit decreasing
+endpoint product of supplied residual factors, and proves:
+
+```text
+ChartLocalSuffixState.residualProduct_eq_residualFactorProduct_of_residualBlock_eq
+ChartLocalSuffixState.residualProduct_productCoordinateEdges_succSucc_eq_residualFactorProduct
+paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq_base
+```
+
+The first theorem says that if every suffix transformed Schur residual block
+below the endpoint `j` is a supplied factor `C p`, then the suffix residual
+product is the explicit ordered factor product.  The second
+specializes this to raw multi-edge p.13 product-coordinate matrices.  The
+third exposes the existing fixed-base product-coordinate constructor's base
+residual-product preservation as a named theorem.
+
+This is an intermediate-factor API.  It does not prove that the factor product
+is Aoyagi's selected-entry matrix, does not construct residual factors from
+source data, does not realize an arbitrary final residual matrix in the
+multi-edge case, does not construct a fixed-base source chart or residual-index
+equivalence, and does not prove source coverage, source-measure transport,
+normal crossings, pole order, or RLCT.

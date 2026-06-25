@@ -8330,6 +8330,35 @@ Nonclaims: no construction of `Ebase`, no proof of the residual-product
 matrix identity, no construction of the residual-index equivalence, no source
 coverage, source-measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 residual-product factor frontier:
+`ProductReduction.lean` now defines
+`ChartLocalSuffixState.residualFactorProduct` and proves
+`ChartLocalSuffixState.residualProduct_eq_residualFactorProduct_of_residualBlock_eq`
+and
+`ChartLocalSuffixState.residualProduct_productCoordinateEdges_succSucc_eq_residualFactorProduct`.
+The new factor product is the explicit decreasing product of supplied residual
+factors `C p`; if every suffix transformed Schur residual block below the
+endpoint `j` equals `C p`, then the suffix `residualProduct` equals this
+explicit factor product.
+For raw multi-edge p.13 product-coordinate matrices this follows from the
+existing residual-block theorem.  `RegularSuspensionCoordinates.lean` also now
+proves
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq_base`,
+which exposes that the fixed-base p.13 product-coordinate constructor
+preserves the base suffix residual product.  Reproductions, statement cards,
+and review:
+`threads/03-block-product-reduction/reproduction-a2-residual-factor-product.md`,
+`threads/03-block-product-reduction/statement-card-a2-residual-factor-product.md`,
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-residual-product-preservation.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-coordinate-residual-product-preservation.md`,
+and
+`threads/03-block-product-reduction/review-a2-residual-product-factor-frontier.md`.
+Nonclaims: no construction of the residual factors from Aoyagi source data, no
+selected-entry residual-product matrix identity, no arbitrary final residual
+matrix realization in the multi-edge case, no fixed-base source chart, no
+residual-index equivalence, no source coverage, source-measure transport,
+normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

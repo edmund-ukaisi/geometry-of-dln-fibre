@@ -3892,6 +3892,106 @@ theorem continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuc
       hlast, hzero] using hres
 
 set_option linter.unusedSectionVars false in
+/-- The multi-edge p. 13 product-coordinate matrix constructor preserves the
+base suffix residual product. -/
+theorem paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq_base
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)] [∀ i, Module ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (Ebase : ∀ p : Fin (M + 2), Matrix
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+          p.castSucc) ℝ) :
+    ChartLocalSuffixState.residualProduct
+        (paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+          V Bv U₀ u Ebase)
+        (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+      ChartLocalSuffixState.residualProduct Ebase
+        (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) := by
+  let G :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+      V Bv U₀ u Ebase
+  let F2 :=
+    AoyagiRegularBlockCoordinateIndex.f2Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let F3 :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let Ctop :=
+    AoyagiRegularBlockCoordinateIndex.ctopMatrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  have hLastG :
+      G (Fin.last (M + 1)) =
+        ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3
+          (ChartLocalSuffixState.residualBlock Ebase
+            (Fin.last (M + 2)) (Fin.last (M + 1)) (Fin.last (M + 1)).succ.le_last) := by
+    simp [G, F3, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
+  have hMidG :
+      ∀ p : Fin (M + 2), 0 < p.val → p.val < M + 1 →
+        G p =
+          ChartLocalSuffixState.productCoordinateMiddleMatrix
+            (ρ := Fin (Module.finrank ℝ U₀))
+            (ChartLocalSuffixState.residualBlock Ebase
+              (Fin.last (M + 2)) p p.succ.le_last) := by
+    intro p hp0 hplast
+    have hnotLast : p ≠ Fin.last (M + 1) := by
+      intro hp
+      have hval : p.val = M + 1 := by
+        simp [hp]
+      omega
+    have hnotZero : p ≠ 0 := by
+      intro hp
+      have hval : p.val = 0 := by
+        simp [hp]
+      omega
+    simp [G, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+      hnotLast, hnotZero]
+  have hLeftG :
+      let p0 : Fin (M + 2) := 0
+      G p0 =
+        ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop
+          (ChartLocalSuffixState.residualBlock Ebase
+            (Fin.last (M + 2)) p0 p0.succ.le_last) := by
+    have hnotLast : (0 : Fin (M + 2)) ≠ Fin.last (M + 1) := by
+      intro h
+      have hval := congrArg Fin.val h
+      simp at hval
+    simp [G, F2, Ctop, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+      hnotLast]
+  simpa [G] using
+    ChartLocalSuffixState.residualProduct_productCoordinateEdges_succSucc_eq_base
+      (K := ℝ) Ebase G F2 F3 Ctop hLastG hMidG hLeftG
+
+set_option linter.unusedSectionVars false in
 /-- The multi-edge p. 13 product-coordinate constructor has regular
 coordinates equal to the supplied Euclidean vector and residual coordinates
 equal to the base residual product. -/

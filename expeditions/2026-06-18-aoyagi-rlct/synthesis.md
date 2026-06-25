@@ -10641,3 +10641,21 @@ and
 This is finite all-pivot sector geometry only, not local source-stratum
 coverage, fixed-base residual readout, source-measure identification, normal
 crossings, pole order, or RLCT.
+
+The residual-product frontier now has an intermediate-factor API in
+`ProductReduction.lean`: `ChartLocalSuffixState.residualFactorProduct` names
+the explicit decreasing product of supplied residual factors, and
+`residualProduct_eq_residualFactorProduct_of_residualBlock_eq` plus
+`residualProduct_productCoordinateEdges_succSucc_eq_residualFactorProduct`
+prove that product-coordinate edges have suffix residual product equal to this
+factor product when their transformed Schur residual blocks read as the
+supplied factors.  The general comparison lemma assumes all suffix blocks
+below its endpoint `j`; in the full `last,0` p.13 use this is the traversed
+chain.  `RegularSuspensionCoordinates.lean` also exposes
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq_base`,
+the theorem that the fixed-base p.13 product-coordinate constructor preserves
+the base residual product.  This is not the selected-entry matrix identity.
+The next honest target is to either prove or boundary-document a statement of
+the form `residualFactorProduct C last 0 = selectedEntryMatrix` from explicit
+Aoyagi displayed residual-factor data, still with residual-index equivalence
+and source chart data supplied unless separately produced.

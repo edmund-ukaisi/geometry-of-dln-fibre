@@ -1839,6 +1839,28 @@ def residualProduct
     (by simpa using (1 : Matrix (κ j) (κ j) K))
     (Fin.val_fin_le.mp hij)
 
+/-- The ordered product of an explicitly supplied family of residual factors.
+
+This is the same decreasing endpoint product as `residualProduct`, but with
+the visited Schur residual blocks replaced by a supplied matrix family `C`. -/
+def residualFactorProduct
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (j i : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix (κ j) (κ i) K :=
+  Nat.decreasingInduction
+    (motive := fun m hmj ↦
+      Matrix (κ j) (κ ⟨m, lt_of_le_of_lt hmj j.isLt⟩) K)
+    (fun m hms D ↦
+      let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hms j.isLt)⟩
+      by
+        let D' : Matrix (κ j) (κ p.succ) K := by
+          simpa [p] using D
+        simpa [p] using D' * C p)
+    (by simpa using (1 : Matrix (κ j) (κ j) K))
+    (Fin.val_fin_le.mp hij)
+
 /-- The residual product is identity at the right endpoint. -/
 @[simp]
 theorem residualProduct_self
@@ -1848,6 +1870,16 @@ theorem residualProduct_self
     (j : Fin (N + 1)) :
     residualProduct E j j le_rfl = 1 := by
   simp [residualProduct]
+
+/-- The explicit residual-factor product is identity at the right endpoint. -/
+@[simp]
+theorem residualFactorProduct_self
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (j : Fin (N + 1)) :
+    residualFactorProduct C j j le_rfl = 1 := by
+  simp [residualFactorProduct]
 
 /-- The residual product unfolds by multiplying the next transformed Schur
 residual block. -/
@@ -1859,6 +1891,20 @@ theorem residualProduct_castSucc
     residualProduct E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
       residualProduct E j p.succ hpj * residualBlock E j p hpj := by
   unfold residualProduct
+  rw [Nat.decreasingInduction_succ_left]
+  · congr 1
+  · exact Fin.val_fin_le.mp hpj
+
+/-- The explicit residual-factor product unfolds by multiplying the next
+supplied residual factor. -/
+theorem residualFactorProduct_castSucc
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j) :
+    residualFactorProduct C j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+      residualFactorProduct C j p.succ hpj * C p := by
+  unfold residualFactorProduct
   rw [Nat.decreasingInduction_succ_left]
   · congr 1
   · exact Fin.val_fin_le.mp hpj
@@ -1902,6 +1948,49 @@ theorem residualProduct_eq_of_residualBlock_eq
   have hcanon' :
       residualProduct E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) =
         residualProduct E' j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) := by
+    simpa [motive] using hcanon
+  simpa using hcanon'
+
+/-- A residual product is the explicit factor product when each suffix Schur
+residual block below the endpoint `j` is the corresponding supplied factor. -/
+theorem residualProduct_eq_residualFactorProduct_of_residualBlock_eq
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j)
+    (hblock : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      residualBlock E j p hpj = C p) :
+    residualProduct E j i hij = residualFactorProduct C j i hij := by
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    residualProduct E j im (Fin.val_fin_le.mpr hmj) =
+      residualFactorProduct C j im (Fin.val_fin_le.mpr hmj)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hms j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        residualProduct E j p.succ hpj =
+          residualFactorProduct C j p.succ hpj := by
+      simpa [motive, p, hpj] using ih
+    calc
+      residualProduct E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+          residualProduct E j p.succ hpj * residualBlock E j p hpj := by
+            rw [residualProduct_castSucc]
+      _ = residualFactorProduct C j p.succ hpj * C p := by
+            rw [ih', hblock p hpj]
+      _ = residualFactorProduct C j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) := by
+            rw [← residualFactorProduct_castSucc]
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      residualProduct E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) =
+        residualFactorProduct C j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) := by
     simpa [motive] using hcanon
   simpa using hcanon'
 
@@ -2395,6 +2484,47 @@ theorem residualBlock_productCoordinateEdges_succSucc
         schurResidualBlock_fromBlocks_lowerLeft_zero
           (K := K) (A := (1 : Matrix ρ ρ K))
           (B := (0 : Matrix ρ (κ p.castSucc) K)) (D := C p)
+
+/-- Raw multi-edge product-coordinate matrices have residual product equal to
+the explicit ordered product of the supplied residual factors. -/
+theorem residualProduct_productCoordinateEdges_succSucc_eq_residualFactorProduct
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0)) :
+    residualProduct E (Fin.last (N + 2)) 0 (Fin.zero_le (Fin.last (N + 2))) =
+      residualFactorProduct C (Fin.last (N + 2)) 0 (Fin.zero_le (Fin.last (N + 2))) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  have hblocks_last :
+      ∀ p : Fin (N + 2),
+        residualBlock E j p p.succ.le_last = C p := by
+    intro p
+    simpa [j] using
+      residualBlock_productCoordinateEdges_succSucc
+        (K := K) E F2 F3 Ctop C hLast hMid hLeft p
+  have hblocks :
+      ∀ (p : Fin (N + 2)) (hpj : p.succ ≤ j),
+        residualBlock E j p hpj = C p := by
+    intro p hpj
+    have hhp : hpj = p.succ.le_last := Subsingleton.elim _ _
+    cases hhp
+    exact hblocks_last p
+  have hprod :=
+    residualProduct_eq_residualFactorProduct_of_residualBlock_eq
+      (K := K) E C (Fin.zero_le j) hblocks
+  simpa [j] using hprod
 
 /-- Raw multi-edge product-coordinate matrices preserve the residual product
 when their residual factors are chosen to be the base transformed Schur
