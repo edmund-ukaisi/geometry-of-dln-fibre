@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-62 (2026-06-25) — L2 (b)-route DECIDED: B (front-pivot WLOG), sound + decisively less-Lean; (b) EXACT; build commissioned. ★**
+- **B is the (b)-route** (pp-pin2-rearch + decorrelated Codex, b-wlog-spec.md @2095bd64): 3 exact checks (loss identity
+  `dlnLoss B A = dlnLoss (B·Π)(τ_Π A)`, τ_Π MP |det Π|=1, rank+front ⟹ (b) EXACT). **Soundness subtlety resolved:** the headline
+  is `⨅ w∈optimalSet, rlctAt` (Skeleton:1725) — τ_Π is a global MP homeomorphism mapping optimalSet(B)↔optimalSet(B·Π) preserving
+  each rlctAt (banked `rlctAtOn_comp_homeomorph`) ⟹ the ⨅ transfers choice-independently through the headline's EXISTING ⨅-form.
+  B avoids A's unbuilt Pπ-telescope+FACT2 ENTIRELY; the Π-frame caveat fully avoided (fresh chart). (b) becomes an EXACT equality
+  (front pivot) — the producer's S5a/b/c/(d,e) decomp UNCHANGED, S5a + the S5c atom banked.
+- **l2-broute LAUNCHED** (a51044d4) — the full B route: the front-pivot chart ((b)-exact via the clean telescope) + complete the
+  hproducer + the 5 WLOG lemmas (front_pivot_perm_exists → dlnLoss_colPerm_eq → paramColPermLast_MP → rlct_infimum_colPerm_eq →
+  headline rw). pp-pin2-rearch on-call (front-pivot-perm LA / the ⨅-transfer). On close → the L2 body done + the headline WLOG'd to
+  front pivot → the L2 gate (+ the case-split/product_reduction final wire).
+- **The L2 (b) saga is RESOLVED in design** (6th catch → comparability → germ/Taylor overturned → A'/B re-adjudicated → B-decisive,
+  (b) EXACT). The geometric heart's route is settled + contained; remaining is the B build (l2-broute) + the final wire.
+- **R1 (3,3,4):** r1-matbox (ac9892b0) building the 9-chart A0 cover (the last (3,3,4) hfin piece; algebraic heart banked).
+- Active: l2-broute (L2 (b)-route-B) + r1-matbox (R1 (3,3,4) cover). pp-pin2-rearch + pp-r1-genM-2 on-call. General hdiv + general lifts + D1 ahead.
+
 **UPDATE-61 (2026-06-25) — L2 hproducer: S5a banked; A's (b) revealed unbuilt Pπ-telescope+FACT2 → A'/B re-adjudication to B (likely wins).**
 - **S5a banked @68a51768** (route-independent): `eventually_P00_invertible` (P00 invertible on a 𝓝 w0) + the abstract IsUnit-on-𝓝
   lemma, in the new `DeepestEFullSregComparability.lean` (0 sorries, axiom-clean). NOT wired (Deepest* convention).
