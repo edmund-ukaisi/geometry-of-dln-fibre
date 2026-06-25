@@ -423,7 +423,20 @@ extends here — a candidate point for the operator's scope call (full general-L
   framed ⇒ clean framed=framed identification (~1-2 tides); if mismatched ⇒ re-point coreΦ (check it preserves `deepest_loss_squeeze`'s
   public conclusion) OR a frame-covariance lemma (heavier — a stronger scope-fork trigger). NOT a wall, but real and MEDIUM. Both the
   cert AND the controller made the same unverified-assumption error (frames vanish at w0); the numeric check corrected both — the lesson
-  is to NUMERICALLY VERIFY the order of a claimed-small term before designing around it. **Process note for the operator:** the producer's last
+  is to NUMERICALLY VERIFY the order of a claimed-small term before designing around it.
+- **10th catch (2026-06-25, the BIG one — the independent confirm earned it).** The fully-decorrelated confirm seat (a8a8b2ff,
+  commissioned BECAUSE pp self-flagged its error rate) REFUTED the additive bound `|frobSq(Rcore) − coreΦ| ≤ Ccore·Sreg` by
+  EXPLICIT COUNTEREXAMPLE on the CLEAN S5a interior (cond P00=1): a reachable family with Sreg=Θ(t⁶), cores Θ(t), gap/Sreg→∞ (~1/a²);
+  the bridge premise hRem is also false there; generic order Θ(Sreg³). pp's earlier O(Sreg)/O(Sreg²) readings were corner-dirty
+  (hcorner-violating) artifacts. **The additive route — assumed since the 8th catch — is DEAD.** BUT `deepest_loss_squeeze`'s actual
+  CONCLUSION (the folded sandwich `c₁(Sreg+coreΦ) ≤ loss ≤ c₂(Sreg+coreΦ)`) is TRUE and survives (coreΦ=Θ(t⁴) dominates Sreg; the gap
+  charges to coreΦ). Only the 2681 additive INTERMEDIATE is the false piece — a bounded re-architecture of the producer's FOLD PROOF
+  (re-state 2681 to the coreΦ-charge `|frobSq(Rcore)−coreΦ| ≤ 2√(coreΦ·frobSq(D)) + frobSq(D)` → multiplicative comparability → the
+  sandwich; verified 0/20000). **Headline NOT threatened; deepest_loss_squeeze's STATEMENT unchanged.** This is the decorrelation
+  discipline working: a load-bearing claim from an error-prone seat, gated on an independent adversarial confirm, was refuted before the
+  build chased a false bound. **Process signal for the operator:** the producer fold has now re-scoped FIVE times — but the destination
+  (the folded comparability) keeps surviving every probe; it's the intermediate lemma shapes that are slippery. Sound destination,
+  intricate route. A strong input to Item-24's scope fork, though I continue under charge-ahead (the repair is verified + bounded). **Process note for the operator:** the producer's last
   piece has now surfaced four corrections (general-L recursion, rectangularity, the cast grind [beaten], this frame finding) — each caught
   by a tide/numeric check before a green-but-wrong build, each bounded. The L=2 close is progressing solidly but the germ-charge geometry
   is genuinely intricate; the L2-close ETA has extended across these. A candidate point to weigh Item-24's scope fork, though I continue
