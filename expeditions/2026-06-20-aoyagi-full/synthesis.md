@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-49 (2026-06-25) — framedParams body: statement CORRECTED (soundness catch) + skeleton banked @06385657; body-completion + R1 in flight.**
+- **l2-body landed + integrated** — another soundness catch (same discipline as PIN2): `framedParams_split_eq_frame_raw` was
+  UNDER-HYPOTHESIZED (false as stated — bare Pf,Qf,J don't make P0 a unit / P00 invertible / the corner normalize). FIXED by
+  adding the 7 frame hypotheses (= the `deepestPoint_frame_pivot_exists` bundle), threaded through the caller (which discharges
+  them). The inverse-frame assembly + the producer-determined t,γ are FILLED + banked. PIN1 stays clean; no monomial_rlct.
+- **HONEST REASSESSMENT (the L2 gate is further than "one body sorry"):** the body decomposes into **8 named correct-statement
+  internal gaps** (hS1/hS1' round-trip · hinterface · hS2 telescope · hS3b B-normalize · hKP_pos/hKi_pos positivity · hproducer
+  = S4 reg-energy + S5a/b + the S5c germ atom). All design-complete (framedbody-cert + s5c certs) + most have banked anchors
+  (reindex_fromBlocks_reads_eq_deviation, endpoint_telescoping, deepestPoint_interior_frame_id, prod(deepest)=B). The hardest
+  (hproducer) needs BUILDING the S5c germ atom `schur_core_germ_comparability` (the matrix middle-factor `R=S0·W·S1`, W→I + the
+  germ bound) — genuinely-new geometry, not yet in Lean. Latent: hKP_pos needs H s≥1 (derivable from the strict r<H s).
+- **l2-body-fill LAUNCHED** (aef4bc35) — fills the 8 gaps + builds the S5c atom, off the certs; pp-pin2-rearch on-call for the
+  S5c germ geometry. Edits DeepestGaugeConstruction (+ maybe a helper) — different file from r1-hfin.
+- **2 builds in flight (independent files):** l2-body-fill (framedParams body) + r1-hfin (the R1 hfin long pole). pp-pin2-rearch
+  + pp-r1-genM on-call. After the body closes: the final L2 wire (squeeze-exists + case-split + the import-arch relocation).
+
 **★ UPDATE-48 (2026-06-25) — assembler gap CLOSED @2a0e6bd9; the L2 gauge chart is down to ONE geometric sorry; R1 hfin in flight. ★**
 - **l2-pi-assembler landed + integrated** (forced-rebuild + `#print axioms` re-verified): `hasStrictFDerivAt_schurShiftRaw_zero`
   sorry-free + axiom-clean via Route (b) (the paramsEquivFlat flat-decode — Route (a)'s Params-Pi `pi'` confirmed walled by a
