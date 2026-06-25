@@ -266,3 +266,10 @@ import DLNFibre.DLN.Aoyagi.ClosedForm
 -- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
 import DLNFibre.Core.FibreDetUnit
 import DLNFibre.Core.CThetaShiftCount
+-- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework + the
+-- polynomial-extension minimal-prime descent + the Σ̄^r / fibre count endpoints.
+import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.TopDimMinPrimesPoly
+import DLNFibre.Core.TopDimMinPrimesBridge
+import DLNFibre.Core.TopComponentsTopDim
+import DLNFibre.Core.FibreTopDimDetUnit
