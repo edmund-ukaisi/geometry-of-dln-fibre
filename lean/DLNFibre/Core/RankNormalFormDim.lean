@@ -14,6 +14,7 @@ entries) and the count `#{i : Fin n | i < r} = r`.
 ## Main results
 - `rank_diagonal_indicator_lt` — `rank (diagonal (fun i ↦ if i < r then 1 else 0)) = r`.
 - `Matrix.rank_eq_zero_iff` — over a field, `M.rank = 0 ↔ M = 0`.
+- `Matrix.rank_fromBlocks_zero_offdiag` — block-diagonal rank-additivity over a field.
 -/
 
 namespace DLNFibre.Core
@@ -52,6 +53,44 @@ theorem _root_.Matrix.rank_eq_zero_iff {K : Type*} [Field K] {m n : ℕ}
     have := congrFun (congrArg (fun f ↦ f (Pi.single j 1)) hr) i
     simpa [Matrix.mulVecLin, Matrix.mulVec_single] using this
   · rintro rfl; simp [Matrix.rank]
+
+/-- `finrank` of a product submodule `S.prod T` is `finrank S + finrank T`. -/
+private theorem finrank_submodule_prod {K M N : Type*} [Field K] [AddCommGroup M] [Module K M]
+    [AddCommGroup N] [Module K N] (S : Submodule K M) (T : Submodule K N)
+    [Module.Finite K S] [Module.Finite K T] :
+    Module.finrank K (S.prod T) = Module.finrank K S + Module.finrank K T := by
+  have ee : (↥(S.prod T)) ≃ₗ[K] (↥S × ↥T) :=
+    { toFun := fun x ↦ (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
+      invFun := fun p ↦ ⟨(p.1.1, p.2.1), p.1.2, p.2.2⟩
+      map_add' := fun _ _ ↦ rfl
+      map_smul' := fun _ _ ↦ rfl
+      left_inv := fun _ ↦ rfl
+      right_inv := fun _ ↦ rfl }
+  rw [ee.finrank_eq, Module.finrank_prod]
+
+/-- The sum-arrow ↔ prod-arrow linear equivalence `(α ⊕ β → R) ≃ₗ (α → R) × (β → R)`. -/
+private noncomputable def sumArrowEquiv (R : Type*) [Semiring R] (α β : Type*) :
+    (α ⊕ β → R) ≃ₗ[R] (α → R) × (β → R) := LinearEquiv.sumArrowLequivProdArrow α β R R
+
+/-- **Block-diagonal rank-additivity.** Over a field, the rank of a block-diagonal matrix
+`[[A, 0], [0, D]]` is `A.rank + D.rank`: the multiplication map acts block-independently
+(`fromBlocks_mulVec`), so its range is the product of the two blocks' ranges, and `finrank` adds. -/
+theorem _root_.Matrix.rank_fromBlocks_zero_offdiag {K : Type*} [Field K] {m₁ n₁ m₂ n₂ : ℕ}
+    (A : Matrix (Fin m₁) (Fin n₁) K) (D : Matrix (Fin m₂) (Fin n₂) K) :
+    (Matrix.fromBlocks A 0 0 D).rank = A.rank + D.rank := by
+  have hbridge : (Matrix.fromBlocks A 0 0 D).mulVecLin
+      = (sumArrowEquiv K (Fin m₁) (Fin m₂)).symm.toLinearMap.comp
+          ((A.mulVecLin.prodMap D.mulVecLin).comp
+            (sumArrowEquiv K (Fin n₁) (Fin n₂)).toLinearMap) := by
+    apply LinearMap.ext; intro v
+    apply (sumArrowEquiv K (Fin m₁) (Fin m₂)).injective
+    ext (i | i) <;>
+      simp [Matrix.mulVecLin, Matrix.fromBlocks_mulVec, sumArrowEquiv,
+        LinearEquiv.sumArrowLequivProdArrow, LinearMap.prodMap, Matrix.mulVec, dotProduct]
+  rw [Matrix.rank, Matrix.rank, Matrix.rank, hbridge,
+    LinearMap.range_comp, LinearMap.range_comp_of_range_eq_top _ (by
+      rw [LinearMap.range_eq_top]; exact (sumArrowEquiv K (Fin n₁) (Fin n₂)).surjective),
+    LinearEquiv.finrank_map_eq, LinearMap.range_prodMap, finrank_submodule_prod]
 
 end DLNFibre.Core
 
