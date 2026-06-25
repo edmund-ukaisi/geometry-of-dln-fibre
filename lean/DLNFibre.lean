@@ -260,3 +260,5 @@ import DLNFibre.Core.FibreCodimFinal
 -- THE PAYOFF (destination): BundleShiftInterface discharged from Core — rlct(K^DLN_B)=(C+δ)/2 rests
 -- on ONLY the Cited Aoyagi RlctInterface; the geometric half is Proved (k : Type 0). [#52/G4]
 import DLNFibre.DLN.BundleShiftDischarge
+-- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
+import DLNFibre.DLN.Aoyagi.ClosedForm
