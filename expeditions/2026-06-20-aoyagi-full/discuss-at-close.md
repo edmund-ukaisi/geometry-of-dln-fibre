@@ -399,6 +399,17 @@ extends here — a candidate point for the operator's scope call (full general-L
   producer keeps revealing the next layer. Net: real layer-filling (each banked piece is solid; the gap is now three attackable
   obligations, not a vague bridge), but the L2-close timeline extends here. **Driving h1 (design-first) now** under the charge-ahead
   mandate; flagged as a genuine scope-decision point below.
+- **GENERAL-L FINDING (2026-06-25, the h1/h2/h3 formaliser, Codex xhigh-confirmed).** The banked bridge is a TWO-FACTOR Schur-LDU.
+  The germ charge is stated for `2≤L`. h1(hR) lifts to general L by grouping (first L−1)·(last); but **h2 is NOT clean for L≥3** — it
+  needs a RECURSIVE multi-factor Schur-core-of-product identity (absorbing the off-diagonal leaks of the first L−1 layers), which is
+  research-grade. At L=2 it is trivially two-factor (h2 clean) ⇒ the germ charge CLOSES at L=2. The pen-and-paper cert's "h2 CLEAN" was
+  correct **at L=2**; the general-L recursion is the refinement. **DECISION (controller): option (a)** — close L=2 fully via the bridge,
+  leave L≥3 a precisely-stated guarded sorry (the established 3169/3174 / Item-19 pattern), keeping the L=2 path axiom-clean. Rejected (b)
+  general-L recursive induction (research-grade AND insufficient alone — general R1/hdiv/D1 are also held general-L) and (c) signature
+  narrowing (churns consumers; (a)'s guarded sorry on the true `2≤L` statement is the honest building block). **NEW unifying general-L
+  gap:** the recursive multi-factor Schur-core-of-product identity subsumes the 3 L≥3 guarded sorries (2680-L≥3 / 3169 / 3174) — it is
+  THE general-L producer obstruction. This sharpens Item 24's general-L arm: the general-L=2 producer (option a) is MODERATE/in-progress;
+  the FULL general-L producer is research-grade here too.
 
 ## 24. SCOPE-DECISION POINT for the operator: full general-L=2 producer (h1/h2/h3) vs the RRR (L=2) milestone (2026-06-25).
 The L2 gauge-chart producer (the general-L=2 front-pivot body) has now re-scoped twice on its germ charge (Item 22). The remaining
