@@ -6649,6 +6649,8 @@ Lean names:
 `SelectedEntrySignedBox.monomialUnitHypotheses`, and
 `SelectedEntrySignedBox.monomialLower_sourceDensityBounds`, plus the
 center-subtype API
+`SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap`,
+`SelectedEntrySignedBox.CenterCoord.aoyagiCoordinateSquareSum_eq_residual_of_coord_readout`,
 `SelectedEntrySignedBox.CenterCoord.monomialUnitHypotheses` and
 `SelectedEntrySignedBox.CenterCoord.monomialLower_sourceDensityBounds`.
 
@@ -6658,7 +6660,10 @@ exponent `0`.  The formal density is the absolute value of the formal
 pivot-first determinant, so its pivot exponent is `(center.erase pivot).card`
 and its other exponents are `0`.  The residual unit is bounded below by `1`,
 and the formal density unit is exactly `1`.  The center-subtype API restates
-the same data over `center -> R` with zero exponents away from the pivot.
+the same data over `center -> R` with zero exponents away from the pivot.  It
+now also proves the raw residual square-sum identity over center coordinates
+and a source-neutral coordinate-readout bridge under an explicit finite
+reindexing and pointwise coordinate readout.
 
 Nonclaims: no analytic chart construction, source coverage, transition
 regularity, source production, weighted pushforward, analytic

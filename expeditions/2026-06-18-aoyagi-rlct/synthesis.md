@@ -10482,6 +10482,29 @@ Xhigh reorientation scouts:
   for the selected-entry chart.  A source-neutral finite-cover integrability
   aggregator is useful only as explicit-hypothesis plumbing.
 
+Follow-up xhigh source/API scouts completed after the interruption.  Source
+scout `Popper` checked Aoyagi PDF pp. 15-21 and found only the displayed
+top-left selected-entry chart in Case 1 (2) and Case 2; the paper does not
+write an all-pivot affine cover, sector decomposition, or overlap analysis.
+API scout `Rawls` confirmed that the remaining `hresidual_eq` is a square-sum
+bridge and is not provable for arbitrary `CedgeBase`; it needs a concrete
+coordinate-readout theorem from fixed-base residual indices to selected-entry
+center coordinates, or else a weaker lower-bound socket.  The boundary
+reproduction is now
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-source-chart-coverage-boundary.md`.
+
+Lean follow-up for this boundary landed the finite-only part:
+`aoyagiCoordinateSquareSum_comp_equiv`,
+`SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap`,
+and
+`SelectedEntrySignedBox.CenterCoord.aoyagiCoordinateSquareSum_eq_residual_of_coord_readout`.
+The bridge still requires an explicit finite equivalence and pointwise
+coordinate readout; it does not construct fixed-base residual readout or source
+coverage.  Focused selected-entry build, full `scripts/lb`, `scripts/sorries`,
+and `git diff --check` passed.  Xhigh review `Volta` passed with no findings;
+review artifact:
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-coordinate-square-sum.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

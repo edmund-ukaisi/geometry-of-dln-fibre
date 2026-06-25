@@ -5466,3 +5466,30 @@ Boundary: the local source/image equality is an explicit hypothesis.  This
 still does not construct the p.13 source chart, prove source-rank image or
 coverage, prove original-source measure transport, produce normal crossings,
 compute pole order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry source-chart coverage boundary
+
+Reproduction:
+`reproduction-a2-selected-entry-source-chart-coverage-boundary.md`.
+
+Fresh xhigh source/API scouting checked Aoyagi PDF pp. 15-21 against the
+current selected-entry source-stratum endpoint.  The printed proof displays the
+top-left selected-entry chart in Case 1 (2) and Case 2 and performs the
+elementary `Q/P` Schur cleanup there.  It does not state an all-pivot affine
+cover, sector decomposition, or chart-overlap analysis.
+
+Controller decision: keep source image/coverage supplied.  The next honest
+Lean target is only the residual-coordinate algebra under an explicit
+coordinate-readout bridge, beginning with the elementary identity
+`CenterCoord.residual pivot y = aoyagiCoordinateSquareSum (chartMap pivot y)`.
+
+Statement card:
+`statement-card-a2-selected-entry-residual-coordinate-square-sum.md`.
+Review:
+`review-a2-selected-entry-residual-coordinate-square-sum.md`.
+
+Lean now proves the square-sum reindexing utility, the selected-entry
+center-coordinate residual square-sum identity, and a source-neutral
+coordinate-readout bridge.  The bridge requires an explicit finite equivalence
+and pointwise coordinate readout; it does not construct the fixed-base residual
+map readout.

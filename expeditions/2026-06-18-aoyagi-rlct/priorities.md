@@ -4569,3 +4569,13 @@ single selected-entry chart equality or a finite chart cover/sector
 decomposition.  If the coverage proof is too large, first remove the supplied
 residual-coordinate identity.  Do not turn the conditional source-stratum
 bridge into an unconditional p.13/RLCT claim without that source work.
+
+Post-reorientation source/API scouts have now resolved that immediate question
+at source level:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-source-chart-coverage-boundary.md`.
+Aoyagi PDF pp. 15-21 display only the top-left selected-entry chart and the
+finite `Q/P` Schur cleanup; they do not print an all-pivot cover or local
+source-stratum equality.  The next priority is therefore to reduce the
+remaining `hresidual_eq` socket honestly: prove the selected-entry residual
+square-sum algebra and then require a concrete fixed-base residual coordinate
+readout/equivalence, while leaving source coverage explicit.

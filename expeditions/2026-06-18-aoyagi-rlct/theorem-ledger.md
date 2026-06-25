@@ -8259,6 +8259,27 @@ Nonclaims: the local equality is not proved; no p.13 source chart
 construction, source-rank image/coverage theorem, original-source measure
 transport, normal crossings, pole order, or RLCT.
 
+Latest A2 selected-entry residual coordinate square-sum:
+`RegularSuspensionCoordinates.lean` now proves
+`aoyagiCoordinateSquareSum_comp_equiv`, and
+`SelectedEntrySignedBoxMeasure.lean` now proves
+`SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap`
+and
+`SelectedEntrySignedBox.CenterCoord.aoyagiCoordinateSquareSum_eq_residual_of_coord_readout`.
+The first selected-entry theorem identifies the finite center-coordinate
+residual with the square-sum of the selected-entry chart coordinates.  The
+second packages the honest bridge shape: another finite coordinate family has
+that residual square-sum only under an explicit finite equivalence and
+pointwise coordinate readout.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-source-chart-coverage-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-residual-coordinate-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-coordinate-square-sum.md`.
+Nonclaims: no fixed-base residual-coordinate readout, source chart
+construction, source coverage, source-measure transport, normal crossings,
+pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -54,6 +54,14 @@ theorem aoyagiCoordinateSquareSum_sumElim
       aoyagiCoordinateSquareSum f + aoyagiCoordinateSquareSum g := by
   simp [aoyagiCoordinateSquareSum, Fintype.sum_sum_type]
 
+/-- Reindexing a finite coordinate family does not change its square-sum. -/
+theorem aoyagiCoordinateSquareSum_comp_equiv
+    {η κ R : Type*} [Fintype η] [Fintype κ] [CommSemiring R]
+    (e : η ≃ κ) (f : κ → R) :
+    aoyagiCoordinateSquareSum (fun a : η => f (e a)) =
+      aoyagiCoordinateSquareSum f := by
+  simpa [aoyagiCoordinateSquareSum] using e.sum_comp (fun b : κ => f b ^ 2)
+
 /-- A finite coordinate square-sum is nonnegative over an ordered scalar
 ring. -/
 theorem aoyagiCoordinateSquareSum_nonneg

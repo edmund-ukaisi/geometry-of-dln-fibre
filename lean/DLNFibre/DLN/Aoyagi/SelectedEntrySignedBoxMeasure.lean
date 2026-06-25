@@ -488,6 +488,40 @@ def residual {center : Finset ι} (pivot : center)
   selectedEntryCenterSq center
     (selectedEntryChartMap pivot.1 (y pivot) (sourceResidual y))
 
+/-- The center-indexed selected-entry residual is exactly the square-sum of
+the selected-entry chart coordinates. -/
+theorem residual_eq_aoyagiCoordinateSquareSum_chartMap {center : Finset ι}
+    (pivot : center) (y : center → ℝ) :
+    residual pivot y =
+      aoyagiCoordinateSquareSum (chartMap pivot y) := by
+  rw [residual, selectedEntryCenterSq, aoyagiCoordinateSquareSum]
+  rw [← Finset.sum_attach center
+    (fun i : ι => selectedEntryChartMap pivot.1 (y pivot) (sourceResidual y) i ^ 2)]
+  rfl
+
+/-- If another finite coordinate family reads the selected-entry chart
+coordinates up to a finite reindexing, its square-sum is the selected-entry
+residual. -/
+theorem aoyagiCoordinateSquareSum_eq_residual_of_coord_readout
+    {η : Type*} [Fintype η] {center : Finset ι} (pivot : center)
+    (F : (center → ℝ) → η → ℝ) (e : η ≃ center)
+    (hF : ∀ y c, F (chartMap pivot y) c = chartMap pivot y (e c)) :
+    ∀ y : center → ℝ,
+      aoyagiCoordinateSquareSum (F (chartMap pivot y)) = residual pivot y := by
+  intro y
+  have hpoint :
+      F (chartMap pivot y) = fun c : η => chartMap pivot y (e c) := by
+    funext c
+    exact hF y c
+  calc
+    aoyagiCoordinateSquareSum (F (chartMap pivot y)) =
+        aoyagiCoordinateSquareSum (fun c : η => chartMap pivot y (e c)) := by
+      rw [hpoint]
+    _ = aoyagiCoordinateSquareSum (chartMap pivot y) :=
+      aoyagiCoordinateSquareSum_comp_equiv e (chartMap pivot y)
+    _ = residual pivot y :=
+      (residual_eq_aoyagiCoordinateSquareSum_chartMap pivot y).symm
+
 /-- The center-indexed selected-entry residual unit. -/
 def residualUnit {center : Finset ι} (pivot : center)
     (y : center → ℝ) : ℝ :=
