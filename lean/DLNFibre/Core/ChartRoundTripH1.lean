@@ -177,4 +177,121 @@ theorem chartPsiLoc_chartPhiVarSub [Infinite k] (d : Fin (N + 2) → ℕ) (r : �
     rw [Matrix.submatrix_apply, Matrix.map_apply, Matrix.of_apply] at h2
     rw [h2, Matrix.map_apply, schurB21Loc, Matrix.of_apply, hgfib]
 
+/-! ## The O(F)-coefficient leg of the h1 round-trip (mirror of the Φ∘Ψ legs) -/
+
+variable (k) in
+/-- `chartPsiLoc` agrees with `chartPsiQuot` on `O(Σ)`-classes. Mirror of `chartPhiLoc_algebraMap`. -/
+theorem chartPsiLoc_algebraMap [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (a : sweepSigmaRing k d r) :
+    chartPsiLoc k d r hp hq
+        (algebraMap _ (Localization.Away (chartDsig k d r hp hq)) a)
+      = chartPsiQuot k d r hp hq a := by
+  rw [chartPsiLoc, IsLocalization.liftAlgHom_apply, IsLocalization.lift_eq]
+  rfl
+
+variable (k) in
+/-- **The coefficient leg `chartPsiLoc ∘ schurToDsig = schurToGfib`.** Both `SchurLoc →ₐ[k] Away gF`;
+on `MvPolynomial SchurVar k`-classes, `schurToDsig (algebraMap (X s)) = chartPhiVarSub s`,
+`chartPsiLoc` of which is `algebraMap (X s)` (`chartPsiLoc_chartPhiVarSub`); and `schurToGfib
+(algebraMap (X s)) = algebraMap (X s)`. -/
+theorem chartPsiLoc_comp_schurToDsig [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
+    (chartPsiLoc k d r hp hq).comp (schurToDsig k d r hp hq)
+      = schurToGfib k d r hp hq := by
+  apply Localization.algHom_ext (Submonoid.powers (detSchurS (d 0) (d (Fin.last (N + 1))) r))
+  apply MvPolynomial.algHom_ext
+  intro s
+  rw [AlgHom.comp_apply, AlgHom.comp_apply]
+  show chartPsiLoc k d r hp hq (schurToDsig k d r hp hq
+      (algebraMap _ (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) (X s)))
+    = schurToGfib k d r hp hq
+      (algebraMap _ (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) (X s))
+  rw [schurToDsig_algebraMap, chartPhiSchurAeval, aeval_X, chartPsiLoc_chartPhiVarSub,
+    schurToGfib_algebraMap,
+    show (MvPolynomial.mapAlgHom (Algebra.ofId k (sweepFibreRing k d r hp hq))) (X s)
+      = MvPolynomial.map (algebraMap k (sweepFibreRing k d r hp hq)) (X s) from rfl,
+    MvPolynomial.map_X]
+
+variable (k) in
+/-- **The variable leg `chartPsiLoc (sigmaCoordT x) = chartPsiSub x`.** Mirror of
+`chartPhiLoc_fibCoordT`. -/
+theorem chartPsiLoc_sigmaCoordT [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (x : RepCoord d) :
+    chartPsiLoc k d r hp hq (sigmaCoordT k d r hp hq x) = chartPsiSub k d r hp hq x := by
+  rw [sigmaCoordT, chartPsiLoc_algebraMap, chartPsiQuot, Ideal.Quotient.liftₐ_apply,
+    Ideal.Quotient.lift_mk, RingHom.coe_coe, chartPsiAeval, aeval_X]
+
+variable (k) in
+/-- **The composite `chartPsiLoc ∘ chartPhiTower = aevalTower schurToGfib chartPsiSub`.** Mirror of
+`chartPhiLoc_comp_chartPsiTower`. -/
+theorem chartPsiLoc_comp_chartPhiTower [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
+    (chartPsiLoc k d r hp hq).comp (chartPhiTower k d r hp hq)
+      = MvPolynomial.aevalTower (schurToGfib k d r hp hq) (chartPsiSub k d r hp hq) := by
+  apply MvPolynomial.algHom_ext'
+  · rw [AlgHom.comp_assoc]
+    rw [show (chartPhiTower k d r hp hq).comp
+          (IsScalarTower.toAlgHom k (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
+            (MvPolynomial (RepCoord d) (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)))
+        = schurToDsig k d r hp hq from by
+      rw [chartPhiTower]; exact MvPolynomial.aevalTower_comp_toAlgHom _ _]
+    rw [chartPsiLoc_comp_schurToDsig, MvPolynomial.aevalTower_comp_toAlgHom]
+  · intro x
+    rw [AlgHom.comp_apply, chartPhiTower, MvPolynomial.aevalTower_X, chartPsiLoc_sigmaCoordT,
+      MvPolynomial.aevalTower_X]
+
+variable (k) in
+/-- **The h1 O(F)-coefficient per-generator identity** `chartPsiLoc (chartPhiFibSub x) = fibCoordT x`.
+Collapses via the gauge group law at `eg * eg⁻¹ = 1` to `fibCoordT x`. -/
+theorem chartPsiLoc_chartPhiFibSub [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (x : RepCoord d) :
+    chartPsiLoc k d r hp hq (chartPhiFibSub k d r hp hq x) = fibCoordT k d r hp hq x := by
+  rw [chartPhiFibSub,
+    show chartPsiLoc k d r hp hq (chartPhiTower k d r hp hq
+        (gaugeSub d (endpointGauge (k := k) d r hp hq) x))
+      = (chartPsiLoc k d r hp hq).comp (chartPhiTower k d r hp hq)
+          (gaugeSub d (endpointGauge (k := k) d r hp hq) x) from rfl,
+    chartPsiLoc_comp_chartPhiTower]
+  rw [show chartPsiSub k d r hp hq
+        = (fun y ↦ MvPolynomial.aevalTower (schurToGfib k d r hp hq) (fibCoordT k d r hp hq)
+            (gaugeSub d (endpointGauge (k := k) d r hp hq)⁻¹ y)) from by
+      funext y; rw [chartPsiSub, chartPsiTower]]
+  rw [aevalTower_gaugeSub_gaugeSub (schurToGfib k d r hp hq) d (fibCoordT k d r hp hq)
+    (endpointGauge (k := k) d r hp hq)⁻¹ (endpointGauge (k := k) d r hp hq) x,
+    mul_inv_cancel, gaugeSub_one, MvPolynomial.aevalTower_X]
+
+variable (k) in
+set_option synthInstance.maxHeartbeats 800000 in
+/-- **The h1 composite `chartPsiLoc ∘ chartPhiAeval = algebraMap P (Away gF)`** (as
+`IsScalarTower.toAlgHom k P (Away gF)`). By `MvPolynomial.algHom_ext'`: the `O(F)`-coefficient leg
+(`Ideal.Quotient.algHom_ext` + `MvPolynomial`-ext, discharged by `chartPsiLoc_chartPhiFibSub`) and
+the `SchurVar` variable leg (`chartPsiLoc_chartPhiVarSub`). The heart of the h1 round-trip. -/
+theorem chartPsiLoc_comp_chartPhiAeval [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
+    (chartPsiLoc k d r hp hq).comp (chartPhiAeval k d r hp hq)
+      = IsScalarTower.toAlgHom k (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r)
+            (sweepFibreRing k d r hp hq)) (Localization.Away (chartGfib k d r hp hq)) := by
+  refine MvPolynomial.algHom_ext' (R := k)
+    (A := sweepFibreRing k d r hp hq) (B := Localization.Away (chartGfib k d r hp hq))
+    (σ := SchurVar (d 0) (d (Fin.last (N + 1))) r) ?_ (fun s ↦ ?_)
+  · -- coefficient leg: lift `O(F)`-classes to `RepCoord` generators.
+    apply Ideal.Quotient.algHom_ext
+    apply MvPolynomial.algHom_ext
+    intro x
+    simp only [AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', Ideal.Quotient.mkₐ_eq_mk]
+    show chartPsiLoc k d r hp hq (chartPhiAeval k d r hp hq
+        (C (Ideal.Quotient.mk (vanishingIdeal k (sweepFibre k d r hp hq)) (X x))))
+      = algebraMap (sweepFibreRing k d r hp hq) (Localization.Away (chartGfib k d r hp hq))
+          (Ideal.Quotient.mk (vanishingIdeal k (sweepFibre k d r hp hq)) (X x))
+    rw [chartPhiAeval, MvPolynomial.aevalTower_C,
+      show chartPhiCoeff k d r hp hq
+          (Ideal.Quotient.mk (vanishingIdeal k (sweepFibre k d r hp hq)) (X x))
+        = chartPhiFibSub k d r hp hq x from by
+        rw [chartPhiCoeff, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk, RingHom.coe_coe,
+          chartPhiFibAeval, aeval_X],
+      chartPsiLoc_chartPhiFibSub, fibCoordT]
+  · -- variable leg: `chartPsiLoc (chartPhiVarSub s) = algebraMap (X s)`.
+    rw [AlgHom.comp_apply, chartPhiAeval, MvPolynomial.aevalTower_X, chartPsiLoc_chartPhiVarSub,
+      IsScalarTower.coe_toAlgHom']
+
 end DLNFibre.Core
