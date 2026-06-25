@@ -195,9 +195,9 @@ theorem monomialLower_sourceDensityBounds {center : Finset ι} (pivot : center)
 
 namespace CenterCoord
 
-/-- Center-indexed signed-box residual coordinates.  The selected pivot value
-is read directly from the center-indexed coordinate function and ignored by the
-ambient residual function. -/
+/-- Center-indexed signed-box residual coordinates.  The chart supplies the
+selected pivot separately; this residual value at the pivot is irrelevant to
+the chart's pivot branch. -/
 def sourceResidual {center : Finset ι}
     (y : center → ℝ) (i : ι) : ℝ :=
   if h : i ∈ center then y ⟨i, h⟩ else 0
@@ -272,6 +272,61 @@ theorem aemeasurable_chartMap {center : Finset ι} (pivot : center)
 /-- The center-indexed signed box with radii `R`. -/
 def signedBoxSet {center : Finset ι} (R : center → ℝ) : Set (center → ℝ) :=
   Set.univ.pi fun i => Set.Ioo (-(R i)) (R i)
+
+/-- The signed-box image of the finite selected-entry chart is the origin
+together with the nonzero-pivot horn described by the quotient coordinates. -/
+theorem mem_chartMap_image_signedBoxSet_iff {center : Finset ι} (pivot : center)
+    {R x : center → ℝ} (hR : ∀ i, 0 < R i) :
+    x ∈ chartMap pivot '' signedBoxSet R ↔
+      x = 0 ∨
+        (x pivot ≠ 0 ∧ |x pivot| < R pivot ∧
+          ∀ i : center, i ≠ pivot → |x i / x pivot| < R i) := by
+  constructor
+  · rintro ⟨y, hybox, rfl⟩
+    by_cases hyp : y pivot = 0
+    · left
+      exact chartMap_eq_zero_of_pivot_eq_zero pivot y hyp
+    · right
+      refine ⟨?_, ?_, ?_⟩
+      · simpa using hyp
+      · have hy : y pivot ∈ Set.Ioo (-(R pivot)) (R pivot) :=
+          hybox pivot (Set.mem_univ pivot)
+        simpa using (abs_lt.mpr hy)
+      · intro i hi
+        have hy : y i ∈ Set.Ioo (-(R i)) (R i) :=
+          hybox i (Set.mem_univ i)
+        have hdiv : chartMap pivot y i / chartMap pivot y pivot = y i := by
+          rw [chartMap_of_ne pivot y hi, chartMap_pivot]
+          field_simp [hyp]
+        calc
+          |chartMap pivot y i / chartMap pivot y pivot| = |y i| := by rw [hdiv]
+          _ < R i := abs_lt.mpr hy
+  · intro hx
+    rcases hx with rfl | ⟨hpivot, hpivot_lt, hhorn⟩
+    · refine ⟨0, ?_, ?_⟩
+      · rw [signedBoxSet]
+        intro i _hi
+        exact abs_lt.mp (by simpa using hR i)
+      · exact chartMap_eq_zero_of_pivot_eq_zero pivot (0 : center → ℝ) rfl
+    · let y : center → ℝ := fun i =>
+        if i = pivot then x pivot else x i / x pivot
+      refine ⟨y, ?_, ?_⟩
+      · rw [signedBoxSet]
+        intro i _hi
+        have hyabs : |y i| < R i := by
+          by_cases hi : i = pivot
+          · subst i
+            simpa [y] using hpivot_lt
+          · simpa [y, hi] using hhorn i hi
+        exact abs_lt.mp hyabs
+      · funext i
+        by_cases hi : i = pivot
+        · subst i
+          simp [y]
+        · have hmul : x pivot * (x i / x pivot) = x i := by
+            field_simp [hpivot]
+          rw [chartMap_of_ne pivot y hi]
+          simpa [y, hi] using hmul
 
 omit [DecidableEq ι] in
 /-- Center-indexed signed boxes are measurable. -/

@@ -4601,3 +4601,12 @@ formula bookkeeping slice is the selected-width pair-sum range/Icc conversion:
 The next safe formula-layer refinement is the exact Definition 3 ceiling-data
 constructor:
 `threads/06-dln-translation/reproduction-definition3-exact-ceil-data-a6.md`.
+
+After that A6 bookkeeping, A2 has resumed at the selected-entry chart/source
+frontier.  The finite chart-image characterization
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`
+is useful source-facing algebra: it describes the selected-entry signed-box
+image as the origin plus a nonzero-pivot horn.  It must not be treated as
+source-stratum coverage.  The next real A2 frontier remains fixed-base
+residual readout from actual source-chart data, local source-stratum coverage,
+or source-measure identification.

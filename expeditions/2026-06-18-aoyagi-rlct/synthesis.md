@@ -10602,3 +10602,16 @@ statement card:
 `threads/06-dln-translation/reproduction-definition3-exact-ceil-data-a6.md`
 and
 `threads/06-dln-translation/statement-card-a6-definition3-exact-ceil-data.md`.
+
+Post-ceiling A2 resumed at the selected-entry chart/source frontier.  Lean now
+proves
+`SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`:
+for positive signed-box radii, the finite selected-entry chart image is
+exactly the origin together with the nonzero-pivot horn
+`x pivot != 0`, `|x pivot| < R pivot`, and
+`|x i / x pivot| < R i` off the pivot.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-image-characterization.md`.
+This does not discharge source-stratum coverage, fixed-base residual readout,
+source-measure identification, normal crossings, pole order, or RLCT.

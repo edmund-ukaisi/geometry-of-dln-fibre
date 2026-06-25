@@ -309,7 +309,9 @@ No such claim is formalisation-ready until both fields are filled.
   null-origin radial integrability transfer at
   `threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`;
   product below-critical integrability at
-  `threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`.
+  `threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`;
+  selected-entry chart-image characterization at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -360,7 +362,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`;
   regular-square bounded-density wrapper reviewed by xhigh `Mendel the 4th`
   in
-  `threads/03-block-product-reduction/review-a2-regular-square-bounded-density-wrapper.md`.
+  `threads/03-block-product-reduction/review-a2-regular-square-bounded-density-wrapper.md`;
+  selected-entry chart-image characterization reviewed by xhigh `Halley` in
+  `threads/03-block-product-reduction/review-a2-selected-entry-chart-image-characterization.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6723,6 +6727,18 @@ fixed-base reverse edges and returns the pointwise residual-coordinate readout.
 This is still a supplied-matrix bridge: no construction of `Ebase`, no proof
 of the residual-product matrix identity, no residual-index equivalence, and no
 source coverage.
+
+Latest A2 selected-entry chart-image characterization:
+`SelectedEntrySignedBoxMeasure.lean` now proves
+`SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.
+For positive signed-box radii, membership in
+`chartMap pivot '' signedBoxSet R` is equivalent to being the origin or lying
+in the nonzero-pivot horn
+`x pivot != 0`, `|x pivot| < R pivot`, and
+`|x i / x pivot| < R i` for every non-pivot coordinate.  This is finite
+selected-entry chart algebra only; it does not prove local source-stratum
+coverage, source-measure identification, fixed-base residual readout, normal
+crossings, pole order, or RLCT.
 
 Latest A2 selected-entry local-source finite-integral handoff:
 Lean now specializes the local-source monomial-unit finite-integral socket to
