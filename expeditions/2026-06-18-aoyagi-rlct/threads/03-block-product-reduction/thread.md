@@ -3054,3 +3054,34 @@ satisfy the residual negative-power hypothesis, does not cover a
 positive-measure zero set of `a`, and does not prove endpoint/divergence,
 threshold equality, bounded-density/prior transport, p.13 analytic
 chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 residual square-sum integrability socket
+
+Reproduction:
+`reproduction-a2-residual-square-sum-integrability-socket.md`.
+Statement card:
+`statement-card-a2-residual-square-sum-integrability-socket.md`.
+Review:
+`review-a2-residual-square-sum-integrability-socket.md`.
+
+Lean now specialises the residual-power threshold-shift bridge to Aoyagi's
+finite coordinate square-sum convention:
+
+```text
+lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale
+lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+```
+
+The generic theorem uses
+`a(x)=aoyagiCoordinateSquareSum (b x)`.  The residual-block theorem uses
+`a(x)=aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value (D x))`.
+In both cases, a.e. positivity and finite residual negative `t`-power lower
+integral are hypotheses.
+
+Boundary: this is only an interface socket for the p. 13 residual square-sum.
+It does not prove positivity or residual negative-power integrability for
+Aoyagi's reduced residual coordinates, does not cover a positive-measure zero
+set, and does not prove endpoint/divergence, threshold equality,
+bounded-density/prior transport, p.13 analytic chart/Jacobian construction,
+normal crossings, pole order, or RLCT.

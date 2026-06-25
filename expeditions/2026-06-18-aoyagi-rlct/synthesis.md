@@ -9186,6 +9186,41 @@ set of `a`, and does not prove endpoint/divergence, threshold equality,
 bounded-density/prior transport, p.13 analytic chart/Jacobian construction,
 normal crossings, pole order, or RLCT.
 
+Latest A2 residual square-sum integrability socket:
+`RegularSuspensionSquareSumIntegrability.lean` now imports both the coordinate
+square-sum layer and the analytic integrability layer, and specialises the
+residual-power bridge to:
+
+```text
+lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale
+lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+```
+
+For a finite coordinate family `b`, if
+`aoyagiCoordinateSquareSum (b x)>0` a.e., `0<t`, and
+
+```text
+∫⁻ x, ENNReal.ofReal ((aoyagiCoordinateSquareSum (b x))^(-t)) dmu < infinity,
+```
+
+then the product lower integral with base
+`aoyagiCoordinateSquareSum (b x)` and exponent `t+finrank_R(E)/2` is finite.
+The residual-block theorem is the same statement for
+`AoyagiResidualBlockCoordinateIndex.value (D x)`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-square-sum-integrability-socket.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-square-sum-integrability-socket.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-square-sum-integrability-socket.md`.
+
+This is a socket theorem only.  It still does not prove positivity or
+negative-power integrability for Aoyagi's reduced residual coordinates, does
+not cover a positive-measure zero set, and does not prove endpoint/divergence,
+threshold equality, bounded-density/prior transport, p.13 analytic
+chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

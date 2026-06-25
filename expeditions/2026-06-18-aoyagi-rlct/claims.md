@@ -6263,6 +6263,34 @@ of `a`, no endpoint behavior, no lower/divergence side or threshold equality,
 no bounded-density or prior theorem, no Aoyagi p.13 analytic chart/Jacobian
 construction, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 residual square-sum integrability socket:
+Lean now specialises the residual-power threshold-shift bridge to Aoyagi's
+finite coordinate square-sum convention in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSquareSumIntegrability.lean`.  The
+theorems
+`lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale`,
+`lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top`,
+and
+`lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top`
+say that if `a(x)=aoyagiCoordinateSquareSum (b x)` or the residual-block
+version with `AoyagiResidualBlockCoordinateIndex.value (D x)` is a.e. strictly
+positive, `0<t`, and its negative `t`-power lower integral is finite, then
+the square-model product lower integral at exponent
+`t+finrank_R(E)/2` is finite.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-square-sum-integrability-socket.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-square-sum-integrability-socket.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-square-sum-integrability-socket.md`.
+
+Nonclaims: no proof that Aoyagi's reduced residual coordinates satisfy
+positivity or residual negative-power integrability, no theorem for a
+positive-measure zero set of the residual square-sum, no endpoint behavior, no
+lower/divergence side or threshold equality, no bounded-density or prior
+theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

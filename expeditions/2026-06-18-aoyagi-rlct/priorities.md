@@ -3765,6 +3765,13 @@ Lean rewrites the variable-base theorem in the finite-side threshold form:
 finite `∫ ofReal(a(x)^(-t))`, a.e. `0<a(x)`, and `0<t` imply finite product
 integrability at exponent `t+dim/2`.
 
+A2 residual square-sum integrability socket has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-square-sum-integrability-socket.md`.
+Lean specialises the threshold bridge to
+`aoyagiCoordinateSquareSum (b x)` and to residual matrix-block entries
+`AoyagiResidualBlockCoordinateIndex.value (D x)`, with positivity and
+negative-power integrability still explicit hypotheses.
+
 Updated next A2 analytic target: prove, for the reduced residual model itself,
 the residual negative-power hypothesis `∫ ofReal(a(x)^(-t)) < infinity` in
 the relevant local chart/density setting.  This is still threshold-level
