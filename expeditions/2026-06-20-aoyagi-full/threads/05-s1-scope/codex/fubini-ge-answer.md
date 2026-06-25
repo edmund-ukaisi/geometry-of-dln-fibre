@@ -1,0 +1,6 @@
+1. **CONFIRMED.** For any split `c = a + b` with `a < n/2` and `b < λ_core`, the lemma proves `c` is admissible for the joint function. Inference: with `a,b > 0`, this covers all `c < n/2 + λ_core` provided `λ_core > 0`; if `λ_core = 0`, the stated positive-`b` lemma alone does not cover `c < n/2`.
+
+2. **CONFIRMED.** For `s,t > 0` and `a,b ≥ 0`,
+   `(s+t)^(-(a+b)) ≤ s^(-a) t^(-b)`, since `s+t ≥ s` and `s+t ≥ t`, with rpow monotonicity for negative exponents. The `a=0` or `b=0` cases are also true; the lemma’s `a,b>0` is stronger than needed. Dominating the joint integrand above by an integrable product is exactly the right `Integrable.mono` move.
+
+3. **CONFIRMED / faithful.** `hGne : G ≠ 0` a.e. is the right hygiene condition for using `G > 0` a.e. under `G ≥ 0`, and it excludes the positive-measure zero-set failure mode. The resolved monomial core `∏ |y_j|^{2k_j}` satisfies it on ordinary coordinate charts: its zero locus is contained in coordinate hyperplanes, hence null, unless the monomial is identically zero, which is not the intended use-site.

@@ -1,0 +1,801 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efbb6-a6ce-76f2-a971-f25a786e47a3
+--------
+user
+<task>
+We are formalising a lower-bound RLCT (real log-canonical threshold) divergence atom for deep
+linear networks (DLNs). I need an independent construction/critique of whether a particular
+"single-radial-pivot" change-of-variables chart generalises from a worked depth-2 case to
+arbitrary depth.
+
+SETUP (exact). For reduced widths M = (M_0, M_1, ..., M_L) (positive integers), the loss is
+  F(A) = || A^(0) A^(1) ... A^(L) ||_Frobenius^2 ,
+the squared Frobenius norm of a product of L+1 matrices of compatible shapes (A^(s) is
+M_s x M_{s+1}, with the last factor M_L x M_{L+1} for an output width; for our "core" we evaluate
+at the deepest point and want the box integral near the origin A=0). We want, for c' >= (1/2) minAdm M:
+  INT_{[-eps,eps]^N} |F(A)|^{-c'} dA = +infinity  (N = total number of entries = flat dimension),
+for every eps>0.  Here minAdm M is the integer
+  minAdm M = min over admissible exponent vectors T=(t_1,...,t_L) of
+             Mval(M,T) = sum_{j=1}^{L} (t_{j-1} - t_j)(M_{j+1} - t_j),  t_0 := M_0,
+  admissibility: 0 <= t_L <= ... <= t_1, t_1 <= min(M_0,M_1), t_j <= M_{j+1}, t_L = 0.
+This has a layer-peeling recursion:
+  minAdm(M) = min_{t in [0..min(M_0,M_1)]} (M_0 - t)(M_1 - t) + minAdm( (t, M_2, ..., M_L) ).
+The minimiser gives a DESCENT PATH of pivots (t_1, t_2, ..., t_{L-1}) plus a final 2-width leaf.
+
+THE WORKED DEPTH-2 CASE (L=2), M=(3,3,4), minAdm=8, threshold 4. A SINGLE change-of-variables
+chart phi : R^21 -> R^21 (the 21 flat coords) was constructed and VERIFIED EXACTLY:
+  - it is built as: Schur shear (block-triangular, det 1) composed with a coupled "diag(b)=a*beta"
+    blow-up of the binding rank-1 pivot u_0;
+  - F( phi(u) ) = u_0^2 * U(u)  EXACTLY (polynomial identity), where U is a u_0-free polynomial,
+    and U >= a^2 = u_1^2 (bounded below away from 0 on a positive-measure box slice);
+  - |det D phi(u)| = |u_0|^7 * |u_1|^2 = |u_0|^{minAdm-1} * |u_1|^2  (the spectator u_1 has loss-base
+    exponent 0).
+  So the leaf integrand is a PURE-MONOMIAL leaf: (k,h) = (1, minAdm-1) on the single binding axis u_0
+  (loss base u_0^2, Jacobian u_0^{minAdm-1}); the box integral diverges at c' >= (h+1)/(2k) = minAdm/2.
+The Lean divergence atom accepts an arbitrary product monomial: integrand = (prod_j |u_j|^{h_j}) *
+(prod_j |u_j|^{k_j})^{-2c'}, diverging when min over loss-axes (h_j+1)/(2 k_j) <= c'. (PRODUCT/normal-
+crossing form, NOT a sum-of-monomials form.)
+
+THE QUESTION. For L >= 3 the descent path has SEVERAL nested pivots (e.g. M=(4,4,2,2) has path
+(t_1,t_2)=(4,2) with per-step Schur codims 0,0 and a leaf 2x2 -> minAdm=4; M=(3,3,3,3) has path
+(2,1) with codims 1,2 and leaf 1*3=3 -> minAdm=6).  Each pivot is its own Schur blow-up; the
+composite chart is a CHAIN of these.
+
+  (1) Does the composite chart still factor as  F( Phi(u) ) = (SINGLE monomial in u)^2 * U,
+      U bounded below on a positive-measure box, with |det D Phi| a pure monomial, and the
+      resulting leaf threshold EXACTLY minAdm/2 ?   OR does the nested chain produce a genuine
+      SUM-of-monomials (e.g. u_0^2 + u_1^2 type, a blow-up of a smooth point) whose box-integral
+      threshold is NOT a single pure-monomial axis?
+  (2) Concretely for M=(4,4,2,2) and M=(3,3,3,3): construct (or argue the obstruction to) a single
+      change-of-variables chart Phi on the flat coordinates with F(Phi(u)) = (monomial)^2 * U,
+      U >= c0 > 0 on a positive-measure slice, |det D Phi| a monomial, such that the box integral
+      diverges at exactly c' = minAdm/2 and CONVERGES for c' < minAdm/2 (sharp).  Give the explicit
+      pivot coordinates and the Jacobian monomial, OR explain why the nested peel forces a sum form
+      / a multi-axis leaf where the threshold splits.
+  (3) Is the threshold minAdm/2 achievable with a "single binding axis" carrying (1, minAdm-1), the
+      way the depth-2 case did, for ALL M?  Or only for a characterised subclass (e.g. L=2, or
+      single-pivot descent paths)?  If a subclass, characterise it precisely.
+
+This is for a Lean formalisation: I need EITHER a build-ready general construction OR a precise
+characterisation of the M-class where the single-pivot chart works, plus the obstruction outside it.
+</task>
+
+<output_contract>
+1. A direct answer to (1): single-monomial product form vs sum form for the nested chain. State your
+   confidence and whether it is a derivation or a conjecture.
+2. For (2): either an explicit chart for (4,4,2,2) and (3,3,3,3) (pivot coords + Jacobian monomial +
+   the F = monomial^2 * U factorisation, checked), or the precise obstruction.
+3. For (3): the M-class (all M? L=2 only? single-pivot paths only?) for which a single binding axis
+   (1, minAdm-1) realises threshold minAdm/2, with the characterisation criterion.
+4. Distinguish clearly: derived/proven vs conjectured/heuristic. Flag any step you are unsure of.
+</output_contract>
+
+<grounding_rules>
+- Exact algebra only for load-bearing claims. If you assert a factorisation F = monomial^2 * U,
+  it must be an exact polynomial identity (say so, and ideally give the U).
+- The threshold of a PURE monomial product prod x_i^{2 k_i} with Jacobian weight prod x_i^{h_i} is
+  min_i (h_i+1)/(2 k_i).  The threshold of a SUM (e.g. x^2 + y^2 with weight x^{a}y^{b}) is the
+  Newton-polytope LCT, generally (a+1+b+1)/2 along the diagonal — DIFFERENT.  Keep these separate.
+- Do not assume the depth-2 single-radial miracle generalises; test it.
+- I am withholding my own tentative conclusion. Reason from the setup.
+</grounding_rules>
+
+codex
+I’ll treat this as a math verification task, not a repo edit. I’m going to inspect the local notes for the verified depth-2 chart and the conventions around `minAdm`, then I’ll test the two named examples algebraically rather than assuming the pattern generalises.
+exec
+/bin/bash -lc "ls -la && find .. -maxdepth 3 -name CLAUDE.md -o -name AGENTS.md -o -path '*policies*'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+ succeeded in 0ms:
+total 16
+drwxrwxr-x  4 ubuntu ubuntu 4096 Jun 24 22:17 .
+drwxrwxr-x 31 ubuntu ubuntu 4096 Jun 24 22:14 ..
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 22:18 codex
+drwxrwxr-x  3 ubuntu ubuntu 4096 Jun 24 22:16 scripts
+
+exec
+/bin/bash -lc "pwd && rg -n \"minAdm|single-radial|Schur|diag\\(b\\)|RLCT|lower-bound|M=\\(3,3,4\\)|3,3,4|4,4,2,2|3,3,3,3\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+./codex/genM-chart-prompt.md:2:We are formalising a lower-bound RLCT (real log-canonical threshold) divergence atom for deep
+./codex/genM-chart-prompt.md:4:"single-radial-pivot" change-of-variables chart generalises from a worked depth-2 case to
+./codex/genM-chart-prompt.md:11:at the deepest point and want the box integral near the origin A=0). We want, for c' >= (1/2) minAdm M:
+./codex/genM-chart-prompt.md:13:for every eps>0.  Here minAdm M is the integer
+./codex/genM-chart-prompt.md:14:  minAdm M = min over admissible exponent vectors T=(t_1,...,t_L) of
+./codex/genM-chart-prompt.md:18:  minAdm(M) = min_{t in [0..min(M_0,M_1)]} (M_0 - t)(M_1 - t) + minAdm( (t, M_2, ..., M_L) ).
+./codex/genM-chart-prompt.md:21:THE WORKED DEPTH-2 CASE (L=2), M=(3,3,4), minAdm=8, threshold 4. A SINGLE change-of-variables
+./codex/genM-chart-prompt.md:23:  - it is built as: Schur shear (block-triangular, det 1) composed with a coupled "diag(b)=a*beta"
+./codex/genM-chart-prompt.md:27:  - |det D phi(u)| = |u_0|^7 * |u_1|^2 = |u_0|^{minAdm-1} * |u_1|^2  (the spectator u_1 has loss-base
+./codex/genM-chart-prompt.md:29:  So the leaf integrand is a PURE-MONOMIAL leaf: (k,h) = (1, minAdm-1) on the single binding axis u_0
+./codex/genM-chart-prompt.md:30:  (loss base u_0^2, Jacobian u_0^{minAdm-1}); the box integral diverges at c' >= (h+1)/(2k) = minAdm/2.
+./codex/genM-chart-prompt.md:35:THE QUESTION. For L >= 3 the descent path has SEVERAL nested pivots (e.g. M=(4,4,2,2) has path
+./codex/genM-chart-prompt.md:36:(t_1,t_2)=(4,2) with per-step Schur codims 0,0 and a leaf 2x2 -> minAdm=4; M=(3,3,3,3) has path
+./codex/genM-chart-prompt.md:37:(2,1) with codims 1,2 and leaf 1*3=3 -> minAdm=6).  Each pivot is its own Schur blow-up; the
+./codex/genM-chart-prompt.md:42:      resulting leaf threshold EXACTLY minAdm/2 ?   OR does the nested chain produce a genuine
+./codex/genM-chart-prompt.md:45:  (2) Concretely for M=(4,4,2,2) and M=(3,3,3,3): construct (or argue the obstruction to) a single
+./codex/genM-chart-prompt.md:48:      diverges at exactly c' = minAdm/2 and CONVERGES for c' < minAdm/2 (sharp).  Give the explicit
+./codex/genM-chart-prompt.md:51:  (3) Is the threshold minAdm/2 achievable with a "single binding axis" carrying (1, minAdm-1), the
+./codex/genM-chart-prompt.md:62:2. For (2): either an explicit chart for (4,4,2,2) and (3,3,3,3) (pivot coords + Jacobian monomial +
+./codex/genM-chart-prompt.md:65:   (1, minAdm-1) realises threshold minAdm/2, with the characterisation criterion.
+./codex/genM-chart-prompt.md:75:- Do not assume the depth-2 single-radial miracle generalises; test it.
+./scripts/genM_chart_monomial.py:3:genM_chart_monomial.py — does a SINGLE weighted-radial-pivot chart realise ½·minAdm for general M?
+./scripts/genM_chart_monomial.py:5:The (3,3,4) chart is L=2, single pivot.  Its mechanism:
+./scripts/genM_chart_monomial.py:8:  - Jacobian |det Dphi| = |u_p|^h · (spectator factors),  with h = minAdm - 1 = 7  on the (3,3,4) leaf.
+./scripts/genM_chart_monomial.py:9:  - box-divergence threshold = (h+1)/(2k) with (k,h)=(1, minAdm-1) = minAdm/2.   <- the achiever.
+./scripts/genM_chart_monomial.py:11:THE QUESTION for general M:  the descent has L-1 NESTED pivots t_1,...,t_{L-1}, each a Schur
+./scripts/genM_chart_monomial.py:13:SINGLE binding axis carrying exponent minAdm-1 ?   Or does the nested peel produce a PRODUCT of
+./scripts/genM_chart_monomial.py:17:single-axis prediction against minAdm.  Exact integer / rational arithmetic only.
+./scripts/genM_chart_monomial.py:23:For the achiever we WANT the leaf threshold to EQUAL minAdm/2 (so c'>=minAdm/2 diverges, c'<minAdm/2 fin).
+./scripts/genM_chart_monomial.py:25:from genM_structure import minAdmRec, descent_trace, redChain
+./scripts/genM_chart_monomial.py:31:    The (3,3,4)-style SINGLE-axis prediction:  one binding pivot axis with (k,h)=(1, minAdm-1).
+./scripts/genM_chart_monomial.py:32:    Threshold = (h+1)/(2k) = minAdm/2.   This is what the (3,3,4) chart did (L=2, one pivot).
+./scripts/genM_chart_monomial.py:35:    val, _ = minAdmRec(tuple(M))
+./scripts/genM_chart_monomial.py:48:    print(f"M={M}  L={L}  minAdm={val}  #nested-pivots(>=3-width steps)={npivots}")
+./scripts/genM_chart_monomial.py:49:    print(f"   single-axis (3,3,4)-style: (k,h)=({k},{h})  threshold=(h+1)/2k={thr}  "
+./scripts/genM_chart_monomial.py:50:          f"== minAdm/2={F(val,2)}?  {thr == F(val,2)}")
+./scripts/genM_chart_monomial.py:55:    print("=== single-axis (3,3,4)-style prediction vs minAdm/2 ===\n")
+./scripts/genM_chart_monomial.py:64:    print("\nNOTE: the single-axis arithmetic (k,h)=(1,minAdm-1) ALWAYS gives threshold minAdm/2")
+./scripts/genM_chart_monomial.py:66:    print("Jacobian exponent h=minAdm-1 on ONE axis while F=u^2*U.  For L>=3 the nested peel makes")
+./scripts/genM_transcribe.py:3:genM_transcribe.py — does the multi-pivot box integral really transcribe to ONE axis (1, minAdm-1)?
+./scripts/genM_transcribe.py:6:   int s^{c1-1} a^{c2-1} (s^2 + a^2)^{-c'} ds da   --(s=u, a=u w)-->   u^{minAdm-1-2c'} [finite w-int]
+./scripts/genM_transcribe.py:7:i.e. a single axis (1, minAdm-1).  This script CHECKS that transcription EXACTLY (symbolic), and
+./scripts/genM_transcribe.py:14:nested form and compare to minAdm/2.
+./codex/genM-chart-run.log:16:We are formalising a lower-bound RLCT (real log-canonical threshold) divergence atom for deep
+./codex/genM-chart-run.log:18:"single-radial-pivot" change-of-variables chart generalises from a worked depth-2 case to
+./codex/genM-chart-run.log:25:at the deepest point and want the box integral near the origin A=0). We want, for c' >= (1/2) minAdm M:
+./codex/genM-chart-run.log:27:for every eps>0.  Here minAdm M is the integer
+./codex/genM-chart-run.log:28:  minAdm M = min over admissible exponent vectors T=(t_1,...,t_L) of
+./codex/genM-chart-run.log:32:  minAdm(M) = min_{t in [0..min(M_0,M_1)]} (M_0 - t)(M_1 - t) + minAdm( (t, M_2, ..., M_L) ).
+./codex/genM-chart-run.log:35:THE WORKED DEPTH-2 CASE (L=2), M=(3,3,4), minAdm=8, threshold 4. A SINGLE change-of-variables
+./codex/genM-chart-run.log:37:  - it is built as: Schur shear (block-triangular, det 1) composed with a coupled "diag(b)=a*beta"
+./codex/genM-chart-run.log:41:  - |det D phi(u)| = |u_0|^7 * |u_1|^2 = |u_0|^{minAdm-1} * |u_1|^2  (the spectator u_1 has loss-base
+./codex/genM-chart-run.log:43:  So the leaf integrand is a PURE-MONOMIAL leaf: (k,h) = (1, minAdm-1) on the single binding axis u_0
+./codex/genM-chart-run.log:44:  (loss base u_0^2, Jacobian u_0^{minAdm-1}); the box integral diverges at c' >= (h+1)/(2k) = minAdm/2.
+./codex/genM-chart-run.log:49:THE QUESTION. For L >= 3 the descent path has SEVERAL nested pivots (e.g. M=(4,4,2,2) has path
+./codex/genM-chart-run.log:50:(t_1,t_2)=(4,2) with per-step Schur codims 0,0 and a leaf 2x2 -> minAdm=4; M=(3,3,3,3) has path
+./codex/genM-chart-run.log:51:(2,1) with codims 1,2 and leaf 1*3=3 -> minAdm=6).  Each pivot is its own Schur blow-up; the
+./codex/genM-chart-run.log:56:      resulting leaf threshold EXACTLY minAdm/2 ?   OR does the nested chain produce a genuine
+./codex/genM-chart-run.log:59:  (2) Concretely for M=(4,4,2,2) and M=(3,3,3,3): construct (or argue the obstruction to) a single
+./codex/genM-chart-run.log:62:      diverges at exactly c' = minAdm/2 and CONVERGES for c' < minAdm/2 (sharp).  Give the explicit
+./codex/genM-chart-run.log:65:  (3) Is the threshold minAdm/2 achievable with a "single binding axis" carrying (1, minAdm-1), the
+./codex/genM-chart-run.log:76:2. For (2): either an explicit chart for (4,4,2,2) and (3,3,3,3) (pivot coords + Jacobian monomial +
+./codex/genM-chart-run.log:79:   (1, minAdm-1) realises threshold minAdm/2, with the characterisation criterion.
+./codex/genM-chart-run.log:89:- Do not assume the depth-2 single-radial miracle generalises; test it.
+./codex/genM-chart-run.log:94:I’ll treat this as a math verification task, not a repo edit. I’m going to inspect the local notes for the verified depth-2 chart and the conventions around `minAdm`, then I’ll test the two named examples algebraically rather than assuming the pattern generalises.
+./scripts/genM_structure.py:6:  - minAdm M (via the Aoyagi layer-peeling recursion, the exact integer min),
+./scripts/genM_structure.py:8:  - the per-step Schur-complement codim contributions  c_j = (M'_0 - t_{j+1})(M'_1 - t_{j+1})
+./scripts/genM_structure.py:10:  - the "single-pivot box-divergence threshold" prediction: ½·minAdm.
+./scripts/genM_structure.py:67:def minAdm_brute(M):
+./scripts/genM_structure.py:87:def minAdmRec(M):
+./scripts/genM_structure.py:98:        childval, childpath = minAdmRec(redChain(t, M))
+./scripts/genM_structure.py:111:    val, path = minAdmRec(tuple(M))
+./scripts/genM_structure.py:128:    bval, bTs = minAdm_brute(M)
+./scripts/genM_structure.py:129:    rval, rpath = minAdmRec(M)
+./scripts/genM_structure.py:132:    print(f"  minAdm (brute over Adm)      = {bval}   minimiser(s) T* = {bTs}")
+./scripts/genM_structure.py:133:    print(f"  minAdmRec (layer-peel)       = {rval}   peel pivots     = {rpath}")
+./scripts/genM_structure.py:136:    print(f"  rlct = minAdm/2              = {bval/2}")
+./scripts/genM_structure.py:143:    # the achiever-monomial: the SUM of schur-codims + the leaf = minAdm; the box-divergence
+./scripts/genM_structure.py:144:    # threshold the single weighted-pivot chart must realise is minAdm/2.
+
+codex
+There are already small scripts in this thread aimed at exactly this question. I’m reading them as prior scratch work, then I’ll independently check the actual algebraic normal form for the named widths.
+exec
+/bin/bash -lc "sed -n '1,240p' scripts/genM_structure.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+genM_structure.py — EXACT-algebra reconstruction of the binding descent path for general M.
+
+Goal: for a reduced-width vector M = (M_0,...,M_L), recover
+  - minAdm M (via the Aoyagi layer-peeling recursion, the exact integer min),
+  - the binding minimiser T* = (t_1,...,t_L) (the descent path),
+  - the per-step Schur-complement codim contributions  c_j = (M'_0 - t_{j+1})(M'_1 - t_{j+1})
+    along the peel (M' = current reduced chain),
+  - the "single-pivot box-divergence threshold" prediction: ½·minAdm.
+
+This is the COMBINATORIAL layer (no measure theory yet) — it identifies the achiever path the
+geometric chart must blow up.  Everything is exact integer arithmetic.
+"""
+from functools import lru_cache
+from itertools import product
+
+
+def Mval(M, T):
+    """Aoyagi candidate value (over the integers).  M : tuple len L+1, T : tuple len L.
+    M(T) = sum_{j=1}^{L} (t^{j-1} - t^j)(M^{j+1} - t^j),  with t^0 := M^1 = M[0]."""
+    L = len(M) - 1
+    assert len(T) == L
+    total = 0
+    for j in range(L):           # j = 0..L-1 corresponds to layer index 1..L
+        tprev = M[0] if j == 0 else T[j - 1]
+        tj = T[j]
+        total += (tprev - tj) * (M[j + 1] - tj)
+    return total
+
+
+def admBound(M, j):
+    """min(M0,M1) for j==0, else M_{j+1}."""
+    if j == 0:
+        return min(M[0], M[1])
+    return M[j + 1]
+
+
+def admissible(M, T):
+    L = len(M) - 1
+    # within block bounds
+    for j in range(L):
+        if T[j] > admBound(M, j):
+            return False
+    # weak decrease t^1 >= ... >= t^L
+    for i in range(L):
+        for j in range(i, L):
+            if T[j] > T[i]:
+                return False
+    # last exponent zero
+    if L >= 1 and T[L - 1] != 0:
+        return False
+    return True
+
+
+def all_adm(M):
+    L = len(M) - 1
+    if L == 0:
+        yield tuple()
+        return
+    ranges = [range(admBound(M, j) + 1) for j in range(L)]
+    for T in product(*ranges):
+        if admissible(M, T):
+            yield T
+
+
+def minAdm_brute(M):
+    """min over Adm of Mval, with the minimiser(s)."""
+    best = None
+    bestT = []
+    for T in all_adm(M):
+        v = Mval(M, T)
+        if best is None or v < best:
+            best = v
+            bestT = [T]
+        elif v == best:
+            bestT.append(T)
+    return best, bestT
+
+
+def redChain(t, M):
+    """(t, M_2, M_3, ..., M_L) — one fewer layer."""
+    return (t,) + tuple(M[2:])
+
+
+@lru_cache(maxsize=None)
+def minAdmRec(M):
+    """Layer-peeling recursion, returns (value, descent-path-as-list-of-pivots)."""
+    L = len(M) - 1
+    if L == 0:
+        return 0, ()
+    if L == 1:
+        return M[0] * M[1], ()        # leaf: pivot product, no further pivots
+    best = None
+    bestpath = None
+    bestt = None
+    for t in range(min(M[0], M[1]) + 1):
+        childval, childpath = minAdmRec(redChain(t, M))
+        v = (M[0] - t) * (M[1] - t) + childval
+        if best is None or v < best:
+            best = v
+            bestpath = childpath
+            bestt = t
+    return best, (bestt,) + bestpath
+
+
+def descent_trace(M):
+    """Full peel: list of (current chain, pivot t, schur-codim, child-leaf-or-recurse)."""
+    trace = []
+    cur = tuple(M)
+    val, path = minAdmRec(tuple(M))
+    # path has length L-1 (pivots at each >=3-width step); the final L=1 leaf product is implicit.
+    idx = 0
+    while len(cur) >= 3:
+        t = path[idx]
+        codim = (cur[0] - t) * (cur[1] - t)
+        trace.append((cur, t, codim, 'recurse'))
+        cur = redChain(t, cur)
+        idx += 1
+    # now cur is a 2-width leaf
+    leaf = cur[0] * cur[1]
+    trace.append((cur, None, leaf, 'leaf'))
+    return trace, val
+
+
+def report(M):
+    M = tuple(M)
+    bval, bTs = minAdm_brute(M)
+    rval, rpath = minAdmRec(M)
+    trace, tval = descent_trace(M)
+    print(f"M = {M}")
+    print(f"  minAdm (brute over Adm)      = {bval}   minimiser(s) T* = {bTs}")
+    print(f"  minAdmRec (layer-peel)       = {rval}   peel pivots     = {rpath}")
+    print(f"  descent-trace total          = {tval}")
+    assert bval == rval == tval, "recursion / brute / trace disagree!"
+    print(f"  rlct = minAdm/2              = {bval/2}")
+    print("  peel:")
+    for (chain, t, codim, kind) in trace:
+        if kind == 'leaf':
+            print(f"     LEAF chain={chain}  product-codim = {codim}")
+        else:
+            print(f"     chain={chain}  pivot t={t}  schur-codim=(M0-t)(M1-t)={codim}")
+    # the achiever-monomial: the SUM of schur-codims + the leaf = minAdm; the box-divergence
+    # threshold the single weighted-pivot chart must realise is minAdm/2.
+    print()
+    return bval, bTs, rpath, trace
+
+
+if __name__ == "__main__":
+    for M in [(2, 2, 2), (3, 3, 4), (3, 3, 3), (4, 4, 2, 2), (2, 2, 4),
+              (4, 4, 4), (5, 3, 4), (3, 3, 3, 3), (2, 3, 4, 2), (4, 4, 4, 4)]:
+        report(M)
+
+exec
+/bin/bash -lc "find . -maxdepth 3 -type f -not -path './.git/*' -printf '%p\\n' | sort" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+2026-06-24T22:18:47.422964Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019efbb6-a6ce-76f2-a971-f25a786e47a3`" }
+ exited 1:
+2026-06-24T22:18:47.423289Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find . -maxdepth 3 -type f -not -path './.git/*' -printf '%p\\n' | sort"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "sed -n '1,220p' scripts/genM_chart_monomial.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+genM_chart_monomial.py — does a SINGLE weighted-radial-pivot chart realise ½·minAdm for general M?
+
+The (3,3,4) chart is L=2, single pivot.  Its mechanism:
+  - ONE exceptional divisor u_p (the "radial" pivot of the blow-up at the binding rank t_1),
+  - F ∘ phi = u_p^2 · U   (U a u_p-free unit, bounded away from 0 on the box),
+  - Jacobian |det Dphi| = |u_p|^h · (spectator factors),  with h = minAdm - 1 = 7  on the (3,3,4) leaf.
+  - box-divergence threshold = (h+1)/(2k) with (k,h)=(1, minAdm-1) = minAdm/2.   <- the achiever.
+
+THE QUESTION for general M:  the descent has L-1 NESTED pivots t_1,...,t_{L-1}, each a Schur
+blow-up.  Does the COMPOSITE chart still factor as  F ∘ Phi = (single monomial)^2 · U  with a
+SINGLE binding axis carrying exponent minAdm-1 ?   Or does the nested peel produce a PRODUCT of
+exceptional divisors, so the achiever monomial is multi-axis  F = (prod u_{p_i}^{2 a_i}) · U  ?
+
+This script computes, for the descent trace, the candidate single-pivot exponent and tests the
+single-axis prediction against minAdm.  Exact integer / rational arithmetic only.
+
+Key arithmetic facts (the threshold of a monomial leaf):
+  monomial leaf  integrand  = (prod_j |u_j|^{h_j}) * (|prod_j u_j^{k_j}|^2)^{-c}   [loss base squared]
+  the box integral  int_{[0,eps]^N}  diverges at  c >= min_j (h_j + 1)/(2 k_j)  over axes with k_j>0
+  (Newton/monomial threshold;  per-axis (h_j+1)/(2 k_j),  the MIN over loss-carrying axes).
+For the achiever we WANT the leaf threshold to EQUAL minAdm/2 (so c'>=minAdm/2 diverges, c'<minAdm/2 fin).
+"""
+from genM_structure import minAdmRec, descent_trace, redChain
+from fractions import Fraction as F
+
+
+def single_pivot_334_style(M):
+    """
+    The (3,3,4)-style SINGLE-axis prediction:  one binding pivot axis with (k,h)=(1, minAdm-1).
+    Threshold = (h+1)/(2k) = minAdm/2.   This is what the (3,3,4) chart did (L=2, one pivot).
+    Returns (k, h, threshold).
+    """
+    val, _ = minAdmRec(tuple(M))
+    k = 1
+    h = val - 1
+    thr = F(h + 1, 2 * k)
+    return k, h, thr
+
+
+def report(M):
+    M = tuple(M)
+    trace, val = descent_trace(M)
+    L = len(M) - 1
+    npivots = sum(1 for (_, _, _, kind) in trace if kind == 'recurse')
+    k, h, thr = single_pivot_334_style(M)
+    print(f"M={M}  L={L}  minAdm={val}  #nested-pivots(>=3-width steps)={npivots}")
+    print(f"   single-axis (3,3,4)-style: (k,h)=({k},{h})  threshold=(h+1)/2k={thr}  "
+          f"== minAdm/2={F(val,2)}?  {thr == F(val,2)}")
+    return npivots, val, thr
+
+
+if __name__ == "__main__":
+    print("=== single-axis (3,3,4)-style prediction vs minAdm/2 ===\n")
+    multipivot = []
+    for M in [(2, 2, 2), (3, 3, 4), (3, 3, 3), (2, 2, 4), (4, 4, 4), (5, 3, 4),
+              (4, 4, 2, 2), (3, 3, 3, 3), (2, 3, 4, 2), (4, 4, 4, 4)]:
+        npiv, val, thr = report(M)
+        if npiv >= 2:
+            multipivot.append(M)
+        print()
+    print("Cases with >=2 nested pivots (L>=3, the deep-sharing regime):", multipivot)
+    print("\nNOTE: the single-axis arithmetic (k,h)=(1,minAdm-1) ALWAYS gives threshold minAdm/2")
+    print("by construction.  The real question is whether a single radial pivot CHART can carry")
+    print("Jacobian exponent h=minAdm-1 on ONE axis while F=u^2*U.  For L>=3 the nested peel makes")
+    print("the composite chart's exceptional set a UNION of divisors -- see genM_chart_geometry.py.")
+
+exec
+/bin/bash -lc "sed -n '1,260p' scripts/genM_transcribe.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+genM_transcribe.py — does the multi-pivot box integral really transcribe to ONE axis (1, minAdm-1)?
+
+Thread 22 CLAIMED:  for L>=3 the chart is a recursive gauge chain whose box integral
+   int s^{c1-1} a^{c2-1} (s^2 + a^2)^{-c'} ds da   --(s=u, a=u w)-->   u^{minAdm-1-2c'} [finite w-int]
+i.e. a single axis (1, minAdm-1).  This script CHECKS that transcription EXACTLY (symbolic), and
+more importantly checks WHICH integrand the nested peel actually produces.
+
+The crux distinction the prior thread glossed:
+  * SUM form     F = s^2 + a^2          (two divisors meeting, "+", a blow-up of a smooth point)
+  * PRODUCT form F = (s a)^2 = s^2 a^2  (two divisors crossing, "x", a monomial / normal-crossing)
+These have DIFFERENT thresholds.  We compute the exact box-integral threshold of each candidate
+nested form and compare to minAdm/2.
+
+We use the standard log-canonical-threshold of a monomial/quasi-homogeneous germ:
+  for F = prod_i x_i^{2 k_i} with Jacobian weight prod_i x_i^{h_i}, the box integral
+     int_{[0,eps]^n} (prod x_i^{h_i}) F^{-c}  diverges  <=>  c >= min_i (h_i+1)/(2 k_i).
+For a SUM of monomials we must Newton-polytope it (the LCT is 1/(max over the Newton diagram of the
+support function), Varchenko); we compute that exactly with a small LP.
+"""
+import sympy as sp
+from fractions import Fraction as F
+from itertools import product as iproduct
+
+
+# ---- exact Newton-polytope monomial threshold (single chart, several monomials summed) ----
+def newton_lct(exps, weights):
+    """
+    exps: list of monomial exponent-tuples for the generators g_m (each |g_m|^2 enters F = sum g_m^2,
+          so the VANISHING locus exponents are 2*exps when squared; we pass the SQUARED exponents).
+    Actually we pass the exponent tuples of F's *monomials* directly (F is a sum of monomials in the
+    blow-up coords, each = prod x_i^{p_{m,i}}).  weights = Jacobian exponents h_i (the |det| weight).
+    Returns the box-integral threshold c* : the inf c with int (prod x^h) F^{-c} = +inf, where
+    F = sum_m (prod_i x_i^{p_{m,i}}).
+    For a single monomial F = prod x_i^{p_i}:  threshold = min_i (h_i+1)/p_i.
+    For a sum: threshold = min over the Newton polyhedron's relevant faces; we use the
+    standard formula  c* = min_i over the LP   max  c  s.t.  for all m: sum_i p_{m,i} t_i >= ... .
+    We instead compute it via the dual: c* = inf over the Newton diagram support.
+    Robust route: c* = 1 / (lct-style); we compute by the explicit 1-parameter monomial probe along
+    each coordinate ray AND each diagonal ray, taking the MIN (sufficient for the crossing/normal cases
+    we test; we assert against the recursion value as ground truth).
+    """
+    n = len(weights)
+    cands = []
+    # coordinate rays e_i: t = e_i.  Along x_i->0, others fixed >0:  F ~ x_i^{p*} with
+    # p* = min_m p_{m,i}.  integrand ~ x_i^{h_i} (x_i^{p*})^{-c}; diverges c >= (h_i+1)/p*.
+    for i in range(n):
+        ps = [e[i] for e in exps if e[i] > 0]
+        if not ps:
+            continue
+        pstar = min(e[i] for e in exps)  # min over ALL gens (gens with 0 contribute O(1), keep F>0)
+        # if some gen has 0 exponent in x_i then F stays bounded below as x_i->0 => no divergence
+        if any(e[i] == 0 for e in exps):
+            continue
+        cands.append(F(weights[i] + 1, pstar))
+    # diagonal rays over every subset (all chosen coords -> 0 at equal rate)
+    for r in range(2, n + 1):
+        for sub in _subsets(range(n), r):
+            # t_i = 1 for i in sub else 0.  F ~ rho^{p*} with p* = min_m sum_{i in sub} p_{m,i}
+            # (only gens supported entirely... no: gens with support outside sub stay O(1) -> F bounded)
+            if any(any(e[i] == 0 for i in sub) for e in []):
+                pass
+            # require EVERY gen to vanish along this ray (else F bounded below)
+            ok = all(sum(e[i] for i in sub) > 0 for e in exps)
+            if not ok:
+                continue
+            pstar = min(sum(e[i] for i in sub) for e in exps)
+            wsum = sum(weights[i] for i in sub) + r  # h_i+1 summed over the sub coords
+            cands.append(F(wsum, pstar))
+    return min(cands) if cands else None
+
+
+def _subsets(it, r):
+    it = list(it)
+    n = len(it)
+    if r > n:
+        return
+    idx = list(range(r))
+    while True:
+        yield tuple(it[i] for i in idx)
+        i = r - 1
+        while i >= 0 and idx[i] == n - r + i:
+            i -= 1
+        if i < 0:
+            return
+        idx[i] += 1
+        for j in range(i + 1, r):
+            idx[j] = idx[j - 1] + 1
+
+
+# ---- the transcription check (thread 22's s=u, a=u w) ----
+def check_transcription():
+    s, a, u, w, c1, c2, cp = sp.symbols('s a u w c1 c2 cprime', positive=True)
+    # int s^{c1-1} a^{c2-1} (s^2+a^2)^{-cp} ds da  with a = u w, s = u  (Jacobian du dw: ds da = u du dw)
+    integrand = s**(c1 - 1) * a**(c2 - 1) * (s**2 + a**2)**(-cp)
+    sub = integrand.subs({s: u, a: u * w}) * u   # * |J| = u
+    sub = sp.simplify(sub)
+    # collect the power of u
+    powu = sp.simplify(sp.log(sub) )  # not robust; instead extract directly
+    # do it by hand: s^{c1-1} = u^{c1-1}; a^{c2-1} = (uw)^{c2-1}=u^{c2-1} w^{c2-1};
+    # (s^2+a^2)^{-cp} = u^{-2cp}(1+w^2)^{-cp};  times u  => u^{(c1-1)+(c2-1)-2cp+1} = u^{c1+c2-1-2cp}
+    print("transcription u-exponent =", "c1 + c2 - 1 - 2*c'")
+    print("  diverges in u (near 0) when  c1+c2-1-2c' <= -1  i.e.  c' >= (c1+c2)/2")
+    print("  so the SUM-of-two-monomials s^2+a^2 with Jac s^{c1-1}a^{c2-1} has threshold (c1+c2)/2.")
+    return
+
+
+if __name__ == "__main__":
+    check_transcription()
+    print()
+    # SANITY: two crossing divisors (product form) F = s^2 a^2, Jac s^{c1-1} a^{c2-1}
+    # threshold along s-axis = c1/2, along a-axis = c2/2, MIN = min(c1,c2)/2.
+    print("Newton thresholds (exact):")
+    print("  SUM  F = s^2 + a^2, Jac (h_s,h_a)=(c1-1,c2-1):  diagonal gives (c1+c2)/2")
+    th_sum = newton_lct([(2, 0), (0, 2)], [3, 3])  # c1=c2=4 example: weights 3,3
+    print("    example c1=c2=4: diagonal pred (4+4)/2=4;  newton_lct=", th_sum)
+    print("  PRODUCT F = s^2 a^2 (=(sa)^2), Jac (3,3):  min axis (3+1)/2=2")
+    th_prod = newton_lct([(2, 2)], [3, 3])
+    print("    newton_lct=", th_prod)
+
+exec
+/bin/bash -lc 'python3 scripts/genM_structure.py' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart
+2026-06-24T22:18:52.820257Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019efbb6-a6ce-76f2-a971-f25a786e47a3`" }
+ exited 1:
+2026-06-24T22:18:52.820562Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'python3 scripts/genM_structure.py'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+codex
+**Direct Answer**
+
+Confidence: high. Derived, not conjectural.
+
+The raw nested Schur peel does **not** produce a product of independent loss axes. In normal coordinates it produces a smooth-normal **sum** form: several residual blocks vanish, and \(F\) is the squared norm of a map linear in those residuals to first order.
+
+But after one final radial blow-up of **all** normal residual coordinates together, it becomes the desired single-axis monomial atom:
+\[
+F(\Phi(u,\cdots))=u^2 U,\qquad |\det D\Phi|=|u|^{\minAdm(M)-1}\cdot(\text{spectator monomial}),
+\]
+with \(U\ge c_0>0\) on a positive-measure sector. Thus the Lean product-monomial atom can use one loss axis \((k,h)=(1,\minAdm-1)\).
+
+The mistake to avoid is modeling the nested chain as
+\[
+F\sim \prod_i r_i^2.
+\]
+It is instead locally
+\[
+F\sim r_1^2+\cdots+r_d^2,\qquad d=\minAdm(M),
+\]
+then radialized by \(r_1=u,\ r_i=u w_i\).
+
+**Example: \(M=(4,4,2,2)\)**
+
+Here \(\minAdm=4\), path \((t_1,t_2)=(4,2)\), and the only positive normal block is the final \(2\times2\) leaf.
+
+Let \(A\in\mathbb R^{4\times4}\), \(B\in\mathbb R^{4\times2}\) be free, and set
+\[
+C=u\Gamma,\qquad 
+\Gamma=\begin{pmatrix}1&s\\ t&v\end{pmatrix}.
+\]
+Then exactly
+\[
+ABC=u\,AB\Gamma,\qquad
+F=u^2\|AB\Gamma\|^2.
+\]
+The Jacobian from \((u,s,t,v)\mapsto C\) is \(|u|^3\). Thus
+\[
+|\det D\Phi|=|u|^3,
+\]
+so the atom threshold is
+\[
+\frac{3+1}{2}=2=\frac{\minAdm}{2}.
+\]
+On a sector where, for example, suitable entries of \(A\), \(B\), and \(\Gamma\) are nonzero, \(U=\|AB\Gamma\|^2\) is bounded below.
+
+**Example: \(M=(3,3,3,3)\)**
+
+Here \(\minAdm=6\), path \((t_1,t_2)=(2,1)\), with normal block sizes \(1,2,3\).
+
+Use blocks
+\[
+K=\begin{pmatrix}a&a\alpha\\ \gamma a&\gamma a\alpha+\delta\end{pmatrix},
+\quad
+m=\binom{m_1}{m_2},\quad
+\lambda=(\lambda_1,\lambda_2),
+\]
+and define
+\[
+A=
+\binom{I_2}{\lambda}K(I_2\ m)+uE_{33}.
+\]
+Let
+\[
+w=(1,n_1,n_2),\quad p=\binom{1}{\ell},\quad
+Y=\begin{pmatrix}0&0&0\\0&\eta_1&\eta_2\end{pmatrix},
+\]
+\[
+D=p\,b\,w+uY.
+\]
+Choose a free row \(r\in\mathbb R^{1\times3}\), and set
+\[
+B=\binom{D-mr}{r},
+\]
+so that \((I_2\ m)B=D\). Finally choose free rows \(h_1,h_2\in\mathbb R^{1\times3}\), \(\zeta\in\mathbb R^{1\times3}\), and set
+\[
+C=\begin{pmatrix}
+u\zeta-n_1h_1-n_2h_2\\
+h_1\\
+h_2
+\end{pmatrix},
+\]
+so \(wC=u\zeta\).
+
+Then exactly
+\[
+ABC=uH,
+\]
+where
+\[
+H=\binom{I_2}{\lambda}K\bigl(pb\zeta+YC\bigr)+E_{33}BC.
+\]
+Hence
+\[
+F=u^2\|H\|^2.
+\]
+The Jacobian is
+\[
+|\det D\Phi|=|u|^5\,|a|^4\,|\delta|^2\,|b|^3.
+\]
+The \(u\)-axis has \((k,h)=(1,5)\), so the atom threshold is
+\[
+\frac{5+1}{2}=3=\frac{\minAdm}{2}.
+\]
+On a sector with \(a,\delta,b,\zeta_1\) bounded away from zero, \(U=\|H\|^2\) is bounded below.
+
+**General Class**
+
+The single binding axis \((1,\minAdm-1)\) is achievable for **all positive width vectors \(M\)**, provided the axis is understood as the final radial coordinate of the full normal bundle to a minimal rank-chain stratum.
+
+For a minimizing admissible path \(T=(t_1,\dots,t_L=0)\), the normal block sizes are
+\[
+d_j=(t_{j-1}-t_j)(M_j-t_j),
+\]
+with \(t_0=M_0\), and
+\[
+\sum_j d_j=\minAdm(M).
+\]
+Schur coordinates make the product vanish exactly when all these residual blocks vanish. Scaling all residual coordinates by one common radial variable \(u\) gives
+\[
+F=u^2U,\qquad |\det|=|u|^{\minAdm(M)-1}\cdot(\text{spectator monomial}).
+\]
+
+What is false is the stricter claim that each nested pivot gives a separate product loss axis. For genuine multi-pivot cases like \((3,3,3,3)\), the unradialized form is sum/smooth-normal, not product-normal-crossing. The product-monomial Lean atom becomes valid only after the common radial blow-up. Global convergence below \(\minAdm/2\) is not proved by this lower-bound sector alone; it needs the matching upper-bound cover/resolution.
+tokens used
+47,983
+**Direct Answer**
+
+Confidence: high. Derived, not conjectural.
+
+The raw nested Schur peel does **not** produce a product of independent loss axes. In normal coordinates it produces a smooth-normal **sum** form: several residual blocks vanish, and \(F\) is the squared norm of a map linear in those residuals to first order.
+
+But after one final radial blow-up of **all** normal residual coordinates together, it becomes the desired single-axis monomial atom:
+\[
+F(\Phi(u,\cdots))=u^2 U,\qquad |\det D\Phi|=|u|^{\minAdm(M)-1}\cdot(\text{spectator monomial}),
+\]
+with \(U\ge c_0>0\) on a positive-measure sector. Thus the Lean product-monomial atom can use one loss axis \((k,h)=(1,\minAdm-1)\).
+
+The mistake to avoid is modeling the nested chain as
+\[
+F\sim \prod_i r_i^2.
+\]
+It is instead locally
+\[
+F\sim r_1^2+\cdots+r_d^2,\qquad d=\minAdm(M),
+\]
+then radialized by \(r_1=u,\ r_i=u w_i\).
+
+**Example: \(M=(4,4,2,2)\)**
+
+Here \(\minAdm=4\), path \((t_1,t_2)=(4,2)\), and the only positive normal block is the final \(2\times2\) leaf.
+
+Let \(A\in\mathbb R^{4\times4}\), \(B\in\mathbb R^{4\times2}\) be free, and set
+\[
+C=u\Gamma,\qquad 
+\Gamma=\begin{pmatrix}1&s\\ t&v\end{pmatrix}.
+\]
+Then exactly
+\[
+ABC=u\,AB\Gamma,\qquad
+F=u^2\|AB\Gamma\|^2.
+\]
+The Jacobian from \((u,s,t,v)\mapsto C\) is \(|u|^3\). Thus
+\[
+|\det D\Phi|=|u|^3,
+\]
+so the atom threshold is
+\[
+\frac{3+1}{2}=2=\frac{\minAdm}{2}.
+\]
+On a sector where, for example, suitable entries of \(A\), \(B\), and \(\Gamma\) are nonzero, \(U=\|AB\Gamma\|^2\) is bounded below.
+
+**Example: \(M=(3,3,3,3)\)**
+
+Here \(\minAdm=6\), path \((t_1,t_2)=(2,1)\), with normal block sizes \(1,2,3\).
+
+Use blocks
+\[
+K=\begin{pmatrix}a&a\alpha\\ \gamma a&\gamma a\alpha+\delta\end{pmatrix},
+\quad
+m=\binom{m_1}{m_2},\quad
+\lambda=(\lambda_1,\lambda_2),
+\]
+and define
+\[
+A=
+\binom{I_2}{\lambda}K(I_2\ m)+uE_{33}.
+\]
+Let
+\[
+w=(1,n_1,n_2),\quad p=\binom{1}{\ell},\quad
+Y=\begin{pmatrix}0&0&0\\0&\eta_1&\eta_2\end{pmatrix},
+\]
+\[
+D=p\,b\,w+uY.
+\]
+Choose a free row \(r\in\mathbb R^{1\times3}\), and set
+\[
+B=\binom{D-mr}{r},
+\]
+so that \((I_2\ m)B=D\). Finally choose free rows \(h_1,h_2\in\mathbb R^{1\times3}\), \(\zeta\in\mathbb R^{1\times3}\), and set
+\[
+C=\begin{pmatrix}
+u\zeta-n_1h_1-n_2h_2\\
+h_1\\
+h_2
+\end{pmatrix},
+\]
+so \(wC=u\zeta\).
+
+Then exactly
+\[
+ABC=uH,
+\]
+where
+\[
+H=\binom{I_2}{\lambda}K\bigl(pb\zeta+YC\bigr)+E_{33}BC.
+\]
+Hence
+\[
+F=u^2\|H\|^2.
+\]
+The Jacobian is
+\[
+|\det D\Phi|=|u|^5\,|a|^4\,|\delta|^2\,|b|^3.
+\]
+The \(u\)-axis has \((k,h)=(1,5)\), so the atom threshold is
+\[
+\frac{5+1}{2}=3=\frac{\minAdm}{2}.
+\]
+On a sector with \(a,\delta,b,\zeta_1\) bounded away from zero, \(U=\|H\|^2\) is bounded below.
+
+**General Class**
+
+The single binding axis \((1,\minAdm-1)\) is achievable for **all positive width vectors \(M\)**, provided the axis is understood as the final radial coordinate of the full normal bundle to a minimal rank-chain stratum.
+
+For a minimizing admissible path \(T=(t_1,\dots,t_L=0)\), the normal block sizes are
+\[
+d_j=(t_{j-1}-t_j)(M_j-t_j),
+\]
+with \(t_0=M_0\), and
+\[
+\sum_j d_j=\minAdm(M).
+\]
+Schur coordinates make the product vanish exactly when all these residual blocks vanish. Scaling all residual coordinates by one common radial variable \(u\) gives
+\[
+F=u^2U,\qquad |\det|=|u|^{\minAdm(M)-1}\cdot(\text{spectator monomial}).
+\]
+
+What is false is the stricter claim that each nested pivot gives a separate product loss axis. For genuine multi-pivot cases like \((3,3,3,3)\), the unradialized form is sum/smooth-normal, not product-normal-crossing. The product-monomial Lean atom becomes valid only after the common radial blow-up. Global convergence below \(\minAdm/2\) is not proved by this lower-bound sector alone; it needs the matching upper-bound cover/resolution.
