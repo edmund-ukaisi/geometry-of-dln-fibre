@@ -4618,3 +4618,10 @@ identity into the scalar residual square-sum needed by local-source endpoints.
 Do not treat it as proof of the matrix identity, residual-index equivalence,
 source coverage, source-measure identification, normal crossings, pole order,
 or RLCT.
+
+The finite selected-entry sector cover
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`
+records the elementary all-pivot bounded cover of a smaller signed box by
+selected-entry chart images.  It is supplementary finite geometry only.  It
+does not reduce the fixed-pivot local source-stratum equality socket and must
+not be cited as source coverage.

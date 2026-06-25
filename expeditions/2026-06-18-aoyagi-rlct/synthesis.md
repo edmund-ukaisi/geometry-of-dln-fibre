@@ -10628,3 +10628,16 @@ and
 It does not construct the source chart, prove the matrix identity, construct
 the residual-index equivalence, prove source coverage, identify source
 measures, produce normal crossings, compute pole order, or prove RLCT.
+
+The finite selected-entry sector-cover corollary has also landed in
+`SelectedEntrySignedBoxMeasure.lean`:
+`SelectedEntrySignedBox.CenterCoord.signedBoxSet_subset_iUnion_chartMap_image_signedBoxSet_of_one_lt`.
+Under `S i <= R i` and `1 < R i`, a point in `signedBoxSet S` is either zero
+or has a maximal absolute-value coordinate; the corresponding selected-entry
+chart with radii `R` contains the point.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-finite-sector-cover.md`.
+This is finite all-pivot sector geometry only, not local source-stratum
+coverage, fixed-base residual readout, source-measure identification, normal
+crossings, pole order, or RLCT.

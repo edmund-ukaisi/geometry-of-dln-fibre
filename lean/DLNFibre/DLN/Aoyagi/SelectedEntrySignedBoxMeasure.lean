@@ -328,6 +328,99 @@ theorem mem_chartMap_image_signedBoxSet_iff {center : Finset ι} (pivot : center
           rw [chartMap_of_ne pivot y hi]
           simpa [y, hi] using hmul
 
+/-- If a chosen pivot coordinate is nonzero and dominates all absolute
+coordinates, then the point lies in that selected-entry chart image whenever
+the pivot itself is inside its radius and every non-pivot chart radius is
+larger than `1`. -/
+theorem mem_chartMap_image_signedBoxSet_of_pivot_abs_max {center : Finset ι}
+    (pivot : center) {R x : center → ℝ}
+    (hpivot : x pivot ≠ 0) (hpivot_lt : |x pivot| < R pivot)
+    (hmax : ∀ i : center, |x i| ≤ |x pivot|)
+    (hR_nonpivot : ∀ i : center, i ≠ pivot → 1 < R i) :
+    x ∈ chartMap pivot '' signedBoxSet R := by
+  rw [mem_chartMap_image_signedBoxSet_iff pivot]
+  · right
+    refine ⟨hpivot, hpivot_lt, ?_⟩
+    intro i hi
+    have hpivot_abs_pos : 0 < |x pivot| := abs_pos.mpr hpivot
+    have hle_one : |x i| / |x pivot| ≤ 1 := by
+      rw [div_le_iff₀ hpivot_abs_pos]
+      simpa using hmax i
+    calc
+      |x i / x pivot| = |x i| / |x pivot| := by rw [abs_div]
+      _ ≤ 1 := hle_one
+      _ < R i := hR_nonpivot i hi
+  · intro i
+    by_cases hi : i = pivot
+    · subst i
+      exact (abs_pos.mpr hpivot).trans hpivot_lt
+    · exact zero_lt_one.trans (hR_nonpivot i hi)
+
+omit [DecidableEq ι] in
+/-- A nonzero finite coordinate vector has a nonzero coordinate whose absolute
+value dominates all coordinates. -/
+theorem exists_pivot_abs_le_abs_of_ne_zero {center : Finset ι} [Nonempty center]
+    (x : center → ℝ) (hx : x ≠ 0) :
+    ∃ pivot : center, x pivot ≠ 0 ∧ ∀ i : center, |x i| ≤ |x pivot| := by
+  classical
+  obtain ⟨pivot, _hpivot_mem, hpivot_max⟩ :=
+    Finset.exists_max_image (Finset.univ : Finset center) (fun i => |x i|)
+      Finset.univ_nonempty
+  refine ⟨pivot, ?_, fun i => hpivot_max i (by simp)⟩
+  intro hpivot_zero
+  apply hx
+  funext i
+  have hle_zero : |x i| ≤ 0 := by
+    simpa [hpivot_zero] using hpivot_max i (by simp)
+  have habs_zero : |x i| = 0 :=
+    le_antisymm hle_zero (abs_nonneg _)
+  exact abs_eq_zero.mp habs_zero
+
+/-- A nonzero point in a smaller signed box lies in some selected-entry chart
+image, by choosing a coordinate of maximal absolute value as pivot.
+
+The strict `1 < R i` condition is what makes tied maximal non-pivot quotients
+fit inside the open quotient radii. -/
+theorem exists_maxPivot_mem_chartMap_image_signedBoxSet_of_mem_signedBoxSet_ne_zero
+    {center : Finset ι} [Nonempty center] {R S x : center → ℝ}
+    (hSleR : ∀ i, S i ≤ R i) (hRone : ∀ i, 1 < R i)
+    (hxS : x ∈ signedBoxSet S) (hxne : x ≠ 0) :
+    ∃ pivot : center,
+      x pivot ≠ 0 ∧
+        (∀ i : center, |x i| ≤ |x pivot|) ∧
+        x ∈ chartMap pivot '' signedBoxSet R := by
+  obtain ⟨pivot, hpivot, hmax⟩ := exists_pivot_abs_le_abs_of_ne_zero x hxne
+  refine ⟨pivot, hpivot, hmax, ?_⟩
+  have hx_pivot : x pivot ∈ Set.Ioo (-(S pivot)) (S pivot) :=
+    hxS pivot (Set.mem_univ pivot)
+  exact mem_chartMap_image_signedBoxSet_of_pivot_abs_max pivot hpivot
+    (lt_of_lt_of_le (abs_lt.mpr hx_pivot) (hSleR pivot)) hmax
+    (fun i _hi => hRone i)
+
+/-- Finite selected-entry chart geometry: if all target radii are larger than
+`1` and a signed box with radii `S` is contained in the target coordinate box,
+then that smaller signed box is covered by the finite family of
+selected-entry chart images.
+
+This is only a finite coordinate-cover statement.  It does not identify this
+box with an Aoyagi source stratum or construct source-chart data. -/
+theorem signedBoxSet_subset_iUnion_chartMap_image_signedBoxSet_of_one_lt
+    {center : Finset ι} [Nonempty center] {R S : center → ℝ}
+    (hSleR : ∀ i, S i ≤ R i) (hRone : ∀ i, 1 < R i) :
+    signedBoxSet S ⊆ ⋃ pivot : center, chartMap pivot '' signedBoxSet R := by
+  intro x hxS
+  by_cases hxzero : x = 0
+  · rcases ‹Nonempty center› with ⟨pivot⟩
+    refine Set.mem_iUnion.mpr ⟨pivot, ?_⟩
+    rw [mem_chartMap_image_signedBoxSet_iff pivot]
+    · exact Or.inl hxzero
+    · intro i
+      exact zero_lt_one.trans (hRone i)
+  · obtain ⟨pivot, _hpivot, _hmax, hmem⟩ :=
+      exists_maxPivot_mem_chartMap_image_signedBoxSet_of_mem_signedBoxSet_ne_zero
+        hSleR hRone hxS hxzero
+    exact Set.mem_iUnion.mpr ⟨pivot, hmem⟩
+
 omit [DecidableEq ι] in
 /-- Center-indexed signed boxes are measurable. -/
 theorem measurableSet_signedBoxSet {center : Finset ι} (R : center → ℝ) :

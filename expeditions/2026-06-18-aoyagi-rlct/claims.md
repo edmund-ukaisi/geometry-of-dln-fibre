@@ -313,7 +313,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry chart-image characterization at
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`;
   selected-entry residual-product square-sum at
-  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`.
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`;
+  selected-entry finite sector cover at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -368,7 +370,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry chart-image characterization reviewed by xhigh `Halley` in
   `threads/03-block-product-reduction/review-a2-selected-entry-chart-image-characterization.md`;
   selected-entry residual-product square-sum reviewed by xhigh `Hooke` in
-  `threads/03-block-product-reduction/review-a2-selected-entry-residual-product-square-sum.md`.
+  `threads/03-block-product-reduction/review-a2-selected-entry-residual-product-square-sum.md`;
+  selected-entry finite sector cover reviewed by xhigh `Bacon` in
+  `threads/03-block-product-reduction/review-a2-selected-entry-finite-sector-cover.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6752,6 +6756,17 @@ in the nonzero-pivot horn
 `|x i / x pivot| < R i` for every non-pivot coordinate.  This is finite
 selected-entry chart algebra only; it does not prove local source-stratum
 coverage, source-measure identification, fixed-base residual readout, normal
+crossings, pole order, or RLCT.
+
+Latest A2 selected-entry finite sector cover:
+`SelectedEntrySignedBoxMeasure.lean` now proves
+`SelectedEntrySignedBox.CenterCoord.signedBoxSet_subset_iUnion_chartMap_image_signedBoxSet_of_one_lt`.
+If `S i <= R i` and every target radius satisfies `1 < R i`, then
+`signedBoxSet S` is contained in the union of all selected-entry chart images
+`chartMap pivot '' signedBoxSet R`, by choosing a maximal absolute-value
+pivot for nonzero points.  This is finite all-pivot sector geometry only; it
+does not prove local source-stratum coverage, source/image equality,
+residual-product matrix identity, source-measure identification, normal
 crossings, pole order, or RLCT.
 
 Latest A2 selected-entry local-source finite-integral handoff:
