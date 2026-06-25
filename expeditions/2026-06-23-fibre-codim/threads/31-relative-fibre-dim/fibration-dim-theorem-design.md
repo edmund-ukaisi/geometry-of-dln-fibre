@@ -411,3 +411,24 @@ Confirmation requested from controller (α-vs-β shapes the ~2-3 module grind). 
 `(R Noetherian, g avoids a top minimal prime) ⟹ ringKrullDim (Localization.Away g R) = ringKrullDim R`,
 consuming sub-lemma (4); step-4 and step-5 then differ only in the avoidance input (3). ~2-3 modules
 covering BOTH (not 1.5-2 + 0.5-1 separately).
+
+---
+
+## Tide progress log — update 7 (no-drop sub-lemma (iv) route VALIDATED — no absent API)
+
+The one genuinely-new sub-lemma both no-drops share — **(iv) affine-domain localization preserves dim**:
+`dim(Localization.Away g D) = dim D` for `D` a finite-type domain over `k`, `0 ≠ g ∈ D` — route VALIDATED,
+all pieces present at v4.29:
+- `D` and `D[1/g]` share the fraction field: `IsLocalization.isFractionRing_of_isLocalization`
+  (`LocalizationLocalization.lean:279`) — `FractionRing D` is a fraction ring of the localization `D[1/g]`.
+  **This is the key bridge; PRESENT, no absent API.**
+- `dim = trdeg_k(FracField)` for affine domains: the engine's `AffineNoetherRank.trdeg_eq_of_integral_injective`
+  + `ringKrullDim_quotient_unbotD_eq_trdeg_toNat` (the latter stated for `R⧸p`; `D[1/g]` is finite-type
+  `= D[X]/(gX−1)`, a domain, so the affine-domain `dim=trdeg` applies once presented as such).
+- so `dim(D[1/g]) = trdeg Frac(D[1/g]) = trdeg Frac D = dim D`.
+The residual work in (iv): present `D[1/g]` as a finite-type-domain quotient and transport trdeg — fresh
+but mechanical, ~1 module. NO absent-theorem exposure (the fraction-field bridge is the crux and it's present).
+
+Full no-drop ≥ then = (iv) + RadicalCatenary max-over-min-primes (LANDED) + avoidance (pp-nodrop cert /
+clean nonzero-k-coeff for step-5). Step-3 freeness presentation (3b/3c, route-β) is the separate remaining
+piece (component-wise radical-ideal identification, component structure in hand).
