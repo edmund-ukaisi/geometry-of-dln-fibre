@@ -3472,3 +3472,40 @@ bounded-density adapter.  Its conclusion is finite lower-integrability of
 `loss^(-(t + regularCount/2))*density` over the local product measure.  It is
 not a chart, original-loss, density/Jacobian, residual-integrability,
 normal-crossing, pole-order, or RLCT theorem.
+
+## 2026-06-25 A2 source-rank stratum measurability
+
+Reproduction:
+`reproduction-a2-source-rank-stratum-measurability.md`.
+Statement card:
+`statement-card-a2-source-rank-stratum-measurability.md`.
+Review:
+`review-a2-source-rank-stratum-measurability.md`.
+
+Lean now proves the measurable-source-stratum input under continuous-family
+hypotheses.  The finite matrix bridge in `ChartTopology.lean` proves rank
+inequalities by determinantal minors, closedness of finite matrix `rank <= r`
+loci, and measurability of exact-rank loci for continuous matrix families:
+
+```text
+matrix_rank_le_iff_forall_submatrix_det_eq_zero
+isClosed_matrix_rank_le
+measurableSet_matrix_rank_le_of_continuous
+measurableSet_matrix_rank_eq_of_continuous
+```
+
+`ProductReductionBoundary.lean` then proves:
+
+```text
+measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous_finBasisMatrix
+measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous
+measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous_finBasisMatrix
+measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous
+```
+
+Boundary: this is measurability, not exact-rank openness.  It requires
+continuous finite-basis coordinate matrices, or a globally continuous edge
+family `Cedge`; it does not derive global measurability from only a
+`ContinuousAt Cedge x0` hypothesis.  It does not prove product-chart
+construction, original-loss comparison, density/Jacobian transport, residual
+positivity/integrability, normal crossings, pole order, or RLCT.

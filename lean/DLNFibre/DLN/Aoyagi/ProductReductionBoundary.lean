@@ -158,6 +158,108 @@ def paperEndpointFixedBaseSourceRankStratum
     x ∈ paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge ∧
     ∀ p : Fin N, r ≤ rEdge p}
 
+set_option linter.unusedSectionVars false in
+/-- The exact edge-rank stratum is measurable when the fixed finite-basis edge
+coordinate matrices vary continuously. -/
+theorem measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous_finBasisMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ}
+    (hCedge : ∀ p : Fin N,
+      Continuous fun x : α ↦
+        LinearMap.toMatrix
+          (Module.finBasis K (reverseVertex W p.castSucc))
+          (Module.finBasis K (reverseVertex W p.succ))
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) :
+    MeasurableSet (paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge) := by
+  classical
+  rw [paperEndpointFixedBaseEdgeRankStratum, Set.setOf_forall]
+  refine MeasurableSet.iInter fun p ↦ ?_
+  have hp :=
+    measurableSet_matrix_rank_eq_of_continuous
+      (K := K)
+      (A := fun x : α ↦
+        LinearMap.toMatrix
+          (Module.finBasis K (reverseVertex W p.castSucc))
+          (Module.finBasis K (reverseVertex W p.succ))
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))
+      (hCedge p) (rEdge p)
+  simpa [rank_toMatrix_eq_finrank_range] using hp
+
+set_option linter.unusedSectionVars false in
+/-- A globally continuous edge family has a measurable exact edge-rank stratum. -/
+theorem measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ}
+    (hCedge : Continuous Cedge) :
+    MeasurableSet (paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge) := by
+  classical
+  refine measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous_finBasisMatrix
+    (W := W) (Cedge := Cedge) (rEdge := rEdge) ?_
+  intro p
+  exact
+    (continuous_linearMap_toMatrix
+        (Module.finBasis K (reverseVertex W p.castSucc))
+        (Module.finBasis K (reverseVertex W p.succ))).comp
+      ((continuous_apply p).comp hCedge)
+
+/-- The source-shaped rank stratum is measurable when the fixed finite-basis
+edge coordinate matrices vary continuously.  The base-product rank and source
+inequalities are constant conditions, so the only varying part is the exact
+edge-rank stratum. -/
+theorem measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous_finBasisMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hCedge : ∀ p : Fin N,
+      Continuous fun x : α ↦
+        LinearMap.toMatrix
+          (Module.finBasis K (reverseVertex W p.castSucc))
+          (Module.finBasis K (reverseVertex W p.succ))
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) :
+    MeasurableSet (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) := by
+  classical
+  by_cases hbase : Module.finrank K (LinearMap.range (paperTotalMap W B)) = r
+  · by_cases hle : ∀ p : Fin N, r ≤ rEdge p
+    · simpa [paperEndpointFixedBaseSourceRankStratum, hbase, hle] using
+        measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_continuous_finBasisMatrix
+          (W := W) (Cedge := Cedge) (rEdge := rEdge) hCedge
+    · have hempty :
+        paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge = ∅ := by
+        ext x
+        simp [paperEndpointFixedBaseSourceRankStratum, hbase, hle]
+      rw [hempty]
+      exact MeasurableSet.empty
+  · have hempty :
+      paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge = ∅ := by
+      ext x
+      simp [paperEndpointFixedBaseSourceRankStratum, hbase]
+    rw [hempty]
+    exact MeasurableSet.empty
+
+/-- A globally continuous edge family has a measurable source-shaped rank
+stratum. -/
+theorem measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hCedge : Continuous Cedge) :
+    MeasurableSet (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) := by
+  classical
+  refine measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous_finBasisMatrix
+    (W := W) (B := B) (Cedge := Cedge) (r := r) (rEdge := rEdge) ?_
+  intro p
+  exact
+    (continuous_linearMap_toMatrix
+        (Module.finBasis K (reverseVertex W p.castSucc))
+        (Module.finBasis K (reverseVertex W p.succ))).comp
+      ((continuous_apply p).comp hCedge)
+
 omit [CompleteSpace K] [∀ i, TopologicalSpace (W i)]
   [∀ i, IsTopologicalAddGroup (W i)]
   [∀ i, T2Space (W i)] [∀ i, ContinuousSMul K (W i)] in

@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.ThroughLayerMatrix
 import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Topology.Instances.Matrix
 
@@ -85,6 +86,170 @@ theorem identityCornerForm_mem_nhds_identityCornerDetChart
   identityCornerDetChart_mem_nhds (identityCornerDetChart_of_identityCornerForm hM)
 
 end DeterminantChart
+
+section MatrixRankMeasurability
+
+variable {K : Type*} [Field K]
+
+/-- A square submatrix has rank at most the rank of the full matrix. -/
+theorem matrix_rank_submatrix_le_rank {m n : ℕ} (A : Matrix (Fin m) (Fin n) K) {a b : ℕ}
+    (f : Fin a → Fin m) (g : Fin b → Fin n) :
+    (A.submatrix f g).rank ≤ A.rank := by
+  have hc := Matrix.cRank_submatrix_le A f g
+  rw [← Matrix.cRank_toNat_eq_rank (A.submatrix f g), ← Matrix.cRank_toNat_eq_rank A]
+  exact Cardinal.toNat_le_toNat hc ((A.cRank_le_card_width).trans_lt Cardinal.natCast_lt_aleph0)
+
+/-- A square matrix whose rank is below its size has determinant zero. -/
+theorem matrix_det_eq_zero_of_rank_lt {m : ℕ} (A : Matrix (Fin m) (Fin m) K)
+    (h : A.rank < m) :
+    A.det = 0 := by
+  by_contra hdet
+  have hu : IsUnit A := (Matrix.isUnit_iff_isUnit_det A).mpr (Ne.isUnit hdet)
+  have := Matrix.rank_of_isUnit A hu
+  rw [Fintype.card_fin] at this
+  omega
+
+/-- If `A.rank ≤ r`, then every `(r+1) × (r+1)` minor vanishes. -/
+theorem matrix_submatrix_det_eq_zero_of_rank_le {m n r : ℕ}
+    {A : Matrix (Fin m) (Fin n) K} (hr : A.rank ≤ r)
+    (er : Fin (r + 1) → Fin m) (ec : Fin (r + 1) → Fin n) :
+    (A.submatrix er ec).det = 0 :=
+  matrix_det_eq_zero_of_rank_lt _
+    (lt_of_le_of_lt (matrix_rank_submatrix_le_rank A er ec) (by omega))
+
+/-- From `s ≤ A.rank`, extract `s` linearly independent rows. -/
+theorem exists_injective_linearIndependent_matrix_rows {m n : ℕ}
+    (A : Matrix (Fin m) (Fin n) K) {s : ℕ} (hs : s ≤ A.rank) :
+    ∃ er : Fin s → Fin m, Function.Injective er ∧
+      LinearIndependent K (fun i ↦ A.row (er i)) := by
+  classical
+  obtain ⟨κ, a, ha_inj, ha_span, ha_li⟩ := exists_linearIndependent' K A.row
+  haveI : Module.Finite K (Fin m → K) := inferInstance
+  haveI : Finite κ := ha_li.finite
+  haveI : Fintype κ := Fintype.ofFinite κ
+  have hcard : Fintype.card κ = A.rank := by
+    have h1 : Module.finrank K (Submodule.span K (Set.range (A.row ∘ a))) = Fintype.card κ :=
+      finrank_span_eq_card ha_li
+    rw [ha_span] at h1
+    rw [A.rank_eq_finrank_span_row, ← h1]
+  have hsle : s ≤ Fintype.card κ := by
+    rw [hcard]
+    exact hs
+  obtain ⟨ι⟩ := Function.Embedding.nonempty_of_card_le (β := κ) (α := Fin s)
+    (by rw [Fintype.card_fin]; exact hsle)
+  have hιinj : Function.Injective (ι : Fin s → κ) := Function.Embedding.injective ι
+  refine ⟨fun i ↦ a (ι i), ?_, ?_⟩
+  · exact fun i j hij ↦ hιinj (ha_inj hij)
+  · have hcomp : (fun i ↦ A.row (a (ι i))) = (A.row ∘ a) ∘ (ι : Fin s → κ) := rfl
+    rw [hcomp]
+    exact ha_li.comp (ι : Fin s → κ) hιinj
+
+/-- If `r+1 ≤ A.rank`, then some `(r+1) × (r+1)` minor is nonzero. -/
+theorem exists_matrix_submatrix_det_ne_zero_of_le_rank {m n r : ℕ}
+    (A : Matrix (Fin m) (Fin n) K) (hr : r + 1 ≤ A.rank) :
+    ∃ (er : Fin (r + 1) → Fin m) (ec : Fin (r + 1) → Fin n),
+      Function.Injective er ∧ Function.Injective ec ∧ (A.submatrix er ec).det ≠ 0 := by
+  classical
+  obtain ⟨er, her_inj, her_li⟩ := exists_injective_linearIndependent_matrix_rows A hr
+  set B : Matrix (Fin (r + 1)) (Fin n) K := A.submatrix er id with hB
+  have hBrow : B.row = fun i ↦ A.row (er i) := by
+    funext i
+    rfl
+  have hBli : LinearIndependent K B.row := by
+    rw [hBrow]
+    exact her_li
+  have hBrank : B.rank = r + 1 := by
+    have := hBli.rank_matrix
+    rwa [Fintype.card_fin] at this
+  have hBTrank : (r + 1) ≤ Bᵀ.rank := by
+    rw [Matrix.rank_transpose, hBrank]
+  obtain ⟨ec, hec_inj, hec_li⟩ :=
+    exists_injective_linearIndependent_matrix_rows Bᵀ hBTrank
+  set C : Matrix (Fin (r + 1)) (Fin (r + 1)) K := A.submatrix er ec with hC
+  have hCcol : C.col = fun i ↦ Bᵀ.row (ec i) := by
+    funext i j
+    simp [hC, hB, Matrix.col_apply, Matrix.row_apply, Matrix.transpose_apply,
+      Matrix.submatrix_apply]
+  have hCli : LinearIndependent K C.col := by
+    rw [hCcol]
+    exact hec_li
+  have hCunit : IsUnit C := Matrix.linearIndependent_cols_iff_isUnit.mp hCli
+  refine ⟨er, ec, her_inj, hec_inj, ?_⟩
+  exact Matrix.isUnit_iff_isUnit_det C |>.mp hCunit |>.ne_zero
+
+/-- Determinantal characterization of finite matrix rank. -/
+theorem matrix_rank_le_iff_forall_submatrix_det_eq_zero {m n r : ℕ}
+    (A : Matrix (Fin m) (Fin n) K) :
+    A.rank ≤ r ↔ ∀ (er : Fin (r + 1) → Fin m) (ec : Fin (r + 1) → Fin n),
+      (A.submatrix er ec).det = 0 := by
+  constructor
+  · exact fun hr er ec ↦ matrix_submatrix_det_eq_zero_of_rank_le hr er ec
+  · intro hall
+    by_contra hlt
+    obtain ⟨er, ec, _, _, hne⟩ :=
+      exists_matrix_submatrix_det_ne_zero_of_le_rank A
+        (Nat.succ_le_of_lt (Nat.not_le.mp hlt))
+    exact hne (hall er ec)
+
+variable [TopologicalSpace K] [IsTopologicalRing K] [T1Space K]
+
+/-- The finite matrix locus `rank ≤ r` is closed in the Euclidean coordinate topology. -/
+theorem isClosed_matrix_rank_le {m n r : ℕ} :
+    IsClosed ({A : Matrix (Fin m) (Fin n) K | A.rank ≤ r}) := by
+  classical
+  rw [show ({A : Matrix (Fin m) (Fin n) K | A.rank ≤ r}) =
+      ⋂ er : Fin (r + 1) → Fin m,
+        ⋂ ec : Fin (r + 1) → Fin n,
+          {A : Matrix (Fin m) (Fin n) K | (A.submatrix er ec).det = 0} by
+    ext A
+    simp [matrix_rank_le_iff_forall_submatrix_det_eq_zero]]
+  refine isClosed_iInter fun er ↦ isClosed_iInter fun ec ↦ ?_
+  exact IsClosed.preimage
+    ((continuous_id.matrix_submatrix er ec).matrix_det) isClosed_singleton
+
+/-- A continuous family of finite matrices has a measurable `rank ≤ r` locus. -/
+theorem measurableSet_matrix_rank_le_of_continuous
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {m n : ℕ} {A : α → Matrix (Fin m) (Fin n) K}
+    (hA : Continuous A) (r : ℕ) :
+    MeasurableSet {x | (A x).rank ≤ r} := by
+  simpa [Set.preimage] using
+    (IsClosed.preimage hA
+      (isClosed_matrix_rank_le (K := K) (m := m) (n := n) (r := r))).measurableSet
+
+/-- A continuous family of finite matrices has a measurable exact-rank locus. -/
+theorem measurableSet_matrix_rank_eq_of_continuous
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {m n : ℕ} {A : α → Matrix (Fin m) (Fin n) K}
+    (hA : Continuous A) (r : ℕ) :
+    MeasurableSet {x | (A x).rank = r} := by
+  cases r with
+  | zero =>
+      simpa [Nat.le_zero] using
+        measurableSet_matrix_rank_le_of_continuous (K := K) (A := A) hA 0
+  | succ r =>
+      have hleSucc :=
+        measurableSet_matrix_rank_le_of_continuous (K := K) (A := A) hA (r + 1)
+      have hle := measurableSet_matrix_rank_le_of_continuous (K := K) (A := A) hA r
+      rw [show {x | (A x).rank = r + 1} =
+          {x | (A x).rank ≤ r + 1} \ {x | (A x).rank ≤ r} by
+        ext x
+        constructor
+        · intro hx
+          change (A x).rank = r + 1 at hx
+          constructor
+          · change (A x).rank ≤ r + 1
+            rw [hx]
+          · change ¬ (A x).rank ≤ r
+            rw [hx]
+            exact Nat.not_succ_le_self r
+        · intro hx
+          change (A x).rank ≤ r + 1 ∧ ¬ (A x).rank ≤ r at hx
+          change (A x).rank = r + 1
+          exact le_antisymm hx.1 (Nat.succ_le_of_lt (Nat.lt_of_not_ge hx.2))]
+      exact hleSucc.diff hle
+
+end MatrixRankMeasurability
 
 section ContinuousLinearMapCoordinates
 

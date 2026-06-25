@@ -3884,3 +3884,16 @@ and invokes the p.13 bounded-density finite-side adapter.  The next analytic
 work should prove or explicitly source the remaining inputs: measurable source
 stratum, original-loss lower comparison, density/Jacobian transport, residual
 positivity, and residual negative-power integrability.
+
+A2 source-rank stratum measurability has now landed under continuous-family
+hypotheses:
+`threads/03-block-product-reduction/reproduction-a2-source-rank-stratum-measurability.md`.
+Lean proves finite matrix exact-rank loci are measurable by determinantal
+minors, then applies this to the fixed-basis edge matrices and the
+source-shaped rank stratum.  This removes the measurable-source-stratum input
+when the edge coordinate matrices are continuous, or when `Cedge` is globally
+continuous.  It does not prove exact-rank openness and does not derive
+measurability from only a `ContinuousAt Cedge x0` hypothesis.  Remaining
+analytic inputs for the local finite-integral bridge: original-loss lower
+comparison, density/Jacobian transport, residual positivity, and residual
+negative-power integrability.
