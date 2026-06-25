@@ -1735,6 +1735,200 @@ private theorem ne_zero_of_mul_eq_one_right {n : ℕ} (hn : 0 < n)
   rw [hM, Matrix.zero_mul] at h
   exact matrix_one_ne_zero hn h.symm
 
+/-- The layer partial-product matrix is continuous in the parameters (local copy; the
+`FrontPivotProducer` / `LossContinuity` copies are private / collide with `DeepestGaugeChart`'s
+`continuous_dlnLoss`). Induction on the chain length: base `prodAux 0 = 1` constant; step
+`prodAux (k+1) = prodAux k * layer k`, the cast-transported layer normalised to the plain projection,
+then `Continuous.matrix_mul`. -/
+private theorem continuous_prodAux_loc (H : Fin (L + 1) → ℕ) (k : ℕ) (hk : k < L + 1) :
+    Continuous (fun A : Params H => prodAux H A k hk) := by
+  revert hk
+  induction k with
+  | zero =>
+      intro hk
+      simpa [prodAux] using
+        (continuous_const :
+          Continuous (fun _ : Params H => (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)))
+  | succ k ih =>
+      intro hk
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      let layer : Params H → Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ :=
+        fun A => ((by rw [e1, e2]; exact A ⟨k, hkL⟩) :
+          Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)
+      have hLayer : Continuous layer := by
+        dsimp [layer]
+        simpa only [e1, e2, eq_mpr_eq_cast, cast_eq] using
+          (continuous_apply (⟨k, hkL⟩ : Fin L) :
+            Continuous (fun A : Params H => A ⟨k, hkL⟩))
+      have hMul : Continuous (fun A : Params H => prodAux H A k hk' * layer A) :=
+        (ih hk').matrix_mul hLayer
+      exact hMul.congr fun A => by dsimp [layer]; rfl
+
+/-- `w ↦ prod H ((paramsEquivFlat).symm w)` is continuous (the CLE `symm` is continuous;
+`continuous_prodAux_loc` at `k = L`). -/
+private theorem continuous_prod_symm (H : Fin (L + 1) → ℕ) :
+    Continuous (fun w : Fin (flatDim H) → ℝ => prod H ((paramsEquivFlat H).symm w)) := by
+  have hsymmcoe : ⇑(paramsEquivFlatCLE H).symm = ⇑(paramsEquivFlat H).symm := by
+    funext y
+    apply (paramsEquivFlat H).injective
+    rw [(paramsEquivFlat H).apply_symm_apply]
+    have hcle : (paramsEquivFlat H) ((paramsEquivFlatCLE H).symm y)
+        = (paramsEquivFlatCLE H) ((paramsEquivFlatCLE H).symm y) := by
+      rw [← paramsEquivFlatCLE_coe H]
+    rw [hcle, ContinuousLinearEquiv.apply_symm_apply]
+  have hsymm : Continuous fun w : Fin (flatDim H) → ℝ => (paramsEquivFlat H).symm w := by
+    rw [← hsymmcoe]; exact (paramsEquivFlatCLE H).symm.continuous
+  exact (continuous_prodAux_loc H L (Nat.lt_succ_self L)).comp hsymm
+
+/-- `w ↦ reindex e₁ e₂ (P0·(prod((symm) w) − B)·QL)` is continuous (the conjugated residual,
+`continuous_prod_symm` + matrix algebra). The continuity input to the S5b leak smallness. -/
+private theorem continuous_Mw (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+    (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+    (e₁ : Fin (H 0) ≃ Fin r ⊕ Fin (H 0 - r))
+    (e₂ : Fin (H (Fin.last L)) ≃ Fin r ⊕ Fin (H (Fin.last L) - r)) :
+    Continuous fun w : Fin (flatDim H) → ℝ =>
+      Matrix.reindex e₁ e₂ (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) := by
+  have hconj : Continuous fun w : Fin (flatDim H) → ℝ =>
+      P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL :=
+    (continuous_const.matrix_mul (((continuous_prod_symm H)).sub continuous_const)).matrix_mul
+      continuous_const
+  exact hconj.matrix_reindex e₁ e₂
+
+/-- **S5b — the eventual leak bound** (`hproducer` conjunct (c), pivot-agnostic). With
+`M w := reindex e₁ e₂ (P0·(prod((symm) w) − B)·QL)` and the producer blocks `P00 := M.toBlocks₁₁ + 1`,
+`P01 := M.toBlocks₁₂`, `P10 := M.toBlocks₂₁`, the Schur leak `P10·(P00)⁻¹·P01` has squared-Frobenius
+energy `≤ 1·Sreg` on a `𝓝` of `w0`, where `Sreg := (∑(P00−1)² + ∑P01²) + ∑P10² = frobSq M₁₁ + frobSq
+M₁₂ + frobSq M₂₁`. At `w0`, `prod = B`, `M = 0`, so `P01 = P10 = 0`, `P00 = 1`, and `(P00)⁻¹·P01 = 0`.
+Proof: `w ↦ ∑((P00 w)⁻¹·P01 w)²` is `ContinuousAt w0` (matrix inverse continuous at the unit `P00 w0 =
+1` via `continuousAt_matrix_inv` + `continuousAt_inv₀` on the scalar det, composed with `continuous_Mw`)
+with value `0 < 1`, so `≤ 1` eventually; then `leak_frobenius_bound` + `∑P10² ≤ Sreg`. Constant `t = 1`
+is uniform; `U` is the smallness `𝓝`. -/
+private theorem eventually_leak (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+    (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+    (e₁ : Fin (H 0) ≃ Fin r ⊕ Fin (H 0 - r))
+    (e₂ : Fin (H (Fin.last L)) ≃ Fin r ⊕ Fin (H (Fin.last L) - r)) :
+    ∀ᶠ w in 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, ∑ j, (((Matrix.reindex e₁ e₂
+              (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁
+            * ((Matrix.reindex e₁ e₂
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex e₁ e₂
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
+        ≤ (1 : ℝ) ^ 2
+          * (((∑ i, ∑ j, (((Matrix.reindex e₁ e₂
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
+              + (∑ i, ∑ j, (((Matrix.reindex e₁ e₂
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
+            + (∑ i, ∑ j, (((Matrix.reindex e₁ e₂
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2)) := by
+  set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
+  set Mfn : (Fin (flatDim H) → ℝ) →
+      Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
+    fun w => Matrix.reindex e₁ e₂ (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) with hMfn
+  -- M w0 = 0 (residual prod − B = 0 at the deepest point).
+  have hM0 : Mfn w0 = 0 := by
+    have hsymm0 : (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL := by
+      rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _
+    have hprod0 : prod H (deepestPoint H r B hB hr hL) = B :=
+      (deepestPoint_isDeep H r B hB hr hL).1
+    simp only [hMfn, hsymm0, hprod0, sub_self, Matrix.mul_zero, Matrix.zero_mul]
+    ext i j
+    simp [Matrix.reindex_apply, Matrix.submatrix_apply]
+  -- Continuity of M, hence of each block and of (M₁₁+1)⁻¹·M₁₂.
+  have hMcont : Continuous Mfn := continuous_Mw H r B P0 QL e₁ e₂
+  have h11 : Continuous fun w => (Mfn w).toBlocks₁₁ := hMcont.matrix_submatrix _ _
+  have h12 : Continuous fun w => (Mfn w).toBlocks₁₂ := hMcont.matrix_submatrix _ _
+  have h21 : Continuous fun w => (Mfn w).toBlocks₂₁ := hMcont.matrix_submatrix _ _
+  -- `P00 w := M₁₁ w + 1`, continuous, `= 1` at `w0` (`M w0 = 0`).
+  have hP00cont : Continuous fun w => (Mfn w).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ) :=
+    h11.add continuous_const
+  have hP00_0 : (Mfn w0).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ) = 1 := by
+    rw [hM0]; ext i j; simp [Matrix.toBlocks₁₁]
+  -- `(P00 w)⁻¹` is `ContinuousAt w0` (`det (P00 w0) = det 1 = 1 ≠ 0`).
+  have hdet0 : ((Mfn w0).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)).det ≠ 0 := by
+    rw [hP00_0]; simp
+  have hinvAt : ContinuousAt (fun w => ((Mfn w).toBlocks₁₁
+      + (1 : Matrix (Fin r) (Fin r) ℝ))⁻¹) w0 := by
+    have hinvdet : ContinuousAt Ring.inverse
+        ((Mfn w0).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)).det := by
+      rw [Ring.inverse_eq_inv']; exact continuousAt_inv₀ hdet0
+    have houter : ContinuousAt Inv.inv ((Mfn w0).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) :=
+      continuousAt_matrix_inv _ hinvdet
+    exact ContinuousAt.comp (g := Inv.inv)
+      (f := fun w => (Mfn w).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))
+      houter hP00cont.continuousAt
+  -- `g w := ∑ (((P00 w)⁻¹ · M₁₂ w) i j)²`, the global functional `Φ(A,B) := frobSq (A·B)` composed
+  -- with the `ContinuousAt` pair `w ↦ ((P00 w)⁻¹, M₁₂ w)`. `Φ` is globally continuous.
+  set Φ : Matrix (Fin r) (Fin r) ℝ × Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ → ℝ :=
+    fun p => ∑ i, ∑ j, ((p.1 * p.2) i j) ^ 2 with hΦ
+  have hΦcont : Continuous Φ := by
+    rw [hΦ]
+    refine continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ => ?_))
+    exact (((continuous_fst.matrix_mul continuous_snd).matrix_elem i j).pow 2)
+  set g : (Fin (flatDim H) → ℝ) → ℝ :=
+    fun w => Φ (((Mfn w).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))⁻¹, (Mfn w).toBlocks₁₂)
+    with hg
+  have hpairAt : ContinuousAt (fun w => (((Mfn w).toBlocks₁₁
+      + (1 : Matrix (Fin r) (Fin r) ℝ))⁻¹, (Mfn w).toBlocks₁₂)) w0 :=
+    hinvAt.prodMk h12.continuousAt
+  have hgAt : ContinuousAt g w0 := hΦcont.continuousAt.comp hpairAt
+  have hg0 : g w0 = 0 := by
+    simp only [hg, hΦ]
+    rw [hM0]
+    have h120 : ((0 : Matrix (Fin r ⊕ Fin (H 0 - r))
+        (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ).toBlocks₁₂) = 0 := by
+      ext i j; simp [Matrix.toBlocks₁₂]
+    simp only [h120, Matrix.mul_zero]; simp
+  -- `g ≤ 1` eventually: `g` `ContinuousAt w0` with `g w0 = 0 < 1`.
+  have hgsmall : ∀ᶠ w in 𝓝 w0, g w ≤ 1 :=
+    Filter.Tendsto.eventually_le_const (u := (1 : ℝ)) (v := g w0)
+      (by rw [hg0]; exact zero_lt_one) hgAt
+  filter_upwards [hgsmall] with w hgw
+  -- The leak chain on `w`: `∑(P10·N·P01)² ≤ (∑P10²)·(∑(N·P01)²) ≤ Sreg·1`.
+  set N := ((Mfn w).toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))⁻¹ with hN
+  set P01b := (Mfn w).toBlocks₁₂ with hP01b
+  set P10b := (Mfn w).toBlocks₂₁ with hP10b
+  have hleak := leak_frobenius_bound N P01b P10b
+  -- `∑(N·P01)² ≤ 1` is `g w ≤ 1` after column-major ↔ row-major (`Finset.sum_comm`).
+  have hgw' : (∑ j, ∑ k, ((N * P01b) k j) ^ 2) ≤ 1 := by
+    have hgwΦ : (∑ i, ∑ j, ((N * P01b) i j) ^ 2) ≤ 1 := by
+      have hgeq : g w = ∑ i, ∑ j, ((N * P01b) i j) ^ 2 := by rw [hg, hΦ, hN, hP01b]
+      rw [← hgeq]; exact hgw
+    rw [Finset.sum_comm]; exact hgwΦ
+  have hP10nn : (0 : ℝ) ≤ ∑ i, ∑ k, (P10b i k) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+  -- `∑P10² ≤ Sreg` (it is the third summand; the other two summands are nonneg).
+  have hSreg : (∑ i, ∑ k, (P10b i k) ^ 2)
+      ≤ (((∑ i, ∑ j, ((Mfn w).toBlocks₁₁ i j) ^ 2)
+            + (∑ i, ∑ j, ((Mfn w).toBlocks₁₂ i j) ^ 2))
+          + (∑ i, ∑ j, ((Mfn w).toBlocks₂₁ i j) ^ 2)) := by
+    have hnn1 : (0 : ℝ) ≤ ((∑ i, ∑ j, ((Mfn w).toBlocks₁₁ i j) ^ 2)
+        + (∑ i, ∑ j, ((Mfn w).toBlocks₁₂ i j) ^ 2)) :=
+      add_nonneg (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+        (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _)
+    rw [hP10b]; linarith
+  calc (∑ i, ∑ j, ((P10b * N * P01b) i j) ^ 2)
+      ≤ (∑ i, ∑ k, (P10b i k) ^ 2) * (∑ j, ∑ k, ((N * P01b) k j) ^ 2) := hleak
+    _ ≤ (((∑ i, ∑ j, ((Mfn w).toBlocks₁₁ i j) ^ 2)
+            + (∑ i, ∑ j, ((Mfn w).toBlocks₁₂ i j) ^ 2))
+          + (∑ i, ∑ j, ((Mfn w).toBlocks₂₁ i j) ^ 2)) * 1 := by
+        apply mul_le_mul hSreg hgw' (Finset.sum_nonneg fun _ _ =>
+          Finset.sum_nonneg fun _ _ => sq_nonneg _)
+        exact le_trans hP10nn hSreg
+    _ = (1 : ℝ) ^ 2 * (((∑ i, ∑ j, ((Mfn w).toBlocks₁₁ i j) ^ 2)
+            + (∑ i, ∑ j, ((Mfn w).toBlocks₁₂ i j) ^ 2))
+          + (∑ i, ∑ j, ((Mfn w).toBlocks₂₁ i j) ^ 2)) := by ring
+
 /-- **The frame-bridge cert** (#80, ruling (b) — the ONE geometric input of the loss squeeze). Packages
 the constant endpoint frames `P0, QL` (with inverses `Pi, Qi`, `Pi·P0 = 1 ∧ QL·Qi = 1`) and a `leak`
 charge constant `t`, and a neighborhood `U` of the deepest point where for each `w ∈ U` the loss matrix
@@ -1885,7 +2079,7 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                 ≤ γ₁ * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                     + (∑ i, ∑ j, (P10 i j) ^ 2))
                   + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
-  -- **ASSEMBLY (B (front-pivot WLOG) route, 2026-06-25, thread 31; partial — 3 named `sorry`s left).**
+  -- **ASSEMBLY (B (front-pivot WLOG) route, 2026-06-25, thread 31; partial — 2 named `sorry`s left).**
   -- The cert is stated TRUE (the frame hypotheses + `hfront` + `hL2`/`hpos`/`hinterface`). Under the
   -- FRONT pivot (`hfront : J = frontEmbed`), `pivotThr J = rThr`, so the last-layer column-permutation
   -- `π_J` is the identity. **LANDED this tide:** the endpoint-frame units + `Pi·P0 = 1`/`QL·Qi = 1`; the
@@ -1894,13 +2088,17 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- telescope `hS2_front : prod (F w) = P0·prod(A w)·QL` (every `w`, via `endpoint_telescoping_eq`); the
   -- per-`w` block split `hRegBlocks` (`reindex(prod (F w)) = fromBlocks 1 0 0 0 + reindex(P0·(prod−B)·QL)`
   -- via `hS3b`); the `hproducer` conjuncts (a) `hconj` (`fromBlocks_toBlocks`), (b) the EXACT reg energy
-  -- `∑deepestEFull² = Sreg` (`hbexact`, via `deepestEFull_sq_sum_eq_blocks` — `δ₁ = δ₂ = 1`), and S5a
-  -- `Invertible P00` (banked `eventually_P00_invertible`). **STILL OPEN (3 named `sorry`s in `hproducer`,
-  -- CORRECT statements, pivot-AGNOSTIC):** the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b `eventually_leak`)
-  -- and the folded core (d')/(e') (`eventually_core_comparable`, the per-layer↔global Schur charge via
-  -- the BANKED `schur_core_germ_comparability` + `deepestCoreAbsorb`) — the genuine unbuilt geometry, +
-  -- the coupled `U` (intersect the S5a/S5b/S5c nbhds). (`hS1'`, `hframe0`, `hS2_w0` are kept as the
-  -- subsumed basepoint path feeding `hS3b`.)
+  -- `∑deepestEFull² = Sreg` (`hbexact`, via `deepestEFull_sq_sum_eq_blocks` — `δ₁ = δ₂ = 1`), S5a
+  -- `Invertible P00` (banked `eventually_P00_invertible`), AND (c) the leak `∑(P10⅟P00 P01)² ≤ Sreg`
+  -- (S5b `eventually_leak`, landed this tide — continuity of `(P00)⁻¹` at the unit `P00 w0 = 1` +
+  -- `leak_frobenius_bound` + `∑P10² ≤ Sreg`, `t = 1`), with the coupled `U := S5a-set ∩ S5b-set`
+  -- (`Filter.inter_mem`). **STILL OPEN (2 named `sorry`s in `hproducer`, CORRECT statements,
+  -- pivot-AGNOSTIC):** the folded core (d')/(e') (the per-layer↔global Schur charge — the structural
+  -- bridge `Rcore = P11 − P10⅟P00 P01 ↔ deepestCoreF (deepestCoreAbsorb (split w)).2.1` via the
+  -- block-LDU `Rcore = (∏ core)·(1−K)·(…)`, UNBUILT; with the additive charge
+  -- `|frobSq Rcore − coreΦ| ≤ C·Sreg` from the BANKED `schur_core_germ_comparability` it closes at
+  -- `γ₁ = γ₂ = 1+C`). (`hS1'`, `hframe0`, `hS2_w0` are kept as the subsumed basepoint path feeding
+  -- `hS3b`.)
   classical
   set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
   -- The raw (un-framed) parameter tuple at `w` and the full framed reconstruction of `split w`.
@@ -2229,13 +2427,14 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `⨅ optimalSet` form is invariant.
   --
   -- **CLOSED this tide (front pivot):** (a) `hconj` (block decomposition, `fromBlocks_toBlocks`); (b)
-  -- the EXACT reg energy (`hbexact`); S5a `Invertible P00` (banked `eventually_P00_invertible`). The
-  -- `𝓝 w0` set `U` is the S5a det-open neighborhood. **REMAINING (3 precisely-named `sorry`s, the
-  -- genuine unbuilt geometry, pivot-AGNOSTIC):** the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b
-  -- `eventually_leak`: `P01 w0 = P10 w0 = 0`, `⅟P00` bounded — a continuity+sub-multiplicativity bound)
-  -- and the folded core (d')/(e') (`eventually_core_comparable`: the per-layer↔global Schur charge to
-  -- `Sreg` via the BANKED `schur_core_germ_comparability` + `deepestCoreAbsorb`). The `U` here must then
-  -- intersect the S5b/S5c neighborhoods; this tide uses the S5a `U` and leaves leak/core scoped.
+  -- the EXACT reg energy (`hbexact`); S5a `Invertible P00` (banked `eventually_P00_invertible`); AND
+  -- (c) the leak `∑(P10⅟P00 P01)² ≤ Sreg` (S5b `eventually_leak`, landed this tide: `P01 w0 = P10 w0
+  -- = 0`, `(P00)⁻¹` continuous at the unit `P00 w0 = 1` — a continuity+sub-multiplicativity bound,
+  -- `t = 1`). The `𝓝 w0` set `U` is the coupled `S5a-set ∩ S5b-set` (`Filter.inter_mem`).
+  -- **REMAINING (2 precisely-named `sorry`s, the genuine unbuilt geometry, pivot-AGNOSTIC):** the
+  -- folded core (d')/(e') (the per-layer↔global Schur charge to `Sreg` via the BANKED
+  -- `schur_core_germ_comparability` + `deepestCoreAbsorb` — needs the UNBUILT structural bridge
+  -- `Rcore = P11 − P10⅟P00 P01 ↔ deepestCoreF (deepestCoreAbsorb (split w)).2.1`).
   have hproducer :
       ∃ (t γ₁ γ₂ δ₁ δ₂ : ℝ), 0 < γ₁ ∧ 0 < γ₂ ∧ 0 < δ₁ ∧ 0 < δ₂ ∧
         ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -2272,14 +2471,14 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                       + (∑ i, ∑ j, (P10 i j) ^ 2))
                     + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
     -- **FRONT-PIVOT PRODUCER (B route, this tide, 2026-06-25).** With the front pivot, conjuncts (a)
-    -- (`hconj`, `fromBlocks_toBlocks`) and (b) (`∑deepestEFull² = Sreg`, EXACT via `hRegBlocks` +
-    -- `deepestEFull_sq_sum_eq_blocks` — so `δ₁ = δ₂ = 1`) and S5a (`eventually_P00_invertible`, banked)
-    -- are CLOSED. The block witnesses are the `toBlocks` of `M w := reindex(P0·(prod(symm w)−B)·QL)`
-    -- (with `P00 := M.toBlocks₁₁ + 1`, so `P00 − 1 = M.toBlocks₁₁`). **REMAINING (3 named `sorry`s):**
-    -- the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b `eventually_leak`, a continuity+sub-multiplicativity
-    -- bound: `P01 w0 = P10 w0 = 0`, `⅟P00` bounded — built once) and the folded core (d')/(e')
-    -- (`eventually_core_comparable`, the per-layer↔global Schur charge to `Sreg` via the banked
-    -- `schur_core_germ_comparability` + `deepestCoreAbsorb`) — pivot-agnostic, unbuilt geometry.
+    -- (`hconj`, `fromBlocks_toBlocks`), (b) (`∑deepestEFull² = Sreg`, EXACT via `hRegBlocks` +
+    -- `deepestEFull_sq_sum_eq_blocks` — so `δ₁ = δ₂ = 1`), S5a (`eventually_P00_invertible`, banked)
+    -- AND (c) the leak (`eventually_leak`, banked this tide, `t = 1`) are CLOSED. The block witnesses
+    -- are the `toBlocks` of `M w := reindex(P0·(prod(symm w)−B)·QL)` (with `P00 := M.toBlocks₁₁ + 1`,
+    -- so `P00 − 1 = M.toBlocks₁₁`); `U := S5a-set ∩ S5b-set` (`Filter.inter_mem`). **REMAINING
+    -- (2 named `sorry`s):** the folded core (d')/(e') (the per-layer↔global Schur charge to `Sreg`
+    -- via the banked `schur_core_germ_comparability` + `deepestCoreAbsorb`, needing the UNBUILT
+    -- structural bridge `Rcore ↔ deepestCoreF (deepestCoreAbsorb (split w)).2.1`) — pivot-agnostic.
     classical
     -- **(b)-EXACT** (front pivot): `∑deepestEFull(split w)² = Sreg(w)` where `Sreg(w)` is the three
     -- residual-block energies of `M w := reindex(P0·(prod(symm w)−B)·QL)`. Via the block-energy identity
@@ -2344,19 +2543,45 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [hs11, hs12, hs21]
       ring
     -- S5a: the `(1,1)`-block map is eventually a unit (banked `eventually_P00_invertible`).
+    -- S5a (`IsUnit P00`) and S5b (the leak smallness) are each a `𝓝 w0` member; `U` is their
+    -- intersection (`Filter.inter_mem`). Each `w ∈ U` then carries BOTH facts (`hw.1`, `hw.2`).
     have hP00ev := eventually_P00_invertible H r B hB hr hL P0 QL
+      (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+    have hleakev := eventually_leak H r B hB hr hL P0 QL
       (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
     refine ⟨1, 1, 1, 1, 1, one_pos, one_pos, one_pos, one_pos,
       {w | IsUnit ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁
-        + (1 : Matrix (Fin r) (Fin r) ℝ))}, hP00ev, fun w hw => ?_⟩
+        + (1 : Matrix (Fin r) (Fin r) ℝ))}
+      ∩ {w | (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
+        ≤ (1 : ℝ) ^ 2
+          * (((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
+              + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
+            + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))},
+      Filter.inter_mem hP00ev hleakev, fun w hw => ?_⟩
     -- The conjugated residual `M w` and its four blocks (`P00 := M.toBlocks₁₁ + 1`).
     set Mw := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) with hMw
-    -- S5a gives `IsUnit (M.toBlocks₁₁ + 1)`, the producer's `P00`.
-    have hP00u : IsUnit (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hw
+    -- S5a gives `IsUnit (M.toBlocks₁₁ + 1)`, the producer's `P00` (first intersection component).
+    have hP00u : IsUnit (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hw.1
+    -- S5b gives the leak smallness `∑(P10·(P00)⁻¹·P01)² ≤ Sreg` (second intersection component).
+    have hleakw := hw.2
     letI : Invertible (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hP00u.invertible
     refine ⟨Mw.toBlocks₁₁ + 1, Mw.toBlocks₁₂, Mw.toBlocks₂₁, Mw.toBlocks₂₂, this, ?_, ?_, ?_, ?_, ?_, ?_⟩
     · -- (a) `hconj`: `M = fromBlocks (P00−1) P01 P10 P11`. `P00 − 1 = M.toBlocks₁₁` ⟹ `fromBlocks_toBlocks`.
@@ -2368,11 +2593,21 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     · -- (b)-high: `∑deepestEFull² ≤ 1·Sreg`. EXACT, so `≤` with `δ₂ = 1`.
       rw [one_mul, add_sub_cancel_right]
       exact le_of_eq (hbexact w)
-    · -- (c) leak (S5b `eventually_leak`) — UNBUILT (the genuine continuity+bound, pivot-agnostic).
+    · -- (c) leak (S5b `eventually_leak`, banked this tide). The intersection's second component
+      -- `hleakw` is EXACTLY this bound with `t = 1`, modulo `⅟P00 = (P00)⁻¹` (`invOf_eq_nonsing_inv`)
+      -- and `P00 − 1 = M.toBlocks₁₁` (`add_sub_cancel_right`).
+      rw [add_sub_cancel_right, invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))]
+      exact hleakw
+    · -- (d') folded core upper (S5c charge). REMAINING — the per-layer↔global Schur charge bridge
+      -- (`Rcore := P11 − P10·⅟P00·P01 ↔ deepestCoreF (deepestCoreAbsorb (split w)).2.1` via the
+      -- block-LDU `Rcore = (∏ core)·(1−K)·(…)`) is UNBUILT. With the additive charge
+      -- `|frobSq Rcore − coreΦ| ≤ C·Sreg` it closes at `γ₂ = 1+C`; the banked
+      -- `schur_core_germ_comparability` supplies the charge ONCE the `Mw`-blocks ↔ `coreAbsorb`-core
+      -- structural identity is in place. (Codex `high`, decorrelated, 2026-06-25: arithmetic alone
+      -- cannot substitute for the missing geometric identity.) Precisely-named `sorry`.
       sorry
-    · -- (d') folded core upper (S5c charge) — UNBUILT (the per-layer↔global Schur charge).
-      sorry
-    · -- (e') folded core lower (S5c charge) — UNBUILT.
+    · -- (e') folded core lower (S5c charge). REMAINING — same missing bridge as (d'); closes at
+      -- `γ₁ = 1+C` once the `Mw`-blocks ↔ `coreAbsorb`-core identity + the additive charge land.
       sorry
   obtain ⟨t, γ₁, γ₂, δ₁, δ₂, hγ₁, hγ₂, hδ₁, hδ₂, U, hU, hbody⟩ := hproducer
   exact ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, δ₁, δ₂, hPP, hQQ, hγ₁, hγ₂, hδ₁, hδ₂, hKP_pos, hKi_pos, U, hU, hbody⟩
