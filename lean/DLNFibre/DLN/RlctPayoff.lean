@@ -121,8 +121,8 @@ of its irreducible components". The height of `sigmaIdeal d 0 = sInf (orbitIdeal
 (`sigmaIdeal_eq_sInf_orbitIdeals`) is the infimum over its minimal primes
 (`minimalPrimes_sigmaIdeal_eq`); each such prime is an orbit ideal, and every orbit ideal contains a
 minimal one of `≤` height, so the two infima agree. `[IsAlgClosed k]` (orbit-ideal primality). This
-is the **per-orbit** aggregate reading; identifying the infimum with `cCodim d 0` needs the
-Kostant-partition encoding bridge (Deferred — see module header). -/
+is the **per-orbit** aggregate reading; identifying the infimum with `cCodim d 0` is bridge (b)
+(`codimRepCanonical_fibre_zero_eq_cCodim`, the Kostant-partition encoding, Proved below). -/
 theorem codimRepCanonical_fibre_zero_eq_iInf_orbitCodim [IsAlgClosed k] (d : Fin (N + 1) → ℕ) :
     codimRepCanonical (fibre (k := k) d 0)
       = ⨅ M ∈ {M : Tuple (k := k) d | (mult d M).rank ≤ 0},

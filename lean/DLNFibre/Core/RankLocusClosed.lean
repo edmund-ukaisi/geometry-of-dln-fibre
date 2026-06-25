@@ -1,5 +1,6 @@
 import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.Orbit
+import DLNFibre.Core.GenericTuple
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 /-!
@@ -159,17 +160,8 @@ the ring hom `eval`), and each `(s)`-minor of the generic `submult` is a polynom
 
 variable {N : ℕ}
 
-/-- The **generic tuple** over the coordinate ring `MvPolynomial (RepCoord d) k`: the `(i, r, c)`
-entry is the coordinate variable `X ⟨i, r, c⟩`. Evaluating at `canonicalCoord d A` recovers `A`. -/
-noncomputable def genericTuple (d : Fin (N + 1) → ℕ) :
-    Tuple (k := MvPolynomial (RepCoord d) k) d :=
-  fun i r c ↦ MvPolynomial.X ⟨i, r, c⟩
-
-/-- Evaluating the generic tuple at `canonicalCoord d A` recovers the factor `A i`. -/
-theorem eval_genericTuple {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (i : Fin N) :
-    (genericTuple (k := k) d i).map (MvPolynomial.eval (canonicalCoord d A)) = A i := by
-  funext r c
-  simp only [Matrix.map_apply, genericTuple, MvPolynomial.eval_X, canonicalCoord_apply]
+-- `genericTuple` and `eval_genericTuple` now live in `Core.GenericTuple` (over any `CommRing`, the
+-- weakest hypothesis), reused here and by `Core.MultComorphism`.
 
 /-- Evaluating the generic interval sub-product at `canonicalCoord d A` recovers `submult d A i j`:
 matrix multiplication commutes with the ring hom `eval`, and the generic factors evaluate to the

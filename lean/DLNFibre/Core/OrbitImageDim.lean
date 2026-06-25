@@ -11,22 +11,23 @@ The headline of the L2b★ route-c chain that, combined with the landed A0
 
 > `(ringKrullDim (orbitPullback M).range).unbotD 0 ≤ finrank k (LinearMap.range (deformationδ M M))`.
 
-The chain (A0 landed, A4.1 landed, A4.2/A4.3 the named open obligations):
+The chain (all rungs now PROVED):
 - **A0** (landed): `varietyDim Z_M = (ringKrullDim (orbitPullback M).range).unbotD 0`.
 - **A4.1** (landed, `ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat`):
   `(ringKrullDim (orbitPullback M).range).unbotD 0 = (Algebra.trdeg k (orbitPullback M).range).toNat`.
-- **A4.2** (the char-0 differential criterion, `genericDifferentialRank` the shared rank object;
-  the open obligation is `DiffIndepCriterion`, with the routine trdeg reduction folded into the
-  `hA42` hypothesis below): `(Algebra.trdeg k (orbitPullback M).range).toNat ≤
-  genericDifferentialRank k (groupRing d) (genericOrbitCoord M)`.
-- **A4.3** (the char-free differential-rank identity, the orbit-map differential = `δ⁰`; the open
-  obligation `hA43`): `genericDifferentialRank k (groupRing d) (genericOrbitCoord M) =
-  finrank k (LinearMap.range (deformationδ M M))`.
+- **A4.2** (the char-0 differential criterion, `genericDifferentialRank` the shared rank object):
+  `(Algebra.trdeg k (orbitPullback M).range).toNat ≤
+  genericDifferentialRank k (groupRing d) (genericOrbitCoord M)`. The criterion `DiffIndepCriterion`
+  is discharged here (`diffIndepCriterion_groupRing`, char 0).
+- **A4.3** (the char-free differential-rank identity, the orbit-map differential = `δ⁰`):
+  `genericDifferentialRank k (groupRing d) (genericOrbitCoord M) =
+  finrank k (LinearMap.range (deformationδ M M))`. The `≤`-bound is PROVED in
+  `Core.OrbitDifferentialRank` (`genericDifferentialRank_genericOrbitCoord_le_finrank_range_deformationδ`).
 
-This module assembles A4.4 from A4.1 (proved) and the two named hypotheses `hA42`, `hA43`. The two
-hypotheses are the residual open obligations of the route — stated at exact precision so a focused
-follow-up can discharge each independently. `[CharZero k]` is carried on `hA42`'s side (the criterion
-is char-0); the assembly itself is char-free.
+This module assembles A4.4 from A4.1 (proved) and two hypotheses `hA42`, `hA43_le`, kept as
+building-block inputs at exact precision; the unconditional forms (with both discharged) are
+`…_charZero` here and the `…_unconditional` variants in `Core.OrbitDifferentialRank`. `[CharZero k]`
+is carried on `hA42`'s side (the criterion is char-0); the bare assembly itself is char-free.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -107,9 +108,10 @@ theorem varietyDim_orbitRankLocus_le_finrank_range_deformationδ
 
 `hA42` (the image-form A4.2 bound) follows from the field-theory criterion `DiffIndepCriterion k
 (groupRing d)` via the trdeg wrapper, since `(orbitPullback M).range = adjoin k (range
-(genericOrbitCoord M))`. This pins the genuine open obligation of A4.2 to `DiffIndepCriterion` —
-the char-0 "algebraically-independent ⟹ differentials linearly independent" fact — separated from
-all the orbit-specific bookkeeping. -/
+(genericOrbitCoord M))`. This isolates the A4.2 content as `DiffIndepCriterion` — the char-0
+"algebraically-independent ⟹ differentials linearly independent" fact — separated from all the
+orbit-specific bookkeeping. The criterion is discharged below (`diffIndepCriterion_groupRing`,
+char 0). -/
 
 -- `genericDifferentialRank` over the localization `groupRing d` is costly to unfold during
 -- unification; the default heartbeat budget is exceeded by the `range_orbitPullback_eq_adjoin`

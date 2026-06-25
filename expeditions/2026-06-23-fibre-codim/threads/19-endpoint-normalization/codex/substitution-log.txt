@@ -1,0 +1,2276 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef973-edcc-7411-8615-cdf88cc40787
+--------
+user
+# Lean 4 / Mathlib formalisation design review — endpoint-normalization AlgEquiv
+
+I am formalising one rung of a larger affine-AG construction in Lean 4 (Mathlib v4.29). I want a
+decorrelated design review of the construction below BEFORE I build it. Focus on: (1) is the
+substitution direction correct so that the mult-transport comes out as stated, (2) the `N=1`
+endpoint-coincidence pitfall, (3) the cleanest matrix-inverse API. Do NOT write full Lean; give me
+the math + the API names + the traps.
+
+## The objects (fixed conventions, already in the codebase)
+
+- `d : Fin (N + 1) → ℕ` a dimension vector. `Tuple d := ∀ i : Fin N, Matrix (Fin (d i.succ)) (Fin (d i.castSucc)) k`.
+  Factor `i : Fin N` is an `(d (i+1)) × (d i)` matrix. So factor `0` (the FIRST factor, source side)
+  is `(d 1) × (d 0)`; factor `N-1` (the LAST factor, target side) is `(d N) × (d (N-1))`.
+- `mult d A = A_{N-1} · A_{N-2} · ... · A_1 · A_0 : Matrix (Fin (d (last N))) (Fin (d 0)) k`.
+  (built by successive LEFT-multiplication: `multPrefix succ i = A i * multPrefix castSucc i`.)
+- `RepCoord d := Σ i : Fin N, Fin (d i.succ) × Fin (d i.castSucc)`. A coordinate is `⟨i, (row, col)⟩`:
+  edge `i`, row in target dim, col in source dim.
+- `multPoly d : Fin (d last) → Fin (d 0) → MvPolynomial (RepCoord d) R` — the generic product entries
+  (= `mult d genericTuple` where `genericTuple i a b = X ⟨i,(a,b)⟩`).
+
+## The pre-staged contract (must instantiate this exact shape)
+
+```
+example {R} [CommRing R] (d : Fin (N+1) → ℕ)
+    (toSub fromSub : RepCoord d → MvPolynomial (RepCoord d) R)
+    (h_to_from : ∀ x, aeval toSub (fromSub x) = X x)
+    (h_from_to : ∀ x, aeval fromSub (toSub x) = X x) :
+    MvPolynomial (RepCoord d) R ≃ₐ[R] MvPolynomial (RepCoord d) R :=
+  AlgEquiv.ofAlgHom (aeval toSub) (aeval fromSub) ... ...
+```
+
+## The construction I intend
+
+Endpoint normalization: with invertible `H : Matrix (Fin (d 0)) (Fin (d 0)) R` (right factor on
+source side) and `L : Matrix (Fin (d last)) (Fin (d last)) R` (left factor on target side), I
+right-multiply the FIRST factor `A_0` by `H⁻¹` and left-multiply the LAST factor `A_{N-1}` by `L⁻¹`,
+all middle factors fixed. Then `mult(Ã) = L⁻¹ · mult(A) · H⁻¹`.
+
+I will parametrize by `[Invertible H]`, `[Invertible L]` and use `⅟H`, `⅟L` (avoid `nonsing_inv`,
+works over any CommRing R, no field needed).
+
+The single-edge substitution for "right-multiply edge `e` (an `m×n` block) by a matrix `U : Matrix
+(Fin n) (Fin n) R`": the coordinate `X ⟨e,(i,j)⟩` maps to `∑_l U_{l,j} · X ⟨e,(i,l)⟩`. (Because
+`(A·U)_{i,j} = ∑_l A_{i,l} U_{l,j}`.) Left-multiply edge `e` by `V : Matrix (Fin m) (Fin m) R`:
+`X ⟨e,(i,j)⟩ ↦ ∑_l V_{i,l} · X ⟨e,(l,j)⟩`.
+
+For the endpoint normalization, `toSub` (the substitution that, via `aeval`, computes the entries of
+`Ã` as polynomials in `A`'s variables) should encode `Ã_0 = A_0 · H⁻¹` on edge 0 and
+`Ã_{N-1} = L⁻¹ · A_{N-1}` on edge `N-1`, identity on all other edges.
+
+QUESTIONS:
+1. To get `aeval toSub (multPoly d r c) = (L⁻¹ · multPoly · H⁻¹) r c` (the transport for `Ã`), what
+   EXACTLY should `toSub ⟨e,(i,j)⟩` be on edge 0 and on edge `N-1`? Give the direction precisely —
+   should edge 0 carry `H⁻¹` or `H` in the substitution, given `aeval` does p ↦ p(toSub)? Walk
+   through the N=1 sanity check (a single matrix M, `mult = M`, `Ã = L⁻¹ M H⁻¹`).
+2. `N=1`: edge 0 IS edge N-1 (`Fin 1`, only index 0). Both substitutions apply to the same edge.
+   The correct combined substitution must be `Ã = L⁻¹ · A_0 · H⁻¹` simultaneously. What is the
+   single substitution `X ⟨0,(i,j)⟩ ↦ ∑_{l,m} (L⁻¹)_{i,l} (H⁻¹)_{m,j} X ⟨0,(l,m)⟩`? Confirm the
+   round-trip (`toSub`/`fromSub` mutually inverse) still holds in the coincident case and that
+   composing the two single-sided subs in either order gives this (does order matter for the FINAL
+   answer, vs intermediate)?
+3. The round-trip `fromSub`: should be the same construction with `H`, `L` in place of `H⁻¹`, `L⁻¹`.
+   The collapse `aeval toSub (fromSub (X⟨e,(i,j)⟩)) = X⟨e,(i,j)⟩` reduces to a matrix identity
+   `∑ (H⁻¹)(H) = δ` i.e. `H⁻¹ H = 1`. Over `MvPolynomial`, is the cleanest route to prove this on
+   generators: expand `aeval` of the sum, swap to `Finset.sum`, recognize `∑_l (⅟U)_{?,l} U_{l,?}`
+   as `(⅟U * U)_{?,?} = 1_{?,?}` via `Matrix.mul_apply` + `invOf_mul_self`, then `Matrix.one_apply`?
+   Any pitfall with the double sum in the N=1 coincident case (Fubini / `Finset.sum_comm`)?
+4. Is there a SIMPLER overall structuring: define ONE general single-edge "linear substitution by an
+   endomorphism on edge e" `AlgHom`, prove the composition law `(sub by U) ∘ (sub by V) = sub by
+   (U*V)` ONCE, and get round-trip + N=1 coincidence as corollaries? Or is per-direction `aeval`
+   with explicit double-sum proofs less painful in practice? I lean toward the composition-law
+   approach to avoid duplicating the inverse-collapse proof. Critique.
+5. Any reason the mult-transport `aeval toSub (multPoly d r c) = (⅟L · M · ⅟H) r c` (with M the
+   generic-product matrix `Matrix.of (multPoly d)`) would NOT factor through `aeval`-commutes-with-
+   matrix-product + the entrywise substitution on the endpoint factors? The middle factors are fixed
+   by `toSub` (identity substitution) — does `aeval id_on_middle (multPrefix ...) = multPrefix` need
+   an induction, or does it fall out because `toSub` is identity on those edges' variables?
+
+Give me the cleanest construction + the precise substitution formulas + the API names
+(`Matrix.mul_apply`, `invOf_mul_self`, `Finset.sum`, `aeval`, `MvPolynomial.algHom_ext`,
+`map_sum`, `aeval_X`, ...) and flag every trap.
+
+codex
+I’ll verify the Mathlib API names against primary docs/repo first, then I’ll give the design-level answer without writing implementation code.
+web search: 
+web search: Mathlib v4.29 Matrix invOf_mul_self Invertible Lean 4
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs Mathlib Matrix.mul_apply invOf_mul_self
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Defs.html
+codex
+The public docs search is not finding every declaration, so I’m also checking the local workspace/toolchain where possible. That should catch version-specific naming issues better than relying on memory.
+exec
+/bin/bash -lc "pwd && rg --files -g 'lake-manifest.json' -g 'lakefile.*' -g 'lean-toolchain' -g '*.lean' | head -80" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+lean-toolchain
+DLNFibre.lean
+lake-manifest.json
+lakefile.toml
+DLNFibre/DLN/RlctPayoffGeneral.lean
+DLNFibre/DLN/RlctPayoff.lean
+DLNFibre/DLN/Basic.lean
+DLNFibre/Core/IntegralDimension.lean
+DLNFibre/Core/Gabriel.lean
+DLNFibre/Core/OrbitVariety.lean
+DLNFibre/Core/DeterminantalBasePresentation.lean
+DLNFibre/Core/QSeriesThm55.lean
+DLNFibre/Core/NullstellensatzCodim.lean
+DLNFibre/Core/QSeriesExtraction.lean
+DLNFibre/Core/RankLocusClosed.lean
+DLNFibre/Core/DeterminantalBaseElimination.lean
+DLNFibre/Core/DeterminantalChart.lean
+DLNFibre/Core/CTheta.lean
+DLNFibre/Core/AffineDomainDimension.lean
+DLNFibre/Core/CThetaQIPConverse.lean
+DLNFibre/Core/OrbitCodim.lean
+DLNFibre/Core/QSeriesShift.lean
+DLNFibre/Core/RankPattern.lean
+DLNFibre/Core/CotangentJacobian.lean
+DLNFibre/Core/OrbitPullbackDim.lean
+DLNFibre/Core/CCodimCornerMono.lean
+DLNFibre/Core/QSeriesPeel.lean
+DLNFibre/Core/Orbit.lean
+DLNFibre/Core/QSeriesDurfee.lean
+DLNFibre/Core/QSeriesFivegon.lean
+DLNFibre/Core/SmoothPointRegular.lean
+DLNFibre/Core/OrbitImageDim.lean
+DLNFibre/Core/BoxMoveGeneral.lean
+DLNFibre/Core/Barcode.lean
+DLNFibre/Core/SigmaComponents.lean
+DLNFibre/Core/CThetaQIP.lean
+DLNFibre/Core/GenericTuple.lean
+DLNFibre/Core/CThetaArbitrary.lean
+DLNFibre/Core/MatrixKaehler.lean
+DLNFibre/Core/DeterminantalStratumDim.lean
+DLNFibre/Core/FlatTrivialProductProbe.lean
+DLNFibre/Core/BoxMoveDegeneration.lean
+DLNFibre/Core/Basic.lean
+DLNFibre/Core/BoxMoveGeneration.lean
+DLNFibre/Core/CThetaValue.lean
+DLNFibre/Core/MvPolynomialKerAeval.lean
+DLNFibre/Core/GraphIdealHeight.lean
+DLNFibre/Core/FibreReducedTrivialization.lean
+DLNFibre/Core/PolynomialCurveLimit.lean
+DLNFibre/Core/CCodimZeroMono.lean
+DLNFibre/Core/SigmaStratification.lean
+DLNFibre/Core/CThetaThetaBridge.lean
+DLNFibre/Core/AffineNoetherRank.lean
+DLNFibre/Core/OrbitLinearCodim.lean
+DLNFibre/Core/CThetaExplicit.lean
+DLNFibre/Core/Submult.lean
+DLNFibre/Core/JacobianTrdeg.lean
+DLNFibre/Core/DeterminantalChartRing.lean
+DLNFibre/Core/CThetaGeometric.lean
+DLNFibre/Core/MultComorphism.lean
+DLNFibre/Core/DeformationExt.lean
+DLNFibre/Core/SigmaCodim.lean
+DLNFibre/Core/OrbitDifferentialRank.lean
+DLNFibre/Core/OrbitSmooth.lean
+DLNFibre/Core/QSeries.lean
+DLNFibre/Core/CThetaPermInvariance.lean
+DLNFibre/Core/OrbitTangentCotangent.lean
+DLNFibre/Core/NoetherMonicPositioning.lean
+DLNFibre/Core/QSeriesOrth.lean
+DLNFibre/Core/CCodimZeroStrict.lean
+DLNFibre/Core/DeepChartRing.lean
+DLNFibre/Core/FibreCodim.lean
+DLNFibre/Core/BaseChange.lean
+DLNFibre/Core/CThetaDropM.lean
+DLNFibre/Core/FlatQuasiFiniteHeight.lean
+DLNFibre/Core/IntervalModule.lean
+DLNFibre/Core/CThetaGeometricPerm.lean
+DLNFibre/Core/PolynomialDimension.lean
+DLNFibre/Core/SmoothLocalRelativeDimension.lean
+DLNFibre/Core/FibreNormalForm.lean
+
+exec
+/bin/bash -lc 'find . -maxdepth 4 -name CLAUDE.md -o -name AGENTS.md -o -name lake-manifest.json -o -name lean-toolchain' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+./CLAUDE.md
+./lake-manifest.json
+./lean-toolchain
+
+exec
+/bin/bash -lc "sed -n '1,220p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+# Lean conventions (DLNFibre)
+
+## Build
+- **Multi-worktree / multi-session: build via `scripts/lb`, NOT bare `lake build`.** `lb` symlinks this
+  worktree's `.lake/packages` to the shared rev-keyed mathlib store (mmap-shared, no per-worktree clone)
+  and throttles total Lean workers across all sessions via a global semaphore. Full rationale + box
+  sizing: [`../docs/policies/lean-build-workflow.md`](../docs/policies/lean-build-workflow.md). **Do NOT
+  `lake exe cache get` in a worktree** — it re-clones ~7 GB and defeats the sharing; the shared store is
+  built once by `scripts/lake-store-setup <mathlib-rev>` (detached; exceeds the 10-min cap).
+- Fresh shells: `source ~/.elan/env` before any `lake` command.
+- Build from this `lean/` directory: `scripts/lb DLNFibre.<Module>`, or `scripts/lb` for the whole
+  library. (Bare `lake build`/`lake env lean` still work for one-off elaboration, but bypass the shared
+  store + the global concurrency cap — fine for a single `#eval`, not for parallel builds.)
+- Toolchain: Lean `v4.29.0` (`lean-toolchain`), Mathlib `v4.29.0` (`lakefile.toml`). Matches the `ai-research-assistant` harness one level up, so its v4.29 Mathlib idioms transfer.
+
+## Library shape — engine vs application
+- **`DLNFibre.Core.*`** is the network-free **engine** (quiver orbits, Kostant partitions / rank patterns, `Ext` codimension, `(C, θ)`). It **must never import `DLNFibre.DLN`**. The dependency arrows point `DLN → Core → Mathlib`.
+- **`DLNFibre.DLN.*`** is the **application** (multiplication-map fibres, the square-Frobenius loss, the RLCT payoff); it depends on `Core`.
+- State each result at the specificity its claim needs; lift a piece into shared `Core` API on its **second** use, not in anticipation of one. Good API (characterizations over predicates, weakest hypotheses, name = content) is the `bedrock`/`precision` discipline, not a folder layout.
+
+## Aggregator
+- `DLNFibre.lean` is single-writer. Add new module imports at the end; do not reorder existing imports.
+- New modules live at `DLNFibre/<Core|DLN>/<Topic>/<File>.lean`; one substantive theorem family per file.
+
+## Sorry gate
+- Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
+
+## Bedrock (the bar above the sorry gate)
+A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —
+"technically correct but subtly wrong, not The Way." Build each result as **bedrock**: something the next
+theorem stands on without re-opening it. Where there's nothing to check against, **beauty is the guide** — a
+vacuous, mis-scoped, or overclaiming theorem is *ugly*. In practice that recurrently means (not exhaustively):
+name = content; non-vacuous, with the witness *shown* in-file; the weakest hypotheses that suffice, in usable
+form; characterized (an `iff`) over asserted; every *cited*/*assumed* step named (never an `…rlct…`-style
+theorem that secretly claims an unproved analytic interface — here the `rlct = ½·codim` reading rests on a
+cited bound). The controller judges against this taste and holds precedence — full statement:
+[`../docs/policies/bedrock.md`](../docs/policies/bedrock.md).
+
+## Style
+- `↦` not `=>` for lambda arrows.
+- `decide +kernel`, not `native_decide`. Avoid `@[implemented_by]`, `@[extern]`, `unsafePerformIO`.
+- One-line docstrings.
+- Name a lemma for what it proves: a kernel/ideal *membership* fact is `…_mem_ker`, not `…_gen` (which reads as an ideal-generation claim).
+- Confirm a Mathlib lemma exists before building a proof around it: `scripts/lean-search "..."`, or `rg` over `.lake/packages/mathlib/Mathlib/`.
+- Pre-stage uncertain API with `example` blocks that pin lemma names/types; keep them as durable contracts.
+
+## Mathlib gotchas (v4.29 pin)
+Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific ones here as they are found
+(the ReLU programme's proof-specific notes were intentionally not ported — they were about a different theory).
+
+- **`Basis` is `Module.Basis` at the v4.29 pin.** Bare `Basis` is unknown even with full Mathlib imports;
+  ascribe `Module.Basis (Fin _) ℝ _` (e.g. from `Pi.basisFun`). Dot-notation (`b.tensorProduct b'`) is
+  unaffected. Likely to recur in any `Matrix.rank` / column-span work.
+- **`decide +kernel`, never `native_decide`.** Kernel `decide` is axiom-clean; `native_decide` trusts the
+  compiler and breaks `#print axioms` hygiene. Kernel-reduction cost is **heartbeat-invisible** (a
+  `maxHeartbeats` bump does not speed it), so a heartbeat timeout on a `decide` is not the symptom to chase.
+- **Matrix-product identities over `ℤ` by `decide`, then cast.** An `ℝ` matrix-product identity is a
+  `Matrix.ext` blow-up (per-entry `simp`, times out at scale). Write the matrices over `ℤ`
+  (`DecidableEq` ⟹ `Matrix.mul` decides by kernel reduction, `by decide`), define the `ℝ` ones via
+  `· .map (Int.castRingHom ℝ)`, and transfer products with `← Matrix.map_mul` (cast is a ring hom). No `ℝ`
+  `Matrix.ext` at all.
+- **`Fin`-vector `![…]` + `fin_cases` friction.** `fin_cases i` leaves the index as `⟨k, ⋯⟩` (a `Fin.mk`),
+  so `Matrix.cons_val_one`/`_two`/… do not fire on the outer selection. Normalize first with
+  `rw [show (⟨k, by omega⟩ : Fin n) = (k : Fin n) from rfl]`, then the `cons_val_*` simp set fires; or prove
+  the components as separate `have`s and assemble with `funext i; fin_cases i`.
+- **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
+  when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
+  to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
+  shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
+- **No off-the-shelf rank-normal-form / "equal rank ⟹ equivalent matrices" in v4.29.** Built at the
+  linear-map level in `Core.FibreNormalForm` (`exists_conj`, `exists_baseChange_of_rank_eq`): for a
+  rank-`r` `f : (Fin n → k) →ₗ (Fin m → k)`, restrict to `fU : U ≃ range f` (`U` a `ker`-complement,
+  via `Submodule.quotientEquivOfIsCompl _.symm ≪≫ LinearMap.quotKerEquivRange`); two maps with equal
+  ker+range finrank are conjugate (`prodEquivOfIsCompl` kernel/range decompositions glued by
+  `LinearEquiv.ofFinrankEq`), transferred to matrices by `LinearMap.toMatrix'_comp` +
+  `LinearMap.toMatrix'_toLin'`. Useful `rfl`s: `Matrix.rank A = finrank (range (toLin' A))` and
+  `toLin' A = A.mulVecLin`. The `IsCompl` finrank lemma is `Submodule.finrank_add_eq_of_isCompl`.
+- **`RingEquiv.height_comap` is the clean `Ideal.height` transport** (`(I.comap e).height = I.height`,
+  any ideal, no `IsPrime`). For codim-invariance of a locus under a *linear* coordinate change, the
+  set-level route `vanishingIdeal (shifted) = comap (algEquiv) (vanishingIdeal)` + `height_comap` is
+  cleaner than re-deriving an `Ideal.map` identity. Used in `Core.FibreNormalForm.codimRep_baseChange_image`
+  — this closes the linear-coordinate-invariance gap `Core.OrbitCodim`'s docstring flagged, for the
+  base-change family of isos.
+- **The end-factor (`GL_{d_N}×GL_{d_0}`) action is just `Core.BaseChange.baseChange` with inner units
+  `= 1`.** No new action needed: mult-equivariance `mult (P•A) = P_N·(mult A)·(P_0)⁻¹` is
+  `mult_eq_submult` + the LANDED `submult_smul` at the full interval `(0, last)`. Caveat: the
+  same-rank ⟹ same-fibre-codim headline genuinely needs `N ≥ 1` (`hN : (0 : Fin (N+1)) ≠ Fin.last N`)
+  — for `N = 0` `mult` is the constant `1`, the end vertices coincide, the action only conjugates, and
+  the claim is false.
+
+## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
+- **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
+  `cCodim · 0` (`cCodim e 0 ≤ cCodim e' 0` for `e ≤ e'`, + a strict all-vertex version). Both gating
+  bricks (`hLowerBound`, `hRecover`) discharge from it via the LANDED rank-shift `cCodim d t = cCodim
+  (d−t) 0` + the Gabriel→Kostant bridge `gabrielPartition` (a tuple's `kostantArrayOfRank (rankFn ·)`
+  recast into the `CTheta` `Fin × Fin → ℕ` encoding via `finArrayOfSupp`).
+- **The right construction for the dimension-monotonicity is the SHORTEST-interval split** (at an
+  over-covered vertex `k`, split the shortest `[i,j] ∋ k` into `[i,k−1]+[k+1,j]`): verified to never
+  increase `codimForm` (199/199), whereas splitting a non-shortest interval CAN increase it. The
+  merge-up route (raise the corner per-partition) is DEAD — corner-`s` partitions often admit no
+  corner-raise with non-increasing `codimForm` (71/252).
+- **Strict SINGLE-vertex dimension-mono is FALSE** (e.g. `cCodim [1,1,0] 0 = cCodim [1,2,0] 0 = 0`);
+  only the strict ALL-vertex version holds (`d−r < d−s` everywhere when `r > s`). Strict corner-
+  monotonicity (needed for `hRecover`'s "corner = r") rides on the all-vertex strict version.
+- **`codimForm` is the type-A `Ext`-pairing form**: reindexed, `= ∑_{A=[a,b],B=[c,e]: a<c≤b+1, b<e}
+  m̄(A) m̄(B)`. The split delta is `∑_B coeff(B) m̄(B)` with the positive-coeff `B` being the shorter
+  intervals covering `k` (absent when `I` is shortest). `codimForm` is also corner-blind
+  (`codimForm_update_corner`, LANDED) — it never reads `m_{0N}`.
+
+## `cCodim·0` weak monotonicity LANDED (`Core.CCodimZeroMono`, thread 07)
+- **`cCodim_zero_mono` is PROVED sorry-free** (`e ≤ e' ⟹ cCodim e 0 ≤ cCodim e' 0`), discharging the
+  weak gating hypothesis `hMono`. The θ-count headline is now `numTop_eq_ncard_topComponents_of_strict`
+  — UNCONDITIONAL except for the strict `hMonoStrict`. Axiom-clean `[propext, Classical.choice,
+  Quot.sound]`. `hLowerBound` is fully unconditional.
+- **Reusable infrastructure** (all in `CCodimZeroMono`, built on `CThetaQIPConverse`'s `codimBil`):
+  `codimBil_extendℤ_boxℤ_right`/`_left` (univ-sum collapse of `codimBil` vs a single box, via the
+  clamped `rrInd`/`llInd` indicators), `codimBil_boxℤ_boxℤ` (the box-pairing value), `codimForm_add`
+  (reused), `codimForm_congr_onbox` (codimForm reads only on-box values).
+- **Four atomic shortest-split moves**, each with delta / sign / `_le` / `_cover` / `_mem`: interior
+  `redMove` (`c = b+2` gap kills the self-term), `leftShrink` (omit left endpoint; handles `a=0` and
+  singleton-via-empty-piece), `rightShrink` (omit right endpoint; handles `d'=N`), `removeMove`
+  (singleton removal; coefficient ALWAYS `≤ 0`). Boundary lesson: there is NO `Fin` `b` with `b+1 = 0`,
+  so `k=0` left-endpoint and `k=N` right-endpoint genuinely need the dedicated shrink moves (the
+  interior `redMove`'s empty-piece guard `a≤b` can't be made false when `a=0`). `reduceStep` dispatches
+  by `k`'s position; `exists_le_codimForm` is the recursion (strong induction on `∑ e'`).
+## `cCodim·0` strict monotonicity LANDED → θ UNCONDITIONAL (`Core.CCodimZeroStrict`, thread 08)
+- **`cCodim_zero_strict` is PROVED sorry-free** (`(∀ v, e v < e' v) → cCodim e 0 < cCodim e' 0`),
+  discharging `hMonoStrict`. **`numTop_eq_ncard_topComponents` is now UNCONDITIONAL** (`θ =
+  #top-dimensional irreducible components of Σ̄^r`, no open hypothesis); axiom-clean `[propext,
+  Classical.choice, Quot.sound]`.
+- **Route B (the landed route), reusing the four atomic moves + their `_le` sign lemmas:**
+  - **Double sum** `codimForm_extendℤ_eq_sum_pairs`: `codimForm (extendℤ m) = ∑_{A,B} m(A) m(B) ·
+    [pairBox A B]` (built from `codimBil_sum_right` + `codimBil_const_mul_right` + the existing
+    right-rectangle collapse; `rrInd (B.1)(B.2) A ↔ pairBox A B` on the box). Gives `∃ active pair ⟺
+    codimForm ≥ 1` (`codimForm_extendℤ_pos_of_exists_pair` / `exists_pair_of_codimForm_pos`).
+  - **Lemma Y** `codimForm_extendℤ_pos_of_fullCover`: full coverage ⟹ `codimForm ≥ 1`, via the
+    extremal longest-`[0,b]` argument (`b<N` from corner-`0`; maximality forces `c≥1` so `[0,b]→[c,d]`
+    pairs).
+  - **Lemma X** `reduceStep_strict`: select the active pair minimising `min(ilen A, ilen B)`; split the
+    shorter member at the partner-adjacent vertex. **ClaimA** (`claimA_left`/`claimA_right`) — that
+    member is shortest *active* covering that vertex — is the one non-mechanical step (the `y<d` vs
+    `d≤y` / `a<x` vs `x≤a` interval-arithmetic case split; minimality MUST be over the shorter member,
+    Codex-confirmed). The partner sits at split-coefficient EXACTLY `−1` (`splitCoeff_partner_le` &c.,
+    `omega` on indicators), and `sum_coeff_le_neg_one` upgrades the `_le` ("≤0") to `_lt` ("≤ −1").
+    8-way dispatch (left/right member × interior/leftShrink/rightShrink/removeMove); each move has TWO
+    partner orientations (the partner can sit left or right of the split source).
+  - **Wiring** (`cCodim_zero_strict`): a minimiser `m'` of `cCodim e' 0` is full-coverage (Lemma Y ⟹
+    `codimForm ≥ 1`); `reduceStep_strict` drops it `≥ 1` to a partition of `e'` decremented at `k`,
+    which still dominates `e` (`e ≤ e''` since `e < e'` everywhere), so LANDED `exists_le_codimForm`
+    gives `cCodim e 0 ≤ cCodim e' 0 − 1`. (No `+1`-step vector needed — the minimiser-of-`e'` route is
+    cleaner and uses only the two given nonemptiness hypotheses.)
+  - RULED OUT (don't re-explore): Route A (simple `Φ` with `codimForm ≥ Φ ≥ cCodim+1`) — the gap is
+    often exactly 1, no simple `Φ` carries it; every deterministic LOCAL step-selection rule fails —
+    the strict step's location is config-dependent (the "involved-in-a-pair + extremal-by-length"
+    refinement is load-bearing).
+
+exec
+/bin/bash -lc "cat lean-toolchain && sed -n '1,220p' lake-manifest.json" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+leanprover/lean4:v4.29.0
+{"version": "1.1.0",
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/leanprover-community/mathlib4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "8a178386ffc0f5fef0b77738bb5449d50efeea95",
+   "name": "mathlib",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.29.0",
+   "inherited": false,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/plausible",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "83e90935a17ca19ebe4b7893c7f7066e266f50d3",
+   "name": "plausible",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/LeanSearchClient",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "c5d5b8fe6e5158def25cd28eb94e4141ad97c843",
+   "name": "LeanSearchClient",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/import-graph",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "48d5698bc464786347c1b0d859b18f938420f060",
+   "name": "importGraph",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/ProofWidgets4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "3c52dee17f0cd89c1ec14de78920d1bdaa3d26b3",
+   "name": "proofwidgets",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v0.0.95",
+   "inherited": true,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/aesop",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "7152850e7b216a0d409701617721b6e469d34bf6",
+   "name": "aesop",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/quote4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "707efb56d0696634e9e965523a1bbe9ac6ce141d",
+   "name": "Qq",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/batteries",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "756e3321fd3b02a85ffda19fef789916223e578c",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover/lean4-cli",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover",
+   "rev": "7802da01beb530bf051ab657443f9cd9bc3e1a29",
+   "name": "Cli",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.29.0",
+   "inherited": true,
+   "configFile": "lakefile.toml"}],
+ "name": "DLNFibre",
+ "lakeDir": ".lake"}
+
+exec
+/bin/bash -lc 'rg "theorem .*invOf_mul_self|lemma .*invOf_mul_self|def .*invOf_mul_self|invOf_mul_self" .lake/packages/mathlib/Mathlib -n' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+exec
+/bin/bash -lc 'rg "theorem .*mul_invOf_self|lemma .*mul_invOf_self|mul_invOf_self" .lake/packages/mathlib/Mathlib -n' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+exec
+/bin/bash -lc 'rg "aeval_X|algHom_ext|ofAlgHom|map_sum|mul_apply" .lake/packages/mathlib/Mathlib/Algebra .lake/packages/mathlib/Mathlib/Data .lake/packages/mathlib/Mathlib/LinearAlgebra -n' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 102ms:
+ succeeded in 167ms:
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:45:    A * (⅟A * B) = B := by rw [← Matrix.mul_assoc, mul_invOf_self, Matrix.one_mul]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:53:    A * B * ⅟B = A := by rw [Matrix.mul_assoc, mul_invOf_self, Matrix.mul_one]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:110:  invOf_mul_self := by rw [← transpose_mul, mul_invOf_self, transpose_one]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:111:  mul_invOf_self := by rw [← transpose_mul, invOf_mul_self, transpose_one]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:121:  invOf_mul_self := by rw [← transpose_one, ← mul_invOf_self Aᵀ, transpose_mul, transpose_transpose]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:122:  mul_invOf_self := by rw [← transpose_one, ← invOf_mul_self Aᵀ, transpose_mul, transpose_transpose]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:156:      rw [mul_invOf_self, Matrix.one_mul]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:194:  mul_invOf_self := add_mul_mul_invOf_mul_eq_one _ _ _ _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:214:  simp only [Matrix.mul_sub, Matrix.add_mul, mul_invOf_self']
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:216:  simp only [← Matrix.mul_assoc, mul_invOf_self', Matrix.one_mul]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean:238:  mul_invOf_self := add_mul_mul_mul_invOf_eq_one A U C V
+.lake/packages/mathlib/Mathlib/Algebra/Symmetrized.lean:243:    rw [sym_mul_sym, mul_invOf_self, invOf_mul_self, one_add_one_eq_two, invOf_mul_self, sym_one]
+.lake/packages/mathlib/Mathlib/Algebra/Symmetrized.lean:244:  mul_invOf_self := by
+.lake/packages/mathlib/Mathlib/Algebra/Symmetrized.lean:245:    rw [sym_mul_sym, mul_invOf_self, invOf_mul_self, one_add_one_eq_two, invOf_mul_self, sym_one]
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:706:  mul_invOf_self := by rw [← fst_mul, mul_invOf_self, fst_one]
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:733:  mul_invOf_self := by
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:734:    convert mul_right_eq_one _ _ (mul_invOf_self x.fst)
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:803:  rw [← invOf_eq_inv, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Laurent.lean:224:  mul_invOf_self := by rw [← T_add, add_neg_cancel, T_zero]
+.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Reverse.lean:213:    rw [← mul_one (eval₂ i (⅟x) _), ← one_pow N, ← mul_invOf_self x, mul_pow, ← mul_assoc, h,
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:41:  mul_invOf_self := u.mul_inv
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:78:    m * ⅟m = 1 := mul_invOf_self m
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:89:  mul_invOf_self := by
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:90:    rw [← (isUnit_of_invertible a).mul_right_inj, ← mul_assoc, ← mul_assoc, mul_invOf_self, mul_one,
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:99:  mul_invOf_self := by rw [← mul_assoc, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:120:  mul_invOf_self := by rw [← (commute_invOf m).mul_pow, mul_invOf_self, one_pow]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:140:  mul_invOf_self := by rw [← map_mul, mul_invOf_self, map_one]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:93:  mul_invOf_self : a * invOf = 1
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:106:theorem mul_invOf_self' [Mul α] [One α] (a : α) {_ : Invertible a} : a * ⅟a = 1 :=
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:107:  Invertible.mul_invOf_self
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:109:theorem mul_invOf_self [Mul α] [One α] (a : α) [Invertible a] : a * ⅟a = 1 := mul_invOf_self' _
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:125:  rw [← mul_assoc, mul_invOf_self, one_mul]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:153:  (left_inv_eq_right_inv hac (mul_invOf_self _)).symm
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:156:  ⟨fun h ↦ by rw [← h, mul_invOf_self], invOf_eq_right_inv⟩
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:166:  rw [h, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:187:  mul_invOf_self := by rw [hs, hsi, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:216:  ⟨a, mul_invOf_self a, invOf_mul_self a⟩
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:79:    rw [mul_sub, mul_invOf_self, mul_one, ← one_add_one_eq_two, add_sub_cancel_right]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:83:    (⅟2 : R) + (⅟2 : R) = 1 := by rw [← two_mul, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:91:  rw [mul_add, invOf_mul_self, add_mul, one_mul, mul_assoc, mul_invOf_self, mul_one, add_comm]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:96:  rw [mul_sub, invOf_mul_self, sub_mul, one_mul, mul_assoc, mul_invOf_self, mul_one]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:102:    _ ↔ -a = a * ⅟a * b + a * ⅟b * a := by rw [mul_invOf_self, one_mul]
+.lake/packages/mathlib/Mathlib/Algebra/CharP/Invertible.lean:64:  mul_invOf_self := by rw [CharP.intCast_mul_natCast_gcdA_eq_gcd, h, Nat.cast_one]
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:481:  invOf_mul_self := by rw [← star_mul, mul_invOf_self, star_one]
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:482:  mul_invOf_self := by rw [← star_mul, invOf_mul_self, star_one]
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:487:    simp only [mul_invOf_self, mul_one]
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:489:  have : (star (⅟r)) * (star r) = star 1 := by rw [← star_mul, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Invertible.lean:22:  haveI : 0 < a * ⅟a := by simp only [mul_invOf_self, zero_lt_one]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Invertible.lean:30:  haveI : 0 < a * ⅟a := by simp only [mul_invOf_self, zero_lt_one]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Invertible.lean:38:  mul_invOf_self a ▸ le_mul_of_one_le_left (invOf_nonneg.2 <| zero_le_one.trans h) h
+.lake/packages/mathlib/Mathlib/Algebra/Order/Invertible.lean:42:  mul_invOf_self a ▸ lt_mul_of_one_lt_left (invOf_pos.2 <| one_pos.trans h) h
+.lake/packages/mathlib/Mathlib/Algebra/Lie/Classical.lean:340:  rw [PB, Matrix.fromBlocks_multiply, mul_invOf_self]
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Algebra/TrivSqZeroExt.lean:167:    smul_smul, mul_invOf_self, one_smul, inl_fst_add_inr_snd_eq]
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Algebra/Exponential.lean:366:  mul_invOf_self := by
+.lake/packages/mathlib/Mathlib/Algebra/Algebra/Basic.lean:497:    mul_invOf_self, hf]
+.lake/packages/mathlib/Mathlib/Algebra/Algebra/Basic.lean:498:  mul_invOf_self := by rw [← Algebra.smul_def, ← map_smul, Algebra.smul_def, mul_invOf_self, hf]
+
+ succeeded in 205ms:
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Algebra/Exponential.lean:360:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:189:  invOf_mul_self := coe_moebius_mul_coe_zeta
+.lake/packages/mathlib/Mathlib/LinearAlgebra/QuadraticForm/Basic.lean:863:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean:29:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean:30:    rw [map_smul, smul_mul_assoc, ι_sq_scalar, Algebra.smul_def, ← map_mul, invOf_mul_self, map_one]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean:32:    rw [map_smul, mul_smul_comm, ι_sq_scalar, Algebra.smul_def, ← map_mul, invOf_mul_self, map_one]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean:49:    invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/CliffordAlgebra/Inversion.lean:55:    smul_smul, smul_smul, invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:82:    rw [mul_smul_comm, mul_adjugate, smul_smul, invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:83:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:84:    rw [smul_mul_assoc, adjugate_mul, smul_smul, invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:95:  invOf_mul_self := by rw [← det_mul, h, det_one]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:102:  invOf_mul_self := by rw [mul_comm, ← det_mul, h, det_one]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:107:  detInvertibleOfLeftInverse A (⅟A) (invOf_mul_self _)
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:219:  rw [← invOf_eq_nonsing_inv, invOf_mul_self]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:535:  invOf_mul_self :=
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SchurComplement.lean:56:    Matrix.one_mul, Matrix.mul_one, invOf_mul_self, Matrix.mul_invOf_cancel_left,
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SchurComplement.lean:82:      Matrix.neg_mul, invOf_mul_self, Matrix.invOf_mul_cancel_right, add_neg_cancel,
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SchurComplement.lean:93:      Matrix.neg_mul, invOf_mul_self, Matrix.invOf_mul_cancel_right, neg_add_cancel,
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SchurComplement.lean:114:      have := invOf_mul_self (fromBlocks A B 0 D)
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SchurComplement.lean:138:      have := invOf_mul_self (fromBlocks A 0 C D)
+.lake/packages/mathlib/Mathlib/Algebra/GroupWithZero/Invertible.lean:32:      _ = 1 := invOf_mul_self
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:705:  invOf_mul_self := by rw [← fst_mul, invOf_mul_self, fst_one]
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:730:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/Algebra/TrivSqZeroExt/Basic.lean:731:    convert mul_left_eq_one _ _ (invOf_mul_self x.fst)
+.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Laurent.lean:223:  invOf_mul_self := by rw [← T_add, neg_add_cancel, T_zero]
+.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Reverse.lean:202:    rw [pow_add, ← mul_assoc, mul_assoc (i r), ← mul_pow, invOf_mul_self, one_pow, mul_one]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:40:  invOf_mul_self := u.inv_mul
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:79:    _ = ⅟m * m := (invOf_mul_self m).symm
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:88:  invOf_mul_self := by rw [mul_assoc, invOf_mul_self]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:96:  invOf_mul_self := by
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:97:    rw [← (isUnit_of_invertible b).mul_left_inj, mul_assoc, mul_assoc, invOf_mul_self, mul_one,
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:119:  invOf_mul_self := by rw [← (commute_invOf m).symm.mul_pow, invOf_mul_self, one_pow]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:139:  invOf_mul_self := by rw [← map_mul, invOf_mul_self, map_one]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:91:  invOf_mul_self : invOf * a = 1
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:100:theorem invOf_mul_self' [Mul α] [One α] (a : α) {_ : Invertible a} : ⅟a * a = 1 :=
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:101:  Invertible.invOf_mul_self
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:103:theorem invOf_mul_self [Mul α] [One α] (a : α) [Invertible a] : ⅟a * a = 1 := invOf_mul_self' _
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:117:  rw [← mul_assoc, invOf_mul_self, one_mul]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:150:  left_inv_eq_right_inv (invOf_mul_self _) hac
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:159:  ⟨fun h ↦ by rw [← h, invOf_mul_self], invOf_eq_left_inv⟩
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:186:  invOf_mul_self := by rw [hs, hsi, invOf_mul_self]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:216:  ⟨a, mul_invOf_self a, invOf_mul_self a⟩
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean:220:  invOf_eq_right_inv (invOf_mul_self _)
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:91:  rw [mul_add, invOf_mul_self, add_mul, one_mul, mul_assoc, mul_invOf_self, mul_one, add_comm]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:96:  rw [mul_sub, invOf_mul_self, sub_mul, one_mul, mul_assoc, mul_invOf_self, mul_one]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:110:    _ ↔ 1 = ⅟a * a + ⅟b * a + (⅟a * b + ⅟b * b) := by rw [invOf_mul_self, mul_add, add_mul, add_mul]
+.lake/packages/mathlib/Mathlib/Algebra/Ring/Invertible.lean:111:    _ ↔ 1 = 1 + ⅟b * a + (1 + ⅟a * b) := by rw [invOf_mul_self, invOf_mul_self, add_comm _ 1]
+.lake/packages/mathlib/Mathlib/Algebra/CharP/Invertible.lean:63:  invOf_mul_self := by rw [CharP.natCast_gcdA_mul_intCast_eq_gcd, h, Nat.cast_one]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Module/Basic.lean:28:    smul_smul, invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Module/Basic.lean:33:    smul_smul, invOf_mul_self, one_smul]
+.lake/packages/mathlib/Mathlib/Algebra/Algebra/Basic.lean:496:  invOf_mul_self := by rw [← Algebra.commutes, ← Algebra.smul_def, ← map_smul, Algebra.smul_def,
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:481:  invOf_mul_self := by rw [← star_mul, mul_invOf_self, star_one]
+.lake/packages/mathlib/Mathlib/Algebra/Star/Basic.lean:482:  mul_invOf_self := by rw [← star_mul, invOf_mul_self, star_one]
+.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Grp_.lean:307:    rw [← comp_mul, invOf_mul_self, comp_one]⟩
+.lake/packages/mathlib/Mathlib/CategoryTheory/Monoidal/Grp_.lean:308:  left_inv := by rw [Yoneda.fullyFaithful_preimage, ← Hom.mul_def, invOf_mul_self, Hom.one_def]
+.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Chebyshev.lean:626:  rw [C_comp_two_mul_X, ← mul_assoc, ← map_ofNat Polynomial.C 2, ← map_mul, invOf_mul_self',
+.lake/packages/mathlib/Mathlib/RingTheory/WittVector/WittPolynomial.lean:259:  rw [xInTermsOfW_eq, mul_assoc, ← C_mul, ← mul_pow, invOf_mul_self,
+.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:468:  D.leibniz_of_mul_eq_one <| invOf_mul_self a
+.lake/packages/mathlib/Mathlib/RingTheory/Localization/Defs.lean:443:  invOf_mul_self := by simp
+
+codex
+The local pin confirms Lean 4.29 / Mathlib v4.29 and the expected inverse lemmas. I’m now checking the polynomial-specific names and existing project patterns around mult/generic coordinates.
+exec
+/bin/bash -lc 'rg "def multPoly|multPoly|RepCoord|genericTuple|multPrefix" DLNFibre -n' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+DLNFibre/Core/NullstellensatzCodim.lean:10:Over an algebraically closed field `k` and a finite coordinate index `σ` (our `RepCoord d`), this
+DLNFibre/Core/NullstellensatzCodim.lean:181:Z` plus the variety dimension of `coord '' Z` equals the ambient dimension `Nat.card (RepCoord d)`.
+DLNFibre/Core/NullstellensatzCodim.lean:182:`height_vanishingIdeal_add_varietyDim_eq_card` at `σ := RepCoord d`, `Z := coord '' Z`. -/
+DLNFibre/Core/NullstellensatzCodim.lean:184:    (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
+DLNFibre/Core/NullstellensatzCodim.lean:185:    (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
+DLNFibre/Core/NullstellensatzCodim.lean:186:    codimRep coord Z + varietyDim (coord '' Z) = (Nat.card (RepCoord d) : ℕ∞) :=
+DLNFibre/Core/NullstellensatzCodim.lean:189:/-- **The bridge at `codimRep` (subtraction).** `codimRep coord Z = Nat.card (RepCoord d) −
+DLNFibre/Core/NullstellensatzCodim.lean:193:    (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
+DLNFibre/Core/NullstellensatzCodim.lean:194:    (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
+DLNFibre/Core/NullstellensatzCodim.lean:195:    codimRep coord Z = (Nat.card (RepCoord d) : ℕ∞) - varietyDim (coord '' Z) :=
+DLNFibre/Core/NullstellensatzCodim.lean:199:`canonicalCoord d`, `codimRepCanonical Z = Nat.card (RepCoord d) − varietyDim (canonicalCoord d ''
+DLNFibre/Core/NullstellensatzCodim.lean:204:      Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
+DLNFibre/Core/NullstellensatzCodim.lean:205:    codimRepCanonical Z = (Nat.card (RepCoord d) : ℕ∞) - varietyDim (canonicalCoord d '' Z) :=
+DLNFibre/Core/RankLocusClosed.lean:22:   polynomials in the matrix entries (the **generic tuple** `genericTuple`, entries = coordinate
+DLNFibre/Core/RankLocusClosed.lean:155:the **generic tuple** `genericTuple d`, the tuple over the coordinate ring whose `(i, r, c)` entry
+DLNFibre/Core/RankLocusClosed.lean:163:-- `genericTuple` and `eval_genericTuple` now live in `Core.GenericTuple` (over any `CommRing`, the
+DLNFibre/Core/RankLocusClosed.lean:168:factors of `A` (`eval_genericTuple`). By induction on the upper index through `submult_succ`. -/
+DLNFibre/Core/RankLocusClosed.lean:169:theorem eval_submult_genericTuple {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d)
+DLNFibre/Core/RankLocusClosed.lean:171:    (submult d (genericTuple (k := k) d) i j hij).map (MvPolynomial.eval (canonicalCoord d A))
+DLNFibre/Core/RankLocusClosed.lean:183:      rw [submult_succ d (genericTuple (k := k) d) i p hip, submult_succ d A i p hip,
+DLNFibre/Core/RankLocusClosed.lean:184:        Matrix.map_mul, eval_genericTuple A p, ih hip]
+DLNFibre/Core/RankLocusClosed.lean:187:sub-product `submult d (genericTuple d) i j`, a polynomial in the coordinate ring. Its value at
+DLNFibre/Core/RankLocusClosed.lean:191:    (er : Fin s → Fin (d j)) (ec : Fin s → Fin (d i)) : MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/RankLocusClosed.lean:192:  ((submult d (genericTuple (k := k) d) i j hij).submatrix er ec).det
+DLNFibre/Core/RankLocusClosed.lean:197:`submult d A i j` (`eval_submult_genericTuple`). -/
+DLNFibre/Core/RankLocusClosed.lean:203:    eval_submult_genericTuple A i j hij]
+DLNFibre/Core/RankLocusClosed.lean:211:    Set (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/RankLocusClosed.lean:220:    (x : RepCoord d → k) :
+DLNFibre/Core/RankLocusClosed.lean:269:    (σ := RepCoord d) (k := k) (K := k)).l_u_l_eq_l _ |>.symm
+DLNFibre/Core/DeepChartRing.lean:20:   **deep** generic product `Matrix.of (multPoly d)` (the deep analog of `N = 1`'s `detPivotPoly`).
+DLNFibre/Core/DeepChartRing.lean:26:4. The **type bridge** `repStratumEquiv : RepCoord (dStratum q p) ≃ Fin p × Fin q` (the
+DLNFibre/Core/DeepChartRing.lean:70:`RepCoord (dStratum q p)` is a `Sigma` over `Fin 1`; collapsing it gives `Fin p × Fin q` (the
+DLNFibre/Core/DeepChartRing.lean:74:/-- **The single-matrix stratum-coordinate bridge** `RepCoord (dStratum q p) ≃ Fin p × Fin q`. The
+DLNFibre/Core/DeepChartRing.lean:78:def repStratumEquiv (q p : ℕ) : RepCoord (dStratum q p) ≃ Fin p × Fin q :=
+DLNFibre/Core/DeepChartRing.lean:84:/-- **The deep base comorphism** `MvPolynomial (RepCoord (dStratum q p)) k →ₐ[k]
+DLNFibre/Core/DeepChartRing.lean:85:MvPolynomial (RepCoord d) k` (`q = d 0`, `p = d (last N)`): the `mult` comorphism `multComap d`
+DLNFibre/Core/DeepChartRing.lean:89:    MvPolynomial (RepCoord (dStratum (d 0) (d (Fin.last N)))) k →ₐ[k]
+DLNFibre/Core/DeepChartRing.lean:90:      MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/DeepChartRing.lean:94:generic product entry `multPoly d a b`. -/
+DLNFibre/Core/DeepChartRing.lean:97:    deepBaseComap (k := k) d (X ⟨0, (a, b)⟩) = multPoly d a b := by
+DLNFibre/Core/DeepChartRing.lean:105:deep generic product `Matrix.of (multPoly d)`. The deep analog of `N = 1`'s `detPivotPoly`;
+DLNFibre/Core/DeepChartRing.lean:108:    (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) : MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/DeepChartRing.lean:109:  ((Matrix.of (multPoly d)).submatrix
+DLNFibre/Core/DeepChartRing.lean:118:  (sigmaIdeal d r).map (algebraMap (MvPolynomial (RepCoord d) k)
+DLNFibre/Core/DeepChartRing.lean:170:`multPoly d (castLE i) (castLE j)` (`deepBaseComap_X`), the corresponding entry of `Matrix.of
+DLNFibre/Core/DeepChartRing.lean:171:(multPoly d)`. (Exact analog of the landed `renameEquiv_detPivot`.) -/
+DLNFibre/Core/DeepChartRing.lean:181:    show (Matrix.of (multPoly (k := k) (dStratum (d 0) (d (Fin.last N)))))
+DLNFibre/Core/DeepChartRing.lean:183:        = X ⟨0, (Fin.castLE hp i, Fin.castLE hq j)⟩ from multPoly_stratum_apply _ _ _ _,
+DLNFibre/Core/DeepChartRing.lean:203:(`eval_multPoly`). -/
+DLNFibre/Core/DeepChartRing.lean:205:    (f : MvPolynomial (RepCoord (dStratum (d 0) (d (Fin.last N)))) k) :
+DLNFibre/Core/DeepChartRing.lean:217:    rw [show aeval (R := k) (canonicalCoord d A) (multPoly d a b)
+DLNFibre/Core/DeepChartRing.lean:218:          = eval (canonicalCoord d A) (multPoly d a b) from by rw [aeval_def, eval]; rfl,
+DLNFibre/Core/DeepChartRing.lean:219:      eval_multPoly, aeval_X, canonicalCoord_apply]
+DLNFibre/Core/DeepChartRing.lean:273:    (x : MvPolynomial (RepCoord (dStratum (d 0) (d (Fin.last N)))) k) :
+DLNFibre/Core/DeepChartRing.lean:275:        (algebraMap (MvPolynomial (RepCoord (dStratum (d 0) (d (Fin.last N)))) k)
+DLNFibre/Core/DeepChartRing.lean:277:      = algebraMap (MvPolynomial (RepCoord d) k) (Localization.Away (ΔPdeep (k := k) d r hp hq))
+DLNFibre/Core/DeepChartRing.lean:356:`MvPolynomial (RepCoord d) R` over an **arbitrary** coefficient ring `R` (Codex: NOT
+DLNFibre/Core/DeepChartRing.lean:362:/-- **R2-3b-3 pre-stage contract.** Two coordinate substitutions `toSub`, `fromSub : RepCoord d →
+DLNFibre/Core/DeepChartRing.lean:363:MvPolynomial (RepCoord d) R` over an arbitrary commutative ring `R`, mutually inverse on the
+DLNFibre/Core/DeepChartRing.lean:364:generators, assemble to a coordinate-change `AlgEquiv` of `MvPolynomial (RepCoord d) R` via
+DLNFibre/Core/DeepChartRing.lean:368:    (toSub fromSub : RepCoord d → MvPolynomial (RepCoord d) R)
+DLNFibre/Core/DeepChartRing.lean:369:    (h_to_from : ∀ x, aeval toSub (fromSub x) = (X x : MvPolynomial (RepCoord d) R))
+DLNFibre/Core/DeepChartRing.lean:370:    (h_from_to : ∀ x, aeval fromSub (toSub x) = (X x : MvPolynomial (RepCoord d) R)) :
+DLNFibre/Core/DeepChartRing.lean:371:    MvPolynomial (RepCoord d) R ≃ₐ[R] MvPolynomial (RepCoord d) R :=
+DLNFibre/Core/DeepChartRing.lean:395:/-- The type bridge `RepCoord (dStratum 2 2) ≃ Fin 2 × Fin 2` round-trips on a concrete coordinate
+DLNFibre/Core/DeepChartRing.lean:401:product entry `multPoly (dStratum 2 2) a b` — non-vacuous (`N = 1` specialization). -/
+DLNFibre/Core/DeepChartRing.lean:404:      = multPoly (dStratum 2 2) a b :=
+DLNFibre/Core/DeterminantalBaseElimination.lean:12:This module reindexes the engine coordinate ring `A_eng = MvPolynomial (RepCoord (dStratum q p)) k`
+DLNFibre/Core/DeterminantalBaseElimination.lean:13:along the block split `RepCoord ≃ B22block ⊕ SchurVar` (`B22block = Fin (p−r) × Fin (q−r)`,
+DLNFibre/Core/DeterminantalBaseElimination.lean:85:/-- The full block reindex `RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar`. Drops the `Σ _ : Fin 1`
+DLNFibre/Core/DeterminantalBaseElimination.lean:89:    RepCoord (dStratum q p) ≃ B22block q p r ⊕ SchurVar q p r :=
+DLNFibre/Core/DeterminantalBaseElimination.lean:171:      = A 0 * multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1)) := rfl
+DLNFibre/Core/DeterminantalBaseElimination.lean:172:  have h1 : multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1))
+DLNFibre/Core/DeterminantalBaseElimination.lean:178:`multPoly (dStratum q p) a b = X ⟨0, (a, b)⟩`. -/
+DLNFibre/Core/DeterminantalBaseElimination.lean:179:theorem multPoly_stratum_apply (q p : ℕ) (a : Fin p) (b : Fin q) :
+DLNFibre/Core/DeterminantalBaseElimination.lean:180:    (Matrix.of (multPoly (k := k) (dStratum q p))) a b
+DLNFibre/Core/DeterminantalBaseElimination.lean:181:      = (X ⟨0, (a, b)⟩ : MvPolynomial (RepCoord (dStratum q p)) k) := by
+DLNFibre/Core/DeterminantalBaseElimination.lean:182:  rw [Matrix.of_apply, multPoly, mult_stratum_eq q p (genericTuple (dStratum q p))]
+DLNFibre/Core/DeterminantalBaseElimination.lean:209:    Matrix.submatrix_apply, multPoly_stratum_apply, renameEquiv_apply, rename_X, Matrix.of_apply,
+DLNFibre/Core/DeterminantalBaseElimination.lean:219:    MvPolynomial (RepCoord (dStratum q p)) k
+DLNFibre/Core/RankPattern.lean:303:(generalising `Setup.multPrefix`, the `i = 0` slice), the bridge `mult d A = submult d A 0 (last N)`,
+DLNFibre/Core/BaseChange.lean:169:    rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
+DLNFibre/Core/OrbitPullbackDim.lean:16:1. **Ideal identification.** `varietyDim Z_M = ringKrullDim (MvPolynomial (RepCoord d) k ⧸
+DLNFibre/Core/OrbitPullbackDim.lean:20:2. **First isomorphism theorem.** `(MvPolynomial (RepCoord d) k ⧸ ker μ_M^*) ≃ₐ[k] (μ_M^*).range`
+DLNFibre/Core/OrbitPullbackDim.lean:48:`MvPolynomial (RepCoord d) k ⧸ ker μ_M^*`. `varietyDim` definition, then L6.4
+DLNFibre/Core/OrbitPullbackDim.lean:55:      = (ringKrullDim (MvPolynomial (RepCoord d) k ⧸
+DLNFibre/Core/OrbitPullbackDim.lean:61:the first isomorphism theorem `MvPolynomial (RepCoord d) k ⧸ ker μ_M^* ≃ₐ[k] (μ_M^*).range`. -/
+DLNFibre/Core/OrbitPullbackDim.lean:63:    (MvPolynomial (RepCoord d) k ⧸ RingHom.ker (orbitPullback M).toRingHom)
+DLNFibre/Core/CCodimCornerMono.lean:383:    (p : Ideal (MvPolynomial (RepCoord d) k)) (hp : p ∈ topComponents (k := k) d r hr) :
+DLNFibre/Core/DeterminantalChartRing.lean:224:Lifting the per-point vanishing to the polynomial ring `MvPolynomial (RepCoord d) k`: the generic
+DLNFibre/Core/DeterminantalChartRing.lean:225:product matrix `multPoly d` (`Core.MultComorphism`) evaluates at `canonicalCoord A` to `mult d A`
+DLNFibre/Core/DeterminantalChartRing.lean:226:(`eval_multPoly`), so an `(r+1)`-minor of `multPoly d` evaluates to the corresponding minor of
+DLNFibre/Core/DeterminantalChartRing.lean:230:/-- Evaluating any square minor of the generic product matrix `multPoly d` at the coordinates of a
+DLNFibre/Core/DeterminantalChartRing.lean:231:tuple `A` gives the corresponding minor of the actual product `mult d A` (`eval_multPoly` entrywise
+DLNFibre/Core/DeterminantalChartRing.lean:233:theorem eval_det_submatrix_multPoly {k : Type u} [Field k] {N : ℕ} (d : Fin (N + 1) → ℕ)
+DLNFibre/Core/DeterminantalChartRing.lean:236:    eval (canonicalCoord d A) (((Matrix.of (multPoly d)).submatrix br bc).det)
+DLNFibre/Core/DeterminantalChartRing.lean:242:  exact eval_multPoly d A (br i) (bc j)
+DLNFibre/Core/DeterminantalChartRing.lean:246:`det ((multPoly d).submatrix br bc)` lies in `sigmaIdeal d r` (the vanishing ideal of
+DLNFibre/Core/DeterminantalChartRing.lean:249:theorem det_submatrix_multPoly_mem_sigmaIdeal {k : Type u} [Field k] {N : ℕ}
+DLNFibre/Core/DeterminantalChartRing.lean:252:    ((Matrix.of (multPoly d)).submatrix br bc).det ∈ sigmaIdeal (k := k) d r := by
+DLNFibre/Core/DeterminantalChartRing.lean:257:  rw [show aeval (R := k) (canonicalCoord d A) ((Matrix.of (multPoly d)).submatrix br bc).det
+DLNFibre/Core/DeterminantalChartRing.lean:258:        = eval (canonicalCoord d A) ((Matrix.of (multPoly d)).submatrix br bc).det from by
+DLNFibre/Core/DeterminantalChartRing.lean:260:  rw [eval_det_submatrix_multPoly d A br bc]
+DLNFibre/Core/DeterminantalChartRing.lean:275:single matrix `multPoly (dStratum q p)`. Inverting it is the pivot chart; `Localization.Away` of it
+DLNFibre/Core/DeterminantalChartRing.lean:278:    MvPolynomial (RepCoord (dStratum q p)) k :=
+DLNFibre/Core/DeterminantalChartRing.lean:279:  ((Matrix.of (multPoly (dStratum q p))).submatrix
+DLNFibre/Core/DeterminantalChartRing.lean:293:        * multPrefix (dStratum q p) (chartWitness q p r) (Fin.castSucc (0 : Fin 1)) := rfl
+DLNFibre/Core/DeterminantalChartRing.lean:294:  have h1 : multPrefix (dStratum q p) (chartWitness (k := k) q p r) (Fin.castSucc (0 : Fin 1))
+DLNFibre/Core/DeterminantalChartRing.lean:337:  rw [detPivotPoly, eval_det_submatrix_multPoly,
+DLNFibre/Core/DeterminantalChartRing.lean:363:        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+DLNFibre/Core/DeterminantalChartRing.lean:382:        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+DLNFibre/Core/BoxMoveDegeneration.lean:67:    RepCoord d → Polynomial k :=
+DLNFibre/Core/BoxMoveDegeneration.lean:87:      ∈ MvPolynomial.zeroLocus (σ := RepCoord d) (k := k) k
+DLNFibre/Core/BoxMoveDegeneration.lean:88:          (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet U)) := by
+DLNFibre/Core/BoxMoveDegeneration.lean:238:      ∈ MvPolynomial.zeroLocus (σ := RepCoord boxDim) (k := k) k
+DLNFibre/Core/BoxMoveDegeneration.lean:239:          (MvPolynomial.vanishingIdeal (σ := RepCoord boxDim) (K := k) k
+DLNFibre/Core/OrbitCodim.lean:41:`coord : Rep_d ≃ (RepCoord d → k)`. The geometric codimension is the height read through the
+DLNFibre/Core/OrbitCodim.lean:53:the induced ring automorphism of `MvPolynomial (RepCoord d) k`), but Mathlib v4.29 has no transport
+DLNFibre/Core/OrbitCodim.lean:91:The standard affine codimension: coordinatise `Rep_d` as the function space `RepCoord d → k`, take
+DLNFibre/Core/OrbitCodim.lean:92:the vanishing ideal of (the image of) the closed subset in `MvPolynomial (RepCoord d) k`, and read
+DLNFibre/Core/OrbitCodim.lean:96:`(i : Fin N) × Fin (d i.succ) × Fin (d i.castSucc)` — so `Rep_d ≅ RepCoord d → k`. -/
+DLNFibre/Core/OrbitCodim.lean:97:abbrev RepCoord (d : Fin (N + 1) → ℕ) : Type :=
+DLNFibre/Core/OrbitCodim.lean:100:instance (d : Fin (N + 1) → ℕ) : Finite (RepCoord d) := by
+DLNFibre/Core/OrbitCodim.lean:101:  unfold RepCoord; infer_instance
+DLNFibre/Core/OrbitCodim.lean:103:/-- The **canonical linear flattening** `Rep_d ≃ (RepCoord d → k)`, one coordinate per matrix entry:
+DLNFibre/Core/OrbitCodim.lean:105:`Equiv.piCurry` (Sigma-currying `∀ i, (… × … → k) ↔ (RepCoord d → k)`). This is the coordinatisation
+DLNFibre/Core/OrbitCodim.lean:108:    Tuple (k := k) d ≃ (RepCoord d → k) :=
+DLNFibre/Core/OrbitCodim.lean:116:    (x : RepCoord d) : canonicalCoord d A x = A x.1 x.2.1 x.2.2 := rfl
+DLNFibre/Core/OrbitCodim.lean:119:`coord : Rep_d ≃ (RepCoord d → k)`: the `Ideal.height` of the vanishing ideal of `coord '' Z` in the
+DLNFibre/Core/OrbitCodim.lean:126:noncomputable def codimRep {d : Fin (N + 1) → ℕ} (coord : Tuple (k := k) d ≃ (RepCoord d → k))
+DLNFibre/Core/OrbitCodim.lean:129:    (MvPolynomial.vanishingIdeal (σ := RepCoord d) (k := k) (K := k) (coord '' Z))
+DLNFibre/Core/OrbitCodim.lean:152:    (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (M : Tuple (k := k) d)
+DLNFibre/Core/OrbitCodim.lean:165:    (coord : Tuple (k := k) (foldDim L) ≃ (RepCoord (foldDim L) → k))
+DLNFibre/Core/OrbitImageDim.lean:80:    {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+DLNFibre/Core/OrbitImageDim.lean:96:    [Infinite k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+DLNFibre/Core/OrbitImageDim.lean:123:    [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+DLNFibre/Core/OrbitImageDim.lean:135:    {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+DLNFibre/Core/OrbitImageDim.lean:155:    [CharZero k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d)
+DLNFibre/Core/GenericTuple.lean:8:`genericTuple d`, whose `(i, r, c)` entry is the coordinate variable `X ⟨i, r, c⟩` of
+DLNFibre/Core/GenericTuple.lean:9:`MvPolynomial (RepCoord d) k`, and the bridge `eval_genericTuple` saying that evaluating at the
+DLNFibre/Core/GenericTuple.lean:26:/-- The **generic tuple** over the coordinate ring `MvPolynomial (RepCoord d) k`: the `(i, r, c)`
+DLNFibre/Core/GenericTuple.lean:28:noncomputable def genericTuple (d : Fin (N + 1) → ℕ) :
+DLNFibre/Core/GenericTuple.lean:29:    Tuple (k := MvPolynomial (RepCoord d) k) d :=
+DLNFibre/Core/GenericTuple.lean:32:@[simp] theorem genericTuple_apply (d : Fin (N + 1) → ℕ) (i : Fin N)
+DLNFibre/Core/GenericTuple.lean:34:    (genericTuple (k := k) d i) r c = X ⟨i, r, c⟩ := rfl
+DLNFibre/Core/GenericTuple.lean:37:theorem eval_genericTuple {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (i : Fin N) :
+DLNFibre/Core/GenericTuple.lean:38:    (genericTuple (k := k) d i).map (MvPolynomial.eval (canonicalCoord d A)) = A i := by
+DLNFibre/Core/GenericTuple.lean:40:  simp only [Matrix.map_apply, genericTuple, MvPolynomial.eval_X, canonicalCoord_apply]
+DLNFibre/Core/DeterminantalStratumDim.lean:202:      Ideal (MvPolynomial (RepCoord (dStratum n m)) k)).IsPrime := by
+DLNFibre/Core/DeterminantalStratumDim.lean:207:/-! ## The ambient dimension `card (RepCoord ![n,m]) = m · n` -/
+DLNFibre/Core/DeterminantalStratumDim.lean:209:/-- `Nat.card (RepCoord ![n,m]) = m · n` (one coordinate per matrix entry of the single `m × n`
+DLNFibre/Core/DeterminantalStratumDim.lean:213:    Nat.card (RepCoord (dStratum n m)) = m * n := by
+DLNFibre/Core/DeterminantalStratumDim.lean:246:  have hcard : (Nat.card (RepCoord (dStratum n m)) : ℕ∞) = ((m * n : ℕ) : ℕ∞) := by
+DLNFibre/Core/MvPolynomialKerAeval.lean:25:**Dependency rule:** pure `MvPolynomial`; no DLN/RepCoord dependency. `Core` only.
+DLNFibre/Core/BoxMoveGeneral.lean:140:      ∈ MvPolynomial.zeroLocus (σ := RepCoord (fun l ↦ d l + d' l)) (k := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:141:          (MvPolynomial.vanishingIdeal (σ := RepCoord (fun l ↦ d l + d' l)) (K := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:193:      ∈ MvPolynomial.zeroLocus (σ := RepCoord d) (k := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:194:          (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet U)) := by
+DLNFibre/Core/BoxMoveGeneral.lean:213:      ∈ MvPolynomial.zeroLocus (σ := RepCoord (fun l ↦ d l + d' l)) (k := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:214:          (MvPolynomial.vanishingIdeal (σ := RepCoord (fun l ↦ d l + d' l)) (K := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:352:      ∈ MvPolynomial.zeroLocus (σ := RepCoord (intervalDim a e)) (k := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:353:          (MvPolynomial.vanishingIdeal (σ := RepCoord (intervalDim a e)) (K := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:585:      ∈ MvPolynomial.zeroLocus (σ := RepCoord (fun l ↦ intervalDim a e l + foldDim rest l))
+DLNFibre/Core/BoxMoveGeneral.lean:588:            (σ := RepCoord (fun l ↦ intervalDim a e l + foldDim rest l)) (K := k) k
+DLNFibre/Core/BoxMoveGeneral.lean:1157:          (σ := RepCoord (fun l ↦ (intervalDim a e l + intervalDim c b.castSucc l) + foldDim rest l))
+DLNFibre/Core/BoxMoveGeneral.lean:1160:            (σ := RepCoord
+DLNFibre/Core/BoxMoveGeneral.lean:1185:    ∈ MvPolynomial.zeroLocus (σ := RepCoord (intervalDim (0 : Fin 3) 2)) (k := ℚ) ℚ
+DLNFibre/Core/BoxMoveGeneral.lean:1186:        (MvPolynomial.vanishingIdeal (σ := RepCoord (intervalDim (0 : Fin 3) 2)) (K := ℚ) ℚ
+DLNFibre/Core/BoxMoveGeneral.lean:1204:        (σ := RepCoord (fun l ↦ boxDim l + intervalDim (0 : Fin 3) 0 l)) (k := ℚ) ℚ
+DLNFibre/Core/BoxMoveGeneral.lean:1206:          (σ := RepCoord (fun l ↦ boxDim l + intervalDim (0 : Fin 3) 0 l)) (K := ℚ) ℚ
+DLNFibre/Core/BoxMoveGeneral.lean:1222:        (σ := RepCoord (fun l ↦ intervalDim (0 : Fin 3) 1 l + foldDim [((1 : Fin 3), (2 : Fin 3))] l))
+DLNFibre/Core/BoxMoveGeneral.lean:1225:          (σ := RepCoord (fun l ↦ intervalDim (0 : Fin 3) 1 l + foldDim [((1 : Fin 3), (2 : Fin 3))] l))
+DLNFibre/Core/BoxMoveGeneral.lean:1266:          (σ := RepCoord
+DLNFibre/Core/BoxMoveGeneral.lean:1270:            (σ := RepCoord
+DLNFibre/Core/OrbitVariety.lean:13:The orbit `O_M = G_d · M` (a point set in `RepCoord d → k`) is **Zariski-irreducible**, i.e. its
+DLNFibre/Core/OrbitVariety.lean:34:`G_d`. A point set in `RepCoord d → k`. -/
+DLNFibre/Core/OrbitVariety.lean:35:def orbitSet {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) : Set (RepCoord d → k) :=
+DLNFibre/Core/OrbitVariety.lean:38:/-- The **orbit map** `μ_M : G_d → (RepCoord d → k)`, `P ↦ canonicalCoord (P • M)`. -/
+DLNFibre/Core/OrbitVariety.lean:40:    BaseChangeGroup (k := k) d → (RepCoord d → k) :=
+DLNFibre/Core/OrbitVariety.lean:160:    RepCoord d → groupRing (k := k) d :=
+DLNFibre/Core/OrbitVariety.lean:164:/-- The **orbit-map pullback** `μ_M^* : MvPolynomial (RepCoord d) k → 𝒪(G_d)`, the `k`-algebra hom
+DLNFibre/Core/OrbitVariety.lean:168:    MvPolynomial (RepCoord d) k →ₐ[k] groupRing (k := k) d :=
+DLNFibre/Core/OrbitVariety.lean:266:    (P : BaseChangeGroup (k := k) d) (g : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitVariety.lean:269:  have hgen : ∀ x : RepCoord d,
+DLNFibre/Core/OrbitVariety.lean:368:RepCoord d → k` is **prime**: `O_M` is the image of the irreducible group `G_d` under the polynomial
+DLNFibre/Core/OrbitVariety.lean:375:      Ideal (MvPolynomial (RepCoord d) k)).IsPrime := by
+DLNFibre/Core/SigmaComponents.lean:13:`PrimeSpectrum (MvPolynomial (RepCoord d) k)` (where the union / minimal-primes algebra lives),
+DLNFibre/Core/SigmaComponents.lean:80:    Set (Ideal (MvPolynomial (RepCoord d) k)) :=
+DLNFibre/Core/SigmaComponents.lean:82:      MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:105:        MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:131:    Ideal (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/SigmaComponents.lean:132:  MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:170:    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (canonicalCoord d '' orbitRankLocus M)
+DLNFibre/Core/SigmaComponents.lean:171:        ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:178:          (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:189:    {p : Ideal (MvPolynomial (RepCoord d) k)} (hp : p ∈ orbitIdeals (k := k) d r) : p.IsPrime := by
+DLNFibre/Core/SigmaComponents.lean:221:        ((sigmaIdeal (k := k) d r : Ideal (MvPolynomial (RepCoord d) k)) :
+DLNFibre/Core/SigmaComponents.lean:222:          Set (MvPolynomial (RepCoord d) k))))ᵒᵈ :=
+DLNFibre/Core/SigmaComponents.lean:238:/-- The coordinate ring `MvPolynomial (RepCoord d) k` has finite Krull dimension (`= Nat.card`), so
+DLNFibre/Core/SigmaComponents.lean:241:    FiniteRingKrullDim (MvPolynomial (RepCoord d) k) := by
+DLNFibre/Core/SigmaComponents.lean:244:  have : ((Nat.card (RepCoord d) : ℕ∞) : WithBot ℕ∞) ≠ ⊤ := by
+DLNFibre/Core/SigmaComponents.lean:254:      = (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:268:    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (canonicalCoord d '' orbitRankLocus M)
+DLNFibre/Core/SigmaComponents.lean:277:    haveI : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaComponents.lean:279:    have hstrict := Ideal.height_strict_mono_of_is_prime (R := MvPolynomial (RepCoord d) k) hlt
+DLNFibre/Core/SigmaComponents.lean:303:    change multPrefix dWitness 0 (Fin.last 2) = 0
+DLNFibre/Core/SigmaComponents.lean:304:    rw [show (Fin.last 2 : Fin 3) = (1 : Fin 2).succ from rfl, multPrefix_succ,
+DLNFibre/Core/FibreReducedTrivialization.lean:66:scheme `mult⁻¹(B)`, i.e. `MvPolynomial (RepCoord d) k` modulo the fibre generator ideal. (`F_E` in
+DLNFibre/Core/FibreReducedTrivialization.lean:70:  MvPolynomial (RepCoord d) k ⧸ fibreGenIdeal d B
+DLNFibre/Core/AffineNoetherRank.lean:19:landed as `quotientKerEquivRangeOrbitPullback`), with the coordinate index reindexed `RepCoord d ≃ Fin n`
+DLNFibre/Core/AffineNoetherRank.lean:77:The first iso (`quotientKerEquivRangeOrbitPullback`) presents `Aimg` as `R_RepCoord ⧸ ker`; the
+DLNFibre/Core/AffineNoetherRank.lean:78:coordinate index is reindexed `RepCoord d ≃ Fin n` (`renameEquiv`), carrying `ker` to a prime `p` of
+DLNFibre/Core/AffineNoetherRank.lean:85:  -- reindex `RepCoord d ≃ Fin n` (it is `Finite`)
+DLNFibre/Core/AffineNoetherRank.lean:86:  letI : Fintype (RepCoord d) := Fintype.ofFinite _
+DLNFibre/Core/AffineNoetherRank.lean:87:  set n := Fintype.card (RepCoord d) with hn
+DLNFibre/Core/AffineNoetherRank.lean:88:  let e : RepCoord d ≃ Fin n := Fintype.equivFin _
+DLNFibre/Core/AffineNoetherRank.lean:91:  let Rr : MvPolynomial (RepCoord d) k ≃+* MvPolynomial (Fin n) k := R.toRingEquiv
+DLNFibre/Core/AffineNoetherRank.lean:98:  -- `R_RepCoord ⧸ ker ≃ₐ[k] R_Fin ⧸ p`
+DLNFibre/Core/AffineNoetherRank.lean:99:  let Φ : (MvPolynomial (RepCoord d) k ⧸ ker) ≃ₐ[k] (MvPolynomial (Fin n) k ⧸ p) :=
+DLNFibre/Core/AffineNoetherRank.lean:101:  -- chain: `Aimg ≃ₐ R_RepCoord ⧸ ker ≃ₐ R_Fin ⧸ p`
+DLNFibre/Core/SigmaCodim.lean:67:    have hmem : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaCodim.lean:70:        ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/SigmaCodim.lean:73:    haveI : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/VoigtDischarge.lean:42:  letI : Fintype (RepCoord d) := Fintype.ofFinite _
+DLNFibre/Core/VoigtDischarge.lean:63:      = (Nat.card (RepCoord d) : ℕ∞) := by
+DLNFibre/Core/VoigtDischarge.lean:68:  have hRN : (orbitLinearCodim M : ℕ∞) + (r : ℕ∞) = (Nat.card (RepCoord d) : ℕ∞) := by
+DLNFibre/Core/DeterminantalBasePresentation.lean:22:   image under `Ψ` of the bordered `(r+1)`-minor (LANDED `det_submatrix_multPoly_mem_sigmaIdeal`),
+DLNFibre/Core/DeterminantalBasePresentation.lean:99:variables of `multPoly`). Pivot block `Δ`, pivot-row × non-pivot-col `u`, non-pivot-row × pivot-col
+DLNFibre/Core/DeterminantalBasePresentation.lean:102:    Matrix (Fin r) (Fin r) (MvPolynomial (RepCoord (dStratum q p)) k) :=
+DLNFibre/Core/DeterminantalBasePresentation.lean:103:  Matrix.of fun i j ↦ (Matrix.of (multPoly (dStratum q p))) (Fin.castLE hp i) (Fin.castLE hq j)
+DLNFibre/Core/DeterminantalBasePresentation.lean:106:    Matrix (Fin r) Unit (MvPolynomial (RepCoord (dStratum q p)) k) :=
+DLNFibre/Core/DeterminantalBasePresentation.lean:107:  Matrix.of fun i _ ↦ (Matrix.of (multPoly (dStratum q p))) (Fin.castLE hp i)
+DLNFibre/Core/DeterminantalBasePresentation.lean:111:    Matrix Unit (Fin r) (MvPolynomial (RepCoord (dStratum q p)) k) :=
+DLNFibre/Core/DeterminantalBasePresentation.lean:112:  Matrix.of fun _ j ↦ (Matrix.of (multPoly (dStratum q p)))
+DLNFibre/Core/DeterminantalBasePresentation.lean:117:    Matrix Unit Unit (MvPolynomial (RepCoord (dStratum q p)) k) :=
+DLNFibre/Core/DeterminantalBasePresentation.lean:118:  Matrix.of fun _ _ ↦ (Matrix.of (multPoly (dStratum q p)))
+DLNFibre/Core/DeterminantalBasePresentation.lean:136:/-- The bordered minor `m_b`: the determinant of the `multPoly` submatrix on rows `[pivots, r+a']`
+DLNFibre/Core/DeterminantalBasePresentation.lean:139:    (a' : Fin (p - r)) (b' : Fin (q - r)) : MvPolynomial (RepCoord (dStratum q p)) k :=
+DLNFibre/Core/DeterminantalBasePresentation.lean:140:  ((Matrix.of (multPoly (dStratum q p))).submatrix
+DLNFibre/Core/DeterminantalBasePresentation.lean:161:product, `det_submatrix_multPoly_mem_sigmaIdeal` after the `Fin r ⊕ Unit ≃ Fin (r+1)` reindex). -/
+DLNFibre/Core/DeterminantalBasePresentation.lean:169:  exact det_submatrix_multPoly_mem_sigmaIdeal (dStratum q p) _ _
+DLNFibre/Core/DeterminantalBasePresentation.lean:177:  rw [Matrix.map_apply, Matrix.map_apply, borderΔ, Matrix.of_apply, multPoly_stratum_apply,
+DLNFibre/Core/DeterminantalBasePresentation.lean:185:  rw [Matrix.map_apply, Matrix.map_apply, borderU, Matrix.of_apply, multPoly_stratum_apply,
+DLNFibre/Core/DeterminantalBasePresentation.lean:193:  rw [Matrix.map_apply, Matrix.map_apply, borderV, Matrix.of_apply, multPoly_stratum_apply,
+DLNFibre/Core/DeterminantalBasePresentation.lean:203:  rw [Matrix.map_apply, borderD, Matrix.of_apply, multPoly_stratum_apply, Matrix.of_apply]
+DLNFibre/Core/DeterminantalBasePresentation.lean:242:    (x : MvPolynomial (RepCoord (dStratum q p)) k) :
+DLNFibre/Core/DeterminantalBasePresentation.lean:244:        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+DLNFibre/Core/DeterminantalBasePresentation.lean:274:    (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+DLNFibre/Core/DeterminantalBasePresentation.lean:288:          (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+DLNFibre/Core/OrbitDifferentialRank.lean:374:        ((genericUnit (k := k) d (⟨i, s, t⟩ : RepCoord d).1.succ
+DLNFibre/Core/OrbitDifferentialRank.lean:375:          * genericFactor M (⟨i, s, t⟩ : RepCoord d).1
+DLNFibre/Core/OrbitDifferentialRank.lean:376:          * genericUnitInv (k := k) d (⟨i, s, t⟩ : RepCoord d).1.castSucc)
+DLNFibre/Core/OrbitDifferentialRank.lean:377:        (⟨i, s, t⟩ : RepCoord d).2.1 (⟨i, s, t⟩ : RepCoord d).2.2)
+DLNFibre/Core/OrbitDifferentialRank.lean:571:    {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+DLNFibre/Core/OrbitDifferentialRank.lean:615:  have hgen : ∀ x : RepCoord d,
+DLNFibre/Core/OrbitDifferentialRank.lean:622:  have hSW : Submodule.span K (Set.range fun x : RepCoord d =>
+DLNFibre/Core/OrbitDifferentialRank.lean:653:    [CharZero k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+DLNFibre/Core/OrbitDifferentialRank.lean:665:    [CharZero k] [Infinite k] {d : Fin (N + 1) → ℕ} [Fintype (RepCoord d)] (M : Tuple (k := k) d) :
+DLNFibre/Core/OrbitClosure.lean:52:def repClosure {d : Fin (N + 1) → ℕ} (S : Set (RepCoord d → k)) : Set (RepCoord d → k) :=
+DLNFibre/Core/OrbitClosure.lean:53:  MvPolynomial.zeroLocus (σ := RepCoord d) (k := k) k
+DLNFibre/Core/OrbitClosure.lean:54:    (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k S)
+DLNFibre/Core/OrbitClosure.lean:57:theorem subset_repClosure {d : Fin (N + 1) → ℕ} (S : Set (RepCoord d → k)) :
+DLNFibre/Core/OrbitClosure.lean:62:theorem repClosure_mono {d : Fin (N + 1) → ℕ} {S T : Set (RepCoord d → k)} (h : S ⊆ T) :
+DLNFibre/Core/OrbitClosure.lean:68:theorem repClosure_idem {d : Fin (N + 1) → ℕ} (S : Set (RepCoord d → k)) :
+DLNFibre/Core/OrbitClosure.lean:70:  congrArg (MvPolynomial.zeroLocus (σ := RepCoord d) (k := k) k)
+DLNFibre/Core/OrbitClosure.lean:72:      (σ := RepCoord d) (k := k) (K := k)).u_l_u_eq_u S)
+DLNFibre/Core/OrbitClosure.lean:77:    {S T : Set (RepCoord d → k)} (h : S ⊆ repClosure T) :
+DLNFibre/Core/OrbitClosure.lean:125:    RepCoord d → MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/OrbitClosure.lean:128:          MvPolynomial.X (⟨x.1, r, c⟩ : RepCoord d)))
+DLNFibre/Core/OrbitClosure.lean:130:        Matrix (Fin (d x.1.succ)) (Fin (d x.1.castSucc)) (MvPolynomial (RepCoord d) k)))
+DLNFibre/Core/OrbitClosure.lean:135:    MvPolynomial (RepCoord d) k →ₐ[k] MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/OrbitClosure.lean:142:    (x : RepCoord d → k) (coord : RepCoord d) :
+DLNFibre/Core/OrbitClosure.lean:147:  set Xmat : Matrix (Fin (d coord.1.succ)) (Fin (d coord.1.castSucc)) (MvPolynomial (RepCoord d) k)
+DLNFibre/Core/OrbitClosure.lean:149:          MvPolynomial.X (⟨coord.1, r, c⟩ : RepCoord d)) with hXmat
+DLNFibre/Core/OrbitClosure.lean:153:          (MvPolynomial (RepCoord d) k)).map (MvPolynomial.eval x))
+DLNFibre/Core/OrbitClosure.lean:169:    (x : RepCoord d → k) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitClosure.lean:190:    (P : BaseChangeGroup (k := k) d) {y : RepCoord d → k} (hy : y ∈ orbitSet U) :
+DLNFibre/Core/OrbitClosure.lean:200:    (P : BaseChangeGroup (k := k) d) {f : MvPolynomial (RepCoord d) k}
+DLNFibre/Core/OrbitClosure.lean:201:    (hf : f ∈ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet U)) :
+DLNFibre/Core/OrbitClosure.lean:203:      ∈ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet U) := by
+DLNFibre/Core/OrbitClosure.lean:953:theorem vanishingIdeal_repClosure {d : Fin (N + 1) → ℕ} (S : Set (RepCoord d → k)) :
+DLNFibre/Core/OrbitClosure.lean:954:    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (repClosure S)
+DLNFibre/Core/OrbitClosure.lean:955:      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k S :=
+DLNFibre/Core/OrbitClosure.lean:957:    (σ := RepCoord d) (k := k) (K := k)).u_l_u_eq_u S
+DLNFibre/Core/OrbitClosure.lean:975:    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/OrbitClosure.lean:977:      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet M) := by
+DLNFibre/Core/OrbitClosure.lean:979:  calc MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet M)
+DLNFibre/Core/OrbitClosure.lean:980:      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (repClosure (orbitSet M)) :=
+DLNFibre/Core/OrbitClosure.lean:982:    _ ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/OrbitClosure.lean:1010:    (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/Setup.lean:17:defined through the prefix products `multPrefix`, whose `rfl` step lemmas (`multPrefix_zero`,
+DLNFibre/Core/Setup.lean:18:`multPrefix_succ`) let downstream lemmas recurse on the product without unfolding `Fin.induction`.
+DLNFibre/Core/Setup.lean:37:def multPrefix (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+DLNFibre/Core/Setup.lean:42:@[simp] theorem multPrefix_zero (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+DLNFibre/Core/Setup.lean:43:    multPrefix d A 0 = 1 := rfl
+DLNFibre/Core/Setup.lean:47:@[simp] theorem multPrefix_succ (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i : Fin N) :
+DLNFibre/Core/Setup.lean:48:    multPrefix d A i.succ = A i * multPrefix d A i.castSucc := rfl
+DLNFibre/Core/Setup.lean:53:  multPrefix d A (Fin.last N)
+DLNFibre/Core/Setup.lean:106:  unfold mult multPrefix tupleWitness dWitness
+DLNFibre/Core/Setup.lean:112:  unfold mult multPrefix tupleWitness dWitness
+DLNFibre/Core/MultComorphism.lean:15:`mult` applied to the **generic** tuple over `MvPolynomial (RepCoord d) k`. It is constructible.
+DLNFibre/Core/MultComorphism.lean:19:1. **`multPoly`** — the generic product entries `(mult d genericTuple) r c`, where
+DLNFibre/Core/MultComorphism.lean:20:   `genericTuple i a b = MvPolynomial.X ⟨i, a, b⟩` re-uses the existing `mult`/`multPrefix` over the
+DLNFibre/Core/MultComorphism.lean:22:2. **`eval_multPoly` (the bridge)** — `MvPolynomial.eval (canonicalCoord d A) (multPoly d r c) =
+DLNFibre/Core/MultComorphism.lean:26:3. **Fibre as zero-locus** — `canonicalCoord d '' (fibre d B) = zeroLocus {multPoly r c − C·B r c}`.
+DLNFibre/Core/MultComorphism.lean:29:   radical of `fibreGenIdeal d B = span {multPoly d r c − C (B r c)}`.
+DLNFibre/Core/MultComorphism.lean:30:5. **The comorphism + `Ideal.map`** — `multComap d := aeval (fun rc ↦ multPoly d rc.1 rc.2)`, and
+DLNFibre/Core/MultComorphism.lean:65:/-! ## The generic product entries `multPoly`
+DLNFibre/Core/MultComorphism.lean:67:The **generic tuple** `genericTuple d` (entries = coordinate variables `X ⟨i,a,b⟩`) and the bridge
+DLNFibre/Core/MultComorphism.lean:68:`eval_genericTuple` (eval at `canonicalCoord d A` recovers `A`) are reused from
+DLNFibre/Core/MultComorphism.lean:73:/-- **The generic product entries** `multPoly d r c = (mult d genericTuple) r c`: the polynomial in
+DLNFibre/Core/MultComorphism.lean:74:the coordinate ring `MvPolynomial (RepCoord d) k` giving the `(r,c)` entry of the product. -/
+DLNFibre/Core/MultComorphism.lean:75:noncomputable def multPoly (d : Fin (N + 1) → ℕ) :
+DLNFibre/Core/MultComorphism.lean:76:    Fin (d (Fin.last N)) → Fin (d 0) → MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/MultComorphism.lean:77:  fun r c ↦ (mult d (genericTuple (k := k) d)) r c
+DLNFibre/Core/MultComorphism.lean:82:product, entrywise — the induction spine of the bridge. Reuses `eval_genericTuple`
+DLNFibre/Core/MultComorphism.lean:83:(`Core.RankLocusClosed`) at the `multPrefix_succ` step. -/
+DLNFibre/Core/MultComorphism.lean:84:theorem map_eval_multPrefix (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (j : Fin (N + 1)) :
+DLNFibre/Core/MultComorphism.lean:85:    (multPrefix d (genericTuple (k := k) d) j).map (eval (canonicalCoord d A))
+DLNFibre/Core/MultComorphism.lean:86:      = multPrefix d A j := by
+DLNFibre/Core/MultComorphism.lean:89:    simp only [multPrefix_zero]
+DLNFibre/Core/MultComorphism.lean:92:    rw [multPrefix_succ, multPrefix_succ, Matrix.map_mul, ih, eval_genericTuple]
+DLNFibre/Core/MultComorphism.lean:94:/-- **The bridge (load-bearing).** Evaluating the generic product entry `multPoly d r c` at the
+DLNFibre/Core/MultComorphism.lean:96:theorem eval_multPoly (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+DLNFibre/Core/MultComorphism.lean:98:    eval (canonicalCoord d A) (multPoly d r c) = (mult d A) r c := by
+DLNFibre/Core/MultComorphism.lean:99:  have h := map_eval_multPrefix d A (Fin.last N)
+DLNFibre/Core/MultComorphism.lean:101:  simpa [multPoly, mult, Matrix.map_apply] using this
+DLNFibre/Core/MultComorphism.lean:109:/-- The generating set of the fibre over `B`: the polynomials `multPoly d r c − C (B r c)`, one per
+DLNFibre/Core/MultComorphism.lean:112:    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) : Set (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/MultComorphism.lean:113:  Set.range (fun rc : Fin (d (Fin.last N)) × Fin (d 0) ↦ multPoly d rc.1 rc.2 - C (B rc.1 rc.2))
+DLNFibre/Core/MultComorphism.lean:115:/-- A point `x` lies in the zero-locus of `fibreGenSet d B` iff `eval x (multPoly d r c) = B r c`
+DLNFibre/Core/MultComorphism.lean:118:    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (x : RepCoord d → k) :
+DLNFibre/Core/MultComorphism.lean:120:      ∀ r c, eval x (multPoly d r c) = B r c := by
+DLNFibre/Core/MultComorphism.lean:132:exactly the common zero-locus of `{multPoly d r c − C (B r c)}`. Membership chase via
+DLNFibre/Core/MultComorphism.lean:133:`eval_multPoly` and `Matrix.ext_iff`. -/
+DLNFibre/Core/MultComorphism.lean:141:    rw [eval_multPoly]
+DLNFibre/Core/MultComorphism.lean:148:    rw [← (canonicalCoord d).apply_symm_apply x, eval_multPoly] at this
+DLNFibre/Core/MultComorphism.lean:151:/-- The **fibre generator ideal** `span {multPoly d r c − C (B r c)}` — the ideal cutting out the
+DLNFibre/Core/MultComorphism.lean:154:    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) : Ideal (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/MultComorphism.lean:169:`MvPolynomial (Fin d_N × Fin d_0) k →ₐ[k] MvPolynomial (RepCoord d) k` sending the target entry
+DLNFibre/Core/MultComorphism.lean:170:variable `X (r,c)` to the generic product entry `multPoly d r c`. -/
+DLNFibre/Core/MultComorphism.lean:172:    MvPolynomial (Fin (d (Fin.last N)) × Fin (d 0)) k →ₐ[k] MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/MultComorphism.lean:173:  aeval (fun rc ↦ multPoly d rc.1 rc.2)
+DLNFibre/Core/MultComorphism.lean:177:      = multPoly d rc.1 rc.2 := by
+DLNFibre/Core/MultComorphism.lean:208:/-- The generic product entry `multPoly` at the `(2,2,2)` witness, evaluated at the witness tuple's
+DLNFibre/Core/MultComorphism.lean:209:coordinates, reproduces the actual product `!![1,2;3,7]` — `eval_multPoly` is non-vacuous. -/
+DLNFibre/Core/MultComorphism.lean:211:    eval (canonicalCoord dWitness tupleWitness) (multPoly dWitness r c)
+DLNFibre/Core/MultComorphism.lean:213:  rw [eval_multPoly]
+DLNFibre/Core/MultComorphism.lean:215:    unfold mult multPrefix tupleWitness dWitness
+DLNFibre/Core/OrbitTangentCotangent.lean:38:/-! ## GAP 1 — the ambient identity `card (RepCoord d) = finrank C¹` -/
+DLNFibre/Core/OrbitTangentCotangent.lean:40:/-- **GAP 1.** `Nat.card (RepCoord d) = finrank k (cochain1 d d)`: both are `∑_i d(i.succ)·d(i.castSucc)`.
+DLNFibre/Core/OrbitTangentCotangent.lean:44:    Nat.card (RepCoord d) = finrank k (cochain1 (k := k) d d) := by
+DLNFibre/Core/OrbitTangentCotangent.lean:238:/-- The **dual-number orbit point** `p_ε : RepCoord d → DualNumber k` at `P_ε = 1 + ε φ`: the entry
+DLNFibre/Core/OrbitTangentCotangent.lean:248:    RepCoord d → DualNumber k :=
+DLNFibre/Core/OrbitTangentCotangent.lean:255:    (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:269:    (g : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:281:private theorem orbitPointε_eq (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:294:private theorem fst_orbitPointε (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:300:private theorem snd_orbitPointε (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:313:    MvPolynomial (RepCoord d) k →ₗ[k] k :=
+DLNFibre/Core/OrbitTangentCotangent.lean:317:    (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:323:    (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:333:@[simp] theorem dirDeriv_X (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:340:    (f g : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:354:    {f : MvPolynomial (RepCoord d) k} (hf : f ∈ orbitIdeal M) : dirDeriv M φ f = 0 := by
+DLNFibre/Core/OrbitTangentCotangent.lean:379:    (g : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:421:private theorem canonicalCoord_add (A B : Tuple (k := k) d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:426:private theorem canonicalCoord_smul (c : k) (A : Tuple (k := k) d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:433:    (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:446:    (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitTangentCotangent.lean:461:theorem coordTest_mem_normalFormIdeal (M : Tuple (k := k) d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:487:theorem cotPairing_coordTest (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
+DLNFibre/Core/OrbitTangentCotangent.lean:505:  have hv : ∀ x : RepCoord d, canonicalCoord d (deformationδ M M φ) x = 0 := by
+DLNFibre/Core/OrbitTangentCotangent.lean:568:ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). -/
+DLNFibre/Core/OrbitTangentCotangent.lean:576:  have hle : ringKrullDim (orbitRing M) ≤ (Nat.card (RepCoord d) : WithBot ℕ∞) := by
+DLNFibre/Core/OrbitTangentCotangent.lean:586:  have hcardlt : (Nat.card (RepCoord d) : WithBot ℕ∞) < (⊤ : WithBot ℕ∞) :=
+DLNFibre/Core/OrbitSmooth.lean:12:`M`: the coordinate ring `A = MvPolynomial (RepCoord d) k ⧸ vanishingIdeal(canonicalCoord '' Z_M)`
+DLNFibre/Core/OrbitSmooth.lean:45:    (P Q : BaseChangeGroup (k := k) d) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitSmooth.lean:55:    (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitSmooth.lean:66:    MvPolynomial (RepCoord d) k ≃ₐ[k] MvPolynomial (RepCoord d) k :=
+DLNFibre/Core/OrbitSmooth.lean:76:    (P : BaseChangeGroup (k := k) d) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitSmooth.lean:81:`A = MvPolynomial (RepCoord d) k ⧸ I` with `I = vanishingIdeal (orbitSet M)`. By L6.4
+DLNFibre/Core/OrbitSmooth.lean:89:    Ideal (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/OrbitSmooth.lean:90:  MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k (orbitSet M)
+DLNFibre/Core/OrbitSmooth.lean:92:/-- The coordinate ring `A = MvPolynomial (RepCoord d) k ⧸ I` of the orbit closure `Z_M`. -/
+DLNFibre/Core/OrbitSmooth.lean:94:  MvPolynomial (RepCoord d) k ⧸ orbitIdeal M
+DLNFibre/Core/OrbitSmooth.lean:106:    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _)
+DLNFibre/Core/OrbitSmooth.lean:117:    (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _)
+DLNFibre/Core/OrbitSmooth.lean:122:      (baseChangeAlgEquiv P⁻¹ : MvPolynomial (RepCoord d) k →+* _) ≤ orbitIdeal M :=
+DLNFibre/Core/OrbitSmooth.lean:126:          (baseChangeAlgEquiv P⁻¹ : MvPolynomial (RepCoord d) k →+* _)).map
+DLNFibre/Core/OrbitSmooth.lean:127:          (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _) := by
+DLNFibre/Core/OrbitSmooth.lean:135:    _ ≤ (orbitIdeal M).map (baseChangeAlgEquiv P : MvPolynomial (RepCoord d) k →+* _) :=
+DLNFibre/Core/OrbitSmooth.lean:150:    (P : BaseChangeGroup (k := k) d) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitSmooth.lean:170:    (P : BaseChangeGroup (k := k) d) {f : MvPolynomial (RepCoord d) k} (hf : f ∈ orbitIdeal M) :
+DLNFibre/Core/OrbitSmooth.lean:186:    (P : BaseChangeGroup (k := k) d) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/OrbitSmooth.lean:353:/-- `A = orbitRing M` is a **finitely-presented** `k`-algebra: `MvPolynomial (RepCoord d) k` is
+DLNFibre/Core/ChartFlatnessProbe.lean:54:    (Rt : Type u) [CommRing Rt] [Algebra (MvPolynomial (RepCoord d) k) Rt]
+DLNFibre/Core/ThetaComponentCount.lean:189:    Ideal (MvPolynomial (RepCoord d) k) :=
+DLNFibre/Core/ThetaComponentCount.lean:191:    MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/ThetaComponentCount.lean:199:      = MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/ThetaComponentCount.lean:299:    Set (Ideal (MvPolynomial (RepCoord d) k)) :=
+DLNFibre/Core/FibreNormalForm.lean:65:    (x : RepCoord d → k) (f : MvPolynomial (RepCoord d) k) :
+DLNFibre/Core/FibreNormalForm.lean:115:          (baseChangePullback P : MvPolynomial (RepCoord d) k →+* _) := by
+DLNFibre/Core/FibreNormalForm.lean:145:  have he : (baseChangePullback P : MvPolynomial (RepCoord d) k →+* _)
+DLNFibre/DLN/RlctPayoff.lean:136:    have hmem : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/DLN/RlctPayoff.lean:139:        ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/DLN/RlctPayoff.lean:142:    haveI : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+DLNFibre/Core/Submult.lean:10:is the identity `1 : Matrix (Fin (d i)) (Fin (d i))`). It generalises `Setup.multPrefix`, which is
+DLNFibre/Core/Submult.lean:17:ends. Recursing from the variable base `i` (as `multPrefix` recurses from the fixed base `0`) would
+DLNFibre/Core/Submult.lean:24:reduction lemmas. The step lemma `submult_succ` is the genuine `multPrefix_succ` analogue this
+DLNFibre/Core/Submult.lean:50:for `i ≤ j`, empty (the identity) at `i = j`. The `i = 0` slice is `Setup.multPrefix`. -/
+DLNFibre/Core/Submult.lean:63:/-- **Composition step** (the `multPrefix_succ` analogue): the sub-product to `p.succ` gains its top
+DLNFibre/Core/Submult.lean:75:The `i = 0` sub-product is exactly `Setup.multPrefix`, so the full product is its top slice. Both
+DLNFibre/Core/Submult.lean:78:/-- The `i = 0` sub-product is the prefix product: `submult d A 0 j = multPrefix d A j`. -/
+DLNFibre/Core/Submult.lean:80:    submult d A 0 j (Fin.zero_le j) = multPrefix d A j := by
+DLNFibre/Core/Submult.lean:82:  | zero => rw [submult_self, multPrefix_zero]
+DLNFibre/Core/Submult.lean:83:  | succ p ih => rw [submult_succ d A 0 p (Fin.zero_le _), multPrefix_succ, ih]
+DLNFibre/Core/Submult.lean:114:/-- `submult 0 1` on the witness is the first factor `A₁ = [[1,2],[0,1]]` (via the `multPrefix`
+DLNFibre/Core/Submult.lean:117:  rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
+DLNFibre/Core/Submult.lean:129:/-- `submult 0 2 = A₂ A₁ = [[1,2],[3,7]]`, matching `mult` (via the `multPrefix` bridge). -/
+DLNFibre/Core/Submult.lean:131:  rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
+DLNFibre/Core/Submult.lean:149:    rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
+DLNFibre/Core/Orbit.lean:451:/-- The first factor (`submult 0 1`) of the rank-one witness is `A = !![1,0;0,0]` (`multPrefix`
+
+exec
+/bin/bash -lc "rg \"def aeval|theorem aeval_X|\\[simp\\].*aeval_X|def algHom_ext|theorem algHom_ext|lemma algHom_ext|ofAlgHom\" .lake/packages/mathlib/Mathlib/Algebra/MvPolynomial .lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial -n" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:239:  .ofAlgHom (aeval isEmptyElim) (Algebra.ofId _ _) (by ext) (by ext i m; exact isEmptyElim i)
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:359:  AlgEquiv.ofAlgHom (MvPolynomial.aeval fun o => o.elim Polynomial.X fun s => Polynomial.C (X s))
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:513:  AlgEquiv.ofAlgHom (MvPolynomial.aeval fun o => o.elim (C Polynomial.X) X)
+.lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/Symmetric/Defs.lean:180:  AlgEquiv.ofAlgHom
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:599:def aeval : MvPolynomial σ R →ₐ[R] S₁ :=
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:617:theorem aeval_X (s : σ) : aeval f (X s : MvPolynomial σ R) = f s :=
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:631:theorem aeval_X_left : aeval X = AlgHom.id R (MvPolynomial σ R) :=
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:634:theorem aeval_X_left_apply (p : MvPolynomial σ R) : aeval X p = p :=
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:756:def aevalTower (f : R →ₐ[S] A) (X : σ → A) : MvPolynomial σ R →ₐ[S] A :=
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean:420:theorem algHom_ext' {A B : Type*} [CommSemiring A] [CommSemiring B] [Algebra R A] [Algebra R B]
+.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean:432:theorem algHom_ext {A : Type*} [Semiring A] [Algebra R A] {f g : MvPolynomial σ R →ₐ[R] A}
+
+exec
+/bin/bash -lc "rg \"namespace Matrix|def mul|theorem mul_apply|\\[simp\\].*mul_apply|one_apply|ext\" .lake/packages/mathlib/Mathlib/Data/Matrix -n | head -120" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:35:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:72:    rw [show d₁ = d₂ from funext h]⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:75:  fun d₁ d₂ h => funext fun i => by simpa using Matrix.ext_iff.mpr h i i
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:79:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:91:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:99:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:106:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:112:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:119:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:171:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:204:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:209:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:210:  simp +contextual [diagonal, Pi.single_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:214:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:215:  simp +contextual [diagonal, eq_comm, Pi.single_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:236:theorem one_apply {i j} : (1 : Matrix n n α) i j = if i = j then 1 else 0 :=
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:240:theorem one_apply_eq (i) : (1 : Matrix n n α) i i = 1 :=
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:244:theorem one_apply_ne {i j} : i ≠ j → (1 : Matrix n n α) i j = 0 :=
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:247:theorem one_apply_ne' {i j} : j ≠ i → (1 : Matrix n n α) i j = 0 :=
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:253:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:254:  simp only [one_apply, map_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:258:  simp only [one_apply, Pi.single_apply, eq_comm]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:300:  funext <| @diagonal_apply_eq _ _ _ _ a
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:339:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean:395:  ext fun i j => by
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:35:def mulLeftLinearMap (X : Matrix l m A) :
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:48:  LinearMap.ext fun _ => Matrix.zero_mul _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:57:def mulRightLinearMap (Y : Matrix m n A) :
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:70:  LinearMap.ext fun _ => Matrix.mul_zero _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:81:def mulLinearMap : Matrix l m A →ₗ[R] Matrix m n A →ₗ[R] Matrix l n A where
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:83:  map_add' _ _ := LinearMap.ext fun _ => Matrix.add_mul _ _ _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:84:  map_smul' _ _ := LinearMap.ext fun _ => Matrix.smul_mul _ _ _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:101:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:108:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:120:  ext c : 1
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:136:  LinearMap.ext fun _ => Matrix.one_mul _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:145:    ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:148:    simpa using Matrix.ext_iff.2 h i default
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:169:  LinearMap.ext fun _ => Matrix.mul_one _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:178:    ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Bilinear.lean:181:    simpa using Matrix.ext_iff.2 h default j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:19:  extract each of the four blocks from `Matrix.fromBlocks`.
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:22:* `Matrix.blockDiag`: extract the blocks from the diagonal of a block diagonal matrix.
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:25:* `Matrix.blockDiag'`: extract the blocks from the diagonal of a block diagonal matrix.
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:35:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:70:/-- Given a matrix whose row and column indexes are sum types, we can extract the corresponding
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:75:/-- Given a matrix whose row and column indexes are sum types, we can extract the corresponding
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:80:/-- Given a matrix whose row and column indexes are sum types, we can extract the corresponding
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:85:/-- Given a matrix whose row and column indexes are sum types, we can extract the corresponding
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:92:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:116:theorem ext_iff_blocks {A B : Matrix (n ⊕ o) (l ⊕ m) α} :
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:127:  ext_iff_blocks
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:132:  ext i j; rcases i with ⟨⟩ <;> rcases j with ⟨⟩ <;> simp [fromBlocks]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:136:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:147:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:154:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:196:  ext i j; rcases i with ⟨⟩ <;> rcases j with ⟨⟩ <;> simp [fromBlocks]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:200:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:205:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:212:  ext i j; rcases i with ⟨⟩ <;> rcases j with ⟨⟩ <;> rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:219:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:227:  | zero => ext (i | i) (j | j) <;> simp [one_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:236:  ext i
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:244:  ext i
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:255:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:262:  ext ⟨i, hi⟩ ⟨j, hj⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:269:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:276:  funext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:283:  funext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:300:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:301:  rcases i with ⟨⟩ <;> rcases j with ⟨⟩ <;> simp [one_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:351:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:358:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:372:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:378:  ext ⟨i, k⟩ ⟨j, k'⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:393:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:425:  ext ⟨i, k⟩ ⟨j, k'⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:452:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:478:  ext fun _ _ => rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:483:  ext fun _ _ => rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:496:  ext fun i j => by
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:505:  funext fun _ => ext fun i j => blockDiagonal_apply_eq M i j _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:519:  funext <| blockDiag_diagonal _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:588:  Matrix.ext fun ⟨_, _⟩ ⟨_, _⟩ => rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:605:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:612:  ext ⟨ii, ix⟩ ⟨ji, jx⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:624:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:630:  ext ⟨i, k⟩ ⟨j, k'⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:647:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:679:  ext ⟨k, i⟩ ⟨k', j⟩
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:710:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:736:  ext fun _ _ => rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:741:  ext fun _ _ => rfl
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:755:  ext fun i j => by
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:765:  funext fun _ => ext fun _ _ => blockDiagonal'_apply_eq M _ _ _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:779:  funext <| blockDiag'_diagonal _
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:826:  ext i k
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:835:    ext i k
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:864:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Action.lean:22:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Reflection.lean:40:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Reflection.lean:103:    Matrix.ext fun i j => by
+.lake/packages/mathlib/Mathlib/Data/Matrix/Reflection.lean:135:def mulᵣ [Mul α] [Add α] [Zero α] (A : Matrix (Fin l) (Fin m) α) (B : Matrix (Fin m) (Fin n) α) :
+.lake/packages/mathlib/Mathlib/Data/Matrix/Reflection.lean:163:def mulVecᵣ [Mul α] [Add α] [Zero α] (A : Matrix (Fin l) (Fin m) α) (v : Fin m → α) : Fin l → α :=
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:286:namespace Matrix
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:298:theorem mul_apply [Fintype m] [Mul α] [AddCommMonoid α] {M : Matrix l m α} {N : Matrix m n α}
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:307:theorem mul_apply' [Fintype m] [Mul α] [AddCommMonoid α] {M : Matrix l m α} {N : Matrix m n α}
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:327:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:333:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:344:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:349:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:354:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:359:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:383:  ext i j
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:398:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:403:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:442:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:454:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:460:  ext
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:484:  ext
+
+codex
+I found the project already has the staged `ofAlgHom` contract in `DeepChartRing`, and the product/generic tuple lives in `Core.MultComorphism`/`Core.GenericTuple`. I’m checking exact theorem statements now so the API recommendations are precise.
+exec
+/bin/bash -lc "sed -n '590,645p' .lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean && sed -n '420,440p' .lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+
+/-! ### The algebra of multivariate polynomials -/
+
+
+variable [Algebra R S₁] [CommSemiring S₂]
+variable (f : σ → S₁)
+
+/-- A map `σ → S₁` where `S₁` is an algebra over `R` generates an `R`-algebra homomorphism
+from multivariate polynomials over `σ` to `S₁`. -/
+def aeval : MvPolynomial σ R →ₐ[R] S₁ :=
+  { eval₂Hom (algebraMap R S₁) f with commutes' := fun _r => eval₂_C _ _ _ }
+
+theorem aeval_def (p : MvPolynomial σ R) : aeval f p = eval₂ (algebraMap R S₁) f p :=
+  rfl
+
+theorem aeval_eq_eval₂Hom (p : MvPolynomial σ R) : aeval f p = eval₂Hom (algebraMap R S₁) f p :=
+  rfl
+
+@[simp]
+lemma coe_aeval_eq_eval :
+    RingHomClass.toRingHom (aeval f : MvPolynomial σ S₁ →ₐ[S₁] S₁) = eval f :=
+  rfl
+
+@[simp]
+lemma aeval_eq_eval : (aeval f : MvPolynomial σ S₁ → S₁) = eval f := rfl
+
+@[simp]
+theorem aeval_X (s : σ) : aeval f (X s : MvPolynomial σ R) = f s :=
+  eval₂_X _ _ _
+
+theorem aeval_C (r : R) : aeval f (C r) = algebraMap R S₁ r :=
+  eval₂_C _ _ _
+
+@[simp] theorem aeval_ofNat (n : Nat) [n.AtLeastTwo] :
+    aeval f (ofNat(n) : MvPolynomial σ R) = ofNat(n) :=
+  map_ofNat _ _
+
+theorem aeval_unique (φ : MvPolynomial σ R →ₐ[R] S₁) : φ = aeval (φ ∘ X) := by
+  ext i
+  simp
+
+theorem aeval_X_left : aeval X = AlgHom.id R (MvPolynomial σ R) :=
+  (aeval_unique (AlgHom.id R _)).symm
+
+theorem aeval_X_left_apply (p : MvPolynomial σ R) : aeval X p = p :=
+  AlgHom.congr_fun aeval_X_left p
+
+theorem comp_aeval {B : Type*} [CommSemiring B] [Algebra R B] (φ : S₁ →ₐ[R] B) :
+    φ.comp (aeval f) = aeval fun i => φ (f i) := by
+  ext i
+  simp
+
+lemma comp_aeval_apply {B : Type*} [CommSemiring B] [Algebra R B] (φ : S₁ →ₐ[R] B)
+    (p : MvPolynomial σ R) :
+    φ (aeval f p) = aeval (fun i ↦ φ (f i)) p := by
+  rw [← comp_aeval, AlgHom.coe_comp, comp_apply]
+theorem algHom_ext' {A B : Type*} [CommSemiring A] [CommSemiring B] [Algebra R A] [Algebra R B]
+    {f g : MvPolynomial σ A →ₐ[R] B}
+    (h₁ :
+      f.comp (IsScalarTower.toAlgHom R A (MvPolynomial σ A)) =
+        g.comp (IsScalarTower.toAlgHom R A (MvPolynomial σ A)))
+    (h₂ : ∀ i, f (X i) = g (X i)) : f = g :=
+  AlgHom.coe_ringHom_injective (MvPolynomial.ringHom_ext' (congr_arg AlgHom.toRingHom h₁) h₂)
+
+/-- See note [partially-applied ext lemmas].
+
+We set the priority higher than that of `MvPolynomial.algHom_ext'`. -/
+@[ext high + 2]
+theorem algHom_ext {A : Type*} [Semiring A] [Algebra R A] {f g : MvPolynomial σ R →ₐ[R] A}
+    (hf : ∀ i : σ, f (X i) = g (X i)) : f = g :=
+  AddMonoidAlgebra.algHom_ext' (mulHom_ext' fun X : σ => MonoidHom.ext_mnat (hf X))
+
+@[simp]
+theorem algHom_C {A : Type*} [Semiring A] [Algebra R A] (f : MvPolynomial σ R →ₐ[R] A) (r : R) :
+    f (C r) = algebraMap R A r :=
+  f.commutes r
+
+
+exec
+/bin/bash -lc "sed -n '286,312p' .lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean && sed -n '232,246p' .lake/packages/mathlib/Mathlib/Data/Matrix/Diagonal.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+namespace Matrix
+
+/-- `M * N` is the usual product of matrices `M` and `N`, i.e. we have that
+`(M * N) i k` is the dot product of the `i`-th row of `M` by the `k`-th column of `N`.
+This is currently only defined when `m` is finite. -/
+-- We want to be lower priority than `instHMul`, but without this we can't have operands with
+-- implicit dimensions.
+@[default_instance 100]
+instance [Fintype m] [Mul α] [AddCommMonoid α] :
+    HMul (Matrix l m α) (Matrix m n α) (Matrix l n α) where
+  hMul M N := fun i k => (fun j => M i j) ⬝ᵥ fun j => N j k
+
+theorem mul_apply [Fintype m] [Mul α] [AddCommMonoid α] {M : Matrix l m α} {N : Matrix m n α}
+    {i k} : (M * N) i k = ∑ j, M i j * N j k :=
+  rfl
+
+instance [Fintype n] [Mul α] [AddCommMonoid α] : Mul (Matrix n n α) where
+  mul M N := M * N
+
+instance [Fintype n] [DecidableEq n] [MulOne α] [AddCommMonoid α] : MulOne (Matrix n n α) where
+
+theorem mul_apply' [Fintype m] [Mul α] [AddCommMonoid α] {M : Matrix l m α} {N : Matrix m n α}
+    {i k} : (M * N) i k = (M i) ⬝ᵥ fun j => N j k :=
+  rfl
+
+theorem two_mul_expl {R : Type*} [NonUnitalNonAssocSemiring R] (A B : Matrix (Fin 2) (Fin 2) R) :
+    (A * B) 0 0 = A 0 0 * B 0 0 + A 0 1 * B 1 0 ∧
+@[simp]
+theorem diagonal_eq_one {d : n → α} : diagonal d = 1 ↔ d = 1 :=
+  diagonal_injective.eq_iff' diagonal_one
+
+theorem one_apply {i j} : (1 : Matrix n n α) i j = if i = j then 1 else 0 :=
+  rfl
+
+@[simp]
+theorem one_apply_eq (i) : (1 : Matrix n n α) i i = 1 :=
+  diagonal_apply_eq _ i
+
+@[simp]
+theorem one_apply_ne {i j} : i ≠ j → (1 : Matrix n n α) i j = 0 :=
+  diagonal_apply_ne _
+
+
+exec
+/bin/bash -lc "sed -n '1,75p' .lake/packages/mathlib/Mathlib/Data/Matrix/Invertible.lean && sed -n '90,112p' .lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Defs.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+/-
+Copyright (c) 2023 Eric Wieser. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Eric Wieser, Ahmad Alkhalawi
+-/
+module
+
+public import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+public import Mathlib.Tactic.Abel
+
+/-! # Extra lemmas about invertible matrices
+
+A few of the `Invertible` lemmas generalize to multiplication of rectangular matrices.
+
+For lemmas about the matrix inverse in terms of the determinant and adjugate, see `Matrix.inv`
+in `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean`.
+
+## Main results
+
+* `Matrix.invertibleConjTranspose`
+* `Matrix.invertibleTranspose`
+* `Matrix.isUnit_conjTranspose`
+* `Matrix.isUnit_transpose`
+-/
+
+@[expose] public section
+
+
+open scoped Matrix
+
+variable {m n : Type*} {α : Type*}
+variable [Fintype n] [DecidableEq n]
+
+namespace Matrix
+
+section Semiring
+variable [Semiring α]
+
+/-- A copy of `invOf_mul_cancel_left` for rectangular matrices. -/
+protected theorem invOf_mul_cancel_left (A : Matrix n n α) (B : Matrix n m α) [Invertible A] :
+    ⅟A * (A * B) = B := by rw [← Matrix.mul_assoc, invOf_mul_self, Matrix.one_mul]
+
+/-- A copy of `mul_invOf_cancel_left` for rectangular matrices. -/
+protected theorem mul_invOf_cancel_left (A : Matrix n n α) (B : Matrix n m α) [Invertible A] :
+    A * (⅟A * B) = B := by rw [← Matrix.mul_assoc, mul_invOf_self, Matrix.one_mul]
+
+/-- A copy of `invOf_mul_cancel_right` for rectangular matrices. -/
+protected theorem invOf_mul_cancel_right (A : Matrix m n α) (B : Matrix n n α) [Invertible B] :
+    A * ⅟B * B = A := by rw [Matrix.mul_assoc, invOf_mul_self, Matrix.mul_one]
+
+/-- A copy of `mul_invOf_cancel_right` for rectangular matrices. -/
+protected theorem mul_invOf_cancel_right (A : Matrix m n α) (B : Matrix n n α) [Invertible B] :
+    A * B * ⅟B = A := by rw [Matrix.mul_assoc, mul_invOf_self, Matrix.mul_one]
+
+/-- A copy oy of `invOf_mul_eq_iff_eq_mul_left` for rectangular matrices. -/
+protected theorem invOf_mul_eq_iff_eq_mul_left
+    {A B : Matrix n m α} {C : Matrix n n α} [Invertible C] :
+    ⅟C * A = B ↔ A = C * B := by
+  refine ⟨fun h ↦ ?_, fun h ↦ ?_⟩
+  · rw [← h, Matrix.mul_invOf_cancel_left]
+  · rw [h, Matrix.invOf_mul_cancel_left]
+
+/-- A copy oy of `mul_left_eq_iff_eq_invOf_mul` for rectangular matrices. -/
+protected theorem mul_left_eq_iff_eq_invOf_mul
+    {A B : Matrix n m α} {C : Matrix n n α} [Invertible C] :
+    C * A = B ↔ A = ⅟C * B := by
+  rw [eq_comm, ← Matrix.invOf_mul_eq_iff_eq_mul_left, eq_comm]
+
+/-- A copy oy of `mul_invOf_eq_iff_eq_mul_right` for rectangular matrices. -/
+protected theorem mul_invOf_eq_iff_eq_mul_right
+    {A B : Matrix m n α} {C : Matrix n n α} [Invertible C] :
+    A * ⅟C = B ↔ A = B * C := by
+  refine ⟨fun h ↦ ?_, fun h ↦ ?_⟩
+  · rw [← h, Matrix.invOf_mul_cancel_right]
+  · rw [h, Matrix.mul_invOf_cancel_right]
+  /-- `invOf a` is a left inverse of `a` -/
+  invOf_mul_self : invOf * a = 1
+  /-- `invOf a` is a right inverse of `a` -/
+  mul_invOf_self : a * invOf = 1
+
+/-- The inverse of an `Invertible` element -/
+-- This notation has the same precedence as `Inv.inv`.
+prefix:max "⅟" => Invertible.invOf
+
+@[simp]
+theorem invOf_mul_self' [Mul α] [One α] (a : α) {_ : Invertible a} : ⅟a * a = 1 :=
+  Invertible.invOf_mul_self
+
+theorem invOf_mul_self [Mul α] [One α] (a : α) [Invertible a] : ⅟a * a = 1 := invOf_mul_self' _
+
+@[simp]
+theorem mul_invOf_self' [Mul α] [One α] (a : α) {_ : Invertible a} : a * ⅟a = 1 :=
+  Invertible.mul_invOf_self
+
+theorem mul_invOf_self [Mul α] [One α] (a : α) [Invertible a] : a * ⅟a = 1 := mul_invOf_self' _
+
+section Monoid
+
+
+exec
+/bin/bash -lc "sed -n '355,377p' DLNFibre/Core/DeepChartRing.lean && sed -n '73,102p' DLNFibre/Core/MultComorphism.lean && sed -n '26,41p' DLNFibre/Core/GenericTuple.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+The endpoint-normalization `AlgEquiv` for R2-3b-3 is an `aeval`-substitution on the **unquotiented**
+`MvPolynomial (RepCoord d) R` over an **arbitrary** coefficient ring `R` (Codex: NOT
+`baseChangeAlgEquiv`, which carries `[Infinite k]` from polynomial-function ext). The contract — two
+`aeval` substitutions that round-trip on generators, assembled by `AlgEquiv.ofAlgHom` — is pinned
+here so R2-3b-3 inherits the exact shape. (`example`: the contract, not the genuine
+substitution.) -/
+
+/-- **R2-3b-3 pre-stage contract.** Two coordinate substitutions `toSub`, `fromSub : RepCoord d →
+MvPolynomial (RepCoord d) R` over an arbitrary commutative ring `R`, mutually inverse on the
+generators, assemble to a coordinate-change `AlgEquiv` of `MvPolynomial (RepCoord d) R` via
+`AlgEquiv.ofAlgHom` (each direction an `aeval`; the round-trips by `MvPolynomial.algHom_ext` +
+`aeval_X`). The endpoint-normalization substitution of R2-3b-3 instantiates this. -/
+noncomputable example {R : Type u} [CommRing R] (d : Fin (N + 1) → ℕ)
+    (toSub fromSub : RepCoord d → MvPolynomial (RepCoord d) R)
+    (h_to_from : ∀ x, aeval toSub (fromSub x) = (X x : MvPolynomial (RepCoord d) R))
+    (h_from_to : ∀ x, aeval fromSub (toSub x) = (X x : MvPolynomial (RepCoord d) R)) :
+    MvPolynomial (RepCoord d) R ≃ₐ[R] MvPolynomial (RepCoord d) R :=
+  AlgEquiv.ofAlgHom (aeval toSub) (aeval fromSub)
+    (by
+      apply MvPolynomial.algHom_ext
+      intro x
+      change aeval toSub (aeval fromSub (X x)) = _
+      rw [aeval_X]; exact h_to_from x)
+/-- **The generic product entries** `multPoly d r c = (mult d genericTuple) r c`: the polynomial in
+the coordinate ring `MvPolynomial (RepCoord d) k` giving the `(r,c)` entry of the product. -/
+noncomputable def multPoly (d : Fin (N + 1) → ℕ) :
+    Fin (d (Fin.last N)) → Fin (d 0) → MvPolynomial (RepCoord d) k :=
+  fun r c ↦ (mult d (genericTuple (k := k) d)) r c
+
+/-! ## The bridge: evaluating the generic product gives the actual product -/
+
+/-- The ring hom `eval (canonicalCoord d A)` carries the generic prefix product to the actual prefix
+product, entrywise — the induction spine of the bridge. Reuses `eval_genericTuple`
+(`Core.RankLocusClosed`) at the `multPrefix_succ` step. -/
+theorem map_eval_multPrefix (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (j : Fin (N + 1)) :
+    (multPrefix d (genericTuple (k := k) d) j).map (eval (canonicalCoord d A))
+      = multPrefix d A j := by
+  induction j using Fin.induction with
+  | zero =>
+    simp only [multPrefix_zero]
+    exact Matrix.map_one _ (map_zero _) (map_one _)
+  | succ i ih =>
+    rw [multPrefix_succ, multPrefix_succ, Matrix.map_mul, ih, eval_genericTuple]
+
+/-- **The bridge (load-bearing).** Evaluating the generic product entry `multPoly d r c` at the
+coordinates of a tuple `A` reproduces the actual product entry `(mult d A) r c`. -/
+theorem eval_multPoly (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+    (r : Fin (d (Fin.last N))) (c : Fin (d 0)) :
+    eval (canonicalCoord d A) (multPoly d r c) = (mult d A) r c := by
+  have h := map_eval_multPrefix d A (Fin.last N)
+  have := congrFun (congrFun (congrArg (fun M ↦ M) h) r) c
+  simpa [multPoly, mult, Matrix.map_apply] using this
+
+/-- The **generic tuple** over the coordinate ring `MvPolynomial (RepCoord d) k`: the `(i, r, c)`
+entry is the coordinate variable `X ⟨i, r, c⟩`. Evaluating at `canonicalCoord d A` recovers `A`. -/
+noncomputable def genericTuple (d : Fin (N + 1) → ℕ) :
+    Tuple (k := MvPolynomial (RepCoord d) k) d :=
+  fun i r c ↦ X ⟨i, r, c⟩
+
+@[simp] theorem genericTuple_apply (d : Fin (N + 1) → ℕ) (i : Fin N)
+    (r : Fin (d i.succ)) (c : Fin (d i.castSucc)) :
+    (genericTuple (k := k) d i) r c = X ⟨i, r, c⟩ := rfl
+
+/-- Evaluating the generic tuple at `canonicalCoord d A` recovers the factor `A i`. -/
+theorem eval_genericTuple {d : Fin (N + 1) → ℕ} (A : Tuple (k := k) d) (i : Fin N) :
+    (genericTuple (k := k) d i).map (MvPolynomial.eval (canonicalCoord d A)) = A i := by
+  funext r c
+  simp only [Matrix.map_apply, genericTuple, MvPolynomial.eval_X, canonicalCoord_apply]
+
+
+codex
+There is already sub-product infrastructure in this repo, so the mult-transport does not have to be a giant expansion. I’m checking those names because they may be the cleaner endpoint-product proof path.
+exec
+/bin/bash -lc 'rg "theorem .*map_mul|Matrix.map_mul|map_mul" .lake/packages/mathlib/Mathlib/Data/Matrix -n | head -80' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:440:    map_mul' := blockDiagonal_mul }
+.lake/packages/mathlib/Mathlib/Data/Matrix/Block.lean:698:    map_mul' := blockDiagonal'_mul }
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:149:  map_multiset_sum (diagAddMonoidHom n α) s
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:172:    map_mul' := fun _ _ => (diagonal_mul_diagonal' _ _).symm }
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:597:    map_mul' := fun _ _ => Matrix.map_mul }
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:651:  map_mul' _ _ := unop_injective <| by ext; simp [transpose, mul_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:658:    ⟨RingEquiv.mopMatrix, by simp⟩ RingEquiv.mopMatrix.map_mul) (RingEquiv.injective _)
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:837:  map_mul' _ _ := by ext; simp [Matrix.mul_apply]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:874:  (transposeAddEquiv m n α).toAddMonoidHom.map_multiset_sum s
+.lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean:902:  map_mul' M N := (congrArg MulOpposite.op <| transpose_mul M N).trans <| MulOpposite.op_mul ..
+.lake/packages/mathlib/Mathlib/Data/Matrix/Composition.lean:139:  map_mul' _ _ := by ext; exact sum_apply .. |>.trans <| .symm <| Fintype.sum_prod_type ..
+.lake/packages/mathlib/Mathlib/Data/Matrix/Composition.lean:151:  ⟨fun n ↦ .of_injective (MonoidHom.mk ⟨_, comp_one⟩ (compRingEquiv (Fin n) I R).map_mul)
+.lake/packages/mathlib/Mathlib/Data/Matrix/DualNumber.lean:30:  map_mul' A B := by
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:439:protected theorem map_mul [Fintype n] {L : Matrix m n α} {M : Matrix n o α}
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:595:    Matrix.map_one _ (map_zero f) (map_one f)⟩ fun _ _ ↦ Matrix.map_mul
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:1237:  simp only [dotProduct, map_sum f, f.map_mul, Function.comp]
+.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:1243:theorem map_mulVec [NonAssocSemiring R] [NonAssocSemiring S] (f : R →+* S) (M : Matrix m n R)
+
+exec
+/bin/bash -lc "sed -n '45,100p' DLNFibre/Core/Submult.lean && rg \"mult_eq_submult|submult_smul|baseChange|BaseChange\" DLNFibre/Core/BaseChange.lean DLNFibre/Core/Submult.lean -n" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ hm⟩
+    show Matrix (Fin (d p.succ)) (Fin (d i)) k from
+      A p * (show Matrix (Fin (d p.castSucc)) (Fin (d i)) k from rec p.castSucc.isLt)
+
+/-- The interval sub-product `submult d A i j = A_j ⋯ A_{i+1} : Matrix (Fin (d j)) (Fin (d i)) k`
+for `i ≤ j`, empty (the identity) at `i = j`. The `i = 0` slice is `Setup.multPrefix`. -/
+def submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i j : Fin (N + 1)) (hij : i ≤ j) :
+    Matrix (Fin (d j)) (Fin (d i)) k :=
+  Nat.leRec (motive := fun m _ ↦ (hm : m < N + 1) → Matrix (Fin (d ⟨m, hm⟩)) (Fin (d i)) k)
+    (fun _ ↦ 1) (submultStep d A i) hij j.isLt
+
+/-- The diagonal sub-product is the identity on `Fin (d i)` (the empty product). -/
+theorem submult_self (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i : Fin (N + 1)) :
+    submult d A i i le_rfl = 1 := by
+  unfold submult
+  exact congrFun (Nat.leRec_self (motive := fun m _ ↦ (hm : m < N + 1) →
+    Matrix (Fin (d ⟨m, hm⟩)) (Fin (d i)) k) (fun _ ↦ 1) (submultStep d A i)) i.isLt
+
+/-- **Composition step** (the `multPrefix_succ` analogue): the sub-product to `p.succ` gains its top
+factor on the left, `submult d A i p.succ = A p * submult d A i p.castSucc`. -/
+theorem submult_succ (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i : Fin (N + 1)) (p : Fin N)
+    (h : i ≤ p.castSucc) :
+    submult d A i p.succ (h.trans (Fin.castSucc_le_succ p)) = A p * submult d A i p.castSucc h := by
+  unfold submult
+  exact congrFun (Nat.leRec_succ (h1 := Fin.val_fin_le.mpr h)
+    (h2 := Fin.val_fin_le.mpr (h.trans (Fin.castSucc_le_succ p)))
+    (refl := fun _ ↦ 1) (le_succ_of_le := submultStep d A i)) p.succ.isLt
+
+/-! ## The bridge to `mult`
+
+The `i = 0` sub-product is exactly `Setup.multPrefix`, so the full product is its top slice. Both
+proofs run by `Fin.induction` on the upper index through `submult_succ`. -/
+
+/-- The `i = 0` sub-product is the prefix product: `submult d A 0 j = multPrefix d A j`. -/
+theorem submult_zero (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (j : Fin (N + 1)) :
+    submult d A 0 j (Fin.zero_le j) = multPrefix d A j := by
+  induction j using Fin.induction with
+  | zero => rw [submult_self, multPrefix_zero]
+  | succ p ih => rw [submult_succ d A 0 p (Fin.zero_le _), multPrefix_succ, ih]
+
+/-- **Bridge.** The full multiplication map is the `i = 0` sub-product to the last index:
+`mult d A = submult d A 0 (Fin.last N)`. -/
+theorem mult_eq_submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+    mult d A = submult d A 0 (Fin.last N) (Fin.zero_le _) := by
+  rw [mult, submult_zero]
+
+/-! ## The rank pattern `r_{ij}` -/
+
+/-- `rankPattern d A i j = (submult d A i j).rank` — the paper's `r_{ij}` for `i < j`; on the
+diagonal `r_{ii} = d_i`. -/
+noncomputable def rankPattern (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) (i j : Fin (N + 1))
+    (hij : i ≤ j) : ℕ :=
+  (submult d A i j hij).rank
+
+/-- **Diagonal rank.** `r_{ii} = d_i` (rank of the identity on `Fin (d i)`), `k` nontrivial. -/
+theorem rankPattern_self [Nontrivial k] (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d)
+DLNFibre/Core/Submult.lean:87:theorem mult_eq_submult (d : Fin (N + 1) → ℕ) (A : Tuple (k := k) d) :
+DLNFibre/Core/Submult.lean:136:  mult_eq_submult dWitness tupleWitness
+DLNFibre/Core/BaseChange.lean:4:# `DLNFibre.Core.BaseChange` — the `G_d` base-change action and rank-pattern invariance
+DLNFibre/Core/BaseChange.lean:13:- `submult_baseChange` / `submult_smul` — **telescoping conjugation** of the interval sub-product:
+DLNFibre/Core/BaseChange.lean:17:- `rankPattern_baseChange` / `rankPattern_smul` — **rank-pattern base-change invariance**:
+DLNFibre/Core/BaseChange.lean:41:abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
+DLNFibre/Core/BaseChange.lean:48:def baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) : Tuple (k := k) d :=
+DLNFibre/Core/BaseChange.lean:52:@[simp] theorem baseChange_apply (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+DLNFibre/Core/BaseChange.lean:54:    baseChange P A i = Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹) := rfl
+DLNFibre/Core/BaseChange.lean:57:theorem baseChange_one (A : Tuple (k := k) d) :
+DLNFibre/Core/BaseChange.lean:58:    baseChange (1 : BaseChangeGroup (k := k) d) A = A := by
+DLNFibre/Core/BaseChange.lean:60:  simp only [baseChange_apply, Pi.one_apply, Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one]
+DLNFibre/Core/BaseChange.lean:63:theorem baseChange_mul (P Q : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
+DLNFibre/Core/BaseChange.lean:64:    baseChange (P * Q) A = baseChange P (baseChange Q A) := by
+DLNFibre/Core/BaseChange.lean:66:  simp only [baseChange_apply, Pi.mul_apply, Units.val_mul, _root_.mul_inv_rev, Matrix.mul_assoc]
+DLNFibre/Core/BaseChange.lean:69:instance : MulAction (BaseChangeGroup (k := k) d) (Tuple (k := k) d) where
+DLNFibre/Core/BaseChange.lean:70:  smul := baseChange
+DLNFibre/Core/BaseChange.lean:71:  one_smul := baseChange_one
+DLNFibre/Core/BaseChange.lean:72:  mul_smul := baseChange_mul
+DLNFibre/Core/BaseChange.lean:75:@[simp] theorem smul_eq_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
+DLNFibre/Core/BaseChange.lean:76:    P • A = baseChange P A := rfl
+DLNFibre/Core/BaseChange.lean:84:theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+DLNFibre/Core/BaseChange.lean:86:    submult d (baseChange P A) i j hij
+DLNFibre/Core/BaseChange.lean:103:      rw [submult_succ d (baseChange P A) i p hcast, ih hcast, submult_succ d A i p hcast,
+DLNFibre/Core/BaseChange.lean:104:          baseChange_apply]
+DLNFibre/Core/BaseChange.lean:110:theorem submult_smul (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+DLNFibre/Core/BaseChange.lean:114:  submult_baseChange P A i j hij
+DLNFibre/Core/BaseChange.lean:121:theorem rankPattern_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+DLNFibre/Core/BaseChange.lean:123:    rankPattern d (baseChange P A) i j hij = rankPattern d A i j hij := by
+DLNFibre/Core/BaseChange.lean:124:  rw [rankPattern, rankPattern, submult_baseChange,
+DLNFibre/Core/BaseChange.lean:129:theorem rankPattern_smul (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+DLNFibre/Core/BaseChange.lean:132:  rankPattern_baseChange P A i j hij
+DLNFibre/Core/BaseChange.lean:152:def witnessBaseChange : BaseChangeGroup (k := ℤ) dWitness :=
+DLNFibre/Core/BaseChange.lean:161:    rankPattern dWitness (witnessBaseChange • tupleWitness) i j hij
+DLNFibre/Core/BaseChange.lean:163:  rankPattern_smul witnessBaseChange tupleWitness i j hij
+DLNFibre/Core/BaseChange.lean:166:example : rankPattern dWitness (witnessBaseChange • tupleWitness) 0 2 (Fin.zero_le _) = 2 := by
+
+exec
+/bin/bash -lc "sed -n '1,220p' DLNFibre/Core/BaseChange.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+import DLNFibre.Core.Submult
+
+/-!
+# `DLNFibre.Core.BaseChange` — the `G_d` base-change action and rank-pattern invariance
+
+The change-of-basis action of Le Halleur–Rimányi 2024 (§2.2): the group
+`G_d = ∏_{v} GL_{d_v}` acts on `Tuple d` by conjugating each edge map by the units at its two
+endpoints. For `P : ∀ v, GL_{d_v}` (units = invertible matrices) the action is
+`(P • A)_i = P_{i+1} · A_i · P_i⁻¹` — the target-vertex unit `P i.succ` on the left, the
+source-vertex unit inverse `(P i.castSucc)⁻¹` on the right.
+
+**Headlines.**
+- `submult_baseChange` / `submult_smul` — **telescoping conjugation** of the interval sub-product:
+  `submult (P • A) i j = P_j · (submult A i j) · P_i⁻¹`. The inner units cancel along the product
+  (`… P_t⁻¹ P_t …`), so only the two boundary units survive; proved by induction mirroring
+  `submult_succ`.
+- `rankPattern_baseChange` / `rankPattern_smul` — **rank-pattern base-change invariance**:
+  `rankPattern (P • A) i j = rankPattern A i j`. A unit matrix has invertible determinant
+  (`Matrix.isUnits_det_units`), and multiplying by such a matrix preserves rank
+  (`Matrix.rank_mul_eq_left_of_isUnit_det` / `…_right_…`), so the boundary conjugation drops out.
+
+This is the orbit-side input to Prop 3.1b (the rank pattern is a base-change invariant): two tuples
+in the same `G_d`-orbit have the same rank pattern.
+
+**Typeclass.** `CommRing k` throughout — the two rank levers
+`Matrix.rank_mul_eq_left_of_isUnit_det` / `…_right_…` are stated over a `CommRing` (no `Field`
+needed). The non-vacuity witness additionally uses `Nontrivial ℤ` (via `Matrix.rank_of_isUnit`).
+**Dependency rule:** never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core
+
+open Matrix
+
+universe u
+
+variable {k : Type u} [CommRing k] {N : ℕ}
+
+/-- `G_d = ∏_v GL_{d_v}`: a base-change datum is one invertible matrix per vertex (a unit of the
+square matrix ring = an element of `GL_{d_v}`). -/
+abbrev BaseChangeGroup (d : Fin (N + 1) → ℕ) : Type u :=
+  ∀ v : Fin (N + 1), (Matrix (Fin (d v)) (Fin (d v)) k)ˣ
+
+variable {d : Fin (N + 1) → ℕ}
+
+/-- The `G_d` base-change action on `Tuple d`: on edge `i`, conjugate `A i` by the target-vertex
+unit `P i.succ` on the left and the source-vertex unit inverse `(P i.castSucc)⁻¹` on the right. -/
+def baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) : Tuple (k := k) d :=
+  fun i ↦ Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹)
+
+/-- The defining formula of the action, edge by edge. -/
+@[simp] theorem baseChange_apply (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+    (i : Fin N) :
+    baseChange P A i = Units.val (P i.succ) * A i * Units.val ((P i.castSucc)⁻¹) := rfl
+
+/-- The identity base change fixes every tuple. -/
+theorem baseChange_one (A : Tuple (k := k) d) :
+    baseChange (1 : BaseChangeGroup (k := k) d) A = A := by
+  funext i
+  simp only [baseChange_apply, Pi.one_apply, Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one]
+
+/-- Base change is compatible with multiplication in `G_d`: `(P * Q) • A = P • (Q • A)`. -/
+theorem baseChange_mul (P Q : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
+    baseChange (P * Q) A = baseChange P (baseChange Q A) := by
+  funext i
+  simp only [baseChange_apply, Pi.mul_apply, Units.val_mul, _root_.mul_inv_rev, Matrix.mul_assoc]
+
+/-- The base change is a genuine group action of `G_d = ∏_v GL_{d_v}` on `Tuple d`. -/
+instance : MulAction (BaseChangeGroup (k := k) d) (Tuple (k := k) d) where
+  smul := baseChange
+  one_smul := baseChange_one
+  mul_smul := baseChange_mul
+
+/-- `•` is the base-change action (definitional). -/
+@[simp] theorem smul_eq_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d) :
+    P • A = baseChange P A := rfl
+
+/-! ## Telescoping conjugation of the sub-product -/
+
+/-- **Telescoping conjugation.** The interval sub-product of a base-changed tuple is the sub-product
+conjugated by the two boundary units: `submult (P • A) i j = P_j · (submult A i j) · P_i⁻¹`. The
+inner units cancel (`P_t⁻¹ P_t = 1`); proved by induction on the upper index mirroring
+`submult_succ`. -/
+theorem submult_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    submult d (baseChange P A) i j hij
+      = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹) := by
+  revert hij
+  induction j using Fin.induction with
+  | zero =>
+    intro hij
+    obtain rfl := Fin.le_zero_iff.mp hij
+    simp only [submult_self]
+    rw [Matrix.mul_one, Units.mul_inv]
+  | succ p ih =>
+    intro hij
+    rcases eq_or_lt_of_le hij with rfl | hlt
+    · -- diagonal `i = p.succ`: the empty sub-product, boundary units cancel
+      simp only [submult_self]
+      rw [Matrix.mul_one, Units.mul_inv]
+    · -- active edge `i ≤ p.castSucc`: peel the top factor and cancel the inner units
+      have hcast : i ≤ p.castSucc := Fin.le_castSucc_iff.mpr hlt
+      rw [submult_succ d (baseChange P A) i p hcast, ih hcast, submult_succ d A i p hcast,
+          baseChange_apply]
+      simp only [Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc (Units.val ((P p.castSucc)⁻¹)) (Units.val (P p.castSucc)),
+          Units.inv_mul, Matrix.one_mul]
+
+/-- Telescoping conjugation, in `•` notation. -/
+theorem submult_smul (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    submult d (P • A) i j hij
+      = Units.val (P j) * submult d A i j hij * Units.val ((P i)⁻¹) :=
+  submult_baseChange P A i j hij
+
+/-! ## Rank-pattern base-change invariance -/
+
+/-- **Rank-pattern base-change invariance.** Conjugating by units does not change rank, so the rank
+pattern is constant on `G_d`-orbits: `rankPattern (P • A) i j = rankPattern A i j`. (Orbit-side
+input to Prop 3.1b.) -/
+theorem rankPattern_baseChange (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    rankPattern d (baseChange P A) i j hij = rankPattern d A i j hij := by
+  rw [rankPattern, rankPattern, submult_baseChange,
+    Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units _),
+    Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnits_det_units _)]
+
+/-- Rank-pattern base-change invariance, in `•` notation. -/
+theorem rankPattern_smul (P : BaseChangeGroup (k := k) d) (A : Tuple (k := k) d)
+    (i j : Fin (N + 1)) (hij : i ≤ j) :
+    rankPattern d (P • A) i j hij = rankPattern d A i j hij :=
+  rankPattern_baseChange P A i j hij
+
+section Witness
+
+/-! ## Non-vacuity witness
+
+Conjugate the landed `(2,2,2)` witness `Setup.tupleWitness` by the `GL₂(ℤ)` element `!![1,1;0,1]`
+(determinant `1`) at every vertex, and check the rank pattern is unchanged. The off-diagonal value
+`r_{02} = rank(A₂A₁) = 2` survives the conjugation — the headline `rankPattern_smul` applied to a
+genuine, non-identity base change of a concrete tuple. -/
+
+/-- A concrete `GL₂(ℤ)` element, `!![1,1;0,1]` (determinant `1`), with explicit inverse
+`!![1,-1;0,1]` (so the unit is computable: `val * inv = inv * val = 1` by `decide`). -/
+def witnessUnit : (Matrix (Fin 2) (Fin 2) ℤ)ˣ where
+  val := !![1, 1; 0, 1]
+  inv := !![1, -1; 0, 1]
+  val_inv := by decide
+  inv_val := by decide
+
+/-- Base-change the `(2,2,2)` witness by `witnessUnit` at every vertex. -/
+def witnessBaseChange : BaseChangeGroup (k := ℤ) dWitness :=
+  fun v ↦ match v with
+    | 0 => witnessUnit
+    | 1 => witnessUnit
+    | 2 => witnessUnit
+
+/-- The headline applies to a concrete non-identity base change: the rank pattern is unchanged at
+every `(i, j)`. -/
+example (i j : Fin 3) (hij : i ≤ j) :
+    rankPattern dWitness (witnessBaseChange • tupleWitness) i j hij
+      = rankPattern dWitness tupleWitness i j hij :=
+  rankPattern_smul witnessBaseChange tupleWitness i j hij
+
+/-- The off-diagonal product rank survives the base change: `r_{02} = rank(A₂A₁) = 2`. -/
+example : rankPattern dWitness (witnessBaseChange • tupleWitness) 0 2 (Fin.zero_le _) = 2 := by
+  rw [rankPattern_smul, rankPattern]
+  have hsub : submult dWitness tupleWitness 0 2 (Fin.zero_le _) = !![1, 2; 3, 7] := by
+    rw [submult_zero]; unfold multPrefix tupleWitness dWitness; decide
+  have hunit : IsUnit (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ) := by
+    rw [Matrix.isUnit_iff_isUnit_det,
+      show (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ).det = 1 from by decide]
+    exact isUnit_one
+  have hrank : (!![1, 2; 3, 7] : Matrix (Fin 2) (Fin 2) ℤ).rank = 2 := by
+    rw [Matrix.rank_of_isUnit _ hunit, Fintype.card_fin]
+  rw [hsub]; exact hrank
+
+end Witness
+
+end DLNFibre.Core
+
+codex
+The existing `BaseChange` lemma is worth reusing conceptually: it already proves the same telescoping endpoint phenomenon for units at all vertices. For this polynomial automorphism, the new work is mainly aligning the `aeval` substitution with that endpoint action.
+exec
+/bin/bash -lc 'rg "invertible.*map|map.*Invertible|instance .*Invertible.*map|Invertible.*Matrix.*map|invOf.*map" .lake/packages/mathlib/Mathlib/Data/Matrix .lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix .lake/packages/mathlib/Mathlib/Algebra -n | head -160' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:38:which consists of invertible `R`-linear maps on `M`.
+.lake/packages/mathlib/Mathlib/Algebra/Group/Hom/Defs.lean:692:then `f x` has a right inverse too. For elements invertible on both sides see `IsUnit.map`. -/
+.lake/packages/mathlib/Mathlib/Algebra/Group/Hom/Defs.lean:701:then `f x` has a left inverse too. For elements invertible on both sides see `IsUnit.map`. -/
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:139:  invOf_mul_self := by rw [← map_mul, invOf_mul_self, map_one]
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:140:  mul_invOf_self := by rw [← map_mul, mul_invOf_self, map_one]
+.lake/packages/mathlib/Mathlib/Algebra/Module/Equiv/Defs.lean:16:* `LinearEquiv σ M M₂`, `M ≃ₛₗ[σ] M₂`: an invertible semilinear map. Here, `σ` is a `RingHom`
+.lake/packages/mathlib/Mathlib/Algebra/Module/Equiv/Defs.lean:48:/-- A linear equivalence is an invertible linear map. -/
+.lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Basic.lean:855:by `s : S` is invertible, then there is a linear map `M' → M''`.
+.lake/packages/mathlib/Mathlib/Algebra/Algebra/Basic.lean:496:  invOf_mul_self := by rw [← Algebra.commutes, ← Algebra.smul_def, ← map_smul, Algebra.smul_def,
+.lake/packages/mathlib/Mathlib/Algebra/Algebra/Basic.lean:498:  mul_invOf_self := by rw [← Algebra.smul_def, ← map_smul, Algebra.smul_def, mul_invOf_self, hf]
+.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Laurent.lean:290:    rw [← mul_assoc, ← smul_mul_assoc, mul_left_inj_of_invertible, ← map_mul, ← single_eq_C,
+
+exec
+/bin/bash -lc "sed -n '432,452p' .lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean && sed -n '570,610p' .lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+
+/-- This instance enables use with `mul_smul_comm`. -/
+instance Semiring.smulCommClass [Fintype n] [Monoid R] [DistribMulAction R α]
+    [SMulCommClass R α α] : SMulCommClass R (Matrix n n α) (Matrix n n α) :=
+  ⟨fun r m n => (Matrix.mul_smul m r n).symm⟩
+
+@[simp]
+protected theorem map_mul [Fintype n] {L : Matrix m n α} {M : Matrix n o α}
+    [NonUnitalNonAssocSemiring β] {F} [FunLike F α β] [NonUnitalRingHomClass F α β] {f : F} :
+    (L * M).map f = L.map f * M.map f := by
+  ext
+  simp [mul_apply, map_sum]
+
+end NonUnitalNonAssocSemiring
+
+section NonAssocSemiring
+
+variable [NonAssocSemiring α]
+
+@[simp]
+protected theorem one_mul [Fintype m] [DecidableEq m] (M : Matrix m n α) :
+theorem mapMatrix_trans (f : α ≃ₛₗ[σᵣₛ] β) (g : β ≃ₛₗ[σₛₜ] γ) :
+    f.mapMatrix.trans g.mapMatrix = ((f.trans g).mapMatrix : Matrix m n α ≃ₛₗ[_] _) :=
+  rfl
+
+@[simp] lemma mapMatrix_toLinearMap (f : α ≃ₛₗ[σᵣₛ] β) :
+    (f.mapMatrix : _ ≃ₛₗ[_] Matrix m n β).toLinearMap = f.toLinearMap.mapMatrix := by
+  rfl
+
+lemma entryLinearMap_comp_mapMatrix (f : α ≃ₛₗ[σᵣₛ] β) (i : m) (j : n) :
+    (entryLinearMap S _ i j).comp f.mapMatrix.toLinearMap =
+      f.toLinearMap.comp (entryLinearMap R _ i j) := by
+  simp only [mapMatrix_toLinearMap, LinearMap.entryLinearMap_comp_mapMatrix]
+
+end LinearEquiv
+
+namespace RingHom
+
+variable [Fintype m] [DecidableEq m]
+variable [NonAssocSemiring α] [NonAssocSemiring β] [NonAssocSemiring γ]
+
+/-- The `RingHom` between spaces of square matrices induced by a `RingHom` between their
+coefficients. This is `Matrix.map` as a `RingHom`. -/
+@[simps]
+def mapMatrix (f : α →+* β) : Matrix m m α →+* Matrix m m β :=
+  { f.toAddMonoidHom.mapMatrix with
+    toFun := fun M => M.map f
+    map_one' := by simp
+    map_mul' := fun _ _ => Matrix.map_mul }
+
+@[simp]
+theorem mapMatrix_id : (RingHom.id α).mapMatrix = RingHom.id (Matrix m m α) :=
+  rfl
+
+@[simp]
+theorem mapMatrix_comp (f : β →+* γ) (g : α →+* β) :
+    f.mapMatrix.comp g.mapMatrix = ((f.comp g).mapMatrix : Matrix m m α →+* _) :=
+  rfl
+
+protected lemma _root_.Matrix.map_pow {α β : Type*} [Semiring α] [Semiring β]
+    (M : Matrix m m α) (f : α →+* β) (a : ℕ) : (M ^ a).map f = (M.map f) ^ a :=
+  f.mapMatrix.map_pow M a
+
+exec
+/bin/bash -lc "sed -n '128,145p' .lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+  (Units.ofPowEqOne x n hx hn).invertible
+
+end Monoid
+
+
+/-- Monoid homs preserve invertibility. -/
+@[implicit_reducible]
+def Invertible.map {R : Type*} {S : Type*} {F : Type*} [MulOneClass R] [MulOneClass S]
+    [FunLike F R S] [MonoidHomClass F R S] (f : F) (r : R) [Invertible r] :
+    Invertible (f r) where
+  invOf := f (⅟r)
+  invOf_mul_self := by rw [← map_mul, invOf_mul_self, map_one]
+  mul_invOf_self := by rw [← map_mul, mul_invOf_self, map_one]
+
+/-- Note that the `Invertible (f r)` argument can be satisfied by using `letI := Invertible.map f r`
+before applying this lemma. -/
+theorem map_invOf {R : Type*} {S : Type*} {F : Type*} [MulOneClass R] [Monoid S]
+    [FunLike F R S] [MonoidHomClass F R S] (f : F) (r : R)
+
+exec
+/bin/bash -lc "sed -n '145,170p' .lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+    [FunLike F R S] [MonoidHomClass F R S] (f : F) (r : R)
+    [Invertible r] [ifr : Invertible (f r)] :
+    f (⅟r) = ⅟(f r) := by
+  obtain rfl : ifr = Invertible.map f r := Subsingleton.elim _ _; rfl
+
+/-- If a function `f : R → S` has a left-inverse that is a monoid hom,
+  then `r : R` is invertible if `f r` is.
+
+The inverse is computed as `g (⅟(f r))` -/
+@[simps! -isSimp, implicit_reducible]
+def Invertible.ofLeftInverse {R : Type*} {S : Type*} {G : Type*} [MulOneClass R] [MulOneClass S]
+    [FunLike G S R] [MonoidHomClass G S R] (f : R → S) (g : G) (r : R)
+    (h : Function.LeftInverse g f) [Invertible (f r)] : Invertible r :=
+  (Invertible.map g (f r)).copy _ (h r).symm
+
+/-- Invertibility on either side of a monoid hom with a left-inverse is equivalent. -/
+@[simps]
+def invertibleEquivOfLeftInverse {R : Type*} {S : Type*} {F G : Type*} [Monoid R] [Monoid S]
+    [FunLike F R S] [MonoidHomClass F R S] [FunLike G S R] [MonoidHomClass G S R]
+    (f : F) (g : G) (r : R) (h : Function.LeftInverse g f) : Invertible (f r) ≃ Invertible r where
+  toFun _ := Invertible.ofLeftInverse f _ _ h
+  invFun _ := Invertible.map f _
+  left_inv _ := Subsingleton.elim _ _
+  right_inv _ := Subsingleton.elim _ _
+
+exec
+/bin/bash -lc "rg \"def last'|theorem.*last|last'\" .lake/packages/mathlib/Mathlib/Data/Fin -n | head -80 && rg \"last'\" .lake/packages/mathlib/Mathlib -n | head -40" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/Data/Fin/FlagRange.lean:34:theorem IsMaxChain.range_fin_of_covBy (h0 : f 0 = ⊥) (hlast : f (.last n) = ⊤)
+.lake/packages/mathlib/Mathlib/Data/Fin/FlagRange.lean:60:@[simp] theorem Flag.mem_rangeFin {x h0 hlast hcovBy} :
+.lake/packages/mathlib/Mathlib/Data/Fin/Rev.lean:74:theorem rev_pred {i : Fin (n + 1)} (h : i ≠ 0) (h' := rev_ne_iff.mpr ((rev_last _).symm ▸ h)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean:206:theorem last_pos' [NeZero n] : 0 < last n := n.pos_of_neZero
+.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean:208:theorem one_lt_last [NeZero n] : 1 < last (n + 1) := by
+.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean:383:theorem natCast_eq_last (n) : (n : Fin (n + 1)) = Fin.last n := by ext; simp
+.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean:393:theorem le_val_last (i : Fin (n + 1)) : i ≤ n := by
+.lake/packages/mathlib/Mathlib/Data/Fin/Basic.lean:486:theorem last_sub (i : Fin (n + 1)) : last n - i = Fin.rev i :=
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:187:theorem eq_castSucc_of_ne_last {x : Fin (n + 1)} (h : x ≠ (last _)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:195:theorem eq_castSucc_or_eq_last {n : Nat} (i : Fin (n + 1)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:199:theorem castSucc_ne_last {n : ℕ} (i : Fin n) : i.castSucc ≠ .last n :=
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:228:theorem succ_ne_last_iff (a : Fin (n + 1)) : succ a ≠ last (n + 1) ↔ a ≠ last n :=
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:231:theorem succ_ne_last_of_lt {p i : Fin n} (h : i < p) : succ i ≠ last n := by
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:276:theorem pred_last (h := Fin.ext_iff.not.2 last_pos'.ne') :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:332:theorem castPred_castSucc {i : Fin n} (h' := Fin.ext_iff.not.2 (castSucc_lt_last i).ne) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:336:theorem castSucc_castPred (i : Fin (n + 1)) (h : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:341:theorem castPred_eq_iff_eq_castSucc (i : Fin (n + 1)) (hi : i ≠ last _) (j : Fin n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:351:theorem castPred_le_castPred_iff {i j : Fin (n + 1)} {hi : i ≠ last n} {hj : j ≠ last n} :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:357:theorem castPred_le_castPred {i j : Fin (n + 1)} (h : i ≤ j) (hj : j ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:363:theorem castPred_lt_castPred_iff {i j : Fin (n + 1)} {hi : i ≠ last n} {hj : j ≠ last n} :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:369:theorem castPred_lt_castPred {i j : Fin (n + 1)} (h : i < j) (hj : j ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:372:theorem castPred_lt_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:376:theorem lt_castPred_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:380:theorem castPred_le_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:384:theorem le_castPred_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:389:theorem castPred_inj {i j : Fin (n + 1)} {hi : i ≠ last n} {hj : j ≠ last n} :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:398:theorem castPred_eq_zero [NeZero n] {i : Fin (n + 1)} (h : i ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:402:theorem castPred_ne_zero [NeZero n] {i : Fin (n + 1)} (h₁ : i ≠ last n) (h₂ : i ≠ 0) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:413:theorem succ_castPred_eq_castPred_succ {a : Fin (n + 1)} (ha : a ≠ last n)
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:417:theorem succ_castPred_eq_add_one {a : Fin (n + 1)} (ha : a ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:423:theorem castpred_succ_le_iff {a b : Fin (n + 1)} (ha : succ a ≠ last (n + 1)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:427:theorem lt_castPred_succ_iff {a b : Fin (n + 1)} (ha : succ a ≠ last (n + 1)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:431:theorem lt_castPred_succ {a : Fin (n + 1)} (ha : succ a ≠ last (n + 1)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:434:theorem succ_castPred_le_iff {a b : Fin (n + 1)} (ha : a ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:438:theorem lt_succ_castPred_iff {a b : Fin (n + 1)} (ha : a ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:442:theorem lt_succ_castPred {a : Fin (n + 1)} (ha : a ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:445:theorem castPred_le_pred_iff {a b : Fin (n + 1)} (ha : a ≠ last n) (hb : b ≠ 0) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:449:theorem pred_lt_castPred_iff {a b : Fin (n + 1)} (ha : a ≠ 0) (hb : b ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:453:theorem pred_lt_castPred {a : Fin (n + 1)} (h₁ : a ≠ 0) (h₂ : a ≠ last n) :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Embedding.lean:76:theorem snoc_last {n : ℕ} {x : Fin n ↪ α} {a : α} {ha : a ∉ range x} :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:131:theorem cons_last {α : Fin (n + 2) → Sort*} (x : α 0) (p : ∀ i : Fin n.succ, α i.succ) :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:530:theorem snoc_last : snoc p x (last n) = x := by simp [snoc]
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:566:theorem update_snoc_last : update (snoc p x) (last n) z = snoc p z := by
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:580:theorem snoc_inj {x y : ∀ i : Fin n, α i.castSucc} {xₙ yₙ : α (last n)} :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:588:theorem snoc_left_injective (xₙ : α (last n)) : Function.Injective (snoc · xₙ) :=
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:593:theorem snoc_init_self : snoc (init q) (q (last n)) = q := by
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:599:theorem init_update_last : init (update q (last n) z) = init q := by
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:935:theorem insertNth_last (x : α (last n)) (p : ∀ j : Fin n, α ((last n).succAbove j)) :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:948:theorem insertNth_last' (x : β) (p : Fin n → β) :
+.lake/packages/mathlib/Mathlib/Data/Fin/Tuple/Basic.lean:948:theorem insertNth_last' (x : β) (p : Fin n → β) :
+.lake/packages/mathlib/Mathlib/Logic/Equiv/Fin/Rotate.lean:42:theorem finRotate_last' : finRotate (n + 1) ⟨n, by lia⟩ = ⟨0, Nat.zero_lt_succ _⟩ := by
+.lake/packages/mathlib/Mathlib/Logic/Equiv/Fin/Rotate.lean:48:  finRotate_last'
+.lake/packages/mathlib/Mathlib/Logic/Equiv/Fin/Rotate.lean:60:    rw [finRotate_last', Fin.snoc, Fin.cons, dif_neg (lt_irrefl _)]
+.lake/packages/mathlib/Mathlib/Data/QPF/Multivariate/Constructions/Cofix.lean:344:`liftR_map`, `liftR_map_last` and `liftR_map_last'` are useful for reasoning about
+.lake/packages/mathlib/Mathlib/Data/QPF/Multivariate/Constructions/Cofix.lean:393:theorem liftR_map_last' [LawfulMvFunctor F] {α : TypeVec n} {ι} (R : ι → ι → Prop) (x : F (α ::: ι))
+.lake/packages/mathlib/Mathlib/Data/QPF/Multivariate/Constructions/Cofix.lean:504:    apply liftR_map_last'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Covering/BesicovitchVectorSpace.lean:333:    exact a.hlast' k hτ
+.lake/packages/mathlib/Mathlib/MeasureTheory/Covering/Besicovitch.lean:182:theorem hlast' (i : Fin N.succ) (h : 1 ≤ τ) : a.r (last N) ≤ τ * a.r i := by
+.lake/packages/mathlib/Mathlib/Order/KrullDimension.lean:998:    have hlast' : p'.last = x := by
+.lake/packages/mathlib/Mathlib/Order/KrullDimension.lean:1003:      simpa [p', hlast'] using this
+.lake/packages/mathlib/Mathlib/Order/KrullDimension.lean:1028:    have hlast' : p'.last = x := by
+.lake/packages/mathlib/Mathlib/Order/KrullDimension.lean:1031:      rw [hlast'] at this
+
+exec
+/bin/bash -lc "sed -n '240,292p' .lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+open Fin.NatCast in
+theorem coe_succ_lt_iff_lt {n : ℕ} {j k : Fin n} : (j : Fin (n + 1)) < k ↔ j < k := by
+  simp only [coe_eq_castSucc, castSucc_lt_castSucc_iff]
+
+@[simp]
+theorem range_castSucc {n : ℕ} : Set.range (castSucc : Fin n → Fin n.succ) =
+    ({ i | (i : ℕ) < n } : Set (Fin n.succ)) := range_castLE (by lia)
+
+@[simp]
+theorem coe_of_injective_castSucc_symm {n : ℕ} (i : Fin n.succ) (hi) :
+    ((Equiv.ofInjective castSucc (castSucc_injective _)).symm ⟨i, hi⟩ : ℕ) = i := by
+  rw [← val_castSucc]
+  exact congr_arg val (Equiv.apply_ofInjective_symm _ _)
+
+theorem castSucc_castAdd (i : Fin n) : castSucc (castAdd m i) = castAdd (m + 1) i := rfl
+
+theorem succ_castAdd (i : Fin n) : succ (castAdd m i) =
+    if h : i.succ = last _ then natAdd n (0 : Fin (m + 1))
+      else castAdd (m + 1) ⟨i.1 + 1, lt_of_le_of_ne i.2 (Fin.val_ne_iff.mpr h)⟩ := by
+  split_ifs with h
+  exacts [Fin.ext (congr_arg Fin.val h :), rfl]
+
+theorem succ_natAdd (i : Fin m) : succ (natAdd n i) = natAdd n (succ i) := rfl
+
+end Succ
+
+section Pred
+
+/-!
+### pred
+-/
+
+theorem pred_one' [NeZero n] (h := (zero_ne_one' (n := n)).symm) :
+    Fin.pred (1 : Fin (n + 1)) h = 0 := by
+  simp_rw [Fin.ext_iff, val_pred, val_one', val_zero, Nat.sub_eq_zero_iff_le, Nat.mod_le]
+
+theorem pred_last (h := Fin.ext_iff.not.2 last_pos'.ne') :
+    pred (last (n + 1)) h = last n := by simp_rw [← succ_last, pred_succ]
+
+theorem pred_lt_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ 0) : pred i hi < j ↔ i < succ j := by
+  rw [← succ_lt_succ_iff, succ_pred]
+theorem lt_pred_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ 0) : j < pred i hi ↔ succ j < i := by
+  rw [← succ_lt_succ_iff, succ_pred]
+theorem pred_le_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ 0) : pred i hi ≤ j ↔ i ≤ succ j := by
+  rw [← succ_le_succ_iff, succ_pred]
+theorem le_pred_iff {j : Fin n} {i : Fin (n + 1)} (hi : i ≠ 0) : j ≤ pred i hi ↔ succ j ≤ i := by
+  rw [← succ_le_succ_iff, succ_pred]
+
+theorem castSucc_pred_eq_pred_castSucc {a : Fin (n + 1)} (ha : a ≠ 0) :
+    (a.pred ha).castSucc = (castSucc a).pred (castSucc_ne_zero_iff.mpr ha) := rfl
+
+theorem castSucc_pred_add_one_eq {a : Fin (n + 1)} (ha : a ≠ 0) :
+    (a.pred ha).castSucc + 1 = a := by
+
+exec
+/bin/bash -lc 'rg "unitOfInvertible|ofInvertible|isUnit_of_invertible|Invertible.*Units|toUnit" .lake/packages/mathlib/Mathlib/Algebra/Group/Invertible -n' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:27:def unitOfInvertible [Monoid α] (a : α) [Invertible a] : αˣ where
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:33:theorem isUnit_of_invertible [Monoid α] (a : α) [Invertible a] : IsUnit a :=
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:34:  ⟨unitOfInvertible a, rfl⟩
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:60:  ⟨Nonempty.rec <| @isUnit_of_invertible _ _ _, IsUnit.nonempty_invertible⟩
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:85:/-- This is the `Invertible` version of `Units.isUnit_units_mul` -/
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:90:    rw [← (isUnit_of_invertible a).mul_right_inj, ← mul_assoc, ← mul_assoc, mul_invOf_self, mul_one,
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:93:/-- This is the `Invertible` version of `Units.isUnit_mul_units` -/
+.lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean:97:    rw [← (isUnit_of_invertible b).mul_left_inj, mul_assoc, mul_assoc, invOf_mul_self, mul_one,
+
+exec
+/bin/bash -lc "sed -n '20,38p' .lake/packages/mathlib/Mathlib/Algebra/Group/Invertible/Basic.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+ succeeded in 0ms:
+
+universe u
+
+variable {α : Type u}
+
+/-- An `Invertible` element is a unit. -/
+@[simps]
+def unitOfInvertible [Monoid α] (a : α) [Invertible a] : αˣ where
+  val := a
+  inv := ⅟a
+  val_inv := by simp
+  inv_val := by simp
+
+theorem isUnit_of_invertible [Monoid α] (a : α) [Invertible a] : IsUnit a :=
+  ⟨unitOfInvertible a, rfl⟩
+
+/-- Units are invertible in their associated monoid. -/
+instance Units.invertible [Monoid α] (u : αˣ) :
+    Invertible (u : α) where
+
+codex
+**Short Verdict**
+
+`toSub` should use `⅟H` on the first edge and `⅟L` on the last edge. Since `aeval toSub` sends `p` to `p(toSub)`, `toSub` must encode the normalized variables `Ã` in terms of the old variables `A`.
+
+For distinct endpoints:
+
+```text
+edge 0:
+X⟨0,(i,j)⟩ ↦ ∑ m, C ((⅟H) m j) * X⟨0,(i,m)⟩
+
+edge N-1:
+X⟨N-1,(i,j)⟩ ↦ ∑ l, C ((⅟L) i l) * X⟨N-1,(l,j)⟩
+```
+
+So `aeval toSub (multPoly d r c)` computes `mult(Ã)`, hence gives
+`((⅟L)^C * M * (⅟H)^C) r c`, where in Lean the endpoint matrices must be mapped into the polynomial ring, e.g. `(⅟L).map C`, `(⅟H).map C`.
+
+For `N = 1`, the only edge gets both operations:
+
+```text
+X⟨0,(i,j)⟩ ↦
+  ∑ l, ∑ m, C ((⅟L) i l * (⅟H) m j) * X⟨0,(l,m)⟩
+```
+
+This is exactly `(⅟L * A₀ * ⅟H) i j`. If your definition branches `if e = 0 then ... else if e = last then ...`, it is wrong for `N = 1`.
+
+**Round Trip**
+
+`fromSub` is the same construction with `H`, `L` replacing `⅟H`, `⅟L`:
+
+```text
+N = 1:
+X⟨0,(i,j)⟩ ↦ ∑ l, ∑ m, C (L i l * H m j) * X⟨0,(l,m)⟩
+```
+
+The inverse collapses use both orientations:
+
+```text
+aeval toSub (fromSub x):
+  left side uses  L * ⅟L = 1      -- `mul_invOf_self L`
+  right side uses ⅟H * H = 1      -- `invOf_mul_self H`
+
+aeval fromSub (toSub x):
+  left side uses  ⅟L * L = 1      -- `invOf_mul_self L`
+  right side uses H * ⅟H = 1      -- `mul_invOf_self H`
+```
+
+So do not expect only `invOf_mul_self` everywhere.
+
+**Clean Structure**
+
+Best fit for this repo: model the operation as endpoint `baseChange` on the generic tuple, not as ad hoc edge cases.
+
+Take the vertex unit data over `P := MvPolynomial (RepCoord d) R`:
+
+```text
+P_to(0) = H^C
+P_to(N) = (L^C)⁻¹
+P_to(middle) = 1
+```
+
+Then `baseChange P_to (genericTuple d)` has exactly the desired endpoint-normalized factors, including the `N = 1` coincidence automatically. The inverse is `P_to⁻¹`.
+
+For the staged contract, define:
+
+```text
+toSub x   := (baseChange P_to   (genericTuple d) x.1) x.2.1 x.2.2
+fromSub x := (baseChange P_from (genericTuple d) x.1) x.2.1 x.2.2
+```
+
+Then assemble with `aeval`. Prove `aeval toSub = φ_to` and `aeval fromSub = φ_from` by `MvPolynomial.algHom_ext` + `MvPolynomial.aeval_X`.
+
+Useful project/API names:
+
+```text
+baseChange_apply
+baseChange_mul
+submult_smul
+mult_eq_submult
+
+MvPolynomial.aeval
+MvPolynomial.aeval_X
+MvPolynomial.aeval_C
+MvPolynomial.algHom_ext
+MvPolynomial.comp_aeval
+AlgEquiv.ofAlgHom
+
+Matrix.mul_apply
+Matrix.map_apply
+Matrix.map_mul
+Matrix.one_apply
+Matrix.ext
+invOf_mul_self
+mul_invOf_self
+Matrix.invOf_mul_cancel_left
+Matrix.mul_invOf_cancel_left
+Matrix.invOf_mul_cancel_right
+Matrix.mul_invOf_cancel_right
+unitOfInvertible
+Invertible.map
+map_invOf
+RingHom.mapMatrix
+```
+
+**Main Traps**
+
+`Matrix` coefficients must live in the polynomial ring for the final statement: use `(⅟L).map C * Matrix.of (multPoly d) * (⅟H).map C`.
+
+If you prove the `N = 1` double-sum directly, expect `Finset.sum_comm`, `Finset.mul_sum`, `Finset.sum_mul`, and coefficient reassociation/commutation. The composition/baseChange route avoids most of that.
+
+For mult-transport, Lean will still need an induction/general lemma like `map_multPrefix` or the existing `submult_smul` route. The fact that middle variables are fixed does not by itself make `aeval` simplify an entire prefix product without a product-respecting lemma.
+tokens used
+115,935
+**Short Verdict**
+
+`toSub` should use `⅟H` on the first edge and `⅟L` on the last edge. Since `aeval toSub` sends `p` to `p(toSub)`, `toSub` must encode the normalized variables `Ã` in terms of the old variables `A`.
+
+For distinct endpoints:
+
+```text
+edge 0:
+X⟨0,(i,j)⟩ ↦ ∑ m, C ((⅟H) m j) * X⟨0,(i,m)⟩
+
+edge N-1:
+X⟨N-1,(i,j)⟩ ↦ ∑ l, C ((⅟L) i l) * X⟨N-1,(l,j)⟩
+```
+
+So `aeval toSub (multPoly d r c)` computes `mult(Ã)`, hence gives
+`((⅟L)^C * M * (⅟H)^C) r c`, where in Lean the endpoint matrices must be mapped into the polynomial ring, e.g. `(⅟L).map C`, `(⅟H).map C`.
+
+For `N = 1`, the only edge gets both operations:
+
+```text
+X⟨0,(i,j)⟩ ↦
+  ∑ l, ∑ m, C ((⅟L) i l * (⅟H) m j) * X⟨0,(l,m)⟩
+```
+
+This is exactly `(⅟L * A₀ * ⅟H) i j`. If your definition branches `if e = 0 then ... else if e = last then ...`, it is wrong for `N = 1`.
+
+**Round Trip**
+
+`fromSub` is the same construction with `H`, `L` replacing `⅟H`, `⅟L`:
+
+```text
+N = 1:
+X⟨0,(i,j)⟩ ↦ ∑ l, ∑ m, C (L i l * H m j) * X⟨0,(l,m)⟩
+```
+
+The inverse collapses use both orientations:
+
+```text
+aeval toSub (fromSub x):
+  left side uses  L * ⅟L = 1      -- `mul_invOf_self L`
+  right side uses ⅟H * H = 1      -- `invOf_mul_self H`
+
+aeval fromSub (toSub x):
+  left side uses  ⅟L * L = 1      -- `invOf_mul_self L`
+  right side uses H * ⅟H = 1      -- `mul_invOf_self H`
+```
+
+So do not expect only `invOf_mul_self` everywhere.
+
+**Clean Structure**
+
+Best fit for this repo: model the operation as endpoint `baseChange` on the generic tuple, not as ad hoc edge cases.
+
+Take the vertex unit data over `P := MvPolynomial (RepCoord d) R`:
+
+```text
+P_to(0) = H^C
+P_to(N) = (L^C)⁻¹
+P_to(middle) = 1
+```
+
+Then `baseChange P_to (genericTuple d)` has exactly the desired endpoint-normalized factors, including the `N = 1` coincidence automatically. The inverse is `P_to⁻¹`.
+
+For the staged contract, define:
+
+```text
+toSub x   := (baseChange P_to   (genericTuple d) x.1) x.2.1 x.2.2
+fromSub x := (baseChange P_from (genericTuple d) x.1) x.2.1 x.2.2
+```
+
+Then assemble with `aeval`. Prove `aeval toSub = φ_to` and `aeval fromSub = φ_from` by `MvPolynomial.algHom_ext` + `MvPolynomial.aeval_X`.
+
+Useful project/API names:
+
+```text
+baseChange_apply
+baseChange_mul
+submult_smul
+mult_eq_submult
+
+MvPolynomial.aeval
+MvPolynomial.aeval_X
+MvPolynomial.aeval_C
+MvPolynomial.algHom_ext
+MvPolynomial.comp_aeval
+AlgEquiv.ofAlgHom
+
+Matrix.mul_apply
+Matrix.map_apply
+Matrix.map_mul
+Matrix.one_apply
+Matrix.ext
+invOf_mul_self
+mul_invOf_self
+Matrix.invOf_mul_cancel_left
+Matrix.mul_invOf_cancel_left
+Matrix.invOf_mul_cancel_right
+Matrix.mul_invOf_cancel_right
+unitOfInvertible
+Invertible.map
+map_invOf
+RingHom.mapMatrix
+```
+
+**Main Traps**
+
+`Matrix` coefficients must live in the polynomial ring for the final statement: use `(⅟L).map C * Matrix.of (multPoly d) * (⅟H).map C`.
+
+If you prove the `N = 1` double-sum directly, expect `Finset.sum_comm`, `Finset.mul_sum`, `Finset.sum_mul`, and coefficient reassociation/commutation. The composition/baseChange route avoids most of that.
+
+For mult-transport, Lean will still need an induction/general lemma like `map_multPrefix` or the existing `submult_smul` route. The fact that middle variables are fixed does not by itself make `aeval` simplify an entire prefix product without a product-respecting lemma.

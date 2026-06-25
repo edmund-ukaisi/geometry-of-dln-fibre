@@ -1,0 +1,23 @@
+// (3,3,3) r=1: fibre over E=diag(I_1,0) in 3x3. A0=(a_ij), A1=(b_ij), P=A1*A0=E.
+LIB "primdec.lib";
+ring R = 0, (a11,a12,a13,a21,a22,a23,a31,a32,a33,
+              b11,b12,b13,b21,b22,b23,b31,b32,b33), dp;
+matrix A0[3][3] = a11,a12,a13, a21,a22,a23, a31,a32,a33;
+matrix A1[3][3] = b11,b12,b13, b21,b22,b23, b31,b32,b33;
+matrix P = A1*A0;
+matrix E[3][3] = 1,0,0, 0,0,0, 0,0,0;
+ideal I = ideal(P - E);
+"=== ambient dim 18; dim fibre over E (rank-1): ===";
+int dimI = dim(std(I));
+dimI;
+"=== codim = 18 - dim: ===";
+18 - dimI;
+"=== (engine says C+delta = 8, so expected dim = 10) ===";
+"=== number of irreducible components + their dims: ===";
+list pd = primdecGTZ(I);
+"num components:"; size(pd);
+int k;
+for (k=1; k<=size(pd); k++) {
+  "comp", k, "dim:", dim(std(pd[k][2]));
+}
+$

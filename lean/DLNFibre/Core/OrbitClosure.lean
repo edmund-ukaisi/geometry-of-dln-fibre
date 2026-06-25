@@ -655,9 +655,8 @@ orbit closure: any tuples `Tp, Tq` over `d` realizing `r, r''` on the upper tria
 degeneration of `Core.BoxMoveGeneral`, reconciled with the realizers by the rank-pattern bridge and
 `G_d`-stability.
 
-CONDITIONAL: stated here as the clean residual obligation; the body (integer→`Fin` box-coordinate
-extraction + the split / non-split geometric invocation + the residual-`rest` dimension cast) is the
-one genuinely hard glue of L6.4. -/
+The body (integer→`Fin` box-coordinate extraction + the split / non-split geometric invocation +
+the residual-`rest` dimension cast) is the one genuinely hard glue of L6.4. -/
 theorem boxMoveStep_repClosure_subset [Infinite k] {d : Fin (N + 1) → ℕ}
     {r r'' : ℤ → ℤ → ℤ} {Tp Tq : Tuple (k := k) d}
     (hrsupp : Supported (N : ℤ) r) (hr''supp : Supported (N : ℤ) r'')

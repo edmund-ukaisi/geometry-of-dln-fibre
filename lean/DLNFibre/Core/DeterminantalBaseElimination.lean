@@ -1,0 +1,331 @@
+import DLNFibre.Core.DeterminantalChartRing
+import DLNFibre.Core.GraphIdealHeight
+import Mathlib.RingTheory.MvPolynomial.Localization
+
+/-!
+# `DLNFibre.Core.DeterminantalBaseElimination` — the localized base presentation (`Iad = J`)
+
+The localized determinantal base ring `A_loc = Localization.Away detΔ` of the rank-`≤ r` stratum, on
+the pivot chart, eliminates the bottom-right `B22` block: the Schur relation forces
+`B22 = B21 Δ⁻¹ B12`, so the localized base ideal `Iad` is the graph ideal `J` of that forced value.
+
+This module reindexes the engine coordinate ring `A_eng = MvPolynomial (RepCoord (dStratum q p)) k`
+along the block split `RepCoord ≃ B22block ⊕ SchurVar` (`B22block = Fin (p−r) × Fin (q−r)`,
+`#B22block = (p−r)(q−r) = C`; `SchurVar = Δ ⊕ B12 ⊕ B21`, `#SchurVar = r(p+q−r) = δ`), so the pivot
+minor `detΔ` lives in the `SchurVar` block. The forced-block graph ideal then has height `C`
+(`Core.GraphIdealHeight`), which — with the LANDED `height Iad = C` and `J ⊆ Iad` — squeezes
+`Iad = J` and exhibits `A_loc ⧸ Iad` as the free Schur localization (regular of dimension `δ`).
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core
+
+open Matrix MvPolynomial
+
+universe u
+
+/-! ## The block coordinate types and the reindex equivalence -/
+
+/-- The eliminated `B22` block: bottom-right `(p−r) × (q−r)` matrix coordinates. `#B22block = C`. -/
+abbrev B22block (q p r : ℕ) : Type := Fin (p - r) × Fin (q - r)
+
+/-- The free Schur coordinates `Δ ⊕ B12 ⊕ B21`: the top-left `r×r` pivot block `Δ`, the top-right
+`r × (q−r)` block `B12`, the bottom-left `(p−r) × r` block `B21`. `#SchurVar = δ = r(p+q−r)`. -/
+abbrev SchurVar (q p r : ℕ) : Type :=
+  (Fin r × Fin r) ⊕ ((Fin r × Fin (q - r)) ⊕ (Fin (p - r) × Fin r))
+
+/-- `#B22block = (p − r)(q − r) = C`. -/
+theorem card_B22block (q p r : ℕ) : Nat.card (B22block q p r) = (p - r) * (q - r) := by
+  simp [B22block, Nat.card_eq_fintype_card]
+
+/-- `#SchurVar = r·r + (r·(q−r) + (p−r)·r) = r(p + q − r) = δ` (for `r ≤ p`, `r ≤ q`). -/
+theorem card_SchurVar (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    Nat.card (SchurVar q p r) = r * (p + q - r) := by
+  simp only [SchurVar, Nat.card_eq_fintype_card, Fintype.card_fin,
+    Fintype.card_prod, Fintype.card_sum]
+  -- r*r + (r*(q−r) + (p−r)*r) = r(p+q−r), via `q = r+b`, `p = r+a`
+  obtain ⟨a, rfl⟩ := Nat.le.dest hp
+  obtain ⟨b, rfl⟩ := Nat.le.dest hq
+  rw [show r + a + (r + b) - r = r + a + b by omega, Nat.add_sub_cancel_left,
+    Nat.add_sub_cancel_left]
+  ring
+
+/-- The block reindex of the four products `(Δ ⊕ B12) ⊕ (B21 ⊕ B22)` into `B22block ⊕ SchurVar`
+(B22 outermost for the elimination; `SchurVar = Δ ⊕ (B12 ⊕ B21)`). -/
+def blockRearrange (q p r : ℕ) :
+    (((Fin r × Fin r) ⊕ (Fin r × Fin (q - r))) ⊕
+        ((Fin (p - r) × Fin r) ⊕ (Fin (p - r) × Fin (q - r))))
+      ≃ B22block q p r ⊕ SchurVar q p r where
+  toFun := fun x ↦ match x with
+    | .inl (.inl d) => .inr (.inl d)
+    | .inl (.inr b12) => .inr (.inr (.inl b12))
+    | .inr (.inl b21) => .inr (.inr (.inr b21))
+    | .inr (.inr b22) => .inl b22
+  invFun := fun x ↦ match x with
+    | .inr (.inl d) => .inl (.inl d)
+    | .inr (.inr (.inl b12)) => .inl (.inr b12)
+    | .inr (.inr (.inr b21)) => .inr (.inl b21)
+    | .inl b22 => .inr (.inr b22)
+  left_inv := by rintro (⟨d|b12⟩|⟨b21|b22⟩) <;> rfl
+  right_inv := by rintro (b22|⟨d|⟨b12|b21⟩⟩) <;> rfl
+
+/-- The pivot split `Fin n ≃ Fin r ⊕ Fin (n−r)` (first `r` ↦ left). -/
+def finSplit {n r : ℕ} (h : r ≤ n) : Fin n ≃ Fin r ⊕ Fin (n - r) :=
+  (finCongr (show n = r + (n - r) by omega)).trans finSumFinEquiv.symm
+
+/-- `finSplit` sends a pivot index `castLE i` (`i < r`) to `Sum.inl i`. -/
+@[simp] theorem finSplit_castLE {n r : ℕ} (h : r ≤ n) (i : Fin r) :
+    finSplit h (Fin.castLE h i) = Sum.inl i := by
+  rw [finSplit, Equiv.trans_apply,
+    show (finCongr (show n = r + (n - r) by omega)) (Fin.castLE h i) = Fin.castAdd (n - r) i from by
+      apply Fin.ext; simp [finCongr, Fin.castLE, Fin.castAdd],
+    finSumFinEquiv_symm_apply_castAdd]
+
+/-- The full block reindex `RepCoord (dStratum q p) ≃ B22block ⊕ SchurVar`. Drops the `Σ _ : Fin 1`
+(`Equiv.uniqueSigma`), splits `Fin p ≃ Fin r ⊕ Fin (p−r)` and `Fin q ≃ Fin r ⊕ Fin (q−r)`
+(`finSplit`), distributes the product, then rearranges (`blockRearrange`). -/
+def repCoordReindex (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    RepCoord (dStratum q p) ≃ B22block q p r ⊕ SchurVar q p r :=
+  (Equiv.uniqueSigma _).trans <|
+    (Equiv.prodCongr (finSplit hp) (finSplit hq)).trans <|
+      (Equiv.sumProdDistrib _ _ _).trans <|
+        (Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+          (blockRearrange q p r)
+
+/-- `finSplit` sends a non-pivot index `cast (natAdd r a)` (`≥ r`) to `Sum.inr a`. -/
+@[simp] theorem finSplit_natAdd {n r : ℕ} (h : r ≤ n) (a : Fin (n - r)) :
+    finSplit h (Fin.cast (show r + (n - r) = n by omega) (Fin.natAdd r a)) = Sum.inr a := by
+  rw [finSplit, Equiv.trans_apply,
+    show (finCongr (show n = r + (n - r) by omega))
+        (Fin.cast (show r + (n - r) = n by omega) (Fin.natAdd r a)) = Fin.natAdd r a from by
+      apply Fin.ext; simp [finCongr, Fin.natAdd],
+    finSumFinEquiv_symm_apply_natAdd]
+
+/-- A pivot coordinate `⟨0, (castLE i, castLE j)⟩` (pivot row `i`, pivot column `j`, both `< r`)
+maps under the reindex into the `Δ`-block of `SchurVar`: `Sum.inr (Sum.inl (i, j))`. So the pivot
+minor `detΔ` is a polynomial in the `SchurVar` coordinates only. -/
+theorem repCoordReindex_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j : Fin r) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.castLE hp i, Fin.castLE hq j)⟩
+      = Sum.inr (Sum.inl (i, j)) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.castLE hp i), finSplit hq (Fin.castLE hq j)))) = _
+  rw [finSplit_castLE, finSplit_castLE]
+  rfl
+
+/-- A `B22` coordinate `⟨0, (cast (natAdd r a), cast (natAdd r b))⟩` (non-pivot row `a`, column `b`)
+maps under the reindex to the outer `B22block`: `Sum.inl (a, b)`. So the `B22` entries become the
+outer (eliminated) coordinates under `blockAlgEquiv`. -/
+theorem repCoordReindex_b22 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (b : Fin (q - r)) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a),
+             Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩
+      = Sum.inl (a, b) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a)),
+          finSplit hq (Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))))) = _
+  rw [finSplit_natAdd, finSplit_natAdd]
+  rfl
+
+/-- A `B12` coordinate (pivot row `i`, non-pivot column `b`) maps to the `B12`-block of `SchurVar`:
+`Sum.inr (Sum.inr (Sum.inl (i, b)))`. -/
+theorem repCoordReindex_b12 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (i : Fin r) (b : Fin (q - r)) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.castLE hp i, Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩
+      = Sum.inr (Sum.inr (Sum.inl (i, b))) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.castLE hp i),
+          finSplit hq (Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))))) = _
+  rw [finSplit_castLE, finSplit_natAdd]
+  rfl
+
+/-- A `B21` coordinate (non-pivot row `a`, pivot column `i`) maps to the `B21`-block of `SchurVar`:
+`Sum.inr (Sum.inr (Sum.inr (a, i)))`. -/
+theorem repCoordReindex_b21 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (i : Fin r) :
+    repCoordReindex q p r hp hq
+        ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a), Fin.castLE hq i)⟩
+      = Sum.inr (Sum.inr (Sum.inr (a, i))) := by
+  change ((Equiv.sumCongr (Equiv.prodSumDistrib _ _ _) (Equiv.prodSumDistrib _ _ _)).trans
+      (blockRearrange q p r)) ((Equiv.sumProdDistrib _ _ _)
+        ((finSplit hp (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a)),
+          finSplit hq (Fin.castLE hq i)))) = _
+  rw [finSplit_natAdd, finSplit_castLE]
+  rfl
+
+/-! ## The generic product entries are the coordinate variables (`N = 1`) -/
+
+variable {k : Type u} [Field k]
+
+/-- At `N = 1`, the product `mult (dStratum q p) A` is the lone factor `A 0` (the empty prefix
+product is the identity). General over any commutative ring. -/
+theorem mult_stratum_eq {R : Type*} [CommRing R] (q p : ℕ) (A : Tuple (k := R) (dStratum q p)) :
+    mult (dStratum q p) A = A 0 := by
+  have hdef : mult (dStratum q p) A
+      = A 0 * multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1)) := rfl
+  have h1 : multPrefix (dStratum q p) A (Fin.castSucc (0 : Fin 1))
+      = (1 : Matrix (Fin (dStratum q p (Fin.castSucc (0 : Fin 1))))
+            (Fin (dStratum q p (Fin.castSucc (0 : Fin 1)))) R) := rfl
+  rw [hdef, h1]; exact Matrix.mul_one _
+
+/-- The generic single-matrix product entries are the coordinate variables:
+`multPoly (dStratum q p) a b = X ⟨0, (a, b)⟩`. -/
+theorem multPoly_stratum_apply (q p : ℕ) (a : Fin p) (b : Fin q) :
+    (Matrix.of (multPoly (k := k) (dStratum q p))) a b
+      = (X ⟨0, (a, b)⟩ : MvPolynomial (RepCoord (dStratum q p)) k) := by
+  rw [Matrix.of_apply, multPoly, mult_stratum_eq q p (genericTuple (dStratum q p))]
+  rfl
+
+/-! ## The pivot minor `detΔ` lives in the `SchurVar` block
+
+Under the block reindex `Φ = renameEquiv (repCoordReindex)`, the pivot minor `detΔ = detPivotPoly`
+maps to `rename Sum.inr detSchurS` — a polynomial in the `SchurVar` (specifically `Δ`) coordinates
+only. Pushing further through `sumAlgEquiv` (with `B22block` outermost), `detΔ` becomes the constant
+`C detSchurS`, so localizing `A_eng` at `detΔ` is localizing the coefficient ring at `detSchurS`. -/
+
+/-- The pivot determinant in the free Schur coordinate ring: `det` of the `Δ`-block coordinate
+matrix `(i, j) ↦ X (Sum.inl (i, j))` in `MvPolynomial (SchurVar q p r) k`. This is `detΔ` after
+eliminating the `B22` block — the localization element on the Schur side. -/
+noncomputable def detSchurS (q p r : ℕ) : MvPolynomial (SchurVar q p r) k :=
+  (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).det
+
+/-- Under the reindex `renameEquiv (repCoordReindex)`, the pivot minor `detΔ` maps to
+`rename Sum.inr (detSchurS)`: it is a polynomial in the `SchurVar` coordinates only. (`det` commutes
+with the algebra maps; each pivot entry `X ⟨0, (castLE i, castLE j)⟩` maps to the `Δ`-coordinate
+`X (Sum.inr (Sum.inl (i, j)))`, by `repCoordReindex_pivot`.) -/
+theorem renameEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    (renameEquiv k (repCoordReindex q p r hp hq)) (detPivotPoly (k := k) q p r hp hq)
+      = rename Sum.inr (detSchurS (k := k) q p r) := by
+  rw [detPivotPoly, detSchurS, AlgEquiv.map_det, AlgHom.map_det (rename Sum.inr)]
+  congr 1
+  funext i j
+  rw [AlgEquiv.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.map_apply,
+    Matrix.submatrix_apply, multPoly_stratum_apply, renameEquiv_apply, rename_X, Matrix.of_apply,
+    rename_X]
+  congr 1
+  exact repCoordReindex_pivot q p r hp hq i j
+
+/-- The full block algebra equivalence
+`A_eng ≃ₐ[k] MvPolynomial B22block (MvPolynomial SchurVar k)`: relabel the coordinates
+(`renameEquiv (repCoordReindex)`) then split off the `B22` block (`sumAlgEquiv`, `B22block`
+outermost). -/
+noncomputable def blockAlgEquiv (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    MvPolynomial (RepCoord (dStratum q p)) k
+      ≃ₐ[k] MvPolynomial (B22block q p r) (MvPolynomial (SchurVar q p r) k) :=
+  (renameEquiv k (repCoordReindex q p r hp hq)).trans (sumAlgEquiv k _ _)
+
+/-- Under `blockAlgEquiv`, the pivot minor `detΔ` becomes the constant `C detSchurS`: it lives
+purely in the `SchurVar` coefficient ring (`sumAlgEquiv` sends `rename Sum.inr` into the constants).
+So localizing `A_eng` at `detΔ` corresponds to localizing the `SchurVar` coefficient ring at
+`detSchurS`. -/
+theorem blockAlgEquiv_detPivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    blockAlgEquiv (k := k) q p r hp hq (detPivotPoly (k := k) q p r hp hq)
+      = C (detSchurS (k := k) q p r) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_detPivot]
+  have h := sumAlgEquiv_comp_rename_inr (R := k) (S₁ := B22block q p r) (S₂ := SchurVar q p r)
+  have hs := congrArg (fun f ↦ f (detSchurS (k := k) q p r)) h
+  simpa using hs
+
+/-! ### `blockAlgEquiv` on the four block coordinate variables
+
+Under `blockAlgEquiv`, a `B22` coordinate becomes the outer (eliminated) variable `X (a,b)`; the
+three free-block coordinates (`Δ`, `B12`, `B21`) become inner constants `C (X …)` from the
+`SchurVar` coefficient ring. These are the entry-images the bordered-minor identity uses. -/
+
+/-- `blockAlgEquiv` sends a `B22` coordinate to the outer eliminated variable `X (a, b)`. -/
+theorem blockAlgEquiv_X_b22 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q)
+    (a : Fin (p - r)) (b : Fin (q - r)) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a),
+                Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩)
+      = X (a, b) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b22]
+  exact sumToIter_Xl k _ _ _
+
+/-- `blockAlgEquiv` sends a `Δ`-pivot coordinate to the inner constant `C (X (Sum.inl (i, j)))`. -/
+theorem blockAlgEquiv_X_pivot (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i j : Fin r) :
+    blockAlgEquiv (k := k) q p r hp hq (X ⟨0, (Fin.castLE hp i, Fin.castLE hq j)⟩)
+      = C (X (Sum.inl (i, j))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_pivot]
+  exact sumToIter_Xr k _ _ _
+
+/-- `blockAlgEquiv` sends a `B12` coordinate to `C (X (Sum.inr (Sum.inl (i, b))))`. -/
+theorem blockAlgEquiv_X_b12 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (i : Fin r) (b : Fin (q - r)) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.castLE hp i, Fin.cast (show r + (q - r) = q by omega) (Fin.natAdd r b))⟩)
+      = C (X (Sum.inr (Sum.inl (i, b)))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b12]
+  exact sumToIter_Xr k _ _ _
+
+/-- `blockAlgEquiv` sends a `B21` coordinate to `C (X (Sum.inr (Sum.inr (a, i))))`. -/
+theorem blockAlgEquiv_X_b21 (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) (a : Fin (p - r)) (i : Fin r) :
+    blockAlgEquiv (k := k) q p r hp hq
+        (X ⟨0, (Fin.cast (show r + (p - r) = p by omega) (Fin.natAdd r a), Fin.castLE hq i)⟩)
+      = C (X (Sum.inr (Sum.inr (a, i)))) := by
+  rw [blockAlgEquiv, AlgEquiv.trans_apply, renameEquiv_apply, rename_X, repCoordReindex_b21]
+  exact sumToIter_Xr k _ _ _
+
+/-- `detSchurS ≠ 0`: it is the determinant of the generic `Δ`-coordinate matrix (a renamed
+`mvPolynomialX`), nonzero by `det_mvPolynomialX_ne_zero`. So `Sd = Localization.Away detSchurS` is a
+nontrivial localization (a domain), and `detSchurS` is a valid localization element. -/
+theorem detSchurS_ne_zero (q p r : ℕ) : detSchurS (k := k) q p r ≠ 0 := by
+  rw [detSchurS]
+  have hren : (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k)))
+      = (mvPolynomialX (Fin r) (Fin r) k).map
+          (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) := by
+    ext i j; simp [mvPolynomialX_apply, rename_X]
+  rw [hren,
+    show ((mvPolynomialX (Fin r) (Fin r) k).map
+        (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r)))).det
+      = rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))
+          (mvPolynomialX (Fin r) (Fin r) k).det from
+      (AlgHom.map_det (rename (fun ab : Fin r × Fin r ↦ (Sum.inl ab : SchurVar q p r))) _).symm,
+    Ne, rename_eq_zero_iff_of_injective]
+  · exact det_mvPolynomialX_ne_zero (Fin r) k
+  · intro a b hab; simpa using hab
+
+/-! ## The forced `B22` value and its graph ideal `J` (`height J = C`)
+
+On the pivot chart the Schur relation forces `B22 = B21 Δ⁻¹ B12`. The forced value lives in
+`Sd = Localization.Away detSchurS`: `forcedB22 a b = (B21 · adjugate Δ · B12)_{ab} / detSchurS`
+(using `adjugate`, not `inv`, so the numerator is a genuine polynomial). The graph ideal `J =
+graphIdeal forcedB22` of `MvPolynomial B22block Sd` has height `(p−r)(q−r) = C` — the lower bound
+the `Iad = J` height-squeeze consumes (the inclusion `J ⊆ Iad` alone only gives `≤ C`). -/
+
+/-- The Schur numerator `B21 · adjugate Δ · B12` in the free coordinate ring
+`MvPolynomial SchurVar k` (`Δ`, `B12`, `B21` the generic free blocks). `adjugate`, not `inv`, keeps
+it polynomial. -/
+noncomputable def forcedNum (q p r : ℕ) :
+    Matrix (Fin (p - r)) (Fin (q - r)) (MvPolynomial (SchurVar q p r) k) :=
+  (Matrix.of fun a i ↦ X (Sum.inr (Sum.inr (a, i)))) *
+    (Matrix.of (fun i j : Fin r ↦ (X (Sum.inl (i, j)) : MvPolynomial (SchurVar q p r) k))).adjugate
+    * (Matrix.of fun i j ↦ X (Sum.inr (Sum.inl (i, j))))
+
+/-- The forced `B22` value in `Sd = Localization.Away detSchurS`: the Schur numerator divided by
+`detSchurS` (`= B21 Δ⁻¹ B12` once the pivot det is inverted). The graph map whose ideal `J` the
+localized determinantal ideal `Iad` equals. -/
+noncomputable def forcedB22 (q p r : ℕ) (Sd : Type u) [CommRing Sd]
+    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+    B22block q p r → Sd :=
+  fun ab ↦ IsLocalization.mk' Sd ((forcedNum (k := k) q p r) ab.1 ab.2)
+    (⟨detSchurS q p r, Submonoid.mem_powers _⟩ : Submonoid.powers (detSchurS (k := k) q p r))
+
+/-- **`height J = C`** for the forced Schur graph ideal `J = graphIdeal forcedB22` in
+`MvPolynomial B22block Sd`: it eliminates the `B22` block, so its height is
+`#B22block = (p−r)(q−r) = C` (`height_graphIdeal_localization_eq` at `Sd = Localization.Away
+detSchurS`, `detSchurS ≠ 0`). The lower bound the `Iad = J` squeeze needs. -/
+theorem height_graphIdeal_forcedB22_eq (q p r : ℕ) (Sd : Type u) [CommRing Sd]
+    [Algebra (MvPolynomial (SchurVar q p r) k) Sd]
+    [IsLocalization.Away (detSchurS (k := k) q p r) Sd] :
+    (graphIdeal (forcedB22 (k := k) q p r Sd)).height = ((p - r) * (q - r) : ℕ) := by
+  rw [height_graphIdeal_localization_eq (k := k) (detSchurS q p r) (detSchurS_ne_zero q p r) Sd,
+    card_B22block]
+
+end DLNFibre.Core

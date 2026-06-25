@@ -1,0 +1,136 @@
+# lessons — fibre-codimension bundle-shift (LR Lemma 4.6)  (append-only)
+
+- **(setup) `fetch` updates `origin/dev`, not local `dev`.** Branching a new worktree off the LOCAL
+  `dev` after a merge gave a *stale* base (`7854591`, PR #6) missing the just-merged PR #7. Fix:
+  `git branch -f dev origin/dev` (no local `dev` worktree, so safe) before `git worktree add … dev`, or
+  branch directly off `origin/dev`. [Relates to the ROADMAP "Process / harness uplift" items.]
+- **(setup) Controller-in-worktree** ⟹ teammate `isolation: worktree` collapses to the shared worktree
+  (serial). Acceptable; true isolation needs the controller in the main checkout (occupied by aoyagi).
+- **(rotation hold) Uplift A implemented (draft, to-validate-on-box).** Authored the multi-worktree
+  Lean build workflow during the VM-rotation hold: `docs/policies/lean-build-workflow.md` + `lean/scripts/lb`
+  (shared-store symlink + global `flock` build semaphore + capped `-j`, on-the-fly tunable) + `lean/scripts/lake-store-setup`
+  (one-time detached store materialisation) + `lean/CLAUDE.md` pointer. Key design point (operator): with
+  MULTIPLE independent controllers each spawning teammate worktrees, per-session `-j` can't bound total
+  concurrency — only a GLOBAL semaphore (in the wrapper, the single chokepoint) can. Target box t3.2xlarge
+  (8 vCPU / 32 GB): shared mathlib is REQUIRED (can't hold unshared copies); global cap ≈6 workers.
+  **TODO post-rotation:** validate the scripts on the box (esp. store-materialisation + the flock pool),
+  then **promote the policy + scripts to `dev`** so every worktree inherits them.
+- **(rotation hold) Build-script validation on the prior box — 3 bugs fixed + a real toolchain finding.**
+  Tested `lb` end-to-end (temp store symlinked to the already-materialised packages — no `cache get`, no
+  disturbing other sessions). Bugs: (1)(2) two `set -e` exits — `[ cond ] && { … }` at statement level
+  exits the script when `cond` is false (the build-config-source and slot-wait lines); use `if … fi`.
+  (3) **Lake 5.0 / Lean v4.29 has NO `-j`/`--jobs` flag** (`unknown short option '-j'`) — per-build
+  parallelism is the **`LEAN_NUM_THREADS`** env instead. **Measured** that `LEAN_NUM_THREADS` caps the
+  concurrent-`lean`-*subprocess* count (`=1`→1, `=4`→4), so `SLOTS × J` is a valid TOTAL-worker cap
+  (`SLOTS=2, J=3` confirmed fine). Method notes: deleting a module's `.olean` does NOT force a rebuild
+  (lake trusts its trace) — force via a source content change (revert with `git checkout`); `pgrep -c`
+  exits non-zero on 0 matches (don't `|| echo 0` — it double-counts). Wrapper now validated except the
+  one-time `cache get` (store-setup), which still needs the box.
+- **(setup) Uplift A works — share `.lake/packages` via symlink.** The fresh-worktree `lake exe cache
+  get` re-clones mathlib + builds the cache exe, which exceeds the 10-min bash cap (build killed twice).
+  Fix: `rm -rf lean/.lake && mkdir lean/.lake && ln -s <main-checkout>/lean/.lake/packages
+  lean/.lake/packages` — valid because the main checkout's mathlib rev (`8a178386`) matches this
+  worktree's (same v4.29 pin). Result: `Core.Basic` built in **4.2 s** (vs the timed-out clone). This is
+  the ROADMAP "Process / harness uplift A" applied by hand; worth scripting into a worktree hook. (Safety:
+  shared `.lake/packages` is read-only at build time; the worktree's own DLNFibre oleans go in its own
+  `.lake/build`. Only valid when the dep revs match.)
+- **(rotation hold) Global build semaphore validated + one benign edge case.** With `SLOTS=1`, two
+  concurrent `lb` builds correctly serialise: the loser logs "all 1 global build slots busy; waiting…"
+  until the winner releases the `flock` slot, then proceeds (both green). The cross-session global cap
+  works — the answer to the multi-controller RAM concern. **Known limitation (box-TODO):** `lb`'s
+  `.lake/packages` self-heal runs *before* the slot acquire and is **not concurrency-safe within one
+  worktree** — two `lb` in the *same* worktree could race the `rm -rf`/`ln -s`. Benign in intended use
+  (one build per worktree at a time; distinct worktrees have distinct `.lake`). Fix on the box: wrap the
+  self-heal in a per-worktree `flock` (separate fd from the global build pool).
+
+## Multi-tide coordination — the G2-2 collisions, and protocol-level fixes (2026-06-24)
+
+**Failure mode.** G2-2's elimination half saw THREE collisions: two formaliser tides grinding the SAME
+residual in the SAME shared worktree. Zero damage (committed-seam discipline + the tides halting on
+collision saved it), but heavy wasted effort + controller overhead.
+
+**Root causes (mechanism, not carelessness):**
+1. **Shared worktree.** All tides ran in the controller's one worktree ⟹ `.lake/build` races, git-index
+   races, and an untracked in-flight `.lean` pollutes the whole-package build (duplicate decls) for the
+   other tide. (`scripts/lb` builds every `.lean` in the package, tracked or not.)
+2. **No reliable hard-stop.** `TaskStop` did not reach the `Agent`-spawned background tides (by name or
+   `name@session`); only a `shutdown_request` worked — and a busy tide doesn't process it promptly.
+3. **Message latency vs fast tides.** "stop / go / actually finish" messages crossed the tides'
+   continued commits. The controller's model of "tide X is at state S" was always stale on arrival;
+   tides commit + idle on their own cadence, not on a mid-burst message.
+
+**Higher-level fixes (adopt as protocol):**
+- **(A) One write-baton per branch.** Exactly one tide holds the write-baton for a module/branch.
+  Issued on spawn; returned ONLY by *confirmed termination* (shutdown-approved / process-gone), never by
+  a "standing down" message. Successor spawned only after the baton is returned. ⟹ terminate-then-spawn,
+  never overlap.
+- **(B) Hand-offs are terminate-then-spawn.** A tide that safety-valves commits a clean partial, is shut
+  down (controller waits for the shutdown-approved event), THEN the successor reads the committed state +
+  handoff doc. No "fresh tide for the residual" while the original is alive.
+- **(C) Strictly serial formaliser tides in a shared worktree.** Until per-teammate worktree isolation
+  exists, ONE write-tide at a time, full stop. (Scouts/reviewers that don't WRITE Lean may overlap —
+  they don't touch `.lake/build` or commit source.)
+- **(D) Act on committed state, not messages.** Source of truth = `git log` / the branch, not in-flight
+  tide messages (stale by arrival). Redirect only at a tide's self-reported committed checkpoint.
+- **(E) Never leave an untracked `.lean` in the package; commit partials frequently.** A hand-off is
+  always from a clean committed state; an untracked in-flight module breaks the other tide's build.
+- **(F) Don't re-scope a tide mid-flight via crossing messages.** If scope changes, wait for the tide's
+  next checkpoint and re-spec then.
+
+**For the operator at expedition end (harness asks):** (i) per-teammate worktree isolation for a
+*worktree-based* controller — the real fix to (C), = ROADMAP Uplift B (currently teammate `isolation:
+worktree` collapses onto the controller's worktree); (ii) a reliable controller hard-stop for background
+tides (`TaskStop` didn't reach `Agent`-spawned ones). With (A)–(F) the collisions are structurally
+impossible (never two write-tides on one branch), but (i)+(ii) would make it cheap rather than disciplined.
+
+## R2-3a/b coordination near-misses (2026-06-24) — two refinements
+
+Two new wrinkles surfaced over R2-3a → R2-3b-1+2, both resolved with ZERO damage but worth protocol:
+
+- **(G) The controller must not commit a tide's *uncommitted* work in a shared worktree.** Twice a tide
+  finished a small addition (a docstring; then `isReduced_Sred`) and went **idle leaving it uncommitted**
+  in the working tree. The controller (green-gater) committed it directly to keep the branch clean. It
+  worked — the second time the tide even saw the controller's commit and built its card on top — but in a
+  **shared worktree the controller and the tide share one index**, so committing a tide's in-flight file
+  while the tide is still alive can race a `git add` the tide is about to issue. **Fix:** the write-baton
+  holder (the tide) commits its own work; if it idles with an uncommitted module, the controller sends a
+  one-line "commit it + report SHA" rather than committing on its behalf. Tightens (A)/(E): the controller
+  green-gates *committed* state, it does not author commits into a live tide's worktree. (Reinforces the
+  spec line now in every tide brief: **"commit finished work BEFORE going idle."**)
+- **(H) Messaging a shut-down teammate REVIVES it.** A courtesy "thanks, stand down" SendMessage to a
+  tide that had already approved its shutdown **resumed the process** (re-loaded with all prior messages
+  as a fresh prompt). To terminate cleanly: send the `shutdown_request`, get the `shutdown-approved` /
+  `teammate_terminated` event, then send **no further messages** to that teammate. Put the thanks/closure
+  *inside* the `shutdown_request` reason, not in a separate message afterward. (A revived idle tide is
+  harmless if it doesn't write, but it burns context and muddies the one-write-baton picture; re-terminate
+  with another `shutdown_request`, never a chat message.)
+- **(I) Spawned agents default to the MAIN-checkout cwd, not the controller's worktree.** A pen-and-paper
+  wrote its `certificate.md` to `…/geometry-of-dln-fibre/expeditions/…` (the main checkout) instead of the
+  worktree `…/.claude/worktrees/fibre-codim/expeditions/…`. Formaliser tides avoid this for *builds*
+  because their brief says "cd into the worktree lean dir every call", but DOC writes (certificates,
+  findings, cards) silently land in the main checkout — polluting another session's branch + leaving the
+  deliverable off the controller's branch. **Fix:** every teammate brief must give the WORKTREE-prefixed
+  absolute path for any file it writes (`…/.claude/worktrees/fibre-codim/expeditions/…`), not the bare
+  repo path. The controller re-homes any stray artefact onto its own branch from the agent's message
+  content (never by reaching into the main checkout).
+- **(J) Build/aggregate caveat: witness-name collisions surface only at aggregation.** A new module's
+  witness `tupleWitnessQ` clashed with `Core.Gabriel.tupleWitnessQ` (both `DLNFibre.Core`) — invisible to
+  the tide (Gabriel isn't a dep, so the isolated `scripts/lb <module>` build is clean) and only erroring
+  when the controller adds the import to the aggregator (both then in one environment). Same class as the
+  earlier `genericTuple` dup. **Fix:** tide briefs say "prefix witness/scratch defs with the module name"
+  (`fibreJac…`, not `tupleWitnessQ`); the controller resolves any residual clash at the green-gate (a
+  rename is the controller's aggregation responsibility).
+- **(K) Never spawn a successor write-tide before the predecessor's `teammate_terminated` is confirmed —
+  reinforced the hard way.** Under a mid-tide ROUTE PIVOT (route B → route c), the controller shut down the
+  H4 tide and *immediately spawned a fresh route-c tide* — but H4 was busy (hadn't processed the shutdown)
+  and was still building route-c scaffolding, so TWO write-tides converged on the same branch/work. Zero
+  damage only because the H4 tide had exemplary collision-discipline: it detected the conflicting task owner,
+  **deleted its uncommitted (sorry-bearing) work to protect the branch, and held all Lean writes** until the
+  controller clarified. Compounded by the revive-wrinkle (H): messaging H4 to redirect it *revived* it, after
+  which it processed its stale shutdown and re-terminated. **Fix (binds the controller):** on a mid-tide route
+  pivot, REDIRECT the existing alive tide (one message changing its task) — do NOT shut it down + spawn a
+  parallel one; if you do shut it down, WAIT for `teammate_terminated` before spawning the successor; and
+  never message a tide that has a pending shutdown (it revives then re-terminates, muddying the picture). When
+  the route changes, the cheapest correct move is usually a single redirect message to the live tide, not a
+  new spawn. Net here: a lot of churn, zero damage, branch stayed green throughout — but the churn was
+  avoidable and is the controller's error, not the substrate's.

@@ -27,7 +27,8 @@ categorical/derived-`Ext` bridge is **DEFERRED** — it is not built here. Hence
 `deformationExt1`, not `Ext1`; the equality with derived `Ext` is **Cited**, not Proved.
 
 Nothing here is the *geometric* codimension: `finrank deformationExt1 M M = codim O_M` is Voigt's
-theorem (Phase B) and needs the orbit-dimension bridge. No declaration here is named `codim…`.
+theorem (Phase B), discharged in `Core.VoigtDischarge` — not here.
+No declaration here is named `codim…`.
 
 **Typeclass.** `Field k` throughout (the deformation complex computes `Ext` over a field; finrank
 additivity needs free finite modules). `Nontrivial k` is automatic from `Field`.
