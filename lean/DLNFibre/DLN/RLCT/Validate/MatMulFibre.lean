@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
 import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
 
 /-!
@@ -247,61 +248,55 @@ theorem pivotCol_box_lt_top {p N : ℕ} (hp : 1 ≤ p) (ℓ : Fin (N + 1)) (S : 
       rw [heq]; exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_Icc))
     exact hcpt.measure_lt_top
 
-/-- The 2×2 → `Fin 4` flatten `e22` (MP): uncurry the matrix to `(Fin 2 × Fin 2) → ℝ`
-(`MeasurableEquiv.curry _ _ _ |>.symm`), then reindex `Fin 2 × Fin 2 ≃ Fin 4` (`arrowCongr'`). -/
+/-- The Sigma→`Fin 4` reindex for the 2×2 flatten: `(_ : Fin 2) × Fin 2 ≃ Fin 4`
+(`sigmaEquivProd` then `finProdFinEquiv`). -/
+noncomputable def sig22EquivFin4 : ((_ : Fin 2) × Fin 2) ≃ Fin 4 :=
+  (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans
+    ((finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2 * 2)).trans (finCongr (by norm_num)))
+
+/-- The 2×2 → `Fin 4` flatten `e22` (MP), built ENTIRELY from sorry-free MP bricks:
+`piCurry` (Sigma uncurry, `measurePreserving_piCurry`) then `arrowCongr'` (the `sig22EquivFin4`
+reindex, `volume_preserving_arrowCongr'`). No `MeasurableEquiv.curry` sorry. -/
 noncomputable def e22 : (Fin 2 → Fin 2 → ℝ) ≃ᵐ (Fin 4 → ℝ) :=
-  (MeasurableEquiv.curry (Fin 2) (Fin 2) ℝ).symm.trans
-    (MeasurableEquiv.arrowCongr'
-      ((finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2 * 2)).trans (finCongr (by norm_num)))
-      (MeasurableEquiv.refl ℝ))
+  (MeasurableEquiv.piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ)).symm.trans
+    (MeasurableEquiv.arrowCongr' sig22EquivFin4 (MeasurableEquiv.refl ℝ))
 
-/-- `e22 A i = A ((g.symm i).1) ((g.symm i).2)` for the reindex `g = finProdFinEquiv ∘ finCongr`
-(the flatten reads the matrix entry at the decoded `(row, col)`). -/
+/-- `e22 A i = A (sig22EquivFin4.symm i).1 (sig22EquivFin4.symm i).2` (the flatten reads the matrix
+entry at the decoded Sigma index). -/
 theorem e22_apply (A : Fin 2 → Fin 2 → ℝ) (i : Fin 4) :
-    e22 A i = A
-      (((finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2*2)).trans (finCongr (by norm_num))).symm i).1
-      (((finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2*2)).trans (finCongr (by norm_num))).symm i).2 := rfl
-
-/-- The uncurry `(Fin 2 → Fin 2 → ℝ) ≃ᵐ (Fin 2 × Fin 2 → ℝ)` is measure-preserving — `curry` is a
-reindex of the product Lebesgue measure. Via `arrowProdEquivProdArrow` is awkward (it splits the
-codomain, not the domain index); this is the `MeasurableEquiv.curry` reindex MP, a standard fact. -/
-theorem measurePreserving_uncurry22 :
-    MeasurePreserving (MeasurableEquiv.curry (Fin 2) (Fin 2) ℝ).symm
-      (volume : Measure (Fin 2 → Fin 2 → ℝ)) (volume : Measure (Fin 2 × Fin 2 → ℝ)) := by
-  sorry
+    e22 A i = A (sig22EquivFin4.symm i).1 (sig22EquivFin4.symm i).2 := rfl
 
 theorem measurePreserving_e22 :
     MeasurePreserving e22 (volume : Measure (Fin 2 → Fin 2 → ℝ)) (volume : Measure (Fin 4 → ℝ)) := by
   unfold e22
-  exact measurePreserving_uncurry22.trans (volume_preserving_arrowCongr'
-    ((finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2 * 2)).trans (finCongr (by norm_num)))
+  refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr' sig22EquivFin4
     (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+  exact (measurePreserving_piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ)
+    (fun _ _ => (volume : Measure ℝ))).symm _
 
 theorem frobSq22_box_lt_top (T : ℝ) (hT : 0 < T) (c' : ℝ) (hc' : c' < 2) :
     ∫⁻ A in matBox 2 2 T, ENNReal.ofReal ((frobSq A) ^ (-c')) < ⊤ := by
   -- `frobSq A = ∑_{i<4} (e22 A i)²` (the flatten reindexes the 4 entries; `Equiv.sum_comp`)
   have hfrob : ∀ A : Fin 2 → Fin 2 → ℝ, frobSq A = ∑ i, (e22 A i) ^ 2 := by
     intro A
-    set g : Fin 2 × Fin 2 ≃ Fin 4 :=
-      (finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2 * 2)).trans (finCongr (by norm_num)) with hg
-    rw [show (∑ i, (e22 A i) ^ 2) = ∑ i, (A (g.symm i).1 (g.symm i).2) ^ 2 from
+    rw [show (∑ i, (e22 A i) ^ 2)
+        = ∑ i, (A (sig22EquivFin4.symm i).1 (sig22EquivFin4.symm i).2) ^ 2 from
       Finset.sum_congr rfl (fun i _ => by rw [e22_apply])]
-    rw [Equiv.sum_comp g.symm (fun kj : Fin 2 × Fin 2 => (A kj.1 kj.2) ^ 2), Fintype.sum_prod_type]
-    rfl
+    rw [Equiv.sum_comp sig22EquivFin4.symm (fun kj : (_ : Fin 2) × Fin 2 => (A kj.1 kj.2) ^ 2)]
+    unfold frobSq
+    rw [Fintype.sum_sigma]
   -- transport via `e22` (MP); `matBox 2 2 T = e22 ⁻¹' (morseBox 4 T)`
   have hmp := measurePreserving_e22
   have hpre : matBox 2 2 T = e22 ⁻¹' (morseBox 4 T) := by
     ext A
     simp only [matBox, morseBox, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ,
       true_implies]
-    set g : Fin 2 × Fin 2 ≃ Fin 4 :=
-      (finProdFinEquiv : Fin 2 × Fin 2 ≃ Fin (2 * 2)).trans (finCongr (by norm_num)) with hg
     constructor
     · intro h i; rw [e22_apply]; exact h _ _
     · intro h k2 jj
-      have := h (g (k2, jj))
+      have := h (sig22EquivFin4 ⟨k2, jj⟩)
       rw [e22_apply] at this
-      simpa [hg, Equiv.symm_apply_apply] using this
+      simpa [Equiv.symm_apply_apply] using this
   have hrwfrob : ∀ A : Fin 2 → Fin 2 → ℝ, ENNReal.ofReal ((frobSq A) ^ (-c'))
       = (fun x : Fin 4 → ℝ => ENNReal.ofReal ((∑ i, (x i) ^ 2) ^ (-c'))) (e22 A) := fun A => by
     rw [hfrob]

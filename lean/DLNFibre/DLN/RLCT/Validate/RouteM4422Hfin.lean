@@ -28,12 +28,15 @@ fibre engine + the radial Morse terminal (`radial_ball_iff`), no `monomial_rlct`
 
 ## STATUS — the connecting plumbing is the honest residual
 
-The fibre engine (`fibre_lintegral_mul_le`) and the Morse terminal (`sumSqND_box_lt_top`) are banked
-sorry-free and S2-free (`MatMulFibre`, `S1RadialMorse`). The remaining step is the measure-preserving
-identification of `routeMCore M4422` over `(−1,1)^28` with the iterated triple-matrix fibre integral
-(the `paramsEquivFlat`/`Params M4422` reshape + the 3-fold Tonelli), pinned below as the single
-`sorry`. The MATH is complete (Codex-survived, numerically verified, thread 29); this is the
-`Params`-reshape bookkeeping.
+The whole analytic engine is banked **sorry-free and S2-free** (`[propext, Classical.choice,
+Quot.sound]`, no `monomial_rlct`): the fibre lemma `fibre_lintegral_mul_le`, the radial-Morse terminal
+`radial_morse_dominates_lt_top`/`sumSqND_box_lt_top`, the A2 leaf `frobSq22_box_lt_top`, and the
+assembled 3-fold iterated fibre `triple_fibre_lt_top` (`MatMulFibre`, `S1RadialMorse`). The remaining
+step — pinned as the single `sorry` below — is the measure-preserving identification of
+`routeMCore M4422` over `(−1,1)^28` with `triple_fibre_lt_top` (the `paramsEquivFlat`/`Params M4422`
+entry reshape + the open-⊆-closed box monotone bound + the `c' = 0` trivial split). The MATH is
+complete (Codex-survived, numerically verified, thread 29); this is `Params`-reshape bookkeeping that
+rides the banked `prod_M4422_eq_rmatMul` + `dlnLoss_M4422_eq_frobSq` product identities.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -145,11 +148,10 @@ atom `routeM4422_box_diverges`; together they discharge the two analytic atoms o
 `routeMLayerCover_of_atoms` for `M = (4,4,2,2)` (this side via the iterated matrix-product fibre engine
 `fibre_lintegral_mul_le`, S2-free).
 
-The residual `sorry` is the `Params`-reshape + 3-fold Tonelli identification of `routeMCore M4422`
-over the 28-coord box with `triple_fibre_lt_top` (the iterated-fibre core, banked). The analytic
-content — the two fibre bounds (`fibre_lintegral_mul_le`), the `c' < 2` threshold, and the A2 Morse
-leaf (`frobSq22_box_lt_top`) — is banked in `MatMulFibre`/`S1RadialMorse` (S2-free; the only open
-sub-lemma there is `measurePreserving_uncurry22`, the standard 2×2-matrix flatten MP). -/
+The residual `sorry` is the `Params`-reshape identification of `routeMCore M4422` over the 28-coord
+box with `triple_fibre_lt_top` (the iterated-fibre core, banked sorry-free + S2-free). The full
+analytic content — the two fibre bounds (`fibre_lintegral_mul_le`), the `c' < 2` threshold, and the
+A2 Morse leaf (`frobSq22_box_lt_top`) — is banked sorry-free in `MatMulFibre`/`S1RadialMorse`. -/
 theorem routeMCore_M4422_threshold_lt_top (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M4422 : ℝ) / 2) :
     ∫⁻ x in routeMBaseNbhd M4422, ENNReal.ofReal (|routeMCore M4422 x| ^ (-(c' : ℝ))) < ⊤ := by

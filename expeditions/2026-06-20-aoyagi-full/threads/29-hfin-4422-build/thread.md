@@ -53,3 +53,18 @@ Bad sets (Y=0) are null and handled by the a.e. split.
 ## Axiom hygiene
 The whole route is S2-FREE (radial_ball_iff Morse, det-1 shears, Tonelli). #print axioms must be
 [propext, Classical.choice, Quot.sound] for the (4,4,2,2) hfin conclusion — NO monomial_rlct on this side.
+
+## OUTCOME (2026-06-25)
+Delivered, full library GREEN (8370 jobs), all named results axiom-clean S2-free
+[propext, Classical.choice, Quot.sound] (NO monomial_rlct, NO sorryAx, NO native_decide):
+- L1.1 `radial_morse_dominates_lt_top` (S1RadialMorse.lean) — sorry-free. Deliverable #1.
+- `fibre_lintegral_mul_le` + the full engine (MatMulFibre.lean) — sorry-free (incl. frobSq22_box_lt_top,
+  pivotCol_box_eq, fibreConst_lt_top). The iterated-fibre engine, the analytic heart of deliverable #2.
+- `triple_fibre_lt_top` (RouteM4422Hfin.lean) — sorry-free; the 3-fold iterated fibre for (4,4,2,2).
+- `routeMCore_M4422_threshold_lt_top` (the hfin headline) — ONE residual sorry: the Params-reshape
+  identification of routeMCore over (−1,1)^28 with triple_fibre_lt_top (entry-correspondence +
+  open-⊆-closed monotone bound + c'=0 split). Bridge identities banked: prod_M4422_eq_rmatMul,
+  dlnLoss_M4422_eq_frobSq.
+Reviewer (Codex-decorrelated) verdict: math sound, statements faithful, sorry honestly scoped, axiom-clean.
+The earlier measurePreserving_uncurry22 sorry was DISCHARGED (reviewer NICE-TO-HAVE) by routing e22
+through the sorry-free piCurry (Sigma) MP instead of MeasurableEquiv.curry.
