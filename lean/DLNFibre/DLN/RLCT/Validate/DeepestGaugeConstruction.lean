@@ -16,6 +16,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrame
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
+import DLNFibre.DLN.RLCT.Validate.FrontPivotProducer
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -1458,6 +1459,41 @@ theorem deepestEPivot_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
        refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
        simp only [deepestEPivot, Equiv.apply_symm_apply])
 
+/-- **The FULL reg-residual energy IS the FULL block energy** (the `deepestEFull` analogue of
+`deepestEPivot_sq_sum_eq_blocks`). The sum of squares of `deepestEFull q` over `Fin nReg` equals the
+three residual-block energies of `P = reindex(prod(framedParamsPivot q))` — `∑(P11−1)² + ∑P12² +
+∑P21²`. Same `regResidualPack`-as-summing-bijection argument; only the framed product changes
+(`framedParamsPivot` for `framedParamsRegPivot`). The block-level identity the producer's (b)-conjunct
+reads. -/
+theorem deepestEFull_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2)
+      = (∑ a, ∑ b, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (prod H (framedParamsPivot H r hr hL J Pf Qf q))).toBlocks₁₁ - 1) a b) ^ 2)
+        + ((∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (prod H (framedParamsPivot H r hr hL J Pf Qf q))).toBlocks₁₂ a b) ^ 2)
+          + (∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (prod H (framedParamsPivot H r hr hL J Pf Qf q))).toBlocks₂₁ a b) ^ 2)) := by
+  rw [← Equiv.sum_comp (regResidualPack H r hr).symm
+      (fun i => (deepestEFull H r hr hL J Pf Qf q i) ^ 2),
+    Fintype.sum_sum_type]
+  congr 1
+  · rw [Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+    simp only [deepestEFull, Equiv.apply_symm_apply]
+  · rw [Fintype.sum_sum_type]
+    congr 1 <;>
+      (rw [Fintype.sum_prod_type]
+       refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
+       simp only [deepestEFull, Equiv.apply_symm_apply])
+
 /-- The left endpoint frame at first layer, cast to the endpoint width `Fin (H 0)`. The canonical
 witness of the endpoint telescoping (independent of the product being telescoped). -/
 noncomputable def endpointP0 (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
@@ -1739,6 +1775,17 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- width positivity `0 < M s ⟺ r < H s` the headline already carries) gives `0 < H 0`, `0 < H (last L)`.
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (J : Fin r ↪ Fin (H (Fin.last L)))
+    -- **FRONT-PIVOT HYPOTHESIS (B (front-pivot WLOG) route, b-wlog-spec, 2026-06-25).** The pivot
+    -- embedding is the FRONT embedding `k ↦ k` (`frontEmbed`), so its column pivots are `{0,…,r−1}`
+    -- and `pivotThresholdSplit … J = rThresholdSplit …` (banked `pivotThresholdSplit_frontEmbed`).
+    -- This is what makes the (b)-conjunct an EXACT equality `∑deepestEFull² = Sreg` (NOT the refuted
+    -- two-sided comparability): for a front pivot the last-layer column-permutation `π_J` is the
+    -- identity, the per-`w` telescope `prod (F w) = P0·prod(A w)·QL` is CLEAN for every `w` (not just
+    -- `w0`), so the framed-product block reads coincide with the loss `Sreg` blocks entrywise. The
+    -- caller discharges it by running the chart at `B·Π` (the column permutation bringing `B`'s rank-`r`
+    -- pivots to the front), where the headline's `⨅ optimalSet` form is invariant (b-wlog-spec lemmas
+    -- 1-5). The earlier non-front statement carried `δ₁, δ₂` comparability + an UNBUILT germ/Taylor atom.
+    (hfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
@@ -1838,20 +1885,22 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                 ≤ γ₁ * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                     + (∑ i, ∑ j, (P10 i j) ^ 2))
                   + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
-  -- **ASSEMBLY (2026-06-25, thread 31; partial — see the remaining `sorry`s).** The cert is stated TRUE
-  -- (the frame hypotheses above + `hL2`/`hpos`/`hinterface` added this tide). The body is the banked
-  -- S0–S5 decomposition (`framedbody-cert.md`). **LANDED this tide:** the endpoint-frame units +
-  -- `Pi·P0 = 1`/`QL·Qi = 1`; the Frobenius positivity `hKP_pos`/`hKi_pos` (PROVED sorry-free from `hpos`
-  -- ⟹ `0 < H 0`, `0 < H (last L)` — a unit matrix over a nonempty index is `≠ 0`); S1 (non-last
-  -- round-trip); the witnessed telescope `endpoint_telescoping_eq`; `hframe0`/`hS2_w0` (the SOUND
-  -- deepest-gauge `w0` instance — at `w0` the deviation vanishes); S3b the `reindex(P0·B·QL) = fromBlocks
-  -- 1 0 0 0` normalization (via `hS2_w0` ▸ `framedParamsRegPivot 0` ▸ product-of-corners).
-  -- **STILL OPEN (named `sorry`s, CORRECT statements):** `hS1'` — the last-layer round-trip is NOT the
-  -- clean `Pf·(symm w)·Qf` (REFUTED, `hs1prime-verdict.md`): for a non-front pivot `J` the last layer
-  -- carries a column-permutation `π_J`; the statement now reflects the permuted form. `hproducer` — the
-  -- per-`w` S4 reg-energy + S5a/b/c (`Invertible P00`, leak, core germ comparability) + the `𝓝`
-  -- construction, where the `π_J` cancellation (verdict option A) and the S5c germ atom
-  -- `schur_core_germ_comparability` (`s5c-r2-cert.md`) are the genuine open geometry.
+  -- **ASSEMBLY (B (front-pivot WLOG) route, 2026-06-25, thread 31; partial — 3 named `sorry`s left).**
+  -- The cert is stated TRUE (the frame hypotheses + `hfront` + `hL2`/`hpos`/`hinterface`). Under the
+  -- FRONT pivot (`hfront : J = frontEmbed`), `pivotThr J = rThr`, so the last-layer column-permutation
+  -- `π_J` is the identity. **LANDED this tide:** the endpoint-frame units + `Pi·P0 = 1`/`QL·Qi = 1`; the
+  -- Frobenius positivity `hKP_pos`/`hKi_pos`; S1 (non-last round-trip); the CLEAN last-layer frame
+  -- `hS1'_front` (front pivot, `reindex_fromBlocks_reads_eq_deviation` applies); the CLEAN per-`w`
+  -- telescope `hS2_front : prod (F w) = P0·prod(A w)·QL` (every `w`, via `endpoint_telescoping_eq`); the
+  -- per-`w` block split `hRegBlocks` (`reindex(prod (F w)) = fromBlocks 1 0 0 0 + reindex(P0·(prod−B)·QL)`
+  -- via `hS3b`); the `hproducer` conjuncts (a) `hconj` (`fromBlocks_toBlocks`), (b) the EXACT reg energy
+  -- `∑deepestEFull² = Sreg` (`hbexact`, via `deepestEFull_sq_sum_eq_blocks` — `δ₁ = δ₂ = 1`), and S5a
+  -- `Invertible P00` (banked `eventually_P00_invertible`). **STILL OPEN (3 named `sorry`s in `hproducer`,
+  -- CORRECT statements, pivot-AGNOSTIC):** the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b `eventually_leak`)
+  -- and the folded core (d')/(e') (`eventually_core_comparable`, the per-layer↔global Schur charge via
+  -- the BANKED `schur_core_germ_comparability` + `deepestCoreAbsorb`) — the genuine unbuilt geometry, +
+  -- the coupled `U` (intersect the S5a/S5b/S5c nbhds). (`hS1'`, `hframe0`, `hS2_w0` are kept as the
+  -- subsumed basepoint path feeding `hS3b`.)
   classical
   set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
   -- The raw (un-framed) parameter tuple at `w` and the full framed reconstruction of `split w`.
@@ -1953,6 +2002,36 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [← hcorner, ← Matrix.reindex_symm, Equiv.symm_apply_apply]
     rw [hcornerInv]
     simp only [hPfL, Matrix.one_mul]
+  -- **S1'-FRONT — the CLEAN last-layer frame** (B (front-pivot WLOG), b-wlog-spec, 2026-06-25). Under
+  -- the front pivot `hfront : J = frontEmbed`, the last-layer column reindex `pivotThr (pivotJSucc J)`
+  -- IS `rThr` (`pivotThresholdSplit_pivotJSucc_frontEmbed`), so the pivot reindex of the reads in `hS1'`
+  -- collapses to the THRESHOLD reindex, and the SAME `reindex_fromBlocks_reads_eq_deviation` (last
+  -- layer) the non-last `hS1` uses applies — the reads = the raw deviation `(symm(w−w0)) last`. The
+  -- column-permutation `π_J` that refutes the general-`J` clean frame is the identity here. The result
+  -- is the clean frame `F w last = Pf last · (A w) last · Qf last` for EVERY `w` (not just `w0`).
+  have hS1'_front : ∀ w, F w (lastLayer hL)
+      = Pf (lastLayer hL) * (A w) (lastLayer hL) * Qf (lastLayer hL) := by
+    intro w
+    -- The front-pivot collapse `pivotThr (pivotJSucc J) = rThr` on the last-layer column width.
+    have hsplit_eq : pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J)
+        = rThresholdSplit r (H ((lastLayer hL).succ)) (hr _) := by
+      rw [hfront]; exact pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL
+    rw [hS1' w, hsplit_eq]
+    -- `H ((lastLayer).succ) = H (Fin.last L)`, so `(lastLayer).succ = Fin.last L` as the layer index;
+    -- the read reindex matches `reindex_fromBlocks_reads_eq_deviation` at `s = lastLayer hL`.
+    rw [show ((split w).1, (split w).2.2)
+          = ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) by rw [hsplit w],
+      show (split w).2.1 = (deepestSplit H r hr hL w0 w).2.1 by rw [hsplit w],
+      reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w (lastLayer hL)]
+    -- Distribute + affine bridge (identical to `hS1`'s closing step).
+    rw [hA]; simp only [haffine w (lastLayer hL), Matrix.mul_sub, Matrix.sub_mul]
+    abel
+  -- The CLEAN per-`w` frame for EVERY layer (front-pivot): non-last via `hS1`, last via `hS1'_front`.
+  have hframe_front : ∀ w (s : Fin L), F w s = Pf s * (A w) s * Qf s := by
+    intro w s
+    by_cases hs : s = lastLayer hL
+    · rw [hs]; exact hS1'_front w
+    · exact hS1 w s hs
   -- **S0/interface — adjacent interior frames are identity** (`framedbody-cert.md` S0/S2): the telescope
   -- `hinterface` input is now a hypothesis (see the signature) — every strictly-interior interface
   -- `(Qf s, Pf (s+1))` is `(1, 1)`, the input `endpoint_telescoping_eq` consumes for the interface collapse.
@@ -2028,6 +2107,43 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
           : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
         = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl]
     exact reindex_prodAux_framedParamsRegPivot_zero H r hr hL hL2 J Pf Qf
+  -- **S2-FRONT — the CLEAN per-`w` telescope** (B (front-pivot WLOG), 2026-06-25). Under the front
+  -- pivot the per-layer frame `hframe_front` is clean for EVERY layer (last via `hS1'_front`), so the
+  -- WITNESSED endpoint telescope holds for every `w` (not just `w0`): `prod (F w) = P0·prod(A w)·QL`.
+  -- This is exactly what makes the (b)-conjunct EXACT (the framed-product block reads = the loss blocks).
+  have hS2_front : ∀ w, prod H (F w) = P0 * prod H (A w) * QL := by
+    intro w
+    rw [hP0def, hQLdef]
+    exact endpoint_telescoping_eq H hL (A w) (F w) Pf Qf (hframe_front w) hinterface
+  -- **The per-`w` reg-block identity** (the (b)-EXACT bridge): the reindexed framed product splits as
+  -- the corner `fromBlocks 1 0 0 0` plus the reindexed conjugated residual `P0·(prod(A w)−B)·QL`. From
+  -- the clean telescope `hS2_front` + `P0·prod(A w)·QL = P0·B·QL + P0·(prod(A w)−B)·QL` + `hS3b`.
+  have hRegBlocks : ∀ w, Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (prod H (F w))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (P0 * (prod H (A w) - B) * QL) := by
+    intro w
+    -- `P0·prod(A w)·QL = P0·B·QL + P0·(prod(A w)−B)·QL` (distribute; `prod(A w) = B + (prod(A w)−B)`).
+    have hsplitprod : P0 * prod H (A w) * QL
+        = P0 * B * QL + P0 * (prod H (A w) - B) * QL := by
+      rw [Matrix.mul_sub, Matrix.sub_mul, add_sub_cancel]
+    rw [hS2_front w, hsplitprod]
+    -- `reindex` is additive (`reindex_apply` = `submatrix .symm .symm`, `submatrix_add`); the corner
+    -- summand `reindex(P0·B·QL) = fromBlocks 1 0 0 0` (hS3b), the deviation summand matches the RHS.
+    have hadd : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (P0 * B * QL + P0 * (prod H (A w) - B) * QL)
+          = Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * B * QL)
+            + Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (P0 * (prod H (A w) - B) * QL) := by
+      ext i j
+      simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply]
+    rw [hadd, hS3b]
   -- The inverses `Pi, Qi` from the units `hP0unit`, `hQLunit`. `Pi := P0⁻¹` (the unit's inverse),
   -- `Pi · P0 = 1`; similarly `Qi := QL⁻¹`, `QL · Qi = 1`.
   obtain ⟨P0u, hP0u⟩ := hP0unit
@@ -2100,21 +2216,26 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- the `core_comparability_squeeze` shape, derivable from the built S5c germ atom
   -- `schur_core_germ_comparability` + the `|∑Rcore² − coreΦ| ≤ C·Sreg` charge (`Y0,Z1 ≤ √Sreg`).
   --
-  -- **CONJUNCT (b) — COMPARABILITY (thread 31, this tide, 2026-06-25; DECORRELATED Codex `xhigh`):** the
-  -- earlier candidate EQUALITY `∑deepestEFull² = Sreg` is FALSE for a non-front pivot `J` (numeric
-  -- `17.98 ≠ 23.65`); the STATEMENT is now the two-sided `δ₁·Sreg ≤ ∑deepestEFull² ≤ δ₂·Sreg` (the sound
-  -- comparability, folded by `deepest_loss_squeeze`'s rewired constants). The cert's "via banked
-  -- invertible-conjugation machinery" route is OVER-OPTIMISTIC: the last-layer pivot-read summand sits
-  -- INSIDE the product (`hS1'`), so this is NOT a clean pointwise `conjugation_frobenius_comparable`. The
-  -- sound derivation is a GERM/Taylor argument (`fderiv` quadratic-form comparison of the two energy maps
-  -- at `w0` — same kernel, related by the invertible column map `π_J·QL` — plus an `isLittleO` remainder
-  -- absorption to fix uniform `δ₁, δ₂` on a small `U`). That `fderiv`+Taylor machinery is UNBANKED.
+  -- **CONJUNCT (b) — EXACT under the FRONT pivot (B (front-pivot WLOG) route, this tide, 2026-06-25).**
+  -- The earlier candidate EQUALITY `∑deepestEFull² = Sreg` is FALSE for a non-front pivot `J` (the last
+  -- layer carries the column-permutation `π_J`; numeric `17.98 ≠ 23.65`). With the front pivot
+  -- (`hfront : J = frontEmbed`), `pivotThr J = rThr` and `π_J = id`, so the per-`w` telescope
+  -- `prod (F w) = P0·prod(A w)·QL` is CLEAN for every `w` (`hframe_front`/`hS2_front`), and the
+  -- reindexed framed product splits as `fromBlocks 1 0 0 0 + reindex(P0·(prod(A w)−B)·QL)`
+  -- (`hRegBlocks`, via `hS3b`). Hence `∑deepestEFull(split w)² = Sreg(w)` EXACTLY (`hbexact` below,
+  -- via `deepestEFull_sq_sum_eq_blocks`) — `δ₁ = δ₂ = 1`. No comparability, no `π_J`-cancellation, no
+  -- germ/Taylor `fderiv` machinery (the unbanked content the non-front route needed). The WLOG transfer
+  -- to a general (non-front) `B` is via `B·Π` at the headline (b-wlog-spec lemmas 1-5), where the
+  -- `⨅ optimalSet` form is invariant.
   --
-  -- The remaining `sorry` is the per-`w` block decomposition (a) + the reg comparability (b, the germ
-  -- atom) + the leak (c) + the π_J cancellation + the `𝓝` construction (S5a det-open ∩ S5b leak-nbhd ∩
-  -- S5c germ-nbhd) — the genuine open geometry. (d')/(e') themselves reduce to the built S5c atom + the
-  -- charge. This tide CORRECTED (b)'s statement (false `=` → sound `≍`) + rewired the squeeze; the body
-  -- producer stays a precisely-stated `sorry` (the germ/Taylor + neighborhood content is unbanked).
+  -- **CLOSED this tide (front pivot):** (a) `hconj` (block decomposition, `fromBlocks_toBlocks`); (b)
+  -- the EXACT reg energy (`hbexact`); S5a `Invertible P00` (banked `eventually_P00_invertible`). The
+  -- `𝓝 w0` set `U` is the S5a det-open neighborhood. **REMAINING (3 precisely-named `sorry`s, the
+  -- genuine unbuilt geometry, pivot-AGNOSTIC):** the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b
+  -- `eventually_leak`: `P01 w0 = P10 w0 = 0`, `⅟P00` bounded — a continuity+sub-multiplicativity bound)
+  -- and the folded core (d')/(e') (`eventually_core_comparable`: the per-layer↔global Schur charge to
+  -- `Sreg` via the BANKED `schur_core_germ_comparability` + `deepestCoreAbsorb`). The `U` here must then
+  -- intersect the S5b/S5c neighborhoods; this tide uses the S5a `U` and leaves leak/core scoped.
   have hproducer :
       ∃ (t γ₁ γ₂ δ₁ δ₂ : ℝ), 0 < γ₁ ∧ 0 < γ₂ ∧ 0 < δ₁ ∧ 0 < δ₂ ∧
         ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -2150,7 +2271,109 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   ≤ γ₁ * ((((∑ i, ∑ j, ((P00 - 1) i j) ^ 2) + (∑ i, ∑ j, (P01 i j) ^ 2))
                       + (∑ i, ∑ j, (P10 i j) ^ 2))
                     + (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2))) := by
-    sorry
+    -- **FRONT-PIVOT PRODUCER (B route, this tide, 2026-06-25).** With the front pivot, conjuncts (a)
+    -- (`hconj`, `fromBlocks_toBlocks`) and (b) (`∑deepestEFull² = Sreg`, EXACT via `hRegBlocks` +
+    -- `deepestEFull_sq_sum_eq_blocks` — so `δ₁ = δ₂ = 1`) and S5a (`eventually_P00_invertible`, banked)
+    -- are CLOSED. The block witnesses are the `toBlocks` of `M w := reindex(P0·(prod(symm w)−B)·QL)`
+    -- (with `P00 := M.toBlocks₁₁ + 1`, so `P00 − 1 = M.toBlocks₁₁`). **REMAINING (3 named `sorry`s):**
+    -- the leak (c) `∑(P10⅟P00 P01)² ≤ Sreg` (S5b `eventually_leak`, a continuity+sub-multiplicativity
+    -- bound: `P01 w0 = P10 w0 = 0`, `⅟P00` bounded — built once) and the folded core (d')/(e')
+    -- (`eventually_core_comparable`, the per-layer↔global Schur charge to `Sreg` via the banked
+    -- `schur_core_germ_comparability` + `deepestCoreAbsorb`) — pivot-agnostic, unbuilt geometry.
+    classical
+    -- **(b)-EXACT** (front pivot): `∑deepestEFull(split w)² = Sreg(w)` where `Sreg(w)` is the three
+    -- residual-block energies of `M w := reindex(P0·(prod(symm w)−B)·QL)`. Via the block-energy identity
+    -- `deepestEFull_sq_sum_eq_blocks` (LHS = the energies of `P' := reindex(prod(framedParamsPivot)) =
+    -- reindex(prod (F w))`) + the front-pivot bridge `hRegBlocks` (`P' = fromBlocks 1 0 0 0 + M w`, so
+    -- `P'.toBlocks₁₁ − 1 = M.toBlocks₁₁`, `P'.toBlocks₁₂ = M.toBlocks₁₂`, `P'.toBlocks₂₁ = M.toBlocks₂₁`).
+    have hbexact : ∀ w, (∑ i, (deepestEFull H r hr hL J Pf Qf (split w)) i ^ 2)
+        = ((∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁ a b) ^ 2)
+            + (∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂ a b) ^ 2))
+          + (∑ a, ∑ b, ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁ a b) ^ 2) := by
+      intro w
+      -- LHS = block energies of `P' := reindex(prod(framedParamsPivot(split w)))`.
+      rw [deepestEFull_sq_sum_eq_blocks H r hr hL J Pf Qf (split w)]
+      -- `prod(framedParamsPivot(split w)) = prod (F w)` (def `hF`), then `hRegBlocks w`:
+      -- `reindex(prod (F w)) = fromBlocks 1 0 0 0 + M w`. The `toBlocks` of a `fromBlocks 1 0 0 0` sum:
+      -- `toBlocks₁₁ = 1 + M.toBlocks₁₁` so `−1` cancels; `toBlocks₁₂ = M.toBlocks₁₂`; `toBlocks₂₁`.
+      have hFw : prod H (framedParamsPivot H r hr hL J Pf Qf (split w)) = prod H (F w) := by
+        rw [hF]
+      set Mw := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) with hMwdef
+      -- The reindexed product `P' = reindex(prod (F w)) = fromBlocks 1 0 0 0 + Mw` (front pivot).
+      have hP'split : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (prod H (framedParamsPivot H r hr hL J Pf Qf (split w)))
+          = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw := by
+        rw [hFw, hRegBlocks w, hMwdef]
+      rw [hP'split]
+      -- The three block energies of `fromBlocks 1 0 0 0 + Mw` equal those of `Mw`'s pure blocks.
+      have hb11 : ∀ a b, ((Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₁₁
+            - 1) a b = Mw.toBlocks₁₁ a b := by
+        intro a b
+        simp only [Matrix.toBlocks₁₁, Matrix.add_apply, Matrix.sub_apply, Matrix.of_apply,
+          Matrix.fromBlocks_apply₁₁, Matrix.one_apply]
+        split <;> ring
+      have hb12 : ∀ a b, (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₁₂ a b
+            = Mw.toBlocks₁₂ a b := by
+        intro a b
+        simp only [Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.of_apply,
+          Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_add]
+      have hb21 : ∀ a b, (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₂₁ a b
+            = Mw.toBlocks₂₁ a b := by
+        intro a b
+        simp only [Matrix.toBlocks₂₁, Matrix.add_apply, Matrix.of_apply,
+          Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, zero_add]
+      -- The three block energies of `fromBlocks 1 0 0 0 + Mw` equal those of `Mw`'s pure blocks.
+      have hs11 : (∑ a, ∑ b, (((Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₁₁
+            - 1) a b) ^ 2) = ∑ a, ∑ b, (Mw.toBlocks₁₁ a b) ^ 2 :=
+        Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => by rw [hb11 a b]))
+      have hs12 : (∑ a, ∑ b, ((Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₁₂
+            a b) ^ 2) = ∑ a, ∑ b, (Mw.toBlocks₁₂ a b) ^ 2 :=
+        Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => by rw [hb12 a b]))
+      have hs21 : (∑ a, ∑ b, ((Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Mw).toBlocks₂₁
+            a b) ^ 2) = ∑ a, ∑ b, (Mw.toBlocks₂₁ a b) ^ 2 :=
+        Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => by rw [hb21 a b]))
+      rw [hs11, hs12, hs21]
+      ring
+    -- S5a: the `(1,1)`-block map is eventually a unit (banked `eventually_P00_invertible`).
+    have hP00ev := eventually_P00_invertible H r B hB hr hL P0 QL
+      (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+    refine ⟨1, 1, 1, 1, 1, one_pos, one_pos, one_pos, one_pos,
+      {w | IsUnit ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁
+        + (1 : Matrix (Fin r) (Fin r) ℝ))}, hP00ev, fun w hw => ?_⟩
+    -- The conjugated residual `M w` and its four blocks (`P00 := M.toBlocks₁₁ + 1`).
+    set Mw := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) with hMw
+    -- S5a gives `IsUnit (M.toBlocks₁₁ + 1)`, the producer's `P00`.
+    have hP00u : IsUnit (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hw
+    letI : Invertible (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hP00u.invertible
+    refine ⟨Mw.toBlocks₁₁ + 1, Mw.toBlocks₁₂, Mw.toBlocks₂₁, Mw.toBlocks₂₂, this, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · -- (a) `hconj`: `M = fromBlocks (P00−1) P01 P10 P11`. `P00 − 1 = M.toBlocks₁₁` ⟹ `fromBlocks_toBlocks`.
+      rw [add_sub_cancel_right]
+      exact (Matrix.fromBlocks_toBlocks Mw).symm
+    · -- (b)-low: `1·Sreg ≤ ∑deepestEFull²`. EXACT (`= Sreg`), so `≤` with `δ₁ = 1`.
+      rw [one_mul, add_sub_cancel_right]
+      exact le_of_eq (hbexact w).symm
+    · -- (b)-high: `∑deepestEFull² ≤ 1·Sreg`. EXACT, so `≤` with `δ₂ = 1`.
+      rw [one_mul, add_sub_cancel_right]
+      exact le_of_eq (hbexact w)
+    · -- (c) leak (S5b `eventually_leak`) — UNBUILT (the genuine continuity+bound, pivot-agnostic).
+      sorry
+    · -- (d') folded core upper (S5c charge) — UNBUILT (the per-layer↔global Schur charge).
+      sorry
+    · -- (e') folded core lower (S5c charge) — UNBUILT.
+      sorry
   obtain ⟨t, γ₁, γ₂, δ₁, δ₂, hγ₁, hγ₂, hδ₁, hδ₂, U, hU, hbody⟩ := hproducer
   exact ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, δ₁, δ₂, hPP, hQQ, hγ₁, hγ₂, hδ₁, hδ₂, hKP_pos, hKi_pos, U, hU, hbody⟩
 
@@ -2167,6 +2390,9 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (J : Fin r ↪ Fin (H (Fin.last L)))
+    -- **FRONT-PIVOT HYPOTHESIS** (threaded to the frame-bridge cert, b-wlog-spec): the pivot embedding
+    -- is the front embedding, making the (b)-conjunct an EXACT equality (see the cert's `hfront`).
+    (hfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
@@ -2211,7 +2437,7 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `framedParams_split_eq_frame_raw` is the ONE geometric input; the wiring below is sorry-free.
   classical
   obtain ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, δ₁, δ₂, hP, hQ, hγ₁, hγ₂, hδ₁, hδ₂, hKP_pos, hKi_pos, U, hU, hbr⟩ :=
-    framedParams_split_eq_frame_raw H r B hB hr hL hL2 hpos J Pf Qf split hsplit
+    framedParams_split_eq_frame_raw H r B hB hr hL hL2 hpos J hfront Pf Qf split hsplit
       hPunit hQunit hQf0 hPfL hNF hcorner hinterface
   -- Endpoint-frame energies (the conjugation constants). `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²`.
   set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
@@ -2345,7 +2571,16 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- The strict reduced-width positivity the headline carries (`0 < M s ⟺ r < H s`); needed for the
     -- endpoint conjugation-constant positivity (`0 < ∑P0²·∑QL²`) in the loss squeeze. (Threaded from the
     -- consumer `deepest_gauge_squeeze_exists`, which holds it via the headline's `hpos`.)
-    (hpos : ∀ s : Fin (L + 1), r < H s) :
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    -- **FRONT-PIVOT HYPOTHESIS (B (front-pivot WLOG), b-wlog-spec, 2026-06-25).** The `B`-determined
+    -- pivot set of `deepestPoint_frame_pivot_exists` is the FRONT embedding `k ↦ k` — i.e. `B`'s rank-`r`
+    -- pivot columns are the first `r`. This is what makes the loss-squeeze's (b)-conjunct EXACT (the
+    -- producer's `∑deepestEFull² = Sreg`, no `δ₁, δ₂` comparability, no germ/Taylor atom). The caller
+    -- (`deepest_gauge_squeeze_exists`, the WLOG seam) discharges it by running the chart at `B·Π`, where
+    -- `Π` brings `B`'s pivots to the front and the headline's `⨅ optimalSet` is invariant (b-wlog-spec
+    -- lemmas 1-5). Stated about the bundle's `.choose` (the pivot `Jb` the body uses).
+    (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
       (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
       (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
@@ -2401,12 +2636,18 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `deepestPoint_frame_pivot_exists`). The first/interior arms are the threshold `deepestPoint_frame`;
   -- the LAST-layer arm is the pivot frame (with a UNIT `B22` block — the PIN1 input). `split` stays
   -- frameless/MP; the READING side carries this family (#80 frame-wiring).
-  obtain ⟨Jb, Pf, Qf, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner⟩ :=
-    deepestPoint_frame_pivot_exists H r B hB hr hL hL2
+  -- Use the bundle's `.choose` for `Jb` (so the signature's `hJfront`, stated about `.choose`,
+  -- connects to the body's `J`), and `.choose_spec` for the rest of the bundle.
+  set Jb : Fin r ↪ Fin (H ((lastLayer hL).succ)) :=
+    (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJb_def
+  obtain ⟨Pf, Qf, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner⟩ :=
+    (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
   -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
   -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).
   set J : Fin r ↪ Fin (H (Fin.last L)) :=
     Jb.trans (finCongr (H_lastLayer_succ H hL)).toEmbedding with hJ
+  -- The body's `J` IS the front embedding (the signature's `hJfront`, via `.choose`).
+  have hJfront' : J = frontEmbed H r hr := by rw [hJ, hJb_def]; exact hJfront
   have hpivJ : pivotJSucc H r hL J = Jb := by
     apply Function.Embedding.ext; intro k
     simp only [hJ, pivotJSucc, Function.Embedding.trans_apply, Equiv.coe_toEmbedding, finCongr_apply]
@@ -2531,8 +2772,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         rw [hsf]; exact hPfL
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`'s defining identities).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
-    deepest_loss_squeeze H r B hB hr hL hL2 hpos J Pf Qf split coreAbsorb regStraighten hsplit_base
-      hsplit hra_regval hca_def hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
+    deepest_loss_squeeze H r B hB hr hL hL2 hpos J hJfront' Pf Qf split coreAbsorb regStraighten
+      hsplit_base hsplit hra_regval hca_def hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
   exact ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base,
     hca_base, hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct,
     c₁, c₂, hc₁, hc₂, U, hU, hsq⟩
@@ -2544,11 +2785,14 @@ layers) is what `deepest_gauge_construction` needs for the endpoint-frame trivia
 theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
-    (hpos : ∀ s : Fin (L + 1), r < H s) :
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    -- The front-pivot hypothesis (b-wlog-spec; discharged by the caller's `B·Π` WLOG transfer).
+    (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
   obtain ⟨nGauge, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base, hca_reg,
     hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
-    deepest_gauge_construction H r B hB hr hL hL2 hpos
+    deepest_gauge_construction H r B hB hr hL hL2 hpos hJfront
   exact ⟨{
     nGauge := nGauge
     split := split
