@@ -565,6 +565,33 @@ genuinely-hard remaining rung; everything else (descents, round-trips, glue) fol
 clearing-denominators + point-realization pattern. ~3-4 more modules. **The whole `e` route now has NO
 absent-API exposure and a single located wall.**
 
+---
+
+## Tide progress log — update 11 (`e` seams 3+3b LANDED; the Ψ comorphism + its gauge factorization)
+
+**Banked (committed, zero-sorry, axiom-clean; controller-aggregated):**
+- `Core.ChartPsiSubstitution` (seam 3, `fac3cbe0`): the un-descended Ψ comorphism via vehicle B —
+  `fibCoordT` (fibre-coord evaluator `RepCoord d → Away gF`), `chartPsiTower` (`= aevalTower schurToGfib
+  fibCoordT`, carries `SchurLoc`-coeff gauge polys into the target), `chartPsiSub` (`= chartPsiTower ∘
+  gaugeSub(endpointGauge⁻¹)`), `chartPsiAeval` (`= aeval chartPsiSub`).
+- `Core.ChartPsiReconstruct` (seam 3b, `9763c8eb`): `chartPsiTower_gaugeEquiv` —
+  `chartPsiTower (gaugeEquiv(endpointGauge⁻¹) p) = eval₂Hom schurToGfib (chartPsiSub-blocks) p`. The
+  bridge reducing the Ψ reconstruction to the LANDED `gaugeEquiv_multPoly` at the inverse gauge. Proved
+  via `MvPolynomial.map_aeval` (ring-hom level, scalar-free — sidesteps the `→ₐ[k]`/`→ₐ[SchurLoc]`
+  scalar-mismatch) + `aevalTower_comp_algebraMap`. **The fiddly `eval₂`/coercion threading is now a
+  solved, reusable pattern for the descent.**
+
+**`e` seam ledger (6 of ~10 modules landed):** seam0 spine (`ChartSweepWiring`) + crux
+(`PrincipalOpenComorphism`) ✓; seam1 (`ChartLocalizedCoordinates`) ✓; seam2 (`ChartSchurConnect`) ✓;
+seam3 (`ChartPsiSubstitution`) ✓; seam3b (`ChartPsiReconstruct`) ✓. **Remaining (~3-4 modules):**
+(a) the product-reconstruction VALUE (`gaugeEquiv(endpointGauge⁻¹)(multPoly) = (Lmat·multPoly·Hmat)`,
+then the chart-matrix entry on the fibre via `factor_chart_matrix` over the localization); (b) the Ψ
+vanishingIdeal descent → `IsLocalization.liftAlgHom` (point-realization + the LANDED
+`away_eq_zero_iff_exists_pow_mul_mem`); (c) the Φ direction symmetrically (`aevalTower` into
+`Away dsig`, SchurVar→multPoly blocks); (d) the round-trips + `AlgEquiv.ofAlgHom` glue (ext via
+`Localization.algHom_ext`). All API present; route fully de-risked; the gauge-vehicle + factorization
+infrastructure is in place.
+
 **Handoff state:** spine green & committed; the two remaining hard inputs (`e`, `hsig`) are isolated
 named hypotheses, fully scoped, no absent-API exposure, but each a multi-module grind. The `e` build is
 the ~1.2–1.8k-LoC route-(b) plumbing (Ψ/Φ localized AlgHoms + round-trips), wall = the Ψ vanishingIdeal
