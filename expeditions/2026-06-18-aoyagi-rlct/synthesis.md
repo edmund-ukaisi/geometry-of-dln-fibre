@@ -10659,3 +10659,15 @@ The next honest target is to either prove or boundary-document a statement of
 the form `residualFactorProduct C last 0 = selectedEntryMatrix` from explicit
 Aoyagi displayed residual-factor data, still with residual-index equivalence
 and source chart data supplied unless separately produced.
+
+The factorization obstruction is now formalized in `ProductReduction.lean`:
+`residualFactorProduct_trans` splits a factor product through any intermediate
+residual index, and `rank_residualFactorProduct_le_card_intermediate` proves
+the rank bound through that intermediate type.  This makes precise why an
+arbitrary final selected-entry matrix cannot be inserted into a multi-edge
+fixed-base residual product without compatible intermediate factors.  Future
+selected-entry work should supply factors `C y p` plus a product identity, not
+only a terminal matrix identity, unless it is in the one-edge case.
+Do not state the same split law for bare `residualProduct E`: its visited
+Schur residual blocks depend on the top endpoint, so the safe split law is for
+explicit fixed factor families.

@@ -8359,6 +8359,24 @@ matrix realization in the multi-edge case, no fixed-base source chart, no
 residual-index equivalence, no source coverage, source-measure transport,
 normal crossings, pole order, or RLCT.
 
+Latest A2 residual-factor rank obstruction:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.residualFactorProduct_trans` and
+`ChartLocalSuffixState.rank_residualFactorProduct_le_card_intermediate`.
+The first splits the explicit factor product through any intermediate residual
+index `q`; the second uses `Matrix.rank_mul_le_left` and
+`Matrix.rank_le_card_width` to show that the terminal factor product has rank
+at most `card (kappa q)` over a nontrivial coefficient ring.  Reproduction and
+statement card:
+`threads/03-block-product-reduction/reproduction-a2-residual-factor-product-rank-obstruction.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-residual-factor-product-rank-obstruction.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-factor-product-rank-obstruction.md`.
+Nonclaims: no selected-entry matrix factorization result, no source-factor
+construction, no residual-index equivalence, no source coverage, no
+source-measure transport, no normal crossings, no pole order, and no RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

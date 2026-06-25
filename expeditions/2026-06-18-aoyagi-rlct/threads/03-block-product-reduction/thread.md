@@ -5584,3 +5584,31 @@ source data, does not realize an arbitrary final residual matrix in the
 multi-edge case, does not construct a fixed-base source chart or residual-index
 equivalence, and does not prove source coverage, source-measure transport,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 residual-factor rank obstruction
+
+Reproduction:
+`reproduction-a2-residual-factor-product-rank-obstruction.md`.
+Statement card:
+`statement-card-a2-residual-factor-product-rank-obstruction.md`.
+Review:
+`review-a2-residual-factor-product-rank-obstruction.md`.
+
+Lean now proves:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_trans
+ChartLocalSuffixState.rank_residualFactorProduct_le_card_intermediate
+```
+
+The split law says an explicit residual-factor product factors through any
+intermediate residual index `q`.  Over a nontrivial coefficient ring, the rank
+of the terminal product is therefore bounded by `card (kappa q)`.  This
+formalises the obstruction found in pen-and-paper review: a multi-edge
+residual product cannot realize an arbitrary terminal matrix unless the
+desired matrix is compatible with all intermediate residual dimensions.
+
+This is finite matrix algebra only.  It does not decide whether Aoyagi's
+displayed selected-entry residual matrix has a suitable factorization, does
+not construct source factors, source coverage, source-measure transport,
+normal crossings, pole order, or RLCT.

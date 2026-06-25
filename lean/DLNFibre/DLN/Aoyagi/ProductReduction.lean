@@ -1909,6 +1909,71 @@ theorem residualFactorProduct_castSucc
   · congr 1
   · exact Fin.val_fin_le.mp hpj
 
+/-- The explicit residual-factor product splits through an intermediate
+residual index. -/
+theorem residualFactorProduct_trans
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {i q j : Fin (N + 1)} (hiq : i ≤ q) (hqj : q ≤ j) :
+    residualFactorProduct C j i (hiq.trans hqj) =
+      residualFactorProduct C j q hqj * residualFactorProduct C q i hiq := by
+  let motive : (m : ℕ) → m ≤ q.val → Prop := fun m hmq ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmq q.isLt⟩
+    residualFactorProduct C j im ((Fin.val_fin_le.mpr hmq).trans hqj) =
+      residualFactorProduct C j q hqj *
+        residualFactorProduct C q im (Fin.val_fin_le.mpr hmq)
+  have hbase : motive q.val le_rfl := by
+    dsimp [motive]
+    simp
+  have hstep : ∀ m (hmq : m + 1 ≤ q.val),
+      motive (m + 1) hmq → motive m (Nat.le_of_succ_le hmq) := by
+    intro m hmq ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hmq q.isLt)⟩
+    have hpq : p.succ ≤ q := Fin.val_fin_le.mpr hmq
+    have hpj : p.succ ≤ j := hpq.trans hqj
+    have ih' :
+        residualFactorProduct C j p.succ hpj =
+          residualFactorProduct C j q hqj * residualFactorProduct C q p.succ hpq := by
+      simpa [motive, p, hpq, hpj] using ih
+    calc
+      residualFactorProduct C j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+          residualFactorProduct C j p.succ hpj * C p := by
+            rw [residualFactorProduct_castSucc]
+      _ =
+          (residualFactorProduct C j q hqj *
+              residualFactorProduct C q p.succ hpq) * C p := by
+            rw [ih']
+      _ =
+          residualFactorProduct C j q hqj *
+            (residualFactorProduct C q p.succ hpq * C p) := by
+            rw [Matrix.mul_assoc]
+      _ =
+          residualFactorProduct C j q hqj *
+            residualFactorProduct C q p.castSucc ((Fin.castSucc_le_succ p).trans hpq) := by
+            rw [← residualFactorProduct_castSucc]
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hiq)
+  have hcanon' :
+      residualFactorProduct C j i
+          (Fin.val_fin_le.mpr ((Fin.val_fin_le.mp hiq).trans (Fin.val_fin_le.mp hqj))) =
+        residualFactorProduct C j q hqj *
+          residualFactorProduct C q i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hiq)) := by
+    simpa [motive] using hcanon
+  simpa using hcanon'
+
+/-- A residual-factor product factors through every intermediate residual
+index, so its matrix rank is bounded by the cardinality of that intermediate
+type. -/
+theorem rank_residualFactorProduct_le_card_intermediate
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)] [Nontrivial K]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {i q j : Fin (N + 1)} (hiq : i ≤ q) (hqj : q ≤ j) :
+    (residualFactorProduct C j i (hiq.trans hqj)).rank ≤ Fintype.card (κ q) := by
+  rw [residualFactorProduct_trans C hiq hqj]
+  exact (Matrix.rank_mul_le_left _ _).trans (Matrix.rank_le_card_width _)
+
 /-- Residual products agree when all transformed Schur residual blocks visited
 by the two suffix recursions agree. -/
 theorem residualProduct_eq_of_residualBlock_eq
