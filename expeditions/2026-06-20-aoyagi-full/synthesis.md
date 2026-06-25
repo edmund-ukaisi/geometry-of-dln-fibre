@@ -886,6 +886,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-52 (2026-06-25) — R1 hfin ladder DESIGN-COMPLETE end-to-end (general-r N2 de-risked); pp-r1-genM-2 released. ★**
+- **General-lift N2 de-risked + banked @d57e9247** (pp-r1-genM-2 + decorrelated Codex; `minorpivot-cert.md`): the nested
+  minor-pivot cover = `argmaxCellOn`/`Finset.exists_max_image` at the MINOR level (active = j×j minor-index pairs, coord =
+  det∘submatrix; no "rank=max-minor" theorem needed). **The sharpest risk — det M11→0 — is CLOSED EXACTLY:** the shear
+  M21·M11⁻¹ entries are Cramer minor-ratios ≤ 1 by complete-pivoting (the argmax pivot), symbolic to (4,3) — no blow-up, no
+  cell subdivision. 4 refinements amending spec L2.2: **R1 comparison-not-equality** (`c0·D ≤ ‖R·S‖² ≤ c1·D`, the row-op is
+  non-orthogonal — RELAYED to r1-ladder; its (3,3,4)/r=2 equality instance unaffected) · R2 the Cramer edge · R3 deterministic
+  tie-break (disjointness without the null-set proof) · R4 per-level re-pinning (termination, depth ≤ r). Mathlib bridge
+  verified (cramer_apply/mul_adjugate/inv_def, v4.29). Build-risk = N2a/N2b index-permutation bookkeeping (Lean-cost, not math).
+- **pp-r1-genM-2 RELEASED** — R1 design arc comprehensively complete (route distinction → L3.2a cover = existing infra →
+  minor-pivot general de-risk). On-call only for an r≥3 N2 build math-snag.
+- **R1 hfin is now design-complete end-to-end** — the whole ladder (cover + Jacobian + integrand + minor-pivot + Schur +
+  termination + threshold λ=½·minAdm) is build-ready; remaining is FORMALISATION (r1-ladder building (3,3,4); then the general
+  lift, fully spec'd ahead). The other open R1 piece is general **hdiv** (RouteMLayerCoverGE:120, the (3,3,3,3) Frame-det
+  Lean-cost wall — needs a det-tactic formaliser tide, HELD for focused bandwidth).
+- Active: l2-body-fill (L2 framedParams body) + r1-ladder (R1 (3,3,4) hfin). pp-pin2-rearch + pp-r1-genM-2 on-call.
+
 **★ UPDATE-51 (2026-06-25) — the R1 hfin wall (L3.2a) DE-RISKED + the (3,3,4) ladder build commissioned. ★**
 - **L3.2a cover DE-RISKED, banked @8161f79e** (pp-r1-genM-2 + decorrelated Codex): the r²-chart Δ-blow-up cover CLOSES up to
   null at general r and **IS the existing `argmaxCellOn`/`pivotBlowupOn` machinery** at the r² Δ-entry level — no new cover
