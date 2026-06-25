@@ -886,6 +886,24 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-58 (2026-06-25) — both long poles down to their HARD-CORE last piece; (3,3,4) hfin resolved-form BUILT; frame-transport tide launched. ★**
+- **L2:** (b) restated equality→comparability @049e6efe (squeeze rewired sorry-free, public conclusion + PIN1 clean). 7th finding
+  (build-effort refinement, not an obstruction): the comparability's PROOF is the unbanked germ/Taylor route (fderiv quad-form at
+  w0 + isLittleO), and hproducer is a COUPLED 𝓝 construction (S5a∩S5b∩S5c+(b)) — beyond a contained tide. pp-pin2-rearch
+  re-engaged to DECOMPOSE the coupled producer into build-ready sub-lemmas (`hproducer-decomp-cert`) + re-adjudicate A' (germ/Taylor)
+  vs B (front-pivot WLOG, (b) exact). L2 hproducer build HELD pending the decomposition.
+- **R1: (3,3,4) hfin resolved-form BUILT @5e7759b7** (r1-334cover, +393 LoC, S2-FREE): the KEYSTONE `resolved334_lt_top`
+  (`∫(∑Tᵢ²+frobSq(Δ·S))^{−c'}<⊤` for 2<c'<4 — the additive threshold 4=2+2 COMPOSES) + the core finiteness (S-first transpose-fibre,
+  avoiding the r≥3 Schur split) + `measurePreserving_matTranspose` + the {core=0} null set — all axiom-clean. **Open content shrank
+  to the FRAME TRANSPORT alone** (the MP Schur-frame cover-up-to-null reducing flat `frobSq(A0·A1)` → the resolved form = the L3.2a
+  cover for (3,3,4); ~8-15 lemmas, Codex-confirmed irreducible).
+- **r1-frametransport LAUNCHED** (acb008b3) — closes the (3,3,4) frame transport per L32a-cover-cert, target `resolved334_lt_top`.
+  pp-r1-genM-2 on-call. On close, routeMCore_M334_threshold_lt_top is fully S2-free.
+- **Honest state:** both long poles' LAST pieces are now hard multi-lemma cores (L2 coupled germ-producer being decomposed; R1
+  (3,3,4) frame transport building); everything around them (keystones, atoms, resolved-form, squeeze) is built. 7 soundness catches
+  this session, all resolved soundly, all from review/decorrelated design, PIN1 verbatim throughout.
+- Active: r1-frametransport (R1 build) + pp-pin2-rearch (L2 hproducer decomp). pp-r1-genM-2 on-call. General hdiv + general lifts + D1 ahead.
+
 **★ UPDATE-57 (2026-06-25) — 6th catch RESOLVED: hproducer (b) → comparability (option A, contained); hproducer build resumed. ★**
 - **hproducer (b) adjudicated @788c7fab — option A (comparability) is SOUND, the contained repair** (pp-pin2-rearch + decorrelated
   Codex; `r2-frontpivot-cert.md` + an exact PD certificate): the equality `∑deepestEFull²=Sreg` is false, but the COMPARABILITY
