@@ -74,6 +74,44 @@ theorem lintegral_ofReal_fintype_rpow_positiveBox_lt_top
       (μ := Measure.pi μ) (fun x : ι → ℝ => ∏ i, f i (x i)))
     (hasFiniteIntegral_iff_enorm.mp hint.hasFiniteIntegral)
 
+/-- Finite lower-integral transfer from an a.e. upper bound by a constant
+multiple of a positive-box power-product model. -/
+theorem lintegral_ofReal_le_const_mul_fintype_rpow_positiveBox_lt_top
+    {ι : Type*} [Fintype ι] {p R : ι → ℝ} {A : ℝ}
+    {f : (ι → ℝ) → ℝ}
+    (hA : 0 ≤ A) (hR : ∀ i, 0 < R i) (hp : ∀ i, -1 < p i)
+    (hle : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i))),
+      f x ≤ A * ∏ i, (x i) ^ (p i)) :
+    (∫⁻ x : ι → ℝ, ENNReal.ofReal (f x)
+      ∂ Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i)))) < ∞ := by
+  let μ : Measure (ι → ℝ) :=
+    Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i)))
+  let g : (ι → ℝ) → ℝ := fun x => ∏ i, (x i) ^ (p i)
+  have hbase : (∫⁻ x : ι → ℝ, ENNReal.ofReal (g x) ∂ μ) < ∞ := by
+    dsimp [g, μ]
+    exact lintegral_ofReal_fintype_rpow_positiveBox_lt_top (R := R) hR hp
+  have hmono :
+      (∫⁻ x : ι → ℝ, ENNReal.ofReal (f x) ∂ μ) ≤
+        ∫⁻ x : ι → ℝ, ENNReal.ofReal (A * g x) ∂ μ := by
+    apply lintegral_mono_ae
+    filter_upwards [hle] with x hx
+    exact ENNReal.ofReal_le_ofReal hx
+  refine lt_of_le_of_lt hmono ?_
+  have hscale :
+      (∫⁻ x : ι → ℝ, ENNReal.ofReal (A * g x) ∂ μ) =
+        ENNReal.ofReal A * ∫⁻ x : ι → ℝ, ENNReal.ofReal (g x) ∂ μ := by
+    calc
+      (∫⁻ x : ι → ℝ, ENNReal.ofReal (A * g x) ∂ μ) =
+          ∫⁻ x : ι → ℝ, ENNReal.ofReal A * ENNReal.ofReal (g x) ∂ μ := by
+        apply lintegral_congr
+        intro x
+        rw [ENNReal.ofReal_mul hA]
+      _ = ENNReal.ofReal A * ∫⁻ x : ι → ℝ, ENNReal.ofReal (g x) ∂ μ := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  rw [hscale]
+  exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hbase
+
 /-- Finite positive-box monomial-chart integrability for the product of
 coordinate factors `x_i^(h_i - 2*t*k_i)`. -/
 theorem lintegral_ofReal_fintype_monomialFactor_positiveBox_lt_top
@@ -85,6 +123,22 @@ theorem lintegral_ofReal_fintype_monomialFactor_positiveBox_lt_top
       ∂ Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i)))) < ∞ := by
   exact lintegral_ofReal_fintype_rpow_positiveBox_lt_top
     (R := R) hR (fun i => by linarith [hcrit i])
+
+/-- Aoyagi-exponent form of finite lower-integral transfer from an a.e. upper
+bound by a constant multiple of the positive-box monomial model. -/
+theorem lintegral_ofReal_le_const_mul_fintype_monomialFactor_positiveBox_lt_top
+    {ι : Type*} [Fintype ι] {h k : ι → ℕ} {t : ℝ} {R : ι → ℝ} {A : ℝ}
+    {f : (ι → ℝ) → ℝ}
+    (hA : 0 ≤ A) (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < (h i : ℝ) + 1)
+    (hle : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i))),
+      f x ≤ A * ∏ i, (x i) ^ ((h i : ℝ) - 2 * t * (k i : ℝ))) :
+    (∫⁻ x : ι → ℝ, ENNReal.ofReal (f x)
+      ∂ Measure.pi (fun i : ι => volume.restrict (Set.Ioo (0 : ℝ) (R i)))) < ∞ := by
+  exact lintegral_ofReal_le_const_mul_fintype_rpow_positiveBox_lt_top
+    (p := fun i => (h i : ℝ) - 2 * t * (k i : ℝ)) (R := R)
+    hA hR (fun i => by linarith [hcrit i]) hle
 
 end Aoyagi
 end DLN

@@ -3197,3 +3197,31 @@ residual-loss lower bound, density/prior upper bound, signed-box
 absolute-value theorem, finite chart cover, endpoint/divergence, threshold
 equality, p.13 analytic chart/Jacobian construction, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-25 A2 positive-box monomial domination
+
+Reproduction:
+`reproduction-a2-positive-box-monomial-domination.md`.
+Statement card:
+`statement-card-a2-positive-box-monomial-domination.md`.
+Review:
+`review-a2-positive-box-monomial-domination.md`.
+
+Lean now proves direct positive-box monomial domination transfer in
+`MonomialChartIntegrability.lean`:
+
+```text
+lintegral_ofReal_le_const_mul_fintype_rpow_positiveBox_lt_top
+lintegral_ofReal_le_const_mul_fintype_monomialFactor_positiveBox_lt_top
+```
+
+If an arbitrary real integrand `f` is a.e. bounded above by
+`A * prod_i x_i^(p_i)` on the positive-box product measure, with `0<=A`,
+`R_i>0`, and `p_i>-1`, then `int^- ofReal(f)` is finite.  The Aoyagi wrapper
+uses `p_i=h_i-2*t*k_i` under the strict inequalities `2*t*k_i<h_i+1`.
+
+Boundary: this is only a domination-transfer theorem.  It does not derive the
+upper bound from residual-loss and density estimates, does not handle
+signed/absolute-value boxes, and does not prove chart coverage, endpoint or
+divergent behavior, threshold equality, p.13 analytic chart/Jacobian
+construction, normal crossings, pole order, or RLCT.

@@ -9303,6 +9303,28 @@ residual-loss lower bound, density/prior upper bound, signed-box absolute-value
 theorem, endpoint/divergence, threshold equality, finite chart cover, p.13
 analytic chart/Jacobian construction, normal crossings, pole order, or RLCT.
 
+Latest A2 positive-box monomial domination:
+`MonomialChartIntegrability.lean` now also proves a direct domination transfer
+theorem.  The general theorem
+`lintegral_ofReal_le_const_mul_fintype_rpow_positiveBox_lt_top` says that if
+`0<=A` and `f(x) <= A * prod_i x_i^(p_i)` a.e. on the positive-box product
+measure, with `R_i>0` and `p_i>-1`, then `int^- ofReal(f)` is finite.  The
+Aoyagi wrapper
+`lintegral_ofReal_le_const_mul_fintype_monomialFactor_positiveBox_lt_top`
+uses `p_i=h_i-2*t*k_i` under `2*t*k_i<h_i+1`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-domination.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-positive-box-monomial-domination.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-positive-box-monomial-domination.md`.
+
+This is only direct domination transfer.  It does not derive the majorant from
+residual-loss and density hypotheses, does not handle signed/absolute-value
+boxes, and does not prove chart coverage, endpoint/divergence, threshold
+equality, p.13 analytic chart/Jacobian construction, normal crossings, pole
+order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

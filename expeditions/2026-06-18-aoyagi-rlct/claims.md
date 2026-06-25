@@ -6384,6 +6384,35 @@ lower/divergence side or threshold equality, no finite chart cover theorem, no
 Aoyagi p.13 analytic chart/Jacobian construction, no normal crossings, no pole
 order, and no RLCT.
 
+Latest A2 positive-box monomial domination:
+Lean now proves direct lower-integral transfer from an a.e. upper bound by a
+constant multiple of the positive-box monomial model in
+`lean/DLNFibre/DLN/Aoyagi/MonomialChartIntegrability.lean`.  If `0<=A`,
+`R_i>0`, `p_i>-1`, and
+
+```text
+f(x) <= A * prod_i x_i^(p_i)
+```
+
+for the product positive-box measure a.e., then `int^- ofReal(f)` is finite.
+The Aoyagi wrapper takes `p_i=h_i-2*t*k_i` under
+`2*t*k_i<h_i+1`.
+Lean names:
+`lintegral_ofReal_le_const_mul_fintype_rpow_positiveBox_lt_top` and
+`lintegral_ofReal_le_const_mul_fintype_monomialFactor_positiveBox_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-domination.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-positive-box-monomial-domination.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-positive-box-monomial-domination.md`.
+
+Nonclaims: no residual-loss lower-bound theorem, no density/prior upper-bound
+theorem, no derivation from separate loss and density estimates, no signed-box
+absolute-value theorem, no endpoint behavior, no lower/divergence side or
+threshold equality, no finite chart cover theorem, no Aoyagi p.13 analytic
+chart/Jacobian construction, no normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

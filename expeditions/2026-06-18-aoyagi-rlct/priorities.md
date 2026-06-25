@@ -3796,10 +3796,17 @@ Aoyagi corollary uses `p_i=h_i-2*t*k_i`, under
 residual lower-bound, density/prior transport, signed-box, chart-cover,
 endpoint, pole-order, or RLCT theorem.
 
+A2 positive-box monomial domination has now landed:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-domination.md`.
+Lean proves that if `f` is a.e. bounded above by
+`A * prod_i x_i^(p_i)` on the positive-box product measure, with `0<=A`,
+`R_i>0`, and `p_i>-1`, then `int^- ofReal(f)` is finite.  The Aoyagi wrapper
+uses `p_i=h_i-2*t*k_i` under `2*t*k_i<h_i+1`.  Treat this as direct
+domination transfer only.
+
 Updated next A2 analytic target: prove the residual/density comparison theorem
-in the local monomial setting.  The desired next statement should combine the
-landed positive-box theorem and lower-bound comparison under explicit a.e.
-hypotheses.  Do not copy the sketch as a theorem statement without adding
+that derives the domination hypothesis from explicit loss and density
+assumptions.  Do not copy the sketch as a theorem statement without adding
 `c>0`, a suitable finite nonnegative density constant `C`, the sign condition
 on `t`, a.e. positivity where negative powers are used, the needed
 measurability or lower-integral comparison assumptions, and a signed-box to
