@@ -7639,6 +7639,35 @@ Nonclaims: no proof of Aoyagi actual chart-side bounds, no analytic
 density/Jacobian transport, no chart coverage, no endpoint/divergent-side or
 threshold equality theorem, no normal crossings, pole order, or RLCT.
 
+Latest A2 p.13 half loss lower bound:
+`RegularSuspensionCoordinates.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source`,
+`PaperEndpointFixedBaseRegularCoordinateSourceData.const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source`,
+and
+`exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source_of_rank_eq`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-half-loss-lower-bound.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-half-loss-lower-bound.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`.
+Nonclaims: no original DLN loss comparison, no analytic p.13 chart,
+no density/Jacobian transport, no regular-suspension theorem, no normal
+crossings, pole order, or RLCT.
+
+Latest A2 signed-box model-loss adapter:
+`MonomialChartIntegrability.lean` proves
+`lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-model-loss-adapter.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-signed-box-model-loss-adapter.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`.
+Nonclaims: no model-loss construction, no p.13 source-filter to signed-box
+a.e. handoff, no density/Jacobian transport, no chart coverage, no normal
+crossings, pole order, or RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

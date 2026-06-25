@@ -3269,3 +3269,60 @@ Aoyagi's actual charts, and does not prove analytic density/Jacobian
 transport, chart coverage, endpoint or divergent behavior, threshold equality,
 p.13 analytic chart/Jacobian construction, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-25 A2 p.13 half loss lower bound
+
+Reproduction:
+`reproduction-a2-p13-half-loss-lower-bound.md`.
+Statement card:
+`statement-card-a2-p13-half-loss-lower-bound.md`.
+
+Lean now proves the lower-bound corollary of the p.13 source-stratum
+literal/cleaned factor-`2` comparison in `RegularSuspensionCoordinates.lean`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source
+PaperEndpointFixedBaseRegularCoordinateSourceData.const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source
+exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source_of_rank_eq
+```
+
+The first theorem proves eventually on the fixed-base source-rank stratum
+
+```text
+(1/2) * (regularSquareSum + residualSquareSum) <= literalSquareSum.
+```
+
+The second composes this with a supplied ambient comparison
+`c * literalSquareSum <= loss`, with `c>=0`, to get
+
+```text
+(c/2) * (regularSquareSum + residualSquareSum) <= loss.
+```
+
+Boundary: this is finite p.13 square-sum bookkeeping only.  It does not prove
+the original DLN loss comparison, analytic coordinate status, chart coverage,
+Jacobian/prior density transport, regular-suspension additivity, normal
+crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 signed-box model-loss adapter
+
+Reproduction:
+`reproduction-a2-signed-box-model-loss-adapter.md`.
+Statement card:
+`statement-card-a2-signed-box-model-loss-adapter.md`.
+
+Lean now proves the generic signed-box comparison adapter in
+`MonomialChartIntegrability.lean`:
+
+```text
+lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss
+```
+
+If `c*M <= modelLoss` and `modelLoss <= K*loss` a.e. with `c>0` and `K>0`,
+then `(c/K)*M <= loss` a.e.; the theorem delegates to the existing signed-box
+residual/density comparison with constant `c/K`.
+
+Boundary: this is comparison plumbing only.  It does not construct the model
+loss, convert p.13 source-filter facts into signed-box a.e. chart hypotheses,
+prove density/Jacobian transport, chart coverage, normal crossings, pole
+order, or RLCT.

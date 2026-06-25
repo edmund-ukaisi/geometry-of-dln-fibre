@@ -2770,6 +2770,107 @@ theorem literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_
   exact hx
 
 set_option linter.unusedSectionVars false in
+/-- On the source-rank stratum filter, the literal signed/corrected p. 13
+square-sum is locally bounded below by one half of the regular-plus-residual
+cleaned square-sum.
+
+This is the lower-bound direction of the finite p. 13 comparison.  It does
+not prove that an ambient DLN loss is comparable to the literal square-sum;
+that triangular/determinant-chart comparison remains a supplied input. -/
+theorem literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      (1 / 2 : ℝ) *
+        (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  refine
+    (literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source
+      (W := W) (B := B) sourceData).mono ?_
+  intro x hx
+  nlinarith [hx.2]
+
+set_option linter.unusedSectionVars false in
+/-- A supplied lower bound of an ambient loss by a positive multiple of the
+literal p. 13 square-sum gives, on the source-rank stratum filter, a lower
+bound by the regular-plus-residual cleaned square-sum with the constant halved.
+
+This theorem only packages the finite p. 13 comparison.  The hypothesis
+`hloss` is where any determinant-chart triangular-multiplier comparison with
+the original DLN loss must be supplied. -/
+theorem const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {loss : α → ℝ} {c : ℝ} (hc : 0 ≤ c)
+    (hloss :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        c * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤ loss x) :
+    ∀ᶠ x in
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+      (c / 2) *
+        (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ≤ loss x := by
+  have hhalf :=
+    literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source
+      (W := W) (B := B) sourceData
+  filter_upwards [hhalf, hloss] with x hhalf_x hloss_x
+  have hmul := mul_le_mul_of_nonneg_left hhalf_x hc
+  calc
+    (c / 2) *
+        (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x))
+        = c * ((1 / 2 : ℝ) *
+          (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x) +
+            aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x))) := by
+          ring
+    _ ≤ c * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) := hmul
+    _ ≤ loss x := hloss_x
+
+set_option linter.unusedSectionVars false in
 /-- Relative directional form: on the source-rank stratum filter, the literal
 signed/corrected square-sum is bounded by twice the cleaned square-sum. -/
 theorem literalProductDifferenceCoordinateMap_squareSum_eventually_le_two_mul_productDifferenceCoordinateMap_squareSum_nhdsWithin_source
@@ -2874,6 +2975,55 @@ theorem exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_cleaned
   exact
     ⟨U₀, hU₀, sourceData,
       PaperEndpointFixedBaseRegularCoordinateSourceData.literal_cleaned_productDifferenceCoordinateMap_squareSum_eventually_factor_two_nhdsWithin_source
+          (W := W) (B := B) sourceData⟩
+
+set_option linter.unusedSectionVars false in
+/-- Source rank data produce fixed-base regular-coordinate source data and the
+source-stratum half lower bound of the literal p. 13 square-sum by the cleaned
+regular-plus-residual square-sum.
+
+This is only source-side finite square-sum bookkeeping.  It does not supply a
+comparison with the original DLN loss, construct a regular-suspension chart,
+compute a Jacobian, produce normal crossings, or extract an RLCT. -/
+theorem exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source_of_rank_eq
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (H : ℕ → ℕ) (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hprod :
+      Module.finrank ℝ (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge :
+      ∀ p : Fin N,
+        Module.finrank ℝ (LinearMap.range (reverseEdge W B p)) = rEdge p)
+    (hH : ∀ k : Fin (N + 1),
+      H (k.val + 1) = Module.finrank ℝ (W k)) :
+    ∃ U₀ : Submodule ℝ (reverseVertex W 0),
+      ∃ hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)),
+        PaperEndpointFixedBaseRegularCoordinateSourceData
+            (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge ∧
+          ∀ᶠ x in
+            nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge),
+            (1 / 2 : ℝ) *
+              (aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseRegularBlockCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ Cedge x) +
+                aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseResidualBlockCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+              aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  rcases exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq
+      (K := ℝ) W B Cedge H r rEdge hCedge hbase hprod hedge hH with
+    ⟨U₀, hU₀, sourceData⟩
+  exact
+    ⟨U₀, hU₀, sourceData,
+      PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source
           (W := W) (B := B) sourceData⟩
 
 end FixedBaseRealSmallness

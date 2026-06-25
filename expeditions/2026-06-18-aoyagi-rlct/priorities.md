@@ -3826,3 +3826,16 @@ pin a narrower chart-local bound that can feed this signed-box theorem.  Do
 not claim this landed theorem proves Aoyagi's p.13 analytic chart/Jacobian
 construction, finite chart coverage, endpoint or divergent behavior, pole
 order, or RLCT.
+
+A2 p.13 half loss lower bound and signed-box model-loss adapter have now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-half-loss-lower-bound.md`
+and
+`threads/03-block-product-reduction/reproduction-a2-signed-box-model-loss-adapter.md`.
+Use the half-bound as the preferred finite source-stratum handoff from
+literal p.13 square-sum to regular-plus-residual cleaned square-sum.  Use the
+model-loss adapter when a signed-box monomial lower bound is first proved for
+an intermediate model loss.  Remaining A2 blockers are analytic/source
+handoffs: original DLN loss versus literal p.13 square-sum, local chart
+neighborhoods versus signed boxes/a.e. statements, Jacobian/prior density
+transport, and residual normal-crossing chart production.

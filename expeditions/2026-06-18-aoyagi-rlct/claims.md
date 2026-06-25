@@ -239,10 +239,13 @@ No such claim is formalisation-ready until both fields are filled.
   exposes that extraction on `Cfull` gives the reduced finite minimum plus the
   regular count shift and the reduced finite order. The source-stratum
   literal p.13 square-sum is now also compared directly with
-  regular-block square-sum plus residual-block square-sum. The full source
-  Theorem 3/RLCT claim remains blocked on the analytic product-coordinate
-  regular-square suspension theorem and the actual p.13 chart/density
-  construction.
+  regular-block square-sum plus residual-block square-sum, including the
+  half lower-bound form and a supplied ambient-loss handoff.  The signed-box
+  comparison layer now also has a generic model-loss adapter, dividing the
+  monomial lower-bound constant by a positive model/actual comparison
+  constant. The full source Theorem 3/RLCT claim remains blocked on the
+  analytic product-coordinate regular-square suspension theorem and the actual
+  p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -281,6 +284,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-supplied-regular-suspension-extraction-projection.md`;
   source-stratum literal regular/residual square-sum comparison at
   `threads/03-block-product-reduction/reproduction-a2-source-stratum-literal-regular-residual-square-sum.md`;
+  p.13 half loss lower bound at
+  `threads/03-block-product-reduction/reproduction-a2-p13-half-loss-lower-bound.md`;
+  signed-box model-loss adapter at
+  `threads/03-block-product-reduction/reproduction-a2-signed-box-model-loss-adapter.md`;
   regular square-suspension integrability target at
   `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`;
   one-sided regular-suspension integrability brick at
@@ -335,7 +342,10 @@ No such claim is formalisation-ready until both fields are filled.
   null-origin radial integrability transfer reviewed by xhigh `Jason the 4th` in
   `threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`;
   product below-critical integrability reviewed by xhigh `Hypatia the 4th` in
-  `threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`.
+  `threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`;
+  p.13 half lower bound and signed-box model-loss adapter reviewed by xhigh
+  `Hume the 4th` in
+  `threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -636,6 +646,16 @@ No such claim is formalisation-ready until both fields are filled.
   `PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_factor_two_nhdsWithin_source`,
   which rewrites the source-stratum literal/cleaned factor-`2` comparison as a
   comparison with the regular-block square-sum plus residual-block square-sum.
+  Also proved
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source`,
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source`,
+  and
+  `exists_paperEndpointFixedBaseRegularCoordinateSourceData_literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source_of_rank_eq`,
+  which package the lower-bound half of the same finite comparison and a
+  supplied ambient-loss handoff. In `MonomialChartIntegrability.lean`, also
+  proved
+  `lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss`,
+  the signed-box model-loss adapter from `modelLoss <= K*loss` with `K>0`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

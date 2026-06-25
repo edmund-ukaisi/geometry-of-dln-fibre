@@ -9391,6 +9391,25 @@ charts, prove analytic density/Jacobian transport, chart coverage,
 endpoint/divergence, threshold equality, normal crossings, pole order, or
 RLCT.
 
+Latest A2 p.13 finite loss handoffs:
+`RegularSuspensionCoordinates.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source`,
+the source-filter half lower bound
+`(1/2)*(regularSquareSum+residualSquareSum) <= literalSquareSum`, and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source`,
+which composes a supplied `c*literalSquareSum <= loss` comparison into
+`(c/2)*(regularSquareSum+residualSquareSum) <= loss`.  The source-rank
+existence wrapper also landed.  This is only finite p.13 square-sum
+bookkeeping; original-loss comparison and analytic chart/Jacobian transport
+remain supplied.
+
+Latest A2 signed-box comparison adapter:
+`MonomialChartIntegrability.lean` now proves
+`lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss`.
+If `c*M <= modelLoss` and `modelLoss <= K*loss` a.e. with `K>0`, the actual
+loss gets the signed-box theorem with constant `c/K`.  This is comparison
+plumbing only and does not instantiate Aoyagi p.13 charts or density bounds.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

@@ -498,6 +498,58 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
       (loss := loss x) (density := density x) (x := x)
       hc ht hxabs hxloss hxdens_nonneg hxdens_le
 
+/-- Signed-box residual/density comparison through an intermediate model loss.
+If the model loss has the required absolute-monomial lower bound and is
+bounded above by a positive constant times the actual loss, then the existing
+signed-box theorem applies to the actual loss with the lower-bound constant
+divided by that comparison constant.
+
+This is only a comparison adapter.  It does not produce the model loss,
+instantiate a p. 13 chart, prove the model/actual comparison, or prove
+density/Jacobian transport. -/
+theorem lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss
+    {ι : Type*} [Fintype ι] {h k : ι → ℕ} {t : ℝ} {R : ι → ℝ} {c K C : ℝ}
+    {modelLoss loss density : (ι → ℝ) → ℝ}
+    (hc : 0 < c) (hK : 0 < K) (hC : 0 ≤ C) (ht : 0 ≤ t)
+    (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < (h i : ℝ) + 1)
+    (hmodel : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      c * ∏ i, (|x i|) ^ (2 * (k i : ℝ)) ≤ modelLoss x)
+    (hcompare : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      modelLoss x ≤ K * loss x)
+    (hdensity_nonneg : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      0 ≤ density x)
+    (hdensity_le : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      density x ≤ C * ∏ i, (|x i|) ^ (h i : ℝ)) :
+    (∫⁻ x : ι → ℝ, ENNReal.ofReal ((loss x) ^ (-t) * density x)
+      ∂ Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))) < ∞ := by
+  let μ : Measure (ι → ℝ) :=
+    Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  have hc' : 0 < c / K := div_pos hc hK
+  refine lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
+    (h := h) (k := k) (t := t) (R := R) (c := c / K) (C := C)
+    (loss := loss) (density := density)
+    hc' hC ht hR hcrit ?_ hdensity_nonneg hdensity_le
+  filter_upwards [hmodel, hcompare] with x hxmodel hxcompare
+  have hscaled :
+      c * ∏ i, (|x i|) ^ (2 * (k i : ℝ)) ≤ K * loss x :=
+    hxmodel.trans hxcompare
+  have hscaled' :
+      c * ∏ i, (|x i|) ^ (2 * (k i : ℝ)) ≤ loss x * K := by
+    simpa [mul_comm] using hscaled
+  have hdiv :
+      (c * ∏ i, (|x i|) ^ (2 * (k i : ℝ))) / K ≤ loss x := by
+    exact (div_le_iff₀ hK).2 hscaled'
+  calc
+    (c / K) * ∏ i, (|x i|) ^ (2 * (k i : ℝ)) =
+        (c * ∏ i, (|x i|) ^ (2 * (k i : ℝ))) / K := by
+      ring
+    _ ≤ loss x := hdiv
+
 end Aoyagi
 end DLN
 end DLNFibre
