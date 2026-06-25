@@ -4056,3 +4056,17 @@ the local regular-fiber loss/density bounds explicit, and does not construct
 the chart, prove the pushforward, transport density or Jacobian factors,
 compare original `lossDLN`, produce normal crossings, compute pole order, or
 extract an RLCT.
+
+A2 signed-box residual continuous-density finite-integral bridge has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-continuous-density-finite-integral-bridge.md`.
+Lean composes the measurable-edge weighted signed-box residual-source
+constructor with the existing continuous-density p.13 local finite-integral
+theorem.  This is the preferred consumer when the residual side is supplied by
+a signed-box source chart and the transported product density is supplied as a
+positive continuous function at the chart center.  It still keeps
+source-stratum measurability, the weighted pushforward, source-density
+assumptions, residual lower bound, and local regular-fiber loss lower bound
+explicit.  It does not construct the chart, prove pushforward or
+density/Jacobian transport, compare original `lossDLN`, produce normal
+crossings, compute pole order, or extract an RLCT.

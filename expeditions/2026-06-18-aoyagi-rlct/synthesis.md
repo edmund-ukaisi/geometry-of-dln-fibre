@@ -9543,6 +9543,19 @@ the source-density monomial upper bound, and local regular-fiber loss/density
 bounds.  It is not chart construction, pushforward proof, density/Jacobian
 transport, original-loss comparison, normal crossings, pole order, or RLCT.
 
+Latest A2 signed-box residual continuous-density finite-integral bridge:
+`RegularSuspensionLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_continuousAt_pos_density`.
+It combines the measurable-edge weighted signed-box residual-source theorem
+with the existing positive-continuous-density p.13 local finite-integral
+bridge.  The conclusion produces a radius `R <= Rmax`, density bound `C`, and
+open source neighborhood `U`.  The theorem still assumes source-stratum
+measurability, signed-box chart/source-density hypotheses, the weighted
+pushforward, residual lower bound, positive continuous product density at
+`(x₀,0)`, and the regular-fiber loss lower bound.  It does not construct the
+chart, prove pushforward or density/Jacobian transport, compare original
+`lossDLN`, produce normal crossings, compute pole order, or extract an RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
