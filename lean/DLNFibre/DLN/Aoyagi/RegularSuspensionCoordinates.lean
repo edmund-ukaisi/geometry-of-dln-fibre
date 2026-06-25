@@ -109,6 +109,127 @@ theorem aoyagiCoordinateSquareSum_add_le_two_mul_add_two_mul
     _ = 2 * (∑ c, f c ^ 2) + 2 * ∑ c, g c ^ 2 := by
       rw [← Finset.mul_sum, ← Finset.mul_sum]
 
+/-- Frobenius-style finite matrix-product estimate for coordinate
+square-sums. -/
+theorem matrixCoordinateSquareSum_mul_le_mul
+    {ι μ ν R : Type*} [Fintype ι] [Fintype μ] [Fintype ν]
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    (A : Matrix μ ι R) (B : Matrix ι ν R) :
+    aoyagiCoordinateSquareSum (fun ij : μ × ν => (A * B) ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (fun ij : μ × ι => A ij.1 ij.2) *
+        aoyagiCoordinateSquareSum (fun ij : ι × ν => B ij.1 ij.2) := by
+  classical
+  unfold aoyagiCoordinateSquareSum
+  calc
+    ∑ ij : μ × ν, (A * B) ij.1 ij.2 ^ 2 ≤
+        ∑ ij : μ × ν,
+          (∑ k : ι, A ij.1 k ^ 2) * ∑ k : ι, B k ij.2 ^ 2 := by
+      exact Finset.sum_le_sum (fun ij _ => by
+        simpa [Matrix.mul_apply] using
+          (Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset ι)
+            (fun k => A ij.1 k) (fun k => B k ij.2)))
+    _ =
+        (∑ ij : μ × ι, A ij.1 ij.2 ^ 2) *
+          ∑ ij : ι × ν, B ij.1 ij.2 ^ 2 := by
+      simp only [Fintype.sum_prod_type]
+      calc
+        ∑ i : μ, ∑ j : ν,
+            (∑ k : ι, A i k ^ 2) * ∑ k : ι, B k j ^ 2 =
+            ∑ i : μ, (∑ k : ι, A i k ^ 2) *
+              ∑ j : ν, ∑ k : ι, B k j ^ 2 := by
+          simp [Finset.mul_sum]
+        _ =
+            (∑ i : μ, ∑ k : ι, A i k ^ 2) *
+              ∑ j : ν, ∑ k : ι, B k j ^ 2 := by
+          rw [Finset.sum_mul]
+        _ =
+            (∑ i : μ, ∑ k : ι, A i k ^ 2) *
+              ∑ k : ι, ∑ j : ν, B k j ^ 2 := by
+          have hcomm :
+              (∑ j : ν, ∑ k : ι, B k j ^ 2) =
+                ∑ k : ι, ∑ j : ν, B k j ^ 2 := by
+            rw [Finset.sum_comm]
+          rw [hcomm]
+
+/-- Two-sided multiplication by finite matrices is bounded for coordinate
+square-sums. -/
+theorem matrixCoordinateSquareSum_mul_mul_le_mul
+    {ι μ ν κ R : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [Fintype κ]
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    (L : Matrix μ ι R) (M : Matrix ι ν R) (Rmat : Matrix ν κ R) :
+    aoyagiCoordinateSquareSum
+        (fun ij : μ × κ => (L * M * Rmat) ij.1 ij.2) ≤
+      (aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+          aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2)) *
+        aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2) := by
+  classical
+  have hright :=
+    matrixCoordinateSquareSum_mul_le_mul (A := L * M) (B := Rmat)
+  have hleft :=
+    matrixCoordinateSquareSum_mul_le_mul (A := L) (B := M)
+  let SL := aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2)
+  let SM := aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2)
+  let SR := aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2)
+  let SLM := aoyagiCoordinateSquareSum (fun ij : μ × ν => (L * M) ij.1 ij.2)
+  let SLMR :=
+    aoyagiCoordinateSquareSum
+      (fun ij : μ × κ => (L * M * Rmat) ij.1 ij.2)
+  have hright' : SLMR ≤ SLM * SR := by
+    simpa [SLMR, SLM, SR, Matrix.mul_assoc] using hright
+  have hleft' : SLM ≤ SL * SM := by
+    simpa [SLM, SL, SM] using hleft
+  have hSR : 0 ≤ SR := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (fun ij : ν × κ => Rmat ij.1 ij.2)
+  have hSM : 0 ≤ SM := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (fun ij : ι × ν => M ij.1 ij.2)
+  have hbounded : SLM * SR ≤ (SL * SR) * SM := by
+    calc
+      SLM * SR ≤ (SL * SM) * SR := mul_le_mul_of_nonneg_right hleft' hSR
+      _ = (SL * SR) * SM := by ring
+  calc
+    SLMR ≤ SLM * SR := hright'
+    _ ≤ (SL * SR) * SM := hbounded
+
+/-- If the product of the left and right multiplier square-sums is bounded by
+`K`, then a small enough constant times the transformed square-sum is bounded
+by the original square-sum. -/
+theorem const_mul_matrixCoordinateSquareSum_le_of_mul_eq_of_multiplierSquareSum_mul_le
+    {ι μ ν κ R : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [Fintype κ]
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    {L : Matrix μ ι R} {M : Matrix ι ν R} {Rmat : Matrix ν κ R}
+    {T : Matrix μ κ R} {c K : R}
+    (hc_nonneg : 0 ≤ c)
+    (hcK : c * K ≤ 1)
+    (hbound :
+      aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2) *
+          aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2) ≤ K)
+    (hT : L * M * Rmat = T) :
+    c * aoyagiCoordinateSquareSum (fun ij : μ × κ => T ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2) := by
+  classical
+  let SL := aoyagiCoordinateSquareSum (fun ij : μ × ι => L ij.1 ij.2)
+  let SM := aoyagiCoordinateSquareSum (fun ij : ι × ν => M ij.1 ij.2)
+  let SR := aoyagiCoordinateSquareSum (fun ij : ν × κ => Rmat ij.1 ij.2)
+  let ST := aoyagiCoordinateSquareSum (fun ij : μ × κ => T ij.1 ij.2)
+  have hSM : 0 ≤ SM := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (fun ij : ι × ν => M ij.1 ij.2)
+  have hmul :
+      ST ≤ (SL * SR) * SM := by
+    simpa [ST, SL, SM, SR, hT] using
+      matrixCoordinateSquareSum_mul_mul_le_mul L M Rmat
+  have hbound' : (SL * SR) * SM ≤ K * SM :=
+    mul_le_mul_of_nonneg_right hbound hSM
+  calc
+    c * ST ≤ c * (K * SM) := by
+      exact mul_le_mul_of_nonneg_left (hmul.trans hbound') hc_nonneg
+    _ = (c * K) * SM := by ring
+    _ ≤ 1 * SM := by
+      exact mul_le_mul_of_nonneg_right hcK hSM
+    _ = SM := one_mul SM
+
 /-- A finite real coordinate square-sum is continuous at a point when the
 coordinate family is continuous there. -/
 theorem aoyagiCoordinateSquareSum_continuousAt
@@ -722,6 +843,85 @@ theorem literalCoordinateSquareSum_eq_regular_add_correctedResidual
           (AoyagiResidualBlockCoordinateIndex.value (D - F3 * F2)) := by
   simp [aoyagiCoordinateSquareSum, literalValue, AoyagiRegularBlockCoordinateIndex.value,
     AoyagiResidualBlockCoordinateIndex.value, Fintype.sum_sum_type]
+
+/-- The literal p. 13 product-difference square-sum is the entry square-sum of
+the displayed signed/corrected block matrix. -/
+theorem literalCoordinateSquareSum_eq_fromBlocks_neg_neg_sub_mul
+    [CommRing R] [Fintype ι] [Fintype μ] [Fintype ν]
+    (X : Matrix ι ι R) (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (D : Matrix μ ν R) :
+    aoyagiCoordinateSquareSum (literalValue X F2 F3 D) =
+      aoyagiCoordinateSquareSum
+        (fun ij : (ι ⊕ μ) × (ι ⊕ ν) =>
+          (fromBlocks X (-F2) (-F3) (D - F3 * F2)) ij.1 ij.2) := by
+  simp [aoyagiCoordinateSquareSum, literalValue, AoyagiRegularBlockCoordinateIndex.value,
+    AoyagiResidualBlockCoordinateIndex.value, Fintype.sum_sum_type, Fintype.sum_prod_type,
+    Finset.sum_add_distrib]
+  abel
+
+/-- Quantitative p. 13 triangular-multiplier comparison.
+
+If triangular endpoint multipliers transform `T` to the p. 13 block-diagonal
+form and the product of their coordinate square-sums is bounded by `K`, then a
+constant `c` with `c*K <= 1` times the literal p. 13 square-sum is bounded by
+the untransformed product-difference square-sum. -/
+theorem const_mul_literalCoordinateSquareSum_le_productDifferenceSquareSum_of_triangularBlockProduct
+    [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+    [Fintype ι] [Fintype μ] [Fintype ν]
+    [DecidableEq ι] [DecidableEq μ] [DecidableEq ν]
+    (F2 : Matrix ι ν R) (F3 : Matrix μ ι R)
+    (Ctop : Matrix ι ι R) (D : Matrix μ ν R)
+    (T : Matrix (ι ⊕ μ) (ι ⊕ ν) R)
+    {c K : R}
+    (hc_nonneg : 0 ≤ c) (hcK : c * K ≤ 1)
+    (hbound :
+      aoyagiCoordinateSquareSum
+            (fun ij : (ι ⊕ μ) × (ι ⊕ μ) =>
+              (fromBlocks (1 : Matrix ι ι R) 0 F3 (1 : Matrix μ μ R))
+                ij.1 ij.2) *
+          aoyagiCoordinateSquareSum
+            (fun ij : (ι ⊕ ν) × (ι ⊕ ν) =>
+              (fromBlocks (1 : Matrix ι ι R) F2 0 (1 : Matrix ν ν R))
+                ij.1 ij.2) ≤ K)
+    (htri :
+      fromBlocks (1 : Matrix ι ι R) 0 F3 (1 : Matrix μ μ R) * T *
+        fromBlocks (1 : Matrix ι ι R) F2 0 (1 : Matrix ν ν R) =
+          fromBlocks Ctop 0 0 D) :
+    c * aoyagiCoordinateSquareSum (literalValue (Ctop - 1) F2 F3 D) ≤
+      aoyagiCoordinateSquareSum
+        (fun ij : (ι ⊕ μ) × (ι ⊕ ν) =>
+          (T - fromBlocks (1 : Matrix ι ι R) 0
+            (0 : Matrix μ ι R) (0 : Matrix μ ν R)) ij.1 ij.2) := by
+  classical
+  let L : Matrix (ι ⊕ μ) (ι ⊕ μ) R :=
+    fromBlocks (1 : Matrix ι ι R) 0 F3 (1 : Matrix μ μ R)
+  let Rmat : Matrix (ι ⊕ ν) (ι ⊕ ν) R :=
+    fromBlocks (1 : Matrix ι ι R) F2 0 (1 : Matrix ν ν R)
+  let T0 : Matrix (ι ⊕ μ) (ι ⊕ ν) R :=
+    fromBlocks (1 : Matrix ι ι R) 0 (0 : Matrix μ ι R) (0 : Matrix μ ν R)
+  let Tlit : Matrix (ι ⊕ μ) (ι ⊕ ν) R :=
+    fromBlocks (Ctop - 1) (-F2) (-F3) (D - F3 * F2)
+  have hdiff : L * (T - T0) * Rmat = Tlit := by
+    simpa [L, Rmat, T0, Tlit] using
+      triangularBlockProductDifference_fromBlocks_indexed F2 F3 Ctop D T htri
+  have hlit :
+      aoyagiCoordinateSquareSum (literalValue (Ctop - 1) F2 F3 D) =
+        aoyagiCoordinateSquareSum
+          (fun ij : (ι ⊕ μ) × (ι ⊕ ν) => Tlit ij.1 ij.2) := by
+    simpa [Tlit] using
+      literalCoordinateSquareSum_eq_fromBlocks_neg_neg_sub_mul
+        (Ctop - 1) F2 F3 D
+  have hraw :
+      c * aoyagiCoordinateSquareSum
+          (fun ij : (ι ⊕ μ) × (ι ⊕ ν) => Tlit ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum
+          (fun ij : (ι ⊕ μ) × (ι ⊕ ν) => (T - T0) ij.1 ij.2) := by
+    refine
+      const_mul_matrixCoordinateSquareSum_le_of_mul_eq_of_multiplierSquareSum_mul_le
+        (L := L) (M := T - T0) (Rmat := Rmat) (T := Tlit)
+        (c := c) (K := K) hc_nonneg hcK ?_ hdiff
+    simpa [L, Rmat] using hbound
+  simpa [hlit, T0] using hraw
 
 /-- The corrected residual square-sum is bounded by twice the cleaned residual
 square-sum plus twice the product-correction square-sum.

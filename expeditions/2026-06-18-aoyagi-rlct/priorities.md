@@ -644,6 +644,19 @@ regular-plus-residual square-sum split.  This is the finite p.13 loss-shape
 input for later Fubini work; it is not analytic regular-coordinate status,
 chart production, a Fubini theorem, normal crossings, pole order, or RLCT.
 
+A2 adapted product-difference triangular multiplier comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-adapted-product-difference-triangular-multiplier-comparison.md`.
+Lean proves finite Frobenius-style coordinate square-sum bounds and the p.13
+triangular-multiplier theorem
+`AoyagiProductDifferenceCoordinateIndex.const_mul_literalCoordinateSquareSum_le_productDifferenceSquareSum_of_triangularBlockProduct`.
+This supplies the elementary adapted-coordinate comparison
+`c * literalSquareSum <= squareSum(T-T0)` under a supplied triangular identity
+and supplied multiplier square-sum bound `squareSum(L)*squareSum(R) <= K`
+with `c*K <= 1`.  It is not a comparison with `lossDLN` or the original
+statistical loss, and it does not prove covariance lower bounds, basis norm
+equivalence, multiplier boundedness, analytic chart construction, Jacobian
+transport, normal crossings, pole order, or RLCT.
+
 The next genuine A2 analytic target is now pinned at
 `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
 prove an abstract Euclidean product-coordinate theorem that adding `k`
