@@ -710,6 +710,11 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   hand off rather than red-spiral). The focused finish of PIN1 (the dominant L2 bottleneck's core).
 - 2 background BUILD agents: l2-pin1-valuefold (L2 PIN1 value-fold), r1-node-3333 (R1 hdiv (3,3,3,3)). Queued: hfin BUILD (#55),
   R1 hdiv-general chaining, L2 PIN2 + the case-split wire + product_reduction, D1.
+- **hfin BUILD STARTED (hfin-4422 a2dcef0e, 2026-06-25):** the LOW-risk terminal `radial_morse_dominates_lt_top` (S2-free,
+  build first) + the (4,4,2,2) corank-2 depth-2 hfin instance (generalising the (2,2,2) Case222CoverGETail depth-2 worked
+  example) — the concrete anchor before the general L3.1 (the HIGH-risk r²-chart cover, pp-r1-genM on-call). Used the idle
+  heartbeat's free integration bandwidth. **3 BUILD agents now:** l2-pin1-valuefold (L2 PIN1), r1-node-3333 (R1 hdiv (3,3,3,3)),
+  hfin-4422 (R1 hfin (4,4,2,2)) — all three open fronts (L2 PIN1 / R1 hdiv / R1 hfin), non-overlapping files.
 
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
