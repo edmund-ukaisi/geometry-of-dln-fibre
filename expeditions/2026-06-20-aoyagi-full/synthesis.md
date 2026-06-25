@@ -886,6 +886,17 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-66 (2026-06-25) — L2 hproducer leak (c) CLOSED @8dd67a56; producer down to the core (d')/(e') (the Rcore↔coreAbsorb block-LDU).**
+- **l2-leak-core:** the leak conjunct (c) `∑(P10·⅟P00·P01)² ≤ Sreg` closed sorry-free (`eventually_leak` + the coupled-U {S5a}∩{S5b},
+  t=1; reviewer PASS incl. goal-not-weakened). hproducer = (a)+(b)-EXACT+S5a+leak(c) all PROVEN; PIN1 clean; no monomial_rlct.
+- **The producer's LAST piece = the folded core (d')/(e') (2 sorries):** needs the UNBUILT structural bridge `Rcore = P11−P10⅟P00P01
+  ↔ deepestCoreF(deepestCoreAbsorb)` (the block-LDU; the decomp-cert under-specified (iv) as "pure wiring"; confirmed by Codex). The
+  banked `schur_core_germ_comparability` charges it at γ=1+C once the identity exists. **pp-pin2-rearch pinning it** (rcore-coreabsorb-cert,
+  design-before-build to avoid another thrashing cycle). Then a formaliser build → the L2 body complete for front pivot.
+- **R1 (3,3,4):** r1-ratiofin (a22cef05) building the last sorry (hratiofin) → on close the (3,3,4) hfin is complete S2-free.
+- Active: r1-ratiofin (R1 build) + pp-pin2-rearch (L2 Rcore↔coreAbsorb design). pp-r1-genM-2 on-call. The L2 producer (d')/(e') build is
+  HELD pending pp's pin. General hdiv + general lifts + D1 ahead.
+
 **UPDATE-65 (2026-06-25) — (3,3,4) hfin down to ONE sorry (hratiofin); radial separation built @acd5c4e2; both poles' last pieces building.**
 - **r1-chart banked:** the per-chart radial separation is PROVEN (piFinSuccAbove MP + Fubini + radialAxis discharge; `angularA1_integral_le`
   the integral-level schur comparability + the zero-guard). `matBox334_chart_lt_top`'s gap narrowed to the lone `hratiofin` (the ratio
