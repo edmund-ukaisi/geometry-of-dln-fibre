@@ -6688,6 +6688,17 @@ readout expected by the original-loss wrapper.  It uses
 `CedgeBase`, prove the residual-product matrix identity, construct the
 residual-index equivalence, or prove source coverage.
 
+Latest A2 selected-entry prescribed-matrix readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_prescribedEdgeMatrix_residualProduct_eq_matrix`.
+If future selected-entry source-chart algebra supplies a fixed-base matrix
+family `Ebase x`, and its residual product at `chartMap pivot y` is the
+selected-entry chart matrix, the theorem realises each `Ebase x` as continuous
+fixed-base reverse edges and returns the pointwise residual-coordinate readout.
+This is still a supplied-matrix bridge: no construction of `Ebase`, no proof
+of the residual-product matrix identity, no residual-index equivalence, and no
+source coverage.
+
 Latest A2 selected-entry local-source finite-integral handoff:
 Lean now specializes the local-source monomial-unit finite-integral socket to
 the center-indexed selected-entry signed box.

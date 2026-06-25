@@ -5530,3 +5530,22 @@ It does not construct `CedgeBase`, prove source image/coverage, construct the
 residual-index equivalence, or prove the matrix formula.
 Independent xhigh review passed after wording fixes to keep the source
 boundary precise.
+
+## 2026-06-25 A2 selected-entry prescribed-matrix readout
+
+Reproduction:
+`reproduction-a2-selected-entry-prescribed-matrix-readout.md`.
+Statement card:
+`statement-card-a2-selected-entry-prescribed-matrix-readout.md`.
+Review:
+`review-a2-selected-entry-prescribed-matrix-readout.md`.
+
+Lean now proves that a prescribed fixed-base matrix family with a supplied
+selected-entry residual-product matrix identity gives the same pointwise
+readout after those matrices are realised as continuous reverse edges.  This
+is the layer expected if the future source-chart algebra is phrased directly
+in fixed-base edge matrices.  It does not construct the matrix family, prove
+the residual-product identity, construct the residual-index equivalence, or
+prove source image/coverage.
+Independent xhigh review passed after wording fixes to avoid implying that the
+theorem packages a source chart.

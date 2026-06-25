@@ -8313,6 +8313,23 @@ Nonclaims: no construction of `CedgeBase`, no proof of the residual-product
 matrix identity, no construction of the residual-index equivalence, no source
 coverage, source-measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 selected-entry prescribed-matrix readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_prescribedEdgeMatrix_residualProduct_eq_matrix`.
+It starts from a supplied fixed-base matrix family `Ebase`, uses
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices`
+to identify the realised continuous edge family's fixed-base matrices with
+`Ebase`, and delegates to the residual-product matrix readout bridge.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-prescribed-matrix-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-prescribed-matrix-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-prescribed-matrix-readout.md`.
+Nonclaims: no construction of `Ebase`, no proof of the residual-product
+matrix identity, no construction of the residual-index equivalence, no source
+coverage, source-measure transport, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

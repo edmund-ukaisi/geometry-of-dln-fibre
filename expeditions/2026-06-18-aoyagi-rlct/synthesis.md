@@ -10534,6 +10534,21 @@ and
 Xhigh review `Plato` passed; review artifact:
 `threads/03-block-product-reduction/review-a2-selected-entry-residual-product-matrix-readout.md`.
 
+The next readout-layer wrapper also landed in Lean:
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_prescribedEdgeMatrix_residualProduct_eq_matrix`.
+It starts from a supplied fixed-base matrix family `Ebase`, realises it as
+continuous reverse edges, uses the prescribed-matrix recovery theorem, and
+then delegates to the matrix residual-product readout bridge.  It is useful
+when the next source-chart calculation is naturally stated directly in
+fixed-base edge matrices.  It still does not construct `Ebase`, prove the
+residual-product matrix identity, construct the residual-index equivalence, or
+prove source coverage.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-prescribed-matrix-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-prescribed-matrix-readout.md`.
+Xhigh review `Linnaeus` passed after wording fixes; review artifact:
+`threads/03-block-product-reduction/review-a2-selected-entry-prescribed-matrix-readout.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
