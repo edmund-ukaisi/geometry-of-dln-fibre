@@ -1929,6 +1929,79 @@ private theorem eventually_leak (H : Fin (L + 1) → ℕ) (r : ℕ)
             + (∑ i, ∑ j, ((Mfn w).toBlocks₁₂ i j) ^ 2))
           + (∑ i, ∑ j, ((Mfn w).toBlocks₂₁ i j) ^ 2)) := by ring
 
+/-- **(d')/(e') lemma 1 — the core decode** (cert Q3, "routine"). On the inner ball (`χ = 1`, where
+`deepestCoreAbsorb`'s cutoff Schur shift equals the honest raw correction), the absorbed-core energy
+`deepestCoreF (deepestCoreAbsorb q).2.1` equals the squared-Frobenius energy of the product of the
+per-layer Schur cores `S_s = T_s − Z_s(1+X_s)⁻¹Y_s` (with `T_s` the raw core read of `q.2.1`,
+`(X_s,Y_s,Z_s)` the reg+spec reads). Decode chain: `coreShearHomeo` ADD-form +
+`schurCutoffShift = schurShiftRaw` (χ=1) + `paramsEquivFlat (deepestM)` additivity/round-trip
+(`schurShiftRaw = paramsEquivFlat (schurCorrection)`) + `dlnLoss M 0 A = frobSq (prod M A)`. EXACT. -/
+theorem deepestCoreF_coreAbsorb_eq_prodSchur (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hq : q ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
+      ((cutoffBump H r hr hL).rIn)) :
+    deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1
+      = frobSq (prod (deepestM H r)
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrection H r hr hL (q.1, q.2.2) s)) := by
+  -- The absorbed core slot: `coreShearHomeo` ADD-form `(coreAbsorb q).2.1 = q.2.1 + shift (q.1, q.2.2)`.
+  have hcore : (deepestCoreAbsorb H r hr hL q).2.1
+      = q.2.1 + schurCutoffShift H r hr hL (q.1, q.2.2) := rfl
+  -- On the inner ball the cutoff shift equals the honest raw Schur shift.
+  have hraw : schurCutoffShift H r hr hL (q.1, q.2.2)
+      = schurShiftRaw H r hr hL (q.1, q.2.2) := by
+    apply schurCutoffShift_eq_raw_of_mem_closedBall
+    -- `(q.1, q.2.2)` lies in the inner ball whenever `q` does (the gauge slot is a projection,
+    -- distance-nonincreasing).
+    rw [Metric.mem_closedBall, dist_zero_right] at hq ⊢
+    refine le_trans ?_ hq
+    -- `‖(q.1, q.2.2)‖ = max ‖q.1‖ ‖q.2.2‖ ≤ max ‖q.1‖ (max ‖q.2.1‖ ‖q.2.2‖) = ‖q‖`.
+    have h1 : ‖q.1‖ ≤ ‖q‖ := by rw [Prod.norm_def q]; exact le_max_left _ _
+    have h2 : ‖q.2.2‖ ≤ ‖q‖ := by
+      rw [Prod.norm_def q, Prod.norm_def q.2]
+      exact le_trans (le_max_right _ _) (le_max_right _ _)
+    rw [Prod.norm_def (q.1, q.2.2)]
+    exact max_le h1 h2
+  -- `schurShiftRaw = paramsEquivFlat (schurCorrection)`.
+  have hsr : schurShiftRaw H r hr hL (q.1, q.2.2)
+      = paramsEquivFlat (deepestM H r) (schurCorrection H r hr hL (q.1, q.2.2)) := rfl
+  -- The decoded core tuple: `paramsEquivFlat.symm (q.2.1 + paramsEquivFlat (schurCorrection))`
+  -- `= paramsEquivFlat.symm q.2.1 + schurCorrection` (additivity of `.symm` + round-trip).
+  have hdecode : (paramsEquivFlat (deepestM H r)).symm ((deepestCoreAbsorb H r hr hL q).2.1)
+      = (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+          + schurCorrection H r hr hL (q.1, q.2.2) s) := by
+    rw [hcore, hraw, hsr]
+    -- `.symm` agrees with the linear `.symm` (`paramsEquivFlatLinear`), hence additive.
+    have hsymmL : ∀ y, (paramsEquivFlat (deepestM H r)).symm y
+        = (paramsEquivFlatLinear (deepestM H r)).symm y := by
+      intro y
+      apply (paramsEquivFlatLinear (deepestM H r)).injective
+      rw [(paramsEquivFlatLinear (deepestM H r)).apply_symm_apply,
+        show (paramsEquivFlatLinear (deepestM H r)) ((paramsEquivFlat (deepestM H r)).symm y)
+          = (paramsEquivFlat (deepestM H r)) ((paramsEquivFlat (deepestM H r)).symm y) from
+          congrFun (paramsEquivFlatLinear_coe (deepestM H r)) _,
+        (paramsEquivFlat (deepestM H r)).apply_symm_apply]
+    -- The second summand round-trips: `linear.symm (paramsEquivFlat (schurCorrection)) = schurCorrection`.
+    have hrt : (paramsEquivFlatLinear (deepestM H r)).symm
+        (paramsEquivFlat (deepestM H r) (schurCorrection H r hr hL (q.1, q.2.2)))
+          = schurCorrection H r hr hL (q.1, q.2.2) := by
+      rw [show (paramsEquivFlat (deepestM H r)) (schurCorrection H r hr hL (q.1, q.2.2))
+          = (paramsEquivFlatLinear (deepestM H r)) (schurCorrection H r hr hL (q.1, q.2.2)) from
+          (congrFun (paramsEquivFlatLinear_coe (deepestM H r)) _).symm,
+        (paramsEquivFlatLinear (deepestM H r)).symm_apply_apply]
+    -- Rewrite the LHS argument of `.symm` to the linear form, apply additivity + round-trip.
+    rw [hsymmL (q.2.1 + paramsEquivFlat (deepestM H r) (schurCorrection H r hr hL (q.1, q.2.2))),
+      map_add, hrt, ← hsymmL q.2.1]
+    rfl
+  -- Assemble: `deepestCoreF = dlnLoss M 0 (paramsEquivFlat.symm core) = frobSq (prod M core)`.
+  show dlnLoss (deepestM H r)
+      (0 : Matrix (Fin (deepestM H r 0)) (Fin (deepestM H r (Fin.last L))) ℝ)
+      ((paramsEquivFlat (deepestM H r)).symm (deepestCoreAbsorb H r hr hL q).2.1)
+    = frobSq _
+  rw [hdecode]
+  simp only [dlnLoss, frobSq, sub_zero]
+
 /-- **The frame-bridge cert** (#80, ruling (b) — the ONE geometric input of the loss squeeze). Packages
 the constant endpoint frames `P0, QL` (with inverses `Pi, Qi`, `Pi·P0 = 1 ∧ QL·Qi = 1`) and a `leak`
 charge constant `t`, and a neighborhood `U` of the deepest point where for each `w ∈ U` the loss matrix
@@ -2549,8 +2622,46 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
     have hleakev := eventually_leak H r B hB hr hL P0 QL
       (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-    refine ⟨1, 1, 1, 1, 1, one_pos, one_pos, one_pos, one_pos,
-      {w | IsUnit ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+    -- **THE ONE REMAINING GEOMETRIC GAP (the in-sum Schur charge).** The folded-core conjuncts
+    -- (d')/(e') reduce to a SINGLE GERM charge: a constant `C ≥ 0` with, EVENTUALLY in `𝓝 w0`, the
+    -- in-sum bound `|frobSq Rcore(w) − coreΦ(w)| ≤ C·Sreg(w)` (`Rcore = P11 − P10·(P00)⁻¹·P01` the
+    -- global Schur complement of `Mw`, `coreΦ = deepestCoreF (coreAbsorb (split w)).2.1`, `Sreg`
+    -- the three regular-block energies). GERM-scoped (NOT `∀ w` — the in-sum charge is FALSE globally:
+    -- where `Sreg(w) = 0` but `Rcore ≠ coreΦ`, `|…| ≤ C·0` fails; it holds only near `w0`). This is
+    -- the FRAME-STRIPPING-bridge + S5c germ charge (see the per-conjunct notes below): lemma 1
+    -- (`deepestCoreF_coreAbsorb_eq_prodSchur`, banked above) pins `coreΦ = frobSq (∏S)`; the verified
+    -- 2-layer LDU (sympy `two-layer-ldu-verify.py`) gives `Rcore = S0·(1−K)·S1`; the banked
+    -- `schur_core_germ_comparability` + Cauchy–Schwarz then bound the in-sum difference by `C·Sreg`
+    -- on the germ. Stated with the TOTAL inverse `(·)⁻¹` (= `⅟P00` on the S5a set,
+    -- `invOf_eq_nonsing_inv`) so the constant `C` is `w`-uniform on the germ. UNBUILT (the
+    -- frame-aware identification of `Rcore` with the lemma-1 `S0,S1` despite the per-layer `Pf,Qf`
+    -- frames). The germ set is folded into `U` via `Filter.inter_mem`, so `hw.2` carries it per-`w`.
+    obtain ⟨C, hCnn, hcharge⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
+        |(∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₂
+            - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁
+              * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁ + 1)⁻¹
+              * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
+          - deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1|
+          ≤ C * (((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
+              + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
+            + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2)) := by
+      sorry
+    refine ⟨1, 1 + C, 1 + C, 1, 1, by positivity, by positivity, one_pos, one_pos,
+      ({w | IsUnit ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁
         + (1 : Matrix (Fin r) (Fin r) ℝ))}
@@ -2572,16 +2683,40 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
             + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))})
+      ∩ {w | |(∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₂
+            - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁
+              * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁ + 1)⁻¹
+              * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
+          - deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1|
+          ≤ C * (((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
+              + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
+            + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                  (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))},
-      Filter.inter_mem hP00ev hleakev, fun w hw => ?_⟩
+      Filter.inter_mem (Filter.inter_mem hP00ev hleakev) hcharge, fun w hw => ?_⟩
     -- The conjugated residual `M w` and its four blocks (`P00 := M.toBlocks₁₁ + 1`).
     set Mw := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL) with hMw
     -- S5a gives `IsUnit (M.toBlocks₁₁ + 1)`, the producer's `P00` (first intersection component).
-    have hP00u : IsUnit (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hw.1
+    have hP00u : IsUnit (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hw.1.1
     -- S5b gives the leak smallness `∑(P10·(P00)⁻¹·P01)² ≤ Sreg` (second intersection component).
-    have hleakw := hw.2
+    have hleakw := hw.1.2
+    -- The in-sum Schur charge (third intersection component, the germ gap).
+    have hchargew := hw.2
     letI : Invertible (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)) := hP00u.invertible
     refine ⟨Mw.toBlocks₁₁ + 1, Mw.toBlocks₁₂, Mw.toBlocks₂₁, Mw.toBlocks₂₂, this, ?_, ?_, ?_, ?_, ?_, ?_⟩
     · -- (a) `hconj`: `M = fromBlocks (P00−1) P01 P10 P11`. `P00 − 1 = M.toBlocks₁₁` ⟹ `fromBlocks_toBlocks`.
@@ -2598,17 +2733,34 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       -- and `P00 − 1 = M.toBlocks₁₁` (`add_sub_cancel_right`).
       rw [add_sub_cancel_right, invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))]
       exact hleakw
-    · -- (d') folded core upper (S5c charge). REMAINING — the per-layer↔global Schur charge bridge
-      -- (`Rcore := P11 − P10·⅟P00·P01 ↔ deepestCoreF (deepestCoreAbsorb (split w)).2.1` via the
-      -- block-LDU `Rcore = (∏ core)·(1−K)·(…)`) is UNBUILT. With the additive charge
-      -- `|frobSq Rcore − coreΦ| ≤ C·Sreg` it closes at `γ₂ = 1+C`; the banked
-      -- `schur_core_germ_comparability` supplies the charge ONCE the `Mw`-blocks ↔ `coreAbsorb`-core
-      -- structural identity is in place. (Codex `high`, decorrelated, 2026-06-25: arithmetic alone
-      -- cannot substitute for the missing geometric identity.) Precisely-named `sorry`.
-      sorry
-    · -- (e') folded core lower (S5c charge). REMAINING — same missing bridge as (d'); closes at
-      -- `γ₁ = 1+C` once the `Mw`-blocks ↔ `coreAbsorb`-core identity + the additive charge land.
-      sorry
+    · -- (d') folded core UPPER: `Sreg + Score ≤ (1+C)·(Sreg + coreΦ)`. From the in-sum charge
+      -- `hchargew` (= `hw.2`, `|Score − coreΦ| ≤ C·Sreg` — the ONE remaining germ gap above) +
+      -- nonnegativity, by `nlinarith`. (The γ = 1+C fold; the earlier `1`-binding was UNSOUND —
+      -- `Score = coreΦ` is FALSE for M>1.)
+      have hch := hchargew
+      simp only [Set.mem_setOf_eq, ← hMw] at hch
+      rw [invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)), add_sub_cancel_right]
+      rw [abs_sub_le_iff] at hch
+      have hSreg_nn : (0 : ℝ) ≤ ((∑ i, ∑ j, ((Mw.toBlocks₁₁) i j) ^ 2)
+          + (∑ i, ∑ j, ((Mw.toBlocks₁₂) i j) ^ 2)) + (∑ i, ∑ j, ((Mw.toBlocks₂₁) i j) ^ 2) := by
+        positivity
+      have hcore_nn : (0 : ℝ) ≤ deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1 :=
+        dlnLoss_nonneg _ _ _
+      nlinarith [hch.1, hch.2, hSreg_nn, hcore_nn, hCnn,
+        mul_nonneg hCnn hSreg_nn]
+    · -- (e') folded core LOWER: `Sreg + coreΦ ≤ (1+C)·(Sreg + Score)`. Same charge `hchargew`, the
+      -- other direction, by `nlinarith`.
+      have hch := hchargew
+      simp only [Set.mem_setOf_eq, ← hMw] at hch
+      rw [invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)), add_sub_cancel_right]
+      rw [abs_sub_le_iff] at hch
+      have hSreg_nn : (0 : ℝ) ≤ ((∑ i, ∑ j, ((Mw.toBlocks₁₁) i j) ^ 2)
+          + (∑ i, ∑ j, ((Mw.toBlocks₁₂) i j) ^ 2)) + (∑ i, ∑ j, ((Mw.toBlocks₂₁) i j) ^ 2) := by
+        positivity
+      have hScore_nn : (0 : ℝ) ≤ ∑ i, ∑ j, ((Mw.toBlocks₂₂
+          - Mw.toBlocks₂₁ * (Mw.toBlocks₁₁ + 1)⁻¹ * Mw.toBlocks₁₂) i j) ^ 2 := by positivity
+      nlinarith [hch.1, hch.2, hSreg_nn, hScore_nn, hCnn,
+        mul_nonneg hCnn hSreg_nn]
   obtain ⟨t, γ₁, γ₂, δ₁, δ₂, hγ₁, hγ₂, hδ₁, hδ₂, U, hU, hbody⟩ := hproducer
   exact ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, δ₁, δ₂, hPP, hQQ, hγ₁, hγ₂, hδ₁, hδ₂, hKP_pos, hKi_pos, U, hU, hbody⟩
 
