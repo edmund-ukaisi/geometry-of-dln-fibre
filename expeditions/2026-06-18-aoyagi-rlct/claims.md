@@ -243,7 +243,10 @@ No such claim is formalisation-ready until both fields are filled.
   half lower-bound form and a supplied ambient-loss handoff.  The signed-box
   comparison layer now also has a generic model-loss adapter, dividing the
   monomial lower-bound constant by a positive model/actual comparison
-  constant. The full source Theorem 3/RLCT claim remains blocked on the
+  constant. The regular-square product-measure layer now also has a
+  bounded-density wrapper consuming supplied `loss >= c*(residualSquareSum +
+  regularNormSq)` and `0 <= density <= C` hypotheses. The full source
+  Theorem 3/RLCT claim remains blocked on the
   analytic product-coordinate regular-square suspension theorem and the actual
   p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
@@ -288,6 +291,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-p13-half-loss-lower-bound.md`;
   signed-box model-loss adapter at
   `threads/03-block-product-reduction/reproduction-a2-signed-box-model-loss-adapter.md`;
+  regular-square bounded-density wrapper at
+  `threads/03-block-product-reduction/reproduction-a2-regular-square-bounded-density-wrapper.md`;
   regular square-suspension integrability target at
   `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`;
   one-sided regular-suspension integrability brick at
@@ -345,7 +350,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`;
   p.13 half lower bound and signed-box model-loss adapter reviewed by xhigh
   `Hume the 4th` in
-  `threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`.
+  `threads/03-block-product-reduction/review-a2-p13-half-and-signed-box-model-adapter.md`;
+  regular-square bounded-density wrapper reviewed by xhigh `Mendel the 4th`
+  in
+  `threads/03-block-product-reduction/review-a2-regular-square-bounded-density-wrapper.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -656,6 +664,11 @@ No such claim is formalisation-ready until both fields are filled.
   proved
   `lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top_of_modelLoss_le_const_mul_loss`,
   the signed-box model-loss adapter from `modelLoss <= K*loss` with `K>0`.
+  Also proved
+  `lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`
+  and
+  `lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`,
+  the bounded-density regular-square finite-side wrappers.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

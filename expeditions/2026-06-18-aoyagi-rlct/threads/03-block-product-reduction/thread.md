@@ -3326,3 +3326,36 @@ Boundary: this is comparison plumbing only.  It does not construct the model
 loss, convert p.13 source-filter facts into signed-box a.e. chart hypotheses,
 prove density/Jacobian transport, chart coverage, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-25 A2 regular-square bounded-density wrapper
+
+Reproduction:
+`reproduction-a2-regular-square-bounded-density-wrapper.md`.
+Statement card:
+`statement-card-a2-regular-square-bounded-density-wrapper.md`.
+
+Lean now proves the bounded-density finite-side regular-square-suspension
+wrapper in `RegularSuspensionSquareSumIntegrability.lean`:
+
+```text
+lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top
+lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top
+```
+
+The theorem consumes supplied product-measure hypotheses:
+
+```text
+0 < aoyagiCoordinateSquareSum (b x)  a.e.,
+int^- x, ofReal(aoyagiCoordinateSquareSum(b x)^(-t)) < infinity,
+c * (aoyagiCoordinateSquareSum(b x)+||u||^2) <= loss(x,u),
+0 <= density(x,u),
+density(x,u) <= C
+```
+
+on the regular ball, with `c>0`, `C>=0`, and `t>0`.  It concludes finite
+lower integral of `loss^(-(t+dim(E)/2))*density` over the regular ball.
+
+Boundary: this is a one-sided finite-integrability wrapper only.  It does not
+prove Aoyagi's p.13 analytic product chart, the lower loss bound,
+density/Jacobian transport, residual integrability, endpoint/divergent-side
+behavior, threshold equality, normal crossings, pole order, or RLCT.

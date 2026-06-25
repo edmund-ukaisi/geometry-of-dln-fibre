@@ -3839,3 +3839,11 @@ an intermediate model loss.  Remaining A2 blockers are analytic/source
 handoffs: original DLN loss versus literal p.13 square-sum, local chart
 neighborhoods versus signed boxes/a.e. statements, Jacobian/prior density
 transport, and residual normal-crossing chart production.
+
+A2 regular-square bounded-density wrapper has now landed:
+`threads/03-block-product-reduction/reproduction-a2-regular-square-bounded-density-wrapper.md`.
+It is the preferred finite-side integrability consumer once a product chart
+supplies `loss >= c*(residualSquareSum+regularNormSq)` and
+`0 <= density <= C` on the regular ball.  It still does not prove those
+chart-side hypotheses; the next A2 work should produce or narrow one of them,
+especially the original-loss comparison and density/Jacobian transport.

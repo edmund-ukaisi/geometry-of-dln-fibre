@@ -9410,6 +9410,20 @@ If `c*M <= modelLoss` and `modelLoss <= K*loss` a.e. with `K>0`, the actual
 loss gets the signed-box theorem with constant `c/K`.  This is comparison
 plumbing only and does not instantiate Aoyagi p.13 charts or density bounds.
 
+Latest A2 regular-square bounded-density wrapper:
+`RegularSuspensionSquareSumIntegrability.lean` now proves
+`lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`
+and the residual-block specialization
+`lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`.
+These consume supplied product-measure hypotheses:
+residual square-sum positivity and negative-power integrability,
+`loss >= c*(residualSquareSum+||u||^2)` on the regular ball, and
+`0 <= density <= C` there.  The conclusion is finite lower integral of
+`loss^(-(t+dim/2))*density` over the regular ball.  This is still finite-side
+and one-sided only; p.13 chart construction, original-loss comparison,
+Jacobian/prior transport, threshold equality, pole order, and RLCT remain
+outside the theorem.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
