@@ -886,6 +886,17 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-70 (2026-06-25) — frame-stripping DOWNGRADED to MODERATE (not a wall); all 3 final-piece builds in flight. ★**
+- **frame-stripping bridge: NOT research-grade — MODERATE 2-3 tides (~200-350 LoC)** (pp-pin2-rearch + Codex honest re-read,
+  frame-stripping-cert @d111fee7). The "frames" worry resolves: frame-stripping is ALREADY DONE (the banked (b)-exact hconj → the
+  frame-free ∏C_s); only the frame-free 2-layer LDU `Rcore=S0·(1−K)·S1` is new (= the hR the S5c atom defers). Mathlib SchurComplement
+  API is the toolkit; a bounded 4-lemma directed sequence (schur_P11_decomp style), one watch-item (⅟P bookkeeping). Item 22 downgraded.
+- **l2-framestrip LAUNCHED** (a3a53074) — builds the frame-free LDU (the 4-step route) → hR → the banked S5c charge → closes (d')/(e')
+  → the L2 body COMPLETE for front pivot. pp-pin2-rearch on-call (step-2 unipotent-strip / ⅟P).
+- **3 builds in flight (independent files):** l2-framestrip (the producer's last piece) + l2-wlog (the WLOG transfer, hJfront discharge)
+  + r1-ginnerz (the (3,3,4) hfin's last sorry). pp seats on-call. The L2 close = these + the final wire (squeeze-exists relocation +
+  case-split). General hdiv + general lifts + D1 ahead. No operator wall — the producer's last piece is a contained build.
+
 **UPDATE-69 (2026-06-25) — L2 producer down to the frame-stripping bridge (research-grade, verified algebra); 8th catch fixed; WLOG launched.**
 - **l2-core-de @4a3bdd60:** (d')/(e') reduced 2→1 sorry. Banked: lemma-1 decode `deepestCoreF_coreAbsorb_eq_prodSchur` (coreΦ=‖∏S‖²)
   + the γ=1+C composition. **8th catch:** the prior γ=1 demanded the FALSE standalone Score=coreΦ (M>1); rebound to γ=1+C (in-sum

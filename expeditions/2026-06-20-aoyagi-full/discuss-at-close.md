@@ -383,3 +383,9 @@ extends here — a candidate point for the operator's scope call (full general-L
 - **8th soundness catch (fixed, l2-core-de):** the prior producer witness bound γ₁=γ₂=1, under which (d')/(e') demanded the
   standalone equality `Score=coreΦ` — FALSE for M>1 (the kill-condition germ witness). Rebound to γ=1+C (the correct in-sum fold)
   + made the charge a genuine germ (∀ᶠ, not ∀). lemma-1 decode (coreΦ=‖∏S‖²) + the γ=1+C composition banked sorry-free.
+- **DOWNGRADED (same day): NOT research-grade — a MODERATE 2-3 tide contained build (~200-350 LoC).** pp-pin2-rearch + Codex's
+  honest effort re-read: the "frames" worry resolves — frame-stripping is ALREADY DONE (the banked (b)-exact `hconj` strips Pf,Qf →
+  the frame-free ∏C_s); only the frame-free 2-layer LDU `Rcore=S0·(1−K)·S1` is new, and it's the `hR` the banked S5c atom already
+  defers. Mathlib's `SchurComplement` API (block-LU + triangular inverses + inverse-cancel) is the toolkit; a bounded 4-lemma
+  directed sequence (schur_P11_decomp style), one watch-item (the `⅟P` bookkeeping). **Commissioned as a contained build
+  (l2-framestrip), NOT an operator wall.** So the L2 close is NOT blocked here — it's a moderate build + the final wire.
