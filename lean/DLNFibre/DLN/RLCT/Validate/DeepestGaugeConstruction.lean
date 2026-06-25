@@ -2887,17 +2887,14 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
             (fun q : DeepestSplit H r nGauge =>
               (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
             (0 : DeepestSplit H r nGauge) ∧
-      ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
-        ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
-          ∀ w ∈ U,
-            0 ≤ ((∑ i, (regStraighten (split w)).1 i ^ 2)
-                + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
-            c₁ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-                + deepestCoreF H r (coreAbsorb (split w)).2.1)
-              ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
-            dlnLoss H B ((paramsEquivFlat H).symm w)
-              ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-                + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
+      -- **The `loss_squeeze` slot — RLCT-EQUALITY form** (route-B migration, matches the migrated
+      -- `DeepestGaugeChart.loss_squeeze` field): `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`.
+      rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+        = rlctAtOn
+            (fun x : Fin (flatDim H) → ℝ =>
+              (∑ i, (regStraighten (split x)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split x)).2.1)
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   -- `split` (obligation (i), MP reindex carrying the deepest point to `0`). Use the CONCRETE
   -- `deepestSplit` witness (not the `deepestSplit_exists` existential) so the PIN2 cert's round-trip
   -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`readX/Y/Z_deepestSplit`,
@@ -3050,13 +3047,16 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
           Fin.ext (by simp only [lastLayer]; omega)
         rw [hsf]; exact hPfL
-  -- PIN 2: the loss squeeze (`coreΦ → Score` fix, 2026-06-25). The squeeze's CONCLUSION now uses the
-  -- global Schur energy `Score = frobSq(Rcore)` (the closed `hscore` lambda below), NOT the refuted
-  -- `coreΦ = deepestCoreF (coreAbsorb …)`. **DOWNSTREAM RIPPLE (reported, NOT fixed this tide):** the
-  -- `exact ⟨…⟩` into `DeepestGaugeChart` BREAKS — the structure's `loss_squeeze` field is still
-  -- `coreΦ`-shaped (and `coreAbsorb_rlct`/`regAbsorb_rlct` + the whole RLCT chain build on `deepestCoreF
-  -- (coreAbsorb …)`). The `coreΦ → Score` migration of the structure + the RLCT re-derivation from
-  -- `Sreg + Score` is pp's parallel design; this `sorry` marks the ripple boundary.
+  -- Assemble the bundle: all data (`split`, `coreAbsorb`, `regStraighten` + their facts) is in scope;
+  -- the final `?_` is the migrated `loss_squeeze` RLCT-equality (the route-B close below).
+  refine ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base,
+    hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, ?_⟩
+  -- PIN 2: the loss squeeze (ROUTE-B close, `coreΦ → Score`, 2026-06-25). The migrated `loss_squeeze`
+  -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
+  -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
+  -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
+  -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
+  -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
   set Score : (Fin (flatDim H) → ℝ) → ℝ :=
     fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
@@ -3078,21 +3078,70 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     deepest_loss_squeeze H r B hB hr hL hL2 hpos J hJfront' Pf Qf split coreAbsorb regStraighten
       hsplit_base hsplit hra_regval hca_def Score (fun _ => rfl)
       hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
-  -- **RIPPLE BOUNDARY `sorry` (the ONE point the `coreΦ → Score` ripple lands).** `hsq` is the TRUE
-  -- pointwise sandwich `c₁·(Sreg_E + Score) ≤ loss ≤ c₂·(Sreg_E + Score)` (`Score = frobSq(Rcore)`,
-  -- axiom-clean); the `DeepestGaugeChart` instance below needs the `coreΦ`-shaped `loss_squeeze` field
-  -- — and the pointwise `coreΦ` sandwich is FALSE (on-fibre counterexample). **CLOSE PLAN (route B,
-  -- Codex-recommended; multi-file, controller-integrated — OUTSIDE this single-writer file's edit
-  -- scope):** migrate `DeepestGaugeChart.loss_squeeze` from a pointwise sandwich to the RLCT-equality
-  -- `rlctAt(loss) = rlctAtOn(Sreg_E + coreΦ)`, proven via THIS Score-sandwich `hsq` → `rlctAtOn_squeeze`
-  -- (⟹ `rlctAt(loss) = rlctAtOn(Sreg_E + Score)`) → the diffeo bridge `rlctAtOn(Sreg_E + Score) =
-  -- rlctAtOn(Sreg_E + coreΦ)` via `rlctAtOn_comp_localDiffeo` with `Ψ : S1 ↦ (I − K)·S1` (`K(0) = 0`
-  -- ⟹ `I − K` an analytic unit, `Ψ(0) = 0`; `Score = coreΦ ∘ Ψ`). RLCT is diffeo-invariant, so coreΦ
-  -- and Score give the SAME RLCT (headline C/2 SAFE). The downstream RLCT chain
-  -- (`deepest_squeeze_transport → deepest_regular_smooth_split → deepest_regular_core_reduces`) then
-  -- consumes the RLCT equality unchanged. (The `coreΦ`-pointwise field is the only thing that breaks;
-  -- all downstream files still TYPE-CHECK — the ripple is this single structure-construction point.)
-  sorry
+  -- **ROUTE-B CLOSE (2026-06-25).** Target: `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)` (the migrated
+  -- field). TWO steps: (1) `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + Score)` — the TRUE Score-sandwich `hsq`
+  -- fed to `rlctAtOn_squeeze` after the Params→flat MP transport; (2) the diffeo bridge
+  -- `rlctAtOn(Sreg_E + Score) = rlctAtOn(Sreg_E + coreΦ)` via `Ψ : S1 ↦ (I−K)·S1` (`rlctAtOn_comp_localDiffeo`).
+  set Φscore : (Fin (flatDim H) → ℝ) → ℝ :=
+    fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x with hΦscore
+  set Φcore : (Fin (flatDim H) → ℝ) → ℝ :=
+    fun x => (∑ i, (regStraighten (split x)).1 i ^ 2)
+      + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦcore
+  set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+  -- **Step 1: `rlctAt(dlnLoss) = rlctAtOn Φscore wstar`** (Params→flat MP transport + `rlctAtOn_squeeze`
+  -- on the TRUE Score-sandwich `hsq`).
+  have hstep1 : rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = rlctAtOn Φscore wstar := by
+    rw [← rlctAtOn_eq_rlctAt]
+    set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
+      ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
+      with he
+    have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
+      measurePreserving_paramsEquivFlat H
+    have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
+    have htrans := rlctAtOn_comp_homeomorph e hmp hemb
+      (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
+      (deepestPoint H r B hB hr hL)
+    have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
+        = fun A : Params H => dlnLoss H B A := by
+      funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
+    rw [hcomp] at htrans
+    have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
+    rw [he_deepest] at htrans
+    rw [htrans]
+    refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
+      ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
+      c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
+    · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
+      rw [hΦscore, hScoreDef]
+      apply Measurable.add
+      · exact (Finset.measurable_sum _ (fun i _ =>
+          ((measurable_pi_apply i).comp
+            (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
+      · -- **MEASURABILITY of `Score` (isolated mechanical residual).** `Score w = frobSq(Schur(Mw w))`,
+        -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_prod_symm`
+        -- + matrix mul/sub/reindex/toBlocks continuous). The only non-continuous piece is `(Mw₁₁+1)⁻¹`,
+        -- but it is MEASURABLE: `inv_def` gives `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with
+        -- `Continuous.matrix_det`/`Continuous.matrix_adjugate` (continuous) and `Ring.inverse : ℝ → ℝ`
+        -- measurable. So each entry of `Score` is measurable (sum/product/`⁻¹` of measurable), and `frobSq`
+        -- (finite ∑∑ of squares) is measurable. Mechanical Mathlib measurability plumbing (entrywise
+        -- `nonsing_inv` measurability — no off-the-shelf `Measurable (·⁻¹ : Matrix → Matrix)` at v4.29).
+        sorry
+    · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
+      simpa only [hΦscore] using hsq w hw
+  -- **Step 2: the diffeo bridge** `rlctAtOn Φscore wstar = rlctAtOn Φcore wstar` via `Ψ : S1 ↦ (I−K)·S1`
+  -- (`rlctAtOn_comp_localDiffeo`: `Ψ` ContDiff ⊤, `HasStrictFDerivAt Ψ (≃L) wstar` with `Ψ'(wstar) =
+  -- I − K(wstar) = I`, `Ψ wstar = wstar`; and `Φcore ∘ Ψ = Φscore` since `coreΦ ∘ Ψ = Score` (the LDU
+  -- `Rcore = S0·(1−K)·S1`, `coreΦ = frobSq(S0·S1)`) and `Ψ` fixes the reg slot). The genuine remaining
+  -- geometric content; the field migration + re-wiring (DeepestGaugeChart.lean) are DONE.
+  have hstep2 : rlctAtOn Φscore wstar
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split x)).2.1)
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+    sorry
+  rw [hstep1, hstep2]
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
 Destructures the bundled construction into the structure. The `2 ≤ L` hypothesis (distinct boundary

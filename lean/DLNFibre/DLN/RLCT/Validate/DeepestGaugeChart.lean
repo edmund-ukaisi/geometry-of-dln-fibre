@@ -266,24 +266,25 @@ structure DeepestGaugeChart (H : Fin (L + 1) → ℕ) (r : ℕ)
           (fun q : DeepestSplit H r nGauge =>
             (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
           (0 : DeepestSplit H r nGauge)
-  /-- **The loss-squeeze datum** (g161 (e)-form). Near the deepest point, `dlnLoss H B` is two-sidedly
-  bounded by `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF (coreAbsorb (split w)).2.1` — the regular
-  slot through `regStraighten` (→ the nonlinear residual `E`), the core slot through `coreAbsorb` (→ the
-  Schur core). The matrix comparability is cobuild-sub34's (the banked `core_comparability_squeeze`).
-  `regStraighten` is total + continuous, so `Φ` is globally measurable — the squeeze (a local `∃ U` germ
-  bound) feeds `rlctAtOn_squeeze` with global measurability intact. -/
+  /-- **The loss-squeeze datum — RLCT-EQUALITY form** (route-B migration, 2026-06-25). The local RLCT of
+  `dlnLoss H B` at the deepest point equals that of `Φ = ∑ (regStraighten (split w)).1² + deepestCoreF
+  (coreAbsorb (split w)).2.1` (the regular slot through `regStraighten` → the nonlinear residual `E`, the
+  core slot through `coreAbsorb` → the Schur core). **This was a POINTWISE two-sided sandwich; it is now
+  the RLCT EQUALITY** the downstream chain actually consumes — the pointwise `coreΦ` sandwich is FALSE
+  (an on-fibre counterexample: `Rcore = 0`, `loss = Sreg = 0`, but `coreΦ = t⁸ ≠ 0`). The TRUE pointwise
+  bound is the `Score = frobSq(Rcore)` sandwich (`dlnLoss_two_sided_of_frame`); the producer constructs
+  this field from it via `rlctAtOn_squeeze` (⟹ `rlctAtOn(Sreg+Score)`) + the analytic-unit diffeo bridge
+  `rlctAtOn(Sreg+Score) = rlctAtOn(Sreg+coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`, `rlctAtOn_comp_localDiffeo`). RLCT
+  is diffeo-invariant, so `coreΦ` and `Score` give the SAME RLCT (the headline value is unaffected); the
+  field keeps the `coreΦ` RHS so the downstream `deepest_regular_smooth_split` + the `_rlct` fields are
+  unchanged. -/
   loss_squeeze :
-    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
-      ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
-        ∀ w ∈ U,
-          0 ≤ ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1) ∧
-          c₁ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1)
-            ≤ dlnLoss H B ((paramsEquivFlat H).symm w) ∧
-          dlnLoss H B ((paramsEquivFlat H).symm w)
-            ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split w)).2.1)
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split x)).2.1)
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
 
 /-- **Smart constructor from an EXACT germ** — a CONVENIENCE for the special case `c₁ = c₂ = 1`. If a
 producer delivers `dlnLoss H B ∘ flatSymm =ᶠ[𝓝 wstar] Φ` (an EXACT germ equality), it discharges
@@ -333,14 +334,51 @@ noncomputable def DeepestGaugeChart.ofExactGerm (H : Fin (L + 1) → ℕ) (r : �
   regStraighten_spectator := fun _ => rfl
   regAbsorb_rlct := rfl
   loss_squeeze := by
+    -- **Route-B migration (2026-06-25): the field is now the RLCT equality.** From the EXACT germ
+    -- `loss∘symm =ᶠ Φ` (with `regStraighten = id`, so the field's `Φ` IS the germ's `Φ`), build the
+    -- two-sided `c₁ = c₂ = 1` bound, then `rlctAtOn_squeeze` + the Params→flat transport (the SAME chain
+    -- the old `deepest_squeeze_transport` ran, now folded into the field construction).
+    set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+    set Φ : (Fin (flatDim H) → ℝ) → ℝ := fun x =>
+      (∑ i, (id (split x)).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦ
+    rw [← rlctAtOn_eq_rlctAt]
+    set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
+      ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
+      with he
+    have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
+      measurePreserving_paramsEquivFlat H
+    have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
+    have htrans := rlctAtOn_comp_homeomorph e hmp hemb
+      (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
+      (deepestPoint H r B hB hr hL)
+    have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
+        = fun A : Params H => dlnLoss H B A := by
+      funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
+    rw [hcomp] at htrans
+    have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
+    rw [he_deepest] at htrans
+    rw [htrans]
     obtain ⟨U, hU, hUeq⟩ := loss_germ.exists_mem
-    refine ⟨1, 1, one_pos, one_pos, U, hU, fun w hw => ?_⟩
-    have heq : dlnLoss H B ((paramsEquivFlat H).symm w)
-        = (∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1 := hUeq hw
-    refine ⟨?_, ?_, ?_⟩
-    · exact add_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _) (dlnLoss_nonneg _ _ _)
-    · rw [one_mul]; exact le_of_eq heq.symm
-    · rw [one_mul]; exact le_of_eq heq
+    refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φ wstar
+      ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
+      1 1 one_pos one_pos ⟨U, hU, fun w hw => ?_⟩
+    · rw [hΦ]
+      apply Measurable.add
+      · exact (Finset.measurable_sum _ (fun i _ =>
+          ((measurable_pi_apply i).comp
+            (continuous_fst.comp split.continuous).measurable).pow_const _))
+      · exact ((continuous_dlnLoss (deepestM H r) _).comp
+          (continuous_paramsEquivFlat_symm _)).measurable.comp
+          ((continuous_fst.comp continuous_snd).comp
+            (coreAbsorb.continuous.comp split.continuous)).measurable
+    · have heq : dlnLoss H B ((paramsEquivFlat H).symm w)
+          = (∑ i, (split w).1 i ^ 2) + deepestCoreF H r (coreAbsorb (split w)).2.1 := hUeq hw
+      have hΦnn : (0 : ℝ) ≤ Φ w := by
+        simp only [hΦ, id_eq]
+        exact add_nonneg (Finset.sum_nonneg fun i _ => sq_nonneg _) (dlnLoss_nonneg _ _ _)
+      refine ⟨hΦnn, ?_, ?_⟩
+      · simp only [hΦ, id_eq, one_mul]; exact le_of_eq heq.symm
+      · simp only [hΦ, id_eq, one_mul]; exact le_of_eq heq
 
 /-- **Sub-lemma 2 (`deepestPoint_is_rank_exact`).** The constructed deepest point is rank-`r`-exact on
 every layer — a restatement of the green `deepestPoint_isDeep` (`IsDeepLayers.2.1`, the rank clause),
@@ -379,44 +417,12 @@ theorem deepest_squeeze_transport (H : Fin (L + 1) → ℕ) (r : ℕ)
           (fun x : Fin (flatDim H) → ℝ =>
             (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2)
               + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1)
-          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
-  set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
-  set Φ : (Fin (flatDim H) → ℝ) → ℝ := fun x =>
-    (∑ i, (Γ.regStraighten (Γ.split x)).1 i ^ 2)
-      + deepestCoreF H r (Γ.coreAbsorb (Γ.split x)).2.1 with hΦ
-  -- Step 1: `rlctAt` on `Params` is `rlctAtOn`; transport Params→flat (MP homeomorph).
-  rw [← rlctAtOn_eq_rlctAt]
-  set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
-    ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
-    with he
-  have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
-    measurePreserving_paramsEquivFlat H
-  have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
-  have htrans := rlctAtOn_comp_homeomorph e hmp hemb
-    (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
-    (deepestPoint H r B hB hr hL)
-  have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
-      = fun A : Params H => dlnLoss H B A := by
-    funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
-  rw [hcomp] at htrans
-  have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
-  rw [he_deepest] at htrans
-  rw [htrans]
-  -- Step 2: `rlctAtOn_squeeze` consuming the `loss_squeeze` datum, landing on `Φ` at `wstar`.
-  obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ := Γ.loss_squeeze
-  refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φ wstar
-    ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
-    c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => hsq w hw⟩
-  -- `Φ` measurable: regular sum-of-squares + the core loss through the reindex + absorb + flattening.
-  rw [hΦ]
-  apply Measurable.add
-  · exact (Finset.measurable_sum _ (fun i _ =>
-      ((measurable_pi_apply i).comp
-        (continuous_fst.comp (Γ.regStraighten_continuous.comp Γ.split.continuous)).measurable).pow_const _))
-  · exact ((continuous_dlnLoss (deepestM H r) _).comp
-      (continuous_paramsEquivFlat_symm _)).measurable.comp
-      ((continuous_fst.comp continuous_snd).comp
-        (Γ.coreAbsorb.continuous.comp Γ.split.continuous)).measurable
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :=
+  -- **Route-B (2026-06-25): the `loss_squeeze` field IS this RLCT equality** (it was migrated from the
+  -- refuted pointwise `coreΦ` sandwich to the RLCT-equality form — the `rlctAtOn_squeeze` + Params→flat
+  -- transport now live in the field's CONSTRUCTION in `deepest_gauge_construction`). So this transport
+  -- sub-lemma is a direct projection.
+  Γ.loss_squeeze
 
 /-- **Sub-lemma 7 (`deepest_reduced_core_identification`).** The reduced core loss in flat
 coordinates has the same RLCT as on `Params M`: `rlctAtOn (dlnLoss M 0 ∘ (paramsEquivFlat M).symm) 0
