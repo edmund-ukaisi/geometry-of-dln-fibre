@@ -2,6 +2,7 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.SchurChartIff
+import DLNFibre.Core.SchurGauge
 import DLNFibre.Core.DeterminantalBaseElimination
 
 /-!
@@ -81,5 +82,85 @@ theorem isUnit_Hmatk (M : Matrix (Fin p) (Fin q) k) (hp : r ≤ p) (hq : r ≤ q
   rw [Hmatk, Matrix.isUnit_iff_isUnit_det, Matrix.det_submatrix_equiv_self,
     Matrix.det_fromBlocks_zero₂₁]
   simpa using hΔ
+
+/-! ## The explicit block inverses of the gauge units -/
+
+/-- The explicit inverse of the lower-unitriangular block `[[I,0],[X,I]]⁻¹ = [[I,0],[−X,I]]`
+(over any commutative ring; `Invertible` of the unitriangular block via `Matrix.invertibleOfIsUnitDet`). -/
+theorem inv_fromBlocks_lower {R : Type*} [CommRing R] {a b : ℕ}
+    (X : Matrix (Fin b) (Fin a) R) :
+    (Matrix.fromBlocks (1 : Matrix (Fin a) (Fin a) R) (0 : Matrix (Fin a) (Fin b) R) X 1)⁻¹
+      = Matrix.fromBlocks (1 : Matrix (Fin a) (Fin a) R) (0 : Matrix (Fin a) (Fin b) R) (-X) 1 := by
+  apply Matrix.inv_eq_left_inv
+  rw [Matrix.fromBlocks_multiply]
+  simp
+
+/-- The explicit inverse of the upper-triangular block `[[Δ,Y],[0,I]]⁻¹ = [[Δ⁻¹,−Δ⁻¹Y],[0,I]]`
+when `Δ` is invertible. -/
+theorem inv_fromBlocks_upper {R : Type*} [CommRing R] {a c : ℕ}
+    (Δ : Matrix (Fin a) (Fin a) R) (Y : Matrix (Fin a) (Fin c) R) (hΔ : IsUnit Δ.det) :
+    (Matrix.fromBlocks Δ Y (0 : Matrix (Fin c) (Fin a) R) 1)⁻¹
+      = Matrix.fromBlocks Δ⁻¹ (-(Δ⁻¹ * Y)) (0 : Matrix (Fin c) (Fin a) R) 1 := by
+  apply Matrix.inv_eq_left_inv
+  rw [Matrix.fromBlocks_multiply, Matrix.nonsing_inv_mul Δ hΔ]
+  simp
+
+/-! ## The normal form and the chart normalization -/
+
+/-- The rank-`r` normal form `E = diag(I_r, 0) : Mat_{p×q}(k)`, in block form `[[I,0],[0,0]]`
+reindexed by the pivot split. -/
+noncomputable def normalForm (p q r : ℕ) (hp : r ≤ p) (hq : r ≤ q) : Matrix (Fin p) (Fin q) k :=
+  (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) k) 0 0 0).submatrix (finSplit hp) (finSplit hq)
+
+/-- **The chart normalization.** When `rank M ≤ r` (so the Schur block relation holds, rung-1) and
+the pivot block `Δ` is invertible, the gauge conjugation `L⁻¹ · M · H⁻¹` carries `M` to the rank-`r`
+normal form `E = diag(I_r, 0)`. The matrix heart of the chart retraction, over `k`. Proof: reindex
+the whole identity to the pivot block split, where the explicit gauge inverses (`inv_fromBlocks_*`)
+and the LANDED `schurComplement_normal_form` give it directly (the Schur relation `B22 = B21 Δ⁻¹ B12`
+is `rank_le_iff_schur_eq`). -/
+theorem normalize_chart_matrix (M : Matrix (Fin p) (Fin q) k) (hp : r ≤ p) (hq : r ≤ q)
+    (hΔ : IsUnit (chartΔ M hp hq).det) (hrank : M.rank ≤ r) :
+    (Lmatk M hp hq)⁻¹ * M * (Hmatk M hp hq)⁻¹ = normalForm p q r hp hq := by
+  -- abbreviations for the four blocks of `M` (in the pivot split).
+  set Δ := chartΔ M hp hq with hΔdef
+  set B12 := (chartBlocks M hp hq).toBlocks₁₂ with hB12
+  set B21 := (chartBlocks M hp hq).toBlocks₂₁ with hB21
+  set B22 := (chartBlocks M hp hq).toBlocks₂₂ with hB22
+  -- `chartBlocks M = fromBlocks Δ B12 B21 B22` (the block decomposition; the top-left block of the
+  -- reindexed matrix is exactly the pivot minor `chartΔ`).
+  have hΔeq : (chartBlocks M hp hq).toBlocks₁₁ = Δ := by
+    ext i j
+    simp only [hΔdef, chartΔ, chartBlocks, Matrix.toBlocks₁₁, Matrix.submatrix_apply,
+      Matrix.of_apply, Fin.castLE]
+    rfl
+  have hMblocks : chartBlocks M hp hq = Matrix.fromBlocks Δ B12 B21 B22 := by
+    rw [← hΔeq, hB12, hB21, hB22, Matrix.fromBlocks_toBlocks]
+  -- the Schur relation `B22 = B21 Δ⁻¹ B12` (rung-1, since `rank (chartBlocks M) = rank M ≤ r`).
+  have hrankBlocks : (chartBlocks M hp hq).rank = M.rank := by
+    rw [chartBlocks]; exact Matrix.rank_submatrix M (finSplit hp).symm (finSplit hq).symm
+  have hSchur : B22 = B21 * Δ⁻¹ * B12 := by
+    rw [← (rank_le_iff_schur_eq Δ B12 B21 B22 hΔ)]
+    rw [← hMblocks, hrankBlocks]; exact hrank
+  -- the block matrix `Mb = chartBlocks M`, an opaque name so reindexing `M` does not loop.
+  set Mb := chartBlocks M hp hq with hMb
+  -- `M` as a reindexed block matrix (`Mb` is opaque, so this rewrite terminates).
+  have hMre : M = Mb.submatrix (finSplit hp) (finSplit hq) := by
+    rw [hMb, chartBlocks, Matrix.submatrix_submatrix]; simp
+  -- The two gauge inverses, in block form (their `M`-content folded into `Δ`, `B12`, `B21`).
+  have hLinv : (Lmatk M hp hq)⁻¹
+      = (Matrix.fromBlocks 1 0 (-(B21 * Δ⁻¹)) 1).submatrix (finSplit hp) (finSplit hp) := by
+    rw [Lmatk, inv_submatrix_equiv, inv_fromBlocks_lower]
+  have hHinv : (Hmatk M hp hq)⁻¹
+      = (Matrix.fromBlocks Δ⁻¹ (-(Δ⁻¹ * B12)) 0 1).submatrix (finSplit hq) (finSplit hq) := by
+    rw [Hmatk, inv_submatrix_equiv, inv_fromBlocks_upper _ _ hΔ]
+  -- reindex the whole conjugation to block coordinates, then `schurComplement_normal_form`.
+  rw [hLinv, hHinv, hMre,
+    Matrix.submatrix_mul_equiv _ _ (finSplit hp) (finSplit hp) (finSplit hq),
+    Matrix.submatrix_mul_equiv _ _ (finSplit hp) (finSplit hq) (finSplit hq), normalForm]
+  congr 1
+  -- block-coordinate goal: `[[I,0],[−B21Δ⁻¹,I]] * (chartBlocks M) * [[Δ⁻¹,−Δ⁻¹B12],[0,I]]
+  --   = fromBlocks 1 0 0 0`, with `chartBlocks M = fromBlocks Δ B12 B21 (B21Δ⁻¹B12)` (Schur).
+  rw [hMblocks, hSchur]
+  exact schurComplement_normal_form Δ B12 B21 hΔ
 
 end DLNFibre.Core
