@@ -1,5 +1,23 @@
 # Thread 31 — PIN2 comparability re-architecture (the L2 geometric heart)
 
+## hproducer (b) repair (6th catch, 2026-06-25): option A (comparability) is SOUND — see `r2-frontpivot-cert.md`
+
+`hproducer` conjunct (b) `∑deepestEFull² = Sreg` is FALSE as an EQUALITY for non-front `J` (banked
+`hproducer-verdict.md`). Adjudicated: the COMPARABILITY `∑deepestEFull² ≍ Sreg` HOLDS (the contained
+repair, no headline restructure, no PIN1 touch). The FACT-3 floor witness (`17.98≠23.65`) was
+INCOHERENTLY BASED — it didn't transport the basepoint; banked `deepestEFull_base : deepestEFull 0 = 0`
+means both energies vanish at w0, so no `w→w0` floor path exists. Structural reason (from the def): the
+`framedParamsPivot` last layer places the corner AND the deviation reads through the SAME `pivotThr.symm`
+column reindex, so both are squared-norms of the same residual-deviation product under invertible column
+reindexings (`QL`·permutation) ⇒ positive-definite quadratic forms with EQUAL kernel ⇒ comparable. EXACT
+cert (r=1,H0=1,H2=2): both Gram spectra `{3.394,10.606}`, generalized eig `[c₁,c₂]=[0.5195,1.9250]`;
+witness `17.98/23.65=0.76 ∈ [0.52,1.93]` ✓. CONTRAST dead option-2 (T=0 vs FULL = kernel mismatch);
+here SAME product, invertible reindex = kernel-preserving. Build: restate (b) as `≍`, fold into the
+squeeze's existing two-sided `c₁/c₂`. Soundness-critical: the proof must use the SHARED-`pivotThr.symm`
+corner placement (NOT colPerm the corner). Codex independently verified A SOUND + B (front-pivot WLOG)
+sound as the fallback (loss identity exact, MP, no PIN1 touch). Decorrelated Codex: `codex/r2-frontpivot-*`,
+`/tmp/s5c_codexclean/answer.md`.
+
 **Seat:** pen-and-paper (obstruction). **Direction asked:** validate-or-refute the brief's option 2
 (weaken `h00/h01/h10` to a two-sided comparability `Sreg ≍ ∑deepestEPivot²`, folding the Y·T leak into
 γ₁/γ₂). **Level:** the loss-squeeze germ (the matrix-block / energy-comparability level, below the RLCT
