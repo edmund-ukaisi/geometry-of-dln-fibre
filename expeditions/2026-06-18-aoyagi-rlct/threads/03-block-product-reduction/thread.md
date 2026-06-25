@@ -3611,3 +3611,35 @@ Boundary: this does not construct the chart, prove the pushforward identity,
 compute a Jacobian, bound a density, prove monomial residual lower control,
 compare the original DLN loss, produce normal crossings, compute pole order, or
 extract an RLCT.
+
+## 2026-06-25 A2 signed-box residual source-measure handoff
+
+Opened a density-free residual source-measure slice after the generic
+pushforward handoff.  Scope is only an unweighted signed-box product measure:
+given a supplied pushforward identity and a supplied chart-side lower bound
+`c * product_i |y_i|^(2*k_i) <= residualSq(chart y)`, derive chart-side
+residual positivity and finite `ofReal(residualSq^(-t))` integral under
+`t >= 0` and the strict coordinate conditions `2*t*k_i < 1`, then transport
+the pair to the source.
+
+Lean adds
+`lintegral_ofReal_loss_rpow_neg_signedBox_lt_top` in
+`MonomialChartIntegrability.lean` and
+`residualSourceHypotheses_of_measure_map_signedBox_monomialLower` in
+`RegularSuspensionLocalMeasure.lean`.
+
+This remains unweighted product-measure plumbing.  It does not construct the
+chart, prove the pushforward identity, transport Jacobian/density factors,
+compare the original DLN loss, prove the density-weighted Aoyagi
+`2*t*k_i < h_i+1` calculation for source measures, produce normal crossings,
+or extract an RLCT.  Reproduction and statement card:
+`reproduction-a2-signed-box-residual-source-measure-handoff.md` and
+`statement-card-a2-signed-box-residual-source-measure-handoff.md`.
+Review:
+`review-a2-signed-box-residual-source-measure-handoff.md`.
+
+Controller verified targeted builds for
+`DLNFibre.DLN.Aoyagi.MonomialChartIntegrability` and
+`DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure`, full `DLNFibre` build,
+`scripts/sorries`, and `git diff --check`.  The full build still emits many
+pre-existing style/Core warnings, but no failures.

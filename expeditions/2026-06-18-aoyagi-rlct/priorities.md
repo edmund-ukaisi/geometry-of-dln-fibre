@@ -240,6 +240,15 @@ pair or settle branch-independent Theorem 2 payloads for arbitrary Definition
 3 source data.  Do not add source-rank wrappers or final-socket variants unless
 a concrete downstream consumer removes a real hypothesis.
 
+A2 signed-box residual source-measure handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-source-measure-handoff.md`.
+Lean adds a density-free signed-box theorem and a source-facing constructor
+from a supplied signed-box pushforward plus supplied residual monomial lower
+bound.  Treat it as unweighted product-measure plumbing only.  It uses the
+stricter unweighted threshold `2*t*k_i < 1`; it is not Jacobian/density
+transport, not original-loss comparison, not chart construction, not normal
+crossings, and not RLCT extraction.
+
 A6 Definition 3 `ell=1` ceiling-data simplification has now landed:
 `threads/06-dln-translation/reproduction-definition3-ell-one-ceil-data-simplification-a6.md`.
 Lean adds finite arithmetic lemmas in the `AoyagiDefinition3CeilData`

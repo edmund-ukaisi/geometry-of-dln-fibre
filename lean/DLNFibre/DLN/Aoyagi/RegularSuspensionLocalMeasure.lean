@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+import DLNFibre.DLN.Aoyagi.MonomialChartIntegrability
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 import DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
 import Mathlib.MeasureTheory.Integral.Lebesgue.Map
@@ -610,6 +611,86 @@ theorem residualSourceHypotheses_of_measure_map
               (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t)))
         chart
     exact lt_of_le_of_lt (by simpa [residualNegPowerIntegrableOn, hmap] using hle) hbase_chart
+
+set_option linter.unusedSectionVars false in
+/-- Residual source hypotheses from a signed-box chart pushforward and an
+explicit absolute-monomial lower bound on the chart-side residual square.
+
+This is an unweighted signed-box source-measure constructor.  It does not
+construct the chart, prove the source-measure pushforward identity, transport a
+Jacobian/density factor, compare the original DLN loss, or extract an RLCT. -/
+theorem residualSourceHypotheses_of_measure_map_signedBox_monomialLower
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [MeasurableSpace α] [Fintype ι]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source : Set α} {μ : Measure α}
+    {chart : (ι → ℝ) → α} {t c : ℝ} {R : ι → ℝ} {k : ι → ℕ}
+    (hchart : AEMeasurable chart
+      (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hmap :
+      μ.restrict source =
+        Measure.map chart
+          (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hpos_meas :
+      MeasurableSet {x : α |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)})
+    (hc : 0 < c) (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < 1)
+    (hlower : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      c * ∏ i, (|y i|) ^ (2 * (k i : ℝ)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y))) :
+    (∀ᵐ x ∂ μ.restrict source,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t := by
+  let signedBox : Measure (ι → ℝ) :=
+    Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  have hpos_chart :
+      ∀ᵐ y ∂ signedBox,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y)) := by
+    have hcoord : ∀ᵐ y : ι → ℝ ∂ signedBox, ∀ i, 0 < |y i| := by
+      dsimp [signedBox]
+      exact ae_forall_abs_pos_measure_pi_restrict_Ioo_neg (R := R) (ι := ι)
+    filter_upwards [hcoord, hlower] with y hyabs hylower
+    have hmonomial_pos :
+        0 < ∏ i, (|y i|) ^ (2 * (k i : ℝ)) := by
+      exact Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hyabs i) _
+    exact lt_of_lt_of_le (mul_pos hc hmonomial_pos) hylower
+  have hbase_chart :
+      (∫⁻ y : ι → ℝ, ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y))) ^ (-t))
+          ∂ signedBox) < ∞ := by
+    dsimp [signedBox]
+    exact
+      lintegral_ofReal_loss_rpow_neg_signedBox_lt_top
+        (k := k) (t := t) (R := R) (c := c)
+        (loss := fun y : ι → ℝ =>
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge (chart y)))
+        hc ht hR hcrit hlower
+  exact
+    residualSourceHypotheses_of_measure_map
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (source := source) (μ := μ)
+      (ν := signedBox) (chart := chart) (t := t)
+      (by simpa [signedBox] using hchart)
+      (by simpa [signedBox] using hmap)
+      hpos_meas hpos_chart hbase_chart
 
 set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied

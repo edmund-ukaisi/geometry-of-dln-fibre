@@ -498,6 +498,40 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
       (loss := loss x) (density := density x) (x := x)
       hc ht hxabs hxloss hxdens_nonneg hxdens_le
 
+/-- Density-free signed-box finite-side comparison.  An explicit a.e.
+absolute-monomial lower bound on `loss` gives finite lower integral of
+`loss^(-t)` under the stricter unweighted inequalities `2*t*k_i < 1`. -/
+theorem lintegral_ofReal_loss_rpow_neg_signedBox_lt_top
+    {ι : Type*} [Fintype ι] {k : ι → ℕ} {t : ℝ} {R : ι → ℝ} {c : ℝ}
+    {loss : (ι → ℝ) → ℝ}
+    (hc : 0 < c) (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < 1)
+    (hloss : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      c * ∏ i, (|x i|) ^ (2 * (k i : ℝ)) ≤ loss x) :
+    (∫⁻ x : ι → ℝ, ENNReal.ofReal ((loss x) ^ (-t))
+      ∂ Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))) < ∞ := by
+  let h : ι → ℕ := fun _ => 0
+  have hcrit0 : ∀ i, 2 * t * (k i : ℝ) < (h i : ℝ) + 1 := by
+    intro i
+    dsimp [h]
+    linarith [hcrit i]
+  have hdensity_nonneg : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      0 ≤ (1 : ℝ) := by
+    simp
+  have hdensity_le : ∀ᵐ x : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      (1 : ℝ) ≤ 1 * ∏ i, (|x i|) ^ (h i : ℝ) := by
+    filter_upwards with x
+    simp [h]
+  have hfinite :=
+    lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
+      (h := h) (k := k) (t := t) (R := R) (c := c) (C := 1)
+      (loss := loss) (density := fun _ => (1 : ℝ))
+      hc (by positivity) ht hR hcrit0 hloss hdensity_nonneg hdensity_le
+  simpa using hfinite
+
 /-- Signed-box residual/density comparison through an intermediate model loss.
 If the model loss has the required absolute-monomial lower bound and is
 bounded above by a positive constant times the actual loss, then the existing
