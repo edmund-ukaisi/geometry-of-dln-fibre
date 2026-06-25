@@ -886,6 +886,17 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-45 (2026-06-25) — S5c matrix-core: TRUE but GERM-scoped (box bound would be unsound); last residual dispatched.**
+- pp-pin2-rearch + Codex closed the r≥2 matrix-core S5c (`s5c-r2-cert.md`): exact middle-factor `R = S0·W·S1·…`,
+  `W_s = I − Z_{s+1}A⁻¹Y_s → I` at the deepest point. **Codex caught a real confound the first MC missed:** the two-sided BOX
+  ratio `∑‖R‖² ≍ ∑‖∏S‖²` is FALSE for M>1 off-germ (rank-deficient `S0=εE12,S1=εE21` ⇒ R=0≠∏S — the rank-≤1 W gives no rank
+  protection). But on a true germ `R−∏S=O(ε⁴)` vs `∏S=O(ε²)`, so the in-sum germ bound `|∑‖R‖²−∑‖∏S‖²| ≤ C·∑E²` HOLDS — and
+  `rlctAt` is a germ invariant, so the germ form is the right + only safe scope. **The build atom MUST be the germ form, not a
+  box bound.** g156 docstring refined to the matrix middle-factor + germ scope; Item 18 updated.
+- **Last S5c residual dispatched:** the r≥2 matrix-PIVOT (a_s an r×r block) LDU symbolic confirm (pp-pin2-rearch). On confirm →
+  S5c fully closed → commission the framedParams-body formaliser tide (using framedbody-cert + s5c-cert + s5c-r2-cert, germ form).
+- Drives: l2-htilde (hTilde→squeeze-exists build) + pp-pin2-rearch (r≥2 matrix-pivot confirm). pp-r1-genM on-call (R1, held).
+
 **UPDATE-44 (2026-06-25) — S5c adjudicated (unit-rescaling, NOT ideal); g156 false prose corrected; r≥2 gap flagged+dispatched.**
 - **framedbody-cert (pp-pin2-rearch) staged + banked** — the `framedParams_split_eq_frame_raw` body S0–S5 decomposition. KEY
   de-risk: the docstring's "genuine bulk" (readX/Y/Z→raw decode) is ALREADY BANKED (`reindex_fromBlocks_reads_eq_deviation`).
