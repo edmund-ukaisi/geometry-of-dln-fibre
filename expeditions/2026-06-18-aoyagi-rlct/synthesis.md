@@ -9647,6 +9647,18 @@ still only finite linear algebra: no theorem yet compares fixed adapted
 endpoint Frobenius loss with `lossDLN`, because the target matrix and
 basis-change/loss comparison wrappers must still be wired.
 
+Latest A2 chain-map loss update:
+`DLNFibre.DLN.Aoyagi.ChainMapLossBridge` now wires the target matrix side.
+For `chainMapMatrixTuple b A`, `lossDLN` against any endpoint matrix `B`
+rewrites to `chainMapMatrixFrobeniusLossAgainst b (chainMap A) B`; if `B` is
+the endpoint matrix of another chain `A0`, it rewrites to
+`chainMapMatrixFrobeniusLoss b (chainMap A) (chainMap A0)`.  The
+reverse-vertex wrapper supplies the Aoyagi base-chain target
+`reverseEdge W Bpaper`.  This is still not an adapted-coordinate comparison:
+the remaining finite loss step is to apply the basis-change square-sum
+comparison between this original endpoint Frobenius loss and the fixed adapted
+endpoint Frobenius loss.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

@@ -4148,3 +4148,15 @@ orientation blocker.  The next loss-comparison step is still to choose the
 target matrix in the same endpoint bases and unfold `lossDLN` as the
 Frobenius square of `mult d A - B`; no adapted-to-original basis comparison or
 statistical/covariance loss comparison is proved by this bridge.
+
+A2 chain-map loss bridge has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-chainmap-loss-bridge.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.ChainMapLossBridge` that `lossDLN` of a
+tuple built from fixed-basis chain-edge matrices is exactly the Frobenius
+trace of the corresponding endpoint chain-map matrix difference.  The
+reverse-vertex wrapper handles the Aoyagi base paper-order target via
+`reverseEdge W Bpaper`.  The remaining loss-comparison frontier is now the
+positive comparison between this original endpoint Frobenius loss and the
+fixed adapted endpoint Frobenius loss, using the finite basis-change theorem;
+statistical/covariance losses and analytic chart/density transport remain
+separate.

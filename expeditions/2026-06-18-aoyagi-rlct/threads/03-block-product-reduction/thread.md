@@ -4135,3 +4135,36 @@ coordinates with original endpoint coordinates, prove a statistical/KL or
 covariance loss comparison, construct a product chart, transport
 density/Jacobian factors, produce normal crossings, compute pole order, or
 extract an RLCT.
+
+## 2026-06-25 A2 chain-map loss bridge
+
+Reproduction:
+`reproduction-a2-chainmap-loss-bridge.md`.
+Statement card:
+`statement-card-a2-chainmap-loss-bridge.md`.
+Review:
+`review-a2-chainmap-loss-bridge.md`.
+
+Lean now proves the `lossDLN` rewrite in the new module
+`DLNFibre.DLN.Aoyagi.ChainMapLossBridge`:
+
+```text
+chainMapMatrixFrobeniusLossAgainst
+chainMapMatrixFrobeniusLoss
+lossDLN_chainMapMatrixTuple_eq_trace
+lossDLN_chainMapMatrixTuple_eq_chainMapFrobenius
+lossDLN_reverseVertex_chainMapMatrixTuple_eq_baseFrobenius
+```
+
+For a tuple `chainMapMatrixTuple b A`, `lossDLN` against any endpoint matrix
+`B` is the Frobenius trace of
+`[chainMap_A(0,last)]_{b_0,b_last} - B`.  When `B` is the endpoint matrix of a
+target chain `A0`, the loss is the Frobenius trace of the difference of the
+two endpoint chain-map matrices.  The reverse-vertex wrapper specializes this
+to the Aoyagi base paper-order chain `reverseEdge W Bpaper`.
+
+Boundary: this is only an equality rewrite of `lossDLN`.  It does not compare
+original endpoint bases with fixed adapted endpoint bases, prove a positive
+basis-change lower bound for this loss, identify a statistical/KL/covariance
+loss, construct a product chart, transport density/Jacobian factors, produce
+normal crossings, compute pole order, or extract an RLCT.
