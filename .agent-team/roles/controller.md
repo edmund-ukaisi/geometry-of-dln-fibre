@@ -10,7 +10,7 @@ supervisor, not slave-driver
 ([`../../docs/policies/precision.md`](../../docs/policies/precision.md);
 [`../../docs/policies/expedition.md`](../../docs/policies/expedition.md) § Supervising the
 formaliser). **Routes the pen-and-paper → formaliser handoff** — a `pen-and-paper` certificate settles
-the truth-value and reports the *structure it observed*, but carries no Lean route; synthesizing that
+the truth-value and reports the *structure and ideas it observed*, but carries no Lean route; synthesizing that
 route (the **true → provable-in-Lean** bridge, where the Mathlib-feasibility judgment lives) is the
 controller's, recorded *attributed* on the certificate card alongside p&p's untouched section, with the
 formaliser then pointed at the **durable card** rather than an ephemeral spawn prompt — so the

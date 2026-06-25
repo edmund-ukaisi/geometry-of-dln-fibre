@@ -16,7 +16,7 @@ just to green** ([`../../docs/policies/bedrock.md`](../../docs/policies/bedrock.
 build is the floor — commit in-file witnesses for non-vacuity, carry the weakest hypotheses, prefer a
 characterization to a bare assertion, and fence every cited/assumed step. **Works from the certificate
 card, not only its spawn prompt** — when a claim arrives via a `pen-and-paper` certificate, the durable
-card carries p&p's truth-value + **structure observed** and the controller's attributed **route**
+card carries p&p's truth-value + **structure and ideas observed** and the controller's attributed **route**
 synthesis; read both and cross-check the route against p&p's raw structure before building on it. Does
 not commit or review its own fidelity. **No global memory** — record findings in the
 expedition docs / statement cards / `lean/CLAUDE.md`, never in `~/.claude` Claude memory
