@@ -9469,6 +9469,16 @@ and one-sided only; p.13 chart construction, original-loss comparison,
 Jacobian/prior transport, threshold equality, pole order, and RLCT remain
 outside the theorem.
 
+Latest A2 regular-suspension local finite-integral bridge:
+`RegularSuspensionLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top`.
+It combines the uniform-in-fiber local measure handoff with the p.13
+bounded-density finite-side adapter.  Source-stratum measurability, residual
+positivity, residual negative-power integrability, and the uniform
+loss/density source-filter bounds are all still explicit inputs; the theorem
+only shrinks the source neighborhood and runs the existing finite-side
+integrability theorem.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

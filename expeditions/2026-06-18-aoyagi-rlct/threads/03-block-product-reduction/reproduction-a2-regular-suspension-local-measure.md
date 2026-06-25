@@ -111,6 +111,34 @@ finite-side p.13 regular-coordinate adapter.  It still does not prove the
 uniform source-filter bounds themselves, and it does not address the residual
 positivity or residual negative-power integral inputs of that adapter.
 
+## Finite-Integral Bridge
+
+The final wrapper in this file now composes the uniform product-hypothesis
+handoff with the p.13 finite-side adapter from
+`RegularSuspensionSquareSumIntegrability.lean`.
+
+In addition to the source-filter uniform loss/density bounds above, assume:
+
+```text
+0 < residualSquareSum(x)  a.e. for mu.restrict S,
+int^- x, ofReal(residualSquareSum(x)^(-t)) d(mu.restrict S) < infinity,
+R > 0, c > 0, C >= 0, t > 0.
+```
+
+After the local-measure handoff gives `U`, the proof restricts the two residual
+base hypotheses from `S` to `U inter S` by measure monotonicity.  The existing
+p.13 finite-side adapter then gives:
+
+```text
+int^- (x,u) over (mu.restrict (U inter S)).prod nu,
+  ofReal(1_{ball(0,R)}(u) * loss(x,u)^(-(t + regularCount/2)) * density(x,u))
+  < infinity.
+```
+
+This is a bridge between already-supplied local source/filter hypotheses and
+the already-proved finite-side theorem.  It is not a source proof of residual
+positivity or residual integrability.
+
 ## Boundary
 
 The first product statements are deliberately first-coordinate statements.
@@ -127,7 +155,7 @@ Still missing:
 - source/product coordinate identification;
 - original DLN loss comparison;
 - density/Jacobian transport;
-- residual positivity and residual negative-power integrability;
+- proof of residual positivity and residual negative-power integrability;
 - endpoint/divergence, threshold equality, normal crossings, pole order, and
   RLCT extraction.
 
@@ -147,4 +175,6 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_p13RegularCoordinates_loss_density_bounds
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top
 ```

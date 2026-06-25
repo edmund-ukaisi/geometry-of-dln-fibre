@@ -6550,6 +6550,27 @@ chart cover theorem, no endpoint behavior, no lower/divergence side or
 threshold equality, no Aoyagi p.13 analytic chart/Jacobian construction, no
 normal crossings, no pole order, and no RLCT.
 
+Latest A2 regular-suspension local finite-integral bridge:
+Lean now composes the p.13 uniform-in-fiber local measure handoff with the
+p.13 bounded-density finite-side adapter in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionLocalMeasure.lean`.  If the source
+filter supplies uniform loss/density bounds on the regular-coordinate ball,
+and the source stratum also has supplied residual square-sum positivity plus
+finite `int^- ofReal(residualSquareSum^(-t))`, then Lean produces an open
+neighborhood `U` such that the local product lower integral of
+`loss^(-(t+regularCount/2))*density` is finite over
+`(mu.restrict (U inter sourceStratum)).prod nu`.
+
+Lean names:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top`.
+
+Nonclaims: no measurable-source-stratum proof, no p.13 product chart, no
+source/product coordinate identification, no original DLN loss comparison, no
+density/Jacobian transport, no proof of residual positivity or residual-base
+integrability, no normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

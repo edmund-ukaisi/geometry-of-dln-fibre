@@ -3439,6 +3439,8 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_p13RegularCoordinates_loss_density_bounds
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top
 ```
 
 The inputs are a measurable fixed-base source rank stratum and the already
@@ -3462,3 +3464,11 @@ coordinate vectors in a ball.  It intersects those eventual facts and produces
 the three product-measure a.e. hypotheses expected by the finite-side p.13
 regular-coordinate adapter.  It still does not prove the uniform bounds,
 residual positivity, or residual negative-power integrability.
+
+The finite-integral bridge then adds the residual positivity and residual
+negative-power integral as explicit source-stratum hypotheses, restricts them
+from `sourceStratum` to `U ∩ sourceStratum`, and invokes the p.13 finite-side
+bounded-density adapter.  Its conclusion is finite lower-integrability of
+`loss^(-(t + regularCount/2))*density` over the local product measure.  It is
+not a chart, original-loss, density/Jacobian, residual-integrability,
+normal-crossing, pole-order, or RLCT theorem.

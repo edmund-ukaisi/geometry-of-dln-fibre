@@ -3874,3 +3874,13 @@ product-fiber-regular-coordinate lower bound from the source comparison
 alone.  The uniform-in-fiber handoff can now package a separately supplied
 product-chart/loss/density hypothesis into the finite-side a.e. form; residual
 positivity and residual negative-power integrability remain separate inputs.
+
+A2 regular-suspension local finite-integral bridge has now landed in Lean:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-local-measure.md`.
+It is the preferred consumer when the source-filter uniform-in-fiber
+loss/density bounds, residual positivity, and residual negative-power
+integrability are all available.  It shrinks to a local source neighborhood
+and invokes the p.13 bounded-density finite-side adapter.  The next analytic
+work should prove or explicitly source the remaining inputs: measurable source
+stratum, original-loss lower comparison, density/Jacobian transport, residual
+positivity, and residual negative-power integrability.
