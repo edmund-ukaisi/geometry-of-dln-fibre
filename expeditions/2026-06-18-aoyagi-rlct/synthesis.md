@@ -9582,6 +9582,32 @@ and fixed-basis norm comparison.  No product chart, source coverage,
 density/Jacobian transport, residual source hypothesis, normal-crossing
 certificate, pole-order theorem, or RLCT extraction is inferred.
 
+Latest A2 continuous-density/top-front-end update:
+`RegularSuspensionLocalMeasure.lean` now proves two follow-on theorems:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_const_mul_adaptedProductDifferenceSquareSum_le_loss_continuousAt_pos_density`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_continuousEdge_const_mul_adaptedProductDifferenceSquareSum_le_loss_continuousAt_pos_density`.
+The first is only a radius-shrinking helper; the second is the preferred
+composed A2 front end.  It derives source-stratum/edge-matrix measurability
+from global continuity, derives residual source hypotheses from the supplied
+weighted signed-box chart, obtains density bounds from positive continuous
+density, and delegates to the adapted-loss comparison bridge.  The hard
+inputs remain supplied: signed-box chart and pushforward, residual monomial
+bound, product-coordinate adapted lower bound, and `c0 * adapted <= loss`.
+No product chart, density/Jacobian transport, original-loss comparison,
+normal-crossing certificate, pole-order theorem, or RLCT extraction is
+inferred.
+
+Next A2 frontier from xhigh scouting:
+`threads/03-block-product-reduction/scout-a2-adapted-to-frobenius-loss-comparison-next.md`.
+The next substantive target should be the finite-dimensional comparison behind
+`c0 * adaptedProductDifferenceSquareSum <= loss`, first for an
+endpoint/Frobenius square loss.  Required reproduction: identify the endpoint
+matrix represented by the adapted p.13 coordinates, match orientation and
+`reverseEdge` product conventions, and prove the basis/norm comparison before
+stating anything about `lossDLN`.  Statistical/KL losses require additional
+covariance/noise assumptions.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

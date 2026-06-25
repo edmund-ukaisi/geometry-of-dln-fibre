@@ -3963,3 +3963,61 @@ identify the original DLN/statistical loss with the p.13 adapted square-sum,
 construct a product chart, prove source coverage, transport Jacobian/prior
 density, prove residual source hypotheses, produce normal crossings, compute
 pole order, or extract an RLCT.
+
+## 2026-06-25 A2 adapted loss-comparison continuous-density finite integral
+
+Reproduction:
+`reproduction-a2-adapted-loss-comparison-continuous-density-finite-integral.md`.
+Statement card:
+`statement-card-a2-adapted-loss-comparison-continuous-density-finite-integral.md`.
+Review:
+`review-a2-adapted-loss-comparison-continuous-density-finite-integral.md`.
+
+Lean now proves the radius-shrinking helper
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_const_mul_adaptedProductDifferenceSquareSum_le_loss_continuousAt_pos_density
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+It combines the adapted-to-loss comparison finite-integral bridge with the
+existing continuous-density local-bounds theorem.  The theorem assumes
+positive continuous product density at `(x₀,0)` and shrinks from `Rmax` to
+some `R <= Rmax`.
+
+Boundary: this is a helper for the composed front end below.  It still assumes
+residual source hypotheses, the product-coordinate adapted lower bound, and
+the adapted-to-loss comparison.  It does not construct a chart, prove
+density/Jacobian transport, compare original `lossDLN`, produce normal
+crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 continuous-edge signed-box adapted-loss finite integral
+
+Reproduction:
+`reproduction-a2-continuous-edge-signed-box-adapted-loss-finite-integral.md`.
+Statement card:
+`statement-card-a2-continuous-edge-signed-box-adapted-loss-finite-integral.md`.
+Review:
+`review-a2-continuous-edge-signed-box-adapted-loss-finite-integral.md`.
+
+Lean now proves the composed front end
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_continuousEdge_const_mul_adaptedProductDifferenceSquareSum_le_loss_continuousAt_pos_density
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+The theorem derives source-stratum measurability and fixed-basis edge-matrix
+measurability from global `Continuous Cedge`, obtains residual positivity and
+negative-power integrability from the supplied weighted signed-box residual
+chart, obtains density bounds from positive continuous product density, and
+uses the supplied product-coordinate adapted lower bound plus
+`c0 * adapted <= loss` to produce the p.13 finite-integral comparison.
+
+Boundary: the signed-box chart, weighted pushforward, residual monomial lower
+bound, source-density bounds, product-coordinate adapted lower bound, and
+adapted-to-loss comparison remain explicit.  No product chart,
+density/Jacobian transport, original-loss comparison, normal crossings, pole
+order, or RLCT is proved.

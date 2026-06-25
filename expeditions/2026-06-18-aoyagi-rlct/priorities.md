@@ -4095,3 +4095,29 @@ proves, the comparison with `loss`; it does not construct the product chart,
 prove source coverage, transport density/Jacobian factors, prove residual
 source hypotheses, produce normal crossings, compute pole order, or extract an
 RLCT.
+
+A2 adapted-loss continuous-density helper and continuous-edge signed-box
+adapted-loss front end have now landed:
+`threads/03-block-product-reduction/reproduction-a2-adapted-loss-comparison-continuous-density-finite-integral.md`
+and
+`threads/03-block-product-reduction/reproduction-a2-continuous-edge-signed-box-adapted-loss-finite-integral.md`.
+The helper removes explicit local density bounds by shrinking the regular
+radius under positive continuous product density.  The top front end is the
+preferred composed A2 consumer: global `Continuous Cedge` supplies
+source-stratum and edge-matrix measurability, signed-box source data supplies
+residual positivity/integrability, and the adapted lower bound plus supplied
+`c0 * adapted <= loss` supplies the p.13 loss comparison with constant
+`c0 * c`.  Do not build more intermediate finite-integral wrappers unless a
+downstream theorem directly consumes them.  The chart, weighted pushforward,
+density/Jacobian transport, product-coordinate adapted lower bound,
+adapted-to-original-loss comparison, normal crossings, pole order, and RLCT
+remain open or supplied.
+
+Next A2 target after this front end:
+`threads/03-block-product-reduction/scout-a2-adapted-to-frobenius-loss-comparison-next.md`.
+The remaining high-value hypothesis is the actual finite-dimensional
+comparison from the adapted fixed-base product-difference square-sum to an
+endpoint/Frobenius square loss.  Start with a pen-and-paper reproduction of
+the endpoint matrix comparison, basis/norm equivalence, orientation, and any
+map needed before mentioning `lossDLN`.  Do not build another finite-integral
+wrapper unless a downstream theorem directly consumes it.
