@@ -886,6 +886,27 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-41 (2026-06-25) — PIN1 gate GREEN (survives verbatim); the PIN2 full-reg repair is build-ready + COMMISSIONED.**
+- **PIN1-survival adjudication GREEN (pp-pin2-rearch, exact + decorrelated Codex):** PIN1 `deepestEPivot_regSlice_fderiv`
+  survives the T=0→full-product `regStraighten` swap VERBATIM. The leak `E_full − E_zero = (0, Y0·T1, T0·Z1)` is purely
+  degree-2 ⟹ `D(E_full)(0) = [F | 0 | G]` (reg-in F = the SAME invertible regBlockCLE; core-in 0; spec-in G). PIN1 RE-USED
+  as-is via the 1-line bridge `E_full(·,0,0) = deepestEPivot(·,0)`. The contained fix: `regStraighten`'s reg OUTPUT reads
+  the core (`E_pivot:R×S→R` → `E_full:R×(C×S)→R`); the corrected chart deriv at 0 is block-triangular `[[F,0,G],[0,I,0],
+  [0,0,I]]`, det = det F ≠ 0 — still invertible (the IFT peel input intact); `∑(regStraighten).1² = Sreg` exactly. **This
+  ALSO closes the open rlct-risk gamble** — the squeeze is now the BANKED leaf lemma `dlnLoss_two_sided_of_frame`'s TRUE
+  comparability `dlnLoss ≍ Sreg+Score`, so the headline rlct no longer rests on an unverified `rlct(Φ_struct)=rlct(dlnLoss)`.
+- **`l2-pin2-fullreg` (a93075b4) COMMISSIONED** — the 4-file repair (per thread 31 restatement-spec.md): generalize
+  regStraightenOf/regStraightenTotalCLM to (reg,core,spec)→reg + delete the T=0 h00/h01/h10/hSreg_eq/deepestEPivot_sq_sum +
+  define E_full + re-aim deepestEPivot_deriv via PIN1 (verbatim) + the bridge + the ∂E_full/∂core(0)=0 atom + re-prove
+  loss_squeeze via the leaf lemma. RE-USES PIN1's F + the leaf lemma. Flagged risk: the regStraightenTotalCLM generalization
+  transfer (the shear invertibility) — pp-pin2-rearch on-call for it.
+- **pp-pin2-rearch RELEASED** — its PIN2 design arc is comprehensively complete (refuted my option-2 lean → the full-reg
+  repair → PIN1-survival → the build-ready 4-file spec). On-call for the regStraightenTotalCLM transfer.
+- **L2 status:** PIN1 closed + survives the repair · L=1 base banked · PIN2 route-step bedrock banked · the full-reg repair
+  building → closes PIN2 → then the case-split wire + product_reduction → the L2 gate. The MATH is sound (the leaf-lemma
+  comparability); the false T=0 squeeze is being replaced by the true full-reg one.
+- 1 background BUILD agent: l2-pin2-fullreg (the PIN2 full-reg repair). pp-pin2-rearch + pp-r1-genM on-call.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
