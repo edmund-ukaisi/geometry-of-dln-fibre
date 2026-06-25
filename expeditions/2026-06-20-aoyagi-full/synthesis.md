@@ -886,6 +886,25 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-44 (2026-06-25) — S5c adjudicated (unit-rescaling, NOT ideal); g156 false prose corrected; r≥2 gap flagged+dispatched.**
+- **framedbody-cert (pp-pin2-rearch) staged + banked** — the `framedParams_split_eq_frame_raw` body S0–S5 decomposition. KEY
+  de-risk: the docstring's "genuine bulk" (readX/Y/Z→raw decode) is ALREADY BANKED (`reindex_fromBlocks_reads_eq_deviation`).
+  Decorrelated Codex reordered the residual risk onto S5c + S5b (not S1').
+- **S5c adjudicated — WITNESS (clean), banked (`s5c-cert.md`):** the core identification is an EXACT unit-rescaling
+  `R = u·∏S_s`, `u = ∏(1+X_s)/P00` a bounded unit (→1 at the deepest point) ⟹ standalone comparability `∑R² ≍ ∑(∏S)² =
+  deepestCoreF(coreAbsorb)`, NO ∑E² charge. **A FALSE prose claim was found + corrected:** g156's `fullProduct_core_split`
+  docstring asserted `R−∏S ∈ ideal(E)` — Gröbner-FALSE (`−Y1·Z0 ≠ 0`); the theorem+proof were always sound (used only
+  `frobenius_fromBlocks`+`schur_P11_decomp`), the false claim lived only in prose. Corrected (Item 17). **Load-bearing
+  build-ordering:** feed `core_comparability_squeeze` the GLOBAL `R`, not `∏S` (else the leak `R−∏S` is not E-controllable).
+- **r≥2 / matrix-core S5c is the last named open L2 dependency:** exact for r=1 all L, but only MC-supported for M>1 (the
+  scalar `u` becomes a bounded invertible similarity) — and the headline NEEDS the matrix case (Item 18). DISPATCHED to
+  pp-pin2-rearch (witness/obstruction, `s5c-r2-cert.md`; likely a singular-value sandwich via the matrix Schur-of-product
+  identity). NOT deferred.
+- **L2 status:** PIN2 integrated+green+axiom-clean @bcfb8b60. framedbody design complete for r=1 (S5c done); r≥2 in flight.
+  Near-term build: l2-htilde (hTilde→squeeze-exists). Then the body formaliser tide (using framedbody-cert + s5c-cert[+r2])
+  + the case-split wire + product_reduction → the L2 gate.
+- Drives: l2-htilde (build) + pp-pin2-rearch (r≥2 S5c design). pp-r1-genM on-call (R1, held).
+
 **★ UPDATE-43 (2026-06-25) — L2 PIN2 full-reg repair INTEGRATED + green-gated + axiom-verified @bcfb8b60. ★**
 - **l2-pin2-fullreg landed; I integrated it into main** (forced-rebuild green-gate + `#print axioms` re-verified MYSELF, not just
   trusting the report): the false `h00/h01/h10` (T=0 block-equalities) are DELETED, replaced by the TRUE reg-energy identity
