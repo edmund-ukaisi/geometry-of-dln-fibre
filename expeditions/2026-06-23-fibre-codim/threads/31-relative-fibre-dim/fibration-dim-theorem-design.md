@@ -303,3 +303,34 @@ substitution descended through `vanishingIdeal` (NOT `fibreGenIdeal`). The local
 `IsLocalization.height_map_of_disjoint` + `AtPrime.ringKrullDim_eq_height` + the engine's closed-point
 equidim (`height_eq_ringKrullDim_of_isMaximal_fintype`), the `≥` via a top maximal ideal avoiding detΔ —
 a multi-lemma custom construction, NOT a one-liner.
+
+---
+
+## Tide progress log — update 3 (set-level trivialization COMPLETE; AlgEquiv-descent SPECIFY)
+
+**Banked (committed, sorry/axiom-clean) — set-level trivialization done both directions:**
+- `Core.ChartSection.factor_chart_matrix` — `L·E·H = M` (converse of `normalize_chart_matrix`).
+- `Core.ChartBijection` — `chartGauge_smul_retraction` (Ψ∘Φ=id), `mult_chartGauge_inv_smul_fibre`
+  (`mult(Ψ(M,B))=M` for `B ∈ fibre E`, the base reconstruction). Both bijection directions hold.
+- `Core.LocalizationKrullDim.ringKrullDim_localization_le` — the `≤` half of the no-drop.
+
+Tide total so far: 8 commits, ~570 LoC new sorry-free Core theory, all green. Modules:
+`SchurChartIff`, `VarietyDimPolyExtension`, `ChartSection`, `ChartRetraction`, `ChartBijection`,
+`LocalizationKrullDim`.
+
+**SPECIFY — the AlgEquiv descent (the remaining deepest plumbing, R2-3b-4 re-approached via vanishingIdeal):**
+Target (step 3): `Localization.Away (mk detΔ) (O(Σ^r)) ≃ₐ[k] Localization.Away g (MvPolynomial SchurVar O(F))`,
+where `O(Σ^r) = MvPolynomial (RepCoord d) k ⧸ vanishingIdeal(canonicalCoord '' Σ^r)` and
+`O(F) = MvPolynomial (RepCoord d) k ⧸ vanishingIdeal(canonicalCoord '' fibre E)` (RADICAL ideals — NOT
+`fibreGenIdeal`/`IadDeep`, the wall).
+Reusable pieces wired:
+ - `EndpointNormalization.gaugeEquiv (endpointGauge)` : the gauge `AlgEquiv` of `MvPolynomial (RepCoord d) SchurLoc`,
+   with `gaugeEquiv_multPoly` carrying `multPoly → L⁻¹·multPoly·H⁻¹` (= normalized).
+ - `IsLocalization.algEquivOfAlgEquiv` (v4.29 present) : transports a base `AlgEquiv` to localizations
+   when submonoids correspond.
+The genuine remaining content: identify the gauge-normalized `vanishingIdeal(Σ^r)` (over `SchurLoc`,
+localized) with the FREE extension `vanishingIdeal(F)[SchurVar]` — the freeness-presentation step. This
+is what the rung-3 freeness cert verified holds (δ Schur vars FREE over `O(F)`); the Lean realization
+must ride `vanishingIdeal` and `varietyDim_eq_of_coordRingAlgEquiv`, NEVER the generator-ideal containment.
+Best built AFTER `pp-nodrop`'s component cert lands (it informs the reducible-component structure of the
+normalized ideal).
