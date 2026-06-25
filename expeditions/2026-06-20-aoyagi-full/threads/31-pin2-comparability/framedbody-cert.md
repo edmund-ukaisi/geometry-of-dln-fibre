@@ -52,6 +52,22 @@ Proof chain (each step a banked atom):
 
 ## S1' — last-layer pivot-column variant (exact relabel; a SEPARATE bridge lemma)
 
+> **CORRECTION (thread 31 formalisation tide, 2026-06-25): option α below is REFUTED.** Pen-and-paper
+> + decorrelated Codex (xhigh) adjudication (`hs1prime-verdict.md`): the clean form
+> `framedParamsPivot (split w) last = Pf last · (paramsSymm w) last · Qf last` is **FALSE** for a
+> non-front pivot `J`. `framedParamsPivot_last` reindexes the column side by the PIVOT split, but the
+> gauge reads are J-INDEPENDENT threshold decodes (`readY/readT_deepestSplit_raw` land block-col
+> `inr q ↦` deviation col `r+q`), so the reads term equals the deviation with columns PERMUTED by
+> `π_J(j) = (rThr).symm (pivotThr J · j)`. Option-α's premise ("the role index is split-independent so
+> the decoders agree per-entry") is the error: the reads ARE threshold, but `framedParamsPivot_last`
+> PLACES them at pivot columns. Counterexample `H=(1,1,2)`, `J 0 = 1` (columns swapped). The TRUE
+> statement is the permuted form; the fix (verdict option A) is to fold the orthogonal `Pπ`
+> (`colPerm_J M = M·Pπ`) into the endpoint `QL` + `B`-pivot normalization — it should cancel against
+> the SAME outer `reindex(rThr, pivotThr J)` carried on BOTH `deepestEFull` and `Sreg`. **At the
+> deepest gauge `w0` the deviation vanishes (`split w0 = 0`), so `π_J` acts trivially — `hframe0`/`hS2_w0`/
+> `hS3b` are SOUND at `w0` (LANDED this tide); only the general-`w` energy identity (the `hproducer`
+> `sorry`) needs the cancellation.** See `hs1prime-verdict.md`.
+
 `framedParamsPivot`'s LAST layer (`framedParamsPivot_last`) reindexes the column side by
 `pivotThresholdSplit r (H last.succ) (pivotJSucc J)`, not `rThresholdSplit`. The banked
 `reindex_fromBlocks_reads_eq_deviation` uses `rThresholdSplit` on BOTH sides, so it does not apply

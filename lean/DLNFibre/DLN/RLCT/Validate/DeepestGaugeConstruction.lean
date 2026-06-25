@@ -1457,6 +1457,247 @@ theorem deepestEPivot_sq_sum_eq_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
        refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
        simp only [deepestEPivot, Equiv.apply_symm_apply])
 
+/-- The left endpoint frame at first layer, cast to the endpoint width `Fin (H 0)`. The canonical
+witness of the endpoint telescoping (independent of the product being telescoped). -/
+noncomputable def endpointP0 (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) :
+    Matrix (Fin (H 0)) (Fin (H 0)) ℝ :=
+  (show (⟨0, by omega⟩ : Fin L).castSucc = (0 : Fin (L + 1)) from Fin.ext (by simp [Fin.castSucc]))
+    ▸ P ⟨0, by omega⟩
+
+/-- The right endpoint frame at last layer, cast to the endpoint width `Fin (H (Fin.last L))`. -/
+noncomputable def endpointQL (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ :=
+  (show (⟨L - 1, by omega⟩ : Fin L).succ = Fin.last L from Fin.ext (by simp [Fin.succ, Fin.last]; omega))
+    ▸ Q ⟨L - 1, by omega⟩
+
+/-- Transporting `IsUnit` of a square matrix along a `Fin (L+1)`-index equality (the `▸` type-cast,
+matching the motive `fun x => Matrix (Fin (H x)) (Fin (H x)) ℝ` of `endpointP0`/`endpointQL`). -/
+private theorem isUnit_index_cast (H : Fin (L + 1) → ℕ) {a b : Fin (L + 1)} (h : a = b)
+    (M : Matrix (Fin (H a)) (Fin (H a)) ℝ) (hM : IsUnit M) :
+    IsUnit (h ▸ M) := by
+  subst h; exact hM
+
+/-- `endpointP0` is a unit when the first-layer frame `P (firstLayer)` is (a type-cast preserves units). -/
+theorem isUnit_endpointP0 (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (hP : IsUnit (P (firstLayer hL))) : IsUnit (endpointP0 H hL P) := by
+  have hfl : (⟨0, by omega⟩ : Fin L) = firstLayer hL := Fin.ext (by simp [firstLayer])
+  rw [endpointP0]
+  exact isUnit_index_cast H
+    (show (⟨0, by omega⟩ : Fin L).castSucc = (0 : Fin (L + 1)) from Fin.ext (by simp [Fin.castSucc]))
+    (P ⟨0, by omega⟩) (by rw [hfl]; exact hP)
+
+/-- `endpointQL` is a unit when the last-layer frame `Q (lastLayer)` is (a type-cast preserves units). -/
+theorem isUnit_endpointQL (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQ : IsUnit (Q (lastLayer hL))) : IsUnit (endpointQL H hL Q) := by
+  have hll : (⟨L - 1, by omega⟩ : Fin L) = lastLayer hL := Fin.ext (by simp [lastLayer])
+  rw [endpointQL]
+  exact isUnit_index_cast H
+    (show (⟨L - 1, by omega⟩ : Fin L).succ = Fin.last L from
+      Fin.ext (by simp [Fin.succ, Fin.last]; omega))
+    (Q ⟨L - 1, by omega⟩) (by rw [hll]; exact hQ)
+
+/-- **Witnessed endpoint telescoping** (the witness-exposing variant of `endpoint_telescoping`, thread
+31): the product equation with the CANONICAL endpoint frames `endpointP0`/`endpointQL` (independent of
+the telescoped product). This is the existential telescope's content with the witnesses spelled out, so
+the SAME endpoints serve every `w`. Proof: the same cast-heavy `prodAux` induction as
+`endpoint_telescoping` (copied — the banked telescope is off-tide), targeting the explicit equality. -/
+theorem endpoint_telescoping_eq (H : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (A C : Params H)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hframe : ∀ s : Fin L, C s = P s * A s * Q s)
+    (hinterface : ∀ (s : Fin L) (hs : (s : ℕ) + 1 < L),
+      Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        P ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ)) :
+    prod H C = endpointP0 H hL P * prod H A * endpointQL H hL Q := by
+  obtain ⟨Lm, rfl⟩ : ∃ Lm, L = Lm + 1 := ⟨L - 1, by omega⟩
+  have hPid : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) →
+      P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) := by
+    intro s hs1
+    obtain ⟨t', ht'⟩ : ∃ t', (s : ℕ) = t' + 1 := ⟨(s : ℕ) - 1, by omega⟩
+    have hslt : ((⟨t', by omega⟩ : Fin (Lm + 1)) : ℕ) + 1 < Lm + 1 := by simp; omega
+    have heq : (⟨t' + 1, by omega⟩ : Fin (Lm + 1)) = s := by apply Fin.ext; simp [ht']
+    have := (hinterface ⟨t', by omega⟩ hslt).2
+    rw [heq] at this; exact this
+  have hQid : ∀ s : Fin (Lm + 1), (s : ℕ) + 1 < Lm + 1 →
+      Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+    fun s hs => (hinterface s hs).1
+  have hCAint : ∀ s : Fin (Lm + 1), 1 ≤ (s : ℕ) → (s : ℕ) + 1 < Lm + 1 → C s = A s := by
+    intro s hs1 hslt
+    rw [hframe s, hPid s hs1, hQid s hslt, Matrix.one_mul, Matrix.mul_one]
+  have h0cs : (⟨0, by omega⟩ : Fin (Lm + 1)).castSucc = (0 : Fin (Lm + 2)) := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have hLs : (⟨Lm, by omega⟩ : Fin (Lm + 1)).succ = Fin.last (Lm + 1) := by
+    apply Fin.ext; simp [Fin.succ, Fin.last]
+  have hinv : ∀ (k : ℕ) (hk : k < Lm + 2), 1 ≤ k → k ≤ Lm →
+      prodAux H C k hk = (h0cs ▸ P ⟨0, by omega⟩) * prodAux H A k hk := by
+    intro k
+    induction k with
+    | zero => intro _ hk0; exact absurd hk0 (by norm_num)
+    | succ k ih =>
+        intro hsucc _ hkLm
+        have e1 : H (⟨k, Nat.lt_of_succ_lt hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).castSucc) := rfl
+        have e2 : H (⟨k + 1, hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).succ) := rfl
+        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+        rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+        · subst hk0
+          set hkL' := Nat.lt_of_succ_lt_succ hsucc with hkL'def
+          have hC0 : C ⟨0, hkL'⟩ = P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩ := by
+            rw [hframe ⟨0, _⟩, hQid ⟨0, _⟩ (by simp; omega), Matrix.mul_one]
+          simp only [show prodAux H C 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+            show prodAux H A 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl, hC0]
+          rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
+            (finCongr e1.symm) (finCongr e2.symm)]
+          show (1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+              * (P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩)
+            = P ⟨0, hkL'⟩ * ((1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                  (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+                * A ⟨0, hkL'⟩)
+          rw [Matrix.one_mul, Matrix.one_mul]
+        · rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
+            ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
+  -- FINAL: spell the endpoints. `endpointP0/QL` are defeq to the casts `h0cs ▸ P⟨0⟩`, `hLs ▸ Q⟨Lm⟩`.
+  -- The endpoint defs are defeq to the internal casts (`⟨Lm+1-1,_⟩` reduces to `⟨Lm,_⟩`; proofs
+  -- proof-irrelevant). Pin via `Fin.ext` index-congruence + `cast`/`▸` proof-irrelevance.
+  have hP0eq : endpointP0 H hL P = (h0cs ▸ P ⟨0, by omega⟩ :
+      Matrix (Fin (H 0)) (Fin (H 0)) ℝ) := by
+    rw [endpointP0]
+  have hQLeq : endpointQL H hL Q = (hLs ▸ Q ⟨Lm, by omega⟩ :
+      Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) := rfl
+  rw [hP0eq, hQLeq]
+  have hLm1 : Lm + 1 < Lm + 1 + 1 := Nat.lt_succ_self (Lm + 1)
+  have hLmL : Lm < Lm + 1 := Nat.lt_succ_self _
+  have e1L : H (⟨Lm, Nat.lt_of_succ_lt hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).castSucc) := rfl
+  have e2L : H (⟨Lm + 1, hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).succ) := rfl
+  show prod H C = _
+  simp only [prod]
+  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+  rcases Nat.eq_zero_or_pos Lm with hLm0 | hLmpos
+  · subst hLm0
+    have hC0 : C ⟨0, hLmL⟩ = P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩ := hframe ⟨0, hLmL⟩
+    rw [show prodAux H C 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      show prodAux H A 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      hC0,
+      reindex_mul_distrib_right (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩) (Q ⟨0, hLmL⟩) (finCongr e1L.symm)
+        (finCongr e2L.symm),
+      reindex_mul_distrib_left (P ⟨0, hLmL⟩) (A ⟨0, hLmL⟩) (finCongr e1L.symm) (finCongr e2L.symm)]
+    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+    show (1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+          (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ)
+        * (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩)
+      = P ⟨0, hLmL⟩ * ((1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+            (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ) * A ⟨0, hLmL⟩) * Q ⟨0, hLmL⟩
+    rw [Matrix.one_mul, Matrix.one_mul]
+  · rw [hinv Lm (Nat.lt_of_succ_lt hLm1) hLmpos (le_refl _)]
+    have hCLm : C ⟨Lm, hLmL⟩ = A ⟨Lm, hLmL⟩ * Q ⟨Lm, hLmL⟩ := by
+      rw [hframe ⟨Lm, hLmL⟩, hPid ⟨Lm, hLmL⟩ (by simpa using hLmpos), Matrix.one_mul]
+    rw [hCLm, reindex_mul_distrib_right (A ⟨Lm, hLmL⟩) (Q ⟨Lm, hLmL⟩)
+      (finCongr e1L.symm) (finCongr e2L.symm),
+      show Matrix.reindex (finCongr e2L.symm) (finCongr e2L.symm) (Q ⟨Lm, hLmL⟩)
+        = (hLs ▸ Q ⟨Lm, by omega⟩ :
+            Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
+      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+    exact mul_four_reassoc _ _ _ _
+
+/-- **The threshold corner is the `corM` shape.** Reindexing `fromBlocks 1 0 0 0` by the inverse
+`r`-threshold split on both sides yields the block-normal corner `fun i j => if i = j ∧ i < r then 1
+else 0` — the RHS of `hNF`/`deepestPoint_frame_normal`. The same 4-arm `ext` as the read-decode atom,
+with the `(1,1)`-block diagonal collapsing to `if i = j` (under `i, j < r`). -/
+private theorem reindex_fromBlocks_one_eq_corM (r a b : ℕ) (ha : r ≤ a) (hb : r ≤ b) :
+    Matrix.reindex (rThresholdSplit r a ha).symm (rThresholdSplit r b hb).symm
+        (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      = Matrix.of (fun (i : Fin a) (j : Fin b) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  ext i j
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Equiv.symm_symm]
+  rcases hi : (rThresholdSplit r a ha) i with p | p <;>
+    rcases hj : (rThresholdSplit r b hb) j with q | q
+  · -- (inl, inl): the `(1,1)` block, `1 p q = if p = q then 1 else 0`; recover `i = castLE p`,
+    -- `j = castLE q` so `i.val = p.val < r`, `j.val = q.val < r`, and `i.val = j.val ↔ p = q`.
+    rw [Matrix.fromBlocks_apply₁₁]
+    have hip : i = p.castLE ha := by rw [← rThresholdSplit_symm_inl r a ha p, ← hi, Equiv.symm_apply_apply]
+    have hjq : j = q.castLE hb := by rw [← rThresholdSplit_symm_inl r b hb q, ← hj, Equiv.symm_apply_apply]
+    simp only [Matrix.one_apply, Matrix.of_apply, hip, hjq, Fin.coe_castLE]
+    by_cases hpq : p = q
+    · subst hpq; simp [p.isLt]
+    · rw [if_neg hpq, if_neg]
+      rintro ⟨hval, _⟩
+      exact hpq (Fin.ext hval)
+  · rw [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]
+    have hjq : j = ⟨r + q, by omega⟩ := by
+      rw [← rThresholdSplit_symm_inr r b hb q, ← hj, Equiv.symm_apply_apply]
+    have hip : i = p.castLE ha := by rw [← rThresholdSplit_symm_inl r a ha p, ← hi, Equiv.symm_apply_apply]
+    simp only [Matrix.of_apply, hip, hjq, Fin.coe_castLE]
+    rw [if_neg]; rintro ⟨hval, hlt⟩; omega
+  · rw [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]
+    have hip : i = ⟨r + p, by omega⟩ := by
+      rw [← rThresholdSplit_symm_inr r a ha p, ← hi, Equiv.symm_apply_apply]
+    simp only [Matrix.of_apply, hip]
+    rw [if_neg]; rintro ⟨_, hlt⟩; simp at hlt
+  · rw [Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]
+    have hip : i = ⟨r + p, by omega⟩ := by
+      rw [← rThresholdSplit_symm_inr r a ha p, ← hi, Equiv.symm_apply_apply]
+    simp only [Matrix.of_apply, hip]
+    rw [if_neg]; rintro ⟨_, hlt⟩; simp at hlt
+
+/-- A square matrix over a nonempty index with a sum-of-squared-entries `= 0` is the zero matrix. -/
+private theorem frob_sq_sum_eq_zero_iff {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) :
+    (∑ i, ∑ k, (M i k) ^ 2) = 0 ↔ M = 0 := by
+  constructor
+  · intro h
+    have hentry : ∀ i k, (M i k) ^ 2 = 0 := by
+      have h1 : ∀ i ∈ Finset.univ, (∑ k, (M i k) ^ 2) = 0 := by
+        refine (Finset.sum_eq_zero_iff_of_nonneg ?_).mp h
+        exact fun i _ => Finset.sum_nonneg fun k _ => sq_nonneg _
+      intro i k
+      have h2 := (Finset.sum_eq_zero_iff_of_nonneg
+        (fun k _ => sq_nonneg (M i k))).mp (h1 i (Finset.mem_univ i)) k (Finset.mem_univ k)
+      exact h2
+    ext i k
+    have := hentry i k
+    simpa [pow_eq_zero_iff] using this
+  · intro h; subst h; simp
+
+/-- The Frobenius sum-of-squares is `> 0` for a nonzero square matrix over a nonempty index. -/
+private theorem frob_sq_sum_pos_of_ne_zero {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ) (hM : M ≠ 0) :
+    0 < (∑ i, ∑ k, (M i k) ^ 2) := by
+  rcases lt_or_eq_of_le (show (0 : ℝ) ≤ ∑ i, ∑ k, (M i k) ^ 2 from
+    Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => sq_nonneg _) with h | h
+  · exact h
+  · exact absurd ((frob_sq_sum_eq_zero_iff M).mp h.symm) hM
+
+/-- The identity matrix over a nonempty index is nonzero (its `(0,0)` entry is `1`). -/
+private theorem matrix_one_ne_zero {n : ℕ} (hn : 0 < n) :
+    (1 : Matrix (Fin n) (Fin n) ℝ) ≠ 0 := by
+  intro h
+  have := congrFun (congrFun h ⟨0, hn⟩) ⟨0, hn⟩
+  simp [Matrix.one_apply] at this
+
+/-- A left-invertible square matrix over a nonempty index is nonzero (`1 ≠ 0` there). -/
+private theorem ne_zero_of_mul_eq_one_left {n : ℕ} (hn : 0 < n)
+    (Pi M : Matrix (Fin n) (Fin n) ℝ) (h : Pi * M = 1) : M ≠ 0 := by
+  intro hM
+  rw [hM, Matrix.mul_zero] at h
+  exact matrix_one_ne_zero hn h.symm
+
+/-- A right-invertible square matrix over a nonempty index is nonzero (`1 ≠ 0` there). -/
+private theorem ne_zero_of_mul_eq_one_right {n : ℕ} (hn : 0 < n)
+    (M Qi : Matrix (Fin n) (Fin n) ℝ) (h : M * Qi = 1) : M ≠ 0 := by
+  intro hM
+  rw [hM, Matrix.zero_mul] at h
+  exact matrix_one_ne_zero hn h.symm
+
 /-- **The frame-bridge cert** (#80, ruling (b) — the ONE geometric input of the loss squeeze). Packages
 the constant endpoint frames `P0, QL` (with inverses `Pi, Qi`, `Pi·P0 = 1 ∧ QL·Qi = 1`) and a `leak`
 charge constant `t`, and a neighborhood `U` of the deepest point where for each `w ∈ U` the loss matrix
@@ -1490,7 +1731,12 @@ the readX/Y/Z→raw block-decode (3 arms) + the entry-wise `reindex(fromBlocks r
 (Codex `xhigh` decorrelated, 2026-06-25), beyond a single-leaf tide. -/
 theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    -- **STRICT width positivity** (thread 31, 2026-06-25): the endpoint conjugation constants
+    -- `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²` are STRICTLY positive only when the boundary widths are
+    -- nonempty — a unit matrix over an empty index is `0` with zero energy. `hpos` (the strict reduced-
+    -- width positivity `0 < M s ⟺ r < H s` the headline already carries) gives `0 < H 0`, `0 < H (last L)`.
+    (hpos : ∀ s : Fin (L + 1), r < H s)
     (J : Fin r ↪ Fin (H (Fin.last L)))
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
@@ -1515,7 +1761,17 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
-      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    -- **INTERIOR-FRAME TRIVIALITY** (the `endpoint_telescoping` interface-collapse input, thread 31).
+    -- Every strictly-interior interface `(Qf s, Pf (s+1))` is `(1, 1)`. At `L = 2` the single interface
+    -- `s = 0` is `(Qf (firstLayer) = 1, Pf (lastLayer) = 1) = (hQf0, hPfL)`; for `L ≥ 3` the strict-
+    -- interior frames are likewise trivial (the deepest interior layer IS the corner). Stated as a
+    -- hypothesis (the generic rank-normal-form frame `deepestPoint_frame` need not be the identity on the
+    -- interior even though the layer is the corner; the caller supplies the identity-interior choice).
+    (hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ)) :
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
       (Pi : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
@@ -1553,75 +1809,183 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                 ≤ γ₂ * deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)
             ∧ (deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1
                 ≤ γ₁ * (∑ i, ∑ j, ((P11 - P10 * ⅟P00 * P01) i j) ^ 2)) := by
-  -- **SKELETON-FIRST ASSEMBLY (2026-06-25, thread 31).** The cert is now stated TRUE (the seven frame
-  -- hypotheses above). The body is the banked S0–S5 decomposition (`framedbody-cert.md`): S1/S1' the
-  -- per-layer round-trip `framedParamsPivot (split w) s = Pf s · (paramsSymm w)_s · Qf s`; S2 the
-  -- `endpoint_telescoping` to `P0 · prod(paramsSymm w) · QL`; S3b the `reindex(P0·B·QL) = fromBlocks
-  -- 1 0 0 0` normalization (route: `B = prod(deepest)` ▸ telescope-of-deepest ▸ product-of-corners);
-  -- S4 the reg-energy identity (`deepestEPivot_sq_sum_eq_blocks` re-proved for `deepestEFull`); S5a the
-  -- `Invertible P00` germ; S5b the leak bound; S5c the core comparability (germ, `s5c-r2-cert.md`).
-  -- FILLED here: the inverse-frame construction (`Pi, Qi` from the boundary-frame units) and the outer
-  -- `Pi·P0 = 1`/`QL·Qi = 1` + the final `refine`/`exact` assembly. The geometric sub-lemmas that are
-  -- genuinely-new content carry named local `sorry`s with CORRECT statements (see the per-`have` notes).
-  -- The Frobenius-positivity `hKP_pos`/`hKi_pos` are also sorried: they are TRUE only when the boundary
-  -- widths are nonempty (`H 0 ≥ 1`, `H (Fin.last L) ≥ 1`) — a unit matrix over an empty index is `0` with
-  -- zero energy — so a clean fill needs an `H s ≥ 1` fact not currently among the hypotheses (latent in
-  -- the original cert's `0 < KP` conjunct, not introduced here). Order: S1, S1', S2, S3b, S4, S5a, S5b, S5c.
+  -- **ASSEMBLY (2026-06-25, thread 31; partial — see the remaining `sorry`s).** The cert is stated TRUE
+  -- (the frame hypotheses above + `hL2`/`hpos`/`hinterface` added this tide). The body is the banked
+  -- S0–S5 decomposition (`framedbody-cert.md`). **LANDED this tide:** the endpoint-frame units +
+  -- `Pi·P0 = 1`/`QL·Qi = 1`; the Frobenius positivity `hKP_pos`/`hKi_pos` (PROVED sorry-free from `hpos`
+  -- ⟹ `0 < H 0`, `0 < H (last L)` — a unit matrix over a nonempty index is `≠ 0`); S1 (non-last
+  -- round-trip); the witnessed telescope `endpoint_telescoping_eq`; `hframe0`/`hS2_w0` (the SOUND
+  -- deepest-gauge `w0` instance — at `w0` the deviation vanishes); S3b the `reindex(P0·B·QL) = fromBlocks
+  -- 1 0 0 0` normalization (via `hS2_w0` ▸ `framedParamsRegPivot 0` ▸ product-of-corners).
+  -- **STILL OPEN (named `sorry`s, CORRECT statements):** `hS1'` — the last-layer round-trip is NOT the
+  -- clean `Pf·(symm w)·Qf` (REFUTED, `hs1prime-verdict.md`): for a non-front pivot `J` the last layer
+  -- carries a column-permutation `π_J`; the statement now reflects the permuted form. `hproducer` — the
+  -- per-`w` S4 reg-energy + S5a/b/c (`Invertible P00`, leak, core germ comparability) + the `𝓝`
+  -- construction, where the `π_J` cancellation (verdict option A) and the S5c germ atom
+  -- `schur_core_germ_comparability` (`s5c-r2-cert.md`) are the genuine open geometry.
   classical
   set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
   -- The raw (un-framed) parameter tuple at `w` and the full framed reconstruction of `split w`.
   set A : (Fin (flatDim H) → ℝ) → Params H := fun w => (paramsEquivFlat H).symm w with hA
   set F : (Fin (flatDim H) → ℝ) → Params H :=
     fun w => framedParamsPivot H r hr hL J Pf Qf (split w) with hF
-  -- **S1 — per-layer round-trip, NON-last layers** (banked: `framedParamsPivot_of_ne_last` ▸
-  -- `framedParams`/`framedLayer` def ▸ `reindex_fromBlocks_reads_eq_deviation` ▸ `deepestPoint_frame_normal`
-  -- ▸ the affine `symm(w−w0) = symm w − deepest` bridge). GENUINE new content (the X/Y/Z→raw entry
-  -- chase, `framedbody-cert.md` S1); named `sorry`.
+  -- **Affine bridge** (`symm (w − w0) = symm w − deepest`, per layer): `paramsEquivFlat.symm` is
+  -- ℝ-linear (`paramsEquivFlatLinear`), so it preserves subtraction; `symm w0 = deepest` (round-trip).
+  have haffine : ∀ w (s : Fin L),
+      ((paramsEquivFlat H).symm (w - w0)) s
+        = ((paramsEquivFlat H).symm w) s - (deepestPoint H r B hB hr hL) s := by
+    -- `paramsEquivFlat.symm` agrees with the ℝ-linear `paramsEquivFlatLinear.symm` (same forward fn).
+    have hsymm : ∀ y, (paramsEquivFlat H).symm y = (paramsEquivFlatLinear H).symm y := by
+      intro y
+      apply (paramsEquivFlatLinear H).injective
+      rw [(paramsEquivFlatLinear H).apply_symm_apply,
+        show (paramsEquivFlatLinear H) ((paramsEquivFlat H).symm y)
+          = (paramsEquivFlat H) ((paramsEquivFlat H).symm y) from
+          congrFun (paramsEquivFlatLinear_coe H) _,
+        (paramsEquivFlat H).apply_symm_apply]
+    intro w s
+    have hsub : (paramsEquivFlat H).symm (w - w0)
+        = (paramsEquivFlat H).symm w - (paramsEquivFlat H).symm w0 := by
+      rw [hsymm (w - w0), hsymm w, hsymm w0]; exact map_sub (paramsEquivFlatLinear H).symm w w0
+    have hw0symm : (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL := by
+      rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _
+    rw [hsub, hw0symm]; rfl
+  -- **S1 — per-layer round-trip, NON-last layers**: `framedParamsPivot_of_ne_last` ▸ `framedParams`/
+  -- `framedLayer` def ▸ the threshold corner is the `corM` shape (`reindex_fromBlocks_one_eq_corM`) =
+  -- `Pf·deepest·Qf` (`hNF`) ▸ the reg/core read block reindex is the raw deviation
+  -- (`reindex_fromBlocks_reads_eq_deviation`, via `hsplit : split w = deepestSplit w0 w`) ▸ the affine
+  -- bridge ▸ distribute `Pf · (deepest + (symm(w−w0))) · Qf = Pf · symm w · Qf`.
   have hS1 : ∀ w (s : Fin L), s ≠ lastLayer hL →
       F w s = Pf s * (A w) s * Qf s := by
+    intro w s hs
+    have hsne : (s : ℕ) + 1 ≠ L := by
+      intro h; exact hs (Fin.ext (by simp only [lastLayer]; omega))
+    -- `F w s = framedLayer s (Pf s) (Qf s) (readX) (readY) (readZ) (coreRead)`.
+    have hFs : F w s
+        = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+              (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+            + Pf s * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+                (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+                (Matrix.fromBlocks (readX H r hr hL ((split w).1, (split w).2.2) s)
+                  (readY H r hr hL ((split w).1, (split w).2.2) s)
+                  (readZ H r hr hL ((split w).1, (split w).2.2) s)
+                  ((paramsEquivFlat (deepestM H r)).symm (split w).2.1 s)) * Qf s := by
+      rw [hF]; simp only
+      rw [framedParamsPivot_of_ne_last H r hr hL J Pf Qf (split w) s hs, framedParams, framedLayer]
+    rw [hFs]
+    -- Corner term `= Pf s · deepest_s · Qf s` (`reindex_fromBlocks_one_eq_corM` ▸ `hNF`).
+    rw [reindex_fromBlocks_one_eq_corM r (H s.castSucc) (H s.succ) (hr s.castSucc) (hr s.succ),
+      ← hNF s hsne]
+    -- Read block `= raw deviation (symm (w − w0))_s` (`reindex_fromBlocks_reads_eq_deviation`, hsplit).
+    rw [show ((split w).1, (split w).2.2)
+          = ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) by rw [hsplit w],
+      show (split w).2.1 = (deepestSplit H r hr hL w0 w).2.1 by rw [hsplit w],
+      reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w s]
+    -- Distribute + affine bridge: `Pf·deepest·Qf + Pf·(symm(w−w0))·Qf = Pf · symm w · Qf`.
+    rw [hA]; simp only [haffine w s, Matrix.mul_sub, Matrix.sub_mul]
+    abel
+  -- **S1' — last-layer pivot-column variant.** **REFUTED AS ORIGINALLY STATED (thread 31, pen-and-paper
+  -- + decorrelated Codex, 2026-06-25; `hs1prime-verdict.md`).** `framedParamsPivot`'s last layer reindexes
+  -- the COLUMN side by the PIVOT split `pivotThresholdSplit … J`, but the gauge reads are J-INDEPENDENT
+  -- threshold-column decodes (`readY/readT_deepestSplit_raw` land block-col `inr q ↦` deviation col
+  -- `r+q`). So the reads term equals the deviation `(symm(w−w0)) last` with its columns PERMUTED by
+  -- `π_J(j) = (rThr).symm (pivotThr J · j)` — NOT the raw deviation. The clean `F last = Pf·(symm w)·Qf`
+  -- is FALSE for a non-front pivot `J` (counterexample `H=(1,1,2)`, `J 0 = 1`: columns swapped). The
+  -- TRUE statement is the permuted form below. (The cert's option-α premise — "the role index is split-
+  -- independent so the decoders agree per-entry" — is the error: the reads ARE threshold, but
+  -- `framedParamsPivot_last` PLACES them at pivot columns.) The fix (verdict option A) is to fold the
+  -- orthogonal column-permutation `Pπ` (`colPerm_J M = M·Pπ`) into the endpoint `QL` + the `B`-pivot
+  -- normalization — it should cancel against the SAME outer `reindex(rThr, pivotThr J)` carried on BOTH
+  -- the energy (`deepestEFull`) and loss (`Sreg`) sides; that cancellation is genuine new design work
+  -- (verify BEFORE re-stating), so this stays a precisely-stated `sorry`.
+  have hS1' : ∀ w, F w (lastLayer hL)
+      = Pf (lastLayer hL) * (deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL)
+        + Pf (lastLayer hL)
+          * (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+              (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+              (Matrix.fromBlocks
+                (readX H r hr hL ((split w).1, (split w).2.2) (lastLayer hL))
+                (readY H r hr hL ((split w).1, (split w).2.2) (lastLayer hL))
+                (readZ H r hr hL ((split w).1, (split w).2.2) (lastLayer hL))
+                ((paramsEquivFlat (deepestM H r)).symm (split w).2.1 (lastLayer hL))))
+          * Qf (lastLayer hL) := by
     sorry
-  -- **S1' — last-layer pivot-column variant** (`framedbody-cert.md` S1', option α: the column decoder
-  -- swaps `rThresholdSplit_symm_inr` for `pivotThresholdSplit_symm_inr`; the raw layer is split-
-  -- independent). GENUINE new content (~30–40 LoC ext + 4-case); named `sorry`.
-  have hS1' : ∀ w, F w (lastLayer hL) = Pf (lastLayer hL) * (A w) (lastLayer hL) * Qf (lastLayer hL) := by
-    sorry
-  -- The combined per-layer frame identity (`endpoint_telescoping`'s `hframe` input), for any `w`.
-  have hframe : ∀ w (s : Fin L), F w s = Pf s * (A w) s * Qf s := by
-    intro w s
+  -- **S0/interface — adjacent interior frames are identity** (`framedbody-cert.md` S0/S2): the telescope
+  -- `hinterface` input is now a hypothesis (see the signature) — every strictly-interior interface
+  -- `(Qf s, Pf (s+1))` is `(1, 1)`, the input `endpoint_telescoping_eq` consumes for the interface collapse.
+  -- **S2 — telescope** (`endpoint_telescoping_eq`, the WITNESSED variant). The boundary frames are the
+  -- CANONICAL endpoint casts `endpointP0 H hL Pf`, `endpointQL H hL Qf` — they depend only on `Pf, Qf`
+  -- (NOT on `A`/`C`), so the SAME `P0, QL` serve every `w`.
+  set P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ := endpointP0 H hL Pf with hP0def
+  set QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ := endpointQL H hL Qf with hQLdef
+  -- `P0, QL` are units: a type-cast of `Pf (firstLayer)`/`Qf (lastLayer)`, units (`hPunit`/`hQunit`).
+  have hP0unit : IsUnit P0 := by rw [hP0def]; exact isUnit_endpointP0 H hL Pf (hPunit _)
+  have hQLunit : IsUnit QL := by rw [hQLdef]; exact isUnit_endpointQL H hL Qf (hQunit _)
+  -- **`hframe` AT THE DEEPEST GAUGE `w0` ONLY** (SOUND): at `w0` the deviation is `0` (`split w0 = 0`),
+  -- so the refuted column-permutation `π_J` acts trivially (`colPerm_J 0 = 0`), and `F w0 s = Pf s ·
+  -- deepest s · Qf s` for EVERY layer (last layer via the corner `hcorner` + `hPfL`, non-last via S1).
+  -- The general-`w` `hframe` is FALSE on the last layer (hS1'); only the `w0` instance is needed below
+  -- (`hS3b` is a basepoint fact, and the general-`w` energy identity is the `hproducer` `sorry`).
+  have hAw0 : A w0 = deepestPoint H r B hB hr hL := by
+    rw [hA]; simp only; rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _
+  have hsplit0 : split w0 = 0 := by
+    rw [hsplit w0, hw0]
+    exact (deepestSplit_mp_basepoint H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))).2
+  have hframe0 : ∀ s : Fin L, F w0 s = Pf s * (A w0) s * Qf s := by
+    intro s
     by_cases hs : s = lastLayer hL
-    · subst hs; exact hS1' w
-    · exact hS1 w s hs
-  -- **S0/interface — adjacent interior frames are identity** (`framedbody-cert.md` S0/S2). The telescope
-  -- `hinterface` input: every strictly-interior interface `(Qf s, Pf (s+1))` is `(1, 1)`. At `L = 2`
-  -- there is no strict interior so this is vacuous; at `L ≥ 3` it follows from `hNF` (interior frames
-  -- are the identity normal form) — the extraction is genuine content; named `sorry`.
-  have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
-      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
-        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ) := by
-    sorry
-  -- **S2 — telescope** (banked: `endpoint_telescoping`). The boundary frames `P0, QL` (cast to the
-  -- endpoint widths `Fin (H 0)`, `Fin (H (Fin.last L))`) are produced ONCE here and reused for every
-  -- `w` (the telescope's `P0, QL` depend only on `Pf, Qf`, not on `A`/`C`). `hframe` is per-`w`, so we
-  -- pin `P0, QL` at the deepest gauge `A w0` and reuse the SAME witnesses for all `w` by re-running the
-  -- telescope and identifying the outputs (boundary frames are `w`-independent). For the skeleton we
-  -- obtain them at `w0` and carry the per-`w` identity as `hS2`.
-  obtain ⟨P0, QL, hprod0, hunit0⟩ :=
-    endpoint_telescoping H hL (A w0) (F w0) Pf Qf (hframe w0) hinterface
-  -- `P0, QL` are units (the telescope transports `hPunit`/`hQunit` of the boundary frames).
-  obtain ⟨hP0unit, hQLunit⟩ := hunit0 (hPunit _) (hQunit _)
-  -- The per-`w` telescope identity, with the SAME `P0, QL` (the boundary frames are `w`-independent).
-  -- `endpoint_telescoping` at `A w` returns boundary frames defeq to those at `w0`; named `sorry` for
-  -- the witness-identification (the telescope output is a fixed cast of `Pf ⟨0⟩`, `Qf ⟨L-1⟩`).
-  have hS2 : ∀ w, prod H (F w) = P0 * prod H (A w) * QL := by
-    sorry
+    · -- last layer at `w0`: `split w0 = 0` ⟹ `F w0 last = framedParamsRegPivot 0 last = corner`
+      -- (`framedParamsPivot_coreZero` ▸ `framedParamsRegPivot_zero_last`), and the corner
+      -- `reindex(rThr.symm, pivotThr.symm)(fromBlocks 1 0 0 0) = deepest_last · Qf_last` (`hcorner`,
+      -- reindex.symm-cancel), with `Pf_last = 1` (`hPfL`) and `A w0 last = deepest_last`.
+      subst hs
+      rw [hF]; simp only
+      rw [hsplit0,
+        show ((0 : DeepestSplit H r (deepestNGauge H r)))
+          = (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (flatDim (deepestM H r)) → ℝ),
+              (0 : Fin (deepestNGauge H r) → ℝ)) : DeepestSplit H r (deepestNGauge H r)) from rfl,
+        framedParamsPivot_coreZero H r hr hL J Pf Qf 0 0,
+        show (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))
+            : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+          = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
+        framedParamsRegPivot_zero_last H r hr hL J Pf Qf]
+      -- corner term `reindex(rThr.symm, pivotThr.symm)(fromBlocks 1 0 0 0) = deepest_last · Qf_last`.
+      have hcornerInv : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          = deepestPoint H r B hB hr hL (lastLayer hL) * Qf (lastLayer hL) := by
+        rw [← hcorner, ← Matrix.reindex_symm, Equiv.symm_apply_apply]
+      rw [hcornerInv, hAw0, hPfL, Matrix.one_mul]
+    · -- non-last layer at `w0`: `S1` gives `F w0 s = Pf s · (A w0) s · Qf s` directly.
+      exact hS1 w0 s hs
+  have hS2_w0 : prod H (F w0) = P0 * prod H (A w0) * QL := by
+    rw [hP0def, hQLdef]
+    exact endpoint_telescoping_eq H hL (A w0) (F w0) Pf Qf hframe0 hinterface
   -- **S3b — B-normalization** (`framedbody-cert.md` S3b): `reindex(P0·B·QL) = fromBlocks 1 0 0 0`, via
-  -- `B = prod(deepestPoint)` ▸ telescope-of-deepest (S2 at the deepest gauge) ▸ product-of-corners. The
-  -- product-of-corners atom is the `framedParamsPivot`-at-core-0 zero-slot product. GENUINE new content;
-  -- named `sorry`.
+  -- `B = prod(deepestPoint)` ▸ telescope-of-deepest at `w0` (`hS2_w0`, the SOUND basepoint instance) ▸
+  -- `F w0 = framedParamsPivot (split w0)` with `split w0 = 0` collapses to `framedParamsRegPivot 0`
+  -- (`framedParamsPivot_coreZero`) ▸ product-of-corners (`reindex_prodAux_framedParamsRegPivot_zero`).
   have hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * B * QL)
       = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
-    sorry
+    -- `B = prod(deepest)` (the fibre membership `IsDeepLayers.1`).
+    have hBprod : B = prod H (deepestPoint H r B hB hr hL) :=
+      (deepestPoint_isDeep H r B hB hr hL).1.symm
+    -- `P0·B·QL = P0·prod(deepest)·QL = P0·prod(A w0)·QL = prod (F w0)` (hS2_w0, reversed).
+    have hstep : P0 * B * QL = prod H (F w0) := by
+      rw [hBprod, ← hAw0, ← hS2_w0]
+    rw [hstep, hF]; simp only
+    -- `F w0 = framedParamsPivot (split w0) = framedParamsPivot 0 = framedParamsRegPivot 0`.
+    rw [hsplit0,
+      show ((0 : DeepestSplit H r (deepestNGauge H r)))
+        = (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (flatDim (deepestM H r)) → ℝ),
+            (0 : Fin (deepestNGauge H r) → ℝ)) : DeepestSplit H r (deepestNGauge H r)) from rfl,
+      framedParamsPivot_coreZero H r hr hL J Pf Qf 0 0,
+      show (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))
+          : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+        = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl]
+    exact reindex_prodAux_framedParamsRegPivot_zero H r hr hL hL2 J Pf Qf
   -- The inverses `Pi, Qi` from the units `hP0unit`, `hQLunit`. `Pi := P0⁻¹` (the unit's inverse),
   -- `Pi · P0 = 1`; similarly `Qi := QL⁻¹`, `QL · Qi = 1`.
   obtain ⟨P0u, hP0u⟩ := hP0unit
@@ -1633,12 +1997,27 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [hPidef, ← hP0u]; exact (Units.inv_mul P0u)
   have hQQ : QL * Qi = 1 := by
     rw [hQidef, ← hQLu]; exact (Units.mul_inv QLu)
-  -- Frobenius positivity of the endpoint conjugation constants: `P0, QL` are units, hence `≠ 0`, so
-  -- their squared-Frobenius energies are strictly positive (some entry `≠ 0`); named `sorry`.
+  -- Frobenius positivity of the endpoint conjugation constants: `P0, QL` (and their inverses `Pi, Qi`)
+  -- are units, hence `≠ 0`, so their squared-Frobenius energies are strictly positive — over a NONEMPTY
+  -- boundary index (`0 < H 0`, `0 < H (last L)` from `hpos`). `P0`/`Qi` are right factors of a `· = 1`
+  -- product, `Pi`/`QL` left factors; all four are nonzero (`1 ≠ 0` over the nonempty index).
+  have h0pos : 0 < H 0 := lt_of_le_of_lt (Nat.zero_le r) (hpos 0)
+  have hLpos : 0 < H (Fin.last L) := lt_of_le_of_lt (Nat.zero_le r) (hpos (Fin.last L))
+  -- The endpoint `QL/Qi` factors enter the constant column-major (`∑ j ∑ k (· k j)²`); the row-major
+  -- positivity transfers by `Finset.sum_comm` (the double sum is symmetric in the two index orders).
+  have hswap : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℝ),
+      (∑ j, ∑ k, (M k j) ^ 2) = (∑ i, ∑ k, (M i k) ^ 2) := by
+    intro n M; rw [Finset.sum_comm]
   have hKP_pos : 0 < (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) := by
-    sorry
+    have hP0ne : P0 ≠ 0 := ne_zero_of_mul_eq_one_left h0pos Pi P0 hPP
+    have hQLne : QL ≠ 0 := ne_zero_of_mul_eq_one_right hLpos QL Qi hQQ
+    rw [hswap QL]
+    exact mul_pos (frob_sq_sum_pos_of_ne_zero P0 hP0ne) (frob_sq_sum_pos_of_ne_zero QL hQLne)
   have hKi_pos : 0 < (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) := by
-    sorry
+    have hPine : Pi ≠ 0 := ne_zero_of_mul_eq_one_right h0pos Pi P0 hPP
+    have hQine : Qi ≠ 0 := ne_zero_of_mul_eq_one_left hLpos QL Qi hQQ
+    rw [hswap Qi]
+    exact mul_pos (frob_sq_sum_pos_of_ne_zero Pi hPine) (frob_sq_sum_pos_of_ne_zero Qi hQine)
   -- **PER-`w` PRODUCER** (`framedbody-cert.md` S4/S5): the leak constant `t` (S5b) and the core
   -- comparability constants `γ₁, γ₂` (S5c) are UNIFORM over the neighborhood `U`, so they are chosen
   -- here (BEFORE the `∀ w`), together with `U ∈ 𝓝 w0` and the per-`w` block witnesses. The `𝓝 w0` set
@@ -1647,7 +2026,15 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `reindex(P0·(prod(A w) − B)·QL)`, `hconj` is `Matrix.fromBlocks_toBlocks`, the reg-energy (S4) packs
   -- via `regResidualPack` (`deepestEPivot_sq_sum_eq_blocks` for `deepestEFull`), and the leak/core are
   -- the banked S5b/S5c estimates. GENUINE new content (the `𝓝` construction + S4/S5a/S5b/S5c geometry).
-  -- The whole producer is a single named `sorry` with the CORRECT statement below.
+  -- **PIVOT-PERMUTATION CAVEAT (thread 31, `hs1prime-verdict.md`):** the S4 reg-energy identity
+  -- `∑deepestEFull² = Sreg` (conjunct (b)) presupposes the per-`w` telescope `prod(F w) = P0·prod(A w)·QL`
+  -- which is FALSE on the last layer for a non-front pivot `J` — the last factor carries the column-
+  -- permutation `π_J` (refuted hS1'). The FINAL identity is expected to survive (the SAME outer
+  -- `reindex(rThr, pivotThr J)` is on BOTH `deepestEFull` and `Sreg`, so `π_J` should cancel), but the
+  -- producer's S4 step must thread that cancellation (verdict option A: fold the orthogonal `Pπ` into
+  -- `QL`/the `B`-pivot normalization). This is the genuine open design (verify the cancellation), so the
+  -- whole producer is a single named `sorry` with the CORRECT statement below. (The S5c core germ atom
+  -- `schur_core_germ_comparability` of `s5c-r2-cert.md` is the other half — also not yet built.)
   have hproducer :
       ∃ (t γ₁ γ₂ : ℝ), 0 < γ₁ ∧ 0 < γ₂ ∧
         ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -1686,7 +2073,8 @@ banked `core_comparability_squeeze` (#54: leak ∈ ideal(reg), charged to `∑E�
 arbitrary and the bound is unprovable (the g161-class confound). -/
 theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
     (J : Fin r ↪ Fin (H (Fin.last L)))
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
@@ -1712,7 +2100,11 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
-      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ)) :
     ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
       ∃ U ∈ 𝓝 ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
         ∀ w ∈ U,
@@ -1728,8 +2120,8 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `framedParams_split_eq_frame_raw` is the ONE geometric input; the wiring below is sorry-free.
   classical
   obtain ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, hP, hQ, hγ₁, hγ₂, hKP_pos, hKi_pos, U, hU, hbr⟩ :=
-    framedParams_split_eq_frame_raw H r B hB hr hL J Pf Qf split hsplit
-      hPunit hQunit hQf0 hPfL hNF hcorner
+    framedParams_split_eq_frame_raw H r B hB hr hL hL2 hpos J Pf Qf split hsplit
+      hPunit hQunit hQf0 hPfL hNF hcorner hinterface
   -- Endpoint-frame energies (the conjugation constants). `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²`.
   set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
   set Ki := (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) with hKi
@@ -1838,7 +2230,11 @@ the identity (`deepestPoint_frame_Qf_eq_one` / `_Pf_eq_one`) — the boundary-tr
 matrices; `L = 1` is the separate smooth base case.) -/
 theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    -- The strict reduced-width positivity the headline carries (`0 < M s ⟺ r < H s`); needed for the
+    -- endpoint conjugation-constant positivity (`0 < ∑P0²·∑QL²`) in the loss squeeze. (Threaded from the
+    -- consumer `deepest_gauge_squeeze_exists`, which holds it via the headline's `hpos`.)
+    (hpos : ∀ s : Fin (L + 1), r < H s) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
       (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
       (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
@@ -1994,10 +2390,38 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
         = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
     rw [hpivJ]; exact hcorner
+  -- The interior-frame-triviality input `endpoint_telescoping` consumes. The single interface of the
+  -- L = 2 headline (`s = 0`) is the boundary `(Qf (firstLayer) = 1, Pf (lastLayer) = 1) = (hQf0, hPfL)`.
+  -- For L ≥ 3 the strict-interior frames are likewise trivial (the interior deepest layer IS the corner),
+  -- but the bundle `deepestPoint_frame_pivot_exists` supplies the GENERIC rank-normal-form frame there
+  -- (not committed to the identity), so that arm is a scoped gap (`hinterface_interior` below).
+  have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ) := by
+    intro s hs
+    refine ⟨?_, ?_⟩
+    · -- `Qf s = 1`: the left endpoint (`s.val = 0 = firstLayer`) via `hQf0`; interior `1 ≤ s.val` scoped.
+      rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+      · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
+        rw [hsf]; exact hQf0
+      · -- **SCOPED GAP (L ≥ 3 interior `Qf s`).** Vacuous for the L = 2 headline (`1 ≤ s.val ∧ s+1 < 2`
+        -- is empty). For L ≥ 3 the interior deepest layer is the corner (`deepestPoint_interior_eq_corM`)
+        -- but the bundle's frame there is the GENERIC rank-normal-form, not committed to the identity —
+        -- closing this needs the bundle to choose identity interior frames (`DeepestPivotFrame`, off-tide).
+        sorry
+    · -- `Pf (s+1) = 1`: the right endpoint (`s+1 = L-1 = lastLayer`) via `hPfL`; interior scoped.
+      rcases Nat.lt_or_ge ((s : ℕ) + 1) (L - 1) with hint | hbdy
+      · -- **SCOPED GAP (L ≥ 3 interior `Pf (s+1)`).** Vacuous for L = 2 (`s+1 < L-1 = 1` is empty). Same
+        -- bundle-choice obstruction as the interior `Qf s` arm.
+        sorry
+      · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
+          Fin.ext (by simp only [lastLayer]; omega)
+        rw [hsf]; exact hPfL
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`'s defining identities).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
-    deepest_loss_squeeze H r B hB hr hL J Pf Qf split coreAbsorb regStraighten hsplit_base hsplit
-      hra_regval hca_def hPunit hQunit hQf0 hPfL hNF hcorner'
+    deepest_loss_squeeze H r B hB hr hL hL2 hpos J Pf Qf split coreAbsorb regStraighten hsplit_base
+      hsplit hra_regval hca_def hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
   exact ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base,
     hca_base, hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct,
     c₁, c₂, hc₁, hc₂, U, hU, hsq⟩
@@ -2008,11 +2432,12 @@ layers) is what `deepest_gauge_construction` needs for the endpoint-frame trivia
 `deepest_gauge_squeeze_exists := this` on the `2 ≤ L` branch (`L = 1` is the smooth base case). -/
 theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) :
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
   obtain ⟨nGauge, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base, hca_reg,
     hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
-    deepest_gauge_construction H r B hB hr hL hL2
+    deepest_gauge_construction H r B hB hr hL hL2 hpos
   exact ⟨{
     nGauge := nGauge
     split := split
