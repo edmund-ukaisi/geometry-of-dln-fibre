@@ -243,3 +243,22 @@ A decorrelated adjudication (pp-r1-genM, exact + Codex) settled R1's remaining s
   by feasibility.** The remaining R1 hfin work is the bounded Lean build of the recursive coupled cover (the long pole),
   with the explicit per-cell recipe now in hand (radial Δ=a·R + rank-stratified Schur + Morse/monomial leaves + the
   radial disjoint-sum lemma) — pp-r1-genM is spec'ing it build-ready for the formaliser.
+
+## 14. L2 PIN2 needs a COMPARABILITY re-architecture (2026-06-25): the cert's exact-equality statement is FALSE.
+A decorrelated finding (l2-pin2-final + reviewer + Codex, with a numerical counterexample) established that the L2
+gauge-chart's PIN2 (`framedParams_split_eq_frame_raw` + `deepest_loss_squeeze`'s `hSreg_eq`) is **false as stated**: it
+asserts EXACT equalities for the regular blocks read off the T-core-ZEROED `framedParamsRegPivot`, but the actual
+telescoped loss is full-T and the T-core leaks into the off-diagonal regular blocks (`(C0·C1)₁₂ = (1+X0)Y1 + Y0·T1`;
+counterexample L=2 H=[2,2,2] r=1 → y·t ≠ 0). **Operator-relevant honesty:** my earlier "L2 gate is close / one wire
+from done" updates were PREMATURE — PIN2 is the open geometric heart, and three successive PIN2 attempts each found a
+deeper issue (split-genericity → frame-genericity → this T-core leak).
+- **The MATH is unaffected.** The RLCT formula (the headline) holds; rlctAt is invariant under two-sided comparability,
+  and the squeeze `deepest_loss_squeeze` is built for comparability. Only the cert's *exact-equality phrasing* of the
+  regular blocks was over-claimed. This is a FORMALISATION re-architecture, NOT a math obstruction or a hero-task-feasibility
+  risk. The repair (comparability — `Sreg ≍ ∑deepestEPivot²`, leak folded into γ₁/γ₂) is exactly what the cert ALREADY
+  does for the core blocks; PIN2 just needs to do it for the regular blocks too. It changes the cert's public signature
+  (exact → comparability) — a controller-level statement re-architecture, being designed (pp-pin2-rearch) before any build.
+- **No operator action required mid-flight** — flagged for the close + as an honest correction to the optimistic L2-close
+  framing. The L2 gauge chart's true remaining work: the PIN2 comparability re-architecture (the open heart) + the
+  L=1/2≤L case-split wire + product_reduction. PIN1 (closed) + the L=1 base + the PIN2 route-step bedrock are all banked
+  and unaffected.

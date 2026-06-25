@@ -840,6 +840,29 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 1 background BUILD agent: l2-pin2-final (L2 PIN2 close). pp-r1-genM released/on-call. (3,3,3,3) infra banked un-wired
   (det deferred). Queued: the L2 case-split wire, the rank-stratified hfin cover, the general hdiv chaining, D1.
 
+**★ UPDATE-39 (2026-06-25) — L2 PIN2 statement is FALSE (T-core leak, 3rd + decisive issue); needs a COMPARABILITY re-architecture. "L2-close" was PREMATURE.**
+- **The decisive finding (l2-pin2-final, 2 decorrelated confirmations + counterexample):** PIN2
+  `framedParams_split_eq_frame_raw` + `deepest_loss_squeeze`'s `hSreg_eq` assert EXACT equalities for the regular blocks
+  read off `framedParamsRegPivot` (T-core ZEROED) — but the telescoped loss is FULL-T, and the ₂₂ T-core LEAKS into the
+  off-diagonal regular blocks: `(C0·C1)₁₂ = (1+X0)Y1 + Y0·T1`. Counterexample (L=2, H=[2,2,2], r=1): prod(full)₁₂ = y·t
+  ≠ 0 = prod(T=0)₁₂, y (readY) ⊥ t (T-core) independent coords → exact h01 FALSE in every neighborhood. The frame facts
+  (2nd correction) do NOT fix this. This is the 3rd + DEEPEST PIN2 issue (after hsplit-genericity, frame-genericity).
+- **HONEST CORRECTION: the "L2 gate is close / one wire from done" framing was PREMATURE.** PIN2 is the open geometric
+  heart, and its EXACT-equality statement is false. The MATH is fine (the RLCT formula holds); the cert's PHRASING was
+  over-claimed (exact, where only comparability is true). NOT a math obstruction — a formalisation re-architecture.
+- **The repair (option 2, being designed): COMPARABILITY.** Weaken h00/h01/h10 + hSreg_eq from EXACT to two-sided
+  comparability `Sreg ≍ ∑deepestEPivot²`, folding the higher-order Y·T leak into γ₁/γ₂ — exactly as the cert ALREADY
+  does for the CORE blocks (docstring 1302-1305); the bug is asserting EXACT for the REGULAR blocks. rlctAt is
+  comparability-invariant (the squeeze is built for it), so `deepest_regular_core_normal_form_of`'s VALUE is unaffected.
+  Secondary issues flagged: (i) last-layer pivot-vs-threshold COLUMN mismatch (framedParams threshold-col vs hcorner
+  pivot-col); (ii) endpoint_telescoping needs strict-interior interface hyps for L≥3.
+- **`pp-pin2-rearch` commissioned** (decorrelated design): validate option 2 sound + RLCT-sufficient (the leak is
+  higher-order → comparability holds) + the build-ready restatement + the secondary fixes. Then a build. The banked PIN2
+  route steps (the 4-arm decode + the consolidating identity) + PIN1 (closed) are unaffected.
+- L2 status REVISED: PIN1 CLOSED · L=1 base banked · PIN2 route-step bedrock banked · **but PIN2's statement needs the
+  comparability re-architecture (the open heart) — not a body-fill.** Then the case-split wire + product_reduction.
+- 1 design agent: pp-pin2-rearch (PIN2 comparability re-architecture). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
