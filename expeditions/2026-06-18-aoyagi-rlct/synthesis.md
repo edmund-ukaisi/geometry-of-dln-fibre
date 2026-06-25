@@ -10769,3 +10769,12 @@ only a terminal matrix identity, unless it is in the one-edge case.
 Do not state the same split law for bare `residualProduct E`: its visited
 Schur residual blocks depend on the top endpoint, so the safe split law is for
 explicit fixed factor families.
+
+After interruption recovery, xhigh source/API scout `Hilbert` confirmed the
+same boundary in
+`threads/03-block-product-reduction/source-audit-a2-p13-residual-factor-product-boundary.md`.
+The source-backed p.13 match is the ordered residual-factor product theorem;
+the selected-entry multi-edge theorem still needs compatible factors, an
+explicit factor-product identity to the selected-entry matrix, and a residual
+index equivalence.  Do not turn the one-edge selected-entry readout into a
+multi-edge claim without those inputs.

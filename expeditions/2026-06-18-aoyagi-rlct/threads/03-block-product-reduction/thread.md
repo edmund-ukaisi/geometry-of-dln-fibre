@@ -5769,3 +5769,29 @@ This is finite matrix algebra only.  It does not decide whether Aoyagi's
 displayed selected-entry residual matrix has a suitable factorization, does
 not construct source factors, source coverage, source-measure transport,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 p.13 residual-factor product boundary audit
+
+Source/API audit:
+`source-audit-a2-p13-residual-factor-product-boundary.md`.
+
+After interruption recovery, xhigh scout `Hilbert` rechecked Aoyagi p.13
+against the current residual-factor API.  The audited source-backed theorem is
+exactly the already-landed ordered-product statement
+
+```text
+ChartLocalSuffixState.residualProduct_productCoordinateEdges_succSucc_eq_residualFactorProduct
+```
+
+together with the fixed-base preservation consumer
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq_base.
+```
+
+This confirms the current boundary: multi-edge selected-entry work still needs
+compatible residual factors plus an explicit product identity to the
+selected-entry matrix and a residual-index equivalence.  A terminal
+selected-entry matrix alone must not be inserted into a multi-edge residual
+product because the rank/split obstruction through intermediate residual
+types is real.
