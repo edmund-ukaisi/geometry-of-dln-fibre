@@ -5493,3 +5493,20 @@ center-coordinate residual square-sum identity, and a source-neutral
 coordinate-readout bridge.  The bridge requires an explicit finite equivalence
 and pointwise coordinate readout; it does not construct the fixed-base residual
 map readout.
+
+## 2026-06-25 A2 selected-entry original-loss readout wrapper
+
+Reproduction:
+`reproduction-a2-selected-entry-original-loss-readout-wrapper.md`.
+Statement card:
+`statement-card-a2-selected-entry-original-loss-readout-wrapper.md`.
+Review:
+`review-a2-selected-entry-original-loss-readout-wrapper.md`.
+
+Lean now proves the local source-stratum original-loss endpoint with the raw
+scalar `hresidual_eq` socket replaced by explicit residual-coordinate readout:
+a finite equivalence from fixed-base residual indices to selected-entry center
+coordinates, plus pointwise readout along `chartMap pivot`.  It derives the
+old scalar square-sum hypothesis using the finite square-sum bridge and then
+delegates to the existing endpoint.  Source coverage and the readout itself
+remain supplied.

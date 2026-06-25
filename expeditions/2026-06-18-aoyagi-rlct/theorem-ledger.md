@@ -8280,6 +8280,22 @@ Nonclaims: no fixed-base residual-coordinate readout, source chart
 construction, source coverage, source-measure transport, normal crossings,
 pole order, or RLCT.
 
+Latest A2 selected-entry original-loss readout wrapper:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_eq_chartMap_selectedEntryCenter_signedBox_withDensity_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase_of_residualBlockCoordinateReadout`.
+It replaces the raw scalar `hresidual_eq` input to the local source-stratum
+original-loss endpoint by an explicit finite equivalence from fixed-base
+residual indices to selected-entry center coordinates and a pointwise
+coordinate-readout hypothesis.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-original-loss-readout-wrapper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-original-loss-readout-wrapper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-original-loss-readout-wrapper.md`.
+Nonclaims: no construction of the readout, no source chart construction,
+source coverage, source-measure transport, normal crossings, pole order, or
+RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -6670,6 +6670,13 @@ regularity, source production, weighted pushforward, analytic
 Jacobian/source-density transport, full loss comparison, normal-crossing
 extraction, pole order, or RLCT.
 
+Latest A2 selected-entry original-loss readout wrapper:
+`SelectedEntryOriginalLossLocalMeasure.lean` now exposes the local
+source-stratum original-loss endpoint with the raw scalar residual square-sum
+hypothesis replaced by an explicit residual-coordinate readout and finite
+reindexing equivalence.  This is API sharpening only: local source/image
+equality and fixed-base residual readout remain supplied.
+
 Latest A2 selected-entry local-source finite-integral handoff:
 Lean now specializes the local-source monomial-unit finite-integral socket to
 the center-indexed selected-entry signed box.

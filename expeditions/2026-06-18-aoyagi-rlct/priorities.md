@@ -4579,3 +4579,11 @@ source-stratum equality.  The next priority is therefore to reduce the
 remaining `hresidual_eq` socket honestly: prove the selected-entry residual
 square-sum algebra and then require a concrete fixed-base residual coordinate
 readout/equivalence, while leaving source coverage explicit.
+
+The first readout-facing endpoint wrapper has now landed in Lean:
+`SelectedEntryOriginalLossLocalMeasure.lean` proves the local source-stratum
+original-loss theorem with explicit residual-coordinate readout replacing the
+raw scalar `hresidual_eq`.  This is preferred over adding new callers to the
+scalar socket.  The next genuine frontier is still to construct the
+fixed-base readout or a weaker residual lower-bound bridge from actual
+source-chart data; source coverage remains explicit.

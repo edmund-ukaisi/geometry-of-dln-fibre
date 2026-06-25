@@ -10505,6 +10505,17 @@ and `git diff --check` passed.  Xhigh review `Volta` passed with no findings;
 review artifact:
 `threads/03-block-product-reduction/review-a2-selected-entry-residual-coordinate-square-sum.md`.
 
+Next Lean wrapper now exposes the strongest selected-entry local
+source-stratum original-loss endpoint with explicit residual-coordinate
+readout replacing the scalar `hresidual_eq` socket:
+`SelectedEntryOriginalLossLocalMeasure.lean` theorem
+`..._selfBase_of_residualBlockCoordinateReadout`.  It derives the old scalar
+square-sum hypothesis from the finite equivalence/readout hypotheses and then
+delegates to the existing endpoint.  Source coverage and the readout itself
+remain supplied.  Xhigh review `Heisenberg` passed with no findings; review
+artifact:
+`threads/03-block-product-reduction/review-a2-selected-entry-original-loss-readout-wrapper.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.
