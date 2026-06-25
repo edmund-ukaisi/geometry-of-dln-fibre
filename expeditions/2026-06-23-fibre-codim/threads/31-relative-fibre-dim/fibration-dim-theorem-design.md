@@ -482,3 +482,54 @@ stay vanishingIdeal-side, `IsLocalization.liftAlgHom`/`Ideal.Quotient.liftₐ` f
 3. **final wiring** — feed e + hsig + (SchurSideNoDrop) hP to the wrapper → `dim O(Σ^r) = dim O(F) + δ`,
    convert through `varietyDim`/`unbotD`, → `hSweep` → `RouteCAssembly._of_sweep'` → unconditional codim.
    ~1 module, mechanical once (1)+(2) land.
+
+---
+
+## Tide progress log — update 9 (final-wiring spine LANDED + descent crux LANDED; e/hsig scoped, NOT yet built)
+
+**Banked (committed `4b88911f`, both zero-sorry, axiom-clean `[propext, Classical.choice, Quot.sound]`):**
+- `Core.ChartSweepWiring` (the conditional-bank FINAL-WIRING SKELETON — obligation 3 DONE):
+  - `varietyDim_eq_shift_of_ringKrullDim_eq` (general): `ringKrullDim O(Z) = ringKrullDim O(F) + m`
+    ⟹ `varietyDim Z = m + varietyDim F`, `O(F)` nontrivial, `σ : Type*` (NOT `Type u` — `RepCoord d`
+    is `Type 0`, the universe bug to avoid). The `unbotD 0` bridge.
+  - `sweep_of_localizedChartAlgEquiv`: takes `e : Localization.Away dsig ≃ₐ[k] Localization.Away gF`,
+    `hsig`, `hP`, `hF`-nontrivial; emits the EXACT RouteCAssembly `hSweep` shape
+    `varietyDim (canonicalCoord '' productRankLocus d r) = δ + varietyDim (canonicalCoord '' fibre d E)`,
+    `δ = card SchurVar = r(p+q−r)`. Uses local abbrevs `sweepSigma/Fibre/SigmaRing/FibreRing`.
+    **So the whole step-3 spine is now machine-checked except the two named hypotheses `e`, `hsig`.**
+- `Core.PrincipalOpenComorphism` (the descent CRUX primitive): `away_eq_zero_iff_exists_pow_mul_mem`
+  — `mk' (mk a) 1 = 0` in `Localization.Away (mk f₀ : O(Z))` ⟺ `∃ n, f₀^n·a ∈ vanishingIdeal Z`, via
+  `IsLocalization.mk'_eq_zero_iff` + `Quotient.eq_zero_iff_mem`. This is the vanishingIdeal-side
+  zero-test the localized-AlgEquiv descent rides — the R2-3b-4 generator-ideal wall is *structurally*
+  avoided (no generator containment, only membership + clearing denominators).
+
+**Fresh decorrelated Codex (xhigh, `codex/localized-chart-algequiv-{prompt,answer}.md`) — verdict on `e`:**
+- **Route (b) confirmed:** build `chartPsiLoc`/`chartPhiLoc` DIRECTLY as localized AlgHoms (each via
+  `IsLocalization.liftAlgHom` of an `Ideal.Quotient.liftₐ` of an `aeval`), glue by `AlgEquiv.ofAlgHom`,
+  extensionality `Localization.algHom_ext` (`@[ext high]`, present). NOT a k-level denominator-free
+  `OΣ ≃ₐ[k] P` (false globally — the Ψ comorphism contains `Δ⁻¹`).
+- **All Mathlib API verified present at v4.29:** `liftAlgHom`, `algEquivOfAlgEquiv`, `algHom_ext`,
+  `Away.lift/awayMap/mapₐ`, `mk'_eq_zero_iff`, `quotientEquivQuotientMvPolynomial`, `eval_multPoly`
+  (the load-bearing `eval (canonicalCoord A) (multPoly r c) = (mult A) r c` bridge). **NO absent theorem.**
+- **The wall, precisely:** the Ψ-direction descent `vanishingIdeal Σ ⊆ ker chartPsiAeval` (Φ-direction is
+  easier — denominator-free numerators). Discharge by point-realization: for a target chart point with
+  `detSchurS ≠ 0`, build `A := chartGauge(M)⁻¹•B ∈ Σ` (LANDED `mult_chartGauge_inv_smul_fibre`), so
+  `p ∈ vanishingIdeal Σ` evaluates to `0` there; the per-point vanishing → `0`-in-localization is the
+  clearing-denominators primitive (LANDED). **Codex confirmed NO shorter path** (no dimension-only route;
+  `basePresentationEquiv` only trivializes the BASE chart; the set bijection alone does not preserve
+  `varietyDim`). Size estimate ~1.2–1.8k LoC across 4–5 modules.
+
+**Subtlety found on `hsig` (obligation 2 — NOT as cheap as the cert scoped):** `sweep_of_localizedChartAlgEquiv`'s
+`hsig` is over `productRankLocus` (rank **=r**, matching RouteCAssembly which applies `hClosure`
+separately). The pp-nodrop cert + `sigmaIdeal`/`exists_kostantPartition_partitionIdeal_eq_of` are over
+`productRankLocusLE` (rank **≤r**) / `sigmaIdeal`. `vanishingIdeal (productRankLocus)` is NOT freely
+equal to `vanishingIdeal (productRankLocusLE)` — that IS the closure content `hClosure` carries (rank-=r
+is not Zariski-closed). So `hsig` is **entangled with `hClosure`**: either prove `hsig` over the LE form
+and add a `vanishingIdeal (productRankLocus) = vanishingIdeal (productRankLocusLE)` bridge (= the closure
+fact, Cited in RouteCAssembly), or restate `dsig`/`hsig` on the LE coordinate ring. Worth a SPECIFY before
+the `hsig` grind. ~1.5–2 modules (up from 1–1.5).
+
+**Handoff state:** spine green & committed; the two remaining hard inputs (`e`, `hsig`) are isolated
+named hypotheses, fully scoped, no absent-API exposure, but each a multi-module grind. The `e` build is
+the ~1.2–1.8k-LoC route-(b) plumbing (Ψ/Φ localized AlgHoms + round-trips), wall = the Ψ vanishingIdeal
+descent (mechanism de-risked: point-realization + the LANDED clearing-denominators primitive).
