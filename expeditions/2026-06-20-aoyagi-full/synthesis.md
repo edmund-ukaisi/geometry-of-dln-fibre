@@ -886,6 +886,17 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-68 (2026-06-25) — (3,3,4) hfin spine ALL banked @e0f6681a; gap → one index-relabel (ginnerZ_lt_top); both poles' final pieces building.**
+- **r1-ratiofin banked:** the entire hratiofin spine is sorry-free — STEP-1 (the permutation, Codex's flagged highest-risk), STEP-2
+  (outer), STEP-3a (inner T-peel), the per-z Schur comparability — and `RouteM334Hfin` is now ZERO-sorry; the (3,3,4) headline
+  relocated to the new RouteM334Ratiofin.lean (breaks the import cycle). Gap narrowed to `ginnerZ_lt_top` (STEP-3b).
+- **r1-ginnerz LAUNCHED** (ad5cc07d) — closes `ginnerZ_lt_top`: the per-p z-slot identification (raw/g/b, via Fin.exists_succAbove_eq)
+  + the raw↦Δ translation (banked `lintegral_translate_le`) + the feed to the banked `resolved334_box_lt_top 3`. Index bookkeeping,
+  everything feeding it banked. pp-r1-genM-2 on-call. On close → routeMCore_M334_threshold_lt_top FULLY clean → (3,3,4) hfin complete S2-free.
+- **L2:** l2-core-de (a78499af) building the producer (d')/(e') (the Rcore↔coreAbsorb identification + decode + the banked S5c germ charge).
+- Active: l2-core-de (L2 producer final) + r1-ginnerz (R1 (3,3,4) final). pp seats on-call. General hdiv + general lifts + D1 ahead.
+- Both long poles converged to their last index-relabel / identification; all geometric bedrock built; PIN1 verbatim; 7 findings resolved.
+
 **★ UPDATE-67 (2026-06-25) — the L2 gauge-chart geometric heart is DESIGNED END-TO-END; producer's final (d')/(e') building. ★**
 - **Rcore↔coreAbsorb pinned @2770ccb2** (pp-pin2-rearch + Codex): (d')/(e') is NOT new geometry — `Rcore = S0·W·S1` (the banked
   S5c block-LDU, NOT =∏S), so it closes via the banked S5c GERM CHARGE `|frobSq(Rcore)−coreΦ| ≤ C·Sreg` in the IN-SUM folded form
