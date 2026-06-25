@@ -783,6 +783,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 1 background BUILD agent: r1-node-3333 (R1 hdiv (3,3,3,3)). pp-r1-genM released/on-call. Queued: PIN2, the L2 case-split
   wire, the rank-stratified hfin cover (corank-≥2 long pole), the general hdiv chaining, D1.
 
+**★ UPDATE-36 (2026-06-25) — L2 PIN2 statement-CORRECTED (was unprovable as stated); the geometry body (~200-300 LoC) commissioned.**
+- **PIN2 precision catch + fix @5ad8074d** (l2-pin2-close, Codex-corroborated + reviewer-PASS): `framedParams_split_eq_frame_raw`
+  was UNPROVABLE as stated — it took a GENERIC `split` with no tie to the concrete `deepestSplit`, but the banked round-trip
+  decode (readX/Y/Z_deepestSplit, DeepestSplitConcrete) holds ONLY for `deepestSplit`. Fixed the "wrong statement misleads"
+  sorry-gate trap: added `hsplit : ∀ w, split w = deepestSplit … w` to PIN2 + deepest_loss_squeeze; rewired
+  deepest_gauge_construction to supply the CONCRETE deepestSplit (`hsplit := rfl`). The sorry now sits under a PROVABLE
+  statement. PIN1 STAYS clean (verified via forced rebuild); no new axiom; headline byte-identical; full build green (8350).
+  (The tide also correctly applied the stale-olean lesson — forced-rebuild before #print.)
+- **PIN2 geometry body COMMISSIONED (l2-pin2-geom a378f6db):** the ~200-300 LoC — `rw [hsplit]` then the 3-arm readX/Y/Z→raw
+  decode (banked DeepestSplitConcrete) + entry-wise reindex(fromBlocks)=deviation + endpoint_telescoping + J-dependent
+  B-normalisation + core_comparability_squeeze. Closing it closes the L2 gauge chart (deepest_regular_core_normal_form_of,
+  2≤L) → one wire from the L2 gate.
+- **L2 status:** PIN1 CLOSED; PIN2 statement-provable + the body building (l2-pin2-geom); then the case-split wire +
+  product_reduction → the L2 gate. The L=1 base is banked.
+- 2 background BUILD agents: l2-pin2-geom (L2 PIN2 body), r1-node-3333 (R1 hdiv (3,3,3,3) — bounded composition-det cycle).
+  pp-r1-genM released/on-call. Queued: the L2 case-split wire, the rank-stratified hfin cover (corank-≥2), the general hdiv chaining, D1.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
