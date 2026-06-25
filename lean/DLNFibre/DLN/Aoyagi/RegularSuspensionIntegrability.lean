@@ -440,9 +440,170 @@ theorem lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
   rw [← lintegral_enorm_of_nonneg hnonneg]
   exact hint.hasFiniteIntegral
 
+/-- Lower-integral scaling for the inverse scalar map on a finite-dimensional
+real vector space with additive Haar measure. -/
+theorem lintegral_comp_inv_smul_eq_mul_addHaar
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] (f : E → ℝ≥0∞) {r : ℝ}
+    (hr : r ≠ 0) :
+    (∫⁻ x : E, f (r⁻¹ • x) ∂ μ) =
+      ENNReal.ofReal (|r ^ Module.finrank ℝ E|) * ∫⁻ x : E, f x ∂ μ := by
+  let e : E ≃ᵐ E :=
+    (Homeomorph.smul (isUnit_iff_ne_zero.2 (inv_ne_zero hr)).unit).toMeasurableEquiv
+  have hmap :
+      Measure.map (fun x : E => r⁻¹ • x) μ =
+        ENNReal.ofReal (|r ^ Module.finrank ℝ E|) • μ := by
+    rw [Measure.map_addHaar_smul (μ := μ) (r := r⁻¹) (inv_ne_zero hr)]
+    congr 1
+    rw [inv_pow, inv_inv]
+  calc
+    (∫⁻ x : E, f (r⁻¹ • x) ∂ μ) =
+        ∫⁻ y : E, f y ∂ Measure.map (fun x : E => r⁻¹ • x) μ := by
+      simpa [e] using (MeasureTheory.lintegral_map_equiv (μ := μ) f e).symm
+    _ = ∫⁻ y : E, f y ∂ ENNReal.ofReal (|r ^ Module.finrank ℝ E|) • μ := by
+      rw [hmap]
+    _ = ENNReal.ofReal (|r ^ Module.finrank ℝ E|) * ∫⁻ x : E, f x ∂ μ := by
+      simp [smul_eq_mul]
+
+/-- Pointwise positive-parameter square model identity behind the sharp
+scaling estimate. -/
+theorem ofReal_add_norm_sq_pos_rpow_neg_eq_mul_one_add_norm_sq_inv_sqrt_smul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {a s : ℝ}
+    (ha : 0 < a) (x : E) :
+    ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) =
+      ENNReal.ofReal (a ^ (-s)) *
+        ENNReal.ofReal (((1 : ℝ) + ‖(Real.sqrt a)⁻¹ • x‖ ^ 2) ^ (-s)) := by
+  have hreal :
+      (a + ‖x‖ ^ 2) ^ (-s) =
+        a ^ (-s) * (((1 : ℝ) + ‖(Real.sqrt a)⁻¹ • x‖ ^ 2) ^ (-s)) := by
+    have hsqrtpos : 0 < Real.sqrt a := Real.sqrt_pos.2 ha
+    have hnormsq : ‖(Real.sqrt a)⁻¹ • x‖ ^ 2 = ‖x‖ ^ 2 / a := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hsqrtpos)]
+      rw [mul_pow, inv_pow, Real.sq_sqrt ha.le]
+      field_simp [ha.ne']
+    have hbase : a * ((1 : ℝ) + ‖(Real.sqrt a)⁻¹ • x‖ ^ 2) = a + ‖x‖ ^ 2 := by
+      rw [hnormsq]
+      field_simp [ha.ne']
+    calc
+      (a + ‖x‖ ^ 2) ^ (-s) =
+          (a * ((1 : ℝ) + ‖(Real.sqrt a)⁻¹ • x‖ ^ 2)) ^ (-s) := by
+        rw [hbase]
+      _ = a ^ (-s) * (((1 : ℝ) + ‖(Real.sqrt a)⁻¹ • x‖ ^ 2) ^ (-s)) := by
+        rw [Real.mul_rpow ha.le (by positivity)]
+  rw [hreal]
+  rw [ENNReal.ofReal_mul (Real.rpow_nonneg ha.le _)]
+
+/-- Sharp whole-space positive-parameter scaling identity for the square
+model.  Supercriticality is needed only in later finiteness applications. -/
+theorem lintegral_ofReal_add_norm_sq_pos_rpow_neg_eq_scale
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s : ℝ}
+    (ha : 0 < a) :
+    (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ) =
+      ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+        ∫⁻ x : E, ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) ∂ μ := by
+  let r : ℝ := Real.sqrt a
+  let f : E → ℝ≥0∞ := fun x =>
+    ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s))
+  have hrpos : 0 < r := Real.sqrt_pos.2 ha
+  have hr : r ≠ 0 := hrpos.ne'
+  have hpoint : ∀ x : E,
+      ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) =
+        ENNReal.ofReal (a ^ (-s)) * f (r⁻¹ • x) := by
+    intro x
+    dsimp [f, r]
+    exact ofReal_add_norm_sq_pos_rpow_neg_eq_mul_one_add_norm_sq_inv_sqrt_smul
+      (a := a) (s := s) ha x
+  have hlin :
+      (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ) =
+        ENNReal.ofReal (a ^ (-s)) * ∫⁻ x : E, f (r⁻¹ • x) ∂ μ := by
+    calc
+      (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ) =
+          ∫⁻ x : E, ENNReal.ofReal (a ^ (-s)) * f (r⁻¹ • x) ∂ μ := by
+        apply lintegral_congr
+        exact hpoint
+      _ = ENNReal.ofReal (a ^ (-s)) * ∫⁻ x : E, f (r⁻¹ • x) ∂ μ := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  rw [hlin]
+  rw [lintegral_comp_inv_smul_eq_mul_addHaar (μ := μ) f hr]
+  change ENNReal.ofReal (a ^ (-s)) *
+        (ENNReal.ofReal (|r ^ Module.finrank ℝ E|) * ∫⁻ x : E, f x ∂ μ) =
+      ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+        ∫⁻ x : E, f x ∂ μ
+  rw [← mul_assoc]
+  congr 1
+  have hrpow_nonneg : 0 ≤ a ^ (-s) := Real.rpow_nonneg ha.le _
+  rw [← ENNReal.ofReal_mul hrpow_nonneg]
+  congr 1
+  dsimp [r]
+  have hsqrtnonneg : 0 ≤ Real.sqrt a := (Real.sqrt_pos.2 ha).le
+  have habs : |Real.sqrt a ^ Module.finrank ℝ E| = Real.sqrt a ^ Module.finrank ℝ E := by
+    exact abs_of_nonneg (pow_nonneg hsqrtnonneg _)
+  rw [habs]
+  have hsqrtpow :
+      Real.sqrt a ^ Module.finrank ℝ E =
+        a ^ ((Module.finrank ℝ E : ℝ) / 2) := by
+    rw [Real.sqrt_eq_rpow]
+    rw [← Real.rpow_natCast]
+    rw [← Real.rpow_mul ha.le]
+    congr 1
+    ring
+  rw [hsqrtpow]
+  rw [← Real.rpow_add ha]
+  congr 1
+  ring
+
+/-- Ball-restricted positive-parameter square model bound obtained by
+restricting the sharp whole-space scaling identity. -/
+theorem lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (ha : 0 < a) :
+    (∫⁻ x : E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) x) ∂ μ) ≤
+      ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+        ∫⁻ x : E, ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) ∂ μ := by
+  have hmono :
+      (∫⁻ x : E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) x) ∂ μ) ≤
+        ∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ := by
+    apply lintegral_mono
+    intro x
+    by_cases hx : x ∈ Metric.ball (0 : E) R
+    · simp only [Set.indicator_of_mem hx, le_rfl]
+    · simp only [Set.indicator_of_notMem hx]
+      simp
+  exact hmono.trans_eq
+    (lintegral_ofReal_add_norm_sq_pos_rpow_neg_eq_scale
+      (E := E) (μ := μ) (a := a) (s := s) ha)
+
+/-- Supercritical finiteness of the ball-restricted positive-parameter square
+model with the sharp scaling bound as the controlling estimate. -/
+theorem lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_supercritical
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure E} [μ.IsAddHaarMeasure] {a s R : ℝ}
+    (ha : 0 < a) (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
+    (∫⁻ x : E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) x) ∂ μ) < ∞ := by
+  have hle :=
+    lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
+      (E := E) (μ := μ) (a := a) (s := s) (R := R) ha
+  have hmodel :=
+    lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+      (E := E) (μ := μ) (s := s) hs
+  exact lt_of_le_of_lt hle
+    (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hmodel)
+
 /-- Positive-parameter global finite-side estimate in the supercritical
-regime.  This proves finiteness for each fixed `a > 0`; it does not yet give
-the sharp dependence on `a` needed for the threshold-shift theorem. -/
+regime.  This comparison proof gives finiteness for each fixed `a > 0`; the
+sharper dependence on `a` is supplied by the scaling equality above. -/
 theorem lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]

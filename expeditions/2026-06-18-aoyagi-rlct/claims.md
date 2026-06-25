@@ -6188,6 +6188,32 @@ shift, no endpoint behavior, no lower/divergence side, no uniform asymptotics,
 no bounded-density/prior theorem, no Aoyagi p.13 analytic chart/Jacobian
 construction, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 sharp positive-parameter fiber scaling:
+Lean now proves the fixed-positive-parameter Haar-scaling package in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.  The theorems
+`lintegral_comp_inv_smul_eq_mul_addHaar`,
+`ofReal_add_norm_sq_pos_rpow_neg_eq_mul_one_add_norm_sq_inv_sqrt_smul`,
+`lintegral_ofReal_add_norm_sq_pos_rpow_neg_eq_scale`,
+`lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale`, and
+`lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_supercritical`
+say that for `a>0`, the whole-space lower integral of
+`(a+||u||^2)^(-s)` is exactly `a^(finrank/2-s)` times the
+Japanese-bracket lower integral, and the ball-supported lower integral is
+bounded by the same expression.  Under `finrank/2<s`, the right-hand side is
+finite.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-sharp-positive-parameter-fiber-scaling.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-sharp-positive-parameter-fiber-scaling.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-sharp-positive-parameter-fiber-scaling.md`.
+
+Nonclaims: no variable-base product theorem, no residual-base integrability
+of `a(x)^(finrank/2-s)`, no full regular-variable `+dim(E)/2` threshold
+shift, no endpoint behavior, no lower/divergence side, no bounded-density or
+prior theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

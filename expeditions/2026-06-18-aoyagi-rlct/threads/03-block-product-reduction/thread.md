@@ -2950,3 +2950,38 @@ zero, no `+dim(E)/2` threshold shift, no endpoint, lower/divergence, uniform
 asymptotic in `a`, bounded-density/prior theorem, Aoyagi p.13 analytic
 chart/Jacobian theorem, normal-crossing construction, pole order, or RLCT
 theorem is proved.
+
+## 2026-06-25 A2 sharp positive-parameter fiber scaling
+
+Reproduction:
+`reproduction-a2-sharp-positive-parameter-fiber-scaling.md`.
+Statement card:
+`statement-card-a2-sharp-positive-parameter-fiber-scaling.md`.
+Review:
+`review-a2-sharp-positive-parameter-fiber-scaling.md`.
+
+Lean now proves the sharp fixed-positive-parameter scaling package in
+`RegularSuspensionIntegrability.lean`:
+
+```text
+lintegral_comp_inv_smul_eq_mul_addHaar
+ofReal_add_norm_sq_pos_rpow_neg_eq_mul_one_add_norm_sq_inv_sqrt_smul
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_eq_scale
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_supercritical
+```
+
+For additive Haar measure on a finite-dimensional real normed space and
+`a>0`, the whole-space lower integral of `(a+||u||^2)^(-s)` is exactly
+`a^(finrank/2-s)` times the Japanese-bracket lower integral.  The equality is
+only Haar scaling and positive real-power algebra; the supercritical
+hypothesis `finrank/2<s` is used in the last theorem only to make the
+Japanese-bracket constant finite.  Restricting to `ball(0,R)` gives the
+sharp ball bound by monotonicity.
+
+Boundary: fixed positive parameter only.  No variable-base product theorem
+where `a(x)` approaches zero, no proof that the residual base has finite
+`a(x)^(finrank/2-s)` integral, no full `+dim(E)/2` threshold shift, no
+endpoint or divergent side, no uniform asymptotic statement, no
+bounded-density/prior theorem, no Aoyagi p.13 analytic chart/Jacobian theorem,
+no normal-crossing construction, pole order, or RLCT theorem is proved.

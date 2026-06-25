@@ -3737,24 +3737,25 @@ lower integral of `(a(x)+||u||^2)^(-s)` over `X x ball(0,R)` is finite for
 all `s>=0`.  This is the away-from-residual-zero side only.  It does not prove
 the singular-base bound or the `+dim/2` shifted threshold.
 
-Next A2 analytic target: follow the xhigh Lean-route probe
-`threads/03-block-product-reduction/scout-a2-regular-square-threshold-shift-lean-route.md`.
-Use Japanese-bracket integrability plus Haar scaling to prove the fixed
-positive-parameter supercritical fiber bound
-`∫_{ball} (a+||u||^2)^(-s) <= C*a^(dim/2-s)` for `a>0` and
-`dim/2<s`, then lift it to a product theorem with a base integral of
-`a(x)^(dim/2-s)`.  This remains threshold-level integrability control, not
-pole-order preservation or normal-crossing extraction.
-
 A2 Japanese-bracket supercritical integrability has now landed:
 `threads/03-block-product-reduction/reproduction-a2-japanese-bracket-supercritical-integrability.md`.
 Lean proves that `(1+||x||^2)^(-s)` is integrable when `dim/2<s` and that
 `(a+||x||^2)^(-s)` has finite lower integral for every fixed `a>0`.  This
 uses Mathlib Japanese-bracket integrability and the comparison
-`min(a,1)*(1+||x||^2) <= a+||x||^2`.  It still does not give the sharp
-`a^(dim/2-s)` dependence needed for a base-product theorem.
+`min(a,1)*(1+||x||^2) <= a+||x||^2`.  The stronger sharp scaling theorem below
+is now the preferred fixed-parameter estimate.
 
-Updated next A2 analytic target: prove the sharp fixed-positive-parameter
-fiber bound using Haar scaling, then the product theorem over a base function
-with finite integral of `a(x)^(dim/2-s)`.  Do not use this fixed-`a`
-finiteness theorem as a substitute for the threshold shift.
+A2 sharp positive-parameter fiber scaling has now landed:
+`threads/03-block-product-reduction/reproduction-a2-sharp-positive-parameter-fiber-scaling.md`.
+Lean proves the exact Haar-scaling identity
+`∫ (a+||u||^2)^(-s) = a^(dim/2-s) * ∫ (1+||v||^2)^(-s)` for `a>0`,
+the ball-restricted bound, and the supercritical finite ball corollary.  The
+equality itself needs only `a>0`; `dim/2<s` is only used to make the
+Japanese-bracket constant finite.
+
+Updated next A2 analytic target: prove the product theorem over a base
+function with finite lower integral of `a(x)^(dim/2-s)`, using the sharp
+fixed-parameter bound as the fiber estimate.  This is still
+threshold-level integrability control, not pole-order preservation, a
+bounded-density/prior theorem, p.13 analytic chart/Jacobian construction, or
+normal-crossing extraction.

@@ -9089,6 +9089,38 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-japanese-bracket-supercritical-integrability.md`.
 
+Latest A2 sharp positive-parameter fiber scaling:
+`RegularSuspensionIntegrability.lean` now proves the fixed-positive-parameter
+Haar-scaling package:
+
+```text
+lintegral_comp_inv_smul_eq_mul_addHaar
+ofReal_add_norm_sq_pos_rpow_neg_eq_mul_one_add_norm_sq_inv_sqrt_smul
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_eq_scale
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
+lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_supercritical
+```
+
+For `a>0`, the whole-space lower integral of `(a+||u||^2)^(-s)` is exactly
+`a^(finrank/2-s)` times the Japanese-bracket lower integral.  The equality is
+just the substitution `u=sqrt(a) v`, Haar scaling by `sqrt(a)^finrank`, and
+positive real-power algebra; the supercritical hypothesis is used only to
+prove the Japanese-bracket constant finite.  Restricting to a ball gives the
+sharp fixed-parameter fiber bound needed before a variable-base product
+theorem.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-sharp-positive-parameter-fiber-scaling.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-sharp-positive-parameter-fiber-scaling.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-sharp-positive-parameter-fiber-scaling.md`.
+
+This is not yet the product theorem over a base function `a(x)` approaching
+zero, not a proof of residual-base integrability of `a(x)^(finrank/2-s)`, not
+the full regular-variable threshold shift, not endpoint or divergence
+analysis, not bounded-density/prior transport, not Aoyagi's p.13 analytic
+chart/Jacobian construction, not normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
