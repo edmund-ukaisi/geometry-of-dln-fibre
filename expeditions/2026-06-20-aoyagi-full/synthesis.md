@@ -886,6 +886,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-54 (2026-06-25) — R1 hfin ladder BEDROCK banked @bc877c6d (N1/N2a/N3a/N3b proved); N4 wall tide launched. ★**
+- **RouteMSchur bedrock banked** (r1-ladder; standalone green-gate + #print axioms; SELF-reviewed — its own reviewer caught +
+  it repaired an N2b vacuity, re-audit survived): N1 `radialDelta_loss_factor` (ring), N2a `rankOne_outerProduct_split` (the
+  r=2 rank-1 leaf = the (3,3,4) terminal rank-drop), N3a `radial_aAxis_divisor_lt_top`, N3b `radial_loss_chart_lt_top` — all
+  PROVED axiom-clean `[propext, Classical.choice, Quot.sound]`, no monomial_rlct. NEW file RouteMSchur.lean, NOT wired into the
+  aggregator (2 sorries; wire when hfin closes). N2b statement REPAIRED non-vacuous (uniform c₀,c₁, complete-pivoting cell hyps).
+- **2 R1 hfin gaps remain:** N2b (r≥3 block-Gauss proof — de-risked in minorpivot-cert, NOT needed at (3,3,4) where r=2) + N4
+  `routeMCore_threshold_lt_top` (the assembly = the wall): the depth-r WellFounded cover + the (3,3,4) hfin CHART BUNDLE (the
+  ParamsReshapeMP frame transport on the hfin side, not yet instantiated).
+- **r1-n4 LAUNCHED** (a0435aec) — the (3,3,4) hfin: the chart bundle (routeMCore M334 → ‖T‖²⊕‖Δ·S‖²) + N4 depth-2 assembly,
+  reusing the banked bedrock + recStep/radial_morse. pp-r1-genM-2 on-call. The (3,3,4) is r=2 (N2a leaf, no N2b-r≥3 needed).
+- 2 builds in flight (independent files): l2-s5c-body (L2 body: S5c atom + hS1' + hproducer) + r1-n4 (R1 (3,3,4) hfin N4 wall).
+  pp-pin2-rearch + pp-r1-genM-2 on-call. The other open R1 piece is general hdiv (RouteMLayerCoverGE:120, the det wall, HELD).
+
 **★ UPDATE-53 (2026-06-25) — L2 framedParams body 5/8 gaps closed @b7916f4d; down to hS1'+hproducer at L=2; S5c-atom tide launched. ★**
 - **l2-body-fill landed + integrated** (forced-rebuild + #print axioms; PIN1 stays clean; reviewer PASS 5/5): CLOSED sorry-free —
   hKP_pos/hKi_pos (from the strict `hpos:∀s,r<H s`), hinterface (explicit hyp, L=2-discharged), hS1 (non-last round-trip), hS2/
