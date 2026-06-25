@@ -11,13 +11,19 @@
   Companion (the normal-form fibre directly):
   `DLNFibre.Core.codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift`.
   Penultimate rung (`hSweep`): `DLNFibre.Core.varietyDim_sweepSigma_eq_shift`.
-- **Gloss.** For `d : Fin (N+2) → ℕ`, `r` with `hp : r ≤ d (last)`, `hq : r ≤ d 0`,
-  `hN : (0 : Fin (N+2)) ≠ Fin.last (N+1)`, `h : (kostantPartitions d r).Nonempty`, and a matrix
-  `B : Matrix (Fin (d (last))) (Fin (d 0)) k` with `hB : B.rank = r`:
+- **Gloss (minimal-hypothesis form, post-#69 tightening).** For `d : Fin (N+2) → ℕ`, `r`,
+  `h : (kostantPartitions d r).Nonempty`, and a matrix `B : Matrix (Fin (d (last))) (Fin (d 0)) k`
+  with `hB : B.rank = r`:
   `codimRepCanonical (fibre d B) = ((cCodim d r h).toNat : ℕ∞) + ((r * (d (last) + d 0 − r) : ℕ) : ℕ∞)`.
   `codimRepCanonical` is the geometric codimension at the canonical linear flattening (the
   `Ideal.height` of the vanishing ideal of `canonicalCoord '' (·)`); `cCodim d r` is the type-A
   `Ext`-pairing combinatorial codimension `C`; the shift is `δ = r·(d_N + d_0 − r) = card SchurVar`.
+  The rank bounds `r ≤ d (last)`, `r ≤ d 0` and `N ≥ 1` are NO LONGER hypotheses (reviewer-codim #68
+  flagged them redundant; #69 dropped them) — they are derived inside the proof: `r ≤ d k` from
+  `corner_le_dim_of_mem h.choose_spec` (a corner-`r` Kostant partition forces `r ≤ d k` at every
+  vertex), and `(0 : Fin (N+2)) ≠ Fin.last (N+1)` vacuously (`0.val = 0 ≠ N+1`). The intermediate
+  `codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift` still carries `hp hq hN` (its conclusion
+  names `normalForm … hp hq`, so they are type arguments there, not droppable).
 - **Proved.** The full chain, sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`:
   - **`hSweep`** (`varietyDim_sweepSigma_eq_shift`): `varietyDim Σ^r = δ + varietyDim F`. Built by
     feeding `(chartDsig, chartGfib, chartLocalizedAlgEquiv, hsig, hP, hF)` into the LANDED wiring
@@ -42,8 +48,11 @@
   - **`hClosure`** (`varietyDim Σ^r = varietyDim Σ̄^r`): carried by the route-c assembly
     `ClosureBridge.codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep_closure`, proved in-repo by
     the codimension sandwich (zero-cite).
-- **Assumed.** `[Field k] [IsAlgClosed k] [CharZero k]` and **`k : Type` (universe 0)**.
-  `N ≥ 1` (`hN`); `r ≤ d 0`, `r ≤ d (last)`; `(kostantPartitions d r).Nonempty`.
+- **Assumed (headline `codimRepCanonical_fibre_eq_cCodim_add_shift`, minimal form).**
+  `[Field k] [IsAlgClosed k] [CharZero k]` and **`k : Type` (universe 0)**;
+  `(kostantPartitions d r).Nonempty`; the target rank `B.rank = r`. That is ALL — `r ≤ d 0`,
+  `r ≤ d (last)`, and `N ≥ 1` are derived, not assumed (#69). (The intermediate normal-form theorem
+  still lists `hp hq hN` since they are type arguments to `normalForm` in its conclusion.)
 - **Cited.** none for the codimension itself — the geometric content is reproved from the engine
   (orbit-closure machinery, the Schur chart trivialization `e`, the no-drops, the closure sandwich)
   and Mathlib v4.29. (The downstream RLCT `= ½·codim` reading is the Cited Aoyagi/Watanabe bound,

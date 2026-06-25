@@ -151,26 +151,32 @@ theorem codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift [IsAlgClosed k] [
       (Set.image_mono (productRankLocus_subset_productRankLocusLE d r)))
     (varietyDim_sweepSigma_eq_shift d r hp hq hN h)
 
-/-- **The central result: `codim (fibre d B) = C + δ` for any rank-`r` target.** For a rank-`r`
-matrix `B` (`N ≥ 1`, algebraically closed char-`0` field), the geometric codimension of the
-multiplication-map fibre `mult⁻¹(B)` is the combinatorial codimension `C = cCodim d r` plus the
+/-- **The central result: `codim (fibre d B) = C + δ` for any rank-`r` target (minimal hyps).**
+For a rank-`r` matrix `B` over an algebraically closed char-`0` field, the geometric codimension of
+the multiplication-map fibre `mult⁻¹(B)` is the combinatorial codimension `C = cCodim d r` plus the
 matrix-stratum shift `δ = r·(d_N + d_0 − r)`:
 
 > `codimRepCanonical (fibre d B) = (cCodim d r).toNat + r·(d_N + d_0 − r)`.
 
-Lifted from the normal-form fibre (`codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift`) by the
-same-rank fibre-codimension invariance `FibreNormalForm.codimRepCanonical_fibre_eq_of_rank_eq`. This
-is the expedition's central geometric result — the new content underneath the (Cited) RLCT
-`= ½·codim` reading. -/
+The only hypotheses are the field structure, a target rank `hB : B.rank = r`, and the Kostant-set
+nonemptiness `h` (which `cCodim d r h` already requires). The rank bounds `r ≤ d (last)`, `r ≤ d 0`
+are *derived* from `h` (`corner_le_dim_of_mem`: a corner-`r` Kostant partition forces `r ≤ d k` at
+every vertex), and `N ≥ 1` (`(0 : Fin (N+2)) ≠ Fin.last (N+1)`) is vacuously true (`Fin (N+2)` has
+`≥ 2` elements). Lifted from the normal-form fibre by the same-rank invariance
+`FibreNormalForm.codimRepCanonical_fibre_eq_of_rank_eq`. The expedition's central geometric result —
+the new content underneath the (Cited) RLCT `= ½·codim` reading. -/
 theorem codimRepCanonical_fibre_eq_cCodim_add_shift [IsAlgClosed k] [CharZero k]
-    (d : Fin (N + 2) → ℕ) (r : ℕ)
-    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
-    (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))
-    (h : (kostantPartitions d r).Nonempty)
+    (d : Fin (N + 2) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last (N + 1)))) (Fin (d 0)) k) (hB : B.rank = r) :
     codimRepCanonical (fibre d B)
       = ((cCodim d r h).toNat : ℕ∞)
         + ((r * (d (Fin.last (N + 1)) + d 0 - r) : ℕ) : ℕ∞) := by
+  -- the rank bounds are forced by the Kostant set being nonempty (a corner-`r` partition exists).
+  have hp : r ≤ d (Fin.last (N + 1)) := corner_le_dim_of_mem h.choose_spec _
+  have hq : r ≤ d 0 := corner_le_dim_of_mem h.choose_spec _
+  -- `N ≥ 1`: the two end vertices of `Fin (N + 2)` are distinct (`0.val = 0 ≠ N+1 = (last).val`).
+  have hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1) :=
+    fun he ↦ by simpa [Fin.ext_iff, Fin.val_last] using he
   rw [codimRepCanonical_fibre_eq_of_rank_eq d hN B
       (normalForm (k := k) (d (Fin.last (N + 1))) (d 0) r hp hq)
       (hB.trans (rank_normalForm _ _ _ hp hq).symm),
