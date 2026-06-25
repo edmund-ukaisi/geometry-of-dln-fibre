@@ -210,3 +210,7 @@ import DLNFibre.Core.AffineLocalizationNoDrop
 import DLNFibre.Core.ChartLocalizedPolyDim
 -- schur-side no-drop input (dim(P[1/gfib]) = dim P for P a polynomial extension of O(F)).
 import DLNFibre.Core.SchurSideNoDrop
+-- clearing-denominators zero-test for the localized-chart-AlgEquiv descent (vanishingIdeal-side).
+import DLNFibre.Core.PrincipalOpenComorphism
+-- step-3 wiring skeleton: localized chart AlgEquiv e + the two no-drops ⟹ the hSweep shape.
+import DLNFibre.Core.ChartSweepWiring
