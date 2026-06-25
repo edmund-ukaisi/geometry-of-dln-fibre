@@ -3870,6 +3870,7 @@ A2 regular-suspension local-measure wrappers have now landed in Lean:
 `threads/03-block-product-reduction/reproduction-a2-regular-suspension-local-measure.md`.
 They are useful for base/source inequalities, especially the p.13 half lower
 bound and supplied base-loss lower bound.  They do not supply a
-product-fiber-regular-coordinate lower bound, so the next real finite-side
-consumer still needs a separately supplied product-chart/loss/density
-hypothesis package.
+product-fiber-regular-coordinate lower bound from the source comparison
+alone.  The uniform-in-fiber handoff can now package a separately supplied
+product-chart/loss/density hypothesis into the finite-side a.e. form; residual
+positivity and residual negative-power integrability remain separate inputs.

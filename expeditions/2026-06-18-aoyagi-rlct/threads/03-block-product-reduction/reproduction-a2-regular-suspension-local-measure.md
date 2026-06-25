@@ -74,13 +74,51 @@ almost every `z` with respect to
 
 after replacing `x` by `z.1`.
 
+## Uniform Product-Hypothesis Handoff
+
+There is one further elementary use of the same principle.  Suppose the source
+filter already supplies bounds uniformly for every p.13 regular-coordinate
+fiber point `u` in a ball:
+
+```text
+forall eventually x in nhdsWithin x0 S,
+  forall u in ball(0,R),
+    c * (residualSquareSum(x) + regularSquareSum(u)) <= loss(x,u),
+
+forall eventually x in nhdsWithin x0 S,
+  forall u in ball(0,R), 0 <= density(x,u),
+
+forall eventually x in nhdsWithin x0 S,
+  forall u in ball(0,R), density(x,u) <= C.
+```
+
+After intersecting these three eventual facts, apply the product version of
+the local-measure handoff to the base predicate
+
+```text
+P(x) := all three forall-u bounds hold at x.
+```
+
+The result is one open neighborhood `U` such that the three product-measure
+a.e. hypotheses hold over
+
+```text
+(mu.restrict (U inter S)).prod nu.
+```
+
+This is exactly the shape of the loss and density inputs expected by the
+finite-side p.13 regular-coordinate adapter.  It still does not prove the
+uniform source-filter bounds themselves, and it does not address the residual
+positivity or residual negative-power integral inputs of that adapter.
+
 ## Boundary
 
-The product statements are deliberately first-coordinate statements.  They do
-not identify the auxiliary product fiber with Aoyagi's regular coordinates and
-do not produce an inequality involving `regularSquareSum(u)` for a product
-fiber coordinate `u`.  Therefore they do not by themselves feed the full
-finite-side regular-coordinate integrability adapter.
+The first product statements are deliberately first-coordinate statements.
+They do not identify the auxiliary product fiber with Aoyagi's regular
+coordinates and do not derive an inequality involving `regularSquareSum(u)`
+for a product fiber coordinate `u`.  The uniform-in-fiber theorem has that
+shape only because the corresponding `forall u` loss/density bounds are
+supplied on the source filter.
 
 Still missing:
 
@@ -108,4 +146,5 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_literal_regular_add_residual_squareSum_half_le
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_p13RegularCoordinates_loss_density_bounds
 ```

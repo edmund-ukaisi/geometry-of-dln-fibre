@@ -180,11 +180,12 @@ RLCT extraction.
 Latest A2 source-measure consumer: `RegularSuspensionLocalMeasure.lean`
 packages the fixed-base p.13 half lower bound and supplied-base-loss lower
 bound as restricted-source a.e. facts, with first-projection product versions.
-The source rank stratum measurability remains supplied.  These theorems are
-base/source handoffs only; they still do not provide the product-fiber
-regular-coordinate lower bound, product chart, loss comparison, density or
-Jacobian transport, residual-base integrability, normal crossings, pole order,
-or RLCT.
+It also packages source-filter uniform-in-fiber loss and density bounds into
+the three product-measure a.e. hypotheses expected by the finite-side p.13
+regular-coordinate adapter.  The source rank stratum measurability remains
+supplied.  These theorems are base/source handoffs only; they still do not
+prove the uniform bounds, product chart, loss comparison, density or Jacobian
+transport, residual-base integrability, normal crossings, pole order, or RLCT.
 
 ## Latest A6 Source Audit
 

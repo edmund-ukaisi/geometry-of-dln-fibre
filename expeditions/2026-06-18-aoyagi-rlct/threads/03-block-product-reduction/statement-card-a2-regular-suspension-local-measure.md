@@ -42,6 +42,28 @@ then the same handoff gives the restricted-measure a.e. inequality
 
 again with a first-projection product version.
 
+Finally, if the source filter already supplies uniform-in-fiber bounds
+
+```text
+forall u in ball(0,R),
+  c * (residualSquareSum(x) + regularSquareSum(u)) <= loss(x,u),
+
+forall u in ball(0,R), 0 <= density(x,u),
+
+forall u in ball(0,R), density(x,u) <= C,
+```
+
+then there is a single open neighborhood `U` for which all three corresponding
+product-measure a.e. bounds hold over
+
+```text
+(mu.restrict (U inter sourceStratum)).prod nu.
+```
+
+This supplies only the loss/density a.e. hypothesis shape for the finite-side
+p.13 regular-coordinate adapter; residual positivity and residual
+negative-power integrability remain separate inputs.
+
 ## Lean Names
 
 ```text
@@ -49,6 +71,7 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_literal_regular_add_residual_squareSum_half_le
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_p13RegularCoordinates_loss_density_bounds
 ```
 
 ## Dependencies
@@ -61,6 +84,7 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 ## Nonclaims
 
 No measurable-source-stratum proof, p.13 product chart, source/product
-coordinate identification, product-fiber regular-square lower bound, original
-DLN loss comparison, density/Jacobian transport, residual-base integrability,
-normal crossing, pole order, or RLCT extraction is proved.
+coordinate identification, proof of the uniform product-fiber loss/density
+bounds, original DLN loss comparison, density/Jacobian transport,
+residual-base integrability, normal crossing, pole order, or RLCT extraction
+is proved.

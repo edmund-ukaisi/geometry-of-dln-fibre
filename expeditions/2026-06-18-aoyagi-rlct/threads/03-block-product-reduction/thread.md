@@ -3438,6 +3438,7 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_literal_regular_add_residual_squareSum_half_le
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
 PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_p13RegularCoordinates_loss_density_bounds
 ```
 
 The inputs are a measurable fixed-base source rank stratum and the already
@@ -3446,9 +3447,18 @@ neighborhood `U` such that the corresponding inequality holds a.e. for
 `mu.restrict (U ∩ sourceStratum)`, and in product form after replacing the
 base point by `z.1`.
 
-Boundary: the product forms are first-coordinate handoffs only.  They do not
-identify an auxiliary product fiber with p.13 regular coordinates, do not give
-the product-fiber `regularSquareSum(u)` lower bound needed by the finite-side
-integrability adapter, and do not prove source-stratum measurability, chart
+Boundary: the first product forms are first-coordinate handoffs only.  They do
+not identify an auxiliary product fiber with p.13 regular coordinates and do
+not derive the product-fiber `regularSquareSum(u)` lower bound needed by the
+finite-side integrability adapter.  The uniform-in-fiber theorem transports
+such loss/density bounds only when they are separately supplied on the source
+filter.  None of these wrappers prove source-stratum measurability, chart
 construction, original loss comparison, density/Jacobian transport, residual
-integrability, normal crossings, pole order, or RLCT.
+positivity/integrability, normal crossings, pole order, or RLCT.
+
+The last theorem handles the stronger case where the source filter already
+contains uniform-in-fiber loss and density bounds for all p.13 regular
+coordinate vectors in a ball.  It intersects those eventual facts and produces
+the three product-measure a.e. hypotheses expected by the finite-side p.13
+regular-coordinate adapter.  It still does not prove the uniform bounds,
+residual positivity, or residual negative-power integrability.
