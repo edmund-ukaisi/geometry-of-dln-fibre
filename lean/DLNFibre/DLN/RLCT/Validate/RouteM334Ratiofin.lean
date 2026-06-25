@@ -24,19 +24,20 @@ The route (pp-r1-genM-2 design; Codex `xhigh` VET, thread 29 `hratiofin-plan-ans
   `z∈[−1,1]^8` (`setLIntegral_mono_ae'`) and pull out the `(1/5)^{−c'}` constant, reducing `hratiofin`
   (`ratioResidual_lt_top`) to the resolved-form finiteness `resolvedZ_lt_top` (`∫_z Jint < ⊤`).
 
-* **STEP 3 — the resolved-form change-of-variables.** STEP-3a (the `z`-pointwise inner `T`-peel:
+* **STEP 3 — the resolved-form change-of-variables (CLOSED).** STEP-3a (the `z`-pointwise inner `T`-peel:
   `row0↦T` MP translation, row-split + `prod_reorder`) is BANKED sorry-free (`step3a` / `Jint_le_Ginner`),
-  reducing `resolvedZ_lt_top` to STEP-3b. STEP-3b (`ginnerZ_lt_top`, the ONE remaining `sorry`) is the
-  outer `z`-CoV: the `raw↦Δ` translation per fixed `(g,b)` (`lintegral_translate_le`, banked) + the `(g,b)`
-  finite vol-factor + `S` box-enlargement to `K = 3`, feeding the BANKED `resolved334_box_lt_top 3`. The
-  residual gap is the per-`p` `z`-slot identification (which `z`-coords are `raw/g/b`) — see
-  `ginnerZ_lt_top`'s docstring.
+  reducing `resolvedZ_lt_top` to STEP-3b. STEP-3b (`ginnerZ_lt_top`) is now DISCHARGED: the per-`p`
+  `z`-slot identification is the slot bijection `zσ p : Fin 8 ≃ (Fin 2×Fin 2)⊕Fin 4` (raw slots `inl`,
+  `(g,b)` slots `inr`) built from the read-back `Rmat334norm_eq_zslot` + `cellOf`; the MP reshape `zE p`
+  factors `Δof p z = matOf((zE p z).1) − bgShift((zE p z).2)` (`Δof_eq_zE`); CoV + Tonelli + per-`v`
+  translate (`ginner_translate_v_le`) + `S` box-enlargement to `K = 3` feed the BANKED
+  `resolved334_box_lt_top 3` times the finite `(g,b)`-vol factor.
 
 This file relocates the `(3,3,4)` hfin headline chain (`matBox334_blowup_lt_top` …
 `routeMCore_M334_threshold_lt_top`) out of `RouteM334Hfin` (where `matBox334_chart_lt_top` now takes the
 ratio-residual as a hypothesis), so the chain can consume the discharged `ratioResidual_lt_top` without an
-import cycle. S2-hygiene: closing `resolvedZ_lt_top` makes `routeMCore_M334_threshold_lt_top` fully
-`[propext, Classical.choice, Quot.sound]` (currently `+ sorryAx` from this lone gap, NO `monomial_rlct`).
+import cycle. S2-hygiene: with STEP-3b closed, `routeMCore_M334_threshold_lt_top` is fully
+`[propext, Classical.choice, Quot.sound]` (NO `sorryAx`, NO `monomial_rlct`).
 -/
 
 open scoped BigOperators ENNReal
@@ -478,21 +479,421 @@ theorem Jint_le_Ginner (c' : ℝ) (p : Fin 9) (z : Fin 8 → ℝ)
   exact step3a c' (Rmat334norm p z 0 1) (Rmat334norm p z 0 2)
     (Rmat334norm_offpivot_le p z hz 0 1 (by simp)) (Rmat334norm_offpivot_le p z hz 0 2 (by simp)) _
 
-/-- **STEP-3b (the outer `z`-change of variables — the ONE remaining `sorry`).** `∫_{z∈[−1,1]^8}
-Ginner c' (Δof p z) < ⊤` for `2 < c' < 4`. Since `Ginner c' (Δof p z)` reads `z` only through the four
-de-shifted entries `Δof p z = raw − γβ` (with `raw,g,b` eight DISTINCT `z`-components — the off-pivot
-entries of `R' = Rmat334norm p z`), the `raw ↦ Δ` translation per fixed `(g,b)` (`lintegral_translate_le`,
-`|γβ| ≤ 1` so `Δ∈[−2,2]^4 ⊆ matBox 2 2 3`) drops the `(g,b)` ratios to a finite vol-factor `vol([−1,1]^4)`
-and bounds `∫_z Ginner(Δof) ≤ vol([−1,1]^4) · ∫_{Δ∈matBox 2 2 3} Ginner c' Δ`. The last integral is
-`resolved334_box_lt_top 3` after enlarging `S : matBox 2 4 1 → matBox 2 4 3` (`lintegral_mono_set`).
+/-- The `z`-slot of a non-`(0,0)` cell `c`: the `Fin 8` index `jj` with
+`p.succAbove jj = e3 (σr c.1, σc c.2)` (σr = swap r0 0, σc = swap c0 0). -/
+noncomputable def zslot (p : Fin 9) (c : Fin 3 × Fin 3) : Fin 8 :=
+  if h : e3 ((Equiv.swap (e3.symm p).1 0) c.1, (Equiv.swap (e3.symm p).2 0) c.2) ≠ p then
+    (Fin.exists_succAbove_eq h).choose
+  else 0
 
-GAP: the per-`p` identification of which `z`-slots are `raw/g/b` (the `(i,j) ↦
-Fin.exists_succAbove_eq`-index relabeling, a coordinate permutation of `[−1,1]^8`), feeding the
-`lintegral_translate_le` on the `raw`-subblock. Everything else — the resolved RHS, the translation atom,
-the per-`z` `Ginner` reduction (`Jint_le_Ginner`) — is BANKED sorry-free. -/
+/-- The read-back: `Rmat334norm p z c.1 c.2 = z (zslot p c)` for `c ≠ (0,0)`. Lifted verbatim from
+`Rmat334norm_offpivot_le` (the equation it proves and discards). -/
+theorem Rmat334norm_eq_zslot (p : Fin 9) (z : Fin 8 → ℝ) (c : Fin 3 × Fin 3)
+    (hc : ¬ (c.1 = 0 ∧ c.2 = 0)) :
+    Rmat334norm p z c.1 c.2 = z (zslot p c) := by
+  unfold Rmat334norm
+  set r0 := (e3.symm p).1 with hr0
+  set c0 := (e3.symm p).2 with hc0
+  set σr := Equiv.swap r0 0 with hσr
+  set σc := Equiv.swap c0 0 with hσc
+  set y := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z) with hy
+  have hσr0 : σr 0 = r0 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc 0 = c0 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : e3 (r0, c0) = p := by
+    change e3 ((e3.symm p).1, (e3.symm p).2) = p
+    rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : e3 (σr c.1, σc c.2) ≠ p := by
+    intro heq
+    rw [← hpe] at heq
+    have hpair := e3.injective heq
+    rw [Prod.mk.injEq] at hpair
+    obtain ⟨hi, hj⟩ := hpair
+    rw [← hσr0] at hi; rw [← hσc0] at hj
+    exact hc ⟨σr.injective hi, σc.injective hj⟩
+  rw [Rmat334_entry, if_neg hidx]
+  -- zslot p c = (exists_succAbove_eq hidx).choose; spec: p.succAbove (zslot) = e3 (σr,σc).
+  have hslot : zslot p c = (Fin.exists_succAbove_eq hidx).choose := by
+    unfold zslot; rw [dif_pos hidx]
+  have hspec : p.succAbove (zslot p c) = e3 (σr c.1, σc c.2) := by
+    rw [hslot]; exact (Fin.exists_succAbove_eq hidx).choose_spec
+  rw [← hspec]
+  rw [show y (p.succAbove (zslot p c)) = z (zslot p c) from by
+    rw [hy]; simp [MeasurableEquiv.piFinSuccAbove]]
+
+/-- The defining spec of `zslot`: `p.succAbove (zslot p c) = e3 (σr c.1, σc c.2)` for `c ≠ (0,0)`. -/
+theorem zslot_spec (p : Fin 9) (c : Fin 3 × Fin 3) (hc : ¬ (c.1 = 0 ∧ c.2 = 0)) :
+    p.succAbove (zslot p c)
+      = e3 ((Equiv.swap (e3.symm p).1 0) c.1, (Equiv.swap (e3.symm p).2 0) c.2) := by
+  set σr := Equiv.swap (e3.symm p).1 0 with hσr
+  set σc := Equiv.swap (e3.symm p).2 0 with hσc
+  have hσr0 : σr 0 = (e3.symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc 0 = (e3.symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : e3 ((e3.symm p).1, (e3.symm p).2) = p := by
+    rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : e3 (σr c.1, σc c.2) ≠ p := by
+    intro heq
+    rw [← hpe] at heq
+    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ e3.injective heq
+    rw [← hσr0] at hi; rw [← hσc0] at hj
+    exact hc ⟨σr.injective hi, σc.injective hj⟩
+  have hslot : zslot p c = (Fin.exists_succAbove_eq hidx).choose := by
+    unfold zslot; rw [dif_pos hidx]
+  rw [hslot]; exact (Fin.exists_succAbove_eq hidx).choose_spec
+
+/-- The enumeration of the 8 non-`(0,0)` cells of `Fin 3 × Fin 3`: raw cells `(i+1,k+1)` (inl) and the
+bg cells `g0=(1,0), g1=(2,0), b0=(0,1), b1=(0,2)` (inr `0,1,2,3`). -/
+def cellOf : (Fin 2 × Fin 2) ⊕ Fin 4 → Fin 3 × Fin 3
+  | Sum.inl (i, k) => (i.succ, k.succ)
+  | Sum.inr 0 => (1, 0)
+  | Sum.inr 1 => (2, 0)
+  | Sum.inr 2 => (0, 1)
+  | Sum.inr 3 => (0, 2)
+
+theorem cellOf_ne_zero (s : (Fin 2 × Fin 2) ⊕ Fin 4) : ¬ ((cellOf s).1 = 0 ∧ (cellOf s).2 = 0) := by
+  rcases s with ⟨i, k⟩ | j
+  · simp [cellOf, Fin.succ_ne_zero]
+  · fin_cases j <;> decide
+
+theorem cellOf_injective : Function.Injective cellOf := by
+  rintro (⟨i1, k1⟩ | j1) (⟨i2, k2⟩ | j2) h
+  · -- inl, inl
+    simp only [cellOf, Prod.mk.injEq, Fin.succ_inj] at h
+    obtain ⟨hi, hk⟩ := h; subst hi; subst hk; rfl
+  · -- inl, inr : contradiction (raw cell has both components nonzero; bg cell has a zero)
+    exfalso; revert h
+    fin_cases j2 <;> revert i1 k1 <;> decide
+  · -- inr, inl : contradiction
+    exfalso; revert h
+    fin_cases j1 <;> revert i2 k2 <;> decide
+  · -- inr, inr
+    revert h
+    fin_cases j1 <;> fin_cases j2 <;> decide
+
+/-- `zslot p` is injective on non-`(0,0)` cells (via its spec `p.succAbove ∘ zslot = e3 ∘ (σr,σc)`,
+all the constituents injective). -/
+theorem zslot_injOn (p : Fin 9) {c1 c2 : Fin 3 × Fin 3}
+    (h1 : ¬ (c1.1 = 0 ∧ c1.2 = 0)) (h2 : ¬ (c2.1 = 0 ∧ c2.2 = 0))
+    (heq : zslot p c1 = zslot p c2) : c1 = c2 := by
+  have hs1 := zslot_spec p c1 h1
+  have hs2 := zslot_spec p c2 h2
+  rw [heq, hs2] at hs1
+  -- hs1 : e3 (σr c2.1, σc c2.2) = e3 (σr c1.1, σc c1.2)  -- wait, orientation
+  have he : e3 ((Equiv.swap (e3.symm p).1 0) c2.1, (Equiv.swap (e3.symm p).2 0) c2.2)
+      = e3 ((Equiv.swap (e3.symm p).1 0) c1.1, (Equiv.swap (e3.symm p).2 0) c1.2) := hs1
+  have hpair := e3.injective he
+  rw [Prod.mk.injEq] at hpair
+  obtain ⟨hi, hk⟩ := hpair
+  have hi' := (Equiv.swap (e3.symm p).1 0).injective hi
+  have hk' := (Equiv.swap (e3.symm p).2 0).injective hk
+  exact Prod.ext hi'.symm hk'.symm
+
+/-- `zslot p ∘ cellOf : (Fin 2 × Fin 2) ⊕ Fin 4 → Fin 8` is bijective (8 distinct slots). -/
+theorem slotFun_bijective (p : Fin 9) :
+    Function.Bijective (fun s : (Fin 2 × Fin 2) ⊕ Fin 4 => zslot p (cellOf s)) := by
+  rw [Fintype.bijective_iff_injective_and_card]
+  refine ⟨?_, by decide⟩
+  intro s1 s2 hs
+  exact cellOf_injective (zslot_injOn p (cellOf_ne_zero s1) (cellOf_ne_zero s2) hs)
+
+/-- The slot equiv `Fin 8 ≃ (Fin 2 × Fin 2) ⊕ Fin 4`: `σ.symm s = zslot p (cellOf s)`. -/
+noncomputable def zσ (p : Fin 9) : Fin 8 ≃ (Fin 2 × Fin 2) ⊕ Fin 4 :=
+  (Equiv.ofBijective _ (slotFun_bijective p)).symm
+
+theorem zσ_symm_apply (p : Fin 9) (s : (Fin 2 × Fin 2) ⊕ Fin 4) :
+    (zσ p).symm s = zslot p (cellOf s) := by
+  unfold zσ; rw [Equiv.symm_symm]; rfl
+
+/-- The reshape `(Fin 8 → ℝ) ≃ᵐ ((Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ))` splitting the z-cube into the
+raw-cube (inl) and the bg-cube (inr) via the slot equiv `zσ p`. -/
+noncomputable def zE (p : Fin 9) : (Fin 8 → ℝ) ≃ᵐ ((Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ)) :=
+  (MeasurableEquiv.piCongrLeft (fun _ : (Fin 2 × Fin 2) ⊕ Fin 4 => ℝ) (zσ p)).trans
+    (MeasurableEquiv.sumPiEquivProdPi (fun _ => ℝ))
+
+theorem zE_measurePreserving (p : Fin 9) : MeasurePreserving (zE p) volume volume :=
+  (volume_measurePreserving_piCongrLeft (fun _ => ℝ) (zσ p)).trans
+    (volume_measurePreserving_sumPiEquivProdPi (fun _ => ℝ))
+
+/-- `(zE p z).1 (i,k) = z ((zσ p).symm (inl (i,k)))` and `(zE p z).2 j = z ((zσ p).symm (inr j))`. -/
+theorem zE_fst_apply (p : Fin 9) (z : Fin 8 → ℝ) (ik : Fin 2 × Fin 2) :
+    (zE p z).1 ik = z ((zσ p).symm (Sum.inl ik)) := by
+  have : (zE p z).1 ik
+      = MeasurableEquiv.piCongrLeft (fun _ : (Fin 2 × Fin 2) ⊕ Fin 4 => ℝ) (zσ p) z (Sum.inl ik) :=
+    rfl
+  rw [this, ← Equiv.apply_symm_apply (zσ p) (Sum.inl ik),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+theorem zE_snd_apply (p : Fin 9) (z : Fin 8 → ℝ) (j : Fin 4) :
+    (zE p z).2 j = z ((zσ p).symm (Sum.inr j)) := by
+  have : (zE p z).2 j
+      = MeasurableEquiv.piCongrLeft (fun _ : (Fin 2 × Fin 2) ⊕ Fin 4 => ℝ) (zσ p) z (Sum.inr j) :=
+    rfl
+  rw [this, ← Equiv.apply_symm_apply (zσ p) (Sum.inr j),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+/-- The bg-shift matrix `γβ` built from the bg-cube `v = (g0,g1,b0,b1)`: `!![g0 b0, g0 b1; g1 b0, g1 b1]`. -/
+noncomputable def bgShift (v : Fin 4 → ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![v 0 * v 2, v 0 * v 3; v 1 * v 2, v 1 * v 3]
+
+/-- The raw-cube as a `2×2` matrix: `matOf M i k = M (i,k)`. -/
+noncomputable def matOf (M : Fin 2 × Fin 2 → ℝ) : Matrix (Fin 2) (Fin 2) ℝ := fun i k => M (i, k)
+
+/-- The curry `(Fin 2 × Fin 2 → ℝ) ≃ᵐ (Fin 2 → Fin 2 → ℝ)` (= `matOf`), MP for volume.
+`piCongrLeft` (reindex Σ ← Prod) then `piCurry` (in-namespace `measurePreserving_piCurry`). -/
+noncomputable def matOfEquiv : (Fin 2 × Fin 2 → ℝ) ≃ᵐ (Fin 2 → Fin 2 → ℝ) :=
+  (MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin 2, Fin 2) => ℝ)
+      (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm).trans
+    (MeasurableEquiv.piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ))
+
+theorem matOfEquiv_apply (M : Fin 2 × Fin 2 → ℝ) (i k : Fin 2) : matOfEquiv M i k = M (i, k) := by
+  show MeasurableEquiv.piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ)
+      (MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin 2, Fin 2) => ℝ)
+        (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm M) i k = M (i, k)
+  rw [MeasurableEquiv.coe_piCurry]
+  show MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin 2, Fin 2) => ℝ)
+      (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm M ⟨i, k⟩ = M (i, k)
+  rw [← Equiv.apply_symm_apply (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm
+      (⟨i, k⟩ : Σ _ : Fin 2, Fin 2),
+    MeasurableEquiv.piCongrLeft_apply_apply]
+  rfl
+
+theorem matOfEquiv_measurePreserving : MeasurePreserving matOfEquiv volume volume :=
+  (volume_measurePreserving_piCongrLeft (fun _ => ℝ)
+    (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm).trans
+      (measurePreserving_piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ) (fun _ _ => volume))
+
+/-- **The integrand factorization** `Δof p z = matOf ((zE p z).1) − bgShift ((zE p z).2)`: the raw 2×2
+block read off the inl-cube, the de-shift `γβ` off the inr-cube. Each entry via `Rmat334norm_eq_zslot`
++ the `zE` apply lemmas + `zσ_symm_apply`. -/
+theorem Δof_eq_zE (p : Fin 9) (z : Fin 8 → ℝ) :
+    Δof p z = matOf ((zE p z).1) - bgShift ((zE p z).2) := by
+  -- Read-back of the 8 entries: raw_{ik}, g_i, b_k = z at their slots = the zE-cube coordinates.
+  have hr00 : Rmat334norm p z 1 1 = (zE p z).1 (0, 0) := by
+    rw [Rmat334norm_eq_zslot p z (1, 1) (by decide), zE_fst_apply, zσ_symm_apply]; rfl
+  have hr01 : Rmat334norm p z 1 2 = (zE p z).1 (0, 1) := by
+    rw [Rmat334norm_eq_zslot p z (1, 2) (by decide), zE_fst_apply, zσ_symm_apply]; rfl
+  have hr10 : Rmat334norm p z 2 1 = (zE p z).1 (1, 0) := by
+    rw [Rmat334norm_eq_zslot p z (2, 1) (by decide), zE_fst_apply, zσ_symm_apply]; rfl
+  have hr11 : Rmat334norm p z 2 2 = (zE p z).1 (1, 1) := by
+    rw [Rmat334norm_eq_zslot p z (2, 2) (by decide), zE_fst_apply, zσ_symm_apply]; rfl
+  have hg0 : Rmat334norm p z 1 0 = (zE p z).2 0 := by
+    rw [Rmat334norm_eq_zslot p z (1, 0) (by decide), zE_snd_apply, zσ_symm_apply]; rfl
+  have hg1 : Rmat334norm p z 2 0 = (zE p z).2 1 := by
+    rw [Rmat334norm_eq_zslot p z (2, 0) (by decide), zE_snd_apply, zσ_symm_apply]; rfl
+  have hb0 : Rmat334norm p z 0 1 = (zE p z).2 2 := by
+    rw [Rmat334norm_eq_zslot p z (0, 1) (by decide), zE_snd_apply, zσ_symm_apply]; rfl
+  have hb1 : Rmat334norm p z 0 2 = (zE p z).2 3 := by
+    rw [Rmat334norm_eq_zslot p z (0, 2) (by decide), zE_snd_apply, zσ_symm_apply]; rfl
+  rw [Δof, hr00, hr01, hr10, hr11, hg0, hg1, hb0, hb1]
+  ext i k
+  fin_cases i <;> fin_cases k <;> rfl
+
+/-- **Helper 1 — the `Ginner` box finiteness at `K = 3`.** `∫_{Δ∈matBox 2 2 3} Ginner c' Δ < ⊤` for
+`2 < c' < 4`. Enlarge `Ginner`'s `S`-box `matBox 2 4 1 → matBox 2 4 3` (`lintegral_mono_set`), then it is
+exactly `resolved334_box_lt_top 3`. -/
+theorem ginner_box3_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
+    (∫⁻ Δ in matBox 2 2 3, Ginner c' Δ) < ⊤ := by
+  have hSsub : matBox 2 4 1 ⊆ matBox 2 4 (3 : ℝ) := by
+    intro X hX i k; have := hX i k; rw [Set.mem_Icc] at this ⊢
+    constructor <;> linarith [this.1, this.2]
+  refine lt_of_le_of_lt ?_ (resolved334_box_lt_top 3 (by norm_num) c' hc2 hc4)
+  refine lintegral_mono (fun Δ => ?_)
+  show Ginner c' Δ ≤ ∫⁻ S in matBox 2 4 3, ∫⁻ T in morseBox 4 3,
+      ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul Δ S)) ^ (-c'))
+  exact lintegral_mono_set hSsub
+
+/-- **`Fin 2 × Fin 2 → ℝ`-shaped translation-and-enlargement** (Pi-type translate atom). -/
+theorem lintegral_translate_le_P (s : Fin 2 × Fin 2 → ℝ)
+    (B BG : Set (Fin 2 × Fin 2 → ℝ)) (f : (Fin 2 × Fin 2 → ℝ) → ℝ≥0∞)
+    (hsub : (fun M => M + s) '' B ⊆ BG) :
+    (∫⁻ M in B, f (M + s)) ≤ ∫⁻ N in BG, f N := by
+  set τ : (Fin 2 × Fin 2 → ℝ) → (Fin 2 × Fin 2 → ℝ) := fun M => M + s with hτ
+  have hmp : MeasurePreserving τ volume volume := measurePreserving_add_right volume s
+  have hemb : MeasurableEmbedding τ := (Homeomorph.addRight s).measurableEmbedding
+  have h1 : (∫⁻ M in B, f (τ M)) = ∫⁻ N in τ '' B, f N := by
+    rw [← hmp.setLIntegral_comp_preimage_emb hemb f (τ '' B),
+      Set.preimage_image_eq B hemb.injective]
+  calc (∫⁻ M in B, f (M + s)) = ∫⁻ N in τ '' B, f N := h1
+    _ ≤ ∫⁻ N in BG, f N := lintegral_mono_set hsub
+
+/-- The uncurried `Fin 2 × Fin 2 → ℝ` box at radius `K`: `{N | ∀ ik, |N ik| ≤ K}`. -/
+def boxP (K : ℝ) : Set (Fin 2 × Fin 2 → ℝ) := {N | ∀ ik, N ik ∈ Set.Icc (-K) K}
+
+theorem boxP_measurableSet (K : ℝ) : MeasurableSet (boxP K) := by
+  have : boxP K = Set.univ.pi (fun _ : Fin 2 × Fin 2 => Set.Icc (-K) K) := by
+    ext N; constructor
+    · intro h ik _; exact h ik
+    · intro h ik; exact h ik (Set.mem_univ ik)
+  rw [this]
+  exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+
+theorem matOfEquiv_eq_matOf (N : Fin 2 × Fin 2 → ℝ) : matOfEquiv N = matOf N := by
+  funext i k; rw [matOfEquiv_apply]; rfl
+
+/-- **Helper 2 — the `Ginner∘matOf` box finiteness.** `∫_{N∈boxP 3} Ginner c' (matOf N) < ⊤`: change
+variables `N ↦ matOf N = matOfEquiv N` (MP, box-preimage `boxP 3 = matOfEquiv ⁻¹' matBox 2 2 3`) into
+Helper 1. -/
+theorem ginner_matOf_box_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
+    (∫⁻ N in boxP 3, Ginner c' (matOf N)) < ⊤ := by
+  have hpre : boxP 3 = matOfEquiv ⁻¹' (matBox 2 2 3) := by
+    ext N
+    simp only [boxP, Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k; rw [matOfEquiv_apply]; exact h (i, k)
+    · intro h ik; have := h ik.1 ik.2; rw [matOfEquiv_apply] at this; exact this
+  have hkey := matOfEquiv_measurePreserving.setLIntegral_comp_preimage_emb
+    matOfEquiv.measurableEmbedding (Ginner c') (matBox 2 2 3)
+  rw [← hpre] at hkey
+  have heq : (∫⁻ N in boxP 3, Ginner c' (matOf N)) = ∫⁻ N in boxP 3, Ginner c' (matOfEquiv N) := by
+    refine lintegral_congr (fun N => ?_); rw [matOfEquiv_eq_matOf]
+  rw [heq, hkey]
+  exact ginner_box3_lt_top c' hc2 hc4
+
+/-- The uncurried bg-shift `s_v ik = (bgShift v) ik.1 ik.2`, so `matOf (M − s_v) = matOf M − bgShift v`. -/
+noncomputable def bgShiftP (v : Fin 4 → ℝ) : Fin 2 × Fin 2 → ℝ := fun ik => (bgShift v) ik.1 ik.2
+
+theorem matOf_sub_bgShiftP (M : Fin 2 × Fin 2 → ℝ) (v : Fin 4 → ℝ) :
+    matOf (M + (-bgShiftP v)) = matOf M - bgShift v := by
+  funext i k
+  simp only [matOf, bgShiftP, Pi.add_apply, Pi.neg_apply, Matrix.sub_apply]
+  ring
+
+/-- **The per-`v` translate bound.** For `v∈[−1,1]^4` (so `|g·b| ≤ 1`), the raw-cube integral of
+`Ginner c'(matOf M − bgShift v)` over `boxP 1` is dominated by Helper 2's `∫_{N∈boxP 3} Ginner(matOf N)`:
+translate `M ↦ M − bgShiftP v` (`lintegral_translate_le_P`, `|M − s| ≤ 2 ≤ 3`). -/
+theorem ginner_translate_v_le (c' : ℝ) (v : Fin 4 → ℝ)
+    (hv : v ∈ Set.univ.pi (fun _ : Fin 4 => Set.Icc (-1 : ℝ) 1)) :
+    (∫⁻ M in boxP 1, Ginner c' (matOf M - bgShift v))
+      ≤ ∫⁻ N in boxP 3, Ginner c' (matOf N) := by
+  have hsub : (fun M => M + (-bgShiftP v)) '' boxP 1 ⊆ boxP 3 := by
+    rintro N ⟨M, hM, rfl⟩ ik
+    show (M + (-bgShiftP v)) ik ∈ Set.Icc (-3 : ℝ) 3
+    have hMik := Set.mem_Icc.1 (hM ik)
+    -- |bgShiftP v ik| = |g·b| ≤ 1 from |v _| ≤ 1
+    have hb : ∀ a b : Fin 4, |v a * v b| ≤ 1 := by
+      intro a b
+      have ha := Set.mem_Icc.1 (hv a (Set.mem_univ a))
+      have hbb := Set.mem_Icc.1 (hv b (Set.mem_univ b))
+      rw [abs_mul]
+      have : |v a| ≤ 1 := abs_le.2 ha
+      have : |v b| ≤ 1 := abs_le.2 hbb
+      calc |v a| * |v b| ≤ 1 * 1 := by
+            apply mul_le_mul (abs_le.2 ha) (abs_le.2 hbb) (abs_nonneg _) (by norm_num)
+        _ = 1 := by norm_num
+    have hsik : |bgShiftP v ik| ≤ 1 := by
+      simp only [bgShiftP, bgShift]
+      fin_cases ik <;>
+        simp only [Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+          Matrix.of_apply, Fin.isValue] <;>
+        exact hb _ _
+    rw [Set.mem_Icc, Pi.add_apply, Pi.neg_apply]
+    have := abs_le.1 hsik
+    constructor <;> [linarith [hMik.1, this.2]; linarith [hMik.2, this.1]]
+  calc (∫⁻ M in boxP 1, Ginner c' (matOf M - bgShift v))
+      = ∫⁻ M in boxP 1, (fun N => Ginner c' (matOf N)) (M + (-bgShiftP v)) := by
+        refine lintegral_congr (fun M => ?_)
+        show Ginner c' (matOf M - bgShift v) = Ginner c' (matOf (M + (-bgShiftP v)))
+        rw [matOf_sub_bgShiftP]
+    _ ≤ ∫⁻ N in boxP 3, Ginner c' (matOf N) :=
+        lintegral_translate_le_P (-bgShiftP v) (boxP 1) (boxP 3) (fun N => Ginner c' (matOf N)) hsub
+
+/-- The matrix `matOf q.1 − bgShift q.2` is entrywise measurable in `q`. -/
+theorem measurable_matOf_sub_bgShift_entry (i k : Fin 2) :
+    Measurable (fun q : (Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ) => (matOf q.1 - bgShift q.2) i k) := by
+  simp only [matOf, bgShift, Matrix.sub_apply]
+  fin_cases i <;> fin_cases k <;>
+    · simp only [Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply,
+        Fin.isValue]
+      refine Measurable.sub ((measurable_pi_apply _).comp measurable_fst) ?_
+      exact ((measurable_pi_apply _).comp measurable_snd).mul
+        ((measurable_pi_apply _).comp measurable_snd)
+
+set_option maxHeartbeats 1000000 in
+/-- `G (M,v) = Ginner c' (matOf M − bgShift v)` is jointly measurable: it is the `S`-then-`T` double
+lintegral of the joint-measurable resolved integrand in `((M,v),S,T)`. -/
+theorem measurable_G (c' : ℝ) :
+    Measurable (fun q : (Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ) =>
+      Ginner c' (matOf q.1 - bgShift q.2)) := by
+  have hΔ := measurable_matOf_sub_bgShift_entry
+  -- inner-T-integrated function, jointly measurable in (q, S)
+  have hT : Measurable (fun w : ((Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ)) × (Fin 2 → Fin 4 → ℝ) =>
+      ∫⁻ T in morseBox 4 3, ENNReal.ofReal ((∑ jj, (T jj) ^ 2
+        + frobSq (rmatMul (matOf w.1.1 - bgShift w.1.2) w.2)) ^ (-c'))) := by
+    refine Measurable.lintegral_prod_right ?_
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    refine Measurable.add ?_ ?_
+    · refine Finset.measurable_sum _ (fun jj _ => ?_)
+      exact Measurable.pow_const ((measurable_pi_apply jj).comp measurable_snd) 2
+    · unfold frobSq rmatMul
+      refine Finset.measurable_sum _ (fun i _ => ?_)
+      refine Finset.measurable_sum _ (fun j _ => ?_)
+      refine Measurable.pow_const ?_ 2
+      refine Finset.measurable_sum _ (fun k _ => ?_)
+      refine Measurable.mul ((hΔ i k).comp (measurable_fst.comp measurable_fst)) ?_
+      exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp
+        (measurable_snd.comp measurable_fst))
+  exact Measurable.lintegral_prod_right hT
+
+/-- **STEP-3b (the outer `z`-change of variables — CLOSED).** `∫_{z∈[−1,1]^8} Ginner c' (Δof p z) < ⊤`
+for `2 < c' < 4`. `Ginner c' (Δof p z)` reads `z` only through the four de-shifted entries
+`Δof p z = raw − γβ`, with `raw,g,b` eight DISTINCT `z`-components (the off-pivot entries of
+`R' = Rmat334norm p z`). The per-`p` `z`-slot identification is the bijection `zσ p : Fin 8 ≃
+(Fin 2×Fin 2)⊕Fin 4` (raw slots `inl`, `(g,b)` slots `inr`), built from the slot read-back
+`Rmat334norm_eq_zslot` + `cellOf`; the reshape `zE p : (Fin 8→ℝ) ≃ᵐ ((Fin 2×Fin 2→ℝ)×(Fin 4→ℝ))`
+(`piCongrLeft`∘`sumPiEquivProdPi`, MP) factors `Δof p z = matOf((zE p z).1) − bgShift((zE p z).2)`
+(`Δof_eq_zE`). Then: CoV `z ↦ (M,v) = zE p z` (box-preimage), Tonelli to `v`-outer, per-`v` translate
+`M ↦ M − bgShift v` (`ginner_translate_v_le`, `|γβ| ≤ 1` so `[−1,1]^4 → [−2,2]^4 ⊆ matBox 2 2 3`) into
+`ginner_matOf_box_lt_top` (= `resolved334_box_lt_top 3` after the `S`-box enlargement), times the finite
+`v`-vol factor. All atoms BANKED sorry-free. -/
 theorem ginnerZ_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9) :
     (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), Ginner c' (Δof p z)) < ⊤ := by
-  sorry
+  set vbox := Set.univ.pi (fun _ : Fin 4 => Set.Icc (-1 : ℝ) 1) with hvbox
+  -- (1) factor the integrand through zE
+  have hfac : (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), Ginner c' (Δof p z))
+      = ∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
+          (fun q : (Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ) => Ginner c' (matOf q.1 - bgShift q.2))
+            (zE p z) := by
+    refine lintegral_congr (fun z => ?_); rw [Δof_eq_zE]
+  -- (2) box-preimage : [-1,1]^8 = zE ⁻¹' (boxP 1 ×ˢ vbox)
+  have hpre : (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))
+      = zE p ⁻¹' (boxP 1 ×ˢ vbox) := by
+    ext z
+    simp only [Set.mem_preimage, Set.mem_prod, boxP, hvbox, Set.mem_setOf_eq, Set.mem_pi,
+      Set.mem_univ, true_implies]
+    constructor
+    · intro h
+      refine ⟨fun ik => ?_, fun j => ?_⟩
+      · rw [zE_fst_apply]; exact h _
+      · rw [zE_snd_apply]; exact h _
+    · rintro ⟨h1, h2⟩ i
+      -- every z i is read by some inl/inr slot via the bijection (zσ p).symm
+      obtain ⟨s, hs⟩ := (zσ p).symm.surjective i
+      rcases s with ik | j
+      · have := h1 ik; rw [zE_fst_apply, hs] at this; exact this
+      · have := h2 j; rw [zE_snd_apply, hs] at this; exact this
+  rw [hfac, hpre]
+  -- (3) CoV via zE (MP), then Tonelli to v outer
+  have hcov := (zE_measurePreserving p).setLIntegral_comp_preimage_emb
+    (zE p).measurableEmbedding
+    (fun q : (Fin 2 × Fin 2 → ℝ) × (Fin 4 → ℝ) => Ginner c' (matOf q.1 - bgShift q.2))
+    (boxP 1 ×ˢ vbox)
+  rw [hcov]
+  have hbox1 : MeasurableSet (boxP 1) := boxP_measurableSet 1
+  have hvboxms : MeasurableSet vbox :=
+    MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  rw [Measure.volume_eq_prod, setLIntegral_prod _ (measurable_G c').aemeasurable,
+    lintegral_lintegral_swap (measurable_G c').aemeasurable]
+  -- now : ∫_{v∈vbox} ∫_{M∈boxP 1} Ginner(matOf M - bgShift v)
+  -- (4)+(5): per-v translate ≤ Helper 2, then v-vol factor.
+  calc (∫⁻ v in vbox, ∫⁻ M in boxP 1, Ginner c' (matOf M - bgShift v))
+      ≤ ∫⁻ _v in vbox, (∫⁻ N in boxP 3, Ginner c' (matOf N)) := by
+        refine setLIntegral_mono_ae' hvboxms (ae_of_all _ (fun v hv => ?_))
+        exact ginner_translate_v_le c' v hv
+    _ = (∫⁻ N in boxP 3, Ginner c' (matOf N)) * volume vbox := by rw [setLIntegral_const]
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top (ginner_matOf_box_lt_top c' hc2 hc4) ?_
+        rw [hvbox]
+        exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
 
 /-- **The resolved-form finiteness over the ratio box (STEP 3, the box-translation change of variables).**
 `∫_{z∈[−1,1]^8} Jint c' p z < ⊤` for `2 < c' < 4`.
@@ -511,24 +912,18 @@ route (Codex `xhigh` VET, thread 29 `hratiofin-plan-answer.md`, order `b → g �
 4. enlarge `S : matBox 2 4 1 → matBox 2 4 3` (`lintegral_mono_set`) and Fubini-reorder to `(Δ,S,T)`,
    feeding the BANKED `resolved334_box_lt_top 3` times the finite `(b,g)` vol-factor `vol([−1,1]^4)`.
 
-GAP (`sorry`): this resolved-form joint `(z × A1)` change of variables. Everything feeding INTO it is
-banked sorry-free — the per-`z` algebraic comparability (`angA1Int_le_resolved`), the pivot permutation
-(`angA1Int_eq_norm`), the outer integration (`ratioResidual_le_Jint`); and the resolved RHS
-`resolved334_box_lt_top 3` + the translation atom `lintegral_translate_le` are banked too. The cleanest
-remaining decomposition (worked out, the two named sub-lemmas to add):
+This resolved-form joint `(z × A1)` change of variables is now CLOSED, in two halves:
 
-* **STEP-3a (the `z`-pointwise inner `T`-peel, the clean half).** For FIXED `z` (so `b0,b1,Δ` are
-  constants), `Jint c' p z ≤ ∫_{S∈matBox 2 4 1}∫_{T∈morseBox 4 3} ofReal((∑ⱼTⱼ² + frobSq(Δ·S))^{−c'})`:
-  row-split `A1 = row0 × S` (`piFinSuccAbove 0` on the row index, MP), Tonelli, translate
-  `row0 ↦ T = row0 + β·S` per fixed `S` (`lintegral_translate_le`, `|β·S| ≤ 2` so `T∈[−3,3]^4`), enlarge.
-* **STEP-3b (the outer `z`-CoV, the hard half — needs the per-`p` `z`-coordinate structure).** Bound the
-  resulting `∫_z Ginner(Δ(z))` by `vol([−1,1]^4) · ∫_{Δ∈matBox 2 2 3} Ginner(Δ) = (16) ·
-  resolved334_box_lt_top 3`, via the `raw ↦ Δ = raw − γβ` translation per fixed `(b,g)` (the `b,g,raw`
-  are eight DISTINCT `z`-coords — the off-pivot entries of `R'` — so this is `lintegral_translate_le`
-  on the `raw`-subblock with `b,g` held; identifying the raw/g/b coordinate slots per `p` is the
-  bookkeeping pole, the `(i,j) ↦ Fin.exists_succAbove_eq`-index relabeling).
+* **STEP-3a (the `z`-pointwise inner `T`-peel).** For FIXED `z` (so `b0,b1,Δ` are constants),
+  `Jint c' p z ≤ Ginner c' (Δof p z)` (`Jint_le_Ginner`, via `step3a`): row-split `A1 = row0 × S`
+  (`piFinSuccAbove 0` on the row index, MP), Tonelli, translate `row0 ↦ T = row0 + β·S` per fixed `S`
+  (`lintegral_translate_le`, `|β·S| ≤ 2` so `T∈[−3,3]^4`), enlarge.
+* **STEP-3b (the outer `z`-CoV, the per-`p` `z`-coordinate structure).** `ginnerZ_lt_top`: bound
+  `∫_z Ginner(Δof p z)` by `vol([−1,1]^4) · ∫_{Δ∈matBox 2 2 3} Ginner(Δ) ≤ vol · resolved334_box_lt_top 3`
+  via the slot bijection `zσ p` (raw/g/b identification), the MP reshape `zE p` + `Δof_eq_zE`, and the
+  per-`v` `raw ↦ Δ = raw − γβ` translation (`ginner_translate_v_le`, `|γβ| ≤ 1`).
 
-STEP-3a is now BANKED (`step3a`/`Jint_le_Ginner`); the lone remaining gap is STEP-3b (`ginnerZ_lt_top`). -/
+Both halves are BANKED sorry-free; `resolvedZ_lt_top` chains them via `Jint_le_Ginner` + `ginnerZ_lt_top`. -/
 theorem resolvedZ_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9) :
     (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), Jint c' p z) < ⊤ := by
   refine lt_of_le_of_lt ?_ (ginnerZ_lt_top c' hc2 hc4 p)
@@ -620,25 +1015,21 @@ theorem matBox334_blowup_lt_top (c' : ℝ) (hc0 : 0 < c') (hc4 : c' < 4) :
       _ < ⊤ := ENNReal.add_lt_top.2 ⟨hvol, hcover3⟩
   · exact matBox334_blowup_lt_top_gt2 c' hc2 hc4
 
-/-- **The `(3,3,4)` hfin upper bound (the N4 depth-2 instance, GAP = the blow-up bridge ONLY).** For
+/-- **The `(3,3,4)` hfin upper bound — COMPLETE (S2-free, axiom-clean).** For
 `c' < ½·minAdm M334 = 4`, `∫⁻_{routeMBaseNbhd M334} |routeMCore M334 x|^{−c'} < ⊤`. The rank-stratified
 analog of `routeMCore_M4422_threshold_lt_top`.
 
-The additive-threshold composition `4 = 2 + 2` is **BUILT** (`resolved334_lt_top`, axiom-clean S2-free): the
-`‖T‖²` Morse-spectator peel (`core_T_peel_le_ae`, threshold `2`) feeds the corank-2 core `frobSq (Δ·S)` at
-the shifted exponent `c'' = c' − 2 < 2`, resolved by the S-first transpose-fibre route (`core334_lt_top`,
-threshold `λ_{2,4} = 2`, avoiding the radial minor-pivot recursion). The core-`> 0`-a.e. fact the T-peel
-rides on is BUILT (`frobSq_core334_ne_zero_ae`, via the polynomial `corePoly334` + the MP flatten
-`flat334`).
+The live route (this theorem's proof): `c' = 0` is the volume bound; `0 < c' < 4` reduces to the
+two-matrix-box integral (`routeMCore_M334_le_matBox`: `routeMCore M334 = frobSq(A0·A1)` on the open box)
+then the blow-up bridge `matBox334_blowup_lt_top` — the `9`-chart max-modulus-entry A0-cover, each chart
+finite by the now-discharged ratio residual `ratioResidual_lt_top` (the angular comparability
+`angA1Int_le_resolved`, the outer integration `ratioResidual_le_Jint`, and STEP-3 `resolvedZ_lt_top`:
+`Jint_le_Ginner` + the closed outer `z`-CoV `ginnerZ_lt_top`, feeding the BANKED `resolved334_box_lt_top`).
 
-GAP (`sorry`): the FRAME TRANSPORT alone — a measure-preserving cover-up-to-null of `routeMBaseNbhd M334 =
-(−1,1)^21` bringing the flat `routeMCore M334 = frobSq(A0·A1)` (A0 3×3, A1 3×4) into the `‖T‖² ⊕ frobSq(Δ·S)`
-normal form of `resolved334_lt_top`, via the Schur-frame blow-up `g5_pivotNode`/`recStep` atlas (the
-`(2,2,2)` `myF222_threshold_lt_top'` analog at the `r²`-chart scale). The singularity binds at the
-A1-rank-drop locus (nonlinear/rank-local — no elementary global reparametrization). The achiever chart
-`chartParams334`/`Uval334` (`RouteMLayerCoverGEL2`) realises this transport on the lower-bound side; the
-UPPER-bound full cover is the remaining measure-theoretic long pole. Everything DOWNSTREAM of the transport
-(`resolved334_lt_top` + the T-peel + the core resolution + the null set) is BANKED sorry-free, axiom-clean. -/
+With STEP-3b (`ginnerZ_lt_top`) closed, this theorem is fully `[propext, Classical.choice, Quot.sound]`
+(verified by `#print axioms`): NO `sorryAx`, NO `monomial_rlct`, NO `native_decide`. The abandoned
+frame-transport route (the `resolved334_lt_top`/`recStep` Schur-atlas, still sorry'd in `RouteMSchur`)
+is NOT on this path. -/
 theorem routeMCore_M334_threshold_lt_top (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm (![3, 3, 4] : Fin 3 → ℕ) : ℝ) / 2) :
     ∫⁻ x in routeMBaseNbhd (![3, 3, 4] : Fin 3 → ℕ),
