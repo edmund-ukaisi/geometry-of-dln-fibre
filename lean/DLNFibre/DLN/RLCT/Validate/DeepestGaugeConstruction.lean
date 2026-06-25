@@ -466,6 +466,202 @@ noncomputable def matrixPiCLE (a b : ℕ) :
 @[simp] theorem matrixPiCLE_apply (a b : ℕ) (M : Matrix (Fin a) (Fin b) ℝ) (p : Fin a × Fin b) :
     matrixPiCLE a b M p = M p.1 p.2 := rfl
 
+/-- The matrix-to-pi reshape `LinearEquiv` `Matrix (Fin a) (Fin b) ℝ ≃ₗ (Fin a × Fin b → ℝ)` (the
+un-upgraded `matrixPiCLE`; kept as a `LinearEquiv` so the reg-slice decode composes WITHOUT the
+`piCongrLeft` cast and reads each block by `rfl`). -/
+noncomputable def matrixPiLE (a b : ℕ) :
+    Matrix (Fin a) (Fin b) ℝ ≃ₗ[ℝ] (Fin a × Fin b → ℝ) :=
+  (Matrix.ofLinearEquiv ℝ).symm.trans (LinearEquiv.curry ℝ ℝ (Fin a) (Fin b)).symm
+
+@[simp] theorem matrixPiLE_symm_apply (a b : ℕ) (f : Fin a × Fin b → ℝ) (i : Fin a) (j : Fin b) :
+    (matrixPiLE a b).symm f i j = f (i, j) := rfl
+
+/-- **The reg-slice decode `LinearEquiv`** `(Fin nReg → ℝ) ≃ₗ (YSp × (XSp × ZSp))`, the reshape the
+value-fold lands `regBlockCLE` on (layout `(Y, (X, Z))`: `Y` = P12-block, `X` = P11-block, `Z` =
+P21-block). Built CAST-FREE: `funCongrLeft` precomposes by `regResidualPack.symm` (a clean `f ∘ ·`, no
+`piCongrLeft` transport), `sumArrowLequivProdArrow` splits the sum-domain, `matrixPiLE.symm` reshapes
+each arm, and a prod-reorder lands `(Y, (X, Z))`. Every step reads by `rfl`, so the block-apply lemmas
+below are `rfl`. -/
+noncomputable def decodeRegSliceLE (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    (Fin (deepestNReg H r) → ℝ) ≃ₗ[ℝ]
+      (Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ
+        × (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)) :=
+  -- (Fin nReg → ℝ) ≃ₗ (Xidx ⊕ (Yidx ⊕ Zidx) → ℝ) by precomposition with regResidualPack.symm
+  (LinearEquiv.funCongrLeft ℝ ℝ (regResidualPack H r hr).symm).trans <|
+  -- split the outer sum: (Xidx → ℝ) × ((Yidx ⊕ Zidx) → ℝ)
+  (LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans <|
+  -- reshape Xidx-arm to a matrix; split the inner sum on the second arm
+  ((matrixPiLE r r).symm.prodCongr
+    ((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+      ((matrixPiLE r (H (Fin.last L) - r)).symm.prodCongr (matrixPiLE (H 0 - r) r).symm))).trans <|
+  -- reorder (X, (Y, Z)) → (Y, (X, Z))
+  { toFun := fun p => (p.2.1, (p.1, p.2.2))
+    invFun := fun q => (q.2.1, (q.1, q.2.2))
+    left_inv := fun _ => rfl
+    right_inv := fun _ => rfl
+    map_add' := fun _ _ => rfl
+    map_smul' := fun _ _ => rfl }
+
+/-- **The reg-slice decode `≃L`** — the finite-dim upgrade of `decodeRegSliceLE` (the reshape the
+value-fold lands `regBlockCLE` on). -/
+noncomputable def decodeRegSliceCLE (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    (Fin (deepestNReg H r) → ℝ) ≃L[ℝ]
+      (Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ
+        × (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)) :=
+  (decodeRegSliceLE H r hr).toContinuousLinearEquiv
+
+@[simp] theorem decodeRegSliceCLE_coe (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) :
+    ⇑(decodeRegSliceCLE H r hr) = decodeRegSliceLE H r hr :=
+  LinearEquiv.coe_toContinuousLinearEquiv' _
+
+/-- **The decode forward reads** `decodeRegSliceCLE v = (Y, (X, Z))` where each block reads `v` at the
+matching `regResidualPack`-coordinate (X = P11 on the `inl` arm, Y = P12 on `inr ∘ inl`, Z = P21 on
+`inr ∘ inr`). All three are `rfl` (the decode is cast-free). -/
+@[simp] theorem decodeRegSliceCLE_apply_X (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (v : Fin (deepestNReg H r) → ℝ) (a b : Fin r) :
+    (decodeRegSliceCLE H r hr v).2.1 a b
+      = v ((regResidualPack H r hr).symm (Sum.inl (a, b))) := rfl
+
+@[simp] theorem decodeRegSliceCLE_apply_Y (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (v : Fin (deepestNReg H r) → ℝ) (a : Fin r)
+    (b : Fin (H (Fin.last L) - r)) :
+    (decodeRegSliceCLE H r hr v).1 a b
+      = v ((regResidualPack H r hr).symm (Sum.inr (Sum.inl (a, b)))) := rfl
+
+@[simp] theorem decodeRegSliceCLE_apply_Z (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (v : Fin (deepestNReg H r) → ℝ)
+    (a : Fin (H 0 - r)) (b : Fin r) :
+    (decodeRegSliceCLE H r hr v).2.2 a b
+      = v ((regResidualPack H r hr).symm (Sum.inr (Sum.inr (a, b)))) := rfl
+
+/-- **The encode read** `decodeRegSliceCLE.symm (Y, (X, Z)) i` reads back the matching block entry at the
+`regResidualPack`-coordinate of `i` (cast-free, `rfl` after casing the pack). The normal-form direction. -/
+theorem decodeRegSliceCLE_symm_apply (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s)
+    (Y : Matrix (Fin r) (Fin (H (Fin.last L) - r)) ℝ) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (H 0 - r)) (Fin r) ℝ) (i : Fin (deepestNReg H r)) :
+    (decodeRegSliceCLE H r hr).symm (Y, (X, Z)) i
+      = match regResidualPack H r hr i with
+        | Sum.inl (a, b) => X a b
+        | Sum.inr (Sum.inl (a, b)) => Y a b
+        | Sum.inr (Sum.inr (a, b)) => Z a b := by
+  rw [decodeRegSliceCLE, LinearEquiv.coe_toContinuousLinearEquiv_symm']
+  simp only [decodeRegSliceLE, LinearEquiv.trans_symm, LinearEquiv.trans_apply,
+    LinearEquiv.funCongrLeft_symm, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Equiv.symm_symm, Function.comp_apply]
+  rcases regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;> rfl
+
+/-- `reindex` distributes over `+` (entrywise; `submatrix_add`). -/
+theorem reindex_add {a b r s : ℕ} (eₘ : Fin a ≃ Fin r ⊕ Fin (a - r))
+    (eₙ : Fin b ≃ Fin s ⊕ Fin (b - s)) (A B : Matrix (Fin a) (Fin b) ℝ) :
+    Matrix.reindex eₘ eₙ (A + B) = Matrix.reindex eₘ eₙ A + Matrix.reindex eₘ eₙ B := rfl
+
+/-- `toBlocks₁₁` distributes over `+` (entrywise). -/
+theorem toBlocks₁₁_add {n o l m : Type*} (A B : Matrix (n ⊕ o) (l ⊕ m) ℝ) :
+    (A + B).toBlocks₁₁ = A.toBlocks₁₁ + B.toBlocks₁₁ := rfl
+
+/-- `toBlocks₁₂` distributes over `+` (entrywise). -/
+theorem toBlocks₁₂_add {n o l m : Type*} (A B : Matrix (n ⊕ o) (l ⊕ m) ℝ) :
+    (A + B).toBlocks₁₂ = A.toBlocks₁₂ + B.toBlocks₁₂ := rfl
+
+/-- `toBlocks₂₁` distributes over `+` (entrywise). -/
+theorem toBlocks₂₁_add {n o l m : Type*} (A B : Matrix (n ⊕ o) (l ⊕ m) ℝ) :
+    (A + B).toBlocks₂₁ = A.toBlocks₂₁ + B.toBlocks₂₁ := rfl
+
+/-- **The row-frame left-conjugation read** `reindex eR eJ (A · reindex eR.symm eJ.symm (fromBlocks X 0 Z
+0)) = (reindex eR eR A) · fromBlocks X 0 Z 0` — split the product at the shared row interface `eR`. The
+`A·devXZ` analogue of `pivot_devY_read`; its `toBlocks` read off the `(A₁₁X+A₁₂Z, A₂₁X+A₂₂Z)` pair. -/
+theorem mulBlock_devXZ_read {a b r : ℕ}
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eJ : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (A : Matrix (Fin a) (Fin a) ℝ) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (a - r)) (Fin r) ℝ) :
+    Matrix.reindex eR eJ
+        (A * Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks X 0 Z 0))
+      = Matrix.reindex eR eR A * Matrix.fromBlocks X 0 Z 0 := by
+  have hA : A = (Matrix.reindex eR eR A).submatrix eR eR := by
+    simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+      Matrix.submatrix_id_id]
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  conv_lhs => rw [hA]
+  rw [Matrix.submatrix_mul_equiv (Matrix.reindex eR eR A) (Matrix.fromBlocks X 0 Z 0) eR eR eJ,
+    Matrix.submatrix_submatrix, Equiv.self_comp_symm, Equiv.self_comp_symm, Matrix.submatrix_id_id]
+  rfl
+
+/-- The `A·devXZ` read's top-left block: `(reindex eR eR A · fromBlocks X 0 Z 0).toBlocks₁₁ =
+A₁₁·X + A₁₂·Z`. -/
+theorem mulBlock_devXZ_toBlocks₁₁ {a c r : ℕ} (eR : Fin a ≃ Fin r ⊕ Fin (a - r))
+    (A : Matrix (Fin a) (Fin a) ℝ) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (a - r)) (Fin r) ℝ) :
+    (Matrix.reindex eR eR A * Matrix.fromBlocks X (0 : Matrix (Fin r) (Fin c) ℝ) Z 0).toBlocks₁₁
+      = (Matrix.reindex eR eR A).toBlocks₁₁ * X + (Matrix.reindex eR eR A).toBlocks₁₂ * Z := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eR eR A)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁]
+
+/-- The `A·devXZ` read's top-right block is `0` (the right column-block of `fromBlocks X 0 Z 0` is 0). -/
+theorem mulBlock_devXZ_toBlocks₁₂ {a c r : ℕ} (eR : Fin a ≃ Fin r ⊕ Fin (a - r))
+    (A : Matrix (Fin a) (Fin a) ℝ) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (a - r)) (Fin r) ℝ) :
+    (Matrix.reindex eR eR A
+        * Matrix.fromBlocks X (0 : Matrix (Fin r) (Fin c) ℝ) Z 0).toBlocks₁₂ = 0 := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eR eR A)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₂]
+  simp [Matrix.mul_zero]
+
+/-- The `A·devXZ` read's bottom-left block: `(reindex eR eR A · fromBlocks X 0 Z 0).toBlocks₂₁ =
+A₂₁·X + A₂₂·Z`. -/
+theorem mulBlock_devXZ_toBlocks₂₁ {a c r : ℕ} (eR : Fin a ≃ Fin r ⊕ Fin (a - r))
+    (A : Matrix (Fin a) (Fin a) ℝ) (X : Matrix (Fin r) (Fin r) ℝ)
+    (Z : Matrix (Fin (a - r)) (Fin r) ℝ) :
+    (Matrix.reindex eR eR A * Matrix.fromBlocks X (0 : Matrix (Fin r) (Fin c) ℝ) Z 0).toBlocks₂₁
+      = (Matrix.reindex eR eR A).toBlocks₂₁ * X + (Matrix.reindex eR eR A).toBlocks₂₂ * Z := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eR eR A)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]
+
+/-- The pivot-split P21 cross-read is `0`: `(reindex eR eJ ((reindex eR.symm eJ.symm (fromBlocks 0 Y 0
+0)) * Q)).toBlocks₂₁ = 0` — the `fromBlocks 0 Y 0 0` has zero bottom rows. -/
+theorem pivot_devY_read_toBlocks₂₁ {a b r : ℕ}
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eJ : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (Y : Matrix (Fin r) (Fin (b - r)) ℝ) (Q : Matrix (Fin b) (Fin b) ℝ) :
+    (Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)).toBlocks₂₁ = 0 := by
+  have hsplit : Matrix.reindex eR eJ
+        ((Matrix.reindex eR.symm eJ.symm (Matrix.fromBlocks 0 Y 0 0)) * Q)
+      = (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0) * (Matrix.reindex eJ eJ Q) := by
+    have hQ : Q = (Matrix.reindex eJ eJ Q).submatrix eJ eJ := by
+      simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+        Matrix.submatrix_id_id]
+    simp only [Matrix.reindex_apply, Equiv.symm_symm]
+    conv_lhs => rw [hQ]
+    rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) Y 0 0)
+        (Matrix.reindex eJ eJ Q) eR eJ eJ, Matrix.submatrix_submatrix,
+      Equiv.self_comp_symm, Equiv.self_comp_symm, Matrix.submatrix_id_id]
+    rfl
+  rw [hsplit]
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eJ eJ Q)]
+  rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]
+  simp
+
+/-- **A corner left-absorbs a Y-deviation** `reindex(fromBlocks 1 0 0 0) · reindex(fromBlocks 0 Y 0 0)
+= reindex(fromBlocks 0 Y 0 0)`: the corner identity passes `Y` to the top-right block; the bottom rows
+stay `0`. The `corner·devY` companion of `devXZ_mul_corner` (the `Y`-frame term of the product). -/
+theorem corner_mul_devY {a b c r : ℕ}
+    (eA : Fin a ≃ Fin r ⊕ Fin (a - r)) (eB : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (eC : Fin c ≃ Fin r ⊕ Fin (c - r)) (Y : Matrix (Fin r) (Fin (c - r)) ℝ) :
+    (Matrix.reindex eA.symm eB.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+        * (Matrix.reindex eB.symm eC.symm (Matrix.fromBlocks 0 Y 0 0))
+      = Matrix.reindex eA.symm eC.symm (Matrix.fromBlocks 0 Y 0 0) := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      (Matrix.fromBlocks 0 Y 0 0) eA eB eC]
+  congr 1
+  rw [Matrix.fromBlocks_multiply]
+  congr 1 <;>
+    · simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
+      try exact Matrix.one_mul _
+
 /-- **`deepestEPivot`'s reg-block derivative at `0` is the invertible frame factor `F`** (the #91
 analytic crux, PIVOT-aligned). On the pivot path the reg-slice `r0 ↦ deepestEPivot J Pf Qf (r0, 0)` has
 constant strict derivative `F` (the idempotent sandwich: only `firstLayer` X,Z / `lastLayer` Y survive;
@@ -531,15 +727,455 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- The PIVOT split (this statement's `J`) resolves it: the chosen pivot columns lead, so `B₂₂` is the
   -- unit block `hQf22` supplies, and `F` is invertible WITHOUT restricting `B`.
   --
-  -- STAGE E (DONE, this tide): the `J`-migration above is COMPLETE — `deepestEPivot`/`_base`/`_contdiff`/
-  -- `_sq_sum_eq_blocks`/`_deriv` + `deepest_loss_squeeze` + PIN2 all carry `J` and the pivot split; the
-  -- call site discharges `J`/`hQf22` from `deepestPoint_frame_pivot_exists` (the cast bridge `pivotJSucc J
-  -- = Jb`, banked). STAGE F (this `sorry`): the value-fold strict-derivative — write the encode/decode
-  -- reshape `≃L`s (`matrixPiCLE` + `regPivotFinEquiv` + the `regResidualPack` layout swap), the normal
-  -- form `deepestEPivot (r0,0) = F r0 + quadResidual r0` (`ext i`; case `regResidualPack i`; the three
-  -- block reads via `pivot_devY_read_toBlocks₁₁/₁₂` + `mulBlockPairCLE_apply`, the `P11−1` corner cancel),
-  -- and the combine `F.hasStrictFDerivAt.add (quad-deriv-0 via hasStrictFDerivAt_sum_mul_zero)`.
-  sorry
+  -- STAGE F (this tide): the value-fold strict-derivative. `L = n+1+1` (from `2 ≤ L`) so the collapse
+  -- applies with defeq column types; `F := decode ∘ regBlockCLE ∘ decode.symm` is the invertible frame
+  -- factor; `deepestEPivot (r0,0) = F r0 + quad r0` with `quad` purely quadratic (deriv 0 at 0).
+  obtain ⟨n, rfl⟩ : ∃ n, L = n + 1 + 1 := ⟨L - 2, by omega⟩
+  -- The block-split row frame and the pivot column frame's lower-right unit block.
+  set eR := rThresholdSplit r (H (firstLayer hL).castSucc) (hr _) with heR
+  set eJsucc := pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J)
+    with heJsucc
+  set Bmat := Matrix.reindex eJsucc eJsucc (Qf (lastLayer hL)) with hBmat
+  -- The assembled reg-block `≃L` `F` (invertible from `IsUnit (Pf first)` + the `hQf22` `B₂₂`-unit).
+  set Fblk := regBlockCLE eR (Pf (firstLayer hL)) hPf Bmat.toBlocks₂₁ Bmat.toBlocks₂₂ hQf22
+    with hFblk
+  set Fmap : (Fin (deepestNReg H r) → ℝ) ≃L[ℝ] (Fin (deepestNReg H r) → ℝ) :=
+    (decodeRegSliceCLE H r hr).trans (Fblk.trans (decodeRegSliceCLE H r hr).symm) with hFmap
+  refine ⟨Fmap, ?_⟩
+  -- The eJlast/eJsucc reconciliation: the `deepestEPivot` outer column reindex uses
+  -- `pivotThresholdSplit r (H (Fin.last L)) J`; the last-layer factor `framedParamsRegPivot_regSlice_last`
+  -- uses `eJsucc = pivotThresholdSplit r (H last.succ) (pivotJSucc J)`. At `L = n+1+1` these are defeq.
+  have heJ : pivotThresholdSplit r (H (Fin.last (n + 1 + 1))) (hr (Fin.last (n + 1 + 1))) J = eJsucc := by
+    rw [heJsucc]; rfl
+  -- The collapsed-and-expanded product `prod (framedParamsRegPivot (r0,0))`. Abbreviate the slice reads.
+  have hprod : ∀ r0 : Fin (deepestNReg H r) → ℝ,
+      prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0))
+        = firstShapeF H r hr hL Pf Qf r0 (lastLayer hL).castSucc
+            * framedParamsRegPivot H r hr hL J Pf Qf (r0, 0) (lastLayer hL) :=
+    fun r0 => prod_framedParamsRegPivot_regSlice_collapse H r hr hL hL2 J Pf Qf hQf0 r0
+  -- The product expansion: `firstShapeF₀ · last = corner + (Y-frame) + (A·XZ) + (quad)`. The quad term
+  -- is the genuine quadratic cross `Pf_first · reindex(fromBlocks 0 (X·Y) 0 (Z·Y)) · Qf_last`. Stated at
+  -- the `firstShapeF₀ · last` (NOT `prod`) form so all row indices are `(firstLayer hL).castSucc` (the
+  -- `firstShapeF`/`Pf` spelling) consistently — distributivity then fires without the `H 0`-cast wall.
+  have hPexp : ∀ r0 : Fin (deepestNReg H r) → ℝ,
+      firstShapeF H r hr hL Pf Qf r0 (lastLayer hL).castSucc
+          * framedParamsRegPivot H r hr hL J Pf Qf (r0, 0) (lastLayer hL)
+        = Matrix.reindex eR.symm eJsucc.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + (Matrix.reindex eR.symm eJsucc.symm
+              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0)) * Qf (lastLayer hL)
+          + Pf (firstLayer hL) * Matrix.reindex eR.symm eJsucc.symm
+              (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+                (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+          + Pf (firstLayer hL) * Matrix.reindex eR.symm eJsucc.symm
+              (Matrix.fromBlocks 0
+                (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)) 0
+                (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+              * Qf (lastLayer hL) := by
+    intro r0
+    -- `firstShapeF`'s codomain is `Fin (H 0)` but its body's row split is `H (firstLayer hL).castSucc`
+    -- (defeq). Restate `firstShapeF₀` with the body's `castSucc` row spelling (by `rfl` across the defeq).
+    have hfs : firstShapeF H r hr hL Pf Qf r0 (lastLayer hL).castSucc
+        = Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+            (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + Pf (firstLayer hL) * Matrix.reindex
+              (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+              (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+              (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+                (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+            * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+                (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+      rw [firstShapeF, hQf0, Matrix.mul_one]
+    -- The last-layer factor (`Pf last = 1`).
+    have hlast : framedParamsRegPivot H r hr hL J Pf Qf (r0, 0) (lastLayer hL)
+        = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm eJsucc.symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm eJsucc.symm
+              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0) * Qf (lastLayer hL) := by
+      rw [framedParamsRegPivot_regSlice_last H r hr hL hL2 J Pf Qf r0, hPfL, Matrix.one_mul]
+    -- Re-elaborate the product `*` node at the body's `castSucc` row index (full `change`), so the
+    -- heterogeneous-dim distributivity rewrites fire syntactically.
+    rw [hfs, hlast]
+    set C0 := Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+        (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+        (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) with hC0
+    set PD := Pf (firstLayer hL) * Matrix.reindex
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+        (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+        (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+          (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+      * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+          (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) with hPD
+    set C' := Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm eJsucc.symm
+        (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) with hC'
+    set EQ := Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm eJsucc.symm
+        (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0) * Qf (lastLayer hL) with hEQ
+    show (C0 + PD) * (C' + EQ) = _
+    rw [Matrix.add_mul C0 PD (C' + EQ), Matrix.mul_add C0 C' EQ, Matrix.mul_add PD C' EQ]
+    -- The four terms: `C0·C'`, `C0·EQ`, `PD·C'`, `PD·EQ`, each simplified by the banked corner / dev
+    -- lemmas (grouped explicitly so the lemma shapes match), then regrouped by `abel`.
+    have ht1 : C0 * C' = Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+      rw [hC0, hC']; exact corner_reindex_mul _ _ _
+    have ht2 : C0 * EQ = Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0) * Qf (lastLayer hL) := by
+      rw [hC0, hEQ, ← Matrix.mul_assoc, corner_mul_devY]
+    have ht3 : PD * C' = Pf (firstLayer hL) * Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+          (readZ H r hr hL (r0, 0) (firstLayer hL)) 0) := by
+      rw [hPD, hC',
+        Matrix.mul_assoc (Pf (firstLayer hL) * Matrix.reindex _ _
+          (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+            (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)),
+        corner_reindex_mul, Matrix.mul_assoc (Pf (firstLayer hL)), devXZ_mul_corner]
+    have ht4 : PD * EQ = Pf (firstLayer hL) * Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks 0
+          (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)) 0
+          (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+        * Qf (lastLayer hL) := by
+      rw [hPD, hEQ, Matrix.mul_assoc (Pf (firstLayer hL)),
+        Matrix.mul_assoc (Pf (firstLayer hL)),
+        ← Matrix.mul_assoc (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+            (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+            (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
+              (readZ H r hr hL (r0, 0) (firstLayer hL)) 0) *
+          Matrix.reindex (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
+            (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) _ (Qf (lastLayer hL)),
+        devXZ_corner_devY, ← heR, ← Matrix.mul_assoc]
+    rw [ht1, ht2, ht3, ht4]
+    abel
+  -- The reindexed product `P = reindex eR eJsucc prod`, as a sum: corner + (Y·Qf) + (A·devXZ) + (quad).
+  -- Reading each `toBlocks` (the read lemmas) gives the three residual blocks: P11 = I + (A₁₁X+A₁₂Z) +
+  -- Y·B21 + quad11, P12 = Y·B22 + quad12, P21 = (A₂₁X+A₂₂Z) + quad21. The linear parts match `Fblk`.
+  -- The quadratic block-read (per coordinate), the deriv-0 part of the normal form.
+  set quadM := fun r0 : Fin (deepestNReg H r) → ℝ => Matrix.reindex eR eJsucc (Pf (firstLayer hL)
+      * Matrix.reindex eR.symm eJsucc.symm (Matrix.fromBlocks 0
+          (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)) 0
+          (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+        * Qf (lastLayer hL)) with hquadM
+  set quadE : (Fin (deepestNReg H r) → ℝ) → (Fin (deepestNReg H r) → ℝ) :=
+    fun r0 i => match regResidualPack H r hr i with
+      | Sum.inl (a, b) => (quadM r0).toBlocks₁₁ a b
+      | Sum.inr (Sum.inl (a, b)) => (quadM r0).toBlocks₁₂ a b
+      | Sum.inr (Sum.inr (a, b)) => (quadM r0).toBlocks₂₁ a b with hquadE
+  -- The reindexed product as a sum of the four reindexed terms (`reindex_add`, rfl). The corner
+  -- reindexes to `fromBlocks 1 0 0 0`; the `A·devXZ` term to `(reindex eR eR A)·fromBlocks X 0 Z 0`
+  -- (`mulBlock_devXZ_read`); the quad term is `quadM r0`.
+  have hPdec : ∀ r0 : Fin (deepestNReg H r) → ℝ,
+      Matrix.reindex eR eJsucc (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+          + Matrix.reindex eR eJsucc (Matrix.reindex eR.symm eJsucc.symm
+              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0) * Qf (lastLayer hL))
+          + Matrix.reindex eR eR (Pf (firstLayer hL)) * Matrix.fromBlocks
+              (readX H r hr hL (r0, 0) (firstLayer hL)) 0 (readZ H r hr hL (r0, 0) (firstLayer hL)) 0
+          + quadM r0 := by
+    intro r0
+    rw [hprod r0, hPexp r0, reindex_add, reindex_add, reindex_add,
+      show Matrix.reindex eR eJsucc (Matrix.reindex eR.symm eJsucc.symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 from by
+        simp only [Matrix.reindex_apply, Equiv.symm_symm, Matrix.submatrix_submatrix,
+          Equiv.self_comp_symm, Matrix.submatrix_id_id],
+      mulBlock_devXZ_read]
+  -- The deepestEPivot reindex (`rThresholdSplit (H 0)` / `pivotThresholdSplit (H (Fin.last L)) J`) is the
+  -- same as `reindex eR eJsucc` (defeq: `(firstLayer hL).castSucc = 0`, `heJ`).
+  have hPread : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last (n + 1 + 1))) (hr (Fin.last (n + 1 + 1))) J)
+          (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)))
+        = Matrix.reindex eR eJsucc (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0))) := by
+    intro r0; rw [heJ]; rfl
+  -- The decode blocks ARE the slice reads (`decodeRegSliceCLE_apply_*` + `readX/Y/Z_regSlice_*`).
+  have hdX : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (decodeRegSliceCLE H r hr r0).2.1 = readX H r hr hL (r0, 0) (firstLayer hL) := by
+    intro r0; funext a b
+    rw [decodeRegSliceCLE_apply_X, readX_regSlice_first, regResidualPack]
+  have hdZ : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (decodeRegSliceCLE H r hr r0).2.2 = readZ H r hr hL (r0, 0) (firstLayer hL) := by
+    intro r0; funext a b
+    rw [decodeRegSliceCLE_apply_Z, readZ_regSlice_first, regResidualPack]
+  have hdY : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (decodeRegSliceCLE H r hr r0).1 = readY H r hr hL (r0, 0) (lastLayer hL) := by
+    intro r0; funext a b
+    rw [decodeRegSliceCLE_apply_Y, readY_regSlice_last, regResidualPack]
+    congr 2
+  -- The full decode triple (so `mulBlockPairCLE` / `decode.symm` see concrete pairs).
+  have hdec : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      decodeRegSliceCLE H r hr r0 = (readY H r hr hL (r0, 0) (lastLayer hL),
+        (readX H r hr hL (r0, 0) (firstLayer hL), readZ H r hr hL (r0, 0) (firstLayer hL))) := by
+    intro r0
+    rw [← hdX r0, ← hdY r0, ← hdZ r0]
+    rfl
+  -- The normal form: `deepestEPivot (r0,0) i = Fmap r0 i + quadE r0 i`. Per coordinate, case the pack;
+  -- read `deepestEPivot`'s block (`hPread` + `hPdec` + the block-read lemmas) and `Fmap`'s block
+  -- (`decodeRegSliceCLE_symm_apply` + `regBlockCLE_apply` + `mulBlockPairCLE_apply` + the decode reads).
+  -- The three block matrix-identities of `P = reindex eR eJsucc prod`, read off `hPdec` (block-additive)
+  -- + the read lemmas. `Bmat = reindex eJsucc eJsucc (Qf last)`, so `B22 = Bmat.toBlocks₂₂`,
+  -- `B21 = Bmat.toBlocks₂₁`. The linear parts match `regBlockCLE`'s components; the residual is `quadM`.
+  have hb11 : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (Matrix.reindex eR eJsucc (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)))).toBlocks₁₁
+        = 1 + (readY H r hr hL (r0, 0) (lastLayer hL) * Bmat.toBlocks₂₁
+            + ((Matrix.reindex eR eR (Pf (firstLayer hL))).toBlocks₁₁
+                * readX H r hr hL (r0, 0) (firstLayer hL)
+              + (Matrix.reindex eR eR (Pf (firstLayer hL))).toBlocks₁₂
+                * readZ H r hr hL (r0, 0) (firstLayer hL)))
+          + (quadM r0).toBlocks₁₁ := by
+    intro r0
+    rw [hPdec r0, toBlocks₁₁_add, toBlocks₁₁_add, toBlocks₁₁_add, Matrix.toBlocks_fromBlocks₁₁,
+      mulBlock_devXZ_toBlocks₁₁, pivot_devY_read_toBlocks₁₁, hBmat]
+    abel
+  have hb12 : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (Matrix.reindex eR eJsucc (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)))).toBlocks₁₂
+        = readY H r hr hL (r0, 0) (lastLayer hL) * Bmat.toBlocks₂₂ + (quadM r0).toBlocks₁₂ := by
+    intro r0
+    rw [hPdec r0, toBlocks₁₂_add, toBlocks₁₂_add, toBlocks₁₂_add, Matrix.toBlocks_fromBlocks₁₂,
+      mulBlock_devXZ_toBlocks₁₂, pivot_devY_read_toBlocks₁₂, hBmat]
+    abel
+  have hb21 : ∀ (r0 : Fin (deepestNReg H r) → ℝ),
+      (Matrix.reindex eR eJsucc (prod H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)))).toBlocks₂₁
+        = ((Matrix.reindex eR eR (Pf (firstLayer hL))).toBlocks₂₁
+              * readX H r hr hL (r0, 0) (firstLayer hL)
+            + (Matrix.reindex eR eR (Pf (firstLayer hL))).toBlocks₂₂
+              * readZ H r hr hL (r0, 0) (firstLayer hL))
+          + (quadM r0).toBlocks₂₁ := by
+    intro r0
+    rw [hPdec r0, toBlocks₂₁_add, toBlocks₂₁_add, toBlocks₂₁_add, Matrix.toBlocks_fromBlocks₂₁,
+      mulBlock_devXZ_toBlocks₂₁, pivot_devY_read_toBlocks₂₁]
+    abel
+  have hNF : ∀ (r0 : Fin (deepestNReg H r) → ℝ) (i : Fin (deepestNReg H r)),
+      deepestEPivot H r hr hL J Pf Qf (r0, 0) i = Fmap r0 i + quadE r0 i := by
+    intro r0 i
+    -- `Fmap r0 i = decode.symm (Fblk (decode r0)) i`.
+    have hFm : Fmap r0 i = (decodeRegSliceCLE H r hr).symm
+        (Fblk (decodeRegSliceCLE H r hr r0)) i := by rw [hFmap]; rfl
+    rw [hFm, hdec r0]
+    simp only [hFblk, regBlockCLE_apply, mulBlockPairCLE_apply]
+    -- Reduce the `decode.symm` (encode read) on the `Fmap` side (`erw`: its `Z`-block type `H 0 − r`
+    -- vs the `Fblk` `Z`-block `H (firstLayer hL).castSucc − r` are defeq), and unfold `deepestEPivot`'s
+    -- match + align its reindex with `hbᵢⱼ`'s `reindex eR eJsucc` spelling (`hPread`).
+    erw [decodeRegSliceCLE_symm_apply]
+    simp only [deepestEPivot, hPread r0]
+    rcases hcase : regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;>
+      simp only [hcase, hquadE]
+    · erw [hb11 r0]; simp only [Matrix.add_apply, Matrix.sub_apply]; ring
+    · erw [hb12 r0]; simp only [Matrix.add_apply]
+    · erw [hb21 r0]; simp only [Matrix.add_apply]
+  -- The function equality `(fun r0 => deepestEPivot (r0,0)) = fun r0 => Fmap r0 + quadE r0`.
+  have hfun : (fun r0 : Fin (deepestNReg H r) → ℝ => deepestEPivot H r hr hL J Pf Qf (r0, 0))
+      = fun r0 => (Fmap r0 : Fin (deepestNReg H r) → ℝ) + quadE r0 := by
+    funext r0; funext i; rw [hNF r0 i]; rfl
+  -- The quadratic residual has strict derivative `0` at `0` (each coordinate is a sum of products of two
+  -- `r0`-linear factors vanishing at `0`; `hasStrictFDerivAt_sum_mul_zero` per coord + `hasStrictFDerivAt_pi'`).
+  have hquadderiv : HasStrictFDerivAt quadE (0 : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
+      (Fin (deepestNReg H r) → ℝ)) 0 := by
+    -- The decode blocks have strict derivatives (CLE) and vanish at 0; each read entry is a coordinate of
+    -- a decode block, hence a continuous-linear functional of r0 vanishing at 0. `quadM`'s entries are
+    -- sums of products of two such (the `X·Y`/`Z·Y` cross), so each `quadE` coord has strict deriv 0.
+    -- The decode blocks (X = `.2.1`, Y = `.1`, Z = `.2.2`) are CLE-components of `r0`: strict deriv + 0.
+    set Dfst := ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin r) ℝ)
+      (Matrix (Fin (H 0 - r)) (Fin r) ℝ) with hDfst
+    set Dsnd := ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+      (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ) with hDsnd
+    set Dc := (decodeRegSliceCLE H r hr).toContinuousLinearMap with hDc
+    have heqX : (fun r0 : Fin (deepestNReg H r) → ℝ => readX H r hr hL (r0, 0) (firstLayer hL))
+        = ⇑((Dfst.comp Dsnd).comp Dc) := by funext y; rw [← hdX y]; rfl
+    have heqY : (fun r0 : Fin (deepestNReg H r) → ℝ => readY H r hr hL (r0, 0) (lastLayer hL))
+        = ⇑((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc) := by
+      funext y; rw [← hdY y]; rfl
+    have heqZ : (fun r0 : Fin (deepestNReg H r) → ℝ => readZ H r hr hL (r0, 0) (firstLayer hL))
+        = ⇑((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+            (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc)) := by
+      funext y; rw [← hdZ y]; rfl
+    have hXsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readX H r hr hL (r0, 0) (firstLayer hL)) ((Dfst.comp Dsnd).comp Dc) 0 := by
+      rw [heqX]; exact ((Dfst.comp Dsnd).comp Dc).hasStrictFDerivAt
+    have hYsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readY H r hr hL (r0, 0) (lastLayer hL))
+        ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc) 0 := by
+      rw [heqY]
+      exact ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+        (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc).hasStrictFDerivAt
+    have hZsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readZ H r hr hL (r0, 0) (firstLayer hL))
+        ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ) (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp
+          (Dsnd.comp Dc)) 0 := by
+      rw [heqZ]
+      exact ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+        (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc)).hasStrictFDerivAt
+    have hdec0 : decodeRegSliceCLE H r hr 0 = 0 := map_zero _
+    have hX0 : readX H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) = 0 := by
+      rw [← hdX 0, hdec0]; rfl
+    have hY0 : readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) = 0 := by
+      rw [← hdY 0, hdec0]; rfl
+    have hZ0 : readZ H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) = 0 := by
+      rw [← hdZ 0, hdec0]; rfl
+    -- Each read ENTRY (scalar) has a strict derivative (the matrix-valued read deriv post-composed with
+    -- the entry-projection CLM) and vanishes at 0. Stated via the function-equality `readX·entry = ⇑(CLM)`.
+    have hXe : ∀ (p q : Fin r), ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readX H r hr hL (r0, 0) (firstLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin r) (Fin r) ℝ →ₗ[ℝ] ℝ
+          ).toContinuousLinearMap).comp ((Dfst.comp Dsnd).comp Dc), ?_⟩
+      have : (fun r0 => readX H r hr hL (r0, 0) (firstLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin r) (Fin r) ℝ →ₗ[ℝ] ℝ
+            ).toContinuousLinearMap).comp ((Dfst.comp Dsnd).comp Dc)) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqX y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    have hYe : ∀ (p : Fin r) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readY H r hr hL (r0, 0) (lastLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q :
+          Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ →ₗ[ℝ] ℝ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc), ?_⟩
+      have : (fun r0 => readY H r hr hL (r0, 0) (lastLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q :
+            Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ →ₗ[ℝ] ℝ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc)) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqY y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    have hZe : ∀ (p : Fin (H 0 - r)) (q : Fin r), ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin (H 0 - r)) (Fin r) ℝ →ₗ[ℝ] ℝ
+          ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ) (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp
+            (Dsnd.comp Dc)), ?_⟩
+      have : (fun r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin (H 0 - r)) (Fin r) ℝ →ₗ[ℝ] ℝ
+            ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+            (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc))) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqZ y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    -- Each matrix-product ENTRY `(X·Y) p q = ∑_k X p k · Y k q` is a sum of products of two read entries,
+    -- each vanishing-linear, so it has strict derivative 0 at 0 (`hasStrictFDerivAt_sum_mul_zero`).
+    have hXYe : ∀ (p : Fin r) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => (readX H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro p q
+      have hsum := hasStrictFDerivAt_sum_mul_zero
+        (fun k r0 => readX H r hr hL (r0, 0) (firstLayer hL) p k)
+        (fun k r0 => readY H r hr hL (r0, 0) (lastLayer hL) k q)
+        (fun k => (hXe p k).choose) (fun k => (hYe k q).choose)
+        (fun k => (hXe p k).choose_spec) (fun k => (hYe k q).choose_spec)
+        (fun k => by show readX H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) p k = 0; rw [hX0]; rfl)
+        (fun k => by show readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) k q = 0; rw [hY0]; rfl)
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => (readX H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q)
+          = fun r0 => ∑ k, readX H r hr hL (r0, 0) (firstLayer hL) p k
+              * readY H r hr hL (r0, 0) (lastLayer hL) k q := by
+        funext r0; rw [Matrix.mul_apply]
+      rw [heq]; exact hsum
+    have hZYe : ∀ (p : Fin (H 0 - r)) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => (readZ H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro p q
+      have hsum := hasStrictFDerivAt_sum_mul_zero
+        (fun k r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p k)
+        (fun k r0 => readY H r hr hL (r0, 0) (lastLayer hL) k q)
+        (fun k => (hZe p k).choose) (fun k => (hYe k q).choose)
+        (fun k => (hZe p k).choose_spec) (fun k => (hYe k q).choose_spec)
+        (fun k => by show readZ H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) p k = 0; rw [hZ0]; rfl)
+        (fun k => by show readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) k q = 0; rw [hY0]; rfl)
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => (readZ H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q)
+          = fun r0 => ∑ k, readZ H r hr hL (r0, 0) (firstLayer hL) p k
+              * readY H r hr hL (r0, 0) (lastLayer hL) k q := by
+        funext r0; rw [Matrix.mul_apply]
+      rw [heq]; exact hsum
+    -- The dev-block `fromBlocks 0 (X·Y) 0 (Z·Y)` ENTRY has strict deriv 0 (each block entry is `(X·Y)`/
+    -- `(Z·Y)` or `0`, all deriv 0).
+    have hdevb : ∀ (s : Fin r ⊕ Fin (H 0 - r)) (t : Fin r ⊕ Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)) s t)
+          (0 : _ →L[ℝ] ℝ) 0 := by
+      rintro (s | s) (t | t)
+      · exact hasStrictFDerivAt_const 0 0
+      · exact hXYe s t
+      · exact hasStrictFDerivAt_const 0 0
+      · exact hZYe s t
+    -- The `D(r0)` (reindexed dev-block) entry has strict deriv 0 (it IS a dev-block entry).
+    have hDentry : ∀ (s t), HasStrictFDerivAt (fun r0 => Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+          (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+          (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+          (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))) s t)
+        (0 : _ →L[ℝ] ℝ) 0 := by
+      intro s t
+      have heq : (fun r0 => Matrix.reindex eR.symm eJsucc.symm
+          (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))) s t)
+          = fun r0 => Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (eR s) (eJsucc t) := by
+        funext r0; rfl
+      rw [heq]; exact hdevb (eR s) (eJsucc t)
+    -- `quadM r0 s t = (Pf · D(r0) · Qf) (eR.symm s)(eJsucc.symm t)` = a finite sum (Leibniz) of
+    -- `const · D-entry · const`, each deriv 0; the sum has deriv 0.
+    have hquadM_entry : ∀ (s t), HasStrictFDerivAt (fun r0 => quadM r0 s t) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro s t
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => quadM r0 s t)
+          = fun r0 => ∑ l, ∑ k, Pf (firstLayer hL) (eR.symm s) k
+              * Matrix.reindex eR.symm eJsucc.symm
+                  (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+                    (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+                    (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+                    (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+                  k l
+              * Qf (lastLayer hL) l (eJsucc.symm t) := by
+        funext r0
+        rw [hquadM]
+        simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
+        rw [Matrix.mul_apply]
+        refine Finset.sum_congr rfl (fun l _ => ?_)
+        rw [Matrix.mul_apply, Finset.sum_mul]
+        rfl
+      rw [heq]
+      have hfull : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          ∑ l, ∑ k, Pf (firstLayer hL) (eR.symm s) k
+              * Matrix.reindex eR.symm eJsucc.symm
+                  (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+                    (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+                    (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+                    (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+                  k l
+              * Qf (lastLayer hL) l (eJsucc.symm t))
+          (∑ _l : Fin (H ((lastLayer hL).succ)), ∑ _k : Fin (H ((firstLayer hL).castSucc)),
+            (0 : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ)) 0 := by
+        refine HasStrictFDerivAt.fun_sum (fun l _ => HasStrictFDerivAt.fun_sum (fun k _ => ?_))
+        have := ((hDentry k l).const_mul (Pf (firstLayer hL) (eR.symm s) k)).mul_const
+          (Qf (lastLayer hL) l (eJsucc.symm t))
+        simpa using this
+      simpa using hfull
+    refine hasStrictFDerivAt_pi'.2 (fun i => ?_)
+    rcases hcase : regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;>
+      simp only [hquadE, hcase, ContinuousLinearMap.zero_comp]
+    · exact hquadM_entry _ _
+    · exact hquadM_entry _ _
+    · exact hquadM_entry _ _
+  -- `Fmap` is a CLE, so it has strict derivative `↑Fmap`; add the quad (deriv 0), `+ 0`.
+  have hFderiv : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => Fmap r0)
+      (Fmap : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 :=
+    Fmap.hasStrictFDerivAt
+  rw [hfun]
+  simpa using hFderiv.add hquadderiv
 
 /-- **`deepestEPivot`'s derivative at `0` is the invertible SHEAR** (#120-corrected: NOT `fst`). By #91
 (`d(P−B)|_0 = (Σ_s X_s, Y_L, Z_1)`, idempotent sandwich), the reg-residual's derivative reads the
