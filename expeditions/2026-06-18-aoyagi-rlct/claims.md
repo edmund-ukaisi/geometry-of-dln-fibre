@@ -7046,6 +7046,24 @@ Nonclaims: no construction of `Cfac`, no factor-product selected-entry proof,
 no residual-index equivalence construction, no source/image equality, no
 source-measure transport, no normal crossings, pole order, or RLCT.
 
+Latest A2 residual-factor product two-edge unfold:
+Lean now proves that an explicit residual-factor product over two supplied
+edges unfolds to the product of the right factor and the left factor, after
+casting both factors to the canonical middle endpoint `(1 : Fin 3)`.
+
+Lean name:
+`ChartLocalSuffixState.residualFactorProduct_fin_two_eq_mul`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-residual-factor-product-two-edge-unfold.md`,
+`threads/03-block-product-reduction/statement-card-a2-residual-factor-product-two-edge-unfold.md`,
+and
+`threads/03-block-product-reduction/review-a2-residual-factor-product-two-edge-unfold.md`.
+
+Nonclaims: no concrete displayed Case 2 `Cfac`, no construction of global
+compatible factors, no residual-index equivalence, no selected-entry matrix
+identity, no source/image equality, no normal crossings, pole order, or RLCT.
+
 Latest A2 fixed-base residual-factor family constructor:
 Lean now defines the raw p.13 fixed-base matrix family from a supplied
 compatible residual-factor family `Cfac`, rather than reading the factors from

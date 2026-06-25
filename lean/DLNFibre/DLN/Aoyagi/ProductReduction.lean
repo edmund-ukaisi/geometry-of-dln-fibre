@@ -2057,6 +2057,59 @@ theorem residualFactorProduct_trans
     simpa [motive] using hcanon
   simpa using hcanon'
 
+/-- The explicit residual-factor product over two edges is the product of the
+right factor followed by the left factor.
+
+The two middle endpoint expressions `Fin.castSucc (1 : Fin 2)` and
+`Fin.succ (0 : Fin 2)` are propositionally equal but not definitionally the
+same type index, so the statement displays both factors at the canonical
+middle endpoint `(1 : Fin 3)`. -/
+theorem residualFactorProduct_fin_two_eq_mul
+    {κ : Fin 3 → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin 2, Matrix (κ p.succ) (κ p.castSucc) K) :
+    residualFactorProduct C (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) K from
+        by simpa using C (1 : Fin 2)) *
+      (show Matrix (κ (1 : Fin 3)) (κ 0) K from
+        by simpa using C (0 : Fin 2)) := by
+  have hsplit :
+      residualFactorProduct C (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        residualFactorProduct C (Fin.last 2) (1 : Fin 3) (by decide) *
+          residualFactorProduct C (1 : Fin 3) 0 (by decide) := by
+    simpa using
+      (residualFactorProduct_trans (K := K) C
+        (i := 0) (q := (1 : Fin 3)) (j := Fin.last 2)
+        (by decide) (by decide))
+  have hright :
+      residualFactorProduct C (Fin.last 2) (1 : Fin 3) (by decide) =
+        (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) K from
+          by simpa using C (1 : Fin 2)) := by
+    change residualFactorProduct C (Fin.last 2) (Fin.castSucc (1 : Fin 2))
+      (Fin.val_fin_le.mpr (by simp)) =
+      (show Matrix (κ (Fin.last 2)) (κ (Fin.castSucc (1 : Fin 2))) K from
+        by simpa using C (1 : Fin 2))
+    rw [residualFactorProduct_castSucc (K := K) C
+      (j := Fin.last 2) (p := (1 : Fin 2)) (Fin.val_fin_le.mpr (by simp))]
+    exact Matrix.one_mul
+      (show Matrix (κ (Fin.last 2)) (κ (Fin.castSucc (1 : Fin 2))) K from
+        by simpa using C (1 : Fin 2))
+  have hleft :
+      residualFactorProduct C (1 : Fin 3) 0 (by decide) =
+        (show Matrix (κ (1 : Fin 3)) (κ 0) K from
+          by simpa using C (0 : Fin 2)) := by
+    change residualFactorProduct C (Fin.succ (0 : Fin 2)) (Fin.castSucc (0 : Fin 2))
+      (Fin.val_fin_le.mpr (by simp)) =
+      (show Matrix (κ (Fin.succ (0 : Fin 2))) (κ (Fin.castSucc (0 : Fin 2))) K from
+        by simpa using C (0 : Fin 2))
+    rw [residualFactorProduct_castSucc (K := K) C
+      (j := Fin.succ (0 : Fin 2)) (p := (0 : Fin 2))
+      (Fin.val_fin_le.mpr (by simp))]
+    exact Matrix.one_mul
+      (show Matrix (κ (Fin.succ (0 : Fin 2))) (κ (Fin.castSucc (0 : Fin 2))) K from
+        by simpa using C (0 : Fin 2))
+  rw [hsplit, hright, hleft]
+
 /-- A residual-factor product factors through every intermediate residual
 index, so its matrix rank is bounded by the cardinality of that intermediate
 type. -/

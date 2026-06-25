@@ -10866,3 +10866,12 @@ remaining source sockets are unchanged: construction of `Cfac`, the
 factor-product selected-entry identity, residual-index equivalence, local
 source/image equality, source-measure transport, normal crossings, pole order,
 and RLCT.
+
+The residual-factor API now has a generic two-edge unfold:
+`threads/03-block-product-reduction/reproduction-a2-residual-factor-product-two-edge-unfold.md`.
+Lean proves `ChartLocalSuffixState.residualFactorProduct_fin_two_eq_mul`.
+This matches the local Case 2 product shape `D_{J+1} * C'_+` at the level of
+finite ordered products, but no displayed Case 2 dependent `Cfac` package has
+been added.  The missing data are still the residual-index equivalences,
+embedding into the fixed-base suffix, and a selected-entry coordinate-matrix
+RHS identity.

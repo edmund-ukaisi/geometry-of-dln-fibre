@@ -5827,3 +5827,29 @@ This is finite p.13 product-coordinate/readout composition only.  It does not
 construct `Cfac`, prove the selected-entry factor-product identity, construct
 the residual-index equivalence, prove local source/image equality, transport
 measure, produce normal crossings, compute pole order, or prove RLCT.
+
+## 2026-06-25 A2 residual-factor product two-edge unfold
+
+Reproduction:
+`reproduction-a2-residual-factor-product-two-edge-unfold.md`.
+Statement card:
+`statement-card-a2-residual-factor-product-two-edge-unfold.md`.
+Review:
+`review-a2-residual-factor-product-two-edge-unfold.md`.
+
+Lean now proves the generic two-edge unfold:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_fin_two_eq_mul
+```
+
+For a supplied residual-factor family over `Fin 2`, the product from
+`Fin.last 2` to `0` is the right factor followed by the left factor, with the
+two factors cast to the canonical middle endpoint `(1 : Fin 3)`.  This is the
+generic API needed before any future Case 2 local two-factor product is
+threaded into a residual-factor statement.
+
+The bespoke displayed Case 2 dependent `Fin 3` package is still not added:
+it would need endpoint equivalences from the fixed-base residual types to the
+Case 2 post-pivot row/column/following-factor types and an equality with the
+selected-entry coordinate matrix before it becomes a real readout input.

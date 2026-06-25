@@ -4696,3 +4696,11 @@ selected-entry factor-product identity, and the residual-index equivalence.
 It still does not construct those data or prove local source/image equality.
 The next meaningful source work remains factor production/product identity,
 residual-index provenance, or source/image and measure transport.
+
+A2 residual-factor product two-edge unfold has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-factor-product-two-edge-unfold.md`.
+Lean proves the generic `Fin 3` endpoint unfold of
+`residualFactorProduct C (Fin.last 2) 0`.  Treat it as reusable product API
+for future local Case 2 factor work.  Do not turn it into a bespoke displayed
+Case 2 `Cfac` package until the residual-index equivalences and selected-entry
+matrix RHS are real downstream inputs.
