@@ -836,6 +836,13 @@ the `kostantPartitions`-nonempty achievability hypothesis is carried (reviewer-c
 non-vacuous); **`rlct = ½·codim` stays Cited** (Aoyagi/Watanabe) — the geometric codimension is the new
 zero-cite content.
 
-**Remaining (post-central-result).** #52 — discharge `DLN.BundleShiftInterface.cited_bundle_shift` from the
-Proved codim result → complete the RLCT payoff (`rlct = C/2`, cap Cited). #54 — θ-count fidelity for
-`(3,3,3)`. Opening/merging the PR is operator-gated (signal-and-wait).
+**DESTINATION REALIZED (#52 discharged, 2026-06-25).** `DLN.BundleShiftDischarge` proves the bundle shift
+from Core (`bundleShift_of_core`, via `FibreCodimFinal` + `SigmaCodim` Brick A); the rewired payoff
+`rlct_lossDLN_eq_half_cCodim_add_shift` DROPS the geometric interface and rests on ONLY the Cited Aoyagi
+`RlctInterface`. `#print axioms` = `[propext, Classical.choice, Quot.sound]` (geometric half genuinely
+Proved); reviewer-g4 PASS (decorrelated + Codex). The full chain — geometry `codim = C+δ` zero-cite, wired
+into the RLCT payoff `rlct = C/2` with ONLY the analytic `rlct ≤ ½·codim` Cited (Aoyagi/Watanabe) — is the
+destination, realized at `k : Type 0` (the DLN field; covers ℂ). The G1 lift is subsumed by `FibreCodimFinal`.
+
+**Remaining.** #54 — θ-count fidelity for `(3,3,3)` (separate follow-up). Opening/merging PR #10 is
+operator-gated.

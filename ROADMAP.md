@@ -112,9 +112,10 @@ the ℕ∞ catenary, riding only the *free* orbit-in-Σ^r containment — no clo
 `Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv` → **hSweep** (`varietyDim Σ^r = δ + varietyDim F`,
 now a Proved lemma) → the route-c assembly `Core.RouteCAssembly` (carries the in-repo `hClosure`).
 **Scope:** `k : Type 0` (the DLN field — ℝ/ℂ; a universe lift is roadmap-able, loses nothing for the
-application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanabe). **Next (#52):** discharge
-`DLN.BundleShiftInterface.cited_bundle_shift` from this Proved codim result → complete the RLCT payoff
-`DLN.RlctPayoffGeneral` (`rlct = C/2`, cap still Cited). Full record:
+application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanabe). **Payoff DISCHARGED
+(#52):** `DLN.BundleShiftDischarge` proves the bundle shift from Core (`bundleShift_of_core`); the rewired
+`rlct_lossDLN_eq_half_cCodim_add_shift` rests on ONLY the Cited Aoyagi `RlctInterface` — the destination
+`rlct = C/2` is realized (geometric half zero-cite; only `rlct ≤ ½·codim` Cited). Full record:
 `expeditions/2026-06-23-fibre-codim/synthesis.md`.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)

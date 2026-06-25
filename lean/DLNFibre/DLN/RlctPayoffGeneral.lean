@@ -106,8 +106,9 @@ variable {d : Fin (N + 1) → ℕ}
 
 /-- **The general-`r` RLCT payoff, through the Cited Aoyagi rlct AND the Lemma-4.5/4.6 shift
 interface.** Given the interfaces `I` (Aoyagi rlct, Cited) and `J` (Lemma 4.5/4.6 bundle shift, a
-codimension identity now Proved in `Core.FibreCodimFinal` but here still carried as a hypothesis —
-the open `G4` rewire), for a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of
+codimension identity Proved in `Core.FibreCodimFinal`, carried here as a hypothesis — this is the
+lower-level two-interface transport; `DLN.BundleShiftDischarge` discharges `J` from Core and gives
+the destination payoff resting on only `I`), for a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of
 the DLN square-Frobenius loss `K^DLN_B` equals `(cCodim d r + r(d_0+d_N−r))/2`: the combinatorial
 `C/2` plus the half-shift. Proof: `I.cited_aoyagi_dln` (general in `r`) gives `rlct = ½·codim mult⁻¹(B)`;
 `J.cited_bundle_shift` rewrites the fibre codim as `codim Σ̄^r + shift`; Brick A
