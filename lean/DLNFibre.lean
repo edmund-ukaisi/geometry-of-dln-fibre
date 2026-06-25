@@ -279,3 +279,6 @@ import DLNFibre.Core.TopDimMinPrimesLocalization
 import DLNFibre.Core.TopDimMinPrimesRadical
 import DLNFibre.Core.TopDimMinPrimesChartE
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
+-- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r ↔
+-- exact =r at the top-dim minimal-prime level), via the unconditional recovery + corner-monotonicity.
+import DLNFibre.Core.TopDimMinPrimesW0
