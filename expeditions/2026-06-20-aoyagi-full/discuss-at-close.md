@@ -389,6 +389,31 @@ extends here — a candidate point for the operator's scope call (full general-L
   defers. Mathlib's `SchurComplement` API (block-LU + triangular inverses + inverse-cancel) is the toolkit; a bounded 4-lemma
   directed sequence (schur_P11_decomp style), one watch-item (the `⅟P` bookkeeping). **Commissioned as a contained build
   (l2-framestrip), NOT an operator wall.** So the L2 close is NOT blocked here — it's a moderate build + the final wire.
+- **RE-ESCALATED (2026-06-25, l2-framestrip build report — the MODERATE downgrade was OPTIMISTIC).** The build banked the genuinely-new
+  lemma (`schur_product_ldu`, the frame-free LDU) + a conditional bridge (`germ_charge_of_schur_factorization`), both axiom-clean and
+  integrated (HEAD `dfcfeb82`), PIN1 re-verified clean. BUT l2-framestrip + decorrelated Codex(xhigh) + the reviewer all honestly
+  corrected the cert's "the ONLY new piece is the LDU": the producer germ charge ALSO needs three named unbuilt obligations —
+  **h1** (the per-layer block decomposition / interior-frame telescope at the BLOCK level — the HEAVIEST, ~300+ LoC), **h2** (match
+  lemma-1's cores to the LDU's), **h3** (the `‖Y0‖,‖Z1‖≤√Sreg` reg-block estimate ⟹ quadratic remainder). Multi-tide (~300-1500 LoC).
+  **The L2 body is NOT complete for front pivot.** This is the SECOND re-scope of this piece (MODERATE-downgrade → re-escalate); the
+  producer keeps revealing the next layer. Net: real layer-filling (each banked piece is solid; the gap is now three attackable
+  obligations, not a vague bridge), but the L2-close timeline extends here. **Driving h1 (design-first) now** under the charge-ahead
+  mandate; flagged as a genuine scope-decision point below.
+
+## 24. SCOPE-DECISION POINT for the operator: full general-L=2 producer (h1/h2/h3) vs the RRR (L=2) milestone (2026-06-25).
+The L2 gauge-chart producer (the general-L=2 front-pivot body) has now re-scoped twice on its germ charge (Item 22). The remaining
+h1/h2/h3 is genuine multi-tide geometry (h1 ~300+ LoC alone). **This is the natural point for the operator's pending scope call.** The
+options, stated plainly:
+- **(A) Push the general-L=2 producer to completion** (h1 design→build, then h2/h3, then the final wire). This is the charge-ahead
+  default; I am driving it. It completes the L2 gate's gauge-chart arm for arbitrary widths at L=2 (front pivot, WLOG-reduced).
+- **(B) Declare the RRR (L=2 reduced-rank-regression, Aoyagi Thm 1) milestone as the L=2 deliverable.** RRR is ALREADY DONE (#17,
+  committed) — it is the L=2 headline for the reduced-rank-regression case. Under (B) the general-L=2 gauge-chart producer is
+  roadmapped (the h1/h2/h3 geometry deferred), and the near-term deliverable is RRR + the R1 (3,3,4) anchor + the engine.
+Note: descoping to L=2 does NOT avoid the producer — the producer IS the general-L=2 body. The real fork is (A) general-L=2 gauge
+chart vs (B) the RRR special case. Either way the FULL general-L headline additionally needs R1-general + general-hdiv (the
+(3,3,3,3) Frame-det wall, HELD) + D1, which are far. **No action needed from the operator to keep progress** — I default to (A) and
+record this for the eventual review. The decision matters for how the close is *named* (general-L=2 vs RRR-L=2), not for whether
+work continues.
 
 ## 23. A stray off-path θ-components expedition appeared in the worktree — a real LR-θ vs Aoyagi-θ finding (2026-06-25).
 `expeditions/2026-06-25-theta-components/` appeared untracked in the worktree (created by another context — not commissioned by
