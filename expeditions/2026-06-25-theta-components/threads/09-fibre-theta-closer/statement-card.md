@@ -73,8 +73,28 @@ seven landed chain rungs. The W0 bridge landed independently (peer); this tide c
 >   (W1, this tide), `ncard_topDimMinPrimes_chartE_eq` (chartE, thread 08),
 >   `topDimMinPrimes_mvPolynomial_ncard_eq` (poly, thread 06),
 >   `topDimMinPrimes_quotient_radical_ncard_eq` (W3, thread 08) + `vanishingIdeal_image_fibre_eq_radical`.
-> - **Status.** sorry-free, axiom-clean. The UNCONDITIONAL headline (plugging the peer's W2 into `hW2`)
->   is a one-liner pending W2 building green.
+> - **Status.** sorry-free, axiom-clean.
+
+> **Claim (THE COMPOSED HEADLINE, UNCONDITIONAL).** Same conclusion as the `_of` form, with the W2
+> rung discharged from the LANDED flat-route keystone — no open hypothesis.
+>
+> - **Lean:** `DLNFibre.Core.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (`FibreThetaCount.lean`,
+>   `section UnivZero`).
+> - **Gloss.** `(TopDimMinPrimes (R ⧸ fibreGenIdeal d E_r)).ncard = cTheta (dminus d r)` over
+>   `[IsAlgClosed k][CharZero k]` + `Monotone d` + `∀ i, r ≤ d i` + the two Kostant nonemptinesses +
+>   `hN`. The W2 rung is `Core.TopDimMinPrimesW2.ncard_topDimMinPrimes_away_chartGfib_eq`.
+> - **Stated at `k : Type` (universe 0).** The peer's W2 theorem is monomorphic at `Type` (not
+>   `Type u`); the universe-polymorphic rungs E0/W0/W1/chartE/poly/W3 specialise to `u = 0` freely, and
+>   `Type 0` carries the operative fields (`AlgebraicClosure ℚ`, `ℂ`). (Re-generalising W2 to `Type u`
+>   would lift this to `Type u`; W2 is peer-owned.)
+> - **Discharge is NOT via the `_of` form** — applying `_of` forces an `isDefEq`-across-the-diamond at
+>   its `hW2` binder type (the `MvPolynomial`-over-quotient `AddMonoidAlgebra.semiring` vs
+>   `Ring.toSemiring` diamond, which leaves a `Field sorry` metavariable). Instead the theorem **inlines
+>   the 7-rung calc** under a body `letI : CommRing (MvPolynomial SchurVar (sweepFibreRing)) :=
+>   inferInstance`, obtaining W2 as `have hW2 := ncard_topDimMinPrimes_away_chartGfib_eq (k := k) …`
+>   (under the `letI` the instance path matches the chain — no diamond).
+> - **Status.** sorry-free, **axiom-clean** `[propext, Classical.choice, Quot.sound]` (verified
+>   `#print axioms` — NO `sorryAx`).
 
 ---
 
