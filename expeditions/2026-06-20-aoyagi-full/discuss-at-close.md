@@ -361,3 +361,11 @@ unsound. **This is the deepest L2 architecture catch — the gauge chart, as bui
   where (b) holds. Neither touches PIN1. **Operator-relevant:** this adds a repair step before the L2 body closes; the L2 gate
   is NOT "one piece (hproducer) away" until (A)/(B) lands. No math is at risk (the RLCT formula is invariant under the column
   permutation / the comparability); it is a gauge-chart-architecture correction. Not blocking the operator — driving it now.
+- **RESOLVED (same day) — option A (comparability) is SOUND, the contained repair.** pp-pin2-rearch + decorrelated Codex (exact
+  PD certificate, generalized eigenvalues [0.52,1.93] ∋ the 0.76 witness): the comparability `∑deepestEFull²≍Sreg` HOLDS (both
+  energies vanish at w0 ⟹ PD Gram forms differing by the invertible kernel-preserving reindex `π_J·QL`). Restate (b) from `=` to
+  `≍` — which `deepest_loss_squeeze` ALREADY folds (it never needed the equality). No headline restructure, no PIN1 touch, no R2
+  WLOG (B validated as fallback only). Build resumed (l2-hprod-comp). **Net for the operator: the 6th catch cost a statement
+  restatement, not an architecture change; the L2 gate is again hproducer → body → final wire.** Scope: the comparability's PD
+  cert is exact at r=1/H0=1/H2=2; the structural argument is convention-uniform (general-H unverified symbolically — pp-pin2-rearch
+  on-call if the Lean general-H operator-norm bound snags).

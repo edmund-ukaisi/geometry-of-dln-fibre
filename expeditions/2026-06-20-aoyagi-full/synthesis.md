@@ -886,6 +886,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-57 (2026-06-25) — 6th catch RESOLVED: hproducer (b) → comparability (option A, contained); hproducer build resumed. ★**
+- **hproducer (b) adjudicated @788c7fab — option A (comparability) is SOUND, the contained repair** (pp-pin2-rearch + decorrelated
+  Codex; `r2-frontpivot-cert.md` + an exact PD certificate): the equality `∑deepestEFull²=Sreg` is false, but the COMPARABILITY
+  `∑deepestEFull²≍Sreg` HOLDS — both energies vanish at w0 (`deepestEFull_base`) ⟹ PD Gram forms in the deviation, differing only
+  by the invertible kernel-preserving reindex `π_J·QL` (generalized eigenvalues [0.52,1.93] ∋ the 0.76 witness — which refuted
+  EQUALITY, not comparability). `deepest_loss_squeeze` ALREADY folds the two-sided shape (never needed the equality). **No headline
+  restructure, no PIN1 touch, no WLOG.** Same kernel-preserving mechanism as S5c. (B front-pivot WLOG validated as fallback.)
+- **l2-hprod-comp LAUNCHED** (ac67c116): restate (b) as `≍`, build `deepestEFull_sq_comparable_Sreg` (via `dlnLoss_two_sided_of_frame`,
+  the structural invertible-reindex argument; SOUNDNESS-CRITICAL = read the corner off the shared `pivotThr.symm`), assemble
+  hproducer (consume the built S5c atom; π_J cancellation no longer needed). pp-pin2-rearch on-call for general-H / B fallback.
+- **L2 close back on track:** hproducer (this tide) → L=2 body done (only the 2 vacuous-at-L2 interior remain) → final wire
+  (squeeze-exists + case-split, wiring hL2/hpos/hinterface) → L2 gate. The body's hard pieces (S5c atom, hS1', telescope) all banked.
+- 2 builds in flight (independent files): l2-hprod-comp (L2 hproducer) + r1-334cover (R1 (3,3,4) cover). pp seats on-call. General hdiv held.
+
 **★ UPDATE-56 (2026-06-25) — 6th L2 catch (the deepest): hproducer (b) FALSE for non-front pivot; the front-pivot-WLOG repair adjudicating. ★**
 - **l2-hproducer landed — hproducer is NOT fillable as stated** (banked `hproducer-verdict.md` @06989e60). Conjunct (b)
   `∑deepestEFull²=Sreg` is FALSE for a non-front pivot J (the GENERIC headline case): deepestEFull threshold-effective (pivotThr J)
