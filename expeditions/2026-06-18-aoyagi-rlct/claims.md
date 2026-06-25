@@ -3708,6 +3708,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-definition3-theorem2-translation-a6.md`;
   Theorem 2 selected-width pair-sum range/Icc conversion reproduced at
   `threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`;
+  Definition 3 exact ceiling data reproduced at
+  `threads/06-dln-translation/reproduction-definition3-exact-ceil-data-a6.md`;
   corrected closed-form cutoff boundary recorded at
   `threads/06-dln-translation/boundary-paper-closed-form-corrected-cutoff-a6.md`;
   dimension/rank convention map reproduced at
@@ -3795,6 +3797,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-final-formula-notation-a6.md`;
   Theorem 2 selected-width pair-sum range/Icc conversion reviewed at
   `threads/06-dln-translation/review-theorem2-selected-width-pair-sum-range-icc-a6.md`;
+  Definition 3 exact ceiling data reviewed at
+  `threads/06-dln-translation/review-definition3-exact-ceil-data-a6.md`;
   source-data ceiling reviewed at
   `threads/06-dln-translation/review-definition3-source-data-ceil-a6.md`;
   source-data local wrappers reviewed at
@@ -3885,6 +3889,9 @@ No such claim is formalisation-ready until both fields are filled.
   `DLNFibre.DLN.Aoyagi.aoyagiSelectedWidthNat_selectedReducedWidths_nonneg_of_rank_le`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3SourceData`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.ofSelectedSumCeil`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.ofSelectedSumCeil_ceilWidth`,
+  `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.ofSelectedSumCeil_aParam`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.nonempty_of_ell_pos`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder`,
   `DLNFibre.DLN.Aoyagi.AoyagiDefinition3CeilData.theorem2OrderFormula`,
@@ -4058,7 +4065,11 @@ No such claim is formalisation-ready until both fields are filled.
   Definition 3 selected-sum average rewrite, Nat-indexed range/Icc reindexing
   of Theorem 2's selected-width pair sum, equality of the average and ceiling
   displayed lambda formulas under supplied ceiling data, and equality of the
-  ceiling and expanded displayed lambda formulas when `0 < ell`.  Also
+  ceiling and expanded displayed lambda formulas when `0 < ell`.  Also proved
+  an exact Definition 3 ceiling-data constructor pinning
+  `ceilWidth=(sum+ell-1)/ell` and the positive residue
+  `aParam=((sum-1)%ell+1).toNat`; the older `nonempty_of_ell_pos` constructor
+  now delegates to this exact datum.  Also
   proved Definition 3 positivity wrappers, selected-sum wrappers for Lemma 4
   terminal endpoint zero, lower/upper Htilde terminal zero, a
   chain-bounds-to-terminal-zero wrapper, finite interval-count/order-formula

@@ -125,6 +125,70 @@ structure AoyagiDefinition3CeilData
 
 namespace AoyagiDefinition3CeilData
 
+/-- Exact Definition 3 ceiling/residue data for a selected-width family.
+
+For `T = sum_j m_j`, this uses Aoyagi's ceiling integer
+`ceilWidth = (T + ell - 1) / ell` and the positive residue
+`aParam = ((T - 1) % ell + 1).toNat`.  Dividing `T - 1` by `ell` gives the
+residue range `0 < aParam <= ell` without a separate zero-remainder case. -/
+noncomputable def ofSelectedSumCeil
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) (hell : 0 < ell) :
+    AoyagiDefinition3CeilData ell m := by
+  classical
+  let T : ℤ := ∑ j : Fin (ell + 1), m j
+  let e : ℤ := ell
+  let U : ℤ := T - 1
+  have hepos : 0 < e := by
+    simpa [e] using (show (0 : ℤ) < (ell : ℤ) by exact_mod_cast hell)
+  have hene : e ≠ 0 := ne_of_gt hepos
+  have hdiv : (T + e - 1) / e = U / e + 1 := by
+    have hU : U % e + e * (U / e) = U := Int.emod_add_mul_ediv U e
+    refine ((Int.ediv_emod_unique hepos (r := U % e) (q := U / e + 1)).mpr ?_).1
+    constructor
+    · rw [mul_add, mul_one]
+      linarith [hU]
+    · exact ⟨Int.emod_nonneg U hene, Int.emod_lt_of_pos U hepos⟩
+  let a : ℕ := (U % e + 1).toNat
+  have hapos_int : (0 : ℤ) < U % e + 1 := by
+    have hnonneg : 0 ≤ U % e := Int.emod_nonneg U hene
+    omega
+  have hale_int : U % e + 1 ≤ e := by
+    have hlt : U % e < e := Int.emod_lt_of_pos U hepos
+    omega
+  have hcast_a : (a : ℤ) = U % e + 1 := by
+    dsimp [a]
+    exact Int.toNat_of_nonneg (le_of_lt hapos_int)
+  exact {
+    ell_pos := hell
+    ceilWidth := (T + e - 1) / e
+    aParam := a
+    selectedSum_eq := by
+      rw [hdiv, hcast_a]
+      rw [mul_sub, mul_one]
+      linarith [Int.emod_add_mul_ediv U e]
+    aParam_pos := by
+      have : (0 : ℤ) < (a : ℤ) := by
+        rw [hcast_a]
+        exact hapos_int
+      exact_mod_cast this
+    aParam_le := by
+      have : (a : ℤ) ≤ (ell : ℤ) := by
+        rw [hcast_a]
+        simpa [e] using hale_int
+      exact_mod_cast this }
+
+@[simp] theorem ofSelectedSumCeil_ceilWidth
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) (hell : 0 < ell) :
+    (ofSelectedSumCeil ell m hell).ceilWidth =
+      ((∑ j : Fin (ell + 1), m j) + (ell : ℤ) - 1) / (ell : ℤ) := by
+  rfl
+
+@[simp] theorem ofSelectedSumCeil_aParam
+    (ell : ℕ) (m : Fin (ell + 1) → ℤ) (hell : 0 < ell) :
+    (ofSelectedSumCeil ell m hell).aParam =
+      (((∑ j : Fin (ell + 1), m j) - 1) % (ell : ℤ) + 1).toNat := by
+  rfl
+
 /-- Aoyagi Theorem 2's displayed order/multiplicity expression, named as an
 order formula to avoid confusion with this repository's component-count
 `theta`. -/

@@ -10591,3 +10591,14 @@ selected-width pair sum from the `Fin`/indicator form to a Nat-indexed
 `threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`
 and
 `threads/06-dln-translation/statement-card-a6-selected-width-pair-sum-range-icc.md`.
+
+The next safe formula-layer refinement also landed in the same A6 lane:
+`AoyagiDefinition3CeilData.ofSelectedSumCeil` constructs the exact ceiling
+datum from any integer selected-width family and `0 < ell`, with
+`ceilWidth=(sum+ell-1)/ell` and positive residue
+`aParam=((sum-1)%ell+1).toNat`.  The older existential
+`nonempty_of_ell_pos` now delegates to this exact datum.  Reproduction and
+statement card:
+`threads/06-dln-translation/reproduction-definition3-exact-ceil-data-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-definition3-exact-ceil-data.md`.

@@ -72,59 +72,8 @@ namespace AoyagiDefinition3CeilData
 integer selected-width family. -/
 theorem nonempty_of_ell_pos
     (ell : ℕ) (m : Fin (ell + 1) → ℤ) (hell : 0 < ell) :
-    Nonempty (AoyagiDefinition3CeilData ell m) := by
-  classical
-  let T : ℤ := ∑ j : Fin (ell + 1), m j
-  let e : ℤ := ell
-  have hepos : 0 < e := by
-    simpa [e] using (show (0 : ℤ) < (ell : ℤ) by exact_mod_cast hell)
-  have hene : e ≠ 0 := ne_of_gt hepos
-  by_cases hmod : T % e = 0
-  · refine ⟨{
-      ell_pos := hell
-      ceilWidth := T / e
-      aParam := ell
-      selectedSum_eq := ?_
-      aParam_pos := hell
-      aParam_le := le_rfl }⟩
-    have hT : e * (T / e) = T := by
-      have h := Int.emod_add_mul_ediv T e
-      rw [hmod, zero_add] at h
-      simpa [mul_comm] using h
-    calc
-      T = e * (T / e) := hT.symm
-      _ = (ell : ℤ) * (T / e - 1) + ell := by
-        simp [e]
-        ring
-  · let a : ℕ := (T % e).toNat
-    have hmod_nonneg : 0 ≤ T % e := Int.emod_nonneg T hene
-    have hmod_pos : 0 < T % e := by omega
-    have hmod_lt : T % e < e := Int.emod_lt_of_pos T hepos
-    have hcast_a : (a : ℤ) = T % e := by
-      dsimp [a]
-      exact Int.toNat_of_nonneg hmod_nonneg
-    have hapos : 0 < a := by
-      have hapos_int : (0 : ℤ) < (a : ℤ) := by
-        simpa [hcast_a] using hmod_pos
-      exact_mod_cast hapos_int
-    have hale : a ≤ ell := by
-      have hle_int : (a : ℤ) ≤ (ell : ℤ) := by
-        have hle : T % e ≤ e := le_of_lt hmod_lt
-        simpa [hcast_a, e] using hle
-      exact_mod_cast hle_int
-    refine ⟨{
-      ell_pos := hell
-      ceilWidth := T / e + 1
-      aParam := a
-      selectedSum_eq := ?_
-      aParam_pos := hapos
-      aParam_le := hale }⟩
-    calc
-      T = T % e + e * (T / e) := (Int.emod_add_mul_ediv T e).symm
-      _ = (ell : ℤ) * (T / e + 1 - 1) + a := by
-        rw [hcast_a]
-        simp [e]
-        ring
+    Nonempty (AoyagiDefinition3CeilData ell m) :=
+  ⟨AoyagiDefinition3CeilData.ofSelectedSumCeil ell m hell⟩
 
 /-- Explicit Definition 3 ceiling datum from a positive-remainder
 decomposition of the selected-width sum.

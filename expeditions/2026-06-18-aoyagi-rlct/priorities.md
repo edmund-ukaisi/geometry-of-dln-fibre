@@ -4598,3 +4598,6 @@ formula layer unless a future module explicitly quarantines repaired-cutoff
 finite arithmetic and avoids fibre-codimension theorems.  The first such safe
 formula bookkeeping slice is the selected-width pair-sum range/Icc conversion:
 `threads/06-dln-translation/reproduction-theorem2-selected-width-pair-sum-range-icc-a6.md`.
+The next safe formula-layer refinement is the exact Definition 3 ceiling-data
+constructor:
+`threads/06-dln-translation/reproduction-definition3-exact-ceil-data-a6.md`.
