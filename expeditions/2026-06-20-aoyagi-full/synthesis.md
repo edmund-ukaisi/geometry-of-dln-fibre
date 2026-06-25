@@ -886,6 +886,28 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-47 (2026-06-25) — hTilde INTEGRATED @4a02398a; the parallel L2 build push is launched. ★**
+- **hTilde landed + integrated** (l2-htilde; forced-rebuild green-gate + `#print axioms` re-verified): sorry-free chain-rule
+  wire in `deepest_gauge_construction` (PIN1's D_E + `D(coreAbsorb.symm)(0)=id` + `regStraightenOf2_gen`) + a NEW 437-LoC
+  axiom-clean `DeepestSchurSmooth.lean` (the global ContDiff⊤ ladder for the cutoff Schur shift — the brief's "coreAbsorb.symm
+  is a CLE" premise was wrong; it's a homeo with `(1+X)⁻¹` poles + a ContDiffBump cutoff, and the consumer demands GLOBAL
+  smoothness). PIN1 stays `[propext, Classical.choice, Quot.sound]`. ONE new narrow correct-statement gap
+  (`hasStrictFDerivAt_schurShiftRaw_zero`, DeepestSchurSmooth:365 — the Params-Pi assembler; value 0 proved per-entry).
+- **Parallel L2 push launched (independent files):** **l2-body** (a4bf381d) — the framedParams body (DeepestGaugeConstruction
+  ~1491), design-complete via framedbody-cert + s5c-cert + s5c-r2-cert (germ form, feed global R not ∏S, readX/Y/Z banked).
+  **l2-pi-assembler** (a0a89c1a) — the DeepestSchurSmooth:365 Params-Pi gap (assembler or paramsEquivFlat decode). Different
+  files → no clobber at integration.
+- **R1 hfin DEFERRED (not rushed):** it's the single HARDEST remaining build (the corank-≥2 binding `‖Δ·S‖²` coupled `diag(b)`
+  resolution + {V=0} recursion — "the largest remaining R1 build", thread-27 statement-card). I do NOT have the #54 build-ready
+  lemma spec crisply located, so launching now would be a low-quality rush. NEXT focused action: locate + digest the #54
+  build-ready lemmas → crisp commission ((3,3,4) anchor via {V=0} recursion + the done (2,2,2) `myF222_threshold_lt_top'`
+  recStep template; pp-r1-genM on-call for the corank-≥2 coupled-chart step). The forbidden Aoyagi cite is the only shortcut;
+  the recursive coupled cover is the from-scratch path.
+- **Final L2 assembly (after l2-body lands):** the squeeze-exists + case-split (L=1 base / 2≤L gauge arm) + product_reduction —
+  needs an import-arch decision (DeepestGaugeChart imports the construction circularly → relocate `deepest_gauge_squeeze_exists`
+  downstream). Same file as l2-body, so serialized after it.
+- Active: l2-body + l2-pi-assembler (builds). pp-pin2-rearch released/on-call. pp-r1-genM on-call (R1 hfin, spec-locate next).
+
 **★ UPDATE-46 (2026-06-25) — S5c FULLY CLOSED; the framedParams-body design is complete; L2 is now BUILD-bound. ★**
 - **S5c fully closed** (r≥2 matrix-PIVOT LDU confirmed): `R = S0·W·S1·…`, `W = I − Z₁A⁻¹Y₀ → I`, germ orders survive with a
   matrix pivot (X-linear term absorbed by the pivot block, not the off-diagonal). Both orthogonal generalizations done
