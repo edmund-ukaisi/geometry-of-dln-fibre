@@ -436,7 +436,18 @@ extends here — a candidate point for the operator's scope call (full general-L
   discipline working: a load-bearing claim from an error-prone seat, gated on an independent adversarial confirm, was refuted before the
   build chased a false bound. **Process signal for the operator:** the producer fold has now re-scoped FIVE times — but the destination
   (the folded comparability) keeps surviving every probe; it's the intermediate lemma shapes that are slippery. Sound destination,
-  intricate route. A strong input to Item-24's scope fork, though I continue under charge-ahead (the repair is verified + bounded). **Process note for the operator:** the producer's last
+  intricate route. A strong input to Item-24's scope fork, though I continue under charge-ahead (the repair is verified + bounded).
+- **11th catch (2026-06-25, the DEEPEST — operator-decision-grade).** Commissioned to PROVE the folded (♦), the decorrelated seat (a8a8b2ff)
+  instead REFUTED it — triple-confirmed (its exact algebra + Codex + a decorrelated pp cross-check ad67c6b4). Exact ON-FIBRE counterexample
+  ((2,3,2), r=1, a tilted kernel K=Z1Y0 nilpotent ⟹ Rcore=0 ⟹ Score=0, but coreΦ=t⁸≠0; loss=Sreg=0). **This refutes `deepest_loss_squeeze`'s
+  published coreΦ conclusion itself** (`c₁(Sreg+coreΦ) ≤ loss` fails). ROOT CAUSE: **coreΦ (per-layer-product core) is the WRONG quantity** — it
+  overcounts where per-layer cores cancel in the product (the tilted-kernel locus, OPEN in the fibre, NOT measure-zero). The right quantity is
+  **Score = frobSq(Rcore)** (global Schur, the genuine deepest-layer residual); `loss ≍ Sreg+Score` is the BANKED leaf. **Fix:** restate the
+  squeeze + producer with Score (the (♦) sorry vanishes — it becomes the banked leaf). **Headline NOT disproved** (Score gives the true loss
+  RLCT by the banked comparability) **but RE-GATED** on the uncertified `rlctAtOn(Sreg+Score)=C/2` re-derivation (Newton-polytope; commissioned
+  to pp + I'll independently confirm) + whether the R1 recursion also assumed coreΦ. **Lesson:** when a load-bearing identity has survived only
+  narrow adversary families, commission a seat to REFUTE it (not confirm). The decorrelation discipline caught what 5 prior catches' confirm-
+  framings missed. **Process note for the operator:** the producer's last
   piece has now surfaced four corrections (general-L recursion, rectangularity, the cast grind [beaten], this frame finding) — each caught
   by a tide/numeric check before a green-but-wrong build, each bounded. The L=2 close is progressing solidly but the germ-charge geometry
   is genuinely intricate; the L2-close ETA has extended across these. A candidate point to weigh Item-24's scope fork, though I continue
@@ -457,6 +468,17 @@ chart vs (B) the RRR special case. Either way the FULL general-L headline additi
 (3,3,3,3) Frame-det wall, HELD) + D1, which are far. **No action needed from the operator to keep progress** — I default to (A) and
 record this for the eventual review. The decision matters for how the close is *named* (general-L=2 vs RRR-L=2), not for whether
 work continues.
+- **STRENGTHENED (2026-06-25, after the 11th catch — this is now the live decision).** The L2 gauge-chart producer turned out to rest on a
+  fundamentally wrong core quantity (coreΦ), refuted only after 5+ catches by adversarial decorrelation; the fix (Score) is sound but RE-OPENS
+  the L2 RLCT derivation (the headline value is re-gated on the uncertified `rlctAtOn(Sreg+Score)=C/2`). Option (A) (push the general-L=2 gauge-
+  chart producer) now carries: the squeeze restatement (in progress) + the RLCT re-derivation from Score (pp, gating) + possibly an R1-recursion
+  coreΦ-vs-Score check + the final wire + the general-L L≥3 gaps. Option (B) (declare RRR-L=2, #17, DONE+clean, as the L=2 deliverable + roadmap
+  the gauge-chart producer) is now materially more attractive — RRR is Aoyagi Thm 1 proven cleanly without ANY of this coreΦ/Score machinery.
+  **My charge-ahead default remains (A)** — the fix is sound, the headline likely survives, and abandoning a nearly-converged (if hard-won)
+  producer mid-repair would waste the banked PIN1/PIN2/h1/regroup/rectangular-LDU work. But this is the genuine fork: if pp's re-derivation
+  shows `rlctAtOn(Sreg+Score)=C/2` cleanly, (A) is close; if it's hard or the R1 recursion is also coreΦ-infected, (B) (ship RRR-L=2, roadmap
+  the general producer) is the disciplined call. **Recommend the operator weigh this on return** — it's the clearest scope decision of the
+  expedition. (No block: I drive (A)'s fix + the gating re-derivation now.)
 
 ## 23. A stray off-path θ-components expedition appeared in the worktree — a real LR-θ vs Aoyagi-θ finding (2026-06-25).
 `expeditions/2026-06-25-theta-components/` appeared untracked in the worktree (created by another context — not commissioned by
