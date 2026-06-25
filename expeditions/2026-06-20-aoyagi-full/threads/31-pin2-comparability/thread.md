@@ -123,6 +123,18 @@ to have the right rlct.
   interfaces, so `hQf0/hPfL` suffice. For `L ≥ 3` the missing hyp is `deepestPoint_interior_frame_id`
   (`Q_s = 1 ∧ P_s = 1` for `1 ≤ s ≤ L−2`), banked in `DeepestFrame.lean:108`. Thread it into `hinterface`.
 
+## S5c — the `Rcore ↔ coreAbsorb` core identification (adjudicated WITNESS, 2026-06-25)
+
+NOT banked (g156 only ASSERTS it in prose, and that prose `R−∏S ∈ ideal(reg)` claim is FALSE — Groebner
+remainder `−Y1Z0 ≠ 0`). Adjudicated: the true statement is an EXACT unit-rescaling, cleaner than ideal
+membership. `Rcore = u·∏S_s`, `u = ∏_s(1+X_s)/A` a bounded unit (→1 at 0); both `= ∏det(C_s)` over the
+global pivot `A` resp. ∏ layer-pivots (rank-1 determinant identity). So `∑Rcore² ≍ ∑(∏S_s)²` STANDALONE
+on a nbhd (NO `∑E²` charge). Build-ready atom + the squeeze wiring (feed the GLOBAL `Rcore` to
+`core_comparability_squeeze`, NOT `∏S` — the gap `Rcore−∏S` is NOT `E`-controllable) in `s5c-cert.md`.
+Decorrelated Codex (by-hand re-derivation) agrees on every point. **Scope: r=1 EXACT (L=2,3 verified);
+matrix-r (M>1) MC-supported [0.99,1.02] at scale 1e-2, FLAGGED as a follow-on for the general-`(C,θ)`
+headline.** Cert: `s5c-cert.md`; consult: `codex/s5c-*`.
+
 ## framedParams_split_eq_frame_raw BODY decomposition (post-integration, 2026-06-25)
 
 After the PIN2 repair integrated green (`bcfb8b60`), the cert BODY is a `sorry` with a TRUE conclusion

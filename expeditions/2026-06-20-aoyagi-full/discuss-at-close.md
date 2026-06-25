@@ -285,3 +285,22 @@ checkout while it is on `expedition/aoyagi-full`. I have **deliberately NOT comm
 expedition/branch) and **NOT deleted it** (it is someone's work). It persists untracked across checkouts. **Operator
 action:** home it on its own branch / the fibre-codim expedition, or confirm it should be dropped. (Also gitignored the
 transient `**/.codex-consult/` scratch this tick.)
+
+## 17. FALSE prose in a committed docstring found + corrected (2026-06-25): g156 `R − ∏S ∈ ideal(E)` is FALSE.
+S5c adjudication (pp-pin2-rearch + decorrelated Gröbner Codex) found `fullProduct_core_split`'s docstring
+(`DeepestGaugeBlocks.lean:126`) asserted in PROSE that the global Schur complement `R` and the per-layer Schur product
+`∏S_s` differ by an element of `ideal(E)` (the regular blocks) — so they "squeeze the same" via ideal membership. **That
+mechanism is FALSE** (`num(R − ∏S) mod ideal(A−1, P12, P21) = −Y1·Z0 ≠ 0`). The THEOREM itself is sound (its statement +
+proof, `frobenius_fromBlocks` + `schur_P11_decomp`, never used the false claim — it lived only in the explanatory prose).
+The CONCLUSION (R, ∏S squeeze the same) is TRUE, but via an exact **unit-rescaling** `R = u·∏S`, `u = ∏(1+X_s)/P00` a
+bounded unit. **Corrected the docstring this tick** (cite s5c-cert; added the build-ordering consequence: feed the squeeze
+the global `R`, not `∏S`). No operator action — flagged as the conceptual-slop catch + correction.
+
+## 18. r≥2 / matrix-core S5c is NOT exact-proven — the headline NEEDS it (2026-06-25).
+The S5c core comparability `∑R² ≍ ∑(∏S)² = deepestCoreF(coreAbsorb)` (via the unit rescaling `R = u·∏S`) is **EXACT for
+r=1, all L** (rank-1 determinant identity, L=2/3 symbolically verified). For **r≥2 / matrix core (M>1)** the scalar unit `u`
+becomes a bounded invertible SIMILARITY — only **MC-supported** (`H=[3,3,3]` r=1 2×2-core: `∑R²/∑(∏S)² → [0.99,1.02]`), NOT
+exact-proven. **The full L2 headline (rank-`r` reduced core) DEPENDS on this matrix case.** pp-pin2-rearch flagged it +
+recommends a short r≥2 cert before the body build relies on it; I've dispatched it onto the r≥2 adjudication (probably
+routine sub-multiplicativity, but not free). **Operator-relevant:** until the r≥2 matrix-core comparability is proven, the
+L2 gate closes only for r=1 cores; the general-r headline carries this as a named open dependency. Driving it now, not deferring.
