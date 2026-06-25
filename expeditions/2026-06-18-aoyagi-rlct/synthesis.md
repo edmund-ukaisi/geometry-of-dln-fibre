@@ -162,6 +162,21 @@ prove original DLN loss comparability, prove density/Jacobian transport, or
 prove endpoint/divergence, threshold equality, normal crossings, pole order,
 or RLCT.
 
+Latest A2 support update: `LocalMeasureHandoff.lean` now proves
+
+```text
+exists_open_ae_restrict_inter_of_eventually_nhdsWithin
+exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin
+```
+
+This converts `∀ᶠ x in nhdsWithin x0 S, P x` into an a.e. fact after
+restricting the base measure to a smaller open neighborhood intersected with
+`S`, and pulls such facts to product measures along first projection.  It is
+infrastructure for feeding local source-filter facts into product-measure
+hypotheses; it is not a p.13 chart construction, loss comparison, density or
+Jacobian transport theorem, integrability theorem, normal-crossing theorem, or
+RLCT extraction.
+
 ## Latest A6 Source Audit
 
 `threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`

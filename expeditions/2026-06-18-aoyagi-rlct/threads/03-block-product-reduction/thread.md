@@ -3392,3 +3392,31 @@ Aoyagi's p.13 analytic product chart, compare the original DLN loss with the
 p.13 literal square-sum, prove Jacobian/prior density transport, prove
 residual-base integrability, or prove endpoint/divergence, threshold equality,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 local measure handoff
+
+Reproduction:
+`reproduction-a2-local-measure-handoff.md`.
+Statement card:
+`statement-card-a2-local-measure-handoff.md`.
+Review:
+`review-a2-local-measure-handoff.md`.
+
+Lean now proves a generic local support handoff in
+`LocalMeasureHandoff.lean`:
+
+```text
+exists_open_ae_restrict_inter_of_eventually_nhdsWithin
+exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin
+```
+
+If a property holds eventually in `nhdsWithin x0 S`, then after shrinking to
+some open neighborhood `U` of `x0`, it holds almost everywhere for any measure
+restricted to `U ∩ S`.  The product version pulls the same base a.e. fact back
+along first projection for `(mu.restrict (U ∩ S)).prod nu`.
+
+Boundary: this is only a filter-to-restricted-measure conversion.  It does not
+construct a p.13 product chart, identify source coordinates with
+residual-base plus regular-fiber product coordinates, compare losses, transport
+density/Jacobian factors, prove integrability, produce normal crossings, pole
+order, or RLCT.

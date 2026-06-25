@@ -249,7 +249,10 @@ No such claim is formalisation-ready until both fields are filled.
   p.13 fixed-base regular-coordinate adapter that rewrites the Euclidean
   regular-coordinate fiber dimension as `aoyagiTheorem2RegularVariableCount`
   and states the lower-loss hypothesis using the p.13 regular coordinate
-  square-sum. The full source
+  square-sum. A generic local measure handoff now also turns
+  `nhdsWithin` facts into a.e. facts after restricting a measure to a smaller
+  measurable source neighborhood, with a first-projection product version. The
+  full source
   Theorem 3/RLCT claim remains blocked on the
   analytic product-coordinate regular-square suspension theorem and the actual
   p.13 chart/density construction.
@@ -679,6 +682,11 @@ No such claim is formalisation-ready until both fields are filled.
   the p.13 fixed-base regular-coordinate finite-side adapter, reviewed by
   xhigh `Pasteur the 4th` at
   `threads/03-block-product-reduction/review-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+  Also proved `exists_open_ae_restrict_inter_of_eventually_nhdsWithin` and
+  `exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin` in
+  `LocalMeasureHandoff.lean`, the generic local filter-to-restricted-measure
+  handoff, reviewed by xhigh `Carver the 4th` at
+  `threads/03-block-product-reduction/review-a2-local-measure-handoff.md`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

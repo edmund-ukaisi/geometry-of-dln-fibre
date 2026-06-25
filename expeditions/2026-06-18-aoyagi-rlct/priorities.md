@@ -3857,3 +3857,11 @@ hypothesis with the p.13 regular coordinate square-sum.  Future work should
 feed this theorem by producing the remaining supplied product-chart hypotheses
 or by proving a source-filter-to-product-measure handoff; do not add more
 finite-side wrappers unless they remove a real hypothesis.
+
+A2 local measure handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-local-measure-handoff.md`.
+It is the preferred generic support theorem for converting a relative
+neighborhood fact into an a.e. fact on a restricted local source measure, and
+for pulling that fact to a product measure along first projection.  It still
+does not provide the actual p.13 product chart or measure transport; future
+work must supply the chart map and density/Jacobian hypotheses separately.

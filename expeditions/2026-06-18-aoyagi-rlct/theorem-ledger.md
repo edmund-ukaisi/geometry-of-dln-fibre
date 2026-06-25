@@ -7699,6 +7699,20 @@ chart construction, no original DLN loss comparison, no density/Jacobian
 transport, no residual-base integrability proof, no threshold equality, no
 normal crossings, pole order, or RLCT.
 
+Latest A2 local measure handoff:
+`LocalMeasureHandoff.lean` proves
+`exists_open_ae_restrict_inter_of_eventually_nhdsWithin` and
+`exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-local-measure-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-local-measure-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-local-measure-handoff.md`.
+Nonclaims: no p.13 product chart, no source-coordinate/product-coordinate
+identification, no loss comparison, no density/Jacobian transport, no
+integrability theorem, no normal crossing, pole order, or RLCT extraction.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and
