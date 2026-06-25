@@ -252,6 +252,9 @@ No such claim is formalisation-ready until both fields are filled.
   square-sum. A generic local measure handoff now also turns
   `nhdsWithin` facts into a.e. facts after restricting a measure to a smaller
   measurable source neighborhood, with a first-projection product version. The
+  explicit p.13 product-coordinate family is also now proved to preserve
+  source-rank-stratum membership locally in small regular coordinates, under
+  the base product-reduction certificate and determinant-unit condition. The
   full source
   Theorem 3/RLCT claim remains blocked on the
   analytic product-coordinate regular-square suspension theorem and the actual
@@ -315,7 +318,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry residual-product square-sum at
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`;
   selected-entry finite sector cover at
-  `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`.
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`;
+  product-coordinate source-rank membership at
+  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -372,7 +377,10 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry residual-product square-sum reviewed by xhigh `Hooke` in
   `threads/03-block-product-reduction/review-a2-selected-entry-residual-product-square-sum.md`;
   selected-entry finite sector cover reviewed by xhigh `Bacon` in
-  `threads/03-block-product-reduction/review-a2-selected-entry-finite-sector-cover.md`.
+  `threads/03-block-product-reduction/review-a2-selected-entry-finite-sector-cover.md`;
+  product-coordinate source-rank membership reviewed by xhigh check-ins
+  `Bernoulli`, `Banach`, and `Confucius` in
+  `threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6946,6 +6954,32 @@ Nonclaims: no signed-box chart construction, source image/coverage theorem,
 pushforward or Jacobian/source-density identity, residual/source-density
 monomial-unit production, residual integrability proof, normal-crossing
 extraction, pole order, or RLCT.
+
+Latest A2 product-coordinate source-rank membership:
+Lean now proves the elementary product-coordinate rank identities for the
+p.13 right endpoint, middle edges, and left endpoint, and uses them to show
+that the explicit multi-edge product-coordinate family preserves source-rank
+stratum membership under the base product-reduction certificate and
+`det Ctop` unit condition.  The local version chooses a small regular
+coordinate radius and works eventually in `nhdsWithin` the base source-rank
+stratum.
+
+Lean names:
+`ChartLocalSuffixState.rank_productCoordinateRightEndpointMatrix`,
+`ChartLocalSuffixState.rank_productCoordinateMiddleMatrix`,
+`ChartLocalSuffixState.rank_productCoordinateLeftEndpointMatrix`,
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum`,
+and
+`exists_pos_radius_le_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum_nhdsWithin_source`.
+
+Reproduction and review:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`
+and
+`threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`.
+
+Nonclaims: no source coverage, no local source/image equality, no exact-rank
+openness, no inverse chart, no density/Jacobian transport, no normal-crossing
+certificate, no pole-order theorem, and no RLCT theorem.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

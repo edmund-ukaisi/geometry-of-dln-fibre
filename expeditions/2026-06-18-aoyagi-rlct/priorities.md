@@ -4533,6 +4533,18 @@ local residual signed-box chart/source coverage, weighted pushforward and
 Jacobian/source-density identity, and concrete residual/source-density
 monomial-unit identities.
 
+A2 product-coordinate source-rank membership has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`.
+Lean proves the three endpoint/middle product-coordinate rank formulas and
+uses them to show that the explicit p.13 multi-edge product-coordinate family
+maps base source-rank points back into the same source-rank stratum, locally
+for small regular coordinates near the self-base chain.  This fills an
+honest source-rank image-membership gap under a base product-reduction
+certificate and `det Ctop` unit condition.  It is not source coverage, local
+source/image equality, exact-rank openness, density/Jacobian transport,
+normal crossings, pole order, or RLCT.  Do not add another wrapper here
+unless it removes one of those real remaining hypotheses.
+
 A2 selected-entry signed-box monomial-unit data has now landed:
 `threads/03-block-product-reduction/reproduction-a2-selected-entry-signed-box-monomial-unit-data.md`.
 Lean proves a concrete selected-entry producer for the generic signed-box

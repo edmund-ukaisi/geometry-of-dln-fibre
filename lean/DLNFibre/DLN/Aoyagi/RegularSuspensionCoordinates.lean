@@ -5058,6 +5058,296 @@ theorem paperEndpointFixedBaseProductReductionCertificate_multiEdgeProductCoordi
       (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeProd rEdge (x, u) hdetCharts
 
 set_option linter.unusedSectionVars false in
+/-- The explicit multi-edge p.13 product-coordinate edge family preserves the
+source-rank stratum pointwise, assuming the base point is already in the
+source-rank stratum and carries a product-reduction certificate.
+
+The certificate hypothesis is essential: it is what identifies the ranks of
+the base transformed Schur residual blocks as `rEdge p - r`.  This theorem is
+only source-rank image membership for the constructed product-coordinate
+family; it does not prove source coverage, exact-rank openness, a local
+inverse, Jacobian transport, normal crossings, or RLCT. -/
+theorem paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (x : α)
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (r : ℕ) (rEdge : Fin (M + 2) → ℕ)
+    (baseCert :
+      PaperEndpointFixedBaseProductReductionCertificate
+        (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase rEdge x)
+    (hsrc :
+      x ∈ paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge)
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det) :
+    (x, u) ∈ paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) (N := M + 2) V Bv
+      (paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        V Bv U₀ hU₀ CedgeBase) r rEdge := by
+  classical
+  let CedgeProd :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+      V Bv U₀ hU₀ CedgeBase
+  refine ⟨hsrc.1, ?_, hsrc.2.2⟩
+  intro p
+  let Ebase : ∀ p : Fin (M + 2), Matrix
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+          p.castSucc) ℝ :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+      (fun p ↦
+        (CedgeBase x p :
+          reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+  let G :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+      V Bv U₀ u Ebase
+  let F2 :=
+    AoyagiRegularBlockCoordinateIndex.f2Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let F3 :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let Ctop :=
+    AoyagiRegularBlockCoordinateIndex.ctopMatrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let C : ∀ p : Fin (M + 2), Matrix
+      (throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+        p.castSucc) ℝ :=
+    fun p ↦ ChartLocalSuffixState.residualBlock Ebase
+      (Fin.last (M + 2)) p p.succ.le_last
+  let Eprod : ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ :=
+    fun p ↦ (CedgeProd (x, u) p :
+      reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ)
+  let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀ Eprod
+  have hEMat : EMat = G := by
+    funext q
+    simpa [EMat, Eprod, CedgeProd,
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean,
+      Ebase, G] using
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
+        (K := ℝ) V Bv U₀ hU₀ G q
+  have hUrank : Module.finrank ℝ U₀ = r :=
+    (paperEndpointBasepointCertificate_of_isCompl V Bv U₀ hU₀).finrank_eq_range.trans hsrc.1
+  have hCrank : ∀ q : Fin (M + 2), (C q).rank = rEdge q - r := by
+    intro q
+    simpa [C, Ebase] using
+      PaperEndpointFixedBaseProductReductionCertificate.residualBlock_rank_eq_sourceRankSubProductRank
+        (W := V) (B := Bv)
+        (base := paperEndpointBasepointCertificate_of_isCompl V Bv U₀ hU₀)
+        (cert := baseCert) hsrc q
+  have hGrank : (G p).rank = rEdge p := by
+    by_cases hlast : p = Fin.last (M + 1)
+    · subst p
+      have hshape :
+          G (Fin.last (M + 1)) =
+            ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3 (C (Fin.last (M + 1))) := by
+        simp [G, F3, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
+      rw [hshape]
+      have hle : r ≤ rEdge (Fin.last (M + 1)) := hsrc.2.2 (Fin.last (M + 1))
+      calc
+        (ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3 (C (Fin.last (M + 1)))).rank =
+            Fintype.card (Fin (Module.finrank ℝ U₀)) + (C (Fin.last (M + 1))).rank := by
+          exact
+            ChartLocalSuffixState.rank_productCoordinateRightEndpointMatrix
+              (K := ℝ) F3 (C (Fin.last (M + 1)))
+        _ = r + (rEdge (Fin.last (M + 1)) - r) := by
+          rw [Fintype.card_fin, hUrank, hCrank]
+        _ = rEdge (Fin.last (M + 1)) := by
+          omega
+    · by_cases hzero : p = 0
+      · subst p
+        have hnotLast : (0 : Fin (M + 2)) ≠ Fin.last (M + 1) := by
+          intro h
+          have hval := congrArg Fin.val h
+          simp at hval
+        have hshape :
+            G (0 : Fin (M + 2)) =
+              ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C 0) := by
+          simp [G, F2, Ctop, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+            hnotLast]
+        rw [hshape]
+        have hle : r ≤ rEdge 0 := hsrc.2.2 0
+        calc
+          (ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C 0)).rank =
+              Fintype.card (Fin (Module.finrank ℝ U₀)) + (C 0).rank := by
+            exact
+              ChartLocalSuffixState.rank_productCoordinateLeftEndpointMatrix
+                (K := ℝ) F2 Ctop (C 0) (by simpa [Ctop] using hCtop)
+          _ = r + (rEdge 0 - r) := by
+            rw [Fintype.card_fin, hUrank, hCrank]
+          _ = rEdge 0 := by
+            omega
+      · have hp0 : 0 < p.val := Nat.pos_of_ne_zero (by
+          intro hp
+          apply hzero
+          ext
+          simpa using hp)
+        have hplast : p.val < M + 1 := by
+          have hle : p.val ≤ M + 1 := Nat.le_of_lt_succ p.isLt
+          have hne : p.val ≠ M + 1 := by
+            intro hp
+            apply hlast
+            ext
+            simpa using hp
+          exact Nat.lt_of_le_of_ne hle hne
+        have hshape :
+            G p =
+              ChartLocalSuffixState.productCoordinateMiddleMatrix
+                (ρ := Fin (Module.finrank ℝ U₀)) (C p) := by
+          simp [G, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+            hlast, hzero]
+        rw [hshape]
+        have hle : r ≤ rEdge p := hsrc.2.2 p
+        calc
+          (ChartLocalSuffixState.productCoordinateMiddleMatrix
+              (ρ := Fin (Module.finrank ℝ U₀)) (C p)).rank =
+              Fintype.card (Fin (Module.finrank ℝ U₀)) + (C p).rank := by
+            exact
+              ChartLocalSuffixState.rank_productCoordinateMiddleMatrix
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) (C p)
+          _ = r + (rEdge p - r) := by
+            rw [Fintype.card_fin, hUrank, hCrank]
+          _ = rEdge p := by
+            omega
+  calc
+    Module.finrank ℝ (LinearMap.range (Eprod p)) =
+        (EMat p).rank := by
+      exact
+        (rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ Eprod p).symm
+    _ = (G p).rank := by rw [hEMat]
+    _ = rEdge p := hGrank
+
+set_option linter.unusedSectionVars false in
+/-- On a sufficiently small Euclidean regular-coordinate ball, the explicit
+multi-edge p.13 product-coordinate edge family maps base source-rank points
+back into the same source-rank stratum.
+
+This is an image-membership statement for the constructed product-coordinate
+family, relative to Aoyagi's source-shaped rank stratum.  It does not prove
+that the product-coordinate map covers a source neighborhood, that the
+source-rank stratum is open, or that any Jacobian/density or RLCT statement
+holds. -/
+theorem exists_pos_radius_le_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum_nhdsWithin_source
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    {r : ℕ} (rEdge : Fin (M + 2) → ℕ) {Rmax : ℝ}
+    (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          V Bv U₀ hU₀ CedgeBase
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            (x, u) ∈ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) (N := M + 2) V Bv CedgeProd r rEdge := by
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  dsimp only
+  have hcert_nhds :
+      {x : α |
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase rEdge x} ∈
+        nhds x₀ :=
+    paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds
+      (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase rEdge hCedgeBase hbase
+  have hcert :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase rEdge x :=
+    (inf_le_left :
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge) ≤ nhds x₀) hcert_nhds
+  have hsrc_eventual :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        x ∈ paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge :=
+    eventually_mem_nhdsWithin
+  filter_upwards [hcert, hsrc_eventual] with x hcert_x hsrc_x
+  intro u hu
+  exact
+    paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (x := x) (u := u)
+      (r := r) (rEdge := rEdge) hcert_x hsrc_x (hunit u hu)
+
+set_option linter.unusedSectionVars false in
 /-- On a sufficiently small Euclidean regular-coordinate ball, the explicit
 multi-edge source-dependent p.13 product-coordinate edge family satisfies the
 fixed-base product-reduction certificate, eventually on any base source

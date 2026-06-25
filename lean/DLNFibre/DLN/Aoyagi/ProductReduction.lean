@@ -942,6 +942,101 @@ def productCoordinateSingleEdgeMatrix
     Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
   fromBlocks Ctop (-(Ctop * F2)) (-(F3 * Ctop)) (C0 + F3 * Ctop * F2)
 
+section ProductCoordinateRank
+
+variable {K : Type*} [Field K]
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+/-- The right-endpoint p.13 product-coordinate matrix has rank equal to the
+regular corner size plus the rank of its residual block. -/
+theorem rank_productCoordinateRightEndpointMatrix
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (F3 : Matrix μ ρ K) (C : Matrix μ ν K) :
+    (productCoordinateRightEndpointMatrix F3 C).rank =
+      Fintype.card ρ + C.rank := by
+  let L : Matrix (ρ ⊕ μ) (ρ ⊕ μ) K :=
+    fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix μ μ K)
+  have hLdet : IsUnit L.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := L)).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  calc
+    (productCoordinateRightEndpointMatrix F3 C).rank =
+        (L * productCoordinateRightEndpointMatrix F3 C).rank := by
+      exact (Matrix.rank_mul_eq_right_of_isUnit_det L
+        (productCoordinateRightEndpointMatrix F3 C) hLdet).symm
+    _ = (fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) C).rank := by
+      have hmul :
+          L * productCoordinateRightEndpointMatrix F3 C =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) C := by
+        change
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3 (1 : Matrix μ μ K) *
+              fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) C =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) C
+        rw [fromBlocks_multiply]
+        simp
+      rw [hmul]
+    _ = (1 : Matrix ρ ρ K).rank + C.rank := by
+      exact rank_fromBlocks_zero_zero (1 : Matrix ρ ρ K) C
+    _ = Fintype.card ρ + C.rank := by
+      rw [Matrix.rank_one]
+
+/-- The middle p.13 product-coordinate matrix has rank equal to the regular
+corner size plus the rank of its residual block. -/
+theorem rank_productCoordinateMiddleMatrix
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype ν]
+    (C : Matrix μ ν K) :
+    (productCoordinateMiddleMatrix (ρ := ρ) C).rank =
+      Fintype.card ρ + C.rank := by
+  calc
+    (productCoordinateMiddleMatrix (ρ := ρ) C).rank =
+        (fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) C).rank := by
+      rfl
+    _ = (1 : Matrix ρ ρ K).rank + C.rank := by
+      exact rank_fromBlocks_zero_zero (1 : Matrix ρ ρ K) C
+    _ = Fintype.card ρ + C.rank := by
+      rw [Matrix.rank_one]
+
+set_option linter.unusedDecidableInType false in
+/-- The left-endpoint p.13 product-coordinate matrix has rank equal to the
+regular corner size plus the rank of its residual block, provided the displayed
+`Ctop` block is in the determinant chart. -/
+theorem rank_productCoordinateLeftEndpointMatrix
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    [Fintype ν] [DecidableEq ν]
+    (F2 : Matrix ρ ν K) (Ctop : Matrix ρ ρ K) (C0 : Matrix μ ν K)
+    (hCtop : IsUnit Ctop.det) :
+    (productCoordinateLeftEndpointMatrix F2 Ctop C0).rank =
+      Fintype.card ρ + C0.rank := by
+  let R : Matrix (ρ ⊕ ν) (ρ ⊕ ν) K :=
+    fromBlocks (1 : Matrix ρ ρ K) F2 0 (1 : Matrix ν ν K)
+  have hRdet : IsUnit R.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := R)).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  calc
+    (productCoordinateLeftEndpointMatrix F2 Ctop C0).rank =
+        (productCoordinateLeftEndpointMatrix F2 Ctop C0 * R).rank := by
+      exact (Matrix.rank_mul_eq_left_of_isUnit_det R
+        (productCoordinateLeftEndpointMatrix F2 Ctop C0) hRdet).symm
+    _ = (fromBlocks Ctop 0 (0 : Matrix μ ρ K) C0).rank := by
+      have hmul :
+          productCoordinateLeftEndpointMatrix F2 Ctop C0 * R =
+            fromBlocks Ctop 0 (0 : Matrix μ ρ K) C0 := by
+        change
+          fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix μ ρ K) C0 *
+              fromBlocks (1 : Matrix ρ ρ K) F2 0 (1 : Matrix ν ν K) =
+            fromBlocks Ctop 0 (0 : Matrix μ ρ K) C0
+        rw [fromBlocks_multiply]
+        simp
+      rw [hmul]
+    _ = Ctop.rank + C0.rank := by
+      exact rank_fromBlocks_zero_zero Ctop C0
+    _ = Fintype.card ρ + C0.rank := by
+      rw [Matrix.rank_of_isUnit Ctop ((Matrix.isUnit_iff_isUnit_det (A := Ctop)).mpr hCtop)]
+
+end ProductCoordinateRank
+
 /-- The deterministic suffix-state update hidden in the chart-local induction proof. -/
 def step
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}

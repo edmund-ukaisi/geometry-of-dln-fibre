@@ -10779,6 +10779,21 @@ explicit factor-product identity to the selected-entry matrix, and a residual
 index equivalence.  Do not turn the one-edge selected-entry readout into a
 multi-edge claim without those inputs.
 
+The product-coordinate source-rank membership slice has now landed in
+`ProductReduction.lean` and `RegularSuspensionCoordinates.lean`.  It proves
+the three elementary p.13 rank identities for the right endpoint, middle
+edges, and left endpoint, then uses a base product-reduction certificate to
+show that the explicit multi-edge product-coordinate family preserves
+source-rank-stratum membership pointwise; a small-radius version supplies the
+`det Ctop` unit condition and eventual base certificate near the self-base
+chain.  Reproduction and review:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`
+and
+`threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`.
+This is image membership only.  It does not prove local source/image equality,
+source coverage, exact-rank openness, inverse chart, density/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
 Post-recovery xhigh scouts `Godel` and `Ampere` found no high-value Lean-ready
 A4 or A2/A6 wrapper beyond the current supplied sockets.  The cross-thread
 decision is saved at

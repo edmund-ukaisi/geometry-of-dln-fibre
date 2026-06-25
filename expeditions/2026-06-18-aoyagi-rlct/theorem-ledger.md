@@ -7985,6 +7985,28 @@ triangular multiplier bound, no product chart, no source coverage, no
 density/Jacobian transport, no normal crossings, pole order, or RLCT
 extraction.
 
+Latest A2 product-coordinate source-rank membership:
+`ProductReduction.lean` proves
+`ChartLocalSuffixState.rank_productCoordinateRightEndpointMatrix`,
+`ChartLocalSuffixState.rank_productCoordinateMiddleMatrix`, and
+`ChartLocalSuffixState.rank_productCoordinateLeftEndpointMatrix`.
+`RegularSuspensionCoordinates.lean` proves
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum`
+and
+`exists_pos_radius_le_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_sourceRankStratum_nhdsWithin_source`.
+The pointwise theorem combines the block-rank identities with the residual
+rank formulas from a base product-reduction certificate, proving source-rank
+image membership for the explicit p.13 product-coordinate family.  The local
+theorem supplies a small regular-coordinate ball where `det Ctop` is a unit
+and uses eventual base product-reduction certificates near the self-base
+chain.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`.
+Nonclaims: no source coverage, no local source/image equality, no exact-rank
+openness, no inverse chart, no density/Jacobian transport, no normal
+crossings, pole order, or RLCT.
+
 Latest A2 product-family certificate and adapted lower bound:
 `ProductReduction.lean` proves
 `ChartLocalSuffixState.recursiveDetCharts_productCoordinateEdges_succSucc`.
