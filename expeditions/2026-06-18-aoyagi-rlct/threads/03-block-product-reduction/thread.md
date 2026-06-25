@@ -3837,3 +3837,35 @@ arbitrary non-normed continuous-linear-map spaces.  It also does not prove
 source-rank openness, analytic chart construction, pushforward, density or
 Jacobian transport, original-loss comparison, residual positivity or
 integrability by itself, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 signed-box residual source finite-integral bridge
+
+Reproduction:
+`reproduction-a2-signed-box-residual-source-finite-integral-bridge.md`.
+Statement card:
+`statement-card-a2-signed-box-residual-source-finite-integral-bridge.md`.
+Review:
+`review-a2-signed-box-residual-source-finite-integral-bridge.md`.
+
+Lean now proves the direct p.13 finite-integral handoff
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+The theorem first invokes
+`residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_edgeMatrix`
+to obtain residual positivity and residual negative-power integrability on
+the source-rank stratum, then passes those two hypotheses to
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top`.
+
+Boundary: source-stratum measurability, fixed-basis edge-matrix
+measurability, `0 < t`, signed-box chart a.e.-measurability, source-density
+a.e.-measurability, weighted source pushforward, signed-box residual monomial
+lower bound, source-density a.e. nonnegativity, signed-box density monomial
+upper bound, and local regular-fiber loss/density bounds remain explicit
+inputs.  This does not construct a p.13 chart, prove the pushforward, transport
+Jacobian/prior density, compare original `lossDLN`, produce normal crossings,
+compute pole order, or extract an RLCT.

@@ -4044,3 +4044,15 @@ assert raw `Measurable Cedge` for arbitrary non-normed continuous-linear-map
 spaces, and it still does not prove chart construction, pushforward identity,
 density/Jacobian transport, residual positivity/integrability, original-loss
 comparison, normal crossings, pole order, or RLCT.
+
+A2 signed-box residual source finite-integral bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-source-finite-integral-bridge.md`.
+Lean composes the measurable-edge weighted signed-box residual-source
+constructor with the p.13 local finite-integral theorem.  This is the preferred
+consumer when a signed-box residual chart supplies the weighted pushforward,
+residual lower bound, source-density a.e.-measurability/nonnegativity, and
+density upper bound.  It still keeps `0 < t`, source-stratum measurability, and
+the local regular-fiber loss/density bounds explicit, and does not construct
+the chart, prove the pushforward, transport density or Jacobian factors,
+compare original `lossDLN`, produce normal crossings, compute pole order, or
+extract an RLCT.

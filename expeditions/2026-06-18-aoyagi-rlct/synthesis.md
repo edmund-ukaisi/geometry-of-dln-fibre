@@ -9530,6 +9530,19 @@ level, while leaving chart construction, pushforward, density/Jacobian
 transport, original-loss comparison, residual positivity/integrability,
 normal crossings, pole order, and RLCT outside the theorem.
 
+Latest A2 signed-box residual source finite-integral bridge:
+`RegularSuspensionLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix`.
+It removes the explicit residual positivity and residual negative-power
+integrability inputs from the p.13 local finite-integral bridge when the
+measurable-edge weighted signed-box residual-source hypotheses are supplied.
+It still assumes `0 < t`, source-stratum measurability, signed-box chart
+a.e.-measurability, source-density a.e.-measurability, the weighted
+pushforward, residual monomial lower bound, source-density a.e. nonnegativity,
+the source-density monomial upper bound, and local regular-fiber loss/density
+bounds.  It is not chart construction, pushforward proof, density/Jacobian
+transport, original-loss comparison, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
