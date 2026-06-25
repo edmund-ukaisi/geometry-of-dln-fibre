@@ -704,3 +704,150 @@ Note: `A := baseChange (evalGauge (schurEval s) endpointGauge⁻¹) B ∈ Σ^r` 
 `mult_smul` + the `endpointGauge` evaluation = `chartGauge(M(s))` shape) for the point-realization;
 or route through the LANDED `mult_chartGauge_inv_smul_fibre` once `evalGauge` is identified with
 `chartGauge(M(s))⁻¹` (a separate bridge, deferrable).
+
+---
+
+## Tide progress log — update 14 (chart-eval lemma + Ψ descent obligation LANDED; sorry-2 = dsig-unit remains)
+
+**Banked this tide (sorry-free, build-green, NOT yet committed by controller):**
+- `Core.ChartEvalRealize` (NEW, ~112 LoC, sorry-free):
+  - `rank_normalForm` : `(normalForm p q r hp hq).rank = r` (via `rank_fromBlocks_zero_offdiag` +
+    `rank_one` + `rank_submatrix`).
+  - `chartEvalGauge_smul_mem_productRankLocus` : `baseChange P B ∈ productRankLocus d r` for any `P`
+    and `B ∈ fibre (normalForm)` (via `mem_productRankLocus_iff_mem_sweep` + `rank_normalForm`). The
+    geometric realization the Ψ descent rides.
+  - `evalAway_chartPsiAeval` (task #66, the chart-eval lemma proper): `evalAway s B hs
+    (chartPsiAeval p) = aeval (canonicalCoord (baseChange (evalGauge (schurEval s) endpointGauge⁻¹)
+    B)) p`. ONE `MvPolynomial.algHom_ext` chaining A.3 (`evalAway_comp_chartPsiTower`) + A.4
+    (`aevalTower_gaugeSub`). No wall — exactly the route-(b) prediction.
+- `Core.ChartPsiDescent.chartPsi_vanishingIdeal_le` (seam-C sorry-1, the descent LINCHPIN): **PROVED**
+  (`[Infinite k]` added — benign at the `IsAlgClosed`+`CharZero` scope). Route: `mk'`-surjectivity
+  (`IsLocalization.mk'_surjective (.powers gF)`) + the away zero-test
+  `away_mk'_eq_zero_iff_exists_pow_mul_eq_zero` (annihilating power `m = 1`) + seam B
+  `mvpoly_eq_zero_of_forall_eval_fibre`. The `δ(s) = eval s detSchurS` case split clears the
+  detSchurS-vanishing locus by the `gF` factor; the `δ(s)≠0` branch realizes `y` as a fibre point
+  `B`, runs `evalAway_chartPsiAeval` + the realization (point lands in `Σ^r`, `p` vanishes there) +
+  `IsLocalization.lift_mk'_spec` (`v=0`) to extract `evalP x = 0`. Helper
+  `evalP_eq_eval_map_evalFibrePt` bridges `evalP s B = eval s ∘ map (evalFibrePt)`. Decorrelated
+  Codex (xhigh, `codex/seam-c-descent-answer.md`) pre-validated the assembly as sound + canonical.
+- `Core.ChartPsiDsigUnit` (NEW, ~63 LoC, sorry-free so far): the FIRST brick toward sorry-2 —
+  `map_algebraMap_multPrefix` / `map_algebraMap_multPoly` (the generic product is natural in the
+  coefficient ring: `map (algebraMap k S) (multPoly_k) = multPoly_S`, `multPrefix` induction).
+
+**REMAINING (seam-C sorry-2 = `chartPsi_dsig_isUnit`, the symbolic product-reconstruction):**
+The MATH is fully de-risked (decorrelated Codex `codex/dsig-unit-answer.md` + the careful block
+computation): `chartPsiQuot chartDsig = chartPsiAeval ΔPdeep` (reduction PROVED inline), and
+`chartPsiAeval ΔPdeep = image of detSchurS in Away gF`, a **unit** (the inverted element, via
+`schurToGfib`). The TRUE value is `detSchurS`-image (NOT `1` — Codex's first guess wrongly invoked
+the Schur relation on the generic `multPoly`; the correct chain is below). Lemma chain still to build
+(~4-5 lemmas, the design doc's flagged real-content step, NOT the brief's "mechanical" scope):
+  1. ✅ `map_algebraMap_multPoly` (LANDED in `ChartPsiDsigUnit`).
+  2. per-entry transport `chartPsiAeval (multPoly_k rr cc) = chartPsiTower ((L · multPoly_SchurLoc ·
+     H) rr cc)` — via `comp_aeval`/`map_aeval` to push `chartPsiAeval = aeval chartPsiSub`,
+     `chartPsiSub = chartPsiTower ∘ gaugeSub(endpointGauge⁻¹)`, then `map_algebraMap_multPoly` +
+     `aeval_gaugeSub_multPoly` (at `R = SchurLoc`, `P = endpointGauge⁻¹`: `(P⁻¹)_last = L`,
+     `((P⁻¹)_0)⁻¹ = H`). **The k→SchurLoc coefficient-threading is the friction.**
+  3. the fibre fact: under `chartPsiTower` (`fibCoordT` sends RepCoord-`X` to `O(F)`-classes), the
+     `multPoly` block `M` reduces to `normalForm = diag(I_r,0)` ON the fibre (so the top-left `M₁₁ ↦
+     I_r`). Provable from `eval_multPoly` + `mem_vanishingIdeal_iff` (`multPoly a b - C(normalForm a
+     b) ∈ vanishingIdeal sweepFibre` since `mult = normalForm` on `F`).
+  4. determinant assembly: top-left r×r block of `L · M · H` is `M₁₁ · Δ_schur`; with `M₁₁ ↦ I_r`
+     the image is `schurToGfib(schurΔLoc)`, `det = schurToGfib(detSchurS-image)` (`AlgHom.map_det` +
+     `det_schurΔLoc`), a unit by `isUnit_det_schurΔLoc` carried through `schurToGfib`.
+
+**Handoff state:** `ChartEvalRealize` + `ChartPsiDsigUnit` sorry-free & committable; `ChartPsiDescent`
+sorry-1 PROVED, sorry-2 reduced to `IsUnit (chartPsiAeval ΔPdeep)` with the full de-risked route in an
+in-file `TODO` note. Whole-library build green (3745 jobs). Seam D (Φ, symmetric/easier) + seam E
+(`AlgEquiv.ofAlgHom` glue) untouched. Recommend a successor tide for sorry-2 → seam D/E → `e` → hsig
+→ hSweep.
+
+---
+
+## Tide progress log — update 15 (sorry-2 bricks 1-3 LANDED; only the det assembly [brick 4] remains)
+
+Continued on `chartPsi_dsig_isUnit` (seam-C sorry-2). `Core.ChartPsiDsigUnit` now holds THREE
+sorry-free bricks (was one); only the determinant assembly (brick 4) is left:
+
+- **Brick 1** `map_algebraMap_multPoly` (multPoly natural in the coefficient ring).
+- **Brick 2** `chartPsiAeval_eq_tower_gaugeEquiv_map` : `chartPsiAeval p = chartPsiTower (gaugeEquiv
+  (endpointGauge⁻¹) (map (algebraMap k SchurLoc) p))` for any `k`-poly `p`. Resolved the pinned
+  blocker (the `comp_aeval` `k`-vs-`SchurLoc` scalar mismatch) at the RING-HOM level: `map_aeval` +
+  the coeff leg `chartPsiTower ∘ algebraMap SchurLoc = schurToGfib` (`aevalTower_comp_algebraMap`) +
+  `eval₂Hom_map_hom` + the scalar tower `schurToGfib ∘ algebraMap k SchurLoc = algebraMap k (Away
+  gF)` (`AlgHom.commutes`).
+- **Brick 3** `chartPsiTower_map_algebraMap` : `chartPsiTower (map (algebraMap k SchurLoc) p) =
+  algebraMap O(F) (Away gF) (mk_F p)` (the SchurLoc-lifted `k`-poly reads its `O(F)`-class). Ring-hom
+  extensionality (`MvPolynomial.ringHom_ext` on the two composite homs, then `DFunLike.congr_fun`);
+  the earlier "ringHom_ext on the applied goal" mistake is fixed.
+
+**ONLY brick 4 (the determinant assembly) remains** — fully specced in an in-file route note
+(`ChartPsiDsigUnit`, end): `ΔPdeep = det(submatrix(of multPoly))` → `AlgHom.map_det` → per-entry
+brick 2 + `gaugeEquiv_multPoly` (endpointGauge⁻¹: `(P⁻¹)_last=L`, `((P⁻¹)_0)⁻¹=H`) → top-left r×r
+block `M₁₁·Δ_schur` → brick 3 + the fibre fact `mk_F multPoly = normalForm` (so `M₁₁ ↦ I_r`) → `det =
+schurToGfib (detSchurS-image)`, a unit (`isUnit_det_schurΔLoc` via `IsUnit.map` through the
+`k`-alg-hom `schurToGfib`). ~40-60 LoC of `det`/`submatrix`/`fromBlocks` commuting; NO missing API, NO
+new wall. `ChartEvalRealize` + `ChartPsiDsigUnit` (bricks 1-3) are sorry-free & committable;
+`ChartPsiDescent` has only sorry-2 (`chartPsi_dsig_isUnit`), reduced to `IsUnit (chartPsiAeval
+ΔPdeep)`. Whole-library build green.
+
+---
+
+## Tide progress log — update 16 (SEAM C CLOSED: brick 4 + `chartPsiLoc` sorry-free; committed `05d7155b`)
+
+**Brick 4 LANDED → seam C complete.** `chartPsiLoc` is now an honest sorry-free localized algebra
+hom. Committed + pushed to `origin/expedition/fibre-codimension` as `05d7155b` (HEAD was `85f180a4`).
+Both `ChartPsiDescent` + `ChartPsiDsigUnit` sorry-free; whole-library build green (3746 jobs). NOT
+yet aggregated into `DLNFibre.lean` (controller owns it; ask sent).
+
+The brick-4 chain (all in `Core.ChartPsiDsigUnit`, ~155 LoC over bricks 1-3):
+- `multPoly_sub_normalForm_mem_vanishingIdeal` + `chartPsiTower_map_multPoly_eq_normalForm` — the
+  **fibre fact**: `multPoly a b − C (normalForm a b)` vanishes on `sweepFibre` (`mult B = normalForm`
+  on the fibre), so under `chartPsiTower` the generic product reads `normalForm = diag(I_r,0)`.
+- `liftGauge_endpointGauge_inv_{last,zero_inv}` — the inverse endpoint gauge values: `(eg⁻¹)_last`'s
+  value is `C·Lmat`, `((eg⁻¹)_0)⁻¹`'s value is `C·Hmat` (via `liftGauge_inv` + `liftGauge_inv_val_eq`
+  + `endpointGauge_{last,zero}` + `inv_inv`).
+- `chartPsiAeval_multPoly_eq_conj` — per-entry: `chartPsiAeval (multPoly rr cc) = chartPsiTower
+  ((C·Lmat · M_SL · C·Hmat) rr cc)` (brick 2 + brick 1 + `gaugeEquiv_multPoly` at `eg⁻¹`).
+- `map_chartPsiAeval_multPoly_eq` — the full `p×q` matrix factorization `Mpsi = L'·E·H'` over
+  `Away gF` (`L' = Lmat.map schurToGfib`, `E = normalForm.map (algebraMap k)`, `H' = Hmat.map
+  schurToGfib`): push the ring hom `chartPsiTower` through the product (`Matrix.map_mul`), then
+  `chartPsiTower_C` (gauge blocks → `schurToGfib`-images) + the fibre fact (`M ↦ E`).
+- `submatrix_map_chartPsiAeval_eq_schurΔ` — the top-left `r×r` block is `schurΔLoc.map schurToGfib`:
+  unfold `Lmat`/`Hmat`/`normalForm` to `block.submatrix (finSplit)(finSplit)`, telescope with
+  `submatrix_mul_equiv`, then `castLE`-submatrix → `toBlocks₁₁` (`finSplit_castLE`), and the block
+  product `[[1,0],[*,1]]·[[1,0],[0,0]]·[[Δ',Y],[0,1]]` has `(1,1) = Δ'` (`fromBlocks_multiply`). Needs
+  `set_option synthInstance.maxHeartbeats 400000` (deep `Away gF` matrix-instance search).
+- `chartPsiAeval_ΔPdeep_isUnit` — `det (schurΔLoc.map schurToGfib) = schurToGfib (det schurΔLoc) =
+  schurToGfib (detSchurS-image)`, a unit (`isUnit_det_schurΔLoc.map`). Capstone.
+
+Then `chartPsi_dsig_isUnit` + `chartPsiLoc` (the `liftAlgHom`). **STRUCTURAL NOTE**: these two were
+MOVED from `ChartPsiDescent` into `ChartPsiDsigUnit` — the brick-4 lemmas live in `ChartPsiDsigUnit`
+(which imports `ChartPsiDescent`), so keeping `chartPsi_dsig_isUnit`/`chartPsiLoc` in `ChartPsiDescent`
+would be circular. `chartPsiLoc` is now in `Core.ChartPsiDsigUnit`. `ChartPsiDescent` keeps
+`chartPsi_vanishingIdeal_le` (sorry-1, PROVED) + `chartPsiQuot`.
+
+### Seam D scoping (Φ direction → `chartPhiLoc : Away gF →ₐ[k] Away dsig`)
+
+The mirror of seam C, but the **descent is easier** (target `Away dsig` localizes `O(Σ^r)`, a
+`vanishingIdeal`-quotient, so `away_eq_zero_iff_exists_pow_mul_mem` [Σ-side primitive] applies
+directly — no `mk'`-surjectivity dance). The **substitution still needs building** (comparable in size
+to seam-3 Ψ-substitution):
+- `chartPhiAeval : MvPolynomial SchurVar O(F) →ₐ[k] Away dsig`, an `aevalTower`:
+  - coeff leg `O(F) → Away dsig`: fibre coord `X x` (mod `vanishingIdeal F`) → the **forward**-gauge-
+    normalized coordinate `gaugeSub (chartGauge(M)⁻¹)`-image, with `chartGauge` built symbolically over
+    `Away dsig` (pivot minor inverted there). Mirror of `fibCoordT` but going into `Away dsig`. The
+    descent obligation `vanishingIdeal F ≤ ker` rides the Σ-side primitive + the geometric realization
+    `chartGauge(mult A)•A ∈ fibre E` (`chartGauge_mem_fibre`, LANDED).
+  - variable leg `SchurVar → Away dsig`: each Schur var → the corresponding Schur block of the generic
+    product `M = Matrix.of (multPoly d)` (the `schurΔ`/`schurB12`/`schurB21`/`B22`-block coordinate),
+    as a RepCoord-poly pushed into `Away dsig`.
+- `chartPhi_gF_isUnit`: `gF`'s image is a unit (the Schur-determinant block of `M` is invertible on
+  `D(dsig)` — `dsig = det(pivot block)` is exactly inverted; should be near-direct from `dsig` being
+  the inverted element).
+- `chartPhiLoc`: `IsLocalization.liftAlgHom` of the descended `chartPhiQuot`.
+
+Reusable LANDED infra: `chartGauge`/`chartGauge_mem_fibre` (`ChartRetraction`), `mult_chartGauge_inv_smul_fibre`
+(`ChartBijection`), `schurΔ`/`schurB12`/`schurB21` (`DeterminantalBasePresentation`), the Σ-side
+primitive (`PrincipalOpenComorphism`), and the `gaugeSub`/`gaugeEquiv`/`liftGauge` machinery
+(`EndpointNormalization`). NO new wall foreseen, but it is a fresh multi-module construction (est.
+3-4 sub-modules: the substitution, the descent, the unit, the lift), NOT a quick assembly.
