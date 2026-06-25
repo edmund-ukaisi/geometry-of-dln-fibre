@@ -18,6 +18,8 @@ Place the card next to the claim in the expedition or theory markdown:
 > - **Assumed.** <hypotheses the statement carries that the informal claim also needs>
 > - **Cited.** <anything used from an external source, not reproved here — or "none">
 > - **Deferred.** <the reduction/step the impressive reading needs but that is NOT done — or "none">
+> - **Structure observed.** <pen-and-paper, when the claim arrived via a certificate: the mechanism / load-bearing invariant seen while adjudicating — the math-level *why*; non-prescriptive>
+> - **Route.** <controller: the Lean proof strategy synthesized from that certificate and handed to the formaliser — attributed; the *how*>
 > - **Status.** sorry-free / sorry-free + reviewed
 ```
 
@@ -32,3 +34,9 @@ Place the card next to the claim in the expedition or theory markdown:
 - The **Proved / Assumed / Cited / Deferred** split is the precision discipline
   ([`precision.md`](precision.md)): the headline (and the Lean name) state only what is **Proved**;
   anything **Deferred** is named, never omitted.
+- The card is also the **transmission medium** for a pen-and-paper → controller → formaliser handoff:
+  p&p writes the certificate (+ **Structure observed**), the controller appends the attributed **Route**
+  synthesis (leaving p&p's section untouched), and the formaliser works from the card. The chain is then
+  durable and reviewable — p&p's raw structure survives as a cross-check on the controller's route —
+  rather than carried only by an ephemeral spawn prompt that evaporates on `/compact` and cannot be
+  gated.
