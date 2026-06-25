@@ -410,6 +410,18 @@ extends here — a candidate point for the operator's scope call (full general-L
   gap:** the recursive multi-factor Schur-core-of-product identity subsumes the 3 L≥3 guarded sorries (2680-L≥3 / 3169 / 3174) — it is
   THE general-L producer obstruction. This sharpens Item 24's general-L arm: the general-L=2 producer (option a) is MODERATE/in-progress;
   the FULL general-L producer is research-grade here too.
+- **9th catch (2026-06-25, numeric, pinned before a false build) — the bridge's exact hCore is FALSE under endpoint frames.** af8305f1's
+  numeric check (L=2, rect, nontrivial frames): h1 is SOUND (framed-block LDU cores reproduce the global Schur EXACTLY), but the banked
+  bridge's `hCore : coreΦ = frobSq(S0·S1)` (EXACT) is FALSE — `frobSq(framed S0S1)=1.065` vs frame-free `coreΦ=0.938`; the surviving
+  endpoint frames Pf_0=P0/Qf_1=QL decorate the cores. The bridge stays SOUND as a conditional (the implication holds), but its hCore is
+  unmeetable under the framed producer. Resolution (pp adjudicating): relax hCore to the germ charge `|coreΦ − frobSq(S0S1)| ≤ C·Sreg`
+  (provided the discrepancy is O(Sreg) — frame factors = I+O(√Sreg) near w0; pp verifying the sweep). This is the SAME exact-→-germ lesson
+  as the 8th catch, one level deeper — a bounded bridge re-statement, not a wall. **Process note for the operator:** the producer's last
+  piece has now surfaced four corrections (general-L recursion, rectangularity, the cast grind [beaten], this frame finding) — each caught
+  by a tide/numeric check before a green-but-wrong build, each bounded. The L=2 close is progressing solidly but the germ-charge geometry
+  is genuinely intricate; the L2-close ETA has extended across these. A candidate point to weigh Item-24's scope fork, though I continue
+  under charge-ahead. Recurring API lesson worth hardening: state in-sum/core comparabilities as germ charges (`|·−·| ≤ C·Sreg`) by
+  default, not exact equalities.
 
 ## 24. SCOPE-DECISION POINT for the operator: full general-L=2 producer (h1/h2/h3) vs the RRR (L=2) milestone (2026-06-25).
 The L2 gauge-chart producer (the general-L=2 front-pivot body) has now re-scoped twice on its germ charge (Item 22). The remaining
