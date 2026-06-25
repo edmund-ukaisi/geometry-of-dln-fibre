@@ -767,6 +767,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   3rd concurrent grind. The (4,4,2,2) reshape sorry (MATCH class) is a low-priority concrete finish.
 - 2 background BUILD agents: aeb04fc2 (L2 PIN1 finish), r1-node-3333 (R1 hdiv (3,3,3,3)). pp-r1-genM released/on-call.
 
+**★ UPDATE-35 (2026-06-25) — L2 PIN1 CLOSED (axiom-clean). The dominant L2 bottleneck's core is DONE; PIN2 is the only remaining gauge-chart sorry.**
+- **PIN1 `deepestEPivot_regSlice_fderiv` CLOSED @96ad9b2a** — axiom-clean `[propext, Classical.choice, Quot.sound]`, full
+  build green (8350). The value-fold: decodeRegSliceCLE + hPexp (the product expansion through the firstShapeF cast wall)
+  + hNF (per-coord gluing via `erw` across the genuine rfl-defeq `H 0`/`(firstLayer).castSucc` seam) + hquadderiv (quad
+  deriv-0 via the scalar route — the non-square matrix-mul bilinear CLM is absent at v4.29) → regBlockCLE →
+  regStraightenTotalCLM_equiv → PIN1. Reviewer-SURVIVED (F a non-vacuous invertible CLE ≠ id; no overclaim).
+- **CONTROLLER SOUNDNESS CATCH (the #print-axioms gate worked):** the first integration `#print axioms` showed a spurious
+  `sorryAx` — traced (NOT dismissed) to a STALE OLEAN (`scripts/lb` served the pre-copy monolithic-sorry version; PIN1 was
+  literally `sorry` there). A forced clean rebuild (rm the module olean + rebuild) confirmed PIN1 genuinely clean. Banked the
+  lesson (lessons.md): after copying a file into the main tree, force-rebuild the module before trusting `#print axioms`.
+- **L2 status:** Stage A/C/D/E banked + PIN1 CLOSED. **PIN2 (`framedParams_split_eq_frame_raw`, DGC:1452) is the ONLY
+  remaining L2 gauge-chart sorry.** Then: the L=1/2≤L case-split wire (Skeleton:1131 deepest_regular_core_normal_form,
+  using the L=1 base + the gauge chart) + product_reduction → the L2 gate. + the continuous_dlnLoss dedupe at wiring time.
+- 1 background BUILD agent: r1-node-3333 (R1 hdiv (3,3,3,3)). pp-r1-genM released/on-call. Queued: PIN2, the L2 case-split
+  wire, the rank-stratified hfin cover (corank-≥2 long pole), the general hdiv chaining, D1.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**

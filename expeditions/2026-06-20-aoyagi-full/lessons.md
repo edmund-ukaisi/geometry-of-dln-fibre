@@ -935,3 +935,17 @@ null, and `InjOn` where Mathlib's c-o-v needs it.** A false `cov` sorry still sh
 footprint looked NORMAL, so footprint-checking did not flag it. "Green + factorization-reviewed" ≠ "sound" for
 a measure-c-o-v. Pairs with "name results for what they are" / "green ≠ right": I over-claimed the milestone on
 a partial review; correct such claims promptly when the gap surfaces.
+
+## Stale-olean gotcha: force-rebuild the module before trusting `#print axioms` on a freshly-copied file (2026-06-25)
+Integrating PIN1 (copied `DeepestGaugeConstruction.lean` from a tide worktree into the main tree, then
+`scripts/lb DLNFibre`): the build reported GREEN (8350 jobs), but `#print axioms deepestEPivot_regSlice_fderiv`
+showed a spurious `sorryAx`. The tide had reported it axiom-clean. Tracing (NOT dismissing) the discrepancy:
+every checked dependency was clean, PIN1's proof region had zero sorry-tactic, and it used none of the build's
+9 sorries — an internal contradiction. Cause: `scripts/lb DLNFibre` served a **STALE olean** for the copied
+module (the pre-copy monolithic-`sorry` version of PIN1, whose `#print axioms` is exactly `[…, sorryAx, …]`).
+A forced clean rebuild (`find .lake/build -name 'DeepestGaugeConstruction.olean' -delete` + rebuild) produced
+the correct olean → PIN1 clean. **Discipline:** after `cp`-ing a file into the main tree, force-rebuild that
+module (rm its olean + rebuild) before trusting `#print axioms` — a full `lake`/`lb` build can serve a stale
+olean for a copied-in file (mtime/shared-store timing). The soundness gate did its job (flagged the anomaly);
+the lesson is that the *fix* is a forced rebuild, not dismissal — and equally not panic (the green build alone
+would have hidden the staleness in the other direction).
