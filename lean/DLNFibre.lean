@@ -233,3 +233,14 @@ import DLNFibre.Core.ChartEvalRealize
 -- chartPsi_dsig_isUnit + chartPsiLoc live in ChartPsiDsigUnit (circular-dep fix).
 import DLNFibre.Core.ChartPsiDescent
 import DLNFibre.Core.ChartPsiDsigUnit
+-- seam D (Φ direction, closed): the forward-gauge comorphism + Σ-side chart-point eval descent.
+import DLNFibre.Core.ChartPhiSubstitution
+import DLNFibre.Core.ChartPhiFibCoord
+import DLNFibre.Core.ChartSigmaAwayZero
+import DLNFibre.Core.ChartSigmaEval
+import DLNFibre.Core.ChartSigmaEvalGauge
+import DLNFibre.Core.ChartSigmaEvalRealize
+import DLNFibre.Core.ChartSigmaGaugeBridge
+import DLNFibre.Core.ChartPhiDescent
+-- chartPhiLoc : Away gF →ₐ[k] Away dsig (the Φ-direction localized hom; seam E glues e from it).
+import DLNFibre.Core.ChartPhiLoc
