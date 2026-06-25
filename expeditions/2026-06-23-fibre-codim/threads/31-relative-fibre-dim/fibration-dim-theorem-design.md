@@ -432,3 +432,53 @@ but mechanical, ~1 module. NO absent-theorem exposure (the fraction-field bridge
 Full no-drop ≥ then = (iv) + RadicalCatenary max-over-min-primes (LANDED) + avoidance (pp-nodrop cert /
 clean nonzero-k-coeff for step-5). Step-3 freeness presentation (3b/3c, route-β) is the separate remaining
 piece (component-wise radical-ideal identification, component structure in hand).
+
+---
+
+## Tide progress log — update 8 (the no-drop + dimension-arithmetic SPINE landed; route-3 fixed)
+
+**Banked (committed-pending-controller-integration, all sorry/axiom-clean, whole-library green):**
+- `Core.AffineLocalizationNoDrop` (150 LoC) — three theorems:
+  - `ringKrullDim_eq_trdeg_of_fg_domain` — `dim A = (trdeg k A).toNat` for ANY f.g. `k`-domain (via
+    Noether `exists_integral_inj_algHom_of_fg` + engine `trdeg_eq_of_integral_injective`). General
+    affine-domain dim=trdeg the engine lacked at this generality.
+  - `trdeg_localization_eq` — `trdeg k S = trdeg k D` for `S = M⁻¹D`, `M ≤ nonZeroDivisors D` (sandwich
+    `k ⊆ D ⊆ S`, `S ↪ Frac D` algebraic so `trdeg D S = 0`, `trdeg_add_eq`). GENERAL submonoid → directly
+    usable by step-4 source.
+  - `ringKrullDim_localizationAway_eq_of_fg_domain` — the (iv) headline `dim(D[1/g]) = dim D`, `D` f.g.
+    `k`-domain, `g ≠ 0`.
+  - `ringKrullDim_localizationAway_eq_of_avoids_top_prime` — the SHARED abstract no-drop over a reducible
+    f.g. `k`-algebra `R`: `g` avoiding a TOP-dim **prime** `p₀` (`dim(R/p₀)=dim R`, `g∉p₀`) ⟹
+    `dim(R[1/g])=dim R`. ≤ from LANDED `ringKrullDim_localization_le`; ≥ via surjection
+    `R[1/g] ↠ (R/p₀)[1/ḡ]` (`Localization.awayMap`) + (iv). **Minimality NOT needed** (weakened from
+    minimalPrime to prime — eases both avoidance proofs).
+- `Core.ChartLocalizedPolyDim` (61 LoC) — `ringKrullDim_eq_of_localized_polyExtensionAlgEquiv`: the
+  ROUTE-3 dimension-arithmetic wrapper. From a LOCALIZED chart `AlgEquiv`
+  `Localization.Away dsig ≃ₐ[k] Localization.Away gfib` + the two no-drop equalities (hsig source, hP
+  schur), concludes `dim Osig = dim Ofib + card ι`. Pure arithmetic.
+- `Core.SchurSideNoDrop` (92 LoC) — `ringKrullDim_localizationAway_eq_of_schurSide`: the schur-side `hP`
+  FULLY DISCHARGED. For `P = MvPolynomial ι A`, top-dim prime `q₀` of `A`, `gfib = map (algebraMap k A) g₀`
+  with `g₀ ≠ 0`: `dim(P[1/gfib]) = dim P`. Witness `p₀ = Ideal.map C q₀`: prime via
+  `quotientEquivQuotientMvPolynomial` (P/p₀ ≅ MvPolynomial ι (A/q₀), domain); top-dim via the equiv +
+  `ringKrullDim_of_isNoetherianRing`; `gfib ∉ p₀` via the reduction `map (mk q₀)` (kills p₀, sends gfib to
+  `map (algMap k (A/q₀)) g₀ ≠ 0`). Also `isPrime_map_C_of_isPrime` (reusable). **No minimal-prime theory
+  needed** — the weakened "top prime" hypothesis + the C-quotient equiv suffice.
+
+**ROUTE-3 DECISION (Codex xhigh decorrelated, `codex/step3-routebeta-spec-{prompt,answer}.md`):** localize
+BOTH sides, no-drop twice. ROUTE-2 (feed un-localized O(Σ^r) to the poly-ext brick) CONFIRMED WRONG —
+O(Σ^r) un-localized is NOT a free poly ext (Schur coords regular only after inverting detΔ). Wall to avoid:
+the localized chart AlgEquiv via `sigmaIdeal`/`IadDeep`/`fibreGenIdeal` generator equalities (R2-3b-4 wall);
+stay vanishingIdeal-side, `IsLocalization.liftAlgHom`/`Ideal.Quotient.liftₐ` for descent,
+`IsLocalization.algEquivOfAlgEquiv` for the localized lift.
+
+**REMAINING for hSweep (3 obligations the ChartLocalizedPolyDim wrapper consumes):**
+1. **The LOCALIZED chart AlgEquiv `e`** — `Localization.Away (mk detΔ) O(Σ^r) ≃ₐ[k] Localization.Away gfib (MvPolynomial SchurVar O(F))`.
+   The genuine HARD rung: variable-gauge Ψ comorphism (k-level, route-β) descended through vanishingIdeal,
+   then localized via `algEquivOfAlgEquiv`. ~3 modules; the wall-risk piece. DESERVES A FRESH TIDE.
+2. **source no-drop `hsig`** — `ringKrullDim_localizationAway_eq_of_avoids_top_prime` at R = O(Σ^r),
+   g = detΔ, p₀ = a top minimal prime of O(Σ^r) avoiding detΔ (the pp-nodrop cert
+   `nodrop-density-adjudication.md`: Fact A `exists_kostantPartition_partitionIdeal_eq_of` + Fact B
+   H'-permutation). ~1-1.5 modules (wire the cert to a top prime + detΔ∉it).
+3. **final wiring** — feed e + hsig + (SchurSideNoDrop) hP to the wrapper → `dim O(Σ^r) = dim O(F) + δ`,
+   convert through `varietyDim`/`unbotD`, → `hSweep` → `RouteCAssembly._of_sweep'` → unconditional codim.
+   ~1 module, mechanical once (1)+(2) land.
