@@ -731,6 +731,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 3 background BUILD agents: aeb04fc2 (L2 PIN1 finish, the 2 mechanical sorries), r1-node-3333 (R1 hdiv (3,3,3,3)),
   hfin-4422 (R1 hfin (4,4,2,2)). The value-fold infra is safe on origin/worktree-agent-aeb04fc2.
 
+**★ UPDATE-33 (2026-06-25) — hfin (4,4,2,2) BUILT via a CLEANER iterated-fibre route (S2-free); the general-route question re-opened.**
+- **hfin (4,4,2,2) INTEGRATED @a09033ac** (hfin-4422, reviewer-SURVIVED, full build green 8350): a CLEANER route than the
+  spec's rank-stratified recursion — Codex steered to the ITERATED-FIBRE route (avoiding the HIGH-risk r²-chart cover;
+  single-global-shear confirmed DEAD). 3 new files, all S2-FREE [propext, Classical.choice, Quot.sound]: S1RadialMorse
+  (radial_morse_dominates_lt_top, the Morse leaf terminal), MatMulFibre (`fibre_lintegral_mul_le` — the REUSABLE per-layer
+  fibre peel ∫frobSq(X·Y)^{−c'} ≤ const·frobSq(Y)^{−c'}, Y-independent; + triple_fibre_lt_top the 3-fold iterate),
+  RouteM4422Hfin (the (4,4,2,2) hfin atom, 1 residual reshape sorry — the paramsEquivFlat entry-reshape, bridge identities
+  banked, not math). Threshold 2 = ½·minAdm confirmed exact.
+- **THE GENERAL-ROUTE QUESTION (re-opened):** the iterated-fibre route is much cleaner + S2-free + avoids the HIGH-risk
+  r²-chart cover — IF it generalizes. Crux: does iterating the fibre peel give ½·minAdm for GENERAL M, incl the corank-≥2
+  BINDING that pp-r1-genM's rank-stratified route was designed for? (4,4,2,2) worked, but whether its binding is corank-1
+  (so only the easy case validated) or corank-≥2 (so the iterated-fibre genuinely supersedes rank-stratified) is unknown.
+  **pp-r1-genM RE-ENGAGED** (on-call) to adjudicate — decisive for the general hfin build route.
+- 2 background BUILD agents: aeb04fc2 (L2 PIN1 finish), r1-node-3333 (R1 hdiv (3,3,3,3)). + pp-r1-genM (iterated-fibre
+  generality adjudication). Queued: close the (4,4,2,2) reshape sorry, the general hfin (route TBD by pp-r1-genM), the
+  general hdiv chaining, L2 PIN2 + wiring, D1.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
