@@ -6,7 +6,7 @@ import DLNFibre.Core.ChartRoundTripH1
 /-!
 # `DLNFibre.Core.ChartLocalizedAlgEquiv` — the localized chart `AlgEquiv` `e` (seam E)
 
-SPECIFY skeleton. Glues `chartPsiLoc` and `chartPhiLoc` into the chart `AlgEquiv`
+Glues `chartPsiLoc` and `chartPhiLoc` into the chart `AlgEquiv`
 `e : Localization.Away dsig ≃ₐ[k] Localization.Away gF` via `AlgEquiv.ofAlgHom`, with the two
 round-trips.
 

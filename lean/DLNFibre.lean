@@ -91,8 +91,8 @@ import DLNFibre.Core.GenericTuple
 -- and fibreGenIdeal = Ideal.map multComap (maxIdealOfPoint B) — the fibre-ring quotient F2 consumes.
 import DLNFibre.Core.MultComorphism
 -- Fibre-codim LOWER bound (partial Lemma 4.6): codimRepCanonical Σ̄^r ≤ codimRepCanonical (mult⁻¹ B)
--- from mult⁻¹B ⊆ Σ̄^r. The +r(d_0+d_N−r) shift (the identity) stays Cited — it needs the exact-rank
--- chart trivialization (absent at v4.29); the naïve sandwich is a NO-GO (see the module docstring).
+-- from mult⁻¹B ⊆ Σ̄^r. The +r(d_0+d_N−r) shift (the full identity) is now PROVED in FibreCodimFinal
+-- (route-β chart build); this module supplies the lower-bound half it anticipated.
 import DLNFibre.Core.FibreCodim
 -- Fibre-codim G1 (rank-chart build): same rank ⟹ same fibre codim (N≥1), via the GL×GL end-factor
 -- action + mult-equivariance + height-comap codim-invariance + rank normal form. Reduces Lemma 4.6
@@ -121,9 +121,9 @@ import DLNFibre.Core.DeterminantalBaseElimination
 -- Iad = J (earned honestly, not assumed). Feeds G2-3 (the total presentation + flatness).
 import DLNFibre.Core.DeterminantalBasePresentation
 -- Route-(b) reducedness chain for G2-3 (R2-3a): the tensor-with-a-field reducedness descent (PROVED),
--- and — CONDITIONAL on the trivialization `e : S ≃ₐ[k] R ⊗ F_B` + `IsReduced S` (explicit hypotheses,
--- the open R2-3b wall) — `fibreGenIdeal` radical + the radical-collapse of MultComorphism pt4. The
--- final BundleShiftInterface discharge WAITS for R2-3b to prove `e`.
+-- CONDITIONAL on a deep product iso `e : S ≃ₐ[k] R ⊗ F_B` + `IsReduced S`. SUPERSEDED: codim=C+δ was
+-- instead closed by the route-β localized chart AlgEquiv (ChartLocalizedAlgEquiv) + FibreCodimFinal;
+-- this conditional R2-3b chain is off the critical path (retained as record).
 import DLNFibre.Core.FibreReducedTrivialization
 -- Deep chart ring (R2-3b-1+2, the residual G2-3 wall foundation): `Sred = Localization.Away(ΔPdeep) ⧸
 -- IadDeep` for general d (the engine's base presentation is N=1 only), the RepCoord↔stratum/endpoint

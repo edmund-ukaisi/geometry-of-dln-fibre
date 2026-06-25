@@ -18,7 +18,8 @@ identity `varietyDim Σ^r = δ + varietyDim F` (`hSweep`) — and the closure/de
 `varietyDim Σ^r = varietyDim Σ̄^r` (`hClosure`) are carried as **explicit named hypotheses** (this is
 the conditional bank), so everything *around* them is machine-checked. Both are since **discharged
 in-repo**: `hSweep` in `Core.FibreCodimFinal` (the route-β chart build), `hClosure` in
-`Core.ClosureBridge` (`varietyDim_productRankLocus_eq_productRankLocusLE` — proved, **not** Cited). The two dimension/codimension
+`Core.ClosureBridge` (`varietyDim_productRankLocus_eq_productRankLocusLE` — proved, **not** Cited).
+The two dimension/codimension
 relations `codimRepCanonical Z + varietyDim Z = card` are carried as named hypotheses
 `hCatFibre`/`hCatSigma` in the base theorem; the primed variant discharges them from the
 reducible-locus catenary `Core.RadicalCatenary` (true for any nonempty subset of affine space),
