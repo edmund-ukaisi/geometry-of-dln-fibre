@@ -273,3 +273,9 @@ import DLNFibre.Core.TopDimMinPrimesPoly
 import DLNFibre.Core.TopDimMinPrimesBridge
 import DLNFibre.Core.TopComponentsTopDim
 import DLNFibre.Core.FibreTopDimDetUnit
+-- θ-components (fibre-count wiring, thread 08): the keystone localization-survival of the top-dim
+-- minimal-prime count, + radical-insensitivity (W3), the chart-e count carry, and the W2 avoidance.
+import DLNFibre.Core.TopDimMinPrimesLocalization
+import DLNFibre.Core.TopDimMinPrimesRadical
+import DLNFibre.Core.TopDimMinPrimesChartE
+import DLNFibre.Core.TopDimMinPrimesGfibAvoid
