@@ -388,3 +388,26 @@ unconditional gauge-conjugation transport `gaugeEquiv(endpointGauge)(multPoly r 
   cross-check/alternative, not the spine.
 
 Confirmation requested from controller (α-vs-β shapes the ~2-3 module grind). Proceeding with β.
+
+---
+
+## Tide progress log — update 6 (no-drop ≥ FACTORED — shared by step-4 and step-5)
+
+`dim(R[1/g]) = dim R` (the no-drop, both step-4 source and step-5 poly-ext) FACTORS as:
+1. **[LANDED] ≤** — `LocalizationKrullDim.ringKrullDim_localization_le`.
+2. **dim R = max over minimal primes of dim(R/p)** — the `RadicalCatenary` pattern;
+   `RadicalCatenary.exists_minimalPrime_ringKrullDim_quotient_ge` is LANDED.
+3. **pick a TOP minimal prime `p₀` with `g ∉ p₀`** — the avoidance:
+   - step-4: the `pp-nodrop` cert (Fact A corner=r + Fact B GL-permutation-to-top-left ⟹ detΔ ∉ a top
+     minimal prime of `O(Σ^r)`).
+   - step-5: `g = detSchurS` is a nonzero `k`-coefficient polynomial, so its image is nonzero in
+     EVERY component `MvPolynomial ι (A/p)` (sympy-confirmed clean — no delicate avoidance).
+4. **[ONE NEW SUB-LEMMA, shared] affine-domain localization preserves dim**: for `D = R/p₀` a
+   finite-type domain over `k` and `0 ≠ g ∈ D`, `dim(D[1/g]) = dim D`. Buildable from the engine's
+   `AffineDomainDimension` (trdeg = dim for affine domains) + `Frac(D[1/g]) = Frac D` (localization at a
+   nonzero element of a domain doesn't change the fraction field). The genuinely-new piece both no-drops share.
+
+**Efficient build structure:** ONE shared abstract no-drop lemma
+`(R Noetherian, g avoids a top minimal prime) ⟹ ringKrullDim (Localization.Away g R) = ringKrullDim R`,
+consuming sub-lemma (4); step-4 and step-5 then differ only in the avoidance input (3). ~2-3 modules
+covering BOTH (not 1.5-2 + 0.5-1 separately).
