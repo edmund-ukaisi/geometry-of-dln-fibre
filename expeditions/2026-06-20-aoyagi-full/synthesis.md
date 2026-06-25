@@ -886,6 +886,24 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-59 (2026-06-25) — L2 hproducer: germ/Taylor was a FALSE ALARM (A' pointwise); 5-sub-lemma decomp build-ready + commissioned. ★**
+- **The 7th finding (germ/Taylor) is OVERTURNED** (pp-pin2-rearch + decorrelated Codex, `hproducer-decomp-cert.md` @03004ccb): the
+  formaliser feared Π_J on a varying internal interface ⟹ unbanked germ/Taylor. FALSE — hS1' shows Π_J (Pπ) is a FIXED orthogonal
+  OUTPUT-side permutation, so `∑deepestEFull²` and `Sreg` are the SAME residual N=∏A−B under two FIXED invertible reindexings
+  (FACT2) ⟹ POINTWISE comparable (the BANKED fixed-map Frobenius machinery applies, no Taylor). The earlier 'failures' had
+  colPerm'd the corner (the bug). A' pointwise ranked #1 (no restructure, no WLOG).
+- **The "coupled 𝓝" is a clean finite-∩-of-nbhds: 5 build-ready sub-lemmas** — (i) deepestEFull_Sreg_comparable (A' pointwise) →
+  (ii) eventually_P00_invertible → (iii) eventually_leak + (iv) eventually_core_comparable (wiring to the BUILT
+  schur_core_germ_comparability) → (v) hproducer = hconj + U:=⋂(4 nbhds). Import circularity resolved (the (b)-atom → a NEW module
+  GaugeChart.DeepestEFullSregComparability; the generic Frobenius lemma stays low-level).
+- **l2-hprod-build LAUNCHED** (a2c823f3) — executes the 5-sub-lemma decomposition (soundness-critical: FACT2 on the deviation only,
+  corner in the pivot convention). pp-pin2-rearch on-call (general-H pointwise / B WLOG fallback). On close → L=2 body COMPLETE
+  (only the 2 vacuous-at-L2 interior remain) → the final wire → L2 gate.
+- **R1 (3,3,4):** r1-frametransport (acb008b3) building the frame transport (the last (3,3,4) hfin piece; resolved-form banked).
+- Both long poles' last pieces BUILDING on de-risked decompositions: l2-hprod-build (L2 body) + r1-frametransport (R1 (3,3,4) hfin).
+  pp-r1-genM-2 on-call. General hdiv + general lifts + D1 ahead. (The germ/Taylor scare resolved: the design-before-build loop turned
+  a feared multi-step development into a contained 5-lemma build.)
+
 **★ UPDATE-58 (2026-06-25) — both long poles down to their HARD-CORE last piece; (3,3,4) hfin resolved-form BUILT; frame-transport tide launched. ★**
 - **L2:** (b) restated equality→comparability @049e6efe (squeeze rewired sorry-free, public conclusion + PIN1 clean). 7th finding
   (build-effort refinement, not an obstruction): the comparability's PROOF is the unbanked germ/Taylor route (fderiv quad-form at
