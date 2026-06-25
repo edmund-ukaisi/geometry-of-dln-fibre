@@ -3934,3 +3934,32 @@ positive continuous product density, and local regular-fiber loss lower bound
 remain explicit inputs.  This does not construct a chart, prove the
 pushforward, transport Jacobian/prior density, compare original `lossDLN`,
 produce normal crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 adapted product-difference loss-comparison finite integral
+
+Reproduction:
+`reproduction-a2-adapted-product-difference-loss-comparison-finite-integral.md`.
+Statement card:
+`statement-card-a2-adapted-product-difference-loss-comparison-finite-integral.md`.
+Review:
+`review-a2-adapted-product-difference-loss-comparison-finite-integral.md`.
+
+Lean now proves the conditional comparison handoff
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_const_mul_adaptedProductDifferenceSquareSum_le_loss
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+The theorem assumes a product-coordinate lower bound
+`c * (residualSquareSum(x)+squareSum(u)) <= adaptedSquareSum(x,u)` and a
+positive comparison `c0 * adaptedSquareSum(x,u) <= loss(x,u)`.  It multiplies
+constants to obtain the existing p.13 local finite-integral input with
+constant `c0 * c`.
+
+Boundary: the comparison with `loss` is supplied, not proved.  This does not
+identify the original DLN/statistical loss with the p.13 adapted square-sum,
+construct a product chart, prove source coverage, transport Jacobian/prior
+density, prove residual source hypotheses, produce normal crossings, compute
+pole order, or extract an RLCT.

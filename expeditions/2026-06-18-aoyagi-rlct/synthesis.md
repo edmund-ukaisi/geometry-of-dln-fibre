@@ -9569,6 +9569,19 @@ openness theorem, not a local `ContinuousAt Cedge x₀` theorem, and not a raw
 `Measurable Cedge` API.  All chart, pushforward, source-density, residual,
 product-density, and loss hypotheses remain supplied.
 
+Latest A2 adapted product-difference loss-comparison finite-integral handoff:
+`RegularSuspensionLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_const_mul_adaptedProductDifferenceSquareSum_le_loss`.
+It consumes an explicit local product-coordinate adapted lower bound and an
+explicit positive comparison
+`c0 * adaptedProductDifferenceSquareSum <= loss`, then applies the existing
+p.13 finite-integral theorem with constant `c0 * c`.  This is the safe
+conditional boundary for future original-loss work: the comparison with
+`loss` remains supplied and should be proved separately by metric/covariance
+and fixed-basis norm comparison.  No product chart, source coverage,
+density/Jacobian transport, residual source hypothesis, normal-crossing
+certificate, pole-order theorem, or RLCT extraction is inferred.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

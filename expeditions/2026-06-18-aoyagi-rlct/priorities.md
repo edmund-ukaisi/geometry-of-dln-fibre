@@ -4082,3 +4082,16 @@ It is not a `ContinuousAt Cedge x₀` theorem, not source-rank openness, and not
 a raw `Measurable Cedge` API.  The signed-box chart/pushforward,
 source-density bounds, residual lower bound, positive continuous product
 density, and local regular-fiber loss lower bound remain explicit.
+
+A2 adapted product-difference loss-comparison finite-integral handoff has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-adapted-product-difference-loss-comparison-finite-integral.md`.
+Lean proves the conditional bridge from a supplied positive comparison
+`c0 * adaptedProductDifferenceSquareSum <= loss` to the existing p.13
+finite-integral theorem, using comparison constant `c0 * c`.  This is the
+preferred safe boundary for original-loss work until the metric/covariance and
+basis-norm comparison is actually proved.  The theorem assumes, rather than
+proves, the comparison with `loss`; it does not construct the product chart,
+prove source coverage, transport density/Jacobian factors, prove residual
+source hypotheses, produce normal crossings, compute pole order, or extract an
+RLCT.
