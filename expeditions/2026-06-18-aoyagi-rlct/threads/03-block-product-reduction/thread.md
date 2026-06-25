@@ -3902,3 +3902,35 @@ and the local regular-fiber loss lower bound remain explicit inputs.  This
 does not construct a chart, prove the pushforward, transport Jacobian/prior
 density, compare original `lossDLN`, produce normal crossings, compute pole
 order, or extract an RLCT.
+
+## 2026-06-25 A2 continuous-edge signed-box continuous-density finite-integral bridge
+
+Reproduction:
+`reproduction-a2-continuous-edge-signed-box-continuous-density-finite-integral-bridge.md`.
+Statement card:
+`statement-card-a2-continuous-edge-signed-box-continuous-density-finite-integral-bridge.md`.
+Review:
+`review-a2-continuous-edge-signed-box-continuous-density-finite-integral-bridge.md`.
+
+Lean now proves the global-continuous-edge variant
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_continuousEdge_continuousAt_pos_density
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+The theorem derives source-rank-stratum measurability from
+`measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous`, derives
+fixed-basis endpoint edge-matrix measurability by composing `Continuous Cedge`
+with `continuous_linearMap_toMatrix`, and then delegates to the signed-box
+continuous-density finite-integral bridge.
+
+Boundary: this assumes global `Continuous Cedge`; it does not derive the
+result from only `ContinuousAt Cedge x₀`, does not assert source-rank openness,
+and does not introduce a raw `Measurable Cedge` interface.  The signed-box
+chart, weighted pushforward, source-density hypotheses, residual lower bound,
+positive continuous product density, and local regular-fiber loss lower bound
+remain explicit inputs.  This does not construct a chart, prove the
+pushforward, transport Jacobian/prior density, compare original `lossDLN`,
+produce normal crossings, compute pole order, or extract an RLCT.

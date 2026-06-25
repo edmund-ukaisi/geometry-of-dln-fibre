@@ -4070,3 +4070,15 @@ assumptions, residual lower bound, and local regular-fiber loss lower bound
 explicit.  It does not construct the chart, prove pushforward or
 density/Jacobian transport, compare original `lossDLN`, produce normal
 crossings, compute pole order, or extract an RLCT.
+
+A2 continuous-edge signed-box continuous-density finite-integral bridge has
+now landed:
+`threads/03-block-product-reduction/reproduction-a2-continuous-edge-signed-box-continuous-density-finite-integral-bridge.md`.
+Lean derives source-rank-stratum measurability and fixed-basis endpoint
+edge-matrix measurability from global `Continuous Cedge`, then calls the
+signed-box continuous-density finite-integral bridge.  This is the preferred
+consumer when the parameterized reversed-edge family is globally continuous.
+It is not a `ContinuousAt Cedge x₀` theorem, not source-rank openness, and not
+a raw `Measurable Cedge` API.  The signed-box chart/pushforward,
+source-density bounds, residual lower bound, positive continuous product
+density, and local regular-fiber loss lower bound remain explicit.

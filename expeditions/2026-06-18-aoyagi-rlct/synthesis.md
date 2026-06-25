@@ -9556,6 +9556,19 @@ pushforward, residual lower bound, positive continuous product density at
 chart, prove pushforward or density/Jacobian transport, compare original
 `lossDLN`, produce normal crossings, compute pole order, or extract an RLCT.
 
+Latest A2 continuous-edge signed-box continuous-density finite-integral
+bridge:
+`RegularSuspensionLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_continuousEdge_continuousAt_pos_density`.
+It removes the separate `hsource_meas` and `hEdgeMatrix` inputs from the
+signed-box continuous-density bridge under global `Continuous Cedge`.  The
+source-stratum part uses the existing determinantal rank-locus measurability
+theorem; the edge-matrix part composes `continuous_apply` with
+`continuous_linearMap_toMatrix` in endpoint fixed bases.  This is not an
+openness theorem, not a local `ContinuousAt Cedge x₀` theorem, and not a raw
+`Measurable Cedge` API.  All chart, pushforward, source-density, residual,
+product-density, and loss hypotheses remain supplied.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
