@@ -258,6 +258,15 @@ weighted measure plumbing only: the chart, weighted pushforward identity,
 Jacobian/density construction, original-loss comparison, normal crossings,
 pole order, and RLCT remain open/supplied.
 
+Post-recovery source-frontier audit:
+`post-recovery-source-frontier-audit-2026-06-25.md`.  Current A2/A4/A6 sockets
+are honest supplied boundaries; the next high-value work is source/math
+reproduction, not more wrappers.  Preferred next targets are p.13
+regular-suspension analytic chart/source production, selected-entry local
+source/image equality plus compatible residual factors, reduced-product
+residual-base integrability/normal-crossing production, or genuine A4
+analytic atlas/source production.
+
 A6 Definition 3 `ell=1` ceiling-data simplification has now landed:
 `threads/06-dln-translation/reproduction-definition3-ell-one-ceil-data-simplification-a6.md`.
 Lean adds finite arithmetic lemmas in the `AoyagiDefinition3CeilData`

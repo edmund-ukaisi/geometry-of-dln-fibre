@@ -10778,3 +10778,14 @@ the selected-entry multi-edge theorem still needs compatible factors, an
 explicit factor-product identity to the selected-entry matrix, and a residual
 index equivalence.  Do not turn the one-edge selected-entry readout into a
 multi-edge claim without those inputs.
+
+Post-recovery xhigh scouts `Godel` and `Ampere` found no high-value Lean-ready
+A4 or A2/A6 wrapper beyond the current supplied sockets.  The cross-thread
+decision is saved at
+`post-recovery-source-frontier-audit-2026-06-25.md`: the next meaningful work is
+source/math reproduction for regular-suspension analytic chart production,
+selected-entry source/image equality plus compatible factors, residual-base
+integrability/normal-crossing production, or genuine A4 analytic atlas/source
+production.  Avoid thin wrappers around existing final sockets or
+`SourceProductionObligation` constructors unless they remove a real downstream
+hypothesis.
