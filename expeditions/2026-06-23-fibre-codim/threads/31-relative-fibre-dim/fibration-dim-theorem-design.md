@@ -365,3 +365,26 @@ contracts all typecheck. `Localization.Away` on the `vanishingIdeal`-quotient ri
 Build order when grinding: (3a) first (independent), then (3b), then (3c) with the component cert,
 then (3d). Estimate: ~3-4 modules. The whole step-3 stays strictly vanishingIdeal-side (Ideal.quotientEquivAlg
 on the gauge-transported vanishingIdeal — NEVER the IadDeep/fibreGenIdeal generator route).
+
+---
+
+## Tide progress log — update 5 (step-3a landed; route-β decision for the descent)
+
+**Banked (committed):** `Core.ChartGaugeNormalize.gaugeEquiv_endpointGauge_multPoly` (step-3a) — the
+unconditional gauge-conjugation transport `gaugeEquiv(endpointGauge)(multPoly r c) =
+(C(Lmat⁻¹)·multPoly·C(Hmat⁻¹)) r c` over `SchurLoc`, from LANDED `gaugeEquiv_multPoly` +
+`liftGauge_endpointGauge_last/_zero_inv`.
+
+**Route decision for the coordinate-ring descent (3b/3c/3d):** TWO routes considered.
+- **ROUTE-α** (SchurLoc gaugeEquiv descent): descend 3a's SchurLoc-coefficient gaugeEquiv to the
+  k-vanishingIdeal quotient. RISK: the variable-gauge → SchurLoc-coeff connection is a coefficient
+  base-change with unvalidated Mathlib support (`vanishingIdeal_image_smul` is k-valued FIXED gauges only).
+- **ROUTE-β** (k-level Ψ comorphism, CHOSEN): skip the SchurLoc descent. The set maps Φ/Ψ
+  (`ChartBijection`, over k) give the comorphism directly. `Ψ(M,B) = chartGauge(M)⁻¹•B` is a regular
+  map `base × F → Σ^r∩U_Δ` over k, regular after localizing at detΔ (chartGauge⁻¹ entries involve Δ⁻¹).
+  Its `aeval` comorphism over k descends through `vanishingIdeal` directly — no SchurLoc coefficient-descent,
+  and the detΔ-localization it requires IS the target chart localization. k-native, matches the
+  `varietyDim_eq_of_coordRingAlgEquiv` discipline, reuses the landed set-bijection. 3a becomes a
+  cross-check/alternative, not the spine.
+
+Confirmation requested from controller (α-vs-β shapes the ~2-3 module grind). Proceeding with β.
