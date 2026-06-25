@@ -124,13 +124,16 @@ squared-Frobenius loss against the deepest value `blockdiag[1, 0]` splits as the
 `∑E²` (over the `(0,0)−1`, `(0,1)`, `(1,0)` blocks) plus `‖P11‖²`, and `P11 = leak + R` with the
 **full-product Schur complement** `R = P11 − P10·⅟P00·P01` and `leak = P10·⅟P00·P01` (the regular
 endpoint leak `∈ ideal(P10, P01)`). The honest reduced core is `R` (g156: NOT `∏S_s` — the Schur
-complement of a product is not the product of Schur complements). `R` and `∏S_s` DO squeeze the same,
-but via an exact UNIT-RESCALING `R = u·∏S_s`, `u = ∏(1+X_s)/P00` a bounded unit (→ 1 at the deepest
-point) — NOT ideal membership: the earlier prose `R − ∏S_s ∈ ideal(E)` is FALSE (thread 31 `s5c-cert.md`,
-Gröbner: `num(R − ∏S) mod ideal(A−1, P12, P21) = −Y1·Z0 ≠ 0`). Build consequence: feed
-`core_comparability_squeeze` the global `R`, NOT `∏S_s` (else the leak `R − ∏S = −(Y0Z1/A)·∏S` is not
-`E`-controllable). Exact for `r = 1`, all `L`; the `r ≥ 2` matrix core is flagged (s5c-cert). The thin
-assembly of `frobenius_fromBlocks` (`f = ·²`) + `schur_P11_decomp`, ready for
+complement of a product is not the product of Schur complements). NOT ideal membership: the earlier
+prose `R − ∏S_s ∈ ideal(E)` is FALSE (thread 31 `s5c-cert.md`, Gröbner: `num(R − ∏S) mod
+ideal(A−1, P12, P21) = −Y1·Z0 ≠ 0`). The exact mechanism is a matrix middle-factor `R = S0·W·S1·…`,
+`W_s = I − Z_{s+1}·A⁻¹·Y_s → I` at the deepest point (scalar `u = ∏(1+X_s)/P00` when `M = 1`). The
+comparability is GERM-scoped: the two-sided box ratio `∑‖R‖² ≍ ∑‖∏S‖²` is FALSE for `M > 1` off-germ
+(rank-deficient witness `S0=εE12, S1=εE21` ⇒ `R=0 ≠ ∏S`), but the in-sum germ bound
+`|∑‖R‖² − ∑‖∏S‖²| ≤ C·∑E²` on `𝓝 0` HOLDS — which is exactly what the germ-invariant `rlctAt` needs
+(s5c-r2-cert; residual: the `r ≥ 2` matrix-pivot LDU symbolic confirm). Build consequence: feed
+`core_comparability_squeeze` the global `R`, NOT `∏S_s` (else the leak `R − ∏S` is not `E`-controllable).
+The thin assembly of `frobenius_fromBlocks` (`f = ·²`) + `schur_P11_decomp`, ready for
 `core_comparability_squeeze`. -/
 theorem fullProduct_core_split {r mlo nhi : Type*} [Fintype r] [DecidableEq r] [Fintype mlo]
     [Fintype nhi]

@@ -123,6 +123,22 @@ to have the right rlct.
   interfaces, so `hQf0/hPfL` suffice. For `L ≥ 3` the missing hyp is `deepestPoint_interior_frame_id`
   (`Q_s = 1 ∧ P_s = 1` for `1 ≤ s ≤ L−2`), banked in `DeepestFrame.lean:108`. Thread it into `hinterface`.
 
+## S5c MATRIX CORE (r≥2 / M>1) — adjudicated; GERM-not-box (2026-06-25)
+
+The headline needs M=H−r>1. Adjudicated: the scalar unit `u` becomes a matrix MIDDLE FACTOR — EXACT
+identity `R = S0·(I − Z1·A⁻¹·Y0)·S1` (the LDU Schur-of-product; `W=I−Z1A⁻¹Y0`, rank-≤1 perturbation,
+det W = a0a1/A → 1; telescopes over L). **CONFOUND (decorrelated Codex caught, my first MC missed):** the
+standalone box comparability `∑‖R‖²≍∑‖∏S‖²` is FALSE for M>1 — Codex witness `S0=εE12,S1=εE21` with
+`W[1,1]=0` ⇒ `R=0`, `∏S≠0`. BUT that needs off-pivot `Y0Z1≈−1` (off-pivot O(1)) — NOT a germ. On a TRUE
+germ (ALL dev→0): `R−∏S = O(ε⁴)` while `∏S=O(ε²)` (strictly higher-order, verified) ⇒ `‖R‖²/‖∏S‖²→1`.
+So **TRUE on a germ, NOT uniform on a box**; `rlctAtOn` germ-invariance makes the germ form sufficient.
+Build-ready: the EXACT middle-factor identity + the in-sum remainder charge `|∑‖R‖²−∑‖∏S‖²| ≤ C·∑E²` on
+a `𝓝 0` germ (NOT a `[m,M]` ratio bound). MC (true germ, rank-1 S-adversary): sup ratio →1 (1.0008 at
+1e-2). **Residual flag: r≥2 matrix-PIVOT LDU symbolically unverified (only M≥2 at r=1).** Cert:
+`s5c-r2-cert.md`; consult `codex/s5c-r2-*`. This corrects the r=1 `s5c-cert.md` "standalone" phrasing —
+narrow it to a germ for consistency (r=1 is standalone-safe since scalar `W=u` can't rank-cancel, but the
+germ framing unifies). Last named open dependency in the framedParams-body design — CLOSED (germ-scoped).
+
 ## S5c — the `Rcore ↔ coreAbsorb` core identification (adjudicated WITNESS, 2026-06-25)
 
 NOT banked (g156 only ASSERTS it in prose, and that prose `R−∏S ∈ ideal(reg)` claim is FALSE — Groebner

@@ -304,3 +304,12 @@ exact-proven. **The full L2 headline (rank-`r` reduced core) DEPENDS on this mat
 recommends a short r≥2 cert before the body build relies on it; I've dispatched it onto the r≥2 adjudication (probably
 routine sub-multiplicativity, but not free). **Operator-relevant:** until the r≥2 matrix-core comparability is proven, the
 L2 gate closes only for r=1 cores; the general-r headline carries this as a named open dependency. Driving it now, not deferring.
+- **UPDATE (2026-06-25, same day): ADJUDICATED — TRUE but GERM-scoped (a decorrelation win).** The exact matrix identity is a
+  middle-factor `R = S0·W·S1·…`, `W_s = I − Z_{s+1}A⁻¹Y_s → I` at the deepest point. Codex caught a real confound the first MC
+  missed: the two-sided BOX ratio `∑‖R‖²≍∑‖∏S‖²` is **FALSE for M>1** off-germ (rank-deficient `S0=εE12,S1=εE21` ⇒ R=0≠∏S),
+  because the rank-≤1 `W` gives no rank protection. BUT on a true germ (all deviations→0) `R−∏S = O(ε⁴)` vs `∏S = O(ε²)`, so the
+  in-sum germ bound `|∑‖R‖²−∑‖∏S‖²| ≤ C·∑E²` HOLDS — and `rlctAt` is a germ invariant, so the germ form is the right (and only
+  safe) scope. **The build atom MUST be the germ form (`schur_core_germ_comparability`), not a `[m,M]` box bound** — a box bound
+  would be unsound. Verified r=1,M=2 symbolically; the LDU is general in L,M. **One residual** (dispatched): a short r≥2
+  matrix-PIVOT (a_s an r×r block) LDU symbolic confirm before the body build hard-relies on r≥2. No operator action — the
+  dependency is closed germ-scoped; the precision (germ-not-box) is captured in the g156 docstring + s5c-r2-cert.
