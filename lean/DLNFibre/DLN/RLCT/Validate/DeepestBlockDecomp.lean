@@ -143,4 +143,94 @@ theorem prod_eq_prodAux_mul_last {m : ℕ} (H : Fin (m + 1 + 1) → ℕ) (A : Pa
             (A (⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)))) :=
   prodAux_succ H A m (Nat.lt_succ_self (m + 1)) e1 e2
 
+/-- **The corner-split Schur bridge** (the producer's `Rcore`-shape ↔ the framed-product Schur). The
+producer's global Schur complement is taken over `Mw := reindex(P0·(prod − B)·QL)` with the pivot
+`(Mw.toBlocks₁₁ + 1)⁻¹` (the `+1` from the corner). When the framed reindexed product splits as
+`M̂ = fromBlocks 1 0 0 0 + Mw` (the banked `hRegBlocks`), the corner adds `1` to ONLY the `(1,1)` block,
+so the producer's `Rcore` over `Mw` is exactly the Schur complement of `M̂` over its own `(1,1)` block:
+`Mw₂₂ − Mw₂₁·(Mw₁₁+1)⁻¹·Mw₁₂ = M̂₂₂ − M̂₂₁·(M̂₁₁)⁻¹·M̂₁₂`. Pure `toBlocks`-of-`fromBlocks`-sum
+bookkeeping (the same reads the `hbexact` energy identity uses), so the h1 Schur factorization on `M̂`
+(`reindex_mul_schur_factor`) transfers to the producer's `Rcore`. -/
+theorem rcore_eq_schur_of_corner_split {a b r : ℕ}
+    (Mw Mhat : Matrix (Fin a) (Fin b) ℝ)
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eC : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (hsplit : Matrix.reindex eR eC Mhat
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Matrix.reindex eR eC Mw) :
+    (Matrix.reindex eR eC Mw).toBlocks₂₂
+        - (Matrix.reindex eR eC Mw).toBlocks₂₁
+          * ((Matrix.reindex eR eC Mw).toBlocks₁₁ + 1)⁻¹
+          * (Matrix.reindex eR eC Mw).toBlocks₁₂
+      = (Matrix.reindex eR eC Mhat).toBlocks₂₂
+        - (Matrix.reindex eR eC Mhat).toBlocks₂₁
+          * ((Matrix.reindex eR eC Mhat).toBlocks₁₁)⁻¹
+          * (Matrix.reindex eR eC Mhat).toBlocks₁₂ := by
+  -- Each `M̂` block reads off the corner-sum: `M̂₁₁ = Mw₁₁ + 1`, the off/`(2,2)` blocks = `Mw`'s.
+  rw [hsplit]
+  have h11 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₁₁
+      = (Matrix.reindex eR eC Mw).toBlocks₁₁ + 1 := by
+    funext i j
+    simp only [Matrix.toBlocks₁₁, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₁₁, Matrix.one_apply]
+    split <;> ring
+  have h12 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₁₂
+      = (Matrix.reindex eR eC Mw).toBlocks₁₂ := by
+    funext i j
+    simp only [Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_add]
+  have h21 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₂₁
+      = (Matrix.reindex eR eC Mw).toBlocks₂₁ := by
+    funext i j
+    simp only [Matrix.toBlocks₂₁, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, zero_add]
+  have h22 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₂₂
+      = (Matrix.reindex eR eC Mw).toBlocks₂₂ := by
+    funext i j
+    simp only [Matrix.toBlocks₂₂, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, zero_add]
+  rw [h11, h12, h21, h22]
+
+/-- **h1's `hR`, producer-spelling** (the corner-split + two-factor Schur factorization, combined). The
+producer's global Schur complement over `Mw := P0·(prod − B)·QL` with pivot `(Mw₁₁ + 1)⁻¹` equals the
+two-layer LDU form `Ŝ0·(1 − K̂)·Ŝ1` of the per-factor Schur cores, GIVEN:
+* the corner split `reindex eR eC (Mhat) = fromBlocks 1 0 0 0 + reindex eR eC Mw` (the banked
+  `hRegBlocks`, with `Mhat := prod (F w)` the framed reindexed product);
+* the two-factor grouping `Mhat = G0 * G1` (the banked `prod_eq_prodAux_mul_last` at `L = 2`);
+* the three pivot `Invertible` instances (`G0`/`G1` per-factor `(1,1)` blocks and the product pivot
+  `(reindex eR eC (G0*G1)).toBlocks₁₁ = M̂₁₁ = Mw₁₁ + 1`, the producer's S5a unit).
+`rcore_eq_schur_of_corner_split` (corner ⟹ `Rcore = Schur M̂`) then `reindex_mul_schur_factor`
+(`Schur (reindex (G0*G1)) = Ŝ0·(1 − K̂)·Ŝ1`). Frame-agnostic: the cores `Ŝ_s` are whatever the LDU
+reads off `G0, G1`'s blocks (framed in the producer). -/
+theorem rcore_schur_factor_of_corner_split {a b c r : ℕ}
+    (Mw Mhat : Matrix (Fin a) (Fin b) ℝ)
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eMid : Fin c ≃ Fin r ⊕ Fin (c - r))
+    (eC : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (G0 : Matrix (Fin a) (Fin c) ℝ) (G1 : Matrix (Fin c) (Fin b) ℝ)
+    (hGG : Mhat = G0 * G1)
+    (hsplit : Matrix.reindex eR eC Mhat
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Matrix.reindex eR eC Mw)
+    [Invertible (Matrix.reindex eR eMid G0).toBlocks₁₁]
+    [Invertible (Matrix.reindex eMid eC G1).toBlocks₁₁]
+    [Invertible ((Matrix.reindex eR eC (G0 * G1)).toBlocks₁₁)] :
+    (Matrix.reindex eR eC Mw).toBlocks₂₂
+        - (Matrix.reindex eR eC Mw).toBlocks₂₁
+          * ((Matrix.reindex eR eC Mw).toBlocks₁₁ + 1)⁻¹
+          * (Matrix.reindex eR eC Mw).toBlocks₁₂
+      = ((Matrix.reindex eR eMid G0).toBlocks₂₂
+            - (Matrix.reindex eR eMid G0).toBlocks₂₁ * ((Matrix.reindex eR eMid G0).toBlocks₁₁)⁻¹
+              * (Matrix.reindex eR eMid G0).toBlocks₁₂)
+          * (1 - (Matrix.reindex eMid eC G1).toBlocks₂₁
+              * ((Matrix.reindex eR eC (G0 * G1)).toBlocks₁₁)⁻¹
+              * (Matrix.reindex eR eMid G0).toBlocks₁₂)
+          * ((Matrix.reindex eMid eC G1).toBlocks₂₂
+            - (Matrix.reindex eMid eC G1).toBlocks₂₁ * ((Matrix.reindex eMid eC G1).toBlocks₁₁)⁻¹
+              * (Matrix.reindex eMid eC G1).toBlocks₁₂) := by
+  -- Step 1: producer's `Rcore` over `Mw` = Schur of `M̂` over its own `(1,1)` block.
+  rw [rcore_eq_schur_of_corner_split Mw Mhat eR eC hsplit, hGG]
+  -- Step 2: Schur of `reindex (G0*G1)` = the two-layer LDU form (`reindex_mul_schur_factor`).
+  exact reindex_mul_schur_factor eR eMid eC G0 G1
+
 end DLNFibre.DLN.RLCT

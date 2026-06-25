@@ -198,6 +198,107 @@ theorem schur_product_ldu {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
     simp only [Matrix.mul_assoc]
   rw [hassoc, factor_one_sub_middle]
 
+/-- **The two-layer Schur complement in REGROUPED (off-diagonal) form** (the h3 regroup; rectangular
+outer widths `m0, m2`, shared middle `m1`). The GLOBAL (1,1)-block Schur complement of the product of
+two gauge-sliced layers over the product pivot `P = A0·A1 + Y0·Z1` equals `S0·S1 − (S0·Z1)·⅟P·(Y0·S1)`
+— the off-diagonal blocks `S0·Z1` (the (2,1) of the collapsed middle LDU) and `Y0·S1` (the (1,2))
+each pair a per-layer Schur core with a single regular read `Z1` / `Y0`. This is the form the
+remainder charge `R − S0·S1 = −(S0·Z1)·⅟P·(Y0·S1)` reads off, where the smallness comes from the
+REGULAR factor (`Z1, Y0 = O(√Sreg)`), NOT the core factor (the `S0·K·S1` route blows up — the core
+`T_s` escapes Sreg). Same `hprod`/`schur_unipotent_strip` derivation as `schur_product_ldu`, stopped
+one step earlier (before the `1 − K` factoring). -/
+theorem schur_product_regroup {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
+    [Fintype m0] [DecidableEq m0] [Fintype m1] [DecidableEq m1] [Fintype m2] [DecidableEq m2]
+    {α : Type*} [CommRing α]
+    (A0 A1 : Matrix r r α) (Y0 : Matrix r m1 α) (Y1 : Matrix r m2 α)
+    (Z0 : Matrix m0 r α) (Z1 : Matrix m1 r α) (T0 : Matrix m0 m1 α) (T1 : Matrix m1 m2 α)
+    [Invertible A0] [Invertible A1]
+    [hP : Invertible (A0 * A1 + Y0 * Z1)] :
+    (Z0 * Y1 + T0 * T1)
+        - (Z0 * A1 + T0 * Z1) * ⅟(A0 * A1 + Y0 * Z1) * (A0 * Y1 + Y0 * T1)
+      = (T0 - Z0 * ⅟A0 * Y0) * (T1 - Z1 * ⅟A1 * Y1)
+        - ((T0 - Z0 * ⅟A0 * Y0) * Z1) * ⅟(A0 * A1 + Y0 * Z1) * (Y0 * (T1 - Z1 * ⅟A1 * Y1)) := by
+  -- Abbreviations (NOT `set P`: that would copy `hP` to a fresh instance whose `⅟` differs).
+  set S0 : Matrix m0 m1 α := T0 - Z0 * ⅟A0 * Y0 with hS0def
+  set S1 : Matrix m1 m2 α := T1 - Z1 * ⅟A1 * Y1 with hS1def
+  -- The raw product equals the LDU sandwich `L0 · (middle) · U1` (same `hC0`/`hC1` as `schur_product_ldu`).
+  have hC0 : Matrix.fromBlocks A0 Y0 Z0 T0
+      = Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r m0 α) (Z0 * ⅟A0)
+            (1 : Matrix m0 m0 α)
+        * Matrix.fromBlocks A0 (0 : Matrix r m1 α) (0 : Matrix m0 r α) S0
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) (0 : Matrix m1 r α)
+            (1 : Matrix m1 m1 α) := by
+    rw [hS0def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A0 Y0 Z0 T0
+  have hC1 : Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r m1 α) (Z1 * ⅟A1)
+            (1 : Matrix m1 m1 α)
+        * Matrix.fromBlocks A1 (0 : Matrix r m2 α) (0 : Matrix m1 r α) S1
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) (0 : Matrix m2 r α)
+            (1 : Matrix m2 m2 α) := by
+    rw [hS1def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A1 Y1 Z1 T1
+  -- `C0·C1 = L0 · (fromBlocks P (Y0S1) (S0Z1) (S0S1)) · U1`, the middle collapsed by `schur_middle_ldu_blocks`.
+  have hprod : Matrix.fromBlocks A0 Y0 Z0 T0 * Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z0 * ⅟A0) 1
+          * Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1)
+          * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) 0 1 := by
+    rw [hC0, hC1, ← schur_middle_ldu_blocks A0 A1 Y0 Z1 S0 S1]
+    simp only [Matrix.mul_assoc]
+  -- The explicit product blocks (LHS Schur) match `toBlocks` of the raw product.
+  have hblk : Matrix.fromBlocks A0 Y0 Z0 T0 * Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (A0 * Y1 + Y0 * T1)
+          (Z0 * A1 + T0 * Z1) (Z0 * Y1 + T0 * T1) := by
+    rw [Matrix.fromBlocks_multiply]
+  -- The unipotent strip yields the regrouped Schur `S0·S1 − (S0·Z1)·⅟P·(Y0·S1)` directly.
+  have hstrip := schur_unipotent_strip (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1)
+    (Z0 * ⅟A0) (⅟A1 * Y1)
+  rw [← hprod, hblk] at hstrip
+  simp only [Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₂₁,
+    Matrix.toBlocks_fromBlocks₁₂] at hstrip
+  rw [hstrip]
+
+/-- **The Schur-core remainder identity in REGROUPED form** (the h3 regroup, exact ring algebra). With
+the global product Schur complement written in the regrouped form `R = S0·S1 − (S0·Z1)·⅟P·(Y0·S1)`
+(the off-diagonal blocks of the collapsed middle LDU), the deviation of `R` from the product of
+per-layer cores `∏S = S0·S1` is exactly `−(S0·Z1)·⅟P·(Y0·S1)`. The smallness comes from the REGULAR
+reads `Z1, Y0` (each `= O(√Sreg)`), so `S0·Z1` and `Y0·S1` are `O(√Sreg)` and the remainder is
+`O(Sreg)` — the naive `S0·K·S1` route blows up (the core `T_s` escapes Sreg), this one does not. Pure
+`Matrix` distribution. -/
+theorem schur_core_remainder_regroup_identity {r m0 m1 m2 : Type*} [Fintype r] [Fintype m1]
+    (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (Z1 : Matrix m1 r ℝ) (Y0 : Matrix r m1 ℝ)
+    (Pinv : Matrix r r ℝ) (R : Matrix m0 m2 ℝ)
+    (hR : R = S0 * S1 - (S0 * Z1) * Pinv * (Y0 * S1)) :
+    R - S0 * S1 = - ((S0 * Z1) * Pinv * (Y0 * S1)) := by
+  subst hR; abel
+
+/-- **The regrouped Frobenius remainder bound** (the h3 reg-block accounting). The remainder
+`D = −(S0·Z1)·⅟P·(Y0·S1)` (hence `R − ∏S`) has squared-Frobenius energy bounded by the product of the
+three factor energies `frobSq (S0·Z1) · frobSq Pinv · frobSq (Y0·S1)`. Two `frobenius_mul_le`. The
+reg-block estimate `frobSq (S0·Z1), frobSq (Y0·S1) ≤ C·Sreg` (the regular factors `Z1, Y0` carry the
+smallness) + the `⅟P` bound then give `frobSq D ≤ Crem·Sreg²` downstream. -/
+theorem schur_core_remainder_regroup_frobeniusSq_le {r m0 m2 : Type*}
+    [Fintype r] [Fintype m0] [Fintype m2]
+    (S0Z1 : Matrix m0 r ℝ) (Pinv : Matrix r r ℝ) (Y0S1 : Matrix r m2 ℝ) :
+    frobSq (S0Z1 * Pinv * Y0S1) ≤ frobSq S0Z1 * frobSq Pinv * frobSq Y0S1 := by
+  -- `∑‖(S0Z1·Pinv)·Y0S1‖² ≤ (∑‖S0Z1·Pinv‖²)·(∑‖Y0S1‖²) ≤ (∑‖S0Z1‖²·∑‖Pinv‖²)·(∑‖Y0S1‖²)`.
+  simp only [frobSq]
+  have h1 : (∑ i, ∑ j, ((S0Z1 * Pinv * Y0S1) i j) ^ 2)
+      ≤ (∑ i, ∑ k, ((S0Z1 * Pinv) i k) ^ 2) * (∑ j, ∑ k, (Y0S1 k j) ^ 2) :=
+    frobenius_mul_le (S0Z1 * Pinv) Y0S1
+  have h2 : (∑ i, ∑ k, ((S0Z1 * Pinv) i k) ^ 2)
+      ≤ (∑ i, ∑ k, (S0Z1 i k) ^ 2) * (∑ j, ∑ k, (Pinv k j) ^ 2) :=
+    frobenius_mul_le S0Z1 Pinv
+  have hY0S1nn : (0 : ℝ) ≤ ∑ j, ∑ k, (Y0S1 k j) ^ 2 :=
+    Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
+  -- Normalise the column-major factors to the row-major `frobSq` orientation.
+  have hPcomm : (∑ j, ∑ k, (Pinv k j) ^ 2) = ∑ i, ∑ j, (Pinv i j) ^ 2 := Finset.sum_comm
+  have hY0S1comm : (∑ j, ∑ k, (Y0S1 k j) ^ 2) = ∑ i, ∑ j, (Y0S1 i j) ^ 2 := Finset.sum_comm
+  rw [hPcomm] at h2
+  rw [hY0S1comm] at h1 hY0S1nn
+  calc (∑ i, ∑ j, ((S0Z1 * Pinv * Y0S1) i j) ^ 2)
+      ≤ (∑ i, ∑ k, ((S0Z1 * Pinv) i k) ^ 2) * (∑ i, ∑ j, (Y0S1 i j) ^ 2) := h1
+    _ ≤ ((∑ i, ∑ k, (S0Z1 i k) ^ 2) * (∑ i, ∑ j, (Pinv i j) ^ 2)) * (∑ i, ∑ j, (Y0S1 i j) ^ 2) :=
+        mul_le_mul_of_nonneg_right h2 hY0S1nn
+
 /-- **The Schur-core remainder identity** (exact ring algebra, L = 2). With the global product Schur
 complement written in middle-factor form `R = S0 · (1 − K) · S1` (the block-LDU output, `K = Z1·A⁻¹·Y0`
 the off-pivot correction), the deviation of `R` from the product of per-layer cores `∏S = S0·S1` is

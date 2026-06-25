@@ -18,10 +18,17 @@ The genuinely new matrix-algebra piece, the frame-free two-layer LDU
 `schur_product_ldu` (`DeepestSchurComparability`), supplies the per-`w` factorization hypothesis `hR`.
 What `germ_charge_of_schur_factorization` does NOT discharge (and what the producer's residual `sorry`
 still carries) is the frame-aware identification of `Mw`'s `toBlocks` with a per-layer block product
-`(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` (so `schur_product_ldu` applies), the match of
-those cores to lemma-1's absorbed cores (`hCore`), and the quadratic remainder charge
-`frobSq (R − S0·S1) ≤ Crem·Sreg²` (the `K = Z1·⅟P·Y0 = O(Sreg)` content). Those are the precise,
-named obligations the bridge leaves open. Design cert:
+`(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` (so `schur_product_ldu` applies), the core germ
+charge matching lemma-1's frame-free core `coreΦ` to the framed LDU cores `frobSq (Ŝ0·Ŝ1)`
+(`hCore_germ`, `O(Sreg)` since the O(1) frames distort the Schur only through reg-read-gated
+off-diagonal blocks), and the quadratic remainder charge `frobSq (R − S0·S1) ≤ Crem·Sreg²` (the
+`K = Z1·⅟P·Y0 = O(Sreg)` content). Those are the precise, named obligations the bridge leaves open.
+
+**Bridge relaxation (2026-06-25, thread 31).** The original bridge took the EXACT core match
+`coreΦ = frobSq (S0·S1)`. A numeric check found that is FALSE under the producer's nontrivial O(1)
+endpoint frames (the framed LDU cores `Ŝ_s` carry frame decoration), and pp adjudicated the
+discrepancy as `O(Sreg²)` (reg-read-gated), so `hCore` is now the germ charge `hCore_germ`. The proof
+absorbs it by ONE final triangle step; the S5c machinery is unchanged. Design cert:
 `expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/frame-stripping-cert.md`.
 -/
 
@@ -35,48 +42,52 @@ variable {ι : Type*} [TopologicalSpace ι]
 the remaining unbuilt geometry). GIVEN, near `w0`:
 * the per-`w` global Schur factorization `R w = S0 w · (1 − K w) · S1 w` (the frame-aware
   identification — supplied by `schur_product_ldu` once the per-layer block decomposition of `Mw`
-  lands);
-* the per-`w` core identification `coreΦ w = frobSq (S0 w · S1 w)` (lemma-1, matched cores);
+  lands; the cores `S0, S1` are the FRAMED per-layer Schur cores `Ŝ_s`, the LDU being frame-agnostic);
+* the per-`w` core germ charge `|coreΦ w − frobSq (S0 w · S1 w)| ≤ Ccore · Sreg w` (lemma-1's
+  frame-free core `coreΦ` vs the framed LDU cores `Ŝ0·Ŝ1`: the O(1) frames distort the Schur ONLY
+  through off-diagonal frame blocks × vanishing regular reads `Y_s, Z_s = O(√Sreg)`, so the
+  distortion is reg-read-gated and is `O(Sreg²)`, a fortiori `O(Sreg)`);
 * the QUADRATIC remainder charge `frobSq (R w − S0 w · S1 w) ≤ Crem · (Sreg w)²` (the `K = O(Sreg)`
   content: `Y0, Z1` are regular blocks `= O(√Sreg)`, so `K = Z1·⅟P·Y0 = O(Sreg)`, hence
   `R − S0·S1 = −S0·K·S1 = O(Sreg)`);
 * the core energy and `Sreg` are bounded near `w0` (`Mc`, `Bs`), with `Sreg ≥ 0`,
 
 the germ charge `∃ C ≥ 0, ∀ᶠ w, |frobSq (R w) − coreΦ w| ≤ C · Sreg w` holds with the explicit
-constant `C = 2·√(Mc·Crem) + Crem·Bs`. The S5c difference-of-squared split gives
-`|frobSq R − coreΦ| ≤ 2|cross| + frobSq D` (`D = R − S0·S1`); Cauchy–Schwarz
+constant `C = 2·√(Mc·Crem) + Crem·Bs + Ccore`. The S5c difference-of-squared split gives
+`|frobSq R − frobSq(S0S1)| ≤ 2|cross| + frobSq D` (`D = R − S0·S1`); Cauchy–Schwarz
 (`schur_core_germ_comparability` (iv)) bounds `cross² ≤ frobSq(S0S1)·frobSq D ≤ Mc·Crem·Sreg²`, so
-`|cross| ≤ √(Mc·Crem)·Sreg`, and the quadratic charge gives `frobSq D ≤ Crem·Bs·Sreg`. -/
+`|cross| ≤ √(Mc·Crem)·Sreg`, and the quadratic charge gives `frobSq D ≤ Crem·Bs·Sreg`. The final
+triangle step `|frobSq R − coreΦ| ≤ |frobSq R − frobSq(S0S1)| + |frobSq(S0S1) − coreΦ|` adds the
+`Ccore·Sreg` core germ charge. -/
 theorem germ_charge_of_schur_factorization {m0 m1 m2 : Type*}
     [Fintype m0] [Fintype m1] [DecidableEq m1] [Fintype m2]
     (w0 : ι) (Sreg coreΦ : ι → ℝ)
     (S0 : ι → Matrix m0 m1 ℝ) (S1 : ι → Matrix m1 m2 ℝ)
     (K : ι → Matrix m1 m1 ℝ) (R : ι → Matrix m0 m2 ℝ)
-    (Crem Mc Bs : ℝ) (hCrem : 0 ≤ Crem) (hMc : 0 ≤ Mc) (hBs : 0 ≤ Bs)
+    (Crem Mc Bs Ccore : ℝ) (hCrem : 0 ≤ Crem) (hMc : 0 ≤ Mc) (hBs : 0 ≤ Bs) (hCcore : 0 ≤ Ccore)
     (hSregNonneg : ∀ w, 0 ≤ Sreg w)
     (hR : ∀ᶠ w in 𝓝 w0, R w = S0 w * (1 - K w) * S1 w)
-    (hCore : ∀ᶠ w in 𝓝 w0, coreΦ w = frobSq (S0 w * S1 w))
+    (hCore_germ : ∀ᶠ w in 𝓝 w0, |coreΦ w - frobSq (S0 w * S1 w)| ≤ Ccore * Sreg w)
     (hRem : ∀ᶠ w in 𝓝 w0, frobSq (R w - S0 w * S1 w) ≤ Crem * (Sreg w) ^ 2)
     (hMcb : ∀ᶠ w in 𝓝 w0, frobSq (S0 w * S1 w) ≤ Mc)
     (hBsb : ∀ᶠ w in 𝓝 w0, Sreg w ≤ Bs) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
       |frobSq (R w) - coreΦ w| ≤ C * Sreg w := by
-  refine ⟨2 * Real.sqrt (Mc * Crem) + Crem * Bs, by positivity, ?_⟩
-  filter_upwards [hR, hCore, hRem, hMcb, hBsb] with w hRw hCorew hRemw hMcbw hBsbw
+  refine ⟨2 * Real.sqrt (Mc * Crem) + Crem * Bs + Ccore, by positivity, ?_⟩
+  filter_upwards [hR, hCore_germ, hRem, hMcb, hBsb] with w hRw hCorew hRemw hMcbw hBsbw
   -- The S5c split for this `w`: `frobSq R = frobSq(S0S1) + 2·cross + frobSq D`, cross² ≤ energies.
   obtain ⟨_, _, hsplit, hcross_sq⟩ := schur_core_germ_comparability (S0 w) (S1 w) (K w) (R w) hRw
   set D := R w - S0 w * S1 w with hDdef
   set cross := ∑ i, ∑ j, (S0 w * S1 w) i j * D i j with hcrossdef
-  have hdiff : frobSq (R w) - coreΦ w = 2 * cross + frobSq D := by
-    rw [hCorew, hsplit]; ring
-  rw [hdiff]
+  -- The S5c half: `|frobSq R − frobSq(S0S1)| ≤ (2√(Mc·Crem) + Crem·Bs)·Sreg`.
+  have hdiff : frobSq (R w) - frobSq (S0 w * S1 w) = 2 * cross + frobSq D := by
+    rw [hsplit]; ring
   have hDnn : 0 ≤ frobSq D := frobSq_nonneg D
+  have hSregW := hSregNonneg w
   -- Triangle: `|2·cross + frobSq D| ≤ 2|cross| + frobSq D`.
   have htri : |2 * cross + frobSq D| ≤ 2 * |cross| + frobSq D := by
     calc |2 * cross + frobSq D| ≤ |2 * cross| + |frobSq D| := abs_add_le _ _
       _ = 2 * |cross| + frobSq D := by rw [abs_mul, abs_of_nonneg hDnn]; norm_num
-  refine le_trans htri ?_
-  have hSregW := hSregNonneg w
   -- Remainder: `frobSq D ≤ Crem·Sreg² ≤ Crem·Bs·Sreg`.
   have hrem_le : frobSq D ≤ Crem * Bs * Sreg w := by
     calc frobSq D ≤ Crem * (Sreg w) ^ 2 := hRemw
@@ -95,17 +106,48 @@ theorem germ_charge_of_schur_factorization {m0 m1 m2 : Type*}
       _ = Real.sqrt (Mc * Crem) * Real.sqrt ((Sreg w) ^ 2) := by
           rw [Real.sqrt_mul (by positivity)]
       _ = Real.sqrt (Mc * Crem) * Sreg w := by rw [Real.sqrt_sq hSregW]
-  calc 2 * |cross| + frobSq D
-      ≤ 2 * (Real.sqrt (Mc * Crem) * Sreg w) + Crem * Bs * Sreg w := by
-        apply add_le_add _ hrem_le
-        exact mul_le_mul_of_nonneg_left hcross_le (by norm_num)
-    _ = (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w := by ring
+  have hS5c : |frobSq (R w) - frobSq (S0 w * S1 w)|
+      ≤ (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w := by
+    rw [hdiff]
+    refine le_trans htri ?_
+    calc 2 * |cross| + frobSq D
+        ≤ 2 * (Real.sqrt (Mc * Crem) * Sreg w) + Crem * Bs * Sreg w := by
+          apply add_le_add _ hrem_le
+          exact mul_le_mul_of_nonneg_left hcross_le (by norm_num)
+      _ = (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w := by ring
+  -- Final triangle: `|frobSq R − coreΦ| ≤ |frobSq R − frobSq(S0S1)| + |frobSq(S0S1) − coreΦ|`.
+  calc |frobSq (R w) - coreΦ w|
+      = |(frobSq (R w) - frobSq (S0 w * S1 w)) + (frobSq (S0 w * S1 w) - coreΦ w)| := by ring_nf
+    _ ≤ |frobSq (R w) - frobSq (S0 w * S1 w)| + |frobSq (S0 w * S1 w) - coreΦ w| := abs_add_le _ _
+    _ ≤ (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w + Ccore * Sreg w := by
+        refine add_le_add hS5c ?_
+        rw [abs_sub_comm]; exact hCorew
+    _ = (2 * Real.sqrt (Mc * Crem) + Crem * Bs + Ccore) * Sreg w := by ring
+
+/-- **The germ charge directly from the global-Schur core charge** (the trivially-sound conditional;
+pp's correction, 2026-06-25). When the producer's core germ charge is stated against the FRAMED global
+Schur complement `R` itself — `|coreΦ w − frobSq (R w)| ≤ Ccore · Sreg w` (the true loss core IS the
+framed `frobSq (Rcore)` per `dlnLoss_two_sided_of_frame`, `coreΦ` is frame-free, and the gap folds
+`O(Sreg)` on the S5a domain where the pivot `P00 = N11 + 1` is invertible / `⅟P00` bounded) — the
+producer's germ charge `|frobSq (R w) − coreΦ w| ≤ Ccore · Sreg w` is exactly that bound (modulo
+`|·|` symmetry). No S5c remainder split, no `S0·S1` per-layer product, no `Crem`/`Mc`/`Bs` energies
+needed: the charge is already against `R`. Sound regardless of which core-charge route the producer's
+`coreΦ_germ_charge` ultimately takes. -/
+theorem germ_charge_of_core_charge {m0 m2 : Type*} [Fintype m0] [Fintype m2]
+    (w0 : ι) (Sreg coreΦ : ι → ℝ) (R : ι → Matrix m0 m2 ℝ) (Ccore : ℝ) (hCcore : 0 ≤ Ccore)
+    (hCore_germ : ∀ᶠ w in 𝓝 w0, |coreΦ w - frobSq (R w)| ≤ Ccore * Sreg w) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
+      |frobSq (R w) - coreΦ w| ≤ C * Sreg w := by
+  refine ⟨Ccore, hCcore, ?_⟩
+  filter_upwards [hCore_germ] with w hCorew
+  rw [abs_sub_comm]; exact hCorew
 
 /-! ## Non-vacuity witness
 
 The bridge's hypotheses are jointly satisfiable with a genuinely nonzero remainder: take `ι = ℝ`,
-`M = Fin 1`, `S0 w = S1 w = (w)` (scalar), `K w = w`, `R w = S0·(1−K)·S1`, `Sreg w = |w|`. Then
-`R w − S0 w · S1 w = −w³` is nonzero for `w ≠ 0`, and the quadratic remainder charge
+`M = Fin 1`, `S0 w = S1 w = (w)` (scalar), `K w = w`, `R w = S0·(1−K)·S1`, `Sreg w = |w|`,
+`coreΦ w = frobSq (S0 w · S1 w)` (the exact core match — a special case of `hCore_germ` with
+`Ccore = 0`). Then `R w − S0 w · S1 w = −w³` is nonzero for `w ≠ 0`, and the quadratic remainder charge
 `frobSq (R − S0·S1) = w⁶ ≤ Crem·|w|²` holds near `0` for `Crem = 1` (since `w⁶ ≤ w²` for `|w| ≤ 1`),
 so the bridge fires on a non-trivial instance — its conclusion is not the empty `0 ≤ 0`. (The full
 `∀ᶠ` discharge of this witness is downstream plumbing; the point recorded here is that the antecedents

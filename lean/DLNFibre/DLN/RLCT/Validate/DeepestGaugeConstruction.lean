@@ -17,6 +17,7 @@ import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
 import DLNFibre.DLN.RLCT.Validate.DeepestGermCharge
+import DLNFibre.DLN.RLCT.Validate.DeepestBlockDecomp
 import DLNFibre.DLN.RLCT.Validate.FrontPivotProducer
 
 /-!
