@@ -886,6 +886,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-42 (2026-06-25) — tick: housekeeping banked + goal-distance glance (on-path, healthy).**
+- **Banked @5ecff7ca:** pp-pin2-rearch's PIN2 `transfer-cert.md` (thread 31 — the regStraightenTotalCLM transfer is a
+  SIMPLIFICATION of the banked `_isUnit`, `W:=C×S` unsplit; relayed to l2-pin2-fullreg) + thread 27's iterfibre ceiling
+  refinement + discuss-at-close Items 15 (PIN2 resolved: full-reg supersedes Item-14 comparability) & 16 (the stray
+  cross-expedition `2026-06-23-fibre-codim/` dir — left untracked, flagged for operator homing, NOT banked here) +
+  gitignored `**/.codex-consult/` scratch.
+- **Goal-distance glance (`scripts/sorries`):** 6 RLCT files carry real sorries — Skeleton (the named gates L2:1131 /
+  R1:1234 / D1 / headline), DeepestGaugeChart + DeepestGaugeConstruction (L2 PIN2, actively building), RouteM4422Hfin +
+  RouteMLayerCoverGE + RouteMRecursion (R1 hdiv/hfin, build-held). EVERY live sorry-bearing file is on the critical path to
+  a named gate — no orphan off-path file. Trajectory downward: the PIN2 repair closes the DeepestGauge* sorries + the
+  Skeleton L2 sorry. (DeepestBaseL1 + RRR.lean are sorry-FREE; earlier raw-grep hits were "sorry-free"/"-conditional" prose.)
+- 1 background BUILD agent: l2-pin2-fullreg (PIN2 full-reg repair). pp-pin2-rearch idle-on-standby (cert staged+relayed;
+  not re-messaged — idle pings are auto-emitted substrate events). pp-r1-genM on-call (R1, held).
+
 **★ UPDATE-41 (2026-06-25) — PIN1 gate GREEN (survives verbatim); the PIN2 full-reg repair is build-ready + COMMISSIONED.**
 - **PIN1-survival adjudication GREEN (pp-pin2-rearch, exact + decorrelated Codex):** PIN1 `deepestEPivot_regSlice_fderiv`
   survives the T=0→full-product `regStraighten` swap VERBATIM. The leak `E_full − E_zero = (0, Y0·T1, T0·Z1)` is purely
