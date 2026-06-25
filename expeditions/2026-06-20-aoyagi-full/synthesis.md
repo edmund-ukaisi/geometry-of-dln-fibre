@@ -886,6 +886,19 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-60 (2026-06-25) — R1 (3,3,4) frame-transport algebraic heart BUILT @a393ea89; gap → the 9-chart A0 cover alone; matbox tide launched.**
+- **r1-frametransport banked** (+400 LoC, S2-free axiom-clean): `routeMCore_M334_threshold_lt_top` is NO LONGER a sorry — reduces
+  to the lone `matBox334_blowup_lt_top`. Built: the MP plumbing (routeMCore→matBox), the exact Schur-shear `R·A1=L_γ·[T;Δ·S]`,
+  the SOS comparability `frobSq(R·A1) ≥ (1/5)·(∑T²+frobSq(Δ·S))` (σ_min(L_γ)²=2−√3>1/5, sympy-verified), the radial divisor.
+  Decorrelated Codex: pivot on A0, the Jacobian-weighted blow-up is genuinely forced (no MP global reparam).
+- **r1-matbox LAUNCHED** (ac9892b0) — the (3,3,4) hfin's LAST piece: `matBox334_blowup_lt_top` = the 9-chart A0 argmax radial
+  cover-up-to-null + per-chart radial c-o-v (Jac |a|^8) + the banked `frobSq_angularR_ge` + box-rescale to the banked
+  `resolved334_lt_top` + ENNReal.sum_lt_top (~17-37 lemmas remaining of ~35-55; the algebraic heart banked). Per L32a-cover-cert +
+  the phi334 single-pivot precedent. pp-r1-genM-2 on-call. On close → (3,3,4) hfin fully S2-free.
+- **Both long poles' last pieces BUILDING:** l2-hprod-build (L2 hproducer 5-sub-lemma ∩-of-𝓝) + r1-matbox (R1 (3,3,4) 9-chart cover).
+  Convergence: each R1 tide banks more + shrinks the gap (bedrock → residual-power → resolved-form → algebraic heart → now just the
+  cover assembly). pp seats on-call; general hdiv + general lifts + D1 ahead.
+
 **★ UPDATE-59 (2026-06-25) — L2 hproducer: germ/Taylor was a FALSE ALARM (A' pointwise); 5-sub-lemma decomp build-ready + commissioned. ★**
 - **The 7th finding (germ/Taylor) is OVERTURNED** (pp-pin2-rearch + decorrelated Codex, `hproducer-decomp-cert.md` @03004ccb): the
   formaliser feared Π_J on a varying internal interface ⟹ unbanked germ/Taylor. FALSE — hS1' shows Π_J (Pπ) is a FIXED orthogonal
