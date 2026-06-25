@@ -664,4 +664,67 @@ theorem regStraightenTotalCLM_equiv_of_regBlock_isUnit (D_E : (R × S) →L[ℝ]
 
 end RegBlockIsUnit
 
+/-! ## The core-reading shear's invertibility (`regStraightenTotalCLM2`) — the L2-PIN2 transfer
+
+`transfer-cert.md` (thread 31): the `E_full`-straightening (reg output reads the core) carries the
+non-reg slot UN-split as a single `W`. Its total CLM `regStraightenTotalCLM2 D_E : δ ↦ (D_E δ, δ.2)`
+is invertible ⟺ its reg-block `D_E.comp regInCLM` is — the SAME block-triangular argument as
+`_isUnit` with the `(c', s')` pair collapsed to one `w'`. The core-in block `G` (and the spec-in
+block) live inside `D_E (0, w')`, subtracted by the inverse; only `F`'s invertibility is needed. -/
+
+section RegBlock2IsUnit
+variable {R W : Type*}
+  [NormedAddCommGroup R] [NormedSpace ℝ R]
+  [NormedAddCommGroup W] [NormedSpace ℝ W]
+
+/-- **`regStraightenTotalCLM2 D_E` is an invertible CLE when its reg-block is an invertible `≃L`**
+(the core-reading L2-PIN2 form; `transfer-cert.md`). Given `F : R ≃L R` whose coercion is the
+reg-block `D_E.comp regInCLM`, the total `δ ↦ (D_E δ, δ.2)` is `[[F, G],[0, I]]` (block
+upper-triangular, `G` the carried-in block = core ⊕ spec), inverted by
+`(r', w') ↦ (F⁻¹(r' − D_E(0, w')), w')`. -/
+theorem regStraightenTotalCLM2_equiv_of_regBlock_isUnit (D_E : (R × W) →L[ℝ] R)
+    (F : R ≃L[ℝ] R)
+    (hF : (F : R →L[ℝ] R) = D_E.comp (regInCLM : R →L[ℝ] R × W)) :
+    ∃ e : (R × W) ≃L[ℝ] (R × W),
+      (e : (R × W) →L[ℝ] (R × W)) = regStraightenTotalCLM2 D_E := by
+  -- `D_E (r, w) = F r + D_E (0, w)` (linearity); reg-out of `T` is `F δ.1 + D_E (0, δ.2)`.
+  have hFr : ∀ r : R, F r = D_E (r, (0 : W)) := by
+    intro r
+    have := ContinuousLinearMap.ext_iff.1 hF r
+    simpa [regInCLM] using this
+  have hsplit : ∀ (r : R) (w : W), D_E (r, w) = F r + D_E (0, w) := by
+    intro r w
+    rw [hFr r, ← map_add]
+    congr 1
+    ext <;> simp
+  -- The explicit inverse `(r', w') ↦ (F⁻¹(r' − D_E(0, w')), w')`, packaged as a `≃L`.
+  let inv : (R × W) →L[ℝ] (R × W) :=
+    ((F.symm : R →L[ℝ] R).comp ((ContinuousLinearMap.fst ℝ R W) -
+        (D_E.comp ((ContinuousLinearMap.inr ℝ R W).comp
+          (ContinuousLinearMap.snd ℝ R W))))).prod
+      (ContinuousLinearMap.snd ℝ R W)
+  have hinvapp : ∀ δ : R × W,
+      inv δ = (F.symm (δ.1 - D_E (0, δ.2)), δ.2) := by
+    intro δ
+    simp only [inv, ContinuousLinearMap.prod_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd',
+      ContinuousLinearMap.inr_apply]
+    rfl
+  refine ⟨{ toLinearMap := (regStraightenTotalCLM2 D_E).toLinearMap
+            invFun := inv
+            left_inv := ?_
+            right_inv := ?_
+            continuous_toFun := (regStraightenTotalCLM2 D_E).continuous
+            continuous_invFun := inv.continuous }, rfl⟩
+  · intro δ
+    change inv (regStraightenTotalCLM2 D_E δ) = δ
+    rw [regStraightenTotalCLM2_apply, hinvapp, hsplit δ.1 δ.2]
+    simp only [add_sub_cancel_right, ContinuousLinearEquiv.symm_apply_apply]
+  · intro δ
+    change regStraightenTotalCLM2 D_E (inv δ) = δ
+    rw [hinvapp, regStraightenTotalCLM2_apply, hsplit _ δ.2]
+    simp only [ContinuousLinearEquiv.apply_symm_apply, sub_add_cancel]
+
+end RegBlock2IsUnit
+
 end DLNFibre.DLN.RLCT

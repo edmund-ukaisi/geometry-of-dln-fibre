@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct` — the gauge-sliced framed product `∏C` (#44c)
@@ -81,6 +82,49 @@ theorem contDiff_readZ_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (fun p => readZ H r hr hL p s i j) := by
   simp only [readZ, Matrix.of_apply]
   exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
+
+/-- Each reduced-core read `(paramsEquivFlat (deepestM)).symm q.2.1 s a b` is `ContDiff ⊤` in `q`: the
+core slot `q.2.1` is a `ContDiff` linear projection, `(paramsEquivFlat (deepestM)).symm` is a `ContDiff`
+continuous-linear equiv (`paramsEquivFlatCLE.symm`), then layer/entry selection are `ContDiff` applies.
+The full-`framedParams` analogue of the `readX/Y/Z` ContDiff (the L2-PIN2 core read). -/
+theorem contDiff_coreRead_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (a : Fin (deepestM H r s.castSucc)) (b : Fin (deepestM H r s.succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (paramsEquivFlat (deepestM H r)).symm q.2.1 s a b) := by
+  -- `(paramsEquivFlat (deepestM)).symm = (paramsEquivFlatCLE (deepestM)).symm` as functions (same
+  -- forward map ⟹ same inverse), and the CLE's symm is `ContDiff`. Then layer/entry selection + the
+  -- ContDiff core-slot projection compose.
+  have hsymm_coe : ⇑(paramsEquivFlat (deepestM H r)).symm
+      = ⇑(paramsEquivFlatCLE (deepestM H r)).symm := by
+    funext y
+    apply (paramsEquivFlat (deepestM H r)).injective
+    rw [(paramsEquivFlat (deepestM H r)).apply_symm_apply]
+    have h1 : (paramsEquivFlat (deepestM H r)) ((paramsEquivFlatCLE (deepestM H r)).symm y)
+        = (paramsEquivFlatCLE (deepestM H r)) ((paramsEquivFlatCLE (deepestM H r)).symm y) := by
+      rw [paramsEquivFlatCLE_coe]
+    rw [h1, (paramsEquivFlatCLE (deepestM H r)).apply_symm_apply]
+  have hcle : ContDiff ℝ (⊤ : ℕ∞) (fun y : Fin (flatDim (deepestM H r)) → ℝ =>
+      (paramsEquivFlat (deepestM H r)).symm y) := by
+    rw [hsymm_coe]
+    exact (paramsEquivFlatCLE (deepestM H r)).symm.contDiff
+  -- The scalar entry `y ↦ (paramsEquivFlat M).symm y s a b` is a continuous-linear functional of `y`
+  -- (eval ∘ the CLE.symm); compose with the ContDiff core-slot projection `q ↦ q.2.1`. Built via the
+  -- CLM `evalCLM` to dodge the `Matrix`-norm-instance friction (no intermediate Matrix-typed ContDiff).
+  set evalCLM : (Params (deepestM H r)) →L[ℝ] ℝ :=
+    (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (deepestM H r s.succ) => ℝ) b).comp
+      ((ContinuousLinearMap.proj (R := ℝ)
+          (φ := fun _ : Fin (deepestM H r s.castSucc) => Fin (deepestM H r s.succ) → ℝ) a).comp
+        (ContinuousLinearMap.proj (R := ℝ)
+          (φ := fun s : Fin L => Matrix (Fin (deepestM H r s.castSucc))
+            (Fin (deepestM H r s.succ)) ℝ) s)) with hevalCLM
+  have hfun : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (paramsEquivFlat (deepestM H r)).symm q.2.1 s a b)
+      = fun q : DeepestSplit H r (deepestNGauge H r) =>
+        evalCLM ((paramsEquivFlat (deepestM H r)).symm q.2.1) := by
+    funext q; rfl
+  rw [hfun]
+  exact evalCLM.contDiff.comp (hcle.comp (contDiff_snd.fst))
 
 /-- **The per-layer FRAME-CONJUGATED normal-form matrix** (#80 frame-wiring). The deepest-point block
 corner `corM = reindex(fromBlocks 1 0 0 0)` PLUS the frame-conjugated raw deviation
@@ -219,6 +263,71 @@ theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [hentry]
   refine contDiff_const.add ?_
   -- `(P · D · Q) i j = ∑ n, (P · D) i n · Q n j = ∑ n, (∑ m, P i m · D m n) · Q n j`.
+  simp only [Matrix.mul_apply]
+  refine ContDiff.sum (fun n _ => ?_)
+  refine ContDiff.mul (ContDiff.sum (fun m _ => ?_)) contDiff_const
+  exact contDiff_const.mul (hD m n)
+
+/-- Each FULL `framedParams` layer ENTRY is `ContDiff ⊤` in the `DeepestSplit` slot — the same block-read
+structure as `framedParamsReg`, but the `(1,1)` block carries the reduced core read (`contDiff_coreRead_entry`)
+instead of `0`. The full-product analogue, the `_contdiff` input for `deepestEFull`. -/
+theorem contDiff_framedParams_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L)
+    (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      framedParams H r hr hL P Q q s i j) := by
+  -- Each entry of `D(q) = reindex(fromBlocks (readX) (readY) (readZ) (coreRead))` is ContDiff (a block
+  -- read or the core read), then the framedLayer entry is `corM + (P·D·Q)`.
+  have hD : ∀ (m : Fin (H s.castSucc)) (n : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
+          (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+            (readZ H r hr hL (q.1, q.2.2) s)
+            ((paramsEquivFlat (deepestM H r)).symm q.2.1 s))) m n) := by
+    intro m n
+    have hmn : (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
+          (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+            (readZ H r hr hL (q.1, q.2.2) s)
+            ((paramsEquivFlat (deepestM H r)).symm q.2.1 s))) m n)
+        = fun q : DeepestSplit H r (deepestNGauge H r) =>
+            Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+              (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
+              ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m)
+              ((rThresholdSplit r (H s.succ) (hr s.succ)) n) := by
+      funext q
+      simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
+    rw [hmn]
+    -- The reg slot `(q.1, q.2.2)` is ContDiff (fst + snd∘snd); compose with the read entries.
+    have hreg : ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        ((q.1, q.2.2) : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) :=
+      contDiff_fst.prodMk (contDiff_snd.snd)
+    rcases (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m with a | a <;>
+      rcases (rThresholdSplit r (H s.succ) (hr s.succ)) n with b | b <;>
+      simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
+        Matrix.fromBlocks_apply₂₂]
+    · exact (contDiff_readX_entry H r hr hL s a b).comp hreg
+    · exact (contDiff_readY_entry H r hr hL s a b).comp hreg
+    · exact (contDiff_readZ_entry H r hr hL s a b).comp hreg
+    · exact contDiff_coreRead_entry H r hr hL s a b
+  have hentry : (fun q : DeepestSplit H r (deepestNGauge H r) => framedParams H r hr hL P Q q s i j)
+      = fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+              (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) i j
+          + (P s * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+                  (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+                    (readZ H r hr hL (q.1, q.2.2) s)
+                    ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)) * Q s) i j := by
+    funext q
+    simp only [framedParams, framedLayer, Matrix.add_apply]
+  rw [hentry]
+  refine contDiff_const.add ?_
   simp only [Matrix.mul_apply]
   refine ContDiff.sum (fun n _ => ?_)
   refine ContDiff.mul (ContDiff.sum (fun m _ => ?_)) contDiff_const

@@ -100,6 +100,103 @@ theorem framedParamsRegPivot_last (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [dif_pos rfl]
   rfl
 
+/-- **The FULL pivot-aware framed reconstruction** (`framedParamsPivot`, the L2-PIN2 repair object).
+Identical to `framedParamsRegPivot` EXCEPT the `(1,1)` core block carries the reduced core slot read
+`(paramsEquivFlat (deepestM H r)).symm q.2.1 s` (the `framedParams` core), NOT `0`. The reg blocks of
+its reindexed product are the FULL product's reg blocks — what the LOSS sees (`Sreg`), restoring the
+core leak `framedParamsRegPivot` wrongly drops (thread 31). On every NON-last layer it is `framedParams`
+(the full threshold framing); on the LAST layer the `.succ`-side column reindex is pivot-aligned. -/
+noncomputable def framedParamsPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Params H :=
+  fun s =>
+    if hs : s = lastLayer hL then
+      (by
+        rw [hs]
+        exact
+          Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+              (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+              (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+            + P (lastLayer hL)
+              * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                  (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))
+              * Q (lastLayer hL) :
+          Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ)
+    else
+      framedParams H r hr hL P Q q s
+
+/-- On every NON-last layer, `framedParamsPivot` is `framedParams` (the full threshold framing). -/
+theorem framedParamsPivot_of_ne_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (s : Fin L) (hs : s ≠ lastLayer hL) :
+    framedParamsPivot H r hr hL J P Q q s = framedParams H r hr hL P Q q s := by
+  simp only [framedParamsPivot, dif_neg hs]
+
+/-- The LAST layer of `framedParamsPivot` (the pivot-spelled formula, core block = the core read). -/
+theorem framedParamsPivot_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    framedParamsPivot H r hr hL J P Q q (lastLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + P (lastLayer hL)
+            * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+                (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))
+            * Q (lastLayer hL) := by
+  show (dite (lastLayer hL = lastLayer hL) _ _) = _
+  rw [dif_pos rfl]
+  rfl
+
+/-- **The core-zero bridge** (`framedParamsPivot` at core slot `0` = `framedParamsRegPivot`): when the
+reduced-core slot `q.2.1 = 0`, the core read `(paramsEquivFlat (deepestM)).symm 0 = 0` so the `(1,1)`
+block is `0` and the FULL reconstruction collapses to the T=0 one (the PIN1 reg-slice witness). The
+soundness link re-using PIN1's invertible `F` verbatim. -/
+theorem framedParamsPivot_coreZero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (reg : Fin (deepestNReg H r) → ℝ) (spec : Fin (deepestNGauge H r) → ℝ) :
+    framedParamsPivot H r hr hL J P Q (reg, 0, spec)
+      = framedParamsRegPivot H r hr hL J P Q (reg, spec) := by
+  -- The core read at the zero core slot is the all-zero tuple (`gaugeSlotRead_zero`'s T-core pattern):
+  -- forward `paramsEquivFlat (fun _ => 0) = 0` by `rfl`, then `symm_apply_apply`.
+  have hfwd : (paramsEquivFlat (deepestM H r)) (fun _ => 0) = 0 := by
+    funext i
+    show (paramsEquivFlat (deepestM H r)) (fun _ => 0) i = (0 : Fin _ → ℝ) i; rfl
+  have hTfun : (paramsEquivFlat (deepestM H r)).symm
+      (((reg, 0, spec) : DeepestSplit H r (deepestNGauge H r)).2.1) = (fun _ => 0) := by
+    rw [show ((reg, 0, spec) : DeepestSplit H r (deepestNGauge H r)).2.1
+        = (0 : Fin (flatDim (deepestM H r)) → ℝ) from rfl, ← hfwd,
+      (paramsEquivFlat (deepestM H r)).symm_apply_apply]
+  funext s
+  by_cases hs : s = lastLayer hL
+  · subst hs
+    rw [framedParamsPivot_last, framedParamsRegPivot_last, hTfun]
+  · rw [framedParamsPivot_of_ne_last H r hr hL J P Q (reg, 0, spec) s hs,
+      framedParamsRegPivot_of_ne_last H r hr hL J P Q (reg, spec) s hs]
+    -- Non-last: `framedParams (reg,0,spec)` vs `framedParamsReg (reg,spec)` — same reg reads, core 0.
+    simp only [framedParams, framedParamsReg, hTfun]
+
 /-- Each `framedParamsRegPivot` layer ENTRY is `ContDiff ⊤` in the `(reg, gauge)` slots: non-last layers
 ARE `framedParamsReg` (the banked `contDiff_framedParamsReg_entry`); the last layer is the same
 `corM + P·reindex(fromBlocks readX readY readZ 0)·Q` block-read shape with a pivot column reindex
@@ -175,6 +272,88 @@ theorem contDiff_framedParamsRegPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
       funext p; rw [framedParamsRegPivot_of_ne_last H r hr hL J P Q p s hs]
     rw [he]
     exact contDiff_framedParamsReg_entry H r hr hL P Q s i j
+
+/-- Each FULL `framedParamsPivot` layer ENTRY is `ContDiff ⊤` in the `DeepestSplit` slot: non-last layers
+ARE `framedParams` (`contDiff_framedParams_entry`); the last layer is the same block-read shape with the
+`(1,1)` core read and a pivot column reindex. The `_contdiff` input for `deepestEFull`. -/
+theorem contDiff_framedParamsPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L)
+    (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      framedParamsPivot H r hr hL J P Q q s i j) := by
+  by_cases hs : s = lastLayer hL
+  · -- last layer: pivot column reindex, `(1,1)` block the core read.
+    subst hs
+    have hD : ∀ (m : Fin (H (lastLayer hL).castSucc)) (n : Fin (H (lastLayer hL).succ)),
+        ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
+            (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+            (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+              ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))) m n) := by
+      intro m n
+      have hmn : (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
+            (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+            (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+              ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))) m n)
+          = fun q : DeepestSplit H r (deepestNGauge H r) =>
+              Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))
+                ((rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)) m)
+                ((pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)) n) := by
+        funext q
+        simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
+      rw [hmn]
+      have hreg : ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          ((q.1, q.2.2) : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) :=
+        contDiff_fst.prodMk (contDiff_snd.snd)
+      rcases (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)) m with a | a <;>
+        rcases (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)) n
+          with b | b <;>
+        simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
+          Matrix.fromBlocks_apply₂₂]
+      · exact (contDiff_readX_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact (contDiff_readY_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact (contDiff_readZ_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact contDiff_coreRead_entry H r hr hL (lastLayer hL) a b
+    have hentry : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          framedParamsPivot H r hr hL J P Q q (lastLayer hL) i j)
+        = fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+                (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) i j
+            + (P (lastLayer hL) * Matrix.reindex
+                  (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                  (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))) * Q (lastLayer hL)) i j := by
+      funext q
+      rw [framedParamsPivot_last H r hr hL J P Q q]
+      simp only [Matrix.add_apply]
+    rw [hentry]
+    refine contDiff_const.add ?_
+    simp only [Matrix.mul_apply]
+    refine ContDiff.sum (fun n _ => ?_)
+    refine ContDiff.mul (ContDiff.sum (fun m _ => ?_)) contDiff_const
+    exact contDiff_const.mul (hD m n)
+  · -- non-last layer: `framedParamsPivot = framedParams`, the full entry continuity.
+    have he : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          framedParamsPivot H r hr hL J P Q q s i j)
+        = fun q : DeepestSplit H r (deepestNGauge H r) => framedParams H r hr hL P Q q s i j := by
+      funext q; rw [framedParamsPivot_of_ne_last H r hr hL J P Q q s hs]
+    rw [he]
+    exact contDiff_framedParams_entry H r hr hL P Q s i j
 
 /-- The LAST layer of `framedParamsRegPivot` at the ORIGIN is the threshold-ROW / pivot-COLUMN corner
 (the deviation `fromBlocks 0 0 0 0 = 0` vanishes, so the frame term `P · reindex 0 · Q = 0`). -/

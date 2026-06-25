@@ -157,6 +157,69 @@ theorem rlctAtOn_regAbsorb_reduce
     exact hstep.symm
   rw [hL, hR, hpeel]
 
+/-- **The reg-absorption RLCT reduction, CORE-DEPENDENT reg output** (the L2-PIN2 form; Codex option D,
+thread 31). When the reg output `E` reads the CORE slot (`regAbsorb q := (E q, q.2)` with `E : R × (C ×
+S) → R` reading all three), the `coreAbsorb.symm` conjugation can no longer pretend the reg output is
+unchanged. The fix: peel the CONJUGATED map `π̃ q := (E (coreAbsorb.symm q), q.2)` — so the
+`coreAbsorb.symm` change of variables is absorbed INTO the peeled map. The coupled equality reduces to
+the decoupled peel of `π̃` against `F0 q = regF q.1 + coreF q.2.1` (no `coreAbsorb`):
+
+    (LHS-integrand) ∘ coreAbsorb.symm = F0 ∘ π̃,   (RHS-integrand) ∘ coreAbsorb.symm = F0.
+
+`π̃`'s derivative at `0` is `D(regStraightenOf2 E)(0) ∘ D(coreAbsorb.symm)(0)` — a composition of two
+invertible CLEs (the shear `regStraightenTotalCLM2 D_E` × the core-shear), so `π̃` is a local diffeo at
+`0` and the peel (`rlctAtOn_comp_localDiffeo`) applies. No core-block-zero needed (invertibility of a
+composite of CLEs). -/
+theorem rlctAtOn_regAbsorb_reduce2
+    (coreAbsorb : (R × (C × S)) ≃ₜ (R × (C × S)))
+    (E : (R × (C × S)) → R)
+    (regF : R → ℝ) (coreF : C → ℝ)
+    (hca_mp : MeasurePreserving coreAbsorb volume volume)
+    (hca_base : coreAbsorb 0 = 0)
+    (hca_reg : ∀ q, (coreAbsorb q).1 = q.1)
+    (hpeel :
+      rlctAtOn (fun q : R × (C × S) => regF (E (coreAbsorb.symm q)) + coreF q.2.1) 0
+        = rlctAtOn (fun q : R × (C × S) => regF q.1 + coreF q.2.1) 0) :
+    rlctAtOn (fun q : R × (C × S) => regF (E q) + coreF (coreAbsorb q).2.1) 0
+      = rlctAtOn (fun q : R × (C × S) => regF q.1 + coreF (coreAbsorb q).2.1) 0 := by
+  have hsymm_mp : MeasurePreserving (⇑coreAbsorb.symm) volume volume :=
+    hca_mp.symm coreAbsorb.toMeasurableEquiv
+  have hsymm_emb : MeasurableEmbedding (⇑coreAbsorb.symm) := coreAbsorb.symm.measurableEmbedding
+  have hsymm_base : coreAbsorb.symm 0 = 0 := by
+    conv_lhs => rw [← hca_base]
+    rw [coreAbsorb.symm_apply_apply]
+  -- LHS: change variables by `coreAbsorb.symm`; the core term collapses, the reg output becomes
+  -- `E (coreAbsorb.symm q)` (the reg output changes under `coreAbsorb.symm`; it is not pretended fixed).
+  have hL : rlctAtOn (fun q : R × (C × S) => regF (E q) + coreF (coreAbsorb q).2.1) 0
+      = rlctAtOn (fun q : R × (C × S) => regF (E (coreAbsorb.symm q)) + coreF q.2.1) 0 := by
+    have hstep := rlctAtOn_comp_homeomorph coreAbsorb.symm hsymm_mp hsymm_emb
+      (fun q : R × (C × S) => regF (E q) + coreF (coreAbsorb q).2.1) 0
+    rw [hsymm_base] at hstep
+    have hfun : (fun q : R × (C × S) =>
+          regF (E (coreAbsorb.symm q)) + coreF (coreAbsorb (coreAbsorb.symm q)).2.1)
+        = fun q : R × (C × S) => regF (E (coreAbsorb.symm q)) + coreF q.2.1 := by
+      funext q
+      rw [coreAbsorb.apply_symm_apply]
+    rw [hfun] at hstep
+    exact hstep.symm
+  -- RHS: same conjugation; the core term collapses, the regular term is `coreAbsorb.symm`-fixed.
+  have hR : rlctAtOn (fun q : R × (C × S) => regF q.1 + coreF (coreAbsorb q).2.1) 0
+      = rlctAtOn (fun q : R × (C × S) => regF q.1 + coreF q.2.1) 0 := by
+    have hstep := rlctAtOn_comp_homeomorph coreAbsorb.symm hsymm_mp hsymm_emb
+      (fun q : R × (C × S) => regF q.1 + coreF (coreAbsorb q).2.1) 0
+    rw [hsymm_base] at hstep
+    have hfun : (fun q : R × (C × S) =>
+          regF (coreAbsorb.symm q).1 + coreF (coreAbsorb (coreAbsorb.symm q)).2.1)
+        = fun q : R × (C × S) => regF q.1 + coreF q.2.1 := by
+      funext q
+      have hcore : (coreAbsorb (coreAbsorb.symm q)).2.1 = q.2.1 := by
+        rw [coreAbsorb.apply_symm_apply]
+      have hreg : (coreAbsorb.symm q).1 = q.1 := symm_fixes_fst coreAbsorb hca_reg q
+      rw [hcore, hreg]
+    rw [hfun] at hstep
+    exact hstep.symm
+  rw [hL, hR, hpeel]
+
 /-! ## The decoupled #72 peel for a core-fixing reg-straightening (the `hpeel` atom)
 
 The decoupled peel `rlctAtOn (fun q => regF (regStraighten q).1 + coreF q.2.1) 0 = rlctAtOn (fun q =>
@@ -543,5 +606,79 @@ theorem regStraightenTotalCLM_equiv_of_regBlock_id (D_E : (R × S) →L[ℝ] R)
   rw [clmShearEquiv_coe N hNN, hN]; abel
 
 end RegStraightenOf
+
+/-! ## The core-reading reg-straightening (`regStraightenOf2`) — the L2-PIN2 full-reg repair
+
+The PIN2 repair requires the reg OUTPUT to read the CORE slot (`E_full : (reg, core, spec) → reg`,
+so the squeeze's reg term is the FULL product's reg energy `Sreg`, which depends on the core — thread
+31, refuting the T=0 `deepestEPivot`). The straightening object then reads ALL of `R × W` (the carried
+non-reg slot `W` un-split), `regStraightenOf2 E_full q := (E_full q, q.2)`. This is the existing
+`regStraightenOf` with `proj := id` (one fewer `Prod` layer than instantiating `S := C × S`, which
+would insert a phantom core). When `W = C × S`, `(E_full q, q.2)` is DEFEQ to `(E_full q, q.2.1,
+q.2.2)`, so the slot-fix `rfl`s carry over to the `DeepestSplit = R × (C × S)` shape.
+
+The total derivative at `0` of `regStraightenOf2 E_full` is `[[F, 0, G],[0,I,0],[0,0,I]]` (rows
+reg/core/spec; `F` = the reg-block, `0` the core-in block from `∂E_full/∂core(0)=0`, `G` the spectator
+block) — block upper-triangular, `det = det F ≠ 0` when `F` is invertible, so the IFT/`#72` peel input
+survives the `E_zero → E_full` swap (`transfer-cert.md`, thread 31; PIN1's `F` is re-used verbatim). -/
+
+section RegStraightenOf2
+variable {R W : Type*}
+  [NormedAddCommGroup R] [NormedSpace ℝ R]
+  [NormedAddCommGroup W] [NormedSpace ℝ W]
+
+/-- The core-reading reg-straightening from `E_full : R × W → R` (reading the WHOLE non-reg slot `W`):
+replace the reg slot by `E_full q`, carry `W` (= core × spec) identically. -/
+def regStraightenOf2 (E_full : R × W → R) : R × W → R × W :=
+  fun q => (E_full q, q.2)
+
+@[simp] theorem regStraightenOf2_snd (E_full : R × W → R) (q : R × W) :
+    (regStraightenOf2 E_full q).2 = q.2 := rfl
+
+@[simp] theorem regStraightenOf2_fst (E_full : R × W → R) (q : R × W) :
+    (regStraightenOf2 E_full q).1 = E_full q := rfl
+
+theorem regStraightenOf2_basepoint (E_full : R × W → R) (h0 : E_full 0 = 0) :
+    regStraightenOf2 E_full 0 = 0 := by
+  refine Prod.ext ?_ rfl
+  show E_full (0 : R × W) = 0
+  rw [h0]
+
+theorem continuous_regStraightenOf2 (E_full : R × W → R) (hcont : Continuous E_full) :
+    Continuous (regStraightenOf2 E_full) :=
+  hcont.prodMk continuous_snd
+
+/-- `regStraightenOf2`'s regular output reads all of `q` (the `hra_regdep` of
+`rlctAtOn_regAbsorb_reduce` is then `q = q'` at both reg + carried slots, so trivially equal). -/
+theorem regStraightenOf2_regdep (E_full : R × W → R) (q q' : R × W)
+    (hreg : q.1 = q'.1) (hcarry : q.2 = q'.2) :
+    (regStraightenOf2 E_full q).1 = (regStraightenOf2 E_full q').1 := by
+  simp only [regStraightenOf2_fst]
+  congr 1
+  exact Prod.ext hreg hcarry
+
+/-- The total CLM `regStraightenTotalCLM2 D_E : (R × W) →L (R × W)` from a reg-component derivative
+`D_E : (R × W) →L R`: `δ ↦ (D_E δ, δ.2)`. The derivative of `regStraightenOf2 E_full` at `0` when
+`D E_full(0) = D_E`. (`transfer-cert.md`: one fewer `Prod` layer than `regStraightenTotalCLM`.) -/
+noncomputable def regStraightenTotalCLM2 (D_E : (R × W) →L[ℝ] R) :
+    (R × W) →L[ℝ] (R × W) :=
+  D_E.prod (ContinuousLinearMap.snd ℝ R W)
+
+@[simp] theorem regStraightenTotalCLM2_apply (D_E : (R × W) →L[ℝ] R) (δ : R × W) :
+    regStraightenTotalCLM2 D_E δ = (D_E δ, δ.2) := rfl
+
+/-- **`regStraightenOf2 E_full` strict-diff with the assembled derivative** — given
+`HasStrictFDerivAt E_full D_E 0` for any `D_E`, the total map's strict derivative at `0` is
+`regStraightenTotalCLM2 D_E` (the assembled `(D_E on the whole input, id on the carried slot)`). The
+`proj := id` analogue of `hasStrictFDerivAt_regStraightenOf_gen`. -/
+theorem hasStrictFDerivAt_regStraightenOf2_gen (E_full : R × W → R) (D_E : (R × W) →L[ℝ] R)
+    (hE : HasStrictFDerivAt E_full D_E 0) :
+    HasStrictFDerivAt (regStraightenOf2 E_full) (regStraightenTotalCLM2 D_E) 0 := by
+  have hsnd : HasStrictFDerivAt (fun q : R × W => q.2)
+      (ContinuousLinearMap.snd ℝ R W) 0 :=
+    (ContinuousLinearMap.snd ℝ R W).hasStrictFDerivAt
+  exact hE.prodMk hsnd
+
+end RegStraightenOf2
 
 end DLNFibre.DLN.RLCT
