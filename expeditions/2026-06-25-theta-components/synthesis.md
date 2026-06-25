@@ -74,4 +74,24 @@ operator (a precision finding on the paper being formalised — possible erratum
 - **02** terrain map (scout) — DONE; `threads/02-terrain-map/findings.md`.
 - **03** H1-vs-H2 stress-test (pen-and-paper, obstruction) — DONE; H1 REFUTED, three distinct invariants, LR
   printed rlcm off-by-one (controller-verified vs `main.tex`). Certificate `threads/03-theta-h1-h2/findings.md`.
-- **04** (A)-decoupling kill-condition + `fibreGenIdeal` primary decomposition — running.
+- **04** (A)-decoupling kill-condition + `fibreGenIdeal` primary decomposition — DONE; **kill-condition HOLDS
+  (`detΔ ≡ 1` on the whole fibre, a one-line definitional fact)** ⟹ Route A open, reducedness wall OFF the θ
+  path. Fibre #top = `cTheta(d−r) = C(m,|δ|)` verified on 6 Singular cases. Certificate
+  `threads/04-fibre-theta-route/findings.md`.
+
+## The fibre-θ build plan (Route A — de-risked, next tide)
+
+1. **`detΔ_unit_on_fibre`** — `detΔ − 1 ∈ fibreGenIdeal` (one-liner: `mem_fibre` + `chartΔ_normalForm`;
+   general — any `d`, `r`, ring). The entry lemma.
+2. **Transport** the PROVED Σ̄^r bijection `bijOn_partitionIdeal_topComponents` through the chart `e`
+   (`Core.ChartLocalizedAlgEquiv`) via `IsLocalization.orderIsoOfPrime` — reducedness-free, since `detΔ` is a
+   unit on `O(fibre)`. Gives: fibre top-components ↔ Σ^r top-components.
+3. **Shift-width identity** `numTop(fibre d E_r) = cTheta(d−r)` — grounded in the PROVED
+   `numTop_eq_ncard_topComponents` (Σ̄^r) + the block-triangular shift (rank-`r` fibre ≅ affine stratum ×
+   zero-product locus of `d−r`; the affine factor adds no components). The one substantive input — check if the
+   engine already has a `numTop` rank-shift (analogous to the proved `cCodim d r = cValue(d−r)`); if not, it is
+   LR Lemma 4.5, a named input (commission a pen-and-paper cert if it blocks the tide).
+
+After the fibre-θ count + bijection land (scope-2 backbone): the **heavy lift** — the full reduced bundle +
+smoothness (scope-3, "rest of Lemma 4.6 B"), which DOES need the reducedness wall (R2-3b) + a hand-built scheme
+bundle + smooth-locus scoping.
