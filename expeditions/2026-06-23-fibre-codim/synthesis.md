@@ -844,5 +844,20 @@ Proved); reviewer-g4 PASS (decorrelated + Codex). The full chain — geometry `c
 into the RLCT payoff `rlct = C/2` with ONLY the analytic Aoyagi `rlct = ½·codim` equality Cited — is the
 destination, realized at `k : Type 0` (the DLN field; covers ℂ). The G1 lift is subsumed by `FibreCodimFinal`.
 
-**Remaining.** #54 — θ-count fidelity for `(3,3,3)` (separate follow-up). Opening/merging PR #10 is
+**CLOSED-FORM CAPSTONE (Aoyagi Thm 2 matched, 2026-06-25).** `DLN.Aoyagi.ClosedForm` bridges the
+`cValue` engine to Aoyagi (2023) Theorem 2's displayed RLCT closed form λ: five theorems, sorry-free,
+axiom-clean (`[propext, Classical.choice, Quot.sound]`) — the core `two_lambdaCore_eq_cValue`
+(`2·lambdaCore = cValue`, via `2·activePairSum = S²−Q` + the cValue prefix expansion + the
+ceiling↔nearest residue bridge `residueA·(ℓ−residueA) = |δ|·(ℓ−|δ|)`), `two_lambda_eq_codimFormula`,
+and the fibre bridges `codimRepCanonical_fibre_eq_aoyagiCodimFormula` / `_eq_two_aoyagiLambda` —
+**`codim(mult⁻¹ B) = 2·λ_Aoyagi`**, the codimension equals twice Aoyagi's published λ. The displayed λ
+was checked faithful term-by-term (the PDF is image-only — rendered + read visually) and computationally
+(≈3000 inputs). **Controller fidelity fixes** (fix-wrong-statements-first): added the necessary rank bound
+`hr : r ≤ d 0 + d (Fin.last N)` to `two_lambda_eq_codimFormula` (the no-bound statement is FALSE for
+`r > d_0+d_last`, e.g. `d=![1,1], r=3`); honest surrogate docstrings (`ell = qipM` matches Aoyagi's λ
+value but not her `Card(𝓜)−1` pointwise — `(1,1,2)`: `qipM=2` vs `ℓ=1`); flagged the paper's
+Definition-3 `(ℓ−1)→ℓ` misprint. Verification scripts banked (`aoyagi_check.py`, `aoyagi_shift.py`).
+
+**Remaining.** #54 — θ-count fidelity for `(3,3,3)` (Aoyagi's order `θ=a(ℓ−a)+1` vs LR's `θ=C(m,|δ|)`
+genuinely differ as orders — distinct from the λ-value match landed here). Opening/merging PR #10 is
 operator-gated.
