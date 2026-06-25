@@ -99,5 +99,8 @@ import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
 import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
 import DLNFibre.DLN.RLCT.Validate.RouteM4422
+import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
+import DLNFibre.DLN.RLCT.Validate.MatMulFibre
+import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
