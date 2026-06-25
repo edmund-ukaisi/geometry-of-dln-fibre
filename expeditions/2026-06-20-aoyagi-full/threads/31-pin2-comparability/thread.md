@@ -123,12 +123,38 @@ to have the right rlct.
   interfaces, so `hQf0/hPfL` suffice. For `L ≥ 3` the missing hyp is `deepestPoint_interior_frame_id`
   (`Q_s = 1 ∧ P_s = 1` for `1 ≤ s ≤ L−2`), banked in `DeepestFrame.lean:108`. Thread it into `hinterface`.
 
+## PIN1 survival under E_zero→E_full (the gating question for the repair — SETTLED)
+
+**PIN1 (`deepestEPivot_regSlice_fderiv`) survives VERBATIM** (exact sympy + decorrelated Codex xhigh,
+`codex/pin1-survival-*`, independent re-derivation agreeing):
+- `E_full − E_zero = (0, Y0·T1, T0·Z1)` — purely degree-2.
+- Reg-slice Jacobian at 0 (core+spec held 0): `D(E_full)(r0,0,0) = D(deepestEPivot)(r0,0) = F` (the
+  invertible `regBlockCLE`). Leaks vanish at core=0; `O(‖h‖²)` ⇒ zero strict derivative at 0.
+- Core-direction Jacobian at 0: `∂E_full/∂T0(0)=∂E_full/∂T1(0)=0`.
+- So `D(E_full)(0) = [F | 0 | G]` (reg-in `F` invertible, core-in `0`, spec-in `G`).
+
+**BUT the chart architecture must change** (the deeper consequence): the squeeze's reg term MUST be
+`Sreg` (FULL reg blocks), which DEPENDS on the core. So `regStraighten`'s reg OUTPUT must read the core
+— `E_pivot : (reg,spec)→reg` becomes `E_full : (reg,core,spec)→reg`. The corrected chart
+`regStraighten q = (E_full q, q.2.1, q.2.2)` has derivative `[[F,0,G],[0,I,0],[0,0,I]]` at 0
+(block-tri, diag `(F,I,I)`, det = det F ≠ 0 — INVERTIBLE), so the IFT/`#72` peel input is intact.
+Verified `∑(new regStraighten).1² = ‖E_full‖² = Sreg` matches `dln=0` on line A — over-count gone.
+
+**Architecture verdict (brief Q2):** PIN1 RE-USED as-is (the reg-slice fact + 1-line bridge
+`E_full(·,0,0)=deepestEPivot(·,0)`), NOT a new analog, NOT orphaned. The new Lean work is generalizing
+the `regStraightenOf`/`regStraightenTotalCLM` straightening object from `(reg,spec)→reg` to
+`(reg,core,spec)→reg` (existing invertibility argument with `proj:=id`). Full build-ready spec:
+`restatement-spec.md`. This also CLOSES the open rlct risk I flagged earlier — the safe full-reg route
+makes the squeeze the leaf lemma's TRUE comparability, so the headline rlct no longer rests on the
+unverified `rlct(Φ_struct)=rlct(dlnLoss)` gamble.
+
 ## Files
 
 - Cert scripts: `/tmp/witness_yt.py`, `comparability.py`, `lower_confound.py`, `exact_lineA.py`,
   `epivot_exact.py`, `full_with_schur.py`, `option2_test.py`, `gauge_check.py`, `corank2.py`,
-  `inf_correct.py`, `ratio_inf.py` (one-off; algebra reproduced in this thread).
-- Codex artefact: `codex/squeeze-soundness-prompt.md` + `codex/squeeze-soundness-answer.md`.
+  `inf_correct.py`, `ratio_inf.py`, `pin1_survival.py`, `route_decision.py`, `arch_final.py`,
+  `rlct_compare.py`, `rlct_minimal.py`, `diffeo_unit.py` (one-off; algebra reproduced in this thread).
+- Codex artefacts: `codex/squeeze-soundness-{prompt,answer}.md`, `codex/pin1-survival-{prompt,answer}.md`.
 - The false lemmas: `lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean`
   `framedParams_split_eq_frame_raw` (~1327, the `h00/h01/h10` exact-equality conjunctions) +
   `deepest_loss_squeeze` (~1478, `hSreg_eq` ~1541).
