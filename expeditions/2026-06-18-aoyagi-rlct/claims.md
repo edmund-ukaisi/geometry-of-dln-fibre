@@ -320,7 +320,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry finite sector cover at
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`;
   product-coordinate source-rank membership at
-  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`.
+  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`;
+  selected-entry residual-factor readout boundary at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -380,7 +382,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-selected-entry-finite-sector-cover.md`;
   product-coordinate source-rank membership reviewed by xhigh check-ins
   `Bernoulli`, `Banach`, and `Confucius` in
-  `threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`.
+  `threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`;
+  selected-entry residual-factor readout boundary reviewed by xhigh source/API
+  scouts `Kant` and `Kuhn` in
+  `threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6980,6 +6985,27 @@ and
 Nonclaims: no source coverage, no local source/image equality, no exact-rank
 openness, no inverse chart, no density/Jacobian transport, no normal-crossing
 certificate, no pole-order theorem, and no RLCT theorem.
+
+Latest A2 selected-entry residual-factor readout boundary:
+Lean now proves the finite handoff from compatible residual factors to the
+selected-entry residual-product matrix identity.  If the fixed-base
+transformed Schur residual blocks along `chartMap pivot y` are a supplied
+factor family `Cfac y`, and the ordered product
+`residualFactorProduct (Cfac y) last 0` is the selected-entry coordinate
+matrix, then the fixed-base `residualProduct` is that same selected-entry
+matrix.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualProduct_eq_selectedEntryCenter_matrix_of_residualFactorProduct_eq_matrix`.
+
+Reproduction and review:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`
+and
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`.
+
+Nonclaims: no construction of `Cfac`, no factor-product identity proof, no
+residual-index equivalence construction, no source/image equality,
+source-measure transport, normal crossings, pole order, or RLCT.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

@@ -4640,6 +4640,17 @@ Do not treat it as proof of the matrix identity, residual-index equivalence,
 source coverage, source-measure identification, normal crossings, pole order,
 or RLCT.
 
+The selected-entry residual-factor readout boundary has now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`.
+Lean proves that a compatible residual-factor family whose transformed Schur
+blocks are the fixed-base residual blocks, and whose ordered factor product is
+the selected-entry coordinate matrix, gives the residual-product matrix
+identity required by the readout bridge.  This is the preferred residual
+socket shape: it rules out treating a multi-edge terminal selected-entry
+matrix as arbitrary.  The real remaining inputs are still construction of the
+factors, the factor-product selected-entry identity, the residual-index
+equivalence, and local source/image equality.
+
 The finite selected-entry sector cover
 `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`
 records the elementary all-pivot bounded cover of a smaller signed box by

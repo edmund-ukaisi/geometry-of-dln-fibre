@@ -8338,6 +8338,21 @@ Nonclaims: no construction of `CedgeBase`, no proof of the residual-product
 matrix identity, no construction of the residual-index equivalence, no source
 coverage, source-measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 selected-entry residual-factor readout boundary:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualProduct_eq_selectedEntryCenter_matrix_of_residualFactorProduct_eq_matrix`.
+It derives the selected-entry residual-product matrix identity from the
+Aoyagi-shaped data: a supplied compatible residual-factor family, proofs that
+the transformed Schur residual blocks are those factors, and a supplied
+ordered factor-product identity to the selected-entry coordinate matrix.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`.
+Nonclaims: no construction of compatible factors, no factor-product proof, no
+residual-index equivalence construction, no source/image equality,
+source-measure transport, normal crossings, pole order, or RLCT.
+
 Latest A2 selected-entry prescribed-matrix readout:
 `SelectedEntryOriginalLossLocalMeasure.lean` now proves
 `PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_prescribedEdgeMatrix_residualProduct_eq_matrix`.

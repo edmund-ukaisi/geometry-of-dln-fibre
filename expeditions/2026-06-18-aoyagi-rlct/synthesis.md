@@ -10794,6 +10794,20 @@ This is image membership only.  It does not prove local source/image equality,
 source coverage, exact-rank openness, inverse chart, density/Jacobian
 transport, normal crossings, pole order, or RLCT.
 
+The next residual-readout refinement landed in
+`SelectedEntryOriginalLossLocalMeasure.lean`:
+`paperEndpointFixedBaseResidualProduct_eq_selectedEntryCenter_matrix_of_residualFactorProduct_eq_matrix`.
+It moves the selected-entry readout socket from an arbitrary terminal
+`residualProduct = matrix(...)` identity to Aoyagi's factor-product language:
+if the fixed-base transformed Schur residual blocks are a compatible factor
+family and the ordered factor product equals the selected-entry matrix, then
+the residual product equals that selected-entry matrix.  Reproduction/review:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`
+and
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`.
+This still does not construct the factors, prove the factor-product identity,
+construct the residual-index equivalence, or prove source/image equality.
+
 Post-recovery xhigh scouts `Godel` and `Ampere` found no high-value Lean-ready
 A4 or A2/A6 wrapper beyond the current supplied sockets.  The cross-thread
 decision is saved at
