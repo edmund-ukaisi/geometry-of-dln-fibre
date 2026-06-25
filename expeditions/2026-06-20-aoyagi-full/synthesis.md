@@ -886,6 +886,21 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-48 (2026-06-25) — assembler gap CLOSED @2a0e6bd9; the L2 gauge chart is down to ONE geometric sorry; R1 hfin in flight. ★**
+- **l2-pi-assembler landed + integrated** (forced-rebuild + `#print axioms` re-verified): `hasStrictFDerivAt_schurShiftRaw_zero`
+  sorry-free + axiom-clean via Route (b) (the paramsEquivFlat flat-decode — Route (a)'s Params-Pi `pi'` confirmed walled by a
+  Mathlib-v4.29 whnf timeout). **`deepest_gauge_construction`'s sorryAx now traces to ONLY the framedParams body (1491)** — the
+  single piece l2-body is building. No new axiom, no monomial_rlct.
+- **R1 hfin tide LAUNCHED** (r1-hfin, ad9b74f1) — off the build-ready thread-28 `spec.md` (3 lemma families L1.1/L2.1/L2.2 +
+  recursion carrier L3.1/L3.2, dependency order, S2-FREE conclusion). Validate-small-first: inventory the banked L1.1
+  (radial-morse, S1RadialMorse) + the (4,4,2,2) instance, then L2.1/L2.2 + the (3,3,4) corank-2 anchor. pp-r1-genM on-call for
+  the HIGH-risk r²-chart Δ-blow-up cover (L3.2a). The hfin conclusion is S2-FREE — `#print axioms` stays within
+  `[propext, Classical.choice, Quot.sound, monomial_rlct]`, no new axiom.
+- **L2 remaining = the body (l2-body building) + the final wire** (squeeze-exists + L=1/2≤L case-split + product_reduction;
+  needs the import-arch relocation of `deepest_gauge_squeeze_exists` downstream — same file as l2-body, serialized after it).
+- 3 builds in flight (independent files): l2-body (framedParams body) + r1-hfin (the R1 long pole). pp-pin2-rearch released;
+  pp-r1-genM on-call.
+
 **★ UPDATE-47 (2026-06-25) — hTilde INTEGRATED @4a02398a; the parallel L2 build push is launched. ★**
 - **hTilde landed + integrated** (l2-htilde; forced-rebuild green-gate + `#print axioms` re-verified): sorry-free chain-rule
   wire in `deepest_gauge_construction` (PIN1's D_E + `D(coreAbsorb.symm)(0)=id` + `regStraightenOf2_gen`) + a NEW 437-LoC
