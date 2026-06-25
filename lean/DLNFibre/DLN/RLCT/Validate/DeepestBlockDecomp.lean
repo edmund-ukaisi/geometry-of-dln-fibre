@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
+import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestBlockDecomp` — the h1 block decomposition (network-free)
@@ -124,5 +125,22 @@ theorem reindex_mul_schur_factor {a b c r : ℕ}
   rw [← invOf_eq_nonsing_inv (A := A0), ← invOf_eq_nonsing_inv (A := A1),
     ← invOf_eq_nonsing_inv (A := A0 * A1 + Y0 * Z1)]
   exact schur_product_ldu A0 A1 Y0 Y1 Z0 Z1 T0 T1
+
+/-- **The two-grouping of a layer product** (the h1 reduction to two block factors, ANY `L = m+1`). The
+full layer product `prod H A` factors as `(prodAux H A m) · (last layer, recast)` — the running product
+of the first `m` layers times the last layer — via a single `prodAux_succ` fold. This is the `G0·G1`
+form `reindex_mul_schur_factor` consumes (`G0 = prodAux m` the first-`m` grouped product, `G1 = A_m` the
+last layer); it holds for every `L ≥ 1`, so the h1 Schur factorization is general-`L` (only the h2
+core-match specializes to `L = 2`). -/
+theorem prod_eq_prodAux_mul_last {m : ℕ} (H : Fin (m + 1 + 1) → ℕ) (A : Params (L := m + 1) H)
+    (e1 : H (⟨m, Nat.lt_of_succ_lt (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1 + 1))
+        = H ((⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)).castSucc))
+    (e2 : H (⟨m + 1, Nat.lt_succ_self (m + 1)⟩ : Fin (m + 1 + 1))
+        = H ((⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)).succ)) :
+    prod H A
+      = (prodAux H A m (Nat.lt_of_succ_lt (Nat.lt_succ_self (m + 1))))
+        * (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm)
+            (A (⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)))) :=
+  prodAux_succ H A m (Nat.lt_succ_self (m + 1)) e1 e2
 
 end DLNFibre.DLN.RLCT
