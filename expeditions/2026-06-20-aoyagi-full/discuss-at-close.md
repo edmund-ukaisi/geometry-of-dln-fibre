@@ -313,3 +313,19 @@ L2 gate closes only for r=1 cores; the general-r headline carries this as a name
   would be unsound. Verified r=1,M=2 symbolically; the LDU is general in L,M. **One residual** (dispatched): a short r≥2
   matrix-PIVOT (a_s an r×r block) LDU symbolic confirm before the body build hard-relies on r≥2. No operator action — the
   dependency is closed germ-scoped; the precision (germ-not-box) is captured in the g156 docstring + s5c-r2-cert.
+
+## 19. L2 body: a GENERAL-L interior-frame dependency (VACUOUS at L=2) + the hS1' option-α soundness catch (2026-06-25).
+Building the framedParams body (`framedParams_split_eq_frame_raw`) surfaced two items:
+- **hS1' option-α was REFUTED** (pen-and-paper + decorrelated Codex): the cert's "clean" last-layer round-trip
+  `framedParamsPivot (split w) last = Pf last · paramsSymm w last · Qf last` is FALSE for a non-front pivot `J` — the last
+  layer carries a column-permutation `π_J` (threshold-encoded reads at pivot columns). The cert (framedbody-cert) + the lemma
+  were corrected in-place to the permuted statement (a correct-statement sorry); hS2/hS3b were re-architected onto the sound
+  `w0` deepest-gauge instance, NOT the false general form (reviewer-confirmed). The third L2 statement-correction catch (after
+  the PIN2 false-equality + the framedParams under-hypothesization) — the precision discipline holding.
+- **A GENERAL-L-only gap (operator-relevant for the scope decision):** the body's 2 interior-frame sorries (DeepestGaugeConstruction
+  ~2412/2417) are **VACUOUS at the L=2 headline** (guarded empty branches — `1 ≤ s ∧ s+1 < 2` empty) but bind for L≥3: they need
+  the `deepestPoint_frame_pivot_exists` bundle to CHOOSE identity interior frames (the generic rank-normal-form interior frames
+  are not identity for L≥3). Closing them is an off-tide `DeepestPivotFrame` refinement. **Net for scope:** the L=2/RRR milestone
+  body needs only hS1' + hproducer (the 2 interior gaps don't bind); the FULL general-L headline additionally needs the
+  identity-interior-frame bundle choice. Signature note: framedParams/loss_squeeze/gauge_construction now carry `hL2 : 2 ≤ L`,
+  `hpos : ∀ s, r < H s`, and an explicit `hinterface` — wired from the headline (which holds hpos/hL2) at squeeze-exists connect time.

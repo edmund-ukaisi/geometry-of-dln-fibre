@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-53 (2026-06-25) — L2 framedParams body 5/8 gaps closed @b7916f4d; down to hS1'+hproducer at L=2; S5c-atom tide launched. ★**
+- **l2-body-fill landed + integrated** (forced-rebuild + #print axioms; PIN1 stays clean; reviewer PASS 5/5): CLOSED sorry-free —
+  hKP_pos/hKi_pos (from the strict `hpos:∀s,r<H s`), hinterface (explicit hyp, L=2-discharged), hS1 (non-last round-trip), hS2/
+  hS3b (the axiom-clean witnessed `endpoint_telescoping_eq`; hS3b sound via the `w0` deepest-gauge instance). **Third L2
+  soundness catch:** hS1' option-α REFUTED (the last layer carries a column-perm π_J for non-front J) — corrected to the permuted
+  statement; hS2/hS3b re-architected onto the sound w0 form. Body sorryAx from the 4 remaining gaps only, no extra axiom.
+- **L2 body remaining (4 correct-statement gaps):** hS1' (permuted last-layer) + hproducer (π_J cancellation + S4/S5a/b + **the
+  unbuilt S5c germ atom**) — the two L=2-BINDING gaps. + 2 L≥3-interior-frame sorries VACUOUS at L=2 (Item 19; general-L only,
+  need the DeepestPivotFrame identity-interior-frame choice). Signature: hL2/hpos/hinterface added (wire from headline).
+- **l2-s5c-body LAUNCHED** (a2edef67) — S5c germ atom PRIMARY (new file DeepestSchurComparability.lean, per s5c-r2-cert: the
+  matrix middle-factor `R=S0·W·S1`, germ bound `|∑‖R‖²−∑‖∏S‖²|≤C∑E²` — germ-scoped, NOT box), then hS1' + hproducer. The S5c
+  atom was deferred by the prior body tide (the hard standalone piece) — now the explicit primary. pp-pin2-rearch on-call.
+- **L2 close path:** S5c atom + hS1' + hproducer (this tide) → framedParams body done at L=2 → the final wire (squeeze-exists +
+  case-split + import-arch relocation; wires hL2/hpos/hinterface from the headline) → the L2 gate.
+- 2 builds in flight (independent files): l2-s5c-body (L2 body finish) + r1-ladder (R1 (3,3,4) hfin). pp-pin2-rearch + pp-r1-genM-2 on-call.
+
 **★ UPDATE-52 (2026-06-25) — R1 hfin ladder DESIGN-COMPLETE end-to-end (general-r N2 de-risked); pp-r1-genM-2 released. ★**
 - **General-lift N2 de-risked + banked @d57e9247** (pp-r1-genM-2 + decorrelated Codex; `minorpivot-cert.md`): the nested
   minor-pivot cover = `argmaxCellOn`/`Finset.exists_max_image` at the MINOR level (active = j×j minor-index pairs, coord =
