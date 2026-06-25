@@ -3643,3 +3643,34 @@ Controller verified targeted builds for
 `DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure`, full `DLNFibre` build,
 `scripts/sorries`, and `git diff --check`.  The full build still emits many
 pre-existing style/Core warnings, but no failures.
+
+## 2026-06-25 A2 weighted signed-box residual source-measure handoff
+
+Opened the density-weighted version of the signed-box source-measure handoff.
+Scope is still measure plumbing: if the source measure is supplied as the
+pushforward of
+`signedBox.withDensity (fun y => ENNReal.ofReal (density y))`, and the
+residual lower bound plus density nonnegativity/monomial upper bound are
+supplied a.e. on the underlying signed box, then the residual source
+positivity/integrability pair follows under the Aoyagi-style strict
+inequalities `2*t*k_i < h_i+1`.
+
+Lean adds
+`residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower`
+in `RegularSuspensionLocalMeasure.lean`, reusing the previously landed
+`lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top` and generic
+pushforward handoff.
+
+This still does not construct the chart, prove the weighted pushforward
+identity, compute or regularize a Jacobian/density factor, compare the original
+DLN loss, produce normal crossings, compute pole order, or extract an RLCT.
+Reproduction and statement card:
+`reproduction-a2-weighted-signed-box-residual-source-measure-handoff.md` and
+`statement-card-a2-weighted-signed-box-residual-source-measure-handoff.md`.
+Review:
+`review-a2-weighted-signed-box-residual-source-measure-handoff.md`.
+
+Controller verified the focused
+`DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` build, full `DLNFibre`
+build, `scripts/sorries`, and `git diff --check`.  The full build still emits
+many pre-existing style/Core warnings, but no failures.

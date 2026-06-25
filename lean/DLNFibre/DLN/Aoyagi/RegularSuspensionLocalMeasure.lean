@@ -693,6 +693,142 @@ theorem residualSourceHypotheses_of_measure_map_signedBox_monomialLower
       hpos_meas hpos_chart hbase_chart
 
 set_option linter.unusedSectionVars false in
+/-- Residual source hypotheses from a signed-box chart pushforward with a
+supplied density and explicit absolute-monomial residual/density bounds.
+
+This is a weighted signed-box source-measure constructor.  It assumes the
+source-measure pushforward through `signedBox.withDensity (ofReal density)` and
+the chart-side density bounds; it does not construct the chart, compute the
+Jacobian/density factor, compare the original DLN loss, or extract an RLCT. -/
+theorem residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [MeasurableSpace α] [Fintype ι]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source : Set α} {μ : Measure α}
+    {chart : (ι → ℝ) → α} {density : (ι → ℝ) → ℝ}
+    {t c C : ℝ} {R : ι → ℝ} {h k : ι → ℕ}
+    (hdensity_aemeas :
+      AEMeasurable (fun y : ι → ℝ => ENNReal.ofReal (density y))
+        (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hchart : AEMeasurable chart
+      (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))))
+    (hmap :
+      μ.restrict source =
+        Measure.map chart
+          ((Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+            (fun y : ι → ℝ => ENNReal.ofReal (density y))))
+    (hpos_meas :
+      MeasurableSet {x : α |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)})
+    (hc : 0 < c) (hC : 0 ≤ C) (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : ∀ i, 2 * t * (k i : ℝ) < (h i : ℝ) + 1)
+    (hlower : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      c * ∏ i, (|y i|) ^ (2 * (k i : ℝ)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (chart y)))
+    (hdensity_nonneg : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      0 ≤ density y)
+    (hdensity_le : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i))),
+      density y ≤ C * ∏ i, (|y i|) ^ (h i : ℝ)) :
+    (∀ᵐ x ∂ μ.restrict source,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t := by
+  let signedBox : Measure (ι → ℝ) :=
+    Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (ι → ℝ) :=
+    signedBox.withDensity (fun y : ι → ℝ => ENNReal.ofReal (density y))
+  let residual : (ι → ℝ) → ℝ := fun y =>
+    aoyagiCoordinateSquareSum
+      (paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ Cedge (chart y))
+  have hpos_signed :
+      ∀ᵐ y ∂ signedBox, 0 < residual y := by
+    have hcoord : ∀ᵐ y : ι → ℝ ∂ signedBox, ∀ i, 0 < |y i| := by
+      dsimp [signedBox]
+      exact ae_forall_abs_pos_measure_pi_restrict_Ioo_neg (R := R) (ι := ι)
+    filter_upwards [hcoord, hlower] with y hyabs hylower
+    have hmonomial_pos :
+        0 < ∏ i, (|y i|) ^ (2 * (k i : ℝ)) := by
+      exact Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hyabs i) _
+    exact lt_of_lt_of_le (mul_pos hc hmonomial_pos) hylower
+  have hpos_chart :
+      ∀ᵐ y ∂ weightedBox, 0 < residual y := by
+    exact (withDensity_absolutelyContinuous signedBox
+      (fun y : ι → ℝ => ENNReal.ofReal (density y))).ae_le hpos_signed
+  have hfinite_signed :
+      (∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t) * density y)
+        ∂ signedBox) < ∞ := by
+    dsimp [signedBox, residual]
+    exact
+      lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
+        (h := h) (k := k) (t := t) (R := R) (c := c) (C := C)
+        (loss := fun y : ι → ℝ =>
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge (chart y)))
+        (density := density)
+        hc hC ht hR hcrit hlower hdensity_nonneg hdensity_le
+  have hbase_chart :
+      (∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t)) ∂ weightedBox) < ∞ := by
+    have hdensity_lt_top :
+        ∀ᵐ y : ι → ℝ ∂ signedBox, ENNReal.ofReal (density y) < ∞ := by
+      filter_upwards with y
+      exact ENNReal.ofReal_lt_top
+    have hwith :
+        (∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t)) ∂ weightedBox) =
+          ∫⁻ y : ι → ℝ,
+            ENNReal.ofReal (density y) * ENNReal.ofReal ((residual y) ^ (-t))
+            ∂ signedBox := by
+      dsimp [weightedBox]
+      rw [lintegral_withDensity_eq_lintegral_mul_non_measurable₀
+        signedBox (by simpa [signedBox] using hdensity_aemeas) hdensity_lt_top
+        (fun y : ι → ℝ => ENNReal.ofReal ((residual y) ^ (-t)))]
+      simp [Pi.mul_apply]
+    have hmul :
+        (∫⁻ y : ι → ℝ,
+            ENNReal.ofReal (density y) * ENNReal.ofReal ((residual y) ^ (-t))
+            ∂ signedBox) =
+          ∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t) * density y)
+            ∂ signedBox := by
+      apply lintegral_congr_ae
+      filter_upwards [hdensity_nonneg] with y hyden_nonneg
+      rw [mul_comm]
+      exact (ENNReal.ofReal_mul' hyden_nonneg).symm
+    calc
+      (∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t)) ∂ weightedBox)
+          = ∫⁻ y : ι → ℝ,
+              ENNReal.ofReal (density y) * ENNReal.ofReal ((residual y) ^ (-t))
+              ∂ signedBox := hwith
+      _ = ∫⁻ y : ι → ℝ, ENNReal.ofReal ((residual y) ^ (-t) * density y)
+            ∂ signedBox := hmul
+      _ < ∞ := hfinite_signed
+  exact
+    residualSourceHypotheses_of_measure_map
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (source := source) (μ := μ)
+      (ν := weightedBox) (chart := chart) (t := t)
+      (hchart.mono_ac (by
+        simpa [signedBox, weightedBox] using
+          withDensity_absolutelyContinuous signedBox
+            (fun y : ι → ℝ => ENNReal.ofReal (density y))))
+      (by simpa [signedBox, weightedBox] using hmap)
+      hpos_meas
+      (by simpa [residual] using hpos_chart)
+      (by simpa [residual] using hbase_chart)
+
+set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied
 source-stratum residual integrability and supplied uniform-in-fiber loss/density
 bounds.

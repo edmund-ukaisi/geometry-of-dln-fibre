@@ -249,6 +249,15 @@ stricter unweighted threshold `2*t*k_i < 1`; it is not Jacobian/density
 transport, not original-loss comparison, not chart construction, not normal
 crossings, and not RLCT extraction.
 
+A2 weighted signed-box residual source-measure handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-weighted-signed-box-residual-source-measure-handoff.md`.
+Lean adds a source-facing constructor for a supplied pushforward from
+`signedBox.withDensity (ofReal density)`, using the existing signed-box
+residual/density estimate and threshold `2*t*k_i < h_i+1`.  Treat it as
+weighted measure plumbing only: the chart, weighted pushforward identity,
+Jacobian/density construction, original-loss comparison, normal crossings,
+pole order, and RLCT remain open/supplied.
+
 A6 Definition 3 `ell=1` ceiling-data simplification has now landed:
 `threads/06-dln-translation/reproduction-definition3-ell-one-ceil-data-simplification-a6.md`.
 Lean adds finite arithmetic lemmas in the `AoyagiDefinition3CeilData`
