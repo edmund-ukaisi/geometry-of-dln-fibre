@@ -886,6 +886,23 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-61 (2026-06-25) — L2 hproducer: S5a banked; A's (b) revealed unbuilt Pπ-telescope+FACT2 → A'/B re-adjudication to B (likely wins).**
+- **S5a banked @68a51768** (route-independent): `eventually_P00_invertible` (P00 invertible on a 𝓝 w0) + the abstract IsUnit-on-𝓝
+  lemma, in the new `DeepestEFullSregComparability.lean` (0 sorries, axiom-clean). NOT wired (Deepest* convention).
+- **The (b)-atom (deepestEFull_Sreg_comparable) did NOT close — and it revealed more depth:** A's pointwise comparability rests on
+  TWO unbuilt several-hundred-LoC pieces, (1) the corrected Pπ-telescope + (2) the FACT2 reindex identity (the decomp-cert's
+  "banked machinery" was the assembly GIVEN them). Structural finding (banked decode lemmas): all 4 reads decode to the SAME raw
+  deviation — the telescope is structurally sound. **This FLIPS the A'/B balance** (the prior A'-#1 ranking assumed A's (b) was
+  cheap). B (front-pivot WLOG) makes (b) an EXACT equality (front J ⟹ no Pπ ⟹ no FACT2), cost = the MP-invariance
+  `rlctAt(loss B)=rlctAt(loss B·Π)` + a fresh chart for B·Π. pp-pin2-rearch re-adjudicating DEFINITIVELY (b-wlog-spec; verify B
+  sound + resolve the Π-frame caveat + the build-ready spec for the winner). L2 hproducer build HELD pending the verdict.
+- **R1 (3,3,4):** r1-matbox (ac9892b0) building the 9-chart A0 cover (matBox334_blowup_lt_top) — the last (3,3,4) hfin piece.
+- **Honest read on hproducer:** it's the genuinely-hard geometric core of the L2 gauge chart (the per-w framed-product telescope +
+  reindex + the (b)-comparability for a non-front pivot), peeling layers across tides (6th catch → comparability → germ/Taylor
+  overturned → now the Pπ-telescope+FACT2 cost → likely B). Tractable (the comparability HOLDS), but the route choice (A' vs B) is
+  the deciding call, now in pp's hands. S5a + the squeeze machinery + the S5c atom are banked for the assembly.
+- Active: r1-matbox (R1 build) + pp-pin2-rearch (the A'/B verdict). pp-r1-genM-2 on-call. General hdiv + general lifts + D1 ahead.
+
 **UPDATE-60 (2026-06-25) — R1 (3,3,4) frame-transport algebraic heart BUILT @a393ea89; gap → the 9-chart A0 cover alone; matbox tide launched.**
 - **r1-frametransport banked** (+400 LoC, S2-free axiom-clean): `routeMCore_M334_threshold_lt_top` is NO LONGER a sorry — reduces
   to the lone `matBox334_blowup_lt_top`. Built: the MP plumbing (routeMCore→matBox), the exact Schur-shear `R·A1=L_γ·[T;Δ·S]`,
