@@ -1014,17 +1014,162 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [← hdY 0, hdec0]; rfl
     have hZ0 : readZ H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) = 0 := by
       rw [← hdZ 0, hdec0]; rfl
-    -- REMAINING (self-contained, GREEN below via `sorry`): from the read strict-derivs (`hXsd/hYsd/hZsd`,
-    -- PROVED above: each read block is a CLE-component of `r0`, deriv = a CLM) and their vanishing at 0
-    -- (`hX0/hY0/hZ0`), the two cross products `X·Y`, `Z·Y` have strict derivative 0 at 0 (bounded-bilinear
-    -- matrix mul of two factors vanishing at 0: `ContinuousLinearMap.hasStrictFDerivAt_of_bilinear` with
-    -- the matrix-mul CLM — deriv `B.precompR _ (X 0) _ + B.precompL _ _ (Y 0) = 0`). `quadM` is a CLM
-    -- (`reindex ∘ Pf·_·Qf`) of `fromBlocks 0 (X·Y) 0 (Z·Y)` (linear in the two products), so `quadM` has
-    -- strict deriv 0, and `quadE` (its `toBlocks` entries, via `hasStrictFDerivAt_pi'`) likewise.
-    -- The one missing brick is the matrix-mul-as-bounded-bilinear CLM (`Matrix.mulLinearMap` upgraded to
-    -- `Matrix →L Matrix →L Matrix` in finite dim) + the fromBlocks-as-CLM; both are routine normed-matrix
-    -- infrastructure (`LinearMap.toContinuousLinearMap` finite-dim + `precompR/precompL` simp to 0).
-    sorry
+    -- Each read ENTRY (scalar) has a strict derivative (the matrix-valued read deriv post-composed with
+    -- the entry-projection CLM) and vanishes at 0. Stated via the function-equality `readX·entry = ⇑(CLM)`.
+    have hXe : ∀ (p q : Fin r), ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readX H r hr hL (r0, 0) (firstLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin r) (Fin r) ℝ →ₗ[ℝ] ℝ
+          ).toContinuousLinearMap).comp ((Dfst.comp Dsnd).comp Dc), ?_⟩
+      have : (fun r0 => readX H r hr hL (r0, 0) (firstLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin r) (Fin r) ℝ →ₗ[ℝ] ℝ
+            ).toContinuousLinearMap).comp ((Dfst.comp Dsnd).comp Dc)) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqX y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    have hYe : ∀ (p : Fin r) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readY H r hr hL (r0, 0) (lastLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q :
+          Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ →ₗ[ℝ] ℝ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc), ?_⟩
+      have : (fun r0 => readY H r hr hL (r0, 0) (lastLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q :
+            Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ →ₗ[ℝ] ℝ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc)) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqY y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    have hZe : ∀ (p : Fin (H 0 - r)) (q : Fin r), ∃ φ : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ,
+        HasStrictFDerivAt (fun r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p q) φ 0 := by
+      intro p q
+      refine ⟨((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin (H 0 - r)) (Fin r) ℝ →ₗ[ℝ] ℝ
+          ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ) (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp
+            (Dsnd.comp Dc)), ?_⟩
+      have : (fun r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p q)
+          = ⇑(((Matrix.entryLinearMap ℝ ℝ p q : Matrix (Fin (H 0 - r)) (Fin r) ℝ →ₗ[ℝ] ℝ
+            ).toContinuousLinearMap).comp
+          ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+            (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc))) := by
+        funext y
+        exact congrArg (fun M => M p q) (congrFun heqZ y)
+      rw [this]; exact ContinuousLinearMap.hasStrictFDerivAt _
+    -- Each matrix-product ENTRY `(X·Y) p q = ∑_k X p k · Y k q` is a sum of products of two read entries,
+    -- each vanishing-linear, so it has strict derivative 0 at 0 (`hasStrictFDerivAt_sum_mul_zero`).
+    have hXYe : ∀ (p : Fin r) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => (readX H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro p q
+      have hsum := hasStrictFDerivAt_sum_mul_zero
+        (fun k r0 => readX H r hr hL (r0, 0) (firstLayer hL) p k)
+        (fun k r0 => readY H r hr hL (r0, 0) (lastLayer hL) k q)
+        (fun k => (hXe p k).choose) (fun k => (hYe k q).choose)
+        (fun k => (hXe p k).choose_spec) (fun k => (hYe k q).choose_spec)
+        (fun k => by show readX H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) p k = 0; rw [hX0]; rfl)
+        (fun k => by show readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) k q = 0; rw [hY0]; rfl)
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => (readX H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q)
+          = fun r0 => ∑ k, readX H r hr hL (r0, 0) (firstLayer hL) p k
+              * readY H r hr hL (r0, 0) (lastLayer hL) k q := by
+        funext r0; rw [Matrix.mul_apply]
+      rw [heq]; exact hsum
+    have hZYe : ∀ (p : Fin (H 0 - r)) (q : Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => (readZ H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro p q
+      have hsum := hasStrictFDerivAt_sum_mul_zero
+        (fun k r0 => readZ H r hr hL (r0, 0) (firstLayer hL) p k)
+        (fun k r0 => readY H r hr hL (r0, 0) (lastLayer hL) k q)
+        (fun k => (hZe p k).choose) (fun k => (hYe k q).choose)
+        (fun k => (hZe p k).choose_spec) (fun k => (hYe k q).choose_spec)
+        (fun k => by show readZ H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) p k = 0; rw [hZ0]; rfl)
+        (fun k => by show readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) k q = 0; rw [hY0]; rfl)
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => (readZ H r hr hL (r0, 0) (firstLayer hL)
+          * readY H r hr hL (r0, 0) (lastLayer hL)) p q)
+          = fun r0 => ∑ k, readZ H r hr hL (r0, 0) (firstLayer hL) p k
+              * readY H r hr hL (r0, 0) (lastLayer hL) k q := by
+        funext r0; rw [Matrix.mul_apply]
+      rw [heq]; exact hsum
+    -- The dev-block `fromBlocks 0 (X·Y) 0 (Z·Y)` ENTRY has strict deriv 0 (each block entry is `(X·Y)`/
+    -- `(Z·Y)` or `0`, all deriv 0).
+    have hdevb : ∀ (s : Fin r ⊕ Fin (H 0 - r)) (t : Fin r ⊕ Fin (H (Fin.last (n + 1 + 1)) - r)),
+        HasStrictFDerivAt (fun r0 => Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)) s t)
+          (0 : _ →L[ℝ] ℝ) 0 := by
+      rintro (s | s) (t | t)
+      · exact hasStrictFDerivAt_const 0 0
+      · exact hXYe s t
+      · exact hasStrictFDerivAt_const 0 0
+      · exact hZYe s t
+    -- The `D(r0)` (reindexed dev-block) entry has strict deriv 0 (it IS a dev-block entry).
+    have hDentry : ∀ (s t), HasStrictFDerivAt (fun r0 => Matrix.reindex eR.symm eJsucc.symm
+        (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+          (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+          (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+          (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))) s t)
+        (0 : _ →L[ℝ] ℝ) 0 := by
+      intro s t
+      have heq : (fun r0 => Matrix.reindex eR.symm eJsucc.symm
+          (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))) s t)
+          = fun r0 => Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+            (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+            (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+            (eR s) (eJsucc t) := by
+        funext r0; rfl
+      rw [heq]; exact hdevb (eR s) (eJsucc t)
+    -- `quadM r0 s t = (Pf · D(r0) · Qf) (eR.symm s)(eJsucc.symm t)` = a finite sum (Leibniz) of
+    -- `const · D-entry · const`, each deriv 0; the sum has deriv 0.
+    have hquadM_entry : ∀ (s t), HasStrictFDerivAt (fun r0 => quadM r0 s t) (0 : _ →L[ℝ] ℝ) 0 := by
+      intro s t
+      have heq : (fun r0 : Fin (deepestNReg H r) → ℝ => quadM r0 s t)
+          = fun r0 => ∑ l, ∑ k, Pf (firstLayer hL) (eR.symm s) k
+              * Matrix.reindex eR.symm eJsucc.symm
+                  (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+                    (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+                    (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+                    (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+                  k l
+              * Qf (lastLayer hL) l (eJsucc.symm t) := by
+        funext r0
+        rw [hquadM]
+        simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
+        rw [Matrix.mul_apply]
+        refine Finset.sum_congr rfl (fun l _ => ?_)
+        rw [Matrix.mul_apply, Finset.sum_mul]
+        rfl
+      rw [heq]
+      have hfull : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          ∑ l, ∑ k, Pf (firstLayer hL) (eR.symm s) k
+              * Matrix.reindex eR.symm eJsucc.symm
+                  (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ)
+                    (readX H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL))
+                    (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ)
+                    (readZ H r hr hL (r0, 0) (firstLayer hL) * readY H r hr hL (r0, 0) (lastLayer hL)))
+                  k l
+              * Qf (lastLayer hL) l (eJsucc.symm t))
+          (∑ _l : Fin (H ((lastLayer hL).succ)), ∑ _k : Fin (H ((firstLayer hL).castSucc)),
+            (0 : (Fin (deepestNReg H r) → ℝ) →L[ℝ] ℝ)) 0 := by
+        refine HasStrictFDerivAt.fun_sum (fun l _ => HasStrictFDerivAt.fun_sum (fun k _ => ?_))
+        have := ((hDentry k l).const_mul (Pf (firstLayer hL) (eR.symm s) k)).mul_const
+          (Qf (lastLayer hL) l (eJsucc.symm t))
+        simpa using this
+      simpa using hfull
+    refine hasStrictFDerivAt_pi'.2 (fun i => ?_)
+    rcases hcase : regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;>
+      simp only [hquadE, hcase, ContinuousLinearMap.zero_comp]
+    · exact hquadM_entry _ _
+    · exact hquadM_entry _ _
+    · exact hquadM_entry _ _
   -- `Fmap` is a CLE, so it has strict derivative `↑Fmap`; add the quad (deriv 0), `+ 0`.
   have hFderiv : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => Fmap r0)
       (Fmap : (Fin (deepestNReg H r) → ℝ) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 :=
