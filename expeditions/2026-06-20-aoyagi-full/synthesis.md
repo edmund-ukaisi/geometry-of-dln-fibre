@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-51 (2026-06-25) — the R1 hfin wall (L3.2a) DE-RISKED + the (3,3,4) ladder build commissioned. ★**
+- **L3.2a cover DE-RISKED, banked @8161f79e** (pp-r1-genM-2 + decorrelated Codex): the r²-chart Δ-blow-up cover CLOSES up to
+  null at general r and **IS the existing `argmaxCellOn`/`pivotBlowupOn` machinery** at the r² Δ-entry level — no new cover
+  geometry (Jacobian |a|^{r²−1}; integrand G∘φ=a²·‖R·S‖² by ring; threshold MIN(r²/2, inner); λ_{r,p}=½·minAdm, 10/10). The HIGH
+  build-risk #1 is downgraded to "reuse existing infra + 4 targets." **Codex soundness refinement:** the rank recursion is a
+  nested minor-pivot OPEN-neighbourhood cover (NOT measure-zero exact strata, illegal as integration domains); the Schur
+  complement carries corank-(r−j) via `det R = det M11·Sc`. 4 new targets: N1 (ring) / N2 minor-pivot (MED, r=2 ring-clean,
+  r≥3 block-Gauss) / N3 (MED) / N4 assembly (HIGH).
+- **r1-ladder LAUNCHED** (a56bbdeb) — the (3,3,4) depth-2 hfin ladder (N1–N4, ring-clean, the direct lift of
+  myF222_threshold_lt_top'), reusing the existing cover infra verbatim. Validates the general machinery at minimal corank;
+  general-r is the follow-on. pp-r1-genM-2 on the general minor-pivot follow-up (de-risk N2 at r≥3) for the lift.
+- **R1 status:** hfin upper — (4,4,2,2) banked S2-free; general via the now-de-risked ladder ((3,3,4) building). hdiv lower —
+  general still open (RouteMLayerCoverGE:120, the (3,3,3,3) Frame-det wall). S2-free conclusion throughout.
+- 2 builds + 1 design in flight (independent files): l2-body-fill (L2 framedParams body) + r1-ladder (R1 (3,3,4) hfin) +
+  pp-r1-genM-2 (R1 general minor-pivot). pp-pin2-rearch on-call.
+
 **★ UPDATE-50 (2026-06-25) — (4,4,2,2) hfin closed S2-FREE @902ce5a7; R1 route distinction settled; the L3.2a wall is the R1 binding constraint. ★**
 - **(4,4,2,2) hfin CLOSED, S2-FREE** (r1-hfin; reviewer PASS; `#print axioms = [propext, Classical.choice, Quot.sound]`, no
   monomial_rlct, no sorryAx): `routeMCore_M4422_threshold_lt_top` — the depth-2 template + a reusable reshape API
