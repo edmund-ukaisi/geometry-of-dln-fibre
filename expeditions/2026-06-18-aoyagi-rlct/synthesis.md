@@ -10875,3 +10875,15 @@ finite ordered products, but no displayed Case 2 dependent `Cfac` package has
 been added.  The missing data are still the residual-index equivalences,
 embedding into the fixed-base suffix, and a selected-entry coordinate-matrix
 RHS identity.
+
+The guarded Case 2 reindex bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-reindex.md`.
+Lean proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_submatrix`
+in a new bridge module importing both `ProductReduction` and
+`BlowupArithmetic`.  Given a supplied two-edge residual-factor family, explicit
+endpoint equivalences, and the two factor identities, the terminal
+`residualFactorProduct` submatrix is exactly the displayed Case 2 post-pivot
+free-`C'` product.  This still leaves the source-moving sockets open:
+constructing the factors, constructing the fixed-base endpoint equivalences,
+and identifying the selected-entry coordinate-matrix RHS.

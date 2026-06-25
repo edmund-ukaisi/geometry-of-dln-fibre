@@ -7064,6 +7064,24 @@ Nonclaims: no concrete displayed Case 2 `Cfac`, no construction of global
 compatible factors, no residual-index equivalence, no selected-entry matrix
 identity, no source/image equality, no normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 residual-factor product reindex:
+Lean now proves that a supplied two-edge residual-factor product, with
+explicit endpoint equivalences and supplied factor identities, reindexes to
+Aoyagi's displayed Case 2 post-pivot free-`C'` product.
+
+Lean name:
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_submatrix`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-reindex.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-factor-product-reindex.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-residual-factor-product-reindex.md`.
+
+Nonclaims: no construction of `Cfac`, no fixed-base endpoint equivalence, no
+selected-entry coordinate-matrix RHS identity, no source/image equality, no
+source-measure transport, no normal crossings, pole order, or RLCT.
+
 Latest A2 fixed-base residual-factor family constructor:
 Lean now defines the raw p.13 fixed-base matrix family from a supplied
 compatible residual-factor family `Cfac`, rather than reading the factors from

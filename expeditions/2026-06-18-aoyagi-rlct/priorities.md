@@ -4704,3 +4704,12 @@ Lean proves the generic `Fin 3` endpoint unfold of
 for future local Case 2 factor work.  Do not turn it into a bespoke displayed
 Case 2 `Cfac` package until the residual-index equivalences and selected-entry
 matrix RHS are real downstream inputs.
+
+A2 Case 2 residual-factor product reindex has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-reindex.md`.
+Lean proves the guarded bridge from a supplied two-edge residual-factor family
+to `case2DisplayedPostPivotFreeTwoEdgeFactorProduct`, assuming explicit
+endpoint equivalences and the two factor identities.  This is useful API for
+future readout work, but the meaningful frontier is unchanged: construct or
+source-audit the endpoint equivalences, compatible factors, and selected-entry
+coordinate-matrix RHS identity.

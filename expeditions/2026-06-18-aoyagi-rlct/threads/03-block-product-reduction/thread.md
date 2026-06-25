@@ -5853,3 +5853,29 @@ The bespoke displayed Case 2 dependent `Fin 3` package is still not added:
 it would need endpoint equivalences from the fixed-base residual types to the
 Case 2 post-pivot row/column/following-factor types and an equality with the
 selected-entry coordinate matrix before it becomes a real readout input.
+
+## 2026-06-25 A2 Case 2 residual-factor product reindex
+
+Reproduction:
+`reproduction-a2-case2-residual-factor-product-reindex.md`.
+Statement card:
+`statement-card-a2-case2-residual-factor-product-reindex.md`.
+Review:
+`review-a2-case2-residual-factor-product-reindex.md`.
+
+Lean now proves:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_submatrix
+```
+
+This theorem takes a supplied two-edge residual-factor family, explicit
+endpoint equivalences, and the two factor identities identifying its factors
+with the Case 2 post-pivot residual block and following-factor tail.  It then
+reindexes the generic two-edge `residualFactorProduct` and recovers
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct`.
+
+This is the guarded bridge that the previous two-edge unfold made possible.
+It still does not construct the displayed Case 2 `Cfac`, fixed-base endpoint
+equivalences, selected-entry matrix RHS identity, source/image equality,
+normal crossings, pole order, or RLCT.
