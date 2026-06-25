@@ -227,3 +227,5 @@ import DLNFibre.Core.ChartPointEval
 import DLNFibre.Core.ChartEvalGauge
 import DLNFibre.Core.ChartEvalLemma
 import DLNFibre.Core.ChartEvalGaugeCommute
+-- chart-eval lemma proper (#66) + geometric realization A∈Σ^r (the route-β descent's eval input).
+import DLNFibre.Core.ChartEvalRealize
