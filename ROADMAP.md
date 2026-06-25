@@ -31,7 +31,7 @@ multiplication map $\operatorname{mult}(A_\ast)=A_N\cdots A_1$, we want, in hone
             explicit lattice-point formula (§7, Thm 7.10)
         │
         ▼
-   rlct(K^DLN_B) = C/2   (§8, Thm 8.6;  uses the cited rlct ≤ ½·codim bound, Aoyagi/Watanabe)
+   rlct(K^DLN_B) = C/2   (§8, Thm 8.6;  via the cited rlct = ½·codim equality, Aoyagi/Watanabe)
 ```
 
 Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT payoff → `DLNFibre.DLN`.
@@ -115,7 +115,7 @@ now a Proved lemma) → the route-c assembly `Core.RouteCAssembly` (carries the 
 application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanabe). **Payoff DISCHARGED
 (#52):** `DLN.BundleShiftDischarge` proves the bundle shift from Core (`bundleShift_of_core`); the rewired
 `rlct_lossDLN_eq_half_cCodim_add_shift` rests on ONLY the Cited Aoyagi `RlctInterface` — the destination
-`rlct = C/2` is realized (geometric half zero-cite; only `rlct ≤ ½·codim` Cited). Full record:
+`rlct = C/2` is realized (geometric half zero-cite; only the Aoyagi `rlct = ½·codim` equality Cited). Full record:
 `expeditions/2026-06-23-fibre-codim/synthesis.md`.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)

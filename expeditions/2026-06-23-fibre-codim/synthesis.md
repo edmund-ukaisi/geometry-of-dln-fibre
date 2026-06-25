@@ -35,7 +35,7 @@ missing AG. Then either a tide (formaliser) or a roadmap entry. Build baseline w
 
 LR route only (`Core` geometry + `DLN.RlctPayoff*`). **No collision with the live aoyagi-full** (its
 independent λ-via-resolution route, `DLN.RLCT.*`, does not touch this). The analytic
-`rlct ≤ ½·codim` stays **Cited**; nothing named `rlct_…` claims it.
+Aoyagi `rlct = ½·codim` equality stays **Cited**; nothing named `rlct_…` claims it.
 
 ## Recon verdict (2026-06-23, thread 01) — GENUINE BLOCKER
 
@@ -841,7 +841,7 @@ from Core (`bundleShift_of_core`, via `FibreCodimFinal` + `SigmaCodim` Brick A);
 `rlct_lossDLN_eq_half_cCodim_add_shift` DROPS the geometric interface and rests on ONLY the Cited Aoyagi
 `RlctInterface`. `#print axioms` = `[propext, Classical.choice, Quot.sound]` (geometric half genuinely
 Proved); reviewer-g4 PASS (decorrelated + Codex). The full chain — geometry `codim = C+δ` zero-cite, wired
-into the RLCT payoff `rlct = C/2` with ONLY the analytic `rlct ≤ ½·codim` Cited (Aoyagi/Watanabe) — is the
+into the RLCT payoff `rlct = C/2` with ONLY the analytic Aoyagi `rlct = ½·codim` equality Cited — is the
 destination, realized at `k : Type 0` (the DLN field; covers ℂ). The G1 lift is subsumed by `FibreCodimFinal`.
 
 **Remaining.** #54 — θ-count fidelity for `(3,3,3)` (separate follow-up). Opening/merging PR #10 is
