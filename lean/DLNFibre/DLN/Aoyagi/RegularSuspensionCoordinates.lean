@@ -2361,6 +2361,84 @@ def paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
   AoyagiProductDifferenceCoordinateIndex.literalValue
     (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D
 
+/-- The untransformed endpoint product-difference square-sum in the fixed-base
+adapted coordinates.
+
+This is the square-sum of the adapted endpoint product matrix minus the
+rank-`r` model block `[I,0;0,0]`.  It is not the original DLN/statistical
+loss. -/
+def paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) : K :=
+  let ι := Fin (Module.finrank K U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  aoyagiCoordinateSquareSum
+    (fun ij : (ι ⊕ μ) × (ι ⊕ ν) =>
+      (paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E -
+        fromBlocks (1 : Matrix ι ι K) 0
+          (0 : Matrix μ ι K) (0 : Matrix μ ν K)) ij.1 ij.2)
+
+/-- The product of the coordinate square-sums of the deterministic p. 13
+triangular endpoint multipliers in the fixed-base adapted coordinates.
+
+This is a pointwise finite quantity.  Local boundedness of this quantity is a
+separate analytic/topological input. -/
+def paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) : K :=
+  let ι := Fin (Module.finrank K U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      Matrix
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  let S :
+      ChartLocalSuffixState ι
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        K (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState E (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  aoyagiCoordinateSquareSum
+      (fun ij : (ι ⊕ μ) × (ι ⊕ μ) =>
+        (fromBlocks (1 : Matrix ι ι K) 0 (lowerLeftBlock S.L)
+          (1 : Matrix μ μ K)) ij.1 ij.2) *
+    aoyagiCoordinateSquareSum
+      (fun ij : (ι ⊕ ν) × (ι ⊕ ν) =>
+        (fromBlocks (1 : Matrix ι ι K) (-(S.B)) 0
+          (1 : Matrix ν ν K)) ij.1 ij.2)
+
 set_option linter.unusedSectionVars false in
 /-- The fixed-base cleaned product-difference coordinate map is the disjoint
 sum of the regular block coordinate map and the residual coordinate map. -/
@@ -2656,6 +2734,109 @@ variable {N : ℕ}
   [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
   [∀ i, ContinuousSMul ℝ (W i)]
   (B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc)
+
+namespace PaperEndpointFixedBaseProductReductionCertificate
+
+set_option linter.unusedSectionVars false in
+/-- A fixed-base product-reduction certificate turns the p. 13 triangular
+multiplier comparison into a pointwise adapted product-difference square-sum
+bound.
+
+The multiplier square-sum bound is supplied explicitly.  This is not a
+comparison with the original DLN/statistical loss. -/
+theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ} {x : α}
+    (cert :
+      PaperEndpointFixedBaseProductReductionCertificate
+        (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hbound :
+      paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+        (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    c * aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+      paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+        (K := ℝ) W B U₀ hU₀ Cedge x := by
+  classical
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : ∀ p : Fin N,
+      reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ :=
+    fun p ↦
+      (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)
+  let EMat : ∀ p : Fin N,
+      Matrix
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) ℝ :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E
+  let S :
+      ChartLocalSuffixState ι
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        ℝ (Fin.last N) 0 :=
+    ChartLocalSuffixState.suffixState EMat (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  have hSL :
+      S.L =
+        fromBlocks (1 : Matrix ι ι ℝ) 0 (lowerLeftBlock S.L)
+          (1 : Matrix μ μ ℝ) := by
+    rcases ChartLocalSuffixState.suffixState_L_eq_lowerUnitriangular
+        (K := ℝ) EMat (i := 0) (j := Fin.last N)
+        (Fin.zero_le (Fin.last N)) with
+      ⟨F3, hF3⟩
+    rw [hF3]
+    rfl
+  have hblock :
+      IsUnit S.L.det ∧ IsUnit S.Ctop.det ∧
+        S.L * paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+            fromBlocks (1 : Matrix ι ι ℝ) (-(S.B)) 0 (1 : Matrix ν ν ℝ) =
+          fromBlocks S.Ctop 0 0 S.D := by
+    simpa [paperEndpointFixedBaseContinuousEdgesRecursiveBlockDiagonal, E, EMat, S, ι, μ, ν]
+      using cert.blockDiagonal
+  have htri :
+      fromBlocks (1 : Matrix ι ι ℝ) 0 (lowerLeftBlock S.L)
+          (1 : Matrix μ μ ℝ) *
+        paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E *
+        fromBlocks (1 : Matrix ι ι ℝ) (-(S.B)) 0 (1 : Matrix ν ν ℝ) =
+          fromBlocks S.Ctop 0 0 S.D := by
+    rw [← hSL]
+    exact hblock.2.2
+  have hraw :
+      c * aoyagiCoordinateSquareSum
+          (AoyagiProductDifferenceCoordinateIndex.literalValue
+            (S.Ctop - 1) (-(S.B)) (lowerLeftBlock S.L) S.D) ≤
+        aoyagiCoordinateSquareSum
+          (fun ij : (ι ⊕ μ) × (ι ⊕ ν) =>
+            (paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E -
+              fromBlocks (1 : Matrix ι ι ℝ) 0
+                (0 : Matrix μ ι ℝ) (0 : Matrix μ ν ℝ)) ij.1 ij.2) := by
+    refine
+      AoyagiProductDifferenceCoordinateIndex.const_mul_literalCoordinateSquareSum_le_productDifferenceSquareSum_of_triangularBlockProduct
+        (F2 := -(S.B)) (F3 := lowerLeftBlock S.L)
+        (Ctop := S.Ctop) (D := S.D)
+        (T := paperEndpointFixedBaseTotalMatrixOfReverseEdges W B U₀ hU₀ E)
+        (c := c) (K := Kmul) hc_nonneg hcK ?_ htri
+    simpa [paperEndpointFixedBaseTriangularMultiplierSquareSumProduct, E, EMat, S, ι, μ, ν]
+      using hbound
+  simpa [paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap,
+    paperEndpointFixedBaseAdaptedProductDifferenceSquareSum, E, EMat, S, ι, μ, ν] using hraw
+
+end PaperEndpointFixedBaseProductReductionCertificate
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 

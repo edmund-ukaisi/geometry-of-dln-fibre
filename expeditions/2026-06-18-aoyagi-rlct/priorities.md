@@ -657,6 +657,18 @@ statistical loss, and it does not prove covariance lower bounds, basis norm
 equivalence, multiplier boundedness, analytic chart construction, Jacobian
 transport, normal crossings, pole order, or RLCT.
 
+A2 fixed-base adapted product-difference certificate bound has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-adapted-product-difference-certificate-bound.md`.
+Lean adds the pointwise adapted square-sum definitions
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum` and
+`paperEndpointFixedBaseTriangularMultiplierSquareSumProduct`, and proves
+`PaperEndpointFixedBaseProductReductionCertificate.const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum`.
+This instantiates the finite p.13 triangular-multiplier comparison with the
+deterministic fixed-base product-reduction certificate fields.  The
+multiplier bound remains supplied, and the right-hand side is only the
+adapted fixed-base product-difference square-sum, not `lossDLN` or original
+statistical loss.
+
 The next genuine A2 analytic target is now pinned at
 `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
 prove an abstract Euclidean product-coordinate theorem that adding `k`
