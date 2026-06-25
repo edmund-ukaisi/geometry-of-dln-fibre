@@ -262,3 +262,26 @@ deeper issue (split-genericity → frame-genericity → this T-core leak).
   framing. The L2 gauge chart's true remaining work: the PIN2 comparability re-architecture (the open heart) + the
   L=1/2≤L case-split wire + product_reduction. PIN1 (closed) + the L=1 base + the PIN2 route-step bedrock are all banked
   and unaffected.
+
+## 15. L2 PIN2 RESOLVED at the design level (2026-06-25): full-reg repair, NOT comparability — supersedes Item 14's plan.
+The Item-14 "comparability re-architecture" plan (weaken the regular blocks to `Sreg ≍ ∑deepestEPivot²`, fold the leak
+into γ) was itself **REFUTED** (pp-pin2-rearch, decorrelated Codex + exact): the `Y0·T1` leak is DEGREE-2 (same order as
+the kept terms, exact cancellation), so comparability fails both directions and `deepest_loss_squeeze` is false as typed.
+The SOUND repair is **full-reg `regStraighten`**: the chart's regular OUTPUT reads the FULL product core
+(`E_pivot:R×S→R` → `E_full:R×(C×S)→R`), so `∑(regStraighten·).1² = Sreg` EXACTLY (no leak, no comparability slack on the
+regular blocks). Adjudicated GREEN: (a) **PIN1 survives verbatim** — `D(E_full)(0) = [F | 0 | G]` (the leak is degree-2 ⟹
+zero first-order core contribution), reg-in F = the same invertible `regBlockCLE`, re-used via a 1-line bridge; (b) the
+transfer is a SIMPLIFICATION of the banked `_isUnit` lemma (`W := C×S` unsplit), not a new generalization; (c) it **closes
+the open rlct-risk gamble** — the squeeze is now the BANKED leaf lemma `dlnLoss_two_sided_of_frame`'s TRUE comparability
+`dlnLoss ≍ Sreg+Score`, so the headline rlct no longer rests on an unverified `rlct(Φ_struct)=rlct(dlnLoss)`. **Operator
+note:** PIN2 went false-statement → sound-repair under the precision discipline (three deepening tide catches, then a
+decorrelated design that refuted even the controller's own option-2 lean). The math (the RLCT formula) was never at risk —
+only the cert's phrasing — and is now on a verified path. Building (l2-pin2-fullreg); no operator action required.
+
+## 16. STRAY cross-expedition dir in the aoyagi-full working tree (2026-06-25) — needs homing, NOT banked here.
+`expeditions/2026-06-23-fibre-codim/` (a separate expedition: Jacobian-rank / geometric-codimension, the Lehalleur-Rimányi
+track — thread `25-jacobian-rank-cert` with sympy/Gröbner scripts + Codex consults) appeared **untracked** in the main
+checkout while it is on `expedition/aoyagi-full`. I have **deliberately NOT committed it** to aoyagi-full's history (wrong
+expedition/branch) and **NOT deleted it** (it is someone's work). It persists untracked across checkouts. **Operator
+action:** home it on its own branch / the fibre-codim expedition, or confirm it should be dropped. (Also gitignored the
+transient `**/.codex-consult/` scratch this tick.)

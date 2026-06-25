@@ -118,4 +118,14 @@ for the class it covers, reducing (not eliminating) the rank-stratified build's 
   `(2,4,2)`, so the decidable check is the honest criterion).
 - **What would change it:** a fibre bound that sees the residual's rank (not one column) — but that IS
   the rank-stratified resolution; the single-column shear's ceiling is intrinsic.
-- **Decorrelated Codex consult:** fired (`codex/iterfibre-prompt.md`); fold the answer in when it lands.
+- **The ceiling mechanism, sharpened (`scripts/iterfibre_ceiling_check`):** the fibre lemma's
+  threshold `p/2` is forced by its **`Y`-independent constant** — the bound must hold even for
+  near-singular `Y`, where it is loose. The TRUE per-fibre threshold for full-rank `Y` is higher (e.g.
+  the `(2,2,2)` `A0`-fibre with full-rank `A1` is a 4-dim Morse, threshold `4/2 = 2`), but the route
+  INTEGRATES `Y` over the whole box including the near-singular region, where the looseness caps the
+  iterated bound at `p/2`. So `best_iterfibre` is a genuine ceiling OF THIS lemma; beating it requires
+  a `Y`-rank-aware bound = the rank-stratified resolution. Verdict robust.
+- **Decorrelated Codex consult:** fired (`codex/iterfibre-prompt.md`); ran long at `xhigh` and had not
+  completed at report time — the exact-rational verdict above is self-standing (the threshold is read
+  directly from the Lean `fibreConst`'s `Kbound`), the consult is corroboration not load-bearing. Fold
+  in when it lands.
