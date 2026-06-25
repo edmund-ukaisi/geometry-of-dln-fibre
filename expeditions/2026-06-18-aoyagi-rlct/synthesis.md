@@ -10853,3 +10853,16 @@ This is the corrected finite identity for `D_J = u N` with
 weights and is not counted again as a final factor.  This is pure `Q/P`
 matrix algebra only, not chart/source production, normal crossings, pole
 order, or RLCT.
+
+The A2 residual-factor readout stack is now composed through the actual
+fixed-base product-coordinate constructor:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-constructor-readout.md`.
+Lean proves
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualFactorProduct_eq_matrix`.
+It realizes the fixed-base matrices from supplied `uBase` and `Cfac`, uses the
+constructor theorem reducing `residualProduct` to `residualFactorProduct`, and
+then applies the prescribed-matrix selected-entry readout bridge.  The
+remaining source sockets are unchanged: construction of `Cfac`, the
+factor-product selected-entry identity, residual-index equivalence, local
+source/image equality, source-measure transport, normal crossings, pole order,
+and RLCT.

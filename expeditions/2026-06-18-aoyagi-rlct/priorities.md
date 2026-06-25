@@ -4686,3 +4686,13 @@ as source-backed finite algebra for pp. 19-21 and as a guardrail against
 double-counting the selected variable in future Case 2 weight statements.  It
 does not move source production, coverage, successor data, normal crossings,
 pole order, or RLCT.
+
+A2 selected-entry residual-factor constructor readout has now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-constructor-readout.md`.
+Lean composes the fixed-base residual-factor constructor with the
+prescribed-matrix selected-entry readout bridge.  This is now the preferred
+readout handoff when a future source calculation supplies `uBase`, `Cfac`, the
+selected-entry factor-product identity, and the residual-index equivalence.
+It still does not construct those data or prove local source/image equality.
+The next meaningful source work remains factor production/product identity,
+residual-index provenance, or source/image and measure transport.

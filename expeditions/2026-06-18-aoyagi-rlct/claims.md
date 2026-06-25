@@ -7026,6 +7026,26 @@ Nonclaims: no construction of `Cfac`, no factor-product identity proof, no
 residual-index equivalence construction, no source/image equality,
 source-measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 selected-entry residual-factor constructor readout:
+Lean now composes the supplied residual-factor constructor with the
+selected-entry prescribed-matrix readout.  A supplied source-indexed family
+`Cfac`, evaluated at `chartMap pivot y`, is threaded through the actual
+fixed-base product-coordinate matrices; the constructor's residual-product
+theorem reduces the readout socket to the supplied factor-product identity.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualFactorProduct_eq_matrix`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-constructor-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-residual-factor-constructor-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-constructor-readout.md`.
+
+Nonclaims: no construction of `Cfac`, no factor-product selected-entry proof,
+no residual-index equivalence construction, no source/image equality, no
+source-measure transport, no normal crossings, pole order, or RLCT.
+
 Latest A2 fixed-base residual-factor family constructor:
 Lean now defines the raw p.13 fixed-base matrix family from a supplied
 compatible residual-factor family `Cfac`, rather than reading the factors from

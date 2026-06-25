@@ -389,6 +389,98 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- The fixed-base residual-factor product-coordinate constructor gives the
+selected-entry coordinate readout once its compatible residual-factor product
+is the selected-entry chart matrix.
+
+This is the residual-factor version of the prescribed-matrix readout bridge:
+the factor family is threaded through the actual product-coordinate matrix
+constructor, and the residual-product identity is obtained from its residual
+factor theorem.  The residual-factor family, its product identity, the
+residual-coordinate equivalence, and source coverage remain supplied. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualFactorProduct_eq_matrix
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (uBase : (center → ℝ) → EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (Cfac : (center → ℝ) → ∀ p : Fin (M + 2), Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ)
+    (hfactor :
+      ∀ y : center → ℝ,
+        ChartLocalSuffixState.residualFactorProduct
+          (Cfac (SelectedEntrySignedBox.CenterCoord.chartMap pivot y))
+          (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) :
+      ∀ y c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀
+            (fun x ↦
+              paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+                V Bv U₀ hU₀
+                (paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean
+                  V Bv U₀ (uBase x) (Cfac x)))
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) c =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivot y (residualCoordEquiv c) := by
+  let Ebase : (center → ℝ) → ∀ p : Fin (M + 2),
+      Matrix
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ :=
+    fun x ↦
+      paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean
+        V Bv U₀ (uBase x) (Cfac x)
+  refine
+    paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_prescribedEdgeMatrix_residualProduct_eq_matrix
+      (V := V) (Bv := Bv) (pivot := pivot) U₀ hU₀ Ebase residualCoordEquiv ?_
+  intro y
+  calc
+    ChartLocalSuffixState.residualProduct
+        (Ebase (SelectedEntrySignedBox.CenterCoord.chartMap pivot y))
+        (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+      ChartLocalSuffixState.residualFactorProduct
+        (Cfac (SelectedEntrySignedBox.CenterCoord.chartMap pivot y))
+        (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) := by
+        simpa [Ebase] using
+          paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean_residualProduct_eq_residualFactorProduct
+            (V := V) (Bv := Bv) U₀
+            (uBase (SelectedEntrySignedBox.CenterCoord.chartMap pivot y))
+            (Cfac (SelectedEntrySignedBox.CenterCoord.chartMap pivot y))
+    _ =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := hfactor y
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- One-edge p.13 product-coordinate edge family whose supplied residual
 matrix is the finite selected-entry chart coordinate matrix.
 

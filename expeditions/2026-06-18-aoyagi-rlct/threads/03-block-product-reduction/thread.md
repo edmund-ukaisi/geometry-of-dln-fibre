@@ -5795,3 +5795,35 @@ selected-entry matrix and a residual-index equivalence.  A terminal
 selected-entry matrix alone must not be inserted into a multi-edge residual
 product because the rank/split obstruction through intermediate residual
 types is real.
+
+## 2026-06-25 A2 selected-entry residual-factor constructor readout
+
+Reproduction:
+`reproduction-a2-selected-entry-residual-factor-constructor-readout.md`.
+Statement card:
+`statement-card-a2-selected-entry-residual-factor-constructor-readout.md`.
+Review:
+`review-a2-selected-entry-residual-factor-constructor-readout.md`.
+
+Lean now composes the fixed-base residual-factor product-coordinate
+constructor with the selected-entry prescribed-matrix readout bridge:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.
+  paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualFactorProduct_eq_matrix
+```
+
+The theorem takes supplied `uBase`, supplied compatible factors `Cfac`, a
+residual-index equivalence, and a factor-product identity for
+`Cfac (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)`.  It realizes the
+fixed-base matrices from
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean`,
+uses the constructor theorem
+`..._residualProduct_eq_residualFactorProduct`, and returns the pointwise
+selected-entry residual-coordinate readout needed by the original-loss local
+socket.
+
+This is finite p.13 product-coordinate/readout composition only.  It does not
+construct `Cfac`, prove the selected-entry factor-product identity, construct
+the residual-index equivalence, prove local source/image equality, transport
+measure, produce normal crossings, compute pole order, or prove RLCT.
