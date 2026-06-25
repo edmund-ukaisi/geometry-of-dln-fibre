@@ -200,3 +200,6 @@ import DLNFibre.Core.ChartRetraction
 import DLNFibre.Core.ChartBijection
 -- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
 import DLNFibre.Core.LocalizationKrullDim
+-- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
+-- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
+import DLNFibre.Core.ChartGaugeNormalize
