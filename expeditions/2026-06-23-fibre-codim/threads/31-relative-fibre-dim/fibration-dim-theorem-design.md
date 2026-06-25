@@ -851,3 +851,55 @@ Reusable LANDED infra: `chartGauge`/`chartGauge_mem_fibre` (`ChartRetraction`), 
 primitive (`PrincipalOpenComorphism`), and the `gaugeSub`/`gaugeEquiv`/`liftGauge` machinery
 (`EndpointNormalization`). NO new wall foreseen, but it is a fresh multi-module construction (est.
 3-4 sub-modules: the substitution, the descent, the unit, the lift), NOT a quick assembly.
+
+---
+
+## Tide progress log — update 17 (seam D: design locked + substitution legs LANDED)
+
+**Successor tide `tide-efinish-3` (thread 31), seam D = Φ direction → `chartPhiLoc`.**
+
+**Design locked (decorrelated Codex xhigh, `codex/seam-d-architecture-{prompt,answer}.md` +
+`codex/phi-descent-{prompt,answer}.md`):** build `chartPhiAeval` as an INDEPENDENT `aevalTower`
+(NOT a descent of the single `gaugeEquiv` — that would re-prove the same ideal-transport + base-coord
+facts). The exact seam-C mirror, with the FORWARD `endpointGauge` (not its inverse) landing in the
+SOURCE localization `Away dsig`:
+- `sigmaCoordT x = algebraMap O(Σ) (Away dsig) (mk_Σ (X x))` (mirror of `fibCoordT`).
+- `chartPhiVarSub : SchurVar → Away dsig` — SchurVar generators → deep product blocks of
+  `M = Matrix.of (multPoly d)` (Δ at `castLE` rows/cols, B12/B21 at the bordering `natAdd` indices).
+- `chartPhiSchurAeval := aeval chartPhiVarSub`, `chartPhiSchurAeval detSchurS = algebraMap dsig` (a unit).
+- `schurToDsig : SchurLoc →ₐ[k] Away dsig` = `liftAlgHom chartPhiSchurAeval` (mirror of `schurToGfib`).
+- `chartPhiTower := aevalTower schurToDsig sigmaCoordT`; `chartPhiFibSub x := chartPhiTower
+  (gaugeSub d endpointGauge x)`; `chartPhiFibAeval := aeval chartPhiFibSub`.
+- descend `vanishingIdeal F ≤ ker chartPhiFibAeval` → `chartPhiCoeff : O(F) →ₐ[k] Away dsig`.
+- `chartPhiAeval := aevalTower chartPhiCoeff chartPhiVarSub`; lift (`gF ↦ unit`) → `chartPhiLoc`.
+
+**Banked (committed, sorry/axiom-clean, whole-library green; NOT yet aggregated):**
+- `Core.ChartPhiSubstitution` (`add2de1b`): `sigmaCoordT`, `chartPhiVarSub` (+ `_inl`),
+  `chartPhiSchurAeval`, `chartPhiSchurAeval_detSchurS` (the var-leg Δ-block det = dsig, a unit),
+  `schurToDsig`.
+- `Core.ChartPhiFibCoord` (`3a135b0a`): `chartPhiTower`, `chartPhiFibSub`, `chartPhiFibAeval`.
+- `Core.ChartPhiDescent` (UNCOMMITTED skeleton, ONE sorry = the descent): `chartPhi_vanishingIdeal_le`
+  (sorry), `chartPhiCoeff`, `chartPhiAeval` — the `aevalTower`/`liftₐ` chain typechecks (NO absent API).
+
+**The descent route (Codex `phi-descent-answer`, EASIER than Ψ — target localizes a vanishingIdeal-
+quotient so the Σ-side primitive applies directly; NO `[Infinite k]` needed via `mem_vanishingIdeal_iff`
++ Δ(y)=0 split, NOT funext):**
+1. `away_mk'_pow_eq_zero_iff_exists_pow_mul_mem` — denominator-power variant of the Σ-side primitive
+   (matches `mk'_surjective`). REUSABLE.
+2. `schurOfMult A : SchurVar → k` — A's Schur data (the block entries of `mult A`), defined explicitly;
+   `eval_schurOfMult_detSchurS : eval (schurOfMult A) detSchurS = (chartΔ (mult A)).det`.
+3. `evalSigmaAway A hA hΔ : Away dsig →ₐ[k] k` — the Σ-side chart-point eval (mirror of `evalAway`),
+   `liftAlgHom (aeval (canonicalCoord A))`, ΔPdeep(A) a unit.
+4. coeff leg `evalSigmaAway ∘ schurToDsig = schurEval (schurOfMult A)`; var leg
+   `evalSigmaAway ∘ sigmaCoordT x = canonicalCoord A x` — REUSES the parametric seam-A infra
+   (`schurEval`, `evalGauge`, `aevalTower_gaugeSub`, `map_aevalTower_liftGauge`).
+5. `evalSigmaAway_chartPhiFibAeval` — the Φ eval lemma: `evalSigmaAway A (chartPhiFibAeval p) =
+   aeval (canonicalCoord (baseChange (evalGauge (schurEval (schurOfMult A)) endpointGauge) A)) p`.
+6. **THE BRIDGE (Codex's flagged break point)** `evalGauge_endpointGauge_eq_chartGauge` :
+   `evalGauge (schurEval (schurOfMult A)) endpointGauge = chartGauge (mult A)` — crosses 3
+   representations (SchurLoc vars / evaluated blocks of `mult A` / concrete `Lmatk`/`Hmatk`). Then
+   `chartGauge(mult A)•A ∈ fibre E` is the LANDED `chartGauge_mem_fibre`.
+7. `sigmaAway_eq_zero_of_forall_eval_zero z (hz : ∀ A ∈ Σ^r, ΔPdeep(A)≠0 → evalSigmaAway A z = 0) :
+   z = 0` — the packaged numerator-extraction + zero-test (the Δ(A)=0 locus killed by the ΔPdeep
+   factor). The descent: apply at `z = chartPhiFibAeval p`, pointwise-zero from (5)+(6)+
+   `chartGauge_mem_fibre` + `p` vanishing on F.
