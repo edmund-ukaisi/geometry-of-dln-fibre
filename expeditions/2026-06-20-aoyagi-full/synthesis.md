@@ -716,6 +716,21 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   heartbeat's free integration bandwidth. **3 BUILD agents now:** l2-pin1-valuefold (L2 PIN1), r1-node-3333 (R1 hdiv (3,3,3,3)),
   hfin-4422 (R1 hfin (4,4,2,2)) — all three open fronts (L2 PIN1 / R1 hdiv / R1 hfin), non-overlapping files.
 
+**★ UPDATE-32 (2026-06-25) — L2 PIN1 value-fold infrastructure BANKED (reviewer-SURVIVED, ~450 LoC); PIN1 one finCongr-cast from green.**
+- **l2-pin1-valuefold @7a847924 (origin/worktree-branch, reviewer-SURVIVED 5/5, full build green 8367):** decomposed PIN1's
+  monolithic value-fold sorry into ~450 LoC of PROVEN infrastructure + 2 small MECHANICAL sorries. Banked sorry-free:
+  `decodeRegSliceCLE` (the reg-slice reshape ≃L, cast-free) + the block-read helpers (`corner_mul_devY`, `mulBlock_devXZ_*`,
+  `pivot_devY_read_toBlocks₂₁`, …) + `hPexp` (the product expansion `firstShapeF·last = corner + Y-frame + A·devXZ + quad`
+  THROUGH the firstShapeF-codomain cast wall — the 4-5/5 crux, resolved via a `show`-retype) + the block identities + the
+  derivative-combine structure. Reviewer: F/regBlockCLE are GENUINE invertible CLEs (real invFuns, gated by IsUnit(Pf first)
+  + hQf22); the quadratic cross is genuinely present (the "P12 = Y·B₂₂ exactly" overclaim correctly REJECTED).
+- **The 2 remaining PIN1 sorries (mechanical, reviewer-confirmed CORRECT statements, NO math gap):** (1) `hNF` the final
+  per-coordinate gluing — blocked on a `H 0` vs `(firstLayer hL).castSucc` defeq-not-syntactic clash; fix = a finCongr cast
+  bridge at the decode/Fblk seam. (2) `hquadderiv` the quad deriv-0 (self-contained hasStrictFDerivAt). PIN1 is "one
+  finCongr-cast away from green." **aeb04fc2 RESUMED** to close both → PIN1 green (then I integrate PIN1-green in one pass).
+- 3 background BUILD agents: aeb04fc2 (L2 PIN1 finish, the 2 mechanical sorries), r1-node-3333 (R1 hdiv (3,3,3,3)),
+  hfin-4422 (R1 hfin (4,4,2,2)). The value-fold infra is safe on origin/worktree-agent-aeb04fc2.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
