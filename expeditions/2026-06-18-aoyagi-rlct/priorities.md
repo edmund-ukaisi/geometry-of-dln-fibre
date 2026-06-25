@@ -3716,3 +3716,15 @@ no pointwise origin regularity, closed-ball or boundary-sphere theorem,
 endpoint behavior, lower/divergence, density transport, product-coordinate
 threshold, p.13 analytic chart/Jacobian construction, normal crossings, pole
 order, or RLCT.
+
+A2 product below-critical integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`.
+Lean proves in `RegularSuspensionIntegrability.lean` that if the base measure
+is finite, the base term is a.e. nonnegative, and `2*s < finrank` for the
+regular variables, then the lower integral of
+`(a(x)+||u||^2)^(-s)` over `X x ball(0,R)` is finite.  The proof is by a.e.
+domination by the `a=0` regular-ball integrand and Tonelli factorization of
+the majorant.  This is only the below-regular-critical case; it still does not
+prove the `+dim/2` shifted threshold, the endpoint, the divergent side,
+uniform asymptotics, density/prior transport, p.13 chart/Jacobian construction,
+normal crossings, pole order, or RLCT.

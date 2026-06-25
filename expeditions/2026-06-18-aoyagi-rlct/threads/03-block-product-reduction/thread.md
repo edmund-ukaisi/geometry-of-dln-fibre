@@ -2845,3 +2845,39 @@ origin, closed-ball theorem, boundary-sphere nullity, endpoint theorem,
 lower/divergence theorem, uniform asymptotic in `a`, bounded-density theorem,
 product-coordinate `+k/2` threshold, Aoyagi p.13 analytic chart/Jacobian
 theorem, normal-crossing construction, pole order, or RLCT theorem is proved.
+
+## 2026-06-24 A2 product below-critical integrability
+
+Reproduction:
+`reproduction-a2-product-below-critical-integrability.md`.
+Statement card:
+`statement-card-a2-product-below-critical-integrability.md`.
+Review:
+`review-a2-product-below-critical-integrability.md`.
+
+Lean now proves the first product-coordinate finite-side theorem in
+`RegularSuspensionIntegrability.lean`:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+```
+
+For a finite base measure `mu`, additive Haar measure `nu` on a nontrivial
+finite-dimensional real normed regular space `E`, an a.e. nonnegative base
+term `a : alpha -> R`, and `2*s < finrank_R(E)`, the lower integral over
+`alpha x E` of
+
+```text
+ENNReal.ofReal (1_{ball(0,R)}(u) * (a(x)+||u||^2)^(-s))
+```
+
+is finite.  The proof uses a.e. domination by the `a=0` regular-ball integrand:
+away from the regular origin, `(a(x)+||u||^2)^(-s) <= (||u||^2)^(-s)`.
+Tonelli then factors the majorant as `mu(univ)` times the already-proved
+regular open-ball integral.
+
+Boundary: below-regular-critical finite side only.  No `+dim(E)/2` threshold
+shift, no theorem for `s >= dim(E)/2`, no endpoint, lower/divergence, uniform
+asymptotic in `a`, bounded-density/prior theorem, Aoyagi p.13 analytic
+chart/Jacobian theorem, normal-crossing construction, pole order, or RLCT
+theorem is proved.

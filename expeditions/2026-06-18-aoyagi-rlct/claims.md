@@ -288,7 +288,9 @@ No such claim is formalisation-ready until both fields are filled.
   radial finite-side integrability brick at
   `threads/03-block-product-reduction/reproduction-a2-radial-finite-side-integrability.md`;
   null-origin radial integrability transfer at
-  `threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`.
+  `threads/03-block-product-reduction/reproduction-a2-null-origin-radial-integrability.md`;
+  product below-critical integrability at
+  `threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -331,7 +333,9 @@ No such claim is formalisation-ready until both fields are filled.
   radial finite-side integrability brick reviewed by xhigh `Volta the 4th` in
   `threads/03-block-product-reduction/review-a2-radial-finite-side-integrability.md`;
   null-origin radial integrability transfer reviewed by xhigh `Jason the 4th` in
-  `threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`.
+  `threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`;
+  product below-critical integrability reviewed by xhigh `Hypatia the 4th` in
+  `threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6109,6 +6113,29 @@ boundary-sphere nullity, no endpoint behavior, no lower/divergence side, no
 uniform asymptotics in `a`, no bounded-density theorem, no product-coordinate
 `+k/2` threshold theorem, no Aoyagi p.13 analytic chart/Jacobian construction,
 no normal crossings, no pole order, and no RLCT.
+
+Latest A2 product below-critical integrability:
+Lean now proves the first product-coordinate finite-side theorem in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+The theorem
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top` says that
+for a finite base measure, additive Haar regular factor, a.e. nonnegative base
+term `a : alpha -> R`, and strict regular-side inequality
+`2*s < finrank_R(E)`, the ball-supported lower integral of
+`(a(x)+||u||^2)^(-s)` over the product is finite.  The proof uses an a.e.
+domination by the `a=0` regular-ball integrand and `lintegral_prod_mul` for the
+majorant.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-below-critical-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`.
+
+Nonclaims: no regular-variable `+dim(E)/2` threshold shift, no theorem for
+`s>=dim(E)/2`, no endpoint behavior, no lower/divergence side, no uniform
+asymptotics, no bounded-density/prior theorem, no Aoyagi p.13 analytic
+chart/Jacobian construction, no normal crossings, no pole order, and no RLCT.
 
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities

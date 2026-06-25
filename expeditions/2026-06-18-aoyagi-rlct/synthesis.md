@@ -9004,6 +9004,34 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-null-origin-radial-integrability.md`.
 
+Latest A2 product below-critical integrability:
+`RegularSuspensionIntegrability.lean` now proves the first product-coordinate
+finite-side theorem:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+```
+
+If the base measure is finite, `a : alpha -> R` is nonnegative a.e., the
+regular factor is finite-dimensional with additive Haar measure, `R>0`,
+`s>=0`, and `2*s < finrank_R(E)`, then the `ENNReal.ofReal` lower integral over
+`alpha x E` of the ball-supported function
+`(a(x)+||u||^2)^(-s)` is finite.  The proof uses an a.e. inequality away from
+`u=0`, because pointwise domination is not the right statement for the
+totalized real value at the regular origin, and then factors the majorant by
+`lintegral_prod_mul`.
+
+This is only the below-regular-critical case.  It does not prove a
+`+dim(E)/2` threshold shift, any result for `s>=dim(E)/2`, endpoint behavior,
+divergence, uniform asymptotics, bounded-density/prior transport, Aoyagi's
+p.13 analytic chart/Jacobian construction, normal crossings, pole order, or
+RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-below-critical-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
