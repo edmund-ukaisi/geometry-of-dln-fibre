@@ -369,3 +369,17 @@ unsound. **This is the deepest L2 architecture catch — the gauge chart, as bui
   restatement, not an architecture change; the L2 gate is again hproducer → body → final wire.** Scope: the comparability's PD
   cert is exact at r=1/H0=1/H2=2; the structural argument is convention-uniform (general-H unverified symbolically — pp-pin2-rearch
   on-call if the Lean general-H operator-norm bound snags).
+
+## 22. The L2 producer's LAST piece is RESEARCH-GRADE in Lean (the frame-stripping bridge) + an 8th soundness catch (2026-06-25).
+The L2 gauge-chart producer (the geometric heart) is built end-to-end EXCEPT one germ charge: the **frame-stripping bridge**
+`Rcore = P11−P10·⅟P00·P01` (the framedParamsPivot product's global Schur, front pivot) `= S0·(1−K)·S1` with the SAME per-layer
+Schur cores `S_s` as the deepestCoreAbsorb core, DESPITE the per-layer `Pf,Qf` frames. **The algebra is sympy + Codex VERIFIED**
+(`two-layer-ldu-verify.py` ALL ZERO; `K=Z1·⅟P·Y0`, `P=(1+X0)(1+X1)+Y0·Z1`) — so it is TRUE, not a math wall. But l2-core-de +
+Codex flag it **research-grade in Lean**: 3 inverses (⅟A0,⅟A1,⅟P), no clean ring proof, and the per-layer Schur does NOT telescope
+cleanly (the middle `R0⁻¹·L1⁻¹` is a full matrix). pp-pin2-rearch is pinning the Lean route (asked to flag honestly if it is a
+multi-tide grind). **Operator-relevant:** this is the single hardest-to-formalise remaining piece of the L2 body; the L2 gate is
+gated on it + the final wire (WLOG/squeeze-exists/case-split). If pp reports it is a deep multi-tide build, the L2-close timeline
+extends here — a candidate point for the operator's scope call (full general-L vs the L=2/RRR milestone).
+- **8th soundness catch (fixed, l2-core-de):** the prior producer witness bound γ₁=γ₂=1, under which (d')/(e') demanded the
+  standalone equality `Score=coreΦ` — FALSE for M>1 (the kill-condition germ witness). Rebound to γ=1+C (the correct in-sum fold)
+  + made the charge a genuine germ (∀ᶠ, not ∀). lemma-1 decode (coreΦ=‖∏S‖²) + the γ=1+C composition banked sorry-free.

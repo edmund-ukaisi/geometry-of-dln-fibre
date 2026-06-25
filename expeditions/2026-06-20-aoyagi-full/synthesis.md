@@ -886,6 +886,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-69 (2026-06-25) — L2 producer down to the frame-stripping bridge (research-grade, verified algebra); 8th catch fixed; WLOG launched.**
+- **l2-core-de @4a3bdd60:** (d')/(e') reduced 2→1 sorry. Banked: lemma-1 decode `deepestCoreF_coreAbsorb_eq_prodSchur` (coreΦ=‖∏S‖²)
+  + the γ=1+C composition. **8th catch:** the prior γ=1 demanded the FALSE standalone Score=coreΦ (M>1); rebound to γ=1+C (in-sum
+  fold) + the charge made a genuine germ. PIN1 clean.
+- **The producer's LAST piece = the FRAME-STRIPPING BRIDGE** (1 germ charge): `Rcore = S0·(1−K)·S1` with the SAME S_s as lemma-1,
+  despite Pf,Qf frames. Algebra sympy+Codex VERIFIED (ALL ZERO, K=Z1⅟P Y0) — TRUE, not a math wall — but flagged RESEARCH-GRADE in
+  Lean (3 inverses, no clean ring, non-telescoping middle). pp-pin2-rearch pinning the Lean route (frame-stripping-cert; asked to
+  flag honestly if multi-tide). Item 22 — operator-relevant: the hardest-to-formalise L2 piece; a candidate scope-call point.
+- **In parallel (independent):** l2-wlog (af2c20b4) building the WLOG transfer (b-wlog 1-4: front-pivot-perm + loss identity + MP +
+  the ⨅-transfer — the headline-level hJfront discharge machinery) + r1-ginnerz (ad5cc07d) the (3,3,4) ginnerZ final sorry.
+- L2 close now gated on: the frame-stripping bridge + the final wire (WLOG [building] + squeeze-exists relocation + case-split).
+  R1 (3,3,4) hfin gated on ginnerZ [building]. Active: l2-wlog + r1-ginnerz (builds) + pp-pin2-rearch (frame-stripping design).
+  General hdiv + general lifts + D1 ahead. 8 soundness findings, all resolved/fixed; PIN1 verbatim throughout.
+
 **UPDATE-68 (2026-06-25) — (3,3,4) hfin spine ALL banked @e0f6681a; gap → one index-relabel (ginnerZ_lt_top); both poles' final pieces building.**
 - **r1-ratiofin banked:** the entire hratiofin spine is sorry-free — STEP-1 (the permutation, Codex's flagged highest-risk), STEP-2
   (outer), STEP-3a (inner T-peel), the per-z Schur comparability — and `RouteM334Hfin` is now ZERO-sorry; the (3,3,4) headline
