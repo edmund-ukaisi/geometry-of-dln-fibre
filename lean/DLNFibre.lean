@@ -214,3 +214,16 @@ import DLNFibre.Core.SchurSideNoDrop
 import DLNFibre.Core.PrincipalOpenComorphism
 -- step-3 wiring skeleton: localized chart AlgEquiv e + the two no-drops ⟹ the hSweep shape.
 import DLNFibre.Core.ChartSweepWiring
+-- route-3 point-realization (seam B): an MvPolynomial vanishing on all fibre points is zero.
+import DLNFibre.Core.SchurFibreVanishing
+-- chart-descent geometry (seams toward e): localized chart coordinates + Schur-side connection.
+import DLNFibre.Core.ChartLocalizedCoordinates
+import DLNFibre.Core.ChartSchurConnect
+-- Ψ descent (route-3): the substitution into the localized chart + its reconstruction.
+import DLNFibre.Core.ChartPsiSubstitution
+import DLNFibre.Core.ChartPsiReconstruct
+-- gauge-eval commute (seam A): point evaluation, the gauge eval, and the A.3/A.4 tower lemmas.
+import DLNFibre.Core.ChartPointEval
+import DLNFibre.Core.ChartEvalGauge
+import DLNFibre.Core.ChartEvalLemma
+import DLNFibre.Core.ChartEvalGaugeCommute
