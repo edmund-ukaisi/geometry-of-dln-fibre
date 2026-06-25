@@ -148,7 +148,12 @@ TopDimMinPrimes(O(fibre)) = TopDimMinPrimes(O(fibre)[1/detΔ])   ✓ LANDED (Fib
 >     image of `M`, dimension-preserving by the affine-domain no-drop
 >     `Core.AffineLocalizationNoDrop.ringKrullDim_localizationAway_eq_of_fg_domain`) — a per-prime
 >     analogue of the LANDED ambient `ringKrullDim_localizationAway_eq_of_avoids_top_prime`; ~1
->     module of wiring.
+>     module of wiring. **NOTE (reviewer + Codex, decorrelated):** this per-prime / *componentwise*
+>     no-drop `dim ((A ⧸ comap P)_f) = dim (A ⧸ comap P)` does NOT fold out of the ambient no-drop +
+>     avoidance — a domain localized at a non-unit can drop dimension (DVR at a uniformizer). Treat
+>     it as a *required lemma* of the successor tide (it holds here because `A ⧸ comap P` is a f.g.
+>     `k`-domain and `f̄ ≠ 0`, so the affine-domain no-drop applies — but it must be invoked
+>     per-prime, not inferred from the global no-drop).
 >   - **the avoidance certificate `havoid`** is the genuine math input:
 >     - **`gF` (W2): EASY** — after the poly descent every minimal prime of `O(F)[SchurVar]` is
 >       `map C q`, and `gF = map (algebraMap k O(F)) detSchurS` avoids it (`detSchurS ≠ 0` survives

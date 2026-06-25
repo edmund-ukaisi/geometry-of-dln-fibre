@@ -154,3 +154,16 @@ gap** (reviewer + Codex concur). Thread 09 is fixing it (pin the instance at the
 flat-transported form), with a clean fallback (keep the green `_of` form; document the diamond). Controller
 gates `#print axioms` sorryAx-free before committing. **Correction:** earlier framing of this as an "imminent
 one-liner" was an overclaim the fidelity gate caught — the discharge hits the diamond.
+
+**RESOLVED — SCOPE-2 CLOSED (2026-06-25, commit 50a9fa31).** Thread 09 landed the UNCONDITIONAL headline
+`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` : `(TopDimMinPrimes(O(fibre))).ncard = cTheta(d−r)`, no `hW2`.
+The `sorryAx` had two causes, both fixed: (1) **universe** — W2 is `k : Type` (0), so the headline lives in a
+`section UnivZero` (the universe-polymorphic rungs specialise to u=0; Type 0 carries ℂ / `AlgebraicClosure ℚ`,
+matching the expedition's Type-0 codim/RLCT scope); (2) **diamond** — inline the 7-rung calc under a body
+`letI : CommRing (MvPolynomial SchurVar (sweepFibreRing)) := inferInstance` and obtain W2 as a `have` under it
+(matches the chain's instance path), rather than applying `_of` (whose `hW2` binder forced the
+isDefEq-across-diamond that leaked the `Field` metavar). **Controller-gated** (not trusted): whole library
+green 3780, sorries 0, `#print axioms` = `[propext, Classical.choice, Quot.sound]` (no sorryAx). So the
+**fibre-θ count is CLOSED** — reviewer-PASS chain + the unconditional headline. Caveat: `k : Type 0` (to lift
+to `Type u`, W2 needs re-generalising — peer-owned; Type 0 is the honest, sufficient scope). The explicit
+fibre↔Kostant bijection is implicit via the composed BijOns; not separately assembled (optional).
