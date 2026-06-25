@@ -250,3 +250,7 @@ import DLNFibre.Core.ChartGaugeTower
 import DLNFibre.Core.ChartRoundTrip
 import DLNFibre.Core.ChartRoundTripH1
 import DLNFibre.Core.ChartLocalizedAlgEquiv
+-- hsig (source no-drop): ringKrullDim (Away chartDsig) = ringKrullDim O(Σ^r), anchored on =r.
+import DLNFibre.Core.SourceNoDrop
+-- THE CENTRAL RESULT: codim(fibre d B) = C + δ = cCodim + r·(d_N+d_0−r), unconditional (k : Type 0).
+import DLNFibre.Core.FibreCodimFinal
