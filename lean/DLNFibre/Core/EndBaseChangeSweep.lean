@@ -13,13 +13,15 @@ matrices are `H`-equivalent (`exists_baseChange_of_rank_eq`). Hence the **exact-
 > `productRankLocus d r = ⋃_{P} (P • ·) '' (fibre d E)`   for any fixed rank-`r` target `E` (`N ≥ 1`).
 
 This module proves that sweep identity (the reachable structural part of route c). The **dimension
-consequence** `varietyDim (productRankLocus d r) = δ + varietyDim (fibre d E)` is the *one genuinely
-hard rung* — an orbit/quotient-dimension count; whether it is buildable from the engine's
-`OrbitPullbackDim` orbit-dimension method or needs a Mathlib-absent base-change/product-dimension
-theorem is under adjudication. It is **NOT** proved here; the downstream `codim F = C+δ` assembly
-(`codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep`) carries it (and the closure/density bridge
-`dim Σ^r = dim Σ̄^r`) as **explicit named hypotheses** (the conditional-bank pattern), so everything
-*around* the residual is machine-checked. Nothing here claims the dimension identity.
+consequence** `varietyDim (productRankLocus d r) = δ + varietyDim (fibre d E)` was the *one
+genuinely hard rung* — an orbit/quotient-dimension count. It is **NOT** proved in this module; it
+is now **discharged** via the route-β localized-chart `AlgEquiv` (`Core.ChartLocalizedAlgEquiv` +
+`Core.ChartSweepWiring`) and the closure/density bridge `dim Σ^r = dim Σ̄^r`
+(`Core.ClosureBridge`), giving the **unconditional** `codim (fibre d B) = C + δ`
+(`Core.FibreCodimFinal`). The downstream assembly
+(`codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep`) takes the sweep + closure identities as
+**named hypotheses** (the conditional-bank pattern), with everything *around* them machine-checked
+here. Nothing in this module itself claims the dimension identity.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

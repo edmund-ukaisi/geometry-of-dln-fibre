@@ -23,24 +23,24 @@ The result splits into two bricks of **different status** (expedition thread 11 
   and which is itself now proved). `Σ̄^r` is `GL_d`-stable (a finite union of orbit closures), so there
   is no fibre-dimension wall.
 
-* **Brick B (Cited, named — LR Lemma 4.5 + Lemma 4.6).** The passage `Σ̄^r ⤳ mult⁻¹(B)` (for `B` of
-  rank `r`, `0 < N`) is the bundle shift `codim mult⁻¹(B) = codim Σ̄^r + r(d_0+d_N−r)`. The paper
+* **Brick B (interface, named — LR Lemma 4.5 + Lemma 4.6).** The passage `Σ̄^r ⤳ mult⁻¹(B)` (for `B`
+  of rank `r`, `0 < N`) is the bundle shift `codim mult⁻¹(B) = codim Σ̄^r + r(d_0+d_N−r)`. The paper
   states the shift for the *exact-rank* locus `Σ^r` (Lemma 4.6, `lem:rank_vs_fibers`); the
   closed-locus form here folds in `codim Σ̄^r = codim Σ^r` (Cor. 4.4 + Lemma 4.5, `lem:rank_0` — the
-  Zariski closure preserves codimension). It is NOT zero-cited-provable at Mathlib v4.29: `mult⁻¹(B)`
-  (`B ≠ 0`) is not `GL_d`-stable, not an orbit closure, and the shift is a locally-trivial-bundle /
-  fibre-dimension count Mathlib lacks (thread 11, four routes, all hit the same wall). We carry it as
-  a **Cited interface** `BundleShiftInterface` — a structure FIELD `cited_bundle_shift` (a hypothesis,
-  NOT a global `axiom`), separate from `RlctInterface` so both Cited dependencies (Aoyagi rlct +
-  Lemma 4.5/4.6 shift) are independently visible in any consumer.
+  Zariski closure preserves codimension). This **codimension identity is now PROVED, zero-cite**, in
+  `Core.FibreCodimFinal` (`codimRepCanonical_fibre_eq_cCodim_add_shift`, the route-β localized-chart
+  sweep). The payoff theorem in *this* module has not yet been rewired onto that Core result, so it
+  still consumes the shift through the `BundleShiftInterface` — a structure FIELD `cited_bundle_shift`
+  (a hypothesis, NOT a global `axiom`), separate from `RlctInterface`. (Discharging this interface into
+  the payoff is the open `G4`; the geometric codim identity it abstracts is no longer the residual.)
 
 **R2-general** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi`) is pure transport: the (already
 general-in-`r`) Cited Aoyagi equality gives `rlct = ½·codim mult⁻¹(B)`; Brick B rewrites the fibre
 codim as `codim Σ̄^r + shift`; Brick A rewrites `codim Σ̄^r = cCodim d r`. Both interfaces `I`, `J`
 are explicit in the type; `via_aoyagi` names the rlct source. This is **not** an unconditional
-`rlct = (C + shift)/2`. Both Cited fields are guarded by `0 < N` — the scope (a genuine deep network,
-N ≥ 1) where Lemma 4.6 and Aoyagi hold; at `N = 0` the "product" `mult` is the empty product and the
-shift identity is false.
+`rlct = (C + shift)/2`. Both interface fields are guarded by `0 < N` — the scope (a genuine deep
+network, N ≥ 1) where Lemma 4.6 and Aoyagi hold; at `N = 0` the "product" `mult` is the empty product
+and the shift identity is false.
 
 **Dependency rule:** `DLN` depends on `Core`; `Core` never imports `DLN`. Brick A is now in `Core`.
 -/
@@ -53,37 +53,40 @@ universe u v
 
 variable {N : ℕ}
 
-/-! ## Brick B — the bundle shift (Cited, named: LR Lemma 4.5 + Lemma 4.6)
+/-! ## Brick B — the bundle shift (interface, named: LR Lemma 4.5 + Lemma 4.6)
 
-The passage `Σ̄^r ⤳ mult⁻¹(B)` is a locally-trivial-bundle dimension count Mathlib v4.29 lacks
-(thread 11). We carry it as a Cited interface, separate from `RlctInterface`. Brick A
-(`codim Σ̄^r = C`) is now `Core` geometry (`DLNFibre.Core.SigmaCodim`). -/
+The passage `Σ̄^r ⤳ mult⁻¹(B)` gives the bundle shift `codim mult⁻¹(B) = codim Σ̄^r + r(d_0+d_N−r)`.
+This codimension identity is now PROVED, zero-cite, in `Core.FibreCodimFinal`
+(`codimRepCanonical_fibre_eq_cCodim_add_shift`). This module's payoff has not yet been rewired onto it,
+so it still consumes the shift through an interface, separate from `RlctInterface` (the open `G4`).
+Brick A (`codim Σ̄^r = C`) is `Core` geometry (`DLNFibre.Core.SigmaCodim`). -/
 
 section BrickB
 
 open MvPolynomial
 
-/-- **The Cited bundle-shift interface (Lehalleur–Rimányi Lemma 4.5 + Lemma 4.6).** An ASSUMED
-geometric interface, not proved here. For a genuine deep network (`0 < N`) and `B` of *exact* rank
+/-- **The bundle-shift interface (Lehalleur–Rimányi Lemma 4.5 + Lemma 4.6).** A carried geometric
+hypothesis (NOT a global `axiom`). For a genuine deep network (`0 < N`) and `B` of *exact* rank
 `r ≤ min d`, Lemma 4.6 (`lem:rank_vs_fibers`, main.tex:844–858) says `mult⁻¹(B)` is a locally-trivial
 bundle over the rank-`r` matrix orbit `Mat^{rk=r}` (of dimension `r(d_0+d_N−r)`), so
 `codim mult⁻¹(B) = codim Σ^r + r(d_0+d_N−r)`. The field is stated for the *closed* rank-`≤ r` locus
 `Σ̄^r = productRankLocusLE d r`, folding in `codim Σ̄^r = codim Σ^r` (Cor. 4.4 + Lemma 4.5,
-`lem:rank_0`, main.tex:816–833 — the Zariski closure preserves codimension). The field
-`cited_bundle_shift` is a carried hypothesis (NOT a global `axiom`); it hits the fibre-dimension wall
-of Mathlib v4.29 (thread 11) and is named for the citation, not proved. The `0 < N` guard restricts
-it to the scope where Lemma 4.6 holds: at `N = 0` the "product" `mult` is the empty product (`mult = 1`
-on the trivial chain) and the shift identity fails. Separate from `RlctInterface` so the two Cited
-dependencies (Aoyagi rlct + the Lemma 4.5/4.6 shift) are independently visible in any consumer's
-type. -/
+`lem:rank_0`, main.tex:816–833 — the Zariski closure preserves codimension). This codimension
+identity is now PROVED, zero-cite, in `Core.FibreCodimFinal`
+(`codimRepCanonical_fibre_eq_cCodim_add_shift`); the field `cited_bundle_shift` is the
+not-yet-discharged hypothesis through which *this* module's payoff still consumes the shift (the open
+`G4` rewire), not a fundamental gap. The `0 < N` guard restricts it to the scope where Lemma 4.6
+holds: at `N = 0` the "product" `mult` is the empty product (`mult = 1` on the trivial chain) and the
+shift identity fails. Separate from `RlctInterface` so the two interfaces (Aoyagi rlct + the
+Lemma 4.5/4.6 shift) are independently visible in any consumer's type. -/
 structure BundleShiftInterface (d : Fin (N + 1) → ℕ)
     (K : Type v) [Field K] [IsAlgClosed K] [CharZero K] (ι : ℝ →+* K) where
-  /-- **Cited (LR Lemma 4.5 + Lemma 4.6, scope `0 < N`):** for a genuine deep network, the geometric
+  /-- **LR Lemma 4.5 + Lemma 4.6 (scope `0 < N`):** for a genuine deep network, the geometric
   codimension of the multiplication fibre `mult⁻¹(B)` (base-changed to `K`, `B` of exact rank `r`)
   equals that of the closed rank-`≤ r` product locus `Σ̄^r` plus the base dimension `r(d_0+d_N−r)`.
   The `Σ̄^r` form combines Lemma 4.6 (the shift, stated for the exact-rank `Σ^r`) with
-  `codim Σ̄^r = codim Σ^r` (Cor. 4.4 + Lemma 4.5). Assumed geometric content (a fibre-dimension count
-  absent from Mathlib v4.29), not a proved fact. -/
+  `codim Σ̄^r = codim Σ^r` (Cor. 4.4 + Lemma 4.5). This identity is PROVED, zero-cite, in
+  `Core.FibreCodimFinal`; here it is a carried hypothesis pending the `G4` rewire of the payoff. -/
   cited_bundle_shift : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (r : ℕ),
     0 < N → B.rank = r → (∀ k', r ≤ d k') →
     codimRepCanonical (fibre (k := K) d (B.map ι))
@@ -94,23 +97,24 @@ end BrickB
 
 /-! ## R2-general — the payoff `rlct(K^DLN_B) = (C + r(d_0+d_N−r))/2`
 
-Pure transport through both Cited interfaces and Brick A. -/
+Pure transport through both interfaces (the Cited Aoyagi rlct + the bundle shift) and Brick A. -/
 
 section R2General
 
 variable {d : Fin (N + 1) → ℕ}
   {K : Type v} [Field K] [IsAlgClosed K] [CharZero K] {ι : ℝ →+* K}
 
-/-- **The general-`r` RLCT payoff, through the Cited Aoyagi rlct AND the Cited Lemma-4.5/4.6 shift.**
-Given the Cited interfaces `I` (Aoyagi rlct) and `J` (Lemma 4.5/4.6 bundle shift), for a genuine deep
-network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of the DLN square-Frobenius loss `K^DLN_B`
-equals `(cCodim d r + r(d_0+d_N−r))/2`: the combinatorial `C/2` plus the half-shift. Proof:
-`I.cited_aoyagi_dln` (general in `r`) gives `rlct = ½·codim mult⁻¹(B)`; `J.cited_bundle_shift` rewrites
-the fibre codim as `codim Σ̄^r + shift`; Brick A
+/-- **The general-`r` RLCT payoff, through the Cited Aoyagi rlct AND the Lemma-4.5/4.6 shift
+interface.** Given the interfaces `I` (Aoyagi rlct, Cited) and `J` (Lemma 4.5/4.6 bundle shift, a
+codimension identity now Proved in `Core.FibreCodimFinal` but here still carried as a hypothesis —
+the open `G4` rewire), for a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of
+the DLN square-Frobenius loss `K^DLN_B` equals `(cCodim d r + r(d_0+d_N−r))/2`: the combinatorial
+`C/2` plus the half-shift. Proof: `I.cited_aoyagi_dln` (general in `r`) gives `rlct = ½·codim mult⁻¹(B)`;
+`J.cited_bundle_shift` rewrites the fibre codim as `codim Σ̄^r + shift`; Brick A
 (`Core.codimRepCanonical_productRankLocusLE_eq_cCodim`) rewrites `codim Σ̄^r = cCodim d r`. Both
-interfaces `I`, `J` are explicit in the type (both Cited dependencies visible); `via_aoyagi` names the
+interfaces `I`, `J` are explicit in the type (both dependencies visible); `via_aoyagi` names the
 rlct source. This is **not** an unconditional `rlct = (C + shift)/2`. The `0 < N` guard is the scope
-of both Cited facts (a genuine product). `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the
+of both interface facts (a genuine product). `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the
 geometric codimension). -/
 theorem rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi
     (I : RlctInterface d K ι) (J : BundleShiftInterface d K ι)
@@ -154,10 +158,11 @@ theorem codimRepCanonical_productRankLocusLE_d222_one :
   omega
 
 /-- **`(2,2,2)`, `r = 1`: the RLCT payoff `rlct(K^DLN_B) = 2`**, over `ℂ`, for `B` of rank `1`,
-through the Cited Aoyagi interface `I` and the Cited Lemma-4.5/4.6 bundle-shift interface `J`. The
+through the Cited Aoyagi interface `I` and the Lemma-4.5/4.6 bundle-shift interface `J` (whose codim
+identity is now Proved in `Core.FibreCodimFinal`, carried here pending the `G4` rewire). The
 combinatorial `C = cCodim d222 1 = 1` and the shift `1·(2+2−1) = 3` give `rlct = (1+3)/2 = 2`: the
-`(2,2,2)` rank-`1` DLN is mildly singular. `(2,2,2)` has `N = 2 > 0`, so the `0 < N` Cited-scope guard
-is met. Both interfaces `I`, `J` are the explicit Cited hypotheses. -/
+`(2,2,2)` rank-`1` DLN is mildly singular. `(2,2,2)` has `N = 2 > 0`, so the `0 < N` scope guard
+is met. Both interfaces `I`, `J` are the explicit hypotheses. -/
 theorem rlct_lossDLN_d222_one_eq_two_via_aoyagi
     (I : RlctInterface Core.d222 ℂ Complex.ofRealHom)
     (J : BundleShiftInterface Core.d222 ℂ Complex.ofRealHom)

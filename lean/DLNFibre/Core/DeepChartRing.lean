@@ -46,12 +46,17 @@ The deliverables, with `q = d 0` (source dimension) and `p = d (Fin.last N)` (ta
 
 **Scope (what is NOT here).** The full product iso `e : Sred ≃ₐ[k] SchurLoc ⊗_k FibreAlg`, the
 endpoint-normalization `AlgEquiv`, and the descent of the iso to the reduced chart quotient are
-**R2-3b-3 and R2-3b-4** (later tides). No result here claims `codim (fibre) = C + δ` or discharges
-`BundleShiftInterface` — `e` is not yet built. (R2-3a's *other* hypothesis, `IsReduced S`, **is**
-discharged here: `isReduced_Sred`, so R2-3b-4 needs only `e` itself.) The R2-3b-3
-endpoint-normalization `aeval`-substitution contract is pre-staged below as an `example` block (an
-arbitrary coefficient ring `R`, via `AlgEquiv.ofAlgHom`, **not** `baseChangeAlgEquiv` which carries
-`[Infinite k]`).
+**not built in this module** (they were the later R2-3b rungs of this route-(b) chain). No result
+here claims `codim (fibre) = C + δ`. (R2-3a's *other* hypothesis, `IsReduced S`, **is** discharged
+here: `isReduced_Sred`.) The endpoint-normalization `aeval`-substitution contract is pre-staged
+below as an `example` block (an arbitrary coefficient ring `R`, via `AlgEquiv.ofAlgHom`, **not**
+`baseChangeAlgEquiv` which carries `[Infinite k]`).
+
+**Off the critical path (route-β superseded this).** The unconditional `codim (fibre d B) = C + δ`
+(`Core.FibreCodimFinal`) was reached by **route-β**, whose localized chart `AlgEquiv` `e` is BUILT
+in `Core.ChartLocalizedAlgEquiv` — not via the deep product iso this route-(b) chain was building.
+So the rungs here are a self-contained component of that superseded route, no longer gating the
+codimension result.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

@@ -125,16 +125,17 @@ import DLNFibre.Core.DeterminantalBasePresentation
 -- instead closed by the route-β localized chart AlgEquiv (ChartLocalizedAlgEquiv) + FibreCodimFinal;
 -- this conditional R2-3b chain is off the critical path (retained as record).
 import DLNFibre.Core.FibreReducedTrivialization
--- Deep chart ring (R2-3b-1+2, the residual G2-3 wall foundation): `Sred = Localization.Away(ΔPdeep) ⧸
+-- Deep chart ring (R2-3b-1+2, an early R2-3b-route module): `Sred = Localization.Away(ΔPdeep) ⧸
 -- IadDeep` for general d (the engine's base presentation is N=1 only), the RepCoord↔stratum/endpoint
 -- bridges, and the localized base→total map `schurToSred : SchurLoc → Sred` giving Sred its
 -- SchurLoc-algebra structure (R2-3a's R = SchurLoc, S = Sred). The crux containments (det transport,
--- base→deep sigmaIdeal, NON-circular) proved. Feeds R2-3b-3 (endpoint AlgEquiv) + R2-3b-4 (the iso e).
+-- base→deep sigmaIdeal, NON-circular) proved. OFF the critical path: route-β (ChartLocalizedAlgEquiv)
+-- built `e` instead; a self-contained component of the superseded R2-3b route.
 import DLNFibre.Core.DeepChartRing
 -- Endpoint-normalization gauge AlgEquiv (R2-3b-3): the vertex-unit conjugation `Aᵢ ↦ P_{i+1}·Aᵢ·P_i⁻¹`
 -- (= landed `BaseChange.baseChange`) on the generic tuple, `gaugeEquiv d P`, over arbitrary CommRing R,
 -- + the transport `gaugeEquiv (multPoly) = P_last·M·P_0⁻¹` (endpoint gauge P_0=H, P_last=L⁻¹ ⟹ L⁻¹·M·H⁻¹).
--- The coordinate change that turns `mult(A)=LEH` into `mult(Ã)=E`. Feeds R2-3b-4 (instantiate + descend).
+-- The coordinate change `mult(A)=LEH` ↦ `mult(Ã)=E`. Its `gaugeEquiv` is reused by route-β's seams.
 import DLNFibre.Core.EndpointNormalization
 -- HEIGHT-DIRECT route, rung H1 (radical-insensitive retarget): `Ideal.height_radical` (height(radical I)
 -- = height I, no hypotheses) + `codimRepCanonical_fibre_eq_height_fibreGenIdeal` (codim of the fibre =

@@ -48,16 +48,15 @@ general `codimRep coord …` theorems are kept as honest implications "for this 
 `hVoigt`, …" — `codimRep` is an honest general building block (any `coord`), and the canonical
 specialisation is what the Voigt discharge supplies (`Core.VoigtDischarge`). (An unconstrained set-bijection `coord`
 need not preserve height; `hVoigt` is only expected/true at the canonical linear one, and the
-theorem asserts nothing when `hVoigt` fails.) **Linear-coordinate invariance is NOT proved here:**
-for any *linear* re-coordinatisation the height should agree with the canonical one (invariant under
-the induced ring automorphism of `MvPolynomial (RepCoord d) k`), but Mathlib v4.29 has no transport
-lemma for `Ideal.height` under a `RingEquiv`/`comap`; proving it needs (i) the `AlgEquiv` of the
-coordinate change on `MvPolynomial`, (ii) `vanishingIdeal (φ ∘ coord '' Z) = comap φ (vanishingIdeal
-(coord '' Z))`, and (iii) `(comap φ I).height = I.height` for `φ` a ring iso — none of which is
-cheap at this pin. It is left to the `voigt` sub-expedition. Definition only — none of the deep
+theorem asserts nothing when `hVoigt` fails.) **Linear-coordinate invariance** holds for any
+*linear* re-coordinatisation: the height agrees with the canonical one (invariant under the induced
+ring automorphism of `MvPolynomial (RepCoord d) k`), via (i) the `AlgEquiv` of the coordinate change
+on `MvPolynomial`, (ii) `vanishingIdeal (φ ∘ coord '' Z) = comap φ (vanishingIdeal (coord '' Z))`,
+and (iii) `(comap φ I).height = I.height` for `φ` a ring iso (`RingEquiv.height_comap`, available at
+this pin). For the base-change family of linear isos this is PROVED in
+`Core.FibreNormalForm.codimRep_baseChange_image`. This file is definition only — none of the deep
 dimension theorems (catenary `dim R/I = n − ht I`, determinantal height, Nullstellensatz radical
-bridge) are invoked; those are the `voigt` sub-expedition. `Ideal.height : ℕ∞`, locus codim is
-`ℕ∞`-valued.
+bridge) are invoked here. `Ideal.height : ℕ∞`, locus codim is `ℕ∞`-valued.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

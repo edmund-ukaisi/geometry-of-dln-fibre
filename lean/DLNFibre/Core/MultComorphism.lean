@@ -22,7 +22,8 @@ The deliverables, for a fixed dimension vector `d : Fin (N+1) → ℕ`:
 2. **`eval_multPoly` (the bridge)** — `MvPolynomial.eval (canonicalCoord d A) (multPoly d r c) =
    (mult d A) r c` for every tuple `A`. `eval (canonicalCoord d A)` is a ring hom, so it commutes
    with the matrix product (`Matrix.map_mul`); the single-variable case is `canonicalCoord_apply` /
-   `eval_X`. This is the load-bearing lemma; everything else is corollary.
+   `eval_X`. This is the load-bearing lemma; everything else is corollary. The generic tuple and its
+   evaluation bridge come from `Core.GenericTuple`.
 3. **Fibre as zero-locus** — `canonicalCoord d '' (fibre d B) = zeroLocus {multPoly r c − C·B r c}`.
 4. **`vanishingIdeal(fibre) = radical(fibreGenIdeal)`** — over `[IsAlgClosed k]`, the engine's
    Nullstellensatz (`vanishingIdeal_zeroLocus_eq_radical`) reads the fibre's vanishing ideal as the
@@ -65,10 +66,9 @@ end Contracts
 /-! ## The generic product entries `multPoly`
 
 The **generic tuple** `genericTuple d` (entries = coordinate variables `X ⟨i,a,b⟩`) and the bridge
-`eval_genericTuple` (eval at `canonicalCoord d A` recovers `A`) are reused from
-`Core.RankLocusClosed`, where they were first built for the minor-polynomial / zero-locus work — this
-is their second use (the `bedrock` "lift on second use" rule; both could promote to a more
-foundational home if a third consumer appears). -/
+`eval_genericTuple` (eval at `canonicalCoord d A` recovers `A`) live in `Core.GenericTuple` (extracted
+there on their second use — by `Core.RankLocusClosed`'s minor-polynomial / zero-locus work and this
+module — per the `bedrock` "lift on second use" rule). -/
 
 /-- **The generic product entries** `multPoly d r c = (mult d genericTuple) r c`: the polynomial in
 the coordinate ring `MvPolynomial (RepCoord d) k` giving the `(r,c)` entry of the product. -/
