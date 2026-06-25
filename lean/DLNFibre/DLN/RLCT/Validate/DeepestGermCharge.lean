@@ -47,8 +47,11 @@ constant `C = 2·√(Mc·Crem) + Crem·Bs`. The S5c difference-of-squared split 
 `|frobSq R − coreΦ| ≤ 2|cross| + frobSq D` (`D = R − S0·S1`); Cauchy–Schwarz
 (`schur_core_germ_comparability` (iv)) bounds `cross² ≤ frobSq(S0S1)·frobSq D ≤ Mc·Crem·Sreg²`, so
 `|cross| ≤ √(Mc·Crem)·Sreg`, and the quadratic charge gives `frobSq D ≤ Crem·Bs·Sreg`. -/
-theorem germ_charge_of_schur_factorization {M : Type*} [Fintype M] [DecidableEq M]
-    (w0 : ι) (Sreg coreΦ : ι → ℝ) (S0 S1 K R : ι → Matrix M M ℝ)
+theorem germ_charge_of_schur_factorization {m0 m1 m2 : Type*}
+    [Fintype m0] [Fintype m1] [DecidableEq m1] [Fintype m2]
+    (w0 : ι) (Sreg coreΦ : ι → ℝ)
+    (S0 : ι → Matrix m0 m1 ℝ) (S1 : ι → Matrix m1 m2 ℝ)
+    (K : ι → Matrix m1 m1 ℝ) (R : ι → Matrix m0 m2 ℝ)
     (Crem Mc Bs : ℝ) (hCrem : 0 ≤ Crem) (hMc : 0 ≤ Mc) (hBs : 0 ≤ Bs)
     (hSregNonneg : ∀ w, 0 ≤ Sreg w)
     (hR : ∀ᶠ w in 𝓝 w0, R w = S0 w * (1 - K w) * S1 w)

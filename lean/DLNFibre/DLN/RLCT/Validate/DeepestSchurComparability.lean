@@ -74,10 +74,11 @@ Design cert: `expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/f
 `P` invertible, the Schur complement `Sb − Rb·⅟P·Q` is unchanged after a lower-unipotent left factor
 `fromBlocks 1 0 X 1` and an upper-unipotent right factor `fromBlocks 1 V 0 1`. Pure inverse-cancel
 algebra (`P·⅟P = 1` localizes the cancellation). -/
-theorem schur_unipotent_strip {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+theorem schur_unipotent_strip {r n0 n2 : Type*} [Fintype r] [DecidableEq r]
+    [Fintype n0] [DecidableEq n0] [Fintype n2] [DecidableEq n2]
     {α : Type*} [CommRing α]
-    (P : Matrix r r α) (Q : Matrix r M α) (Rb : Matrix M r α) (Sb : Matrix M M α)
-    (X : Matrix M r α) (V : Matrix r M α) [Invertible P] :
+    (P : Matrix r r α) (Q : Matrix r n2 α) (Rb : Matrix n0 r α) (Sb : Matrix n0 n2 α)
+    (X : Matrix n0 r α) (V : Matrix r n2 α) [Invertible P] :
     ((Matrix.fromBlocks (1 : Matrix r r α) 0 X 1
         * Matrix.fromBlocks P Q Rb Sb
         * Matrix.fromBlocks (1 : Matrix r r α) V 0 1).toBlocks₂₂)
@@ -99,25 +100,27 @@ theorem schur_unipotent_strip {r M : Type*} [Fintype r] [DecidableEq r] [Fintype
     sub_eq_add_neg, Matrix.neg_mul, Matrix.mul_neg]
   abel
 
-/-- `a·c − a·k·c = a·(1 − k)·c` for a square middle factor `k`. The clean final factoring of the
-two-layer Schur identity (`a = S0`, `c = S1`, `k = Z1·⅟P·Y0`), stated abstractly so it dodges the
-`set`-abbreviation unfolding that `Matrix.mul_sub` would otherwise trigger on `S1`'s body. -/
-theorem factor_one_sub_middle {M : Type*} [Fintype M] [DecidableEq M] {α : Type*} [CommRing α]
-    (a k c : Matrix M M α) :
+/-- `a·c − a·k·c = a·(1 − k)·c` for a square middle factor `k` (rectangular outer widths `m0, m2`).
+The clean final factoring of the two-layer Schur identity (`a = S0 : m0×m1`, `c = S1 : m1×m2`,
+`k = Z1·⅟P·Y0 : m1×m1`), stated abstractly so it dodges the `set`-abbreviation unfolding that
+`Matrix.mul_sub` would otherwise trigger on `S1`'s body. -/
+theorem factor_one_sub_middle {m0 m1 m2 : Type*} [Fintype m1] [DecidableEq m1]
+    {α : Type*} [CommRing α] (a : Matrix m0 m1 α) (k : Matrix m1 m1 α) (c : Matrix m1 m2 α) :
     a * c - a * k * c = a * (1 - k) * c := by
   rw [Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, Matrix.mul_assoc]
 
 /-- The middle LDU factor of the two-layer product collapses to a single block matrix with the global
-pivot `P = A0·A1 + Y0·Z1` and the per-layer Schur cores `S0, S1`:
-`D0·(U0·L1)·D1 = fromBlocks P (Y0·S1) (S0·Z1) (S0·S1)`. -/
-theorem schur_middle_ldu_blocks {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+pivot `P = A0·A1 + Y0·Z1` and the per-layer Schur cores `S0, S1` (rectangular outer widths `m0, m2`,
+shared middle `m1`): `D0·(U0·L1)·D1 = fromBlocks P (Y0·S1) (S0·Z1) (S0·S1)`. -/
+theorem schur_middle_ldu_blocks {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
+    [Fintype m1] [DecidableEq m1]
     {α : Type*} [CommRing α]
-    (A0 A1 : Matrix r r α) (Y0 : Matrix r M α) (Z1 : Matrix M r α)
-    (S0 S1 : Matrix M M α) [Invertible A0] [Invertible A1] :
-    Matrix.fromBlocks A0 (0 : Matrix r M α) (0 : Matrix M r α) S0 *
-        (Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) (0 : Matrix M r α) 1 *
-          Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r M α) (Z1 * ⅟A1) 1) *
-        Matrix.fromBlocks A1 (0 : Matrix r M α) (0 : Matrix M r α) S1
+    (A0 A1 : Matrix r r α) (Y0 : Matrix r m1 α) (Z1 : Matrix m1 r α)
+    (S0 : Matrix m0 m1 α) (S1 : Matrix m1 m2 α) [Invertible A0] [Invertible A1] :
+    Matrix.fromBlocks A0 (0 : Matrix r m1 α) (0 : Matrix m0 r α) S0 *
+        (Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) (0 : Matrix m1 r α) 1 *
+          Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r m1 α) (Z1 * ⅟A1) 1) *
+        Matrix.fromBlocks A1 (0 : Matrix r m2 α) (0 : Matrix m1 r α) S1
       = Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1) := by
   rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply,
     Matrix.fromBlocks_inj]
@@ -130,15 +133,19 @@ theorem schur_middle_ldu_blocks {r M : Type*} [Fintype r] [DecidableEq r] [Finty
     abel
 
 /-- **The two-layer Schur-complement LDU identity** (the genuinely new bridge for the deepest-point
-germ charge). The GLOBAL (1,1)-block Schur complement of the product of two gauge-sliced layers
-`(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` over the product pivot `P = A0·A1 + Y0·Z1` equals
-the middle-factor form `S0·(1 − K)·S1` of the per-layer Schur cores `S_s = T_s − Z_s·⅟A_s·Y_s`, with
-`K = Z1·⅟P·Y0` the off-pivot correction. This is the `hR` hypothesis the banked S5c atom
-`schur_core_germ_comparability` consumes. Verified TRUE by sympy across `r,M` shapes. -/
-theorem schur_product_ldu {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+germ charge; RECTANGULAR outer widths `m0, m2`, shared middle `m1`). The GLOBAL (1,1)-block Schur
+complement of the product of two gauge-sliced layers `(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)`
+— with `C0 : (r⊕m0)×(r⊕m1)`, `C1 : (r⊕m1)×(r⊕m2)` — over the product pivot `P = A0·A1 + Y0·Z1` equals
+the middle-factor form `S0·(1 − K)·S1` of the per-layer Schur cores `S0 = T0 − Z0·⅟A0·Y0 : m0×m1`,
+`S1 = T1 − Z1·⅟A1·Y1 : m1×m2`, with `K = Z1·⅟P·Y0 : m1×m1` the off-pivot correction. This is the `hR`
+hypothesis the S5c atom `schur_core_germ_comparability` consumes. The producer's Schur complement is
+genuinely rectangular (`(H0−r)×(Hlast−r)`, `H0 ≠ Hlast`), so the three-width form is load-bearing.
+Verified TRUE by sympy across `r, m0, m1, m2` shapes. -/
+theorem schur_product_ldu {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
+    [Fintype m0] [DecidableEq m0] [Fintype m1] [DecidableEq m1] [Fintype m2] [DecidableEq m2]
     {α : Type*} [CommRing α]
-    (A0 A1 : Matrix r r α) (Y0 Y1 : Matrix r M α)
-    (Z0 Z1 : Matrix M r α) (T0 T1 : Matrix M M α)
+    (A0 A1 : Matrix r r α) (Y0 : Matrix r m1 α) (Y1 : Matrix r m2 α)
+    (Z0 : Matrix m0 r α) (Z1 : Matrix m1 r α) (T0 : Matrix m0 m1 α) (T1 : Matrix m1 m2 α)
     [Invertible A0] [Invertible A1]
     [hP : Invertible (A0 * A1 + Y0 * Z1)] :
     (Z0 * Y1 + T0 * T1)
@@ -147,18 +154,22 @@ theorem schur_product_ldu {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] 
           * (1 - Z1 * ⅟(A0 * A1 + Y0 * Z1) * Y0)
           * (T1 - Z1 * ⅟A1 * Y1) := by
   -- Abbreviations (NOT `set P`: that would copy `hP` to a fresh instance whose `⅟` differs).
-  set S0 : Matrix M M α := T0 - Z0 * ⅟A0 * Y0 with hS0def
-  set S1 : Matrix M M α := T1 - Z1 * ⅟A1 * Y1 with hS1def
+  set S0 : Matrix m0 m1 α := T0 - Z0 * ⅟A0 * Y0 with hS0def
+  set S1 : Matrix m1 m2 α := T1 - Z1 * ⅟A1 * Y1 with hS1def
   -- The raw product equals the LDU sandwich `L0 · (middle) · U1`.
   have hC0 : Matrix.fromBlocks A0 Y0 Z0 T0
-      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z0 * ⅟A0) 1
-        * Matrix.fromBlocks A0 (0 : Matrix r M α) (0 : Matrix M r α) S0
-        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) 0 1 := by
+      = Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r m0 α) (Z0 * ⅟A0)
+            (1 : Matrix m0 m0 α)
+        * Matrix.fromBlocks A0 (0 : Matrix r m1 α) (0 : Matrix m0 r α) S0
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) (0 : Matrix m1 r α)
+            (1 : Matrix m1 m1 α) := by
     rw [hS0def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A0 Y0 Z0 T0
   have hC1 : Matrix.fromBlocks A1 Y1 Z1 T1
-      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z1 * ⅟A1) 1
-        * Matrix.fromBlocks A1 (0 : Matrix r M α) (0 : Matrix M r α) S1
-        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) 0 1 := by
+      = Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r m1 α) (Z1 * ⅟A1)
+            (1 : Matrix m1 m1 α)
+        * Matrix.fromBlocks A1 (0 : Matrix r m2 α) (0 : Matrix m1 r α) S1
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) (0 : Matrix m2 r α)
+            (1 : Matrix m2 m2 α) := by
     rw [hS1def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A1 Y1 Z1 T1
   -- `C0·C1 = L0 · (D0·(U0·L1)·D1) · U1`, with the middle collapsed by `schur_middle_ldu_blocks`.
   have hprod : Matrix.fromBlocks A0 Y0 Z0 T0 * Matrix.fromBlocks A1 Y1 Z1 T1
@@ -191,8 +202,9 @@ theorem schur_product_ldu {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] 
 complement written in middle-factor form `R = S0 · (1 − K) · S1` (the block-LDU output, `K = Z1·A⁻¹·Y0`
 the off-pivot correction), the deviation of `R` from the product of per-layer cores `∏S = S0·S1` is
 exactly `− S0 · K · S1`. Pure `Ring`/`Matrix` distribution — no germ, no norm. -/
-theorem schur_core_remainder_identity {M : Type*} [Fintype M] [DecidableEq M]
-    (S0 S1 K R : Matrix M M ℝ) (hR : R = S0 * (1 - K) * S1) :
+theorem schur_core_remainder_identity {m0 m1 m2 : Type*} [Fintype m1] [DecidableEq m1]
+    (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ) (R : Matrix m0 m2 ℝ)
+    (hR : R = S0 * (1 - K) * S1) :
     R - S0 * S1 = - (S0 * K * S1) := by
   subst hR
   rw [Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul]
@@ -203,8 +215,8 @@ theorem schur_core_remainder_identity {M : Type*} [Fintype M] [DecidableEq M]
 factor energies: `∑‖S0·K·S1‖² ≤ (∑‖S0‖²)·(∑‖K‖²)·(∑‖S1‖²)`. This is what makes the remainder **higher
 order** on the germ: with `S0, S1 = O(ε)` and `K = O(ε²)`, the bound is `O(ε⁶)`, charged to the
 `O(ε²)` regular energy by the consumer. Two `frobenius_mul_le` + `frobSq_nonneg` monotonicity. -/
-theorem schur_core_remainder_frobeniusSq_le {M : Type*} [Fintype M]
-    (S0 S1 K : Matrix M M ℝ) :
+theorem schur_core_remainder_frobeniusSq_le {m0 m1 m2 : Type*} [Fintype m0] [Fintype m1] [Fintype m2]
+    (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ) :
     frobSq (S0 * K * S1) ≤ frobSq S0 * frobSq K * frobSq S1 := by
   -- `∑‖(S0·K)·S1‖² ≤ (∑‖S0·K‖²)·(∑‖S1‖²) ≤ (∑‖S0‖²·∑‖K‖²)·(∑‖S1‖²)`.
   simp only [frobSq]
@@ -272,8 +284,10 @@ regular energy `∑E²` (since `K = Z1·A⁻¹·Y0 = O(ε²)` is charged via `�
 term is bounded sqrt-free via `frobInner_sq_le`: `(⟨∏S, D⟩)² ≤ frobSq ∏S · frobSq D`. Bundles
 `schur_core_remainder_identity` (exact `D = −S0·K·S1`) + `frobSq_add_eq` + `frobInner_sq_le` +
 `schur_core_remainder_frobeniusSq_le`. -/
-theorem schur_core_germ_comparability {M : Type*} [Fintype M] [DecidableEq M]
-    (S0 S1 K R : Matrix M M ℝ) (hR : R = S0 * (1 - K) * S1) :
+theorem schur_core_germ_comparability {m0 m1 m2 : Type*} [Fintype m0] [Fintype m1] [DecidableEq m1]
+    [Fintype m2]
+    (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ) (R : Matrix m0 m2 ℝ)
+    (hR : R = S0 * (1 - K) * S1) :
     -- (i) the exact remainder identity: `R − ∏S = −S0·K·S1`
     (R - S0 * S1 = - (S0 * K * S1))
     -- (ii) the sub-multiplicative remainder energy bound
@@ -295,32 +309,32 @@ theorem schur_core_germ_comparability {M : Type*} [Fintype M] [DecidableEq M]
     have hRsplit : R = S0 * S1 + D := by rw [hD]; abel
     rw [hRsplit]; exact frobSq_add_eq (S0 * S1) D
 
-/-! ## Non-vacuity witness
+/-! ## Non-vacuity witness (RECTANGULAR instance)
 
 The atom's antecedent `R = S0·(1−K)·S1` is inhabited with a genuinely nonzero off-pivot correction
-`K ≠ 0`, and the remainder `R − ∏S` is then genuinely nonzero (the bound is not the empty `0 ≤ 0`).
-The scalar (`M = Fin 1`) instance with all blocks `= t`: `R = t²(1−t)`, `∏S = t²`, remainder `= −t³`,
-and the sub-multiplicative bound is `t⁶ ≤ t²·t²·t²` — TIGHT (equality), confirming the bound is sharp
-in the worst (full-rank scalar) case, not slack-by-construction. -/
+`K ≠ 0` AND genuinely RECTANGULAR off-diagonals (the three-width generalization is exercised, not the
+square special case). Take `m0 = Fin 2`, `m1 = m2 = Fin 1`: `S0 = ![1, 0]ᵀ : 2×1`, `K = [1/2] : 1×1`,
+`S1 = [1] : 1×1`, `R = S0·(1−K)·S1 = ![1/2, 0]ᵀ`. Then `R − ∏S = ![−1/2, 0]ᵀ ≠ 0` — the remainder is
+genuinely nonzero (the bound is not the empty `0 ≤ 0`), on a non-square shape. -/
 example :
-    let t : ℝ := (1 : ℝ) / 2
-    let S : Matrix (Fin 1) (Fin 1) ℝ := Matrix.of fun _ _ => t
-    let K : Matrix (Fin 1) (Fin 1) ℝ := Matrix.of fun _ _ => t
-    let R : Matrix (Fin 1) (Fin 1) ℝ := S * (1 - K) * S
-    -- the off-pivot correction is genuinely nonzero, so the remainder is genuinely nonzero
-    K ≠ 0 ∧ R - S * S ≠ 0 := by
+    let S0 : Matrix (Fin 2) (Fin 1) ℝ := Matrix.of fun i _ => if i = 0 then (1 : ℝ) else 0
+    let K : Matrix (Fin 1) (Fin 1) ℝ := Matrix.of fun _ _ => (1 : ℝ) / 2
+    let S1 : Matrix (Fin 1) (Fin 1) ℝ := 1
+    let R : Matrix (Fin 2) (Fin 1) ℝ := S0 * (1 - K) * S1
+    -- the off-pivot correction is genuinely nonzero, so the rectangular remainder is genuinely nonzero
+    K ≠ 0 ∧ R - S0 * S1 ≠ 0 := by
   refine ⟨?_, ?_⟩
   · intro h
     have := congrFun (congrFun h 0) 0
     simp [Matrix.of_apply, Matrix.zero_apply] at this
   · intro h
-    have hid := schur_core_remainder_identity (M := Fin 1)
-      (Matrix.of fun _ _ => (1 : ℝ) / 2) (Matrix.of fun _ _ => (1 : ℝ) / 2)
-      (Matrix.of fun _ _ => (1 : ℝ) / 2)
-      ((Matrix.of fun _ _ => (1 : ℝ) / 2) * (1 - Matrix.of fun _ _ => (1 : ℝ) / 2)
-        * (Matrix.of fun _ _ => (1 : ℝ) / 2)) rfl
+    have hid := schur_core_remainder_identity (m0 := Fin 2) (m1 := Fin 1) (m2 := Fin 1)
+      (Matrix.of fun i _ => if i = 0 then (1 : ℝ) else 0)
+      (1 : Matrix (Fin 1) (Fin 1) ℝ) (Matrix.of fun _ _ => (1 : ℝ) / 2)
+      ((Matrix.of fun i _ => if i = 0 then (1 : ℝ) else 0)
+        * (1 - Matrix.of fun _ _ => (1 : ℝ) / 2) * (1 : Matrix (Fin 1) (Fin 1) ℝ)) rfl
     rw [h] at hid
-    -- `0 = −(S·K·S)`, but `(S·K·S) 0 0 = (1/2)³ ≠ 0`.
+    -- `0 = −(S0·K·S1)`, but `(S0·K·S1) 0 0 = 1·(1/2)·1 = 1/2 ≠ 0`.
     have := congrFun (congrFun hid.symm 0) 0
     simp [Matrix.mul_apply, Matrix.of_apply, Matrix.neg_apply] at this
 end DLNFibre.DLN.RLCT
