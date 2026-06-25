@@ -820,6 +820,26 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - (3,3,3,3) green-gate building on my base now (verify before commit). 1 other BUILD agent: l2-pin2-geom (L2 PIN2 body —
   the decode bedrock is green; assembling telescoping + B-normalisation + comparability). pp-r1-genM released/on-call.
 
+**★ UPDATE-38 (2026-06-25) — PIN2 route steps 1+2 INTEGRATED; PIN2 found unprovable-as-written AGAIN (generic frames); the close (statement-correction + body) commissioned.**
+- **PIN2 route steps 1+2 INTEGRATED @9af25ece** (DeepestFrameRaw, +180 LoC, 9 lemmas, axiom-clean, full build green 8350):
+  the 4-arm index decode (readX/Y/Z + readT_deepestSplit_raw) + `reindex_fromBlocks_reads_eq_deviation` (the consolidating
+  entry-wise identity). The "probed convergent only" hardest PIN2 piece is DONE — banked as bedrock.
+- **2nd PIN2 statement-correction needed (l2-pin2-geom, reviewer + Codex + EXACT counterexample):** PIN2
+  `framedParams_split_eq_frame_raw` + `deepest_loss_squeeze` are UNPROVABLE as written — they take ARBITRARY frames Pf,Qf
+  with no tie to the deepest point, but the germ identity is CONTRADICTORY for generic frames (counterexample: L=2,
+  widths=r=1, B=[1], Pf=Qf=2 → no conjugating scalar). [The 1st correction was `hsplit` tying split to deepestSplit;
+  this 2nd is the FRAMES.] Fix: thread the frame facts `deepestPoint_frame_pivot_exists` already produces (hNF, hPunit/
+  hQunit, hQf0/hPfL, hQf22, hcorner) into PIN2 + deepest_loss_squeeze; the caller deepest_gauge_construction has them.
+- **`l2-pin2-final` (a3e80946) commissioned:** the statement-correction (thread the frame facts) + the body (the banked
+  route steps + deepestPoint_frame_normal + corner=reindex(fromBlocks 1 0 0 0) + endpoint_telescoping + J-normalization +
+  core_comparability_squeeze) → close PIN2. Reviewer to verify the correction is sound (provable + headline-constructs +
+  no over-restriction), per the recurring precision pattern.
+- **L2 status:** PIN1 CLOSED; PIN2 = bedrock done + the close building (l2-pin2-final); then the case-split wire +
+  product_reduction → the L2 gate. The L=1 base is banked. (Two PIN2 statement-corrections this run — the precision
+  discipline catching over-general statements before they lock in.)
+- 1 background BUILD agent: l2-pin2-final (L2 PIN2 close). pp-r1-genM released/on-call. (3,3,3,3) infra banked un-wired
+  (det deferred). Queued: the L2 case-split wire, the rank-stratified hfin cover, the general hdiv chaining, D1.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
