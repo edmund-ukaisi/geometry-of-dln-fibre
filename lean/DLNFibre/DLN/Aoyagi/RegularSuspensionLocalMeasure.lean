@@ -442,6 +442,39 @@ def residualNegPowerIntegrableOn
       ∂ (μ.restrict source)) < ∞
 
 set_option linter.unusedSectionVars false in
+/-- The residual square-sum is positive a.e. once its zero locus is null for
+the restricted source measure. -/
+theorem residualSquareSum_pos_ae_of_zero_set_null
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [MeasurableSpace α]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source : Set α} {μ : Measure α}
+    (hzero :
+      (μ.restrict source)
+        {x | aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) = 0} = 0) :
+    ∀ᵐ x ∂ μ.restrict source,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) := by
+  exact
+    ae_pos_of_forall_nonneg_of_measure_zero_eq_zero
+      (μ := μ.restrict source)
+      (f := fun x =>
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x))
+      (fun x =>
+        aoyagiCoordinateSquareSum_nonneg
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x))
+      hzero
+
+set_option linter.unusedSectionVars false in
 /-- Residual positivity and negative-power integrability restrict to smaller
 source sets. -/
 theorem residualSourceHypotheses_mono
@@ -476,6 +509,42 @@ theorem residualSourceHypotheses_mono
             (paperEndpointFixedBaseResidualBlockCoordinateMap
               (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t))))).trans_lt
         (by simpa [residualNegPowerIntegrableOn] using hbase)
+
+set_option linter.unusedSectionVars false in
+/-- Residual positivity and negative-power integrability on a smaller source set
+from residual negative-power integrability on a larger source set and nullity of
+the residual zero locus there. -/
+theorem residualSourceHypotheses_mono_of_zero_set_null
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [MeasurableSpace α]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source source' : Set α} {μ : Measure α} {t : ℝ}
+    (hsubset : source' ⊆ source)
+    (hzero :
+      (μ.restrict source)
+        {x | aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) = 0} = 0)
+    (hbase : residualNegPowerIntegrableOn
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t) :
+    (∀ᵐ x ∂ μ.restrict source',
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source' μ t := by
+  exact
+    residualSourceHypotheses_mono
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (source := source) (source' := source')
+      (μ := μ) (t := t) hsubset
+      (residualSquareSum_pos_ae_of_zero_set_null
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) (source := source) (μ := μ) hzero)
+      hbase
 
 set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied

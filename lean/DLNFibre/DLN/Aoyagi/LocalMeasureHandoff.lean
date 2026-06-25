@@ -24,6 +24,15 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- A nonnegative real function is positive almost everywhere once its zero
+locus is null. -/
+theorem ae_pos_of_forall_nonneg_of_measure_zero_eq_zero
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → ℝ}
+    (hnonneg : ∀ x, 0 ≤ f x) (hzero : μ {x | f x = 0} = 0) :
+    ∀ᵐ x ∂ μ, 0 < f x := by
+  rw [ae_iff]
+  exact measure_mono_null (fun x hx ↦ le_antisymm (le_of_not_gt hx) (hnonneg x)) hzero
+
 /-- A positive continuous density factor at `(x₀,0)` is uniformly nonnegative
 and bounded on a sufficiently small product neighborhood, with the radius
 chosen below any supplied positive cap. -/

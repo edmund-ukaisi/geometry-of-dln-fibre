@@ -3545,3 +3545,35 @@ and continuous at the center.  It does not construct that density/Jacobian
 factor, prove source-measure transport, prove the original-loss lower
 comparison, or prove residual positivity/integrability, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-25 A2 residual zero-locus handoff
+
+Reproduction:
+`reproduction-a2-residual-zero-locus-handoff.md`.
+Statement card:
+`statement-card-a2-residual-zero-locus-handoff.md`.
+Review:
+`review-a2-residual-zero-locus-handoff.md`.
+
+Lean now proves the generic nonnegative-function handoff
+
+```text
+ae_pos_of_forall_nonneg_of_measure_zero_eq_zero
+```
+
+and applies it to the Aoyagi residual square-sum:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSquareSum_pos_ae_of_zero_set_null
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_mono_of_zero_set_null
+```
+
+This weakens the residual positivity input for downstream local finite-integral
+bridges: instead of supplying `0 < residualSquareSum` a.e. directly, it is
+enough to supply that the residual zero locus is null for the restricted source
+measure.  The residual negative-power integral is still supplied, and the
+zero-locus nullity itself is still a real chart/source-measure input.
+
+Boundary: this does not prove residual zero-locus nullity, residual
+negative-power integrability, source-measure transport, the original-loss lower
+comparison, density/Jacobian transport, normal crossings, pole order, or RLCT.

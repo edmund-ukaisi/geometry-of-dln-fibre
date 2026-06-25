@@ -3907,3 +3907,13 @@ has a consumer taking that continuous-density input directly.  This moves the
 boundedness consequence only; the actual density/Jacobian factor, source
 measure transport, original-loss lower comparison, residual positivity, and
 residual negative-power integrability remain open/supplied.
+
+A2 residual zero-locus handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-zero-locus-handoff.md`.
+Lean proves that the residual square-sum is positive a.e. once its zero locus
+is null for the restricted source measure, and packages this with the existing
+source-restriction monotonicity helper.  This weakens direct residual
+positivity to a null-zero-locus input.  It does not prove that nullity, and it
+does not prove residual negative-power integrability, source-measure transport,
+original-loss comparison, density/Jacobian transport, normal crossings, pole
+order, or RLCT.
