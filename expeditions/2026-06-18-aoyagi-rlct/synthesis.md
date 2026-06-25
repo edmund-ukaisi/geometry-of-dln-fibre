@@ -10842,3 +10842,14 @@ integrability/normal-crossing production, or genuine A4 analytic atlas/source
 production.  Avoid thin wrappers around existing final sockets or
 `SourceProductionObligation` constructors unless they remove a real downstream
 hypothesis.
+
+After post-interruption scout review, the Case 2 p. 21 scalar accounting has
+also been pinned:
+`threads/04-blow-up-certificate/reproduction-case2-corrected-weight-scalar-transport-a4.md`.
+Lean proves `weightedPivotDiagonal_mul_smul` and
+`weightedPivotBlockRowOp_mul_oldDiagonal_mul_smul_pivotPreQBlock_mul_pivotQ`.
+This is the corrected finite identity for `D_J = u N` with
+`b'_i = u b_i`: the selected scalar is absorbed into the transported diagonal
+weights and is not counted again as a final factor.  This is pure `Q/P`
+matrix algebra only, not chart/source production, normal crossings, pole
+order, or RLCT.

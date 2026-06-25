@@ -6625,3 +6625,33 @@ this nondependent bridge over a primary `residualFactorProduct` statement.
 No source production of `Cprime`, ambient p.13 factor-family construction,
 residual-index equivalence, chart coverage, normal crossings, pole order, or
 RLCT is claimed.
+
+## 2026-06-25 Case 2 corrected weight scalar transport
+
+Artifacts:
+`reproduction-case2-corrected-weight-scalar-transport-a4.md`,
+`statement-card-a4-case2-corrected-weight-scalar-transport.md`, and
+`review-case2-corrected-weight-scalar-transport-a4.md`.
+
+Lean now proves the finite scalar transport behind Aoyagi's Case 2
+`D_J = u N` and `b'_i = u b_i` convention:
+
+```text
+weightedPivotDiagonal_mul_smul
+weightedPivotBlockRowOp_mul_oldDiagonal_mul_smul_pivotPreQBlock_mul_pivotQ
+```
+
+The second theorem states the corrected source-side `Q/P` product:
+
+```text
+(P * diag(b) * (u • N)) * (Q * C')
+  = (diag(u*b) * D''') * C'
+```
+
+under the explicit quotient hypothesis `u*b_i = q_i*(u*b_0)`.  This records
+that the selected scalar is already absorbed into the transported weights; the
+printed p. 21 extra final `u` is not formalized under the p. 20 convention.
+
+This is finite matrix algebra only.  It does not construct chart coverage,
+source-produced `C'`, successor data, residual-index equivalence, analytic
+Jacobian/density control, normal crossings, pole order, or RLCT.

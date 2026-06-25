@@ -822,7 +822,10 @@ No such claim is formalisation-ready until both fields are filled.
   that count under continuation. The supplied corrected exponent post-data
   now also projects its new-label numerator to exactly this selected-coordinate
   count through the source-selected and displayed boundary packages; this is
-  supplied bookkeeping, not chart-produced post-data. The displayed
+  supplied bookkeeping, not chart-produced post-data. The corrected scalar
+  accounting for the displayed Case 2 `Q/P` identity is now also proved:
+  `D_J = u N` with `b'_i = u b_i` transports the selected scalar into the
+  diagonal weights and does not leave a further final factor of `u`. The displayed
   source-coordinate chart map now also principalizes the finite residual-block
   center ideal to `Ideal.span {u}` in source-chart names, with value and
   divisibility projections exported by the displayed boundary package. Missing

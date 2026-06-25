@@ -4995,6 +4995,47 @@ theorem weightedPivotDiagonal_mul_lowerRows_reindex
   have hentry := congrFun (congrFun h (e i)) t
   simpa [Matrix.diagonal_mul] using hentry
 
+/-- Pulling a common scalar out of the normalized pivot block is equivalent to
+multiplying every pivot-row weight by that scalar.
+
+This is the finite algebra behind Aoyagi's Case 2 notation
+`D_J = u * N` and `b'_i = u * b_i`: one should transport the common `u` into
+the diagonal weights, not count it again in the displayed product. -/
+theorem weightedPivotDiagonal_mul_smul
+    {κ' : Type*} (u b0 : R) (b : ρ → R)
+    (M : Matrix (Unit ⊕ ρ) κ' R) :
+    weightedPivotDiagonal b0 b * (u • M) =
+      weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) * M := by
+  ext r c
+  rcases r with _ | i
+  · simp [weightedPivotDiagonal, Matrix.mul_apply, Fintype.sum_sum_type,
+      mul_assoc, mul_comm]
+  · suffices
+      (∑ x, diagonal b i x * (u * M (Sum.inr x) c)) =
+        ∑ x, diagonal (fun i ↦ u * b i) i x * M (Sum.inr x) c by
+        simpa [weightedPivotDiagonal, Matrix.mul_apply, Fintype.sum_sum_type] using this
+    calc
+      ∑ x, diagonal b i x * (u * M (Sum.inr x) c) =
+          ∑ x, u * (diagonal b i x * M (Sum.inr x) c) := by
+            apply Finset.sum_congr rfl
+            intro x _
+            ring
+      _ =
+          u * ∑ x, diagonal b i x * M (Sum.inr x) c := by
+            rw [Finset.mul_sum]
+      _ = u * (b i * M (Sum.inr i) c) := by
+            congr 1
+            simpa [dotProduct] using
+              (diagonal_dotProduct (v := b)
+                (w := fun x ↦ M (Sum.inr x) c) i)
+      _ = (u * b i) * M (Sum.inr i) c := by ring
+      _ = ∑ x, diagonal (fun i ↦ u * b i) i x *
+            M (Sum.inr x) c := by
+            have h :=
+              (diagonal_dotProduct (v := fun i ↦ u * b i)
+                (w := fun x ↦ M (Sum.inr x) c) i)
+            simpa [dotProduct] using h.symm
+
 set_option linter.flexible false in
 /-- The normalised `P` row operation clears the first column below the pivot. -/
 theorem weightedPivotBlockRowOp_mul_diagonal_mul
@@ -5991,6 +6032,61 @@ theorem weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
           (weightedPivotDiagonal b0 b * weightedPivotClearedBlock (D - x * y)) *
             (pivotQinv y * C) := by
             rw [weightedPivotBlockRowOp_mul_diagonal_mul_pivotPostQBlock b0 b q x y D h]
+
+/-- Corrected source-side form of the Case 2 `Q/P` identity with a scalar
+normalising variable.
+
+If the old chart block is `u • pivotPreQBlock x y D` and the transported
+weights are `u * b0`, `u * b`, then multiplying the old weighted source block
+by `Q * C'` gives the cleared block with the transported weights and the free
+following factor `C'`.  This is the algebraic version of the p. 20 convention
+`b'_i = u b_i`; it deliberately has no extra final factor of `u`. -/
+theorem weightedPivotBlockRowOp_mul_oldDiagonal_mul_smul_pivotPreQBlock_mul_pivotQ
+    [Fintype ρ] [DecidableEq ρ]
+    (u b0 : R) (b q : ρ → R)
+    (x : Matrix ρ Unit R) (y : Matrix Unit κ R) (D : Matrix ρ κ R)
+    (Cprime : Matrix (Unit ⊕ κ) τ R)
+    (h : ∀ i, u * b i = q i * (u * b0)) :
+    (weightedPivotBlockRowOp q (fun i ↦ x i ()) *
+          weightedPivotDiagonal b0 b * (u • pivotPreQBlock x y D)) *
+        (pivotQ y * Cprime) =
+      (weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) *
+          weightedPivotClearedBlock (D - x * y)) * Cprime := by
+  calc
+    (weightedPivotBlockRowOp q (fun i ↦ x i ()) *
+          weightedPivotDiagonal b0 b * (u • pivotPreQBlock x y D)) *
+        (pivotQ y * Cprime) =
+      (weightedPivotBlockRowOp q (fun i ↦ x i ()) *
+            (weightedPivotDiagonal b0 b * (u • pivotPreQBlock x y D))) *
+          (pivotQ y * Cprime) := by
+        congr 1
+        rw [← Matrix.mul_assoc]
+    _ =
+      (weightedPivotBlockRowOp q (fun i ↦ x i ()) *
+            (weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) *
+              pivotPreQBlock x y D)) *
+          (pivotQ y * Cprime) := by
+        rw [weightedPivotDiagonal_mul_smul]
+    _ =
+      (weightedPivotBlockRowOp q (fun i ↦ x i ()) *
+            weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) *
+              pivotPreQBlock x y D) *
+          (pivotQ y * Cprime) := by
+        congr 1
+        rw [Matrix.mul_assoc]
+    _ =
+      (weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) *
+          weightedPivotClearedBlock (D - x * y)) *
+        (pivotQinv y * (pivotQ y * Cprime)) := by
+        rw [weightedPivotBlockRowOp_mul_diagonal_mul_pivotPreQBlock_mul
+          (b0 := u * b0) (b := fun i ↦ u * b i) (q := q)
+          (x := x) (y := y) (D := D) (C := pivotQ y * Cprime) h]
+    _ =
+      (weightedPivotDiagonal (u * b0) (fun i ↦ u * b i) *
+          weightedPivotClearedBlock (D - x * y)) * Cprime := by
+        rw [← Matrix.mul_assoc (pivotQinv y) (pivotQ y) Cprime]
+        rw [pivotQinv_mul_pivotQ]
+        simp
 
 /-- Supplied data for the source-displayed top-left pivot calculation after
 the selected chart has already been transported to pivot-first coordinates.

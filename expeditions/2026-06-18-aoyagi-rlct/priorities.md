@@ -4677,3 +4677,12 @@ records the elementary all-pivot bounded cover of a smaller signed box by
 selected-entry chart images.  It is supplementary finite geometry only.  It
 does not reduce the fixed-pivot local source-stratum equality socket and must
 not be cited as source coverage.
+
+A4 Case 2 scalar accounting has now been pinned:
+`threads/04-blow-up-certificate/reproduction-case2-corrected-weight-scalar-transport-a4.md`.
+Lean proves the generic corrected `Q/P` identity with old weights, raw scalar
+block `u • N`, transported weights `u*b`, and no extra final `u`.  Treat this
+as source-backed finite algebra for pp. 19-21 and as a guardrail against
+double-counting the selected variable in future Case 2 weight statements.  It
+does not move source production, coverage, successor data, normal crossings,
+pole order, or RLCT.
