@@ -123,6 +123,26 @@ to have the right rlct.
   interfaces, so `hQf0/hPfL` suffice. For `L ≥ 3` the missing hyp is `deepestPoint_interior_frame_id`
   (`Q_s = 1 ∧ P_s = 1` for `1 ≤ s ≤ L−2`), banked in `DeepestFrame.lean:108`. Thread it into `hinterface`.
 
+## framedParams_split_eq_frame_raw BODY decomposition (post-integration, 2026-06-25)
+
+After the PIN2 repair integrated green (`bcfb8b60`), the cert BODY is a `sorry` with a TRUE conclusion
+(`∑(deepestEFull (split w))² = Sreg` + leak + core). Build-ready sub-lemma decomposition in
+`framedbody-cert.md` (decorrelated Codex `codex/framedbody-*`, which REORDERED my risk ranking). Key
+findings:
+- The step-(1) decode the old docstring called the "sub-blocker / genuine bulk" is **already banked**
+  (`reindex_fromBlocks_reads_eq_deviation`, sorry-free) — the docstring predates it.
+- **Highest risk is S0/S3 frame-source reconciliation**, not the S1' pivot decode (Codex Q4). Largely
+  discharged by the co-sourced bundle `deepestPoint_frame_pivot_exists` (same `Pf,Qf,J`), BUT a
+  CONFIRMED subtlety: the bundle's `hcorner` normalizes `deepestPoint_last`, NOT `B` — so S3b
+  (`reindex(P0·B·QL)=fromBlocks 1 0 0 0`) routes through `prod(deepest)=B` (banked) + telescope-of-deepest
+  + product-of-corners. Real sub-step, low-risk (all pieces banked / core-0 collapse).
+- **S5 hides three obligations** Codex flagged (my decomposition under-compressed them): S5a `P00`-unit +
+  shrink `U`; S5b the leak estimate `∑(P10⅟P00 P01)² ≤ t²·Sreg` (a neighborhood Cauchy-Schwarz, NOT a
+  corollary of `fullProduct_core_split`); S5c the `Rcore ↔ deepestCoreF(coreAbsorb)` identification (the
+  genuine new geometry — the global-Schur ↔ per-layer-coreAbsorb ideal-membership; may need its own cert).
+- S1' pivot-column decode pre-derived exact (option α): the banked 4-case `ext` with
+  `pivotThresholdSplit_symm_*` swapped in; cast/bookkeeping risk only.
+
 ## PIN1 survival under E_zero→E_full (the gating question for the repair — SETTLED)
 
 **PIN1 (`deepestEPivot_regSlice_fderiv`) survives VERBATIM** (exact sympy + decorrelated Codex xhigh,
