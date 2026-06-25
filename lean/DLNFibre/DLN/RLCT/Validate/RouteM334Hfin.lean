@@ -26,12 +26,16 @@ The additive threshold is reached by the residual-power convolution atom `radial
 `c'' = c' − 2 < 2` via the `r² = 4`-chart Δ-blow-up cover (a-axis divisor `r²/2 = 2` ⊗ the rank-1 N2a
 leaf `(∑col²)·‖row·S‖²`). Threshold equivalence: `c' < 4 ⟺ c'' < 2 = λ_{2,4}`.
 
-## STATUS — partial (the headline reduces to ONE gap: the `A0` radial-chart cover; gap NARROWED)
+## STATUS — partial (ONE gap: the ratio residual `hratiofin`; the radial separation now BUILT)
 
 The headline `routeMCore_M334_threshold_lt_top` is no longer itself a `sorry`: it reduces, via the banked
-clean MP plumbing `routeMCore_M334_le_matBox`, to the `A0` radial-chart cover `matBox334_blowup_lt_top`
-(the sole remaining `sorry`), and the trivial `c' = 0` case. The blow-up's algebraic heart + the radial
-divisor + the resolved normal form are all banked sorry-free.
+clean MP plumbing `routeMCore_M334_le_matBox`, to the `A0` 9-chart cover (`matBox334_blowup_lt_top`,
+sorry-free) and the trivial `c' = 0` case. Inside the per-chart `matBox334_chart_lt_top` the radial
+separation is now BUILT sorry-free (the `piFinSuccAbove` Tonelli split + the radial-axis divisor); the
+SOLE remaining `sorry` is the ratio residual `hratiofin` (the per-pivot permutation + the raw↦Δ/row0↦T
+translation change-of-variables feeding `angularA1_integral_le` + `resolved334_box_lt_top 3`). The
+blow-up's algebraic heart + the radial divisor + the resolved normal form + the schur-comparability
+integral bound (`angularA1_integral_le`) are all banked sorry-free.
 
 * **Banked (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`, S2-FREE):**
   - The corank-2 resolution (the RHS of the gap): `matTranspose`/`measurePreserving_matTranspose`,
@@ -49,16 +53,21 @@ divisor + the resolved normal form are all banked sorry-free.
     (`frobSq(R·A1) ≥ (1/5)·(∑T² + frobSq(Δ·S))`, ratios `|γ| ≤ 1`). Axiom-clean.
   - The radial divisor atom (THIS file, new): `radialAxis334_lt_top` — `∫_{[−1,1]} |a|^{8−2c'} < ⊤` for
     `c' < 9/2` (the `r²−1 = 8` blow-up Jacobian; threshold `9/2 > 4`, so never binding). Axiom-clean.
-* **Gap (ONE precisely-named `sorry`):** `matBox334_blowup_lt_top` — the `A0` 9-chart radial cover assembly.
-  Decompose: (i) cover `matBox 3 3 1 \ {A0=0}` by the `9` max-modulus-entry charts (`argmaxCellOn`/
-  `univ_ae_cover` on flattened-A0, `coordZero_null` for the null complement); (ii) per chart, the radial
-  c-o-v with Jacobian `|a|^8` (`pivotBlowupOn`/`g5_pivotNode`/`recStep`), the row/col permutation putting
-  the pivot at `(0,0)` (frobSq permutation-invariant), the det-1 shear `T = y + β·S`; (iii) apply the banked
-  `frobSq_angularR_ge` to lower-bound the integrand by the normal form, Tonelli-separate the radial factor
-  (`radialAxis334_lt_top`), and rescale the residual box to feed `resolved334_lt_top`; (iv) `ENNReal.sum_lt_top`
-  over the `9` charts (finite subadditivity — ties harmless). The highest-risk step (decorrelated-Codex):
-  the radial-chart c-o-v + box-rescale (ii)+(iii). The achiever chart `chartParams334`/`Uval334`
-  (`RouteMLayerCoverGEL2`) realises this transport for ONE pivot on the lower-bound side.
+* **The 9-chart cover assembly + the radial separation are BUILT sorry-free** (`matBox334_blowup_lt_top`,
+  `matBox334_blowup_lt_top_gt2`, the `recStep` cover, the per-chart `chart_integrand_factor` +
+  `piFinSuccAbove` Tonelli radial split inside `matBox334_chart_lt_top`). New reusable atoms (all
+  axiom-clean): `ofReal_rpow_neg_antitone_of_imp` (the Q=0-vs-frobSq(R·A1)=0 zero-guarded inverse-power
+  bound), `frobSq_eq_zero_iff`, `angularA1_integral_le` (the per-A1 schur comparability at integral level,
+  feeding the resolved form), `chart_integrand_factor` (the radial homogeneity factorisation),
+  `angA1Int`/`angA1Int_offpivot` + `measurable_angA1Int` (the ratio residual + its `a`-invariance & meas.).
+* **Gap (ONE precisely-named `sorry`):** `hratiofin` inside `matBox334_chart_lt_top` — the ratio residual
+  `∫_{z∈[−1,1]^8} angA1Int (e.symm (0,z)) < ⊤`. The radial axis is discharged; what remains is, per ratio
+  `z`: (a) the per-pivot row/col permutation bringing `Rmat334 p` to the `(0,0)` `angularR` normal form
+  (the A1-row permute MP on the symmetric box — the highest-risk bookkeeping, Codex VET-3), and (b) Step C,
+  the raw↦Δ / row0↦T box-translation change-of-variables (MP translations + domain enlargement to `[−3,3]`)
+  feeding the BANKED `angularA1_integral_le` + `resolved334_box_lt_top 3`. The achiever chart
+  `chartParams334`/`Uval334` (`RouteMLayerCoverGEL2`) realises this transport for ONE pivot on the
+  lower-bound side.
 
 ## S2-hygiene
 The hfin CONCLUSION is S2-FREE. Every banked piece above is `#print axioms`-clean
@@ -1143,16 +1152,235 @@ theorem gFlat334_blowup_radial (c' : ℝ) (p : Fin 9) (y : Fin 9 → ℝ) :
   rw [hbl, radialDelta_loss_factor (y p)
     ((matToFlatEquiv 3 3).symm (fun i => if i = p then 1 else y i)) A1]
 
-/-- **The per-chart finiteness (GAP — the genuine radial transport).** For each A0-entry pivot
-`p : Fin 9`, the radial-blow-up chart integral — the pivot-blow-up `pivotBlowupOn univ p` of the flat A0
-(Jacobian `|y p|^8`), against the full A1 box — is finite for `2 < c' < 4`. The content: on chart `p`,
-`A0 = a·R` (`a = y p`, `R` the bounded angular matrix, `R_p = 1`); `frobSq(A0·A1) = a²·frobSq(R·A1)`
-(`radialDelta_loss_factor`); the per-pivot normalisation to `(0,0)` (row/col permute A0, the induced
-A1-row permute is measure-preserving on the symmetric box) + `frobSq_angularR_ge` lower-bounds
-`frobSq(R·A1) ≥ (1/5)(‖T‖² + frobSq(Δ·S))`; Tonelli-separate the radial `|a|^{8−2c'}` axis
-(`radialAxis334_lt_top`, finite since `c' < 4 < 9/2`); the residual `(‖T‖²+frobSq(Δ·S))^{−c'}` over the
-box-enlarged `(Δ∈[−2,2], S∈[−1,1], T∈[−3,3])` domain feeds `resolved334_box_lt_top 3`. SKELETON (`sorry`)
-— the radial change-of-variables + per-pivot permutation + box-enlarged rescale (the long pole). -/
+/-! ## Per-chart transport — the foundational helpers (the long pole's atoms)
+
+The per-chart finiteness `matBox334_chart_lt_top` assembles from: (h0) the ENNReal zero-guard rpow
+inverse-power antitone bound (the Q=0 vs frobSq(R·A1)=0 zero-set coincidence, Codex Q2); (h1) the
+`frobSq = 0 ↔ all entries 0` characterisation; (h2) the per-`A1` integral bound feeding the resolved
+form; (h3) the radial Tonelli separation; (h4) the arbitrary-`p` → `(0,0)` permutation. Each is built
+and named below. -/
+
+/-- **The ENNReal inverse-power antitone bound with a zero-guard.** For `0 ≤ B ≤ A`, `0 < c'`, and the
+zero-coincidence `B = 0 → A = 0`, the inverse power flips: `ofReal (A^{−c'}) ≤ ofReal (B^{−c'})`. On
+`{B > 0}` this is the base-antitone `Real.rpow_le_rpow_of_nonpos`; on `{B = 0}` the guard gives `A = 0`
+so both sides are `ofReal (0^{−c'}) = ofReal 0 = 0`. The Q=0-vs-`frobSq(R·A1)`=0 coincidence (Codex Q2)
+is exactly the guard the angular comparability supplies. -/
+theorem ofReal_rpow_neg_antitone_of_imp {A B c' : ℝ} (hB : 0 ≤ B) (hBA : B ≤ A) (hc' : 0 < c')
+    (himp : B = 0 → A = 0) :
+    ENNReal.ofReal (A ^ (-c')) ≤ ENNReal.ofReal (B ^ (-c')) := by
+  rcases eq_or_lt_of_le hB with hB0 | hB0
+  · -- B = 0 ⟹ A = 0; both sides ofReal (0^{−c'}) = 0
+    have hA0 : A = 0 := himp hB0.symm
+    rw [← hB0, hA0]
+  · -- 0 < B ≤ A: base-antitone for the nonpositive exponent
+    exact ENNReal.ofReal_le_ofReal
+      (Real.rpow_le_rpow_of_nonpos hB0 hBA (by linarith))
+
+/-- `frobSq M = 0 ↔ ∀ i j, M i j = 0` — the squared Frobenius norm vanishes iff the matrix is zero
+(a sum of squares is zero iff each term is). The zero-coincidence guard's algebraic core. -/
+theorem frobSq_eq_zero_iff {a b : Type*} [Fintype a] [Fintype b] (M : a → b → ℝ) :
+    frobSq M = 0 ↔ ∀ i j, M i j = 0 := by
+  unfold frobSq
+  rw [Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _))]
+  refine ⟨fun h i j => ?_, fun h i _ => Finset.sum_eq_zero (fun j _ => by rw [h i j]; ring)⟩
+  have hi := h i (Finset.mem_univ i)
+  rw [Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg _)] at hi
+  exact pow_eq_zero_iff (by norm_num) |>.1 (hi j (Finset.mem_univ j))
+
+/-- **The per-`A1` angular integral bound (the resolved-form feed, `(0,0)` normal form).** For ratios
+`b0,b1,g0,g1` with `|γ| ≤ 1` and any lower-right block `(d00,d01,d10,d11)` (the de-shifted `Δ`),
+
+    ∫_{A1∈matBox 3 4 1} ofReal (frobSq (angularR … · A1)^{−c'})
+      ≤ ofReal ((1/5)^{−c'}) · ∫_{A1∈matBox 3 4 1} ofReal ((∑ⱼ Tⱼ² + frobSq (Δ·S))^{−c'}),
+
+`Tⱼ = A1 0 j + (b0·A1 1 j + b1·A1 2 j)`, `Δ = !![d00,d01;d10,d11]`, `S = A1 rows 1,2`. The pointwise
+ENNReal antitone bound (`ofReal_rpow_neg_antitone_of_imp`, guarded by the zero-coincidence
+`frobSq(R·A1)=0 ⟺ Q=0` via the exact shear identity `rmatMul_angularR_eq` and `frobSq_eq_zero_iff`),
+then `frobSq_angularR_ge` for `Q ≤ 5·frobSq(R·A1)`, and `lintegral_const_mul'` to pull out `(1/5)^{−c'}`. -/
+theorem angularA1_integral_le (c' : ℝ) (hc0 : 0 < c')
+    (b0 b1 g0 g1 d00 d01 d10 d11 : ℝ) (hg0 : g0 ^ 2 ≤ 1) (hg1 : g1 ^ 2 ≤ 1) :
+    (∫⁻ A1 in matBox 3 4 1,
+        ENNReal.ofReal ((frobSq (rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1)) ^ (-c')))
+      ≤ ENNReal.ofReal (((1 : ℝ) / 5) ^ (-c'))
+        * ∫⁻ A1 in matBox 3 4 1,
+            ENNReal.ofReal (((∑ j, (A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)) ^ 2)
+              + frobSq (rmatMul (!![d00, d01; d10, d11] : Matrix (Fin 2) (Fin 2) ℝ)
+                  (fun k j => A1 (k.succ) j))) ^ (-c')) := by
+  -- abbreviate Q (the resolved-form integrand base) and F = frobSq(R·A1)
+  set Q : (Fin 3 → Fin 4 → ℝ) → ℝ := fun A1 =>
+    (∑ j, (A1 0 j + (b0 * A1 1 j + b1 * A1 2 j)) ^ 2)
+      + frobSq (rmatMul (!![d00, d01; d10, d11] : Matrix (Fin 2) (Fin 2) ℝ)
+          (fun k j => A1 (k.succ) j)) with hQdef
+  set F : (Fin 3 → Fin 4 → ℝ) → ℝ := fun A1 =>
+    frobSq (rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1) with hFdef
+  -- Q ≥ 0, F ≥ 0
+  have hQnn : ∀ A1, 0 ≤ Q A1 := by
+    intro A1; rw [hQdef]
+    exact add_nonneg (Finset.sum_nonneg (fun j _ => sq_nonneg _)) (frobSq_nonneg _)
+  -- the angular comparability: (1/5)·Q ≤ F
+  have hcompare : ∀ A1, (1 / 5 : ℝ) * Q A1 ≤ F A1 := by
+    intro A1; rw [hQdef, hFdef]
+    exact frobSq_angularR_ge b0 b1 g0 g1 d00 d01 d10 d11 hg0 hg1 A1
+  -- the zero coincidence: Q A1 = 0 → F A1 = 0 (via the exact shear identity)
+  have hzero : ∀ A1, Q A1 = 0 → F A1 = 0 := by
+    intro A1 hQ0
+    show frobSq (rmatMul (angularR b0 b1 g0 g1 d00 d01 d10 d11) A1) = 0
+    rw [rmatMul_angularR_eq]
+    -- frobSq(schurNF) = Q = 0, so schurNF = 0, so lgammaShear schurNF = 0
+    have hsnf : frobSq (schurNF b0 b1 d00 d01 d10 d11 A1) = 0 := by
+      rw [frobSq_schurNF_eq]; exact hQ0
+    have hsnf0 : ∀ i j, schurNF b0 b1 d00 d01 d10 d11 A1 i j = 0 :=
+      (frobSq_eq_zero_iff _).1 hsnf
+    rw [frobSq_eq_zero_iff]
+    intro i j
+    unfold lgammaShear
+    by_cases hi0 : i = 0
+    · rw [if_pos hi0, hsnf0 0 j]
+    · by_cases hi1 : i = 1
+      · rw [if_neg hi0, if_pos hi1, hsnf0 0 j, hsnf0 1 j]; ring
+      · rw [if_neg hi0, if_neg hi1, hsnf0 0 j, hsnf0 2 j]; ring
+  -- the pointwise ENNReal antitone bound: ofReal(F^{−c'}) ≤ ofReal(((1/5)Q)^{−c'})
+  have hpt : ∀ A1, ENNReal.ofReal ((F A1) ^ (-c'))
+      ≤ ENNReal.ofReal (((1 / 5 : ℝ) * Q A1) ^ (-c')) := by
+    intro A1
+    refine ofReal_rpow_neg_antitone_of_imp
+      (mul_nonneg (by norm_num) (hQnn A1)) (hcompare A1) hc0 ?_
+    intro h15
+    have hQ0 : Q A1 = 0 := by
+      rcases mul_eq_zero.1 h15 with h | h
+      · norm_num at h
+      · exact h
+    exact hzero A1 hQ0
+  -- ((1/5)·Q)^{−c'} = (1/5)^{−c'} · Q^{−c'}; pull the constant out of the lintegral
+  have hsplit : ∀ A1, ENNReal.ofReal (((1 / 5 : ℝ) * Q A1) ^ (-c'))
+      = ENNReal.ofReal (((1 : ℝ) / 5) ^ (-c')) * ENNReal.ofReal ((Q A1) ^ (-c')) := by
+    intro A1
+    rw [Real.mul_rpow (by norm_num) (hQnn A1),
+      ENNReal.ofReal_mul (Real.rpow_nonneg (by norm_num) _)]
+  calc (∫⁻ A1 in matBox 3 4 1, ENNReal.ofReal ((F A1) ^ (-c')))
+      ≤ ∫⁻ A1 in matBox 3 4 1, ENNReal.ofReal (((1 / 5 : ℝ) * Q A1) ^ (-c')) :=
+        lintegral_mono (fun A1 => hpt A1)
+    _ = ∫⁻ A1 in matBox 3 4 1,
+          ENNReal.ofReal (((1 : ℝ) / 5) ^ (-c')) * ENNReal.ofReal ((Q A1) ^ (-c')) := by
+        refine lintegral_congr (fun A1 => hsplit A1)
+    _ = ENNReal.ofReal (((1 : ℝ) / 5) ^ (-c'))
+          * ∫⁻ A1 in matBox 3 4 1, ENNReal.ofReal ((Q A1) ^ (-c')) := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+
+/-- The angular A1-integral as a function of the flat point `y` (pivot `p`): `∫_{A1} frobSq(R·A1)^{−c'}`
+with `R = Rmat334 p y`. The ratio-side residual the radial separation isolates (depends on `y` only
+through the off-pivot ratios — `Rmat334 p y` reads `y i` only for `i ≠ p`). -/
+noncomputable def angA1Int (c' : ℝ) (p : Fin 9) (y : Fin 9 → ℝ) : ℝ≥0∞ :=
+  ∫⁻ A1 in matBox 3 4 1, ENNReal.ofReal ((frobSq (rmatMul (Rmat334 p y) A1)) ^ (-c'))
+
+/-- `angA1Int` reads `y` only through the off-pivot coordinates (`Rmat334 p y` ignores `y p`). The
+`a`-invariance the radial Tonelli split exploits: after `piFinSuccAbove p`, `angA1Int` is constant in the
+pivot axis, so it factors out as the ratio-side residual. -/
+theorem angA1Int_offpivot (c' : ℝ) (p : Fin 9) (y y' : Fin 9 → ℝ) (h : ∀ i, i ≠ p → y i = y' i) :
+    angA1Int c' p y = angA1Int c' p y' := by
+  have hR : Rmat334 p y = Rmat334 p y' := by
+    unfold Rmat334; congr 1; funext i
+    by_cases hi : i = p
+    · simp [hi]
+    · simp [hi, h i hi]
+  unfold angA1Int; rw [hR]
+
+/-- Each entry of `Rmat334 p y` is measurable in `y` (the `matToFlatEquiv 3 3`-`symm`, an MP equiv,
+composed with the select `y ↦ (i ↦ if i=p then 1 else y i)`). -/
+theorem measurable_Rmat334_entry (p : Fin 9) (r c : Fin 3) :
+    Measurable (fun y : Fin 9 → ℝ => Rmat334 p y r c) := by
+  unfold Rmat334
+  have h1 : Measurable (fun y : Fin 9 → ℝ => (fun i => if i = p then (1 : ℝ) else y i)) := by
+    apply measurable_pi_lambda; intro i
+    by_cases hi : i = p
+    · simp only [hi, if_pos]; exact measurable_const
+    · simp only [hi, if_neg, not_false_eq_true]; exact measurable_pi_apply i
+  have h2 : Measurable (fun z : Fin 9 → ℝ => (matToFlatEquiv 3 3).symm z) :=
+    (matToFlatEquiv 3 3).symm.measurable
+  exact (((h2.comp h1).eval (a := r)).eval (a := c))
+
+/-- `angA1Int c' p` is measurable in `y` (the A1-integral of the measurable joint integrand, via
+`Measurable.lintegral_prod_right` + the entrywise `measurable_Rmat334_entry`). -/
+theorem measurable_angA1Int (c' : ℝ) (p : Fin 9) : Measurable (angA1Int c' p) := by
+  unfold angA1Int
+  apply Measurable.lintegral_prod_right (f := fun y A1 =>
+    ENNReal.ofReal ((frobSq (rmatMul (Rmat334 p y) A1)) ^ (-c')))
+  apply ENNReal.measurable_ofReal.comp
+  apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+  unfold frobSq rmatMul
+  apply Finset.measurable_sum; intro i _
+  apply Finset.measurable_sum; intro j _
+  apply Measurable.pow_const
+  apply Finset.measurable_sum; intro k _
+  apply Measurable.mul
+  · exact (measurable_Rmat334_entry p i k).comp measurable_fst
+  · have hA1 : Measurable (fun A1 : Fin 3 → Fin 4 → ℝ => A1 k j) :=
+      (measurable_pi_apply j).comp (measurable_pi_apply k)
+    exact hA1.comp measurable_snd
+
+/-- The chart integrand on `D_p`, after the indicator-decouple + radial homogeneity, factors as
+`ofReal(|y p|^{8−2c'}) · 1_{|y p|≤1} · angA1Int`. The pointwise identity feeding the Tonelli split:
+on `chartDomOn univ p` the box indicator fires iff `|y p| ≤ 1` (`flatBox334_blowup_mem_iff`), the loss
+factors the radial scale (`gFlat334_blowup_radial`), and `(y p)²)^{−c'} = |y p|^{−2c'}` pulls out of the
+A1-integral as a constant — combining with `|y p|^8` to `|y p|^{8−2c'}`. -/
+theorem chart_integrand_factor (c' : ℝ) (hc0 : 0 < c') (hc4 : c' < 4) (p : Fin 9) (y : Fin 9 → ℝ)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin 9)) p) :
+    ENNReal.ofReal (|y p| ^ 8)
+        * flatBox334.indicator (gFlat334 c') (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y)
+      = (Set.Icc (-1 : ℝ) 1).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) (y p) * angA1Int c' p y := by
+  -- the indicator decouples to `|y p| ≤ 1`
+  by_cases hmem : pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y ∈ flatBox334
+  · have hyp : |y p| ≤ 1 := (flatBox334_blowup_mem_iff p y hy).1 hmem
+    rw [Set.indicator_of_mem hmem,
+      Set.indicator_of_mem (s := Set.Icc (-1 : ℝ) 1) (by rw [Set.mem_Icc, ← abs_le]; exact hyp)]
+    -- gFlat334(blowup) = ∫_{A1} ((y p)²·frobSq(R·A1))^{−c'}; pull (y p)² out
+    rw [gFlat334_blowup_radial c' p y, angA1Int]
+    -- ((y p)²·F)^{−c'} = ((y p)²)^{−c'}·F^{−c'}; pull the constant ((y p)²)^{−c'} out of the lintegral
+    have hpull : ∀ A1 : Fin 3 → Fin 4 → ℝ,
+        ENNReal.ofReal (((y p) ^ 2 * frobSq (rmatMul (Rmat334 p y) A1)) ^ (-c'))
+          = ENNReal.ofReal ((((y p) ^ 2) ^ (-c')))
+            * ENNReal.ofReal ((frobSq (rmatMul (Rmat334 p y) A1)) ^ (-c')) := by
+      intro A1
+      rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity) _),
+        ← Real.mul_rpow (by positivity) (frobSq_nonneg _)]
+    rw [lintegral_congr hpull,
+      lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+    -- ofReal(|y p|^8)·ofReal(((y p)²)^{−c'}) = ofReal(|y p|^{8−2c'})
+    rw [← mul_assoc]
+    congr 1
+    rw [← ENNReal.ofReal_mul (by positivity)]
+    congr 1
+    -- |y p|^8 · ((y p)²)^{−c'} = |y p|^{8−2c'}.
+    have hb : ((y p) ^ 2 : ℝ) = |y p| ^ (2 : ℝ) := by
+      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
+    rcases eq_or_ne (y p) 0 with hyp0 | hyp0
+    · -- y p = 0: both sides 0 (8 − 2c' ≠ 0 since c' < 4 ⟹ the rpow at base 0 is 0)
+      rw [hyp0, abs_zero, Real.zero_rpow (by intro h; nlinarith),
+        zero_pow (by norm_num), zero_mul]
+    · -- y p ≠ 0: |y p| > 0, combine the powers
+      have hpos : (0 : ℝ) < |y p| := abs_pos.2 hyp0
+      rw [hb, ← Real.rpow_natCast (|y p|) 8, ← Real.rpow_mul (le_of_lt hpos),
+        ← Real.rpow_add hpos]
+      congr 1; push_cast; ring
+  · have hyp : ¬ |y p| ≤ 1 := fun h => hmem ((flatBox334_blowup_mem_iff p y hy).2 h)
+    rw [Set.indicator_of_notMem hmem,
+      Set.indicator_of_notMem (s := Set.Icc (-1 : ℝ) 1)
+        (by rw [Set.mem_Icc, ← abs_le]; exact hyp), zero_mul, mul_zero]
+
+/-- **The per-chart finiteness (the radial separation PROVED; ONE gap remains: the ratio residual).**
+For each A0-entry pivot `p : Fin 9` and `2 < c' < 4`, the radial-blow-up chart integral (Jacobian
+`|y p|^8`, against the full A1 box) is finite. The radial separation is now BUILT sorry-free:
+`chart_integrand_factor` rewrites the integrand to `radInd(y p) · angA1Int` (box indicator decouples to
+`|y p| ≤ 1`, the loss factors the radial scale, `((y p)²)^{−c'}` peels out → `|y p|^{8−2c'}`); the
+`piFinSuccAbove p` MP transport + Tonelli factor the pivot axis from the 8 ratios (`angA1Int` is
+`a`-invariant, `angA1Int_offpivot`); the radial axis is `radialAxis334_lt_top`-finite (`c'<4<9/2`).
+
+REMAINING GAP (`hratiofin`, the ratio residual `∫_{[−1,1]^8} angA1Int (e.symm (0,z)) < ⊤`): per ratio
+`z`, the per-pivot row/col permutation to the `(0,0)` normal form (`Rmat334 p` ↦ `angularR`, the
+A1-row permute MP on the symmetric box) + the BANKED `angularA1_integral_le` (the zero-guarded schur
+comparability `∫_{A1} frobSq(R·A1)^{−c'} ≤ (1/5)^{−c'}·∫_{A1} (∑T²+frobSq(Δ·S))^{−c'}`) feed the
+box-enlarged `resolved334_box_lt_top 3` via the raw↦Δ / row0↦T translation change-of-variables. -/
 theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9) :
     ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin 9)) p \ pivotZeroOn p,
         ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin 9)) p y).det|
@@ -1165,19 +1393,118 @@ theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin
     rw [pivotBlowupOnDeriv_det (Finset.univ : Finset (Fin 9)) p (Finset.mem_univ p) y]
     simp [abs_pow]
   simp only [hdet]
-  -- REMAINING GAP (the genuine measure-theoretic long pole, sharply scoped to this chart integral).
-  -- The structural facts are established (det `|y p|^8` above; `pivotBlowupOn univ p y` unflattens to
-  -- the radial scaling `(y p) • R` with `R_p = 1`, `R_k = y_k`, by `rfl`; `frobSq((y p)•R · A1) =
-  -- (y p)²·frobSq(R·A1)` by `radialDelta_loss_factor`). The remaining content:
-  -- (KEY decoupling) on `chartDomOn univ p` the ratios `|y_k| ≤ 1` (k≠p), so the blown-up off-pivot
-  --   entries `|y p · y_k| ≤ |y p|`; hence `flatBox334 (blowup) ⟺ |y p| ≤ 1` — the indicator decouples
-  --   to the pure radial constraint, separating the `y p` axis from the ratios with NO coupling.
-  -- (i) reindex `Fin 9 ≃ ℝ × (Fin 8 → ℝ)` (pivot axis × ratios), Tonelli-separate the radial factor
-  --   `|y p|^{8−2c'}` (finite for `c' < 9/2`, `radialAxis334_lt_top`) from the ratio/A1 residual;
-  -- (ii) the per-pivot row/col permutation to `(0,0)` (the induced A1-row permute is MP on the
-  --   symmetric A1-box) + `frobSq_angularR_ge` lower-bounds `frobSq(R·A1) ≥ (1/5)(‖T‖²+frobSq(Δ·S))`,
-  --   box-enlarged (`Δ∈[−2,2]`, `T∈[−3,3]`, the de-shift `d = raw − γβ`) to feed `resolved334_box_lt_top 3`.
-  sorry
+  -- (PROVED) rewrite the chart integrand on `D_p ⊆ chartDomOn` to the product radial-axis × A1-residual
+  -- form (`chart_integrand_factor`): the box indicator decouples to `|y p| ≤ 1`, the loss factors the
+  -- radial scale, and `(y p)²)^{−c'}` peels out — leaving `radInd(y p) · angA1Int`.
+  have hmsD : MeasurableSet (chartDomOn (Finset.univ : Finset (Fin 9)) p \ pivotZeroOn p) := by
+    refine MeasurableSet.diff ?_ ?_
+    · have heq : chartDomOn (Finset.univ : Finset (Fin 9)) p
+          = ⋂ k ∈ (Finset.univ.erase p), {y : Fin 9 → ℝ | |y k| ≤ 1} := by
+        ext y
+        simp only [chartDomOn, Set.mem_setOf_eq, Set.mem_iInter, Finset.mem_erase,
+          Finset.mem_univ, true_and, and_true, true_implies]
+      rw [heq]
+      refine Finset.measurableSet_biInter (Finset.univ.erase p) (fun k _ => ?_)
+      exact measurableSet_le ((measurable_pi_apply k).abs) measurable_const
+    · exact (measurable_pi_apply p (measurableSet_singleton 0))
+  rw [setLIntegral_congr_fun hmsD (fun y hy =>
+    chart_integrand_factor c' (by linarith) hc4 p y hy.1)]
+  -- (PROVED) the radial separation: transport through `piFinSuccAbove p` (MP), Fubini-factor the
+  -- pivot axis from the 8 ratios (`angA1Int` is `a`-invariant, `angA1Int_offpivot`), bound the radial
+  -- axis by `radialAxis334_lt_top`. The chart integral ≤ (radial axis) × (ratio residual).
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p with he
+  have hmp : MeasurePreserving e (volume) (volume) := volume_preserving_piFinSuccAbove _ p
+  -- the domain D_p pulls back through `e` to `{a≠0} ×ˢ [−1,1]^8`
+  have hpre : (chartDomOn (Finset.univ : Finset (Fin 9)) p \ pivotZeroOn p)
+      = e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))) := by
+    ext y
+    simp only [chartDomOn, pivotZeroOn, Set.mem_diff, Set.mem_setOf_eq, Set.mem_preimage,
+      Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, he]
+    show (_ ∧ _) ↔ ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p) y).1 ≠ 0 ∧ _
+    constructor
+    · rintro ⟨h1, h2⟩
+      refine ⟨h2, fun j => ?_⟩
+      rw [Set.mem_Icc, ← abs_le]
+      exact h1 (p.succAbove j) (Finset.mem_univ _) (Fin.succAbove_ne p j)
+    · rintro ⟨h1, h2⟩
+      refine ⟨fun k _ hk => ?_, h1⟩
+      obtain ⟨j, rfl⟩ := Fin.exists_succAbove_eq hk
+      have := h2 j; rw [Set.mem_Icc, ← abs_le] at this; exact this
+  have hSms : MeasurableSet
+      (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))) :=
+    MeasurableSet.prod (by measurability)
+      (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+  -- abbreviate the product integrand g
+  set g : (Fin 9 → ℝ) → ℝ≥0∞ := fun y =>
+    (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) (y p)
+      * angA1Int c' p y with hgdef
+  have hgmeas : Measurable g := by
+    rw [hgdef]
+    refine Measurable.mul ?_ (measurable_angA1Int c' p)
+    have hind : Measurable (fun a : ℝ =>
+        (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a) := by
+      refine Measurable.indicator ?_ measurableSet_Icc
+      exact ENNReal.measurable_ofReal.comp ((measurable_id.abs).pow_const _)
+    exact hind.comp (measurable_pi_apply p)
+  -- transport: ∫_{D_p} g = ∫_{ {a≠0}×box8 } g (e.symm q)
+  rw [hpre]
+  have key := hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding (fun q => g (e.symm q))
+    (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)))
+  have htrans : (∫⁻ y in e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ
+        (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))), g y)
+      = ∫⁻ q in (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))),
+          g (e.symm q) := by
+    rw [← key]
+    refine setLIntegral_congr_fun (e.measurable hSms) (fun y _ => ?_)
+    rw [MeasurableEquiv.symm_apply_apply]
+  rw [htrans]
+  -- Fubini: ∫_{ {a≠0}×box8 } g(e.symm (a,z)) = ∫_{a≠0} ∫_{box8} g(e.symm (a,z))
+  have hgsymm_meas : Measurable (fun q : ℝ × (Fin 8 → ℝ) => g (e.symm q)) :=
+    hgmeas.comp e.symm.measurable
+  rw [Measure.volume_eq_prod ℝ (Fin 8 → ℝ),
+    setLIntegral_prod _ hgsymm_meas.aemeasurable]
+  -- the integrand factors: g(e.symm (a,z)) = radInd(a) · angA1Int(e.symm (0,z))
+  have hfactor : ∀ a : ℝ, ∀ z : Fin 8 → ℝ,
+      g (e.symm (a, z))
+        = (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a
+          * angA1Int c' p (e.symm (0, z)) := by
+    intro a z
+    show (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c')))
+        ((e.symm (a, z)) p) * angA1Int c' p (e.symm (a, z))
+      = (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a
+          * angA1Int c' p (e.symm (0, z))
+    have hp_eq : (e.symm (a, z)) p = a := by rw [he]; simp [MeasurableEquiv.piFinSuccAbove]
+    have hoff : angA1Int c' p (e.symm (a, z)) = angA1Int c' p (e.symm (0, z)) := by
+      refine angA1Int_offpivot c' p _ _ (fun i hi => ?_)
+      obtain ⟨j, rfl⟩ := Fin.exists_succAbove_eq hi
+      rw [he]; simp [MeasurableEquiv.piFinSuccAbove]
+    rw [hp_eq, hoff]
+  -- the radial-axis factor is finite (`radialAxis334_lt_top`, c'<4<9/2)
+  have hradfin : (∫⁻ a in {a : ℝ | a ≠ 0},
+        (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a) < ⊤ := by
+    refine lt_of_le_of_lt (le_trans (lintegral_mono_set (Set.subset_univ _)) (le_of_eq ?_))
+      (radialAxis334_lt_top c' (by linarith))
+    rw [setLIntegral_univ, lintegral_indicator measurableSet_Icc]
+  -- the ratio residual `∫_{box8} angA1Int(e.symm (0,z))` is finite — the REMAINING GAP. The route
+  -- (BANKED atoms `angularA1_integral_le`/`ofReal_rpow_neg_antitone_of_imp`): per `z`, the per-pivot
+  -- row/col permutation to `(0,0)` normal form + `angularA1_integral_le` feed the box-enlarged
+  -- `resolved334_box_lt_top 3` (the raw↦Δ / row0↦T translation change-of-variables).
+  have hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
+        angA1Int c' p (e.symm (0, z))) < ⊤ := by
+    sorry
+  -- assemble: ∫_{a≠0} ∫_{box8} radInd(a)·H(z) = (∫ radInd)·(∫ H) < ⊤
+  have hinner : ∀ a : ℝ,
+      (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), g (e.symm (a, z)))
+        = (Set.Icc (-1 : ℝ) 1).indicator (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a
+          * ∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
+              angA1Int c' p (e.symm (0, z)) := by
+    intro a
+    have hradne : (Set.Icc (-1 : ℝ) 1).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (8 - 2 * c'))) a ≠ ⊤ := by
+      rw [Set.indicator_apply]; split <;> simp [ENNReal.ofReal_ne_top]
+    rw [lintegral_congr (fun z => hfactor a z), lintegral_const_mul' _ _ hradne]
+  rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
+  exact ENNReal.mul_lt_top hradfin hratiofin
 
 /-- **The blow-up bridge, the `2 < c'` core.** `∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'} < ⊤` for
 `2 < c' < 4`. The full `0 < c' < 4` statement reduces to this via the exponent-bump
