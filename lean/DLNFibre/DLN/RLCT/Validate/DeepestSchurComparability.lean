@@ -59,6 +59,134 @@ theorem frobSq_neg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) :
     frobSq (-X) = frobSq X := by
   simp only [frobSq, Matrix.neg_apply, neg_sq]
 
+/-! ## The two-layer Schur-complement LDU identity (the frame-free `hR` for the germ charge)
+
+The S5c atom below consumes `hR : R = S0·(1−K)·S1` for the GLOBAL product Schur complement `R`. These
+network-free `Matrix`-algebra lemmas SUPPLY that `hR` for the L = 2 two-layer product: the Schur
+complement of `(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` over the product pivot
+`P = A0·A1 + Y0·Z1` equals the middle-factor form of the per-layer Schur cores. The producer's frame
+stripping (the banked `hconj` chain) reduces its framed product to exactly this frame-free `∏C_s`, so
+`schur_product_ldu` delivers the `hR` the germ charge feeds into `schur_core_germ_comparability`.
+Design cert: `expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/frame-stripping-cert.md`
+(L = 2 only; general-L is a separate induction, not needed for the L = 2 headline). -/
+
+/-- Unipotent-strip invariance of the (1,1)-block Schur complement: for `fromBlocks P Q Rb Sb` with
+`P` invertible, the Schur complement `Sb − Rb·⅟P·Q` is unchanged after a lower-unipotent left factor
+`fromBlocks 1 0 X 1` and an upper-unipotent right factor `fromBlocks 1 V 0 1`. Pure inverse-cancel
+algebra (`P·⅟P = 1` localizes the cancellation). -/
+theorem schur_unipotent_strip {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+    {α : Type*} [CommRing α]
+    (P : Matrix r r α) (Q : Matrix r M α) (Rb : Matrix M r α) (Sb : Matrix M M α)
+    (X : Matrix M r α) (V : Matrix r M α) [Invertible P] :
+    ((Matrix.fromBlocks (1 : Matrix r r α) 0 X 1
+        * Matrix.fromBlocks P Q Rb Sb
+        * Matrix.fromBlocks (1 : Matrix r r α) V 0 1).toBlocks₂₂)
+      - (Matrix.fromBlocks (1 : Matrix r r α) 0 X 1
+          * Matrix.fromBlocks P Q Rb Sb
+          * Matrix.fromBlocks (1 : Matrix r r α) V 0 1).toBlocks₂₁
+        * ⅟P
+        * (Matrix.fromBlocks (1 : Matrix r r α) 0 X 1
+            * Matrix.fromBlocks P Q Rb Sb
+            * Matrix.fromBlocks (1 : Matrix r r α) V 0 1).toBlocks₁₂
+      = Sb - Rb * ⅟P * Q := by
+  rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
+  simp only [Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero,
+    Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₁₂]
+  -- Goal: `(X*P+Rb)*V + (X*Q+Sb) − (X*P+Rb)*⅟P*(P*V+Q) = Sb − Rb*⅟P*Q`.
+  simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc,
+    Matrix.mul_invOf_cancel_left, Matrix.invOf_mul_cancel_left,
+    Matrix.mul_invOf_cancel_right, Matrix.invOf_mul_cancel_right,
+    sub_eq_add_neg, Matrix.neg_mul, Matrix.mul_neg]
+  abel
+
+/-- `a·c − a·k·c = a·(1 − k)·c` for a square middle factor `k`. The clean final factoring of the
+two-layer Schur identity (`a = S0`, `c = S1`, `k = Z1·⅟P·Y0`), stated abstractly so it dodges the
+`set`-abbreviation unfolding that `Matrix.mul_sub` would otherwise trigger on `S1`'s body. -/
+theorem factor_one_sub_middle {M : Type*} [Fintype M] [DecidableEq M] {α : Type*} [CommRing α]
+    (a k c : Matrix M M α) :
+    a * c - a * k * c = a * (1 - k) * c := by
+  rw [Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, Matrix.mul_assoc]
+
+/-- The middle LDU factor of the two-layer product collapses to a single block matrix with the global
+pivot `P = A0·A1 + Y0·Z1` and the per-layer Schur cores `S0, S1`:
+`D0·(U0·L1)·D1 = fromBlocks P (Y0·S1) (S0·Z1) (S0·S1)`. -/
+theorem schur_middle_ldu_blocks {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+    {α : Type*} [CommRing α]
+    (A0 A1 : Matrix r r α) (Y0 : Matrix r M α) (Z1 : Matrix M r α)
+    (S0 S1 : Matrix M M α) [Invertible A0] [Invertible A1] :
+    Matrix.fromBlocks A0 (0 : Matrix r M α) (0 : Matrix M r α) S0 *
+        (Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) (0 : Matrix M r α) 1 *
+          Matrix.fromBlocks (1 : Matrix r r α) (0 : Matrix r M α) (Z1 * ⅟A1) 1) *
+        Matrix.fromBlocks A1 (0 : Matrix r M α) (0 : Matrix M r α) S1
+      = Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1) := by
+  rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply,
+    Matrix.fromBlocks_inj]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one,
+      add_zero, zero_add, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc,
+      Matrix.mul_invOf_cancel_left, Matrix.invOf_mul_cancel_left,
+      Matrix.mul_invOf_cancel_right, Matrix.invOf_mul_cancel_right,
+      mul_invOf_self, invOf_mul_self] <;>
+    abel
+
+/-- **The two-layer Schur-complement LDU identity** (the genuinely new bridge for the deepest-point
+germ charge). The GLOBAL (1,1)-block Schur complement of the product of two gauge-sliced layers
+`(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` over the product pivot `P = A0·A1 + Y0·Z1` equals
+the middle-factor form `S0·(1 − K)·S1` of the per-layer Schur cores `S_s = T_s − Z_s·⅟A_s·Y_s`, with
+`K = Z1·⅟P·Y0` the off-pivot correction. This is the `hR` hypothesis the banked S5c atom
+`schur_core_germ_comparability` consumes. Verified TRUE by sympy across `r,M` shapes. -/
+theorem schur_product_ldu {r M : Type*} [Fintype r] [DecidableEq r] [Fintype M] [DecidableEq M]
+    {α : Type*} [CommRing α]
+    (A0 A1 : Matrix r r α) (Y0 Y1 : Matrix r M α)
+    (Z0 Z1 : Matrix M r α) (T0 T1 : Matrix M M α)
+    [Invertible A0] [Invertible A1]
+    [hP : Invertible (A0 * A1 + Y0 * Z1)] :
+    (Z0 * Y1 + T0 * T1)
+        - (Z0 * A1 + T0 * Z1) * ⅟(A0 * A1 + Y0 * Z1) * (A0 * Y1 + Y0 * T1)
+      = (T0 - Z0 * ⅟A0 * Y0)
+          * (1 - Z1 * ⅟(A0 * A1 + Y0 * Z1) * Y0)
+          * (T1 - Z1 * ⅟A1 * Y1) := by
+  -- Abbreviations (NOT `set P`: that would copy `hP` to a fresh instance whose `⅟` differs).
+  set S0 : Matrix M M α := T0 - Z0 * ⅟A0 * Y0 with hS0def
+  set S1 : Matrix M M α := T1 - Z1 * ⅟A1 * Y1 with hS1def
+  -- The raw product equals the LDU sandwich `L0 · (middle) · U1`.
+  have hC0 : Matrix.fromBlocks A0 Y0 Z0 T0
+      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z0 * ⅟A0) 1
+        * Matrix.fromBlocks A0 (0 : Matrix r M α) (0 : Matrix M r α) S0
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A0 * Y0) 0 1 := by
+    rw [hS0def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A0 Y0 Z0 T0
+  have hC1 : Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z1 * ⅟A1) 1
+        * Matrix.fromBlocks A1 (0 : Matrix r M α) (0 : Matrix M r α) S1
+        * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) 0 1 := by
+    rw [hS1def]; exact Matrix.fromBlocks_eq_of_invertible₁₁ A1 Y1 Z1 T1
+  -- `C0·C1 = L0 · (D0·(U0·L1)·D1) · U1`, with the middle collapsed by `schur_middle_ldu_blocks`.
+  have hprod : Matrix.fromBlocks A0 Y0 Z0 T0 * Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (1 : Matrix r r α) 0 (Z0 * ⅟A0) 1
+          * Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1)
+          * Matrix.fromBlocks (1 : Matrix r r α) (⅟A1 * Y1) 0 1 := by
+    rw [hC0, hC1, ← schur_middle_ldu_blocks A0 A1 Y0 Z1 S0 S1]
+    simp only [Matrix.mul_assoc]
+  -- The explicit product blocks (LHS Schur) match `toBlocks` of the raw product.
+  have hblk : Matrix.fromBlocks A0 Y0 Z0 T0 * Matrix.fromBlocks A1 Y1 Z1 T1
+      = Matrix.fromBlocks (A0 * A1 + Y0 * Z1) (A0 * Y1 + Y0 * T1)
+          (Z0 * A1 + T0 * Z1) (Z0 * Y1 + T0 * T1) := by
+    rw [Matrix.fromBlocks_multiply]
+  -- Read off the Schur complement of the raw product from its explicit blocks, then strip.
+  -- Instantiate at `A0*A1+Y0*Z1` so the `Invertible` instance is `hP` (no `set`-copy mismatch).
+  have hstrip := schur_unipotent_strip (A0 * A1 + Y0 * Z1) (Y0 * S1) (S0 * Z1) (S0 * S1)
+    (Z0 * ⅟A0) (⅟A1 * Y1)
+  rw [← hprod, hblk] at hstrip
+  simp only [Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₂₁,
+    Matrix.toBlocks_fromBlocks₁₂] at hstrip
+  -- `hstrip : (Z0Y1+T0T1) − (Z0A1+T0Z1)·⅟P·(A0Y1+Y0T1) = S0·S1 − (S0·Z1)·⅟P·(Y0·S1)`.
+  rw [hstrip]
+  -- Final factoring: `S0·S1 − S0·(Z1·⅟P·Y0)·S1 = S0·(1 − Z1·⅟P·Y0)·S1`.
+  have hassoc : S0 * Z1 * ⅟(A0 * A1 + Y0 * Z1) * (Y0 * S1)
+      = S0 * (Z1 * ⅟(A0 * A1 + Y0 * Z1) * Y0) * S1 := by
+    simp only [Matrix.mul_assoc]
+  rw [hassoc, factor_one_sub_middle]
+
 /-- **The Schur-core remainder identity** (exact ring algebra, L = 2). With the global product Schur
 complement written in middle-factor form `R = S0 · (1 − K) · S1` (the block-LDU output, `K = Z1·A⁻¹·Y0`
 the off-pivot correction), the deviation of `R` from the product of per-layer cores `∏S = S0·S1` is

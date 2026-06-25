@@ -16,6 +16,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrame
 import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
 import DLNFibre.DLN.RLCT.Foundations.DeepestSplitHaar
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
+import DLNFibre.DLN.RLCT.Validate.DeepestGermCharge
 import DLNFibre.DLN.RLCT.Validate.FrontPivotProducer
 
 /-!
@@ -2628,14 +2629,31 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- global Schur complement of `Mw`, `coreΦ = deepestCoreF (coreAbsorb (split w)).2.1`, `Sreg`
     -- the three regular-block energies). GERM-scoped (NOT `∀ w` — the in-sum charge is FALSE globally:
     -- where `Sreg(w) = 0` but `Rcore ≠ coreΦ`, `|…| ≤ C·0` fails; it holds only near `w0`). This is
-    -- the FRAME-STRIPPING-bridge + S5c germ charge (see the per-conjunct notes below): lemma 1
-    -- (`deepestCoreF_coreAbsorb_eq_prodSchur`, banked above) pins `coreΦ = frobSq (∏S)`; the verified
-    -- 2-layer LDU (sympy `two-layer-ldu-verify.py`) gives `Rcore = S0·(1−K)·S1`; the banked
-    -- `schur_core_germ_comparability` + Cauchy–Schwarz then bound the in-sum difference by `C·Sreg`
-    -- on the germ. Stated with the TOTAL inverse `(·)⁻¹` (= `⅟P00` on the S5a set,
-    -- `invOf_eq_nonsing_inv`) so the constant `C` is `w`-uniform on the germ. UNBUILT (the
-    -- frame-aware identification of `Rcore` with the lemma-1 `S0,S1` despite the per-layer `Pf,Qf`
-    -- frames). The germ set is folded into `U` via `Filter.inter_mem`, so `hw.2` carries it per-`w`.
+    -- the FRAME-STRIPPING-bridge + S5c germ charge. **REDUCED (thread 31, 2026-06-25):** this exact
+    -- germ-charge shape is now DISCHARGED by the banked, network-free conditional bridge
+    -- `germ_charge_of_schur_factorization` (`DeepestGermCharge.lean`) FROM three named per-`w`
+    -- hypotheses (with `R w := the Schur matrix`, so `frobSq (R w) = the inline ∑∑(·)²` by `rfl`):
+    --   (h1) `hR`   : `R w = S0 w · (1 − K w) · S1 w` — supplied by the BANKED frame-free two-layer LDU
+    --        `schur_product_ldu` (`DeepestSchurComparability.lean`, PROVEN this tide, all `r,M`), ONCE
+    --        the per-layer block decomposition `Mw.toBlocks ↔ (fromBlocks A0 Y0 Z0 T0)·(…A1 Y1 Z1 T1)`
+    --        is established (the frame-aware identification — still UNBUILT; needs the per-layer
+    --        gauge-slice block reads + the interior-frame telescope at the BLOCK level, NOT just the
+    --        single-matrix telescope `hS2_front`).
+    --   (h2) `hCore`: `coreΦ w = frobSq (S0 w · S1 w)` — from lemma 1
+    --        (`deepestCoreF_coreAbsorb_eq_prodSchur`, banked above: `coreΦ = frobSq (prod (deepestM) S')`,
+    --        `prod = S0'·S1'` at L=2), ONCE lemma-1's cores `S'_s = (symm core)_s + schurCorrection_s`
+    --        are matched to `schur_product_ldu`'s `S_s = T_s − Z_s·⅟A_s·Y_s` (UNBUILT).
+    --   (h3) `hRem` : `frobSq (R w − S0 w · S1 w) ≤ Crem · (Sreg w)²` — the QUADRATIC remainder charge
+    --        (`R − S0·S1 = −S0·K·S1`, `K = Z1·⅟P·Y0 = O(Sreg)` since `Y0, Z1 = O(√Sreg)` are reg
+    --        blocks), via `schur_core_remainder_frobeniusSq_le` (banked) + the `‖Y0‖,‖Z1‖ ≤ √Sreg`
+    --        bound (UNBUILT — the regular-block size estimate).
+    -- plus the eventual boundedness of `coreΦ`/`Sreg` near `w0` (continuity). GERM-scoped (NOT `∀ w` —
+    -- the in-sum charge is FALSE globally: where `Sreg(w) = 0` but `Rcore ≠ coreΦ`, `|…| ≤ C·0` fails).
+    -- Stated with the TOTAL inverse `(·)⁻¹` (= `⅟P00` on the S5a set, `invOf_eq_nonsing_inv`) so `C` is
+    -- `w`-uniform on the germ. The germ set is folded into `U` via `Filter.inter_mem` (`hw.2` per-`w`).
+    -- **STILL `sorry`** — the three named obligations above (h1's block decomposition, h2's core match,
+    -- h3's reg-block estimate) are the genuine unbuilt geometry; the bridge + LDU lemma are the
+    -- banked half. (Multi-tide: ~300+ LoC of per-layer block-reindex/gauge-read algebra; cert-confirmed.)
     obtain ⟨C, hCnn, hcharge⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
         |(∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
