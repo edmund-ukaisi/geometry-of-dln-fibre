@@ -3728,3 +3728,20 @@ the majorant.  This is only the below-regular-critical case; it still does not
 prove the `+dim/2` shifted threshold, the endpoint, the divergent side,
 uniform asymptotics, density/prior transport, p.13 chart/Jacobian construction,
 normal crossings, pole order, or RLCT.
+
+A2 product bounded-away integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-bounded-away-integrability.md`.
+Lean proves in `RegularSuspensionIntegrability.lean` that if the base measure
+is finite and the base term is a.e. bounded below by `epsilon>0`, then the
+lower integral of `(a(x)+||u||^2)^(-s)` over `X x ball(0,R)` is finite for
+all `s>=0`.  This is the away-from-residual-zero side only.  It does not prove
+the singular-base bound or the `+dim/2` shifted threshold.
+
+Next A2 analytic target: follow the xhigh Lean-route probe
+`threads/03-block-product-reduction/scout-a2-regular-square-threshold-shift-lean-route.md`.
+Use Japanese-bracket integrability plus Haar scaling to prove the fixed
+positive-parameter supercritical fiber bound
+`∫_{ball} (a+||u||^2)^(-s) <= C*a^(dim/2-s)` for `a>0` and
+`dim/2<s`, then lift it to a product theorem with a base integral of
+`a(x)^(dim/2-s)`.  This remains threshold-level integrability control, not
+pole-order preservation or normal-crossing extraction.

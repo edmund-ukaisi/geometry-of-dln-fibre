@@ -2881,3 +2881,42 @@ shift, no theorem for `s >= dim(E)/2`, no endpoint, lower/divergence, uniform
 asymptotic in `a`, bounded-density/prior theorem, Aoyagi p.13 analytic
 chart/Jacobian theorem, normal-crossing construction, pole order, or RLCT
 theorem is proved.
+
+## 2026-06-25 A2 product bounded-away integrability
+
+Reproduction:
+`reproduction-a2-product-bounded-away-integrability.md`.
+Statement card:
+`statement-card-a2-product-bounded-away-integrability.md`.
+Review:
+`review-a2-product-bounded-away-integrability.md`.
+Threshold-shift Lean-route probe:
+`scout-a2-regular-square-threshold-shift-lean-route.md`.
+
+Lean now proves the product-coordinate regular-ball estimate away from the
+residual zero set in `RegularSuspensionIntegrability.lean`:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_le
+```
+
+For a finite base measure `mu`, additive Haar measure `nu` on a nontrivial
+finite-dimensional real normed regular space `E`, a positive constant
+`epsilon`, an a.e. lower bound `epsilon <= a(x)`, and `s>=0`, the lower
+integral over `alpha x E` of
+
+```text
+ENNReal.ofReal (1_{ball(0,R)}(u) * (a(x)+||u||^2)^(-s))
+```
+
+is finite.  The proof bounds the integrand by `epsilon^(-s)` on the regular
+ball, uses `measure_ball_lt_top`, and factors the constant-ball majorant by
+`lintegral_prod_mul`.
+
+Boundary: away-from-zero finite side only.  No singular-base bound where
+`a(x)` approaches zero, no `+dim(E)/2` threshold shift, no endpoint,
+lower/divergence, uniform asymptotic in `a`, bounded-density/prior theorem,
+Aoyagi p.13 analytic chart/Jacobian theorem, normal-crossing construction,
+pole order, or RLCT theorem is proved.  The next analytic target is the
+Japanese-bracket/Haar-scaling supercritical fiber bound recorded in the scout
+route probe.

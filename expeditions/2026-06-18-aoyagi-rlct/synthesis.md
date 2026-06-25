@@ -9032,6 +9032,35 @@ Statement card:
 Review:
 `threads/03-block-product-reduction/review-a2-product-below-critical-integrability.md`.
 
+Latest A2 product bounded-away integrability:
+`RegularSuspensionIntegrability.lean` now proves the product estimate away from
+the residual zero set:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_le
+```
+
+If the base measure is finite, the regular factor is finite-dimensional with
+additive Haar measure, `epsilon>0`, `a(x)>=epsilon` for base-a.e. `x`, and
+`s>=0`, then the `ENNReal.ofReal` lower integral over `alpha x E` of the
+ball-supported function `(a(x)+||u||^2)^(-s)` is finite.  The proof uses the
+a.e. bound by the constant `epsilon^(-s)` on the regular ball, finiteness of
+Haar measure on metric balls, and `lintegral_prod_mul`.
+
+This is the easy away-from-zero side of the regular-square threshold picture.
+It does not analyze the singular base region where `a(x)` approaches zero and
+does not prove the `+dim(E)/2` threshold shift, endpoint behavior, divergence,
+uniform asymptotics, bounded-density/prior transport, Aoyagi's p.13 analytic
+chart/Jacobian construction, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-bounded-away-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-bounded-away-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-bounded-away-integrability.md`.
+Lean-route probe for the next threshold-shift theorem:
+`threads/03-block-product-reduction/scout-a2-regular-square-threshold-shift-lean-route.md`.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

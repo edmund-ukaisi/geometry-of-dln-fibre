@@ -6137,6 +6137,32 @@ Nonclaims: no regular-variable `+dim(E)/2` threshold shift, no theorem for
 asymptotics, no bounded-density/prior theorem, no Aoyagi p.13 analytic
 chart/Jacobian construction, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 product bounded-away integrability:
+Lean now proves the away-from-residual-zero product estimate in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.
+The theorem
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_le`
+says that for a finite base measure, additive Haar regular factor, positive
+constant `epsilon`, a.e. lower bound `epsilon <= a(x)`, and `s>=0`, the
+ball-supported lower integral of `(a(x)+||u||^2)^(-s)` over the product is
+finite.  The proof dominates the integrand by the constant
+`epsilon^(-s)` on the regular ball and factors that majorant by
+`lintegral_prod_mul`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-product-bounded-away-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-product-bounded-away-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-bounded-away-integrability.md`.
+Threshold-shift route probe:
+`threads/03-block-product-reduction/scout-a2-regular-square-threshold-shift-lean-route.md`.
+
+Nonclaims: no singular-base theorem where `a(x)` approaches zero, no
+regular-variable `+dim(E)/2` threshold shift, no endpoint behavior, no
+lower/divergence side, no uniform asymptotics, no bounded-density/prior
+theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

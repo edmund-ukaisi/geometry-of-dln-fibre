@@ -353,6 +353,57 @@ theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
   exact lt_of_le_of_lt hmono
     (by rw [hprod]; exact ENNReal.mul_lt_top (measure_lt_top μ Set.univ) hgfin)
 
+/-- Product-coordinate finite estimate away from the residual zero set.  If the
+base term is bounded below by a positive constant almost everywhere, the
+regular variables introduce no singularity on a regular ball. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_le
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E] [Nontrivial E]
+    {μ : Measure α} [IsFiniteMeasure μ]
+    {ν : Measure E} [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {s R ε : ℝ}
+    (hε : 0 < ε) (ha : ∀ᵐ x ∂μ, ε ≤ a x) (hs : 0 ≤ s) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) < ∞ := by
+  let C : ℝ := ε ^ (-s)
+  let g : E → ℝ≥0∞ := fun u =>
+    (Metric.ball (0 : E) R).indicator (fun _ : E => ENNReal.ofReal C) u
+  have hg : AEMeasurable g ν := by
+    dsimp [g]
+    exact (measurable_const.indicator Metric.isOpen_ball.measurableSet).aemeasurable
+  have hgfin : (∫⁻ u : E, g u ∂ν) < ∞ := by
+    have hball : ν (Metric.ball (0 : E) R) < ∞ := measure_ball_lt_top
+    have hCtop : ENNReal.ofReal C < ∞ := ENNReal.ofReal_lt_top
+    dsimp [g]
+    rw [lintegral_indicator_const Metric.isOpen_ball.measurableSet]
+    exact ENNReal.mul_lt_top hCtop hball
+  have hmono :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν)
+        ≤ ∫⁻ z : α × E, g z.2 ∂ μ.prod ν := by
+    apply lintegral_mono_ae
+    have ha_prod : ∀ᵐ z : α × E ∂ μ.prod ν, ε ≤ a z.1 :=
+      (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae ha
+    filter_upwards [ha_prod] with z haz
+    dsimp [g, C]
+    by_cases hzball : z.2 ∈ Metric.ball (0 : E) R
+    · simp only [Set.indicator_of_mem hzball]
+      apply ENNReal.ofReal_le_ofReal
+      have hε_le : ε ≤ a z.1 + ‖z.2‖ ^ 2 := by nlinarith [sq_nonneg ‖z.2‖]
+      simpa using Real.rpow_le_rpow_of_nonpos hε hε_le (by linarith)
+    · simp [Set.indicator_of_notMem hzball]
+  have hprod :
+      (∫⁻ z : α × E, g z.2 ∂ μ.prod ν) =
+        μ Set.univ * ∫⁻ u : E, g u ∂ν := by
+    simpa using
+      (lintegral_prod_mul (μ := μ) (ν := ν)
+        (f := fun _ : α => (1 : ℝ≥0∞)) (g := g) aemeasurable_const hg)
+  exact lt_of_le_of_lt hmono
+    (by rw [hprod]; exact ENNReal.mul_lt_top (measure_lt_top μ Set.univ) hgfin)
+
 end RadialFiniteSide
 
 end Aoyagi
