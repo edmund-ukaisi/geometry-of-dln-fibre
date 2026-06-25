@@ -118,6 +118,24 @@ application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanab
 `rlct = C/2` is realized (geometric half zero-cite; only the Aoyagi `rlct = ½·codim` equality Cited). Full record:
 `expeditions/2026-06-23-fibre-codim/synthesis.md`.
 
+**Aoyagi closed form recovered def-by-def (expedition `fibre-codim`, 2026-06-25).** `DLN.Aoyagi.ClosedForm`:
+`codimRepCanonical_fibre_eq_two_paperLambda` — `codim(mult⁻¹ B) = 2·paperLambda`, with `paperLambda` Aoyagi
+Thm 2's displayed λ at *her own* Definition-3 active-set size `paperEll` (certified the unique solution of her
+Definition-3 conditions; the paper's `(ℓ−1)→ℓ` misprint corrected). Zero-cite, axiom-clean.
+
+**Type-universe lift (Core) — roadmapped, low priority.** The codim/θ geometric results sit at `k : Type`
+(universe 0; covers ℝ/ℂ/`AlgebraicClosure ℚ`). Lift `Core.FibreCodimFinal`, the Schur-side no-drop, and the
+chart machinery (`Core.ChartLocalizedAlgEquiv`) to `Type u`. Mechanical refactor, no new math; unblocks
+fully-general statements. Deferred behind the θ side.
+
+**Next: the θ / top-component side (expedition `theta-components`, 2026-06-25).** Resolve the order θ and the
+rest of Lemma 4.6 (full bundle, scope B) — see `expeditions/2026-06-25-theta-components/brief.md`. Key open
+finding: Aoyagi's order `θ = a(ℓ−a)+1` and the LR/Lean component-count `θ = C(m,|δ|)` **diverge for `|δ| ≥ 2`**
+(smallest witness `(2,2,2,2,2)`, r=0: 5 vs 6) — agreeing only for `|δ| ≤ 1` (hence `(3,3,3)` = 2). Design goal:
+the full local-trivial bundle `mult⁻¹(B) → Mat^{=r}` should consolidate codim + θ + smoothness and may retire
+the codim hand-built trivialization (promoting `e` to a genuine bundle chart, climbing the reducedness wall the
+codim expedition routed around).
+
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
 orbits = isomorphism classes (Thm 2.4), Gabriel's interval-module decomposition (Thm 2.5), orbits ↔ Kostant
