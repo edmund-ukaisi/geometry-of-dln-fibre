@@ -3509,3 +3509,39 @@ family `Cedge`; it does not derive global measurability from only a
 `ContinuousAt Cedge x0` hypothesis.  It does not prove product-chart
 construction, original-loss comparison, density/Jacobian transport, residual
 positivity/integrability, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 continuous density local bounds
+
+Reproduction:
+`reproduction-a2-continuous-density-local-bounds.md`.
+Statement card:
+`statement-card-a2-continuous-density-local-bounds.md`.
+Review:
+`review-a2-continuous-density-local-bounds.md`.
+
+Lean now proves a generic topological density-boundedness handoff in
+`LocalMeasureHandoff.lean`:
+
+```text
+exists_pos_radius_le_eventually_density_bounds_of_continuousAt_pos
+exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
+```
+
+If a supplied density factor is continuous at `(x0,0)` and positive there,
+then for some `R <= Rmax` and `C >= 0`, eventually near `x0` and for every
+regular-coordinate vector in `ball(0,R)`, one has `0 <= density <= C`.
+
+`RegularSuspensionLocalMeasure.lean` now also abstracts residual
+source-restriction plumbing and gives a p.13 local finite-integral consumer:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_mono
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_continuousAt_pos_density
+```
+
+Boundary: this removes only the separate supplied density nonnegativity and
+upper-bound filters once the transported density factor is supplied as positive
+and continuous at the center.  It does not construct that density/Jacobian
+factor, prove source-measure transport, prove the original-loss lower
+comparison, or prove residual positivity/integrability, normal crossings, pole
+order, or RLCT.

@@ -3897,3 +3897,13 @@ measurability from only a `ContinuousAt Cedge x0` hypothesis.  Remaining
 analytic inputs for the local finite-integral bridge: original-loss lower
 comparison, density/Jacobian transport, residual positivity, and residual
 negative-power integrability.
+
+A2 continuous density local bounds have now landed:
+`threads/03-block-product-reduction/reproduction-a2-continuous-density-local-bounds.md`.
+Lean proves that a supplied density factor which is positive and continuous at
+the product-chart center is locally nonnegative and bounded above after
+shrinking the regular-coordinate radius.  The p.13 finite-integral bridge now
+has a consumer taking that continuous-density input directly.  This moves the
+boundedness consequence only; the actual density/Jacobian factor, source
+measure transport, original-loss lower comparison, residual positivity, and
+residual negative-power integrability remain open/supplied.

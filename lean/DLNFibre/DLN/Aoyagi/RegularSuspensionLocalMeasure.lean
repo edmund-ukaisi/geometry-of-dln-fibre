@@ -442,6 +442,42 @@ def residualNegPowerIntegrableOn
       ∂ (μ.restrict source)) < ∞
 
 set_option linter.unusedSectionVars false in
+/-- Residual positivity and negative-power integrability restrict to smaller
+source sets. -/
+theorem residualSourceHypotheses_mono
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [MeasurableSpace α]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {source source' : Set α} {μ : Measure α} {t : ℝ}
+    (hsubset : source' ⊆ source)
+    (hpos :
+      ∀ᵐ x ∂ μ.restrict source,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x))
+    (hbase : residualNegPowerIntegrableOn
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source μ t) :
+    (∀ᵐ x ∂ μ.restrict source',
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge source' μ t := by
+  constructor
+  · exact ae_mono (Measure.restrict_mono hsubset le_rfl) hpos
+  · exact
+      (lintegral_mono'
+        (Measure.restrict_mono hsubset le_rfl)
+        (le_refl (fun x : α => ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t))))).trans_lt
+        (by simpa [residualNegPowerIntegrableOn] using hbase)
+
+set_option linter.unusedSectionVars false in
 /-- Local finite-side p.13 regular-coordinate integrability from supplied
 source-stratum residual integrability and supplied uniform-in-fiber loss/density
 bounds.
@@ -602,23 +638,13 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       hsource_meas hloss hdensity_nonneg hdensity_le with
     ⟨U, hUopen, hxU, hloss_ae, hdensity_nonneg_ae, hdensity_le_ae⟩
   have hsubset : U ∩ sourceStratum ⊆ sourceStratum := Set.inter_subset_right
-  have hpos_U :
-      ∀ᵐ x ∂ μ.restrict (U ∩ sourceStratum),
-        0 < aoyagiCoordinateSquareSum
-          (paperEndpointFixedBaseResidualBlockCoordinateMap
-            (K := ℝ) W B U₀ hU₀ Cedge x) := by
-    exact ae_mono (Measure.restrict_mono hsubset le_rfl) hpos_source
-  have hbase_U :
-      residualNegPowerIntegrableOn
-        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge
-        (U ∩ sourceStratum) μ t := by
-    exact (lintegral_mono'
-      (Measure.restrict_mono hsubset le_rfl)
-      (le_refl (fun x : α => ENNReal.ofReal
-        ((aoyagiCoordinateSquareSum
-          (paperEndpointFixedBaseResidualBlockCoordinateMap
-            (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t))))).trans_lt
-      (by simpa [residualNegPowerIntegrableOn, sourceStratum] using hbase_source)
+  rcases residualSourceHypotheses_mono
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (source := sourceStratum)
+      (source' := U ∩ sourceStratum) (μ := μ) (t := t)
+      hsubset hpos_source
+      (by simpa [residualNegPowerIntegrableOn, sourceStratum] using hbase_source) with
+    ⟨hpos_U, hbase_U⟩
   have hfin :=
     lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top
       (W := W) (B := B) sourceData
@@ -630,6 +656,144 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       (by simpa [ρ, sourceStratum] using hdensity_nonneg_ae)
       (by simpa [ρ, sourceStratum] using hdensity_le_ae)
   exact ⟨U, hUopen, hxU, by simpa [ρ, sourceStratum] using hfin⟩
+
+set_option linter.unusedSectionVars false in
+/-- Local finite-side p.13 integrability when the transported density factor is
+supplied as a positive continuous function at the chart center.
+
+This removes the separate local nonnegativity and boundedness hypotheses for
+the density by shrinking the regular-coordinate radius.  It still does not
+construct the density/Jacobian factor or prove the loss lower bound. -/
+theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_continuousAt_pos_density
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t Rmax c : ℝ}
+    (hRmax : 0 < Rmax) (hc : 0 < c) (ht : 0 < t)
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge))
+    (hpos_source :
+      ∀ᵐ x ∂ μ.restrict
+          (paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) W B Cedge r rEdge),
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x))
+    (hbase_source :
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) Cedge
+        (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge) μ t)
+    (hdensity_cont : ContinuousAt density (x₀, 0))
+    (hdensity_pos : 0 < density (x₀, 0))
+    (hloss :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rmax →
+            c * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) :
+    ∃ R C : ℝ, ∃ U : Set α,
+      0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ x₀ ∈ U ∧
+        (∫⁻ z : α × EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          ENNReal.ofReal
+            ((Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) R).indicator
+              (fun u =>
+                (loss (z.1, u)) ^
+                  (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2)) *
+                  density (z.1, u)) z.2) ∂
+            (μ.restrict
+              (U ∩ paperEndpointFixedBaseSourceRankStratum
+                (K := ℝ) W B Cedge r rEdge)).prod ν) < ∞ := by
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge
+  rcases exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
+      (s := sourceStratum) (Rmax := Rmax) hdensity_cont hdensity_pos hRmax with
+    ⟨R, C, hR, hRle, hC, hdensity_nonneg, hdensity_le⟩
+  have hloss_R :
+      ∀ᶠ x in nhdsWithin x₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ ρ,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ ρ) R →
+            c * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u) := by
+    filter_upwards [hloss] with x hx u hu
+    exact hx u (Metric.ball_subset_ball hRle hu)
+  rcases exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top
+      (W := W) (B := B) sourceData
+      (μ := μ) (ν := ν) (loss := loss) (density := density)
+      (t := t) (R := R) (c := c) (C := C)
+      hR hc hC ht hsource_meas hpos_source hbase_source
+      (by simpa [ρ, sourceStratum] using hloss_R)
+      (by simpa [ρ, sourceStratum] using hdensity_nonneg)
+      (by simpa [ρ, sourceStratum] using hdensity_le) with
+    ⟨U, hUopen, hxU, hfin⟩
+  exact ⟨R, C, U, hR, hRle, hC, hUopen, hxU, by simpa [ρ, sourceStratum] using hfin⟩
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
