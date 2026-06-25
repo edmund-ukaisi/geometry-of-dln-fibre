@@ -134,3 +134,23 @@ per-prime no-drop) — relayed to thread 08. Certificate `threads/07-dsig-avoida
 **Thread 08 (fibre-count wiring) — running.** Building the reusable `TopDimMinPrimes` localization-survival
 lemma + W2/W3/chart-`e` + assessing W0; W1 dischargeable now (per thread 07). Composes the headline
 `numTop(fibre d E_r) = cTheta(d−r)` if W0 also wires.
+
+**COUNT CHAIN — `_of` form LANDED + reviewed PASS; unconditional headline BLOCKED on a plumbing diamond
+(2026-06-25, committed ba288ceb).** The full count chain (E0·W0·W1·chartE·W2·poly·W3) is composed in
+`Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_of`: `(TopDimMinPrimes(O(fibre))).ncard =
+cTheta(d−r)`, taking the W2 rung as an explicit hypothesis `hW2`. **Decorrelated fidelity reviewer: PASS** —
+fidelity sound (TopDimMinPrimes genuinely counts top-dim components; `(2,2,2,2,2)`→6 not 10; W3 generator↔
+radical; cTheta(d−r)=C(m,|δ|)), all 7 rungs compose, the keystone's **per-prime** no-drop `hper` genuinely
+discharged (Codex produced the exact counterexample showing global-no-drop+avoidance is insufficient — the
+Lean has the per-prime form), axiom-clean `[propext, Classical.choice, Quot.sound]`. All rung lemmas (W0–W3,
+chartE, the keystone) committed green. **So the count is MATHEMATICALLY ESTABLISHED** (the `_of` chain + the
+separately-proven W2 lemma `ncard_topDimMinPrimes_away_chartGfib_eq`).
+
+**The one open piece — the UNCONDITIONAL headline** `numTop_fibre_eq_cTheta_dminus` (discharge `hW2` with the
+W2 lemma) is **NOT yet landed**: composing them inline re-triggers the W2 instance-diamond at the
+`Away(chartGfib)` boundary (leaks a `⊢ Field sorry` metavariable — the nested `MvPolynomial`-over-quotient
+`AddMonoidAlgebra` vs `Ring.toSemiring` diamond W2 dodged via the flat iso). This is **plumbing, not a math
+gap** (reviewer + Codex concur). Thread 09 is fixing it (pin the instance at the composition / consume W2's
+flat-transported form), with a clean fallback (keep the green `_of` form; document the diamond). Controller
+gates `#print axioms` sorryAx-free before committing. **Correction:** earlier framing of this as an "imminent
+one-liner" was an overclaim the fidelity gate caught — the discharge hits the diamond.
