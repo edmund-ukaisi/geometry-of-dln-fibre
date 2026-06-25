@@ -244,3 +244,9 @@ import DLNFibre.Core.ChartSigmaGaugeBridge
 import DLNFibre.Core.ChartPhiDescent
 -- chartPhiLoc : Away gF →ₐ[k] Away dsig (the Φ-direction localized hom; seam E glues e from it).
 import DLNFibre.Core.ChartPhiLoc
+-- seam E (route-β hard rung CLOSED): gauge tower law + Φ∘Ψ/Ψ∘Φ round-trip legs + the localized
+-- chart AlgEquiv e := chartLocalizedAlgEquiv : Away dsig ≃ₐ[k] Away gF (AlgEquiv.ofAlgHom).
+import DLNFibre.Core.ChartGaugeTower
+import DLNFibre.Core.ChartRoundTrip
+import DLNFibre.Core.ChartRoundTripH1
+import DLNFibre.Core.ChartLocalizedAlgEquiv
