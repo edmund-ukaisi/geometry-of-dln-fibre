@@ -6352,6 +6352,38 @@ prior transport theorem, no endpoint behavior, no lower/divergence side or
 threshold equality, no Aoyagi p.13 analytic chart/Jacobian construction, no
 normal crossings, no pole order, and no RLCT.
 
+Latest A2 positive-box monomial integrability:
+Lean now proves the elementary positive-box monomial product theorem in
+`lean/DLNFibre/DLN/Aoyagi/MonomialChartIntegrability.lean`.  For finite
+coordinate index type `i`, radii `R_i>0`, and exponents `p_i>-1`,
+
+```text
+∫⁻ x, ENNReal.ofReal (prod_i x_i^(p_i))
+  d Measure.pi (i |-> volume.restrict (0,R_i))
+<
+infinity.
+```
+
+It also proves the Aoyagi exponent-form corollary with
+`p_i=h_i-2*t*k_i`, under the strict inequalities `2*t*k_i<h_i+1`.
+Lean names:
+`lintegral_ofReal_rpow_restrict_Ioo_lt_top`,
+`lintegral_ofReal_monomialFactor_restrict_Ioo_lt_top`,
+`lintegral_ofReal_fintype_rpow_positiveBox_lt_top`, and
+`lintegral_ofReal_fintype_monomialFactor_positiveBox_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-positive-box-monomial-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-positive-box-monomial-integrability.md`.
+
+Nonclaims: no residual-loss lower-bound theorem, no density/prior upper-bound
+theorem, no signed-box absolute-value theorem, no endpoint behavior, no
+lower/divergence side or threshold equality, no finite chart cover theorem, no
+Aoyagi p.13 analytic chart/Jacobian construction, no normal crossings, no pole
+order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

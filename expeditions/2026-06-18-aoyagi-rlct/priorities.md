@@ -3786,13 +3786,27 @@ Lean proves that if `b(x) >= c*a(x)` a.e. with `c>0`, `a(x)>0` a.e.,
 lower integral.  Treat this as comparison plumbing for monomial-chart residual
 work, not as monomial integrability or a chart theorem.
 
-Updated next A2 analytic target: prove, for the reduced residual model itself,
-the residual negative-power hypothesis `∫ ofReal(a(x)^(-t)) < infinity` in
-the relevant local monomial-chart/density setting.  The source scout's current
-recommended target is an elementary monomial criterion:
-`a(z) >= c * prod |z_j|^(2*k_j)` and density
-`rho(z) <= C * prod |z_j|^(h_j)` imply finite `a(z)^(-t) rho(z)`
-integral under the strict inequalities `2*t*k_j < h_j+1`.  This is still
-threshold-level integrability control, not pole-order preservation, a
-bounded-density/prior theorem, p.13 analytic chart/Jacobian construction, or
-normal-crossing extraction.
+A2 positive-box monomial integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-integrability.md`.
+Lean proves the elementary product theorem on
+`prod_i (0,R_i)`: if `R_i>0` and `p_i>-1`, then
+`∫ ofReal(prod_i x_i^(p_i))` is finite for the finite product measure.  The
+Aoyagi corollary uses `p_i=h_i-2*t*k_i`, under
+`2*t*k_i<h_i+1`.  Treat this as product-factor integrability only, not a
+residual lower-bound, density/prior transport, signed-box, chart-cover,
+endpoint, pole-order, or RLCT theorem.
+
+Updated next A2 analytic target: prove the residual/density comparison theorem
+in the local monomial setting.  The desired next statement should combine the
+landed positive-box theorem and lower-bound comparison under explicit a.e.
+hypotheses.  Do not copy the sketch as a theorem statement without adding
+`c>0`, a suitable finite nonnegative density constant `C`, the sign condition
+on `t`, a.e. positivity where negative powers are used, the needed
+measurability or lower-integral comparison assumptions, and a signed-box to
+positive-box decomposition/comparison.  With those hypotheses, the intended
+shape is that `loss(z) >= c * prod |z_j|^(2*k_j)` and
+`0 <= rho(z) <= C * prod |z_j|^(h_j)` imply finite `loss(z)^(-t) * rho(z)`
+integral under strict `2*t*k_j < h_j+1`.  This is still threshold-level
+integrability control, not pole-order preservation, p.13 analytic
+chart/Jacobian construction, finite chart coverage, or normal-crossing
+extraction.

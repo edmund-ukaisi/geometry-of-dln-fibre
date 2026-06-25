@@ -3159,3 +3159,41 @@ bound for Aoyagi's product residual, does not prove monomial integrability,
 does not prove a finite chart cover theorem, and does not prove
 bounded-density/prior transport, endpoint/divergence, threshold equality, p.13
 analytic chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 positive-box monomial integrability
+
+Reproduction:
+`reproduction-a2-positive-box-monomial-integrability.md`.
+Statement card:
+`statement-card-a2-positive-box-monomial-integrability.md`.
+Review:
+`review-a2-positive-box-monomial-integrability.md`.
+
+Lean now proves the positive-box monomial factor theorem in
+`MonomialChartIntegrability.lean`:
+
+```text
+lintegral_ofReal_rpow_restrict_Ioo_lt_top
+lintegral_ofReal_monomialFactor_restrict_Ioo_lt_top
+lintegral_ofReal_fintype_rpow_positiveBox_lt_top
+lintegral_ofReal_fintype_monomialFactor_positiveBox_lt_top
+```
+
+The general product theorem says that for finite `i`, `R_i>0`, and
+`p_i>-1`,
+
+```text
+int^- x, ofReal(prod_i x_i^(p_i))
+  d Measure.pi (i |-> volume.restrict (0,R_i))
+<
+infinity.
+```
+
+The Aoyagi-specialized theorem sets `p_i=h_i-2*t*k_i`, so the strict
+inequality `2*t*k_i<h_i+1` gives the required `p_i>-1`.
+
+Boundary: this is the positive-coordinate model only.  It does not prove a
+residual-loss lower bound, density/prior upper bound, signed-box
+absolute-value theorem, finite chart cover, endpoint/divergence, threshold
+equality, p.13 analytic chart/Jacobian construction, normal crossings, pole
+order, or RLCT.

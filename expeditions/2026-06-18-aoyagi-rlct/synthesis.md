@@ -9279,6 +9279,30 @@ monomial integrability, cover finitely many charts, transport density/prior
 factors, or prove endpoint/divergence, threshold equality, p.13 analytic
 chart/Jacobian construction, normal crossings, pole order, or RLCT.
 
+Latest A2 positive-box monomial integrability:
+`MonomialChartIntegrability.lean` now proves the positive-box monomial factor
+theorem.  The general theorem
+`lintegral_ofReal_fintype_rpow_positiveBox_lt_top` gives finite lower integral
+of `ofReal(prod_i x_i^(p_i))` over
+`Measure.pi (i |-> volume.restrict (0,R_i))` when every `R_i>0` and
+`p_i>-1`.  The Aoyagi-specialized theorem
+`lintegral_ofReal_fintype_monomialFactor_positiveBox_lt_top` sets
+`p_i=h_i-2*t*k_i`, using the strict inequality `2*t*k_i<h_i+1`.
+One-dimensional helper names are
+`lintegral_ofReal_rpow_restrict_Ioo_lt_top` and
+`lintegral_ofReal_monomialFactor_restrict_Ioo_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-monomial-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-positive-box-monomial-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-positive-box-monomial-integrability.md`.
+
+This is only the positive-coordinate monomial model.  It does not prove a
+residual-loss lower bound, density/prior upper bound, signed-box absolute-value
+theorem, endpoint/divergence, threshold equality, finite chart cover, p.13
+analytic chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

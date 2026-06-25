@@ -136,4 +136,5 @@ import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 import DLNFibre.DLN.Aoyagi.RegularSuspensionAlgebraicSource
 import DLNFibre.DLN.Aoyagi.Theorem2RegularSuspensionFinalBridge
 import DLNFibre.DLN.Aoyagi.RegularSuspensionIntegrability
+import DLNFibre.DLN.Aoyagi.MonomialChartIntegrability
 import DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
