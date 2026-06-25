@@ -886,6 +886,24 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-55 (2026-06-25) — both long poles down to ONE "last piece" each; S5c atom + residual-power keystone BUILT; 4th+5th catches. ★**
+- **L2: the S5c germ atom is BUILT** @bd37613c (`schur_core_germ_comparability`, axiom-clean, 0 sorries — the hardest standalone
+  L2 piece) + hS1' closed. **4th L2 catch:** hproducer's (d)/(e) uniform-MULTIPLICATIVE comparability `∑Rcore²≍coreΦ` refuted
+  for M>1 (Codex + a tilted-kernel germ counterexample) → RESTATED to the regular-energy-FOLDED form, `deepest_loss_squeeze`
+  public conclusion preserved. L2 body now down to **hproducer** (1 binding gap; (d')/(e') reduce to the built atom + ∑E² charge)
+  + 2 L≥3-interior (vacuous at L=2).
+- **R1: the residual-power keystone is BUILT** @9909ab21 (`radial_morse_residual_power_le`, S2-free, 0 sorries) + the (3,3,4) N4
+  (`routeMCore_M334_threshold_lt_top`, 1 cover sorry). **5th catch (a CONTROLLER-recipe error):** my N4 commission's `radial_morse`
+  peel UNDERSHOT the additive `c'<4` by 2 — the tide+pp-r1-genM-2+Codex caught it + built the residual-power convolution. R1
+  (3,3,4) hfin now down to **the frame-transport + cover-assembly** (1 gap; the atom+threshold+core algebra banked).
+- **Both "last piece" tides launched:** l2-hproducer (a064b129, the final L2 body gap) + r1-334cover (af795d4e, the (3,3,4)
+  frame-transport + recStep cover). Different files, parallel; pp-pin2-rearch + pp-r1-genM-2 on-call.
+- **Cleanup item (20):** `minAdm_M4422` name duplicate (Case334RouteStep vs RouteM4422) — de-dup before the final aggregator wiring.
+- L2 close path: hproducer → L=2 body done → final wire (squeeze-exists + case-split) → L2 gate. R1 (3,3,4): cover-assembly →
+  (3,3,4) hfin done → general lift → R1 hfin; + general hdiv (the held det wall) → R1 gate. Then D1 → headline.
+- 5 soundness catches this session (PIN2 false-eq · framedParams under-hyp · g156 false prose · germ-vs-box S5c · hproducer
+  mult-comparability · radial_morse undershoot), PIN1 verbatim throughout — every catch from review, none from a green build.
+
 **★ UPDATE-54 (2026-06-25) — R1 hfin ladder BEDROCK banked @bc877c6d (N1/N2a/N3a/N3b proved); N4 wall tide launched. ★**
 - **RouteMSchur bedrock banked** (r1-ladder; standalone green-gate + #print axioms; SELF-reviewed — its own reviewer caught +
   it repaired an N2b vacuity, re-audit survived): N1 `radialDelta_loss_factor` (ring), N2a `rankOne_outerProduct_split` (the

@@ -329,3 +329,19 @@ Building the framedParams body (`framedParams_split_eq_frame_raw`) surfaced two 
   body needs only hS1' + hproducer (the 2 interior gaps don't bind); the FULL general-L headline additionally needs the
   identity-interior-frame bundle choice. Signature note: framedParams/loss_squeeze/gauge_construction now carry `hL2 : 2 ≤ L`,
   `hpos : ∀ s, r < H s`, and an explicit `hinterface` — wired from the headline (which holds hpos/hL2) at squeeze-exists connect time.
+
+## 20. Two more soundness catches (2026-06-25) + a latent `minAdm_M4422` name duplicate (cleanup at final wiring).
+- **4th L2 catch — hproducer (d)/(e) MULTIPLICATIVE comparability FALSE for M>1.** The framedParams cert's core conjuncts
+  asserted a uniform two-sided `∑Rcore² ≍ coreΦ`; a decorrelated Codex + a tilted-kernel germ counterexample (`W=I+ηE₁₂` ⟹
+  `Rcore=0` while `∏S≠0` arbitrarily near the deepest point) refuted it (same shape as the earlier germ-vs-box S5c finding).
+  RESTATED to the regular-energy-FOLDED form `Sreg+‖Rcore‖²≍Sreg+coreΦ`; `deepest_loss_squeeze`'s PUBLIC conclusion preserved.
+  The S5c germ atom `schur_core_germ_comparability` is now BUILT (axiom-clean) and the folded (d')/(e') reduce to it.
+- **5th catch — a CONTROLLER-recipe error (mine).** My r1-n4 commission told the formaliser to peel `‖T‖²` via the crude
+  `radial_morse_dominates_lt_top`, which caps at the Morse threshold 2 and discards the core's rlct — UNDERSHOOTING the additive
+  (3,3,4) target `c'<4` by 2. The tide + pp-r1-genM-2 + decorrelated Codex caught it and built the correct
+  `radial_morse_residual_power_le` (the residual-power convolution, S2-free). The decorrelated review catching the controller's
+  own recipe, not just a cert's — worth noting the controller is not exempt from the soundness loop.
+- **Latent name duplicate (cleanup):** `minAdm_M4422` is defined in BOTH `Case334RouteStep.lean` and `RouteM4422.lean` (same
+  namespace `DLNFibre.DLN.RLCT`); importing both together fails. Pre-existing, not introduced by these tides; `RouteM334Hfin`
+  avoids it by not importing `RouteM4422Hfin`. **Must be de-duplicated before the final aggregator wiring** that pulls the R1
+  hfin modules together. Operator-relevant only as a wiring-time cleanup, not a soundness issue.
