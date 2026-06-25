@@ -229,3 +229,7 @@ import DLNFibre.Core.ChartEvalLemma
 import DLNFibre.Core.ChartEvalGaugeCommute
 -- chart-eval lemma proper (#66) + geometric realization A∈Σ^r (the route-β descent's eval input).
 import DLNFibre.Core.ChartEvalRealize
+-- seam C (Ψ descent, closed): chartPsiQuot + the sorry-free chartPsiLoc (localized Ψ hom).
+-- chartPsi_dsig_isUnit + chartPsiLoc live in ChartPsiDsigUnit (circular-dep fix).
+import DLNFibre.Core.ChartPsiDescent
+import DLNFibre.Core.ChartPsiDsigUnit
