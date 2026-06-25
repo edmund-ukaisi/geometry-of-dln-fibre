@@ -24,8 +24,9 @@ the rank-`0` fibre `mult⁻¹(0) = Σ̄^0` has dimension `5`), so the going-down
 `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` does not apply to the comorphism at the
 closed point `B`. The shift `δ` only materialises after restricting to the exact-rank chart where
 the map *is* flat — a substantial new build (explicit pivot charts, the section `D = C A⁻¹ B`, the
-product `mult⁻¹(U) ∩ Σ̄^r ≅ U × mult⁻¹(E)`, flatness per top component). The full identity stays
-**Cited** (`DLN.BundleShiftInterface.cited_bundle_shift`) until that build lands.
+product `mult⁻¹(U) ∩ Σ̄^r ≅ U × mult⁻¹(E)`, flatness per top component). **That chart build has since landed** — the full identity is now **Proved** zero-cite in
+`Core.FibreCodimFinal` (`codimRepCanonical_fibre_eq_cCodim_add_shift`, the route-β localized chart
+`AlgEquiv` over the rank-`=r` ring); this lower bound is the easy half it anticipated.
 
 What this lower bound *is*: a rigorous, non-overclaiming piece of bedrock the future chart build can
 stand on. Mechanism: `mult⁻¹(B) ⊆ Σ̄^r` (rank of the product on the fibre is `rank B = r ≤ r`), so
@@ -76,8 +77,8 @@ codimension of the closed rank-`≤ r` product locus `Σ̄^r` is at most that of
 
 This is the **easy half** of LR Lemma 4.5/4.6 (`codim mult⁻¹ B = codim Σ̄^r + r(d_0+d_N−r)`), the
 inequality `C ≤ codim mult⁻¹ B` that follows from `mult⁻¹ B ⊆ Σ̄^r` alone. The full identity — the
-shift `+ r(d_0+d_N−r)` — is **Cited** (`DLN.BundleShiftInterface.cited_bundle_shift`); it needs the
-exact-rank fibre-bundle structure absent from Mathlib v4.29 (see the module docstring). No closure /
+shift `+ r(d_0+d_N−r)` — is now **Proved** zero-cite in `Core.FibreCodimFinal` (the route-β chart
+build this lower bound anticipated; see the module docstring). No closure /
 characteristic hypothesis. -/
 theorem codimRepCanonical_productRankLocusLE_le_codimRepCanonical_fibre {d : Fin (N + 1) → ℕ}
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) {r : ℕ} (hB : B.rank = r) :

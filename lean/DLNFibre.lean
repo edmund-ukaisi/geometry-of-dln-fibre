@@ -161,10 +161,12 @@ import DLNFibre.Core.EndBaseChangeSweep
 import DLNFibre.Core.RadicalCatenary
 -- H5 per-component→codim closer (reusable): `height_eq_of_minimalPrimes_bounds` (height I = v from the
 -- per-minimal-prime bounds) + the codim retarget at v = C+δ + G1-transport (one rank-r witness ⟹ all B).
+-- NOTE: parallel route-B (minimal-primes) CONDITIONAL bank, superseded by the unconditional
+-- FibreCodimFinal route; retained (honestly named `…_of_height_bounds`), not on the critical path.
 import DLNFibre.Core.FibreCodimMinPrimes
--- Route-c assembly (conditional bank): `codimRepCanonical(fibre d B) = C + δ` for rank-r B, carrying ONLY
--- the sweep dim-identity `hSweep` (the residual) + the Cited density `hClosure` (LR 4.4/4.5) as explicit
--- hypotheses; the catenary hyps discharged via RadicalCatenary. Honest: no hypothesis = the conclusion.
+-- Route-c assembly (conditional bank): `codimRepCanonical(fibre d B) = C + δ` for rank-r B, carrying
+-- the sweep dim-identity `hSweep` + the density `hClosure` as named hypotheses (both since discharged
+-- in-repo: hSweep in FibreCodimFinal, hClosure in ClosureBridge); catenary hyps via RadicalCatenary.
 import DLNFibre.Core.RouteCAssembly
 -- (b)-build rung 1 — generic freeness (Grothendieck's lemma, MODULE case): a f.g. module over a
 -- (Noetherian) domain is free/flat after inverting one nonzero element (via the Mathlib substrate

@@ -164,7 +164,9 @@ are *derived* from `h` (`corner_le_dim_of_mem`: a corner-`r` Kostant partition f
 every vertex), and `N ≥ 1` (`(0 : Fin (N+2)) ≠ Fin.last (N+1)`) is vacuously true (`Fin (N+2)` has
 `≥ 2` elements). Lifted from the normal-form fibre by the same-rank invariance
 `FibreNormalForm.codimRepCanonical_fibre_eq_of_rank_eq`. The expedition's central geometric result —
-the new content underneath the (Cited) RLCT `= ½·codim` reading. -/
+the new content underneath the (Cited) RLCT `= ½·codim` reading. Scope: this is the **codimension
+identity** of LR Lemma 4.6; the lemma's locally-trivial-bundle / component-count / smoothness content
+is separate. -/
 theorem codimRepCanonical_fibre_eq_cCodim_add_shift [IsAlgClosed k] [CharZero k]
     (d : Fin (N + 2) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last (N + 1)))) (Fin (d 0)) k) (hB : B.rank = r) :
