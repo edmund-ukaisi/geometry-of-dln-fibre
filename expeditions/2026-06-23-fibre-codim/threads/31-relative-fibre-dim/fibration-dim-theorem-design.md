@@ -638,3 +638,56 @@ transport — the `chartPsiTower_gaugeEquiv` bridge applied to the pivot minor).
 **`e` ledger: 8 of ~10 modules.** Remaining: the chart-evaluation lemma (seam A linchpin) → seam C
 sorries (descent + dsig-unit) → `chartPsiLoc`; seam D (Φ direction, symmetric); seam E (round-trips +
 `ofAlgHom`). All API present; the descent mechanism is fully de-risked and the infrastructure is in.
+
+---
+
+## Tide progress log — update 13 (chart-eval ROUTE-(b) fixed + the eval/tower legs LANDED)
+
+**2nd decorrelated Codex (xhigh, `codex/chart-eval-lemma-answer.md`) — the chart-eval lemma route:**
+- **ROUTE (b)** chosen (less plumbing than route (a)): do NOT construct `M(s)`/`chartGauge` + prove an
+  evaluated-gauge=chartGauge commuting square. Instead DEFINE `A := baseChange (evalGaugeInv s) B`
+  (the evaluated inverse-gauge applied to `B`) and compute `evalAway ∘ chartPsiAeval = aeval
+  (canonicalCoord A)` directly by `MvPolynomial.algHom_ext`.
+- **The feared matrix-inverse-commutes-with-ring-map step is SIDESTEPPED at the Units level**
+  (`Units.map` + `Units.coe_map_inv`, which is `rfl`) — exactly how the engine's `liftGauge` already
+  does gauge inverses. NO `Matrix.nonsing_inv` transport. (`Matrix.map_nonsing_inv` /
+  `RingHom.map_matrix_inv` / `IsLocalization.Away.liftAlgHom` confirmed ABSENT at v4.29; local helper
+  `mapMatrix_nonsing_inv_of_isUnit_det` available as fallback but NOT needed.)
+- `schurEval : SchurLoc →ₐ[k] k` = `IsLocalization.liftAlgHom (aeval s)` (`detSchurS s ≠ 0` ⟹ unit).
+
+**Banked this tide (committed, zero-sorry, axiom-clean; NOT yet aggregated):**
+- `Core.ChartPointEval` (`4ba5e195`, seam A.1): `evalF`/`evalP`/`evalP_gF`/`evalAway`/
+  `evalAway_algebraMap` — the target-side chart-point evaluation maps (`k`-point of `P` = `(s, B∈F)`).
+- `Core.ChartEvalGauge` (`719e56a5`, seam A.2): `schurEval`, `schurEval_algebraMap`,
+  `schurToGfib_algebraMap` (the `Away.mapₐ` `map_eq`), `evalAway_comp_schurToGfib` (the COEFFICIENT leg
+  `evalAway ∘ schurToGfib = schurEval`).
+- `Core.ChartEvalLemma` (`3a3e335c`, seam A.3): `evalAway_fibCoordT` (the VARIABLE leg `evalAway
+  (fibCoordT x) = canonicalCoord B x`, via the `O(F)→P→Away gF` scalar tower + `aevalTower_C`), and
+  `evalAway_comp_chartPsiTower` (the TOWER DECOMPOSITION `evalAway ∘ chartPsiTower =
+  aevalTower schurEval (canonicalCoord B)`, by `MvPolynomial.algHom_ext'` on the two legs).
+- Reverted (`655a76b5`) a DUPLICATE `ChartAwayZero.away_algebraMap_eq_zero_iff` — it duplicated the
+  already-landed `PrincipalOpenComorphism.away_mk'_eq_zero_iff_exists_pow_mul_eq_zero` (`5c8833a3`,
+  the `algebraMap`-form is a one-liner from it).
+
+**THE one remaining identity for the chart-eval lemma** (everything else chains off it):
+`(aevalTower schurEval (canonicalCoord B)) (gaugeSub (endpointGauge⁻¹) x) = (baseChange (evalGaugeInv
+s) B) x.1 x.2.1 x.2.2`, where `evalGaugeInv s : BaseChangeGroup (k:=k) d := Units.map
+(schurEval.mapMatrix) ∘ (endpointGauge⁻¹)` (the `schurEval`-image of the symbolic inverse gauge, at the
+Units level). `gaugeSub (endpointGauge⁻¹) x = baseChange (liftGauge (endpointGauge⁻¹)) (genericTuple)
+x.1 x.2.1 x.2.2`; applying `aevalTower schurEval (canonicalCoord B)` evaluates the `C`-lifted SchurLoc
+gauge-unit entries via `schurEval` (the `Units.map` commute, `rfl`-level by `liftGauge_val_eq` +
+`Matrix.map_map`) and the `X`-generators at `canonicalCoord B`. ~1 module (the gauge-eval commute
++ the per-generator `baseChange` unfold). Then `chartEvalLemma : evalAway (chartPsiAeval p) = aeval
+(canonicalCoord (baseChange (evalGaugeInv s) B)) p` by `MvPolynomial.algHom_ext` (per-generator =
+the identity above) — and `baseChange (evalGaugeInv s) B ∈ Σ^r` by LANDED
+`mult_chartGauge_inv_smul_fibre` (needs identifying `evalGaugeInv s` with `chartGauge(M(s))⁻¹` OR a
+direct `mult (baseChange (evalGaugeInv s) B) = M(s)` — the geometric realization for `A ∈ Σ`).
+
+**`e` ledger: 11 of ~13 sub-modules.** Remaining: (i) the gauge-eval commute + chart-eval lemma
+(~1-2 mod); (ii) seam C — discharge `chartPsi_vanishingIdeal_le` (chart-eval lemma + seam-B
+`mvpoly_eq_zero_of_forall_eval_fibre` + the `away` zero-test) and `chartPsi_dsig_isUnit` (symbolic
+product-reconstruction), → `chartPsiLoc` (~1-2 mod); (iii) seam D Φ (symmetric, target `Away dsig` is
+a vanishingIdeal-quotient so the LANDED Σ-side primitive applies directly — EASIER) (~2-3 mod);
+(iv) seam E glue `AlgEquiv.ofAlgHom` + round-trips via `Localization.algHom_ext` (~1-2 mod). NO
+absent-API, NO wall — fully de-risked mechanical assembly. `ChartPsiDescent.lean` skeleton (2 sorries,
+the `liftₐ`/`liftAlgHom` chain machine-checked around them) is UNCOMMITTED scaffolding for seam C.
