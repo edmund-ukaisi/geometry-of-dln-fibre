@@ -414,9 +414,16 @@ extends here — a candidate point for the operator's scope call (full general-L
   numeric check (L=2, rect, nontrivial frames): h1 is SOUND (framed-block LDU cores reproduce the global Schur EXACTLY), but the banked
   bridge's `hCore : coreΦ = frobSq(S0·S1)` (EXACT) is FALSE — `frobSq(framed S0S1)=1.065` vs frame-free `coreΦ=0.938`; the surviving
   endpoint frames Pf_0=P0/Qf_1=QL decorate the cores. The bridge stays SOUND as a conditional (the implication holds), but its hCore is
-  unmeetable under the framed producer. Resolution (pp adjudicating): relax hCore to the germ charge `|coreΦ − frobSq(S0S1)| ≤ C·Sreg`
-  (provided the discrepancy is O(Sreg) — frame factors = I+O(√Sreg) near w0; pp verifying the sweep). This is the SAME exact-→-germ lesson
-  as the 8th catch, one level deeper — a bounded bridge re-statement, not a wall. **Process note for the operator:** the producer's last
+  unmeetable under the framed producer. **CORRECTED (pp adjudication, same day): the discrepancy is O(1), NOT O(Sreg)** — pp owned its
+  h1-cert error ("work frame-free post-hconj" was wrong: hconj strips frames from the PRODUCT, but Rcore is the Schur of the FRAMED Mw,
+  and the Schur is NOT frame-invariant — global ratio ~5e7, per-layer ~9e4, unbounded) AND refuted the controller's premature O(Sreg)
+  framing (the gauge frames are w-independent O(1) constants, not →I at w0). So the germ-relax route is DEAD. **Real resolution =
+  FRAME-CONSISTENCY:** make the producer's `coreΦ` framed-consistent with the LDU's framed cores. Decisive fork (pp taking the focused
+  adjudication): is `deepestCoreAbsorb` (the core) frame-consistent with `deepestEFull` (the framed reg term)? If the true loss core is
+  framed ⇒ clean framed=framed identification (~1-2 tides); if mismatched ⇒ re-point coreΦ (check it preserves `deepest_loss_squeeze`'s
+  public conclusion) OR a frame-covariance lemma (heavier — a stronger scope-fork trigger). NOT a wall, but real and MEDIUM. Both the
+  cert AND the controller made the same unverified-assumption error (frames vanish at w0); the numeric check corrected both — the lesson
+  is to NUMERICALLY VERIFY the order of a claimed-small term before designing around it. **Process note for the operator:** the producer's last
   piece has now surfaced four corrections (general-L recursion, rectangularity, the cast grind [beaten], this frame finding) — each caught
   by a tide/numeric check before a green-but-wrong build, each bounded. The L=2 close is progressing solidly but the germ-charge geometry
   is genuinely intricate; the L2-close ETA has extended across these. A candidate point to weigh Item-24's scope fork, though I continue
