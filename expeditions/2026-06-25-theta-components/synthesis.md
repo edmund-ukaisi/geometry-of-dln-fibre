@@ -95,3 +95,30 @@ operator (a precision finding on the paper being formalised — possible erratum
 After the fibre-θ count + bijection land (scope-2 backbone): the **heavy lift** — the full reduced bundle +
 smoothness (scope-3, "rest of Lemma 4.6 B"), which DOES need the reducedness wall (R2-3b) + a hand-built scheme
 bundle + smooth-locus scoping.
+
+## Progress + recalibration (2026-06-25, thread 05)
+
+**LANDED** (sorry-free, axiom-clean, aggregated, library green 3767):
+- `Core.FibreDetUnit` — `ΔPdeep_sub_one_mem_fibreGenIdeal` (detΔ−1 ∈ fibreGenIdeal, general / scheme-level at
+  the generator ideal), `isUnit_mk_ΔPdeep_fibreGenIdeal`, `fibreLocalizationAwayDetΔ_algEquiv` (O(fibre) ≃
+  Localization.Away detΔ — the reducedness-free Route-A kill-condition payoff). **Build-plan step 1 DONE.**
+- `Core.CThetaShiftCount` — `numTop_eq_cTheta_dminus` (`numTop d r = cTheta(d−r) = C(m,|δ|)`, field-free, via
+  the engine `numTop_rankShift` = LR Lemma 4.5) + `ncard_topComponents_sigma_eq_cTheta_dminus` (Σ̄^r).
+  **Step 3's combinatorial half was an ENGINE WIRE — DONE.**
+
+**RECALIBRATION (formaliser ground-truth, Codex-confirmed):** the brief's "1-3 light lemmas" for the fibre
+transport was optimistic. The chart `e`'s fibre side is `(O(F)[SchurVar])[1/detSchurS]` — a `|δ|`-variable
+polynomial extension + a localization. Transporting the COMPONENT COUNT (not just dimension, which is all the
+codim expedition needed from `e`) is a genuine successor tide whose hardest piece is a hand-built
+**polynomial-extension minimal-prime descent** `TopDimMinPrimes(O(F)[X]) ≃ TopDimMinPrimes(O(F))` (classical —
+minimal primes of `R[X]` are `p·R[X]` for `p ∈ minimalPrimes R` — but no packaged Mathlib lemma). The
+`detΔ`-unit lemma removes the *reducedness* blocker; it does not itself prove the count.
+
+**Next:** thread 06 (formaliser) — the fibre-count transport: `topDimMinPrimes_polyAway_equiv` → `orderIsoOfPrime`
+through `e` → `numTop(fibre d E_r) = cTheta(d−r)` + the component bijection.
+
+**The big decision ahead (scope-3 bundle/smoothness):** the full reduced bundle + smoothness genuinely needs the
+**reducedness wall (R2-3b)** — `fibreGenIdeal` radical — which the codim expedition explicitly DECLINED as a
+"≥2-module from-scratch AG sub-project" (it routed around radical-insensitively). The fibre-θ COUNT avoids the
+wall (via `detΔ`-unit); the BUNDLE/SMOOTHNESS does not. So scope-B's hard core is climbing a wall previously
+judged too costly — a large, multi-tide commitment. Surface to the operator when the count lands.
