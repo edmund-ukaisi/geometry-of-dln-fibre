@@ -9325,6 +9325,38 @@ boxes, and does not prove chart coverage, endpoint/divergence, threshold
 equality, p.13 analytic chart/Jacobian construction, normal crossings, pole
 order, or RLCT.
 
+Latest A2 positive-box residual/density comparison:
+`MonomialChartIntegrability.lean` now proves the elementary finite-side bridge
+from separate positive-box loss/density bounds to finite lower-integral
+control.  The support lemma
+`ae_forall_pos_measure_pi_restrict_Ioo` gives a.e. coordinate positivity on
+the positive-box product measure.  The pointwise theorem
+`loss_rpow_neg_mul_density_le_const_mul_monomialFactor_of_pos` proves
+
+```text
+loss(x)^(-t) * density(x)
+  <= (c^(-t)*C) * prod_i x_i^(h_i-2*t*k_i)
+```
+
+from `c*prod_i x_i^(2*k_i)<=loss(x)`, `0<=density(x)`, and
+`density(x)<=C*prod_i x_i^(h_i)` on a positive point, with `c>0` and `t>=0`.
+The finite theorem
+`lintegral_ofReal_loss_rpow_neg_mul_density_positiveBox_lt_top` adds `C>=0`,
+`R_i>0`, and `2*t*k_i<h_i+1`, then invokes the landed monomial domination
+theorem.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-residual-density-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-positive-box-residual-density-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-positive-box-residual-density-comparison.md`.
+
+This is still positive-box threshold-level integrability only.  It does not
+handle signed/absolute-value boxes, prove the supplied loss/density estimates
+for Aoyagi's actual charts, prove analytic density/Jacobian transport, chart
+coverage, endpoint/divergence, threshold equality, normal crossings, pole
+order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

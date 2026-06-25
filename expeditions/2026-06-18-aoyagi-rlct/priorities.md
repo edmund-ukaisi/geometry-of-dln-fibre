@@ -3804,16 +3804,17 @@ Lean proves that if `f` is a.e. bounded above by
 uses `p_i=h_i-2*t*k_i` under `2*t*k_i<h_i+1`.  Treat this as direct
 domination transfer only.
 
-Updated next A2 analytic target: prove the residual/density comparison theorem
-that derives the domination hypothesis from explicit loss and density
-assumptions.  Do not copy the sketch as a theorem statement without adding
-`c>0`, a suitable finite nonnegative density constant `C`, the sign condition
-on `t`, a.e. positivity where negative powers are used, the needed
-measurability or lower-integral comparison assumptions, and a signed-box to
-positive-box decomposition/comparison.  With those hypotheses, the intended
-shape is that `loss(z) >= c * prod |z_j|^(2*k_j)` and
-`0 <= rho(z) <= C * prod |z_j|^(h_j)` imply finite `loss(z)^(-t) * rho(z)`
-integral under strict `2*t*k_j < h_j+1`.  This is still threshold-level
-integrability control, not pole-order preservation, p.13 analytic
-chart/Jacobian construction, finite chart coverage, or normal-crossing
-extraction.
+A2 positive-box residual/density comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-positive-box-residual-density-comparison.md`.
+Lean proves that explicit a.e. positive-box bounds
+`c * prod_i x_i^(2*k_i) <= loss(x)`, `0 <= density(x)`, and
+`density(x) <= C * prod_i x_i^(h_i)` imply finite
+`int^- ofReal(loss(x)^(-t) * density(x))` under `c>0`, `C>=0`, `t>=0`,
+`R_i>0`, and `2*t*k_i<h_i+1`.  Treat this as positive-box comparison only.
+
+Updated next A2 analytic target: decide whether to formalise the signed-box or
+absolute-value version next, or to keep positive boxes and start proving actual
+Aoyagi chart-side hypotheses that supply the loss lower bound and density
+upper bound.  Do not claim this landed theorem handles signed orthants,
+absolute values, Aoyagi's p.13 analytic chart/Jacobian construction, finite
+chart coverage, endpoint or divergent behavior, pole order, or RLCT.

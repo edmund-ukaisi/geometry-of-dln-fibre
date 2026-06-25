@@ -3225,3 +3225,47 @@ upper bound from residual-loss and density estimates, does not handle
 signed/absolute-value boxes, and does not prove chart coverage, endpoint or
 divergent behavior, threshold equality, p.13 analytic chart/Jacobian
 construction, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 positive-box residual/density comparison
+
+Reproduction:
+`reproduction-a2-positive-box-residual-density-comparison.md`.
+Statement card:
+`statement-card-a2-positive-box-residual-density-comparison.md`.
+Review:
+`review-a2-positive-box-residual-density-comparison.md`.
+
+Lean now proves the positive-box bridge from separate supplied loss/density
+bounds to finite lower-integral control in `MonomialChartIntegrability.lean`:
+
+```text
+ae_forall_pos_measure_pi_restrict_Ioo
+loss_rpow_neg_mul_density_le_const_mul_monomialFactor_of_pos
+lintegral_ofReal_loss_rpow_neg_mul_density_positiveBox_lt_top
+```
+
+The finite theorem assumes `c>0`, `C>=0`, `t>=0`, `R_i>0`, the strict
+inequalities `2*t*k_i<h_i+1`, and the a.e. positive-box bounds
+
+```text
+c * prod_i x_i^(2*k_i) <= loss(x),
+0 <= density(x),
+density(x) <= C * prod_i x_i^(h_i).
+```
+
+It concludes
+
+```text
+int^- x, ofReal(loss(x)^(-t) * density(x)) < infinity
+```
+
+for the product positive-box measure.  The proof uses a.e. coordinate
+positivity, real-power order reversal for exponent `-t`, product power
+arithmetic on positive coordinates, and the landed monomial domination theorem.
+
+Boundary: this is still positive-box comparison only.  It does not handle
+signed or absolute-value boxes, does not prove the supplied bounds for
+Aoyagi's actual charts, and does not prove analytic density/Jacobian
+transport, chart coverage, endpoint or divergent behavior, threshold equality,
+p.13 analytic chart/Jacobian construction, normal crossings, pole order, or
+RLCT.
