@@ -172,6 +172,99 @@ theorem exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN
   rw [lossDLN_chainMapMatrixTuple_eq_chainMapFrobenius]
   exact hc x
 
+set_option linter.style.longLine false in
+/-- Source-filter self-base form: near a continuous fixed-base paper chain,
+the cleaned p.13 regular-plus-residual square-sum is bounded below by the
+original square-Frobenius `lossDLN` of the chain-coordinate tuple.
+
+This composes the self-base adapted p.13 lower bound with the finite endpoint
+basis comparison.  It is still a one-parameter source-filter theorem, not a
+product-coordinate chart or density-transport theorem. -/
+theorem exists_pos_const_half_regular_add_residual_squareSum_eventually_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {d : Fin (N + 1) → ℕ}
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (reverseVertex W j))
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N =>
+        LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        (c / 2) *
+          (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x) +
+            aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+          lossDLN d
+            (LinearMap.toMatrix (b 0) (b (Fin.last N))
+              (chainMap (reverseVertex W) (reverseEdge W B)
+                0 (Fin.last N) (Fin.zero_le (Fin.last N))))
+            (chainMapMatrixTuple b
+              (fun p : Fin N =>
+                (Cedge x p :
+                  reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))) := by
+  rcases
+      PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceFrobeniusLoss_selfBase_nhdsWithin_source
+        (W := W) (B := B) sourceData hCedge hbase with
+    ⟨a, ha_pos, ha⟩
+  rcases
+      exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN_chainMapMatrixTuple
+        (W := W) (B := B) b U₀ hU₀ Cedge with
+    ⟨b₀, hb₀_pos, hb₀⟩
+  refine ⟨a * b₀, mul_pos ha_pos hb₀_pos, ?_⟩
+  filter_upwards [ha] with x hx
+  let S : ℝ :=
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseRegularBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) +
+      aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)
+  have hxS :
+      (a / 2) * S ≤
+        paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+          W B U₀ hU₀ Cedge x := by
+    simpa [S] using hx
+  have hscaled :
+      b₀ * ((a / 2) * S) ≤
+        b₀ * paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss
+          W B U₀ hU₀ Cedge x :=
+    mul_le_mul_of_nonneg_left hxS (le_of_lt hb₀_pos)
+  have hle :
+      b₀ * ((a / 2) * S) ≤
+        lossDLN d
+          (LinearMap.toMatrix (b 0) (b (Fin.last N))
+            (chainMap (reverseVertex W) (reverseEdge W B)
+              0 (Fin.last N) (Fin.zero_le (Fin.last N))))
+          (chainMapMatrixTuple b
+            (fun p : Fin N =>
+              (Cedge x p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))) :=
+    le_trans hscaled (hb₀ x)
+  calc
+    ((a * b₀) / 2) * S = b₀ * ((a / 2) * S) := by ring
+    _ ≤
+        lossDLN d
+          (LinearMap.toMatrix (b 0) (b (Fin.last N))
+            (chainMap (reverseVertex W) (reverseEdge W B)
+              0 (Fin.last N) (Fin.zero_le (Fin.last N))))
+          (chainMapMatrixTuple b
+            (fun p : Fin N =>
+              (Cedge x p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))) := hle
+
 end EndpointLossComparison
 
 end Aoyagi

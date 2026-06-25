@@ -255,10 +255,116 @@ theorem measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous
     (W := W) (B := B) (Cedge := Cedge) (r := r) (rEdge := rEdge) ?_
   intro p
   exact
-    (continuous_linearMap_toMatrix
+      (continuous_linearMap_toMatrix
         (Module.finBasis K (reverseVertex W p.castSucc))
         (Module.finBasis K (reverseVertex W p.succ))).comp
       ((continuous_apply p).comp hCedge)
+
+set_option linter.unusedSectionVars false in
+/-- The exact edge-rank stratum is measurable when the fixed-base edge matrix
+family used by the deterministic suffix recursion is measurable. -/
+theorem measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_measurable_edgeMatrix
+    [MeasurableSpace K] [BorelSpace K] [SecondCountableTopology K]
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {rEdge : Fin N → ℕ}
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := K) W B U₀ hU₀
+          (fun p : Fin N ↦
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)))) :
+    MeasurableSet (paperEndpointFixedBaseEdgeRankStratum W Cedge rEdge) := by
+  classical
+  rw [paperEndpointFixedBaseEdgeRankStratum, Set.setOf_forall]
+  refine MeasurableSet.iInter fun p ↦ ?_
+  let edgeMatrixAt : α →
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K :=
+    fun x ↦
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+        (K := K) W B U₀ hU₀
+        (fun q : Fin N ↦
+          (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ)) p
+  have hEdgeMatrixAt : Measurable edgeMatrixAt := by
+    simpa [edgeMatrixAt] using hEdgeMatrix.eval (a := p)
+  have hrank :
+      MeasurableSet {x : α | (edgeMatrixAt x).rank = rEdge p} :=
+    by
+      simpa using
+        measurableSet_matrix_rank_eq_of_measurable_finite
+          (K := K) (A := edgeMatrixAt) hEdgeMatrixAt (rEdge p)
+  have hset :
+      {x : α |
+        Module.finrank K
+          (LinearMap.range
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+          rEdge p} =
+        {x : α | (edgeMatrixAt x).rank = rEdge p} := by
+    ext x
+    change
+      (Module.finrank K
+          (LinearMap.range
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+          rEdge p) ↔
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := K) W B U₀ hU₀
+          (fun q : Fin N ↦
+            (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ)) p).rank =
+          rEdge p
+    rw [rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (E := fun q : Fin N ↦
+        (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+      (p := p)]
+  rw [hset]
+  exact hrank
+
+set_option linter.unusedSectionVars false in
+/-- The source-shaped rank stratum is measurable when the fixed-base edge
+matrix family used by the deterministic suffix recursion is measurable.  The
+base-product rank and source inequalities are constant conditions. -/
+theorem measurableSet_paperEndpointFixedBaseSourceRankStratum_of_measurable_edgeMatrix
+    [MeasurableSpace K] [BorelSpace K] [SecondCountableTopology K]
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := K) W B U₀ hU₀
+          (fun p : Fin N ↦
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)))) :
+    MeasurableSet (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) := by
+  classical
+  by_cases hbase : Module.finrank K (LinearMap.range (paperTotalMap W B)) = r
+  · by_cases hle : ∀ p : Fin N, r ≤ rEdge p
+    · simpa [paperEndpointFixedBaseSourceRankStratum, hbase, hle] using
+        measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_measurable_edgeMatrix
+          (W := W) (B := B) U₀ hU₀ (Cedge := Cedge) (rEdge := rEdge) hEdgeMatrix
+    · have hempty :
+        paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge = ∅ := by
+        ext x
+        simp [paperEndpointFixedBaseSourceRankStratum, hbase, hle]
+      rw [hempty]
+      exact MeasurableSet.empty
+  · have hempty :
+      paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge = ∅ := by
+      ext x
+      simp [paperEndpointFixedBaseSourceRankStratum, hbase]
+    rw [hempty]
+    exact MeasurableSet.empty
 
 omit [CompleteSpace K] [∀ i, TopologicalSpace (W i)]
   [∀ i, IsTopologicalAddGroup (W i)]

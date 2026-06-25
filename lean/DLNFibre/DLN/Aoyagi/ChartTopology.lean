@@ -268,6 +268,75 @@ theorem measurableSet_matrix_rank_eq_of_continuous
           exact le_antisymm hx.1 (Nat.succ_le_of_lt (Nat.lt_of_not_ge hx.2))]
       exact hleSucc.diff hle
 
+variable [MeasurableSpace K] [BorelSpace K] [SecondCountableTopology K]
+
+/-- A measurable family of finite matrices has a measurable `rank ≤ r` locus. -/
+theorem measurableSet_matrix_rank_le_of_measurable
+    {α : Type*} [MeasurableSpace α]
+    {m n : ℕ} {A : α → Matrix (Fin m) (Fin n) K}
+    (hA : Measurable A) (r : ℕ) :
+    MeasurableSet {x | (A x).rank ≤ r} := by
+  exact hA
+    (isClosed_matrix_rank_le (K := K) (m := m) (n := n) (r := r)).measurableSet
+
+/-- A measurable family of finite matrices has a measurable exact-rank locus. -/
+theorem measurableSet_matrix_rank_eq_of_measurable
+    {α : Type*} [MeasurableSpace α]
+    {m n : ℕ} {A : α → Matrix (Fin m) (Fin n) K}
+    (hA : Measurable A) (r : ℕ) :
+    MeasurableSet {x | (A x).rank = r} := by
+  cases r with
+  | zero =>
+      simpa [Nat.le_zero] using
+        measurableSet_matrix_rank_le_of_measurable (K := K) (A := A) hA 0
+  | succ r =>
+      have hleSucc :=
+        measurableSet_matrix_rank_le_of_measurable (K := K) (A := A) hA (r + 1)
+      have hle := measurableSet_matrix_rank_le_of_measurable (K := K) (A := A) hA r
+      rw [show {x | (A x).rank = r + 1} =
+          {x | (A x).rank ≤ r + 1} \ {x | (A x).rank ≤ r} by
+        ext x
+        constructor
+        · intro hx
+          change (A x).rank = r + 1 at hx
+          constructor
+          · change (A x).rank ≤ r + 1
+            rw [hx]
+          · change ¬ (A x).rank ≤ r
+            rw [hx]
+            exact Nat.not_succ_le_self r
+        · intro hx
+          change (A x).rank ≤ r + 1 ∧ ¬ (A x).rank ≤ r at hx
+          change (A x).rank = r + 1
+          exact le_antisymm hx.1 (Nat.succ_le_of_lt (Nat.lt_of_not_ge hx.2))]
+      exact hleSucc.diff hle
+
+set_option linter.unusedFintypeInType false in
+/-- A measurable family of finite matrices with arbitrary finite row and
+column index types has a measurable exact-rank locus. -/
+theorem measurableSet_matrix_rank_eq_of_measurable_finite
+    {α m n : Type*} [MeasurableSpace α] [Fintype m] [Fintype n]
+    {A : α → Matrix m n K} (hA : Measurable A) (r : ℕ) :
+    MeasurableSet {x | (A x).rank = r} := by
+  let em : m ≃ Fin (Fintype.card m) := Fintype.equivFin m
+  let en : n ≃ Fin (Fintype.card n) := Fintype.equivFin n
+  let Afin : α → Matrix (Fin (Fintype.card m)) (Fin (Fintype.card n)) K :=
+    fun x ↦ (A x).reindex em en
+  have hReindex : Continuous (fun M : Matrix m n K ↦ M.reindex em en) := by
+    simpa [Matrix.reindex_apply] using
+      (continuous_id.matrix_submatrix em.symm en.symm)
+  have hAfin : Measurable Afin := hReindex.measurable.comp hA
+  have hfin :
+      MeasurableSet {x : α | (Afin x).rank = r} :=
+    measurableSet_matrix_rank_eq_of_measurable (K := K) (A := Afin) hAfin r
+  have hset :
+      {x : α | (A x).rank = r} = {x : α | (Afin x).rank = r} := by
+    ext x
+    change (A x).rank = r ↔ ((A x).reindex em en).rank = r
+    rw [Matrix.rank_reindex em en (A x)]
+  rw [hset]
+  exact hfin
+
 end MatrixRankMeasurability
 
 section ContinuousLinearMapCoordinates
@@ -294,6 +363,21 @@ theorem continuous_linearMap_toMatrix
     simpa using (LinearMap.toMatrix_apply bE bF (f : E →ₗ[K] F) i j)]
   exact (continuous_apply i).comp
     ((Module.Basis.continuous_coe_repr bF).comp (continuous_eval_const (bE j)))
+
+omit [T2Space F] in
+/-- Fixed bases identify matrices with continuous linear maps continuously. -/
+theorem continuous_matrix_toContinuousLinearMap
+    [T2Space E] [IsTopologicalAddGroup E] [FiniteDimensional K E]
+    (bE : Module.Basis ι K E) (bF : Module.Basis μ K F) :
+    Continuous
+      (fun M : Matrix μ ι K ↦
+        LinearMap.toContinuousLinearMap (Matrix.toLin bE bF M)) := by
+  classical
+  let L : Matrix μ ι K →ₗ[K] E →L[K] F :=
+    (LinearMap.toContinuousLinearMap : (E →ₗ[K] F) ≃ₗ[K] E →L[K] F).toLinearMap.comp
+      (Matrix.toLin bE bF).toLinearMap
+  change Continuous L
+  exact LinearMap.continuous_of_finiteDimensional L
 
 end ContinuousLinearMapCoordinates
 
@@ -325,6 +409,55 @@ theorem continuous_matrix_inv_of_forall_isUnit_det
     (x := x) (f := A) (g := Inv.inv)
     (continuousAt_matrix_inv_of_isUnit_det (A := A x) (hunit x))
     hA.continuousAt
+
+/-- The right-endpoint p. 13 raw matrix pattern is continuous in `F3` and the
+residual block. -/
+theorem continuous_productCoordinateRightEndpointMatrix
+    {α : Type*} [TopologicalSpace α] {ρ μ ν : Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    {F3 : α → Matrix μ ρ K} {C : α → Matrix μ ν K}
+    (hF3 : Continuous F3) (hC : Continuous C) :
+    Continuous
+      (fun x : α ↦
+        ChartLocalSuffixState.productCoordinateRightEndpointMatrix (K := K) (F3 x) (C x)) := by
+  have hfrom : Continuous
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-(F3 x)) (C x)) :=
+    continuous_const.matrix_fromBlocks continuous_const hF3.neg hC
+  simpa [ChartLocalSuffixState.productCoordinateRightEndpointMatrix] using hfrom
+
+/-- The middle p. 13 raw matrix pattern is continuous in the residual block. -/
+theorem continuous_productCoordinateMiddleMatrix
+    {α : Type*} [TopologicalSpace α] {ρ μ ν : Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    {C : α → Matrix μ ν K} (hC : Continuous C) :
+    Continuous
+      (fun x : α ↦
+        ChartLocalSuffixState.productCoordinateMiddleMatrix (K := K) (ρ := ρ) (C x)) := by
+  have hfrom : Continuous
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) (C x)) :=
+    continuous_const.matrix_fromBlocks continuous_const continuous_const hC
+  simpa [ChartLocalSuffixState.productCoordinateMiddleMatrix] using hfrom
+
+/-- The left-endpoint p. 13 raw matrix pattern is continuous in `F2`, `Ctop`,
+and the residual block. -/
+theorem continuous_productCoordinateLeftEndpointMatrix
+    {α : Type*} [TopologicalSpace α] {ρ μ ν : Type*}
+    [Fintype ρ] {F2 : α → Matrix ρ ν K}
+    {Ctop : α → Matrix ρ ρ K} {C0 : α → Matrix μ ν K}
+    (hF2 : Continuous F2) (hCtop : Continuous Ctop) (hC0 : Continuous C0) :
+    Continuous
+      (fun x : α ↦
+        ChartLocalSuffixState.productCoordinateLeftEndpointMatrix
+          (K := K) (F2 x) (Ctop x) (C0 x)) := by
+  have hmul : Continuous (fun x : α ↦ Ctop x * F2 x) :=
+    hCtop.matrix_mul hF2
+  have hfrom : Continuous
+      (fun x : α ↦
+        fromBlocks (Ctop x) (-(Ctop x * F2 x)) (0 : Matrix μ ρ K) (C0 x)) :=
+    hCtop.matrix_fromBlocks hmul.neg continuous_const hC0
+  simpa [ChartLocalSuffixState.productCoordinateLeftEndpointMatrix] using hfrom
 
 namespace ProductReductionStepRawCoordinates
 
@@ -1561,6 +1694,120 @@ theorem continuousAt_chartLocalSuffixState_suffixState_fields
   have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
     (Fin.val_fin_le.mp hij)
   simpa [motive] using hcanon
+
+/-- The transformed Schur residual block visited by the suffix recursion
+varies continuously with the edge family, assuming the basepoint recursive
+chart hypotheses. -/
+theorem continuousAt_chartLocalSuffixState_residualBlock
+    (E : α → ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (hE : ContinuousAt E x₀)
+    {j : Fin (N + 1)}
+    (hchart : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (E x₀) p
+          (ChartLocalSuffixState.suffixState (E x₀) j p.succ hpj)))
+    (p : Fin N) (hpj : p.succ ≤ j) :
+    ContinuousAt
+      (fun x : α ↦ ChartLocalSuffixState.residualBlock (E x) j p hpj) x₀ := by
+  let S : α → ChartLocalSuffixState ρ κ K j p.succ :=
+    fun x ↦ ChartLocalSuffixState.suffixState (E x) j p.succ hpj
+  have hfields :=
+    continuousAt_chartLocalSuffixState_suffixState_fields E hE hchart p.succ hpj
+  rcases hfields with ⟨_, _hL, hB, _hCtop, _hD⟩
+  let M : α → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K :=
+    fun x ↦ ChartLocalSuffixState.transformedEdge (E x) p (S x)
+  have hE_p : ContinuousAt (fun x : α ↦ E x p) x₀ :=
+    (continuous_apply p).continuousAt.comp hE
+  have hleft : ContinuousAt
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ K) (S x).B 0
+          (1 : Matrix (κ p.succ) (κ p.succ) K)) x₀ := by
+    have hfrom : Continuous
+        (fun B : Matrix ρ (κ p.succ) K ↦
+          fromBlocks (1 : Matrix ρ ρ K) B 0
+            (1 : Matrix (κ p.succ) (κ p.succ) K)) :=
+      continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
+    exact hfrom.continuousAt.comp hB
+  have hM : ContinuousAt M x₀ := by
+    have hmul : Continuous (fun q :
+        Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K ×
+          Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    simpa [M, S, ChartLocalSuffixState.transformedEdge] using
+      ContinuousAt.comp₂ hmul.continuousAt hleft hE_p
+  have htop : ContinuousAt (fun x : α ↦ topLeftCorner (M x)) x₀ :=
+    continuous_topLeftCorner.continuousAt.comp hM
+  have hchartM : identityCornerDetChart (M x₀) := by
+    simpa [M, S] using hchart p hpj
+  have htopInvBase : ContinuousAt (Inv.inv : Matrix ρ ρ K → Matrix ρ ρ K)
+      (topLeftCorner (M x₀)) :=
+    continuousAt_matrix_inv_of_isUnit_det (A := topLeftCorner (M x₀)) hchartM
+  have htopInv : ContinuousAt (fun x : α ↦ (topLeftCorner (M x))⁻¹) x₀ := by
+    change ContinuousAt
+      ((Inv.inv : Matrix ρ ρ K → Matrix ρ ρ K) ∘
+        (fun x : α ↦ topLeftCorner (M x))) x₀
+    exact ContinuousAt.comp
+      (x := x₀) (f := fun x : α ↦ topLeftCorner (M x))
+      (g := Inv.inv) htopInvBase htop
+  have hupper : ContinuousAt (fun x : α ↦ upperRightBlock (M x)) x₀ := by
+    have hupper' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K ↦ upperRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inl Sum.inr
+    exact hupper'.continuousAt.comp hM
+  have hlower : ContinuousAt (fun x : α ↦ lowerLeftBlock (M x)) x₀ := by
+    have hlower' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K ↦ lowerLeftBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inl
+    exact hlower'.continuousAt.comp hM
+  have hright : ContinuousAt (fun x : α ↦ lowerRightBlock (M x)) x₀ := by
+    have hright' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K ↦ lowerRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inr
+    exact hright'.continuousAt.comp hM
+  have hleftInv : ContinuousAt
+      (fun x : α ↦ lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹) x₀ := by
+    have hmul : Continuous (fun q :
+        Matrix (κ p.succ) ρ K × Matrix ρ ρ K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact ContinuousAt.comp₂ hmul.continuousAt hlower htopInv
+  have hcorr : ContinuousAt
+      (fun x : α ↦
+        lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) x₀ := by
+    have hmul : Continuous (fun q :
+        Matrix (κ p.succ) ρ K × Matrix ρ (κ p.castSucc) K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact ContinuousAt.comp₂ hmul.continuousAt hleftInv hupper
+  have hschur : ContinuousAt (fun x : α ↦ schurResidualBlock (M x)) x₀ := by
+    have hsub : ContinuousAt
+        (fun x : α ↦
+          lowerRightBlock (M x) -
+            lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) x₀ :=
+      hright.sub hcorr
+    simpa [schurResidualBlock] using hsub
+  simpa [ChartLocalSuffixState.residualBlock, M, S] using hschur
+
+/-- The residual product produced by the suffix recursion varies continuously
+with the edge family, assuming the basepoint recursive chart hypotheses. -/
+theorem continuousAt_chartLocalSuffixState_residualProduct
+    (E : α → ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (hE : ContinuousAt E x₀)
+    {i j : Fin (N + 1)} (hij : i ≤ j)
+    (hchart : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (E x₀) p
+          (ChartLocalSuffixState.suffixState (E x₀) j p.succ hpj))) :
+    ContinuousAt
+      (fun x : α ↦ ChartLocalSuffixState.residualProduct (E x) j i hij) x₀ := by
+  have hfields :=
+    continuousAt_chartLocalSuffixState_suffixState_fields E hE hchart i hij
+  rcases hfields with ⟨_, _hL, _hB, _hCtop, hD⟩
+  have hstate :
+      (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).D) =
+        (fun x : α ↦ ChartLocalSuffixState.residualProduct (E x) j i hij) := by
+    funext x
+    exact ChartLocalSuffixState.suffixState_D_eq_residualProduct (E x) hij
+  rw [hstate] at hD
+  exact hD
 
 end ChartLocalSuffixStateTopology
 

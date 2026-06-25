@@ -123,6 +123,46 @@ def paperEndpointFixedBaseEdgeMatrixOfReverseEdges
     (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
     (E p)
 
+/-- A reversed edge family whose fixed-base edge matrices are prescribed. -/
+def paperEndpointFixedBaseReverseEdgeFamilyOfMatrices
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (M : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K) :
+    ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+  fun p ↦
+    Matrix.toLin
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+      (M p)
+
+set_option linter.unusedSectionVars false in
+/-- Prescribed fixed-base edge matrices are recovered from the realised
+reversed edge family. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_reverseEdgeFamilyOfMatrices
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (M : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K)
+    (p : Fin N) :
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (paperEndpointFixedBaseReverseEdgeFamilyOfMatrices W B U₀ hU₀ M) p =
+      M p := by
+  simp [paperEndpointFixedBaseEdgeMatrixOfReverseEdges,
+    paperEndpointFixedBaseReverseEdgeFamilyOfMatrices]
+
 /-- The reversed variable total product expressed in the endpoint bases fixed from `B`. -/
 def paperEndpointFixedBaseTotalMatrixOfReverseEdges
     [∀ j, FiniteDimensional K (W j)]
@@ -774,6 +814,137 @@ variable {K : Type u} [NontriviallyNormedField K] [CompleteSpace K]
   [∀ i, Module K (W i)] [∀ i, ContinuousSMul K (W i)]
   (B : ∀ i : Fin N, W i.succ →ₗ[K] W i.castSucc)
 
+/-- A continuous reversed edge family whose fixed-base edge matrices are prescribed. -/
+def paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (M : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K) :
+    ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
+  fun p ↦
+    LinearMap.toContinuousLinearMap
+      (paperEndpointFixedBaseReverseEdgeFamilyOfMatrices W B U₀ hU₀ M p)
+
+set_option linter.unusedSectionVars false in
+/-- Prescribed fixed-base edge matrices are recovered from the realised
+continuous reversed edge family. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (M : ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K)
+    (p : Fin N) :
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun q ↦
+          (paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices W B U₀ hU₀ M q :
+            reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ)) p =
+      M p := by
+  simpa [paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices] using
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_reverseEdgeFamilyOfMatrices
+      (K := K) W B U₀ hU₀ M p
+
+/-- Realising prescribed fixed-base edge matrices as continuous reversed edges is continuous
+in the prescribed matrices. -/
+theorem paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    Continuous
+      (fun M : ∀ p : Fin N,
+        Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K ↦
+        paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices W B U₀ hU₀ M) := by
+  classical
+  refine continuous_pi ?_
+  intro p
+  have hrealise : Continuous
+      (fun M :
+        Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K ↦
+        LinearMap.toContinuousLinearMap
+          (Matrix.toLin
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+            (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ) M)) :=
+    continuous_matrix_toContinuousLinearMap
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+  simpa [paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices,
+    paperEndpointFixedBaseReverseEdgeFamilyOfMatrices] using hrealise.comp (continuous_apply p)
+
+/-- Continuous-at version of
+`paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous`. -/
+theorem paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (M : α → ∀ p : Fin N,
+      Matrix
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (Fin (Module.finrank K U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) K)
+    (hM : ContinuousAt M x₀) :
+    ContinuousAt
+      (fun x : α ↦
+        paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices W B U₀ hU₀ (M x)) x₀ :=
+  (paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous
+    (K := K) W B U₀ hU₀).continuousAt.comp hM
+
+/-- Fixed-base edge matrix coordinates vary continuously with a continuous
+reversed edge family. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : ContinuousAt Cedge x₀) :
+    ContinuousAt
+      (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin N ↦
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) x₀ := by
+  refine continuousAt_pi.2 ?_
+  intro p
+  have hCedge_p : ContinuousAt (fun x : α ↦ Cedge x p) x₀ :=
+    (continuous_apply p).continuousAt.comp hCedge
+  have hcoord : Continuous
+      (fun f : reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦
+        LinearMap.toMatrix
+          (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+          (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+          (f : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) :=
+    continuous_linearMap_toMatrix
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+      (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+  simpa [paperEndpointFixedBaseEdgeMatrixOfReverseEdges] using
+    hcoord.continuousAt.comp hCedge_p
+
 /-- For a single fixed-base edge parameter, the transformed determinant chart pulls back to a
 neighborhood of the base edge in the continuous-linear-map topology. -/
 theorem paperEndpointFixedBaseContinuousEdge_selfBase_mem_nhds_transformed_identityCornerDetChart
@@ -1174,6 +1345,62 @@ theorem paperEndpointFixedBaseContinuousEdges_recursiveSuffixState_fields_contin
     simpa [E] using hchart₀ p
   simpa [E] using
     continuousAt_chartLocalSuffixState_suffixState_fields E hE hchartE
+
+/-- In endpoint bases fixed from `B`, the transformed Schur residual blocks
+visited by the suffix recursion vary continuously with a continuous reversed
+edge family, assuming the basepoint recursive determinant charts. -/
+theorem paperEndpointFixedBaseContinuousEdges_residualBlock_continuousAt
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hchart₀ : ∀ p : Fin N,
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (fun q : Fin N ↦
+            LinearMap.toMatrix
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+              (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+              (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+          p
+          (ChartLocalSuffixState.suffixState
+            (fun q : Fin N ↦
+              LinearMap.toMatrix
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.castSucc)
+                (paperEndpointFixedBaseBasis W B U₀ hU₀ q.succ)
+                (Cedge x₀ q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+            (Fin.last N) p.succ p.succ.le_last)))
+    (p : Fin N) :
+    let E : α → ∀ q : Fin N,
+        Matrix
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ q.succ)
+          (Fin (Module.finrank K U₀) ⊕
+            throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ q.castSucc) K :=
+      fun x ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun q : Fin N ↦
+            (Cedge x q : reverseVertex W q.castSucc →ₗ[K] reverseVertex W q.succ))
+    ContinuousAt
+      (fun x : α ↦
+        ChartLocalSuffixState.residualBlock (E x) (Fin.last N) p p.succ.le_last) x₀ := by
+  intro E
+  have hE : ContinuousAt E x₀ := by
+    simpa [E] using
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
+        (K := K) W B U₀ hU₀ Cedge hCedge
+  have hchartE : ∀ (q : Fin N) (hq : q.succ ≤ Fin.last N),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (E x₀) q
+          (ChartLocalSuffixState.suffixState (E x₀) (Fin.last N) q.succ hq)) := by
+    intro q hq
+    simpa [E] using hchart₀ q
+  exact
+    continuousAt_chartLocalSuffixState_residualBlock
+      (K := K) E hE hchartE p p.succ.le_last
 
 /-- If the base parameter is the fixed paper chain `B`, the recursive transformed determinant
 charts required by the suffix-state topology handoff hold automatically. -/

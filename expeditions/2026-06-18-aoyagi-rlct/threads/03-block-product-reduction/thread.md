@@ -4240,3 +4240,1229 @@ source-density bounds, positive continuous transported density, and global
 arbitrary tuples, statistical/KL/covariance losses, product-chart
 construction, density/Jacobian transport, normal crossings, pole order, or
 RLCT extraction.
+
+## 2026-06-25 A2 original loss self-base lower bound
+
+Reproduction:
+`reproduction-a2-original-loss-self-base-lower-bound.md`.
+Statement card:
+`statement-card-a2-original-loss-self-base-lower-bound.md`.
+Review:
+`review-a2-original-loss-self-base-lower-bound.md`.
+
+Lean now proves the one-parameter self-base source-filter lower bound in
+`DLNFibre.DLN.Aoyagi.EndpointLossComparison`:
+
+```text
+exists_pos_const_half_regular_add_residual_squareSum_eventually_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_source
+```
+
+The theorem composes the existing self-base p.13 lower bound into fixed
+adapted endpoint Frobenius loss with the endpoint basis comparison into
+original square-Frobenius `lossDLN`.  If the p.13 lower-bound constant is
+`a > 0` and the endpoint comparison constant is `b > 0`, Lean uses
+`c = a*b` and rewrites `b*((a/2)*S)` as `(c/2)*S`.
+
+Boundary: this is not the product-coordinate chart theorem.  It treats only
+the actual edge family `Cedge x` near the self-base point, not an independent
+regular fiber variable `u`.  It does not prove chart construction,
+signed-box/product source-measure transport, density/Jacobian transport,
+normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-25 A2 original loss source-measure handoff
+
+Reproduction:
+`reproduction-a2-original-loss-source-measure-handoff.md`.
+Statement card:
+`statement-card-a2-original-loss-source-measure-handoff.md`.
+Review:
+`review-a2-original-loss-source-measure-handoff.md`.
+
+Lean now proves the restricted-source a.e. handoff for the self-base original
+square-Frobenius lower bound in
+`DLNFibre.DLN.Aoyagi.OriginalLossSourceMeasure`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_half_regular_add_residual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_prod_fst_half_regular_add_residual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase
+```
+
+These theorems apply the generic `nhdsWithin`-to-restricted-a.e. local-measure
+handoffs to the self-base original-loss source-filter theorem.  The measure is
+restricted to `U ∩ sourceStratum`; the product form is only a first-projection
+statement over `(mu.restrict (U ∩ sourceStratum)).prod nu`.
+
+Boundary: this is source-measure plumbing only.  It does not construct the
+p.13 product chart, identify an independent regular fiber variable, prove
+signed-box pushforward, transport density/Jacobian factors, produce normal
+crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 original loss source-measure continuous-edge wrapper
+
+Reproduction:
+`reproduction-a2-original-loss-source-measure-continuous-edge-wrapper.md`.
+Statement card:
+`statement-card-a2-original-loss-source-measure-continuous-edge-wrapper.md`.
+Review:
+`review-a2-original-loss-source-measure-continuous-edge-wrapper.md`.
+
+Lean now proves continuous-edge convenience wrappers in
+`DLNFibre.DLN.Aoyagi.OriginalLossSourceMeasure`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_half_regular_add_residual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_of_continuousEdge
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_prod_fst_half_regular_add_residual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_of_continuousEdge
+```
+
+The wrappers replace the separate `ContinuousAt Cedge x0` and source-stratum
+measurability inputs by global `Continuous Cedge`.  The measurable-set input is
+discharged by `measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous`;
+the source-filter lower bound receives `hCedge.continuousAt`.
+
+Boundary: this is only a measurability/continuity convenience wrapper around
+the restricted-source a.e. handoff.  It does not prove source-rank openness,
+construct the product chart, identify an independent regular fiber variable,
+prove signed-box pushforward, transport density/Jacobian factors, produce
+normal crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 edge-matrix signed-box adapted-loss finite integral
+
+Reproduction:
+`reproduction-a2-edge-matrix-signed-box-adapted-loss-finite-integral.md`.
+Statement card:
+`statement-card-a2-edge-matrix-signed-box-adapted-loss-finite-integral.md`.
+Review:
+`review-a2-edge-matrix-signed-box-adapted-loss-finite-integral.md`.
+
+Lean now proves the edge-matrix-measurable variant of the signed-box
+adapted-loss finite-integral front end:
+
+```text
+measurableSet_matrix_rank_eq_of_measurable_finite
+measurableSet_paperEndpointFixedBaseEdgeRankStratum_of_measurable_edgeMatrix
+measurableSet_paperEndpointFixedBaseSourceRankStratum_of_measurable_edgeMatrix
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_const_mul_adaptedProductDifferenceSquareSum_le_loss_continuousAt_pos_density
+```
+
+It also proves the corresponding original square-Frobenius consumer:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_adaptedProductDifferenceSquareSum_lower_continuousAt_pos_density
+```
+
+The source-rank stratum is measurable from the same fixed-base edge-matrix
+family used by the deterministic p.13 suffix recursion, using finite matrix
+exact-rank measurability and
+`rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range`.
+The adapted-loss theorem then obtains residual source hypotheses from the
+weighted signed-box residual constructor and delegates to the existing
+continuous-density adapted-loss comparison theorem.  The original-loss theorem
+discharges the adapted-to-loss comparison by endpoint basis comparison for
+`chainMapMatrixTuple`.
+
+Boundary: the signed-box chart and weighted pushforward, residual monomial
+lower bound, source-density bounds, positive continuous product density,
+product-coordinate adapted lower bound, and for the abstract loss theorem the
+adapted-to-loss comparison remain explicit.  This does not construct the
+product chart, derive source coverage, transport density/Jacobian factors,
+derive the product-coordinate adapted lower bound, produce normal crossings,
+compute pole order, or extract an RLCT.
+
+## 2026-06-25 A2 product-coordinate adapted lower-bound socket
+
+Reproduction:
+`reproduction-a2-product-coordinate-adapted-lower-bound-socket.md`.
+Statement card:
+`statement-card-a2-product-coordinate-adapted-lower-bound-socket.md`.
+Review:
+`review-a2-product-coordinate-adapted-lower-bound-socket.md`.
+
+Lean now proves the conditional independent regular-fiber lower-bound socket in
+`DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productCoordinateShape_nhdsWithin_source
+```
+
+The theorem assumes a positive regular radius, product-coordinate shape
+
+```text
+cleaned(CedgeProd(x,u)) = residual(CedgeBase x) + squareSum(u),
+```
+
+the cleaned-to-literal p.13 comparison `cleaned <= 2*literal`, a
+product-reduction certificate, `0 < Kmul`, and a uniform triangular multiplier
+bound with that `Kmul`.  It
+then produces the exact `hadapted_lower` shape consumed by the local-measure
+and original-loss finite-integral front ends.
+
+Review caught and fixed two fidelity issues: the Lean statement now requires
+`0 < Rmax`, and the notes now say the theorem assumes the cleaned-to-literal
+comparison directly rather than exposing `F2/F3` smallness.
+
+Boundary: this is a conditional socket only.  It does not construct
+`CedgeProd`, identify analytic product coordinates, derive `F2/F3` smallness
+for the product family, prove source coverage, prove signed-box pushforward,
+transport density/Jacobian factors, produce normal crossings, compute pole
+order, or extract an RLCT.
+
+## 2026-06-25 A2 product-family assumption-reduction sockets
+
+Reproduction:
+`reproduction-a2-product-family-assumption-reduction-sockets.md`.
+Statement card:
+`statement-card-a2-product-family-assumption-reduction-sockets.md`.
+Review:
+`review-a2-product-family-assumption-reduction-sockets.md`.
+
+Lean now reduces two opaque hypotheses behind the product-coordinate adapted
+lower-bound socket in `DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates`:
+
+```text
+paperEndpointFixedBaseRegularBlockF2F3SquareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.productDifferenceCoordinateMap_squareSum_le_two_mul_literalProductDifferenceCoordinateMap_squareSum_of_regularBlockF2F3SquareSum_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.productDifferenceCoordinateMap_squareSum_eventually_le_two_mul_literalProductDifferenceCoordinateMap_squareSum_nhdsWithin_source_prod_of_regularBlockF2F3SquareSum_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.productCoordinateShape_nhdsWithin_source_of_regular_residual_coordinateMap_eq
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productCoordinateShape_regularBlockF2F3Small_nhdsWithin_source
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_regular_residual_coordinateMap_eq_regularBlockF2F3Small_nhdsWithin_source
+```
+
+The first bridge derives the socket's cleaned-to-literal comparison from
+supplied product-family `F2/F3` smallness.  The second derives the
+product-coordinate square-sum shape from supplied component identities:
+regular coordinates equal `u`, and residual coordinates equal the base
+residual block.  The composed wrapper replaces the direct
+cleaned-to-literal hypothesis by the `F2/F3` smallness hypothesis while
+leaving product shape, certificates, multiplier bound, and `0 < Rmax`
+explicit.  The fully composed wrapper also replaces the direct product-shape
+hypothesis by the regular/residual component identities.
+
+Extended same day: Lean now also derives the product-family `F2/F3` smallness
+from literal regular-coordinate equality and the radius bound `Rmax <= 1`:
+
+```text
+aoyagiCoordinateSquareSum_le_one_of_mem_ball_le_one
+AoyagiRegularBlockCoordinateIndex.f2_f3_squareSum_add_le_coordinateSquareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRegularBlockF2F3SquareSum_le_regularBlockCoordinateMap_squareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRegularBlockF2F3SquareSum_le_one_of_regularBlockCoordinateMap_eq_of_mem_ball_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRegularBlockF2F3SquareSum_eventually_le_one_nhdsWithin_source_of_regularBlockCoordinateMap_eq_of_mem_ball_le_one
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_regular_residual_coordinateMap_eq_regularRadius_le_one_nhdsWithin_source
+```
+
+The finite smallness proof uses
+`F2/F3 squareSum <= full regular squareSum`, the identity
+`regularBlock(CedgeProd(x,u)) = u`, and
+`u in ball(0,Rmax), Rmax <= 1 => squareSum(u) <= 1`.  The final wrapper keeps
+`0 < Rmax` because the existing adapted lower-bound socket carries a positive
+regular-radius interface/nonvacuity condition.  Literal coordinate equality is
+essential; a hidden permutation, scaling, or linear change would require a
+separate norm bound.
+
+Boundary: no product family is constructed, no analytic coordinate chart is
+proved, and no source coverage, signed-box pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT extraction is proved.
+
+## 2026-06-25 A2 product-family suffix-field construction
+
+Reproduction:
+`reproduction-a2-product-family-suffix-field-construction.md`.
+Statement card:
+`statement-card-a2-product-family-suffix-field-construction.md`.
+Review:
+`review-a2-product-family-suffix-field-construction.md`.
+
+Lean now proves the first finite matrix layer toward an actual product-family
+constructor.  In `DLNFibre.DLN.Aoyagi.ProductReduction`, the new one-step
+suffix-field lemmas are:
+
+```text
+ChartLocalSuffixState.step_finalF3_fromBlocks
+ChartLocalSuffixState.step_middleResidualFactor_fromBlocks
+ChartLocalSuffixState.step_leftEndpointF2Ctop_fromBlocks
+ChartLocalSuffixState.step_singleEdgeF2F3Ctop_fromBlocks
+ChartLocalSuffixState.suffixState_tail_fields_of_productFamily_transformedEdges
+ChartLocalSuffixState.suffixState_productFamily_fields_fromBlocks_one
+ChartLocalSuffixState.suffixState_productFamily_fields_fromBlocks_succSucc
+```
+
+They verify and assemble the block shapes from the p.13 construction: a
+right-endpoint edge creates `F3`, middle block-diagonal edges preserve the
+regular fields and multiply the residual factor, a left endpoint edge creates
+`B = -F2` and `Ctop`, and the one-edge case creates all regular fields while
+preserving the supplied Schur residual `C0`.  For chains with at least two
+edges, the global theorem proves final fields `B = -F2`, `Ctop = Ctop`,
+`D = residualProduct E last 0`, and `L = [I, 0; F3, I]` from the corresponding
+transformed-edge shape hypotheses.  The determinant-unit hypothesis appears
+only where the `Ctop` inverse is cancelled.
+
+Also in `RegularSuspensionCoordinates.lean`,
+`paperEndpointFixedBaseRegularBlockF2F3SquareSum_eq_suffixState_B_lowerLeftBlock`
+expands the fixed-base `F2/F3` square-sum as exactly the square-sum of the
+suffix fields `-S.B` and `lowerLeftBlock S.L`.
+
+Independent review found no sign error or overclaim.  Boundary: this is still
+finite transformed-edge matrix algebra.  It does not construct fixed-base
+continuous edge maps, prove those maps realize the transformed-edge shapes,
+prove source coverage, signed-box pushforward, density/Jacobian transport,
+normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-25 A2 fixed-base product-family coordinate readout
+
+Reproduction:
+`reproduction-a2-fixed-base-product-family-coordinate-readout.md`.
+Statement card:
+`statement-card-a2-fixed-base-product-family-coordinate-readout.md`.
+Review:
+`review-a2-fixed-base-product-family-coordinate-readout.md`.
+
+Lean now connects the matrix-level product-family suffix fields to the
+fixed-base p.13 coordinate maps.  In `RegularSuspensionCoordinates.lean`,
+
+```text
+paperEndpointFixedBaseSuffixState_fields_of_productFamily_transformedEdges_succSucc
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_productFamily_transformedEdges_succSucc
+```
+
+specialize the generic suffix-field theorem to the endpoint bases used by
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges`, then read the cleaned
+product-difference coordinate map as
+
+```text
+value(Ctop - I, F2, F3, residualProduct EMat last 0).
+```
+
+The signs are the p.13 signs: `S.B = -F2` is read as the coordinate `F2`, and
+`S.L = [I,0;F3,I]` is read as `F3`.  The residual coordinate remains the
+edgewise residual product, not an arbitrary final residual matrix.
+
+Boundary: the theorem still assumes the transformed-edge block shapes.  It
+does not construct `CedgeProd`, prove fixed-base continuous maps realize those
+shapes, prove source coverage, signed-box pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-25 A2 fixed-base prescribed edge-matrix realisation
+
+Reproduction:
+`reproduction-a2-fixed-base-prescribed-edge-matrix-realisation.md`.
+Statement card:
+`statement-card-a2-fixed-base-prescribed-edge-matrix-realisation.md`.
+Review:
+`review-a2-fixed-base-prescribed-edge-matrix-realisation.md`.
+
+Lean now turns prescribed fixed-base edge matrices back into actual reversed
+edge maps.  In `FixedBasepointChart.lean`:
+
+```text
+paperEndpointFixedBaseReverseEdgeFamilyOfMatrices
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_reverseEdgeFamilyOfMatrices
+paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
+```
+
+The algebraic statement is the basis inverse law
+`toMatrix(toLin(G)) = G`; the continuous statement uses
+`LinearMap.toContinuousLinearMap` in finite dimensions and reads back the same
+matrix.
+
+In `RegularSuspensionCoordinates.lean`,
+
+```text
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_prescribedProductFamilyEdgeMatrices_succSucc
+```
+
+packages this with the product-family coordinate readout: if the prescribed
+matrices `G` satisfy the transformed-edge block-shape hypotheses, the
+continuous fixed-base edge family realised from `G` has coordinates
+`value(Ctop - I, F2, F3, residualProduct G last 0)`.
+
+Boundary: this is pointwise.  It does not construct a product-coordinate
+matrix family `G(x,u)`, prove transformed-edge block shapes for such a family,
+prove parameter-continuity, source coverage, signed-box pushforward,
+density/Jacobian transport, normal crossings, pole order, or RLCT extraction.
+An attempted fully parameterized convenience wrapper was removed because it
+caused pathological elaboration by unfolding the large coordinate map; use the
+pointwise theorem as the next API.
+
+## 2026-06-25 A2 fixed-base single-edge product-family coordinate readout
+
+Reproduction:
+`reproduction-a2-fixed-base-single-edge-product-family-coordinate-readout.md`.
+Statement card:
+`statement-card-a2-fixed-base-single-edge-product-family-coordinate-readout.md`.
+Review:
+`review-a2-fixed-base-single-edge-product-family-coordinate-readout.md`.
+
+Lean now covers the one-edge product-family coordinate case in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+paperEndpointFixedBaseSuffixState_fields_of_productFamily_transformedEdge_one
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_productFamily_transformedEdge_one
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_prescribedProductFamilyEdgeMatrix_one
+```
+
+The transformed edge shape is the endpoint-collapse block
+
+```text
+[ Ctop,       -Ctop F2
+  -F3 Ctop,   C0 + F3 Ctop F2 ],
+```
+
+and the cleaned coordinate readout is
+`value(Ctop - I, F2, F3, C0)`.  The prescribed-matrix theorem realises the
+single fixed-base matrix as a continuous edge map and then reads it back.
+
+Boundary: still finite and pointwise.  No product-coordinate matrix family,
+parameter-continuity, transformed-edge production, source coverage,
+density/Jacobian transport, normal crossings, pole order, or RLCT extraction is
+proved.
+
+## 2026-06-25 A2 fixed-base product-coordinate edge matrices
+
+Reproduction:
+`reproduction-a2-fixed-base-product-coordinate-edge-matrices.md`.
+Statement card:
+`statement-card-a2-fixed-base-product-coordinate-edge-matrices.md`.
+Review:
+`review-a2-fixed-base-product-coordinate-edge-matrices.md`.
+
+Lean now replaces the supplied transformed-edge hypotheses by raw p.13
+product-coordinate edge-matrix hypotheses.  In `ProductReduction.lean`:
+
+```text
+ChartLocalSuffixState.productCoordinateRightEndpointMatrix
+ChartLocalSuffixState.productCoordinateMiddleMatrix
+ChartLocalSuffixState.productCoordinateLeftEndpointMatrix
+ChartLocalSuffixState.productCoordinateSingleEdgeMatrix
+ChartLocalSuffixState.suffixState_tail_fields_of_productCoordinateEdges
+ChartLocalSuffixState.suffixState_productCoordinate_fields_one
+ChartLocalSuffixState.suffixState_productCoordinate_fields_succSucc
+```
+
+The multi-edge theorem proves the required tail induction: after the right
+endpoint, and through the middle edges, the suffix state carries `B=0`; only
+with that invariant do the raw middle and left edge matrices become the
+displayed transformed-edge matrices.
+
+In `RegularSuspensionCoordinates.lean`:
+
+```text
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_productCoordinateEdgeMatrix_one
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_productCoordinateEdges_succSucc
+```
+
+read those raw edge patterns through the fixed-base p.13 coordinate map.  The
+single-edge readout is `value(Ctop - I, F2, F3, C0)`.  The multi-edge readout
+is `value(Ctop - I, F2, F3, residualProduct EMat last 0)`.
+
+Boundary: still pointwise finite algebra.  No dependent product-family
+constructor `G(x,u)`, parameter-continuity, source coverage, signed-box
+pushforward, density/Jacobian transport, normal crossings, pole order, or RLCT
+extraction is proved.
+
+## 2026-06-25 A2 regular coordinate-vector block reconstruction
+
+Reproduction:
+`reproduction-a2-regular-coordinate-vector-block-reconstruction.md`.
+Statement card:
+`statement-card-a2-regular-coordinate-vector-block-reconstruction.md`.
+Review:
+`review-a2-regular-coordinate-vector-block-reconstruction.md`.
+
+Lean now has the finite inverse to the regular-coordinate readout in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+AoyagiRegularBlockCoordinateIndex.ctopMinusIdentityMatrix
+AoyagiRegularBlockCoordinateIndex.ctopMatrix
+AoyagiRegularBlockCoordinateIndex.f2Matrix
+AoyagiRegularBlockCoordinateIndex.f3Matrix
+AoyagiRegularBlockCoordinateIndex.ctopMatrix_sub_one
+AoyagiRegularBlockCoordinateIndex.value_coordinateMatrices
+AoyagiRegularBlockCoordinateIndex.exists_value_eq
+AoyagiRegularBlockCoordinateIndex.value_euclideanCoordinateMatrices
+AoyagiRegularBlockCoordinateIndex.value_euclideanCtopMatrixCoordinateMatrices
+```
+
+For any scalar regular-coordinate family `coord`, the three matrices obtained
+by reading the three tagged summands satisfy
+`value(X,F2,F3)=coord`.  For a Euclidean regular-coordinate vector `u`, apply
+this to `coord c = u c`.  When the actual top-left block is needed, the helper
+`ctopMatrix` gives `Ctop=I+X` and proves `Ctop-I=X`.
+
+Boundary: this supplies the target `Ctop - I`, `F2`, and `F3` blocks for a
+future `G(x,u)` constructor.  It does not choose residual blocks, assemble edge
+matrices, prove raw edge-pattern hypotheses, prove continuity in `(x,u)`,
+construct a product chart, transport measures, produce normal crossings, prove
+pole order, or extract RLCT.
+
+## 2026-06-25 A2 single-edge product-coordinate family constructor
+
+Reproduction:
+`reproduction-a2-single-edge-product-coordinate-family-constructor.md`.
+Statement card:
+`statement-card-a2-single-edge-product-coordinate-family-constructor.md`.
+Review:
+`review-a2-single-edge-product-coordinate-family-constructor.md`.
+
+Lean now has the one-edge constructor/readout in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+AoyagiResidualBlockCoordinateIndex.matrix
+AoyagiResidualBlockCoordinateIndex.value_matrix
+AoyagiResidualBlockCoordinateIndex.exists_value_eq
+AoyagiProductDifferenceCoordinateIndex.value_euclideanCtopMatrixCoordinateMatrices_residual
+paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_singleEdgeProductCoordinateEuclidean
+```
+
+Given a Euclidean regular-coordinate vector `u`, the constructor forms
+`X,F2,F3` by tagged projection, sets `Ctop=I+X`, and builds the raw one-edge
+p.13 matrix
+
+```text
+[ Ctop,       -Ctop F2
+  -F3 Ctop,   D + F3 Ctop F2 ].
+```
+
+Under the explicit determinant-chart hypothesis `IsUnit Ctop.det`, the
+fixed-base product-difference coordinate map reads exactly
+`Sum.elim (fun c => u c) (AoyagiResidualBlockCoordinateIndex.value D)`.
+
+Verification passed: focused `RegularSuspensionCoordinates` build, full
+`DLNFibre` build via local `LAKE_SHARED=.lake-local-shared`, `scripts/sorries`,
+and `git diff --check`.
+
+Boundary: this is still one-edge, finite, and pointwise.  It does not choose
+`D` from a base source family, prove multi-edge residual-product preservation,
+prove parameter-continuity, construct a product chart, transport measures,
+produce normal crossings, prove pole order, or extract RLCT.
+
+## 2026-06-25 A2 multi-edge residual-product preservation
+
+Reproduction:
+`reproduction-a2-multi-edge-residual-product-preservation.md`.
+Statement card:
+`statement-card-a2-multi-edge-residual-product-preservation.md`.
+Review:
+`review-a2-multi-edge-residual-product-preservation.md`.
+
+Lean now proves the finite multi-edge residual-product preservation theorem in
+`ProductReduction.lean`:
+
+```text
+ChartLocalSuffixState.schurResidualBlock_fromBlocks_upperRight_zero
+ChartLocalSuffixState.schurResidualBlock_fromBlocks_lowerLeft_zero
+ChartLocalSuffixState.residualProduct_eq_of_residualBlock_eq
+ChartLocalSuffixState.suffixState_tail_fields_of_productCoordinateEdges_from
+ChartLocalSuffixState.residualBlock_productCoordinateEdges_succSucc
+ChartLocalSuffixState.residualProduct_productCoordinateEdges_succSucc_eq_base
+```
+
+For a chain with at least two edges, if the new raw p.13 product-coordinate
+edge matrices use residual factors
+`residualBlock Ebase (Fin.last (N+2)) p`, then every transformed Schur
+residual block visited by the new suffix recursion agrees with the base one,
+and therefore the ordered residual product agrees with the base residual
+product.
+
+Boundary: finite pointwise matrix algebra only.  This does not build the
+dependent `G(x,u)` family, prove parameter-continuity, construct a product
+chart, transport measures, produce normal crossings, prove pole order, or
+extract RLCT.
+
+## 2026-06-25 A2 multi-edge product-coordinate family constructor
+
+Reproduction:
+`reproduction-a2-multi-edge-product-coordinate-family-constructor.md`.
+Statement card:
+`statement-card-a2-multi-edge-product-coordinate-family-constructor.md`.
+Review:
+`review-a2-multi-edge-product-coordinate-family-constructor.md`.
+
+Lean now proves the fixed-`Ebase` multi-edge product-coordinate constructor in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_multiEdgeProductCoordinateEuclidean
+```
+
+For a chain with at least two edges, the constructor reads a Euclidean regular
+coordinate vector `u` into `Ctop=I+X`, `F2`, and `F3`, chooses each new
+residual factor as `residualBlock Ebase last p`, and assembles the raw p.13
+edge matrices.  The fixed-base product-difference coordinate map of the
+realised continuous edge family is
+
+```text
+Sum.elim (fun c => u c)
+  (AoyagiResidualBlockCoordinateIndex.value (residualProduct Ebase last 0)).
+```
+
+The determinant hypothesis `IsUnit (Ctop(u)).det` is explicit and belongs to
+the coordinate-readout theorem.  The proof reuses the raw
+product-coordinate suffix-field theorem and the multi-edge residual-product
+preservation theorem.
+
+Boundary: still pointwise in a fixed base matrix family `Ebase`.  This does
+not yet construct the source-dependent family `G(x,u)` from a base source edge
+family, prove parameter-continuity, construct a product chart, transport
+measures, produce normal crossings, prove pole order, or extract RLCT.
+
+## 2026-06-25 A2 multi-edge source-dependent product-coordinate family
+
+Reproduction:
+`reproduction-a2-multi-edge-source-dependent-product-coordinate-family.md`.
+Statement card:
+`statement-card-a2-multi-edge-source-dependent-product-coordinate-family.md`.
+Review:
+`review-a2-multi-edge-source-dependent-product-coordinate-family.md`.
+
+Lean now specializes the fixed-`Ebase` constructor to the fixed-base matrices
+of a base source edge family `CedgeBase x`.  New names in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct
+paperEndpointFixedBaseRegularBlockCoordinateMap_congr_point
+paperEndpointFixedBaseResidualBlockCoordinateMap_congr_point
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_multiEdgeProductCoordinateEuclidean_baseEdgeFamily
+```
+
+At each point `(x,u)`, under `IsUnit (det(Ctop(u)))`, the constructed product
+family has regular coordinates exactly `u` and residual coordinates equal to
+the base residual coordinate map of `CedgeBase x`.
+
+Boundary: pointwise finite coordinate algebra for at-least-two-edge chains.
+The determinant-unit hypothesis is still explicit; no small-ball determinant
+chart, parameter-continuity, source coverage, product chart, measure
+transport, normal crossings, pole order, or RLCT extraction is proved.
+
+## 2026-06-25 A2 Ctop determinant neighborhood
+
+Reproduction:
+`reproduction-a2-ctop-determinant-neighborhood.md`.
+Statement card:
+`statement-card-a2-ctop-determinant-neighborhood.md`.
+Review:
+`review-a2-ctop-determinant-neighborhood.md`.
+
+Lean now proves the elementary determinant-neighborhood lemmas in
+`RegularSuspensionCoordinates.lean`:
+
+```text
+AoyagiRegularBlockCoordinateIndex.continuous_ctopMatrix_euclidean
+AoyagiRegularBlockCoordinateIndex.continuous_det_ctopMatrix_euclidean
+AoyagiRegularBlockCoordinateIndex.ctopMatrix_zero
+AoyagiRegularBlockCoordinateIndex.ctopMatrix_euclidean_zero
+AoyagiRegularBlockCoordinateIndex.det_ctopMatrix_zero
+AoyagiRegularBlockCoordinateIndex.det_ctopMatrix_euclidean_zero
+AoyagiRegularBlockCoordinateIndex.isUnit_det_ctopMatrix_euclidean_zero
+AoyagiRegularBlockCoordinateIndex.eventually_isUnit_det_ctopMatrix_euclidean_nhds_zero
+AoyagiRegularBlockCoordinateIndex.exists_pos_ball_forall_isUnit_det_ctopMatrix_euclidean
+AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+```
+
+The proof is the direct p.13 calculation: `Ctop(u)=I+X(u)`, so
+`Ctop(0)=I`, `det(Ctop(0))=1`, the determinant is continuous in `u`, and the
+real unit locus is open.  Therefore `IsUnit(det(Ctop(u)))` holds eventually
+near `u=0` and on a positive Euclidean ball, shrinkable below any prescribed
+positive radius.
+
+Boundary: this only supplies the determinant-unit chart hypothesis near the
+centered regular coordinate.  It does not prove product-family continuity in
+`(x,u)`, source coverage, rank-stratum openness, signed-box pushforward,
+density/Jacobian transport, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-25 A2 residual block continuity support
+
+Reproduction:
+`reproduction-a2-residual-block-continuity-support.md`.
+Statement card:
+`statement-card-a2-residual-block-continuity-support.md`.
+Review:
+`review-a2-residual-block-continuity-support.md`.
+
+Lean now proves the local continuity support for transformed Schur residual
+blocks and residual products, and the resulting source-dependent
+product-coordinate family continuity:
+
+```text
+continuous_productCoordinateRightEndpointMatrix
+continuous_productCoordinateMiddleMatrix
+continuous_productCoordinateLeftEndpointMatrix
+continuousAt_chartLocalSuffixState_residualBlock
+continuousAt_chartLocalSuffixState_residualProduct
+continuous_matrix_toContinuousLinearMap
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
+paperEndpointFixedBaseContinuousEdges_residualBlock_continuousAt
+paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous
+paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuousAt
+AoyagiRegularBlockCoordinateIndex.continuous_f2Matrix_euclidean
+AoyagiRegularBlockCoordinateIndex.continuous_f3Matrix_euclidean
+continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+```
+
+The key mathematical point is that source residual factors are continuous only
+under the recursive determinant-chart hypotheses for the base transformed
+edges, because the Schur complement uses matrix inversion.  The residual
+product continuity is obtained by rewriting the suffix-state `D` field with
+`suffixState_D_eq_residualProduct`.
+
+The product-coordinate matrix family is continuous at `(x0,u0)` by the
+right-endpoint, middle-edge, and left-endpoint p.13 matrix formulas: `F2`,
+`F3`, and `Ctop` are continuous in `u`, and the residual blocks are continuous
+in `x` under the recursive chart hypotheses.  The realised edge family is then
+continuous by composing with the fixed-base matrix-realisation map.  In the
+self-base case `CedgeBase x0 = reverseEdge B`, the recursive chart hypotheses
+are discharged by the existing fixed-base self-base determinant-chart theorem.
+
+Boundary: this is a local conditional continuity theorem.  It does not prove
+automatic recursive chart neighborhoods, product charts, source coverage,
+signed-box pushforward, density/Jacobian transport, normal crossings, pole
+order, or RLCT.
+
+## 2026-06-25 A2 source-dependent product family small-ball coordinate identities
+
+Reproduction:
+`reproduction-a2-source-dependent-product-family-small-ball-coordinate-identities.md`.
+Statement card:
+`statement-card-a2-source-dependent-product-family-small-ball-coordinate-identities.md`.
+Review:
+`review-a2-source-dependent-product-family-small-ball-coordinate-identities.md`.
+
+Lean now proves the small-radius wrapper
+
+```text
+exists_pos_radius_le_regular_residualBlockCoordinateMap_eq_multiEdgeProductCoordinateEuclidean_baseEdgeFamily_nhdsWithin_source
+```
+
+for the multi-edge source-dependent product family.  Given any positive
+regular-coordinate outer radius `Rmax`, it chooses `0 < R <= Rmax` such that,
+eventually on the base source-rank stratum and uniformly for
+`u in ball(0,R)`, the constructed product family has regular coordinates
+exactly `u` and residual coordinates equal to those of the base source family.
+
+The proof is intentionally pointwise in the source variable: the determinant
+small-ball theorem supplies `IsUnit(det(Ctop(u)))`, and the existing
+source-dependent product-family readout supplies the two coordinate
+identities.  The source-filter statement follows from a pointwise-in-`x`
+assertion.
+
+Boundary: this does not prove product-family continuity, source coverage,
+product-reduction certificates, triangular multiplier bounds, measure
+transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 product-family certificate and adapted lower bound
+
+Reproduction:
+`reproduction-a2-product-family-certificate-and-adapted-lower-bound.md`.
+Statement card:
+`statement-card-a2-product-family-certificate-and-adapted-lower-bound.md`.
+Review:
+`review-a2-product-family-certificate-and-adapted-lower-bound.md`.
+
+Lean now proves the finite p.13 certificate and adapted lower-bound package for
+the explicit source-dependent multi-edge product family:
+
+```text
+ChartLocalSuffixState.recursiveDetCharts_productCoordinateEdges_succSucc
+paperEndpointFixedBaseProductReductionCertificate_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+exists_pos_radius_le_productReductionCertificate_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_nhdsWithin_source
+paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le_of_recursiveDetCharts
+exists_pos_radius_le_pos_const_triangularMultiplierSquareSumProduct_eventually_le_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_nhdsWithin_source
+exists_pos_radius_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_nhdsWithin_source
+```
+
+The key calculation is that the explicit product-coordinate edge matrices have
+recursive determinant charts whenever `det(Ctop(u))` is a unit.  In the
+self-base case, the constructed product family is continuous at `(x0,0)`;
+the pointwise certificate supplies determinant charts there, so the p.13
+triangular multiplier square-sum product is locally bounded.  Combining this
+with the small-ball coordinate identities and the existing adapted lower-bound
+socket gives a positive constant `c` and a small radius `R` such that
+
+```text
+c * (squareSum(residual(CedgeBase x)) + squareSum(u))
+  <= adaptedProductDifferenceSquareSum(CedgeProd(x,u))
+```
+
+eventually on the base source stratum and uniformly for `u in ball(0,R)`.
+
+Boundary: this is still an adapted fixed-base product-difference lower bound,
+not an original-loss comparison, product chart, source coverage result,
+measure-transport theorem, normal-crossing certificate, pole-order theorem, or
+RLCT extraction.
+
+## 2026-06-25 A2 original-loss local integrability for the product family
+
+Reproduction:
+`reproduction-a2-original-loss-local-integrability-product-family.md`.
+Statement card:
+`statement-card-a2-original-loss-local-integrability-product-family.md`.
+Review:
+`review-a2-original-loss-local-integrability-product-family.md`.
+
+Lean now composes the explicit self-base multi-edge product-family adapted
+lower bound with the original square-Frobenius local finite-integral front end:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_multiEdgeProductCoordinateEdgeFamily_selfBase_continuousAt_pos_density
+```
+
+For the concrete product-coordinate family
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean`,
+the theorem no longer requires a supplied adapted product-difference lower
+bound.  It obtains a radius `Rprod <= Rmax` and a positive constant from the
+product-family theorem, then applies the existing original-loss local
+integrability theorem at radius `Rprod`; the final radius is therefore still
+bounded by the original `Rmax`.
+
+Boundary: the signed-box source chart, weighted pushforward, residual
+monomial lower bound, source-density monomial bound, transported density
+factor, and positive exponent input remain supplied.  This is not source
+coverage, density/Jacobian transport, normal crossings, pole order, or RLCT
+extraction.
+
+## 2026-06-25 A2 original-loss local integrability for the product family, edge-matrix form
+
+Reproduction:
+`reproduction-a2-original-loss-local-integrability-product-family-edge-matrix.md`.
+Statement card:
+`statement-card-a2-original-loss-local-integrability-product-family-edge-matrix.md`.
+Review:
+`review-a2-original-loss-local-integrability-product-family-edge-matrix.md`.
+
+Lean now proves the measurable-edge-matrix variant:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase_continuousAt_pos_density
+```
+
+This removes the global `Continuous CedgeBase` input from the previous
+product-family original-loss front end.  The adapted lower bound still uses
+only `ContinuousAt CedgeBase x0` plus the self-base equality, while
+source-stratum and residual measurability are kept explicit through the
+fixed-base edge-matrix measurability hypothesis.
+
+Boundary: this is still not signed-box chart construction, pushforward
+transport, residual monomial lower-bound production, density/Jacobian
+computation, normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-25 A2 local-source signed-box and monomial-unit boundary
+
+Reproduction:
+`reproduction-a2-local-source-signed-box-monomial-unit-boundary.md`.
+Statement card:
+`statement-card-a2-local-source-signed-box-monomial-unit-boundary.md`.
+Review:
+`review-a2-local-source-signed-box-monomial-unit-boundary.md`.
+
+Lean now proves a local-source version of the p.13 local finite-integral front
+end and the chart-side monomial-unit bound package:
+
+```text
+exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_loss_density_bounds
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource
+signedBox_monomialLower_sourceDensityBounds_of_monomialUnits
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+The local-source theorem replaces the hard-coded full source-rank stratum by a
+measurable source set `source`, so future p.13 chart work only needs to prove a
+pushforward identity for the local chart image.  The monomial-unit theorem
+derives the residual lower bound, source-density a.e.-measurability,
+nonnegativity, and monomial upper bound from identities
+`residual = unit * monomial` and `sourceDensity = unit * monomial` plus
+a.e. unit bounds.
+
+Boundary: this does not construct the local chart, prove source coverage,
+prove the weighted pushforward/Jacobian formula, produce the monomial-unit
+identities, extract normal crossings, compute pole order, or prove an RLCT
+claim.
+
+## 2026-06-25 A2 local-source monomial-unit finite-integral wrapper
+
+Reproduction:
+`reproduction-a2-local-source-monomial-unit-finite-integral-wrapper.md`.
+Statement card:
+`statement-card-a2-local-source-monomial-unit-finite-integral-wrapper.md`.
+Review:
+`review-a2-local-source-monomial-unit-finite-integral-wrapper.md`.
+
+Lean now proves the local-source signed-box finite-integral handoff directly
+from supplied monomial-times-unit residual and source-density data:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialUnits_edgeMatrix
+```
+
+This is a consumer theorem for a supplied local residual chart.  The theorem
+uses the earlier monomial-unit inequality package to derive the residual lower
+bound, source-density a.e.-measurability, source-density nonnegativity, and
+source-density monomial upper bound required by the local-source signed-box
+finite-integral theorem.
+
+Boundary: the measurable local source, signed-box source chart, weighted
+pushforward, residual monomial-unit identity, source-density monomial-unit
+identity, density/Jacobian formula, normal-crossing extraction, pole order, and
+RLCT extraction remain supplied or cited outside this slice.
+
+## 2026-06-25 A2 local-source adapted-loss finite-integral socket
+
+Reproduction:
+`reproduction-a2-local-source-adapted-loss-finite-integral-socket.md`.
+Statement card:
+`statement-card-a2-local-source-adapted-loss-finite-integral-socket.md`.
+Review:
+`review-a2-local-source-adapted-loss-finite-integral-socket.md`.
+
+Lean now proves the local-source analogue of the adapted-loss comparison
+finite-integral socket:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_const_mul_adaptedProductDifferenceSquareSum_le_loss
+```
+
+It multiplies the adapted product-difference lower bound by the positive
+adapted-to-loss comparison constant, then applies the local-source p.13
+finite-integral theorem.  The residual positivity/integrability and density
+bounds remain local-source hypotheses.
+
+Boundary: this does not prove the adapted product-coordinate lower bound, the
+adapted-to-original loss comparison, local chart construction, source coverage,
+density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 original-loss local-source finite-integral socket
+
+Reproduction:
+`reproduction-a2-original-loss-local-source-finite-integral-socket.md`.
+Statement card:
+`statement-card-a2-original-loss-local-source-finite-integral-socket.md`.
+Review:
+`review-a2-original-loss-local-source-finite-integral-socket.md`.
+
+Lean now proves the local-source original square-Frobenius loss specialization:
+
+```text
+exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_adaptedProductDifferenceSquareSum_lower
+```
+
+The theorem defines the concrete endpoint `lossDLN` on the product chart,
+uses the finite endpoint basis comparison to prove
+`c0 * adaptedSquareSum <= lossDLN`, and delegates to the local-source
+adapted-loss finite-integral socket.  The measurable source set, residual
+positivity/integrability, adapted lower bound, and density bounds remain
+explicit hypotheses.
+
+Boundary: this is a Lean plumbing theorem, not a source-stated p.13 chart
+construction.  It does not construct the local source, prove source coverage,
+prove signed-box pushforward or Jacobian/density transport, produce residual
+or source-density monomial-unit identities, prove normal crossings, compute
+pole order, or extract RLCT.
+
+## 2026-06-25 A2 measurable local source from source certificate
+
+Reproduction:
+`reproduction-a2-measurable-local-source-from-source-certificate.md`.
+Statement card:
+`statement-card-a2-measurable-local-source-from-source-certificate.md`.
+Review:
+`review-a2-measurable-local-source-from-source-certificate.md`.
+
+Lean now proves the certificate-level and source-data-level measurable local
+source package:
+
+```text
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_measurable_localSource
+PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_measurable_localSource_of_measurable_edgeMatrix
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_nhdsWithin_of_measurable_edgeMatrix
+```
+
+The local source is `U inter sourceRankStratum`, with `U` an open neighborhood
+of the basepoint extracted from the certificate's `nhdsWithin` data.  The
+source-data wrapper derives source-rank-stratum measurability from fixed-base
+edge-matrix measurability and proves that the local source has the same
+`nhdsWithin x0` filter as the full source-rank stratum.
+
+Boundary: this moves source packaging, not the chart itself.  It does not
+construct a signed-box chart, prove source coverage/image, prove pushforward or
+Jacobian/source-density transport, produce residual/source-density monomial
+units, prove normal crossings, compute pole order, or extract RLCT.
+
+## 2026-06-25 A2 local-source product-family adapted lower bound
+
+Reproduction:
+`reproduction-a2-local-source-product-family-adapted-lower-bound.md`.
+Statement card:
+`statement-card-a2-local-source-product-family-adapted-lower-bound.md`.
+Review:
+`review-a2-local-source-product-family-adapted-lower-bound.md`.
+
+Lean now packages the explicit self-base multi-edge p.13 product-coordinate
+adapted lower bound over the measurable local source extracted from the source
+certificate:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_pos_radius_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+```
+
+The theorem returns `source = sourceU inter sourceRankStratum`,
+`MeasurableSet source`, `x0 in source`, `source subset sourceRankStratum`,
+source-rank conclusions on `source`, the equality
+`nhdsWithin x0 source = nhdsWithin x0 sourceRankStratum`, positive `R <= Rmax`
+and `c`, and the adapted product-family lower bound on `nhdsWithin x0 source`.
+
+Boundary: this is finite/local-coordinate packaging.  It does not construct a
+signed-box chart, prove source image/coverage, prove weighted pushforward or
+Jacobian/source-density transport, compare to original/KL loss, produce
+residual/source-density monomial units, prove normal crossings, compute pole
+order, or extract RLCT.
+
+## 2026-06-25 A2 local-source original-loss product-family continuation
+
+Reproduction:
+`reproduction-a2-local-source-original-loss-product-family-continuation.md`.
+Statement card:
+`statement-card-a2-local-source-original-loss-product-family-continuation.md`.
+Review:
+`review-a2-local-source-original-loss-product-family-continuation.md`.
+
+Lean now composes the measurable local-source product-family adapted lower
+bound with the local-source original-loss finite-integral socket:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_forall_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_multiEdgeProductCoordinateEdgeFamily_selfBase
+```
+
+The theorem returns `source = sourceU inter sourceRankStratum`,
+`MeasurableSet source`, `x0 in source`, source-stratum inclusion, source-rank
+facts, the `nhdsWithin` equality, positive `R <= Rmax` and `c`, and a
+continuation: once residual positivity/integrability and density bounds are
+supplied on the returned local source, the finite local integral for the
+concrete endpoint square-Frobenius `lossDLN` follows.
+
+Boundary: this is a conditional composition wrapper, not an Aoyagi-stated
+chart theorem.  It does not construct a signed-box chart, prove source
+image/coverage, prove weighted pushforward or Jacobian/source-density
+transport, produce residual/source-density monomial units, prove residual
+integrability, prove normal crossings, compute pole order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry signed-box monomial-unit data
+
+Reproduction:
+`reproduction-a2-selected-entry-signed-box-monomial-unit-data.md`.
+Statement card:
+`statement-card-a2-selected-entry-signed-box-monomial-unit-data.md`.
+Review:
+`review-a2-selected-entry-signed-box-monomial-unit-data.md`.
+
+Lean now proves concrete signed-box monomial-unit data for the elementary
+selected-entry pivot chart:
+
+```text
+SelectedEntrySignedBox.residual_eq_unit_mul_abs_monomial
+SelectedEntrySignedBox.sourceDensity_eq_abs_pivotFirstJacobian_det
+SelectedEntrySignedBox.sourceDensity_eq_unit_mul_abs_monomial
+SelectedEntrySignedBox.monomialUnitHypotheses
+SelectedEntrySignedBox.monomialLower_sourceDensityBounds
+SelectedEntrySignedBox.CenterCoord.monomialUnitHypotheses
+SelectedEntrySignedBox.CenterCoord.monomialLower_sourceDensityBounds
+```
+
+The coordinate index is `Option {i // i in center.erase pivot}`.  The `none`
+coordinate is the selected pivot variable `u`; the `some` coordinates are the
+non-pivot residual variables.  The exponents are `k none = 1`,
+`k (some _) = 0`, `h none = (center.erase pivot).card`, and
+`h (some _) = 0`.  The residual unit is
+`1 + sum_{i in center.erase pivot} residual_i^2`, and the density unit is
+`1`.  The `CenterCoord` namespace restates the same package over
+`center -> R`, with zero exponents away from the pivot, for downstream Case 2
+source-coordinate use.
+
+Boundary: this is only selected-entry finite algebra plus formal absolute
+determinant data.  It does not construct the local chart source, prove source
+coverage, prove a weighted pushforward or analytic Jacobian/source-density
+identity, compare to the full DLN loss, prove normal crossings, compute pole
+order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry local-source finite-integral handoff
+
+Reproduction:
+`reproduction-a2-selected-entry-local-source-finite-integral-handoff.md`.
+Statement card:
+`statement-card-a2-selected-entry-local-source-finite-integral-handoff.md`.
+Review:
+`review-a2-selected-entry-local-source-finite-integral-handoff.md`.
+
+Lean now plugs the center-indexed selected-entry signed-box data into the
+local-source p.13 finite-integral socket:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_selectedEntryCenter_signedBox_withDensity_edgeMatrix
+```
+
+The theorem assumes a supplied local source chart, weighted pushforward
+identity, and equality between the fixed-base residual block square-sum and
+`SelectedEntrySignedBox.CenterCoord.residual pivot`.  It discharges the
+selected-entry residual/source-density monomial-unit hypotheses and reduces
+the coordinatewise threshold to the pivot inequality
+`2 * t < (center.erase pivot.1).card + 1`.
+
+Boundary: this remains conditional local-source plumbing.  It does not
+construct the selected-entry chart source, prove source image/coverage,
+weighted pushforward, analytic Jacobian/source-density transport, original
+loss comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 selected-entry chart Jacobian pushforward
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-jacobian-pushforward.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-jacobian-pushforward.md`.
+Review:
+`review-a2-selected-entry-chart-jacobian-pushforward.md`.
+
+Lean now proves the actual finite center-indexed selected-entry chart
+Jacobian and signed-box weighted pushforward:
+
+```text
+SelectedEntrySignedBox.CenterCoord.chartMapFDeriv_det
+SelectedEntrySignedBox.CenterCoord.sourceDensity_eq_abs_chartMapFDeriv_det
+SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_signedBoxSet
+SelectedEntrySignedBox.CenterCoord.map_chartMap_restrict_withDensity_sourceDensity_eq_restrict_image_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_chartMap_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image
+SelectedEntrySignedBox.CenterCoord.map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image
+```
+
+The proof first applies Mathlib's Jacobian change-of-variables theorem on a
+null-measurable source set contained in `{y | y pivot != 0}`, where the chart
+is injective.  It then recovers the full signed-box statement using the
+Lebesgue-null pivot hyperplane on the source and target sides.
+
+Review found no mathematical fidelity issue.  Follow-up fixes added chart-image
+measurability for downstream wrappers, corrected the module docstring, and
+removed an unnecessary normal-crossing import.
+
+Boundary: this proves the finite chart transport for the concrete
+center-indexed selected-entry map.  It still does not construct the p.13
+source chart inside the original DLN parameter space, prove source
+image/coverage, identify the original source measure with this chart-image
+restriction, compare the full DLN loss, produce normal crossings, compute pole
+order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry chart-image local handoff
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-image-local-handoff.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-image-local-handoff.md`.
+Review:
+`review-a2-selected-entry-chart-image-local-handoff.md`.
+
+Lean now specializes the selected-entry local-source finite-integral handoff
+to the finite chart image:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_chartMap_selectedEntryCenter_signedBox_withDensity_edgeMatrix
+```
+
+The theorem sets
+`source = SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres`,
+`sourceChart = SelectedEntrySignedBox.CenterCoord.chartMap pivot`, and
+`μ = volume`.  The finite selected-entry chart transport theorem supplies the
+weighted pushforward, chart-image measurability supplies `hsource_meas`, and
+continuity supplies chart a.e.-measurability.
+
+Independent xhigh review found no mathematical fidelity issue.  The reviewer
+checked that the assumptions and conclusion are over the finite chart image,
+not an original DLN source.
+
+Boundary: this is a finite chart-image wrapper.  It does not identify the
+chart image with an original DLN source neighborhood, prove original source
+coverage or source-measure equality, compare full DLN loss, produce normal
+crossings, compute pole order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry chart-image original-loss wrapper
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-image-original-loss-wrapper.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-image-original-loss-wrapper.md`.
+Review:
+`review-a2-selected-entry-chart-image-original-loss-wrapper.md`.
+
+Lean now proves the finite chart-image original-loss wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_chartMap_selectedEntryCenter_signedBox_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower
+```
+
+The theorem keeps the source as
+`SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres`.  It combines the
+selected-entry chart-image local-measure handoff with the finite endpoint
+basis comparison from adapted product-difference Frobenius loss to original
+`lossDLN`.  The adapted-product lower bound, residual identity along the
+selected-entry chart, edge-matrix measurability, pivot integrability threshold,
+and density bounds remain explicit hypotheses on the finite chart image.
+
+The same Lean file also contains a source-stratum-equality specialization,
+but its source identification is an explicit hypothesis, not a proof of p.13
+source coverage.
+
+Independent xhigh review found no issue.  It checked that the main theorem
+integrates over the finite chart image, keeps the adapted-product lower bound
+explicit, and that the source-stratum variant is conditional.
+
+Boundary: this still does not construct an original DLN p.13 source chart,
+prove source-rank stratum coverage or original-source measure identity, derive
+the adapted-product lower bound from original-source coordinates, produce
+normal crossings, compute pole order, or extract RLCT.
+
+## 2026-06-25 A2 selected-entry local source-stratum original-loss bridge
+
+Reproduction:
+`reproduction-a2-selected-entry-local-source-stratum-original-loss-bridge.md`.
+Statement card:
+`statement-card-a2-selected-entry-local-source-stratum-original-loss-bridge.md`.
+Review:
+`review-a2-selected-entry-local-source-stratum-original-loss-bridge.md`.
+
+Lean now proves a local-equality version of the selected-entry source-stratum
+original-loss endpoint:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_eq_chartMap_selectedEntryCenter_signedBox_withDensity_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase
+```
+
+The theorem replaces the previous global equality hypothesis
+
+```text
+sourceStratum = chartMap pivot '' signedBoxSet Rres
+```
+
+with a supplied open neighborhood `Ulocal` of `x0` and a local equality
+
+```text
+Ulocal ∩ sourceStratum =
+Ulocal ∩ (chartMap pivot '' signedBoxSet Rres).
+```
+
+The proof transports source-stratum eventual bounds to the finite chart-image
+filter, applies the finite chart-image original-loss wrapper, and then shrinks
+the returned open set into `Ulocal` before rewriting the restricted measure.
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.SelectedEntryOriginalLossLocalMeasure`.
+Independent xhigh review accepted the theorem boundary and the local
+filter/restricted-measure shrink.
+
+Boundary: the local source/image equality is an explicit hypothesis.  This
+still does not construct the p.13 source chart, prove source-rank image or
+coverage, prove original-source measure transport, produce normal crossings,
+compute pole order, or extract RLCT.

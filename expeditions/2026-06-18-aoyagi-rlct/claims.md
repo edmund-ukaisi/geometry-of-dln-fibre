@@ -6625,6 +6625,151 @@ coordinate identification proof, no Jacobian/prior density transport, no
 residual positivity or residual integrability proof, no original `lossDLN`
 comparison, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 local-source monomial-unit finite-integral wrapper:
+Lean now proves that the local-source signed-box finite-integral theorem can
+consume supplied monomial-times-unit residual and source-density data directly.
+The theorem composes the elementary monomial-unit inequality package with the
+local-source signed-box finite-integral handoff.
+
+Lean name:
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialUnits_edgeMatrix`.
+
+Nonclaims: no local chart construction, no source coverage, no pushforward
+proof, no density/Jacobian formula, no concrete monomial-unit production, no
+normal-crossing extraction, no pole order, and no RLCT.
+
+Latest A2 selected-entry signed-box monomial-unit data:
+Lean now proves the concrete selected-entry monomial-unit data expected by the
+local-source signed-box consumer.
+
+Lean names:
+`SelectedEntrySignedBox.residual_eq_unit_mul_abs_monomial`,
+`SelectedEntrySignedBox.sourceDensity_eq_abs_pivotFirstJacobian_det`,
+`SelectedEntrySignedBox.sourceDensity_eq_unit_mul_abs_monomial`,
+`SelectedEntrySignedBox.monomialUnitHypotheses`, and
+`SelectedEntrySignedBox.monomialLower_sourceDensityBounds`, plus the
+center-subtype API
+`SelectedEntrySignedBox.CenterCoord.monomialUnitHypotheses` and
+`SelectedEntrySignedBox.CenterCoord.monomialLower_sourceDensityBounds`.
+
+The coordinate index is `Option {i // i in center.erase pivot}`.  The pivot
+coordinate has loss exponent `1`; the non-pivot residual coordinates have loss
+exponent `0`.  The formal density is the absolute value of the formal
+pivot-first determinant, so its pivot exponent is `(center.erase pivot).card`
+and its other exponents are `0`.  The residual unit is bounded below by `1`,
+and the formal density unit is exactly `1`.  The center-subtype API restates
+the same data over `center -> R` with zero exponents away from the pivot.
+
+Nonclaims: no analytic chart construction, source coverage, transition
+regularity, source production, weighted pushforward, analytic
+Jacobian/source-density transport, full loss comparison, normal-crossing
+extraction, pole order, or RLCT.
+
+Latest A2 selected-entry local-source finite-integral handoff:
+Lean now specializes the local-source monomial-unit finite-integral socket to
+the center-indexed selected-entry signed box.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_selectedEntryCenter_signedBox_withDensity_edgeMatrix`.
+
+The theorem keeps the source chart, weighted pushforward, and residual
+coordinate identity as explicit hypotheses, but discharges the residual-unit
+identity, source-density unit identity, unit bounds, and coordinatewise
+critical-exponent hypothesis using the selected-entry calculation.  The pivot
+threshold is `2 * t < (center.erase pivot.1).card + 1`; non-pivot coordinates
+are automatic because both their loss and density exponents are zero.
+
+Nonclaims: no source chart construction, no source image/coverage theorem, no
+weighted pushforward proof, no analytic Jacobian/source-density transport, no
+original-loss comparison, no normal-crossing certificate, no pole-order
+theorem, and no RLCT theorem.
+
+Latest A2 local-source adapted-loss finite-integral socket:
+Lean now proves the adapted-loss comparison finite-integral handoff over an
+explicit local source.  The proof only multiplies the adapted lower bound by a
+positive adapted-to-loss comparison constant before applying the local-source
+p.13 theorem.
+
+Lean name:
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_const_mul_adaptedProductDifferenceSquareSum_le_loss`.
+
+Nonclaims: no adapted lower-bound proof, no original `lossDLN` comparison, no
+local chart construction, no source coverage, no density/Jacobian transport,
+no normal-crossing extraction, no pole order, and no RLCT.
+
+Latest A2 original-loss local-source finite-integral socket:
+Lean now proves that the local-source adapted-loss finite-integral socket
+specializes to the concrete endpoint square-Frobenius `lossDLN` of a chain
+matrix tuple.
+
+Lean name:
+`exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_adaptedProductDifferenceSquareSum_lower`.
+
+The only discharged input is the adapted-square-sum-to-original-loss
+comparison, obtained from finite endpoint basis comparison plus the adapted
+Frobenius-loss/square-sum identity.  The local source, residual
+positivity/integrability, adapted product-coordinate lower bound, and density
+bounds remain hypotheses.
+
+Nonclaims: no local source construction, chart construction, source coverage,
+pushforward or Jacobian/source-density transport, residual/source-density
+monomial-unit production, statistical/KL loss comparison, normal-crossing
+extraction, pole order, or RLCT.
+
+Latest A2 measurable local-source package:
+Lean now proves that a fixed-base local source certificate supplies an explicit
+measurable local source `source = U inter sourceRankStratum`; the edge-matrix
+version derives source-rank-stratum measurability from the fixed-base
+edge-matrix family.  At the regular-coordinate source-data level, the local
+source has the same `nhdsWithin x0` filter as the full source-rank stratum.
+
+Lean names:
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_measurable_localSource`,
+`PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate.exists_measurable_localSource_of_measurable_edgeMatrix`,
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_nhdsWithin_of_measurable_edgeMatrix`.
+
+Nonclaims: no signed-box chart construction, source image/coverage theorem,
+pushforward or Jacobian/source-density identity, residual/source-density
+monomial-unit production, normal-crossing extraction, pole order, or RLCT.
+
+Latest A2 local-source product-family adapted lower bound:
+Lean now proves that the explicit self-base multi-edge p.13 product-coordinate
+adapted lower bound holds over the measurable local source extracted from the
+source certificate.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_pos_radius_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase`.
+
+The theorem returns the local source, open neighborhood, source measurability,
+basepoint membership, source-stratum inclusion, source-rank conclusions,
+`nhdsWithin` equality, positive radius/constant, and the adapted lower bound
+on `nhdsWithin x0 source`.
+
+Nonclaims: no signed-box chart construction, source image/coverage theorem,
+pushforward or Jacobian/source-density identity, original/KL loss comparison,
+residual/source-density monomial-unit production, normal-crossing extraction,
+pole order, or RLCT.
+
+Latest A2 local-source original-loss product-family continuation:
+Lean now proves that the measurable local-source product-family package
+composes with the local-source original-loss finite-integral socket.  The
+result returns the local source, source-rank data, `nhdsWithin` equality,
+positive radius/constant, and a continuation for the concrete endpoint
+square-Frobenius `lossDLN`.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_measurable_localSource_forall_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_multiEdgeProductCoordinateEdgeFamily_selfBase`.
+
+The continuation still requires residual positivity, residual negative-power
+integrability, an additive Haar regular-coordinate measure, and local density
+nonnegativity/boundedness on the returned `source`.
+
+Nonclaims: no signed-box chart construction, source image/coverage theorem,
+pushforward or Jacobian/source-density identity, residual/source-density
+monomial-unit production, residual integrability proof, normal-crossing
+extraction, pole order, or RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

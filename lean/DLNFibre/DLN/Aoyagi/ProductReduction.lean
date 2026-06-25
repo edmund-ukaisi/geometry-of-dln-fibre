@@ -151,6 +151,38 @@ theorem fromBlocks_corners {ι μ ν : Type*} (M : Matrix (ι ⊕ μ) (ι ⊕ ν
       (lowerRightBlock M) = M := by
   ext (i | i) (j | j) <;> rfl
 
+omit [CommRing K] in
+@[simp]
+theorem topLeftCorner_fromBlocks {ι μ ν : Type*}
+    (A : Matrix ι ι K) (B : Matrix ι ν K) (C : Matrix μ ι K) (D : Matrix μ ν K) :
+    topLeftCorner (fromBlocks A B C D) = A := by
+  ext i j
+  simp [topLeftCorner]
+
+omit [CommRing K] in
+@[simp]
+theorem upperRightBlock_fromBlocks {ι μ ν : Type*}
+    (A : Matrix ι ι K) (B : Matrix ι ν K) (C : Matrix μ ι K) (D : Matrix μ ν K) :
+    upperRightBlock (fromBlocks A B C D) = B := by
+  ext i j
+  simp [upperRightBlock]
+
+omit [CommRing K] in
+@[simp]
+theorem lowerLeftBlock_fromBlocks {ι μ ν : Type*}
+    (A : Matrix ι ι K) (B : Matrix ι ν K) (C : Matrix μ ι K) (D : Matrix μ ν K) :
+    lowerLeftBlock (fromBlocks A B C D) = C := by
+  ext i j
+  simp [lowerLeftBlock]
+
+omit [CommRing K] in
+@[simp]
+theorem lowerRightBlock_fromBlocks {ι μ ν : Type*}
+    (A : Matrix ι ι K) (B : Matrix ι ν K) (C : Matrix μ ι K) (D : Matrix μ ν K) :
+    lowerRightBlock (fromBlocks A B C D) = D := by
+  ext i j
+  simp [lowerRightBlock]
+
 /-- A block matrix with identity top-left corner and zero lower-left block. -/
 def identityCornerForm {ι μ ν : Type*} [DecidableEq ι]
     (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Prop :=
@@ -166,6 +198,24 @@ def identityCornerDetChart {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
 def schurResidualBlock {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
     (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K) : Matrix μ ν K :=
   lowerRightBlock M - lowerLeftBlock M * (topLeftCorner M)⁻¹ * upperRightBlock M
+
+/-- If the upper-right block is zero, the Schur residual is the lower-right block. -/
+theorem schurResidualBlock_fromBlocks_upperRight_zero
+    {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
+    (A : Matrix ι ι K) (C : Matrix μ ι K) (D : Matrix μ ν K) :
+    schurResidualBlock (fromBlocks A (0 : Matrix ι ν K) C D) = D := by
+  ext i j
+  simp [schurResidualBlock, topLeftCorner, upperRightBlock, lowerLeftBlock,
+    lowerRightBlock, Matrix.mul_apply]
+
+/-- If the lower-left block is zero, the Schur residual is the lower-right block. -/
+theorem schurResidualBlock_fromBlocks_lowerLeft_zero
+    {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
+    (A : Matrix ι ι K) (B : Matrix ι ν K) (D : Matrix μ ν K) :
+    schurResidualBlock (fromBlocks A B (0 : Matrix μ ι K) D) = D := by
+  ext i j
+  simp [schurResidualBlock, topLeftCorner, upperRightBlock, lowerLeftBlock,
+    lowerRightBlock, Matrix.mul_apply]
 
 /-- In identity-corner form, the selected top-left corner is exactly `1`. -/
 theorem topLeftCorner_eq_one_of_identityCornerForm
@@ -852,6 +902,46 @@ def transformedEdge
   fromBlocks (1 : Matrix ρ ρ K) S.B 0 (1 : Matrix (κ p.succ) (κ p.succ) K) *
     E p
 
+/-- Raw right-endpoint matrix pattern for Aoyagi's p. 13 product coordinates.
+
+After the terminal suffix state, its transformed edge has block shape
+`[I, 0; -F3, C]`. -/
+def productCoordinateRightEndpointMatrix
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    (F3 : Matrix μ ρ K) (C : Matrix μ ν K) :
+    Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
+  fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) C
+
+/-- Raw middle-edge matrix pattern for Aoyagi's p. 13 product coordinates.
+
+When the current suffix state has `B = 0`, its transformed edge has block shape
+`[I, 0; 0, C]`. -/
+def productCoordinateMiddleMatrix
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    (C : Matrix μ ν K) : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
+  fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix μ ρ K) C
+
+/-- Raw left-endpoint matrix pattern for Aoyagi's p. 13 product coordinates.
+
+When the current suffix state has `B = 0`, its transformed edge has block shape
+`[Ctop, -Ctop F2; 0, C0]`. -/
+def productCoordinateLeftEndpointMatrix
+    {ρ μ ν : Type*} [Fintype ρ]
+    (F2 : Matrix ρ ν K) (Ctop : Matrix ρ ρ K) (C0 : Matrix μ ν K) :
+    Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
+  fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix μ ρ K) C0
+
+/-- Raw single-edge matrix pattern for Aoyagi's p. 13 product coordinates.
+
+At the terminal suffix state its Schur residual is `C0`, while the regular
+fields read as `Ctop - I`, `F2`, and `F3`. -/
+def productCoordinateSingleEdgeMatrix
+    {ρ μ ν : Type*} [Fintype ρ]
+    (F2 : Matrix ρ ν K) (F3 : Matrix μ ρ K)
+    (Ctop : Matrix ρ ρ K) (C0 : Matrix μ ν K) :
+    Matrix (ρ ⊕ μ) (ρ ⊕ ν) K :=
+  fromBlocks Ctop (-(Ctop * F2)) (-(F3 * Ctop)) (C0 + F3 * Ctop * F2)
+
 /-- The deterministic suffix-state update hidden in the chart-local induction proof. -/
 def step
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
@@ -866,6 +956,121 @@ def step
     B := (topLeftCorner M)⁻¹ * upperRightBlock M
     Ctop := S.Ctop * topLeftCorner M
     D := S.D * schurResidualBlock M }
+
+/-- A step from a terminal-field suffix state with transformed edge
+`[I, 0; -F3, C]` creates the
+right-endpoint `F3` field and starts the residual product with `C`. -/
+theorem step_finalF3_fromBlocks
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K p.succ p.succ)
+    (F3 : Matrix (κ p.succ) ρ K)
+    (C : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hM :
+      transformedEdge E p S =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) C) :
+    S.Ctop = 1 →
+    S.D = 1 →
+    S.L = 1 →
+    let S' := step E p S
+    S'.B = 0 ∧ S'.Ctop = 1 ∧ S'.D = C ∧
+      S'.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ p.succ) (κ p.succ) K) := by
+  intro hCtop hD hL
+  suffices - -F3 = F3 by
+    simpa [step, hM, hCtop, hD, hL, schurResidualBlock, sub_eq_add_neg] using this
+  exact neg_neg F3
+
+/-- A middle transformed edge `[I, 0; 0, C]` preserves the already-created
+regular fields and multiplies the residual product by `C`. -/
+theorem step_middleResidualFactor_fromBlocks
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3 : Matrix (κ j) ρ K)
+    (Dprev : Matrix (κ j) (κ p.succ) K)
+    (C : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hM :
+      transformedEdge E p S =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (0 : Matrix (κ p.succ) ρ K) C)
+    (hCtop : S.Ctop = 1)
+    (hD : S.D = Dprev)
+    (hL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K)) :
+    let S' := step E p S
+    S'.B = 0 ∧ S'.Ctop = 1 ∧ S'.D = Dprev * C ∧
+      S'.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K) := by
+  simp [step, hM, hCtop, hD, hL, schurResidualBlock, sub_eq_add_neg]
+
+/-- A left-endpoint transformed edge `[Ctop, -Ctop F2; 0, C0]` creates the
+`F2` and `Ctop - I` fields without changing the already-created `F3`. -/
+theorem step_leftEndpointF2Ctop_fromBlocks
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F2 : Matrix ρ (κ p.castSucc) K)
+    (F3 : Matrix (κ j) ρ K)
+    (Dprev : Matrix (κ j) (κ p.succ) K)
+    (Ctop : Matrix ρ ρ K)
+    (C0 : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hM :
+      transformedEdge E p S =
+        fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p.succ) ρ K) C0)
+    (hCtop_unit : IsUnit Ctop.det)
+    (hS_Ctop : S.Ctop = 1)
+    (hD : S.D = Dprev)
+    (hL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K)) :
+    let S' := step E p S
+    S'.B = -F2 ∧ S'.Ctop = Ctop ∧ S'.D = Dprev * C0 ∧
+      S'.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ j) (κ j) K) := by
+  simp [step, hM, hS_Ctop, hD, hL, schurResidualBlock,
+    Matrix.nonsing_inv_mul_cancel_left, hCtop_unit, sub_eq_add_neg]
+
+/-- From a terminal-field suffix state, one transformed edge creates the `F2`,
+`F3`, and `Ctop - I` fields while leaving the Schur residual equal to `C0`. -/
+theorem step_singleEdgeF2F3Ctop_fromBlocks
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K p.succ p.succ)
+    (F2 : Matrix ρ (κ p.castSucc) K)
+    (F3 : Matrix (κ p.succ) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C0 : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hM :
+      transformedEdge E p S =
+        fromBlocks Ctop (-(Ctop * F2)) (-(F3 * Ctop)) (C0 + F3 * Ctop * F2))
+    (hCtop_unit : IsUnit Ctop.det) :
+    S.Ctop = 1 →
+    S.D = 1 →
+    S.L = 1 →
+    let S' := step E p S
+    S'.B = -F2 ∧ S'.Ctop = Ctop ∧ S'.D = C0 ∧
+      S'.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3
+        (1 : Matrix (κ p.succ) (κ p.succ) K) := by
+  intro hS_Ctop hD hL
+  suffices
+      F3 * (Ctop * F2) + - - -(F3 * (Ctop * F2)) = 0 ∧ - -F3 = F3 by
+    simpa [step, hM, hS_Ctop, hD, hL, schurResidualBlock,
+      Matrix.nonsing_inv_mul_cancel_left, hCtop_unit, Matrix.mul_assoc,
+      sub_eq_add_neg, add_assoc] using this
+  constructor
+  · have htriple :
+        - - -(F3 * (Ctop * F2)) = -(F3 * (Ctop * F2)) :=
+      neg_neg (-(F3 * (Ctop * F2)))
+    rw [htriple]
+    exact add_neg_cancel (F3 * (Ctop * F2))
+  · exact neg_neg F3
 
 /-- Raw p. 13 coordinates attached to one deterministic suffix-state step. -/
 def stepRawCoordinates
@@ -1203,6 +1408,403 @@ theorem suffixState_castSucc
   · simp
   · exact Fin.val_fin_le.mp hpj
 
+/-- Product-family tail suffix fields for a chain with at least two edges.
+
+Edges `1, ..., last` create the right-endpoint `F3` field and preserve
+`B = 0`, `Ctop = 1`, and the lower-unitriangular left multiplier until the
+left endpoint is processed separately. -/
+theorem suffixState_tail_fields_of_productFamily_transformedEdges
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      transformedEdge E (Fin.last (N + 1))
+          (terminal (ρ := ρ) (κ := κ) (K := K) (Fin.last (N + 2))) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        transformedEdge E p
+            (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ p.succ) ρ K) (C p)) :
+    let one : Fin (N + 3) := ⟨1, by omega⟩
+    let S := suffixState E (Fin.last (N + 2)) one one.le_last
+    S.B = 0 ∧ S.Ctop = 1 ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ (Fin.last (N + 2))) (κ (Fin.last (N + 2))) K) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  let motive : (m : ℕ) → m ≤ N + 1 → Prop := fun m hm ↦
+    0 < m →
+      let p : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le hm⟩
+      let S := suffixState E j p.castSucc p.castSucc.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K)
+  have hbase : motive (N + 1) le_rfl := by
+    intro _
+    let p : Fin (N + 2) := ⟨N + 1, Nat.lt_succ_of_le le_rfl⟩
+    have hstate :
+        suffixState E j p.castSucc p.castSucc.le_last =
+          step E p (suffixState E j p.succ p.succ.le_last) := by
+      simpa [j, p] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    have hp_succ : p.succ = j := by
+      ext
+      simp [p, j]
+    have hterminal :
+        suffixState E j p.succ p.succ.le_last =
+          terminal (ρ := ρ) (κ := κ) (K := K) j := by
+      cases hp_succ
+      exact suffixState_self (K := K) E j
+    have hstep :=
+      step_finalF3_fromBlocks (K := K) E p
+        (terminal (ρ := ρ) (κ := κ) (K := K) j) F3 (C p)
+        (by simpa [j, p] using hLast)
+        rfl rfl rfl
+    change
+      (suffixState E j p.castSucc p.castSucc.le_last).B = 0 ∧
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j p.castSucc p.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate, hterminal]
+    exact And.intro hstep.1 (And.intro hstep.2.1 hstep.2.2.2)
+  have hstep : ∀ m (hms : m + 1 ≤ N + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le (Nat.le_of_succ_le hms)⟩
+    let pnext : Fin (N + 2) := ⟨m + 1, Nat.lt_succ_of_le hms⟩
+    have hm_lt_last : m < N + 1 := Nat.lt_of_succ_le hms
+    have hstate :
+        suffixState E j p.castSucc p.castSucc.le_last =
+          step E p (suffixState E j p.succ p.succ.le_last) := by
+      simpa [j, p] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    have ih' :
+        let S := suffixState E j p.succ p.succ.le_last
+        S.B = 0 ∧ S.Ctop = 1 ∧
+          S.L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) := by
+      simpa [motive, p, pnext, j] using ih (Nat.succ_pos m)
+    have hM :
+        transformedEdge E p
+            (suffixState E j p.succ p.succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ p.succ) ρ K) (C p) := by
+      exact hMid p hmpos hm_lt_last
+    have hstep_fields :=
+      step_middleResidualFactor_fromBlocks (K := K) E p
+        (suffixState E j p.succ p.succ.le_last) F3
+        (suffixState E j p.succ p.succ.le_last).D (C p)
+        hM ih'.2.1 rfl ih'.2.2
+    change
+      (suffixState E j p.castSucc p.castSucc.le_last).B = 0 ∧
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j p.castSucc p.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate]
+    exact
+      And.intro hstep_fields.1
+        (And.intro hstep_fields.2.1 hstep_fields.2.2.2)
+  have hall := Nat.decreasingInduction (motive := motive) hstep hbase (show 1 ≤ N + 1 by omega)
+  simpa [motive, j] using hall (show 0 < 1 by omega)
+
+/-- Product-coordinate raw tail suffix fields for a chain with at least two
+edges.
+
+This version assumes the raw edge matrices have Aoyagi's p. 13 right and
+middle product-coordinate block patterns.  The transformed-edge hypotheses are
+proved inside the induction from the already-produced `B = 0` field. -/
+theorem suffixState_tail_fields_of_productCoordinateEdges
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p)) :
+    let one : Fin (N + 3) := ⟨1, by omega⟩
+    let S := suffixState E (Fin.last (N + 2)) one one.le_last
+    S.B = 0 ∧ S.Ctop = 1 ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ (Fin.last (N + 2))) (κ (Fin.last (N + 2))) K) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  let motive : (m : ℕ) → m ≤ N + 1 → Prop := fun m hm ↦
+    0 < m →
+      let p : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le hm⟩
+      let S := suffixState E j p.castSucc p.castSucc.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K)
+  have hbase : motive (N + 1) le_rfl := by
+    intro _
+    let p : Fin (N + 2) := ⟨N + 1, Nat.lt_succ_of_le le_rfl⟩
+    have hstate :
+        suffixState E j p.castSucc p.castSucc.le_last =
+          step E p (suffixState E j p.succ p.succ.le_last) := by
+      simpa [j, p] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    have hp_succ : p.succ = j := by
+      ext
+      simp [p, j]
+    have hterminal :
+        suffixState E j p.succ p.succ.le_last =
+          terminal (ρ := ρ) (κ := κ) (K := K) j := by
+      cases hp_succ
+      exact suffixState_self (K := K) E j
+    have hM :
+        transformedEdge E p
+            (terminal (ρ := ρ) (κ := κ) (K := K) p.succ) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C p) := by
+      have hEp :
+          E p = fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C p) := by
+        simpa [p, productCoordinateRightEndpointMatrix] using hLast
+      simp [transformedEdge, terminal, hEp]
+    have hstep :=
+      step_finalF3_fromBlocks (K := K) E p
+        (terminal (ρ := ρ) (κ := κ) (K := K) j) F3 (C p)
+        (by
+          cases hp_succ
+          simpa [p, j] using hM)
+        rfl rfl rfl
+    change
+      (suffixState E j p.castSucc p.castSucc.le_last).B = 0 ∧
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j p.castSucc p.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate, hterminal]
+    exact And.intro hstep.1 (And.intro hstep.2.1 hstep.2.2.2)
+  have hstep : ∀ m (hms : m + 1 ≤ N + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le (Nat.le_of_succ_le hms)⟩
+    let pnext : Fin (N + 2) := ⟨m + 1, Nat.lt_succ_of_le hms⟩
+    have hm_lt_last : m < N + 1 := Nat.lt_of_succ_le hms
+    have hstate :
+        suffixState E j p.castSucc p.castSucc.le_last =
+          step E p (suffixState E j p.succ p.succ.le_last) := by
+      simpa [j, p] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    have ih' :
+        let S := suffixState E j p.succ p.succ.le_last
+        S.B = 0 ∧ S.Ctop = 1 ∧
+          S.L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) := by
+      simpa [motive, p, pnext, j] using ih (Nat.succ_pos m)
+    have hM :
+        transformedEdge E p
+            (suffixState E j p.succ p.succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ p.succ) ρ K) (C p) := by
+      simp [transformedEdge, productCoordinateMiddleMatrix,
+        hMid p hmpos hm_lt_last, ih'.1]
+    have hstep_fields :=
+      step_middleResidualFactor_fromBlocks (K := K) E p
+        (suffixState E j p.succ p.succ.le_last) F3
+        (suffixState E j p.succ p.succ.le_last).D (C p)
+        hM ih'.2.1 rfl ih'.2.2
+    change
+      (suffixState E j p.castSucc p.castSucc.le_last).B = 0 ∧
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j p.castSucc p.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate]
+    exact
+      And.intro hstep_fields.1
+        (And.intro hstep_fields.2.1 hstep_fields.2.2.2)
+  have hall := Nat.decreasingInduction (motive := motive) hstep hbase (show 1 ≤ N + 1 by omega)
+  simpa [motive, j] using hall (show 0 < 1 by omega)
+
+/-- Product-coordinate raw tail suffix fields at any non-left vertex.
+
+After the right endpoint and the middle product-coordinate edges to its right
+have been processed, the suffix state has `B = 0`, `Ctop = 1`, and carries the
+right endpoint `F3` in the lower-left block of `L`. -/
+theorem suffixState_tail_fields_of_productCoordinateEdges_from
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (p : Fin (N + 2)) (hp : 0 < p.val) :
+    let j : Fin (N + 3) := Fin.last (N + 2)
+    let S := suffixState E j p.castSucc p.castSucc.le_last
+    S.B = 0 ∧ S.Ctop = 1 ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ j) (κ j) K) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  let motive : (m : ℕ) → m ≤ N + 1 → Prop := fun m hm ↦
+    0 < m →
+      let q : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le hm⟩
+      let S := suffixState E j q.castSucc q.castSucc.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K)
+  have hbase : motive (N + 1) le_rfl := by
+    intro _
+    let q : Fin (N + 2) := ⟨N + 1, Nat.lt_succ_of_le le_rfl⟩
+    have hstate :
+        suffixState E j q.castSucc q.castSucc.le_last =
+          step E q (suffixState E j q.succ q.succ.le_last) := by
+      simpa [j, q] using
+        suffixState_castSucc (K := K) E q q.succ.le_last
+    have hq_succ : q.succ = j := by
+      ext
+      simp [q, j]
+    have hterminal :
+        suffixState E j q.succ q.succ.le_last =
+          terminal (ρ := ρ) (κ := κ) (K := K) j := by
+      cases hq_succ
+      exact suffixState_self (K := K) E j
+    have hM :
+        transformedEdge E q
+            (terminal (ρ := ρ) (κ := κ) (K := K) q.succ) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+      have hEq :
+          E q = fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+        simpa [q, productCoordinateRightEndpointMatrix] using hLast
+      simp [transformedEdge, terminal, hEq]
+    have hstep :=
+      step_finalF3_fromBlocks (K := K) E q
+        (terminal (ρ := ρ) (κ := κ) (K := K) j) F3 (C q)
+        (by
+          cases hq_succ
+          simpa [q, j] using hM)
+        rfl rfl rfl
+    change
+      (suffixState E j q.castSucc q.castSucc.le_last).B = 0 ∧
+        (suffixState E j q.castSucc q.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j q.castSucc q.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate, hterminal]
+    exact And.intro hstep.1 (And.intro hstep.2.1 hstep.2.2.2)
+  have hstep : ∀ m (hms : m + 1 ≤ N + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let q : Fin (N + 2) := ⟨m, Nat.lt_succ_of_le (Nat.le_of_succ_le hms)⟩
+    let qnext : Fin (N + 2) := ⟨m + 1, Nat.lt_succ_of_le hms⟩
+    have hm_lt_last : m < N + 1 := Nat.lt_of_succ_le hms
+    have hstate :
+        suffixState E j q.castSucc q.castSucc.le_last =
+          step E q (suffixState E j q.succ q.succ.le_last) := by
+      simpa [j, q] using
+        suffixState_castSucc (K := K) E q q.succ.le_last
+    have ih' :
+        let S := suffixState E j q.succ q.succ.le_last
+        S.B = 0 ∧ S.Ctop = 1 ∧
+          S.L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K) := by
+      simpa [motive, q, qnext, j] using ih (Nat.succ_pos m)
+    have hM :
+        transformedEdge E q
+            (suffixState E j q.succ q.succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ q.succ) ρ K) (C q) := by
+      simp [transformedEdge, productCoordinateMiddleMatrix,
+        hMid q hmpos hm_lt_last, ih'.1]
+    have hstep_fields :=
+      step_middleResidualFactor_fromBlocks (K := K) E q
+        (suffixState E j q.succ q.succ.le_last) F3
+        (suffixState E j q.succ q.succ.le_last).D (C q)
+        hM ih'.2.1 rfl ih'.2.2
+    change
+      (suffixState E j q.castSucc q.castSucc.le_last).B = 0 ∧
+        (suffixState E j q.castSucc q.castSucc.le_last).Ctop = 1 ∧
+          (suffixState E j q.castSucc q.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+    rw [hstate]
+    exact
+      And.intro hstep_fields.1
+        (And.intro hstep_fields.2.1 hstep_fields.2.2.2)
+  have hp_le : p.val ≤ N + 1 := Nat.le_of_lt_succ p.isLt
+  have hall := Nat.decreasingInduction (motive := motive) hstep hbase hp_le
+  simpa [motive, j] using hall hp
+
+/-- Product-family suffix fields for the single-edge case. -/
+theorem suffixState_productFamily_fields_fromBlocks_one
+    {ρ : Type*} {κ : Fin 2 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin 1, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (p : Fin 1)
+    (F2 : Matrix ρ (κ p.castSucc) K)
+    (F3 : Matrix (κ p.succ) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C0 : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hM :
+      transformedEdge E p (terminal (ρ := ρ) (κ := κ) (K := K) p.succ) =
+        fromBlocks Ctop (-(Ctop * F2)) (-(F3 * Ctop)) (C0 + F3 * Ctop * F2))
+    (hCtop : IsUnit Ctop.det) :
+    let S := suffixState E p.succ p.castSucc (Fin.castSucc_le_succ p)
+    S.B = -F2 ∧ S.Ctop = Ctop ∧ S.D = C0 ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ p.succ) (κ p.succ) K) := by
+  have hself :
+      suffixState E p.succ p.succ le_rfl =
+        terminal (ρ := ρ) (κ := κ) (K := K) p.succ :=
+    suffixState_self (K := K) E p.succ
+  have hstate :
+      suffixState E p.succ p.castSucc (Fin.castSucc_le_succ p) =
+        step E p (suffixState E p.succ p.succ le_rfl) := by
+    simpa using suffixState_castSucc (K := K) E p le_rfl
+  have hstep :=
+    step_singleEdgeF2F3Ctop_fromBlocks (K := K) E p
+      (terminal (ρ := ρ) (κ := κ) (K := K) p.succ) F2 F3 Ctop C0
+      hM hCtop rfl rfl rfl
+  rw [hstate, hself]
+  exact hstep
+
+/-- Product-coordinate raw suffix fields for the single-edge case. -/
+theorem suffixState_productCoordinate_fields_one
+    {ρ : Type*} {κ : Fin 2 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin 1, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (p : Fin 1)
+    (F2 : Matrix ρ (κ p.castSucc) K)
+    (F3 : Matrix (κ p.succ) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C0 : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hE : E p = productCoordinateSingleEdgeMatrix F2 F3 Ctop C0)
+    (hCtop : IsUnit Ctop.det) :
+    let S := suffixState E p.succ p.castSucc (Fin.castSucc_le_succ p)
+    S.B = -F2 ∧ S.Ctop = Ctop ∧ S.D = C0 ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ p.succ) (κ p.succ) K) := by
+  have hM :
+      transformedEdge E p (terminal (ρ := ρ) (κ := κ) (K := K) p.succ) =
+        fromBlocks Ctop (-(Ctop * F2)) (-(F3 * Ctop)) (C0 + F3 * Ctop * F2) := by
+    simp [transformedEdge, productCoordinateSingleEdgeMatrix, terminal, hE]
+  exact
+    suffixState_productFamily_fields_fromBlocks_one
+      (K := K) E p F2 F3 Ctop C0 hM hCtop
+
 /-- The Schur residual block of the transformed edge visited by the suffix recursion. -/
 def residualBlock
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
@@ -1261,6 +1863,48 @@ theorem residualProduct_castSucc
   · congr 1
   · exact Fin.val_fin_le.mp hpj
 
+/-- Residual products agree when all transformed Schur residual blocks visited
+by the two suffix recursions agree. -/
+theorem residualProduct_eq_of_residualBlock_eq
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E E' : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j)
+    (hblock : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      residualBlock E j p hpj = residualBlock E' j p hpj) :
+    residualProduct E j i hij = residualProduct E' j i hij := by
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    residualProduct E j im (Fin.val_fin_le.mpr hmj) =
+      residualProduct E' j im (Fin.val_fin_le.mpr hmj)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hms j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        residualProduct E j p.succ hpj =
+          residualProduct E' j p.succ hpj := by
+      simpa [motive, p, hpj] using ih
+    calc
+      residualProduct E j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+          residualProduct E j p.succ hpj * residualBlock E j p hpj := by
+            rw [residualProduct_castSucc]
+      _ = residualProduct E' j p.succ hpj * residualBlock E' j p hpj := by
+            rw [ih', hblock p hpj]
+      _ = residualProduct E' j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) := by
+            rw [residualProduct_castSucc]
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      residualProduct E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) =
+        residualProduct E' j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) := by
+    simpa [motive] using hcanon
+  simpa using hcanon'
+
 /-- The deterministic suffix-state `D` field unfolds by multiplying the next
 visited Schur residual block. -/
 theorem suffixState_D_castSucc
@@ -1311,6 +1955,509 @@ theorem suffixState_D_eq_residualProduct
         residualProduct E j i (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) := by
     simpa [motive] using hcanon
   simpa using hcanon'
+
+/-- Product-family suffix fields for a chain with at least two edges. -/
+theorem suffixState_productFamily_fields_fromBlocks_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      transformedEdge E (Fin.last (N + 1))
+          (terminal (ρ := ρ) (κ := κ) (K := K) (Fin.last (N + 2))) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        transformedEdge E p
+            (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0
+            (0 : Matrix (κ p.succ) ρ K) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      let one : Fin (N + 3) := ⟨1, by omega⟩
+      transformedEdge E p0 (suffixState E (Fin.last (N + 2)) one one.le_last) =
+        fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ one) ρ K) (C p0))
+    (hCtop : IsUnit Ctop.det) :
+    let p0 : Fin (N + 2) := 0
+    let S := suffixState E (Fin.last (N + 2)) p0.castSucc p0.castSucc.le_last
+    S.B = -F2 ∧ S.Ctop = Ctop ∧
+      S.D = residualProduct E (Fin.last (N + 2)) p0.castSucc p0.castSucc.le_last ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ (Fin.last (N + 2))) (κ (Fin.last (N + 2))) K) := by
+  let p0 : Fin (N + 2) := 0
+  let one : Fin (N + 3) := ⟨1, by omega⟩
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  have hp0_succ : p0.succ = one := by
+    ext
+    simp [p0, one]
+  have htail :
+      let S := suffixState E j p0.succ p0.succ.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K) := by
+    cases hp0_succ
+    simpa [p0, one, j] using
+      suffixState_tail_fields_of_productFamily_transformedEdges
+        (K := K) E F3 C hLast hMid
+  have hM :
+      transformedEdge E p0 (suffixState E j p0.succ p0.succ.le_last) =
+        fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0) := by
+    cases hp0_succ
+    simpa [p0, one, j] using hLeft
+  have hstate :
+      suffixState E j p0.castSucc p0.castSucc.le_last =
+        step E p0 (suffixState E j p0.succ p0.succ.le_last) := by
+    simpa [p0, j] using
+      suffixState_castSucc (K := K) E p0 p0.succ.le_last
+  have hDres :
+      (suffixState E j p0.castSucc p0.castSucc.le_last).D =
+        residualProduct E j p0.castSucc p0.castSucc.le_last := by
+    simpa [p0, j] using
+      suffixState_D_eq_residualProduct (K := K) E p0.castSucc.le_last
+  have hstep :=
+    step_leftEndpointF2Ctop_fromBlocks (K := K) E p0
+      (suffixState E j p0.succ p0.succ.le_last) F2 F3
+      (suffixState E j p0.succ p0.succ.le_last).D Ctop (C p0)
+      hM hCtop htail.2.1 rfl htail.2.2
+  change
+    (suffixState E j p0.castSucc p0.castSucc.le_last).B = -F2 ∧
+      (suffixState E j p0.castSucc p0.castSucc.le_last).Ctop = Ctop ∧
+        (suffixState E j p0.castSucc p0.castSucc.le_last).D =
+          residualProduct E j p0.castSucc p0.castSucc.le_last ∧
+          (suffixState E j p0.castSucc p0.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+  rw [hstate]
+  refine ⟨hstep.1, hstep.2.1, ?_, hstep.2.2.2⟩
+  rw [← hstate]
+  exact hDres
+
+/-- Product-coordinate raw suffix fields for a chain with at least two edges.
+
+This assumes the raw fixed matrices have Aoyagi's p. 13 left, middle, and
+right product-coordinate patterns.  It derives the transformed-edge block
+shapes internally, so callers do not need to state them as separate
+hypotheses. -/
+theorem suffixState_productCoordinate_fields_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0))
+    (hCtop : IsUnit Ctop.det) :
+    let p0 : Fin (N + 2) := 0
+    let S := suffixState E (Fin.last (N + 2)) p0.castSucc p0.castSucc.le_last
+    S.B = -F2 ∧ S.Ctop = Ctop ∧
+      S.D = residualProduct E (Fin.last (N + 2)) p0.castSucc p0.castSucc.le_last ∧
+      S.L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 F3
+          (1 : Matrix (κ (Fin.last (N + 2))) (κ (Fin.last (N + 2))) K) := by
+  let p0 : Fin (N + 2) := 0
+  let one : Fin (N + 3) := ⟨1, by omega⟩
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  have hp0_succ : p0.succ = one := by
+    ext
+    simp [p0, one]
+  have htail :
+      let S := suffixState E j p0.succ p0.succ.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K) := by
+    cases hp0_succ
+    simpa [p0, one, j] using
+      suffixState_tail_fields_of_productCoordinateEdges
+        (K := K) E F3 C hLast hMid
+  have hM :
+      transformedEdge E p0 (suffixState E j p0.succ p0.succ.le_last) =
+        fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0) := by
+    have hB0 : (suffixState E j p0.succ p0.succ.le_last).B = 0 := htail.1
+    have hLeft' : E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+      simpa [p0] using hLeft
+    dsimp [transformedEdge]
+    rw [hB0, hLeft']
+    dsimp [productCoordinateLeftEndpointMatrix]
+    rw [fromBlocks_one]
+    exact Matrix.one_mul _
+  have hstate :
+      suffixState E j p0.castSucc p0.castSucc.le_last =
+        step E p0 (suffixState E j p0.succ p0.succ.le_last) := by
+    simpa [p0, j] using
+      suffixState_castSucc (K := K) E p0 p0.succ.le_last
+  have hDres :
+      (suffixState E j p0.castSucc p0.castSucc.le_last).D =
+        residualProduct E j p0.castSucc p0.castSucc.le_last := by
+    simpa [p0, j] using
+      suffixState_D_eq_residualProduct (K := K) E p0.castSucc.le_last
+  have hstep :=
+    step_leftEndpointF2Ctop_fromBlocks (K := K) E p0
+      (suffixState E j p0.succ p0.succ.le_last) F2 F3
+      (suffixState E j p0.succ p0.succ.le_last).D Ctop (C p0)
+      hM hCtop htail.2.1 rfl htail.2.2
+  change
+    (suffixState E j p0.castSucc p0.castSucc.le_last).B = -F2 ∧
+      (suffixState E j p0.castSucc p0.castSucc.le_last).Ctop = Ctop ∧
+        (suffixState E j p0.castSucc p0.castSucc.le_last).D =
+          residualProduct E j p0.castSucc p0.castSucc.le_last ∧
+          (suffixState E j p0.castSucc p0.castSucc.le_last).L =
+            fromBlocks (1 : Matrix ρ ρ K) 0 F3
+              (1 : Matrix (κ j) (κ j) K)
+  rw [hstate]
+  refine ⟨hstep.1, hstep.2.1, ?_, hstep.2.2.2⟩
+  rw [← hstate]
+  exact hDres
+
+/-- Raw multi-edge product-coordinate matrices satisfy the recursive
+determinant-chart hypotheses whenever the left endpoint `Ctop` is a
+determinant unit. -/
+theorem recursiveDetCharts_productCoordinateEdges_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0))
+    (hCtop : IsUnit Ctop.det) :
+    ∀ p : Fin (N + 2),
+      identityCornerDetChart
+        (transformedEdge E p
+          (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last)) := by
+  intro p
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  by_cases hlast : p.val = N + 1
+  · have hp : p = Fin.last (N + 1) := by
+      ext
+      simpa using hlast
+    subst p
+    have hsucc : (Fin.last (N + 1)).succ = j := by
+      ext
+      simp [j]
+    have hterminal :
+        suffixState E j (Fin.last (N + 1)).succ
+            (Fin.last (N + 1)).succ.le_last =
+          terminal (ρ := ρ) (κ := κ) (K := K) j := by
+      cases hsucc
+      exact suffixState_self (K := K) E j
+    have hM :
+        transformedEdge E (Fin.last (N + 1))
+            (suffixState E j (Fin.last (N + 1)).succ
+              (Fin.last (N + 1)).succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+      have hE :
+          E (Fin.last (N + 1)) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+        simpa [productCoordinateRightEndpointMatrix] using hLast
+      let q : Fin (N + 2) := Fin.last (N + 1)
+      have hMterm :
+          transformedEdge E q (terminal (ρ := ρ) (κ := κ) (K := K) q.succ) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+        have hEq : E q = fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+          simpa [q] using hE
+        simp [transformedEdge, terminal, hEq]
+      rw [hterminal]
+      cases hsucc
+      simpa [q] using hMterm
+    rw [hM]
+    simp [identityCornerDetChart]
+  · by_cases hzero : p.val = 0
+    · have hp : p = 0 := by
+        ext
+        simpa using hzero
+      subst p
+      let p0 : Fin (N + 2) := 0
+      let one : Fin (N + 3) := ⟨1, by omega⟩
+      have hp0_succ : p0.succ = one := by
+        ext
+        simp [p0, one]
+      have htail :
+          let S := suffixState E j p0.succ p0.succ.le_last
+          S.B = 0 ∧ S.Ctop = 1 ∧
+            S.L =
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) := by
+        cases hp0_succ
+        simpa [p0, one, j] using
+          suffixState_tail_fields_of_productCoordinateEdges
+            (K := K) E F3 C hLast hMid
+      have hM :
+          transformedEdge E p0 (suffixState E j p0.succ p0.succ.le_last) =
+            fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0) := by
+        have hB0 : (suffixState E j p0.succ p0.succ.le_last).B = 0 := htail.1
+        have hLeft' : E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+          simpa [p0] using hLeft
+        dsimp [transformedEdge]
+        rw [hB0, hLeft']
+        dsimp [productCoordinateLeftEndpointMatrix]
+        rw [fromBlocks_one]
+        exact Matrix.one_mul _
+      rw [hM]
+      simpa [identityCornerDetChart] using hCtop
+    · have hpos : 0 < p.val := Nat.pos_of_ne_zero hzero
+      have hlt : p.val < N + 1 := by
+        have hle : p.val ≤ N + 1 := Nat.le_of_lt_succ p.isLt
+        exact Nat.lt_of_le_of_ne hle hlast
+      let q : Fin (N + 2) := ⟨p.val + 1, by omega⟩
+      have hqpos : 0 < q.val := by
+        simp [q]
+      have hq_cast : q.castSucc = p.succ := by
+        ext
+        simp [q]
+      have htailq :
+          let S := suffixState E j q.castSucc q.castSucc.le_last
+          S.B = 0 ∧ S.Ctop = 1 ∧
+            S.L =
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) := by
+        simpa [j] using
+          suffixState_tail_fields_of_productCoordinateEdges_from
+            (K := K) E F3 C hLast hMid q hqpos
+      have hB0 :
+          (suffixState E j p.succ p.succ.le_last).B = 0 := by
+        cases hq_cast
+        simpa using htailq.1
+      have hM :
+          transformedEdge E p (suffixState E j p.succ p.succ.le_last) =
+            fromBlocks (1 : Matrix ρ ρ K) 0
+              (0 : Matrix (κ p.succ) ρ K) (C p) := by
+        simp [transformedEdge, productCoordinateMiddleMatrix,
+          hMid p hpos hlt, hB0]
+      rw [hM]
+      simp [identityCornerDetChart]
+
+/-- For raw multi-edge product-coordinate matrices, each transformed Schur
+residual block visited by the deterministic suffix recursion is the supplied
+residual factor `C p`. -/
+theorem residualBlock_productCoordinateEdges_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0)) :
+    ∀ p : Fin (N + 2),
+      residualBlock E (Fin.last (N + 2)) p p.succ.le_last = C p := by
+  intro p
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  by_cases hlast : p.val = N + 1
+  · have hp : p = Fin.last (N + 1) := by
+      ext
+      simpa using hlast
+    subst p
+    have hsucc : (Fin.last (N + 1)).succ = j := by
+      ext
+      simp [j]
+    have hterminal :
+        suffixState E j (Fin.last (N + 1)).succ
+            (Fin.last (N + 1)).succ.le_last =
+          terminal (ρ := ρ) (κ := κ) (K := K) j := by
+      cases hsucc
+      exact suffixState_self (K := K) E j
+    have hM :
+        transformedEdge E (Fin.last (N + 1))
+            (suffixState E j (Fin.last (N + 1)).succ
+              (Fin.last (N + 1)).succ.le_last) =
+          fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+      have hE :
+          E (Fin.last (N + 1)) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+        simpa [productCoordinateRightEndpointMatrix] using hLast
+      let q : Fin (N + 2) := Fin.last (N + 1)
+      have hMterm :
+          transformedEdge E q (terminal (ρ := ρ) (κ := κ) (K := K) q.succ) =
+            fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+        have hEq : E q = fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+          simpa [q] using hE
+        simp [transformedEdge, terminal, hEq]
+      rw [hterminal]
+      cases hsucc
+      simpa [q] using hMterm
+    change
+      schurResidualBlock
+          (transformedEdge E (Fin.last (N + 1))
+            (suffixState E j (Fin.last (N + 1)).succ
+              (Fin.last (N + 1)).succ.le_last)) =
+        C (Fin.last (N + 1))
+    rw [hM]
+    simpa using
+      schurResidualBlock_fromBlocks_upperRight_zero
+        (K := K) (A := (1 : Matrix ρ ρ K)) (C := -F3)
+        (D := C (Fin.last (N + 1)))
+  · by_cases hzero : p.val = 0
+    · have hp : p = 0 := by
+        ext
+        simpa using hzero
+      subst p
+      let p0 : Fin (N + 2) := 0
+      let one : Fin (N + 3) := ⟨1, by omega⟩
+      have hp0_succ : p0.succ = one := by
+        ext
+        simp [p0, one]
+      have htail :
+          let S := suffixState E j p0.succ p0.succ.le_last
+          S.B = 0 ∧ S.Ctop = 1 ∧
+            S.L =
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) := by
+        cases hp0_succ
+        simpa [p0, one, j] using
+          suffixState_tail_fields_of_productCoordinateEdges
+            (K := K) E F3 C hLast hMid
+      have hM :
+          transformedEdge E p0 (suffixState E j p0.succ p0.succ.le_last) =
+            fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0) := by
+        have hB0 : (suffixState E j p0.succ p0.succ.le_last).B = 0 := htail.1
+        have hLeft' : E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+          simpa [p0] using hLeft
+        dsimp [transformedEdge]
+        rw [hB0, hLeft']
+        dsimp [productCoordinateLeftEndpointMatrix]
+        rw [fromBlocks_one]
+        exact Matrix.one_mul _
+      change
+        schurResidualBlock
+            (transformedEdge E p0 (suffixState E j p0.succ p0.succ.le_last)) =
+          C p0
+      rw [hM]
+      simpa using
+        schurResidualBlock_fromBlocks_lowerLeft_zero
+          (K := K) (A := Ctop) (B := -(Ctop * F2)) (D := C p0)
+    · have hpos : 0 < p.val := Nat.pos_of_ne_zero hzero
+      have hlt : p.val < N + 1 := by
+        have hle : p.val ≤ N + 1 := Nat.le_of_lt_succ p.isLt
+        exact Nat.lt_of_le_of_ne hle hlast
+      let q : Fin (N + 2) := ⟨p.val + 1, by omega⟩
+      have hqpos : 0 < q.val := by
+        simp [q]
+      have hq_cast : q.castSucc = p.succ := by
+        ext
+        simp [q]
+      have htailq :
+          let S := suffixState E j q.castSucc q.castSucc.le_last
+          S.B = 0 ∧ S.Ctop = 1 ∧
+            S.L =
+              fromBlocks (1 : Matrix ρ ρ K) 0 F3
+                (1 : Matrix (κ j) (κ j) K) := by
+        simpa [j] using
+          suffixState_tail_fields_of_productCoordinateEdges_from
+            (K := K) E F3 C hLast hMid q hqpos
+      have hB0 :
+          (suffixState E j p.succ p.succ.le_last).B = 0 := by
+        cases hq_cast
+        simpa using htailq.1
+      have hM :
+          transformedEdge E p (suffixState E j p.succ p.succ.le_last) =
+            fromBlocks (1 : Matrix ρ ρ K) 0
+              (0 : Matrix (κ p.succ) ρ K) (C p) := by
+        simp [transformedEdge, productCoordinateMiddleMatrix,
+          hMid p hpos hlt, hB0]
+      change
+        schurResidualBlock
+            (transformedEdge E p (suffixState E j p.succ p.succ.le_last)) =
+          C p
+      rw [hM]
+      simpa using
+        schurResidualBlock_fromBlocks_lowerLeft_zero
+          (K := K) (A := (1 : Matrix ρ ρ K))
+          (B := (0 : Matrix ρ (κ p.castSucc) K)) (D := C p)
+
+/-- Raw multi-edge product-coordinate matrices preserve the residual product
+when their residual factors are chosen to be the base transformed Schur
+residual blocks. -/
+theorem residualProduct_productCoordinateEdges_succSucc_eq_base
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (Ebase E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3
+          (residualBlock Ebase (Fin.last (N + 2)) (Fin.last (N + 1))
+            (Fin.last (N + 1)).succ.le_last))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p =
+          productCoordinateMiddleMatrix (ρ := ρ)
+            (residualBlock Ebase (Fin.last (N + 2)) p p.succ.le_last))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 =
+        productCoordinateLeftEndpointMatrix F2 Ctop
+          (residualBlock Ebase (Fin.last (N + 2)) p0 p0.succ.le_last)) :
+    residualProduct E (Fin.last (N + 2)) 0 (Fin.zero_le (Fin.last (N + 2))) =
+      residualProduct Ebase (Fin.last (N + 2)) 0 (Fin.zero_le (Fin.last (N + 2))) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  let C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K :=
+    fun p ↦ residualBlock Ebase j p p.succ.le_last
+  have hLastC :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))) := by
+    simpa [C, j] using hLast
+  have hMidC :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p) := by
+    intro p hp0 hplast
+    simpa [C, j] using hMid p hp0 hplast
+  have hLeftC :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+    simpa [C, j] using hLeft
+  have hblocks_last :
+      ∀ p : Fin (N + 2),
+        residualBlock E j p p.succ.le_last =
+          residualBlock Ebase j p p.succ.le_last := by
+    intro p
+    simpa [C, j] using
+      residualBlock_productCoordinateEdges_succSucc
+        (K := K) E F2 F3 Ctop C hLastC hMidC hLeftC p
+  have hblocks :
+      ∀ (p : Fin (N + 2)) (hpj : p.succ ≤ j),
+        residualBlock E j p hpj = residualBlock Ebase j p hpj := by
+    intro p hpj
+    have hhp : hpj = p.succ.le_last := Subsingleton.elim _ _
+    cases hhp
+    exact hblocks_last p
+  have hprod :=
+    residualProduct_eq_of_residualBlock_eq
+      (K := K) E Ebase (Fin.zero_le j) hblocks
+  simpa [j] using hprod
 
 /-- One deterministic suffix-state update preserves lower-unitriangularity of `L`. -/
 theorem step_L_eq_lowerUnitriangular

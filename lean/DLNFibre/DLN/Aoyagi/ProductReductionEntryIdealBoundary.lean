@@ -1024,6 +1024,81 @@ theorem exists_source_neighborhood
   intro x hxU hxsrc
   exact hsubset ⟨hxU, hxsrc⟩
 
+set_option linter.unusedSectionVars false in
+/-- The local source certificate supplies an explicit measurable local source
+after shrinking its neighborhood and intersecting with the source-rank stratum.
+
+This is source-set packaging only: it does not construct a product chart,
+pushforward identity, or Jacobian/source-density factor. -/
+theorem exists_measurable_localSource
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (cert :
+      PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
+        W B U₀ hU₀ x₀ Cedge r rEdge)
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge)) :
+    ∃ source U : Set α,
+      U ∈ nhds x₀ ∧ IsOpen U ∧ x₀ ∈ U ∧
+      source = U ∩ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge ∧
+      MeasurableSet source ∧ x₀ ∈ source ∧
+      source ⊆ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge ∧
+      ∀ x, x ∈ source →
+        PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks
+          W B U₀ hU₀ Cedge r rEdge x := by
+  rcases cert.exists_source_neighborhood with ⟨U₀loc, hU₀loc, _hx₀U₀loc, hsource⟩
+  rcases mem_nhds_iff.mp hU₀loc with ⟨U, hU_subset, hUopen, hx₀U⟩
+  let source : Set α :=
+    U ∩ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge
+  refine ⟨source, U, hUopen.mem_nhds hx₀U, hUopen, hx₀U, rfl, ?_, ?_, ?_, ?_⟩
+  · exact hUopen.measurableSet.inter hsource_meas
+  · exact ⟨hx₀U, cert.source_basepoint⟩
+  · exact Set.inter_subset_right
+  · intro x hx
+    exact hsource x (hU_subset hx.1) hx.2
+
+set_option linter.unusedSectionVars false in
+/-- Measurable-edge-matrix version of the measurable local-source extraction
+from the fixed-base local source certificate. -/
+theorem exists_measurable_localSource_of_measurable_edgeMatrix
+    [MeasurableSpace K] [BorelSpace K] [SecondCountableTopology K]
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (cert :
+      PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
+        W B U₀ hU₀ x₀ Cedge r rEdge)
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := K) W B U₀ hU₀
+          (fun p : Fin N ↦
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)))) :
+    ∃ source U : Set α,
+      U ∈ nhds x₀ ∧ IsOpen U ∧ x₀ ∈ U ∧
+      source = U ∩ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge ∧
+      MeasurableSet source ∧ x₀ ∈ source ∧
+      source ⊆ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge ∧
+      ∀ x, x ∈ source →
+        PaperEndpointFixedBaseCanonicalProductDifferenceSourceRanks
+          W B U₀ hU₀ Cedge r rEdge x := by
+  exact
+    exists_measurable_localSource
+      (W := W) (B := B) (x₀ := x₀) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) (r := r) (rEdge := rEdge) cert
+      (measurableSet_paperEndpointFixedBaseSourceRankStratum_of_measurable_edgeMatrix
+        (W := W) (B := B) U₀ hU₀
+        (Cedge := Cedge) (r := r) (rEdge := rEdge) hEdgeMatrix)
+
 end PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
 
 /-- A continuous reversed-edge family based at `B` admits a canonical

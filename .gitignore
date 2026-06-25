@@ -1,6 +1,7 @@
 # Lean / Lake build artifacts
 lean/.lake
 lean/.lake/
+lean/.lake-local-shared/
 **/*.olean
 **/*.ilean
 **/*.trace

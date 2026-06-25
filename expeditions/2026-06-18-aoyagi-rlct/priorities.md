@@ -4187,3 +4187,385 @@ density, and product-coordinate adapted lower bound remain supplied; arbitrary
 tuples, statistical/KL/covariance losses, product-chart construction,
 density/Jacobian transport, normal crossings, pole order, and RLCT extraction
 remain outside this theorem.
+
+A2 original loss self-base lower bound has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-self-base-lower-bound.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.EndpointLossComparison` that the cleaned
+p.13 regular-plus-residual square-sum is locally bounded below by original
+square-Frobenius `lossDLN` for the actual self-base edge family
+`chainMapMatrixTuple b (Cedge x)`.  This is the preferred one-parameter
+source-filter original-loss lower-bound theorem.  It does not replace the
+product-chart adapted lower-bound hypothesis in the local-measure theorem,
+because it has no independent regular fiber variable.
+
+A2 original loss source-measure handoff has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-source-measure-handoff.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.OriginalLossSourceMeasure` that the
+self-base original-loss source-filter lower bound holds a.e. after restricting
+any base measure to `U ∩ sourceStratum`, and also in a first-projection
+product-measure form.  This is the source-measure analogue of the adapted
+square-sum handoff.  It still has no product chart, no independent regular
+fiber variable, no signed-box pushforward, no density/Jacobian transport, no
+normal crossings, no pole order, and no RLCT extraction.
+
+A2 original loss source-measure continuous-edge wrapper has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-source-measure-continuous-edge-wrapper.md`.
+Lean proves in `DLNFibre.DLN.Aoyagi.OriginalLossSourceMeasure` that global
+`Continuous Cedge` discharges the source-stratum measurability input for the
+original-loss source-measure handoff and supplies the needed `ContinuousAt`
+input.  This is only a wrapper; it does not prove source-rank openness,
+product-chart construction, signed-box pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT extraction.
+
+A2 edge-matrix signed-box adapted/original loss finite-integral front end has
+now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-edge-matrix-signed-box-adapted-loss-finite-integral.md`.
+Lean proves source-rank-stratum measurability from the fixed-base edge-matrix
+family used by the p.13 suffix recursion, then proves an edge-matrix variant of
+the signed-box adapted-loss finite-integral theorem.  It also proves the
+matching original `lossDLN` consumer in `OriginalLossLocalMeasure.lean`, using
+the endpoint basis comparison to discharge `c0 * adapted <= loss`.  This
+removes global `Continuous Cedge` from that front end when the measurable
+fixed-base edge matrices are supplied.  The signed-box chart/pushforward,
+residual monomial lower bound, source-density bounds, positive continuous
+product density, and product-coordinate adapted lower bound remain explicit.
+This is not product-chart construction, density/Jacobian transport, normal
+crossings, pole order, or RLCT extraction.
+
+A2 independent regular-fiber product-coordinate adapted lower-bound socket has
+now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-adapted-lower-bound-socket.md`.
+Lean proves that a positive-radius product family with supplied
+product-coordinate square-sum shape, supplied cleaned-to-literal comparison,
+supplied product-reduction certificates, `0 < Kmul`, and supplied uniform
+triangular multiplier bound with that `Kmul` gives the `hadapted_lower` shape
+consumed by the local-measure/original-loss front ends.  Review fixed the
+nonvacuity issue by adding `0 < Rmax` and corrected the notes so `F2/F3`
+smallness is not claimed as an exposed input of this theorem.
+
+Next-highest A2 target: construct or prove the product-family assumptions
+feeding that socket.  In order of value: product-coordinate square-sum shape
+for an actual `CedgeProd`, cleaned-to-literal comparison from product-family
+`F2/F3` smallness, and a positive local uniform triangular multiplier bound for
+the product family.  Keep source coverage, signed-box pushforward,
+density/Jacobian transport, normal crossings, pole order, and RLCT extraction
+separate.
+
+A2 product-family assumption-reduction sockets have now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-family-assumption-reduction-sockets.md`.
+Lean now reduces the socket's cleaned-to-literal comparison to supplied
+product-family `F2/F3` smallness, and reduces the product-coordinate
+square-sum shape to supplied component coordinate identities
+`regularBlock(CedgeProd(x,u)) = u` and
+`residualBlock(CedgeProd(x,u)) = residualBlock(CedgeBase x)`.  This is the
+preferred way to feed the lower-bound socket when product-coordinate data are
+available; the fully composed theorem consumes the component identities,
+`F2/F3` smallness, certificates, and multiplier bound directly.
+
+The same checkpoint now also proves that the local `F2/F3` smallness follows
+from literal regular-coordinate equality plus a radius bound `Rmax <= 1`.
+The finite proof is:
+`F2/F3 <= full regular squareSum = squareSum(u) <= 1`.  The final
+radius-derived lower-bound wrapper consumes the regular/residual component
+identities, `0 < Rmax`, `Rmax <= 1`, product-reduction certificates, and the
+triangular multiplier bound.  Literal equality is essential; a hidden linear
+coordinate change would need a separate norm-comparison bound.
+
+Next A2 frontier: construct an actual `CedgeProd` or prove the component
+coordinate identities for a supplied product-family constructor.  Do not turn
+these identities into fields with a trivial constructor unless a downstream
+theorem consumes the field package; the value is in producing the
+product-family coordinate behavior.  With literal regular coordinates, the
+`F2/F3` smallness itself is no longer a separate frontier once `Rmax <= 1` is
+available.
+
+A2 product-family suffix-field construction has now started:
+`threads/03-block-product-reduction/reproduction-a2-product-family-suffix-field-construction.md`.
+Lean proves the one-step matrix identities for the intended transformed-edge
+shapes:
+
+```text
+ChartLocalSuffixState.step_finalF3_fromBlocks
+ChartLocalSuffixState.step_middleResidualFactor_fromBlocks
+ChartLocalSuffixState.step_leftEndpointF2Ctop_fromBlocks
+ChartLocalSuffixState.step_singleEdgeF2F3Ctop_fromBlocks
+ChartLocalSuffixState.suffixState_tail_fields_of_productFamily_transformedEdges
+ChartLocalSuffixState.suffixState_productFamily_fields_fromBlocks_one
+ChartLocalSuffixState.suffixState_productFamily_fields_fromBlocks_succSucc
+```
+
+It also exposes
+`paperEndpointFixedBaseRegularBlockF2F3SquareSum_eq_suffixState_B_lowerLeftBlock`.
+Next A2 target: wrap the finite transformed-edge theorem back into fixed-base
+continuous linear maps and prove that the supplied product-family constructor
+realizes the transformed-edge shapes.  After that, prove the regular/residual
+coordinate identities for `CedgeProd`.
+
+A2 fixed-base product-family coordinate readout has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-product-family-coordinate-readout.md`.
+Lean proves that the fixed-base product-difference coordinate map reads the
+matrix-level product-family suffix theorem as
+`value(Ctop - I, F2, F3, residualProduct EMat last 0)` for chains with at least
+two edges.  This removes the sign/readout ambiguity but does not build
+`CedgeProd` or prove the transformed-edge shapes.  Next A2 target remains the
+actual fixed-base product-family constructor or a theorem proving those
+transformed-edge hypotheses for a supplied constructor.
+
+A2 fixed-base prescribed edge-matrix realisation has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-prescribed-edge-matrix-realisation.md`.
+Lean can realise any prescribed fixed-base edge matrix family `G` as actual
+continuous reversed edge maps and read those maps back as exactly `G`.  It also
+has a pointwise coordinate theorem for prescribed `G` satisfying the
+product-family transformed-edge block shapes.  Next A2 target sharpens to:
+define the product-coordinate matrix family `G(x,u)` and prove the right,
+middle, and left transformed-edge block-shape hypotheses for it.  Do not add a
+parameterized wrapper by unfolding the full coordinate map; that path caused
+slow elaboration and adds little over the pointwise theorem.
+
+A2 fixed-base single-edge product-family coordinate readout has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-single-edge-product-family-coordinate-readout.md`.
+The fixed-base product-family readout now covers both the single-edge
+endpoint-collapse case and the at-least-two-edge case.  Next A2 target remains
+the construction of the product-coordinate matrix family `G(x,u)` and proofs
+of its transformed-edge block shapes.
+
+A2 fixed-base raw product-coordinate edge matrices have now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-product-coordinate-edge-matrices.md`.
+Lean proves the raw p.13 edge matrix patterns imply the suffix-field and
+fixed-base coordinate readouts, including the multi-edge tail invariant
+`B=0`.  This removes the need to supply transformed-edge block shapes when raw
+fixed-base matrices already have the p.13 patterns.  Next A2 target is now
+narrower: define or package the actual dependent parameter family `G(x,u)` and
+prove its raw edge matrices are exactly these pointwise product-coordinate
+patterns, together with the needed parameter-continuity.  Avoid a convenience
+wrapper that unfolds the full coordinate map.
+
+A2 regular coordinate-vector block reconstruction has now landed:
+`threads/03-block-product-reduction/reproduction-a2-regular-coordinate-vector-block-reconstruction.md`.
+Lean proves that any scalar regular-coordinate family, and in particular any
+Euclidean regular-coordinate vector `u`, is exactly
+`AoyagiRegularBlockCoordinateIndex.value X F2 F3` for the component matrices
+obtained from the three tagged summands.  It also records `Ctop=I+X` and
+`Ctop-I=X` for the later edge-matrix constructor.  Next A2 target remains the
+actual dependent `G(x,u)` constructor: use this API for the regular blocks,
+then choose residual factors so the residual readout stays at the base
+residual, prove raw edge patterns, and prove parameter-continuity.
+
+A2 single-edge product-coordinate family constructor has now landed:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-product-coordinate-family-constructor.md`.
+Lean constructs the one-edge raw p.13 matrix from a Euclidean regular vector
+`u` and residual matrix `D`, and proves the fixed-base cleaned coordinate
+readout is exactly `u` on regular coordinates and `D` on residual coordinates,
+under the explicit `IsUnit Ctop.det` chart hypothesis.  This closes the
+one-edge pointwise constructor.  Next A2 frontier is the multi-edge
+residual-product preservation and dependent parameter family, not more
+single-edge wrappers.
+
+A2 multi-edge residual-product preservation has now landed:
+`threads/03-block-product-reduction/reproduction-a2-multi-edge-residual-product-preservation.md`.
+Lean proves that raw p.13 product-coordinate edge matrices whose residual
+factors are the base transformed Schur residual blocks preserve the ordered
+residual product.  This closes the residual-factor algebra for chains with at
+least two edges.  Next A2 frontier is the dependent fixed-base parameter
+family `G(x,u)`: assemble raw edge matrices from the regular-coordinate vector
+and base residual blocks, then prove fixed-base coordinate readout and
+parameter-continuity.
+
+A2 multi-edge product-coordinate family constructor has now landed:
+`threads/03-block-product-reduction/reproduction-a2-multi-edge-product-coordinate-family-constructor.md`.
+Lean assembles the fixed-`Ebase` raw p.13 matrices from a Euclidean regular
+vector `u` and the base transformed Schur residual blocks, then proves the
+fixed-base coordinate readout:
+regular coordinates are exactly `u`, and residual coordinates are
+`value(residualProduct Ebase last 0)`.  This closes the pointwise multi-edge
+constructor.  Next A2 frontier is the source-dependent wrapper: take
+`Ebase = edgeMatrix(CedgeBase x)`, prove the same component coordinate
+identities against `paperEndpointFixedBaseResidualBlockCoordinateMap CedgeBase
+x`, and then address parameter-continuity in `(x,u)`.
+
+A2 multi-edge source-dependent product-coordinate family has now landed:
+`threads/03-block-product-reduction/reproduction-a2-multi-edge-source-dependent-product-coordinate-family.md`.
+Lean defines the pointwise product family from a base source family
+`CedgeBase`, and proves at `(x,u)` that regular coordinates are exactly `u`
+and residual coordinates equal the base residual coordinate map.  The next A2
+frontier is now the continuity layer: prove the constructed edge family is
+continuous in `(x,u)` from continuity of `CedgeBase` plus continuity of the
+residual-block construction.
+
+A2 `Ctop` determinant neighborhood has now landed:
+`threads/03-block-product-reduction/reproduction-a2-ctop-determinant-neighborhood.md`.
+Lean proves that `Ctop(u)=I+X(u)` has determinant a unit for all sufficiently
+small Euclidean regular-coordinate vectors `u`, with a positive ball version
+and a shrinkable-radius version.  This removes the explicit `hCtop` hypothesis
+locally near `u=0`; it does not prove the source-dependent product family is
+continuous in `(x,u)` or any chart/source/measure/RLCT layer.
+
+A2 residual-block continuity support has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-block-continuity-support.md`.
+Lean proves continuity of transformed Schur residual blocks and residual
+products under recursive determinant-chart hypotheses, fixed-base wrappers
+from continuous edge families to continuous residual factors, continuity of
+the source-dependent product-coordinate matrix family `G(x,u)`, and continuity
+of the realised edge family `CedgeProd(x,u)`.  In the self-base case, the
+recursive determinant charts are discharged from
+`CedgeBase x₀ = reverseEdge B`.  The next A2 frontier is now a neighborhood
+package: combine this self-base continuity, the `Ctop(u)` determinant
+neighborhood, and the existing regular/residual coordinate identities into an
+actual source/regular-coordinate neighborhood.  This still precedes product
+charts, source coverage, density/Jacobian transport, normal crossings, pole
+order, and RLCT.
+
+A2 source-dependent product-family small-ball coordinate identities have now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-source-dependent-product-family-small-ball-coordinate-identities.md`.
+Lean chooses a positive `R <= Rmax` on which `IsUnit(det(Ctop(u)))` holds and
+packages the constructed product family's regular/residual coordinate readout
+as eventual on the base source-rank stratum, uniformly for `u in ball(0,R)`.
+The next A2 frontier is now to supply, for this concrete constructed product
+family, the product-reduction certificate and triangular multiplier bound
+needed by the adapted-product lower-bound socket.
+
+A2 product-family certificate and adapted lower bound have now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-family-certificate-and-adapted-lower-bound.md`.
+Lean proves the product-reduction certificate for the explicit multi-edge
+product-coordinate family from `IsUnit(det(Ctop(u)))`, proves local boundedness
+of its triangular multiplier square-sum product in the self-base case, and
+combines these with the coordinate identities into the adapted fixed-base
+lower bound
+`c * (residual square-sum + regular square-sum) <= adapted product-difference
+square-sum` on a small source/regular-coordinate product neighborhood.  The
+next A2 frontier is now the handoff from this adapted fixed-base square-sum to
+the original/source measure and original DLN loss layers, while keeping
+source coverage and Jacobian/density claims explicit.
+
+A2 original-loss local integrability for the explicit product family has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-local-integrability-product-family.md`.
+Lean adds the top product-family/original-loss composition theorem in
+`OriginalLossLocalMeasure.lean`, removing the explicit adapted-lower-bound
+hypothesis for
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean`.
+The signed-box source chart, weighted pushforward, residual monomial lower
+bound, source-density bound, transported density factor, and analytic exponent
+input remain supplied.  Next A2 frontier is therefore not another composition
+wrapper of the same shape, but one of the remaining supplied chart/source
+obligations: signed-box source chart/pushforward, residual monomial lower
+bound, or density/Jacobian transport.
+
+A2 original-loss local integrability for the explicit product family now also
+has an edge-matrix form:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-local-integrability-product-family-edge-matrix.md`.
+Lean proves the same product-family original-loss finite-integral handoff from
+`ContinuousAt CedgeBase x0` plus fixed-base edge-matrix measurability, avoiding
+global `Continuous CedgeBase`.  This is the final wrapper of this shape unless
+a downstream chart construction forces a different measurability boundary.
+The next A2 frontier should move one of the supplied chart/source obligations.
+
+A2 local-source signed-box and monomial-unit boundary has now landed:
+`threads/03-block-product-reduction/reproduction-a2-local-source-signed-box-monomial-unit-boundary.md`.
+Lean replaces the full source-rank-stratum finite-integral front end by an
+explicit measurable local source set and proves the elementary
+monomial-unit-to-bound package.  The follow-on local-source monomial-unit
+finite-integral wrapper has also landed:
+`threads/03-block-product-reduction/reproduction-a2-local-source-monomial-unit-finite-integral-wrapper.md`.
+The local-source adapted-loss socket has also landed:
+`threads/03-block-product-reduction/reproduction-a2-local-source-adapted-loss-finite-integral-socket.md`.
+Future A2 chart work should target the genuine remaining supplied fields:
+local residual signed-box chart/source coverage, weighted pushforward and
+Jacobian/source-density identity, and concrete residual/source-density
+monomial-unit identities.  Do not mark these as proved from p.13 block algebra
+alone.
+
+A2 original-loss local-source finite-integral socket has now landed:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-local-source-finite-integral-socket.md`.
+Lean specializes the local-source adapted-loss finite-integral socket to
+concrete endpoint square-Frobenius `lossDLN` by proving only the finite
+endpoint basis comparison.  This is useful when a downstream local chart
+package needs the original-loss conclusion but still supplies the adapted
+lower bound.  If the explicit self-base product-coordinate family is already
+available, prefer the stronger product-family original-loss front ends because
+they also discharge the adapted lower-bound hypothesis.  The next A2 frontier
+remains the genuine local chart/source obligations: source coverage,
+pushforward/Jacobian/source-density identity, and concrete monomial-unit
+residual/source-density identities.
+
+A2 measurable local source from source certificate has now landed:
+`threads/03-block-product-reduction/reproduction-a2-measurable-local-source-from-source-certificate.md`.
+Lean extracts `source = U inter sourceRankStratum` from the local source
+certificate, proves it measurable from fixed-base edge-matrix measurability,
+keeps `x0 in source`, carries source-rank conclusions on `source`, and records
+`nhdsWithin x0 source = nhdsWithin x0 sourceRankStratum` at the
+regular-coordinate source-data level.  The next A2 frontier should use this
+local source package when attacking genuine chart/source obligations: local
+residual signed-box chart/source coverage, weighted pushforward and
+Jacobian/source-density identity, and concrete residual/source-density
+monomial-unit identities.
+
+A2 local-source product-family adapted lower bound has now landed:
+`threads/03-block-product-reduction/reproduction-a2-local-source-product-family-adapted-lower-bound.md`.
+Lean combines the measurable local source package with the explicit self-base
+multi-edge p.13 product-coordinate adapted lower bound, returning the local
+source, source-rank data, `nhdsWithin` equality, positive radius/constant, and
+the lower bound on `nhdsWithin x0 source`.  This is the preferred source
+package for downstream local residual chart work; the genuine remaining
+obligations are still local signed-box chart/source coverage, weighted
+pushforward and Jacobian/source-density identity, and concrete
+residual/source-density monomial-unit identities.
+
+A2 local-source original-loss product-family continuation has now landed:
+`threads/03-block-product-reduction/reproduction-a2-local-source-original-loss-product-family-continuation.md`.
+Lean combines the local-source product-family adapted lower bound with the
+local-source original-loss socket, returning a continuation for finite local
+integrals of the concrete endpoint `lossDLN` after the remaining residual
+positivity/integrability and density bounds are supplied on the returned
+`source`.  This should be the last pure composition wrapper on this path for
+now.  The next A2 frontier remains the real local chart/source obligations:
+local residual signed-box chart/source coverage, weighted pushforward and
+Jacobian/source-density identity, and concrete residual/source-density
+monomial-unit identities.
+
+A2 selected-entry signed-box monomial-unit data has now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-signed-box-monomial-unit-data.md`.
+Lean proves a concrete selected-entry producer for the generic signed-box
+monomial-unit consumer.  It packages the finite square-sum identity, the
+absolute formal pivot-first determinant density, and the unit bounds with
+coordinate index `Option {i // i in center.erase pivot}`, and also provides a
+center-subtype `CenterCoord` API with zero exponents away from the pivot.  The
+remaining frontier is no longer this elementary selected-entry unit
+calculation; it is the local chart/source package around it: source coverage,
+weighted pushforward, analytic Jacobian/source-density transport, and any
+Case 2-specific chart/source wiring.
+
+A2 selected-entry local-source finite-integral handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-local-source-finite-integral-handoff.md`.
+Lean plugs the `CenterCoord` selected-entry monomial-unit data into the
+local-source finite-integral socket:
+`SelectedEntrySignedBoxLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_localSource_selectedEntryCenter_signedBox_withDensity_edgeMatrix`.
+It discharges the residual/density unit identities and coordinatewise
+critical-exponent condition from the explicit selected-entry calculation,
+leaving the local source chart, weighted pushforward, residual-coordinate
+identification, and local loss/density bounds supplied.  This is useful
+continuation plumbing, but the next frontier remains the actual chart/source
+production: source image/coverage, weighted pushforward, and analytic
+Jacobian/source-density identity.
+
+A2 selected-entry chart-image and local source-stratum original-loss bridges
+have now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-jacobian-pushforward.md`,
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-local-handoff.md`,
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-original-loss-wrapper.md`,
+and
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-local-source-stratum-original-loss-bridge.md`.
+Lean proves the finite selected-entry Jacobian/pushforward theorem, finite
+chart-image local integrability wrappers, and a conditional local
+source-stratum original-loss endpoint.  The endpoint assumes an open
+neighborhood `Ulocal` with
+`Ulocal inter sourceStratum = Ulocal inter chartMap pivot '' signedBoxSet Rres`
+and still assumes the selected-entry residual-coordinate identity.  The next
+priority is therefore paper-first: reproduce Aoyagi's actual p.13
+source-chart coverage and decide whether the source-backed statement is a
+single selected-entry chart equality or a finite chart cover/sector
+decomposition.  If the coverage proof is too large, first remove the supplied
+residual-coordinate identity.  Do not turn the conditional source-stratum
+bridge into an unconditional p.13/RLCT claim without that source work.
