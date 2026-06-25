@@ -886,6 +886,10 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-71 (2026-06-25) — idle heartbeat: 4 builds in flight (none reported); drift-glance found a stray θ-components expedition (off-path, captured + left untracked).**
+- **Tick state:** the 4 final-piece builds (l2-framestrip a3a53074, l2-wlog af2c20b4, r1-ginnerz ad5cc07d, + a fidelity review of FrontPivotWLOG a57309af) all still running; r1-ginnerz actively grinding measurability errors. Nothing LANDED ⟹ idle heartbeat, no integration this tick. HEAD = e78ed0ff.
+- **Drift-glance found a stray, off-critical-path expedition** `expeditions/2026-06-25-theta-components/` (untracked, created by another context — not mine, like the fibre-codim stray). It carries a clean decorrelated-Codex θ adjudication: **LR-θ and Aoyagi-θ are GENUINELY DIFFERENT invariants** — LR θ_geom = #top-dimensional components = `binom(m,|δ|)`; Aoyagi θ_order = pole order/SLT multiplicity = `|δ|(m−|δ|)+1`; they agree **iff |δ|≤1** (smallest disagreement (2,2,2,2,2): 6 vs 5). **Aoyagi-full impact: NONE on the headline** — `aoyagi_learning_coefficient` is a **λ statement**, and λ AGREES between the papers (codim/2 = 3/2 for (2,2,2,2,2)). The caveat is forward-looking: any θ/multiplicity claim in aoyagi-full must use Aoyagi's order-form, never LR's binom. Recorded as discuss-at-close Item 23; left untracked (not committed onto the aoyagi-full branch — wrong expedition).
+
 **★ UPDATE-70 (2026-06-25) — frame-stripping DOWNGRADED to MODERATE (not a wall); all 3 final-piece builds in flight. ★**
 - **frame-stripping bridge: NOT research-grade — MODERATE 2-3 tides (~200-350 LoC)** (pp-pin2-rearch + Codex honest re-read,
   frame-stripping-cert @d111fee7). The "frames" worry resolves: frame-stripping is ALREADY DONE (the banked (b)-exact hconj → the

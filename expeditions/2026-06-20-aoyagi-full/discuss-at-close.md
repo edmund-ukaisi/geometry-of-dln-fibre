@@ -389,3 +389,18 @@ extends here — a candidate point for the operator's scope call (full general-L
   defers. Mathlib's `SchurComplement` API (block-LU + triangular inverses + inverse-cancel) is the toolkit; a bounded 4-lemma
   directed sequence (schur_P11_decomp style), one watch-item (the `⅟P` bookkeeping). **Commissioned as a contained build
   (l2-framestrip), NOT an operator wall.** So the L2 close is NOT blocked here — it's a moderate build + the final wire.
+
+## 23. A stray off-path θ-components expedition appeared in the worktree — a real LR-θ vs Aoyagi-θ finding (2026-06-25).
+`expeditions/2026-06-25-theta-components/` appeared untracked in the worktree (created by another context — not commissioned by
+this controller, like the earlier `2026-06-23-fibre-codim/` stray). **Left untracked** — it is a *different* expedition (θ is the
+LR component-count / SLT multiplicity, not the aoyagi-full λ headline), so committing it onto `expedition/aoyagi-full` would muddy
+the branch. It carries a clean decorrelated-Codex adjudication worth preserving: **LR-θ and Aoyagi-θ are GENUINELY DIFFERENT
+invariants.** LR θ_geom = number of top-dimensional irreducible components of Σ⁰ = QIP-minimiser count = `binom(m, |δ|)`; Aoyagi
+θ_order = the RLCT pole order (SLT multiplicity `max Card{j : (h_j+1)/(2k_j)=λ}`) = `|δ|(m−|δ|)+1`. They **agree iff |δ|≤1**
+(equivalently `S mod m ∈ {0,1,m−1}`); smallest disagreement is the all-width-2 depth-4 net (2,2,2,2,2): θ_geom=binom(4,2)=6 vs
+θ_order=2·2+1=5. The mechanism: binom(m,|δ|) counts *which* |δ| active coordinates take the Voronoi rounding correction, whereas
+Aoyagi's a(ℓ−a)+1 counts minimal-ratio resolution directions (an a×(ℓ−a) crossing + 1 base) — these coincide only via the small
+binomial identities. **Aoyagi-full impact: NONE on the headline** — `aoyagi_learning_coefficient` is a *λ* statement, and λ AGREES
+between the papers (LR codim/2 = Aoyagi λ = 3/2 for (2,2,2,2,2), F2). **Forward-looking caveat:** if aoyagi-full ever states the
+multiplicity/θ (e.g. the `log log n` order term), it must use Aoyagi's order-form `a(ℓ−a)+1`, NOT LR's binom — they are not
+interchangeable beyond |δ|≤1. Operator decision: whether to adopt / re-home / discard the stray θ-components expedition.
