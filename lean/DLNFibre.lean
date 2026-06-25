@@ -257,3 +257,6 @@ import DLNFibre.Core.ChartLocalizedAlgEquiv
 import DLNFibre.Core.SourceNoDrop
 -- THE CENTRAL RESULT: codim(fibre d B) = C + δ = cCodim + r·(d_N+d_0−r), unconditional (k : Type 0).
 import DLNFibre.Core.FibreCodimFinal
+-- THE PAYOFF (destination): BundleShiftInterface discharged from Core — rlct(K^DLN_B)=(C+δ)/2 rests
+-- on ONLY the Cited Aoyagi RlctInterface; the geometric half is Proved (k : Type 0). [#52/G4]
+import DLNFibre.DLN.BundleShiftDischarge
