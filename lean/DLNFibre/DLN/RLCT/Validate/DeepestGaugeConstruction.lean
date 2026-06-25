@@ -1307,16 +1307,32 @@ core only modulo regular leakage, folded into `c₁/c₂`; the RLCT value stays 
 This is cobuild's OWN cert (a DIFFERENT object from deriv-fm's #120 reg-slice-of-`deepestEPivot`): it
 is built on `split`/`deepestRoleIndexEquiv` + the core + the gauge, via `endpoint_telescoping`
 (`deepestPoint_frame` boundary frames + interior-interface vanishing) and the `framedParams`/`framedParamsReg`
-identification. **Isolated `sorry` (route-first):** the chain below is sorry-free GIVEN this cert; the
-cert itself is the g164 boundary-frame extraction + the split-reg-half structured-equiv (the
-`regBoundaryEmbed` technique, per deriv-fm). -/
+identification.
+
+**STATEMENT STRENGTHENED (L2-PIN2, 2026-06-25):** the cert now takes `hsplit : ∀ w, split w =
+deepestSplit … w` (the concrete reindex witness, `DeepestSplitConcrete`). Without it the conclusion is
+NOT derivable — the block `P00/P01/P10` are read off `framedParamsRegPivot (split w)`, whose tie to
+`paramsEquivFlat.symm w` runs through the round-trip `readX/Y/Z (split w) = raw-deviation block`, which
+is provable ONLY for the concrete `deepestSplit` (the index-decode lemmas are stated against it). For a
+generic homeomorphism `split` the statement is unprovable (under-hypothesized). The caller
+`deepest_gauge_construction` now supplies the concrete `deepestSplit`, so `hsplit := fun _ => rfl`.
+
+**Isolated `sorry` (route-first):** the cert is the g164 boundary-frame extraction + the split-reg-half
+structured-equiv (the `regBoundaryEmbed` technique). The remaining geometry (with `hsplit` in hand) is
+the readX/Y/Z→raw block-decode (3 arms) + the entry-wise `reindex(fromBlocks readX readY readZ Tcore) =
+(paramsEquivFlat.symm w − deepestPoint)_s` + `framedLayer = P_s·(paramsSymm w)_s·Q_s`
+(`deepestPoint_frame_normal`) + `endpoint_telescoping` + the J-dependent `reindex(P0·B·QL) = fromBlocks
+1 0 0 0` (`exists_deepest_lastLayer_pivotFrame`) + `core_comparability_squeeze` — ~200-300 LoC of glue
+(Codex `xhigh` decorrelated, 2026-06-25), beyond a single-leaf tide. -/
 theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L)))
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
-    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r)) :
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w) :
     ∃ (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
       (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
       (Pi : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
@@ -1469,6 +1485,8 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
     (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0)
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
     (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
       (regStraighten q).1 = deepestEPivot H r hr hL J Pf Qf (q.1, q.2.2))
     (hcoreabs : coreAbsorb = deepestCoreAbsorb H r hr hL) :
@@ -1487,7 +1505,7 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `framedParams_split_eq_frame_raw` is the ONE geometric input; the wiring below is sorry-free.
   classical
   obtain ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, hP, hQ, hγ₁, hγ₂, hKP_pos, hKi_pos, U, hU, hbr⟩ :=
-    framedParams_split_eq_frame_raw H r B hB hr hL J Pf Qf split
+    framedParams_split_eq_frame_raw H r B hB hr hL J Pf Qf split hsplit
   -- Endpoint-frame energies (the conjugation constants). `KP = ∑P0²·∑QL²`, `Ki = ∑Pi²·∑Qi²`.
   set KP := (∑ i, ∑ k, (P0 i k) ^ 2) * (∑ j, ∑ k, (QL k j) ^ 2) with hKP
   set Ki := (∑ i, ∑ k, (Pi i k) ^ 2) * (∑ j, ∑ k, (Qi k j) ^ 2) with hKi
@@ -1631,9 +1649,20 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
             dlnLoss H B ((paramsEquivFlat H).symm w)
               ≤ c₂ * ((∑ i, (regStraighten (split w)).1 i ^ 2)
                 + deepestCoreF H r (coreAbsorb (split w)).2.1) := by
-  -- `split` (obligation (i), MP reindex carrying the deepest point to `0`).
-  obtain ⟨split, hsplit_mp, hsplit_base⟩ :=
-    deepestSplit_exists H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+  -- `split` (obligation (i), MP reindex carrying the deepest point to `0`). Use the CONCRETE
+  -- `deepestSplit` witness (not the `deepestSplit_exists` existential) so the PIN2 cert's round-trip
+  -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`readX/Y/Z_deepestSplit`,
+  -- `DeepestSplitConcrete`) are stated against THIS map, so generality of `split` would block them.
+  set split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
+    deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) with hsplit_def
+  have hsplit_mp_base :=
+    deepestSplit_mp_basepoint H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+  have hsplit_mp : MeasurePreserving split volume volume := hsplit_mp_base.1
+  have hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0 :=
+    hsplit_mp_base.2
+  have hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w :=
+    fun _ => rfl
   -- The PIVOT-ALIGNED per-layer gauge frame family + the `B`-determined pivot set `Jb` (banked
   -- `deepestPoint_frame_pivot_exists`). The first/interior arms are the threshold `deepestPoint_frame`;
   -- the LAST-layer arm is the pivot frame (with a UNIT `B22` block — the PIN1 input). `split` stays
@@ -1672,7 +1701,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       D_E hEp_deriv eShear he_shear (deepestEPivot_base H r hr hL hL2 J Pf Qf)
   -- PIN 2: the loss squeeze (consuming the concrete `coreAbsorb` + `regStraighten`'s defining identities).
   obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
-    deepest_loss_squeeze H r B hB hr hL J Pf Qf split coreAbsorb regStraighten hsplit_base
+    deepest_loss_squeeze H r B hB hr hL J Pf Qf split coreAbsorb regStraighten hsplit_base hsplit
       hra_regval hca_def
   exact ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base,
     hca_base, hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct,
