@@ -529,6 +529,42 @@ and add a `vanishingIdeal (productRankLocus) = vanishingIdeal (productRankLocusL
 fact, Cited in RouteCAssembly), or restate `dsig`/`hsig` on the LE coordinate ring. Worth a SPECIFY before
 the `hsig` grind. ~1.5–2 modules (up from 1–1.5).
 
+---
+
+## Tide progress log — update 10 (`e` seams 1-2 LANDED; gauge-vehicle B fixed; the wall located)
+
+**Banked (committed, zero-sorry, axiom-clean):**
+- `Core.ChartLocalizedCoordinates` (seam 1, `f827ebf1`): `chartDsig` (source `dsig = mk(vanishingIdeal
+  Σ^r) ΔPdeep`) + `chartGfib` (schur-side `gF = map(algebraMap k O(F)) detSchurS`) — the EXACT
+  `dsig`/`gfib` the wrapper `ringKrullDim_eq_of_localized_polyExtensionAlgEquiv` consumes (definitional
+  match), with image-unit facts.
+- `Core.ChartSchurConnect` (seam 2, `ffc97b5f`): `schurToGfib : SchurLoc →ₐ[k] Localization.Away gF`
+  via `IsLocalization.Away.mapₐ` of `mapAlgHom (Algebra.ofId k O(F))` at `detSchurS`, + the unit
+  alignment `mapAlgHom_ofId_detSchurS`. **Resolves the update-5 concern** (the SchurLoc-coeff base-change
+  IS clean).
+
+**Gauge-vehicle TIE-BREAK (decorrelated Codex xhigh, `codex/gauge-vehicle-{prompt,answer}.md`): VEHICLE B.**
+Use the LANDED `endpointGauge` over `SchurLoc` + `gaugeEquiv_endpointGauge_multPoly` (step-3a), carried
+into the targets by `schurToGfib` (seam 2). NOT vehicle A (re-deriving `Lmatk/Hmatk/chartGauge`,
+`[Field k]`-bound for a concrete matrix, over the localization CommRing — that reopens the L/H plumbing).
+So the SchurLoc-coefficient gauge route (the "route-α RISK" of update-5) is in fact the CLEAN vehicle:
+`Away.mapₐ` makes the coefficient base-change a one-liner.
+
+**The Ψ substitution, pinned (Codex vehicle-B):** `psiSub : RepCoord d → Localization.Away gF`,
+`psiSub x = aeval fibCoordT (gaugeSub d (endpointGauge⁻¹) x)` with `fibCoordT x = algebraMap O(F)
+(Away gF) (mk(vanishingIdeal F)(X x))` and the `SchurLoc`-coefficients carried via `schurToGfib`. Then
+`chartPsiAeval = aeval psiSub`, descend through `vanishingIdeal Σ` (point-realization + the LANDED
+clearing-denominators `away_eq_zero_iff_exists_pow_mul_mem`), lift via `IsLocalization.liftAlgHom`. Φ
+dually into `Away dsig`. Glue `AlgEquiv.ofAlgHom`, ext `Localization.algHom_ext`.
+
+**THE WALL (precisely, Codex):** the Ψ product-reconstruction lemma
+`aeval fibCoordT (gaugeEquiv d endpointGauge⁻¹ (multPoly rr cc)) = (forced Schur chart matrix entry
+rr cc in Away gF)`, via `gaugeEquiv_multPoly` at `P⁻¹` + `endpointGauge_zero/last` + the fibre relation
+`mult B = normalForm` + a generic `L·E·H` Schur factorization over the localized target. The
+genuinely-hard remaining rung; everything else (descents, round-trips, glue) follows the de-risked
+clearing-denominators + point-realization pattern. ~3-4 more modules. **The whole `e` route now has NO
+absent-API exposure and a single located wall.**
+
 **Handoff state:** spine green & committed; the two remaining hard inputs (`e`, `hsig`) are isolated
 named hypotheses, fully scoped, no absent-API exposure, but each a multi-module grind. The `e` build is
 the ~1.2–1.8k-LoC route-(b) plumbing (Ψ/Φ localized AlgHoms + round-trips), wall = the Ψ vanishingIdeal
