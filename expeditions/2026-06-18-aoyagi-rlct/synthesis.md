@@ -9515,6 +9515,21 @@ edge-family/suffix-state recursion, and it does not prove residual positivity
 or integrability without the existing signed-box pushforward and monomial
 bounds.
 
+Latest A2 residual-coordinate map measurability:
+`ChartTopology.lean` proves finite real matrix inverse measurability and the
+deterministic suffix-state field measurability theorem
+`measurable_chartLocalSuffixState_suffixState_fields_real`.
+`RegularSuspensionCoordinates.lean` proves
+`measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix`.
+`RegularSuspensionLocalMeasure.lean` adds
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_edgeMatrix`.
+The hypothesis is measurable fixed-basis endpoint edge matrices, not raw
+`Measurable Cedge` for arbitrary continuous-linear-map spaces.  This closes
+the previous residual-coordinate measurability handoff at the finite matrix
+level, while leaving chart construction, pushforward, density/Jacobian
+transport, original-loss comparison, residual positivity/integrability,
+normal crossings, pole order, and RLCT outside the theorem.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

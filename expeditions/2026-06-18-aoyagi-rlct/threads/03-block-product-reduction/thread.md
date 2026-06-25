@@ -3806,3 +3806,34 @@ Boundary: this does not prove global residual-coordinate measurability from the
 edge family or suffix-state recursion, residual positivity/integrability by
 itself, the weighted pushforward identity, chart construction, density/Jacobian
 transport, original-loss comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 residual-coordinate map measurability
+
+Reproduction:
+`reproduction-a2-residual-coordinate-map-measurability.md`.
+Statement card:
+`statement-card-a2-residual-coordinate-map-measurability.md`.
+Review:
+`review-a2-residual-coordinate-map-measurability.md`.
+
+Lean now proves the deterministic suffix-recursion measurability bridge:
+
+```text
+measurable_matrix_inv_real
+measurable_chartLocalSuffixState_suffixState_fields_real
+measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_edgeMatrix
+```
+
+The edge hypothesis is the measurable Pi-valued fixed-basis matrix family
+`x |-> paperEndpointFixedBaseEdgeMatrixOfReverseEdges ... (fun p => Cedge x p)`.
+This is the matrix family actually consumed by the p.13 deterministic suffix
+state.  The proof uses finite real matrix Borel operations, including global
+measurability of totalized matrix inverse, and then projects the final `D`
+block.
+
+Boundary: this deliberately does not assert raw `Measurable Cedge` for
+arbitrary non-normed continuous-linear-map spaces.  It also does not prove
+source-rank openness, analytic chart construction, pushforward, density or
+Jacobian transport, original-loss comparison, residual positivity or
+integrability by itself, normal crossings, pole order, or RLCT.

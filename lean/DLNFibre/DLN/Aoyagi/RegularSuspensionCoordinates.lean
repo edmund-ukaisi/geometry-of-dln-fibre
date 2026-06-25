@@ -2779,6 +2779,63 @@ variable {N : ℕ}
   [∀ i, ContinuousSMul ℝ (W i)]
   (B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc)
 
+set_option linter.unusedSectionVars false in
+/-- The fixed-base residual `D`-block coordinate map is measurable whenever
+the reversed edge family is measurably given in the fixed endpoint bases.
+
+This is finite Borel bookkeeping for the deterministic p. 13 suffix recursion:
+the fixed bases are those attached to the base chain `B`.  The hypothesis is
+the actual measurable matrix family consumed by the recursion, so no measurable
+structure on arbitrary continuous linear maps is chosen here.  No source-rank
+openness, analytic chart construction, density/Jacobian transport, or normal-
+crossing statement is asserted. -/
+theorem measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := ℝ) W B U₀ hU₀
+          (fun p : Fin N ↦
+            (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))) :
+    Measurable
+      (paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ Cedge) := by
+  classical
+  let ι := Fin (Module.finrank ℝ U₀)
+  let κ : Fin (N + 1) → Type :=
+    fun j ↦
+      throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j
+  let E : α → ∀ p : Fin N,
+      Matrix (ι ⊕ κ p.succ) (ι ⊕ κ p.castSucc) ℝ :=
+    fun x p ↦
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+        (K := ℝ) W B U₀ hU₀
+        (fun q : Fin N ↦
+          (Cedge x q : reverseVertex W q.castSucc →ₗ[ℝ] reverseVertex W q.succ)) p
+  let S : α →
+      ChartLocalSuffixState ι κ ℝ (Fin.last N) 0 :=
+    fun x ↦ ChartLocalSuffixState.suffixState (E x) (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  have hE : Measurable E := by
+    simpa [E] using hEdgeMatrix
+  have hD :
+      Measurable (fun x : α ↦ (S x).D) := by
+    simpa [S] using
+      (measurable_chartLocalSuffixState_suffixState_fields_real
+        (E := E) hE (j := Fin.last N) 0 (Fin.zero_le (Fin.last N))).2.2.2
+  refine measurable_pi_lambda _ ?_
+  intro c
+  rcases c with ⟨i, j⟩
+  have hentry : Measurable (fun x : α ↦ (S x).D i j) :=
+    (measurable_pi_apply j).comp ((measurable_pi_apply i).comp hD)
+  simpa [paperEndpointFixedBaseResidualBlockCoordinateMap, E, S,
+    AoyagiResidualBlockCoordinateIndex.value, ι, κ] using hentry
+
 namespace PaperEndpointFixedBaseProductReductionCertificate
 
 set_option linter.unusedSectionVars false in

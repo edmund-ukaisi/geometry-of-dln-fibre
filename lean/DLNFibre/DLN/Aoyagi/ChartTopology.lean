@@ -1,6 +1,8 @@
 import DLNFibre.DLN.Aoyagi.ThroughLayerMatrix
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Real
+import Mathlib.MeasureTheory.MeasurableSpace.Pi
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Topology.Instances.Matrix
 
@@ -19,6 +21,23 @@ open Matrix
 namespace DLNFibre
 namespace DLN
 namespace Aoyagi
+
+instance instMeasurableSpaceMatrix {m n R : Type*} [MeasurableSpace R] :
+    MeasurableSpace (Matrix m n R) :=
+  inferInstanceAs (MeasurableSpace (m → n → R))
+
+instance instSecondCountableTopologyMatrix {m n R : Type*}
+    [Countable m] [Countable n] [TopologicalSpace R] [SecondCountableTopology R] :
+    SecondCountableTopology (Matrix m n R) := by
+  change SecondCountableTopology (m → n → R)
+  infer_instance
+
+instance instBorelSpaceMatrix {m n R : Type*}
+    [Countable m] [Countable n] [TopologicalSpace R] [MeasurableSpace R]
+    [SecondCountableTopology R] [BorelSpace R] :
+    BorelSpace (Matrix m n R) := by
+  change BorelSpace (m → n → R)
+  infer_instance
 
 section DeterminantChart
 
@@ -793,6 +812,330 @@ def productReductionStepCoordinate_detChart_homeomorph
   continuous_invFun :=
     ProductReductionStepChartCoordinates.continuous_detChart_toRaw
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+
+/-- Matrix inversion is Borel-measurable on finite real matrices.
+
+Mathlib's matrix inverse is the adjugate multiplied by the ring inverse of the
+determinant, so this is a global Borel statement; no determinant-chart
+hypothesis is needed. -/
+theorem measurable_matrix_inv_real
+    {ι : Type*} [Fintype ι] [DecidableEq ι] :
+    Measurable (Inv.inv : Matrix ι ι ℝ → Matrix ι ι ℝ) := by
+  classical
+  refine measurable_pi_lambda _ fun i ↦ measurable_pi_lambda _ fun j ↦ ?_
+  have hdet :
+      Measurable fun A : Matrix ι ι ℝ ↦ Ring.inverse A.det := by
+    simpa [Ring.inverse_eq_inv'] using
+      (continuous_id.matrix_det.measurable.inv :
+        Measurable fun A : Matrix ι ι ℝ ↦ (A.det)⁻¹)
+  have hadj :
+      Measurable fun A : Matrix ι ι ℝ ↦ A.adjugate i j :=
+    (continuous_id.matrix_adjugate.matrix_elem i j).measurable
+  change Measurable fun A : Matrix ι ι ℝ ↦ A⁻¹ i j
+  simpa [Matrix.inv_def] using hdet.mul hadj
+
+section ChartLocalSuffixStateMeasurability
+
+variable {α : Type*} [MeasurableSpace α]
+variable {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+  [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+
+/-- The transformed edge used by one suffix-state step is measurable when the
+input edge and the previous accumulated upper block are measurable. -/
+theorem measurable_chartLocalSuffixState_transformedEdge_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : α → ChartLocalSuffixState ρ κ ℝ j p.succ)
+    (hE : Measurable (fun x : α ↦ E x p))
+    (hB : Measurable (fun x : α ↦ (S x).B)) :
+    Measurable
+      (fun x : α ↦ ChartLocalSuffixState.transformedEdge (E x) p (S x)) := by
+  let left : α → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) ℝ :=
+    fun x ↦
+      fromBlocks (1 : Matrix ρ ρ ℝ) (S x).B 0
+        (1 : Matrix (κ p.succ) (κ p.succ) ℝ)
+  have hleft : Measurable left := by
+    have hfrom : Continuous
+        (fun B : Matrix ρ (κ p.succ) ℝ ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) B 0
+            (1 : Matrix (κ p.succ) (κ p.succ) ℝ)) :=
+      continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
+    exact hfrom.measurable.comp hB
+  have hmul : Continuous (fun q :
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) ℝ ×
+        Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ q.1 * q.2) :=
+    continuous_fst.matrix_mul continuous_snd
+  simpa [left, ChartLocalSuffixState.transformedEdge] using
+    hmul.measurable.comp (hleft.prodMk hE)
+
+/-- The accumulated upper block produced by one deterministic suffix-state
+step is measurable. -/
+theorem measurable_chartLocalSuffixState_step_B_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : α → ChartLocalSuffixState ρ κ ℝ j p.succ)
+    (hE : Measurable (fun x : α ↦ E x p))
+    (hB : Measurable (fun x : α ↦ (S x).B)) :
+    Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).B) := by
+  let M : α → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    fun x ↦ ChartLocalSuffixState.transformedEdge (E x) p (S x)
+  have hM : Measurable M :=
+    measurable_chartLocalSuffixState_transformedEdge_real E p S hE hB
+  have htop : Measurable (fun x : α ↦ topLeftCorner (M x)) :=
+    continuous_topLeftCorner.measurable.comp hM
+  have htopInv : Measurable (fun x : α ↦ (topLeftCorner (M x))⁻¹) :=
+    measurable_matrix_inv_real.comp htop
+  have hupper : Measurable (fun x : α ↦ upperRightBlock (M x)) := by
+    have hupper' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ upperRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inl Sum.inr
+    exact hupper'.measurable.comp hM
+  have hmul : Continuous (fun q :
+      Matrix ρ ρ ℝ × Matrix ρ (κ p.castSucc) ℝ ↦ q.1 * q.2) :=
+    continuous_fst.matrix_mul continuous_snd
+  change Measurable
+    (fun x : α ↦ (topLeftCorner (M x))⁻¹ * upperRightBlock (M x))
+  exact hmul.measurable.comp (htopInv.prodMk hupper)
+
+/-- The deterministic suffix-state fields produced by one update are
+measurable when the previous fields and input edge are measurable. -/
+theorem measurable_chartLocalSuffixState_step_fields_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : α → ChartLocalSuffixState ρ κ ℝ j p.succ)
+    (hE : Measurable (fun x : α ↦ E x p))
+    (hL : Measurable (fun x : α ↦ (S x).L))
+    (hB : Measurable (fun x : α ↦ (S x).B))
+    (hCtop : Measurable (fun x : α ↦ (S x).Ctop))
+    (hD : Measurable (fun x : α ↦ (S x).D)) :
+    Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).L) ∧
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).B) ∧
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).Ctop) ∧
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).D) := by
+  let M : α → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    fun x ↦ ChartLocalSuffixState.transformedEdge (E x) p (S x)
+  have hM : Measurable M :=
+    measurable_chartLocalSuffixState_transformedEdge_real E p S hE hB
+  have htop : Measurable (fun x : α ↦ topLeftCorner (M x)) :=
+    continuous_topLeftCorner.measurable.comp hM
+  have htopInv : Measurable (fun x : α ↦ (topLeftCorner (M x))⁻¹) :=
+    measurable_matrix_inv_real.comp htop
+  have hupper : Measurable (fun x : α ↦ upperRightBlock (M x)) := by
+    have hupper' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ upperRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inl Sum.inr
+    exact hupper'.measurable.comp hM
+  have hlower : Measurable (fun x : α ↦ lowerLeftBlock (M x)) := by
+    have hlower' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ lowerLeftBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inl
+    exact hlower'.measurable.comp hM
+  have hright : Measurable (fun x : α ↦ lowerRightBlock (M x)) := by
+    have hright' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ lowerRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inr
+    exact hright'.measurable.comp hM
+  have hCtopTop : Measurable
+      (fun x : α ↦ (S x).Ctop * topLeftCorner (M x)) := by
+    have hmul : Continuous (fun q : Matrix ρ ρ ℝ × Matrix ρ ρ ℝ ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.measurable.comp (hCtop.prodMk htop)
+  have hCtopTopInv : Measurable
+      (fun x : α ↦ ((S x).Ctop * topLeftCorner (M x))⁻¹) :=
+    measurable_matrix_inv_real.comp hCtopTop
+  have hBstep :
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).B) :=
+    measurable_chartLocalSuffixState_step_B_real E p S hE hB
+  have hCtopStep :
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).Ctop) := by
+    change Measurable (fun x : α ↦ (S x).Ctop * topLeftCorner (M x))
+    exact hCtopTop
+  have hschur : Measurable (fun x : α ↦ schurResidualBlock (M x)) := by
+    have hleftInv : Measurable
+        (fun x : α ↦ lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹) := by
+      have hmul : Continuous (fun q :
+          Matrix (κ p.succ) ρ ℝ × Matrix ρ ρ ℝ ↦ q.1 * q.2) :=
+        continuous_fst.matrix_mul continuous_snd
+      exact hmul.measurable.comp (hlower.prodMk htopInv)
+    have hcorr : Measurable
+        (fun x : α ↦
+          lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) := by
+      have hmul : Continuous (fun q :
+          Matrix (κ p.succ) ρ ℝ × Matrix ρ (κ p.castSucc) ℝ ↦ q.1 * q.2) :=
+        continuous_fst.matrix_mul continuous_snd
+      exact hmul.measurable.comp (hleftInv.prodMk hupper)
+    have hsub : Measurable
+        (fun x : α ↦
+          lowerRightBlock (M x) -
+            lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) :=
+      hright.sub hcorr
+    simpa [schurResidualBlock] using hsub
+  have hDstep :
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).D) := by
+    have hmul : Continuous (fun q :
+        Matrix (κ j) (κ p.succ) ℝ × Matrix (κ p.succ) (κ p.castSucc) ℝ ↦
+          q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    change Measurable (fun x : α ↦ (S x).D * schurResidualBlock (M x))
+    exact hmul.measurable.comp (hD.prodMk hschur)
+  have hX : Measurable
+      (fun x : α ↦
+        (S x).D * lowerLeftBlock (M x) * ((S x).Ctop * topLeftCorner (M x))⁻¹) := by
+    have hDlower : Measurable
+        (fun x : α ↦ (S x).D * lowerLeftBlock (M x)) := by
+      have hmul : Continuous (fun q :
+          Matrix (κ j) (κ p.succ) ℝ × Matrix (κ p.succ) ρ ℝ ↦ q.1 * q.2) :=
+        continuous_fst.matrix_mul continuous_snd
+      exact hmul.measurable.comp (hD.prodMk hlower)
+    have hmul : Continuous (fun q :
+        Matrix (κ j) ρ ℝ × Matrix ρ ρ ℝ ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.measurable.comp (hDlower.prodMk hCtopTopInv)
+  have hnegX : Measurable
+      (fun x : α ↦
+        -((S x).D * lowerLeftBlock (M x) * ((S x).Ctop * topLeftCorner (M x))⁻¹)) :=
+    hX.neg
+  have hfactor : Measurable
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ ℝ) 0
+          (-((S x).D * lowerLeftBlock (M x) * ((S x).Ctop * topLeftCorner (M x))⁻¹))
+          (1 : Matrix (κ j) (κ j) ℝ)) := by
+    have hfrom : Continuous
+        (fun X : Matrix (κ j) ρ ℝ ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) 0 X (1 : Matrix (κ j) (κ j) ℝ)) :=
+      continuous_const.matrix_fromBlocks continuous_const continuous_id continuous_const
+    exact hfrom.measurable.comp hnegX
+  have hLstep :
+      Measurable (fun x : α ↦ (ChartLocalSuffixState.step (E x) p (S x)).L) := by
+    have hmul : Continuous (fun q :
+        Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) ℝ × Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) ℝ ↦
+          q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    change Measurable
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ ℝ) 0
+          (-((S x).D * lowerLeftBlock (M x) * ((S x).Ctop * topLeftCorner (M x))⁻¹))
+          (1 : Matrix (κ j) (κ j) ℝ) * (S x).L)
+    exact hmul.measurable.comp (hfactor.prodMk hL)
+  exact ⟨hLstep, hBstep, hCtopStep, hDstep⟩
+
+/-- All deterministic fields produced by the suffix-state recursion are
+measurable functions of a measurable real edge family. -/
+theorem measurable_chartLocalSuffixState_suffixState_fields_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    (hE : Measurable E)
+    {j : Fin (N + 1)} :
+    ∀ (i : Fin (N + 1)) (hij : i ≤ j),
+      Measurable
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).L) ∧
+        Measurable
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).B) ∧
+        Measurable
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).Ctop) ∧
+        Measurable
+          (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).D) := by
+  intro i hij
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    Measurable
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j im
+            (Fin.val_fin_le.mpr hmj)).L) ∧
+      Measurable
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j im
+            (Fin.val_fin_le.mpr hmj)).B) ∧
+      Measurable
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j im
+            (Fin.val_fin_le.mpr hmj)).Ctop) ∧
+      Measurable
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j im
+            (Fin.val_fin_le.mpr hmj)).D)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        Measurable
+            (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j p.succ hpj).L) ∧
+          Measurable
+            (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j p.succ hpj).B) ∧
+          Measurable
+            (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j p.succ hpj).Ctop) ∧
+          Measurable
+            (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j p.succ hpj).D) := by
+      simpa [motive, p, hpj] using ih
+    rcases ih' with ⟨hL, hB, hCtop, hD⟩
+    have hE_p : Measurable (fun x : α ↦ E x p) :=
+      (measurable_pi_apply p).comp hE
+    have hnext :=
+      measurable_chartLocalSuffixState_step_fields_real E p
+        (fun x : α ↦ ChartLocalSuffixState.suffixState (E x) j p.succ hpj)
+        hE_p hL hB hCtop hD
+    rcases hnext with ⟨hLnext, hBnext, hCtopNext, hDnext⟩
+    have hstateL :
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).L) =
+        (fun x : α ↦
+          (ChartLocalSuffixState.step (E x) p
+            (ChartLocalSuffixState.suffixState (E x) j p.succ hpj)).L) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateB :
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).B) =
+        (fun x : α ↦
+          (ChartLocalSuffixState.step (E x) p
+            (ChartLocalSuffixState.suffixState (E x) j p.succ hpj)).B) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateCtop :
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).Ctop) =
+        (fun x : α ↦
+          (ChartLocalSuffixState.step (E x) p
+            (ChartLocalSuffixState.suffixState (E x) j p.succ hpj)).Ctop) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateD :
+        (fun x : α ↦
+          (ChartLocalSuffixState.suffixState (E x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).D) =
+        (fun x : α ↦
+          (ChartLocalSuffixState.step (E x) p
+            (ChartLocalSuffixState.suffixState (E x) j p.succ hpj)).D) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · rw [← hstateL] at hLnext
+      simpa [motive, p, hpj] using hLnext
+    · rw [← hstateB] at hBnext
+      simpa [motive, p, hpj] using hBnext
+    · rw [← hstateCtop] at hCtopNext
+      simpa [motive, p, hpj] using hCtopNext
+    · rw [← hstateD] at hDnext
+      simpa [motive, p, hpj] using hDnext
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hij)
+  simpa [motive] using hcanon
+
+end ChartLocalSuffixStateMeasurability
 
 /-- The accumulated upper block produced by one deterministic suffix-state step varies
 continuously with the edge and the previous accumulated upper block. -/

@@ -4031,3 +4031,16 @@ prove residual-coordinate measurability from the deterministic suffix-state
 recursion, residual positivity/integrability by itself, chart construction,
 pushforward identity, density/Jacobian transport, original-loss comparison,
 normal crossings, pole order, or RLCT.
+
+A2 residual-coordinate map measurability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-residual-coordinate-map-measurability.md`.
+Lean proves the deterministic suffix-state fields are measurable from a
+measurable real edge-matrix family, then applies this to the fixed-base
+residual `D`-block coordinate map.  The weighted signed-box residual
+source-measure constructor now has a variant deriving `hres_meas` from
+fixed-basis edge-matrix measurability.  This should be the preferred input
+when a source chart supplies measurable endpoint edge matrices.  It does not
+assert raw `Measurable Cedge` for arbitrary non-normed continuous-linear-map
+spaces, and it still does not prove chart construction, pushforward identity,
+density/Jacobian transport, residual positivity/integrability, original-loss
+comparison, normal crossings, pole order, or RLCT.

@@ -7666,6 +7666,28 @@ pushforward and monomial bounds, no chart construction, no density/Jacobian
 transport, no original-loss comparison, no normal crossings, pole order, or
 RLCT.
 
+Latest A2 residual-coordinate map measurability:
+`ChartTopology.lean` proves
+`measurable_matrix_inv_real`,
+`measurable_chartLocalSuffixState_transformedEdge_real`,
+`measurable_chartLocalSuffixState_step_fields_real`, and
+`measurable_chartLocalSuffixState_suffixState_fields_real`.
+`RegularSuspensionCoordinates.lean` proves
+`measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix`.
+`RegularSuspensionLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_edgeMatrix`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-coordinate-map-measurability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-coordinate-map-measurability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-coordinate-map-measurability.md`
+(xhigh review passed).
+Nonclaims: no raw `Measurable Cedge` theorem for arbitrary non-normed
+continuous-linear-map spaces, no source-rank openness, no analytic p.13 chart,
+no pushforward, density/Jacobian transport, original-loss comparison, residual
+positivity/integrability by itself, normal crossings, pole order, or RLCT.
+
 Latest A2 p.13 half loss lower bound:
 `RegularSuspensionCoordinates.lean` proves
 `PaperEndpointFixedBaseRegularCoordinateSourceData.literal_regular_add_residual_squareSum_eventually_half_le_nhdsWithin_source`,
