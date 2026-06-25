@@ -203,3 +203,6 @@ import DLNFibre.Core.LocalizationKrullDim
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
+-- no-drop machinery (shared by step-4/5): affine-domain dim(D[1/g])=dim D + the abstract
+-- no-drop dim(R[1/g])=dim R when g avoids a top minimal prime of a reducible Noetherian R.
+import DLNFibre.Core.AffineLocalizationNoDrop
