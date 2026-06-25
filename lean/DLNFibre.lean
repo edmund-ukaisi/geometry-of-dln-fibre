@@ -185,3 +185,18 @@ import DLNFibre.Core.VarietyDimBaseChange
 -- codim Σ^r = codim Σ̄^r = C (irreducibility-free catenary + ONE corner-r witness orbit), wired into
 -- RouteCAssembly so codim(fibre)=C+δ now carries ONLY hSweep.
 import DLNFibre.Core.ClosureBridge
+-- hSweep build (chart-trivialization): general matrix-rank helpers
+-- (diag(I_r,0) rank; rank=0 iff 0; block-diagonal rank-additivity).
+import DLNFibre.Core.RankNormalFormDim
+-- rung-1 chart-membership iff: rank(mult A) ≤ r ⟺ Schur block = 0 on detΔ≠0.
+import DLNFibre.Core.SchurChartIff
+-- rung-3 +δ: varietyDim W = varietyDim F + card ι from a coordinate-ring AlgEquiv (domain-free).
+import DLNFibre.Core.VarietyDimPolyExtension
+-- rung-2a chart normalization: L⁻¹·M·H⁻¹ = diag(I_r,0) over k + factor_chart_matrix (L·E·H = M).
+import DLNFibre.Core.ChartSection
+-- rung-2b tuple retraction: chartGauge(mult A)•A ∈ fibre E — the regular φ→F via mult_smul.
+import DLNFibre.Core.ChartRetraction
+-- rung-2 set-level chart bijection Σ^r∩U_Δ ≅ base × F, both directions (round-trip).
+import DLNFibre.Core.ChartBijection
+-- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
+import DLNFibre.Core.LocalizationKrullDim
