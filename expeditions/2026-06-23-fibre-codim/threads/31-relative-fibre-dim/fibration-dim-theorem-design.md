@@ -273,3 +273,33 @@ the `SchurLoc`-localization handling inside the AlgEquiv, and the orbit-density 
 sub-lemma is the **`k`-valued set-level section** `s(M)=(P_N=[[Δ,0],[B21,I]], P_0⁻¹=[[I,Δ⁻¹B12],[0,I]])` and
 its retraction-into-`F` property `φ(A)=s(mult A)⁻¹•A ∈ F` (uses only landed `mult_smul`,
 `schurComplement_normal_form`, rung-1 chart-iff) — then lift to the coord-ring AlgEquiv.
+
+---
+
+## Tide progress log — update 2 (rung-2 set-level geometry DONE)
+
+**Banked rung-2 bricks (committed, sorry/axiom-clean):**
+- `Core.ChartSection` — `k`-valued chart gauge `Lmatk`/`Hmatk` (+ invertibility), explicit block
+  inverses, and `normalize_chart_matrix : (Lmatk M)⁻¹·M·(Hmatk M)⁻¹ = diag(I_r,0)` (the matrix heart,
+  over `k`; reindex + `schurComplement_normal_form` + rung-1 `rank_le_iff_schur_eq`).
+- `Core.ChartRetraction` — `chartGauge M : BaseChangeGroup` (`L⁻¹` at `last`, `H` at `0`) +
+  `chartGauge_mem_fibre : chartGauge(mult A)•A ∈ fibre(diag(I_r,0))` (the retraction φ onto F, via
+  `mult_smul`; lands because of the rank relation).
+
+So the **set-level geometry of the trivialization is essentially done** (the regular retraction φ exists
+and lands in F). What remains is the two genuinely-hard, absent-theorem-exposed pieces:
+
+**Remaining R2a — the coordinate-ring AlgEquiv** `O(Σ^r∩U_Δ) ≃ₐ[k] MvPolynomial (SchurVar) O(F)`.
+The set bijection Φ=(mult,φ)/Ψ exists; the AlgEquiv is the comorphism, realized as `aeval` of the Ψ
+substitution descended through `vanishingIdeal` (NOT `fibreGenIdeal`). The localized-coordinate bridge
+(presenting the chart ring over `SchurLoc = Localization.Away detΔ`) is the bookkeeping grind.
+
+**Remaining R2b — the localization no-drop / one-chart density** (MATHLIB-ABSENT confirmed: no packaged
+`ringKrullDim (Localization.Away f) = …` at v4.29). `varietyDim` is closure-based, so the cleanest is
+**rung-4 density**: `vanishingIdeal(canonicalCoord '' Σ^r∩U_Δ) = vanishingIdeal(canonicalCoord '' Σ^r)`
+(same Zariski closure) ⟹ `varietyDim(chart)=varietyDim Σ^r` directly — but the chart ring is the
+*localized* `O(F)[SchurVar]_{detΔ}` while the closure ring is `O(Σ^r)`, so a no-drop relating
+`dim(O(F)[SchurVar]_{detΔ}) = dim(O(F)[SchurVar]) = δ + dim F` is still needed. Buildable from
+`IsLocalization.height_map_of_disjoint` + `AtPrime.ringKrullDim_eq_height` + the engine's closed-point
+equidim (`height_eq_ringKrullDim_of_isMaximal_fintype`), the `≥` via a top maximal ideal avoiding detΔ —
+a multi-lemma custom construction, NOT a one-liner.
