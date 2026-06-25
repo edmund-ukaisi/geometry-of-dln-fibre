@@ -674,6 +674,71 @@ theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_p
       (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R) ha_pos hs
   exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hbase hKlt)
 
+/-- Threshold-shift form of the variable-base product estimate: the product
+lower integral at exponent `t + finrank ℝ E / 2` is bounded by the residual
+negative `t`-power lower integral times the Japanese-bracket factor. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {t R : ℝ}
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ht : 0 < t) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (a z.1 + ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) ≤
+      (∫⁻ x : α, ENNReal.ofReal ((a x) ^ (-t)) ∂μ) *
+        ∫⁻ u : E, ENNReal.ofReal
+          (((1 : ℝ) + ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) ∂ν := by
+  let s : ℝ := t + (Module.finrank ℝ E : ℝ) / 2
+  have hs : (Module.finrank ℝ E : ℝ) / 2 < s := by
+    dsimp [s]
+    linarith
+  have hexp : (Module.finrank ℝ E : ℝ) / 2 - s = -t := by
+    dsimp [s]
+    ring
+  have hle :=
+    lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale
+      (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R) ha_pos hs
+  simpa [s, hexp] using hle
+
+/-- Finite-side threshold-shift corollary of the variable-base product
+estimate.  This is the analytic bridge from a residual negative `t`-power
+integrability input to the full square-suspension integrability input. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {t R : ℝ}
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ht : 0 < t)
+    (hbase :
+      (∫⁻ x : α, ENNReal.ofReal ((a x) ^ (-t)) ∂μ) < ∞) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (a z.1 + ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞ := by
+  let s : ℝ := t + (Module.finrank ℝ E : ℝ) / 2
+  have hs : (Module.finrank ℝ E : ℝ) / 2 < s := by
+    dsimp [s]
+    linarith
+  have hexp : (Module.finrank ℝ E : ℝ) / 2 - s = -t := by
+    dsimp [s]
+    ring
+  have hbase' :
+      (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) < ∞ := by
+    simpa [hexp] using hbase
+  have hfin :=
+    lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_of_base_lt_top
+      (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R)
+      ha_pos hs hbase'
+  simpa [s] using hfin
+
 /-- Positive-parameter global finite-side estimate in the supercritical
 regime.  This comparison proof gives finiteness for each fixed `a > 0`; the
 sharper dependence on `a` is supplied by the scaling equality above. -/

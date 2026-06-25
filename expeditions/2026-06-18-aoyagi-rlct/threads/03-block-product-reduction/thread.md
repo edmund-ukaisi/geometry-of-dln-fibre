@@ -3020,3 +3020,37 @@ actual residual coordinates, does not cover a positive-measure zero set of
 `a`, and does not prove endpoint/divergence, bounded-density/prior transport,
 p.13 analytic chart/Jacobian construction, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-25 A2 residual-power threshold-shift bridge
+
+Reproduction:
+`reproduction-a2-residual-power-threshold-shift-bridge.md`.
+Statement card:
+`statement-card-a2-residual-power-threshold-shift-bridge.md`.
+Review:
+`review-a2-residual-power-threshold-shift-bridge.md`.
+
+Lean now proves the finite-side threshold-shift form of the variable-base
+product theorem:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+```
+
+If `a(x)>0` for base-a.e. `x`, `0<t`, and
+
+```text
+∫⁻ x, ENNReal.ofReal (a(x)^(-t)) dmu < infinity,
+```
+
+then the product lower integral of
+`(a(x)+||u||^2)^(-(t+finrank_R(E)/2))` over `alpha x ball(0,R)` is finite.
+This is the substitution `s=t+finrank_R(E)/2` in the variable-base theorem:
+`0<t` gives `finrank_R(E)/2<s`, and `finrank_R(E)/2-s=-t`.
+
+Boundary: this does not prove that Aoyagi's reduced residual coordinates
+satisfy the residual negative-power hypothesis, does not cover a
+positive-measure zero set of `a`, and does not prove endpoint/divergence,
+threshold equality, bounded-density/prior transport, p.13 analytic
+chart/Jacobian construction, normal crossings, pole order, or RLCT.

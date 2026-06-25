@@ -6236,6 +6236,33 @@ lower/divergence side, no bounded-density or prior theorem, no Aoyagi p.13
 analytic chart/Jacobian construction, no normal crossings, no pole order, and
 no RLCT.
 
+Latest A2 residual-power threshold-shift bridge:
+Lean now proves the residual-power form of the variable-base product theorem
+in `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.  The
+theorems
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_residual_power_scale`
+and
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top`
+say that if `a(x)>0` for base-a.e. `x`, `0<t`, and
+`∫⁻ x, ENNReal.ofReal (a(x)^(-t)) dmu < infinity`, then the product lower
+integral of `(a(x)+||u||^2)^(-(t+finrank_R(E)/2))` over
+`alpha x ball(0,R)` is finite.  The proof is the substitution
+`s=t+finrank_R(E)/2` in the variable-base theorem, so
+`finrank_R(E)/2-s=-t`.  No finite base measure or measurability hypothesis on
+`a` is used.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-residual-power-threshold-shift-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-residual-power-threshold-shift-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-residual-power-threshold-shift-bridge.md`.
+
+Nonclaims: no proof that Aoyagi's reduced residual coordinates satisfy the
+residual negative-power hypothesis, no theorem for a positive-measure zero set
+of `a`, no endpoint behavior, no lower/divergence side or threshold equality,
+no bounded-density or prior theorem, no Aoyagi p.13 analytic chart/Jacobian
+construction, no normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof
