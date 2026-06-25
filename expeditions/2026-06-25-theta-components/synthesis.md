@@ -122,3 +122,15 @@ through `e` → `numTop(fibre d E_r) = cTheta(d−r)` + the component bijection.
 "≥2-module from-scratch AG sub-project" (it routed around radical-insensitively). The fibre-θ COUNT avoids the
 wall (via `detΔ`-unit); the BUNDLE/SMOOTHNESS does not. So scope-B's hard core is climbing a wall previously
 judged too costly — a large, multi-tide commitment. Surface to the operator when the count lands.
+
+**Thread 07 (W1 avoidance) — SETTLED TRUE (2026-06-25).** Every top-dim minimal prime of `sigmaIdeal d r`
+avoids `detΔ`, **globally** (one fixed `detΔ`, no per-component chart; only the witness point is per-component
+via base change to `diag(I_r,0)`). Verified Singular `#BAD=0` on ~12 cases (incl. adversarial `(2,2,3,2)`),
+Codex-concurred. **The math is ALREADY a landed Lean lemma:** `Core.SourceNoDrop.chartDsig_not_mem_partitionIdeal`
+is the all-partition statement (any `m ∈ kostantPartitions d r`, no minimisation hyp). So W1 needs only WIRING
+(quantify over `topComponents` via `bijOn_partitionIdeal_topComponents` + the localization-survival lemma + the
+per-prime no-drop) — relayed to thread 08. Certificate `threads/07-dsig-avoidance/findings.md`.
+
+**Thread 08 (fibre-count wiring) — running.** Building the reusable `TopDimMinPrimes` localization-survival
+lemma + W2/W3/chart-`e` + assessing W0; W1 dischargeable now (per thread 07). Composes the headline
+`numTop(fibre d E_r) = cTheta(d−r)` if W0 also wires.
