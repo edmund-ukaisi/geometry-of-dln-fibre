@@ -712,6 +712,19 @@ it must assume or prove a positive local comparison from original loss to the
 adapted fixed-base square-sum; see
 `threads/03-block-product-reduction/audit-a2-original-loss-to-p13-boundary.md`.
 
+A2 adapted product-difference local finite-integral handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-adapted-product-difference-local-finite-integral-handoff.md`.
+Lean proves a fixed-radius conditional wrapper for a supplied product
+edge-family `CedgeProd`: if the adapted fixed-base product-difference square
+sum along `CedgeProd(x,u)` is bounded below by
+`c*(residualSquareSumBase(x)+squareSum(u))` and identified with a chart loss,
+then the existing p.13 local finite-side theorem gives the ball-local,
+indicator-supported finite integral of
+`chartLoss^(-(t+regularCount/2))*density`.  This is now the preferred core API
+for supplied product-chart adapted-loss handoffs.  A continuous-density
+corollary can be added later if a downstream theorem removes a real density
+hypothesis; do not add it as packaging only.
+
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
 Lean adds

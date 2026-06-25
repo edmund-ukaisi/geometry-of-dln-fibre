@@ -3742,3 +3742,39 @@ An xhigh original-loss audit is recorded at
 original DLN/statistical loss to p.13 coordinates must either prove or assume a
 positive local comparison from original loss to the adapted product-difference
 square-sum.  Aoyagi p.13 alone is not being treated as that bridge.
+
+## 2026-06-25 A2 adapted product-difference local finite-integral handoff
+
+Reproduction:
+`reproduction-a2-adapted-product-difference-local-finite-integral-handoff.md`.
+Statement card:
+`statement-card-a2-adapted-product-difference-local-finite-integral-handoff.md`.
+Review:
+`review-a2-adapted-product-difference-local-finite-integral-handoff.md`.
+
+Lean now proves the conditional finite-integral handoff
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_chartLoss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_adaptedProductDifferenceSquareSum_identified
+```
+
+in `RegularSuspensionLocalMeasure.lean`.
+
+The theorem takes an independent product edge-family `CedgeProd`, a supplied
+product-coordinate adapted lower bound
+
+```text
+c * (residualSquareSumBase(x) + squareSum(u))
+  <= paperEndpointFixedBaseAdaptedProductDifferenceSquareSum(CedgeProd(x,u)),
+```
+
+and a supplied identification of that adapted square-sum with `chartLoss(x,u)`.
+It then delegates to the existing p.13 local finite-integral theorem and
+returns a ball-local, indicator-supported finite integral for
+`chartLoss^(-(t+regularCount/2))*density`.
+
+Boundary: this does not derive the product-coordinate lower bound from the
+base-only self-base comparison, construct a product chart, prove source
+coverage, transport Jacobian/prior density, prove residual
+positivity/integrability, compare original `lossDLN`, produce normal crossings,
+compute pole order, or extract an RLCT.

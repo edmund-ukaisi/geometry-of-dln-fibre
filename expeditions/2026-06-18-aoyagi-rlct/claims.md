@@ -6595,6 +6595,36 @@ original-loss audit requires an explicit positive local comparison from
 original loss to the adapted fixed-base square-sum before any original-loss
 handoff is stated.
 
+Latest A2 adapted product-difference local finite-integral handoff:
+Lean now proves a conditional finite-integral wrapper for a supplied product
+edge-family `CedgeProd`.  If, uniformly on the source filter and on a fixed
+regular-coordinate ball,
+
+```text
+c * (residualSquareSumBase(x) + squareSum(u))
+  <= paperEndpointFixedBaseAdaptedProductDifferenceSquareSum(CedgeProd(x,u)),
+```
+
+and that adapted square-sum is identified with a chart loss, then the existing
+p.13 finite-side theorem gives finite lower integral of
+
+```text
+1_{ball(0,R)}(u)
+  * chartLoss(x,u)^(-(t+regularCount/2))
+  * density(x,u)
+```
+
+over a sufficiently small restricted source neighborhood times the regular
+coordinate measure.
+
+Lean name:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_chartLoss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_adaptedProductDifferenceSquareSum_identified`.
+
+Nonclaims: no product chart construction, no source coverage theorem, no
+coordinate identification proof, no Jacobian/prior density transport, no
+residual positivity or residual integrability proof, no original `lossDLN`
+comparison, no normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

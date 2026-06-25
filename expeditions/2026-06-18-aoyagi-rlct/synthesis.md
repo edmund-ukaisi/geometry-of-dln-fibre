@@ -9491,6 +9491,17 @@ crossings/pole order/RLCT.  The original-loss audit pins the next safe
 boundary: original loss needs an explicit positive local comparison to the
 adapted fixed-base square-sum before the p.13 machinery may consume it.
 
+Latest A2 adapted product-difference local finite-integral handoff:
+`RegularSuspensionLocalMeasure.lean` now proves a conditional fixed-radius
+wrapper for a supplied product edge-family `CedgeProd`.  A supplied lower bound
+from `c*(residualSquareSumBase+squareSum(u))` to the adapted fixed-base
+product-difference square-sum along `CedgeProd(x,u)`, plus a supplied
+identification with `chartLoss`, feeds the existing p.13 local finite-side
+theorem.  The conclusion is ball-local and indicator-supported.  This remains
+product-chart/loss-identification plumbing only; it does not construct the
+chart, prove Jacobian/prior transport, prove residual hypotheses, compare
+original `lossDLN`, or extract normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
