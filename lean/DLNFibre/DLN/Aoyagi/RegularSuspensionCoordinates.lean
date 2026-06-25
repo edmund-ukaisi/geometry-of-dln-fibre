@@ -247,6 +247,38 @@ theorem aoyagiCoordinateSquareSum_continuousAt
       (((continuous_apply c).continuousAt.comp hf).pow 2)
     simpa [Finset.sum_insert, hcs] using hterm.add ih
 
+/-- A continuous real-valued function is locally bounded above by its value
+plus one. -/
+theorem continuousAt_eventually_le_self_add_one
+    {α : Type*} [TopologicalSpace α] {f : α → ℝ} {x₀ : α}
+    (hf : ContinuousAt f x₀) :
+    ∀ᶠ x in nhds x₀, f x ≤ f x₀ + 1 := by
+  have htarget : ∀ᶠ y in nhds (f x₀), y ≤ f x₀ + 1 := by
+    exact eventually_le_nhds (show f x₀ < f x₀ + 1 by linarith)
+  exact hf.eventually htarget
+
+/-- A continuous real-valued function admits a positive local upper bound. -/
+theorem continuousAt_exists_pos_eventually_le
+    {α : Type*} [TopologicalSpace α] {f : α → ℝ} {x₀ : α}
+    (hf : ContinuousAt f x₀) :
+    ∃ K : ℝ, 0 < K ∧ ∀ᶠ x in nhds x₀, f x ≤ K := by
+  refine ⟨max (f x₀ + 1) 1, ?_, ?_⟩
+  · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
+  · exact
+      (continuousAt_eventually_le_self_add_one hf).mono
+        (fun _ hx ↦ hx.trans (le_max_left _ _))
+
+/-- A finite real coordinate square-sum admits a positive local upper bound
+when its coordinate family is continuous. -/
+theorem aoyagiCoordinateSquareSum_exists_pos_eventually_le_of_continuousAt
+    {η α : Type*} [Fintype η] [TopologicalSpace α]
+    {f : α → η → ℝ} {x₀ : α}
+    (hf : ContinuousAt f x₀) :
+    ∃ K : ℝ, 0 < K ∧
+      ∀ᶠ x in nhds x₀, aoyagiCoordinateSquareSum (f x) ≤ K :=
+  continuousAt_exists_pos_eventually_le
+    (aoyagiCoordinateSquareSum_continuousAt hf)
+
 /-- Centered continuity lets one shrink to a neighborhood where the finite real
 coordinate square-sum is at most `1`. -/
 theorem aoyagiCoordinateSquareSum_eventually_le_one_of_continuousAt_zero
@@ -2878,6 +2910,157 @@ theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_
 
 end PaperEndpointFixedBaseProductReductionCertificate
 
+set_option linter.unusedSectionVars false in
+/-- The fixed-base p. 13 triangular multiplier square-sum product is locally
+bounded near a continuous edge family based at the paper chain `B`.
+
+This is only local boundedness of the deterministic finite multiplier
+square-sum product; it is not a comparison with the original DLN/statistical
+loss. -/
+theorem paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ Kmul : ℝ, 0 < Kmul ∧
+      ∀ᶠ x in nhds x₀,
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul := by
+  classical
+  let ι := Fin (Module.finrank ℝ U₀)
+  let μ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N)
+  let ν :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀ 0
+  let E : α → ∀ p : Fin N,
+      Matrix
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.succ)
+        (ι ⊕ throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ p.castSucc) ℝ :=
+    fun x p ↦
+      LinearMap.toMatrix
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.castSucc)
+        (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
+        (Cedge x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)
+  let S : α →
+      ChartLocalSuffixState ι
+        (fun j : Fin (N + 1) ↦
+          throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀ j)
+        ℝ (Fin.last N) 0 :=
+    fun x ↦ ChartLocalSuffixState.suffixState (E x) (Fin.last N) 0
+      (Fin.zero_le (Fin.last N))
+  let Lmul : α → Matrix (ι ⊕ μ) (ι ⊕ μ) ℝ :=
+    fun x ↦
+      fromBlocks (1 : Matrix ι ι ℝ) 0 (lowerLeftBlock (S x).L)
+        (1 : Matrix μ μ ℝ)
+  let Rmul : α → Matrix (ι ⊕ ν) (ι ⊕ ν) ℝ :=
+    fun x ↦
+      fromBlocks (1 : Matrix ι ι ℝ) (-(S x).B) 0
+        (1 : Matrix ν ν ℝ)
+  have hfields :
+      IsUnit ((S x₀).Ctop.det) ∧
+        ContinuousAt (fun x : α ↦ (S x).Ctop - 1) x₀ ∧
+        ContinuousAt (fun x : α ↦ -(S x).B) x₀ ∧
+        ContinuousAt (fun x : α ↦ lowerLeftBlock (S x).L) x₀ ∧
+        ContinuousAt (fun x : α ↦ (S x).D) x₀ := by
+    simpa [E, S, ι, μ, ν] using
+      paperEndpointFixedBaseContinuousEdges_selfBase_productDifferenceCoefficientFields_continuousAt
+        (K := ℝ) W B U₀ hU₀ Cedge hCedge hbase
+  rcases hfields with ⟨_, _, hB, hL, _⟩
+  have hLmul : ContinuousAt Lmul x₀ := by
+    have hfrom : Continuous
+        (fun F3 : Matrix μ ι ℝ ↦
+          fromBlocks (1 : Matrix ι ι ℝ) 0 F3 (1 : Matrix μ μ ℝ)) :=
+      continuous_const.matrix_fromBlocks continuous_const continuous_id continuous_const
+    exact hfrom.continuousAt.comp hL
+  have hRmul : ContinuousAt Rmul x₀ := by
+    have hfrom : Continuous
+        (fun F2 : Matrix ι ν ℝ ↦
+          fromBlocks (1 : Matrix ι ι ℝ) F2 0 (1 : Matrix ν ν ℝ)) :=
+      continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
+    exact hfrom.continuousAt.comp hB
+  have hLcoord :
+      ContinuousAt
+        (fun x : α ↦ fun ij : (ι ⊕ μ) × (ι ⊕ μ) ↦
+          Lmul x ij.1 ij.2) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro ij
+    exact (continuous_apply ij.2).continuousAt.comp
+      ((continuous_apply ij.1).continuousAt.comp hLmul)
+  have hRcoord :
+      ContinuousAt
+        (fun x : α ↦ fun ij : (ι ⊕ ν) × (ι ⊕ ν) ↦
+          Rmul x ij.1 ij.2) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro ij
+    exact (continuous_apply ij.2).continuousAt.comp
+      ((continuous_apply ij.1).continuousAt.comp hRmul)
+  have hSL :
+      ContinuousAt
+        (fun x : α ↦
+          aoyagiCoordinateSquareSum
+            (fun ij : (ι ⊕ μ) × (ι ⊕ μ) ↦ Lmul x ij.1 ij.2)) x₀ :=
+    aoyagiCoordinateSquareSum_continuousAt hLcoord
+  have hSR :
+      ContinuousAt
+        (fun x : α ↦
+          aoyagiCoordinateSquareSum
+            (fun ij : (ι ⊕ ν) × (ι ⊕ ν) ↦ Rmul x ij.1 ij.2)) x₀ :=
+    aoyagiCoordinateSquareSum_continuousAt hRcoord
+  have hprod :
+      ContinuousAt
+        (fun x : α ↦
+          aoyagiCoordinateSquareSum
+              (fun ij : (ι ⊕ μ) × (ι ⊕ μ) ↦ Lmul x ij.1 ij.2) *
+            aoyagiCoordinateSquareSum
+              (fun ij : (ι ⊕ ν) × (ι ⊕ ν) ↦ Rmul x ij.1 ij.2)) x₀ :=
+    hSL.mul hSR
+  rcases continuousAt_exists_pos_eventually_le hprod with
+    ⟨Kmul, hKmul_pos, hKmul⟩
+  refine ⟨Kmul, hKmul_pos, ?_⟩
+  filter_upwards [hKmul] with x hx
+  simpa [paperEndpointFixedBaseTriangularMultiplierSquareSumProduct,
+    E, S, Lmul, Rmul, ι, μ, ν] using hx
+
+set_option linter.unusedSectionVars false in
+/-- Source-filter form of local boundedness for the fixed-base p. 13
+triangular multiplier square-sum product.  No openness of the source stratum is
+asserted or used. -/
+theorem paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ Kmul : ℝ, 0 < Kmul ∧
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul := by
+  rcases
+      paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) hCedge hbase with
+    ⟨Kmul, hKmul_pos, hKmul⟩
+  exact
+    ⟨Kmul, hKmul_pos,
+      (inf_le_left :
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀) hKmul⟩
+
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 set_option linter.unusedSectionVars false in
@@ -3347,6 +3530,72 @@ theorem half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferen
   exact
     const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source
       (W := W) (B := B) sourceData hc_nonneg hloss
+
+set_option linter.unusedSectionVars false in
+/-- At a continuous fixed-base paper chain, the adapted fixed-base
+product-difference square-sum is locally bounded below by a positive constant
+times the cleaned regular-plus-residual p. 13 square-sum.
+
+This theorem removes the separately supplied product-reduction certificate and
+triangular multiplier bound from the previous wrapper by deriving both near
+the base.  The conclusion is still a comparison with the adapted fixed-base
+product-difference square-sum, not with the original DLN/statistical loss. -/
+theorem exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_selfBase_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        (c / 2) *
+          (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x) +
+            aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+          paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+            (K := ℝ) W B U₀ hU₀ Cedge x := by
+  rcases
+      paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le_nhdsWithin_source
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) (r := r) (rEdge := rEdge) hCedge hbase with
+    ⟨Kmul, hKmul_pos, hbound⟩
+  let c : ℝ := Kmul⁻¹
+  have hc_pos : 0 < c := by
+    exact inv_pos.mpr hKmul_pos
+  have hc_nonneg : 0 ≤ c := le_of_lt hc_pos
+  have hcK : c * Kmul ≤ 1 := by
+    dsimp [c]
+    rw [inv_mul_cancel₀ (ne_of_gt hKmul_pos)]
+  have hcert_nhds :
+      {x : α |
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x} ∈ nhds x₀ :=
+    paperEndpointFixedBaseProductReductionCertificate_selfBase_mem_nhds
+      (K := ℝ) W B U₀ hU₀ Cedge rEdge hCedge hbase
+  have hcert :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x :=
+    (inf_le_left :
+      nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge) ≤ nhds x₀) hcert_nhds
+  exact
+    ⟨c, hc_pos,
+      half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productReductionCertificate_nhdsWithin_source
+        (W := W) (B := B) sourceData hc_nonneg hcK hcert hbound⟩
 
 set_option linter.unusedSectionVars false in
 /-- Relative directional form: on the source-rank stratum filter, the literal

@@ -679,6 +679,19 @@ eventually.  The adapted square-sum remains a fixed-base product-difference
 quantity only; this is not original-loss comparison, multiplier boundedness,
 analytic chart construction, normal crossings, pole order, or RLCT.
 
+A2 fixed-base triangular multiplier local boundedness has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-triangular-multiplier-local-boundedness.md`.
+Lean proves a positive local upper bound for
+`paperEndpointFixedBaseTriangularMultiplierSquareSumProduct` from continuity
+of `Cedge` at the fixed paper chain, weakens it to the source-rank filter, and
+uses `c=Kmul^{-1}` with the self-base product-reduction certificate to obtain
+a positive-constant adapted fixed-base lower bound for
+`regularSquareSum+residualSquareSum`.  This removes the supplied local
+multiplier-bound hypothesis in the self-base adapted-square-sum comparison.
+It is still not an original-loss comparison, exact-rank/source-rank openness,
+analytic chart construction, Jacobian/prior transport, normal crossings, pole
+order, or RLCT.
+
 The next genuine A2 analytic target is now pinned at
 `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
 prove an abstract Euclidean product-coordinate theorem that adding `k`

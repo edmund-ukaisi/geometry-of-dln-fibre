@@ -3674,3 +3674,36 @@ Controller verified the focused
 `DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` build, full `DLNFibre`
 build, `scripts/sorries`, and `git diff --check`.  The full build still emits
 many pre-existing style/Core warnings, but no failures.
+
+## 2026-06-25 A2 fixed-base triangular multiplier local boundedness
+
+Reproduction:
+`reproduction-a2-fixed-base-triangular-multiplier-local-boundedness.md`.
+Statement card:
+`statement-card-a2-fixed-base-triangular-multiplier-local-boundedness.md`.
+Review:
+`review-a2-fixed-base-triangular-multiplier-local-boundedness.md`.
+
+Lean now proves generic local-boundedness helpers for continuous real
+functions and finite square-sums, then applies them to the deterministic p.13
+triangular multiplier product:
+
+```text
+paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le
+paperEndpointFixedBaseTriangularMultiplierSquareSumProduct_exists_pos_eventually_le_nhdsWithin_source
+```
+
+The source-data consumer
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_selfBase_nhdsWithin_source
+```
+
+derives both the self-base product-reduction certificate and the multiplier
+bound from `hCedge`/`hbase`, chooses `c=Kmul^{-1}`, and returns a positive
+constant for the adapted fixed-base product-difference square-sum lower bound
+on the source-rank filter.
+
+Boundary: this is not an original DLN/statistical loss comparison, not
+source-rank openness, not analytic chart or measure transport, not normal
+crossings, not pole order, and not RLCT extraction.
