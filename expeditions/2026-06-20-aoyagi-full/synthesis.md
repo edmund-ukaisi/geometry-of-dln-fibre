@@ -886,6 +886,22 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-50 (2026-06-25) — (4,4,2,2) hfin closed S2-FREE @902ce5a7; R1 route distinction settled; the L3.2a wall is the R1 binding constraint. ★**
+- **(4,4,2,2) hfin CLOSED, S2-FREE** (r1-hfin; reviewer PASS; `#print axioms = [propext, Classical.choice, Quot.sound]`, no
+  monomial_rlct, no sorryAx): `routeMCore_M4422_threshold_lt_top` — the depth-2 template + a reusable reshape API
+  (paramsEquivFlat_decode, measurePreserving_eParams4422). L1.1 (radial-morse) confirmed already-banked. NOTE: discharges the
+  (4,4,2,2) INSTANCE only, not `routeMLayerCover_of_atoms`'s general-M hfin field.
+- **DECISIVE R1 route distinction (settled):** the iterated-fibre route is SPECIAL-CLASS only — `best_iterfibre(M) < ½·minAdm M`
+  for ALL corank-≥2 binding M (incl. (3,3,4),(3,3,3),(4,4,4),(3,3,3,3), even (2,2,2)). So general-M hfin REQUIRES the
+  rank-stratified {V=0} ladder (spec L2.1/L2.2/L3.x). The (4,4,2,2) win does NOT generalize — it's the MATCH-class template.
+- **pp-r1-genM-2 ENGAGED on the wall (L3.2a):** the r²-chart Δ-blow-up cover up to null at general r (spec build-risk #1, HIGH).
+  De-risk the binding constraint BEFORE the big ladder build → then commission the full ladder (L2.1→L2.2→L3.2→L3.1) with the
+  cover design in hand. Output: thread 28 `L32a-cover-cert.md`, anchored on (3,3,4). Ladder formaliser build HELD pending it.
+- **R1 remaining (honest, the largest chunk left):** TWO open general pieces — (a) general **hfin** (the rank-stratified ladder,
+  wall = L3.2a, in design) + (b) general **hdiv** (`routeMCore_box_diverges_achiever`, RouteMLayerCoverGE:120 — the (3,3,3,3)
+  Frame-det elaboration-cost wall, still open). Bears on the operator scope decision (full general-L vs the L=2/RRR milestone).
+- Active: l2-body-fill (L2 framedParams body) + pp-r1-genM-2 (R1 L3.2a design). pp-pin2-rearch on-call.
+
 **UPDATE-49 (2026-06-25) — framedParams body: statement CORRECTED (soundness catch) + skeleton banked @06385657; body-completion + R1 in flight.**
 - **l2-body landed + integrated** — another soundness catch (same discipline as PIN2): `framedParams_split_eq_frame_raw` was
   UNDER-HYPOTHESIZED (false as stated — bare Pf,Qf,J don't make P0 a unit / P00 invertible / the corner normalize). FIXED by
