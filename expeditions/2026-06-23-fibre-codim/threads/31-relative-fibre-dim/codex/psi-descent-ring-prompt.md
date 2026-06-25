@@ -1,0 +1,97 @@
+<task>
+Lean 4 + Mathlib v4.29 formalisation. I am building a localized chart `AlgEquiv`
+`e : Localization.Away dsig ≃ₐ[k] Localization.Away gF`
+between two coordinate rings of affine varieties, for a determinantal-chart fibration.
+I need to resolve a RING-MISMATCH subtlety in the `Ψ`-direction descent BEFORE committing ~1.5k LoC.
+
+## The two sides
+
+- `k` is an algebraically closed field of char 0 (`[Field k] [IsAlgClosed k] [CharZero k]`).
+- `RepCoord d` and `SchurVar` are finite index types.
+- SOURCE ring `OΣ := MvPolynomial (RepCoord d) k ⧸ vanishingIdeal k Σ`, where
+  `Σ := canonicalCoord '' productRankLocus d r ⊆ (RepCoord d → k)` (a Zariski-closed set,
+  `vanishingIdeal` = radical by construction). `dsig := Ideal.Quotient.mk (vanishingIdeal Σ) (ΔPdeep)`,
+  the class of the deep pivot minor (top-left r×r minor of the generic product polynomial matrix).
+  SOURCE localized ring: `Localization.Away dsig`.
+- TARGET ring `P := MvPolynomial SchurVar OF`, where `OF := MvPolynomial (RepCoord d) k ⧸ vanishingIdeal k F`,
+  `F := canonicalCoord '' fibre d E ⊆ (RepCoord d → k)`, `E` = the rank-r normal form `diag(I_r,0)`.
+  `gF := MvPolynomial.map (algebraMap k OF) detSchurS : P` (the Schur determinant with OF-coefficients).
+  TARGET localized ring: `Localization.Away gF`.
+
+NOTE the asymmetry: SOURCE `Localization.Away dsig` localizes a `vanishingIdeal`-quotient ring `OΣ`;
+TARGET `Localization.Away gF` localizes `P = MvPolynomial SchurVar OF`, which is NOT itself a
+`MvPolynomial σ k ⧸ vanishingIdeal Z` (it is a polynomial ring over the quotient OF).
+
+## What is LANDED (verified, zero-sorry)
+
+- `chartPsiAeval : MvPolynomial (RepCoord d) k →ₐ[k] Localization.Away gF` (the un-descended Ψ comorphism),
+  built as `aeval chartPsiSub` where `chartPsiSub x = chartPsiTower (gaugeSub (endpointGauge⁻¹) x)`,
+  `chartPsiTower = aevalTower schurToGfib fibCoordT`, `fibCoordT x = algebraMap OF (Away gF) (mk (vanishingIdeal F) (X x))`,
+  `schurToGfib : SchurLoc →ₐ[k] Away gF` carries the SchurLoc-coefficient gauge to the target.
+- The clearing-denominators primitive, ONLY proven for away-localizations of a `vanishingIdeal`-quotient:
+  `away_eq_zero_iff_exists_pow_mul_mem (Z : Set (σ → k)) (f₀ a : MvPolynomial σ k) :`
+  `  (IsLocalization.mk' (Localization.Away (mk (vanishingIdeal Z) f₀)) (mk (vanishingIdeal Z) a) 1 = 0)`
+  `  ↔ ∃ n, f₀^n * a ∈ vanishingIdeal Z`.
+  This is over `Localization.Away (mk (vanishingIdeal Z) f₀)` — i.e. localization of `MvPolynomial σ k ⧸ vanishingIdeal Z`.
+- `eval_multPoly : eval (canonicalCoord A) (multPoly d r c) = (mult d A) r c`.
+- `mult_chartGauge_inv_smul_fibre : mult (chartGauge(M)⁻¹ • B) = M` for `B ∈ fibre E`, `M` pivot-invertible, `rank M ≤ r`.
+- `gaugeEquiv_endpointGauge_multPoly` (transport of multPoly under the gauge AlgEquiv over SchurLoc).
+- The DESCENT GOAL: `vanishingIdeal k Σ ≤ RingHom.ker chartPsiAeval.toRingHom`, then
+  `Ideal.Quotient.liftₐ` to `OΣ →ₐ Away gF`, then `IsLocalization.liftAlgHom` to `Away dsig →ₐ Away gF`.
+
+## The precise question
+
+The point-realization argument (realize a chart point `(s, B)` with `detSchurS s ≠ 0`, `B ∈ F`, as
+`A := chartGauge(M)⁻¹ • B ∈ Σ`, so `p ∈ vanishingIdeal Σ ⟹ eval (canonicalCoord A) p = 0`) lives over Σ.
+But the TARGET `Away gF` localizes `P = MvPolynomial SchurVar OF`, NOT `OΣ`. So my landed
+clearing-denominators primitive (over a `vanishingIdeal`-quotient) does NOT directly apply to the Ψ target.
+
+How do I cleanly discharge `chartPsiAeval p = 0` in `Away gF` for `p ∈ vanishingIdeal Σ`? Specifically:
+
+1. Is the RIGHT mechanism to prove `chartPsiAeval p = 0` by showing the underlying element of
+   `P = MvPolynomial SchurVar OF` is killed by a power of `gF` (i.e. `gF^n · (chartPsiAeval' p) = 0` in `P`,
+   where `chartPsiAeval'` is the un-localized version into `P`), via `IsLocalization.mk'_eq_zero_iff` /
+   `IsLocalization.Away` directly on `P` — NOT via my Σ-side primitive? And does the kill-by-power
+   reduce to a membership in `vanishingIdeal F` after the SchurVar polynomial structure is unwound?
+
+2. OR is the cleaner mechanism to NOT descend through points at all, but to use the SYMBOLIC product
+   reconstruction: `chartPsiAeval (multPoly d r c) = E r c` (a CONSTANT, the normal form entry) in `Away gF`,
+   proven from `gaugeEquiv_endpointGauge_multPoly` + the fibre relation `mult B = E` carried symbolically
+   through `schurToGfib`/`fibCoordT`? If the Ψ comorphism sends each `multPoly` generator to a constant
+   matching E, then `vanishingIdeal Σ` (generated, as a radical, by relations among the `multPoly` entries
+   and the rank conditions) lands in the kernel more directly — does this avoid the point-realization +
+   clearing-denominators entirely, reducing the descent to: "the generators of (a defining ideal whose
+   radical is) vanishingIdeal Σ map to 0"? What is the catch — is `vanishingIdeal Σ` (the FULL radical
+   vanishing ideal of the rank-EXACTLY-r locus) reachable this way, given it is NOT finitely generated by
+   the obvious `multPoly`-relations + minor-vanishing (rank ≤ r is closed, rank = r is not)?
+
+3. Given the rank-EXACTLY-r vs rank-≤-r subtlety (vanishingIdeal Σ for Σ=rank-exactly-r locus; its Zariski
+   closure is the rank-≤-r locus), is the point-realization argument actually NECESSARY (because the radical
+   vanishing ideal is not symbolically generated), and if so, what is the cleanest Lean bridge from
+   "vanishes at every k-point of the principal open `Σ ∩ D(detΔ)`" to "= 0 in `Away gF`"?
+   Concretely: does proving `chartPsiAeval p = 0` require a NEW clearing-denominators lemma over
+   `Away gF` (target ring = poly-over-quotient), or can it route through evaluation at `Away gF`'s
+   own points / a `MvPolynomial`-coefficient version of my landed primitive?
+
+Rank the routes (1/2/3) by Lean-feasibility at v4.29, name the single cheapest discharge, and identify
+the one lemma most likely to be the genuine wall. Flag any Mathlib API as NEEDS-VERIFICATION.
+</task>
+
+<output_contract>
+1. VERDICT: which route (1/2/3) is the cleanest descent for `vanishingIdeal Σ ≤ ker chartPsiAeval`, one line.
+2. MECHANISM: the precise lemma chain for the chosen route (Lean-level steps; name the v4.29 API at each).
+3. THE gF-SIDE ZERO-TEST: exactly how to prove `x = 0` in `Localization.Away gF` where `gF : MvPolynomial SchurVar OF` —
+   the analog of my landed Σ-side primitive, but for a poly-over-quotient target. Is `IsLocalization.mk'_eq_zero_iff`
+   on `P` enough, and what does the kill-by-`gF^n` reduce to?
+4. RANK-EXACTLY-r CATCH: is the point-realization argument necessary, or does the symbolic route (2) suffice?
+   If symbolic suffices, what generates `vanishingIdeal Σ` for the purpose of the kernel check?
+5. THE WALL: the single lemma most likely to fight Mathlib, + mitigation.
+6. Flag every NEEDS-VERIFICATION Mathlib name.
+</output_contract>
+
+<grounding_rules>
+Distinguish (a) Mathlib API you are confident exists at v4.29 from (b) names you are INFERRING — mark (b)
+as NEEDS-VERIFICATION. Do not invent lemma names. If a route requires an absent theorem, say so explicitly
+rather than papering it. The landed primitive `away_eq_zero_iff_exists_pow_mul_mem` is over a
+`vanishingIdeal`-QUOTIENT ring; be precise about whether the target `Away gF` (poly-over-quotient) can reuse it.
+</grounding_rules>
