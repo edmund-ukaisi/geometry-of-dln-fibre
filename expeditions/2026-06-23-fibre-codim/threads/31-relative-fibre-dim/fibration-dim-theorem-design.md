@@ -691,3 +691,16 @@ a vanishingIdeal-quotient so the LANDED Σ-side primitive applies directly — E
 (iv) seam E glue `AlgEquiv.ofAlgHom` + round-trips via `Localization.algHom_ext` (~1-2 mod). NO
 absent-API, NO wall — fully de-risked mechanical assembly. `ChartPsiDescent.lean` skeleton (2 sorries,
 the `liftₐ`/`liftAlgHom` chain machine-checked around them) is UNCOMMITTED scaffolding for seam C.
+
+**Update 13.1 — seam A.4 (the gauge-eval commute) LANDED** (`6566c1b4`, `Core.ChartEvalGaugeCommute`,
+zero-sorry): `evalGauge g P := Units.map g.mapMatrix ∘ P` + `aevalTower_gaugeSub` (`aevalTower g
+(canonicalCoord B) (gaugeSub d P x) = (baseChange (evalGauge g P) B) x`). **The feared
+matrix-inverse-commutes step is CONFIRMED sidestepped at the Units level** — `evalGauge_inv_val` is
+`Units.coe_map_inv` (`rfl`), no `Matrix.nonsing_inv`. So the chart-eval lemma proper is now ONE
+`MvPolynomial.algHom_ext` chaining `evalAway_comp_chartPsiTower` (A.3) + `aevalTower_gaugeSub` (A.4):
+per generator `evalAway (chartPsiSub x) = canonicalCoord (baseChange (evalGauge (schurEval s) endpointGauge⁻¹) B) x`.
+**`e` chart-evaluation infra COMPLETE; remaining = chart-eval lemma proper → seam C/D/E, NO wall.**
+Note: `A := baseChange (evalGauge (schurEval s) endpointGauge⁻¹) B ∈ Σ^r` needs `mult A = M(s)` (via
+`mult_smul` + the `endpointGauge` evaluation = `chartGauge(M(s))` shape) for the point-realization;
+or route through the LANDED `mult_chartGauge_inv_smul_fibre` once `evalGauge` is identified with
+`chartGauge(M(s))⁻¹` (a separate bridge, deferrable).
