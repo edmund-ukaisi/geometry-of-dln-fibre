@@ -9221,6 +9221,39 @@ not cover a positive-measure zero set, and does not prove endpoint/divergence,
 threshold equality, bounded-density/prior transport, p.13 analytic
 chart/Jacobian construction, normal crossings, pole order, or RLCT.
 
+Latest A2 Euclidean coordinate square-sum base integrability:
+`RegularSuspensionSquareSumIntegrability.lean` now also proves the free
+Euclidean residual-coordinate base case:
+
+```text
+aoyagiEuclideanCoordinateSquareSum_pos_of_ne_zero
+ae_aoyagiEuclideanCoordinateSquareSum_pos
+ae_aoyagiEuclideanCoordinateSquareSum_pos_restrict
+lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_indicator_ball_lt_top
+lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_restrict_ball_lt_top
+lintegral_ofReal_euclideanCoordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+```
+
+For `x : EuclideanSpace ℝ eta`, Mathlib gives
+`||x||^2 = sum_i x_i^2`, so the Aoyagi coordinate square-sum is `||x||^2`.
+It is positive off the origin and a.e. positive for nonatomic measures.  The
+existing radial finite-side theorem gives finite local negative `t`-power
+lower integral on `ball(0,R)` when `R>0`, `0<=t`, and `2*t < card eta`; the
+composed theorem feeds this into the square-model product socket.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+
+This is not the Aoyagi product residual theorem.  It does not prove
+integrability for `D=prod_s C^(s)`, does not identify the p.13 residual product
+map with free Euclidean coordinates, does not cover zero-dimensional residual
+blocks, and does not prove endpoint/divergence, threshold equality,
+bounded-density/prior transport, p.13 analytic chart/Jacobian construction,
+normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

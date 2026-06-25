@@ -3085,3 +3085,39 @@ Aoyagi's reduced residual coordinates, does not cover a positive-measure zero
 set, and does not prove endpoint/divergence, threshold equality,
 bounded-density/prior transport, p.13 analytic chart/Jacobian construction,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 Euclidean coordinate square-sum base integrability
+
+Reproduction:
+`reproduction-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Statement card:
+`statement-card-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Review:
+`review-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+
+Lean now proves the local negative-power base theorem for the free Euclidean
+residual-coordinate model in `RegularSuspensionSquareSumIntegrability.lean`:
+
+```text
+aoyagiEuclideanCoordinateSquareSum_pos_of_ne_zero
+ae_aoyagiEuclideanCoordinateSquareSum_pos
+ae_aoyagiEuclideanCoordinateSquareSum_pos_restrict
+lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_indicator_ball_lt_top
+lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_restrict_ball_lt_top
+lintegral_ofReal_euclideanCoordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+```
+
+For `x : EuclideanSpace ℝ eta`, the finite square-sum
+`aoyagiCoordinateSquareSum (fun i => x i)` is `||x||^2`.  Hence it is
+positive away from the origin, positive a.e. for nonatomic measures, and has
+finite local negative `t`-power lower integral on `ball(0,R)` when
+`R>0`, `0<=t`, and `2*t < card eta`.  The final theorem composes this base
+integrability with the existing square-model product socket.
+
+Boundary: this is only the free Euclidean coordinate model.  It does not prove
+residual-base integrability for Aoyagi's product residual `D=prod_s C^(s)`,
+does not show that the p.13 residual product map is locally equivalent to free
+coordinates, does not cover zero-dimensional residual blocks, and does not
+prove endpoint/divergence, threshold equality, bounded-density/prior
+transport, p.13 analytic chart/Jacobian construction, normal crossings, pole
+order, or RLCT.

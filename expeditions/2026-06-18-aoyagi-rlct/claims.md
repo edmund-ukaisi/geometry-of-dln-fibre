@@ -6291,6 +6291,37 @@ lower/divergence side or threshold equality, no bounded-density or prior
 theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
 crossings, no pole order, and no RLCT.
 
+Latest A2 Euclidean coordinate square-sum base integrability:
+Lean now proves the free-coordinate residual base theorem in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSquareSumIntegrability.lean`.  For
+`x : EuclideanSpace ℝ eta`,
+`aoyagiCoordinateSquareSum (fun i : eta => x i)` is `||x||^2`, so the
+square-sum is positive away from the origin and positive a.e. for nonatomic
+measures.  Lean proves finite local lower integral of its negative `t`-power
+on `ball(0,R)` under `R>0`, `0<=t`, and `2*t < card eta`, and composes this
+with the square-model product theorem.
+Lean names:
+`aoyagiEuclideanCoordinateSquareSum_pos_of_ne_zero`,
+`ae_aoyagiEuclideanCoordinateSquareSum_pos`,
+`ae_aoyagiEuclideanCoordinateSquareSum_pos_restrict`,
+`lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_indicator_ball_lt_top`,
+`lintegral_ofReal_euclideanCoordinateSquareSum_rpow_neg_restrict_ball_lt_top`,
+and
+`lintegral_ofReal_euclideanCoordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+
+Nonclaims: no proof for Aoyagi's product residual `D=prod_s C^(s)`, no proof
+that p.13 residual product coordinates are locally free Euclidean coordinates,
+no zero-dimensional residual branch, no endpoint behavior, no lower/divergence
+side or threshold equality, no bounded-density or prior theorem, no Aoyagi
+p.13 analytic chart/Jacobian construction, no normal crossings, no pole order,
+and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

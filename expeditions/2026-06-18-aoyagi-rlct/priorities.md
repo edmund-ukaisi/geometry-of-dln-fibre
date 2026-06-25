@@ -3772,9 +3772,20 @@ Lean specialises the threshold bridge to
 `AoyagiResidualBlockCoordinateIndex.value (D x)`, with positivity and
 negative-power integrability still explicit hypotheses.
 
+A2 Euclidean coordinate square-sum base integrability is in progress:
+`threads/03-block-product-reduction/reproduction-a2-euclidean-coordinate-square-sum-base-integrability.md`.
+Lean proves the local negative-power theorem for the free Euclidean coordinate
+model `a(x)=sum_i x_i^2`, plus a composed square-suspension product corollary.
+Treat this as a base-case analytic brick only: it does not prove the residual
+negative-power hypothesis for Aoyagi's product residual `D=prod_s C^(s)`.
+
 Updated next A2 analytic target: prove, for the reduced residual model itself,
 the residual negative-power hypothesis `∫ ofReal(a(x)^(-t)) < infinity` in
-the relevant local chart/density setting.  This is still threshold-level
-integrability control, not pole-order preservation, a bounded-density/prior
-theorem, p.13 analytic chart/Jacobian construction, or normal-crossing
-extraction.
+the relevant local monomial-chart/density setting.  The source scout's current
+recommended target is an elementary monomial criterion:
+`a(z) >= c * prod |z_j|^(2*k_j)` and density
+`rho(z) <= C * prod |z_j|^(h_j)` imply finite `a(z)^(-t) rho(z)`
+integral under the strict inequalities `2*t*k_j < h_j+1`.  This is still
+threshold-level integrability control, not pole-order preservation, a
+bounded-density/prior theorem, p.13 analytic chart/Jacobian construction, or
+normal-crossing extraction.
