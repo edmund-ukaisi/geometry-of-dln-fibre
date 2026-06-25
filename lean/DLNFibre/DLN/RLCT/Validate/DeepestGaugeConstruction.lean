@@ -2624,38 +2624,19 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
     have hleakev := eventually_leak H r B hB hr hL P0 QL
       (rThresholdSplit r (H 0) (hr 0)) (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-    -- **THE ONE REMAINING GEOMETRIC GAP (the in-sum Schur charge).** The folded-core conjuncts
-    -- (d')/(e') reduce to a SINGLE GERM charge: a constant `C ≥ 0` with, EVENTUALLY in `𝓝 w0`, the
-    -- in-sum bound `|frobSq Rcore(w) − coreΦ(w)| ≤ C·Sreg(w)` (`Rcore = P11 − P10·(P00)⁻¹·P01` the
-    -- global Schur complement of `Mw`, `coreΦ = deepestCoreF (coreAbsorb (split w)).2.1`, `Sreg`
-    -- the three regular-block energies). GERM-scoped (NOT `∀ w` — the in-sum charge is FALSE globally:
-    -- where `Sreg(w) = 0` but `Rcore ≠ coreΦ`, `|…| ≤ C·0` fails; it holds only near `w0`). This is
-    -- the FRAME-STRIPPING-bridge + S5c germ charge. **REDUCED (thread 31, 2026-06-25):** this exact
-    -- germ-charge shape is now DISCHARGED by the banked, network-free conditional bridge
-    -- `germ_charge_of_schur_factorization` (`DeepestGermCharge.lean`) FROM three named per-`w`
-    -- hypotheses (with `R w := the Schur matrix`, so `frobSq (R w) = the inline ∑∑(·)²` by `rfl`):
-    --   (h1) `hR`   : `R w = S0 w · (1 − K w) · S1 w` — supplied by the BANKED frame-free two-layer LDU
-    --        `schur_product_ldu` (`DeepestSchurComparability.lean`, PROVEN this tide, all `r,M`), ONCE
-    --        the per-layer block decomposition `Mw.toBlocks ↔ (fromBlocks A0 Y0 Z0 T0)·(…A1 Y1 Z1 T1)`
-    --        is established (the frame-aware identification — still UNBUILT; needs the per-layer
-    --        gauge-slice block reads + the interior-frame telescope at the BLOCK level, NOT just the
-    --        single-matrix telescope `hS2_front`).
-    --   (h2) `hCore`: `coreΦ w = frobSq (S0 w · S1 w)` — from lemma 1
-    --        (`deepestCoreF_coreAbsorb_eq_prodSchur`, banked above: `coreΦ = frobSq (prod (deepestM) S')`,
-    --        `prod = S0'·S1'` at L=2), ONCE lemma-1's cores `S'_s = (symm core)_s + schurCorrection_s`
-    --        are matched to `schur_product_ldu`'s `S_s = T_s − Z_s·⅟A_s·Y_s` (UNBUILT).
-    --   (h3) `hRem` : `frobSq (R w − S0 w · S1 w) ≤ Crem · (Sreg w)²` — the QUADRATIC remainder charge
-    --        (`R − S0·S1 = −S0·K·S1`, `K = Z1·⅟P·Y0 = O(Sreg)` since `Y0, Z1 = O(√Sreg)` are reg
-    --        blocks), via `schur_core_remainder_frobeniusSq_le` (banked) + the `‖Y0‖,‖Z1‖ ≤ √Sreg`
-    --        bound (UNBUILT — the regular-block size estimate).
-    -- plus the eventual boundedness of `coreΦ`/`Sreg` near `w0` (continuity). GERM-scoped (NOT `∀ w` —
-    -- the in-sum charge is FALSE globally: where `Sreg(w) = 0` but `Rcore ≠ coreΦ`, `|…| ≤ C·0` fails).
-    -- Stated with the TOTAL inverse `(·)⁻¹` (= `⅟P00` on the S5a set, `invOf_eq_nonsing_inv`) so `C` is
-    -- `w`-uniform on the germ. The germ set is folded into `U` via `Filter.inter_mem` (`hw.2` per-`w`).
-    -- **STILL `sorry`** — the three named obligations above (h1's block decomposition, h2's core match,
-    -- h3's reg-block estimate) are the genuine unbuilt geometry; the bridge + LDU lemma are the
-    -- banked half. (Multi-tide: ~300+ LoC of per-layer block-reindex/gauge-read algebra; cert-confirmed.)
-    obtain ⟨C, hCnn, hcharge⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
+    -- **THE FOLDED GERM CHARGE (♦)** (h2-repair-spec, 2026-06-25). The additive
+    -- `|Score − coreΦ| ≤ C·Sreg` is REFUTED (reachable chart curve, `gap/Sreg → ∞ ~1/a²`: spectator
+    -- reg coords `X₁,Y₀,Z₁` shrink `Sreg` uncharged). The CORRECT charge is the FOLDED one: the gap is
+    -- charged to the SUM `Sreg + coreΦ` (load-bearing — `coreΦ` alone fails under product cancellation,
+    -- `Sreg` alone under reg cancellation; their sum is protected on BOTH adversary families). This
+    -- `(♦)` is the ONE remaining well-scoped, CORRECTLY-stated geometric residual (the genuine
+    -- leading-order germ content R1: `frobSq(D)/(Sreg+coreΦ) → 0`, verified Θ(t²)→0, robust under both
+    -- cancellations). Its leading-order Taylor proof lands separately (thread a8a8b2ff). The bridge
+    -- `fold_comparability_of_core_relative` consumes it to the `γ₁ = γ₂ = 2` fold; `(★)`
+    -- (`schur_gap_le_coreRelative`) + the banked h1 `hR` (`rcore_schur_factor_of_corner_split`) supply
+    -- the matrix structure. **`Score = frobSq(Rcore)`** (the inline Schur energy, by `rfl`),
+    -- **`coreΦ = deepestCoreF (deepestCoreAbsorb (split w)).2.1`**, **`Sreg`** the three reg-block energies.
+    have hcharge : ∀ᶠ w in 𝓝 w0,
         |(∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₂
@@ -2669,7 +2650,7 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
           - deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1|
-          ≤ C * (((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          ≤ (1 / 2) * ((((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
               + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -2677,9 +2658,14 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
             + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2)) := by
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))
+            + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1) := by
+      -- **R1 / `core_germ_charge` (♦)** — the genuine leading-order germ residual (CORRECT statement,
+      -- the refuted additive `sorry` is fixed). `frobSq(D)/(Sreg+coreΦ) → 0` (Θ(t²)) on S5a; the clean
+      -- proof needs leading-order Taylor in the chart (thread a8a8b2ff), NOT block algebra. Isolated,
+      -- strictly smaller/better-scoped than the refuted additive `sorry`.
       sorry
-    refine ⟨1, 1 + C, 1 + C, 1, 1, by positivity, by positivity, one_pos, one_pos,
+    refine ⟨1, 2, 2, 1, 1, by positivity, by positivity, one_pos, one_pos,
       ({w | IsUnit ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁
@@ -2716,7 +2702,7 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2)
           - deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1|
-          ≤ C * (((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          ≤ (1 / 2) * ((((∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₁) i j) ^ 2)
               + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -2724,7 +2710,8 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₁₂) i j) ^ 2))
             + (∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
                   (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))},
+                  (P0 * (prod H ((paramsEquivFlat H).symm w) - B) * QL)).toBlocks₂₁) i j) ^ 2))
+            + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1)},
       Filter.inter_mem (Filter.inter_mem hP00ev hleakev) hcharge, fun w hw => ?_⟩
     -- The conjugated residual `M w` and its four blocks (`P00 := M.toBlocks₁₁ + 1`).
     set Mw := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -2752,10 +2739,9 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
       -- and `P00 − 1 = M.toBlocks₁₁` (`add_sub_cancel_right`).
       rw [add_sub_cancel_right, invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ))]
       exact hleakw
-    · -- (d') folded core UPPER: `Sreg + Score ≤ (1+C)·(Sreg + coreΦ)`. From the in-sum charge
-      -- `hchargew` (= `hw.2`, `|Score − coreΦ| ≤ C·Sreg` — the ONE remaining germ gap above) +
-      -- nonnegativity, by `nlinarith`. (The γ = 1+C fold; the earlier `1`-binding was UNSOUND —
-      -- `Score = coreΦ` is FALSE for M>1.)
+    · -- (d') folded core UPPER: `Sreg + Score ≤ 2·(Sreg + coreΦ)` (γ₂ = 2). From the FOLDED charge
+      -- `hchargew` (= `hw.2`, `|Score − coreΦ| ≤ ½(Sreg + coreΦ)` — the (♦) germ gap) + nonnegativity,
+      -- by `nlinarith`. `Score ≤ coreΦ + ½(Sreg+coreΦ)` ⟹ `Sreg+Score ≤ (3/2)(Sreg+coreΦ) ≤ 2(…)`.
       have hch := hchargew
       simp only [Set.mem_setOf_eq, ← hMw] at hch
       rw [invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)), add_sub_cancel_right]
@@ -2765,10 +2751,9 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
         positivity
       have hcore_nn : (0 : ℝ) ≤ deepestCoreF H r (deepestCoreAbsorb H r hr hL (split w)).2.1 :=
         dlnLoss_nonneg _ _ _
-      nlinarith [hch.1, hch.2, hSreg_nn, hcore_nn, hCnn,
-        mul_nonneg hCnn hSreg_nn]
-    · -- (e') folded core LOWER: `Sreg + coreΦ ≤ (1+C)·(Sreg + Score)`. Same charge `hchargew`, the
-      -- other direction, by `nlinarith`.
+      nlinarith [hch.1, hch.2, hSreg_nn, hcore_nn]
+    · -- (e') folded core LOWER: `Sreg + coreΦ ≤ 2·(Sreg + Score)` (γ₁ = 2). Same FOLDED charge, the
+      -- other direction. `coreΦ ≤ Score + ½(Sreg+coreΦ)` ⟹ `½(Sreg+coreΦ) ≤ Sreg+Score` ⟹ `≤ 2(…)`.
       have hch := hchargew
       simp only [Set.mem_setOf_eq, ← hMw] at hch
       rw [invOf_eq_nonsing_inv (Mw.toBlocks₁₁ + (1 : Matrix (Fin r) (Fin r) ℝ)), add_sub_cancel_right]
@@ -2778,8 +2763,7 @@ theorem framedParams_split_eq_frame_raw (H : Fin (L + 1) → ℕ) (r : ℕ)
         positivity
       have hScore_nn : (0 : ℝ) ≤ ∑ i, ∑ j, ((Mw.toBlocks₂₂
           - Mw.toBlocks₂₁ * (Mw.toBlocks₁₁ + 1)⁻¹ * Mw.toBlocks₁₂) i j) ^ 2 := by positivity
-      nlinarith [hch.1, hch.2, hSreg_nn, hScore_nn, hCnn,
-        mul_nonneg hCnn hSreg_nn]
+      nlinarith [hch.1, hch.2, hSreg_nn, hScore_nn]
   obtain ⟨t, γ₁, γ₂, δ₁, δ₂, hγ₁, hγ₂, hδ₁, hδ₂, U, hU, hbody⟩ := hproducer
   exact ⟨P0, QL, Pi, Qi, t, γ₁, γ₂, δ₁, δ₂, hPP, hQQ, hγ₁, hγ₂, hδ₁, hδ₂, hKP_pos, hKi_pos, U, hU, hbody⟩
 

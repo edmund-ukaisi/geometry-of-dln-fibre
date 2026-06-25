@@ -4,9 +4,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestBlockDecomp` — the h1 block decomposition (network-free)
 
-The producer's germ charge (`DeepestGaugeConstruction`, `framedParams_split_eq_frame_raw`) reduces, via
-the banked bridge `germ_charge_of_schur_factorization`, to three per-`w` obligations; the first (h1) is
-the Schur factorization `hR : Rcore = S0·(1 − K)·S1`.
+The producer's folded germ charge (`DeepestGaugeConstruction`, `framedParams_split_eq_frame_raw`) uses
+the Schur factorization `hR : Rcore = S0·(1 − K)·S1` (h1) of the global Schur complement. This module
+supplies that `hR`; it feeds the intermediate `(★)` (`schur_gap_le_coreRelative`) toward the folded
+charge `(♦)` (`DeepestGermCharge`).
 
 This module supplies the **network-free matrix-algebra core of h1**: a product of two matrices, each
 reindexed into `r ⊕ (· − r)` block shape by a chosen equiv, has its reindexed product equal to the

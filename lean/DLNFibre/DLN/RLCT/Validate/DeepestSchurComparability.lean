@@ -198,15 +198,18 @@ theorem schur_product_ldu {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
     simp only [Matrix.mul_assoc]
   rw [hassoc, factor_one_sub_middle]
 
-/-- **The two-layer Schur complement in REGROUPED (off-diagonal) form** (the h3 regroup; rectangular
+/-- **The two-layer Schur complement in REGROUPED (off-diagonal) form** (exact algebra; rectangular
 outer widths `m0, m2`, shared middle `m1`). The GLOBAL (1,1)-block Schur complement of the product of
 two gauge-sliced layers over the product pivot `P = A0·A1 + Y0·Z1` equals `S0·S1 − (S0·Z1)·⅟P·(Y0·S1)`
 — the off-diagonal blocks `S0·Z1` (the (2,1) of the collapsed middle LDU) and `Y0·S1` (the (1,2))
-each pair a per-layer Schur core with a single regular read `Z1` / `Y0`. This is the form the
-remainder charge `R − S0·S1 = −(S0·Z1)·⅟P·(Y0·S1)` reads off, where the smallness comes from the
-REGULAR factor (`Z1, Y0 = O(√Sreg)`), NOT the core factor (the `S0·K·S1` route blows up — the core
-`T_s` escapes Sreg). Same `hprod`/`schur_unipotent_strip` derivation as `schur_product_ldu`, stopped
-one step earlier (before the `1 − K` factoring). -/
+each pair a per-layer Schur core with a single off-diagonal read `Z1` / `Y0`. Same
+`hprod`/`schur_unipotent_strip` derivation as `schur_product_ldu`, stopped one step earlier (before the
+`1 − K` factoring); the two factorings are mutually consistent (same LHS).
+
+**SCOPE CAVEAT (2026-06-25).** This exact regroup was banked for an additive `O(Sreg)` remainder charge
+(`Z1, Y0 = O(√Sreg)` regular reads ⟹ `R − S0·S1 = O(Sreg)`). That `O(Sreg)` reading is REFUTED on the
+clean S5a interior (the `⅟P`/core factors are not uniformly bounded as the reg reads vanish). The
+identity stands; the size charge built on it does not. The repair charges to `coreΦ` (see the cert). -/
 theorem schur_product_regroup {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
     [Fintype m0] [DecidableEq m0] [Fintype m1] [DecidableEq m1] [Fintype m2] [DecidableEq m2]
     {α : Type*} [CommRing α]
@@ -256,13 +259,19 @@ theorem schur_product_regroup {r m0 m1 m2 : Type*} [Fintype r] [DecidableEq r]
     Matrix.toBlocks_fromBlocks₁₂] at hstrip
   rw [hstrip]
 
-/-- **The Schur-core remainder identity in REGROUPED form** (the h3 regroup, exact ring algebra). With
-the global product Schur complement written in the regrouped form `R = S0·S1 − (S0·Z1)·⅟P·(Y0·S1)`
-(the off-diagonal blocks of the collapsed middle LDU), the deviation of `R` from the product of
-per-layer cores `∏S = S0·S1` is exactly `−(S0·Z1)·⅟P·(Y0·S1)`. The smallness comes from the REGULAR
-reads `Z1, Y0` (each `= O(√Sreg)`), so `S0·Z1` and `Y0·S1` are `O(√Sreg)` and the remainder is
-`O(Sreg)` — the naive `S0·K·S1` route blows up (the core `T_s` escapes Sreg), this one does not. Pure
-`Matrix` distribution. -/
+/-- **The Schur-core remainder identity in REGROUPED form** (exact ring algebra). With the global
+product Schur complement written in the regrouped form `R = S0·S1 − (S0·Z1)·⅟P·(Y0·S1)` (the
+off-diagonal blocks of the collapsed middle LDU), the deviation of `R` from the product of per-layer
+cores `∏S = S0·S1` is exactly `−(S0·Z1)·⅟P·(Y0·S1)`. Pure `Matrix` distribution — TRUE unconditionally
+(the identity holds for any `R` of the regrouped form).
+
+**SCOPE CAVEAT (2026-06-25, the refuted size claim).** An earlier docstring asserted the remainder is
+`O(Sreg)` (regular reads `Z1, Y0 = O(√Sreg)`). That `O(Sreg)` reading is REFUTED: the independent
+confirm found a reachable family on the clean S5a interior (cond `P00 = 1`) where the remainder energy
+`frobSq(R − S0·S1)` is NOT `≤ Crem·Sreg²` — the `⅟P`/core factors are NOT uniformly bounded as the
+reg reads vanish, so the product bound `frobSq(S0Z1)·frobSq(⅟P)·frobSq(Y0S1)` does not collapse to
+`Sreg²`. The identity below stands; the additive `O(Sreg)` charge built on it does NOT. The repair
+charges the gap to `coreΦ` (Θ(t⁴)), not `Sreg` (Θ(t⁶)) — see the cert. -/
 theorem schur_core_remainder_regroup_identity {r m0 m1 m2 : Type*} [Fintype r] [Fintype m1]
     (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (Z1 : Matrix m1 r ℝ) (Y0 : Matrix r m1 ℝ)
     (Pinv : Matrix r r ℝ) (R : Matrix m0 m2 ℝ)
@@ -270,11 +279,16 @@ theorem schur_core_remainder_regroup_identity {r m0 m1 m2 : Type*} [Fintype r] [
     R - S0 * S1 = - ((S0 * Z1) * Pinv * (Y0 * S1)) := by
   subst hR; abel
 
-/-- **The regrouped Frobenius remainder bound** (the h3 reg-block accounting). The remainder
-`D = −(S0·Z1)·⅟P·(Y0·S1)` (hence `R − ∏S`) has squared-Frobenius energy bounded by the product of the
-three factor energies `frobSq (S0·Z1) · frobSq Pinv · frobSq (Y0·S1)`. Two `frobenius_mul_le`. The
-reg-block estimate `frobSq (S0·Z1), frobSq (Y0·S1) ≤ C·Sreg` (the regular factors `Z1, Y0` carry the
-smallness) + the `⅟P` bound then give `frobSq D ≤ Crem·Sreg²` downstream. -/
+/-- **The regrouped Frobenius submultiplicative bound** (TRUE unconditionally). The triple product
+`S0Z1·Pinv·Y0S1` has squared-Frobenius energy bounded by the product of the three factor energies
+`frobSq (S0Z1) · frobSq Pinv · frobSq (Y0S1)`. Two `frobenius_mul_le`. This is a pure submultiplicative
+inequality — it holds for any conformable real matrices and asserts nothing about `Sreg`.
+
+**SCOPE CAVEAT (2026-06-25).** This bound was banked to feed an additive `frobSq D ≤ Crem·Sreg²` charge
+via `frobSq (S0Z1), frobSq (Y0S1) ≤ C·Sreg` + a `⅟P` bound. That downstream charge is REFUTED (the
+independent confirm exhibited a clean-S5a family where `frobSq D / Sreg² → ∞`: the `⅟P`/core factors do
+not stay bounded as the reg reads vanish). The inequality below is still true and reusable; the
+`Sreg²` downstream it was meant for is not. The repair charges to `coreΦ` instead (see the cert). -/
 theorem schur_core_remainder_regroup_frobeniusSq_le {r m0 m2 : Type*}
     [Fintype r] [Fintype m0] [Fintype m2]
     (S0Z1 : Matrix m0 r ℝ) (Pinv : Matrix r r ℝ) (Y0S1 : Matrix r m2 ℝ) :

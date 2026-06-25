@@ -2,34 +2,34 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 
 /-!
-# `DLNFibre.DLN.RLCT.Validate.DeepestGermCharge` — the conditional germ-charge bridge
+# `DLNFibre.DLN.RLCT.Validate.DeepestGermCharge` — the folded germ-charge bridge
 
 The producer `framedParams_split_eq_frame_raw` (`DeepestGaugeConstruction`) reduces the folded core
-(d')/(e') of its loss squeeze to a SINGLE germ charge:
+(d')/(e') of its loss squeeze to a SINGLE germ charge comparing the global Schur energy
+`Score := frobSq (Rcore)` (`Rcore` the (1,1)-block Schur complement of `Mw := reindex(P0·(prod−B)·QL)`)
+with the frame-free core energy `coreΦ := deepestCoreF (deepestCoreAbsorb (split w)).2.1`, near `w0`,
+modulo the regular-block energy `Sreg`. This module supplies the ABSTRACT, network-free pieces that
+turn that comparison into the two folded squeeze conjuncts.
 
-    ∃ C ≥ 0, ∀ᶠ w in 𝓝 w0, |frobSq (Rcore w) − coreΦ w| ≤ C · Sreg w
+**The FOLDED charge (the correct route, h2-repair-spec 2026-06-25).** The naive ADDITIVE charge
+`|Score − coreΦ| ≤ C·Sreg` is FALSE on the real chart: a reachable curve on the clean S5a interior
+(cond `P00 = 1`, identity frames) has `gap / Sreg → ∞` (`~1/a²`) — spectator regular coordinates
+(`X₁, Y₀, Z₁`) shrink `Sreg` while the gap stays Θ(t⁶), uncharged. The correct charge is FOLDED: the
+gap is charged to the SUM `Sreg + coreΦ`,
 
-with `Rcore w` the GLOBAL (1,1)-block Schur complement of `Mw := reindex(P0·(prod(A w) − B)·QL)`,
-`coreΦ w = deepestCoreF (deepestCoreAbsorb (split w)).2.1`, and `Sreg w` the three regular-block
-energies. This module supplies the ABSTRACT, network-free derivation of that germ charge from the
-named ingredients — isolating the remaining UNBUILT geometry as exactly those ingredients.
+    (♦)   |Score − coreΦ| ≤ ½·(Sreg + coreΦ)     (eventually on S5a).
 
-The genuinely new matrix-algebra piece, the frame-free two-layer LDU
-`schur_product_ldu` (`DeepestSchurComparability`), supplies the per-`w` factorization hypothesis `hR`.
-What `germ_charge_of_schur_factorization` does NOT discharge (and what the producer's residual `sorry`
-still carries) is the frame-aware identification of `Mw`'s `toBlocks` with a per-layer block product
-`(fromBlocks A0 Y0 Z0 T0)·(fromBlocks A1 Y1 Z1 T1)` (so `schur_product_ldu` applies), the core germ
-charge matching lemma-1's frame-free core `coreΦ` to the framed LDU cores `frobSq (Ŝ0·Ŝ1)`
-(`hCore_germ`, `O(Sreg)` since the O(1) frames distort the Schur only through reg-read-gated
-off-diagonal blocks), and the quadratic remainder charge `frobSq (R − S0·S1) ≤ Crem·Sreg²` (the
-`K = Z1·⅟P·Y0 = O(Sreg)` content). Those are the precise, named obligations the bridge leaves open.
+The `(Sreg + coreΦ)` denominator is LOAD-BEARING — `coreΦ` alone fails under product cancellation
+(`coreΦ → 0` faster, e.g. `S0·S1 = 0`), `Sreg` alone under regular cancellation; their SUM is protected
+on both adversary families. `fold_comparability_of_core_relative` below consumes `(♦)` to the
+`γ₁ = γ₂ = 2` fold conjuncts the producer returns. The intermediate `(★)`
+(`schur_gap_le_coreRelative`) bounds the gap by `2√(coreΦ·frobSq D) + frobSq D` (`D = Rcore − S0·S1`),
+the matrix-algebra route to `(♦)` once the leading-order germ residual `frobSq D ≤ ⅛(Sreg+coreΦ)`
+lands. `(♦)` itself is the producer's single remaining residual (a genuine leading-order germ lemma,
+NOT block algebra — every norm-factoring route has a hole; see the spec §4).
 
-**Bridge relaxation (2026-06-25, thread 31).** The original bridge took the EXACT core match
-`coreΦ = frobSq (S0·S1)`. A numeric check found that is FALSE under the producer's nontrivial O(1)
-endpoint frames (the framed LDU cores `Ŝ_s` carry frame decoration), and pp adjudicated the
-discrepancy as `O(Sreg²)` (reg-read-gated), so `hCore` is now the germ charge `hCore_germ`. The proof
-absorbs it by ONE final triangle step; the S5c machinery is unchanged. Design cert:
-`expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/frame-stripping-cert.md`.
+Design cert + the refutation/repair record:
+`expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/h2-repair-spec.md` (+ `frame-stripping-cert.md`).
 -/
 
 open Matrix Filter
@@ -38,109 +38,67 @@ namespace DLNFibre.DLN.RLCT
 
 variable {ι : Type*} [TopologicalSpace ι]
 
-/-- **The germ charge from the global Schur factorization** (the honest conditional bridge isolating
-the remaining unbuilt geometry). GIVEN, near `w0`:
-* the per-`w` global Schur factorization `R w = S0 w · (1 − K w) · S1 w` (the frame-aware
-  identification — supplied by `schur_product_ldu` once the per-layer block decomposition of `Mw`
-  lands; the cores `S0, S1` are the FRAMED per-layer Schur cores `Ŝ_s`, the LDU being frame-agnostic);
-* the per-`w` core germ charge `|coreΦ w − frobSq (S0 w · S1 w)| ≤ Ccore · Sreg w` (lemma-1's
-  frame-free core `coreΦ` vs the framed LDU cores `Ŝ0·Ŝ1`: the O(1) frames distort the Schur ONLY
-  through off-diagonal frame blocks × vanishing regular reads `Y_s, Z_s = O(√Sreg)`, so the
-  distortion is reg-read-gated and is `O(Sreg²)`, a fortiori `O(Sreg)`);
-* the QUADRATIC remainder charge `frobSq (R w − S0 w · S1 w) ≤ Crem · (Sreg w)²` (the `K = O(Sreg)`
-  content: `Y0, Z1` are regular blocks `= O(√Sreg)`, so `K = Z1·⅟P·Y0 = O(Sreg)`, hence
-  `R − S0·S1 = −S0·K·S1 = O(Sreg)`);
-* the core energy and `Sreg` are bounded near `w0` (`Mc`, `Bs`), with `Sreg ≥ 0`,
-
-the germ charge `∃ C ≥ 0, ∀ᶠ w, |frobSq (R w) − coreΦ w| ≤ C · Sreg w` holds with the explicit
-constant `C = 2·√(Mc·Crem) + Crem·Bs + Ccore`. The S5c difference-of-squared split gives
-`|frobSq R − frobSq(S0S1)| ≤ 2|cross| + frobSq D` (`D = R − S0·S1`); Cauchy–Schwarz
-(`schur_core_germ_comparability` (iv)) bounds `cross² ≤ frobSq(S0S1)·frobSq D ≤ Mc·Crem·Sreg²`, so
-`|cross| ≤ √(Mc·Crem)·Sreg`, and the quadratic charge gives `frobSq D ≤ Crem·Bs·Sreg`. The final
-triangle step `|frobSq R − coreΦ| ≤ |frobSq R − frobSq(S0S1)| + |frobSq(S0S1) − coreΦ|` adds the
-`Ccore·Sreg` core germ charge. -/
-theorem germ_charge_of_schur_factorization {m0 m1 m2 : Type*}
+/-- **(★) — the coreΦ-relative gap bound** (the EXACT difference-split charge, h2-repair-spec item 1).
+With the global Schur factorization `R = S0·(1−K)·S1` (so `coreΦ = frobSq (S0·S1)` is the per-layer
+core energy and `D = R − S0·S1` the remainder), the gap between the Schur energy `frobSq R` and the
+core energy is bounded by `2·√(frobSq(S0·S1) · frobSq D) + frobSq D`. The S5c difference-of-squared
+split (`schur_core_germ_comparability` (iii)) gives `frobSq R = frobSq(S0S1) + 2·cross + frobSq D`, and
+Cauchy–Schwarz ((iv)) gives `cross² ≤ frobSq(S0S1)·frobSq D`, so `|cross| ≤ √(frobSq(S0S1)·frobSq D)`.
+This REPLACES the refuted additive `≤ C·Sreg` charge: the gap is charged to the CORE energy `frobSq(D)`
+(which `→ 0` on the germ), NOT to `Sreg`. -/
+theorem schur_gap_le_coreRelative {m0 m1 m2 : Type*}
     [Fintype m0] [Fintype m1] [DecidableEq m1] [Fintype m2]
-    (w0 : ι) (Sreg coreΦ : ι → ℝ)
-    (S0 : ι → Matrix m0 m1 ℝ) (S1 : ι → Matrix m1 m2 ℝ)
-    (K : ι → Matrix m1 m1 ℝ) (R : ι → Matrix m0 m2 ℝ)
-    (Crem Mc Bs Ccore : ℝ) (hCrem : 0 ≤ Crem) (hMc : 0 ≤ Mc) (hBs : 0 ≤ Bs) (hCcore : 0 ≤ Ccore)
-    (hSregNonneg : ∀ w, 0 ≤ Sreg w)
-    (hR : ∀ᶠ w in 𝓝 w0, R w = S0 w * (1 - K w) * S1 w)
-    (hCore_germ : ∀ᶠ w in 𝓝 w0, |coreΦ w - frobSq (S0 w * S1 w)| ≤ Ccore * Sreg w)
-    (hRem : ∀ᶠ w in 𝓝 w0, frobSq (R w - S0 w * S1 w) ≤ Crem * (Sreg w) ^ 2)
-    (hMcb : ∀ᶠ w in 𝓝 w0, frobSq (S0 w * S1 w) ≤ Mc)
-    (hBsb : ∀ᶠ w in 𝓝 w0, Sreg w ≤ Bs) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
-      |frobSq (R w) - coreΦ w| ≤ C * Sreg w := by
-  refine ⟨2 * Real.sqrt (Mc * Crem) + Crem * Bs + Ccore, by positivity, ?_⟩
-  filter_upwards [hR, hCore_germ, hRem, hMcb, hBsb] with w hRw hCorew hRemw hMcbw hBsbw
-  -- The S5c split for this `w`: `frobSq R = frobSq(S0S1) + 2·cross + frobSq D`, cross² ≤ energies.
-  obtain ⟨_, _, hsplit, hcross_sq⟩ := schur_core_germ_comparability (S0 w) (S1 w) (K w) (R w) hRw
-  set D := R w - S0 w * S1 w with hDdef
-  set cross := ∑ i, ∑ j, (S0 w * S1 w) i j * D i j with hcrossdef
-  -- The S5c half: `|frobSq R − frobSq(S0S1)| ≤ (2√(Mc·Crem) + Crem·Bs)·Sreg`.
-  have hdiff : frobSq (R w) - frobSq (S0 w * S1 w) = 2 * cross + frobSq D := by
-    rw [hsplit]; ring
+    (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ) (R : Matrix m0 m2 ℝ)
+    (hR : R = S0 * (1 - K) * S1) :
+    |frobSq R - frobSq (S0 * S1)|
+      ≤ 2 * Real.sqrt (frobSq (S0 * S1) * frobSq (R - S0 * S1)) + frobSq (R - S0 * S1) := by
+  obtain ⟨_, _, hsplit, hcross_sq⟩ := schur_core_germ_comparability S0 S1 K R hR
+  set D := R - S0 * S1 with hDdef
+  set cross := ∑ i, ∑ j, (S0 * S1) i j * D i j with hcrossdef
   have hDnn : 0 ≤ frobSq D := frobSq_nonneg D
-  have hSregW := hSregNonneg w
-  -- Triangle: `|2·cross + frobSq D| ≤ 2|cross| + frobSq D`.
+  have hBnn : 0 ≤ frobSq (S0 * S1) := frobSq_nonneg _
+  -- `frobSq R − frobSq(S0S1) = 2·cross + frobSq D` (the split (iii)).
+  have hdiff : frobSq R - frobSq (S0 * S1) = 2 * cross + frobSq D := by rw [hsplit]; ring
+  rw [hdiff]
+  -- Triangle then Cauchy–Schwarz: `|2·cross + frobSq D| ≤ 2|cross| + frobSq D ≤ 2√(B·D) + frobSq D`.
   have htri : |2 * cross + frobSq D| ≤ 2 * |cross| + frobSq D := by
     calc |2 * cross + frobSq D| ≤ |2 * cross| + |frobSq D| := abs_add_le _ _
       _ = 2 * |cross| + frobSq D := by rw [abs_mul, abs_of_nonneg hDnn]; norm_num
-  -- Remainder: `frobSq D ≤ Crem·Sreg² ≤ Crem·Bs·Sreg`.
-  have hrem_le : frobSq D ≤ Crem * Bs * Sreg w := by
-    calc frobSq D ≤ Crem * (Sreg w) ^ 2 := hRemw
-      _ = Crem * Sreg w * Sreg w := by ring
-      _ ≤ Crem * Bs * Sreg w := by
-          apply mul_le_mul_of_nonneg_right _ hSregW
-          exact mul_le_mul_of_nonneg_left hBsbw hCrem
-  -- Cross term: `cross² ≤ Mc·Crem·Sreg²`, so `|cross| ≤ √(Mc·Crem)·Sreg`.
-  have hcross_le : |cross| ≤ Real.sqrt (Mc * Crem) * Sreg w := by
-    have hbound : cross ^ 2 ≤ (Mc * Crem) * (Sreg w) ^ 2 := by
-      calc cross ^ 2 ≤ frobSq (S0 w * S1 w) * frobSq D := hcross_sq
-        _ ≤ Mc * (Crem * (Sreg w) ^ 2) := mul_le_mul hMcbw hRemw hDnn hMc
-        _ = (Mc * Crem) * (Sreg w) ^ 2 := by ring
+  refine le_trans htri ?_
+  have hcross_le : |cross| ≤ Real.sqrt (frobSq (S0 * S1) * frobSq D) := by
     calc |cross| = Real.sqrt (cross ^ 2) := (Real.sqrt_sq_eq_abs cross).symm
-      _ ≤ Real.sqrt ((Mc * Crem) * (Sreg w) ^ 2) := Real.sqrt_le_sqrt hbound
-      _ = Real.sqrt (Mc * Crem) * Real.sqrt ((Sreg w) ^ 2) := by
-          rw [Real.sqrt_mul (by positivity)]
-      _ = Real.sqrt (Mc * Crem) * Sreg w := by rw [Real.sqrt_sq hSregW]
-  have hS5c : |frobSq (R w) - frobSq (S0 w * S1 w)|
-      ≤ (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w := by
-    rw [hdiff]
-    refine le_trans htri ?_
-    calc 2 * |cross| + frobSq D
-        ≤ 2 * (Real.sqrt (Mc * Crem) * Sreg w) + Crem * Bs * Sreg w := by
-          apply add_le_add _ hrem_le
-          exact mul_le_mul_of_nonneg_left hcross_le (by norm_num)
-      _ = (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w := by ring
-  -- Final triangle: `|frobSq R − coreΦ| ≤ |frobSq R − frobSq(S0S1)| + |frobSq(S0S1) − coreΦ|`.
-  calc |frobSq (R w) - coreΦ w|
-      = |(frobSq (R w) - frobSq (S0 w * S1 w)) + (frobSq (S0 w * S1 w) - coreΦ w)| := by ring_nf
-    _ ≤ |frobSq (R w) - frobSq (S0 w * S1 w)| + |frobSq (S0 w * S1 w) - coreΦ w| := abs_add_le _ _
-    _ ≤ (2 * Real.sqrt (Mc * Crem) + Crem * Bs) * Sreg w + Ccore * Sreg w := by
-        refine add_le_add hS5c ?_
-        rw [abs_sub_comm]; exact hCorew
-    _ = (2 * Real.sqrt (Mc * Crem) + Crem * Bs + Ccore) * Sreg w := by ring
+      _ ≤ Real.sqrt (frobSq (S0 * S1) * frobSq D) := Real.sqrt_le_sqrt hcross_sq
+  have := mul_le_mul_of_nonneg_left hcross_le (by norm_num : (0:ℝ) ≤ 2)
+  linarith
 
-/-- **The germ charge directly from the global-Schur core charge** (the trivially-sound conditional;
-pp's correction, 2026-06-25). When the producer's core germ charge is stated against the FRAMED global
-Schur complement `R` itself — `|coreΦ w − frobSq (R w)| ≤ Ccore · Sreg w` (the true loss core IS the
-framed `frobSq (Rcore)` per `dlnLoss_two_sided_of_frame`, `coreΦ` is frame-free, and the gap folds
-`O(Sreg)` on the S5a domain where the pivot `P00 = N11 + 1` is invertible / `⅟P00` bounded) — the
-producer's germ charge `|frobSq (R w) − coreΦ w| ≤ Ccore · Sreg w` is exactly that bound (modulo
-`|·|` symmetry). No S5c remainder split, no `S0·S1` per-layer product, no `Crem`/`Mc`/`Bs` energies
-needed: the charge is already against `R`. Sound regardless of which core-charge route the producer's
-`coreΦ_germ_charge` ultimately takes. -/
-theorem germ_charge_of_core_charge {m0 m2 : Type*} [Fintype m0] [Fintype m2]
-    (w0 : ι) (Sreg coreΦ : ι → ℝ) (R : ι → Matrix m0 m2 ℝ) (Ccore : ℝ) (hCcore : 0 ≤ Ccore)
-    (hCore_germ : ∀ᶠ w in 𝓝 w0, |coreΦ w - frobSq (R w)| ≤ Ccore * Sreg w) :
-    ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ w in 𝓝 w0,
-      |frobSq (R w) - coreΦ w| ≤ C * Sreg w := by
-  refine ⟨Ccore, hCcore, ?_⟩
-  filter_upwards [hCore_germ] with w hCorew
-  rw [abs_sub_comm]; exact hCorew
+/-- **The folded comparability bridge** (h2-repair-spec item 3, the abstract bridge for the folded
+route — it replaced an earlier additive bridge that was refuted; see the module header). From the
+FOLDED core germ charge `(♦)`
+`|Score − coreΦ| ≤ ½·(Sreg + coreΦ)` (the gap charged to the `(Sreg + coreΦ)` SUM — load-bearing: see
+the spec's CAUTION, `coreΦ` alone fails under product cancellation, `Sreg` alone under reg cancellation)
+with `Sreg, coreΦ ≥ 0`, the two folded squeeze conjuncts `Sreg + coreΦ ≤ 2·(Sreg + Score)` and
+`Sreg + Score ≤ 2·(Sreg + coreΦ)` hold eventually — witness `γ₁ = γ₂ = 2`. Pure inequality algebra
+(`|Score − coreΦ| ≤ ½(Sreg+coreΦ)` ⟹ both directions of the fold by `abs_le` + `linarith`). -/
+theorem fold_comparability_of_core_relative
+    (w0 : ι) (Sreg coreΦ Score : ι → ℝ)
+    (hSregNN : ∀ w, 0 ≤ Sreg w) (hcoreNN : ∀ w, 0 ≤ coreΦ w) (hScoreNN : ∀ w, 0 ≤ Score w)
+    (hcharge : ∀ᶠ w in 𝓝 w0, |Score w - coreΦ w| ≤ (1 / 2) * (Sreg w + coreΦ w)) :
+    ∃ γ₁ γ₂ : ℝ, 0 < γ₁ ∧ 0 < γ₂ ∧ ∀ᶠ w in 𝓝 w0,
+      (Sreg w + coreΦ w ≤ γ₁ * (Sreg w + Score w))
+      ∧ (Sreg w + Score w ≤ γ₂ * (Sreg w + coreΦ w)) := by
+  refine ⟨2, 2, by norm_num, by norm_num, ?_⟩
+  filter_upwards [hcharge] with w hch
+  rw [abs_le] at hch
+  obtain ⟨hch_lo, hch_hi⟩ := hch
+  have hSregW := hSregNN w
+  have hcoreW := hcoreNN w
+  have hScoreW := hScoreNN w
+  constructor
+  · -- lower: `|Score − coreΦ| ≤ ½(Sreg+coreΦ)` ⟹ `Score ≥ coreΦ − ½(Sreg+coreΦ)`, so
+    -- `Sreg + Score ≥ ½(Sreg + coreΦ)` ⟹ `Sreg + coreΦ ≤ 2(Sreg + Score)`.
+    nlinarith [hch_lo, hch_hi, hSregW, hcoreW, hScoreW]
+  · -- upper: `Score ≤ coreΦ + ½(Sreg+coreΦ)` ⟹ `Sreg + Score ≤ (3/2)(Sreg+coreΦ) ≤ 2(Sreg+coreΦ)`.
+    nlinarith [hch_lo, hch_hi, hSregW, hcoreW, hScoreW]
 
 /-! ## Non-vacuity witness
 
