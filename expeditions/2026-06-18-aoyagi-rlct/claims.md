@@ -687,6 +687,12 @@ No such claim is formalisation-ready until both fields are filled.
   `LocalMeasureHandoff.lean`, the generic local filter-to-restricted-measure
   handoff, reviewed by xhigh `Carver the 4th` at
   `threads/03-block-product-reduction/review-a2-local-measure-handoff.md`.
+  Also proved the fixed-base p.13 regular-suspension local-measure wrappers
+  in `RegularSuspensionLocalMeasure.lean`, turning the half lower bound and a
+  supplied base-loss lower bound into restricted-source and first-projection
+  product a.e. facts, with source-stratum measurability still supplied;
+  reviewed by xhigh `McClintock the 5th` at
+  `threads/03-block-product-reduction/review-a2-regular-suspension-local-measure.md`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

@@ -7713,6 +7713,21 @@ Nonclaims: no p.13 product chart, no source-coordinate/product-coordinate
 identification, no loss comparison, no density/Jacobian transport, no
 integrability theorem, no normal crossing, pole order, or RLCT extraction.
 
+Latest A2 regular-suspension local measure handoff:
+`RegularSuspensionLocalMeasure.lean` proves restricted-source and
+first-projection product a.e. forms of the fixed-base p.13 half lower bound
+and supplied-base-loss lower bound.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-local-measure.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-local-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-regular-suspension-local-measure.md`.
+Nonclaims: no measurable-source-stratum proof, no p.13 product chart, no
+source/product coordinate identification, no product-fiber regular-square
+lower bound, no original DLN loss comparison, no density/Jacobian transport,
+no residual-base integrability, no normal crossing, pole order, or RLCT
+extraction.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

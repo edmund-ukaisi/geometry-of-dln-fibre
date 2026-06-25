@@ -3420,3 +3420,35 @@ construct a p.13 product chart, identify source coordinates with
 residual-base plus regular-fiber product coordinates, compare losses, transport
 density/Jacobian factors, prove integrability, produce normal crossings, pole
 order, or RLCT.
+
+## 2026-06-25 A2 regular-suspension local measure handoff
+
+Reproduction:
+`reproduction-a2-regular-suspension-local-measure.md`.
+Statement card:
+`statement-card-a2-regular-suspension-local-measure.md`.
+Review:
+`review-a2-regular-suspension-local-measure.md`.
+
+Lean now packages two p.13 fixed-base source-filter comparisons as
+restricted-measure a.e. facts in `RegularSuspensionLocalMeasure.lean`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_literal_regular_add_residual_squareSum_half_le
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_literal_regular_add_residual_squareSum_half_le
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_loss_to_half_regular_add_residual_squareSum
+```
+
+The inputs are a measurable fixed-base source rank stratum and the already
+proved p.13 `nhdsWithin` comparisons.  The conclusions produce an open
+neighborhood `U` such that the corresponding inequality holds a.e. for
+`mu.restrict (U ∩ sourceStratum)`, and in product form after replacing the
+base point by `z.1`.
+
+Boundary: the product forms are first-coordinate handoffs only.  They do not
+identify an auxiliary product fiber with p.13 regular coordinates, do not give
+the product-fiber `regularSquareSum(u)` lower bound needed by the finite-side
+integrability adapter, and do not prove source-stratum measurability, chart
+construction, original loss comparison, density/Jacobian transport, residual
+integrability, normal crossings, pole order, or RLCT.
