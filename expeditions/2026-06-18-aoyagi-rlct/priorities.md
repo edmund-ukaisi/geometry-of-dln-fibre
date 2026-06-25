@@ -669,6 +669,16 @@ multiplier bound remains supplied, and the right-hand side is only the
 adapted fixed-base product-difference square-sum, not `lossDLN` or original
 statistical loss.
 
+A2 source-filter adapted product-difference bound has now landed:
+`threads/03-block-product-reduction/reproduction-a2-source-filter-adapted-product-difference-bound.md`.
+Lean proves the source-rank `nhdsWithin` lift of the pointwise adapted bound
+under supplied eventual product-reduction certificate and multiplier-bound
+hypotheses, and composes it with the finite p.13 half-bound to get
+`(c/2)*(regularSquareSum+residualSquareSum) <= adaptedProductDifferenceSquareSum`
+eventually.  The adapted square-sum remains a fixed-base product-difference
+quantity only; this is not original-loss comparison, multiplier boundedness,
+analytic chart construction, normal crossings, pole order, or RLCT.
+
 The next genuine A2 analytic target is now pinned at
 `threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
 prove an abstract Euclidean product-coordinate theorem that adding `k`

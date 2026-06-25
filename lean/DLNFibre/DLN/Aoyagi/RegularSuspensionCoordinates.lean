@@ -2836,6 +2836,46 @@ theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProd
   simpa [paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap,
     paperEndpointFixedBaseAdaptedProductDifferenceSquareSum, E, EMat, S, ι, μ, ν] using hraw
 
+set_option linter.unusedSectionVars false in
+/-- Source-filter form of the pointwise fixed-base adapted product-difference
+bound.
+
+The product-reduction certificate and multiplier square-sum bound are supplied
+eventually on the source-rank stratum.  The conclusion is still only an
+adapted fixed-base product-difference square-sum bound, not an original-loss
+comparison. -/
+theorem const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_adaptedProductDifferenceSquareSum_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hcert :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    (hbound :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge),
+      c * aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+        paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+          (K := ℝ) W B U₀ hU₀ Cedge x := by
+  filter_upwards [hcert, hbound] with x hcert_x hbound_x
+  exact
+    const_mul_literalProductDifferenceCoordinateMap_squareSum_le_adaptedProductDifferenceSquareSum
+      (W := W) (B := B) hcert_x hc_nonneg hcK hbound_x
+
 end PaperEndpointFixedBaseProductReductionCertificate
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
@@ -3250,6 +3290,63 @@ theorem const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_resid
           (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
             (K := ℝ) W B U₀ hU₀ Cedge x) := hmul
     _ ≤ loss x := hloss_x
+
+set_option linter.unusedSectionVars false in
+/-- If the fixed-base product-reduction certificate and triangular multiplier
+square-sum bound hold eventually on the source-rank stratum, then the adapted
+fixed-base product-difference square-sum is eventually bounded below by the
+cleaned regular-plus-residual p. 13 square-sum, with the usual factor `1/2`.
+
+This composes the pointwise adapted product-difference bound with the finite
+literal/cleaned p. 13 comparison.  The adapted product-difference square-sum
+is not the original DLN/statistical loss. -/
+theorem half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_of_productReductionCertificate_nhdsWithin_source
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {c Kmul : ℝ}
+    (hc_nonneg : 0 ≤ c) (hcK : c * Kmul ≤ 1)
+    (hcert :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        PaperEndpointFixedBaseProductReductionCertificate
+          (K := ℝ) W B U₀ hU₀ Cedge rEdge x)
+    (hbound :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        paperEndpointFixedBaseTriangularMultiplierSquareSumProduct
+          (K := ℝ) W B U₀ hU₀ Cedge x ≤ Kmul) :
+    ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge),
+      (c / 2) *
+        (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) +
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+        paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+          (K := ℝ) W B U₀ hU₀ Cedge x := by
+  have hloss :
+      ∀ᶠ x in nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge),
+        c * aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseLiteralProductDifferenceCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge x) ≤
+          paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+            (K := ℝ) W B U₀ hU₀ Cedge x :=
+    PaperEndpointFixedBaseProductReductionCertificate.const_mul_literalProductDifferenceCoordinateMap_squareSum_eventually_le_adaptedProductDifferenceSquareSum_nhdsWithin_source
+      (W := W) (B := B) hc_nonneg hcK hcert hbound
+  exact
+    const_mul_literal_squareSum_eventually_le_loss_to_half_regular_add_residual_squareSum_nhdsWithin_source
+      (W := W) (B := B) sourceData hc_nonneg hloss
 
 set_option linter.unusedSectionVars false in
 /-- Relative directional form: on the source-rank stratum filter, the literal
