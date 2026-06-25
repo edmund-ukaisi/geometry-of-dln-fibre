@@ -886,6 +886,19 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**UPDATE-63 (2026-06-25) — R1 (3,3,4) hfin is ONE lemma from complete; matBox cover banked @99e7bb04; r1-chart on the final lemma.**
+- **r1-matbox banked** (+349 LoC, aggregator green 8370): the 9-chart A0 cover assembly is built; `matBox334_blowup_lt_top` is PROVED
+  modulo the lone `matBox334_chart_lt_top`. Sorry-free, S2-free: the exponent-bump (0<c'<4 → 2<c'<4), the box-radius-K resolved
+  generalisation (`resolved334_box_lt_top`, K=3), the A0↔Fin 9 flatten + MP reindex, the indicator decoupling (Codex-vetted), the
+  radial pull-out, and `matBox334_blowup_lt_top_gt2` (flatten + recStep 9-chart cover + ENNReal.sum_lt_top).
+- **r1-chart LAUNCHED** (ae1cc7f4) — the (3,3,4) hfin's FINAL lemma `matBox334_chart_lt_top` (the per-chart radial transport):
+  the piFinSuccAbove radial Tonelli + the per-pivot permutation invariance (A1↦Q⁻¹A1 MP) + `frobSq_angularR_ge` + the feed to
+  `resolved334_box_lt_top 3`. Codex-vetted interface (2 xhigh consults). pp-r1-genM-2 on-call. **On close → routeMCore_M334_threshold_lt_top
+  fully [propext, Classical.choice, Quot.sound] (no monomial_rlct) → the (3,3,4) hfin is a COMPLETE S2-free proof.**
+- The (3,3,4) hfin convergence: bedrock → residual-power → resolved-form → algebraic heart → 9-chart cover → now ONE per-chart lemma.
+- **L2:** l2-broute (a51044d4) building the (b)-route-B (front-pivot chart (b)-exact + producer + WLOG transfer + headline rw).
+- Active: l2-broute (L2 (b)-route-B) + r1-chart (R1 (3,3,4) final lemma). pp seats on-call. General hdiv + general lifts + D1 ahead.
+
 **★ UPDATE-62 (2026-06-25) — L2 (b)-route DECIDED: B (front-pivot WLOG), sound + decisively less-Lean; (b) EXACT; build commissioned. ★**
 - **B is the (b)-route** (pp-pin2-rearch + decorrelated Codex, b-wlog-spec.md @2095bd64): 3 exact checks (loss identity
   `dlnLoss B A = dlnLoss (B·Π)(τ_Π A)`, τ_Π MP |det Π|=1, rank+front ⟹ (b) EXACT). **Soundness subtlety resolved:** the headline
