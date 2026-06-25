@@ -2985,3 +2985,38 @@ where `a(x)` approaches zero, no proof that the residual base has finite
 endpoint or divergent side, no uniform asymptotic statement, no
 bounded-density/prior theorem, no Aoyagi p.13 analytic chart/Jacobian theorem,
 no normal-crossing construction, pole order, or RLCT theorem is proved.
+
+## 2026-06-25 A2 variable-base product fiber integrability
+
+Reproduction:
+`reproduction-a2-variable-base-product-fiber-integrability.md`.
+Statement card:
+`statement-card-a2-variable-base-product-fiber-integrability.md`.
+Review:
+`review-a2-variable-base-product-fiber-integrability.md`.
+
+Lean now proves the first variable-base product theorem using the sharp
+fiber estimate:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_of_base_lt_top
+```
+
+If `a(x)>0` for base-a.e. `x`, `finrank_R(E)/2<s`, and
+
+```text
+∫⁻ x, ENNReal.ofReal (a(x)^(finrank_R(E)/2-s)) dmu < infinity,
+```
+
+then the product lower integral of `(a(x)+||u||^2)^(-s)` over
+`alpha x ball(0,R)` is finite.  The proof uses `lintegral_prod_le`, then the
+fixed-fiber sharp bound for a.e. base point, and finally the finite
+base-power hypothesis times the finite Japanese-bracket constant.  No finite
+base measure or measurability hypothesis on `a` is required.
+
+Boundary: this does not prove the residual-base hypothesis for Aoyagi's
+actual residual coordinates, does not cover a positive-measure zero set of
+`a`, and does not prove endpoint/divergence, bounded-density/prior transport,
+p.13 analytic chart/Jacobian construction, normal crossings, pole order, or
+RLCT.

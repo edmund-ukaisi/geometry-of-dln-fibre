@@ -9121,6 +9121,38 @@ the full regular-variable threshold shift, not endpoint or divergence
 analysis, not bounded-density/prior transport, not Aoyagi's p.13 analytic
 chart/Jacobian construction, not normal crossings, pole order, or RLCT.
 
+Latest A2 variable-base product fiber integrability:
+`RegularSuspensionIntegrability.lean` now proves the first variable-base
+product theorem using the sharp fiber estimate:
+
+```text
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_of_base_lt_top
+```
+
+If `a(x)>0` for base-a.e. `x`, `finrank_R(E)/2<s`, and
+
+```text
+∫⁻ x, ENNReal.ofReal (a(x)^(finrank_R(E)/2-s)) dmu < infinity,
+```
+
+then the product lower integral of `(a(x)+||u||^2)^(-s)` over
+`alpha x ball(0,R)` is finite.  The proof uses `lintegral_prod_le`, the
+fixed-fiber sharp bound for a.e. base point, and the finite base-power
+hypothesis times the finite Japanese-bracket constant.  No finite base measure
+or measurability hypothesis on `a` is required.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-variable-base-product-fiber-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-variable-base-product-fiber-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-variable-base-product-fiber-integrability.md`.
+
+This still does not prove the residual-base hypothesis for Aoyagi's actual
+residual coordinates, does not cover a positive-measure zero set of `a`, and
+does not prove endpoint/divergence, bounded-density/prior transport, p.13
+analytic chart/Jacobian construction, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

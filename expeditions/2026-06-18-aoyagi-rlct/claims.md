@@ -6214,6 +6214,28 @@ shift, no endpoint behavior, no lower/divergence side, no bounded-density or
 prior theorem, no Aoyagi p.13 analytic chart/Jacobian construction, no normal
 crossings, no pole order, and no RLCT.
 
+Latest A2 variable-base product fiber integrability:
+Lean now proves the first variable-base product theorem in
+`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionIntegrability.lean`.  The theorems
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale` and
+`lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_of_base_lt_top`
+say that if `a(x)>0` for base-a.e. `x`, `finrank_R(E)/2<s`, and
+`∫⁻ x, ENNReal.ofReal (a(x)^(finrank_R(E)/2-s)) dmu < infinity`, then the
+product lower integral of `(a(x)+||u||^2)^(-s)` over `alpha x ball(0,R)` is
+finite.  No finite base measure or measurability hypothesis on `a` is used.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-variable-base-product-fiber-integrability.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-variable-base-product-fiber-integrability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-variable-base-product-fiber-integrability.md`.
+
+Nonclaims: no proof of the residual-base integrability hypothesis, no theorem
+for a positive-measure zero set of `a`, no endpoint behavior, no
+lower/divergence side, no bounded-density or prior theorem, no Aoyagi p.13
+analytic chart/Jacobian construction, no normal crossings, no pole order, and
+no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

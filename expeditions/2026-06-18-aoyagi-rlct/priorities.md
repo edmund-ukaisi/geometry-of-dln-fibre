@@ -3753,9 +3753,15 @@ the ball-restricted bound, and the supercritical finite ball corollary.  The
 equality itself needs only `a>0`; `dim/2<s` is only used to make the
 Japanese-bracket constant finite.
 
-Updated next A2 analytic target: prove the product theorem over a base
-function with finite lower integral of `a(x)^(dim/2-s)`, using the sharp
-fixed-parameter bound as the fiber estimate.  This is still
-threshold-level integrability control, not pole-order preservation, a
-bounded-density/prior theorem, p.13 analytic chart/Jacobian construction, or
-normal-crossing extraction.
+A2 variable-base product fiber integrability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-variable-base-product-fiber-integrability.md`.
+Lean proves the product bound and finiteness theorem from a.e. `a(x)>0`,
+`dim/2<s`, and finite base lower integral of `a(x)^(dim/2-s)`.  No finite base
+measure or measurability hypothesis on `a` is used.
+
+Updated next A2 analytic target: prove the residual-base integrability
+hypothesis for the reduced residual model that supplies
+`∫ ofReal(a(x)^(dim/2-s)) < infinity`.  This is still threshold-level
+integrability control, not pole-order preservation, a bounded-density/prior
+theorem, p.13 analytic chart/Jacobian construction, or normal-crossing
+extraction.

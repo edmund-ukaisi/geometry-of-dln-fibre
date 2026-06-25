@@ -432,7 +432,7 @@ theorem lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
     [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
     {μ : Measure E} [μ.IsAddHaarMeasure] {s : ℝ}
     (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
-    (∫⁻ x : E, ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) ∂ μ) < ∞ := by
+    (∫⁻ x : E, ENNReal.ofReal (((1 : ℝ) + ‖x‖ ^ 2) ^ (-s)) ∂μ) < ∞ := by
   have hint := integrable_one_add_norm_sq_rpow_neg (E := E) (μ := μ) hs
   have hnonneg : ∀ x : E, 0 ≤ ((1 : ℝ) + ‖x‖ ^ 2) ^ (-s) := by
     intro x
@@ -591,7 +591,7 @@ theorem lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_super
     (ha : 0 < a) (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
     (∫⁻ x : E, ENNReal.ofReal
       ((Metric.ball (0 : E) R).indicator
-        (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) x) ∂ μ) < ∞ := by
+        (fun x : E => (a + ‖x‖ ^ 2) ^ (-s)) x) ∂μ) < ∞ := by
   have hle :=
     lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
       (E := E) (μ := μ) (a := a) (s := s) (R := R) ha
@@ -601,6 +601,79 @@ theorem lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_lt_top_of_super
   exact lt_of_le_of_lt hle
     (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hmodel)
 
+/-- Variable-base product estimate from the sharp positive-parameter fiber
+bound.  The base measure need not be finite; all base-side control is carried
+by the displayed lower-integral hypothesis. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {s R : ℝ}
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x)
+    (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) ≤
+      (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) *
+        ∫⁻ u : E, ENNReal.ofReal (((1 : ℝ) + ‖u‖ ^ 2) ^ (-s)) ∂ν := by
+  let p : ℝ := (Module.finrank ℝ E : ℝ) / 2 - s
+  let K : ℝ≥0∞ :=
+    ∫⁻ u : E, ENNReal.ofReal (((1 : ℝ) + ‖u‖ ^ 2) ^ (-s)) ∂ν
+  let F : α × E → ℝ≥0∞ := fun z =>
+    ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2)
+  have hKlt : K < ∞ := by
+    dsimp [K]
+    exact lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+      (E := E) (μ := ν) (s := s) hs
+  have hfiber : ∀ᵐ x ∂μ,
+      (∫⁻ u : E, F (x, u) ∂ν) ≤
+        ENNReal.ofReal ((a x) ^ p) * K := by
+    filter_upwards [ha_pos] with x hx
+    dsimp [F, K, p]
+    exact lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball_le_scale
+      (E := E) (μ := ν) (a := a x) (s := s) (R := R) hx
+  have htotal :
+      (∫⁻ z : α × E, F z ∂ μ.prod ν) ≤
+        ∫⁻ x : α, ∫⁻ u : E, F (x, u) ∂ν ∂μ :=
+    lintegral_prod_le F
+  have hiter :
+      (∫⁻ x : α, ∫⁻ u : E, F (x, u) ∂ν ∂μ) ≤
+        ∫⁻ x : α, ENNReal.ofReal ((a x) ^ p) * K ∂μ :=
+    lintegral_mono_ae hfiber
+  exact (htotal.trans hiter).trans_eq (by
+    rw [lintegral_mul_const' K _ hKlt.ne])
+
+/-- Variable-base product finiteness from the sharp positive-parameter fiber
+bound and a finite base-power lower integral. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_ae_pos_of_base_lt_top
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {s R : ℝ}
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x)
+    (hs : (Module.finrank ℝ E : ℝ) / 2 < s)
+    (hbase :
+      (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) < ∞) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) < ∞ := by
+  let K : ℝ≥0∞ :=
+    ∫⁻ u : E, ENNReal.ofReal (((1 : ℝ) + ‖u‖ ^ 2) ^ (-s)) ∂ν
+  have hKlt : K < ∞ := by
+    dsimp [K]
+    exact lintegral_ofReal_one_add_norm_sq_rpow_neg_lt_top
+      (E := E) (μ := ν) (s := s) hs
+  have hle :=
+    lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_le_scale
+      (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R) ha_pos hs
+  exact lt_of_le_of_lt hle (ENNReal.mul_lt_top hbase hKlt)
+
 /-- Positive-parameter global finite-side estimate in the supercritical
 regime.  This comparison proof gives finiteness for each fixed `a > 0`; the
 sharper dependence on `a` is supplied by the scaling equality above. -/
@@ -609,7 +682,7 @@ theorem lintegral_ofReal_norm_sq_add_pos_rpow_neg_lt_top
     [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
     {μ : Measure E} [μ.IsAddHaarMeasure] {a s : ℝ}
     (ha : 0 < a) (hs : (Module.finrank ℝ E : ℝ) / 2 < s) :
-    (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂ μ) < ∞ := by
+    (∫⁻ x : E, ENNReal.ofReal ((a + ‖x‖ ^ 2) ^ (-s)) ∂μ) < ∞ := by
   let c : ℝ := min a 1
   have hcpos : 0 < c := lt_min ha zero_lt_one
   have hclea : c ≤ a := min_le_left _ _
