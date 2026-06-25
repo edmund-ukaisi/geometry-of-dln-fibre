@@ -7683,6 +7683,22 @@ Nonclaims: no p.13 chart construction, no original loss comparison,
 no density/Jacobian transport, no residual-base integrability proof,
 no threshold equality, no normal crossings, pole order, or RLCT.
 
+Latest A2 p.13 regular-coordinate bounded-density adapter:
+`RegularSuspensionSquareSumIntegrability.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+Nonclaims: no source-filter to product-measure a.e. handoff, no p.13 analytic
+chart construction, no original DLN loss comparison, no density/Jacobian
+transport, no residual-base integrability proof, no threshold equality, no
+normal crossings, pole order, or RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and

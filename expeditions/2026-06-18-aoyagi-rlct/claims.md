@@ -245,7 +245,11 @@ No such claim is formalisation-ready until both fields are filled.
   monomial lower-bound constant by a positive model/actual comparison
   constant. The regular-square product-measure layer now also has a
   bounded-density wrapper consuming supplied `loss >= c*(residualSquareSum +
-  regularNormSq)` and `0 <= density <= C` hypotheses. The full source
+  regularNormSq)` and `0 <= density <= C` hypotheses. It now also has a
+  p.13 fixed-base regular-coordinate adapter that rewrites the Euclidean
+  regular-coordinate fiber dimension as `aoyagiTheorem2RegularVariableCount`
+  and states the lower-loss hypothesis using the p.13 regular coordinate
+  square-sum. The full source
   Theorem 3/RLCT claim remains blocked on the
   analytic product-coordinate regular-square suspension theorem and the actual
   p.13 chart/density construction.
@@ -668,7 +672,13 @@ No such claim is formalisation-ready until both fields are filled.
   `lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`
   and
   `lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`,
-  the bounded-density regular-square finite-side wrappers.
+  the bounded-density regular-square finite-side wrappers. Also proved
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount`
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top`,
+  the p.13 fixed-base regular-coordinate finite-side adapter, reviewed by
+  xhigh `Pasteur the 4th` at
+  `threads/03-block-product-reduction/review-a2-p13-regular-coordinate-bounded-density-adapter.md`.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

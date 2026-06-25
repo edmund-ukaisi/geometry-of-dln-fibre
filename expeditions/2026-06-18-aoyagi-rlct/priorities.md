@@ -3847,3 +3847,13 @@ supplies `loss >= c*(residualSquareSum+regularNormSq)` and
 `0 <= density <= C` on the regular ball.  It still does not prove those
 chart-side hypotheses; the next A2 work should produce or narrow one of them,
 especially the original-loss comparison and density/Jacobian transport.
+
+A2 p.13 regular-coordinate bounded-density adapter has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+It is the preferred source-facing consumer for fixed-base p.13 regular
+coordinates: it rewrites the Euclidean regular fiber dimension to
+`aoyagiTheorem2RegularVariableCount N H r` and states the lower-loss
+hypothesis with the p.13 regular coordinate square-sum.  Future work should
+feed this theorem by producing the remaining supplied product-chart hypotheses
+or by proving a source-filter-to-product-measure handoff; do not add more
+finite-side wrappers unless they remove a real hypothesis.

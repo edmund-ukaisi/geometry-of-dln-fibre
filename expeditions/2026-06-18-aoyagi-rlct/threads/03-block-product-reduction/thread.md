@@ -3359,3 +3359,36 @@ Boundary: this is a one-sided finite-integrability wrapper only.  It does not
 prove Aoyagi's p.13 analytic product chart, the lower loss bound,
 density/Jacobian transport, residual integrability, endpoint/divergent-side
 behavior, threshold equality, normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 p.13 regular-coordinate bounded-density adapter
+
+Reproduction:
+`reproduction-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+Statement card:
+`statement-card-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+Review:
+`review-a2-p13-regular-coordinate-bounded-density-adapter.md`.
+
+Lean now specialises the bounded-density finite-side regular-square theorem to
+the fixed-base p.13 regular coordinate index in
+`RegularSuspensionSquareSumIntegrability.lean`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount
+PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top
+```
+
+The first theorem rewrites the Euclidean regular-coordinate fiber dimension as
+`aoyagiTheorem2RegularVariableCount N H r`.  The second consumes supplied
+product-measure hypotheses for the residual square-sum, lower loss comparison,
+and bounded density, with the p.13 regular term written as
+`aoyagiCoordinateSquareSum (fun i => u i)`, and proves finite
+lower-integrability at exponent
+`t + aoyagiTheorem2RegularVariableCount N H r / 2`.
+
+Boundary: this is source-facing finite-side adapter only.  It does not turn
+source-stratum filter facts into product-measure a.e. hypotheses, construct
+Aoyagi's p.13 analytic product chart, compare the original DLN loss with the
+p.13 literal square-sum, prove Jacobian/prior density transport, prove
+residual-base integrability, or prove endpoint/divergence, threshold equality,
+normal crossings, pole order, or RLCT.

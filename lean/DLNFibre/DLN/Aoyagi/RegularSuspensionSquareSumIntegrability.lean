@@ -355,6 +355,186 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_no
       (loss := loss) (density := density) (t := t) (R := R)
       (c := c) (C := C) hc hC ht hpos hbase hloss hdensity_nonneg hdensity_le
 
+section FixedBaseP13EuclideanRegularCoordinates
+
+variable {N : ℕ}
+  {W : Fin (N + 1) → Type*} [∀ i, AddCommGroup (W i)]
+  [∀ i, TopologicalSpace (W i)] [∀ i, IsTopologicalAddGroup (W i)]
+  [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
+  [∀ i, ContinuousSMul ℝ (W i)]
+  {B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc}
+
+namespace PaperEndpointFixedBaseRegularCoordinateSourceData
+
+set_option linter.unusedSectionVars false in
+/-- The Euclidean space indexed by the p. 13 regular block coordinates has
+dimension Aoyagi's regular-variable count. -/
+theorem regularCoordinateEuclidean_finrank_eq_regularVariableCount
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge) :
+    Module.finrank ℝ
+        (EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0))) =
+      aoyagiTheorem2RegularVariableCount N H r := by
+  rw [finrank_euclideanSpace]
+  exact sourceData.regularCoordinateIndex_card_eq_regularVariableCount
+
+set_option linter.unusedSectionVars false in
+/-- p. 13 fixed-base regular-coordinate-space specialisation of the
+bounded-density finite-side square-suspension theorem.
+
+The theorem consumes product-measure hypotheses for the residual base and the
+Euclidean regular-coordinate fiber.  It does not turn the source-stratum
+filter facts into product-chart a.e. hypotheses, construct the p. 13 analytic
+chart, compare with the original DLN loss, or prove density/Jacobian
+transport. -/
+theorem lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t R c C : ℝ}
+    (_hR : 0 < R) (hc : 0 < c) (hC : 0 ≤ C) (ht : 0 < t)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x))
+    (hbase :
+      (∫⁻ x : α, ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t)) ∂μ) < ∞)
+    (hloss : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        c * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          aoyagiCoordinateSquareSum (fun i => z.2 i)) ≤ loss z)
+    (hdensity_nonneg : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        0 ≤ density z)
+    (hdensity_le : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        density z ≤ C) :
+    (∫⁻ z : α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)),
+      ENNReal.ofReal
+        ((Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R).indicator
+          (fun u =>
+            (loss (z.1, u)) ^
+              (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2)) *
+              density (z.1, u)) z.2) ∂μ.prod ν) < ∞ := by
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+  have hfinrank_nat :
+      Module.finrank ℝ (EuclideanSpace ℝ ρ) =
+        aoyagiTheorem2RegularVariableCount N H r := by
+    simpa [ρ] using
+      sourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount
+  have hfinrank :
+      (Module.finrank ℝ (EuclideanSpace ℝ ρ) : ℝ) =
+        (aoyagiTheorem2RegularVariableCount N H r : ℝ) := by
+    exact_mod_cast hfinrank_nat
+  have hloss_norm : ∀ᵐ z : α × EuclideanSpace ℝ ρ ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : EuclideanSpace ℝ ρ) R →
+        c * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          ‖z.2‖ ^ 2) ≤ loss z := by
+    filter_upwards [hloss] with z hzloss
+    intro hzball
+    simpa [ρ, aoyagiCoordinateSquareSum, EuclideanSpace.real_norm_sq_eq] using
+      hzloss hzball
+  have hfin :=
+    lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top
+      (E := EuclideanSpace ℝ ρ) (μ := μ) (ν := ν)
+      (b := fun x =>
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)
+      (loss := loss) (density := density) (t := t) (R := R)
+      (c := c) (C := C) hc hC ht hpos hbase hloss_norm hdensity_nonneg hdensity_le
+  rw [hfinrank] at hfin
+  simpa [ρ] using hfin
+
+end PaperEndpointFixedBaseRegularCoordinateSourceData
+
+end FixedBaseP13EuclideanRegularCoordinates
+
 end Aoyagi
 end DLN
 end DLNFibre

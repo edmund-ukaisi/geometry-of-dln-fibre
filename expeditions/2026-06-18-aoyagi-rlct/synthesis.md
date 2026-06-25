@@ -142,6 +142,26 @@ must still verify them against the PDF.
 The source inventory thread must replace this with page-pinned, source-faithful
 entries.
 
+## Latest A2 p.13 Finite-Side Adapter
+
+`RegularSuspensionSquareSumIntegrability.lean` now has a p.13 fixed-base
+regular-coordinate adapter:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount
+PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residual_power_lt_top
+```
+
+It specialises the generic bounded-density regular-square finite-side theorem
+to the actual p.13 regular coordinate index and rewrites the Euclidean fiber
+dimension as `aoyagiTheorem2RegularVariableCount N H r`.  It still consumes
+product-measure hypotheses for residual positivity/integrability, lower loss
+comparison, and bounded density; it does not convert source-stratum filters
+to product-measure a.e. hypotheses, construct the p.13 analytic product chart,
+prove original DLN loss comparability, prove density/Jacobian transport, or
+prove endpoint/divergence, threshold equality, normal crossings, pole order,
+or RLCT.
+
 ## Latest A6 Source Audit
 
 `threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`
