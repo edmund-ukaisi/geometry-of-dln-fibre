@@ -4651,6 +4651,19 @@ matrix as arbitrary.  The real remaining inputs are still construction of the
 factors, the factor-product selected-entry identity, the residual-index
 equivalence, and local source/image equality.
 
+The fixed-base residual-factor family constructor has now landed:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-residual-factor-family-constructor.md`.
+Lean defines the raw p.13 matrix family from supplied compatible factors
+`Cfac` and proves both
+`residualBlock(G,last,p)=Cfac p` and
+`residualProduct(G,last,0)=residualFactorProduct Cfac last 0`.  This is the
+right finite constructor to feed the selected-entry residual-factor socket,
+but it still does not produce `Cfac` from a source chart or prove the
+selected-entry factor-product identity.  The next honest target is the fixed
+displayed-pivot Case 2 factor construction, with a robust residual-index
+family/API, or a source reproduction showing why that construction must stay
+supplied.
+
 The finite selected-entry sector cover
 `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`
 records the elementary all-pivot bounded cover of a smaller signed box by

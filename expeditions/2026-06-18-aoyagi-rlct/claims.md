@@ -7007,6 +7007,29 @@ Nonclaims: no construction of `Cfac`, no factor-product identity proof, no
 residual-index equivalence construction, no source/image equality,
 source-measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 fixed-base residual-factor family constructor:
+Lean now defines the raw p.13 fixed-base matrix family from a supplied
+compatible residual-factor family `Cfac`, rather than reading the factors from
+a base edge family.  It proves that every transformed Schur residual block
+visited by the suffix recursion is the supplied factor, and that the suffix
+`residualProduct` is the ordered `residualFactorProduct Cfac`.
+
+Lean names:
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean`,
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean_residualBlock_eq`,
+and
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean_residualProduct_eq_residualFactorProduct`.
+
+Reproduction and review:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-residual-factor-family-constructor.md`
+and
+`threads/03-block-product-reduction/review-a2-fixed-base-residual-factor-family-constructor.md`.
+
+Nonclaims: no construction of `Cfac` from source-chart data, no
+selected-entry factor-product identity, no residual-index equivalence, no
+source/image equality, source-measure transport, normal crossings, pole order,
+or RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

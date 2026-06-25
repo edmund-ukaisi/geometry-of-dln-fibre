@@ -10808,6 +10808,22 @@ and
 This still does not construct the factors, prove the factor-product identity,
 construct the residual-index equivalence, or prove source/image equality.
 
+The fixed-base residual-factor family constructor has now landed in
+`RegularSuspensionCoordinates.lean`:
+`paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfResidualFactorsEuclidean`,
+`..._residualBlock_eq`, and
+`..._residualProduct_eq_residualFactorProduct`.  Given supplied compatible
+factors `Cfac`, the raw p.13 right/middle/left endpoint matrix family has
+transformed Schur residual blocks exactly `Cfac p`, and its suffix residual
+product is the ordered explicit `residualFactorProduct Cfac last 0`.
+Reproduction/review:
+`threads/03-block-product-reduction/reproduction-a2-fixed-base-residual-factor-family-constructor.md`
+and
+`threads/03-block-product-reduction/review-a2-fixed-base-residual-factor-family-constructor.md`.
+This is the finite constructor needed before a source-specific factor-product
+identity, not a construction of those factors from selected-entry chart data
+and not source/image equality.
+
 Post-recovery xhigh scouts `Godel` and `Ampere` found no high-value Lean-ready
 A4 or A2/A6 wrapper beyond the current supplied sockets.  The cross-thread
 decision is saved at
