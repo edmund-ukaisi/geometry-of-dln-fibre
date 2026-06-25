@@ -10615,3 +10615,16 @@ and
 `threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-image-characterization.md`.
 This does not discharge source-stratum coverage, fixed-base residual readout,
 source-measure identification, normal crossings, pole order, or RLCT.
+
+The next A2 readout-socket wrapper has also landed in
+`SelectedEntryOriginalLossLocalMeasure.lean`:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_residualProduct_eq_matrix`.
+It derives the scalar selected-entry residual square-sum hypothesis from a
+supplied suffix residual-product matrix identity and a supplied finite
+residual-coordinate equivalence.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-residual-product-square-sum.md`.
+It does not construct the source chart, prove the matrix identity, construct
+the residual-index equivalence, prove source coverage, identify source
+measures, produce normal crossings, compute pole order, or prove RLCT.

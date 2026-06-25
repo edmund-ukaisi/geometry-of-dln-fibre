@@ -311,7 +311,9 @@ No such claim is formalisation-ready until both fields are filled.
   product below-critical integrability at
   `threads/03-block-product-reduction/reproduction-a2-product-below-critical-integrability.md`;
   selected-entry chart-image characterization at
-  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`.
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-image-characterization.md`;
+  selected-entry residual-product square-sum at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -364,7 +366,9 @@ No such claim is formalisation-ready until both fields are filled.
   in
   `threads/03-block-product-reduction/review-a2-regular-square-bounded-density-wrapper.md`;
   selected-entry chart-image characterization reviewed by xhigh `Halley` in
-  `threads/03-block-product-reduction/review-a2-selected-entry-chart-image-characterization.md`.
+  `threads/03-block-product-reduction/review-a2-selected-entry-chart-image-characterization.md`;
+  selected-entry residual-product square-sum reviewed by xhigh `Hooke` in
+  `threads/03-block-product-reduction/review-a2-selected-entry-residual-product-square-sum.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -6716,6 +6720,16 @@ readout expected by the original-loss wrapper.  It uses
 `AoyagiResidualBlockCoordinateIndex.value_matrix`; it does not construct
 `CedgeBase`, prove the residual-product matrix identity, construct the
 residual-index equivalence, or prove source coverage.
+
+Latest A2 selected-entry residual-product square-sum:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_residualProduct_eq_matrix`.
+It composes the residual-product matrix readout bridge with the finite
+selected-entry square-sum reindexing theorem, producing the scalar
+`hresidual_eq` shape expected by local-source/original-loss sockets from the
+sharper residual-product matrix identity.  This still leaves the matrix
+identity, residual-index equivalence, source coverage, source-measure
+identification, normal crossings, pole order, and RLCT supplied/unproved.
 
 Latest A2 selected-entry prescribed-matrix readout:
 `SelectedEntryOriginalLossLocalMeasure.lean` now proves

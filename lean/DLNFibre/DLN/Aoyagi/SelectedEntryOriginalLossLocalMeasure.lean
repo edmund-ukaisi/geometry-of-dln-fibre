@@ -164,6 +164,69 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- A matrix-level residual-product identity gives the scalar selected-entry
+residual square-sum expected by the local original-loss endpoint.
+
+This is only a readout composition: the residual-product matrix identity,
+source coverage, and source-chart construction remain hypotheses for
+downstream source work. -/
+theorem aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_residualProduct_eq_matrix
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    {CedgeBase : (center → ℝ) → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ}
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (hresidualProduct :
+      ∀ y : center → ℝ,
+        ChartLocalSuffixState.residualProduct
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+            (K := ℝ) (W := V) (B := Bv) U₀ hU₀
+            (fun p : Fin (M + 2) ↦
+              (CedgeBase (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) p :
+                reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ)))
+          (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) :
+      ∀ y : center → ℝ,
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+              (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)) =
+        SelectedEntrySignedBox.CenterCoord.residual pivot y := by
+  have hreadout :
+      ∀ y c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) c =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivot y (residualCoordEquiv c) :=
+    paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualProduct_eq_matrix
+      (V := V) (Bv := Bv) (pivot := pivot) U₀ hU₀ residualCoordEquiv hresidualProduct
+  exact
+    SelectedEntrySignedBox.CenterCoord.aoyagiCoordinateSquareSum_eq_residual_of_coord_readout
+      (pivot := pivot)
+      (F := fun x : center → ℝ =>
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase x)
+      residualCoordEquiv hreadout
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- Prescribed fixed-base edge matrices give the selected-entry coordinate
 readout once their suffix residual product is the selected-entry chart matrix.
 

@@ -4610,3 +4610,11 @@ image as the origin plus a nonzero-pivot horn.  It must not be treated as
 source-stratum coverage.  The next real A2 frontier remains fixed-base
 residual readout from actual source-chart data, local source-stratum coverage,
 or source-measure identification.
+
+The residual-product square-sum wrapper
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-square-sum.md`
+is also useful socket sharpening: it turns a supplied residual-product matrix
+identity into the scalar residual square-sum needed by local-source endpoints.
+Do not treat it as proof of the matrix identity, residual-index equivalence,
+source coverage, source-measure identification, normal crossings, pole order,
+or RLCT.
