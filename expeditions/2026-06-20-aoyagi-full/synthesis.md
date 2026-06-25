@@ -886,6 +886,24 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-56 (2026-06-25) — 6th L2 catch (the deepest): hproducer (b) FALSE for non-front pivot; the front-pivot-WLOG repair adjudicating. ★**
+- **l2-hproducer landed — hproducer is NOT fillable as stated** (banked `hproducer-verdict.md` @06989e60). Conjunct (b)
+  `∑deepestEFull²=Sreg` is FALSE for a non-front pivot J (the GENERIC headline case): deepestEFull threshold-effective (pivotThr J)
+  vs Sreg pivot-aligned; π_J moves the −1 corner between blocks. Triply confirmed (index algebra + witness 17.98≠23.65 + 2 Codex).
+  The formaliser refused to fabricate; PIN1 stays clean; the sorry honest. **This is the deepest L2 architecture catch — the
+  gauge chart as built only closes for a front pivot.**
+- **Controller decision (autonomous): the most-contained sound repair, being spec'd by pp-pin2-rearch (re-engaged):** (A) IF the
+  COMPARABILITY `∑deepestEFull²≍Sreg` holds uniformly on a 𝓝 (the squeeze needs only `≍`, not `=`) → restate (b) as `≍`, no
+  restructure; (B) ELSE R2 the front-pivot WLOG (`rlctAt(loss B)=rlctAt(loss B·π)` via `A_{L-1}→A_{L-1}·π` MP; front J'⟹(b) holds).
+  Neither touches PIN1. **No math at risk** (RLCT invariant under the column perm / the comparability) — a gauge-chart-architecture
+  correction. Item 21.
+- **hproducer build HELD** pending pp-pin2-rearch's (A)/(B) verdict. The L2 gate is NOT "one piece away" until the (b) repair lands;
+  then hproducer → L=2 body done → final wire → L2 gate. (The S5c atom + hS1' + the other body gaps remain closed/banked.)
+- **R1 continues independently:** r1-334cover (the (3,3,4) frame-transport + cover-assembly) still building. R1 (3,3,4) hfin is
+  on track; the keystones (residual-power, N1-N3b) banked.
+- Active: r1-334cover (R1 build) + pp-pin2-rearch (L2 (b)-repair design). pp-r1-genM-2 on-call. General hdiv (det wall) held.
+- 6 soundness catches this session — every one from review/decorrelated design, none from a green build; PIN1 verbatim throughout.
+
 **★ UPDATE-55 (2026-06-25) — both long poles down to ONE "last piece" each; S5c atom + residual-power keystone BUILT; 4th+5th catches. ★**
 - **L2: the S5c germ atom is BUILT** @bd37613c (`schur_core_germ_comparability`, axiom-clean, 0 sorries — the hardest standalone
   L2 piece) + hS1' closed. **4th L2 catch:** hproducer's (d)/(e) uniform-MULTIPLICATIVE comparability `∑Rcore²≍coreΦ` refuted

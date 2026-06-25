@@ -345,3 +345,19 @@ Building the framedParams body (`framedParams_split_eq_frame_raw`) surfaced two 
   namespace `DLNFibre.DLN.RLCT`); importing both together fails. Pre-existing, not introduced by these tides; `RouteM334Hfin`
   avoids it by not importing `RouteM4422Hfin`. **Must be de-duplicated before the final aggregator wiring** that pulls the R1
   hfin modules together. Operator-relevant only as a wiring-time cleanup, not a soundness issue.
+
+## 21. The DEEPEST L2 catch (2026-06-25): the gauge chart needs a front-pivot WLOG (or a comparability restatement).
+The 6th L2 soundness catch (l2-hproducer, triply confirmed: exact index algebra + numeric witness `17.98 ≠ 23.65` + 2
+decorrelated Codex): `hproducer` conjunct (b), the reg-energy IDENTITY `∑ deepestEFull(split w)² = Sreg`, is **FALSE for a
+non-front pivot J** — and a non-front J is the GENERIC headline case (B's rank-r pivot columns are wherever B's rank lives, not
+forced to `{0..r−1}`). Root cause: `deepestEFull` (from PIN1) reads the residual *threshold-effectively* (via `pivotThr J`),
+while `Sreg`/the `hconj` blocks are *pivot-aligned*; the column permutation `π_J` moves the `−1` deepest-corner between the
+P00/P01/P11 blocks, so the two residual energies genuinely differ. The cheap "assert threshold-Sreg = pivot-Sreg" repair is
+unsound. **This is the deepest L2 architecture catch — the gauge chart, as built, only closes for a front pivot.**
+- **Controller decision (autonomous, per the charge-ahead mandate), being spec'd by pp-pin2-rearch:** the most-contained sound
+  repair. (A) IF the COMPARABILITY `∑deepestEFull² ≍ Sreg` holds uniformly on a 𝓝 (the squeeze only needs `≍`, not `=`) →
+  restate (b) as `≍`, no headline restructure. (B) ELSE R2 — the front-pivot WLOG: `rlctAt(dlnLoss B) = rlctAt(dlnLoss B·π)`
+  (a column permutation realized by `A_{L-1} → A_{L-1}·π`, a linear MP param change), invoke the chart for the front-pivot `B·π`
+  where (b) holds. Neither touches PIN1. **Operator-relevant:** this adds a repair step before the L2 body closes; the L2 gate
+  is NOT "one piece (hproducer) away" until (A)/(B) lands. No math is at risk (the RLCT formula is invariant under the column
+  permutation / the comparability); it is a gauge-chart-architecture correction. Not blocking the operator — driving it now.
