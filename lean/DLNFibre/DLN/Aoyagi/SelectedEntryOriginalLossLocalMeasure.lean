@@ -63,6 +63,107 @@ universe v
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- A matrix-level residual-product identity gives the selected-entry
+coordinate readout expected by the local original-loss endpoint.
+
+This is only a readout bridge: the residual-product matrix identity, source
+coverage, and source-chart construction remain hypotheses for downstream
+source work. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualProduct_eq_matrix
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    {CedgeBase : (center → ℝ) → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ}
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ≃ center)
+    (hresidualProduct :
+      ∀ y : center → ℝ,
+        ChartLocalSuffixState.residualProduct
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+            (K := ℝ) (W := V) (B := Bv) U₀ hU₀
+            (fun p : Fin (M + 2) ↦
+              (CedgeBase (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) p :
+                reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ)))
+          (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) :
+      ∀ y c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) c =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivot y (residualCoordEquiv c) := by
+  intro y c
+  let E : ∀ p : Fin (M + 2),
+      Matrix
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+      (K := ℝ) (W := V) (B := Bv) U₀ hU₀
+      (fun p : Fin (M + 2) ↦
+        (CedgeBase (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) p :
+          reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+  have hread :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct E
+            (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2)))) := by
+    simpa [E] using
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct
+        (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+        (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)
+  have hmatrix :
+      ChartLocalSuffixState.residualProduct E
+          (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := by
+    simpa [E] using hresidualProduct y
+  calc
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (W := V) (B := Bv) U₀ hU₀ CedgeBase
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) c =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct E
+            (Fin.last (M + 2)) 0 (Fin.zero_le (Fin.last (M + 2)))) c := by
+      exact congrFun hread c
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c))) c := by
+      rw [hmatrix]
+    _ = SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+          (residualCoordEquiv c) := by
+      simpa using congrFun
+        (AoyagiResidualBlockCoordinateIndex.value_matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) c
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- Selected-entry finite chart-image handoff for the original square-Frobenius
 `lossDLN`.
 

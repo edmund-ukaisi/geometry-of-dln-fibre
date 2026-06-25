@@ -6677,6 +6677,17 @@ hypothesis replaced by an explicit residual-coordinate readout and finite
 reindexing equivalence.  This is API sharpening only: local source/image
 equality and fixed-base residual readout remain supplied.
 
+Latest A2 selected-entry residual-product matrix readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualProduct_eq_matrix`.
+This converts a supplied matrix identity for the fixed-base suffix residual
+product at `chartMap pivot y` into the pointwise selected-entry coordinate
+readout expected by the original-loss wrapper.  It uses
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct` and
+`AoyagiResidualBlockCoordinateIndex.value_matrix`; it does not construct
+`CedgeBase`, prove the residual-product matrix identity, construct the
+residual-index equivalence, or prove source coverage.
+
 Latest A2 selected-entry local-source finite-integral handoff:
 Lean now specializes the local-source monomial-unit finite-integral socket to
 the center-indexed selected-entry signed box.

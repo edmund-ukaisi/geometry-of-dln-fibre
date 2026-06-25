@@ -8296,6 +8296,23 @@ Nonclaims: no construction of the readout, no source chart construction,
 source coverage, source-measure transport, normal crossings, pole order, or
 RLCT.
 
+Latest A2 selected-entry residual-product matrix readout:
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualProduct_eq_matrix`.
+It converts a supplied fixed-base suffix residual-product matrix identity at
+`SelectedEntrySignedBox.CenterCoord.chartMap pivot y` into the pointwise
+selected-entry coordinate readout used by the original-loss wrapper, using
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct` and
+`AoyagiResidualBlockCoordinateIndex.value_matrix`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-matrix-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-residual-product-matrix-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-product-matrix-readout.md`.
+Nonclaims: no construction of `CedgeBase`, no proof of the residual-product
+matrix identity, no construction of the residual-index equivalence, no source
+coverage, source-measure transport, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

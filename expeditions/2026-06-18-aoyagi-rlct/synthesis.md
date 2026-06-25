@@ -10516,6 +10516,24 @@ remain supplied.  Xhigh review `Heisenberg` passed with no findings; review
 artifact:
 `threads/03-block-product-reduction/review-a2-selected-entry-original-loss-readout-wrapper.md`.
 
+Post-resume A2 follow-up: xhigh scout `Mencius` confirmed that existing
+fixed-base product-coordinate infrastructure reads residual products but does
+not construct the selected-entry `CedgeBase` or source-chart residual-product
+formula.  Lean now has the smaller matrix-to-coordinate bridge
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_residualProduct_eq_matrix`
+in `SelectedEntryOriginalLossLocalMeasure.lean`: if a later source-chart proof
+supplies
+`residualProduct(E(chartMap pivot y)) =
+matrix(c |-> chartMap pivot y (residualCoordEquiv c))`, the theorem produces
+the pointwise readout needed by the original-loss wrapper.  The matrix identity
+itself, source coverage, and the residual-index equivalence remain supplied.
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-product-matrix-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-residual-product-matrix-readout.md`.
+Xhigh review `Plato` passed; review artifact:
+`threads/03-block-product-reduction/review-a2-selected-entry-residual-product-matrix-readout.md`.
+
 ## Drift guard
 
 - Normal-crossing extraction: Cited.

@@ -5510,3 +5510,23 @@ coordinates, plus pointwise readout along `chartMap pivot`.  It derives the
 old scalar square-sum hypothesis using the finite square-sum bridge and then
 delegates to the existing endpoint.  Source coverage and the readout itself
 remain supplied.
+
+## 2026-06-25 A2 selected-entry residual-product matrix readout
+
+Reproduction:
+`reproduction-a2-selected-entry-residual-product-matrix-readout.md`.
+Statement card:
+`statement-card-a2-selected-entry-residual-product-matrix-readout.md`.
+Review:
+`review-a2-selected-entry-residual-product-matrix-readout.md`.
+
+Lean now proves that a supplied fixed-base suffix residual-product matrix
+identity at a selected-entry chart point implies the pointwise residual
+coordinate readout required by the original-loss wrapper.  This is the natural
+next layer below the pointwise readout hypothesis: it reduces future source
+residual-readout subgoal to constructing the residual-product matrix formula
+for `CedgeBase`.
+It does not construct `CedgeBase`, prove source image/coverage, construct the
+residual-index equivalence, or prove the matrix formula.
+Independent xhigh review passed after wording fixes to keep the source
+boundary precise.
