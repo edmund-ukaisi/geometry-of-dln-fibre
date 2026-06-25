@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFrame
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurSmooth
 import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbIFT
 import DLNFibre.DLN.RLCT.Validate.DeepestRegSliceFderiv
 import DLNFibre.DLN.RLCT.Validate.DeepestRegBlockInvertible
@@ -1880,7 +1881,52 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       HasStrictFDerivAt (regStraightenOf2 (fun q => deepestEFull H r hr hL J Pf Qf (coreAbsorb.symm q)))
         (eTilde : DeepestSplit H r (deepestNGauge H r) →L[ℝ]
           DeepestSplit H r (deepestNGauge H r)) 0 := by
-    sorry
+    -- The PIN1 invertible total shear `D_E` and its CLE `e` (`↑e = regStraightenTotalCLM2 D_E`).
+    obtain ⟨D_E, e, hsd, he⟩ :=
+      deepestEFull_deriv H r hr hL hL2 J Pf Qf hPf hQf hQf0 hPfL hQf22
+    -- `coreAbsorb.symm = (coreShearHomeo (schurCutoffShift) …).symm` (PIN0's concrete shear), which is
+    -- `ContDiff ⊤` (the cutoff Schur shift is globally smooth — `contDiff_schurCutoffShift`) with strict
+    -- derivative `id` at `0` (the degree-2 vanishing `D(shift)(0) = 0`).
+    have hcds : ContDiff ℝ (⊤ : ℕ∞) (schurCutoffShift H r hr hL) :=
+      contDiff_schurCutoffShift H r hr hL
+    have hsymm_cd : ContDiff ℝ (⊤ : ℕ∞)
+        (fun q : DeepestSplit H r (deepestNGauge H r) => coreAbsorb.symm q) := by
+      rw [hca_def]
+      exact contDiff_coreShearHomeo_symm (schurCutoffShift H r hr hL)
+        (continuous_schurCutoffShift H r hr hL) hcds
+    have hsymm_sd : HasStrictFDerivAt (fun q : DeepestSplit H r (deepestNGauge H r) => coreAbsorb.symm q)
+        (ContinuousLinearMap.id ℝ (DeepestSplit H r (deepestNGauge H r))) 0 := by
+      rw [hca_def]
+      exact hasStrictFDerivAt_coreShearHomeo_symm_zero (schurCutoffShift H r hr hL)
+        (continuous_schurCutoffShift H r hr hL) (hasStrictFDerivAt_schurCutoffShift_zero H r hr hL)
+    -- The conjugated full-reg straightening input `E_comp := deepestEFull ∘ coreAbsorb.symm`.
+    set Ecomp : DeepestSplit H r (deepestNGauge H r) → (Fin (deepestNReg H r) → ℝ) :=
+      fun q => deepestEFull H r hr hL J Pf Qf (coreAbsorb.symm q) with hEcomp
+    -- (A) ContDiff: `regStraightenOf2 (Efull ∘ symm)` is `ContDiff ⊤` (both factors are).
+    have hEcomp_cd : ContDiff ℝ (⊤ : ℕ∞) Ecomp :=
+      (deepestEFull_contdiff H r hr hL J Pf Qf).comp hsymm_cd
+    have hcontdiff : ContDiff ℝ (⊤ : ℕ∞) (regStraightenOf2 Ecomp) :=
+      contDiff_regStraightenOf2 Ecomp hEcomp_cd
+    -- (B) Strict derivative: `D(Efull ∘ symm)(0) = D_E ∘ id = D_E` (chain rule, `D(symm)(0) = id`), so the
+    -- total `regStraightenOf2` derivative is `regStraightenTotalCLM2 D_E = ↑e` (`deepestEFull_deriv`).
+    have hEcomp_sd : HasStrictFDerivAt Ecomp D_E 0 := by
+      -- `coreAbsorb.symm 0 = 0`, so `deepestEFull`'s strict deriv at `0` is at `coreAbsorb.symm 0`.
+      have hsymm0 : coreAbsorb.symm (0 : DeepestSplit H r (deepestNGauge H r)) = 0 := by
+        conv_lhs => rw [← hca_base]
+        rw [coreAbsorb.symm_apply_apply]
+      have hsd' : HasStrictFDerivAt (deepestEFull H r hr hL J Pf Qf) D_E
+          (coreAbsorb.symm (0 : DeepestSplit H r (deepestNGauge H r))) := by
+        rw [hsymm0]; exact hsd
+      have hchain := hsd'.comp (x := (0 : DeepestSplit H r (deepestNGauge H r))) hsymm_sd
+      -- `hchain : HasStrictFDerivAt (fun x => Efull (symm x)) (D_E.comp id) 0`; `D_E.comp id = D_E`.
+      have hchain' : HasStrictFDerivAt Ecomp (D_E.comp
+          (ContinuousLinearMap.id ℝ (DeepestSplit H r (deepestNGauge H r)))) 0 := hchain
+      rw [ContinuousLinearMap.comp_id] at hchain'
+      exact hchain'
+    have hreg_sd := hasStrictFDerivAt_regStraightenOf2_gen Ecomp D_E hEcomp_sd
+    refine ⟨e, hcontdiff, ?_⟩
+    rw [he]
+    exact hreg_sd
   obtain ⟨eTilde, hTilde_contdiff, hTilde_deriv⟩ := hTilde
   obtain ⟨regStraighten, hra_cont, hra_base, hra_core, hra_spec, hra_regval, hra_rlct⟩ :=
     deepest_regAbsorb_exists H r B hB hr hL (deepestNGauge H r) coreAbsorb
