@@ -952,23 +952,17 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
     have hFm : Fmap r0 i = (decodeRegSliceCLE H r hr).symm
         (Fblk (decodeRegSliceCLE H r hr r0)) i := by rw [hFmap]; rfl
     rw [hFm, hdec r0]
-    simp only [hFblk, regBlockCLE_apply, mulBlockPairCLE_apply, decodeRegSliceCLE_symm_apply]
+    simp only [hFblk, regBlockCLE_apply, mulBlockPairCLE_apply]
+    -- Reduce the `decode.symm` (encode read) on the `Fmap` side (`erw`: its `Z`-block type `H 0 − r`
+    -- vs the `Fblk` `Z`-block `H (firstLayer hL).castSucc − r` are defeq), and unfold `deepestEPivot`'s
+    -- match + align its reindex with `hbᵢⱼ`'s `reindex eR eJsucc` spelling (`hPread`).
+    erw [decodeRegSliceCLE_symm_apply]
     simp only [deepestEPivot, hPread r0]
     rcases hcase : regResidualPack H r hr i with ⟨a, b⟩ | ⟨a, b⟩ | ⟨a, b⟩ <;>
       simp only [hcase, hquadE]
-    -- REMAINING (the one open gluing, GREEN below via `sorry`): each case is
-    -- `(reindex eR eJsucc prod).toBlocksᵢⱼ a b (− δ) = (regBlockCLE block read) a b + (quadM).toBlocksᵢⱼ a b`.
-    -- The matrix block identities `hb11/hb12/hb21` (PROVED above, sorry-free) give exactly
-    -- `(reindex eR eJsucc prod).toBlocksᵢⱼ = linear + quadM.toBlocksᵢⱼ`, and the linear part matches
-    -- `regBlockCLE`'s components (`B22=Bmat₂₂`, `B21=Bmat₂₁`, A-blocks = `(reindex eR eR (Pf first))ᵢⱼ`).
-    -- The remaining blocker is the `H 0` vs `H (firstLayer hL).castSucc` defeq spelling clash, NOT a math
-    -- gap: `Pf first`-multiplication (in `hPexp`/`hbᵢⱼ`) forces `eR`'s rows to `H (firstLayer hL).castSucc`,
-    -- while `deepestEPivot`'s reindex and `decode`'s codomain blocks use `H 0`. So `rw/simp [hbᵢⱼ r0]` and
-    -- `decodeRegSliceCLE_symm_apply` (its `Z : H 0 − r` vs the `Fblk` `Z : H (firstLayer hL).castSucc − r`)
-    -- both fail to unify the identically-PRINTED terms. FIX (next tide): bridge the two block spellings with
-    -- an explicit `finCongr (firstLayer_castSucc : (firstLayer hL).castSucc = 0)` cast at the decode/Fblk
-    -- seam (or normalise the index globally), so every `reindex`/decode/Fblk shares one spelling.
-    all_goals sorry
+    · erw [hb11 r0]; simp only [Matrix.add_apply, Matrix.sub_apply]; ring
+    · erw [hb12 r0]; simp only [Matrix.add_apply]
+    · erw [hb21 r0]; simp only [Matrix.add_apply]
   -- The function equality `(fun r0 => deepestEPivot (r0,0)) = fun r0 => Fmap r0 + quadE r0`.
   have hfun : (fun r0 : Fin (deepestNReg H r) → ℝ => deepestEPivot H r hr hL J Pf Qf (r0, 0))
       = fun r0 => (Fmap r0 : Fin (deepestNReg H r) → ℝ) + quadE r0 := by
@@ -977,6 +971,59 @@ theorem deepestEPivot_regSlice_fderiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `r0`-linear factors vanishing at `0`; `hasStrictFDerivAt_sum_mul_zero` per coord + `hasStrictFDerivAt_pi'`).
   have hquadderiv : HasStrictFDerivAt quadE (0 : (Fin (deepestNReg H r) → ℝ) →L[ℝ]
       (Fin (deepestNReg H r) → ℝ)) 0 := by
+    -- The decode blocks have strict derivatives (CLE) and vanish at 0; each read entry is a coordinate of
+    -- a decode block, hence a continuous-linear functional of r0 vanishing at 0. `quadM`'s entries are
+    -- sums of products of two such (the `X·Y`/`Z·Y` cross), so each `quadE` coord has strict deriv 0.
+    -- The decode blocks (X = `.2.1`, Y = `.1`, Z = `.2.2`) are CLE-components of `r0`: strict deriv + 0.
+    set Dfst := ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin r) ℝ)
+      (Matrix (Fin (H 0 - r)) (Fin r) ℝ) with hDfst
+    set Dsnd := ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+      (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ) with hDsnd
+    set Dc := (decodeRegSliceCLE H r hr).toContinuousLinearMap with hDc
+    have heqX : (fun r0 : Fin (deepestNReg H r) → ℝ => readX H r hr hL (r0, 0) (firstLayer hL))
+        = ⇑((Dfst.comp Dsnd).comp Dc) := by funext y; rw [← hdX y]; rfl
+    have heqY : (fun r0 : Fin (deepestNReg H r) → ℝ => readY H r hr hL (r0, 0) (lastLayer hL))
+        = ⇑((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc) := by
+      funext y; rw [← hdY y]; rfl
+    have heqZ : (fun r0 : Fin (deepestNReg H r) → ℝ => readZ H r hr hL (r0, 0) (firstLayer hL))
+        = ⇑((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+            (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc)) := by
+      funext y; rw [← hdZ y]; rfl
+    have hXsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readX H r hr hL (r0, 0) (firstLayer hL)) ((Dfst.comp Dsnd).comp Dc) 0 := by
+      rw [heqX]; exact ((Dfst.comp Dsnd).comp Dc).hasStrictFDerivAt
+    have hYsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readY H r hr hL (r0, 0) (lastLayer hL))
+        ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+            (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc) 0 := by
+      rw [heqY]
+      exact ((ContinuousLinearMap.fst ℝ (Matrix (Fin r) (Fin (H (Fin.last (n + 1 + 1)) - r)) ℝ)
+        (Matrix (Fin r) (Fin r) ℝ × Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp Dc).hasStrictFDerivAt
+    have hZsd : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ =>
+          readZ H r hr hL (r0, 0) (firstLayer hL))
+        ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ) (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp
+          (Dsnd.comp Dc)) 0 := by
+      rw [heqZ]
+      exact ((ContinuousLinearMap.snd ℝ (Matrix (Fin r) (Fin r) ℝ)
+        (Matrix (Fin (H 0 - r)) (Fin r) ℝ)).comp (Dsnd.comp Dc)).hasStrictFDerivAt
+    have hdec0 : decodeRegSliceCLE H r hr 0 = 0 := map_zero _
+    have hX0 : readX H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) = 0 := by
+      rw [← hdX 0, hdec0]; rfl
+    have hY0 : readY H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (lastLayer hL) = 0 := by
+      rw [← hdY 0, hdec0]; rfl
+    have hZ0 : readZ H r hr hL ((0 : Fin (deepestNReg H r) → ℝ), 0) (firstLayer hL) = 0 := by
+      rw [← hdZ 0, hdec0]; rfl
+    -- REMAINING (self-contained, GREEN below via `sorry`): from the read strict-derivs (`hXsd/hYsd/hZsd`,
+    -- PROVED above: each read block is a CLE-component of `r0`, deriv = a CLM) and their vanishing at 0
+    -- (`hX0/hY0/hZ0`), the two cross products `X·Y`, `Z·Y` have strict derivative 0 at 0 (bounded-bilinear
+    -- matrix mul of two factors vanishing at 0: `ContinuousLinearMap.hasStrictFDerivAt_of_bilinear` with
+    -- the matrix-mul CLM — deriv `B.precompR _ (X 0) _ + B.precompL _ _ (Y 0) = 0`). `quadM` is a CLM
+    -- (`reindex ∘ Pf·_·Qf`) of `fromBlocks 0 (X·Y) 0 (Z·Y)` (linear in the two products), so `quadM` has
+    -- strict deriv 0, and `quadE` (its `toBlocks` entries, via `hasStrictFDerivAt_pi'`) likewise.
+    -- The one missing brick is the matrix-mul-as-bounded-bilinear CLM (`Matrix.mulLinearMap` upgraded to
+    -- `Matrix →L Matrix →L Matrix` in finite dim) + the fromBlocks-as-CLM; both are routine normed-matrix
+    -- infrastructure (`LinearMap.toContinuousLinearMap` finite-dim + `precompR/precompL` simp to 0).
     sorry
   -- `Fmap` is a CLE, so it has strict derivative `↑Fmap`; add the quad (deriv 0), `+ 0`.
   have hFderiv : HasStrictFDerivAt (fun r0 : Fin (deepestNReg H r) → ℝ => Fmap r0)
