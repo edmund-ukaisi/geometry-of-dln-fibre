@@ -140,3 +140,30 @@ the `√(coreΦ·frobSq(D))` form, not a `√frobSq(K)`-times-coreΦ form.
 - `/tmp/h2confirm/frame_stress.py` — corner-clean (O(Sreg²)) vs corner-dirty (O(Sreg)) frames.
 - Codex consult: `codex/h2-confirm-order-prompt.md` / `h2-confirm-order-answer.md` (decorrelated, xhigh;
   independently derived `Θ(Sreg³)` generic + the cancellation-curve refutation).
+
+---
+
+## ADDENDUM (coordinator follow-up): reachability SETTLED + repair spec
+
+**Reachability (the critical check):** the counterexample IS reachable in the parameterized chart, not
+just the abstract Schur algebra. Built at the RAW PARAMETER level (raw layers `W0(t),W1(t)`, actual
+`dlnLoss`, identity frames), `cond(P00)=1.00` exactly (`/tmp/h2confirm/chart_reachability.py`):
+`gap/Sreg → 91, 608, 23` (constants, unbounded in λ), while `loss/(Sreg+coreΦ) → 1.0000`. The reg/gauge
+reads are free coords (`regGaugeSlotEquiv` homeo; `RegGaugeIdx = Σ_s ((X_s)⊕(Y_s)⊕(Z_s))`); the loss's
+reg slot reads only boundary generators `X_0,Y_1,Z_0` but `X_1,Y_0,Z_1` are free SPECTATORS that shrink
+the PRODUCT blocks `P00,P01,P10` (hence `Sreg`) without being charged. Codex decorrelated (`xhigh`)
+independently confirmed reachability + a POINTWISE failure (`P01=0 ⇒ Sreg=0, gap>0`):
+`codex/h2-reachability-answer.md`. **⇒ the additive route is dead on the REAL domain; re-architecture is
+required.**
+
+**Repair:** the squeeze statement + body are UNCHANGED; only the producer's FOLD PROOF of the two folded
+conjuncts `hcore_le`/`hcore_ge` (the `Sreg+Score ≍ Sreg+coreΦ` pair) is re-architected, off the dead
+additive intermediate. Full build-ready spec: `h2-repair-spec.md`. Key corrections found while writing it:
+- The right charge is `|Score − coreΦ| ≤ η·(Sreg + coreΦ)`, η→0 — the `(Sreg+coreΦ)` denominator (NOT
+  `coreΦ` alone: `frobSq(D)/coreΦ` blows up under PRODUCT cancellation `S0·S1=0`, reachable via free cores).
+- `germ_charge_of_core_charge` is NOT the repair (it renames the refuted additive charge);
+  `germ_charge_of_schur_factorization`'s `hRem ≤ Crem·Sreg²` is also dead.
+- The bridge `(♦) ⇒ γ₁=γ₂=2` + the squeeze wiring are READY (pure inequality algebra). The single residual
+  is `(♦) : |Score − coreΦ| ≤ ½(Sreg+coreΦ)` ∀ᶠ on S5a — TRUE (verified robust, Θ(t²)→0) but its clean
+  proof is genuine germ analysis: EVERY norm-factoring route (Frobenius sub-mult, operator-norm) has a
+  hole (verified). **Flagged for a follow-up pen-and-paper leading-order pass before the formaliser commits.**
