@@ -949,3 +949,21 @@ module (rm its olean + rebuild) before trusting `#print axioms` — a full `lake
 olean for a copied-in file (mtime/shared-store timing). The soundness gate did its job (flagged the anomaly);
 the lesson is that the *fix* is a forced rebuild, not dismissal — and equally not panic (the green build alone
 would have hidden the staleness in the other direction).
+
+## Jacobian-det at scale: factor by det_comp, BlockTriangular by ROW, split heavy-fderiv from det (2026-06-25, thread 30)
+The (3,3,3,3) hdiv instance's Jacobian det surfaced the per-file Lean-elaboration-cost wall (NOT a math gap — the
+det is sympy+reviewer-certified `|det Dφ| = |u0|⁵|u1|⁴|u4|²|u9|³`). Banked recipe for ANY large c-o-v det (directly
+informs the general closed-φ_M chaining det):
+1. **Never a single n×n matrix-product det identity.** The explicit 9×9 A·B·C `Matrix.mul_apply` det (729 entries over
+   nested `![…]`) blew 2M heartbeats. Instead: `det = ∏ factor-dets` via `LinearMap.det_comp` (factor the deriv map:
+   here Frame3333Deriv ∘ Kparam3333Deriv).
+2. **Per factor: abstract-entry BlockTriangular, `fin_cases` on the ROW only** (27, not 729) — read `(Deriv)(Pi.single j 1) i`
+   through fixed-coord facts; never expand to `![…]`.
+3. **Define the fderiv CLMs with explicit literal match patterns** (a catch-all match makes `whnf` time out).
+4. **SPLIT the HasFDerivAt-heavy infra from the det into separate files.** The binding constraint at this scale is
+   PER-FILE elaboration cost: the two 27-row HasFDerivAt + the 4M-heartbeat composition identity already make the
+   det-free file ~7-10min; adding the det → ~12min/non-green. The fix is a dedicated `…Det.lean` that IMPORTS the infra
+   file (the HasFDerivAt come in as oleans, no re-elaboration) and carries only the dets + the atom. The infra file
+   itself stays green + reusable; the det is a scoped follow-up module.
+Corollary for the controller: a green, reusable infra file can be committed UN-WIRED (not in the aggregator) to avoid
+loading a multi-minute build onto every aggregator green-gate — build it on-demand (as with the Deepest* family).

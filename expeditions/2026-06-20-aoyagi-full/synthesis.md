@@ -800,6 +800,26 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - 2 background BUILD agents: l2-pin2-geom (L2 PIN2 body), r1-node-3333 (R1 hdiv (3,3,3,3) — bounded composition-det cycle).
   pp-r1-genM released/on-call. Queued: the L2 case-split wire, the rank-stratified hfin cover (corank-≥2), the general hdiv chaining, D1.
 
+**★ UPDATE-37 (2026-06-25) — R1 (3,3,3,3) hdiv INFRA banked (994 LoC, green, reviewer-SURVIVED); det deferred (Lean-cost, optional); det-tactic lesson banked.**
+- **r1-node-3333 finalized (commit 99f2b377, worktree):** RouteM3333.lean — 994 LoC, GREEN, ZERO sorry/axiom (verified
+  twice). The multi-pivot core (reviewer-SURVIVED, 27×27 det independently re-derived): chartA/B/C3333 (LDU + B/C
+  chaining), `dlnLoss_chartParams3333` = **F=u²·V** (the soundness-critical telescoping A·B·C=u·H), Vval3333_ae_pos +
+  bounded, leafH3333 (exact exponents, u-exp 5 = minAdm−1), continuity/zero/image. + the REUSABLE Jacobian/composition
+  infra (pack3333 + reshape MP + T3333 + T3333Deriv + T3333_hasFDerivAt + the composition T3333=Frame3333∘Kparam3333 +
+  both HasFDerivAt) — the bricks the general closed-φ_M chaining reuses. Det-guard CERTIFIED (det≠0 off {u0=0}, sympy+reviewer).
+- **The det/atom DEFERRED** (Frame3333Deriv_det → phi3333_abs_det → nodeChart3333 → the (3,3,3,3) atom): a Lean
+  ELABORATION-COST wall (NOT math — certified). The per-file cost (two 27-row HasFDerivAt + the 4M-heartbeat composition
+  identity = ~7-10min; +det → non-green) → a dedicated RouteM3333Det.lean follow-up (imports RouteM3333 as oleans). Since
+  (3,3,3,3) is OPTIONAL validation, the det module is a LOW-priority deferred follow-up.
+- **INTEGRATION decision: bank RouteM3333.lean UN-WIRED** (committed but NOT in the aggregator — avoids the +7-10min
+  recurring aggregator-build cost; build on-demand, like the Deepest* family). The infra banks safely on origin + is
+  reusable; the optional det doesn't slow every build.
+- **Det-tactic LESSON banked (lessons.md + thread 30):** det = ∏ factor-dets via LinearMap.det_comp (never a single n×n
+  product identity — the 729-entry A·B·C blew 2M heartbeats); BlockTriangular by ROW (27 not 729); explicit literal-match
+  CLMs; SPLIT HasFDerivAt-heavy infra from the det into separate files. Directly informs the general chaining det strategy.
+- (3,3,3,3) green-gate building on my base now (verify before commit). 1 other BUILD agent: l2-pin2-geom (L2 PIN2 body —
+  the decode bedrock is green; assembling telescoping + B-normalisation + comparability). pp-r1-genM released/on-call.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
