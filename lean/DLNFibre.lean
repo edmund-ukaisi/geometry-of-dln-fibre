@@ -262,3 +262,7 @@ import DLNFibre.Core.FibreCodimFinal
 import DLNFibre.DLN.BundleShiftDischarge
 -- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
 import DLNFibre.DLN.Aoyagi.ClosedForm
+-- θ-components (Route-A fibre entry): detΔ ≡ 1 on the fibre ⟹ localizing O(fibre) at detΔ is an iso
+-- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
+import DLNFibre.Core.FibreDetUnit
+import DLNFibre.Core.CThetaShiftCount
