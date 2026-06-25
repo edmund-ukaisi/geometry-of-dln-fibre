@@ -684,6 +684,33 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   Productive use of capacity while L2 PIN1 (can't parallelize the one coupled write) + the hfin spec run.
 - 3 background agents: l2-pin1-final (L2 PIN1, dominant), pp-r1-genM (hfin recStep spec #54), r1-node-3333 (R1 hdiv (3,3,3,3)).
 
+**★ UPDATE-30 (2026-06-24) — R1 DESIGN ARC COMPLETE (hfin cover spec banked); pp-r1-genM released; hfin BUILD held for bandwidth.**
+- **hfin recStep cover SPEC banked @fabdc203 (pp-r1-genM (a), #54):** 3 build-ready lemma families / 6 steps, grounded in
+  verified-real signatures, axiom-hygiene CONFIRMED zero-new, the (2,2,2) `myF222_threshold_lt_top'` as the depth-2 worked
+  example, risks ranked (HIGH = the r²-chart Δ-blow-up cover; mitigation = ship (4,4,2,2) corank-2 first). **R1 is now
+  DESIGN-CLOSED end-to-end** (hdiv chart → closer → hfin adjudication → S2-only feasibility → cover spec), math validated
+  S2-only. pp-r1-genM RELEASED (its R1 design arc is comprehensively complete; the remaining R1 is formalisation).
+- **hfin BUILD (#55) HELD for bandwidth** — the spec is build-ready; commission when r1-node-3333 / l2-pin1-final reports
+  (avoid 3 concurrent build tides as sole integrator). Build plan: L1.1 terminal → (4,4,2,2) corank-2 instance → general L3.1.
+- 2 background BUILD agents: l2-pin1-final (L2 PIN1, dominant), r1-node-3333 (R1 hdiv (3,3,3,3)). pp-r1-genM released.
+  Queued: the hfin BUILD (#55), the R1 hdiv-general chaining (after (3,3,3,3) banks the LDU machinery), L2 PIN2 + wiring, D1.
+
+**★ UPDATE-31 (2026-06-25) — L2 Stage E (frame migration) INTEGRATED (reviewer-SURVIVED); PIN1 value-fold (~250 LoC) commissioned as the finish.**
+- **Stage E INTEGRATED @c9cfe648** (l2-pin1-final, reviewer-SURVIVED 5/5 + Codex): the frame-family rewiring —
+  deepestEPivot + 4 helpers + both PINs + deepest_loss_squeeze + the call site migrated from the THRESHOLD split to the
+  PIVOT split (framedParamsRegPivot J), threading the B-determined J; `deepestEPivot_base` re-proved sorry-free + axiom-clean;
+  PIN1 gains J + hQf22 (the genuine B22-unit); the call site discharges hQf22 from the banked deepestPoint_frame_pivot_exists
+  via the pivotJSucc cast bridge. Faithful migration (not a weakening, no hidden generality loss). Full build green (8347
+  jobs); 2 sorries (the 2 PINs), no new axioms. Plus PIN1 value-fold bedrock banked: pivot_devY_read_toBlocks₁₁ + matrixPiCLE.
+- **CONFIRMED CORRECTION (banked):** PIN1's residual blocks are LINEAR + a genuine QUADRATIC cross — the clean "P12 =
+  Y·B₂₂ exactly" is FALSE; the quad folds into quadResidual. (Caught by the value-fold attempt; handled.)
+- **PIN1 value-fold COMMISSIONED (l2-pin1-valuefold aeb04fc2):** the remaining ~250 LoC — the encode/decode reshape ≃Ls +
+  the normal form hnormal + the combine → the invertible frame factor regBlockCLE → PIN1. Precisely scoped (2× Codex-validated
+  skeleton), bricks banked, but 4/5-difficulty with documented cast walls (the prior tide made the honest call to bank +
+  hand off rather than red-spiral). The focused finish of PIN1 (the dominant L2 bottleneck's core).
+- 2 background BUILD agents: l2-pin1-valuefold (L2 PIN1 value-fold), r1-node-3333 (R1 hdiv (3,3,3,3)). Queued: hfin BUILD (#55),
+  R1 hdiv-general chaining, L2 PIN2 + the case-split wire + product_reduction, D1.
+
 ## Prior read (2026-06-22): ★ DESIGN CLOSED (g132→g153) — general-M λ on three concurrent Lean grinds ★
 
 **★ LATEST (2026-06-22, cont'd) — #64 fix-route RESOLVED (e); R1 skeleton GREEN, routeStep delegated; #66 closed.**
