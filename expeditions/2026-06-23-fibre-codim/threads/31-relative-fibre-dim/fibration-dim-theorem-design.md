@@ -334,3 +334,34 @@ is what the rung-3 freeness cert verified holds (δ Schur vars FREE over `O(F)`)
 must ride `vanishingIdeal` and `varietyDim_eq_of_coordRingAlgEquiv`, NEVER the generator-ideal containment.
 Best built AFTER `pp-nodrop`'s component cert lands (it informs the reducible-component structure of the
 normalized ideal).
+
+---
+
+## Tide progress log — update 4 (step-3 AlgEquiv descent: factored plan + signature-validated)
+
+**Signature-validated (local SPECIFY built then removed — no absent-API gap at v4.29):** the step-3→5
+contracts all typecheck. `Localization.Away` on the `vanishingIdeal`-quotient ring,
+`MvPolynomial ι (fibreCoordRing)`, `nonZeroDivisors`, and the `gaugeEquiv`/`algEquivOfAlgEquiv`/
+`Ideal.quotientEquivAlg` framing all resolve. The remaining work is PROOFS, not infrastructure.
+
+**Reusable abbrevs pinned** (vanishingIdeal-based, to re-state when grinding):
+`fibreCoordRing d E := MvPolynomial (RepCoord d) k ⧸ vanishingIdeal(canonicalCoord '' fibre d E)`;
+`sigmaCoordRing d r := … ⧸ vanishingIdeal(canonicalCoord '' productRankLocus d r)`;
+`sigmaDetΔ := Quotient.mk (det of the top-left r×r submatrix of (Matrix.of (multPoly d)))`.
+
+**The step-3 AlgEquiv descent, FACTORED (4 sub-lemmas, the R2-3b-4 hard rung via vanishingIdeal):**
+- **(3a)** gauge normalizes the generic product over `SchurLoc`: `gaugeEquiv (endpointGauge) (multPoly r c)
+  = E r c` on the chart. Pure algebra from LANDED `gaugeEquiv_multPoly` (gives `(L⁻¹·multPoly·H⁻¹) r c`)
+  + the SchurLoc-level Schur relation. NEEDS a SchurLoc Schur-relation bridge (the chart-locus condition
+  at the polynomial/SchurLoc level) — genuine new plumbing, but independent of no-drop/avoidance.
+- **(3b)** the gauge `comap` maps `vanishingIdeal(Σ^r)` (over SchurLoc) to the normalized ideal — the
+  ideal-transport, via (3a) + the `vanishingIdeal` characterization. Rides `gaugeEquiv` (vanishingIdeal-free).
+- **(3c)** the freeness identification: normalized `vanishingIdeal = vanishingIdeal(F)[SchurVar]` FREE
+  (the rung-3 freeness cert content). Interacts with the reducible-component structure → benefits from
+  pp-nodrop's cert.
+- **(3d)** localization descent: `Ideal.quotientEquivAlg` + `IsLocalization.algEquivOfAlgEquiv` to land
+  the localized AlgEquiv. Mechanical given (3a)-(3c).
+
+Build order when grinding: (3a) first (independent), then (3b), then (3c) with the component cert,
+then (3d). Estimate: ~3-4 modules. The whole step-3 stays strictly vanishingIdeal-side (Ideal.quotientEquivAlg
+on the gauge-transported vanishingIdeal — NEVER the IadDeep/fibreGenIdeal generator route).
