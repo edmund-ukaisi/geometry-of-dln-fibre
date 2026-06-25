@@ -12,7 +12,8 @@ exactly `r`. Via Mathlib's `Matrix.rank_diagonal` (rank of a diagonal matrix = n
 entries) and the count `#{i : Fin n | i < r} = r`.
 
 ## Main results
-- `Matrix.rank_diagonal_indicator_lt` — `rank (diagonal (fun i ↦ if i < r then 1 else 0)) = r`.
+- `rank_diagonal_indicator_lt` — `rank (diagonal (fun i ↦ if i < r then 1 else 0)) = r`.
+- `Matrix.rank_eq_zero_iff` — over a field, `M.rank = 0 ↔ M = 0`.
 -/
 
 namespace DLNFibre.Core
@@ -35,6 +36,22 @@ theorem rank_diagonal_indicator_lt {K : Type*} [Field K] [DecidableEq K] {n r : 
       left_inv := fun i ↦ by ext; rfl
       right_inv := fun j ↦ by ext; rfl }
   rw [Fintype.card_congr he, Fintype.card_fin]
+
+/-- **A matrix over a field has rank `0` iff it is the zero matrix.** `rank` is `finrank` of the
+range of `mulVecLin`; that range is `⊥` iff `mulVecLin` is `0` iff the matrix vanishes on each
+standard basis vector. -/
+theorem _root_.Matrix.rank_eq_zero_iff {K : Type*} [Field K] {m n : ℕ}
+    (M : Matrix (Fin m) (Fin n) K) :
+    M.rank = 0 ↔ M = 0 := by
+  constructor
+  · intro h
+    have hr : LinearMap.range M.mulVecLin = ⊥ := by
+      rw [← Submodule.finrank_eq_zero (R := K)]; exact h
+    rw [LinearMap.range_eq_bot] at hr
+    ext i j
+    have := congrFun (congrArg (fun f ↦ f (Pi.single j 1)) hr) i
+    simpa [Matrix.mulVecLin, Matrix.mulVec_single] using this
+  · rintro rfl; simp [Matrix.rank]
 
 end DLNFibre.Core
 
