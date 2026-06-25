@@ -1,0 +1,192 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading additional input from stdin...
+OpenAI Codex v0.142.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-aef4bc3563641668f
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efe66-5582-7c33-a92a-c26b08f2d452
+--------
+user
+<task>
+Adjudicate a single Lean truth-value (TRUE/FALSE) about a matrix-reconstruction identity. Reason from
+the exact index algebra; a small numeric instance is acceptable as a guide but the verdict must be from
+the algebra. Withhold nothing; be decisive.
+</task>
+
+<context>
+Setting: deep-linear-network "framed reconstruction". For the LAST layer of a chain, there is a
+reconstruction map `framedParamsPivot ... (split w) last` defined (Lean) as:
+
+  F_last  =  reindex eR eCpiv (fromBlocks 1 0 0 0)
+           + Pf_last * reindex eR eCpiv (fromBlocks (readX) (readY) (readZ) (coreRead)) * Qf_last
+
+where, with rank r, row width a = H_last.castSucc, column width b = H_last.succ:
+  - eR   = (rThresholdSplit r a).symm        -- the THRESHOLD row split (first r rows = block "inl")
+  - eCpiv = (pivotThresholdSplit r b J).symm  -- the PIVOT column split: left block "inl" enumerates the
+            r PIVOT columns sorted (range of an embedding J : Fin r ↪ Fin b), right block "inr" the
+            sorted complement (non-pivot columns).
+  - reindex e1 e2 M (i,j) = M (e1.symm i) (e2.symm j), i.e. block index of column j is (pivotThresholdSplit r b J) j.
+
+KEY FACT 1 (banked, "reindex_fromBlocks_reads_eq_deviation"): the SAME fromBlocks of those four reads,
+when reindexed with the THRESHOLD column split eCthr = (rThresholdSplit r b).symm on BOTH sides, equals
+exactly the raw deviation matrix Mdev := (symm (w - w0)) last  (an a x b matrix). The reads are
+J-INDEPENDENT: readY at block-position (i, q) decodes to Mdev[i][r+q] (threshold column r+q); coreRead
+(the T block) at (i,q) decodes to Mdev[r+i][r+q]; readX to Mdev[i][q] (q<r); readZ to Mdev[r+i][q].
+So the fromBlocks matrix, viewed in block coordinates, has column-block "inl q" -> Mdev column q, and
+column-block "inr q" -> Mdev column r+q. (Threshold columns.)
+
+KEY FACT 2 (banked): pivotThresholdSplit.symm (inl i) = i-th sorted PIVOT column (range J);
+pivotThresholdSplit.symm (inr i) = i-th sorted NON-pivot column. When J = castLE (pivots are the first
+r columns), pivotThresholdSplit = rThresholdSplit.
+
+KEY FACT 3 (hypothesis "hcorner", last layer, with Pf_last = I): 
+  reindex eR eCpiv (deepest_last * Qf_last) = fromBlocks 1 0 0 0
+  i.e. reindex eR eCpiv (fromBlocks 1 0 0 0) = deepest_last * Qf_last (Pf_last = I).
+The non-last-layer normal form fact ("hNF") is EXPLICITLY restricted to non-last layers (s+1 != L).
+
+Also: symm w last = deepest_last + Mdev.  J is B-determined (B's r pivot columns) and may be any
+embedding Fin r -> Fin b (it need NOT be the first r columns).
+
+THE TRUTH-VALUE TO ADJUDICATE:
+  hS1'  :  F_last  =  Pf_last * (symm w) last * Qf_last      (for all w, with J fixed/arbitrary)
+i.e. with Pf_last = I:   F_last  =  (symm w) last * Qf_last  =  (deepest_last + Mdev) * Qf_last.
+</task>
+
+<output_contract>
+1. VERDICT: hS1' is TRUE or FALSE (one line).
+2. The exact reason from the index algebra: what column index does reindex eR eCpiv (fromBlocks reads)
+   place readY/coreRead into, vs what column the read DECODES to. Whether the corner term and the reads
+   term are placed by the SAME column map.
+3. If FALSE: the smallest concrete (r, a, b, J, and a generic Mdev) where F_last != target, and the
+   CORRECT statement of hS1' (e.g. F_last = Pf * (column-permutation of (symm w) last) * Qf).
+4. Flag inference vs computed-fact.
+</output_contract>
+
+<grounding_rules>
+Ground strictly in the facts above. The reads are J-independent threshold-column decodes; the OUTER
+reindex on F_last uses the PIVOT column split. Do not assume an outer cancelling reindex exists on F_last
+itself (there is none in the statement of hS1' — the RHS is the raw layer, the same matrix for any split).
+</grounding_rules>
+codex
+I’ll adjudicate this directly from the stated split/reindex algebra. The key point is whether the read blocks decode using threshold columns while the outer placement uses pivot columns.
+codex
+VERDICT: **hS1' is FALSE**.
+
+For the reads term,
+```lean
+(reindex eR eCpiv Reads) i j
+= Reads ((rThresholdSplit r a) i) ((pivotThresholdSplit r b J) j)
+```
+So if `pivotThresholdSplit r b J j = inl q`, column `j` is the `q`-th pivot column, but the read block `inl q` decodes to threshold column `q` of `Mdev`. If `pivotThresholdSplit r b J j = inr q`, column `j` is the `q`-th non-pivot column, but `readY/coreRead` at `inr q` decodes to threshold column `r + q` of `Mdev`.
+
+Thus the reads term is
+```lean
+Rreads i j = Mdev i ((rThresholdSplit r b).symm ((pivotThresholdSplit r b J) j))
+```
+not `Mdev i j` unless the pivot split equals the threshold split. The corner term is calibrated by `hcorner` to give `deepest_last * Qf_last`; the reads term is placed by the pivot split while decoding threshold columns. Those are not the same column semantics.
+
+Small concrete counterexample, smallest with `readY` and `coreRead` both present:
+
+- `r = 1`, `a = 2`, `b = 2`
+- `J 0 = 1`, so the pivot column is column `1`, not column `0`
+- Let
+  ```text
+  Mdev = [ x  y
+           z  t ]
+  ```
+Then pivot column order is `[1]`, non-pivot order is `[0]`. Hence the reindexed reads term is
+```text
+[ y  x
+  t  z ]
+```
+because `readY/coreRead`, which decode threshold column `1`, are placed into actual non-pivot column `0`. The target deviation term is still
+```text
+[ x  y
+  z  t ]
+```
+So with, for example, `Qf_last = I`, generic `Mdev` gives `F_last != (deepest_last + Mdev) * Qf_last`.
+
+The correct statement is:
+```lean
+F_last =
+  deepest_last * Qf_last
+  + (colPerm_J Mdev) * Qf_last
+```
+with
+```lean
+(colPerm_J Mdev) i j =
+  Mdev i ((rThresholdSplit r b).symm ((pivotThresholdSplit r b J) j))
+```
+and, with `Pf_last` retained in the displayed reconstruction shape,
+```lean
+F_last =
+  deepest_last * Qf_last
+  + Pf_last * (colPerm_J Mdev) * Qf_last
+```
+
+Computed fact: the displayed index formula for the reads term follows directly from the given `reindex` definition and the two split facts.  
+Inference: the theorem as stated is false for arbitrary fixed `J`; it becomes true in the special case `J = castLE` or in degenerate cases where the column permutation is killed after right multiplication by `Qf_last`.
+tokens used
+17,906
+VERDICT: **hS1' is FALSE**.
+
+For the reads term,
+```lean
+(reindex eR eCpiv Reads) i j
+= Reads ((rThresholdSplit r a) i) ((pivotThresholdSplit r b J) j)
+```
+So if `pivotThresholdSplit r b J j = inl q`, column `j` is the `q`-th pivot column, but the read block `inl q` decodes to threshold column `q` of `Mdev`. If `pivotThresholdSplit r b J j = inr q`, column `j` is the `q`-th non-pivot column, but `readY/coreRead` at `inr q` decodes to threshold column `r + q` of `Mdev`.
+
+Thus the reads term is
+```lean
+Rreads i j = Mdev i ((rThresholdSplit r b).symm ((pivotThresholdSplit r b J) j))
+```
+not `Mdev i j` unless the pivot split equals the threshold split. The corner term is calibrated by `hcorner` to give `deepest_last * Qf_last`; the reads term is placed by the pivot split while decoding threshold columns. Those are not the same column semantics.
+
+Small concrete counterexample, smallest with `readY` and `coreRead` both present:
+
+- `r = 1`, `a = 2`, `b = 2`
+- `J 0 = 1`, so the pivot column is column `1`, not column `0`
+- Let
+  ```text
+  Mdev = [ x  y
+           z  t ]
+  ```
+Then pivot column order is `[1]`, non-pivot order is `[0]`. Hence the reindexed reads term is
+```text
+[ y  x
+  t  z ]
+```
+because `readY/coreRead`, which decode threshold column `1`, are placed into actual non-pivot column `0`. The target deviation term is still
+```text
+[ x  y
+  z  t ]
+```
+So with, for example, `Qf_last = I`, generic `Mdev` gives `F_last != (deepest_last + Mdev) * Qf_last`.
+
+The correct statement is:
+```lean
+F_last =
+  deepest_last * Qf_last
+  + (colPerm_J Mdev) * Qf_last
+```
+with
+```lean
+(colPerm_J Mdev) i j =
+  Mdev i ((rThresholdSplit r b).symm ((pivotThresholdSplit r b J) j))
+```
+and, with `Pf_last` retained in the displayed reconstruction shape,
+```lean
+F_last =
+  deepest_last * Qf_last
+  + Pf_last * (colPerm_J Mdev) * Qf_last
+```
+
+Computed fact: the displayed index formula for the reads term follows directly from the given `reindex` definition and the two split facts.  
+Inference: the theorem as stated is false for arbitrary fixed `J`; it becomes true in the special case `J = castLE` or in degenerate cases where the column permutation is killed after right multiplication by `Qf_last`.

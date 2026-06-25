@@ -18,3 +18,7 @@ lean/build/
 .claude/worktrees/
 
 # Agent Teams runtime state also lives outside the repo (~/.claude/teams, ~/.claude/tasks).
+theory/aoyagi-2023-reproduction/pages/
+
+# Codex consult scratch (transient; load-bearing consults are homed in threads/NN/codex/).
+**/.codex-consult/
