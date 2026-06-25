@@ -886,6 +886,20 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-67 (2026-06-25) — the L2 gauge-chart geometric heart is DESIGNED END-TO-END; producer's final (d')/(e') building. ★**
+- **Rcore↔coreAbsorb pinned @2770ccb2** (pp-pin2-rearch + Codex): (d')/(e') is NOT new geometry — `Rcore = S0·W·S1` (the banked
+  S5c block-LDU, NOT =∏S), so it closes via the banked S5c GERM CHARGE `|frobSq(Rcore)−coreΦ| ≤ C·Sreg` in the IN-SUM folded form
+  `Sreg+frobSq(Rcore) ≍ Sreg+coreΦ` (γ=1+C; never a standalone ratio — the germ lesson). `coreΦ=‖∏S‖²` EXACT (coreShearHomeo
+  add-form + χ=1 decode). The only new work: one IDENTIFICATION lemma (producer Rcore blocks ↔ S5c input) + a routine decode + the linarith.
+- **l2-core-de LAUNCHED** (a78499af) — builds the (d')/(e') (deepestCoreF_coreAbsorb_eq_prodSchur + rcore_coreAbsorb_germ_charge +
+  the γ=1+C composition). On close → **the L2 body (the chart) is COMPLETE for front pivot** (only the 2 vacuous-at-L2 interior remain).
+  pp-pin2-rearch on-call for the step-3 block-extraction glue.
+- **The entire L2 gauge-chart heart is now DESIGNED END-TO-END:** PIN1 → PIN2(full-reg) → S5c germ atom → hTilde →
+  (b)-route-B (front-pivot, (b) EXACT) → leak(c) → Rcore↔coreAbsorb. The deepest part of the programme. Remaining L2: this build +
+  the final wire (WLOG discharge hJfront + squeeze-exists relocation + case-split + product_reduction).
+- **R1 (3,3,4):** r1-ratiofin (a22cef05) building the last sorry (hratiofin) → complete S2-free hfin.
+- Active: l2-core-de (L2 producer final) + r1-ratiofin (R1 (3,3,4) final). pp seats on-call. General hdiv + general lifts + D1 ahead.
+
 **UPDATE-66 (2026-06-25) — L2 hproducer leak (c) CLOSED @8dd67a56; producer down to the core (d')/(e') (the Rcore↔coreAbsorb block-LDU).**
 - **l2-leak-core:** the leak conjunct (c) `∑(P10·⅟P00·P01)² ≤ Sreg` closed sorry-free (`eventually_leak` + the coupled-U {S5a}∩{S5b},
   t=1; reviewer PASS incl. goal-not-weakened). hproducer = (a)+(b)-EXACT+S5a+leak(c) all PROVEN; PIN1 clean; no monomial_rlct.
