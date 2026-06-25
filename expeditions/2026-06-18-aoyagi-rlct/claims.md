@@ -6571,6 +6571,30 @@ source/product coordinate identification, no original DLN loss comparison, no
 density/Jacobian transport, no proof of residual positivity or residual-base
 integrability, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 adapted product-difference local-measure handoff:
+Lean now converts the positive self-base adapted fixed-base lower bound
+
+```text
+(c/2) * (regularSquareSum + residualSquareSum)
+  <= adaptedProductDifferenceSquareSum
+```
+
+from the source-rank `nhdsWithin` filter into restricted-measure a.e. form,
+and into a product-measure first-projection form.  The positive constant `c`
+is preserved.
+
+Lean names:
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_prod_fst_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase`.
+
+Nonclaims: no original `lossDLN` comparison, no p.13 product chart, no
+source/product coordinate identification, no density/Jacobian transport, no
+residual integrability, no normal crossings, no pole order, and no RLCT.  The
+original-loss audit requires an explicit positive local comparison from
+original loss to the adapted fixed-base square-sum before any original-loss
+handoff is stated.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

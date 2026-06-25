@@ -222,6 +222,110 @@ theorem exists_open_ae_restrict_source_prod_fst_const_mul_literal_squareSum_le_l
         (W := W) (B := B) sourceData hc hloss)
 
 set_option linter.unusedSectionVars false in
+/-- At a continuous fixed-base paper chain, the adapted fixed-base
+product-difference comparison becomes an a.e. lower bound after restricting to
+a small measurable source neighborhood.
+
+The right-hand side is the adapted fixed-base product-difference square-sum,
+not the original DLN/statistical loss. -/
+theorem exists_pos_const_open_ae_restrict_source_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    {μ : Measure α}
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge)) :
+    ∃ c : ℝ, 0 < c ∧
+      ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+        ∀ᵐ x ∂ μ.restrict
+            (U ∩ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge),
+          (c / 2) *
+            (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseRegularBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x)) ≤
+            paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+              (K := ℝ) W B U₀ hU₀ Cedge x := by
+  rcases
+      exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_selfBase_nhdsWithin_source
+        (W := W) (B := B) sourceData hCedge hbase with
+    ⟨c, hc_pos, hbound⟩
+  rcases
+      exists_open_ae_restrict_inter_of_eventually_nhdsWithin
+        (μ := μ) (x₀ := x₀)
+        (s := paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge)
+        hsource_meas hbound with
+    ⟨U, hUopen, hx₀U, hUbound⟩
+  exact ⟨c, hc_pos, U, hUopen, hx₀U, hUbound⟩
+
+set_option linter.unusedSectionVars false in
+/-- Product-measure first-projection form of the self-base adapted
+product-difference local-measure handoff.  The asserted comparison is only a
+property of the base/source coordinate `z.1`. -/
+theorem exists_pos_const_open_ae_restrict_source_prod_fst_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α β : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    [MeasurableSpace β] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    {μ : Measure α} {ν : Measure β}
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge)) :
+    ∃ c : ℝ, 0 < c ∧
+      ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+        ∀ᵐ z : α × β ∂
+            (μ.restrict
+              (U ∩ paperEndpointFixedBaseSourceRankStratum
+                (K := ℝ) W B Cedge r rEdge)).prod ν,
+          (c / 2) *
+            (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseRegularBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+              aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge z.1)) ≤
+            paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+              (K := ℝ) W B U₀ hU₀ Cedge z.1 := by
+  rcases
+      exists_pos_const_half_regular_add_residual_squareSum_eventually_le_adaptedProductDifferenceSquareSum_selfBase_nhdsWithin_source
+        (W := W) (B := B) sourceData hCedge hbase with
+    ⟨c, hc_pos, hbound⟩
+  rcases
+      exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin
+        (μ := μ) (ν := ν) (x₀ := x₀)
+        (s := paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge)
+        hsource_meas hbound with
+    ⟨U, hUopen, hx₀U, hUbound⟩
+  exact ⟨c, hc_pos, U, hUopen, hx₀U, hUbound⟩
+
+set_option linter.unusedSectionVars false in
 /-- Uniform-in-fiber source-filter bounds become product-measure a.e. bounds
 after restricting the base to a sufficiently small measurable source
 neighborhood.

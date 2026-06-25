@@ -3707,3 +3707,38 @@ on the source-rank filter.
 Boundary: this is not an original DLN/statistical loss comparison, not
 source-rank openness, not analytic chart or measure transport, not normal
 crossings, not pole order, and not RLCT extraction.
+
+## 2026-06-25 A2 adapted product-difference local-measure handoff
+
+Reproduction:
+`reproduction-a2-adapted-product-difference-local-measure-handoff.md`.
+Statement card:
+`statement-card-a2-adapted-product-difference-local-measure-handoff.md`.
+Review:
+`review-a2-adapted-product-difference-local-measure-handoff.md`.
+
+Lean now proves the restricted-measure and product first-projection a.e.
+wrappers for the positive self-base adapted fixed-base product-difference
+lower bound:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_const_open_ae_restrict_source_prod_fst_half_regular_add_residual_squareSum_le_adaptedProductDifferenceSquareSum_selfBase
+```
+
+The proof preserves the upstream positive constant and applies the existing
+local-measure handoff from `nhdsWithin` eventual predicates to a.e. predicates
+on `mu.restrict (U inter sourceStratum)`, and its product-measure
+first-projection version.
+
+Boundary: the right-hand side is still only
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum`.  This does not
+compare with original `lossDLN`, construct the p.13 product chart, transport
+Jacobian/prior density, prove residual positivity/integrability, produce normal
+crossings, compute pole order, or extract an RLCT.
+
+An xhigh original-loss audit is recorded at
+`audit-a2-original-loss-to-p13-boundary.md`: any future theorem connecting
+original DLN/statistical loss to p.13 coordinates must either prove or assume a
+positive local comparison from original loss to the adapted product-difference
+square-sum.  Aoyagi p.13 alone is not being treated as that bridge.

@@ -9479,6 +9479,18 @@ loss/density source-filter bounds are all still explicit inputs; the theorem
 only shrinks the source neighborhood and runs the existing finite-side
 integrability theorem.
 
+Latest A2 adapted product-difference local-measure handoff:
+`RegularSuspensionLocalMeasure.lean` now proves the restricted-measure and
+product first-projection a.e. wrappers for the positive self-base adapted
+fixed-base product-difference lower bound.  The wrappers preserve the upstream
+positive constant and target only
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum`; they do not compare
+with original `lossDLN`, construct the p.13 product chart, transport
+Jacobian/prior density, prove residual integrability, or extract normal
+crossings/pole order/RLCT.  The original-loss audit pins the next safe
+boundary: original loss needs an explicit positive local comparison to the
+adapted fixed-base square-sum before the p.13 machinery may consume it.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

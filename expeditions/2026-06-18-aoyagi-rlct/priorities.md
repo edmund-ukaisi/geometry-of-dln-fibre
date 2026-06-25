@@ -692,13 +692,25 @@ It is still not an original-loss comparison, exact-rank/source-rank openness,
 analytic chart construction, Jacobian/prior transport, normal crossings, pole
 order, or RLCT.
 
-The next genuine A2 analytic target is now pinned at
-`threads/03-block-product-reduction/reproduction-a2-regular-square-suspension-integrability-target.md`:
-prove an abstract Euclidean product-coordinate theorem that adding `k`
-regular square variables shifts the local power-integrability threshold by
-`k/2`.  This should be formalised separately from normal-crossing extraction
-and still requires actual Aoyagi p.13 chart/density hypotheses before it can
-be applied.
+A2 adapted product-difference local-measure handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-adapted-product-difference-local-measure-handoff.md`.
+Lean converts the positive self-base adapted fixed-base lower bound into a
+restricted-measure a.e. theorem and a product-measure first-projection theorem.
+This is a base/source a.e. handoff only: the right-hand side is
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum`, not original
+`lossDLN`, and no product chart, Jacobian/prior transport, residual
+integrability, normal crossings, pole order, or RLCT is produced.
+
+Next highest-value A2 target: an adapted fixed-base product-difference local
+finite-integral handoff.  It should consume explicit product-chart/loss
+identification hypotheses that turn
+`paperEndpointFixedBaseAdaptedProductDifferenceSquareSum` into the product
+regular-coordinate loss of the p.13 finite-side integrability theorem.  Do not
+derive such a uniform-in-regular-fiber loss bound from the base-only adapted
+comparison.  Original `lossDLN` remains a separate boundary: any theorem using
+it must assume or prove a positive local comparison from original loss to the
+adapted fixed-base square-sum; see
+`threads/03-block-product-reduction/audit-a2-original-loss-to-p13-boundary.md`.
 
 A6 Theorem 2 supplied regular-suspension final bridge has now landed:
 `threads/06-dln-translation/reproduction-theorem2-regular-suspension-final-bridge-a6.md`.
