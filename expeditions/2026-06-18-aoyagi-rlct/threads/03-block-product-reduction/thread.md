@@ -4739,6 +4739,40 @@ Boundary: this is still one-edge, finite, and pointwise.  It does not choose
 prove parameter-continuity, construct a product chart, transport measures,
 produce normal crossings, prove pole order, or extract RLCT.
 
+## 2026-06-25 A2 single-edge residual-product realisation
+
+Reproduction:
+`reproduction-a2-single-edge-residual-product-realisation.md`.
+Statement card:
+`statement-card-a2-single-edge-residual-product-realisation.md`.
+Review:
+`review-a2-single-edge-residual-product-realisation.md`.
+
+Lean now proves that the one-edge p.13 product-coordinate matrix realizes the
+supplied residual matrix as the raw suffix residual product:
+
+```text
+ChartLocalSuffixState.residualProduct_productCoordinateSingleEdge_eq
+paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq
+```
+
+For the unique edge, the block matrix is
+
+```text
+[ Ctop,       -Ctop F2
+  -F3 Ctop,   D + F3 Ctop F2 ].
+```
+
+Under `IsUnit Ctop.det`, its transformed Schur residual is `D`; the existing
+suffix-state bridge identifies the suffix state's `D` field with
+`residualProduct`.
+
+Boundary: this is a one-edge transformed-residual-product theorem, not a raw
+lower-right-block identity and not a multi-edge arbitrary-terminal-residual
+realisation theorem.  It does not choose `D` from source data, construct a
+source chart, transport measures, produce normal crossings, prove pole order,
+or extract RLCT.
+
 ## 2026-06-25 A2 multi-edge residual-product preservation
 
 Reproduction:

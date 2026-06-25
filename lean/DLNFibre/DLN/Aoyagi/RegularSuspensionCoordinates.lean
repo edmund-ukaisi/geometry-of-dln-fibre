@@ -3473,6 +3473,71 @@ def paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean
         D
 
 set_option linter.unusedSectionVars false in
+/-- The one-edge p. 13 product-coordinate constructor has raw residual product
+equal to the supplied residual matrix. -/
+theorem paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq
+    (V : Fin 2 → Type v) [∀ i, AddCommGroup (V i)] [∀ i, Module ℝ (V i)]
+    (Bv : ∀ i : Fin 1, V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (D : Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0) ℝ)
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det) :
+    ChartLocalSuffixState.residualProduct
+        (paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean
+          V Bv U₀ u D)
+        (Fin.last 1) 0 (Fin.zero_le (Fin.last 1)) = D := by
+  let G :=
+    paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean
+      V Bv U₀ u D
+  let F2 :=
+    AoyagiRegularBlockCoordinateIndex.f2Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let F3 :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let Ctop :=
+    AoyagiRegularBlockCoordinateIndex.ctopMatrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last 1))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  have hE :
+      G 0 = ChartLocalSuffixState.productCoordinateSingleEdgeMatrix F2 F3 Ctop D := by
+    simp [G, F2, F3, Ctop,
+      paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean]
+  simpa [G] using
+    ChartLocalSuffixState.residualProduct_productCoordinateSingleEdge_eq
+      (K := ℝ) G 0 F2 F3 Ctop D hE (by simpa [Ctop] using hCtop)
+
+set_option linter.unusedSectionVars false in
 /-- Fixed-base product-difference coordinates read Aoyagi's single-edge raw
 product-coordinate edge matrix. -/
 theorem paperEndpointFixedBaseProductDifferenceCoordinateMap_eq_of_productCoordinateEdgeMatrix_one

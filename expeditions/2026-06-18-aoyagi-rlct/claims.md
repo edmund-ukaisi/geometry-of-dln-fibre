@@ -6746,6 +6746,19 @@ This is still a supplied-matrix bridge: no construction of `Ebase`, no proof
 of the residual-product matrix identity, no residual-index equivalence, and no
 source coverage.
 
+Latest A2 single-edge residual-product realisation:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.residualProduct_productCoordinateSingleEdge_eq`, and
+`RegularSuspensionCoordinates.lean` proves
+`paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq`.
+For the one-edge p.13 product-coordinate matrix
+`[Ctop,-Ctop F2; -F3 Ctop, D + F3 Ctop F2]`, the transformed Schur residual is
+`D` under `IsUnit Ctop.det`, and the suffix-state bridge identifies it with
+the raw `residualProduct`.  This is finite one-edge algebra only: not a raw
+lower-right-block identity, not a multi-edge arbitrary-terminal-residual
+realisation theorem, and not source coverage, source-measure transport, normal
+crossings, pole order, or RLCT.
+
 Latest A2 selected-entry chart-image characterization:
 `SelectedEntrySignedBoxMeasure.lean` now proves
 `SelectedEntrySignedBox.CenterCoord.mem_chartMap_image_signedBoxSet_iff`.

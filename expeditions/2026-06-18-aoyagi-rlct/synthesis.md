@@ -10021,6 +10021,24 @@ This does not choose `D` from a base source family or prove multi-edge
 residual-product preservation, parameter-continuity, product charts, measure
 transport, normal crossings, pole order, or RLCT.
 
+Latest A2 single-edge residual-product realisation:
+`ProductReduction.lean` now proves
+`ChartLocalSuffixState.residualProduct_productCoordinateSingleEdge_eq`, and
+`RegularSuspensionCoordinates.lean` exposes the fixed-base wrapper
+`paperEndpointFixedBaseSingleEdgeProductCoordinateMatrixOfEuclidean_residualProduct_eq`.
+For the raw one-edge p.13 matrix
+`[Ctop,-Ctop F2; -F3 Ctop, D + F3 Ctop F2]`, the transformed Schur residual is
+`D` under `IsUnit Ctop.det`; the suffix-state bridge identifies this with the
+ordered residual product.  Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-single-edge-residual-product-realisation.md`,
+`threads/03-block-product-reduction/statement-card-a2-single-edge-residual-product-realisation.md`,
+and
+`threads/03-block-product-reduction/review-a2-single-edge-residual-product-realisation.md`.
+This is the one-edge complement to the multi-edge rank obstruction.  It is not
+a raw lower-right-block identity, does not choose `D` from source data, does
+not construct a product chart or source-measure transport, and does not prove
+normal crossings, pole order, or RLCT.
+
 Latest A2 multi-edge residual-product preservation:
 `ProductReduction.lean` now proves the residual-product congruence and p.13
 specialization:

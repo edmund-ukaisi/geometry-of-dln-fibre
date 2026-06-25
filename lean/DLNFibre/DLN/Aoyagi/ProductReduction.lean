@@ -2110,6 +2110,38 @@ theorem suffixState_D_eq_residualProduct
     simpa [motive] using hcanon
   simpa using hcanon'
 
+/-- In the one-edge p. 13 product-coordinate matrix, the raw residual product
+is the supplied residual block. -/
+theorem residualProduct_productCoordinateSingleEdge_eq
+    {ρ : Type*} {κ : Fin 2 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin 1, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (p : Fin 1)
+    (F2 : Matrix ρ (κ p.castSucc) K)
+    (F3 : Matrix (κ p.succ) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C0 : Matrix (κ p.succ) (κ p.castSucc) K)
+    (hE : E p = productCoordinateSingleEdgeMatrix F2 F3 Ctop C0)
+    (hCtop : IsUnit Ctop.det) :
+    residualProduct E p.succ p.castSucc (Fin.castSucc_le_succ p) = C0 := by
+  let S := suffixState E p.succ p.castSucc (Fin.castSucc_le_succ p)
+  have hfields :
+      S.B = -F2 ∧ S.Ctop = Ctop ∧ S.D = C0 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ p.succ) (κ p.succ) K) := by
+    simpa [S] using
+      suffixState_productCoordinate_fields_one
+        (K := K) E p F2 F3 Ctop C0 hE hCtop
+  have hD :
+      S.D = residualProduct E p.succ p.castSucc (Fin.castSucc_le_succ p) := by
+    simpa [S] using
+      suffixState_D_eq_residualProduct (K := K) E (Fin.castSucc_le_succ p)
+  calc
+    residualProduct E p.succ p.castSucc (Fin.castSucc_le_succ p) = S.D := by
+      rw [← hD]
+    _ = C0 := hfields.2.2.1
+
 /-- Product-family suffix fields for a chain with at least two edges. -/
 theorem suffixState_productFamily_fields_fromBlocks_succSucc
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
