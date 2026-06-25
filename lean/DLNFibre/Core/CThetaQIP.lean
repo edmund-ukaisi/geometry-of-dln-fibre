@@ -22,16 +22,18 @@ whose `codimForm` is *exactly* `G_d(e)` (`codimForm_mOfE`); as `mOfE d e ∈ kos
 **Name = content (the load-bearing caveat).** This is the `≤` half only. The reverse
 `cCodim ≥ qipMin` (every minimiser is in the `e`-image — Lemma 6.4/6.7, the *horizontal-lace
 representability* of top-dimensional orbits) is the HARD converse and is **NOT** proved here;
-`cCodim = qipMin` (Thm 6.1 proper) is therefore **NOT** asserted. The `e`-image is a *proper* subset
-of all Kostant partitions (3 of 6 for `(2,2,2)`), so the substitution alone gives only `≤`. A
-pen-and-paper prototype is working the converse.
+`cCodim = qipMin` (Thm 6.1 proper) is therefore **NOT** asserted in this file. The `e`-image is a
+*proper* subset of all Kostant partitions (3 of 6 for `(2,2,2)`), so the substitution alone gives
+only `≤`. The hard converse `cCodim ≥ qipMin`, hence the equality `cCodim = qipMin`, is **PROVED**
+in `Core.CThetaQIPConverse` (`cCodim_eq_qipMin`).
 
 The **per-orbit** geometric reading (`codimForm` = geometric codimension of the orbit closure `Ō_M`)
 is PROVED in `Core.CThetaGeometric` via the discharged Voigt lemma
 `Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim` (`[IsAlgClosed k] [CharZero k]`);
-the **aggregate** `Σ^0` reading (`cCodim` = geometric codim of the whole zero-product locus `Σ^0`)
-stays open per the `Core.CThetaGeometric` roadmap (it needs `Σ^0`-as-variety + its orbit
-stratification). `cCodim`/`qipMin` here are min-values of ℤ-quadratic forms over finite sets.
+the **aggregate** reading (`cCodim` = geometric codim of the whole *closed* rank-`≤ r` locus `Σ̄^r`)
+is also formalised — `codim Σ̄^r = cCodim d r` (`Core.SigmaCodim`), via the orbit stratification
+(`Core.SigmaStratification`). `cCodim`/`qipMin` here are min-values of ℤ-quadratic forms over finite
+sets.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

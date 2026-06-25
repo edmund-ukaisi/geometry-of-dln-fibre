@@ -1,0 +1,525 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading additional input from stdin...
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef42a-12a1-7fb1-a418-bbbbbfc93666
+--------
+user
+# Frame
+
+Setting: Lean 4 + Mathlib v4.29.0 (toolchain leanprover/lean4:v4.29.0). We work over a fixed
+algebraically closed field k of characteristic 0. Affine varieties are represented as Zariski-closed
+subsets Z ⊆ (σ → k) for a finite index σ (i.e. closed subsets of affine space A^|σ|), and geometric
+dimension is `varietyDim Z := (ringKrullDim (MvPolynomial σ k ⧸ vanishingIdeal k Z)).unbotD 0`,
+geometric codimension is `Ideal.height (vanishingIdeal k Z)`. We already have, for an IRREDUCIBLE
+variety (vanishingIdeal Z prime): `height (vanishingIdeal Z) + varietyDim Z = Nat.card σ` (the
+catenary complement), proved via Mathlib's `height_add_ringKrullDim_quotient_eq` for MvPolynomial
+rings. We also have a transcendence-degree / Kähler-differential ("generic Jacobian rank") route for
+the dimension of the IMAGE of an explicit polynomial parametrisation map μ : G → A^n (used to compute
+the dimension of an algebraic-group orbit as the image of the group under an orbit map).
+
+# Question
+
+Suppose I have a dominant morphism of affine varieties f : X → Y over k, where Y is a single orbit
+of a connected algebraic group G acting on affine space (so Y is smooth, irreducible, homogeneous),
+and f is G-equivariant for a G-action on X covering the G-action on Y. Classically this makes
+f : X → Y a Zariski-locally-trivial fibre bundle, so dim X = dim Y + dim(f⁻¹(y)) for any y ∈ Y, and
+in particular codim_{A^N} f⁻¹(y) = codim_{A^N} X + dim Y.
+
+In Lean 4 + Mathlib v4.29 affine-variety terms (heights of ideals in MvPolynomial rings, ringKrullDim,
+Algebra.trdeg, the StandardSmooth/etale relative-dimension API, the Krull-dimension polynomial lemmas
+like `MvPolynomial.ringKrullDim_of_isNoetherianRing : ringKrullDim (MvPolynomial ι R) = ringKrullDim R
++ Nat.card ι`):
+
+1. What does it actually take to prove `dim X = dim Y + dim (fibre f y)` for such a homogeneous-base
+   locally-trivial bundle? Itemise the intermediate lemmas/theorems needed, and for each say whether
+   Mathlib v4.29 has it, has a close cousin, or lacks it entirely.
+
+2. Is there a SHORTER route that avoids building "locally trivial bundle" as a first-class object —
+   e.g. a purely commutative-algebra fibre-dimension statement (dim of a fibre ring of a flat or
+   smooth or just dominant finite-type morphism), or an equidimensionality / going-down argument, or
+   reduction to `MvPolynomial.ringKrullDim_of_isNoetherianRing` via a global trivialisation? If so,
+   what are its hypotheses and which Mathlib pieces does it rest on?
+
+3. What is the single hardest missing piece — the one theorem whose absence is the real obstruction —
+   and roughly how much from-scratch development (in module-count terms) would it be at this Mathlib
+   pin?
+
+Be concrete about Mathlib v4.29 API names where you can. If you believe the clean general statement is
+simply not reachable without a substantial from-scratch dimension-theory-of-morphisms build, say so
+plainly and characterise that build.
+codex
+I’ll check the local repo instructions and then inspect the pinned Mathlib surface/API from the workspace if it is vendored or available via Lake cache. For the Mathlib claims, I’ll rely on source/docs rather than memory.
+exec
+/bin/bash -lc "sed -n '1,220p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'lakefile.*' -g 'lean-toolchain' -g 'lake-manifest.json' -g '.lake/**'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+ exited 1 in 355ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+
+ exited 2 in 422ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+The thread directory itself is sparse, so I’m going to walk upward just enough to find the repo root and the local instructions before checking the Lean dependency tree.
+exec
+/bin/bash -lc 'git rev-parse --show-toplevel' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+2026-06-23T11:07:57.858161Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+ exited 1:
+2026-06-23T11:07:57.863954Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'git rev-parse --show-toplevel'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc 'find .. -maxdepth 4 -name CLAUDE.md -o -name AGENTS.md -o -name lean-toolchain -o -name lakefile.lean -o -name lake-manifest.json' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+ succeeded in 173ms:
+ succeeded in 187ms:
+total 20
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jun 23 11:07 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun 23 11:07 ..
+-rw-rw-r-- 1 ubuntu ubuntu    0 Jun 23 11:07 bundle-dim-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 2997 Jun 23 11:07 bundle-dim-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 5802 Jun 23 11:07 bundle-dim-stderr.log
+
+codex
+This sandbox can read only the thread root, not the parent worktree, so I can’t directly inspect the local Lean checkout from here. I’ll use official Mathlib source/docs for API verification and cross-check against the prompt’s pinned version.
+web search: 
+web search: Mathlib v4.29.0 height_add_ringKrullDim_quotient_eq MvPolynomial.ringKrullDim_of_isNoetherianRing StandardSmooth etale relative dimension
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs Mathlib.RingTheory.KrullDimension height_add_ringKrullDim_quotient_eq
+web search: 
+web search: site:leanprover-community.github.io/mathlib_docs4 height_add_ringKrullDim_quotient_eq
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: github.com/leanprover-community/mathlib4/tree/v4.29.0 Mathlib RingTheory KrullDimension
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib/RingTheory/KrullDimension
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: raw.githubusercontent.com leanprover-community mathlib4 v4.29.0 RingTheory KrullDimension Noetherian.lean
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/e568743e9c24da15c8f8347a47931d2a6c33ff85/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/raw/e568743e9c24da15c8f8347a47931d2a6c33ff85/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean?download=
+web search: 
+web search: 'relative' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/Morphisms/Smooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/Basic.html
+web search: 
+web search: 'StandardSmoothOfRelativeDimension' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib RingTheory Etale Basic Algebra.Etale
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Etale/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs MvPolynomial.ringKrullDim_of_isNoetherianRing Mathlib
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPolynomial/Basic.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/find/?pattern=MvPolynomial.ringKrullDim_of_isNoetherianRing
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Noetherian.html
+codex
+The public docs confirm the relevant smooth/standard-smooth APIs, but the exact Krull-dimension module URLs are not being indexed cleanly. I’ll do a local read-only search in the installed environment next; if it is blocked, I’ll separate “confirmed name” from “expected or prompt-stated name” in the answer.
+exec
+/bin/bash -lc "find /home/ubuntu -path '*Mathlib*' -type f -name '*.lean' 2>/dev/null | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc "find /home/ubuntu -name 'lean-toolchain' -o -name 'lake-manifest.json' 2>/dev/null | head -100" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+2026-06-23T11:09:01.224519Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+2026-06-23T11:09:01.224595Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+ exited 1:
+ exited 1:
+2026-06-23T11:09:01.239312Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find /home/ubuntu -path '*Mathlib*' -type f -name '*.lean' 2>/dev/null | head -200"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+2026-06-23T11:09:01.240188Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find /home/ubuntu -name 'lean-toolchain' -o -name 'lake-manifest.json' 2>/dev/null | head -100"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+web search: 
+web search: https://api.github.com/repos/leanprover-community/mathlib4/contents/Mathlib/RingTheory/KrullDimension?ref=v4.29.0
+web search: 
+web search: api.github.com repos leanprover-community mathlib4 contents Mathlib RingTheory KrullDimension ref v4.29.0
+web search: 
+web search: loogle height_add_ringKrullDim_quotient_eq
+web search: 
+web search: loogle.lean-lang.org MvPolynomial.ringKrullDim_of_isNoetherianRing
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+codex
+I’m going to try a direct read of the tagged Mathlib source through `curl`; that gives the cleanest answer for exact declaration names. It is read-only network access, so if the sandbox rejects it I’ll continue from the public docs and known declarations.
+2026-06-23T11:09:18.778591Z ERROR codex_core::tools::router: error=approval policy is UnlessTrusted; reject command — you cannot ask for escalated permissions if the approval policy is UnlessTrusted
+web search: 
+web search: https://github.com/leanprover-community/mathlib4
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/releases/tag/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/8a17838/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/8a17838/Mathlib/RingTheory/KrullDimension
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/releases/tag/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib
+web search: 
+web search: github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/Morphisms/Smooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential"
+web search: 
+web search: "ringKrullDim_of_isNoetherianRing" "MvPolynomial"
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension "ringKrullDim"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: Mathlib.RingTheory.KrullDimension.Height mathlib4_docs
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Ideal/Height.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Ideal/Height.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPolynomial/Basic.html
+web search: 
+web search: "Mathlib.RingTheory.Polynomial.Dimension"
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "AlgebraicGeometry.Scheme" "krullDim"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/KrullDimension.html
+web search: 
+web search: "height_add_ringKrullDim_quotient_eq" "leanprover"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Catenary.html
+codex
+I have enough API context now. The main conclusion is that the group-equivariant geometry is not the bottleneck; the missing black box is a dimension theorem for finite-type/flat morphisms, or equivalently a robust product/fibre dimension theory for affine coordinate rings.
+exec
+/bin/bash -lc "sed -n '1,220p' bundle-dim-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc "sed -n '1,220p' bundle-dim-stderr.log" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+ succeeded in 0ms:
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading additional input from stdin...
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef42a-12a1-7fb1-a418-bbbbbfc93666
+--------
+user
+# Frame
+
+Setting: Lean 4 + Mathlib v4.29.0 (toolchain leanprover/lean4:v4.29.0). We work over a fixed
+algebraically closed field k of characteristic 0. Affine varieties are represented as Zariski-closed
+subsets Z ⊆ (σ → k) for a finite index σ (i.e. closed subsets of affine space A^|σ|), and geometric
+dimension is `varietyDim Z := (ringKrullDim (MvPolynomial σ k ⧸ vanishingIdeal k Z)).unbotD 0`,
+geometric codimension is `Ideal.height (vanishingIdeal k Z)`. We already have, for an IRREDUCIBLE
+variety (vanishingIdeal Z prime): `height (vanishingIdeal Z) + varietyDim Z = Nat.card σ` (the
+catenary complement), proved via Mathlib's `height_add_ringKrullDim_quotient_eq` for MvPolynomial
+rings. We also have a transcendence-degree / Kähler-differential ("generic Jacobian rank") route for
+the dimension of the IMAGE of an explicit polynomial parametrisation map μ : G → A^n (used to compute
+the dimension of an algebraic-group orbit as the image of the group under an orbit map).
+
+# Question
+
+Suppose I have a dominant morphism of affine varieties f : X → Y over k, where Y is a single orbit
+of a connected algebraic group G acting on affine space (so Y is smooth, irreducible, homogeneous),
+and f is G-equivariant for a G-action on X covering the G-action on Y. Classically this makes
+f : X → Y a Zariski-locally-trivial fibre bundle, so dim X = dim Y + dim(f⁻¹(y)) for any y ∈ Y, and
+in particular codim_{A^N} f⁻¹(y) = codim_{A^N} X + dim Y.
+
+In Lean 4 + Mathlib v4.29 affine-variety terms (heights of ideals in MvPolynomial rings, ringKrullDim,
+Algebra.trdeg, the StandardSmooth/etale relative-dimension API, the Krull-dimension polynomial lemmas
+like `MvPolynomial.ringKrullDim_of_isNoetherianRing : ringKrullDim (MvPolynomial ι R) = ringKrullDim R
++ Nat.card ι`):
+
+1. What does it actually take to prove `dim X = dim Y + dim (fibre f y)` for such a homogeneous-base
+   locally-trivial bundle? Itemise the intermediate lemmas/theorems needed, and for each say whether
+   Mathlib v4.29 has it, has a close cousin, or lacks it entirely.
+
+2. Is there a SHORTER route that avoids building "locally trivial bundle" as a first-class object —
+   e.g. a purely commutative-algebra fibre-dimension statement (dim of a fibre ring of a flat or
+   smooth or just dominant finite-type morphism), or an equidimensionality / going-down argument, or
+   reduction to `MvPolynomial.ringKrullDim_of_isNoetherianRing` via a global trivialisation? If so,
+   what are its hypotheses and which Mathlib pieces does it rest on?
+
+3. What is the single hardest missing piece — the one theorem whose absence is the real obstruction —
+   and roughly how much from-scratch development (in module-count terms) would it be at this Mathlib
+   pin?
+
+Be concrete about Mathlib v4.29 API names where you can. If you believe the clean general statement is
+simply not reachable without a substantial from-scratch dimension-theory-of-morphisms build, say so
+plainly and characterise that build.
+codex
+I’ll check the local repo instructions and then inspect the pinned Mathlib surface/API from the workspace if it is vendored or available via Lake cache. For the Mathlib claims, I’ll rely on source/docs rather than memory.
+exec
+/bin/bash -lc "sed -n '1,220p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'lakefile.*' -g 'lean-toolchain' -g 'lake-manifest.json' -g '.lake/**'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+ exited 1 in 355ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+
+ exited 2 in 422ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+The thread directory itself is sparse, so I’m going to walk upward just enough to find the repo root and the local instructions before checking the Lean dependency tree.
+exec
+/bin/bash -lc 'git rev-parse --show-toplevel' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+2026-06-23T11:07:57.858161Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+ exited 1:
+2026-06-23T11:07:57.863954Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'git rev-parse --show-toplevel'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc 'find .. -maxdepth 4 -name CLAUDE.md -o -name AGENTS.md -o -name lean-toolchain -o -name lakefile.lean -o -name lake-manifest.json' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+ succeeded in 173ms:
+ succeeded in 187ms:
+total 20
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jun 23 11:07 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun 23 11:07 ..
+-rw-rw-r-- 1 ubuntu ubuntu    0 Jun 23 11:07 bundle-dim-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 2997 Jun 23 11:07 bundle-dim-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 5802 Jun 23 11:07 bundle-dim-stderr.log
+
+codex
+This sandbox can read only the thread root, not the parent worktree, so I can’t directly inspect the local Lean checkout from here. I’ll use official Mathlib source/docs for API verification and cross-check against the prompt’s pinned version.
+web search: 
+web search: Mathlib v4.29.0 height_add_ringKrullDim_quotient_eq MvPolynomial.ringKrullDim_of_isNoetherianRing StandardSmooth etale relative dimension
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs Mathlib.RingTheory.KrullDimension height_add_ringKrullDim_quotient_eq
+web search: 
+web search: site:leanprover-community.github.io/mathlib_docs4 height_add_ringKrullDim_quotient_eq
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: github.com/leanprover-community/mathlib4/tree/v4.29.0 Mathlib RingTheory KrullDimension
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib/RingTheory/KrullDimension
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: raw.githubusercontent.com leanprover-community mathlib4 v4.29.0 RingTheory KrullDimension Noetherian.lean
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/e568743e9c24da15c8f8347a47931d2a6c33ff85/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/raw/e568743e9c24da15c8f8347a47931d2a6c33ff85/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean?download=
+web search: 
+web search: 'relative' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/Morphisms/Smooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/Basic.html
+web search: 
+web search: 'StandardSmoothOfRelativeDimension' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib RingTheory Etale Basic Algebra.Etale
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Etale/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs MvPolynomial.ringKrullDim_of_isNoetherianRing Mathlib
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPolynomial/Basic.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/find/?pattern=MvPolynomial.ringKrullDim_of_isNoetherianRing
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Noetherian.html
+codex
+The public docs confirm the relevant smooth/standard-smooth APIs, but the exact Krull-dimension module URLs are not being indexed cleanly. I’ll do a local read-only search in the installed environment next; if it is blocked, I’ll separate “confirmed name” from “expected or prompt-stated name” in the answer.
+exec
+/bin/bash -lc "find /home/ubuntu -path '*Mathlib*' -type f -name '*.lean' 2>/dev/null | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+exec
+/bin/bash -lc "find /home/ubuntu -name 'lean-toolchain' -o -name 'lake-manifest.json' 2>/dev/null | head -100" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+2026-06-23T11:09:01.224519Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+2026-06-23T11:09:01.224595Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef42a-12a1-7fb1-a418-bbbbbfc93666`" }
+ exited 1:
+ exited 1:
+2026-06-23T11:09:01.239312Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find /home/ubuntu -path '*Mathlib*' -type f -name '*.lean' 2>/dev/null | head -200"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+2026-06-23T11:09:01.240188Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find /home/ubuntu -name 'lean-toolchain' -o -name 'lake-manifest.json' 2>/dev/null | head -100"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+web search: 
+web search: https://api.github.com/repos/leanprover-community/mathlib4/contents/Mathlib/RingTheory/KrullDimension?ref=v4.29.0
+web search: 
+web search: api.github.com repos leanprover-community mathlib4 contents Mathlib RingTheory KrullDimension ref v4.29.0
+web search: 
+web search: loogle height_add_ringKrullDim_quotient_eq
+web search: 
+web search: loogle.lean-lang.org MvPolynomial.ringKrullDim_of_isNoetherianRing
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+codex
+I’m going to try a direct read of the tagged Mathlib source through `curl`; that gives the cleanest answer for exact declaration names. It is read-only network access, so if the sandbox rejects it I’ll continue from the public docs and known declarations.
+2026-06-23T11:09:18.778591Z ERROR codex_core::tools::router: error=approval policy is UnlessTrusted; reject command — you cannot ask for escalated permissions if the approval policy is UnlessTrusted
+web search: 
+web search: https://github.com/leanprover-community/mathlib4
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/releases/tag/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/8a17838/Mathlib/RingTheory/KrullDimension/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/8a17838/Mathlib/RingTheory/KrullDimension
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/releases/tag/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/tree/v4.29.0/Mathlib
+web search: 
+web search: github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/AlgebraicGeometry/Morphisms/Smooth.lean
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicGeometry/Morphisms/Smooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Smooth/StandardSmooth.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential"
+web search: 
+web search: "ringKrullDim_of_isNoetherianRing" "MvPolynomial"
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension "ringKrullDim"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Basic.html
+web search: 
+web search: Mathlib.RingTheory.KrullDimension.Height mathlib4_docs
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Ideal/Height.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Ideal/Height.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPolynomial/Basic.html
+web search: 
+web search: "Mathlib.RingTheory.Polynomial.Dimension"
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "AlgebraicGeometry.Scheme" "krullDim"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/KrullDimension.html
+web search: 
+web search: "height_add_ringKrullDim_quotient_eq" "leanprover"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/KrullDimension/Catenary.html
+codex
+I have enough API context now. The main conclusion is that the group-equivariant geometry is not the bottleneck; the missing black box is a dimension theorem for finite-type/flat morphisms, or equivalently a robust product/fibre dimension theory for affine coordinate rings.
+exec
+/bin/bash -lc "sed -n '1,220p' bundle-dim-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/01-recon/codex
+
+ succeeded in 144ms:
+codex
+Short answer: the clean general statement is not realistically reachable in Mathlib v4.29 without building substantial dimension theory for morphisms. The group/homogeneous-base story is not the main blocker; the blocker is turning “finite type family with constant fibre” into a `ringKrullDim` equality.
+
+**1. What The Bundle Proof Needs**
+
+To prove
+
+```lean
+varietyDim X = varietyDim Y + varietyDim (fibre f y)
+```
+
+for a locally trivial affine-variety bundle, you would need roughly:
+
+| Needed lemma/theorem | Status in Mathlib v4.29 terms |
+|---|---|
+| Polynomial map induces a coordinate-ring map `k[Y] →ₐ[k] k[X]` | Mostly local/project-specific for your closed-subset model. Mathlib has the algebra pieces, not your variety wrapper. |
+| Dominance iff coordinate-ring map is injective | Close cousins in scheme/algebraic geometry, but for your `vanishingIdeal` affine-subset setup this is a Nullstellensatz bridge you likely must prove. |
+| Fibre coordinate ring identification: `k[fibre f y] ≃ k[X] ⊗_{k[Y]} k` or quotient by pulled-back maximal ideal | Algebra pieces exist: quotients, tensor products, ideals. The geometric fibre/vanishing-ideal equality is missing for your model. |
+| Equivariance + transitive `G`-action gives all fibres isomorphic | Group-action API exists, but algebraic group actions/orbit varieties/local triviality are not packaged at this level. Likely project-specific. |
+| Zariski local triviality as first-class data: open cover `Uᵢ` with `f ⁻¹ Uᵢ ≃ Uᵢ × F` | Essentially absent for affine varieties. Scheme local-property infrastructure exists, but not a ready affine-variety bundle API. |
+| Dimension is local on a nonempty open cover | Missing for your `varietyDim`. There are Krull/topological dimension APIs, but not this affine-variety theorem. |
+| Nonempty open subset of irreducible affine variety has same dimension | Missing in your wrapper. Ring-localization height tools are close cousins. |
+| Product dimension: `dim (U × F) = dim U + dim F` | Major missing piece. For `F = A^r`, this reduces to polynomial-ring dimension, but for general affine `F` it needs tensor-product/finitely-generated-algebra dimension theory. |
+| Convert dimension equality to codimension equality | You already have the irreducible catenary complement using `height_add_ringKrullDim_quotient_eq`; this part is available once irreducibility/primality hypotheses are in place. |
+
+Mathlib does have the basic `ringKrullDim` and `Ideal.height` infrastructure, and the smooth/standard-smooth APIs exist on both the ring and scheme sides. Current generated docs expose `AlgebraicGeometry.Smooth`, `SmoothOfRelativeDimension`, and standard-smooth relative-dimension predicates such as `RingHom.IsStandardSmoothOfRelativeDimension` / `Algebra.IsStandardSmoothOfRelativeDimension`; they also expose the basic Krull-dimension and ideal-height namespaces. citeturn10view0turn12view0turn16view1turn18view1
+
+**2. Shorter Routes**
+
+The shortest viable route is not “formalize locally trivial bundles”; it is a commutative-algebra theorem of the following shape:
+
+```lean
+-- schematic statement
+φ : A →ₐ[k] B
+A, B finitely generated k-algebras
+A irreducible/equidimensional/catenary
+B flat over A
+all fibres have ringKrullDim d
+⊢ ringKrullDim B = ringKrullDim A + d
+```
+
+Then your homogeneous/equivariant input only has to show flatness or local triviality, and that all closed fibres are isomorphic, hence have the same `varietyDim`.
+
+Mathlib has `Flat`, smooth/étale APIs, standard-smooth relative-dimension structure, base-change style infrastructure, and polynomial-ring Krull-dimension lemmas such as the `MvPolynomial.ringKrullDim_of_isNoetherianRing` theorem you mention. But it does not appear to have the needed theorem:
+
+```lean
+flat finite type morphism + constant fibre dimension
+  ⇒ dim total = dim base + fibre dimension
+```
+
+nor the weaker generic fibre theorem:
+
+```lean
+dominant finite type morphism of irreducible affine varieties
+  ⇒ dim X = dim Y + dim generic fibre
+```
+
+A global trivialisation helps only in special cases. If you can prove
+
+```lean
+k[X] ≃ₐ[k] k[Y][t₁, ..., tᵣ]
+```
+
+then `MvPolynomial.ringKrullDim_of_isNoetherianRing` basically gives the result. If instead
+
+```lean
+k[X] ≃ₐ[k] k[Y] ⊗[k] k[F]
+```
+
+for a general affine fibre `F`, you still need the missing tensor-product/product dimension theorem.
+
+The smooth route is also too narrow. If `f` is smooth of relative dimension `d`, Mathlib has close API support for expressing that, but you would still need the theorem connecting `SmoothOfRelativeDimension d` to `ringKrullDim` of total spaces and fibres. And your bundle fibre need not be smooth.
+
+**3. Hardest Missing Piece**
+
+The real missing theorem is a dimension theorem for finite-type morphisms, preferably in ring form:
+
+```lean
+-- one useful target
+theorem ringKrullDim_eq_base_add_fibreDim_of_flat_finiteType
+  (φ : A →+* B)
+  [IsNoetherianRing A] [Algebra.FiniteType A B]
+  [Flat A B]
+  (constant_fibre_dim : ∀ p, ringKrullDim (B ⊗[A] κ(p)) = d) :
+  ringKrullDim B = ringKrullDim A + d
+```
+
+A more classical variant would be the generic fibre dimension theorem plus upper semicontinuity/equidimensionality for flat finite-type maps.
+
+At this Mathlib pin, I would budget this as a substantial development, not a lemma or two: roughly 8-15 focused modules if you stay affine/ring-theoretic, more if you route through schemes. The build would include coordinate-ring/fibre-ring identification, localization and open-subset dimension lemmas, product/tensor-product dimension over algebraically closed fields, generic fibre dimension, flat/equidimensional fibre dimension, and bridges back to your `varietyDim`/`height` definitions.
+
+So: for the paper formalisation, the pragmatic route is to avoid proving the general homogeneous-bundle theorem unless it becomes central. Use explicit parametrisation/Jacobian-rank/trdeg computations where possible, or prove a narrowly tailored global-trivialisation/polynomial-extension statement for the specific fibre.
+tokens used
+222,598

@@ -32,10 +32,11 @@ square-completion bridge gives `C`.
 `θ` (**`qipNumMinimisers_eq_cTheta`**: the number of `Gqip`-minimisers is `C(m, |δ|)`, via the
 minimiser ↔ `|δ|`-subset-of-`qipLow` bijection — the integer-square equality characterization
 `sumSq_eq_abs_characterization` pins minimisers to `{0, sgn δ}`-valued `t`-vectors). The proofs need
-`Monotone d`. Nothing here asserts the **aggregate** geometric reading (`C = codim Σ⁰`); the
+`Monotone d`. Nothing here asserts the **aggregate** geometric reading directly; the
 **per-orbit** geometric reading (`codimForm` = geometric orbit-closure codimension) is PROVED in
-`Core.CThetaGeometric`, while the aggregate `Σ⁰` reading stays open per the `Core.CThetaGeometric`
-roadmap (it needs `Σ⁰`-as-variety + its orbit stratification). `cValue`/`cTheta` read `d` through its order-sensitive
+`Core.CThetaGeometric`, and the aggregate reading `codim Σ̄^r = cCodim d r` is PROVED in
+`Core.SigmaCodim` (over the orbit stratification `Core.SigmaStratification`). `cValue`/`cTheta` read
+`d` through its order-sensitive
 prefix data (`qipM`/`qipS`/`qipRound`/`qipDelta`), so **permutation invariance of `(C, θ)`
 (Cor 5.10) is NOT a corollary of this file** — see the thread retrospective for the obstruction.
 

@@ -31,7 +31,7 @@ multiplication map $\operatorname{mult}(A_\ast)=A_N\cdots A_1$, we want, in hone
             explicit lattice-point formula (§7, Thm 7.10)
         │
         ▼
-   rlct(K^DLN_B) = C/2   (§8, Thm 8.6;  uses the cited rlct ≤ ½·codim bound, Aoyagi/Watanabe)
+   rlct(K^DLN_B) = C/2   (§8, Thm 8.6;  via the cited rlct = ½·codim equality, Aoyagi/Watanabe)
 ```
 
 Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT payoff → `DLNFibre.DLN`.
@@ -91,6 +91,32 @@ $\theta=\operatorname{cTheta}((\underline d-r)\circ\operatorname{sort})$ for any
 **Remaining in Bundle 1 (future):** the §4 **fibre-codim reduction (Lemma 4.6)** — the per-orbit
 geometric reading (`codimForm` = geometric codimension of the orbit closure $\bar O_M$) is **Proved**
 (Bundle 2 / `voigt-discharge`).
+
+**Lemma 4.6 bundle-shift `codim(fibre B) = C + r(d₀+d_N−r)` — PROVED unconditionally, zero-cite for the
+geometry (expedition `fibre-codim`, 2026-06-25).** `Core.FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift`:
+for any rank-`r` `B` over an algebraically closed char-0 field (`k : Type 0`),
+`codimRepCanonical (fibre d B) = (cCodim d r h).toNat + r·(d_N + d_0 − r)` — **no Cited interface for the
+geometry**. Build green, `scripts/sorries` 0, `#print axioms = [propext, Classical.choice, Quot.sound]`
+(no `sorryAx`). Minimal-hyp form: only `[IsAlgClosed][CharZero]` + `h : (kostantPartitions d r).Nonempty`
++ `B.rank = r`. **Double-gated by independent decorrelated review:** `e`-fidelity (#67 PASS) and codim↔paper
+fidelity (#68 PASS — matches LR Lemma 4.6, `(2,2,2)` checked by hand+`decide`, no overclaim;
+`reviews/68-codim-final-fidelity.md`).
+**The route that broke the earlier residual (route-β):** the `BundleShiftInterface` residual — the deep
+flat/smooth trivialization of `Σ̄^r`, left by the 2026-06-24 outcome as a "circular-as-a-Lean-route,
+≥2-module from-scratch AG sub-project" — was BUILT directly as the **localized chart `AlgEquiv`**
+`Core.ChartLocalizedAlgEquiv.chartLocalizedAlgEquiv : O(Σ^r)[1/Δ] ≃ₐ[k] O(F)⊗stratum[1/g]`, staying
+**radical-insensitive (vanishingIdeal-side) throughout** so the `IsReduced`-then-build circularity never
+arises. Seams A–E (the Ψ/Φ comorphism descents + the gauge-group-law round-trips, the matrix-inverse wall
+sidestepped at the units level); fed with the **source no-drop** `Core.SourceNoDrop` (Fact B `detΔ∉P` +
+the ℕ∞ catenary, riding only the *free* orbit-in-Σ^r containment — no closure-density entanglement) through
+`Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv` → **hSweep** (`varietyDim Σ^r = δ + varietyDim F`,
+now a Proved lemma) → the route-c assembly `Core.RouteCAssembly` (carries the in-repo `hClosure`).
+**Scope:** `k : Type 0` (the DLN field — ℝ/ℂ; a universe lift is roadmap-able, loses nothing for the
+application). **Still Cited (out of scope):** `rlct = ½·codim` (Aoyagi/Watanabe). **Payoff DISCHARGED
+(#52):** `DLN.BundleShiftDischarge` proves the bundle shift from Core (`bundleShift_of_core`); the rewired
+`rlct_lossDLN_eq_half_cCodim_add_shift` rests on ONLY the Cited Aoyagi `RlctInterface` — the destination
+`rlct = C/2` is realized (geometric half zero-cite; only the Aoyagi `rlct = ½·codim` equality Cited). Full record:
+`expeditions/2026-06-23-fibre-codim/synthesis.md`.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,

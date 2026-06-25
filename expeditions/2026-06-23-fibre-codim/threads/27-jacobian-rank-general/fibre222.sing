@@ -1,0 +1,31 @@
+// Exact Krull dimension + primary decomposition of mult^{-1}(E) for (2,2,2), E=diag(I_1,0)
+// A0 = [[a,b],[c,d]], A1 = [[e,f],[g,h]], product P = A1*A0, equations P = E=[[1,0],[0,0]].
+LIB "primdec.lib";
+ring R = 0, (a,b,c,d,e,f,g,h), dp;
+// A1*A0 entries:
+// P[1,1] = e*a + f*c ; P[1,2] = e*b + f*d
+// P[2,1] = g*a + h*c ; P[2,2] = g*b + h*d
+ideal I =
+  e*a + f*c - 1,
+  e*b + f*d,
+  g*a + h*c,
+  g*b + h*d;
+"=== ambient dim 8; dim V(I) (fibre over E, rank-1): ===";
+dim(std(I));
+"=== codim fibre = 8 - dim: ===";
+"=== primary decomposition (components): ===";
+list pd = primdecGTZ(I);
+"number of components:";
+size(pd);
+int k;
+for (k=1; k<=size(pd); k++) {
+  "--- component", k, ": dim of associated prime =";
+  dim(std(pd[k][2]));
+}
+"=== radical check: is I radical? (I == radical(I)) ===";
+ideal rI = radical(I);
+"dim radical:"; dim(std(rI));
+// I radical iff std(I) and std(rI) generate same ideal; compare via reduce
+"reduce(I, std(rI)) zero? (I subset rad always); reduce(rad, std(I)):";
+size(reduce(rI, std(I)));
+$

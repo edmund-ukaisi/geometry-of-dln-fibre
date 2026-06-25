@@ -35,7 +35,7 @@ The stance:
   reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
   Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
   recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
-  reading needs the cited analytic bound.)
+  reading needs the cited Aoyagi equality.)
 - **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
   "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
   the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
@@ -125,8 +125,9 @@ networks:
   in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
   surprising **permutation invariance** of $(C,\theta)$;
 - the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
-  singular". The geometric codimension is the new content; the `rlct ≤ ½·codim` direction is **Cited**
-  (Aoyagi / Watanabe).
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
 
 The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
 DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.

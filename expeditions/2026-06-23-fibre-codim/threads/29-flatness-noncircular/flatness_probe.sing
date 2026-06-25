@@ -1,0 +1,27 @@
+// Thread 29: non-circular flatness probe. Run: Singular -q flatness_probe.sing
+// (3,3,3) r=1: the decisive case (Sigma^bar reducible, fibre non-equidim).
+LIB "primdec.lib";
+ring r = 0, (a(1..9), b(1..9)), dp;
+matrix A1[3][3] = a(1),a(2),a(3),a(4),a(5),a(6),a(7),a(8),a(9);
+matrix A2[3][3] = b(1),b(2),b(3),b(4),b(5),b(6),b(7),b(8),b(9);
+matrix P = A2*A1;
+// 1. Sigma^bar = rank<=1 product locus: REDUCIBLE, dims 15,14,14 (top = card-C = 18-3).
+ideal Isig = minor(P,2);
+list ps = minAssGTZ(Isig);
+"Sigmabar comps:"; int c; for(c=1;c<=size(ps);c++){ "  dim="+string(dim(std(ps[c]))); }
+// 2. CM: pd(O(Sigmabar)) = codim = 3 (Hochster-Eagon; Auslander-Buchsbaum => depth=dim => CM).
+resolution re = sres(std(Isig),0); "pd O(Sigmabar):"; size(re)-1;
+// 3. Fibre over E: components 10,9,9. dim-10 (both factors rank<=2), dim-9 (one factor in GL).
+ideal FE; int i,j;
+for(i=1;i<=3;i++){for(j=1;j<=3;j++){ if(i==1&&j==1){FE=FE,P[i,j]-1;}else{FE=FE,P[i,j];} }}
+list pe = minAssGTZ(FE); "E-fibre comps:"; for(c=1;c<=size(pe);c++){ "  dim="+string(dim(std(pe[c]))); }
+// 4. ALL E-fibre comps have P=E exactly (rank 1) => meet exact-rank chart {P11 invertible}.
+//    => chart fibre NOT equidimensional (kills miracle-flatness equidim hypothesis at E).
+// 5. Hilbert constancy: every chart fibre (E + generics) has (dim,mult)=(10,60) => FLAT family,
+//    but flatness AT E is a product-decomposition statement, not provable by generic flatness.
+proc fd(ideal I){ def G=std(I); return("(dim="+string(dim(G))+",mult="+string(mult(G))+")"); }
+intvec u=1,5,7; intvec v=1,3,4; ideal Fg;
+for(i=1;i<=3;i++){for(j=1;j<=3;j++){ Fg=Fg, P[i,j]-u[i]*v[j]; }}
+"E-fibre   "+fd(FE);
+"gen-fibre "+fd(Fg);
+quit;

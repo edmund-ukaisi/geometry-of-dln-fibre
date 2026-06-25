@@ -1,0 +1,1857 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ef8e9-fc36-7ca2-bdff-0d92dd4dd084
+--------
+user
+# Codex consult — G2-3 total-space presentation + flatness (decorrelated design review)
+
+You are a decorrelated second opinion for a Lean 4 + Mathlib (v4.29) formalisation of
+Lehalleur–Rimányi (2024) "Geometry of the fibers of the multiplication map of deep linear
+networks", Lemma 4.6. I want you to red-team a proposed route and propose a cheaper one if you see it.
+
+## The setup (precise objects)
+
+- Dimension vector `d = (d_0,...,d_N)`. `Rep_d = ∏_{i=1}^N Mat_{d_i × d_{i-1}}(k)` (k alg-closed, char 0).
+- `mult : Rep_d → Mat_{d_N × d_0}`, `(A_1,...,A_N) ↦ A_N···A_1`.
+- `Σ̄^r = {A ∈ Rep_d : rank(mult A) ≤ r}` (closed product-rank locus).
+- `fibre(B) = mult⁻¹(B)` for `B` of exact rank `r`.
+- Coordinate ring of `Rep_d` = `MvPolynomial (factor entries) k` (the variables are the entries of
+  the `A_i`, NOT the product entries).
+
+## What is ALREADY formalised (reuse, do not rebuild)
+
+1. **Brick A**: `codim_{Rep_d}(Σ̄^r) = C = cCodim d r` (combinatorial codim), proved, general r,
+   via orbit-closure / Kostant-partition machinery.
+2. **G2-2 (the BASE presentation)**: for a SINGLE matrix `Mat^{rk≤r}_{q×p}` (the TARGET matrix
+   space, treated as `dStratum` = the N=1 case), localized at the pivot r×r minor `detΔ`:
+   `A_loc / Iad ≅ₐ[k] Sd` where `Sd = Localization.Away detSchurS` is regular of dimension
+   `δ = r(p+q−r)`, and `height Iad = C = (p−r)(q−r)`. This works because the target entries ARE
+   coordinate variables, so the bottom-right `B22` block is forced by the Schur complement
+   `B22 = B21 Δ⁻¹ B12`, and the rank ideal localizes to a graph ideal `J = graphIdeal forcedB22`.
+3. **Graph-ideal height engine** (general): for finite σ,τ and any `c : σ → MvPolynomial τ k`
+   (or to a localization `Sd`), `height(graphIdeal c) = #σ`. Network-free.
+4. **Bordered Schur minor identity** (any comm ring): `det[[Δ,u],[v,d]] = d·detΔ − v·adj(Δ)·u`.
+5. **Going-down height-additivity** (LANDED in Mathlib v4.29):
+   `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P` :
+   `height_S P = height_R p + height_{S/pS}(P/pS)` for `R → S` with `HasGoingDown` (flat ⟹ this).
+6. **Flat-quasi-finite height** brick: flat + quasi-finite-at-Q ⟹ `height_S Q = height_R (Q∩R)`.
+7. The fibre comorphism `multComap : MvPoly[target entries] →ₐ[k] MvPoly[factor entries]`,
+   `X_{rc} ↦ multPoly d r c = (mult d genericTuple)_{rc}` (degree-N polynomials), and
+   `fibreGenIdeal d B = map multComap (maxIdealOfPoint B)`.
+
+## The TARGET to discharge
+
+`codim_{Rep_d}(fibre B) = C + δ` (as ℕ∞ ideal heights), i.e. `codim_{Σ̄^r}(fibre) = δ`.
+
+## My proposed CHART chain (red-team this)
+
+Localize `Rep_d` at the pulled-back pivot `Δ_tot = multComap(detΔ)` = the product-pivot minor.
+- `R := Sd` = O(target rank locus chart), regular dim δ (= G2-2's output ring).
+- `S := B_loc` = O(Σ̄^r ∩ chart), a `Sd`-algebra via the localized comorphism.
+- Claim local-triviality: `S ≅ₐ[Sd] Sd ⊗_k F_E` (free over Sd), where `F_E` = O(fibre over the
+  normal form `E = diag(I_r,0)`) — a "zero-product-type" ring, reducible (e.g. anchor `(2,2,2),r=1`:
+  `F_E = k[u,v,X,Z,ℓ,m]/(uX+vZ−1, ℓm)`).
+- Free ⟹ flat ⟹ HasGoingDown. Take `P` a minimal prime of the fibre in `S`, lying over the maximal
+  ideal `m_B` of the point `B` in `R` (height δ since R regular dim δ, m_B maximal). `P` minimal in
+  the fibre ring `F_E` ⟹ relative height 0. So `height_S P = δ + 0 = δ`. Min over components ⟹
+  `codim_{Σ̄^r}(fibre) = δ`. Add C (Brick A, chart-localization preserves height) ⟹ `C + δ`.
+
+## What I found (the wall)
+
+The total rank ideal in `Rep_d` FACTORS: for `(2,2,2),r=1`, `det(A_2 A_1) = detA_1 · detA_2`
+(reducible, 2 components), whereas the base target rank ideal `det(B) = B00 B11 − B01 B10` is
+irreducible. So the B22-elimination/graph-ideal trick of G2-2 does NOT port: product entries are
+not coordinate variables. The trivialization `S ≅ Sd ⊗_k F_E` is the genuine object and seems to be
+a substantial new build (an explicit polynomial section of `mult` over the chart + the tensor
+decomposition AlgEquiv).
+
+## QUESTIONS
+
+**Q1 (total presentation).** On the pivot chart, is `S ≅ₐ[Sd] Sd ⊗_k F_E` the right object?
+What are the free vs forced FACTOR coordinates on the chart? Is there an EXPLICIT polynomial
+section `Mat^{rk≤r}_chart → Rep_d` (e.g. for N=2: given B with pivot block invertible, a canonical
+factorization `B = A_2 A_1`) that exhibits the trivialization? For general N (product of N matrices),
+how does the section generalize — is it "put N−1 factors in normal position, one carries B"?
+Is the tensor-decomposition AlgEquiv reachable, or is there a cheaper route (e.g. compute
+`height_S(I_fibre)` directly via explicit C+δ coordinate equations on the chart, bypassing flatness)?
+
+**Q2 (flatness / going-down).** Is `free ⟹ flat ⟹ HasGoingDown ⟹ height_eq_height_add_…` the right
+chain, and is the "P minimal prime of fibre ⟹ relative height 0 in F_E" step sound? Or is the
+flat-quasi-finite brick (`height_eq_under_of_flat_quasiFiniteAt`, fibre height 0) cleaner — does
+quasi-finiteness HOLD here (the fibre F_E is dim 4, NOT finite, so quasi-finite-at-Q FAILS unless Q
+is isolated in its fibre — but the fibre is positive-dimensional, so going-down + minimal-prime is
+needed, not quasi-finite)? Pin the exact lemma chain. Is there a subtlety in `m_B` having height
+exactly δ (R regular dim δ ⟹ every maximal ideal height δ — but is `R = Sd` actually a finitely-
+generated k-algebra domain that's equidimensional, so all maximal ideals have height δ? Sd is a
+localization of a polynomial ring, so YES, but confirm)?
+
+**Q3 (reserve route).** Evaluate the "explicit coordinate equations" reserve: instead of flatness,
+exhibit the fibre `mult⁻¹(B) ∩ chart` as cut by exactly `C + δ` equations whose Jacobian has full
+rank `C+δ` at a smooth point (a complete-intersection / regular-sequence argument giving height
+`C+δ` directly via Krull + a lower bound). Is THIS cleaner in Lean than the trivialization, given
+that `det(product)` factors and the fibre is reducible?
+
+Be concrete and adversarial. If the trivialization is the only honest route and it's a big build,
+say so and estimate its size; if there's a shortcut, name it precisely. Cite Mathlib v4.29 API where
+relevant (HasGoingDown, Module.Flat, IsLocalization, TensorProduct.Free, minimalPrimes, Ideal.height).
+
+codex
+I’ll treat this as a design review, not an implementation task. I’m going to check the local Mathlib/repo API names first so the advice is anchored in what this workspace actually has.
+exec
+/bin/bash -lc "rg -n \"height_eq_height_add|HasGoingDown|quasiFinite|minimalPrimes|Module\\.Flat|Flat|GoingDown|height_eq_under\" -S . Mathlib 2>/dev/null" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+2026-06-24T09:15:59.474892Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019ef8e9-fc36-7ca2-bdff-0d92dd4dd084`" }
+ exited 1:
+2026-06-24T09:15:59.476210Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "rg -n \"height_eq_height_add|HasGoingDown|quasiFinite|minimalPrimes|Module\\.Flat|Flat|GoingDown|height_eq_under\" -S . Mathlib 2>/dev/null"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "pwd && rg --files -g 'lake-manifest.json' -g 'lakefile.*' -g 'lean-toolchain' -g 'CLAUDE.md' -g 'README.md' -g 'AGENTS.md'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ exited 1 in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+
+exec
+/bin/bash -lc 'rg -n "G2|graphIdeal|fibreGenIdeal|multComap|cCodim|Schur|detSchur|height_eq" -S .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+./codex/q1q2-stdout.log:15:# Codex consult — G2-3 total-space presentation + flatness (decorrelated design review)
+./codex/q1q2-stdout.log:32:1. **Brick A**: `codim_{Rep_d}(Σ̄^r) = C = cCodim d r` (combinatorial codim), proved, general r,
+./codex/q1q2-stdout.log:34:2. **G2-2 (the BASE presentation)**: for a SINGLE matrix `Mat^{rk≤r}_{q×p}` (the TARGET matrix
+./codex/q1q2-stdout.log:36:   `A_loc / Iad ≅ₐ[k] Sd` where `Sd = Localization.Away detSchurS` is regular of dimension
+./codex/q1q2-stdout.log:38:   coordinate variables, so the bottom-right `B22` block is forced by the Schur complement
+./codex/q1q2-stdout.log:39:   `B22 = B21 Δ⁻¹ B12`, and the rank ideal localizes to a graph ideal `J = graphIdeal forcedB22`.
+./codex/q1q2-stdout.log:41:   (or to a localization `Sd`), `height(graphIdeal c) = #σ`. Network-free.
+./codex/q1q2-stdout.log:42:4. **Bordered Schur minor identity** (any comm ring): `det[[Δ,u],[v,d]] = d·detΔ − v·adj(Δ)·u`.
+./codex/q1q2-stdout.log:44:   `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P` :
+./codex/q1q2-stdout.log:47:7. The fibre comorphism `multComap : MvPoly[target entries] →ₐ[k] MvPoly[factor entries]`,
+./codex/q1q2-stdout.log:49:   `fibreGenIdeal d B = map multComap (maxIdealOfPoint B)`.
+./codex/q1q2-stdout.log:57:Localize `Rep_d` at the pulled-back pivot `Δ_tot = multComap(detΔ)` = the product-pivot minor.
+./codex/q1q2-stdout.log:58:- `R := Sd` = O(target rank locus chart), regular dim δ (= G2-2's output ring).
+./codex/q1q2-stdout.log:72:irreducible. So the B22-elimination/graph-ideal trick of G2-2 does NOT port: product entries are
+./codex/q1q2-stdout.log:87:**Q2 (flatness / going-down).** Is `free ⟹ flat ⟹ HasGoingDown ⟹ height_eq_height_add_…` the right
+./codex/q1q2-stdout.log:89:flat-quasi-finite brick (`height_eq_under_of_flat_quasiFiniteAt`, fibre height 0) cleaner — does
+./codex/q1q2-stdout.log:110:/bin/bash -lc "rg -n \"height_eq_height_add|HasGoingDown|quasiFinite|minimalPrimes|Module\\.Flat|Flat|GoingDown|height_eq_under\" -S . Mathlib 2>/dev/null" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+./codex/q1q2-stdout.log:113:2026-06-24T09:15:59.476210Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "rg -n \"height_eq_height_add|HasGoingDown|quasiFinite|minimalPrimes|Module\\.Flat|Flat|GoingDown|height_eq_under\" -S . Mathlib 2>/dev/null"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+./codex/consult-prompt.md:1:# Codex consult — G2-3 total-space presentation + flatness (decorrelated design review)
+./codex/consult-prompt.md:18:1. **Brick A**: `codim_{Rep_d}(Σ̄^r) = C = cCodim d r` (combinatorial codim), proved, general r,
+./codex/consult-prompt.md:20:2. **G2-2 (the BASE presentation)**: for a SINGLE matrix `Mat^{rk≤r}_{q×p}` (the TARGET matrix
+./codex/consult-prompt.md:22:   `A_loc / Iad ≅ₐ[k] Sd` where `Sd = Localization.Away detSchurS` is regular of dimension
+./codex/consult-prompt.md:24:   coordinate variables, so the bottom-right `B22` block is forced by the Schur complement
+./codex/consult-prompt.md:25:   `B22 = B21 Δ⁻¹ B12`, and the rank ideal localizes to a graph ideal `J = graphIdeal forcedB22`.
+./codex/consult-prompt.md:27:   (or to a localization `Sd`), `height(graphIdeal c) = #σ`. Network-free.
+./codex/consult-prompt.md:28:4. **Bordered Schur minor identity** (any comm ring): `det[[Δ,u],[v,d]] = d·detΔ − v·adj(Δ)·u`.
+./codex/consult-prompt.md:30:   `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P` :
+./codex/consult-prompt.md:33:7. The fibre comorphism `multComap : MvPoly[target entries] →ₐ[k] MvPoly[factor entries]`,
+./codex/consult-prompt.md:35:   `fibreGenIdeal d B = map multComap (maxIdealOfPoint B)`.
+./codex/consult-prompt.md:43:Localize `Rep_d` at the pulled-back pivot `Δ_tot = multComap(detΔ)` = the product-pivot minor.
+./codex/consult-prompt.md:44:- `R := Sd` = O(target rank locus chart), regular dim δ (= G2-2's output ring).
+./codex/consult-prompt.md:58:irreducible. So the B22-elimination/graph-ideal trick of G2-2 does NOT port: product entries are
+./codex/consult-prompt.md:73:**Q2 (flatness / going-down).** Is `free ⟹ flat ⟹ HasGoingDown ⟹ height_eq_height_add_…` the right
+./codex/consult-prompt.md:75:flat-quasi-finite brick (`height_eq_under_of_flat_quasiFiniteAt`, fibre height 0) cleaner — does
+./thread.md:1:# thread 14 — G2-3 total-presentation design recon (G2-3a, explore/scout — scope the wall)
+./thread.md:3:**Type:** explore (scout) · design recon. G2-2 (the localized BASE presentation `A_loc/Iad ≅ₐ[k] Sd`)
+./thread.md:4:is done. G2-3 is the genuine wall: the **total**-space side + flatness, en route to
+./thread.md:5:`codim_{Σ̄^r}(fibre) = δ` ⟹ the final `codimRepCanonical(fibre d B) = cCodim d r + r(d_0+d_N−r)`. Scope
+./thread.md:6:it before any formaliser tide. **No production Lean** (throwaway probes fine); output = the G2-3
+./thread.md:9:## The target + where G2-2 leaves us
+./thread.md:13:(= `cCodim d r + δ`; Brick A gives `codimRepCanonical Σ̄^r = cCodim`). Via the catenary this is
+./thread.md:16:**Landed foundation (reuse, don't rebuild):** G2-2's base presentation `A_loc/Iad ≅ Sd` (regular dim δ,
+./thread.md:17:`height Iad = C`); the reusable engines — `MvPolynomialKerAeval` (`ker_aeval = graphIdeal`),
+./thread.md:18:`GraphIdealHeight` (`height_graphIdeal_eq` + localized transport), `DeterminantalBaseElimination`
+./thread.md:19:(reindex + `blockAlgEquiv` + detΔ bridge), `DeterminantalChartRing` (bordered Schur minor); the
+./thread.md:20:going-down height-additivity `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` (LANDED in
+./thread.md:26:   G2-2's base `Mat^{rk=r}`). On the pivot chart, does the reindex/graph-ideal/Schur machinery extend
+./thread.md:30:   cheaper route reusing G2-2?
+./thread.md:33:   `A_loc`) ⟹ flat ⟹ going-down, with the landed `height_eq_height_add_…`? Pin the exact lemma chain to
+./thread.md:36:3. **Reducibility (the G2-5 question).** `codimRepCanonical = iInf` over minimal primes; Σ̄^r reducible
+./thread.md:39:   into G2-3 or stays a separate rung.
+./thread.md:40:4. **Rung-ladder + risk.** Decompose G2-3 (+G2-4/G2-5) into tide-sized rungs; per rung the machinery
+./thread.md:42:   total-presentation a clean mirror of G2-2's base presentation, or materially harder (Rep_d ≫ Mat)?
+./thread.md:48:(G2-2), `Core/DeterminantalBaseElimination`, `Core/MultComorphism`/`FibreCodim` (the fibre + comorphism),
+./thread.md:53:The confirmed G2-3 rung-ladder, per-rung machinery + size + risk, the single hardest sub-wall + its
+./thread.md:56:fallback). Honest scout — if G2-3 is genuinely much harder than G2-2 (or a wall), say so plainly.
+
+codex
+The first pass shows this thread is intentionally a scout/design thread, and the local prompt already records the same wall you described. I’ll read the thread notes and then inspect only relevant Lean/API references that are present under this worktree.
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+total 20
+drwxrwxr-x  3 ubuntu ubuntu 4096 Jun 24 09:08 .
+drwxrwxr-x 16 ubuntu ubuntu 4096 Jun 24 09:05 ..
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 09:15 codex
+-rw-rw-r--  1 ubuntu ubuntu 4580 Jun 24 09:05 thread.md
+
+exec
+/bin/bash -lc "sed -n '1,220p' thread.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+# thread 14 — G2-3 total-presentation design recon (G2-3a, explore/scout — scope the wall)
+
+**Type:** explore (scout) · design recon. G2-2 (the localized BASE presentation `A_loc/Iad ≅ₐ[k] Sd`)
+is done. G2-3 is the genuine wall: the **total**-space side + flatness, en route to
+`codim_{Σ̄^r}(fibre) = δ` ⟹ the final `codimRepCanonical(fibre d B) = cCodim d r + r(d_0+d_N−r)`. Scope
+it before any formaliser tide. **No production Lean** (throwaway probes fine); output = the G2-3
+rung-ladder + reachability verdict. Decorrelated Codex required.
+
+## The target + where G2-2 leaves us
+Final Core target (= `BundleShiftInterface.cited_bundle_shift`): for `[Field K][IsAlgClosed K][CharZero K]`,
+`B.rank = r`, `r ≤ d k'`, `0 < N`:
+`codimRepCanonical (fibre d B) = codimRepCanonical (productRankLocusLE d r) + (r*(d_0+d_N−r):ℕ∞)`
+(= `cCodim d r + δ`; Brick A gives `codimRepCanonical Σ̄^r = cCodim`). Via the catenary this is
+`codim_{Σ̄^r}(fibre) = δ`. G1 (reduce-to-`E`) lets us work at the normal form `E = diag(I_r,0)`.
+
+**Landed foundation (reuse, don't rebuild):** G2-2's base presentation `A_loc/Iad ≅ Sd` (regular dim δ,
+`height Iad = C`); the reusable engines — `MvPolynomialKerAeval` (`ker_aeval = graphIdeal`),
+`GraphIdealHeight` (`height_graphIdeal_eq` + localized transport), `DeterminantalBaseElimination`
+(reindex + `blockAlgEquiv` + detΔ bridge), `DeterminantalChartRing` (bordered Schur minor); the
+going-down height-additivity `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` (LANDED in
+Mathlib, used in `FlatQuasiFiniteHeight`/`PolynomialDimension`); the affine-domain equidim + the
+catenary bridge.
+
+## Questions to answer (the blueprint)
+1. **The total-space presentation on the chart.** `B_total` = the coordinate ring of `Σ̄^r ⊆ Rep_d` (vs
+   G2-2's base `Mat^{rk=r}`). On the pivot chart, does the reindex/graph-ideal/Schur machinery extend
+   from `Mat` to the full `Rep_d`? What are the "free" vs "forced" coordinates of the TOTAL ring on the
+   chart, and what is the fibre-over-`E` coordinate ring `F_E` concretely (the "zero-product-type"
+   locus)? Is `B_loc ≅ A_loc ⊗_k F_E` (the bundle trivialization) the right object, or is there a
+   cheaper route reusing G2-2?
+2. **Flatness / going-down.** The chain needs `HasGoingDown` for the comorphism `A_base → B_total` ON
+   THE CHART (mult is NOT globally flat — fibre dim jumps). Does `B_loc ≅ A_loc ⊗ F_E` (free over
+   `A_loc`) ⟹ flat ⟹ going-down, with the landed `height_eq_height_add_…`? Pin the exact lemma chain to
+   `codim_{Σ̄^r}(fibre) = δ`. (Reserve: Codex's earlier "total-coordinate" route — fibre = `C+δ` explicit
+   coordinate equations on the chart ⟹ height directly, no going-down — evaluate if cleaner now.)
+3. **Reducibility (the G2-5 question).** `codimRepCanonical = iInf` over minimal primes; Σ̄^r reducible
+   when θ>1. How do the fibre's components match Σ̄^r's orbit-components (Brick A
+   `minimalPrimes_sigmaIdeal_eq`) with the uniform `+δ`? Pin the correspondence; decide whether it folds
+   into G2-3 or stays a separate rung.
+4. **Rung-ladder + risk.** Decompose G2-3 (+G2-4/G2-5) into tide-sized rungs; per rung the machinery
+   (reuse-vs-new), size, risk; name the single hardest sub-wall and its reachability verdict. Is the
+   total-presentation a clean mirror of G2-2's base presentation, or materially harder (Rep_d ≫ Mat)?
+
+## Method / rules
+Exact algebra; use the `(2,2,2),r=1` anchor (`dim Σ̄^1 = 7 = 3 + 4`; fibre codim `4 = C(1)+δ(3)`). **Fire a
+decorrelated `local-codex-consult`** (authenticated, xhigh) on Q1+Q2 (the total presentation + flatness),
+saved under `threads/14-total-presentation-design/codex/`. Read: `Core/DeterminantalBasePresentation`
+(G2-2), `Core/DeterminantalBaseElimination`, `Core/MultComorphism`/`FibreCodim` (the fibre + comorphism),
+`Core/SigmaCodim` (Brick A + minimal primes), `Core/FlatTrivialProductProbe`/`ChartFlatnessProbe` (the
+flatness API + the prior NO-GO write-ups). **NO production Lean / no commits to library files.**
+
+## Output (report to controller)
+The confirmed G2-3 rung-ladder, per-rung machinery + size + risk, the single hardest sub-wall + its
+reachability verdict, the decorrelated-Codex read, and a clear recommendation: the route for the total
+presentation + flatness (or, if the total presentation is out of reach at v4.29, the precise wall + the
+fallback). Honest scout — if G2-3 is genuinely much harder than G2-2 (or a wall), say so plainly.
+In-repo notes only; never `~/.claude/**/memory/`; don't touch other worktrees.
+
+exec
+/bin/bash -lc "find .. -maxdepth 3 -type f \\( -name '*.lean' -o -name '*.md' -o -name 'lake-manifest.json' -o -name 'lean-toolchain' \\) | sed -n '1,200p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+../11-base-ring-presentation/thread.md
+../11-base-ring-presentation/codex/g2-2-encoding-prompt.md
+../11-base-ring-presentation/codex/g2-2-elimination-prompt.md
+../11-base-ring-presentation/codex/g2-2-encoding-answer.md
+../11-base-ring-presentation/codex/g2-2-elimination-answer.md
+../11-base-ring-presentation/codex/g2-2-answer.md
+../11-base-ring-presentation/codex/g2-2-prompt.md
+../11-base-ring-presentation/statement-card.md
+../14-total-presentation-design/thread.md
+../14-total-presentation-design/codex/consult-prompt.md
+../08-normal-form/thread.md
+../05-comorphism/thread.md
+../05-comorphism/codex-fidelity-prompt.md
+../05-comorphism/statement-card.md
+../05-comorphism/codex-fidelity-verdict.md
+../03-layer1-design/thread.md
+../03-layer1-design/codex/layer1-route-prompt.md
+../03-layer1-design/codex/layer1-route-answer.md
+../02-thermometer/thread.md
+../02-thermometer/codex/route-answer.md
+../02-thermometer/codex/route-prompt.md
+../12-base-elimination/thread.md
+../12-base-elimination/codex/inclusion-answer.md
+../12-base-elimination/codex/localtransport-answer.md
+../12-base-elimination/codex/heightJ-prompt.md
+../12-base-elimination/codex/inclusion-prompt.md
+../12-base-elimination/codex/localtransport-prompt.md
+../12-base-elimination/codex/heightJ-answer.md
+../12-base-elimination/statement-card.md
+../01-recon/thread.md
+../01-recon/codex/bundle-dim-prompt.md
+../01-recon/codex/bundle-dim-answer.md
+../09-chart-flatness-proto/thread.md
+../09-chart-flatness-proto/codex/flatness-construction-answer.md
+../09-chart-flatness-proto/codex/flatness-construction-prompt.md
+../10-base-chart-presentation/thread.md
+../10-base-chart-presentation/codex/fidelity-review-prompt.md
+../10-base-chart-presentation/codex/01-formulation-prompt.md
+../10-base-chart-presentation/codex/fidelity-review-answer.md
+../10-base-chart-presentation/codex/01-formulation-answer.md
+../10-base-chart-presentation/statement-card.md
+../04-l1-flatness/thread.md
+../13-base-elimination-transport/thread.md
+../13-base-elimination-transport/codex-g22c-route-answer.md
+../13-base-elimination-transport/codex/squeeze-fidelity-prompt.md
+../13-base-elimination-transport/codex/squeeze-fidelity-answer.md
+../13-base-elimination-transport/statement-card.md
+../13-base-elimination-transport/codex-g22c-route-prompt.md
+../07-chart-design/thread.md
+../07-chart-design/codex/g2-reachability-prompt.md
+../07-chart-design/codex/g2-reachability-answer.md
+../06-height-squeeze/thread.md
+../06-height-squeeze/codex/01-route-answer.md
+../06-height-squeeze/codex/01-route-prompt.md
+../06-height-squeeze/statement-card.md
+
+codex
+There are existing scout notes in neighboring threads, including the prior chart-flatness probe and the base presentation route. I’ll sample those rather than trying to infer everything from the final prompt.
+exec
+/bin/bash -lc "sed -n '1,260p' ../09-chart-flatness-proto/thread.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+# thread 09 — chart-flatness prototype (G2a, formalisation / tide — the GATING probe)
+
+**Type:** formalisation (tide) · `OPENED → SPECIFY/DESIGN → CHECKPOINT(no-skip) → PROVE-or-WALL`.
+G0 (thread 07) confirmed the chart build is ~6–12 modules whose HIGH-risk core is a **flatness proof on
+the pivot chart** (the wall-within-the-wall that stalled thread-04). **Do NOT build the full G2.** This
+tide is a *thermometer*: pin + attack the flatness core on the simplest case to get a cheap GO/NO-GO
+before committing the rest. If it walls, we land G1 + roadmap; if it lands, we commit full G2.
+
+## The gating question
+On the pivot chart `U = {M : top-left r×r block invertible}` of the exact-rank stratum, is the
+chart-localized comorphism of `mult` **flat** (via free, through the Schur section) — formalizably at
+Mathlib v4.29? Route **M-goingdown** (G0's recommendation): localize F1's `multComap` at the pivot minor;
+on that chart `mult` is the trivial bundle `U × mult⁻¹(E)`, so the localized total ring is free
+(polynomial) over the localized base ring ⟹ flat ⟹ `HasGoingDown` ⟹ the LANDED
+`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` gives the shift.
+
+## Scope — the SIMPLEST nontrivial case for cheap signal
+Target the **anchor `(2,2,2)`, `r=1`, `E = diag(1,0)`** (or general `N=2, r=1` if no harder). Deliver
+the gating fact: the chart-localized comorphism is flat (or its localized total ring is free over the
+localized base) on the pivot chart. Concretely, the sub-steps to probe/pin:
+1. the pivot localization (`Localization.Away (pivot minor)` of the base/total coordinate rings; or the
+   `MvPolynomial`-level localized algebra map) — **does the engine/Mathlib API support stating it?**
+2. the Schur section as an explicit `AlgEquiv` / freeness witness on the chart;
+3. `Module.Flat` (or `Module.Free`) of the localized total ring over the localized base ring.
+
+Use the pinned `Module.Flat`/free + going-down API in `Core/FlatTrivialProductProbe.lean` (thread-04's
+durable contracts) and F1's `Core/MultComorphism.lean` (`multComap`, `fibreGenIdeal`).
+
+## MANDATORY process (no-skip checkpoint)
+1. **SPECIFY/DESIGN + PROBE:** pin the localized comorphism + the freeness/flatness statement; probe the
+   `Localization.Away` + `Module.Flat`/`Module.Free` API with `example` blocks (keep as durable
+   contracts). **Fire a decorrelated `local-codex-consult`** (authenticated, xhigh) on the chart-flatness
+   construction; save under `threads/09-chart-flatness-proto/codex/`.
+2. **CHECKPOINT — report to `main` BEFORE grinding the full flatness proof:** the pinned construction,
+   whether the freeness/flatness is reachable this run, and a GO/NO-GO. **Proceed to PROVE only if
+   clearly viable.** If the localized-chart-ring layer or the Schur freeness needs machinery absent at
+   v4.29, STOP and report the precise wall — that is a *successful thermometer reading* (it redirects us
+   to land G1 + roadmap), NOT a failure. Do NOT grind a doomed proof, do NOT commit a `sorry`, do NOT
+   weaken the statement to something vacuous.
+3. **PROVE** the gating fact to green (anchor case), then report.
+
+## Hard rules (lean/CLAUDE.md)
+Build via `scripts/lb` (never bare `lake build`/`cache get`); zero sorry/axiom/native_decide; `↦`;
+`decide +kernel`; name=content (don't name a chart-only fact as the global flatness). **Core only — never
+import `DLNFibre.DLN`.** Confirm Mathlib lemmas exist before building on them. Don't touch other worktrees
+or any stash. In-repo memory only.
+
+## Report (to `main`)
+The GO/NO-GO verdict on chart flatness + the precise reachability of each sub-step (localization,
+Schur freeness, flatness); if a gating fact landed — name + signature + green/sorries/axioms + module
+path; the decorrelated-Codex read; the honest size estimate for the full G2 given what you found.
+This verdict decides whether we commit the remaining ~6–9 modules or land G1 + roadmap.
+
+exec
+/bin/bash -lc "sed -n '1,260p' ../09-chart-flatness-proto/codex/flatness-construction-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+exec
+/bin/bash -lc "sed -n '1,260p' ../07-chart-design/codex/g2-reachability-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+**Verdict: NO-GO for the claimed route as a cheap gating fact.**
+
+The mathematical flatness is not the main problem. The problem is that the statement as phrased mixes two different maps.
+
+For `(2,2,2), r=1`, write
+
+```text
+A1 = [[x,y],[z,w]],  A2 = [[u,v],[s,t]]
+B  = A2 A1 = [[a,b],[c,d]]
+a = ux + vz
+b = uy + vw
+c = sx + tz
+d = sy + tw
+```
+
+On `a ≠ 0`, set
+
+```text
+ℓ = xw - zy        -- det A1
+m = ut - vs        -- det A2
+```
+
+Then the full localized map has presentation
+
+```text
+k[a,b,c,d,a⁻¹] → k[u,v,s,t,x,y,z,w][a⁻¹]
+
+≃ k[a,b,c,d,a⁻¹][u,v,x,z,ℓ,m] /
+    (ux + vz - a, ℓm - (ad - bc)).
+```
+
+So the unrestricted full-base chart is not the Schur-trivial bundle with fibre over `E`. The Schur complement `ad-bc` remains as a live base parameter. It may still be flat in this `2×2` chart, but proving that in Lean would require a bespoke “monic monomial quotient is free/flat” argument or an explicit basis. Mathlib v4.29 does not give generic flatness, miracle flatness, or a ready CM/equidimensional flatness criterion to bypass this.
+
+The paper’s flat bundle is the restricted map:
+
+```text
+Σ¹ ∩ D(a) → Mat^{rk=1} ∩ D(a)
+```
+
+On rings this means quotient first by the determinant condition:
+
+```text
+A_rank = (k[a,b,c,d] / (ad - bc))[a⁻¹]
+       ≃ k[a,b,c,a⁻¹]
+```
+
+and
+
+```text
+T_rank = (k[A1,A2] / (det(A2 A1)))[a⁻¹].
+```
+
+Then the chart presentation becomes
+
+```text
+T_rank ≃ A_rank[u,v,x,z,ℓ,m] / (ux + vz - a, ℓm).
+```
+
+After scaling `x,z` by the unit `a`, this is
+
+```text
+T_rank ≃ A_rank ⊗[k] F_E
+```
+
+where
+
+```text
+F_E = k[u,v,X,Z,ℓ,m] / (uX + vZ - 1, ℓm).
+```
+
+That is the actual Schur/local-triviality algebra. It is **not** `MvPolynomial fibreVars A_rank`; the fibre over `E` is not affine space. It has the relation `ℓm = 0`, so it is reducible. Flatness follows because over a field `F_E` is a free `k`-module and base change gives a free, hence flat, `A_rank`-module.
+
+Lean reachability: once the `AlgEquiv`
+
+```text
+T_rank ≃ₐ[A_rank] A_rank ⊗[k] F_E
+```
+
+exists, `Module.Flat` is easy. The v4.29 API has the needed endpoint: localization maps, `IsLocalization.flat`, `Module.Flat.of_linearEquiv`, flat implies `HasGoingDown`, and the landed height-additivity lemma. The wall is constructing the localized determinantal quotient/trivialization equivalence and proving the inverse formulas through quotient plus localization.
+
+A section/retraction does not avoid flatness. Ring maps with retractions need not satisfy going-down; for example `A → A × A/(t)` over `A = k[t]` has a retraction but going-down fails on the second component from `(0) ⊂ (t)`. The Schur section helps only because it should upgrade to an actual product/tensor presentation, which is exactly the flatness proof.
+
+Bottom line: the correct restricted chart-flatness fact is true, but **NO-GO for landing it this run as a small gating lemma**. The single precise wall is the explicit `AlgEquiv` between the localized determinantal quotient ring and the product/tensor chart. Without building that, Mathlib v4.29 has no softer flatness theorem that will close the gap.
+ succeeded in 0ms:
+**Q1: G2 Reachability**
+
+Verdict: **reachable only as a real infrastructure build; not reachable by just writing the Schur chart and invoking existing Mathlib dimension lemmas.**
+
+**(a) Coordinate-ring isomorphism.**  
+Yes, the Schur-complement section gives a genuine algebraic isomorphism, but **only after localizing at the pivot determinant**. The target chart is not affine closed; it is the basic open where the `r × r` pivot minor is invertible. Algebraically you should expect an `AlgEquiv` between localized quotient rings, roughly:
+
+```lean
+(R_rep ⧸ I_rank_le_r_mult)[1/Δ_mult]
+  ≃ₐ[k]
+(R_fibre_E ⊗[k] k[pivot_chart_vars][1/det])
+```
+
+or better, avoid a general tensor theorem and rewrite the RHS as:
+
+```lean
+(MvPolynomial chartVars R_fibre_E)[1/det]
+```
+
+The Schur formulas are regular in this localization because `A⁻¹` is `adj(A)/det(A)`. Building the `AlgEquiv` is tedious but conceptually solid.
+
+What I would **not** expect to be ready in Mathlib v4.29:
+
+```lean
+ringKrullDim_tensorProduct_eq_add
+ringKrullDim_mvPolynomial_eq_add
+ringKrullDim_localization_away_eq
+dim_product_variety_eq_add
+```
+
+under the hypotheses you need. I would search for `ringKrullDim`, `Ideal.height`, `IsLocalization`, `Localization.Away`, `MvPolynomial`, `TensorProduct`, but my expectation is that the exact additivity package is missing.
+
+The better route is to prove the special lemma you need:
+
+```lean
+ringKrullDim ((MvPolynomial σ A) localized away fresh_det)
+  = ringKrullDim A + Fintype.card σ
+```
+
+for finite-type reduced/prime affine `k`-algebras, then extend to reducible rings by minimal primes.
+
+**(b) Principal opens.**  
+Be careful: “dimension is preserved by `D(f)`” is not a pure localization fact for arbitrary domains. For finitely generated domains over a field and nonzero `f`, yes, nonempty principal opens have the same dimension. But I would not expect Mathlib v4.29 to have this in the needed form.
+
+Also, your current `varietyDim Z := ringKrullDim (MvPolynomial ⧸ vanishingIdeal Z)` does **not** really model locally closed charts. If you feed it a dense open subset, its vanishing ideal is the closure ideal. That can be useful, but it is not the coordinate ring of the open chart. For G2 you need a new localized chart-ring layer.
+
+**(c) Size and hard wall.**  
+Estimate: **6-9 modules**, not 1-2.
+
+Likely modules:
+
+1. basic-open coordinate rings as localizations of affine quotients;
+2. pivot chart for rank-`r` matrices via Schur complement;
+3. localized endpoint-action formulas for `mult`;
+4. the actual chart `AlgEquiv`;
+5. polynomial-extension Krull dimension additivity;
+6. localization-at-fresh-determinant preserves dimension;
+7. reducible/minimal-prime passage;
+8. finite pivot-chart cover / full-dimension exact-rank argument;
+9. assembly into `codimRepCanonical`.
+
+Single hardest sub-wall: **Krull-dimension additivity for localized polynomial extensions over possibly reducible affine coordinate rings**, tied back to `Ideal.height`/minimal primes. The Schur `AlgEquiv` is not the mathematical wall; dimension transport is.
+
+**Q2: Route Choice**
+
+Verdict: **use G2 as the primary route; do not bet on the inner-group route.**
+
+The inner-group idea is seductive but likely worse in Lean. `mult⁻¹(E)` is not a single orbit, and the old rank-pattern classification for quiver orbits does not directly classify `H`-orbits with frozen endpoint product `E`. You would need new relative-position invariants: kernels/images relative to `ker E`, `im E`, and intermediate transmitted rank-`r` data. The existing `OrbitImageDim` machinery computes dimensions of known orbit closures; it does not by itself identify the fibre as a finite union of such closures with the correct maximal dimension.
+
+The recursion-on-`N` idea also looks bad. Peeling off `A_N` creates incidence conditions like `ker(previous product) ⊆ ker E`, then rank strata and maximization. That is likely a new stratified dimension theorem in disguise.
+
+For the `d - r` lead: **the fibre over `E` is not exactly `Σ⁰_{d-r}`.** The numeric anchor already kills that:
+
+```text
+d = (2,2,2), r = 1
+dim fibre(E) = 4
+dim Σ⁰_(1,1,1) = dim {ba = 0} = 1
+```
+
+What is plausible is a chart/dimension relation with extra affine/frame parameters. The expected extra dimension is
+
+```text
+D(d) - D(d-r) - δ
+= Σ_{i=1}^{N-1} r(2 d_i - r).
+```
+
+So a better reduced-rank statement would be:
+
+```text
+dim fibre(E)
+= dim Σ⁰_{d-r} + Σ_{i=1}^{N-1} r(2 d_i - r),
+```
+
+assuming the usual codim equality `C_r(d) = C_0(d-r)`. That is useful as a calculation target, but it still needs chart/localization/product-dimension infrastructure. It is not a free replacement for G2.
+
+**Q3: Things I Would Attack First**
+
+Main overclaims / risks:
+
+- A single pivot chart does not automatically compute global `dim Σ^r`; you need finite chart cover or a proof the chart meets all top-dimensional components.
+- `Σ^r` and `Mat^{rk=r}` are locally closed, not closed. Your current `vanishingIdeal` substrate sees closures unless you add localized coordinate rings.
+- Reducibility matters. You cannot use the irreducible catenary bridge directly on `Σ̄^r` or the fibre unless you pass through minimal primes/maximal components.
+- Product dimension is not free. Avoid general tensor-product dimension if possible; prove the special localized polynomial-extension formula.
+- The `d-r` fibre-is-`Σ⁰` slogan is false literally; only a dimension relation with extra parameters is plausible.
+
+**Final Go / No-Go**
+
+Go for **G1 first**; it is clean and independent.
+
+For the main proof: **conditional go** on G2 if you accept a serious commutative-algebra/chart infrastructure build. **No-go** if the plan assumes Mathlib already has product/open-chart dimension lemmas in the needed form.
+
+Recommended order:
+
+1. G1 reduce arbitrary rank-`r` `B` to `E`.
+2. Prototype the localized Schur `AlgEquiv` for one pivot chart.
+3. Build the special `ringKrullDim` lemma for localized polynomial extensions.
+4. Add finite chart cover / reducible minimal-prime bookkeeping.
+5. Assemble G3/G4.
+
+Single hardest sub-wall: **dimension of localized polynomial extensions over the fibre coordinate ring, especially reducible/minimal-prime handling.**
+codex
+The earlier probe confirms a key correction: the tensor product presentation is for the restricted rank-locus chart, not the full target matrix chart before imposing `rank ≤ r`. I’ll now check what names/APIs are already recorded locally for the height/flatness endpoint.
+exec
+/bin/bash -lc "find /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim -maxdepth 5 -type f -name '*.lean' | sed -n '1,240p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/DLN/Basic.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/DLN/RlctPayoff.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/DLN/RlctPayoffGeneral.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesDurfee.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Orbit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesPeel.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimCornerMono.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitPullbackDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CotangentJacobian.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/RankPattern.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesShift.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaQIPConverse.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/AffineDomainDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CTheta.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalChart.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalBaseElimination.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/RankLocusClosed.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesExtraction.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/NullstellensatzCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesThm55.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalBasePresentation.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitVariety.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Gabriel.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/IntegralDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatTrivialProductProbe.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalStratumDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MatrixKaehler.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaArbitrary.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/GenericTuple.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaQIP.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaComponents.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Barcode.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveGeneral.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitImageDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SmoothPointRegular.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesFivegon.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaThetaBridge.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaStratification.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimZeroMono.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/PolynomialCurveLimit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/GraphIdealHeight.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MvPolynomialKerAeval.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaValue.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveGeneration.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Basic.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveDegeneration.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalChartRing.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/JacobianTrdeg.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Submult.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaExplicit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitLinearCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/AffineNoetherRank.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeformationExt.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MultComorphism.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaGeometric.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitDifferentialRank.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeries.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitSmooth.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaPermInvariance.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitTangentCotangent.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/NoetherMonicPositioning.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ThetaComponentCount.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitDifferential.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Setup.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/VoigtDischarge.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitClosure.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitKostant.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FibreNormalForm.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/PolynomialDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaGeometricPerm.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/IntervalModule.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaDropM.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BaseChange.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FibreCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimZeroStrict.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesOrth.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre.lean
+
+exec
+/bin/bash -lc "find /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim -maxdepth 5 -type f \\( -name 'lake-manifest.json' -o -name 'lakefile.lean' -o -name 'lean-toolchain' \\) -print" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/lake-manifest.json
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/lean-toolchain
+
+exec
+/bin/bash -lc "find /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim -maxdepth 5 -type f -path '*/Core/*' | sed -n '1,240p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/expeditions/2026-06-23-fibre-codim/threads/14-total-presentation-design
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesDurfee.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Orbit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesPeel.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimCornerMono.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitPullbackDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CotangentJacobian.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/RankPattern.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesShift.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaQIPConverse.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/AffineDomainDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CTheta.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalChart.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalBaseElimination.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/RankLocusClosed.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesExtraction.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/NullstellensatzCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesThm55.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalBasePresentation.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitVariety.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Gabriel.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/IntegralDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatTrivialProductProbe.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalStratumDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MatrixKaehler.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaArbitrary.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/GenericTuple.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaQIP.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaComponents.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Barcode.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveGeneral.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitImageDim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SmoothPointRegular.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesFivegon.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaThetaBridge.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaStratification.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimZeroMono.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/PolynomialCurveLimit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/GraphIdealHeight.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MvPolynomialKerAeval.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaValue.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveGeneration.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Basic.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BoxMoveDegeneration.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeterminantalChartRing.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/JacobianTrdeg.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Submult.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaExplicit.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitLinearCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/AffineNoetherRank.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/DeformationExt.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/MultComorphism.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaGeometric.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitDifferentialRank.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SigmaCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeries.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitSmooth.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaPermInvariance.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitTangentCotangent.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/NoetherMonicPositioning.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ThetaComponentCount.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitDifferential.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/Setup.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/VoigtDischarge.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitClosure.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/OrbitKostant.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FibreNormalForm.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/PolynomialDimension.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaGeometricPerm.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/IntervalModule.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CThetaDropM.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/BaseChange.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FibreCodim.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/CCodimZeroStrict.lean
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/QSeriesOrth.lean
+
+codex
+The Lean tree is available one directory up from the thread notes. I’ll search there for the endpoint lemmas and the probe contracts, keeping it to read-only inspection.
+exec
+/bin/bash -lc "rg -n \"height_eq_height_add|HasGoingDown|quasiFinite|QuasiFinite|minimalPrimes|Module\\.Flat|Flat|GoingDown|height_eq_under|free|TensorProduct\" lean/DLNFibre/Core -S" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+lean/DLNFibre/Core/FibreCodim.lean:24:`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` does not apply to the comorphism at the
+lean/DLNFibre/Core/FibreCodim.lean:52:Network-free, no field-closure hypothesis. -/
+lean/DLNFibre/Core/OrbitImageDim.lean:22:- **A4.3** (the char-free differential-rank identity, the orbit-map differential = `δ⁰`; the open
+lean/DLNFibre/Core/OrbitImageDim.lean:29:is char-0); the assembly itself is char-free.
+lean/DLNFibre/Core/OrbitImageDim.lean:75:criterion in image-form (`trdeg ≤ genericDifferentialRank`), and `hA43_le`, the char-free
+lean/DLNFibre/Core/OrbitImageDim.lean:133:the char-free differential-rank bound (the A4.3 `≤`-obligation). -/
+lean/DLNFibre/Core/OrbitImageDim.lean:152:hypothesis — `DiffIndepCriterion` is now `diffIndepCriterion_groupRing`; only `hA43_le` (the char-free
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:12:`Algebra.QuasiFiniteAt R Q` here is Mathlib's finite-fibre-dimension condition
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:17:import Mathlib.RingTheory.QuasiFinite.Basic
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:30:theorem fibre_height_eq_zero_of_quasiFiniteAt (Q : Ideal S) [Q.IsPrime]
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:31:    [Algebra.QuasiFiniteAt R Q] :
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:63:  have hK'Q' : K.comap f = Q := QuasiFiniteAt.eq_of_le_of_under_eq hK'Q hunder
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:71:theorem Ideal.height_eq_under_of_flat_quasiFiniteAt
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:72:    [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S]
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:73:    (Q : Ideal S) [Q.IsPrime] [Algebra.QuasiFiniteAt R Q] :
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:75:  have := Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (Q.under R) Q
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:76:  rw [fibre_height_eq_zero_of_quasiFiniteAt Q, add_zero] at this
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:81:theorem Ideal.height_eq_under_of_etale
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:85:  Ideal.height_eq_under_of_flat_quasiFiniteAt Q
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:91:  Ideal.height_eq_under_of_flat_quasiFiniteAt (R := R) (S := R) Q
+lean/DLNFibre/Core/Barcode.lean:22:content only; it is *not* the full Gabriel bijection (uniqueness is a separate, near-free step via
+lean/DLNFibre/Core/Barcode.lean:175:/-! ## Abstract chains and the composite map (cast-free `submult` analogue)
+lean/DLNFibre/Core/Barcode.lean:180:identity at `i = j`). It is the abstract, cast-free analogue of `Setup.submult`: defined by
+lean/DLNFibre/Core/Barcode.lean:202:`i = j`). The abstract, cast-free analogue of `Setup.submult` (the `i = 0` slice is the chain's
+lean/DLNFibre/Core/Barcode.lean:636:**Existence only**: uniqueness of the multiplicities is the separate (near-free) step via
+lean/DLNFibre/Core/IntervalModule.lean:246:one step that genuinely needs a **field** (so the range subspaces are free and finite-dimensional);
+lean/DLNFibre/Core/SigmaComponents.lean:22:  `Ideal.minimalPrimes.equivIrreducibleComponents`) are the inclusion-minimal members of the family.
+lean/DLNFibre/Core/SigmaComponents.lean:25:  worked `(2,2,2)`/`(2,3,2)` examples. The caveat is co-located at `minimalPrimes_sigmaIdeal_eq`.)
+lean/DLNFibre/Core/SigmaComponents.lean:29:  (`orbitRankLocus_minCodim_mem_minimalPrimes`), via the strict drop of `Ideal.height` under proper
+lean/DLNFibre/Core/SigmaComponents.lean:50:theorem minimalPrimes_sInf_of_finite_of_isPrime {R : Type*} [CommRing R]
+lean/DLNFibre/Core/SigmaComponents.lean:52:    (sInf s).minimalPrimes = {p | p ∈ s ∧ ∀ q ∈ s, q ≤ p → p ≤ q} := by
+lean/DLNFibre/Core/SigmaComponents.lean:167:order — the bridge that turns `minimalPrimes_sigmaIdeal_eq` into a statement about maximal `Ō_M`. -/
+lean/DLNFibre/Core/SigmaComponents.lean:199:From the bridge `sigmaIdeal = sInf orbitIdeals` + the SPIKE (`minimalPrimes` of `sInf` of a finite
+lean/DLNFibre/Core/SigmaComponents.lean:206:theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+lean/DLNFibre/Core/SigmaComponents.lean:207:    (sigmaIdeal (k := k) d r).minimalPrimes
+lean/DLNFibre/Core/SigmaComponents.lean:210:  exact minimalPrimes_sInf_of_finite_of_isPrime (orbitIdeals d r) (orbitIdeals_finite d r)
+lean/DLNFibre/Core/SigmaComponents.lean:216:`Ideal.minimalPrimes.equivIrreducibleComponents`, combined with `minimalPrimes_sigmaIdeal_eq`. -/
+lean/DLNFibre/Core/SigmaComponents.lean:223:  (OrderIso.setCongr _ _ (minimalPrimes_sigmaIdeal_eq d r).symm).trans
+lean/DLNFibre/Core/SigmaComponents.lean:224:    (Ideal.minimalPrimes.equivIrreducibleComponents (sigmaIdeal (k := k) d r))
+lean/DLNFibre/Core/SigmaComponents.lean:264:theorem orbitRankLocus_minCodim_mem_minimalPrimes [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+lean/DLNFibre/Core/SigmaComponents.lean:269:      ∈ (sigmaIdeal (k := k) d r).minimalPrimes := by
+lean/DLNFibre/Core/SigmaComponents.lean:270:  rw [minimalPrimes_sigmaIdeal_eq]
+lean/DLNFibre/Core/SigmaComponents.lean:324:    (sigmaIdeal (k := AlgebraicClosure ℚ) dWitness 0).minimalPrimes
+lean/DLNFibre/Core/SigmaComponents.lean:327:  minimalPrimes_sigmaIdeal_eq dWitness 0
+lean/DLNFibre/Core/PolynomialDimension.lean:4:import Mathlib.RingTheory.Ideal.GoingDown
+lean/DLNFibre/Core/PolynomialDimension.lean:9:# Dimension data of primes in a polynomial ring over a field (network-free engine)
+lean/DLNFibre/Core/PolynomialDimension.lean:31:  going-down instance and `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`.
+lean/DLNFibre/Core/PolynomialDimension.lean:105:extension `A → A[X]` is free hence flat, so it satisfies going-down
+lean/DLNFibre/Core/PolynomialDimension.lean:106:(`Algebra.HasGoingDown.of_flat`), and the equality is
+lean/DLNFibre/Core/PolynomialDimension.lean:107:`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`. This is the load-bearing additive half of
+lean/DLNFibre/Core/PolynomialDimension.lean:114:  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (P.under A) P
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:8:dimension `n`, with `Ω[S⁄k]` free of rank `n`, and the local ring `Localization.AtPrime m` has
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:13:  `exists_etale_mvPolynomial`); étale preserves height (M1 `height_eq_under_of_etale`);
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:33:import DLNFibre.Core.FlatQuasiFiniteHeight
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:45:/-- On a standard-smooth chart `S`, `Ω[S⁄k]` is free of finite rank, so its `Module.rank` is the
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:110:`Ω[S⁄k]` free of rank `n`, and the local ring `Localization.AtPrime m` has Krull dimension `n`. The
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean:153:    Ideal.height_eq_under_of_etale q
+lean/DLNFibre/Core/CThetaArbitrary.lean:27:keeps the LHS clean, and the witness choice is free by proof irrelevance.
+lean/DLNFibre/Core/MatrixKaehler.lean:4:import Mathlib.LinearAlgebra.TensorProduct.Tower
+lean/DLNFibre/Core/MatrixKaehler.lean:6:import Mathlib.RingTheory.Flat.Basic
+lean/DLNFibre/Core/MatrixKaehler.lean:7:import Mathlib.LinearAlgebra.TensorProduct.RightExactness
+lean/DLNFibre/Core/MatrixKaehler.lean:108:`Flat.lTensor_preserves_injective_linearMap`, so the range of the base-changed `subtype` is
+lean/DLNFibre/Core/MatrixKaehler.lean:124:    exact Module.Flat.lTensor_preserves_injective_linearMap _ (Submodule.injective_subtype _)
+lean/DLNFibre/Core/OrbitKostant.lean:121:`Supported` holds by the guard, for free).
+lean/DLNFibre/Core/OrbitKostant.lean:372:for free (`kostantArrayOfRank_isKostant`). -/
+lean/DLNFibre/Core/OrbitKostant.lean:536:  -- middle rank identity (the multiplicity array is field-free), so we instantiate at `ℚ`.
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:1:import Mathlib.RingTheory.Flat.Basic
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:2:import Mathlib.RingTheory.Flat.Stability
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:3:import Mathlib.RingTheory.Flat.Localization
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:4:import Mathlib.RingTheory.RingHom.Flat
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:6:import Mathlib.LinearAlgebra.TensorProduct.Basis
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:7:import Mathlib.RingTheory.Ideal.GoingDown
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:11:# `DLNFibre.Core.FlatTrivialProductProbe` — the L1-0 `Module.Flat` API-surface contract
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:15:`Module.Flat` *API* is fully viable at Mathlib v4.29 — every lever the local-triviality⟹trivial-
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:16:product⟹free⟹flat route needs is present and compiles (the `example`-blocks below are the durable
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:32:namespace DLNFibre.Core.FlatProbe
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:34:open scoped TensorProduct
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:42:    Module.Flat A M := inferInstance
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:44:/-- `MvPolynomial (Fin r) A` is free, hence flat, over `A` — the trivial-product model fibre. -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:46:    Module.Flat A (MvPolynomial (Fin r) A) := inferInstance
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:48:/-- Tensor of frees is free over the base — the `A ⊗ F` trivial-product shape. -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:52:/-! ## Transport flatness across an equivalence (the "B ≃ free" closer) -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:54:/-- Flatness transports across a linear equivalence. -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:56:    [Module.Flat A M] (e : N ≃ₗ[A] M) : Module.Flat A N :=
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:57:  Module.Flat.of_linearEquiv e
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:59:/-- Flatness transports across an *algebra* equivalence: `B ≃ₐ[A] (free A-algebra)` gives
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:60:`Module.Flat A B` — the one-liner the route ends on, once such an equivalence exists. -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:62:    (e : B ≃ₐ[A] MvPolynomial (Fin r) A) : Module.Flat A B :=
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:63:  Module.Flat.of_linearEquiv e.toLinearEquiv
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:65:/-- Flatness composes along a tower `A → S → M` (`Module.Flat.trans`). -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:67:    [Module A M] [Module S M] [IsScalarTower A S M] [Module.Flat A S] [Module.Flat S M] :
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:68:    Module.Flat A M := Module.Flat.trans A S M
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:70:/-! ## Flat-local-on-base, scheme-free (the local-triviality lever, when the ring map exists)
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:74:levers to glue per-chart freeness into global flatness over the base. They are unusable here only
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:77:/-- **Module-level flat-local-on-base.** To prove `Module.Flat R M` it suffices to prove flatness of
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:79:scheme-free local-triviality lever (`Module.flat_of_localized_span`). -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:82:    (h : ∀ r : s, Module.Flat R (LocalizedModule.Away r.1 M)) : Module.Flat R M :=
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:85:/-- **Ring-hom-level flat-local-on-base.** `RingHom.Flat` is a local property: its `propertyIsLocal`
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:88:example : RingHom.PropertyIsLocal @RingHom.Flat := RingHom.Flat.propertyIsLocal
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:90:/-! ## Downstream levers (NOT in L1-0 scope — confirming they sit on `Module.Flat`)
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:95:/-- Flat ⟹ going-down (instance). -/
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:96:example (A B : Type u) [CommRing A] [CommRing B] [Algebra A B] [Module.Flat A B] :
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:97:    Algebra.HasGoingDown A B := inferInstance
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:101:    [IsNoetherianRing B] [Algebra.HasGoingDown A B]
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:104:  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean:106:end DLNFibre.Core.FlatProbe
+lean/DLNFibre/Core/Setup.lean:8:The network-free substrate for the geometry of the DLN fibre (Le Halleur–Rimányi 2024, §2): for
+lean/DLNFibre/Core/IntegralDimension.lean:8:# Krull dimension of integral extensions (network-free engine)
+lean/DLNFibre/Core/OrbitDifferential.lean:16:This is the structural `dμ_e = δ⁰` certificate (thread 36 §2), char-free. It is the geometric heart of
+lean/DLNFibre/Core/OrbitDifferential.lean:85:Char-free. The `dμ_e = δ⁰` certificate (thread 36 §2), structural in Lean; reusable by A4.3 and A6.1. -/
+lean/DLNFibre/Core/Gabriel.lean:21:  sub-product `submult d A i j`. The cast-free bridge between the two encodings.
+lean/DLNFibre/Core/Gabriel.lean:65:The cast-free identification of the abstract-chain and matrix encodings of the sub-product. -/
+lean/DLNFibre/Core/ThetaComponentCount.lean:300:  {p | p ∈ (sigmaIdeal (k := k) d r).minimalPrimes ∧ p.height = (cCodim d r h).toNat}
+lean/DLNFibre/Core/ThetaComponentCount.lean:324:  the landed `orbitRankLocus_minCodim_mem_minimalPrimes` quantifier `∀ corner-≤r M'` needs.
+lean/DLNFibre/Core/ThetaComponentCount.lean:369:      refine orbitRankLocus_minCodim_mem_minimalPrimes d r (realizerD (k := k) hmem)
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:2:import Mathlib.RingTheory.Flat.Localization
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:3:import Mathlib.RingTheory.Flat.Basic
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:5:import Mathlib.RingTheory.TensorProduct.Free
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:6:import Mathlib.RingTheory.Ideal.GoingDown
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:10:# `DLNFibre.Core.ChartFlatnessProbe` — the G2a chart-flatness API-surface contract
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:14:at the pivot minor and ask whether the chart-localized total ring is **flat** (via free, through the
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:16:additivity `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`.
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:34:namespace DLNFibre.Core.ChartFlatProbe
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:36:open scoped TensorProduct
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:66:    [IsLocalization M S] : Module.Flat R S :=
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:76:/-- **The going-down consumer.** Given the route's flatness as a `[Module.Flat]` instance on a tower
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:80:    [IsNoetherianRing Rt] [Module.Flat Rb Rt]
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:83:  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:85:/-! ## The Schur-freeness model shape (free total over base on a TRIVIALIZED chart)
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:90:field `k` the fibre `F_E` is free as a `k`-module (every vector space is free), so the base change
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:91:is free, hence flat, over `Rb`. This pins what the Schur section must DELIVER; the wall is building
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:94:/-- The base change `Rb ⊗[k] F` of a `k`-module `F` is free over `Rb` (over a field, `F` is free) —
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:95:the `Algebra.TensorProduct.instFree` lever the corrected Schur trivialization closes on. -/
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:100:base change of the (reducible, free-over-`k`) fibre algebra `F_E` makes `Rt` free, hence flat, over
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:104:    Module.Flat Rb Rt :=
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:105:  Module.Flat.of_linearEquiv e
+lean/DLNFibre/Core/ChartFlatnessProbe.lean:107:end DLNFibre.Core.ChartFlatProbe
+lean/DLNFibre/Core/JacobianTrdeg.lean:12:import Mathlib.RingTheory.Flat.Basic
+lean/DLNFibre/Core/JacobianTrdeg.lean:88:localization of the free `Ω[P⁄k]` (`KaehlerDifferential.isLocalizedModule_map`), so the
+lean/DLNFibre/Core/JacobianTrdeg.lean:90:and `KaehlerDifferential.map_D` identifies its entries with `D(algebraMap (X i))`. Char-free. -/
+lean/DLNFibre/Core/JacobianTrdeg.lean:115:`{1 ⊗ D_Pf(X_i)}` — `K`-independent by flat base change (`Module.Flat.linearIndependent_one_tmul`) of
+lean/DLNFibre/Core/JacobianTrdeg.lean:140:    Module.Flat.linearIndependent_one_tmul hbase
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:10:detΔ`, modulo its base ideal `Iad`, is the free Schur localization `Sd` (`= Localization.Away
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:49:/-- The free Schur localization `Sd = Localization.Away detSchurS` — the downstream-composable base
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:375:the free Schur localization `Sd = Localization.Away detSchurS` — a regular ring of dimension `δ`.
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:398:`#SchurVar = 1·(2 + 2 − 1) = 3 = δ` free coordinates. The presentation exhibits `A_loc/Iad` as the
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:399:free Schur localization `Sd` (a regular ring of dimension `δ = 3`). -/
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean:402:`#SchurVar = 3 = δ` (three free Schur coordinates). -/
+lean/DLNFibre/Core/NoetherMonicPositioning.lean:4:import Mathlib.RingTheory.Ideal.GoingDown
+lean/DLNFibre/Core/NoetherMonicPositioning.lean:11:# Monic-coordinate positioning for a nonzero polynomial (network-free engine)
+lean/DLNFibre/Core/DeterminantalChartRing.lean:26:`(r+1)×(r+1)` minor, hence vanishes on `Σ̄^r` (rank `≤ r`). It is the generator-free handle on the
+lean/DLNFibre/Core/OrbitTangentCotangent.lean:26:**Typeclass.** The reverse inequality is char-free; `[IsAlgClosed k]` is inherited from M3 (smooth
+lean/DLNFibre/Core/OrbitTangentCotangent.lean:640:(R6). The char-free reverse of the A4 submersion bound; `[IsAlgClosed k]` from M3/L1. -/
+lean/DLNFibre/Core/NullstellensatzCodim.lean:55:ideal — the self-contained, topology-free closure condition (`Z` is cut out by polynomials). -/
+lean/DLNFibre/Core/BoxMoveDegeneration.lean:20:network-free core (it consumes L6.0): from a polynomial-coefficient tuple `Fpoly` with
+lean/DLNFibre/Core/BoxMoveDegeneration.lean:51:The reusable, network-free core of L6.1 (and of any one-parameter degeneration on `Tuple d`):
+lean/DLNFibre/Core/Basic.lean:4:# `DLNFibre.Core` — the engine (network-free)
+lean/DLNFibre/Core/Basic.lean:11:`DLN → Core → Mathlib`. Keeping `Core` network-free is what makes it reusable on its own
+lean/DLNFibre/Core/RankLocusClosed.lean:42:/-! ## The determinantal-rank bridge (pure matrix lemma, network-free) -/
+lean/DLNFibre/Core/OrbitSmooth.lean:396:/-- **L3.2 skeleton.** Sanity-check (sorry-free) that every instance the generic-smoothness machine
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:17:`Iad = J` and exhibits `A_loc ⧸ Iad` as the free Schur localization (regular of dimension `δ`).
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:33:/-- The free Schur coordinates `Δ ⊕ B12 ⊕ B21`: the top-left `r×r` pivot block `Δ`, the top-right
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:192:/-- The pivot determinant in the free Schur coordinate ring: `det` of the `Δ`-block coordinate
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:238:three free-block coordinates (`Δ`, `B12`, `B21`) become inner constants `C (X …)` from the
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:301:/-- The Schur numerator `B21 · adjugate Δ · B12` in the free coordinate ring
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean:302:`MvPolynomial SchurVar k` (`Δ`, `B12`, `B21` the generic free blocks). `adjugate`, not `inv`, keeps
+lean/DLNFibre/Core/DeterminantalChart.lean:177:block matrix is determined by its three free blocks `(Δ, B12, B21)` with `Δ` invertible: the
+lean/DLNFibre/Core/DeterminantalChart.lean:219:`(card m)² + (card m)(card n) + (card l)(card m)`, the three free-block coordinate counts whose sum
+lean/DLNFibre/Core/DeterminantalChart.lean:228:/-- **`δ` matches `r(p+q−r)`.** The three free-block coordinate counts sum to the determinantal
+lean/DLNFibre/Core/PolynomialCurveLimit.lean:22:algebraically closed field is automatically infinite). `σ` need not be finite. Network-free,
+lean/DLNFibre/Core/CTheta.lean:35:components are the orbit closures (`Core.SigmaComponents.minimalPrimes_sigmaIdeal_eq`),
+lean/DLNFibre/Core/CTheta.lean:114:the support `m_{ij} = 0` for `i > j` then comes for free from carrier membership. -/
+lean/DLNFibre/Core/AffineDomainDimension.lean:1:import Mathlib.RingTheory.IntegralClosure.GoingDown
+lean/DLNFibre/Core/AffineDomainDimension.lean:2:import Mathlib.RingTheory.Ideal.GoingDown
+lean/DLNFibre/Core/AffineDomainDimension.lean:13:# Affine-domain dimension formula / equidimensionality (network-free engine)
+lean/DLNFibre/Core/AffineDomainDimension.lean:36:Mathlib's classical theorem `Algebra.HasGoingDown` for integral extensions of an integrally closed
+lean/DLNFibre/Core/AffineDomainDimension.lean:37:domain (`@[stacks 00H8]`) via `Ideal.exists_ltSeries_of_hasGoingDown`. No new catenary induction is
+lean/DLNFibre/Core/AffineDomainDimension.lean:57:direction is going-down (`Algebra.HasGoingDown`, present for integral extensions of an integrally
+lean/DLNFibre/Core/AffineDomainDimension.lean:85:    obtain ⟨L, hLlen, hLlast, _⟩ := Ideal.exists_ltSeries_of_hasGoingDown l P
+lean/DLNFibre/Core/CThetaQIPConverse.lean:115:hypothesis (`(c : ℕ) = b + 1`) so the move definition stays `Fin`-arithmetic-free. -/
+lean/DLNFibre/Core/QSeriesFivegon.lean:1006:/-- Flat admissible tuples: `(n+1)`-tuples summing to `d` with `x_{i.castSucc} ≤ b_i` on the first
+lean/DLNFibre/Core/QSeriesFivegon.lean:1007:`n` coordinates (the corner coordinate `n` is free, bounded by `d` via the sum). -/
+lean/DLNFibre/Core/QSeriesFivegon.lean:1290:/-- **Thm 5.6 (the "fivegon")**: `fivegonSum d = Pmult d` — the corner-free single sum over **all**
+lean/DLNFibre/Core/QSeriesFivegon.lean:1318:set of `Qseries d r`). Connects the corner-free fivegon to the corner-graded `Qseries` layer. -/
+lean/DLNFibre/Core/SmoothPointRegular.lean:15:* hence `finrank κ (m/m²) ≤ finrank κ (κ ⊗_R Ω[R⁄k]) = finrank R Ω[R⁄k] = n`, with `Ω[R⁄k]` free of rank `n`
+lean/DLNFibre/Core/SmoothPointRegular.lean:16:  (the localization of the standard-smooth chart's free `Ω[S⁄k]`, transported by
+lean/DLNFibre/Core/SmoothPointRegular.lean:17:  `Module.finrank_of_isLocalizedModule_of_free`);
+lean/DLNFibre/Core/SmoothPointRegular.lean:32:import Mathlib.RingTheory.TensorProduct.Finite
+lean/DLNFibre/Core/SmoothPointRegular.lean:41:open Algebra IsLocalRing TensorProduct
+lean/DLNFibre/Core/SmoothPointRegular.lean:59:/-- On the standard-smooth chart `S = A[1/f]`, `Ω[S⁄k]` is free of finite rank equal to the relative
+lean/DLNFibre/Core/SmoothPointRegular.lean:74:target has `κ(m)`-dimension `n` (base change of the rank-`n` free module `Ω[R⁄k]`). -/
+lean/DLNFibre/Core/SmoothPointRegular.lean:89:  -- `Ω[R⁄k]` is free (projective over a local ring): smoothness gives projectivity.
+lean/DLNFibre/Core/SmoothPointRegular.lean:91:  haveI : Module.Free R (Ω[R⁄k]) := Module.free_of_flat_of_isLocalRing
+lean/DLNFibre/Core/SmoothPointRegular.lean:123:/-- The local relative dimension at a smooth point: `Ω[Localization.AtPrime m⁄k]` is free of rank
+lean/DLNFibre/Core/SmoothPointRegular.lean:140:    IsStandardSmooth.free_kaehlerDifferential
+lean/DLNFibre/Core/SmoothPointRegular.lean:158:  rw [Module.finrank_of_isLocalizedModule_of_free (Localization.AtPrime m)
+lean/DLNFibre/Core/RankPattern.lean:220:`i > N`, `diff` leaks to `i = N+1`), so the box is the wrong invariant for a guard-free `Equiv`. -/
+lean/DLNFibre/Core/RankPattern.lean:307:motive — a cast-free third route (neither the shifted-tail nor the `List.prod` options originally
+lean/DLNFibre/Core/DeformationExt.lean:33:additivity needs free finite modules). `Nontrivial k` is automatic from `Field`.
+lean/DLNFibre/Core/CotangentJacobian.lean:30:import Mathlib.RingTheory.Flat.Localization
+lean/DLNFibre/Core/CotangentJacobian.lean:37:import Mathlib.LinearAlgebra.TensorProduct.RightExactness
+lean/DLNFibre/Core/CotangentJacobian.lean:38:import Mathlib.LinearAlgebra.TensorProduct.Tower
+lean/DLNFibre/Core/CotangentJacobian.lean:40:open TensorProduct KaehlerDifferential Module IsLocalRing Matrix
+lean/DLNFibre/Core/CotangentJacobian.lean:85:    TensorProduct.mk A (Localization.AtPrime p) p.Cotangent 1
+lean/DLNFibre/Core/CotangentJacobian.lean:95:    (p.map (Algebra.TensorProduct.includeRight.toRingHom :
+lean/DLNFibre/Core/CotangentJacobian.lean:100:  set e : T ⊗[A] A ≃ₐ[T] T := Algebra.TensorProduct.rid A T T
+lean/DLNFibre/Core/CotangentJacobian.lean:101:  have hfwd : (p.map (Algebra.TensorProduct.includeRight.toRingHom : A →+* T ⊗[A] A)) ≤
+lean/DLNFibre/Core/CotangentJacobian.lean:106:    rw [show e (Algebra.TensorProduct.includeRight.toRingHom x) = algebraMap A T x from by
+lean/DLNFibre/Core/CotangentJacobian.lean:107:      simp [e, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]]
+lean/DLNFibre/Core/CotangentJacobian.lean:110:      (p.map (Algebra.TensorProduct.includeRight.toRingHom : A →+* T ⊗[A] A)).comap
+lean/DLNFibre/Core/CotangentJacobian.lean:115:    rw [show e.symm (algebraMap A T x) = Algebra.TensorProduct.includeRight.toRingHom x from by
+lean/DLNFibre/Core/CotangentJacobian.lean:116:      apply e.injective; simp [e, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]]
+lean/DLNFibre/Core/CCodimCornerMono.lean:195:/-! ## The diagonal partition (corner-`0` nonemptiness, for free)
+lean/DLNFibre/Core/CCodimCornerMono.lean:374:partition. From G3 (`minimalPrimes_sigmaIdeal_eq`) `p = vanishingIdeal (Ō_{M'})` for a corner-`≤ r`
+lean/DLNFibre/Core/CCodimCornerMono.lean:386:  rw [topComponents, Set.mem_setOf_eq, minimalPrimes_sigmaIdeal_eq] at hp
+lean/DLNFibre/Core/Orbit.lean:20:* `baseChange_normalForm` — **the Gabriel normal-form object** (cast-free): every tuple is
+lean/DLNFibre/Core/CThetaGeometric.lean:36:(`Core.SigmaComponents.minimalPrimes_sigmaIdeal_eq`); (iii) codimension-of-a-union =
+lean/DLNFibre/Core/OrbitDifferentialRank.lean:12:The char-free differential-rank bound that discharges the last residual of A4.4:
+lean/DLNFibre/Core/OrbitDifferentialRank.lean:565:δ⁰)`, char-free. The differential span `S = span_K {D(f_x)}` is generated by the conjugated
+lean/DLNFibre/Core/AffineNoetherRank.lean:22:Char-free: no algebraic closure, no `CharZero` (the Noether engine and `trdeg` API are char-free).
+lean/DLNFibre/Core/AffineNoetherRank.lean:80:`ringKrullDim_eq_of_ringEquiv` and `AlgEquiv.trdeg_eq`. Char-free. -/
+lean/DLNFibre/Core/SigmaCodim.lean:12:This is **network-free `Core` geometry** — no `DLNFibre.DLN` dependency. It is the same orbit-closure
+lean/DLNFibre/Core/SigmaCodim.lean:14:`r`: `sigmaIdeal d r = sInf (orbitIdeals d r)` and `minimalPrimes_sigmaIdeal_eq` (both general in `r`,
+lean/DLNFibre/Core/SigmaCodim.lean:56:and `minimalPrimes_sigmaIdeal_eq` are both general in `r` (`Core.SigmaComponents`). `[IsAlgClosed k]`
+lean/DLNFibre/Core/SigmaCodim.lean:76:    obtain ⟨p, hp, hple⟩ := Ideal.exists_minimalPrimes_le hle
+lean/DLNFibre/Core/SigmaCodim.lean:77:    haveI := Ideal.minimalPrimes_isPrime hp
+lean/DLNFibre/Core/SigmaCodim.lean:78:    calc ⨅ J ∈ (sigmaIdeal (k := k) d r).minimalPrimes,
+lean/DLNFibre/Core/SigmaCodim.lean:79:            @Ideal.primeHeight _ _ J (Ideal.minimalPrimes_isPrime ‹_›)
+lean/DLNFibre/Core/SigmaCodim.lean:89:    haveI := Ideal.minimalPrimes_isPrime hJ
+lean/DLNFibre/Core/SigmaCodim.lean:91:      ((minimalPrimes_sigmaIdeal_eq (k := k) d r) ▸ hJ).1
+
+exec
+/bin/bash -lc "sed -n '1,260p' lean/DLNFibre/Core/FlatTrivialProductProbe.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+import Mathlib.RingTheory.Flat.Basic
+import Mathlib.RingTheory.Flat.Stability
+import Mathlib.RingTheory.Flat.Localization
+import Mathlib.RingTheory.RingHom.Flat
+import Mathlib.RingTheory.MvPolynomial.Basic
+import Mathlib.LinearAlgebra.TensorProduct.Basis
+import Mathlib.RingTheory.Ideal.GoingDown
+import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+
+/-!
+# `DLNFibre.Core.FlatTrivialProductProbe` — the L1-0 `Module.Flat` API-surface contract
+
+**Status: API contract / checkpoint artefact, NOT the L1-0 theorem.** L1-0 (flatness of `mult`
+restricted to a rank-`r` chart) was **checkpointed, not proved** (thread 04, 2026-06-23): the
+`Module.Flat` *API* is fully viable at Mathlib v4.29 — every lever the local-triviality⟹trivial-
+product⟹free⟹flat route needs is present and compiles (the `example`-blocks below are the durable
+pins) — but the route is **unreachable this run** because the prerequisite object is missing: there
+is no coordinate-ring pullback `A →+* B` of `mult` (the engine carries `mult` only as a *set-level*
+function on `Tuple d`, with codim read through `vanishingIdeal`/`Ideal.height`; no `Spec`, no
+scheme, no algebra map between the base/total coordinate quotient rings). Building that ring map +
+the
+determinantal chart localisation + the section-of-the-torsor trivialisation is a from-scratch
+affine-AG construction (≈ 8–12 modules), not an API gap. See the thread-04 report for the verdict
+and the recommended fallback (the two-inequality dimension sandwich).
+
+This module records the **verified-present API** as `example`-blocks so the next attempt (or the
+real L1-0, once the ring map exists) can stand on confirmed contracts rather than re-probing.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core.FlatProbe
+
+open scoped TensorProduct
+
+universe u
+
+/-! ## Free ⟹ flat, and the polynomial / tensor trivial-product shapes -/
+
+/-- Free modules are flat (instance), the base of the route. -/
+example (A M : Type u) [CommRing A] [AddCommGroup M] [Module A M] [Module.Free A M] :
+    Module.Flat A M := inferInstance
+
+/-- `MvPolynomial (Fin r) A` is free, hence flat, over `A` — the trivial-product model fibre. -/
+example (A : Type u) [CommRing A] (r : ℕ) :
+    Module.Flat A (MvPolynomial (Fin r) A) := inferInstance
+
+/-- Tensor of frees is free over the base — the `A ⊗ F` trivial-product shape. -/
+example (A F : Type u) [CommRing A] [AddCommGroup F] [Module A F] [Module.Free A F] :
+    Module.Free A (A ⊗[A] F) := inferInstance
+
+/-! ## Transport flatness across an equivalence (the "B ≃ free" closer) -/
+
+/-- Flatness transports across a linear equivalence. -/
+example (A M N : Type u) [CommRing A] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
+    [Module.Flat A M] (e : N ≃ₗ[A] M) : Module.Flat A N :=
+  Module.Flat.of_linearEquiv e
+
+/-- Flatness transports across an *algebra* equivalence: `B ≃ₐ[A] (free A-algebra)` gives
+`Module.Flat A B` — the one-liner the route ends on, once such an equivalence exists. -/
+example (A B : Type u) [CommRing A] [CommRing B] [Algebra A B] (r : ℕ)
+    (e : B ≃ₐ[A] MvPolynomial (Fin r) A) : Module.Flat A B :=
+  Module.Flat.of_linearEquiv e.toLinearEquiv
+
+/-- Flatness composes along a tower `A → S → M` (`Module.Flat.trans`). -/
+example (A S M : Type u) [CommRing A] [CommRing S] [AddCommGroup M] [Algebra A S]
+    [Module A M] [Module S M] [IsScalarTower A S M] [Module.Flat A S] [Module.Flat S M] :
+    Module.Flat A M := Module.Flat.trans A S M
+
+/-! ## Flat-local-on-base, scheme-free (the local-triviality lever, when the ring map exists)
+
+`mult : Σ^r → Mat^{rk=r}` is Zariski-*locally* (not globally) trivial, so the route needs a
+flat-local-on-base lemma. Mathlib v4.29 has it at the **ring/module level, no schemes** — the
+levers to glue per-chart freeness into global flatness over the base. They are unusable here only
+because no `algebraMap A B` for `mult` exists yet. -/
+
+/-- **Module-level flat-local-on-base.** To prove `Module.Flat R M` it suffices to prove flatness of
+`LocalizedModule.Away r M` for each `r` in a spanning set `s ⊆ S` (a principal-open cover) — the
+scheme-free local-triviality lever (`Module.flat_of_localized_span`). -/
+example (R M : Type u) [CommRing R] [AddCommGroup M] [Module R M]
+    (s : Set R) (spn : Ideal.span s = ⊤)
+    (h : ∀ r : s, Module.Flat R (LocalizedModule.Away r.1 M)) : Module.Flat R M :=
+  Module.flat_of_localized_span (S := R) (M := M) s spn h
+
+/-- **Ring-hom-level flat-local-on-base.** `RingHom.Flat` is a local property: its `propertyIsLocal`
+bundles `ofLocalizationSpanTarget`, `ofLocalizationSpan`, composition stability, and iso-respect —
+the descent package for gluing per-chart flatness of a ring map. -/
+example : RingHom.PropertyIsLocal @RingHom.Flat := RingHom.Flat.propertyIsLocal
+
+/-! ## Downstream levers (NOT in L1-0 scope — confirming they sit on `Module.Flat`)
+
+These belong to L1-1 (a later tide); pinned here only to confirm the flatness fact, once proved,
+feeds the height-additivity squeeze with no further hypothesis beyond Noetherianity. -/
+
+/-- Flat ⟹ going-down (instance). -/
+example (A B : Type u) [CommRing A] [CommRing B] [Algebra A B] [Module.Flat A B] :
+    Algebra.HasGoingDown A B := inferInstance
+
+/-- The height-additivity lemma sits on going-down + Noetherianity (both rings Noetherian). -/
+example (A B : Type u) [CommRing A] [CommRing B] [Algebra A B] [IsNoetherianRing A]
+    [IsNoetherianRing B] [Algebra.HasGoingDown A B]
+    (p : Ideal A) [p.IsPrime] (P : Ideal B) [P.IsPrime] [P.LiesOver p] :
+    P.height = p.height + (P.map (Ideal.Quotient.mk (p.map (algebraMap A B)))).height :=
+  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P
+
+end DLNFibre.Core.FlatProbe
+
+exec
+/bin/bash -lc "sed -n '1,280p' lean/DLNFibre/Core/ChartFlatnessProbe.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+import Mathlib.RingTheory.Localization.Away.Basic
+import Mathlib.RingTheory.Flat.Localization
+import Mathlib.RingTheory.Flat.Basic
+import Mathlib.RingTheory.MvPolynomial.Basic
+import Mathlib.RingTheory.TensorProduct.Free
+import Mathlib.RingTheory.Ideal.GoingDown
+import DLNFibre.Core.MultComorphism
+
+/-!
+# `DLNFibre.Core.ChartFlatnessProbe` — the G2a chart-flatness API-surface contract
+
+**Status: API contract / thermometer artefact, NOT a theorem.** Thread 09 (2026-06-23) is the GATING
+probe for route **M-goingdown** of the rank-chart fibre-codimension build: localize F1's `multComap`
+at the pivot minor and ask whether the chart-localized total ring is **flat** (via free, through the
+Schur section) over the chart-localized base ring — which would feed the LANDED going-down
+additivity `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`.
+
+This module records the **verified-present localization + flatness API** as `example`-blocks
+(durable pins), and states — without `sorry` — the precise SHAPE of the gating object, so the
+verdict rests on confirmed contracts rather than recalled signatures.
+
+**The verdict (in the thread report):** the localization + flatness *API* is present at v4.29
+and the localized comorphism `Localization.Away.mapₐ` is constructible. But the *object* route
+M-goingdown needs flat is NOT the global `multComap` — that map is provably **not flat** (the fibre
+dimension jumps 4 → 5 as the target degenerates rank 1 → rank 0 on the `(2,2,2)` anchor, recorded in
+`Core.FibreCodim`). The flatness lives only on the **exact-rank determinantal chart**, whose
+base/total rings are quotients by determinantal ideals carried in the engine ONLY as opaque
+`vanishingIdeal`s — so the Schur section cannot be exhibited as an `AlgEquiv` without first building
+an explicit presentation of those quotient rings (a determinantal-algebra build). See the report.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core.ChartFlatProbe
+
+open scoped TensorProduct
+open MvPolynomial
+
+universe u
+
+/-! ## The localized comorphism exists (the chart-localized `algebraMap`)
+
+`Localization.Away.mapₐ f a : Localization.Away a →ₐ[R] Localization.Away (f a)` is the localized
+algebra map. Specialised to F1's `multComap d` and a pivot element `Δ` of the base coordinate ring,
+it IS the chart-localized comorphism the route wants — its mere existence is not the wall. -/
+
+/-- **The chart-localized comorphism exists.** For a base-ring element `Δ` (the pivot minor in
+target coords), `Localization.Away.map` builds the localized comorphism of `mult`:
+`(R_base)[1/Δ] →ₐ[k] (R_tot)[1/multComap Δ]`. Construction, not flatness. -/
+noncomputable example {k : Type u} [Field k] {N : ℕ} (d : Fin (N + 1) → ℕ)
+    (Δ : MvPolynomial (Fin (d (Fin.last N)) × Fin (d 0)) k)
+    (Rb : Type u) [CommRing Rb] [Algebra (MvPolynomial (Fin (d (Fin.last N)) × Fin (d 0)) k) Rb]
+    [IsLocalization.Away Δ Rb]
+    (Rt : Type u) [CommRing Rt] [Algebra (MvPolynomial (RepCoord d) k) Rt]
+    [IsLocalization.Away (multComap d Δ) Rt] :
+    Rb →+* Rt :=
+  IsLocalization.Away.map Rb Rt (multComap d).toRingHom Δ
+
+/-! ## Localization is always flat over the base (`IsLocalization.flat`)
+
+The localization `R[1/Δ]` is flat over `R` — present and unconditional. This is the EASY flatness
+(localizing a single ring); it is NOT the route's flatness (total-over-base via the comorphism). -/
+
+/-- A localization is flat over the ring it localizes (`IsLocalization.flat`). -/
+example {R S : Type u} [CommRing R] [CommRing S] [Algebra R S] (M : Submonoid R)
+    [IsLocalization M S] : Module.Flat R S :=
+  IsLocalization.flat S M
+
+/-! ## The route's flatness, stated honestly as a hypothesis (the gating object)
+
+The fact route M-goingdown needs: total-localized FLAT over base-localized THROUGH the comorphism,
+with the base/total being the EXACT-RANK quotient rings (not the full polynomial rings). The engine
+has no explicit presentation of those quotient rings, so we can only *state* the target as a
+hypothesis here — this `example` pins its TYPE (the going-down consumer), not a proof. -/
+
+/-- **The going-down consumer.** Given the route's flatness as a `[Module.Flat]` instance on a tower
+`Rb → Rt`, the LANDED height-additivity fires — confirming the gating fact, once proved, needs no
+hypothesis beyond Noetherianity. This is the contract the chart-flatness proof must discharge. -/
+example {Rb Rt : Type u} [CommRing Rb] [CommRing Rt] [Algebra Rb Rt] [IsNoetherianRing Rb]
+    [IsNoetherianRing Rt] [Module.Flat Rb Rt]
+    (p : Ideal Rb) [p.IsPrime] (P : Ideal Rt) [P.IsPrime] [P.LiesOver p] :
+    P.height = p.height + (P.map (Ideal.Quotient.mk (p.map (algebraMap Rb Rt)))).height :=
+  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown p P
+
+/-! ## The Schur-freeness model shape (free total over base on a TRIVIALIZED chart)
+
+The correct trivialization (decorrelated-Codex, 2026-06-23) is NOT a polynomial algebra: the fibre
+over `E` is **reducible** (`F_E = k[u,v,X,Z,ℓ,m]/(uX+vZ−1, ℓm)` for the anchor — note the `ℓm = 0`
+relation), so the chart is the BASE CHANGE `Rt ≃ₐ[Rb] Rb ⊗[k] F_E`, not `MvPolynomial _ Rb`. Over a
+field `k` the fibre `F_E` is free as a `k`-module (every vector space is free), so the base change
+is free, hence flat, over `Rb`. This pins what the Schur section must DELIVER; the wall is building
+the trivializing `AlgEquiv` from the engine's opaque `vanishingIdeal`-quotients, not the closer. -/
+
+/-- The base change `Rb ⊗[k] F` of a `k`-module `F` is free over `Rb` (over a field, `F` is free) —
+the `Algebra.TensorProduct.instFree` lever the corrected Schur trivialization closes on. -/
+example {k : Type u} [Field k] (Rb F : Type u) [CommRing Rb] [Algebra k Rb]
+    [AddCommGroup F] [Module k F] : Module.Free Rb (Rb ⊗[k] F) := inferInstance
+
+/-- **The Schur closer (model, corrected).** A chart trivialization `Rt ≃ₐ[Rb] Rb ⊗[k] F_E` to the
+base change of the (reducible, free-over-`k`) fibre algebra `F_E` makes `Rt` free, hence flat, over
+`Rb` — the one-liner the route ends on, once the trivializing `AlgEquiv` exists. -/
+example {k : Type u} [Field k] (Rb Rt F : Type u) [CommRing Rb] [CommRing Rt] [Algebra k Rb]
+    [AddCommGroup F] [Module k F] [Algebra Rb Rt] (e : Rt ≃ₗ[Rb] Rb ⊗[k] F) :
+    Module.Flat Rb Rt :=
+  Module.Flat.of_linearEquiv e
+
+end DLNFibre.Core.ChartFlatProbe
+
+exec
+/bin/bash -lc "sed -n '1,280p' lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+/-
+Height under a flat, quasi-finite-at-a-prime algebra.
+
+If `S` is a flat `R`-algebra (both Noetherian) and `S` is `R`-quasi-finite at a prime `Q`,
+then `Q` and the prime `Q.under R` it lies over have the same height: the fibre over
+`Q.under R` contributes nothing because quasi-finiteness forces `Q` to be minimal in that fibre.
+
+This is the height-preservation brick of the étale route to "smooth ⟹ regular": étale ⟹ flat +
+quasi-finite, so heights are preserved along an étale map, reducing `ringKrullDim` of a local ring
+to the dimension of an affine-space base.
+
+`Algebra.QuasiFiniteAt R Q` here is Mathlib's finite-fibre-dimension condition
+(`κ(p) ⊗ S` finite over `κ(p)`), which is *weaker* than the Stacks 00PL "finite type + isolated in
+its fibre" notion — the two coincide for finite-type `S`. The result holds in this weaker generality.
+-/
+import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+import Mathlib.RingTheory.QuasiFinite.Basic
+import Mathlib.RingTheory.Etale.Basic
+import Mathlib.RingTheory.Unramified.LocalStructure
+
+open Algebra
+
+namespace DLNFibre.Core
+
+variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
+
+/-- The image of `Q` in the fibre `S ⧸ (Q.under R)S` has height `0` when `S` is `R`-quasi-finite
+at `Q`: any prime below it pulls back to a prime of `S` with the same contraction to `R`, hence
+equal to `Q` by quasi-finiteness. -/
+theorem fibre_height_eq_zero_of_quasiFiniteAt (Q : Ideal S) [Q.IsPrime]
+    [Algebra.QuasiFiniteAt R Q] :
+    (Q.map (Ideal.Quotient.mk ((Q.under R).map (algebraMap R S)))).height = 0 := by
+  -- Abbreviations: `pS = (Q.under R) S`, `f = quotient map onto the fibre`.
+  set pS : Ideal S := (Q.under R).map (algebraMap R S) with hpS
+  set f : S →+* S ⧸ pS := Ideal.Quotient.mk pS with hf
+  have hsurj : Function.Surjective f := Ideal.Quotient.mk_surjective
+  have hkerf : RingHom.ker f = pS := Ideal.mk_ker
+  -- `comap f ⊥ = pS` (the kernel of the quotient map), in usable form.
+  have hbot : (⊥ : Ideal (S ⧸ pS)).comap f = pS := by
+    rw [← RingHom.ker_eq_comap_bot]; exact hkerf
+  -- `pS ≤ Q`, since `Q` lies over `Q.under R`.
+  have hpSQ : pS ≤ Q := hpS.trans_le Ideal.map_comap_le
+  -- `J := Q.map f` is prime and pulls back to `Q`.
+  have hJprime : (Q.map f).IsPrime :=
+    Ideal.map_isPrime_of_surjective hsurj (hkerf.trans_le hpSQ)
+  have hJcomap : (Q.map f).comap f = Q := by
+    rw [Ideal.comap_map_of_surjective f hsurj, hbot, sup_eq_left.mpr hpSQ]
+  -- height = primeHeight = 0 ⟺ minimal prime.
+  rw [Ideal.height_eq_primeHeight, Ideal.primeHeight_eq_zero_iff]
+  refine ⟨⟨hJprime, bot_le⟩, ?_⟩
+  -- Minimality: any prime `K ≤ J` equals `J`.
+  rintro K ⟨hKprime, -⟩ hKJ
+  -- `K' := K.comap f`, with `pS ≤ K' ≤ Q`.
+  have hK'prime : (K.comap f).IsPrime := hKprime.comap f
+  have hpSK' : pS ≤ K.comap f := (le_of_eq hkerf.symm).trans (Ideal.ker_le_comap f)
+  have hK'Q : K.comap f ≤ Q := by rw [← hJcomap]; exact Ideal.comap_mono hKJ
+  -- `K'.under R = Q.under R`: both equal `Q.under R`.
+  have hunder : (K.comap f).under R = Q.under R := by
+    refine le_antisymm (Ideal.comap_mono hK'Q) ?_
+    have h1 : Q.under R ≤ pS.comap (algebraMap R S) := hpS.symm ▸ Ideal.le_comap_map
+    exact h1.trans (Ideal.comap_mono hpSK')
+  -- Quasi-finiteness: `K' = Q`, hence `K = K'.map f = Q.map f = J`, so `J ≤ K`.
+  have hK'Q' : K.comap f = Q := QuasiFiniteAt.eq_of_le_of_under_eq hK'Q hunder
+  have hKJ' : K = Q.map f :=
+    calc K = (K.comap f).map f := (Ideal.map_comap_of_surjective f hsurj K).symm
+      _ = Q.map f := by rw [hK'Q']
+  exact hKJ'.ge
+
+/-- For a flat, Noetherian `R`-algebra `S` quasi-finite at a prime `Q`, the height of `Q`
+equals the height of the prime `Q.under R` it lies over. -/
+theorem Ideal.height_eq_under_of_flat_quasiFiniteAt
+    [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S]
+    (Q : Ideal S) [Q.IsPrime] [Algebra.QuasiFiniteAt R Q] :
+    Q.height = (Q.under R).height := by
+  have := Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (Q.under R) Q
+  rw [fibre_height_eq_zero_of_quasiFiniteAt Q, add_zero] at this
+  exact this
+
+/-- Étale algebras are flat and quasi-finite, so an étale Noetherian `R`-algebra `S` preserves
+the height of every prime: `Q.height = (Q.under R).height`. -/
+theorem Ideal.height_eq_under_of_etale
+    [IsNoetherianRing R] [IsNoetherianRing S] [Algebra.Etale R S]
+    (Q : Ideal S) [Q.IsPrime] :
+    Q.height = (Q.under R).height :=
+  Ideal.height_eq_under_of_flat_quasiFiniteAt Q
+
+/-- Non-vacuity: the hypotheses hold for the identity algebra `R = S` (flat and module-finite over
+itself), where the statement reduces to `Q.height = Q.height`. -/
+example [IsNoetherianRing R] (Q : Ideal R) [Q.IsPrime] :
+    Q.height = (Q.under R).height :=
+  Ideal.height_eq_under_of_flat_quasiFiniteAt (R := R) (S := R) Q
+
+end DLNFibre.Core
+
+codex
+The endpoint API is already pinned locally: flatness transport and tensor-product freeness compile, and the hard part is indeed the chart `AlgEquiv`, not `Module.Flat`. I’m checking the polynomial height module once to avoid overstating what the height-additivity term returns.
+exec
+/bin/bash -lc "sed -n '60,105p' lean/DLNFibre/Core/SigmaCodim.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+exec
+/bin/bash -lc "sed -n '90,135p' lean/DLNFibre/Core/PolynomialDimension.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+exec
+/bin/bash -lc "sed -n '190,230p' lean/DLNFibre/Core/SigmaComponents.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+  obtain ⟨M, _, rfl⟩ := hp
+  exact isPrime_vanishingIdeal_orbitRankLocus M
+
+/-- **G3 (minimal-primes form).** The minimal primes of the aggregate ideal `sigmaIdeal d r` of
+`Σ̄^r` are exactly the **inclusion-minimal** orbit ideals `vanishingIdeal (Ō_M)` over the
+corner-`≤ r` family. Since `vanishingIdeal` is order-reversing
+(`vanishingIdeal_orbitRankLocus_le_iff`), "inclusion-minimal orbit ideal" = "maximal orbit closure
+`Ō_M`" (orbit-closure / rank-pattern order, Thm 3.8 `O_s ⊆ Ō_r ⟺ s ≤ r`): the irreducible components
+of `Σ̄^r` are the maximal `Ō_M`.
+From the bridge `sigmaIdeal = sInf orbitIdeals` + the SPIKE (`minimalPrimes` of `sInf` of a finite
+family of primes = its inclusion-minimal members). `[IsAlgClosed k]` (for primality).
+**Caveat (paper transcription).** Le Halleur–Rimányi Cor 4.4(b) as printed reads "the **minimal**
+elements of `R^{≤r}`"; the geometrically-correct object is the inclusion-**maximal** orbit closures =
+inclusion-**minimal** vanishing ideals (the all-zero pattern is the order-minimal one and sits inside
+every closure, so is never a component). Settled by the worked `(2,2,2)`/`(2,3,2)` examples (recon
+thread 02); this is what the theorem proves. -/
+theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+    (sigmaIdeal (k := k) d r).minimalPrimes
+      = {p | p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q} := by
+  rw [sigmaIdeal_eq_sInf_orbitIdeals]
+  exact minimalPrimes_sInf_of_finite_of_isPrime (orbitIdeals d r) (orbitIdeals_finite d r)
+    (fun _ hp ↦ orbitIdeals_isPrime d r hp)
+
+/-- **G3 (irreducible-components form).** The irreducible components of (the prime-spectrum
+incarnation of) `Σ̄^r`, namely `zeroLocus (sigmaIdeal d r)`, are in inclusion-reversing bijection
+with the inclusion-minimal orbit ideals = the maximal orbit closures `Ō_M`. The Mathlib bridge
+`Ideal.minimalPrimes.equivIrreducibleComponents`, combined with `minimalPrimes_sigmaIdeal_eq`. -/
+noncomputable def irreducibleComponents_sigmaIdeal_equiv [IsAlgClosed k] (d : Fin (N + 1) → ℕ)
+    (r : ℕ) :
+    {p // p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q}
+      ≃o (irreducibleComponents (PrimeSpectrum.zeroLocus
+        ((sigmaIdeal (k := k) d r : Ideal (MvPolynomial (RepCoord d) k)) :
+          Set (MvPolynomial (RepCoord d) k))))ᵒᵈ :=
+  (OrderIso.setCongr _ _ (minimalPrimes_sigmaIdeal_eq d r).symm).trans
+    (Ideal.minimalPrimes.equivIrreducibleComponents (sigmaIdeal (k := k) d r))
+
+/-! ## θ — the top-dimensional components are the minimal-codimension orbit closures
+
+The geometric "top-dimensional = irreducible component" content: a corner-`≤ r` orbit closure of
+**minimal geometric codimension** (`codimRepCanonical`, the LANDED Voigt codim) is an irreducible
+component of `Σ̄^r`. The mechanism is the strict drop of `Ideal.height` under proper prime inclusion
+
+exec
+/bin/bash -lc "sed -n '1,120p' lean/DLNFibre/Core/FibreCodim.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim
+ succeeded in 0ms:
+import DLNFibre.Core.SigmaCodim
+import DLNFibre.Core.MultComorphism
+
+/-!
+# `DLNFibre.Core.FibreCodim` — the fibre-codimension LOWER bound (partial F2 / Lemma 4.6)
+
+**Scope, stated honestly.** Lehalleur–Rimányi Lemma 4.5/4.6 is the *codimension identity*
+
+> `codimRepCanonical (mult⁻¹ B) = codimRepCanonical Σ̄^r + r·(d_0 + d_N − r)`  (`B` rank `r`).
+
+This module proves the **easy half** that is reachable from the committed engine — the inclusion
+lower bound
+
+> `codimRepCanonical Σ̄^r ≤ codimRepCanonical (mult⁻¹ B)`
+
+— and **only** that half. The identity itself is **NOT** proved here: its honest proof needs the
+fibre-bundle / rank-chart local-trivialization of `mult` over the exact-rank determinantal stratum
+`Mat^{rk=r}` (the paper's Lie-group submersion argument), which is **absent from Mathlib v4.29**.
+The naïve "two-inequality sandwich" (Krull lower bound + affine-domain upper bound) provably cannot
+close the gap: Krull's height theorem bounds height *above* by the generator count `d_N·d_0`, the
+wrong direction and far larger than the shift `δ = r(d_0+d_N−r)`; and `mult` is **not flat** — the
+fibre dimension *jumps* as the rank drops (witness `(2,2,2)`: the rank-`1` fibre has dimension `4`,
+the rank-`0` fibre `mult⁻¹(0) = Σ̄^0` has dimension `5`), so the going-down additivity
+`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown` does not apply to the comorphism at the
+closed point `B`. The shift `δ` only materialises after restricting to the exact-rank chart where
+the map *is* flat — a substantial new build (explicit pivot charts, the section `D = C A⁻¹ B`, the
+product `mult⁻¹(U) ∩ Σ̄^r ≅ U × mult⁻¹(E)`, flatness per top component). The full identity stays
+**Cited** (`DLN.BundleShiftInterface.cited_bundle_shift`) until that build lands.
+
+What this lower bound *is*: a rigorous, non-overclaiming piece of bedrock the future chart build can
+stand on. Mechanism: `mult⁻¹(B) ⊆ Σ̄^r` (rank of the product on the fibre is `rank B = r ≤ r`), so
+`canonicalCoord '' (mult⁻¹ B) ⊆ canonicalCoord '' Σ̄^r`; `vanishingIdeal` is order-reversing and
+`Ideal.height` is monotone, giving the codimension inequality. No `[IsAlgClosed]`/`[CharZero]`
+needed — this half is pure inclusion monotonicity.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core
+
+open Matrix MvPolynomial Ideal
+
+universe u
+
+variable {k : Type u} [Field k] {N : ℕ}
+
+/-! ## `codimRepCanonical` is monotone under set inclusion (general lemma) -/
+
+/-- **`codimRepCanonical` is monotone under inclusion.** A subset's geometric codimension is at
+least that of any superset: a larger set has a smaller vanishing ideal (`vanishingIdeal_anti_mono`),
+and `Ideal.height` is monotone, so `codimRepCanonical Z' ≤ codimRepCanonical Z` when `Z ⊆ Z'`.
+Network-free, no field-closure hypothesis. -/
+theorem codimRepCanonical_mono {d : Fin (N + 1) → ℕ} {Z Z' : Set (Tuple (k := k) d)}
+    (h : Z ⊆ Z') : codimRepCanonical Z' ≤ codimRepCanonical Z := by
+  apply Ideal.height_mono
+  exact MvPolynomial.vanishingIdeal_anti_mono (Set.image_mono h)
+
+/-! ## The fibre sits inside the closed rank-`≤ r` locus -/
+
+/-- **The fibre over a rank-`r` matrix lies in `Σ̄^r`.** If `mult A = B` and `B.rank = r` then
+`(mult A).rank = r ≤ r`, so `A ∈ productRankLocusLE d r`: `mult⁻¹(B) ⊆ Σ̄^r`. -/
+theorem fibre_subset_productRankLocusLE {d : Fin (N + 1) → ℕ}
+    {B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k} {r : ℕ} (hB : B.rank = r) :
+    fibre d B ⊆ productRankLocusLE d r := by
+  intro A hA
+  rw [mem_productRankLocusLE]
+  rw [mem_fibre] at hA
+  rw [hA, hB]
+
+/-! ## The fibre-codimension lower bound (the reachable half of Lemma 4.6) -/
+
+/-- **The fibre-codimension lower bound (partial Lemma 4.6).** For `B` of rank `r`, the geometric
+codimension of the closed rank-`≤ r` product locus `Σ̄^r` is at most that of the fibre `mult⁻¹(B)`:
+
+> `codimRepCanonical Σ̄^r ≤ codimRepCanonical (mult⁻¹ B)`.
+
+This is the **easy half** of LR Lemma 4.5/4.6 (`codim mult⁻¹ B = codim Σ̄^r + r(d_0+d_N−r)`), the
+inequality `C ≤ codim mult⁻¹ B` that follows from `mult⁻¹ B ⊆ Σ̄^r` alone. The full identity — the
+shift `+ r(d_0+d_N−r)` — is **Cited** (`DLN.BundleShiftInterface.cited_bundle_shift`); it needs the
+exact-rank fibre-bundle structure absent from Mathlib v4.29 (see the module docstring). No closure /
+characteristic hypothesis. -/
+theorem codimRepCanonical_productRankLocusLE_le_codimRepCanonical_fibre {d : Fin (N + 1) → ℕ}
+    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) {r : ℕ} (hB : B.rank = r) :
+    codimRepCanonical (productRankLocusLE (k := k) d r) ≤ codimRepCanonical (fibre d B) :=
+  codimRepCanonical_mono (fibre_subset_productRankLocusLE hB)
+
+/-! ## Non-vacuity witness — `(2,2,2)`, `B = 0`, `r = 0`
+
+The lower bound fires at the cleanest base point `B = 0` (`rank 0 = 0`, `Matrix.rank_zero`): there
+`mult⁻¹(0) = Σ̄^0`, so the inequality `codim Σ̄^0 ≤ codim mult⁻¹(0)` is in fact an equality (`0 = 0`
+shift) — the lower bound is non-vacuous and tight at `r = 0`, the only case where the full Lemma 4.6
+needs no shift (already a LANDED equality in `DLN.RlctPayoff`). -/
+
+section Witness
+
+/-- The fibre-codimension lower bound fires on `(2,2,2)` at `B = 0` (`r = 0`):
+`codim Σ̄^0 ≤ codim mult⁻¹(0)`, over `AlgebraicClosure ℚ`. -/
+example :
+    codimRepCanonical (productRankLocusLE (k := AlgebraicClosure ℚ) dWitness 0)
+      ≤ codimRepCanonical (fibre dWitness (0 : Matrix (Fin (dWitness (Fin.last 2)))
+          (Fin (dWitness 0)) (AlgebraicClosure ℚ))) :=
+  codimRepCanonical_productRankLocusLE_le_codimRepCanonical_fibre _ Matrix.rank_zero
+
+end Witness
+
+end DLNFibre.Core
+
+ succeeded in 104ms:
+/-- **L5.7, easy half (ideal form).** For a prime `p` of `R = k[x₁,…,xₙ]`,
+`Ideal.primeHeight p + dim (R ⧸ p) ≤ n`. -/
+theorem primeHeight_add_ringKrullDim_quotient_le
+    (k : Type*) [Field k] (n : ℕ) (p : Ideal (MvPolynomial (Fin n) k)) [p.IsPrime] :
+    (Ideal.primeHeight p : WithBot ℕ∞) + ringKrullDim ((MvPolynomial (Fin n) k) ⧸ p)
+      ≤ (n : WithBot ℕ∞) := by
+  rw [ringKrullDim_quotient_eq_coheight ⟨p, ‹_›⟩]
+  have h := height_add_coheight_le k n ⟨p, ‹_›⟩
+  rw [Ideal.primeHeight]
+  exact_mod_cast h
+
+/-! ### The polynomial-tower additive brick (the `≥`/catenary additive half) -/
+
+/-- **Additive height law on the one-variable tower.** For `A` Noetherian and a prime `P` of `A[X]`
+lying over `q = P.under A`, `height P = height q + height (image of P in (A ⧸ q)[X])`. The
+extension `A → A[X]` is free hence flat, so it satisfies going-down
+(`Algebra.HasGoingDown.of_flat`), and the equality is
+`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`. This is the load-bearing additive half of
+the catenary content for polynomial rings. -/
+theorem height_eq_height_under_add_height_map_quotient
+    {A : Type*} [CommRing A] [IsNoetherianRing A]
+    (P : Ideal (Polynomial A)) [P.IsPrime] :
+    P.height = (P.under A).height +
+      (P.map (Ideal.Quotient.mk ((P.under A).map (algebraMap A (Polynomial A))))).height :=
+  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (P.under A) P
+
+/-! ### Non-vacuity witnesses -/
+
+/-- Witness for `ringKrullDim_quotient_eq_noetherRank`: for the zero prime of `k[x]` the Noether
+rank `s` it produces is `1` (not the degenerate `0`), since `dim (k[x] ⧸ ⊥) = dim k[x] = 1`. -/
+example (k : Type*) [Field k] :
+    ∃ s : ℕ, (s : WithBot ℕ∞) = (1 : WithBot ℕ∞) ∧
+      ringKrullDim ((MvPolynomial (Fin 1) k) ⧸ (⊥ : Ideal (MvPolynomial (Fin 1) k)))
+        = (s : WithBot ℕ∞) := by
+  obtain ⟨s, _, _, hdim⟩ := ringKrullDim_quotient_eq_noetherRank k 1 ⊥
+  refine ⟨s, ?_, hdim⟩
+  rw [← hdim, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _),
+    ringKrullDim_mvPolynomial_fin_field, Nat.cast_one]
+
+/-- Witness that the additive tower law is non-vacuous: `ℤ[X]` is Noetherian, the law applies to its
+prime `(X)`. -/
+example : (Ideal.span {Polynomial.X} : Ideal (Polynomial ℤ)).IsPrime := by
+  rw [Ideal.span_singleton_prime Polynomial.X_ne_zero]; exact Polynomial.prime_X
+
+end DLNFibre.Core
+
+ succeeded in 105ms:
+    codimRepCanonical (productRankLocusLE (k := k) d r)
+      = ⨅ M ∈ {M : Tuple (k := k) d | (mult d M).rank ≤ r},
+          codimRepCanonical (orbitRankLocus M) := by
+  rw [codimRepCanonical_productRankLocusLE_eq_height_sigmaIdeal, Ideal.height]
+  apply le_antisymm
+  · -- every orbit ideal contains a minimal prime of `≤` height ⟹ LHS ≤ each RHS summand
+    refine le_iInf₂ (fun M hM ↦ ?_)
+    have hmem : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+        (canonicalCoord d '' orbitRankLocus M)) ∈ orbitIdeals (k := k) d r := ⟨M, hM, rfl⟩
+    have hle : sigmaIdeal (k := k) d r
+        ≤ MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+          (canonicalCoord d '' orbitRankLocus M) := by
+      rw [sigmaIdeal_eq_sInf_orbitIdeals]; exact sInf_le hmem
+    haveI : (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
+        (canonicalCoord d '' orbitRankLocus M)).IsPrime :=
+      isPrime_vanishingIdeal_orbitRankLocus M
+    obtain ⟨p, hp, hple⟩ := Ideal.exists_minimalPrimes_le hle
+    haveI := Ideal.minimalPrimes_isPrime hp
+    calc ⨅ J ∈ (sigmaIdeal (k := k) d r).minimalPrimes,
+            @Ideal.primeHeight _ _ J (Ideal.minimalPrimes_isPrime ‹_›)
+        ≤ p.primeHeight := by
+          refine iInf₂_le_of_le p hp ?_
+          exact le_of_eq (by congr)
+      _ ≤ _ := by
+          rw [← Ideal.height_eq_primeHeight]
+          exact (Ideal.height_mono hple).trans_eq
+            (codimRepCanonical_orbitRankLocus_eq_height d M).symm
+  · -- each minimal prime IS an orbit ideal ⟹ RHS ≤ LHS
+    refine le_iInf₂ (fun J hJ ↦ ?_)
+    haveI := Ideal.minimalPrimes_isPrime hJ
+    have hJfam : J ∈ orbitIdeals (k := k) d r :=
+      ((minimalPrimes_sigmaIdeal_eq (k := k) d r) ▸ hJ).1
+    obtain ⟨M, hM, rfl⟩ := hJfam
+    refine iInf₂_le_of_le M hM ?_
+    rw [codimRepCanonical_orbitRankLocus_eq_height, Ideal.height_eq_primeHeight]
+
+/-- **Brick A (`ℕ∞` form): `codim Σ̄^r = C`.** The geometric codimension of `Σ̄^r` as an `ℕ∞` equals
+the combinatorial `C = cCodim d r`. Both inequalities come from bridge (a): the per-orbit lower bound
+(`cCodim_le_codimRepCanonical_of cCodim_zero_mono` — uses only the **weak** monotonicity) and the
+realizer of a minimising Kostant partition attaining the minimum. `[IsAlgClosed k] [CharZero k]`
+(the Voigt-discharge scope where `C` is the geometric codimension). -/
+theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [IsAlgClosed k] [CharZero k]
+    (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
+    codimRepCanonical (productRankLocusLE (k := k) d r) = ((cCodim d r h).toNat : ℕ∞) := by
+  rw [codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim]
+  apply le_antisymm
+
+codex
+One subtle point is worth separating in the final answer: “`R` regular of dimension `δ`” is morally enough for this chart, but in Lean I would prove `height m_B = δ` from the explicit localized polynomial presentation, not from regularity alone. That avoids an equidimensionality detour.
+codex
+**Verdict**
+
+Yes, the honest object is the chart trivialization
+
+```lean
+S ≃ₐ[R] R ⊗[k] F_E
+```
+
+but the cheaper way to build it is **not** to solve the total rank ideal by Schur/graph elimination in factor coordinates. Present the total chart as a **base change / graph ring**, then use endpoint row-column operations.
+
+**Q1**
+
+Let the target chart split the product matrix as
+
+```text
+B = [ Δ  P ]
+    [ Q  B22 ]
+```
+
+with `Δ` invertible. In the rank-`≤ r` target chart,
+
+```text
+B22 = Q Δ⁻¹ P
+R = k[Δ, P, Q, det(Δ)⁻¹].
+```
+
+Define
+
+```text
+L = [ Δ  0 ]          H = [ I  Δ⁻¹P ]
+    [ Q  I ]              [ 0    I   ]
+
+E = [ I 0 ]
+    [ 0 0 ].
+```
+
+Then
+
+```text
+B = L E H.
+```
+
+For a tuple `A = (A₁,...,A_N)` over the chart, normalize only the endpoints:
+
+```text
+Ã₁ = A₁ H⁻¹
+Ãᵢ = Aᵢ              for 1 < i < N
+Ã_N = L⁻¹ A_N.
+```
+
+Then
+
+```text
+A_N ... A₁ = B    ⇔    Ã_N ... Ã₁ = E.
+```
+
+Conversely,
+
+```text
+A₁ = Ã₁ H
+Aᵢ = Ãᵢ
+A_N = L Ã_N.
+```
+
+So the factor coordinates are not “free vs forced” in the original coordinate system. The clean coordinates are:
+
+```text
+base:       Δ, P, Q, det(Δ)⁻¹
+fibre:      normalized factor entries Ãᵢ, modulo mult(Ã)=E
+```
+
+The section exists: choose canonical rank-`r` maps `e_i : k^{d_{i-1}} → k^{d_i}` with an `I_r` in the pivot block and zero elsewhere, so `e_N ... e_1 = E`. Then for `N ≥ 2`,
+
+```text
+s(B)_1 = e₁ H
+s(B)_i = eᵢ
+s(B)_N = L e_N.
+```
+
+For Lean, the best presentation is:
+
+```text
+T = k[target entries]
+P = k[factor entries]
+R = target rank chart
+
+S := P ⊗[T] R
+   ≃ R[factor entries] / (mult(A) - B_univ)
+```
+
+Then the endpoint change above transports the ideal `(mult(A)-B_univ)` to `(mult(Ã)-E)`, giving
+
+```text
+S ≃ R[factor entries] / (mult(Ã)-E)
+  ≃ R ⊗[k] F_E.
+```
+
+This avoids porting the G2-2 graph-ideal trick to product entries. The factoring phenomenon `det(A₂A₁)=det A₁ det A₂` is real, but it becomes a fibre relation, e.g. `ℓm=0`, not an obstruction.
+
+**Q2**
+
+The flatness chain is the right one:
+
+```lean
+e : S ≃ₐ[R] R ⊗[k] F_E
+Module.Free R (R ⊗[k] F_E)      -- over a field, F_E is a free k-module
+Module.Flat R S                 -- `Module.Flat.of_linearEquiv e.toLinearEquiv`
+Algebra.HasGoingDown R S        -- instance from flatness
+Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown m_B P
+```
+
+The local probes already pin this API: tensor-product freeness and flatness transport are in [ChartFlatnessProbe.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean:94), and the going-down height consumer is pinned at [ChartFlatnessProbe.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean:76).
+
+For `P` minimal over `m_B S`, the relative term is zero because the image of `P` in `S ⧸ m_BS` is a minimal prime. So
+
+```text
+height_S P = height_R m_B + 0 = δ.
+```
+
+That step is sound. But phrase it as “minimal over the fibre ideal”, not merely “minimal prime of `F_E`” until after transporting through `S ⧸ m_BS ≃ F_E`.
+
+The flat-quasi-finite brick is not the right tool. The fibre is positive-dimensional, so `Algebra.QuasiFiniteAt R P` fails in the relevant cases; the local file [FlatQuasiFiniteHeight.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:71) is for zero-dimensional fibre behavior.
+
+For `height m_B = δ`: correct, but in Lean do not rely on “regular dim `δ`” alone. Use the explicit presentation `R = Localization.Away detSchurS` of a polynomial ring in `δ` Schur variables, and prove the point maximal ideal has height `δ`.
+
+One red-team caveat: adding the ambient `+ C` is not automatic from Brick A alone. You still need the minimal-prime/catenary/localization assembly: the fibre lies wholly in the chosen chart because the pivot minor evaluates to a nonzero scalar on `B`, and then quotient-height `δ` must be lifted over minimal primes of `Σ̄^r` of height `C`.
+
+**Q3**
+
+The explicit-equations/Jacobian reserve is not cleaner.
+
+A full-rank Jacobian at one smooth point proves only a local statement for one component. It does not rule out larger-dimensional components elsewhere, which is exactly the danger in this reducible setting. Krull gives height upper bounds from generator counts, not the needed lower bound. And producing `C+δ` global equations is unrealistic: the product rank locus is not generally a complete intersection, and `C` comes from orbit-closure combinatorics, not from an explicit regular sequence.
+
+The cheapest serious route is therefore:
+
+```text
+base-change graph presentation
+→ endpoint normalization AlgEquiv
+→ R ⊗ F_E
+→ free/flat
+→ going-down height additivity
+→ reducible minimal-prime assembly for +C.
+```
+
+Estimate: relative chart flatness is a real 4-6 module build; the full ambient `C+δ` theorem with localization and minimal-prime bookkeeping is more like 7-10 modules. The hard wall is the explicit quotient/tensor `AlgEquiv`, not Mathlib’s flatness API.
+tokens used
+68,238
+**Verdict**
+
+Yes, the honest object is the chart trivialization
+
+```lean
+S ≃ₐ[R] R ⊗[k] F_E
+```
+
+but the cheaper way to build it is **not** to solve the total rank ideal by Schur/graph elimination in factor coordinates. Present the total chart as a **base change / graph ring**, then use endpoint row-column operations.
+
+**Q1**
+
+Let the target chart split the product matrix as
+
+```text
+B = [ Δ  P ]
+    [ Q  B22 ]
+```
+
+with `Δ` invertible. In the rank-`≤ r` target chart,
+
+```text
+B22 = Q Δ⁻¹ P
+R = k[Δ, P, Q, det(Δ)⁻¹].
+```
+
+Define
+
+```text
+L = [ Δ  0 ]          H = [ I  Δ⁻¹P ]
+    [ Q  I ]              [ 0    I   ]
+
+E = [ I 0 ]
+    [ 0 0 ].
+```
+
+Then
+
+```text
+B = L E H.
+```
+
+For a tuple `A = (A₁,...,A_N)` over the chart, normalize only the endpoints:
+
+```text
+Ã₁ = A₁ H⁻¹
+Ãᵢ = Aᵢ              for 1 < i < N
+Ã_N = L⁻¹ A_N.
+```
+
+Then
+
+```text
+A_N ... A₁ = B    ⇔    Ã_N ... Ã₁ = E.
+```
+
+Conversely,
+
+```text
+A₁ = Ã₁ H
+Aᵢ = Ãᵢ
+A_N = L Ã_N.
+```
+
+So the factor coordinates are not “free vs forced” in the original coordinate system. The clean coordinates are:
+
+```text
+base:       Δ, P, Q, det(Δ)⁻¹
+fibre:      normalized factor entries Ãᵢ, modulo mult(Ã)=E
+```
+
+The section exists: choose canonical rank-`r` maps `e_i : k^{d_{i-1}} → k^{d_i}` with an `I_r` in the pivot block and zero elsewhere, so `e_N ... e_1 = E`. Then for `N ≥ 2`,
+
+```text
+s(B)_1 = e₁ H
+s(B)_i = eᵢ
+s(B)_N = L e_N.
+```
+
+For Lean, the best presentation is:
+
+```text
+T = k[target entries]
+P = k[factor entries]
+R = target rank chart
+
+S := P ⊗[T] R
+   ≃ R[factor entries] / (mult(A) - B_univ)
+```
+
+Then the endpoint change above transports the ideal `(mult(A)-B_univ)` to `(mult(Ã)-E)`, giving
+
+```text
+S ≃ R[factor entries] / (mult(Ã)-E)
+  ≃ R ⊗[k] F_E.
+```
+
+This avoids porting the G2-2 graph-ideal trick to product entries. The factoring phenomenon `det(A₂A₁)=det A₁ det A₂` is real, but it becomes a fibre relation, e.g. `ℓm=0`, not an obstruction.
+
+**Q2**
+
+The flatness chain is the right one:
+
+```lean
+e : S ≃ₐ[R] R ⊗[k] F_E
+Module.Free R (R ⊗[k] F_E)      -- over a field, F_E is a free k-module
+Module.Flat R S                 -- `Module.Flat.of_linearEquiv e.toLinearEquiv`
+Algebra.HasGoingDown R S        -- instance from flatness
+Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown m_B P
+```
+
+The local probes already pin this API: tensor-product freeness and flatness transport are in [ChartFlatnessProbe.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean:94), and the going-down height consumer is pinned at [ChartFlatnessProbe.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/ChartFlatnessProbe.lean:76).
+
+For `P` minimal over `m_B S`, the relative term is zero because the image of `P` in `S ⧸ m_BS` is a minimal prime. So
+
+```text
+height_S P = height_R m_B + 0 = δ.
+```
+
+That step is sound. But phrase it as “minimal over the fibre ideal”, not merely “minimal prime of `F_E`” until after transporting through `S ⧸ m_BS ≃ F_E`.
+
+The flat-quasi-finite brick is not the right tool. The fibre is positive-dimensional, so `Algebra.QuasiFiniteAt R P` fails in the relevant cases; the local file [FlatQuasiFiniteHeight.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean:71) is for zero-dimensional fibre behavior.
+
+For `height m_B = δ`: correct, but in Lean do not rely on “regular dim `δ`” alone. Use the explicit presentation `R = Localization.Away detSchurS` of a polynomial ring in `δ` Schur variables, and prove the point maximal ideal has height `δ`.
+
+One red-team caveat: adding the ambient `+ C` is not automatic from Brick A alone. You still need the minimal-prime/catenary/localization assembly: the fibre lies wholly in the chosen chart because the pivot minor evaluates to a nonzero scalar on `B`, and then quotient-height `δ` must be lifted over minimal primes of `Σ̄^r` of height `C`.
+
+**Q3**
+
+The explicit-equations/Jacobian reserve is not cleaner.
+
+A full-rank Jacobian at one smooth point proves only a local statement for one component. It does not rule out larger-dimensional components elsewhere, which is exactly the danger in this reducible setting. Krull gives height upper bounds from generator counts, not the needed lower bound. And producing `C+δ` global equations is unrealistic: the product rank locus is not generally a complete intersection, and `C` comes from orbit-closure combinatorics, not from an explicit regular sequence.
+
+The cheapest serious route is therefore:
+
+```text
+base-change graph presentation
+→ endpoint normalization AlgEquiv
+→ R ⊗ F_E
+→ free/flat
+→ going-down height additivity
+→ reducible minimal-prime assembly for +C.
+```
+
+Estimate: relative chart flatness is a real 4-6 module build; the full ambient `C+δ` theorem with localization and minimal-prime bookkeeping is more like 7-10 modules. The hard wall is the explicit quotient/tensor `AlgEquiv`, not Mathlib’s flatness API.

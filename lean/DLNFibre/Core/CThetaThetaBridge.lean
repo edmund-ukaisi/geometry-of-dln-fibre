@@ -29,12 +29,14 @@ The two sides have **equal cardinality** by `Finset.card_bij'`:
 Composing the count equality with `qipNumMinimisers_eq_cTheta` gives `numTop d 0 = cTheta d`.
 
 **Scope (name = content).** This is the **combinatorial** `θ`: a minimiser count of a ℤ-quadratic
-form over Kostant partitions. The **aggregate** geometric reading ("`θ` top-dimensional GEOMETRIC
-components of `Σ⁰`") stays open per the `Core.CThetaGeometric` roadmap — it needs `Σ⁰`-as-variety,
-its orbit stratification, and a top-component count — and nothing here asserts it; the per-orbit
-codimension reading is PROVED in `Core.CThetaGeometric` (the discharged Voigt lemma). The
-nonemptiness bridge `kostant_nonempty_iff_qipFeasible_nonempty` lets the two `Nonempty`
-hypotheses pass between layers.
+form over Kostant partitions. The **aggregate** geometric reading — `θ` as the count of
+top-dimensional GEOMETRIC components of the closed locus `Σ̄^r` — is PROVED:
+`numTop d r = #{top-dimensional irreducible components of Σ̄^r}`
+(`Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`, unconditional), over the orbit
+stratification (`Core.SigmaStratification` / `Core.SigmaComponents`); the per-orbit codimension
+reading is PROVED in `Core.CThetaGeometric` (the discharged Voigt lemma). Nothing here asserts those
+geometric readings directly. The nonemptiness bridge `kostant_nonempty_iff_qipFeasible_nonempty`
+lets the two `Nonempty` hypotheses pass between layers.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

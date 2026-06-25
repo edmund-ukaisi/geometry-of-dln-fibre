@@ -495,7 +495,7 @@ theorem codimForm_concatMove_lt {m : Fin (N + 1) × Fin (N + 1) → ℕ} {a b c 
       ≤ codimForm N M - 1 := by linarith
   linarith [this]
 
-/-! ## The converse, top-level (skeleton)
+/-! ## The converse, top-level
 
 `cCodim_ge_qipMin` is the reverse inequality; `cCodim_eq_qipMin` combines it with the easy `≤`.
 `mOfE_surj_of_hl` and the exhaustiveness/minimiser-is-HL chain carry the work. -/
@@ -828,8 +828,8 @@ theorem cCodim_ge_qipMin (d : Fin (N + 1) → ℕ) (hd : Monotone d)
 
 /-- **The QIP (Thm 6.1), as equality.** For weakly-increasing `d`, `cCodim d 0 = qipMin d`: the
 combinatorial codimension of the zero-product locus equals the QIP minimum. (The per-orbit geometric
-reading of `cCodim` is proved in `Core.CThetaGeometric`; only the `Σ^r`-aggregate reading remains
-open, per its roadmap — as in `Core.CTheta`.) -/
+reading of `cCodim` is proved in `Core.CThetaGeometric`; the `Σ̄^r`-aggregate reading
+`codim Σ̄^r = cCodim d r` is proved in `Core.SigmaCodim` — as in `Core.CTheta`.) -/
 theorem cCodim_eq_qipMin (d : Fin (N + 1) → ℕ) (hd : Monotone d)
     (h : (kostantPartitions d 0).Nonempty) (hne : (qipFeasible d).Nonempty) :
     cCodim d 0 h = qipMin d hne :=

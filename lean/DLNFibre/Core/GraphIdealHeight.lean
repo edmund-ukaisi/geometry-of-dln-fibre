@@ -1,0 +1,161 @@
+import DLNFibre.Core.MvPolynomialKerAeval
+import DLNFibre.Core.NullstellensatzCodim
+import Mathlib.RingTheory.MvPolynomial.Localization
+
+/-!
+# `DLNFibre.Core.GraphIdealHeight` — the height of a block graph ideal over a field
+
+The **height** of the graph ideal that eliminates the `σ`-block of `MvPolynomial (σ ⊕ τ) k` (`k` a
+field, `σ τ` finite) is `Nat.card σ`. Concretely, viewing `MvPolynomial (σ ⊕ τ) k ≃ₐ[k]
+MvPolynomial σ (MvPolynomial τ k)` (`sumAlgEquiv`), for a forced map `c : σ → MvPolynomial τ k` the
+graph ideal `graphIdeal c` (kernel of `aeval c`, killing the `σ`-coordinates) is prime with quotient
+`MvPolynomial τ k` (dimension `Nat.card τ`), so by the field catenary
+
+> `height (graphIdeal c) + dim (quotient) = #(all vars)`  ⟹  `height = (#σ + #τ) − #τ = #σ`.
+
+This is the lower-bound engine for the localized determinantal base presentation (`G2-2`): the Schur
+graph ideal `J` eliminates the `B22` block, so `height J = #B22block = (p−r)(q−r) = C` — the
+direction the `Iad = J` height-squeeze genuinely needs (the inclusion `J ⊆ Iad` only gives `≤ C`).
+
+Reuses `Core.MvPolynomialKerAeval` (the graph-ideal / quotient package) and
+`Core.NullstellensatzCodim` (the field catenary `height_add_ringKrullDim_quotient_eq_card`).
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+namespace DLNFibre.Core
+
+open MvPolynomial
+
+universe u v w
+
+variable {k : Type u} [Field k] {σ : Type v} {τ : Type w} [Finite σ] [Finite τ]
+
+omit [Finite σ] in
+/-- The quotient of `MvPolynomial σ (MvPolynomial τ k)` by the block graph ideal `graphIdeal c` has
+Krull dimension `Nat.card τ`: it is `MvPolynomial τ k` (`graphIdealQuotientEquiv`, the elimination),
+whose dimension is `Nat.card τ` (a field has Krull dimension `0`). -/
+theorem ringKrullDim_quotient_graphIdeal_eq (c : σ → MvPolynomial τ k) :
+    ringKrullDim (MvPolynomial σ (MvPolynomial τ k) ⧸ graphIdeal c)
+      = (Nat.card τ : WithBot ℕ∞) := by
+  rw [ringKrullDim_eq_of_ringEquiv (graphIdealQuotientEquiv c).toRingEquiv,
+    MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]
+
+/-- **The height of the block graph ideal over a field is `Nat.card σ`.** For `c : σ →
+MvPolynomial τ k`, the graph ideal `graphIdeal c` of `MvPolynomial σ (MvPolynomial τ k)` (the kernel
+of `aeval c`, eliminating the `σ`-block) has height `Nat.card σ`. The catenary identity
+`height + dim(quotient) = #vars`: `#vars = Nat.card σ + Nat.card τ` (via `sumAlgEquiv` to
+`MvPolynomial (σ ⊕ τ) k`) and `dim(quotient) = Nat.card τ`, so `height = Nat.card σ`. -/
+theorem height_graphIdeal_eq (c : σ → MvPolynomial τ k) :
+    (graphIdeal c).height = (Nat.card σ : ℕ∞) := by
+  -- the graph ideal is prime (kernel of a map to the domain `MvPolynomial τ k`)
+  haveI hprime : (graphIdeal c).IsPrime := graphIdeal_isPrime c
+  -- transport to the field ring `MvPolynomial (σ ⊕ τ) k` to apply the field catenary
+  set e : MvPolynomial (σ ⊕ τ) k ≃ₐ[k] MvPolynomial σ (MvPolynomial τ k) :=
+    sumAlgEquiv k σ τ with he
+  set J₀ : Ideal (MvPolynomial (σ ⊕ τ) k) :=
+    (graphIdeal c).comap (e : MvPolynomial (σ ⊕ τ) k →+* MvPolynomial σ (MvPolynomial τ k))
+    with hJ₀
+  -- `J₀ = (graphIdeal c).map e.symm`, so it is prime and transports height/quotient-dim
+  have hmap : J₀ = (graphIdeal c).map (e.symm : MvPolynomial σ (MvPolynomial τ k) →+*
+      MvPolynomial (σ ⊕ τ) k) :=
+    (Ideal.map_symm (e : MvPolynomial (σ ⊕ τ) k ≃+* MvPolynomial σ (MvPolynomial τ k))).symm
+  haveI : J₀.IsPrime := by rw [hmap]; exact Ideal.map_isPrime_of_equiv e.symm
+  have hheight : J₀.height = (graphIdeal c).height := by
+    rw [hmap]; exact height_map_algEquiv e.symm (graphIdeal c)
+  have hdim : ringKrullDim (MvPolynomial (σ ⊕ τ) k ⧸ J₀)
+      = ringKrullDim (MvPolynomial σ (MvPolynomial τ k) ⧸ graphIdeal c) := by
+    rw [hmap]; exact ringKrullDim_quotient_map_algEquiv e.symm (graphIdeal c)
+  -- the field catenary on `MvPolynomial (σ ⊕ τ) k`
+  have hcat := height_add_ringKrullDim_quotient_eq_card (k := k) (σ := σ ⊕ τ) J₀
+  rw [hheight, hdim, ringKrullDim_quotient_graphIdeal_eq c, Nat.card_sum] at hcat
+  -- drop `WithBot` to the `ℕ∞` catenary `height + #τ = #σ + #τ`, then cancel (landed pattern)
+  have hcat' : (graphIdeal c).height + (Nat.card τ : ℕ∞)
+      = (Nat.card σ : ℕ∞) + (Nat.card τ : ℕ∞) := by
+    have h2 : (((graphIdeal c).height + (Nat.card τ : ℕ∞) : ℕ∞) : WithBot ℕ∞)
+        = (((Nat.card σ : ℕ∞) + (Nat.card τ : ℕ∞) : ℕ∞) : WithBot ℕ∞) := by
+      push_cast; push_cast at hcat; rw [hcat]
+    exact_mod_cast h2
+  -- cancel the finite `#τ` (landed pattern: `AddLECancellable.eq_tsub_of_add_eq`), then simplify
+  have hne : (Nat.card τ : ℕ∞) ≠ ⊤ := ENat.coe_ne_top _
+  have hcancel := ENat.addLECancellable_of_ne_top hne
+  have hsub := hcancel.eq_tsub_of_add_eq hcat'
+  rwa [hcancel.add_tsub_cancel_right] at hsub
+
+/-- **The coordinate ideal of the `σ`-block has height `Nat.card σ`.** The ideal `span (range X)`
+generated by the `σ`-coordinate variables of `MvPolynomial σ (MvPolynomial τ k)` is the graph ideal
+of the zero map (`X i = X i − C 0`), so `height_graphIdeal_eq` gives its height as `#σ`. This is the
+coordinate-ideal target the elimination's translation automorphism transports the Schur graph ideal
+to. -/
+theorem height_coordIdeal_eq :
+    (Ideal.span (Set.range fun i ↦ (X i : MvPolynomial σ (MvPolynomial τ k)))).height
+      = (Nat.card σ : ℕ∞) := by
+  rw [show (Ideal.span (Set.range fun i ↦ (X i : MvPolynomial σ (MvPolynomial τ k))))
+        = graphIdeal (fun _ : σ ↦ (0 : MvPolynomial τ k)) from by
+      simp only [graphIdeal, map_zero, sub_zero]]
+  exact height_graphIdeal_eq (fun _ : σ ↦ (0 : MvPolynomial τ k))
+
+attribute [local instance] MvPolynomial.algebraMvPolynomial
+
+/-- **The coordinate ideal height is preserved under localizing the coefficient ring.** For `f ≠ 0`
+in `MvPolynomial τ k` and `Sd = Localization.Away f`, the `σ`-block coordinate ideal of
+`MvPolynomial σ Sd` still has height `Nat.card σ`. Transport: `MvPolynomial σ Sd` is the
+localization of `MvPolynomial σ (MvPolynomial τ k)` at `powers (C f)` (the `isLocalization`
+instance), the coordinate ideal is the `map` of the un-localized one, and `C f ∉` the coordinate
+prime (`f ≠ 0`), so `IsLocalization.height_map_of_disjoint` + `height_coordIdeal_eq` give it. The
+localized target the determinantal elimination's height-squeeze uses (`det ≠ 0`). -/
+theorem height_coordIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
+    (Sd : Type u) [CommRing Sd] [Algebra (MvPolynomial τ k) Sd] [IsLocalization.Away f Sd] :
+    (Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd))).height = (Nat.card σ : ℕ∞) := by
+  set K0 : Ideal (MvPolynomial σ (MvPolynomial τ k)) :=
+    Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ (MvPolynomial τ k))) with hK0def
+  have hK0g : K0 = graphIdeal (fun _ : σ ↦ (0 : MvPolynomial τ k)) := by
+    simp only [hK0def, graphIdeal, map_zero, sub_zero]
+  have hK0prime : K0.IsPrime := by rw [hK0g]; exact graphIdeal_isPrime _
+  have hCf : (C f : MvPolynomial σ (MvPolynomial τ k)) ∉ K0 := by
+    rw [hK0g, ← ker_aeval_eq_graphIdeal]
+    exact fun hmem ↦ hf (by simpa using RingHom.mem_ker.mp hmem)
+  have hdisj := (Ideal.disjoint_powers_iff_notMem (C f : MvPolynomial σ (MvPolynomial τ k))
+    hK0prime.isRadical).2 hCf
+  haveI : IsLocalization (Submonoid.powers (C f : MvPolynomial σ (MvPolynomial τ k)))
+      (MvPolynomial σ Sd) := by
+    simpa [Submonoid.map_powers] using
+      (MvPolynomial.isLocalization (σ := σ) (M := Submonoid.powers f) (S := Sd))
+  have hKmap : K0.map (algebraMap (MvPolynomial σ (MvPolynomial τ k)) (MvPolynomial σ Sd))
+      = Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd)) := by
+    rw [hK0def, Ideal.map_span, ← Set.range_comp']
+    congr 1; funext b; simp [MvPolynomial.algebraMap_def]
+  rw [← hKmap, IsLocalization.height_map_of_disjoint
+    (Submonoid.powers (C f : MvPolynomial σ (MvPolynomial τ k))) K0 hdisj, hK0g]
+  exact height_graphIdeal_eq _
+
+/-- The **translation automorphism** `X b ↦ X b + C (c b)` of `MvPolynomial σ R`, an `AlgEquiv` with
+inverse `X b ↦ X b − C (c b)`. It carries the coordinate ideal `span (range X)` to `graphIdeal c`
+(used to transport heights: a graph ideal is a translated coordinate ideal). -/
+noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
+    MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R :=
+  AlgEquiv.ofAlgHom (aeval (fun b ↦ X b + C (c b))) (aeval (fun b ↦ X b - C (c b)))
+    (by apply MvPolynomial.algHom_ext; intro b; simp)
+    (by apply MvPolynomial.algHom_ext; intro b; simp)
+
+/-- **The height of a graph ideal over a localized coefficient ring is `Nat.card σ`.** For `c : σ →
+Sd` with `Sd = Localization.Away f` (`f ≠ 0` in `MvPolynomial τ k`), `(graphIdeal c).height =
+Nat.card σ`. The translation automorphism `translateAux (−c)` carries the `σ`-coordinate ideal of
+`MvPolynomial σ Sd` to `graphIdeal c`, and the coordinate ideal has height `Nat.card σ`
+(`height_coordIdeal_localization_eq`). This is the engine the determinantal elimination's
+`height J = C` step uses (`σ = B22block`, `Sd = Localization.Away detSchurS`). -/
+theorem height_graphIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
+    (Sd : Type u) [CommRing Sd] [Algebra (MvPolynomial τ k) Sd] [IsLocalization.Away f Sd]
+    (c : σ → Sd) : (graphIdeal c).height = (Nat.card σ : ℕ∞) := by
+  have htrans : (Ideal.span (Set.range fun b ↦ (X b : MvPolynomial σ Sd))).map
+      ((translateAux (fun b ↦ - c b) : MvPolynomial σ Sd ≃ₐ[Sd] MvPolynomial σ Sd) :
+        MvPolynomial σ Sd →+* MvPolynomial σ Sd) = graphIdeal c := by
+    rw [Ideal.map_span, graphIdeal]
+    congr 1
+    ext z
+    constructor
+    · rintro ⟨_, ⟨b, rfl⟩, rfl⟩; exact ⟨b, by simp [translateAux, map_neg]; ring⟩
+    · rintro ⟨b, rfl⟩; exact ⟨X b, ⟨b, rfl⟩, by simp [translateAux, map_neg]; ring⟩
+  rw [← htrans, height_map_algEquiv, height_coordIdeal_localization_eq f hf Sd]
+
+end DLNFibre.Core

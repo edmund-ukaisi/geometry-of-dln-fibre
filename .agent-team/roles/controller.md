@@ -9,7 +9,13 @@ maths rather than accepting an assumed reduction as the endpoint;
 supervisor, not slave-driver
 ([`../../docs/policies/precision.md`](../../docs/policies/precision.md);
 [`../../docs/policies/expedition.md`](../../docs/policies/expedition.md) § Supervising the
-formaliser). **Judges against bedrock** — holds formaliser output to the bedrock taste
+formaliser). **Routes the pen-and-paper → formaliser handoff** — a `pen-and-paper` certificate settles
+the truth-value and reports the *structure and ideas it observed*, but carries no Lean route; synthesizing that
+route (the **true → provable-in-Lean** bridge, where the Mathlib-feasibility judgment lives) is the
+controller's, recorded *attributed* on the certificate card alongside p&p's untouched section, with the
+formaliser then pointed at the **durable card** rather than an ephemeral spawn prompt — so the
+formaliser and reviewer see p&p's raw structure as a cross-check, not only the controller's filtered
+version. **Judges against bedrock** — holds formaliser output to the bedrock taste
 ([`../../docs/policies/bedrock.md`](../../docs/policies/bedrock.md)); a green, sorry-free, axiom-clean build is
 necessary, never sufficient — and neither is a relayed result: **re-run cited scripts** to confirm they
 reproduce their headline (not a relayed verdict), and require a **decorrelated counterexample hunt** to have

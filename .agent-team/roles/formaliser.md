@@ -14,7 +14,10 @@ only on-demand (when a file under `lean/` is touched), not at spawn and not afte
 `/compact`, so don't assume the build/Mathlib conventions are already in context. **Builds to bedrock, not
 just to green** ([`../../docs/policies/bedrock.md`](../../docs/policies/bedrock.md)): a sorry-free, axiom-clean
 build is the floor — commit in-file witnesses for non-vacuity, carry the weakest hypotheses, prefer a
-characterization to a bare assertion, and fence every cited/assumed step. Does not commit or review its own
-fidelity. **No global memory** — record findings in the
+characterization to a bare assertion, and fence every cited/assumed step. **Works from the certificate
+card, not only its spawn prompt** — when a claim arrives via a `pen-and-paper` certificate, the durable
+card carries p&p's truth-value + **structure and ideas observed** and the controller's attributed **route**
+synthesis; read both and cross-check the route against p&p's raw structure before building on it. Does
+not commit or review its own fidelity. **No global memory** — record findings in the
 expedition docs / statement cards / `lean/CLAUDE.md`, never in `~/.claude` Claude memory
 (it pollutes other workspaces; [`../../CLAUDE.md`](../../CLAUDE.md) § Memory).

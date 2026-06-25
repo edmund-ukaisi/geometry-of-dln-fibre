@@ -2,13 +2,14 @@
 Zariski cotangent space = cokernel of the Jacobian, at a rational point of an affine variety.
 
 For `R = MvPolynomial σ k` (`σ` a `Fintype`), an ideal `I` with a finite generating family
-`g : Fin m → R`, and a `k`-rational point `a : σ → k` of `V(I)` (`∀ i, eval a (g i) = 0`), let
+`g : ι → R` (`ι` a `Fintype` with `DecidableEq`), and a `k`-rational point `a : σ → k` of `V(I)`
+(`∀ i, eval a (g i) = 0`), let
 `A = R ⧸ I` and `m_A` the maximal ideal at `a` (the kernel of the augmentation `ε : A →ₐ[k] k`
 induced by `eval a`). The headline:
 
   `finrank k (CotangentSpace (Localization.AtPrime m_A)) = finrank k (ker jacobian)`,
 
-where `jacobian : (σ → k) →ₗ[k] (Fin m → k)` is `v ↦ fun i ↦ ∑ x, eval a (pderiv x (g i)) • v x`
+where `jacobian : (σ → k) →ₗ[k] (ι → k)` is `v ↦ fun i ↦ ∑ x, eval a (pderiv x (g i)) • v x`
 (rows = generators, cols = `σ`). The residue field `κ(m_A) = k` since `a` is `k`-rational.
 
 Route: the conormal sequence of the surjection `R ↠ A` (`kerCotangentToTensor k R A`), base-changed to
@@ -143,26 +144,26 @@ theorem finrank_cotangentSpace_localization_eq_cotangent :
 end Localization
 
 variable {k : Type*} [Field k] {σ : Type*} [Fintype σ] [DecidableEq σ]
-  {m : ℕ} (g : Fin m → MvPolynomial σ k) (a : σ → k)
+  {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι → MvPolynomial σ k) (a : σ → k)
 
-/-- The Jacobian matrix of `g` at `a`: rows = generators, columns = `σ`;
+/-- The Jacobian matrix of `g` at `a`: rows = generators (indexed by `ι`), columns = `σ`;
 entry `(i, x) = eval a (pderiv x (g i))`. -/
-def jacobianMatrix : Matrix (Fin m) σ k :=
+def jacobianMatrix : Matrix ι σ k :=
   fun i x ↦ MvPolynomial.eval a (MvPolynomial.pderiv x (g i))
 
-/-- The Jacobian of `g` at `a` as a `k`-linear map `(σ → k) →ₗ[k] (Fin m → k)`
+/-- The Jacobian of `g` at `a` as a `k`-linear map `(σ → k) →ₗ[k] (ι → k)`
 (multiplication by the Jacobian matrix). -/
-def jacobian : (σ → k) →ₗ[k] (Fin m → k) := (jacobianMatrix g a).mulVecLin
+def jacobian : (σ → k) →ₗ[k] (ι → k) := (jacobianMatrix g a).mulVecLin
 
-/-- The transpose Jacobian: the conormal map `(Fin m → k) →ₗ[k] (σ → k)` sending the `i`-th basis
+/-- The transpose Jacobian: the conormal map `(ι → k) →ₗ[k] (σ → k)` sending the `i`-th basis
 vector to the gradient row of `g i` at `a` (multiplication by the transposed Jacobian matrix). -/
-def jacobianTranspose : (Fin m → k) →ₗ[k] (σ → k) := (jacobianMatrix g a)ᵀ.mulVecLin
+def jacobianTranspose : (ι → k) →ₗ[k] (σ → k) := (jacobianMatrix g a)ᵀ.mulVecLin
 
-theorem jacobian_apply (v : σ → k) (i : Fin m) :
+theorem jacobian_apply (v : σ → k) (i : ι) :
     jacobian g a v i = ∑ x, (MvPolynomial.eval a (MvPolynomial.pderiv x (g i))) • v x := by
   simp [jacobian, jacobianMatrix, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, smul_eq_mul]
 
-theorem jacobianTranspose_apply (c : Fin m → k) (x : σ) :
+theorem jacobianTranspose_apply (c : ι → k) (x : σ) :
     jacobianTranspose g a c x = ∑ i, (MvPolynomial.eval a (MvPolynomial.pderiv x (g i))) • c i := by
   simp only [jacobianTranspose, jacobianMatrix, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct,
     Matrix.transpose_apply, smul_eq_mul]
@@ -371,18 +372,18 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
         Ψ.toLinearMap = LinearMap.range (jacobianTranspose g a) := by
     set K := LinearMap.ker (KaehlerDifferential.mapBaseChange k (MvPolynomial σ k)
       (MvPolynomial σ k ⧸ Ideal.span (Set.range g))) with hKdef
-    set sgen : Fin m → ((MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗[MvPolynomial σ k]
+    set sgen : ι → ((MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗[MvPolynomial σ k]
         Ω[MvPolynomial σ k⁄k]) :=
       fun i ↦ (1 : MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗ₜ[MvPolynomial σ k]
         KaehlerDifferential.D k (MvPolynomial σ k) (g i) with hsgen
-    set tgen : Fin m → (k ⊗[MvPolynomial σ k ⧸ Ideal.span (Set.range g)]
+    set tgen : ι → (k ⊗[MvPolynomial σ k ⧸ Ideal.span (Set.range g)]
         ((MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗[MvPolynomial σ k] Ω[MvPolynomial σ k⁄k])) :=
       fun i ↦ (1 : k) ⊗ₜ[MvPolynomial σ k ⧸ Ideal.span (Set.range g)] sgen i with htgen
     -- `ker(R → B) = span (range g)`
     have hIker : RingHom.ker (algebraMap (MvPolynomial σ k)
         (MvPolynomial σ k ⧸ Ideal.span (Set.range g))) = Ideal.span (Set.range g) :=
       Ideal.mk_ker
-    have hgi_mem : ∀ i : Fin m, g i ∈ RingHom.ker (algebraMap (MvPolynomial σ k)
+    have hgi_mem : ∀ i : ι, g i ∈ RingHom.ker (algebraMap (MvPolynomial σ k)
         (MvPolynomial σ k ⧸ Ideal.span (Set.range g))) := fun i ↦ by
       rw [hIker]; exact Ideal.subset_span ⟨i, rfl⟩
     -- the conormal generators span `K` over `R`, hence over `B`
@@ -408,14 +409,14 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
       rfl
     -- RHS range = `span k (range Jᵀ-columns)`
     have hRhsSpan : LinearMap.range (jacobianTranspose g a) =
-        Submodule.span k (Set.range fun i : Fin m ↦ jacobianTranspose g a (Pi.single i 1)) := by
-      have hdom : Submodule.span k (Set.range fun i : Fin m ↦ (Pi.single i (1 : k) : Fin m → k)) = ⊤ := by
-        rw [← (Pi.basisFun k (Fin m)).span_eq]; congr 1
+        Submodule.span k (Set.range fun i : ι ↦ jacobianTranspose g a (Pi.single i 1)) := by
+      have hdom : Submodule.span k (Set.range fun i : ι ↦ (Pi.single i (1 : k) : ι → k)) = ⊤ := by
+        rw [← (Pi.basisFun k ι).span_eq]; congr 1
         ext v; simp [Pi.basisFun_apply, eq_comm]
       rw [← Submodule.map_top (jacobianTranspose g a), ← hdom, Submodule.map_span, ← Set.range_comp]
       rfl
     -- `Ψ` sends generator `tgen i` to the `i`-th gradient row `Jᵀ(eᵢ)`
-    have hPsi_i : ∀ i : Fin m, Ψ.toLinearMap (tgen i) = jacobianTranspose g a (Pi.single i 1) := by
+    have hPsi_i : ∀ i : ι, Ψ.toLinearMap (tgen i) = jacobianTranspose g a (Pi.single i 1) := by
       intro i
       show Ψ (tgen i) = _
       rw [htgen, hsgen, Ψ_D (g i)]
