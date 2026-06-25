@@ -886,6 +886,26 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
 
+**★ UPDATE-43 (2026-06-25) — L2 PIN2 full-reg repair INTEGRATED + green-gated + axiom-verified @bcfb8b60. ★**
+- **l2-pin2-fullreg landed; I integrated it into main** (forced-rebuild green-gate + `#print axioms` re-verified MYSELF, not just
+  trusting the report): the false `h00/h01/h10` (T=0 block-equalities) are DELETED, replaced by the TRUE reg-energy identity
+  `∑(deepestEFull (split w))² = Sreg` (what `dlnLoss_two_sided_of_frame` consumes — no over-count). `deepest_loss_squeeze` +
+  `deepest_regAbsorb_exists` bodies sorry-free. New infra all axiom-clean `[propext, Classical.choice, Quot.sound]`:
+  `regStraightenOf2`/`regStraightenTotalCLM2_equiv_of_regBlock_isUnit` (the transfer = simplification of the banked `_isUnit`,
+  `W:=C×S` unsplit) + `rlctAtOn_regAbsorb_reduce2` + `deepestEFull`/`_coreZero`/`_deriv`. **PIN1 re-used VERBATIM, axiom-clean.**
+  `deepest_loss_squeeze`'s only `sorryAx` is inherited from the cert body — **NO `monomial_rlct`** (the squeeze does not smuggle
+  the S2 cite). Independent reviewer SURVIVED all 4 contract points. Deepest* subtree still OUT of the aggregator (controller-gated).
+- **The open rlct-risk gamble is CLOSED:** the squeeze now rests on the BANKED leaf lemma's TRUE comparability, not an unverified
+  `rlct(Φ_struct)=rlct(dlnLoss)`. The PIN2 false-statement → sound-repair arc is complete.
+- **L2 gate's remaining transitive sorries (all CORRECT-statement) + who's driving:**
+  1. `hTilde` (DeepestGaugeConstruction ~1883): the `∂deepestEFull/∂core(0)=0` local-diffeo atom — LARGELY DERIVABLE from the
+     proved `deepestEFull_deriv` (`D(deepestEFull)(0)=[F|0|G]`, core-column 0) + chain rule + `regStraightenTotalCLM2_equiv`. →
+     **l2-htilde** (formaliser, worktree, ad7f46ec) + then `deepest_gauge_squeeze_exists` (DeepestGaugeChart:361, "one assembly").
+  2. `framedParams_split_eq_frame_raw` body (~1490, ~200-300 LoC geometric cert: round-trip + telescoping + pivot-frame + core
+     comparability) → **pp-pin2-rearch** re-engaged to structure the build-ready cert (thread 31 `framedbody-cert.md`).
+  3. then the L=1/2≤L case-split wire + `product_reduction` (Skeleton) → the L2 gate.
+- 2 background drives: l2-htilde (build) + pp-pin2-rearch (design). pp-r1-genM on-call (R1, held).
+
 **UPDATE-42 (2026-06-25) — tick: housekeeping banked + goal-distance glance (on-path, healthy).**
 - **Banked @5ecff7ca:** pp-pin2-rearch's PIN2 `transfer-cert.md` (thread 31 — the regStraightenTotalCLM transfer is a
   SIMPLIFICATION of the banked `_isUnit`, `W:=C×S` unsplit; relayed to l2-pin2-fullreg) + thread 27's iterfibre ceiling
