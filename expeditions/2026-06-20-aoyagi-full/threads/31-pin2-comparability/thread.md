@@ -134,8 +134,13 @@ germ (ALL dev→0): `R−∏S = O(ε⁴)` while `∏S=O(ε²)` (strictly higher-
 So **TRUE on a germ, NOT uniform on a box**; `rlctAtOn` germ-invariance makes the germ form sufficient.
 Build-ready: the EXACT middle-factor identity + the in-sum remainder charge `|∑‖R‖²−∑‖∏S‖²| ≤ C·∑E²` on
 a `𝓝 0` germ (NOT a `[m,M]` ratio bound). MC (true germ, rank-1 S-adversary): sup ratio →1 (1.0008 at
-1e-2). **Residual flag: r≥2 matrix-PIVOT LDU symbolically unverified (only M≥2 at r=1).** Cert:
-`s5c-r2-cert.md`; consult `codex/s5c-r2-*`. This corrects the r=1 `s5c-cert.md` "standalone" phrasing —
+1e-2). **r≥2 matrix-PIVOT confirm — CLOSED (2026-06-25):** verified r=2/M=1 (sympy germ-orders + numeric
+3-decade + Codex `codex/s5c-r2pivot-*` independent block-LDU). The identity is the SAME `W = I_M −
+Z1·A⁻¹·Y0` (now `A=a0a1+Y0Z1` a MATRIX, A→I_r, A⁻¹ bounded); germ orders survive (`R−∏S=O(ε⁴)`,
+`∏S=O(ε²)`); the `(I+X)⁻¹=I−X+…` X-linear contamination does NOT leak into `W−I` (carries Y0·Z1, two
+off-pivot factors ⇒ O(ε²)) so `R−∏S` stays O(ε⁴) not O(ε³). **No residual flag remains** — S5c fully
+closed germ-scoped (matrix pivot + matrix core both confirmed). Cert: `s5c-r2-cert.md`; consult
+`codex/s5c-r2-*`, `codex/s5c-r2pivot-*`. This corrects the r=1 `s5c-cert.md` "standalone" phrasing —
 narrow it to a germ for consistency (r=1 is standalone-safe since scalar `W=u` can't rank-cancel, but the
 germ framing unifies). Last named open dependency in the framedParams-body design — CLOSED (germ-scoped).
 

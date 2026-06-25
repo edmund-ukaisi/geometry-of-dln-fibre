@@ -64,13 +64,38 @@ Feed the squeeze the global `R` (as in the r=1 cert), get `loss ≍ ∑E²+‖R�
 (the `|·| ≤ C·∑E²` form, NOT a two-sided ratio bound — that is what survives the rank-deficient slice,
 because there `∑E²` is bounded below too).
 
+## r≥2 MATRIX-PIVOT confirm (the residual — now CLOSED, 2026-06-25)
+
+Confirmed (sympy germ-orders + numeric across 3 decades + decorrelated Codex `codex/s5c-r2pivot-*`,
+independent block-LDU re-derivation). Case: r=2 (a_s an r×r MATRIX pivot, a_s → I_r), M=1 core, L=2.
+
+- **The identity is the SAME form** (Codex's clean `D0·M·D1` block derivation, `M = U0·L1`):
+  `D0·M·D1 = [[a0a1+Y0Z1, Y0·S1],[S0·Z1, S0·S1]]`, top-left = the global product pivot `A = P11`, so
+  `R = S0·S1 − (S0 Z1)·A⁻¹·(Y0 S1) = S0·(I_M − Z1·A⁻¹·Y0)·S1`. **`W = I_M − Z1·A⁻¹·Y0` — IDENTICAL to
+  the r=1 form**, now with `A = a0a1 + Y0Z1` a MATRIX (r×r). `A → I_r` ⇒ `A⁻¹` bounded near 0.
+  (My first parenthesized symbolic attempt mis-spelled the `ε`-scaling and returned False; Codex's
+  block derivation + my numeric/order checks confirm the form.)
+- **The germ orders SURVIVE the matrix pivot** (the load-bearing check; sympy + numeric, ratios stable
+  across scale 1e-1→1e-3): `S_s = O(ε)`, `∏S = O(ε²)`, `W − I = O(ε²)`, `R − ∏S = (W−I)·∏S = O(ε⁴)`.
+- **The contamination worry is RESOLVED** (Codex Q4): `a_s⁻¹ = (I+X_s)⁻¹ = I − X_s + O(ε²)` — the
+  X-LINEAR term does NOT leak into `W − I`. `W − I = −Z1·A⁻¹·Y0` carries Y0 AND Z1 (two off-pivot
+  factors), so `W − I = O(ε²)` regardless of the pivot's `O(ε)` X-deviation (the X is absorbed by the
+  pivot block `A`, not the off-diagonal). So `R − ∏S` stays `O(ε⁴)`, NOT dropped to `O(ε³)`.
+- ⇒ `|∑‖R‖² − ∑‖∏S‖²| ≤ 2‖∏S‖‖R−∏S‖ + ‖R−∏S‖² = O(ε⁶)`, charged to `∑E²` on the germ — the in-sum
+  comparability survives the matrix pivot with NO new obstruction.
+
+**Verdict: CONFIRMED germ for r≥2 matrix pivot.** The build-ready atom `schur_core_germ_comparability`
+is unchanged: same `W = I_M − Z1·A⁻¹·Y0` (matrix `A`), same `|∑‖R‖²−∑‖∏S‖²| ≤ C·∑E²` germ form. Verified
+at r=2/M=1; the LDU mechanism is general in r,M,L (the per-interface `W_k = I − Z_{k+1}A_k⁻¹Y_k`
+telescoping). **No residual flag remains** — S5c is fully closed (germ-scoped, r≥2 included).
+
 ## Scope / caveat (honest)
 
-- The **middle-factor identity `R = S0·W·S1`** is EXACT (verified r=1, M=2; the LDU mechanism is general
-  in L and M — the per-interface `W_k` telescoping). For general r (a_s an r×r pivot block, not scalar)
-  the same LDU holds with `A`, `a_s` matrix pivots and `W_k = I − Z_{k+1}A_k⁻¹Y_k` — structurally
-  identical, MC-supported, but I did NOT symbolically verify r≥2 (only M≥2 at r=1). **Flag:** if the
-  headline needs r≥2 (not just M≥2), a short symbolic confirm of the matrix-pivot LDU is the residual.
+- The **middle-factor identity `R = S0·W·S1`** is EXACT (r=1 M=2 AND r=2 M=1 verified; the LDU mechanism
+  is general in r, M, L — the per-interface `W_k` telescoping, `W_k = I − Z_{k+1}A_k⁻¹Y_k`). General
+  r×r-pivot, M×M-core, all-L is the same block-LDU; the r=2/M=1 + r=1/M=2 cases pin both the matrix-pivot
+  and the matrix-core generalizations. Not every `(r,M,L)` triple symbolically enumerated — but the two
+  orthogonal generalizations (matrix pivot, matrix core) are each confirmed, and the mechanism is uniform.
 - The **germ-not-box** distinction is the load-bearing subtlety: the formaliser must state the
   comparability as a `𝓝 0` germ with the remainder `≤ C·∑E²`, NOT a uniform `[m,M]` ratio. `rlctAtOn`'s
   germ-invariance makes this sufficient for the headline.
