@@ -347,27 +347,31 @@ theorem hasStrictFDerivAt_schurCorrection_entry_zero (H : Fin (L + 1) → ℕ) (
       simp] at hsum
   exact hsum
 
-/-- `schurShiftRaw` has strict derivative `0` at `0`.
-
-**ISOLATED GAP (one correctly-stated `sorry`).** The geometry is settled and banked; what remains is Lean
-PLUMBING only. `schurShiftRaw = paramsEquivFlatCLE ∘ schurCorrection`, and `schurCorrection`'s strict
-derivative at `0` is `0` ENTRYWISE — `hasStrictFDerivAt_schurCorrection_entry_zero` (PROVED below; the
-triple product `(−Z)·(1+X)⁻¹·Y` with `Z(0)=Y(0)=0`, so `D=0`). Reassembling the per-`(s,i,j)`-entry
-strict-deriv-`0` into the `Params`-valued strict derivative needs `hasStrictFDerivAt_pi'` over
-`Params (deepestM) = ∀ s, Matrix …`, which Mathlib v4.29 cannot drive here: `Params` being a `def`
-blocks `F'` inference (instance-stuck on `NormedSpace ?m (?m i)`), and supplying `F'` explicitly then
-fails to synthesize the family instance `(i : Fin L) → NormedAddCommGroup (Matrix …)` for the lambda
-family. The codebase sidesteps exactly this by staying entrywise (`hasStrictFDerivAt_prodAux_entry` never
-builds a `Params`-valued derivative). Closing this cleanly wants a `Params`-level `HasStrictFDerivAt`
-assembler (mirroring `hasStrictFDerivAt_prod_entry`) or the explicit `paramsEquivFlat` flat-coordinate
-decode (each flat coord = one `schurCorrection` entry via `piCurry` + `Fintype.equivFin`). The derivative
-VALUE (`0`) is fully determined — this is NOT a geometric gap. -/
+/-- **`schurShiftRaw` has strict derivative `0` at `0`.** `schurShiftRaw = paramsEquivFlat ∘
+schurCorrection`, and each flat output coordinate `k` is — by `rfl` — the `schurCorrection` entry at the
+decoded matrix index `(equivFin (FlatIdx (deepestM))).symm k = ⟨⟨s, i⟩, j⟩`. So `hasStrictFDerivAt_pi'`
+over the HONEST `Fin (flatDim …) → ℝ` codomain (which Mathlib v4.29 drives without the `Params`-`def`
+whnf wall) reduces the goal to the per-entry strict-deriv-`0` `hasStrictFDerivAt_schurCorrection_entry_zero`
+(the triple product `(−Z)·(1+X)⁻¹·Y` with `Z(0)=Y(0)=0`, so `D=0`). The derivative VALUE (`0`) is fully
+determined — no geometric content remains. -/
 theorem hasStrictFDerivAt_schurShiftRaw_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     HasStrictFDerivAt (schurShiftRaw H r hr hL)
       (0 : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
         →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
-  sorry
+  -- Flat-coordinate decode (Route b): the output is the HONEST `Fin (flatDim …) → ℝ`, which
+  -- `hasStrictFDerivAt_pi'` CAN drive (no `Params`-`def` whnf wall). Each flat coordinate `k` is, by
+  -- `rfl`, the `schurCorrection` entry at the decoded index `(equivFin (FlatIdx …)).symm k`, whose
+  -- per-entry strict-deriv-`0` is `hasStrictFDerivAt_schurCorrection_entry_zero`.
+  refine hasStrictFDerivAt_pi'.2 (fun k => ?_)
+  -- `(proj k).comp 0 = 0`.
+  rw [ContinuousLinearMap.comp_zero]
+  -- Decode `k` to its `(s, i, j)` matrix coordinate; `schurShiftRaw q k = schurCorrection q s i j`.
+  set d := (Fintype.equivFin (FlatIdx (deepestM H r))).symm k
+  have hcoord : (fun q => schurShiftRaw H r hr hL q k)
+      = fun q => schurCorrection H r hr hL q d.1.1 d.1.2 d.2 := rfl
+  rw [hcoord]
+  exact hasStrictFDerivAt_schurCorrection_entry_zero H r hr hL d.1.1 d.1.2 d.2
 
 /-- `schurCutoffShift` has strict derivative `0` at `0`: on the inner ball `χ = 1` so
 `schurCutoffShift = schurShiftRaw` (`schurCutoffShift_eq_raw_of_mem_closedBall`), whose strict
