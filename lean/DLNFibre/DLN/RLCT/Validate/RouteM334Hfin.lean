@@ -521,6 +521,126 @@ theorem resolved334_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
   rw [hresid]
   exact core334_lt_top (c' - 2) (by linarith) (by linarith)
 
+/-! ## The box-radius-`K` resolved-form finiteness (for the per-chart box-enlargement)
+
+The per-chart radial change-of-variables on `(3,3,4)` produces, after the angular `de-shift`
+(`Δ = raw − γβ`, the bounded ratios), a residual integral whose `Δ`, `S`, `T` variables range over
+boxes ENLARGED beyond `[−1,1]` (`Δ ∈ [−2,2]^{2×2}`, `T ∈ [−3,3]^4`, `S ∈ [−1,1]^{2×4}`). The box-`K`
+generalisation of the keystone `resolved334_lt_top`, derived by the SAME S-first transpose-fibre route at
+box radius `K` (every underlying brick — `fibre_lintegral_mul_le`, `frobSq22_box_lt_top`,
+`core_T_peel_le_ae` — is already box-radius-general). The per-chart bound dominates by this with `K = 3`. -/
+
+/-- The box-`K` per-Δ S-fibre bound (box-radius-general `core334_S_fibre_le`). -/
+theorem core334_S_fibre_box_le (K : ℝ) (hK : 0 < K) (c'' : ℝ) (hc0 : 0 < c'') (hc2 : c'' < 2)
+    (Δ : Fin 2 → Fin 2 → ℝ) :
+    ∫⁻ S in matBox 2 4 K, ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c''))
+      ≤ fibreConst 4 2 2 K c'' * ENNReal.ofReal ((frobSq Δ) ^ (-c'')) := by
+  have hrw : ∀ S : Fin 2 → Fin 4 → ℝ,
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c''))
+        = ENNReal.ofReal ((frobSq (rmatMul (matTranspose 2 4 S) (fun k i => Δ i k))) ^ (-c'')) := by
+    intro S
+    rw [frobSq_rmatMul_transpose Δ S]
+    rfl
+  rw [setLIntegral_congr_fun (matBox_measurableSet 2 4 K) (fun S _ => hrw S)]
+  have hmp := measurePreserving_matTranspose 2 4
+  have hpre : matBox 2 4 K = matTranspose 2 4 ⁻¹' matBox 4 2 K := by
+    ext S
+    simp only [matBox, Set.mem_setOf_eq, Set.mem_preimage]
+    constructor
+    · intro h j k; rw [matTranspose_apply]; exact h k j
+    · intro h k j; have := h j k; rwa [matTranspose_apply] at this
+  rw [hpre,
+    hmp.setLIntegral_comp_preimage_emb (matTranspose 2 4).measurableEmbedding
+      (fun X => ENNReal.ofReal ((frobSq (rmatMul X (fun k i => Δ i k))) ^ (-c''))) (matBox 4 2 K)]
+  have hbound := fibre_lintegral_mul_le (p := 4) (n := 2) (q := 2) (by norm_num) (by norm_num)
+    (by norm_num) K hK c'' hc0 (by norm_num; linarith) (fun k i => Δ i k)
+  have hfrobT : frobSq (fun k i => Δ i k) = frobSq Δ := by
+    unfold frobSq; rw [Finset.sum_comm]
+  rwa [hfrobT] at hbound
+
+/-- The box-`K` corank-2 core finiteness (box-radius-general `core334_lt_top`). -/
+theorem core334_box_lt_top (K : ℝ) (hK : 0 < K) (c'' : ℝ) (hc0 : 0 ≤ c'') (hc2 : c'' < 2) :
+    ∫⁻ Δ in matBox 2 2 K, ∫⁻ S in matBox 2 4 K,
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'')) < ⊤ := by
+  rcases eq_or_lt_of_le hc0 with hc0' | hc0'
+  · -- c'' = 0: the integrand is (·)^0 = 1, the double integral is vol·vol < ⊤
+    have hzero : c'' = 0 := hc0'.symm
+    have hone : ∀ (Δ : Fin 2 → Fin 2 → ℝ) (S : Fin 2 → Fin 4 → ℝ),
+        ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'')) = 1 := by
+      intro Δ S; rw [hzero]; simp [Real.rpow_zero]
+    have hvolfin : ∀ p n : ℕ, volume (matBox p n K) < ⊤ := by
+      intro p n
+      have hcpt : IsCompact (matBox p n K) := by
+        have heq : matBox p n K
+            = Set.univ.pi (fun _ : Fin p => Set.univ.pi (fun _ : Fin n => Set.Icc (-K) K)) := by
+          ext X; simp only [matBox, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+        rw [heq]; exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_Icc))
+      exact hcpt.measure_lt_top
+    simp only [hone]
+    rw [setLIntegral_const]
+    refine ENNReal.mul_lt_top ?_ (hvolfin 2 2)
+    rw [setLIntegral_const]
+    exact ENNReal.mul_lt_top ENNReal.one_lt_top (hvolfin 2 4)
+  · calc ∫⁻ Δ in matBox 2 2 K, ∫⁻ S in matBox 2 4 K,
+            ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c''))
+        ≤ ∫⁻ Δ in matBox 2 2 K, fibreConst 4 2 2 K c'' * ENNReal.ofReal ((frobSq Δ) ^ (-c'')) :=
+          lintegral_mono (fun Δ => core334_S_fibre_box_le K hK c'' hc0' hc2 Δ)
+      _ = fibreConst 4 2 2 K c'' * ∫⁻ Δ in matBox 2 2 K, ENNReal.ofReal ((frobSq Δ) ^ (-c'')) := by
+          rw [lintegral_const_mul' _ _
+            (fibreConst_ne_top 4 2 2 K c'' hK (by norm_num; linarith) (by norm_num) (by norm_num))]
+      _ < ⊤ := by
+          have hcfin := fibreConst_lt_top 4 2 2 K c'' hK (by norm_num; linarith)
+            (by norm_num) (by norm_num)
+          exact ENNReal.mul_lt_top hcfin (frobSq22_box_lt_top K hK c'' hc2)
+
+/-- **The box-radius-`K` resolved-form finiteness.** `∫_{Δ box K}∫_{S box K}∫_{T box K}
+(∑ᵢ Tᵢ² + frobSq(Δ·S))^{−c'} < ⊤` for `2 < c' < 4`, every `K > 0`. The box-radius-general
+`resolved334_lt_top`; the per-chart radial change-of-variables feeds this at `K = 3`. -/
+theorem resolved334_box_lt_top (K : ℝ) (hK : 0 < K) (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
+    ∫⁻ Δ in matBox 2 2 K, ∫⁻ S in matBox 2 4 K, ∫⁻ T in morseBox 4 K,
+      ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul Δ S)) ^ (-c')) < ⊤ := by
+  set w : (Fin 2 → Fin 2 → ℝ) × (Fin 2 → Fin 4 → ℝ) → ℝ :=
+    fun p => frobSq (rmatMul p.1 p.2) with hwdef
+  have hmeasT : Measurable (fun q : ((Fin 2 → Fin 2 → ℝ) × (Fin 2 → Fin 4 → ℝ)) × (Fin 4 → ℝ) =>
+      ENNReal.ofReal ((∑ i, (q.2 i) ^ 2 + w q.1) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    show Measurable (fun q : ((Fin 2 → Fin 2 → ℝ) × (Fin 2 → Fin 4 → ℝ)) × (Fin 4 → ℝ) =>
+        (∑ i, (q.2 i) ^ 2 + frobSq (rmatMul q.1.1 q.1.2)))
+    unfold frobSq rmatMul; fun_prop
+  have hstep1 : ∫⁻ Δ in matBox 2 2 K, ∫⁻ S in matBox 2 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul Δ S)) ^ (-c'))
+      = ∫⁻ p in (matBox 2 2 K ×ˢ matBox 2 4 K), (∫⁻ T in morseBox 4 K,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w p) ^ (-c'))) ∂volume := by
+    rw [Measure.volume_eq_prod (Fin 2 → Fin 2 → ℝ) (Fin 2 → Fin 4 → ℝ),
+      setLIntegral_prod _ (Measurable.lintegral_prod_right hmeasT).aemeasurable]
+  rw [hstep1]
+  have hwpos : ∀ᵐ z ∂(volume.restrict (matBox 2 2 K ×ˢ matBox 2 4 K)), 0 < w z :=
+    ae_restrict_of_ae frobSq_core334_ne_zero_ae
+  have hpeel := core_T_peel_le_ae (m := 3) (volume) c' (by norm_num; linarith) K hK w
+    (matBox 2 2 K ×ˢ matBox 2 4 K) hwpos
+  refine lt_of_le_of_lt hpeel ?_
+  refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+  have hmeasResid : Measurable
+      (fun p : (Fin 2 → Fin 2 → ℝ) × (Fin 2 → Fin 4 → ℝ) =>
+        ENNReal.ofReal ((w p) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2)))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))) (by fun_prop)
+    show Measurable (fun p : (Fin 2 → Fin 2 → ℝ) × (Fin 2 → Fin 4 → ℝ) =>
+        frobSq (rmatMul p.1 p.2))
+    unfold frobSq rmatMul; fun_prop
+  have hresid : (∫⁻ p in (matBox 2 2 K ×ˢ matBox 2 4 K),
+        ENNReal.ofReal ((w p) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))))
+      = ∫⁻ Δ in matBox 2 2 K, ∫⁻ S in matBox 2 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-(c' - 2))) := by
+    rw [Measure.volume_eq_prod (Fin 2 → Fin 2 → ℝ) (Fin 2 → Fin 4 → ℝ),
+      setLIntegral_prod _ hmeasResid.aemeasurable]
+    refine setLIntegral_congr_fun (matBox_measurableSet 2 2 K) (fun Δ _ => ?_)
+    refine setLIntegral_congr_fun (matBox_measurableSet 2 4 K) (fun S _ => ?_)
+    rw [hwdef]; norm_num
+  rw [hresid]
+  exact core334_box_lt_top K hK (c' - 2) (by linarith) (by linarith)
+
 /-! ## The `Params M334` ↔ two-matrix-box reshape (the clean MP plumbing, mirrors `RouteM4422Hfin`)
 
 The connecting plumbing identifying the flat-box integral of `routeMCore M334` with the two-matrix-box
@@ -873,6 +993,28 @@ theorem radialAxis334_lt_top (c' : ℝ) (hc' : c' < 9 / 2) :
     ∫⁻ a in Set.Icc (-1 : ℝ) 1, ENNReal.ofReal (|a| ^ (8 - 2 * c')) < ⊤ :=
   abs_rpow_lintegral_Icc_lt_top 1 one_pos (8 - 2 * c') (by linarith)
 
+/-- **The exponent-bump pointwise bound.** For `0 < c'` and `c' ≤ c''` (with `0 < c''`), the inverse
+power `F^{−c'}` is dominated by `1 + F^{−c''}` for every `F ≥ 0`. (At `F ≥ 1` the `−c'` power is `≤ 1`;
+at `0 < F < 1` the larger exponent dominates, `F^{−c'} ≤ F^{−c''}`; at `F = 0` both `rpow`s are `0`.)
+The reduction device that lifts the `c' ≤ 2` case of the blow-up bridge onto the `2 < c''` cover. -/
+theorem rpow_neg_le_one_add_rpow_neg (F : ℝ) (hF : 0 ≤ F) (c' c'' : ℝ) (hc0 : 0 < c')
+    (hle : c' ≤ c'') :
+    F ^ (-c') ≤ 1 + F ^ (-c'') := by
+  rcases eq_or_lt_of_le hF with hF0 | hF0
+  · -- F = 0: 0^{−c'} = 0 ≤ 1 + 0^{−c''}
+    rw [← hF0, Real.zero_rpow (by linarith : -c' ≠ 0)]
+    have : (0 : ℝ) ≤ (0 : ℝ) ^ (-c'') := Real.rpow_nonneg le_rfl _
+    linarith
+  · rcases le_or_gt 1 F with hF1 | hF1
+    · -- F ≥ 1: F^{−c'} ≤ 1 (base ≥ 1, exponent ≤ 0)
+      have h1 : F ^ (-c') ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos hF1 (by linarith)
+      have h2 : (0 : ℝ) ≤ F ^ (-c'') := Real.rpow_nonneg hF _
+      linarith
+    · -- 0 < F < 1: F^{−c'} ≤ F^{−c''} (base ≤ 1, smaller-magnitude negative exponent)
+      have h1 : F ^ (-c') ≤ F ^ (-c'') :=
+        Real.rpow_le_rpow_of_exponent_ge hF0 (le_of_lt hF1) (by linarith)
+      linarith
+
 /-! ## The blow-up bridge (the ONE remaining gap — the `A0` radial-chart cover)
 
 `∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'} < ⊤` for `0 < c' < 4`. The corank-2 resolution: the pure
@@ -896,10 +1038,216 @@ c-o-v on the max-entry cells (cover-up-to-null, injectivity off `{a = 0}`, Jacob
 target boxes → enlarged boxes consumable by a scaled `resolved334_lt_top`). Everything DOWNSTREAM of the
 RHS (`resolved334_lt_top` + the T-peel + the core resolution + the null set) is BANKED sorry-free; the
 clean MP plumbing (`routeMCore_M334_le_matBox`) reducing the headline to THIS is banked sorry-free too. -/
+/-- The flat-A0 cover integrand: `gFlat334 c' y = ∫_{A1∈box} frobSq(rmatMul ((matToFlatEquiv 3 3).symm y) A1)^{−c'}`,
+the (A1-integrated) `A0`-integrand reindexed by the `Fin 9` flatten. The `g` of `recStep` on `Fin 9`. -/
+noncomputable def gFlat334 (c' : ℝ) (y : Fin 9 → ℝ) : ℝ≥0∞ :=
+  ∫⁻ A1 in matBox 3 4 1,
+    ENNReal.ofReal ((frobSq (rmatMul ((matToFlatEquiv 3 3).symm y) A1)) ^ (-c'))
+
+/-- The flattened A0-box `matToFlatEquiv 3 3 '' (matBox 3 3 1) = {y | ∀ i, |y i| ≤ 1}` as a flat set;
+equivalently the preimage under `.symm`. The cover domain on the `Fin 9` carrier. -/
+def flatBox334 : Set (Fin 9 → ℝ) := {y | ∀ i, y i ∈ Set.Icc (-1 : ℝ) 1}
+
+theorem flatBox334_measurableSet : MeasurableSet flatBox334 := by
+  rw [flatBox334, Set.setOf_forall]
+  exact MeasurableSet.iInter (fun i => (measurable_pi_apply i) measurableSet_Icc)
+
+/-- **The flat-box correspondence (GAP — the `matToFlatEquiv` coordinate read).** The matrix box
+`matBox 3 3 1` is the `matToFlatEquiv 3 3`-preimage of the flat box `flatBox334`. Both are `[−1,1]^9`,
+differing only by the entry↔`Fin 9` reindex (`piCurry`/`arrowCongr'`); the box predicate `∀ entry, |·|≤1`
+is preserved coordinatewise. SKELETON (`sorry`) — the `matToFlatEquiv` per-coordinate unfolding. -/
+theorem matBox334_flatBox_preimage :
+    matBox 3 3 1 = (matToFlatEquiv 3 3) ⁻¹' flatBox334 := by
+  ext A0
+  simp only [matBox, flatBox334, Set.mem_setOf_eq, Set.mem_preimage]
+  -- `(matToFlatEquiv 3 3 A0) i = A0 (e.symm i).1 (e.symm i).2`; reindex the `∀ i` by the bijection `e`.
+  set e : (Σ _ : Fin 3, Fin 3) ≃ Fin 9 :=
+    (Equiv.sigmaEquivProd (Fin 3) (Fin 3)).trans finProdFinEquiv with he
+  have hcoord : ∀ i : Fin 9, (matToFlatEquiv 3 3 A0) i = A0 (e.symm i).1 (e.symm i).2 := fun i => rfl
+  constructor
+  · intro h i
+    rw [hcoord i]; exact h (e.symm i).1 (e.symm i).2
+  · intro h k j
+    have := h (e ⟨k, j⟩)
+    rw [hcoord (e ⟨k, j⟩), Equiv.symm_apply_apply] at this
+    exact this
+
+/-- The A0-outer integral reindexes to the flat `gFlat334` integral over `flatBox334`
+(via `measurePreserving_matToFlatEquiv` + `matBox334_flatBox_preimage`). -/
+theorem matBox334_outer_flat (c' : ℝ) :
+    ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+        ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
+      = ∫⁻ y in flatBox334, gFlat334 c' y := by
+  have hmp := measurePreserving_matToFlatEquiv 3 3
+  have hcomp := hmp.setLIntegral_comp_preimage_emb (matToFlatEquiv 3 3).measurableEmbedding
+    (gFlat334 c') flatBox334
+  rw [matBox334_flatBox_preimage, ← hcomp]
+  refine setLIntegral_congr_fun
+    ((matToFlatEquiv 3 3).measurable flatBox334_measurableSet)
+    (fun A0 _ => ?_)
+  rw [gFlat334, MeasurableEquiv.symm_apply_apply]
+
+/-- **The indicator decoupling (PROVED — the key chart simplification).** On the chart domain
+`chartDomOn univ p` (the ratios `|y_k| ≤ 1`, `k ≠ p`), the blown-up point lands in the flat box
+`flatBox334` IFF the radial coordinate `|y p| ≤ 1`: the off-pivot blown-up entries are `y p · y_k` with
+`|y_k| ≤ 1`, so `|y p · y_k| ≤ |y p|`, and the pivot entry is `y p` itself. So the box indicator depends
+ONLY on `|y p|` — decoupling the radial axis from the 8 ratios (the step that lets Tonelli separate them).
+Decorrelated-Codex confirmed SOUND (thread 29 `codex/chart-answer.md` VET-1). -/
+theorem flatBox334_blowup_mem_iff (p : Fin 9) (y : Fin 9 → ℝ)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin 9)) p) :
+    pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y ∈ flatBox334 ↔ |y p| ≤ 1 := by
+  unfold flatBox334 chartDomOn at *
+  simp only [Set.mem_setOf_eq] at *
+  constructor
+  · intro h
+    have hpp := h p
+    rw [pivotBlowupOn] at hpp
+    simp only [Set.mem_Icc] at hpp
+    rw [abs_le]; exact hpp
+  · intro hp i
+    rw [pivotBlowupOn]
+    by_cases hi : i = p
+    · subst hi; simp only [if_pos rfl, Set.mem_Icc]; rw [abs_le] at hp; exact hp
+    · simp only [if_neg hi, Finset.mem_univ, if_true, Set.mem_Icc]
+      have hyi : |y i| ≤ 1 := hy i (Finset.mem_univ i) hi
+      have hb : |y p * y i| ≤ |y p| := by
+        rw [abs_mul]; nlinarith [abs_nonneg (y p), abs_nonneg (y i)]
+      have hbb : |y p * y i| ≤ 1 := le_trans hb hp
+      rw [abs_le] at hbb; exact hbb
+
+/-- The unflattened angular matrix on chart `p`: `Rmat334 p y` is the `3×3` matrix with `R_p = 1` and
+`R_k = y_k` (`k ≠ p`), the bounded direction of the radial blow-up `A0 = (y p)·R`. -/
+noncomputable def Rmat334 (p : Fin 9) (y : Fin 9 → ℝ) : Fin 3 → Fin 3 → ℝ :=
+  (matToFlatEquiv 3 3).symm (fun i => if i = p then 1 else y i)
+
+/-- **The radial pull-out (PROVED — the homogeneity step).** `gFlat334 c'` of the pivot blow-up factors
+the radial scale `a = y p` out of the loss with degree `2` (`radialDelta_loss_factor`): the blown-up flat
+A0 unflattens to `(y p) • (Rmat334 p y)`, so
+`gFlat334 c' (blowup) = ∫_{A1} ofReal(((y p)²·frobSq(Rmat334·A1))^{−c'})`. The form the radial-axis Tonelli
+separation consumes (the `|y p|^{−2c'}` then pulls cleanly out, leaving the bounded `Rmat334`). -/
+theorem gFlat334_blowup_radial (c' : ℝ) (p : Fin 9) (y : Fin 9 → ℝ) :
+    gFlat334 c' (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y)
+      = ∫⁻ A1 in matBox 3 4 1,
+          ENNReal.ofReal (((y p) ^ 2 * frobSq (rmatMul (Rmat334 p y) A1)) ^ (-c')) := by
+  unfold gFlat334 Rmat334
+  refine lintegral_congr (fun A1 => ?_)
+  congr 1
+  have hbl : (matToFlatEquiv 3 3).symm (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y)
+      = fun r c => (y p) * ((matToFlatEquiv 3 3).symm (fun i => if i = p then 1 else y i)) r c := by
+    funext r c
+    show (matToFlatEquiv 3 3).symm (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y) r c = _
+    rw [show pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y
+        = (fun i => (y p) * (if i = p then 1 else y i)) from by
+      funext i; unfold pivotBlowupOn; by_cases hi : i = p <;> simp [hi]]
+    rfl
+  rw [hbl, radialDelta_loss_factor (y p)
+    ((matToFlatEquiv 3 3).symm (fun i => if i = p then 1 else y i)) A1]
+
+/-- **The per-chart finiteness (GAP — the genuine radial transport).** For each A0-entry pivot
+`p : Fin 9`, the radial-blow-up chart integral — the pivot-blow-up `pivotBlowupOn univ p` of the flat A0
+(Jacobian `|y p|^8`), against the full A1 box — is finite for `2 < c' < 4`. The content: on chart `p`,
+`A0 = a·R` (`a = y p`, `R` the bounded angular matrix, `R_p = 1`); `frobSq(A0·A1) = a²·frobSq(R·A1)`
+(`radialDelta_loss_factor`); the per-pivot normalisation to `(0,0)` (row/col permute A0, the induced
+A1-row permute is measure-preserving on the symmetric box) + `frobSq_angularR_ge` lower-bounds
+`frobSq(R·A1) ≥ (1/5)(‖T‖² + frobSq(Δ·S))`; Tonelli-separate the radial `|a|^{8−2c'}` axis
+(`radialAxis334_lt_top`, finite since `c' < 4 < 9/2`); the residual `(‖T‖²+frobSq(Δ·S))^{−c'}` over the
+box-enlarged `(Δ∈[−2,2], S∈[−1,1], T∈[−3,3])` domain feeds `resolved334_box_lt_top 3`. SKELETON (`sorry`)
+— the radial change-of-variables + per-pivot permutation + box-enlarged rescale (the long pole). -/
+theorem matBox334_chart_lt_top (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) (p : Fin 9) :
+    ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin 9)) p \ pivotZeroOn p,
+        ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin 9)) p y).det|
+          * flatBox334.indicator (gFlat334 c') (pivotBlowupOn (Finset.univ : Finset (Fin 9)) p y)
+      < ⊤ := by
+  -- the Jacobian determinant is `|y p|^8` (`pivotBlowupOnDeriv_det`, `univ.card = 9`).
+  have hdet : ∀ y : Fin 9 → ℝ,
+      |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin 9)) p y).det| = |y p| ^ 8 := by
+    intro y
+    rw [pivotBlowupOnDeriv_det (Finset.univ : Finset (Fin 9)) p (Finset.mem_univ p) y]
+    simp [abs_pow]
+  simp only [hdet]
+  -- REMAINING GAP (the genuine measure-theoretic long pole, sharply scoped to this chart integral).
+  -- The structural facts are established (det `|y p|^8` above; `pivotBlowupOn univ p y` unflattens to
+  -- the radial scaling `(y p) • R` with `R_p = 1`, `R_k = y_k`, by `rfl`; `frobSq((y p)•R · A1) =
+  -- (y p)²·frobSq(R·A1)` by `radialDelta_loss_factor`). The remaining content:
+  -- (KEY decoupling) on `chartDomOn univ p` the ratios `|y_k| ≤ 1` (k≠p), so the blown-up off-pivot
+  --   entries `|y p · y_k| ≤ |y p|`; hence `flatBox334 (blowup) ⟺ |y p| ≤ 1` — the indicator decouples
+  --   to the pure radial constraint, separating the `y p` axis from the ratios with NO coupling.
+  -- (i) reindex `Fin 9 ≃ ℝ × (Fin 8 → ℝ)` (pivot axis × ratios), Tonelli-separate the radial factor
+  --   `|y p|^{8−2c'}` (finite for `c' < 9/2`, `radialAxis334_lt_top`) from the ratio/A1 residual;
+  -- (ii) the per-pivot row/col permutation to `(0,0)` (the induced A1-row permute is MP on the
+  --   symmetric A1-box) + `frobSq_angularR_ge` lower-bounds `frobSq(R·A1) ≥ (1/5)(‖T‖²+frobSq(Δ·S))`,
+  --   box-enlarged (`Δ∈[−2,2]`, `T∈[−3,3]`, the de-shift `d = raw − γβ`) to feed `resolved334_box_lt_top 3`.
+  sorry
+
+/-- **The blow-up bridge, the `2 < c'` core.** `∫_{A0 box}∫_{A1 box} frobSq(A0·A1)^{−c'} < ⊤` for
+`2 < c' < 4`. The full `0 < c' < 4` statement reduces to this via the exponent-bump
+(`matBox334_blowup_lt_top`). The 9-chart A0-entry radial cover assembly: flatten A0 (`matToFlatEquiv 3 3`,
+MP), cover the inner `A0`-integral by the 9 max-modulus-entry charts (`recStep` on `univ : Finset (Fin 9)`,
+folding the box indicator), each chart finite (`matBox334_chart_lt_top`), summed by `ENNReal.sum_lt_top`.
+The cover-to-sum is proven here; the per-chart finiteness is the named transport gap. -/
+theorem matBox334_blowup_lt_top_gt2 (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4) :
+    ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+      ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) < ⊤ := by
+  -- Reindex A0 to the flat `Fin 9` carrier (MP), then `recStep` (univ argmax-cover) splits the
+  -- A0-integral into the 9 max-modulus-entry chart sum; each chart is finite, summed by `sum_lt_top`.
+  rw [matBox334_outer_flat c']
+  rw [recStep (Finset.univ : Finset (Fin 9)) 0 (Finset.mem_univ 0)
+      flatBox334 flatBox334_measurableSet (gFlat334 c')]
+  exact ENNReal.sum_lt_top.2 (fun p _ => matBox334_chart_lt_top c' hc2 hc4 p)
+
 theorem matBox334_blowup_lt_top (c' : ℝ) (hc0 : 0 < c') (hc4 : c' < 4) :
     ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
       ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c')) < ⊤ := by
-  sorry
+  rcases le_or_gt c' 2 with hc2 | hc2
+  · -- 0 < c' ≤ 2: bump the exponent to c'' = 3 ∈ (2,4) by the pointwise `F^{−c'} ≤ 1 + F^{−3}` bound.
+    -- ∫∫ F^{−c'} ≤ ∫∫ 1 + ∫∫ F^{−3} = vol·vol + (the 2<c'' cover) < ⊤.
+    have hbump : ∀ (A0 : Fin 3 → Fin 3 → ℝ) (A1 : Fin 3 → Fin 4 → ℝ),
+        ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
+        ≤ 1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
+      intro A0 A1
+      have h := rpow_neg_le_one_add_rpow_neg (frobSq (rmatMul A0 A1)) (frobSq_nonneg _) c' 3 hc0
+        (by linarith)
+      calc ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
+          ≤ ENNReal.ofReal (1 + (frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := ENNReal.ofReal_le_ofReal h
+        _ = 1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
+            rw [ENNReal.ofReal_add (by norm_num) (Real.rpow_nonneg (frobSq_nonneg _) _),
+              ENNReal.ofReal_one]
+    -- the c'' = 3 cover
+    have hcover3 := matBox334_blowup_lt_top_gt2 3 (by norm_num) (by norm_num)
+    -- the constant-1 integral over the two boxes
+    have hvolfin : ∀ p n : ℕ, volume (matBox p n 1) < ⊤ := by
+      intro p n
+      have hcpt : IsCompact (matBox p n (1 : ℝ)) := by
+        have heq : matBox p n (1 : ℝ)
+            = Set.univ.pi (fun _ : Fin p => Set.univ.pi (fun _ : Fin n => Set.Icc (-1 : ℝ) 1)) := by
+          ext X; simp only [matBox, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+        rw [heq]; exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_Icc))
+      exact hcpt.measure_lt_top
+    have hvol : ∫⁻ _A0 in matBox 3 3 1, ∫⁻ _A1 in matBox 3 4 1, (1 : ℝ≥0∞) < ⊤ := by
+      rw [setLIntegral_const, setLIntegral_const]
+      exact ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.one_lt_top (hvolfin 3 4)) (hvolfin 3 3)
+    -- the c'' = 3 inner-integral measurability (for `lintegral_add`)
+    have hmeas3 : ∀ A0 : Fin 3 → Fin 3 → ℝ, Measurable (fun A1 : Fin 3 → Fin 4 → ℝ =>
+        ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ)))) := by
+      intro A0
+      apply ENNReal.measurable_ofReal.comp
+      apply Measurable.comp (g := fun t : ℝ => t ^ (-(3 : ℝ))) (by fun_prop)
+      unfold frobSq rmatMul; fun_prop
+    -- combine
+    calc ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+            ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
+        ≤ ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+            (1 + ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ)))) :=
+          lintegral_mono fun A0 => lintegral_mono fun A1 => hbump A0 A1
+      _ = (∫⁻ _A0 in matBox 3 3 1, ∫⁻ _A1 in matBox 3 4 1, (1 : ℝ≥0∞))
+            + ∫⁻ A0 in matBox 3 3 1, ∫⁻ A1 in matBox 3 4 1,
+                ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(3 : ℝ))) := by
+          rw [← lintegral_add_left' (by
+            exact (Measurable.lintegral_prod_right (measurable_const)).aemeasurable) _]
+          refine setLIntegral_congr_fun (matBox_measurableSet 3 3 1) (fun A0 _ => ?_)
+          rw [← lintegral_add_left' (measurable_const).aemeasurable]
+      _ < ⊤ := ENNReal.add_lt_top.2 ⟨hvol, hcover3⟩
+  · exact matBox334_blowup_lt_top_gt2 c' hc2 hc4
 
 /-- **The `(3,3,4)` hfin upper bound (the N4 depth-2 instance, GAP = the blow-up bridge ONLY).** For
 `c' < ½·minAdm M334 = 4`, `∫⁻_{routeMBaseNbhd M334} |routeMCore M334 x|^{−c'} < ⊤`. The rank-stratified
