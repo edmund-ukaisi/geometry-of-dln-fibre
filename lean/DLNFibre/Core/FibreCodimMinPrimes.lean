@@ -18,7 +18,8 @@ The inputs are carried as **explicit named hypotheses** (the conditional-bank pa
 * `hge : ∀ J ∈ (fibreGenIdeal d B).minimalPrimes, v ≤ J.height` — every component has codim `≥ v`;
 * `hle : ∃ J ∈ (fibreGenIdeal d B).minimalPrimes, J.height ≤ v` — one (top) component has codim `≤ v`.
 
-With `v = C + δ = (cCodim d r).toNat + r(d_N + d_0 − r)` (`codimRepCanonical_fibre_eq_cCodim_add_shift`),
+With `v = C + δ = (cCodim d r).toNat + r(d_N + d_0 − r)`
+(`codimRepCanonical_fibre_eq_cCodim_add_shift_of_height_bounds`),
 this is the Lemma-4.6 fibre codimension. When the route-B tide (off thread 27's certificate) supplies
 `rank(fibreJacobian) ≥ C+δ` generically on every component, those hypotheses discharge — via
 `FibreJacobian` H3a (`finrank ker + rank = card`) + generic smoothness
@@ -79,7 +80,7 @@ has `height ≥ C + δ` and one has `height ≤ C + δ` (`C = cCodim d r`, `δ =
 codimension is `C + δ`. `codimRepCanonical_fibre_eq_of_minimalPrimes_height_bounds` at `v := C + δ`.
 The route-B tide discharges the two hypotheses from thread 27's `rank(d mult) ≥ C+δ` (every component)
 + `= C+δ` (top component), via H3a + generic smoothness + the catenary. -/
-theorem codimRepCanonical_fibre_eq_cCodim_add_shift [IsAlgClosed k]
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_height_bounds [IsAlgClosed k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k)
     (hge : ∀ J ∈ (fibreGenIdeal d B).minimalPrimes,
