@@ -9357,6 +9357,40 @@ for Aoyagi's actual charts, prove analytic density/Jacobian transport, chart
 coverage, endpoint/divergence, threshold equality, normal crossings, pole
 order, or RLCT.
 
+Latest A2 signed-box residual/density comparison:
+`MonomialChartIntegrability.lean` now proves the signed-box absolute-value
+finite-side bridge from separate supplied loss/density bounds to finite
+lower-integral control.  The support lemma
+`ae_forall_abs_pos_measure_pi_restrict_Ioo_neg` gives a.e. coordinate
+nonvanishing on
+`Measure.pi (i |-> volume.restrict (-(R_i),R_i))`.  The one-dimensional
+helper `integrableOn_abs_rpow_Ioo_neg_pos` proves integrability of `|x|^p`
+on `(-R,R)` for `R>0`, `p>-1`, by reflecting the negative half and using the
+positive-interval power theorem.  Product and domination theorem names:
+
+```text
+lintegral_ofReal_abs_rpow_restrict_Ioo_neg_lt_top
+lintegral_ofReal_fintype_abs_rpow_signedBox_lt_top
+lintegral_ofReal_fintype_abs_monomialFactor_signedBox_lt_top
+lintegral_ofReal_le_const_mul_fintype_abs_rpow_signedBox_lt_top
+lintegral_ofReal_le_const_mul_fintype_abs_monomialFactor_signedBox_lt_top
+loss_rpow_neg_mul_density_le_const_mul_abs_monomialFactor_of_abs_pos
+lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-density-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-signed-box-residual-density-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-signed-box-residual-density-comparison.md`.
+
+This is still supplied-bound signed-box threshold-level integrability only.
+It does not prove the supplied loss/density estimates for Aoyagi's actual
+charts, prove analytic density/Jacobian transport, chart coverage,
+endpoint/divergence, threshold equality, normal crossings, pole order, or
+RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

@@ -3812,9 +3812,17 @@ Lean proves that explicit a.e. positive-box bounds
 `int^- ofReal(loss(x)^(-t) * density(x))` under `c>0`, `C>=0`, `t>=0`,
 `R_i>0`, and `2*t*k_i<h_i+1`.  Treat this as positive-box comparison only.
 
-Updated next A2 analytic target: decide whether to formalise the signed-box or
-absolute-value version next, or to keep positive boxes and start proving actual
-Aoyagi chart-side hypotheses that supply the loss lower bound and density
-upper bound.  Do not claim this landed theorem handles signed orthants,
-absolute values, Aoyagi's p.13 analytic chart/Jacobian construction, finite
-chart coverage, endpoint or divergent behavior, pole order, or RLCT.
+A2 signed-box residual/density comparison has now landed:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-density-comparison.md`.
+Lean proves the absolute-value signed-box analogue of the positive-box
+comparison, including a.e. nonzero-coordinate support, one-dimensional
+`|x|^p` finite-side integrability, signed-box product integrability, direct
+domination transfer, and the finite lower-integral theorem from supplied
+absolute-monomial loss/density bounds.
+
+Updated next A2 analytic target: start proving actual Aoyagi chart-side
+hypotheses that supply the loss lower bound and density/prior upper bound, or
+pin a narrower chart-local bound that can feed this signed-box theorem.  Do
+not claim this landed theorem proves Aoyagi's p.13 analytic chart/Jacobian
+construction, finite chart coverage, endpoint or divergent behavior, pole
+order, or RLCT.

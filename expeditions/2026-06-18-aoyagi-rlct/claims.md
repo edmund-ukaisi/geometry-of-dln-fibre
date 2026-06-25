@@ -6448,6 +6448,47 @@ behavior, no lower/divergence side or threshold equality, no Aoyagi p.13
 analytic chart/Jacobian construction, no normal crossings, no pole order, and
 no RLCT.
 
+Latest A2 signed-box residual/density comparison:
+Lean now proves the signed-box absolute-value analogue of the positive-box
+finite-side comparison in
+`lean/DLNFibre/DLN/Aoyagi/MonomialChartIntegrability.lean`.  On the product
+signed-box measure, if `c>0`, `C>=0`, `t>=0`, `R_i>0`,
+`2*t*k_i<h_i+1`, and a.e.
+
+```text
+c * prod_i |x_i|^(2*k_i) <= loss(x),
+0 <= density(x),
+density(x) <= C * prod_i |x_i|^(h_i),
+```
+
+then `int^- ofReal(loss(x)^(-t) * density(x))` is finite.  The proof first
+records a.e. coordinate nonvanishing for the signed-box product measure, then
+proves one-dimensional and finite-product absolute-power integrability, then
+derives the pointwise absolute-monomial domination with constant `c^(-t)*C`,
+and finally invokes the signed-box domination theorem.
+Lean names:
+`ae_forall_abs_pos_measure_pi_restrict_Ioo_neg`,
+`integrableOn_abs_rpow_Ioo_neg_pos`,
+`lintegral_ofReal_abs_rpow_restrict_Ioo_neg_lt_top`,
+`lintegral_ofReal_fintype_abs_rpow_signedBox_lt_top`,
+`lintegral_ofReal_fintype_abs_monomialFactor_signedBox_lt_top`,
+`lintegral_ofReal_le_const_mul_fintype_abs_rpow_signedBox_lt_top`,
+`lintegral_ofReal_le_const_mul_fintype_abs_monomialFactor_signedBox_lt_top`,
+`loss_rpow_neg_mul_density_le_const_mul_abs_monomialFactor_of_abs_pos`, and
+`lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-density-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-signed-box-residual-density-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-signed-box-residual-density-comparison.md`.
+
+Nonclaims: no proof that Aoyagi's actual product-residual charts satisfy the
+supplied bounds, no analytic density/Jacobian transport theorem, no finite
+chart cover theorem, no endpoint behavior, no lower/divergence side or
+threshold equality, no Aoyagi p.13 analytic chart/Jacobian construction, no
+normal crossings, no pole order, and no RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 Proved that in the explicit all-source branch, the strict selected inequalities
 already force source-range rank-width.  For each source index `s`, the proof

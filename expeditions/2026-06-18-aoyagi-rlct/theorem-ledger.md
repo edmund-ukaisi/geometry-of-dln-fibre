@@ -7617,6 +7617,28 @@ Nonclaims: no analytic regularity, analytic Jacobian determinant calculation,
 source-rank openness, source coverage, ideal-germ transport,
 regular-suspension certificate, normal crossings, pole order, or RLCT.
 
+Latest A2 signed-box residual/density comparison:
+`MonomialChartIntegrability.lean` proves the signed-box absolute-value
+finite-side theorem from supplied a.e. loss/density bounds.  Lean names:
+`ae_forall_abs_pos_measure_pi_restrict_Ioo_neg`,
+`integrableOn_abs_rpow_Ioo_neg_pos`,
+`lintegral_ofReal_abs_rpow_restrict_Ioo_neg_lt_top`,
+`lintegral_ofReal_fintype_abs_rpow_signedBox_lt_top`,
+`lintegral_ofReal_fintype_abs_monomialFactor_signedBox_lt_top`,
+`lintegral_ofReal_le_const_mul_fintype_abs_rpow_signedBox_lt_top`,
+`lintegral_ofReal_le_const_mul_fintype_abs_monomialFactor_signedBox_lt_top`,
+`loss_rpow_neg_mul_density_le_const_mul_abs_monomialFactor_of_abs_pos`, and
+`lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-signed-box-residual-density-comparison.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-signed-box-residual-density-comparison.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-signed-box-residual-density-comparison.md`.
+Nonclaims: no proof of Aoyagi actual chart-side bounds, no analytic
+density/Jacobian transport, no chart coverage, no endpoint/divergent-side or
+threshold equality theorem, no normal crossings, pole order, or RLCT.
+
 Latest A6 Definition 3 all-source strict rank-width:
 `Definition3Bridge.lean` proves
 `AoyagiDefinition3SourceData.sourceRangeRankWidth_of_all_selected_strict` and
