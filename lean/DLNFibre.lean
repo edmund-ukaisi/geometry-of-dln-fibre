@@ -130,5 +130,12 @@ import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
 import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
 import DLNFibre.DLN.RLCT.Validate.RouteM4422
+-- L1.1 terminal (S2-free): the general-`n` radial-Morse domination, the reusable hfin leaf terminal.
+import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
+-- The matrix-product fibre engine (S2-free): the iterated-fibre finiteness `fibre_lintegral_mul_le`.
+import DLNFibre.DLN.RLCT.Validate.MatMulFibre
+-- The (4,4,2,2) hfin upper bound (iterated-fibre route): analytic engine banked sorry-free; the
+-- Params-reshape + 3-fold Tonelli connection is the one residual sorry (see file header).
+import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
