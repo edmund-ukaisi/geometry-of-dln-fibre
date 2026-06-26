@@ -324,3 +324,9 @@ import DLNFibre.Core.FibreBundleTransition
 -- `sweepFibreRing⧸I ≃ₐ[k] orbitRing M` per top-component prime (fibre-component↔orbit, ~multi-module).
 import DLNFibre.Core.LocalizationAtComponent
 import DLNFibre.Core.FibreGenericSmoothUncond
+-- Scope-3 (bundle bridge B3-4, thread 21): the genuine TOP-LEFT `e_β`↔ambient identification — the seam
+-- `detMinorPoly_topLeft_rename`, the bridge AlgHom `topLeftBaseToChartAway` (identifies the inverted
+-- denominators, load-bearing), and a genuinely-instantiated `LocalTrivializationDatum` at the top-left
+-- chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial` — the per-pivot
+-- trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it remain (#123).
+import DLNFibre.Core.FibreBundleLocallyTrivial
