@@ -11262,3 +11262,30 @@ derivative, then assemble the full ambient tuple derivative against
 `productReductionStepFormalJacobian`.  No source-measure pushforward, density
 transport, change of variables, normal crossings, pole order, or RLCT is
 claimed.
+
+## Latest A2 Product-Step C Ambient Derivative
+
+The final non-passive analytic component derivative has landed in
+`ProductReductionStepDerivative.lean`.  Lean proves
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart_C
+```
+
+for the coordinate
+
+```text
+C = A4 - A3*A1^{-1}*A2.
+```
+
+The proof groups the tail as `(A3*A1^{-1})*A2`, applies
+`hasFDerivAt_matrix_inv_of_isUnit_det` to `A1^{-1}`, and uses
+`matrixMulContinuousLinearMap` for the product-rule layers.  The derivative is
+identified with `productReductionStepFormalJacobian_dC x` under the
+determinant-chart hypothesis `IsUnit x.A1.det`.
+
+Next analytic priority: assemble the full ambient tuple derivative against
+`productReductionStepFormalJacobian`.  The remaining chart coordinates `D`,
+`A1`, and `A3` are passive projections.  No source-measure pushforward,
+density transport, change of variables, normal crossings, pole order, or RLCT
+is claimed.

@@ -8707,6 +8707,23 @@ This identifies the analytic derivative of the `F3` coordinate with
 determinant formula, source-measure transport, normal crossings, pole order,
 and RLCT remain open.
 
+Latest A2 product-step C ambient derivative:
+`ProductReductionStepDerivative.lean` now proves the analytic derivative of
+`C = A4 - A3*A1^{-1}*A2`. Lean name:
+`hasFDerivAt_productReductionStepTopologyTupleToChart_C`.
+The proof reuses `hasFDerivAt_matrix_inv_of_isUnit_det` and
+`matrixMulContinuousLinearMap`, grouping the tail as `(A3*A1^{-1})*A2`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-c-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-c-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-c-ambient-derivative.md`.
+This identifies the analytic derivative of the `C` coordinate with
+`productReductionStepFormalJacobian_dC` under `IsUnit x.A1.det`. All
+component derivatives are now available; full tuple derivative assembly,
+analytic determinant formula, source-measure transport, normal crossings,
+pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

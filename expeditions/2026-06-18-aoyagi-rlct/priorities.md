@@ -4907,3 +4907,14 @@ derivative priority is the `C = A4 - A3*A1^{-1}*A2` component, reusing the
 `A1` inverse calculation from `F2`, then assembling the full ambient tuple
 derivative.  Do not infer source-measure pushforward, density transport,
 normal crossings, pole order, or RLCT.
+
+A2 product-step C ambient derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-c-ambient-derivative.md`.
+Lean proves `hasFDerivAt_productReductionStepTopologyTupleToChart_C`, using
+the matrix inverse derivative for `A1^{-1}` and product-rule bundling for
+`(A3*A1^{-1})*A2`.  The determinant input is exactly `IsUnit x.A1.det`.  All
+individual coordinate derivatives are now available, so the next priority is
+to assemble the full ambient tuple derivative against
+`productReductionStepFormalJacobian`, with passive coordinates discharged by
+projection derivatives.  Do not infer source-measure pushforward, density
+transport, normal crossings, pole order, or RLCT.

@@ -389,6 +389,133 @@ theorem hasFDerivAt_productReductionStepTopologyTupleToChart_F3
   rw [hderiv]
   simpa [productReductionStepTopologyTupleToChart, Ctop] using hF3
 
+-- The `C` component reuses the `A1` inverse derivative from `F2` and two
+-- heterogeneous product-rule layers.
+set_option maxRecDepth 2048 in
+/-- The `C = A4 - A3 * A1⁻¹ * A2` component of the ambient tuple coordinate
+map has the expected Frechet derivative from the formal p. 13 tangent
+calculation. -/
+theorem hasFDerivAt_productReductionStepTopologyTupleToChart_C
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hA1 : IsUnit x.A1.det) :
+    HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        (productReductionStepTopologyTupleToChart
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z).2.2.2.2.2.2)
+      (LinearMap.toContinuousLinearMap
+        (productReductionStepFormalJacobian_dC
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x))
+      x.topologyTuple := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  let leftA3 : Matrix μ ρ ℝ := x.A3 * x.A1⁻¹
+  let LA1 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix ρ ρ ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LA2 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix ρ ν ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA2
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LA3 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix μ ρ ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA3
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LA4 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix μ ν ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA4
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LinvA1 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix ρ ρ ℝ :=
+    (-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ) x.A1⁻¹ x.A1⁻¹)).comp LA1
+  let BA3inv : Matrix μ ρ ℝ →L[ℝ] Matrix ρ ρ ℝ →L[ℝ] Matrix μ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := μ) (m := ρ) (n := ρ)
+  let Btail : Matrix μ ρ ℝ →L[ℝ] Matrix ρ ν ℝ →L[ℝ] Matrix μ ν ℝ :=
+    matrixMulContinuousLinearMap (l := μ) (m := ρ) (n := ν)
+  let LA3A1inv : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix μ ρ ℝ :=
+    BA3inv.precompR _ x.A3 LinvA1 + BA3inv.precompL _ LA3 x.A1⁻¹
+  have hA1coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.1)
+      LA1 x.topologyTuple := by
+    simpa [LA1, productReductionStepRawTangent_dA1] using
+      (LA1.hasFDerivAt (x := x.topologyTuple))
+  have hA2coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.1)
+      LA2 x.topologyTuple := by
+    simpa [LA2, productReductionStepRawTangent_dA2] using
+      (LA2.hasFDerivAt (x := x.topologyTuple))
+  have hA3coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.2.1)
+      LA3 x.topologyTuple := by
+    simpa [LA3, productReductionStepRawTangent_dA3] using
+      (LA3.hasFDerivAt (x := x.topologyTuple))
+  have hA4coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.2.2)
+      LA4 x.topologyTuple := by
+    simpa [LA4, productReductionStepRawTangent_dA4] using
+      (LA4.hasFDerivAt (x := x.topologyTuple))
+  have hA1inv : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        (z.2.2.2.1)⁻¹)
+      LinvA1 x.topologyTuple := by
+    simpa [LinvA1, Function.comp_def] using
+      ((hasFDerivAt_matrix_inv_of_isUnit_det x.A1 hA1).comp
+        (x := x.topologyTuple) hA1coord)
+  have hA3A1inv : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.2.1 * (z.2.2.2.1)⁻¹)
+      LA3A1inv x.topologyTuple := by
+    simpa [BA3inv, LA3A1inv] using
+      (BA3inv.hasFDerivAt_of_bilinear hA3coord hA1inv)
+  have htail : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        (z.2.2.2.2.2.1 * (z.2.2.2.1)⁻¹) * z.2.2.2.2.1)
+      (Btail.precompR _ leftA3 LA2 +
+        Btail.precompL _ LA3A1inv x.A2)
+      x.topologyTuple := by
+    simpa [Btail, leftA3] using
+      (Btail.hasFDerivAt_of_bilinear hA3A1inv hA2coord)
+  have hC : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.2.2 -
+          (z.2.2.2.2.2.1 * (z.2.2.2.1)⁻¹) * z.2.2.2.2.1)
+      (LA4 -
+        (Btail.precompR _ leftA3 LA2 +
+          Btail.precompL _ LA3A1inv x.A2))
+      x.topologyTuple :=
+    hA4coord.sub htail
+  have hderiv :
+      LinearMap.toContinuousLinearMap
+          (productReductionStepFormalJacobian_dC
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x) =
+        LA4 -
+          (Btail.precompR _ leftA3 LA2 +
+            Btail.precompL _ LA3A1inv x.A2) := by
+    apply ContinuousLinearMap.ext
+    intro v
+    ext i j
+    simp [BA3inv, Btail, LA1, LA2, LA3, LA4, LinvA1, LA3A1inv, leftA3,
+      productReductionStepFormalJacobian_dC,
+      productReductionStepRawTangent_dA1,
+      productReductionStepRawTangent_dA2,
+      productReductionStepRawTangent_dA3,
+      productReductionStepRawTangent_dA4,
+      Matrix.mul_apply, Matrix.mul_assoc]
+    abel_nf
+  rw [hderiv]
+  simpa [productReductionStepTopologyTupleToChart, leftA3, Matrix.mul_assoc] using hC
+
 end Aoyagi
 end DLN
 end DLNFibre
