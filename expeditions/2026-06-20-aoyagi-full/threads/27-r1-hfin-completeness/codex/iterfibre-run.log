@@ -1,0 +1,1081 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.1
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efcb0-c621-7c43-95af-3880fcc7664a
+--------
+user
+<task>
+Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+deep-linear-net loss, or only a weaker bound. This decides a Lean proof route.
+
+SETUP. F = ‖A^(0)·A^(1)·…·A^(L-1)‖_F² (product of matrices, A^(s) is M_s × M_{s+1}), near A=0,
+flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+
+THE ITERATED-FIBRE METHOD (just built, S2-free). A reusable per-layer "fibre" bound:
+  FIBRE LEMMA: for fixed Y (n×q), ∫_{X∈box (p×n)} frobSq(X·Y)^{−c'} dX ≤ const(p,n,q) · frobSq(Y)^{−c'},
+  FINITE iff c' < p/2 (p = #rows of the LEFT factor X). [Proof: frobSq(X·Y) ≥ (Y_{ℓj})²·Σ_i u_i² for
+  the max-abs entry (ℓ,j) of Y and the per-row shear u_i (det-1 MP in X); (Y_{ℓj})² ≥ frobSq(Y)/(nq);
+  the u-fibre is a p-dim Morse, ∫ (Σu_i²)^{−c'} < ∞ iff c' < p/2 (radial). So the X-integral is bounded
+  by a Y-independent const times frobSq(Y)^{−c'}, threshold p/2.]
+  ITERATE outside-in: ∫_{A0}∫_{A1}…∫_{A_{L-1}} F^{−c'} ≤ C0·C1·…·∫_{A_{L-1}} frobSq(A_{L-1})^{−c'},
+  peeling A0 (X=A0, Y=A1…A_{L-1}, threshold M_0/2), then A1 (threshold M_1/2), …, terminal A_{L-1}
+  is a Morse block frobSq over M_{L-1}·M_L entries (threshold M_{L-1}·M_L/2).
+  So the method's GUARANTEED finiteness threshold is  iterfibre(M) = min( min_{s=0}^{L-2} M_s/2 ,
+  M_{L-1}·M_L/2 ).
+
+MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+  (4,4,2,2): both 2 (MATCH); (2,1,2): both 1 (MATCH).
+  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+  (3,3,3,3): 3/2 vs 3; (4,4,4): 2 vs 6; (5,3,4): 5/2 vs 11/2. ALL WEAKER except the two MATCH cases.
+So the naive iterated-fibre gives min_s M_s/2 (the smallest left-factor row count over 2), which is
+generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+(e.g. (4,4,2,2): the leaf 2×2 binds at 2 = both).
+
+QUESTIONS:
+  (1) Is my threshold accounting for the iterated-fibre method correct — is the per-peel threshold
+      really M_s/2 (the left-factor row count), independent of the rank/structure of the residual Y?
+      The fibre lemma uses only ONE max column of Y and the per-row shear; it does NOT see Y's rank.
+  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+      differently, (b) peeling COLUMNS not rows (transpose), (c) a smarter fibre bound that sees more
+      than one column of Y, (d) interleaving with rank-stratification on Y — or is min_s M_s/2 a
+      genuine CEILING of the single-column-shear fibre method?
+  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+      undershoots (needing the rank-stratified coupled resolution).
+</task>
+
+<output_contract>
+1. Confirm/correct the per-peel threshold M_s/2 and the iterfibre(M) = min(M_s/2, terminal) formula.
+2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+   vs conjectured.
+</output_contract>
+
+<grounding_rules>
+- The fibre lemma threshold p/2 is the u-fibre Morse dimension (p rows), exact.
+- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+  integral via a lower bound on F, so a valid but possibly-loose finiteness threshold).
+- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+- Reason adversarially; I want to know if the clean iterated-fibre route actually suffices.
+</grounding_rules>
+
+codex
+I’ll check the local notes/formula context first, then I’ll give the adjudication rather than just trusting the examples. The key point to pin down is the exact admissible-path constraints, since the equality class depends on them.
+exec
+/bin/bash -lc 'pwd && rg -n "minAdm|admissible path|Aoyagi|RLCT|rlct|deep linear" -S .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./Vzero-termination-cert.md:8:(S2-only) or needs the forbidden Aoyagi/Watanabe `rlct ≥ ½·codim` cite.**
+./Vzero-termination-cert.md:25:> (S2, `monomial_rlct`)** and **Euclidean sum-of-squares blocks (S2-FREE, Mathlib `radial_ball_iff` —
+./Vzero-termination-cert.md:27:> disjoint-sum lemma `rlct(‖P‖²+H) = ½dim P + rlct(H)` (S2-FREE)**. Depth ≤ `r`. The recursion threshold
+./Vzero-termination-cert.md:28:> `λ_{r,p} = min(r²/2, min_j(jp/2 + λ_{r−j,p}))` reproduces `½·minAdm(r,r,p)` EXACTLY (verified, 10/10).
+./Vzero-termination-cert.md:56:- joint (disjoint var groups, Tonelli) `J(c') = ∫ |a|^{3−2c'}·I^{−c'} < ⊤` for `c' < 2 = rlct(‖ΔS‖²)`.
+./Vzero-termination-cert.md:57:- The (3,3,4) cell `‖T‖² ⊕ ‖ΔS‖²` (disjoint): `rlct = 2 + 2 = 4 = ½·minAdm` (Watanabe disjoint-sum
+./Vzero-termination-cert.md:59:  `c' < ½·minAdm` — the per-cell upper bound at EXACTLY the achiever threshold.
+./Vzero-termination-cert.md:60:- NON-achiever strata (other pivot cells): higher `Mval` ⟹ threshold `> ½·minAdm` ⟹ converge more
+./Vzero-termination-cert.md:61:  easily for `c' < ½·minAdm`. No stratum undercuts. This geometrically REALISES the proven combinatorial
+./Vzero-termination-cert.md:62:  `IsResolutionAtlas.threshold_ge` (every leaf threshold `≥ ½·minAdm`).
+./Vzero-termination-cert.md:85:**Hero-task feasibility: CONFIRMED.** R1's upper bound (`hfin`, `rlctAtOn ≥ ½·minAdm`) is provable
+./Vzero-termination-cert.md:86:from scratch under the S2-only constraint. The forbidden Aoyagi/Watanabe `rlct ≥ ½·codim` cite is NOT
+./Vzero-termination-cert.md:104:**The repaired recursion** (Codex, S2-free + a radial disjoint-sum lemma `rlct(‖P‖² + H(z)) =
+./Vzero-termination-cert.md:105:½·dim(P) + rlct(H)`, proven by radial integration in `P`):
+./Vzero-termination-cert.md:109:**DECISIVE cross-check** (`scripts/Vzero_lambda_recursion.py`, exact): `λ_{r,p} = ½·minAdm(r,r,p)` for
+./Vzero-termination-cert.md:111:bind). The repaired recursion reproduces the correct literature rlct. **No non-S2 cite** — only S2 (the
+./Vzero-termination-cert.md:117:(`≤ r`, corank strictly drops), and the binding stratum is picked by the `min` (matching `½·minAdm`).
+./Vzero-termination-cert.md:124:  Morse block ⊕ lower core, the `min` binds, depth ≤ r, threshold `λ_{r,p} = ½·minAdm(r,r,p)` (verified).
+./Vzero-termination-cert.md:135:  threshold `5/2`; the cell rlct `= ½·minAdm` via disjoint-sum; the 4-chart blow-up cover completeness
+./Vzero-termination-cert.md:137:- **Used (S2-free, standard):** Watanabe disjoint-sum additivity `rlct(f(x)+g(y)) = rlct(f)+rlct(g)`
+./Vzero-termination-cert.md:144:  RLCT VALUES are pinned (disjoint-sum + the proven `threshold_ge`); the geometric cover assembly at
+./Vzero-termination-cert.md:154:depth (≤ corank), with the per-cell upper bound at `½·minAdm`. **R1 is fully provable from scratch
+./statement-card.md:10:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the upper bound `rlctAtOn ≥ ½·minAdm`. S2-only (the
+./statement-card.md:11:cited Aoyagi/Watanabe `rlct ≥ ½·codim` is FORBIDDEN).
+./statement-card.md:17:  `c' < ½·minAdm`; the conclusion is a GEOMETRIC finiteness the leaf data cannot supply.
+./statement-card.md:30:- **Smooth (corank-≤1) cover suffices** iff every admissible path has all per-step coranks ≤ 1 — only
+./statement-card.md:38:- leaf = single divisor `foldDivisors[Mval]`, `d=1`, model finite iff `c'<½·minAdm` (`leaf_data.py`).
+./thread.md:6:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the UPPER bound `rlctAtOn ≥ ½·minAdm` (below the
+./thread.md:8:**Constraint:** proven-from-scratch, S2 (`monomial_rlct`) ONLY — the cited Aoyagi/Watanabe analytic
+./thread.md:23:> ("leaf-sum finite") correctly extracts `c' < ½·minAdm` — but the CONCLUSION (`∫|F|^{−c'} < ⊤`) is a
+./thread.md:35:  `threshold_ge` (every leaf threshold `≥ ½·minAdm`) and `achiever` (some leaf `= ½·minAdm`). **No chart
+./thread.md:37:  than full surjectivity onto `Adm M`"). So the atlas supplies the VALUE `⨅ monomialThreshold = ½·minAdm`,
+./thread.md:42:  The leaf-sum is finite iff `c' < ½·minAdm` (`scripts/leaf_data.py`, exact). **No threshold-only
+./thread.md:49:  — every rank stratum), each chart bounded separately. The leaf data only extracts `c' < ½·minAdm`; the
+./thread.md:78:- **REACHABLE-from-scratch with smooth (corank-≤1) sub-charts only** — `M` where EVERY admissible path
+./thread.md:82:- **Needs the FULL coupled resolution** — `M` with ANY admissible path having a corank-≥2 drop (i.e.
+./thread.md:89:    NON-minimising (higher `Mval`, threshold `> ½·minAdm`), its integral converges more easily; the
+./thread.md:117:- **Levels separate.** This is the UPPER leg (`cover_le`/`rlctAtOn ≥ ½·minAdm`). hdiv (LOWER,
+./thread.md:118:  `cover_ge_div`) is closed (#135 `φ_M`). The VALUE `⨅ monomialThreshold = ½·minAdm` is PROVEN
+./thread.md:121:  `c' < ½·minAdm`; the (3,3,4) `φ_M` unit `Uval334` vanishes on `{a=0,c=0,Δ=0}` (positive-dim) in-chart;
+./thread.md:134:  one cited route (Aoyagi/Watanabe `rlct ≥ ½·codim`) is FORBIDDEN here (S2-only) — so the recursive
+./thread.md:139:  crossing leaves (it should — the determinantal RLCT is rational and the iterated `diag(b)` peel
+./thread.md:149:the alternative (cite `rlct ≥ ½·codim`) is forbidden by the S2-only constraint. NOT a wall — a precise,
+./codex/iterfibre-run.log:16:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-run.log:20:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-run.log:21:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-run.log:35:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-run.log:37:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-run.log:40:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-run.log:47:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-run.log:51:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-run.log:52:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-run.log:53:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-run.log:59:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-run.log:60:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-run.log:66:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-run.log:68:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-run.log:69:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/Vzero-run.log:16:Red-team a feasibility verdict. I claim a determinantal singularity's RLCT upper bound is provable
+./codex/Vzero-run.log:17:"from scratch" using ONLY a normal-crossing→RLCT axiom (S2) + standard Euclidean radial integration,
+./codex/Vzero-run.log:18:with NO appeal to the general Aoyagi/Watanabe bound rlct ≥ codim/2. Find the hole if there is one.
+./codex/Vzero-run.log:20:SETUP. Loss F = ||A^(0)...A^(L-1)||_F^2 (deep linear net), near 0. After peeling clean rank-1 pivots,
+./codex/Vzero-run.log:22:r×p free block (a matrix-multiplication / determinantal singularity). I want, for c' < rlct(G),
+./codex/Vzero-run.log:35:  threshold 2 = rlct(||Δ S||^2). The cell F = ||T||^2 ⊕ ||ΔS||^2 (disjoint vars) -> rlct = 2+2 = 4 =
+./codex/Vzero-run.log:36:  minAdm/2 by Watanabe disjoint-sum additivity (Tonelli, S2-free).
+./codex/Vzero-run.log:39:divisor axes), depth ≤ corank, giving the per-cell upper bound at threshold minAdm/2. So the RLCT
+./codex/Vzero-run.log:40:upper bound is provable from scratch — the Aoyagi/Watanabe cite is NOT needed.
+./codex/Vzero-run.log:52:  (3) The UPPER bound (finiteness), not just the rlct VALUE: does INT |a|^{r^2-1} (a^2 I)^{-c'} d(...)
+./codex/Vzero-run.log:53:      genuinely converge for c' < minAdm/2 via the resolved leaves, or is there a cross-term / a
+./codex/Vzero-run.log:57:      that forces a genuine non-S2 RLCT computation (where you'd have to cite rlct ≥ codim/2)?
+./codex/Vzero-run.log:69:- rlct(||Δ S||^2) for Δ r×r, S r×p (matrix-product, true rank 0) is known rational (e.g. (2,2,4): 2).
+./codex/Vzero-run.log:71:- S2 = normal-crossing→RLCT (threshold min_j (h_j+1)/2k_j for a product monomial). Euclidean Morse
+./codex/Vzero-run.log:73:- Watanabe disjoint-sum: rlct(f(x)+g(y)) = rlct(f)+rlct(g) for disjoint x,y (Tonelli, S2-free).
+./codex/Vzero-run.log:78:I’ll treat this as a local RLCT/resolution audit, not as a repo-editing task. The key issue is whether the proposed recursion is a genuine resolution or only a stratified heuristic around the first exceptional divisor.
+./codex/Vzero-run.log:84:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:157:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:174:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-run.log:210:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:283:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:300:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-answer.md:5:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-answer.md:78:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-answer.md:95:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/hfin-answer.md:49:which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+./codex/hfin-answer.md:55:minAdm(3,3,4) = 8,
+./codex/hfin-answer.md:56:every leaf threshold >= minAdm/2 = 4.
+./codex/hfin-answer.md:65:It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+./scripts/hfin_class_boundary.py:26:from genM_structure import minAdmRec, all_adm, Mval, redChain
+./scripts/hfin_class_boundary.py:38:    T,minAdm=minim(M)
+./scripts/hfin_class_boundary.py:53:    return steps,minAdm
+./scripts/hfin_class_boundary.py:57:    steps,minAdm=achiever_coranks(M)
+./scripts/hfin_class_boundary.py:60:    print(f"M={M} minAdm={minAdm} achiever steps (chain, t, drop_rows x drop_cols, corank):")
+./codex/iterfibre-prompt.md:2:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-prompt.md:6:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-prompt.md:7:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-prompt.md:21:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-prompt.md:23:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-prompt.md:26:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-prompt.md:33:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-prompt.md:37:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-prompt.md:38:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-prompt.md:39:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-prompt.md:45:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-prompt.md:46:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-prompt.md:52:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-prompt.md:54:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-prompt.md:55:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/hfin-run.log:16:Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:45:threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:60:      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:64:      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:75:CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:111:/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:115:./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:116:./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:118:./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:119:./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:121:./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:122:./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:123:./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:130:./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:132:./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:133:./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:140:./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:145:./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:146:./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:148:./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:149:./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:151:./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:152:./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:153:./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:160:./codex/hfin-prompt.md:45:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:162:./codex/hfin-prompt.md:49:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:163:./codex/hfin-prompt.md:51:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:170:./codex/hfin-prompt.md:68:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:205:Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+./codex/hfin-run.log:211:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:213:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:221:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:222:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:228:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:229:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:233:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:234:threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+./codex/hfin-run.log:248:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:249:      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+./codex/hfin-run.log:252:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:253:      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+./codex/hfin-run.log:254:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:264:CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+./codex/hfin-run.log:271:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:300:/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:304:./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:305:./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:307:./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:308:./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:310:./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:311:./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:312:./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:319:./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:321:./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:322:./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:329:./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:334:./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:335:./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:337:./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:338:./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:340:./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:341:./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:342:./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:349:./codex/hfin-prompt.md:45:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:351:./codex/hfin-prompt.md:49:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:352:./codex/hfin-prompt.md:51:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:359:./codex/hfin-prompt.md:68:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:423:which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+./codex/hfin-run.log:429:minAdm(3,3,4) = 8,
+./codex/hfin-run.log:430:every leaf threshold >= minAdm/2 = 4.
+./codex/hfin-run.log:439:It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+./codex/hfin-run.log:514:which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+./codex/hfin-run.log:520:minAdm(3,3,4) = 8,
+./codex/hfin-run.log:521:every leaf threshold >= minAdm/2 = 4.
+./codex/hfin-run.log:530:It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+./codex/hfin-prompt.md:2:Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-prompt.md:31:threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+./codex/hfin-prompt.md:45:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-prompt.md:46:      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+./codex/hfin-prompt.md:49:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-prompt.md:50:      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+./codex/hfin-prompt.md:51:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-prompt.md:61:CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+./codex/hfin-prompt.md:68:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/Vzero-prompt.md:2:Red-team a feasibility verdict. I claim a determinantal singularity's RLCT upper bound is provable
+./codex/Vzero-prompt.md:3:"from scratch" using ONLY a normal-crossing→RLCT axiom (S2) + standard Euclidean radial integration,
+./codex/Vzero-prompt.md:4:with NO appeal to the general Aoyagi/Watanabe bound rlct ≥ codim/2. Find the hole if there is one.
+./codex/Vzero-prompt.md:6:SETUP. Loss F = ||A^(0)...A^(L-1)||_F^2 (deep linear net), near 0. After peeling clean rank-1 pivots,
+./codex/Vzero-prompt.md:8:r×p free block (a matrix-multiplication / determinantal singularity). I want, for c' < rlct(G),
+./codex/Vzero-prompt.md:21:  threshold 2 = rlct(||Δ S||^2). The cell F = ||T||^2 ⊕ ||ΔS||^2 (disjoint vars) -> rlct = 2+2 = 4 =
+./codex/Vzero-prompt.md:22:  minAdm/2 by Watanabe disjoint-sum additivity (Tonelli, S2-free).
+./codex/Vzero-prompt.md:25:divisor axes), depth ≤ corank, giving the per-cell upper bound at threshold minAdm/2. So the RLCT
+./codex/Vzero-prompt.md:26:upper bound is provable from scratch — the Aoyagi/Watanabe cite is NOT needed.
+./codex/Vzero-prompt.md:38:  (3) The UPPER bound (finiteness), not just the rlct VALUE: does INT |a|^{r^2-1} (a^2 I)^{-c'} d(...)
+./codex/Vzero-prompt.md:39:      genuinely converge for c' < minAdm/2 via the resolved leaves, or is there a cross-term / a
+./codex/Vzero-prompt.md:43:      that forces a genuine non-S2 RLCT computation (where you'd have to cite rlct ≥ codim/2)?
+./codex/Vzero-prompt.md:55:- rlct(||Δ S||^2) for Δ r×r, S r×p (matrix-product, true rank 0) is known rational (e.g. (2,2,4): 2).
+./codex/Vzero-prompt.md:57:- S2 = normal-crossing→RLCT (threshold min_j (h_j+1)/2k_j for a product monomial). Euclidean Morse
+./codex/Vzero-prompt.md:59:- Watanabe disjoint-sum: rlct(f(x)+g(y)) = rlct(f)+rlct(g) for disjoint x,y (Tonelli, S2-free).
+./scripts/Vzero_lambda_recursion.py:3:Vzero_lambda_recursion.py — VERIFY Codex's repaired rank-stratified recursion gives the RIGHT rlct of
+./scripts/Vzero_lambda_recursion.py:12:Cross-check against the KNOWN rlct of ||Δ S||^2 (= the matrix-product / RRR core rlct at true rank 0).
+./scripts/Vzero_lambda_recursion.py:13:For Δ r×r (square) and S r×p, this is the (r,r,p) RRR core: rlct = ½·minAdm(r,r,p) (Aoyagi).
+./scripts/Vzero_lambda_recursion.py:14:We compute minAdm(r,r,p)/2 and compare to λ_{r,p}.
+./scripts/Vzero_lambda_recursion.py:18:from genM_structure import minAdmRec
+./scripts/Vzero_lambda_recursion.py:30:print("Codex recursion λ_{r,p} vs known ½·minAdm(r,r,p) [the (r,r,p) RRR core rlct]:")
+./scripts/Vzero_lambda_recursion.py:35:    m9 = F(minAdmRec(M)[0],2)
+./scripts/Vzero_lambda_recursion.py:38:    print(f"  r={r},p={p}: λ_recursion={lrp}   ½·minAdm({r},{r},{p})={m9}   match={match}")
+./scripts/Vzero_lambda_recursion.py:42:print("   reproduces the correct ||Δ S||^2 rlct = ½·minAdm(r,r,p). The intermediate strata BIND")
+./scripts/leaf_data.py:31:    print(f"M={M}: {len(ls)} leaves; path-totals (=Mval) range [{mn}..{max(totals)}]; minAdm={mn}")
+./scripts/leaf_data.py:33:    print(f"   leaf thresholds = tot/2; min = {F(mn,2)} = minAdm/2; achiever leaf tot={mn}")
+./scripts/Vzero_224_cover_jac.py:5:that rlct(||Delta S||^2) ~ 2 (guard against algebra slip; MC is a GUIDE only, not load-bearing).
+./scripts/Vzero_224_cover_jac.py:45:print("   [MC is a GUIDE only -- at rlct 2 it is near-useless beyond the resolvable window; the EXACT")
+./scripts/Vzero_224_cover_jac.py:46:print("    resolution above (threshold 2) is the load-bearing result, consistent with the cert's rlct 2.]")
+./scripts/Vzero_recursion.py:7:  (S2)      a product monomial prod x_i^{2k_i} (handled by monomial_rlct), OR
+./scripts/Vzero_recursion.py:62:print("       after a linear change) -> S2-FREE Euclidean leaf (radial_ball_iff), rlct 4? no -- 8-D")
+./scripts/Vzero_recursion.py:63:print("       Morse has rlct 8/2=4 over its 8 vars, BUT the e-divisor is exceptional.")
+./scripts/Vzero_threshold_tie.py:3:Vzero_threshold_tie.py — the final rigor: every resolved leaf's threshold is >= minAdm/2, so the
+./scripts/Vzero_threshold_tie.py:4:per-cell upper bound gives ∫|F|^{-c'}<inf for ALL c' < minAdm/2 (the achiever binds globally, no
+./scripts/Vzero_threshold_tie.py:8:Disjoint-sum: rlct(F) = min over the disjoint blocks' resolved thresholds. We confirm EACH resolved
+./scripts/Vzero_threshold_tie.py:9:leaf threshold >= minAdm/2 = 4? NO -- careful: rlct(F)=4 is the SUM 2+2 (disjoint-sum ADDS), not the
+./scripts/Vzero_threshold_tie.py:11:TOTAL). The GEOMETRIC resolution gives rlct(F) = sum of the disjoint blocks = 2+2 = 4 = minAdm/2.
+./scripts/Vzero_threshold_tie.py:12:So the finiteness ∫|F|^{-c'}<inf holds for c' < 4 = minAdm/2 -- the per-cell upper bound at the RIGHT
+./scripts/Vzero_threshold_tie.py:13:threshold. We confirm the disjoint-sum additivity gives EXACTLY minAdm/2 (matches the leaf's Mval/2).
+./scripts/Vzero_threshold_tie.py:16:# (3,3,4) achiever cell: T-block (1x4 Morse) rlct 2; Delta-S corank-2 core rlct 2 (resolved above).
+./scripts/Vzero_threshold_tie.py:17:# disjoint vars (cert verified: T in {B0..B3}, Delta-S in {d0..d3,B4..B11}) -> rlct ADD.
+./scripts/Vzero_threshold_tie.py:22:    print(f"   {name}: rlct {r}")
+./scripts/Vzero_threshold_tie.py:23:print(f"   total rlct(F) = sum = {total} = minAdm/2 = {F(8,2)}  -> ∫|F|^-c' < inf for c' < 4 = minAdm/2.")
+./scripts/Vzero_threshold_tie.py:25:print("So the per-cell UPPER bound holds at EXACTLY the achiever threshold minAdm/2. The geometric")
+./scripts/Vzero_threshold_tie.py:27:print("threshold. The disjoint-sum additivity rlct(f(x)+g(y))=rlct(f)+rlct(g) (Watanabe, disjoint vars)")
+./scripts/Vzero_threshold_tie.py:30:print("NON-achiever strata (other pivot cells): higher Mval -> threshold > minAdm/2 -> converge MORE")
+./scripts/Vzero_threshold_tie.py:31:print("easily for c'<minAdm/2. So no stratum undercuts; the global ∫_{routeMBaseNbhd}|F|^-c'<inf for")
+./scripts/Vzero_threshold_tie.py:32:print("c'<minAdm/2 holds. This is the proven combinatorial threshold_ge, now geometrically realised.")
+./scripts/iterfibre_threshold.py:3:iterfibre_threshold.py — does the iterated-fibre route's threshold = ½·minAdm for general M?
+./scripts/iterfibre_threshold.py:15:  Compare to ½·minAdm(M).
+./scripts/iterfibre_threshold.py:17:CRUX: per-peel threshold is M_s/2 (the LEFT-factor row count), NOT the codim. Does min = ½·minAdm?
+./scripts/iterfibre_threshold.py:21:from genM_structure import minAdmRec
+./scripts/iterfibre_threshold.py:34:    ma = F(minAdmRec(M)[0], 2)
+./scripts/iterfibre_threshold.py:38:    print(f"M={M}: iterfibre min(peels={[str(p) for p in peels]}, term={term})={it}  vs ½·minAdm={ma}  -> {status}")
+./scripts/iterfibre_threshold.py:42:    print("Iterated-fibre threshold = min(M_s/2 per peel, terminal M_{L-1}M_L/2) vs ½·minAdm:\n")
+./scripts/Vzero_224_upper.py:9:  (A) the a-axis: INT_0^1 a^{3-2c'} da < inf  <=>  3-2c' > -1  <=>  c' < 2.   [a-divisor rlct (3+1)/2=2]
+./scripts/Vzero_224_upper.py:15:        INT_{R^8 ball} (alpha r_P^2 + beta r_Q^2)^{-c'} -- a sum of two Euclidean blocks. Its rlct
+./scripts/Vzero_224_upper.py:19:We verify the TOTAL cell threshold = 2 (matching rlct(||Delta S||^2)=2) and that J(c')<inf for c'<2,
+./scripts/Vzero_224_upper.py:34:# Compute its rlct by the weights: assign P' weight 1 (4 vars), e weight 1, Q weight 0? no -- e^2||Q||^2
+./scripts/Vzero_224_upper.py:35:# has degree 2 in (e,Q-radial)... The cleanest: the FULL G has rlct 2 (cert). The a-divisor already
+./scripts/Vzero_224_upper.py:38:# rlct of ||P'||^2 (4D Morse) = 2; rlct of e^2||Q||^2 = (e-divisor 1/2... ) -- the SUM rlct is min of
+./scripts/Vzero_224_upper.py:43:# radial Q -> rlct contribution. Compute the FULL inner rlct by Newton on the toric model
+./scripts/Vzero_224_upper.py:45:# Its rlct: lct of x^2-sum is 4/2=2 (P' block). The e^2 y^2 block: lct of e^2*||y||^2 over (e,y(4)):
+./scripts/Vzero_224_upper.py:50:# codim 4+1+4=9. But I is NOT a single monomial. Compute rlct(I) by resolution:
+./scripts/Vzero_224_upper.py:52:# I~||P'||^2 + s^2*(unit) -> a (4+1)-Morse-ish: ||P'||^2 + s^2 is a 5-D Morse -> rlct 5/2.
+./scripts/Vzero_224_upper.py:53:# So inner rlct = min(2 [the P' Morse where e generic], 5/2 [the e-blown stratum]) ... the BINDING is 2.
+./scripts/Vzero_224_upper.py:55:print("(B) inner I = ||P'||^2 + e^2||Q||^2: rlct(I) computed by resolution:")
+./scripts/Vzero_224_upper.py:63:print("TOTAL cell threshold = min(a-divisor 2, inner 5/2) = 2 = rlct(||Delta S||^2).  [matches cert]")
+./scripts/Vzero_224_upper.py:66:print("   integrable for c' < 2 = rlct. All leaves monomial(S2)/Morse(S2-free). NO non-S2 cite.")
+./scripts/hfin_obstruction_exact.py:9:  So threshold_ge (>= minAdm/2) IS true: the achiever leaf has threshold Mval/2 = minAdm/2 = 4. The
+./scripts/hfin_obstruction_exact.py:15:- OBSTRUCTION: the binding corank-2 core ||Delta S||^2 ((2,2,4)) is NOT normal-crossing. Its rlct is
+./scripts/hfin_obstruction_exact.py:17:  models a SMOOTH codim center. We show ||Delta S||^2 has rlct 2 but is NOT (monomial)^2*unit, so no
+./scripts/hfin_obstruction_exact.py:20:We verify: (a) ||Delta S||^2 rlct = 2 (Newton/known); (b) it is NOT a normal crossing (the singular
+./scripts/hfin_all_strata.py:4:the achiever path. So the obstruction is whether ANY leaf/stratum (any admissible path) has a corank>=2
+./scripts/hfin_all_strata.py:8:leaves are ALL admissible paths. Even if the ACHIEVER (min) path is corank-1, OTHER paths (other rank
+./scripts/hfin_all_strata.py:10:EVERYWHERE. So the relevant question: does ANY admissible path have a corank>=2 drop? (Almost always
+./scripts/hfin_all_strata.py:18:    """For an admissible path T, the per-step residual coranks along the peel."""
+./scripts/hfin_all_strata.py:39:    print(f"M={M} minAdm={best} achiever T*={bT}: ANY-path-corank>=2={anycorank2} ; achiever-corank>=2={achiever_corank2}")
+./scripts/hfin_all_strata.py:43:    print("hfin must cover ALL strata. Obstruction bites if ANY admissible path has corank>=2.\n")
+
+exec
+/bin/bash -lc "ls -la && find .. -maxdepth 3 -name 'CLAUDE.md' -o -name 'README.md' -o -path '*paper-sources*'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+total 44
+drwxrwxr-x  4 ubuntu ubuntu  4096 Jun 24 23:46 .
+drwxrwxr-x 34 ubuntu ubuntu  4096 Jun 25 00:59 ..
+-rw-rw-r--  1 ubuntu ubuntu 11734 Jun 24 23:46 Vzero-termination-cert.md
+drwxrwxr-x  2 ubuntu ubuntu  4096 Jun 25 02:51 codex
+drwxrwxr-x  2 ubuntu ubuntu  4096 Jun 25 02:50 scripts
+-rw-rw-r--  1 ubuntu ubuntu  3979 Jun 24 23:30 statement-card.md
+-rw-rw-r--  1 ubuntu ubuntu 12108 Jun 24 23:29 thread.md
+
+codex
+The local thread already contains a script for exactly this check. I’m going to read the generator and the iterfibre script so I can separate what is proved by the accounting from what would require a new geometric/rank-stratified argument.
+exec
+/bin/bash -lc "sed -n '1,220p' scripts/iterfibre_threshold.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+iterfibre_threshold.py — does the iterated-fibre route's threshold = ½·minAdm for general M?
+
+THE ITERATED-FIBRE THRESHOLD ACCOUNTING (from MatMulFibre / RouteM4422Hfin):
+  fibre_lintegral_mul_le: ∫_X frobSq(X·Y)^{−c'} ≤ const · frobSq(Y)^{−c'}, finite iff c' < p/2,
+  p = ROW count of the left factor X.
+  Iterate outside-in: F = ‖A0·A1·…·A_{L-1}‖². Peel A0 (X=A0 [M0×M1], Y=A1…A_{L-1} [M1×M_L]): threshold M0/2.
+  Then A1 (X=A1 [M1×M2], Y=A2… [M2×M_L]): threshold M1/2. … Peel A_{L-2}: threshold M_{L-2}/2.
+  TERMINAL: the last factor A_{L-1} [M_{L-1}×M_L], frobSq over its full M_{L-1}·M_L entries (Morse):
+  threshold = M_{L-1}·M_L / 2.
+  So the route's GUARANTEED finiteness threshold (the MIN over the chain, since the integral is finite
+  iff EVERY peel's threshold is exceeded... no: finite for c' < min of all the thresholds):
+    iterfibre_thr(M) = min( min_{s=0}^{L-2} M_s/2 , M_{L-1}·M_L/2 ).
+  Compare to ½·minAdm(M).
+
+CRUX: per-peel threshold is M_s/2 (the LEFT-factor row count), NOT the codim. Does min = ½·minAdm?
+"""
+import sys
+sys.path.insert(0,'/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart/scripts')
+from genM_structure import minAdmRec
+from fractions import Fraction as F
+
+def iterfibre_thr(M):
+    M=tuple(M); L=len(M)-1
+    # peels for layers 0..L-2 (left-factor rows M_0..M_{L-2}); terminal = last factor M_{L-1}*M_L
+    peel_thrs = [F(M[s],2) for s in range(L-1)]   # s=0..L-2
+    terminal = F(M[L-1]*M[L], 2)
+    return min(peel_thrs + [terminal]) if (peel_thrs or True) else terminal
+
+def report(M):
+    M=tuple(M)
+    it = iterfibre_thr(M)
+    ma = F(minAdmRec(M)[0], 2)
+    L=len(M)-1
+    peels=[F(M[s],2) for s in range(L-1)]; term=F(M[L-1]*M[L],2)
+    status = "MATCH" if it==ma else ("WEAKER" if it<ma else "STRONGER(?!)")
+    print(f"M={M}: iterfibre min(peels={[str(p) for p in peels]}, term={term})={it}  vs ½·minAdm={ma}  -> {status}")
+    return it, ma
+
+if __name__=="__main__":
+    print("Iterated-fibre threshold = min(M_s/2 per peel, terminal M_{L-1}M_L/2) vs ½·minAdm:\n")
+    for M in [(2,2,2),(2,1,2),(4,4,2,2),(2,2,4),(3,3,3),(3,3,4),(3,3,3,3),(4,4,4),(5,3,4),(2,3,4,2)]:
+        report(M)
+
+exec
+/bin/bash -lc "sed -n '1,260p' scripts/genM_structure.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ exited 2 in 0ms:
+sed: can't read scripts/genM_structure.py: No such file or directory
+
+exec
+/bin/bash -lc "sed -n '1,180p' scripts/hfin_class_boundary.py && sed -n '1,140p' scripts/hfin_all_strata.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+hfin_class_boundary.py — characterize the M-class where the single-divisor leaf cover SUFFICES for hfin
+vs where the corank-2 obstruction bites.
+
+The hfin per-chart upper bound on a leaf requires F (on that chart's stratum) to be NORMAL-CROSSING
+presentable by the leaf's divisor data. This works iff the binding strata along that path are
+SMOOTH-center blow-ups (corank <= 1 drops -- each Schur peel removes a rank-1 pivot, a smooth center),
+and FAILS where a path's drop has corank >= 2 (a determinantal center, not a single smooth divisor).
+
+CLASS BOUNDARY (the achiever path's per-step corank):
+- A descent step at boundary s drops rank from t_{s-1} to t_s. The block codim is
+  (t_{s-1}-t_s)(M_s - t_s). The CORANK of the drop is min(t_{s-1}-t_s, ...) -- actually the residual
+  block is (M_{s-1}-... ) -- the relevant corank is whether the per-step Schur residual is a rank-1
+  (scalar, smooth) or rank->=2 (matrix, determinantal) drop.
+- The (3,3,4) achiever t=(1,0): step drops M_0=3 -> t_1=1, a corank-2 partial drop (residual 2x2 Delta)
+  -> determinantal -> the single-divisor leaf is geometrically inadequate (obstruction).
+- The (2,2,2) achiever t=(1,0): drops 2->1, corank-1 residual (1x1 scalar Delta) -> SMOOTH -> single
+  divisor suffices (threshold-only = coupled, agree).
+
+We compute, per M, the achiever path's per-step residual-block dimensions (drop-rows x drop-cols) and
+flag corank>=2 (the obstruction) vs corank<=1 (single-divisor OK).
+"""
+import sys
+sys.path.insert(0, '/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart/scripts')
+from genM_structure import minAdmRec, all_adm, Mval, redChain
+
+def minim(M):
+    best=None;bT=None
+    for T in all_adm(tuple(M)):
+        v=Mval(tuple(M),T)
+        if best is None or v<best: best=v;bT=T
+    return bT,best
+
+def achiever_coranks(M):
+    """Per descent step: residual block (drop_rows x drop_cols) and the corank = min(drop_rows,drop_cols)."""
+    M=tuple(M);L=len(M)-1
+    T,minAdm=minim(M)
+    t=[M[0]]+[T[s] for s in range(L-1)]+[0]
+    steps=[]
+    cur=M
+    idx=0
+    while len(cur)>=3:
+        ti=T[idx]
+        drop_rows=cur[0]-ti   # M_0 - t (rows dropped)
+        drop_cols=cur[1]-ti   # M_1 - t (cols dropped)
+        corank=min(drop_rows,drop_cols)
+        steps.append((cur,ti,drop_rows,drop_cols,corank))
+        cur=redChain(ti,cur); idx+=1
+    # leaf: cur is 2-width, the (t_last x M_last) product -- corank = min of leaf dims
+    leaf_corank=min(cur[0],cur[1])
+    steps.append((cur,None,cur[0],cur[1],leaf_corank))
+    return steps,minAdm
+
+def report(M):
+    M=tuple(M)
+    steps,minAdm=achiever_coranks(M)
+    maxcorank=max(s[4] for s in steps)
+    obstruction = maxcorank>=2
+    print(f"M={M} minAdm={minAdm} achiever steps (chain, t, drop_rows x drop_cols, corank):")
+    for (chain,ti,dr,dc,cr) in steps:
+        tag=' <-- CORANK>=2 (determinantal, single-divisor INADEQUATE)' if cr>=2 else ' (corank<=1, smooth, OK)'
+        print(f"   {chain} t={ti}: residual {dr}x{dc}, corank {cr}{tag}")
+    print(f"   => hfin from single-divisor leaf: {'OBSTRUCTED (needs coupled charts)' if obstruction else 'REACHABLE (smooth-center cover)'}")
+    print()
+    return obstruction
+
+if __name__ == "__main__":
+    res={}
+    for M in [(2,2,2),(2,1,2),(3,3,4),(2,2,4),(4,4,2,2),(3,3,3),(3,3,3,3),(5,3,4),(2,3,2)]:
+        res[M]=report(M)
+    print("OBSTRUCTED (corank>=2 binding):", [M for M,o in res.items() if o])
+    print("REACHABLE (corank<=1):", [M for M,o in res.items() if not o])
+#!/usr/bin/env python3
+"""
+hfin_all_strata.py — the CRITICAL refinement: hfin must cover ALL strata of routeMBaseNbhd, not just
+the achiever path. So the obstruction is whether ANY leaf/stratum (any admissible path) has a corank>=2
+drop — because the cover must resolve EVERY stratum the base neighborhood meets.
+
+The base neighborhood routeMBaseNbhd = (-1,1)^N contains points of EVERY rank stratum. The cover's
+leaves are ALL admissible paths. Even if the ACHIEVER (min) path is corank-1, OTHER paths (other rank
+drops) realise corank>=2 strata that the cover must still resolve for the integral to be bounded
+EVERYWHERE. So the relevant question: does ANY admissible path have a corank>=2 drop? (Almost always
+yes for M with M_s>=3 somewhere, since dropping rank by >=2 at a boundary with both dims >=2 is admissible.)
+"""
+import sys
+sys.path.insert(0, '/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart/scripts')
+from genM_structure import all_adm, Mval, redChain
+
+def path_steps_coranks(M, T):
+    """For an admissible path T, the per-step residual coranks along the peel."""
+    M=tuple(M); coranks=[]
+    cur=M; idx=0
+    while len(cur)>=3:
+        t=T[idx]
+        coranks.append(min(cur[0]-t, cur[1]-t))
+        cur=redChain(t,cur); idx+=1
+    coranks.append(min(cur[0],cur[1]))  # leaf
+    return coranks
+
+def report(M):
+    M=tuple(M)
+    anycorank2=False; achiever_corank2=False
+    best=None;bT=None
+    for T in all_adm(M):
+        v=Mval(M,T)
+        if best is None or v<best: best=v;bT=T
+    for T in all_adm(M):
+        cks=path_steps_coranks(M,T)
+        if max(cks)>=2: anycorank2=True
+    achiever_corank2 = max(path_steps_coranks(M,bT))>=2
+    print(f"M={M} minAdm={best} achiever T*={bT}: ANY-path-corank>=2={anycorank2} ; achiever-corank>=2={achiever_corank2}")
+    return anycorank2, achiever_corank2
+
+if __name__ == "__main__":
+    print("hfin must cover ALL strata. Obstruction bites if ANY admissible path has corank>=2.\n")
+    for M in [(2,2,2),(2,1,2),(2,3,2),(3,3,3,3),(3,3,4),(2,2,4),(4,4,2,2)]:
+        report(M)
+
+codex
+The current thread imports the admissible-path machinery from the adjacent `26-r1-genM-chart` thread, so I’m following that import. The existing comments already support the per-peel accounting; the remaining work is the equality boundary.
+exec
+/bin/bash -lc 'python3 scripts/iterfibre_threshold.py' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+2026-06-25T02:52:04.186388Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019efcb0-c621-7c43-95af-3880fcc7664a`" }
+ exited 1:
+2026-06-25T02:52:04.186822Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'python3 scripts/iterfibre_threshold.py'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "sed -n '1,280p' /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/26-r1-genM-chart/scripts/genM_structure.py" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""
+genM_structure.py — EXACT-algebra reconstruction of the binding descent path for general M.
+
+Goal: for a reduced-width vector M = (M_0,...,M_L), recover
+  - minAdm M (via the Aoyagi layer-peeling recursion, the exact integer min),
+  - the binding minimiser T* = (t_1,...,t_L) (the descent path),
+  - the per-step Schur-complement codim contributions  c_j = (M'_0 - t_{j+1})(M'_1 - t_{j+1})
+    along the peel (M' = current reduced chain),
+  - the "single-pivot box-divergence threshold" prediction: ½·minAdm.
+
+This is the COMBINATORIAL layer (no measure theory yet) — it identifies the achiever path the
+geometric chart must blow up.  Everything is exact integer arithmetic.
+"""
+from functools import lru_cache
+from itertools import product
+
+
+def Mval(M, T):
+    """Aoyagi candidate value (over the integers).  M : tuple len L+1, T : tuple len L.
+    M(T) = sum_{j=1}^{L} (t^{j-1} - t^j)(M^{j+1} - t^j),  with t^0 := M^1 = M[0]."""
+    L = len(M) - 1
+    assert len(T) == L
+    total = 0
+    for j in range(L):           # j = 0..L-1 corresponds to layer index 1..L
+        tprev = M[0] if j == 0 else T[j - 1]
+        tj = T[j]
+        total += (tprev - tj) * (M[j + 1] - tj)
+    return total
+
+
+def admBound(M, j):
+    """min(M0,M1) for j==0, else M_{j+1}."""
+    if j == 0:
+        return min(M[0], M[1])
+    return M[j + 1]
+
+
+def admissible(M, T):
+    L = len(M) - 1
+    # within block bounds
+    for j in range(L):
+        if T[j] > admBound(M, j):
+            return False
+    # weak decrease t^1 >= ... >= t^L
+    for i in range(L):
+        for j in range(i, L):
+            if T[j] > T[i]:
+                return False
+    # last exponent zero
+    if L >= 1 and T[L - 1] != 0:
+        return False
+    return True
+
+
+def all_adm(M):
+    L = len(M) - 1
+    if L == 0:
+        yield tuple()
+        return
+    ranges = [range(admBound(M, j) + 1) for j in range(L)]
+    for T in product(*ranges):
+        if admissible(M, T):
+            yield T
+
+
+def minAdm_brute(M):
+    """min over Adm of Mval, with the minimiser(s)."""
+    best = None
+    bestT = []
+    for T in all_adm(M):
+        v = Mval(M, T)
+        if best is None or v < best:
+            best = v
+            bestT = [T]
+        elif v == best:
+            bestT.append(T)
+    return best, bestT
+
+
+def redChain(t, M):
+    """(t, M_2, M_3, ..., M_L) — one fewer layer."""
+    return (t,) + tuple(M[2:])
+
+
+@lru_cache(maxsize=None)
+def minAdmRec(M):
+    """Layer-peeling recursion, returns (value, descent-path-as-list-of-pivots)."""
+    L = len(M) - 1
+    if L == 0:
+        return 0, ()
+    if L == 1:
+        return M[0] * M[1], ()        # leaf: pivot product, no further pivots
+    best = None
+    bestpath = None
+    bestt = None
+    for t in range(min(M[0], M[1]) + 1):
+        childval, childpath = minAdmRec(redChain(t, M))
+        v = (M[0] - t) * (M[1] - t) + childval
+        if best is None or v < best:
+            best = v
+            bestpath = childpath
+            bestt = t
+    return best, (bestt,) + bestpath
+
+
+def descent_trace(M):
+    """Full peel: list of (current chain, pivot t, schur-codim, child-leaf-or-recurse)."""
+    trace = []
+    cur = tuple(M)
+    val, path = minAdmRec(tuple(M))
+    # path has length L-1 (pivots at each >=3-width step); the final L=1 leaf product is implicit.
+    idx = 0
+    while len(cur) >= 3:
+        t = path[idx]
+        codim = (cur[0] - t) * (cur[1] - t)
+        trace.append((cur, t, codim, 'recurse'))
+        cur = redChain(t, cur)
+        idx += 1
+    # now cur is a 2-width leaf
+    leaf = cur[0] * cur[1]
+    trace.append((cur, None, leaf, 'leaf'))
+    return trace, val
+
+
+def report(M):
+    M = tuple(M)
+    bval, bTs = minAdm_brute(M)
+    rval, rpath = minAdmRec(M)
+    trace, tval = descent_trace(M)
+    print(f"M = {M}")
+    print(f"  minAdm (brute over Adm)      = {bval}   minimiser(s) T* = {bTs}")
+    print(f"  minAdmRec (layer-peel)       = {rval}   peel pivots     = {rpath}")
+    print(f"  descent-trace total          = {tval}")
+    assert bval == rval == tval, "recursion / brute / trace disagree!"
+    print(f"  rlct = minAdm/2              = {bval/2}")
+    print("  peel:")
+    for (chain, t, codim, kind) in trace:
+        if kind == 'leaf':
+            print(f"     LEAF chain={chain}  product-codim = {codim}")
+        else:
+            print(f"     chain={chain}  pivot t={t}  schur-codim=(M0-t)(M1-t)={codim}")
+    # the achiever-monomial: the SUM of schur-codims + the leaf = minAdm; the box-divergence
+    # threshold the single weighted-pivot chart must realise is minAdm/2.
+    print()
+    return bval, bTs, rpath, trace
+
+
+if __name__ == "__main__":
+    for M in [(2, 2, 2), (3, 3, 4), (3, 3, 3), (4, 4, 2, 2), (2, 2, 4),
+              (4, 4, 4), (5, 3, 4), (3, 3, 3, 3), (2, 3, 4, 2), (4, 4, 4, 4)]:
+        report(M)
+
+exec
+/bin/bash -lc "sed -n '1,220p' codex/iterfibre-run.log | tail -n 120" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+./statement-card.md:10:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the upper bound `rlctAtOn ≥ ½·minAdm`. S2-only (the
+./statement-card.md:11:cited Aoyagi/Watanabe `rlct ≥ ½·codim` is FORBIDDEN).
+./statement-card.md:17:  `c' < ½·minAdm`; the conclusion is a GEOMETRIC finiteness the leaf data cannot supply.
+./statement-card.md:30:- **Smooth (corank-≤1) cover suffices** iff every admissible path has all per-step coranks ≤ 1 — only
+./statement-card.md:38:- leaf = single divisor `foldDivisors[Mval]`, `d=1`, model finite iff `c'<½·minAdm` (`leaf_data.py`).
+./thread.md:6:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the UPPER bound `rlctAtOn ≥ ½·minAdm` (below the
+./thread.md:8:**Constraint:** proven-from-scratch, S2 (`monomial_rlct`) ONLY — the cited Aoyagi/Watanabe analytic
+./thread.md:23:> ("leaf-sum finite") correctly extracts `c' < ½·minAdm` — but the CONCLUSION (`∫|F|^{−c'} < ⊤`) is a
+./thread.md:35:  `threshold_ge` (every leaf threshold `≥ ½·minAdm`) and `achiever` (some leaf `= ½·minAdm`). **No chart
+./thread.md:37:  than full surjectivity onto `Adm M`"). So the atlas supplies the VALUE `⨅ monomialThreshold = ½·minAdm`,
+./thread.md:42:  The leaf-sum is finite iff `c' < ½·minAdm` (`scripts/leaf_data.py`, exact). **No threshold-only
+./thread.md:49:  — every rank stratum), each chart bounded separately. The leaf data only extracts `c' < ½·minAdm`; the
+./thread.md:78:- **REACHABLE-from-scratch with smooth (corank-≤1) sub-charts only** — `M` where EVERY admissible path
+./thread.md:82:- **Needs the FULL coupled resolution** — `M` with ANY admissible path having a corank-≥2 drop (i.e.
+./thread.md:89:    NON-minimising (higher `Mval`, threshold `> ½·minAdm`), its integral converges more easily; the
+./thread.md:117:- **Levels separate.** This is the UPPER leg (`cover_le`/`rlctAtOn ≥ ½·minAdm`). hdiv (LOWER,
+./thread.md:118:  `cover_ge_div`) is closed (#135 `φ_M`). The VALUE `⨅ monomialThreshold = ½·minAdm` is PROVEN
+./thread.md:121:  `c' < ½·minAdm`; the (3,3,4) `φ_M` unit `Uval334` vanishes on `{a=0,c=0,Δ=0}` (positive-dim) in-chart;
+./thread.md:134:  one cited route (Aoyagi/Watanabe `rlct ≥ ½·codim`) is FORBIDDEN here (S2-only) — so the recursive
+./thread.md:139:  crossing leaves (it should — the determinantal RLCT is rational and the iterated `diag(b)` peel
+./thread.md:149:the alternative (cite `rlct ≥ ½·codim`) is forbidden by the S2-only constraint. NOT a wall — a precise,
+./codex/iterfibre-run.log:16:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-run.log:20:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-run.log:21:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-run.log:35:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-run.log:37:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-run.log:40:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-run.log:47:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-run.log:51:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-run.log:52:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-run.log:53:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-run.log:59:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-run.log:60:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-run.log:66:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-run.log:68:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-run.log:69:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/Vzero-run.log:16:Red-team a feasibility verdict. I claim a determinantal singularity's RLCT upper bound is provable
+./codex/Vzero-run.log:17:"from scratch" using ONLY a normal-crossing→RLCT axiom (S2) + standard Euclidean radial integration,
+./codex/Vzero-run.log:18:with NO appeal to the general Aoyagi/Watanabe bound rlct ≥ codim/2. Find the hole if there is one.
+./codex/Vzero-run.log:20:SETUP. Loss F = ||A^(0)...A^(L-1)||_F^2 (deep linear net), near 0. After peeling clean rank-1 pivots,
+./codex/Vzero-run.log:22:r×p free block (a matrix-multiplication / determinantal singularity). I want, for c' < rlct(G),
+./codex/Vzero-run.log:35:  threshold 2 = rlct(||Δ S||^2). The cell F = ||T||^2 ⊕ ||ΔS||^2 (disjoint vars) -> rlct = 2+2 = 4 =
+./codex/Vzero-run.log:36:  minAdm/2 by Watanabe disjoint-sum additivity (Tonelli, S2-free).
+./codex/Vzero-run.log:39:divisor axes), depth ≤ corank, giving the per-cell upper bound at threshold minAdm/2. So the RLCT
+./codex/Vzero-run.log:40:upper bound is provable from scratch — the Aoyagi/Watanabe cite is NOT needed.
+./codex/Vzero-run.log:52:  (3) The UPPER bound (finiteness), not just the rlct VALUE: does INT |a|^{r^2-1} (a^2 I)^{-c'} d(...)
+./codex/Vzero-run.log:53:      genuinely converge for c' < minAdm/2 via the resolved leaves, or is there a cross-term / a
+./codex/Vzero-run.log:57:      that forces a genuine non-S2 RLCT computation (where you'd have to cite rlct ≥ codim/2)?
+./codex/Vzero-run.log:69:- rlct(||Δ S||^2) for Δ r×r, S r×p (matrix-product, true rank 0) is known rational (e.g. (2,2,4): 2).
+./codex/Vzero-run.log:71:- S2 = normal-crossing→RLCT (threshold min_j (h_j+1)/2k_j for a product monomial). Euclidean Morse
+./codex/Vzero-run.log:73:- Watanabe disjoint-sum: rlct(f(x)+g(y)) = rlct(f)+rlct(g) for disjoint x,y (Tonelli, S2-free).
+./codex/Vzero-run.log:78:I’ll treat this as a local RLCT/resolution audit, not as a repo-editing task. The key issue is whether the proposed recursion is a genuine resolution or only a stratified heuristic around the first exceptional divisor.
+./codex/Vzero-run.log:84:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:157:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:174:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-run.log:210:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:283:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:300:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-answer.md:5:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-answer.md:78:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-answer.md:95:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/hfin-answer.md:49:which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+./codex/hfin-answer.md:55:minAdm(3,3,4) = 8,
+./codex/hfin-answer.md:56:every leaf threshold >= minAdm/2 = 4.
+./codex/hfin-answer.md:65:It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+./scripts/hfin_class_boundary.py:26:from genM_structure import minAdmRec, all_adm, Mval, redChain
+./scripts/hfin_class_boundary.py:38:    T,minAdm=minim(M)
+./scripts/hfin_class_boundary.py:53:    return steps,minAdm
+./scripts/hfin_class_boundary.py:57:    steps,minAdm=achiever_coranks(M)
+./scripts/hfin_class_boundary.py:60:    print(f"M={M} minAdm={minAdm} achiever steps (chain, t, drop_rows x drop_cols, corank):")
+./codex/iterfibre-prompt.md:2:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-prompt.md:6:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-prompt.md:7:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-prompt.md:21:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-prompt.md:23:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-prompt.md:26:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-prompt.md:33:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-prompt.md:37:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-prompt.md:38:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-prompt.md:39:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-prompt.md:45:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-prompt.md:46:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-prompt.md:52:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-prompt.md:54:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-prompt.md:55:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/hfin-run.log:16:Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:45:threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:60:      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:64:      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:75:CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:111:/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:115:./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:116:./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:118:./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:119:./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:121:./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:122:./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:123:./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:130:./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:132:./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:133:./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:140:./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:145:./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:146:./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:148:./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:149:./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:151:./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:152:./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:153:./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+
+codex
+I have enough to decide the proof-route question. One nuance I’m checking before answering is the equality boundary: the cleanest exact statement is recursive/decidable from `minAdmRec`; simple slogans like “corank >= 2” are not exact, because `(2,2,2)` already undershoots with only a rank-one drop.
+exec
+/bin/bash -lc "sed -n '80,220p' codex/iterfibre-run.log" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+./Vzero-termination-cert.md:25:> (S2, `monomial_rlct`)** and **Euclidean sum-of-squares blocks (S2-FREE, Mathlib `radial_ball_iff` —
+./Vzero-termination-cert.md:27:> disjoint-sum lemma `rlct(‖P‖²+H) = ½dim P + rlct(H)` (S2-FREE)**. Depth ≤ `r`. The recursion threshold
+./Vzero-termination-cert.md:28:> `λ_{r,p} = min(r²/2, min_j(jp/2 + λ_{r−j,p}))` reproduces `½·minAdm(r,r,p)` EXACTLY (verified, 10/10).
+./Vzero-termination-cert.md:56:- joint (disjoint var groups, Tonelli) `J(c') = ∫ |a|^{3−2c'}·I^{−c'} < ⊤` for `c' < 2 = rlct(‖ΔS‖²)`.
+./Vzero-termination-cert.md:57:- The (3,3,4) cell `‖T‖² ⊕ ‖ΔS‖²` (disjoint): `rlct = 2 + 2 = 4 = ½·minAdm` (Watanabe disjoint-sum
+./Vzero-termination-cert.md:59:  `c' < ½·minAdm` — the per-cell upper bound at EXACTLY the achiever threshold.
+./Vzero-termination-cert.md:60:- NON-achiever strata (other pivot cells): higher `Mval` ⟹ threshold `> ½·minAdm` ⟹ converge more
+./Vzero-termination-cert.md:61:  easily for `c' < ½·minAdm`. No stratum undercuts. This geometrically REALISES the proven combinatorial
+./Vzero-termination-cert.md:62:  `IsResolutionAtlas.threshold_ge` (every leaf threshold `≥ ½·minAdm`).
+./Vzero-termination-cert.md:85:**Hero-task feasibility: CONFIRMED.** R1's upper bound (`hfin`, `rlctAtOn ≥ ½·minAdm`) is provable
+./Vzero-termination-cert.md:86:from scratch under the S2-only constraint. The forbidden Aoyagi/Watanabe `rlct ≥ ½·codim` cite is NOT
+./Vzero-termination-cert.md:104:**The repaired recursion** (Codex, S2-free + a radial disjoint-sum lemma `rlct(‖P‖² + H(z)) =
+./Vzero-termination-cert.md:105:½·dim(P) + rlct(H)`, proven by radial integration in `P`):
+./Vzero-termination-cert.md:109:**DECISIVE cross-check** (`scripts/Vzero_lambda_recursion.py`, exact): `λ_{r,p} = ½·minAdm(r,r,p)` for
+./Vzero-termination-cert.md:111:bind). The repaired recursion reproduces the correct literature rlct. **No non-S2 cite** — only S2 (the
+./Vzero-termination-cert.md:117:(`≤ r`, corank strictly drops), and the binding stratum is picked by the `min` (matching `½·minAdm`).
+./Vzero-termination-cert.md:124:  Morse block ⊕ lower core, the `min` binds, depth ≤ r, threshold `λ_{r,p} = ½·minAdm(r,r,p)` (verified).
+./Vzero-termination-cert.md:135:  threshold `5/2`; the cell rlct `= ½·minAdm` via disjoint-sum; the 4-chart blow-up cover completeness
+./Vzero-termination-cert.md:137:- **Used (S2-free, standard):** Watanabe disjoint-sum additivity `rlct(f(x)+g(y)) = rlct(f)+rlct(g)`
+./Vzero-termination-cert.md:144:  RLCT VALUES are pinned (disjoint-sum + the proven `threshold_ge`); the geometric cover assembly at
+./Vzero-termination-cert.md:154:depth (≤ corank), with the per-cell upper bound at `½·minAdm`. **R1 is fully provable from scratch
+./statement-card.md:10:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the upper bound `rlctAtOn ≥ ½·minAdm`. S2-only (the
+./statement-card.md:11:cited Aoyagi/Watanabe `rlct ≥ ½·codim` is FORBIDDEN).
+./statement-card.md:17:  `c' < ½·minAdm`; the conclusion is a GEOMETRIC finiteness the leaf data cannot supply.
+./statement-card.md:30:- **Smooth (corank-≤1) cover suffices** iff every admissible path has all per-step coranks ≤ 1 — only
+./statement-card.md:38:- leaf = single divisor `foldDivisors[Mval]`, `d=1`, model finite iff `c'<½·minAdm` (`leaf_data.py`).
+./thread.md:6:∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the UPPER bound `rlctAtOn ≥ ½·minAdm` (below the
+./thread.md:8:**Constraint:** proven-from-scratch, S2 (`monomial_rlct`) ONLY — the cited Aoyagi/Watanabe analytic
+./thread.md:23:> ("leaf-sum finite") correctly extracts `c' < ½·minAdm` — but the CONCLUSION (`∫|F|^{−c'} < ⊤`) is a
+./thread.md:35:  `threshold_ge` (every leaf threshold `≥ ½·minAdm`) and `achiever` (some leaf `= ½·minAdm`). **No chart
+./thread.md:37:  than full surjectivity onto `Adm M`"). So the atlas supplies the VALUE `⨅ monomialThreshold = ½·minAdm`,
+./thread.md:42:  The leaf-sum is finite iff `c' < ½·minAdm` (`scripts/leaf_data.py`, exact). **No threshold-only
+./thread.md:49:  — every rank stratum), each chart bounded separately. The leaf data only extracts `c' < ½·minAdm`; the
+./thread.md:78:- **REACHABLE-from-scratch with smooth (corank-≤1) sub-charts only** — `M` where EVERY admissible path
+./thread.md:82:- **Needs the FULL coupled resolution** — `M` with ANY admissible path having a corank-≥2 drop (i.e.
+./thread.md:89:    NON-minimising (higher `Mval`, threshold `> ½·minAdm`), its integral converges more easily; the
+./thread.md:117:- **Levels separate.** This is the UPPER leg (`cover_le`/`rlctAtOn ≥ ½·minAdm`). hdiv (LOWER,
+./thread.md:118:  `cover_ge_div`) is closed (#135 `φ_M`). The VALUE `⨅ monomialThreshold = ½·minAdm` is PROVEN
+./thread.md:121:  `c' < ½·minAdm`; the (3,3,4) `φ_M` unit `Uval334` vanishes on `{a=0,c=0,Δ=0}` (positive-dim) in-chart;
+./thread.md:134:  one cited route (Aoyagi/Watanabe `rlct ≥ ½·codim`) is FORBIDDEN here (S2-only) — so the recursive
+./thread.md:139:  crossing leaves (it should — the determinantal RLCT is rational and the iterated `diag(b)` peel
+./thread.md:149:the alternative (cite `rlct ≥ ½·codim`) is forbidden by the S2-only constraint. NOT a wall — a precise,
+./codex/iterfibre-run.log:16:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-run.log:20:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-run.log:21:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-run.log:35:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-run.log:37:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-run.log:40:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-run.log:47:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-run.log:51:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-run.log:52:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-run.log:53:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-run.log:59:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-run.log:60:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-run.log:66:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-run.log:68:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-run.log:69:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/Vzero-run.log:16:Red-team a feasibility verdict. I claim a determinantal singularity's RLCT upper bound is provable
+./codex/Vzero-run.log:17:"from scratch" using ONLY a normal-crossing→RLCT axiom (S2) + standard Euclidean radial integration,
+./codex/Vzero-run.log:18:with NO appeal to the general Aoyagi/Watanabe bound rlct ≥ codim/2. Find the hole if there is one.
+./codex/Vzero-run.log:20:SETUP. Loss F = ||A^(0)...A^(L-1)||_F^2 (deep linear net), near 0. After peeling clean rank-1 pivots,
+./codex/Vzero-run.log:22:r×p free block (a matrix-multiplication / determinantal singularity). I want, for c' < rlct(G),
+./codex/Vzero-run.log:35:  threshold 2 = rlct(||Δ S||^2). The cell F = ||T||^2 ⊕ ||ΔS||^2 (disjoint vars) -> rlct = 2+2 = 4 =
+./codex/Vzero-run.log:36:  minAdm/2 by Watanabe disjoint-sum additivity (Tonelli, S2-free).
+./codex/Vzero-run.log:39:divisor axes), depth ≤ corank, giving the per-cell upper bound at threshold minAdm/2. So the RLCT
+./codex/Vzero-run.log:40:upper bound is provable from scratch — the Aoyagi/Watanabe cite is NOT needed.
+./codex/Vzero-run.log:52:  (3) The UPPER bound (finiteness), not just the rlct VALUE: does INT |a|^{r^2-1} (a^2 I)^{-c'} d(...)
+./codex/Vzero-run.log:53:      genuinely converge for c' < minAdm/2 via the resolved leaves, or is there a cross-term / a
+./codex/Vzero-run.log:57:      that forces a genuine non-S2 RLCT computation (where you'd have to cite rlct ≥ codim/2)?
+./codex/Vzero-run.log:69:- rlct(||Δ S||^2) for Δ r×r, S r×p (matrix-product, true rank 0) is known rational (e.g. (2,2,4): 2).
+./codex/Vzero-run.log:71:- S2 = normal-crossing→RLCT (threshold min_j (h_j+1)/2k_j for a product monomial). Euclidean Morse
+./codex/Vzero-run.log:73:- Watanabe disjoint-sum: rlct(f(x)+g(y)) = rlct(f)+rlct(g) for disjoint x,y (Tonelli, S2-free).
+./codex/Vzero-run.log:78:I’ll treat this as a local RLCT/resolution audit, not as a repo-editing task. The key issue is whether the proposed recursion is a genuine resolution or only a stratified heuristic around the first exceptional divisor.
+./codex/Vzero-run.log:84:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:157:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:174:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-run.log:210:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-run.log:283:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-run.log:300:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/Vzero-answer.md:5:The obstruction is not a forced need for the general Aoyagi/Watanabe `rlct >= codim/2` bound. It is a missing elementary induction lemma.
+./codex/Vzero-answer.md:78:rlct( ||P||^2 + H(z) ) = dim(P)/2 + rlct(H)
+./codex/Vzero-answer.md:95:This is an S2/S2-free induction, not the general Aoyagi/Watanabe codimension bound.
+./codex/hfin-answer.md:49:which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+./codex/hfin-answer.md:55:minAdm(3,3,4) = 8,
+./codex/hfin-answer.md:56:every leaf threshold >= minAdm/2 = 4.
+./codex/hfin-answer.md:65:It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+./scripts/hfin_class_boundary.py:26:from genM_structure import minAdmRec, all_adm, Mval, redChain
+./scripts/hfin_class_boundary.py:38:    T,minAdm=minim(M)
+./scripts/hfin_class_boundary.py:53:    return steps,minAdm
+./scripts/hfin_class_boundary.py:57:    steps,minAdm=achiever_coranks(M)
+./scripts/hfin_class_boundary.py:60:    print(f"M={M} minAdm={minAdm} achiever steps (chain, t, drop_rows x drop_cols, corank):")
+./codex/iterfibre-prompt.md:2:Adjudicate whether an "iterated-fibre" upper-bound method reaches the sharp RLCT threshold for a
+./codex/iterfibre-prompt.md:6:flat box (−1,1)^N. Want, for c' < rlct(F), ∫_box F^{−c'} < ∞ (the upper bound). rlct(F) = ½·minAdm(M)
+./codex/iterfibre-prompt.md:7:where minAdm(M)=min over admissible paths T of Σ_j (t_{j−1}−t_j)(M_{j+1}−t_j), t_0=M_0, t_L=0.
+./codex/iterfibre-prompt.md:21:MY EXACT FINDING. iterfibre(M) vs ½·minAdm(M):
+./codex/iterfibre-prompt.md:23:  (2,2,2): iterfibre 1 vs ½·minAdm 3/2 (WEAKER); (2,2,4): 1 vs 2; (3,3,4): 3/2 vs 4; (3,3,3): 3/2 vs 7/2;
+./codex/iterfibre-prompt.md:26:generically STRICTLY BELOW ½·minAdm. It matches only when min_s M_s/2 happens to equal ½·minAdm
+./codex/iterfibre-prompt.md:33:  (2) Can the iterated-fibre method be REFINED to reach ½·minAdm — e.g. by (a) choosing the peel order
+./codex/iterfibre-prompt.md:37:  (3) Net: does iterated-fibre GENERALIZE to ½·minAdm for all M (if so, how), or is it strictly weaker
+./codex/iterfibre-prompt.md:38:      at the corank-≥2 binding (where the true rlct = ½·minAdm exceeds min_s M_s/2)? If weaker,
+./codex/iterfibre-prompt.md:39:      characterize exactly the M-class where iterfibre(M) = ½·minAdm (so it suffices there) vs where it
+./codex/iterfibre-prompt.md:45:2. Can it be refined to ½·minAdm (which refinement), or is min_s M_s/2 the ceiling of the method?
+./codex/iterfibre-prompt.md:46:3. The M-class where iterfibre = ½·minAdm (suffices) vs undershoots (needs rank-stratified). Derived
+./codex/iterfibre-prompt.md:52:- ½·minAdm is the true rlct (literature/Aoyagi). iterfibre ≤ rlct always (it's an upper bound on the
+./codex/iterfibre-prompt.md:54:- A WEAKER finiteness threshold (iterfibre < ½·minAdm) means the method proves ∫F^{−c'}<∞ only for
+./codex/iterfibre-prompt.md:55:  c' < iterfibre, NOT up to ½·minAdm — so it does NOT prove rlct ≥ ½·minAdm. That's the failure mode.
+./codex/hfin-run.log:16:Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:45:threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:60:      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:64:      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:75:CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:111:/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:115:./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:116:./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:118:./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:119:./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:121:./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:122:./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:123:./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:130:./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:132:./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:133:./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:140:./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:145:./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:146:./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:148:./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:149:./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:151:./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:152:./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:153:./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+
+exec
+/bin/bash -lc "sed -n '1,130p' statement-card.md && sed -n '70,105p' thread.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+# Statement card — R1 hfin (upper bound): OBSTRUCTION from the combinatorial atlas; reachable only via the full recursive coupled resolution
+
+**Status:** DESIGN adjudication (no Lean). Verdict: hfin is NOT dischargeable from the combinatorial
+`routeLayerAtlas` alone; reachable from scratch (S2-only) only via the FULL recursive coupled
+resolution cover — corank-sensitive, the genuine R1 long pole. Date 2026-06-24, seat `pen-and-paper`.
+Thread `threads/27-r1-hfin-completeness/`.
+
+## The atom
+`hfin` (`routeMLayerCover_of_atoms`, `RouteMLayerCover.lean:180`): `∀ c', (leaf-sum < ⊤) →
+∫_{routeMBaseNbhd} |routeMCore M|^{−c'} < ⊤` — the upper bound `rlctAtOn ≥ ½·minAdm`. S2-only (the
+cited Aoyagi/Watanabe `rlct ≥ ½·codim` is FORBIDDEN).
+
+## Verdict (named for what it is)
+- The `routeLayerAtlas` is a COMBINATORIAL leaf family `(ι, d, k, h)` — `IsResolutionAtlas` carries
+  only the two NUMERICAL fields `threshold_ge` / `achiever`, **no charts, no cover**. Each leaf is a
+  SINGLE divisor `foldDivisors[Mval(M,T)]` (`d=1`). The hfin hypothesis correctly extracts
+  `c' < ½·minAdm`; the conclusion is a GEOMETRIC finiteness the leaf data cannot supply.
+- **OBSTRUCTION** (exact + decorrelated Codex): the per-chart UPPER c-o-v needs `F∘φ ≥ c₀·(monomial)²`
+  (unit bounded BELOW on the whole chart — a normal-crossing presentation), the OPPOSITE of hdiv. The
+  #135 `φ_M` chart's unit `Uval334` VANISHES on a positive-dim sublocus `{a=0,c=0,Δ=0}` in-chart (the
+  deeper corank stratum); `φ_M` resolves the TOP stratum, not the sub-stratum. The corank-≥2 binding
+  core `‖Δ·S‖²` is reducible + non-quasi-homogeneous (multi-facet Newton polyhedron) → NOT single-
+  divisor → needs the coupled `diag(b)` resolution.
+- **REACHABLE from scratch** (NOT a headline wall) via a genuine `recStep`-style RECURSIVE cover of
+  `routeMBaseNbhd` (the (2,2,2) template `Case222CoverGETail.myF222_threshold_lt_top'` is exactly this —
+  4 pivot cells, NOT the single-divisor leaf), with per-cell charts = #135 `φ_M` (top stratum) + coupled
+  `diag(b)` sub-charts (recursion into `{V=0}`) for the corank-≥2 cells, + a per-cell upper c-o-v.
+
+## Characterised class
+- **Smooth (corank-≤1) cover suffices** iff every admissible path has all per-step coranks ≤ 1 — only
+  near-trivial `M` (e.g. `(2,1,2)`).
+- **Needs the coupled resolution** for ANY `M` with a corank-≥2 drop on some path — almost all `M` with
+  a width ≥ 3 (incl. all corank-2 binding cases). NB: a corank-≥2 NON-achiever stratum doesn't alone
+  defeat hfin (its rate is favourable off the minimiser, as (2,2,2)'s done cover shows) — the load-
+  bearing hard cell is the corank-≥2 BINDING one.
+
+## Verified (exact, sympy) + corroboration
+- leaf = single divisor `foldDivisors[Mval]`, `d=1`, model finite iff `c'<½·minAdm` (`leaf_data.py`).
+- `φ_M` unit `Uval334` vanishes on `{a=0,c=0,Δ=0}` positive-dim in-chart (`hfin_V_vanishing.py`).
+- `‖Δ·S‖²` reducible + non-quasi-homogeneous, multi-facet Newton (`hfin_obstruction_exact.py`).
+- per-path corank classification (`hfin_all_strata.py`); the (2,2,2) Lean hfin is recursive `recStep`.
+- Decorrelated Codex (xhigh): OBSTRUCTION on corank-2; per-chart bound needs real charts +
+  `F∘φ ≥ c·monomial²`; upgrade to coupled `diag(b)` charts to close from scratch.
+
+## Levels / what would change it
+Upper leg only (`cover_le`). hdiv (lower) is closed (#135 `φ_M`). VALUE proven (`routeLayerAtlas_value`).
+What makes hfin easier: a recursive per-cell DIRECT finiteness (à la `myF222_threshold_lt_top'`) may
+avoid a global atlas — but the corank-≥2 cell still needs its coupled resolution. The forbidden cite is
+the only shortcut, so the recursive coupled cover is the from-scratch path. **Largest remaining R1 build.**
+
+**Artefacts:** `thread.md`; `scripts/{leaf_data,hfin_V_vanishing,hfin_obstruction_exact,hfin_all_strata,hfin_class_boundary}.py`; `codex/hfin-{prompt,answer}.md`.
+SEVERAL divisors/charts — NOT the one `foldDivisors[Mval]` divisor. A single-divisor leaf is
+geometrically inadequate to UPPER-bound the integral over a corank-≥2 stratum.
+
+## 3. The characterised class (where hfin is reachable directly vs needs the coupled cover)
+
+The per-step achiever-path corank decides reachability of a single-divisor (smooth-center) cover, but
+**hfin must cover ALL strata** of `routeMBaseNbhd`, not just the achiever (`scripts/hfin_all_strata.py`):
+
+- **REACHABLE-from-scratch with smooth (corank-≤1) sub-charts only** — `M` where EVERY admissible path
+  has all per-step coranks `≤ 1`. Exactly the cases with no corank-≥2 drop anywhere: `(2,1,2)` (and the
+  near-trivial widths). The recursive `recStep` cover resolves each stratum by a smooth (rank-1) pivot
+  blow-up — the (2,2,2)-template machinery generalises directly.
+- **Needs the FULL coupled resolution** — `M` with ANY admissible path having a corank-≥2 drop (i.e.
+  some boundary with both `M₀−t ≥ 2` and `M₁−t ≥ 2`). This is **almost all `M`** with a width `≥ 3`
+  (incl. all the corank-2 binding cases `(3,3,4)`, `(2,2,4)`, `(3,3,3)`, `(4,4,2,2)`, `(5,3,4)`, and even
+  `(2,2,2)`/`(3,3,3,3)` whose NON-achiever strata have corank-2 drops). The corank-≥2 stratum's chart
+  needs a coupled (multi-divisor `diag(b)`-style) resolution — the same machinery the refuted per-node
+  `hnode` and the prior `verify-r1-diagb-334` cert identified.
+  - NOTE `(2,2,2)` IS done in Lean — its corank-2 NON-achiever stratum is handled because, being
+    NON-minimising (higher `Mval`, threshold `> ½·minAdm`), its integral converges more easily; the
+    `recStep` p-cells bound it. So "corank-≥2 stratum exists" does NOT alone defeat hfin — what matters
+    is whether the recursive cover can bound EACH stratum's integral, which for a corank-≥2 stratum needs
+    its coupled resolution chart (more work, but the rate is favourable off the minimiser).
+
+## 4. Net verdict + what closing hfin from scratch needs
+
+**hfin is REACHABLE from scratch (S2-only) — it is NOT a headline wall — but it is the genuine R1 long
+pole: a full recursive coupled resolution cover**, substantially larger than hdiv. Specifically:
+
+- A genuine **`recStep`-style recursive cover** of `routeMBaseNbhd`: at each node, split the integral
+  over the pivot-rank cells (ALL strata, as `Case222CoverGETail` does for (2,2,2)), recurse on the
+  reduced core, terminating at smooth leaves. This is the `routeMLayerCover` GEOMETRY the combinatorial
+  atlas only bookkeeps.
+- Each corank-≥2 cell needs its **coupled `diag(b)` resolution chart** (the symbolic shared-Δ coupling),
+  resolving `‖Δ·S‖²` to normal crossings — the deeper sub-charts on `{unit=0}`. The #135 `φ_M` gives the
+  TOP stratum of each cell; the recursion must descend into `{V=0}`.
+

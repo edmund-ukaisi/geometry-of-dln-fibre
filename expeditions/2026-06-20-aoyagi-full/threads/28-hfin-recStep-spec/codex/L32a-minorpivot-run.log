@@ -1,0 +1,305 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efe68-f1c4-7983-bebe-465b755c6b9d
+--------
+user
+<task>
+You are a Lean-4/Mathlib formalisation + measure-theory second opinion. I am pinning the EXACT shape of
+a recursive measure-theoretic cover so a formaliser can build it without re-deriving the geometry. Give
+your INDEPENDENT analysis of two specific design choices; attack them, do not rubber-stamp.
+</task>
+
+<grounding>
+CONTEXT. I must show ∫_U ‖R·S‖²^{−c'} < ∞ for c' < λ_{r,p}, where R ranges over an r×r matrix block
+(with one entry pinned = 1, so rank R ≥ 1) over a bounded box {|R_kl| ≤ 1}, S ranges over an r×p free
+block, near the determinantal singularity {R·S = 0}. The threshold is
+    λ_{r,p} = min( r²/2, min_{1≤j≤r}( jp/2 + λ_{r−j,p} ) ),  λ_{0,p}=0.
+I want to RESOLVE the {R singular} locus by a recursive cover and reduce to Euclidean Morse leaves
+(∫(∑x_i²)^{−c'} < ∞ ⟺ c' < dim/2, already formalised) plus monomial divisor axes.
+
+The library has a generic "argmax-cell cover" on Fin N → ℝ:
+  - argmaxCellOn(active, p) = {y | y_p ≠ 0 ∧ ∀ k ∈ active, |y_k| ≤ |y_p|};
+  - {∃ k ∈ active, y_k ≠ 0} = ⋃_{p∈active} argmaxCellOn(active,p)  [via Finset.exists_max_image];
+  - the cells are a.e.-disjoint; the complement {∀ active, y_k = 0} is null.
+This was designed for COORDINATE pivots (active = a Finset of coordinate indices). I want to reuse it at
+a different level: pivots = MINORS of R.
+
+DESIGN CHOICE 1 (the nested minor-pivot cover). Cover the R-space by a NESTED atlas, descending the
+"current minor size" k = r, r−1, …, 1:
+  - Level k: on {some k×k minor of R has nonzero det}, run the argmax cover with `active` = the Finset
+    of all k×k minor-index pairs (I,J), the "coordinate" being the minor determinant det(R[I,J]) (a
+    polynomial in R). The argmax pivot (I*,J*) is a minor with MAXIMAL |det| that is nonzero ⟹ that
+    k×k minor is INVERTIBLE on its cell. On the cell, the Schur complement Sc = M22 − M21 M11⁻¹ M12
+    (M11 = the invertible minor, after a permutation to top-left) is an (r−k)×(r−k) block, and the
+    Schur determinant identity det R = det(M11)·det(Sc) holds. Recurse the cover on Sc (size r−k).
+  - The complement {all k×k minors = 0} is NOT dropped as null and is NOT asserted to equal {rank<k};
+    it is simply the domain of Level k−1 (its own argmax over (k−1)-minors). Termination: the pinned
+    entry forces rank ≥ 1, and each level's residual Schur block is STRICTLY smaller, so the descent
+    reaches size 1 (R = col·row, terminal Morse) in ≤ r levels.
+  - CLAIM: this needs ONLY (a) Finset.exists_max_image over the minor-index Finset, and (b) the Schur
+    determinant identity — NOT the heavy theorem "rank R = max size of a nonzero minor" (which is not a
+    single Mathlib lemma at this pin).
+
+DESIGN CHOICE 2 (the per-cell split as a COMPARISON, not an equality). On the minor-pivot cell
+{det M11 ≠ 0, |R_kl| ≤ 1, M11 the max minor}, det-1 row op L=[[I,0],[−M21 M11⁻¹,I]] and col op
+U=[[I,−M11⁻¹M12],[0,I]] give L·R·U = blockdiag(M11, Sc) exactly (verified r=2,3). For the LOSS, I do
+a det-1 reparam of S only (S = U·(P;Q), Lebesgue-preserving) and CLAIM a two-sided bounded comparison
+    c0·(‖M11·P‖² + ‖Sc·Q‖²)  ≤  ‖R·S‖²  ≤  c1·(‖M11·P‖² + ‖Sc·Q‖²),   0 < c0 ≤ c1 < ∞,
+with c0,c1 ABSOLUTE constants on the cell (because the minor-pivot argmax forces the shear coefficients
+M21 M11⁻¹ to have modulus ≤ 1). The non-orthogonal row op L is absorbed into the comparison constants
+(it does NOT preserve the Frobenius norm). I do NOT claim the clean equality ‖R·S‖² = unit·‖P‖²+‖BQ‖².
+</grounding>
+
+<questions>
+1. NESTED COVER SOUNDNESS. Is DESIGN CHOICE 1 a valid measure-theoretic cover-up-to-null at each level,
+   reusing the generic argmax-cell cover with `active` = minor-index Finset? In particular: is it correct
+   that I avoid the "rank = max nonzero minor" theorem entirely by descending one minor-size at a time
+   and treating {all k-minors = 0} as the (k−1)-level domain rather than a rank statement? Or is there a
+   measure-theoretic gap (e.g. the union of levels not covering {R singular} up to null, or a level's
+   complement having positive measure that escapes the descent)?
+2. ARGMAX OVER MINORS. The generic argmax cover was proven for coordinate projections (the "coordinate"
+   is y ↦ y_p, linear). Here the "coordinate" is R ↦ det(minor(I,J)), a POLYNOMIAL. Does
+   Finset.exists_max_image still give the cover (it only needs a finite family of measurable real
+   functions and picks the argmax)? Any subtlety in the a.e.-disjointness (the tie set {|det minor_I| =
+   |det minor_J|} — is it still null, being a proper algebraic subvariety)?
+3. COMPARISON vs EQUALITY. Is DESIGN CHOICE 2 correct that the per-cell split must be a two-sided BOUNDED
+   COMPARISON (c0·D ≤ ‖RS‖² ≤ c1·D, D the disjoint form), NOT a raw equality — because the row op L is
+   non-orthogonal? And is the threshold of ‖RS‖²^{−c'} genuinely preserved under such a bounded sandwich
+   (so the disjoint-sum threshold jp/2 + λ_{r−j,p} transfers)? Are the constants c0,c1 really absolute on
+   the minor-pivot cell (shear coeffs ≤ 1), or do they degrade as det M11 → 0 within the cell?
+4. THE det M11 → 0 EDGE. Within a minor-pivot cell, det M11 ranges over (0, max]. As det M11 → 0, the
+   shear M21 M11⁻¹ can blow up even if the ENTRIES of R are bounded. Does the argmax-over-minors pivot
+   condition (|det M11| ≥ |det of every other k-minor|) actually bound M21 M11⁻¹, or is there a
+   sub-locus inside the cell where det M11 is small but some (k−1)-minor is large, breaking the c1
+   bound? If so, how should the cell be further subdivided?
+5. FRAGILITY. Of these, which single step is most likely to be the real formalisation cost, and is there
+   a cleaner alternative cover (e.g. a single global blow-up of the ideal of maximal minors) that a
+   formaliser should prefer over the nested per-size descent?
+</questions>
+
+<output_contract>
+For each question 1–5: a direct verdict (CORRECT / INCORRECT / NEEDS-CARE) with the precise reason. Mark
+PROVEN vs INFERENCE. If you find a hole, give the smallest (r,p,k) where it bites and the fix. Be
+concrete and adversarial. Question 4 is the one I am least sure about — scrutinise it hardest.
+</output_contract>
+
+codex
+I’m going to treat this as a math/formalisation review rather than editing the repo. I’ll be adversarial about where the finite cover argument is purely order-theoretic and where algebraic/null-set or bounded-constant claims actually enter.
+codex
+1. **NESTED COVER SOUNDNESS: NEEDS-CARE**
+
+**PROVEN:** As a finite set-theoretic cover, the descent is sound and does not need the theorem “rank = maximal nonzero minor.” For each matrix, either some `k`-minor is nonzero, or all `k`-minors are zero and the matrix belongs to the next level. Since the original `R` has a pinned nonzero entry, the descent reaches level `1`; no point escapes.
+
+**NEEDS-CARE:** If you recurse on a Schur complement `Sc`, that residual block no longer has a pinned nonzero entry. So termination cannot rely on the original pin. You need either:
+
+- a zero-residual leaf, or
+- the statement that the complement `{all entries of Sc = 0}` is null in the residual Euclidean coordinates and may be dropped for integration.
+
+That is not the rank theorem, but it is a separate measure-theoretic endpoint.
+
+2. **ARGMAX OVER MINORS: CORRECT for cover, NEEDS-CARE for disjointness**
+
+**PROVEN:** `Finset.exists_max_image` does not care that the functions are linear coordinates. It works for any finite family of real-valued functions. So applying the coordinate argmax cover to
+
+```lean
+R ↦ det (minor R I J)
+```
+
+is mathematically valid. The cells are preimages of ordinary argmax cells under the measurable/continuous polynomial minor map.
+
+**NEEDS-CARE:** A.e.-disjointness is not automatic from `exists_max_image`. Tie sets are
+
+```text
+|det minor_a| = |det minor_b|
+```
+
+equivalently
+
+```text
+(det minor_a)^2 - (det minor_b)^2 = 0.
+```
+
+In the full matrix space this is a proper algebraic hypersurface for distinct minors, hence null. But formalising “proper polynomial zero set is null” may be expensive. Cleaner fix: impose a deterministic tie-break order and make genuinely disjoint measurable cells. Then you do not need nullity of tie loci at all.
+
+3. **COMPARISON vs EQUALITY: CORRECT**
+
+**PROVEN:** The clean equality of Frobenius norms is false in general. From
+
+```text
+L R U = blockdiag(M11, Sc)
+```
+
+and `S = U (P,Q)`, one gets
+
+```text
+R S = L⁻¹ (M11 P, Sc Q).
+```
+
+Since `L` is usually non-orthogonal, Frobenius norm is only comparable, not equal.
+
+If `A = M21 M11⁻¹` is uniformly bounded, then
+
+```text
+c0 (‖M11 P‖² + ‖Sc Q‖²)
+≤ ‖R S‖²
+≤ c1 (‖M11 P‖² + ‖Sc Q‖²)
+```
+
+with constants depending only on `r`. Such a bounded sandwich preserves the integrability threshold because for `c' > 0`,
+
+```text
+c1^(-c') D^(-c') ≤ ‖RS‖^(-2c') ≤ c0^(-c') D^(-c').
+```
+
+**NEEDS-CARE:** This comparison does not by itself turn `‖M11 P‖²` into a uniform Euclidean Morse block `‖P‖²`. The determinant of `M11` may still approach zero. Any later step replacing `M11 P` by `P` must pay the determinant/Jacobian divisor.
+
+4. **THE `det M11 → 0` EDGE: CORRECT for shears, but scrutinise inverse use**
+
+**PROVEN:** The argmax-over-`k`-minors condition really does bound the shear entries.
+
+For `A = M21 M11⁻¹`, Cramer’s rule expresses each entry of `A` as
+
+```text
+det(M11 with one pivot row replaced by an outside row) / det(M11).
+```
+
+The numerator is itself a `k × k` minor of `R`. Since `M11` was chosen with maximal absolute `k`-minor,
+
+```text
+|numerator| ≤ |det M11|,
+```
+
+so each entry of `A` has absolute value `≤ 1`.
+
+Similarly, entries of `B = M11⁻¹ M12` are ratios of `k`-minors obtained by replacing one pivot column, hence are also bounded by `1`.
+
+So there is no hidden sublocus where a large `(k−1)`-minor of `M11` makes `M21 M11⁻¹` blow up. The inverse `M11⁻¹` alone can blow up, but the products `M21 M11⁻¹` and `M11⁻¹ M12` are controlled by the max-minor condition.
+
+Smallest apparent danger: `r = 3, k = 2`, with `M11 = diag(ε,1)`. The inverse has size `1/ε`, but the max-minor condition forces outside-row/column replacement minors to be `O(ε)`, cancelling the blow-up in the shears.
+
+5. **FRAGILITY: NEEDS-CARE**
+
+Most likely formalisation cost: **proving and using the Cramer-rule shear bounds uniformly for arbitrary minor index pairs and permutations.** That is the critical bridge from “argmax minor” to bounded analytic comparison.
+
+Second cost: Schur complement bookkeeping for arbitrary indexed submatrices. The determinant identity itself is standard, but making all row/column permutations, block decompositions, and minor-replacement determinants line up in Lean will be tedious.
+
+I would not recommend a global blow-up of the maximal-minor ideal as the first formalisation route. It is cleaner conceptually, but likely heavier in Mathlib. The nested finite argmax cover is more elementary and Lean-compatible, provided you add:
+
+- deterministic tie-breaking, avoiding algebraic tie-null proofs;
+- an explicit zero-residual endpoint for recursive Schur blocks;
+- Cramer-rule lemmas bounding both shears from the max-minor hypothesis;
+- a clear separation between bounded norm comparison and later determinant-divisor/Jacobian estimates.
+tokens used
+14,224
+1. **NESTED COVER SOUNDNESS: NEEDS-CARE**
+
+**PROVEN:** As a finite set-theoretic cover, the descent is sound and does not need the theorem “rank = maximal nonzero minor.” For each matrix, either some `k`-minor is nonzero, or all `k`-minors are zero and the matrix belongs to the next level. Since the original `R` has a pinned nonzero entry, the descent reaches level `1`; no point escapes.
+
+**NEEDS-CARE:** If you recurse on a Schur complement `Sc`, that residual block no longer has a pinned nonzero entry. So termination cannot rely on the original pin. You need either:
+
+- a zero-residual leaf, or
+- the statement that the complement `{all entries of Sc = 0}` is null in the residual Euclidean coordinates and may be dropped for integration.
+
+That is not the rank theorem, but it is a separate measure-theoretic endpoint.
+
+2. **ARGMAX OVER MINORS: CORRECT for cover, NEEDS-CARE for disjointness**
+
+**PROVEN:** `Finset.exists_max_image` does not care that the functions are linear coordinates. It works for any finite family of real-valued functions. So applying the coordinate argmax cover to
+
+```lean
+R ↦ det (minor R I J)
+```
+
+is mathematically valid. The cells are preimages of ordinary argmax cells under the measurable/continuous polynomial minor map.
+
+**NEEDS-CARE:** A.e.-disjointness is not automatic from `exists_max_image`. Tie sets are
+
+```text
+|det minor_a| = |det minor_b|
+```
+
+equivalently
+
+```text
+(det minor_a)^2 - (det minor_b)^2 = 0.
+```
+
+In the full matrix space this is a proper algebraic hypersurface for distinct minors, hence null. But formalising “proper polynomial zero set is null” may be expensive. Cleaner fix: impose a deterministic tie-break order and make genuinely disjoint measurable cells. Then you do not need nullity of tie loci at all.
+
+3. **COMPARISON vs EQUALITY: CORRECT**
+
+**PROVEN:** The clean equality of Frobenius norms is false in general. From
+
+```text
+L R U = blockdiag(M11, Sc)
+```
+
+and `S = U (P,Q)`, one gets
+
+```text
+R S = L⁻¹ (M11 P, Sc Q).
+```
+
+Since `L` is usually non-orthogonal, Frobenius norm is only comparable, not equal.
+
+If `A = M21 M11⁻¹` is uniformly bounded, then
+
+```text
+c0 (‖M11 P‖² + ‖Sc Q‖²)
+≤ ‖R S‖²
+≤ c1 (‖M11 P‖² + ‖Sc Q‖²)
+```
+
+with constants depending only on `r`. Such a bounded sandwich preserves the integrability threshold because for `c' > 0`,
+
+```text
+c1^(-c') D^(-c') ≤ ‖RS‖^(-2c') ≤ c0^(-c') D^(-c').
+```
+
+**NEEDS-CARE:** This comparison does not by itself turn `‖M11 P‖²` into a uniform Euclidean Morse block `‖P‖²`. The determinant of `M11` may still approach zero. Any later step replacing `M11 P` by `P` must pay the determinant/Jacobian divisor.
+
+4. **THE `det M11 → 0` EDGE: CORRECT for shears, but scrutinise inverse use**
+
+**PROVEN:** The argmax-over-`k`-minors condition really does bound the shear entries.
+
+For `A = M21 M11⁻¹`, Cramer’s rule expresses each entry of `A` as
+
+```text
+det(M11 with one pivot row replaced by an outside row) / det(M11).
+```
+
+The numerator is itself a `k × k` minor of `R`. Since `M11` was chosen with maximal absolute `k`-minor,
+
+```text
+|numerator| ≤ |det M11|,
+```
+
+so each entry of `A` has absolute value `≤ 1`.
+
+Similarly, entries of `B = M11⁻¹ M12` are ratios of `k`-minors obtained by replacing one pivot column, hence are also bounded by `1`.
+
+So there is no hidden sublocus where a large `(k−1)`-minor of `M11` makes `M21 M11⁻¹` blow up. The inverse `M11⁻¹` alone can blow up, but the products `M21 M11⁻¹` and `M11⁻¹ M12` are controlled by the max-minor condition.
+
+Smallest apparent danger: `r = 3, k = 2`, with `M11 = diag(ε,1)`. The inverse has size `1/ε`, but the max-minor condition forces outside-row/column replacement minors to be `O(ε)`, cancelling the blow-up in the shears.
+
+5. **FRAGILITY: NEEDS-CARE**
+
+Most likely formalisation cost: **proving and using the Cramer-rule shear bounds uniformly for arbitrary minor index pairs and permutations.** That is the critical bridge from “argmax minor” to bounded analytic comparison.
+
+Second cost: Schur complement bookkeeping for arbitrary indexed submatrices. The determinant identity itself is standard, but making all row/column permutations, block decompositions, and minor-replacement determinants line up in Lean will be tedious.
+
+I would not recommend a global blow-up of the maximal-minor ideal as the first formalisation route. It is cleaner conceptually, but likely heavier in Mathlib. The nested finite argmax cover is more elementary and Lean-compatible, provided you add:
+
+- deterministic tie-breaking, avoiding algebraic tie-null proofs;
+- an explicit zero-residual endpoint for recursive Schur blocks;
+- Cramer-rule lemmas bounding both shears from the max-minor hypothesis;
+- a clear separation between bounded norm comparison and later determinant-divisor/Jacobian estimates.
