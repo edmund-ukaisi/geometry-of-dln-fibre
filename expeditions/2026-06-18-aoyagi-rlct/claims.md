@@ -3872,6 +3872,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/reproduction-definition3-l-eq-two-order-disagreement-a6.md`;
   Definition 3 branch-selection source audit at
   `threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`;
+  Definition 3 `L=2` branch-formula rank-width removal reproduced at
+  `threads/06-dln-translation/reproduction-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`;
   Case 2 finite-formula wrapper reproduced at
   `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 regular-shift finite-formula wrapper reproduced at
@@ -3957,6 +3959,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/review-definition3-l-eq-two-order-disagreement-a6.md`;
   Definition 3 branch-selection source audit by xhigh `Einstein the 3rd` at
   `threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`;
+  Definition 3 `L=2` branch-formula rank-width removal reviewed at
+  `threads/06-dln-translation/review-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`;
   Case 2 finite-formula wrapper reviewed at
   `threads/06-dln-translation/review-case2-theorem2-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reviewed at

@@ -1645,3 +1645,38 @@ The returned lambda statement is the unfolded finite ceiling-form expression.
 This is still finite arithmetic for a restricted branch.  It does not prove
 arbitrary Definition 3 branch selection, Eq5 payloads, final chart production,
 normal crossings, pole order, or RLCT extraction.
+
+## Current slice - 2026-06-26, `L=2` branch formula rank-width removal
+
+Reproduction:
+`reproduction-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-branch-formula-rankwidth-removal.md`.
+Review:
+`review-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.rank_le_of_aoyagiReducedWidthInt_eq_natCast
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_three_reducedWidthInt_eq_natCast
+AoyagiDefinition3SourceData.allSourceStrict_of_L_eq_two_triangle_widths
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_L_eq_two_triangle_widths
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+```
+
+The repeated-positive wrapper removes the explicit source-range rank-width
+input from the existing `_rankWidth` theorem by deriving `r <= H(s)` from the
+Nat-valued reduced-width identities at `s=1,2,3`.
+
+The triangle parity wrappers remove the same input by first deriving the
+all-source strict selected inequality from the three concrete triangle
+inequalities, then invoking the existing all-source strict rank-width theorem
+before delegating to the odd/even `_rankWidth` parity formula packages.
+
+Boundary: finite branch-specific Definition 3/Theorem 2 arithmetic only.  This
+does not choose a canonical branch, prove branch independence, add a final
+socket, construct Eq5 payloads or charts, prove normal crossings, identify pole
+order, or extract RLCT.

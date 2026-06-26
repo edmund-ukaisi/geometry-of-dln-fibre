@@ -611,6 +611,33 @@ theorem sourceRangeRankWidth_of_constant_reducedWidth
   unfold aoyagiReducedWidthInt at hnonneg
   exact_mod_cast (sub_nonneg.mp hnonneg)
 
+/-- If an integer reduced width is identified with a natural number, the
+underlying rank-width bound holds at that source layer. -/
+theorem rank_le_of_aoyagiReducedWidthInt_eq_natCast
+    {H : ℕ → ℕ} {r s w : ℕ}
+    (hw : aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    r ≤ H s := by
+  have hnonneg : 0 ≤ aoyagiReducedWidthInt H r s := by
+    rw [hw]
+    exact_mod_cast Nat.zero_le w
+  unfold aoyagiReducedWidthInt at hnonneg
+  exact_mod_cast (sub_nonneg.mp hnonneg)
+
+/-- Three Nat-valued reduced-width identities give the source-range rank-width
+bound for `L=2`. -/
+theorem sourceRangeRankWidth_of_three_reducedWidthInt_eq_natCast
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ)) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s := by
+  intro s hs1 hsL
+  have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+  rcases hs with rfl | rfl | rfl
+  · exact rank_le_of_aoyagiReducedWidthInt_eq_natCast hw1
+  · exact rank_le_of_aoyagiReducedWidthInt_eq_natCast hw2
+  · exact rank_le_of_aoyagiReducedWidthInt_eq_natCast hw3
+
 /-- The all-source strict selected inequalities force source-range rank-width.
 
 For a fixed source index, sum the strict inequalities over the other `L`
@@ -1703,6 +1730,57 @@ theorem exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
     ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg,
       hm0, hm1, hm2⟩
 
+/-- Concrete three-width triangle inequalities give the all-source strict
+selected inequality for `L=2`. -/
+theorem allSourceStrict_of_L_eq_two_triangle_widths
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+      (2 : ℤ) * aoyagiReducedWidthInt H r s <
+        ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+  have hsum :
+      (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
+        (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+    norm_num [hw1, hw2, hw3]
+    ring
+  have htri1z : (2 : ℤ) * (w1 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri1
+  have htri2z : (2 : ℤ) * (w2 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri2
+  have htri3z : (2 : ℤ) * (w3 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    exact_mod_cast htri3
+  intro s hs1 hsL
+  have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+  rcases hs with rfl | rfl | rfl
+  · rw [hw1, hsum]
+    exact htri1z
+  · rw [hw2, hsum]
+    exact htri2z
+  · rw [hw3, hsum]
+    exact htri3z
+
+/-- Concrete three-width triangle inequalities force source-range rank-width
+for `L=2`. -/
+theorem sourceRangeRankWidth_of_L_eq_two_triangle_widths
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s :=
+  sourceRangeRankWidth_of_all_selected_strict
+    (L := 2) (H := H) (r := r) (by norm_num)
+    (allSourceStrict_of_L_eq_two_triangle_widths
+      (H := H) (r := r) hw1 hw2 hw3 htri1 htri2 htri3)
+
 /-- For three source layers (`L = 2`), the all-source triangle branch with a
 supplied positive-remainder decomposition gives explicit Theorem 2 finite
 formula data.
@@ -1975,6 +2053,96 @@ theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWid
   exact
     ⟨C, m, data, hC, S, hm, hceil', haParam, horder', hnat, hnonneg, hstrict_m,
       hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+
+/-- Odd-total `L=2` all-source triangle formula package, deriving the
+source-range rank-width hypothesis from the concrete triangle inequalities. -/
+theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3)
+    (hodd : (w1 + w2 + w3) % 2 = 1) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) + 1 ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 2 ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((1 : ℚ) * ((2 : ℚ) - (1 : ℚ))) / 8 -
+          ((((w1 + w2 + w3) / 2 : ℕ) : ℚ) + (1 : ℚ) / 2) ^ 2 / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+  exact
+    exists_consecutive_three_widths_theorem2Formula_of_triangle_odd_rankWidth
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      hw1 hw2 hw3 htri1 htri2 htri3 hodd
+      (sourceRangeRankWidth_of_L_eq_two_triangle_widths
+        (H := H) (r := r) hw1 hw2 hw3 htri1 htri2 htri3)
+
+/-- Even-total `L=2` all-source triangle formula package, deriving the
+source-range rank-width hypothesis from the concrete triangle inequalities. -/
+theorem exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3)
+    (heven : (w1 + w2 + w3) % 2 = 0) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) ∧
+      data.aParam = 2 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+      aoyagiSelectedWidthPairSum 2 m =
+        (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r +
+          ((2 : ℚ) * ((2 : ℚ) - (2 : ℚ))) / 8 -
+          ((((w1 + w2 + w3) / 2 - 1 : ℕ) : ℚ) + (2 : ℚ) / 2) ^ 2 / 2 +
+          (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+            (w2 : ℚ) * (w3 : ℚ)) / 2) := by
+  exact
+    exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      hw1 hw2 hw3 htri1 htri2 htri3 heven
+      (sourceRangeRankWidth_of_L_eq_two_triangle_widths
+        (H := H) (r := r) hw1 hw2 hw3 htri1 htri2 htri3)
 
 /-- For `L = 2` and an exposed `ell = 1` selected pair, a positive selected
 pair cover with a supplied remainder-one decomposition gives explicit Theorem
@@ -2662,6 +2830,47 @@ theorem exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_rankWidth
       exact
         ⟨C, w1, w2, m, data, hw1_pos, hw2_pos, S, hm, hceil, haParam, horder,
           hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- For `L = 2`, a positive repeated reduced-width profile gives an `ell = 1`
+Theorem 2 finite formula package, deriving source-range rank-width from the
+Nat-valued reduced-width identities.
+
+This keeps the repeated branch noncanonical: the returned selected pair depends
+on the input repeated-equality disjunction. -/
+theorem exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (hw1_pos : 0 < w1) (hw2_pos : 0 < w2) (hw3_pos : 0 < w3)
+    (hrep : w1 = w2 ∨ w1 = w3 ∨ w2 = w3) :
+    ∃ (C : AoyagiSelectedCutpoints 1)
+        (u v : ℕ)
+        (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      0 < u ∧
+      0 < v ∧
+      AoyagiDefinition3SourceData 2 1 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+        aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2 := by
+  exact
+    exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_rankWidth
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      hw1 hw2 hw3 hw1_pos hw2_pos hw3_pos hrep
+      (sourceRangeRankWidth_of_three_reducedWidthInt_eq_natCast hw1 hw2 hw3)
 
 /-- Diagnostic: the printed `L = 2` Definition 3 conditions can admit both the
 `ell = 1` repeated-positive branch and the `ell = 2` all-source triangle branch

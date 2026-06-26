@@ -14,6 +14,16 @@ AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_t
 AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even_rankWidth
 ```
 
+Follow-up no-`hr` wrappers:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+```
+
+See
+`statement-card-a6-definition3-l-eq-two-branch-formula-rankwidth-removal.md`.
+
 ## Statement
 
 For the all-source `L=2`, `ell=2` triangle branch, the previous formula theorem
@@ -55,6 +65,11 @@ w1*w2 + w1*w3 + w2*w3
 ```
 
 and the corresponding finite Theorem 2 lambda formula.
+
+The later no-`hr` wrappers derive the usual source-range rank-width hypothesis
+from the same concrete triangle inequalities via the all-source strict
+rank-width theorem, then delegate to the `_rankWidth` parity theorems recorded
+here.
 
 ## Source reproduction
 

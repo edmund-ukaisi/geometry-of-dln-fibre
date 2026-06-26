@@ -8268,6 +8268,25 @@ combined repeated/triangle branch theorem, no source-rank wrapper, no final
 socket, no Eq5 payloads, no chart production, no pole-order theorem, and no
 RLCT theorem.
 
+Latest A6 Definition 3 `L=2` branch-formula rank-width removal:
+`Definition3Bridge.lean` now also has no-`hr` wrappers for the existing
+repeated-positive and triangle parity branch-specific formula packages:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+```
+
+The repeated-positive wrapper derives source-range rank-width from the three
+Nat-valued reduced-width equalities.  The triangle wrappers derive the
+all-source strict selected inequality from the concrete triangle inequalities,
+then use `sourceRangeRankWidth_of_all_selected_strict`.  These wrappers only
+remove the explicit `hr` argument before delegating to the already reviewed
+`_rankWidth` formula theorems.  They do not choose a canonical branch, prove
+branch independence, add a final socket, construct Eq5 payloads or charts,
+prove normal crossings, identify pole order, or extract RLCT.
+
 Latest A6 Definition 3 branch-overlap diagnostic:
 `Definition3Bridge.lean` now proves
 `AoyagiDefinition3SourceData.exists_L_eq_two_two_three_three_formula_disagreement`.

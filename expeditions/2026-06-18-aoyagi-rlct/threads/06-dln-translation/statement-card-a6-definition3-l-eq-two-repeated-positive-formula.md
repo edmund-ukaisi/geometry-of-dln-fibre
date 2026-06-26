@@ -20,6 +20,15 @@ Compatibility theorem retained:
 AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated_remainder_rankWidth
 ```
 
+Follow-up no-`hr` wrapper:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+```
+
+See
+`statement-card-a6-definition3-l-eq-two-branch-formula-rankwidth-removal.md`.
+
 ## Statement
 
 For `L=2`, suppose the source-range reduced widths are natural values
@@ -66,6 +75,10 @@ Each branch covers all three source-range width values by the selected value
 set, then delegates to the automatic `ell=1` selected-pair formula package.
 The compatibility theorem with branch-compatible `ceilPred` equations is kept
 for callers that already use that form, but it is no longer the preferred API.
+
+The later no-`hr` wrapper derives the usual source-range rank-width hypothesis
+from the Nat-valued reduced-width identities before delegating to the
+`_rankWidth` theorem recorded here.
 
 ## Verification
 

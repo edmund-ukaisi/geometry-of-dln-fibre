@@ -5359,3 +5359,15 @@ supplied injectivity of the deterministic first-nonbase selector.  Do not
 promote this to source-backed terminal exactness; selector injectivity,
 branch-label injectivity, no-extra coverage, pole order, normal crossings, and
 RLCT remain open or supplied.
+
+A6 Definition 3 `L=2` branch-formula rank-width removal has now passed
+xhigh review:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`.
+The useful target is narrow: remove the exposed source-range rank-width
+hypothesis from the branch-specific repeated-positive and triangle parity
+formula wrappers by deriving it from Nat-valued width equalities or from the
+all-source strict triangle inequalities.  Keep the branch tags explicit.  Do
+not turn this into a canonical branch theorem, branch-independent payload,
+final socket, Eq5 construction, chart production, normal-crossing theorem,
+pole-order theorem, or RLCT extraction.  Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`.
