@@ -9178,3 +9178,34 @@ This is the formula layer for the next retained-passive derivative theorem.
 It does not prove a derivative, determinant formula, density, measure
 pushforward, image equality, source-rank coverage, normal-crossing theorem,
 pole order, or RLCT statement.
+
+## 2026-06-26 A2 retained-passive solved A1 derivative
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a1-derivative.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a1-derivative.md`.
+Review:
+`review-a2-retained-passive-solved-a1-derivative.md`
+passed by xhigh read-only explorer `Nietzsche the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`,
+`lean/DLNFibre.lean`.
+
+Lean now proves the coordinate-projection differentiability helpers for the
+retained-passive tuple, differentiability of the passive top-left tail product,
+and
+
+```text
+differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+```
+
+for every solved top-left block on the tuple determinant chart.  The endpoint
+case uses determinant-unit differentiability of matrix inversion; successor
+cases are tuple projections.
+
+This is a partial derivative foothold only.  It does not prove solved lower-left
+differentiability, full raw-order differentiability, a tangent equivalence,
+determinant formula, Jacobian density, measure pushforward, image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.

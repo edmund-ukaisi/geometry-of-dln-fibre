@@ -347,3 +347,4 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative

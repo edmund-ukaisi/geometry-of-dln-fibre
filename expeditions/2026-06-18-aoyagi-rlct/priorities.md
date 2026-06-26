@@ -6113,3 +6113,15 @@ component formulas and the existing matrix inverse derivative.  Keep the
 determinant theorem separate: first build a formal tangent equivalence and
 prove determinant-unitness; do not assert the candidate absolute determinant
 formula until it is independently checked against the exact Lean basis/order.
+
+A2 retained-passive solved-`A1` differentiability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-derivative.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-derivative.md`.
+Lean adds `RetainedPassiveCoordinatesDerivative.lean` with differentiability
+of tuple projections, the passive top-left tail product, and solved top-left
+blocks on `topologyTupleDetChartSet`.  The next derivative slice is the
+solved lower-left endpoint and residual lower-left tail sum; only after that
+should the full `topologyTupleEdgeRawOrder` differentiability theorem be
+assembled.  Do not state determinant/Jacobian/measure claims before the formal
+tangent equivalence is in place.

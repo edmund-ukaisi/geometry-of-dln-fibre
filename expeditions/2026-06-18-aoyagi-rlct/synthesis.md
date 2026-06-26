@@ -13296,3 +13296,16 @@ the retained-passive raw-order endomap.  The accompanying reproduction note
 `reproduction-a2-retained-passive-raw-order-derivative-jacobian-plan.md`
 records the candidate formal Jacobian route and a candidate absolute
 determinant, but no derivative or determinant theorem is claimed yet.
+
+Latest retained-passive solved-`A1` derivative foothold:
+`RetainedPassiveCoordinatesDerivative.lean` is now the derivative layer for the
+retained-passive tuple map.  It proves coordinate-projection differentiability,
+`differentiableAt_retainedPassiveA1TailAfterFirst`, and
+`differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet`.  This is the
+top-left endpoint-solve component needed for the eventual
+`topologyTupleEdgeRawOrder` derivative theorem.  It does not prove solved
+lower-left differentiability, full raw-order differentiability, determinant
+unit/formula, density, measure pushforward, normal crossings, pole order, or
+RLCT.  Next target: the lower-left endpoint solve and tail-sum
+differentiability, then assembly of the full raw-order differentiability
+statement.
