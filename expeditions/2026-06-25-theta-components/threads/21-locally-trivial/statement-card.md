@@ -1,8 +1,8 @@
 # Thread 21 — the `e_β` ↔ ambient bridge (B3-4) — statement card
 
 **Status: sorry-free (pending reviewer fidelity).** Module
-`lean/DLNFibre/Core/FibreBundleLocallyTrivial.lean`. Whole library green; all four headlines
-axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`).
+`lean/DLNFibre/Core/FibreBundleLocallyTrivial.lean` @ `d9da1de9`. Whole library green; all four
+headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`).
 
 **Scope verdict (honest, per brief): PARTIAL.** This is the genuine **top-left** `e_β` ↔ ambient
 bridge + the local-trivialization *datum* shape with the top-left chart instantiated. It is **NOT**
