@@ -163,6 +163,21 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_reverseEdgeFamilyOfMatric
   simp [paperEndpointFixedBaseEdgeMatrixOfReverseEdges,
     paperEndpointFixedBaseReverseEdgeFamilyOfMatrices]
 
+set_option linter.unusedSectionVars false in
+/-- Realising the fixed-base edge matrices extracted from a reversed edge
+family recovers that reversed edge family. -/
+theorem paperEndpointFixedBaseReverseEdgeFamilyOfMatrices_edgeMatrixOfReverseEdges
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ) :
+    paperEndpointFixedBaseReverseEdgeFamilyOfMatrices W B U₀ hU₀
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ E) =
+      E := by
+  funext p
+  simp [paperEndpointFixedBaseReverseEdgeFamilyOfMatrices,
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges]
+
 /-- The reversed variable total product expressed in the endpoint bases fixed from `B`. -/
 def paperEndpointFixedBaseTotalMatrixOfReverseEdges
     [∀ j, FiniteDimensional K (W j)]
@@ -855,6 +870,25 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFami
     paperEndpointFixedBaseEdgeMatrixOfReverseEdges_reverseEdgeFamilyOfMatrices
       (K := K) W B U₀ hU₀ M p
 
+set_option linter.unusedSectionVars false in
+/-- Realising the fixed-base edge matrices extracted from a continuous reversed
+edge family recovers that continuous reversed edge family. -/
+theorem paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_edgeMatrixOfReverseEdges
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (E : ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ) :
+    paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices W B U₀ hU₀
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin N ↦
+            (E p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) =
+      E := by
+  funext p
+  ext x
+  simp [paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices,
+    paperEndpointFixedBaseReverseEdgeFamilyOfMatrices,
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges]
+
 /-- Realising prescribed fixed-base edge matrices as continuous reversed edges is continuous
 in the prescribed matrices. -/
 theorem paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous
@@ -944,6 +978,24 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
       (paperEndpointFixedBaseBasis W B U₀ hU₀ p.succ)
   simpa [paperEndpointFixedBaseEdgeMatrixOfReverseEdges] using
     hcoord.continuousAt.comp hCedge_p
+
+set_option linter.unusedSectionVars false in
+/-- Fixed-base edge matrix coordinates vary continuously with a continuous
+reversed edge family. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    Continuous
+      (fun E : ∀ p : Fin N, reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin N ↦
+            (E p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) := by
+  rw [continuous_iff_continuousAt]
+  intro E
+  exact
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
+      W B U₀ hU₀ (fun E ↦ E) continuousAt_id
 
 /-- For a single fixed-base edge parameter, the transformed determinant chart pulls back to a
 neighborhood of the base edge in the continuous-linear-map topology. -/
