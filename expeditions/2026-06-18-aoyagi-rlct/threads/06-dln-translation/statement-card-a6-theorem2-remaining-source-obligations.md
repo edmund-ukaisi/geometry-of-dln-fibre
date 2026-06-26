@@ -12,6 +12,10 @@ normal-crossing certificate data, active-ratio inequalities, displayed-ratio
 chart counts, A4 blow-up source/chart production, A2 source-boundary handling,
 and supplied or corrected A5 terminal-order data.
 
+Aoyagi Theorem 4 is not a current supplied-socket obligation: the present Lean
+statements are local/conditional on supplied certificates.  It reopens only for
+a future global arbitrary-base-point theorem.
+
 ## Cited Boundary
 
 Only normal-crossing-to-RLCT extraction is allowed as a citation.

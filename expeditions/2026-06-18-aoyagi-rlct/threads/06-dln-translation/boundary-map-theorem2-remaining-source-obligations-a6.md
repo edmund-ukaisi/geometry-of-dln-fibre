@@ -82,11 +82,14 @@ the terminal-order upper bound through a supplied
    printed Eq3/Eq4/Eq5 paragraph unless a new reproduction repairs the known
    obstructions.
 
-8. A3 deepest singular point.
+8. A3 deepest singular point policy.
 
-   Aoyagi Theorem 4 is not inside the current citation boundary.  Either avoid
-   it by proving a local/source-specific route to the needed certificate, or
-   ask the operator to expand the citation policy.
+   Aoyagi Theorem 4 is not inside the current citation boundary, but the
+   current Lean final sockets already avoid it by staying local/conditional on
+   supplied source data and supplied normal-crossing certificates.  This is not
+   a current supplied-socket obligation.  It reopens only if a future theorem
+   claims a global arbitrary-base-point RLCT statement, or if source production
+   claims that the chosen certificate attains the global DLN RLCT.
 
 ## Citation Boundary
 

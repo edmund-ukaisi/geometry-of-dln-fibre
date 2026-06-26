@@ -147,8 +147,10 @@ must still verify them against the PDF.
 - PDF pp. 8-9: Definition 3 and Theorem 2, the multi-layer main theorem and
   final formula. The final target is Theorem 2, not Theorem 1.
 - PDF pp. 10-13: Lemma 2 and Theorem 3, the block/product reductions.
-- PDF p. 14: Theorem 4, deepest singular point statement; probe before deciding
-  whether it is cited or proved.
+- PDF p. 14: Theorem 4, deepest singular point statement.  Current
+  local/conditional final sockets avoid this global comparison; reopen only for
+  a global arbitrary-base-point theorem or a global-attainment source-production
+  claim.
 - PDF pp. 14-23: recursive Case 1 / Case 2 blow-up bookkeeping, terminal
   diagonal ideal, and candidate exponents.
 - PDF pp. 24-27: Lemmas 3-5, finite arithmetic minimisation and pole-order
@@ -1208,9 +1210,11 @@ crossings, pole order, or RLCT content.
   lemma, and a decision on hidden analytic steps (local coordinate invariance,
   generator replacement, regular-coordinate additivity).
 - A3 Theorem 4: xhigh scout reports this is an analytic RLCT comparison theorem
-  cited to Aoyagi [22], not proved in the 2023 paper. Because the user allowed
-  only the normal-crossing extraction citation in Lean, this is a scope conflict
-  unless we can avoid it or prove a restricted homogeneous version.
+  cited to Aoyagi [22], not proved in the 2023 paper.  The current
+  local/conditional final sockets avoid it, so there is no Lean target under
+  the present theorem scope.  Reopen only for a global arbitrary-base-point
+  theorem, a global-attainment source-production claim, or an operator decision
+  to expand the citation boundary.
 - A4 blow-up certificate: draft reproduction/certificate design landed at
   `threads/04-blow-up-certificate/reproduction-draft.md`; independent check
   landed at `threads/04-blow-up-certificate/reproduction-check.md`. Verdict:
@@ -12429,3 +12433,13 @@ This removes the abstract counted-datum classifier object from this
 conditional Eq5 endpoint-chain route only.  It does not prove selector
 injectivity, branch-label injectivity, back-to-label coverage, no-extra
 coverage, terminal-label exactness, pole order, normal crossings, or RLCT.
+
+## A3 Deepest-Point Citation Policy - 2026-06-26
+
+Aoyagi Theorem 4 is not a current Lean obligation.  The supplied final sockets
+now in use are local/conditional on supplied source data and supplied
+normal-crossing certificates, so they do not need the global
+deepest-singular-point comparison.  Under the current citation rule, do not
+cite Theorem 4 and do not smuggle it into a supplied boundary.  A3 reopens only
+for a future global arbitrary-base-point theorem or for a source-production
+claim that the selected certificate attains the global DLN RLCT.

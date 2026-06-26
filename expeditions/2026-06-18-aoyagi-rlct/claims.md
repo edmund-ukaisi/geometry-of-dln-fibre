@@ -814,23 +814,32 @@ No such claim is formalisation-ready until both fields are filled.
 
 - **Statement.** The global RLCT is attained at the deepest singular point used
   by Aoyagi's reduction.
-- **Tier.** Established in Aoyagi; status to be decided by probe.
-- **Status.** scope conflict / probe. Xhigh scout says this is analytic
-  background cited to another Aoyagi paper, but the goal permits only the
-  normal-crossing extraction citation in Lean.
-- **Kill-condition.** The proof depends on lower semicontinuity/global analytic
-  facts rather than elementary homogeneous scaling or explicit reduction.
+- **Tier.** Established in Aoyagi; avoided in the current Lean theorem scope.
+- **Status.** avoided for current local/conditional final sockets.  Xhigh
+  scouts `Boole` and `Dirac the 3rd` found that Aoyagi Theorem 4 is analytic
+  background cited to another Aoyagi paper, while the current final sockets
+  are already local/conditional on supplied source data and supplied
+  normal-crossing certificates.  The theorem reopens only for a future result
+  that claims a global arbitrary-base-point RLCT statement or proves that a
+  source-produced certificate attains the global DLN RLCT.
+- **Kill-condition.** Any theorem tries to pass from arbitrary source/base
+  points to the deepest-point certificate, or uses lower semicontinuity/global
+  analytic comparison, without expanding the citation boundary.
 - **Evidence/source.** Aoyagi Theorem 4, PDF p. 14.
-- **Pen-and-paper reproduction.** pending/probe.
-- **Reproduction check.** pending.
-- **Lean target.** TBD by thread 02 or 06.
-- **Proved.** pending.
-- **Assumed.** TBD.
+- **Pen-and-paper reproduction.** source scout report at
+  `threads/02-analytic-interface/scout-report.md`; avoidance audit by xhigh
+  `Dirac the 3rd` recorded in this claim and the A6 boundary map.
+- **Reproduction check.** xhigh `Dirac the 3rd` checked current Lean final
+  sockets and found no silent Theorem 4 dependency.
+- **Lean target.** none for current supplied local/conditional theorem scope.
+- **Proved.** not proved; avoided by theorem statement shape.
+- **Assumed.** no Theorem 4 assumption in current Lean final sockets.
 - **Cited.** not allowed as a separate Lean citation under current goal.
-- **Deferred.** restricted proof or avoidance strategy pending.
-- **Controller caution.** Allowed paths are: prove a restricted homogeneous
-  deepest-point lemma, avoid Theorem 4 by formulating locally at the deepest
-  point, or surface an operator decision to expand the cited boundary.
+- **Deferred.** restricted deepest-point proof or operator decision only if a
+  future global theorem requires it.
+- **Controller caution.** Do not add Aoyagi Theorem 4 as a hidden citation.
+  Keep final Lean statements local/conditional unless the operator explicitly
+  expands the cited boundary or a restricted deepest-point lemma is proved.
 
 ## Claim A4 - blow-up transition certificate
 

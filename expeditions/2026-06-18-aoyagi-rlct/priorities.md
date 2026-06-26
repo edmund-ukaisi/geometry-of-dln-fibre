@@ -5380,3 +5380,13 @@ repeated-positive, triangle-odd, or triangle-even finite formula packages.
 Do not collapse this disjunction to a canonical branch or a branch-independent
 lambda/order payload.  Review:
 `threads/06-dln-translation/review-definition3-l-eq-two-branch-disjunction-formula-a6.md`.
+
+## A3 Deepest-Point Citation Policy - 2026-06-26
+
+Aoyagi Theorem 4 is avoided for the current local/conditional final sockets.
+Do not cite it and do not add it as a supplied Lean boundary: the existing
+final sockets are conditional on supplied source data and supplied
+normal-crossing certificates, so no global arbitrary-base-point comparison is
+used.  Reopen A3 only if a future theorem claims a global arbitrary-base-point
+RLCT statement or claims that a chosen source-produced certificate attains the
+global DLN RLCT.
