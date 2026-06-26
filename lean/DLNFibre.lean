@@ -108,5 +108,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
 -- the atom matches the (4,4,2,2)/(3,3,4) siblings (cites `monomial_rlct`, the S2 divergence leaf).
 import DLNFibre.DLN.RLCT.Validate.RouteM3333
 import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
+-- R1-general achiever ENGINES (toward the (A) general lower-atom). Two reusable, axiom-clean pieces:
+-- the composed-det telescoping (`general_composed_clm_abs_det` — the variable-length Jacobian det via
+-- the det monoid-hom, promoted from the spike) + the chained-product telescope
+-- (`Chain.chain_telescope`, the algebraic heart of the chart identity `prod M (φ_M u) = u·H`).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

@@ -18,7 +18,7 @@
 
 **Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
 
-**LIVE (2026-06-26, UPDATE-105):** OPERATOR DECIDED **(A) — go the distance** (hero expedition; the fully general headline is the mission). Mission + ambition calibration baked into `loop-prompt.md`. CHARGING the general builds, sea-rising. First piece IN FLIGHT: the R1-general LOWER-leg atom (general `NodeAchieverChart M`, generalizing the (3,3,3,3) pattern via the banked telescoping det + finite-family cov). Queue: R1 upper-leg recursion → L2 general-`L` interior → D1 → headline. No walls; all bounded builds; feedback-controlled (measure, adapt).
+**LIVE (2026-06-26, UPDATE-106):** CHARGING (A), sea-rising. First pass LANDED: 2 R1-general achiever engines banked + integrated (`general_composed_clm_abs_det` + `Chain.chain_telescope`; green-gate 8355, axiom-clean) — the general lower-atom's global telescope + det are now banked. NEXT PASS IN FLIGHT: the per-M block construction (the `Chain` instance for arbitrary M = thread-26 `K_s`/`G_s`/radial blocks + local identities; then bridge + dets + unit + cov + assembly → discharge `routeMCore_box_diverges_achiever` ∀M). Self-heartbeat cron armed (hourly :37). Queue after: R1 upper-leg recursion → L2 general-`L` → D1 → headline. Feedback-controlled (measure, adapt).
 
 ---
 
@@ -905,6 +905,14 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
+**★ UPDATE-106 (2026-06-26) — (A) FIRST PASS landed + integrated: 2 reusable R1-general achiever ENGINES banked (green-gate 8355, axiom-clean). The general lower-atom's global telescope + composed-det are BANKED; remaining = the per-M block construction. ★**
+- The flagship build (a4e6a2de) reported a checkpoint+design-fork: the general lower-atom is a multi-pass build (thread-32 + a fresh decorrelated Codex concur — NOT a single tide), and it banked the two highest-value reusable engines sorry-free:
+  - `RouteMAchieverGeneralDet.lean` (`general_composed_clm_abs_det` etc.) — the variable-length composed-det telescopes via the det monoid-hom (promoted from the Spike; the Spike file deleted as superseded).
+  - `RouteMAchieverTelescope.lean` (`Chain` + `chain_telescope`/`chain_telescope_zero`) — the abstract chained-product telescope: GIVEN per-level local identities `C_s·A_s = B_s·C_{s+1}+u·E_s` + terminal `C_n=u·R`, the global `prod = u·Hmat` is proven ONCE, sorry-free. Decouples the global telescope from the per-M block construction. Non-vacuous (L=1 RRR witness).
+- Integrated at file level + green-gate (8355 jobs); both engines axiom-clean `[propext, Classical.choice, Quot.sound]`; wired into the aggregator.
+- **Remaining for the general lower-atom (next pass, IN FLIGHT):** the per-M block construction = the `Chain` INSTANCE for arbitrary M (the thread-26 `K_s` LDU-core + `G_s` chaining + radial blocks over dependent `Params M` block sizes, supplying the `step`/`base` local identities) + the bridge `suffix 0 = prod M A` + per-factor dets/leafH + unit V + cov + assembly. Crux = the dependent-block layer-matrix construction (piece 2). The global telescope + det are banked, so the per-M work supplies only the LOCAL identities — a clean decomposition. Commissioning it (ambitious; break down, bank incrementally, report at walls).
+- **Operator note (Item 30):** CLAUDE.md/infra drift — `scripts/lb` (shared mathlib store) exists in main but main's `lean/CLAUDE.md` doesn't document it (the worktree's refreshed CLAUDE.md does); minor.
 
 **★★ UPDATE-105 (2026-06-26) — OPERATOR DECIDED (A): GO THE DISTANCE. The (A)/(B) fork is CLOSED → the fully general `aoyagi_learning_coefficient` is the mission (hero expedition). Charging the general builds, sea-rising. ★★**
 - **Decision (operator, binding/standing):** (A) is "always the main choice here" — the deliverable is the FULLY GENERAL headline (arbitrary `L`, `M`), not a concrete-anchor milestone. Concrete anchors = templates/validation, not the endpoint. Baked into `loop-prompt.md` (the mission + the ambition calibration + the de-risked critical path) so every tick re-grounds on it.

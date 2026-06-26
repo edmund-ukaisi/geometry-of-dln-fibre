@@ -593,3 +593,12 @@ feedback controller (measure, adapt) and charges the general builds. Items 24/25
 R1-general reachability inputs to it) are RESOLVED by this decision; they remain on record as the de-risking trail.
 The only items still genuinely needing the operator: the strays (Item 23: the off-path θ-components / fibre-codim
 expeditions + `docs/expositions/theta-invariants-distinction.md`), and the PR/dev→master promotions (still gated).
+
+## 30. Infra/CLAUDE.md drift (2026-06-26, minor) — for operator reconciliation.
+`lean/scripts/lb` (the shared-mathlib-store build wrapper + global concurrency cap) exists in the main checkout
+(dated Jun 24) and is used by worktree formalisers, but the main checkout's `lean/CLAUDE.md` does NOT document
+it (still says "lake build"); the worktree's `lean/CLAUDE.md` DOES document it (+ a refined Aoyagi-citation note:
+`RlctInterface.cited_aoyagi_dln` = the equality, vs the bare `monomial_rlct`). This is harmless branch drift — the
+controller green-gates via bare `lake build` in the main checkout (works), worktrees use `scripts/lb`. Worth a
+one-time reconciliation: promote the refreshed `lean/CLAUDE.md` (scripts/lb docs + the citation refinement) to the
+expedition branch so main + worktrees agree. Likely originated from a parallel infra update / stray expedition.
