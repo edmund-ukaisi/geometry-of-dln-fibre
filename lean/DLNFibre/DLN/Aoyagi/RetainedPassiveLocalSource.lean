@@ -6,9 +6,10 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 
 This file ties the retained-passive source-recursive determinant chart to the
 fixed-base endpoint edge-family map used by the p.13 local-measure handoff.
-It proves only determinant-chart local coverage near the self-base point; it
-does not prove exact-rank openness, source-image equality, measure transport,
-a Jacobian theorem, normal crossings, pole order, or RLCT extraction.
+It proves determinant-chart local coverage near the self-base point and
+measurability under global source-edge continuity.  It does not prove
+exact-rank openness, source-image equality, measure transport, a Jacobian
+theorem, normal crossings, pole order, or RLCT extraction.
 -/
 
 noncomputable section
@@ -18,6 +19,8 @@ open Matrix
 namespace DLNFibre
 namespace DLN
 namespace Aoyagi
+
+open ChartLocalSuffixState
 
 section RetainedPassiveLocalSource
 
@@ -113,6 +116,55 @@ theorem paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_nhds_of_selfBase
     exact
       (mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts
         W B U₀ hU₀ Cedge x).2 hx)
+
+/-- A globally continuous edge family gives a continuous fixed-base edge-matrix
+map into the retained-passive source-family space. -/
+theorem continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : Continuous Cedge) :
+    Continuous fun x : α ↦
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) := by
+  rw [continuous_iff_continuousAt]
+  intro x
+  exact
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousAt
+      W B U₀ hU₀ Cedge hCedge.continuousAt
+
+/-- Under global continuity of the edge family, the retained-passive p.13
+local source is measurable. -/
+theorem measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (hCedge : Continuous Cedge) :
+    MeasurableSet
+      (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge) := by
+  have hE :=
+    continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous
+      W B U₀ hU₀ Cedge hCedge
+  let sourceSet :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet
+      (K := K) (ρ := Fin (Module.finrank K U₀))
+      (κ' := throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀)
+  have hopen : IsOpen sourceSet := by
+    dsimp [sourceSet]
+    exact RetainedPassiveNonredundantCoordinateData.isOpen_sourceRecursiveDetChartSet
+  have hpre :
+      IsOpen (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge) := by
+    simpa [paperEndpointFixedBaseRetainedPassiveP13LocalSource] using
+      hE.isOpen_preimage sourceSet hopen
+  exact hpre.measurableSet
 
 /-- The retained-passive determinant-chart preimage is an open-neighborhood
 local source, giving the handoff-shaped source-rank inclusion locally. -/

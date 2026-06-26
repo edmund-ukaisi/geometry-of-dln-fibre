@@ -12954,3 +12954,15 @@ chosen open set being contained in the retained-passive local source.
 Remaining downstream fields are measurability of this local source, residual
 integrability, loss/density bounds on it, and the separate
 Jacobian/pushforward theorem.
+
+Latest A2 retained-passive local-source measurability:
+`RetainedPassiveLocalSource.lean` proves
+`continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous`
+and
+`measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous`.
+The theorem is a continuous-preimage argument: `sourceRecursiveDetChartSet` is
+open, and the fixed-base edge-matrix map is continuous when `Cedge` is
+continuous.  This discharges the measurable-local-source field for the
+retained-passive source under the same global continuity hypothesis.  It does
+not address residual integrability, loss/density bounds, or
+Jacobian/pushforward transport.

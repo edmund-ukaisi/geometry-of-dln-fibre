@@ -9978,6 +9978,21 @@ Nonclaims: no exact-rank openness, no global source-rank cover, no
 measurability theorem for the local source, no measure pushforward, no
 Jacobian/density theorem, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive local-source measurability:
+`RetainedPassiveLocalSource.lean` proves
+`continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous`
+and
+`measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-local-source-measurability.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-local-source-measurability.md`.
+Focused build passed.  The theorem proves only measurability of the chart-tied
+local source under global continuity of `Cedge`.  Nonclaims: no source-rank
+openness, no residual integrability, no loss/density bounds, no measure
+pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
+and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`

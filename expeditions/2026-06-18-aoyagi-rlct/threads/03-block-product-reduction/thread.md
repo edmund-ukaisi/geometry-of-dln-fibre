@@ -8523,3 +8523,34 @@ Nonclaims: no exact-rank openness, no global source-rank finite cover, no
 source-image equality, no measurability of this local source, no measure
 pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
 and no RLCT extraction.
+
+## 2026-06-26 A2 retained-passive local-source measurability
+
+Reproduction:
+`reproduction-a2-retained-passive-local-source-measurability.md`.
+Statement card:
+`statement-card-a2-retained-passive-local-source-measurability.md`.
+Review:
+`review-a2-retained-passive-local-source-measurability.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`.
+
+Lean now proves:
+
+```text
+continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous
+measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous
+```
+
+The proof is purely topological.  Global continuity of `Cedge` gives global
+continuity of the fixed-base edge-matrix map by the existing fixed-base
+continuity-at theorem.  The retained-passive local source is the preimage of
+the open set `sourceRecursiveDetChartSet`, hence measurable under
+`OpensMeasurableSpace`.
+
+This removes the `hlocalSource_meas` obligation for this retained-passive
+local source when `Cedge` is globally continuous.  Nonclaims: no source-rank
+openness, no residual integrability, no loss/density bounds, no measure
+pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
+and no RLCT extraction.

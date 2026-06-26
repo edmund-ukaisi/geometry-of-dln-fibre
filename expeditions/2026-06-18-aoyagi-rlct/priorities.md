@@ -5873,3 +5873,12 @@ the source stratum.  Next priority: decide whether to connect this local
 source to the local-measure consumer's remaining hypotheses
 (`MeasurableSet localSource`, residual integrability, loss/density bounds) or
 to open the separate measure/Jacobian transport problem.
+
+Latest retained-passive local-source measurability:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean` proves
+`measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous`.
+This removes the `MeasurableSet localSource` obligation for the chart-tied
+retained-passive local source under global continuity of `Cedge`.  The next
+local-measure obligations are residual integrability and the loss/density
+bounds on this local source; the Jacobian/pushforward theorem remains a
+separate frontier.
