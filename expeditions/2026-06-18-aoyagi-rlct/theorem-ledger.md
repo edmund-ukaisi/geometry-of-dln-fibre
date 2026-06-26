@@ -8806,6 +8806,28 @@ This supplies only the injectivity hypothesis for future Jacobian
 change-of-variables work. It does not prove source-measure transport, density
 transport, normal crossings, pole order, or RLCT.
 
+Latest A2 product-step weighted additive-Haar change of variables:
+`ProductReductionStepMeasure.lean` now proves the raw determinant-chart
+weighted pushforward identity via Mathlib's Jacobian theorem. Lean names:
+`ProductReductionStepRawTopologyTuple`,
+`productReductionStepRawDetChartSet`,
+`isOpen_productReductionStepRawDetChartSet`,
+`nullMeasurableSet_productReductionStepRawDetChartSet`,
+`productReductionStepTopologyTupleToChartRawOrder`,
+`productReductionStepRawOrderJacobianCLM`,
+`productReductionStepRawOrderJacobianAbsDet`, and
+`map_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart_withDensity_abs_det`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-weighted-haar-cov.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-weighted-haar-cov.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-weighted-haar-cov.md`.
+This proves only weighted additive-Haar transport to the image of the raw
+determinant chart. It does not specialize to `volume`, identify that image
+with the whole target determinant chart, transport the original DLN
+source/prior measure, prove source coverage, construct normal crossings,
+compute pole order, or extract an RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

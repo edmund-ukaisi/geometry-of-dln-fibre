@@ -6395,3 +6395,36 @@ This supplies the injectivity hypothesis for a future Mathlib Jacobian
 change-of-variables adapter. It does not prove the adapter itself, source
 measure pushforward, density transport, image equality with the full target
 determinant chart, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 product-step weighted Haar change of variables
+
+Reproduction:
+`reproduction-a2-product-step-weighted-haar-cov.md`.
+Statement card:
+`statement-card-a2-product-step-weighted-haar-cov.md`.
+Review:
+`review-a2-product-step-weighted-haar-cov.md`.
+
+Lean now proves:
+
+```text
+ProductReductionStepRawTopologyTuple
+productReductionStepRawDetChartSet
+isOpen_productReductionStepRawDetChartSet
+nullMeasurableSet_productReductionStepRawDetChartSet
+productReductionStepTopologyTupleToChartRawOrder
+productReductionStepRawOrderJacobianCLM
+productReductionStepRawOrderJacobianAbsDet
+map_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart_withDensity_abs_det
+```
+
+This is the direct Mathlib Jacobian change-of-variables adapter for the raw
+p. 13 determinant chart. For an additive Haar measure `m`, the raw-order map
+pushes forward `m` restricted to the determinant chart and weighted by
+`|det J(z)|` to `m` restricted to the image of that determinant chart.
+
+The theorem is intentionally generic in the additive Haar measure and keeps
+the null-measurability hypothesis explicit. It does not specialize to
+`volume`, identify the image with the whole target determinant chart, transport
+the original DLN source/prior measure, prove source coverage, construct
+normal crossings, compute pole order, or extract an RLCT.

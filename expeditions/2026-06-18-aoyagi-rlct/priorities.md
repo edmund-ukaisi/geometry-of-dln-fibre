@@ -4976,3 +4976,18 @@ theorem. The next measure priority is to package the adapter with a fixed
 measurable-space/additive-Haar measure and normed-space-aligned derivative
 family. Do not infer source-measure pushforward, density transport, normal
 crossings, pole order, or RLCT yet.
+
+A2 product-step weighted additive-Haar change of variables has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-weighted-haar-cov.md`.
+Lean proves
+`map_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart_withDensity_abs_det`
+in `ProductReductionStepMeasure.lean`. This packages the determinant-chart
+derivative and injectivity results into Mathlib's Jacobian
+change-of-variables theorem for a generic additive Haar measure `m`, with the
+source weighted by `|det J(z)|` and the target restricted to the image of the
+raw determinant chart. The next priority is not to restate this as original
+source/prior transport; it is to decide the next independently elementary
+bridge: image identification with the target determinant chart, local prior
+density/unit comparison, finite source coverage, or regular-suspension input
+for a normal-crossing certificate. Do not infer original source-measure
+transport, source coverage, normal crossings, pole order, or RLCT.

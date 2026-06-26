@@ -335,3 +335,5 @@ import DLNFibre.Core.FibreCodimFinal
 import DLNFibre.DLN.BundleShiftDischarge
 -- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
 import DLNFibre.DLN.Aoyagi.ClosedForm
+-- Aoyagi p. 13 product-step weighted additive-Haar change-of-variables adapter.
+import DLNFibre.DLN.Aoyagi.ProductReductionStepMeasure

@@ -11421,3 +11421,33 @@ add a brittle measure module until that instance boundary is pinned.
 
 No source-measure pushforward, density transport, change of variables, normal
 crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Product-Step Weighted Haar COV
+
+The raw determinant-chart weighted additive-Haar change-of-variables adapter
+has landed in `ProductReductionStepMeasure.lean`. Lean proves:
+
+```text
+ProductReductionStepRawTopologyTuple
+productReductionStepRawDetChartSet
+isOpen_productReductionStepRawDetChartSet
+nullMeasurableSet_productReductionStepRawDetChartSet
+productReductionStepTopologyTupleToChartRawOrder
+productReductionStepRawOrderJacobianCLM
+productReductionStepRawOrderJacobianAbsDet
+map_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart_withDensity_abs_det
+```
+
+The main theorem applies
+`MeasureTheory.map_withDensity_abs_det_fderiv_eq_addHaar` with the landed
+raw-order `HasFDerivWithinAt` theorem and the landed raw-order `InjOn` theorem.
+The statement is generic in an additive Haar measure `m` and keeps
+`NullMeasurableSet (productReductionStepRawDetChartSet ...) m` explicit. The
+wrapper `nullMeasurableSet_productReductionStepRawDetChartSet` derives that
+hypothesis from openness when a Borel-space measurable structure is available.
+
+This is weighted Haar transport only to the image of the raw determinant
+chart. It does not identify the image with the whole target determinant chart,
+does not specialize to `volume`, does not transport the original DLN
+source/prior measure, does not prove source coverage, does not construct
+normal crossings, and does not compute an RLCT or pole order.
