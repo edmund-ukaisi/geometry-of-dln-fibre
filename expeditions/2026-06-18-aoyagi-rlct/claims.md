@@ -8146,3 +8146,22 @@ endpoint recovery for `A1_0` or `A3_last`, no retained-passive coordinate
 domain with active `Ctop_0` plus passive `A1_p` for `p > 0`, no source-rank
 coverage, no source/image equality, no source-measure pushforward, no
 density/Jacobian theorem, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive A1 readback:
+Lean now proves the constructor-side theorem
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  For the full
+reconstructed determinant-unit `A1` family, adjacent suffix-state top blocks
+recover the supplied factor by `A1_p = Ctop_{p+1}^-1 * Ctop_p`.
+
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-readback.md`.
+
+Nonclaims: this is not yet the retained-passive coordinate-domain endpoint
+theorem.  At `p=0`, `A1_0` is still supplied and determinant-unit; Lean has not
+yet constructed it from active `Ctop_0=I+X` and passive `A1_p` for `p>0`.
+No `A3_last` recovery, source-rank coverage, source/image equality,
+source-measure pushforward, density/Jacobian theorem, normal crossings, pole
+order, or RLCT is proved.

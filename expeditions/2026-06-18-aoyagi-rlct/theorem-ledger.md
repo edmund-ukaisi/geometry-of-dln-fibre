@@ -9425,3 +9425,19 @@ family with all `A1_p` determinant-unit: no endpoint recovery for `A1_0` or
 and passive `A1_p` for `p > 0`, no coverage, no source/image theorem, no
 source-measure pushforward, no density/Jacobian theorem, no normal crossings,
 no pole order, and no RLCT.
+
+Latest A2 retained-passive A1 readback:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop`.
+For a full determinant-unit retained-passive `A1` family, adjacent recursive
+top blocks recover each supplied factor by
+`A1_p = Ctop_{p+1}^-1 * Ctop_p`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-readback.md`.
+This is constructor-side finite readback only: at `p=0`, `A1_0` is still an
+input and `hA1` assumes its determinant is a unit.  It is not yet the
+retained-passive coordinate-domain theorem with active `Ctop_0=I+X` and
+passive `A1_p` for `p>0`; no `A3_last` recovery, coverage, source/image
+theorem, source-measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.

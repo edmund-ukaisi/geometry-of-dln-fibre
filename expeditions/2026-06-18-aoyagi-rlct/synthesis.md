@@ -12524,3 +12524,12 @@ retained-passive coordinate-domain theorem with active `Ctop_0` and passive
 transport, normal crossings, pole order, or RLCT.  Xhigh reviewer
 `Mill the 3rd` passed this scope in
 `threads/03-block-product-reduction/review-a2-retained-passive-ctop-det-chart.md`.
+
+The next small Lean rung now proves the constructor-side readback theorem
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop`:
+for a full determinant-unit `A1` family, adjacent recursive top blocks satisfy
+`A1_p = Ctop_{p+1}^-1 * Ctop_p`.  Xhigh reviewer `Hubble the 3rd` passed the
+noncommutative order and source scope.  Caveat: this still reads back a
+supplied `A1_0`; it is not yet the retained-passive coordinate-domain theorem
+where active `Ctop_0=I+X` and passive `A1_p` for `p>0` determine the omitted
+endpoint.

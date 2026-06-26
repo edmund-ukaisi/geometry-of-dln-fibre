@@ -216,6 +216,43 @@ theorem suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix
     Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
   simpa [motive, E, j] using hcanon
 
+/-- Constructor-side readback for the full retained-passive `A1` family.
+
+For fixed-base edges built from a full determinant-unit family `A1`, adjacent
+recursive suffix-state top blocks recover the supplied factor
+`A1_p = Ctop_{p+1}⁻¹ * Ctop_p`.
+
+At `p = 0` this is only the finite algebra underlying the later active endpoint
+formula.  It is not yet the retained-passive coordinate-domain theorem: here
+`A1_0` is still part of the input family, and `hA1` assumes its determinant is
+a unit. -/
+theorem retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    A1 p =
+      ((suffixState E (Fin.last N) p.succ p.succ.le_last).Ctop)⁻¹ *
+        (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop := by
+  intro E
+  have hCtop :
+      (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop =
+        (suffixState E (Fin.last N) p.succ p.succ.le_last).Ctop * A1 p := by
+    simpa [E] using
+      suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc
+        A1 F2 A3 C hF2last hA1 p
+  have hCtop_next :
+      IsUnit ((suffixState E (Fin.last N) p.succ p.succ.le_last).Ctop).det := by
+    simpa [E] using
+      suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix
+        A1 F2 A3 C hF2last hA1 p.succ p.succ.le_last
+  rw [hCtop]
+  simp [Matrix.nonsing_inv_mul_cancel_left, hCtop_next]
+
 /-- Retained-passive fixed-base edge matrices have the prescribed transformed
 edge at every step of the deterministic suffix-state recursion. -/
 theorem retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq

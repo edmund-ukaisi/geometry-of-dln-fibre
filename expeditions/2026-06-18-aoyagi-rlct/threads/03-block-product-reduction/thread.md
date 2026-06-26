@@ -7350,3 +7350,39 @@ the determinant-unit theorem is for the reconstructed full fixed-base `A1_p`
 family after all `A1_p` are assumed or proved determinant units.  It is not yet
 the retained-passive coordinate-domain theorem with active `Ctop_0` and passive
 `A1_p` for `p > 0`.
+
+## 2026-06-26 A2 retained-passive A1 readback
+
+Statement card:
+`statement-card-a2-retained-passive-a1-readback.md`.
+Review:
+`review-a2-retained-passive-a1-readback.md`.
+
+Lean now proves the constructor-side adjacent-Ctop readback theorem:
+
+```text
+ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop
+```
+
+For the same retained-passive fixed-base reconstruction from a full
+determinant-unit `A1` family, adjacent suffix-state top blocks recover the
+supplied factor:
+
+```text
+A1_p = Ctop_{p+1}^-1 * Ctop_p.
+```
+
+The proof uses the Ctop recurrence and determinant-unit propagation for
+`Ctop_{p+1}`.  The noncommutative order is part of the theorem: the inverse is
+on the left.
+
+This is not yet the retained-passive coordinate-domain endpoint theorem.  At
+`p=0`, `A1_0` is still an input and `hA1` assumes `det(A1_0)` is a unit.  The
+future endpoint theorem must construct `A1_0` from active `Ctop_0=I+X` and
+passive `A1_p` for `p>0`.  No `A3_last` recovery, coverage, source/image
+theorem, source-measure pushforward, Jacobian/prior density theorem, normal
+crossings, pole order, or RLCT is proved.
+
+Verification passed with the local shared Lake directory: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
+`scripts/sorries`, and `git diff --check`.

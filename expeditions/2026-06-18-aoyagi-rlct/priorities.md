@@ -5450,3 +5450,15 @@ This is still finite suffix-state bookkeeping only, for a full reconstructed
 family where every `A1_p` is already determinant-unit.  The next A2 target
 remains active endpoint readback, beginning with
 `A1_0 = Ctop_1^-1 * Ctop_0`.
+
+Follow-up constructor-side A1 readback landed in the same file:
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-readback.md`.
+It proves `A1_p = Ctop_{p+1}^-1 * Ctop_p` for the full reconstructed `A1`
+family.  Do not treat this as the active retained-passive coordinate-domain
+endpoint theorem: at `p=0`, `A1_0` is still supplied and determinant-unit.
+The next target remains a genuine coordinate-domain endpoint construction from
+active `Ctop_0=I+X` and passive `A1_p` for `p>0`.
