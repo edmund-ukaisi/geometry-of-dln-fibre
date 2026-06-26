@@ -337,3 +337,14 @@ import DLNFibre.Core.FibreBundleLocallyTrivial
 -- `exists_sigma_topComponent_orbitRingEquiv` (every top component of O(Σ̄^r) IS `orbitRing (realizerD m)`).
 -- Smoothness remains unconditional MOD the corrected (dimensionally-honest) fibre≅orbit×Aᵟ iso (#128).
 import DLNFibre.Core.FibreComponentOrbit
+-- Scope-3 (smoothness FULLY UNCONDITIONAL, thread 20 #128): the orbit-iso detour proved UNNECESSARY —
+-- a fibre top component `sweepFibreRing⧸I` is a finitely-presented DOMAIN over an alg-closed field,
+-- hence generically smooth (`IsSmoothAt k ⊥`); the C1 bridge lifts that to `IsSmoothAt k I`. Headlines
+-- `isSmoothAt_sweepFibre_topComponent` + `exists_isSmoothAt_chartDsig_unconditional`: generic
+-- smoothness of the DLN fibre, NO open hypothesis remaining.
+import DLNFibre.Core.FibreComponentOrbitTransport
+-- Scope-3 (per-pivot conjugation skeleton, thread 22 #123): the endpoint-permutation gauge carries the
+-- top-left deep chart `e_β` to a genuine `LocalTrivializationDatum` at EVERY pivot `(s,t)` of the cover
+-- (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot `chartLocalizedAlgEquivAt`).
+-- PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the per-pivot trivializations remains (#133).
+import DLNFibre.Core.FibreChartConjugation
