@@ -7100,6 +7100,27 @@ Nonclaims: no selected-entry chart construction, no compatible `Cfac`, no
 selected-entry matrix RHS identity, no source/image equality, no
 source-measure transport, no normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 residual-coordinate endpoint-equivalence composition:
+Lean now proves that supplied row and column endpoint equivalences compose
+with the Case 2 residual-coordinate index equivalence to give the full
+`residualCoordEquiv` shape expected by the selected-entry readout socket.
+
+Lean name:
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs`, with the
+orientation wrapper
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+
+Nonclaims: the row and column endpoint equivalences are still supplied; no
+selected-entry chart construction, no compatible `Cfac`, no selected-entry
+matrix RHS identity, no source/image equality, no source-measure transport,
+no normal crossings, pole order, or RLCT.
+
 Latest A2 fixed-base residual-factor family constructor:
 Lean now defines the raw p.13 fixed-base matrix family from a supplied
 compatible residual-factor family `Cfac`, rather than reading the factors from

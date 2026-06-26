@@ -10896,3 +10896,15 @@ the p.13 product residual-coordinate index for
 `case2ResidualBlockPivotEntries n S J`.  This is the source-backed rectangular
 index component of the future `residualCoordEquiv`; it still does not identify
 fixed-base endpoint complement indices with those Case 2 row/column types.
+
+The product-level endpoint composition has now landed as
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs`, plus the
+oppositely oriented wrapper
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs`,
+with reproduction at
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+This means the selected-entry residual-coordinate socket no longer needs a
+hand-built product equivalence: separate supplied endpoint row and column
+equivalences are enough.  The construction of those endpoint equivalences, and
+the selected-entry factor-product matrix identity, remain the live source
+frontier.

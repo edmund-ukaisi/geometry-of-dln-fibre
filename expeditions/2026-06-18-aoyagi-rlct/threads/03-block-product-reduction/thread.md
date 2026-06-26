@@ -5904,3 +5904,33 @@ This helps the future `residualCoordEquiv` socket, but it is finite
 bookkeeping only.  It does not construct a selected-entry chart, compatible
 residual factors, a selected-entry matrix RHS, source/image equality, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 Case 2 residual-coordinate endpoint-equivalence composition
+
+Reproduction:
+`reproduction-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+Statement card:
+`statement-card-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+Review:
+`review-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+
+Lean now proves:
+
+```text
+case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs
+```
+
+Given supplied endpoint row and column equivalences to
+`Case2ResidualRowIndex n S J` and `Case2ResidualColIndex n S J`, the full
+endpoint residual scalar-coordinate product is equivalent to
+`case2ResidualBlockPivotEntries n S J`.  The second theorem is the same
+composition with the equivalences oriented out of the Case 2 types, matching
+the factor-product reindex bridge.  This sharpens the future
+`residualCoordEquiv` socket: the source-moving obligation is now exactly the
+two endpoint equivalences, not the product assembly.
+
+This remains finite bookkeeping only.  It does not construct the endpoint
+equivalences, a selected-entry chart, compatible residual factors, a
+selected-entry matrix RHS, source/image equality, normal crossings, pole order,
+or RLCT.

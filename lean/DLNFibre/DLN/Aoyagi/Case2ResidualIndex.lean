@@ -72,7 +72,54 @@ theorem case2ResidualBlockCoordinateIndexEquivPivotEntries_symm_apply_snd
       p.1.2 :=
   rfl
 
+/-- Separate row and column endpoint equivalences give the full residual
+coordinate equivalence to the Case 2 pivot-entry center.
+
+This only packages product-index reindexing.  The row and column equivalences
+remain explicit hypotheses. -/
+def case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+    {μ ν : Type*} (n : ℕ → ℕ) (S J : ℕ)
+    (rowEquiv : μ ≃ Case2ResidualRowIndex n S J)
+    (colEquiv : ν ≃ Case2ResidualColIndex n S J) :
+    AoyagiResidualBlockCoordinateIndex μ ν ≃
+      (case2ResidualBlockPivotEntries n S J : Type) :=
+  (Equiv.prodCongr rowEquiv colEquiv).trans
+    (case2ResidualBlockCoordinateIndexEquivPivotEntries n S J)
+
+@[simp]
+theorem case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs_apply
+    {μ ν : Type*} (n : ℕ → ℕ) (S J : ℕ)
+    (rowEquiv : μ ≃ Case2ResidualRowIndex n S J)
+    (colEquiv : ν ≃ Case2ResidualColIndex n S J)
+    (c : AoyagiResidualBlockCoordinateIndex μ ν) :
+    (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+        n S J rowEquiv colEquiv c).1 =
+      ((rowEquiv c.1).1, (colEquiv c.2).1) :=
+  rfl
+
+/-- Version of `case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs`
+with endpoint equivalences oriented out of the Case 2 residual row and column
+types. -/
+def case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs
+    {μ ν : Type*} (n : ℕ → ℕ) (S J : ℕ)
+    (rowEquiv : Case2ResidualRowIndex n S J ≃ μ)
+    (colEquiv : Case2ResidualColIndex n S J ≃ ν) :
+    AoyagiResidualBlockCoordinateIndex μ ν ≃
+      (case2ResidualBlockPivotEntries n S J : Type) :=
+  case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+    n S J rowEquiv.symm colEquiv.symm
+
+@[simp]
+theorem case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs_apply
+    {μ ν : Type*} (n : ℕ → ℕ) (S J : ℕ)
+    (rowEquiv : Case2ResidualRowIndex n S J ≃ μ)
+    (colEquiv : Case2ResidualColIndex n S J ≃ ν)
+    (c : AoyagiResidualBlockCoordinateIndex μ ν) :
+    (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfCase2EndpointEquivs
+        n S J rowEquiv colEquiv c).1 =
+      ((rowEquiv.symm c.1).1, (colEquiv.symm c.2).1) :=
+  rfl
+
 end Aoyagi
 end DLN
 end DLNFibre
-

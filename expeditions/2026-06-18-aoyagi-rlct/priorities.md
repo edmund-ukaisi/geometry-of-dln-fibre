@@ -4722,3 +4722,12 @@ types with Case 2 row/column types, and it does not produce the selected-entry
 matrix RHS.  The next useful work is either endpoint equivalence construction
 for a concrete fixed-base readout or the source audit for why that endpoint
 identification must remain supplied.
+
+A2 Case 2 residual-coordinate endpoint-equivalence composition has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-endpoint-equivalence-composition.md`.
+If future source work supplies separate endpoint row and column equivalences,
+Lean can now produce the exact `residualCoordEquiv` needed by the selected-entry
+readout bridge.  The meaningful frontier is now sharper: construct or
+source-audit those endpoint equivalences, then prove the selected-entry
+factor-product matrix identity.
