@@ -6428,3 +6428,38 @@ the null-measurability hypothesis explicit. It does not specialize to
 `volume`, identify the image with the whole target determinant chart, transport
 the original DLN source/prior measure, prove source coverage, construct
 normal crossings, compute pole order, or extract an RLCT.
+
+## 2026-06-26 A2 product-step determinant-chart image
+
+Reproduction:
+`reproduction-a2-product-step-det-chart-image.md`.
+Statement card:
+`statement-card-a2-product-step-det-chart-image.md`.
+Review:
+`review-a2-product-step-det-chart-image.md`.
+
+Lean now proves:
+
+```text
+ProductReductionStepRawCoordinates.topologyTuple_mem_rawDetChartSet
+productReductionStepRawCoordinatesOfTopologyTuple_of_topologyTuple
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple_detChart
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple_rawOrder
+ProductReductionStepChartCoordinates.rawOrderTopologyTuple_mem_rawDetChartSet
+mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart
+surjOn_productReductionStepTopologyTupleToChartRawOrder_detChart
+bijOn_productReductionStepTopologyTupleToChartRawOrder_detChart
+image_productReductionStepTopologyTupleToChartRawOrder_detChart
+map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq_restrict_detChart
+```
+
+This identifies the image of the raw determinant chart under the raw-order p.
+13 product-step map with the raw-shaped target determinant chart. The
+strengthened Haar theorem rewrites the previous target `Phi '' S` to `S`
+using this image equality.
+
+This is still weighted additive-Haar transport in p. 13 coordinates. It does
+not identify the original DLN source/prior measure, remove the Jacobian
+density, prove source coverage, construct normal crossings, compute pole
+order, or extract an RLCT.

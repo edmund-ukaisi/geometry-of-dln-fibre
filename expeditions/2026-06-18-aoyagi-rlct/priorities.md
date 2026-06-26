@@ -4991,3 +4991,15 @@ bridge: image identification with the target determinant chart, local prior
 density/unit comparison, finite source coverage, or regular-suspension input
 for a normal-crossing certificate. Do not infer original source-measure
 transport, source coverage, normal crossings, pole order, or RLCT.
+
+A2 product-step determinant-chart image identification has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-det-chart-image.md`.
+Lean proves `image_productReductionStepTopologyTupleToChartRawOrder_detChart`
+and the strengthened weighted Haar theorem
+`map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq_restrict_detChart`.
+This closes the elementary target-image gap for the p. 13 one-step
+coordinate map. The next bridge should be chosen carefully: either a local
+prior-density/unit comparison in these coordinates, finite source-chart
+coverage, or regular-suspension input for the eventual normal-crossing
+certificate. Do not infer original source-measure transport, source coverage,
+normal crossings, pole order, or RLCT from this image theorem.

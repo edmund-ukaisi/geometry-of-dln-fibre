@@ -8828,6 +8828,31 @@ with the whole target determinant chart, transport the original DLN
 source/prior measure, prove source coverage, construct normal crossings,
 compute pole order, or extract an RLCT.
 
+Latest A2 product-step determinant-chart image:
+`ProductReductionStepMeasure.lean` now proves that the raw-order p. 13
+product-step coordinate map sends the raw determinant chart onto the
+raw-shaped target determinant chart. Lean names:
+`ProductReductionStepRawCoordinates.topologyTuple_mem_rawDetChartSet`,
+`productReductionStepRawCoordinatesOfTopologyTuple_of_topologyTuple`,
+`productReductionStepChartCoordinatesOfRawOrderTopologyTuple`,
+`productReductionStepChartCoordinatesOfRawOrderTopologyTuple_detChart`,
+`productReductionStepChartCoordinatesOfRawOrderTopologyTuple_rawOrder`,
+`ProductReductionStepChartCoordinates.rawOrderTopologyTuple_mem_rawDetChartSet`,
+`mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart`,
+`surjOn_productReductionStepTopologyTupleToChartRawOrder_detChart`,
+`bijOn_productReductionStepTopologyTupleToChartRawOrder_detChart`,
+`image_productReductionStepTopologyTupleToChartRawOrder_detChart`, and
+`map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq_restrict_detChart`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-det-chart-image.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-det-chart-image.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-det-chart-image.md`.
+This is only determinant-chart image identification and the corresponding
+weighted Haar target rewrite. It does not transport the original DLN
+source/prior measure, prove source coverage, construct normal crossings,
+compute pole order, or extract an RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

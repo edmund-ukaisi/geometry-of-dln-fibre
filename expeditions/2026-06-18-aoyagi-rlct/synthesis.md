@@ -11451,3 +11451,35 @@ chart. It does not identify the image with the whole target determinant chart,
 does not specialize to `volume`, does not transport the original DLN
 source/prior measure, does not prove source coverage, does not construct
 normal crossings, and does not compute an RLCT or pole order.
+
+## Latest A2 Product-Step Determinant-Chart Image
+
+The image-identification bridge for the raw-order p. 13 product-step map has
+landed in `ProductReductionStepMeasure.lean`. Lean proves:
+
+```text
+ProductReductionStepRawCoordinates.topologyTuple_mem_rawDetChartSet
+productReductionStepRawCoordinatesOfTopologyTuple_of_topologyTuple
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple_detChart
+productReductionStepChartCoordinatesOfRawOrderTopologyTuple_rawOrder
+ProductReductionStepChartCoordinates.rawOrderTopologyTuple_mem_rawDetChartSet
+mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart
+surjOn_productReductionStepTopologyTupleToChartRawOrder_detChart
+bijOn_productReductionStepTopologyTupleToChartRawOrder_detChart
+image_productReductionStepTopologyTupleToChartRawOrder_detChart
+map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq_restrict_detChart
+```
+
+The set `productReductionStepRawDetChartSet` is now used in two readings: as
+the raw source determinant chart `(C1,D,F3old,A1,A2,A3,A4)` and, after the
+raw-order chart-coordinate permutation, as the raw-shaped target determinant
+chart `(Ctop,D,F3,A1,F2,A3,C)`. The proof packages target raw-order tuples as
+chart records and applies the existing record-level inverse theorem
+`productReductionStepCoordinate_right_inverse`.
+
+The strengthened Haar theorem is only the previous weighted Haar theorem with
+the target image rewritten by this equality. It remains weighted additive-Haar
+transport in local product-step coordinates. It is not original DLN
+source/prior transport, not source coverage, not normal crossings, and not
+RLCT.
