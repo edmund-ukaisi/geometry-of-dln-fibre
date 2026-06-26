@@ -131,12 +131,14 @@ fully-general statements. Deferred behind the θ side.
 **θ / top-component side + rest of Lemma 4.6 — CLOSED (expedition `theta-components`, 2026-06-26).** Full
 record: `expeditions/2026-06-25-theta-components/synthesis.md`. The substantive mathematics is **Proved,
 unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
-- **Fibre θ-count** for the NORMAL-FORM fibre over `E_r = diag(I_r,0)`:
-  `numTop(mult⁻¹ E_r) = cTheta(d−r) = C(m,|δ|)` — `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`
-  (the `TopDimMinPrimes` count chain through the chart `e`, reducedness-free via `detΔ`-unit; carries
-  `Monotone d` + rank + Kostant-nonempty hyps). Resolves #54. **Arbitrary rank-`r` `B`** then follows by the
-  same-rank component-count transport (`reducedFibre_baseChangeHomogeneous` ⟹ `mult⁻¹ B ≅ mult⁻¹ E_r` as
-  varieties) — being added per the owner's PR #11 review (was previously over-stated here as arbitrary `B`).
+- **Fibre θ-count, arbitrary rank-`r` `B`** — `numTop(mult⁻¹ B) = cTheta(d−r) = C(m,|δ|)` for ANY `B` with
+  `B.rank = r`: `Core.FibreThetaCountArbitrary.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_of_rank`
+  (`Type 0`). The normal-form case `E_r` is
+  `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (the `TopDimMinPrimes` count chain
+  through the chart `e`, reducedness-free via `detΔ`-unit; `Monotone d` + rank + Kostant-nonempty hyps);
+  the same-rank transport `ncard_topDimMinPrimes_fibre_eq_of_rank_eq` (via `reducedFibre_baseChangeHomogeneous`:
+  `mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal count) lifts it to arbitrary `B`. Resolves
+  #54. (The arbitrary-`B` generality was added in PR #11 review round 1 — previously proved only for `E_r`.)
 - **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
   `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
   LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
@@ -150,17 +152,20 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
 - **Σ̄^r component ↔ orbit labeling — unconditional** (`exists_sigma_topComponent_orbitRingEquiv`): the first
   genuine "label a top component by an orbit ring".
 - **Bundle — the per-pivot local-product atlas over the rank-`=r` open** (`Core.FibreBundleLocallyTrivialFull.reducedFibre_pivotLocalProductAtlasOnRankOpen`):
-  scheme open-cover by the per-pivot Schur charts + trivializations into the standard fibre `SchurLoc ⊗
-  sweepFibreRing` + a coherent base-side transition cocycle + the intertwining (`e_β` cancels) + the k-point
-  rank-tie. Honestly **NOT** `locallyTrivial`.
+  scheme open-cover by the per-pivot Schur charts + the cover→`PivotDatum` bridge (`pivotOfCover`, PR #11
+  C1) connecting a covering chart to its trivialization + trivializations into the standard fibre `SchurLoc
+  ⊗ sweepFibreRing` + the base-side overlap-restricted transition (`overlapRestrict` /
+  `chartOverlapTransition_restrict`, PR #11 C2) + the intertwining (`e_β` cancels) + the k-point rank-tie.
+  Honestly **NOT** `locallyTrivial`. The `transitionFactors` field is a common-target cancellation (NOT an
+  overlap cocycle — corrected in C2); the full overlap-restricted *trivialization* cocycle is a residual.
 - **`e` (fibre-component↔orbit), localized chart transport — rung 1** (`Core.FibreComponentOrbitIso.schurComponent_chartQuotientEquiv`).
 - **Reusable spin-outs:** `mvPolynomialAwayMapTensorAlgEquiv`, `exists_invertible_minor_of_rank` (Mathlib
   v4.29 gap: rank-`r` ⟹ invertible `r×r` minor), the `awayOverlap`/`awayTriple` cocycle engine,
   `localizationAtPrimeQuotientAlgEquiv`, `Algebra.Smooth.tensorProduct`,
   `isSmoothAt_bot_of_finitePresentation_domain`.
 
-**Roadmapped residuals (deferred at the honest ceiling — both genuinely non-trivial, recommended-stop by the
-tides + multiple Codex consults):**
+**Roadmapped residuals (deferred at the honest ceiling — all genuinely non-trivial / off-critical-path;
+items 4–5 are the honest residuals surfaced by the PR #11 owner review):**
 1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
    (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) — genuinely new scheme-theoretic math (the
    k-point rank-tie, banked, does NOT compose with the prime cover). A fresh multi-tide build, not a finish.
@@ -173,6 +178,17 @@ tides + multiple Codex consults):**
    *global* / *shifted-orbit* shapes are FALSE — only the localized full-`d`-orbit form is reachable; two dead
    consumers relabeled as superseded scaffolding.
 3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred.
+4. **Bundle full overlap *trivialization* cocycle** (PR #11 C2 residual): the atlas has the base-side
+   overlap-restricted transition (`overlapRestrict`); the full overlap-restricted *trivialization* cocycle
+   square needs a target-side localization comparison `targetOverlapTransition` — the per-pivot chart map is
+   only a `k`-algebra (gauge) map, not `sweepSigmaRing`-algebra, so the localization-subsingleton trick
+   fails. Genuinely new/heavy; the current `transitionFactors` is honestly a common-target cancellation.
+5. **Smoothness full component-incidence** (PR #11 C4 residual): the chart-smoothness witness is non-vacuous
+   (`isSmoothAt_chartDsig_topComponent_nonvacuous`: `D(h) ≠ ∅`), but full incidence `D(h) ∩ V(I) ≠ ∅` (the
+   smooth open meets the chosen top component) needs faithfully-flat lying-over of `includeRight :
+   sweepFibreRing → SchurLoc ⊗_k sweepFibreRing` — needs `Module.FaithfullyFlat` (not TC-discoverable:
+   `Module.Free k SchurLoc` + `Nontrivial` + a tensor-orientation flip). The `sweepFibreRing`-level
+   `isSmoothAt_sweepFibre_topComponent` IS per-component; only the chart-level transport drops incidence.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
