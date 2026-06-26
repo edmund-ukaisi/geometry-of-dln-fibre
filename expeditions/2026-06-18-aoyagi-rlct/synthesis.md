@@ -12800,3 +12800,21 @@ if the suffix `B`/readback `F2` recurrence and one-step Schur reconstruction
 close cleanly.  This remains before image openness, source-rank coverage,
 source/image equality, local homeomorphism, measure pushforward,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+New follow-up proves the first source-recursive reconstruction spine.  The
+generic Schur readback reassembly lemma now lives in `ProductReduction.lean`:
+from `topLeftCorner`, `-(A1^-1*upperRightBlock)`, `lowerLeftBlock`, and
+`schurResidualBlock`, a determinant-chart block matrix is recovered.  In
+`RetainedPassiveCoordinates.lean`, `sourceRecursiveDetChart E` now propagates
+determinant units to every source suffix `Ctop`, hence
+`sourceReadback E` lies in `detChart`.  Lean also proves
+`sourceReadback.F2full i = -S_i.B`, the one-step `Ctop` recurrence, a
+nonzero passive `A1` tail invariant, and
+`sourceReadback_solvedA1_eq_topLeftCorner`.
+
+This is still partial right-inverse algebra.  The missing finite endpoint is
+the solved-`A3` reconstruction from lower-left transformed blocks, especially
+the final edge where `F3 = lowerLeft(S_0.L)` must cancel the retained-passive
+lower-left tail.  Only after that should the controller assemble the full
+`edgeMatrix (sourceReadback E) = E` theorem by Schur reassembly and
+upper-unitriangular cancellation.

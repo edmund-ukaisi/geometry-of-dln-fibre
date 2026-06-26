@@ -217,6 +217,22 @@ theorem schurResidualBlock_fromBlocks_lowerLeft_zero
   simp [schurResidualBlock, topLeftCorner, upperRightBlock, lowerLeftBlock,
     lowerRightBlock, Matrix.mul_apply]
 
+/-- Reassembling a block matrix from its one-step Schur readbacks recovers the
+original matrix on the selected determinant chart. -/
+theorem fromBlocks_schurReadbacks_eq
+    {ι μ ν : Type*} [Fintype ι] [DecidableEq ι]
+    (M : Matrix (ι ⊕ μ) (ι ⊕ ν) K)
+    (hA1 : IsUnit (topLeftCorner M).det) :
+    fromBlocks (topLeftCorner M)
+        (-(topLeftCorner M * (-((topLeftCorner M)⁻¹ * upperRightBlock M))))
+        (lowerLeftBlock M)
+        (schurResidualBlock M -
+          lowerLeftBlock M * (-((topLeftCorner M)⁻¹ * upperRightBlock M))) =
+      M := by
+  have hneg : - -upperRightBlock M = upperRightBlock M := neg_neg _
+  rw [← fromBlocks_corners (K := K) M]
+  simp [schurResidualBlock, hA1, Matrix.mul_assoc, sub_eq_add_neg, add_assoc, hneg]
+
 /-- In identity-corner form, the selected top-left corner is exactly `1`. -/
 theorem topLeftCorner_eq_one_of_identityCornerForm
     {ι μ ν : Type*} [DecidableEq ι] {M : Matrix (ι ⊕ μ) (ι ⊕ ν) K}

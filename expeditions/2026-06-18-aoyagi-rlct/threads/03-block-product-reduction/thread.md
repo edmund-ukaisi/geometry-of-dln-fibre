@@ -8250,3 +8250,40 @@ density/Jacobian theorem, normal crossings, pole order, or RLCT.
 
 Xhigh reviewer `Beauvoir the 3rd` passed the determinant predicate scope,
 index shifts, theorem layering, documentation boundary, and focused build.
+
+## 2026-06-26 A2 retained-passive source-recursive reconstruction spine
+
+Reproduction:
+`reproduction-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+Review:
+`review-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+
+Lean now proves the first finite algebraic spine for the right-inverse
+direction:
+
+```text
+DLNFibre.DLN.Aoyagi.fromBlocks_schurReadbacks_eq
+RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState_Ctop_det_isUnit_of_sourceRecursiveDetChart
+RetainedPassiveNonredundantCoordinateData.sourceReadback_detChart_of_sourceRecursiveDetChart
+RetainedPassiveNonredundantCoordinateData.sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
+RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState_Ctop_castSucc
+RetainedPassiveNonredundantCoordinateData.sourceReadback_A1Tail_eq_sourceReadbackSuffixState_Ctop_of_ne_zero
+RetainedPassiveNonredundantCoordinateData.sourceReadback_A1TailAfterFirst_eq_sourceReadbackSuffixState_Ctop_succ_zero
+RetainedPassiveNonredundantCoordinateData.sourceReadback_solvedA1_eq_topLeftCorner
+```
+
+The generic Schur reassembly lemma was placed in `ProductReduction.lean`.
+The source-side determinant predicate now gives retained-passive `detChart`
+membership for `sourceReadback E`, the full right field satisfies
+`F2full i = -S_i.B`, and the solved full `A1` family matches the selected
+top-left block of every visited transformed source edge.
+
+This is not yet the full right inverse.  The next finite target is the
+solved-`A3` analogue
+`sourceReadback_solvedA3_eq_lowerLeftBlock`; the final edge is the only
+substantial case and should use the source-side `F3` lower-left suffix field
+and the retained-passive lower-left tail sum.  Do not promote this rung to
+image openness, source-rank coverage, source/image equality, local
+homeomorphism, measure transport, normal crossings, pole order, or RLCT.

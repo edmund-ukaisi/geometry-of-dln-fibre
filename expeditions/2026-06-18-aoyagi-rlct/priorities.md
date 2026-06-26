@@ -5755,3 +5755,21 @@ direction `edgeMatrix (sourceReadback E) = E` under `sourceRecursiveDetChart E`.
 This should be proved as finite Schur/suffix algebra if it works.  Do not
 rename it as image openness, source-rank coverage, local homeomorphism,
 measure transport, normal crossings, pole order, or RLCT.
+
+The first source-recursive reconstruction spine has now landed/in progress:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-reconstruction-spine.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-reconstruction-spine.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+It proves determinant propagation for source suffix `Ctop`, retained-passive
+`detChart` membership of `sourceReadback E`, the source `F2full = -B`
+readback recurrence, a nonzero `A1` tail invariant, and solved-`A1`
+reconstruction from transformed-edge top-left corners.
+
+Next retained-passive target: prove the solved-`A3` analogue
+`sourceReadback_solvedA3_eq_lowerLeftBlock`, then combine solved `A1`, solved
+`A3`, Schur reassembly, and upper-unitriangular cancellation into
+`edgeMatrix (sourceReadback E) = E` under `sourceRecursiveDetChart E`.  Keep
+this as finite reconstruction algebra only; do not assert source-rank
+coverage, image openness, local homeomorphism, measure transport, normal
+crossings, pole order, or RLCT.

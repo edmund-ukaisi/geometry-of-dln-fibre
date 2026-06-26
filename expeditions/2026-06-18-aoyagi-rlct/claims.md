@@ -8632,3 +8632,29 @@ Nonclaims: finite source-readback continuity only.  No arbitrary edge-family
 image membership, image openness, local homeomorphism, source-rank coverage,
 source/image equality, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-recursive reconstruction spine:
+Lean now proves the first right-inverse algebra for arbitrary edge families
+satisfying `sourceRecursiveDetChart`.  The source suffix `Ctop` determinants
+are units at every visited suffix state, so `sourceReadback E` satisfies the
+retained-passive `detChart`.  The full source-readback right field satisfies
+`F2full i = -S_i.B`, and the solved full `A1` family equals
+`topLeftCorner (sourceReadbackTransformedEdge E p)` for every edge.
+
+The generic Schur reassembly lemma
+`DLNFibre.DLN.Aoyagi.fromBlocks_schurReadbacks_eq` has been placed in
+`ProductReduction.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-reconstruction-spine.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-reconstruction-spine.md`
+passed after API cleanup.
+
+Nonclaims: no solved-`A3` endpoint reconstruction and no full
+`edgeMatrix (sourceReadback E) = E` theorem yet.  No image openness, local
+homeomorphism, source-rank coverage, source/image equality, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
+is proved.

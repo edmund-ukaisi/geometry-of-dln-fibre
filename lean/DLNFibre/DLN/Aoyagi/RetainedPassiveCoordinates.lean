@@ -2367,6 +2367,275 @@ def sourceReadback
       (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
         (Fin.zero_le (Fin.last (M + 1)))).L
 
+/-- Along a source family satisfying the recursive determinant-chart predicate,
+the accumulated source-readback top block has determinant a unit at every suffix
+state. -/
+theorem sourceReadbackSuffixState_Ctop_det_isUnit_of_sourceRecursiveDetChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E)
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    IsUnit ((sourceReadbackSuffixState (K := K) (ρ := ρ) E i hi).Ctop.det) := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (M + 2) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    IsUnit ((sourceReadbackSuffixState (K := K) (ρ := ρ) E im
+      (Fin.val_fin_le.mpr hmj)).Ctop.det)
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive, j]
+    change IsUnit
+      ((sourceReadbackSuffixState (K := K) (ρ := ρ) E (Fin.last (M + 1)) le_rfl).Ctop.det)
+    simp [sourceReadbackSuffixState, suffixState_self, terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        IsUnit ((sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ hpj).Ctop.det) := by
+      simpa [motive, j, p] using ih
+    have hstate :
+        sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj) =
+          step E p (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ hpj) := by
+      simpa [sourceReadbackSuffixState, j] using
+        suffixState_castSucc (K := K) E p hpj
+    change IsUnit
+      ((sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc
+        ((Fin.castSucc_le_succ p).trans hpj)).Ctop.det)
+    rw [hstate]
+    change IsUnit
+      (((sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ hpj).Ctop *
+          topLeftCorner
+            (transformedEdge E p
+              (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ hpj))).det)
+    rw [Matrix.det_mul]
+    have htop :
+        IsUnit
+          (topLeftCorner
+            (transformedEdge E p
+              (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ hpj))).det := by
+      simpa [sourceRecursiveDetChart, sourceReadbackSuffixState, j] using hchart p hpj
+    exact ih'.mul htop
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, sourceReadbackSuffixState, j] using hcanon
+
+/-- Source readback lands in the retained-passive determinant chart whenever the
+source family satisfies the recursive determinant-chart predicate. -/
+theorem sourceReadback_detChart_of_sourceRecursiveDetChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E) :
+    (sourceReadback (K := K) (ρ := ρ) E).detChart := by
+  constructor
+  · simpa [sourceReadback] using
+      sourceReadbackSuffixState_Ctop_det_isUnit_of_sourceRecursiveDetChart
+        (K := K) (ρ := ρ) E hchart 0 (Fin.zero_le (Fin.last (M + 1)))
+  · intro p
+    simpa [sourceReadback, sourceReadbackTransformedEdge, sourceRecursiveDetChart,
+      sourceReadbackSuffixState, identityCornerDetChart] using
+      hchart p.succ p.succ.succ.le_last
+
+/-- The full source-readback right field is the negative of the deterministic
+suffix-state right field at the same layer. -/
+theorem sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    (sourceReadback (K := K) (ρ := ρ) E).F2full i =
+      -(sourceReadbackSuffixState (K := K) (ρ := ρ) E i hi).B := by
+  rcases Fin.eq_castSucc_or_eq_last i with ⟨p, rfl⟩ | rfl
+  · have hstate :
+        sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc hi =
+          step E p
+            (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last) := by
+      simpa [sourceReadbackSuffixState] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    rw [hstate]
+    simp [sourceReadback, sourceReadbackTransformedEdge, sourceReadbackSuffixState, step]
+  · change
+      (sourceReadback (K := K) (ρ := ρ) E).F2full (Fin.last (M + 1)) =
+        -(sourceReadbackSuffixState (K := K) (ρ := ρ) E (Fin.last (M + 1)) le_rfl).B
+    simp [sourceReadback, sourceReadbackSuffixState, suffixState_self, terminal]
+
+/-- The source-readback suffix-state top block unfolds by one step through the
+top-left corner of the visited transformed edge. -/
+theorem sourceReadbackSuffixState_Ctop_castSucc
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (p : Fin (M + 1)) :
+    (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc p.castSucc.le_last).Ctop =
+      (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last).Ctop *
+        topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
+  have hstate :
+      sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc p.castSucc.le_last =
+        step E p (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last) := by
+    simpa [sourceReadbackSuffixState] using
+      suffixState_castSucc (K := K) E p p.succ.le_last
+  rw [hstate]
+  rfl
+
+/-- Every nonzero passive top-left tail stored by source readback matches the
+corresponding source suffix-state `Ctop` block. -/
+theorem sourceReadback_A1Tail_eq_sourceReadbackSuffixState_Ctop_of_ne_zero
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :
+    ∀ i : Fin (M + 2), i ≠ 0 →
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (sourceReadback (K := K) (ρ := ρ) E).A1seed (Fin.last (M + 1)) i
+          i.le_last =
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E i i.le_last).Ctop := by
+  let data := sourceReadback (K := K) (ρ := ρ) E
+  let A1seed : Fin (M + 1) → Matrix ρ ρ K := data.A1seed
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    1 ≤ m →
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm) =
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+          ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)).Ctop
+  have hbase : motive (M + 1) le_rfl := by
+    intro _hmpos
+    dsimp [motive, j]
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed (Fin.last (M + 1)) (Fin.last (M + 1)) le_rfl =
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+          (Fin.last (M + 1)) le_rfl).Ctop
+    simp [sourceReadbackSuffixState, suffixState_self, terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hp_ne : p ≠ 0 := by
+      intro hp
+      have hval : p.val = (0 : Fin (M + 1)).val := congrArg Fin.val hp
+      simp [p] at hval
+      omega
+    have hprod :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1seed j p.succ p.succ.le_last * A1seed p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1seed (j := j) p p.succ.le_last
+    have ih' :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.succ p.succ.le_last =
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+            p.succ p.succ.le_last).Ctop := by
+      have hmpos_succ : 1 ≤ m + 1 := Nat.succ_pos m
+      simpa [motive, j, p] using ih hmpos_succ
+    have hA1p :
+        A1seed p = topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
+      rcases Fin.eq_zero_or_eq_succ p with hp0 | ⟨q, hp⟩
+      · exact False.elim (hp_ne hp0)
+      · rw [hp]
+        simp [A1seed, data, sourceReadback]
+    have hCtop :=
+      sourceReadbackSuffixState_Ctop_castSucc (K := K) (ρ := ρ) E p
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j p.castSucc p.castSucc.le_last =
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+          p.castSucc p.castSucc.le_last).Ctop
+    rw [hprod, ih', hA1p, hCtop]
+  have hcanon : ∀ m (hm : m ≤ M + 1), motive m hm := by
+    intro m hm
+    exact Nat.decreasingInduction (motive := motive) hstep hbase (m := m) hm
+  intro i hi
+  have hi_pos : 1 ≤ i.val := by
+    by_contra hlt
+    have hzero : i.val = 0 := Nat.eq_zero_of_not_pos hlt
+    exact hi (Fin.ext hzero)
+  have hcanon_i := hcanon i.val (Fin.val_fin_le.mp i.le_last) hi_pos
+  simpa [motive, A1seed, data, j] using hcanon_i
+
+/-- The passive top-left tail stored by source readback is exactly the suffix
+`Ctop` block just to the right of the first edge. -/
+theorem sourceReadback_A1TailAfterFirst_eq_sourceReadbackSuffixState_Ctop_succ_zero
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :
+    retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+        (sourceReadback (K := K) (ρ := ρ) E).A1seed =
+      (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+        (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last).Ctop := by
+  simpa [retainedPassiveA1TailAfterFirst] using
+    sourceReadback_A1Tail_eq_sourceReadbackSuffixState_Ctop_of_ne_zero
+      (K := K) (ρ := ρ) E (0 : Fin (M + 1)).succ (Fin.succ_ne_zero 0)
+
+/-- The solved full `A1` family of source-readback data recovers the top-left
+corner of each visited transformed source edge. -/
+theorem sourceReadback_solvedA1_eq_topLeftCorner
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E)
+    (p : Fin (M + 1)) :
+    ((sourceReadback (K := K) (ρ := ρ) E).toCoordinateData).solvedA1 p =
+      topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
+  let data := sourceReadback (K := K) (ρ := ρ) E
+  change retainedPassiveSolvedA1 (K := K) (ρ := ρ) data.A1seed data.Ctop p =
+    topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p)
+  rcases Fin.eq_zero_or_eq_succ p with hp0 | ⟨q, hp⟩
+  · rw [hp0]
+    have htail :=
+      sourceReadback_A1TailAfterFirst_eq_sourceReadbackSuffixState_Ctop_succ_zero
+        (K := K) (ρ := ρ) E
+    have hCtop :=
+      sourceReadbackSuffixState_Ctop_castSucc (K := K) (ρ := ρ) E
+        (0 : Fin (M + 1))
+    have hCtop0 :
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
+            (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+              (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last).Ctop *
+            topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E 0) := by
+      simpa using hCtop
+    have hunit :
+        IsUnit
+          ((sourceReadbackSuffixState (K := K) (ρ := ρ) E
+            (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last).Ctop.det) :=
+      sourceReadbackSuffixState_Ctop_det_isUnit_of_sourceRecursiveDetChart
+        (K := K) (ρ := ρ) E hchart
+        (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last
+    rw [retainedPassiveSolvedA1_zero]
+    change
+      (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) data.A1seed)⁻¹ *
+          data.Ctop =
+        topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E 0)
+    rw [htail]
+    change
+      ((sourceReadbackSuffixState (K := K) (ρ := ρ) E
+            (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last).Ctop)⁻¹ *
+        (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
+            (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+        topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E 0)
+    rw [hCtop0]
+    exact Matrix.nonsing_inv_mul_cancel_left
+      (A := (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+        (0 : Fin (M + 1)).succ (0 : Fin (M + 1)).succ.le_last).Ctop)
+      (B := topLeftCorner (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E 0))
+      hunit
+  · rw [hp]
+    rw [retainedPassiveSolvedA1_eq_of_ne_zero
+      (K := K) (ρ := ρ) data.A1seed data.Ctop (Fin.succ_ne_zero q)]
+    simp [data, sourceReadback]
+
 /-- On the determinant-chart image of the retained-passive source map, the
 source-side readback recovers the original nonredundant coordinates. -/
 theorem sourceReadback_edgeMatrix_eq

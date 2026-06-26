@@ -9839,3 +9839,34 @@ This is finite readback continuity only: no arbitrary edge-family image
 membership, image openness, source-rank coverage, source/image theorem, local
 homeomorphism, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive source-recursive reconstruction spine:
+`ProductReduction.lean` proves the generic block-algebra lemma
+`fromBlocks_schurReadbacks_eq`: on an invertible selected top-left corner,
+one-step Schur readbacks reassemble the original block matrix.
+
+`RetainedPassiveCoordinates.lean` proves the first source-side reconstruction
+spine under `sourceRecursiveDetChart`:
+`sourceReadbackSuffixState_Ctop_det_isUnit_of_sourceRecursiveDetChart`,
+`sourceReadback_detChart_of_sourceRecursiveDetChart`,
+`sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B`,
+`sourceReadbackSuffixState_Ctop_castSucc`,
+`sourceReadback_A1Tail_eq_sourceReadbackSuffixState_Ctop_of_ne_zero`,
+`sourceReadback_A1TailAfterFirst_eq_sourceReadbackSuffixState_Ctop_succ_zero`,
+and `sourceReadback_solvedA1_eq_topLeftCorner`.
+
+These theorems prove determinant propagation to all source suffix `Ctop`
+blocks, retained-passive determinant-chart membership of `sourceReadback E`,
+the `F2full = -B` readback recurrence, and solved-`A1` reconstruction from
+visited transformed-edge top-left corners.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-reconstruction-spine.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-reconstruction-spine.md`
+passed after API cleanup.
+
+This is partial finite right-inverse algebra only: no solved-`A3` endpoint
+reconstruction and no full `edgeMatrix (sourceReadback E) = E` theorem yet.
+No image openness, source-rank coverage, source/image theorem, local
+homeomorphism, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT.
