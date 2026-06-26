@@ -337,3 +337,5 @@ import DLNFibre.DLN.BundleShiftDischarge
 import DLNFibre.DLN.Aoyagi.ClosedForm
 -- Aoyagi p. 13 product-step weighted additive-Haar change-of-variables adapter.
 import DLNFibre.DLN.Aoyagi.ProductReductionStepMeasure
+-- Aoyagi p. 13 regular-coordinate tuple feeding the product-step inverse density handoff.
+import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity

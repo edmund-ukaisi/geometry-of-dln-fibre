@@ -6552,3 +6552,32 @@ This is local chart-side reciprocal-density unit control.  It is not an
 unweighted source-measure pushforward theorem, not original DLN source/prior
 transport, not source coverage, not normal crossings, not pole order, and not
 RLCT.
+
+## 2026-06-26 A2 p.13 regular-coordinate inverse density handoff
+
+Reproduction:
+`reproduction-a2-product-step-regular-coordinate-inverse-density.md`.
+Statement card:
+`statement-card-a2-product-step-regular-coordinate-inverse-density.md`.
+Review:
+`review-a2-product-step-regular-coordinate-inverse-density.md`.
+
+Lean now defines the left-endpoint raw-shaped target tuple for the explicit
+p. 13 multi-edge regular-coordinate family:
+
+```text
+(Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+Lean proves determinant-chart membership at the centered regular coordinate,
+continuity of this tuple at self-base points, and continuity/positivity of the
+chart-side inverse product-step Jacobian density after composition.
+
+The critical calculation is that the passive `A1` slot is `Ctop(u)`, not the
+identity.  The identity is the pre-left-step accumulator `C1`.  The determinant
+chart therefore checks two copies of `IsUnit det(Ctop(u))`, discharged at
+`u = 0` by `Ctop(0) = I`.
+
+This is only a local tuple and reciprocal-density handoff.  It is not source
+coverage, original DLN source/prior transport, unweighted measure transport,
+normal crossings, pole order, or RLCT.

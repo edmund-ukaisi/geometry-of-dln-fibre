@@ -5038,3 +5038,16 @@ needed, must be a genuinely new source/prior or product-chart transport
 statement; do not rebrand these local unit bounds as an unweighted
 change-of-variables theorem, original DLN prior transport, source coverage,
 normal crossings, pole order, or RLCT.
+
+A2 p.13 regular-coordinate inverse-density handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-regular-coordinate-inverse-density.md`.
+Lean defines the concrete left-endpoint tuple
+`(Ctop(u),Dtail(x),F3(u),Ctop(u),F2(u),0,C0(x))`, proves centered
+determinant-chart membership and self-base continuity, then composes with the
+abstract inverse-density theorem for continuity/positivity of the reciprocal
+Jacobian density along the p. 13 regular-coordinate tuple.  Treat this as a
+local product-step chart handoff only.  It is not source coverage, original
+source/prior transport, unweighted measure transport, normal crossings, pole
+order, or RLCT.  The next valuable extension is either an arbitrary-step
+`stepRawCoordinates` version or a genuine chart/source-density transport
+consumer; do not add more wrappers unless they feed one of those.

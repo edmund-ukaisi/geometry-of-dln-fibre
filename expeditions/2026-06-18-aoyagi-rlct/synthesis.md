@@ -11558,3 +11558,26 @@ This is chart-side reciprocal-density unit control for
 `|det D Phi(Phi^{-1}(y))|^{-1}`.  It is not an unweighted measure pushforward,
 not original DLN source/prior transport, not source coverage, not normal
 crossings, not pole order, and not RLCT.
+
+## Latest A2 P.13 Regular-Coordinate Inverse Density Handoff
+
+`ProductReductionStepRegularDensity.lean` now defines the left-endpoint
+raw-shaped target tuple for the explicit p. 13 multi-edge regular-coordinate
+family:
+
+```text
+(Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+Lean proves the tuple is in the product-step target determinant chart at the
+centered regular coordinate, is continuous at self-base points, and composes
+with the abstract chart-side inverse-density theorem to give continuity and
+positivity of
+`productReductionStepRawOrderInverseJacobianDensity` along this tuple.
+
+The pen-and-paper check is saved at
+`threads/03-block-product-reduction/reproduction-a2-product-step-regular-coordinate-inverse-density.md`.
+The main fidelity point is that the passive `A1` slot is `Ctop(u)`, not `1`;
+the identity is the preceding raw `C1` accumulator.  This checkpoint is still
+local unit control only: no source coverage, original DLN prior transport,
+unweighted measure transport, normal crossings, pole order, or RLCT.

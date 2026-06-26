@@ -7469,3 +7469,38 @@ and
 Nonclaims: no full raw/chart `LinearEquiv`, no determinant-unit theorem, no
 analytic derivative theorem, no source-measure pushforward or density
 transport, and no normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 regular-coordinate inverse-density handoff:
+Lean now defines the concrete left-endpoint raw-shaped target tuple for the
+explicit p. 13 regular-coordinate family:
+
+```text
+(Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+Lean proves centered determinant-chart membership, self-base continuity, and
+continuity/positivity of the chart-side inverse product-step Jacobian density
+along this tuple.
+
+Lean names:
+`paperEndpointFixedBaseP13RawOrderTuple`,
+`paperEndpointFixedBaseP13RawOrderTuple_mem_rawDetChartSet`,
+`paperEndpointFixedBaseP13RawOrderTuple_mem_rawDetChartSet_center`,
+`continuousAt_paperEndpointFixedBaseP13RawOrderTuple_selfBase`,
+`continuousAt_paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_selfBase`,
+and
+`paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-regular-coordinate-inverse-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-regular-coordinate-inverse-density.md`.
+
+Reproduction check: xhigh scouts `Gauss the 2nd` and `Nash the 2nd`
+confirmed the tuple order, `A1 = Ctop(u)`, determinant-chart membership, and
+API shape.  Xhigh reviewer `Descartes the 2nd` accepted the Lean slice after
+the `_center` positivity rename and aggregate-comment fix; review at
+`threads/03-block-product-reduction/review-a2-product-step-regular-coordinate-inverse-density.md`.
+
+Nonclaims: no source coverage, original DLN source/prior transport,
+unweighted measure transport, normal crossings, pole order, or RLCT.

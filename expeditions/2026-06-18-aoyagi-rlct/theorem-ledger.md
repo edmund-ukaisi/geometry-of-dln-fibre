@@ -8909,6 +8909,22 @@ prove an unweighted source-measure pushforward theorem, original DLN
 source/prior measure comparison, source coverage, normal crossings, pole
 order, or RLCT.
 
+Latest A2 p.13 regular-coordinate inverse-density handoff:
+`ProductReductionStepRegularDensity.lean` defines the concrete left-endpoint
+p. 13 raw-shaped target tuple
+`(Ctop(u),Dtail(x),F3(u),Ctop(u),F2(u),0,C0(x))`, proves centered
+determinant-chart membership and self-base continuity, and composes this tuple
+with the abstract inverse-density theorem to prove continuity and positivity
+of the chart-side reciprocal density along it.  Reproduction and statement
+card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-regular-coordinate-inverse-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-regular-coordinate-inverse-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-regular-coordinate-inverse-density.md`.
+This is not source coverage, original source/prior transport, unweighted
+measure transport, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

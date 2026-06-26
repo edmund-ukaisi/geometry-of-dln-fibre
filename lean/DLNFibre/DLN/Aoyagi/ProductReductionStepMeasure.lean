@@ -544,6 +544,35 @@ theorem continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_r
   simpa [productReductionStepRawOrderInverseJacobianDensity, rawPreimage] using
     (ContinuousAt.inv₀ hforward (ne_of_gt hpos))
 
+/-- Composing a continuous raw-shaped target chart tuple with the chart-side
+inverse determinant density preserves continuity at determinant-chart points. -/
+theorem continuousAt_productReductionStepRawOrderInverseJacobianDensity_comp_of_mem_rawDetChartSet
+    {ρ π μ ν α : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν] [TopologicalSpace α]
+    {Y : α → ProductReductionStepRawTopologyTuple ρ π μ ν} {a₀ : α}
+    (hY : ContinuousAt Y a₀)
+    (hY₀ : Y a₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ContinuousAt
+      (fun a : α =>
+        productReductionStepRawOrderInverseJacobianDensity
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (Y a))
+      a₀ :=
+  (continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (Y a₀) hY₀).comp hY
+
+/-- Composing any raw-shaped target chart tuple with the chart-side inverse
+determinant density is positive at determinant-chart points. -/
+theorem productReductionStepRawOrderInverseJacobianDensity_comp_pos_of_mem_rawDetChartSet
+    {ρ π μ ν α : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (Y : α → ProductReductionStepRawTopologyTuple ρ π μ ν) (a₀ : α)
+    (hY₀ : Y a₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    0 <
+      productReductionStepRawOrderInverseJacobianDensity
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (Y a₀) :=
+  productReductionStepRawOrderInverseJacobianDensity_pos
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (Y a₀) hY₀
+
 /-- Near any target determinant-chart point, the chart-side inverse
 Jacobian density admits a positive lower bound. -/
 theorem exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds
