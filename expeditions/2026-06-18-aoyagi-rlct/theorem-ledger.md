@@ -9960,6 +9960,24 @@ coverage result for a retained-passive p.13 local source tied to
 Nonclaims: no coverage removed, no raw measure pushforward, no
 Jacobian/density theorem, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive local-source coverage:
+`RetainedPassiveLocalSource.lean` defines
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource` and proves
+`mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts`,
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_nhds_of_selfBase`,
+and
+`exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-local-source-coverage.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-local-source-coverage.md`.
+Focused and full builds passed.  The theorem proves that the retained-passive
+source preimage is a determinant-chart neighborhood near the self-base point,
+and packages the corresponding handoff-shaped source-stratum inclusion.
+Nonclaims: no exact-rank openness, no global source-rank cover, no
+measurability theorem for the local source, no measure pushforward, no
+Jacobian/density theorem, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`

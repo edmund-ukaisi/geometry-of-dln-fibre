@@ -8468,3 +8468,58 @@ wrapper.  The theorem should define a local source tied to the preimage of
 prove a local inclusion from `paperEndpointFixedBaseSourceRankStratum`.
 Do not set `localSource` to the source stratum itself.  Keep measure/Jacobian
 transport as a separate later theorem family.
+
+## 2026-06-26 A2 retained-passive local-source coverage
+
+Reproduction:
+`reproduction-a2-retained-passive-local-source-coverage.md`.
+Statement card:
+`statement-card-a2-retained-passive-local-source-coverage.md`.
+Review:
+`review-a2-retained-passive-local-source-coverage.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`.
+
+Lean now defines the chart-tied retained-passive p.13 local source
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13LocalSource
+```
+
+as the fixed-base edge-matrix preimage of
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet`, with
+`rho = Fin (Module.finrank K U0)` and
+`kappa' = throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U0`.
+
+The Lean index convention is now explicit: the retained-passive parameter `M`
+means vertices `Fin (M + 2)` and edges `Fin (M + 1)`.  If the paper notation
+has `N` edges, this Lean theorem uses `M = N - 1`.
+
+Main Lean names:
+
+```text
+mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts
+paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_nhds_of_selfBase
+exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase
+```
+
+The theorem returns an open `Ulocal` containing the base point with `Ulocal`
+contained in the retained-passive local source.  Therefore
+`Ulocal ∩ paperEndpointFixedBaseSourceRankStratum` is locally contained in the
+same chart-tied source.  Carson the 3rd confirmed that the nontrivial content
+is the determinant-chart preimage neighborhood; the source-rank inclusion is
+the handoff-shaped consequence of `Ulocal ⊆ localSource`, not source-rank
+openness.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
+```
+
+Nonclaims: no exact-rank openness, no global source-rank finite cover, no
+source-image equality, no measurability of this local source, no measure
+pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
+and no RLCT extraction.

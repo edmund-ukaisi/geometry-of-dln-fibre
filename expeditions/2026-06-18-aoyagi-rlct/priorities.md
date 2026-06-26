@@ -5858,3 +5858,18 @@ raw-measure theorem until the coverage theorem and a separate measure/Jacobian
 transport theorem exist.  Boyle the 3rd passed the boundary package with no
 blocking issue; carry forward the residual paper/Lean index-convention check
 before formalising the coverage theorem.
+
+Latest retained-passive local-source coverage bridge:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean` defines
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource` as the fixed-base
+edge-matrix preimage of `sourceRecursiveDetChartSet` and proves
+`exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-local-source-coverage.md`.
+This is the first chart-tied local-source bridge for the retained-passive
+chart: the open `Ulocal` is contained in the determinant-chart preimage, so
+the source-stratum inclusion is not obtained by setting `localSource` equal to
+the source stratum.  Next priority: decide whether to connect this local
+source to the local-measure consumer's remaining hypotheses
+(`MeasurableSet localSource`, residual integrability, loss/density bounds) or
+to open the separate measure/Jacobian transport problem.

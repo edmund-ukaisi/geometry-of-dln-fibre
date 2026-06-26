@@ -77,6 +77,14 @@ Already proved in Lean before this card:
 - openness of `detChartSet` and `sourceRecursiveDetChartSet`;
 - the retained-passive open partial homeomorphism.
 
+Subsequent Lean bridge:
+
+- `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean` defines the
+  retained-passive p.13 local source as the fixed-base preimage of
+  `sourceRecursiveDetChartSet` and proves the self-base open-neighborhood
+  coverage wrapper.  See
+  `statement-card-a2-retained-passive-local-source-coverage.md`.
+
 ## Assumed
 
 For the proposed coverage theorem:
@@ -126,11 +134,12 @@ Controller route synthesis from Franklin the 3rd and Socrates the 3rd:
 
 ## Status
 
-Reviewed boundary card only.  Boyle the 3rd passed the
-reproduction/card/ledger package with no blocking issue; see
+Reviewed boundary card.  Boyle the 3rd passed the reproduction/card/ledger
+package with no blocking issue; see
 `review-a2-retained-passive-p13-source-chart-coverage-boundary.md`.
 
-No Lean theorem and no build claim.  The next theorem must first resolve the
-paper/Lean index convention for the retained-passive local source.  Any later
-Jacobian theorem must define the `A2/F2` column width internally before using
-the symbolic determinant exponent.
+The first Lean bridge following this boundary is now recorded in
+`statement-card-a2-retained-passive-local-source-coverage.md`.  It resolves
+the paper/Lean index convention at the local-source level.  Any later Jacobian
+theorem must still define the `A2/F2` column width internally before using the
+symbolic determinant exponent.

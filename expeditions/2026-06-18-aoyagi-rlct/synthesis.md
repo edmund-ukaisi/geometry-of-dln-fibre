@@ -12929,3 +12929,28 @@ passive p.13 local source as the fixed-base source preimage of
 obtain a local recursive determinant chart near the base edge family, and
 prove the source-rank local inclusion.  Measure/Jacobian transport is a
 separate later frontier.
+
+Latest A2 retained-passive local-source coverage:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean` landed the first
+Lean bridge from the retained-passive source-recursive chart to the fixed-base
+p.13 source side.  The local source is
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource`, the fixed-base
+edge-matrix preimage of `sourceRecursiveDetChartSet`.
+
+The predicate theorem
+`mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts`
+identifies this local source with the existing fixed-base recursive
+determinant-chart predicate.  The neighborhood theorem
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_nhds_of_selfBase`
+uses the self-base fixed-base chart neighborhood lemma.  The coverage wrapper
+`exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase`
+returns an open `Ulocal` contained in the chart-tied local source, giving the
+local inclusion from `paperEndpointFixedBaseSourceRankStratum`.
+
+This resolves the determinant-chart preimage neighborhood needed for the
+local-source coverage socket without claiming exact-rank openness or measure
+transport.  The source-rank inclusion is the handoff-shaped consequence of the
+chosen open set being contained in the retained-passive local source.
+Remaining downstream fields are measurability of this local source, residual
+integrability, loss/density bounds on it, and the separate
+Jacobian/pushforward theorem.

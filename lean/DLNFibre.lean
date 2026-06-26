@@ -344,3 +344,4 @@ import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity
 import DLNFibre.DLN.Aoyagi.ProductReductionStepSuffixDensity
 import DLNFibre.DLN.Aoyagi.Lemma5FirstNonbaseOrderBridge
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
+import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
