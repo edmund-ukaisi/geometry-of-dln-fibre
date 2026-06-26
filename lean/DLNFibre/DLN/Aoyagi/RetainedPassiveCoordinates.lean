@@ -1783,6 +1783,76 @@ theorem retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets
       (K := K) (ρ := ρ) (κ' := κ') A1 F2 A3 C Ctop F3
       hF2last hPassiveA1sol hCtop hA10 hA3last
 
+/-- Bundled finite retained-passive coordinate data for the fixed-base source
+map.  This is algebraic data only, not a topological coordinate domain. -/
+structure RetainedPassiveCoordinateData
+    {M : ℕ} (κ' : Fin (M + 2) → Type*) where
+  A1seed : Fin (M + 1) → Matrix ρ ρ K
+  F2 : ∀ i : Fin (M + 2), Matrix ρ (κ' i) K
+  A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K
+  C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K
+  Ctop : Matrix ρ ρ K
+  F3 : Matrix (κ' (Fin.last (M + 1))) ρ K
+
+namespace RetainedPassiveCoordinateData
+
+/-- The solved full `A1` family associated to retained-passive coordinate data. -/
+def solvedA1
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ') :
+    Fin (M + 1) → Matrix ρ ρ K :=
+  retainedPassiveSolvedA1 (K := K) (ρ := ρ) data.A1seed data.Ctop
+
+/-- The solved full `A3` family associated to retained-passive coordinate data. -/
+def solvedA3
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ') :
+    ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K :=
+  retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ')
+    (data.solvedA1) data.A3seed data.C data.F3
+
+/-- The fixed-base edge family built from retained-passive coordinate data. -/
+def edgeMatrix
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ') :
+    ∀ p : Fin (M + 1), Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
+  retainedPassiveFixedBaseEdgeMatrix data.solvedA1 data.F2 data.solvedA3 data.C
+
+/-- Bundled finite retained-passive source-map readback theorem. -/
+theorem edgeMatrix_readbacks_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ')
+    (hF2last : data.F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (data.A1seed p).det)
+    (hCtop : IsUnit data.Ctop.det) :
+    let E := data.edgeMatrix
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B =
+        data.F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+        topLeftCorner T = data.solvedA1 p ∧
+          upperRightBlock T = -(data.solvedA1 p * data.F2 p.castSucc) ∧
+          -((data.solvedA1 p)⁻¹ * upperRightBlock T) = data.F2 p.castSucc ∧
+          lowerLeftBlock T = data.solvedA3 p ∧
+          schurResidualBlock T = data.C p) := by
+  intro E
+  simpa [edgeMatrix, solvedA1, solvedA3, E] using
+    retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets
+      (K := K) (ρ := ρ) (κ' := κ') data.A1seed data.F2 data.A3seed data.C
+      data.Ctop data.F3 hF2last hPassiveA1 hCtop
+
+end RetainedPassiveCoordinateData
+
 end RetainedPassive
 
 end ChartLocalSuffixState

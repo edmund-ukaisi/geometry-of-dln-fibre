@@ -5597,3 +5597,17 @@ or prove a local inverse/readback theorem from such a structure.  Coverage,
 source/image equality, measure transport, density/Jacobian accounting, normal
 crossings, pole order, and RLCT remain out of scope until that source-map
 object is stable.
+
+The explicit finite coordinate-data/source-map object is now landed/in
+progress in `RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-coordinate-data-source-map.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-coordinate-data-source-map.md`.
+It names the fields `A1seed`, `F2`, `A3seed`, `C`, `Ctop`, and `F3`, and its
+`edgeMatrix` projection builds the retained-passive fixed-base source family.
+
+Next retained-passive target: a genuine local inverse/readback theorem for the
+bundled object, making clear which coordinates are recovered from the edge
+family and which determinant-unit side conditions are used.  Still before
+source-rank coverage, source/image equality, measure transport,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.

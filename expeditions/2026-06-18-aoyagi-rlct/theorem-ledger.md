@@ -9623,3 +9623,20 @@ Review:
 This is constructor-side finite algebra only: no bundled coordinate domain,
 two-sided local inverse, source coverage, source/image theorem, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive coordinate-data source map:
+`RetainedPassiveCoordinates.lean` defines
+`ChartLocalSuffixState.RetainedPassiveCoordinateData` and its projections
+`solvedA1`, `solvedA3`, and `edgeMatrix`.  The theorem
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_readbacks_eq_targets`
+proves that the bundled data's fixed-base edge family has the active
+source-left and per-edge transformed-edge readbacks under the finite side
+conditions `F2_last=0`, passive `A1seed` determinant units, and `det(Ctop)`
+unit.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-coordinate-data-source-map.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-coordinate-data-source-map.md`.
+This is a finite algebraic source-map object only: no open coordinate domain,
+topology, measure, Jacobian, local inverse, source coverage, source/image
+theorem, normal crossings, pole order, or RLCT.

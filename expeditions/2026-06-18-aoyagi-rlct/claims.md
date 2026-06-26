@@ -8400,3 +8400,26 @@ Nonclaims: constructor-side finite source-map layer only.  No bundled
 coordinate-domain structure, no two-sided local inverse, no source-rank
 coverage, no source/image equality, no measure pushforward, no density/Jacobian
 theorem, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive coordinate-data source map:
+Lean now defines
+`ChartLocalSuffixState.RetainedPassiveCoordinateData` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`, with fields
+`A1seed`, `F2`, `A3seed`, `C`, `Ctop`, and `F3`.  Its projections
+`solvedA1`, `solvedA3`, and `edgeMatrix` build the solved full families and the
+retained-passive fixed-base edge family.  The theorem
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_readbacks_eq_targets`
+proves the source-left active readbacks and per-edge transformed-edge readbacks
+from this bundled data under `F2_last=0`, passive `A1seed` unit hypotheses, and
+`det(Ctop)` unit.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-coordinate-data-source-map.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-coordinate-data-source-map.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-coordinate-data-source-map.md`.
+
+Nonclaims: finite algebraic source-map object only.  No open coordinate domain,
+topology, measure, Jacobian, two-sided local inverse, source-rank coverage,
+source/image equality, normal crossings, pole order, or RLCT.

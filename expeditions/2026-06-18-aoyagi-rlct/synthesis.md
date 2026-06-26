@@ -12646,3 +12646,11 @@ proves zeroing the final block erases the seed/solved difference.  The wrapper
 the fixed-base readback package without endpoint-equation hypotheses.  This is
 still constructor-side finite algebra, not a coordinate-domain object or
 coverage/measure theorem.
+
+New follow-up bundles the constructor fields.  `RetainedPassiveCoordinateData`
+has fields `A1seed`, `F2`, `A3seed`, `C`, `Ctop`, and `F3`; its projections
+define `solvedA1`, `solvedA3`, and `edgeMatrix`.  The theorem
+`RetainedPassiveCoordinateData.edgeMatrix_readbacks_eq_targets` unfolds these
+projections and applies the solved-family readback theorem.  This is now a
+named finite retained-passive source-map object, but still lacks topology,
+local inverse, coverage, source-image, or measure/density content.

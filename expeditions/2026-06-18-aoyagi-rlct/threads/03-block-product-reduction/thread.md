@@ -7533,6 +7533,54 @@ Xhigh reviewer `Bohr the 3rd` passed the sign/order, tail-invariance,
 passive determinant-unit transport, reuse of the fixed-base readback package,
 and nonclaim boundary.  No changes were required.
 
+## 2026-06-26 A2 retained-passive coordinate-data source map
+
+Reproduction:
+`reproduction-a2-retained-passive-coordinate-data-source-map.md`.
+Statement card:
+`statement-card-a2-retained-passive-coordinate-data-source-map.md`.
+Review:
+`review-a2-retained-passive-coordinate-data-source-map.md`.
+
+Lean now bundles the retained-passive finite coordinate fields into
+
+```text
+ChartLocalSuffixState.RetainedPassiveCoordinateData
+```
+
+with fields
+
+```text
+A1seed, F2, A3seed, C, Ctop, F3.
+```
+
+The projections
+
+```text
+RetainedPassiveCoordinateData.solvedA1
+RetainedPassiveCoordinateData.solvedA3
+RetainedPassiveCoordinateData.edgeMatrix
+```
+
+build the solved full families and the retained-passive fixed-base edge family.
+The theorem
+
+```text
+RetainedPassiveCoordinateData.edgeMatrix_readbacks_eq_targets
+```
+
+reuses the solved-family wrapper to prove the active source-left and per-edge
+transformed-edge readbacks from the bundled data under `F2_last=0`, passive
+`A1seed` unit hypotheses, and `det(Ctop)` unit.
+
+This is a finite algebraic source-map object.  It does not define an open
+coordinate domain, topology, measure, Jacobian, two-sided local inverse,
+coverage, source/image equality, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Kant the 3rd` passed the field contents, projection order,
+terminal `F2` condition, reuse of the solved-family wrapper, and nonclaim
+boundary.  No changes were required.
+
 ## 2026-06-26 A2 retained-passive `A1_0` endpoint target
 
 Reproduction:
