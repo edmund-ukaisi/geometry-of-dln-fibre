@@ -32,8 +32,10 @@
   - `smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre` (the headline, conditional on the
     hypothesis below).
 - **Assumed.** `Algebra.IsSmoothAt k q` for `sweepFibreRing` at the top-component generic prime `q`.
-  This is exactly the thread-14 fact (C) (generic Jacobian rank `= codim = C+δ` on every top
-  component, verified on 15600 dimension vectors + Singular certs). NOT discharged in Lean here.
+  This is the formal-smoothness reading of the thread-14 fact (C) (generic Jacobian rank `= codim =
+  C+δ` on every top component, verified on 15600 dimension vectors + Singular certs); the
+  Jacobian-rank `⟹` `IsSmoothAt` bridge rests on the `IsAlgClosed k` (hence perfect-field) setting
+  named in the claim. NOT discharged in Lean here.
 - **Cited.** none (the hypothesis is a Lean-level openness, not an external citation).
 - **Deferred (the precise cost of going unconditional):**
   - (i) Discharge `IsSmoothAt k q` of `sweepFibreRing` at top-component generic points. Two routes,
@@ -54,4 +56,5 @@
   of-base-change + component-localization comparison; FALLBACK wall = determinantal rank theory).
   The chosen landing isolates the one honest input (`IsSmoothAt` of the fibre factor) and discharges
   everything else (matrix-factor smoothness, the tensor-smooth and basic-open bricks) unconditionally.
-- **Status.** sorry-free
+- **Status.** sorry-free + reviewed (fidelity PASS-WITH-NOTES; N1 wording + N3 field-assumption
+  notes actioned; N2 framing guard-rail noted for downstream synthesis).

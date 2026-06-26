@@ -35,7 +35,7 @@ fibre element `g ∉ q` with `Smooth k (SchurLoc ⊗_k Localization.Away g)`: th
 fibre chart-piece is genuinely smooth. This is the substance of the LEAD route's "smoothness is
 factor-wise on the tensor product"; the only open input is the `IsSmoothAt` of the fibre factor.
 
-**Cost to go unconditional (the gap, stated honestly).** Two further steps, deferred:
+**Cost to go unconditional (the gap).** Two further steps, deferred:
 (i) discharge the hypothesis `IsSmoothAt k q` of `sweepFibreRing` at top-component generic points —
 this is the thread-14 fact (C), needing either the orbit-closure transport (`OrbitSmooth`'s
 `isSmoothAt_normalFormIdeal` + a local "the fibre equals one shifted orbit closure at this

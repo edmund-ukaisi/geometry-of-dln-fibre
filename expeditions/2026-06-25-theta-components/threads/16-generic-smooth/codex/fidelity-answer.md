@@ -1,0 +1,13 @@
+1. **Load-Bearing**
+[FACT] The hypothesis `Algebra.IsSmoothAt k q` is exactly what supplies `∃ g ∉ q, Smooth k (Localization.Away g)` via the Mathlib lemma cited. [FACT] Without it, the theorem would assert a smooth basic open neighborhood of `q` in the fibre ring; for a singular prime this is false. [INFERENCE] SchurLoc being smooth does not repair singularity in the fibre factor, so the hypothesis is not decorative and does not smuggle more than the needed fibre-local smoothness.
+
+2. **Non-Vacuity**
+[FACT] If `g ∉ q` and `q` is prime/proper, then `g` is not forced to vanish in the localized fibre ring, and `Localization.Away g` is the relevant basic open, not automatically zero. [FACT] SchurLoc is an away localization of a polynomial ring; for `r = 0`, the determinant is conventionally `1`, so SchurLoc is just the polynomial/matrix-factor ring, still not zero over a nonzero field. [INFERENCE] Degenerate dimensions may make the geometry trivial, but they do not make the theorem content-free in the zero-ring sense.
+
+3. **Overclaim Check**
+[VERDICT: honest but narrow.] [FACT] The theorem proves smoothness of `SchurLoc ⊗[k] Localization.Away g`, not directly `Algebra.IsSmoothAt k p` for the chart ring and not directly anything about all of the fibre. [FACT] Step (i) is assumed and step (ii) is deferred, so the formal theorem is one transport lemma short of the chart-level statement. [INFERENCE] The card phrase is honest only if “conditionally” and “chart-piece/tensor chart” remain explicit; calling it simply “generic smoothness of the fibre” overclaims. [INFERENCE] Conversely, the Lean theorem is mechanically close to formal-smoothness bookkeeping once `hq_smooth` is assumed, but that bookkeeping is still the correct bridge object.
+
+4. **Jacobian vs IsSmoothAt**
+[VERDICT: subtlety-flagged.] [FACT] For finitely presented algebras over a field, smoothness at a prime is the algebro-geometric notion captured by smooth local rings, and over a perfect/algebraically closed field the Jacobian rank criterion is the standard way to certify it for affine varieties. [FACT] `Algebra.IsSmoothAt k q` in Mathlib is formal smoothness of the localization at `q`, so it is stronger/more intrinsic than merely saying the local ring is regular in arbitrary imperfect-field contexts. [INFERENCE] Since the field is algebraically closed, the thread-14 Jacobian-rank-equals-codimension fact is an accurate informal source for `IsSmoothAt`, but the gloss should mention the finite-presentation/perfect-field assumptions.
+
+Overall verdict: the conditional formulation is the right honest object, provided the title does not hide that the actual Lean theorem is the tensor-chart smoothness conditional on the fibre-local `IsSmoothAt` input.
