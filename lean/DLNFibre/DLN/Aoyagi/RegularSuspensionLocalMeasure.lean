@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 import DLNFibre.DLN.Aoyagi.MonomialChartIntegrability
+import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 import DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
 import Mathlib.MeasureTheory.Integral.Lebesgue.Map
@@ -3394,6 +3395,157 @@ theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13Regular
   exact ⟨R, C, U, hR, hRle, hC, hUopen, hxU, by simpa [ρ, sourceStratum] using hfin⟩
 
 set_option linter.unusedSectionVars false in
+/-- Local finite-side p.13 integrability with the concrete chart-side inverse
+Jacobian density for the left-endpoint product step.
+
+This specializes
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_continuousAt_pos_density`
+to
+`productReductionStepRawOrderInverseJacobianDensity` composed with
+`paperEndpointFixedBaseP13RawOrderTuple`.  It removes only the abstract
+continuity/positivity hypotheses on the density factor; the loss lower bound
+and residual-source integrability hypotheses remain supplied. -/
+theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_continuousAt_selfBase
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex V 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv))}
+    {CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 2) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) (N := M + 2) V Bv U₀ hU₀ x₀ CedgeBase H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)) → ℝ}
+    {t Rmax c : ℝ}
+    (hRmax : 0 < Rmax) (hc : 0 < c) (ht : 0 < t)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge))
+    (hpos_source :
+      ∀ᵐ x ∂ μ.restrict
+          (paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x))
+    (hbase_source :
+      residualNegPowerIntegrableOn
+        (W := V) (B := Bv) (U₀ := U₀) (hU₀ := hU₀) CedgeBase
+        (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge) μ t)
+    (hloss :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex V) (reverseEdge V Bv) U₀ 0))) Rmax →
+            c * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) :
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge
+    ∃ R C : ℝ, ∃ U : Set α,
+      0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ x₀ ∈ U ∧
+        (∫⁻ z : α × EuclideanSpace ℝ ρ,
+          ENNReal.ofReal
+            ((Metric.ball (0 : EuclideanSpace ℝ ρ) R).indicator
+              (fun u =>
+                (loss (z.1, u)) ^
+                    (-(t + (aoyagiTheorem2RegularVariableCount (M + 2) H r : ℝ) / 2)) *
+                  productReductionStepRawOrderInverseJacobianDensity
+                    (paperEndpointFixedBaseP13RawOrderTuple
+                      V Bv U₀ hU₀ CedgeBase (z.1, u))) z.2) ∂
+            (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  classical
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge
+  let density : α × EuclideanSpace ℝ ρ → ℝ :=
+    fun xu ↦
+      productReductionStepRawOrderInverseJacobianDensity
+        (paperEndpointFixedBaseP13RawOrderTuple
+          V Bv U₀ hU₀ CedgeBase xu)
+  have hdensity_cont : ContinuousAt density (x₀, 0) := by
+    simpa [density, ρ] using
+      continuousAt_paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_selfBase
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+  have hdensity_pos : 0 < density (x₀, 0) := by
+    simpa [density, ρ] using
+      paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) x₀
+  simpa [density, ρ, sourceStratum] using
+    exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_continuousAt_pos_density
+      (W := V) (B := Bv) sourceData
+      (μ := μ) (ν := ν) (loss := loss) (density := density)
+      (t := t) (Rmax := Rmax) (c := c)
+      hRmax hc ht
+      (by simpa [sourceStratum] using hsource_meas)
+      (by simpa [sourceStratum] using hpos_source)
+      (by simpa [residualNegPowerIntegrableOn, sourceStratum] using hbase_source)
+      hdensity_cont hdensity_pos
+      (by simpa [ρ, sourceStratum] using hloss)
+
+set_option linter.unusedSectionVars false in
 /-- Radius-shrinking local finite-integral handoff with residual source
 hypotheses supplied by a weighted signed-box residual chart and density bounds
 supplied by positivity and continuity at the chart center.
@@ -3546,6 +3698,173 @@ theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13Regular
       (by simpa [sourceStratum] using hpos_source)
       (by simpa [residualNegPowerIntegrableOn, sourceStratum] using hbase_source)
       hdensity_cont hdensity_pos
+      (by simpa [ρ, sourceStratum] using hloss)
+
+set_option linter.unusedSectionVars false in
+/-- Radius-shrinking p.13 finite-integral handoff for the concrete
+product-step inverse Jacobian density, with residual source hypotheses supplied
+by a weighted signed-box residual chart.
+
+This removes only the abstract regular-fiber density factor from the signed-box
+front end: the residual signed-box pushforward, source-density monomial bound,
+and local regular-fiber loss lower bound are still explicit hypotheses.  It
+does not identify the signed-box source density with the product-step inverse
+Jacobian density and does not prove a product-chart pushforward theorem. -/
+theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_selfBase
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α ι : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    [Fintype ι] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex V 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv))}
+    {CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 2) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) (N := M + 2) V Bv U₀ hU₀ x₀ CedgeBase H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {sourceChart : (ι → ℝ) → α} {sourceDensity : (ι → ℝ) → ℝ}
+    {loss :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)) → ℝ}
+    {t Rmax creg cres Cres : ℝ}
+    {Rres : ι → ℝ} {hres kres : ι → ℕ}
+    (hRmax : 0 < Rmax) (hcreg : 0 < creg) (ht : 0 < t)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge))
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+          (fun p : Fin (M + 2) ↦
+            (CedgeBase x p :
+              reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))))
+    (hsourceDensity_aemeas :
+      AEMeasurable (fun y : ι → ℝ => ENNReal.ofReal (sourceDensity y))
+        (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hsourceChart : AEMeasurable sourceChart
+      (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hmap :
+      μ.restrict (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge) =
+        Measure.map sourceChart
+          ((Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+            (fun y : ι → ℝ => ENNReal.ofReal (sourceDensity y))))
+    (hcres : 0 < cres) (hCres : 0 ≤ Cres) (hRres : ∀ i, 0 < Rres i)
+    (hcrit : ∀ i, 2 * t * (kres i : ℝ) < (hres i : ℝ) + 1)
+    (hres_lower : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      cres * ∏ i, (|y i|) ^ (2 * (kres i : ℝ)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase (sourceChart y)))
+    (hsourceDensity_nonneg : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      0 ≤ sourceDensity y)
+    (hsourceDensity_le : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      sourceDensity y ≤ Cres * ∏ i, (|y i|) ^ (hres i : ℝ))
+    (hloss :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex V) (reverseEdge V Bv) U₀ 0))) Rmax →
+            creg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) :
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge
+    ∃ R C : ℝ, ∃ U : Set α,
+      0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ x₀ ∈ U ∧
+        (∫⁻ z : α × EuclideanSpace ℝ ρ,
+          ENNReal.ofReal
+            ((Metric.ball (0 : EuclideanSpace ℝ ρ) R).indicator
+              (fun u =>
+                (loss (z.1, u)) ^
+                    (-(t + (aoyagiTheorem2RegularVariableCount (M + 2) H r : ℝ) / 2)) *
+                  productReductionStepRawOrderInverseJacobianDensity
+                    (paperEndpointFixedBaseP13RawOrderTuple
+                      V Bv U₀ hU₀ CedgeBase (z.1, u))) z.2) ∂
+            (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  classical
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge
+  rcases
+      residualSourceHypotheses_of_measure_map_signedBox_withDensity_monomialLower_of_measurable_edgeMatrix
+        (W := V) (B := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := CedgeBase) (source := sourceStratum) (μ := μ)
+        (chart := sourceChart) (density := sourceDensity)
+        (t := t) (c := cres) (C := Cres) (R := Rres) (h := hres) (k := kres)
+        hEdgeMatrix hsourceDensity_aemeas hsourceChart
+        (by simpa [sourceStratum] using hmap)
+        hcres hCres (le_of_lt ht) hRres hcrit hres_lower
+        hsourceDensity_nonneg hsourceDensity_le with
+    ⟨hpos_source, hbase_source⟩
+  simpa [ρ, sourceStratum] using
+    exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_continuousAt_selfBase
+      (V := V) (Bv := Bv) sourceData
+      (μ := μ) (ν := ν) (loss := loss)
+      (t := t) (Rmax := Rmax) (c := creg)
+      hRmax hcreg ht hCedgeBase hbase
+      (by simpa [sourceStratum] using hsource_meas)
+      (by simpa [sourceStratum] using hpos_source)
+      (by simpa [residualNegPowerIntegrableOn, sourceStratum] using hbase_source)
       (by simpa [ρ, sourceStratum] using hloss)
 
 set_option linter.unusedSectionVars false in

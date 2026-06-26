@@ -5051,3 +5051,14 @@ source/prior transport, unweighted measure transport, normal crossings, pole
 order, or RLCT.  The next valuable extension is either an arbitrary-step
 `stepRawCoordinates` version or a genuine chart/source-density transport
 consumer; do not add more wrappers unless they feed one of those.
+
+A2 p.13 product-step inverse-density finite-integral handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-density-finite-integral-handoff.md`.
+Lean specializes the existing p.13 continuous-density finite-integral and
+weighted signed-box residual-source handoffs to the concrete chart-side
+inverse product-step Jacobian density along the left-endpoint tuple.  Treat
+this as a local finite-integral consumer only.  It is not source coverage,
+product-chart construction, product-step pushforward, original source/prior
+transport, signed-box density identification, normal crossings, pole order, or
+RLCT.  Further density work should move a genuine transport or chart image
+obligation, not add another wrapper around the same finite-integral theorem.

@@ -7504,3 +7504,24 @@ the `_center` positivity rename and aggregate-comment fix; review at
 
 Nonclaims: no source coverage, original DLN source/prior transport,
 unweighted measure transport, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 product-step inverse-density finite-integral handoff:
+Lean now specializes two existing p.13 local finite-integral handoffs to the
+concrete chart-side inverse product-step Jacobian density along the
+left-endpoint regular-coordinate tuple.
+
+Lean names:
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_continuousAt_selfBase`
+and
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_selfBase`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-density-finite-integral-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-inverse-density-finite-integral-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-inverse-density-finite-integral-handoff.md`.
+
+Nonclaims: no source coverage, p.13 product chart construction, product-step
+pushforward identity, original source/prior transport, signed-box density
+identification, normal crossings, pole order, or RLCT.

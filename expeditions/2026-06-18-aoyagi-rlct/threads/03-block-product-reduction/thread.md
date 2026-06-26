@@ -6581,3 +6581,44 @@ chart therefore checks two copies of `IsUnit det(Ctop(u))`, discharged at
 This is only a local tuple and reciprocal-density handoff.  It is not source
 coverage, original DLN source/prior transport, unweighted measure transport,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 product-step inverse-density finite-integral handoff
+
+Reproduction:
+`reproduction-a2-product-step-inverse-density-finite-integral-handoff.md`.
+Statement card:
+`statement-card-a2-product-step-inverse-density-finite-integral-handoff.md`.
+Review:
+`review-a2-product-step-inverse-density-finite-integral-handoff.md`.
+
+Lean now specializes the existing p.13 local finite-integral handoff from an
+abstract positive continuous regular-fiber density to the concrete chart-side
+inverse product-step Jacobian density
+
+```text
+productReductionStepRawOrderInverseJacobianDensity
+  (paperEndpointFixedBaseP13RawOrderTuple V Bv U0 hU0 CedgeBase xu).
+```
+
+Lean proves both the direct continuous-density finite-integral wrapper and the
+weighted signed-box residual-source wrapper:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_continuousAt_selfBase
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_selfBase
+```
+
+The pen-and-paper check is only the inverse-coordinate readout for the concrete
+tuple:
+
+```text
+Phi^{-1}(Ctop(u),Dtail(x),F3(u),Ctop(u),F2(u),0,C0(x))
+  = (I,Dtail(x),F3(u),Ctop(u),-Ctop(u)F2(u),0,C0(x)).
+```
+
+This confirms that no `Dtail` inverse is introduced and that the local unit
+input remains the two `Ctop(u)` determinant checks.  The theorem is a
+finite-integral consumer only: it does not prove the p.13 product chart image,
+source coverage, product-step pushforward identity, original DLN source/prior
+transport, signed-box density identification, normal crossings, pole order, or
+RLCT.

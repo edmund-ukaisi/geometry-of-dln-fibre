@@ -8925,6 +8925,24 @@ Review:
 This is not source coverage, original source/prior transport, unweighted
 measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 p.13 product-step inverse-density finite-integral handoff:
+`RegularSuspensionLocalMeasure.lean` now specializes the existing p.13
+continuous-density finite-integral theorem to the concrete chart-side inverse
+product-step Jacobian density along `paperEndpointFixedBaseP13RawOrderTuple`.
+It also provides the weighted signed-box residual-source version.  Lean names:
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_continuousAt_selfBase`
+and
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_selfBase`.
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-density-finite-integral-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-inverse-density-finite-integral-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-inverse-density-finite-integral-handoff.md`.
+This is a local finite-integral consumer only; it does not prove source
+coverage, a product-step pushforward theorem, original source/prior transport,
+signed-box density identification, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

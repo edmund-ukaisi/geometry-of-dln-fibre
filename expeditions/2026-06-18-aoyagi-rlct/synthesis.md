@@ -11581,3 +11581,33 @@ The main fidelity point is that the passive `A1` slot is `Ctop(u)`, not `1`;
 the identity is the preceding raw `C1` accumulator.  This checkpoint is still
 local unit control only: no source coverage, original DLN prior transport,
 unweighted measure transport, normal crossings, pole order, or RLCT.
+
+## Latest A2 P.13 Product-Step Inverse-Density Finite-Integral Handoff
+
+`RegularSuspensionLocalMeasure.lean` now removes the abstract regular-fiber
+`density` input from two p.13 local finite-integral handoffs by specializing it
+to
+
+```text
+productReductionStepRawOrderInverseJacobianDensity
+  (paperEndpointFixedBaseP13RawOrderTuple V Bv U0 hU0 CedgeBase xu).
+```
+
+The direct wrapper delegates to the existing continuous-positive-density
+finite-integral theorem using the continuity and positivity established in
+`ProductReductionStepRegularDensity.lean`.  The signed-box wrapper first
+obtains residual-source positivity/integrability from the existing weighted
+signed-box source-measure constructor, then delegates to the direct wrapper.
+
+The pen-and-paper calculation is
+
+```text
+Phi^{-1}(Ctop(u),Dtail(x),F3(u),Ctop(u),F2(u),0,C0(x))
+  = (I,Dtail(x),F3(u),Ctop(u),-Ctop(u)F2(u),0,C0(x)).
+```
+
+This is finite-integral composition only: it does not construct a p.13 product
+chart, prove source coverage, prove a product-step pushforward identity,
+identify signed-box source density with the inverse Jacobian density, transport
+the original DLN prior, produce normal crossings, compute pole order, or prove
+RLCT.
