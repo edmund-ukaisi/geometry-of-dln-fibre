@@ -5423,3 +5423,15 @@ active `X=Ctop_0-I`, `F2_0`, `F3_0`, and residual factors `C_p`; passive
 `A1_p,F2_p` for `p>0` and `A3_p` for `p<last`; omitted `A1_0` and
 `A3_last` recovered from `Ctop_0` and `F3_0`.  The next Lean target should be
 finite reconstruction/readback for this source map, not a measure theorem.
+
+First Lean rung landed:
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`, with statement
+card
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-transformed-edge-reconstruction.md`.
+It proves that fixed-base edges
+`E_p = [I,F2_{p+1};0,I] * [A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]`
+have the prescribed transformed blocks under deterministic suffix recursion,
+assuming `F2_last=0` and unit `A1_p`.  The next A2 target should add the
+active endpoint readback/reconstruction for `A1_0` and `A3_last`, still before
+coverage or measure transport.

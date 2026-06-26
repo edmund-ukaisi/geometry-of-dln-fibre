@@ -12492,3 +12492,21 @@ target should be a reconstruction/readback theorem for the retained-passive
 source map.  It should not claim source-rank coverage, source-measure
 pushforward, density/Jacobian transport, normal crossings, pole order, or
 RLCT.
+
+## Latest A2 Retained-Passive Lean Rung - 2026-06-26
+
+Lean now records the first finite algebraic rung in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  The theorem
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq`
+proves that, for retained-passive blocks
+`M_p=[A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]` and fixed-base edges
+`E_p=[I,F2_{p+1};0,I]*M_p`, the deterministic suffix recursion sees
+`M_p` as the transformed edge at step `p`.  The proof tracks the suffix-state
+`B` field by reverse induction, starting from `F2_last=0`, and uses only the
+unit determinant hypotheses on `A1_p`.
+
+This is not the full retained-passive source chart yet.  It does not recover
+the active endpoint variables `A1_0` or `A3_last`, does not prove source-rank
+coverage or source/image equality, and does not address measure pushforward,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.  The next
+finite target is endpoint readback/reconstruction for `A1_0` and `A3_last`.

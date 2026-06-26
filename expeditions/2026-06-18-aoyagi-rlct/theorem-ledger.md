@@ -9391,3 +9391,18 @@ Review:
 This is a conditional upper-bound hardening only.  It does not prove selector
 injectivity, branch-label injectivity, no-extra coverage, terminal-label
 exactness, pole order, normal crossings, or RLCT.
+
+Latest A2 retained-passive transformed-edge reconstruction:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq`.
+Given retained-passive blocks
+`M_p=[A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]`, fixed-base edges
+`E_p=[I,F2_{p+1};0,I]*M_p`, the terminal condition `F2_last=0`, and unit
+determinants for every `A1_p`, the deterministic suffix-state recursion has
+`transformedEdge E p (suffixState E last p.succ) = M_p` for every edge.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-transformed-edge-reconstruction.md`.
+This is finite transformed-edge reconstruction only: no endpoint recovery for
+`A1_0` or `A3_last`, source-rank coverage, source/image equality,
+source-measure pushforward, density/Jacobian theorem, normal crossings, pole
+order, or RLCT.

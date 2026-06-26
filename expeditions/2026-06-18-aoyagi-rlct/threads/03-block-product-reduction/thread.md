@@ -7266,3 +7266,44 @@ with `F2_N = 0`.  This is the first finite source-map/inverse skeleton that
 could later support `hcoverage`.  It does not yet prove coverage, exact-rank
 openness, source-measure pushforward, density/Jacobian transport, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive transformed-edge reconstruction
+
+Statement card:
+`statement-card-a2-retained-passive-transformed-edge-reconstruction.md`.
+
+Lean now adds `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.
+The bounded theorem is
+
+```text
+ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
+```
+
+with helper definitions
+
+```text
+retainedPassiveTransformedEdge
+retainedPassiveFixedBaseEdgeMatrix
+```
+
+and suffix-state `B` tracking helpers.  For retained-passive transformed blocks
+
+```text
+M_p = [A1_p, -A1_p F2_p; A3_p, C_p - A3_p F2_p]
+```
+
+and fixed-base edges
+
+```text
+E_p = [I, F2_{p+1}; 0, I] * M_p,
+```
+
+Lean proves that the deterministic suffix recursion has
+`transformedEdge E p (suffixState E last p.succ) = M_p`, assuming
+`F2_last=0` and unit determinants for every `A1_p`.
+
+This is finite transformed-edge reconstruction only.  It does not recover the
+active endpoint variables `A1_0` or `A3_last`, prove source-rank coverage,
+construct source/image equality, push source measure forward, compute a
+Jacobian/prior density, produce normal crossings, prove pole order, or extract
+RLCT.

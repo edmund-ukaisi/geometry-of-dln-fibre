@@ -153,6 +153,7 @@ import DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure
 import DLNFibre.DLN.Aoyagi.Case2ResidualSelectedEntryChartBridge
 import DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxLocalMeasure
 import DLNFibre.DLN.Aoyagi.SelectedEntryOriginalLossLocalMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
 -- Determinantal-stratum dimension (fibre-codim AG build, rung 1): dim Mat^{rk≤r}_{m×n} = r(n+m−r),
 -- via the N=1 specialisation of the quiver engine (productRankLocusLE ![n,m] r = the determinantal variety).
 import DLNFibre.Core.DeterminantalStratumDim
