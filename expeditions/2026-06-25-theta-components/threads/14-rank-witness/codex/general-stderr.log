@@ -1,0 +1,299 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f035e-15ae-7e01-baf1-8b17fa1cab47
+--------
+user
+<task>
+Independent proof-audit of a GENERAL fibre-Jacobian rank theorem for deep linear networks.
+We need to decide whether a per-case-verified rank identity holds for ALL dimension vectors and
+ranks, and to pin its exact scope. Derive from first principles; do not rubber-stamp.
+
+SETUP (exact). Fix d=(d_0,...,d_N) of nonneg integers, N arrows, over an INFINITE field k.
+Rep_d = affine space of tuples A=(A_1,...,A_N), A_i an (d_i x d_{i-1}) matrix.
+  mult(A) = A_N * A_{N-1} * ... * A_1   (a d_N x d_0 matrix).
+Fix r, 0 <= r <= min_i d_i. E_r = diag(I_r,0) of shape d_N x d_0, rank exactly r.
+  Fib = { A : mult(A) = E_r }   (affine scheme), cut by F_{ij} = (mult(A) - E_r)_{ij} = 0.
+Fibre Jacobian at A: J(A), the matrix of  Adot |-> sum_i L_i Adot_i R_i,
+  L_i = A_N..A_{i+1}  (d_N x d_i),   R_i = A_{i-1}..A_1  (d_{i-1} x d_0).
+
+ESTABLISHED FACTS (exact, proved earlier in the project; you may USE these):
+- delta := r*(d_0 + d_N - r) is the determinantal codim of the rank-<=r locus Sigma^{<=r} at E_r.
+- dsh := sorted-ascending of (d_0-r,...,d_N-r). C_sh := the combinatorial codim of the SHIFTED
+  zero-product variety {B : B_N..B_1 = 0} on dim vector dsh (a closed form C = cValue(dsh)).
+  Q := delta + C_sh is the fibre codimension (= "C + delta"), proved separately.
+- theta := number of top-dimensional irreducible components of Fib = C(m, |qdelta|) where
+  (m, qdelta) are the QIP data of dsh. The top components biject with corner-r Kostant partitions
+  of dsh.
+- For any A in Fib: U_i := (A_i..A_1)(k^r) is r-dimensional; A_i : U_{i-1} -> U_i is iso; the
+  quotient maps Abar_i : k^{d_{i-1}}/U_{i-1} -> k^{d_i}/U_i satisfy Abar_N..Abar_1 = 0
+  (the "shifted" rep is a zero-product rep on the quotient dim vector (d_i - r)).
+
+VERIFIED ON 6 CASES (exact rank over Q, plus a complete 9x9-minor enumeration on one):
+  (2,2,2)r1 Q=4 th=2; (2,2,2,2)r1 Q=4 th=3; (3,3,3)r2 Q=9 th=2; (2,2,2,2,2)r0 Q=3 th=6;
+  (3,3,3)r1 Q=8 th=1; (3,2,3)r1 Q=7 th=2.
+On every TOP component the generic rank of J equals Q = delta + C_sh.
+
+THE RANK-SPLIT CLAIM TO AUDIT (conjectured general, proved per-case):
+  rank J(A) = delta + dim I(Abar),   where
+  I(Abar) := sum_i  im(Lbar_i) tensor Ann ker(Rbar_i)   inside Hom(k^{d0}/U_0, k^{dN}/U_N),
+  Lbar_i = Abar_N..Abar_{i+1}, Rbar_i = Abar_{i-1}..Abar_1 (the quotient partials), and on the
+  dense orbit of EVERY top Kostant component  dim I(Abar) = C_sh, giving rank J = Q generically.
+
+QUESTIONS (answer each; mark every claim PROVEN / CONJECTURE / GAP):
+
+Q1. THE SPLIT delta + dim I(Abar). Is the decomposition rank J(A) = delta + dim I(Abar) valid for
+    EVERY A in Fib and every (d, r) (infinite field)? Give the exact argument: the change of basis
+    aligning U_i (the through-flag) so J becomes block-triangular, the proof that the endpoint block
+    contributes EXACTLY delta = r(d_0+d_N-r) (not less -- mind that the r-image and r-source blocks
+    overlap; is delta the right count or is there a correction r^2?), and that the complementary
+    block is exactly the shifted zero-product differential. Where, if anywhere, does the split need
+    A to be GENERIC rather than arbitrary in Fib?
+
+Q2. dim I(Abar) = C_sh ON THE GENERIC TOP STRATUM. This is the crux. For a zero-product rep
+    Abar_N..Abar_1 = 0 on dim vector dsh, lying on the dense orbit of a top Kostant component, is
+    dim(sum_i im(Lbar_i) tensor Ann ker(Rbar_i)) ALWAYS equal to C_sh? Is this a known theorem
+    (the tangent space to the zero-product variety / the smoothness of the open orbit in each
+    top component)? Give the cleanest proof or name the obstruction. In particular: is the generic
+    zero-product top stratum a SMOOTH point of its component (so tangent dim = component dim,
+    forcing rank = codim)? Cite the mechanism (Kostant / quiver-orbit smoothness / Ext^1 vanishing).
+
+Q3. PER-COMPONENT vs GLOBAL minor, sharp dividing line. Verified: theta=1 (qdelta=0) admits a
+    single global Q-minor; theta>=2 forces per-component minors (disjoint active arrow-intervals).
+    PROVE the dividing line: theta = 1 IFF a single fixed coordinate Q-minor of J is nonvanishing
+    on the entire generic locus. Is "theta=1" equivalent to "the Jacobian matroids of all top
+    components share a common basis"? Does r saturating to a complete intersection (Q = d_N d_0)
+    change this (it should NOT -- (2,2,2)r1 has Q=4=d_N d_0 yet theta=2 and per-component)?
+
+Q4. KILL-PROBES. Identify the SMALLEST (d, r) most likely to BREAK rank J = delta + C_sh on some
+    top component -- e.g. asymmetric endpoints (d_0 != d_N), an internal node strictly smaller than
+    endpoints (a "valley", so a quotient node has dim 0 forcing a forced rank drop), wide m>=3 with
+    |qdelta|>=2, or non-equidimensional fibres (top components of different dims). Name 2-3 such
+    cases and predict, for each, whether the split survives and why.
+
+OUTPUT CONTRACT:
+- A short answer to each of Q1-Q4, each claim tagged PROVEN / CONJECTURE / GAP.
+- For Q1: explicitly resolve whether the endpoint block is delta or delta - (something).
+- For Q2: state whether this is a citable theorem and give its name/scope, or flag it as the gap.
+- For Q3: a crisp iff or a counterexample.
+- For Q4: 2-3 concrete kill-probe (d,r) with predictions.
+
+GROUNDING RULES:
+- Reason from exact algebra (product-rule differential, the through-flag block decomposition,
+  ranks of Lbar_i/Rbar_i, quiver-orbit tangent spaces). Numeric rank only guides.
+- Distinguish "tangent space dim = codim" (smoothness) from "rank = codim" carefully.
+- If Q2 reduces to a known smoothness/normality statement about zero-product (nilpotent-type)
+  quiver loci, NAME it precisely with its hypotheses. If it is genuinely open, say so.
+- Do NOT assume the conclusion. If a step needs genericity or a Kostant hypothesis, say exactly which.
+</task>
+
+codex
+I’ll audit this as a math question first, using the repo only to pin notation and any established statements. I’ll separate what follows formally from the block decomposition from what still depends on zero-product component geometry.
+exec
+/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'README.md' -g 'docs/**' -g 'paper-sources/**' -g '*.lean' | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+
+exec
+/bin/bash -lc 'rg -n "cValue|C_sh|Kostant|zero-product|zero product|rank J|Jacobian|QIP|qdelta|theta|corner" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+ succeeded in 0ms:
+./general-stderr.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+./general-stderr.log:16:Independent proof-audit of a GENERAL fibre-Jacobian rank theorem for deep linear networks.
+./general-stderr.log:25:Fibre Jacobian at A: J(A), the matrix of  Adot |-> sum_i L_i Adot_i R_i,
+./general-stderr.log:30:- dsh := sorted-ascending of (d_0-r,...,d_N-r). C_sh := the combinatorial codim of the SHIFTED
+./general-stderr.log:31:  zero-product variety {B : B_N..B_1 = 0} on dim vector dsh (a closed form C = cValue(dsh)).
+./general-stderr.log:32:  Q := delta + C_sh is the fibre codimension (= "C + delta"), proved separately.
+./general-stderr.log:33:- theta := number of top-dimensional irreducible components of Fib = C(m, |qdelta|) where
+./general-stderr.log:34:  (m, qdelta) are the QIP data of dsh. The top components biject with corner-r Kostant partitions
+./general-stderr.log:38:  (the "shifted" rep is a zero-product rep on the quotient dim vector (d_i - r)).
+./general-stderr.log:43:On every TOP component the generic rank of J equals Q = delta + C_sh.
+./general-stderr.log:46:  rank J(A) = delta + dim I(Abar),   where
+./general-stderr.log:49:  dense orbit of EVERY top Kostant component  dim I(Abar) = C_sh, giving rank J = Q generically.
+./general-stderr.log:53:Q1. THE SPLIT delta + dim I(Abar). Is the decomposition rank J(A) = delta + dim I(Abar) valid for
+./general-stderr.log:58:    block is exactly the shifted zero-product differential. Where, if anywhere, does the split need
+./general-stderr.log:61:Q2. dim I(Abar) = C_sh ON THE GENERIC TOP STRATUM. This is the crux. For a zero-product rep
+./general-stderr.log:62:    Abar_N..Abar_1 = 0 on dim vector dsh, lying on the dense orbit of a top Kostant component, is
+./general-stderr.log:63:    dim(sum_i im(Lbar_i) tensor Ann ker(Rbar_i)) ALWAYS equal to C_sh? Is this a known theorem
+./general-stderr.log:64:    (the tangent space to the zero-product variety / the smoothness of the open orbit in each
+./general-stderr.log:66:    zero-product top stratum a SMOOTH point of its component (so tangent dim = component dim,
+./general-stderr.log:67:    forcing rank = codim)? Cite the mechanism (Kostant / quiver-orbit smoothness / Ext^1 vanishing).
+./general-stderr.log:69:Q3. PER-COMPONENT vs GLOBAL minor, sharp dividing line. Verified: theta=1 (qdelta=0) admits a
+./general-stderr.log:70:    single global Q-minor; theta>=2 forces per-component minors (disjoint active arrow-intervals).
+./general-stderr.log:71:    PROVE the dividing line: theta = 1 IFF a single fixed coordinate Q-minor of J is nonvanishing
+./general-stderr.log:72:    on the entire generic locus. Is "theta=1" equivalent to "the Jacobian matroids of all top
+./general-stderr.log:74:    change this (it should NOT -- (2,2,2)r1 has Q=4=d_N d_0 yet theta=2 and per-component)?
+./general-stderr.log:76:Q4. KILL-PROBES. Identify the SMALLEST (d, r) most likely to BREAK rank J = delta + C_sh on some
+./general-stderr.log:79:    |qdelta|>=2, or non-equidimensional fibres (top components of different dims). Name 2-3 such
+./general-stderr.log:93:- If Q2 reduces to a known smoothness/normality statement about zero-product (nilpotent-type)
+./general-stderr.log:95:- Do NOT assume the conclusion. If a step needs genericity or a Kostant hypothesis, say exactly which.
+./general-stderr.log:99:I’ll audit this as a math question first, using the repo only to pin notation and any established statements. I’ll separate what follows formally from the block decomposition from what still depends on zero-product component geometry.
+./general-stderr.log:101:/bin/bash -lc "pwd && rg --files -g 'CLAUDE.md' -g 'README.md' -g 'docs/**' -g 'paper-sources/**' -g '*.lean' | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+./general-stderr.log:103:/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+./general-prompt.md:2:Independent proof-audit of a GENERAL fibre-Jacobian rank theorem for deep linear networks.
+./general-prompt.md:11:Fibre Jacobian at A: J(A), the matrix of  Adot |-> sum_i L_i Adot_i R_i,
+./general-prompt.md:16:- dsh := sorted-ascending of (d_0-r,...,d_N-r). C_sh := the combinatorial codim of the SHIFTED
+./general-prompt.md:17:  zero-product variety {B : B_N..B_1 = 0} on dim vector dsh (a closed form C = cValue(dsh)).
+./general-prompt.md:18:  Q := delta + C_sh is the fibre codimension (= "C + delta"), proved separately.
+./general-prompt.md:19:- theta := number of top-dimensional irreducible components of Fib = C(m, |qdelta|) where
+./general-prompt.md:20:  (m, qdelta) are the QIP data of dsh. The top components biject with corner-r Kostant partitions
+./general-prompt.md:24:  (the "shifted" rep is a zero-product rep on the quotient dim vector (d_i - r)).
+./general-prompt.md:29:On every TOP component the generic rank of J equals Q = delta + C_sh.
+./general-prompt.md:32:  rank J(A) = delta + dim I(Abar),   where
+./general-prompt.md:35:  dense orbit of EVERY top Kostant component  dim I(Abar) = C_sh, giving rank J = Q generically.
+./general-prompt.md:39:Q1. THE SPLIT delta + dim I(Abar). Is the decomposition rank J(A) = delta + dim I(Abar) valid for
+./general-prompt.md:44:    block is exactly the shifted zero-product differential. Where, if anywhere, does the split need
+./general-prompt.md:47:Q2. dim I(Abar) = C_sh ON THE GENERIC TOP STRATUM. This is the crux. For a zero-product rep
+./general-prompt.md:48:    Abar_N..Abar_1 = 0 on dim vector dsh, lying on the dense orbit of a top Kostant component, is
+./general-prompt.md:49:    dim(sum_i im(Lbar_i) tensor Ann ker(Rbar_i)) ALWAYS equal to C_sh? Is this a known theorem
+./general-prompt.md:50:    (the tangent space to the zero-product variety / the smoothness of the open orbit in each
+./general-prompt.md:52:    zero-product top stratum a SMOOTH point of its component (so tangent dim = component dim,
+./general-prompt.md:53:    forcing rank = codim)? Cite the mechanism (Kostant / quiver-orbit smoothness / Ext^1 vanishing).
+./general-prompt.md:55:Q3. PER-COMPONENT vs GLOBAL minor, sharp dividing line. Verified: theta=1 (qdelta=0) admits a
+./general-prompt.md:56:    single global Q-minor; theta>=2 forces per-component minors (disjoint active arrow-intervals).
+./general-prompt.md:57:    PROVE the dividing line: theta = 1 IFF a single fixed coordinate Q-minor of J is nonvanishing
+./general-prompt.md:58:    on the entire generic locus. Is "theta=1" equivalent to "the Jacobian matroids of all top
+./general-prompt.md:60:    change this (it should NOT -- (2,2,2)r1 has Q=4=d_N d_0 yet theta=2 and per-component)?
+./general-prompt.md:62:Q4. KILL-PROBES. Identify the SMALLEST (d, r) most likely to BREAK rank J = delta + C_sh on some
+./general-prompt.md:65:    |qdelta|>=2, or non-equidimensional fibres (top components of different dims). Name 2-3 such
+./general-prompt.md:79:- If Q2 reduces to a known smoothness/normality statement about zero-product (nilpotent-type)
+./general-prompt.md:81:- Do NOT assume the conclusion. If a step needs genericity or a Kostant hypothesis, say exactly which.
+
+codex
+The current thread directory appears to contain only the prompt/log artifacts, so I’m going to reason from the algebra in the task statement and use external checks only for the named geometry theorem if needed.
+exec
+/bin/bash -lc "find . -maxdepth 3 -type f | sort | sed -n '1,200p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+2026-06-26T09:58:57.423751Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f035e-15ae-7e01-baf1-8b17fa1cab47`" }
+ exited 1:
+2026-06-26T09:58:57.424306Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find . -maxdepth 3 -type f | sort | sed -n '1,200p'"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+exec
+/bin/bash -lc "find .. -maxdepth 5 -name CLAUDE.md -o -name README.md -o -path '*/docs/policies/*' | sort | sed -n '1,200p'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+2026-06-26T09:58:57.486024Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f035e-15ae-7e01-baf1-8b17fa1cab47`" }
+ exited 1:
+2026-06-26T09:58:57.486453Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "find .. -maxdepth 5 -name CLAUDE.md -o -name README.md -o -path '*/docs/policies/*' | sort | sed -n '1,200p'"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+codex
+The sandbox rejected a broader `find`, so I’ll keep the audit self-contained instead of spending turns on repository discovery. The key issue is independent of file layout: the image of the product differential after choosing through-flag bases.
+web search: 
+web search: ideal entries product of generic matrices radical variety A_N ... A_1 = 0 quiver locus
+web search: 
+web search: representation variety monomial algebra path algebra one zero relation product of matrices radical ideal
+web search: 
+web search: De Concini Strickland variety of complexes normal Cohen-Macaulay rational singularities components
+codex
+The block split now has a clean route: choose complements containing the prefix image of `ker(E_r)`, not arbitrary complements. That kills the otherwise dangerous upper-right prefix terms, so the quotient block really is the shifted differential for every fibre point.
+exec
+/bin/bash -lc "python3 - <<'PY'
+print('ok')
+PY" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/theta-components/expeditions/2026-06-25-theta-components/threads/14-rank-witness/codex
+2026-06-26T10:02:50.625136Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f035e-15ae-7e01-baf1-8b17fa1cab47`" }
+ exited 1:
+2026-06-26T10:02:50.625412Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "python3 - <<'PY'
+print('ok')
+PY"`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+web search: 
+web search: "variety of complexes" De Concini Strickland normal Cohen-Macaulay
+web search: 
+web search: "Abeasis" "Del Fra" "variety of complexes" matrices AB=0 components normal
+web search: 
+web search: "product of generic matrices" "radical" "primary decomposition"
+web search: 
+web search: "quiver determinantal ideals" radical Cohen-Macaulay type A
+web search: 
+web search: Voigt tangent space theorem Ext^1 module variety tangent orbit quotient
+codex
+**Q1. Split**
+
+PROVEN. For every `A in Fib`, no genericity is needed.
+
+Choose `W_0 = ker(E_r)` and `W_N` complementary to `U_N`. For each internal `i`, choose a complement `W_i` to `U_i` containing `(A_i...A_1)(W_0)`. This is possible because if `(A_i...A_1)x in U_i` for `x in W_0`, then applying `A_N...A_{i+1}` gives `E_r x = 0`; since `U_i -> U_N` is an isomorphism, the vector was already zero.
+
+In these bases, every prefix `R_i` has no upper-right block:
+```text
+R_i = [ iso   0
+        0   Rbar_i ]
+```
+while every suffix `L_i` is block upper triangular and induces `Lbar_i` on quotients. Hence the quotient endpoint block of
+```text
+L_i dA_i R_i
+```
+is exactly
+```text
+Lbar_i (dA_i)_quot Rbar_i.
+```
+So the quotient image is exactly
+```text
+I(Abar) = sum_i im(Lbar_i) tensor Ann ker(Rbar_i).
+```
+
+The remaining endpoint block is the subspace of maps `V_0 -> V_N` with zero quotient-to-quotient block. Its dimension is
+```text
+dim Hom(U_0,V_N) + dim Hom(W_0,U_N)
+= r d_N + r(d_0-r)
+= r(d_0+d_N-r) = delta.
+```
+Equivalently, the `U_0 -> U_N` overlap is counted once, so there is no extra `-r^2` correction beyond the one already built into `delta`.
+
+Thus:
+```text
+rank J(A) = delta + dim I(Abar).
+```
+
+**Q2. Generic Top Stratum**
+
+GAP as stated from the supplied facts.
+
+For zero-product reps, `dim I(B)` is exactly the rank of the differential of the product map at `B`. Therefore
+```text
+dim I(B) = C_sh
+```
+is equivalent to saying that the product-zero scheme is generically smooth/reduced along that top component.
+
+The clean obstruction is:
+```text
+Ext^1_{Lambda}(B,B),   Lambda = k A_N / <full path 0 -> N>.
+```
+By Voigt’s tangent-space theorem, `ker d(product) / tangent orbit` is controlled by this Ext group. Thus the desired equality holds on a dense top orbit iff the corresponding top Kostant module is rigid over this bound-quiver algebra:
+```text
+Ext^1_Lambda(B,B) = 0.
+```
+
+Known type-A quiver orbit-closure results give normal/CM/rational singularities for ordinary path-algebra orbit closures, but that does not by itself prove generic reducedness for the scheme cut out only by `B_N...B_1=0`. ([arxiv.org](https://arxiv.org/abs/1307.6261?utm_source=openai)) Classical “variety of complexes” results concern consecutive relations, not exactly this single long-product relation. ([arxiv.org](https://arxiv.org/abs/1504.00339?utm_source=openai))
+
+So: PROVEN if one supplies the theorem “top Kostant modules for `kA_N/<full path>` are rigid” or “the long-product zero scheme is generically reduced along every top orbit”; otherwise this is the main GAP.
+
+**Q3. Global Minor**
+
+FALSE in the strong “nonvanishing on the entire generic locus” sense.
+
+Counterexample: `N=2`, `d=(1,2,1)`, `r=0`. The equation is
+```text
+B_2 B_1 = 0
+```
+with `B_1` a column and `B_2` a row. This is the irreducible quadric `x_1 y_1 + x_2 y_2 = 0`, so `theta=1`, `Q=1`. The Jacobian row is
+```text
+[y_1, y_2, x_1, x_2].
+```
+On the smooth generic locus `B_1 != 0`, `B_2 != 0`, no single coordinate minor is nonzero everywhere: each coordinate can vanish at some smooth generic point.
+
+If “global minor” only means “nonzero at the generic point of each top component,” then `theta=1` implies existence, but `theta>1` failing is a separate Jacobian-matroid statement, not a consequence of `theta` alone. The verified per-component behavior is evidence, not a general proof.
+
+Target saturation `Q=d_N d_0` does not change this; common-minor existence is a column/basis issue, not a row-count issue.
+
+**Q4. Kill Probes**
+
+PROVEN split survives in all cases below by Q1; the only possible failure is Q2 rigidity/generic reducedness.
+
+1. `(d,r)=((2,3,2),1)`, shifted `(1,2,1)`. Prediction: survives. This is the irreducible quadric probe above after shifting; good for killing the strong Q3 claim.
+
+2. `(d,r)=((2,3,4),1)`, shifted `(1,2,3)`. Prediction: top rank is `delta + C_sh`, but lower-dimensional strata can have larger shifted differential rank. Good scope test: `Q` is top-generic, not all-fibre.
+
+3. `(d,r)=((2,2,2,2),0)`. Prediction: split survives; generic top rank should be `C_sh` if the bound-quiver rigidity theorem holds. This is the smallest useful multi-arrow, multi-component zero-product stress test beyond scalar products.
+tokens used
+84,945
