@@ -182,8 +182,37 @@ GATED on the general determinant. Forcing the per-instance frame method into ∀
 infrastructure (anti-bedrock). The recommended next unit: a focused `SchurFrame` parametric-det theorem
 (matrix-indexed, `|det K|^{r+c}` then LDU/radial pullback), THEN coordinatization + cov.
 
+## Phase B (the flat chart + its det) — B1 LANDED, C1 ∀M LANDED; B2/B3 re-scoped (2026-06-26)
+
+After the cost-reversal (thread 36, Phase A `schurFrame_abs_det` banked + gated):
+
+- **B1 LANDED** (`RouteMGenFlatChart.lean`, sorry-free, axiom-clean): the general flat chart
+  `chartParamsFlat := chartParamsGen ∘ genBlkFlat` (the `genBlkFlat` decoder over opaque `Wext`/`Text`
+  widths, identity boundary `k=0` via reindexed `1` under the descent `t_0=M_0`). **The general C1 keystone
+  `chartParamsFlat_eq_chartParamsGen` is DEFINITIONAL (`rfl`)** — the `(3,3,3,3)` probe route, now ∀M; and
+  `routeMCore_chartParamsFlat : routeMCore M (paramsEquivFlat ∘ chartParamsFlat) = (x p)²·V` transfers the
+  banked `routeMCore_phiGen` for FREE (given the identity-boundary `hC0`, dischargeable per-instance as
+  `Bflat3333_C0_eq_one`). `chainQ_cZero_heq` (the `c`-general HEq `chainQ`-at-`c=0`-is-`I`).
+- **B2 bounded bricks LANDED** (`RouteMGenChainBridge.lean`, sorry-free): the opaque-width `chainA`/`chainQ`
+  entry laws (`chainA_apply_castAdd`/`_natAdd`, `chainQ_apply_castAdd`/`_natAdd` — the mechanical bridge
+  from the abstract `chainA`/`chainQ` to the flat-frame block rows, generalizing the `(3,3,3,3)` probe) +
+  `chainUnit_det` (det 1 for the unit-triangular chaining `(W,C)↦(W,C−N·W)`, the cert's `G_s⁻¹`).
+
+- **B2/B3 to `phiFlat_abs_det` RE-SCOPED — NOT a few scoped lemmas** (decorrelated Codex xhigh confirmed,
+  `threads/36-…/codex/b2-{prompt,answer}`). The genuine remaining work: `chainA` (the rate chart's layer)
+  and the Phase-A Schur frame `S(X,K,N,E)` are DIFFERENT objects (the Schur frame is the cert's COMPRESSED
+  TRANSITION `C_s`, not the layer `A^(s) = chainA`). So `schurFrame_abs_det` does NOT attach directly to
+  `D(chartParamsFlat)`. The correct factorization is
+  `Dφ = DQ · ∏ D(chain_s) [det 1] · ∏ D(Schur_s) [|det K_s|^{r+c}] · ∏ D(LDU_s) [∏|q|^{2(t−i)}] · D(radial)
+  [|u_p|^{D−1}]`, **with the prefix-pullback wrinkle** (factor `i`'s deriv at `prefix_i u`, as
+  `Frame3333Deriv (Kparam3333 u)`). The build needs a `ChartFactor`/prefix-fold scaffold + the global
+  chart-equality (`Q · ∏factors = paramsEquivFlat ∘ chartParamsFlat`) over OPAQUE widths — a genuine
+  multi-pass design/build, not bounded. Codex re-scope: bank the B2 bricks (DONE) + A3 `lduCore_abs_det`
+  (parallel) FIRST, then the prefix-fold scaffold, THEN `phiFlat_abs_det` as the final theorem.
+
 ## Files (worktree branch)
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFactor.lean`, `RouteMFactoredChain.lean`,
 `RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
 `RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`,
-`RouteMGenLeafIntegrand.lean`. NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+`RouteMGenLeafIntegrand.lean`, `RouteMFlatChartProbe3333.lean`, `RouteMGenFlatChart.lean` (B1),
+`RouteMGenChainBridge.lean` (B2 bricks). NOT yet in the `DLNFibre.lean` aggregator (controller wires).
