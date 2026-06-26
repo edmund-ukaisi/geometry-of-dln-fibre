@@ -579,3 +579,17 @@ R1 gate `resolution_charts` for the (A) decision:
 > — invest in those large builds, or ship the concrete-anchor milestone (B) — is the operator's, and is the
 > single gate for all remaining substantial work. The controller has maximally de-risked + spec'd; it will
 > not start a large from-scratch (A) build without the scope decision.
+
+## 29. (A)/(B) SCOPE FORK — RESOLVED → (A) (operator, 2026-06-26). Items 24/25/26/27/28 closed.
+The operator decided: **(A) GO THE DISTANCE.** This is a hero expedition; the deliverable is the FULLY GENERAL
+`aoyagi_learning_coefficient` (arbitrary `L`, `M`), not the concrete-anchor milestone (B). Concrete anchors are
+templates + validation, not the endpoint. Plus an **ambition recalibration**: the controller's risk-estimates have
+skewed too pessimistic — mapped-as-"too large/risky" pieces frequently are not; a build that largely follows
+well-established mathematics is within the "break it into pieces, dissolve one by one, let the sea rise, adapt with
+state" reach and should be CHARGED, not deferred. "Roadmap + operator" is reserved for genuine research walls / bare
+unargued extensions only. Both directives are now baked into `loop-prompt.md` (the mission + the ambition calibration
++ the de-risked critical path) so every tick re-grounds on them. The controller holds the strategic vision as a
+feedback controller (measure, adapt) and charges the general builds. Items 24/25/26/27/28 (the (A)/(B) framing and the
+R1-general reachability inputs to it) are RESOLVED by this decision; they remain on record as the de-risking trail.
+The only items still genuinely needing the operator: the strays (Item 23: the off-path θ-components / fibre-codim
+expeditions + `docs/expositions/theta-invariants-distinction.md`), and the PR/dev→master promotions (still gated).

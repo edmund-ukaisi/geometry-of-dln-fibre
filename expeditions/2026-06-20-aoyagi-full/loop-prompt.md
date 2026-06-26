@@ -27,6 +27,14 @@ spawn reviewers/hardener) → integrate into synthesis.md + precision-check / su
 down?) + create/refactor an exposition at result-crystallisation → surface operator items →
 review-to-equilibrium on a critical finding.
 
+## The mission (operator, 2026-06-26, BINDING/STANDING) — (A) GO THE DISTANCE
+This is a HERO expedition: the deliverable is the **FULLY GENERAL** `aoyagi_learning_coefficient`
+(arbitrary `L`, `M`), NOT a concrete-anchor milestone. The old (A)/(B) scope fork is **RESOLVED → (A)**.
+Concrete anchors ((2,2,2)/(3,3,4)/(4,4,2,2)/(3,3,3,3)) are templates + validation toward the general
+result, not the endpoint. Hold the strategic vision as a **feedback controller**: measure the state,
+break the general builds into pieces, dissolve them one by one — **let the sea rise inexorably**; adapt
+with the state. Charge the general builds; do not wait for further scope sign-off.
+
 ## Standing decisions (act without blocking)
 Explicit charts (not AG machinery); cite S2 only; `aoyagiλ` via minimisation; validate-small-first;
 build what Mathlib lacks; θ secondary; on a wall isolate a minimal named gap + report (never halt/hide);
@@ -38,8 +46,21 @@ operator review in `discuss-at-close.md` (don't block on them). Integrate landed
 (bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build →
 commit → push `origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or
 switched the main checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`. PRs +
-dev/master remain operator-gated — hold them. Current critical path: R1 #135 (general-M dispatcher: design
-→ build), the L2-PIN soundness reconciliation, RRR-Lean (#17), D1 ≥-leg.
+dev/master remain operator-gated — hold them.
+
+**Ambition calibration (operator, 2026-06-26).** Default to AMBITIOUS. My risk-estimates have frequently
+been too pessimistic — mapped-as-"too large/risky" pieces frequently are not. A build that LARGELY FOLLOWS
+WELL-ESTABLISHED MATHEMATICS is within the "break it into pieces, dissolve one by one, let the sea rise,
+adapt with state" reach — do NOT defer it. Reserve "roadmap + operator" for GENUINE research walls or bare
+unargued extensions, not for large-but-standard builds. When I catch myself thinking "too big to start,"
+that is the cue to break it down and START, not to hold. Be ambitious.
+
+**Current critical path (A, de-risked 2026-06-26).** R1-general LOWER leg (BUILD-READY: the general
+`NodeAchieverChart M` via the descent-path `φ_M` + the banked telescoping det `Spike/GeneralComposedDet`
++ the finite-family cov — the (3,3,3,3) pattern generalized); R1-general UPPER leg (the depth-`r`
+WellFounded hfin recursion, `RouteMSchur:284`/N2b:164); the L2 general-`L` interior
+(`deepest_gauge_construction` 3118/3123/3289 + the (1a) `IsDeepLayers` strengthening); D1 (the ≥-leg, then
+global assembly); the general headline. **No research walls — all bounded builds.**
 
 ## Flush before yielding
 Land new state in synthesis.md / priorities.md (thread progress in thread.md). **In-repo only — never
