@@ -167,3 +167,84 @@ green 3780, sorries 0, `#print axioms` = `[propext, Classical.choice, Quot.sound
 **fibre-θ count is CLOSED** — reviewer-PASS chain + the unconditional headline. Caveat: `k : Type 0` (to lift
 to `Type u`, W2 needs re-generalising — peer-owned; Type 0 is the honest, sufficient scope). The explicit
 fibre↔Kostant bijection is implicit via the composed BijOns; not separately assembled (optional).
+
+---
+
+# Scope-3 — the rest of Lemma 4.6 (bundle + smoothness). CLOSED 2026-06-26.
+
+The operator chose the maximal "build it for real" push. The substantive mathematics is **complete,
+unconditional, axiom-clean** (`[propext, Classical.choice, Quot.sound]`, whole library green at 3805 jobs).
+The two remaining residuals are precisely characterised and **roadmapped** — both genuinely non-trivial
+(new scheme-theoretic math / off-critical-path), both recommended-stop by the tides + multiple decorrelated
+Codex consults. The expedition closes at its honest ceiling.
+
+## Final scorecard
+| Result | State | Headline lemma |
+|---|---|---|
+| θ-count `numTop(fibre)=cTheta(d−r)=C(m,\|δ\|)` | ✅ Unconditional | `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` |
+| Codim `= C+δ` | ✅ (prior expedition) | `codimRepCanonical_fibre_eq_cCodim_add_shift` |
+| **Generic smoothness of the fibre** | ✅ **Fully unconditional** | `isSmoothAt_sweepFibre_topComponent`, `exists_isSmoothAt_chartDsig_unconditional` |
+| Σ̄^r component ↔ orbit labeling | ✅ Unconditional | `exists_sigma_topComponent_orbitRingEquiv` |
+| Bundle: per-pivot local-product atlas over the rank-`=r` open | ✅ cover+triv+cocycle+intertwining+k-point tie | `reducedFibre_pivotLocalProductAtlasOnRankOpen` |
+| `e` (fibre-component↔orbit), chart-localization transport | ✅ rung 1 | `schurComponent_chartQuotientEquiv` |
+| 3-θ-invariants exposition | ✅ | `docs/expositions/theta-invariants-distinction.md` |
+
+Reusable network-free spin-outs banked along the way: `mvPolynomialAwayMapTensorAlgEquiv`,
+`exists_invertible_minor_of_rank` (a Mathlib v4.29 gap: rank-`r` matrix ⟹ invertible `r×r` minor), the
+`awayOverlap`/`awayTriple` localization cocycle engine, `localizationAtPrimeQuotientAlgEquiv`,
+`Algebra.Smooth.tensorProduct`, `isSmoothAt_bot_of_finitePresentation_domain`.
+
+## How smoothness closed — the elegant shortcut (thread 17/20)
+The planned route was an orbit-closure identification (C2(a): `sweepFibreRing⧸I ≃ orbit ring`). It proved
+UNNECESSARY. A fibre top component `sweepFibreRing⧸I` is a finitely-presented **domain** over an
+algebraically-closed (perfect) field, hence **generically smooth** (`IsSmoothAt k ⊥`, the generic-smoothness
+theorem); the C1 localization-recovers-component bridge lifts that to `IsSmoothAt k I`, and the thread-17
+chart transport carries it to the fibre chart. **The OrbitSmooth machinery was a red herring for
+smoothness** — the component need not *be* an orbit, only a domain. Generic smoothness was the headline
+goal and it landed cleanly, fully unconditional.
+
+## Two decisive fidelity catches (the decorrelated discipline working)
+1. **The dimensionally-impossible bare-orbit iso (thread 20).** Thread-17's stated C2(a) interface
+   `sweepFibreRing⧸I ≃ orbitRing M` was confirmed (by reviewer+Codex×2) as "non-vacuous, confirmed-final" —
+   but a later dimension count showed it is **dimensionally impossible** (fibre component = orbit × `A^δ`,
+   `δ = r(d_0+d_N−r) > 0`; witness `(2,2,2)r1`: `4 = 1+3`). Lesson: a non-vacuity claim for a cited
+   interface needs a **dimension/satisfiability check**, not just "the implication is non-circular".
+2. **The globally-false consumer-shaped `e` (thread 24).** Even the corrected `sweepFibreRing⧸I ≃
+   MvPolynomial η (orbitRing M_shifted)` is **globally false**: the chart `e_β` is intrinsically localized,
+   so only a LOCALIZED, full-`d`-orbit form is reachable. The tide refused to build a 500-line iso to feed a
+   consumer whose shape doesn't exist, and surfaced it. Both dead consumers were **relabeled** as superseded
+   scaffolding (not deleted — honest record).
+
+## The bundle tower (threads 11/18/19/21/22/23) and its honest ceiling
+The bundle was a genuine multi-rung tower, each "last rung" revealing another: single-chart triviality (11)
+→ per-minor cover + family (18) → ambient transition cocycle (19) → top-left `e_β`↔ambient bridge (21) →
+per-pivot conjugation skeleton + trivializations at every pivot (22) → coherent per-pivot atlas + base-side
+cocycle + scheme cover + k-point rank-tie (23). What is **earned** is a genuine coherent **per-pivot
+local-product atlas over the rank-`=r` open** — honestly NOT named `locallyTrivial`. A 5th Codex consult
+corrected a controller premise: the k-point rank-tie does **not** compose with the prime-level cover; the
+bare `locallyTrivial` name needs the **prime residue-field-rank bridge = genuinely new scheme-theoretic
+math**. The tide also correctly **overrode a mis-aimed controller steer** (the ambient-transition target was
+a red herring; the genuine cocycle is base-side over `sweepSigmaRing`).
+
+## Roadmapped residuals (future work — both recommended-stop here)
+1. **Bundle → bare `locallyTrivial`:** the prime-level residue-field-rank bridge (`P ∈ rankROpen ↔ universal
+   matrix over κ(P) has rank r`). Substantial NEW scheme-theoretic math, a fresh build — NOT a finishing
+   touch.
+2. **`e` → full localized iso:** rung 2, the orbit descent `exists_chartComponent_localizedOrbitEquiv`
+   (`(Away chartDsig)⧸chartComponentIdeal → Away Δ (orbitRing (realizerD m))`). ~mid-hundreds LoC, off every
+   critical path, consumed by nothing.
+3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred, loses nothing for the
+   ℝ/ℂ application.
+
+## Controller lessons
+- **The decorrelated dialectic earns its cost.** Three separate confident headlines were wrong and caught by
+  the next pass: "Aoyagi erred" (refuted, thread 03), the "confirmed-final" bare-orbit iso (dimensionally
+  impossible, thread 20), the shifted-orbit `e` (globally false, thread 24). Never bank the confident
+  headline; let the skeptical / decorrelated seat fire.
+- **Cost estimates repeatedly ran low** (the bundle "2–3 modules" → a 7-rung tower; C2(a) "~800 LoC" → a
+  multi-tide undertaking + a false target). Surface each recalibration for a knowing operator decision rather
+  than grinding by inertia — and when the experts on the ground recommend stop, recommend consolidating.
+- **Tides exercised excellent independent judgment** — finding shorter routes (the smoothness domain
+  shortcut), refusing to build false objects, overriding mis-aimed controller steers, and naming honestly
+  (declining `locallyTrivial` four times). Honest scope was upheld throughout; no overclaim survived to a
+  headline.

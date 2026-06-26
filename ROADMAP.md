@@ -128,13 +128,44 @@ Definition-3 conditions; the paper's `(ℓ−1)→ℓ` misprint corrected). Zero
 chart machinery (`Core.ChartLocalizedAlgEquiv`) to `Type u`. Mechanical refactor, no new math; unblocks
 fully-general statements. Deferred behind the θ side.
 
-**Next: the θ / top-component side (expedition `theta-components`, 2026-06-25).** Resolve the order θ and the
-rest of Lemma 4.6 (full bundle, scope B) — see `expeditions/2026-06-25-theta-components/brief.md`. Key open
-finding: Aoyagi's order `θ = a(ℓ−a)+1` and the LR/Lean component-count `θ = C(m,|δ|)` **diverge for `|δ| ≥ 2`**
-(smallest witness `(2,2,2,2,2)`, r=0: 5 vs 6) — agreeing only for `|δ| ≤ 1` (hence `(3,3,3)` = 2). Design goal:
-the full local-trivial bundle `mult⁻¹(B) → Mat^{=r}` should consolidate codim + θ + smoothness and may retire
-the codim hand-built trivialization (promoting `e` to a genuine bundle chart, climbing the reducedness wall the
-codim expedition routed around).
+**θ / top-component side + rest of Lemma 4.6 — CLOSED (expedition `theta-components`, 2026-06-26).** Full
+record: `expeditions/2026-06-25-theta-components/synthesis.md`. The substantive mathematics is **Proved,
+unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
+- **Fibre θ-count** `numTop(mult⁻¹ B) = cTheta(d−r) = C(m,|δ|)` — `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (the
+  `TopDimMinPrimes` count chain through the chart `e`, reducedness-free via `detΔ`-unit). Resolves #54.
+- **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
+  `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
+  LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
+  `(2,2,2,2,2)` r=0: 6/5/4). The `rlct = C/2` story is unaffected. Written up:
+  `docs/expositions/theta-invariants-distinction.md`. **An off-by-one in LR's printed rlcm — operator may
+  wish to raise an erratum/correspondence.**
+- **Generic smoothness of the fibre — FULLY UNCONDITIONAL** (`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`,
+  `exists_isSmoothAt_chartDsig_unconditional`, `[IsAlgClosed k]`): a fibre top component is an fp domain over
+  an alg-closed field, hence generically smooth (`IsSmoothAt k ⊥`); lifted via the C1 localization-recovers-
+  component bridge. The OrbitSmooth/orbit-iso route was unnecessary for smoothness.
+- **Σ̄^r component ↔ orbit labeling — unconditional** (`exists_sigma_topComponent_orbitRingEquiv`): the first
+  genuine "label a top component by an orbit ring".
+- **Bundle — the per-pivot local-product atlas over the rank-`=r` open** (`Core.FibreBundleLocallyTrivialFull.reducedFibre_pivotLocalProductAtlasOnRankOpen`):
+  scheme open-cover by the per-pivot Schur charts + trivializations into the standard fibre `SchurLoc ⊗
+  sweepFibreRing` + a coherent base-side transition cocycle + the intertwining (`e_β` cancels) + the k-point
+  rank-tie. Honestly **NOT** `locallyTrivial`.
+- **`e` (fibre-component↔orbit), localized chart transport — rung 1** (`Core.FibreComponentOrbitIso.schurComponent_chartQuotientEquiv`).
+- **Reusable spin-outs:** `mvPolynomialAwayMapTensorAlgEquiv`, `exists_invertible_minor_of_rank` (Mathlib
+  v4.29 gap: rank-`r` ⟹ invertible `r×r` minor), the `awayOverlap`/`awayTriple` cocycle engine,
+  `localizationAtPrimeQuotientAlgEquiv`, `Algebra.Smooth.tensorProduct`,
+  `isSmoothAt_bot_of_finitePresentation_domain`.
+
+**Roadmapped residuals (deferred at the honest ceiling — both genuinely non-trivial, recommended-stop by the
+tides + multiple Codex consults):**
+1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
+   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) — genuinely new scheme-theoretic math (the
+   k-point rank-tie, banked, does NOT compose with the prime cover). A fresh multi-tide build, not a finish.
+2. **`e` → full localized iso:** rung 2, the orbit descent `exists_chartComponent_localizedOrbitEquiv`
+   (`(Away chartDsig)⧸chartComponentIdeal → Away Δ (orbitRing (realizerD m))`). ~mid-hundreds LoC, off every
+   critical path (smoothness is unconditional without it), consumed by nothing. NOTE: the *global* /
+   *shifted-orbit* shapes are FALSE — only the localized full-`d`-orbit form is reachable; two dead consumers
+   relabeled as superseded scaffolding.
+3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)
 **Plainly.** The representation-theoretic engine: type-A quiver representations, the $G_{\underline d}$-action,
