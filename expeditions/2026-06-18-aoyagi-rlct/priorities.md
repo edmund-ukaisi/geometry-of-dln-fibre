@@ -4770,3 +4770,10 @@ Lean proves the displayed old Case 2 source-chart map is exactly
 `SelectedEntrySignedBox.CenterCoord.chartMap` at the displayed pivot.  This is
 useful vocabulary for downstream selected-entry sockets, but it remains about
 the old center, not the post-pivot product.
+
+A2 Case 2 successor readout CenterCoord matrix bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-successor-readout-centercoord-matrix.md`.
+Lean consumes a supplied successor source-chart readout and returns the exact
+successor selected-entry `CenterCoord.chartMap` residual-factor product
+matrix.  The meaningful frontier is unchanged: source-produce the readout,
+endpoint equivalences, compatible factors, and `Cprime`.

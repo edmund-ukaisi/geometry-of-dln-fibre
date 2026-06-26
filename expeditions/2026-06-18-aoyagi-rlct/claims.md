@@ -7271,3 +7271,22 @@ and
 Nonclaims: no post-pivot product readout, successor source-chart readout,
 endpoint equivalence, source image, source-measure transport, normal
 crossings, pole order, or RLCT.
+
+Latest A2 Case 2 successor readout CenterCoord matrix:
+Lean now proves that a supplied entrywise successor source-chart readout for
+the displayed Case 2 post-pivot lower product gives the successor
+selected-entry `CenterCoord.chartMap` matrix for the unreindexed two-edge
+residual-factor product.
+
+Lean name:
+`residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-successor-readout-centercoord-matrix.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-successor-readout-centercoord-matrix.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-successor-readout-centercoord-matrix.md`.
+
+Nonclaims: the successor readout, endpoint equivalences, compatible factors,
+`Cprime` production, source/image equality, source-measure transport, normal
+crossings, pole order, and RLCT remain supplied or open.

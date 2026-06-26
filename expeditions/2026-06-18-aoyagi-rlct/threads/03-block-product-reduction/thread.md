@@ -6063,3 +6063,29 @@ shared vocabulary for the source-supported old chart.
 This is not a post-pivot product readout.  It does not identify
 `D_(J+1) * C'_+` with selected-center or successor source-chart coordinates,
 and it proves no source/image equality, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 Case 2 successor readout CenterCoord matrix
+
+Reproduction:
+`reproduction-a2-case2-successor-readout-centercoord-matrix.md`.
+Statement card:
+`statement-card-a2-case2-successor-readout-centercoord-matrix.md`.
+Review:
+`review-a2-case2-successor-readout-centercoord-matrix.md`.
+
+Lean now proves:
+
+```text
+residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+```
+
+Given a supplied entrywise successor source-chart readout for the displayed
+post-pivot lower product, plus the residual-factor identities and endpoint
+equivalences, the unreindexed two-edge residual-factor product is exactly the
+successor `SelectedEntrySignedBox.CenterCoord.chartMap` matrix.  This composes
+the Case 2 product bridge with the old/source selected-entry chart vocabulary
+alignment.
+
+This is still conditional finite plumbing.  It does not prove the successor
+readout, construct endpoint equivalences or factors, produce `Cprime`, prove
+source/image equality, normal crossings, pole order, or RLCT.

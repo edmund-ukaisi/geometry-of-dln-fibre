@@ -10961,3 +10961,12 @@ Lean proves
 in `SelectedEntrySignedBoxMeasure.lean`.  This is definitional vocabulary
 alignment for the old center `(S,J)` and displayed pivot `(J+1,J+1)`, not a
 readout theorem for the post-pivot product.
+
+The successor source-chart readout socket now composes to the selected-entry
+`CenterCoord.chartMap` matrix shape:
+`threads/03-block-product-reduction/reproduction-a2-case2-successor-readout-centercoord-matrix.md`.
+Lean proves
+`residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`
+in a downstream bridge module.  This theorem consumes the supplied successor
+entrywise readout, factor identities, and endpoint equivalences; it does not
+construct any of them.

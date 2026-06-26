@@ -148,6 +148,7 @@ import DLNFibre.DLN.Aoyagi.EndpointLossComparison
 import DLNFibre.DLN.Aoyagi.OriginalLossSourceMeasure
 import DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure
 import DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure
+import DLNFibre.DLN.Aoyagi.Case2ResidualSelectedEntryChartBridge
 import DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxLocalMeasure
 import DLNFibre.DLN.Aoyagi.SelectedEntryOriginalLossLocalMeasure
 -- Determinantal-stratum dimension (fibre-codim AG build, rung 1): dim Mat^{rk≤r}_{m×n} = r(n+m−r),

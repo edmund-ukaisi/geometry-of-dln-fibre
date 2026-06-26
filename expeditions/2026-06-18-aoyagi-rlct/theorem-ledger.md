@@ -8510,6 +8510,18 @@ This is definitional vocabulary alignment for the old Case 2 source chart;
 post-pivot product readout, successor source-chart readout, source/image
 equality, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 Case 2 successor readout CenterCoord matrix:
+`Case2ResidualSelectedEntryChartBridge.lean` now proves
+`residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-successor-readout-centercoord-matrix.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-successor-readout-centercoord-matrix.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-successor-readout-centercoord-matrix.md`.
+This is conditional finite composition; successor readout, endpoint
+equivalences, compatible factors, source/image equality, normal crossings,
+pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
