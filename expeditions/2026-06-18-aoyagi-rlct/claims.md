@@ -8885,3 +8885,37 @@ product readout is proved from source construction, no longer suffix is
 transported to the two-edge chain, and no source chart/source image,
 pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
 or RLCT is proved.
+
+Latest A2 retained-passive Case 2 synthetic two-edge data:
+Lean now defines `case2PostPivotRetainedPassiveData` and proves
+`case2PostPivotRetainedPassiveData_detChart` and
+`case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise` in
+`RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+The same final identity is also exposed under the content-named alias
+`case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+
+Status: Proved; reviewed.
+
+Claim: the concrete post-pivot Case 2 two-edge factor family can be packaged
+as a retained-passive nonredundant coordinate datum with identity determinant
+fields, and the existing concrete Case 2 selected-entry product bridge gives
+the retained-passive data-level `hdataFactor` identity for that synthetic
+datum under the explicit entrywise successor-source readout.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-synthetic-data.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-synthetic-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-case2-synthetic-data.md`
+passed by xhigh `Ampere the 3rd`.
+
+Kill condition: the datum is synthetic and two-edge.  It may not be used as
+the retained data of a source chart or as a slice of a longer retained-passive
+suffix unless separate edge-realization or suffix-transport hypotheses are
+proved.
+
+Nonclaims: no source chart, fixed-base edge realization, longer-suffix
+transport, entrywise product readout, pushforward/Jacobian theorem,
+original-loss comparison, normal crossings, pole order, or RLCT is proved.

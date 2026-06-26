@@ -9948,6 +9948,29 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive Case 2 synthetic two-edge data:
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` defines
+`case2PostPivotRetainedPassiveData` and proves
+`case2PostPivotRetainedPassiveData_detChart` plus
+`case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise`, with alias
+`case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-synthetic-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-synthetic-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-case2-synthetic-data.md`
+passed by xhigh `Ampere the 3rd`.
+
+The datum is the concrete post-pivot Case 2 `Fin 3` endpoint family with
+active `C` factors definitionally equal to
+`case2PostPivotFreeTwoEdgeFactorFamily`; determinant-chart membership is
+proved from identity `Ctop` and identity passive `A1`.  The data-level
+selected-entry residual-factor identity still assumes the entrywise
+successor-source readout and endpoint equivalence.  No source chart,
+fixed-base edge realization, longer-suffix transport, normal-crossing
+production, pole order, or RLCT is proved.
+
 ## 2026-06-26 A2 retained-passive Case 2 selected-entry bridge
 
 Reproduction:

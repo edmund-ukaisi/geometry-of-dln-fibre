@@ -5967,3 +5967,18 @@ construct the retained-passive source data and prove the entrywise selected-
 center readout, or prove an explicit slicing/transport theorem from the longer
 retained-passive suffix to the two-edge Case 2 chain.  Do not silently apply
 the two-edge theorem to general `M`.
+
+Latest retained-passive Case 2 synthetic two-edge data:
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now defines
+`case2PostPivotRetainedPassiveData`, proves its determinant-chart condition,
+and proves its selected-entry `hdataFactor` identity under the same explicit
+entrywise successor-source readout as the concrete Case 2 bridge.  A content-
+named residual-factor-product alias is also available.  This removes only the
+generic `hD`/`hF` factor-identification hypotheses by choosing the active
+factors definitionally.
+
+Next priority remains source-specific: either produce retained-passive source
+data and fixed-base edge realization for a real `sourceChart y`, or prove the
+actual suffix/transport identities needed to connect a longer retained-passive
+chain to this two-edge datum.  Do not treat the synthetic datum as source
+production.

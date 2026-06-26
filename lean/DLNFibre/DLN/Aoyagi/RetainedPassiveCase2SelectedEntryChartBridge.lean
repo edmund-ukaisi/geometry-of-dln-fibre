@@ -14,6 +14,45 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- The synthetic two-edge retained-passive datum whose active `C` factors are
+Aoyagi's displayed Case 2 post-pivot residual block and following factor.
+
+All passive retained coordinates are set to zero, while `Ctop` and the single
+passive `A1` block are identity matrices.  This is a finite bookkeeping object;
+it does not construct a source chart or identify a longer retained-passive
+suffix with the displayed two-edge chain. -/
+noncomputable def case2PostPivotRetainedPassiveData
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) where
+  A1passive := fun _ ↦ 1
+  F2 := fun _ ↦ 0
+  A3passive := fun _ ↦ 0
+  C := case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime
+  Ctop := 1
+  F3 := 0
+
+/-- The synthetic two-edge Case 2 retained-passive datum lies in the finite
+retained-passive determinant chart. -/
+theorem case2PostPivotRetainedPassiveData_detChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ) :
+    (case2PostPivotRetainedPassiveData
+      (ρ := ρ) n hS hcont residual Cprime).detChart := by
+  constructor
+  · simp [case2PostPivotRetainedPassiveData]
+  · intro p
+    simp [case2PostPivotRetainedPassiveData]
+
 set_option linter.style.longLine false in
 /-- A two-edge retained-passive coordinate datum satisfies the selected-entry
 residual-factor matrix identity once its two `C` factors are Aoyagi's displayed
@@ -124,6 +163,94 @@ theorem residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelected
   exact
     residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
       n hS hcont hnext residual Cprime data.C yNext e₂ e₁ e₀κ eNext hD hF hentry
+
+set_option linter.style.longLine false in
+/-- The synthetic two-edge retained-passive Case 2 datum satisfies the
+successor selected-entry residual-factor matrix identity.
+
+This removes the generic retained-passive factor-identification hypotheses by
+choosing the active factors to be exactly Aoyagi's displayed post-pivot two-edge
+family.  The entrywise successor-source readout remains an explicit hypothesis,
+and this theorem is still finite matrix algebra only. -/
+theorem case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise
+    {ρ : Type*} {τ : Type} [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext
+            (yNext (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}))
+            (SelectedEntrySignedBox.CenterCoord.sourceResidual yNext)
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext (i, t)).1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotRetainedPassiveData
+          (ρ := ρ) n hS hcont residual Cprime).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext c)) := by
+  simpa [case2PostPivotRetainedPassiveData] using
+    residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+      (τ := τ) n hS hcont hnext residual Cprime yNext eNext hentry
+
+set_option linter.style.longLine false in
+/-- Content-named alias for
+`case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise`. -/
+theorem case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+    {ρ : Type*} {τ : Type} [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext
+            (yNext (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}))
+            (SelectedEntrySignedBox.CenterCoord.sourceResidual yNext)
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext (i, t)).1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotRetainedPassiveData
+          (ρ := ρ) n hS hcont residual Cprime).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext c)) :=
+  case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise
+    (ρ := ρ) n hS hcont hnext residual Cprime yNext eNext hentry
 
 end Aoyagi
 end DLN

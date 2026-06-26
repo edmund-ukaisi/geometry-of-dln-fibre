@@ -13089,3 +13089,22 @@ This removes finite residual-factor boilerplate for the two-edge Case 2
 `hdataFactor` target.  It does not slice a longer retained-passive suffix to
 two edges, construct `retainedData`, prove the entrywise displayed product
 readout, or prove source chart/pushforward/Jacobian/original-loss facts.
+
+Latest A2 retained-passive Case 2 synthetic two-edge data:
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now also defines the
+synthetic retained-passive datum
+`case2PostPivotRetainedPassiveData` with active factors exactly
+`case2PostPivotFreeTwoEdgeFactorFamily`, identity `Ctop`, identity passive
+`A1`, and zero passive off-diagonal fields.  Lean proves
+`case2PostPivotRetainedPassiveData_detChart` and
+`case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise`, with content-
+named alias
+`case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+
+This is the smallest honest data-level closure of the previous two-edge
+bridge: it removes `hD` and `hF` by defining the datum's active factors to be
+the displayed Case 2 factors, but it still requires the entrywise successor-
+source readout and the endpoint equivalence.  It remains synthetic finite
+bookkeeping.  It does not produce retained-passive source data for a source
+chart, realize fixed-base edge matrices, or identify a longer suffix with the
+two-edge chain.  Xhigh review by `Ampere the 3rd` found no blockers.

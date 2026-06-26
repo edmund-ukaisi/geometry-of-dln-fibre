@@ -8794,3 +8794,45 @@ suffix to two edges, construct retained-passive source data, prove the
 entrywise displayed product readout, or prove source chart/source image,
 pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
 or RLCT statements.
+
+## 2026-06-26 A2 retained-passive Case 2 synthetic two-edge data
+
+Reproduction:
+`reproduction-a2-retained-passive-case2-synthetic-data.md`.
+Statement card:
+`statement-card-a2-retained-passive-case2-synthetic-data.md`.
+Review:
+`review-a2-retained-passive-case2-synthetic-data.md`
+passed by xhigh `Ampere the 3rd`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now defines and proves:
+
+```text
+case2PostPivotRetainedPassiveData
+case2PostPivotRetainedPassiveData_detChart
+case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise
+case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+```
+
+The definition builds the concrete two-edge retained-passive datum for the
+post-pivot Case 2 endpoint family
+`tau -> Case2ResidualColIndex n S (J+1) -> Case2ResidualRowIndex n S (J+1)`.
+Its passive fields are zero except `A1passive=1`, and `Ctop=1`; its active
+`C` family is exactly `case2PostPivotFreeTwoEdgeFactorFamily`.
+
+The determinant-chart theorem proves the finite retained-passive determinant
+condition from identity `Ctop` and identity passive `A1`.  The `hdataFactor`
+theorem then delegates to the concrete Case 2 selected-entry bridge, removing
+the generic factor-identification hypotheses for this synthetic two-edge
+datum while keeping the entrywise successor-source readout and endpoint
+equivalence explicit.  The final identity is also exposed under a content-
+named residual-factor-product alias.
+
+Nonclaims: no source chart or source edge family is constructed, no longer
+retained-passive suffix is sliced or transported to this two-edge datum, no
+entrywise displayed product readout is proved, and no source image,
+pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
+or RLCT statement is proved.
