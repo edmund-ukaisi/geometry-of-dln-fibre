@@ -204,6 +204,163 @@ theorem continuous_A3seed
       simpa [A3seed] using
         continuous_A3passive (ρ := ρ) (κ' := κ') (K := K) p
 
+/-- The passive top-left tail product is continuous as a function of the
+nonredundant retained-passive coordinates. -/
+theorem continuous_retainedPassiveA1TailAfterFirst
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ] :
+    Continuous
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ' ↦
+        retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) data.A1seed) := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let i₀ : Fin (M + 2) := (0 : Fin (M + 1)).succ
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    1 ≤ m →
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            data.A1seed j ⟨m, Nat.lt_succ_of_le hm⟩
+              (Fin.val_fin_le.mpr hm))
+  have hbase : motive (M + 1) le_rfl := by
+    intro _hmpos
+    change
+      Continuous
+        (fun _data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            _ j j le_rfl)
+    simpa using
+      (continuous_const :
+        Continuous
+          (fun _data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            (1 : Matrix ρ ρ K)))
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := by
+      exact Fin.val_fin_le.mpr hms
+    have hnext :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              data.A1seed j p.succ hpj) := by
+      simpa [motive, j, p] using ih (Nat.succ_pos m)
+    have hfactor :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦ data.A1seed p) :=
+      continuous_A1seed (ρ := ρ) (κ' := κ') (K := K) p
+    have hmul :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                data.A1seed j p.succ hpj *
+              data.A1seed p) :=
+      hnext.matrix_mul hfactor
+    change
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            data.A1seed j p.castSucc ((Fin.castSucc_le_succ p).trans hpj))
+    rw [show
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            data.A1seed j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun data ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                data.A1seed j p.succ hpj *
+              data.A1seed p by
+      funext data
+      exact
+        residualFactorProduct_castSucc
+          (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ) data.A1seed p hpj]
+    simpa [p] using hmul
+  have htail :=
+    Nat.decreasingInduction (motive := motive) hstep hbase
+      (Nat.succ_le_succ (Nat.zero_le M))
+  have htail' := htail le_rfl
+  simpa [retainedPassiveA1TailAfterFirst, j, i₀, motive] using htail'
+
+/-- On the determinant chart, each solved full `A1` component is continuous. -/
+theorem continuous_solvedA1_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    (p : Fin (M + 1)) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        (data.1.toCoordinateData).solvedA1 p) := by
+  cases p using Fin.cases with
+  | zero =>
+      have htail :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+                data.1.A1seed) :=
+        continuous_retainedPassiveA1TailAfterFirst
+          (ρ := ρ) (κ' := κ') (K := K) |>.comp continuous_subtype_val
+      have hunit :
+          ∀ data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart},
+            IsUnit
+              (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+                data.1.A1seed).det := by
+        intro data
+        exact
+          retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+            (K := K) (ρ := ρ) data.1.A1seed
+            (data.1.toCoordinateData_passiveA1_units data.2.2)
+      have htailInv :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+                data.1.A1seed)⁻¹) :=
+        continuous_matrix_inv_of_forall_isUnit_det htail hunit
+      have hCtop :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              data.1.Ctop) :=
+        (continuous_Ctop (ρ := ρ) (κ' := κ') (K := K)).comp
+          continuous_subtype_val
+      have hmul :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+                  data.1.A1seed)⁻¹ *
+                data.1.Ctop) :=
+        htailInv.matrix_mul hCtop
+      simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
+        toCoordinateData] using hmul
+  | succ p =>
+      have hseed :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              data.1.A1seed p.succ) :=
+        (continuous_A1seed (ρ := ρ) (κ' := κ') (K := K) p.succ).comp
+          continuous_subtype_val
+      simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
+        toCoordinateData, Fin.succ_ne_zero] using hseed
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

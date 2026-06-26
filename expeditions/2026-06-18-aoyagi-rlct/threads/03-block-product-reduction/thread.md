@@ -8077,3 +8077,33 @@ projection-continuity layer:
 `review-a2-retained-passive-projection-continuity.md`.  The next target is
 determinant-chart subtype continuity for `solvedA1`, `solvedA3`, and then
 `edgeMatrix`.
+
+## 2026-06-26 A2 retained-passive solved-A1 continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a1-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a1-continuity.md`.
+Review:
+`review-a2-retained-passive-solved-a1-continuity.md`.
+
+Lean now proves:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_retainedPassiveA1TailAfterFirst
+RetainedPassiveNonredundantCoordinateData.continuous_solvedA1_detChart_subtype
+```
+
+The first theorem proves continuity of the passive top-left tail product by
+finite product induction.  The second proves componentwise continuity of the
+solved full `A1` family on `{data // data.detChart}`: the zero component uses
+the determinant-chart tail unit and matrix-inverse continuity, while nonzero
+components reduce to `A1seed`.
+
+This is solved-top-left endpoint continuity only.  It does not prove
+continuity of `solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image
+openness, source-rank coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
+
+Xhigh reviewer `Popper the 3rd` passed the Lean statements, typeclass
+assumptions, documentation boundary, focused build, and diff hygiene.

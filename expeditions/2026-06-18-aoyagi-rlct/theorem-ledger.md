@@ -9728,3 +9728,26 @@ This is a staging topology layer only: no continuity of `solvedA1`,
 `solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
 source-rank coverage, source/image theorem, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive solved-A1 continuity:
+`RetainedPassiveCoordinatesTopology.lean` proves
+`RetainedPassiveNonredundantCoordinateData.continuous_retainedPassiveA1TailAfterFirst`,
+continuity of the passive top-left tail product as a function of the
+nonredundant coordinate data.
+
+It also proves
+`RetainedPassiveNonredundantCoordinateData.continuous_solvedA1_detChart_subtype`:
+for every `p : Fin (M+1)`, the map
+`data ↦ (data.1.toCoordinateData).solvedA1 p` is continuous on the subtype
+`{data // data.detChart}`.  The zero component uses inverse continuity on the
+tail determinant-unit locus; nonzero components reduce to `A1seed`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a1-continuity.md`
+passed.
+
+This is solved-top-left endpoint continuity only: no continuity of
+`solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
+source-rank coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.

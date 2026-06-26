@@ -8522,3 +8522,18 @@ Nonclaims: projection-continuity setup only.  No continuity of `solvedA1`,
 `solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
 source-rank coverage, source/image equality, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive solved-A1 continuity:
+Lean now proves continuity of the passive top-left tail product and
+componentwise continuity of the solved full `A1` family on the nonredundant
+determinant-chart subtype in `RetainedPassiveCoordinatesTopology.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-continuity.md`.
+
+Nonclaims: no continuity of `solvedA3`, `toCoordinateData`, or `edgeMatrix`;
+no image openness, source-rank coverage, source/image equality, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
+is proved.

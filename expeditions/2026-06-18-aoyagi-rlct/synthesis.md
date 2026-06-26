@@ -12703,3 +12703,16 @@ step.  It does not prove continuity of `solvedA1`, `solvedA3`, or
 subtype.  It also says nothing about image openness, source-rank coverage,
 source/image equality, measure pushforward, density/Jacobian accounting,
 normal crossings, pole order, or RLCT.
+
+New follow-up proves the first inverse-dependent endpoint continuity statement.
+The passive top-left tail `retainedPassiveA1TailAfterFirst(data.A1seed)` is
+continuous by finite product induction.  On `{data // data.detChart}`, the
+tail determinant is a unit by the existing passive-tail unit theorem, so
+matrix inverse continuity applies and gives continuity of
+`Tail(data)^-1 * data.Ctop`, the zero component of the solved full `A1`
+family.  The remaining solved `A1` components are just seed projections.
+
+This still stops before `solvedA3`, `toCoordinateData`, and `edgeMatrix`
+continuity.  It also says nothing about image openness, source-rank coverage,
+source/image equality, measure pushforward, density/Jacobian accounting,
+normal crossings, pole order, or RLCT.
