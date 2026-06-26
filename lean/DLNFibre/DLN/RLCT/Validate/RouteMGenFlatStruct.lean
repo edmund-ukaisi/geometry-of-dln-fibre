@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMChartSlots
 import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
+import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatChart
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChainBridge
 
 /-!
 # `RouteMGenFlatStruct` — the STRUCTURED achiever-chart decoder (the item-3 unblock)
@@ -146,5 +148,87 @@ noncomputable def genBlkFlatStruct : GenBlk M t where
     | (k + 1) =>
       if hk : k < L then rmatPad M t (k + 1) (ha.hdesc k) (ha.hub k) (readE M t ha x ⟨k, hk⟩) else 0
   Rfin := fun _ => 0
+
+/-! ## The rate transfer (the chain admissibility + the chart + the conditional rate)
+
+The structured decoder feeds the decoder-agnostic rate engine `routeMCore_phiGen`. `hleStruct` derives
+the chain admissibility from `StructAdm`; `Wext0_eq_Text1` is the identity-boundary `c_0 = 0`. The
+chart `phiFlatStruct` and its rate `routeMCore = u²·V` follow from `routeMCore_phiGen` given `hC0`
+(the identity-boundary `C 0 · suffix = suffix`; `Bmat 0 = reindex 1`, `Rmat 0 = 0`, `chainQ(N_0) = I`
+at `c_0 = 0`). -/
+
+/-- The chain admissibility `hle : Text(k+1) ≤ Wext k` for `chartParamsGen`, from `StructAdm`. -/
+theorem hleStruct (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) :
+    ∀ k, k < L → Text M t (k + 1) ≤ Wext M k := by
+  intro k _
+  match k with
+  | 0 =>
+    rw [show Wext M 0 = M 0 from by rw [Wext]; simp]
+    have h := ha.h0; rw [tDesc_apply] at h; rw [h]
+  | (k + 1) => exact ha.hub k
+
+/-- The identity boundary has `c_0 = 0` (`Wext 0 = Text 1`, from `t_0 = M_0`). -/
+theorem Wext0_eq_Text1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) : Text M t 1 = Wext M 0 := by
+  have h := ha.h0; rw [tDesc_apply] at h
+  rw [show Wext M 0 = M 0 from by rw [Wext]; simp, h]
+
+/-- **The identity boundary `C 0 = 1`** (square `Text 0` type): `Bmat 0 · chainQ(N_0) + u·Rmat 0 =
+(reindex 1)·(I at c_0=0) + 0 = 1`. The `chainQ` kept-column law (`chainQ_apply_castAdd`, every column a
+kept column at `c_0 = 0`) + the `Text 0 = Text 1 = Wext 0` cast collapse. -/
+theorem C0_eq_one (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (u : ℝ) :
+    (chainOfMt u M t (genBlkFlatStruct M t ha (fun _ => u)) (hleStruct M t ha)).toChain.C 0
+      = (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) := by
+  rw [chainOfMt_C_zero u M t _ (hleStruct M t ha) ha.hL,
+    show (genBlkFlatStruct M t ha (fun _ => u)).Rmat 0 = 0 from rfl, smul_zero, add_zero]
+  have h1W : Text M t 1 = Wext M 0 := Wext0_eq_Text1 M t ha
+  have hBmat : (genBlkFlatStruct M t ha (fun _ => u)).Bmat 0
+      = Matrix.reindex (Equiv.refl _) (finCongr (Text0_eq_Text1_struct M t ha.h0))
+          (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) := rfl
+  rw [hBmat]
+  ext i j
+  rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.cast (Text0_eq_Text1_struct M t ha.h0) i)]
+  · rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+      finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self, Matrix.one_apply_eq, one_mul]
+    have hjcol : (j : Fin (Wext M 0)) = Fin.cast (genWidthEq M t (hleStruct M t ha) 0 ha.hL)
+        (Fin.castAdd (Wext M 0 - Text M t (0 + 1)) (Fin.cast h1W.symm j)) := by
+      apply Fin.ext; simp
+    rw [hjcol, chainQ_apply_castAdd, Matrix.one_apply, Matrix.one_apply]
+    by_cases h : (i : ℕ) = (j : ℕ)
+    · rw [if_pos (by apply Fin.ext; simpa using h), if_pos (by apply Fin.ext; simpa using h)]
+    · rw [if_neg (by intro hc; exact h (by simpa using congrArg Fin.val hc)),
+        if_neg (by intro hc; exact h (by simpa using congrArg Fin.val hc))]
+  · intro b _ hb
+    rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+      finCongr_symm, finCongr_apply]
+    rw [show (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) i
+          (Fin.cast (Text0_eq_Text1_struct M t ha.h0).symm b) = 0 from by
+      rw [Matrix.one_apply, if_neg]; intro hc; apply hb; rw [hc]; apply Fin.ext; simp]
+    rw [zero_mul]
+  · intro hi; exact absurd (Finset.mem_univ _) hi
+
+/-- **`hC0` for the structured decoder** (unconditional): `C 0 · suffix 0 = suffix 0` (`C 0 = 1`). -/
+theorem hC0_struct (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (u : ℝ) :
+    (chainOfMt u M t (genBlkFlatStruct M t ha (fun _ => u)) (hleStruct M t ha)).toChain.C 0
+        * (chainOfMt u M t (genBlkFlatStruct M t ha (fun _ => u))
+            (hleStruct M t ha)).toChain.suffix 0 (Nat.zero_le L)
+      = (chainOfMt u M t (genBlkFlatStruct M t ha (fun _ => u))
+          (hleStruct M t ha)).toChain.suffix 0 (Nat.zero_le L) := by
+  rw [C0_eq_one M t ha u]
+  exact Matrix.one_mul _
+
+/-- **The structured flat chart** `phiFlatStruct := paramsEquivFlat ∘ chartParamsGen ∘ genBlkFlatStruct`
+(binding pivot the radial `u`). -/
+noncomputable def phiFlatStruct (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (u : ℝ) :
+    Fin (routeMAmbient M) → ℝ :=
+  phiGen u M t (genBlkFlatStruct M t ha (fun _ => u)) (hleStruct M t ha)
+
+/-- **The rate transfers to the structured chart** (UNCONDITIONAL): `routeMCore M (phiFlatStruct u) =
+u²·VvalGen`, via the decoder-agnostic banked `routeMCore_phiGen` + the proven `hC0_struct`. The
+structured decoder keeps the rate ∀M. -/
+theorem routeMCore_phiFlatStruct (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (u : ℝ) :
+    routeMCore M (phiFlatStruct M t ha u)
+      = u ^ 2 * VvalGen u M t (genBlkFlatStruct M t ha (fun _ => u)) (hleStruct M t ha) :=
+  routeMCore_phiGen u M t (genBlkFlatStruct M t ha (fun _ => u)) (hleStruct M t ha)
+    (hC0_struct M t ha u)
 
 end DLNFibre.DLN.RLCT
