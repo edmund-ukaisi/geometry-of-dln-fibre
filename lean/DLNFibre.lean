@@ -335,5 +335,18 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
 import DLNFibre.DLN.RLCT.Validate.RouteMSuffixBridge
+-- R1-general achiever CHART (∀M): the abstract chain engine (`FactoredChain` + `step_of_factor` +
+-- `chain_block` + `chainQ_mul_chainA` — M-agnostic block algebra) + the per-M achiever chain `chainOfMt`
+-- (a structural recursion over opaque `t`-widths) → the ∀M chart identity `routeMCore_phiGen : F∘φ = u²·V`
+-- (path-agnostic rate), validated to specialize to (3,3,3,3). Sorry-free + axiom-clean.
+import DLNFibre.DLN.RLCT.Validate.RouteMChainFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlockValid
+import DLNFibre.DLN.RLCT.Validate.RouteMFactoredChain
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRate
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRateValid
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId3333
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
