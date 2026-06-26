@@ -8658,3 +8658,28 @@ Nonclaims: no solved-`A3` endpoint reconstruction and no full
 homeomorphism, source-rank coverage, source/image equality, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
 is proved.
+
+Latest A2 retained-passive source right inverse:
+Lean now proves the finite right-inverse theorem
+`RetainedPassiveNonredundantCoordinateData.edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart`
+in `RetainedPassiveCoordinates.lean`.
+
+The supporting new algebra proves the lower-left suffix recurrence, source
+`D` and solved-`A1` product readbacks, actual lower-left tail-sum readback,
+solved-`A3` recovery from transformed source lower-left blocks, transformed
+edge reassembly from Schur readbacks, and final upper-unitriangular
+cancellation.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-right-inverse.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-right-inverse.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-right-inverse.md`
+passed with API cleanup.
+
+Nonclaims: image membership is proved only for the explicit
+`sourceRecursiveDetChart` domain.  No openness, local homeomorphism,
+source-rank coverage, equality with the whole source image, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
+is proved.

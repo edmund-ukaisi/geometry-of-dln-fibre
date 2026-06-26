@@ -8287,3 +8287,43 @@ substantial case and should use the source-side `F3` lower-left suffix field
 and the retained-passive lower-left tail sum.  Do not promote this rung to
 image openness, source-rank coverage, source/image equality, local
 homeomorphism, measure transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive source right inverse
+
+Reproduction:
+`reproduction-a2-retained-passive-source-right-inverse.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-right-inverse.md`.
+Review:
+`review-a2-retained-passive-source-right-inverse.md`.
+
+Lean now proves the finite right-inverse theorem on the recursive determinant
+chart:
+
+```text
+ChartLocalSuffixState.step_lowerLeftBlock_L_of_L_eq_lowerUnitriangular
+ChartLocalSuffixState.step_lowerLeftBlock_L_of_exists_L_eq_lowerUnitriangular
+RetainedPassiveNonredundantCoordinateData.retainedPassiveSolvedA3_last_eq_of_productTailSum_eq
+RetainedPassiveNonredundantCoordinateData.retainedPassiveSolvedA3_last_eq_of_productTailSum_eq_of_ne_last
+RetainedPassiveNonredundantCoordinateData.sourceReadback_solvedA1_residualFactorProduct_eq_Ctop
+RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState_D_eq_residualFactorProduct_C
+RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState_lowerLeftBlock_L_eq_lowerLeftProductTailSum
+RetainedPassiveNonredundantCoordinateData.sourceReadback_solvedA3_eq_lowerLeftBlock
+RetainedPassiveNonredundantCoordinateData.retainedPassiveTransformedEdge_sourceReadback_eq_sourceReadbackTransformedEdge
+RetainedPassiveNonredundantCoordinateData.edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+```
+
+The missing lower-left endpoint is closed by identifying
+`lowerLeftBlock S_0.L` with the retained-passive lower-left product-tail sum
+for the actual transformed source lower-left blocks.  The final `A3` solver
+then cancels the final tail contribution against `CtopLast`.  Schur
+reassembly reconstructs every transformed source edge, and the stored
+`F2full = -S.B` identity cancels the deterministic upper-unitriangular
+multiplier.
+
+This proves image membership only for edge families satisfying
+`sourceRecursiveDetChart`: `(sourceReadback E).edgeMatrix = E`.  The next
+frontier is topological/geometric packaging around this finite inverse, such
+as the exact source-domain/image statement and local-homeomorphism conditions,
+but those require explicit openness/image hypotheses.  Do not assert source
+rank coverage, measure transport, normal crossings, pole order, or RLCT.

@@ -5773,3 +5773,21 @@ Next retained-passive target: prove the solved-`A3` analogue
 this as finite reconstruction algebra only; do not assert source-rank
 coverage, image openness, local homeomorphism, measure transport, normal
 crossings, pole order, or RLCT.
+
+The finite right-inverse algebra has now landed/in progress:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-right-inverse.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-right-inverse.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-right-inverse.md`.
+Lean proves `sourceReadback_solvedA3_eq_lowerLeftBlock`,
+`retainedPassiveTransformedEdge_sourceReadback_eq_sourceReadbackTransformedEdge`,
+and `edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart`.
+
+Next retained-passive target after review/banking: decide the exact
+topological packaging of the finite inverse.  Candidate minimal statements are
+that `edgeMatrix` sends retained-passive `detChart` coordinates into
+`sourceRecursiveDetChart`, that `sourceRecursiveDetChart` is open or locally
+open around the intended point, and then a restricted two-sided inverse or
+local-homeomorphism theorem.  Keep all predicates explicit.  Do not infer
+global source-image equality, source-rank coverage, measure transport, normal
+crossings, pole order, or RLCT from the finite inverse alone.

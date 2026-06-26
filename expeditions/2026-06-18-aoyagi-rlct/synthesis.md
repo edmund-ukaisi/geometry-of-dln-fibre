@@ -12818,3 +12818,27 @@ the final edge where `F3 = lowerLeft(S_0.L)` must cancel the retained-passive
 lower-left tail.  Only after that should the controller assemble the full
 `edgeMatrix (sourceReadback E) = E` theorem by Schur reassembly and
 upper-unitriangular cancellation.
+
+New follow-up proves that finite right-inverse theorem.  The new generic
+one-step lower-left recurrence says that if the suffix left multiplier `L` is
+lower unitriangular, then stepping one edge adds exactly
+`-(D * lowerLeftBlock(T_p) * Ctop_new^-1)` to its lower-left block.  Combining
+this with the source-readback identities for solved-`A1` products and Schur
+residual `D` products identifies `lowerLeftBlock S_i.L` with the explicit
+retained-passive lower-left product-tail sum of the actual transformed source
+edges.
+
+At `i = 0`, this tail is the readback field `F3`.  Splitting it into the
+zeroed-final early tail and the final contribution gives the final solved
+`A3` block by inverse cancellation against `CtopLast`.  Hence every solved
+`A3` equals the lower-left block of the corresponding transformed source
+edge.  The transformed edge then has exactly the Schur readbacks of
+`T_p(E)`, so `fromBlocks_schurReadbacks_eq` reassembles `T_p(E)`.  The stored
+identity `F2full p.succ = -S_{p.succ}.B` cancels the deterministic
+upper-unitriangular multiplier and proves
+`edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart`.
+
+This is now finite image membership on the explicit recursive determinant
+chart.  It still does not prove openness of that chart, equality with the
+whole source image, a local homeomorphism, source-rank coverage, measure
+transport, normal crossings, pole order, or RLCT.

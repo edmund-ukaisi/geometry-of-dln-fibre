@@ -2896,6 +2896,46 @@ theorem step_L_eq_lowerUnitriangular
   simpa [X, M] using
     lowerUnitriangular_mul_fromBlocks_one_zero_indexed (K := K) X F3
 
+/-- If the next suffix-state left multiplier is lower unitriangular, one step
+adds exactly the displayed lower-left contribution to its lower block. -/
+theorem step_lowerLeftBlock_L_of_L_eq_lowerUnitriangular
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3prev : Matrix (κ j) ρ K)
+    (hSL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K)) :
+    lowerLeftBlock (step E p S).L =
+      -(S.D * lowerLeftBlock (transformedEdge E p S) *
+          ((step E p S).Ctop)⁻¹) +
+        lowerLeftBlock S.L := by
+  let M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K := transformedEdge E p S
+  let X : Matrix (κ j) ρ K := -(S.D * lowerLeftBlock M * (S.Ctop * topLeftCorner M)⁻¹)
+  dsimp [step, M]
+  rw [hSL]
+  rw [lowerUnitriangular_mul_fromBlocks_one_zero_indexed]
+  simp
+
+/-- Existential-hypothesis form of
+`step_lowerLeftBlock_L_of_L_eq_lowerUnitriangular`. -/
+theorem step_lowerLeftBlock_L_of_exists_L_eq_lowerUnitriangular
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N) (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (hS : ∃ F3prev : Matrix (κ j) ρ K,
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3prev
+        (1 : Matrix (κ j) (κ j) K)) :
+    lowerLeftBlock (step E p S).L =
+      -(S.D * lowerLeftBlock (transformedEdge E p S) *
+          ((step E p S).Ctop)⁻¹) +
+        lowerLeftBlock S.L := by
+  rcases hS with ⟨F3prev, hSL⟩
+  exact step_lowerLeftBlock_L_of_L_eq_lowerUnitriangular
+    (K := K) E p S F3prev hSL
+
 /-- The deterministic suffix state's accumulated left multiplier is lower unitriangular. -/
 theorem suffixState_L_eq_lowerUnitriangular
     {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}

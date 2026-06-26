@@ -9870,3 +9870,33 @@ reconstruction and no full `edgeMatrix (sourceReadback E) = E` theorem yet.
 No image openness, source-rank coverage, source/image theorem, local
 homeomorphism, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive source right inverse:
+`ProductReduction.lean` proves
+`ChartLocalSuffixState.step_lowerLeftBlock_L_of_L_eq_lowerUnitriangular` and
+the existential wrapper
+`ChartLocalSuffixState.step_lowerLeftBlock_L_of_exists_L_eq_lowerUnitriangular`.
+
+`RetainedPassiveCoordinates.lean` proves
+`retainedPassiveSolvedA3_last_eq_of_productTailSum_eq`,
+`retainedPassiveSolvedA3_last_eq_of_productTailSum_eq_of_ne_last`,
+`sourceReadback_solvedA1_residualFactorProduct_eq_Ctop`,
+`sourceReadbackSuffixState_D_eq_residualFactorProduct_C`,
+`sourceReadbackSuffixState_lowerLeftBlock_L_eq_lowerLeftProductTailSum`,
+`sourceReadback_solvedA3_eq_lowerLeftBlock`,
+`retainedPassiveTransformedEdge_sourceReadback_eq_sourceReadbackTransformedEdge`,
+and `edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart`.
+
+The final theorem states that every edge family satisfying
+`sourceRecursiveDetChart` is recovered from its source readback:
+`(sourceReadback E).edgeMatrix = E`.  This completes the finite right-inverse
+direction on the recursive determinant chart.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-right-inverse.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-right-inverse.md`
+passed with API cleanup.
+
+This is not a local homeomorphism or global image theorem.  No openness,
+source-rank coverage, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.
