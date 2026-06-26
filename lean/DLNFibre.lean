@@ -352,5 +352,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId3333
 -- (the leaf-integrand field, pure algebra in `F∘φ = u_p²·V`, no determinant) + `VvalGen_nonneg` (the unit
 -- `V = ‖Hr‖²` ≥ 0). Isolates the atom's residual to the achiever-`t` Jacobian det + cov + a.e.-positivity.
 import DLNFibre.DLN.RLCT.Validate.RouteMGenLeafIntegrand
+-- Phase A of the general achiever Jacobian det (network-free, pure matrix algebra): the parametric
+-- Schur-frame det `schurFrame_abs_det : |det DS| = |det K|^{r+c}` (via an abstract `lowerTri` block-
+-- triangular nest — the `frameB`-free replacement for the (3,3,3,3) hand det), + the A1 `det_mulLeft/Right`
+-- blocks. Validated to reproduce `Frame3333Deriv_det`'s K-blocks. The det-engine keystone for the ∀M atom.
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurFrameDet
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
