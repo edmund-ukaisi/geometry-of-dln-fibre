@@ -37,10 +37,11 @@ quotient, an orbit-closure ring covered by `Core.OrbitSmooth`.
 ## The single remaining geometric conditional (C2(a))
 
 `isSmoothAt_sweepFibre_of_component_orbitSmooth`: GIVEN that every top-dim minimal prime `I` of
-`sweepFibreRing` has a `k`-algebra iso `sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` carrying the generic
-prime `⊥` to `normalFormIdeal M` (the orbit normal-form point) — the C2(a) fact — then
-`Algebra.IsSmoothAt k I` of `sweepFibreRing`, via `OrbitSmooth.isSmoothAt_normalFormIdeal` (+ a
-domain "smooth closed point ⟹ smooth generic point" step) and the C1 bridge. **C2(a) is NOT
+`sweepFibreRing` has a `k`-algebra iso `sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` to an orbit-closure
+coordinate ring — the C2(a) fact — then `Algebra.IsSmoothAt k I` of `sweepFibreRing`, via
+`OrbitSmooth.isSmoothAt_normalFormIdeal` (+ a domain "smooth closed point ⟹ smooth generic point"
+step, transported across the iso — no `⊥ ↦ normalFormIdeal` correspondence needed) and the C1
+bridge. **C2(a) is NOT
 discharged here**: it needs a fibre-component ↔ orbit-closure theory (an explicit
 `sweepFibreRing ⧸ I ≃ orbitRing M`) that this harness does not build (the θ-count is established via
 codimension/`ncard` chains, never labelling a component by an orbit). Codex-confirmed multi-module

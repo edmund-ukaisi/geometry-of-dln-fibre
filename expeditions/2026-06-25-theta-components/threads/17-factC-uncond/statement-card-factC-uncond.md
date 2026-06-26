@@ -73,4 +73,7 @@ axiom-clean (`[propext, Classical.choice, Quot.sound]`). C1 is a fully reusable 
 
 ## Status
 
-sorry-free (pending reviewer fidelity check).
+sorry-free + reviewed (reviewer PASS-WITH-NOTES; the one note — the C2 docstring over-specified the
+deferred iso as "carrying `⊥ ↦ normalFormIdeal M`" while the actual Lean hypothesis is an *arbitrary*
+`k`-algebra iso, i.e. the theorem is *stronger* — fixed in the docstring; card Claim/Assumed were
+already accurate). Two decorrelated Codex consults confirm: C1 sound, C2 honest-reduction-conditional.
