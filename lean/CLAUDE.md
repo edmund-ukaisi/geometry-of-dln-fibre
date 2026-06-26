@@ -25,6 +25,14 @@
 ## Sorry gate
 - Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
+- **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
+  invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
+  prior `sorry` / type-error can persist in the cached olean and the build still reports success. **Confirm
+  any "sorry-free" / axiom-footprint claim with `#print axioms` (which FORCES elaboration), never the build's
+  exit status alone** — or force-recompile (delete the `.olean` / `touch` the source). The aggregator's
+  `AxCheck.lean` does this for the load-bearing results on every build; add new load-bearing results there, or
+  run a force-rebuilt `#print axioms` scratch (delete its olean first). (Caught a persisted diagonal-`sorry` +
+  an unreported type-error in `RouteMSchurFrameDet`, 2026-06-26.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —

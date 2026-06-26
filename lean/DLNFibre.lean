@@ -357,5 +357,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMGenLeafIntegrand
 -- triangular nest — the `frameB`-free replacement for the (3,3,3,3) hand det), + the A1 `det_mulLeft/Right`
 -- blocks. Validated to reproduce `Frame3333Deriv_det`'s K-blocks. The det-engine keystone for the ∀M atom.
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurFrameDet
+-- Phase B (toward the ∀M achiever atom): the general flat-frame chart `chartParamsFlat := chartParamsGen ∘
+-- genBlkFlat` with the ∀M general C1 keystone `chartParamsFlat_eq_chartParamsGen` (definitional `rfl`) —
+-- so `routeMCore_chartParamsFlat = u²·V` (the RATE side complete ∀M) — + the opaque-width chain↔frame
+-- entry-law bricks (`chainA/Q_apply_castAdd/natAdd`, `chainUnit_det`) bridging the abstract chart to the
+-- Phase-A Schur/LDU factors. (`phiFlat_abs_det` — the det telescope — is the next multi-pass build.)
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChainBridge
+import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatChart
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
