@@ -131,8 +131,12 @@ fully-general statements. Deferred behind the θ side.
 **θ / top-component side + rest of Lemma 4.6 — CLOSED (expedition `theta-components`, 2026-06-26).** Full
 record: `expeditions/2026-06-25-theta-components/synthesis.md`. The substantive mathematics is **Proved,
 unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
-- **Fibre θ-count** `numTop(mult⁻¹ B) = cTheta(d−r) = C(m,|δ|)` — `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (the
-  `TopDimMinPrimes` count chain through the chart `e`, reducedness-free via `detΔ`-unit). Resolves #54.
+- **Fibre θ-count** for the NORMAL-FORM fibre over `E_r = diag(I_r,0)`:
+  `numTop(mult⁻¹ E_r) = cTheta(d−r) = C(m,|δ|)` — `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`
+  (the `TopDimMinPrimes` count chain through the chart `e`, reducedness-free via `detΔ`-unit; carries
+  `Monotone d` + rank + Kostant-nonempty hyps). Resolves #54. **Arbitrary rank-`r` `B`** then follows by the
+  same-rank component-count transport (`reducedFibre_baseChangeHomogeneous` ⟹ `mult⁻¹ B ≅ mult⁻¹ E_r` as
+  varieties) — being added per the owner's PR #11 review (was previously over-stated here as arbitrary `B`).
 - **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
   `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
   LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
