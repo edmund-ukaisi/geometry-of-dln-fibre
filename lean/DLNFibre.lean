@@ -355,3 +355,9 @@ import DLNFibre.Core.FibreChartConjugation
 -- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial` (cover is point-set /
 -- near-definitional over the OPEN; a bare scheme-theoretic name needs the rank-tie `rankROpen={rank=r}`, #133r).
 import DLNFibre.Core.FibreBundleLocallyTrivialFull
+-- Scope-3 (variety-level fibre-component↔orbit iso, thread 24 #138): rung 1 of the honest LOCALIZED `e`
+-- — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away chartDsig)⧸chartComponentIdeal`
+-- (the chart-localization component transport). The consumer-shaped global/shifted-orbit `e` is FALSE
+-- (chart is intrinsically localized); only the LOCALIZED full-d-orbit form is reachable — the orbit
+-- descent (rung 2) is a precisely-costed residual, NOT built. Off-critical-path geometric enrichment.
+import DLNFibre.Core.FibreComponentOrbitIso

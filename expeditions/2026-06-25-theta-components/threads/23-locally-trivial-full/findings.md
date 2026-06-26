@@ -40,10 +40,19 @@ NOT `locallyTrivial` — that identifier was judged a mild overclaim (see below)
 scheme equality; (iii) a bare `locallyTrivial` over the closure is false. The structure name
 `PivotLocalProductAtlas` carries the honest content.
 
-## The ONE remaining rung to a bare `locallyTrivial` (#133r, small, no new math)
-The Lean-formalized rank-tie `rankROpen = {rank=r}` — the converse of the banked forward inclusion
-(`sweepSigma_subset_chartOpen`), a Nullstellensatz over the rank-`=r` open. ~150–300 LoC CA, NO new
-mathematics (Codex). With it the headline could honestly carry `locallyTrivial`.
+## CORRECTION (B3-8, commit daba2248, 5th Codex consult) — the rank-tie does NOT earn `locallyTrivial`
+The "rank-tie = no new math → bare `locallyTrivial`" premise (#139) CONFLATED two distinct statements:
+- The **k-point** rank-tie (built, no new math, `[Field k]` only): `sweepSigma_eq_chartCoverKPoint_inter_rankLe`
+  + `r_le_rank_of_isUnit_eval_ΔPdeepAt` + `mem_chartCoverKPoint_iff_rankEq_of_rankLe` — over
+  `RepCoord → k` points, the pivot minors cut out the rank-`<r` complement. ✓ LANDED, axiom-clean.
+- The **prime/scheme** statement that WOULD earn `locallyTrivial`: `P ∈ rankROpen ↔ the universal matrix
+  over the residue field κ(P) has rank r` — genuinely NEW scheme-theoretic content (a residue-field-rank
+  bridge), NOT "no new math".
+The atlas cover (`iSup_pivot_basicOpen_eq_rankROpen`) is PRIME-level; the rank-tie is K-POINT-level; they
+do NOT compose. So the headline correctly STAYS `reducedFibre_pivotLocalProductAtlasOnRankOpen`, NOT
+`locallyTrivial`. **The TRUE residual to a bare `locallyTrivial` is the prime residue-field-rank bridge —
+substantial NEW math, a separate build, NOT a finishing touch.** Both tides + reviewer + 5 Codex consults
+concur: the atlas + k-point tie is the honest CEILING for this expedition.
 
 ## Net B3 state
 cover (#18) + ambient cocycle (#19) + top-left datum (#21) + per-pivot trivializations (#22) + the
