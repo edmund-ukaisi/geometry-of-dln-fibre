@@ -257,3 +257,13 @@ keeps it ∀M, confirming the design.
 
 8 modules banked this tide. The det side's RATE + decoder + all det-foundations + the assembly skeleton
 are done; item-3's map-equality induction is the final build.
+
+### Item-3 CLE route validated (feasibility de-risked)
+`flatToChartIdx : (Fin N → ℝ) ≃L (ChartIdx → ℝ)` via `ContinuousLinearEquiv.piCongrLeft` over
+`chartIdxEquiv` elaborates cleanly — the first step of the per-factor CLE route. Remaining for item-3:
+(a) per-factor `(Fin N → ℝ) ≃L Block_s × Rest` by composing `flatToChartIdx` + a `ChartIdx ≃ slot_s ⊕
+rest` split (`sumPiEquivProdPi`) + the `(Fin schurDim → ℝ) ≃L SchurInc`/`LDUParam` block flattening;
+(b) the factor list `fs` from these CLEs + the item-2 factors; (c) the entry-wise stage match
+`(paramsEquivFlat).symm ∘ composeFold fs = chartParamsGen ∘ genBlkFlatStruct` (the chainA-layer
+induction). This is the one genuinely-deep remaining build; the CLE machinery + all det/rate/decoder
+foundations beneath it are banked.
