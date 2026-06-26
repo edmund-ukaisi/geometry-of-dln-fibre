@@ -201,3 +201,33 @@ Then item-3 (Params-level stage induction, Codex shape) + item-4 (leafH summatio
 The `Rmat s` bottom-right E-placement (a 2D padded block) is the one component not yet validated as a
 standalone lemma (analogous to `bmatStack` but padding a `c_s`-col `r_s`-row block into `Text s × Wext s`
 with zeros elsewhere) — the precise next dependent-width sub-step.
+
+---
+
+## UPDATE-4 (same tide cont.) — the s-1 index friction RESOLVED via k-indexing; rmatPad banked; assembly fully de-risked
+
+Banked **`rmatPad`** (the `u`-carrier `Rmat s = [[0,0],[0,E]]` via `fromBlocks 0 0 0 E` +
+`finSumFinEquiv` reindex) — the last decoder constructor. ALL dependent-width bricks are now validated:
+`readSchur`/`readLift`, `bmatStack` (+ block laws), `frameSplitEquiv`, `rmatPad`.
+
+### The indexing resolution (sidesteps the assembly's worst friction)
+Index the decoder by the GenBlk boundary as `s = k+1` (so chart-slot `k` feeds GenBlk `Bmat (k+1)`),
+NOT by `s` with a `s-1` slot read. Then the slot↔frame match is `rfl`-clean:
+`schurDim M (fun j => Text M t (j+1)) k = Text(k+1)·Wext(k+1)` by `rfl`, and `frameSplitEquiv M t (k+1)`
+gives the K/X/N/E split at exactly that size. The `s-1`-through-`dite`-guarded-`Wext` HEq friction (which
+would have plagued every frame read) DISAPPEARS with k-indexing. (The `t`-arity bridge is
+`fun j => Text M t (j+1)` — the ℕ→ℕ descent that `schurDim`/`chartIdxEquiv` consume.)
+
+### genBlkFlatStruct assembly — fully de-risked, the remaining integration
+Every component + the indexing are validated. The assembly (a `GenBlk M t` with `match`-on-`k`):
+- `Bmat (k+1) = bmatStack M t (k+1) hdesc (Kreader k) (Xreader k)`; `Bmat 0 = reindex 1`.
+- `Rmat (k+1) = rmatPad M t (k+1) h1 h2 (Ereader k)`; `Rmat 0 = 0`.
+- `Nblk k = Nreader k`; `Wblk k = Wreader k` (from `liftDim k`); `Rfin L` from `schurDim(L-1)`.
+- K/X/N/E readers: `frameSplitEquiv M t (k+1)`-inject the role index, `finProdFinEquiv` the (i,j),
+  `chartIdxEquiv.symm ⟨k, Sum.inl ·⟩`, read `x`. (The `schurDim k`-vs-`Text(k+1)·Wext(k+1)` finCongr
+  is `rfl`.)
+- Hyps to thread: `hdesc : Text(k+2) ≤ Text(k+1)` (descent, achiever-strict) ∀k; `h2` already in `hle`.
+- K kept DIRECT (no LDU in decoder) — the item-2 `lduChartFactor` supplies the LDU reparametrization in
+  `composeFold`, matched in item-3.
+Then rate (`hC0` re-check, `genBlk3spec` pattern ∀M) + item-3 (Params-level stage induction) + item-4
+(leafH summation) → `phiFlat_abs_det`. This is the next pass: a substantial but design-complete module.
