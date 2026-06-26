@@ -8448,3 +8448,34 @@ Nonclaims: no full equality of coordinate-data records.  The dummy fields
 `A1seed 0` and `A3seed (Fin.last M)` are not recoverable.  No open coordinate
 domain, topology, measure, Jacobian, source-rank coverage, source/image
 equality, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive nonredundant coordinate data:
+Lean now defines the dummy-free coordinate object
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  It stores the
+actual retained-passive finite coordinates: passive `A1` fields indexed by
+`Fin M`, nonterminal `F2` fields indexed by `Fin (M+1)`, passive `A3` fields
+indexed by `Fin M`, all residual `C` fields, `Ctop`, and `F3`.
+
+The embedding into `RetainedPassiveCoordinateData` fills only canonical
+non-coordinate slots: `A1seed 0=0`, `A3seed (Fin.last M)=0`, and
+`F2full (Fin.last (M+1))=0`.  The theorem
+`RetainedPassiveNonredundantCoordinateData.edgeMatrix_readbacks_eq_targets`
+recovers all stored fields from the edge family under passive `A1passive`
+unit hypotheses and `det(Ctop)` unit.  The theorem
+`RetainedPassiveNonredundantCoordinateData.edgeMatrix_ext` proves full
+record equality for the nonredundant object from equal edge families, with the
+same side conditions on both records.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-nonredundant-coordinate-data.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-nonredundant-coordinate-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-nonredundant-coordinate-data.md`
+passed.
+
+Nonclaims: finite coordinate algebra only.  No open coordinate domain,
+topology, determinant-unit neighborhood, source-rank coverage,
+source/image equality, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.

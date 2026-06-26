@@ -12663,3 +12663,17 @@ fields `F2_0`, `Ctop`, `F3`, and per-edge recoverable fields `A1seed_p` for
 families and proves equality of exactly those recoverable fields, using
 `F2_last=0` for the terminal `F2` coordinate.  It deliberately does not claim
 full data equality because `A1seed 0` and `A3seed last` are placeholders.
+
+New follow-up replaces the bundled object by a nonredundant coordinate object.
+`RetainedPassiveNonredundantCoordinateData` stores only `A1passive`, the
+nonterminal `F2` coordinates, `A3passive`, `C`, `Ctop`, and `F3`.  Its
+`toCoordinateData` projection fills the old dummy slots by zero and uses
+`F2full_last=0` definitionally.  The readback theorem recovers every stored
+field, and `edgeMatrix_ext` now proves full equality of two nonredundant
+records from equal edge families under the same passive `A1` and `Ctop`
+determinant-unit side conditions.
+
+This closes the finite dummy-slot cleanup.  It is still not the open
+coordinate domain: determinant-unit neighborhoods, source-rank coverage,
+source/image equality, measure pushforward, density/Jacobian accounting,
+normal crossings, pole order, and RLCT remain outside this rung.

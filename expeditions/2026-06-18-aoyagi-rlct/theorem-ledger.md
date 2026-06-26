@@ -9660,3 +9660,29 @@ passed.
 This is finite recoverable-coordinate algebra only: no full record
 injectivity, open coordinate domain, topology, measure, Jacobian, source-rank
 coverage, source/image theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive nonredundant coordinate data:
+`RetainedPassiveCoordinates.lean` defines
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData`, with fields
+`A1passive`, nonterminal `F2`, `A3passive`, `C`, `Ctop`, and `F3`.  The helper
+projections `A1seed`, `F2full`, `A3seed`, and `toCoordinateData` embed this
+dummy-free object into the older bundled `RetainedPassiveCoordinateData` by
+setting `A1seed 0=0`, `A3seed (Fin.last M)=0`, and
+`F2full (Fin.last (M+1))=0`.
+
+The theorem
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.edgeMatrix_readbacks_eq_targets`
+recovers exactly the stored fields from `data.edgeMatrix`, under passive
+`A1passive` determinant-unit hypotheses and `det(Ctop)` unit.  The theorem
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.edgeMatrix_ext`
+proves full equality of two nonredundant records from equality of their edge
+families, with the same side conditions on both records.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-nonredundant-coordinate-data.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-nonredundant-coordinate-data.md`
+passed.
+This is finite coordinate algebra only: no open coordinate domain, topology,
+determinant-unit neighborhood, source-rank coverage, source/image theorem,
+measure pushforward, density/Jacobian theorem, normal crossings, pole order,
+or RLCT.

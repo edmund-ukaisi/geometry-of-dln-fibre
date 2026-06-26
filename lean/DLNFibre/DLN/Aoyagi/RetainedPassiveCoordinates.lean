@@ -2038,6 +2038,232 @@ theorem edgeMatrix_recoverable_ext
 
 end RetainedPassiveCoordinateData
 
+/-- Nonredundant finite retained-passive coordinate data.  This removes the
+dummy endpoint seed fields and the terminal zero `F2` slot from
+`RetainedPassiveCoordinateData`. -/
+structure RetainedPassiveNonredundantCoordinateData
+    {M : ℕ} (κ' : Fin (M + 2) → Type*) where
+  A1passive : Fin M → Matrix ρ ρ K
+  F2 : ∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) K
+  A3passive : ∀ p : Fin M, Matrix (κ' p.castSucc.succ) ρ K
+  C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K
+  Ctop : Matrix ρ ρ K
+  F3 : Matrix (κ' (Fin.last (M + 1))) ρ K
+
+namespace RetainedPassiveNonredundantCoordinateData
+
+/-- Embed passive `A1` coordinates into the older seed family by filling the
+dummy first seed with zero. -/
+def A1seed
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    Fin (M + 1) → Matrix ρ ρ K :=
+  Fin.cases 0 data.A1passive
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem A1seed_zero
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    data.A1seed 0 = 0 := by
+  simp [A1seed]
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem A1seed_succ
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (p : Fin M) :
+    data.A1seed p.succ = data.A1passive p := by
+  simp [A1seed]
+
+/-- Extend the nonterminal `F2` coordinates by the terminal zero convention. -/
+def F2full
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    ∀ i : Fin (M + 2), Matrix ρ (κ' i) K :=
+  Fin.snoc data.F2 0
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem F2full_castSucc
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (p : Fin (M + 1)) :
+    data.F2full p.castSucc = data.F2 p := by
+  simp [F2full]
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem F2full_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    data.F2full (Fin.last (M + 1)) = 0 := by
+  simp [F2full]
+
+/-- Embed passive `A3` coordinates into the older seed family by filling the
+dummy final seed with zero. -/
+def A3seed
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K :=
+  Fin.snoc data.A3passive 0
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem A3seed_castSucc
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (p : Fin M) :
+    data.A3seed p.castSucc = data.A3passive p := by
+  simp [A3seed]
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem A3seed_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    data.A3seed (Fin.last M) = 0 := by
+  simp [A3seed]
+
+/-- The corresponding older bundled coordinate data, with dummy slots filled
+canonically. -/
+def toCoordinateData
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ' where
+  A1seed := data.A1seed
+  F2 := data.F2full
+  A3seed := data.A3seed
+  C := data.C
+  Ctop := data.Ctop
+  F3 := data.F3
+
+/-- The fixed-base edge family associated to nonredundant retained-passive
+coordinate data. -/
+def edgeMatrix
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    ∀ p : Fin (M + 1), Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
+  data.toCoordinateData.edgeMatrix
+
+/-- Passive determinant-unit hypotheses for the nonredundant coordinates imply
+the side condition expected by the older bundled coordinate data. -/
+theorem toCoordinateData_passiveA1_units
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hPassiveA1 : ∀ p : Fin M, IsUnit (data.A1passive p).det) :
+    ∀ p : Fin (M + 1), p ≠ 0 →
+      IsUnit ((data.toCoordinateData).A1seed p).det := by
+  intro p hp
+  cases p using Fin.cases with
+  | zero => exact False.elim (hp rfl)
+  | succ p =>
+      simpa [toCoordinateData] using hPassiveA1 p
+
+/-- The nonredundant edge family reads back exactly the stored finite
+coordinates. -/
+theorem edgeMatrix_readbacks_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hPassiveA1 : ∀ p : Fin M, IsUnit (data.A1passive p).det)
+    (hCtop : IsUnit data.Ctop.det) :
+    let E := data.edgeMatrix
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B =
+        data.F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+      (∀ p : Fin M,
+        let T := transformedEdge E p.succ
+          (suffixState E (Fin.last (M + 1)) p.succ.succ p.succ.succ.le_last);
+        topLeftCorner T = data.A1passive p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        -((topLeftCorner T)⁻¹ * upperRightBlock T) = data.F2 p) ∧
+      (∀ p : Fin M,
+        let T := transformedEdge E p.castSucc
+          (suffixState E (Fin.last (M + 1)) p.castSucc.succ
+            p.castSucc.succ.le_last);
+        lowerLeftBlock T = data.A3passive p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        schurResidualBlock T = data.C p) := by
+  intro E
+  have hRead :=
+    RetainedPassiveCoordinateData.edgeMatrix_recoverableReadbacks_eq_targets
+      (K := K) (ρ := ρ) data.toCoordinateData data.F2full_last
+      (data.toCoordinateData_passiveA1_units hPassiveA1) hCtop
+  rcases hRead with ⟨hF20, hCtopRead, hF3Read, hA1, hF2, hA3, hC⟩
+  refine ⟨?_, hCtopRead, hF3Read, ?_, ?_, ?_, hC⟩
+  · simpa [E, edgeMatrix, toCoordinateData] using hF20
+  · intro p
+    have hp : (p.succ : Fin (M + 1)) ≠ 0 := Fin.succ_ne_zero p
+    have h := hA1 p.succ hp
+    simpa [E, edgeMatrix, toCoordinateData] using h
+  · intro p
+    have h := hF2 p
+    simpa [E, edgeMatrix, toCoordinateData] using h
+  · intro p
+    have hp : (p.castSucc : Fin (M + 1)) ≠ Fin.last M :=
+      Fin.castSucc_ne_last p
+    have h := hA3 p.castSucc hp
+    simpa [E, edgeMatrix, toCoordinateData] using h
+
+/-- Equal nonredundant retained-passive edge families have equal coordinate
+data. -/
+theorem edgeMatrix_ext
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data data' :
+      RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hPassiveA1 : ∀ p : Fin M, IsUnit (data.A1passive p).det)
+    (hPassiveA1' : ∀ p : Fin M, IsUnit (data'.A1passive p).det)
+    (hCtop : IsUnit data.Ctop.det)
+    (hCtop' : IsUnit data'.Ctop.det)
+    (hE : data.edgeMatrix = data'.edgeMatrix) :
+    data = data' := by
+  have hRecover :=
+    RetainedPassiveCoordinateData.edgeMatrix_recoverable_ext
+      (K := K) (ρ := ρ) data.toCoordinateData data'.toCoordinateData
+      data.F2full_last data'.F2full_last
+      (data.toCoordinateData_passiveA1_units hPassiveA1)
+      (data'.toCoordinateData_passiveA1_units hPassiveA1')
+      hCtop hCtop' (by simpa [edgeMatrix] using hE)
+  rcases hRecover with ⟨hA1, hF2, hA3, hC, hCtopEq, hF3⟩
+  have hA1passive : data.A1passive = data'.A1passive := by
+    funext p
+    have hp : (p.succ : Fin (M + 1)) ≠ 0 := Fin.succ_ne_zero p
+    have h := hA1 p.succ hp
+    simpa [toCoordinateData] using h
+  have hF2body : data.F2 = data'.F2 := by
+    funext p
+    have h := congrFun hF2 p.castSucc
+    simpa [toCoordinateData] using h
+  have hA3passive : data.A3passive = data'.A3passive := by
+    funext p
+    have hp : (p.castSucc : Fin (M + 1)) ≠ Fin.last M :=
+      Fin.castSucc_ne_last p
+    have h := hA3 p.castSucc hp
+    simpa [toCoordinateData] using h
+  have hCbody : data.C = data'.C := by
+    simpa [toCoordinateData] using hC
+  have hCtopBody : data.Ctop = data'.Ctop := by
+    simpa [toCoordinateData] using hCtopEq
+  have hF3body : data.F3 = data'.F3 := by
+    simpa [toCoordinateData] using hF3
+  cases data
+  cases data'
+  simp_all
+
+end RetainedPassiveNonredundantCoordinateData
+
 end RetainedPassive
 
 end ChartLocalSuffixState

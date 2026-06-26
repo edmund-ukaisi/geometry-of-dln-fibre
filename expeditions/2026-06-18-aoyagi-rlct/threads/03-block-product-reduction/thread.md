@@ -7387,6 +7387,56 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive nonredundant coordinate data
+
+Reproduction:
+`reproduction-a2-retained-passive-nonredundant-coordinate-data.md`.
+Statement card:
+`statement-card-a2-retained-passive-nonredundant-coordinate-data.md`.
+Review:
+`review-a2-retained-passive-nonredundant-coordinate-data.md`.
+
+Lean now defines the dummy-free coordinate object
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+```
+
+with stored fields `A1passive`, nonterminal `F2`, `A3passive`, `C`, `Ctop`,
+and `F3`.  It embeds this object into the older
+`RetainedPassiveCoordinateData` by filling the ignored endpoint seeds and the
+terminal `F2` slot canonically:
+
+```text
+A1seed_0 = 0,
+A3seed_last = 0,
+F2_last = 0.
+```
+
+The new layer proves
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.edgeMatrix_readbacks_eq_targets
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.edgeMatrix_ext
+```
+
+Under passive `A1passive` determinant-unit hypotheses and `det(Ctop)` unit,
+the edge family reads back every stored nonredundant coordinate.  Equality of
+edge families for two such data objects forces full equality of the
+nonredundant records.  This full extensionality is valid precisely because the
+dummy `A1seed 0`, dummy `A3seed last`, and constrained terminal `F2` field have
+been removed.
+
+This is still finite coordinate algebra only.  It does not construct an open
+coordinate domain, topology, determinant-unit neighborhood, source-rank
+coverage, source/image theorem, measure pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Locke the 3rd` passed the field boundary, `M=0` behavior,
+dummy-slot embedding, passive-unit side-condition translation, readback scope,
+full nonredundant extensionality, and nonclaim boundary.  The reviewer also
+reran the focused `RetainedPassiveCoordinates` build successfully.
+
 ## 2026-06-26 A2 retained-passive recoverable readbacks
 
 Reproduction:

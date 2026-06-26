@@ -5626,3 +5626,19 @@ move to the first topology/domain layer that keeps these same side conditions.
 Do not assert full coordinate-data injectivity, source-rank coverage,
 source/image equality, measure transport, density/Jacobian accounting, normal
 crossings, pole order, or RLCT.
+
+That named recoverable-coordinate projection object is now implemented as
+`RetainedPassiveNonredundantCoordinateData` in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-nonredundant-coordinate-data.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-nonredundant-coordinate-data.md`.
+It removes the dummy `A1seed 0`, dummy `A3seed last`, and terminal constrained
+`F2` slot, then proves full extensionality for the resulting finite data
+object.
+
+Next retained-passive target after review/banking: move to the first genuine
+domain/topology layer for this nonredundant chart, keeping the side conditions
+explicit.  Do not assert source-rank coverage, source/image equality, measure
+transport, density/Jacobian accounting, normal crossings, pole order, or RLCT
+until the corresponding source-domain and transport data are actually proved.
