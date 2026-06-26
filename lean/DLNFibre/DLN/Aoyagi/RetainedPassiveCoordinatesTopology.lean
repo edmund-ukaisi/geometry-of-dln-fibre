@@ -367,6 +367,117 @@ def topologyTupleEdgeRawOrder
     (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z)
 
 @[simp]
+theorem topologyTupleEdgeRawOrder_A1passive
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) (p : Fin M) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).1 p =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      let A1 := data.toCoordinateData.solvedA1
+      let A3 := data.toCoordinateData.solvedA3
+      A1 p.succ + data.toCoordinateData.F2 p.succ.succ * A3 p.succ := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks11_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) p.succ
+
+@[simp]
+theorem topologyTupleEdgeRawOrder_F2
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) (p : Fin (M + 1)) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.1 p =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      let A1 := data.toCoordinateData.solvedA1
+      let A3 := data.toCoordinateData.solvedA3
+      (-(A1 p * data.toCoordinateData.F2 p.castSucc) +
+        data.toCoordinateData.F2 p.succ *
+          (data.toCoordinateData.C p - A3 p * data.toCoordinateData.F2 p.castSucc)) := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks12_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) p
+
+@[simp]
+theorem topologyTupleEdgeRawOrder_A3passive
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) (p : Fin M) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.1 p =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      data.toCoordinateData.solvedA3 p.castSucc := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks21_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) p.castSucc
+
+@[simp]
+theorem topologyTupleEdgeRawOrder_C
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) (p : Fin (M + 1)) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.2.1 p =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      let A3 := data.toCoordinateData.solvedA3
+      data.toCoordinateData.C p - A3 p * data.toCoordinateData.F2 p.castSucc := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks22_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) p
+
+@[simp]
+theorem topologyTupleEdgeRawOrder_Ctop
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.2.2.1 =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      let A1 := data.toCoordinateData.solvedA1
+      let A3 := data.toCoordinateData.solvedA3
+      A1 0 + data.toCoordinateData.F2 (0 : Fin (M + 1)).succ * A3 0 := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks11_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) 0
+
+@[simp]
+theorem topologyTupleEdgeRawOrder_F3
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.2.2.2 =
+      let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+      data.toCoordinateData.solvedA3 (Fin.last M) := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  dsimp [topologyTupleEdgeRawOrder, edgeFamilyRawOrderTuple,
+    topologyTupleEdgeMatrix, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix, data]
+  exact toBlocks21_retainedPassiveFixedBaseEdgeMatrix
+    (K := K) (A1 := data.toCoordinateData.solvedA1)
+    (F2 := data.toCoordinateData.F2) (A3 := data.toCoordinateData.solvedA3)
+    (C := data.toCoordinateData.C) (Fin.last M)
+
+@[simp]
 theorem edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
     [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]

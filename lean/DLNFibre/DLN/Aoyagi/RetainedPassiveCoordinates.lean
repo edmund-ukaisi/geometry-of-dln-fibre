@@ -46,6 +46,104 @@ def retainedPassiveFixedBaseEdgeMatrix
       (1 : Matrix (κ p.succ) (κ p.succ) K) *
     retainedPassiveTransformedEdge A1 F2 A3 C p
 
+@[simp]
+theorem topLeftCorner_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    topLeftCorner (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p) =
+      A1 p + F2 p.succ * A3 p := by
+  simp [retainedPassiveFixedBaseEdgeMatrix, retainedPassiveTransformedEdge,
+    fromBlocks_multiply]
+
+@[simp]
+theorem upperRightBlock_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    upperRightBlock (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p) =
+      -(A1 p * F2 p.castSucc) +
+        F2 p.succ * (C p - A3 p * F2 p.castSucc) := by
+  simp [retainedPassiveFixedBaseEdgeMatrix, retainedPassiveTransformedEdge,
+    fromBlocks_multiply]
+
+@[simp]
+theorem lowerLeftBlock_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    lowerLeftBlock (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p) =
+      A3 p := by
+  simp [retainedPassiveFixedBaseEdgeMatrix, retainedPassiveTransformedEdge,
+    fromBlocks_multiply]
+
+@[simp]
+theorem lowerRightBlock_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    lowerRightBlock (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p) =
+      C p - A3 p * F2 p.castSucc := by
+  simp [retainedPassiveFixedBaseEdgeMatrix, retainedPassiveTransformedEdge,
+    fromBlocks_multiply]
+
+@[simp]
+theorem toBlocks11_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).toBlocks₁₁ =
+      A1 p + F2 p.succ * A3 p := by
+  simpa [topLeftCorner] using
+    topLeftCorner_retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p
+
+@[simp]
+theorem toBlocks12_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).toBlocks₁₂ =
+      -(A1 p * F2 p.castSucc) +
+        F2 p.succ * (C p - A3 p * F2 p.castSucc) := by
+  simpa [upperRightBlock] using
+    upperRightBlock_retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p
+
+@[simp]
+theorem toBlocks21_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).toBlocks₂₁ =
+      A3 p := by
+  simpa [lowerLeftBlock] using
+    lowerLeftBlock_retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p
+
+@[simp]
+theorem toBlocks22_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).toBlocks₂₂ =
+      C p - A3 p * F2 p.castSucc := by
+  simpa [lowerRightBlock] using
+    lowerRightBlock_retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p
+
 /-- If the next suffix-state right field is `-F2_{p+1}`, the fixed-base edge
 has the prescribed retained-passive transformed edge. -/
 theorem transformedEdge_retainedPassiveFixedBaseEdgeMatrix_of_B_eq

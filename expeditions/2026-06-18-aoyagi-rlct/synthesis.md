@@ -13276,3 +13276,23 @@ Jacobian calculation.  It is not a retained-passive inverse for arbitrary edge
 families, and it proves no derivative, determinant formula, density, measure
 pushforward, image equality, homeomorphism, normal crossings, pole order, or
 RLCT extraction.
+
+Latest retained-passive raw-order block formulas:
+`RetainedPassiveCoordinates.lean` now records the raw blocks of the fixed-base
+retained-passive edge matrix:
+
+```text
+X_p = A_p + F2full_(p.succ) * L_p
+B_p = -(A_p * F2full_(p.castSucc))
+        + F2full_(p.succ) * (C_p - L_p * F2full_(p.castSucc))
+Y_p = L_p
+Z_p = C_p - L_p * F2full_(p.castSucc).
+```
+
+`RetainedPassiveCoordinatesTopology.lean` lifts these formulas to the
+`topologyTupleEdgeRawOrder_*` component theorems in the existing
+`TopologyTuple` order.  This is the first derivative-facing formula layer for
+the retained-passive raw-order endomap.  The accompanying reproduction note
+`reproduction-a2-retained-passive-raw-order-derivative-jacobian-plan.md`
+records the candidate formal Jacobian route and a candidate absolute
+determinant, but no derivative or determinant theorem is claimed yet.

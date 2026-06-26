@@ -9130,3 +9130,51 @@ This removes the target-product mismatch for future retained-passive
 derivative work.  It does not prove a derivative, determinant formula,
 density, measure pushforward, image equality, homeomorphism, source-rank
 coverage, normal-crossing theorem, pole order, or RLCT statement.
+
+## 2026-06-26 A2 retained-passive raw-order block formulas
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-derivative-jacobian-plan.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-block-formulas.md`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean`.
+
+Lean now exposes fixed-base raw edge block formulas:
+
+```text
+topLeftCorner_retainedPassiveFixedBaseEdgeMatrix
+upperRightBlock_retainedPassiveFixedBaseEdgeMatrix
+lowerLeftBlock_retainedPassiveFixedBaseEdgeMatrix
+lowerRightBlock_retainedPassiveFixedBaseEdgeMatrix
+toBlocks11_retainedPassiveFixedBaseEdgeMatrix
+toBlocks12_retainedPassiveFixedBaseEdgeMatrix
+toBlocks21_retainedPassiveFixedBaseEdgeMatrix
+toBlocks22_retainedPassiveFixedBaseEdgeMatrix
+```
+
+and tuple-level component formulas:
+
+```text
+topologyTupleEdgeRawOrder_A1passive
+topologyTupleEdgeRawOrder_F2
+topologyTupleEdgeRawOrder_A3passive
+topologyTupleEdgeRawOrder_C
+topologyTupleEdgeRawOrder_Ctop
+topologyTupleEdgeRawOrder_F3
+```
+
+The pointwise formula is the block product
+
+```text
+fromBlocks 1 F2full_(p.succ) 0 1 *
+  fromBlocks A_p (-(A_p * F2full_(p.castSucc))) L_p
+    (C_p - L_p * F2full_(p.castSucc)).
+```
+
+This is the formula layer for the next retained-passive derivative theorem.
+It does not prove a derivative, determinant formula, density, measure
+pushforward, image equality, source-rank coverage, normal-crossing theorem,
+pole order, or RLCT statement.

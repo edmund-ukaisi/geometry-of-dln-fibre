@@ -6102,3 +6102,14 @@ calculation for `topologyTupleEdgeRawOrder` on the tuple determinant chart,
 starting from the pen-and-paper determinant calculation.  Do not claim a
 measure pushforward until that derivative determinant and the corresponding
 target Haar representation are formalized.
+
+A2 retained-passive raw-order block formulas have now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-derivative-jacobian-plan.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-block-formulas.md`.
+The next Lean move should be the `DifferentiableAt` theorem for
+`topologyTupleEdgeRawOrder` at tuple determinant-chart points, using these
+component formulas and the existing matrix inverse derivative.  Keep the
+determinant theorem separate: first build a formal tangent equivalence and
+prove determinant-unitness; do not assert the candidate absolute determinant
+formula until it is independently checked against the exact Lean basis/order.
