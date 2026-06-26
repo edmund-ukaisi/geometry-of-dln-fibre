@@ -217,6 +217,87 @@ theorem sweepSigma_subset_chartOpen (d : Fin (N + 2) → ℕ) (r : ℕ)
   obtain ⟨s, t, hs, ht, hdet⟩ := exists_invertible_minor_of_rank (mult d A) hA
   exact ⟨s, t, hs, ht, by rw [ΔPdeepAt, eval_det_submatrix_multPoly]; exact hdet⟩
 
+/-! ## The k-point rank-tie: the pivot minors cut out the rank-`< r` complement (B3-8)
+
+The genuine k-point content behind the cover: on the rank-`≤ r` k-points (the closure `Σ̄^r`), a
+point lies in some chart `D(ΔPdeepAt s t)` **iff** its product has rank exactly `r`. The forward
+direction (rank `= r` ⟹ some chart, `sweepSigma_subset_chartOpen`) is the cover; the converse (some
+`r × r` deep minor non-vanishing ⟹ rank `≥ r`, hence `= r` under `≤ r`) is the determinantal-rank
+lower bound (`rank_submatrix_le_rank` + the square `r × r` minor having full rank when its det is a
+unit). So the pivot minors cut out the rank-`< r` complement — over `k`-points; needs only `[Field
+k]`. (This is NOT the prime/scheme-level identity `rankROpen = {rank = r}`: `rankROpen` is a set
+of primes, this is over `k`-points. The prime-level statement is the residue-field-rank bridge —
+the real residual to a bare `locallyTrivial` name; see the headline note.) -/
+
+/-- The k-point chart-cover locus: points `x` lying in some per-pivot chart `D(ΔPdeepAt s t)`. -/
+def chartCoverKPoint (d : Fin (N + 2) → ℕ) (r : ℕ) : Set (RepCoord d → k) :=
+  {x | ∃ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
+    Function.Injective s ∧ Function.Injective t ∧ IsUnit (eval x (ΔPdeepAt (k := k) d r s t))}
+
+/-- The k-point rank-`≤ r` locus: points whose product has rank `≤ r` (the closure `Σ̄^r`). -/
+def rankLeKPoint (d : Fin (N + 2) → ℕ) (r : ℕ) : Set (RepCoord d → k) :=
+  {x | (mult d ((canonicalCoord d).symm x)).rank ≤ r}
+
+omit [Infinite k] in
+/-- **A non-vanishing `r × r` deep minor forces rank `≥ r`.** If `eval x (ΔPdeepAt s t)` is a unit
+then the `(s, t)` minor of `mult d ((canonicalCoord d).symm x)` has nonzero determinant, so that
+square `r × r` minor has full rank `r`, and a submatrix's rank is `≤` the matrix's rank
+(`rank_submatrix_le_rank`). -/
+theorem r_le_rank_of_isUnit_eval_ΔPdeepAt (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (x : RepCoord d → k) (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    (hu : IsUnit (eval x (ΔPdeepAt (k := k) d r s t))) :
+    r ≤ (mult d ((canonicalCoord d).symm x)).rank := by
+  set A := (canonicalCoord d).symm x with hA
+  have heval : eval x (ΔPdeepAt (k := k) d r s t) = ((mult d A).submatrix s t).det := by
+    rw [ΔPdeepAt, show x = canonicalCoord d A from by rw [hA, Equiv.apply_symm_apply]]
+    exact eval_det_submatrix_multPoly d A s t
+  rw [heval] at hu
+  have hne : ((mult d A).submatrix s t).det ≠ 0 := hu.ne_zero
+  have hsq : ((mult d A).submatrix s t).rank = r := by
+    rw [Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).mpr
+      (isUnit_iff_ne_zero.mpr hne)), Fintype.card_fin]
+  calc r = ((mult d A).submatrix s t).rank := hsq.symm
+    _ ≤ (mult d A).rank := rank_submatrix_le_rank (mult d A) s t
+
+omit [Infinite k] in
+/-- **The k-point rank-tie.** On the rank-`≤ r` k-points, lying in some per-pivot chart is
+equivalent to the product having rank exactly `r`: forward `sweepSigma_subset_chartOpen` (rank `= r`
+⟹ chart),
+converse `r_le_rank_of_isUnit_eval_ΔPdeepAt` (chart ⟹ rank `≥ r`) with `≤ r` ⟹ `= r`. So the pivot
+minors cut out the rank-`< r` complement. -/
+theorem mem_chartCoverKPoint_iff_rankEq_of_rankLe (d : Fin (N + 2) → ℕ) (r : ℕ)
+    {x : RepCoord d → k} (hx : x ∈ rankLeKPoint (k := k) d r) :
+    x ∈ chartCoverKPoint (k := k) d r ↔ (mult d ((canonicalCoord d).symm x)).rank = r := by
+  rw [rankLeKPoint, Set.mem_setOf_eq] at hx
+  constructor
+  · rintro ⟨s, t, _, _, hu⟩
+    exact le_antisymm hx (r_le_rank_of_isUnit_eval_ΔPdeepAt d r x s t hu)
+  · intro hrk
+    obtain ⟨s, t, hs, ht, hu⟩ :=
+      sweepSigma_subset_chartOpen d r x ⟨(canonicalCoord d).symm x, hrk, by
+        rw [Equiv.apply_symm_apply]⟩
+    exact ⟨s, t, hs, ht, hu⟩
+
+omit [Infinite k] in
+/-- **The k-point rank-tie (set form).** The rank-exactly-`r` k-point locus `sweepSigma` is the
+chart-cover locus intersected with the rank-`≤ r` closure: the pivot minors cut out the rank-`< r`
+complement inside `Σ̄^r`. -/
+theorem sweepSigma_eq_chartCoverKPoint_inter_rankLe (d : Fin (N + 2) → ℕ) (r : ℕ) :
+    sweepSigma (k := k) d r
+      = chartCoverKPoint (k := k) d r ∩ rankLeKPoint (k := k) d r := by
+  ext x
+  constructor
+  · intro hx
+    have hrk : (mult d ((canonicalCoord d).symm x)).rank = r := by
+      obtain ⟨A, hA, rfl⟩ := hx
+      rw [Equiv.symm_apply_apply, mem_productRankLocus] at *; exact hA
+    have hle : x ∈ rankLeKPoint (k := k) d r := by rw [rankLeKPoint, Set.mem_setOf_eq, hrk]
+    exact ⟨(mem_chartCoverKPoint_iff_rankEq_of_rankLe d r hle).mpr hrk, hle⟩
+  · rintro ⟨hcov, hle⟩
+    have hrk := (mem_chartCoverKPoint_iff_rankEq_of_rankLe d r hle).mp hcov
+    exact ⟨(canonicalCoord d).symm x, by rw [mem_productRankLocus]; exact hrk,
+      Equiv.apply_symm_apply _ _⟩
+
 /-! ## The scheme-level cover over the rank-`r` open (B3-7)
 
 The genuine scheme-theoretic cover. Over `Spec (sweepSigmaRing) = Σ̄^r` (the closure), the per-pivot
@@ -347,12 +428,19 @@ The reduced fibre bundle has a **per-pivot local-product atlas over the rank-exa
 (`iSup_pivot_basicOpen_eq_rankROpen`) + the per-pivot trivializations into the standard fibre + the
 coherent (base-algebraic) transition cocycle, all assembled (`pivotLocalProductAtlas`).
 
-**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, twice): `rankROpen` is
+**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, thrice): `rankROpen` is
 defined as the chart-cover-complement, so the scheme open-cover is near-definitional, and the
-identity `rankROpen = {rank = r}` is the geometric reading, not a formalized scheme equality. The
-genuine content is the per-pivot trivializations + the coherent cocycle. A *bare* `locallyTrivial`
-over `Spec (sweepSigmaRing) = Σ̄^r` is genuinely false (the rank-`< r` boundary lies in no chart);
-the residual to a scheme-theoretic `locallyTrivial` is the Lean-formalized rank-tie. -/
+prime-level identity `rankROpen = {rank = r}` is not formalized. The genuine content is the
+per-pivot trivializations + the coherent cocycle. A *bare* `locallyTrivial` over
+`Spec (sweepSigmaRing)` (the
+closure) is genuinely false (the rank-`< r` boundary lies in no chart). The **k-point** rank-tie IS
+now banked — `sweepSigma_eq_chartCoverKPoint_inter_rankLe` /
+`mem_chartCoverKPoint_iff_rankEq_of_rankLe`: on the rank-`≤ r` `k`-points the charts cut out exactly
+the rank-`= r` locus. But (Codex) a k-point tie does NOT compose with the prime-level cover
+`iSup_pivot_basicOpen_eq_rankROpen` to license `locallyTrivial`; the genuine residual is the
+**prime/scheme** statement that a prime `P` lies in `rankROpen` iff the universal matrix over the
+residue field at `P` has rank `r` (a residue-field-rank bridge — genuinely new scheme-theoretic
+content, NOT covered by the k-point rank algebra). -/
 
 /-- **The per-pivot local-product atlas over the rank-`= r` open.** The full assembly
 (`pivotLocalProductAtlas`): the scheme open-cover of `rankROpen ⊆ Spec (sweepSigmaRing)` by the
@@ -400,6 +488,14 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ)
           Set (PrimeSpectrum (sweepSigmaRing k d r))))
       = rankROpen (k := k) d r :=
   (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).schemeCover
+
+/-- **Rank-tie witness.** On the rank-`≤ r` k-points, the rank-exactly-`r` locus is exactly the
+chart-cover locus — the pivot minors cut out the rank-`< r` complement (the genuine geometric
+content behind the cover, over `k`-points). -/
+example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ) :
+    sweepSigma (k := k) d r
+      = chartCoverKPoint (k := k) d r ∩ rankLeKPoint (k := k) d r :=
+  sweepSigma_eq_chartCoverKPoint_inter_rankLe d r
 
 end Witness
 

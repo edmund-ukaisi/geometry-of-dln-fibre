@@ -1,9 +1,10 @@
-# Thread 23 — locally trivial over the rank-`r` open (B3-6 + B3-7) — statement card
+# Thread 23 — the per-pivot atlas + k-point rank-tie over the rank-`r` open (B3-6/7/8) — statement card
 
-**Status: sorry-free (B3-6 reviewed PASS-WITH-CONCERNS, actioned; B3-7 pending review).** Module
-`lean/DLNFibre/Core/FibreBundleLocallyTrivialFull.lean`. Whole library green (3803 jobs); all
-headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`). Three
-decorrelated Codex consults (cocycle framing + naming honesty + reconcile/ambient-vs-cover).
+**Status: sorry-free (B3-6 reviewed PASS-WITH-CONCERNS, actioned; B3-7/8 pending review).** Module
+`lean/DLNFibre/Core/FibreBundleLocallyTrivialFull.lean`. Whole library green (3804 jobs); all
+headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`). FIVE
+decorrelated Codex consults (cocycle framing + naming honesty + reconcile/ambient-vs-cover + review +
+rank-tie target).
 
 **Scope verdict (honest): the per-pivot LOCAL-PRODUCT ATLAS over the rank-`= r` open.** Headline
 `reducedFibre_pivotLocalProductAtlasOnRankOpen` (a `PivotLocalProductAtlas`). **Deliberately NOT named
@@ -17,9 +18,24 @@ trivializations + the coherent base-algebraic cocycle + intertwining. A bare `lo
 closure `Σ̄^r` is genuinely FALSE (rank-`< r` boundary lies in no chart). The third Codex consult
 confirmed the lead's "ambient `MvPolynomial` identification" target is orthogonal busywork.
 
-**Residual to a scheme-theoretic `locallyTrivial`:** the Lean-formalized rank-tie `rankROpen =
-{rank = r}` (the converse of the banked forward inclusion; Nullstellensatz-style over the rank-`= r`
-open). No new mathematics; a clean further rung.
+**B3-8 — the k-point rank-tie (LANDED).** `sweepSigma_eq_chartCoverKPoint_inter_rankLe` /
+`mem_chartCoverKPoint_iff_rankEq_of_rankLe` / `r_le_rank_of_isUnit_eval_ΔPdeepAt`: on the rank-`≤ r`
+k-points, lying in some per-pivot chart ⟺ rank exactly `r` — the pivot minors cut out the rank-`< r`
+complement (over k-points; only `[Field k]`). Forward banked (`sweepSigma_subset_chartOpen`); converse
+from `rank_submatrix_le_rank` + full-rank square minor. This is the genuine geometric content behind
+the cover.
+
+**Why B3-8 does NOT earn a bare `locallyTrivial` (5th Codex consult, decisive):** the k-point rank-tie
+is over `RepCoord → k` points; the atlas cover `iSup_pivot_basicOpen_eq_rankROpen` is over PRIMES of
+`sweepSigmaRing`. The two do NOT compose — a k-point tie does not license a prime/scheme local-
+triviality. So the headline stays `reducedFibre_pivotLocalProductAtlasOnRankOpen` (NOT renamed to
+`locallyTrivial`).
+
+**Residual to a bare scheme-theoretic `locallyTrivial`:** the **prime-level** residue-field-rank
+bridge — a prime `P ∈ rankROpen` iff the universal matrix over the residue field κ(P) has rank `r`.
+This is genuinely NEW scheme-theoretic content (NOT "no new mathematics", contra the original B3-8
+framing) — the prime-vs-k-point gap, not more rank algebra. The k-point rank-tie (B3-8) is the honest
+k-point shadow of it.
 
 ---
 
