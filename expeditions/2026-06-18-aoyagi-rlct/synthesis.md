@@ -12533,3 +12533,13 @@ noncommutative order and source scope.  Caveat: this still reads back a
 supplied `A1_0`; it is not yet the retained-passive coordinate-domain theorem
 where active `Ctop_0=I+X` and passive `A1_p` for `p>0` determine the omitted
 endpoint.
+
+Latest follow-up in the same file proves retained-passive `D` and one-step `L`
+recurrences.  The Schur residual of
+`[A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]` is `C_p`, so the deterministic suffix
+field satisfies `D_p=D_{p+1}*C_p` and globally
+`D_i=residualFactorProduct C last i`.  The left multiplier step contributes
+the lower-left block `-(D_{p+1}*A3_p*(Ctop_{p+1}*A1_p)^-1)`, and under an
+explicit lower-unitriangular next-state shape the lower-left block updates by
+adding `F3next`.  This is the one-step algebra behind the later `F3` sum and
+`A3_last` solve; it is not yet that endpoint theorem.

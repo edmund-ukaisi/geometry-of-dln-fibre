@@ -99,6 +99,91 @@ theorem step_retainedPassiveFixedBaseEdgeMatrix_Ctop
       A1 F2 A3 C p S hB
   simp [step, hM, retainedPassiveTransformedEdge]
 
+omit [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)] in
+/-- The Schur residual block of a retained-passive transformed edge is the
+prescribed residual block `C_p`. -/
+theorem schurResidualBlock_retainedPassiveTransformedEdge
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N)
+    (hA1 : IsUnit (A1 p).det) :
+    schurResidualBlock (retainedPassiveTransformedEdge A1 F2 A3 C p) =
+      C p := by
+  simp [schurResidualBlock, retainedPassiveTransformedEdge,
+    Matrix.nonsing_inv_mul_cancel_left, hA1, Matrix.mul_assoc,
+    sub_eq_add_neg, add_assoc]
+
+/-- One retained-passive step updates the suffix-state residual product by
+multiplying with the prescribed residual block `C_p`. -/
+theorem step_retainedPassiveFixedBaseEdgeMatrix_D
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (hB : S.B = -F2 p.succ)
+    (hA1 : IsUnit (A1 p).det) :
+    (step (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C) p S).D =
+      S.D * C p := by
+  have hM :=
+    transformedEdge_retainedPassiveFixedBaseEdgeMatrix_of_B_eq
+      A1 F2 A3 C p S hB
+  simp [step, hM, schurResidualBlock_retainedPassiveTransformedEdge,
+    hA1]
+
+/-- One retained-passive step updates the suffix-state left multiplier by the
+lower-unitriangular contribution from the prescribed `A3_p` block. -/
+theorem step_retainedPassiveFixedBaseEdgeMatrix_L
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (hB : S.B = -F2 p.succ) :
+    (step (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C) p S).L =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+          (-(S.D * A3 p * (S.Ctop * A1 p)⁻¹))
+          (1 : Matrix (κ j) (κ j) K) *
+        S.L := by
+  have hM :=
+    transformedEdge_retainedPassiveFixedBaseEdgeMatrix_of_B_eq
+      A1 F2 A3 C p S hB
+  simp [step, hM, retainedPassiveTransformedEdge]
+
+/-- If the next suffix-state left multiplier is lower unitriangular with lower
+block `F3next`, one retained-passive step adds exactly the new lower-left
+contribution from `A3_p`. -/
+theorem step_retainedPassiveFixedBaseEdgeMatrix_lowerLeftBlock_L
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : ChartLocalSuffixState ρ κ K j p.succ)
+    (F3next : Matrix (κ j) ρ K)
+    (hB : S.B = -F2 p.succ)
+    (hL :
+      S.L = fromBlocks (1 : Matrix ρ ρ K) 0 F3next
+        (1 : Matrix (κ j) (κ j) K)) :
+    lowerLeftBlock
+        (step (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C) p S).L =
+      -(S.D * A3 p * (S.Ctop * A1 p)⁻¹) + F3next := by
+  let X : Matrix (κ j) ρ K := -(S.D * A3 p * (S.Ctop * A1 p)⁻¹)
+  have hLstep :
+      (step (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C) p S).L =
+        fromBlocks (1 : Matrix ρ ρ K) 0 X
+            (1 : Matrix (κ j) (κ j) K) *
+          S.L := by
+    simpa [X] using
+      step_retainedPassiveFixedBaseEdgeMatrix_L A1 F2 A3 C p S hB
+  rw [hLstep, hL]
+  rw [lowerUnitriangular_mul_fromBlocks_one_zero_indexed (K := K) X F3next]
+  simp [lowerLeftBlock_fromBlocks, X]
+
 /-- The deterministic suffix-state right field along retained-passive fixed-base
 edges is the prescribed `-F2` field. -/
 theorem suffixState_B_retainedPassiveFixedBaseEdgeMatrix
@@ -146,6 +231,70 @@ theorem suffixState_B_retainedPassiveFixedBaseEdgeMatrix
   have hcanon :=
     Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
   simpa [motive, E, j] using hcanon
+
+/-- The deterministic suffix-state residual field unfolds by multiplying the
+prescribed retained-passive residual block. -/
+theorem suffixState_D_retainedPassiveFixedBaseEdgeMatrix_castSucc
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).D =
+      (suffixState E (Fin.last N) p.succ p.succ.le_last).D * C p := by
+  intro E
+  have hstate :
+      suffixState E (Fin.last N) p.castSucc p.castSucc.le_last =
+        step E p (suffixState E (Fin.last N) p.succ p.succ.le_last) := by
+    simpa [E] using suffixState_castSucc (K := K) E p p.succ.le_last
+  have hB :
+      (suffixState E (Fin.last N) p.succ p.succ.le_last).B = -F2 p.succ :=
+    suffixState_B_retainedPassiveFixedBaseEdgeMatrix
+      A1 F2 A3 C hF2last hA1 p.succ p.succ.le_last
+  rw [hstate]
+  exact
+    step_retainedPassiveFixedBaseEdgeMatrix_D
+      A1 F2 A3 C p (suffixState E (Fin.last N) p.succ p.succ.le_last)
+      hB (hA1 p)
+
+/-- Along retained-passive fixed-base edges, the deterministic suffix-state
+residual field is the explicit ordered product of the prescribed residual
+blocks. -/
+theorem suffixState_D_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    ∀ (i : Fin (N + 1)) (hi : i ≤ Fin.last N),
+      (suffixState (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C)
+        (Fin.last N) i hi).D =
+        residualFactorProduct C (Fin.last N) i hi := by
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  let j : Fin (N + 1) := Fin.last N
+  have hblock : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      residualBlock E j p hpj = C p := by
+    intro p hpj
+    have hB :
+        (suffixState E j p.succ hpj).B = -F2 p.succ :=
+      suffixState_B_retainedPassiveFixedBaseEdgeMatrix
+        A1 F2 A3 C hF2last hA1 p.succ hpj
+    dsimp [residualBlock]
+    rw [transformedEdge_retainedPassiveFixedBaseEdgeMatrix_of_B_eq
+      A1 F2 A3 C p (suffixState E j p.succ hpj) hB]
+    exact schurResidualBlock_retainedPassiveTransformedEdge
+      A1 F2 A3 C p (hA1 p)
+  intro i hi
+  calc
+    (suffixState E j i hi).D = residualProduct E j i hi := by
+      exact suffixState_D_eq_residualProduct (K := K) E hi
+    _ = residualFactorProduct C j i hi := by
+      exact residualProduct_eq_residualFactorProduct_of_residualBlock_eq
+        (K := K) E C hi hblock
 
 /-- The deterministic suffix-state top block unfolds by multiplying the
 prescribed retained-passive `A1_p` block. -/

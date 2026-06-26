@@ -9441,3 +9441,23 @@ retained-passive coordinate-domain theorem with active `Ctop_0=I+X` and
 passive `A1_p` for `p>0`; no `A3_last` recovery, coverage, source/image
 theorem, source-measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive D/L recurrences:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.schurResidualBlock_retainedPassiveTransformedEdge`,
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_D`,
+`ChartLocalSuffixState.suffixState_D_retainedPassiveFixedBaseEdgeMatrix_castSucc`,
+`ChartLocalSuffixState.suffixState_D_retainedPassiveFixedBaseEdgeMatrix`,
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_L`, and
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_lowerLeftBlock_L`.
+For retained-passive blocks, the Schur residual is `C_p`, the residual field is
+`D_p=D_{p+1}*C_p` and `D_i=residualFactorProduct C last i`, and the one-step
+left-multiplier lower-left contribution is
+`-(D_{p+1}*A3_p*(Ctop_{p+1}*A1_p)^-1)`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-d-l-recurrence.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-d-l-recurrence.md`.
+This is finite suffix-state bookkeeping only: no iterated F3 sum, no
+`A3_last` recovery, no coordinate-domain theorem, no source coverage,
+source/image theorem, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT.

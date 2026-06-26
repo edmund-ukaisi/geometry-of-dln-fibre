@@ -5462,3 +5462,15 @@ family.  Do not treat this as the active retained-passive coordinate-domain
 endpoint theorem: at `p=0`, `A1_0` is still supplied and determinant-unit.
 The next target remains a genuine coordinate-domain endpoint construction from
 active `Ctop_0=I+X` and passive `A1_p` for `p>0`.
+
+Retained-passive D/L recurrence rung landed in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-d-l-recurrence.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-d-l-recurrence.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-d-l-recurrence.md`.
+Lean proves `schurResidualBlock M_p=C_p`, `D_p=D_{p+1}*C_p`,
+`D_i=residualFactorProduct C last i`, and the one-step lower-left contribution
+`-(D_{p+1}*A3_p*(Ctop_{p+1}*A1_p)^-1)+F3next`.  This is the next bedrock for
+the `A3_last` formula, but does not yet prove the iterated F3 sum or solve
+`A3_last`.

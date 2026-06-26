@@ -8165,3 +8165,24 @@ yet constructed it from active `Ctop_0=I+X` and passive `A1_p` for `p>0`.
 No `A3_last` recovery, source-rank coverage, source/image equality,
 source-measure pushforward, density/Jacobian theorem, normal crossings, pole
 order, or RLCT is proved.
+
+Latest A2 retained-passive D/L recurrences:
+Lean now proves the retained-passive Schur residual, residual-field, and
+one-step lower-unitriangular recurrences in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.schurResidualBlock_retainedPassiveTransformedEdge`,
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_D`,
+`ChartLocalSuffixState.suffixState_D_retainedPassiveFixedBaseEdgeMatrix`,
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_L`, and
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_lowerLeftBlock_L`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-d-l-recurrence.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-d-l-recurrence.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-d-l-recurrence.md`.
+
+Nonclaims: no iterated `F3_0` finite-sum formula, no `A3_last` solve, no
+retained-passive coordinate-domain theorem, no source-rank coverage, no
+source/image equality, no source-measure pushforward, no density/Jacobian
+theorem, no normal crossings, no pole order, and no RLCT.

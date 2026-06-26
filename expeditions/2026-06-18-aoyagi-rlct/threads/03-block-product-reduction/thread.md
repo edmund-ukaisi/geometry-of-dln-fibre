@@ -7386,3 +7386,59 @@ crossings, pole order, or RLCT is proved.
 Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
+
+## 2026-06-26 A2 retained-passive D and L recurrences
+
+Reproduction:
+`reproduction-a2-retained-passive-d-l-recurrence.md`.
+Statement card:
+`statement-card-a2-retained-passive-d-l-recurrence.md`.
+Review:
+`review-a2-retained-passive-d-l-recurrence.md`.
+
+Lean now proves the retained-passive Schur residual and deterministic residual
+field recurrences:
+
+```text
+ChartLocalSuffixState.schurResidualBlock_retainedPassiveTransformedEdge
+ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_D
+ChartLocalSuffixState.suffixState_D_retainedPassiveFixedBaseEdgeMatrix_castSucc
+ChartLocalSuffixState.suffixState_D_retainedPassiveFixedBaseEdgeMatrix
+```
+
+For
+
+```text
+M_p = [A1_p, -A1_p F2_p; A3_p, C_p - A3_p F2_p],
+```
+
+Lean proves `schurResidualBlock M_p = C_p`, then
+`D_p = D_{p+1} * C_p`, and finally
+`D_i = residualFactorProduct C last i`.
+
+The same Lean slice also proves the one-step lower-unitriangular update:
+
+```text
+ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_L
+ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_lowerLeftBlock_L
+```
+
+If the next suffix-state left multiplier is `[I,0;F3next,I]`, the new
+lower-left block is
+
+```text
+-(D_{p+1} * A3_p * (Ctop_{p+1} * A1_p)^-1) + F3next.
+```
+
+Together with the already-proved `Ctop_p = Ctop_{p+1} * A1_p`, this is the
+one-step algebra behind `F3_p = F3_{p+1} - D_{p+1} A3_p Ctop_p^-1`.
+
+This is not yet the iterated finite-sum formula for `F3_0` and does not solve
+for `A3_last`.  It also still assumes a full determinant-unit `A1` family,
+including `A1_0`; no retained-passive coordinate-domain theorem, coverage,
+source/image theorem, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.
+
+Verification passed with the local shared Lake directory: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
+`scripts/sorries`, and `git diff --check`.
