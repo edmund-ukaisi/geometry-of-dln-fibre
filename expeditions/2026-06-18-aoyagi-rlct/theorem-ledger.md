@@ -9948,6 +9948,41 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+## 2026-06-26 A2 retained-passive coordinate-data edge-matrix residual-factor bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+Review:
+`review-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_retainedPassiveCoordinateData_edgeMatrix
+```
+
+The first theorem is the pure fixed-base p.13 inverse bridge: source readback
+recovers retained-passive coordinate data from the fixed-base edge family when
+that edge family is the data's `edgeMatrix` and the data satisfies `detChart`.
+The second theorem pushes this through the source-readback residual-factor
+product.  The third derives the selected-entry residual square-sum from the
+data-level residual-factor matrix identity.
+
+Nonclaims: no construction of retained-passive data, no Case 2 entrywise
+product identity, no source chart construction, no source image equality, no
+pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
+no pole order, and no RLCT.
+
 Latest A2 retained-passive source-readback residual readout:
 `RetainedPassiveLocalSource.lean` proves
 `paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`.

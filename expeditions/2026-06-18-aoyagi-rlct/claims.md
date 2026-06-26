@@ -8817,3 +8817,37 @@ Nonclaims: no proof of that matrix identity from a concrete Case 2 source
 construction, no source chart construction, no source image equality, no
 pushforward/Jacobian theorem, no original-loss comparison, no normal crossings,
 pole order, or RLCT is proved.
+
+Latest A2 retained-passive coordinate-data edge-matrix residual-factor bridge:
+Lean now proves
+`sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq`
+in `RetainedPassiveLocalSource.lean`, plus
+`sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix`
+and
+`aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_retainedPassiveCoordinateData_edgeMatrix`
+in `RetainedPassiveLocalMeasure.lean`.
+
+Status: Proved.
+
+Claim: if fixed-base p.13 edge matrices along a source chart are realized as
+the `edgeMatrix` of retained-passive coordinate data in the determinant chart,
+then source readback recovers that data.  Consequently the selected-entry
+source-readback residual-factor matrix identity can be reduced to the
+data-level identity for `(retainedData y).C`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`
+passed by xhigh `Curie the 3rd`.
+
+Kill condition: the edge realization must be the exact fixed-base edge matrix
+family used in the residual-coordinate readout, and each retained datum must
+satisfy `detChart`.
+
+Nonclaims: no construction of `retainedData`, no Case 2 entrywise product
+identity, no source chart construction, no source image equality, no
+pushforward/Jacobian theorem, no original-loss comparison, no normal crossings,
+pole order, or RLCT is proved.

@@ -119,6 +119,46 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_resid
       rw [hfactor]
 
 set_option linter.unusedSectionVars false in
+/-- Source readback recovers supplied retained-passive coordinate data when
+the fixed-base edge matrices are the coordinate data's retained-passive source
+edge matrix.
+
+This is a pointwise inverse bridge for the fixed-base p.13 source side.  The
+determinant-chart hypothesis on `data` is essential: it is exactly the
+hypothesis used by `sourceReadback_edgeMatrix_eq`. -/
+theorem sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    (x : α)
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart)
+    (hedge :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (Cedge x p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+        data.edgeMatrix) :
+    sourceReadback (K := K) (ρ := Fin (Module.finrank K U₀))
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (Cedge x p :
+              reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) =
+      data := by
+  rw [hedge]
+  exact
+    sourceReadback_edgeMatrix_eq
+      (K := K) (ρ := Fin (Module.finrank K U₀))
+      (data := data) hdet
+
+set_option linter.unusedSectionVars false in
 /-- Membership in the retained-passive local source is exactly the existing
 fixed-base recursive determinant-chart predicate. -/
 theorem mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts

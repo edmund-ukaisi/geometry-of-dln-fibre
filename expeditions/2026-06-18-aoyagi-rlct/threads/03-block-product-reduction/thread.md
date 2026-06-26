@@ -8734,3 +8734,33 @@ Remaining supplied fields: the source chart, weighted pushforward, residual-
 factor matrix identity, local loss bound, and density bounds.  Nonclaims: no
 source chart construction, source image equality, pushforward/Jacobian proof,
 original-loss comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive coordinate-data edge-matrix residual-factor bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+Review:
+`review-a2-retained-passive-coordinate-data-edge-matrix-residual-factor-bridge.md`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves the pure pointwise bridge
+`sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq`,
+then uses it in
+`sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix`
+and
+`aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_retainedPassiveCoordinateData_edgeMatrix`.
+
+This exposes the next Aoyagi-specific residual readout target at the retained-
+passive coordinate-data level: construct or identify `retainedData y`, prove
+its `edgeMatrix` realizes the fixed-base source chart, and prove the product
+identity for `(retainedData y).C`.
+
+Nonclaims: no construction of retained-passive data, no Case 2 entrywise
+product identity, no source chart construction, no source image equality, no
+pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
+no pole order, and no RLCT.

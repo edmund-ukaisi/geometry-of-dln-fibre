@@ -5946,3 +5946,16 @@ Current best next target remains algebraic/source-specific residual-factor
 readout if a concrete source chart/factor family is available.  The
 measure/Jacobian route is still not ready for a full retained-passive
 pushforward theorem.
+
+Latest retained-passive coordinate-data edge-matrix residual-factor bridge:
+the source-readback identity can now be reduced through explicit
+retained-passive coordinate data.  Future source-specific work should try to
+construct `retainedData y`, prove its fixed-base `edgeMatrix` realizes
+`Cedge (sourceChart y)`, and prove the data-level residual-factor product
+identity for `(retainedData y).C`.
+
+Do not add another local-measure wrapper as the next priority unless it
+removes a genuinely new hypothesis.  The current best next target is the
+finite Case 2/product readout: instantiate the existing two-edge Case 2 bridge
+with the retained-passive data-level residual factors, endpoint equivalences,
+and the entrywise selected-center identity.

@@ -13053,3 +13053,19 @@ Remaining frontiers are sharper: produce the actual source chart/pushforward,
 prove the residual-factor matrix identity from source-specific Case 2 algebra,
 and prove local original-loss/density bounds.  The theorem does not prove
 Jacobian/source-density transport, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive coordinate-data edge-matrix residual-factor bridge:
+`RetainedPassiveLocalSource.lean` proves the pure pointwise inverse bridge
+`sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq`.
+Given retained-passive coordinate data in the determinant chart whose
+`edgeMatrix` is exactly the fixed-base p.13 edge family, source readback
+recovers that data.
+
+`RetainedPassiveLocalMeasure.lean` then uses this pure bridge to reduce the
+selected-entry source-readback residual-factor matrix identity to the
+data-level identity for `(retainedData y).C`, and derives the same selected-
+entry residual square-sum as before.
+
+This does not construct `retainedData`, prove the Case 2 entrywise product
+identity, or prove source chart/pushforward/Jacobian/original-loss facts.  It
+only exposes the next algebraic target in a less opaque form.
