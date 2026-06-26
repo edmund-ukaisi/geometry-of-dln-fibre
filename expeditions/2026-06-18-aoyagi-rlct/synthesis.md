@@ -10931,3 +10931,15 @@ The source audit confirms that Aoyagi pp. 19-22 support the lower product
 next source-moving obligation is therefore the pointwise selected-center
 readout, still with endpoint equivalences and factor/source production
 supplied.
+
+The same displayed-product socket now has a successor source-chart-map matrix
+bridge:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-successor-source-chart-map.md`.
+Lean proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSourceChartMapMatrix_of_entrywise`.
+This packages a supplied entrywise readout into `case2DisplayedSourceChartMap`
+on the successor `(S,J+1)` center as a matrix identity, using the already
+proved product-index equivalence and a supplied column endpoint equivalence.
+It does not prove the successor readout, selected-center readout, source
+production of `Cprime`/successor data, source/image equality, normal
+crossings, pole order, or RLCT.

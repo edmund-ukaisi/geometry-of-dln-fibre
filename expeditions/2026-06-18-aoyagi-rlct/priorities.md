@@ -4747,3 +4747,12 @@ entry of `D_{J+1} * C'_+` is the selected-center coordinate indexed by the
 endpoint equivalences.  This is the preferred next RHS interface.  Do not
 replace it with a canonical endpoint or center equivalence unless source work
 actually constructs that data.
+
+A2 Case 2 displayed-product successor source-chart-map bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-successor-source-chart-map.md`.
+Lean packages a supplied entrywise readout of `D_{J+1} * C'_+` as successor
+`case2DisplayedSourceChartMap` coordinates into a full matrix identity.  This
+is useful notation/API sharpening only.  The readout, selected-center
+identification, endpoint/source data, `Cprime` production, source/image
+equality, normal crossings, pole order, and RLCT remain the meaningful
+frontier.

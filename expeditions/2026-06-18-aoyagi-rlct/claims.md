@@ -7215,3 +7215,22 @@ and
 Nonclaims: the entrywise selected-center readout remains supplied; no
 construction of `Cfac`, endpoint equivalences, `Cprime`, source/image
 equality, source-measure transport, normal crossings, pole order, or RLCT.
+
+Latest A2 Case 2 displayed-product successor source-chart map:
+Lean now proves that an entrywise successor source-chart-map readout for
+Aoyagi's displayed post-pivot lower product implies the corresponding full
+matrix identity on the successor `(S,J+1)` residual-coordinate matrix.
+
+Lean name:
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSourceChartMapMatrix_of_entrywise`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-successor-source-chart-map.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-successor-source-chart-map.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-successor-source-chart-map.md`.
+
+Nonclaims: the entrywise successor source-chart readout remains supplied; no
+selected-center readout, construction of `Cfac`, endpoint/source data,
+`Cprime`, source/image equality, source-measure transport, normal crossings,
+pole order, or RLCT.

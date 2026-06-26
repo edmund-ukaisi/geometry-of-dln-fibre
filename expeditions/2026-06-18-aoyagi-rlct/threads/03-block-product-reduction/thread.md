@@ -5985,3 +5985,30 @@ work can supply pointwise displayed entries rather than a full matrix equality.
 This remains finite matrix extensionality.  The entrywise readout itself,
 compatible factors, endpoint equivalences, source production of `Cprime`,
 source/image equality, normal crossings, pole order, and RLCT remain open.
+
+## 2026-06-26 A2 Case 2 displayed-product successor source-chart map
+
+Reproduction:
+`reproduction-a2-case2-displayed-product-successor-source-chart-map.md`.
+Statement card:
+`statement-card-a2-case2-displayed-product-successor-source-chart-map.md`.
+Review:
+`review-a2-case2-displayed-product-successor-source-chart-map.md`.
+
+Lean now proves:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSourceChartMapMatrix_of_entrywise
+```
+
+Given an entrywise readout of the displayed post-pivot lower product into the
+successor Case 2 source-chart map, and a supplied column endpoint equivalence
+`tau ~= Case2ResidualColIndex n S (J+1)`, the displayed product is the matrix
+whose entries are those successor source-chart coordinates.  The row endpoint
+is the definitional successor Case 2 row domain, and the product-index
+assembly uses
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs`.
+
+This is finite endpoint reindexing only.  The entrywise successor source-chart
+readout, selected-center readout, compatible factors, endpoint/source data,
+source/image equality, normal crossings, pole order, and RLCT remain open.

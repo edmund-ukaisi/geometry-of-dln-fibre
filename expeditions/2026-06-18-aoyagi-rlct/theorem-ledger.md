@@ -8473,6 +8473,18 @@ This is finite extensionality only; the pointwise readout, endpoint
 equivalences, compatible factors, source/image equality, normal crossings,
 pole order, and RLCT remain open.
 
+Latest A2 Case 2 displayed-product successor source-chart map:
+`Case2ResidualFactorProduct.lean` now proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSourceChartMapMatrix_of_entrywise`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-successor-source-chart-map.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-successor-source-chart-map.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-successor-source-chart-map.md`.
+This is finite endpoint reindexing only; the successor source-chart readout,
+selected-center readout, endpoint/source data, compatible factors,
+source/image equality, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

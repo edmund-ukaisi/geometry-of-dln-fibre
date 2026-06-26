@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.ProductReduction
 import DLNFibre.DLN.Aoyagi.BlowupArithmetic
+import DLNFibre.DLN.Aoyagi.Case2ResidualIndex
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 
 /-!
@@ -116,6 +117,40 @@ theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubma
       (AoyagiResidualBlockCoordinateIndex.matrix
         (fun c : AoyagiResidualBlockCoordinateIndex κ₂ κ₀ ↦
           centerCoord (residualCoordEquiv c))).submatrix e₂ e₀ := by
+  ext i t
+  simpa [AoyagiResidualBlockCoordinateIndex.matrix] using hentry i t
+
+set_option linter.style.longLine false in
+/-- Entrywise readout into the successor Case 2 source-chart map gives a
+matrix identity on the post-pivot displayed product.
+
+This is a finite endpoint-reindexing bridge only.  The entrywise readout,
+successor source coordinates, and column endpoint equivalence are still
+hypotheses; the theorem does not construct them or identify them with a
+selected-entry center-coordinate chart. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSourceChartMapMatrix_of_entrywise
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (uNext : R) (residualNext : ℕ × ℕ → R)
+    (e₀ : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext uNext residualNext
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) e₀ (i, t)).1)) :
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          case2DisplayedSourceChartMap n hS hnext uNext residualNext
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) e₀ c).1)) := by
   ext i t
   simpa [AoyagiResidualBlockCoordinateIndex.matrix] using hentry i t
 
