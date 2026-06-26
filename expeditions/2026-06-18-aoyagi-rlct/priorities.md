@@ -5841,3 +5841,20 @@ measure/Jacobian transport statement for this chart or connect it to the
 existing regular-suspension/product-measure infrastructure under explicit
 supplied analytic hypotheses.  Do not infer whole source-image equality,
 source-rank coverage, measure transport, normal crossings, pole order, or RLCT.
+
+After the post-interruption xhigh check-in, the retained-passive p.13
+source-chart boundary is recorded at
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-p13-source-chart-boundary.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-p13-source-chart-coverage-boundary.md`,
+with review at
+`threads/03-block-product-reduction/review-a2-retained-passive-p13-source-chart-coverage-boundary.md`.
+Both the pen-and-paper and Lean/API scouts agree that the next honest Lean
+payoff is coverage, not raw-density.  The target should define a retained-
+passive p.13 local source as a fixed-base source preimage of
+`sourceRecursiveDetChartSet` and prove local inclusion from
+`paperEndpointFixedBaseSourceRankStratum`.  Do not add a consumer theorem or
+raw-measure theorem until the coverage theorem and a separate measure/Jacobian
+transport theorem exist.  Boyle the 3rd passed the boundary package with no
+blocking issue; carry forward the residual paper/Lean index-convention check
+before formalising the coverage theorem.

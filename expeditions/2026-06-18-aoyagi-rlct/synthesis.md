@@ -12897,3 +12897,35 @@ membership rewrite, and inverse continuity-on-target is the pointwise
 This is the local chart object for the explicit retained-passive chart.  It
 still does not prove whole source-image equality, source-rank coverage,
 measure/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive p.13 source-chart boundary:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-p13-source-chart-boundary.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-p13-source-chart-coverage-boundary.md`
+record the post-interruption xhigh reconstruction; review is at
+`threads/03-block-product-reduction/review-a2-retained-passive-p13-source-chart-coverage-boundary.md`.
+
+Franklin the 3rd reconstructed the coordinate list:
+active variables `Ctop_0 - I`, `F2_0`, `F3_0`, and residual blocks `C_p`;
+passive variables `A1_p`, `F2_p` for `p > 0`, and `A3_p` for `p < last`;
+solved endpoints `A1_0` and `A3_last`.  The p.13 square-sum readout remains
+the displayed active block `[Ctop - I, -F2; -F3, D - F3 F2]`, so passive
+variables are unit/source reconstruction data, not new singular variables.
+
+Socrates the 3rd confirmed that no existing downstream theorem consumes
+`detChart_sourceRecursiveDetChart_openPartialHomeomorph` in a way that removes
+a real supplied field.  `hcoverage` remains in
+`RegularSuspensionLocalMeasure.lean`, and `hraw_map` remains in
+`ProductReductionStepRegularDensity.lean`.
+
+Boyle the 3rd passed the boundary package with no blocking issue.  Before the
+next Lean theorem, resolve the paper/Lean index convention for the retained-
+passive edge family; before any later Jacobian theorem, define the `A2/F2`
+block width internally.
+
+Next work should attempt the coverage target first: define the retained-
+passive p.13 local source as the fixed-base source preimage of
+`sourceRecursiveDetChartSet`, use existing fixed-base neighborhood lemmas to
+obtain a local recursive determinant chart near the base edge family, and
+prove the source-rank local inclusion.  Measure/Jacobian transport is a
+separate later frontier.

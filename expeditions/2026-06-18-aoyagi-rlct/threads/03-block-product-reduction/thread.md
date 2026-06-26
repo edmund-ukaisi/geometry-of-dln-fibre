@@ -8420,3 +8420,51 @@ This is a local chart object for the explicit retained-passive chart only.  It
 does not prove equality with the whole source image, source-rank coverage,
 measure transport, density/Jacobian transport, normal crossings, pole order,
 or RLCT.
+
+## 2026-06-26 A2 retained-passive p.13 source-chart coverage boundary
+
+Reproduction:
+`reproduction-a2-retained-passive-p13-source-chart-boundary.md`.
+Statement card:
+`statement-card-a2-retained-passive-p13-source-chart-coverage-boundary.md`.
+Review:
+`review-a2-retained-passive-p13-source-chart-coverage-boundary.md`.
+
+After VM reorientation, xhigh pen-and-paper scout Franklin the 3rd reproduced
+the retained-passive p.13 source-chart calculation, and xhigh Lean/API scout
+Socrates the 3rd audited the existing retained-passive chart against the
+remaining downstream sockets.
+
+The finite coordinate boundary is:
+
+```text
+active:  Ctop_0 - I, F2_0, F3_0, residual blocks C_p
+passive: A1_p and F2_p for p > 0, A3_p for p < last
+solved:  A1_0 and A3_last
+```
+
+The passive variables reconstruct the source edge family but do not enter the
+p.13 active readout
+
+```text
+[ Ctop - I      -F2
+  -F3        D - F3 F2 ].
+```
+
+Socrates confirmed that the existing open partial homeomorphism has no honest
+downstream consumer by itself.  It does not remove the `hraw_map` measure
+pushforward hypothesis in `ProductReductionStepRegularDensity.lean` and does
+not remove the `hcoverage` local source-rank inclusion in
+`RegularSuspensionLocalMeasure.lean`.
+
+Boyle the 3rd reviewed the reproduction, card, and ledger updates and found no
+blocking issue.  The residual risks before Lean are the paper/Lean index
+convention for the retained-passive edge family and the need to define any
+future Jacobian exponent by the actual `A2/F2` block width.
+
+Next target: a retained-passive local source coverage theorem, not another
+wrapper.  The theorem should define a local source tied to the preimage of
+`sourceRecursiveDetChartSet` under the fixed-base source edge-family map and
+prove a local inclusion from `paperEndpointFixedBaseSourceRankStratum`.
+Do not set `localSource` to the source stratum itself.  Keep measure/Jacobian
+transport as a separate later theorem family.

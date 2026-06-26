@@ -9948,6 +9948,18 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive p.13 coverage boundary:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-p13-source-chart-boundary.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-p13-source-chart-coverage-boundary.md`
+record a reviewed boundary, not a Lean theorem.  Review is at
+`threads/03-block-product-reduction/review-a2-retained-passive-p13-source-chart-coverage-boundary.md`;
+Boyle the 3rd found no blocking issue.  The proposed next theorem is a
+coverage result for a retained-passive p.13 local source tied to
+`sourceRecursiveDetChartSet`.  Current status: no Lean name and no proof.
+Nonclaims: no coverage removed, no raw measure pushforward, no
+Jacobian/density theorem, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`
