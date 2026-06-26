@@ -6714,3 +6714,41 @@ This is the first genuine raw product-chart density-transport theorem after
 the suffix-density handoff.  It is still not original DLN source/prior
 transport, source coverage, p.13 source-chart construction, signed-box density
 identification, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 raw product-step preimage
+
+Reproduction:
+`reproduction-a2-p13-raw-product-step-preimage.md`.
+Statement card:
+`statement-card-a2-p13-raw-product-step-preimage.md`.
+Review:
+`review-a2-p13-raw-product-step-preimage.md`.
+
+Lean now defines the explicit raw source tuple
+
+```text
+X(x,u) = (I, Dtail(x), F3(u), Ctop(u), -Ctop(u)*F2(u), 0, C0(x))
+```
+
+whose raw-order product-step image is the existing p.13 raw-shaped target
+tuple
+
+```text
+Y(x,u) = (Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+New Lean names:
+
+```text
+paperEndpointFixedBaseP13RawPreimageTuple
+paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet
+paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet_center
+productReductionStepTopologyTupleToChartRawOrder_paperEndpointFixedBaseP13RawPreimageTuple
+```
+
+The determinant-chart hypothesis is only `IsUnit det(Ctop(u))`; the centered
+case uses `Ctop(0) = I`.  The calculation inverts `Ctop` only.  It does not
+invert `Dtail`, prove source coverage, construct the p.13 source chart from
+original DLN coordinates, transport the original source/prior measure, identify
+signed-box density, prove product-measure pushforward, produce normal
+crossings, compute pole order, or extract RLCT.

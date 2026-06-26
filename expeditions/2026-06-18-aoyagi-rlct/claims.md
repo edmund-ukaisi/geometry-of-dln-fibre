@@ -7586,3 +7586,38 @@ Nonclaims: this is raw product-chart Haar transport only.  It is not original
 DLN source/prior transport, source coverage, p.13 source-chart construction,
 signed-box density identification, regular-suspension construction, normal
 crossings, pole order, or RLCT.
+
+Latest A2 p.13 raw product-step preimage:
+Lean now defines the raw source tuple
+
+```text
+(I,Dtail(x),F3(u),Ctop(u),-Ctop(u)*F2(u),0,C0(x))
+```
+
+and proves that, under `IsUnit det(Ctop(u))`, it lies in the raw source
+determinant chart and maps under `productReductionStepTopologyTupleToChartRawOrder`
+to the existing p.13 raw-shaped target tuple
+
+```text
+(Ctop(u),Dtail(x),F3(u),Ctop(u),F2(u),0,C0(x)).
+```
+
+Lean names:
+`paperEndpointFixedBaseP13RawPreimageTuple`,
+`paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet`,
+`paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet_center`,
+and
+`productReductionStepTopologyTupleToChartRawOrder_paperEndpointFixedBaseP13RawPreimageTuple`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-p13-raw-product-step-preimage.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-raw-product-step-preimage.md`.
+Review passed at
+`threads/03-block-product-reduction/review-a2-p13-raw-product-step-preimage.md`.
+Xhigh review found no correctness or scope issues.
+
+Nonclaims: this is raw product-chart algebra only.  It is not source coverage,
+p.13 source-chart construction from original DLN coordinates, source/prior
+transport, signed-box density identification, product-measure pushforward,
+regular-suspension certification, normal crossings, pole order, or RLCT.

@@ -9007,3 +9007,22 @@ order, or RLCT.
   claim card.
 - Source references come from Aoyagi's PDF for this expedition. Do not fill
   ledger gaps from the quiver paper.
+
+Latest A2 p.13 raw product-step preimage:
+`ProductReductionStepRegularDensity.lean` now proves the pointwise raw
+preimage algebra for the left-endpoint p.13 product step.  Lean names:
+`paperEndpointFixedBaseP13RawPreimageTuple`,
+`paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet`,
+`paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet_center`, and
+`productReductionStepTopologyTupleToChartRawOrder_paperEndpointFixedBaseP13RawPreimageTuple`.
+The source tuple is `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, the target tuple is
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)`, and the determinant hypothesis is
+`IsUnit det(Ctop)`.  Reproduction and statement card are at
+`threads/03-block-product-reduction/reproduction-a2-p13-raw-product-step-preimage.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-raw-product-step-preimage.md`;
+review passed at
+`threads/03-block-product-reduction/review-a2-p13-raw-product-step-preimage.md`.
+This is raw product-chart algebra only: no source coverage, original p.13
+source-chart construction, source/prior transport, signed-box density,
+product-measure pushforward, normal crossings, pole order, or RLCT.

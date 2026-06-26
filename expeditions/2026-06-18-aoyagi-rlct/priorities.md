@@ -5091,3 +5091,17 @@ consume it only with a genuine source/product-chart construction or density
 identification; do not repackage it as original DLN source/prior transport,
 p.13 source coverage, signed-box density identification, regular suspension,
 normal crossings, pole order, or RLCT.
+
+A2 p.13 raw product-step preimage has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-raw-product-step-preimage.md`.
+Lean proves that the explicit source tuple
+`(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)` is in the source determinant chart under
+`IsUnit det(Ctop)` and maps to the p.13 raw-shaped tuple
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)`.  This is the concrete pointwise algebra needed
+before applying the raw inverse-density pushforward to p.13 regular
+coordinates.  The next high-value A2 move is to identify this preimage/target
+with the constructed multi-edge product-coordinate source family, or to state
+a carefully conditional source-measure consumer with the raw preimage
+pushforward as an explicit hypothesis.  Do not infer source coverage,
+original DLN source/prior transport, signed-box density identification,
+product-measure pushforward, normal crossings, pole order, or RLCT.

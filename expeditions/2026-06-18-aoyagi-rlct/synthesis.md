@@ -11704,3 +11704,35 @@ This is a genuine raw product-chart density-transport theorem.  It is still
 not original DLN source/prior transport, p.13 source-chart construction,
 source coverage, signed-box density identification, regular suspension,
 normal crossings, pole order, or RLCT.
+
+## Latest A2 p.13 Raw Product-Step Preimage
+
+`ProductReductionStepRegularDensity.lean` now defines the raw source tuple
+
+```text
+X(x,u) = (I, Dtail(x), F3(u), Ctop(u), -Ctop(u)*F2(u), 0, C0(x))
+```
+
+for the left-endpoint p.13 regular-coordinate family and proves that, when
+`det Ctop(u)` is a unit, the raw-order product-step map sends it to
+
+```text
+Y(x,u) = (Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+The centered determinant-chart membership theorem is also proved from
+`Ctop(0) = I`.  The pen-and-paper substitution uses only the inverse of
+`Ctop`; the passive tail product `Dtail` is never inverted.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-p13-raw-product-step-preimage.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-raw-product-step-preimage.md`.
+Review passed at
+`threads/03-block-product-reduction/review-a2-p13-raw-product-step-preimage.md`.
+
+This closes only the pointwise raw product-chart preimage algebra needed to
+consume the raw inverse-density pushforward.  It does not construct the
+original p.13 source chart, prove source coverage, prove source/prior
+transport, identify signed-box density, prove product-measure pushforward,
+produce normal crossings, compute pole order, or prove RLCT.
