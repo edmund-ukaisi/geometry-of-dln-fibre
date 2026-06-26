@@ -8327,3 +8327,35 @@ frontier is topological/geometric packaging around this finite inverse, such
 as the exact source-domain/image statement and local-homeomorphism conditions,
 but those require explicit openness/image hypotheses.  Do not assert source
 rank coverage, measure transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive source-recursive chart homeomorphism
+
+Reproduction:
+`reproduction-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+Review:
+`review-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+
+Lean now packages the finite two-sided inverse as a topological equivalence
+between explicit chart domains:
+
+```text
+RetainedPassiveNonredundantCoordinateData.solvedA1_det_isUnit_of_detChart
+RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart
+RetainedPassiveNonredundantCoordinateData.continuous_edgeMatrix_sourceRecursiveDetChart_subtype
+RetainedPassiveNonredundantCoordinateData.continuous_sourceReadback_detChart_subtype
+RetainedPassiveNonredundantCoordinateData.detChart_sourceRecursiveDetChart_homeomorph
+```
+
+The forward map sends `data : {data // data.detChart}` to
+`data.edgeMatrix`, now with proof that it satisfies `sourceRecursiveDetChart`.
+The inverse sends `E : {E // sourceRecursiveDetChart E}` to
+`sourceReadback E`, now with proof that it satisfies `detChart`.  The inverse
+laws are exactly the earlier `sourceReadback_edgeMatrix_eq` and
+`edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart` theorems.
+
+This is a homeomorphism of named subtypes only.  It does not prove ambient
+openness of `sourceRecursiveDetChart`, equality with the whole source image,
+source-rank coverage, measure transport, normal crossings, pole order, or
+RLCT.

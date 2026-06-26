@@ -5791,3 +5791,21 @@ open around the intended point, and then a restricted two-sided inverse or
 local-homeomorphism theorem.  Keep all predicates explicit.  Do not infer
 global source-image equality, source-rank coverage, measure transport, normal
 crossings, pole order, or RLCT from the finite inverse alone.
+
+The explicit source-recursive chart homeomorphism has now landed/in progress:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-chart-homeomorph.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-homeomorph.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+Lean proves that `edgeMatrix` sends retained-passive `detChart` coordinates
+into `sourceRecursiveDetChart`, wraps both directions as continuous maps
+between subtypes, and defines
+`detChart_sourceRecursiveDetChart_homeomorph`.
+
+Next retained-passive target after review/banking: prove ambient openness or a
+neighborhood theorem for `sourceRecursiveDetChart` if a downstream local chart
+statement needs it.  The likely route is finite intersection of determinant
+unit preimages using existing suffix-state/transformed-edge continuity at
+chart points.  Keep this as an explicit source-recursive chart statement; do
+not promote it to global source-image equality, source-rank coverage, measure
+transport, normal crossings, pole order, or RLCT.

@@ -9900,3 +9900,27 @@ passed with API cleanup.
 This is not a local homeomorphism or global image theorem.  No openness,
 source-rank coverage, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-recursive chart homeomorphism:
+`RetainedPassiveCoordinates.lean` proves
+`RetainedPassiveNonredundantCoordinateData.solvedA1_det_isUnit_of_detChart`
+and
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart`.
+
+`RetainedPassiveCoordinatesTopology.lean` proves
+`continuous_edgeMatrix_sourceRecursiveDetChart_subtype`,
+`continuous_sourceReadback_detChart_subtype`, and defines
+`detChart_sourceRecursiveDetChart_homeomorph`.
+
+The homeomorphism is between the retained-passive determinant-coordinate
+subtype and the explicit source-recursive determinant edge subtype.  It uses
+the already proved finite inverse laws in both directions.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-homeomorph.md`
+passed.
+
+This does not prove ambient openness of `sourceRecursiveDetChart`, equality
+with the whole source image, source-rank coverage, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.

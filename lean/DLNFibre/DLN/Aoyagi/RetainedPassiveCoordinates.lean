@@ -2313,6 +2313,28 @@ theorem toCoordinateData_passiveA1_units_of_detChart
       IsUnit ((data.toCoordinateData).A1seed p).det :=
   data.toCoordinateData_passiveA1_units hdet.2
 
+/-- A determinant-chart point has determinant-unit solved full `A1` blocks. -/
+theorem solvedA1_det_isUnit_of_detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    ∀ p : Fin (M + 1), IsUnit ((data.toCoordinateData).solvedA1 p).det := by
+  change ∀ p : Fin (M + 1),
+    IsUnit
+      (retainedPassiveSolvedA1 (K := K) (ρ := ρ)
+        data.A1seed data.Ctop p).det
+  exact
+    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+      (K := K) (ρ := ρ)
+      (retainedPassiveSolvedA1 (K := K) (ρ := ρ) data.A1seed data.Ctop)
+      data.Ctop
+      (retainedPassiveSolvedA1_passive_det_isUnit
+        (K := K) (ρ := ρ) data.A1seed data.Ctop
+        (data.toCoordinateData_passiveA1_units hdet.2))
+      hdet.1
+      (retainedPassiveSolvedA1_zero_eq_tail_inv_mul
+        (K := K) (ρ := ρ) data.A1seed data.Ctop)
+
 /-- The nonredundant edge family reads back exactly the stored finite
 coordinates. -/
 theorem edgeMatrix_readbacks_eq_targets
@@ -2454,6 +2476,33 @@ def sourceRecursiveDetChart
     identityCornerDetChart
       (transformedEdge E p
         (suffixState E (Fin.last (M + 1)) p.succ hp))
+
+/-- The retained-passive source map sends determinant-chart coordinate data
+into the source-recursive determinant chart. -/
+theorem sourceRecursiveDetChart_edgeMatrix_of_detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    sourceRecursiveDetChart (K := K) (ρ := ρ) data.edgeMatrix := by
+  have hRead :=
+    RetainedPassiveCoordinateData.edgeMatrix_readbacks_eq_targets
+      (K := K) (ρ := ρ) data.toCoordinateData data.F2full_last
+      (data.toCoordinateData_passiveA1_units hdet.2) hdet.1
+  rcases hRead with ⟨_hF20, _hCtop, _hF3, hEdge⟩
+  intro p hp
+  have hhp : hp = p.succ.le_last := Subsingleton.elim _ _
+  cases hhp
+  have htop :
+      topLeftCorner
+          (transformedEdge data.edgeMatrix p
+            (suffixState data.edgeMatrix (Fin.last (M + 1)) p.succ p.succ.le_last)) =
+        (data.toCoordinateData).solvedA1 p := by
+    simpa [edgeMatrix] using (hEdge p).1
+  have hunit :
+      IsUnit ((data.toCoordinateData).solvedA1 p).det :=
+    solvedA1_det_isUnit_of_detChart (K := K) (ρ := ρ) data hdet p
+  simpa [identityCornerDetChart, htop] using hunit
 
 /-- Total source-side readback of the nonredundant retained-passive
 coordinates from an arbitrary retained-passive-shaped edge family. -/

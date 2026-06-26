@@ -457,29 +457,6 @@ theorem continuous_residualFactorProduct_C
     Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
   simpa [motive, j] using hcanon
 
-/-- A determinant-chart point has determinant-unit solved full `A1` blocks. -/
-theorem solvedA1_det_isUnit_of_detChart
-    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
-    [CommRing K] [Fintype ρ] [DecidableEq ρ]
-    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
-    (hdet : data.detChart) :
-    ∀ p : Fin (M + 1), IsUnit ((data.toCoordinateData).solvedA1 p).det := by
-  change ∀ p : Fin (M + 1),
-    IsUnit
-      (retainedPassiveSolvedA1 (K := K) (ρ := ρ)
-        data.A1seed data.Ctop p).det
-  exact
-    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
-      (K := K) (ρ := ρ)
-      (retainedPassiveSolvedA1 (K := K) (ρ := ρ) data.A1seed data.Ctop)
-      data.Ctop
-      (retainedPassiveSolvedA1_passive_det_isUnit
-        (K := K) (ρ := ρ) data.A1seed data.Ctop
-        (data.toCoordinateData_passiveA1_units hdet.2))
-      hdet.1
-      (retainedPassiveSolvedA1_zero_eq_tail_inv_mul
-        (K := K) (ρ := ρ) data.A1seed data.Ctop)
-
 /-- Residual products of the solved full `A1` family are continuous on the
 determinant-chart subtype. -/
 theorem continuous_residualFactorProduct_solvedA1_detChart_subtype
@@ -1226,6 +1203,85 @@ theorem continuous_sourceReadback_sourceRecursiveDetChart_subtype
             sourceRecursiveDetChart (K := K) (ρ := ρ) E} ↦
         E'.1)
       (x₀ := E) continuous_subtype_val.continuousAt E.2
+
+/-- The retained-passive source map is continuous from the determinant-chart
+coordinate subtype to the source-recursive determinant-chart edge subtype. -/
+theorem continuous_edgeMatrix_sourceRecursiveDetChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        (⟨data.1.edgeMatrix,
+          sourceRecursiveDetChart_edgeMatrix_of_detChart
+            (K := K) (ρ := ρ) data.1 data.2⟩ :
+          {E : ∀ p : Fin (M + 1),
+              Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K //
+            sourceRecursiveDetChart (K := K) (ρ := ρ) E})) := by
+  exact
+    continuous_edgeMatrix_detChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K) |>.subtype_mk _
+
+/-- The source-side readback map is continuous from the source-recursive
+determinant-chart edge subtype to the retained-passive determinant-chart
+coordinate subtype. -/
+theorem continuous_sourceReadback_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun E :
+          {E : ∀ p : Fin (M + 1),
+              Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K //
+            sourceRecursiveDetChart (K := K) (ρ := ρ) E} ↦
+        (⟨sourceReadback (K := K) (ρ := ρ) E.1,
+          sourceReadback_detChart_of_sourceRecursiveDetChart
+            (K := K) (ρ := ρ) E.1 E.2⟩ :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart})) := by
+  exact
+    continuous_sourceReadback_sourceRecursiveDetChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K) |>.subtype_mk _
+
+/-- The retained-passive determinant coordinate chart is homeomorphic to its
+explicit source-recursive determinant edge chart.
+
+This is a finite topological coordinate statement for the named recursive
+source chart.  It does not assert that this chart is the whole source image,
+that the source image is open, a rank-coverage theorem, measure transport,
+normal crossings, pole order, or RLCT extraction. -/
+def detChart_sourceRecursiveDetChart_homeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    {data : RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := ρ) κ' // data.detChart} ≃ₜ
+      {E : ∀ p : Fin (M + 1),
+          Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K //
+        sourceRecursiveDetChart (K := K) (ρ := ρ) E} where
+  toFun data :=
+    ⟨data.1.edgeMatrix,
+      sourceRecursiveDetChart_edgeMatrix_of_detChart
+        (K := K) (ρ := ρ) data.1 data.2⟩
+  invFun E :=
+    ⟨sourceReadback (K := K) (ρ := ρ) E.1,
+      sourceReadback_detChart_of_sourceRecursiveDetChart
+        (K := K) (ρ := ρ) E.1 E.2⟩
+  left_inv data := by
+    apply Subtype.ext
+    exact sourceReadback_edgeMatrix_eq (K := K) (ρ := ρ) data.1 data.2
+  right_inv E := by
+    apply Subtype.ext
+    exact edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+      (K := K) (ρ := ρ) E.1 E.2
+  continuous_toFun :=
+    continuous_edgeMatrix_sourceRecursiveDetChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K)
+  continuous_invFun :=
+    continuous_sourceReadback_detChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K)
 
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet

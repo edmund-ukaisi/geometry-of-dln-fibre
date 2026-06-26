@@ -8683,3 +8683,28 @@ Nonclaims: image membership is proved only for the explicit
 source-rank coverage, equality with the whole source image, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
 is proved.
+
+Latest A2 retained-passive source-recursive chart homeomorphism:
+Lean now proves
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart`,
+`continuous_edgeMatrix_sourceRecursiveDetChart_subtype`,
+`continuous_sourceReadback_detChart_subtype`, and
+`detChart_sourceRecursiveDetChart_homeomorph`.
+
+The forward map is `data.edgeMatrix` from `{data // data.detChart}` to the
+explicit source-recursive determinant chart.  The inverse map is
+`sourceReadback E`.  The inverse laws are the previously proved finite
+left/right inverse theorems.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-chart-homeomorph.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-homeomorph.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-homeomorph.md`
+passed.
+
+Nonclaims: this is a homeomorphism of named subtypes only.  No ambient
+openness of the source-recursive chart, equality with the whole source image,
+source-rank coverage, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.

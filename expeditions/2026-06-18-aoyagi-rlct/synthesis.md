@@ -12842,3 +12842,25 @@ This is now finite image membership on the explicit recursive determinant
 chart.  It still does not prove openness of that chart, equality with the
 whole source image, a local homeomorphism, source-rank coverage, measure
 transport, normal crossings, pole order, or RLCT.
+
+New follow-up packages the finite inverse as a topological equivalence of
+explicit chart subtypes.  On the coordinate side, `data.detChart` implies that
+every solved full `A1` block has unit determinant: passive blocks are stored
+unit blocks, while the active block is the inverse passive tail multiplied by
+`Ctop`.  The retained-passive transformed-edge readback theorem then shows
+that every transformed edge in `data.edgeMatrix` has determinant-unit top-left
+corner, so `data.edgeMatrix` satisfies `sourceRecursiveDetChart`.
+
+With this domain membership in place, the already banked continuity theorem
+for `edgeMatrix` becomes a continuous map
+`{data // data.detChart} -> {E // sourceRecursiveDetChart E}`.  The already
+banked source-readback continuity theorem similarly becomes a continuous map
+in the reverse direction, using
+`sourceReadback_detChart_of_sourceRecursiveDetChart`.  The two finite inverse
+laws give `detChart_sourceRecursiveDetChart_homeomorph`.
+
+This is the correct topological packaging of the retained-passive coordinate
+chart on the explicit source-recursive determinant domain.  It still does not
+prove ambient openness of that source domain, equality with the whole source
+image, source-rank coverage, measure transport, normal crossings, pole order,
+or RLCT.
