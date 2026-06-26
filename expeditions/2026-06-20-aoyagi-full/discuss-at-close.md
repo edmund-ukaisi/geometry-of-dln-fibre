@@ -641,3 +641,15 @@ no-global-memory rule but are NOT aoyagi-full's content (they're the theta-compo
 The controller did NOT delete them (deleting another expedition's notes is not aoyagi-full's call; re-homing them into
 aoyagi-full would be wrong). Operator: as part of the strays' disposition, these global-memory notes should be re-homed
 in-repo (in theta-components' / fibre-codim's docs) and the global files cleared. Aoyagi-full writes in-repo only.
+
+## 34. Shared branch advanced externally again + an unsaved Codex consult (2026-06-26, minor process).
+(a) `origin/expedition/aoyagi-full` (and my local branch) advanced `e0f43b23 → fa6d185c` without a controller commit:
+two doc commits (a3901f84's thread.md UPDATE-7/8 blueprint) PLUS a ~30k-line dev-catch-up of OLD fibre-codim threads
+(13/25/26 scripts/codex). Authored as the git user. The controller verified it's benign — NOT a merge, no `lean/`
+touched, my banked Lean (`a692c021`) byte-identical, build still green 8470, my commits all ancestors — and built the
+fresh OPTION-1 tide off it. Recurrence of Item 31. Process: such direct catch-ups onto the shared branch are fine for
+docs but the controller can't distinguish them from a Lean change without a per-push diff; a heads-up (or routing
+catch-ups via a separate branch) would tighten integration discipline. (b) thread.md UPDATE-8 cites a decorrelated
+bridge-design Codex consult at `codex/bridge-design-{prompt,answer}.md`, but those files were never written to disk
+(the blueprint content IS captured in thread.md). The fresh `option1-bridge` tide is instructed to re-save it. No
+soundness impact.
