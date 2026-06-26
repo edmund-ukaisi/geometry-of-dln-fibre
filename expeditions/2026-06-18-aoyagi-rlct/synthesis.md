@@ -13069,3 +13069,23 @@ entry residual square-sum as before.
 This does not construct `retainedData`, prove the Case 2 entrywise product
 identity, or prove source chart/pushforward/Jacobian/original-loss facts.  It
 only exposes the next algebraic target in a less opaque form.
+
+Latest A2 retained-passive Case 2 selected-entry bridge:
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now contains two finite
+two-edge retained-passive specializations:
+
+```text
+residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_entrywise
+```
+
+They instantiate the existing Case 2 residual-factor bridge at a
+retained-passive coordinate datum `data`.  The factor order is explicit:
+`data.C 1` is the post-pivot residual block, `data.C 0` is the following
+factor, so the product is `data.C 1 * data.C 0`.  The source-shaped theorem
+targets the successor `(S,J+1)` residual center with pivot `(J+2,J+2)`.
+
+This removes finite residual-factor boilerplate for the two-edge Case 2
+`hdataFactor` target.  It does not slice a longer retained-passive suffix to
+two edges, construct `retainedData`, prove the entrywise displayed product
+readout, or prove source chart/pushforward/Jacobian/original-loss facts.

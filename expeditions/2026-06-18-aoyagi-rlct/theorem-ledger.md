@@ -9948,6 +9948,35 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+## 2026-06-26 A2 retained-passive Case 2 selected-entry bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-case2-selected-entry-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-case2-selected-entry-bridge.md`.
+Review:
+`review-a2-retained-passive-case2-selected-entry-bridge.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+
+residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_entrywise
+```
+
+The first theorem is the generic selected-center retained-passive two-edge
+adapter.  The second is the Aoyagi source-shaped successor-center adapter on
+the `(S,J+1)` residual domains.
+
+Nonclaims: no longer suffix slicing/transport, no construction of
+`retainedData`, no proof of the entrywise product readout, no source chart or
+source image equality, no pushforward/Jacobian theorem, no original-loss
+comparison, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-26 A2 retained-passive coordinate-data edge-matrix residual-factor bridge
 
 Reproduction:

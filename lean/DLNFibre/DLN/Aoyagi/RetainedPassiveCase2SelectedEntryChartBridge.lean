@@ -1,0 +1,130 @@
+import DLNFibre.DLN.Aoyagi.Case2ResidualSelectedEntryChartBridge
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
+
+/-!
+# Retained-passive Case 2 selected-entry residual bridge
+
+This file specializes the finite Case 2 residual-factor product bridge to a
+two-edge retained-passive coordinate datum.  It is finite matrix algebra only.
+-/
+
+noncomputable section
+
+namespace DLNFibre
+namespace DLN
+namespace Aoyagi
+
+set_option linter.style.longLine false in
+/-- A two-edge retained-passive coordinate datum satisfies the selected-entry
+residual-factor matrix identity once its two `C` factors are Aoyagi's displayed
+Case 2 post-pivot residual block and following factor.
+
+This is finite Case 2 algebra only.  The order is `data.C 1` for the
+post-pivot residual block followed by `data.C 0` for the free following factor,
+both on the shifted `(S, J + 1)` residual domains.  The entrywise selected-center
+readout remains an explicit hypothesis. -/
+theorem residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+    {ρ τ ι : Type*} [DecidableEq ι]
+    {κ : Fin 3 → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {center : Finset ι} (pivot : center)
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ)
+    (y : center → ℝ)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ≃ center)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ (Fin.last 2))
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ (1 : Fin 3))
+    (e₀ : τ ≃ κ 0)
+    (hD :
+      (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) ℝ from
+        by simpa using data.C (1 : Fin 2)).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ (1 : Fin 3)) (κ 0) ℝ from
+        by simpa using data.C (0 : Fin 2)).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv (e₂ i, e₀ t))) :
+    ChartLocalSuffixState.residualFactorProduct data.C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c)) := by
+  exact
+    residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+      n hS hcont residual Cprime data.C
+      (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)
+      residualCoordEquiv e₂ e₁ e₀ hD hF hentry
+
+set_option linter.style.longLine false in
+/-- Source-shaped Case 2 specialization for a two-edge retained-passive
+coordinate datum.
+
+The conclusion is the successor selected-entry center-coordinate matrix on the
+post-pivot `(S, J + 1)` residual block.  The factor order is still `data.C 1`
+then `data.C 0`; the entrywise displayed-source readout is the mathematical
+hypothesis that identifies the product with successor chart coordinates. -/
+theorem residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_entrywise
+    {ρ τ : Type*}
+    {κ : Fin 3 → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ (Fin.last 2))
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ (1 : Fin 3))
+    (e₀κ : τ ≃ κ 0)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hD :
+      (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) ℝ from
+        by simpa using data.C (1 : Fin 2)).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ (1 : Fin 3)) (κ 0) ℝ from
+        by simpa using data.C (0 : Fin 2)).submatrix e₁ e₀κ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext
+            (yNext (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}))
+            (SelectedEntrySignedBox.CenterCoord.sourceResidual yNext)
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext (i, t)).1)) :
+    ChartLocalSuffixState.residualFactorProduct data.C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) e₂.symm (e₀κ.symm.trans eNext) c)) := by
+  exact
+    residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+      n hS hcont hnext residual Cprime data.C yNext e₂ e₁ e₀κ eNext hD hF hentry
+
+end Aoyagi
+end DLN
+end DLNFibre

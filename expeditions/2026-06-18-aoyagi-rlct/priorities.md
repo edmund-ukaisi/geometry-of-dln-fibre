@@ -5954,8 +5954,16 @@ construct `retainedData y`, prove its fixed-base `edgeMatrix` realizes
 `Cedge (sourceChart y)`, and prove the data-level residual-factor product
 identity for `(retainedData y).C`.
 
-Do not add another local-measure wrapper as the next priority unless it
-removes a genuinely new hypothesis.  The current best next target is the
-finite Case 2/product readout: instantiate the existing two-edge Case 2 bridge
-with the retained-passive data-level residual factors, endpoint equivalences,
-and the entrywise selected-center identity.
+Latest retained-passive Case 2 selected-entry bridge:
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now instantiates the
+existing two-edge Case 2 product bridge with a retained-passive coordinate
+datum.  The order is pinned as `data.C 1` for the post-pivot residual block
+and `data.C 0` for the following factor, and the source-shaped theorem targets
+the successor `(S,J+1)` center and pivot `(J+2,J+2)`.
+
+Do not add another local-measure wrapper as the next priority unless it removes
+a genuinely new hypothesis.  The current best next target is now one of:
+construct the retained-passive source data and prove the entrywise selected-
+center readout, or prove an explicit slicing/transport theorem from the longer
+retained-passive suffix to the two-edge Case 2 chain.  Do not silently apply
+the two-edge theorem to general `M`.

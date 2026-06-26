@@ -8851,3 +8851,37 @@ Nonclaims: no construction of `retainedData`, no Case 2 entrywise product
 identity, no source chart construction, no source image equality, no
 pushforward/Jacobian theorem, no original-loss comparison, no normal crossings,
 pole order, or RLCT is proved.
+
+Latest A2 retained-passive Case 2 selected-entry bridge:
+Lean now proves
+`residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise`
+and
+`residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_entrywise`
+in `RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Status: Proved.
+
+Claim: for a two-edge retained-passive coordinate datum, the selected-entry
+residual-factor matrix identity follows from the finite Case 2 product bridge
+once `data.C 1` is identified with the post-pivot residual block, `data.C 0`
+is identified with the free following factor, and the displayed post-pivot
+product is supplied entrywise as selected-center coordinates.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-selected-entry-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-selected-entry-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-case2-selected-entry-bridge.md`
+passed by xhigh `Darwin the 3rd`.
+
+Kill condition: the theorem is only two-edge (`Fin 3` endpoints).  A longer
+retained-passive suffix still needs an explicit slicing or transport theorem.
+The successor theorem targets the `(S,J+1)` residual center and pivot
+`(J+2,J+2)`.
+
+Nonclaims: no retained-passive coordinate datum is constructed, no entrywise
+product readout is proved from source construction, no longer suffix is
+transported to the two-edge chain, and no source chart/source image,
+pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
+or RLCT is proved.

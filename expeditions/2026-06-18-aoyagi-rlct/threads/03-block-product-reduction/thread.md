@@ -8764,3 +8764,33 @@ Nonclaims: no construction of retained-passive data, no Case 2 entrywise
 product identity, no source chart construction, no source image equality, no
 pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
 no pole order, and no RLCT.
+
+## 2026-06-26 A2 retained-passive Case 2 selected-entry bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-case2-selected-entry-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-case2-selected-entry-bridge.md`.
+Review:
+`review-a2-retained-passive-case2-selected-entry-bridge.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves the two-edge retained-passive adapters
+
+```text
+residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_entrywise
+```
+
+The factor order is pinned in the statement: `data.C 1` is the post-pivot
+residual block and `data.C 0` is the following factor.  The source-shaped
+adapter targets the successor `(S,J+1)` center and pivot `(J+2,J+2)`, not the
+old Case 2 center.
+
+This is finite algebra only.  It does not slice a longer retained-passive
+suffix to two edges, construct retained-passive source data, prove the
+entrywise displayed product readout, or prove source chart/source image,
+pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
+or RLCT statements.
