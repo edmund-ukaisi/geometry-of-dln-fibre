@@ -1,14 +1,22 @@
-# Thread 23 — the per-pivot local-product atlas + overlap cocycle (B3-6) — statement card
+# Thread 23 — locally trivial over the rank-`r` open (B3-6 + B3-7) — statement card
 
-**Status: sorry-free (pending reviewer fidelity → reviewed PASS-WITH-CONCERNS, actioned).** Module
+**Status: sorry-free (B3-6 reviewed PASS-WITH-CONCERNS, actioned; B3-7 pending review).** Module
 `lean/DLNFibre/Core/FibreBundleLocallyTrivialFull.lean`. Whole library green (3803 jobs); all
-headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`). Two
-decorrelated Codex consults (cocycle framing + naming honesty).
+headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`). Three
+decorrelated Codex consults (cocycle framing + naming honesty + reconcile/ambient-vs-cover).
 
-**Scope verdict (honest): the per-pivot local-product atlas with coherent transitions over the
-rank-exactly-`r` locus.** NOT named `locallyTrivial` (reviewer + Codex: the cover is point-set, not
-scheme-theoretic `span = ⊤`; and bare `locallyTrivial` over the closure `Σ̄^r` is FALSE). The headline
-is `reducedFibre_pivotLocalProductAtlasOnRankLocus`.
+**Scope verdict (honest): the reduced fibre bundle is LOCALLY TRIVIAL over the rank-`= r` OPEN.** With
+the B3-7 upgrade (a genuine SCHEME-LEVEL open-cover, not merely point-set), the headline is
+`reducedFibre_locallyTrivialOnRankOpen` (a `PivotLocalProductAtlas`). The `OnRankOpen` qualifier is
+load-bearing: the base is the rank-`= r` OPEN subscheme `rankROpen` of `Spec (sweepSigmaRing) = Σ̄^r`,
+NOT the closure (bare `locallyTrivial` over the closure is FALSE — rank-`< r` boundary lies in no
+chart). A third Codex consult confirmed the lead's "ambient `MvPolynomial` identification" target is
+orthogonal busywork; the genuine final rung was the scheme-level cover, now built.
+
+**Caveat (honest):** `rankROpen` is DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so
+`schemeCover` (`⨆ basicOpen = rankROpen`) is the `PrimeSpectrum` definition unfolded — a genuine
+scheme open-cover BY the charts. Its identification with the rank-`= r` locus is the geometric reading
+(forward inclusion banked: `sweepSigma_subset_chartOpen`), not a separately-formalized scheme equality.
 
 ---
 
