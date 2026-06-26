@@ -7437,6 +7437,52 @@ dummy-slot embedding, passive-unit side-condition translation, readback scope,
 full nonredundant extensionality, and nonclaim boundary.  The reviewer also
 reran the focused `RetainedPassiveCoordinates` build successfully.
 
+## 2026-06-26 A2 retained-passive determinant-chart domain
+
+Reproduction:
+`reproduction-a2-retained-passive-det-chart-domain.md`.
+Statement card:
+`statement-card-a2-retained-passive-det-chart-domain.md`.
+Review:
+`review-a2-retained-passive-det-chart-domain.md`.
+
+Lean now names the determinant-domain predicate for the nonredundant
+retained-passive coordinate object:
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.detChart
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.detChartSet
+```
+
+The predicate is `det(Ctop)` unit plus determinant-unit passive `A1passive`
+blocks.  The finite readback and extensionality theorems now have
+domain-scoped wrappers:
+
+```text
+edgeMatrix_readbacks_eq_targets_of_detChart
+edgeMatrix_ext_of_detChart
+injOn_edgeMatrix_detChartSet
+```
+
+The new topology module
+`RetainedPassiveCoordinatesTopology.lean` gives the record the product
+topology on its finite matrix fields and proves:
+
+```text
+isOpen_detChartSet
+detChartSet_mem_nhds
+```
+
+This is a coordinate-domain topology statement only.  It does not prove image
+openness, continuity of `edgeMatrix`, source-rank coverage, source/image
+equality, measure pushforward, density/Jacobian transport, normal crossings,
+pole order, or RLCT.
+
+Xhigh reviewer `Poincare the 3rd` passed the determinant-domain scope, `M=0`
+behavior, domain-scoped wrappers, `Set.InjOn` statement, product-topology
+field order, openness proof scope, aggregator import, and nonclaim boundary.
+The reviewer also reran the focused topology-module build successfully.
+
 ## 2026-06-26 A2 retained-passive recoverable readbacks
 
 Reproduction:

@@ -2148,6 +2148,29 @@ def edgeMatrix
     ∀ p : Fin (M + 1), Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
   data.toCoordinateData.edgeMatrix
 
+/-- The finite determinant-domain predicate for nonredundant retained-passive
+coordinates: all passive `A1` blocks and the active `Ctop` block are
+determinant-units. -/
+def detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    Prop :=
+  IsUnit data.Ctop.det ∧ ∀ p : Fin M, IsUnit (data.A1passive p).det
+
+/-- The finite determinant-domain set for nonredundant retained-passive
+coordinates. -/
+def detChartSet
+    {M : ℕ} {κ' : Fin (M + 2) → Type*} :
+    Set (RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :=
+  {data | data.detChart}
+
+@[simp]
+theorem mem_detChartSet
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    data ∈ detChartSet (K := K) (ρ := ρ) (κ' := κ') ↔ data.detChart := by
+  rfl
+
 /-- Passive determinant-unit hypotheses for the nonredundant coordinates imply
 the side condition expected by the older bundled coordinate data. -/
 theorem toCoordinateData_passiveA1_units
@@ -2161,6 +2184,16 @@ theorem toCoordinateData_passiveA1_units
   | zero => exact False.elim (hp rfl)
   | succ p =>
       simpa [toCoordinateData] using hPassiveA1 p
+
+/-- Domain-scoped passive determinant-unit side condition for the older
+bundled coordinate data. -/
+theorem toCoordinateData_passiveA1_units_of_detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    ∀ p : Fin (M + 1), p ≠ 0 →
+      IsUnit ((data.toCoordinateData).A1seed p).det :=
+  data.toCoordinateData_passiveA1_units hdet.2
 
 /-- The nonredundant edge family reads back exactly the stored finite
 coordinates. -/
@@ -2216,6 +2249,39 @@ theorem edgeMatrix_readbacks_eq_targets
     have h := hA3 p.castSucc hp
     simpa [E, edgeMatrix, toCoordinateData] using h
 
+/-- Domain-scoped version of the nonredundant readback theorem. -/
+theorem edgeMatrix_readbacks_eq_targets_of_detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    let E := data.edgeMatrix
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B =
+        data.F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+      (∀ p : Fin M,
+        let T := transformedEdge E p.succ
+          (suffixState E (Fin.last (M + 1)) p.succ.succ p.succ.succ.le_last);
+        topLeftCorner T = data.A1passive p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        -((topLeftCorner T)⁻¹ * upperRightBlock T) = data.F2 p) ∧
+      (∀ p : Fin M,
+        let T := transformedEdge E p.castSucc
+          (suffixState E (Fin.last (M + 1)) p.castSucc.succ
+            p.castSucc.succ.le_last);
+        lowerLeftBlock T = data.A3passive p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        schurResidualBlock T = data.C p) := by
+  exact data.edgeMatrix_readbacks_eq_targets hdet.2 hdet.1
+
 /-- Equal nonredundant retained-passive edge families have equal coordinate
 data. -/
 theorem edgeMatrix_ext
@@ -2261,6 +2327,32 @@ theorem edgeMatrix_ext
   cases data
   cases data'
   simp_all
+
+/-- Domain-scoped extensionality for nonredundant retained-passive coordinate
+data. -/
+theorem edgeMatrix_ext_of_detChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data data' :
+      RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart)
+    (hdet' : data'.detChart)
+    (hE : data.edgeMatrix = data'.edgeMatrix) :
+    data = data' :=
+  edgeMatrix_ext data data' hdet.2 hdet'.2 hdet.1 hdet'.1 hE
+
+/-- The nonredundant source map is injective on the finite determinant-domain
+set. -/
+theorem injOn_edgeMatrix_detChartSet
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Set.InjOn
+      (fun data :
+        RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' ↦
+        data.edgeMatrix)
+      (detChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  intro data hdata data' hdata' hE
+  exact edgeMatrix_ext_of_detChart data data' hdata hdata' hE
 
 end RetainedPassiveNonredundantCoordinateData
 

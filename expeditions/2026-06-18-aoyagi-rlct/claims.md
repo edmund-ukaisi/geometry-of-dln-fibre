@@ -8479,3 +8479,31 @@ Nonclaims: finite coordinate algebra only.  No open coordinate domain,
 topology, determinant-unit neighborhood, source-rank coverage,
 source/image equality, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive determinant-chart domain:
+Lean now defines
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.detChart` and
+`detChartSet` in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.
+The predicate is exactly `IsUnit Ctop.det` plus pointwise
+`IsUnit (A1passive p).det` for passive `A1` blocks.
+
+Theorems `edgeMatrix_readbacks_eq_targets_of_detChart` and
+`edgeMatrix_ext_of_detChart` repackage the finite readback and extensionality
+theorems on this domain.  The theorem `injOn_edgeMatrix_detChartSet` proves
+source-map injectivity on the determinant-domain set.
+
+Lean also adds `RetainedPassiveCoordinatesTopology.lean`, with a product
+topology on the nonredundant coordinate fields and the openness theorem
+`isOpen_detChartSet`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-det-chart-domain.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-det-chart-domain.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-det-chart-domain.md`
+passed.
+
+Nonclaims: no image openness, continuity of `edgeMatrix`, source-rank
+coverage, source/image equality, measure pushforward, density/Jacobian
+theorem, normal crossings, pole order, or RLCT is proved.

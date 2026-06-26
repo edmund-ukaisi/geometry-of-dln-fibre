@@ -9686,3 +9686,25 @@ This is finite coordinate algebra only: no open coordinate domain, topology,
 determinant-unit neighborhood, source-rank coverage, source/image theorem,
 measure pushforward, density/Jacobian theorem, normal crossings, pole order,
 or RLCT.
+
+Latest A2 retained-passive determinant-chart domain:
+`RetainedPassiveCoordinates.lean` defines
+`ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.detChart` and
+`detChartSet`.  The predicate packages exactly the side conditions used by
+the nonredundant readback theorem: `det(Ctop)` unit and determinant-unit
+passive `A1passive` blocks.  Lean proves the domain-scoped wrappers
+`toCoordinateData_passiveA1_units_of_detChart`,
+`edgeMatrix_readbacks_eq_targets_of_detChart`,
+`edgeMatrix_ext_of_detChart`, and `injOn_edgeMatrix_detChartSet`.
+
+`RetainedPassiveCoordinatesTopology.lean` gives the nonredundant coordinate
+record the product topology on `(A1passive,F2,A3passive,C,Ctop,F3)` and proves
+`isOpen_detChartSet` plus `detChartSet_mem_nhds`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-det-chart-domain.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-det-chart-domain.md`
+passed.
+This is coordinate-domain topology only: no image openness, continuity of
+`edgeMatrix`, source-rank coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.

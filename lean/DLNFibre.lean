@@ -343,3 +343,4 @@ import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity
 -- Aoyagi suffix-state product-step tuples feeding the inverse density handoff.
 import DLNFibre.DLN.Aoyagi.ProductReductionStepSuffixDensity
 import DLNFibre.DLN.Aoyagi.Lemma5FirstNonbaseOrderBridge
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology

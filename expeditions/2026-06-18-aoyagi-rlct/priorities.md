@@ -5642,3 +5642,20 @@ domain/topology layer for this nonredundant chart, keeping the side conditions
 explicit.  Do not assert source-rank coverage, source/image equality, measure
 transport, density/Jacobian accounting, normal crossings, pole order, or RLCT
 until the corresponding source-domain and transport data are actually proved.
+
+The first determinant-domain/topology layer is now landed/in progress in
+`RetainedPassiveCoordinates.lean` and `RetainedPassiveCoordinatesTopology.lean`;
+see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-det-chart-domain.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-det-chart-domain.md`.
+It names `detChart`, proves domain-scoped readback/injectivity wrappers, and
+proves the determinant-domain set is open for the product topology on
+nonredundant coordinate fields.
+
+Next retained-passive target after review/banking: decide whether to prove
+continuity of the nonredundant `edgeMatrix` source map on this product
+topology or to start the recursive source-side readback predicate for arbitrary
+edge families.  Do not assert image openness, source-rank coverage,
+source/image equality, measure transport, density/Jacobian accounting, normal
+crossings, pole order, or RLCT.

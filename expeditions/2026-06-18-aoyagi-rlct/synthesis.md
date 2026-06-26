@@ -12677,3 +12677,15 @@ This closes the finite dummy-slot cleanup.  It is still not the open
 coordinate domain: determinant-unit neighborhoods, source-rank coverage,
 source/image equality, measure pushforward, density/Jacobian accounting,
 normal crossings, pole order, and RLCT remain outside this rung.
+
+New follow-up names the determinant-domain layer for the nonredundant chart.
+`detChart` packages the side conditions already used by the finite readback
+theorem: active `Ctop` determinant unit and passive `A1passive` determinant
+units.  The source map is now stated as injective on `detChartSet`.
+
+The separate topology file gives the nonredundant coordinate record the
+product topology on its finite matrix fields and proves `detChartSet` is open.
+This is the first genuine domain/topology statement for the retained-passive
+chart.  It still says nothing about the image of `edgeMatrix`, continuity of
+`edgeMatrix`, source-rank coverage, source/image equality, measure pushforward,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.
