@@ -5474,3 +5474,14 @@ Lean proves `schurResidualBlock M_p=C_p`, `D_p=D_{p+1}*C_p`,
 `-(D_{p+1}*A3_p*(Ctop_{p+1}*A1_p)^-1)+F3next`.  This is the next bedrock for
 the `A3_last` formula, but does not yet prove the iterated F3 sum or solve
 `A3_last`.
+
+Follow-up lower-left `L` recursion is in progress/landed in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-l-lowerleft-recursion.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-lowerleft-recursion.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-l-lowerleft-recursion.md`.
+It specializes the one-step `L` update to the actual suffix state and rewrites
+the contribution as `-(D_{p+1}*A3_p*Ctop_p^-1)`.  The next target after this
+is the iterated finite-sum recurrence for `F3_0`.

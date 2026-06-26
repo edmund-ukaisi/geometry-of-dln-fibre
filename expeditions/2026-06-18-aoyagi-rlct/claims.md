@@ -8186,3 +8186,23 @@ Nonclaims: no iterated `F3_0` finite-sum formula, no `A3_last` solve, no
 retained-passive coordinate-domain theorem, no source-rank coverage, no
 source/image equality, no source-measure pushforward, no density/Jacobian
 theorem, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive lower-left L recursion:
+Lean now proves the actual suffix-state lower-left recurrence in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`:
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc`
+and
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-l-lowerleft-recursion.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-lowerleft-recursion.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-l-lowerleft-recursion.md`.
+
+Nonclaims: one-edge recursive bookkeeping only.  No iterated finite-sum formula
+for `F3_0`, no `A3_last` solve, no retained-passive coordinate-domain theorem,
+no source-rank coverage, no source/image equality, no source-measure
+pushforward, no density/Jacobian theorem, no normal crossings, no pole order,
+and no RLCT.

@@ -12543,3 +12543,12 @@ the lower-left block `-(D_{p+1}*A3_p*(Ctop_{p+1}*A1_p)^-1)`, and under an
 explicit lower-unitriangular next-state shape the lower-left block updates by
 adding `F3next`.  This is the one-step algebra behind the later `F3` sum and
 `A3_last` solve; it is not yet that endpoint theorem.
+
+New follow-up specializes that one-step `L` update to actual retained-passive
+suffix states.  The preferred theorem is
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop`:
+`lowerLeft(S_p.L) = -(S_{p+1}.D*A3_p*S_p.Ctop^-1)+lowerLeft(S_{p+1}.L)`.
+This gives the exact recursive `F3_p` formula at one edge; the iterated finite
+sum and `A3_last` solve remain next.  Because matrix inverse is total in Lean,
+analytic/chart uses must still pair this with suffix-state `Ctop` determinant
+unit propagation.

@@ -7387,6 +7387,55 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive lower-left L recursion
+
+Reproduction:
+`reproduction-a2-retained-passive-l-lowerleft-recursion.md`.
+Statement card:
+`statement-card-a2-retained-passive-l-lowerleft-recursion.md`.
+Review:
+`review-a2-retained-passive-l-lowerleft-recursion.md`.
+
+Lean now specializes the one-step retained-passive `L` update to the actual
+recursive suffix state:
+
+```text
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop
+```
+
+The first theorem proves
+
+```text
+lowerLeft(S_p.L)
+  = -(S_{p+1}.D * A3_p * (S_{p+1}.Ctop * A1_p)^-1)
+      + lowerLeft(S_{p+1}.L).
+```
+
+The second rewrites the contribution using the current Ctop block:
+
+```text
+lowerLeft(S_p.L)
+  = -(S_{p+1}.D * A3_p * S_p.Ctop^-1)
+      + lowerLeft(S_{p+1}.L).
+```
+
+This is still only one-edge recursive bookkeeping.  It does not prove the
+iterated finite-sum formula for `F3_0`, solve `A3_last`, construct the
+retained-passive coordinate domain, prove coverage, source/image equality,
+measure pushforward, density/Jacobian transport, normal crossings, pole order,
+or RLCT.
+
+Xhigh reviewer `Plato the 3rd` passed the sign/order and current-`Ctop` rewrite.
+Caveat: Lean's matrix inverse is total, so analytic/chart-regularity uses of
+the displayed inverse must still combine this theorem with the existing
+determinant-unit theorem for suffix-state `Ctop`.
+
+Verification passed with the local shared Lake directory: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
+`scripts/sorries`, and `git diff --check`.  The full build still emits
+pre-existing warnings outside the touched Aoyagi module.
+
 ## 2026-06-26 A2 retained-passive D and L recurrences
 
 Reproduction:

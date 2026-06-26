@@ -296,6 +296,92 @@ theorem suffixState_D_retainedPassiveFixedBaseEdgeMatrix
       exact residualProduct_eq_residualFactorProduct_of_residualBlock_eq
         (K := K) E C hi hblock
 
+/-- Along retained-passive fixed-base edges, the lower-left block of the
+deterministic suffix-state left multiplier unfolds by adding the one-step
+lower-unitriangular contribution. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    lowerLeftBlock
+        (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).L =
+      -((suffixState E (Fin.last N) p.succ p.succ.le_last).D *
+          A3 p *
+          ((suffixState E (Fin.last N) p.succ p.succ.le_last).Ctop *
+            A1 p)⁻¹) +
+        lowerLeftBlock
+          (suffixState E (Fin.last N) p.succ p.succ.le_last).L := by
+  intro E
+  let S : ChartLocalSuffixState ρ κ K (Fin.last N) p.succ :=
+    suffixState E (Fin.last N) p.succ p.succ.le_last
+  have hstate :
+      suffixState E (Fin.last N) p.castSucc p.castSucc.le_last =
+        step E p S := by
+    simpa [E, S] using suffixState_castSucc (K := K) E p p.succ.le_last
+  have hB : S.B = -F2 p.succ := by
+    simpa [S, E] using
+      suffixState_B_retainedPassiveFixedBaseEdgeMatrix
+        A1 F2 A3 C hF2last hA1 p.succ p.succ.le_last
+  rcases suffixState_L_eq_lowerUnitriangular (K := K) E p.succ.le_last with
+    ⟨F3next, hL⟩
+  have hlower :
+      lowerLeftBlock (step E p S).L =
+        -(S.D * A3 p * (S.Ctop * A1 p)⁻¹) + F3next := by
+    simpa [E, S] using
+      step_retainedPassiveFixedBaseEdgeMatrix_lowerLeftBlock_L
+        A1 F2 A3 C p S F3next hB hL
+  have hF3next : lowerLeftBlock S.L = F3next := by
+    rw [hL]
+    simp [lowerLeftBlock_fromBlocks]
+  rw [hstate]
+  rw [hF3next]
+  exact hlower
+
+/-- The same retained-passive lower-left recurrence, rewritten with the current
+suffix-state top block `Ctop_p`. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    lowerLeftBlock
+        (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).L =
+      -((suffixState E (Fin.last N) p.succ p.succ.le_last).D *
+          A3 p *
+          ((suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+        lowerLeftBlock
+          (suffixState E (Fin.last N) p.succ p.succ.le_last).L := by
+  intro E
+  let S : ChartLocalSuffixState ρ κ K (Fin.last N) p.succ :=
+    suffixState E (Fin.last N) p.succ p.succ.le_last
+  have hstate :
+      suffixState E (Fin.last N) p.castSucc p.castSucc.le_last =
+        step E p S := by
+    simpa [E, S] using suffixState_castSucc (K := K) E p p.succ.le_last
+  have hB : S.B = -F2 p.succ := by
+    simpa [S, E] using
+      suffixState_B_retainedPassiveFixedBaseEdgeMatrix
+        A1 F2 A3 C hF2last hA1 p.succ p.succ.le_last
+  have hCtop :
+      (suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop =
+        S.Ctop * A1 p := by
+    rw [hstate]
+    exact step_retainedPassiveFixedBaseEdgeMatrix_Ctop A1 F2 A3 C p S hB
+  have hrec :=
+    suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc
+      A1 F2 A3 C hF2last hA1 p
+  rw [hCtop]
+  exact hrec
+
 /-- The deterministic suffix-state top block unfolds by multiplying the
 prescribed retained-passive `A1_p` block. -/
 theorem suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc

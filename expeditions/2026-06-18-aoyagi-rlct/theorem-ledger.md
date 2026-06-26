@@ -9461,3 +9461,18 @@ This is finite suffix-state bookkeeping only: no iterated F3 sum, no
 `A3_last` recovery, no coordinate-domain theorem, no source coverage,
 source/image theorem, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive lower-left L recursion:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc`
+and
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop`.
+These specialize the one-step lower-unitriangular update to actual suffix
+states and rewrite the contribution using current `Ctop_p`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-lowerleft-recursion.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-l-lowerleft-recursion.md`.
+This is one-edge recursive bookkeeping only: no iterated F3 sum, no
+`A3_last` solve, no coordinate-domain theorem, no source coverage, no
+source/image theorem, no measure pushforward, no density/Jacobian theorem, no
+normal crossings, no pole order, and no RLCT.
