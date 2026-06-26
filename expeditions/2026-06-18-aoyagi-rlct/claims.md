@@ -8785,3 +8785,35 @@ identification.
 Nonclaims: no selected-entry source chart, source image equality,
 pushforward/Jacobian theorem, original-loss comparison, normal crossings, pole
 order, or RLCT is proved.
+
+Latest A2 retained-passive selected-entry source-readback residual-factor
+handoff:
+Lean now proves the algebraic readout theorem
+`aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_sourceReadback_residualFactorProduct_eq_matrix`
+and the local-measure consumer
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceReadback_residualFactorProduct_eq_matrix`
+in `RetainedPassiveLocalMeasure.lean`.
+
+Status: Proved.
+
+Claim: the raw selected-entry residual square-sum hypothesis in the retained-
+passive selected-entry handoff can be replaced by a retained-passive
+source-readback residual-factor product matrix identity plus a residual-
+coordinate equivalence to the selected center.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`
+passed by xhigh `Newton the 3rd`.
+
+Kill condition: the supplied matrix identity must target
+`SelectedEntrySignedBox.CenterCoord.chartMap pivot y`, not raw `y`.  It must
+also use an equivalence covering the whole endpoint residual coordinate index.
+
+Nonclaims: no proof of that matrix identity from a concrete Case 2 source
+construction, no source chart construction, no source image equality, no
+pushforward/Jacobian theorem, no original-loss comparison, no normal crossings,
+pole order, or RLCT is proved.

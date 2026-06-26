@@ -8702,3 +8702,35 @@ Nonclaims: no selected-entry source chart is constructed, no entrywise
 selected-entry residual-coordinate identification is proved, and no
 pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
 or RLCT statement is proved.
+
+## 2026-06-26 A2 retained-passive selected-entry source-readback residual-factor handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+Review:
+`review-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_sourceReadback_residualFactorProduct_eq_matrix
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceReadback_residualFactorProduct_eq_matrix
+```
+
+The first theorem derives the selected-entry residual square-sum equality from
+a retained-passive source-readback residual-factor product matrix identity and
+a residual-coordinate equivalence to the selected center.  The second theorem
+uses this derived equality to call the previous retained-passive selected-
+entry local-measure handoff, so callers no longer supply the raw
+`hresidual_eq` square-sum hypothesis.
+
+Remaining supplied fields: the source chart, weighted pushforward, residual-
+factor matrix identity, local loss bound, and density bounds.  Nonclaims: no
+source chart construction, source image equality, pushforward/Jacobian proof,
+original-loss comparison, normal crossings, pole order, or RLCT.

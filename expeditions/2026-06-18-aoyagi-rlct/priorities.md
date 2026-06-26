@@ -5933,3 +5933,16 @@ rather than reusing the opaque square-sum residual-readout hypothesis.
 The measure/Jacobian route remains parked until there is derivative and
 determinant-unit infrastructure for the retained-passive chart or a clearly
 section-level measure statement.
+
+Latest retained-passive selected-entry source-readback residual-factor handoff:
+`RetainedPassiveLocalMeasure.lean` now derives the selected-entry square-sum
+residual readout from a retained-passive source-readback residual-factor
+matrix identity.  This is the preferred selected-entry residual handoff:
+future work should prove the supplied matrix identity from concrete
+source-specific Case 2 algebra, not reintroduce the raw `hresidual_eq`
+square-sum hypothesis.
+
+Current best next target remains algebraic/source-specific residual-factor
+readout if a concrete source chart/factor family is available.  The
+measure/Jacobian route is still not ready for a full retained-passive
+pushforward theorem.

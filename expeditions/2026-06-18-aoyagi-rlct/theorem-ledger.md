@@ -9973,6 +9973,30 @@ construction, no source image equality, no measure pushforward, no
 Jacobian/density theorem, no original-loss comparison, no normal crossings, no
 pole order, and no RLCT.
 
+Latest A2 retained-passive selected-entry source-readback residual-factor
+handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_sourceReadback_residualFactorProduct_eq_matrix`
+and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceReadback_residualFactorProduct_eq_matrix`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-source-readback-residual-factor-handoff.md`
+passed by xhigh `Newton the 3rd`.
+
+The algebra theorem derives the selected-entry residual square-sum from the
+retained-passive source-readback residual-factor product matrix identity and a
+finite equivalence from endpoint residual coordinates to the selected center.
+The local-measure theorem then calls the previous selected-entry
+retained-passive handoff with the derived residual equality.
+
+Nonclaims: no source chart construction, no source image equality, no
+pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
+no pole order, and no RLCT.
+
 Latest A2 retained-passive selected-entry signed-box handoff:
 `RetainedPassiveLocalMeasure.lean` proves
 `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.

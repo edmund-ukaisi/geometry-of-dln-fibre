@@ -13037,3 +13037,19 @@ Next residual-readout frontier: identify this retained-passive residual-factor
 product entrywise with a concrete selected-entry chart coordinate family,
 under an explicit residual-coordinate equivalence and source-specific factor
 readout.  This still does not construct the source chart or pushforward.
+
+Latest A2 retained-passive selected-entry source-readback residual-factor
+handoff:
+`RetainedPassiveLocalMeasure.lean` proves the selected-entry consumer
+`..._selectedEntryCenter_signedBox_withDensity_of_sourceReadback_residualFactorProduct_eq_matrix`.
+It removes the raw square-sum residual hypothesis from the selected-entry
+retained-passive local-measure handoff.  Callers now supply a residual-
+coordinate equivalence and a matrix identity saying the retained-passive
+source-readback residual-factor product equals the selected-entry
+`CenterCoord.chartMap` matrix.  The theorem derives the old square-sum
+residual readout internally and delegates to the previous handoff.
+
+Remaining frontiers are sharper: produce the actual source chart/pushforward,
+prove the residual-factor matrix identity from source-specific Case 2 algebra,
+and prove local original-loss/density bounds.  The theorem does not prove
+Jacobian/source-density transport, normal crossings, pole order, or RLCT.
