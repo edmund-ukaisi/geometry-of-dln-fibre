@@ -12123,3 +12123,31 @@ Artifacts:
 `threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`
 and
 `threads/06-dln-translation/statement-card-a6-case2-theorem2-regular-shift-finite-formula-bridge.md`.
+
+## Latest A4 Case 2 Finite Raw-Pivot Boundary
+
+`SelectedEntryNormalCrossing.lean` now proves a nontrivial finite
+`Case2ResidualBlockChartFamilyBoundary`:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+  .finiteRawPivotChartFamilyBoundary
+```
+
+The chosen `ChartRegular` predicate is finite raw-pivot selected-entry
+regularity: pivot membership, the formula `x_p = u`, `x_q = u*y_q`, and
+finite center-ideal principalization.  The chosen `TransitionRegular`
+predicate is finite affine overlap regularity for each ordered pair of raw
+pivots, obtained from the existing all-pivot selected-entry transition
+family.
+
+This removes a real vacuity at the finite boundary without changing the
+analytic frontier.  It does not prove chart coverage, analytic transition
+regularity, source-produced successor matrices or suffixes, source measure
+transport, normal crossings, pole order, or RLCT.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-chart-family-boundary-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-chart-family-boundary.md`,
+and
+`threads/04-blow-up-certificate/review-case2-finite-raw-pivot-chart-family-boundary-a4.md`.

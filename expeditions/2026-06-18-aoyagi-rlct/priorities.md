@@ -5225,3 +5225,13 @@ lambda work; the older raw bridge is only a conditional socket for situations
 where that raw equality is explicitly supplied.  The shifted lambda equality,
 active-ratio lower bound, endpoint rank bounds, and order/chart-count
 obligations remain supplied.
+
+A4 Case 2 finite raw-pivot chart-family boundary has now landed:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-chart-family-boundary-a4.md`.
+The old finite boundary can now be inhabited by predicates carrying actual
+selected-entry chart formula, finite center-ideal principalization, and finite
+affine overlap data.  Treat this as cleanup of the finite chart-family
+boundary vocabulary, not as source production or analytic atlas construction.
+The next A4 source-moving work must still construct source/suffix data,
+coverage, analytic transition regularity, and Jacobian compatibility, or keep
+those fields explicitly supplied.

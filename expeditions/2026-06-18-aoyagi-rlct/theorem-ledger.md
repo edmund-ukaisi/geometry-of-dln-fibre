@@ -9250,3 +9250,30 @@ and
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-order-formula-bound.md`.
 Review:
 `threads/05-arithmetic-tail/review-lemma5-first-nonbase-order-formula-bound-a5.md`.
+
+Latest A4 Case 2 finite raw-pivot chart-family boundary:
+`SelectedEntryNormalCrossing.lean` now defines
+`Case2FiniteRawPivotChartRegular`,
+`Case2FiniteRawPivotTransitionRegular`, and proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteRawPivotChartFamilyBoundary`.
+This replaces the syntactic `True`-predicate boundary witness with predicates
+carrying the finite selected-entry chart formula, finite center-ideal
+principalization, and finite affine overlap pair.
+
+Labels:
+
+- Proved: finite residual-block nonemptiness under continuation, raw-pivot
+  selected-entry chart formula, finite center-ideal principalization, finite
+  affine ordered-pair overlap certificates, and the resulting nontrivial
+  `Case2ResidualBlockChartFamilyBoundary`.
+- Cited: Aoyagi's displayed Case 2 selected-entry blow-up calculation as the
+  source anchor for the finite formula.
+- Deferred: analytic atlas coverage, analytic transition regularity,
+  source/suffix production, analytic Jacobian compatibility, normal crossings,
+  pole order, and RLCT extraction.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-chart-family-boundary-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-chart-family-boundary.md`,
+and
+`threads/04-blow-up-certificate/review-case2-finite-raw-pivot-chart-family-boundary-a4.md`.

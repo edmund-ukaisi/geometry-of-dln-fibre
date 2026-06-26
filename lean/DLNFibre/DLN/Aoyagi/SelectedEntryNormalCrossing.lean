@@ -3439,6 +3439,92 @@ theorem finiteAffineTransitionRegular_displayedPair
     (finiteAffineTransitionRegular (K := K) n hS hcont) sourceChart
     (displayedChartIndex (K := K) n hS hcont)
 
+/-- Non-vacuous finite selected-entry chart-regularity predicate for a raw
+Case 2 residual-block pivot.
+
+This predicate says that the raw pivot belongs to the finite residual-block
+center, that the standard selected-entry chart family uses the displayed
+formula `x_p = u`, `x_q = u * y_q`, and that this chart principalizes the
+finite center ideal.  It is finite selected-entry algebra only: it does not
+assert analytic chart regularity, coverage, source production, normal
+crossings, pole order, or RLCT extraction. -/
+structure Case2FiniteRawPivotChartRegular
+    (n : ℕ → ℕ) (S J : ℕ) (p : ℕ × ℕ) : Prop where
+  mem : p ∈ case2ResidualBlockPivotEntries n S J
+  selectedEntry_formula :
+    ∀ {R : Type*} [Monoid R] (u : R) (residual : ℕ × ℕ → R)
+      (q : ℕ × ℕ),
+      (Case2ResidualBlockSelectedEntryChartFamilyData.standard n S J R).value
+          ⟨p, mem⟩ (u, residual) q =
+        selectedEntryChartMap p u residual q
+  centerIdeal_eq_span_singleton :
+    ∀ {R : Type*} [CommSemiring R] (u : R) (residual : ℕ × ℕ → R),
+      Ideal.span
+          {v : R | ∃ q, q ∈ case2ResidualBlockPivotEntries n S J ∧
+            selectedEntryChartMap p u residual q = v} =
+        Ideal.span ({u} : Set R)
+
+/-- Non-vacuous finite selected-entry transition predicate for a raw ordered
+pair of Case 2 residual-block pivots.
+
+The certificate is the concrete finite affine overlap pair obtained by
+enumerating the finite residual-block center.  It is only finite affine
+overlap algebra; it is not analytic transition regularity, source production,
+normal crossings, pole order, or RLCT extraction. -/
+structure Case2FiniteRawPivotTransitionRegular
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (K : Type*) [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (p q : ℕ × ℕ) : Prop where
+  source_mem : p ∈ case2ResidualBlockPivotEntries n S J
+  target_mem : q ∈ case2ResidualBlockPivotEntries n S J
+  affine_pair :
+    SelectedEntryFiniteAffineTransitionRegularPair
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      ((finsetSubtypeChartEquiv
+          (case2ResidualBlockPivotEntries n S J)).symm
+        ⟨p, source_mem⟩)
+      ((finsetSubtypeChartEquiv
+          (case2ResidualBlockPivotEntries n S J)).symm
+        ⟨q, target_mem⟩)
+
+/-- The finite Case 2 residual-block center has a nontrivial selected-entry
+chart-family boundary when `ChartRegular` and `TransitionRegular` are chosen
+to mean the concrete finite selected-entry algebra above.
+
+This removes the need for the syntactic `True`-predicate witness at this
+finite boundary.  It still does not construct analytic domains, prove
+coverage, source-produce successor matrices or suffixes, identify a volume
+form, prove normal crossings, compute pole order, or extract the RLCT. -/
+theorem finiteRawPivotChartFamilyBoundary
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    Case2ResidualBlockChartFamilyBoundary n S J
+      (Case2FiniteRawPivotChartRegular n S J)
+      (Case2FiniteRawPivotTransitionRegular (K := K) n hS hcont) := by
+  classical
+  constructor
+  · intro p hp
+    refine ⟨hp, ?_, ?_⟩
+    · intro R inst u residual q
+      rfl
+    · intro R inst u residual
+      exact
+        case2_selectedEntryChartMap_centerIdeal_eq_span_singleton_of_mem
+          (n := n) (S := S) (J := J) hp u residual
+  · intro p hp q hq
+    refine ⟨hp, hq, ?_⟩
+    exact
+      SelectedEntryFiniteAffineTransitionRegularFamily.pair (K := K)
+        (finiteAffineTransitionRegular (K := K) n hS hcont)
+        ((finsetSubtypeChartEquiv
+            (case2ResidualBlockPivotEntries n S J)).symm ⟨p, hp⟩)
+        ((finsetSubtypeChartEquiv
+            (case2ResidualBlockPivotEntries n S J)).symm ⟨q, hq⟩)
+
 /-- The displayed source-substitution block is the supplied selected-entry
 substitution block for the displayed pivot `(J+1,J+1)`.
 

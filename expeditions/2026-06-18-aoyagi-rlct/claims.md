@@ -7876,3 +7876,23 @@ Nonclaims: no source vector construction, no canonical source classifier, no
 injectivity proof, no back-to-label or no-extra terminal-minimum theorem, no
 Eq3/Eq4/Eq5 branch construction, no finite minimum-to-`lambda` equality, no
 pole order, no normal crossings, and no RLCT.
+
+Latest A4 Case 2 finite raw-pivot chart-family boundary:
+Lean now proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteRawPivotChartFamilyBoundary`
+in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`.  It supplies
+`Case2ResidualBlockChartFamilyBoundary` with nontrivial finite predicates:
+`Case2FiniteRawPivotChartRegular` records residual-block pivot membership, the
+standard selected-entry formula, and finite center-ideal principalization; and
+`Case2FiniteRawPivotTransitionRegular` records source/target pivot membership
+plus the concrete finite affine overlap pair.
+
+Reproduction, statement card, and review:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-chart-family-boundary-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-chart-family-boundary.md`,
+and
+`threads/04-blow-up-certificate/review-case2-finite-raw-pivot-chart-family-boundary-a4.md`.
+
+Nonclaims: finite selected-entry algebra only.  No analytic chart coverage,
+analytic transition regularity, source/suffix production, source measure or
+density identification, normal crossings, pole order, or RLCT.
