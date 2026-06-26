@@ -210,7 +210,15 @@ theorem isSmoothAt_sweepFibre_topComponent [IsAlgClosed k]
 now-discharged C2(a) input (`isSmoothAt_sweepFibre_topComponent` at a top-component prime `I`) with
 the thread-17 chart transport `isSmoothAt_chartDsig_of_isSmoothAt_sweepFibre`: there is a chart
 element `h : Away (chartDsig …)` with `Algebra.IsSmoothAt k p` at every chart prime `p` off `h`. No
-open hypothesis remains — generic smoothness of the source pivot chart is unconditional. -/
+open hypothesis remains — generic smoothness of the source pivot chart is unconditional.
+
+⚠ **Incidence caveat.** This form takes the component `I` only to *produce* a smooth witness `h`; it
+does **not** certify that the basic open `D(h)` is nonempty, nor that `D(h)` meets the chart image
+of `I`'s generic point. As stated it is therefore vacuous-as-written if `h` were nilpotent (it is
+not — see below). Two strengthenings: `isSmoothAt_chartDsig_topComponent_nonvacuous` additionally
+certifies `D(h) ≠ ∅` (`¬ IsNilpotent h`); the full component-incidence `D(h) ∩ V(I) ≠ ∅` needs the
+faithfully-flat lying-over of `includeRight : sweepFibreRing → SchurLoc ⊗ sweepFibreRing` (a prime
+of the base change over `I` avoiding `includeRight g`), not built here. -/
 theorem exists_isSmoothAt_chartDsig_unconditional [IsAlgClosed k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ) (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (I : Ideal (sweepFibreRing k d r hp hq))
@@ -221,5 +229,35 @@ theorem exists_isSmoothAt_chartDsig_unconditional [IsAlgClosed k] [Infinite k]
   haveI : I.IsPrime := isPrime_of_mem_topDimMinPrimes hI
   exact isSmoothAt_chartDsig_of_isSmoothAt_sweepFibre d r hp hq I
     (isSmoothAt_sweepFibre_topComponent d r hp hq I hI)
+
+/-- **The source pivot chart is smooth on a NONEMPTY basic open, fully unconditionally (C4).** The
+strengthening of `exists_isSmoothAt_chartDsig_unconditional` that fixes its vacuity gap: the smooth
+witness `h : Away (chartDsig …)` additionally satisfies `¬ IsNilpotent h`, i.e. its basic open
+`D(h) = {h ≠ 0}` is a **nonempty** open of the source pivot chart. So the chart is genuinely smooth
+on a nonempty open, and `Algebra.IsSmoothAt k p` at every chart prime `p` off `h` is a non-vacuous
+certificate. Built from `isSmoothAt_sweepFibre_topComponent` (per-component smoothness at the chosen
+top component `I`) + `exists_smooth_localizationAway_chartDsig_nonvacuous` (the witness comes from a
+singular element `g ∉ I`, so `h` is non-nilpotent) + the basic-open bridge
+`isSmoothAt_of_smooth_localizationAway`.
+
+**Honest residual.** This certifies the smooth open is nonempty; it does **not** yet certify that
+`D(h)` meets the chart image of `I`'s generic point specifically (full component incidence). That
+needs the faithfully-flat lying-over of `includeRight` over `I` — a multi-lemma base-change-prime
+argument (`Ideal.exists_isPrime_liesOver_of_faithfullyFlat`, needing
+`Module.FaithfullyFlat sweepFibreRing (SchurLoc ⊗_k sweepFibreRing)`, the orientation flip, and
+`Module.Free k SchurLoc`) not built here. -/
+theorem isSmoothAt_chartDsig_topComponent_nonvacuous [IsAlgClosed k] [Infinite k]
+    (d : Fin (N + 2) → ℕ) (r : ℕ) (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (I : Ideal (sweepFibreRing k d r hp hq))
+    (hI : I ∈ TopDimMinPrimes (sweepFibreRing k d r hp hq)) :
+    ∃ h : Localization.Away (chartDsig k d r hp hq),
+      ¬ IsNilpotent h ∧
+      ∀ (p : Ideal (Localization.Away (chartDsig k d r hp hq))) [p.IsPrime],
+        h ∉ p → Algebra.IsSmoothAt k p := by
+  haveI : I.IsPrime := isPrime_of_mem_topDimMinPrimes hI
+  obtain ⟨h, hnil, hsmooth⟩ :=
+    exists_smooth_localizationAway_chartDsig_nonvacuous d r hp hq I
+      (isSmoothAt_sweepFibre_topComponent d r hp hq I hI)
+  exact ⟨h, hnil, fun p _ hhp ↦ isSmoothAt_of_smooth_localizationAway hhp hsmooth⟩
 
 end DLNFibre.Core

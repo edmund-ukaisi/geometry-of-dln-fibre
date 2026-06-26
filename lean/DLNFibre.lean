@@ -362,3 +362,8 @@ import DLNFibre.Core.FibreBundleLocallyTrivialFull
 -- (chart is intrinsically localized); only the LOCALIZED full-d-orbit form is reachable — the orbit
 -- descent (rung 2) is a precisely-costed residual, NOT built. Off-critical-path geometric enrichment.
 import DLNFibre.Core.FibreComponentOrbitIso
+-- Review round 1 fix (owner PR #11, C3): the same-rank component-count transport — for ANY `B` with
+-- `B.rank = r`, `numTop(mult⁻¹ B) = cTheta(d−r)` (arbitrary `B`, not just the normal form `E_r`), via
+-- `reducedFibre_baseChangeHomogeneous` (`mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal
+-- TopDimMinPrimes count). Closes the prose overclaim flagged in review (was stated arbitrary, proved E_r).
+import DLNFibre.Core.FibreThetaCountArbitrary

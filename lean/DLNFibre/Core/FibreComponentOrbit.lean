@@ -178,6 +178,9 @@ unsatisfiable in this shape; the theorem is **valid but vacuous in practice**.
 unconditional** with no `e`. The genuine reachable variety identification (LOCALIZED) is
 `Core.FibreComponentOrbitIso.schurComponent_chartQuotientEquiv` and its documented residual. Kept
 for the honest record; do not build a reduction to this. -/
+@[deprecated "superseded by isSmoothAt_sweepFibre_topComponent (direct fp-domain route); \
+hypothesis iso is globally unsatisfiable — historical scaffolding, do not use"
+  (since := "2026-06-26")]
 theorem isSmoothAt_sweepFibre_of_component_orbitPolyEquiv [IsAlgClosed k]
     {d' : Fin (N + 1) → ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)

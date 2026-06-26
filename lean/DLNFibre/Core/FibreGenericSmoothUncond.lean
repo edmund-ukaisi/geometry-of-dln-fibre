@@ -126,6 +126,9 @@ abandoned orbit-iso route to C2(a).
 domain over the perfect field `k`, hence generically smooth, giving `Algebra.IsSmoothAt k I`
 **fully unconditionally** with no orbit iso. Kept for the honest record; do not build a reduction
 to this. -/
+@[deprecated "superseded by isSmoothAt_sweepFibre_topComponent (direct fp-domain route); \
+hypothesis iso is globally unsatisfiable — historical scaffolding, do not use"
+  (since := "2026-06-26")]
 theorem isSmoothAt_sweepFibre_of_component_orbitSmooth [IsAlgClosed k]
     {d' : Fin (N + 1) → ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
@@ -261,6 +264,56 @@ theorem exists_smooth_localizationAway_chartDsig_of_isSmoothAt_sweepFibre
   -- pull back across the chart iso `e` via the abstract transport (one heavy-ring instantiation).
   exact ⟨_, smooth_localizationAway_symm_of_smooth_localizationAway k
     (reducedFibre_chartDsig_tensorEquiv_reducedVariety (k := k) d r hp hq) _ hsmT⟩
+
+/-- **C3 — the smooth chart witness is NON-VACUOUS (its basic open is nonempty).** The same chart
+element `h` as `exists_smooth_localizationAway_chartDsig_of_isSmoothAt_sweepFibre`, additionally
+certified `¬ IsNilpotent h` — so the smooth basic open `D(h) = {h ≠ 0}` is a **nonempty** open of
+the source pivot chart (`PrimeSpectrum.basicOpen h ≠ ⊥`). The smoothness conclusion is therefore not
+vacuous: there genuinely are chart primes off `h` at which the chart is smooth.
+
+`h = e.symm (1 ⊗ g)` for the singular-witness element `g ∉ q` (from
+`smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre`); since `q` is prime `g ≠ 0`, and
+`sweepFibreRing` is reduced so `¬ IsNilpotent g`. Injectivity of `includeRight` (`k`-flat
+`sweepFibreRing`) and of the chart iso `e.symm` transports non-nilpotence to `h`
+(`IsNilpotent.map_iff`). This is the honest non-vacuity strengthening; it does **not** yet certify
+that `D(h)` meets the chart image of the chosen component `q`'s generic point — see the note on the
+chart headline `isSmoothAt_chartDsig_topComponent_nonvacuous`. -/
+theorem exists_smooth_localizationAway_chartDsig_nonvacuous
+    [IsAlgClosed k] [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (q : Ideal (sweepFibreRing k d r hp hq)) [q.IsPrime]
+    (hq_smooth : Algebra.IsSmoothAt k q) :
+    ∃ h : Localization.Away (chartDsig k d r hp hq),
+      ¬ IsNilpotent h ∧ Algebra.Smooth k (Localization.Away h) := by
+  obtain ⟨g, hgq, hg_smooth⟩ :=
+    smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre d r hp hq q hq_smooth
+  -- `g ≠ 0` (prime `q` contains `0`); `sweepFibreRing` reduced ⟹ `¬ IsNilpotent g`.
+  have hg0 : g ≠ 0 := fun h ↦ hgq (h ▸ q.zero_mem)
+  have hgnil : ¬ IsNilpotent g := fun hn ↦ hg0 (IsReduced.eq_zero g hn)
+  -- `SchurLoc` is a domain (localization of a domain at `detSchurS ≠ 0`), hence `Nontrivial` — so
+  -- `algebraMap k SchurLoc` is injective.
+  haveI : IsDomain (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) :=
+    IsLocalization.isDomain_of_le_nonZeroDivisors (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
+      (powers_le_nonZeroDivisors_of_noZeroDivisors
+        (detSchurS_ne_zero (k := k) (d 0) (d (Fin.last (N + 1))) r))
+  -- transport non-nilpotence: `includeRight` injective (`k`-flat base), then chart iso `e.symm`.
+  set Tg : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq :=
+    Algebra.TensorProduct.includeRight (R := k)
+      (A := SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
+      (B := sweepFibreRing k d r hp hq) g with hTg
+  have hTgnil : ¬ IsNilpotent Tg := by
+    rw [hTg, IsNilpotent.map_iff
+      (Algebra.TensorProduct.includeRight_injective (B := sweepFibreRing k d r hp hq)
+        (algebraMap k (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)).injective)]
+    exact hgnil
+  haveI hsmT : Algebra.Smooth k (Localization.Away Tg) :=
+    Algebra.Smooth.of_equiv
+      (schurTensorAwayAlgEquiv (S := SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r) g)
+  set e := reducedFibre_chartDsig_tensorEquiv_reducedVariety (k := k) d r hp hq with he
+  refine ⟨e.symm Tg, ?_, smooth_localizationAway_symm_of_smooth_localizationAway k e Tg hsmT⟩
+  -- `e.symm` injective ⟹ `¬ IsNilpotent (e.symm Tg)`.
+  rw [IsNilpotent.map_iff e.symm.injective]
+  exact hTgnil
 
 /-- **C3 headline — `IsSmoothAt` of the source pivot chart at primes off the singular witness.**
 GIVEN `IsSmoothAt k q` of `sweepFibreRing` at a top-component prime `q`, there is a chart element
