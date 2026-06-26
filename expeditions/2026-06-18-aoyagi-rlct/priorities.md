@@ -4929,3 +4929,17 @@ raw-order formal determinant-unit certificate, then decide the right route to
 source-measure/density transport or the normal-crossing chart certificate.  Do
 not infer source-measure pushforward, density transport, normal crossings,
 pole order, or RLCT.
+
+A2 product-step raw-order ambient derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-ambient-derivative.md`.
+Lean proves `hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder`,
+composing the full ambient derivative with
+`productReductionStepChartTangentRawOrderEquiv` and identifying the derivative
+with `productReductionStepFormalJacobianRawOrder`.  Together with the already
+landed `productReductionStepFormalJacobianRawOrder_det_isUnit`, this puts the
+ambient derivative in the determinant-facing raw order.  The next priority is
+the analytic chart/subtype and measure-transport boundary: decide whether to
+formalise a local determinant-chart differentiability/change-of-variables
+statement or instead feed this into the normal-crossing chart certificate.  Do
+not infer source-measure pushforward, density transport, normal crossings,
+pole order, or RLCT.

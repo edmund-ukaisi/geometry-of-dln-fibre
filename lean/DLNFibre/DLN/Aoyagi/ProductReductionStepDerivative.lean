@@ -585,6 +585,45 @@ theorem hasFDerivAt_productReductionStepTopologyTupleToChart
     productReductionStepRawTangent_dD, productReductionStepRawTangent_dA1,
     productReductionStepRawTangent_dA3] using htuple
 
+set_option maxRecDepth 2048 in
+/-- After reordering chart tangent coordinates into raw-shaped order, the
+ambient p. 13 coordinate map has derivative equal to the raw-order formal
+Jacobian endomorphism. -/
+theorem hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        productReductionStepChartTangentRawOrderEquiv
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+          (productReductionStepTopologyTupleToChart
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z))
+      (LinearMap.toContinuousLinearMap
+        (productReductionStepFormalJacobianRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x))
+      x.topologyTuple := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  let R :
+      ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) →L[ℝ]
+        ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepChartTangentRawOrderEquiv
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)).toLinearMap
+  have hR : HasFDerivAt
+      (fun y : ProductReductionStepChartTangent
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) => R y)
+      R
+      (productReductionStepTopologyTupleToChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) x.topologyTuple) :=
+    R.hasFDerivAt
+  have hcomp := hR.comp x.topologyTuple
+    (hasFDerivAt_productReductionStepTopologyTupleToChart
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1)
+  simpa [R, productReductionStepFormalJacobianRawOrder, Function.comp_def] using hcomp
+
 end Aoyagi
 end DLN
 end DLNFibre

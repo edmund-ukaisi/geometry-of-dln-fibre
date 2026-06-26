@@ -11318,3 +11318,30 @@ formal determinant-unit certificate and then to the appropriate
 source-measure/density transport or normal-crossing chart certificate.  No
 source-measure pushforward, density transport, change of variables, normal
 crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Product-Step Raw-Order Ambient Derivative
+
+The determinant-facing derivative bridge has landed in
+`ProductReductionStepDerivative.lean`.  Lean proves
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
+```
+
+for the composite of `productReductionStepTopologyTupleToChart` with
+`productReductionStepChartTangentRawOrderEquiv`.  Its derivative is
+
+```text
+LinearMap.toContinuousLinearMap
+  (productReductionStepFormalJacobianRawOrder x).
+```
+
+This connects the ambient analytic derivative theorem to the already-landed
+finite determinant-unit certificate
+`productReductionStepFormalJacobianRawOrder_det_isUnit`.
+
+Next analytic priority: cross the chart/subtype and measure-transport
+boundary, or formulate the way this raw-order local derivative feeds the
+normal-crossing chart certificate.  No source-measure pushforward, density
+transport, change of variables, normal crossings, pole order, or RLCT is
+claimed.

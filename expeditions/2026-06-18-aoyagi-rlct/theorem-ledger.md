@@ -8740,6 +8740,23 @@ This closes the ambient differentiability-to-formal-Jacobian identification.
 Analytic determinant formula, source-measure transport, normal crossings, pole
 order, and RLCT remain open.
 
+Latest A2 product-step raw-order ambient derivative:
+`ProductReductionStepDerivative.lean` now proves the derivative of the
+raw-order composite of the ambient tuple map. Lean name:
+`hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder`.
+The proof composes the full ambient derivative theorem with
+`productReductionStepChartTangentRawOrderEquiv` and identifies the derivative
+with `productReductionStepFormalJacobianRawOrder x`, whose determinant unit
+theorem `productReductionStepFormalJacobianRawOrder_det_isUnit` was already
+landed. The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-ambient-derivative.md`.
+This reaches the determinant-facing ambient derivative map. Analytic
+chart/subtype change of variables, source-measure transport, normal crossings,
+pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
