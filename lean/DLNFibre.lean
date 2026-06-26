@@ -280,10 +280,15 @@ import DLNFibre.Core.TopDimMinPrimesRadical
 import DLNFibre.Core.TopDimMinPrimesChartE
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 -- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r ↔
--- exact =r at the top-dim minimal-prime level), via the unconditional recovery + corner-monotonicity.
+-- exact =r at the top-dim minimal-prime level), via unconditional recovery + corner-monotonicity.
 import DLNFibre.Core.TopDimMinPrimesW0
 -- θ-components (count composition): W1 survival + avoidances, the W2 survival, and the headline
 -- numTop(fibre d E_r) = cTheta(d−r) composing the count chain (the `_of` form; hW2 supplied by W2).
 import DLNFibre.Core.TopDimMinPrimesW1W2
 import DLNFibre.Core.TopDimMinPrimesW2
 import DLNFibre.Core.FibreThetaCount
+-- Scope-3 (Tier-R bundle, thread 11): the reduced-fibre product trivialization — the reusable B1
+-- tensor-package `Away (map f) ≃ₐ Away f ⊗ F`, its chart specializations, rank-r base-change
+-- homogeneity, and the single-chart triviality headline (on the REDUCED variety, not the scheme
+-- cut; a full per-minor open cover is NOT built — see the module's B3 disclaimer).
+import DLNFibre.Core.FibreBundleReduced
