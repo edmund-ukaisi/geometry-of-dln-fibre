@@ -10128,6 +10128,29 @@ Nonclaims: no exact-rank openness, no global source-rank cover, no
 measurability theorem for the local source, no measure pushforward, no
 Jacobian/density theorem, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive fixed-base edge realisation:
+`RetainedPassiveLocalSource.lean` proves
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix`
+and
+`sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-fixed-base-edge-realisation.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-edge-realisation.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-fixed-base-edge-realisation.md`
+passed by xhigh `Pasteur the 4th`.
+
+The theorem specializes the existing prescribed fixed-base matrix realization
+to retained-passive coordinate data: the continuous reverse-edge family
+realized from `data.edgeMatrix` has fixed-base edge matrices exactly
+`data.edgeMatrix`, and source readback recovers `data` under `data.detChart`.
+It is a generic wrapper over the fixed-base realization API and the
+retained-passive readback inverse.  Nonclaims: no Case 2 source production,
+no longer-suffix slicing/transport, no source image equality, no measure
+pushforward/Jacobian theorem, no original-loss comparison, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive local-source measurability:
 `RetainedPassiveLocalSource.lean` proves
 `continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous`

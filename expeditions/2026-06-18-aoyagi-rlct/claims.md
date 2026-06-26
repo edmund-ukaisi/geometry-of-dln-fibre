@@ -8919,3 +8919,35 @@ proved.
 Nonclaims: no source chart, fixed-base edge realization, longer-suffix
 transport, entrywise product readout, pushforward/Jacobian theorem,
 original-loss comparison, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive fixed-base edge realisation:
+Lean now proves
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix`
+and
+`sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq`
+in `RetainedPassiveLocalSource.lean`.
+
+Status: Proved; reviewed.
+
+Claim: if a fixed-base continuous reverse-edge family is constructed from a
+retained-passive datum's own `edgeMatrix`, then fixed-base edge-matrix
+extraction recovers `data.edgeMatrix`; if additionally `data.detChart`, then
+source readback recovers `data`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-fixed-base-edge-realisation.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-edge-realisation.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-fixed-base-edge-realisation.md`
+passed by xhigh `Pasteur the 4th`.
+
+Kill condition: the theorem applies only when the edge family is the
+prescribed fixed-base realization of `data.edgeMatrix`.  It may not be used as
+Case 2 source production, as an endpoint-index alignment theorem, or as a
+longer retained-passive suffix transport theorem.
+
+Nonclaims: no retained-passive datum is constructed, no Case 2 successor
+entrywise readout is proved, no source chart/source image equality,
+pushforward/Jacobian theorem, original-loss comparison, normal crossings, pole
+order, or RLCT is proved.

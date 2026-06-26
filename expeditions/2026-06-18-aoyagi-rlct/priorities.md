@@ -5982,3 +5982,15 @@ data and fixed-base edge realization for a real `sourceChart y`, or prove the
 actual suffix/transport identities needed to connect a longer retained-passive
 chain to this two-edge datum.  Do not treat the synthetic datum as source
 production.
+
+Latest retained-passive fixed-base edge realisation:
+`RetainedPassiveLocalSource.lean` now packages the generic case where a
+fixed-base continuous reverse-edge family is built directly from
+`data.edgeMatrix`.  Lean proves that fixed-base edge-matrix extraction returns
+`data.edgeMatrix`, and that source readback recovers `data` when
+`data.detChart`.
+
+Use this as the preferred way to remove the old `hedge` hypothesis only in
+constructed-edge-family cases.  Do not read it as Case 2 source production:
+the successor selected-entry source data, fixed successor pivot readout,
+endpoint equivalence, and longer-suffix transport remain separate frontiers.

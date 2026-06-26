@@ -8836,3 +8836,37 @@ retained-passive suffix is sliced or transported to this two-edge datum, no
 entrywise displayed product readout is proved, and no source image,
 pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
 or RLCT statement is proved.
+
+## 2026-06-26 A2 retained-passive fixed-base edge realisation
+
+Reproduction:
+`reproduction-a2-retained-passive-fixed-base-edge-realisation.md`.
+Statement card:
+`statement-card-a2-retained-passive-fixed-base-edge-realisation.md`.
+Review:
+`review-a2-retained-passive-fixed-base-edge-realisation.md`
+passed by xhigh `Pasteur the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`.
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix
+
+sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq
+```
+
+The first theorem specializes the existing fixed-base prescribed-matrix
+realisation API to a retained-passive datum's `edgeMatrix`: the continuous
+reverse-edge family built from those matrices has fixed-base edge matrices
+exactly `data.edgeMatrix`.  The second theorem adds `data.detChart` and
+recovers `data` by source readback.
+
+This removes a future `hedge` equality only when the source edge family is
+definitionally realised from `data.edgeMatrix`.  It does not construct
+`data`, does not prove literal Case 2 source production, and does not identify
+the synthetic Case 2 two-edge datum with a fixed-base source chart or longer
+retained-passive suffix.  It proves no source image, pushforward/Jacobian,
+original-loss comparison, normal-crossing, pole-order, or RLCT statement.

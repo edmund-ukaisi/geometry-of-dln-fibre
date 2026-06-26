@@ -13108,3 +13108,23 @@ source readout and the endpoint equivalence.  It remains synthetic finite
 bookkeeping.  It does not produce retained-passive source data for a source
 chart, realize fixed-base edge matrices, or identify a longer suffix with the
 two-edge chain.  Xhigh review by `Ampere the 3rd` found no blockers.
+
+Latest A2 retained-passive fixed-base edge realisation:
+`RetainedPassiveLocalSource.lean` now proves
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix`
+and
+`sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq`.
+The first theorem says that the fixed-base continuous reverse-edge family
+constructed from `data.edgeMatrix` has fixed-base edge matrices exactly
+`data.edgeMatrix`; the second adds `data.detChart` and recovers `data` by
+`sourceReadback`.
+
+This is a generic fixed-base realization/readback wrapper.  It removes a
+future explicit `hedge` equality only when the edge family is defined from the
+retained-passive datum's own matrices.  It does not prove the still-missing
+Case 2 successor-source readout, does not construct a source chart datum, and
+does not identify the synthetic two-edge datum with a longer retained-passive
+suffix.  The post-checkpoint xhigh probes found the direct Case 2 `hentry`
+readout still blocked by missing successor chart data/pivot readout, and the
+literal fixed-base Case 2 realization still blocked by endpoint-index
+alignment.

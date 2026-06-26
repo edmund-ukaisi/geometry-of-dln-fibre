@@ -119,6 +119,63 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_resid
       rw [hfactor]
 
 set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The fixed-base continuous edge family realised from a retained-passive
+datum's edge matrices has exactly those fixed-base edge matrices.
+
+This is the prescribed-matrix realisation theorem specialized to
+retained-passive coordinate data.  It is not source-chart construction: the
+edge family is defined from the supplied `data.edgeMatrix`. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)) :
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+              W B U₀ hU₀ data.edgeMatrix p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+      data.edgeMatrix := by
+  funext p
+  exact
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
+      (K := K) W B U₀ hU₀ data.edgeMatrix p
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Source readback of the fixed-base continuous edge family realised from a
+determinant-chart retained-passive datum recovers that datum. -/
+theorem sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart) :
+    sourceReadback (K := K) (ρ := Fin (Module.finrank K U₀))
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+                W B U₀ hU₀ data.edgeMatrix p :
+              reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) =
+      data := by
+  rw [
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix
+      (K := K) W B data]
+  exact
+    sourceReadback_edgeMatrix_eq
+      (K := K) (ρ := Fin (Module.finrank K U₀))
+      (data := data) hdet
+
+set_option linter.unusedSectionVars false in
 /-- Source readback recovers supplied retained-passive coordinate data when
 the fixed-base edge matrices are the coordinate data's retained-passive source
 edge matrix.
