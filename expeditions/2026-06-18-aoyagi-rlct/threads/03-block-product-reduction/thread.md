@@ -8554,3 +8554,32 @@ local source when `Cedge` is globally continuous.  Nonclaims: no source-rank
 openness, no residual integrability, no loss/density bounds, no measure
 pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
 and no RLCT extraction.
+
+## 2026-06-26 A2 retained-passive local-measure handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-local-measure-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-local-measure-handoff.md`.
+Review:
+`review-a2-retained-passive-local-measure-handoff.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource
+```
+
+This specializes the existing source-stratum/local-source finite-integral
+consumer to the retained-passive determinant-chart local source.  It supplies
+the local coverage and measurability fields from the retained-passive local
+source lemmas, under global `Continuous Cedge` and the self-base equality.
+
+It still assumes residual positivity, residual negative-power integrability,
+and local loss/density bounds on the retained-passive local source.  Nonclaims:
+no source image equality, no measure pushforward, no Jacobian/density theorem,
+no residual integrability proof, no original-loss comparison, no normal
+crossings, no pole order, and no RLCT extraction.

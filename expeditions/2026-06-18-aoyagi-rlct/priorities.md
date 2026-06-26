@@ -5882,3 +5882,13 @@ retained-passive local source under global continuity of `Cedge`.  The next
 local-measure obligations are residual integrability and the loss/density
 bounds on this local source; the Jacobian/pushforward theorem remains a
 separate frontier.
+
+Latest retained-passive local-measure handoff:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean` proves the
+retained-passive specialization of the existing local-source finite-integral
+consumer.  Coverage and measurability are now automatic for
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource` under global
+`Continuous Cedge` plus the self-base equality.  The remaining local-source
+fields are analytic: residual positivity/integrability and local loss/density
+bounds on that retained-passive source.  The separate source-measure
+pushforward/Jacobian-density theorem is still a frontier.

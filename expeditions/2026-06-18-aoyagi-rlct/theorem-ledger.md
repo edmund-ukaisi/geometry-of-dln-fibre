@@ -9993,6 +9993,20 @@ openness, no residual integrability, no loss/density bounds, no measure
 pushforward, no Jacobian/density theorem, no normal crossings, no pole order,
 and no RLCT.
 
+Latest A2 retained-passive local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-local-measure-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-local-measure-handoff.md`.
+Focused build passed.  The theorem specializes the existing local-source
+finite-integral consumer to the retained-passive determinant-chart local
+source, discharging only local coverage and measurability.  Nonclaims: no
+source image equality, no measure pushforward, no Jacobian/density theorem, no
+residual integrability proof, no original-loss comparison, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`

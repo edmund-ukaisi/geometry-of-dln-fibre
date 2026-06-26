@@ -12966,3 +12966,15 @@ continuous.  This discharges the measurable-local-source field for the
 retained-passive source under the same global continuity hypothesis.  It does
 not address residual integrability, loss/density bounds, or
 Jacobian/pushforward transport.
+
+Latest A2 retained-passive local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource`.
+This is a narrow consumer specialization.  It plugs the retained-passive
+coverage and measurability lemmas into the existing boundary-explicit
+source-stratum/local-source finite-integral theorem, using the index
+convention `N = M + 1` for retained-passive vertices `Fin (M + 2)`.  It keeps
+residual positivity/integrability and loss/density bounds as hypotheses on the
+retained-passive local source.  It does not construct a source-measure
+pushforward, Jacobian density, original-loss comparison, normal crossings,
+pole order, or RLCT extraction.
