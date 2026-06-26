@@ -15,7 +15,7 @@ reducing the open input to a **single named geometric fact** (C2(a)).
   `isSmoothAt_of_isSmoothAt_quotient_unique_minimalPrime`,
   `isSmoothAt_minimalPrime_of_isSmoothAt_quotient`,
   `isSmoothAt_minimalPrime_of_componentEquiv_domain`
-  (`lean/DLNFibre/Core/LocalizationAtComponent.lean` @ `<commit-sha>`)
+  (`lean/DLNFibre/Core/LocalizationAtComponent.lean` @ `72b2ed2b`)
 - **Gloss.** The kernel `I` dies in `Loc.AtPrime R q` (reduced ring: `⋂ⱼ Iⱼ = ⊥`; for `x ∈ I` pick
   `s` in the intersection of the *other* minimal primes but `∉ q`, then `x·s ∈ ⋂ⱼ Iⱼ = ⊥`), so
   `Localization.localAlgHom` is bijective; `FormallySmooth.iff_of_equiv` transfers `IsSmoothAt`.
@@ -32,7 +32,7 @@ reducing the open input to a **single named geometric fact** (C2(a)).
 > `IsSmoothAt k I`.
 
 - **Lean:** `DLNFibre.Core.isSmoothAt_sweepFibre_of_component_orbitSmooth`
-  (`lean/DLNFibre/Core/FibreGenericSmoothUncond.lean` @ `<commit-sha>`); `[IsAlgClosed k]`.
+  (`lean/DLNFibre/Core/FibreGenericSmoothUncond.lean` @ `72b2ed2b`); `[IsAlgClosed k]`.
 - **Gloss.** `orbitRing M` is a finitely-presented domain `IsSmoothAt k (normalFormIdeal M)`
   (`OrbitSmooth.isSmoothAt_normalFormIdeal`); a domain smooth somewhere is smooth at its generic
   point `⊥` (`isSmoothAt_bot_of_isSmoothAt`); transport `⊥` across the C2(a) iso and apply the C1
@@ -55,7 +55,7 @@ reducing the open input to a **single named geometric fact** (C2(a)).
   (+ keystones `awayTensorRightAlgEquiv`, `schurTensorAwayAlgEquiv`,
   `exists_smooth_localizationAway_chartDsig_of_isSmoothAt_sweepFibre`,
   and `LocalizationAtComponent.smooth_localizationAway_symm_of_smooth_localizationAway`)
-  (`lean/DLNFibre/Core/FibreGenericSmoothUncond.lean` @ `<commit-sha>`); `[IsAlgClosed k] [Infinite k]`.
+  (`lean/DLNFibre/Core/FibreGenericSmoothUncond.lean` @ `72b2ed2b`); `[IsAlgClosed k] [Infinite k]`.
 - **Gloss.** thread-16 gives `g ∉ q` with `Smooth k (SchurLoc ⊗ Away g)`; `schurTensorAwayAlgEquiv`
   identifies this with `Smooth k (Away (1⊗g))` in `SchurLoc ⊗ sweepFibreRing`; the banked chart iso
   + the abstract `Smooth (Away ·)` transport + the basic-open bridge land `IsSmoothAt` of the chart.
