@@ -240,5 +240,33 @@ After the cost-reversal (thread 36, Phase A `schurFrame_abs_det` banked + gated)
 `RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
 `RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`,
 `RouteMGenLeafIntegrand.lean`, `RouteMFlatChartProbe3333.lean`, `RouteMGenFlatChart.lean` (B1),
-`RouteMGenChainBridge.lean` (B2 bricks), `RouteMChartFactorFold.lean` (B3 scaffold). NOT yet in the
-`DLNFibre.lean` aggregator (controller wires).
+`RouteMGenChainBridge.lean` (B2 bricks), `RouteMChartFactorFold.lean` (B3 scaffold),
+`RouteMChartIdxCard.lean` (item-1 card bricks). NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+
+## `phiFlat_abs_det` — route fixed (B+b1); item-1 card bricks LANDED; bottleneck = the same-chart proof
+
+Decorrelated Codex xhigh (`threads/36-…/codex/item1-{prompt,answer}`) on the architectural fork:
+
+- **Route = B+b1** (recommended): build the det chart FRESH as the factor product `Q ∘ composeFold
+  (Schur/LDU/chain/radial)` (det FREE from `composeFold_abs_det` + the per-factor dets), then prove a
+  MAP-LEVEL equality to the `chartParamsGen` chart for the rate. This avoids proving `D(chartParamsGen ∘
+  Bflat) = composeFold` (a deriv equality); it pays the opaque-width LAYER equality once. Route b2
+  (re-derive the rate telescope on the factor product) is possible but NOT a shortcut (reruns the landed
+  `FactoredChain` work). Route A (reconcile the existing `chainA` chart at deriv level) is the same content.
+
+- **Item 1 (the bijective coordinatization) is BOUNDED** — the card bricks LANDED (`RouteMChartIdxCard.lean`):
+  `lduRole_card : |LowIdx t|+t+|UpIdx t| = t²` (the `K_s` block's `t²` coords = the LDU `low/diag/up` roles),
+  `card_diag`, `card_lowIdx_eq_upIdx`. The `ChartIdx` cardinality `= flatDim` is the cert's `ninputs=flatDim`,
+  VERIFIED to telescope algebraically (per boundary `K+X+N+E = (t+r)(t+c) = t_{s-1}·M_s`, `W = c_s·M_{s+1}`;
+  the `t_s` middle sums cancel, `t_0 = M_0` closes it; `+1` radial `−1` fixed-residual cancel — the fixed
+  residual is OMITTED from the input type, the chart writes `u·1` for it, per Codex). The full `ChartIdx`
+  inductive role type (`low/diag/up/x/n/e/w` per boundary, fixed-residual subtracted) + its `card = flatDim`
+  + the `Fin N ≃ ChartIdx` equiv are the remaining item-1 build (`Fintype.equivFin` + `finCongr`; bounded,
+  the card bricks are the load-bearing pieces).
+
+- **The TRUE bottleneck (Codex-confirmed) = the same-chart proof** (item 3): the factor-product chart's layer
+  entries = the `chainA` layers built from the Schur/LDU/radial compressed transitions, over opaque
+  `Wext`/`Text` casts (the B2 entry-laws `chainA/Q_apply_*` are the per-entry bricks; the global map equality
+  is the multi-pass part). "Multi-pass but bounded." The det ALGEBRA (Phase A + B2 bricks + B3 spine + item-1
+  card bricks) is DONE; what remains is the coordinatization assembly (item 1 finish) + the full-ambient
+  factor conjugates (item 2) + the same-chart layer equality (item 3) + `leafH` bookkeeping (item 4).
