@@ -12623,3 +12623,14 @@ reconstruction theorem.  This fills the per-edge part of the future two-sided
 coordinate inverse; it still does not define the bundled coordinate domain,
 source coverage, source/image equality, measure transport, normal crossings,
 pole order, or RLCT.
+
+New follow-up packages the endpoint and transformed-edge readbacks together.
+`retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_targets`
+uses the solved-endpoint hypotheses from the active endpoint package to prove
+`-S_0.B=F2_0`, `S_0.Ctop=Ctop`, `lowerLeft(S_0.L)=F3`, and for every
+deterministic transformed edge the readbacks
+`A1_p`, `F2_p`, `A3_p`, and `C_p`.  The theorem derives the full `A1`
+determinant-unit family from passive units plus the solved `A1_0`, then calls
+the per-edge readback theorem.  This is a fixed-base package, not yet a
+coordinate-domain structure, local inverse, coverage theorem, or measure
+transport theorem.

@@ -1425,11 +1425,78 @@ theorem retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets
   refine ⟨?_, hCtop0, ?_, ?_⟩
   · rw [hB0]
     exact neg_neg (F2 0)
-  · exact hLower.trans hTailTarget
+  · simpa [E] using hLower.trans hTailTarget
   · intro p
     exact
       retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
         (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 p
+
+/-- Retained-passive fixed-base edges with solved endpoint blocks read back the
+active source-left fields and every transformed-edge coordinate block. -/
+theorem retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (M + 2), Matrix ρ (κ' i) K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (Ctop : Matrix ρ ρ K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K)
+    (hF2last : F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det)
+    (hCtop : IsUnit Ctop.det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop)
+    (hA3last :
+      let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+      let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C 0 (Nat.zero_le (M + 1))
+      let CtopLast : Matrix ρ ρ K :=
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+      A3 (Fin.last M) = -(F3 - earlyTail) * CtopLast) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C;
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B = F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+        Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = F3 ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+        topLeftCorner T = A1 p ∧
+          upperRightBlock T = -(A1 p * F2 p.castSucc) ∧
+          -((A1 p)⁻¹ * upperRightBlock T) = F2 p.castSucc ∧
+          lowerLeftBlock T = A3 p ∧
+          schurResidualBlock T = C p) := by
+  intro E
+  have hA1 : ∀ p : Fin (M + 1), IsUnit (A1 p).det :=
+    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+      (K := K) (ρ := ρ) A1 Ctop hPassiveA1 hCtop hA10
+  have hEndpoint :
+      (-(suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).B = F2 0) ∧
+        (suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).Ctop = Ctop ∧
+        lowerLeftBlock
+            (suffixState E (Fin.last (M + 1)) 0
+              (Fin.zero_le (Fin.last (M + 1)))).L = F3 ∧
+        (∀ p : Fin (M + 1),
+          transformedEdge E p
+              (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last) =
+            retainedPassiveTransformedEdge A1 F2 A3 C p) := by
+    simpa [E] using
+      retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets
+        (K := K) (ρ := ρ) (κ' := κ') A1 F2 A3 C Ctop F3
+        hF2last hPassiveA1 hCtop hA10 hA3last
+  refine ⟨hEndpoint.1, hEndpoint.2.1, hEndpoint.2.2.1, ?_⟩
+  intro p
+  simpa [E] using
+    retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks
+      (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 p
 
 end RetainedPassive
 

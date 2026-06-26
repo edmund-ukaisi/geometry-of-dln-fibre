@@ -7434,6 +7434,52 @@ hypothesis, Schur convention, and fixed-base rewrite scope.  The reviewer
 suggested tightening one phrase in the reproduction note from fixed-base
 source map to fixed-base edge-family theorem, which is now applied.
 
+## 2026-06-26 A2 retained-passive fixed-base readback package
+
+Reproduction:
+`reproduction-a2-retained-passive-fixed-base-readback-package.md`.
+Statement card:
+`statement-card-a2-retained-passive-fixed-base-readback-package.md`.
+Review:
+`review-a2-retained-passive-fixed-base-readback-package.md`.
+
+Lean now proves the fixed-base readback package:
+
+```text
+ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_targets
+```
+
+Under the same solved endpoint hypotheses as the active endpoint package, the
+source-left suffix state reads back
+
+```text
+-S_0.B = F2_0
+S_0.Ctop = Ctop
+lowerLeft(S_0.L) = F3
+```
+
+and each deterministic transformed edge `T_p=transformedEdge(E,p,S_{p+1})`
+reads back
+
+```text
+topLeft(T_p) = A1_p
+upperRight(T_p) = -A1_p * F2_p
+-A1_p^-1 * upperRight(T_p) = F2_p
+lowerLeft(T_p) = A3_p
+schurResidualBlock(T_p) = C_p
+```
+
+The proof derives the full determinant-unit `A1` family from passive unit
+hypotheses and the solved `A1_0`, then applies the per-edge readback theorem.
+This remains finite fixed-base packaging: no coordinate-domain structure,
+two-sided local inverse, coverage, source/image equality, measure pushforward,
+density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Lorentz the 3rd` passed the endpoint signs, per-edge readback
+sign/order, solved `A1_0` and `A3_last` dependencies, and nonclaim boundary.
+The reviewer suggested parenthesizing the informal inverse-readback formula to
+match Lean exactly; this is now applied in the reproduction and card.
+
 ## 2026-06-26 A2 retained-passive `A1_0` endpoint target
 
 Reproduction:

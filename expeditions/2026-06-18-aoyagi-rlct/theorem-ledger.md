@@ -9586,3 +9586,19 @@ Review:
 This is per-edge finite readback only: no bundled coordinate domain,
 two-sided local inverse, source coverage, source/image theorem, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive fixed-base readback package:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_targets`.
+Under the solved endpoint hypotheses for `A1_0` and `A3_last`, plus
+`F2_last=0`, passive `A1_p` unit hypotheses for `p != 0`, and `det(Ctop)` unit,
+the fixed-base edge family has source-left readbacks `-S_0.B=F2_0`,
+`S_0.Ctop=Ctop`, and `lowerLeft(S_0.L)=F3`; for each edge, the deterministic
+transformed edge reads back `A1_p`, `F2_p`, `A3_p`, and `C_p`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-readback-package.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-fixed-base-readback-package.md`.
+This is finite fixed-base packaging only: no bundled coordinate domain,
+two-sided local inverse, source coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.

@@ -5567,3 +5567,17 @@ or two-sided readback theorem combining active endpoint package data with
 these per-edge readbacks.  Do not advance to coverage, source/image equality,
 measure transport, density/Jacobian accounting, normal crossings, pole order,
 or RLCT before that finite inverse package is explicit.
+
+The fixed-base readback package is now landed/in progress in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-fixed-base-readback-package.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-readback-package.md`.
+It combines source-left active readbacks with per-edge transformed-edge
+readbacks under the solved `A1_0` and `A3_last` endpoint hypotheses.
+
+Next retained-passive target: define an explicit coordinate-domain/source-map
+structure or prove a genuine two-sided local inverse theorem that packages the
+omitted endpoint formulas as construction data.  Still do not assert
+source-rank coverage, source/image equality, measure transport,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.
