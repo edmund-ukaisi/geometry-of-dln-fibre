@@ -13001,3 +13001,21 @@ supplied monomial-times-unit identities and unit bounds.  The theorem still
 assumes the source chart, weighted pushforward, unit identities/bounds, and
 local loss/density estimates.  It does not prove Jacobian/density transport,
 original-loss comparison, normal crossings, pole order, or RLCT extraction.
+
+Latest A2 retained-passive selected-entry signed-box handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.
+It specializes the retained-passive monomial-unit local-measure handoff to the
+already-proved `SelectedEntrySignedBox.CenterCoord` finite calculation.  The
+theorem no longer asks callers for selected-entry density-unit measurability,
+residual/source-density monomial identities, or unit bounds; these are supplied
+from `SelectedEntrySignedBox.CenterCoord`.  It still assumes the retained-
+passive source chart, weighted pushforward to the retained-passive local source,
+the residual readout through that chart, and local loss/density bounds.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Nonclaims: no retained-passive source chart construction, no source image
+equality, no measure pushforward proof, no Jacobian/source-density theorem, no
+original-loss comparison, no normal crossings, no pole order, and no RLCT.

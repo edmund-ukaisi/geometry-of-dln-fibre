@@ -8645,3 +8645,31 @@ identities, unit bounds, and local loss/density bounds.  Nonclaims: no source
 chart construction, no source image equality, no measure pushforward proof, no
 Jacobian/density theorem, no original-loss comparison, no normal crossings, no
 pole order, and no RLCT extraction.
+
+## 2026-06-26 A2 retained-passive selected-entry signed-box handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Review:
+`review-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity
+```
+
+This specializes the retained-passive monomial-unit socket to
+`SelectedEntrySignedBox.CenterCoord`, discharging selected-entry density-unit
+measurability, monomial identities, and unit bounds from existing finite
+calculation lemmas.  It keeps the retained-passive source chart, weighted
+pushforward, residual readout, and local loss/density bounds explicit.
+
+Nonclaims: no source chart construction, no source image equality, no measure
+pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
+no pole order, and no RLCT.

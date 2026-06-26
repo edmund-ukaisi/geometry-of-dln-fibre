@@ -9948,6 +9948,20 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive selected-entry signed-box handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-signed-box-handoff.md`.
+Focused build passed.  The theorem consumes a supplied retained-passive source
+chart, weighted pushforward, residual readout, and local loss/density bounds,
+and discharges the selected-entry monomial-unit identities and unit bounds from
+`SelectedEntrySignedBox.CenterCoord`.  Nonclaims: no source chart construction,
+no weighted pushforward/Jacobian proof, no original-loss comparison, no normal
+crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive p.13 coverage boundary:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-p13-source-chart-boundary.md`
 and

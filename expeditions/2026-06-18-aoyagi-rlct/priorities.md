@@ -5911,3 +5911,12 @@ normal-crossing data.  Remaining frontiers are unchanged but sharper:
 construct the retained-passive source chart/pushforward, identify the
 Jacobian/source-density unit, and prove the residual unit/loss bounds rather
 than assuming them.
+
+Latest retained-passive selected-entry signed-box handoff:
+`RetainedPassiveLocalMeasure.lean` now specializes the retained-passive
+monomial-unit handoff to `SelectedEntrySignedBox.CenterCoord`.  This removes
+the need to supply selected-entry residual/source-density unit identities and
+bounds separately; only the retained-passive source chart, weighted
+pushforward, residual readout, and local loss/density estimates remain
+supplied.  The next real frontier remains source chart/pushforward/Jacobian or
+residual readout construction, not another wrapper over this same socket.
