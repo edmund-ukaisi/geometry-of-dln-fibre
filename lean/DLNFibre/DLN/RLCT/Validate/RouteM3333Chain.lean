@@ -126,4 +126,76 @@ noncomputable def chain3333 : FactoredChain 3 u where
     · exact chainQ_mul_chainA _ _ _ _
   base := rfl
 
+/-! ## The chart identity `prod M3333 (chartParams) = u • H` (the rate factor, via the engine)
+
+`M3333 = (3,3,3,3)`. The chart parameter `chartParams3333c` IS the chain's layers (all `3×3`); the width
+match `hW` is `rfl`-`3` and the layer match `hA` is `reindex refl refl (A k) = A k` (the `finCongr` of a
+`rfl`-true `3=3` is `Equiv.refl`). So `prod_eq_reindex_suffix` gives `prod = reindex (suffix 0)`, and the
+recursive `C 0 = 1` + `telescope_zero` simplifies `suffix 0` to `u • Hmat 0`. -/
+
+/-- `M3333 = (3,3,3,3)` (local copy, avoids the heavy `RouteM3333` import). -/
+abbrev M3333c : Fin 4 → ℕ := ![3, 3, 3, 3]
+
+/-- **The chart parameter** `chartParams3333c : Params M3333c` — the chain's layers `A 0, A 1, A 2`,
+all `3×3` (`M3333c` is constant `3`, so each layer's type matches the `Params` slot by `rfl`-reduction
+of `M3333c s.castSucc = M3333c s.succ = 3`). -/
+noncomputable def chartParams3333c : Params M3333c := fun s =>
+  match s with
+  | 0 => (chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.A 0
+  | 1 => (chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.A 1
+  | 2 => (chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.A 2
+
+/-- The width match: `W3333 k = M3333c ⟨k,_⟩ = 3` for `k ≤ 3` (all widths `3`). -/
+theorem hW3333c : ∀ k (hk : k ≤ 3),
+    (chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.Wwid k
+      = M3333c ⟨k, Nat.lt_succ_of_le hk⟩ := by
+  intro k hk; interval_cases k <;> rfl
+
+/-- The layer match `hA`: the chain's layer `A k`, reindexed by the (`rfl`-true `3=3`) width equalities,
+IS `chartParams3333c ⟨k,_⟩` — by construction (`chartParams` is `A 0/A 1/A 2`, the reindex is identity
+since every `finCongr (3=3)` is `Equiv.refl`). -/
+theorem hA3333c : ∀ k (hk : k < 3),
+    Matrix.reindex (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf k (le_of_lt hk)))
+        (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf (k + 1) hk))
+        ((chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.A k)
+      = (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf ⟨k, hk⟩ :
+          Matrix (Fin (M3333c (⟨k, Nat.lt_succ_of_le (le_of_lt hk)⟩ : Fin 4)))
+            (Fin (M3333c (⟨k + 1, Nat.succ_lt_succ hk⟩ : Fin 4))) ℝ) := by
+  intro k hk
+  interval_cases k <;>
+    · rw [Matrix.reindex_apply]
+      ext i j
+      simp only [Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Fin.cast_eq_self]
+      rfl
+
+/-- **The chart identity (rate factor), via the engine.** `prod M3333c (chartParams) = u • H`,
+`H := reindex (Hmat 0)`. The bridge `prod_eq_reindex_suffix` gives `prod = reindex (suffix 0)`; the
+recursive `C 0 = 1` makes `C 0 · suffix 0 = suffix 0`, so `telescope_zero` reads `suffix 0 = u • Hmat 0`,
+and `reindex` pulls `u` through (`submatrix_smul`). NO per-entry `ring`. -/
+theorem prod_chartParams3333c_eq :
+    prod M3333c (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+      = u • Matrix.reindex
+          (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf 0 (Nat.zero_le 3)))
+          (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf 3 (le_refl 3)))
+          ((chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.Hmat 0 (Nat.zero_le 3)) := by
+  set c := chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf with hc
+  have hbridge := FactoredChain.prod_eq_reindex_suffix c M3333c
+    (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+    (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+    (hA3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+  rw [hbridge]
+  -- `suffix 0 = C 0 · suffix 0` (since `C 0 = 1`), `= u • Hmat 0` (telescope_zero); `u` pulls through.
+  have hsuf : c.toChain.suffix 0 (Nat.zero_le 3) = u • c.toChain.Hmat 0 (Nat.zero_le 3) := by
+    have ht := c.telescope_zero
+    -- `C 0 = 1` definitionally, so `C 0 · suffix 0 = 1 · suffix 0 = suffix 0` (fully-applied `one_mul`).
+    have h1 : c.toChain.C 0 * c.toChain.suffix 0 (Nat.zero_le 3)
+        = c.toChain.suffix 0 (Nat.zero_le 3) :=
+      Matrix.one_mul (c.toChain.suffix 0 (Nat.zero_le 3))
+    rw [h1] at ht
+    exact ht
+  rw [hsuf]
+  -- `reindex (u • Hmat 0) = u • reindex (Hmat 0)`: fully-applied `submatrix_smul` (dependent-`HSMul`).
+  rw [Matrix.reindex_apply, Matrix.reindex_apply]
+  exact (congrFun (congrFun (Matrix.submatrix_smul u (c.toChain.Hmat 0 (Nat.zero_le 3))) _) _)
+
 end DLNFibre.DLN.RLCT
