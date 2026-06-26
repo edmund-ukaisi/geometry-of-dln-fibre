@@ -5121,3 +5121,16 @@ source-chart/density transport obligation.  Do not infer source coverage,
 original DLN source/prior transport, signed-box density identification,
 product-measure pushforward, regular-suspension certification, normal
 crossings, pole order, or RLCT.
+
+A2 p.13 left-step conditional raw pushforward consumer has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+Lean proves a generic raw-order composition consumer and p.13 specializations
+for both the explicit raw preimage tuple and the actual constructed left-step
+raw tuple.  The source/product-chart raw pushforward is an explicit hypothesis;
+the conclusion is the inverse-Jacobian weighted raw target measure
+`(m.restrict rawDetChart).withDensity ...`.  The next genuinely source-moving
+A2 priority is to prove or source-faithfully assume the actual p.13
+source/product-chart pushforward and density identification.  Do not infer
+source coverage, original DLN source/prior transport, signed-box density
+identification, product-measure pushforward, regular-suspension certification,
+normal crossings, pole order, or RLCT from this consumer.

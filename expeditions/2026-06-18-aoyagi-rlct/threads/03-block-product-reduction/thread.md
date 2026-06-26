@@ -6798,3 +6798,46 @@ This is still pointwise finite product-coordinate algebra.  It does not prove
 source coverage, original DLN source/prior transport, signed-box density
 identification, product-measure pushforward, regular-suspension certification,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 left-step conditional raw pushforward consumer
+
+Reproduction:
+`reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+Statement card:
+`statement-card-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+Review:
+`review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+
+Lean now consumes the raw-order inverse-density pushforward theorem at the p.13
+left endpoint, while keeping the source/product-chart pushforward as an
+explicit hypothesis.
+
+New Lean names:
+
+```text
+map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+p13ProductCoordinateLeftStepRawTopologyTuple
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
+```
+
+The generic theorem says that if a raw source tuple `pre` pushes a measure
+`eta` to additive Haar measure restricted to the raw determinant chart, then
+the raw-order chart map pushes `eta` to the inverse-Jacobian weighted raw
+target measure.  The p.13 raw-preimage theorem applies this to
+`(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)` and identifies the target tuple
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)` a.e. under the supplied `det(Ctop)` unit
+hypothesis.  The public left-step theorem uses the actual constructed
+left-endpoint suffix-step raw tuple and transports the supplied raw
+pushforward through
+`p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple`.
+
+Xhigh review passed with no findings.  The reviewer confirmed that the density
+is on the raw target measure
+`(m.restrict rawDetChart).withDensity ...`, not pulled back to the
+source/product-coordinate domain.
+
+This is a conditional measure consumer only.  It does not prove the supplied
+raw pushforward, source coverage, original DLN source/prior transport,
+signed-box density identification, product-measure pushforward,
+regular-suspension certification, normal crossings, pole order, or RLCT.

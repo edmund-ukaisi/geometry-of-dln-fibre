@@ -11776,3 +11776,48 @@ not construct the original p.13 source chart, prove source coverage,
 transport source/prior measure, identify signed-box density, prove a
 product-measure pushforward, produce a regular-suspension certificate, produce
 normal crossings, compute pole order, or prove RLCT.
+
+## Latest A2 p.13 Left-Step Conditional Raw Pushforward Consumer
+
+`ProductReductionStepMeasure.lean` now has the generic composition consumer
+
+```text
+map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+```
+
+which says: if a raw source tuple `pre` pushes `eta` to additive Haar measure
+restricted to the raw determinant chart, then composing `pre` with the
+raw-order product-step map gives the inverse-Jacobian weighted raw target
+measure.
+
+`ProductReductionStepRegularDensity.lean` specializes this twice:
+
+```text
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
+```
+
+The public left-step theorem takes the raw pushforward for the actual
+constructed tuple
+
+```text
+p13ProductCoordinateLeftStepRawTopologyTuple
+```
+
+as an explicit hypothesis, transports it through the equality with
+`(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, and concludes the target tuple
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)` has density
+`productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
+Haar measure.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+
+This is still conditional.  It does not prove the supplied raw pushforward,
+construct the original p.13 source chart, prove source coverage, transport
+the original DLN source/prior measure, identify signed-box density, prove
+product-measure pushforward, produce a regular-suspension certificate, produce
+normal crossings, compute pole order, or prove RLCT.

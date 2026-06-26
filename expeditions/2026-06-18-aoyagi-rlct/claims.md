@@ -255,10 +255,11 @@ No such claim is formalisation-ready until both fields are filled.
   explicit p.13 product-coordinate family is also now proved to preserve
   source-rank-stratum membership locally in small regular coordinates, under
   the base product-reduction certificate and determinant-unit condition. The
-  full source
-  Theorem 3/RLCT claim remains blocked on the
-  analytic product-coordinate regular-square suspension theorem and the actual
-  p.13 chart/density construction.
+  raw-order inverse-density pushforward is now consumed conditionally for the
+  actual p.13 left-step raw tuple under an explicit source/product-chart raw
+  pushforward hypothesis. The full source Theorem 3/RLCT claim remains blocked
+  on the analytic product-coordinate regular-square suspension theorem and the
+  actual p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -322,7 +323,9 @@ No such claim is formalisation-ready until both fields are filled.
   product-coordinate source-rank membership at
   `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`;
   selected-entry residual-factor readout boundary at
-  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`.
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`;
+  p.13 left-step conditional raw pushforward consumer at
+  `threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -385,7 +388,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`;
   selected-entry residual-factor readout boundary reviewed by xhigh source/API
   scouts `Kant` and `Kuhn` in
-  `threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`.
+  `threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`;
+  p.13 left-step conditional raw pushforward consumer reviewed by xhigh
+  `Ampere the 2nd` in
+  `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
@@ -722,6 +728,15 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-regular-suspension-local-measure.md`
   and xhigh `Boyle the 5th` at
   `threads/03-block-product-reduction/review-a2-regular-suspension-uniform-product-handoff.md`.
+  Also proved
+  `map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`,
+  `p13ProductCoordinateLeftStepRawTopologyTuple`,
+  `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`,
+  and
+  `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map`,
+  the conditional p.13 left-step raw pushforward consumer.  It keeps the raw
+  source pushforward as an explicit hypothesis and places the inverse-Jacobian
+  density on the restricted raw target measure.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

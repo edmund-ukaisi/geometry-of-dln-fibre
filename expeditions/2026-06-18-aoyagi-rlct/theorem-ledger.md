@@ -9047,3 +9047,26 @@ This is pointwise product-coordinate algebra only: no source coverage,
 original p.13 source-chart construction, source/prior transport, signed-box
 density, product-measure pushforward, regular-suspension certification,
 normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step conditional raw pushforward consumer:
+`ProductReductionStepMeasure.lean` now proves
+`map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`, the
+generic composition consumer for the raw-order inverse-density pushforward
+under an explicit raw source pushforward hypothesis.  `ProductReductionStepRegularDensity.lean`
+adds `p13ProductCoordinateLeftStepRawTopologyTuple`,
+`map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`, and
+`map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map`.
+The public p.13 theorem assumes
+`Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
+m.restrict rawDetChart` and concludes the raw-order target tuple has density
+`productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
+Haar measure.
+Reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+This is a conditional measure consumer only: no proof of the supplied raw
+pushforward, original source/prior transport, source coverage, signed-box
+density identification, product-measure pushforward, regular-suspension
+certification, normal crossings, pole order, or RLCT.

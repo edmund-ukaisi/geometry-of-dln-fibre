@@ -1054,6 +1054,67 @@ theorem map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_invers
           (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
           rw [withDensity_one]
 
+set_option maxRecDepth 2048 in
+/-- Conditional consumer for the raw-order product-step inverse-Jacobian
+pushforward.
+
+If a source-side parametrisation `pre` is already known to push a measure `η`
+to Haar measure restricted to the raw determinant chart, then composing `pre`
+with the raw-order product-step map gives the inverse-Jacobian weighted target
+measure.  This theorem deliberately keeps the source-side pushforward as an
+explicit hypothesis. -/
+theorem map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+    {ρ π μ ν X : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    [MeasurableSpace X]
+    [MeasurableSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    [BorelSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    (η : Measure X)
+    (m : Measure (ProductReductionStepRawTopologyTuple ρ π μ ν))
+    [m.IsAddHaarMeasure]
+    (pre : X → ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hs : NullMeasurableSet (productReductionStepRawDetChartSet ρ π μ ν) m)
+    (hpre : AEMeasurable pre η)
+    (hΦ : AEMeasurable
+      (productReductionStepTopologyTupleToChartRawOrder
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      (Measure.map pre η))
+    (hpre_map :
+      Measure.map pre η =
+        m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) :
+    Measure.map
+        (fun x =>
+          productReductionStepTopologyTupleToChartRawOrder
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (pre x))
+        η =
+      (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity
+        (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+          ENNReal.ofReal
+            (productReductionStepRawOrderInverseJacobianDensity
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) y)) := by
+  let Φ : ProductReductionStepRawTopologyTuple ρ π μ ν →
+      ProductReductionStepRawTopologyTuple ρ π μ ν :=
+    productReductionStepTopologyTupleToChartRawOrder
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  calc
+    Measure.map (fun x => Φ (pre x)) η =
+        Measure.map Φ (Measure.map pre η) := by
+          simpa [Φ, Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := η) (g := Φ) (f := pre) hΦ hpre).symm
+    _ =
+        Measure.map Φ (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+          rw [hpre_map]
+    _ =
+      (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity
+        (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+          ENNReal.ofReal
+            (productReductionStepRawOrderInverseJacobianDensity
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) y)) := by
+          simpa [Φ] using
+            map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) m hs
+
 end Aoyagi
 end DLN
 end DLNFibre
