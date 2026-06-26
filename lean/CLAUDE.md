@@ -61,3 +61,17 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
   shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
+- **Dependent-dimension matrix reassociation / cast handling — the kernel that cracked the `prodAux`
+  front-peel (deferred twice).** For products over `Fin (M k)`-style dependent dimensions:
+  (i) `rw [Matrix.mul_assoc]` / `simp` / `conv` will NOT match `(a*b)*c = a*(b*c)` through the dependent
+  `HMul` instance (higher-order matching fails). Close it with a **fully-applied term** instead:
+  `set X := …; set Y := …; exact Matrix.mul_assoc a X Y` (or state a generic
+  `mul_three_reassoc {p q r s : Type*} [Fintype …] (a b c) : a*b*c = a*(b*c) := Matrix.mul_assoc a b c`
+  once and reuse — cf. `RouteMFrontPeel.mul_three_reassoc`, generalising `DeepestTelescoping.mul_four_reassoc`).
+  (ii) Do cast bookkeeping at the **equiv level, never entrywise** (`ext` into a cast-wrapped `∑ if…` is the
+  trap that stalled two tides): `finCongr_refl` collapses `finCongr (rfl-true width eq)` to `Equiv.refl`,
+  then `Matrix.reindex_refl_refl` (via `erw` — plain `rw`/`simp` won't match the dependent `Matrix.reindex`)
+  collapses `reindex refl refl` to identity; `RouteMAchieverBridge.reindex_finCongr_mul` distributes a
+  width-reindex over a product. (iii) Peel layer-products by **prefix-length induction reusing
+  `prodAux_succ`**, not entrywise. This kernel transfers to any `prod`/`prodAux` reassociation (e.g. the
+  L2/D1 `endpoint_telescoping`).

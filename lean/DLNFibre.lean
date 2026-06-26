@@ -115,8 +115,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
 -- Reusable bricks toward the `suffix 0 = prod M A` bridge (`reindex_finCongr_mul` cast-killer, `Mtail`/
--- `Atail`); the front-peel `prod = A_0·prod(tail)` itself (the deferred `prodAux` reassociation XL-cast,
--- shared with `DeepestTelescoping.endpoint_telescoping`) is the next tide.
+-- `Atail`). The `prod` front-peel itself (`RouteMFrontPeel`, the deferred `prodAux` reassociation XL-cast,
+-- now CRACKED + axiom-clean) is banked but NOT yet gated: it imports `DeepestTelescoping` for `prodAux_succ`,
+-- which drags the ungated `Deepest*` subtree's `continuous_dlnLoss` clash into the aggregator. Gating it
+-- needs the decouple (move `prodAux_succ` → `Foundations/Loss`) — folded into the chart-assembly tide.
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
