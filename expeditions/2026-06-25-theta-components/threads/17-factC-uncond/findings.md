@@ -1,5 +1,13 @@
 # Thread 17 — fact (C) unconditional smoothness (C1+C2+C3) (formaliser, #110) — certificate
 
+> **⚠ CORRECTION (thread 20, #119): the C2(a) interface stated below is DIMENSIONALLY IMPOSSIBLE.**
+> `isSmoothAt_sweepFibre_of_component_orbitSmooth`'s iso `sweepFibreRing⧸I ≃ₐ[k] orbitRing M` cannot
+> exist — the fibre top component is the orbit closure × `A^δ` (`δ = r(d_last+d_0−r) > 0`), not a bare
+> orbit ring (witness `(2,2,2)r1`: `4 = 1+3`). The dimension-correct consumer is thread-20's
+> `isSmoothAt_sweepFibre_of_component_orbitPolyEquiv` (iso to `MvPolynomial η (orbitRing M)`). C1+C3
+> below stand; only the C2(a) *target shape* was wrong. See `threads/20-component-orbit/findings.md`.
+
+
 **Formaliser tide.** Two new modules, wired by the controller; whole library green (3788 jobs); headlines
 axiom-clean `[propext, Classical.choice, Quot.sound]` (controller-gated); reviewer PASS-WITH-NOTES
 (actioned). Commits `72b2ed2b` / `e37e3317` / `3e89db24`.

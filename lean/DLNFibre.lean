@@ -330,3 +330,10 @@ import DLNFibre.Core.FibreGenericSmoothUncond
 -- chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial` — the per-pivot
 -- trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it remain (#123).
 import DLNFibre.Core.FibreBundleLocallyTrivial
+-- Scope-3 (C2(a) corrected, thread 20): FIDELITY CORRECTION — thread-17's bare iso `sweepFibreRing⧸I ≃
+-- orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure × Aᵟ, δ=r(d_last+d_0−r)>0).
+-- This module supersedes it: the dimension-correct consumer `…_of_component_orbitPolyEquiv` (iso to
+-- `MvPolynomial η (orbitRing M)`), PLUS the UNCONDITIONAL sigma-side labeling
+-- `exists_sigma_topComponent_orbitRingEquiv` (every top component of O(Σ̄^r) IS `orbitRing (realizerD m)`).
+-- Smoothness remains unconditional MOD the corrected (dimensionally-honest) fibre≅orbit×Aᵟ iso (#128).
+import DLNFibre.Core.FibreComponentOrbit
