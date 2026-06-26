@@ -9215,6 +9215,17 @@ supplied, and the section-image theorem remains the honest replacement.
 Audit:
 `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
 
+Latest A2 p.13 local source coverage boundary:
+`threads/03-block-product-reduction/source-audit-a2-p13-local-source-coverage-boundary.md`
+records that the source-stratum local-subset local-source theorem is only a
+consumer.  Aoyagi pp. 10-13 do not state the local inclusion into
+`localSource`, source/image equality, determinant-chart finite coverage, a
+local inverse with passive variables, source-measure pushforward, or
+density/Jacobian transport.  The current proved Lean facts remain forward
+p.13 source-rank image membership, local raw-section support, section-image
+measure identity, and conditional finite-integral handoffs.  Reverse
+source-rank coverage and p.13 source transport are still supplied/deferred.
+
 Latest A5 Lemma 5 first-nonbase cardinal bound:
 `aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le` is now
 proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  It consumes

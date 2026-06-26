@@ -121,6 +121,32 @@ shape "pivot coordinate" at the pivot and "pivot coordinate times residual
 coordinate" off the pivot. Aoyagi does not derive that shape for the product
 entries above.
 
+## Lean/API Boundary
+
+The current Lean API is already at this boundary.  The theorem
+
+```text
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+```
+
+consumes exactly the missing entrywise successor readout.  Existing finite
+selected-entry inverse theorems can reconstruct chart coordinates only after a
+fixed pivot is known to be nonzero.  There is no theorem proving that the
+successor product has the fixed pivot `(J+2,J+2)` nonzero, and the all-pivot
+coverage theorem can choose some nonzero pivot rather than this one.
+
+Thus even a finite inverse-chart repair would need new hypotheses:
+
+```text
+fixed successor pivot nonzero,
+yNext chosen as the selected-entry inverse of D_(J+1) * C'_+,
+endpoint equivalence to the successor residual column type.
+```
+
+That would be finite chart algebra under supplied data, not a source-backed
+production theorem from Aoyagi pp. 19-22, and it would not remove source
+production, source/image, or measure-transport obligations.
+
 ## Proved / Assumed / Cited / Deferred
 
 **Proved.** The finite `Q/P` block algebra, the `C' = Q^-1 C` lower-tail
@@ -133,7 +159,8 @@ and
 **Assumed.** Any identity making the post-pivot product entries equal successor
 selected-entry chart-map coordinates; any `yNext`; any column endpoint
 equivalence from the free target type to `Case2ResidualColIndex n S (J+1)`;
-and any local source/image equality producing those coordinates.
+fixed successor pivot nonvanishing if a selected-entry inverse is used; and
+any local source/image equality producing those coordinates.
 
 **Cited.** Aoyagi pp. 19-21 only for the displayed Case 2 finite algebra and
 the induction-step wording.
@@ -154,4 +181,3 @@ residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelected
 and the corresponding paper-`C'` source-product identity. A future theorem may
 consume a supplied entrywise successor readout, but proving that readout is a
 separate source-production problem.
-

@@ -5211,6 +5211,16 @@ full raw-Haar pushforward from the p.13 section.  Keep the raw pushforward
 supplied unless a genuine p.13 source chart, source coverage theorem, and
 density/prior transport are constructed for the correct source measure.
 
+A2 p.13 local source coverage boundary has now been rechecked after the
+source-stratum local-subset consumer:
+`threads/03-block-product-reduction/source-audit-a2-p13-local-source-coverage-boundary.md`.
+The consumer is confirmed to be the correct boundary: it consumes a local
+inclusion into `localSource`; it does not provide that inclusion.  Do not add
+more p.13 local-source wrappers unless they remove a concrete supplied
+hypothesis.  The remaining source-moving routes are a genuine p.13 source
+chart with passive variables and measure/density transport, a smaller reverse
+rank/readback theorem, or a different source-backed finite algebra slice.
+
 A5 Lemma 5 first-nonbase cardinal bound has now landed:
 `threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
 Lean proves that the deterministic first-nonbase-or-base selector gives the

@@ -10576,6 +10576,19 @@ This is a conditional coverage consumer, not coverage.  It does not prove a
 local p.13 inverse, source/image equality, raw-Haar pushforward, source-measure
 transport, density/Jacobian identity, normal crossings, pole order, or RLCT.
 
+Latest A2 p.13 local source coverage boundary:
+`threads/03-block-product-reduction/source-audit-a2-p13-local-source-coverage-boundary.md`
+records the post-recovery source/API decision.  Aoyagi pp. 10-13 support the
+Lemma 2 block elimination, the Theorem 3 product normal form, and the p.13
+product-difference display, but not source/image equality, determinant-chart
+finite coverage, a local inverse with passive variables, source-measure
+pushforward, or density/Jacobian transport.  Current Lean proves forward p.13
+source-rank image membership and conditional local-source consumers; reverse
+coverage remains supplied.  The next A2 move should therefore be a genuine
+source chart with transport, a smaller reverse rank/readback theorem, or a
+different source-backed finite algebra slice, not another local-source
+consumer wrapper.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:
@@ -12109,7 +12122,10 @@ The next selected-entry chart is on `D_(J+1)`, not on the product
 selected-entry chart-map matrix must keep an explicit entrywise readout,
 endpoint equivalence, and source data hypothesis.  No Lean theorem was added
 for this negative audit; the existing conditional `..._of_entrywise` bridge is
-the right boundary.
+the right boundary.  A post-recovery Lean/API recheck sharpened the finite
+chart obstruction: selected-entry inversion for a fixed successor chart would
+need that fixed pivot nonzero, while existing all-pivot coverage chooses some
+pivot and does not force `(J+2,J+2)`.
 
 Artifacts:
 `threads/03-block-product-reduction/reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`,

@@ -7115,6 +7115,25 @@ Nonclaims: no proof of the local inclusion, no source coverage, no local
 source/image equality, no raw-Haar pushforward, no source-measure transport,
 no density/Jacobian identity, no normal crossings, pole order, or RLCT.
 
+Latest A2 p.13 local source coverage boundary:
+Post-recovery xhigh source, Lean/API, and hardening scouts rechecked whether
+Aoyagi pp. 10-13 or current Lean APIs support a genuine p.13 local
+source-coverage/inverse theorem after the local-subset consumer.  They do not.
+The paper supports Lemma 2 block elimination, Theorem 3 product normal form,
+and the p.13 product-difference display, but does not state source/image
+equality, a determinant-chart finite cover, a local inverse carrying passive
+variables, source-measure pushforward, or density/Jacobian transport.  Lean
+likewise proves forward p.13 source-rank image membership and conditional
+local-source consumers, while reverse coverage remains supplied.
+
+Audit:
+`threads/03-block-product-reduction/source-audit-a2-p13-local-source-coverage-boundary.md`.
+
+Decision: do not add further wrappers treating the local-subset consumer as
+coverage.  Future A2 work must either prove a genuine p.13 source chart with
+passive variables and transport, prove a smaller reverse rank/readback theorem,
+or move to a different source-backed finite algebra slice.
+
 Latest A2 selected-entry residual-factor readout boundary:
 Lean now proves the finite handoff from compatible residual factors to the
 selected-entry residual-product matrix identity.  If the fixed-base
@@ -7453,7 +7472,10 @@ support the `Q/P` algebra, the paper-`C'` lower-tail identity, and the
 post-pivot product, but the next selected-entry chart is on `D_(J+1)`, not on
 the product with the following factor. The successor entrywise readout,
 endpoint equivalence, source data, source/image equality, normal crossings,
-pole order, and RLCT remain supplied or open. Review:
+pole order, and RLCT remain supplied or open. Post-recovery Lean/API recheck
+also records that a finite inverse-chart repair would require a nonzero fixed
+successor pivot; existing all-pivot coverage can choose some pivot and does
+not provide the fixed successor pivot `(J+2,J+2)`. Review:
 `threads/03-block-product-reduction/review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
 
 Latest A2 Schur-core formal Jacobian unit:

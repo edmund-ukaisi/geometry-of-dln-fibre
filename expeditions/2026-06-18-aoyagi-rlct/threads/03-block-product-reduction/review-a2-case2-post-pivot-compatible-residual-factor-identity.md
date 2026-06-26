@@ -47,12 +47,20 @@ adapter theorem from a source-product entrywise readout would be low risk, but
 it would still be a conditional wrapper and should not be the next
 source-moving target.
 
+Post-recovery Lean/API recheck sharpened the obstruction.  Fixed-chart inverse
+lemmas require a nonzero fixed pivot, while current all-pivot coverage can
+choose some pivot and does not prove that the successor fixed pivot
+`(J+2,J+2)` is nonzero for the post-pivot product.  Defining `yNext` as an
+inverse chart point for `D_(J+1) * C'_+` would therefore require additional
+finite hypotheses and would still not be Aoyagi source production.
+
 ## Guardrails
 
 - Keep the successor center at `(S,J+1)` with pivot `(J+2,J+2)`.
 - Do not identify the old center `(S,J)` with the successor center.
 - Do not treat `D_(J+1) * C'_+` as a selected-entry center matrix without an
   explicit entrywise readout.
+- Do not replace the entrywise readout by all-pivot coverage unless a theorem
+  chooses the fixed successor pivot and proves its nonvanishing.
 - Do not claim source production of `Cprime`, `Csucc`, `yNext`, endpoint
   equivalences, source/image equality, normal crossings, pole order, or RLCT.
-

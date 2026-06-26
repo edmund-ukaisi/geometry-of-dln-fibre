@@ -7100,3 +7100,25 @@ This is a conditional consumer only.  It does not prove the local inclusion,
 source coverage, local source/image equality, raw-Haar pushforward,
 source-measure transport, density/Jacobian identity, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-26 A2 p.13 local source coverage boundary
+
+Audit:
+`source-audit-a2-p13-local-source-coverage-boundary.md`.
+
+After the source-stratum local-subset consumer landed, three xhigh
+post-recovery scouts rechecked whether Aoyagi pp. 10-13 or the current Lean
+API support the missing p.13 local source coverage/inverse theorem.  The
+answer remains negative.  The source gives the Lemma 2 block elimination, the
+Theorem 3 product normal form, and the p.13 product-difference display; it
+does not state a source-image equality, finite determinant-chart cover, local
+inverse with passive variables, p.13 source-measure pushforward, or
+density/Jacobian transport.
+
+The Lean boundary is aligned with the source: forward p.13 product-coordinate
+source-rank membership is proved, but reverse coverage/source-stratum equality
+is still an explicit hypothesis in downstream handoffs.  Future work should
+not add more wrappers around the local-subset consumer.  The source-moving
+alternatives are a genuine p.13 source chart with passive variables and
+transport, a smaller reverse rank/readback theorem, or a different
+source-backed finite algebra slice.
