@@ -12316,3 +12316,27 @@ This is finite formal algebra only.  It does not weaken analytic derivative
 or measure determinant-chart hypotheses and does not produce source coverage,
 source-measure transport, density identification, normal crossings, pole
 order, or RLCT.
+
+## Latest A5 Minimum Numerator Residue Normalization
+
+`Lemma5TerminalBridge.lean` now proves:
+
+```text
+aoyagiLemma5MinNumerator_div_four_sq_eq_theorem2ResidueTerm
+```
+
+For `ell=n+1`, the isolated Lemma 5 numerator divided by `4*ell^2`
+is exactly the Theorem 2 residue contribution `a*(ell-a)/(4*ell)`.  This is
+the finite minimum-to-lambda normalization that remained between the Lemma 5
+numerator notation and Aoyagi's displayed lambda term.
+
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-min-numerator-residue-normalization-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-min-numerator-residue-normalization.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-min-numerator-residue-normalization-a5.md`.
+
+This is rational arithmetic only.  It does not identify a terminal exponent
+with the numerator, prove active-ratio minimality, terminal-label exactness,
+chart counts, pole order, normal crossings, or RLCT.

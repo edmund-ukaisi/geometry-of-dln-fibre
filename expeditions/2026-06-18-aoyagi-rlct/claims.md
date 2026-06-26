@@ -3739,6 +3739,20 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/05-arithmetic-tail/review-lemma5-eq5-terminal-order-formula-bridge-a5.md`.
   This is finite supplied-payload notation plumbing only and does not move the
   source-exactness, pole-order, normal-crossing, or RLCT boundary.
+  Latest minimum-to-lambda normalization: Lean now proves
+  `aoyagiLemma5MinNumerator_div_four_sq_eq_theorem2ResidueTerm` in
+  `lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`, showing that for
+  `ell=n+1`,
+  `aoyagiLemma5MinNumerator n a / (4*ell^2) = a*(ell-a)/(4*ell)` over
+  rationals.  Reproduction:
+  `threads/05-arithmetic-tail/reproduction-lemma5-min-numerator-residue-normalization-a5.md`;
+  statement card:
+  `threads/05-arithmetic-tail/statement-card-a5-lemma5-min-numerator-residue-normalization.md`;
+  review:
+  `threads/05-arithmetic-tail/review-lemma5-min-numerator-residue-normalization-a5.md`.
+  This is only finite rational cancellation; it does not prove terminal
+  exponent identification, active-ratio minimality, terminal-label exactness,
+  chart counts, pole order, normal crossings, or RLCT.
 
 ## Claim A6 - final Aoyagi formula, conditional on A0
 

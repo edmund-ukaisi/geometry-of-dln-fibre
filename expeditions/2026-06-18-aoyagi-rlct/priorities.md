@@ -5312,3 +5312,13 @@ This is finite arithmetic for the source-backed equal-width branch only:
 ceiling data, order `a*(L-a)+1`, pair sum `((L+1)*L*w^2)/2`, and the unfolded
 finite lambda formula.  It is not arbitrary Definition 3 branch selection,
 Eq5 production, chart production, normal crossings, pole order, or RLCT.
+
+A5 Lemma 5 minimum numerator residue normalization has now landed:
+`threads/05-arithmetic-tail/reproduction-lemma5-min-numerator-residue-normalization-a5.md`.
+Lean proves
+`aoyagiLemma5MinNumerator_div_four_sq_eq_theorem2ResidueTerm`, the cancellation
+`a*ell*(ell-a)/(4*ell^2)=a*(ell-a)/(4*ell)` for `ell=n+1`.  This is the
+finite minimum-to-lambda normalization only; it does not prove terminal
+exponent identification, active-ratio minimality, terminal-label exactness,
+chart counts, pole order, normal crossings, or RLCT.  Xhigh review,
+downstream build, sorry scan, and whitespace checks passed.

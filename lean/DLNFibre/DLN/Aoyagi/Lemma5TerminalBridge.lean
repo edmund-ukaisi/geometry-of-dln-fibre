@@ -33,6 +33,29 @@ def aoyagiLemma5MinNumerator (n a : ℕ) : ℤ :=
   (a : ℤ) * ((n + 1 : ℕ) : ℤ) *
     (((n + 1 : ℕ) : ℤ) - (a : ℤ))
 
+/-- The isolated Lemma 5 numerator gives the residue term in Aoyagi Theorem 2
+after the normal-crossing denominator `4 * (n+1)^2` is separated.
+
+This is rational arithmetic only.  It does not identify a terminal exponent
+with the numerator and does not prove a minimum, pole order, or RLCT
+statement. -/
+theorem aoyagiLemma5MinNumerator_div_four_sq_eq_theorem2ResidueTerm
+    (n a : ℕ) :
+    ((aoyagiLemma5MinNumerator n a : ℚ) /
+        (4 * (((n + 1 : ℕ) : ℚ) ^ 2))) =
+      ((a : ℚ) * (((n + 1 : ℕ) : ℚ) - (a : ℚ))) /
+        (4 * ((n + 1 : ℕ) : ℚ)) := by
+  have hell : ((n + 1 : ℕ) : ℚ) ≠ 0 := by
+    exact_mod_cast Nat.succ_ne_zero n
+  have hnum :
+      (aoyagiLemma5MinNumerator n a : ℚ) =
+        (a : ℚ) * ((n + 1 : ℕ) : ℚ) *
+          (((n + 1 : ℕ) : ℚ) - (a : ℚ)) := by
+    unfold aoyagiLemma5MinNumerator
+    norm_num [Int.cast_sub, Int.cast_mul]
+  rw [hnum]
+  field_simp [hell]
+
 /-- Every tagged branch in a supplied full Lemma 5 family attains the isolated
 Lemma 3 numerator minimum, stated with the named free high-count parameter. -/
 theorem AoyagiLemma5SuppliedAdmissibleFamily.fullBranch_freeHighCountMin

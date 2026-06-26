@@ -5606,3 +5606,37 @@ Aoyagi's source vectors, prove that this first-nonbase tie-breaker is the
 source classifier, prove injectivity, prove a back-to-label/no-extra theorem,
 construct Eq3/Eq4/Eq5 branches, identify pole order, prove normal crossings,
 or extract RLCT.
+
+## 2026-06-26 Lean Lemma 5 minimum numerator residue normalization
+
+Reproduction:
+`reproduction-lemma5-min-numerator-residue-normalization-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-min-numerator-residue-normalization.md`.
+Review:
+`review-lemma5-min-numerator-residue-normalization-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5MinNumerator_div_four_sq_eq_theorem2ResidueTerm
+```
+
+For `ell=n+1`, the isolated Lemma 5 numerator
+`aoyagiLemma5MinNumerator n a = a*ell*(ell-a)` satisfies
+
+```text
+((aoyagiLemma5MinNumerator n a : Q) / (4*ell^2))
+  = a*(ell-a)/(4*ell).
+```
+
+No `a<=ell` hypothesis is needed for this cancellation; source applications
+may still carry Definition 3's residue bounds separately.  This only aligns
+the Lemma 5 numerator normalization with the first finite residue term in
+Aoyagi Theorem 2's displayed lambda formula.  It does not identify terminal
+exponents with the numerator, prove active-ratio minimality, prove
+terminal-label exactness or chart counts, identify pole order, prove normal
+crossings, or extract RLCT.
+
+Independent xhigh review passed with no findings and confirmed that
+`a<=n+1` should remain absent from this cancellation theorem.
