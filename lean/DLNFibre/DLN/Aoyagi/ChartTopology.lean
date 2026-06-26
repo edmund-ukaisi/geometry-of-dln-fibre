@@ -1296,6 +1296,90 @@ theorem measurable_chartLocalSuffixState_suffixState_fields_real
   have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hij)
   simpa [motive] using hcanon
 
+/-- The residual product produced by the suffix recursion is measurable as a
+function of a measurable real edge family. -/
+theorem measurable_chartLocalSuffixState_residualProduct_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    (hE : Measurable E)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    Measurable
+      (fun x : α ↦ ChartLocalSuffixState.residualProduct (E x) j i hij) := by
+  have hD :
+      Measurable
+        (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).D) :=
+    (measurable_chartLocalSuffixState_suffixState_fields_real
+      (E := E) hE (j := j) i hij).2.2.2
+  have hstate :
+      (fun x : α ↦ (ChartLocalSuffixState.suffixState (E x) j i hij).D) =
+        (fun x : α ↦ ChartLocalSuffixState.residualProduct (E x) j i hij) := by
+    funext x
+    exact ChartLocalSuffixState.suffixState_D_eq_residualProduct (E x) hij
+  rw [hstate] at hD
+  exact hD
+
+/-- The transformed Schur residual block visited by the suffix recursion is
+measurable as a function of a measurable real edge family. -/
+theorem measurable_chartLocalSuffixState_residualBlock_real
+    (E : α → ∀ p : Fin N,
+      Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    (hE : Measurable E)
+    {j : Fin (N + 1)} (p : Fin N) (hpj : p.succ ≤ j) :
+    Measurable
+      (fun x : α ↦ ChartLocalSuffixState.residualBlock (E x) j p hpj) := by
+  let S : α → ChartLocalSuffixState ρ κ ℝ j p.succ :=
+    fun x ↦ ChartLocalSuffixState.suffixState (E x) j p.succ hpj
+  have hfields :=
+    measurable_chartLocalSuffixState_suffixState_fields_real
+      (E := E) hE (j := j) p.succ hpj
+  rcases hfields with ⟨_hL, hB, _hCtop, _hD⟩
+  have hE_p : Measurable (fun x : α ↦ E x p) :=
+    (measurable_pi_apply p).comp hE
+  let M : α → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    fun x ↦ ChartLocalSuffixState.transformedEdge (E x) p (S x)
+  have hM : Measurable M :=
+    measurable_chartLocalSuffixState_transformedEdge_real E p S hE_p hB
+  have htop : Measurable (fun x : α ↦ topLeftCorner (M x)) :=
+    continuous_topLeftCorner.measurable.comp hM
+  have htopInv : Measurable (fun x : α ↦ (topLeftCorner (M x))⁻¹) :=
+    measurable_matrix_inv_real.comp htop
+  have hupper : Measurable (fun x : α ↦ upperRightBlock (M x)) := by
+    have hupper' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ upperRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inl Sum.inr
+    exact hupper'.measurable.comp hM
+  have hlower : Measurable (fun x : α ↦ lowerLeftBlock (M x)) := by
+    have hlower' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ lowerLeftBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inl
+    exact hlower'.measurable.comp hM
+  have hright : Measurable (fun x : α ↦ lowerRightBlock (M x)) := by
+    have hright' : Continuous
+        (fun M : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ ↦ lowerRightBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inr
+    exact hright'.measurable.comp hM
+  have hleftInv : Measurable
+      (fun x : α ↦ lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹) := by
+    have hmul : Continuous (fun q :
+        Matrix (κ p.succ) ρ ℝ × Matrix ρ ρ ℝ ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.measurable.comp (hlower.prodMk htopInv)
+  have hcorr : Measurable
+      (fun x : α ↦
+        lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) := by
+    have hmul : Continuous (fun q :
+        Matrix (κ p.succ) ρ ℝ × Matrix ρ (κ p.castSucc) ℝ ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    exact hmul.measurable.comp (hleftInv.prodMk hupper)
+  have hschur : Measurable (fun x : α ↦ schurResidualBlock (M x)) := by
+    have hsub : Measurable
+        (fun x : α ↦
+          lowerRightBlock (M x) -
+            lowerLeftBlock (M x) * (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) :=
+      hright.sub hcorr
+    simpa [schurResidualBlock] using hsub
+  simpa [ChartLocalSuffixState.residualBlock, M, S] using hschur
+
 end ChartLocalSuffixStateMeasurability
 
 /-- The accumulated upper block produced by one deterministic suffix-state step varies

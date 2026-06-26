@@ -5140,3 +5140,15 @@ preimage and actual left-step raw tuple.  Do not infer source coverage,
 original DLN source/prior transport, signed-box density identification,
 product-measure pushforward, regular-suspension certification, normal
 crossings, pole order, or RLCT from this consumer.
+
+A2 p.13 left-step raw tuple measurability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-raw-tuple-measurability.md`.
+Lean derives the raw tuple measurability/a.e.-measurability input for the
+explicit p.13 raw preimage and the actual constructed left-step raw tuple from
+fixed-base edge-matrix measurability.  The conditional inverse-Jacobian
+consumer now has a wrapper using this derived a.e.-measurability, but the raw
+pushforward itself is still an explicit hypothesis.  The next genuinely
+source-moving A2 priority remains the actual p.13 source/product-chart
+pushforward and density identification; do not treat finite measurability as
+source coverage, original prior transport, signed-box density identification,
+product-measure pushforward, normal crossings, pole order, or RLCT.

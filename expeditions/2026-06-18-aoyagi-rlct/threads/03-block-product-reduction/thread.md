@@ -6866,3 +6866,40 @@ This is a conditional measure consumer only.  It does not prove the supplied
 raw pushforward, source coverage, original DLN source/prior transport,
 signed-box density identification, product-measure pushforward,
 regular-suspension certification, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 left-step raw tuple measurability
+
+Reproduction:
+`reproduction-a2-p13-left-step-raw-tuple-measurability.md`.
+Statement card:
+`statement-card-a2-p13-left-step-raw-tuple-measurability.md`.
+Review:
+`review-a2-p13-left-step-raw-tuple-measurability.md`.
+
+Lean now derives the a.e.-measurability input for the actual constructed p.13
+left-step raw tuple from fixed-base edge-matrix measurability.  New suffix
+recursion projections:
+
+```text
+measurable_chartLocalSuffixState_residualProduct_real
+measurable_chartLocalSuffixState_residualBlock_real
+```
+
+New p.13 tuple measurability names:
+
+```text
+measurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix
+aemeasurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix
+measurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix
+aemeasurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map_of_measurable_edgeMatrix
+```
+
+The last theorem is still conditional on the raw source pushforward
+`Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
+m.restrict rawDetChart`; it only derives the raw tuple a.e.-measurability
+premise before calling the earlier conditional consumer.  Xhigh review passed
+with no blocking findings.  This does not prove the supplied raw pushforward,
+source coverage, original DLN source/prior transport, signed-box density
+identification, product-measure pushforward, regular-suspension certification,
+normal crossings, pole order, or RLCT.

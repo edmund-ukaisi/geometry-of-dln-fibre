@@ -11843,3 +11843,44 @@ construct the original p.13 source chart, prove source coverage, transport
 the original DLN source/prior measure, identify signed-box density, prove
 product-measure pushforward, produce a regular-suspension certificate, produce
 normal crossings, compute pole order, or prove RLCT.
+
+## Latest A2 p.13 Left-Step Raw Tuple Measurability
+
+`ChartTopology.lean` now exposes the suffix-recursion residual product and
+left residual block as measurable functions of a measurable real edge-matrix
+family:
+
+```text
+measurable_chartLocalSuffixState_residualProduct_real
+measurable_chartLocalSuffixState_residualBlock_real
+```
+
+`ProductReductionStepRegularDensity.lean` uses these facts to prove
+measurability and a.e.-measurability of both the explicit raw preimage tuple
+and the actual constructed left-step raw tuple:
+
+```text
+measurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix
+aemeasurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix
+measurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix
+aemeasurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix
+map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map_of_measurable_edgeMatrix
+```
+
+The final theorem is a convenience wrapper around the earlier conditional
+left-step raw pushforward consumer.  It derives the required raw tuple
+a.e.-measurability from fixed-base edge-matrix measurability, but still takes
+the raw pushforward to `m.restrict rawDetChart` as an explicit hypothesis.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-raw-tuple-measurability.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-raw-tuple-measurability.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-raw-tuple-measurability.md`.
+
+This is finite Borel bookkeeping for the p.13 left-step source tuple.  It does
+not prove the supplied raw pushforward, construct the original p.13 source
+chart, prove source coverage, transport the original DLN source/prior measure,
+identify signed-box density, prove product-measure pushforward, produce a
+regular-suspension certificate, produce normal crossings, compute pole order,
+or prove RLCT.

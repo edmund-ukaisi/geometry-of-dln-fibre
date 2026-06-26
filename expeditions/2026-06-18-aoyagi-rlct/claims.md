@@ -7684,3 +7684,34 @@ not source coverage, p.13 source-chart construction from original DLN
 coordinates, source/prior transport, signed-box density identification,
 product-measure pushforward, regular-suspension certification, normal
 crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step raw tuple measurability:
+Lean now proves that the explicit p.13 raw preimage tuple and the actual
+constructed left-step raw tuple are measurable from fixed-base edge-matrix
+measurability.  It adds suffix-recursion projections for the residual product
+and residual block, then derives raw-tuple measurability and a.e.
+measurability for `p13ProductCoordinateLeftStepRawTopologyTuple`.  The
+conditional p.13 inverse-Jacobian consumer now has a wrapper that takes
+fixed-base edge-matrix measurability plus the same explicit raw pushforward
+hypothesis, deriving the raw tuple a.e.-measurability input internally.
+
+Lean names:
+`measurable_chartLocalSuffixState_residualProduct_real`,
+`measurable_chartLocalSuffixState_residualBlock_real`,
+`measurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix`,
+`aemeasurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix`,
+`measurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix`,
+`aemeasurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix`,
+and
+`map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map_of_measurable_edgeMatrix`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-raw-tuple-measurability.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-raw-tuple-measurability.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-raw-tuple-measurability.md`.
+
+Nonclaims: this does not prove the supplied raw pushforward.  It is not source
+coverage, original DLN source/prior transport, signed-box density
+identification, product-measure pushforward, regular-suspension
+certification, normal crossings, pole order, or RLCT.

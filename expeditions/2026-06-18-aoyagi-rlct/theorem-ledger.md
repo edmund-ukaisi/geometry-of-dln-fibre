@@ -9089,3 +9089,27 @@ This is a conditional measure consumer only: no proof of the supplied raw
 pushforward, original source/prior transport, source coverage, signed-box
 density identification, product-measure pushforward, regular-suspension
 certification, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step raw tuple measurability:
+`ChartTopology.lean` now proves
+`measurable_chartLocalSuffixState_residualProduct_real` and
+`measurable_chartLocalSuffixState_residualBlock_real`.
+`ProductReductionStepRegularDensity.lean` now proves
+`measurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix`,
+`aemeasurable_paperEndpointFixedBaseP13RawPreimageTuple_of_measurable_edgeMatrix`,
+`measurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix`,
+`aemeasurable_p13ProductCoordinateLeftStepRawTopologyTuple_of_measurable_edgeMatrix`,
+and
+`map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map_of_measurable_edgeMatrix`.
+The result derives the raw tuple a.e.-measurability premise from fixed-base
+edge-matrix measurability, but still assumes the raw source pushforward to
+`m.restrict rawDetChart`.
+Reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-raw-tuple-measurability.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-raw-tuple-measurability.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-raw-tuple-measurability.md`.
+This is finite Borel bookkeeping only: no proof of the supplied raw
+pushforward, original source/prior transport, source coverage, signed-box
+density identification, product-measure pushforward, regular-suspension
+certification, normal crossings, pole order, or RLCT.
