@@ -521,3 +521,20 @@ precise sorry naming the (1a) dependency + roadmap it (joining the general-L gap
 path. The triangular-normalizer Core lemma itself is clean + bedrock-valuable (banking it regardless). Another data point for the (A)/(B)
 fork: the gauge-chart producer's L=2 close keeps surfacing real, bounded-but-costly soundness work (12 catches), reinforcing that the
 **concrete-anchor milestone (B) is the clean banked deliverable** while the full general-L producer (A) is a long, soundness-intensive grind.
+
+## 27. R1-general lower-leg classification refined (2026-06-26) — corrects Item-24's "(3,3,3,3) Frame-det det wall"; a third concrete R1 anchor in flight.
+The general-hdiv atom `routeMCore_box_diverges_achiever` (`RouteMLayerCoverGE:120`, the lower leg of the R1 gate) was classified by a
+pen-and-paper design probe (`threads/32-r1-general-hdiv-design`, exact symbolic Jacobian + decorrelated Codex xhigh) as
+**NEEDS-DESIGN-then-build, NOT the research wall** Item-24 assumed. Two facts moved the estimate: (i) the atom is reduced
+**M-agnostically, sorry-free**, to "construct one `NodeAchieverChart M`" (`routeMCore_box_diverges_of_nodeChart`), so each concrete `M`
+is a self-contained chart build; (ii) the two anchors (4,4,2,2)/(3,3,4) are opposite ends of ONE family. The general atom still needs
+**one design pass** (a descent-path-indexed `φ_M` + one general composed-determinant lemma over a variable-length factor list + a
+finite-family null-slice cov) — that is the genuinely new piece, and the honest risk is that the variable-length `det_comp` is a
+dependent-`Fin`-cast fight (fallback: finite-per-node). **In flight:** the **(3,3,3,3)** instance (build-now) — the tide confirmed the
+ACTUAL Lean chart det MATCHES the design read exactly (`x0⁵·x1⁴·x4²·x9³`, soundness) and banked the hard det bricks
+(`Kparam3333Deriv_det`, `Frame3333Deriv_blockTri`, `K7sub_det`) sorry-free + axiom-clean; the ~350-450 LoC mechanical assembly
+(`Frame3333Deriv_det` + `phi3333_abs_det`/`injOn`/`cov` + `nodeChart3333` + atom) is resuming → a THIRD concrete R1 achiever-divergence
+anchor. **(A)/(B) impact:** lowers the (A) cost estimate for R1-general's *lower* leg (reachable, not a wall) — but the *upper* leg
+(the corank-sensitive N2b/N4 hfin lift, `RouteMSchur:164/284`) is separate and still the harder R1 pole; and the *general* atom remains
+a design pass + bounded build away. The concrete-anchor reading of R1 (3,3,4) [Item-24's (B)] is unaffected; this adds (3,3,3,3) to the
+banked-clean concrete inventory either way.

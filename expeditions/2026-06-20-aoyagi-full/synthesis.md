@@ -2,7 +2,7 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## ★ CURRENT STATE (2026-06-26) — CONSOLIDATION PAUSE-POINT; the operator's (A)/(B) scope decision is ripe. (Read this first; UPDATE-99..71 below are the tick-by-tick trail.) HEAD bc102773.
+## ★ CURRENT STATE (2026-06-26) — charging (A)'s reachable lower leg: the R1 (3,3,3,3) achiever anchor (tide in flight); the operator's (A)/(B) scope decision remains ripe. (Read this first; UPDATE-101..71 below are the tick-by-tick trail.) HEAD c342fdca.
 
 **Where we are.** The L2 gauge-chart producer fold (the dominant long pole) is CONSOLIDATED at a clean checkpoint (decision C, UPDATE-98/99). The 12-catch producer-fold saga is COMPLETE — every catch resolved/banked/roadmapped, no green-but-wrong (the decorrelated-confirmation discipline caught each false intermediate before a wrong build). The aggregator builds green (8351 jobs).
 
@@ -16,7 +16,7 @@
 
 **Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
 
-**LIVE (2026-06-26, UPDATE-100):** after 4 pause-ticks, per the mandate (charge ahead / decide autonomously / don't block), I un-held R1-general's lower leg and commissioned a DESIGN PROBE of the general-M `routeMCore_box_diverges_achiever` (the hdiv det wall) — bounded reachability probe (build-now vs roadmap), provisionally pursuing (A)'s reachable piece, recorded for the operator's (B)-redirect (banked-value regardless: core RLCT-recursion machinery).
+**LIVE (2026-06-26, UPDATE-101):** the probe reported NEEDS-DESIGN-then-build (Codex-corroborated) → **(3,3,3,3) build-now, general atom roadmap**. Charging the (3,3,3,3) anchor: the formaliser tide (ac894341) confirmed the det MATCHES the design read EXACTLY (soundness) + banked the hard det bricks sorry-free/axiom-clean (pushed origin `08b466f3`), came back PARTIAL at the assembly wall; **RESUMED** to finish the ~350-450 LoC mechanical remainder → a third concrete R1 anchor. Stale "NOT reachable" header CORRECTED (green). The (A)/(B) fork stays the operator's; this charges A's reachable piece (banked-value under both).
 
 ---
 
@@ -903,6 +903,12 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
+**UPDATE-101 (2026-06-26) — probe REPORTED (NEEDS-DESIGN-then-build, Codex-corroborated): (3,3,3,3) build-now + general atom roadmap; stale header CORRECTED; (3,3,3,3) tide PARTIAL but det MATCHED (soundness confirmed) + resumed. HEAD c342fdca.**
+- **The design probe (ad94adc3) reported — verdict NEEDS-DESIGN-then-build (decorrelated Codex xhigh concurred).** NOT a build-ready tide (the chart's factor list is variable-length + the weighted-axis count grows 1→2→4) and NOT the (3,3,3,3) research wall the operator's held framing assumed (each instance's det is a bounded `BlockTriangular det_comp`). The atom is reduced M-agnostically, sorry-free, to "construct one `NodeAchieverChart M`" (`routeMCore_box_diverges_of_nodeChart`); the two anchors (4,4,2,2)/(3,3,4) are opposite ends of one family. Build-now sub-target: the **(3,3,3,3)** instance (≈990 lines banked sorry-free in `RouteM3333.lean`). Fully-general atom → roadmap (one design pass: a descent-path-indexed `φ_M` + one general composed-det lemma + a finite-family null-slice cov). **This corrects Items 24/25's "(3,3,3,3) Frame-det research wall" → it's reachable, NEEDS-DESIGN not a wall** (recorded for the operator).
+- **Stale header CORRECTED (doc-only, green-verified).** `RouteMLayerCoverGE.lean`'s 2026-06-24 "atom NOT reachable" verdict predated both anchors + the NodeAchieverChart reduction → falsified. Rewrote the residual narrative to the honest current state (general `sorry` stands — NOT proven, general M — but REACHABLE, with the anchor evidence + the chart route next to the claim). Build-verified green (b65v30yuu).
+- **(3,3,3,3) tide (ac894341, worktree) → PARTIAL, with the KEY soundness confirmation.** The ACTUAL Lean det of the banked chart = `u⁵·a⁴·δ²·b³` → composes to `x0⁵·x1⁴·x4²·x9³` = `leafH3333_prod_eq`'s RHS EXACTLY (NO `leafH3333` adjustment) — the design read's claimed det IS the actual Lean det. Banked sorry-free + axiom-clean (`[propext, Classical.choice, Quot.sound]`): `Kparam3333Deriv_det`, `Frame3333Deriv_blockTri`, and the hard `K7sub_det` (7×7 K/Kᵀ-coupling block, broken through via column-reorder + `finSumFinEquiv` + `det_fromBlocks_zero₁₂` — the reusable lesson). Whole-lib green (8441 jobs); pushed origin (worktree `08b466f3`). Stopped HONESTLY (no sorry) at the assembly wall.
+- **Remainder de-risked + bounded → RESUMED to finish.** `Frame3333Deriv_det` block-assembly (×5 subtype-reindex) + `phi3333_abs_det` + `phi3333_injOn` (27-coord recovery, verified recoverable) + `phi3333_cov` (4-axis) + `nodeChart3333`+atom ≈ 350–450 LoC mechanical. Resumed ac894341 (full context; the breakthrough is safe on origin). On completion → integrate the COMPLETE `RouteM3333Atom.lean` (one clean integration banking a THIRD concrete R1 achiever-divergence anchor, value under both A and B).
 
 **UPDATE-100 (2026-06-26) — after 4 consolidation pause-ticks, charging (A)'s reachable lower-leg: R1-general general-hdiv DESIGN PROBE commissioned (decide autonomously per the mandate). HEAD f6119d80.**
 - **Rationale.** The mandate is explicit: charge ahead / decide autonomously / record for operator review / DON'T block. After consolidating + surfacing (A)/(B) over 4 pause-ticks, indefinite holding under-serves it. So I provisionally pursue (A) (the destination = the general result), starting with the most REACHABLE piece, design-first, recorded for the operator's (B)-redirect.

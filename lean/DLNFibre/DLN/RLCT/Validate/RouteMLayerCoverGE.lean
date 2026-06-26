@@ -26,13 +26,15 @@ suffices), so it is immune to the corank-≥2 obstruction that blocks the per-no
   `routeMCore_box_diverges_achiever` + the premise reduction. Wiring sorry-free; the single
   open content is the analytic atom.
 
-## The residual (the ONE honest `sorry` — the genuine R1.6 lower-bound mountain)
+## The residual (the ONE honest `sorry`) and what it now costs
 
 `routeMCore_box_diverges_achiever` is the genuine analytic content and carries the file's
-single `sorry`, with a CORRECT statement. The verdict (this thread's validation + a
-decorrelated `local-codex-consult`, 2026-06-24): the atom is NOT reachable from the banked
-machinery.
+single `sorry`, with a CORRECT statement. The **general-`M`** atom is still open — but it is
+**reachable**, not a wall. (An earlier 2026-06-24 verdict here read "NOT reachable from the
+banked machinery"; it predated the geometric anchors below and is **superseded**. The chart
+route, not the squeeze, is the path.)
 
+What the squeeze does NOT give, and why a chart is needed:
 - The PROVEN squeeze (`rlctAtOn_squeeze`, `schur_recursion_step_squeeze`) computes the POINT
   RLCT `rlctAtOn (routeMCore M) 0` additively along the achiever path, giving the upper bound
   `rlctAtOn (routeMCore M) 0 ≤ ½·minAdm M`. That is STRICTLY WEAKER than this atom: `rlctAtOn ≤ t`
@@ -40,19 +42,31 @@ machinery.
   divergence at-and-above `t` — the BOUNDARY divergence `c' = ½·minAdm M` is sharp (the monomial
   test integral `∫₀^ε u^{−1} = ⊤`) and is not implied by the point bound. (Asserting `=⊤` from
   `rlctAtOn ≤ t` would be the forbidden value-correct-germ-degenerate fill — the trap; NOT done.)
-- The flat→chart transcription `monomialIntegrand_lintegral_box_eq_top` (the sharp monomial
-  divergence in CHART coords) needs a geometric realization `φ : box → flat` with a
-  change-of-variables and a pullback UPPER bound `|routeMCore M ∘ φ| ≤ C · (achiever monomial)`
-  (smaller loss ⟹ larger `|·|^{−c'}` ⟹ divergence). The `(2,2,2)` case had such a chart
-  (`phiUnit`), but it is a depth-2 miracle that does NOT generalise (the Jacobian tower loses
-  triangularity after the first pivot), and the layer atlas (`routeLayerAtlas`) is purely
-  COMBINATORIAL exponent data — it carries no geometric chart map.
+- The honest route is the flat→chart change-of-variables: a geometric `φ : box → flat` with
+  `|det Dφ| = |u_p|^{minAdm M − 1}·(spectator monomial)` and `routeMCore M ∘ φ = (u_p)²·V`,
+  `V` bounded + a.e.-positive on a box, so `∫ |det Dφ|·|F∘φ|^{−c'} ≥ B^{−c'}∫ u_p^{(minAdm−1)−2c'}
+  = ⊤` at `c' = ½·minAdm` (exponent `−1`). `monomialIntegrand_lintegral_box_eq_top` supplies the
+  sharp monomial divergence; `NodeAchieverChart M` (below) packages exactly this bundle.
 
-So the open content is the **general-`M` achiever geometric chart / wedge** (an `F ≤ C·monomial`
-bound on a positive-measure box around an achiever curve, with Jacobian control) — the
-squeeze-to-box-integral bridge the `RouteMLayerCover` header names. The atom is stated at full
-fidelity so the residual is pinned to that obligation; the WIRING into
-`routeMLayerCover_of_atoms` is sorry-free.
+The reachability evidence (banked + a decorrelated design read, 2026-06-26):
+- The atom is reduced **M-agnostically, sorry-free**, to "construct one `NodeAchieverChart M`"
+  (`NodeAchieverChart.lean`: `routeMCore_box_diverges_of_nodeChart`). Only the per-`M` chart
+  **construction** is open.
+- **Two anchors are built sorry-free**, from opposite ends of the family: `(4,4,2,2)` (pure
+  radial, one weighted axis, `RouteM4422.lean`) and `(3,3,4)` (single-weighted radial, two
+  weighted axes, `RouteMLayerCoverGEL2.lean`). The `(2,2,2)` `phiUnit` was the degenerate seed,
+  not the only chart; the family generalises it.
+- A pen-and-paper design read (`threads/32-r1-general-hdiv-design`, exact symbolic Jacobian +
+  decorrelated Codex, xhigh) classifies the general atom as **NEEDS-DESIGN-then-build**: not a
+  mechanical det-tactic tide (the chart's factor list is variable-length and the weighted-axis
+  count grows `1→2→4`), but not the research wall either (each instance's det is a bounded
+  `BlockTriangular det_comp`). The `(3,3,3,3)` instance is **build-now** (≈990 lines banked in
+  `RouteM3333.lean`; only its staged det + 4-slice cov + atom remain) and is the stress-test for
+  the eventual general design pass (a descent-path-indexed `φ_M` + one general composed-det lemma
+  + a finite-family null-slice cov).
+
+The WIRING into `routeMLayerCover_of_atoms` is sorry-free; the single open content is the
+general-`M` chart construction.
 -/
 
 open MeasureTheory
@@ -107,13 +121,12 @@ threshold density `|routeMCore M|^{−c'}` over the cube `[−ε,ε]^N` is `⊤`
 This gives the lower bound `rlctAtOn (routeMCore M) 0 ≤ ½·minAdm M` (`cover_ge_div`, via
 `routeM_coverGeDiv_of_boxDiverges` + the premise reduction below).
 
-**HONEST RESIDUAL — NOT proven.** This carries the file's single `sorry`, with a CORRECT statement
-(validated against the cert + a decorrelated Codex consult, 2026-06-24); see the file header for the
-precise sub-blocker. Summary: the banked squeeze delivers only the POINT-RLCT upper bound
-`rlctAtOn ≤ ½·minAdm M`, strictly weaker than this BOUNDARY box-divergence; closing the gap needs a
-general-`M` achiever geometric chart / wedge (`|routeMCore M ∘ φ| ≤ C · achiever-monomial` on a
-positive-measure box, with Jacobian control) that does not exist on the combinatorial layer atlas,
-and the `(2,2,2)` chart `phiUnit` does not generalise. -/
+**HONEST RESIDUAL — NOT proven (general `M`); REACHABLE.** This carries the file's single `sorry`,
+with a CORRECT statement. The banked squeeze delivers only the POINT-RLCT upper bound
+`rlctAtOn ≤ ½·minAdm M`, strictly weaker than this BOUNDARY box-divergence; the route is the
+flat→chart change-of-variables packaged by `NodeAchieverChart M` (see the file header). Two
+instances are built sorry-free (`(4,4,2,2)`, `(3,3,4)`); the general construction is one design
+pass + a bounded build away, with `(3,3,3,3)` build-now in flight (`threads/32-r1-general-hdiv-design`). -/
 theorem routeMCore_box_diverges_achiever (M : Fin (L + 1) → ℕ) (hpos : 1 ≤ minAdm M)
     (c' : NNReal) (hc' : (minAdm M : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞)) (ε : ℝ) (hε : 0 < ε) :
     ∫⁻ x in cubeBox (routeMAmbient M) ε, ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) = ⊤ := by
