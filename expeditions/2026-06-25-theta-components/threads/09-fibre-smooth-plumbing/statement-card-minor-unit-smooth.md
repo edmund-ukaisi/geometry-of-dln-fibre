@@ -49,4 +49,5 @@
 
 - **Axioms.** All six results: `[propext, Classical.choice, Quot.sound]` — no `sorryAx`.
 
-- **Status.** sorry-free (awaiting reviewer fidelity check).
+- **Status.** sorry-free + reviewed (fidelity PASS, independent reviewer + decorrelated Codex on the
+  `n − c` orientation / `naive` σ/ι swap; axiom gate re-run clean, no `sorryAx`).
