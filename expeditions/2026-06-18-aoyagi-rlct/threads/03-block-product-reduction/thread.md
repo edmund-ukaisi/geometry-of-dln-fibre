@@ -8940,3 +8940,44 @@ Case 2 factor identities for a fixed-base source-readback family, remove
 outside factors from a full retained-passive suffix, prove pivot nonzero,
 produce a source chart, or prove pushforward/Jacobian, original-loss,
 normal-crossing, pole-order, or RLCT statements.
+
+## 2026-06-26 A2 adjacent-window Case 2 selected-entry consumer
+
+Reproduction:
+`reproduction-a2-adjacent-window-case2-selected-entry-consumer.md`.
+Statement card:
+`statement-card-a2-adjacent-window-case2-selected-entry-consumer.md`.
+Review:
+`review-a2-adjacent-window-case2-selected-entry-consumer.md`
+passed by xhigh `Herschel the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/Case2ResidualFactorProduct.lean`,
+`lean/DLNFibre/DLN/Aoyagi/Case2ResidualSelectedEntryChartBridge.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_adjacent_two_submatrix
+
+residualFactorProduct_adjacent_two_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+
+residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+
+exists_residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_pivot_ne_zero
+
+exists_residualFactorProduct_retainedPassiveCoordinateData_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_pivot_ne_zero
+```
+
+This is the conditional adjacent-window consumer of the previous generic
+transport.  It takes the adjacent index `p`, endpoint equivalences, and the
+two factor identities as hypotheses.  The fixed-pivot variant still takes the
+displayed-product nonzero hypothesis at `(J+2,J+2)` as a hypothesis and uses
+the existing selected-entry inverse to produce `yNext`.
+
+This does not construct endpoint equivalences, prove source-readback factor
+identities, identify the full fixed-base endpoint product with the adjacent
+window, prove pivot nonzero, produce a source chart, or prove
+pushforward/Jacobian, original-loss, normal-crossing, pole-order, or RLCT
+statements.

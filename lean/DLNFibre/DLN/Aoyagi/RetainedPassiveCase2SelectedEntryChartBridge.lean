@@ -165,6 +165,74 @@ theorem residualFactorProduct_retainedPassiveCoordinateData_eq_successorSelected
       n hS hcont hnext residual Cprime data.C yNext e₂ e₁ e₀κ eNext hD hF hentry
 
 set_option linter.style.longLine false in
+/-- If the displayed post-pivot product has nonzero successor pivot, an
+adjacent two-edge window in a longer retained-passive coordinate datum admits
+successor selected-entry coordinates whose center-coordinate matrix is that
+adjacent residual-factor product.
+
+The adjacent window, endpoint equivalences, and factor identities are supplied.
+This theorem does not identify a full retained-passive suffix or fixed-base
+source chart with this adjacent window. -/
+theorem exists_residualFactorProduct_retainedPassiveCoordinateData_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_pivot_ne_zero
+    {ρ τ : Type*} {N : ℕ}
+    {κ : Fin (N + 3) → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ)
+    (p : Fin (N + 1))
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ p.succ.succ)
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ p.succ.castSucc)
+    (e₀κ : τ ≃ κ p.castSucc.castSucc)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hD :
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) ℝ from
+        by simpa using data.C p.succ).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) ℝ from
+        by simpa using data.C p.castSucc).submatrix e₁ e₀κ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hpivot :
+      let pivotNext :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} :=
+        ⟨(J + 2, J + 2),
+          case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩
+      let residualCoordEquiv :
+          AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1)) τ ≃
+            (case2ResidualBlockPivotEntries n S (J + 1) : Type) :=
+        case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+          n S (J + 1) (Equiv.refl _) eNext
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime
+        (residualCoordEquiv.symm pivotNext).1
+        (residualCoordEquiv.symm pivotNext).2 ≠ 0) :
+    ∃ yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ,
+      ChartLocalSuffixState.residualFactorProduct data.C
+          p.succ.succ p.castSucc.castSucc
+          ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+            (Fin.castSucc_le_succ p.succ)) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex
+              (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap
+              (⟨(J + 2, J + 2),
+                case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+                {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+              yNext
+              (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+                n S (J + 1) e₂.symm (e₀κ.symm.trans eNext) c)) := by
+  exact
+    exists_residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_pivot_ne_zero
+      n hS hcont hnext residual Cprime data.C p e₂ e₁ e₀κ eNext hD hF hpivot
+
+set_option linter.style.longLine false in
 /-- The synthetic two-edge retained-passive Case 2 datum satisfies the
 successor selected-entry residual-factor matrix identity.
 

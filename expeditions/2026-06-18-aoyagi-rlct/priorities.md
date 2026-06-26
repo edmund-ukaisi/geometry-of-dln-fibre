@@ -6016,3 +6016,10 @@ selected-entry theorem taking endpoint equivalences, the two factor identities,
 and either entrywise readout or fixed-pivot nonzero as hypotheses. Do not use
 the adjacent-window lemma to collapse the full retained-passive fixed-base
 endpoint product without separate outside-factor/full-to-window transport.
+
+Latest adjacent-window Case 2 selected-entry consumer:
+the conditional adjacent-window consumer has landed in the Case 2 and
+retained-passive bridge files.  The remaining high-value work is no longer to
+add wrappers of the same shape; it is to prove one of the supplied hypotheses:
+endpoint equivalences, adjacent source-readback factor identities, fixed-pivot
+nonzero, or a full-to-window/outside-factor transport theorem.

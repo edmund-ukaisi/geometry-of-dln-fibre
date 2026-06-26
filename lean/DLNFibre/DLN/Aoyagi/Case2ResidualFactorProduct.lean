@@ -156,6 +156,59 @@ theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct
       rfl
 
 set_option linter.style.longLine false in
+/-- An adjacent two-edge window in a longer supplied residual-factor family
+gives Aoyagi's displayed Case 2 post-pivot free-`C'` product after explicit
+endpoint reindexing.
+
+The endpoint equivalences and the two factor identities are hypotheses.  This
+theorem does not identify a full retained-passive suffix with this adjacent
+window, construct the endpoint equivalences, or add selected-entry/source
+chart content. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_adjacent_two_submatrix
+    {τ R : Type*} [CommRing R]
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) R)
+    (p : Fin (N + 1))
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ p.succ.succ)
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ p.succ.castSucc)
+    (e₀ : τ ≃ κ p.castSucc.castSucc)
+    (hD :
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) R from
+        by simpa using C p.succ).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) R from
+        by simpa using C p.castSucc).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime) :
+    (ChartLocalSuffixState.residualFactorProduct C
+        p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ))).submatrix e₂ e₀ =
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
+  calc
+    (ChartLocalSuffixState.residualFactorProduct C
+        p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ))).submatrix e₂ e₀ =
+        (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) R from
+          by simpa using C p.succ).submatrix e₂ e₁ *
+        (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) R from
+          by simpa using C p.castSucc).submatrix e₁ e₀ := by
+      exact
+        ChartLocalSuffixState.residualFactorProduct_adjacent_two_submatrix_eq_mul
+          (K := R) C p e₂ e₁ e₀
+    _ = case2DisplayedPostPivotResidualBlock n hS hcont residual *
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime := by
+      rw [hD, hF]
+    _ = case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := rfl
+
+set_option linter.style.longLine false in
 /-- The concrete displayed Case 2 two-edge factor family unfolds to the
 displayed post-pivot free-`C'` product.
 
@@ -432,6 +485,79 @@ theorem residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPiv
       n hS hcont residual Cprime C centerCoord residualCoordEquiv e₂ e₁ e₀ hD hF
       (case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise
         n hS hcont residual Cprime centerCoord residualCoordEquiv e₂ e₀ hentry)
+
+set_option linter.style.longLine false in
+/-- Entrywise selected-center readout for the displayed Case 2 post-pivot
+product upgrades an adjacent two-edge residual-factor product in a longer
+family to the exact selected-center coordinate matrix.
+
+The endpoint equivalences, factor identities, and entrywise readout remain
+hypotheses.  This theorem only composes the generic adjacent-window transport
+with finite Case 2 matrix extensionality. -/
+theorem residualFactorProduct_adjacent_two_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+    {τ R : Type*} [CommRing R]
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) R)
+    (p : Fin (N + 1))
+    {ι : Type*} {center : Finset ι}
+    (centerCoord : center → R)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ p.succ.succ) (κ p.castSucc.castSucc) ≃ center)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ p.succ.succ)
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ p.succ.castSucc)
+    (e₀ : τ ≃ κ p.castSucc.castSucc)
+    (hD :
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) R from
+        by simpa using C p.succ).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) R from
+        by simpa using C p.castSucc).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          centerCoord (residualCoordEquiv (e₂ i, e₀ t))) :
+    ChartLocalSuffixState.residualFactorProduct C
+        p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+          centerCoord (residualCoordEquiv c)) := by
+  apply Matrix.eq_of_submatrix_equiv_eq
+    (ChartLocalSuffixState.residualFactorProduct C
+      p.succ.succ p.castSucc.castSucc
+      ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+        (Fin.castSucc_le_succ p.succ)))
+    (AoyagiResidualBlockCoordinateIndex.matrix
+      (fun c : AoyagiResidualBlockCoordinateIndex
+          (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+        centerCoord (residualCoordEquiv c)))
+    e₂ e₀
+  calc
+    (ChartLocalSuffixState.residualFactorProduct C
+        p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ))).submatrix e₂ e₀ =
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
+      exact
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_adjacent_two_submatrix
+          n hS hcont residual Cprime C p e₂ e₁ e₀ hD hF
+    _ =
+        (AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex
+              (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+            centerCoord (residualCoordEquiv c))).submatrix e₂ e₀ :=
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise
+        n hS hcont residual Cprime centerCoord residualCoordEquiv e₂ e₀ hentry
 
 end Aoyagi
 end DLN

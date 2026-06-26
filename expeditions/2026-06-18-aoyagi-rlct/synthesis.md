@@ -13158,3 +13158,14 @@ fixed-base residual map is a full endpoint product, not automatically an
 interior adjacent window. Future work still needs endpoint equivalences,
 factor identities for the two adjacent source-readback factors, and either
 outside-factor absorption or explicit full-to-window transport.
+
+Latest A2 adjacent-window Case 2 selected-entry consumer:
+the generic adjacent-window product API now feeds the Case 2 displayed product
+and selected-entry bridge.  The new retained-passive wrapper talks directly
+about an adjacent window of `data.C`, but still requires endpoint
+equivalences, two factor identities, and fixed-pivot nonzero.
+
+This moves the next source-specific target: prove the endpoint/factor
+alignment for a real source-readback family, or prove a full-to-window
+transport/absorption statement.  The current theorem is not fixed-base source
+production and not full-suffix collapse.

@@ -9970,6 +9970,33 @@ endpoint alignment, no full-suffix collapse, no Case 2 factor identities, no
 pivot nonzero proof, no source chart/source image, no measure
 pushforward/Jacobian theorem, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 adjacent-window Case 2 selected-entry consumer:
+`Case2ResidualFactorProduct.lean` proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_adjacent_two_submatrix`
+and
+`residualFactorProduct_adjacent_two_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+`Case2ResidualSelectedEntryChartBridge.lean` proves
+`residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`
+and
+`exists_residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_pivot_ne_zero`.
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` proves
+`exists_residualFactorProduct_retainedPassiveCoordinateData_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2PostPivot_pivot_ne_zero`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-adjacent-window-case2-selected-entry-consumer.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-adjacent-window-case2-selected-entry-consumer.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-adjacent-window-case2-selected-entry-consumer.md`
+passed by xhigh `Herschel the 4th`.
+
+Theorems consume an adjacent window, endpoint equivalences, and factor
+identities.  The pivot theorem additionally consumes the already-supplied
+fixed successor pivot nonzero condition for the displayed product.  Nonclaims:
+no endpoint equivalence construction, no full-suffix/fixed-base endpoint
+collapse, no source-readback factor identity proof, no pivot nonzero proof, no
+source image, no pushforward/Jacobian theorem, no normal crossings, no pole
+order, and no RLCT.
+
 Latest A2 retained-passive Case 2 pivot-nonzero source readout:
 `SelectedEntrySignedBoxMeasure.lean` proves
 `SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero`,

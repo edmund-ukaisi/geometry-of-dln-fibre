@@ -9016,3 +9016,37 @@ Nonclaims: no fixed-base endpoint alignment, Case 2 factor identity,
 successor selected-entry readout, pivot nonzero provenance, source chart,
 source image, pushforward/Jacobian theorem, original-loss comparison, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 adjacent-window Case 2 selected-entry consumer:
+Lean now composes the generic adjacent-window residual-factor transport with
+the displayed Case 2 post-pivot product and selected-entry readout APIs.
+
+Status: Proved; reviewed.
+
+Claim: for a supplied longer residual-factor family `C` and adjacent index
+`p`, if endpoint equivalences identify the row, middle, and column endpoints
+with the Case 2 post-pivot row, residual-column, and free-column domains, and
+if the two adjacent factors reindex to the displayed post-pivot residual block
+and following factor, then the adjacent product is the displayed Case 2 lower
+product.  With either entrywise readout or supplied fixed successor pivot
+nonzero, Lean upgrades the adjacent product to the successor selected-entry
+center-coordinate matrix.  The retained-passive wrapper applies this to
+`data.C`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-adjacent-window-case2-selected-entry-consumer.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-adjacent-window-case2-selected-entry-consumer.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-adjacent-window-case2-selected-entry-consumer.md`
+passed by xhigh `Herschel the 4th`.
+
+Kill condition: this is conditional adjacent-window algebra.  It may not be
+used as fixed-base endpoint alignment, as full-suffix collapse, as proof of
+the factor identities for a source-readback family, or as proof of the fixed
+successor pivot nonzero condition.
+
+Nonclaims: no endpoint equivalence, full retained-passive suffix transport,
+fixed-base source production, pivot nonzero provenance, source image,
+pushforward/Jacobian theorem, original-loss comparison, normal crossings,
+pole order, or RLCT is proved.
