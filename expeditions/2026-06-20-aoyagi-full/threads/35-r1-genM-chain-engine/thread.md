@@ -289,3 +289,33 @@ The det ARITHMETIC is now complete (the role count IS `flatDim`); the genuine re
 same-chart proof (`chartParamsGen`'s fderiv over opaque widths = the factor product), which two+ Codex
 consults flag as the multi-pass bottleneck — requires `HasFDerivAt chartParamsGen` (a `noncomputable`
 `chainA`-based map, fderiv exists but its computation + block-triangular det = the multi-pass work).
+
+## Item 1 DONE + item-2 radial factor DONE; the EXACT remaining item-2/3 steps (2026-06-26)
+
+- **Item 1 COMPLETE** (`RouteMChartIdx.lean` + `RouteMChartIdxEquiv.lean`, sorry-free, force-`#print axioms`):
+  `tele_card` (the telescoping spine), `roleSquare_eq`, `chartDim_eq_flatDim` (`ninputs = flatDim` ∀M),
+  `ChartIdx M t = Σ k:Fin L, Fin(schurDim k) ⊕ Fin(liftDim k)` (Schur block `t_k·M_{k+1}` + chain lift
+  `c_k·M_{k+2}`, leaf lift 0), `card_chartIdx = flatDim M`, `chartIdxEquiv : Fin (routeMAmbient M) ≃ ChartIdx M t`.
+  The radial/fixed-residual already cancel in `chartDim_eq_flatDim` (NO `±1`), so the `ChartIdx` is just the
+  Schur+lift `Σ`, no special fixed-residual handling.
+- **Item-2 radial factor DONE** (`RouteMRadialFactor.lean`): `radialFactor active p : ChartFactor N` (the
+  `pivotBlowupOn` blow-up, banked `HasFDerivAt` + det), `radialFactor_abs_det = |u_p|^{card−1}`, non-vacuous
+  through `composeFold`. The radial is full-ambient already — no coordinatization needed.
+
+- **The EXACT remaining item-2 step (Schur/LDU/chain factors):** each lives on a NON-`Fin N → ℝ` space
+  (`schurFrameDeriv` on `SchurInc t r c`, `lduCoreDeriv` on `LDUParam t`, `chainUnitMap` on a product matrix
+  space). To make each a `ChartFactor N`, CONJUGATE the block-diagonal map `id ⊕ factor_s ⊕ id` (identity on
+  other boundaries' coords) into `(Fin N → ℝ) →L (Fin N → ℝ)` via the item-1 coordinatization promoted to a
+  `LinearEquiv` — the path is CONFIRMED feasible: `chartIdxEquiv` (the `Equiv` on indices) →
+  `LinearEquiv.piCongrLeft'` (`(Fin N → ℝ) ≃ₗ (role-fn space)`, banked) → `LinearMap.det_conj` (banked,
+  preserves det) → `det_pi`/block-diag gives the per-factor det = the banked Phase-A value. Each factor is a
+  bounded build (block-diag map + conjugate + det); there are 3 factor families × the per-boundary fold.
+- **The EXACT remaining item-3 step (the bottleneck, `s`-induction):** prove `chartParamsFactored =
+  chartParamsGen` (both `Params M`) by `funext s; funext i j` + boundary structural induction: at each `s`,
+  the factored-chart layer (the `composeFold` factor product's output at slot `s`, decoded) = `chainA M
+  (genBlkFlat …) s` (the `chartParamsGen` layer), matched ENTRY-WISE via `chainA/Q_apply_castAdd/natAdd`. The
+  genuine difficulty (confirmed by probe): `chartParamsGen` decomposes through `GenBlk` (NO `TopologicalSpace`),
+  so the layer equality is between the flat-coord factor-product output and the `chainA`/`GenBlk` output —
+  a per-layer matrix identity over opaque `Wext`/`Text` widths. Then `routeMCore_phiGen` transfers the rate
+  and `composeFold_abs_det` + the per-factor dets give `phiFlat_abs_det = ∏_j |u_j|^{leafH j}` (item 4,
+  `leafH` bookkeeping via the `leafH3333_prod_eq` pattern + `Finset.prod_subset` over `{p} ∪ {q-axes}`).
