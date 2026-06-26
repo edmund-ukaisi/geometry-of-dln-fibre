@@ -5581,3 +5581,19 @@ structure or prove a genuine two-sided local inverse theorem that packages the
 omitted endpoint formulas as construction data.  Still do not assert
 source-rank coverage, source/image equality, measure transport,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+Solved endpoint constructors are now landed/in progress in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-family-constructors.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-family-constructors.md`.
+They replace the explicit `A1_0` and `A3_last` endpoint-equation hypotheses by
+definitions from passive seed data, and then reuse the fixed-base readback
+package.
+
+Next retained-passive target: package this seed data into an explicit
+coordinate/source-map structure with named active fields and passive fields,
+or prove a local inverse/readback theorem from such a structure.  Coverage,
+source/image equality, measure transport, density/Jacobian accounting, normal
+crossings, pole order, and RLCT remain out of scope until that source-map
+object is stable.

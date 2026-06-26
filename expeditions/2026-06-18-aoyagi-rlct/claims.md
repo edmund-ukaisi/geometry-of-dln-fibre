@@ -8371,3 +8371,32 @@ Nonclaims: finite fixed-base packaging only.  No bundled coordinate-domain
 structure, no two-sided local inverse, no source-rank coverage, no source/image
 equality, no measure pushforward, no density/Jacobian theorem, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive solved family constructors:
+Lean now defines the solved endpoint families in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveSolvedA1`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_solvedA1`,
+`ChartLocalSuffixState.retainedPassiveSolvedA1_zero_eq_tail_inv_mul`,
+`ChartLocalSuffixState.retainedPassiveSolvedA1_passive_det_isUnit`,
+`ChartLocalSuffixState.retainedPassiveSolvedA3`,
+`ChartLocalSuffixState.retainedPassiveA3WithoutLast_solvedA3`,
+`ChartLocalSuffixState.retainedPassiveSolvedA3_last_eq_target`, and
+`ChartLocalSuffixState.retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets`.
+The solved `A1` family keeps passive seed blocks away from `0` and sets
+`A1_0=Tail^-1*Ctop`; the solved `A3` family keeps passive seed blocks away
+from the final edge and sets `A3_last=-(F3-EarlyTail)*CtopLast`.  The wrapper
+readback theorem no longer takes the `A1_0` or `A3_last` endpoint equations as
+hypotheses.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-family-constructors.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-family-constructors.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-family-constructors.md`.
+
+Nonclaims: constructor-side finite source-map layer only.  No bundled
+coordinate-domain structure, no two-sided local inverse, no source-rank
+coverage, no source/image equality, no measure pushforward, no density/Jacobian
+theorem, no normal crossings, no pole order, and no RLCT.

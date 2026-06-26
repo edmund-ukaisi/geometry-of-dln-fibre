@@ -9602,3 +9602,24 @@ Review:
 This is finite fixed-base packaging only: no bundled coordinate domain,
 two-sided local inverse, source coverage, source/image theorem, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive solved family constructors:
+`RetainedPassiveCoordinates.lean` proves the solved endpoint constructor layer:
+`ChartLocalSuffixState.retainedPassiveSolvedA1`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_solvedA1`,
+`ChartLocalSuffixState.retainedPassiveSolvedA1_zero_eq_tail_inv_mul`,
+`ChartLocalSuffixState.retainedPassiveSolvedA1_passive_det_isUnit`,
+`ChartLocalSuffixState.retainedPassiveSolvedA3`,
+`ChartLocalSuffixState.retainedPassiveA3WithoutLast_solvedA3`,
+`ChartLocalSuffixState.retainedPassiveSolvedA3_last_eq_target`, and
+`ChartLocalSuffixState.retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets`.
+The wrapper theorem builds solved full `A1` and `A3` families from passive seed
+data and proves the same fixed-base active/per-edge readbacks, without
+assuming endpoint equations for `A1_0` or `A3_last`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-family-constructors.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-family-constructors.md`.
+This is constructor-side finite algebra only: no bundled coordinate domain,
+two-sided local inverse, source coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.

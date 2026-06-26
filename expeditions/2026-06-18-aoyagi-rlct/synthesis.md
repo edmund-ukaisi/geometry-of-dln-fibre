@@ -12634,3 +12634,15 @@ determinant-unit family from passive units plus the solved `A1_0`, then calls
 the per-edge readback theorem.  This is a fixed-base package, not yet a
 coordinate-domain structure, local inverse, coverage theorem, or measure
 transport theorem.
+
+New follow-up makes the two solved endpoint equations definitional from
+passive seed data.  `retainedPassiveSolvedA1` sets
+`A1_0=Tail(A1seed)^-1*Ctop` and keeps `A1seed_p` for `p != 0`; Lean proves the
+passive tail is unchanged, so the endpoint equation is available with the
+solved family itself.  `retainedPassiveSolvedA3` sets
+`A3_last=-(F3-EarlyTail)*CtopLast` and keeps `A3seed_p` for `p != last`; Lean
+proves zeroing the final block erases the seed/solved difference.  The wrapper
+`retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets` now applies
+the fixed-base readback package without endpoint-equation hypotheses.  This is
+still constructor-side finite algebra, not a coordinate-domain object or
+coverage/measure theorem.

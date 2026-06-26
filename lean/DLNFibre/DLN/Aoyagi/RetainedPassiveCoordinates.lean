@@ -1498,6 +1498,291 @@ theorem retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_tar
     retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks
       (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 p
 
+/-- Solve the omitted first retained-passive top-left block from the active
+source-left top block and the passive top-left tail. -/
+def retainedPassiveSolvedA1
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K) : Fin (M + 1) → Matrix ρ ρ K :=
+  fun p ↦
+    if p = 0 then
+      (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1seed)⁻¹ * Ctop
+    else
+      A1seed p
+
+@[simp]
+theorem retainedPassiveSolvedA1_zero
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K) :
+    retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop 0 =
+      (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1seed)⁻¹ * Ctop := by
+  simp [retainedPassiveSolvedA1]
+
+theorem retainedPassiveSolvedA1_eq_of_ne_zero
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    {p : Fin (M + 1)} (hp : p ≠ 0) :
+    retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop p = A1seed p := by
+  simp [retainedPassiveSolvedA1, hp]
+
+/-- The passive top-left tail is unchanged by solving the first block. -/
+theorem retainedPassiveA1TailAfterFirst_solvedA1
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K) :
+    retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+        (retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop) =
+      retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1seed := by
+  let A1sol := retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    1 ≤ m →
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm) =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)
+  have hbase : motive (M + 1) le_rfl := by
+    intro _hmpos
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j j le_rfl =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j j le_rfl
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hp_ne : p ≠ 0 := by
+      intro hp
+      have hval : p.val = (0 : Fin (M + 1)).val := congrArg Fin.val hp
+      simp [p] at hval
+      omega
+    have hprodSol :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1sol j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1sol j p.succ p.succ.le_last * A1sol p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1sol (j := j) p p.succ.le_last
+    have hprodSeed :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1seed j p.succ p.succ.le_last * A1seed p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1seed (j := j) p p.succ.le_last
+    have ih' :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1sol j p.succ p.succ.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.succ p.succ.le_last := by
+      have hmpos_succ : 1 ≤ m + 1 := Nat.succ_pos m
+      simpa [motive, j, p] using ih hmpos_succ
+    have hA1p : A1sol p = A1seed p := by
+      simpa [A1sol] using
+        retainedPassiveSolvedA1_eq_of_ne_zero
+          (K := K) (ρ := ρ) A1seed Ctop hp_ne
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j p.castSucc p.castSucc.le_last =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j p.castSucc p.castSucc.le_last
+    rw [hprodSol, hprodSeed, ih', hA1p]
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase
+      (Nat.succ_le_succ (Nat.zero_le M))
+  have htail := hcanon le_rfl
+  simpa [retainedPassiveA1TailAfterFirst, A1sol, j, motive] using htail
+
+/-- The solved `A1` family satisfies the endpoint equation consumed by the
+fixed-base readback package. -/
+theorem retainedPassiveSolvedA1_zero_eq_tail_inv_mul
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K) :
+    retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop 0 =
+      (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ)
+        (retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop))⁻¹ * Ctop := by
+  rw [retainedPassiveA1TailAfterFirst_solvedA1]
+  simp
+
+theorem retainedPassiveSolvedA1_passive_det_isUnit
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (hPassive : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1seed p).det) :
+    ∀ p : Fin (M + 1), p ≠ 0 →
+      IsUnit (retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop p).det := by
+  intro p hp
+  rw [retainedPassiveSolvedA1_eq_of_ne_zero (K := K) (ρ := ρ) A1seed Ctop hp]
+  exact hPassive p hp
+
+/-- Solve the omitted final retained-passive lower-left block from the active
+source-left lower-left target and the earlier-edge tail. -/
+def retainedPassiveSolvedA3
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K :=
+  fun p ↦
+    if h : p = Fin.last M then by
+      subst p
+      let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3seed
+      let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C 0 (Nat.zero_le (M + 1))
+      let CtopLast : Matrix ρ ρ K :=
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+      exact -(F3 - earlyTail) * CtopLast
+    else
+      A3seed p
+
+@[simp]
+theorem retainedPassiveSolvedA3_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3
+        (Fin.last M) =
+      let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3seed
+      let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C 0 (Nat.zero_le (M + 1))
+      let CtopLast : Matrix ρ ρ K :=
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+      (-(F3 - earlyTail) * CtopLast) := by
+  simp [retainedPassiveSolvedA3]
+
+theorem retainedPassiveSolvedA3_eq_of_ne_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K)
+    {p : Fin (M + 1)} (hp : p ≠ Fin.last M) :
+    retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3 p =
+      A3seed p := by
+  simp [retainedPassiveSolvedA3, hp]
+
+theorem retainedPassiveA3WithoutLast_solvedA3
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    retainedPassiveA3WithoutLast (K := K) (ρ := ρ)
+        (retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3) =
+      retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3seed := by
+  funext p
+  by_cases hp : p = Fin.last M
+  · subst p
+    simp
+  · rw [retainedPassiveA3WithoutLast_eq_of_ne (K := K) (ρ := ρ)
+        (retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3) hp]
+    rw [retainedPassiveA3WithoutLast_eq_of_ne (K := K) (ρ := ρ) A3seed hp]
+    exact
+      retainedPassiveSolvedA3_eq_of_ne_last
+        (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3 hp
+
+/-- The solved `A3` family satisfies the endpoint equation consumed by the
+fixed-base readback package. -/
+theorem retainedPassiveSolvedA3_last_eq_target
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    let A3 := retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3
+    let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+    let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3early C 0 (Nat.zero_le (M + 1))
+    let CtopLast : Matrix ρ ρ K :=
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+    A3 (Fin.last M) = -(F3 - earlyTail) * CtopLast := by
+  dsimp
+  rw [retainedPassiveA3WithoutLast_solvedA3
+    (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3]
+  simp [retainedPassiveSolvedA3]
+
+/-- The solved retained-passive fixed-base source family reads back the active
+source-left fields and every transformed-edge coordinate block. -/
+theorem retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (M + 2), Matrix ρ (κ' i) K)
+    (A3seed : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (Ctop : Matrix ρ ρ K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K)
+    (hF2last : F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1seed p).det)
+    (hCtop : IsUnit Ctop.det) :
+    let A1 := retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop
+    let A3 := retainedPassiveSolvedA3 (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C;
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B = F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+        Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = F3 ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+        topLeftCorner T = A1 p ∧
+          upperRightBlock T = -(A1 p * F2 p.castSucc) ∧
+          -((A1 p)⁻¹ * upperRightBlock T) = F2 p.castSucc ∧
+          lowerLeftBlock T = A3 p ∧
+          schurResidualBlock T = C p) := by
+  intro A1 A3 E
+  have hPassiveA1sol : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det := by
+    simpa [A1] using
+      retainedPassiveSolvedA1_passive_det_isUnit
+        (K := K) (ρ := ρ) A1seed Ctop hPassiveA1
+  have hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop := by
+    simpa [A1] using
+      retainedPassiveSolvedA1_zero_eq_tail_inv_mul (K := K) (ρ := ρ) A1seed Ctop
+  have hA3last :
+      let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+      let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C 0 (Nat.zero_le (M + 1))
+      let CtopLast : Matrix ρ ρ K :=
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+      A3 (Fin.last M) = -(F3 - earlyTail) * CtopLast := by
+    simpa [A1, A3] using
+      retainedPassiveSolvedA3_last_eq_target
+        (K := K) (ρ := ρ) (κ' := κ') A1 A3seed C F3
+  simpa [A1, A3, E] using
+    retainedPassiveFixedBaseEdgeMatrix_activeEndpointAndEdgeReadbacks_eq_targets
+      (K := K) (ρ := ρ) (κ' := κ') A1 F2 A3 C Ctop F3
+      hF2last hPassiveA1sol hCtop hA10 hA3last
+
 end RetainedPassive
 
 end ChartLocalSuffixState

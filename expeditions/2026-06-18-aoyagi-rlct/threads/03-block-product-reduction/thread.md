@@ -7480,6 +7480,59 @@ sign/order, solved `A1_0` and `A3_last` dependencies, and nonclaim boundary.
 The reviewer suggested parenthesizing the informal inverse-readback formula to
 match Lean exactly; this is now applied in the reproduction and card.
 
+## 2026-06-26 A2 retained-passive solved family constructors
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-family-constructors.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-family-constructors.md`.
+Review:
+`review-a2-retained-passive-solved-family-constructors.md`.
+
+Lean now defines the solved retained-passive endpoint families:
+
+```text
+ChartLocalSuffixState.retainedPassiveSolvedA1
+ChartLocalSuffixState.retainedPassiveSolvedA3
+```
+
+The solved `A1` family keeps the passive seed values for `p != 0` and sets
+`A1_0=Tail(A1seed)^-1*Ctop`; Lean proves the passive tail is unchanged by this
+solve:
+
+```text
+ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_solvedA1
+ChartLocalSuffixState.retainedPassiveSolvedA1_zero_eq_tail_inv_mul
+ChartLocalSuffixState.retainedPassiveSolvedA1_passive_det_isUnit
+```
+
+The solved `A3` family keeps passive seed values for `p != last` and sets
+`A3_last=-(F3-EarlyTail)*CtopLast`; Lean proves the final-zeroed family is
+unchanged:
+
+```text
+ChartLocalSuffixState.retainedPassiveA3WithoutLast_solvedA3
+ChartLocalSuffixState.retainedPassiveSolvedA3_last_eq_target
+```
+
+The wrapper
+
+```text
+ChartLocalSuffixState.retainedPassiveSolvedFixedBaseEdgeMatrix_readbacks_eq_targets
+```
+
+then applies the fixed-base readback package without taking `A1_0` or
+`A3_last` endpoint equations as hypotheses.
+
+This is the first explicit constructor-side source-map layer for the
+retained-passive p.13 chart.  It does not define a bundled coordinate domain,
+prove a two-sided inverse, coverage, source/image equality, measure
+pushforward, density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Bohr the 3rd` passed the sign/order, tail-invariance,
+passive determinant-unit transport, reuse of the fixed-base readback package,
+and nonclaim boundary.  No changes were required.
+
 ## 2026-06-26 A2 retained-passive `A1_0` endpoint target
 
 Reproduction:
