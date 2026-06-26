@@ -37,8 +37,11 @@ The count `numTop(mult⁻¹ B) = (TopDimMinPrimes (R ⧸ fibreGenIdeal d B)).nca
 So the count chain composing on top of the model headline gives the genuinely-arbitrary-`B`
 statement `numTop_fibre_eq_cTheta_dminus_of_rank`.
 
-Needs `N ≥ 1` (`hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)`): the same-rank ⟹ same-fibre equivalence
-is false for `N = 0` (the multiplication map is the constant `1`).
+Carries `hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` (distinct endpoints — the base-change must act on
+the two ends independently). NB with the `Fin (N + 2)` indexing there are always ≥ 2 nodes, so this is
+automatically satisfiable for every `N ≥ 0` (`0 ≠ N + 1` in `Fin (N + 2)`); it is passed explicitly
+rather than discharged. (The earlier "constant map at `N = 0`" caveat was inherited from the older
+`Fin (N + 1)` normal-form API and does NOT apply to this `Fin (N + 2)` module.)
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

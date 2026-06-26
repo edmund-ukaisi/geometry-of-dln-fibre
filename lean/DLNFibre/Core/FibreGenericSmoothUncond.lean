@@ -273,8 +273,9 @@ vacuous: there genuinely are chart primes off `h` at which the chart is smooth.
 
 `h = e.symm (1 ⊗ g)` for the singular-witness element `g ∉ q` (from
 `smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre`); since `q` is prime `g ≠ 0`, and
-`sweepFibreRing` is reduced so `¬ IsNilpotent g`. Injectivity of `includeRight` (`k`-flat
-`sweepFibreRing`) and of the chart iso `e.symm` transports non-nilpotence to `h`
+`sweepFibreRing` is reduced so `¬ IsNilpotent g`. Injectivity of `includeRight : sweepFibreRing →
+SchurLoc ⊗_k sweepFibreRing` (from `SchurLoc` being a domain, hence `Nontrivial`, so `algebraMap k
+SchurLoc` is injective) and of the chart iso `e.symm` transports non-nilpotence to `h`
 (`IsNilpotent.map_iff`). This is the honest non-vacuity strengthening; it does **not** yet certify
 that `D(h)` meets the chart image of the chosen component `q`'s generic point — see the note on the
 chart headline `isSmoothAt_chartDsig_topComponent_nonvacuous`. -/

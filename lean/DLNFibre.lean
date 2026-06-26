@@ -331,12 +331,13 @@ import DLNFibre.Core.FibreGenericSmoothUncond
 -- chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial` — the per-pivot
 -- trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it remain (#123).
 import DLNFibre.Core.FibreBundleLocallyTrivial
--- Scope-3 (C2(a) corrected, thread 20): FIDELITY CORRECTION — thread-17's bare iso `sweepFibreRing⧸I ≃
--- orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure × Aᵟ, δ=r(d_last+d_0−r)>0).
--- This module supersedes it: the dimension-correct consumer `…_of_component_orbitPolyEquiv` (iso to
--- `MvPolynomial η (orbitRing M)`), PLUS the UNCONDITIONAL sigma-side labeling
--- `exists_sigma_topComponent_orbitRingEquiv` (every top component of O(Σ̄^r) IS `orbitRing (realizerD m)`).
--- Smoothness remains unconditional MOD the corrected (dimensionally-honest) fibre≅orbit×Aᵟ iso (#128).
+-- Scope-3 (C2(a) dimension finding + sigma labeling, thread 20): thread-17's bare iso `sweepFibreRing⧸I ≃
+-- orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure × Aᵟ, δ=r(d_last+d_0−r)>0), and
+-- the dimension-corrected `…_of_component_orbitPolyEquiv` shape is ALSO globally false (thread 24) — both
+-- orbit-iso consumers are now `@[deprecated]` dead scaffolding. The LIVE contribution is the UNCONDITIONAL
+-- sigma-side labeling `exists_sigma_topComponent_orbitRingEquiv` (every top component of O(Σ̄^r) IS
+-- `orbitRing (realizerD m)`). NB smoothness is fully unconditional WITHOUT any orbit iso — via the direct
+-- fp-domain route in the next import (FibreComponentOrbitTransport), NOT modulo any fibre≅orbit iso.
 import DLNFibre.Core.FibreComponentOrbit
 -- Scope-3 (smoothness FULLY UNCONDITIONAL, thread 20 #128): the orbit-iso detour proved UNNECESSARY —
 -- a fibre top component `sweepFibreRing⧸I` is a finitely-presented DOMAIN over an alg-closed field,

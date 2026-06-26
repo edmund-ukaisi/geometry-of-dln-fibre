@@ -136,9 +136,11 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
   (`Type 0`). The normal-form case `E_r` is
   `Core.FibreThetaCount.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` (the `TopDimMinPrimes` count chain
   through the chart `e`, reducedness-free via `detΔ`-unit; `Monotone d` + rank + Kostant-nonempty hyps);
-  the same-rank transport `ncard_topDimMinPrimes_fibre_eq_of_rank_eq` (via `reducedFibre_baseChangeHomogeneous`:
-  `mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal count) lifts it to arbitrary `B`. Resolves
-  #54. (The arbitrary-`B` generality was added in PR #11 review round 1 — previously proved only for `E_r`.)
+  the same-rank transport `ncard_topDimMinPrimes_fibre_eq_of_rank_eq` (`mult⁻¹ B` a `GL×GL` translate of
+  `mult⁻¹ E_r` ⟹ iso ⟹ equal count) lifts it to arbitrary `B`. Resolves #54. (The transport proof goes
+  directly via `exists_baseChange_of_rank_eq` + `image_smul_fibre` + `vanishingIdeal_image_smul` +
+  quotient-equiv + radical-insensitivity — `reducedFibre_baseChangeHomogeneous` is morally the same
+  homogeneity but is not the literal proof dependency. Generality added in PR #11 review round 1.)
 - **θ-formula finding (precision):** three distinct invariants — the component count `C(m,|δ|)` (Lean
   `cTheta`), Aoyagi's SLT pole order `a(ℓ−a)+1`, and LR's *printed* rlcm `a(ℓ−a)` (= θ−1, **off by one** vs
   LR's own definition; correct rlcm = Aoyagi's). Agree iff `|δ| ≤ 1`, diverge for `|δ| ≥ 2` (witness
@@ -146,9 +148,12 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
   `docs/expositions/theta-invariants-distinction.md`. **An off-by-one in LR's printed rlcm — operator may
   wish to raise an erratum/correspondence.**
 - **Generic smoothness of the fibre — FULLY UNCONDITIONAL** (`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`,
-  `exists_isSmoothAt_chartDsig_unconditional`, `[IsAlgClosed k]`): a fibre top component is an fp domain over
-  an alg-closed field, hence generically smooth (`IsSmoothAt k ⊥`); lifted via the C1 localization-recovers-
-  component bridge. The OrbitSmooth/orbit-iso route was unnecessary for smoothness.
+  `[IsAlgClosed k]`): a fibre top component is an fp domain over an alg-closed field, hence generically
+  smooth (`IsSmoothAt k ⊥`); lifted via the C1 localization-recovers-component bridge. The OrbitSmooth/orbit-iso
+  route was unnecessary for smoothness. Chart-level form: `isSmoothAt_chartDsig_topComponent_nonvacuous`
+  (smooth on a NONEMPTY basic open `D(h)`, `¬IsNilpotent h`) — the stronger, non-vacuous statement; the
+  weaker `exists_isSmoothAt_chartDsig_unconditional` (smooth on *some* basic open, incidence with the chosen
+  component not certified) is superseded by it. Full component-incidence `D(h)∩V(I)≠∅` is residual 5.
 - **Σ̄^r component ↔ orbit labeling — unconditional** (`exists_sigma_topComponent_orbitRingEquiv`): the first
   genuine "label a top component by an orbit ring".
 - **Bundle — the per-pivot local-product atlas over the rank-`=r` open** (`Core.FibreBundleLocallyTrivialFull.reducedFibre_pivotLocalProductAtlasOnRankOpen`):
