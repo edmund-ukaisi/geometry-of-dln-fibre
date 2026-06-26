@@ -251,6 +251,36 @@ ones flagged).
 - **A3** `lduCoreDeriv_det : |det| = ∏_i |q_i|^{2(t−i)}` (lower-triangular, the `Kparam3333Deriv_det`
   pattern at opaque `t`). **Size S.**
 
+### Phase A build status (2026-06-26, `RouteMSchurFrameDet.lean`, branch `worktree-agent-ae0f9…`)
+
+- **A1 LANDED, sorry-free, axiom-clean** `[propext, Classical.choice, Quot.sound]`.
+  `det_mulLeft_matrixSpace = K.det^c`, `det_mulRight_matrixSpace = K.det^r`. Route as designed:
+  `colEquiv` (matrix→columns, `transposeLinearEquiv ≫ ofLinearEquiv.symm`) + `det_conj` + `det_pi`
+  + `det_toLin'`; right = transpose-conjugate of left. The conjugation identity closes by
+  `Matrix.mul_apply` + `Matrix.mulVec` + `rfl` (no entrywise `ext` blow-up).
+- **A2 KEYSTONE LANDED, sorry-free, axiom-clean.** The route was REVISED from the design's
+  flattened `BlockTriangular`-over-`Fin 4` plan to a cleaner **abstract `lowerTri` nest** (Codex
+  `a2-route-{prompt,answer}.md`): a reusable helper `lowerTri f g h : M×N →ₗ M×N`,
+  `(m,n)↦(f m, g n + h m)`, with `lowerTri_det = f.det * g.det` proved via
+  **`LinearMap.det_eq_det_mul_det`** on the invariant subspace `W = Submodule.snd` (restrict ≅ g via
+  `sndEquiv`, quotient `(M×N)/W ≅ M` via `quotientEquivOfIsCompl` + `fstEquiv`). `schurFrameDeriv` is
+  a 3-fold `lowerTri` nest over the four diagonal blocks (`id`, `mulLeftMat K`, `mulRightMat K`, `id`);
+  `schurFrameDeriv_det = K.det^(r+c)` is one `rw` chain. NO `frameB`, NO 7×7 K-block, NO 27-`have`.
+  Fully general `{t r c : ℕ}` (the `Fin 0` degenerate boundaries collapse for free).
+  - **VALIDATED against the (3,3,3,3) hand det** (`schurFrame_abs_det_3333_boundary{1,2}[_value]`):
+    boundary `s=1` (`t=2,r=c=1`) → `|det K|^2` = the hand `(z1·z4−z2·z3)^2 = (det K₁)^2` block;
+    boundary `s=2` (`t=1,r=1,c=2`) → `|det K|^3` = the hand `z9^3 = |b|^3` block. The single uniform
+    `|det Kₛ|^(rₛ+cₛ)` law reproduces BOTH hand K-blocks.
+- **A3 NOT BUILT — route validated, re-rated MEDIUM (not S).** Codex (`a3-ldu-{prompt,answer}.md`) and
+  standalone prototypes agree on the route: parametrize `K = L·diag(q)·U` over `LowIdx`/`UpIdx`/`Fin t`
+  coords; strip the unit-triangular `L,U` (det 1); `det = ∏ q_i^{2(t−1−i)}` from the strict-lower +
+  strict-upper scaling dets (each `∏ q_i^{t−1−i}`). The **scalar-scaling core works** (`det_pi` on
+  `mulRight`-by-`q_i` scalar maps = `∏ q_i`, prototyped clean). The genuine cost (≈5 lemmas, hence the
+  re-rating): (i) the `LDUParam ≃ₗ Matrix` coordinate-split equiv; (ii) two unit-triangular det-1
+  lemmas; (iii) the **multiplicity count** `∏_{LowIdx} q_{p.2} = ∏_j q_j^{t−1−j}` (a `Finset`
+  fiberwise/`prod_subtype_eq_prod_filter` + `card {i : Fin t | j < i} = t−1−j` count — the fiddly
+  combinatorial crux); (iv) the assembly. Deserves its own focused tide; it does NOT gate A2.
+
 **Phase B — the flat chart + det telescope (network-aware).**
 
 - **B1** `Bflat : (Fin N → ℝ) → GenBlk M t` decoder + the per-factor flat CLMs (radial reusing
