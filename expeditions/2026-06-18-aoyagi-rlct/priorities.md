@@ -5077,3 +5077,17 @@ product-step pushforward, original source/prior transport, signed-box density
 identification, normal crossings, pole order, or RLCT.  Next value after
 review is source/product-chart image or density-transport work, not another
 finite-integral wrapper.
+
+A2 raw-order inverse-density pushforward has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-inverse-density-pushforward.md`.
+Lean proves
+`map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian`
+in `ProductReductionStepMeasure.lean`, deriving the unweighted raw
+determinant-chart pushforward orientation from the existing weighted COV
+identity and the pointwise cancellation
+`J(z) * K(Phi z) = 1`.  This is the preferred raw product-chart
+density-transport theorem for the one-step map.  The next A2 priority is to
+consume it only with a genuine source/product-chart construction or density
+identification; do not repackage it as original DLN source/prior transport,
+p.13 source coverage, signed-box density identification, regular suspension,
+normal crossings, pole order, or RLCT.

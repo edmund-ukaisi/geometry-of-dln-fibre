@@ -7555,3 +7555,34 @@ Review:
 Nonclaims: no source coverage, product-chart construction for the original DLN
 source, product-step pushforward identity, original source/prior transport,
 signed-box density identification, normal crossings, pole order, or RLCT.
+
+Latest A2 raw-order inverse-density pushforward:
+Lean now proves the raw determinant-chart unweighted pushforward identity for
+the p.13 product-step map.  For an additive Haar measure `m` on the raw tuple
+space,
+
+```text
+Measure.map productReductionStepTopologyTupleToChartRawOrder
+  (m.restrict productReductionStepRawDetChartSet)
+=
+(m.restrict productReductionStepRawDetChartSet).withDensity
+  (fun y => ofReal (productReductionStepRawOrderInverseJacobianDensity y)).
+```
+
+Lean names:
+`productReductionStepRawOrderInverseJacobianDensity_apply_chartMap`,
+`productReductionStepRawOrderJacobianAbsDet_mul_inverseJacobianDensity_apply_chartMap`,
+and
+`map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-inverse-density-pushforward.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-inverse-density-pushforward.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-inverse-density-pushforward.md`.
+
+Nonclaims: this is raw product-chart Haar transport only.  It is not original
+DLN source/prior transport, source coverage, p.13 source-chart construction,
+signed-box density identification, regular-suspension construction, normal
+crossings, pole order, or RLCT.

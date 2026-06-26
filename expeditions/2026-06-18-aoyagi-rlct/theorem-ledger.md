@@ -8970,6 +8970,28 @@ only; it does not prove source coverage, product-chart construction for the
 original DLN source, product-step pushforward, source/prior transport,
 signed-box density identification, normal crossings, pole order, or RLCT.
 
+Latest A2 raw-order inverse-density pushforward:
+`ProductReductionStepMeasure.lean` now proves the unweighted raw
+determinant-chart pushforward orientation for the p. 13 product-step map.
+Lean names:
+`productReductionStepRawOrderInverseJacobianDensity_apply_chartMap`,
+`productReductionStepRawOrderJacobianAbsDet_mul_inverseJacobianDensity_apply_chartMap`,
+and
+`map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian`.
+The proof uses the existing weighted additive-Haar COV identity and the
+pointwise cancellation of the forward Jacobian density with the chart-side
+reciprocal density after applying the raw-order map; it does not add an
+inverse-map derivative theorem.  Reproduction, statement card, and review are
+at
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-inverse-density-pushforward.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-inverse-density-pushforward.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-inverse-density-pushforward.md`.
+This is raw product-chart Haar transport only. It does not prove original DLN
+source/prior transport, p.13 source-chart construction, source coverage,
+signed-box density identification, regular suspension, normal crossings, pole
+order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -6666,3 +6666,51 @@ not assumed invertible.  This is generic local product-step chart/density
 infrastructure only; it is not source coverage, source/prior transport,
 product-step pushforward, signed-box density identification, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-26 A2 raw-order inverse-density pushforward
+
+Reproduction:
+`reproduction-a2-product-step-raw-order-inverse-density-pushforward.md`.
+Statement card:
+`statement-card-a2-product-step-raw-order-inverse-density-pushforward.md`.
+Review:
+`review-a2-product-step-raw-order-inverse-density-pushforward.md`.
+
+Lean now proves the raw determinant-chart unweighted pushforward orientation:
+
+```text
+map Phi (m.restrict s)
+  = (m.restrict s).withDensity
+      (fun y => ofReal (productReductionStepRawOrderInverseJacobianDensity y)).
+```
+
+Here `Phi` is `productReductionStepTopologyTupleToChartRawOrder`, `s` is
+`productReductionStepRawDetChartSet`, and `m` is an additive Haar measure on
+the raw tuple space.  The proof uses the already-landed weighted COV theorem
+
+```text
+map Phi ((m.restrict s).withDensity (ofReal J)) = m.restrict s
+```
+
+together with the new pointwise cancellation
+
+```text
+ofReal (J z) *
+  ofReal (productReductionStepRawOrderInverseJacobianDensity (Phi z)) = 1
+```
+
+on the determinant chart.  A private local measure lemma transports the second
+density through the pushforward; no inverse derivative theorem is introduced.
+
+New Lean names:
+
+```text
+productReductionStepRawOrderInverseJacobianDensity_apply_chartMap
+productReductionStepRawOrderJacobianAbsDet_mul_inverseJacobianDensity_apply_chartMap
+map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+```
+
+This is the first genuine raw product-chart density-transport theorem after
+the suffix-density handoff.  It is still not original DLN source/prior
+transport, source coverage, p.13 source-chart construction, signed-box density
+identification, normal crossings, pole order, or RLCT.

@@ -71,6 +71,33 @@ theorem nullMeasurableSet_productReductionStepRawDetChartSet
   (isOpen_productReductionStepRawDetChartSet
     (ρ := ρ) (π := π) (μ := μ) (ν := ν)).measurableSet.nullMeasurableSet
 
+private theorem map_withDensity_comp_of_aemeasurable
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {η : Measure α} {f : α → β} {g : β → ℝ≥0∞}
+    (hf : AEMeasurable f η)
+    (hg : AEMeasurable g (Measure.map f η)) :
+    Measure.map f (η.withDensity (fun x => g (f x))) =
+      (Measure.map f η).withDensity g := by
+  ext t ht
+  have hf_density :
+      AEMeasurable f (η.withDensity (fun x => g (f x))) :=
+    hf.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hpre : NullMeasurableSet (f ⁻¹' t) η :=
+    hf.nullMeasurableSet_preimage ht
+  rw [Measure.map_apply_of_aemeasurable hf_density ht,
+    withDensity_apply _ ht,
+    withDensity_apply₀ _ hpre]
+  calc
+    ∫⁻ x in f ⁻¹' t, g (f x) ∂η =
+        ∫⁻ x, (f ⁻¹' t).indicator (fun x => g (f x)) x ∂η := by
+          rw [lintegral_indicator₀ hpre]
+    _ = ∫⁻ x, (t.indicator g) (f x) ∂η := by
+          rfl
+    _ = ∫⁻ y, t.indicator g y ∂Measure.map f η := by
+          exact (lintegral_map' (hg.indicator ht) hf).symm
+    _ = ∫⁻ y in t, g y ∂Measure.map f η := by
+          rw [lintegral_indicator ht]
+
 /-- The raw-order p. 13 product-step coordinate map. The chart output is
 reordered into raw-shaped order so that the derivative is an endomorphism. -/
 def productReductionStepTopologyTupleToChartRawOrder
@@ -479,6 +506,77 @@ def productReductionStepRawOrderInverseJacobianDensity
     (ρ := ρ) (π := π) (μ := μ) (ν := ν)
     ((productReductionStepChartCoordinatesOfRawOrderTopologyTuple y).toRaw).topologyTuple)⁻¹
 
+/-- On the raw determinant chart, the chart-side inverse density evaluated at
+the raw-order product-step image is the reciprocal of the source-side
+Jacobian density. -/
+theorem productReductionStepRawOrderInverseJacobianDensity_apply_chartMap
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (z : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz : z ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    productReductionStepRawOrderInverseJacobianDensity
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+        (productReductionStepTopologyTupleToChartRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z) =
+      (productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z)⁻¹ := by
+  classical
+  let x : ProductReductionStepRawCoordinates ρ π μ ν ℝ :=
+    productReductionStepRawCoordinatesOfTopologyTuple z
+  have hx : x.detChart := by
+    simpa [x, productReductionStepRawDetChartSet] using hz
+  have hchart :
+      productReductionStepChartCoordinatesOfRawOrderTopologyTuple
+          (productReductionStepTopologyTupleToChartRawOrder
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z) =
+        x.toChart := by
+    change
+      productReductionStepChartCoordinatesOfRawOrderTopologyTuple
+          (productReductionStepChartTangentRawOrderEquiv
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+            (ProductReductionStepChartCoordinates.topologyTuple x.toChart)) =
+        x.toChart
+    let y : ProductReductionStepChartCoordinates ρ π μ ν ℝ := x.toChart
+    change
+      productReductionStepChartCoordinatesOfRawOrderTopologyTuple
+          (productReductionStepChartTangentRawOrderEquiv
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+            (ProductReductionStepChartCoordinates.topologyTuple y)) =
+        y
+    cases y
+    rfl
+  have hraw : (x.toChart).toRaw = x :=
+    productReductionStepCoordinate_left_inverse x hx
+  simp [productReductionStepRawOrderInverseJacobianDensity, hchart, hraw, x]
+
+/-- On the raw determinant chart, the source-side Jacobian density cancels the
+chart-side inverse density after applying the raw-order product-step map. -/
+theorem productReductionStepRawOrderJacobianAbsDet_mul_inverseJacobianDensity_apply_chartMap
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (z : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz : z ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ENNReal.ofReal
+        (productReductionStepRawOrderJacobianAbsDet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z) *
+      ENNReal.ofReal
+        (productReductionStepRawOrderInverseJacobianDensity
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+          (productReductionStepTopologyTupleToChartRawOrder
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z)) =
+        1 := by
+  have hpos :
+      0 < productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z :=
+    productReductionStepRawOrderJacobianAbsDet_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz
+  rw [productReductionStepRawOrderInverseJacobianDensity_apply_chartMap
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz,
+    ENNReal.ofReal_inv_of_pos hpos]
+  exact ENNReal.mul_inv_cancel
+    (ne_of_gt (ENNReal.ofReal_pos.mpr hpos))
+    (by simp)
+
 /-- The chart-side inverse determinant density is positive at target
 determinant-chart points. -/
 theorem productReductionStepRawOrderInverseJacobianDensity_pos
@@ -809,6 +907,152 @@ theorem map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq
       (ρ := ρ) (π := π) (μ := μ) (ν := ν)] using
     map_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart_withDensity_abs_det
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) m hs
+
+set_option maxRecDepth 2048 in
+/-- On the raw determinant chart, the raw-order product-step map pushes the
+unweighted source Haar measure to the raw-shaped target determinant-chart Haar
+measure weighted by the chart-side inverse Jacobian density. -/
+theorem map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    [MeasurableSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    [BorelSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    (m : Measure (ProductReductionStepRawTopologyTuple ρ π μ ν))
+    [m.IsAddHaarMeasure]
+    (hs : NullMeasurableSet (productReductionStepRawDetChartSet ρ π μ ν) m) :
+    Measure.map
+        (productReductionStepTopologyTupleToChartRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+        (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) =
+      (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity
+        (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+          ENNReal.ofReal
+            (productReductionStepRawOrderInverseJacobianDensity
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) y)) := by
+  classical
+  let Φ : ProductReductionStepRawTopologyTuple ρ π μ ν →
+      ProductReductionStepRawTopologyTuple ρ π μ ν :=
+    productReductionStepTopologyTupleToChartRawOrder
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  let F : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ≥0∞ :=
+    fun z =>
+      ENNReal.ofReal
+        (productReductionStepRawOrderJacobianAbsDet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z)
+  let G : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ≥0∞ :=
+    fun y =>
+      ENNReal.ofReal
+        (productReductionStepRawOrderInverseJacobianDensity
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) y)
+  have hΦ_within :
+      ∀ z ∈ productReductionStepRawDetChartSet ρ π μ ν,
+        HasFDerivWithinAt Φ
+          (productReductionStepRawOrderJacobianCLM
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z)
+          (productReductionStepRawDetChartSet ρ π μ ν) z := by
+    intro z hz
+    simpa [Φ, productReductionStepRawDetChartSet,
+      productReductionStepTopologyTupleToChartRawOrder,
+      productReductionStepRawOrderJacobianCLM,
+      ProductReductionStepRawTopologyTuple] using
+      (hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+        (productReductionStepRawCoordinatesOfTopologyTuple z) hz.1 hz.2)
+  have hΦ_μs :
+      AEMeasurable Φ
+        (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+    refine ContinuousOn.aemeasurable₀ ?_ hs
+    intro z hz
+    exact (hΦ_within z hz).continuousWithinAt
+  have hF_μs :
+      AEMeasurable F
+        (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+    refine ContinuousOn.aemeasurable₀ ?_ hs
+    intro z hz
+    exact
+      (ENNReal.continuous_ofReal.continuousAt.comp
+        (continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz)).continuousWithinAt
+  have hG_μs :
+      AEMeasurable G
+        (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+    refine ContinuousOn.aemeasurable₀ ?_ hs
+    intro y hy
+    exact
+      (ENNReal.continuous_ofReal.continuousAt.comp
+        (continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) y hy)).continuousWithinAt
+  have hG_comp_μs :
+      AEMeasurable (fun z => G (Φ z))
+        (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+    refine ContinuousOn.aemeasurable₀ ?_ hs
+    intro z hz
+    have hΦz :
+        Φ z ∈ productReductionStepRawDetChartSet ρ π μ ν :=
+      mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) hz
+    have hGcont : ContinuousAt G (Φ z) :=
+      ENNReal.continuous_ofReal.continuousAt.comp
+        (continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (Φ z) hΦz)
+    exact hGcont.comp_continuousWithinAt ((hΦ_within z hz).continuousWithinAt)
+  have hcov :
+      Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F) =
+        m.restrict (productReductionStepRawDetChartSet ρ π μ ν) := by
+    simpa [Φ, F] using
+      map_productReductionStepRawOrder_restrict_detChart_withDensity_absDet_eq_restrict_detChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) m hs
+  have hΦ_weighted :
+      AEMeasurable Φ
+        ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F) :=
+    hΦ_μs.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hG_map :
+      AEMeasurable G
+        (Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F)) := by
+    rw [hcov]
+    exact hG_μs
+  have htransport :
+      Measure.map Φ
+          (((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F).withDensity
+            (fun z => G (Φ z))) =
+        (Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F)).withDensity
+            G :=
+    map_withDensity_comp_of_aemeasurable hΦ_weighted hG_map
+  have hcancel :
+      (F * fun z => G (Φ z)) =ᵐ[
+          m.restrict (productReductionStepRawDetChartSet ρ π μ ν)]
+        1 := by
+    filter_upwards [ae_restrict_mem₀ hs] with z hz
+    simpa [F, G, Φ] using
+      productReductionStepRawOrderJacobianAbsDet_mul_inverseJacobianDensity_apply_chartMap
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz
+  symm
+  calc
+    (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity G =
+        (Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F)).withDensity
+            G := by
+          rw [hcov]
+    _ =
+        Measure.map Φ
+          (((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity F).withDensity
+            (fun z => G (Φ z))) := htransport.symm
+    _ =
+        Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity
+            (F * fun z => G (Φ z))) := by
+          rw [← withDensity_mul₀ hF_μs hG_comp_μs]
+    _ =
+        Measure.map Φ
+          ((m.restrict (productReductionStepRawDetChartSet ρ π μ ν)).withDensity 1) := by
+          rw [withDensity_congr_ae hcancel]
+    _ =
+        Measure.map Φ
+          (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+          rw [withDensity_one]
 
 end Aoyagi
 end DLN

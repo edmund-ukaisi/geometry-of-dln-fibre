@@ -11659,3 +11659,48 @@ separate displayed `S.Ctop` inverse.  This remains local product-step chart/dens
 infrastructure: no source coverage, source/prior transport, product-step
 pushforward theorem, signed-box density identification, normal crossings, pole
 order, or RLCT.
+
+## Latest A2 Raw-Order Inverse-Density Pushforward
+
+`ProductReductionStepMeasure.lean` now proves the raw product-chart
+unweighted pushforward orientation.  If
+
+```text
+Phi = productReductionStepTopologyTupleToChartRawOrder
+s = productReductionStepRawDetChartSet,
+```
+
+and `m` is additive Haar measure on the raw tuple space, then Lean proves
+
+```text
+map Phi (m.restrict s)
+  = (m.restrict s).withDensity
+      (fun y => ofReal (productReductionStepRawOrderInverseJacobianDensity y)).
+```
+
+The proof uses the existing weighted COV identity
+
+```text
+map Phi ((m.restrict s).withDensity (ofReal J)) = m.restrict s
+```
+
+plus the new pointwise cancellation
+
+```text
+ofReal (J z) *
+  ofReal (productReductionStepRawOrderInverseJacobianDensity (Phi z)) = 1.
+```
+
+No inverse-map derivative theorem is added.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-inverse-density-pushforward.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-inverse-density-pushforward.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-inverse-density-pushforward.md`.
+
+This is a genuine raw product-chart density-transport theorem.  It is still
+not original DLN source/prior transport, p.13 source-chart construction,
+source coverage, signed-box density identification, regular suspension,
+normal crossings, pole order, or RLCT.
