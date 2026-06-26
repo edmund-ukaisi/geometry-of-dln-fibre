@@ -10589,6 +10589,17 @@ source chart with transport, a smaller reverse rank/readback theorem, or a
 different source-backed finite algebra slice, not another local-source
 consumer wrapper.
 
+Latest A2 product-coordinate residual-rank readback:
+`RegularSuspensionCoordinates.lean` now proves
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_residualBlock_rank_of_mem_sourceRankStratum`.
+The theorem is pointwise: if the constructed p.13 product-coordinate edge
+family is already in the source-rank stratum at `(x,u)`, and `det Ctop(u)` is
+a unit, then each base Schur residual block has rank `rEdge p - r`.  This is
+the smaller reverse rank/readback theorem identified by the source-coverage
+audit.  It does not prove source coverage, local inverse, source/image
+equality, exact-rank openness, source-measure transport, density/Jacobian
+identity, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

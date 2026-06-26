@@ -7134,6 +7134,30 @@ coverage.  Future A2 work must either prove a genuine p.13 source chart with
 passive variables and transport, prove a smaller reverse rank/readback theorem,
 or move to a different source-backed finite algebra slice.
 
+Latest A2 product-coordinate residual-rank readback:
+Lean now proves the pointwise reverse rank theorem
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_residualBlock_rank_of_mem_sourceRankStratum
+```
+
+in `RegularSuspensionCoordinates.lean`.  If the constructed p.13 multi-edge
+product-coordinate family is already in the source-rank stratum at `(x,u)`,
+and `det Ctop(u)` is a unit, then the base Schur residual block at every edge
+has rank `rEdge p - r`.  The proof uses the p.13 endpoint/middle block-rank
+formulas in reverse and the basepoint identification of the regular corner
+size with `r`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-residual-rank-readback.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-coordinate-residual-rank-readback.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-coordinate-residual-rank-readback.md`.
+
+Nonclaims: no source coverage, no local inverse, no exact-rank openness, no
+source/image equality, no source-measure transport, no density/Jacobian
+identity, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 selected-entry residual-factor readout boundary:
 Lean now proves the finite handoff from compatible residual factors to the
 selected-entry residual-product matrix identity.  If the fixed-base

@@ -5221,6 +5221,15 @@ hypothesis.  The remaining source-moving routes are a genuine p.13 source
 chart with passive variables and measure/density transport, a smaller reverse
 rank/readback theorem, or a different source-backed finite algebra slice.
 
+The smaller reverse rank/readback route has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-coordinate-residual-rank-readback.md`.
+Lean proves that constructed-family source-rank membership for the p.13
+product-coordinate family forces the base residual block ranks `rEdge p - r`.
+This removes one reverse-rank obstacle but not coverage.  The next A2 work
+should not extend this by wrappers; remaining source-moving work is still
+source chart/inverse/coverage, source-measure and density transport, or a
+different finite algebra socket with an unsupplied hypothesis.
+
 A5 Lemma 5 first-nonbase cardinal bound has now landed:
 `threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
 Lean proves that the deterministic first-nonbase-or-base selector gives the

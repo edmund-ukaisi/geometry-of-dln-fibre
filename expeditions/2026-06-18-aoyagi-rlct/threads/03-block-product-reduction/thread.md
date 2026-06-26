@@ -7122,3 +7122,27 @@ not add more wrappers around the local-subset consumer.  The source-moving
 alternatives are a genuine p.13 source chart with passive variables and
 transport, a smaller reverse rank/readback theorem, or a different
 source-backed finite algebra slice.
+
+## 2026-06-26 A2 product-coordinate residual-rank readback
+
+Reproduction:
+`reproduction-a2-product-coordinate-residual-rank-readback.md`.
+Statement card:
+`statement-card-a2-product-coordinate-residual-rank-readback.md`.
+Review:
+`review-a2-product-coordinate-residual-rank-readback.md`.
+
+Lean now proves the smaller reverse rank/readback theorem recommended by the
+source-coverage boundary audit:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_residualBlock_rank_of_mem_sourceRankStratum
+```
+
+If the constructed p.13 multi-edge product-coordinate family is already in
+the source-rank stratum at `(x,u)` and `det Ctop(u)` is a unit, then each base
+Schur residual block has rank `rEdge p - r`.  This is pointwise finite rank
+bookkeeping only.  It assumes constructed-family source-rank membership and
+does not prove source coverage, local inverse, exact-rank openness,
+source/image equality, source-measure transport, density/Jacobian identity,
+normal crossings, pole order, or RLCT.

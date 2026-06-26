@@ -9226,6 +9226,16 @@ p.13 source-rank image membership, local raw-section support, section-image
 measure identity, and conditional finite-integral handoffs.  Reverse
 source-rank coverage and p.13 source transport are still supplied/deferred.
 
+Latest A2 product-coordinate residual-rank readback:
+`RegularSuspensionCoordinates.lean` proves
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_residualBlock_rank_of_mem_sourceRankStratum`.
+It consumes source-rank membership for the constructed p.13 product-coordinate
+family and `IsUnit(det Ctop(u))`, then derives
+`rank(residualBlock Ebase p) = rEdge p - r` for every edge.  The proof is
+finite rank algebra only and uses the existing p.13 endpoint/middle block-rank
+lemmas.  It is not source coverage, local inverse, source/image equality,
+measure transport, normal crossings, pole order, or RLCT.
+
 Latest A5 Lemma 5 first-nonbase cardinal bound:
 `aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le` is now
 proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  It consumes

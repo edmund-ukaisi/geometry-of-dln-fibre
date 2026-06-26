@@ -5526,6 +5526,187 @@ theorem paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFami
     _ = rEdge p := hGrank
 
 set_option linter.unusedSectionVars false in
+/-- If the explicit multi-edge p.13 product-coordinate family is already in the
+source-rank stratum, then the residual blocks used to construct it have the
+expected reduced ranks.
+
+This is a reverse rank readback for the constructed product-coordinate family.
+It does not prove source coverage, exact-rank openness, a local inverse,
+Jacobian transport, normal crossings, or RLCT. -/
+theorem paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_residualBlock_rank_of_mem_sourceRankStratum
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (x : α)
+    (u : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (r : ℕ) (rEdge : Fin (M + 2) → ℕ)
+    (hsrc :
+      (x, u) ∈ paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv
+        (paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          V Bv U₀ hU₀ CedgeBase) r rEdge)
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det)
+    (p : Fin (M + 2)) :
+    let Ebase : ∀ p : Fin (M + 2), Matrix
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+            p.castSucc) ℝ :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+        (fun p ↦
+          (CedgeBase x p :
+            reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+    (ChartLocalSuffixState.residualBlock Ebase
+      (Fin.last (M + 2)) p p.succ.le_last).rank = rEdge p - r := by
+  classical
+  let CedgeProd :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+      V Bv U₀ hU₀ CedgeBase
+  let Ebase : ∀ p : Fin (M + 2), Matrix
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (Fin (Module.finrank ℝ U₀) ⊕
+        throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+          p.castSucc) ℝ :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+      (fun p ↦
+        (CedgeBase x p :
+          reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+  let G :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+      V Bv U₀ u Ebase
+  let F2 :=
+    AoyagiRegularBlockCoordinateIndex.f2Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let F3 :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let Ctop :=
+    AoyagiRegularBlockCoordinateIndex.ctopMatrix
+      (fun c :
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)
+  let C : ∀ p : Fin (M + 2), Matrix
+      (throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (throughSubspaceEndpointComplementIndex (reverseVertex V) (reverseEdge V Bv) U₀
+        p.castSucc) ℝ :=
+    fun p ↦ ChartLocalSuffixState.residualBlock Ebase
+      (Fin.last (M + 2)) p p.succ.le_last
+  let Eprod : ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ :=
+    fun p ↦ (CedgeProd (x, u) p :
+      reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ)
+  let EMat := paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀ Eprod
+  have hEMat : EMat = G := by
+    funext q
+    simpa [EMat, Eprod, CedgeProd,
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean,
+      Ebase, G] using
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
+        (K := ℝ) V Bv U₀ hU₀ G q
+  have hUrank : Module.finrank ℝ U₀ = r :=
+    (paperEndpointBasepointCertificate_of_isCompl V Bv U₀ hU₀).finrank_eq_range.trans hsrc.1
+  have hGrank : (G p).rank = rEdge p := by
+    calc
+      (G p).rank = (EMat p).rank := by rw [hEMat]
+      _ = Module.finrank ℝ (LinearMap.range (Eprod p)) := by
+        exact
+          rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+            (K := ℝ) (W := V) (B := Bv) U₀ hU₀ Eprod p
+      _ = rEdge p := hsrc.2.1 p
+  have hRankFormula :
+      (G p).rank = Fintype.card (Fin (Module.finrank ℝ U₀)) + (C p).rank := by
+    by_cases hlast : p = Fin.last (M + 1)
+    · subst p
+      have hshape :
+          G (Fin.last (M + 1)) =
+            ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3 (C (Fin.last (M + 1))) := by
+        simp [G, F3, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
+      calc
+        (G (Fin.last (M + 1))).rank =
+            (ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3
+              (C (Fin.last (M + 1)))).rank := by
+          simpa using congrArg Matrix.rank hshape
+        _ = Fintype.card (Fin (Module.finrank ℝ U₀)) + (C (Fin.last (M + 1))).rank := by
+          exact
+            ChartLocalSuffixState.rank_productCoordinateRightEndpointMatrix
+              (K := ℝ) F3 (C (Fin.last (M + 1)))
+    · by_cases hzero : p = 0
+      · subst p
+        have hnotLast : (0 : Fin (M + 2)) ≠ Fin.last (M + 1) := by
+          intro h
+          have hval := congrArg Fin.val h
+          simp at hval
+        have hshape :
+            G (0 : Fin (M + 2)) =
+              ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C 0) := by
+          simp [G, F2, Ctop, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+            hnotLast]
+        calc
+          (G (0 : Fin (M + 2))).rank =
+              (ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C 0)).rank := by
+            simpa using congrArg Matrix.rank hshape
+          _ = Fintype.card (Fin (Module.finrank ℝ U₀)) + (C 0).rank := by
+            exact
+              ChartLocalSuffixState.rank_productCoordinateLeftEndpointMatrix
+                (K := ℝ) F2 Ctop (C 0) (by simpa [Ctop] using hCtop)
+      · have hshape :
+            G p =
+              ChartLocalSuffixState.productCoordinateMiddleMatrix
+                (ρ := Fin (Module.finrank ℝ U₀)) (C p) := by
+          simp [G, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+            hlast, hzero]
+        calc
+          (G p).rank =
+              (ChartLocalSuffixState.productCoordinateMiddleMatrix
+                (ρ := Fin (Module.finrank ℝ U₀)) (C p)).rank := by
+            simpa using congrArg Matrix.rank hshape
+          _ = Fintype.card (Fin (Module.finrank ℝ U₀)) + (C p).rank := by
+            exact
+              ChartLocalSuffixState.rank_productCoordinateMiddleMatrix
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) (C p)
+  have hsum : r + (C p).rank = rEdge p := by
+    have h := hRankFormula.symm.trans hGrank
+    simpa [Fintype.card_fin, hUrank] using h
+  dsimp only
+  change (C p).rank = rEdge p - r
+  omega
+
+set_option linter.unusedSectionVars false in
 /-- On a sufficiently small Euclidean regular-coordinate ball, the explicit
 multi-edge p.13 product-coordinate edge family maps base source-rank points
 back into the same source-rank stratum.
