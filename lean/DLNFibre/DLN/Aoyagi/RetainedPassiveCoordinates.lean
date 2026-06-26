@@ -2282,6 +2282,117 @@ theorem edgeMatrix_readbacks_eq_targets_of_detChart
         schurResidualBlock T = data.C p) := by
   exact data.edgeMatrix_readbacks_eq_targets hdet.2 hdet.1
 
+omit [CommRing K] [Fintype ρ] [DecidableEq ρ] in
+/-- Fieldwise extensionality for nonredundant retained-passive coordinate
+data. -/
+theorem ext_fields
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    {data data' :
+      RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ'}
+    (hA1 : data.A1passive = data'.A1passive)
+    (hF2 : data.F2 = data'.F2)
+    (hA3 : data.A3passive = data'.A3passive)
+    (hC : data.C = data'.C)
+    (hCtop : data.Ctop = data'.Ctop)
+    (hF3 : data.F3 = data'.F3) :
+    data = data' := by
+  cases data
+  cases data'
+  simp_all
+
+/-- The deterministic suffix state used to read retained-passive coordinates
+from an arbitrary source edge family. -/
+def sourceReadbackSuffixState
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    ChartLocalSuffixState ρ κ' K (Fin.last (M + 1)) i :=
+  suffixState E (Fin.last (M + 1)) i hi
+
+/-- The transformed edge used to read retained-passive coordinates from an
+arbitrary source edge family. -/
+def sourceReadbackTransformedEdge
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (p : Fin (M + 1)) :
+    Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
+  transformedEdge E p
+    (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last)
+
+/-- Total source-side readback of the nonredundant retained-passive
+coordinates from an arbitrary retained-passive-shaped edge family. -/
+def sourceReadback
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :
+    RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' where
+  A1passive := fun p ↦
+    topLeftCorner
+      (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p.succ)
+  F2 := fun p ↦
+    -((topLeftCorner
+        (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p))⁻¹ *
+      upperRightBlock
+        (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p))
+  A3passive := fun p ↦
+    lowerLeftBlock
+      (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p.castSucc)
+  C := fun p ↦
+    schurResidualBlock
+      (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p)
+  Ctop :=
+    (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
+      (Fin.zero_le (Fin.last (M + 1)))).Ctop
+  F3 :=
+    lowerLeftBlock
+      (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
+        (Fin.zero_le (Fin.last (M + 1)))).L
+
+/-- On the determinant-chart image of the retained-passive source map, the
+source-side readback recovers the original nonredundant coordinates. -/
+theorem sourceReadback_edgeMatrix_eq
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    sourceReadback (K := K) (ρ := ρ) data.edgeMatrix = data := by
+  have hRead := data.edgeMatrix_readbacks_eq_targets_of_detChart hdet
+  rcases hRead with ⟨_hF20, hCtop, hF3, hA1, hF2, hA3, hC⟩
+  have hA1passive :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).A1passive =
+        data.A1passive := by
+    funext p
+    simpa [sourceReadback, sourceReadbackTransformedEdge,
+      sourceReadbackSuffixState] using hA1 p
+  have hF2body :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).F2 = data.F2 := by
+    funext p
+    simpa [sourceReadback, sourceReadbackTransformedEdge,
+      sourceReadbackSuffixState] using hF2 p
+  have hA3passive :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).A3passive =
+        data.A3passive := by
+    funext p
+    simpa [sourceReadback, sourceReadbackTransformedEdge,
+      sourceReadbackSuffixState] using hA3 p
+  have hCbody :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).C = data.C := by
+    funext p
+    simpa [sourceReadback, sourceReadbackTransformedEdge,
+      sourceReadbackSuffixState] using hC p
+  have hCtopBody :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).Ctop = data.Ctop := by
+    simpa [sourceReadback, sourceReadbackSuffixState] using hCtop
+  have hF3body :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).F3 = data.F3 := by
+    simpa [sourceReadback, sourceReadbackSuffixState] using hF3
+  exact ext_fields hA1passive hF2body hA3passive hCbody hCtopBody hF3body
+
 /-- Equal nonredundant retained-passive edge families have equal coordinate
 data. -/
 theorem edgeMatrix_ext

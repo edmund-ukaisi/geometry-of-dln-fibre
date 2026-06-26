@@ -8173,3 +8173,41 @@ crossings, pole order, or RLCT.
 
 Xhigh reviewer `Galileo the 3rd` passed the Lean statements, formula indices,
 final unfolding step, documentation boundary, focused build, and diff hygiene.
+
+## 2026-06-26 A2 retained-passive source-readback object
+
+Reproduction:
+`reproduction-a2-retained-passive-source-readback-object.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-readback-object.md`.
+Review:
+`review-a2-retained-passive-source-readback-object.md`.
+
+Lean now defines:
+
+```text
+RetainedPassiveNonredundantCoordinateData.ext_fields
+RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState
+RetainedPassiveNonredundantCoordinateData.sourceReadbackTransformedEdge
+RetainedPassiveNonredundantCoordinateData.sourceReadback
+```
+
+and proves:
+
+```text
+RetainedPassiveNonredundantCoordinateData.sourceReadback_edgeMatrix_eq
+```
+
+The readback object is total on retained-passive-shaped edge families.  Its
+fields are read from deterministic suffix states and transformed edges:
+`A1passive` from edge `p.succ`, `F2` and `C` from edge `p`, `A3passive` from
+edge `p.castSucc`, and active `Ctop/F3` from suffix state `0`.
+
+The theorem proves only that this readback recovers `data` from
+`data.edgeMatrix` when `data.detChart`.  It does not prove arbitrary
+edge-family image membership, image openness, source-rank coverage,
+source/image theorem, local homeomorphism, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Averroes the 3rd` passed the index shifts, theorem scope,
+documentation boundary, focused build, and diff hygiene.

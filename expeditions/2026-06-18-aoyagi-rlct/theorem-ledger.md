@@ -9794,3 +9794,24 @@ This is source-map continuity on `{data // data.detChart}` only: no image
 openness, source-rank coverage, source/image theorem, local homeomorphism,
 measure pushforward, density/Jacobian theorem, normal crossings, pole order,
 or RLCT.
+
+Latest A2 retained-passive source-readback object:
+`RetainedPassiveCoordinates.lean` proves the finite inverse packaging names
+`ext_fields`, `sourceReadbackSuffixState`,
+`sourceReadbackTransformedEdge`, `sourceReadback`, and
+`sourceReadback_edgeMatrix_eq`.
+
+The readback map is total on retained-passive-shaped edge families.  On the
+image of the determinant-chart source map, it recovers the original
+nonredundant coordinates fieldwise.  The proof uses the already proved
+`edgeMatrix_readbacks_eq_targets_of_detChart`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-object.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-object.md`
+passed.
+
+This is finite readback packaging only: no arbitrary edge-family image
+membership, image openness, source-rank coverage, source/image theorem, local
+homeomorphism, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT.

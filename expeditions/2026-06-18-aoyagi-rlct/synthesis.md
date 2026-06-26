@@ -12757,3 +12757,28 @@ This proves source-map continuity on `{data // data.detChart}` only.  It does
 not prove image openness, source-rank coverage, source/image equality, local
 homeomorphism, measure pushforward, density/Jacobian accounting, normal
 crossings, pole order, or RLCT.
+
+New follow-up packages the inverse formulas into a total source-side readback
+object.  For an arbitrary retained-passive-shaped edge family `E`, Lean
+defines `sourceReadbackSuffixState E i`, `sourceReadbackTransformedEdge E p`,
+and `sourceReadback E`.  The recovered fields are
+
+```text
+A1passive p = topLeftCorner T_{p.succ}(E)
+F2 p        = -((topLeftCorner T_p(E))^-1 * upperRightBlock T_p(E))
+A3passive p = lowerLeftBlock T_{p.castSucc}(E)
+C p         = schurResidualBlock T_p(E)
+Ctop        = S_0(E).Ctop
+F3          = lowerLeftBlock S_0(E).L.
+```
+
+The theorem `sourceReadback_edgeMatrix_eq` proves this total readback is a
+left inverse on the retained-passive determinant-chart image:
+`sourceReadback data.edgeMatrix = data` whenever `data.detChart`.  The proof
+uses the already landed determinant-chart readback theorem and a small
+fieldwise extensionality helper `ext_fields`.
+
+This is still finite inverse packaging only.  It does not prove arbitrary
+edge-family image membership, image openness, source-rank coverage,
+source/image equality, local homeomorphism, measure pushforward,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.

@@ -8579,3 +8579,28 @@ Nonclaims: source-map continuity on the determinant-chart subtype only.  No
 image openness, local homeomorphism, source-rank coverage, source/image
 equality, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-readback object:
+Lean now defines
+`RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState`,
+`sourceReadbackTransformedEdge`, and `sourceReadback`, plus the fieldwise
+helper `ext_fields`, in `RetainedPassiveCoordinates.lean`.
+
+The readback object assigns to an arbitrary retained-passive-shaped edge
+family the nonredundant coordinate fields read from deterministic suffix states
+and transformed edges.  Lean proves
+`sourceReadback_edgeMatrix_eq`: for any `data` with `data.detChart`,
+`sourceReadback data.edgeMatrix = data`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-object.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-object.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-object.md`
+passed.
+
+Nonclaims: total finite readback and inverse-on-image only.  No arbitrary
+edge-family image membership, image openness, local homeomorphism,
+source-rank coverage, source/image equality, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.

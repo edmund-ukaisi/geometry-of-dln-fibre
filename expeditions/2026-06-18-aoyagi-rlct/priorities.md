@@ -5723,3 +5723,20 @@ downstream statement consumes exactly that form, but do not promote the
 continuous injective source map to image openness, source-rank coverage,
 source/image equality, local homeomorphism, measure transport,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+The finite source-readback object is now landed/in progress in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-object.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-object.md`.
+It defines a total readback map from an arbitrary retained-passive-shaped edge
+family to nonredundant retained-passive coordinates, then proves
+`sourceReadback data.edgeMatrix = data` on `data.detChart`.
+
+Next retained-passive target after review/banking: either prove continuity of
+this readback map on an explicitly named recursive determinant-chart/source
+open set, or define that source-side predicate first.  Do not infer arbitrary
+edge-family image membership, image openness, source-rank coverage,
+source/image equality, local homeomorphism, measure transport,
+density/Jacobian accounting, normal crossings, pole order, or RLCT from the
+left-inverse theorem alone.
