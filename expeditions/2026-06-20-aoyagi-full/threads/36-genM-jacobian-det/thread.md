@@ -160,3 +160,44 @@ coordinate space is `radial ⊕ (nonfixed Schur/lift roles) ≃ ChartIdx ≃ Fin
 This is ≈4–5 modules of dependent-width block algebra — well-defined, no open design questions, but a
 genuine multi-tide sequence (NOT a single tide). The det side (items 2 + 4-skeleton) + the slot
 foundation are banked; the structured decoder + item-3 induction are the remaining build.
+
+---
+
+## UPDATE-3 (same tide cont.) — dependent-width decoder FOUNDATIONS banked; the assembly is the next sub-build
+
+Pushed further through the structured-decoder wall. Banked (sorry-free + axiom-clean, in
+`RouteMChartSlots`):
+- **`bmatStack`** + `bmatStack_top`/`bmatStack_bot` — the derived Schur-frame kept block
+  `Bmat s = [K ; X·K]` (`Text s × Text(s+1)`) at dependent widths: `finSumFinEquiv` row split (top `K`
+  over `Text(s+1)` rows, bottom `X·K` over `r_s = Text s − Text(s+1)` rows) + a `Text(s+1)+r_s = Text s`
+  reindex. The block-extraction laws resolve the `Fin.cast (castAdd/natAdd)` reads. The `t`-arity bridge
+  (`Text` wants `Fin(L+1)→ℕ`) is handled.
+- **`frameSplitEquiv`** — the Schur-frame slot K/X/N/E sub-split (`Fin (Text s·Wext s) ≃ (((K⊕X)⊕N)⊕E)`
+  via the banked `roleSquare_eq` + left-nested `finSumFinEquiv.symm`). The per-frame role accessor base.
+
+### Index alignment NAILED (concrete (3,3,3,3) trace)
+GenBlk frame at index `s` has size `Text s · Wext s = schurDim(s−1)` (since `schurDim k =
+Text(k+1)·Wext(k+1)`). So: **`schurDim k` (k=0..L−2) → frame at GenBlk `s=k+1`** (the `s−1` shift);
+**`schurDim(L−1)` → leaf `Rfin(L)`** (`Text(L)·Wext(L)`); **`liftDim k` → `Wblk` at `s=k+1`**; GenBlk
+`s=0` is the fixed identity boundary (consumes NO slots). Radial pivot = ONE designated slot.
+
+### The next sub-build: `genBlkFlatStruct` ASSEMBLY (all components validated, the integration remains)
+With `bmatStack` + `frameSplitEquiv` + the readers banked, the decoder assembly is:
+1. Per interior `s` (1..L−1): read K/X/N/E matrices via `frameSplitEquiv` (slot `k=s−1`) +
+   `finProdFinEquiv` (entry index) + `chartIdxEquiv.symm` + `x`. `Bmat s = bmatStack K X`; `Nblk s = N`;
+   `Wblk s = W` (from `liftDim(s−1)`); `Rmat s` = bottom-right-placed `E` (the `u`-carrier; a
+   `Matrix.fromBlocks 0 0 0 E`-style placement into `Text s × Wext s` — analogous to `bmatStack` but
+   2D-padded). Boundary `s=0`: `Bmat 0 = I`, `Rmat 0 = 0` (identity). Leaf: `Rfin L` from `schurDim(L−1)`.
+2. The LDU reparametrization: K is read as `t_s²` coords reparametrized `low/diag/up` (a further
+   `finSumFinEquiv` sub-split of the K sub-slot) so the det carries the `∏|q|^{2(t−1−i)}` — OR keep K
+   direct and let the LDU FACTOR (item-2 `lduChartFactor`) supply the reparametrization in `composeFold`.
+   (Decide at assembly: cleanest is K-direct in the decoder, LDU in the factor — keeps the decoder
+   simpler and matches the item-2 factor's job.)
+3. Rate: `routeMCore_phiGenStruct` via the decoder-agnostic `routeMCore_phiGen` — re-prove only `hC0`
+   (`C 0 · suffix = suffix`; `Bmat 0 = I`, `Rmat 0 = 0`, `chainQ` at `c_0 = 0` is `I` — the
+   `RouteMGenChartId3333.genBlk3spec` pattern, now ∀M).
+Then item-3 (Params-level stage induction, Codex shape) + item-4 (leafH summation) → `phiFlat_abs_det`.
+
+The `Rmat s` bottom-right E-placement (a 2D padded block) is the one component not yet validated as a
+standalone lemma (analogous to `bmatStack` but padding a `c_s`-col `r_s`-row block into `Text s × Wext s`
+with zeros elsewhere) — the precise next dependent-width sub-step.
