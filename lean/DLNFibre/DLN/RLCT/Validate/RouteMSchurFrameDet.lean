@@ -33,7 +33,7 @@ open Matrix LinearMap
 
 noncomputable section
 
-namespace DLNFibre.RouteMSchurFrameDet
+namespace DLNFibre.DLN.RLCT
 
 /-! ## The abstract 2-block lower-triangular determinant (the keystone helper)
 
@@ -321,4 +321,4 @@ theorem schurFrame_abs_det_3333_boundary2_value (X : Matrix (Fin 1) (Fin 1) ℝ)
     |LinearMap.det (schurFrameDeriv X (Matrix.of fun _ _ => b) N)| = |b| ^ 3 := by
   rw [schurFrame_abs_det, Matrix.det_unique, Matrix.of_apply]
 
-end DLNFibre.RouteMSchurFrameDet
+end DLNFibre.DLN.RLCT
