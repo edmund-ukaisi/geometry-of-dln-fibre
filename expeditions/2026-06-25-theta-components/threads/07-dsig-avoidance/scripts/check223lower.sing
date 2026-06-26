@@ -1,0 +1,18 @@
+LIB "primdec.lib";
+// (2,2,3) r=1: confirm the LOWER-dim component (dim 8) is generically rank-1 (not rank-0/Sigma^0).
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22,b31,b32), dp;
+matrix A1[2][2]=a11,a12,a21,a22;
+matrix A2[3][2]=b11,b12,b21,b22,b31,b32;
+matrix P = A2*A1;
+ideal I = minor(P,2);
+poly detD = P[1,1];
+list pd = minAssGTZ(I);
+int i; intvec dims; int dmax=-1;
+for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); dims[i]=dim(pri); if(dims[i]>dmax){dmax=dims[i];} }
+for(i=1;i<=size(pd);i++){
+  ideal pri=std(pd[i]);
+  "COMP",i," dim=",dims[i]," (top? ",(dims[i]==dmax),")  gens=",pd[i];
+  // does P[1,1] (a 1x1 minor) vanish on this comp? i.e. is detD in pri (=> generic rank 0 = Sigma^0)?
+  "    detD=P[1,1] in p? NF=",reduce(detD,pri);
+}
+quit;

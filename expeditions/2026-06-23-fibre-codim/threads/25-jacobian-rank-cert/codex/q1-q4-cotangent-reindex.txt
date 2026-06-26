@@ -1,0 +1,95 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading prompt from stdin...
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+model: gpt-5-codex
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019ef9fb-af14-72b2-a24d-8011bf0520ce
+--------
+user
+You are a decorrelated second-model reviewer auditing a Lean 4 + Mathlib formalisation
+in commutative algebra / algebraic geometry. Two specific FIDELITY questions. Reason
+independently; do NOT just agree. State inference-vs-fact explicitly. Be terse + object-level.
+
+CONTEXT. There is a general lemma `finrank_cotangentSpace_eq_finrank_ker_jacobian`:
+  For R = MvPolynomial σ k (σ a Fintype, k a Field), a finite generating family g : ι → R
+  (ι a Fintype, DecidableEq), and a k-rational point a : σ → k with `∀ i, eval a (g i) = 0`,
+  define I = Ideal.span (Set.range g), A = R ⧸ I, and the augmentation ε : A →ₐ[k] k induced
+  by eval a (well-defined since the generators vanish at a). Let m_A = RingHom.ker ε (the
+  maximal ideal at a). Then
+    finrank k (CotangentSpace (Localization.AtPrime m_A)) = finrank k (ker jacobian),
+  where jacobian : (σ→k) →ₗ[k] (ι→k) is the linear map of the Jacobian matrix
+  J_{i,x} = eval a (pderiv x (g i)) (rows = generators i:ι, cols = variables x:σ).
+  CotangentSpace of a local ring is m/m² as a κ(m)-vector space; here κ(m_A)=k since a is rational.
+  The proof route: conormal/Kähler differential sequence of R ↠ A base-changed to k identifies
+  k ⊗_A Ω[A/k] with coker(Jᵀ); split augmentation makes m_A.Cotangent ≅ k⊗_A Ω[A/k];
+  flat localization (Ideal.tensorCotangentEquiv) identifies CotangentSpace(Loc.AtPrime m_A) with
+  k ⊗_A m_A.Cotangent. Then finrank(coker Jᵀ) = card σ − rank J = finrank(ker J).
+
+QUESTION 1 (cotangent-ring identification). The H3a application instantiates this with σ = the
+matrix-entry coordinate index, g = the fibre generators g_{(r,c)} = multPoly(r,c) − C(B r c)
+(one per output entry (r,c)), a = the coordinates of a point A in the fibre (mult A = B), and the
+vanishing hypothesis is `eval a (g_{(r,c)}) = 0` which holds because mult A = B. The headline
+applied is stated as:
+  finrank k (CotangentSpace (Localization.AtPrime (maxIdealAt g a hg)))
+    = finrank k (ker (fibreJacobian)).
+CLAIM under audit: the LHS is "the local cotangent space of the FIBRE COORDINATE RING (the ring
+cut out by span(g) = the fibre generator ideal) at the rational point A". Is this identification
+faithful? Specifically: (a) Is `Localization.AtPrime (maxIdealAt g a hg)` genuinely the local ring
+of A = R ⧸ span(range g) at the maximal ideal m_A = ker(ε)? (b) Is m_A really the maximal ideal
+corresponding to the point a (i.e. is the cotangent space at this localization the Zariski
+cotangent space of the affine scheme V(I) at the point a, NOT something else)? (c) Is the result
+genuinely UNCONDITIONAL — no smoothness/genericity/reducedness hypothesis hidden? Note: span(range g)
+is NOT claimed radical; A may be non-reduced. Does the cotangent = ker(J) identity still hold
+WITHOUT radical/reduced, purely from a being a rational zero? Flag any subtlety about the cotangent
+space of a non-reduced ring at a rational point vs. the tangent space dimension.
+
+QUESTION 4 (reindexing soundness). The supporting general lemma was originally proved with the
+generator index being `Fin m` (m : ℕ). It was generalised by replacing `Fin m` with an arbitrary
+`ι : Type*` carrying `[Fintype ι] [DecidableEq ι]` throughout — the Jacobian matrix type changed
+from `Matrix (Fin m) σ k` to `Matrix ι σ k`, and `jacobian/jacobianTranspose` codomains from
+`Fin m → k` to `ι → k`. The proof bodies were otherwise UNCHANGED (every diff line is a pure type
+substitution Fin m → ι plus the two added instances). Key spots that used Fin-specific facts:
+`Pi.basisFun k ι` (standard basis of ι → k), `Pi.single i 1`, finite sums `∑ i`, and a
+`span (range (Pi.single i 1)) = ⊤` step. CLAIM under audit: this generalisation is sound and
+introduces no overclaim — `Pi.basisFun`, `Pi.single`, `Fintype.card`, `Matrix.rank`,
+`Matrix.rank_transpose` all work for an arbitrary `[Fintype ι][DecidableEq ι]` exactly as for
+`Fin m`, and nothing in the cokernel/conormal chain depended on `ι` being an initial segment of ℕ
+or on a linear order on ι. Is there ANY place where `Fin m` specifically (an ordering, a cardinality
+m, `Fin.induction`, decidable linear order) could have been silently relied upon, such that the
+reindexed statement is weaker/stronger/different than advertised? In particular does
+`Matrix ι σ k` rank theory and `Pi.basisFun k ι` require only `Fintype + DecidableEq`?
+
+For each question: verdict FAITHFUL / OVERCLAIM / GAP, with the precise reason. If you need a fact
+you are unsure of, mark it as an assumption to verify rather than asserting it.
+
+warning: Model metadata for `gpt-5-codex` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+**Question 1 — FAITHFUL**
+- Fact: For any `k`-algebra `A` and algebra map `ε : A →ₐ[k] k`, `m := RingHom.ker ε` is a maximal (hence prime) ideal; `Localization.AtPrime m` is the usual local ring `A_m`.
+- Fact: The Lean construction `maxIdealAt g a hg` is (by definition) `ker (eval₂_hom …)` on the quotient `A = R ⧸ span(range g)`, so it coincides with the point `a`.
+- Fact: `CotangentSpace (Localization.AtPrime m)` is canonically `(m / m^2) ⊗_{κ(m)} κ(m)`; because `ε` splits and `κ(m) = k`, this matches the Zariski cotangent space of the fibre at `a`.
+- Inference: Nonreducedness of `A` poses no extra hypothesis; the identification uses only the conormal sequence and the universal property of Kähler differentials. The Jacobian–cotangent equality counts nilpotent directions via `m/m²`, so there is no hidden smoothness assumption.
+
+**Question 4 — FAITHFUL**
+- Fact: `Pi.basisFun k ι`, `Pi.single i 1`, finite sums, and the lemma `Submodule.span (Set.range (Pi.single _ _)) = ⊤` are all stated for arbitrary `[Fintype ι] [DecidableEq ι]`.
+- Fact: `Matrix ι σ k`, `Matrix.rank`, and `Matrix.rank_transpose` work uniformly for any finite types; no order on `ι` is required.
+- Inference: The proof only reindexes along these typeclass-polymorphic constructions, so replacing `Fin m` with general `ι` neither weakens nor strengthens the statement and introduces no hidden dependence on `Fin`-specific structure.
+tokens used
+16,812
+**Question 1 — FAITHFUL**
+- Fact: For any `k`-algebra `A` and algebra map `ε : A →ₐ[k] k`, `m := RingHom.ker ε` is a maximal (hence prime) ideal; `Localization.AtPrime m` is the usual local ring `A_m`.
+- Fact: The Lean construction `maxIdealAt g a hg` is (by definition) `ker (eval₂_hom …)` on the quotient `A = R ⧸ span(range g)`, so it coincides with the point `a`.
+- Fact: `CotangentSpace (Localization.AtPrime m)` is canonically `(m / m^2) ⊗_{κ(m)} κ(m)`; because `ε` splits and `κ(m) = k`, this matches the Zariski cotangent space of the fibre at `a`.
+- Inference: Nonreducedness of `A` poses no extra hypothesis; the identification uses only the conormal sequence and the universal property of Kähler differentials. The Jacobian–cotangent equality counts nilpotent directions via `m/m²`, so there is no hidden smoothness assumption.
+
+**Question 4 — FAITHFUL**
+- Fact: `Pi.basisFun k ι`, `Pi.single i 1`, finite sums, and the lemma `Submodule.span (Set.range (Pi.single _ _)) = ⊤` are all stated for arbitrary `[Fintype ι] [DecidableEq ι]`.
+- Fact: `Matrix ι σ k`, `Matrix.rank`, and `Matrix.rank_transpose` work uniformly for any finite types; no order on `ι` is required.
+- Inference: The proof only reindexes along these typeclass-polymorphic constructions, so replacing `Fin m` with general `ι` neither weakens nor strengthens the statement and introduces no hidden dependence on `Fin`-specific structure.

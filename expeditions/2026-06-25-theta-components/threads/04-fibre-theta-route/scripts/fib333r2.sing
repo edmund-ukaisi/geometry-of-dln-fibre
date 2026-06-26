@@ -1,0 +1,20 @@
+LIB "primdec.lib";
+// (3,3,3) r=2: 2 factors A_1,A_2 each 3x3. mult=A_2*A_1. E = diag(I_2,0) 3x3. detDelta = top-left 2x2 minor of P.
+ring R = 0, (a11,a12,a13,a21,a22,a23,a31,a32,a33, b11,b12,b13,b21,b22,b23,b31,b32,b33), dp;
+matrix A[3][3]=a11,a12,a13,a21,a22,a23,a31,a32,a33;
+matrix B[3][3]=b11,b12,b13,b21,b22,b23,b31,b32,b33;
+matrix P=B*A;
+matrix E[3][3]=1,0,0,0,1,0,0,0,0;
+matrix D=P-E;
+ideal I=D[1,1],D[1,2],D[1,3],D[2,1],D[2,2],D[2,3],D[3,1],D[3,2],D[3,3];
+ideal sI=std(I);
+int cod=18-dim(sI);
+"333r2 DIM:",dim(sI),"CODIM:",cod;
+matrix Del[2][2]=P[1,1],P[1,2],P[2,1],P[2,2];
+poly detDel=det(Del);
+list mp=minAssGTZ(I);
+"333r2 NMINPRIMES:",size(mp);
+int i;int top=0;
+for(i=1;i<=size(mp);i++){int dd=dim(std(mp[i])); if(18-dd==cod){top=top+1;} "  comp",i,"codim",18-dd,"NF(detDel-1):",reduce(detDel-1,std(mp[i]));}
+"333r2 TOP(codim",cod,"):",top;
+quit;

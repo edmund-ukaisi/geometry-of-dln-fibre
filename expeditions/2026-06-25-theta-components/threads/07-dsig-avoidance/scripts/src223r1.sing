@@ -1,0 +1,16 @@
+LIB "primdec.lib";
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22,b31,b32), dp;
+matrix A1[2][2]=a11,a12,a21,a22;        // 2x2
+matrix A2[3][2]=b11,b12,b21,b22,b31,b32; // 3x2
+matrix P = A2*A1;     // 3x2
+ideal I = minor(P,2); // 2x2 minors => rank<=1
+poly detD = P[1,1];   // top-left 1x1 (r=1): rows Fin 1 of d2=3, cols Fin 1 of d0=2
+int nv=nvars(R); "nvars =",nv;
+list pd = minAssGTZ(I);
+"num minimal primes =",size(pd);
+int i; int dmax=-1; intvec dims;
+for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); int di=dim(pri); dims[i]=di; if(di>dmax){dmax=di;} }
+"dims =",dims," max dim =",dmax," min codim =",nv-dmax;
+"--- top comps ---";
+for(i=1;i<=size(pd);i++){ if(dims[i]==dmax){ ideal pri=std(pd[i]); "COMP",i," codim=",nv-dims[i]," gens=",pd[i]; "    NF(detD)=",reduce(detD,pri); } }
+quit;

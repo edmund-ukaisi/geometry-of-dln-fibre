@@ -267,3 +267,26 @@ rest` split (`sumPiEquivProdPi`) + the `(Fin schurDim → ℝ) ≃L SchurInc`/`L
 `(paramsEquivFlat).symm ∘ composeFold fs = chartParamsGen ∘ genBlkFlatStruct` (the chainA-layer
 induction). This is the one genuinely-deep remaining build; the CLE machinery + all det/rate/decoder
 foundations beneath it are banked.
+
+---
+
+## UPDATE-7 (same tide cont.) — PATH B REJECTED (Codex+controller); the bridge (PATH A′) is the irreducible reconciliation
+
+The controller caught the ATOM confound: `NodeAchieverChart` bundles ONE map `phi` needing BOTH
+`leaf_integrand` (RATE of phi) AND `cov` (DET of phi). I have RATE on `phiFlatStruct` + DET on
+`composeFold fs` — TWO maps. PATH B (rate of composeFold fs directly) is NOT a shortcut (Codex + my
+read): `routeMCore` reads via `paramsEquivFlat.symm`, so the rate of `composeFold fs` REQUIRES
+identifying `(paramsEquivFlat).symm (composeFold fs u)`'s Params-layers = THE BRIDGE. PATH C (det of
+phiFlatStruct directly) rebuilds the per-factor derivative decomposition — MORE work.
+
+**PATH A′ (the cleanest, Codex-confirmed): prove the bridge ONCE at the Params level:**
+`(paramsEquivFlat M).symm (composeFold fs u) = chartParamsGen u M t (genBlkFlatStruct u) hle`.
+Then ONE map `phi := composeFold fs`: DET via `composeFold_abs_det_leafH` (free); RATE by transporting
+the banked `routeMCore_phiFlatStruct` through the bridge. This discharges the atom's both fields.
+
+The bridge IS the deep stage-induction (`funext`/per-layer match of the factored flat product to the
+`chainA` layers over opaque widths). It is IRREDUCIBLE (all three paths need a reconciliation of this
+depth; A′ is the cheapest + serves both fields). The DESIGN FREEDOM: choose `fs` so the bridge is
+near-definitional — represent the factor fold as producing the `chainA` layers SEMANTICALLY (Codex).
+This is the last wall; both endpoints (rate of phiFlatStruct; det of composeFold fs) + all
+infrastructure are banked.

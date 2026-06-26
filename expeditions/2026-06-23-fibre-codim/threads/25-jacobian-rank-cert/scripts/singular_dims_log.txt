@@ -1,0 +1,16 @@
+=== /tmp/out_333_1.txt ===
+d=[3, 3, 3] r=1 card=18: fibre dim = 10
+=== /tmp/out_333_2.txt ===
+d=[3, 3, 3] r=2 card=18: fibre dim = 9
+=== /tmp/out__f_2222_0.txt ===
+d=[2, 2, 2, 2] r=0 card=12: fibre dim = 9
+=== /tmp/out__f_2222_1.txt ===
+d=[2, 2, 2, 2] r=1 card=12: fibre dim = 8
+=== /tmp/out__f_2222_2.txt ===
+d=[2, 2, 2, 2] r=2 card=12: fibre dim = 8
+=== /tmp/out__f_223_0.txt ===
+d=[2, 2, 3] r=0 card=10: fibre dim = 6
+=== /tmp/out__f_223_1.txt ===
+d=[2, 2, 3] r=1 card=10: fibre dim = 5
+=== /tmp/out__f_223_2.txt ===
+d=[2, 2, 3] r=2 card=10: fibre dim = 4

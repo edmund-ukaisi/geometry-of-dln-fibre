@@ -1,0 +1,17 @@
+LIB "primdec.lib";
+// (3,3,3) r=1: Sigma^1 = {rank(A2*A1)<=1} = ideal of all 2x2 minors of P (3x3).
+ring R = 0, (a11,a12,a13,a21,a22,a23,a31,a32,a33, b11,b12,b13,b21,b22,b23,b31,b32,b33), dp;
+matrix A1[3][3]=a11,a12,a13,a21,a22,a23,a31,a32,a33;
+matrix A2[3][3]=b11,b12,b13,b21,b22,b23,b31,b32,b33;
+matrix P = A2*A1;
+ideal I = minor(P,2);     // all 2x2 minors => rank <= 1
+poly detD = P[1,1];       // top-left 1x1 minor (r=1)
+int nv=nvars(R); "nvars =",nv;
+list pd = minAssGTZ(I);
+"num minimal primes =",size(pd);
+int i; int dmax=-1; intvec dims;
+for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); int di=dim(pri); dims[i]=di; if(di>dmax){dmax=di;} }
+"dims =",dims," max dim =",dmax," min codim =",nv-dmax;
+"--- top-dim comps: NF(detD) (0=>BAD) ---";
+for(i=1;i<=size(pd);i++){ if(dims[i]==dmax){ ideal pri=std(pd[i]); "COMP",i," codim=",nv-dims[i]; "  NF(detD)=",reduce(detD,pri); } }
+quit;

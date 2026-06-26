@@ -1,0 +1,18 @@
+LIB "primdec.lib";
+// (2,2,3) r=1: 2 factors. A_1: 2x2 (d0=2->d1=2), A_2: 3x2 (d1=2->d2=3). mult = A_2*A_1 is 3x2.
+// E = rank-1 normal form 3x2 = [[1,0],[0,0],[0,0]]. detDelta = top-left 1x1 minor of product = P[1,1].
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22,b31,b32), dp;  // A_1 2x2, A_2 3x2
+matrix A[2][2]=a11,a12,a21,a22;
+matrix B[3][2]=b11,b12,b21,b22,b31,b32;
+matrix P=B*A;   // 3x2
+matrix E[3][2]=1,0,0,0,0,0;
+matrix D=P-E;
+ideal I=D[1,1],D[1,2],D[2,1],D[2,2],D[3,1],D[3,2];
+ideal sI=std(I);
+"223r1 DIM:",dim(sI),"CODIM:",10-dim(sI);
+list mp=minAssGTZ(I);
+"223r1 NMINPRIMES:",size(mp);
+int i;int cod=10-dim(sI);int top=0;
+for(i=1;i<=size(mp);i++){int dd=dim(std(mp[i])); if(10-dd==cod){top=top+1;} "  comp",i,"codim",10-dd,"NF(P[1,1]-1):",reduce(P[1,1]-1,std(mp[i]));}
+"223r1 TOP(codim",cod,"):",top;
+quit;
