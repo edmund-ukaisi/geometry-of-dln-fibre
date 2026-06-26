@@ -6023,3 +6023,13 @@ retained-passive bridge files.  The remaining high-value work is no longer to
 add wrappers of the same shape; it is to prove one of the supplied hypotheses:
 endpoint equivalences, adjacent source-readback factor identities, fixed-pivot
 nonzero, or a full-to-window/outside-factor transport theorem.
+
+Latest source-readback per-factor residual block:
+`RetainedPassiveCoordinates.lean` now exposes the definitional helper
+`sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge`.
+This is useful only as a local source-readback factor API.  The next valuable
+move is still to prove a supplied hypothesis from the adjacent-window Case 2
+consumer: a displayed factor identity for an actual transformed edge, endpoint
+equivalence, full-to-window/outside-factor transport, or pivot nonzero
+provenance.  Do not add further wrappers around this helper unless a
+downstream theorem consumes them directly.

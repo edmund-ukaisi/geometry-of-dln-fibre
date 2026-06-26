@@ -13169,3 +13169,15 @@ This moves the next source-specific target: prove the endpoint/factor
 alignment for a real source-readback family, or prove a full-to-window
 transport/absorption statement.  The current theorem is not fixed-base source
 production and not full-suffix collapse.
+
+Latest source-readback per-factor residual block:
+`RetainedPassiveCoordinates.lean` now exposes
+`sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge`, the
+definitional equality identifying each source-readback factor
+`(sourceReadback E).C p` with the Schur residual block of
+`sourceReadbackTransformedEdge E p`.
+
+Use this as the local API for adjacent source-readback factor work.  It does
+not prove the transformed edge has the displayed Case 2 post-pivot form, and
+it does not address endpoint equivalences, full-to-window transport,
+fixed-pivot nonzero, source chart production, or analytic/RLCT extraction.

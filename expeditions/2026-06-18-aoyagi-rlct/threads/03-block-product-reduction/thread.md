@@ -8981,3 +8981,34 @@ identities, identify the full fixed-base endpoint product with the adjacent
 window, prove pivot nonzero, produce a source chart, or prove
 pushforward/Jacobian, original-loss, normal-crossing, pole-order, or RLCT
 statements.
+
+## 2026-06-26 A2 source-readback per-factor residual block
+
+Reproduction:
+`reproduction-a2-source-readback-per-factor-residual-block.md`.
+Statement card:
+`statement-card-a2-source-readback-per-factor-residual-block.md`.
+Review:
+`review-a2-source-readback-per-factor-residual-block.md`
+passed by xhigh `Pascal the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.
+
+Lean now exposes:
+
+```text
+sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge
+```
+
+For a retained-passive-shaped source edge family `E`, the theorem states that
+`(sourceReadback E).C p` is exactly the Schur residual block of
+`sourceReadbackTransformedEdge E p`.  The proof is `rfl`; no determinant-chart
+hypothesis is needed.
+
+This is a per-factor API handle for the next adjacent-window/source-hypothesis
+frontier.  It does not prove that the transformed source edge is a displayed
+Case 2 post-pivot block, does not construct endpoint equivalences, does not
+collapse a full fixed-base endpoint product to an adjacent window, and does
+not prove pivot nonzero, source production, pushforward/Jacobian,
+original-loss, normal-crossing, pole-order, or RLCT statements.

@@ -9050,3 +9050,31 @@ Nonclaims: no endpoint equivalence, full retained-passive suffix transport,
 fixed-base source production, pivot nonzero provenance, source image,
 pushforward/Jacobian theorem, original-loss comparison, normal crossings,
 pole order, or RLCT is proved.
+
+Latest A2 source-readback per-factor residual block:
+Lean now exposes the definitional field identity
+`sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge` in
+`RetainedPassiveCoordinates.lean`.
+
+Status: Proved; reviewed.
+
+Claim: for any retained-passive-shaped source edge family `E` and edge index
+`p`, `(sourceReadback E).C p` equals the Schur residual block of
+`sourceReadbackTransformedEdge E p`.  The proof is `rfl` and needs no
+determinant-chart hypothesis.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-source-readback-per-factor-residual-block.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-source-readback-per-factor-residual-block.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-readback-per-factor-residual-block.md`
+passed by xhigh `Pascal the 4th`.
+
+Kill condition: this is only a named per-factor readback identity.  It may
+not be used as a displayed Case 2 factor identity, endpoint equivalence,
+full-suffix collapse, fixed pivot nonzero proof, or analytic source
+production.
+
+Nonclaims: no source chart, source image, pushforward/Jacobian theorem,
+original-loss comparison, normal crossings, pole order, or RLCT is proved.

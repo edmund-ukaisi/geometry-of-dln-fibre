@@ -9948,6 +9948,35 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+## 2026-06-26 A2 source-readback per-factor residual block
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-readback-per-factor-residual-block.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-source-readback-per-factor-residual-block.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-readback-per-factor-residual-block.md`
+passed by xhigh `Pascal the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.
+
+Lean now proves:
+
+```text
+sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge
+```
+
+This exposes the field definition of `sourceReadback.C`: for each edge `p`,
+the source-readback residual factor is the Schur residual block of
+`sourceReadbackTransformedEdge E p`.  The proof is definitional and requires
+no determinant-chart hypothesis.
+
+Nonclaims: no displayed Case 2 factor identity, no endpoint equivalence, no
+full-to-window transport, no fixed successor pivot nonzero, no source chart,
+no source image, no pushforward/Jacobian theorem, no original-loss comparison,
+no normal crossings, no pole order, and no RLCT.
+
 Latest A2 adjacent two-edge residual-factor transport:
 `ProductReduction.lean` proves
 `ChartLocalSuffixState.residualFactorProduct_one_edge_eq_factor`,

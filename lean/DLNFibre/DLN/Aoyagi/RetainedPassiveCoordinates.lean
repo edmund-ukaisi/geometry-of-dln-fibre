@@ -2572,6 +2572,18 @@ def sourceReadback
       (sourceReadbackSuffixState (K := K) (ρ := ρ) E 0
         (Fin.zero_le (Fin.last (M + 1)))).L
 
+/-- The retained-passive source readback stores, at each edge, exactly the Schur
+residual block of the transformed source edge. -/
+theorem sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (p : Fin (M + 1)) :
+    (sourceReadback (K := K) (ρ := ρ) E).C p =
+      schurResidualBlock (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
+  rfl
+
 /-- Along a source family satisfying the recursive determinant-chart predicate,
 the accumulated source-readback top block has determinant a unit at every suffix
 state. -/
