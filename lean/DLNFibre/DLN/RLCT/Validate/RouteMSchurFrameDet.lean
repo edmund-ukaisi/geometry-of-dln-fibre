@@ -321,4 +321,181 @@ theorem schurFrame_abs_det_3333_boundary2_value (X : Matrix (Fin 1) (Fin 1) ℝ)
     |LinearMap.det (schurFrameDeriv X (Matrix.of fun _ _ => b) N)| = |b| ^ 3 := by
   rw [schurFrame_abs_det, Matrix.det_unique, Matrix.of_apply]
 
+/-! ## A3 — the LDU-core parametrization Jacobian determinant
+
+Parametrize a `t × t` matrix `K = L · diag(q) · U` by its strict-lower, diagonal, strict-upper free
+entries (`LDUParam t`). The Fréchet derivative of `(L_free, q, U_free) ↦ K` has determinant
+`∏_i q_i^{2(t−1−i)}` (independent of the `L, U` point — they are det-1 unit-triangular factors). The
+LDU-core factor of the achiever chart; combines with the Schur frame's spectator
+`|det Kₛ|^{rₛ+cₛ}`. -/
+
+/-- Strict-lower index set `{(i,j) : j < i}`. -/
+abbrev LowIdx (t : ℕ) := {p : Fin t × Fin t // p.2 < p.1}
+/-- Strict-upper index set `{(i,j) : i < j}`. -/
+abbrev UpIdx (t : ℕ) := {p : Fin t × Fin t // p.1 < p.2}
+/-- The LDU parameter space: strict-lower entries, diagonal, strict-upper entries. -/
+abbrev LDUParam (t : ℕ) := (LowIdx t → ℝ) × (Fin t → ℝ) × (UpIdx t → ℝ)
+
+/-- Embed strict-lower free entries into a matrix (zero on/above the diagonal). -/
+def lowMat {t : ℕ} (l : LowIdx t → ℝ) : Matrix (Fin t) (Fin t) ℝ :=
+  Matrix.of fun i j => if h : j < i then l ⟨(i, j), h⟩ else 0
+
+/-- Embed strict-upper free entries into a matrix (zero on/below the diagonal). -/
+def upMat {t : ℕ} (u : UpIdx t → ℝ) : Matrix (Fin t) (Fin t) ℝ :=
+  Matrix.of fun i j => if h : i < j then u ⟨(i, j), h⟩ else 0
+
+/-- The entry of the assembled matrix `lowMat l + diagonal d + upMat u`. -/
+theorem assemble_apply {t : ℕ} (l : LowIdx t → ℝ) (d : Fin t → ℝ) (u : UpIdx t → ℝ) (i j : Fin t) :
+    (lowMat l + Matrix.diagonal d + upMat u) i j =
+      if h : j < i then l ⟨(i, j), h⟩ else if h : i < j then u ⟨(i, j), h⟩ else d i := by
+  simp only [lowMat, upMat, Matrix.add_apply, Matrix.of_apply, Matrix.diagonal_apply]
+  rcases lt_trichotomy i j with h | h | h
+  · rw [dif_neg (asymm h), dif_pos h, dif_neg (asymm h), dif_pos h, if_neg (ne_of_lt h)]
+    ring
+  · subst h
+    rw [dif_neg (lt_irrefl _), dif_neg (lt_irrefl _), dif_neg (lt_irrefl _), dif_neg (lt_irrefl _),
+      if_pos rfl]
+    ring
+  · rw [dif_pos h, dif_pos h, if_neg (Ne.symm (ne_of_lt h)), dif_neg (asymm h)]
+    ring
+
+/-- The LDU coordinate split: a `t×t` matrix ↔ its strict-lower, diagonal, strict-upper entries. -/
+def matrixSplit {t : ℕ} : Matrix (Fin t) (Fin t) ℝ ≃ₗ[ℝ] LDUParam t where
+  toFun M := (fun p => M p.1.1 p.1.2, fun i => M i i, fun p => M p.1.1 p.1.2)
+  map_add' M N := by refine Prod.ext rfl (Prod.ext rfl rfl)
+  map_smul' a M := by refine Prod.ext rfl (Prod.ext rfl rfl)
+  invFun w := lowMat w.1 + Matrix.diagonal w.2.1 + upMat w.2.2
+  left_inv M := by
+    ext i j
+    change (lowMat (fun p => M p.1.1 p.1.2) + Matrix.diagonal (fun i => M i i)
+          + upMat (fun p => M p.1.1 p.1.2)) i j = M i j
+    rw [assemble_apply]
+    rcases lt_trichotomy i j with h | h | h
+    · rw [dif_neg (asymm h), dif_pos h]
+    · subst h; rw [dif_neg (lt_irrefl _), dif_neg (lt_irrefl _)]
+    · rw [dif_pos h]
+  right_inv w := by
+    obtain ⟨l, d, u⟩ := w
+    refine Prod.ext ?_ (Prod.ext ?_ ?_)
+    · ext p; obtain ⟨⟨i, j⟩, hp⟩ := p
+      change (lowMat l + Matrix.diagonal d + upMat u) i j = _
+      rw [assemble_apply, dif_pos hp]
+    · ext i
+      change (lowMat l + Matrix.diagonal d + upMat u) i i = _
+      rw [assemble_apply, dif_neg (lt_irrefl _), dif_neg (lt_irrefl _)]
+    · ext p; obtain ⟨⟨i, j⟩, hp⟩ := p
+      change (lowMat l + Matrix.diagonal d + upMat u) i j = _
+      rw [assemble_apply, dif_neg (asymm hp), dif_pos hp]
+
+/-! ### The diagonal-point LDU Jacobian determinant
+
+At the diagonal point `L = U = 1` (so `K = diag q`), the LDU differential
+`(dl, dq, du) ↦ lowMat dl · diag q + diag dq + diag q · upMat du` is **block-diagonal** under
+`matrixSplit`: the strict-lower output reads only `dl` (scaled by `q` columnwise), the diagonal
+reads `dq`, the strict-upper reads only `du` (scaled by `q` rowwise). Its determinant is
+`∏_i q_i^{2(t−1−i)}`.
+
+(The general-`L,U` LDU Jacobian has the SAME determinant — the unit-triangular `L, U` factors are
+det 1 — but its proof additionally needs the unit-factor conjugation + a triangular-det over
+`LowIdx`; see `design.md` §4 "Phase A build status". The diagonal-point case is the load-bearing
+core and is what the rate identity evaluates at the achiever pivot.) -/
+
+/-- The columnwise `q`-scaling on strict-lower coordinates: `dl ↦ (p ↦ dl p · q p.col)`. -/
+def lowerScale {t : ℕ} (q : Fin t → ℝ) : (LowIdx t → ℝ) →ₗ[ℝ] (LowIdx t → ℝ) :=
+  LinearMap.pi (fun p : LowIdx t => (LinearMap.mulRight ℝ (q p.1.2)).comp (LinearMap.proj p))
+
+/-- The rowwise `q`-scaling on strict-upper coordinates: `du ↦ (p ↦ du p · q p.row)`. -/
+def upperScale {t : ℕ} (q : Fin t → ℝ) : (UpIdx t → ℝ) →ₗ[ℝ] (UpIdx t → ℝ) :=
+  LinearMap.pi (fun p : UpIdx t => (LinearMap.mulRight ℝ (q p.1.1)).comp (LinearMap.proj p))
+
+/-- **The multiplicity count (strict-lower)**: `∏_{(i,j): j<i} q_j = ∏_j q_j^{t−1−j}`. -/
+theorem prod_lowIdx_col {t : ℕ} (q : Fin t → ℝ) :
+    (∏ p : LowIdx t, q (p.1).2) = ∏ j : Fin t, (q j) ^ ((t : ℕ) - 1 - (j : ℕ)) := by
+  rw [← Finset.prod_subtype (Finset.univ.filter (fun p : Fin t × Fin t => p.2 < p.1))
+        (fun p => by simp) (fun p => q p.2)]
+  rw [← Finset.prod_fiberwise_of_maps_to (t := (Finset.univ : Finset (Fin t)))
+        (g := fun p : Fin t × Fin t => p.2) (fun x _ => Finset.mem_univ _) (fun p => q p.2)]
+  apply Finset.prod_congr rfl
+  intro j _
+  rw [Finset.prod_congr rfl (fun p hp => by
+    simp only [Finset.mem_filter] at hp; rw [hp.2])]
+  rw [Finset.prod_const]
+  congr 1
+  rw [← Fin.card_Ioi (a := j)]
+  apply Finset.card_bij (fun p _ => p.1)
+  · intro p hp; simp only [Finset.mem_filter] at hp; simp [Finset.mem_Ioi, ← hp.2, hp.1]
+  · intro p hp q hq h
+    simp only [Finset.mem_filter] at hp hq
+    apply Prod.ext h; rw [hp.2, hq.2]
+  · intro i hi; simp only [Finset.mem_Ioi] at hi
+    exact ⟨(i, j), by simp [Finset.mem_filter, hi], rfl⟩
+
+/-- **The multiplicity count (strict-upper)**: `∏_{(i,j): i<j} q_i = ∏_i q_i^{t−1−i}`. -/
+theorem prod_upIdx_row {t : ℕ} (q : Fin t → ℝ) :
+    (∏ p : UpIdx t, q (p.1).1) = ∏ i : Fin t, (q i) ^ ((t : ℕ) - 1 - (i : ℕ)) := by
+  rw [← Finset.prod_subtype (Finset.univ.filter (fun p : Fin t × Fin t => p.1 < p.2))
+        (fun p => by simp) (fun p => q p.1)]
+  rw [← Finset.prod_fiberwise_of_maps_to (t := (Finset.univ : Finset (Fin t)))
+        (g := fun p : Fin t × Fin t => p.1) (fun x _ => Finset.mem_univ _) (fun p => q p.1)]
+  apply Finset.prod_congr rfl
+  intro i _
+  rw [Finset.prod_congr rfl (fun p hp => by
+    simp only [Finset.mem_filter] at hp; rw [hp.2])]
+  rw [Finset.prod_const]
+  congr 1
+  rw [← Fin.card_Ioi (a := i)]
+  apply Finset.card_bij (fun p _ => p.2)
+  · intro p hp; simp only [Finset.mem_filter] at hp; simp [Finset.mem_Ioi, ← hp.2, hp.1]
+  · intro p hp q hq h
+    simp only [Finset.mem_filter] at hp hq
+    apply Prod.ext (by rw [hp.2, hq.2]) h
+  · intro j hj; simp only [Finset.mem_Ioi] at hj
+    exact ⟨(i, j), by simp [Finset.mem_filter, hj], rfl⟩
+
+/-- The strict-lower `q`-scaling block has determinant `∏_j q_j^{t−1−j}`. -/
+theorem lowerScale_det {t : ℕ} (q : Fin t → ℝ) :
+    LinearMap.det (lowerScale q) = ∏ j : Fin t, (q j) ^ ((t : ℕ) - 1 - (j : ℕ)) := by
+  rw [lowerScale, LinearMap.det_pi]
+  rw [Finset.prod_congr rfl (fun p _ => by simp [LinearMap.det_ring] :
+    ∀ p ∈ Finset.univ, LinearMap.det (LinearMap.mulRight ℝ (q (p : LowIdx t).1.2)) = q p.1.2)]
+  exact prod_lowIdx_col q
+
+/-- The strict-upper `q`-scaling block has determinant `∏_i q_i^{t−1−i}`. -/
+theorem upperScale_det {t : ℕ} (q : Fin t → ℝ) :
+    LinearMap.det (upperScale q) = ∏ i : Fin t, (q i) ^ ((t : ℕ) - 1 - (i : ℕ)) := by
+  rw [upperScale, LinearMap.det_pi]
+  rw [Finset.prod_congr rfl (fun p _ => by simp [LinearMap.det_ring] :
+    ∀ p ∈ Finset.univ, LinearMap.det (LinearMap.mulRight ℝ (q (p : UpIdx t).1.1)) = q p.1.1)]
+  exact prod_upIdx_row q
+
+/-- **The diagonal-point LDU Jacobian** as a block-diagonal endomorphism of `LDUParam`:
+strict-lower scaled columnwise by `q`, diagonal fixed, strict-upper scaled rowwise by `q`. The
+differential of `(L_free, q, U_free) ↦ L · diag q · U` at `L = U = 1`, read in LDU coordinates. -/
+def lduCoreDerivDiag {t : ℕ} (q : Fin t → ℝ) : LDUParam t →ₗ[ℝ] LDUParam t :=
+  (lowerScale q).prodMap (LinearMap.id.prodMap (upperScale q))
+
+/-- **A3 (diagonal point)**: `det (lduCoreDerivDiag q) = ∏_i q_i^{2(t−1−i)}`. -/
+theorem lduCoreDerivDiag_det {t : ℕ} (q : Fin t → ℝ) :
+    LinearMap.det (lduCoreDerivDiag q) = ∏ i : Fin t, (q i) ^ (2 * ((t : ℕ) - 1 - (i : ℕ))) := by
+  rw [lduCoreDerivDiag, LinearMap.det_prodMap, LinearMap.det_prodMap, LinearMap.det_id,
+    lowerScale_det, upperScale_det, one_mul, ← Finset.prod_mul_distrib]
+  apply Finset.prod_congr rfl
+  intro i _
+  rw [← pow_add, two_mul]
+
+/-- **A3 (diagonal point, abs form)**: `|det (lduCoreDerivDiag q)| = ∏_i |q_i|^{2(t−1−i)}`. -/
+theorem lduCoreDerivDiag_abs_det {t : ℕ} (q : Fin t → ℝ) :
+    |LinearMap.det (lduCoreDerivDiag q)| = ∏ i : Fin t, |q i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ))) := by
+  rw [lduCoreDerivDiag_det, Finset.abs_prod]
+  apply Finset.prod_congr rfl
+  intro i _
+  rw [abs_pow]
+
+/-- Validation, the `(3,3,3,3)` LDU core at boundary `s = 1` (`t = 2`): the A3 exponent product
+collapses to `q_0^2`, matching the hand `Kparam3333Deriv_det = (x 1)^2 = a^2` (`q_0 = a = x 1`). -/
+theorem lduCoreDerivDiag_det_3333_boundary1 (q : Fin 2 → ℝ) :
+    LinearMap.det (lduCoreDerivDiag q) = (q 0) ^ 2 := by
+  rw [lduCoreDerivDiag_det, Fin.prod_univ_two]
+  norm_num
+
 end DLNFibre.DLN.RLCT
