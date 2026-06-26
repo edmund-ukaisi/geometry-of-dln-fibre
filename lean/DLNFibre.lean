@@ -310,3 +310,9 @@ import DLNFibre.Core.FibreGenericSmooth
 -- coherence is NOT built (the cocycle on overlaps) — so this is cover + family, NOT yet `locallyTrivial`.
 import DLNFibre.Core.RankMinorCover
 import DLNFibre.Core.FibreBundlePerMinor
+-- Scope-3 (bundle transition cocycle, thread 19): the genuine ring-level transition `AlgEquiv` on the
+-- per-minor principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` + full coherence (commutes/symm/
+-- round-trip/triple-overlap cocycle), via localization initiality. The abstract `awayOverlap`/
+-- `awayTriple` engine is network-free (spin-out candidate). DISCLAIMER: this cocycle is on the AMBIENT
+-- `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the bundle is NOT `locallyTrivial`.
+import DLNFibre.Core.FibreBundleTransition
