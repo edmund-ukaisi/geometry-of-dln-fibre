@@ -154,4 +154,27 @@ theorem bmatStack_bot {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → �
         = Fin.natAdd (Text M t (k + 1)) b from by apply Fin.ext; simp,
     finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]
 
+/-! ## The Schur-frame slot K/X/N/E sub-split
+
+The frame slot at GenBlk boundary `s` (size `Text s · Wext s`) sub-splits into the Schur roles
+`K` (`Text(s+1)²`), `X` (`r_s·Text(s+1)`), `N` (`Text(s+1)·c_s`), `E` (`r_s·c_s`), where
+`r_s = Text s − Text(s+1)`, `c_s = Wext s − Text(s+1)`. The `(((K + X) + N) + E) = Text s · Wext s`
+identity is the banked `roleSquare_eq`; the split equiv nests `finSumFinEquiv.symm` left-to-right. -/
+
+/-- **The Schur-frame slot K/X/N/E sub-split equivalence** — `Fin (Text s · Wext s) ≃ (((K ⊕ X) ⊕ N)
+⊕ E)` at the role-block sizes, via `roleSquare_eq` + left-nested `finSumFinEquiv.symm`. The decoder's
+per-frame role accessor base (`K`, `X`, `N`, `E` blocks of the Schur frame at boundary `s`). -/
+def frameSplitEquiv {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s) :
+    Fin (Text M t s * Wext M s) ≃
+      (((Fin (Text M t (s + 1) * Text M t (s + 1)) ⊕
+         Fin ((Text M t s - Text M t (s + 1)) * Text M t (s + 1))) ⊕
+        Fin (Text M t (s + 1) * (Wext M s - Text M t (s + 1)))) ⊕
+       Fin ((Text M t s - Text M t (s + 1)) * (Wext M s - Text M t (s + 1)))) :=
+  (finCongr (roleSquare_eq h1 h2).symm).trans
+    ((finSumFinEquiv.symm).trans
+      (((finSumFinEquiv.symm).trans
+        (((finSumFinEquiv.symm).trans (Equiv.refl _)).sumCongr (Equiv.refl _))).sumCongr
+          (Equiv.refl _)))
+
 end DLNFibre.DLN.RLCT
