@@ -9815,3 +9815,27 @@ This is finite readback packaging only: no arbitrary edge-family image
 membership, image openness, source-rank coverage, source/image theorem, local
 homeomorphism, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive source-readback continuity:
+`RetainedPassiveCoordinates.lean` defines
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart`, the
+source-side recursive determinant predicate for the deterministic readback
+suffix states.
+
+`RetainedPassiveCoordinatesTopology.lean` proves
+`continuousAt_sourceReadbackSuffixState_fields`,
+`continuousAt_sourceReadbackTransformedEdge`,
+`continuousAt_sourceReadback`, and
+`continuous_sourceReadback_sourceRecursiveDetChart_subtype`.  The main theorem
+is pointwise `ContinuousAt` under `ContinuousAt E x0` and
+`sourceRecursiveDetChart (E x0)`; the subtype theorem is only a corollary.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-continuity.md`
+passed.
+
+This is finite readback continuity only: no arbitrary edge-family image
+membership, image openness, source-rank coverage, source/image theorem, local
+homeomorphism, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT.

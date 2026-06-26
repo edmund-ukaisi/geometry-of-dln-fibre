@@ -985,6 +985,248 @@ theorem continuous_edgeMatrix_detChart_subtype
   exact continuous_edgeMatrix_detChart_subtype_apply
     (ρ := ρ) (κ' := κ') (K := K) p
 
+/-- The deterministic source-readback suffix-state fields are continuous at a
+base edge family satisfying the recursive determinant-chart predicate. -/
+theorem continuousAt_sourceReadbackSuffixState_fields
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (E : α → ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hE : ContinuousAt E x₀)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) (E x₀))
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    IsUnit ((sourceReadbackSuffixState (K := K) (ρ := ρ) (E x₀) i hi).Ctop.det) ∧
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) (E x) i hi).L) x₀ ∧
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) (E x) i hi).B) x₀ ∧
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) (E x) i hi).Ctop) x₀ ∧
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) (E x) i hi).D) x₀ := by
+  have hchart' :
+      ∀ (p : Fin (M + 1)) (hp : p.succ ≤ Fin.last (M + 1)),
+        identityCornerDetChart
+          (transformedEdge (E x₀) p
+            (suffixState (E x₀) (Fin.last (M + 1)) p.succ hp)) := by
+    simpa [sourceRecursiveDetChart] using hchart
+  simpa [sourceReadbackSuffixState] using
+    (continuousAt_chartLocalSuffixState_suffixState_fields
+      (K := K) (ρ := ρ) (κ := κ') E hE
+      (j := Fin.last (M + 1)) hchart' i hi)
+
+/-- The transformed edge used by source readback is continuous at a base edge
+family satisfying the recursive determinant-chart predicate. -/
+theorem continuousAt_sourceReadbackTransformedEdge
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (E : α → ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hE : ContinuousAt E x₀)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) (E x₀))
+    (p : Fin (M + 1)) :
+    ContinuousAt
+      (fun x : α ↦
+        sourceReadbackTransformedEdge (K := K) (ρ := ρ) (E x) p) x₀ := by
+  let S : α → ChartLocalSuffixState ρ κ' K (Fin.last (M + 1)) p.succ :=
+    fun x ↦ sourceReadbackSuffixState (K := K) (ρ := ρ) (E x)
+      p.succ p.succ.le_last
+  have hfields :=
+    continuousAt_sourceReadbackSuffixState_fields
+      (K := K) (ρ := ρ) (κ' := κ') E hE hchart p.succ p.succ.le_last
+  rcases hfields with ⟨_, _hL, hB, _hCtop, _hD⟩
+  have hE_p : ContinuousAt (fun x : α ↦ E x p) x₀ :=
+    (continuous_apply p).continuousAt.comp hE
+  have hleft : ContinuousAt
+      (fun x : α ↦
+        fromBlocks (1 : Matrix ρ ρ K) (S x).B 0
+          (1 : Matrix (κ' p.succ) (κ' p.succ) K)) x₀ := by
+    have hfrom : Continuous
+        (fun B : Matrix ρ (κ' p.succ) K ↦
+          fromBlocks (1 : Matrix ρ ρ K) B 0
+            (1 : Matrix (κ' p.succ) (κ' p.succ) K)) :=
+      continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const
+    exact hfrom.continuousAt.comp hB
+  have hmul : Continuous
+      (fun q :
+          Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.succ) K ×
+            Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+        q.1 * q.2) :=
+    continuous_fst.matrix_mul continuous_snd
+  simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState, S,
+    transformedEdge] using
+    ContinuousAt.comp₂ hmul.continuousAt hleft hE_p
+
+/-- The source-side readback map is continuous at a base edge family satisfying
+the recursive determinant-chart predicate. -/
+theorem continuousAt_sourceReadback
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (E : α → ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (hE : ContinuousAt E x₀)
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) (E x₀)) :
+    ContinuousAt
+      (fun x : α ↦ sourceReadback (K := K) (ρ := ρ) (E x)) x₀ := by
+  have hchart' :
+      ∀ (p : Fin (M + 1)) (hp : p.succ ≤ Fin.last (M + 1)),
+        identityCornerDetChart
+          (transformedEdge (E x₀) p
+            (suffixState (E x₀) (Fin.last (M + 1)) p.succ hp)) := by
+    simpa [sourceRecursiveDetChart] using hchart
+  have hA1passive :
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadback (K := K) (ρ := ρ) (E x)).A1passive) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro p
+    exact continuous_topLeftCorner.continuousAt.comp
+      (continuousAt_sourceReadbackTransformedEdge
+        (K := K) (ρ := ρ) (κ' := κ') E hE hchart p.succ)
+  have hF2 :
+      ContinuousAt
+        (fun x : α ↦ (sourceReadback (K := K) (ρ := ρ) (E x)).F2) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro p
+    let T : α → Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
+      fun x ↦ sourceReadbackTransformedEdge (K := K) (ρ := ρ) (E x) p
+    have hT : ContinuousAt T x₀ :=
+      continuousAt_sourceReadbackTransformedEdge
+        (K := K) (ρ := ρ) (κ' := κ') E hE hchart p
+    have htop : ContinuousAt (fun x : α ↦ topLeftCorner (T x)) x₀ :=
+      continuous_topLeftCorner.continuousAt.comp hT
+    have htopUnit :
+        IsUnit ((topLeftCorner (T x₀)).det) := by
+      have hchartp := hchart' p p.succ.le_last
+      change IsUnit
+        ((topLeftCorner
+          (transformedEdge (E x₀) p
+            (suffixState (E x₀) (Fin.last (M + 1)) p.succ p.succ.le_last))).det) at hchartp
+      simpa [T, sourceReadbackTransformedEdge, sourceReadbackSuffixState] using hchartp
+    have htopInvBase :
+        ContinuousAt (Inv.inv : Matrix ρ ρ K → Matrix ρ ρ K)
+          (topLeftCorner (T x₀)) :=
+      continuousAt_matrix_inv_of_isUnit_det (A := topLeftCorner (T x₀)) htopUnit
+    have htopInv :
+        ContinuousAt (fun x : α ↦ (topLeftCorner (T x))⁻¹) x₀ := by
+      change ContinuousAt
+        ((Inv.inv : Matrix ρ ρ K → Matrix ρ ρ K) ∘
+          (fun x : α ↦ topLeftCorner (T x))) x₀
+      exact ContinuousAt.comp
+        (x := x₀) (f := fun x : α ↦ topLeftCorner (T x))
+        (g := Inv.inv) htopInvBase htop
+    have hupper : ContinuousAt (fun x : α ↦ upperRightBlock (T x)) x₀ := by
+      have hupper' : Continuous
+          (fun M : Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+            upperRightBlock M) :=
+        continuous_id.matrix_submatrix Sum.inl Sum.inr
+      exact hupper'.continuousAt.comp hT
+    have hmul : Continuous
+        (fun q : Matrix ρ ρ K × Matrix ρ (κ' p.castSucc) K ↦ q.1 * q.2) :=
+      continuous_fst.matrix_mul continuous_snd
+    have hbody : ContinuousAt
+        (fun x : α ↦ (topLeftCorner (T x))⁻¹ * upperRightBlock (T x)) x₀ :=
+      ContinuousAt.comp₂ hmul.continuousAt htopInv hupper
+    simpa [sourceReadback, T] using hbody.neg
+  have hA3passive :
+      ContinuousAt
+        (fun x : α ↦
+          (sourceReadback (K := K) (ρ := ρ) (E x)).A3passive) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro p
+    have hlower : Continuous
+        (fun M : Matrix (ρ ⊕ κ' p.castSucc.succ) (ρ ⊕ κ' p.castSucc.castSucc) K ↦
+          lowerLeftBlock M) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inl
+    exact hlower.continuousAt.comp
+      (continuousAt_sourceReadbackTransformedEdge
+        (K := K) (ρ := ρ) (κ' := κ') E hE hchart p.castSucc)
+  have hC :
+      ContinuousAt
+        (fun x : α ↦ (sourceReadback (K := K) (ρ := ρ) (E x)).C) x₀ := by
+    refine continuousAt_pi.2 ?_
+    intro p
+    have hres :=
+      continuousAt_chartLocalSuffixState_residualBlock
+        (K := K) (ρ := ρ) (κ := κ') E hE
+        (j := Fin.last (M + 1)) hchart' p p.succ.le_last
+    simpa [sourceReadback, sourceReadbackTransformedEdge, sourceReadbackSuffixState,
+      residualBlock] using hres
+  have hfields0 :=
+    continuousAt_sourceReadbackSuffixState_fields
+      (K := K) (ρ := ρ) (κ' := κ') E hE hchart 0
+      (Fin.zero_le (Fin.last (M + 1)))
+  rcases hfields0 with ⟨_, hL0, _hB0, hCtop0, _hD0⟩
+  have hCtop :
+      ContinuousAt
+        (fun x : α ↦ (sourceReadback (K := K) (ρ := ρ) (E x)).Ctop) x₀ := by
+    simpa [sourceReadback, sourceReadbackSuffixState] using hCtop0
+  have hF3 :
+      ContinuousAt
+        (fun x : α ↦ (sourceReadback (K := K) (ρ := ρ) (E x)).F3) x₀ := by
+    have hlower : Continuous
+        (fun L :
+            Matrix (ρ ⊕ κ' (Fin.last (M + 1)))
+              (ρ ⊕ κ' (Fin.last (M + 1))) K ↦
+          lowerLeftBlock L) :=
+      continuous_id.matrix_submatrix Sum.inr Sum.inl
+    simpa [sourceReadback, sourceReadbackSuffixState] using
+      hlower.continuousAt.comp hL0
+  have htuple :
+      ContinuousAt
+        (fun x : α ↦
+          topologyTuple
+            (sourceReadback (K := K) (ρ := ρ) (E x))) x₀ := by
+    change ContinuousAt
+      (fun x : α ↦
+        ((sourceReadback (K := K) (ρ := ρ) (E x)).A1passive,
+          ((sourceReadback (K := K) (ρ := ρ) (E x)).F2,
+            ((sourceReadback (K := K) (ρ := ρ) (E x)).A3passive,
+              ((sourceReadback (K := K) (ρ := ρ) (E x)).C,
+                ((sourceReadback (K := K) (ρ := ρ) (E x)).Ctop,
+                  (sourceReadback (K := K) (ρ := ρ) (E x)).F3)))))) x₀
+    exact hA1passive.prodMk
+      (hF2.prodMk
+        (hA3passive.prodMk
+          (hC.prodMk
+            (hCtop.prodMk hF3))))
+  rw [ContinuousAt, nhds_induced, Filter.tendsto_comap_iff]
+  simpa [Function.comp_def] using htuple
+
+/-- The source-side readback map is continuous on the recursive
+determinant-chart subtype. -/
+theorem continuous_sourceReadback_sourceRecursiveDetChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun E :
+          {E : ∀ p : Fin (M + 1),
+              Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K //
+            sourceRecursiveDetChart (K := K) (ρ := ρ) E} ↦
+        sourceReadback (K := K) (ρ := ρ) E.1) := by
+  rw [continuous_iff_continuousAt]
+  intro E
+  exact
+    continuousAt_sourceReadback
+      (K := K) (ρ := ρ) (κ' := κ')
+      (E := fun E' :
+          {E : ∀ p : Fin (M + 1),
+              Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K //
+            sourceRecursiveDetChart (K := K) (ρ := ρ) E} ↦
+        E'.1)
+      (x₀ := E) continuous_subtype_val.continuousAt E.2
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

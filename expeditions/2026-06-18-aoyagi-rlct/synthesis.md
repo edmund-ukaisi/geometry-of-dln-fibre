@@ -12782,3 +12782,21 @@ This is still finite inverse packaging only.  It does not prove arbitrary
 edge-family image membership, image openness, source-rank coverage,
 source/image equality, local homeomorphism, measure pushforward,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+New follow-up proves the finite topology of that source-side readback map.
+Lean now defines `sourceRecursiveDetChart E`, the predicate that every
+transformed edge visited by the deterministic suffix-state readback recursion
+has an invertible selected top-left corner.  It proves
+`continuousAt_sourceReadbackSuffixState_fields`,
+`continuousAt_sourceReadbackTransformedEdge`,
+`continuousAt_sourceReadback`, and
+`continuous_sourceReadback_sourceRecursiveDetChart_subtype`.
+
+The proof uses the existing chart-local suffix-state continuity API and keeps
+the `ContinuousAt` theorem primary; subtype continuity is only the pointwise
+corollary.  The next finite target is the reconstruction direction
+`edgeMatrix (sourceReadback E) = E` under this recursive determinant predicate,
+if the suffix `B`/readback `F2` recurrence and one-step Schur reconstruction
+close cleanly.  This remains before image openness, source-rank coverage,
+source/image equality, local homeomorphism, measure pushforward,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.

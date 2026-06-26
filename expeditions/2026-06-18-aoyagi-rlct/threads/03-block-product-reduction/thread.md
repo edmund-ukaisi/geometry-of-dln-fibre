@@ -8211,3 +8211,42 @@ density/Jacobian theorem, normal crossings, pole order, or RLCT.
 
 Xhigh reviewer `Averroes the 3rd` passed the index shifts, theorem scope,
 documentation boundary, focused build, and diff hygiene.
+
+## 2026-06-26 A2 retained-passive source-readback continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-source-readback-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-readback-continuity.md`.
+Review:
+`review-a2-retained-passive-source-readback-continuity.md`.
+
+Lean now defines:
+
+```text
+RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+```
+
+and proves:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuousAt_sourceReadbackSuffixState_fields
+RetainedPassiveNonredundantCoordinateData.continuousAt_sourceReadbackTransformedEdge
+RetainedPassiveNonredundantCoordinateData.continuousAt_sourceReadback
+RetainedPassiveNonredundantCoordinateData.continuous_sourceReadback_sourceRecursiveDetChart_subtype
+```
+
+The predicate requires exactly that every transformed edge visited by the
+deterministic suffix-state readback recursion lies in the selected determinant
+chart.  Under this basepoint predicate and `ContinuousAt E x0`, the suffix
+fields, transformed edges, and all six fields of `sourceReadback (E x)` are
+continuous at `x0`.  The subtype theorem is a corollary, not an openness or
+image theorem.
+
+This is finite source-readback continuity only.  It does not prove arbitrary
+edge-family image membership, image openness, source-rank coverage,
+source/image theorem, local homeomorphism, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Beauvoir the 3rd` passed the determinant predicate scope,
+index shifts, theorem layering, documentation boundary, and focused build.

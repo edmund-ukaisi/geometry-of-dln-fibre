@@ -5740,3 +5740,18 @@ edge-family image membership, image openness, source-rank coverage,
 source/image equality, local homeomorphism, measure transport,
 density/Jacobian accounting, normal crossings, pole order, or RLCT from the
 left-inverse theorem alone.
+
+The source-readback continuity rung has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-continuity.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-continuity.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-continuity.md`.
+Lean defines `sourceRecursiveDetChart` and proves `continuousAt_sourceReadback`
+plus the recursive-determinant-subtype continuity corollary.  Treat this as
+finite inverse-side topology only.
+
+Next retained-passive target after review/banking: probe the reconstruction
+direction `edgeMatrix (sourceReadback E) = E` under `sourceRecursiveDetChart E`.
+This should be proved as finite Schur/suffix algebra if it works.  Do not
+rename it as image openness, source-rank coverage, local homeomorphism,
+measure transport, normal crossings, pole order, or RLCT.

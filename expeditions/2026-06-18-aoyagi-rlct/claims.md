@@ -8604,3 +8604,31 @@ Nonclaims: total finite readback and inverse-on-image only.  No arbitrary
 edge-family image membership, image openness, local homeomorphism,
 source-rank coverage, source/image equality, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-readback continuity:
+Lean now defines
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart`, requiring
+the transformed edge at every deterministic readback suffix-state step to lie
+in `identityCornerDetChart`.
+
+Lean proves `continuousAt_sourceReadbackSuffixState_fields`,
+`continuousAt_sourceReadbackTransformedEdge`,
+`continuousAt_sourceReadback`, and
+`continuous_sourceReadback_sourceRecursiveDetChart_subtype` in
+`RetainedPassiveCoordinatesTopology.lean`.  The primary theorem is
+`ContinuousAt (fun x => sourceReadback (E x)) x0` from `ContinuousAt E x0`
+and the recursive determinant predicate at `E x0`; the subtype theorem is
+only the pointwise corollary.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-continuity.md`
+passed.
+
+Nonclaims: finite source-readback continuity only.  No arbitrary edge-family
+image membership, image openness, local homeomorphism, source-rank coverage,
+source/image equality, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT is proved.

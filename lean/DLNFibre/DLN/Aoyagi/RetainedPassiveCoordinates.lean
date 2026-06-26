@@ -2323,6 +2323,20 @@ def sourceReadbackTransformedEdge
   transformedEdge E p
     (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last)
 
+/-- Source-side recursive determinant-chart predicate for the retained-passive
+readback recursion.  It only asserts that every transformed edge visited by
+the deterministic suffix-state algorithm has an invertible selected top-left
+corner. -/
+def sourceRecursiveDetChart
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) : Prop :=
+  ∀ (p : Fin (M + 1)) (hp : p.succ ≤ Fin.last (M + 1)),
+    identityCornerDetChart
+      (transformedEdge E p
+        (suffixState E (Fin.last (M + 1)) p.succ hp))
+
 /-- Total source-side readback of the nonredundant retained-passive
 coordinates from an arbitrary retained-passive-shaped edge family. -/
 def sourceReadback
