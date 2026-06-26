@@ -6042,3 +6042,17 @@ readouts.  Treat this as useful constructed-family factor provenance only.
 The next source-moving targets are still real fixed-base endpoint equivalence,
 real source chart/suffix production, full-to-window/outside-factor transport,
 or fixed pivot nonzero provenance.
+
+Latest A2 full-to-adjacent-window outside-factor transport:
+`ProductReduction.lean` now proves the generic full-product split through an
+adjacent two-edge window and a middle-factor replacement theorem.  The
+selected-entry bridge instantiates the middle factor with the existing Case 2
+successor center-coordinate matrix while keeping both outside residual-factor
+products explicit.  This removes the immediate bookkeeping hazard behind
+"full-to-window" language, but it is not source production and does not absorb
+or discard outside factors.
+
+Next source-moving targets are now real fixed-base endpoint equivalences, real
+source chart/suffix production, fixed pivot nonzero provenance, or a justified
+analytic/source theorem explaining the outside factors in a concrete source
+chart.  Do not add another wrapper unless it consumes one of those hypotheses.

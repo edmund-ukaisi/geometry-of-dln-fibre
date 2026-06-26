@@ -9050,3 +9050,40 @@ equivalences, identify a real Aoyagi source chart/suffix family with the
 synthetic two-edge datum, collapse a full endpoint product to the adjacent
 window, prove pivot nonzero, or prove source image, pushforward/Jacobian,
 original-loss, normal-crossing, pole-order, or RLCT statements.
+
+## 2026-06-26 A2 full-to-adjacent-window outside-factor transport
+
+Reproduction:
+`reproduction-a2-full-to-adjacent-window-outside-factor-transport.md`.
+Statement card:
+`statement-card-a2-full-to-adjacent-window-outside-factor-transport.md`.
+Review:
+`review-a2-full-to-adjacent-window-outside-factor-transport.md`
+passed by xhigh `Mencius the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`,
+`lean/DLNFibre/DLN/Aoyagi/Case2ResidualSelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+residualFactorProduct_split_adjacent_two
+
+residualFactorProduct_split_adjacent_two_of_middle_eq
+
+residualFactorProduct_split_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+```
+
+The generic theorems split a full residual-factor product through an adjacent
+two-edge window and replace only that middle window by a supplied matrix.  The
+Case 2 theorem instantiates the supplied matrix with the existing successor
+selected-entry center-coordinate matrix, using the already-landed adjacent
+Case 2 readout.
+
+This closes the immediate full-to-window bookkeeping gap without collapsing a
+longer suffix to the adjacent window.  The outside products remain in the
+statement.  It does not prove endpoint equivalences, identify a real source
+chart/suffix family, prove pivot nonzero, absorb outside factors, or prove
+source image, pushforward/Jacobian, original-loss, normal-crossing,
+pole-order, or RLCT statements.

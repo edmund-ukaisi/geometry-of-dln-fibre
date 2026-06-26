@@ -2252,6 +2252,68 @@ theorem residualFactorProduct_adjacent_two_submatrix_eq_mul
     _ = A.submatrix e₂ e₁ * B.submatrix e₁ e₀ := by
           exact (Matrix.submatrix_mul_equiv A B e₂ e₁ e₀).symm
 
+/-- A longer residual-factor product splits through an adjacent two-edge
+window, with the factors outside that window kept explicitly.
+
+This theorem does not assert that the outside factors are identities or can be
+ignored. -/
+theorem residualFactorProduct_split_adjacent_two
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    {i j : Fin (N + 3)} (p : Fin (N + 1))
+    (hi : i ≤ p.castSucc.castSucc) (hj : p.succ.succ ≤ j) :
+    residualFactorProduct C j i
+        (hi.trans (((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)).trans hj)) =
+      residualFactorProduct C j p.succ.succ hj *
+        (residualFactorProduct C p.succ.succ p.castSucc.castSucc
+            ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+              (Fin.castSucc_le_succ p.succ)) *
+          residualFactorProduct C p.castSucc.castSucc i hi) := by
+  let hleftmid : p.castSucc.castSucc ≤ p.succ.castSucc :=
+    Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)
+  let hmidright : p.succ.castSucc ≤ p.succ.succ :=
+    Fin.castSucc_le_succ p.succ
+  let hwindow : p.castSucc.castSucc ≤ p.succ.succ := hleftmid.trans hmidright
+  have hsplitOuter :
+      residualFactorProduct C j i (hi.trans (hwindow.trans hj)) =
+        residualFactorProduct C j p.succ.succ hj *
+          residualFactorProduct C p.succ.succ i (hi.trans hwindow) := by
+    simpa [hwindow] using
+      (residualFactorProduct_trans (K := K) C
+        (i := i) (q := p.succ.succ) (j := j)
+        (hi.trans hwindow) hj)
+  have hsplitInner :
+      residualFactorProduct C p.succ.succ i (hi.trans hwindow) =
+        residualFactorProduct C p.succ.succ p.castSucc.castSucc hwindow *
+          residualFactorProduct C p.castSucc.castSucc i hi := by
+    simpa [hwindow] using
+      (residualFactorProduct_trans (K := K) C
+        (i := i) (q := p.castSucc.castSucc) (j := p.succ.succ)
+        hi hwindow)
+  rw [hsplitOuter, hsplitInner]
+
+/-- Replace only the adjacent middle factor in a full residual-factor product,
+leaving the outside factors explicit. -/
+theorem residualFactorProduct_split_adjacent_two_of_middle_eq
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    {i j : Fin (N + 3)} (p : Fin (N + 1))
+    (hi : i ≤ p.castSucc.castSucc) (hj : p.succ.succ ≤ j)
+    (M : Matrix (κ p.succ.succ) (κ p.castSucc.castSucc) K)
+    (hmiddle :
+      residualFactorProduct C p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)) = M) :
+    residualFactorProduct C j i
+        (hi.trans (((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)).trans hj)) =
+      residualFactorProduct C j p.succ.succ hj *
+        (M * residualFactorProduct C p.castSucc.castSucc i hi) := by
+  rw [residualFactorProduct_split_adjacent_two (K := K) C p hi hj, hmiddle]
+
 /-- A residual-factor product factors through every intermediate residual
 index, so its matrix rank is bounded by the cardinality of that intermediate
 type. -/

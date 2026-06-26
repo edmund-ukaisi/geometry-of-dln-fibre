@@ -13192,3 +13192,12 @@ and free-following-factor readouts at edges `1` and `0`.
 This is the first source-map factor identity in this lane, but it remains
 synthetic for Case 2.  Real fixed-base endpoint equivalences and a real
 Aoyagi source chart/suffix family are still open.
+
+Latest A2 full-to-adjacent-window outside-factor transport:
+the generic residual-factor product now splits through an adjacent two-edge
+window, and the selected-entry bridge can replace only that middle factor by
+the Case 2 successor center-coordinate matrix.  The outside products remain
+explicit in the conclusion.  This is the preferred non-overclaiming
+full-to-window bookkeeping theorem; the next real source work remains endpoint
+equivalence, source chart/suffix production, pivot nonzero provenance, or
+analytic control of the outside factors.

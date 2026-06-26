@@ -195,6 +195,88 @@ theorem residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordC
               n S (J + 1) (Equiv.refl _) eNext (i, t)))
 
 set_option linter.style.longLine false in
+/-- A full residual-factor product through a supplied adjacent Case 2 window
+has the successor selected-entry matrix as its middle factor, with the outside
+factors left explicit.
+
+The endpoint equivalences, factor identities, and entrywise readout remain
+hypotheses.  This theorem does not assert that the outside factors are
+identities, invertible, or analytically harmless. -/
+theorem residualFactorProduct_split_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+    {τ : Type*} {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) ℝ)
+    {i j : Fin (N + 3)} (p : Fin (N + 1))
+    (hi : i ≤ p.castSucc.castSucc) (hj : p.succ.succ ≤ j)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ p.succ.succ)
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ p.succ.castSucc)
+    (e₀κ : τ ≃ κ p.castSucc.castSucc)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hD :
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) ℝ from
+        by simpa using C p.succ).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) ℝ from
+        by simpa using C p.castSucc).submatrix e₁ e₀κ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext
+            (yNext (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}))
+            (SelectedEntrySignedBox.CenterCoord.sourceResidual yNext)
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext (i, t)).1)) :
+    ChartLocalSuffixState.residualFactorProduct C j i
+        (hi.trans (((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)).trans hj)) =
+      ChartLocalSuffixState.residualFactorProduct C j p.succ.succ hj *
+        (AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c : AoyagiResidualBlockCoordinateIndex
+                (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap
+                (⟨(J + 2, J + 2),
+                  case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+                  {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+                yNext
+                (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+                  n S (J + 1) e₂.symm (e₀κ.symm.trans eNext) c)) *
+          ChartLocalSuffixState.residualFactorProduct C p.castSucc.castSucc i hi) := by
+  let M : Matrix (κ p.succ.succ) (κ p.castSucc.castSucc) ℝ :=
+    AoyagiResidualBlockCoordinateIndex.matrix
+      (fun c : AoyagiResidualBlockCoordinateIndex
+          (κ p.succ.succ) (κ p.castSucc.castSucc) ↦
+        SelectedEntrySignedBox.CenterCoord.chartMap
+          (⟨(J + 2, J + 2),
+            case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+            {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+          yNext
+          (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+            n S (J + 1) e₂.symm (e₀κ.symm.trans eNext) c))
+  have hmiddle :
+      ChartLocalSuffixState.residualFactorProduct C
+          p.succ.succ p.castSucc.castSucc
+          ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+            (Fin.castSucc_le_succ p.succ)) = M := by
+    simpa [M] using
+      residualFactorProduct_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+        n hS hcont hnext residual Cprime C p yNext e₂ e₁ e₀κ eNext hD hF hentry
+  exact
+    ChartLocalSuffixState.residualFactorProduct_split_adjacent_two_of_middle_eq
+      (K := ℝ) C p hi hj M hmiddle
+
+set_option linter.style.longLine false in
 /-- The concrete displayed Case 2 two-edge factor family upgrades to the
 successor selected-entry center-coordinate chart matrix from the supplied
 entrywise successor readout.

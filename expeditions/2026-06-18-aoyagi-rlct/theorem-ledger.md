@@ -9948,6 +9948,41 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+## 2026-06-26 A2 full-to-adjacent-window outside-factor transport
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-full-to-adjacent-window-outside-factor-transport.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-full-to-adjacent-window-outside-factor-transport.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-full-to-adjacent-window-outside-factor-transport.md`
+passed by xhigh `Mencius the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`,
+`lean/DLNFibre/DLN/Aoyagi/Case2ResidualSelectedEntryChartBridge.lean`.
+
+Lean proves the generic product split and middle-factor substitution:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_split_adjacent_two
+ChartLocalSuffixState.residualFactorProduct_split_adjacent_two_of_middle_eq
+```
+
+and the Case 2 selected-entry specialization:
+
+```text
+residualFactorProduct_split_adjacent_two_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+```
+
+This theorem family is finite residual-product bookkeeping.  It rewrites a
+longer product through an adjacent Case 2 window as left outside product,
+selected-entry middle matrix, and right outside product.  Nonclaims: no
+outside-factor identity or absorption, no endpoint equivalence construction,
+no real source chart/suffix production, no fixed pivot nonzero provenance, no
+source image, pushforward/Jacobian, original-loss, normal-crossing,
+pole-order, or RLCT statement.
+
 ## 2026-06-26 A2 source-readback per-factor residual block
 
 Reproduction:
