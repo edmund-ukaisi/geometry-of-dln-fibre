@@ -304,3 +304,9 @@ import DLNFibre.Core.FibreSmoothPlumbing
 -- NOT discharged), the chart product `SchurLoc ⊗ Away g` is `Smooth k`. The fibre is reducible for
 -- θ≥2, so the honest object is `IsSmoothAt` (generic), never a global `Smooth k`.
 import DLNFibre.Core.FibreGenericSmooth
+-- Scope-3 (per-minor bundle, thread 18): the genuine open cover of `Mat^{=r}` by the `{r×r minor ≠ 0}`
+-- opens + the per-minor chart family. Keystone `exists_invertible_minor_of_rank` (a rank-r matrix has
+-- some invertible r×r minor — a Mathlib v4.29 gap, network-free spin-out candidate). B3-3 transition
+-- coherence is NOT built (the cocycle on overlaps) — so this is cover + family, NOT yet `locallyTrivial`.
+import DLNFibre.Core.RankMinorCover
+import DLNFibre.Core.FibreBundlePerMinor
