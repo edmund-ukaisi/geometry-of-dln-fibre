@@ -34,17 +34,36 @@ pulled-back component ideal. This is the genuine new rung the route map named ("
 `Ideal.comap_symm`).
 - `chartComponentIdeal` — the fibre component pulled to `Away chartDsig` along the product keystone.
 
-## Residual (documented in-module, NOT built) — `exists_chartComponent_localizedOrbitEquiv`
+## Landed — the assembled headline (rung 1 + the precise residual conditional)
 
-The remaining rung descends `(Away chartDsig)⧸chartComponentIdeal` to the sigma side and identifies it
-with a localized full-`d` orbit ring `Away Δ (orbitRing (realizerD m))`. Pieces exist but need
-assembly (~mid-hundreds LoC): (i) `chartComponentIdeal`'s contraction is a sigma top-dim minimal prime
-with `dsig` avoidance — needs a bridge from the product keystone to the `e_β`-stated no-drop lemmas;
-(ii) the localization-quotient iso `(Away f)⧸(map p) ≃+* Away (mk p f)` (inside
-`TopDimMinPrimesLocalization.ringKrullDim_quotient_map_localizationAway_eq`, to extract as `AlgEquiv`);
-(iii) the W0 descent to `orbitRing (realizerD m)` (`exists_sigma_topComponent_orbitRingEquiv`).
-Composing rung 1 + residual = the honest localized `e`:
-`SchurLoc ⊗_k (R_F⧸I) ≃ₐ[k] Away Δ (orbitRing (realizerD m))`.
+```lean
+def LocalizedChartDescent ... (I) : Prop :=
+  ∃ (d' : Fin (N+1)→ℕ) (M : Tuple d') (Δ : orbitRing M),
+    Nonempty ((Away (chartDsig …) ⧸ chartComponentIdeal d r hp hq I) ≃ₐ[k] Localization.Away Δ)
+
+theorem exists_localized_schurComponent_fullOrbitEquiv_of
+    [IsAlgClosed k] [CharZero k] [Infinite k] (d r hp hq) (I)
+    (hdesc : LocalizedChartDescent d r hp hq I) :
+    ∃ (d' : Fin (N+1)→ℕ) (M : Tuple d') (Δ : orbitRing M),
+      Nonempty ((SchurLoc … ⊗[k] (sweepFibreRing k d r hp hq ⧸ I)) ≃ₐ[k] Localization.Away Δ)
+```
+English: GIVEN the residual descent `LocalizedChartDescent` (the (i)+(ii)+(iii) sub-wall packaged as a
+precise `Prop`), the C-part-tensored fibre component is `k`-algebra iso to a **localized full-`d`**
+orbit ring. Proof: rung 1 `.trans` the descent. Otherwise fully proved; the single open input is
+`LocalizedChartDescent`. Names honestly localized + full-`d` (NOT global, NOT shifted-orbit), and
+explicitly advances neither smoothness nor the θ-count.
+
+## The residual `LocalizedChartDescent` (NOT built — the genuine sub-wall)
+
+Descends `(Away chartDsig)⧸chartComponentIdeal` to a localized full-`d` orbit ring. Pieces exist but
+need assembly (~mid-hundreds LoC, multi-tide): (i) `chartComponentIdeal`'s contraction is a sigma
+top-dim minimal prime with `dsig` avoidance — needs a bridge from the product keystone to the
+`e_β`-stated no-drop lemmas (two different isos of `Away chartDsig`); (ii) the localization-quotient
+iso `(Away f)⧸(map p) ≃+* Away (mk p f)` (inside
+`TopDimMinPrimesLocalization.ringKrullDim_quotient_map_localizationAway_eq`, extract as `AlgEquiv`);
+(iii) the W0 descent to `orbitRing (realizerD m)` (`exists_sigma_topComponent_orbitRingEquiv`). The
+LHS-form `SchurLoc ⊗ (R_F⧸I) = (MvPolynomial SchurVar (R_F⧸I))[1/g_I]` is the banked
+`FibreBundleReduced.mvPolynomialAwayMapTensorAlgEquiv`.
 
 ## Aggregator import line (for the controller)
 `import DLNFibre.Core.FibreComponentOrbitIso`
