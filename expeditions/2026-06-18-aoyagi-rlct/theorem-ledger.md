@@ -8724,6 +8724,22 @@ component derivatives are now available; full tuple derivative assembly,
 analytic determinant formula, source-measure transport, normal crossings,
 pole order, and RLCT remain open.
 
+Latest A2 product-step full ambient derivative:
+`ProductReductionStepDerivative.lean` now proves the full ambient derivative
+of `productReductionStepTopologyTupleToChart`. Lean name:
+`hasFDerivAt_productReductionStepTopologyTupleToChart`.
+The proof assembles the component theorems for `Ctop`, `F2`, `F3`, and `C`
+with passive projection derivatives for `D`, `A1`, and `A3`, and identifies
+the derivative with `productReductionStepFormalJacobian x`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-ambient-derivative.md`.
+This closes the ambient differentiability-to-formal-Jacobian identification.
+Analytic determinant formula, source-measure transport, normal crossings, pole
+order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

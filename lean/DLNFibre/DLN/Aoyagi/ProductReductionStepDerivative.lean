@@ -516,6 +516,75 @@ theorem hasFDerivAt_productReductionStepTopologyTupleToChart_C
   rw [hderiv]
   simpa [productReductionStepTopologyTupleToChart, leftA3, Matrix.mul_assoc] using hC
 
+-- The full tuple derivative is the nested product of the landed component
+-- derivatives, in the same order as `ProductReductionStepChartTangent`.
+set_option maxRecDepth 2048 in
+/-- The ambient tuple coordinate map for the p. 13 product-step change has
+Frechet derivative equal to the bundled formal p. 13 Jacobian. -/
+theorem hasFDerivAt_productReductionStepTopologyTupleToChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    HasFDerivAt
+      (productReductionStepTopologyTupleToChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      (LinearMap.toContinuousLinearMap
+        (productReductionStepFormalJacobian
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x))
+      x.topologyTuple := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  let LD : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix π μ ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dD
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LA1 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix ρ ρ ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  let LA3 : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ →L[ℝ]
+      Matrix μ ρ ℝ :=
+    LinearMap.toContinuousLinearMap
+      (productReductionStepRawTangent_dA3
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ))
+  have hDcoord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.1)
+      LD x.topologyTuple := by
+    simpa [LD, productReductionStepRawTangent_dD] using
+      (LD.hasFDerivAt (x := x.topologyTuple))
+  have hA1coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.1)
+      LA1 x.topologyTuple := by
+    simpa [LA1, productReductionStepRawTangent_dA1] using
+      (LA1.hasFDerivAt (x := x.topologyTuple))
+  have hA3coord : HasFDerivAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        z.2.2.2.2.2.1)
+      LA3 x.topologyTuple := by
+    simpa [LA3, productReductionStepRawTangent_dA3] using
+      (LA3.hasFDerivAt (x := x.topologyTuple))
+  have htuple :=
+    (hasFDerivAt_productReductionStepTopologyTupleToChart_Ctop
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) x).prodMk
+      (hDcoord.prodMk
+        (hA1coord.prodMk
+          (hA3coord.prodMk
+            ((hasFDerivAt_productReductionStepTopologyTupleToChart_F2
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hA1).prodMk
+              ((hasFDerivAt_productReductionStepTopologyTupleToChart_F3
+                (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1).prodMk
+                (hasFDerivAt_productReductionStepTopologyTupleToChart_C
+                  (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hA1))))))
+  simpa [productReductionStepTopologyTupleToChart,
+    productReductionStepFormalJacobian, LD, LA1, LA3,
+    productReductionStepRawTangent_dD, productReductionStepRawTangent_dA1,
+    productReductionStepRawTangent_dA3] using htuple
+
 end Aoyagi
 end DLN
 end DLNFibre

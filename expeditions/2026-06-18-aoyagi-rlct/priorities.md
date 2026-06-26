@@ -4918,3 +4918,14 @@ to assemble the full ambient tuple derivative against
 `productReductionStepFormalJacobian`, with passive coordinates discharged by
 projection derivatives.  Do not infer source-measure pushforward, density
 transport, normal crossings, pole order, or RLCT.
+
+A2 product-step full ambient derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-ambient-derivative.md`.
+Lean proves `hasFDerivAt_productReductionStepTopologyTupleToChart`, assembling
+the component derivatives for `(Ctop,D,A1,A3,F2,F3,C)` and identifying the
+Frechet derivative with `productReductionStepFormalJacobian`.  The next
+analytic priority is to connect this ambient derivative with the landed
+raw-order formal determinant-unit certificate, then decide the right route to
+source-measure/density transport or the normal-crossing chart certificate.  Do
+not infer source-measure pushforward, density transport, normal crossings,
+pole order, or RLCT.

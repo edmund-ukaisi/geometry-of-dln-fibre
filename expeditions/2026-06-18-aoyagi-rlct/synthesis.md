@@ -11289,3 +11289,32 @@ Next analytic priority: assemble the full ambient tuple derivative against
 `A1`, and `A3` are passive projections.  No source-measure pushforward,
 density transport, change of variables, normal crossings, pole order, or RLCT
 is claimed.
+
+## Latest A2 Product-Step Full Ambient Derivative
+
+The component derivative layer has been assembled in
+`ProductReductionStepDerivative.lean`.  Lean proves
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart
+```
+
+which states that the tuple-level p. 13 coordinate map
+`productReductionStepTopologyTupleToChart` has Frechet derivative
+
+```text
+LinearMap.toContinuousLinearMap (productReductionStepFormalJacobian x)
+```
+
+at `x.topologyTuple`, under `IsUnit x.C1.det` and `IsUnit x.A1.det`.
+
+The proof combines the landed component derivatives for `Ctop`, `F2`, `F3`,
+and `C` with projection derivatives for the passive coordinates `D`, `A1`,
+and `A3`.  This closes the ambient differentiability-to-formal-Jacobian
+identification for the product-step coordinate formula.
+
+Next analytic priority: connect this derivative theorem to the raw-order
+formal determinant-unit certificate and then to the appropriate
+source-measure/density transport or normal-crossing chart certificate.  No
+source-measure pushforward, density transport, change of variables, normal
+crossings, pole order, or RLCT is claimed.
