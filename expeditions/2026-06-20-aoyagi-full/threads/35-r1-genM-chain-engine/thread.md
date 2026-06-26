@@ -270,3 +270,22 @@ Decorrelated Codex xhigh (`threads/36-…/codex/item1-{prompt,answer}`) on the a
   is the multi-pass part). "Multi-pass but bounded." The det ALGEBRA (Phase A + B2 bricks + B3 spine + item-1
   card bricks) is DONE; what remains is the coordinatization assembly (item 1 finish) + the full-ambient
   factor conjugates (item 2) + the same-chart layer equality (item 3) + `leafH` bookkeeping (item 4).
+
+## Item-1 ARITHMETIC FOUNDATION LANDED — `chartDim_eq_flatDim` (the cert's `ninputs = flatDim`, ∀M)
+
+`RouteMChartIdx.lean` (sorry-free, force-elaborated `#print axioms` = `[propext, Classical.choice,
+Quot.sound]`): the load-bearing arithmetic of item 1's cardinality, fully general.
+- `tele_card` — the abstract telescoping `∑_{k<L} t_k·M_{k+1} + ∑_{k<L−1} (M_{k+1}−t_{k+1})·M_{k+2} =
+  ∑_{k<L} M_k·M_{k+1}` (`= flatDim`), proven by induction on `L` (peel the top boundary; the `t_k` middle
+  sums cancel, `t_0 = M_0` closes the base). The spine.
+- `roleSquare_eq` — `(t_s + r_s)(t_s + c_s) = t_{s−1}·M_s` (the Schur `K/X/N/E` per-boundary role count, on
+  `lduRole_card`'s `K_s = t²` LDU decomposition).
+- `chartDim_eq_flatDim` — `(∑ Schur-role) + (∑ chain-lift) = flatDim M` (the cert's `ninputs = flatDim`, ∀M).
+
+**What remains for item 1 (bounded assembly on this):** the `ChartIdx` inductive role type (`low/diag/up/x/n/e/w`
+per boundary, fixed-residual omitted) + `Fintype.card (ChartIdx) = flatDim` (connect `card (Σ s, role) =
+∑ roleDim = chartDim_eq_flatDim`) + `Fin N ≃ ChartIdx` (`Fintype.equivFin` + `finCongr`). Then items 2-4.
+The det ARITHMETIC is now complete (the role count IS `flatDim`); the genuine remainder is the item-3
+same-chart proof (`chartParamsGen`'s fderiv over opaque widths = the factor product), which two+ Codex
+consults flag as the multi-pass bottleneck — requires `HasFDerivAt chartParamsGen` (a `noncomputable`
+`chainA`-based map, fderiv exists but its computation + block-triangular det = the multi-pass work).
