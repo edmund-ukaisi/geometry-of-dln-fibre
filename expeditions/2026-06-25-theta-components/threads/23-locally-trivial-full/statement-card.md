@@ -5,18 +5,21 @@
 headlines axiom-clean `[propext, Classical.choice, Quot.sound]` (gated via `#print axioms`). Three
 decorrelated Codex consults (cocycle framing + naming honesty + reconcile/ambient-vs-cover).
 
-**Scope verdict (honest): the reduced fibre bundle is LOCALLY TRIVIAL over the rank-`= r` OPEN.** With
-the B3-7 upgrade (a genuine SCHEME-LEVEL open-cover, not merely point-set), the headline is
-`reducedFibre_locallyTrivialOnRankOpen` (a `PivotLocalProductAtlas`). The `OnRankOpen` qualifier is
-load-bearing: the base is the rank-`= r` OPEN subscheme `rankROpen` of `Spec (sweepSigmaRing) = Σ̄^r`,
-NOT the closure (bare `locallyTrivial` over the closure is FALSE — rank-`< r` boundary lies in no
-chart). A third Codex consult confirmed the lead's "ambient `MvPolynomial` identification" target is
-orthogonal busywork; the genuine final rung was the scheme-level cover, now built.
+**Scope verdict (honest): the per-pivot LOCAL-PRODUCT ATLAS over the rank-`= r` open.** Headline
+`reducedFibre_pivotLocalProductAtlasOnRankOpen` (a `PivotLocalProductAtlas`). **Deliberately NOT named
+`locallyTrivial`** — reviewer PASS-WITH-CONCERNS + a fourth (review) Codex consult both judged
+`locallyTrivial`/`OnRankOpen` in the identifier a MILD OVERCLAIM, for two reasons: (1) `rankROpen` is
+DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so the scheme cover
+`iSup_pivot_basicOpen_eq_rankROpen` is the `PrimeSpectrum` definition unfolded (near-definitional);
+(2) the identity `rankROpen = {rank = r}` is the geometric reading (forward inclusion banked:
+`sweepSigma_subset_chartOpen`), NOT a formalized scheme equality. The GENUINE content is the per-pivot
+trivializations + the coherent base-algebraic cocycle + intertwining. A bare `locallyTrivial` over the
+closure `Σ̄^r` is genuinely FALSE (rank-`< r` boundary lies in no chart). The third Codex consult
+confirmed the lead's "ambient `MvPolynomial` identification" target is orthogonal busywork.
 
-**Caveat (honest):** `rankROpen` is DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so
-`schemeCover` (`⨆ basicOpen = rankROpen`) is the `PrimeSpectrum` definition unfolded — a genuine
-scheme open-cover BY the charts. Its identification with the rank-`= r` locus is the geometric reading
-(forward inclusion banked: `sweepSigma_subset_chartOpen`), not a separately-formalized scheme equality.
+**Residual to a scheme-theoretic `locallyTrivial`:** the Lean-formalized rank-tie `rankROpen =
+{rank = r}` (the converse of the banked forward inclusion; Nullstellensatz-style over the rank-`= r`
+open). No new mathematics; a clean further rung.
 
 ---
 

@@ -32,15 +32,15 @@ instantiated at `R = sweepSigmaRing`, `f = chartDsigAt s t`, `g = chartDsigAt s'
   the inherited cocycle laws (`_commutes`, `_symm`, `_trans_symm`, the triple cocycle), all FROM the
   banked thread-19 engine (localization initiality).
 
-## Scope (honest) — locally trivial over the rank-exactly-`r` OPEN
+## Scope (honest) — the per-pivot local-product atlas over the rank-`r` open
 
-The full assembly `reducedFibre_locallyTrivialOnRankOpen` (a `PivotLocalProductAtlas`) bundles, and
-machine-checks, all the local-triviality data over the rank-exactly-`r` open `rankROpen` of
+The full assembly `reducedFibre_pivotLocalProductAtlasOnRankOpen` (a `PivotLocalProductAtlas`)
+bundles, and machine-checks, the local-product data over the open `rankROpen` of
 `Spec (sweepSigmaRing)`:
 
-- the **scheme-level open-cover** `iSup_pivot_basicOpen_eq_rankROpen` — the per-pivot charts
-  `basicOpen (chartDsigAt s t)` cover the rank-`= r` open `rankROpen = (V({chartDsigAt}))ᶜ` of
-  `Spec (sweepSigmaRing)`; backed by the point-set cover `sweepSigma_subset_chartOpen`;
+- the **scheme open-cover** `iSup_pivot_basicOpen_eq_rankROpen` — the per-pivot charts
+  `basicOpen (chartDsigAt s t)` cover `rankROpen = (V({chartDsigAt}))ᶜ`; backed by the point-set
+  cover `sweepSigma_subset_chartOpen`;
 - the **per-pivot trivializations** into the standard fibre `SchurLoc ⊗ sweepFibreRing` (thread 22);
 - the **base-side transition cocycle** `chartOverlapTransition` with its laws (banked thread-19
   engine at `R = sweepSigmaRing`);
@@ -48,14 +48,16 @@ machine-checks, all the local-triviality data over the rank-exactly-`r` open `ra
   trivializations factors purely through the base-ring gauges (the deep chart `e_β` cancels), so the
   transitions are base-algebraic (the structure-group content).
 
-**The `OnRankOpen` qualifier is load-bearing** (reviewer + Codex xhigh, decorrelated): the base is
-the rank-`= r` OPEN subscheme `rankROpen` of `Spec (sweepSigmaRing) = Σ̄^r`, **not** the closure
-itself. A *bare* `locallyTrivial` over `Spec (sweepSigmaRing)` is **false** — the rank-`< r`
-boundary points (`V({chartDsigAt})`) lie in NO chart (all `r × r` minors vanish there). The charts
-cover exactly `rankROpen`, which on `Σ̄^r` (rank `≤ r`) is the rank-`= r` locus, the genuine base of
-`mult⁻¹(B) → Mat^{= r}`. The cover here is the genuine **scheme-level** open-cover (not merely
-point-set), so with the trivializations + coherent cocycle the local-triviality data over the
-rank-`= r` open is complete.
+**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, twice). Two honest
+limits. (1) `rankROpen` is DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so the cover
+`iSup_pivot_basicOpen_eq_rankROpen` is the `PrimeSpectrum` definition unfolded — a genuine scheme
+open-cover BY the charts, but it carries little geometric content beyond the trivializations/cocycle
+(which ARE the genuine content). (2) The identity `rankROpen = {rank = r}` is the geometric reading
+(forward inclusion banked: `sweepSigma_subset_chartOpen`), not a separately-formalized scheme
+equality. A *bare* `locallyTrivial` over `Spec (sweepSigmaRing) = Σ̄^r` (the closure) is genuinely
+**false** — the rank-`< r` boundary lies in `V({chartDsigAt})`, in no chart. So the honest name is
+"per-pivot local-product atlas over the rank-`r` open", and the residual to a bare scheme-theoretic
+`locallyTrivial` is the Lean-formalized rank-tie `rankROpen = {rank = r}`.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -338,31 +340,29 @@ noncomputable def pivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
     ext x
     simp only [AlgEquiv.trans_apply, AlgEquiv.symm_trans_apply, AlgEquiv.symm_apply_apply]
 
-/-! ## The EARNED headline: the reduced fibre bundle is locally trivial over the rank-`r` open
+/-! ## The headline: the per-pivot local-product atlas over the rank-`r` open
 
-The reduced fibre bundle is **locally trivial over the rank-exactly-`r` open** `rankROpen` of
-`Spec (sweepSigmaRing)`: the **scheme-level open-cover** of that open by the per-pivot charts
+The reduced fibre bundle has a **per-pivot local-product atlas over the rank-exactly-`r` open**
+`rankROpen` of `Spec (sweepSigmaRing)`: the scheme open-cover of that open by the per-pivot charts
 (`iSup_pivot_basicOpen_eq_rankROpen`) + the per-pivot trivializations into the standard fibre + the
 coherent (base-algebraic) transition cocycle, all assembled (`pivotLocalProductAtlas`).
 
-**The `OnRankOpen` qualifier is load-bearing** (reviewer + Codex xhigh, decorrelated): the base is
-the rank-`= r` OPEN subscheme `rankROpen` of `Spec (sweepSigmaRing) = Σ̄^r`, **not** all of the
-closure `Σ̄^r`. A *bare* `locallyTrivial` over `Spec (sweepSigmaRing)` is false — the rank-`< r`
-boundary points (`V({chartDsigAt})`) lie in NO chart (every `r × r` minor vanishes there). The
-charts cover exactly `rankROpen = (V({chartDsigAt}))ᶜ`, which on `Σ̄^r` (rank `≤ r`) is the
-rank-`= r` locus, the genuine base of `mult⁻¹(B) → Mat^{= r}`. With the genuine **scheme-level**
-open-cover
-(`schemeCover`, not merely point-set) + trivializations + coherent cocycle, the local-triviality
-data over the rank-`= r` open is complete. -/
+**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, twice): `rankROpen` is
+defined as the chart-cover-complement, so the scheme open-cover is near-definitional, and the
+identity `rankROpen = {rank = r}` is the geometric reading, not a formalized scheme equality. The
+genuine content is the per-pivot trivializations + the coherent cocycle. A *bare* `locallyTrivial`
+over `Spec (sweepSigmaRing) = Σ̄^r` is genuinely false (the rank-`< r` boundary lies in no chart);
+the residual to a scheme-theoretic `locallyTrivial` is the Lean-formalized rank-tie. -/
 
-/-- **The reduced fibre bundle is locally trivial over the rank-`= r` open.** The full assembly
-(`pivotLocalProductAtlas`): the scheme-level open-cover of `rankROpen ⊆ Spec (sweepSigmaRing)` by
-the per-pivot charts, the per-pivot trivializations into the standard fibre `SchurLoc ⊗
-sweepFibreRing`, and the coherent base-algebraic transition cocycle on overlaps — all genuinely
-assembled and machine-checked. The `OnRankOpen` qualifier is load-bearing: the base is the
-rank-`= r` OPEN subscheme of `Spec (sweepSigmaRing) = Σ̄^r`, not the closure (over which bare local
-triviality is false). -/
-noncomputable def reducedFibre_locallyTrivialOnRankOpen (d : Fin (N + 2) → ℕ) (r : ℕ)
+/-- **The per-pivot local-product atlas over the rank-`= r` open.** The full assembly
+(`pivotLocalProductAtlas`): the scheme open-cover of `rankROpen ⊆ Spec (sweepSigmaRing)` by the
+per-pivot charts, the per-pivot trivializations into the standard fibre `SchurLoc ⊗ sweepFibreRing`,
+and the coherent base-algebraic transition cocycle on overlaps — all genuinely assembled and
+machine-checked. **Not** named `locallyTrivial`: `rankROpen` is defined as the
+chart-cover-complement (so the cover is near-definitional) and its identity with `{rank = r}` is the
+geometric reading, not
+a formalized equality; the genuine content is the trivializations + coherent cocycle. -/
+noncomputable def reducedFibre_pivotLocalProductAtlasOnRankOpen (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     PivotLocalProductAtlas (k := k) d r hp hq :=
   pivotLocalProductAtlas d r hp hq
@@ -380,15 +380,15 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r
     ∃ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
       Function.Injective s ∧ Function.Injective t ∧
       IsUnit (eval x (ΔPdeepAt (k := k) d r s t)) :=
-  (reducedFibre_locallyTrivialOnRankOpen (k := k) d r hp hq).cover x hx
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).cover x hx
 
 /-- **Atlas witness.** The transition cocycle round-trips to the identity at every pair of pivots —
 the assembled atlas is genuine coherent data, not asserted. -/
 example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ)
     (r : ℕ) (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I J : PivotDatum d r hp hq) :
-    letI A := reducedFibre_locallyTrivialOnRankOpen (k := k) d r hp hq
+    letI A := reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq
     (A.overlapTransition I J).trans (A.overlapTransition J I) = AlgEquiv.refl :=
-  (reducedFibre_locallyTrivialOnRankOpen (k := k) d r hp hq).transitionRoundTrip I J
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).transitionRoundTrip I J
 
 /-- **Scheme-cover witness.** The per-pivot charts genuinely cover the rank-`= r` open at the scheme
 level — the union of `basicOpen (chartDsigAt s t)` equals `rankROpen` (the open complement of the
@@ -399,7 +399,7 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ)
         (PrimeSpectrum.basicOpen (chartDsigAt (k := k) d r st.1 st.2) :
           Set (PrimeSpectrum (sweepSigmaRing k d r))))
       = rankROpen (k := k) d r :=
-  (reducedFibre_locallyTrivialOnRankOpen (k := k) d r hp hq).schemeCover
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).schemeCover
 
 end Witness
 
