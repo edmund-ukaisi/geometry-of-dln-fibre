@@ -7082,6 +7082,24 @@ Nonclaims: no construction of `Cfac`, no fixed-base endpoint equivalence, no
 selected-entry coordinate-matrix RHS identity, no source/image equality, no
 source-measure transport, no normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 residual-coordinate index pivot-entry equivalence:
+Lean now proves that the p.13 scalar residual-coordinate index for a Case 2
+residual block is equivalent to the finite set of candidate selected entries
+in that block.
+
+Lean name:
+`case2ResidualBlockCoordinateIndexEquivPivotEntries`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-index-pivot-entries.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-coordinate-index-pivot-entries.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-residual-coordinate-index-pivot-entries.md`.
+
+Nonclaims: no selected-entry chart construction, no compatible `Cfac`, no
+selected-entry matrix RHS identity, no source/image equality, no
+source-measure transport, no normal crossings, pole order, or RLCT.
+
 Latest A2 fixed-base residual-factor family constructor:
 Lean now defines the raw p.13 fixed-base matrix family from a supplied
 compatible residual-factor family `Cfac`, rather than reading the factors from

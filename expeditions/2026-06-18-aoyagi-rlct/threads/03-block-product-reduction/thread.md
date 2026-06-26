@@ -5879,3 +5879,28 @@ This is the guarded bridge that the previous two-edge unfold made possible.
 It still does not construct the displayed Case 2 `Cfac`, fixed-base endpoint
 equivalences, selected-entry matrix RHS identity, source/image equality,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-25 A2 Case 2 residual-coordinate index pivot entries
+
+Reproduction:
+`reproduction-a2-case2-residual-coordinate-index-pivot-entries.md`.
+Statement card:
+`statement-card-a2-case2-residual-coordinate-index-pivot-entries.md`.
+Review:
+`review-a2-case2-residual-coordinate-index-pivot-entries.md`.
+
+Lean now proves:
+
+```text
+case2ResidualBlockCoordinateIndexEquivPivotEntries
+```
+
+For the Case 2 residual block, the p.13 residual scalar-coordinate index
+`AoyagiResidualBlockCoordinateIndex row col` is equivalent to the finite
+selected-entry center `case2ResidualBlockPivotEntries n S J`.  This packages
+the source-backed rectangular index provenance checked for Aoyagi pp. 19-22.
+
+This helps the future `residualCoordEquiv` socket, but it is finite
+bookkeeping only.  It does not construct a selected-entry chart, compatible
+residual factors, a selected-entry matrix RHS, source/image equality, normal
+crossings, pole order, or RLCT.

@@ -10887,3 +10887,12 @@ endpoint equivalences, and the two factor identities, the terminal
 free-`C'` product.  This still leaves the source-moving sockets open:
 constructing the factors, constructing the fixed-base endpoint equivalences,
 and identifying the selected-entry coordinate-matrix RHS.
+
+The Case 2 residual-coordinate index equivalence has also landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-index-pivot-entries.md`.
+Lean proves `case2ResidualBlockCoordinateIndexEquivPivotEntries`, identifying
+the p.13 product residual-coordinate index for
+`Case2ResidualRowIndex n S J` and `Case2ResidualColIndex n S J` with
+`case2ResidualBlockPivotEntries n S J`.  This is the source-backed rectangular
+index component of the future `residualCoordEquiv`; it still does not identify
+fixed-base endpoint complement indices with those Case 2 row/column types.

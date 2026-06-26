@@ -134,6 +134,7 @@ import DLNFibre.DLN.Aoyagi.Theorem2RankWidthRegularShiftBridge
 import DLNFibre.DLN.Aoyagi.Theorem2SourceRankRegularShiftBridge
 import DLNFibre.DLN.Aoyagi.RegularSuspensionInterface
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
+import DLNFibre.DLN.Aoyagi.Case2ResidualIndex
 import DLNFibre.DLN.Aoyagi.RegularSuspensionAlgebraicSource
 import DLNFibre.DLN.Aoyagi.Theorem2RegularSuspensionFinalBridge
 import DLNFibre.DLN.Aoyagi.RegularSuspensionIntegrability

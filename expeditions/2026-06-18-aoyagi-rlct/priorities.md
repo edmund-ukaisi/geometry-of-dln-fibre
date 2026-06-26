@@ -4713,3 +4713,12 @@ endpoint equivalences and the two factor identities.  This is useful API for
 future readout work, but the meaningful frontier is unchanged: construct or
 source-audit the endpoint equivalences, compatible factors, and selected-entry
 coordinate-matrix RHS identity.
+
+A2 Case 2 residual-coordinate index pivot-entry equivalence has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-index-pivot-entries.md`.
+It discharges the elementary product-index part of the residual-coordinate
+equivalence for a Case 2 block.  It does not identify fixed-base endpoint
+types with Case 2 row/column types, and it does not produce the selected-entry
+matrix RHS.  The next useful work is either endpoint equivalence construction
+for a concrete fixed-base readout or the source audit for why that endpoint
+identification must remain supplied.
