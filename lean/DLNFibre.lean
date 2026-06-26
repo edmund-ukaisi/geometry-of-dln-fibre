@@ -378,5 +378,15 @@ import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxCard
 import DLNFibre.DLN.RLCT.Validate.RouteMChartIdx
 import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxEquiv
 import DLNFibre.DLN.RLCT.Validate.RouteMRadialFactor
+-- Item-2 of the ∀M achiever Jacobian det (the factor conjugates, DONE ∀M) + the item-3 slot-reader
+-- foundation: `RouteMConjBlock` (det-preserving block conjugation), `RouteMFactorFDeriv`
+-- (`HasFDerivAt.matMul`), `RouteMFactorMaps` (the Schur/LDU/chain `ChartFactor` conjugates + dets),
+-- `RouteMChartSlots` (the DISJOINT role-slot reader API on `chartIdxEquiv`), `RouteMPhiFlatDet`
+-- (`phiFlat_abs_det_of_factored` — the det telescope, conditional on the item-3 map equality + leafH).
+import DLNFibre.DLN.RLCT.Validate.RouteMConjBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorFDeriv
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
+import DLNFibre.DLN.RLCT.Validate.RouteMChartSlots
+import DLNFibre.DLN.RLCT.Validate.RouteMPhiFlatDet
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
