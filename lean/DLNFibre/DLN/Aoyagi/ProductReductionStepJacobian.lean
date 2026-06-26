@@ -803,6 +803,250 @@ theorem productReductionStepFormalJacobianInverse_apply
     productReductionStepChartTangent_dF2, productReductionStepChartTangent_dF3,
     productReductionStepChartTangent_dC, Matrix.mul_assoc]
 
+/-- The inverse formal tangent formula recovers the raw tangent formula at the
+raw-derived chart base point. -/
+theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianInverseFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+        (productReductionStepFormalJacobianChartBase
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)
+        (productReductionStepFormalJacobianFormula
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v) = v := by
+  have hCtop : IsUnit (x.C1 * x.A1).det := by
+    simpa [Matrix.det_mul] using hC1.mul hA1
+  rcases v with ⟨dC1, dD, dF3old, dA1, dA2, dA3, dA4⟩
+  apply Prod.ext
+  · change
+      (dC1 * x.A1 + x.C1 * dA1) * x.A1⁻¹ -
+          (x.C1 * x.A1) * x.A1⁻¹ * dA1 * x.A1⁻¹ =
+        dC1
+    have hleft :
+        (dC1 * x.A1 + x.C1 * dA1) * x.A1⁻¹ =
+          dC1 + x.C1 * dA1 * x.A1⁻¹ := by
+      simp [Matrix.add_mul, Matrix.mul_assoc, hA1]
+    have hright :
+        (x.C1 * x.A1) * x.A1⁻¹ * dA1 * x.A1⁻¹ =
+          x.C1 * dA1 * x.A1⁻¹ := by
+      simp [Matrix.mul_assoc, hA1]
+    rw [hleft, hright]
+    abel
+  · apply Prod.ext
+    · rfl
+    · apply Prod.ext
+      · change
+          dF3old
+              - dD * x.A3 * (x.C1 * x.A1)⁻¹
+              - x.D * dA3 * (x.C1 * x.A1)⁻¹
+              + x.D * x.A3 * (x.C1 * x.A1)⁻¹ *
+                  (dC1 * x.A1 + x.C1 * dA1) * (x.C1 * x.A1)⁻¹
+              + dD * x.A3 * (x.C1 * x.A1)⁻¹
+              + x.D * dA3 * (x.C1 * x.A1)⁻¹
+              - x.D * x.A3 * (x.C1 * x.A1)⁻¹ *
+                  (dC1 * x.A1 + x.C1 * dA1) * (x.C1 * x.A1)⁻¹ =
+            dF3old
+        abel
+      · apply Prod.ext
+        · rfl
+        · apply Prod.ext
+          · change
+              -dA1 * (-(x.A1⁻¹ * x.A2)) -
+                  x.A1 * (x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - x.A1⁻¹ * dA2) =
+                dA2
+            have hterm1 :
+                -dA1 * (-(x.A1⁻¹ * x.A2)) = dA1 * x.A1⁻¹ * x.A2 := by
+              ext i j
+              simp [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
+            have hterm2 :
+                x.A1 * (x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - x.A1⁻¹ * dA2) =
+                  dA1 * x.A1⁻¹ * x.A2 - dA2 := by
+              rw [Matrix.mul_sub]
+              congr 1 <;> simp [Matrix.mul_assoc, hA1]
+            rw [hterm1, hterm2]
+            abel
+          · apply Prod.ext
+            · rfl
+            · change
+                dA4
+                    - dA3 * x.A1⁻¹ * x.A2
+                    + x.A3 * x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2
+                    - x.A3 * x.A1⁻¹ * dA2
+                    - dA3 * (-(x.A1⁻¹ * x.A2))
+                    - x.A3 * (x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - x.A1⁻¹ * dA2) =
+                  dA4
+              have hterm1 :
+                  dA3 * (-(x.A1⁻¹ * x.A2)) =
+                    -(dA3 * x.A1⁻¹ * x.A2) := by
+                calc
+                  dA3 * (-(x.A1⁻¹ * x.A2)) = -(dA3 * (x.A1⁻¹ * x.A2)) := by
+                    rw [Matrix.mul_neg]
+                  _ = -(dA3 * x.A1⁻¹ * x.A2) := by
+                    rw [Matrix.mul_assoc]
+              have hterm2 :
+                  x.A3 * (x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - x.A1⁻¹ * dA2) =
+                    x.A3 * x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 -
+                      x.A3 * x.A1⁻¹ * dA2 := by
+                rw [Matrix.mul_sub]
+                congr 1 <;> simp [Matrix.mul_assoc]
+              rw [hterm1, hterm2]
+              abel
+
+/-- The raw formal tangent formula recovers the chart tangent formula after
+applying the inverse formula at the raw-derived chart base point. -/
+theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x
+        (productReductionStepFormalJacobianInverseFormula
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+          (productReductionStepFormalJacobianChartBase
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x) v) = v := by
+  have _hCtop : IsUnit (x.C1 * x.A1).det := by
+    simpa [Matrix.det_mul] using hC1.mul hA1
+  rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
+  have hCtopLinear :
+      (dCtop * x.A1⁻¹ -
+            (x.C1 * x.A1) * x.A1⁻¹ * dA1 * x.A1⁻¹) *
+          x.A1 + x.C1 * dA1 =
+        dCtop := by
+    have hleft :
+        (dCtop * x.A1⁻¹ -
+              (x.C1 * x.A1) * x.A1⁻¹ * dA1 * x.A1⁻¹) *
+            x.A1 =
+          dCtop - x.C1 * dA1 := by
+      rw [Matrix.sub_mul]
+      congr 1 <;> simp [Matrix.mul_assoc, hA1]
+    rw [hleft]
+    abel
+  have hdA1F2 :
+      -dA1 * (-(x.A1⁻¹ * x.A2)) = dA1 * x.A1⁻¹ * x.A2 := by
+    ext i j
+    simp [Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
+  have hdA2raw :
+      -dA1 * (-(x.A1⁻¹ * x.A2)) - x.A1 * dF2 =
+        dA1 * x.A1⁻¹ * x.A2 - x.A1 * dF2 := by
+    rw [hdA1F2]
+  have hdA3F2 :
+      dA3 * (-(x.A1⁻¹ * x.A2)) = -(dA3 * x.A1⁻¹ * x.A2) := by
+    ext i j
+    simp [Matrix.mul_neg, Matrix.mul_assoc]
+  apply Prod.ext
+  · change
+      (dCtop * x.A1⁻¹ -
+            (x.C1 * x.A1) * x.A1⁻¹ * dA1 * x.A1⁻¹) *
+          x.A1 + x.C1 * dA1 =
+        dCtop
+    exact hCtopLinear
+  · apply Prod.ext
+    · rfl
+    · apply Prod.ext
+      · rfl
+      · apply Prod.ext
+        · rfl
+        · apply Prod.ext
+          · change
+              x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 -
+                  x.A1⁻¹ *
+                    (-dA1 * (-(x.A1⁻¹ * x.A2)) - x.A1 * dF2) =
+                dF2
+            have hterm :
+                x.A1⁻¹ *
+                    (-dA1 * (-(x.A1⁻¹ * x.A2)) - x.A1 * dF2) =
+                  x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - dF2 := by
+              rw [hdA2raw, Matrix.mul_sub]
+              congr 1 <;> simp [Matrix.mul_assoc, hA1]
+            rw [hterm]
+            abel
+          · apply Prod.ext
+            · change
+                dF3
+                    + dD * x.A3 * (x.C1 * x.A1)⁻¹
+                    + x.D * dA3 * (x.C1 * x.A1)⁻¹
+                    - x.D * x.A3 * (x.C1 * x.A1)⁻¹ *
+                        dCtop * (x.C1 * x.A1)⁻¹
+                    - dD * x.A3 * (x.C1 * x.A1)⁻¹
+                    - x.D * dA3 * (x.C1 * x.A1)⁻¹
+                    + x.D * x.A3 * (x.C1 * x.A1)⁻¹ *
+                        ((dCtop * x.A1⁻¹ -
+                              (x.C1 * x.A1) * x.A1⁻¹ *
+                                dA1 * x.A1⁻¹) *
+                            x.A1 + x.C1 * dA1) *
+                          (x.C1 * x.A1)⁻¹ =
+                  dF3
+              rw [hCtopLinear]
+              abel
+            · change
+                dC
+                    - dA3 * (-(x.A1⁻¹ * x.A2))
+                    - x.A3 * dF2
+                    - dA3 * x.A1⁻¹ * x.A2
+                    + x.A3 * x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2
+                    - x.A3 * x.A1⁻¹ *
+                        (-dA1 * (-(x.A1⁻¹ * x.A2)) - x.A1 * dF2) =
+                  dC
+              have hterm :
+                  x.A3 * x.A1⁻¹ *
+                      (-dA1 * (-(x.A1⁻¹ * x.A2)) - x.A1 * dF2) =
+                    x.A3 * x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 -
+                      x.A3 * dF2 := by
+                rw [hdA2raw, Matrix.mul_sub]
+                congr 1 <;> simp [Matrix.mul_assoc, hA1]
+              rw [hdA3F2, hterm]
+              abel
+
+/-- The full p. 13 formal tangent map is a linear equivalence from raw tangent
+coordinates to chart tangent coordinates at the raw-derived chart base point. -/
+def productReductionStepFormalJacobianEquiv
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  LinearEquiv.ofLinear
+    (productReductionStepFormalJacobian
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)
+    (productReductionStepFormalJacobianInverse
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+      (productReductionStepFormalJacobianChartBase
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x))
+    (by
+      apply LinearMap.ext
+      intro v
+      simp [productReductionStepFormalJacobianFormula_inverseFormula_chartBase,
+        hC1, hA1])
+    (by
+      apply LinearMap.ext
+      intro v
+      simp [productReductionStepFormalJacobianInverseFormula_formula_chartBase,
+        hC1, hA1])
+
+@[simp]
+theorem productReductionStepFormalJacobianEquiv_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianEquiv
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1 v =
+      productReductionStepFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v :=
+  rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianEquiv_symm_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    (productReductionStepFormalJacobianEquiv
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1).symm v =
+      productReductionStepFormalJacobianInverse
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+        (productReductionStepFormalJacobianChartBase
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x) v :=
+  rfl
+
 /-- Reorder chart tangent coordinates into the raw-shaped order.
 
 The full p. 13 formal Jacobian naturally maps raw order

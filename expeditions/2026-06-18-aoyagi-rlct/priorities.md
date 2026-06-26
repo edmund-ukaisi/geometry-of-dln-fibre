@@ -4847,3 +4847,13 @@ tangent formulas. Next priority is the inverse-composition proof for the full
 raw/chart maps, followed by the raw-order endomorphism and determinant-unit
 theorem. Determinants should still not be stated on the native raw-to-chart
 map.
+
+A2 full p. 13 formal Jacobian equivalence has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-formal-jacobian-equivalence.md`.
+Lean proves both formula-composition identities and bundles the full raw/chart
+formal tangent map as `productReductionStepFormalJacobianEquiv`.  The next
+Jacobian priority is the raw-order endomorphism obtained by composing with
+`productReductionStepChartTangentRawOrderEquiv`, then the finite
+determinant-unit theorem.  Do not read the raw/chart `LinearEquiv` as analytic
+differentiability, density/Jacobian transport, source-measure pushforward,
+normal crossings, pole order, or RLCT.

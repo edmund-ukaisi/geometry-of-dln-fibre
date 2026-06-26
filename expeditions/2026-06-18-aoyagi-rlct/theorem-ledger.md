@@ -8622,6 +8622,24 @@ This is the linearity layer only; the full `LinearEquiv`, determinant unit
 theorem, analytic derivative, source-measure transport, normal crossings,
 pole order, and RLCT remain open.
 
+Latest A2 full product-step formal Jacobian equivalence:
+`ProductReductionStepJacobian.lean` now proves both formula-composition
+identities at the raw-derived chart base point and bundles the full raw/chart
+formal tangent map as a `LinearEquiv`. Lean names:
+`productReductionStepFormalJacobianInverseFormula_formula_chartBase`,
+`productReductionStepFormalJacobianFormula_inverseFormula_chartBase`,
+`productReductionStepFormalJacobianEquiv`,
+`productReductionStepFormalJacobianEquiv_apply`, and
+`productReductionStepFormalJacobianEquiv_symm_apply`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-formal-jacobian-equivalence.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-formal-jacobian-equivalence.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-formal-jacobian-equivalence.md`.
+This proves finite formal invertibility only. The full determinant-unit theorem
+still needs the chart-output raw-order endomorphism; analytic derivative,
+source-measure transport, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

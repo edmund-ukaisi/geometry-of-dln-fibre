@@ -11109,3 +11109,28 @@ tuple projections, so linearity is by construction. This is still not the full
 raw/chart `LinearEquiv`; inverse composition, the raw-order endomorphism, and
 determinant unitness remain open. No analytic derivative, source-measure
 transport, normal crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Full Product-Step Formal Jacobian Equivalence
+
+The full p. 13 raw/chart formal tangent maps now compose to the identity at
+the raw-derived chart base point.  Lean proves the two formula-level
+composition theorems
+
+```text
+productReductionStepFormalJacobianInverseFormula_formula_chartBase
+productReductionStepFormalJacobianFormula_inverseFormula_chartBase
+```
+
+and bundles them as
+
+```text
+productReductionStepFormalJacobianEquiv
+productReductionStepFormalJacobianEquiv_apply
+productReductionStepFormalJacobianEquiv_symm_apply
+```
+
+This closes finite formal invertibility for the native raw-to-chart tangent
+map.  The determinant theorem remains one layer away: first compose with
+`productReductionStepChartTangentRawOrderEquiv` to form a raw-order
+endomorphism, then prove its determinant is a unit.  No analytic derivative,
+source-measure transport, normal crossings, pole order, or RLCT is claimed.
