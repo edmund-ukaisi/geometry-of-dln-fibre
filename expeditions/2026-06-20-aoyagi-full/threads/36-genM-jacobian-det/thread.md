@@ -231,3 +231,29 @@ Every component + the indexing are validated. The assembly (a `GenBlk M t` with 
   `composeFold`, matched in item-3.
 Then rate (`hC0` re-check, `genBlk3spec` pattern ∀M) + item-3 (Params-level stage induction) + item-4
 (leafH summation) → `phiFlat_abs_det`. This is the next pass: a substantial but design-complete module.
+
+---
+
+## UPDATE-5 (same tide cont.) — structured decoder + RATE COMPLETE ∀M; item-3 (map equality) is the last piece
+
+Banked (sorry-free + axiom-clean): **`genBlkFlatStruct`** (the structured disjoint-slot decoder) +
+**`routeMCore_phiFlatStruct`** (the UNCONDITIONAL rate `routeMCore (phiFlatStruct u) = u²·V` ∀M). The
+delicate `hC0` (`C 0 = 1` at the identity boundary) is CLOSED: `C0_eq_one` via the `chainQ` kept-column
+law (`chainQ_apply_castAdd`, every column kept at `c_0=0`) + the `Text 0 = Text 1 = Wext 0` (all `M_0`)
+cast collapse. The `0+1`-vs-`1` normalization trap was the snag — fixed with `show`. The rate is
+decoder-agnostic (`routeMCore_phiGen` consumes only `GenBlk`/`hle`/`hC0`), so the structured decoder
+keeps it ∀M, confirming the design.
+
+### Remaining for `phiFlat_abs_det`: item-3 (map equality) + item-4 (leafH summation)
+- **Item-3**: `composeFold fs = phiFlatStruct` where `fs` = the item-2 factors (`radialFactor`,
+  `lduChartFactor`, `schurChartFactor`, `chainChartFactor`) with CLEs `E_s` = the role splits matching
+  the SAME `readK/X/N/E/W` slots. Codex's proof shape: `(paramsEquivFlat).symm ∘ composeFold fs =
+  chartParamsGen u M t genBlkFlatStruct hle` by `funext x; ext s i j` + per-stage accessor lemmas
+  (the factored layer-s = `chainA(N_s)(W_s)(C(s+1))` via `chainA/Q_apply_*`). THE deepest remaining
+  piece — the factored-flat ↔ chainA-layer entry match over opaque widths.
+- **Item-4**: the per-factor monomial dets (`radial |u|^{minAdm-1}`, `schur |K_s|^{r_s+c_s}`,
+  `ldu ∏|q|^{2(t-1-i)}`, `chain 1`) summed into `∏|u_j|^{leafH j}` (the `leafH3333_prod_eq` pattern).
+- Then the banked `phiFlat_abs_det_of_factored` (RouteMPhiFlatDet) → `phiFlat_abs_det`.
+
+8 modules banked this tide. The det side's RATE + decoder + all det-foundations + the assembly skeleton
+are done; item-3's map-equality induction is the final build.
