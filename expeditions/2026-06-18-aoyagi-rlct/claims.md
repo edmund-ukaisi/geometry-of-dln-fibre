@@ -7195,3 +7195,23 @@ Nonclaims: no theorem infers `ell=1`, no canonical selected pair, no
 branch-independent payload for arbitrary Definition 3 data, no source-rank or
 final-socket wrapper, no Eq5 payloads, no chart production, no pole-order
 theorem, and no RLCT theorem.
+
+Latest A2 Case 2 displayed-product entrywise selected-center RHS:
+Lean now proves that an entrywise selected-center readout for Aoyagi's
+displayed post-pivot lower product implies the submatrix selected-center RHS,
+and composes this with the unreindexed residual-factor product bridge.
+
+Lean names:
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise`
+and
+`residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entrywise-selected-center-rhs.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-entrywise-selected-center-rhs.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+
+Nonclaims: the entrywise selected-center readout remains supplied; no
+construction of `Cfac`, endpoint equivalences, `Cprime`, source/image
+equality, source-measure transport, normal crossings, pole order, or RLCT.

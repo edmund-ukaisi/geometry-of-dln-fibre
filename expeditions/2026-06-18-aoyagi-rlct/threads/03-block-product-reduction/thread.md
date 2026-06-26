@@ -5960,3 +5960,28 @@ The post-pivot domains are `(S,J+1)`, matching Aoyagi's continuing Case 2
 branch.  The theorem still does not prove the displayed RHS, construct
 `Cfac`, construct endpoint equivalences, produce `Cprime` from source data,
 or prove source/image equality, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 Case 2 displayed-product entrywise selected-center RHS
+
+Reproduction:
+`reproduction-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+Statement card:
+`statement-card-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+Review:
+`review-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+
+Lean now proves:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise
+residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+```
+
+The first theorem turns an entrywise displayed selected-center readout into
+the matrix submatrix RHS required by the previous bridge.  The second theorem
+composes this with the Case 2 residual-factor product bridge, so future source
+work can supply pointwise displayed entries rather than a full matrix equality.
+
+This remains finite matrix extensionality.  The entrywise readout itself,
+compatible factors, endpoint equivalences, source production of `Cprime`,
+source/image equality, normal crossings, pole order, and RLCT remain open.

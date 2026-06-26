@@ -8459,6 +8459,20 @@ Nonclaims: no selected-entry matrix factorization result, no source-factor
 construction, no residual-index equivalence, no source coverage, no
 source-measure transport, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 Case 2 displayed-product entrywise selected-center RHS:
+`Case2ResidualFactorProduct.lean` now proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise`
+and
+`residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entrywise-selected-center-rhs.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-entrywise-selected-center-rhs.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+This is finite extensionality only; the pointwise readout, endpoint
+equivalences, compatible factors, source/image equality, normal crossings,
+pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -4739,3 +4739,11 @@ It removes the final equivalence-submatrix wrapper after a supplied displayed
 post-pivot RHS identity.  The live source-moving obligation is still to prove
 that displayed RHS from the selected-entry chart data, with the post-pivot
 domains at `(S,J+1)`, not the old `J` center.
+
+A2 Case 2 displayed-product entrywise selected-center RHS has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+Lean reduces the displayed RHS socket to the pointwise statement that each
+entry of `D_{J+1} * C'_+` is the selected-center coordinate indexed by the
+endpoint equivalences.  This is the preferred next RHS interface.  Do not
+replace it with a canonical endpoint or center equivalence unless source work
+actually constructs that data.

@@ -10919,3 +10919,15 @@ identifying the displayed post-pivot lower product with the selected-center
 coordinate matrix after reindexing, the unreindexed `residualFactorProduct`
 is the selected-center matrix.  This is finite matrix reindexing only; the
 displayed RHS identity remains the source-moving obligation.
+
+The displayed RHS socket has now been sharpened to an entrywise interface:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entrywise-selected-center-rhs.md`.
+Lean proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_centerCoordinateSubmatrix_of_entrywise`
+and
+`residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`.
+The source audit confirms that Aoyagi pp. 19-22 support the lower product
+`D_{J+1} * C'_+`, but not a canonical endpoint/center-coordinate readout.  The
+next source-moving obligation is therefore the pointwise selected-center
+readout, still with endpoint equivalences and factor/source production
+supplied.
