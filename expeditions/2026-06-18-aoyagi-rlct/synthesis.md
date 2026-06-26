@@ -11166,3 +11166,42 @@ connect the formal tangent calculation to an actual local derivative and
 source-measure/density transport, then insert it into the regular-suspension
 or normal-crossing chart certificate.  No chart coverage, analytic
 change-of-variables, normal crossings, pole order, or RLCT is claimed here.
+
+## Latest A2 Product-Step Ambient Derivative
+
+The analytic derivative layer has started in
+`ProductReductionStepDerivative.lean`.  Lean proves the determinant-chart
+matrix inverse derivative
+
+```text
+hasFDerivAt_matrix_inv_of_isUnit_det
+```
+
+defines the ambient tuple coordinate map
+
+```text
+productReductionStepTopologyTupleToChart
+```
+
+and relates it to both record-level `toChart` and the formal chart base:
+
+```text
+productReductionStepTopologyTupleToChart_topologyTuple
+productReductionStepTopologyTupleToChart_topologyTuple_chartBase
+```
+
+The first component-level analytic identification also landed:
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart_Ctop
+```
+
+which proves the Frechet derivative of `Ctop = C1 * A1` is exactly
+`productReductionStepFormalJacobian_dCtop x` after finite-dimensional
+continuous-linear coercion.
+
+Next analytic priority: prove the remaining component derivatives `F2`,
+`F3`, and `C`, using `hasFDerivAt_matrix_inv_of_isUnit_det`, then assemble the
+full ambient tuple derivative against `productReductionStepFormalJacobian`.
+This still does not prove source-measure pushforward, density transport,
+change of variables, normal crossings, pole order, or RLCT.

@@ -4871,3 +4871,16 @@ source-measure/density transport, and then use it in the regular-suspension or
 normal-crossing chart certificate.  Do not read this determinant unit as
 chart coverage, analytic differentiability, density transport, normal
 crossings, pole order, or RLCT.
+
+A2 product-step ambient derivative has now started:
+`threads/03-block-product-reduction/reproduction-a2-product-step-ambient-derivative.md`.
+Lean adds `ProductReductionStepDerivative.lean`, proves real matrix inverse
+differentiability on determinant-unit square matrices, defines the ambient
+tuple coordinate map for the p. 13 product-step formulas, proves its
+record/formal-chart-base bridge, and proves the `Ctop = C1*A1` component
+derivative as `hasFDerivAt_productReductionStepTopologyTupleToChart_Ctop`.
+The next derivative priority is to prove the `F2`, `F3`, and `C` component
+derivatives using the inverse-derivative lemma, then assemble the full
+ambient tuple derivative against `productReductionStepFormalJacobian`.  Do not
+read this as source-measure pushforward, density/Jacobian transport,
+change-of-variables for integrals, normal crossings, pole order, or RLCT.

@@ -8657,6 +8657,24 @@ and
 This is a finite formal determinant-unit certificate only; analytic derivative,
 source-measure transport, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 product-step ambient derivative:
+`ProductReductionStepDerivative.lean` now begins the analytic derivative layer
+for the p. 13 coordinate change. Lean names:
+`hasFDerivAt_matrix_inv_of_isUnit_det`,
+`productReductionStepTopologyTupleToChart`,
+`productReductionStepTopologyTupleToChart_topologyTuple`,
+`productReductionStepTopologyTupleToChart_topologyTuple_chartBase`, and
+`hasFDerivAt_productReductionStepTopologyTupleToChart_Ctop`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-ambient-derivative.md`.
+This proves matrix inverse differentiability on determinant-unit real square
+matrices, the tuple-level map/record bridge, and the `Ctop = C1*A1`
+component derivative. The full tuple derivative, analytic determinant formula,
+source-measure transport, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
