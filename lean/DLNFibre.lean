@@ -327,5 +327,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 -- (`Chain.chain_telescope`, the algebraic heart of the chart identity `prod M (φ_M u) = u·H`).
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
+-- Bridge bricks (PARTIAL, toward `suffix 0 = prod M A`): the reindex-product cast-killer
+-- `reindex_finCongr_mul` + the tail-chain `Mtail`/`Atail`. Sorry-free; the full bridge (the `prod`
+-- front-peel) is the codebase's deferred `prodAux` reassociation XL-cast (see thread-33).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

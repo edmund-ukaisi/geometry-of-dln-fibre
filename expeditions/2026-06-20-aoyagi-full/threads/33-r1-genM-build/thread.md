@@ -71,3 +71,42 @@ construction + injOn/cov over a growing weighted-axis set). Pieces 1, 3, 4, 6 ar
 two banked engines + the three fixed-`L` anchors as templates. The three concrete instances
 ((4,4,2,2), (3,3,4), (3,3,3,3)) remain the right current banking of the headline's de-risking; the
 general atom is reachable but is a controller-gated design pass, not a single tide.
+
+## Build pass (2026-06-26) — piece 1 hits the `prodAux` reassociation XL-cast
+
+Per the controller's PROCEED-TO-BUILD, I started piece 1 (the bridge `suffix 0 = prod M A`). A
+decorrelated Codex consult (`codex/bridge-{prompt,answer}.md`, xhigh) chose route R3: keep the `Chain`
+widths total (`ℕ → ℕ`), bridge via endpoint `reindex (finCongr …)`, kill products-under-reindex with
+`Matrix.reindex_apply` + `Matrix.submatrix_mul_equiv`. I banked the two reusable bricks sorry-free
+(`reindex_finCongr_mul`, `Mtail`/`Atail` — `RouteMAchieverBridge.lean`, axiom-clean).
+
+**WALL (specific sub-piece): the `prod` front-peel `prod M A = A_0 · prod (Atail M A)`.** This is the
+gateway to the whole bridge (and to any inductive `prod = u·H`). It is the SAME deferred reassociation
+`DeepestTelescoping.endpoint_telescoping` carries ("the XL-cast — DEFERRED to a fresh-session-with-Codex").
+Concretely: after `prodAux_succ` (the proven reindex-explicit peel) + `ext i j` + `mul_apply`, the BASE
+case (`k=0`) reduces to the manifestly-true entry equation
+
+    ∑ x, (if i = x then 1 else 0) · A⟨0⟩ (Fin.cast _ x) (Fin.cast _ j)  =  A 0 i (Fin.cast _ j)
+
+but closing it fights the elaborator at every step: `prodAux M A 0` is `1` only at the SQUARE type
+`Fin (M 0) × Fin (M 0)` while the product expects `Fin (M 0) × Fin (M ⟨0,_⟩)` (so `Matrix.one_mul`
+won't `rw`); the inner `Fin.cast (M 0 = M (castSucc 0))` is not `rfl`-shaped so `Fin.cast_eq_self`
+won't fire; `Fintype.sum_ite_eq`/`sum_eq_single` won't `rw` through the cast-wrapped summand. Each is
+surmountable with bespoke `Fin`-index surgery, but it is many cycles for the BASE case alone, and the
+STEP case compounds it (two reindexes + the `reindex_finCongr_mul` distribution + the tail peel). Over
+the 3-attempt cap on this specific goal; not papered with a `sorry`.
+
+**Two escape routes for the controller (Codex-vetted):**
+1. **A dedicated `prodAux`-reassociation tide** (co-build with `DeepestTelescoping`'s deferred
+   `endpoint_telescoping` — same machinery): prove `prod M A = A_0 · prod (Atail)` with the
+   HEq-induction / entry-level cast discipline, banking it once for both consumers.
+2. **Re-derive the telescope engine in PREFIX form** (Codex R2): redefine `Chain.suffix` as a LEFT-fold
+   matching `prodAux` so the bridge is definitional (no reassociation). Cost: re-proving
+   `chain_telescope` with a forward induction carrying the `u`-divisibility — the math is naturally
+   backward (suffix), so this trades the cast fight for an induction-direction redesign. Most likely
+   the cheaper of the two if the backward divisibility can be re-expressed as a prefix invariant.
+
+**Honest cost read:** pieces 2–6 (the dependent-block `Chain` instance, dets, V, cov, assembly) all sit
+BEHIND this bridge (they need `prod = u·H`). The bridge is not conceptually hard but is the codebase's
+known cast bottleneck; it wants either a dedicated tide or the prefix-form redesign before the general
+atom is reachable. The three fixed-`L` anchors remain the right banking of the headline's de-risking.
