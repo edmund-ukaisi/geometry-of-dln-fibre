@@ -10970,3 +10970,18 @@ Lean proves
 in a downstream bridge module.  This theorem consumes the supplied successor
 entrywise readout, factor identities, and endpoint equivalences; it does not
 construct any of them.
+
+The generic two-edge sockets have now been removed for the concrete displayed
+Case 2 chain:
+`threads/03-block-product-reduction/reproduction-a2-case2-concrete-two-edge-factor-family.md`.
+Lean defines
+`case2PostPivotTwoEdgeDomain` and
+`case2PostPivotFreeTwoEdgeFactorFamily`, proves
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct`,
+and specializes the successor selected-entry matrix theorem as
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+This is a finite API hardening: in the exact chain
+`tau -> Case2ResidualColIndex n S (J+1) -> Case2ResidualRowIndex n S (J+1)`,
+the endpoint equivalences and factor identities are reflexive.  The successor
+entrywise readout and source production of `Cprime`/successor data remain
+supplied.

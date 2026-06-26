@@ -103,6 +103,66 @@ theorem residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
             (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
               n S (J + 1) (Equiv.refl _) eNext (i, t)))
 
+set_option linter.style.longLine false in
+/-- The concrete displayed Case 2 two-edge factor family upgrades to the
+successor selected-entry center-coordinate chart matrix from the supplied
+entrywise successor readout.
+
+This specializes
+`residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise`
+to the concrete endpoint family
+`tau -> Case2ResidualColIndex -> Case2ResidualRowIndex`, removing the generic
+factor-family and endpoint-equivalence hypotheses.  The entrywise successor
+readout remains a hypothesis. -/
+theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          case2DisplayedSourceChartMap n hS hnext
+            (yNext (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}))
+            (SelectedEntrySignedBox.CenterCoord.sourceResidual yNext)
+            ((case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext (i, t)).1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime)
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext c)) := by
+  simpa [case2PostPivotFreeTwoEdgeFactorFamily, case2PostPivotTwoEdgeDomain] using
+    residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_entrywise
+      (τ := τ) (κ := case2PostPivotTwoEdgeDomain n S J τ)
+      n hS hcont hnext residual Cprime
+      (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime)
+      yNext
+      (Equiv.refl _) (Equiv.refl _) (Equiv.refl _) eNext
+      (by
+        ext i j
+        rfl)
+      (by
+        ext i t
+        rfl)
+      hentry
+
 end Aoyagi
 end DLN
 end DLNFibre

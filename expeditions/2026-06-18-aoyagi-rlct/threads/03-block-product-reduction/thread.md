@@ -6089,3 +6089,34 @@ alignment.
 This is still conditional finite plumbing.  It does not prove the successor
 readout, construct endpoint equivalences or factors, produce `Cprime`, prove
 source/image equality, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 Case 2 concrete two-edge factor family
+
+Reproduction:
+`reproduction-a2-case2-concrete-two-edge-factor-family.md`.
+Statement card:
+`statement-card-a2-case2-concrete-two-edge-factor-family.md`.
+Review:
+`review-a2-case2-concrete-two-edge-factor-family.md`.
+
+Lean now proves:
+
+```text
+case2PostPivotTwoEdgeDomain
+case2PostPivotFreeTwoEdgeFactorFamily
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise
+```
+
+The concrete endpoint family is the displayed Case 2 two-edge chain
+`tau -> Case2ResidualColIndex n S (J+1) -> Case2ResidualRowIndex n S (J+1)`.
+The residual-factor product for this family is exactly
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct`, so callers no longer need
+to supply a generic `kappa`, endpoint equivalences, or the two factor
+identities when they are already in this displayed Case 2 chain.  The
+successor selected-entry matrix theorem composes this specialization with a
+supplied successor entrywise readout.
+
+This remains a finite socket reducer.  The successor readout, source
+production of `Cprime`, successor source data, source/image equality, normal
+crossings, pole order, and RLCT remain supplied or open.

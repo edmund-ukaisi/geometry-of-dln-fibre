@@ -4777,3 +4777,14 @@ Lean consumes a supplied successor source-chart readout and returns the exact
 successor selected-entry `CenterCoord.chartMap` residual-factor product
 matrix.  The meaningful frontier is unchanged: source-produce the readout,
 endpoint equivalences, compatible factors, and `Cprime`.
+
+A2 Case 2 concrete two-edge factor family has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-concrete-two-edge-factor-family.md`.
+Lean chooses the displayed endpoint family
+`tau -> Case2ResidualColIndex n S (J+1) -> Case2ResidualRowIndex n S (J+1)`,
+builds the two factors `C'_+` and `D_(J+1)`, and proves the concrete
+`residualFactorProduct` is the displayed product.  The selected-entry successor
+matrix bridge has also been specialized to this family, so future callers no
+longer need to pass a generic `kappa`, endpoint equivalences, or factor
+identities in this exact displayed chain.  The meaningful frontier is now
+sharper: source-produce the successor readout/source data or keep them supplied.

@@ -33,6 +33,72 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- The concrete three endpoints of the displayed Case 2 post-pivot two-edge
+chain: free right endpoint, residual columns, then residual rows. -/
+def case2PostPivotTwoEdgeDomain
+    (n : ℕ → ℕ) (S J : ℕ) (τ : Type) : Fin 3 → Type :=
+  Fin.cases τ
+    (fun q : Fin 2 ↦
+      Fin.cases (Case2ResidualColIndex n S (J + 1))
+        (fun _ : Fin 1 ↦ Case2ResidualRowIndex n S (J + 1)) q)
+
+instance case2PostPivotTwoEdgeDomain.fintype
+    (n : ℕ → ℕ) (S J : ℕ) {τ : Type} [Fintype τ]
+    (q : Fin 3) :
+    Fintype (case2PostPivotTwoEdgeDomain n S J τ q) := by
+  refine Fin.cases ?case0 ?caseSucc q
+  · simpa [case2PostPivotTwoEdgeDomain] using (inferInstance : Fintype τ)
+  · intro q
+    refine Fin.cases ?case1 ?caseSucc2 q
+    · simpa [case2PostPivotTwoEdgeDomain] using
+        (inferInstance : Fintype (Case2ResidualColIndex n S (J + 1)))
+    · intro q
+      refine Fin.cases ?case2 ?caseSucc3 q
+      · simpa [case2PostPivotTwoEdgeDomain] using
+          (inferInstance : Fintype (Case2ResidualRowIndex n S (J + 1)))
+      · intro q
+        exact Fin.elim0 q
+
+instance case2PostPivotTwoEdgeDomain.decidableEq
+    (n : ℕ → ℕ) (S J : ℕ) {τ : Type} [DecidableEq τ]
+    (q : Fin 3) :
+    DecidableEq (case2PostPivotTwoEdgeDomain n S J τ q) := by
+  refine Fin.cases ?case0 ?caseSucc q
+  · simpa [case2PostPivotTwoEdgeDomain] using (inferInstance : DecidableEq τ)
+  · intro q
+    refine Fin.cases ?case1 ?caseSucc2 q
+    · simpa [case2PostPivotTwoEdgeDomain] using
+        (inferInstance : DecidableEq (Case2ResidualColIndex n S (J + 1)))
+    · intro q
+      refine Fin.cases ?case2 ?caseSucc3 q
+      · simpa [case2PostPivotTwoEdgeDomain] using
+          (inferInstance : DecidableEq (Case2ResidualRowIndex n S (J + 1)))
+      · intro q
+        exact Fin.elim0 q
+
+/-- The concrete two-factor family for the displayed Case 2 post-pivot lower
+product: first the free `C'` tail, then the post-pivot residual block. -/
+noncomputable def case2PostPivotFreeTwoEdgeFactorFamily
+    {τ : Type} {R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ∀ p : Fin 2,
+      Matrix
+        (case2PostPivotTwoEdgeDomain n S J τ p.succ)
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) R := by
+  refine Fin.cases ?case0 ?caseSucc
+  · simpa [case2PostPivotTwoEdgeDomain] using
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime
+  · intro p
+    refine Fin.cases ?case1 ?caseSucc2 p
+    · simpa [case2PostPivotTwoEdgeDomain] using
+        case2DisplayedPostPivotResidualBlock n hS hcont residual
+    · intro p
+      exact Fin.elim0 p
+
 set_option linter.style.longLine false in
 /-- A supplied two-edge residual-factor family gives Aoyagi's displayed Case 2
 post-pivot free-`C'` product after explicit endpoint reindexing.
@@ -88,6 +154,36 @@ theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct
     _ = case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
       rw [hD', hF']
       rfl
+
+set_option linter.style.longLine false in
+/-- The concrete displayed Case 2 two-edge factor family unfolds to the
+displayed post-pivot free-`C'` product.
+
+This removes only generic endpoint-family and factor-identity boilerplate; it
+does not construct successor chart coordinates or an entrywise selected-center
+readout. -/
+theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct
+    {τ : Type} {R : Type*} [CommRing R] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime)
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
+  simpa [case2PostPivotFreeTwoEdgeFactorFamily, case2PostPivotTwoEdgeDomain] using
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct_submatrix
+      n hS hcont residual Cprime
+      (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime)
+      (Equiv.refl _) (Equiv.refl _) (Equiv.refl _)
+      (by
+        ext i j
+        rfl)
+      (by
+        ext i t
+        rfl)
 
 set_option linter.style.longLine false in
 /-- Entrywise expansion of Aoyagi's displayed Case 2 post-pivot lower product

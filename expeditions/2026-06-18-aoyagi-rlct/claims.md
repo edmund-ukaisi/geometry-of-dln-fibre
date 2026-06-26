@@ -7290,3 +7290,28 @@ and
 Nonclaims: the successor readout, endpoint equivalences, compatible factors,
 `Cprime` production, source/image equality, source-measure transport, normal
 crossings, pole order, and RLCT remain supplied or open.
+
+Latest A2 Case 2 concrete two-edge factor family:
+Lean now defines the concrete displayed Case 2 two-edge endpoint family
+`tau -> Case2ResidualColIndex n S (J+1) -> Case2ResidualRowIndex n S (J+1)`
+and proves that its `residualFactorProduct` is exactly
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct`.  A downstream specialization
+also proves the successor selected-entry `CenterCoord.chartMap` matrix theorem
+for this concrete family from the still-supplied entrywise successor readout.
+
+Lean names:
+`case2PostPivotTwoEdgeDomain`,
+`case2PostPivotFreeTwoEdgeFactorFamily`,
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct`,
+and
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-concrete-two-edge-factor-family.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-concrete-two-edge-factor-family.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-concrete-two-edge-factor-family.md`.
+
+Nonclaims: the successor readout, source production of `Cprime`, successor
+source data, source/image equality, source-measure transport, normal crossings,
+pole order, and RLCT remain supplied or open.

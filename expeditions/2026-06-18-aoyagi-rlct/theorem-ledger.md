@@ -8522,6 +8522,22 @@ This is conditional finite composition; successor readout, endpoint
 equivalences, compatible factors, source/image equality, normal crossings,
 pole order, and RLCT remain open.
 
+Latest A2 Case 2 concrete two-edge factor family:
+`Case2ResidualFactorProduct.lean` now defines
+`case2PostPivotTwoEdgeDomain` and
+`case2PostPivotFreeTwoEdgeFactorFamily`, and proves
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct`.
+`Case2ResidualSelectedEntryChartBridge.lean` also proves
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_entrywise`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-concrete-two-edge-factor-family.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-concrete-two-edge-factor-family.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-concrete-two-edge-factor-family.md`.
+This specializes the displayed Case 2 two-edge chain and removes generic
+endpoint/factor boilerplate; successor readout, source-produced `Cprime`,
+source/image equality, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
