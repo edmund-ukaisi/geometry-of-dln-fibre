@@ -298,3 +298,9 @@ import DLNFibre.Core.FibreBundleReduced
 -- with `…of_algEquiv…` transport hooks the θ-chart atlas consumes. Conditional on the minor-unit
 -- input (discharged by the rank=C+δ tide), NOT a fibre-is-smooth claim.
 import DLNFibre.Core.FibreSmoothPlumbing
+-- Scope-3 (generic smoothness, thread 16): reusable unconditional bricks — `Smooth (A ⊗ B)`,
+-- `SchurLoc` smooth, the basic-open `IsSmoothAt` bridge — plus the CONDITIONAL headline: given
+-- `IsSmoothAt` of the reduced-fibre factor at a top-component generic prime (= thread-14 fact (C),
+-- NOT discharged), the chart product `SchurLoc ⊗ Away g` is `Smooth k`. The fibre is reducible for
+-- θ≥2, so the honest object is `IsSmoothAt` (generic), never a global `Smooth k`.
+import DLNFibre.Core.FibreGenericSmooth
