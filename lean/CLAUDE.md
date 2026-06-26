@@ -168,3 +168,28 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   width-reindex over a product. (iii) Peel layer-products by **prefix-length induction reusing
   `prodAux_succ`**, not entrywise. This kernel transfers to any `prod`/`prodAux` reassociation (e.g. the
   L2/D1 `endpoint_telescoping`).
+
+## General-`M` achiever-chain RATE engine LANDED (`Validate.RouteMChain*`, thread 35)
+- **The full M-agnostic rate engine for `prod M (φ_M u) = u • H` is banked sorry-free** (no per-entry
+  `ring` blow-up; the `(3,3,3,3)`/`(4,4,2,2)` instances did per-entry `ring`, this does NOT):
+  - `RouteMChainFactor`: `step_of_factor` (`Ck=Bk·Qk+u•Rk`, `Qk·Ak=Cnext`, `Ek=Rk·Ak ⟹ Ck·Ak=Bk·Cnext+u•Ek`,
+    generic) + `chain_block` (`[I|N]·[C−N·W;W]=C` on sum-blocks, `Fintype.sum_sum_type`).
+  - `RouteMFactoredChain`: `FactoredChain` (factored per-level data + `hC`/`hQA`/`base`) → `toChain : Chain`
+    (discharges `Chain.step` via `step_of_factor`); `telescope_zero` fires `C₀·suffix₀ = u•Hmat₀`.
+  - `RouteMChainRate`: `prod_eq_reindex_suffix` (the banked suffix bridge restated on `FactoredChain`).
+  - `RouteMChainBlock`: **the `hQA` on AMBIENT `Fin (M k)`** — `finSplit`/`chainQ`/`chainA` +
+    `chainQ_mul_chainA : chainQ·chainA = C`, via `submatrix_mul_equiv` inner-equiv cancellation reducing to
+    `chain_block`. This is the `S-hybrid` route (Codex-confirmed): do the block algebra on `Fin t ⊕ Fin c`,
+    reindex onto `Fin (M k)` at the seam, ONE `submatrix_mul_equiv` cancels the inner equiv. **Closes the
+    dependent-`Fin (M k)` block algebra** without entrywise `ext`.
+- **The validated per-`M` instance DESIGN** (the remaining SUPPLY; `threads/35-…/thread.md` for the full
+  spec): define `C` RECURSIVELY so `hC`/`hQA` are near-`rfl` — `C 0 := 1`, `C k := Bmat k·chainQ(N_k)+u•R̄_k`
+  (interior, `hC k` is `rfl`), `C L := u•R` (`base` rfl), `A k := chainA (N_k)(W_k)(C(k+1))` (`hQA k :=
+  chainQ_mul_chainA`). Off-by-one: `Twid 0 = M 0`, `Twid (k+1) = t_k` (achiever descent, `t_0 := M_0`), so
+  the FIRST boundary is the identity boundary (`c_0=0`, `chainQ at c=0 = I`), genuine `chain_block` at
+  `1≤k<L`, leaf at `k=L`. **Keep widths EXPLICIT** (not `![…].getD`/`Fin.cons`) or the `c=0` `chainQ=I`
+  `isDefEq` blows the heartbeat budget.
+- **The RATE identity is PATH-AGNOSTIC** (Codex + the telescope theorem): any chain with `C 0 = 1`,
+  `step`, `base`, layer-match gives `prod = u•H`. The achiever profile is needed only for the DOWNSTREAM
+  Jacobian det `|u|^{minAdm−1}` + the `½·minAdm` threshold — the chart-identity checkpoint can use achiever
+  widths but prove only the rate.
