@@ -2893,6 +2893,25 @@ theorem deepest_diffeo_bridge_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
             (∑ i, (regStraighten (split x)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split x)).2.1)
           ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+  -- **ROADMAPPED GAP — the (1a) unblocker (block-triangular endpoint frames).** Feed the joint `(T1, Y1)`
+  -- Ψ (the cert's L = 2 closed form, cutoff-smooth) to the banked `rlctAtOn_diffeo_bridge_of`, with the
+  -- composition identity from E1 (`frobSq_prod_absorbed_eq_rcore`, the core half) + E2 (reg-preservation).
+  -- E2 (`deepestEFull ∘ Ψ = deepestEFull`) is sound ONLY at block-triangular endpoint frames: the
+  -- endpoint conjugation `endpointP0 · (prod − B) · endpointQL` leaks Ψ's moved raw `(2,2)` block
+  -- `P11 = −S0·(T1 − T1')` into the read blocks unless `endpointP0` is block-LOWER and `endpointQL`
+  -- block-UPPER (verified exact-rational, `e2-verify/e2_mw2.py`: 7/8 fail at general frames, 0/8 at
+  -- triangular). The block-triangular normalizers are BANKED
+  -- (`Core.Matrix.blockLower_left_normalizer` / `blockUpper_right_normalizer`), but their `[Invertible
+  -- A11]` precondition (the boundary corner's leading `r×r` block) is NOT supplied by the producer's
+  -- `deepestPoint` — `IsDeepLayers` pins only tail-columns-zero for the boundary corner, and
+  -- `deepestPoint_exists` builds `layer0 = U·[I_r|0]` whose top block can be singular. UNBLOCKER (1a,
+  -- always achievable, `e2-verify/a11_check.py`): strengthen `IsDeepLayers`/`deepestPoint_exists` so the
+  -- boundary corner's leading `r×r` block is invertible (`U` rank-`r` ⟹ permute `r` independent rows to
+  -- the top) and emit block-triangular frames from `deepestPoint_frame_pivot_exists`; then E2 holds via
+  -- the banked normalizers + the `(T1, Y1)` Ψ. A bundle-wide `IsDeepLayers` strengthening (Skeleton-level
+  -- def + its existence proof + consumers) — roadmapped as the general-L frontier (joins the `L ≥ 3`
+  -- interior gaps 3099/3104), per the lower-VOI reckoning (this L = 2 diffeo is a building block off the
+  -- concrete-anchor path; closing it leaves `deepest_gauge_construction` sorryAx from 3099/3104 anyway).
   sorry
 
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation, `2 ≤ L`). Assembles
