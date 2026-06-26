@@ -77,4 +77,28 @@ theorem chainQ_mul_chainA {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t)
   exact chain_block (N.submatrix id (e.symm : Fin (M' - t) → Fin c))
     (W.submatrix (e.symm : Fin (M' - t) → Fin c) id) C
 
+/-! ## The identity boundary (`c = 0`): `chainQ` is the identity
+
+At the first achiever boundary the residual width `c = M_0 − t_0 = 0`, so the chaining row `Q = [I | ]`
+has no residual block — `chainQ` is the genuine identity `I_t`. This is what makes `C 0 = 1` (the suffix
+bridge's `C 0 = 1` requirement) reachable from `Bmat 0 = 1`, `Rmat 0 = 0`. -/
+
+/-- `finSplit` at `c = 0` (`M' = t`) lands every index in the kept block: `finSplit (le_refl t) j =
+Sum.inl j` (the residual `Fin (t − t) = Fin 0` is empty). -/
+theorem finSplit_refl {t : ℕ} (j : Fin t) : finSplit (le_refl t) j = Sum.inl j := by
+  simp only [finSplit, Equiv.trans_apply, finCongr_apply]
+  rw [show (Fin.cast (show t = t + (t - t) by omega) j) = Fin.castAdd (t - t) j from by
+    apply Fin.ext; simp]
+  rw [finSumFinEquiv_symm_apply_castAdd]
+
+/-- **`chainQ` at `c = 0` is the identity** `chainQ (h : t + 0 = t) (N : Fin t → Fin 0) = 1` — the
+identity boundary (no residual block; `Q = [I_t | ]`). The `finSplit`-reindex sends every column to the
+kept block (`finSplit_refl`), so the `Sum.elim` selects `1 i`. -/
+theorem chainQ_cZero {t : ℕ} (h : t + 0 = t) (N : Matrix (Fin t) (Fin 0) ℝ) :
+    chainQ h N = (1 : Matrix (Fin t) (Fin t) ℝ) := by
+  ext i j
+  simp only [chainQ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,
+    Equiv.refl_apply, Equiv.symm_symm]
+  rw [finSplit_refl j, Sum.elim_inl]
+
 end DLNFibre.DLN.RLCT
