@@ -8303,3 +8303,25 @@ coordinate-domain theorem, no `F2` readback packaging, no combined
 `A3_last`/`F3` source-map theorem, no source-rank coverage, no source/image
 equality, no measure pushforward, no density/Jacobian theorem, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive active endpoint package:
+Lean now proves
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Under the
+solved endpoint formulas `A1_0=Tail^-1*Ctop` and
+`A3_last=-(F3-EarlyTail)*CtopLast`, plus `F2_last=0`, passive `A1_p` unit
+hypotheses for `p != 0`, and `det(Ctop)` unit, the constructed fixed-base edge
+family has source-left readbacks `-S_0.B=F2_0`, `S_0.Ctop=Ctop`, and
+`lowerLeft(S_0.L)=F3`, and every edge has the prescribed transformed block at
+the suffix state `S_{p+1}`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-active-endpoint-package.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-active-endpoint-package.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-active-endpoint-package.md`.
+
+Nonclaims: endpoint fixed-base packaging only.  No bundled coordinate-domain
+structure, no two-sided local inverse, no source-rank coverage, no source/image
+equality, no measure pushforward, no density/Jacobian theorem, no normal
+crossings, no pole order, and no RLCT.

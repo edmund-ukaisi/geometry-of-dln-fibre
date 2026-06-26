@@ -1263,6 +1263,111 @@ theorem retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
         (Fin.last N) p.succ p.succ.le_last)
       hB
 
+/-- Retained-passive fixed-base edges with the solved endpoint blocks read back
+the active source-left fields `F2_0`, `Ctop`, and `F3`, and still have the
+prescribed transformed edge at every step.
+
+This is a finite fixed-base endpoint package.  It does not assert source-rank
+coverage, a source/image theorem, density, Jacobian accounting, normal
+crossings, pole order, or RLCT. -/
+theorem retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (M + 2), Matrix ρ (κ' i) K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (Ctop : Matrix ρ ρ K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K)
+    (hF2last : F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det)
+    (hCtop : IsUnit Ctop.det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop)
+    (hA3last :
+      let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+      let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C 0 (Nat.zero_le (M + 1))
+      let CtopLast : Matrix ρ ρ K :=
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+      A3 (Fin.last M) = -(F3 - earlyTail) * CtopLast) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C;
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B = F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+        Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = F3 ∧
+      (∀ p : Fin (M + 1),
+        transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last) =
+          retainedPassiveTransformedEdge A1 F2 A3 C p) := by
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  have hA1 : ∀ p : Fin (M + 1), IsUnit (A1 p).det :=
+    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+      (K := K) (ρ := ρ) A1 Ctop hPassiveA1 hCtop hA10
+  have hB0 :
+      (suffixState E (Fin.last (M + 1)) 0
+        (Fin.zero_le (Fin.last (M + 1)))).B = -F2 0 := by
+    simpa [E] using
+      suffixState_B_retainedPassiveFixedBaseEdgeMatrix
+        (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1
+        (0 : Fin (M + 2)) (Fin.zero_le (Fin.last (M + 1)))
+  have hCtop0 :
+      (suffixState E (Fin.last (M + 1)) 0
+        (Fin.zero_le (Fin.last (M + 1)))).Ctop = Ctop := by
+    simpa [E] using
+      suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_zero_eq_target_of_A1_zero_eq
+        (K := K) (ρ := ρ) (κ' := κ') A1 F2 A3 C Ctop
+        hF2last hPassiveA1 hCtop hA10
+  have hCtopLast :
+      IsUnit
+        (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last).det := by
+    let i : Fin (M + 2) := (Fin.last M).castSucc
+    have hunit :
+        IsUnit
+          ((suffixState E (Fin.last (M + 1)) i i.le_last).Ctop).det := by
+      simpa [E, i] using
+        suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix
+          (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 i i.le_last
+    have hprod :
+        (suffixState E (Fin.last (M + 1)) i i.le_last).Ctop =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1 (Fin.last (M + 1)) i i.le_last := by
+      simpa [E, i] using
+        suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix
+          (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 i i.le_last
+    rw [hprod] at hunit
+    simpa [i] using hunit
+  have hTailTarget :
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C 0 (Nat.zero_le (M + 1)) = F3 := by
+    exact
+      retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq
+        (K := K) (ρ := ρ) (κ' := κ') A1 A3 C F3 hCtopLast hA3last
+  have hLower :
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L =
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C 0 (Nat.zero_le (M + 1)) := by
+    simpa [E] using
+      suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_productTailSum
+        (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1
+  refine ⟨?_, hCtop0, ?_, ?_⟩
+  · rw [hB0]
+    exact neg_neg (F2 0)
+  · exact hLower.trans hTailTarget
+  · intro p
+    exact
+      retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
+        (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1 p
+
 end RetainedPassive
 
 end ChartLocalSuffixState

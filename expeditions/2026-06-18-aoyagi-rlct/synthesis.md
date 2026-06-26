@@ -12600,3 +12600,14 @@ This remains finite endpoint algebra only; the next theorem is the fixed-base
 retained-passive source-map/readback package combining `A1_0`, `A3_last`,
 `F2`, and transformed-edge reconstruction, still before source coverage or
 measure transport.
+
+New follow-up packages those active endpoint readbacks for retained-passive
+fixed-base edges.  The theorem
+`retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets` combines
+the solved `A1_0` formula, solved `A3_last` formula, suffix-state `B/Ctop/L`
+recurrences, and transformed-edge reconstruction.  It proves
+`-S_0.B=F2_0`, `S_0.Ctop=Ctop`, `lowerLeft(S_0.L)=F3`, and
+`transformedEdge(E,p,S_{p+1})` equals the prescribed retained-passive
+transformed block for every edge.  This is the first endpoint package for the
+retained-passive source map, but it is not a bundled coordinate-domain object
+or two-sided local inverse, and it still avoids coverage and measure claims.

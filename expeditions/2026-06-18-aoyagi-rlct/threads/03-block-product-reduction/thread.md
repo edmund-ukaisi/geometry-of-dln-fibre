@@ -7429,6 +7429,42 @@ retained-passive coordinate domain, `F2` readback, `A3_last`/`F3` endpoint
 source map, source-rank coverage, source/image equality, measure pushforward,
 density/Jacobian transport, normal crossings, pole order, or RLCT.
 
+## 2026-06-26 A2 retained-passive active endpoint package
+
+Reproduction:
+`reproduction-a2-retained-passive-active-endpoint-package.md`.
+Statement card:
+`statement-card-a2-retained-passive-active-endpoint-package.md`.
+Review:
+`review-a2-retained-passive-active-endpoint-package.md`.
+
+Lean now packages the active source-left endpoint readbacks for the
+retained-passive fixed-base source map in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`:
+
+```text
+ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets
+```
+
+Under `F2_last=0`, passive `A1_p` determinant-unit hypotheses for `p != 0`,
+`det(Ctop)` unit, the solved formula `A1_0=Tail^-1*Ctop`, and the solved
+formula `A3_last=-(F3-EarlyTail)*CtopLast`, the theorem proves for the
+constructed fixed-base edge family:
+
+```text
+-S_0.B = F2_0,
+S_0.Ctop = Ctop,
+lowerLeft(S_0.L) = F3,
+transformedEdge(E,p,S_{p+1}) = retainedPassiveTransformedEdge_p for every p.
+```
+
+The theorem derives the required `CtopLast` determinant-unit hypothesis from
+the full `A1` unit family, including the solved first block.  This is still
+finite endpoint packaging only: no bundled coordinate-domain structure, no
+two-sided local inverse, no source-rank coverage, no source/image equality, no
+measure pushforward, no density/Jacobian theorem, no normal crossings, no pole
+order, and no RLCT.
+
 ## 2026-06-26 A2 retained-passive lower-left L recursion
 
 Reproduction:

@@ -9555,3 +9555,17 @@ This is finite top-left endpoint algebra only: no full coordinate-domain
 theorem, `F2` readback, combined `A3_last`/`F3` source-map theorem, source
 coverage, source/image theorem, measure pushforward, density/Jacobian theorem,
 normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive active endpoint package:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrix_activeEndpointFields_eq_targets`.
+For retained-passive fixed-base edges satisfying the solved `A1_0` and
+`A3_last` endpoint formulas, the source-left suffix state reads back
+`F2_0`, `Ctop`, and `F3`, and every transformed edge is the prescribed
+retained-passive transformed block at suffix state `S_{p+1}`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-active-endpoint-package.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-active-endpoint-package.md`.
+This is endpoint fixed-base packaging only: no bundled coordinate domain,
+two-sided local inverse, source coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.

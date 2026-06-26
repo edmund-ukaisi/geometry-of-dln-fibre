@@ -5534,3 +5534,19 @@ theorem combining this `A1_0` endpoint, the existing `A3_last`/`F3` prefix
 target, transformed-edge reconstruction, and `F2` readback.  Still do not
 assert source-rank coverage, source/image equality, measure transport,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+Active endpoint package now landed in `RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-active-endpoint-package.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-active-endpoint-package.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-active-endpoint-package.md`.
+It bundles the three source-left active readbacks
+`-S_0.B=F2_0`, `S_0.Ctop=Ctop`, and `lowerLeft(S_0.L)=F3`, plus per-edge
+transformed-block reconstruction, under the solved `A1_0` and `A3_last`
+endpoint formulas.
+
+Next retained-passive target: define a bundled coordinate-domain/source-map
+structure or prove the two-sided readback/reconstruction theorem at the
+fixed-base transformed-edge level.  Still before source-rank coverage,
+source/image equality, measure transport, density/Jacobian accounting, normal
+crossings, pole order, or RLCT.
