@@ -7146,3 +7146,34 @@ bookkeeping only.  It assumes constructed-family source-rank membership and
 does not prove source coverage, local inverse, exact-rank openness,
 source/image equality, source-measure transport, density/Jacobian identity,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 passive-variable local source chart boundary
+
+Reproduction:
+`reproduction-a2-p13-passive-variable-local-source-chart-boundary.md`.
+Review:
+`review-a2-p13-passive-variable-local-source-chart-boundary.md`.
+
+After xhigh source and Lean/API scouts rechecked the p.13 measure frontier,
+the passive-variable repair route has been pinned as a boundary, not a Lean
+theorem.  The audit separates three objects:
+
+```text
+full one-step raw determinant chart,
+p.13 reduced section C1=I, A3=0, A1=Ctop,
+hypothetical retained-passive multi-step source chart.
+```
+
+The full one-step raw chart is already formalised with inverse formulas,
+derivative determinant unit, and additive-Haar density transport.  The p.13
+reduced section is source-faithful to the displayed reduced variables but is
+lower-dimensional in the full raw chart in positive rank, so it cannot supply
+full raw-Haar pushforward.  A retained-passive multi-step chart remains a
+plausible future route, but it is a different object and would need an
+explicit source map, local source/source-rank coverage, product-measure
+decomposition, and density/Jacobian accounting.  Aoyagi pp. 10-13 do not state
+those fields.
+
+Nonclaims: no local source chart, no local inverse, no source-rank coverage,
+no source-measure pushforward, no density/Jacobian identity, no signed-box
+residual chart, no normal crossings, no pole order, and no RLCT.

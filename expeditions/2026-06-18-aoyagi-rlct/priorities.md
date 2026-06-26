@@ -5230,6 +5230,15 @@ should not extend this by wrappers; remaining source-moving work is still
 source chart/inverse/coverage, source-measure and density transport, or a
 different finite algebra socket with an unsupplied hypothesis.
 
+A2 passive-variable source-chart boundary has now been pinned:
+`threads/03-block-product-reduction/reproduction-a2-p13-passive-variable-local-source-chart-boundary.md`.
+The full one-step raw determinant chart is already formalised, while the p.13
+reduced section fixes raw `C1=I` and `A3=0`.  A retained-passive multi-step
+chart remains only a future construction: it needs an explicit source map,
+coverage/source-rank theorem, product-measure decomposition, and
+density/Jacobian accounting.  Do not add Lean wrappers claiming this chart or
+full raw-Haar pushforward from Lemma 2/Theorem 3 alone.
+
 A5 Lemma 5 first-nonbase cardinal bound has now landed:
 `threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
 Lean proves that the deterministic first-nonbase-or-base selector gives the

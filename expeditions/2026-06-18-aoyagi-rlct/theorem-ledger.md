@@ -9299,3 +9299,14 @@ Artifacts:
 `threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-chart-family-boundary.md`,
 and
 `threads/04-blow-up-certificate/review-case2-finite-raw-pivot-chart-family-boundary-a4.md`.
+
+Latest A2 p.13 passive-variable local source chart boundary:
+`threads/03-block-product-reduction/reproduction-a2-p13-passive-variable-local-source-chart-boundary.md`
+records a source-boundary audit, with review at
+`threads/03-block-product-reduction/review-a2-p13-passive-variable-local-source-chart-boundary.md`.
+It proves no new Lean theorem.  The audit confirms that the full one-step raw
+determinant chart is already formalised, the p.13 reduced tuple is a section
+fixing raw `C1=I` and `A3=0`, and a retained-passive multi-step source chart
+would be a new construction needing explicit source map, coverage,
+product-measure, and density/Jacobian fields.  Treat any theorem deriving
+full raw-Haar pushforward from the p.13 section as rejected by this boundary.

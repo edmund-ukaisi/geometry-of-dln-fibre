@@ -7975,3 +7975,17 @@ and
 Nonclaims: finite selected-entry algebra only.  No analytic chart coverage,
 analytic transition regularity, source/suffix production, source measure or
 density identification, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 passive-variable local source chart boundary:
+The audit at
+`threads/03-block-product-reduction/reproduction-a2-p13-passive-variable-local-source-chart-boundary.md`
+records that Lemma 2, as used in Theorem 3's induction, supports the
+one-step Schur/product-coordinate formulas already formalised in Lean, but it
+does not by itself supply a retained-passive multi-step source chart.  The
+full one-step raw determinant chart, the p.13 reduced section, and the
+hypothetical retained-passive source chart are distinct objects.  No Lean
+theorem was added.
+
+Nonclaims: no local source chart, no local inverse, no source-rank coverage,
+no source-measure pushforward, no density/Jacobian identity, no normal
+crossings, no pole order, and no RLCT.

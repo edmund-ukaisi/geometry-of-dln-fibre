@@ -12207,3 +12207,30 @@ Artifacts:
 `threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-chart-family-boundary.md`,
 and
 `threads/04-blow-up-certificate/review-case2-finite-raw-pivot-chart-family-boundary-a4.md`.
+
+## Latest A2 p.13 Passive-Variable Source-Chart Boundary
+
+After the raw-section obstruction and residual-rank readback checkpoint, xhigh
+source/API scouts rechecked the natural passive-variable repair route.  The
+new audit
+`threads/03-block-product-reduction/reproduction-a2-p13-passive-variable-local-source-chart-boundary.md`
+separates the already-formalised full one-step raw determinant chart from the
+actual p.13 reduced section and from a hypothetical retained-passive
+multi-step source chart.
+
+The one-step raw chart keeps all variables and is already proved with inverse
+formulas, derivative determinant unit, and additive-Haar density transport.
+The p.13 reduced section fixes raw `C1=I` and raw `A3=0` (with `A1=Ctop` in
+the left-step tuple), so it remains a section rather than full raw Haar.  A
+retained-passive chart might repair that obstruction, but it would be a new
+construction requiring an explicit source map, local source/source-rank
+coverage, product-measure decomposition, and density/Jacobian accounting.
+Aoyagi pp. 10-13 do not state those fields.  Xhigh review found no blocking
+issues after a wording repair to distinguish Lemma 2's Schur formulas from
+Theorem 3's accumulated induction formulas; review artifact:
+`threads/03-block-product-reduction/review-a2-p13-passive-variable-local-source-chart-boundary.md`.
+
+No Lean theorem was added.  Future A2 work should either construct this
+retained-passive source chart explicitly or choose a different source-backed
+finite algebra slice; do not derive full raw-Haar pushforward from the p.13
+section.
