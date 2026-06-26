@@ -8615,3 +8615,33 @@ residual/density estimates, and local loss/density bounds.  Nonclaims: no
 source chart construction, no source image equality, no measure pushforward
 proof, no Jacobian/density theorem, no original-loss comparison, no normal
 crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-26 A2 retained-passive monomial-unit local-measure handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-monomial-unit-local-measure-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-monomial-unit-local-measure-handoff.md`.
+Review:
+`review-a2-retained-passive-monomial-unit-local-measure-handoff.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialUnits
+```
+
+This specializes the elementary signed-box monomial-unit package to the
+retained-passive determinant-chart local source.  Supplied residual/source
+density monomial-times-unit identities and unit bounds imply the residual
+monomial lower bound and source-density bounds consumed by the retained-
+passive signed-box local-measure handoff.
+
+It still assumes the source chart, weighted pushforward, monomial-unit
+identities, unit bounds, and local loss/density bounds.  Nonclaims: no source
+chart construction, no source image equality, no measure pushforward proof, no
+Jacobian/density theorem, no original-loss comparison, no normal crossings, no
+pole order, and no RLCT extraction.

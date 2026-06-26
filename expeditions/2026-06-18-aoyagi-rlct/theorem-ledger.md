@@ -10021,6 +10021,19 @@ monomial residual/density hypotheses.  Nonclaims: no source chart
 construction, no pushforward proof, no Jacobian/density theorem, no
 original-loss comparison, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive monomial-unit local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialUnits`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-monomial-unit-local-measure-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-monomial-unit-local-measure-handoff.md`.
+Focused build passed.  The theorem derives the retained-passive signed-box
+handoff from supplied monomial-times-unit identities and unit bounds.
+Nonclaims: no source chart construction, no pushforward proof, no
+Jacobian/density theorem, no original-loss comparison, no normal crossings, no
+pole order, and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`

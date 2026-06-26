@@ -12990,3 +12990,14 @@ positivity/integrability on the retained-passive local source.  The theorem
 still assumes the source chart, pushforward, monomial data, and local
 loss/density bounds.  It does not prove Jacobian/density transport,
 original-loss comparison, normal crossings, pole order, or RLCT extraction.
+
+Latest A2 retained-passive monomial-unit local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialUnits`.
+This applies the existing elementary monomial-unit package before the retained-
+passive signed-box local-measure theorem.  The source-density measurability,
+residual monomial lower bound, and source-density bounds are derived from
+supplied monomial-times-unit identities and unit bounds.  The theorem still
+assumes the source chart, weighted pushforward, unit identities/bounds, and
+local loss/density estimates.  It does not prove Jacobian/density transport,
+original-loss comparison, normal crossings, pole order, or RLCT extraction.

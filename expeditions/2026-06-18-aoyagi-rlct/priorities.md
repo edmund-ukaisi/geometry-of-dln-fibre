@@ -5902,3 +5902,12 @@ residual/density estimates, residual positivity/integrability on the
 retained-passive local source is automatic.  Remaining frontiers: construct
 the actual source chart/pushforward and prove the Jacobian/density and
 original-loss bounds rather than assuming them.
+
+Latest retained-passive monomial-unit local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` now also derives the retained-passive
+signed-box handoff from monomial-times-unit residual/source-density identities
+and unit bounds.  This shifts the chart-side hypotheses closer to Aoyagi's
+normal-crossing data.  Remaining frontiers are unchanged but sharper:
+construct the retained-passive source chart/pushforward, identify the
+Jacobian/source-density unit, and prove the residual unit/loss bounds rather
+than assuming them.
