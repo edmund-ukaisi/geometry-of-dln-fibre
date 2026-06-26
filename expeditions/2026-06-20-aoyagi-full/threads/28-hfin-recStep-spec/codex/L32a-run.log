@@ -1,0 +1,180 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efe5c-c1ec-7d82-8845-be0f614089d9
+--------
+user
+<task>
+You are a measure-theory / real-algebraic-geometry second opinion on a change-of-variables COVER design
+in a formalisation (Lean 4 + Mathlib) of a real-log-canonical-threshold (RLCT) upper bound. I want your
+INDEPENDENT analysis of whether a proposed atlas covers a singular locus up to measure zero, and whether
+the per-chart change-of-variables is correct. Do NOT assume my design is right; attack it.
+</task>
+
+<grounding>
+SETUP (exact). We must show finiteness of a Lebesgue integral
+    ∫_{U} |F(x)|^{−c'} dx < ∞   for all c' < λ,
+where U ⊂ ℝ^N is a bounded open box around 0, F ≥ 0 is a real-analytic loss, and λ is a known rational
+threshold (= ½·minAdm, a codimension/2). The singular content at the deepest point reduces, after an
+established frame transport, to a determinantal core
+
+    G(Δ, S) = ‖Δ · S‖²_F   (squared Frobenius norm of the matrix product),
+
+where Δ is an r×r real "residual" matrix block and S is an r×p real free block, near (Δ,S) = (0, free).
+The smallest binding case is r=2, p=4 (this is the inner core of the dimension vector (3,3,4), whose
+full achiever cell is ‖T‖² ⊕ G with T a clean 1×4 Morse spectator block, disjoint variables).
+
+PROPOSED COVER (the thing to attack). To resolve the {Δ = 0} singularity, blow up Δ radially:
+  - View Δ as r² flat coordinates d_{ij}.
+  - Atlas = r² affine "entry charts", chart-(i,j) = { d | d_{ij} ≠ 0 and |d_{kl}| ≤ |d_{ij}| ∀(k,l) }
+    (i.e. entry (i,j) is the max-modulus entry).
+  - On chart-(i,j): set a := d_{ij} (the scale), R := the matrix with R_{ij}=1 and R_{kl}=d_{kl}/d_{ij}
+    (so |R_{kl}| ≤ 1, a bounded "angular" matrix), and Δ = a·R. The chart map is
+        φ_{(i,j)}(a, R-ratios, S) = (a·R, S),  i.e. the standard monomial pivot blow-up on the d-entries,
+    identity on S.
+  - Claim A (COVER UP TO NULL): the r² charts cover {Δ ≠ 0}; the complement {Δ = 0} (all r² entries zero)
+    is a codim-r² null subspace.
+  - Claim B (PER-CHART JACOBIAN): |det Dφ| = |a|^{r²−1}.
+  - Claim C (INTEGRAND): G ∘ φ = a²·‖R·S‖².
+  - Claim D (RANK STRATIFY): on chart-(i,j), rank R ≥ 1 always (pivot entry =1); stratify by rank R = j.
+    On rank-j stratum, after a Schur normal form, ‖R·S‖² ≃ (bounded-below unit)·‖P‖² + ‖B·Q‖² with P a
+    j×p full-rank Morse block and B·Q a corank-(r−j) lower determinantal core. RECURSE on the lower core
+    (corank strictly drops, r−j < r). Leaves: Euclidean Morse blocks ‖·‖² (radially integrable) and the
+    1-D monomial divisor a².
+  - Claim E (THRESHOLD): the chart finiteness threshold = min(r²/2 [the a-divisor],
+    min_{1≤j≤r}( jp/2 + λ_{r−j,p} ) [rank strata, Morse-block-dim/2 ADDED to lower-core λ]). Define
+    λ_{r,p} by this recursion, λ_{0,p}=0. We computed λ_{2,4}=2, λ_{3,4}=4, λ_{3,3}=7/2, λ_{4,4}=6.
+</grounding>
+
+<facts_established>
+- The monomial pivot blow-up map, its argmax-cell cover {d_p≠0, ∀k |d_k|≤|d_p|}, its a.e.-disjointness,
+  its Jacobian det = (pivot)^(#active − 1), and its image characterisation are ALREADY proven in the
+  Lean library at the r² entry level (a generic "argmaxCellOn / pivotBlowupOn" family on Fin (r²) → ℝ).
+- Exact (sympy) checks I have run: Jacobian det = a^{r²−1} for r=2,3; G∘φ = a²·‖R·S‖² (a-degree exactly 2)
+  for r=2,3; det R factor identifies the rank-drop locus; the rank-1 Schur split
+  ‖R·S‖² = (1+v²)·‖[1,u]·S‖² on the rank-1 stratum (r=2); the λ recursion reproduces ½·minAdm on
+  (2,4),(3,4),(3,3),(4,4),(2,2).
+- A disjoint-variable Morse block ⊕ lower core has rlct = (Morse dim)/2 + (lower rlct) by Fubini/Tonelli.
+- The terminal Morse leaf ∫_{box} (∑ Pᵢ²)^{−c'} < ∞ ⟺ c' < (dim P)/2 is proven (radial integration).
+</facts_established>
+
+<questions>
+1. COVER. Is Claim A correct that the r² entry charts cover {Δ ≠ 0} up to a null set, with the chart
+   domains as stated (non-pivot ratios bounded by 1)? Is there any subtlety in covering {Δ ≠ 0} (not just
+   the all-entries-equal-modulus tie set) — e.g. does the bounded-ratio domain miss part of an argmax cell?
+2. C-O-V VALIDITY. The change of variables ∫_{φ(domain)} g = ∫_{domain} |det Dφ|·g∘φ requires φ injective
+   off {a=0} and C¹. Are there hidden non-injectivity or boundary issues when φ maps the bounded-ratio
+   domain ONTO the argmax cell? Does the {a=0} exceptional locus being null suffice to drop it?
+3. RANK STRATIFICATION as a COVER. Claim D stratifies the chart by rank R. For the MEASURE-THEORETIC cover
+   to close, do I need the rank-(<r) strata {det of some minor = 0} to be handled as null sets PLUS a
+   recursive resolution, or does the rank-drop locus genuinely need its own blow-up (it has positive
+   codim but the integral can still diverge there)? Concretely at r=2,p=4: the rank-1 locus {det R = 0}
+   is codim-1 in R-space — is it correct that I must RESOLVE it (not just drop it as null), because the
+   integrand ‖R·S‖²^{−c'} can blow up faster than codim-1 there?
+4. THRESHOLD COMBINATION. Is the per-chart threshold the MIN of (a-divisor r²/2) and (the rank-strata
+   recursion), as in Claim E? Specifically: the a-axis is a separate radial factor (Tonelli product), so
+   the chart is finite iff BOTH the a-integral and the inner (R,S)-integral are finite — hence MIN. But
+   WITHIN the inner, the Morse-block ⊕ lower-core is a disjoint SUM, so rlct ADDS. Is this min-of-(divisor,
+   sum-recursion) the right combination, or is there a coupling between a and (R,S) I am missing that
+   breaks the Tonelli factorisation of the a-axis?
+5. DEPTH / TERMINATION. The recursion measure is the corank r; rank R ≥ 1 on each chart forces the lower
+   corank r−j ≤ r−1 < r. Is corank a sound well-founded measure, or can the rank-stratified recursion
+   fail to terminate / revisit the same corank (e.g. if the Schur normal form does not strictly reduce
+   the determinantal size)?
+6. ANY HOLE. Is there a measure-theoretic gap in "cover {Δ≠0} by r² charts, resolve each chart's rank
+   strata recursively, terminate at Morse/monomial leaves" that would make the upper bound FAIL for some
+   (r,p) — i.e. a stratum whose contribution diverges below λ_{r,p}?
+</questions>
+
+<output_contract>
+For each question 1–6: a direct verdict (CORRECT / INCORRECT / NEEDS-CARE) with the precise reason.
+Mark clearly which of your statements are PROVEN facts vs your INFERENCE. If you find a hole, give the
+smallest (r,p) and the specific stratum where it bites. If the cover is sound, state the single most
+fragile step a formaliser should be most careful about. Be concrete and adversarial; do not rubber-stamp.
+</output_contract>
+
+codex
+I’ll treat this as a mathematical audit, not a repo edit. I’m going to separate what follows from your established Lean facts and focus on the measure-theoretic and RLCT logic around the atlas.
+codex
+1. **COVER: CORRECT.**  
+   **Proven from finite-dimensional max:** every nonzero entry vector `d ∈ R^{r^2}` has at least one max-modulus entry. If pivot `p` is chosen with `|d_k| ≤ |d_p|`, then the ratios `d_k / d_p` all lie in `[-1,1]`. So the bounded-ratio source misses no part of the argmax cell.  
+   **Needs-care:** ties are covered multiple times, but tie loci are codimension-1 null hypersurfaces. The omitted set `{Δ = 0} × S` has codimension `r^2` and is null.
+
+2. **C-O-V VALIDITY: CORRECT, with boundary bookkeeping.**  
+   On `{a ≠ 0}`, the map
+   `a, u_k ↦ d_p = a, d_k = a u_k`
+   is injective with inverse `a = d_p`, `u_k = d_k/d_p`, and is polynomial/C¹. The Jacobian is `|a|^{r^2-1}`.  
+   **Needs-care:** the source with `|u_k| ≤ 1` is not open, and `a=0` collapses all ratios to `{Δ=0}`. Formally, apply COV on open pieces such as `a>0`, `a<0`, `|u_k|<1`, then add boundaries by null-set arguments; or use an area/change-of-variables theorem for measurable a.e.-injective C¹ maps. Dropping `{a=0}` is legitimate because it is null in source and its image is null in target.
+
+3. **RANK STRATIFICATION: NEEDS-CARE.**  
+   You cannot merely drop rank-drop loci as null. Null sets can still control divergence through neighborhoods: `|x|^{-α}` diverges near `{x=0}` even though `{x=0}` is null.  
+   For `r=2,p=4`, the rank-1 locus `{det R=0}` is codimension 1 in `R`-space. The exact locus may be ignored as a set, but neighborhoods of it must be resolved. The Schur split near rank 1 gives, after coordinates,
+   `‖RS‖² ≃ ‖P‖² + ‖B Q‖²`,
+   with `P ∈ R^4`, scalar `B`, and `Q ∈ R^4`. That lower `B Q` core is exactly what must be handled recursively.
+
+4. **THRESHOLD COMBINATION: CORRECT.**  
+   After the radial blow-up,
+   `G ∘ φ = a² ‖RS‖²`, and the density contributes `|a|^{r^2-1}`. Locally this factors as
+   `|a|^{r^2-1-2c'} · ‖RS‖^{-2c'}`.  
+   Therefore the chart is finite only if both the `a`-integral and the inner `(R,S)` integral are finite, so the combination is a **minimum**:
+   `min(r²/2, inner threshold)`.  
+   Inside the Schur chart, the split is a disjoint **sum**
+   `‖P‖² + ‖B Q‖²`, so the RLCTs **add**:
+   `jp/2 + λ_{r-j,p}`.  
+   **Inference:** no hidden coupling between `a` and `(R,S)` remains, except harmless box-bound dependence; local product comparison is enough.
+
+5. **DEPTH / TERMINATION: CORRECT.**  
+   The well-founded measure is the determinantal size/corank `r`. Since the blown-up angular matrix has pivot entry `1`, its rank is at least `1`. On a rank-`j` Schur chart, the lower core has size `r-j`, strictly smaller than `r`. So recursion cannot revisit the same size.
+
+6. **ANY HOLE: NO fatal measure-theoretic hole in the cover, but one fragile step.**  
+   The atlas-cover plus recursive Schur resolution is sound for the stated upper-bound strategy. I do not see a smallest `(r,p)` counterexample where a stratum diverges below your recursive `λ_{r,p}`.
+
+   The most fragile formalisation step is not the radial cover; it is making the “rank-`j` Schur split” into an actual local finite measurable cover with uniform comparison
+   `‖RS‖² ≃ ‖P‖² + ‖B Q‖²`.
+   Do not treat exact rank strata as integration domains. Use neighborhoods where a chosen `j×j` minor is invertible, prove the coordinate change/Jacobian/comparability there, and let the lower Schur complement `B` carry the recursive singularity.
+tokens used
+13,617
+1. **COVER: CORRECT.**  
+   **Proven from finite-dimensional max:** every nonzero entry vector `d ∈ R^{r^2}` has at least one max-modulus entry. If pivot `p` is chosen with `|d_k| ≤ |d_p|`, then the ratios `d_k / d_p` all lie in `[-1,1]`. So the bounded-ratio source misses no part of the argmax cell.  
+   **Needs-care:** ties are covered multiple times, but tie loci are codimension-1 null hypersurfaces. The omitted set `{Δ = 0} × S` has codimension `r^2` and is null.
+
+2. **C-O-V VALIDITY: CORRECT, with boundary bookkeeping.**  
+   On `{a ≠ 0}`, the map
+   `a, u_k ↦ d_p = a, d_k = a u_k`
+   is injective with inverse `a = d_p`, `u_k = d_k/d_p`, and is polynomial/C¹. The Jacobian is `|a|^{r^2-1}`.  
+   **Needs-care:** the source with `|u_k| ≤ 1` is not open, and `a=0` collapses all ratios to `{Δ=0}`. Formally, apply COV on open pieces such as `a>0`, `a<0`, `|u_k|<1`, then add boundaries by null-set arguments; or use an area/change-of-variables theorem for measurable a.e.-injective C¹ maps. Dropping `{a=0}` is legitimate because it is null in source and its image is null in target.
+
+3. **RANK STRATIFICATION: NEEDS-CARE.**  
+   You cannot merely drop rank-drop loci as null. Null sets can still control divergence through neighborhoods: `|x|^{-α}` diverges near `{x=0}` even though `{x=0}` is null.  
+   For `r=2,p=4`, the rank-1 locus `{det R=0}` is codimension 1 in `R`-space. The exact locus may be ignored as a set, but neighborhoods of it must be resolved. The Schur split near rank 1 gives, after coordinates,
+   `‖RS‖² ≃ ‖P‖² + ‖B Q‖²`,
+   with `P ∈ R^4`, scalar `B`, and `Q ∈ R^4`. That lower `B Q` core is exactly what must be handled recursively.
+
+4. **THRESHOLD COMBINATION: CORRECT.**  
+   After the radial blow-up,
+   `G ∘ φ = a² ‖RS‖²`, and the density contributes `|a|^{r^2-1}`. Locally this factors as
+   `|a|^{r^2-1-2c'} · ‖RS‖^{-2c'}`.  
+   Therefore the chart is finite only if both the `a`-integral and the inner `(R,S)` integral are finite, so the combination is a **minimum**:
+   `min(r²/2, inner threshold)`.  
+   Inside the Schur chart, the split is a disjoint **sum**
+   `‖P‖² + ‖B Q‖²`, so the RLCTs **add**:
+   `jp/2 + λ_{r-j,p}`.  
+   **Inference:** no hidden coupling between `a` and `(R,S)` remains, except harmless box-bound dependence; local product comparison is enough.
+
+5. **DEPTH / TERMINATION: CORRECT.**  
+   The well-founded measure is the determinantal size/corank `r`. Since the blown-up angular matrix has pivot entry `1`, its rank is at least `1`. On a rank-`j` Schur chart, the lower core has size `r-j`, strictly smaller than `r`. So recursion cannot revisit the same size.
+
+6. **ANY HOLE: NO fatal measure-theoretic hole in the cover, but one fragile step.**  
+   The atlas-cover plus recursive Schur resolution is sound for the stated upper-bound strategy. I do not see a smallest `(r,p)` counterexample where a stratum diverges below your recursive `λ_{r,p}`.
+
+   The most fragile formalisation step is not the radial cover; it is making the “rank-`j` Schur split” into an actual local finite measurable cover with uniform comparison
+   `‖RS‖² ≃ ‖P‖² + ‖B Q‖²`.
+   Do not treat exact rank strata as integration domains. Use neighborhoods where a chosen `j×j` minor is invertible, prove the coordinate change/Jacobian/comparability there, and let the lower Schur complement `B` carry the recursive singularity.

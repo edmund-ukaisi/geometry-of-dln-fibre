@@ -12,8 +12,7 @@
 #   nohup lean/scripts/lake-store-setup <rev> > /tmp/lake-store-<rev>.log 2>&1 &
 #   # then poll the log for "store ready"
 #
-# Validated end-to-end on a t3.2xlarge box (2026-06-23): the store materialises, `scripts/lb`
-# symlinks into it, mathlib comes free (no recompile), and a read-only build succeeds.
+# *** DRAFT — authored during a VM-rotation hold, UNTESTED. Validate on the target box. ***
 set -euo pipefail
 
 REV="${1:?usage: lake-store-setup <mathlib-rev>}"
@@ -40,16 +39,6 @@ lake exe cache get
 mkdir -p "$(dirname "$STORE")"
 mv .lake/packages "$STORE"
 ln -s "$STORE" .lake/packages
-
-# Pre-warm BEFORE locking read-only. `cache get` fetches oleans but NOT the dependency build-time
-# steps that WRITE into the package dir — notably proofwidgets' `npm install`, which writes
-# `proofwidgets/widget/package-lock.json.hash` on the first build. If we lock the store before that
-# write happens, every worktree's first build dies with "permission denied" on that hash file. One
-# build to completion materialises it (and any other dep replay artifacts) into the store; afterwards
-# a read-only store no longer blocks any build. (Core.Basic pulls the full dep graph incl. proofwidgets.)
-echo "pre-warming the store (materialise proofwidgets npm + dep build artifacts) ..."
-lake build DLNFibre.Core.Basic
-
 chmod -R a-w "$STORE" 2>/dev/null || true   # read-only: worktrees only read deps; they write .lake/build
 
 echo "store ready: $STORE"
