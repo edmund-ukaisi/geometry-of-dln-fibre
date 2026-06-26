@@ -348,3 +348,10 @@ import DLNFibre.Core.FibreComponentOrbitTransport
 -- (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot `chartLocalizedAlgEquivAt`).
 -- PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the per-pivot trivializations remains (#133).
 import DLNFibre.Core.FibreChartConjugation
+-- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled coherent atlas over the
+-- rank-`=r` open — scheme open-cover (`iSup_pivot_basicOpen_eq_rankROpen`) + per-pivot trivializations
+-- into `SchurLoc ⊗ sweepFibreRing` + the base-side overlap cocycle (`chartOverlapTransition` over
+-- `sweepSigmaRing`, laws inherited) + the intertwining (`e_β` cancels → base-algebraic). Headline
+-- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial` (cover is point-set /
+-- near-definitional over the OPEN; a bare scheme-theoretic name needs the rank-tie `rankROpen={rank=r}`, #133r).
+import DLNFibre.Core.FibreBundleLocallyTrivialFull
