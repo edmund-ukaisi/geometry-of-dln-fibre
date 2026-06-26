@@ -2,6 +2,7 @@ import DLNFibre.DLN.Aoyagi.ProductReductionStepJacobian
 import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.Analysis.Matrix.Normed
+import Mathlib.Topology.Algebra.Module.Determinant
 
 /-!
 # Analytic derivative of Aoyagi's p. 13 product-step coordinate change
@@ -623,6 +624,35 @@ theorem hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
     (hasFDerivAt_productReductionStepTopologyTupleToChart
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1)
   simpa [R, productReductionStepFormalJacobianRawOrder, Function.comp_def] using hcomp
+
+/-- The actual Frechet derivative of the raw-order ambient p. 13 coordinate
+map has unit determinant on the determinant chart.
+
+This is only the ambient vector-space derivative determinant. It does not prove
+a subtype chart theorem, source-measure pushforward, density transport,
+normal crossings, pole order, or RLCT extraction. -/
+theorem fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    IsUnit
+      ((fderiv ℝ
+        (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+          productReductionStepChartTangentRawOrderEquiv
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+            (productReductionStepTopologyTupleToChart
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) z))
+        x.topologyTuple).det) := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  have hf :=
+    hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1
+  rw [hf.fderiv]
+  simpa using
+    productReductionStepFormalJacobianRawOrder_det_isUnit
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x hC1 hA1
 
 end Aoyagi
 end DLN

@@ -8757,6 +8757,22 @@ This reaches the determinant-facing ambient derivative map. Analytic
 chart/subtype change of variables, source-measure transport, normal crossings,
 pole order, and RLCT remain open.
 
+Latest A2 product-step raw-order fderiv determinant unit:
+`ProductReductionStepDerivative.lean` now proves unitness of the determinant
+of the actual ambient Frechet derivative of the raw-order composite. Lean name:
+`fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit`.
+The proof uses `HasFDerivAt.fderiv` on
+`hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder` and closes by
+`productReductionStepFormalJacobianRawOrder_det_isUnit`. The reproduction,
+statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-fderiv-det-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-fderiv-det-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-fderiv-det-unit.md`.
+This closes only the ambient determinant-unit bridge. Analytic chart/subtype
+change of variables, source-measure transport, normal crossings, pole order,
+and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

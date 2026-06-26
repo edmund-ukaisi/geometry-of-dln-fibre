@@ -4943,3 +4943,15 @@ formalise a local determinant-chart differentiability/change-of-variables
 statement or instead feed this into the normal-crossing chart certificate.  Do
 not infer source-measure pushforward, density transport, normal crossings,
 pole order, or RLCT.
+
+A2 product-step actual raw-order fderiv determinant unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-fderiv-det-unit.md`.
+Lean proves
+`fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit`, using
+the raw-order `HasFDerivAt` theorem to rewrite the actual `fderiv` and then
+applying `productReductionStepFormalJacobianRawOrder_det_isUnit`.  This closes
+the ambient determinant-unit bridge for the p. 13 product-step coordinate
+map.  The next priority remains the analytic chart/subtype and measure-
+transport boundary, or an explicit normal-crossing chart-certificate consumer.
+Do not infer source-measure pushforward, density transport, normal crossings,
+pole order, or RLCT.

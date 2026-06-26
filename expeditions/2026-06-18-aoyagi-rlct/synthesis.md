@@ -11345,3 +11345,27 @@ boundary, or formulate the way this raw-order local derivative feeds the
 normal-crossing chart certificate.  No source-measure pushforward, density
 transport, change of variables, normal crossings, pole order, or RLCT is
 claimed.
+
+## Latest A2 Product-Step Raw-Order FDeriv Determinant Unit
+
+The actual ambient `fderiv` determinant-unit bridge has landed in
+`ProductReductionStepDerivative.lean`.  Lean proves
+
+```text
+fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+```
+
+for the raw-order composite of the ambient tuple map.  The proof rewrites
+`fderiv R F x.topologyTuple` by the landed raw-order `HasFDerivAt` theorem and
+then applies
+
+```text
+productReductionStepFormalJacobianRawOrder_det_isUnit.
+```
+
+This is the determinant of the actual ambient Frechet derivative, not a
+subtype chart theorem.  The next boundary is determinant-chart/subtype
+differentiability plus measure or density transport, or an explicit consumer
+that feeds this local derivative into a normal-crossing chart certificate.  No
+source-measure pushforward, density transport, change of variables, normal
+crossings, pole order, or RLCT is claimed.

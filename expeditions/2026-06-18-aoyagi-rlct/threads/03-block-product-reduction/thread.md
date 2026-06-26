@@ -6314,3 +6314,29 @@ nested-tuple projections. This proves linearity of the full formulas without
 expanding a monolithic `map_add`/`map_smul` proof. The full raw/chart
 `LinearEquiv`, raw-order endomorphism, and determinant-unit theorem remain
 open, and determinants still must not be taken on the native raw-to-chart map.
+
+## 2026-06-26 A2 product-step raw-order fderiv determinant unit
+
+Reproduction:
+`reproduction-a2-product-step-raw-order-fderiv-det-unit.md`.
+Statement card:
+`statement-card-a2-product-step-raw-order-fderiv-det-unit.md`.
+Review:
+`review-a2-product-step-raw-order-fderiv-det-unit.md`.
+
+Lean now proves:
+
+```text
+fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+```
+
+This uses the raw-order `HasFDerivAt` theorem to identify the actual `fderiv`
+with the continuous-linear version of
+`productReductionStepFormalJacobianRawOrder x`, then applies the formal
+determinant-unit theorem
+`productReductionStepFormalJacobianRawOrder_det_isUnit`.
+
+This closes the ambient determinant-unit bridge for the p. 13 product-step
+coordinate map.  It does not prove determinant-chart subtype differentiability,
+source-measure pushforward, density transport, change of variables, normal
+crossings, pole order, or RLCT.
