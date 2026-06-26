@@ -566,3 +566,16 @@ R1 gate `resolution_charts` for the (A) decision:
   clean L2 bricks) — remains the honest banked-now deliverable. **The controller has consolidated here**: the reachable pieces are
   banked + the frontier is fully mapped; the (A)-vs-(B) scope choice (do we invest in the long general push, or ship the milestone?)
   is the operator's, and is now the single gate for all remaining work. No further large from-scratch (A) build will be started without it.
+
+> **Item-28 UPDATE (2026-06-26): R1 lower-atom #1 risk RESOLVED — the (A) lower leg is build-ready.** A
+> bounded Lean feasibility spike (`DLNFibre/Spike/GeneralComposedDet.lean`, axiom-clean, green) confirmed
+> the variable-length composed-det is NOT a dependent-`Fin`-cast wall: in the full-ambient `List.prod` form
+> the det telescopes via the determinant `MonoidHom` (`LinearMap.det.map_list_prod`) — a one-liner. So the
+> general lower atom is BUILD-READY modulo bounded mechanical per-level work (full-ambient factor embeddings
+> + per-factor dets + the finite-family cov), no research risk. Net for (A): BOTH R1 legs are now de-risked
+> to "bounded build, no walls" — lower leg build-ready-modulo-mechanical; upper leg = one hard depth-`r`
+> WellFounded recursion build. The (A) de-risking is COMPLETE; what remains under (A) is the large
+> from-scratch BUILDS themselves (R1 both legs + L2 (1a) + L≥3 interior + D1). The (A)-vs-(B) scope choice
+> — invest in those large builds, or ship the concrete-anchor milestone (B) — is the operator's, and is the
+> single gate for all remaining substantial work. The controller has maximally de-risked + spec'd; it will
+> not start a large from-scratch (A) build without the scope decision.
