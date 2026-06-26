@@ -5415,3 +5415,11 @@ payoff should remove `hraw_map` in the p.13 raw-density consumer or
 `hcoverage` in the local-source consumer.  A theorem still using the current
 reduced section with `C1=I`, `A3=0`, or still assuming those fields, is not
 frontier progress.
+
+The first pen-and-paper construction prerequisite is now recorded at
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-coordinate-domain-inverse.md`.
+It fixes the retained-passive coordinate choice and recursive inverse:
+active `X=Ctop_0-I`, `F2_0`, `F3_0`, and residual factors `C_p`; passive
+`A1_p,F2_p` for `p>0` and `A3_p` for `p<last`; omitted `A1_0` and
+`A3_last` recovered from `Ctop_0` and `F3_0`.  The next Lean target should be
+finite reconstruction/readback for this source map, not a measure theorem.

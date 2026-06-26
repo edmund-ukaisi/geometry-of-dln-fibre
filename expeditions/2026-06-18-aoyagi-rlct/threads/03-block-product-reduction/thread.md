@@ -7233,3 +7233,36 @@ The first Lean payoff must remove `hraw_map`, remove `hcoverage`, or introduce
 a construction theorem that directly produces one of those fields.  More
 section-image wrappers or raw-density consumers with the same supplied fields
 are parked.
+
+## 2026-06-26 A2 retained-passive coordinate-domain inverse
+
+Reproduction:
+`reproduction-a2-retained-passive-coordinate-domain-inverse.md`.
+
+Read-only xhigh scouts `Harvey the 3rd` and `Bernoulli the 3rd` checked the
+next construction prerequisite.  The retained-passive coordinates should use
+active p.13 variables
+
+```text
+X = Ctop_0 - I,  F2_0,  F3_0,  C_p for every edge p,
+```
+
+and passive variables
+
+```text
+A1_p and F2_p for p > 0,
+A3_p for p < last.
+```
+
+The omitted variables are recovered recursively:
+
+```text
+A1_0 = Ctop_1^{-1} * Ctop_0,
+A3_last = -(F3 + sum_{p<last} D_{p+1} A3_p Ctop_p^{-1}) * Ctop_last,
+E_p = [I, F2_{p+1}; 0, I] * [A1_p, -A1_p F2_p; A3_p, C_p - A3_p F2_p],
+```
+
+with `F2_N = 0`.  This is the first finite source-map/inverse skeleton that
+could later support `hcoverage`.  It does not yet prove coverage, exact-rank
+openness, source-measure pushforward, density/Jacobian transport, normal
+crossings, pole order, or RLCT.

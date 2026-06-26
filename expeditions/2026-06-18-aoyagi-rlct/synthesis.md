@@ -12476,3 +12476,19 @@ retained-passive coordinate domain, source map, local inverse,
 source-rank coverage/image theorem, measure pushforward, and density/Jacobian
 accounting, or else produce one of those fields directly.  Do not add another
 section-image or conditional raw-density wrapper.
+
+## Latest A2 Retained-Passive Coordinate Reproduction - 2026-06-26
+
+The first pen-and-paper construction prerequisite is
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-coordinate-domain-inverse.md`.
+The retained-passive coordinates are active `X=Ctop_0-I`, `F2_0`, `F3_0`, and
+residual factors `C_p`, plus passive `A1_p,F2_p` for `p>0` and `A3_p` for
+`p<last`.  The endpoint variables `A1_0` and `A3_last` are recovered from the
+accumulated active `Ctop_0` and `F3_0`, with `F2_N=0`; the reconstructed edge
+is `[I,F2_{p+1};0,I] * [A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]`.
+
+This is finite coordinate-domain and inverse planning only.  The first Lean
+target should be a reconstruction/readback theorem for the retained-passive
+source map.  It should not claim source-rank coverage, source-measure
+pushforward, density/Jacobian transport, normal crossings, pole order, or
+RLCT.
