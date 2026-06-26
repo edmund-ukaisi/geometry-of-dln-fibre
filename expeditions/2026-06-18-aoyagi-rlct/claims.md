@@ -8507,3 +8507,18 @@ passed.
 Nonclaims: no image openness, continuity of `edgeMatrix`, source-rank
 coverage, source/image equality, measure pushforward, density/Jacobian
 theorem, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive projection continuity:
+Lean now proves the elementary continuity of all stored nonredundant coordinate
+field projections and of the dummy-slot component maps `A1seed`, `F2full`, and
+`A3seed` in `RetainedPassiveCoordinatesTopology.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-projection-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-projection-continuity.md`.
+
+Nonclaims: projection-continuity setup only.  No continuity of `solvedA1`,
+`solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
+source-rank coverage, source/image equality, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.

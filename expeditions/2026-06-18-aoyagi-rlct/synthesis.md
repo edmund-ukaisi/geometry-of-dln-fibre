@@ -12689,3 +12689,17 @@ This is the first genuine domain/topology statement for the retained-passive
 chart.  It still says nothing about the image of `edgeMatrix`, continuity of
 `edgeMatrix`, source-rank coverage, source/image equality, measure pushforward,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+New follow-up records the elementary projection-continuity layer for that
+product topology.  `RetainedPassiveNonredundantCoordinateData.continuous_F2`,
+`continuous_A3passive`, `continuous_C`, and `continuous_F3` now join the
+existing `continuous_A1passive` and `continuous_Ctop` field projections.  The
+component maps of `A1seed`, `F2full`, and `A3seed` are continuous because each
+case is either a stored projection or a constant zero map.
+
+This is deliberately only setup for the next analytic/topological source-map
+step.  It does not prove continuity of `solvedA1`, `solvedA3`, or
+`edgeMatrix`; those require inverse continuity on the determinant-chart
+subtype.  It also says nothing about image openness, source-rank coverage,
+source/image equality, measure pushforward, density/Jacobian accounting,
+normal crossings, pole order, or RLCT.

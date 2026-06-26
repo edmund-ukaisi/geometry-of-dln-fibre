@@ -9708,3 +9708,23 @@ passed.
 This is coordinate-domain topology only: no image openness, continuity of
 `edgeMatrix`, source-rank coverage, source/image theorem, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive projection continuity:
+`RetainedPassiveCoordinatesTopology.lean` proves product-topology continuity
+for every stored field of `RetainedPassiveNonredundantCoordinateData`:
+`continuous_A1passive`, `continuous_F2`, `continuous_A3passive`,
+`continuous_C`, `continuous_Ctop`, and `continuous_F3`.
+
+The same file proves componentwise continuity of the dummy-slot embeddings
+`continuous_A1seed`, `continuous_F2full`, and `continuous_A3seed`.  Each
+component is either one of the stored projections or a constant zero map.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-projection-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-projection-continuity.md`
+passed.
+
+This is a staging topology layer only: no continuity of `solvedA1`,
+`solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
+source-rank coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.

@@ -5659,3 +5659,19 @@ topology or to start the recursive source-side readback predicate for arbitrary
 edge families.  Do not assert image openness, source-rank coverage,
 source/image equality, measure transport, density/Jacobian accounting, normal
 crossings, pole order, or RLCT.
+
+The elementary projection-continuity staging layer is now landed/in progress
+in `RetainedPassiveCoordinatesTopology.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-projection-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-projection-continuity.md`.
+It proves continuity of every stored nonredundant coordinate field and of the
+component maps `A1seed`, `F2full`, and `A3seed`.
+
+Next retained-passive target after review/banking: prove continuity on the
+determinant-chart subtype for the solved endpoint maps (`solvedA1`,
+`solvedA3`) and then for the nonredundant `edgeMatrix` source map.  Use
+`[NontriviallyNormedField K]` and the existing matrix inverse continuity API.
+Do not assert image openness, source-rank coverage, source/image equality,
+measure transport, density/Jacobian accounting, normal crossings, pole order,
+or RLCT.

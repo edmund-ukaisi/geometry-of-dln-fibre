@@ -7387,6 +7387,55 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive projection-continuity checkpoint
+
+The current latest banked topology rung is the retained-passive projection
+continuity layer recorded in
+`reproduction-a2-retained-passive-projection-continuity.md`,
+`statement-card-a2-retained-passive-projection-continuity.md`, and
+`review-a2-retained-passive-projection-continuity.md`.  The next target is
+continuity on the determinant-chart subtype for `solvedA1`, `solvedA3`, and
+then `edgeMatrix`, not arbitrary-edge source-image reconstruction.
+
+## 2026-06-26 A2 retained-passive projection continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-projection-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-projection-continuity.md`.
+Review:
+`review-a2-retained-passive-projection-continuity.md`.
+
+Lean now records the elementary product-topology continuity facts for the
+nonredundant retained-passive coordinate fields:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_A1passive
+RetainedPassiveNonredundantCoordinateData.continuous_F2
+RetainedPassiveNonredundantCoordinateData.continuous_A3passive
+RetainedPassiveNonredundantCoordinateData.continuous_C
+RetainedPassiveNonredundantCoordinateData.continuous_Ctop
+RetainedPassiveNonredundantCoordinateData.continuous_F3
+```
+
+It also proves componentwise continuity of the zero-filled embeddings into the
+older bundled coordinate data:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_A1seed
+RetainedPassiveNonredundantCoordinateData.continuous_F2full
+RetainedPassiveNonredundantCoordinateData.continuous_A3seed
+```
+
+These are setup facts only: projections and constants in the product
+topology.  They do not prove continuity of `solvedA1`, `solvedA3`,
+`toCoordinateData`, or `edgeMatrix`.  They also do not assert image openness,
+source-rank coverage, source/image equality, measure pushforward,
+density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Parfit the 3rd` passed the Lean statements, typeclass
+assumptions, documentation boundary, and focused build.
+
 ## 2026-06-26 A2 retained-passive nonredundant coordinate data
 
 Reproduction:
@@ -8018,3 +8067,13 @@ crossings, pole order, or RLCT is proved.
 Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
+
+## 2026-06-26 End-of-thread retained-passive topology pointer
+
+The latest retained-passive topology rung banked in this thread is the
+projection-continuity layer:
+`reproduction-a2-retained-passive-projection-continuity.md`,
+`statement-card-a2-retained-passive-projection-continuity.md`, and
+`review-a2-retained-passive-projection-continuity.md`.  The next target is
+determinant-chart subtype continuity for `solvedA1`, `solvedA3`, and then
+`edgeMatrix`.
