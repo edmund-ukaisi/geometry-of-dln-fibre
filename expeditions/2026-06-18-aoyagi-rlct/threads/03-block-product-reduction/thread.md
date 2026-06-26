@@ -7307,3 +7307,46 @@ active endpoint variables `A1_0` or `A3_last`, prove source-rank coverage,
 construct source/image equality, push source measure forward, compute a
 Jacobian/prior density, produce normal crossings, prove pole order, or extract
 RLCT.
+
+## 2026-06-26 A2 retained-passive Ctop determinant chart
+
+Statement card:
+`statement-card-a2-retained-passive-ctop-det-chart.md`.
+Review:
+`review-a2-retained-passive-ctop-det-chart.md`.
+
+Lean now also tracks the suffix-state top block along the same retained-passive
+fixed-base reconstruction.  The new local step theorem is
+
+```text
+ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_Ctop
+```
+
+and the recursive theorems are
+
+```text
+ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc
+ChartLocalSuffixState.suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix
+```
+
+The content is finite chart-state bookkeeping:
+
+```text
+Ctop_p = Ctop_{p+1} * A1_p,
+IsUnit det(Ctop_p) for every recursive suffix state.
+```
+
+The determinant-unit result assumes `F2_last=0` and unit determinants for every
+`A1_p`; the `F2_last` hypothesis is used through the already-proved recursive
+`B=-F2` tracking needed to identify the transformed edge at each step.
+
+This does not yet recover the omitted active endpoint `A1_0`, recover
+`A3_last`, construct source-rank coverage or source/image equality, push source
+measure forward, identify a Jacobian/prior density, produce normal crossings,
+prove pole order, or extract RLCT.
+
+Xhigh reviewer `Mill the 3rd` passed the slice and emphasized the scope caveat:
+the determinant-unit theorem is for the reconstructed full fixed-base `A1_p`
+family after all `A1_p` are assumed or proved determinant units.  It is not yet
+the retained-passive coordinate-domain theorem with active `Ctop_0` and passive
+`A1_p` for `p > 0`.

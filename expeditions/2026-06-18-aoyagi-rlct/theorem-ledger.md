@@ -9406,3 +9406,22 @@ This is finite transformed-edge reconstruction only: no endpoint recovery for
 `A1_0` or `A3_last`, source-rank coverage, source/image equality,
 source-measure pushforward, density/Jacobian theorem, normal crossings, pole
 order, or RLCT.
+
+Latest A2 retained-passive Ctop determinant chart tracking:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_Ctop`,
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc`,
+and
+`ChartLocalSuffixState.suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix`.
+For the same retained-passive fixed-base edges, the recursive suffix-state top
+block satisfies `Ctop_p = Ctop_{p+1} * A1_p`; hence the recursive `Ctop`
+determinants are units when all `det(A1_p)` are units.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-det-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-det-chart.md`.
+This is finite determinant-chart bookkeeping only for a full reconstructed
+family with all `A1_p` determinant-unit: no endpoint recovery for `A1_0` or
+`A3_last`, no retained-passive coordinate-domain theorem with active `Ctop_0`
+and passive `A1_p` for `p > 0`, no coverage, no source/image theorem, no
+source-measure pushforward, no density/Jacobian theorem, no normal crossings,
+no pole order, and no RLCT.

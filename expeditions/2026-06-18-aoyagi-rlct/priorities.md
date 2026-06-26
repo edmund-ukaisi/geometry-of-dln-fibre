@@ -5435,3 +5435,18 @@ have the prescribed transformed blocks under deterministic suffix recursion,
 assuming `F2_last=0` and unit `A1_p`.  The next A2 target should add the
 active endpoint readback/reconstruction for `A1_0` and `A3_last`, still before
 coverage or measure transport.
+
+Second finite rung in the same file:
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc`
+and
+`ChartLocalSuffixState.suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix`
+track `Ctop_p = Ctop_{p+1} * A1_p` and prove the recursive `Ctop` blocks stay
+in the determinant-unit chart under the same `F2_last=0` and unit-`A1_p`
+hypotheses.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-det-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-det-chart.md`.
+This is still finite suffix-state bookkeeping only, for a full reconstructed
+family where every `A1_p` is already determinant-unit.  The next A2 target
+remains active endpoint readback, beginning with
+`A1_0 = Ctop_1^-1 * Ctop_0`.

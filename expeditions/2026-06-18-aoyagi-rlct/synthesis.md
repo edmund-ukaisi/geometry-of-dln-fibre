@@ -12510,3 +12510,17 @@ the active endpoint variables `A1_0` or `A3_last`, does not prove source-rank
 coverage or source/image equality, and does not address measure pushforward,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.  The next
 finite target is endpoint readback/reconstruction for `A1_0` and `A3_last`.
+
+Follow-up in the same Lean file now tracks the recursive accumulated top block:
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc`
+proves `Ctop_p = Ctop_{p+1} * A1_p`, and
+`ChartLocalSuffixState.suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix`
+proves every recursive `Ctop` has unit determinant if every `A1_p` does.
+This gives the determinant-chart side condition needed for future endpoint
+readback for a full reconstructed `A1_p` family, but it is not yet the
+retained-passive coordinate-domain theorem with active `Ctop_0` and passive
+`A1_p` for `p > 0`.  It still does not produce the endpoint formula
+`A1_0 = Ctop_1^-1 * Ctop_0`, any `A3_last` formula, coverage, measure
+transport, normal crossings, pole order, or RLCT.  Xhigh reviewer
+`Mill the 3rd` passed this scope in
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-det-chart.md`.

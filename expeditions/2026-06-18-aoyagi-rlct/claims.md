@@ -8123,3 +8123,26 @@ back-to-label map for arbitrary terminal-minimum labels.
 Nonclaims: no source-backed classifier, no proof of selector injectivity,
 no branch-label injectivity, no back-to-label/no-extra theorem, no terminal
 exactness, no pole order, no normal crossings, and no RLCT.
+
+Latest A2 retained-passive Ctop determinant chart:
+Lean now proves the recursive Ctop tracking theorem in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  The new names are
+`ChartLocalSuffixState.step_retainedPassiveFixedBaseEdgeMatrix_Ctop`,
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc`,
+and
+`ChartLocalSuffixState.suffixState_Ctop_det_isUnit_retainedPassiveFixedBaseEdgeMatrix`.
+Under the retained-passive fixed-base reconstruction, the deterministic
+suffix-state recursion satisfies `Ctop_p = Ctop_{p+1} * A1_p`, and all
+recursive `Ctop` determinants are units if `F2_last=0` and every `det(A1_p)`
+is a unit.
+
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-det-chart.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-det-chart.md`.
+
+Nonclaims: finite suffix-state determinant-chart bookkeeping only.  No active
+endpoint recovery for `A1_0` or `A3_last`, no retained-passive coordinate
+domain with active `Ctop_0` plus passive `A1_p` for `p > 0`, no source-rank
+coverage, no source/image equality, no source-measure pushforward, no
+density/Jacobian theorem, no normal crossings, no pole order, and no RLCT.
