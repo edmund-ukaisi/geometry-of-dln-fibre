@@ -8033,3 +8033,36 @@ Nonclaims: finite coordinate algebra only.  No weakening of derivative or
 measure determinant-chart hypotheses, no source coverage, no source-measure
 transport, no density/Jacobian identity, no normal crossings, no pole order,
 and no RLCT.
+
+Latest A2 product-step formal Jacobian A1 unit:
+Lean now proves A1-only versions of the full p.13 formal tangent equivalence
+and raw-order finite determinant-unit theorem in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionStepJacobian.lean`.  The formal
+inverse-composition laws use only `IsUnit A1.det`; terms containing
+`(C1*A1)^-1` cancel additively and are not used through a `Ctop` determinant
+unit hypothesis.
+
+Lean names:
+`productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1`,
+`productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1`,
+`productReductionStepFormalJacobianEquiv_of_isUnit_A1`,
+`productReductionStepFormalJacobianEquiv_of_isUnit_A1_apply`,
+`productReductionStepFormalJacobianEquiv_of_isUnit_A1_symm_apply`,
+`productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1`,
+`productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1_apply`,
+and
+`productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1`.
+
+The older determinant-chart names remain wrappers with the old visible
+`hC1 hA1` call shape.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-formal-jacobian-a1-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-formal-jacobian-a1-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-formal-jacobian-a1-unit.md`.
+
+Nonclaims: finite formal tangent algebra only.  No weakening of analytic
+derivative/measure determinant-chart hypotheses, no source coverage, no
+source-measure transport, no density/Jacobian identity for the original DLN
+source, no normal crossings, no pole order, and no RLCT.

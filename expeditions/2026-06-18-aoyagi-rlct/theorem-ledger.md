@@ -9327,6 +9327,28 @@ and
 No derivative/measure chart-domain weakening, source coverage, source-measure
 transport, normal crossings, pole order, or RLCT is proved.
 
+Latest A2 product-step formal Jacobian A1 unit:
+`ProductReductionStepJacobian.lean` proves A1-only versions of the full p.13
+formal tangent inverse-composition laws, raw/chart `LinearEquiv`, raw-order
+`LinearEquiv`, and finite raw-order determinant-unit theorem.  Main Lean
+names:
+`productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1`,
+`productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1`,
+`productReductionStepFormalJacobianEquiv_of_isUnit_A1`,
+`productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1`, and
+`productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1`.
+The older determinant-chart names remain wrappers with the old visible
+`hC1 hA1` arguments.
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-product-step-formal-jacobian-a1-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-formal-jacobian-a1-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-formal-jacobian-a1-unit.md`.
+This is finite formal tangent algebra only.  It does not weaken analytic
+derivative or measure determinant-chart hypotheses, does not prove `C1*A1`
+invertible from `A1`, and does not prove source coverage, source-measure
+transport, normal crossings, pole order, or RLCT.
+
 Latest A6 Definition 3 equal-width finite Theorem 2 formula:
 `FinalFormula.lean` proves `aoyagiSelectedWidthPairSum_const`, and
 `Definition3Bridge.lean` proves

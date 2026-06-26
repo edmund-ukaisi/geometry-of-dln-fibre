@@ -5251,6 +5251,19 @@ only formal cancellation is needed.  It does not weaken determinant-chart
 hypotheses for derivative/measure work, and it does not construct source
 coverage, source-measure transport, normal crossings, pole order, or RLCT.
 
+A2 product-step formal Jacobian A1 unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-formal-jacobian-a1-unit.md`.
+Lean strengthens the full p.13 formal tangent equivalence and raw-order
+determinant-unit theorem to require only `IsUnit A1.det`, with the old
+determinant-chart theorem names kept as wrappers.  This closes the finite
+formal-Jacobian counterpart of the A1-only coordinate inverse.  It does not
+weaken analytic derivative or measure determinant-chart hypotheses.  After
+this, do not add more A1-only wrappers unless they remove a concrete supplied
+downstream hypothesis; remaining A2 source-moving work is still source-chart
+construction/coverage, source-measure and density transport for the original
+DLN source, or a different finite algebra socket with a real unsupplied
+hypothesis.
+
 A5 Lemma 5 first-nonbase cardinal bound has now landed:
 `threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
 Lean proves that the deterministic first-nonbase-or-base selector gives the

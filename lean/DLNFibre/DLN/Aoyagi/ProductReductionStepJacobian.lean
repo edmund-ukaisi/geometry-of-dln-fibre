@@ -804,10 +804,11 @@ theorem productReductionStepFormalJacobianInverse_apply
     productReductionStepChartTangent_dC, Matrix.mul_assoc]
 
 /-- The inverse formal tangent formula recovers the raw tangent formula at the
-raw-derived chart base point. -/
-theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase
+raw-derived chart base point, using only invertibility of the retained `A1`
+block. -/
+theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (hA1 : IsUnit x.A1.det)
     (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
     productReductionStepFormalJacobianInverseFormula
         (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
@@ -815,8 +816,6 @@ theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)
         (productReductionStepFormalJacobianFormula
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v) = v := by
-  have hCtop : IsUnit (x.C1 * x.A1).det := by
-    simpa [Matrix.det_mul] using hC1.mul hA1
   rcases v with ⟨dC1, dD, dF3old, dA1, dA2, dA3, dA4⟩
   apply Prod.ext
   · change
@@ -893,11 +892,27 @@ theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase
               rw [hterm1, hterm2]
               abel
 
-/-- The raw formal tangent formula recovers the chart tangent formula after
-applying the inverse formula at the raw-derived chart base point. -/
-theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase
+/-- Determinant-chart wrapper for
+`productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1`. -/
+theorem productReductionStepFormalJacobianInverseFormula_formula_chartBase
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (_hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianInverseFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+        (productReductionStepFormalJacobianChartBase
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)
+        (productReductionStepFormalJacobianFormula
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v) = v :=
+  productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1 v
+
+/-- The raw formal tangent formula recovers the chart tangent formula after
+applying the inverse formula at the raw-derived chart base point, using only
+invertibility of the retained `A1` block. -/
+theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hA1 : IsUnit x.A1.det)
     (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
     productReductionStepFormalJacobianFormula
         (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x
@@ -905,8 +920,6 @@ theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
           (productReductionStepFormalJacobianChartBase
             (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x) v) = v := by
-  have _hCtop : IsUnit (x.C1 * x.A1).det := by
-    simpa [Matrix.det_mul] using hC1.mul hA1
   rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
   have hCtopLinear :
       (dCtop * x.A1⁻¹ -
@@ -998,11 +1011,27 @@ theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase
               rw [hdA3F2, hterm]
               abel
 
-/-- The full p. 13 formal tangent map is a linear equivalence from raw tangent
-coordinates to chart tangent coordinates at the raw-derived chart base point. -/
-def productReductionStepFormalJacobianEquiv
+/-- Determinant-chart wrapper for
+`productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1`. -/
+theorem productReductionStepFormalJacobianFormula_inverseFormula_chartBase
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    (_hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x
+        (productReductionStepFormalJacobianInverseFormula
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+          (productReductionStepFormalJacobianChartBase
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x) v) = v :=
+  productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1 v
+
+/-- The full p. 13 formal tangent map is a linear equivalence from raw tangent
+coordinates to chart tangent coordinates at the raw-derived chart base point,
+using only invertibility of the retained `A1` block. -/
+def productReductionStepFormalJacobianEquiv_of_isUnit_A1
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hA1 : IsUnit x.A1.det) :
     ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
       ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
   LinearEquiv.ofLinear
@@ -1015,13 +1044,47 @@ def productReductionStepFormalJacobianEquiv
     (by
       apply LinearMap.ext
       intro v
-      simp [productReductionStepFormalJacobianFormula_inverseFormula_chartBase,
-        hC1, hA1])
+      simp [productReductionStepFormalJacobianFormula_inverseFormula_chartBase_of_isUnit_A1,
+        hA1])
     (by
       apply LinearMap.ext
       intro v
-      simp [productReductionStepFormalJacobianInverseFormula_formula_chartBase,
-        hC1, hA1])
+      simp [productReductionStepFormalJacobianInverseFormula_formula_chartBase_of_isUnit_A1,
+        hA1])
+
+/-- Determinant-chart wrapper for
+`productReductionStepFormalJacobianEquiv_of_isUnit_A1`. -/
+def productReductionStepFormalJacobianEquiv
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (_hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  productReductionStepFormalJacobianEquiv_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1
+
+@[simp]
+theorem productReductionStepFormalJacobianEquiv_of_isUnit_A1_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianEquiv_of_isUnit_A1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1 v =
+      productReductionStepFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v :=
+  rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianEquiv_of_isUnit_A1_symm_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    (productReductionStepFormalJacobianEquiv_of_isUnit_A1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1).symm v =
+      productReductionStepFormalJacobianInverse
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+        (productReductionStepFormalJacobianChartBase
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x) v :=
+  rfl
 
 @[simp]
 theorem productReductionStepFormalJacobianEquiv_apply
@@ -1108,17 +1171,38 @@ theorem productReductionStepFormalJacobianRawOrder_apply
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v) :=
   rfl
 
-/-- The raw-order full p. 13 formal tangent map is a linear automorphism on
-the determinant chart. -/
-def productReductionStepFormalJacobianRawOrderEquiv
+/-- The raw-order full p. 13 formal tangent map is a linear automorphism under
+the retained `A1` determinant-unit hypothesis. -/
+def productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    (hA1 : IsUnit x.A1.det) :
     ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
       ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
-  (productReductionStepFormalJacobianEquiv
-    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1).trans
+  (productReductionStepFormalJacobianEquiv_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1).trans
     (productReductionStepChartTangentRawOrderEquiv
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- Determinant-chart wrapper for
+`productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1`. -/
+def productReductionStepFormalJacobianRawOrderEquiv
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (_hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1
+
+@[simp]
+theorem productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1 v =
+      productReductionStepFormalJacobianRawOrder
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v :=
+  rfl
 
 @[simp]
 theorem productReductionStepFormalJacobianRawOrderEquiv_apply
@@ -1131,15 +1215,15 @@ theorem productReductionStepFormalJacobianRawOrderEquiv_apply
         (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v :=
   rfl
 
-/-- The raw-order full p. 13 formal Jacobian determinant is a unit on the
-determinant chart.
+/-- The raw-order full p. 13 formal Jacobian determinant is a unit under only
+the retained `A1` determinant-unit hypothesis.
 
 This is a finite formal determinant statement. It is not an analytic
 change-of-variables theorem or source-measure pushforward statement. -/
-theorem productReductionStepFormalJacobianRawOrder_det_isUnit
+theorem productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1
     [Finite π] [Finite ν]
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    (hA1 : IsUnit x.A1.det) :
     IsUnit
       (LinearMap.det
         (productReductionStepFormalJacobianRawOrder
@@ -1147,8 +1231,21 @@ theorem productReductionStepFormalJacobianRawOrder_det_isUnit
   let _ : Fintype π := Fintype.ofFinite π
   let _ : Fintype ν := Fintype.ofFinite ν
   exact LinearEquiv.isUnit_det'
-    (productReductionStepFormalJacobianRawOrderEquiv
-      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1)
+    (productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1)
+
+/-- Determinant-chart wrapper for
+`productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1`. -/
+theorem productReductionStepFormalJacobianRawOrder_det_isUnit
+    [Finite π] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (_hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    IsUnit
+      (LinearMap.det
+        (productReductionStepFormalJacobianRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)) :=
+  productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hA1
 
 end ProductStepFull
 

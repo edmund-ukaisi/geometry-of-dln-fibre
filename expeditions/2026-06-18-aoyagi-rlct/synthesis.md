@@ -12288,3 +12288,31 @@ and
 This is finite arithmetic for the restricted source-backed equal-width branch
 only.  It is not arbitrary Definition 3 branch selection, Eq5 production,
 chart production, normal crossings, pole order, or RLCT extraction.
+
+## Latest A2 Product-Step Formal Jacobian A1 Unit
+
+`ProductReductionStepJacobian.lean` now has A1-only formal tangent
+equivalence and raw-order determinant-unit names:
+
+```text
+productReductionStepFormalJacobianEquiv_of_isUnit_A1
+productReductionStepFormalJacobianRawOrderEquiv_of_isUnit_A1
+productReductionStepFormalJacobianRawOrder_det_isUnit_of_isUnit_A1
+```
+
+plus the corresponding formula-composition and simp wrapper names.  The old
+determinant-chart names remain wrappers.  The pen-and-paper point is that all
+`(C1*A1)^-1` terms in the formal `F3` tangent components cancel additively;
+only the `Ctop/C1`, `F2/A2`, and `C/A4` recovery algebra uses multiplicative
+cancellation, and that cancellation is by `A1`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-product-step-formal-jacobian-a1-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-formal-jacobian-a1-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-formal-jacobian-a1-unit.md`.
+
+This is finite formal algebra only.  It does not weaken analytic derivative
+or measure determinant-chart hypotheses and does not produce source coverage,
+source-measure transport, density identification, normal crossings, pole
+order, or RLCT.
