@@ -55,6 +55,27 @@ def paperEndpointFixedBaseRetainedPassiveP13LocalSource
         (κ' := throughSubspaceEndpointComplementIndex
           (reverseVertex W) (reverseEdge W B) U₀)}
 
+/-- The named fixed-base retained-passive p.13 coordinate-to-source edge-family
+map obtained by realising a determinant-chart datum's retained edge matrices
+as continuous reversed edge maps.
+
+This is the source-chart leg from retained-passive coordinates to source edge
+families; it is not a source-image equality or coverage theorem. -/
+def paperEndpointFixedBaseRetainedPassiveP13SourceChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (data :
+      {data :
+        RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) // data.detChart}) :
+    ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
+  paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
+    W B U₀ hU₀ data.1.edgeMatrix
+
 set_option linter.unusedSectionVars false in
 /-- Fixed-base residual coordinates read as the residual-factor product of the
 retained-passive source-readback residual blocks. -/
@@ -174,6 +195,115 @@ theorem sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuous
     sourceReadback_edgeMatrix_eq
       (K := K) (ρ := Fin (Module.finrank K U₀))
       (data := data) hdet
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The named retained-passive p.13 source chart has exactly the retained edge
+matrices of its coordinate datum. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceChart_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      {data :
+        RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) // data.detChart}) :
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+      data.1.edgeMatrix := by
+  simpa [paperEndpointFixedBaseRetainedPassiveP13SourceChart] using
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data.1
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Source readback of the named retained-passive p.13 source chart recovers
+the determinant-chart coordinate datum. -/
+theorem sourceReadback_paperEndpointFixedBaseRetainedPassiveP13SourceChart_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      {data :
+        RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) // data.detChart}) :
+    sourceReadback (K := K) (ρ := Fin (Module.finrank K U₀))
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data p :
+              reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))) =
+      data.1 := by
+  simpa [paperEndpointFixedBaseRetainedPassiveP13SourceChart] using
+    sourceReadback_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix_eq
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data.1 data.2
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The named retained-passive p.13 source chart lands in the fixed-base local
+source set at every determinant-chart coordinate datum. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13SourceChart_mem_localSource
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      {data :
+        RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) // data.detChart}) :
+    data ∈
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀) := by
+  change
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) ∈
+      sourceRecursiveDetChartSet
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)
+  rw [paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceChart_eq
+    (K := K) W B data]
+  exact
+    (mem_sourceRecursiveDetChartSet
+      (K := K) (ρ := Fin (Module.finrank K U₀))
+      (κ' := throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀)
+      data.1.edgeMatrix).2
+      (sourceRecursiveDetChart_edgeMatrix_of_detChart
+        (K := K) (ρ := Fin (Module.finrank K U₀)) data.1 data.2)
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The named retained-passive p.13 source chart is continuous as a map from
+determinant-chart coordinate data to fixed-base continuous edge families. -/
+theorem continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    Continuous
+      (fun data :
+        {data :
+          RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀) // data.detChart} ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data) := by
+  simpa [paperEndpointFixedBaseRetainedPassiveP13SourceChart] using
+    (paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_continuous
+      (K := K) W B U₀ hU₀).comp
+      (continuous_edgeMatrix_detChart_subtype
+        (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)
+        (K := K))
 
 set_option linter.unusedSectionVars false in
 /-- Source readback recovers supplied retained-passive coordinate data when
