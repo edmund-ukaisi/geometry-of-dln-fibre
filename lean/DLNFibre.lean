@@ -316,5 +316,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
+-- (3,3,3,3) chart-Jacobian determinant infrastructure (Kparam det, Frame block-triangularity, the
+-- 7×7 K/Kᵀ coupling-block det). Optional validation rung; built on RouteM3333.
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
