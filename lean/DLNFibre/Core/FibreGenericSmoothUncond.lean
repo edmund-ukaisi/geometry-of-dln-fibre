@@ -102,23 +102,21 @@ instance finitePresentation_away_chartDsig (d : Fin (N + 2) → ℕ) (r : ℕ)
 
 /-! ## The C2(a)-conditional: `IsSmoothAt` of `sweepFibreRing` at a top-component prime -/
 
-/-- **C2 (conditional on the geometric fact C2(a)) — the reduced fibre ring is smooth at the generic
-point of a top component.** GIVEN that a minimal prime `I` of `sweepFibreRing` (a top-dimensional
-irreducible component) has a `k`-algebra iso `sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` to an
-orbit-closure coordinate ring — the **C2(a)** fact — then `Algebra.IsSmoothAt k I` of
-`sweepFibreRing` at the component's generic point.
+/-- ⚠ **HISTORICAL SCAFFOLDING — do NOT use as a reduction.** The hypothesis iso
+`e : sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` (a *bare* orbit-closure ring) is **globally
+unsatisfiable in this shape**: by the chart dimension identity `dim Σ^r = dim F + δ`
+(`δ = r·(d_last + d_0 − r) > 0` for `r ≥ 1`, `Core.ChartSweepWiring`), a fibre top component has
+dimension `dim F`, while a shifted orbit closure has dimension `dim F − δ` — a Krull-dim-preserving
+ring iso cannot equate them (thread-20 finding, Codex-confirmed). This theorem is **valid but
+vacuous in practice** (a true implication from an unsatisfiable premise); it is leftover from the
+abandoned orbit-iso route to C2(a).
 
-Via the packaged bridge `LocalizationAtComponent.isSmoothAt_minimalPrime_of_componentEquiv_domain`
-(C1+C2, all supporting steps UNCONDITIONAL): `orbitRing M` is a finitely-presented `k`-algebra
-**domain** that is `Algebra.IsSmoothAt k (normalFormIdeal M)`
-(`OrbitSmooth.isSmoothAt_normalFormIdeal`), and `sweepFibreRing` is reduced + Noetherian; so the iso
-`e` plus the bridge give `Algebra.IsSmoothAt k I`. (Routed through the abstract packaged bridge so
-the heavy `sweepFibreRing` abbrev is instantiated once, avoiding a `whnf` blowup.)
-
-**C2(a) is the single open input** (the iso `e`, NOT discharged): it requires identifying a top
-component of the fibre with an orbit closure as a `k`-algebra iso, a fibre-component ↔ orbit-closure
-theory absent from this harness (the θ-count is established via codimension/`ncard` chains, never
-labelling a component by an orbit). -/
+**SUPERSEDED** by the direct domain argument
+`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent` (and
+`isSmoothAt_sweepFibre_component`): a fibre component `sweepFibreRing ⧸ I` is a finitely-presented
+domain over the perfect field `k`, hence generically smooth, giving `Algebra.IsSmoothAt k I`
+**fully unconditionally** with no orbit iso. Kept for the honest record; do not build a reduction
+to this. -/
 theorem isSmoothAt_sweepFibre_of_component_orbitSmooth [IsAlgClosed k]
     {d' : Fin (N + 1) → ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)

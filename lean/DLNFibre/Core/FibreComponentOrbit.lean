@@ -8,32 +8,31 @@ import DLNFibre.Core.CCodimCornerMono
 import Mathlib.RingTheory.TensorProduct.MvPolynomial
 
 /-!
-# `DLNFibre.Core.FibreComponentOrbit` — the dimension-correct C2(a) consumer (thread 20, task #119)
+# `DLNFibre.Core.FibreComponentOrbit` — the C2(a) dimension finding + the sigma-side labeling
+(thread 20, task #119)
 
 Thread 17 reduced unconditional generic smoothness to a single open input C2(a): a `k`-algebra iso
 `sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` per top-dimensional minimal prime `I`. **That target is
 dimensionally impossible.** The chart identity (`ChartSweepWiring.sweep_of_localizedChartAlgEquiv`)
 records `dim Σ^r = dim F + δ`, `δ = r·(d_last + d_0 − r)`; a fibre top component has the fibre
 dimension `dim F`, while a *shifted* orbit closure `Ō_M` over `d − r` has dimension `dim F − δ`. The
-fibre top component is the orbit closure **times an affine factor `A^δ`** (the C-part), so the
-correct coordinate ring is `orbitRing M` *tensored with a polynomial ring in `δ` variables* — never
-a bare `orbitRing M`.
+fibre top component is the orbit closure **times an affine factor `A^δ`** (the C-part), so a bare
+`orbitRing M` cannot be the coordinate ring.
 
-This module states the **dimension-correct** C2(a) consumer:
+⚠ **The whole orbit-iso route to C2(a) is SUPERSEDED.** Generic smoothness of the reduced fibre is
+**fully unconditional** with *no* orbit iso, by the direct domain argument
+`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent` (a fibre component is a fp
+domain over the perfect field `k`, hence generically smooth). And the dimension-corrected consumer
+`isSmoothAt_sweepFibre_of_component_orbitPolyEquiv` below — `e : sweepFibreRing ⧸ I ≃ₐ[k]
+MvPolynomial η (orbitRing M)` (shifted orbit) — also takes a **globally-false / unreachable**
+hypothesis (thread-24): the only chart-supported variety iso is *localized* with the polynomial
+wrapper on the FIBRE side and the FULL-`d` orbit. So that consumer is **historical scaffolding**
+(see its ⚠ docstring); it discharges nothing in practice.
 
-> GIVEN `e : sweepFibreRing ⧸ I ≃ₐ[k] MvPolynomial η (orbitRing M)` (`η` finite — the `δ` affine
-> coordinates), THEN `Algebra.IsSmoothAt k I`.
-
-`MvPolynomial η (orbitRing M)` is a finitely-presented `k`-algebra **domain** that is
-`Algebra.IsSmoothAt` at a prime (the orbit ring is smooth at its normal-form point
-`OrbitSmooth.isSmoothAt_normalFormIdeal`, and the polynomial extension preserves smoothness on the
-basic open of the orbit smooth witness), so it feeds the packaged C1+C2 bridge
-`LocalizationAtComponent.isSmoothAt_minimalPrime_of_componentEquiv_domain` exactly as a bare
-`orbitRing M` would have — but it is a *true* statement.
-
-**The remaining open input** is now `e` itself: the intrinsic "fibre top component ≅ shifted orbit
-closure × `A^δ`" variety isomorphism (the block-triangular fibre theorem, the genuine C2(a) wall).
-This module does not build `e`; it fixes the interface it plugs into.
+**What this module genuinely contributes** (unconditional, live): the **sigma-side component ↔
+orbit-closure labeling** `exists_sigma_topComponent_orbitRingEquiv` — every top-dim component of
+`O(Σ̄^r)` IS `orbitRing (realizerD m)` exactly — and the reusable smooth-fp-domain ingredients. The
+two `…_of_component_*` consumers are kept only for the honest record.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -163,20 +162,22 @@ theorem exists_isSmoothAt_mvPolynomial_orbitRing [IsAlgClosed k] {d' : Fin (N + 
 
 /-! ## The dimension-correct C2(a) consumer -/
 
-/-- **C2 (dimension-correct) — the reduced fibre ring is smooth at the generic point of a top
-component, GIVEN the orbit-times-affine iso.** For a top-dimensional minimal prime `I` of
-`sweepFibreRing` with a `k`-algebra iso `e : sweepFibreRing ⧸ I ≃ₐ[k] MvPolynomial (Fin n)
-(orbitRing M)` to an orbit-closure ring tensored with the `δ` affine C-part coordinates, then
-`Algebra.IsSmoothAt k I`.
+/-- ⚠ **HISTORICAL SCAFFOLDING — do NOT use as a reduction.** This was the dimension-CORRECTED C2(a)
+shape (fixing the dimensionally-impossible bare-`orbitRing` consumer
+`isSmoothAt_sweepFibre_of_component_orbitSmooth`), taking
+`e : sweepFibreRing ⧸ I ≃ₐ[k] MvPolynomial (Fin n) (orbitRing M)` with `M` a *shifted* orbit over
+`d − r`. But that iso is **globally false / unreachable in this shape** (thread-24 finding,
+Codex-confirmed): the only chart-supported identification is *localized* and puts the polynomial
+wrapper on the FIBRE side with the FULL-`d` orbit, not the shifted orbit on the orbit side; the
+shifted-orbit product form `(A) ≅ (C) × A^δ` would need a separate denominator-free fibre
+normal-form theorem (cancellation `R[x] ≅ S[y] ⇏ R ≅ S[…]` is invalid). So the hypothesis `e` is
+unsatisfiable in this shape; the theorem is **valid but vacuous in practice**.
 
-`MvPolynomial (Fin n) (orbitRing M)` is a finitely-presented `k`-algebra domain smooth at a prime
-(`exists_isSmoothAt_mvPolynomial_orbitRing`); the packaged bridge
-`isSmoothAt_minimalPrime_of_componentEquiv_domain` then transports smoothness across `e` and the
-C1 localization bridge to `IsSmoothAt k I` of `sweepFibreRing`.
-
-This is the **dimension-correct replacement** for
-`isSmoothAt_sweepFibre_of_component_orbitSmooth` (whose bare `orbitRing M` target is dimensionally
-impossible: a fibre top component is the orbit closure **times** `A^δ`, not the orbit closure). -/
+**SUPERSEDED** by the direct domain argument
+`Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`: smoothness is **fully
+unconditional** with no `e`. The genuine reachable variety identification (LOCALIZED) is
+`Core.FibreComponentOrbitIso.schurComponent_chartQuotientEquiv` and its documented residual. Kept
+for the honest record; do not build a reduction to this. -/
 theorem isSmoothAt_sweepFibre_of_component_orbitPolyEquiv [IsAlgClosed k]
     {d' : Fin (N + 1) → ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
