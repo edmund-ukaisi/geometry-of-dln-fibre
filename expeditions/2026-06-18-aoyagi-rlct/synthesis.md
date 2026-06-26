@@ -11134,3 +11134,35 @@ map.  The determinant theorem remains one layer away: first compose with
 `productReductionStepChartTangentRawOrderEquiv` to form a raw-order
 endomorphism, then prove its determinant is a unit.  No analytic derivative,
 source-measure transport, normal crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Full Product-Step Raw-Order Formal Jacobian Unit
+
+The determinant-facing p. 13 map is now explicit:
+
+```text
+productReductionStepFormalJacobianRawOrder
+```
+
+It is the full raw-to-chart formal tangent map followed by
+`productReductionStepChartTangentRawOrderEquiv`, so the codomain is raw-shaped
+order `(Ctop,D,F3,A1,F2,A3,C)`.  Lean also proves the automorphism witness
+
+```text
+productReductionStepFormalJacobianRawOrderEquiv
+```
+
+and the determinant-unit theorem
+
+```text
+productReductionStepFormalJacobianRawOrder_det_isUnit
+```
+
+under `[Finite pi] [Finite nu]` and determinant-chart hypotheses on `C1` and
+`A1`.
+
+This closes the finite formal Jacobian-unit calculation for the p. 13
+one-step coordinate change.  The next boundary is analytic, not algebraic:
+connect the formal tangent calculation to an actual local derivative and
+source-measure/density transport, then insert it into the regular-suspension
+or normal-crossing chart certificate.  No chart coverage, analytic
+change-of-variables, normal crossings, pole order, or RLCT is claimed here.

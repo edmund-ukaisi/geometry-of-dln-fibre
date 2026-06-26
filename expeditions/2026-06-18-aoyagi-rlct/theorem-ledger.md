@@ -8640,6 +8640,23 @@ This proves finite formal invertibility only. The full determinant-unit theorem
 still needs the chart-output raw-order endomorphism; analytic derivative,
 source-measure transport, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 full product-step raw-order formal Jacobian unit:
+`ProductReductionStepJacobian.lean` now composes the full raw/chart formal
+tangent map with `productReductionStepChartTangentRawOrderEquiv`, producing a
+raw-shaped endomorphism and proving its finite `LinearMap.det` is a unit. Lean
+names: `productReductionStepFormalJacobianRawOrder`,
+`productReductionStepFormalJacobianRawOrder_apply`,
+`productReductionStepFormalJacobianRawOrderEquiv`,
+`productReductionStepFormalJacobianRawOrderEquiv_apply`, and
+`productReductionStepFormalJacobianRawOrder_det_isUnit`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-raw-order-jacobian-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-raw-order-jacobian-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-raw-order-jacobian-unit.md`.
+This is a finite formal determinant-unit certificate only; analytic derivative,
+source-measure transport, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

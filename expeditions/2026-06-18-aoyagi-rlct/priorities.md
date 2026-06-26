@@ -4857,3 +4857,17 @@ Jacobian priority is the raw-order endomorphism obtained by composing with
 determinant-unit theorem.  Do not read the raw/chart `LinearEquiv` as analytic
 differentiability, density/Jacobian transport, source-measure pushforward,
 normal crossings, pole order, or RLCT.
+
+A2 full p. 13 raw-order formal Jacobian determinant unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-raw-order-jacobian-unit.md`.
+Lean defines the raw-order endomorphism
+`productReductionStepFormalJacobianRawOrder` by composing the full formal
+tangent map with `productReductionStepChartTangentRawOrderEquiv`, then proves
+`productReductionStepFormalJacobianRawOrder_det_isUnit`.  This closes the
+finite formal Jacobian-unit calculation for the p.13 one-step map.  Remaining
+A2 work is analytic: identify this formal calculation with the actual local
+analytic coordinate derivative/change-of-variables, integrate it with
+source-measure/density transport, and then use it in the regular-suspension or
+normal-crossing chart certificate.  Do not read this determinant unit as
+chart coverage, analytic differentiability, density transport, normal
+crossings, pole order, or RLCT.

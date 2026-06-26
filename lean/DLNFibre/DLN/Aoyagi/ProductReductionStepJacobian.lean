@@ -1085,6 +1085,71 @@ def productReductionStepChartTangentRawOrderEquiv :
     rcases v with ⟨dCtop, dD, dF3, dA1, dF2, dA3, dC⟩
     rfl
 
+/-- The full p. 13 formal tangent map with chart output reordered into the
+raw-shaped tangent order. -/
+def productReductionStepFormalJacobianRawOrder
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (productReductionStepChartTangentRawOrderEquiv
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).toLinearMap.comp
+    (productReductionStepFormalJacobian
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)
+
+@[simp]
+theorem productReductionStepFormalJacobianRawOrder_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianRawOrder
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v =
+      productReductionStepChartTangentRawOrderEquiv
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+        (productReductionStepFormalJacobian
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v) :=
+  rfl
+
+/-- The raw-order full p. 13 formal tangent map is a linear automorphism on
+the determinant chart. -/
+def productReductionStepFormalJacobianRawOrderEquiv
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (productReductionStepFormalJacobianEquiv
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1).trans
+    (productReductionStepChartTangentRawOrderEquiv
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+@[simp]
+theorem productReductionStepFormalJacobianRawOrderEquiv_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianRawOrderEquiv
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1 v =
+      productReductionStepFormalJacobianRawOrder
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v :=
+  rfl
+
+/-- The raw-order full p. 13 formal Jacobian determinant is a unit on the
+determinant chart.
+
+This is a finite formal determinant statement. It is not an analytic
+change-of-variables theorem or source-measure pushforward statement. -/
+theorem productReductionStepFormalJacobianRawOrder_det_isUnit
+    [Finite π] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    IsUnit
+      (LinearMap.det
+        (productReductionStepFormalJacobianRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x)) := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  exact LinearEquiv.isUnit_det'
+    (productReductionStepFormalJacobianRawOrderEquiv
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x hC1 hA1)
+
 end ProductStepFull
 
 end Aoyagi
