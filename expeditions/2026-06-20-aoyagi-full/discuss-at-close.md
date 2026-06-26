@@ -538,3 +538,10 @@ anchor. **(A)/(B) impact:** lowers the (A) cost estimate for R1-general's *lower
 (the corank-sensitive N2b/N4 hfin lift, `RouteMSchur:164/284`) is separate and still the harder R1 pole; and the *general* atom remains
 a design pass + bounded build away. The concrete-anchor reading of R1 (3,3,4) [Item-24's (B)] is unaffected; this adds (3,3,3,3) to the
 banked-clean concrete inventory either way.
+
+> **Item-27 UPDATE (2026-06-26): the (3,3,3,3) instance LANDED.** Banked sorry-free + integrated
+> (`RouteM3333Atom.lean`, green-gate 8353 jobs). `#print axioms routeMCore_box_diverges_achiever_3333`
+> = the (4,4,2,2)/(3,3,4)-sibling profile `[propext, Classical.choice, Quot.sound, monomial_rlct]` (the
+> pure-analysis det/cov/injOn bricks are S2-free). So R1-general's LOWER leg now has three concrete
+> sorry-free anchors (4422/334/3333) — demonstrably reachable, not a wall. The general atom (the design
+> pass) + the R1 UPPER leg (corank-sensitive hfin) remain the frontier for the (A) path.

@@ -103,5 +103,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
+-- R1 (3,3,3,3) achiever box-divergence anchor — the decisive multi-pivot L=3 node; the THIRD
+-- concrete R1 instance (det/cov/atom on the RouteM3333 chart). The det/cov/injOn lemmas are S2-free;
+-- the atom matches the (4,4,2,2)/(3,3,4) siblings (cites `monomial_rlct`, the S2 divergence leaf).
+import DLNFibre.DLN.RLCT.Validate.RouteM3333
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
