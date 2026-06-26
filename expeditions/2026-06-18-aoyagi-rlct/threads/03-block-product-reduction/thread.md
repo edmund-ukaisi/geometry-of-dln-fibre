@@ -7035,3 +7035,41 @@ to obtain raw determinant-chart support, then applies
 This remains section-image bookkeeping only.  It does not prove a
 raw-Haar/full-chart pushforward, source coverage, original source/prior
 transport, density identification, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 raw pushforward source-boundary audit
+
+Audit:
+`source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
+
+After direct Ghostscript extraction and rendered-page checking of Aoyagi PDF
+pp. 5-14, plus independent xhigh source, Lean-boundary, and pen-and-paper
+audits, the full raw-Haar pushforward target remains killed as a source-backed
+claim:
+
+```text
+Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
+  m.restrict rawDetChart
+```
+
+The source supports the block substitutions in Lemma 2/Theorem 3 and the
+displayed p.13 LCT equality, but pp. 5-14 do not state a concrete p.13
+source/product-coordinate measure pushforward, Jacobian/density transport,
+raw determinant-chart image theorem, or coverage theorem.
+
+The Lean API is already at the right boundary.  The inverse-density theorems
+`map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map` and
+`..._of_measurable_edgeMatrix` keep the raw pushforward supplied.  The proved
+section-image theorem
+`map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix`
+is the honest replacement when only the p.13 raw section is available.
+
+The pen-and-paper obstruction is structural: the p.13 raw section fixes
+`C1 = I` and `A3 = 0`, while the raw determinant chart only requires
+`det C1` and `det A1` to be units.  For nonzero rank block `rho`, the chart
+has open sets with `C1 != I`, so full raw Haar gives positive mass outside
+the section image.  The section obstruction disappears only when `rho = 0`,
+and even then this does not prove the remaining source-map pushforward.
+
+No Lean theorem was added.  Future inverse-density uses must either keep the
+raw pushforward supplied or construct a genuine p.13 source chart, source
+coverage, and density/prior transport for the correct source measure.

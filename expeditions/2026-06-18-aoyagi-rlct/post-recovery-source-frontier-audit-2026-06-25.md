@@ -83,3 +83,19 @@ Pick one source-moving reproduction target:
 Do not spend the next slice on thin final-socket or readout wrappers unless a
 downstream theorem consumes exactly that statement and removes a real
 hypothesis.
+
+## 2026-06-26 Addendum - p.13 raw pushforward
+
+The p.13 left-step raw pushforward frontier was rechecked directly against
+Aoyagi PDF pp. 5-14 and by xhigh source, Lean-boundary, and pen-and-paper
+audits.  The result is recorded at
+`threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
+
+Verdict: do not try to prove full raw-Haar pushforward from the p.13 raw
+section.  The source has block substitutions and the p.13 LCT equality, but no
+concrete source/product-coordinate measure pushforward, density transport,
+raw determinant-chart image theorem, or coverage theorem.  In positive rank,
+the section equations `C1 = I` and `A3 = 0` make full raw-Haar pushforward
+impossible for the p.13 section itself.  Keep raw pushforward supplied unless
+a genuine p.13 source chart, coverage theorem, and density/prior transport are
+constructed for the correct source measure.

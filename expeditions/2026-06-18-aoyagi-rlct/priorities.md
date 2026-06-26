@@ -5171,3 +5171,16 @@ the false next target of deriving full raw-Haar pushforward from p.13.  The
 next source-moving priority remains either actual p.13 source-chart coverage
 or a conditional regular-suspension/RLCT socket with source coverage,
 transported density, and loss comparison explicitly supplied.
+
+A2 p.13 raw pushforward source-boundary audit has now landed:
+`threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
+Direct source extraction and rendered-page checking of PDF pp. 5-14, plus
+xhigh source, Lean-boundary, and pen-and-paper audits, confirm that pp. 5-14
+do not state a concrete p.13 source/product-coordinate pushforward,
+Jacobian/density transport, raw determinant-chart image theorem, or coverage
+theorem.  The positive-rank section obstruction is decisive: the p.13 raw
+section fixes `C1 = I` and `A3 = 0`, while the raw determinant chart allows
+open sets with `C1 != I`.  Therefore no future A2 slice should try to prove
+full raw-Haar pushforward from the p.13 section.  Keep the raw pushforward
+supplied unless a genuine p.13 source chart, source coverage theorem, and
+density/prior transport are constructed for the correct source measure.

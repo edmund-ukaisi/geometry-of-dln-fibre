@@ -9176,3 +9176,22 @@ and
 This is section-image bookkeeping only: no full raw-Haar pushforward, source
 coverage, source/prior transport, density identification, normal crossings,
 pole order, or RLCT.
+
+Latest A2 p.13 raw pushforward source-boundary audit:
+direct source extraction and rendered-page checking of Aoyagi PDF pp. 5-14,
+plus xhigh source, Lean-boundary, and pen-and-paper audits, killed the proposed
+source-backed theorem
+`Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
+m.restrict rawDetChart`.  The source contains the generic Hironaka substitution
+on p.6, Lemma 2/Theorem 3 block substitutions on pp.10-13, and the p.13 LCT
+equality, but no concrete p.13 source/product-coordinate pushforward,
+Jacobian/density transport, raw determinant-chart image theorem, or coverage
+theorem.  The positive-rank section obstruction explains why the theorem
+cannot be recovered from the raw section: the p.13 tuple fixes `C1 = I` and
+`A3 = 0`, while the raw determinant chart permits open subsets with `C1 != I`.
+The section obstruction disappears only in the `rho = 0` exception, which
+still does not prove the remaining source-map pushforward.  No Lean theorem
+was added; the existing inverse-density consumers keep raw pushforward
+supplied, and the section-image theorem remains the honest replacement.
+Audit:
+`threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.

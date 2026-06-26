@@ -11971,6 +11971,40 @@ Reproduction, statement card, and review:
 and
 `threads/03-block-product-reduction/review-a2-p13-left-step-small-ball-section-image.md`.
 
+## Latest A2 p.13 Raw Pushforward Source Boundary
+
+Direct source extraction and rendered-page checking of Aoyagi PDF pp. 5-14,
+with independent xhigh source, Lean-boundary, and pen-and-paper audits, killed
+the proposed theorem that the p.13 left-step raw section itself supplies full
+raw-Haar pushforward:
+
+```text
+Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
+  m.restrict rawDetChart
+```
+
+The source supports Lemma 2/Theorem 3 block substitutions and the displayed
+p.13 LCT equality, but pp. 5-14 do not state a concrete p.13
+source/product-coordinate measure pushforward, Jacobian/density transport,
+raw determinant-chart image theorem, or coverage theorem.  The generic p.6
+Hironaka substitution is extraction background, not this chart construction.
+
+The pen-and-paper obstruction is structural for positive rank: the p.13 raw
+section fixes `C1 = I` and `A3 = 0`, while the raw determinant chart only
+requires `det C1` and `det A1` to be units.  Thus for nonzero rank block
+`rho`, full raw Haar gives positive mass to open chart subsets with
+`C1 != I`, outside the section image.  The obstruction disappears only when
+`rho = 0`, and that exception still does not prove the remaining source-map
+pushforward.
+
+No Lean theorem was added.  The existing conditional inverse-density theorems
+must keep raw pushforward supplied, and the section-image theorem remains the
+honest Lean replacement until a genuine p.13 source chart, coverage theorem,
+and density/prior transport are constructed.
+
+Audit:
+`threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
+
 ## Latest A2 Case 2 Post-Pivot Compatible Residual-Factor Audit
 
 Xhigh source and Lean/API scouts killed the proposed source claim that

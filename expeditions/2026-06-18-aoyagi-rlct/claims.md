@@ -261,9 +261,12 @@ No such claim is formalisation-ready until both fields are filled.
   a.e.-measurability derived internally; the needed `Ctop` determinant-unit
   a.e. fact is derived internally from raw-chart support. The raw p.13 section
   facts `C1 = I` and `A3 = 0` are formalized as guardrails against treating
-  the section as a full raw-Haar chart. The full source Theorem 3/RLCT claim remains blocked
-  on the analytic product-coordinate regular-square suspension theorem and the
-  actual p.13 chart/density construction.
+  the section as a full raw-Haar chart. A page-pinned p.13 source-boundary
+  audit now confirms that pp. 5-14 do not state the raw source pushforward,
+  and the positive-rank section obstruction prevents deriving full raw-Haar
+  pushforward from the p.13 section alone. The full source Theorem 3/RLCT
+  claim remains blocked on the analytic product-coordinate regular-square
+  suspension theorem and the actual p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -329,7 +332,9 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry residual-factor readout boundary at
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`;
   p.13 left-step conditional raw pushforward consumer at
-  `threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+  `threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`;
+  p.13 raw pushforward source-boundary audit at
+  `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -395,7 +400,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`;
   p.13 left-step conditional raw pushforward consumer reviewed by xhigh
   `Ampere the 2nd` in
-  `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+  `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`;
+  p.13 raw pushforward boundary rechecked by xhigh source, Lean-boundary, and
+  pen-and-paper scouts on 2026-06-26, recorded in
+  `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant
