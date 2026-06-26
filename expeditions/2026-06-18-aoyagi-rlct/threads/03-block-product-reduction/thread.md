@@ -6936,3 +6936,34 @@ Haar, does not add a density conclusion, and does not prove source coverage,
 source/prior transport, signed-box density identification, product-measure
 pushforward, regular-suspension certification, normal crossings, pole order,
 or RLCT.  Xhigh landed-slice review passed with no blocking findings.
+
+## 2026-06-26 A2 p.13 left-step local raw-det support
+
+Reproduction:
+`reproduction-a2-p13-left-step-local-raw-det-support.md`.
+Statement card:
+`statement-card-a2-p13-left-step-local-raw-det-support.md`.
+Review:
+`review-a2-p13-left-step-local-raw-det-support.md`.
+
+Lean now proves local raw determinant-chart support for the actual p.13
+left-step raw tuple:
+
+```text
+p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+exists_pos_radius_le_forall_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball
+exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball
+```
+
+The pointwise theorem rewrites the actual left-step tuple to the explicit raw
+preimage tuple `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)` and uses the existing
+membership theorem when `det Ctop(u)` is a unit.  The small-ball theorem uses
+continuity of `det Ctop(u)` at `u=0` to choose `0 < R <= Rmax`; the a.e.
+theorems turn support in that regular-coordinate ball into the raw-chart
+support hypothesis needed by the section-image measure identity.
+
+This is local support for a section.  It does not prove a raw-Haar/full-chart
+pushforward, source coverage, original source/prior transport, signed-box
+density identification, product-measure pushforward, regular-suspension
+certification, normal crossings, pole order, or RLCT.

@@ -11917,3 +11917,29 @@ and
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-section-image-measure.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`.
+
+## Latest A2 p.13 Left-Step Local Raw-Det Support
+
+Lean now proves that the actual p.13 left-step raw tuple is locally supported
+in the raw determinant chart whenever the regular coordinate lies in a small
+ball around the origin.  New names in
+`ProductReductionStepRegularDensity.lean`:
+
+```text
+p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+exists_pos_radius_le_forall_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball
+exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball
+```
+
+This removes a local raw-chart support input from later section-image uses
+when the local `(x,u)` measure is already supported in a sufficiently small
+regular-coordinate ball.  It remains only a section-domain theorem: no raw-Haar
+pushforward, no source/image equality, no source/prior transport, no density
+identification, no normal crossings, and no RLCT are proved.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-local-raw-det-support.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-local-raw-det-support.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-local-raw-det-support.md`.

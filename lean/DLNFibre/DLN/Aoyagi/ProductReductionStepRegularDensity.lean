@@ -840,6 +840,254 @@ theorem p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
     lowerRightBlock_fromBlocks, Ebase, G, F2, F3, Ctop, C, p0, j, ρ, κ]
 
 set_option linter.unusedSectionVars false in
+/-- The actual p. 13 left-step raw tuple lies in the raw determinant chart
+whenever its regular `Ctop` block has unit determinant.
+
+This is a section-domain theorem only: the tuple still has raw `C1 = 1` and
+raw `A3 = 0`, so this does not identify its image with the full raw
+determinant chart. -/
+theorem p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix
+          (fun c : AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det) :
+    p13ProductCoordinateLeftStepRawTopologyTuple
+        V Bv U₀ hU₀ CedgeBase xu ∈
+      productReductionStepRawDetChartSet
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) := by
+  classical
+  have htuple :
+      p13ProductCoordinateLeftStepRawTopologyTuple
+          V Bv U₀ hU₀ CedgeBase xu =
+        paperEndpointFixedBaseP13RawPreimageTuple
+          V Bv U₀ hU₀ CedgeBase xu :=
+    p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu
+  rw [htuple]
+  exact
+    paperEndpointFixedBaseP13RawPreimageTuple_mem_rawDetChartSet
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu hCtop
+
+set_option linter.unusedSectionVars false in
+/-- The actual p. 13 left-step raw tuple is supported in the raw determinant
+chart on a sufficiently small regular-coordinate ball. -/
+theorem
+    exists_pos_radius_le_forall_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      ∀ (x : α)
+        (u : EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ 0))),
+        u ∈ Metric.ball 0 R →
+          p13ProductCoordinateLeftStepRawTopologyTuple
+              V Bv U₀ hU₀ CedgeBase (x, u) ∈
+            productReductionStepRawDetChartSet
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) := by
+  classical
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro x u hu
+  exact
+    p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (xu := (x, u)) (hunit u hu)
+
+set_option linter.unusedSectionVars false in
+/-- A measure supported a.e. on a regular-coordinate ball whose `Ctop`
+determinants are units is supported a.e. in the actual p. 13 left-step raw
+determinant chart. -/
+theorem
+    ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {η : Measure (α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))}
+    {R : ℝ}
+    (hunit :
+      ∀ u : EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)),
+        u ∈ Metric.ball 0 R →
+          IsUnit
+            (AoyagiRegularBlockCoordinateIndex.ctopMatrix
+              (fun c : AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ u c)).det)
+    (hsupport :
+      ∀ᵐ xu ∂η,
+        xu.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex V) (reverseEdge V Bv) U₀ 0))) R) :
+    ∀ᵐ xu ∂η,
+      p13ProductCoordinateLeftStepRawTopologyTuple V Bv U₀ hU₀ CedgeBase xu ∈
+        productReductionStepRawDetChartSet
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) := by
+  filter_upwards [hsupport] with xu hball
+  exact
+    p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (xu := xu) (hunit xu.2 hball)
+
+set_option linter.unusedSectionVars false in
+/-- Small-ball a.e. support version of the actual p. 13 left-step raw
+determinant-chart support theorem. -/
+theorem
+    exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      ∀ η : Measure (α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0))),
+        (∀ᵐ xu ∂η,
+          xu.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ 0))) R) →
+          ∀ᵐ xu ∂η,
+            p13ProductCoordinateLeftStepRawTopologyTuple
+                V Bv U₀ hU₀ CedgeBase xu ∈
+              productReductionStepRawDetChartSet
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) := by
+  classical
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro η hsupport
+  exact
+    ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (η := η) hunit hsupport
+
+set_option linter.unusedSectionVars false in
 /-- The actual p. 13 left-step raw tuple has raw `C1` fixed to the identity. -/
 theorem p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
     {M : ℕ}

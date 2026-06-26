@@ -7739,3 +7739,26 @@ and
 Review:
 `threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`
 passed with no blocking findings.
+
+Latest A2 p.13 left-step local raw-det support:
+Lean now proves that the actual p.13 left-step raw section lands in the raw
+determinant chart throughout a sufficiently small regular-coordinate ball.
+The pointwise theorem rewrites the actual left-step tuple to the explicit raw
+preimage tuple and uses the determinant-unit hypothesis for `Ctop(u)`; the
+small-ball theorem obtains that hypothesis from continuity at `u=0`; and the
+a.e. corollaries convert regular-coordinate ball support into raw-chart
+support.  Lean names:
+`p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet`,
+`exists_pos_radius_le_forall_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet`,
+`ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball`,
+and
+`exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball`.
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-local-raw-det-support.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-local-raw-det-support.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-local-raw-det-support.md`.
+Nonclaims: no raw-Haar/full-chart pushforward, no source/image equality, no
+source/prior transport, no signed-box density identification, no
+regular-suspension certificate, no normal crossings, no pole order, and no
+RLCT.

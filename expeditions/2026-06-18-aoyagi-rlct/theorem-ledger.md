@@ -9129,3 +9129,24 @@ and
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-section-image-measure.md`;
 review passed at
 `threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`.
+
+Latest A2 p.13 left-step local raw-det support:
+`ProductReductionStepRegularDensity.lean` now proves local raw
+determinant-chart support for the actual p.13 left-step section.  Lean names:
+`p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet`,
+`exists_pos_radius_le_forall_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet`,
+`ae_p13ProductCoordinateLeftStepRawTopologyTuple_mem_rawDetChartSet_of_ae_regular_mem_ball`,
+and
+`exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball`.
+For sufficiently small regular coordinates `u`, `det Ctop(u)` is a unit, so
+the actual raw tuple `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)` lies in the raw
+determinant chart.  The a.e. corollaries turn regular-coordinate ball support
+into the raw-chart support hypothesis for the section-image theorem.
+Reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-local-raw-det-support.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-local-raw-det-support.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-local-raw-det-support.md`.
+This is section-domain support only: no full raw-Haar pushforward, source
+coverage, source/prior transport, signed-box density identification,
+regular-suspension certification, normal crossings, pole order, or RLCT.
