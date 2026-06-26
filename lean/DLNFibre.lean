@@ -292,3 +292,9 @@ import DLNFibre.Core.FibreThetaCount
 -- homogeneity, and the single-chart triviality headline (on the REDUCED variety, not the scheme
 -- cut; a full per-minor open cover is NOT built — see the module's B3 disclaimer).
 import DLNFibre.Core.FibreBundleReduced
+-- Scope-3 (smoothness rungs S2+S3, thread 15): the reusable, reducedness-free submersive plumbing —
+-- a chart where a chosen `(C+δ)`-square Jacobian minor is a unit is `Smooth k` (and standard-smooth
+-- of relative dimension `n − c`), via Mathlib `SubmersivePresentation → IsStandardSmooth → Smooth`,
+-- with `…of_algEquiv…` transport hooks the θ-chart atlas consumes. Conditional on the minor-unit
+-- input (discharged by the rank=C+δ tide), NOT a fibre-is-smooth claim.
+import DLNFibre.Core.FibreSmoothPlumbing
