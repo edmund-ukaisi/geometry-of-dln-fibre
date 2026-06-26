@@ -6125,3 +6125,14 @@ solved lower-left endpoint and residual lower-left tail sum; only after that
 should the full `topologyTupleEdgeRawOrder` differentiability theorem be
 assembled.  Do not state determinant/Jacobian/measure claims before the formal
 tangent equivalence is in place.
+
+A2 retained-passive solved-`A3` differentiability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a3-derivative.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a3-derivative.md`.
+Lean now proves the zeroed lower-left seed, `C` residual product, solved-`A1`
+residual product, lower-left tail sum, and solved-`A3` differentiability on the
+tuple determinant chart.  The next derivative slice should assemble
+`DifferentiableAt topologyTupleEdgeRawOrder` from the component formulas.  Keep
+the determinant theorem separate and do not assert the candidate absolute
+Jacobian formula before a formal tangent equivalence is proved.

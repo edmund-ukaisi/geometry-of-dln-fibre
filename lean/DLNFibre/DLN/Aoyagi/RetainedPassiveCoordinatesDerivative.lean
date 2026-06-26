@@ -33,6 +33,25 @@ theorem differentiableAt_matrix_inv_of_isUnit_det
     DifferentiableAt ℝ (fun B : Matrix ρ ρ ℝ ↦ B⁻¹) A :=
   (hasFDerivAt_matrix_inv_of_isUnit_det A hA).differentiableAt
 
+/-- Heterogeneous finite matrix multiplication is differentiable in two
+differentiable matrix-valued arguments. -/
+theorem differentiableAt_matrix_mul
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {l m n : Type*} [Finite l] [Fintype m] [Finite n]
+    {A : E → Matrix l m ℝ} {B : E → Matrix m n ℝ} {x : E}
+    (hA : DifferentiableAt ℝ A x) (hB : DifferentiableAt ℝ B x) :
+    DifferentiableAt ℝ (fun y : E ↦ A y * B y) x := by
+  let _ : Fintype l := Fintype.ofFinite l
+  let _ : Fintype n := Fintype.ofFinite n
+  have hbilin :
+      DifferentiableAt ℝ
+        (fun q : Matrix l m ℝ × Matrix m n ℝ ↦ q.1 * q.2)
+        (A x, B x) := by
+    simpa [matrixMulContinuousLinearMap_apply] using
+      (matrixMulContinuousLinearMap (l := l) (m := m) (n := n)).isBoundedBilinearMap
+        |>.differentiableAt (A x, B x)
+  simpa using hbilin.comp x (hA.prodMk hB)
+
 @[fun_prop]
 theorem differentiableAt_A1passive
     {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
@@ -298,6 +317,449 @@ theorem differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
       have hseed := differentiableAt_A1seed (ρ := ρ) (κ' := κ') p.succ z
       simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
         toCoordinateData, Fin.succ_ne_zero] using hseed
+
+/-- The zeroed-final lower-left family is differentiable componentwise as a
+function of the ambient tuple coordinates. -/
+theorem differentiableAt_retainedPassiveA3WithoutLast
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Finite (κ' j)]
+    (p : Fin (M + 1))
+    (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p) z := by
+  let _ : Fintype ρ := Fintype.ofFinite ρ
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  by_cases hp : p = Fin.last M
+  · subst p
+    simp [retainedPassiveA3WithoutLast]
+  · simpa [retainedPassiveA3WithoutLast, hp] using
+      differentiableAt_A3seed (ρ := ρ) (κ' := κ') p z
+
+/-- Residual products of the stored `C` blocks are differentiable as functions
+of the ambient tuple coordinates. -/
+theorem differentiableAt_residualFactorProduct_C
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1))
+    (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := κ')
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          (Fin.last (M + 1)) i hi) z := by
+  let _ : Fintype ρ := Fintype.ofFinite ρ
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := κ')
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)) z
+  have hbase : motive (M + 1) le_rfl := by
+    change DifferentiableAt ℝ
+      (fun _z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := κ') _ j j le_rfl) z
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := κ')
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+              j p.succ hpj) z := by
+      simpa [motive, j, p] using ih
+    have hfactor :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p) z :=
+      differentiableAt_C (ρ := ρ) (κ' := κ') p z
+    have hmul :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := κ')
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                j p.succ hpj *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p) z :=
+      differentiableAt_matrix_mul hnext hfactor
+    change DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := κ')
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) z
+    rw [show
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          residualFactorProduct (K := ℝ) (κ := κ')
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun z ↦
+            residualFactorProduct (K := ℝ) (κ := κ')
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                j p.succ hpj *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p by
+      funext z
+      exact
+        residualFactorProduct_castSucc
+          (K := ℝ) (κ := κ')
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+/-- Residual products of the solved full `A1` family are differentiable at
+tuple determinant-chart points. -/
+theorem differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1))
+    (z : TopologyTuple ρ κ' ℝ)
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (Fin.last (M + 1)) i hi) z := by
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)) z
+  have hbase : motive (M + 1) le_rfl := by
+    change DifferentiableAt ℝ
+      (fun _z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          _ j j le_rfl) z
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+              j p.succ hpj) z := by
+      simpa [motive, j, p] using ih
+    have hfactor :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p) z :=
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+    have hmul :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p) z :=
+      differentiableAt_matrix_mul hnext hfactor
+    change DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) z
+    rw [show
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun z ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p by
+      funext z
+      exact
+        residualFactorProduct_castSucc
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+/-- The explicit lower-left product-tail sum built from solved `A1`, zeroed
+early `A3`, and stored `C` blocks is differentiable at tuple determinant-chart
+points. -/
+theorem differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (m : ℕ) (hm : m ≤ M + 1)
+    (z : TopologyTuple ρ κ' ℝ)
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C m hm) z := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := by
+    exact hz
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C m hm) z
+  have hbase : motive (M + 1) le_rfl := by
+    change DifferentiableAt ℝ
+      (fun _z : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          _ _ _ (M + 1) le_rfl) z
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ Fin.last (M + 1) := Fin.val_fin_le.mpr hms
+    have hCprod :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := κ')
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+              (Fin.last (M + 1)) p.succ hpj) z :=
+      differentiableAt_residualFactorProduct_C
+        (ρ := ρ) (κ' := κ') p.succ hpj z
+    have hA3early :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p) z :=
+      differentiableAt_retainedPassiveA3WithoutLast
+        (ρ := ρ) (κ' := κ') p z
+    have hA1prod :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj)) z :=
+      differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.castSucc
+        ((Fin.castSucc_le_succ p).trans hpj) z hz
+    have hA1unit :
+        IsUnit
+          (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+            (Fin.last (M + 1)) p.castSucc
+              ((Fin.castSucc_le_succ p).trans hpj)).det :=
+      residualFactorProduct_solvedA1_det_isUnit_of_detChart
+        (K := ℝ) (ρ := ρ) data hdet p.castSucc
+        ((Fin.castSucc_le_succ p).trans hpj)
+    have hA1prodInv :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj))⁻¹) z :=
+      (differentiableAt_matrix_inv_of_isUnit_det
+        (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          (Fin.last (M + 1)) p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj))
+        hA1unit).comp z hA1prod
+    have hC_A3 :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := κ')
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                (Fin.last (M + 1)) p.succ hpj *
+              retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p) z :=
+      differentiableAt_matrix_mul hCprod hA3early
+    have hsummand :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ')
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹)) z :=
+      (differentiableAt_matrix_mul hC_A3 hA1prodInv).neg
+    have htail : motive (m + 1) hms := ih
+    have hsum :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ')
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C (m + 1) hms) z :=
+      hsummand.add htail
+    change DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          p.val (Nat.le_of_lt p.isLt)) z
+    rw [show
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            p.val (Nat.le_of_lt p.isLt)) =
+          fun z ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ')
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C (m + 1) hms by
+      funext z
+      simpa [p] using
+        retainedPassiveLowerLeftProductTailSum_castSucc
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p]
+    simpa [p] using hsum
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+  simpa [motive] using hcanon
+
+/-- On the tuple determinant chart, each solved full `A3` block is
+differentiable as an ambient tuple-coordinate function. -/
+theorem differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (p : Fin (M + 1)) (z : TopologyTuple ρ κ' ℝ)
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA3 p) z := by
+  induction p using Fin.lastCases with
+  | last =>
+      have hF3 := differentiableAt_F3 (ρ := ρ) (κ' := κ') z
+      have hEarlyTail :
+          DifferentiableAt ℝ
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C 0
+                (Nat.zero_le (M + 1))) z :=
+        differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet
+          (ρ := ρ) (κ' := κ') 0 (Nat.zero_le (M + 1)) z hz
+      have hCtopLast :
+          DifferentiableAt ℝ
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                (Fin.last (M + 1)) (Fin.last M).castSucc
+                  (Fin.last M).castSucc.le_last) z :=
+        differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+          (ρ := ρ) (κ' := κ') (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last z hz
+      have hlast :
+          DifferentiableAt ℝ
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              -((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).F3 -
+                  retainedPassiveLowerLeftProductTailSum
+                    (K := ℝ) (ρ := ρ) (κ := κ')
+                    (fun p : Fin (M + 1) ↦
+                      ((ofTopologyTuple (K := ℝ) (ρ := ρ)
+                        (κ' := κ') z).toCoordinateData).solvedA1 p)
+                    (retainedPassiveA3WithoutLast
+                      (K := ℝ) (ρ := ρ)
+                      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+                    (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+                    0 (Nat.zero_le (M + 1))) *
+                residualFactorProduct (K := ℝ)
+                  (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) (Fin.last M).castSucc
+                    (Fin.last M).castSucc.le_last) z :=
+        differentiableAt_matrix_mul (hF3.sub hEarlyTail).neg hCtopLast
+      simpa [RetainedPassiveCoordinateData.solvedA3,
+        RetainedPassiveCoordinateData.solvedA1, toCoordinateData] using hlast
+  | cast p =>
+      have hseed := differentiableAt_A3seed (ρ := ρ) (κ' := κ') p.castSucc z
+      have hfun :
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ)
+              (κ' := κ') z).toCoordinateData).solvedA3 p.castSucc) =
+          fun z ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed p.castSucc := by
+        funext z
+        exact
+          retainedPassiveSolvedA3_eq_of_ne_last
+            (K := ℝ) (ρ := ρ) (κ' := κ')
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).F3
+            (Fin.castSucc_ne_last p)
+      rw [hfun]
+      exact hseed
 
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState

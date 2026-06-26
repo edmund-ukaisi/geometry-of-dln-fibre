@@ -13309,3 +13309,18 @@ unit/formula, density, measure pushforward, normal crossings, pole order, or
 RLCT.  Next target: the lower-left endpoint solve and tail-sum
 differentiability, then assembly of the full raw-order differentiability
 statement.
+
+Latest retained-passive solved-`A3` derivative foothold:
+the same derivative module now proves the lower-left solved-family chain:
+`differentiableAt_retainedPassiveA3WithoutLast`,
+`differentiableAt_residualFactorProduct_C`,
+`differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet`,
+`differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet`,
+and `differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet`.  A new helper
+`differentiableAt_matrix_mul` handles heterogeneous finite matrix products via
+the existing continuous bilinear multiplication map.  This closes the solved
+top-left and lower-left derivative components but still does not prove full
+raw-order differentiability, a formal tangent equivalence, determinant formula,
+density, measure pushforward, normal crossings, pole order, or RLCT.  Next
+target: assemble `DifferentiableAt topologyTupleEdgeRawOrder` from the landed
+component formulas.

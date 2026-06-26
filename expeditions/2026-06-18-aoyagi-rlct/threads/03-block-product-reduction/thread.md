@@ -9209,3 +9209,33 @@ This is a partial derivative foothold only.  It does not prove solved lower-left
 differentiability, full raw-order differentiability, a tangent equivalence,
 determinant formula, Jacobian density, measure pushforward, image equality,
 source-rank coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive solved A3 derivative
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a3-derivative.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a3-derivative.md`.
+Review:
+`review-a2-retained-passive-solved-a3-derivative.md`
+passed as a route audit by xhigh read-only explorer `Newton the 4th`; the
+controller fixed the typeclass issues Newton observed in the dirty draft.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now adds a heterogeneous matrix multiplication differentiability helper
+and proves:
+
+```text
+differentiableAt_retainedPassiveA3WithoutLast
+differentiableAt_residualFactorProduct_C
+differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet
+differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+```
+
+This closes the lower-left solved-family differentiability component.  It does
+not prove full raw-order differentiability, a tangent equivalence, determinant
+formula, Jacobian density, measure pushforward, image equality, source-rank
+coverage, normal crossings, pole order, or RLCT.
