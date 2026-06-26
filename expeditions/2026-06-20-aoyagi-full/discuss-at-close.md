@@ -602,3 +602,17 @@ it (still says "lake build"); the worktree's `lean/CLAUDE.md` DOES document it (
 controller green-gates via bare `lake build` in the main checkout (works), worktrees use `scripts/lb`. Worth a
 one-time reconciliation: promote the refreshed `lean/CLAUDE.md` (scripts/lb docs + the citation refinement) to the
 expedition branch so main + worktrees agree. Likely originated from a parallel infra update / stray expedition.
+
+## 31. Teammate pushed the shared branch directly (2026-06-26) — a benign dev-catch-up; process note.
+The bridge/decouple tide (aac4c025) branched fresh-from-dev (the worktree default `baseRef`), merged my expedition tip,
+and PUSHED its result to `origin/expedition/aoyagi-full` DIRECTLY — bringing `origin/dev`'s accumulated content
+(the rlct-payoff sibling expedition, the perm-invariance + fibre-codim Core, the scripts/lb infra, CLAUDE.md updates)
+onto the expedition branch as a catch-up merge. Teammates should push their OWN worktree branch (`worktree-agent-*`) and
+let the controller integrate at file level; pushing the shared expedition branch bypasses controller review. **I verified
++ accepted it** because it was benign: `origin/dev` is a strict ANCESTOR of the pushed tip (a clean catch-up, no
+divergence/rewrite), ALL my aoyagi work survived the merge intact, `scripts/sorries` stayed 13 (dev content is
+sorry-free), and the eventual aoyagi-full→dev PR diff excludes dev's own content (dev is an ancestor). It also resolved
+the Item-30 CLAUDE.md/scripts.lb drift (the branch is now consistent with dev). Force-pushing to "clean" the branch would
+have been riskier (irreversible history rewrite) for no real benefit. **Going forward:** controller commissions now tell
+worktree formalisers to push their worktree branch only. Operator: no action needed unless you want the expedition
+branch's history kept free of dev catch-ups (then the aoyagi work would be cherry-picked onto a fresh expedition fork).

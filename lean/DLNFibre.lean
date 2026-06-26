@@ -328,10 +328,25 @@ import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
 -- Reusable bricks toward the `suffix 0 = prod M A` bridge (`reindex_finCongr_mul` cast-killer, `Mtail`/
--- `Atail`). The `prod` front-peel itself (`RouteMFrontPeel`, the deferred `prodAux` reassociation XL-cast,
--- now CRACKED + axiom-clean) is banked but NOT yet gated: it imports `DeepestTelescoping` for `prodAux_succ`,
--- which drags the ungated `Deepest*` subtree's `continuous_dlnLoss` clash into the aggregator. Gating it
--- needs the decouple (move `prodAux_succ` → `Foundations/Loss`) — folded into the chart-assembly tide.
+-- `Atail`), then the `prod` front-peel `prod M A = A_0 · (reindex)(prod (Mtail M)(Atail M A))` (the
+-- deferred-twice `prodAux` reassociation XL-cast, CRACKED + axiom-clean; `prodAux_succ` now lives in
+-- `Foundations/Loss`, so this no longer pulls the `Deepest*` clash), then the chain↔DLN-product bridge
+-- `Chain.suffix 0 = prod M A` (`RouteMSuffixBridge`). Shared with L2/D1's `endpoint_telescoping`.
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSuffixBridge
+-- R1-general achiever CHART (∀M): the abstract chain engine (`FactoredChain` + `step_of_factor` +
+-- `chain_block` + `chainQ_mul_chainA` — M-agnostic block algebra) + the per-M achiever chain `chainOfMt`
+-- (a structural recursion over opaque `t`-widths) → the ∀M chart identity `routeMCore_phiGen : F∘φ = u²·V`
+-- (path-agnostic rate), validated to specialize to (3,3,3,3). Sorry-free + axiom-clean.
+import DLNFibre.DLN.RLCT.Validate.RouteMChainFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlockValid
+import DLNFibre.DLN.RLCT.Validate.RouteMFactoredChain
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRate
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRateValid
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId3333
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
