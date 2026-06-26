@@ -8906,3 +8906,37 @@ The pivot-nonzero condition remains supplied.  This is not source chart
 production, not endpoint-index alignment, not longer-suffix transport, and
 not pushforward/Jacobian, original-loss, normal-crossing, pole-order, or RLCT
 work.
+
+## 2026-06-26 A2 adjacent two-edge residual-factor transport
+
+Reproduction:
+`reproduction-a2-adjacent-two-edge-residual-factor-transport.md`.
+Statement card:
+`statement-card-a2-adjacent-two-edge-residual-factor-transport.md`.
+Review:
+`review-a2-adjacent-two-edge-residual-factor-transport.md`
+passed by xhigh `Zeno the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`.
+
+Lean now proves:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_one_edge_eq_factor
+ChartLocalSuffixState.residualFactorProduct_adjacent_two_eq_mul
+ChartLocalSuffixState.residualFactorProduct_adjacent_two_submatrix_eq_mul
+```
+
+This is the generic adjacent-window transport requested by the retained-
+passive/Case 2 bridge scouts. For a supplied residual-factor family `C`, the
+product over the adjacent window from `p+2` to `p` is the ordered product
+`C_(p+1) * C_p`; after endpoint equivalences, the submatrix of the adjacent
+window product is the product of the two reindexed factors.
+
+This buys reusable finite transport for a future adjacent Case 2 selected-
+entry consumer. It does not construct endpoint equivalences, prove the
+Case 2 factor identities for a fixed-base source-readback family, remove
+outside factors from a full retained-passive suffix, prove pivot nonzero,
+produce a source chart, or prove pushforward/Jacobian, original-loss,
+normal-crossing, pole-order, or RLCT statements.

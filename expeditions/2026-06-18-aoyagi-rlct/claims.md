@@ -8983,3 +8983,36 @@ Nonclaims: no retained-passive source data is produced, no fixed-base endpoint
 alignment or longer suffix transport is proved, and no source image,
 pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
 or RLCT is proved.
+
+Latest A2 adjacent two-edge residual-factor transport:
+Lean now proves generic finite product lemmas for
+`ChartLocalSuffixState.residualFactorProduct`: one-edge products reduce to the
+visited factor, adjacent two-edge products reduce to the ordered product of
+the two visited factors, and reindexed adjacent two-edge products reduce to
+the product of the two reindexed factors.
+
+Status: Proved; reviewed.
+
+Claim: for a supplied residual-factor family `C`, an adjacent window
+`p.castSucc.castSucc <= p.succ.succ` has product
+`C p.succ * C p.castSucc` in the correct right-to-left order. After endpoint
+equivalences at the right, middle, and left endpoints, the corresponding
+submatrix is the product of the reindexed factors.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-adjacent-two-edge-residual-factor-transport.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-adjacent-two-edge-residual-factor-transport.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-adjacent-two-edge-residual-factor-transport.md`
+passed by xhigh `Zeno the 4th`.
+
+Kill condition: this theorem applies only to the explicit supplied factor
+product over an adjacent window. It may not be used to identify a full
+retained-passive endpoint product with that window unless outside factors or
+full-to-window transport are separately supplied.
+
+Nonclaims: no fixed-base endpoint alignment, Case 2 factor identity,
+successor selected-entry readout, pivot nonzero provenance, source chart,
+source image, pushforward/Jacobian theorem, original-loss comparison, normal
+crossings, pole order, or RLCT is proved.

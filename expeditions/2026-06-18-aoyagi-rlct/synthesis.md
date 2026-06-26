@@ -13145,3 +13145,16 @@ This moves the direct `hentry` frontier but does not close it: Lean now
 constructs `yNext` from a supplied fixed-pivot nonzero fact, while the nonzero
 fact itself remains unproved.  The endpoint equivalence `eNext` is also still
 explicit, and no longer-suffix/fixed-base endpoint alignment is proved.
+
+Latest A2 adjacent two-edge residual-factor transport:
+`ProductReduction.lean` now has generic one-edge and adjacent-two-edge
+unfolding lemmas for `residualFactorProduct`, plus a submatrix transport
+version. This fixes the adjacent-window factor order as
+`C p.succ * C p.castSucc` and gives the exact finite API needed before a
+Case 2 adjacent-window selected-entry consumer.
+
+The full fixed-base endpoint theorem remains open: the retained-passive
+fixed-base residual map is a full endpoint product, not automatically an
+interior adjacent window. Future work still needs endpoint equivalences,
+factor identities for the two adjacent source-readback factors, and either
+outside-factor absorption or explicit full-to-window transport.

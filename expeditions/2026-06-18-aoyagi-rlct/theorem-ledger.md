@@ -9948,6 +9948,28 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 adjacent two-edge residual-factor transport:
+`ProductReduction.lean` proves
+`ChartLocalSuffixState.residualFactorProduct_one_edge_eq_factor`,
+`ChartLocalSuffixState.residualFactorProduct_adjacent_two_eq_mul`, and
+`ChartLocalSuffixState.residualFactorProduct_adjacent_two_submatrix_eq_mul`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-adjacent-two-edge-residual-factor-transport.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-adjacent-two-edge-residual-factor-transport.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-adjacent-two-edge-residual-factor-transport.md`
+passed by xhigh `Zeno the 4th`.
+
+The one-edge theorem collapses `residualFactorProduct C p.succ p.castSucc` to
+`C p`. The adjacent two-edge theorem splits through the middle endpoint and
+collapses the two one-edge pieces, giving the order `C p.succ * C p.castSucc`.
+The submatrix theorem composes this with `Matrix.submatrix_mul_equiv`.
+Nonclaims: no residual-factor construction from suffix states, no fixed-base
+endpoint alignment, no full-suffix collapse, no Case 2 factor identities, no
+pivot nonzero proof, no source chart/source image, no measure
+pushforward/Jacobian theorem, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive Case 2 pivot-nonzero source readout:
 `SelectedEntrySignedBoxMeasure.lean` proves
 `SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero`,

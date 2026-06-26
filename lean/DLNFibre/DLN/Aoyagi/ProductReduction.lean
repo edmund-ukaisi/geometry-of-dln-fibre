@@ -2046,6 +2046,18 @@ theorem residualFactorProduct_castSucc
   · congr 1
   · exact Fin.val_fin_le.mp hpj
 
+/-- The explicit residual-factor product over one edge is that supplied
+factor. -/
+theorem residualFactorProduct_one_edge_eq_factor
+    {N : ℕ} {κ : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) (h : p.castSucc ≤ p.succ) :
+    residualFactorProduct C p.succ p.castSucc h = C p := by
+  rw [show h = Fin.castSucc_le_succ p from Subsingleton.elim _ _]
+  rw [residualFactorProduct_castSucc (K := K) C (j := p.succ) (p := p) le_rfl]
+  simp
+
 /-- The explicit residual-factor product splits through an intermediate
 residual index. -/
 theorem residualFactorProduct_trans
@@ -2151,6 +2163,94 @@ theorem residualFactorProduct_fin_two_eq_mul
       (show Matrix (κ (Fin.succ (0 : Fin 2))) (κ (Fin.castSucc (0 : Fin 2))) K from
         by simpa using C (0 : Fin 2))
   rw [hsplit, hright, hleft]
+
+/-- The explicit residual-factor product over an adjacent two-edge window in a
+longer chain is the product of the two visited factors. -/
+theorem residualFactorProduct_adjacent_two_eq_mul
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin (N + 1)) :
+    residualFactorProduct C p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ)) =
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) K from
+        by simpa using C p.succ) *
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) K from
+        by simpa using C p.castSucc) := by
+  let hleftmid : p.castSucc.castSucc ≤ p.succ.castSucc :=
+    Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)
+  let hmidright : p.succ.castSucc ≤ p.succ.succ :=
+    Fin.castSucc_le_succ p.succ
+  have hsplit :
+      residualFactorProduct C p.succ.succ p.castSucc.castSucc
+          (hleftmid.trans hmidright) =
+        residualFactorProduct C p.succ.succ p.succ.castSucc
+            hmidright *
+          residualFactorProduct C p.succ.castSucc p.castSucc.castSucc
+            hleftmid := by
+    simpa using
+      (residualFactorProduct_trans (K := K) C
+        (i := p.castSucc.castSucc) (q := p.succ.castSucc) (j := p.succ.succ)
+        hleftmid hmidright)
+  have hright :
+      residualFactorProduct C p.succ.succ p.succ.castSucc
+          hmidright =
+        (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) K from
+          by simpa using C p.succ) := by
+    rw [residualFactorProduct_castSucc (K := K) C
+      (j := p.succ.succ) (p := p.succ) le_rfl]
+    rw [residualFactorProduct_self]
+    exact Matrix.one_mul
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) K from
+        by simpa using C p.succ)
+  have hleft :
+      residualFactorProduct C p.succ.castSucc p.castSucc.castSucc
+          hleftmid =
+        (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) K from
+          by simpa using C p.castSucc) := by
+    change residualFactorProduct C p.castSucc.succ p.castSucc.castSucc
+        (Fin.castSucc_le_succ p.castSucc) =
+      (show Matrix (κ p.castSucc.succ) (κ p.castSucc.castSucc) K from
+        by simpa using C p.castSucc)
+    rw [residualFactorProduct_castSucc (K := K) C
+      (j := p.castSucc.succ) (p := p.castSucc) le_rfl]
+    rw [residualFactorProduct_self]
+    exact Matrix.one_mul
+      (show Matrix (κ p.castSucc.succ) (κ p.castSucc.castSucc) K from
+          by simpa using C p.castSucc)
+  rw [hsplit, hright, hleft]
+
+/-- Reindexing an adjacent two-edge residual-factor product in a longer chain
+gives the product of the two reindexed visited factors. -/
+theorem residualFactorProduct_adjacent_two_submatrix_eq_mul
+    {N : ℕ} {κ : Fin (N + 3) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {κ₂ κ₁ κ₀ : Type*} [Fintype κ₁]
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin (N + 1))
+    (e₂ : κ₂ ≃ κ p.succ.succ)
+    (e₁ : κ₁ ≃ κ p.succ.castSucc)
+    (e₀ : κ₀ ≃ κ p.castSucc.castSucc) :
+    (residualFactorProduct C p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ))).submatrix e₂ e₀ =
+      (show Matrix (κ p.succ.succ) (κ p.succ.castSucc) K from
+        by simpa using C p.succ).submatrix e₂ e₁ *
+      (show Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) K from
+        by simpa using C p.castSucc).submatrix e₁ e₀ := by
+  let A : Matrix (κ p.succ.succ) (κ p.succ.castSucc) K := by
+    simpa using C p.succ
+  let B : Matrix (κ p.succ.castSucc) (κ p.castSucc.castSucc) K := by
+    simpa using C p.castSucc
+  calc
+    (residualFactorProduct C p.succ.succ p.castSucc.castSucc
+        ((Fin.castSucc_le_castSucc_iff.mpr (Fin.castSucc_le_succ p)).trans
+          (Fin.castSucc_le_succ p.succ))).submatrix e₂ e₀ =
+        (A * B).submatrix e₂ e₀ := by
+          rw [residualFactorProduct_adjacent_two_eq_mul (K := K) C p]
+    _ = A.submatrix e₂ e₁ * B.submatrix e₁ e₀ := by
+          exact (Matrix.submatrix_mul_equiv A B e₂ e₁ e₀).symm
 
 /-- A residual-factor product factors through every intermediate residual
 index, so its matrix rank is bounded by the cardinality of that intermediate

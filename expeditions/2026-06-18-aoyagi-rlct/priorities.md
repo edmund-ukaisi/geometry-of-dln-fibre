@@ -6004,3 +6004,15 @@ to prove or source-justify that fixed pivot nonzero condition, or to follow
 Volta's adjacent-two-edge suffix transport route.  Do not mark this as source
 production: endpoint equivalence, pivot nonzero provenance, fixed-base
 realization, longer-suffix transport, and analytic transport remain open.
+
+Latest adjacent two-edge residual-factor transport:
+`ProductReduction.lean` now proves the generic one-edge, adjacent-two-edge,
+and submatrix adjacent-window transport lemmas for explicit
+`residualFactorProduct` families. This should be the preferred finite API for
+the next adjacent Case 2 consumer.
+
+Next priority in this lane: prove a conditional adjacent-window Case 2
+selected-entry theorem taking endpoint equivalences, the two factor identities,
+and either entrywise readout or fixed-pivot nonzero as hypotheses. Do not use
+the adjacent-window lemma to collapse the full retained-passive fixed-base
+endpoint product without separate outside-factor/full-to-window transport.
