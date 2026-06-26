@@ -879,6 +879,112 @@ theorem continuous_solvedA3_detChart_subtype
       rw [hfun]
       exact hseed
 
+/-- On the determinant chart, each retained-passive fixed-base source edge is
+continuous. -/
+theorem continuous_edgeMatrix_detChart_subtype_apply
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (p : Fin (M + 1)) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        data.1.edgeMatrix p) := by
+  let X :=
+    {data : RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := ρ) κ' // data.detChart}
+  have hA1 :
+      Continuous
+        (fun data : X ↦
+          (data.1.toCoordinateData).solvedA1 p) :=
+    continuous_solvedA1_detChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K) p
+  have hA3 :
+      Continuous
+        (fun data : X ↦
+          (data.1.toCoordinateData).solvedA3 p) :=
+    continuous_solvedA3_detChart_subtype
+      (ρ := ρ) (κ' := κ') (K := K) p
+  have hF2current :
+      Continuous
+        (fun data : X ↦ data.1.F2full p.castSucc) :=
+    (continuous_F2full (ρ := ρ) (κ' := κ') (K := K) p.castSucc).comp
+      continuous_subtype_val
+  have hF2next :
+      Continuous
+        (fun data : X ↦ data.1.F2full p.succ) :=
+    (continuous_F2full (ρ := ρ) (κ' := κ') (K := K) p.succ).comp
+      continuous_subtype_val
+  have hC :
+      Continuous
+        (fun data : X ↦ data.1.C p) :=
+    (continuous_C (ρ := ρ) (κ' := κ') (K := K) p).comp
+      continuous_subtype_val
+  have hA1F2 :
+      Continuous
+        (fun data : X ↦
+          (data.1.toCoordinateData).solvedA1 p * data.1.F2full p.castSucc) :=
+    hA1.matrix_mul hF2current
+  have hA3F2 :
+      Continuous
+        (fun data : X ↦
+          (data.1.toCoordinateData).solvedA3 p * data.1.F2full p.castSucc) :=
+    hA3.matrix_mul hF2current
+  have hTransformed :
+      Continuous
+        (fun data : X ↦
+          retainedPassiveTransformedEdge (K := K) (ρ := ρ) (κ := κ')
+            (fun q : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 q)
+            data.1.F2full
+            (fun q : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA3 q)
+            data.1.C p) := by
+    simpa [retainedPassiveTransformedEdge] using
+      hA1.matrix_fromBlocks hA1F2.neg hA3 (hC.sub hA3F2)
+  have hLeft :
+      Continuous
+        (fun data : X ↦
+          fromBlocks (1 : Matrix ρ ρ K) (data.1.F2full p.succ)
+            (0 : Matrix (κ' p.succ) ρ K)
+            (1 : Matrix (κ' p.succ) (κ' p.succ) K)) := by
+    simpa using
+      (continuous_const.matrix_fromBlocks hF2next
+        (continuous_const : Continuous
+          (fun _data : X ↦ (0 : Matrix (κ' p.succ) ρ K)))
+        (continuous_const : Continuous
+          (fun _data : X ↦
+            (1 : Matrix (κ' p.succ) (κ' p.succ) K))))
+  have hEdge :
+      Continuous
+        (fun data : X ↦
+          fromBlocks (1 : Matrix ρ ρ K) (data.1.F2full p.succ)
+              (0 : Matrix (κ' p.succ) ρ K)
+              (1 : Matrix (κ' p.succ) (κ' p.succ) K) *
+            retainedPassiveTransformedEdge (K := K) (ρ := ρ) (κ := κ')
+              (fun q : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 q)
+              data.1.F2full
+              (fun q : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA3 q)
+              data.1.C p) :=
+    hLeft.matrix_mul hTransformed
+  simpa [X, edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix,
+    retainedPassiveFixedBaseEdgeMatrix, toCoordinateData] using hEdge
+
+/-- On the determinant chart, the retained-passive fixed-base source edge
+family is continuous. -/
+theorem continuous_edgeMatrix_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        data.1.edgeMatrix) := by
+  refine continuous_pi ?_
+  intro p
+  exact continuous_edgeMatrix_detChart_subtype_apply
+    (ρ := ρ) (κ' := κ') (K := K) p
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

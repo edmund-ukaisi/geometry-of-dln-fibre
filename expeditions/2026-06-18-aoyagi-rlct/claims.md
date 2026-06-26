@@ -8553,3 +8553,29 @@ Nonclaims: endpoint-family continuity only.  No continuity of `edgeMatrix`;
 no image openness, source-rank coverage, source/image equality, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
 is proved.
+
+Latest A2 retained-passive edge-matrix continuity:
+Lean now proves
+`RetainedPassiveNonredundantCoordinateData.continuous_edgeMatrix_detChart_subtype_apply`
+and
+`RetainedPassiveNonredundantCoordinateData.continuous_edgeMatrix_detChart_subtype`
+in `RetainedPassiveCoordinatesTopology.lean`.
+
+The per-edge theorem proves continuity of `data.1.edgeMatrix p` on
+`{data // data.detChart}` by unfolding the fixed-base retained-passive source
+edge and composing the solved-`A1`, solved-`A3`, `F2full`, and `C` continuity
+lemmas through block-matrix operations.  The family theorem is the Pi-topology
+wrapper.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-matrix-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-matrix-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-matrix-continuity.md`
+passed.
+
+Nonclaims: source-map continuity on the determinant-chart subtype only.  No
+image openness, local homeomorphism, source-rank coverage, source/image
+equality, measure pushforward, density/Jacobian theorem, normal crossings,
+pole order, or RLCT is proved.

@@ -12732,3 +12732,28 @@ are seed projections, while the final component is
 continuity, image openness, source-rank coverage, source/image equality,
 measure pushforward, density/Jacobian accounting, normal crossings, pole
 order, or RLCT.
+
+New follow-up proves the retained-passive source-map continuity layer on the
+determinant-chart subtype.  For each edge `p`,
+`continuous_edgeMatrix_detChart_subtype_apply` unfolds the fixed-base edge as
+
+```text
+fromBlocks 1 (F2full p.succ) 0 1 *
+fromBlocks
+  (solvedA1 p)
+  (-(solvedA1 p * F2full p.castSucc))
+  (solvedA3 p)
+  (C p - solvedA3 p * F2full p.castSucc).
+```
+
+It composes the already banked continuity of `solvedA1`, `solvedA3`,
+`F2full`, and `C` with matrix `fromBlocks`, multiplication, negation, and
+subtraction.  The theorem deliberately keeps the two `F2` indices separate:
+`p.castSucc` is the current transformed-edge block, while `p.succ` is the next
+suffix/base-change block in the left multiplier.  The family theorem
+`continuous_edgeMatrix_detChart_subtype` is only the componentwise Pi wrapper.
+
+This proves source-map continuity on `{data // data.detChart}` only.  It does
+not prove image openness, source-rank coverage, source/image equality, local
+homeomorphism, measure pushforward, density/Jacobian accounting, normal
+crossings, pole order, or RLCT.

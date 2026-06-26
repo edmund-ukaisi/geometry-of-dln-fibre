@@ -5707,3 +5707,19 @@ the already banked continuity of `F2full`, `C`, `solvedA1`, and `solvedA3`.
 Do not assert image openness, source-rank coverage, source/image equality,
 measure transport, density/Jacobian accounting, normal crossings, pole order,
 or RLCT.
+
+The retained-passive `edgeMatrix` continuity layer is now landed/in progress
+in `RetainedPassiveCoordinatesTopology.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-matrix-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-matrix-continuity.md`.
+It proves per-edge continuity of `data.1.edgeMatrix p` on the determinant-chart
+subtype and the Pi-family continuity of `data.1.edgeMatrix`.
+
+Next retained-passive target after review/banking: move to a source-image or
+source-side readback layer only if the needed predicate and hypotheses are
+explicit.  A `ContinuousOn` wrapper for `detChartSet` is acceptable if a
+downstream statement consumes exactly that form, but do not promote the
+continuous injective source map to image openness, source-rank coverage,
+source/image equality, local homeomorphism, measure transport,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.

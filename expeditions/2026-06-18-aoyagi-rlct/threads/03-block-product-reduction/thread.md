@@ -8142,3 +8142,34 @@ density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
 Xhigh reviewer `Sartre the 3rd` passed the Lean statements, inverse-continuity
 usage, typeclass assumptions, documentation boundary, focused build, and diff
 hygiene.
+
+## 2026-06-26 A2 retained-passive edge-matrix continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-edge-matrix-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-edge-matrix-continuity.md`.
+Review:
+`review-a2-retained-passive-edge-matrix-continuity.md`.
+
+Lean now proves:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_edgeMatrix_detChart_subtype_apply
+RetainedPassiveNonredundantCoordinateData.continuous_edgeMatrix_detChart_subtype
+```
+
+The per-edge theorem unfolds the retained-passive source edge into the
+fixed-base block formula and composes continuity of `solvedA1`, `solvedA3`,
+`F2full`, and `C` with block-matrix operations.  The two `F2` roles remain
+separate: `p.castSucc` is used inside the transformed edge and `p.succ` in
+the left upper-unitriangular fixed-base multiplier.  The family theorem is the
+Pi-topology wrapper.
+
+This is source-map continuity on `{data // data.detChart}` only.  It does not
+prove image openness, source-rank coverage, source/image theorem, local
+homeomorphism, measure pushforward, density/Jacobian theorem, normal
+crossings, pole order, or RLCT.
+
+Xhigh reviewer `Galileo the 3rd` passed the Lean statements, formula indices,
+final unfolding step, documentation boundary, focused build, and diff hygiene.
