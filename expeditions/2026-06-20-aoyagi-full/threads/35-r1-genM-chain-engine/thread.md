@@ -210,9 +210,35 @@ After the cost-reversal (thread 36, Phase A `schurFrame_abs_det` banked + gated)
   multi-pass design/build, not bounded. Codex re-scope: bank the B2 bricks (DONE) + A3 `lduCore_abs_det`
   (parallel) FIRST, then the prefix-fold scaffold, THEN `phiFlat_abs_det` as the final theorem.
 
+## B3 — the prefix-fold scaffold LANDED; `phiFlat_abs_det` residual = the opaque-width chart reconciliation
+
+- **B3 scaffold LANDED** (`RouteMChartFactorFold.lean`, sorry-free, force-elaborated `#print axioms` =
+  `[propext, Classical.choice, Quot.sound]`): the reusable prefix-aware composition spine.
+  `ChartFactor N` (full-ambient self-map + per-point fderiv CLM + `HasFDerivAt`), `composeFold` (`foldr ∘`),
+  `composeFold_hasFDerivAt` (the chain rule folded, with the prefix-evaluation — factor `i`'s deriv at
+  `composeFold (tail) u`, the `Frame3333Deriv (Kparam3333 u)` pattern), `composeFold_abs_det` (the telescope
+  via the banked `general_composed_clm_abs_det`). The det algebra is now fully assembled into one spine.
+
+- **`phiFlat_abs_det` residual — the opaque-width CHART RECONCILIATION** (decorrelated Codex xhigh confirmed,
+  `threads/36-…/codex/b3-{prompt,answer}`; the true bottleneck). The block-triangular-DIRECT route is NOT a
+  shortcut (same opaque-width `chainA`/frame reconciliation, "probably worse"). The four residual pieces:
+  1. **A determinant-ready bijective flat coordinatization** — the current `genBlkFlat`'s modular `flatIdxOf`
+     is rate-side scaffolding, NOT a `Fin N ≃ Σ (boundary, role)` packing/splitting (a `paramsEquivFlat`/`pack`
+     generalized to split each layer into its Schur/LDU/chain/radial sub-blocks).
+  2. **Full-ambient conjugates** of the Phase-A factors (`schurFrameDeriv` on `SchurInc t r c`, `lduCoreDeriv`
+     on `LDUParam t`, `chainUnitMap`, the radial) into `(Fin N → ℝ) →L (Fin N → ℝ)` CLMs via (1), feeding
+     `ChartFactor`/`composeFold` (det conjugation-invariant, so the Phase-A values survive).
+  3. **The chart/derivative equality** `D(chartParamsGen ∘ genBlkFlat) = composeFold (factors)` over OPAQUE
+     `Wext`/`Text` widths — the `chainA`-vs-frame reconciliation (the B2 entry-laws `chainA/Q_apply_*` are the
+     per-entry bricks, but the global map/deriv equality is the multi-pass part). **The TRUE bottleneck.**
+  4. **Exponent bookkeeping** into `∏_j |u_j|^{leafH j}` (the `leafH3333_prod_eq` pattern at opaque widths).
+  Pieces (1)+(2)+(3) are a genuine multi-pass build over opaque widths; the det ALGEBRA (Phase A + the B3
+  scaffold + the B2 bricks) is DONE — what remains is the coordinatization + the chart reconciliation.
+
 ## Files (worktree branch)
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFactor.lean`, `RouteMFactoredChain.lean`,
 `RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
 `RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`,
 `RouteMGenLeafIntegrand.lean`, `RouteMFlatChartProbe3333.lean`, `RouteMGenFlatChart.lean` (B1),
-`RouteMGenChainBridge.lean` (B2 bricks). NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+`RouteMGenChainBridge.lean` (B2 bricks), `RouteMChartFactorFold.lean` (B3 scaffold). NOT yet in the
+`DLNFibre.lean` aggregator (controller wires).
