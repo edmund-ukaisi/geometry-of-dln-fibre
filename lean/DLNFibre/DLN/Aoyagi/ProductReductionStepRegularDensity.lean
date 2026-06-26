@@ -1,4 +1,4 @@
-import DLNFibre.DLN.Aoyagi.ProductReductionStepMeasure
+import DLNFibre.DLN.Aoyagi.ProductReductionStepSuffixDensity
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 
 /-!
@@ -157,6 +157,56 @@ def paperEndpointFixedBaseP13RawPreimageTuple
             (Ctop,
               (-(Ctop * F2),
                 ((0 : Matrix (κ p0.succ) ρ ℝ), C0))))))
+
+set_option linter.unusedSectionVars false in
+/-- The source-dependent multi-edge p. 13 product-coordinate matrix family used
+for the left-endpoint raw product-step handoff.
+
+This wraps the existing multi-edge product-coordinate matrix constructor around
+the fixed-base edge matrices determined by `CedgeBase`. -/
+def paperEndpointFixedBaseP13ProductCoordinateMatrixFamily
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ) :
+    α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)) →
+      ∀ p : Fin (M + 2), Matrix
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ :=
+  fun xu ↦ by
+    classical
+    let Ebase : ∀ p : Fin (M + 2), Matrix
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+        (Fin (Module.finrank ℝ U₀) ⊕
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+        (fun p ↦
+          (CedgeBase xu.1 p :
+            reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+    exact
+      paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+        V Bv U₀ xu.2 Ebase
 
 set_option linter.unusedSectionVars false in
 /-- The p. 13 raw-shaped target tuple lies in the target determinant chart
@@ -477,6 +527,291 @@ theorem productReductionStepTopologyTupleToChartRawOrder_paperEndpointFixedBaseP
       rw [Matrix.mul_zero, Matrix.zero_mul]
     · change C0 - (0 : Matrix (κ p0.succ) ρ ℝ) * Ctop⁻¹ * (-(Ctop * F2)) = C0
       rw [Matrix.zero_mul, Matrix.zero_mul, sub_zero]
+
+set_option linter.unusedSectionVars false in
+/-- The left-endpoint raw suffix-step coordinates of the constructed multi-edge
+p. 13 product-coordinate matrix family are exactly the explicit p. 13 raw
+preimage tuple. -/
+theorem p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    let G :=
+      paperEndpointFixedBaseP13ProductCoordinateMatrixFamily
+        V Bv U₀ hU₀ CedgeBase xu
+    let p0 : Fin (M + 2) := 0
+    let j : Fin (M + 3) := Fin.last (M + 2)
+    let F3 : Matrix
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ j)
+        (Fin (Module.finrank ℝ U₀)) ℝ :=
+      AoyagiRegularBlockCoordinateIndex.f3Matrix
+        (fun c : AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ j)
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+    (ChartLocalSuffixState.stepRawCoordinates G p0
+        (ChartLocalSuffixState.suffixState G j p0.succ p0.succ.le_last) F3).topologyTuple =
+      paperEndpointFixedBaseP13RawPreimageTuple
+        V Bv U₀ hU₀ CedgeBase xu := by
+  classical
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ :=
+    fun j ↦ throughSubspaceEndpointComplementIndex
+      (reverseVertex V) (reverseEdge V Bv) U₀ j
+  let Coord := AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+  let Ebase : ∀ p : Fin (M + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+      (fun p ↦
+        (CedgeBase xu.1 p :
+          reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+  let G : ∀ p : Fin (M + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
+      V Bv U₀ xu.2 Ebase
+  let F2 :=
+    AoyagiRegularBlockCoordinateIndex.f2Matrix
+      (fun c : AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+  let F3 :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c : AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+  let Ctop :=
+    AoyagiRegularBlockCoordinateIndex.ctopMatrix
+      (fun c : AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+  let p0 : Fin (M + 2) := 0
+  let j : Fin (M + 3) := Fin.last (M + 2)
+  let C : ∀ p : Fin (M + 2), Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ p.succ)
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ p.castSucc) ℝ :=
+    fun p ↦ ChartLocalSuffixState.residualBlock Ebase
+      (Fin.last (M + 2)) p p.succ.le_last
+  let S := ChartLocalSuffixState.suffixState G j p0.succ p0.succ.le_last
+  have hLastG :
+      G (Fin.last (M + 1)) =
+        ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3
+          (C (Fin.last (M + 1))) := by
+    simp [G, F3, C, Ebase,
+      paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
+  have hMidG :
+      ∀ p : Fin (M + 2), 0 < p.val → p.val < M + 1 →
+        G p =
+          ChartLocalSuffixState.productCoordinateMiddleMatrix
+            (ρ := ρ) (C p) := by
+    intro p hp0 hplast
+    have hnotLast : p ≠ Fin.last (M + 1) := by
+      intro hp
+      have hval : p.val = M + 1 := by
+        simp [hp]
+      omega
+    have hnotZero : p ≠ 0 := by
+      intro hp
+      have hval : p.val = 0 := by
+        simp [hp]
+      omega
+    simp [G, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean,
+      hnotLast, hnotZero]
+  have hLeftG :
+      G p0 =
+        ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+    have hnotLast : p0 ≠ Fin.last (M + 1) := by
+      intro h
+      have hval := congrArg Fin.val h
+      simp [p0] at hval
+    simp [G, F2, Ctop, C, p0,
+      paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean, hnotLast]
+  have hp0_succ : p0.succ = (⟨1, by omega⟩ : Fin (M + 3)) := by
+    ext
+    simp [p0]
+  have htail :
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          Matrix.fromBlocks (1 : Matrix ρ ρ ℝ) 0 F3
+            (1 : Matrix (κ j) (κ j) ℝ) := by
+    have htail' :
+        let one : Fin (M + 3) := ⟨1, by omega⟩
+        let Sone := ChartLocalSuffixState.suffixState G j one one.le_last
+        Sone.B = 0 ∧ Sone.Ctop = 1 ∧
+          Sone.L =
+            Matrix.fromBlocks (1 : Matrix ρ ρ ℝ) 0 F3
+              (1 : Matrix (κ j) (κ j) ℝ) := by
+      simpa [j] using
+        ChartLocalSuffixState.suffixState_tail_fields_of_productCoordinateEdges
+          (K := ℝ) G F3 C hLastG hMidG
+    cases hp0_succ
+    simpa [S, p0, j] using htail'
+  have hblocks_last :
+      ∀ p : Fin (M + 2),
+        ChartLocalSuffixState.residualBlock G j p p.succ.le_last =
+          ChartLocalSuffixState.residualBlock Ebase j p p.succ.le_last := by
+    intro p
+    simpa [C, j] using
+      ChartLocalSuffixState.residualBlock_productCoordinateEdges_succSucc
+        (K := ℝ) G F2 F3 Ctop C hLastG hMidG hLeftG p
+  have hblocks :
+      ∀ (p : Fin (M + 2)) (hpj : p.succ ≤ j),
+        ChartLocalSuffixState.residualBlock G j p hpj =
+          ChartLocalSuffixState.residualBlock Ebase j p hpj := by
+    intro p hpj
+    have hhp : hpj = p.succ.le_last := Subsingleton.elim _ _
+    cases hhp
+    exact hblocks_last p
+  have hDtail :
+      S.D =
+        ChartLocalSuffixState.residualProduct Ebase j p0.succ p0.succ.le_last := by
+    have hDG :
+        S.D = ChartLocalSuffixState.residualProduct G j p0.succ p0.succ.le_last := by
+      simpa [S, G, j, p0] using
+        ChartLocalSuffixState.suffixState_D_eq_residualProduct
+          (K := ℝ) G p0.succ.le_last
+    have hprod :
+        ChartLocalSuffixState.residualProduct G j p0.succ p0.succ.le_last =
+          ChartLocalSuffixState.residualProduct Ebase j p0.succ p0.succ.le_last := by
+      simpa [G, Ebase, j, p0] using
+        ChartLocalSuffixState.residualProduct_eq_of_residualBlock_eq
+          (K := ℝ) G Ebase p0.succ.le_last hblocks
+    exact hDG.trans hprod
+  have hM :
+      ChartLocalSuffixState.transformedEdge G p0 S =
+        Matrix.fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ ℝ) (C p0) := by
+    have hB0 : S.B = 0 := htail.1
+    dsimp [ChartLocalSuffixState.transformedEdge]
+    rw [hB0, hLeftG]
+    dsimp [ChartLocalSuffixState.productCoordinateLeftEndpointMatrix]
+    rw [Matrix.fromBlocks_one]
+    exact Matrix.one_mul _
+  change
+    (ChartLocalSuffixState.stepRawCoordinates G p0 S F3).topologyTuple =
+      paperEndpointFixedBaseP13RawPreimageTuple
+        V Bv U₀ hU₀ CedgeBase xu
+  simp [ChartLocalSuffixState.stepRawCoordinates,
+    ProductReductionStepRawCoordinates.topologyTuple,
+    paperEndpointFixedBaseP13RawPreimageTuple,
+    htail.2.1, hDtail, hM, topLeftCorner_fromBlocks,
+    upperRightBlock_fromBlocks, lowerLeftBlock_fromBlocks,
+    lowerRightBlock_fromBlocks, Ebase, G, F2, F3, Ctop, C, p0, j, ρ, κ]
+
+set_option linter.unusedSectionVars false in
+/-- The constructed multi-edge p. 13 product-coordinate matrix family's
+left-step target tuple is the explicit p. 13 raw-shaped target tuple. -/
+theorem p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix
+          (fun c : AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det) :
+    let G :=
+      paperEndpointFixedBaseP13ProductCoordinateMatrixFamily
+        V Bv U₀ hU₀ CedgeBase xu
+    let p0 : Fin (M + 2) := 0
+    let j : Fin (M + 3) := Fin.last (M + 2)
+    let F3 : Matrix
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ j)
+        (Fin (Module.finrank ℝ U₀)) ℝ :=
+      AoyagiRegularBlockCoordinateIndex.f3Matrix
+        (fun c : AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ j)
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+    chartLocalSuffixStateStepRawOrderTargetTuple G p0
+        (ChartLocalSuffixState.suffixState G j p0.succ p0.succ.le_last) F3 =
+      paperEndpointFixedBaseP13RawOrderTuple
+        V Bv U₀ hU₀ CedgeBase xu := by
+  classical
+  let G :=
+    paperEndpointFixedBaseP13ProductCoordinateMatrixFamily
+      V Bv U₀ hU₀ CedgeBase xu
+  let p0 : Fin (M + 2) := 0
+  let j : Fin (M + 3) := Fin.last (M + 2)
+  let F3 : Matrix
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ j)
+      (Fin (Module.finrank ℝ U₀)) ℝ :=
+    AoyagiRegularBlockCoordinateIndex.f3Matrix
+      (fun c : AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ j)
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)
+  have hraw :
+      (ChartLocalSuffixState.stepRawCoordinates G p0
+        (ChartLocalSuffixState.suffixState G j p0.succ p0.succ.le_last) F3).topologyTuple =
+      paperEndpointFixedBaseP13RawPreimageTuple
+        V Bv U₀ hU₀ CedgeBase xu := by
+    simpa [G, p0, j, F3] using
+      p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) xu
+  change productReductionStepTopologyTupleToChartRawOrder
+      ((ChartLocalSuffixState.stepRawCoordinates G p0
+        (ChartLocalSuffixState.suffixState G j p0.succ p0.succ.le_last) F3).topologyTuple) =
+      paperEndpointFixedBaseP13RawOrderTuple
+        V Bv U₀ hU₀ CedgeBase xu
+  rw [hraw]
+  exact
+    productReductionStepTopologyTupleToChartRawOrder_paperEndpointFixedBaseP13RawPreimageTuple
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (xu := xu) hCtop
 
 set_option linter.unusedSectionVars false in
 /-- The p. 13 raw-shaped target tuple is continuous at a self-base point. -/

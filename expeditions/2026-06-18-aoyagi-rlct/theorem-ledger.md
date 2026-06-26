@@ -9026,3 +9026,24 @@ review passed at
 This is raw product-chart algebra only: no source coverage, original p.13
 source-chart construction, source/prior transport, signed-box density,
 product-measure pushforward, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 product-coordinate left-step raw preimage:
+`ProductReductionStepRegularDensity.lean` now proves that the actual
+left-endpoint suffix-step coordinates of the constructed p.13 multi-edge
+product-coordinate family are the explicit raw preimage tuple.  Lean names:
+`paperEndpointFixedBaseP13ProductCoordinateMatrixFamily`,
+`p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple`, and
+`p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple`.  The raw
+suffix-step tuple is `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, and under
+`IsUnit det(Ctop)` the raw-order target tuple is
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)`.
+Reproduction and statement card are at
+`threads/03-block-product-reduction/reproduction-a2-p13-product-coordinate-left-step-raw-preimage.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-product-coordinate-left-step-raw-preimage.md`;
+review passed after low-severity naming and stale-note repairs at
+`threads/03-block-product-reduction/review-a2-p13-product-coordinate-left-step-raw-preimage.md`.
+This is pointwise product-coordinate algebra only: no source coverage,
+original p.13 source-chart construction, source/prior transport, signed-box
+density, product-measure pushforward, regular-suspension certification,
+normal crossings, pole order, or RLCT.

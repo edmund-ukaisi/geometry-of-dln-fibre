@@ -5105,3 +5105,19 @@ a carefully conditional source-measure consumer with the raw preimage
 pushforward as an explicit hypothesis.  Do not infer source coverage,
 original DLN source/prior transport, signed-box density identification,
 product-measure pushforward, normal crossings, pole order, or RLCT.
+
+A2 p.13 product-coordinate left-step raw preimage bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-product-coordinate-left-step-raw-preimage.md`.
+Lean identifies the actual left-endpoint suffix-step raw coordinates of the
+constructed multi-edge product-coordinate matrix family with the explicit raw
+preimage tuple `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, then derives the raw-order
+target tuple `(Ctop,Dtail,F3,Ctop,F2,0,C0)` using the existing raw preimage
+map theorem.  This closes the pointwise bridge from the constructed p.13
+matrix family to the raw product-step density infrastructure.  The next
+high-value
+A2 work should consume the raw pushforward through an explicitly supplied
+source/product-chart measure hypothesis or identify a genuine p.13
+source-chart/density transport obligation.  Do not infer source coverage,
+original DLN source/prior transport, signed-box density identification,
+product-measure pushforward, regular-suspension certification, normal
+crossings, pole order, or RLCT.

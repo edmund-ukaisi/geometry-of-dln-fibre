@@ -11736,3 +11736,43 @@ consume the raw inverse-density pushforward.  It does not construct the
 original p.13 source chart, prove source coverage, prove source/prior
 transport, identify signed-box density, prove product-measure pushforward,
 produce normal crossings, compute pole order, or prove RLCT.
+
+## Latest A2 p.13 Product-Coordinate Left-Step Raw Preimage
+
+`ProductReductionStepRegularDensity.lean` now defines
+`paperEndpointFixedBaseP13ProductCoordinateMatrixFamily`, the source-dependent
+multi-edge product-coordinate family built from the fixed-base edge matrices
+and the p.13 regular coordinates.
+
+Lean proves:
+
+```text
+p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
+```
+
+The first theorem says the actual left-endpoint
+`ChartLocalSuffixState.stepRawCoordinates` tuple for this constructed family
+is exactly
+
+```text
+(I, Dtail(x), F3(u), Ctop(u), -Ctop(u)*F2(u), 0, C0(x)).
+```
+
+The proof uses the product-coordinate tail-state lemmas
+`S.B = 0`, `S.Ctop = I`, `S.L = [I,0;F3,I]`, proves
+`S.D = Dtail(x)` by transferring residual products back to the fixed-base
+family, and reads the left endpoint transformed edge as
+`[Ctop,-Ctop*F2;0,C0]`.  The second theorem rewrites through the raw preimage
+map theorem to get
+
+```text
+(Ctop(u), Dtail(x), F3(u), Ctop(u), F2(u), 0, C0(x)).
+```
+
+This closes the pointwise bridge from the constructed p.13 product-coordinate
+matrix family to the raw product-step density infrastructure.  It still does
+not construct the original p.13 source chart, prove source coverage,
+transport source/prior measure, identify signed-box density, prove a
+product-measure pushforward, produce a regular-suspension certificate, produce
+normal crossings, compute pole order, or prove RLCT.

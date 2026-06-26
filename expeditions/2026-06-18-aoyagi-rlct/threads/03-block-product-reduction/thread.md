@@ -6752,3 +6752,49 @@ invert `Dtail`, prove source coverage, construct the p.13 source chart from
 original DLN coordinates, transport the original source/prior measure, identify
 signed-box density, prove product-measure pushforward, produce normal
 crossings, compute pole order, or extract RLCT.
+
+## 2026-06-26 A2 p.13 product-coordinate left-step raw preimage
+
+Reproduction:
+`reproduction-a2-p13-product-coordinate-left-step-raw-preimage.md`.
+Statement card:
+`statement-card-a2-p13-product-coordinate-left-step-raw-preimage.md`.
+Review:
+`review-a2-p13-product-coordinate-left-step-raw-preimage.md`.
+
+Lean now connects the explicit p.13 raw preimage tuple to the actual
+constructed multi-edge product-coordinate matrix family.  It defines
+
+```text
+paperEndpointFixedBaseP13ProductCoordinateMatrixFamily
+```
+
+and proves:
+
+```text
+p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
+```
+
+The first theorem identifies the left-endpoint
+`ChartLocalSuffixState.stepRawCoordinates` topology tuple with
+
+```text
+(I,Dtail,F3,Ctop,-Ctop*F2,0,C0).
+```
+
+The proof uses the existing product-coordinate tail-state fields
+`S.B = 0`, `S.Ctop = I`, `S.L = [I,0;F3,I]`, transfers the tail residual
+product back to the fixed-base family, and reads the left endpoint edge as
+`[Ctop,-Ctop*F2;0,C0]`.  The second theorem applies the already-proved raw
+product-step preimage theorem to obtain the target tuple
+`(Ctop,Dtail,F3,Ctop,F2,0,C0)` under `IsUnit det(Ctop)`.
+
+Xhigh review passed after renaming the matrix constructor away from
+`EdgeFamily` wording and updating stale pre-implementation wording in the
+reproduction note.
+
+This is still pointwise finite product-coordinate algebra.  It does not prove
+source coverage, original DLN source/prior transport, signed-box density
+identification, product-measure pushforward, regular-suspension certification,
+normal crossings, pole order, or RLCT.
