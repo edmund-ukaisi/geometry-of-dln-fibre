@@ -3118,15 +3118,67 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       · exact (Finset.measurable_sum _ (fun i _ =>
           ((measurable_pi_apply i).comp
             (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
-      · -- **MEASURABILITY of `Score` (isolated mechanical residual).** `Score w = frobSq(Schur(Mw w))`,
-        -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_prod_symm`
-        -- + matrix mul/sub/reindex/toBlocks continuous). The only non-continuous piece is `(Mw₁₁+1)⁻¹`,
-        -- but it is MEASURABLE: `inv_def` gives `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with
-        -- `Continuous.matrix_det`/`Continuous.matrix_adjugate` (continuous) and `Ring.inverse : ℝ → ℝ`
-        -- measurable. So each entry of `Score` is measurable (sum/product/`⁻¹` of measurable), and `frobSq`
-        -- (finite ∑∑ of squares) is measurable. Mechanical Mathlib measurability plumbing (entrywise
-        -- `nonsing_inv` measurability — no off-the-shelf `Measurable (·⁻¹ : Matrix → Matrix)` at v4.29).
-        sorry
+      · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
+        -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
+        -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
+        -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
+        -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
+        -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
+        set Mw : (Fin (flatDim H) → ℝ) →
+            Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
+          fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B) * endpointQL H hL Qf)
+          with hMw_def
+        have hMw_cont : Continuous Mw :=
+          continuous_Mw H r B (endpointP0 H hL Pf) (endpointQL H hL Qf)
+            (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        -- entrywise measurability bricks (all from `continuous_Mw` + `inv_def`).
+        have hElem : ∀ p q, Measurable (fun w => (Mw w) p q) :=
+          fun p q => (hMw_cont.matrix_elem p q).measurable
+        have hb22 : ∀ (i : Fin (H 0 - r)) (j : Fin (H (Fin.last L) - r)),
+            Measurable (fun w => (Mw w).toBlocks₂₂ i j) := by
+          intro i j; simpa [Matrix.toBlocks₂₂] using hElem (Sum.inr i) (Sum.inr j)
+        have hb21 : ∀ (i : Fin (H 0 - r)) (k : Fin r),
+            Measurable (fun w => (Mw w).toBlocks₂₁ i k) := by
+          intro i k; simpa [Matrix.toBlocks₂₁] using hElem (Sum.inr i) (Sum.inl k)
+        have hb12 : ∀ (l : Fin r) (j : Fin (H (Fin.last L) - r)),
+            Measurable (fun w => (Mw w).toBlocks₁₂ l j) := by
+          intro l j; simpa [Matrix.toBlocks₁₂] using hElem (Sum.inl l) (Sum.inr j)
+        have hb11cont : Continuous (fun w => (Mw w).toBlocks₁₁ + 1) := by
+          apply Continuous.add _ continuous_const
+          exact continuous_matrix fun p q => hMw_cont.matrix_elem (Sum.inl p) (Sum.inl q)
+        have hInv : ∀ (k l : Fin r), Measurable (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l) := by
+          intro k l
+          have h2 : (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l)
+              = fun w => Ring.inverse ((Mw w).toBlocks₁₁ + 1).det
+                  * ((Mw w).toBlocks₁₁ + 1).adjugate k l := by
+            funext w; rw [Matrix.inv_def]; simp [Matrix.smul_apply, smul_eq_mul]
+          rw [h2]
+          refine Measurable.mul ?_ (hb11cont.matrix_adjugate.matrix_elem k l).measurable
+          have hri : Measurable (Ring.inverse : ℝ → ℝ) := by
+            rw [Ring.inverse_eq_inv']; exact measurable_inv
+          exact hri.comp hb11cont.matrix_det.measurable
+        -- assemble: ∑ i ∑ j (Schur-leak entry)².
+        change Measurable fun w => ∑ i, ∑ j,
+          ((Mw w).toBlocks₂₂ - (Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+            * (Mw w).toBlocks₁₂) i j ^ 2
+        refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+        refine Measurable.pow_const ?_ _
+        simp only [Matrix.sub_apply]
+        refine Measurable.sub (hb22 i j) ?_
+        have hentry : (fun w => ((Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+              * (Mw w).toBlocks₁₂) i j)
+            = fun w => ∑ k, ∑ l, (Mw w).toBlocks₂₁ i k * ((Mw w).toBlocks₁₁ + 1)⁻¹ k l
+                * (Mw w).toBlocks₁₂ l j := by
+          funext w
+          rw [Matrix.mul_apply]
+          simp_rw [Matrix.mul_apply, Finset.sum_mul]
+          rw [Finset.sum_comm]
+        rw [hentry]
+        refine Finset.measurable_sum _ (fun k _ => Finset.measurable_sum _ (fun l _ => ?_))
+        exact ((hb21 i k).mul (hInv k l)).mul (hb12 l j)
     · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
       simpa only [hΦscore] using hsq w hw
   -- **Step 2: the diffeo bridge** `rlctAtOn Φscore wstar = rlctAtOn Φcore wstar` via `Ψ : S1 ↦ (I−K)·S1`
