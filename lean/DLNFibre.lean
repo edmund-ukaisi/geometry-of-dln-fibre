@@ -325,5 +325,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
 -- (`listProd_clm_abs_det` / `general_composed_clm_abs_det`) the general `φ_M` det rests on. The
 -- promoted, committed form of the banked feasibility spike (`Spike/GeneralComposedDet`); S2-free.
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
+-- General-M achiever chart-identity engine: the abstract chained-product telescope
+-- (`Chain.chain_telescope`: per-level `C_s·A_s = B_s·C_{s+1} + u·E_s` + `C_n = u·R` ⟹
+-- `C_s·suffix_s = u·Hmat_s`). The reusable algebraic heart of `prod M (φ_M u) = u·H`; S2-free.
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
