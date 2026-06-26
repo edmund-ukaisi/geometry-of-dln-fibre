@@ -17,7 +17,7 @@ pole order, or extract an RLCT.
 noncomputable section
 
 open MeasureTheory
-open scoped ENNReal Matrix.Norms.Operator
+open scoped ENNReal Matrix.Norms.Operator Topology
 
 namespace DLNFibre
 namespace DLN
@@ -142,6 +142,56 @@ def productReductionStepRawOrderJacobianAbsDet
     (z : ProductReductionStepRawTopologyTuple ρ π μ ν) : ℝ :=
   |(productReductionStepRawOrderJacobianCLM
     (ρ := ρ) (π := π) (μ := μ) (ν := ν) z).det|
+
+/-- The determinant of the raw-order product-step derivative family is a unit
+on the determinant chart. -/
+theorem productReductionStepRawOrderJacobianCLM_det_isUnit
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz : z ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    IsUnit
+      ((productReductionStepRawOrderJacobianCLM
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z).det) := by
+  let x : ProductReductionStepRawCoordinates ρ π μ ν ℝ :=
+    productReductionStepRawCoordinatesOfTopologyTuple z
+  have hx : x.detChart := by
+    simpa [x, productReductionStepRawDetChartSet] using hz
+  simpa [productReductionStepRawOrderJacobianCLM, x] using
+    (productReductionStepFormalJacobianRawOrder_det_isUnit
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x hx.1 hx.2)
+
+/-- The absolute determinant density of the raw-order product-step derivative
+is positive on the determinant chart. -/
+theorem productReductionStepRawOrderJacobianAbsDet_pos
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz : z ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    0 < productReductionStepRawOrderJacobianAbsDet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z := by
+  have hunit :=
+    productReductionStepRawOrderJacobianCLM_det_isUnit
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz
+  rw [productReductionStepRawOrderJacobianAbsDet]
+  exact abs_pos.mpr (isUnit_iff_ne_zero.mp hunit)
+
+/-- Near any determinant-chart point, the absolute determinant density of the
+raw-order product-step derivative is positive. -/
+theorem eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ∀ᶠ z in 𝓝 z₀,
+      0 < productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z := by
+  filter_upwards [
+    (isOpen_productReductionStepRawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)).mem_nhds hz₀] with z hz
+  exact
+    productReductionStepRawOrderJacobianAbsDet_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz
 
 /-- The raw-order p. 13 product-step map preserves the determinant chart. -/
 theorem mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart

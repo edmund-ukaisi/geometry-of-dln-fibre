@@ -11483,3 +11483,24 @@ the target image rewritten by this equality. It remains weighted additive-Haar
 transport in local product-step coordinates. It is not original DLN
 source/prior transport, not source coverage, not normal crossings, and not
 RLCT.
+
+## Latest A2 Product-Step Jacobian Density Positivity
+
+The pointwise unit/positivity bridge for the raw-order product-step Jacobian
+density has landed in `ProductReductionStepMeasure.lean`. Lean proves:
+
+```text
+productReductionStepRawOrderJacobianCLM_det_isUnit
+productReductionStepRawOrderJacobianAbsDet_pos
+eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds
+```
+
+The determinant-unit statement unfolds the continuous-linear Jacobian family
+and applies `productReductionStepFormalJacobianRawOrder_det_isUnit`. The
+absolute determinant density is then strictly positive on the determinant
+chart. Openness of the determinant chart gives eventual positivity in the
+neighborhood filter of any chart point.
+
+This is not yet the bounded-density/unit theorem needed for local
+integrability handoffs: no continuity, upper bound, source/prior comparison,
+source coverage, normal crossings, pole order, or RLCT is claimed.

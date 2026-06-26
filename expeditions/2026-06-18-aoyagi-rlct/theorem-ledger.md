@@ -8853,6 +8853,21 @@ weighted Haar target rewrite. It does not transport the original DLN
 source/prior measure, prove source coverage, construct normal crossings,
 compute pole order, or extract an RLCT.
 
+Latest A2 product-step Jacobian density positivity:
+`ProductReductionStepMeasure.lean` now proves the determinant unitness and
+strict positivity of the raw-order product-step Jacobian density on the raw
+determinant chart. Lean names:
+`productReductionStepRawOrderJacobianCLM_det_isUnit`,
+`productReductionStepRawOrderJacobianAbsDet_pos`, and
+`eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-jacobian-density-pos.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-jacobian-density-pos.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-jacobian-density-pos.md`.
+This does not prove density continuity, local boundedness above, source/prior
+measure comparison, source coverage, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

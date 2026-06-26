@@ -6463,3 +6463,29 @@ This is still weighted additive-Haar transport in p. 13 coordinates. It does
 not identify the original DLN source/prior measure, remove the Jacobian
 density, prove source coverage, construct normal crossings, compute pole
 order, or extract an RLCT.
+
+## 2026-06-26 A2 product-step Jacobian density positivity
+
+Reproduction:
+`reproduction-a2-product-step-jacobian-density-pos.md`.
+Statement card:
+`statement-card-a2-product-step-jacobian-density-pos.md`.
+Review:
+`review-a2-product-step-jacobian-density-pos.md`.
+
+Lean now proves:
+
+```text
+productReductionStepRawOrderJacobianCLM_det_isUnit
+productReductionStepRawOrderJacobianAbsDet_pos
+eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds
+```
+
+The proof transfers the formal raw-order determinant-unit theorem to the
+continuous-linear derivative family used by the weighted Haar theorem, then
+uses absolute-value positivity. Since the raw determinant chart is open, this
+positivity also holds eventually near any determinant-chart point.
+
+This is not a continuity theorem, not an upper-bound theorem, not original
+DLN source/prior transport, not source coverage, not normal crossings, not
+pole order, and not RLCT.

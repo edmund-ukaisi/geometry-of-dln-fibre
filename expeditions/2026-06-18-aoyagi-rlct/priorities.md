@@ -5003,3 +5003,14 @@ prior-density/unit comparison in these coordinates, finite source-chart
 coverage, or regular-suspension input for the eventual normal-crossing
 certificate. Do not infer original source-measure transport, source coverage,
 normal crossings, pole order, or RLCT from this image theorem.
+
+A2 product-step Jacobian density positivity has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-jacobian-density-pos.md`.
+Lean proves `productReductionStepRawOrderJacobianCLM_det_isUnit`,
+`productReductionStepRawOrderJacobianAbsDet_pos`, and
+`eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds`. This is a
+small bridge from the formal Jacobian-unit theorem to the actual density used
+in the weighted Haar theorem. The next density priority is the harder one:
+continuity/local boundedness or a two-sided local unit estimate if it can be
+proved cleanly. Do not infer original source/prior transport, source
+coverage, normal crossings, pole order, or RLCT.
