@@ -9239,3 +9239,33 @@ This closes the lower-left solved-family differentiability component.  It does
 not prove full raw-order differentiability, a tangent equivalence, determinant
 formula, Jacobian density, measure pushforward, image equality, source-rank
 coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive raw-order differentiability
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-differentiability.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-differentiability.md`.
+Review:
+`review-a2-retained-passive-raw-order-differentiability.md`
+passed by xhigh read-only explorer `Carver the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now proves:
+
+```text
+differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+```
+
+The proof assembles the six landed raw-order component formulas from
+`RetainedPassiveCoordinatesTopology.lean`, using solved-`A1` and solved-`A3`
+differentiability, tuple projection differentiability for `F2full` and `C`,
+and `differentiableAt_matrix_mul` for all rectangular products.
+
+This closes the differentiability-only layer for the retained-passive
+raw-order target-coordinate endomap.  It does not identify the derivative,
+prove a tangent equivalence, determinant unit/formula, Jacobian density,
+measure pushforward, image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.

@@ -13324,3 +13324,15 @@ raw-order differentiability, a formal tangent equivalence, determinant formula,
 density, measure pushforward, normal crossings, pole order, or RLCT.  Next
 target: assemble `DifferentiableAt topologyTupleEdgeRawOrder` from the landed
 component formulas.
+
+Latest retained-passive raw-order differentiability foothold:
+`RetainedPassiveCoordinatesDerivative.lean` now proves
+`differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet`.
+The proof is a componentwise assembly of the landed raw-order block formulas,
+using solved-`A1`, solved-`A3`, `F2full`, `C`, and heterogeneous matrix-product
+differentiability.  This closes the differentiability-only stage for the
+retained-passive target-coordinate endomap.  It still does not prove a formal
+derivative formula, tangent equivalence, determinant unit/formula, density,
+measure pushforward, normal crossings, pole order, or RLCT.  Next target:
+construct the formal tangent map/equivalence and prove determinant unitness
+before any positive Jacobian density or pushforward theorem.

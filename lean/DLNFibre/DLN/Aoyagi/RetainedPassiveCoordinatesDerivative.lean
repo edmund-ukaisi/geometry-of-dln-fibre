@@ -4,10 +4,11 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 /-!
 # Derivative footholds for retained-passive raw-order coordinates
 
-This file begins the analytic derivative layer for the retained-passive
-raw-order tuple endomap.  The first checkpoint records differentiability of
-the endpoint-solved top-left family; later checkpoints will extend this to the
-lower-left endpoint solve and the full raw-order map.
+This file contains the first analytic derivative layer for the
+retained-passive raw-order tuple endomap.  It proves differentiability of the
+endpoint-solved top-left and lower-left families and assembles these component
+facts into differentiability of the full raw-order map on the tuple
+determinant chart.
 
 These are local coordinate differentiability facts.  They do not prove a
 Jacobian determinant formula, measure pushforward, normal crossings, pole
@@ -760,6 +761,134 @@ theorem differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
             (Fin.castSucc_ne_last p)
       rw [hfun]
       exact hseed
+
+/-- On the tuple determinant chart, the retained-passive edge tuple read in
+raw block order is differentiable as an ambient tuple-coordinate map.
+
+This is only the differentiability assembly for the already-expanded raw-order
+components.  It does not state a Jacobian determinant formula, a measure
+pushforward, normal crossings, pole order, or an RLCT extraction. -/
+theorem differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' ℝ)
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    DifferentiableAt ℝ
+      (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hA1passive :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).1) z := by
+    rw [differentiableAt_pi]
+    intro p
+    have hA1 :=
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.succ z hz
+    have hF2 :=
+      differentiableAt_F2full
+        (ρ := ρ) (κ' := κ') p.succ.succ z
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.succ z hz
+    simpa [raw, topologyTupleEdgeRawOrder_A1passive, toCoordinateData] using
+      hA1.add (differentiableAt_matrix_mul hF2 hA3)
+  have hF2target :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.1) z := by
+    rw [differentiableAt_pi]
+    intro p
+    have hA1 :=
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+    have hF2left :=
+      differentiableAt_F2full
+        (ρ := ρ) (κ' := κ') p.castSucc z
+    have hF2right :=
+      differentiableAt_F2full
+        (ρ := ρ) (κ' := κ') p.succ z
+    have hC :=
+      differentiableAt_C (ρ := ρ) (κ' := κ') p z
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+    have hA1_F2 :
+        DifferentiableAt ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                p.castSucc) z :=
+      differentiableAt_matrix_mul hA1 hF2left
+    have hA3_F2 :
+        DifferentiableAt ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA3 p *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                p.castSucc) z :=
+      differentiableAt_matrix_mul hA3 hF2left
+    have hright :
+        DifferentiableAt ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2 p.succ *
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.C p -
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA3 p *
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                    p.castSucc)) z :=
+      differentiableAt_matrix_mul hF2right (hC.sub hA3_F2)
+    simpa [raw, topologyTupleEdgeRawOrder_F2, toCoordinateData] using
+      hA1_F2.neg.add hright
+  have hA3passive :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.1) z := by
+    rw [differentiableAt_pi]
+    intro p
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.castSucc z hz
+    simpa [raw, topologyTupleEdgeRawOrder_A3passive, toCoordinateData] using hA3
+  have hCtarget :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.1) z := by
+    rw [differentiableAt_pi]
+    intro p
+    have hC :=
+      differentiableAt_C (ρ := ρ) (κ' := κ') p z
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+    have hF2 :=
+      differentiableAt_F2full
+        (ρ := ρ) (κ' := κ') p.castSucc z
+    simpa [raw, topologyTupleEdgeRawOrder_C, toCoordinateData] using
+      hC.sub (differentiableAt_matrix_mul hA3 hF2)
+  have hCtopTarget :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.1) z := by
+    have hA1 :=
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (0 : Fin (M + 1)) z hz
+    have hF2 :=
+      differentiableAt_F2full
+        (ρ := ρ) (κ' := κ') ((0 : Fin (M + 1)).succ) z
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (0 : Fin (M + 1)) z hz
+    simpa [raw, topologyTupleEdgeRawOrder_Ctop, toCoordinateData] using
+      hA1.add (differentiableAt_matrix_mul hF2 hA3)
+  have hF3target :
+      DifferentiableAt ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.2) z := by
+    have hA3 :=
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (Fin.last M) z hz
+    simpa [raw, topologyTupleEdgeRawOrder_F3, toCoordinateData] using hA3
+  change DifferentiableAt ℝ
+    (fun y : TopologyTuple ρ κ' ℝ ↦
+      ((raw y).1,
+        ((raw y).2.1,
+          ((raw y).2.2.1,
+            ((raw y).2.2.2.1,
+              ((raw y).2.2.2.2.1, (raw y).2.2.2.2.2)))))) z
+  exact
+    hA1passive.prodMk
+      (hF2target.prodMk
+        (hA3passive.prodMk
+          (hCtarget.prodMk
+            (hCtopTarget.prodMk hF3target))))
 
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState

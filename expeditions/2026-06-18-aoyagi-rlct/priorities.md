@@ -6136,3 +6136,14 @@ tuple determinant chart.  The next derivative slice should assemble
 `DifferentiableAt topologyTupleEdgeRawOrder` from the component formulas.  Keep
 the determinant theorem separate and do not assert the candidate absolute
 Jacobian formula before a formal tangent equivalence is proved.
+
+A2 retained-passive raw-order differentiability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-differentiability.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-differentiability.md`.
+Lean proves `differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet`.
+The next derivative slice is no longer basic differentiability; it should
+build the formal tangent map/equivalence for the retained-passive raw-order
+endomap and prove determinant unitness.  Keep the exact determinant formula,
+Jacobian density, and measure pushforward separate until the formal tangent
+map has been identified with the derivative.
