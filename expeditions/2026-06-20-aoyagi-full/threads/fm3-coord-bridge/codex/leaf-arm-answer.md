@@ -1,0 +1,7 @@
+1. **VERDICT:** For the value fold `⨅ over routeMIota → ½ · minAdm`, the `.leaf` arm should carry `leafMonoData 0`, whose threshold is `⊤`.
+
+2. **WHY:** From the decls, every branch replaces a recursive leaf threshold `t` by `min (codim/2) t`. On `(2,2,2)`, the terminal leaf is reached after appended codims `[4,3]`, so with `leafMonoData 0` the path threshold is `min 2 (min 3/2 ⊤) = 3/2`. If the `.leaf` MonoData instead had a finite #70/nReg threshold `t`, the same path would give `min 2 (min 3/2 t) = min (3/2) t`; this breaks the anchor whenever `t < 3/2`, and the provided decls do not justify ignoring that extra finite term.
+
+3. **SAME OR DIFFERENT:** They are different objects. Position X is about the **value-fold MonoData** carried by `RouteStep.leaf`, which is consumed by `routeAtlas`, `appendDivisor`, and `monomialThreshold`. Position Y is about the **descent leaf node’s geometric RLCT / local lintegral contribution**, which may be a separate analytic estimate, but it is not the same datum unless a decl explicitly connects it to the `MonoData` stored in `.leaf`.
+
+4. **CASE WHERE NOT `leafMonoData 0`:** From the given decls, no. A finite leaf MonoData would need an additional theorem ensuring its threshold is always non-binding for every relevant route, or else the target value theorem would have to include that finite leaf contribution.

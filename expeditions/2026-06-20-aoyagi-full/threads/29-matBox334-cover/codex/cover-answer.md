@@ -1,0 +1,17 @@
+1. **VERDICT on the overall route:** sound, with one important qualification: the banked lower bound alone is not quite enough to justify inverse-power domination at the zero set unless you also use/prove that `Q = ‖T‖² + frobSq(Δ*S) = 0` implies `frobSq(R*A1)=0` for `angularR`. Architecturally, the route is the right one: 9 radial charts, reduce each pivot to top-left by symmetry, separate the radial axis, and feed a scaled/enlarged resolved normal form.
+
+2. **WORRY 1 (permutation):** the permutation route is sound and cheapest. Do not prove 9 hand-written `frobSq_angularR_ge` variants. Prove one “pivot-normalization” lemma: row-permute `A0` to move pivot row to `0`, column-permute `A0` to move pivot column to `0`, and compensate the `A0` column permutation by the inverse row permutation of `A1`. Soundness trap: the `A1` row permutation must be shown measure-preserving and must preserve `matBox 3 4 1`; this is true because the box has identical bounds on every row coordinate, but it is a real lemma obligation.
+
+3. **WORRY 2a (box rescale):** cheapest ranking: **(b) + a small scaled-resolved corollary**, then **(a)** as a polished general version, then exact-domain tracking as worst. Concrete shape: after triangular changes, dominate by fixed boxes
+   `b,g ∈ [-1,1]`, `d ∈ [-2,2]`, `S ∈ [-1,1]`, `T ∈ [-3,3]`.
+   The exact T bound is `T_j = A1 0 j + b0*A1 1 j + b1*A1 2 j`, hence `|T_j| ≤ 1+1+1 = 3`. Then prove/use one corollary like `resolved334_box3_lt_top`: resolved integral is finite on all variables enlarged to `[-3,3]`. Constants do not matter.
+
+4. **WORRY 2b (c'≤2 split):** sound and cheapest, but structure it as two lemmas: first prove the theorem for `2 < c' < 4`; then for `0 < c' ≤ 2`, compare to exponent `3`. On `{frobSq ≥ 1}`, integrand is bounded by `1`; on `{0 < frobSq < 1}`, use monotonicity of `x^r` in the exponent to get `x^(-c') ≤ x^(-3)`. Trap: handle `frobSq = 0` separately or by a case split, since Lean’s `Real.rpow` at zero with negative exponent is not the mathematical `∞`, and monotonicity lemmas usually require `0 < x`.
+
+5. **The KEY subtlety (angularR reparametrization bijection):** confirmed. Raw normalized chart data has 8 off-pivot entries. Read
+   `b0,b1` from the top row, `g0,g1` from the left column, and
+   `dαβ = rawαβ - gα*bβ` from the lower-right block. This is triangular and bijective; the lower-right raw block is `Δ + γβ`. It is algebraically trivial, but for integration it creates the real box issue: `d ∈ [-2,2]`, not `[-1,1]`.
+
+6. **The SINGLE highest-risk Lean step:** the parameter-dependent box enlargement after the angular change: replacing raw lower-right entries by `d = raw - g*b` and top `A1` row by `T = row0 + b*S`, then bounding their images by fixed boxes. Cheapest de-risk: prove one generic “translated unit box lies in larger box, hence lintegral over translated image ≤ lintegral over larger box” lemma on `Fin n → ℝ`, and reuse it for `d` and `T`.
+
+7. **Anything I am MISSING:** two things. First, `g5_pivotNode` as stated covers `univ`; for the bounded `matBox`, either fold the `matBox` indicator into `g` or prove a restricted corollary. Do not try to feed `U = matBox` directly unless you have the matching ae-cover statement. Second, the inverse-power bound from `frobSq_angularR_ge` needs the zero-case compatibility mentioned in §1; the stated lower bound alone does not imply the domination at `Q = 0`.

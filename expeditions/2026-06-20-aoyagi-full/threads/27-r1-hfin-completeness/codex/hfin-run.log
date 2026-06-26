@@ -1,0 +1,554 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efbf1-9b1f-7d22-b002-ebf64362665f
+--------
+user
+<task>
+Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+particular combinatorial resolution atlas, or whether it has a genuine obstruction. This is a
+resolution-of-singularities COMPLETENESS question.
+
+SETUP (exact). Widths M=(M_0,...,M_L), factors A^(s) of shape M_s x M_{s+1}, loss
+F = ||A^(0)...A^(L-1)||_F^2 near A=0, flat dimension N = sum_s M_s M_{s+1}. We want the UPPER bound
+on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+
+minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+(t_1 >= ... >= t_L=0, t_1<=min(M_0,M_1), t_j<=M_{j+1}), of
+   Mval(M,T) = sum_{j} (t_{j-1}-t_j)(M_{j+1}-t_j).
+
+THE ATLAS. There is a COMBINATORIAL leaf family {leaf i}: the leaves are the admissible descent paths
+(pivot-branch choices). Each leaf carries monomial exponent data (d_i, k_i, h_i) where d_i is a chart
+dimension and k_i, h_i : Fin(d_i) -> Nat are loss-base / Jacobian exponents, built by folding the
+per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+
+THE UPPER-BOUND ATOM (hfin). For all c':
+   IF  sum_i INT_{[0,1]^{d_i}} (prod_j |y_j|^{h_ij}) (prod_j |y_j|^{k_ij})^{-2c'} dy  <  +infinity   (the
+       leaf-sum of the MODEL monomial integrals is finite)
+   THEN  INT_{(-1,1)^N} |F|^{-c'} dx  <  +infinity   (the ACTUAL loss integral is finite).
+This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+
+THE SUSPECTED OBSTRUCTION. The leaf (d,k,h) data is "threshold-only" — it records per-pivot
+multiplicities (codims), NOT the SYMBOLIC coupling of which exceptional divisor multiplies which
+generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+stratum the threshold-only leaf data UNDER-counts the codim — it models the loss as LESS singular than
+it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+UPPER bound (hfin) must control EVERY stratum.
+
+THE QUESTIONS:
+  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+      leaf-sum, you need the leaves to correspond to GEOMETRIC charts that COVER (-1,1)^N up to measure
+      zero, with a per-chart upper change-of-variables INT_{chart}|F|^{-c'} <= C_i INT model_i. Does the
+      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+      chart, |F|^{-c'} is LARGER than the model monomial^{-c'} predicts, so the bound fails and the
+      cover is invalid?
+  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+      DIVERGE (c' above the model threshold 3/2), so that leaf is NOT in the "leaf-sum finite" regime —
+      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+      threshold 4 if threshold-only computes codim 3? Is the atlas's leaf data actually the coupled
+      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+      resolving it needs — e.g. the full coupled-diag(b) resolution charts that carry the symbolic
+      coupling, not just the multiplicity)?
+
+CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+allowed as a shortcut — the resolution must be exhibited. So "just cite the bound" is off the table.
+</task>
+
+<output_contract>
+1. Answer (1): does the threshold-only leaf family give a valid cover with per-chart upper c-o-v, or
+   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+   determines whether hfin is useful or vacuous.
+3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+   uncovered/mis-covered stratum + what resolving it needs).
+4. Flag derived vs conjectured. Exact algebra for any codim / threshold claim.
+</output_contract>
+
+<grounding_rules>
+- The monomial threshold of prod x_i^{2k_i} with Jacobian weight prod x_i^{h_i} is min_{k_i!=0}(h_i+1)/(2k_i).
+- A resolution cover upper bound needs charts covering the domain up to null + per-chart |F o phi| >=
+  c0 * model (so |F|^{-c'} <= C model^{-c'}); a chart that UNDER-resolves (models F as less singular)
+  gives a FALSE per-chart bound.
+- I am withholding my tentative conclusion (I suspect a tension in (2) that is the crux). Reason from
+  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+</grounding_rules>
+
+codex
+I’ll ground this in the local definitions and any existing certificates first, then separate what follows formally from the stated atlas facts versus what would require an actual geometric resolution map.
+exec
+/bin/bash -lc 'ls -la && find .. -maxdepth 3 -name CLAUDE.md -o -name README.md -o -name AGENTS.md' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+total 16
+drwxrwxr-x  4 ubuntu ubuntu 4096 Jun 24 23:20 .
+drwxrwxr-x 32 ubuntu ubuntu 4096 Jun 24 23:20 ..
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 23:22 codex
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 23:20 scripts
+
+exec
+/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:31:per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:35:THE UPPER-BOUND ATOM (hfin). For all c':
+./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:46:the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+./codex/hfin-run.log:48:it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+./codex/hfin-run.log:49:UPPER bound (hfin) must control EVERY stratum.
+./codex/hfin-run.log:52:  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+./codex/hfin-run.log:55:      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+./codex/hfin-run.log:56:      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:62:      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:66:      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+./codex/hfin-run.log:68:      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+./codex/hfin-run.log:69:  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+./codex/hfin-run.log:70:      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+./codex/hfin-run.log:71:      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+./codex/hfin-run.log:81:   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:83:   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+./codex/hfin-run.log:84:   determines whether hfin is useful or vacuous.
+./codex/hfin-run.log:85:3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+./codex/hfin-run.log:96:  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-prompt.md:17:per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-prompt.md:21:THE UPPER-BOUND ATOM (hfin). For all c':
+./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-prompt.md:32:the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+./codex/hfin-prompt.md:34:it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+./codex/hfin-prompt.md:35:UPPER bound (hfin) must control EVERY stratum.
+./codex/hfin-prompt.md:38:  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+./codex/hfin-prompt.md:41:      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+./codex/hfin-prompt.md:42:      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+./codex/hfin-prompt.md:45:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-prompt.md:48:      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+./codex/hfin-prompt.md:49:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-prompt.md:51:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-prompt.md:52:      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+./codex/hfin-prompt.md:54:      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+./codex/hfin-prompt.md:55:  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+./codex/hfin-prompt.md:56:      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+./codex/hfin-prompt.md:57:      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+./codex/hfin-prompt.md:67:   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+./codex/hfin-prompt.md:68:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-prompt.md:69:   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+./codex/hfin-prompt.md:70:   determines whether hfin is useful or vacuous.
+./codex/hfin-prompt.md:71:3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+./codex/hfin-prompt.md:82:  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+
+codex
+The thread directory only contains the prompt/log plus scripts so far; I’m checking those artifacts next, because they may contain the prior exact certificate the prompt refers to.
+exec
+/bin/bash -lc 'rg --files .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+./codex/hfin-run.log
+./codex/hfin-prompt.md
+
+exec
+/bin/bash -lc 'find scripts -maxdepth 2 -type f -print' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+exec
+/bin/bash -lc "sed -n '1,240p' codex/hfin-run.log" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019efbf1-9b1f-7d22-b002-ebf64362665f
+--------
+user
+<task>
+Adjudicate whether an UPPER-BOUND (finiteness) atom for a deep-linear-network RLCT is PROVABLE from a
+particular combinatorial resolution atlas, or whether it has a genuine obstruction. This is a
+resolution-of-singularities COMPLETENESS question.
+
+SETUP (exact). Widths M=(M_0,...,M_L), factors A^(s) of shape M_s x M_{s+1}, loss
+F = ||A^(0)...A^(L-1)||_F^2 near A=0, flat dimension N = sum_s M_s M_{s+1}. We want the UPPER bound
+on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+
+minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+(t_1 >= ... >= t_L=0, t_1<=min(M_0,M_1), t_j<=M_{j+1}), of
+   Mval(M,T) = sum_{j} (t_{j-1}-t_j)(M_{j+1}-t_j).
+
+THE ATLAS. There is a COMBINATORIAL leaf family {leaf i}: the leaves are the admissible descent paths
+(pivot-branch choices). Each leaf carries monomial exponent data (d_i, k_i, h_i) where d_i is a chart
+dimension and k_i, h_i : Fin(d_i) -> Nat are loss-base / Jacobian exponents, built by folding the
+per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+
+THE UPPER-BOUND ATOM (hfin). For all c':
+   IF  sum_i INT_{[0,1]^{d_i}} (prod_j |y_j|^{h_ij}) (prod_j |y_j|^{k_ij})^{-2c'} dy  <  +infinity   (the
+       leaf-sum of the MODEL monomial integrals is finite)
+   THEN  INT_{(-1,1)^N} |F|^{-c'} dx  <  +infinity   (the ACTUAL loss integral is finite).
+This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+
+THE SUSPECTED OBSTRUCTION. The leaf (d,k,h) data is "threshold-only" — it records per-pivot
+multiplicities (codims), NOT the SYMBOLIC coupling of which exceptional divisor multiplies which
+generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+threshold-only recursion computes codim 3 (so it would model rlct 3/2), but the TRUE rlct is 4 (=8/2):
+the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+stratum the threshold-only leaf data UNDER-counts the codim — it models the loss as LESS singular than
+it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+UPPER bound (hfin) must control EVERY stratum.
+
+THE QUESTIONS:
+  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+      leaf-sum, you need the leaves to correspond to GEOMETRIC charts that COVER (-1,1)^N up to measure
+      zero, with a per-chart upper change-of-variables INT_{chart}|F|^{-c'} <= C_i INT model_i. Does the
+      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+      chart, |F|^{-c'} is LARGER than the model monomial^{-c'} predicts, so the bound fails and the
+      cover is invalid?
+  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+      codim is 8 (rlct 4), then for c' in (3/2, 4): the MODEL monomial integral on that leaf would
+      DIVERGE (c' above the model threshold 3/2), so that leaf is NOT in the "leaf-sum finite" regime —
+      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+      rlct >= 3/2, not >= 4) UNLESS the leaf threshold data is the TRUE resolved codim, not threshold-
+      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+      threshold 4 if threshold-only computes codim 3? Is the atlas's leaf data actually the coupled
+      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+      resolving it needs — e.g. the full coupled-diag(b) resolution charts that carry the symbolic
+      coupling, not just the multiplicity)?
+
+CONSTRAINT: proven-from-scratch. The cited Aoyagi/Watanabe analytic bound (rlct >= codim/2) is NOT
+allowed as a shortcut — the resolution must be exhibited. So "just cite the bound" is off the table.
+</task>
+
+<output_contract>
+1. Answer (1): does the threshold-only leaf family give a valid cover with per-chart upper c-o-v, or
+   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+   determines whether hfin is useful or vacuous.
+3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+   uncovered/mis-covered stratum + what resolving it needs).
+4. Flag derived vs conjectured. Exact algebra for any codim / threshold claim.
+</output_contract>
+
+<grounding_rules>
+- The monomial threshold of prod x_i^{2k_i} with Jacobian weight prod x_i^{h_i} is min_{k_i!=0}(h_i+1)/(2k_i).
+- A resolution cover upper bound needs charts covering the domain up to null + per-chart |F o phi| >=
+  c0 * model (so |F|^{-c'} <= C model^{-c'}); a chart that UNDER-resolves (models F as less singular)
+  gives a FALSE per-chart bound.
+- I am withholding my tentative conclusion (I suspect a tension in (2) that is the crux). Reason from
+  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+</grounding_rules>
+
+codex
+I’ll ground this in the local definitions and any existing certificates first, then separate what follows formally from the stated atlas facts versus what would require an actual geometric resolution map.
+exec
+/bin/bash -lc 'ls -la && find .. -maxdepth 3 -name CLAUDE.md -o -name README.md -o -name AGENTS.md' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+total 16
+drwxrwxr-x  4 ubuntu ubuntu 4096 Jun 24 23:20 .
+drwxrwxr-x 32 ubuntu ubuntu 4096 Jun 24 23:20 ..
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 23:22 codex
+drwxrwxr-x  2 ubuntu ubuntu 4096 Jun 24 23:20 scripts
+
+exec
+/bin/bash -lc "pwd && rg -n \"hfin|threshold_ge|monomialThreshold|minAdm|foldDivisors|3,3,4|\\(3,3,4\\)|corank|Delta|rlctAtOn|achiever\" -S ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+./codex/hfin-run.log:22:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-run.log:24:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-run.log:31:per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+./codex/hfin-run.log:32:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-run.log:33:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-run.log:35:THE UPPER-BOUND ATOM (hfin). For all c':
+./codex/hfin-run.log:39:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-run.log:40:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-run.log:44:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-run.log:46:the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+./codex/hfin-run.log:48:it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+./codex/hfin-run.log:49:UPPER bound (hfin) must control EVERY stratum.
+./codex/hfin-run.log:52:  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+./codex/hfin-run.log:55:      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+./codex/hfin-run.log:56:      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+./codex/hfin-run.log:59:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-run.log:62:      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+./codex/hfin-run.log:63:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-run.log:65:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-run.log:66:      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+./codex/hfin-run.log:68:      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+./codex/hfin-run.log:69:  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+./codex/hfin-run.log:70:      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+./codex/hfin-run.log:71:      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+./codex/hfin-run.log:81:   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+./codex/hfin-run.log:82:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-run.log:83:   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+./codex/hfin-run.log:84:   determines whether hfin is useful or vacuous.
+./codex/hfin-run.log:85:3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+./codex/hfin-run.log:96:  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+./codex/hfin-prompt.md:8:on the RLCT: for c' < (1/2)minAdm(M), the integral INT_{(-1,1)^N} |F|^{-c'} dx < +infinity.
+./codex/hfin-prompt.md:10:minAdm(M) = min over admissible exponent paths T=(t_1,...,t_L), t_0:=M_0, t_L:=0, weakly decreasing
+./codex/hfin-prompt.md:17:per-pivot codims along the path (a "foldDivisors" of the path's branch codims). The atlas is PROVEN to
+./codex/hfin-prompt.md:18:satisfy: (threshold_ge) every leaf's monomialThreshold = inf_{k_ij != 0}(h_ij+1)/(2 k_ij) >= minAdm/2;
+./codex/hfin-prompt.md:19:(achiever) some leaf realises = minAdm/2. So inf over leaves of monomialThreshold = minAdm/2 — the VALUE.
+./codex/hfin-prompt.md:21:THE UPPER-BOUND ATOM (hfin). For all c':
+./codex/hfin-prompt.md:25:This is the upper bound rlctAtOn(F) >= minAdm/2: below the achiever threshold, the actual integral is
+./codex/hfin-prompt.md:26:finite. The leaf-sum is finite exactly when every leaf threshold > c', i.e. c' < minAdm/2.
+./codex/hfin-prompt.md:30:generator. A prior exact computation found: for M=(3,3,4) (minAdm=8, the corank-2 binding case), the
+./codex/hfin-prompt.md:32:the corank-2 "shared Delta-block" coupling raises the resolved codim from 3 to 8. So on the corank-2
+./codex/hfin-prompt.md:34:it is. The achiever-path LOWER bound (hdiv) is corank-immune (a single diverging leaf suffices), but the
+./codex/hfin-prompt.md:35:UPPER bound (hfin) must control EVERY stratum.
+./codex/hfin-prompt.md:38:  (1) Is hfin PROVABLE from this combinatorial leaf family? To prove the actual integral finite by the
+./codex/hfin-prompt.md:41:      threshold-only (d,k,h) leaf family give such a valid cover? Or does the corank-2 stratum (where
+./codex/hfin-prompt.md:42:      threshold-only undercounts the codim) make the per-chart bound FALSE there — i.e. on the corank-2
+./codex/hfin-prompt.md:45:  (2) Sharpen: if threshold-only models (3,3,4)'s binding stratum as codim 3 (rlct 3/2) but the true
+./codex/hfin-prompt.md:48:      does that mean the hfin hypothesis (leaf-sum finite) is only satisfied for c' < 3/2, NOT up to
+./codex/hfin-prompt.md:49:      minAdm/2=4? If so, hfin as stated would be VACUOUSLY satisfiable but USELESS (it would only give
+./codex/hfin-prompt.md:51:      only. Which is it? Reconcile: the atlas's PROVEN threshold_ge says every leaf threshold >= minAdm/2
+./codex/hfin-prompt.md:52:      = 4 — so the (3,3,4) leaves must carry threshold >= 4, NOT 3/2. How can a threshold-only leaf carry
+./codex/hfin-prompt.md:54:      (true) codim, or is there a tension between "threshold_ge proven" and "threshold-only undercounts"?
+./codex/hfin-prompt.md:55:  (3) Net: is the hfin upper-bound atom REACHABLE from this atlas (and if so, what geometric cover +
+./codex/hfin-prompt.md:56:      per-chart bound discharges it, validated on (2,2,2) and (3,3,4)), OR is there a precise
+./codex/hfin-prompt.md:57:      OBSTRUCTION (the corank-2 stratum the threshold-only leaves cannot validly cover, and what
+./codex/hfin-prompt.md:67:   does the corank-2 stratum break the per-chart bound? Derived vs conjectured.
+./codex/hfin-prompt.md:68:2. Answer (2): reconcile "threshold_ge proven (>= minAdm/2)" with "threshold-only undercounts the
+./codex/hfin-prompt.md:69:   corank-2 codim". Is the leaf threshold data the TRUE coupled codim or the threshold-only one? This
+./codex/hfin-prompt.md:70:   determines whether hfin is useful or vacuous.
+./codex/hfin-prompt.md:71:3. Answer (3): REACHABLE (the cover + per-chart bound, validated on (2,2,2),(3,3,4)) or OBSTRUCTION (the
+./codex/hfin-prompt.md:82:  the setup; the (3,3,4) threshold-only=3 vs true=8 fact is exact (prior certificate).
+
+codex
+The thread directory only contains the prompt/log plus scripts so far; I’m checking those artifacts next, because they may contain the prior exact certificate the prompt refers to.
+exec
+/bin/bash -lc 'rg --files .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness
+ succeeded in 0ms:
+./codex/hfin-run.log
+./codex/hfin-prompt.md
+
+
+codex
+Short answer: **hfin is not provable from a threshold-only leaf family**. The value theorem `threshold_ge + achiever` is numerical; it is not a resolution-cover theorem.
+
+**(1) Cover / Per-Chart Bound**
+
+A valid hfin proof needs actual charts `phi_i` covering `(-1,1)^N` up to null sets and, on each chart,
+
+```text
+|Jac phi_i(y)| <= C_i prod_j |y_j|^{h_ij}
+F(phi_i(y))   >= c_i prod_j |y_j|^{2 k_ij}.
+```
+
+The bare `(d_i,k_i,h_i)` threshold data does not supply those maps or inequalities.
+
+For the `(3,3,4)` corank-2 stratum, if the threshold-only data really gives codim `3`, then its monomial model has threshold `3/2`. That model is **more singular**, not less singular, than the true codim-8 model. So the failure is not primarily that `|F|^{-c'}` is larger than the codim-3 model predicts. Rather, the codim-3 model is too pessimistic and becomes divergent too early. It can at best prove finiteness for `c' < 3/2`.
+
+If, instead, the atlas claims codim `8` on that stratum but still lacks the symbolic coupled chart showing where the extra five Jacobian dimensions come from, then the per-chart bound is simply unproved. Numerically assigning `h+1=8` is not a geometric resolution.
+
+**(2) Reconciliation**
+
+For one exceptional divisor with loss exponent `k=1` and codim `C=h+1`, the threshold is
+
+```text
+(h+1)/(2k) = C/2.
+```
+
+For `(3,3,4)`, the true binding value is
+
+```text
+C_true = min_r [3r + (3-r)(4-r)]
+       = min {12, 9, 8, 9}
+       = 8,
+```
+
+attained at `r=2`, so the true threshold is `8/2 = 4`.
+
+But the stated threshold-only certificate gives
+
+```text
+C_to = 3,
+lambda_to = 3/2.
+```
+
+Then its model integral has local form like
+
+```text
+∫_0^1 rho^{3-1-2c'} d rho,
+```
+
+which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+
+So the three claims cannot all refer to the same leaf data:
+
+```text
+threshold-only codim = 3,
+minAdm(3,3,4) = 8,
+every leaf threshold >= minAdm/2 = 4.
+```
+
+At least one must be reinterpreted. If `threshold_ge` is genuinely proven for the atlas used in hfin, then that atlas is not the harmful threshold-only codim-3 atlas; it has already incorporated the coupled codim-8 contribution numerically. If the leaves are truly threshold-only, then `threshold_ge` is false for `(3,3,4)`.
+
+**(3) Net Verdict**
+
+**Obstruction**, for the threshold-only atlas.
+
+It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+
+Checks:
+
+```text
+(2,2,2):
+C = min_r [2r + (2-r)(2-r)]
+  = min {4,3,4}
+  = 3,
+threshold = 3/2.
+```
+
+Here threshold-only and true coupled behavior agree.
+
+```text
+(3,3,4):
+C = min_r [3r + (3-r)(4-r)]
+  = min {12,9,8,9}
+  = 8,
+threshold = 4.
+```
+
+The threshold-only codim `3` would give only `3/2`.
+
+To make hfin reachable from scratch, the atlas must be upgraded to genuine geometric resolution charts, e.g. full coupled `diag(b)` / shared-`Delta` charts tracking which exceptional divisor multiplies which generators, with explicit cover, Jacobian exponent, and lower bound for `F ∘ phi`. The threshold-only multiplicity fold is insufficient.
+tokens used
+23,719
+Short answer: **hfin is not provable from a threshold-only leaf family**. The value theorem `threshold_ge + achiever` is numerical; it is not a resolution-cover theorem.
+
+**(1) Cover / Per-Chart Bound**
+
+A valid hfin proof needs actual charts `phi_i` covering `(-1,1)^N` up to null sets and, on each chart,
+
+```text
+|Jac phi_i(y)| <= C_i prod_j |y_j|^{h_ij}
+F(phi_i(y))   >= c_i prod_j |y_j|^{2 k_ij}.
+```
+
+The bare `(d_i,k_i,h_i)` threshold data does not supply those maps or inequalities.
+
+For the `(3,3,4)` corank-2 stratum, if the threshold-only data really gives codim `3`, then its monomial model has threshold `3/2`. That model is **more singular**, not less singular, than the true codim-8 model. So the failure is not primarily that `|F|^{-c'}` is larger than the codim-3 model predicts. Rather, the codim-3 model is too pessimistic and becomes divergent too early. It can at best prove finiteness for `c' < 3/2`.
+
+If, instead, the atlas claims codim `8` on that stratum but still lacks the symbolic coupled chart showing where the extra five Jacobian dimensions come from, then the per-chart bound is simply unproved. Numerically assigning `h+1=8` is not a geometric resolution.
+
+**(2) Reconciliation**
+
+For one exceptional divisor with loss exponent `k=1` and codim `C=h+1`, the threshold is
+
+```text
+(h+1)/(2k) = C/2.
+```
+
+For `(3,3,4)`, the true binding value is
+
+```text
+C_true = min_r [3r + (3-r)(4-r)]
+       = min {12, 9, 8, 9}
+       = 8,
+```
+
+attained at `r=2`, so the true threshold is `8/2 = 4`.
+
+But the stated threshold-only certificate gives
+
+```text
+C_to = 3,
+lambda_to = 3/2.
+```
+
+Then its model integral has local form like
+
+```text
+∫_0^1 rho^{3-1-2c'} d rho,
+```
+
+which is finite exactly when `c' < 3/2`. Hence for `c' in (3/2,4)`, the model leaf integral diverges and the hfin antecedent is false. The implication may be formally true, but it is useless for proving `rlct >= 4`.
+
+So the three claims cannot all refer to the same leaf data:
+
+```text
+threshold-only codim = 3,
+minAdm(3,3,4) = 8,
+every leaf threshold >= minAdm/2 = 4.
+```
+
+At least one must be reinterpreted. If `threshold_ge` is genuinely proven for the atlas used in hfin, then that atlas is not the harmful threshold-only codim-3 atlas; it has already incorporated the coupled codim-8 contribution numerically. If the leaves are truly threshold-only, then `threshold_ge` is false for `(3,3,4)`.
+
+**(3) Net Verdict**
+
+**Obstruction**, for the threshold-only atlas.
+
+It does not discharge hfin at the desired `minAdm/2` threshold. The obstruction is exactly the corank-2 binding stratum: the data forgetting the shared `Delta`-block cannot justify the codim-8 monomial/Jacobian exponents needed for finiteness up to `c'<4`.
+
+Checks:
+
+```text
+(2,2,2):
+C = min_r [2r + (2-r)(2-r)]
+  = min {4,3,4}
+  = 3,
+threshold = 3/2.
+```
+
+Here threshold-only and true coupled behavior agree.
+
+```text
+(3,3,4):
+C = min_r [3r + (3-r)(4-r)]
+  = min {12,9,8,9}
+  = 8,
+threshold = 4.
+```
+
+The threshold-only codim `3` would give only `3/2`.
+
+To make hfin reachable from scratch, the atlas must be upgraded to genuine geometric resolution charts, e.g. full coupled `diag(b)` / shared-`Delta` charts tracking which exceptional divisor multiplies which generators, with explicit cover, Jacobian exponent, and lower bound for `F ∘ phi`. The threshold-only multiplicity fold is insufficient.
