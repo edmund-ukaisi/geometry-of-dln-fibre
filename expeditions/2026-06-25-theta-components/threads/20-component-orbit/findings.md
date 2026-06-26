@@ -42,6 +42,28 @@ Generic smoothness is unconditional EXCEPT the corrected, dimensionally-honest C
 consumer is superseded (kept in-library, harmless, but its hypothesis is unsatisfiable — never use it).
 Plus a genuine NEW unconditional result: the sigma-side component labeling.
 
+## RESIDUAL ROUTE MAP (#128, the corrected fibre→sigma transport) — tide-scoped
+The labeled fibre→sigma transport of `e : sweepFibreRing⧸I ≃ₐ[k] MvPolynomial η (orbitRing M)`
+decomposes into rungs MIRRORING the ncard count chain, each LIFTED from `ncard` to a labeled `AlgEquiv`
+of component-quotient rings. Status:
+- **W3 (radical): FREE** — `sweepFibreRing` is already the reduced (`vanishingIdeal`) ring; `I` is a
+  minimal prime of it directly.
+- **poly (Schur extension): ALREADY BUILT** — `TopDimMinPrimesPoly.{map_C,comap_C}_mem_minimalPrimes`
+  + `MvPolynomial.quotientEquivQuotientMvPolynomial` give `(MvPoly SchurVar (sweepFibreRing))⧸(map C I)
+  ≃ MvPolynomial SchurVar (sweepFibreRing⧸I)`. This is where the δ poly factor `η = SchurVar` enters.
+- **Away localizations + chart `e_β`: THE GENUINE MISSING RUNG (~400–900 LoC, "the heart").** Pieces
+  exist (`ChartLocalizedAlgEquiv.chartLocalizedAlgEquiv : Away dsig ≃ₐ[k] Away gF` BUILT;
+  `TopDimMinPrimesLocalization` has the labeled `Away` minimal-prime bijection BUILT), but the labeled
+  COMPONENT-QUOTIENT `AlgEquiv` across the localization (carry `(Schur-ext sweepFibreRing)`
+  localized-at-gF component across `e_β` to `O(Σ^r)` localized-at-dsig, then descend the
+  localized-component iso to the unlocalized sigma component) is NOT built. Reassigned to `smooth-c2a`.
+- **W0 (δ-shift Σ^r→Σ̄^r): BUILT** — `exists_sigma_topComponent_orbitRingEquiv` lands the sigma
+  component as `orbitRing (realizerD m)` exactly.
+
+So the residual is ONE genuinely-new rung + assembly. The cost recalibration: C2(a)'s "~800–2000 LoC"
+became corrected-interface + sigma half (done) + this ~400–900-LoC focused rung — i.e. C2(a) is a
+multi-tide undertaking, but now precisely scoped, not a vague wall.
+
 ## Artifacts (committed @ 90c26d4c)
 `threads/20-component-orbit/statement-card.md` + codex consults. Lean: `Core/FibreComponentOrbit.lean`.
 New transitive imports (already in lib): `TopDimMinPrimesW0`, `CCodimCornerMono`,
