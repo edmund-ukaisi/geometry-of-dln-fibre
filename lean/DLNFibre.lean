@@ -364,5 +364,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurFrameDet
 -- Phase-A Schur/LDU factors. (`phiFlat_abs_det` — the det telescope — is the next multi-pass build.)
 import DLNFibre.DLN.RLCT.Validate.RouteMGenChainBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatChart
+-- The B3 prefix-fold det SPINE (the det algebra fully assembled): `ChartFactor` + `composeFold`
+-- (chain rule folded over a factor list, with the prefix-evaluation `Frame3333Deriv (Kparam3333 u)`
+-- pattern) + `composeFold_abs_det` (the det telescope via `general_composed_clm_abs_det`). Consumes the
+-- per-factor dets (Schur/LDU/chain/radial). `phiFlat_abs_det` (the opaque-width chart reconciliation) is next.
+import DLNFibre.DLN.RLCT.Validate.RouteMChartFactorFold
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
