@@ -8708,3 +8708,26 @@ Nonclaims: this is a homeomorphism of named subtypes only.  No ambient
 openness of the source-recursive chart, equality with the whole source image,
 source-rank coverage, measure pushforward, density/Jacobian theorem, normal
 crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-recursive chart openness:
+Lean now defines
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet` and
+proves `sourceRecursiveDetChartSet_mem_nhds` and
+`isOpen_sourceRecursiveDetChartSet`.
+
+The proof uses `sourceRecursiveDetChart_iff` to remove the irrelevant suffix
+proof argument, continuity of `sourceReadbackTransformedEdge` at points of the
+chart, openness of the selected determinant chart, and finite intersection of
+edge-wise neighborhoods.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-chart-openness.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-openness.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-openness.md`
+passed.
+
+Nonclaims: no equality with the whole source image, source-rank coverage,
+measure pushforward, density/Jacobian theorem, normal crossings, pole order,
+or RLCT is proved.

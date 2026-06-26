@@ -2477,6 +2477,44 @@ def sourceRecursiveDetChart
       (transformedEdge E p
         (suffixState E (Fin.last (M + 1)) p.succ hp))
 
+/-- The source-recursive determinant chart as a set of edge families. -/
+def sourceRecursiveDetChartSet
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Set (∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :=
+  {E | sourceRecursiveDetChart (K := K) (ρ := ρ) E}
+
+@[simp]
+theorem mem_sourceRecursiveDetChartSet
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :
+    E ∈ sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') ↔
+      sourceRecursiveDetChart (K := K) (ρ := ρ) E := by
+  rfl
+
+/-- The proof argument in `sourceRecursiveDetChart` is irrelevant; the chart
+predicate can be checked at the canonical suffix proof for each edge. -/
+theorem sourceRecursiveDetChart_iff
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :
+    sourceRecursiveDetChart (K := K) (ρ := ρ) E ↔
+      ∀ p : Fin (M + 1),
+        identityCornerDetChart
+          (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
+  constructor
+  · intro hchart p
+    simpa [sourceRecursiveDetChart, sourceReadbackTransformedEdge,
+      sourceReadbackSuffixState] using hchart p p.succ.le_last
+  · intro hchart p hp
+    have hhp : hp = p.succ.le_last := Subsingleton.elim _ _
+    cases hhp
+    simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState] using hchart p
+
 /-- The retained-passive source map sends determinant-chart coordinate data
 into the source-recursive determinant chart. -/
 theorem sourceRecursiveDetChart_edgeMatrix_of_detChart

@@ -9924,3 +9924,26 @@ passed.
 This does not prove ambient openness of `sourceRecursiveDetChart`, equality
 with the whole source image, source-rank coverage, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive source-recursive chart openness:
+`RetainedPassiveCoordinates.lean` defines
+`RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet` and
+proves `mem_sourceRecursiveDetChartSet` plus
+`sourceRecursiveDetChart_iff`.
+
+`RetainedPassiveCoordinatesTopology.lean` proves
+`sourceRecursiveDetChartSet_mem_nhds` and
+`isOpen_sourceRecursiveDetChartSet`.
+
+The theorem says that the named source-recursive determinant chart is open in
+the ambient edge-family space.  It relies on the existing transformed-edge
+continuity API and the generic selected determinant-chart openness theorem.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-openness.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-openness.md`
+passed.
+
+This does not prove equality with the whole source image, source-rank
+coverage, measure pushforward, density/Jacobian theorem, normal crossings,
+pole order, or RLCT.

@@ -1283,6 +1283,60 @@ def detChart_sourceRecursiveDetChart_homeomorph
     continuous_sourceReadback_detChart_subtype
       (ρ := ρ) (κ' := κ') (K := K)
 
+/-- A source-recursive determinant-chart edge family has the source-recursive
+chart set as an ambient neighborhood. -/
+theorem sourceRecursiveDetChartSet_mem_nhds
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K}
+    (hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E) :
+    sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') ∈ nhds E := by
+  let X := ∀ p : Fin (M + 1),
+    Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K
+  have hlocal :
+      {E' : X |
+        ∀ p : Fin (M + 1),
+          identityCornerDetChart
+            (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E' p)} ∈
+        nhds E := by
+    simpa [Set.setOf_forall] using
+      (Filter.iInter_mem.2 fun p : Fin (M + 1) ↦ by
+        have hT :
+            ContinuousAt
+              (fun E' : X ↦
+                sourceReadbackTransformedEdge (K := K) (ρ := ρ) E' p) E :=
+          continuousAt_sourceReadbackTransformedEdge
+            (K := K) (ρ := ρ) (κ' := κ')
+            (E := fun E' : X ↦ E') (x₀ := E)
+            continuous_id.continuousAt hchart p
+        have hdet :
+            identityCornerDetChart
+              (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) :=
+          (sourceRecursiveDetChart_iff (K := K) (ρ := ρ) E).1 hchart p
+        exact hT.preimage_mem_nhds (identityCornerDetChart_mem_nhds hdet))
+  have hset :
+      sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') =
+        {E' : X |
+          ∀ p : Fin (M + 1),
+            identityCornerDetChart
+              (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E' p)} := by
+    ext E'
+    exact sourceRecursiveDetChart_iff (K := K) (ρ := ρ) E'
+  simpa [hset] using hlocal
+
+/-- The source-recursive determinant-chart set is open in the ambient
+edge-family space. -/
+theorem isOpen_sourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    IsOpen (sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  rw [isOpen_iff_mem_nhds]
+  intro E hchart
+  exact sourceRecursiveDetChartSet_mem_nhds (K := K) (ρ := ρ) (κ' := κ') hchart
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

@@ -12864,3 +12864,18 @@ chart on the explicit source-recursive determinant domain.  It still does not
 prove ambient openness of that source domain, equality with the whole source
 image, source-rank coverage, measure transport, normal crossings, pole order,
 or RLCT.
+
+New follow-up proves ambient openness of that source-recursive determinant
+domain.  The definition is first rewritten to the canonical form
+`forall p, identityCornerDetChart (sourceReadbackTransformedEdge E p)`, since
+the proof argument `p.succ <= last` is irrelevant.  At a chart point, each
+transformed-edge readback map is continuous by the existing suffix-state
+continuity theorem, and the selected determinant chart is open in matrix
+space.  Pulling those neighborhoods back and intersecting over the finite edge
+set proves `sourceRecursiveDetChartSet_mem_nhds`, hence
+`isOpen_sourceRecursiveDetChartSet`.
+
+This supplies the ambient open-domain part for the retained-passive
+source-recursive chart.  It still does not prove that this open set is the
+whole source image, source-rank coverage, measure transport, normal crossings,
+pole order, or RLCT.

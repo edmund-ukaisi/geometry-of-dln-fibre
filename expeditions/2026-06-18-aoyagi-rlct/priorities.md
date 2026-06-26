@@ -5809,3 +5809,18 @@ unit preimages using existing suffix-state/transformed-edge continuity at
 chart points.  Keep this as an explicit source-recursive chart statement; do
 not promote it to global source-image equality, source-rank coverage, measure
 transport, normal crossings, pole order, or RLCT.
+
+The source-recursive chart openness rung has now landed/in progress:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-recursive-chart-openness.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-recursive-chart-openness.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-recursive-chart-openness.md`.
+Lean proves `sourceRecursiveDetChartSet_mem_nhds` and
+`isOpen_sourceRecursiveDetChartSet`.
+
+Next retained-passive target after review/banking: decide whether the next
+paper-faithful step is measure/Jacobian transport across the retained-passive
+homeomorphism, or a more explicit bridge from the p. 13 retained-passive chart
+to the existing regular-suspension/product-measure infrastructure.  Do not
+claim global source-image equality or source-rank coverage without a separate
+paper-backed argument.

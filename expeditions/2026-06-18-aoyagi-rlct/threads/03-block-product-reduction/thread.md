@@ -8359,3 +8359,32 @@ This is a homeomorphism of named subtypes only.  It does not prove ambient
 openness of `sourceRecursiveDetChart`, equality with the whole source image,
 source-rank coverage, measure transport, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-26 A2 retained-passive source-recursive chart openness
+
+Reproduction:
+`reproduction-a2-retained-passive-source-recursive-chart-openness.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-recursive-chart-openness.md`.
+Review:
+`review-a2-retained-passive-source-recursive-chart-openness.md`.
+
+Lean now names the source-recursive determinant chart set and proves it is
+open in the ambient edge-family space:
+
+```text
+RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet
+RetainedPassiveNonredundantCoordinateData.mem_sourceRecursiveDetChartSet
+RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_iff
+RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChartSet_mem_nhds
+RetainedPassiveNonredundantCoordinateData.isOpen_sourceRecursiveDetChartSet
+```
+
+The proof removes the irrelevant proof argument in `sourceRecursiveDetChart`,
+uses continuity of each transformed-edge readback at chart points, pulls back
+the open selected determinant chart, and intersects the finitely many edge
+neighborhoods.
+
+This is ambient openness for the named source-recursive chart only.  It does
+not prove equality with the whole source image, source-rank coverage, measure
+transport, normal crossings, pole order, or RLCT.
