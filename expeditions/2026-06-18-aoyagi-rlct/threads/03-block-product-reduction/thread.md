@@ -6340,3 +6340,29 @@ This closes the ambient determinant-unit bridge for the p. 13 product-step
 coordinate map.  It does not prove determinant-chart subtype differentiability,
 source-measure pushforward, density transport, change of variables, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 product-step determinant-chart fderivWithin
+
+Reproduction:
+`reproduction-a2-product-step-det-chart-fderivwithin.md`.
+Statement card:
+`statement-card-a2-product-step-det-chart-fderivwithin.md`.
+Review:
+`review-a2-product-step-det-chart-fderivwithin.md`.
+
+Lean now proves:
+
+```text
+isOpen_productReductionStepRawTopologyTuple_detChart
+hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart
+fderivWithin_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+```
+
+This closes the ambient open-domain determinant-chart derivative bridge for
+the raw-order p. 13 product-step coordinate map. The raw determinant chart is
+open because it is the intersection of two determinant-unit preimages, and on
+that open set `fderivWithin` agrees with the already-landed ambient `fderiv`.
+
+This is not differentiability on the determinant-chart subtype and does not
+prove local injectivity/inverse data for measure change-of-variables, source
+measure pushforward, density transport, normal crossings, pole order, or RLCT.

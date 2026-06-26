@@ -8773,6 +8773,22 @@ This closes only the ambient determinant-unit bridge. Analytic chart/subtype
 change of variables, source-measure transport, normal crossings, pole order,
 and RLCT remain open.
 
+Latest A2 product-step determinant-chart fderivWithin bridge:
+`ProductReductionStepDerivative.lean` now proves the raw determinant-chart
+open-domain derivative and determinant-unit statement. Lean names:
+`isOpen_productReductionStepRawTopologyTuple_detChart`,
+`hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart`,
+and
+`fderivWithin_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-det-chart-fderivwithin.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-det-chart-fderivwithin.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-det-chart-fderivwithin.md`.
+This closes only the ambient open-domain determinant-chart bridge. It does not
+prove subtype differentiability, local injectivity, source-measure transport,
+density transport, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

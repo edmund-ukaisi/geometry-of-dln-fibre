@@ -115,6 +115,31 @@ theorem productReductionStepTopologyTupleToChart_topologyTuple_chartBase
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x) := by
   rfl
 
+/-- The raw one-step determinant chart is open as a subset of the ambient
+tuple coordinate space. -/
+theorem isOpen_productReductionStepRawTopologyTuple_detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] :
+    IsOpen
+      ({z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+        IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det}) := by
+  have hC1 : IsOpen
+      ({z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+        IsUnit z.1.det}) := by
+    exact
+      (continuous_fst.matrix_det).isOpen_preimage
+        ({a : ℝ | IsUnit a}) isOpen_setOf_isUnit
+  have hA1 : IsOpen
+      ({z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+        IsUnit z.2.2.2.1.det}) := by
+    have hcoord : Continuous
+        (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+          z.2.2.2.1) :=
+      continuous_snd.snd.snd.fst
+    exact
+      hcoord.matrix_det.isOpen_preimage
+        ({a : ℝ | IsUnit a}) isOpen_setOf_isUnit
+  simpa [Set.setOf_and] using hC1.inter hA1
+
 -- The matrix-ring product derivative theorem triggers deep right-action
 -- typeclass search before reaching the componentwise simplification.
 set_option maxRecDepth 2048 in
@@ -625,6 +650,29 @@ theorem hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1)
   simpa [R, productReductionStepFormalJacobianRawOrder, Function.comp_def] using hcomp
 
+/-- The raw-order p. 13 coordinate map has the same derivative on the raw
+determinant-chart open domain as it has ambiently. -/
+theorem hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    HasFDerivWithinAt
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        productReductionStepChartTangentRawOrderEquiv
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+          (productReductionStepTopologyTupleToChart
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z))
+      (LinearMap.toContinuousLinearMap
+        (productReductionStepFormalJacobianRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x))
+      {z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+        IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det}
+      x.topologyTuple := by
+  exact
+    (hasFDerivAt_productReductionStepTopologyTupleToChart_rawOrder
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1).hasFDerivWithinAt
+
 /-- The actual Frechet derivative of the raw-order ambient p. 13 coordinate
 map has unit determinant on the determinant chart.
 
@@ -653,6 +701,41 @@ theorem fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
   simpa using
     productReductionStepFormalJacobianRawOrder_det_isUnit
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x hC1 hA1
+
+/-- On the raw determinant-chart open domain, the `fderivWithin` determinant
+of the raw-order p. 13 coordinate map is a unit.
+
+This is still an ambient open-domain derivative theorem. It does not prove a
+subtype chart theorem, source-measure pushforward, density transport, normal
+crossings, pole order, or RLCT extraction. -/
+theorem fderivWithin_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν ℝ)
+    (hC1 : IsUnit x.C1.det) (hA1 : IsUnit x.A1.det) :
+    IsUnit
+      ((fderivWithin ℝ
+        (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+          productReductionStepChartTangentRawOrderEquiv
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+            (productReductionStepTopologyTupleToChart
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) z))
+        {z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+          IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det}
+        x.topologyTuple).det) := by
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  let s : Set (ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ) :=
+    {z | IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det}
+  have hs : IsOpen s :=
+    isOpen_productReductionStepRawTopologyTuple_detChart
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hx : x.topologyTuple ∈ s := by
+    exact ⟨hC1, hA1⟩
+  rw [fderivWithin_of_isOpen hs hx]
+  exact
+    fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1
 
 end Aoyagi
 end DLN

@@ -11369,3 +11369,25 @@ differentiability plus measure or density transport, or an explicit consumer
 that feeds this local derivative into a normal-crossing chart certificate.  No
 source-measure pushforward, density transport, change of variables, normal
 crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Product-Step Determinant-Chart FDerivWithin
+
+The ambient open-domain determinant-chart derivative bridge has landed in
+`ProductReductionStepDerivative.lean`. Lean proves:
+
+```text
+isOpen_productReductionStepRawTopologyTuple_detChart
+hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart
+fderivWithin_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
+```
+
+The raw determinant-chart set is the intersection of the two open determinant
+unit preimages for `C1` and `A1`. The raw-order ambient `HasFDerivAt` theorem
+restricts to this open domain, and `fderivWithin_of_isOpen` reduces the
+determinant-unit claim to the previously landed ambient `fderiv` theorem.
+
+This is not a subtype derivative theorem. The next boundary is local inverse
+or injectivity data plus measure/density transport, or a separate consumer
+that feeds this local derivative into a normal-crossing chart certificate. No
+source-measure pushforward, density transport, change of variables, normal
+crossings, pole order, or RLCT is claimed.

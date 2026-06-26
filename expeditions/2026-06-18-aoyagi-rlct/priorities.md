@@ -4955,3 +4955,14 @@ map.  The next priority remains the analytic chart/subtype and measure-
 transport boundary, or an explicit normal-crossing chart-certificate consumer.
 Do not infer source-measure pushforward, density transport, normal crossings,
 pole order, or RLCT.
+
+A2 product-step determinant-chart open-domain derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-det-chart-fderivwithin.md`.
+Lean proves the ambient raw determinant-chart set is open, restricts the
+raw-order derivative theorem to that domain, and proves determinant unitness
+for the corresponding `fderivWithin`. This is the preferred next API for
+change-of-variables work. The next analytic priority is now local
+injectivity/inverse data and measure pushforward/density transport, or a
+separate normal-crossing chart-certificate consumer. Do not restate this as a
+derivative on the determinant-chart subtype, and do not infer source-measure
+transport, normal crossings, pole order, or RLCT.
