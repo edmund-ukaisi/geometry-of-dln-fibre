@@ -12340,3 +12340,31 @@ Review:
 This is rational arithmetic only.  It does not identify a terminal exponent
 with the numerator, prove active-ratio minimality, terminal-label exactness,
 chart counts, pole order, normal crossings, or RLCT.
+
+## Post-interruption Frontier Audit - 2026-06-26
+
+After the VM/session interruption, the controller re-grounded in the Aoyagi
+worktree and confirmed the clean pushed checkpoint
+`72c8644b Add Lemma 5 numerator residue normalization`.  `git fetch origin`
+showed no `origin/dev` commits ahead of the expedition branch.
+
+Read-only xhigh scouts checked the active frontiers.  Their common conclusion
+is that the obvious Lean lanes are now source-production/classifier blockers,
+not theorem-sized wrapper opportunities:
+
+- A2 selected-entry residual readout is saturated.  The retained-passive p.13
+  route needs an explicit multi-step source chart, local inverse/source-rank
+  coverage, source-measure pushforward, and density/Jacobian accounting; the
+  printed pp. 10-13 algebra does not state those fields.
+- A4 selected-entry analytic-atlas work needs actual produced coverage,
+  analytic transition regularity, suffix/successor data, branch termination,
+  and analytic Jacobian/volume compatibility.  Current sockets are correctly
+  conditional.
+- A5 has no worthwhile finite arithmetic consequence left after the numerator
+  normalization.  The next real target is a source-backed terminal-minimum
+  counted-datum classifier for `TC.terminalMinimumLabels`, plus the injection
+  or back-to-label data required by the existing order-formula consumers.
+
+The durable audit is `frontier-audit-2026-06-26.md`.  Do not reopen A2
+readout, A4 source-production, A5 order-wrapper, or A6 final-socket work unless
+the proposed theorem removes one of the named supplied fields.

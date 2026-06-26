@@ -5322,3 +5322,28 @@ finite minimum-to-lambda normalization only; it does not prove terminal
 exponent identification, active-ratio minimality, terminal-label exactness,
 chart counts, pole order, normal crossings, or RLCT.  Xhigh review,
 downstream build, sorry scan, and whitespace checks passed.
+
+## Post-interruption frontier decision - 2026-06-26
+
+Controller reorientation and xhigh scout fan-out are recorded at
+`frontier-audit-2026-06-26.md`.  The immediate A2/A4/A5 wrapper lanes are
+closed:
+
+- A2 selected-entry residual readout is saturated.  Do not add another readout
+  variant unless a downstream theorem consumes that exact statement.
+- A2 p.13 retained-passive work needs a new source chart with local inverse,
+  source-rank coverage, source-measure pushforward, and density/Jacobian
+  accounting.  Aoyagi pp. 10-13 do not state this package.
+- A4 selected-entry analytic-atlas/source production needs actual produced
+  coverage, transition regularity, suffix/successor data, and analytic
+  Jacobian compatibility.  Do not repackage `SourceProductionObligation`.
+- A5 has no remaining finite arithmetic wrapper below the classifier boundary
+  after the numerator-residue normalization.  The next source-moving target is
+  the terminal-minimum counted-datum classifier for `TC.terminalMinimumLabels`,
+  not another order-formula handoff.
+
+Preferred next probe: attempt a pen-and-paper reproduction of the A5
+terminal-minimum counted-datum classifier from Aoyagi pp. 24-27.  If that
+fails source-fidelity review, record the exact missing fields and move to the
+A2 retained-passive source-chart construction or the A4 analytic-atlas
+production package.
