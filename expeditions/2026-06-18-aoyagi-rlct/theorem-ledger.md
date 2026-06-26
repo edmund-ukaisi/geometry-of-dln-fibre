@@ -8587,6 +8587,24 @@ This fixes `D`, `A1`, and `A3`, so it is not the full p. 13 tangent map; no
 analytic derivative, source-measure pushforward, density/Jacobian transport,
 normal crossings, pole order, or RLCT is proved.
 
+Latest A2 full product-step formal Jacobian formulas:
+`ProductReductionStepJacobian.lean` now records the full p. 13 forward and
+inverse formal tangent formulas and the chart-output raw-order permutation.
+Lean names:
+`ProductReductionStepRawTangent`,
+`ProductReductionStepChartTangent`,
+`productReductionStepFormalJacobianFormula`,
+`productReductionStepFormalJacobianInverseFormula`, and
+`productReductionStepChartTangentRawOrderEquiv`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-formal-jacobian-formulas.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-formal-jacobian-formulas.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-formal-jacobian-formulas.md`.
+This is formula-level Lean plus determinant-order plumbing only; the bundled
+full `LinearMap`, `LinearEquiv`, determinant unit theorem, analytic derivative,
+source-measure transport, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

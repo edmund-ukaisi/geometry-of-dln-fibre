@@ -4829,3 +4829,13 @@ is the next Jacobian brick after the Schur core, but still not the full
 variable-`D/A1/A3` p. 13 formal Jacobian and not analytic density/Jacobian
 transport. The next Jacobian route is the full product-step tangent map with a
 chart-to-raw tangent reorder before any determinant statement.
+
+A2 full p. 13 formal Jacobian formulas and reorder plumbing have now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-formal-jacobian-formulas.md`.
+Lean records the full forward and inverse tuple formulas and
+`productReductionStepChartTangentRawOrderEquiv`.  This moves the Jacobian route
+past the fixed-passive slice by exposing the `dD`, `dA1`, and `dA3` terms and
+the determinant-order issue in code.  Next, prove the formula maps are bundled
+linear maps in smaller component lemmas, then prove the raw/chart
+`LinearEquiv`, then only state determinant unitness after composing with the
+raw-order equivalence.

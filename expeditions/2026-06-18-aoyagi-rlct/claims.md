@@ -7399,3 +7399,27 @@ Nonclaims: this slice varies only `C1`, old `F3`, `A2`, and `A4`, with `D`,
 `A1`, and `A3` fixed. It is not the full p. 13 product-step Jacobian, not an
 analytic derivative theorem, not source-measure pushforward or density
 transport, and not normal crossings, pole order, or RLCT.
+
+Latest A2 full product-step formal Jacobian formulas:
+Lean now records the full p. 13 one-step formal tangent formulas, including
+the `dD`, `dA1`, and `dA3` terms, and a chart-output reorder equivalence for
+future determinant statements.
+
+Lean names:
+`ProductReductionStepRawTangent`,
+`ProductReductionStepChartTangent`,
+`productReductionStepFormalJacobianFormula`,
+`productReductionStepFormalJacobianInverseFormula`,
+and
+`productReductionStepChartTangentRawOrderEquiv`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-formal-jacobian-formulas.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-formal-jacobian-formulas.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-formal-jacobian-formulas.md`.
+
+Nonclaims: no bundled full `LinearMap`, no full raw/chart `LinearEquiv`, no
+determinant-unit theorem, no analytic derivative theorem, no source-measure
+pushforward or density transport, and no normal crossings, pole order, or
+RLCT.

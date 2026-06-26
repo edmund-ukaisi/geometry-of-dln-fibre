@@ -11063,3 +11063,26 @@ is used. This slice is intentionally not the full p. 13 Jacobian, because it
 omits the `dD`, `dA1`, and `dA3` terms. It is also not analytic
 `HasFDerivAt`, source-measure pushforward, density transport, normal crossings,
 pole order, or RLCT extraction.
+
+## Latest A2 Full Product-Step Formal Jacobian Formulas
+
+`ProductReductionStepJacobian.lean` now records the full p. 13 one-step formal
+tangent formulas for all seven raw variables, under the names
+
+```text
+ProductReductionStepRawTangent
+ProductReductionStepChartTangent
+productReductionStepFormalJacobianFormula
+productReductionStepFormalJacobianInverseFormula
+productReductionStepChartTangentRawOrderEquiv
+```
+
+The formulas include the previously omitted `dD`, `dA1`, and `dA3` terms.  The
+chart-output reorder equivalence maps `(Ctop,D,A1,A3,F2,F3,C)` to raw-shaped
+order `(Ctop,D,F3,A1,F2,A3,C)`, making the determinant-order issue explicit.
+
+This is not yet a bundled full `LinearMap` or `LinearEquiv`; the earlier
+monolithic proof attempt was too slow, so the next proof layer should split
+the formula into component linear maps or component linearity lemmas.  No full
+determinant-unit theorem, analytic derivative, source-measure transport,
+normal crossings, pole order, or RLCT is claimed.

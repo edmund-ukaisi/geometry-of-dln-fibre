@@ -361,6 +361,117 @@ theorem productStepFixedPassiveFormalJacobian_det_isUnit
 
 end ProductStepFixedPassive
 
+section ProductStepFull
+
+variable {π : Type*} [Fintype μ]
+
+/-- Tangent space for all raw variables in the p. 13 one-step product-reduction
+coordinate change, ordered as `(C1,D,F3old,A1,A2,A3,A4)`. -/
+abbrev ProductReductionStepRawTangent :=
+  ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν K
+
+/-- Tangent space for all chart variables in the p. 13 one-step
+product-reduction coordinate change, ordered as `(Ctop,D,A1,A3,F2,F3,C)`. -/
+abbrev ProductReductionStepChartTangent :=
+  ProductReductionStepChartCoordinates.TopologyTuple ρ π μ ν K
+
+/-- Full formal tangent formula for the p. 13 one-step product-reduction
+coordinate change.
+
+This is formal tangent arithmetic for the coordinate formulas in
+`ProductReductionStepRawCoordinates.toChart`; it is not an analytic derivative
+theorem or a source-measure pushforward statement. -/
+def productReductionStepFormalJacobianFormula
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  let dC1 : Matrix ρ ρ K := v.1
+  let dD : Matrix π μ K := v.2.1
+  let dF3old : Matrix π ρ K := v.2.2.1
+  let dA1 : Matrix ρ ρ K := v.2.2.2.1
+  let dA2 : Matrix ρ ν K := v.2.2.2.2.1
+  let dA3 : Matrix μ ρ K := v.2.2.2.2.2.1
+  let dA4 : Matrix μ ν K := v.2.2.2.2.2.2
+  let Ctop : Matrix ρ ρ K := x.C1 * x.A1
+  let dCtop : Matrix ρ ρ K := dC1 * x.A1 + x.C1 * dA1
+  let dF2 : Matrix ρ ν K :=
+    x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2 - x.A1⁻¹ * dA2
+  let dF3 : Matrix π ρ K :=
+    dF3old
+      - dD * x.A3 * Ctop⁻¹
+      - x.D * dA3 * Ctop⁻¹
+      + x.D * x.A3 * Ctop⁻¹ * dCtop * Ctop⁻¹
+  let dC : Matrix μ ν K :=
+    dA4
+      - dA3 * x.A1⁻¹ * x.A2
+      + x.A3 * x.A1⁻¹ * dA1 * x.A1⁻¹ * x.A2
+      - x.A3 * x.A1⁻¹ * dA2
+  (dCtop, (dD, (dA1, (dA3, (dF2, (dF3, dC))))))
+
+/-- Full formal tangent formula of the inverse p. 13 one-step coordinate
+change. -/
+def productReductionStepFormalJacobianInverseFormula
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  let dCtop : Matrix ρ ρ K := v.1
+  let dD : Matrix π μ K := v.2.1
+  let dA1 : Matrix ρ ρ K := v.2.2.1
+  let dA3 : Matrix μ ρ K := v.2.2.2.1
+  let dF2 : Matrix ρ ν K := v.2.2.2.2.1
+  let dF3 : Matrix π ρ K := v.2.2.2.2.2.1
+  let dC : Matrix μ ν K := v.2.2.2.2.2.2
+  let dC1 : Matrix ρ ρ K :=
+    dCtop * y.A1⁻¹ - y.Ctop * y.A1⁻¹ * dA1 * y.A1⁻¹
+  let dF3old : Matrix π ρ K :=
+    dF3
+      + dD * y.A3 * y.Ctop⁻¹
+      + y.D * dA3 * y.Ctop⁻¹
+      - y.D * y.A3 * y.Ctop⁻¹ * dCtop * y.Ctop⁻¹
+  let dA2 : Matrix ρ ν K := -dA1 * y.F2 - y.A1 * dF2
+  let dA4 : Matrix μ ν K := dC - dA3 * y.F2 - y.A3 * dF2
+  (dC1, (dD, (dF3old, (dA1, (dA2, (dA3, dA4))))))
+
+/-- Reorder chart tangent coordinates into the raw-shaped order.
+
+The full p. 13 formal Jacobian naturally maps raw order
+`(C1,D,F3old,A1,A2,A3,A4)` to chart order `(Ctop,D,A1,A3,F2,F3,C)`.  A
+determinant statement must first compose with this finite coordinate
+permutation, so that the codomain has the raw-shaped order
+`(Ctop,D,F3,A1,F2,A3,C)`. -/
+def productReductionStepChartTangentRawOrderEquiv :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) where
+  toFun v :=
+    (v.1,
+      (v.2.1,
+        (v.2.2.2.2.2.1,
+          (v.2.2.1,
+            (v.2.2.2.2.1,
+              (v.2.2.2.1, v.2.2.2.2.2.2))))))
+  invFun v :=
+    (v.1,
+      (v.2.1,
+        (v.2.2.2.1,
+          (v.2.2.2.2.2.1,
+            (v.2.2.2.2.1,
+              (v.2.2.1, v.2.2.2.2.2.2))))))
+  map_add' v w := by
+    rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
+    rcases w with ⟨eCtop, eD, eA1, eA3, eF2, eF3, eC⟩
+    rfl
+  map_smul' a v := by
+    rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
+    rfl
+  left_inv v := by
+    rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
+    rfl
+  right_inv v := by
+    rcases v with ⟨dCtop, dD, dF3, dA1, dF2, dA3, dC⟩
+    rfl
+
+end ProductStepFull
+
 end Aoyagi
 end DLN
 end DLNFibre

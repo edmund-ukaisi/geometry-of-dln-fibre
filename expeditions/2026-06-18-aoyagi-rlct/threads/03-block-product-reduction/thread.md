@@ -6254,3 +6254,33 @@ The determinant-unit theorem is finite-dimensional and assumes finite `pi` and
 calculation: no full variable-`D/A1/A3` p. 13 Jacobian, no analytic derivative,
 no source-measure or density transport, no normal crossings, no pole order,
 and no RLCT.
+
+## 2026-06-26 A2 product-step full formal Jacobian formulas
+
+Reproduction:
+`reproduction-a2-product-step-full-formal-jacobian-formulas.md`.
+Statement card:
+`statement-card-a2-product-step-full-formal-jacobian-formulas.md`.
+Review:
+`review-a2-product-step-full-formal-jacobian-formulas.md`.
+
+Lean now records the full p. 13 one-step formal tangent formulas for all raw
+variables and the pure chart-output coordinate permutation needed before any
+determinant theorem:
+
+```text
+ProductReductionStepRawTangent
+ProductReductionStepChartTangent
+productReductionStepFormalJacobianFormula
+productReductionStepFormalJacobianInverseFormula
+productReductionStepChartTangentRawOrderEquiv
+```
+
+The formulas include the missing `dD`, `dA1`, and `dA3` contributions.  The
+chart output is ordered `(Ctop,D,A1,A3,F2,F3,C)`, while raw order is
+`(C1,D,F3old,A1,A2,A3,A4)`, so determinant unitness for the full map must
+first compose with the reorder to `(Ctop,D,F3,A1,F2,A3,C)`.
+
+This is formula-level Lean, not yet the bundled full `LinearMap`,
+`LinearEquiv`, or determinant-unit theorem.  No analytic derivative,
+source-measure transport, normal crossings, pole order, or RLCT is claimed.
