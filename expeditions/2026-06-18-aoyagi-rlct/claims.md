@@ -8249,3 +8249,27 @@ Nonclaims: local final-summand algebra only.  It does not construct the full
 prefix target `G=F3_0+prefix`, the retained-passive coordinate domain, source
 coverage, source/image equality, source-measure pushforward, density/Jacobian
 transport, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive `A3_last` prefix target:
+Lean now proves the finite source-tail target theorem in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveA3WithoutLast`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_eq_withoutLast_add_last`,
+and
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq`.
+The final-zeroed tail is the signed earlier contribution.  If
+`A3_last=-(F3-EarlyTail)*Ctop_last` and `det(Ctop_last)` is a unit, the full
+source product tail is `F3`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a3-last-prefix-target.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-prefix-target.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a3-last-prefix-target.md`.
+
+Nonclaims: finite tail algebra only.  No full retained-passive coordinate
+domain, no active `Ctop_0`/`A1_0` reconstruction, no determinant-unit
+neighborhood theorem, no source coverage, no source/image equality, no
+source-measure pushforward, no density/Jacobian theorem, no normal crossings,
+no pole order, and no RLCT.

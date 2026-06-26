@@ -5504,3 +5504,15 @@ full retained-passive coordinate-domain prefix construction: define the
 earlier-edge unsigned prefix, instantiate `G=F3_0+prefix`, and connect this
 local endpoint solve to the active source coordinate without overclaiming
 coverage or measure transport.
+
+That finite prefix target has now landed/in progress in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a3-last-prefix-target.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-prefix-target.md`.
+Lean represents the earlier prefix as `-EarlyTail`, where `EarlyTail` is the
+product tail with `A3_last` zeroed.  The next retained-passive target should
+move from tail algebra to coordinate-domain packaging: combine active `Ctop_0`,
+passive `A1_p` for `p>0`, the existing `A1_0` readback algebra, and this
+`A3_last` target theorem without asserting source coverage or measure
+transport.

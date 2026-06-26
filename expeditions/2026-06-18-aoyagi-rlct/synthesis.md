@@ -12574,3 +12574,15 @@ target is to build the prefix term from earlier passive `A3_p` values and
 instantiate `G=F3_0+prefix`; coverage, source/image equality, measure
 pushforward, density/Jacobian transport, normal crossings, pole order, and
 RLCT remain open.
+
+New follow-up builds that finite prefix target without adding `Finset`
+reindexing.  `retainedPassiveA3WithoutLast` zeroes the final lower-left block;
+its source tail `EarlyTail` is the signed earlier contribution.  Lean proves
+the split
+`Tail_0(A3)=Tail_0(A3WithoutLast)+Tail_last(A3)`, and then
+`retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq`: if
+`A3_last=-(F3-EarlyTail)*Ctop_last` and `det(Ctop_last)` is a unit, then the
+full source product tail is `F3`.  This is still finite tail algebra only; the
+next real construction is the retained-passive coordinate-domain package with
+active `Ctop_0`, passive `A1_p` for `p>0`, and the already-proved endpoint
+readbacks.

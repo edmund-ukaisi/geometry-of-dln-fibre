@@ -7526,6 +7526,45 @@ Xhigh reviewer `Einstein the 3rd` passed the final-edge indexing, sign/order,
 determinant-unit cancellation, and nonclaim boundary.  The reviewer also ran
 the focused `RetainedPassiveCoordinates` build successfully.
 
+## 2026-06-26 A2 retained-passive `A3_last` prefix target
+
+Reproduction:
+`reproduction-a2-retained-passive-a3-last-prefix-target.md`.
+Statement card:
+`statement-card-a2-retained-passive-a3-last-prefix-target.md`.
+Review:
+`review-a2-retained-passive-a3-last-prefix-target.md`.
+
+Lean now connects the final-edge endpoint solve to the active source target in
+recursive-tail form:
+
+```text
+ChartLocalSuffixState.retainedPassiveA3WithoutLast
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_withoutLast_last
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_eq_withoutLast_add_last
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq
+```
+
+The zeroed family `A3WithoutLast` keeps the earlier lower-left blocks and sets
+the final block to zero.  Its source tail `EarlyTail` is the signed earlier
+contribution, so the paper-facing unsigned prefix is `-EarlyTail`.  Lean proves
+that choosing
+
+```text
+A3_last = -(F3 - EarlyTail) * Ctop_last
+```
+
+under `IsUnit Ctop_last.det` makes the full source product tail equal `F3`.
+
+This is finite tail algebra only.  It does not yet package the full
+retained-passive coordinate domain, reconstruct active `Ctop_0`/`A1_0`, prove
+determinant-unit neighborhoods, coverage, source/image equality, measure
+pushforward, density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Tesla the 3rd` passed the sign convention, split indexing,
+determinant-unit usage, and nonclaim boundary.  The reviewer also ran the
+focused `RetainedPassiveCoordinates` build successfully.
+
 ## 2026-06-26 A2 retained-passive D and L recurrences
 
 Reproduction:

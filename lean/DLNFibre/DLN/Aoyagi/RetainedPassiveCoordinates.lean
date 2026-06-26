@@ -710,6 +710,176 @@ theorem retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_C
     _ = -(-G) := by rw [Matrix.mul_one]
     _ = G := by exact neg_neg G
 
+/-- The final-edge-zeroed `A3` family keeps all lower-left blocks except the
+last one.  Its product tail is the signed contribution of the earlier edges. -/
+def retainedPassiveA3WithoutLast
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (p : Fin (M + 1)) : Matrix (κ' p.succ) ρ K :=
+  if p = Fin.last M then 0 else A3 p
+
+omit [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem retainedPassiveA3WithoutLast_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K) :
+    retainedPassiveA3WithoutLast (K := K) (ρ := ρ) (κ' := κ') A3 (Fin.last M) = 0 := by
+  simp [retainedPassiveA3WithoutLast]
+
+omit [Fintype ρ] [DecidableEq ρ] in
+theorem retainedPassiveA3WithoutLast_eq_of_ne
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    {p : Fin (M + 1)} (hp : p ≠ Fin.last M) :
+    retainedPassiveA3WithoutLast (K := K) (ρ := ρ) (κ' := κ') A3 p = A3 p := by
+  simp [retainedPassiveA3WithoutLast, hp]
+
+/-- The product tail with the final `A3` block zeroed has zero final-edge tail. -/
+@[simp]
+theorem retainedPassiveLowerLeftProductTailSum_withoutLast_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K) :
+    retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3) C M (Nat.le_succ M) =
+      0 := by
+  have hlast :=
+    retainedPassiveLowerLeftProductTailSum_last
+      (K := K) (ρ := ρ) (κ' := κ')
+      A1 (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3) C
+  rw [hlast, retainedPassiveA3WithoutLast_last]
+  rw [show
+      (1 : Matrix (κ' (Fin.last M).succ) (κ' (Fin.last M).succ) K) *
+          (0 : Matrix (κ' (Fin.last M).succ) ρ K) = 0 by
+        exact Matrix.mul_zero _]
+  rw [Matrix.zero_mul]
+  exact neg_zero
+
+/-- Splitting the explicit product tail into the signed earlier-edge tail and
+the final-edge tail. -/
+theorem retainedPassiveLowerLeftProductTailSum_eq_withoutLast_add_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K) :
+    ∀ (m : ℕ) (hm : m ≤ M),
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C m (Nat.le_trans hm (Nat.le_succ M)) =
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            A1 (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3) C m
+              (Nat.le_trans hm (Nat.le_succ M)) +
+          retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            A1 A3 C M (Nat.le_succ M) := by
+  let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+  let lastTail :=
+    retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+      A1 A3 C M (Nat.le_succ M)
+  let motive : (m : ℕ) → m ≤ M → Prop := fun m hm ↦
+    retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3 C m (Nat.le_trans hm (Nat.le_succ M)) =
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C m (Nat.le_trans hm (Nat.le_succ M)) + lastTail
+  have hbase : motive M le_rfl := by
+    dsimp [motive, lastTail, A3early]
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) :=
+      ⟨m, Nat.lt_trans (Nat.lt_of_succ_le hms) (Nat.lt_succ_self M)⟩
+    have hp_ne : p ≠ Fin.last M := by
+      intro hp
+      have hval : p.val = (Fin.last M).val := congrArg Fin.val hp
+      simp [p] at hval
+      omega
+    have htail :
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            A1 A3 C m
+              (Nat.le_trans (Nat.le_of_succ_le hms) (Nat.le_succ M)) =
+          -(residualFactorProduct C (Fin.last (M + 1)) p.succ p.succ.le_last *
+              A3 p *
+              (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                A1 (Fin.last (M + 1)) p.castSucc p.castSucc.le_last)⁻¹) +
+            retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+              A1 A3 C (m + 1) (Nat.le_trans hms (Nat.le_succ M)) := by
+      simpa [p] using
+        retainedPassiveLowerLeftProductTailSum_castSucc
+          (K := K) (ρ := ρ) (κ := κ') A1 A3 C p
+    have htailEarly :
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            A1 A3early C m
+              (Nat.le_trans (Nat.le_of_succ_le hms) (Nat.le_succ M)) =
+          -(residualFactorProduct C (Fin.last (M + 1)) p.succ p.succ.le_last *
+              A3 p *
+              (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                A1 (Fin.last (M + 1)) p.castSucc p.castSucc.le_last)⁻¹) +
+            retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+              A1 A3early C (m + 1) (Nat.le_trans hms (Nat.le_succ M)) := by
+      have hcast :=
+        retainedPassiveLowerLeftProductTailSum_castSucc
+          (K := K) (ρ := ρ) (κ := κ') A1 A3early C p
+      have hA3p : A3early p = A3 p := by
+        simpa [A3early] using
+          retainedPassiveA3WithoutLast_eq_of_ne (K := K) (ρ := ρ) A3 hp_ne
+      simpa [p, hA3p] using hcast
+    change retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3 C m (Nat.le_trans (Nat.le_of_succ_le hms) (Nat.le_succ M)) =
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3early C m
+            (Nat.le_trans (Nat.le_of_succ_le hms) (Nat.le_succ M)) + lastTail
+    rw [htail, htailEarly, ih]
+    simp [add_assoc]
+  intro m hm
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+  simpa [motive, A3early, lastTail] using hcanon
+
+/-- If the final lower-left block is chosen from the active source target
+`F3` plus the unsigned earlier-edge prefix, then the source product tail is
+`F3`.  The earlier prefix is represented as the negative of the signed product
+tail with the final `A3` block zeroed. -/
+theorem retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (F3 : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    let A3early := retainedPassiveA3WithoutLast (K := K) (ρ := ρ) A3
+    let earlyTail : Matrix (κ' (Fin.last (M + 1))) ρ K :=
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3early C 0 (Nat.zero_le (M + 1))
+    let CtopLast : Matrix ρ ρ K :=
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+    IsUnit CtopLast.det →
+      A3 (Fin.last M) = -(F3 - earlyTail) * CtopLast →
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C 0 (Nat.zero_le (M + 1)) = F3 := by
+  intro A3early earlyTail CtopLast hCtop hA3last
+  have hsplit :
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C 0 (Nat.zero_le (M + 1)) =
+        earlyTail +
+          retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            A1 A3 C M (Nat.le_succ M) := by
+    simpa [A3early, earlyTail] using
+      retainedPassiveLowerLeftProductTailSum_eq_withoutLast_add_last
+        (K := K) (ρ := ρ) (κ' := κ') A1 A3 C 0 (Nat.zero_le M)
+  have hlast :
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C M (Nat.le_succ M) =
+        F3 - earlyTail := by
+    simpa [CtopLast] using
+      retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop
+        (K := K) (ρ := ρ) (κ' := κ') A1 A3 C (F3 - earlyTail) hCtop hA3last
+  rw [hsplit, hlast]
+  simp [sub_eq_add_neg, add_left_comm]
+
 /-- The suffix-state retained-passive lower-left tail sum is the same as the
 explicit product-tail sum once `D` and `Ctop` are read back from the recursive
 suffix state. -/

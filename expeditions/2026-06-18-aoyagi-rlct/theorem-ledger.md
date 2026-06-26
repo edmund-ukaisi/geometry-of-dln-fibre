@@ -9514,3 +9514,20 @@ Review:
 This is local endpoint algebra only: no prefix `G=F3_0+prefix`, no coordinate
 domain theorem, no source coverage, source/image theorem, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive `A3_last` prefix target:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveA3WithoutLast`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_withoutLast_last`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_eq_withoutLast_add_last`,
+and
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_zero_eq_target_of_A3_last_eq`.
+The final-zeroed product tail is the signed earlier contribution; choosing
+`A3_last=-(F3-EarlyTail)*Ctop_last` under `IsUnit Ctop_last.det` makes the full
+source tail equal `F3`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-prefix-target.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a3-last-prefix-target.md`.
+This is finite tail algebra only: no coordinate-domain theorem, active
+`Ctop_0`/`A1_0` reconstruction, source coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
