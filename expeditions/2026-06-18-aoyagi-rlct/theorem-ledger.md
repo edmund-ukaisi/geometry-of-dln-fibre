@@ -8943,6 +8943,33 @@ This is a local finite-integral consumer only; it does not prove source
 coverage, a product-step pushforward theorem, original source/prior transport,
 signed-box density identification, normal crossings, pole order, or RLCT.
 
+Latest A2 suffix-step raw-order inverse-density handoff:
+`ProductReductionStepSuffixDensity.lean` defines the arbitrary suffix-step
+raw-shaped target tuple
+`chartLocalSuffixStateStepRawOrderTargetTuple` and proves determinant-chart
+membership, raw tuple continuity, target tuple continuity, and chart-side
+inverse-density continuity/positivity.  Lean names:
+`continuousAt_productReductionStepTopologyTupleToChartRawOrder_of_mem_rawDetChartSet`,
+`chartLocalSuffixStateStepRawOrderTargetTuple`,
+`chartLocalSuffixStateStepRawOrderTargetTuple_mem_rawDetChartSet`,
+`continuousAt_chartLocalSuffixState_stepRawCoordinates_topologyTuple`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_of_raw`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity_of_fields`,
+and
+`chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity_pos`.
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-suffix-step-raw-order-inverse-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-suffix-step-raw-order-inverse-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-step-raw-order-inverse-density.md`.
+This is local product-step chart/density infrastructure
+only; it does not prove source coverage, product-chart construction for the
+original DLN source, product-step pushforward, source/prior transport,
+signed-box density identification, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

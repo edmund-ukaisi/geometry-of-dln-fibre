@@ -5062,3 +5062,18 @@ product-chart construction, product-step pushforward, original source/prior
 transport, signed-box density identification, normal crossings, pole order, or
 RLCT.  Further density work should move a genuine transport or chart image
 obligation, not add another wrapper around the same finite-integral theorem.
+
+A2 arbitrary suffix-step raw-order inverse-density handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-suffix-step-raw-order-inverse-density.md`.
+Lean adds `ProductReductionStepSuffixDensity.lean`, defining the target tuple
+obtained by applying the raw-order product-step map to
+`ChartLocalSuffixState.stepRawCoordinates`.  It proves determinant-chart
+membership from `stepRawCoordinates_detChart`, raw and target-tuple
+continuity, and inverse-density continuity/positivity for arbitrary suffix
+steps.  This is the preferred generic handoff behind the left-endpoint p.13
+special case.  Xhigh review passed after correcting the doc wording about
+which matrices are inverted.  It is not source coverage, product-chart construction,
+product-step pushforward, original source/prior transport, signed-box density
+identification, normal crossings, pole order, or RLCT.  Next value after
+review is source/product-chart image or density-transport work, not another
+finite-integral wrapper.

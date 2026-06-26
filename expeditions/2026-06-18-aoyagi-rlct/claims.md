@@ -7525,3 +7525,33 @@ Review:
 Nonclaims: no source coverage, p.13 product chart construction, product-step
 pushforward identity, original source/prior transport, signed-box density
 identification, normal crossings, pole order, or RLCT.
+
+Latest A2 suffix-step raw-order inverse-density handoff:
+Lean now defines the arbitrary suffix-step raw-shaped target tuple obtained by
+applying the raw-order product-step coordinate map to
+`ChartLocalSuffixState.stepRawCoordinates`.  It proves determinant-chart
+membership, raw and target tuple continuity, and chart-side inverse-density
+continuity/positivity for arbitrary suffix steps.
+
+Lean names:
+`continuousAt_productReductionStepTopologyTupleToChartRawOrder_of_mem_rawDetChartSet`,
+`chartLocalSuffixStateStepRawOrderTargetTuple`,
+`chartLocalSuffixStateStepRawOrderTargetTuple_mem_rawDetChartSet`,
+`continuousAt_chartLocalSuffixState_stepRawCoordinates_topologyTuple`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_of_raw`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity`,
+`continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity_of_fields`,
+and
+`chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity_pos`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-suffix-step-raw-order-inverse-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-suffix-step-raw-order-inverse-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-step-raw-order-inverse-density.md`.
+
+Nonclaims: no source coverage, product-chart construction for the original DLN
+source, product-step pushforward identity, original source/prior transport,
+signed-box density identification, normal crossings, pole order, or RLCT.

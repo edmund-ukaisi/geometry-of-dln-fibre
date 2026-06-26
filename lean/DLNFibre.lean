@@ -339,3 +339,5 @@ import DLNFibre.DLN.Aoyagi.ClosedForm
 import DLNFibre.DLN.Aoyagi.ProductReductionStepMeasure
 -- Aoyagi p. 13 regular-coordinate tuple feeding the product-step inverse density handoff.
 import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity
+-- Aoyagi suffix-state product-step tuples feeding the inverse density handoff.
+import DLNFibre.DLN.Aoyagi.ProductReductionStepSuffixDensity

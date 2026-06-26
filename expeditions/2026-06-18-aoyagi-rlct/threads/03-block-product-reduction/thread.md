@@ -6622,3 +6622,47 @@ finite-integral consumer only: it does not prove the p.13 product chart image,
 source coverage, product-step pushforward identity, original DLN source/prior
 transport, signed-box density identification, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-26 A2 suffix-step raw-order inverse density handoff
+
+Reproduction:
+`reproduction-a2-suffix-step-raw-order-inverse-density.md`.
+Statement card:
+`statement-card-a2-suffix-step-raw-order-inverse-density.md`.
+Review:
+`review-a2-suffix-step-raw-order-inverse-density.md`.
+
+Lean now defines the arbitrary suffix-step target tuple
+
+```text
+chartLocalSuffixStateStepRawOrderTargetTuple E p S F3prev
+```
+
+as the raw-order product-step chart image of
+`ChartLocalSuffixState.stepRawCoordinates E p S F3prev`.  It proves:
+
+```text
+continuousAt_productReductionStepTopologyTupleToChartRawOrder_of_mem_rawDetChartSet
+chartLocalSuffixStateStepRawOrderTargetTuple_mem_rawDetChartSet
+continuousAt_chartLocalSuffixState_stepRawCoordinates_topologyTuple
+continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple
+continuousAt_chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity
+chartLocalSuffixStateStepRawOrderTargetTuple_inverseJacobianDensity_pos
+```
+
+with direct/raw-continuity variants also available.
+
+The pen-and-paper calculation is
+
+```text
+x = (S.Ctop,S.D,F3prev,A1,A2,A3,A4)
+Y = (S.Ctop*A1, S.D,
+     F3prev - S.D*A3*(S.Ctop*A1)^(-1),
+     A1, -A1^(-1)*A2, A3, A4 - A3*A1^(-1)*A2).
+```
+
+The formulas invert `A1` and `S.Ctop*A1`; the residual/passive block `S.D` is
+not assumed invertible.  This is generic local product-step chart/density
+infrastructure only; it is not source coverage, source/prior transport,
+product-step pushforward, signed-box density identification, normal crossings,
+pole order, or RLCT.

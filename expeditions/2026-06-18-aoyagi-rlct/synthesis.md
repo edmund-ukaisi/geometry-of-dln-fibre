@@ -11611,3 +11611,51 @@ chart, prove source coverage, prove a product-step pushforward identity,
 identify signed-box source density with the inverse Jacobian density, transport
 the original DLN prior, produce normal crossings, compute pole order, or prove
 RLCT.
+
+## Latest A2 Suffix-Step Raw-Order Inverse-Density Handoff
+
+`ProductReductionStepSuffixDensity.lean` now gives the generic version of the
+product-step target-tuple handoff.  For an arbitrary suffix-state step it
+defines
+
+```text
+chartLocalSuffixStateStepRawOrderTargetTuple E p S F3prev
+  = productReductionStepTopologyTupleToChartRawOrder
+      ((ChartLocalSuffixState.stepRawCoordinates E p S F3prev).topologyTuple).
+```
+
+If `S.Ctop` and the transformed edge top-left block are determinant units,
+the target tuple lies in the raw-shaped target determinant chart.  Lean also
+proves fieldwise continuity of the raw step tuple, continuity of the target
+tuple by composing with the raw-order chart map at determinant-chart points,
+and continuity/positivity of the chart-side inverse product-step Jacobian
+density along the target tuple.
+
+The pen-and-paper calculation writes
+
+```text
+x = (S.Ctop,S.D,F3prev,A1,A2,A3,A4)
+```
+
+and
+
+```text
+Y = (S.Ctop*A1, S.D,
+     F3prev - S.D*A3*(S.Ctop*A1)^(-1),
+     A1, -A1^(-1)*A2, A3, A4 - A3*A1^(-1)*A2).
+```
+
+The inverse chart recovers `x`; the formulas invert `A1` and `S.Ctop*A1`,
+while `S.D` is passive and may be singular.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-suffix-step-raw-order-inverse-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-suffix-step-raw-order-inverse-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-suffix-step-raw-order-inverse-density.md`.
+Xhigh review passed after the doc wording was corrected to avoid claiming a
+separate displayed `S.Ctop` inverse.  This remains local product-step chart/density
+infrastructure: no source coverage, source/prior transport, product-step
+pushforward theorem, signed-box density identification, normal crossings, pole
+order, or RLCT.
