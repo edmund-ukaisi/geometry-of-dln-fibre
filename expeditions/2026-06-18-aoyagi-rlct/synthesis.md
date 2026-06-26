@@ -10908,3 +10908,14 @@ hand-built product equivalence: separate supplied endpoint row and column
 equivalences are enough.  The construction of those endpoint equivalences, and
 the selected-entry factor-product matrix identity, remain the live source
 frontier.
+
+The residual-factor product bridge now also has the selected-center matrix
+upgrade:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-selected-center-matrix.md`.
+Lean proves
+`residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_submatrix`.
+Given the previous two-edge displayed-product bridge plus a supplied equality
+identifying the displayed post-pivot lower product with the selected-center
+coordinate matrix after reindexing, the unreindexed `residualFactorProduct`
+is the selected-center matrix.  This is finite matrix reindexing only; the
+displayed RHS identity remains the source-moving obligation.

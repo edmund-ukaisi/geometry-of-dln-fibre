@@ -5934,3 +5934,29 @@ This remains finite bookkeeping only.  It does not construct the endpoint
 equivalences, a selected-entry chart, compatible residual factors, a
 selected-entry matrix RHS, source/image equality, normal crossings, pole order,
 or RLCT.
+
+## 2026-06-25 A2 Case 2 residual-factor product selected-center matrix
+
+Reproduction:
+`reproduction-a2-case2-residual-factor-product-selected-center-matrix.md`.
+Statement card:
+`statement-card-a2-case2-residual-factor-product-selected-center-matrix.md`.
+Review:
+`review-a2-case2-residual-factor-product-selected-center-matrix.md`.
+
+Lean now proves:
+
+```text
+Matrix.eq_of_submatrix_equiv_eq
+residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_submatrix
+```
+
+The theorem composes the guarded displayed-product bridge with a supplied
+selected-center RHS equality and then uses equivalence-submatrix faithfulness
+to remove the wrapper.  The resulting statement is the exact matrix identity
+expected by the selected-entry residual-factor readout socket.
+
+The post-pivot domains are `(S,J+1)`, matching Aoyagi's continuing Case 2
+branch.  The theorem still does not prove the displayed RHS, construct
+`Cfac`, construct endpoint equivalences, produce `Cprime` from source data,
+or prove source/image equality, normal crossings, pole order, or RLCT.

@@ -7082,6 +7082,27 @@ Nonclaims: no construction of `Cfac`, no fixed-base endpoint equivalence, no
 selected-entry coordinate-matrix RHS identity, no source/image equality, no
 source-measure transport, no normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 residual-factor product selected-center matrix bridge:
+Lean now proves that once the displayed post-pivot lower product is supplied
+as the selected-center coordinate matrix after endpoint reindexing, the
+unreindexed two-edge `residualFactorProduct` itself is exactly that
+selected-center coordinate matrix.
+
+Lean names:
+`Matrix.eq_of_submatrix_equiv_eq` and
+`residualFactorProduct_eq_centerCoordinateMatrix_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_submatrix`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-selected-center-matrix.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-factor-product-selected-center-matrix.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-residual-factor-product-selected-center-matrix.md`.
+
+Nonclaims: the displayed selected-center RHS identity is still supplied; no
+construction of `Cfac`, no fixed-base endpoint equivalence, no source
+production of `Cprime`, no source/image equality, no source-measure transport,
+no normal crossings, pole order, or RLCT.
+
 Latest A2 Case 2 residual-coordinate index pivot-entry equivalence:
 Lean now proves that the p.13 scalar residual-coordinate index for a Case 2
 residual block is equivalent to the finite set of candidate selected entries

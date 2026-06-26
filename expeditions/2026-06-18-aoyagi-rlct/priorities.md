@@ -4731,3 +4731,11 @@ Lean can now produce the exact `residualCoordEquiv` needed by the selected-entry
 readout bridge.  The meaningful frontier is now sharper: construct or
 source-audit those endpoint equivalences, then prove the selected-entry
 factor-product matrix identity.
+
+A2 Case 2 residual-factor product selected-center matrix bridge has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-factor-product-selected-center-matrix.md`.
+It removes the final equivalence-submatrix wrapper after a supplied displayed
+post-pivot RHS identity.  The live source-moving obligation is still to prove
+that displayed RHS from the selected-entry chart data, with the post-pivot
+domains at `(S,J+1)`, not the old `J` center.
