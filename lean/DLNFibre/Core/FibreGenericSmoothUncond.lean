@@ -6,8 +6,17 @@ import DLNFibre.Core.LocalizationAtComponent
 import Mathlib.RingTheory.Localization.BaseChange
 
 /-!
-# `DLNFibre.Core.FibreGenericSmoothUncond` — generic smoothness, unconditional modulo one geometric
-fact (thread 17, task #110)
+# `DLNFibre.Core.FibreGenericSmoothUncond` — generic smoothness, reduced to one geometric fact
+(thread 17, task #110) — ⚠ HISTORICAL / SUPERSEDED for the headline
+
+> **⚠ The unconditional generic-smoothness headline is NOT here — it is
+> `Core.FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent`, proved by a SIMPLER route that
+> needs no C2(a) (a fibre top component is an fp domain over an alg-closed field, hence generically
+> smooth). The "single remaining geometric conditional (C2(a))" described below was the thread-17 LIVE
+> state; it is now SUPERSEDED — the bare-orbit C2(a) iso was found dimensionally impossible (thread 20)
+> and smoothness was achieved without it. This module's LIVE contribution is the unconditional C1 bridge
+> + C3 transport; `isSmoothAt_sweepFibre_of_component_orbitSmooth` below is relabeled dead scaffolding
+> (its hypothesis iso does not exist in that shape).**
 
 Thread 16 landed generic smoothness of the reduced fibre as an **honest conditional**: its one open
 input is `Algebra.IsSmoothAt k q` of `sweepFibreRing` at a top-component prime `q`. This module
@@ -34,7 +43,7 @@ quotient, an orbit-closure ring covered by `Core.OrbitSmooth`.
   instantiation, no `whnf` blowup) + the basic-open bridge `isSmoothAt_of_smooth_localizationAway`
   land the chart `IsSmoothAt`.
 
-## The single remaining geometric conditional (C2(a))
+## The thread-17 C2(a) conditional — SUPERSEDED (see ⚠ banner above; kept as historical scaffolding)
 
 `isSmoothAt_sweepFibre_of_component_orbitSmooth`: GIVEN that every top-dim minimal prime `I` of
 `sweepFibreRing` has a `k`-algebra iso `sweepFibreRing ⧸ I ≃ₐ[k] orbitRing M` to an orbit-closure

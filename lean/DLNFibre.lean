@@ -320,8 +320,9 @@ import DLNFibre.Core.FibreBundleTransition
 -- C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime meeting
 -- one minimal prime recovers that component's local ring (sub-walls (a)+(b) of thread-16, banked). C3
 -- `FibreGenericSmoothUncond` — `S ⊗ Away g ≃ Away (1⊗g)` transport ⟹ `IsSmoothAt` of the fibre chart
--- from `IsSmoothAt` of `sweepFibreRing`. The SOLE remaining open input is C2(a): the algebra iso
--- `sweepFibreRing⧸I ≃ₐ[k] orbitRing M` per top-component prime (fibre-component↔orbit, ~multi-module).
+-- from `IsSmoothAt` of `sweepFibreRing`. (The thread-17 C2(a) framing — "sole remaining input" — is
+-- SUPERSEDED: smoothness is fully unconditional via FibreComponentOrbitTransport's fp-domain route, no
+-- C2(a) needed; that bare-orbit iso was dimensionally impossible. See FibreComponentOrbitTransport below.)
 import DLNFibre.Core.LocalizationAtComponent
 import DLNFibre.Core.FibreGenericSmoothUncond
 -- Scope-3 (bundle bridge B3-4, thread 21): the genuine TOP-LEFT `e_β`↔ambient identification — the seam

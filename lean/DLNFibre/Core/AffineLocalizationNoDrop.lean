@@ -53,9 +53,10 @@ theorem ringKrullDim_eq_trdeg_of_fg_domain (A : Type u) [CommRing A] [IsDomain A
 
 /-- **`trdeg k S = trdeg k D` for a localization of a domain at nonzero elements.** For a `k`-domain
 `D` and a `k`-algebra localization `S = M⁻¹D` at `M ≤ D∖0` (so the structure map `D → S` makes `S`
-sit between `D` and `Frac D`), the transcendence degrees over `k` agree. `S` is algebraic over `D`
-(`S ↪ Frac D`, algebraic over `D`; `IsAlgebraic.tower_bot_of_injective`), so `trdeg D S = 0` and the
-tower additivity `trdeg_add_eq` over `k ⊆ D ⊆ S` collapses to `trdeg k D`. -/
+sit between `D` and `Frac D`), the transcendence degrees over `k` agree. `S` is **algebraic over `D` in
+the fraction-field sense** — `S ↪ Frac D` and `Frac D` is algebraic over `D` (NOT integral/finite; the
+`Algebra.IsAlgebraic` proof goes through `IsAlgebraic.tower_bot_of_injective`) — so `trdeg D S = 0` and
+the tower additivity `trdeg_add_eq` over `k ⊆ D ⊆ S` collapses to `trdeg k D`. -/
 theorem trdeg_localization_eq (D : Type u) [CommRing D] [IsDomain D] [Algebra k D]
     (M : Submonoid D) (hM : M ≤ nonZeroDivisors D)
     (S : Type u) [CommRing S] [Algebra k S] [Algebra D S] [IsScalarTower k D S]
