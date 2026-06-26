@@ -160,6 +160,67 @@ def paperEndpointFixedBaseP13RawPreimageTuple
                 ((0 : Matrix (κ p0.succ) ρ ℝ), C0))))))
 
 set_option linter.unusedSectionVars false in
+/-- The p. 13 raw preimage tuple is a section of the full raw tuple space:
+its raw `C1` block is fixed to the identity. -/
+theorem paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    (paperEndpointFixedBaseP13RawPreimageTuple
+      V Bv U₀ hU₀ CedgeBase xu).1 =
+      (1 : Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ) := by
+  classical
+  simp [paperEndpointFixedBaseP13RawPreimageTuple]
+
+set_option linter.unusedSectionVars false in
+/-- The p. 13 raw preimage tuple is a section of the full raw tuple space:
+its raw `A3` block is fixed to zero. -/
+theorem paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    (paperEndpointFixedBaseP13RawPreimageTuple
+      V Bv U₀ hU₀ CedgeBase xu).2.2.2.2.2.1 =
+      (0 : Matrix
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (Fin (Module.finrank ℝ U₀)) ℝ) := by
+  classical
+  simp [paperEndpointFixedBaseP13RawPreimageTuple]
+
+set_option linter.unusedSectionVars false in
 /-- The source-dependent multi-edge p. 13 product-coordinate matrix family used
 for the left-endpoint raw product-step handoff.
 
@@ -779,6 +840,81 @@ theorem p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
     lowerRightBlock_fromBlocks, Ebase, G, F2, F3, Ctop, C, p0, j, ρ, κ]
 
 set_option linter.unusedSectionVars false in
+/-- The actual p. 13 left-step raw tuple has raw `C1` fixed to the identity. -/
+theorem p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    (p13ProductCoordinateLeftStepRawTopologyTuple
+      V Bv U₀ hU₀ CedgeBase xu).1 =
+      (1 : Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ) := by
+  have htuple :
+      p13ProductCoordinateLeftStepRawTopologyTuple V Bv U₀ hU₀ CedgeBase xu =
+        paperEndpointFixedBaseP13RawPreimageTuple V Bv U₀ hU₀ CedgeBase xu :=
+    p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu
+  exact (congrArg Prod.fst htuple).trans
+    (paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu)
+
+set_option linter.unusedSectionVars false in
+/-- The actual p. 13 left-step raw tuple has raw `A3` fixed to zero. -/
+theorem p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (xu : α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))) :
+    (p13ProductCoordinateLeftStepRawTopologyTuple
+      V Bv U₀ hU₀ CedgeBase xu).2.2.2.2.2.1 =
+      (0 : Matrix
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (Fin (Module.finrank ℝ U₀)) ℝ) := by
+  have htuple :
+      p13ProductCoordinateLeftStepRawTopologyTuple V Bv U₀ hU₀ CedgeBase xu =
+        paperEndpointFixedBaseP13RawPreimageTuple V Bv U₀ hU₀ CedgeBase xu :=
+    p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu
+  exact (congrArg (fun z => z.2.2.2.2.2.1) htuple).trans
+    (paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu)
+
+set_option linter.unusedSectionVars false in
 /-- The constructed multi-edge p. 13 product-coordinate matrix family's
 left-step target tuple is the explicit p. 13 raw-shaped target tuple. -/
 theorem p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
@@ -914,34 +1050,11 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
         (throughSubspaceEndpointComplementIndex
           (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))]
     [m.IsAddHaarMeasure]
-    (hs : NullMeasurableSet
-      (productReductionStepRawDetChartSet
-        (Fin (Module.finrank ℝ U₀))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))
-      m)
     (hpre :
       AEMeasurable
         (paperEndpointFixedBaseP13RawPreimageTuple
           V Bv U₀ hU₀ CedgeBase)
         η)
-    (hΦ :
-      AEMeasurable
-        (productReductionStepTopologyTupleToChartRawOrder
-          (ρ := Fin (Module.finrank ℝ U₀))
-          (π := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-          (μ := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
-          (ν := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))
-        (Measure.map
-          (paperEndpointFixedBaseP13RawPreimageTuple
-            V Bv U₀ hU₀ CedgeBase) η))
     (hpre_map :
       Measure.map
           (paperEndpointFixedBaseP13RawPreimageTuple
@@ -1042,7 +1155,7 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
             (η := η) (m := m)
             (pre := paperEndpointFixedBaseP13RawPreimageTuple
               V Bv U₀ hU₀ CedgeBase)
-            hs hpre hΦ hpre_map
+            hpre hpre_map
 
 set_option linter.unusedSectionVars false in
 /-- Conditional p. 13 consumer using the actual constructed left-step raw tuple.
@@ -1090,34 +1203,11 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
         (throughSubspaceEndpointComplementIndex
           (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))]
     [m.IsAddHaarMeasure]
-    (hs : NullMeasurableSet
-      (productReductionStepRawDetChartSet
-        (Fin (Module.finrank ℝ U₀))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
-        (throughSubspaceEndpointComplementIndex
-          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))
-      m)
     (hraw :
       AEMeasurable
         (p13ProductCoordinateLeftStepRawTopologyTuple
           V Bv U₀ hU₀ CedgeBase)
         η)
-    (hΦ :
-      AEMeasurable
-        (productReductionStepTopologyTupleToChartRawOrder
-          (ρ := Fin (Module.finrank ℝ U₀))
-          (π := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-          (μ := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
-          (ν := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))
-        (Measure.map
-          (p13ProductCoordinateLeftStepRawTopologyTuple
-            V Bv U₀ hU₀ CedgeBase) η))
     (hraw_map :
       Measure.map
           (p13ProductCoordinateLeftStepRawTopologyTuple
@@ -1194,24 +1284,11 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
               (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))) := by
     rw [← hmap_raw_pre]
     exact hraw_map
-  have hΦpre :
-      AEMeasurable
-        (productReductionStepTopologyTupleToChartRawOrder
-          (ρ := Fin (Module.finrank ℝ U₀))
-          (π := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-          (μ := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
-          (ν := throughSubspaceEndpointComplementIndex
-            (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))
-        (Measure.map pre η) := by
-    rw [← hmap_raw_pre]
-    exact hΦ
   exact
     map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
       (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
-      (CedgeBase := CedgeBase) (η := η) (m := m) hs
-      hpre hΦpre hpre_map hCtop_ae
+      (CedgeBase := CedgeBase) (η := η) (m := m)
+      hpre hpre_map hCtop_ae
 
 set_option linter.unusedSectionVars false in
 /-- The p. 13 raw-shaped target tuple is continuous at a self-base point. -/

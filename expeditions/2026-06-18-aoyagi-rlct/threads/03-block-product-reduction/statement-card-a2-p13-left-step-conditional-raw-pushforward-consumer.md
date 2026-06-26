@@ -15,11 +15,22 @@ density.
 
 The source-side raw pushforward is an explicit hypothesis.
 
+It should not be silently promoted to a theorem from p. 13 alone.  The p. 13
+raw section fixes the full raw tuple coordinates `C1 = I` and `A3 = 0`, so in
+nontrivial raw `C1` or `A3` directions its image is lower-dimensional inside
+the raw determinant chart.  Lean records these section facts for both the
+explicit raw preimage tuple and the actual constructed left-step raw tuple.
+
 ## Lean Names
 
 ```text
+aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
 p13ProductCoordinateLeftStepRawTopologyTuple
+p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
+p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
@@ -28,11 +39,14 @@ map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 
 - An additive Haar measure `m` on the raw tuple space.
 - A source measure `η`.
-- Null-measurability of the raw determinant chart for `m`.
 - A supplied pushforward identity saying the p. 13 raw preimage, or the
   actual constructed left-step raw tuple, maps `η` to `m.restrict rawDetChart`.
 - A.e. determinant-unit condition for `Ctop(u)`.
-- A.e. measurability hypotheses for the raw source tuple and raw-order map.
+- A.e. measurability of the raw source tuple.
+
+Null-measurability of the raw determinant chart and a.e. measurability of the
+raw-order map on `m.restrict rawDetChart` are derived internally from openness
+of the chart and continuity on the chart.
 
 ## Method
 
@@ -67,7 +81,9 @@ This checkpoint does not prove the supplied raw pushforward hypothesis.  It
 does not prove original DLN source/prior transport, source coverage, p. 13
 source-chart construction from original coordinates, signed-box density
 identification, product-measure pushforward, regular-suspension certification,
-normal crossings, pole order, or RLCT.
+normal crossings, pole order, or RLCT.  In particular, the section facts
+`C1 = I` and `A3 = 0` are guardrails against treating the p. 13 section as a
+full raw determinant-chart Haar parametrisation.
 
 ## Verification
 
@@ -85,6 +101,8 @@ Review:
 
 ```text
 expeditions/2026-06-18-aoyagi-rlct/threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md
+expeditions/2026-06-18-aoyagi-rlct/threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md
 ```
 
 xhigh review passed on 2026-06-26 with no findings.
+Follow-up xhigh scout review recorded the raw-section guardrail on 2026-06-26.

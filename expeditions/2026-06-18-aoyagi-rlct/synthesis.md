@@ -11782,17 +11782,23 @@ normal crossings, compute pole order, or prove RLCT.
 `ProductReductionStepMeasure.lean` now has the generic composition consumer
 
 ```text
+aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
 ```
 
 which says: if a raw source tuple `pre` pushes `eta` to additive Haar measure
 restricted to the raw determinant chart, then composing `pre` with the
 raw-order product-step map gives the inverse-Jacobian weighted raw target
-measure.
+measure.  The raw-order map's a.e.-measurability for the restricted raw Haar
+measure is derived from chart openness and continuity on the chart.
 
 `ProductReductionStepRegularDensity.lean` specializes this twice:
 
 ```text
+paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
+p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
+p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
@@ -11810,11 +11816,19 @@ as an explicit hypothesis, transports it through the equality with
 `productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
 Haar measure.
 
+The four section facts record a support guardrail: the p.13 raw section fixes
+raw `C1 = I` and raw `A3 = 0`.  In nontrivial raw `C1` or `A3` directions this
+is lower-dimensional inside the full raw determinant chart, so the full
+raw-Haar pushforward is not justified by p.13 and remains an explicit
+hypothesis here.
+
 Reproduction, statement card, and review:
 `threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
 and
 `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+The follow-up guardrail review is
+`threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md`.
 
 This is still conditional.  It does not prove the supplied raw pushforward,
 construct the original p.13 source chart, prove source coverage, transport

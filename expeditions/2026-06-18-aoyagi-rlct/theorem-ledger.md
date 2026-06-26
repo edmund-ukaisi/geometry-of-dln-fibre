@@ -9050,10 +9050,16 @@ normal crossings, pole order, or RLCT.
 
 Latest A2 p.13 left-step conditional raw pushforward consumer:
 `ProductReductionStepMeasure.lean` now proves
-`map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`, the
-generic composition consumer for the raw-order inverse-density pushforward
-under an explicit raw source pushforward hypothesis.  `ProductReductionStepRegularDensity.lean`
+`aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart`
+and `map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`,
+the generic composition consumer for the raw-order inverse-density pushforward
+under an explicit raw source pushforward hypothesis.  Chart null-measurability
+and raw-order map a.e.-measurability are internal.  `ProductReductionStepRegularDensity.lean`
 adds `p13ProductCoordinateLeftStepRawTopologyTuple`,
+`paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one`,
+`paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero`,
+`p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one`,
+`p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero`,
 `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`, and
 `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map`.
 The public p.13 theorem assumes
@@ -9061,11 +9067,16 @@ The public p.13 theorem assumes
 m.restrict rawDetChart` and concludes the raw-order target tuple has density
 `productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
 Haar measure.
+The section facts record that the p.13 raw preimage fixes raw `C1 = I` and raw
+`A3 = 0`; in nontrivial raw `C1` or `A3` directions this is lower-dimensional,
+so p.13 should not be read as a proof of the full raw-Haar pushforward.
 Reproduction, statement card, and review are at
 `threads/03-block-product-reduction/reproduction-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-conditional-raw-pushforward-consumer.md`,
 and
 `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
+The follow-up section-guardrail review is at
+`threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md`.
 This is a conditional measure consumer only: no proof of the supplied raw
 pushforward, original source/prior transport, source coverage, signed-box
 density identification, product-measure pushforward, regular-suspension

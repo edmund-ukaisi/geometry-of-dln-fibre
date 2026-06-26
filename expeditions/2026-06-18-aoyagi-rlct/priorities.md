@@ -5127,10 +5127,14 @@ A2 p.13 left-step conditional raw pushforward consumer has now landed:
 Lean proves a generic raw-order composition consumer and p.13 specializations
 for both the explicit raw preimage tuple and the actual constructed left-step
 raw tuple.  The source/product-chart raw pushforward is an explicit hypothesis;
-the conclusion is the inverse-Jacobian weighted raw target measure
+raw chart null-measurability and raw-order map a.e.-measurability are derived
+internally.  The conclusion is the inverse-Jacobian weighted raw target measure
 `(m.restrict rawDetChart).withDensity ...`.  The next genuinely source-moving
 A2 priority is to prove or source-faithfully assume the actual p.13
 source/product-chart pushforward and density identification.  Do not infer
-source coverage, original DLN source/prior transport, signed-box density
-identification, product-measure pushforward, regular-suspension certification,
-normal crossings, pole order, or RLCT from this consumer.
+that pushforward from p.13 raw algebra alone: the p.13 section fixes raw
+`C1 = I` and `A3 = 0`, now recorded in Lean for both the explicit raw
+preimage and actual left-step raw tuple.  Do not infer source coverage,
+original DLN source/prior transport, signed-box density identification,
+product-measure pushforward, regular-suspension certification, normal
+crossings, pole order, or RLCT from this consumer.

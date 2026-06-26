@@ -25,6 +25,12 @@ pushes forward to the raw determinant-chart Haar measure.  It should instead
 take that as an explicit hypothesis and only compose the already-proved raw
 product-step pushforward.
 
+The reason is not merely a missing API.  The p.13 raw preimage is a section of
+the full raw tuple space: its raw `C1` coordinate is fixed to `I` and its raw
+`A3` coordinate is fixed to `0`.  In nontrivial raw `C1` or `A3` directions,
+this is lower-dimensional inside the full raw determinant chart, so p.13 does
+not support a full raw-Haar pushforward theorem for `X`.
+
 ## Pen-and-Paper Check
 
 Let `η` be a measure on the p.13 parameter space and let `m` be an additive
@@ -74,14 +80,18 @@ This is the intended theorem.
 Lean added a generic raw-product-step composition consumer:
 
 ```text
+aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
+p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
+p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
 ```
 
 with inputs:
 
 ```text
 hpre       : AEMeasurable pre η
-hPhi       : AEMeasurable Phi (Measure.map pre η)
 hpre_map   : Measure.map pre η = m.restrict S
 ```
 
@@ -92,6 +102,11 @@ Measure.map (fun x => Phi (pre x)) η
   =
 (m.restrict S).withDensity (fun y => ofReal (inverseJacobianDensity y)).
 ```
+
+The raw determinant chart is open, hence null-measurable for the Borel Haar
+measure.  Since `Phi` is continuous on the raw determinant chart and
+`map pre η = m|S`, the a.e.-measurability of `Phi` for `map pre η` is derived
+inside the theorem rather than supplied by the caller.
 
 It then specialized this first to the explicit p.13 raw preimage tuple:
 
@@ -113,6 +128,8 @@ pushforward hypothesis for the actual constructed left-step raw tuple.
 ## Kill Conditions
 
 - If the theorem asserts `map X η = m|S` without a hypothesis, it overclaims.
+- If the theorem treats the p.13 section as full-dimensional raw-Haar chart
+  data, it contradicts the formal section facts `C1 = I` and `A3 = 0`.
 - If the theorem mentions original DLN source coverage or prior transport in
   the conclusion, it overclaims.
 - If it requires an inverse of `Dtail`, the statement is wrong.

@@ -257,7 +257,10 @@ No such claim is formalisation-ready until both fields are filled.
   the base product-reduction certificate and determinant-unit condition. The
   raw-order inverse-density pushforward is now consumed conditionally for the
   actual p.13 left-step raw tuple under an explicit source/product-chart raw
-  pushforward hypothesis. The full source Theorem 3/RLCT claim remains blocked
+  pushforward hypothesis, with raw chart null-measurability and raw-order
+  a.e.-measurability derived internally. The raw p.13 section facts
+  `C1 = I` and `A3 = 0` are formalized as guardrails against treating the
+  section as a full raw-Haar chart. The full source Theorem 3/RLCT claim remains blocked
   on the analytic product-coordinate regular-square suspension theorem and the
   actual p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
@@ -729,6 +732,11 @@ No such claim is formalisation-ready until both fields are filled.
   and xhigh `Boyle the 5th` at
   `threads/03-block-product-reduction/review-a2-regular-suspension-uniform-product-handoff.md`.
   Also proved
+  `aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart`,
+  `paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one`,
+  `paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero`,
+  `p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one`,
+  `p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero`,
   `map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`,
   `p13ProductCoordinateLeftStepRawTopologyTuple`,
   `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`,

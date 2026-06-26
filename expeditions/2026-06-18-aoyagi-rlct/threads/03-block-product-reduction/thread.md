@@ -6815,8 +6815,13 @@ explicit hypothesis.
 New Lean names:
 
 ```text
+aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
+paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
+paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
 p13ProductCoordinateLeftStepRawTopologyTuple
+p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
+p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
@@ -6824,13 +6829,25 @@ map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 The generic theorem says that if a raw source tuple `pre` pushes a measure
 `eta` to additive Haar measure restricted to the raw determinant chart, then
 the raw-order chart map pushes `eta` to the inverse-Jacobian weighted raw
-target measure.  The p.13 raw-preimage theorem applies this to
+target measure.  The raw chart null-measurability and raw-order map
+a.e.-measurability are derived internally from the open determinant chart and
+continuity of the raw-order map on that chart.  The p.13 raw-preimage theorem
+applies this to
 `(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)` and identifies the target tuple
 `(Ctop,Dtail,F3,Ctop,F2,0,C0)` a.e. under the supplied `det(Ctop)` unit
 hypothesis.  The public left-step theorem uses the actual constructed
 left-endpoint suffix-step raw tuple and transports the supplied raw
 pushforward through
 `p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple`.
+
+Follow-up xhigh scout checks, recorded in
+`review-a2-p13-left-step-raw-section-guardrail.md`, found a mathematical
+guardrail: the p.13 raw preimage is a section of the full raw tuple space,
+fixing raw `C1 = I` and raw `A3 = 0`.  The four section facts above are now
+formalized for both the explicit raw preimage tuple and the actual constructed
+left-step raw tuple.  Consequently, p.13 should not be read as providing a
+full raw determinant-chart Haar parametrisation; the raw pushforward remains
+an explicit hypothesis and is not a source-backed theorem at this stage.
 
 Xhigh review passed with no findings.  The reviewer confirmed that the density
 is on the raw target measure

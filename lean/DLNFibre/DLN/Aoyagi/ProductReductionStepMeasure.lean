@@ -1054,6 +1054,41 @@ theorem map_productReductionStepRawOrder_restrict_detChart_eq_withDensity_invers
           (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
           rw [withDensity_one]
 
+/-- The raw-order product-step map is a.e.-measurable for Haar measure
+restricted to the raw determinant chart. -/
+theorem aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν]
+    [MeasurableSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    [BorelSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    (m : Measure (ProductReductionStepRawTopologyTuple ρ π μ ν)) :
+    AEMeasurable
+      (productReductionStepTopologyTupleToChartRawOrder
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      (m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) := by
+  classical
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  refine ContinuousOn.aemeasurable₀ ?_
+    (nullMeasurableSet_productReductionStepRawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) m)
+  intro z hz
+  have hderiv :
+      HasFDerivWithinAt
+        (productReductionStepTopologyTupleToChartRawOrder
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+        (productReductionStepRawOrderJacobianCLM
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z)
+        (productReductionStepRawDetChartSet ρ π μ ν) z := by
+    simpa [productReductionStepRawDetChartSet,
+      productReductionStepTopologyTupleToChartRawOrder,
+      productReductionStepRawOrderJacobianCLM,
+      ProductReductionStepRawTopologyTuple] using
+      (hasFDerivWithinAt_productReductionStepTopologyTupleToChart_rawOrder_detChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+        (productReductionStepRawCoordinatesOfTopologyTuple z) hz.1 hz.2)
+  exact hderiv.continuousWithinAt
+
 set_option maxRecDepth 2048 in
 /-- Conditional consumer for the raw-order product-step inverse-Jacobian
 pushforward.
@@ -1062,7 +1097,8 @@ If a source-side parametrisation `pre` is already known to push a measure `η`
 to Haar measure restricted to the raw determinant chart, then composing `pre`
 with the raw-order product-step map gives the inverse-Jacobian weighted target
 measure.  This theorem deliberately keeps the source-side pushforward as an
-explicit hypothesis. -/
+explicit hypothesis; null-measurability of the raw chart and a.e.
+measurability of the raw-order map are derived internally. -/
 theorem map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
     {ρ π μ ν X : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
     [Fintype μ] [DecidableEq μ] [Fintype ν]
@@ -1073,12 +1109,7 @@ theorem map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
     (m : Measure (ProductReductionStepRawTopologyTuple ρ π μ ν))
     [m.IsAddHaarMeasure]
     (pre : X → ProductReductionStepRawTopologyTuple ρ π μ ν)
-    (hs : NullMeasurableSet (productReductionStepRawDetChartSet ρ π μ ν) m)
     (hpre : AEMeasurable pre η)
-    (hΦ : AEMeasurable
-      (productReductionStepTopologyTupleToChartRawOrder
-        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
-      (Measure.map pre η))
     (hpre_map :
       Measure.map pre η =
         m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) :
@@ -1096,6 +1127,14 @@ theorem map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
       ProductReductionStepRawTopologyTuple ρ π μ ν :=
     productReductionStepTopologyTupleToChartRawOrder
       (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hs : NullMeasurableSet (productReductionStepRawDetChartSet ρ π μ ν) m :=
+    nullMeasurableSet_productReductionStepRawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) m
+  have hΦ : AEMeasurable Φ (Measure.map pre η) := by
+    rw [hpre_map]
+    simpa [Φ] using
+      aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) m
   calc
     Measure.map (fun x => Φ (pre x)) η =
         Measure.map Φ (Measure.map pre η) := by
