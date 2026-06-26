@@ -12552,3 +12552,14 @@ This gives the exact recursive `F3_p` formula at one edge; the iterated finite
 sum and `A3_last` solve remain next.  Because matrix inverse is total in Lean,
 analytic/chart uses must still pair this with suffix-state `Ctop` determinant
 unit propagation.
+
+New follow-up iterates that recurrence.  Lean now defines
+`retainedPassiveLowerLeftTailSum` with terminal value zero and recursive update
+`Tail_p=-(S_{p+1}.D*A3_p*S_p.Ctop^-1)+Tail_{p+1}`, then proves
+`lowerLeft(S_i.L)=Tail_i`.  It also proves
+`suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix`, reading `S_i.Ctop` as
+the ordered product of the `A1` factors, and an explicit product-tail theorem
+where `D` and `Ctop` are replaced by `residualFactorProduct C` and
+`residualFactorProduct A1`.  This is the finite iterated `F3` formula; it is
+still not the `A3_last` endpoint solve or the retained-passive coordinate
+domain theorem.

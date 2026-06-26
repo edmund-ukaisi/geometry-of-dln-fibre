@@ -382,6 +382,143 @@ theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc
   rw [hCtop]
   exact hrec
 
+/-- The finite tail sum obtained by iterating the retained-passive lower-left
+`L` recurrence from index `m` to the terminal suffix state.
+
+The summand at edge `p` is the one-edge contribution
+`-(D_{p+1} * A3_p * Ctop_p⁻¹)`, expressed using the actual deterministic
+suffix states. -/
+def retainedPassiveLowerLeftTailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (m : ℕ) (hm : m ≤ N) : Matrix (κ (Fin.last N)) ρ K :=
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦ Matrix (κ (Fin.last N)) ρ K)
+    (fun q hqs acc ↦
+      let p : Fin N := ⟨q, Nat.lt_of_succ_le hqs⟩;
+      -((suffixState E (Fin.last N) p.succ p.succ.le_last).D *
+          A3 p *
+          ((suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+        acc)
+    0
+    hm
+
+/-- The retained-passive lower-left tail sum is zero at the terminal suffix
+state. -/
+@[simp]
+theorem retainedPassiveLowerLeftTailSum_self
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K) :
+    retainedPassiveLowerLeftTailSum A1 F2 A3 C N le_rfl = 0 := by
+  simp [retainedPassiveLowerLeftTailSum]
+
+/-- The retained-passive lower-left tail sum unfolds by adding the contribution
+from the current edge and then continuing with the successor suffix. -/
+theorem retainedPassiveLowerLeftTailSum_castSucc
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    retainedPassiveLowerLeftTailSum A1 F2 A3 C p.val (Nat.le_of_lt p.isLt) =
+      -((suffixState E (Fin.last N) p.succ p.succ.le_last).D *
+          A3 p *
+          ((suffixState E (Fin.last N) p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+        retainedPassiveLowerLeftTailSum A1 F2 A3 C (p.val + 1)
+          (Nat.succ_le_of_lt p.isLt) := by
+  intro E
+  unfold retainedPassiveLowerLeftTailSum
+  rw [Nat.decreasingInduction_succ_left]
+
+/-- Along retained-passive fixed-base edges, the lower-left block of the
+deterministic suffix-state left multiplier is the finite tail sum of all
+one-edge lower-left contributions to its right. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    ∀ (i : Fin (N + 1)) (hi : i ≤ Fin.last N),
+      let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+      lowerLeftBlock (suffixState E (Fin.last N) i hi).L =
+        retainedPassiveLowerLeftTailSum A1 F2 A3 C i.val (Fin.val_fin_le.mp hi) := by
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  let j : Fin (N + 1) := Fin.last N
+  let motive : (m : ℕ) → m ≤ N → Prop := fun m hm ↦
+    let i : Fin (N + 1) := ⟨m, Nat.lt_succ_of_le hm⟩
+    lowerLeftBlock (suffixState E j i (Fin.val_fin_le.mpr hm)).L =
+      retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm
+  have hbase : motive N le_rfl := by
+    dsimp [motive]
+    have hll_one :
+        lowerLeftBlock (1 : Matrix (ρ ⊕ κ j) (ρ ⊕ κ j) K) =
+          (0 : Matrix (κ j) ρ K) := by
+      ext a b
+      simp [lowerLeftBlock]
+    change lowerLeftBlock (suffixState E j j le_rfl).L =
+      retainedPassiveLowerLeftTailSum A1 F2 A3 C N le_rfl
+    simp [retainedPassiveLowerLeftTailSum, E, j, suffixState_self, terminal,
+      hll_one]
+  have hstep : ∀ m (hms : m + 1 ≤ N),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hm : m ≤ N := Nat.le_of_succ_le hms
+    have hrec :
+        lowerLeftBlock (suffixState E j p.castSucc p.castSucc.le_last).L =
+          -((suffixState E j p.succ p.succ.le_last).D *
+              A3 p *
+              ((suffixState E j p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+            lowerLeftBlock (suffixState E j p.succ p.succ.le_last).L := by
+      simpa [E, j, p] using
+        suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_castSucc_currentCtop
+          A1 F2 A3 C hF2last hA1 p
+    have ih' :
+        lowerLeftBlock (suffixState E j p.succ p.succ.le_last).L =
+          retainedPassiveLowerLeftTailSum A1 F2 A3 C (m + 1) hms := by
+      simpa [motive, E, j, p] using ih
+    have htail :
+        retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm =
+          -((suffixState E j p.succ p.succ.le_last).D *
+              A3 p *
+              ((suffixState E j p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+            retainedPassiveLowerLeftTailSum A1 F2 A3 C (m + 1) hms := by
+      unfold retainedPassiveLowerLeftTailSum
+      rw [Nat.decreasingInduction_succ_left]
+    change lowerLeftBlock (suffixState E j p.castSucc p.castSucc.le_last).L =
+      retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm
+    rw [hrec, ih', htail]
+  intro i hi
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, E, j] using hcanon
+
+/-- Source-left-endpoint specialization of the retained-passive lower-left tail
+sum formula. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_tailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    lowerLeftBlock
+        (suffixState E (Fin.last N) 0 (Fin.zero_le (Fin.last N))).L =
+      retainedPassiveLowerLeftTailSum A1 F2 A3 C 0 (Nat.zero_le N) := by
+  intro E
+  simpa [E] using
+    suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum
+      A1 F2 A3 C hF2last hA1 (0 : Fin (N + 1)) (Fin.zero_le (Fin.last N))
+
 /-- The deterministic suffix-state top block unfolds by multiplying the
 prescribed retained-passive `A1_p` block. -/
 theorem suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc
@@ -408,6 +545,215 @@ theorem suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc
   exact
     step_retainedPassiveFixedBaseEdgeMatrix_Ctop
       A1 F2 A3 C p (suffixState E (Fin.last N) p.succ p.succ.le_last) hB
+
+/-- Along retained-passive fixed-base edges, the deterministic suffix-state top
+block is the ordered product of the prescribed retained-passive `A1` factors. -/
+theorem suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    ∀ (i : Fin (N + 1)) (hi : i ≤ Fin.last N),
+      (suffixState (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C)
+        (Fin.last N) i hi).Ctop =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+          A1 (Fin.last N) i hi := by
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  let j : Fin (N + 1) := Fin.last N
+  let motive : (m : ℕ) → m ≤ N → Prop := fun m hm ↦
+    let i : Fin (N + 1) := ⟨m, Nat.lt_succ_of_le hm⟩
+    (suffixState E j i (Fin.val_fin_le.mpr hm)).Ctop =
+      residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+        A1 j i (Fin.val_fin_le.mpr hm)
+  have hbase : motive N le_rfl := by
+    dsimp [motive]
+    change (suffixState E j j le_rfl).Ctop =
+      residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+        A1 j j le_rfl
+    simp [suffixState_self, terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ N),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hCtop :
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop =
+          (suffixState E j p.succ p.succ.le_last).Ctop * A1 p := by
+      simpa [E, j, p] using
+        suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_castSucc
+          A1 F2 A3 C hF2last hA1 p
+    have ih' :
+        (suffixState E j p.succ p.succ.le_last).Ctop =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+            A1 j p.succ p.succ.le_last := by
+      simpa [motive, E, j, p] using ih
+    have hprod :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+            A1 j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+              A1 j p.succ p.succ.le_last * A1 p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (N + 1) ↦ ρ) A1 (j := j) p p.succ.le_last
+    change (suffixState E j p.castSucc p.castSucc.le_last).Ctop =
+      residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+        A1 j p.castSucc p.castSucc.le_last
+    rw [hCtop, ih', hprod]
+  intro i hi
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, E, j] using hcanon
+
+/-- The retained-passive lower-left tail sum with suffix-state fields replaced
+by explicit ordered products of the prescribed `C` and `A1` factors. -/
+def retainedPassiveLowerLeftProductTailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (m : ℕ) (hm : m ≤ N) : Matrix (κ (Fin.last N)) ρ K :=
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦ Matrix (κ (Fin.last N)) ρ K)
+    (fun q hqs acc ↦
+      let p : Fin N := ⟨q, Nat.lt_of_succ_le hqs⟩;
+      -(residualFactorProduct C (Fin.last N) p.succ p.succ.le_last *
+          A3 p *
+          (residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+            A1 (Fin.last N) p.castSucc p.castSucc.le_last)⁻¹) +
+        acc)
+    0
+    hm
+
+/-- The explicit retained-passive lower-left product-tail sum is zero at the
+terminal suffix state. -/
+@[simp]
+theorem retainedPassiveLowerLeftProductTailSum_self
+    (A1 : Fin N → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K) :
+    retainedPassiveLowerLeftProductTailSum A1 A3 C N le_rfl = 0 := by
+  simp [retainedPassiveLowerLeftProductTailSum]
+
+/-- The explicit retained-passive lower-left product-tail sum unfolds by the
+current product summand and the successor tail. -/
+theorem retainedPassiveLowerLeftProductTailSum_castSucc
+    (A1 : Fin N → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N) :
+    retainedPassiveLowerLeftProductTailSum A1 A3 C p.val (Nat.le_of_lt p.isLt) =
+      -(residualFactorProduct C (Fin.last N) p.succ p.succ.le_last *
+          A3 p *
+          (residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+            A1 (Fin.last N) p.castSucc p.castSucc.le_last)⁻¹) +
+        retainedPassiveLowerLeftProductTailSum A1 A3 C (p.val + 1)
+          (Nat.succ_le_of_lt p.isLt) := by
+  unfold retainedPassiveLowerLeftProductTailSum
+  rw [Nat.decreasingInduction_succ_left]
+
+/-- The suffix-state retained-passive lower-left tail sum is the same as the
+explicit product-tail sum once `D` and `Ctop` are read back from the recursive
+suffix state. -/
+theorem retainedPassiveLowerLeftTailSum_eq_productTailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    ∀ (m : ℕ) (hm : m ≤ N),
+      retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm =
+        retainedPassiveLowerLeftProductTailSum A1 A3 C m hm := by
+  let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+  let j : Fin (N + 1) := Fin.last N
+  let motive : (m : ℕ) → m ≤ N → Prop := fun m hm ↦
+    retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm =
+      retainedPassiveLowerLeftProductTailSum A1 A3 C m hm
+  have hbase : motive N le_rfl := by
+    simp [motive]
+  have hstep : ∀ m (hms : m + 1 ≤ N),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hm : m ≤ N := Nat.le_of_succ_le hms
+    have htail :
+        retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm =
+          -((suffixState E j p.succ p.succ.le_last).D *
+              A3 p *
+              ((suffixState E j p.castSucc p.castSucc.le_last).Ctop)⁻¹) +
+            retainedPassiveLowerLeftTailSum A1 F2 A3 C (m + 1) hms := by
+      simpa [E, j, p, hm] using
+        retainedPassiveLowerLeftTailSum_castSucc A1 F2 A3 C p
+    have hproductTail :
+        retainedPassiveLowerLeftProductTailSum A1 A3 C m hm =
+          -(residualFactorProduct C j p.succ p.succ.le_last *
+              A3 p *
+              (residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+                A1 j p.castSucc p.castSucc.le_last)⁻¹) +
+            retainedPassiveLowerLeftProductTailSum A1 A3 C (m + 1) hms := by
+      simpa [j, p, hm] using
+        retainedPassiveLowerLeftProductTailSum_castSucc A1 A3 C p
+    have hD :
+        (suffixState E j p.succ p.succ.le_last).D =
+          residualFactorProduct C j p.succ p.succ.le_last := by
+      simpa [E, j, p] using
+        suffixState_D_retainedPassiveFixedBaseEdgeMatrix
+          A1 F2 A3 C hF2last hA1 p.succ p.succ.le_last
+    have hCtop :
+        (suffixState E j p.castSucc p.castSucc.le_last).Ctop =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (N + 1) ↦ ρ)
+            A1 j p.castSucc p.castSucc.le_last := by
+      simpa [E, j, p] using
+        suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix
+          A1 F2 A3 C hF2last hA1 p.castSucc p.castSucc.le_last
+    change retainedPassiveLowerLeftTailSum A1 F2 A3 C m hm =
+      retainedPassiveLowerLeftProductTailSum A1 A3 C m hm
+    rw [htail, hproductTail, hD, hCtop, ih]
+  intro m hm
+  exact Nat.decreasingInduction (motive := motive) hstep hbase hm
+
+/-- Along retained-passive fixed-base edges, the lower-left block of the
+deterministic suffix-state left multiplier is the explicit product-tail sum of
+all one-edge lower-left contributions to its right. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_productTailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    ∀ (i : Fin (N + 1)) (hi : i ≤ Fin.last N),
+      let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+      lowerLeftBlock (suffixState E (Fin.last N) i hi).L =
+        retainedPassiveLowerLeftProductTailSum A1 A3 C i.val (Fin.val_fin_le.mp hi) := by
+  intro i hi E
+  calc
+    lowerLeftBlock (suffixState E (Fin.last N) i hi).L =
+        retainedPassiveLowerLeftTailSum A1 F2 A3 C i.val (Fin.val_fin_le.mp hi) := by
+      simpa [E] using
+        suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum
+          A1 F2 A3 C hF2last hA1 i hi
+    _ = retainedPassiveLowerLeftProductTailSum A1 A3 C i.val (Fin.val_fin_le.mp hi) := by
+      exact retainedPassiveLowerLeftTailSum_eq_productTailSum
+        A1 F2 A3 C hF2last hA1 i.val (Fin.val_fin_le.mp hi)
+
+/-- Source-left-endpoint specialization of the explicit retained-passive
+lower-left product-tail formula. -/
+theorem suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_productTailSum
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    lowerLeftBlock
+        (suffixState E (Fin.last N) 0 (Fin.zero_le (Fin.last N))).L =
+      retainedPassiveLowerLeftProductTailSum A1 A3 C 0 (Nat.zero_le N) := by
+  intro E
+  simpa [E] using
+    suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_productTailSum
+      A1 F2 A3 C hF2last hA1 (0 : Fin (N + 1)) (Fin.zero_le (Fin.last N))
 
 /-- Along retained-passive fixed-base edges, the deterministic suffix-state top
 block stays in the determinant-unit chart when every `A1_p` is a unit. -/

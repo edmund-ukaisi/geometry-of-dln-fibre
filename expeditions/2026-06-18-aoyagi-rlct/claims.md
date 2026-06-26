@@ -8206,3 +8206,25 @@ for `F3_0`, no `A3_last` solve, no retained-passive coordinate-domain theorem,
 no source-rank coverage, no source/image equality, no source-measure
 pushforward, no density/Jacobian theorem, no normal crossings, no pole order,
 and no RLCT.
+
+Latest A2 retained-passive lower-left L tail sum:
+Lean now proves the iterated finite lower-left formula in recursive-tail form
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum`,
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum`,
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum_eq_productTailSum`, and
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_productTailSum`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-l-tail-sum.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-tail-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-l-tail-sum.md`.
+
+Nonclaims: recursive finite algebra only.  No `A3_last` solve, no
+retained-passive coordinate-domain theorem, no source-rank coverage, no
+source/image equality, no source-measure pushforward, no density/Jacobian
+theorem, no normal crossings, no pole order, and no RLCT.

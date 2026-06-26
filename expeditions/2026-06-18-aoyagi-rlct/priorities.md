@@ -5485,3 +5485,13 @@ Review:
 It specializes the one-step `L` update to the actual suffix state and rewrites
 the contribution as `-(D_{p+1}*A3_p*Ctop_p^-1)`.  The next target after this
 is the iterated finite-sum recurrence for `F3_0`.
+
+Tail-sum rung now landed/in progress in `RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-l-tail-sum.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-tail-sum.md`.
+It proves the iterated lower-left formula in recursive-tail form and an
+explicit product-tail version using `D=residualFactorProduct C` and
+`Ctop=residualFactorProduct A1`.  The next target is a nonempty-edge endpoint
+construction/solve for `A3_last`, with determinant-unit cancellation for the
+last `Ctop`.

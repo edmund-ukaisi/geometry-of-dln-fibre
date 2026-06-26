@@ -7436,6 +7436,56 @@ Verification passed with the local shared Lake directory: focused
 `scripts/sorries`, and `git diff --check`.  The full build still emits
 pre-existing warnings outside the touched Aoyagi module.
 
+## 2026-06-26 A2 retained-passive lower-left L tail sum
+
+Reproduction:
+`reproduction-a2-retained-passive-l-tail-sum.md`.
+Statement card:
+`statement-card-a2-retained-passive-l-tail-sum.md`.
+Review:
+`review-a2-retained-passive-l-tail-sum.md`.
+
+Lean now iterates the one-edge lower-left recurrence into a recursive finite
+tail sum:
+
+```text
+ChartLocalSuffixState.retainedPassiveLowerLeftTailSum
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_tailSum
+```
+
+The theorem says
+
+```text
+lowerLeft(S_i.L) = Tail_i
+Tail_last = 0
+Tail_p = -(S_{p+1}.D * A3_p * S_p.Ctop^-1) + Tail_{p+1}.
+```
+
+The same Lean slice adds
+
+```text
+ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix
+```
+
+which identifies `S_i.Ctop` with the ordered product of the supplied `A1`
+factors, and then proves the product-tail form:
+
+```text
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+ChartLocalSuffixState.retainedPassiveLowerLeftTailSum_eq_productTailSum
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_productTailSum
+ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_productTailSum
+```
+
+This is now the finite iterated `F3` formula in recursive-tail form.  It still
+does not solve `A3_last`, construct the retained-passive coordinate domain,
+prove coverage, source/image equality, measure pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Pauli the 3rd` passed the indexing, sign/order, terminal zero,
+`Ctop` product order, and total-inverse caveat.
+
 ## 2026-06-26 A2 retained-passive D and L recurrences
 
 Reproduction:

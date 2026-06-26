@@ -9476,3 +9476,27 @@ This is one-edge recursive bookkeeping only: no iterated F3 sum, no
 `A3_last` solve, no coordinate-domain theorem, no source coverage, no
 source/image theorem, no measure pushforward, no density/Jacobian theorem, no
 normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive lower-left L tail sum:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum_self`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum_castSucc`,
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_tailSum`,
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_tailSum`,
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_self`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_castSucc`,
+`ChartLocalSuffixState.retainedPassiveLowerLeftTailSum_eq_productTailSum`,
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_eq_productTailSum`,
+and
+`ChartLocalSuffixState.suffixState_lowerLeftBlock_L_retainedPassiveFixedBaseEdgeMatrix_zero_eq_productTailSum`.
+These iterate the one-edge recurrence into a recursive finite tail sum and an
+explicit product-tail form.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-l-tail-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-l-tail-sum.md`.
+This is finite suffix-state algebra only: no `A3_last` solve, no coordinate
+domain theorem, no source coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.
