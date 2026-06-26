@@ -369,5 +369,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatChart
 -- pattern) + `composeFold_abs_det` (the det telescope via `general_composed_clm_abs_det`). Consumes the
 -- per-factor dets (Schur/LDU/chain/radial). `phiFlat_abs_det` (the opaque-width chart reconciliation) is next.
 import DLNFibre.DLN.RLCT.Validate.RouteMChartFactorFold
+-- Item-1 of the ∀M achiever Jacobian det: the det-ready bijective coordinatization. `RouteMChartIdxCard`
+-- (the per-role cardinality bricks) + `RouteMChartIdx` (`chartDim_eq_flatDim` — the chart-coord count
+-- = `flatDim M`, ∀M) + `RouteMChartIdxEquiv` (`chartIdxEquiv : Fin (routeMAmbient M) ≃ ChartIdx M t`).
+-- + `RouteMRadialFactor` (the radial `ChartFactor` + its det `|u_p|^{card−1}`, item-2 first factor).
+import DLNFibre.DLN.RLCT.Validate.RouteMExtraction
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxCard
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdx
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxEquiv
+import DLNFibre.DLN.RLCT.Validate.RouteMRadialFactor
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
