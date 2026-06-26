@@ -1,126 +1,172 @@
 threads:
 - id: c-14b0d330
   kind: anchored
-  status: open
+  status: resolved
   anchor: 'the answer is the one every schoolchild knows:'
-  anchor_prefix: ' is the
-
-    product zero?
-
-
-    For two scalars $a_1, a_2$ '
-  anchor_suffix: '
-
-    $a_2 a_1 = 0$ forces $a_1 = 0$ or $a_2 = 0$. The '
-  created_at: '2026-06-17T12:06:21'
-  updated_at: '2026-06-17T12:45:00'
+  anchor_prefix: " is the\nproduct zero?\n\nFor two scalars $a_1, a_2$ "
+  anchor_suffix: "\n$a_2 a_1 = 0$ forces $a_1 = 0$ or $a_2 = 0$. The "
+  created_at: "2026-06-17T12:06:21"
+  updated_at: "2026-06-17T23:10:19"
   posts:
   - author: edmund.lau
-    date: '2026-06-17T12:06:21'
-    text: Hmm .. This comes off as patronising. The opening question also sounds more like an overly pedagogical
-      tone... I don't think Arnold style for *Graduate* textbook?
+    date: "2026-06-17T12:06:21"
+    text: Hmm .. This comes off as patronising. The opening question also sounds more
+      like an overly pedagogical tone... I don't think Arnold style for *Graduate*
+      textbook?
     id: p-b51b485a
   - author: claude
-    date: '2026-06-17T12:45:00'
-    text: 'Tone pass: dropped the ''schoolchild''/leading-question framing. The opening now states the
-      setup and the (2,2,2) phenomenon (three components, dims 4/4/5) directly.'
+    date: "2026-06-17T12:45:00"
+    text: 'Tone pass: dropped the ''schoolchild''/leading-question framing. The opening
+      now states the setup and the (2,2,2) phenomenon (three components, dims 4/4/5)
+      directly.'
     id: p-claude-14b0d330
     labels:
     - addressed
 - id: c-6d603b48
   kind: anchored
-  status: open
+  status: resolved
   anchor: only as the reason anyone computed it
-  anchor_prefix: 's network-free — it
-
-    mentions deep linear networks '
-  anchor_suffix: '; the loss
-
-    function and its singularity invariant '
-  created_at: '2026-06-17T12:22:21'
-  updated_at: '2026-06-17T12:45:00'
+  anchor_prefix: "s network-free — it\nmentions deep linear networks "
+  anchor_suffix: "; the loss\nfunction and its singularity invariant "
+  created_at: "2026-06-17T12:22:21"
+  updated_at: "2026-06-17T23:20:54"
   posts:
   - author: edmund.lau
-    date: '2026-06-17T12:22:21'
-    text: There seem to be a lot here that come across as condescending / dismissive. Please change the
-      overall tone!
+    date: "2026-06-17T12:22:21"
+    text: There seem to be a lot here that come across as condescending / dismissive.
+      Please change the overall tone!
     id: p-dc662fcb
   - author: claude
-    date: '2026-06-17T12:45:00'
-    text: Reworded to 'independent of any neural-network interpretation; the loss ... belongs to a later
-      part and is not used here' — no dismissiveness.
+    date: "2026-06-17T12:45:00"
+    text: Reworded to 'independent of any neural-network interpretation; the loss
+      ... belongs to a later part and is not used here' — no dismissiveness.
     id: p-claude-6d603b48
     labels:
     - addressed
 - id: c-22e2883d
   kind: anchored
-  status: open
+  status: resolved
   anchor: The road is short.
-  anchor_prefix: 'sible
-
+  anchor_prefix: |+
+    sible
     "Formalised" notes give the declarations).
 
-
-    '
   anchor_suffix: ' We set up the space of chains and the loci we car'
-  created_at: '2026-06-17T12:22:50'
-  updated_at: '2026-06-17T12:45:00'
+  created_at: "2026-06-17T12:22:50"
+  updated_at: "2026-06-17T23:20:57"
   posts:
   - author: edmund.lau
-    date: '2026-06-17T12:22:50'
-    text: I recall Arnold being very mathematically focused not having a lot of these rhetorical florishes.
+    date: "2026-06-17T12:22:50"
+    text: I recall Arnold being very mathematically focused not having a lot of these
+      rhetorical florishes.
     id: p-5502dd0b
   - author: claude
-    date: '2026-06-17T12:45:00'
-    text: Removed 'The road is short' and the rhetorical framing; replaced by one plain sentence naming
-      what each section does.
+    date: "2026-06-17T12:45:00"
+    text: Removed 'The road is short' and the rhetorical framing; replaced by one
+      plain sentence naming what each section does.
     id: p-claude-22e2883d
     labels:
     - addressed
 - id: c-c03d375d
   kind: anchored
-  status: open
+  status: resolved
   anchor: we observe that coordinates are a distraction
-  anchor_prefix: ' space of chains and the loci we care about
-
-    (§1); '
-  anchor_suffix: ' and reduce to a
-
-    classification up to a group of b'
-  created_at: '2026-06-17T12:26:01'
-  updated_at: '2026-06-17T12:45:00'
+  anchor_prefix: " space of chains and the loci we care about\n(§1); "
+  anchor_suffix: |2-
+     and reduce to a
+    classification up to a group of b
+  created_at: "2026-06-17T12:26:01"
+  updated_at: "2026-06-17T23:21:00"
   posts:
   - author: edmund.lau
-    date: '2026-06-17T12:26:01'
-    text: Again, odd condescending rhetoric. This should just be something like "we formulate things in
-      coordinate free way" or even mentioning quotienting things out by the group action base changes.
+    date: "2026-06-17T12:26:01"
+    text: Again, odd condescending rhetoric. This should just be something like "we
+      formulate things in coordinate free way" or even mentioning quotienting things
+      out by the group action base changes.
     id: p-4f1d3ae7
   - author: claude
-    date: '2026-06-17T12:45:00'
-    text: Section retitled 'The base-change group and its orbits'; the text now states we describe the
-      quotient Rep_d / G_d (the orbits) — no 'distraction' rhetoric.
+    date: "2026-06-17T12:45:00"
+    text: Section retitled 'The base-change group and its orbits'; the text now states
+      we describe the quotient Rep_d / G_d (the orbits) — no 'distraction' rhetoric.
     id: p-claude-c03d375d
     labels:
     - addressed
 - id: c-e6a8d467
   kind: anchored
-  status: open
+  status: resolved
   anchor: Fix the shapes.
-  anchor_prefix: ' The space of chains, and the families inside it
+  anchor_prefix: |2+
+     The space of chains, and the families inside it
 
-
-    '
   anchor_suffix: ' A **dimension vector** is a list of nonnegative i'
-  created_at: '2026-06-17T12:27:07'
-  updated_at: '2026-06-17T12:45:00'
+  created_at: "2026-06-17T12:27:07"
+  updated_at: "2026-06-17T23:21:03"
   posts:
   - author: edmund.lau
-    date: '2026-06-17T12:27:07'
+    date: "2026-06-17T12:27:07"
     text: Feels like just starting with "A dimensional vector is" is more Arnold style.
     id: p-2b77b9c7
   - author: claude
-    date: '2026-06-17T12:45:00'
-    text: Dropped 'Fix the shapes.'; §1 now opens 'A dimension vector is a list ...' directly.
+    date: "2026-06-17T12:45:00"
+    text: Dropped 'Fix the shapes.'; §1 now opens 'A dimension vector is a list ...'
+      directly.
     id: p-claude-e6a8d467
     labels:
     - addressed
+- id: c-7899173d
+  kind: anchored
+  status: open
+  anchor: dimension vector is the indicator of
+  anchor_prefix: "{\\,1\\,} \\underset{j}{k} \\to \\cdots \\to 0.\n$$\n\nIts "
+  anchor_suffix: |2-
+     $[i,j]$. The direct sum of two
+    representations ha
+  created_at: "2026-06-17T23:31:33"
+  updated_at: "2026-06-17T23:31:33"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-17T23:31:33"
+    text: I thought dimension vector is a list of positive integers.. why is it now
+      an indicator..?
+    id: p-685ef969
+- id: c-3859e863
+  kind: anchored
+  status: open
+  anchor: vertex spaces
+  anchor_prefix: "[i,j]$. The direct sum of two\nrepresentations has "
+  anchor_suffix: " $V_l \\oplus V'_l$ and block-diagonal arrow\nmaps, "
+  created_at: "2026-06-17T23:33:22"
+  updated_at: "2026-06-17T23:33:22"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-17T23:33:22"
+    text: What are "vertex spaces" and what is $V_\ell$?
+    id: p-0b1fecd2
+- id: c-ba8b1997
+  kind: anchored
+  status: open
+  anchor: tracing the standard basis through
+  anchor_prefix: "\\\\ 0 & 1\n\\end{smallmatrix}\\right)$ with $BA = 0$, "
+  anchor_suffix: |2-
+
+    $k^2 \xrightarrow{A} k^2 \xrightarrow{B} k^2$ giv
+  created_at: "2026-06-17T23:34:08"
+  updated_at: "2026-06-17T23:34:08"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-17T23:34:08"
+    text: What is "tracing the standard basis"?
+    id: p-77ecde02
+- id: c-a76591b2
+  kind: anchored
+  status: open
+  anchor: Mathlib has no type
+  anchor_prefix: "ex; for a general quiver the statement is\ndeeper. "
+  anchor_suffix: -$A$ Gabriel theorem, so existence was proved from
+  created_at: "2026-06-17T23:34:41"
+  updated_at: "2026-06-17T23:34:41"
+  posts:
+  - author: edmund.lau
+    date: "2026-06-17T23:34:41"
+    text: This seems to belong to the "formalised in lean" collapsible.
+    id: p-f5d0021e

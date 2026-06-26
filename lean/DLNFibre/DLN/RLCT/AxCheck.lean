@@ -1,0 +1,62 @@
+import DLNFibre.DLN.RLCT.Validate.Case111
+import DLNFibre.DLN.RLCT.Validate.Case212
+import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
+import DLNFibre.DLN.RLCT.Validate.Case222Algebra
+import DLNFibre.DLN.RLCT.Validate.Case222Rlct
+
+/-!
+# Axiom-hygiene check
+
+Emits `#print axioms` for the load-bearing results on every build (imported by the `DLNFibre`
+aggregator), so axiom regressions are caught by the standard green-gate rather than only by an
+ad-hoc check.
+
+Reading the output:
+* **clean** = `[propext, Classical.choice, Quot.sound]` — fully proven, no citation, no `sorry`.
+* `+ monomial_rlct` — the single permitted S2 citation (the bare weighted-monomial-integral fact).
+* `sorryAx` — an unproven rung underneath. **Expected** on `aoyagi_learning_coefficient` until the
+  5 Skeleton rungs (L2 `product_reduction`, D1 `deepest_point_reduction`-≥, R1 `resolution_charts`,
+  A1 ×2) are proven; it must **not** appear on any result below that claims to be proven.
+
+This file is `#print`-only — it adds no definitions and no axioms of its own.
+-/
+
+open DLNFibre.DLN.RLCT
+
+-- (1,1,1) + (2,1,2) validate showcases — must stay axiom-free.
+#print axioms case111_rlct
+#print axioms resolution_charts_case111
+#print axioms case212_rlct
+
+-- S1 substrate (the heaviest analytic rung) + product-MIN engine — must stay clean.
+#print axioms rlct_additive_smooth_block
+#print axioms product_min_rlct
+#print axioms product_min_rlct_of_ne
+
+-- (2,2,2) loss-identity seam (#83) — pure matrix algebra (`prod_two_layer` + flat coords + `ring`).
+-- Must stay clean: NO `monomial_rlct` (the seam's S2-dependence is downstream in the cover), NO `sorryAx`.
+#print axioms dlnLoss222_eq_myF222
+
+-- (2,2,2) ≤-direction cover headline (#80, the hard half) — carries `monomial_rlct`, the PERMITTED S2
+-- citation (the threshold value rests on S2 via the box-divergence atom). Must be
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx`. (Contrast dlnLoss222 above,
+-- which must stay monomial_rlct-FREE: the S2-dependence enters here, in the singular cover.)
+#print axioms rlctAtOn_myF222_le
+
+-- (2,2,2) ≥-direction cover headline (#86) — the GEOMETRIC content. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound] — S2-FREE (no `monomial_rlct`), no `sorryAx`: the ≥-cover
+-- (recStep 24-leaf g5_pivotNode + δ-branch smooth-block + conjugation A-pivots) carries no cited bound.
+#print axioms rlctAtOn_myF222_ge'
+
+-- (2,2,2) `=` value (#80) — `le_antisymm` of the ≥ (clean) + the ≤ (monomial_rlct). Must be
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] — NO `sorryAx` (the only citation enters via
+-- the ≤-half; the ≥-content is citation-free).
+#print axioms rlctAtOn_myF222_eq
+
+-- (2,2,2) network headline (#107, ladder 3/3) — `rlctAt (dlnLoss H222) deepest222 = 3/2`, via the
+-- m.p. transport ∘ the loss-identity seam ∘ the `=` value. Same axiom profile as `_eq`:
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], NO `sorryAx`.
+#print axioms case222_rlct
+
+-- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
+#print axioms aoyagi_learning_coefficient
