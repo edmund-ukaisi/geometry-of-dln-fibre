@@ -95,6 +95,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLayerCover
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGE
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGEL2
 import DLNFibre.Core.Matrix.RankNormalForm
+import DLNFibre.Core.Matrix.RankNormalFormTriangular
 import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
 import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart

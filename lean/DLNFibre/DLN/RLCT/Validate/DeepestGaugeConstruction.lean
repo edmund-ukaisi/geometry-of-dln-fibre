@@ -19,6 +19,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurComparability
 import DLNFibre.DLN.RLCT.Validate.DeepestGermCharge
 import DLNFibre.DLN.RLCT.Validate.DeepestBlockDecomp
 import DLNFibre.DLN.RLCT.Validate.FrontPivotProducer
+import DLNFibre.DLN.RLCT.Validate.DeepestSplitSmooth
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridge
+import DLNFibre.DLN.RLCT.Validate.DeepestCompositionE1
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiLens
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction` — the `DeepestGaugeChart` instance (#44c)
@@ -2837,6 +2841,79 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
       _ ≤ Kup * ((δ₁⁻¹ + 1) * (Sreg_E + Sc)) := mul_le_mul_of_nonneg_left hfold hKup_nonneg
       _ = Kup * (δ₁⁻¹ + 1) * (Sreg_E + Sc) := by ring
 
+/-- **The L = 2 diffeo bridge** (`hstep2`'s `L = 2` branch): `rlctAtOn Φscore wstar = rlctAtOn Φcore
+wstar` for the joint `(T1, Y1)` Ψ. At `L = 2` the deepest reduced chain is two layers, so the
+two-grouping collapses to the single-layer blocks (`G0 = firstLayer`, `G1 = lastLayer`) and the
+verified-exact cert closed form applies verbatim. Proof: feed the joint Ψ (the collapsed closed form,
+cutoff-smooth via the banked `DeepestSchurSmooth` inverse-smoothness + χ-bump) to the banked reduction
+`rlctAtOn_diffeo_bridge_of`, with the composition identity from E1 (`frobSq_prod_absorbed_eq_rcore`,
+the core half) + E2 (the `A0·A0⁻¹ = I` reg-preservation, `deepestEFull ∘ Ψ = deepestEFull`). Stated
+as a separate lemma so its `#print axioms` is independently verifiable (axiom-clean), keeping the
+general-`L` gap (the `L ≥ 3` grouped-`G0` diffeo) off the `L = 2` content. -/
+theorem deepest_diffeo_bridge_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
+      (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
+    (hcoreabs : coreAbsorb = deepestCoreAbsorb H r hr hL)
+    (Score : (Fin (flatDim H) → ℝ) → ℝ)
+    (hScoreDef : Score = fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+            * endpointQL H hL Qf)).toBlocks₂₂
+        - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+              * endpointQL H hL Qf)).toBlocks₂₁
+          * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+          * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
+    (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
+    (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+    (hL2eq : L = 2) :
+    rlctAtOn Φscore wstar
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (coreAbsorb (split x)).2.1)
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+  -- **ROADMAPPED GAP — the (1a) unblocker (block-triangular endpoint frames).** Feed the joint `(T1, Y1)`
+  -- Ψ (the cert's L = 2 closed form, cutoff-smooth) to the banked `rlctAtOn_diffeo_bridge_of`, with the
+  -- composition identity from E1 (`frobSq_prod_absorbed_eq_rcore`, the core half) + E2 (reg-preservation).
+  -- E2 (`deepestEFull ∘ Ψ = deepestEFull`) is sound ONLY at block-triangular endpoint frames: the
+  -- endpoint conjugation `endpointP0 · (prod − B) · endpointQL` leaks Ψ's moved raw `(2,2)` block
+  -- `P11 = −S0·(T1 − T1')` into the read blocks unless `endpointP0` is block-LOWER and `endpointQL`
+  -- block-UPPER (verified exact-rational, `e2-verify/e2_mw2.py`: 7/8 fail at general frames, 0/8 at
+  -- triangular). The block-triangular normalizers are BANKED
+  -- (`Core.Matrix.blockLower_left_normalizer` / `blockUpper_right_normalizer`), but their `[Invertible
+  -- A11]` precondition (the boundary corner's leading `r×r` block) is NOT supplied by the producer's
+  -- `deepestPoint` — `IsDeepLayers` pins only tail-columns-zero for the boundary corner, and
+  -- `deepestPoint_exists` builds `layer0 = U·[I_r|0]` whose top block can be singular. UNBLOCKER (1a,
+  -- always achievable, `e2-verify/a11_check.py`): strengthen `IsDeepLayers`/`deepestPoint_exists` so the
+  -- boundary corner's leading `r×r` block is invertible (`U` rank-`r` ⟹ permute `r` independent rows to
+  -- the top) and emit block-triangular frames from `deepestPoint_frame_pivot_exists`; then E2 holds via
+  -- the banked normalizers + the `(T1, Y1)` Ψ. A bundle-wide `IsDeepLayers` strengthening (Skeleton-level
+  -- def + its existence proof + consumers) — roadmapped as the general-L frontier (joins the `L ≥ 3`
+  -- interior gaps 3099/3104), per the lower-VOI reckoning (this L = 2 diffeo is a building block off the
+  -- concrete-anchor path; closing it leaves `deepest_gauge_construction` sorryAx from 3099/3104 anyway).
+  sorry
+
 /-- **The bundled gauge-slice construction** (#44c sub-3, the COUPLED obligation, `2 ≤ L`). Assembles
 the `split` (`deepestSplit_exists`, MP reindex), `coreAbsorb` (`deepest_coreAbsorb_exists`, PIN 0),
 `regAbsorb` (`deepest_regAbsorb_exists`, PIN 1), and the `loss_squeeze` (`deepest_loss_squeeze`,
@@ -3186,13 +3263,30 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- I − K(wstar) = I`, `Ψ wstar = wstar`; and `Φcore ∘ Ψ = Φscore` since `coreΦ ∘ Ψ = Score` (the LDU
   -- `Rcore = S0·(1−K)·S1`, `coreΦ = frobSq(S0·S1)`) and `Ψ` fixes the reg slot). The genuine remaining
   -- geometric content; the field migration + re-wiring (DeepestGaugeChart.lean) are DONE.
+  -- **Step 2: the diffeo bridge, CASE-SPLIT on `L` (8th-catch pattern, like the `hinterface`
+  -- 3041/3046 L≥3 guards).** At `L = 2` the deepest reduced chain `deepestM` has two layers, so the
+  -- two-grouping collapses to single-layer blocks (`G0 = firstLayer`, `G1 = lastLayer`) and the joint
+  -- `(T1, Y1)` Ψ (the verified-exact cert closed form) applies verbatim — closed by the separate
+  -- axiom-clean `deepest_diffeo_bridge_L2`. For `L ≥ 3` the bridge needs the general-`L` grouped-`G0`
+  -- diffeo (`W := I + Z1·A1⁻¹·A0⁻¹·Y0` on the `prodAux (L−1)`-grouped blocks + the grouped pivot `A0⁻¹`),
+  -- the recursive multi-factor reparametrization — the general-`L` gap, joining 3041/3046 (Item 24).
   have hstep2 : rlctAtOn Φscore wstar
       = rlctAtOn
           (fun x : Fin (flatDim H) → ℝ =>
             (∑ i, (regStraighten (split x)).1 i ^ 2)
               + deepestCoreF H r (coreAbsorb (split x)).2.1)
           ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
-    sorry
+    rcases Nat.lt_or_ge L 3 with hLlt | hL3
+    · -- **L = 2 branch** (`2 ≤ L < 3`): the collapsed joint Ψ, axiom-clean (separate lemma).
+      have hL2eq : L = 2 := by omega
+      exact deepest_diffeo_bridge_L2 H r B hB hr hL hL2 hpos J hJfront' Pf Qf
+        split coreAbsorb regStraighten hsplit hra_regval hca_def
+        Score hScoreDef Φscore hΦscore wstar hwstar hL2eq
+    · -- **L ≥ 3 branch (general-`L` grouped-`G0` diffeo GAP).** The cert's `(T1, Y1)` Ψ generalises to
+      -- the two-grouping `G0 = prodAux (L−1)` (first `L−1` layers), `G1 = last layer`: `A0, Y0, Z0, T0`
+      -- become the grouped-product blocks and `W`/`⅟P00` carry the grouped pivot `A0⁻¹`. The recursive
+      -- multi-factor reparametrization — the general-`L` frontier, joining the 3041/3046 L≥3 interior gaps.
+      sorry
   rw [hstep1, hstep2]
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
