@@ -80,3 +80,41 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 >   USES them (`genBlkFlatStruct`) and the item-3 map equality are the next-tide build (see `thread.md`
 >   UPDATE-2).
 > - **Status.** sorry-free. The shared coordinate foundation for the item-3 unblock.
+
+---
+
+> **Claim.** The STRUCTURED disjoint-slot decoder `genBlkFlatStruct` keeps the rate ∀M:
+> `routeMCore M (phiFlatStruct u) = u²·VvalGen` unconditionally.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.genBlkFlatStruct`, `C0_eq_one`, `hC0_struct`,
+>   `routeMCore_phiFlatStruct` (`lean/DLNFibre/DLN/RLCT/Validate/RouteMGenFlatStruct.lean` @ `a94ccf54`),
+>   on `RouteMChartSlots` (`bmatStack`/`frameSplitEquiv`/`rmatPad`/readers).
+> - **Gloss.** `genBlkFlatStruct` reads K/X/N/E/W from disjoint `chartIdxEquiv` slots, derives
+>   `Bmat (k+1) = [K; X·K]`, `Rmat (k+1) = [[0,0],[0,E]]` ⟹ `C_{k+1}` is the Schur frame; identity
+>   boundary `k=0`. `C0_eq_one` proves `C 0 = 1` (the `chainQ`-at-`c_0=0` collapse). The rate transfers
+>   via the decoder-agnostic `routeMCore_phiGen`.
+> - **Proved.** The structured decoder + the unconditional rate ∀M + the identity-boundary `C 0 = 1`.
+> - **Assumed.** `StructAdm M t` (the chart side conditions + the achiever descent `Text(k+2) ≤
+>   Text(k+1)` + `Text(k+2) ≤ Wext(k+1)`).
+> - **Cited / Deferred.** none cited. The factored chart's det (item-4) is deferred to the factor-list
+>   assembly.
+> - **Status.** sorry-free. The decoder + rate side of the structured chart, COMPLETE ∀M.
+
+---
+
+> **Claim.** The factored chart's Jacobian determinant is the leafH monomial, with NO map equality:
+> `|det (fderiv (composeFold fs) u)| = ∏_j |u_j|^{leafH j}`, given the per-factor det product = the
+> monomial (item-4 bookkeeping).
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.composeFold_abs_det_leafH`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMPhiFlatDet.lean` @ `a94ccf54`)
+> - **Gloss.** The chart DEFINED as `composeFold fs` has fderiv `(foldDerivList fs u).prod`
+>   (`composeFold_hasFDerivAt`); its det telescopes (`composeFold_abs_det`) to the per-factor product,
+>   which `hdet` equates to `∏_j |u_j|^{leafH j}`. The map equality is needed only for the rate, not the
+>   det.
+> - **Proved.** The det theorem (no map equality). Validated end-to-end on the radial-only instance.
+> - **Assumed / Deferred.** `hdet` (item-4: the factor list `fs` + the leafH summation — the remaining
+>   factor-list-assembly build; the spine is validated, the CLEs + multi-factor product remain).
+> - **Cited.** none.
+> - **Status.** sorry-free. The genuine `phiFlat_abs_det` for `phiFlat := composeFold fs`, reduced to
+>   the item-4 bookkeeping (no deep map-equality induction).
