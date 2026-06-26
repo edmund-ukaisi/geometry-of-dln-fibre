@@ -5026,3 +5026,15 @@ correct measure orientation.  Do not identify the forward density
 `|det D Phi(x)|` with the inverse chart density
 `|det D Phi(Phi^{-1}(y))|^{-1}`, and do not infer original source/prior
 transport, source coverage, normal crossings, pole order, or RLCT.
+
+A2 product-step inverse Jacobian density unit control has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-jacobian-density.md`.
+Lean proves local continuity, positivity, and positive lower/upper eventual
+bounds for the chart-side reciprocal density
+`|det D Phi(Phi^{-1}(y))|^{-1}` on the raw-shaped target determinant chart.
+This closes the local reciprocal-density orientation gap left by the
+source-side forward-density checkpoint.  The next A2 density/measure work, if
+needed, must be a genuinely new source/prior or product-chart transport
+statement; do not rebrand these local unit bounds as an unweighted
+change-of-variables theorem, original DLN prior transport, source coverage,
+normal crossings, pole order, or RLCT.

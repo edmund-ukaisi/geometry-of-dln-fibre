@@ -6520,3 +6520,35 @@ positive local lower bound; continuity gives a positive local upper bound.
 This is source-side forward-density unit control.  It is not chart-side
 inverse-density transport, original DLN source/prior transport, source
 coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 product-step inverse Jacobian density
+
+Reproduction:
+`reproduction-a2-product-step-inverse-jacobian-density.md`.
+Statement card:
+`statement-card-a2-product-step-inverse-jacobian-density.md`.
+Review:
+`review-a2-product-step-inverse-jacobian-density.md`.
+
+Lean now proves:
+
+```text
+continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet
+productReductionStepRawOrderInverseJacobianDensity
+productReductionStepRawOrderInverseJacobianDensity_pos
+continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds
+exists_pos_eventually_productReductionStepRawOrderInverseJacobianDensity_le_nhds
+```
+
+The proof packages the raw-shaped target inverse map
+`(Ctop,D,F3,A1,F2,A3,C) -> (Ctop A1^{-1},D,F3+D A3 Ctop^{-1},A1,-A1 F2,A3,C-A3 F2)`,
+shows it is continuous at target determinant-chart points, and composes it
+with the already-proved source-side forward density continuity.  The chart-side
+density is the reciprocal `|det D Phi(Phi^{-1}(y))|^{-1}`, so real inverse
+continuity is justified by source-side positivity at the raw preimage.
+
+This is local chart-side reciprocal-density unit control.  It is not an
+unweighted source-measure pushforward theorem, not original DLN source/prior
+transport, not source coverage, not normal crossings, not pole order, and not
+RLCT.

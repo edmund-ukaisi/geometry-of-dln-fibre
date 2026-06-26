@@ -11530,3 +11530,31 @@ eventual bounds near the base point.
 This is not original DLN source/prior transport and not a chart-side inverse
 density theorem.  It does not prove source coverage, normal crossings, pole
 order, or RLCT.
+
+## Latest A2 Product-Step Inverse Jacobian Density
+
+The local unit-control bridge for the chart-side reciprocal raw-order
+product-step Jacobian density has landed in `ProductReductionStepMeasure.lean`.
+Lean proves:
+
+```text
+continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet
+productReductionStepRawOrderInverseJacobianDensity
+productReductionStepRawOrderInverseJacobianDensity_pos
+continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds
+exists_pos_eventually_productReductionStepRawOrderInverseJacobianDensity_le_nhds
+```
+
+The proof treats the target variables in raw-shaped order
+`(Ctop,D,F3,A1,F2,A3,C)`.  The inverse source tuple is
+`(Ctop A1^{-1},D,F3+D A3 Ctop^{-1},A1,-A1 F2,A3,C-A3 F2)`.  This map is
+continuous at determinant-chart points because only `Ctop` and `A1` are
+inverted.  The raw preimage is again in the source determinant chart, so the
+source-side forward density theorem applies, and positivity at the preimage
+allows inversion.
+
+This is chart-side reciprocal-density unit control for
+`|det D Phi(Phi^{-1}(y))|^{-1}`.  It is not an unweighted measure pushforward,
+not original DLN source/prior transport, not source coverage, not normal
+crossings, not pole order, and not RLCT.

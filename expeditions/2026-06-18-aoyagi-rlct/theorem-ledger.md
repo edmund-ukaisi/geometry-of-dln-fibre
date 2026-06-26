@@ -8887,6 +8887,28 @@ This does not prove chart-side inverse-density transport, original DLN
 source/prior measure comparison, source coverage, normal crossings, pole
 order, or RLCT.
 
+Latest A2 product-step inverse Jacobian density:
+`ProductReductionStepMeasure.lean` now proves local continuity, positivity,
+and positive lower/upper eventual bounds for the chart-side reciprocal
+raw-order product-step Jacobian density at target determinant-chart points.
+Lean names:
+`continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet`,
+`productReductionStepRawOrderInverseJacobianDensity`,
+`productReductionStepRawOrderInverseJacobianDensity_pos`,
+`continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet`,
+`exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds`,
+and
+`exists_pos_eventually_productReductionStepRawOrderInverseJacobianDensity_le_nhds`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-jacobian-density.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-inverse-jacobian-density.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-inverse-jacobian-density.md`.
+This controls `|det D Phi(Phi^{-1}(y))|^{-1}` as a local unit.  It does not
+prove an unweighted source-measure pushforward theorem, original DLN
+source/prior measure comparison, source coverage, normal crossings, pole
+order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

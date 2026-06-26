@@ -7424,6 +7424,30 @@ determinant-unit theorem, no analytic derivative theorem, no source-measure
 pushforward or density transport, and no normal crossings, pole order, or
 RLCT.
 
+Latest A2 product-step inverse Jacobian density:
+Lean now proves local continuity, positivity, and positive lower/upper
+eventual bounds for the chart-side reciprocal density
+`|det D Phi(Phi^{-1}(y))|^{-1}` on the raw-shaped target determinant chart.
+
+Lean names:
+`continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet`,
+`productReductionStepRawOrderInverseJacobianDensity`,
+`productReductionStepRawOrderInverseJacobianDensity_pos`,
+`continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet`,
+`exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds`,
+and
+`exists_pos_eventually_productReductionStepRawOrderInverseJacobianDensity_le_nhds`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-inverse-jacobian-density.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-inverse-jacobian-density.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-inverse-jacobian-density.md`.
+
+Nonclaims: this is not an unweighted source-measure pushforward theorem, not
+original DLN source/prior transport, not source coverage, not normal
+crossings, not pole order, and not RLCT.
+
 Latest A2 full product-step bundled formal linear maps:
 Lean now bundles the full p. 13 forward and inverse formal tangent formulas as
 `LinearMap`s and proves that applying these maps is exactly the already

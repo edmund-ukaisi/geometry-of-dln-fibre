@@ -404,6 +404,195 @@ theorem exists_pos_eventually_productReductionStepRawOrderJacobianAbsDet_le_nhds
     exact (hdensity.eventually htarget).mono
       (fun _ hz ↦ hz.trans (le_max_left _ _))
 
+/-- The inverse coordinate map from raw-shaped chart variables to raw source
+variables is continuous at target determinant-chart points. -/
+theorem continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hy₀ : y₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        ((productReductionStepChartCoordinatesOfRawOrderTopologyTuple y).toRaw).topologyTuple)
+      y₀ := by
+  have hCtop : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.1) y₀ := by
+    fun_prop
+  have hCtopInv : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.1⁻¹) y₀ :=
+    ContinuousAt.comp
+      (x := y₀)
+      (f := fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.1)
+      (g := fun A : Matrix ρ ρ ℝ => A⁻¹)
+      (continuousAt_matrix_inv_of_isUnit_det (A := y₀.1) hy₀.1) hCtop
+  have hA1 : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.2.2.2.1) y₀ := by
+    fun_prop
+  have hA1inv : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => (y.2.2.2.1)⁻¹) y₀ :=
+    ContinuousAt.comp
+      (x := y₀)
+      (f := fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.2.2.2.1)
+      (g := fun A : Matrix ρ ρ ℝ => A⁻¹)
+      (continuousAt_matrix_inv_of_isUnit_det (A := y₀.2.2.2.1) hy₀.2) hA1
+  have hC1 : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        y.1 * (y.2.2.2.1)⁻¹) y₀ := by
+    fun_prop
+  have hD : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν => y.2.1) y₀ := by
+    fun_prop
+  have hF3old : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        y.2.2.1 + y.2.1 * y.2.2.2.2.2.1 * y.1⁻¹) y₀ := by
+    fun_prop
+  have hA2 : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        -y.2.2.2.1 * y.2.2.2.2.1) y₀ := by
+    fun_prop
+  have hA3 : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        y.2.2.2.2.2.1) y₀ := by
+    fun_prop
+  have hA4 : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        y.2.2.2.2.2.2 - y.2.2.2.2.2.1 * y.2.2.2.2.1) y₀ := by
+    fun_prop
+  simpa [productReductionStepChartCoordinatesOfRawOrderTopologyTuple,
+    ProductReductionStepChartCoordinates.toRaw,
+    ProductReductionStepRawCoordinates.topologyTuple] using
+      hC1.prodMk
+        (hD.prodMk
+          (hF3old.prodMk
+            (hA1.prodMk
+              (hA2.prodMk
+                (hA3.prodMk hA4)))))
+
+/-- The chart-side inverse determinant density associated to the raw-order
+product-step coordinate change.  For chart variables `y`, this is
+`|det DΦ(Φ⁻¹ y)|⁻¹`, not the source-side forward density. -/
+def productReductionStepRawOrderInverseJacobianDensity
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepRawTopologyTuple ρ π μ ν) : ℝ :=
+  (productReductionStepRawOrderJacobianAbsDet
+    (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+    ((productReductionStepChartCoordinatesOfRawOrderTopologyTuple y).toRaw).topologyTuple)⁻¹
+
+/-- The chart-side inverse determinant density is positive at target
+determinant-chart points. -/
+theorem productReductionStepRawOrderInverseJacobianDensity_pos
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hy : y ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    0 < productReductionStepRawOrderInverseJacobianDensity
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) y := by
+  let chart : ProductReductionStepChartCoordinates ρ π μ ν ℝ :=
+    productReductionStepChartCoordinatesOfRawOrderTopologyTuple y
+  have hchart : chart.detChart := by
+    simpa [chart] using hy
+  have hraw :
+      ((chart.toRaw).topologyTuple : ProductReductionStepRawTopologyTuple ρ π μ ν) ∈
+        productReductionStepRawDetChartSet ρ π μ ν := by
+    simpa [chart] using
+      (ProductReductionStepChartCoordinates.detChart_toRaw chart hchart)
+  have hpos :
+      0 < productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) chart.toRaw.topologyTuple :=
+    productReductionStepRawOrderJacobianAbsDet_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) chart.toRaw.topologyTuple hraw
+  simpa [productReductionStepRawOrderInverseJacobianDensity, chart] using
+    inv_pos.mpr hpos
+
+/-- The chart-side inverse determinant density is continuous at target
+determinant-chart points. -/
+theorem continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hy₀ : y₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ContinuousAt
+      (productReductionStepRawOrderInverseJacobianDensity
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      y₀ := by
+  let rawPreimage : ProductReductionStepRawTopologyTuple ρ π μ ν →
+      ProductReductionStepRawTopologyTuple ρ π μ ν :=
+    fun y => ((productReductionStepChartCoordinatesOfRawOrderTopologyTuple y).toRaw).topologyTuple
+  let yChart₀ : ProductReductionStepChartCoordinates ρ π μ ν ℝ :=
+    productReductionStepChartCoordinatesOfRawOrderTopologyTuple y₀
+  have hyChart₀ : yChart₀.detChart := by
+    simpa [yChart₀] using hy₀
+  have hraw₀ : rawPreimage y₀ ∈ productReductionStepRawDetChartSet ρ π μ ν := by
+    simpa [rawPreimage, yChart₀] using
+      (ProductReductionStepChartCoordinates.detChart_toRaw yChart₀ hyChart₀)
+  have hrawCont : ContinuousAt rawPreimage y₀ := by
+    simpa [rawPreimage] using
+      continuousAt_productReductionStepChartRawOrderToRawTopologyTuple_of_mem_rawDetChartSet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) y₀ hy₀
+  have hforward : ContinuousAt
+      (fun y : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        productReductionStepRawOrderJacobianAbsDet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (rawPreimage y)) y₀ :=
+    (continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (rawPreimage y₀) hraw₀).comp hrawCont
+  have hpos :
+      0 < productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (rawPreimage y₀) :=
+    productReductionStepRawOrderJacobianAbsDet_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (rawPreimage y₀) hraw₀
+  simpa [productReductionStepRawOrderInverseJacobianDensity, rawPreimage] using
+    (ContinuousAt.inv₀ hforward (ne_of_gt hpos))
+
+/-- Near any target determinant-chart point, the chart-side inverse
+Jacobian density admits a positive lower bound. -/
+theorem exists_pos_eventually_le_productReductionStepRawOrderInverseJacobianDensity_nhds
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hy₀ : y₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ∃ ε : ℝ, 0 < ε ∧
+      ∀ᶠ y in 𝓝 y₀,
+        ε ≤ productReductionStepRawOrderInverseJacobianDensity
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) y := by
+  let density : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ :=
+    productReductionStepRawOrderInverseJacobianDensity
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hdensity : ContinuousAt density y₀ :=
+    continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) y₀ hy₀
+  have hpos : 0 < density y₀ :=
+    productReductionStepRawOrderInverseJacobianDensity_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) y₀ hy₀
+  refine ⟨density y₀ / 2, half_pos hpos, ?_⟩
+  have htarget : ∀ᶠ y in 𝓝 (density y₀), density y₀ / 2 ≤ y := by
+    exact eventually_ge_nhds (show density y₀ / 2 < density y₀ by linarith)
+  exact hdensity.eventually htarget
+
+/-- Near any target determinant-chart point, the chart-side inverse
+Jacobian density admits a positive upper bound. -/
+theorem exists_pos_eventually_productReductionStepRawOrderInverseJacobianDensity_le_nhds
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [DecidableEq μ] [Fintype ν]
+    (y₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hy₀ : y₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ∃ K : ℝ, 0 < K ∧
+      ∀ᶠ y in 𝓝 y₀,
+        productReductionStepRawOrderInverseJacobianDensity
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) y ≤ K := by
+  let density : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ :=
+    productReductionStepRawOrderInverseJacobianDensity
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hdensity : ContinuousAt density y₀ :=
+    continuousAt_productReductionStepRawOrderInverseJacobianDensity_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) y₀ hy₀
+  refine ⟨max (density y₀ + 1) 1, ?_, ?_⟩
+  · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
+  · have htarget : ∀ᶠ y in 𝓝 (density y₀), y ≤ density y₀ + 1 := by
+      exact eventually_le_nhds (show density y₀ < density y₀ + 1 by linarith)
+    exact (hdensity.eventually htarget).mono
+      (fun _ hy ↦ hy.trans (le_max_left _ _))
+
 /-- The raw-order p. 13 product-step map preserves the determinant chart. -/
 theorem mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart
     {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]
