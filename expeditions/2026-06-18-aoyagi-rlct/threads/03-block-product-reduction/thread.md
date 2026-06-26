@@ -9012,3 +9012,41 @@ Case 2 post-pivot block, does not construct endpoint equivalences, does not
 collapse a full fixed-base endpoint product to an adjacent window, and does
 not prove pivot nonzero, source production, pushforward/Jacobian,
 original-loss, normal-crossing, pole-order, or RLCT statements.
+
+## 2026-06-26 A2 retained-passive source-map factor readout
+
+Reproduction:
+`reproduction-a2-retained-passive-source-map-factor-readout.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-map-factor-readout.md`.
+Review:
+`review-a2-retained-passive-source-map-factor-readout.md`
+passed by xhigh `Confucius the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C
+
+schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_one_eq_residualBlock
+
+schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_zero_eq_freeFollowingFactor
+```
+
+The first theorem uses the retained-passive source-map/readback inverse:
+under `data.detChart`, the transformed source edge of `data.edgeMatrix` has
+Schur residual block `data.C p`.  The two Case 2 theorems specialize this to
+the synthetic two-edge datum `case2PostPivotRetainedPassiveData`, whose edge
+`1` factor is the displayed post-pivot residual block and whose edge `0`
+factor is the displayed free following factor.
+
+This moves the factor-identity frontier only for constructed retained-passive
+source-map families.  It does not construct real fixed-base endpoint
+equivalences, identify a real Aoyagi source chart/suffix family with the
+synthetic two-edge datum, collapse a full endpoint product to the adjacent
+window, prove pivot nonzero, or prove source image, pushforward/Jacobian,
+original-loss, normal-crossing, pole-order, or RLCT statements.

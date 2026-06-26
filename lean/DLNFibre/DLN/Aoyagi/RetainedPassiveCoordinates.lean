@@ -3238,6 +3238,30 @@ theorem sourceReadback_edgeMatrix_eq
     simpa [sourceReadback, sourceReadbackSuffixState] using hF3
   exact ext_fields hA1passive hF2body hA3passive hCbody hCtopBody hF3body
 
+/-- For retained-passive coordinate data in the determinant chart, the Schur
+residual block of the transformed source edge of `data.edgeMatrix` is exactly
+the stored residual factor `data.C p`. -/
+theorem schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart)
+    (p : Fin (M + 1)) :
+    schurResidualBlock
+        (sourceReadbackTransformedEdge (K := K) (ρ := ρ) data.edgeMatrix p) =
+      data.C p := by
+  have hread :
+      (sourceReadback (K := K) (ρ := ρ) data.edgeMatrix).C p = data.C p :=
+    congrFun
+      (congrArg
+        (fun data' :
+          RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' ↦
+            data'.C)
+        (sourceReadback_edgeMatrix_eq (K := K) (ρ := ρ) (data := data) hdet)) p
+  rw [← sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge
+    (K := K) (ρ := ρ) data.edgeMatrix p]
+  exact hread
+
 /-- Equal nonredundant retained-passive edge families have equal coordinate
 data. -/
 theorem edgeMatrix_ext

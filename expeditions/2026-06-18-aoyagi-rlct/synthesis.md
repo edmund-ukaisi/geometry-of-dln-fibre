@@ -13181,3 +13181,14 @@ Use this as the local API for adjacent source-readback factor work.  It does
 not prove the transformed edge has the displayed Case 2 post-pivot form, and
 it does not address endpoint equivalences, full-to-window transport,
 fixed-pivot nonzero, source chart production, or analytic/RLCT extraction.
+
+Latest retained-passive source-map factor readout:
+`RetainedPassiveCoordinates.lean` now proves that, under `data.detChart`, the
+transformed source edge of `data.edgeMatrix` has Schur residual block
+`data.C p`.  `RetainedPassiveCase2SelectedEntryChartBridge.lean` specializes
+this to the synthetic two-edge Case 2 datum, giving displayed residual-block
+and free-following-factor readouts at edges `1` and `0`.
+
+This is the first source-map factor identity in this lane, but it remains
+synthetic for Case 2.  Real fixed-base endpoint equivalences and a real
+Aoyagi source chart/suffix family are still open.

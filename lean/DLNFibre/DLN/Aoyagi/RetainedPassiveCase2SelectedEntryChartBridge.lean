@@ -54,6 +54,64 @@ theorem case2PostPivotRetainedPassiveData_detChart
     simp [case2PostPivotRetainedPassiveData]
 
 set_option linter.style.longLine false in
+/-- For the synthetic Case 2 retained-passive datum, the Schur residual block
+of the transformed source edge at edge `1` is the displayed post-pivot residual
+block. -/
+theorem schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_one_eq_residualBlock
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ) :
+    schurResidualBlock
+        (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadbackTransformedEdge
+            (K := ℝ) (ρ := ρ)
+            (case2PostPivotRetainedPassiveData
+              (ρ := ρ) n hS hcont residual Cprime).edgeMatrix
+            (1 : Fin 2)) =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual := by
+  have hC :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C
+        (K := ℝ) (ρ := ρ)
+        (data := case2PostPivotRetainedPassiveData
+          (ρ := ρ) n hS hcont residual Cprime)
+        (case2PostPivotRetainedPassiveData_detChart
+          (ρ := ρ) n hS hcont residual Cprime)
+        (1 : Fin 2)
+  simpa [case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+    case2PostPivotTwoEdgeDomain] using hC
+
+set_option linter.style.longLine false in
+/-- For the synthetic Case 2 retained-passive datum, the Schur residual block
+of the transformed source edge at edge `0` is the displayed free following
+factor. -/
+theorem schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_zero_eq_freeFollowingFactor
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ) :
+    schurResidualBlock
+        (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadbackTransformedEdge
+            (K := ℝ) (ρ := ρ)
+            (case2PostPivotRetainedPassiveData
+              (ρ := ρ) n hS hcont residual Cprime).edgeMatrix
+            (0 : Fin 2)) =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime := by
+  have hC :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C
+        (K := ℝ) (ρ := ρ)
+        (data := case2PostPivotRetainedPassiveData
+          (ρ := ρ) n hS hcont residual Cprime)
+        (case2PostPivotRetainedPassiveData_detChart
+          (ρ := ρ) n hS hcont residual Cprime)
+        (0 : Fin 2)
+  simpa [case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+    case2PostPivotTwoEdgeDomain] using hC
+
+set_option linter.style.longLine false in
 /-- A two-edge retained-passive coordinate datum satisfies the selected-entry
 residual-factor matrix identity once its two `C` factors are Aoyagi's displayed
 Case 2 post-pivot residual block and following factor.

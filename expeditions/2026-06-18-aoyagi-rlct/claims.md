@@ -9078,3 +9078,31 @@ production.
 
 Nonclaims: no source chart, source image, pushforward/Jacobian theorem,
 original-loss comparison, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive source-map factor readout:
+Lean now proves a concrete source-map factor identity for retained-passive
+data and two synthetic Case 2 specializations.
+
+Status: Proved; reviewed.
+
+Claim: if `data.detChart`, then
+`schurResidualBlock (sourceReadbackTransformedEdge data.edgeMatrix p) =
+data.C p`.  For `case2PostPivotRetainedPassiveData`, edge `1` reads out
+`case2DisplayedPostPivotResidualBlock`, and edge `0` reads out
+`case2DisplayedPostPivotFreeFollowingFactor`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-map-factor-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-map-factor-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-map-factor-readout.md`
+passed by xhigh `Confucius the 4th`.
+
+Kill condition: the Case 2 specializations are synthetic two-edge source-map
+facts.  They may not be used as real fixed-base endpoint equivalences, source
+chart production, full endpoint product collapse, selected-entry entrywise
+readout, or fixed pivot nonzero provenance.
+
+Nonclaims: no source image, pushforward/Jacobian theorem, original-loss
+comparison, normal crossings, pole order, or RLCT is proved.

@@ -6033,3 +6033,12 @@ consumer: a displayed factor identity for an actual transformed edge, endpoint
 equivalence, full-to-window/outside-factor transport, or pivot nonzero
 provenance.  Do not add further wrappers around this helper unless a
 downstream theorem consumes them directly.
+
+Latest retained-passive source-map factor readout:
+The determinant-chart source-map/readback inverse now yields
+`schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C`, and the
+synthetic two-edge Case 2 datum has displayed edge `1`/edge `0` factor
+readouts.  Treat this as useful constructed-family factor provenance only.
+The next source-moving targets are still real fixed-base endpoint equivalence,
+real source chart/suffix production, full-to-window/outside-factor transport,
+or fixed pivot nonzero provenance.

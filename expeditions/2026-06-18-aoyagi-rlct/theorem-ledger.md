@@ -9977,6 +9977,42 @@ full-to-window transport, no fixed successor pivot nonzero, no source chart,
 no source image, no pushforward/Jacobian theorem, no original-loss comparison,
 no normal crossings, no pole order, and no RLCT.
 
+## 2026-06-26 A2 retained-passive source-map factor readout
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-map-factor-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-map-factor-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-map-factor-readout.md`
+passed by xhigh `Confucius the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+schurResidualBlock_sourceReadbackTransformedEdge_edgeMatrix_eq_C
+
+schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_one_eq_residualBlock
+
+schurResidualBlock_sourceReadbackTransformedEdge_case2PostPivotRetainedPassiveData_edgeMatrix_zero_eq_freeFollowingFactor
+```
+
+The generic theorem says that if retained-passive data are in `detChart`,
+then the Schur residual block of the transformed source edge of
+`data.edgeMatrix` at edge `p` is `data.C p`.  The Case 2 specializations apply
+this to the synthetic two-edge datum and recover the displayed post-pivot
+residual block at edge `1` and the displayed free following factor at edge
+`0`.
+
+Nonclaims: no real Aoyagi source chart production, no fixed-base endpoint
+equivalence, no full-suffix collapse, no selected-entry entrywise readout, no
+fixed pivot nonzero, no source image, no pushforward/Jacobian theorem, no
+original-loss comparison, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 adjacent two-edge residual-factor transport:
 `ProductReduction.lean` proves
 `ChartLocalSuffixState.residualFactorProduct_one_edge_eq_factor`,
