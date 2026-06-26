@@ -545,3 +545,24 @@ banked-clean concrete inventory either way.
 > pure-analysis det/cov/injOn bricks are S2-free). So R1-general's LOWER leg now has three concrete
 > sorry-free anchors (4422/334/3333) — demonstrably reachable, not a wall. The general atom (the design
 > pass) + the R1 UPPER leg (corank-sensitive hfin) remain the frontier for the (A) path.
+
+## 28. R1-general reachability map COMPLETE (2026-06-26) — both legs NEEDS-DESIGN-then-build, NOT walls; sharpens the (A)/(B) cost read.
+Two bounded pen-and-paper probes (threads/32 lower, threads/33 upper; each with a decorrelated Codex consult) now fully map the
+R1 gate `resolution_charts` for the (A) decision:
+- **LOWER leg (`≤`, achiever box-divergence): REACHABLE, anchored.** Reduced M-agnostically sorry-free to one `NodeAchieverChart M`;
+  THREE concrete sorry-free anchors banked ((4,4,2,2), (3,3,4), (3,3,3,3) — the last landed this session). The GENERAL atom is a
+  single design pass: a descent-path-indexed `φ_M` + one general composed-determinant lemma (over a variable-length factor list — the
+  one genuinely new piece) + a finite-family null-slice cov. Risk: the variable-length `det_comp` could be a dependent-`Fin`-cast fight.
+- **UPPER leg (`≥`, hfin / `cover_le`): NEEDS-DESIGN, corank worry RESOLVED.** The corank-≥2 obstruction that broke the threshold-only
+  VALUE recursion does NOT break hfin: hfin needs only the LOWER direction of the Schur comparison (N2b), which holds with a UNIFORM
+  constant at every corank (the classical complete-pivoting shear bound `‖M21·M11⁻¹‖ ≤ 1`; the done (3,3,4) anchor already proves it,
+  `frobSq_angularR_ge`). The heaviest single piece is N4 (`routeMCore_threshold_lt_top`, `RouteMSchur:284`): the depth-`r`
+  WellFounded-on-corank measure recursion — a Lean-engineering long pole (dependent `Fin (r−j)` arity casts + nested cover fold), NOT
+  open math (threshold arithmetic matches `½·minAdm` 30/30; two analytic atoms banked). A build-now de-risker exists (a depth-3 Route-S
+  hfin instance, the upper-leg twin of (3,3,3,3)) but is FROM-SCRATCH (no pre-banked infra) → a large lift, roadmapped not charged.
+- **Net for (A)/(B):** R1-general has **no research walls** — it is a sequence of bounded design passes + large from-scratch builds on
+  both legs (plus the L2 (1a) + L≥3 interior + D1). This LOWERS the (A) risk profile (nothing is impossible) but confirms (A) is a
+  LONG, build-heavy grind. (B) — name the concrete-anchor milestone (RRR + R1 (3,3,4)/(4,4,2,2)/(3,3,3,3) + the engine + the banked
+  clean L2 bricks) — remains the honest banked-now deliverable. **The controller has consolidated here**: the reachable pieces are
+  banked + the frontier is fully mapped; the (A)-vs-(B) scope choice (do we invest in the long general push, or ship the milestone?)
+  is the operator's, and is now the single gate for all remaining work. No further large from-scratch (A) build will be started without it.
