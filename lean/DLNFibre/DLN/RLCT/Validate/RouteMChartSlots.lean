@@ -177,4 +177,25 @@ def frameSplitEquiv {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ
         (((finSumFinEquiv.symm).trans (Equiv.refl _)).sumCongr (Equiv.refl _))).sumCongr
           (Equiv.refl _)))
 
+/-! ## The derived `Rmat` block-pad constructor (the Schur-frame `u`-carrier `[[0,0],[0,E]]`)
+
+The structured decoder's `Rmat s` is the `u`-carrying residual of the Schur frame: the `E_s`
+(`r_s × c_s`) block placed BOTTOM-RIGHT of a `Text s × Wext s` zero matrix, so
+`C_s = Bmat_s·chainQ(N_s) + u·Rmat_s = [[K, KN],[XK, XKN + uE]]` (the Schur frame). A
+`Matrix.fromBlocks 0 0 0 E` padded by `finSumFinEquiv` row/col reindexes. -/
+
+/-- **The Schur-frame `u`-carrier block** `Rmat s = [[0,0],[0,E]]` (`Text s × Wext s`), the `E_s` block
+(`r_s × c_s`) in the bottom-right, zeros elsewhere (`Matrix.fromBlocks 0 0 0 E` + `finSumFinEquiv`
+row/col reindex to `Text s × Wext s`). -/
+noncomputable def rmatPad {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
+    (E : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ) :
+    Matrix (Fin (Text M t s)) (Fin (Wext M s)) ℝ :=
+  Matrix.reindex
+    (finSumFinEquiv.trans
+      (finCongr (show Text M t (s + 1) + (Text M t s - Text M t (s + 1)) = Text M t s by omega)))
+    (finSumFinEquiv.trans
+      (finCongr (show Text M t (s + 1) + (Wext M s - Text M t (s + 1)) = Wext M s by omega)))
+    (Matrix.fromBlocks (0 : Matrix (Fin (Text M t (s + 1))) (Fin (Text M t (s + 1))) ℝ) 0 0 E)
+
 end DLNFibre.DLN.RLCT
