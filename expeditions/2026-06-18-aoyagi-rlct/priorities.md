@@ -4788,3 +4788,11 @@ matrix bridge has also been specialized to this family, so future callers no
 longer need to pass a generic `kappa`, endpoint equivalences, or factor
 identities in this exact displayed chain.  The meaningful frontier is now
 sharper: source-produce the successor readout/source data or keep them supplied.
+
+A2 Case 2 paper-Cprime source-following product has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-paper-cprime-source-following-factor-product.md`.
+Lean combines the concrete two-edge product with the already-landed paper
+`C' = Q^-1 C` lower-tail identity and the formula-level successor following
+factor restriction.  This is the preferred unweighted product-reduction
+handoff when the following factor is Aoyagi's paper `C'`; do not use it as
+source production of successor chart data or selected-entry readout.

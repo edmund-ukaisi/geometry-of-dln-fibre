@@ -8538,6 +8538,18 @@ This specializes the displayed Case 2 two-edge chain and removes generic
 endpoint/factor boilerplate; successor readout, source-produced `Cprime`,
 source/image equality, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 Case 2 paper-Cprime source-following product:
+`Case2ResidualFactorProduct.lean` now proves
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_paperCprime_eq_sourceResidualBlock_successorFollowingFactor`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-paper-cprime-source-following-factor-product.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-paper-cprime-source-following-factor-product.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-paper-cprime-source-following-factor-product.md`.
+This is the unweighted concrete residual-factor-product handoff for Aoyagi's
+paper `C' = Q^-1 C`; successor selected-entry readout, source production,
+source/image equality, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

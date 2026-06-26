@@ -10985,3 +10985,14 @@ This is a finite API hardening: in the exact chain
 the endpoint equivalences and factor identities are reflexive.  The successor
 entrywise readout and source production of `Cprime`/successor data remain
 supplied.
+
+The concrete Case 2 product now also has the paper-`C'` source-following
+handoff:
+`threads/03-block-product-reduction/reproduction-a2-case2-paper-cprime-source-following-factor-product.md`.
+Lean proves
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_paperCprime_eq_sourceResidualBlock_successorFollowingFactor`.
+For `C' = Q^-1 C`, the concrete two-edge `residualFactorProduct` is rewritten
+as the source residual block on `(S,J+1)` times the formula-level successor
+following factor restricted to that same next residual domain.  This is
+finite product algebra only; it does not produce successor source data or a
+selected-entry readout.

@@ -6120,3 +6120,29 @@ supplied successor entrywise readout.
 This remains a finite socket reducer.  The successor readout, source
 production of `Cprime`, successor source data, source/image equality, normal
 crossings, pole order, and RLCT remain supplied or open.
+
+## 2026-06-26 A2 Case 2 paper-Cprime source-following factor product
+
+Reproduction:
+`reproduction-a2-case2-paper-cprime-source-following-factor-product.md`.
+Statement card:
+`statement-card-a2-case2-paper-cprime-source-following-factor-product.md`.
+Review:
+`review-a2-case2-paper-cprime-source-following-factor-product.md`.
+
+Lean now proves:
+
+```text
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_paperCprime_eq_sourceResidualBlock_successorFollowingFactor
+```
+
+For Aoyagi's paper transformed following factor `C' = Q^-1 C`, the concrete
+Case 2 two-edge residual-factor product rewrites as the source residual block
+at `(S,J+1)` times the formula-level successor following factor restricted to
+that same next residual domain.  This uses the existing source-supported
+paper-`C'` tail identity and the zero-extended post-pivot source residual
+representative.
+
+This is finite product-reduction algebra only.  It does not construct
+successor source data, selected-entry readout, source/image equality, chart
+coverage, normal crossings, pole order, or RLCT.

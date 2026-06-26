@@ -186,6 +186,35 @@ theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEd
         rfl)
 
 set_option linter.style.longLine false in
+/-- For Aoyagi's paper `C' = Q⁻¹ C`, the concrete displayed Case 2 two-edge
+factor product is the source residual block at `(S,J+1)` times the
+formula-level successor following factor restricted to that next residual
+domain.
+
+This is finite product-reduction algebra only.  It does not construct
+successor source data, selected-entry readout, chart coverage, normal
+crossings, pole order, or RLCT content. -/
+theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_paperCprime_eq_sourceResidualBlock_successorFollowingFactor
+    {τ : Type} {R : Type*} [CommRing R] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) (C : ℕ → τ → R) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual
+          (case2DisplayedPaperCprime n hS hcont residual C))
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      case2SourceResidualBlock (n := n) (S := S) (J := J + 1)
+          (case2DisplayedPostPivotSourceResidual n hS hcont residual) *
+        case2SourceFollowingFactor (n := n) (S := S) (J := J + 1)
+          (Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedSourceSuccessorFollowingFactor
+            n hS hcont residual C) := by
+  rw [residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct]
+  rw [case2DisplayedPostPivotFreeTwoEdgeFactorProduct]
+  rw [← case2SourceResidualBlock_postPivotSourceResidual n hS hcont residual]
+  rw [Case2DisplayedSuppliedChartFamilyBoundary.case2DisplayedPostPivotFreeFollowingFactor_paperCprime_eq_sourceFollowingFactor_succ]
+  rw [Case2DisplayedSuppliedChartFamilyBoundary.case2SourceFollowingFactor_successorFollowingFactor_succ]
+
+set_option linter.style.longLine false in
 /-- Entrywise expansion of Aoyagi's displayed Case 2 post-pivot lower product
 `D_(J+1) * C'_+`.
 

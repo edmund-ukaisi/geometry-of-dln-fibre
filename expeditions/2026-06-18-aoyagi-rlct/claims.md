@@ -7315,3 +7315,22 @@ and
 Nonclaims: the successor readout, source production of `Cprime`, successor
 source data, source/image equality, source-measure transport, normal crossings,
 pole order, and RLCT remain supplied or open.
+
+Latest A2 Case 2 paper-Cprime source-following product:
+Lean now proves that, for Aoyagi's paper `C' = Q^-1 C`, the concrete Case 2
+two-edge residual-factor product is the source residual block at `(S,J+1)`
+times the formula-level successor following factor restricted to the same next
+residual domain.
+
+Lean name:
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_paperCprime_eq_sourceResidualBlock_successorFollowingFactor`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-paper-cprime-source-following-factor-product.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-paper-cprime-source-following-factor-product.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-paper-cprime-source-following-factor-product.md`.
+
+Nonclaims: no successor `yNext`, selected-entry readout, source production of
+successor chart data/suffixes/terminal rows, source/image equality, chart
+coverage, normal crossings, pole order, or RLCT.
