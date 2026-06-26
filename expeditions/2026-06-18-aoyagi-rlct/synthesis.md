@@ -13128,3 +13128,20 @@ suffix.  The post-checkpoint xhigh probes found the direct Case 2 `hentry`
 readout still blocked by missing successor chart data/pivot readout, and the
 literal fixed-base Case 2 realization still blocked by endpoint-index
 alignment.
+
+Latest A2 retained-passive Case 2 pivot-nonzero source readout:
+`SelectedEntrySignedBoxMeasure.lean` now has the fixed-pivot center-coordinate
+inverse `preimageOfPivotNeZero` and proves
+`chartMap_preimageOfPivotNeZero` / `exists_chartMap_eq_value_of_pivot_ne_zero`.
+`Case2ResidualSelectedEntryChartBridge.lean` specializes this to the
+successor Case 2 center `(S,J+1)` and fixed pivot `(J+2,J+2)`, proving an
+existential `yNext` and the old entrywise successor-source readout from the
+single hypothesis that the displayed post-pivot product is nonzero at that
+fixed pivot.  `RetainedPassiveCase2SelectedEntryChartBridge.lean` then
+packages the resulting synthetic retained-passive residual-factor matrix
+identity.
+
+This moves the direct `hentry` frontier but does not close it: Lean now
+constructs `yNext` from a supplied fixed-pivot nonzero fact, while the nonzero
+fact itself remains unproved.  The endpoint equivalence `eNext` is also still
+explicit, and no longer-suffix/fixed-base endpoint alignment is proved.

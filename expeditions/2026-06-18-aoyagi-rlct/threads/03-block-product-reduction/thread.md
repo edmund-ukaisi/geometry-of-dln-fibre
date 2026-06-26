@@ -8870,3 +8870,39 @@ definitionally realised from `data.edgeMatrix`.  It does not construct
 the synthetic Case 2 two-edge datum with a fixed-base source chart or longer
 retained-passive suffix.  It proves no source image, pushforward/Jacobian,
 original-loss comparison, normal-crossing, pole-order, or RLCT statement.
+
+## 2026-06-26 A2 retained-passive Case 2 pivot-nonzero source readout
+
+Reproduction:
+`reproduction-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+Statement card:
+`statement-card-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+Review:
+`review-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean`,
+`lean/DLNFibre/DLN/Aoyagi/Case2ResidualSelectedEntryChartBridge.lean`,
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+
+Lean now proves:
+
+```text
+SelectedEntrySignedBox.CenterCoord.chartMap_preimageOfPivotNeZero
+SelectedEntrySignedBox.CenterCoord.exists_chartMap_eq_value_of_pivot_ne_zero
+
+exists_successorSourceChartMap_entrywise_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_pivot_ne_zero
+
+exists_case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_pivot_ne_zero
+```
+
+This is the fixed-pivot inverse for the selected-entry chart, specialized to
+the successor Case 2 center `(S,J+1)` with pivot `(J+2,J+2)`.  Instead of
+supplying the full entrywise successor-source readout, callers supply that the
+displayed post-pivot product is nonzero at the fixed successor pivot.  Lean
+then constructs `yNext` and derives the old entrywise readout internally.
+
+The pivot-nonzero condition remains supplied.  This is not source chart
+production, not endpoint-index alignment, not longer-suffix transport, and
+not pushforward/Jacobian, original-loss, normal-crossing, pole-order, or RLCT
+work.

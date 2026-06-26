@@ -8951,3 +8951,35 @@ Nonclaims: no retained-passive datum is constructed, no Case 2 successor
 entrywise readout is proved, no source chart/source image equality,
 pushforward/Jacobian theorem, original-loss comparison, normal crossings, pole
 order, or RLCT is proved.
+
+Latest A2 retained-passive Case 2 pivot-nonzero source readout:
+Lean now proves a fixed-pivot selected-entry inverse and uses it to derive the
+Case 2 successor-source entrywise readout from a supplied nonzero value of the
+displayed post-pivot product at the fixed successor pivot `(J+2,J+2)`.
+
+Status: Proved; reviewed.
+
+Claim: given `eNext : tau ~= Case2ResidualColIndex n S (J+1)` and nonzero
+value of `case2DisplayedPostPivotFreeTwoEdgeFactorProduct` at the reindexed
+successor pivot `(J+2,J+2)`, there exists `yNext` such that the displayed
+post-pivot product is the successor selected-entry source chart map.  Hence
+the synthetic retained-passive two-edge datum satisfies the corresponding
+successor selected-entry residual-factor matrix identity.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-pivot-nonzero-source-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-case2-pivot-nonzero-source-readout.md`
+passed by xhigh `Schrodinger the 4th` after documentation edits.
+
+Kill condition: the theorem still requires the fixed successor pivot nonzero
+condition and the endpoint equivalence.  It may not be used as proof that the
+successor pivot is nonzero, as source chart production, or as longer-suffix
+transport.
+
+Nonclaims: no retained-passive source data is produced, no fixed-base endpoint
+alignment or longer suffix transport is proved, and no source image,
+pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
+or RLCT is proved.

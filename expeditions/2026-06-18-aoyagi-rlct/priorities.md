@@ -5994,3 +5994,13 @@ Use this as the preferred way to remove the old `hedge` hypothesis only in
 constructed-edge-family cases.  Do not read it as Case 2 source production:
 the successor selected-entry source data, fixed successor pivot readout,
 endpoint equivalence, and longer-suffix transport remain separate frontiers.
+
+Latest retained-passive Case 2 pivot-nonzero source readout:
+the old full entrywise successor-source readout has been reduced to a fixed
+successor pivot nonzero hypothesis.  Lean constructs `yNext` by the
+selected-entry fixed-pivot inverse and then obtains the synthetic
+retained-passive residual-factor identity.  The next source-moving target is
+to prove or source-justify that fixed pivot nonzero condition, or to follow
+Volta's adjacent-two-edge suffix transport route.  Do not mark this as source
+production: endpoint equivalence, pivot nonzero provenance, fixed-base
+realization, longer-suffix transport, and analytic transport remain open.

@@ -263,6 +263,39 @@ theorem chartMap_eq_zero_of_pivot_eq_zero {center : Finset ι} (pivot : center)
   · rw [chartMap_of_ne pivot y hi, hy, zero_mul]
     rfl
 
+/-- The center-coordinate inverse for a fixed selected pivot with nonzero
+target value: keep the pivot coordinate and divide every other coordinate by
+the pivot. -/
+noncomputable def preimageOfPivotNeZero {center : Finset ι} (pivot : center)
+    (value : center → ℝ) : center → ℝ :=
+  fun i ↦ if i = pivot then value pivot else value i / value pivot
+
+/-- The fixed-pivot center-coordinate inverse maps back to the target value
+when the selected pivot coordinate is nonzero. -/
+theorem chartMap_preimageOfPivotNeZero {center : Finset ι} (pivot : center)
+    (value : center → ℝ) (hpivot : value pivot ≠ 0) :
+    chartMap pivot (preimageOfPivotNeZero pivot value) = value := by
+  funext i
+  by_cases hi : i = pivot
+  · subst i
+    simp [preimageOfPivotNeZero]
+  · have hpivot_value :
+        preimageOfPivotNeZero pivot value pivot = value pivot := by
+      simp [preimageOfPivotNeZero]
+    have hi_value :
+        preimageOfPivotNeZero pivot value i = value i / value pivot := by
+      simp [preimageOfPivotNeZero, hi]
+    rw [chartMap_of_ne pivot (preimageOfPivotNeZero pivot value) hi,
+      hpivot_value, hi_value]
+    field_simp [hpivot]
+
+/-- Existence form of the fixed-pivot center-coordinate inverse. -/
+theorem exists_chartMap_eq_value_of_pivot_ne_zero {center : Finset ι}
+    (pivot : center) (value : center → ℝ) (hpivot : value pivot ≠ 0) :
+    ∃ y : center → ℝ, chartMap pivot y = value :=
+  ⟨preimageOfPivotNeZero pivot value,
+    chartMap_preimageOfPivotNeZero pivot value hpivot⟩
+
 /-- The center-indexed selected-entry chart map is continuous. -/
 theorem continuous_chartMap {center : Finset ι} (pivot : center) :
     Continuous (chartMap pivot) := by

@@ -9948,6 +9948,29 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive Case 2 pivot-nonzero source readout:
+`SelectedEntrySignedBoxMeasure.lean` proves
+`SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero`,
+`SelectedEntrySignedBox.CenterCoord.chartMap_preimageOfPivotNeZero`, and
+`SelectedEntrySignedBox.CenterCoord.exists_chartMap_eq_value_of_pivot_ne_zero`.
+`Case2ResidualSelectedEntryChartBridge.lean` proves
+`exists_successorSourceChartMap_entrywise_of_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_pivot_ne_zero`.
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` proves
+`exists_case2PostPivotRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix_of_pivot_ne_zero`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+
+The theorem replaces the full entrywise successor-source readout hypothesis
+for the synthetic Case 2 two-edge datum by a single supplied nonzero condition
+at the fixed successor pivot `(J+2,J+2)`, after the endpoint equivalence
+`tau ~= Case2ResidualColIndex n S (J+1)`.  It constructs `yNext` by dividing
+all target coordinates by the pivot coordinate.  Nonclaims: no proof of the
+pivot nonzero condition, no source chart construction, no endpoint alignment,
+no longer-suffix transport, no source image equality, no measure
+pushforward/Jacobian theorem, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive Case 2 synthetic two-edge data:
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` defines
 `case2PostPivotRetainedPassiveData` and proves
