@@ -7762,3 +7762,21 @@ Nonclaims: no raw-Haar/full-chart pushforward, no source/image equality, no
 source/prior transport, no signed-box density identification, no
 regular-suspension certificate, no normal crossings, no pole order, and no
 RLCT.
+
+Latest A2 p.13 left-step small-ball section image:
+Lean now proves the section-image measure identity under fixed-base
+edge-matrix measurability and local regular-coordinate ball support.  For
+every `Rmax > 0`, there is `0 < R <= Rmax` such that any local `(x,u)` measure
+supported a.e. on `u in ball(0,R)` satisfies
+`Measure.map Y eta = Measure.map Phi (Measure.map X eta)`, where `X` is the
+actual p.13 left-step raw section, `Y` is the p.13 raw-order target tuple,
+and `Phi` is the raw-order product-step map.  Lean name:
+`exists_pos_radius_le_map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_ae_regular_mem_ball`.
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-small-ball-section-image.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-small-ball-section-image.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-small-ball-section-image.md`.
+Nonclaims: no full raw-Haar pushforward, no original source/prior transport,
+no source coverage, no density identification, no normal crossings, no pole
+order, and no RLCT.

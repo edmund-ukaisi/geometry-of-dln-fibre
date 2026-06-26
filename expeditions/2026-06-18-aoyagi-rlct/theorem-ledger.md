@@ -9150,3 +9150,20 @@ and
 This is section-domain support only: no full raw-Haar pushforward, source
 coverage, source/prior transport, signed-box density identification,
 regular-suspension certification, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step small-ball section image:
+`ProductReductionStepRegularDensity.lean` now proves
+`exists_pos_radius_le_map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_ae_regular_mem_ball`.
+It combines the local raw-det support radius with the section-image theorem:
+under fixed-base edge-matrix measurability and for a sufficiently small
+regular-coordinate ball, a local `(x,u)` measure supported a.e. in that ball
+satisfies
+`Measure.map Y eta = Measure.map Phi (Measure.map X eta)`.
+Reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-small-ball-section-image.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-small-ball-section-image.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-small-ball-section-image.md`.
+This is section-image bookkeeping only: no full raw-Haar pushforward, source
+coverage, source/prior transport, density identification, normal crossings,
+pole order, or RLCT.

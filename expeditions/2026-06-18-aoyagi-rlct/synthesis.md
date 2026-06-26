@@ -11943,3 +11943,30 @@ Reproduction, statement card, and review:
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-local-raw-det-support.md`,
 and
 `threads/03-block-product-reduction/review-a2-p13-left-step-local-raw-det-support.md`.
+
+## Latest A2 p.13 Left-Step Small-Ball Section Image
+
+Lean now consumes the local raw-det support theorem in the p.13 section-image
+identity.  New name in `ProductReductionStepRegularDensity.lean`:
+
+```text
+exists_pos_radius_le_map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_ae_regular_mem_ball
+```
+
+For every `Rmax > 0`, the theorem chooses `0 < R <= Rmax`.  If a local
+measure on `(x,u)` is supported a.e. on `u in ball(0,R)` and the fixed-base
+edge-matrix family is measurable, then
+
+```text
+Measure.map Y eta = Measure.map Phi (Measure.map X eta).
+```
+
+This is still only a section-image identity.  It does not identify
+`Measure.map X eta` with full raw Haar, does not attach an inverse-Jacobian
+density, and does not prove source/prior transport, normal crossings, or RLCT.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-small-ball-section-image.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-small-ball-section-image.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-left-step-small-ball-section-image.md`.

@@ -6967,3 +6967,36 @@ This is local support for a section.  It does not prove a raw-Haar/full-chart
 pushforward, source coverage, original source/prior transport, signed-box
 density identification, product-measure pushforward, regular-suspension
 certification, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 left-step small-ball section image
+
+Reproduction:
+`reproduction-a2-p13-left-step-small-ball-section-image.md`.
+Statement card:
+`statement-card-a2-p13-left-step-small-ball-section-image.md`.
+Review:
+`review-a2-p13-left-step-small-ball-section-image.md`.
+
+Lean now proves:
+
+```text
+exists_pos_radius_le_map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_ae_regular_mem_ball
+```
+
+For every `Rmax > 0`, it chooses `0 < R <= Rmax`.  Under fixed-base
+edge-matrix measurability, if the local `(x,u)` measure is supported a.e. on
+the regular-coordinate ball `u in ball(0,R)`, then the existing section-image
+identity applies:
+
+```text
+Measure.map Y eta = Measure.map Phi (Measure.map X eta).
+```
+
+The proof first uses
+`exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball`
+to obtain raw determinant-chart support, then applies
+`map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix`.
+
+This remains section-image bookkeeping only.  It does not prove a
+raw-Haar/full-chart pushforward, source coverage, original source/prior
+transport, density identification, normal crossings, pole order, or RLCT.

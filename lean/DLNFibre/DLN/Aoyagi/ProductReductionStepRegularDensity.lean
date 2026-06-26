@@ -1763,6 +1763,94 @@ theorem
         Measure.map Φ (Measure.map raw η) := hmap_comp
 
 set_option linter.unusedSectionVars false in
+/-- Small-ball p. 13 section-image measure identity.
+
+For sufficiently small regular coordinates, the actual p. 13 left-step raw
+section lands in the raw determinant chart a.e.; hence the p. 13 raw-order
+target measure is the raw-order image of the section image measure.  This
+does not identify the section image with full raw Haar measure and carries no
+density conclusion. -/
+theorem
+    exists_pos_radius_le_map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_ae_regular_mem_ball
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    [BorelSpace
+      (ProductReductionStepRawTopologyTuple
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))]
+    (hEdgeMatrix :
+      Measurable (fun x : α =>
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := ℝ) V Bv U₀ hU₀
+          (fun p : Fin (M + 2) =>
+            (CedgeBase x p :
+              reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))))
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      ∀ η : Measure (α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0))),
+        (∀ᵐ xu ∂η,
+          xu.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ 0))) R) →
+          Measure.map
+              (paperEndpointFixedBaseP13RawOrderTuple
+                V Bv U₀ hU₀ CedgeBase)
+              η =
+            Measure.map
+              (productReductionStepTopologyTupleToChartRawOrder
+                (ρ := Fin (Module.finrank ℝ U₀))
+                (π := throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+                (μ := throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+                (ν := throughSubspaceEndpointComplementIndex
+                  (reverseVertex V) (reverseEdge V Bv) U₀
+                    ((0 : Fin (M + 2)).castSucc)))
+              (Measure.map
+                (p13ProductCoordinateLeftStepRawTopologyTuple
+                  V Bv U₀ hU₀ CedgeBase)
+                η) := by
+  classical
+  rcases
+      exists_pos_radius_le_ae_p13LeftStepRaw_mem_rawDetChartSet_of_ae_regular_mem_ball
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) hRmax with
+    ⟨R, hR, hRle, hraw_mem_of_ball⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro η hsupport
+  exact
+    map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (η := η) hEdgeMatrix
+      (hraw_mem_of_ball η hsupport)
+
+set_option linter.unusedSectionVars false in
 /-- The constructed multi-edge p. 13 product-coordinate matrix family's
 left-step target tuple is the explicit p. 13 raw-shaped target tuple. -/
 theorem p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
