@@ -229,7 +229,10 @@ No such claim is formalisation-ready until both fields are filled.
   membership and the explicit dimension convention when `L=N`; the reduced
   certificate and its minimum/order facts remain supplied. The one-step
   determinant-chart coordinate change is now proved to be a homeomorphism
-  between the raw and chart determinant domains. The p. 13 source
+  between the raw and chart determinant domains; its record-level formal
+  inverse laws are also available under the weaker hypothesis
+  `IsUnit A1.det`, with determinant-chart inverse theorems retained as
+  wrappers. The p. 13 source
   regular-suspension boundary is now pinned: the lower-right literal block is
   `prod_s C^(s)-F3F2`, the residual block is `prod_s C^(s)`, and the displayed
   RLCT shift remains an unproved analytic regular-suspension assertion. Lean
@@ -7989,3 +7992,23 @@ theorem was added.
 Nonclaims: no local source chart, no local inverse, no source-rank coverage,
 no source-measure pushforward, no density/Jacobian identity, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 product-step A1 formal inverse:
+Lean now proves
+`productReductionStepCoordinate_left_inverse_of_isUnit_A1` and
+`productReductionStepCoordinate_right_inverse_of_isUnit_A1` in
+`lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`.  These are record-level
+formal inverse laws for the p.13 one-step coordinate change under only
+`IsUnit A1.det`; the older determinant-chart inverse names remain wrappers
+for chart-domain use.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-a1-formal-inverse.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-a1-formal-inverse.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-a1-formal-inverse.md`.
+
+Nonclaims: finite coordinate algebra only.  No weakening of derivative or
+measure determinant-chart hypotheses, no source coverage, no source-measure
+transport, no density/Jacobian identity, no normal crossings, no pole order,
+and no RLCT.

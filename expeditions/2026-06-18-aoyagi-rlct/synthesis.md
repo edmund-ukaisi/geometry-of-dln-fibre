@@ -12234,3 +12234,27 @@ No Lean theorem was added.  Future A2 work should either construct this
 retained-passive source chart explicitly or choose a different source-backed
 finite algebra slice; do not derive full raw-Haar pushforward from the p.13
 section.
+
+## Latest A2 Product-Step A1 Formal Inverse
+
+`ProductReduction.lean` now separates the record-level p. 13 inverse
+cancellation from the determinant-chart domain.  New Lean names:
+
+```text
+productReductionStepCoordinate_left_inverse_of_isUnit_A1
+productReductionStepCoordinate_right_inverse_of_isUnit_A1
+```
+
+The old determinant-chart inverse theorems remain as wrappers.  This removes a
+strictly stronger finite algebra hypothesis from the inverse laws themselves:
+both directions use only `IsUnit A1.det`.  It does not weaken the analytic
+determinant-chart, derivative, or measure hypotheses, and it does not prove
+source coverage, source-measure transport, normal crossings, pole order, or
+RLCT.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-product-step-a1-formal-inverse.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-product-step-a1-formal-inverse.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-product-step-a1-formal-inverse.md`.

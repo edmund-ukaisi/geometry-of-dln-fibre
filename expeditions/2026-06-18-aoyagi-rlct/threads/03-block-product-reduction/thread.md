@@ -7177,3 +7177,32 @@ those fields.
 Nonclaims: no local source chart, no local inverse, no source-rank coverage,
 no source-measure pushforward, no density/Jacobian identity, no signed-box
 residual chart, no normal crossings, no pole order, and no RLCT.
+
+## 2026-06-26 A2 product-step A1 formal inverse
+
+Reproduction:
+`reproduction-a2-product-step-a1-formal-inverse.md`.
+Statement card:
+`statement-card-a2-product-step-a1-formal-inverse.md`.
+Review:
+`review-a2-product-step-a1-formal-inverse.md`.
+
+Lean now proves:
+
+```text
+productReductionStepCoordinate_left_inverse_of_isUnit_A1
+productReductionStepCoordinate_right_inverse_of_isUnit_A1
+```
+
+These extract the record-level inverse cancellation from the existing
+determinant-chart inverse theorems.  Both formal inverse laws require only the
+retained `A1` block to have determinant a unit; the older
+`productReductionStepCoordinate_left_inverse` and
+`productReductionStepCoordinate_right_inverse` names remain as determinant
+chart wrappers for the analytic chart/domain API.
+
+This is finite p. 13 coordinate algebra only.  It does not weaken the
+determinant-chart hypotheses for derivative or measure transport, construct a
+local source chart or local inverse for original DLN parameters, prove
+source-rank coverage, push forward source measure, identify a density/Jacobian,
+produce normal crossings, or compute pole order or RLCT.

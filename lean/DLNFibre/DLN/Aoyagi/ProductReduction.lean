@@ -688,27 +688,59 @@ theorem ProductReductionStepChartCoordinates.detChart_toRaw
       hy.1.mul hA1inv
   · simpa [ProductReductionStepChartCoordinates.toRaw] using hy.2
 
-/-- Forward followed by inverse recovers the raw one-step coordinates.
+/-- Forward followed by inverse recovers the raw one-step coordinates on the
+`A1` determinant-unit locus.
 
-This is stated on the raw determinant chart, where `C1`, `A1`, and hence
-`C1 * A1` are determinant units.  The algebraic cancellation in the proof uses
-the `A1` component; the `C1` component records the source chart needed to treat
-`(C1 * A1)^{-1}` as a regular expression.  No inverse of the passive residual
-block `D` is used. -/
-theorem productReductionStepCoordinate_left_inverse
+This is only the record-level formal inverse calculation.  It does not assert
+that the raw point lies in the source determinant chart. -/
+theorem productReductionStepCoordinate_left_inverse_of_isUnit_A1
     {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
     [DecidableEq μ] [Fintype ν]
     (x : ProductReductionStepRawCoordinates ρ π μ ν K)
-    (hx : x.detChart) :
+    (hA1 : IsUnit x.A1.det) :
     (ProductReductionStepRawCoordinates.toChart x).toRaw = x := by
   cases x with
   | mk C1 D F3 A1 A2 A3 A4 =>
       suffices hneg : - -A2 = A2 by
         simpa [ProductReductionStepRawCoordinates.toChart,
           ProductReductionStepChartCoordinates.toRaw,
-          Matrix.mul_nonsing_inv_cancel_left, hx.2, Matrix.mul_assoc,
+          Matrix.mul_nonsing_inv_cancel_left, hA1, Matrix.mul_assoc,
           sub_eq_add_neg] using hneg
       exact neg_neg A2
+
+/-- Forward followed by inverse recovers the raw one-step coordinates.
+
+This is stated on the raw determinant chart, where `C1`, `A1`, and hence
+`C1 * A1` are determinant units.  The algebraic cancellation in the proof uses
+only the `A1` component; the `C1` component records the source chart needed to
+treat `(C1 * A1)^{-1}` as a regular expression.  No inverse of the passive
+residual block `D` is used. -/
+theorem productReductionStepCoordinate_left_inverse
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (hx : x.detChart) :
+    (ProductReductionStepRawCoordinates.toChart x).toRaw = x :=
+  productReductionStepCoordinate_left_inverse_of_isUnit_A1 x hx.2
+
+/-- Inverse followed by forward recovers the target one-step coordinates on
+the `A1` determinant-unit locus.
+
+This is only the record-level formal inverse calculation.  It does not assert
+that the chart point lies in the target determinant chart. -/
+theorem productReductionStepCoordinate_right_inverse_of_isUnit_A1
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K)
+    (hA1 : IsUnit y.A1.det) :
+    (ProductReductionStepChartCoordinates.toRaw y).toChart = y := by
+  cases y with
+  | mk Ctop D A1 A3 F2 F3 C =>
+      suffices hneg : - -F2 = F2 by
+        simpa [ProductReductionStepRawCoordinates.toChart,
+          ProductReductionStepChartCoordinates.toRaw, hA1, Matrix.mul_assoc,
+          sub_eq_add_neg] using hneg
+      exact neg_neg F2
 
 /-- Inverse followed by forward recovers the target one-step coordinates.
 
@@ -720,14 +752,8 @@ theorem productReductionStepCoordinate_right_inverse
     [DecidableEq μ] [Fintype ν]
     (y : ProductReductionStepChartCoordinates ρ π μ ν K)
     (hA1 : IsUnit y.A1.det) (_hCtop : IsUnit y.Ctop.det) :
-    (ProductReductionStepChartCoordinates.toRaw y).toChart = y := by
-  cases y with
-  | mk Ctop D A1 A3 F2 F3 C =>
-      suffices hneg : - -F2 = F2 by
-        simpa [ProductReductionStepRawCoordinates.toChart,
-          ProductReductionStepChartCoordinates.toRaw, hA1, Matrix.mul_assoc,
-          sub_eq_add_neg] using hneg
-      exact neg_neg F2
+    (ProductReductionStepChartCoordinates.toRaw y).toChart = y :=
+  productReductionStepCoordinate_right_inverse_of_isUnit_A1 y hA1
 
 /-- The p. 13 one-step coordinate change turns a prior triangular product
 identity into the next block-diagonal product identity.

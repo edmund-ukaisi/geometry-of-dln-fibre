@@ -5239,6 +5239,15 @@ coverage/source-rank theorem, product-measure decomposition, and
 density/Jacobian accounting.  Do not add Lean wrappers claiming this chart or
 full raw-Haar pushforward from Lemma 2/Theorem 3 alone.
 
+A2 product-step A1 formal inverse has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-a1-formal-inverse.md`.
+Lean extracts the record-level one-step inverse laws under the weaker
+hypothesis `IsUnit A1.det`, while keeping the old determinant-chart inverse
+theorems as wrappers.  This is the preferred finite algebra inverse API when
+only formal cancellation is needed.  It does not weaken determinant-chart
+hypotheses for derivative/measure work, and it does not construct source
+coverage, source-measure transport, normal crossings, pole order, or RLCT.
+
 A5 Lemma 5 first-nonbase cardinal bound has now landed:
 `threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
 Lean proves that the deterministic first-nonbase-or-base selector gives the
