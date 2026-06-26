@@ -4807,3 +4807,15 @@ source-neutral finite atlas gluing reusable; the next meaningful A2 path is
 still either source-produce the Aoyagi p.13 chart/source-measure data or prove
 the p.13 triangular Jacobian-unit calculation, without claiming source-rank
 coverage from the finite sector cover alone.
+
+A2 Schur-core formal Jacobian unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-schur-core-formal-jacobian-unit.md`.
+Lean proves the fixed-`B` Schur-core tangent map for
+`F2=-B^{-1}A2`, `F3=-A3B^{-1}`, and `C4=A4-A3B^{-1}A2` is a `LinearEquiv`,
+and that its determinant is a unit when the side index types are finite.
+This is the first source-backed p.13 Jacobian-unit slice, but deliberately not
+the full product-step Jacobian with variable `C1`, `A1`, accumulated `F3_old`,
+and passive `D`.  The next meaningful A2 step is either the full product-step
+formal Jacobian unit or direct production of p.13 source-measure/chart data;
+do not infer density transport or analytic change-of-variables from this
+finite formal calculation.

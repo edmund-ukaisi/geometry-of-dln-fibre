@@ -8551,6 +8551,23 @@ This is the unweighted concrete residual-factor-product handoff for Aoyagi's
 paper `C' = Q^-1 C`; successor selected-entry readout, source production,
 source/image equality, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 Schur-core formal Jacobian unit:
+`ProductReductionStepJacobian.lean` now proves that the fixed-pivot Schur-core
+formal tangent map for Aoyagi's coordinate change is a linear equivalence and
+has unit determinant in the finite side-index case.  Lean names:
+`SchurCoreTangent`, `schurCoreFormalJacobian`,
+`schurCoreFormalJacobianInverse`, `schurCoreFormalJacobianEquiv`, and
+`schurCoreFormalJacobian_det_isUnit`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-schur-core-formal-jacobian-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-schur-core-formal-jacobian-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-schur-core-formal-jacobian-unit.md`.
+This is formal finite Jacobian arithmetic only; nonlinear derivative,
+source-measure pushforward, density transport, exact determinant
+sign/exponent, the full product-step Jacobian, normal crossings, pole order,
+and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

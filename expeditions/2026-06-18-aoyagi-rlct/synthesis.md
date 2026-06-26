@@ -11017,3 +11017,23 @@ as the source residual block on `(S,J+1)` times the formula-level successor
 following factor restricted to that same next residual domain.  This is
 finite product algebra only; it does not produce successor source data or a
 selected-entry readout.
+
+## Latest A2 Schur-Core Formal Jacobian Unit
+
+`ProductReductionStepJacobian.lean` now records the fixed-pivot Schur-core
+formal tangent calculation from Aoyagi Lemma 2 and the repeated Theorem 3
+step.  The core variables are only `(A2,A3,A4)` with fixed invertible
+`B = A1`; the formulas are
+`F2=-B^{-1}A2`, `F3=-A3B^{-1}`, and `C4=A4-A3B^{-1}A2`.
+
+Lean proves `schurCoreFormalJacobianEquiv` by an explicit inverse tangent map,
+then proves `schurCoreFormalJacobian_det_isUnit`.  After xhigh review, the
+determinant theorem assumes finite side indices `mu` and `nu`, so it is a real
+finite matrix determinant statement rather than an infinite-dimensional
+fallback.
+
+This is a useful first Jacobian-unit brick.  It does not prove `HasFDerivAt`,
+source pushforward, density transport, exact determinant exponent/sign, or the
+full product-step Jacobian with variable `C1`, `A1`, old `F3`, and passive
+`D`.  The next A2 Jacobian frontier is either that full formal product-step
+linear equivalence or direct source production of the p.13 chart/measure data.

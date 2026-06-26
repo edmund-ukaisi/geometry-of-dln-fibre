@@ -7352,3 +7352,26 @@ and
 Nonclaims: no successor `yNext`, selected-entry readout, source production of
 successor chart data/suffixes/terminal rows, source/image equality, chart
 coverage, normal crossings, pole order, or RLCT.
+
+Latest A2 Schur-core formal Jacobian unit:
+Lean now proves the fixed-`B` Schur-core formal tangent map from Aoyagi Lemma 2
+and Theorem 3 is invertible, and that its determinant is a unit in the finite
+side-index case.
+
+Lean names:
+`SchurCoreTangent`,
+`schurCoreFormalJacobian`,
+`schurCoreFormalJacobianInverse`,
+`schurCoreFormalJacobianEquiv`,
+and
+`schurCoreFormalJacobian_det_isUnit`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-schur-core-formal-jacobian-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-schur-core-formal-jacobian-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-schur-core-formal-jacobian-unit.md`.
+
+Nonclaims: no nonlinear analytic derivative theorem, source-measure
+pushforward, density transport, exact determinant exponent/sign, full p.13
+product-step Jacobian, normal crossings, pole order, or RLCT.

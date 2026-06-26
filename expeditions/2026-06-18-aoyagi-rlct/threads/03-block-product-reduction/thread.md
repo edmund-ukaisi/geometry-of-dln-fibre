@@ -6180,3 +6180,40 @@ This is finite coordinate-cover and measure bookkeeping only.  It does not
 identify `signedBoxSet Sres` with an Aoyagi source-rank stratum, construct an
 analytic source chart, prove original source-measure transport, produce
 normal crossings, prove pole order, or extract an RLCT.
+
+## 2026-06-26 A2 Schur-core formal Jacobian unit
+
+Reproduction:
+`reproduction-a2-schur-core-formal-jacobian-unit.md`.
+Statement card:
+`statement-card-a2-schur-core-formal-jacobian-unit.md`.
+Review:
+`review-a2-schur-core-formal-jacobian-unit.md`.
+
+Lean now proves:
+
+```text
+SchurCoreTangent
+schurCoreFormalJacobian
+schurCoreFormalJacobianInverse
+schurCoreFormalJacobianEquiv
+schurCoreFormalJacobian_det_isUnit
+```
+
+This is the fixed-pivot Schur core from Aoyagi Lemma 2 and the repeated
+Theorem 3 step:
+
+```text
+F2 = -B^{-1} A2,
+F3 = -A3 B^{-1},
+C4 = A4 - A3 B^{-1} A2.
+```
+
+The formal tangent map is packaged as a `LinearEquiv`; the determinant-unit
+theorem is restricted to finite side indices `mu` and `nu`, following xhigh
+review, so it is not a vacuous infinite-dimensional determinant statement.
+
+This remains formal finite Jacobian arithmetic only.  It is not a
+`HasFDerivAt` theorem, not the full p. 13 product-step Jacobian for
+`(C1,D,F3_old,A1,A2,A3,A4)`, not source-measure or density transport, not chart
+coverage, not normal crossings, not pole order, and not RLCT extraction.
