@@ -8690,6 +8690,23 @@ This identifies the analytic derivative of the `F2` coordinate with
 and `C` components, full tuple derivative, analytic determinant formula,
 source-measure transport, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 product-step F3 ambient derivative:
+`ProductReductionStepDerivative.lean` now proves the analytic derivative of
+`F3 = F3old - D*A3*(C1*A1)^{-1}`. Lean name:
+`hasFDerivAt_productReductionStepTopologyTupleToChart_F3`.
+The proof reuses `hasFDerivAt_productReductionStepTopologyTupleToChart_Ctop`,
+`hasFDerivAt_matrix_inv_of_isUnit_det`, and `matrixMulContinuousLinearMap`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-f3-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-f3-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-f3-ambient-derivative.md`.
+This identifies the analytic derivative of the `F3` coordinate with
+`productReductionStepFormalJacobian_dF3` under `IsUnit x.C1.det` and
+`IsUnit x.A1.det`. The `C` component, full tuple derivative, analytic
+determinant formula, source-measure transport, normal crossings, pole order,
+and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -11235,3 +11235,30 @@ the already-proved `Ctop` derivative and the inverse derivative for
 inverse calculation from `F2`.  No source-measure pushforward, density
 transport, change of variables, normal crossings, pole order, or RLCT is
 claimed.
+
+## Latest A2 Product-Step F3 Ambient Derivative
+
+The second inverse-dependent analytic component has landed in
+`ProductReductionStepDerivative.lean`.  Lean proves
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart_F3
+```
+
+for the coordinate
+
+```text
+F3 = F3old - D*A3*(C1*A1)^{-1}.
+```
+
+The proof uses the landed `Ctop = C1*A1` component derivative, applies
+`hasFDerivAt_matrix_inv_of_isUnit_det` to `Ctop^{-1}`, and uses
+`matrixMulContinuousLinearMap` for the product-rule layers.  The derivative is
+identified with `productReductionStepFormalJacobian_dF3 x` under the
+determinant-chart hypotheses `IsUnit x.C1.det` and `IsUnit x.A1.det`.
+
+Next analytic priority: prove the `C = A4 - A3*A1^{-1}*A2` component
+derivative, then assemble the full ambient tuple derivative against
+`productReductionStepFormalJacobian`.  No source-measure pushforward, density
+transport, change of variables, normal crossings, pole order, or RLCT is
+claimed.

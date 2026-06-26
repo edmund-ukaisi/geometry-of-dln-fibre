@@ -4896,3 +4896,14 @@ inverse derivative for `Ctop`, with determinant-unit input from `C1` and
 `A1`.  After that, prove the `C = A4 - A3*A1^{-1}*A2` component and assemble
 the full ambient tuple derivative.  Do not infer source-measure pushforward,
 density transport, normal crossings, pole order, or RLCT.
+
+A2 product-step F3 ambient derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-f3-ambient-derivative.md`.
+Lean proves `hasFDerivAt_productReductionStepTopologyTupleToChart_F3`, using
+the landed `Ctop = C1*A1` derivative, the matrix inverse derivative for
+`Ctop^{-1}`, and product-rule bundling for `D*A3*Ctop^{-1}`.  The determinant
+inputs are exactly `IsUnit x.C1.det` and `IsUnit x.A1.det`.  The next
+derivative priority is the `C = A4 - A3*A1^{-1}*A2` component, reusing the
+`A1` inverse calculation from `F2`, then assembling the full ambient tuple
+derivative.  Do not infer source-measure pushforward, density transport,
+normal crossings, pole order, or RLCT.
