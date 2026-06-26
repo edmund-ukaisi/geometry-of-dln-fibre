@@ -75,7 +75,50 @@ So `Twid 0 = Twid 1 = M_0` (the FIRST boundary is the identity boundary, `c_0 = 
 for the Jacobian det `|u|^{minAdm−1}` (task #77) and the `½·minAdm` threshold — so the chart-identity
 checkpoint can be built on the achiever widths but proves only the rate.
 
+## CHECKPOINT REACHED — the `(3,3,3,3)` CHART IDENTITY via the engine (2026-06-26)
+
+`RouteM3333Chain.lean` (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`) — the decisive
+multi-pivot witness built through the rate engine, reproducing `RouteM3333`'s identity WITHOUT the
+per-entry `ring` blow-up:
+
+- `chain3333 : FactoredChain 3 u` — the recursive-`C` construction (validated design): `C 0 = 1`,
+  `C k = Bmat k · chainQ(N_k) + u • Rmat k` (interior, `hC` `rfl`), `C 3 = u • Rleaf` (`base` `rfl`),
+  `A k = chainA(N_k)(W_k)(C(k+1))` (`hQA` = `chainQ_mul_chainA`). The identity boundary `k=0` uses
+  `Qmat 0 = Bmat 0 = 1`, `Rmat 0 = 0` (so `hC 0`/`hQA 0` are `one_mul`, sidestepping `chainQ` at `c=0`);
+  the genuine `chain_block` fires at `k=1` (`t=2,c=1`) and `k=2` (`t=1,c=2`). **Widths explicit ℕ-`match`**
+  (`W3333`, `T3333w`), NOT `![…].getD` (the heartbeat caveat held — clean build).
+- `prod_chartParams3333c_eq : prod M3333c (chartParams) = u • H` — the rate identity (bridge +
+  recursive-`C 0=1` `telescope_zero`). `chartParams` = the chain's layers; `hW`/`hA` the `rfl`-3 matches
+  (`hA` via `reindex_apply` + `Fin.cast_eq_self`, NOT the `finCongr_refl` `show`-rewrite which didn't fire).
+- `dlnLoss_chartParams3333c : dlnLoss M3333c 0 (chartParams) = u²·V` (`V := ‖Hr‖²`, `Hr := reindex (Hmat 0)`).
+- `routeMCore_phi3333c : routeMCore M3333c (φ u) = u²·V` — **the chart identity** (the soundness-critical
+  `F∘φ = u²·V`), `φ := paramsEquivFlat M3333c ∘ chartParams`, the symm/apply cancel.
+
+**Cast lessons (added to the kernel):** (i) the dependent-`HMul`/`HSMul` `rw [Matrix.one_mul]` /
+`rw [Matrix.submatrix_smul]` higher-order match FAILS even fully-applied as a `rw` — use a fully-applied
+TERM (`have h1 : C 0 * suffix 0 = suffix 0 := Matrix.one_mul (suffix 0)` then `rw [h1]`; `congrFun
+(congrFun (Matrix.submatrix_smul u A) _) _` for the reindex-smul). (ii) `hA` (reindex of a layer to the
+`rfl`-equal-width target) closes by `rw [Matrix.reindex_apply]; ext i j; simp [submatrix_apply,
+finCongr_symm, finCongr_apply, Fin.cast_eq_self]; rfl`.
+
+## The ∀M generalization (the remaining SUPPLY — well-scoped, template now concrete)
+
+The `(3,3,3,3)` instance is the concrete template. The general ∀M version (path-AGNOSTIC rate, so
+parametrize by ANY weakly-decreasing `t : Fin (L+1) → ℕ` with `t 0 = M 0`, `t last = 0`, `t k ≤ M k`):
+- `Twid 0 := M 0`, `Twid (k+1) := t k`; `Wwid k := M k`. The recursion `C : (k:ℕ) → Matrix (Fin (Twid k))
+  (Fin (Wwid k))` over OPAQUE `t`-widths (the `(3,3,3,3)` `match` becomes a structural recursion; the
+  `chainQ`/`chainA` `t + c = M'` proofs are `omega` with `t = t k`, `c = M k − t k`).
+- `chain_block`/`chainQ`/`chainA` are ALREADY M-agnostic (`{M' t c : ℕ}`), so the block algebra is free.
+- The identity boundary `k=0` (`Twid 0 = Twid 1 = M 0`, `c_0 = 0`) uses `Qmat 0 = Bmat 0 = 1` as in `(3,3,3,3)`.
+- The leaf `k = L` is `C L = u • R`, `base` `rfl`.
+- `hW`/`hA`: `Wwid k = M ⟨k,_⟩` is `rfl` (`Wwid = M`); `hA` is the reindex-of-layer (the `(3,3,3,3)`
+  `Fin.cast_eq_self` close).
+- then `φ_M := paramsEquivFlat M ∘ chartParams_M`, `routeMCore M (φ_M u) = u²·V`.
+The remaining genuine work is the opaque-`t`-width recursion for the chain fields (the `(3,3,3,3)` `match`
+lifted to a general structural recursion). Downstream (Jacobian det / cov / atom) needs the achiever `t`
+specifically (for the `minAdm−1` exponent); the rate identity does not.
+
 ## Files (worktree branch)
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFactor.lean`, `RouteMFactoredChain.lean`,
-`RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`.
-NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+`RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
+`RouteM3333Chain.lean`. NOT yet in the `DLNFibre.lean` aggregator (controller wires).
