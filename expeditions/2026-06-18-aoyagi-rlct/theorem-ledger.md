@@ -8675,6 +8675,21 @@ matrices, the tuple-level map/record bridge, and the `Ctop = C1*A1`
 component derivative. The full tuple derivative, analytic determinant formula,
 source-measure transport, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 product-step F2 ambient derivative:
+`ProductReductionStepDerivative.lean` now proves the first inverse-dependent
+component derivative for `F2 = -A1^{-1}A2`. Lean names:
+`matrixMulContinuousLinearMap`, `matrixMulContinuousLinearMap_apply`, and
+`hasFDerivAt_productReductionStepTopologyTupleToChart_F2`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-f2-ambient-derivative.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-f2-ambient-derivative.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-f2-ambient-derivative.md`.
+This identifies the analytic derivative of the `F2` coordinate with
+`productReductionStepFormalJacobian_dF2` under `IsUnit x.A1.det`. The `F3`
+and `C` components, full tuple derivative, analytic determinant formula,
+source-measure transport, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

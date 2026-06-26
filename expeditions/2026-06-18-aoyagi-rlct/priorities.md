@@ -4884,3 +4884,15 @@ derivatives using the inverse-derivative lemma, then assemble the full
 ambient tuple derivative against `productReductionStepFormalJacobian`.  Do not
 read this as source-measure pushforward, density/Jacobian transport,
 change-of-variables for integrals, normal crossings, pole order, or RLCT.
+
+A2 product-step F2 ambient derivative has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-f2-ambient-derivative.md`.
+Lean proves `hasFDerivAt_productReductionStepTopologyTupleToChart_F2`, using
+the determinant-unit hypothesis on `A1` and the reusable heterogeneous matrix
+multiplication helper `matrixMulContinuousLinearMap`.  The next derivative
+priority is `F3`: prove the derivative of
+`F3old - D*A3*(C1*A1)^{-1}` using the landed `Ctop` derivative and the
+inverse derivative for `Ctop`, with determinant-unit input from `C1` and
+`A1`.  After that, prove the `C = A4 - A3*A1^{-1}*A2` component and assemble
+the full ambient tuple derivative.  Do not infer source-measure pushforward,
+density transport, normal crossings, pole order, or RLCT.

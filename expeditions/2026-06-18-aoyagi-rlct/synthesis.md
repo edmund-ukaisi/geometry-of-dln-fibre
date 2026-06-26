@@ -11205,3 +11205,33 @@ Next analytic priority: prove the remaining component derivatives `F2`,
 full ambient tuple derivative against `productReductionStepFormalJacobian`.
 This still does not prove source-measure pushforward, density transport,
 change of variables, normal crossings, pole order, or RLCT.
+
+## Latest A2 Product-Step F2 Ambient Derivative
+
+The first inverse-dependent analytic component has landed in
+`ProductReductionStepDerivative.lean`.  Lean adds the reusable heterogeneous
+matrix multiplication helper
+
+```text
+matrixMulContinuousLinearMap
+matrixMulContinuousLinearMap_apply
+```
+
+and proves
+
+```text
+hasFDerivAt_productReductionStepTopologyTupleToChart_F2
+```
+
+for the coordinate `F2 = -A1^{-1} A2`, under the determinant-chart hypothesis
+`IsUnit x.A1.det`.  The derivative is identified with
+`productReductionStepFormalJacobian_dF2 x` after finite-dimensional
+continuous-linear coercion.
+
+Next analytic priority: prove the `F3` component derivative.  It should reuse
+the already-proved `Ctop` derivative and the inverse derivative for
+`Ctop^{-1}`, with determinant-unit input from `IsUnit x.C1.det` and
+`IsUnit x.A1.det`.  The `C` component derivative should then reuse the `A1`
+inverse calculation from `F2`.  No source-measure pushforward, density
+transport, change of variables, normal crossings, pole order, or RLCT is
+claimed.
