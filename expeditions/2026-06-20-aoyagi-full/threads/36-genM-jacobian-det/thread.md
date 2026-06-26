@@ -267,3 +267,36 @@ rest` split (`sumPiEquivProdPi`) + the `(Fin schurDim → ℝ) ≃L SchurInc`/`L
 `(paramsEquivFlat).symm ∘ composeFold fs = chartParamsGen ∘ genBlkFlatStruct` (the chainA-layer
 induction). This is the one genuinely-deep remaining build; the CLE machinery + all det/rate/decoder
 foundations beneath it are banked.
+
+---
+
+## UPDATE-6 (same tide cont.) — Codex REFRAME: the det needs NO map-equality; phiFlat_abs_det = factor-list + leafH summation
+
+Decorrelated xhigh Codex (`codex/item3-form-*`) reframed item-3 decisively. **DEFINE the achiever chart
+AS `composeFold fs`.** Then `phiFlat_abs_det` is IMMEDIATE from the banked telescope — the map equality
+is needed ONLY to transfer the RATE (which I already have for `phiFlatStruct`), NOT for the determinant.
+Route a-prime (direct layer-wise fderiv of `chartParamsGen ∘ genBlkFlatStruct`) REJECTED — it rebuilds
+the Schur/LDU/chain det proof in one large derivative, duplicating the factor machinery.
+
+Banked: **`composeFold_abs_det_leafH`** (`RouteMPhiFlatDet`) — `|det (fderiv (composeFold fs) u)| =
+∏_j |u_j|^{leafH j}` from `composeFold_hasFDerivAt` + `composeFold_abs_det` + the item-4 det
+bookkeeping `hdet`. NO map equality. This is the genuine `phiFlat_abs_det` for `phiFlat := composeFold fs`.
+
+### So `phiFlat_abs_det` now needs ONLY: the factor list `fs` + the leafH summation `hdet`
+1. **The factor list `fs`** (outer→inner: chain_s, Schur_s, LDU_s, radial): each from the item-2
+   `conjBlockFactor` with a CLE `E_s : (Fin N → ℝ) ≃L Block_s × Rest` built by
+   `flatToChartIdx` (DONE) + a `ChartIdx ≃ slot_k ⊕ rest` split (`sumPiEquivProdPi`) + the
+   `(Fin schurDim → ℝ) ≃L SchurInc`/`LDUParam` block flattening. The remaining build-complexity: the
+   per-boundary `ChartIdx ≃ slot_k ⊕ rest` decomposition (the "rest" subtype + the equiv).
+2. **The leafH summation `hdet`**: the per-factor monomials (`radial |u_p|^{minAdm−1}`, Schur
+   `|K_s(prefix)|^{r_s+c_s}`, LDU `∏|q(prefix)|^{2(t−1−i)}`, chain `1`) multiply to `∏|u_j|^{leafH j}`.
+   The prefix-pullback wrinkle: each factor's det is read at its prefix `composeFold(tail) u`; since the
+   factors read DISJOINT slots (the structured decoder's guarantee), the prefix doesn't disturb a
+   factor's own block — so `det_s = monomial in u's own slot` (a `prefix_s u`'s block = `u`'s block, by
+   slot-disjointness). Then the leafH product is the `leafH3333_prod_eq`-pattern `Finset.prod` over
+   `{radial} ∪ {Schur/LDU slots}`.
+
+This is the REMAINING build — substantial (the CLEs + the disjoint-prefix det bookkeeping) but with NO
+deep map-equality induction. The det side is otherwise COMPLETE (9 modules banked: workhorse, fderiv
+infra, factors, slots, decoder, rate, det-skeleton, map-free det). The rate (for the atom) would later
+use the bridge `composeFold fs = phiFlatStruct` — deferred (not needed for `phiFlat_abs_det`).
