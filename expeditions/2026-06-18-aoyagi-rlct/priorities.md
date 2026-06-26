@@ -5403,3 +5403,15 @@ production, or A5 terminal no-extra/classifier theorem.  Do not promote finite
 selected-entry coverage/transition names, `SourceProductionObligation`
 constructors, or first-nonbase/cardinal-squeeze theorems into analytic/source
 fields.
+
+After reorientation, read-only xhigh scout `Banach the 3rd` rechecked the A2
+retained-passive/raw-density frontier.  The controller decision is now recorded
+at
+`threads/03-block-product-reduction/construction-plan-a2-retained-passive-p13-source-chart.md`:
+the A2 wrapper search is closed.  A2 progress must define a retained-passive
+coordinate domain, source map, local inverse, source-rank coverage/image
+theorem, measure pushforward, and density/Jacobian accounting.  The first Lean
+payoff should remove `hraw_map` in the p.13 raw-density consumer or
+`hcoverage` in the local-source consumer.  A theorem still using the current
+reduced section with `C1=I`, `A3=0`, or still assuming those fields, is not
+frontier progress.

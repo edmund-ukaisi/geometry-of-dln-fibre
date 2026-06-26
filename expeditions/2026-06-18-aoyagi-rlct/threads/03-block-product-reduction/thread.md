@@ -7206,3 +7206,30 @@ determinant-chart hypotheses for derivative or measure transport, construct a
 local source chart or local inverse for original DLN parameters, prove
 source-rank coverage, push forward source measure, identify a density/Jacobian,
 produce normal crossings, or compute pole order or RLCT.
+
+## 2026-06-26 A2 retained-passive source-chart construction plan
+
+Construction plan:
+`construction-plan-a2-retained-passive-p13-source-chart.md`.
+
+After VM reorientation, the controller and read-only xhigh scout
+`Banach the 3rd` rechecked the retained-passive p.13 frontier.  Verdict: no
+smaller source-faithful theorem exists below a genuine retained-passive chart
+construction.  The named eliminable fields remain:
+
+```text
+hraw_map
+hcoverage
+```
+
+in the raw-density and local-source consumers.  The current reduced p.13
+section cannot remove them because it fixes raw `C1 = I` and raw `A3 = 0`,
+while the raw determinant chart permits those coordinates to vary.
+
+Future A2 work should start from the construction plan: define the
+retained-passive coordinate domain, source map, local inverse, source-rank
+coverage/image theorem, measure pushforward, and density/Jacobian accounting.
+The first Lean payoff must remove `hraw_map`, remove `hcoverage`, or introduce
+a construction theorem that directly produces one of those fields.  More
+section-image wrappers or raw-density consumers with the same supplied fields
+are parked.

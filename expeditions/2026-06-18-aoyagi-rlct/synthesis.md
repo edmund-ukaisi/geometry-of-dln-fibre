@@ -12456,3 +12456,23 @@ package; A5 still needs terminal no-extra/classifier data at the Lean
 terminal-label level.  Existing finite theorems remain useful conditional
 infrastructure, but must not be used as analytic coverage, source production,
 selector injectivity, or no-extra terminal-minimum coverage.
+
+## Post-Reorientation A2 Construction Boundary - 2026-06-26
+
+After the interruption, the worktree was clean and aligned with
+`origin/expedition/aoyagi-rlct` at `befd9ec8`.  Host process inspection found
+no running Lean/lake build to recover.  A fresh xhigh read-only scout,
+`Banach the 3rd`, checked the A2 retained-passive/raw-density frontier and
+agreed that no smaller source-faithful theorem exists below a genuine
+retained-passive p.13 source chart.
+
+The durable plan is
+`threads/03-block-product-reduction/construction-plan-a2-retained-passive-p13-source-chart.md`.
+The named fields remain `hraw_map` in the p.13 raw-density consumers and
+`hcoverage` in the local-source finite-integral consumer.  The current p.13
+section fixes `C1=I` and `A3=0`, so it cannot push source measure to full raw
+Haar on the determinant chart.  The next A2 Lean payoff must construct a
+retained-passive coordinate domain, source map, local inverse,
+source-rank coverage/image theorem, measure pushforward, and density/Jacobian
+accounting, or else produce one of those fields directly.  Do not add another
+section-image or conditional raw-density wrapper.
