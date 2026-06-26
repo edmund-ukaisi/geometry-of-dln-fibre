@@ -316,3 +316,11 @@ import DLNFibre.Core.FibreBundlePerMinor
 -- `awayTriple` engine is network-free (spin-out candidate). DISCLAIMER: this cocycle is on the AMBIENT
 -- `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the bundle is NOT `locallyTrivial`.
 import DLNFibre.Core.FibreBundleTransition
+-- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric fact.
+-- C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime meeting
+-- one minimal prime recovers that component's local ring (sub-walls (a)+(b) of thread-16, banked). C3
+-- `FibreGenericSmoothUncond` — `S ⊗ Away g ≃ Away (1⊗g)` transport ⟹ `IsSmoothAt` of the fibre chart
+-- from `IsSmoothAt` of `sweepFibreRing`. The SOLE remaining open input is C2(a): the algebra iso
+-- `sweepFibreRing⧸I ≃ₐ[k] orbitRing M` per top-component prime (fibre-component↔orbit, ~multi-module).
+import DLNFibre.Core.LocalizationAtComponent
+import DLNFibre.Core.FibreGenericSmoothUncond
