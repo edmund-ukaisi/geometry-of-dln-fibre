@@ -3007,6 +3007,74 @@ theorem exists_consecutive_explicitCeilData_of_constant_reducedWidth_decompositi
     · unfold aoyagiSelectedWidthNat
       simp [hi]
 
+/-- Equal-width source data with explicit finite Theorem 2 formula data.
+
+This extends the equal-width explicit ceiling package by computing the
+selected pair sum, order expression, and unfolded finite `lambda` formula for
+the constructed consecutive equal-width branch. -/
+theorem exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition
+    {L : ℕ} {H : ℕ → ℕ} {r w q a : ℕ}
+    (ha_pos : 0 < a) (ha_le : a ≤ L)
+    (hw : w = L * q + a)
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∃ (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = (w : ℤ)) ∧
+      data.ceilWidth = (w : ℤ) + (q : ℤ) + 1 ∧
+      data.aParam = a ∧
+      data.theorem2OrderFormula = a * (L - a) + 1 ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) ∧
+      aoyagiSelectedWidthPairSum L m =
+        (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 2) ∧
+      aoyagiTheorem2Lambda_fromCeilData L L H r m data =
+        aoyagiTheorem2RegularTerm L H r +
+          ((a : ℚ) * ((L : ℚ) - (a : ℚ))) / (4 * (L : ℚ)) -
+          (((L : ℚ) * ((L : ℚ) - 1)) / 4) *
+            (((w : ℚ) + (q : ℚ) + 1) +
+              (((a : ℚ) - (L : ℚ)) / (L : ℚ))) ^ 2 +
+          (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 4) := by
+  rcases exists_consecutive_explicitCeilData_of_constant_reducedWidth_decomposition
+      (L := L) (H := H) (r := r) (w := w) (q := q) (a := a)
+      ha_pos ha_le hw hconst with
+    ⟨C, m, data, hC, S, hm, hmconst, hceil, haParam, hnat, hnonneg, hstrict,
+      hle, hnatNonneg⟩
+  have horder : data.theorem2OrderFormula = a * (L - a) + 1 := by
+    simp [AoyagiDefinition3CeilData.theorem2OrderFormula, haParam]
+  have hm_const_fun : m = fun _ : Fin (L + 1) ↦ (w : ℤ) := by
+    funext j
+    exact hmconst j
+  have hpair :
+      aoyagiSelectedWidthPairSum L m =
+        (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 2) := by
+    rw [hm_const_fun]
+    exact aoyagiSelectedWidthPairSum_const L w
+  have hlambda :
+      aoyagiTheorem2Lambda_fromCeilData L L H r m data =
+        aoyagiTheorem2RegularTerm L H r +
+          ((a : ℚ) * ((L : ℚ) - (a : ℚ))) / (4 * (L : ℚ)) -
+          (((L : ℚ) * ((L : ℚ) - 1)) / 4) *
+            (((w : ℚ) + (q : ℚ) + 1) +
+              (((a : ℚ) - (L : ℚ)) / (L : ℚ))) ^ 2 +
+          (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 4) := by
+    unfold aoyagiTheorem2Lambda_fromCeilData aoyagiTheorem2Lambda_ceil
+    rw [hpair, hceil, haParam]
+    norm_num [Nat.cast_add, Nat.cast_mul]
+    ring_nf
+  exact
+    ⟨C, m, data, hC, S, hm, hmconst, hceil, haParam, horder, hnat, hnonneg,
+      hstrict, hle, hnatNonneg, hpair, hlambda⟩
+
 end AoyagiDefinition3SourceData
 
 end Aoyagi

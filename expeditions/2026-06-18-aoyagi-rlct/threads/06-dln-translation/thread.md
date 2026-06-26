@@ -1612,3 +1612,36 @@ This is still only a supplied-`ell=1` branch result.  It does not infer
 `ell=1`, choose a canonical pair, prove branch-independent formula payloads,
 add a final socket, construct Eq5 payloads or charts, prove normal crossings,
 identify pole order, or extract RLCT.
+
+## Current slice - 2026-06-26, equal-width finite Theorem 2 formula
+
+Reproduction:
+`reproduction-definition3-equal-width-theorem2-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-equal-width-theorem2-formula.md`.
+Review:
+`review-definition3-equal-width-theorem2-formula-a6.md`.
+
+Lean now has:
+
+```text
+aoyagiSelectedWidthPairCount_cast
+aoyagiSelectedWidthPairSum_const
+AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition
+```
+
+For the source-backed equal-width branch, if all source-range reduced widths
+equal `w` and `w = L*q+a` with `0<a<=L`, Lean constructs the consecutive
+selected cutpoints with `ell=L`, reuses the explicit ceiling data
+`ceilWidth=w+q+1`, `aParam=a`, and computes:
+
+```text
+order = a*(L-a)+1,
+pairSum = ((L+1)*L*w^2)/2,
+pair contribution to lambda = ((L+1)*L*w^2)/4.
+```
+
+The returned lambda statement is the unfolded finite ceiling-form expression.
+This is still finite arithmetic for a restricted branch.  It does not prove
+arbitrary Definition 3 branch selection, Eq5 payloads, final chart production,
+normal crossings, pole order, or RLCT extraction.

@@ -109,10 +109,13 @@ A6 equal-width explicit ceiling data has now landed:
 `threads/06-dln-translation/reproduction-definition3-equal-width-explicit-ceil-data-a6.md`.
 It proves the concrete equal-width formula `ceilWidth=w+q+1`, `aParam=a` from
 `w=L*q+a`, `0<a<=L`, and packages it with consecutive equal-width source data.
-Treat the equal-width lane as sufficiently served for now.  Further A6 work
-should move a different source hypothesis or return to A4/A5 source production;
-do not accumulate more equal-width wrappers unless they feed a concrete final
-socket.
+The follow-up equal-width finite formula package has now also landed:
+`threads/06-dln-translation/reproduction-definition3-equal-width-theorem2-formula-a6.md`.
+It computes the pair sum, order expression, and unfolded finite lambda formula
+for the same branch.  Treat the equal-width lane as sufficiently served after
+this formula closure.  Further A6 work should move a different source
+hypothesis or return to A4/A5 source production; do not accumulate more
+equal-width wrappers unless they remove a concrete downstream hypothesis.
 
 A2 regular-variable source-rank shift has now landed:
 `threads/03-block-product-reduction/reproduction-a2-regular-variable-source-rank-shift.md`.
@@ -5286,3 +5289,13 @@ boundary vocabulary, not as source production or analytic atlas construction.
 The next A4 source-moving work must still construct source/suffix data,
 coverage, analytic transition regularity, and Jacobian compatibility, or keep
 those fields explicitly supplied.
+
+A6 equal-width finite Theorem 2 formula package has now landed:
+`threads/06-dln-translation/reproduction-definition3-equal-width-theorem2-formula-a6.md`.
+Lean proves `aoyagiSelectedWidthPairSum_const` and
+`AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition`.
+This is finite arithmetic for the source-backed equal-width branch only:
+`ell=L`, consecutive selected cutpoints, constant selected widths, explicit
+ceiling data, order `a*(L-a)+1`, pair sum `((L+1)*L*w^2)/2`, and the unfolded
+finite lambda formula.  It is not arbitrary Definition 3 branch selection,
+Eq5 production, chart production, normal crossings, pole order, or RLCT.

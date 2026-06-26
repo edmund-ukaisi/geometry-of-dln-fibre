@@ -5433,6 +5433,27 @@ Statement card:
 Review:
 `threads/06-dln-translation/review-definition3-equal-width-explicit-ceil-data-a6.md`.
 
+Latest A6 Definition 3 equal-width finite Theorem 2 formula:
+`FinalFormula.lean` now proves `aoyagiSelectedWidthPairCount_cast` and
+`aoyagiSelectedWidthPairSum_const`, and `Definition3Bridge.lean` proves
+`AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition`.
+For the source-backed equal-width branch with `ell=L`, `m_j=w`, and
+`w=L*q+a`, `0<a<=L`, Lean constructs consecutive source data and returns
+explicit ceiling data, order `a*(L-a)+1`, pair sum
+`((L+1)*L*w^2)/2`, and the unfolded finite lambda formula with pair
+contribution `((L+1)*L*w^2)/4`.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-definition3-equal-width-theorem2-formula-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-theorem2-formula.md`.
+Review:
+`threads/06-dln-translation/review-definition3-equal-width-theorem2-formula-a6.md`.
+
+Nonclaims: restricted finite formula arithmetic only.  No arbitrary Definition
+3 branch selection, no Eq5 payload, no chart production, no normal crossings,
+no pole order, and no RLCT.
+
 Latest A6 Definition 3 positive-remainder ceiling data:
 `Definition3Bridge.lean` now proves
 `AoyagiDefinition3CeilData.ofSelectedSumPositiveRemainder`.  For a supplied

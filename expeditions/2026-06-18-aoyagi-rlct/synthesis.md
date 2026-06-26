@@ -12258,3 +12258,33 @@ and
 `threads/03-block-product-reduction/statement-card-a2-product-step-a1-formal-inverse.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-product-step-a1-formal-inverse.md`.
+
+## Latest A6 Equal-Width Finite Theorem 2 Formula
+
+`FinalFormula.lean` now proves the constant selected-width pair sum:
+
+```text
+aoyagiSelectedWidthPairSum_const
+```
+
+and `Definition3Bridge.lean` now proves:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition
+```
+
+For the equal-width branch `ell=L`, constant selected width `w`, and
+`w=L*q+a`, `0<a<=L`, the theorem returns consecutive Definition 3 source
+data, explicit ceiling data `ceilWidth=w+q+1`, `aParam=a`, order
+`a*(L-a)+1`, pair sum `((L+1)*L*w^2)/2`, and the unfolded finite lambda
+formula with pair contribution `((L+1)*L*w^2)/4`.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-definition3-equal-width-theorem2-formula-a6.md`,
+`threads/06-dln-translation/statement-card-a6-definition3-equal-width-theorem2-formula.md`,
+and
+`threads/06-dln-translation/review-definition3-equal-width-theorem2-formula-a6.md`.
+
+This is finite arithmetic for the restricted source-backed equal-width branch
+only.  It is not arbitrary Definition 3 branch selection, Eq5 production,
+chart production, normal crossings, pole order, or RLCT extraction.

@@ -298,6 +298,55 @@ theorem aoyagiSelectedWidthPairSum_eq_range_Icc_selectedWidthNat
   simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
   omega
 
+/-- Triangular pair-count arithmetic for `ell + 1` selected indices. -/
+theorem aoyagiSelectedWidthPairCount_cast (ell : ℕ) :
+    (∑ i ∈ Finset.range (ell + 1), ((ell - i : ℕ) : ℚ)) =
+      ((((ell + 1) * ell : ℕ) : ℚ) / 2) := by
+  have hreflect := Finset.sum_range_reflect (fun i : ℕ ↦ (i : ℚ)) (ell + 1)
+  have hleft :
+      (∑ i ∈ Finset.range (ell + 1), ((ell - i : ℕ) : ℚ)) =
+        ∑ i ∈ Finset.range (ell + 1), (i : ℚ) := by
+    simpa using hreflect
+  rw [hleft]
+  have htwiceNat := Finset.sum_range_id_mul_two (ell + 1)
+  have hpred : ell + 1 - 1 = ell := by omega
+  rw [hpred] at htwiceNat
+  have hcast := congrArg (fun n : ℕ ↦ (n : ℚ)) htwiceNat
+  have htwiceQ :
+      (∑ i ∈ Finset.range (ell + 1), (i : ℚ)) * 2 =
+        (((ell + 1) * ell : ℕ) : ℚ) := by
+    simpa [Nat.cast_sum, Nat.cast_mul] using hcast
+  nlinarith
+
+/-- If all selected widths are the same Nat value `w`, the selected pair sum
+is the number of selected pairs times `w^2`. -/
+theorem aoyagiSelectedWidthPairSum_const (ell w : ℕ) :
+    aoyagiSelectedWidthPairSum ell (fun _ : Fin (ell + 1) ↦ (w : ℤ)) =
+      (((((ell + 1) * ell : ℕ) : ℚ) * (w : ℚ)^2) / 2) := by
+  rw [aoyagiSelectedWidthPairSum_eq_range_Icc_selectedWidthNat]
+  have hconst :
+      (∑ i ∈ Finset.range (ell + 1), ∑ j ∈ Finset.Icc (i + 1) ell,
+        (aoyagiSelectedWidthNat ell (fun _ : Fin (ell + 1) ↦ (w : ℤ)) i : ℚ) *
+          (aoyagiSelectedWidthNat ell (fun _ : Fin (ell + 1) ↦ (w : ℤ)) j : ℚ)) =
+      ∑ i ∈ Finset.range (ell + 1), ∑ j ∈ Finset.Icc (i + 1) ell,
+        (w : ℚ) * (w : ℚ) := by
+    refine Finset.sum_congr rfl (fun i hi ↦ ?_)
+    have hi' : i < ell + 1 := by simpa using hi
+    rw [aoyagiSelectedWidthNat_of_lt hi']
+    refine Finset.sum_congr rfl (fun j hj ↦ ?_)
+    have hj' : j < ell + 1 := by
+      have hjle : j ≤ ell := (Finset.mem_Icc.mp hj).2
+      omega
+    rw [aoyagiSelectedWidthNat_of_lt hj']
+    norm_num
+  rw [hconst]
+  simp only [Finset.sum_const, Nat.card_Icc, Nat.reduceSubDiff, nsmul_eq_mul,
+    Nat.cast_mul, Nat.cast_add, Nat.cast_one]
+  rw [← Finset.sum_mul]
+  rw [aoyagiSelectedWidthPairCount_cast]
+  norm_num [Nat.cast_add, Nat.cast_mul, pow_two]
+  ring_nf
+
 /-- First source-facing display for Aoyagi Theorem 2's `lambda`, using the
 selected-width average. -/
 def aoyagiTheorem2Lambda_average
