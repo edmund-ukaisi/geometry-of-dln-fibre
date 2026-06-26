@@ -6284,3 +6284,33 @@ first compose with the reorder to `(Ctop,D,F3,A1,F2,A3,C)`.
 This is formula-level Lean, not yet the bundled full `LinearMap`,
 `LinearEquiv`, or determinant-unit theorem.  No analytic derivative,
 source-measure transport, normal crossings, pole order, or RLCT is claimed.
+
+## 2026-06-26 A2 product-step full formal linear maps
+
+Reproduction:
+`reproduction-a2-product-step-full-linear-maps.md`.
+Statement card:
+`statement-card-a2-product-step-full-linear-maps.md`.
+Review:
+`review-a2-product-step-full-linear-maps.md`.
+
+Lean now bundles the full p. 13 forward and inverse formal tangent formulas as
+`LinearMap`s:
+
+```text
+productReductionStepFormalJacobian
+productReductionStepFormalJacobianInverse
+```
+
+and proves the application theorems:
+
+```text
+productReductionStepFormalJacobian_apply
+productReductionStepFormalJacobianInverse_apply
+```
+
+The maps are built from fixed matrix left/right multiplication maps and named
+nested-tuple projections. This proves linearity of the full formulas without
+expanding a monolithic `map_add`/`map_smul` proof. The full raw/chart
+`LinearEquiv`, raw-order endomorphism, and determinant-unit theorem remain
+open, and determinants still must not be taken on the native raw-to-chart map.

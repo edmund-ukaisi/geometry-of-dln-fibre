@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.ChartTopology
+import Mathlib.Data.Matrix.Bilinear
 import Mathlib.LinearAlgebra.Determinant
 
 /-!
@@ -431,6 +432,314 @@ def productReductionStepFormalJacobianInverseFormula
   let dA2 : Matrix ρ ν K := -dA1 * y.F2 - y.A1 * dF2
   let dA4 : Matrix μ ν K := dC - dA3 * y.F2 - y.A3 * dF2
   (dC1, (dD, (dF3old, (dA1, (dA2, (dA3, dA4))))))
+
+/-- Raw tangent projection to `dC1`. -/
+def productReductionStepRawTangent_dC1 :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K where
+  toFun v := v.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to `dD`. -/
+def productReductionStepRawTangent_dD :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π μ K where
+  toFun v := v.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to the old `dF3`. -/
+def productReductionStepRawTangent_dF3old :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π ρ K where
+  toFun v := v.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to `dA1`. -/
+def productReductionStepRawTangent_dA1 :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K where
+  toFun v := v.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to `dA2`. -/
+def productReductionStepRawTangent_dA2 :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ν K where
+  toFun v := v.2.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to `dA3`. -/
+def productReductionStepRawTangent_dA3 :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ρ K where
+  toFun v := v.2.2.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Raw tangent projection to `dA4`. -/
+def productReductionStepRawTangent_dA4 :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ν K where
+  toFun v := v.2.2.2.2.2.2
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dCtop`. -/
+def productReductionStepChartTangent_dCtop :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K where
+  toFun v := v.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dD`. -/
+def productReductionStepChartTangent_dD :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π μ K where
+  toFun v := v.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dA1`. -/
+def productReductionStepChartTangent_dA1 :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K where
+  toFun v := v.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dA3`. -/
+def productReductionStepChartTangent_dA3 :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ρ K where
+  toFun v := v.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dF2`. -/
+def productReductionStepChartTangent_dF2 :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ν K where
+  toFun v := v.2.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dF3`. -/
+def productReductionStepChartTangent_dF3 :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π ρ K where
+  toFun v := v.2.2.2.2.2.1
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- Chart tangent projection to `dC`. -/
+def productReductionStepChartTangent_dC :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ν K where
+  toFun v := v.2.2.2.2.2.2
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+/-- `dCtop` component of the full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobian_dCtop
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K :=
+  (mulRightLinearMap ρ K x.A1).comp
+      (productReductionStepRawTangent_dC1 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+    + (mulLeftLinearMap ρ K x.C1).comp
+      (productReductionStepRawTangent_dA1 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- `dF2` component of the full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobian_dF2
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ν K :=
+  (mulRightLinearMap ρ K x.A2).comp
+      ((mulRightLinearMap ρ K x.A1⁻¹).comp
+        ((mulLeftLinearMap ρ K x.A1⁻¹).comp
+          (productReductionStepRawTangent_dA1
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))
+    - (mulLeftLinearMap ν K x.A1⁻¹).comp
+      (productReductionStepRawTangent_dA2 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- `dF3` component of the full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobian_dF3
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π ρ K :=
+  let Ctop : Matrix ρ ρ K := x.C1 * x.A1
+  productReductionStepRawTangent_dF3old (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+    - (mulRightLinearMap π K Ctop⁻¹).comp
+      ((mulRightLinearMap π K x.A3).comp
+        (productReductionStepRawTangent_dD
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+    - (mulRightLinearMap π K Ctop⁻¹).comp
+      ((mulLeftLinearMap ρ K x.D).comp
+        (productReductionStepRawTangent_dA3
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+    + (mulRightLinearMap π K Ctop⁻¹).comp
+      ((mulLeftLinearMap ρ K (x.D * x.A3 * Ctop⁻¹)).comp
+        (productReductionStepFormalJacobian_dCtop
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x))
+
+/-- `dC` component of the full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobian_dC
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ν K :=
+  let leftA3 : Matrix μ ρ K := x.A3 * x.A1⁻¹
+  productReductionStepRawTangent_dA4 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+    - (mulRightLinearMap μ K x.A2).comp
+      ((mulRightLinearMap μ K x.A1⁻¹).comp
+        (productReductionStepRawTangent_dA3
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+    + (mulRightLinearMap μ K x.A2).comp
+      ((mulRightLinearMap μ K x.A1⁻¹).comp
+        ((mulLeftLinearMap ρ K leftA3).comp
+          (productReductionStepRawTangent_dA1
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))))
+    - (mulLeftLinearMap ν K leftA3).comp
+      (productReductionStepRawTangent_dA2 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- Bundled full formal tangent map for the p. 13 one-step coordinate change. -/
+def productReductionStepFormalJacobian
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (productReductionStepFormalJacobian_dCtop
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).prod
+    ((productReductionStepRawTangent_dD
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+      ((productReductionStepRawTangent_dA1
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+        ((productReductionStepRawTangent_dA3
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+          ((productReductionStepFormalJacobian_dF2
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).prod
+            ((productReductionStepFormalJacobian_dF3
+                (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).prod
+              (productReductionStepFormalJacobian_dC
+                (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x))))))
+
+@[simp]
+theorem productReductionStepFormalJacobian_apply
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K)
+    (v : ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobian (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v =
+      productReductionStepFormalJacobianFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x v := by
+  rcases v with ⟨dC1, dD, dF3old, dA1, dA2, dA3, dA4⟩
+  simp [productReductionStepFormalJacobian, productReductionStepFormalJacobian_dCtop,
+    productReductionStepFormalJacobian_dF2, productReductionStepFormalJacobian_dF3,
+    productReductionStepFormalJacobian_dC, productReductionStepFormalJacobianFormula,
+    productReductionStepRawTangent_dC1, productReductionStepRawTangent_dD,
+    productReductionStepRawTangent_dF3old, productReductionStepRawTangent_dA1,
+    productReductionStepRawTangent_dA2, productReductionStepRawTangent_dA3,
+    productReductionStepRawTangent_dA4, Matrix.mul_assoc]
+
+/-- `dC1` component of the inverse full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobianInverse_dC1
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ρ K :=
+  (mulRightLinearMap ρ K y.A1⁻¹).comp
+      (productReductionStepChartTangent_dCtop
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+    - (mulRightLinearMap ρ K y.A1⁻¹).comp
+      ((mulLeftLinearMap ρ K (y.Ctop * y.A1⁻¹)).comp
+        (productReductionStepChartTangent_dA1
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+
+/-- Old `dF3` component of the inverse full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobianInverse_dF3old
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix π ρ K :=
+  productReductionStepChartTangent_dF3 (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+    + (mulRightLinearMap π K y.Ctop⁻¹).comp
+      ((mulRightLinearMap π K y.A3).comp
+        (productReductionStepChartTangent_dD
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+    + (mulRightLinearMap π K y.Ctop⁻¹).comp
+      ((mulLeftLinearMap ρ K y.D).comp
+        (productReductionStepChartTangent_dA3
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+    - (mulRightLinearMap π K y.Ctop⁻¹).comp
+      ((mulLeftLinearMap ρ K (y.D * y.A3 * y.Ctop⁻¹)).comp
+        (productReductionStepChartTangent_dCtop
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)))
+
+/-- `dA2` component of the inverse full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobianInverse_dA2
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix ρ ν K :=
+  - (mulRightLinearMap ρ K y.F2).comp
+      (productReductionStepChartTangent_dA1
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+    - (mulLeftLinearMap ν K y.A1).comp
+      (productReductionStepChartTangent_dF2
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- `dA4` component of the inverse full p. 13 formal tangent map. -/
+def productReductionStepFormalJacobianInverse_dA4
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      Matrix μ ν K :=
+  productReductionStepChartTangent_dC (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)
+    - (mulRightLinearMap μ K y.F2).comp
+      (productReductionStepChartTangent_dA3
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+    - (mulLeftLinearMap ν K y.A3).comp
+      (productReductionStepChartTangent_dF2
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K))
+
+/-- Bundled inverse full formal tangent map for the p. 13 one-step coordinate
+change. -/
+def productReductionStepFormalJacobianInverse
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K) :
+    ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (productReductionStepFormalJacobianInverse_dC1
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y).prod
+    ((productReductionStepChartTangent_dD
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+      ((productReductionStepFormalJacobianInverse_dF3old
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y).prod
+        ((productReductionStepChartTangent_dA1
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+          ((productReductionStepFormalJacobianInverse_dA2
+              (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y).prod
+            ((productReductionStepChartTangent_dA3
+                (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)).prod
+              (productReductionStepFormalJacobianInverse_dA4
+                (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y))))))
+
+@[simp]
+theorem productReductionStepFormalJacobianInverse_apply
+    (y : ProductReductionStepChartCoordinates ρ π μ ν K)
+    (v : ProductReductionStepChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) :
+    productReductionStepFormalJacobianInverse
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y v =
+      productReductionStepFormalJacobianInverseFormula
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) y v := by
+  rcases v with ⟨dCtop, dD, dA1, dA3, dF2, dF3, dC⟩
+  simp [productReductionStepFormalJacobianInverse,
+    productReductionStepFormalJacobianInverse_dC1,
+    productReductionStepFormalJacobianInverse_dF3old,
+    productReductionStepFormalJacobianInverse_dA2,
+    productReductionStepFormalJacobianInverse_dA4,
+    productReductionStepFormalJacobianInverseFormula,
+    productReductionStepChartTangent_dCtop, productReductionStepChartTangent_dD,
+    productReductionStepChartTangent_dA1, productReductionStepChartTangent_dA3,
+    productReductionStepChartTangent_dF2, productReductionStepChartTangent_dF3,
+    productReductionStepChartTangent_dC, Matrix.mul_assoc]
 
 /-- Reorder chart tangent coordinates into the raw-shaped order.
 

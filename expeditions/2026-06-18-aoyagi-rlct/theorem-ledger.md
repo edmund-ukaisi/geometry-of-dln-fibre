@@ -8605,6 +8605,23 @@ This is formula-level Lean plus determinant-order plumbing only; the bundled
 full `LinearMap`, `LinearEquiv`, determinant unit theorem, analytic derivative,
 source-measure transport, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 full product-step bundled formal linear maps:
+`ProductReductionStepJacobian.lean` now defines the full forward and inverse
+formal tangent formulas as bundled `LinearMap`s and proves the application
+theorems against the previously recorded formula functions. Lean names:
+`productReductionStepFormalJacobian`,
+`productReductionStepFormalJacobian_apply`,
+`productReductionStepFormalJacobianInverse`, and
+`productReductionStepFormalJacobianInverse_apply`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-linear-maps.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-linear-maps.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-linear-maps.md`.
+This is the linearity layer only; the full `LinearEquiv`, determinant unit
+theorem, analytic derivative, source-measure transport, normal crossings,
+pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

@@ -4839,3 +4839,11 @@ the determinant-order issue in code.  Next, prove the formula maps are bundled
 linear maps in smaller component lemmas, then prove the raw/chart
 `LinearEquiv`, then only state determinant unitness after composing with the
 raw-order equivalence.
+
+A2 full p. 13 formal Jacobian formulas are now bundled as Lean `LinearMap`s:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-linear-maps.md`.
+This closes the linearity layer for the full forward and inverse formal
+tangent formulas. Next priority is the inverse-composition proof for the full
+raw/chart maps, followed by the raw-order endomorphism and determinant-unit
+theorem. Determinants should still not be stated on the native raw-to-chart
+map.

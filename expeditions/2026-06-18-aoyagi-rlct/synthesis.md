@@ -11086,3 +11086,26 @@ monolithic proof attempt was too slow, so the next proof layer should split
 the formula into component linear maps or component linearity lemmas.  No full
 determinant-unit theorem, analytic derivative, source-measure transport,
 normal crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Full Product-Step Formal Linear Maps
+
+The full p. 13 formal tangent formulas are now bundled as `LinearMap`s:
+
+```text
+productReductionStepFormalJacobian
+productReductionStepFormalJacobianInverse
+```
+
+Their application theorems identify them with the previously reviewed tuple
+formulas:
+
+```text
+productReductionStepFormalJacobian_apply
+productReductionStepFormalJacobianInverse_apply
+```
+
+The maps are built from fixed matrix left/right multiplication maps and named
+tuple projections, so linearity is by construction. This is still not the full
+raw/chart `LinearEquiv`; inverse composition, the raw-order endomorphism, and
+determinant unitness remain open. No analytic derivative, source-measure
+transport, normal crossings, pole order, or RLCT is claimed.

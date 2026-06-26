@@ -7423,3 +7423,25 @@ Nonclaims: no bundled full `LinearMap`, no full raw/chart `LinearEquiv`, no
 determinant-unit theorem, no analytic derivative theorem, no source-measure
 pushforward or density transport, and no normal crossings, pole order, or
 RLCT.
+
+Latest A2 full product-step bundled formal linear maps:
+Lean now bundles the full p. 13 forward and inverse formal tangent formulas as
+`LinearMap`s and proves that applying these maps is exactly the already
+reviewed tuple formula.
+
+Lean names:
+`productReductionStepFormalJacobian`,
+`productReductionStepFormalJacobian_apply`,
+`productReductionStepFormalJacobianInverse`,
+and
+`productReductionStepFormalJacobianInverse_apply`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-full-linear-maps.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-full-linear-maps.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-full-linear-maps.md`.
+
+Nonclaims: no full raw/chart `LinearEquiv`, no determinant-unit theorem, no
+analytic derivative theorem, no source-measure pushforward or density
+transport, and no normal crossings, pole order, or RLCT.
