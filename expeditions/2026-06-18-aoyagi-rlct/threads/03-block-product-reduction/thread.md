@@ -7387,6 +7387,48 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive `A1_0` endpoint target
+
+Reproduction:
+`reproduction-a2-retained-passive-a1-first-endpoint-target.md`.
+Statement card:
+`statement-card-a2-retained-passive-a1-first-endpoint-target.md`.
+Review:
+`review-a2-retained-passive-a1-first-endpoint-target.md`.
+
+Lean now proves the active top-left endpoint half of the retained-passive
+coordinate inverse in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.
+Main names:
+
+```text
+ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_mul_first
+ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+ChartLocalSuffixState.retainedPassiveCtopProduct_zero_eq_target_of_A1_zero_eq
+ChartLocalSuffixState.retainedPassiveA1_zero_det_isUnit_of_A1_zero_eq_tail_inv_mul
+ChartLocalSuffixState.retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_zero_eq_target_of_A1_zero_eq
+```
+
+For nonempty edge family length `M+1`, the passive tail after the first edge is
+the ordered product `A1_last * ... * A1_1`.  Lean proves the first-edge split
+
+```text
+residualFactorProduct A1 last 0 = Tail * A1_0.
+```
+
+If `A1_0 = Tail^-1 * Ctop`, the full top-left product is `Ctop`.  Lean also
+proves `det(Tail)` is a unit from the passive determinant-unit hypotheses
+`det(A1_p)` unit for `p != 0`; together with `det(Ctop)` unit this gives the
+full determinant-unit `A1` family and the suffix-state endpoint
+`(suffixState E last 0).Ctop = Ctop`.
+
+This is finite top-left endpoint algebra only.  It does not package the full
+retained-passive coordinate domain, `F2` readback, `A3_last`/`F3` endpoint
+source map, source-rank coverage, source/image equality, measure pushforward,
+density/Jacobian transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-26 A2 retained-passive lower-left L recursion
 
 Reproduction:

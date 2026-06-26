@@ -9531,3 +9531,27 @@ Review:
 This is finite tail algebra only: no coordinate-domain theorem, active
 `Ctop_0`/`A1_0` reconstruction, source coverage, source/image theorem, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive `A1_0` endpoint target:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_mul_first`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive`,
+`ChartLocalSuffixState.retainedPassiveCtopProduct_zero_eq_target_of_A1_zero_eq`,
+`ChartLocalSuffixState.retainedPassiveA1_zero_det_isUnit_of_A1_zero_eq_tail_inv_mul`,
+`ChartLocalSuffixState.retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul`,
+and
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_zero_eq_target_of_A1_zero_eq`.
+For `Tail=A1_last*...*A1_1`, the full top-left product splits as
+`Tail*A1_0`; if `A1_0=Tail^-1*Ctop`, the product and the source-left
+suffix-state top block are `Ctop`.  The passive-tail determinant unit is
+proved from pointwise passive units for all `p != 0`, and `det(Ctop)` unit
+then gives the solved `A1_0` unit.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-first-endpoint-target.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-first-endpoint-target.md`.
+This is finite top-left endpoint algebra only: no full coordinate-domain
+theorem, `F2` readback, combined `A3_last`/`F3` source-map theorem, source
+coverage, source/image theorem, measure pushforward, density/Jacobian theorem,
+normal crossings, pole order, or RLCT.

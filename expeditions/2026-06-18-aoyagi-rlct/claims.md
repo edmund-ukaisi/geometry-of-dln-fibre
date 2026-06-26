@@ -8273,3 +8273,33 @@ domain, no active `Ctop_0`/`A1_0` reconstruction, no determinant-unit
 neighborhood theorem, no source coverage, no source/image equality, no
 source-measure pushforward, no density/Jacobian theorem, no normal crossings,
 no pole order, and no RLCT.
+
+Latest A2 retained-passive `A1_0` endpoint target:
+Lean now proves the finite top-left endpoint solve in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_mul_first`,
+`ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive`,
+`ChartLocalSuffixState.retainedPassiveCtopProduct_zero_eq_target_of_A1_zero_eq`,
+`ChartLocalSuffixState.retainedPassiveA1_zero_det_isUnit_of_A1_zero_eq_tail_inv_mul`,
+`ChartLocalSuffixState.retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul`,
+and
+`ChartLocalSuffixState.suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_zero_eq_target_of_A1_zero_eq`.
+If `Tail=A1_last*...*A1_1`, Lean proves
+`residualFactorProduct A1 last 0 = Tail*A1_0`; with
+`A1_0=Tail^-1*Ctop`, the product is `Ctop`.  The tail determinant-unit
+hypothesis is derived from passive unit hypotheses for all `p != 0`, so
+`det(Ctop)` unit gives a full determinant-unit `A1` family and the suffix-state
+endpoint `(suffixState E last 0).Ctop=Ctop`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-first-endpoint-target.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-first-endpoint-target.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-first-endpoint-target.md`.
+
+Nonclaims: finite top-left endpoint algebra only.  No full retained-passive
+coordinate-domain theorem, no `F2` readback packaging, no combined
+`A3_last`/`F3` source-map theorem, no source-rank coverage, no source/image
+equality, no measure pushforward, no density/Jacobian theorem, no normal
+crossings, no pole order, and no RLCT.

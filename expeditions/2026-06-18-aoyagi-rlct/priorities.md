@@ -5516,3 +5516,21 @@ move from tail algebra to coordinate-domain packaging: combine active `Ctop_0`,
 passive `A1_p` for `p>0`, the existing `A1_0` readback algebra, and this
 `A3_last` target theorem without asserting source coverage or measure
 transport.
+
+Retained-passive `A1_0` endpoint solve now landed in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-first-endpoint-target.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-first-endpoint-target.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-first-endpoint-target.md`.
+Lean proves the passive tail split
+`residualFactorProduct A1 last 0 = Tail*A1_0`, derives `det(Tail)` unit from
+passive unit hypotheses for `p != 0`, and proves the source-left suffix-state
+top block is the active endpoint `Ctop` when `A1_0=Tail^-1*Ctop` and
+`det(Ctop)` is a unit.
+
+Next retained-passive target: package the actual fixed-base source map/readback
+theorem combining this `A1_0` endpoint, the existing `A3_last`/`F3` prefix
+target, transformed-edge reconstruction, and `F2` readback.  Still do not
+assert source-rank coverage, source/image equality, measure transport,
+density/Jacobian accounting, normal crossings, pole order, or RLCT.

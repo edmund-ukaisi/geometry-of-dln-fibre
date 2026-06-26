@@ -1063,6 +1063,182 @@ theorem retainedPassiveFixedBaseEdgeMatrix_A1_eq_suffixState_Ctop_inv_mul_Ctop
   rw [hCtop]
   simp [Matrix.nonsing_inv_mul_cancel_left, hCtop_next]
 
+/-- The retained-passive passive top-left tail after the first edge:
+`A1_last * ... * A1_1`, with the empty product equal to `1` in the
+single-edge case. -/
+def retainedPassiveA1TailAfterFirst
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K) : Matrix ρ ρ K :=
+  residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+    A1 (Fin.last (M + 1)) (0 : Fin (M + 1)).succ
+      (0 : Fin (M + 1)).succ.le_last
+
+/-- The full retained-passive top-left product splits as the passive tail after
+the first edge times the first `A1` block. -/
+theorem retainedPassiveA1TailAfterFirst_mul_first
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K) :
+    residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+      retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1 * A1 0 := by
+  have h :=
+    residualFactorProduct_castSucc (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+      A1 (j := Fin.last (M + 1)) (0 : Fin (M + 1))
+        (0 : Fin (M + 1)).succ.le_last
+  simpa [retainedPassiveA1TailAfterFirst] using h
+
+/-- The passive top-left tail after the first edge is determinant-unit when
+each passive `A1_p`, `p ≠ 0`, is determinant-unit. -/
+theorem retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (hPassive : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det) :
+    IsUnit (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).det := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    1 ≤ m →
+      IsUnit
+        (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)).det
+  have hbase : motive (M + 1) le_rfl := by
+    intro _hmpos
+    change IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 j j le_rfl).det
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hp_ne : p ≠ 0 := by
+      intro hp
+      have hval : p.val = (0 : Fin (M + 1)).val := congrArg Fin.val hp
+      simp [p] at hval
+      omega
+    have hprod :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1 j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1 j p.succ p.succ.le_last * A1 p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1 (j := j) p p.succ.le_last
+    have ih' :
+        IsUnit
+          (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1 j p.succ p.succ.le_last).det := by
+      have hmpos_succ : 1 ≤ m + 1 := Nat.succ_pos m
+      simpa [motive, j, p] using ih hmpos_succ
+    change IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 j p.castSucc p.castSucc.le_last).det
+    rw [hprod]
+    simpa [Matrix.det_mul] using ih'.mul (hPassive p hp_ne)
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase
+      (Nat.succ_le_succ (Nat.zero_le M))
+  have htail := hcanon le_rfl
+  simpa [retainedPassiveA1TailAfterFirst, motive, j] using htail
+
+/-- If the first top-left block is solved as `Tail^{-1} * Ctop`, then the full
+retained-passive top-left product realizes the active endpoint `Ctop`. -/
+theorem retainedPassiveCtopProduct_zero_eq_target_of_A1_zero_eq
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (hTail : IsUnit (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop) :
+    residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) = Ctop := by
+  rw [retainedPassiveA1TailAfterFirst_mul_first]
+  rw [hA10]
+  calc
+    retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1 *
+        ((retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop) =
+      (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1 *
+          (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹) * Ctop := by
+        rw [Matrix.mul_assoc]
+    _ = (1 : Matrix ρ ρ K) * Ctop := by
+        rw [Matrix.mul_nonsing_inv _ hTail]
+    _ = Ctop := by rw [Matrix.one_mul]
+
+/-- The solved first top-left block is determinant-unit when the passive tail
+and active endpoint are determinant-unit. -/
+theorem retainedPassiveA1_zero_det_isUnit_of_A1_zero_eq_tail_inv_mul
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (hTail : IsUnit (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).det)
+    (hCtop : IsUnit Ctop.det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop) :
+    IsUnit (A1 0).det := by
+  rw [hA10]
+  have hTailInv :
+      IsUnit ((retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹).det :=
+    (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).isUnit_nonsing_inv_det hTail
+  simpa [Matrix.det_mul] using hTailInv.mul hCtop
+
+/-- The retained-passive full `A1` family is determinant-unit when the passive
+blocks are determinant-unit and the solved first block comes from a unit tail
+and unit active endpoint. -/
+theorem retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+    {M : ℕ}
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (hPassive : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det)
+    (hCtop : IsUnit Ctop.det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop) :
+    ∀ p : Fin (M + 1), IsUnit (A1 p).det := by
+  have hTail : IsUnit (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).det :=
+    retainedPassiveA1TailAfterFirst_det_isUnit_of_passive (K := K) (ρ := ρ) A1 hPassive
+  intro p
+  by_cases hp : p = 0
+  · subst p
+    exact
+      retainedPassiveA1_zero_det_isUnit_of_A1_zero_eq_tail_inv_mul
+        (K := K) (ρ := ρ) A1 Ctop hTail hCtop hA10
+  · exact hPassive p hp
+
+/-- For retained-passive fixed-base edges, solving `A1_0` from the passive tail
+and active `Ctop` makes the deterministic source-left top block equal to the
+active endpoint. -/
+theorem suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix_zero_eq_target_of_A1_zero_eq
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (M + 2), Matrix ρ (κ' i) K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (Ctop : Matrix ρ ρ K)
+    (hF2last : F2 (Fin.last (M + 1)) = 0)
+    (hPassive : ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (A1 p).det)
+    (hCtop : IsUnit Ctop.det)
+    (hA10 :
+      A1 0 = (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1)⁻¹ * Ctop) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    (suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).Ctop = Ctop := by
+  intro E
+  have hA1 : ∀ p : Fin (M + 1), IsUnit (A1 p).det :=
+    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+      (K := K) (ρ := ρ) A1 Ctop hPassive hCtop hA10
+  have hTail : IsUnit (retainedPassiveA1TailAfterFirst (K := K) (ρ := ρ) A1).det :=
+    retainedPassiveA1TailAfterFirst_det_isUnit_of_passive (K := K) (ρ := ρ) A1 hPassive
+  calc
+    (suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).Ctop =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1 (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) := by
+      simpa [E] using
+        suffixState_Ctop_retainedPassiveFixedBaseEdgeMatrix
+          (K := K) (ρ := ρ) (κ := κ') A1 F2 A3 C hF2last hA1
+          (0 : Fin (M + 2)) (Fin.zero_le (Fin.last (M + 1)))
+    _ = Ctop := by
+      exact
+        retainedPassiveCtopProduct_zero_eq_target_of_A1_zero_eq
+          (K := K) (ρ := ρ) A1 Ctop hTail hA10
+
 /-- Retained-passive fixed-base edge matrices have the prescribed transformed
 edge at every step of the deterministic suffix-state recursion. -/
 theorem retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq

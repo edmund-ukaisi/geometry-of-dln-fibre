@@ -12586,3 +12586,17 @@ full source product tail is `F3`.  This is still finite tail algebra only; the
 next real construction is the retained-passive coordinate-domain package with
 active `Ctop_0`, passive `A1_p` for `p>0`, and the already-proved endpoint
 readbacks.
+
+New follow-up proves the active top-left endpoint half of that package.
+`retainedPassiveA1TailAfterFirst` is the passive ordered product
+`A1_last*...*A1_1`; Lean proves
+`residualFactorProduct A1 last 0 = Tail*A1_0` and, if
+`A1_0=Tail^-1*Ctop`, the full top product is `Ctop`.  The hardened version also
+proves `det(Tail)` unit from the passive pointwise hypotheses `det(A1_p)` unit
+for `p != 0`, so `det(Ctop)` unit supplies the omitted `A1_0` determinant
+chart and the full `A1` unit family.  The suffix-state wrapper then gives
+`(suffixState E last 0).Ctop=Ctop` for retained-passive fixed-base edges.
+This remains finite endpoint algebra only; the next theorem is the fixed-base
+retained-passive source-map/readback package combining `A1_0`, `A3_last`,
+`F2`, and transformed-edge reconstruction, still before source coverage or
+measure transport.
