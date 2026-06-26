@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMChainBlock
 import DLNFibre.DLN.RLCT.Validate.RouteMChainRate
+import DLNFibre.DLN.RLCT.Validate.RouteMExtraction
 
 /-!
 # `RouteM3333Chain` — the `(3,3,3,3)` achiever chain via the rate engine (validation + template)
@@ -197,5 +198,58 @@ theorem prod_chartParams3333c_eq :
   -- `reindex (u • Hmat 0) = u • reindex (Hmat 0)`: fully-applied `submatrix_smul` (dependent-`HSMul`).
   rw [Matrix.reindex_apply, Matrix.reindex_apply]
   exact (congrFun (congrFun (Matrix.submatrix_smul u (c.toChain.Hmat 0 (Nat.zero_le 3))) _) _)
+
+/-! ## The loss factorization `dlnLoss = u²·V` and the `routeMCore` chart identity
+
+The soundness-critical `F ∘ φ = u²·V` for `(3,3,3,3)`, via the engine's rate identity (NOT per-entry
+`ring`). `Hr` is the reindexed telescoped quotient (`= reindex (Hmat 0)`, the `H` of `prod = u • H`);
+`V := ‖Hr‖²` (sum of the 9 squared entries). Then `dlnLoss M3333c 0 (chartParams) = ‖prod‖² = ‖u•Hr‖²
+= u²·V`, and `routeMCore M3333c (φ u) = u²·V` (the `paramsEquivFlat` symm/apply cancel). -/
+
+/-- **The telescoped quotient `Hr`** (`= reindex (Hmat 0)`, the `H` of `prod = u • H`). -/
+noncomputable def Hr3333c : Matrix (Fin (M3333c 0)) (Fin (M3333c (Fin.last 3))) ℝ :=
+  Matrix.reindex (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf 0 (Nat.zero_le 3)))
+    (finCongr (hW3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf 3 (le_refl 3)))
+    ((chain3333 u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf).toChain.Hmat 0 (Nat.zero_le 3))
+
+/-- **The unit factor `V = ‖Hr‖²`** (the sum of the squared `Hr` entries; the `u`-free factor of
+`F = u²·V`). -/
+noncomputable def Vval3333c : ℝ :=
+  ∑ i, ∑ j, (Hr3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf i j) ^ 2
+
+/-- **`prod = u • Hr`** (the rate identity in `Hr` form). -/
+theorem prod_eq_smul_Hr3333c :
+    prod M3333c (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+      = u • Hr3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf :=
+  prod_chartParams3333c_eq u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf
+
+/-- **The loss factorization** `dlnLoss M3333c 0 (chartParams) = u²·V`. Each product entry is
+`u·(Hr entry)` (the rate identity `prod = u • Hr`), so `(entry)² = u²·(Hr entry)²` and the squared
+Frobenius norm is `u²·V`. The soundness-critical `F = u²·V`, via the engine (NO per-entry `ring`). -/
+theorem dlnLoss_chartParams3333c :
+    dlnLoss M3333c 0 (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+      = u ^ 2 * Vval3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf := by
+  unfold dlnLoss
+  simp only [Matrix.sub_apply, Matrix.zero_apply, sub_zero]
+  rw [prod_eq_smul_Hr3333c, Vval3333c, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [Matrix.smul_apply, smul_eq_mul]
+  ring
+
+/-- **The genuine achiever flat chart for `(3,3,3,3)`** `phi3333c := paramsEquivFlat M3333c ∘ chartParams`,
+an `(Fin (routeMAmbient M3333c) → ℝ)` value (`routeMAmbient M3333c = flatDim M3333c = 27`). -/
+noncomputable def phi3333c : Fin (routeMAmbient M3333c) → ℝ :=
+  paramsEquivFlat M3333c (chartParams3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+
+/-- **The `routeMCore` chart identity** `routeMCore M3333c (φ u) = u²·V`. `routeMCore M = dlnLoss M 0 ∘
+(paramsEquivFlat).symm`, `φ = paramsEquivFlat ∘ chartParams`, the `symm`/`apply` cancel, leaving
+`dlnLoss M3333c 0 (chartParams)` — `dlnLoss_chartParams3333c`. The soundness-critical `F ∘ φ = u²·V` for
+the decisive multi-pivot node, established THROUGH the rate engine (NO per-entry `ring`). -/
+theorem routeMCore_phi3333c :
+    routeMCore M3333c (phi3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf)
+      = u ^ 2 * Vval3333c u Bmat1 Rmat1 N1 W1 Bmat2 Rmat2 N2 W2 Rleaf := by
+  rw [routeMCore, phi3333c, MeasurableEquiv.symm_apply_apply, dlnLoss_chartParams3333c]
 
 end DLNFibre.DLN.RLCT
