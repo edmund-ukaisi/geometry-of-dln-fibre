@@ -137,7 +137,8 @@ theorem lduCoreMap_hasFDerivAt {t : ℕ} (z : LDUParam t) :
 
 /-- The LDU core map's fderiv has abs-det `∏ |q_i|^{2(t−1−i)}` (the banked `lduCoreDeriv_abs_det`). -/
 theorem lduCoreD_abs_det {t : ℕ} (z : LDUParam t) :
-    |LinearMap.det (lduCoreD z).toLinearMap| = ∏ i : Fin t, |z.2.1 i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ))) := by
+    |LinearMap.det (lduCoreD z).toLinearMap|
+      = ∏ i : Fin t, |z.2.1 i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ))) := by
   rw [lduCoreD, LinearMap.coe_toContinuousLinearMap]
   exact lduCoreDeriv_abs_det z.1 z.2.1 z.2.2
 
@@ -202,7 +203,8 @@ theorem lduChartFactor_abs_det {t : ℕ} {R : Type*}
     |LinearMap.det ((lduChartFactor E).D u).toLinearMap|
       = ∏ i : Fin t, |((E u).1).2.1 i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ))) :=
   conjBlockFactor_abs_det E lduCoreMap lduCoreD _
-    (fun b => ∏ i : Fin t, |b.2.1 i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ)))) (fun b => lduCoreD_abs_det b) u
+    (fun b => ∏ i : Fin t, |b.2.1 i| ^ (2 * ((t : ℕ) - 1 - (i : ℕ))))
+    (fun b => lduCoreD_abs_det b) u
 
 /-- **The chain `ChartFactor`** — `chainUnitCLM N` conjugated into the flat ambient via `E`. -/
 noncomputable def chainChartFactor {t c m' : ℕ} {R : Type*}
