@@ -7486,6 +7486,46 @@ transport, normal crossings, pole order, or RLCT.
 Xhigh reviewer `Pauli the 3rd` passed the indexing, sign/order, terminal zero,
 `Ctop` product order, and total-inverse caveat.
 
+## 2026-06-26 A2 retained-passive final-edge endpoint solve
+
+Reproduction:
+`reproduction-a2-retained-passive-a3-last-endpoint-solve.md`.
+Statement card:
+`statement-card-a2-retained-passive-a3-last-endpoint-solve.md`.
+Review:
+`review-a2-retained-passive-a3-last-endpoint-solve.md`.
+
+Lean now proves the local nonempty-edge endpoint cancellation:
+
+```text
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last
+ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop
+```
+
+At the final edge the product tail is
+
+```text
+Tail_lastEdge = -(I * A3_last * Ctop_last^-1).
+```
+
+Under `IsUnit Ctop_last.det`, choosing
+
+```text
+A3_last = -G * Ctop_last
+```
+
+gives `Tail_lastEdge=G`.
+
+This is the endpoint cancellation needed for the later retained-passive
+coordinate inverse.  It does not yet build the full prefix target
+`G=F3_0+prefix`, construct the retained-passive coordinate domain, prove
+coverage, source/image equality, measure pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Einstein the 3rd` passed the final-edge indexing, sign/order,
+determinant-unit cancellation, and nonclaim boundary.  The reviewer also ran
+the focused `RetainedPassiveCoordinates` build successfully.
+
 ## 2026-06-26 A2 retained-passive D and L recurrences
 
 Reproduction:

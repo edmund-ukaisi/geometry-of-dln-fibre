@@ -8228,3 +8228,24 @@ Nonclaims: recursive finite algebra only.  No `A3_last` solve, no
 retained-passive coordinate-domain theorem, no source-rank coverage, no
 source/image equality, no source-measure pushforward, no density/Jacobian
 theorem, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive final-edge endpoint solve:
+Lean now proves the local nonempty-edge endpoint cancellation in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last` and
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop`.
+At the final edge, the explicit product tail unfolds to
+`-(I*A3_last*Ctop_last^-1)`, and if `det(Ctop_last)` is a unit and
+`A3_last=-G*Ctop_last`, the final tail is `G`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a3-last-endpoint-solve.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-endpoint-solve.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a3-last-endpoint-solve.md`.
+
+Nonclaims: local final-summand algebra only.  It does not construct the full
+prefix target `G=F3_0+prefix`, the retained-passive coordinate domain, source
+coverage, source/image equality, source-measure pushforward, density/Jacobian
+transport, normal crossings, pole order, or RLCT.

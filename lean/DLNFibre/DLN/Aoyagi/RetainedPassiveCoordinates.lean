@@ -651,6 +651,65 @@ theorem retainedPassiveLowerLeftProductTailSum_castSucc
   unfold retainedPassiveLowerLeftProductTailSum
   rw [Nat.decreasingInduction_succ_left]
 
+/-- In a nonempty retained-passive edge family, the explicit lower-left product
+tail at the final edge is just the final `A3` contribution. -/
+theorem retainedPassiveLowerLeftProductTailSum_last
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K) :
+    retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3 C M (Nat.le_succ M) =
+      -((1 : Matrix (κ' (Fin.last M).succ) (κ' (Fin.last M).succ) K) *
+          A3 (Fin.last M) *
+          (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+              (Fin.last M).castSucc.le_last)⁻¹) := by
+  have h :=
+    retainedPassiveLowerLeftProductTailSum_castSucc
+      (K := K) (ρ := ρ) (κ := κ') A1 A3 C (Fin.last M)
+  simpa [Matrix.one_mul] using h
+
+/-- In a nonempty retained-passive edge family, setting the final lower-left
+block to `-G*Ctop_last` realizes the target final tail value `G`. -/
+theorem retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (A1 : Fin (M + 1) → Matrix ρ ρ K)
+    (A3 : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (C : ∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)
+    (G : Matrix (κ' (Fin.last (M + 1))) ρ K) :
+    let CtopLast : Matrix ρ ρ K :=
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+    IsUnit CtopLast.det →
+      A3 (Fin.last M) = -G * CtopLast →
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          A1 A3 C M (Nat.le_succ M) = G := by
+  intro CtopLast hCtop hA3last
+  have hlast :=
+    retainedPassiveLowerLeftProductTailSum_last
+      (K := K) (ρ := ρ) (κ' := κ') A1 A3 C
+  have htail :
+      retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+        A1 A3 C M (Nat.le_succ M) =
+          -((1 : Matrix (κ' (Fin.last M).succ) (κ' (Fin.last M).succ) K) *
+              A3 (Fin.last M) * CtopLast⁻¹) := by
+    simpa [CtopLast] using hlast
+  rw [htail]
+  rw [Matrix.one_mul]
+  rw [hA3last]
+  calc
+    -((-G * CtopLast) * CtopLast⁻¹) =
+        -(-G * (CtopLast * CtopLast⁻¹)) := by
+          rw [Matrix.mul_assoc]
+    _ = -(-G * (1 : Matrix ρ ρ K)) := by
+          rw [Matrix.mul_nonsing_inv CtopLast hCtop]
+    _ = -(-G) := by rw [Matrix.mul_one]
+    _ = G := by exact neg_neg G
+
 /-- The suffix-state retained-passive lower-left tail sum is the same as the
 explicit product-tail sum once `D` and `Ctop` are read back from the recursive
 suffix state. -/

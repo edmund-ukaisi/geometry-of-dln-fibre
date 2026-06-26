@@ -9500,3 +9500,17 @@ Review:
 This is finite suffix-state algebra only: no `A3_last` solve, no coordinate
 domain theorem, no source coverage, source/image theorem, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive final-edge endpoint solve:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last` and
+`ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop`.
+For a nonempty edge family, the last product-tail term is
+`-(I*A3_last*Ctop_last^-1)`, and under `IsUnit Ctop_last.det`,
+`A3_last=-G*Ctop_last` makes that last tail equal to `G`.  Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-endpoint-solve.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a3-last-endpoint-solve.md`.
+This is local endpoint algebra only: no prefix `G=F3_0+prefix`, no coordinate
+domain theorem, no source coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT.

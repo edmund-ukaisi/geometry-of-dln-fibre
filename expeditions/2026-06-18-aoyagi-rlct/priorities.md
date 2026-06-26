@@ -5492,6 +5492,15 @@ and
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-l-tail-sum.md`.
 It proves the iterated lower-left formula in recursive-tail form and an
 explicit product-tail version using `D=residualFactorProduct C` and
-`Ctop=residualFactorProduct A1`.  The next target is a nonempty-edge endpoint
-construction/solve for `A3_last`, with determinant-unit cancellation for the
-last `Ctop`.
+`Ctop=residualFactorProduct A1`.
+
+Local final-edge endpoint solve now landed/in progress in the same file; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a3-last-endpoint-solve.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a3-last-endpoint-solve.md`.
+It proves that the last product-tail summand is `G` when
+`A3_last=-G*Ctop_last` and `det(Ctop_last)` is a unit.  The next target is the
+full retained-passive coordinate-domain prefix construction: define the
+earlier-edge unsigned prefix, instantiate `G=F3_0+prefix`, and connect this
+local endpoint solve to the active source coordinate without overclaiming
+coverage or measure transport.

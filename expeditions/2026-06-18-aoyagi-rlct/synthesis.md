@@ -12563,3 +12563,14 @@ where `D` and `Ctop` are replaced by `residualFactorProduct C` and
 `residualFactorProduct A1`.  This is the finite iterated `F3` formula; it is
 still not the `A3_last` endpoint solve or the retained-passive coordinate
 domain theorem.
+
+New follow-up proves the local nonempty-edge final-summand solve.  Lean unfolds
+`retainedPassiveLowerLeftProductTailSum` at the final edge to
+`-(I*A3_last*Ctop_last^-1)` and proves
+`retainedPassiveLowerLeftProductTailSum_last_eq_of_A3_eq_neg_target_mul_Ctop`:
+if `A3_last=-G*Ctop_last` and `det(Ctop_last)` is a unit, the final tail is
+`G`.  This is only endpoint cancellation.  The next real coordinate-domain
+target is to build the prefix term from earlier passive `A3_p` values and
+instantiate `G=F3_0+prefix`; coverage, source/image equality, measure
+pushforward, density/Jacobian transport, normal crossings, pole order, and
+RLCT remain open.
