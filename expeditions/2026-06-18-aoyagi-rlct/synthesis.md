@@ -13201,3 +13201,30 @@ explicit in the conclusion.  This is the preferred non-overclaiming
 full-to-window bookkeeping theorem; the next real source work remains endpoint
 equivalence, source chart/suffix production, pivot nonzero provenance, or
 analytic control of the outside factors.
+
+Post-recovery A2 retained-passive wrapper-frontier checkpoint:
+`threads/03-block-product-reduction/controller-checkpoint-a2-retained-passive-wrapper-frontier-2026-06-26.md`
+records the VM-recovery scout synthesis at head `47b496fd`.  Singer the 4th
+found that the remaining `hchart_mem` assumptions can be removed only by
+source-edge-family or determinant-chart subtype specializations; these are
+source-faithful but low-value wrappers unless a downstream theorem consumes
+that codomain.  Darwin the 4th found that the remaining `hfactor` is not
+discharged by existing real Case 2/sourceChart infrastructure; existing Lean
+closes only supplied-data or synthetic two-edge cases.
+
+Controller decision: the retained-passive coordinate domain, source map, and
+local inverse for the source-recursive determinant-chart model are already
+present via the fixed-base source-edge-family homeomorphism/open partial
+homeomorphism.  The next A2 progress must remove a real source field:
+construct source-specific retained-passive data and residual-factor identity,
+prove real endpoint/factor/full-to-window alignment with pivot provenance, or
+begin the measure/Jacobian package with exact measure scope.  Do not add
+another support-wrapper unless it is consumed immediately by a named theorem.
+
+Follow-up scouts: Gibbs the 4th independently passed the retained-passive
+coordinate inverse against Aoyagi pp. 10-13, including the `A1_0` and
+`A3_last` endpoint signs.  Pauli the 4th found no direct retained-passive
+measure/Jacobian composition at this head: the missing object is a
+tuple-level differentiable retained-passive source-coordinate map and
+derivative determinant formula.  Existing one-step raw-order measure theorems
+are reusable only after that tuple model and its pushforward theorem exist.

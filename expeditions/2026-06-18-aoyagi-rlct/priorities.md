@@ -6056,3 +6056,20 @@ Next source-moving targets are now real fixed-base endpoint equivalences, real
 source chart/suffix production, fixed pivot nonzero provenance, or a justified
 analytic/source theorem explaining the outside factors in a concrete source
 chart.  Do not add another wrapper unless it consumes one of those hypotheses.
+
+Post-recovery A2 retained-passive wrapper-frontier decision:
+`threads/03-block-product-reduction/controller-checkpoint-a2-retained-passive-wrapper-frontier-2026-06-26.md`.
+The coordinate-domain/source-map/local-inverse layer exists for the fixed-base
+source-recursive determinant-chart model through the retained-passive
+homeomorphism/open partial homeomorphism.  The `hchart_mem` subtype removals
+and the existing synthetic `hfactor` closures are not next-priority unless a
+named downstream theorem consumes them directly.  Next priority is a real
+field-removal construction: source-specific retained-passive data and
+residual-factor identity, endpoint/factor/full-to-window alignment with pivot
+provenance, or an exactly scoped measure/Jacobian package.
+
+The measure/Jacobian package must start by building a tuple-level
+retained-passive source-coordinate map, proving its differentiability on the
+determinant chart, and computing its derivative determinant.  Existing
+one-step raw-order pushforward theorems do not by themselves remove the
+retained-passive `hmap`.
