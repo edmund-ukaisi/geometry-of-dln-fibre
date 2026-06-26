@@ -13,6 +13,7 @@ Case 2 post-pivot two-factor product.  It is finite matrix reindexing only.
 noncomputable section
 
 open Matrix
+open scoped BigOperators
 
 namespace Matrix
 
@@ -87,6 +88,51 @@ theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_residualFactorProduct
     _ = case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime := by
       rw [hD', hF']
       rfl
+
+set_option linter.style.longLine false in
+/-- Entrywise expansion of Aoyagi's displayed Case 2 post-pivot lower product
+`D_(J+1) * C'_+`.
+
+This is just the finite matrix-product formula for the displayed product on
+the continuing `(S,J+1)` domains.  It does not identify the entries with
+selected-entry center coordinates or source-chart coordinates. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (i : Case2ResidualRowIndex n S (J + 1)) (t : τ) :
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+      ∑ j : Case2ResidualColIndex n S (J + 1),
+        case2DisplayedPostPivotResidualBlock n hS hcont residual i j *
+          case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime j t := by
+  simp [case2DisplayedPostPivotFreeTwoEdgeFactorProduct, Matrix.mul_apply]
+
+set_option linter.style.longLine false in
+/-- Entrywise expansion of Aoyagi's displayed Case 2 post-pivot lower product
+directly in terms of the free pivot-first `C'` tail.
+
+This is the same finite matrix-product formula as
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply`, with the reindexed
+following-factor tail unfolded. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R)
+    (i : Case2ResidualRowIndex n S (J + 1)) (t : τ) :
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+      ∑ j : Case2ResidualColIndex n S (J + 1),
+        case2DisplayedPostPivotResidualBlock n hS hcont residual i j *
+          Cprime
+            (Sum.inr
+              ((case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont).symm j)) t := by
+  simp [case2DisplayedPostPivotFreeTwoEdgeFactorProduct,
+    case2DisplayedPostPivotFreeFollowingFactor, case2DisplayedFreeCprimeTail, Matrix.mul_apply]
 
 set_option linter.style.longLine false in
 /-- Entrywise selected-center readout gives the displayed Case 2 post-pivot

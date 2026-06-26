@@ -4756,3 +4756,17 @@ is useful notation/API sharpening only.  The readout, selected-center
 identification, endpoint/source data, `Cprime` production, source/image
 equality, normal crossings, pole order, and RLCT remain the meaningful
 frontier.
+
+A2 Case 2 displayed-product entry expansion has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entry-expansion.md`.
+Lean proves the source-supported finite sum formula for each entry of
+`D_{J+1} * C'_+`, including a direct free-`Cprime` tail version.  This can be
+used for future source calculations, but it is not a source-chart coordinate
+readout and should not be cited as one.
+
+A2 Case 2 source-chart CenterCoord alignment has now landed:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-chart-centercoord-alignment.md`.
+Lean proves the displayed old Case 2 source-chart map is exactly
+`SelectedEntrySignedBox.CenterCoord.chartMap` at the displayed pivot.  This is
+useful vocabulary for downstream selected-entry sockets, but it remains about
+the old center, not the post-pivot product.

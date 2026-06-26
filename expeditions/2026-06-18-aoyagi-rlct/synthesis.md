@@ -10943,3 +10943,21 @@ proved product-index equivalence and a supplied column endpoint equivalence.
 It does not prove the successor readout, selected-center readout, source
 production of `Cprime`/successor data, source/image equality, normal
 crossings, pole order, or RLCT.
+
+The displayed product now also has a source-supported entry expansion:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entry-expansion.md`.
+Lean proves `case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply` and
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime`,
+exposing each entry of `D_(J+1) * C'_+` as a finite sum over
+`Case2ResidualColIndex n S (J+1)`, with a direct free-`Cprime` tail version.
+This is just matrix multiplication; it does not identify the sum with
+selected-center or source-chart coordinates.
+
+The old Case 2 source-chart map is now aligned with the selected-entry
+center-coordinate chart map:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-chart-centercoord-alignment.md`.
+Lean proves
+`case2DisplayedSourceChartMap_eq_selectedEntrySignedBoxCenterCoord_chartMap_apply`
+in `SelectedEntrySignedBoxMeasure.lean`.  This is definitional vocabulary
+alignment for the old center `(S,J)` and displayed pivot `(J+1,J+1)`, not a
+readout theorem for the post-pivot product.

@@ -7234,3 +7234,40 @@ Nonclaims: the entrywise successor source-chart readout remains supplied; no
 selected-center readout, construction of `Cfac`, endpoint/source data,
 `Cprime`, source/image equality, source-measure transport, normal crossings,
 pole order, or RLCT.
+
+Latest A2 Case 2 displayed-product entry expansion:
+Lean now proves the finite matrix-product formula for each entry of Aoyagi's
+displayed post-pivot lower product `D_(J+1) * C'_+`.
+
+Lean name:
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply` and
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entry-expansion.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-entry-expansion.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-entry-expansion.md`.
+
+Nonclaims: no selected-center readout, successor source-chart readout,
+endpoint equivalence, construction of `Cfac`, source production of `Cprime`,
+source/image equality, source-measure transport, normal crossings, pole order,
+or RLCT.
+
+Latest A2 Case 2 source-chart CenterCoord alignment:
+Lean now proves that Aoyagi's displayed Case 2 source-chart map for the old
+center is definitionally the same as
+`SelectedEntrySignedBox.CenterCoord.chartMap` at the displayed pivot.
+
+Lean name:
+`case2DisplayedSourceChartMap_eq_selectedEntrySignedBoxCenterCoord_chartMap_apply`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-chart-centercoord-alignment.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-chart-centercoord-alignment.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-chart-centercoord-alignment.md`.
+
+Nonclaims: no post-pivot product readout, successor source-chart readout,
+endpoint equivalence, source image, source-measure transport, normal
+crossings, pole order, or RLCT.

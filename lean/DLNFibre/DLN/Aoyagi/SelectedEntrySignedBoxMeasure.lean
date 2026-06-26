@@ -222,6 +222,29 @@ theorem chartMap_of_ne {center : Finset ι} (pivot : center)
     exact hi (Subtype.ext h)
   simp [chartMap, sourceResidual, selectedEntryChartMap, hne, i.2]
 
+set_option linter.style.longLine false in
+/-- Aoyagi's displayed Case 2 source-chart map is the center-indexed
+selected-entry chart map specialized to the displayed pivot.
+
+This is definitional vocabulary alignment for the old Case 2 center
+`case2ResidualBlockPivotEntries n S J`.  It does not identify any post-pivot
+factor product with these coordinates. -/
+theorem case2DisplayedSourceChartMap_eq_selectedEntrySignedBoxCenterCoord_chartMap_apply
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (y : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → ℝ)
+    (p : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J}) :
+    case2DisplayedSourceChartMap n hS hcont
+        (y (⟨(J + 1, J + 1),
+          case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩ :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J}))
+        (SelectedEntrySignedBox.CenterCoord.sourceResidual y) p.1 =
+      SelectedEntrySignedBox.CenterCoord.chartMap
+        (⟨(J + 1, J + 1),
+          case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hcont⟩ :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J}) y p :=
+  rfl
+
 /-- The selected-entry chart preserves the pivot-zero locus. -/
 theorem chartMap_mem_pivot_ne_zero_iff {center : Finset ι} (pivot : center)
     (y : center → ℝ) :

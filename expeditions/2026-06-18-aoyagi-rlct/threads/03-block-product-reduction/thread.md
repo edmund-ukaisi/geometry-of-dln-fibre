@@ -6012,3 +6012,54 @@ assembly uses
 This is finite endpoint reindexing only.  The entrywise successor source-chart
 readout, selected-center readout, compatible factors, endpoint/source data,
 source/image equality, normal crossings, pole order, and RLCT remain open.
+
+## 2026-06-26 A2 Case 2 displayed-product entry expansion
+
+Reproduction:
+`reproduction-a2-case2-displayed-product-entry-expansion.md`.
+Statement card:
+`statement-card-a2-case2-displayed-product-entry-expansion.md`.
+Review:
+`review-a2-case2-displayed-product-entry-expansion.md`.
+
+Lean now proves:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime
+```
+
+For every continuing row `i` and target column `t`, the displayed post-pivot
+lower product is the finite sum over
+`Case2ResidualColIndex n S (J+1)` of the post-pivot residual block entry times
+the transported following-factor tail entry.  This is the entrywise form of
+the source-supported product `D_(J+1) * C'_+`.
+
+This remains finite matrix multiplication only.  It does not prove any
+selected-center readout, successor source-chart readout, endpoint equivalence,
+source/image equality, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 Case 2 source-chart CenterCoord alignment
+
+Reproduction:
+`reproduction-a2-case2-source-chart-centercoord-alignment.md`.
+Statement card:
+`statement-card-a2-case2-source-chart-centercoord-alignment.md`.
+Review:
+`review-a2-case2-source-chart-centercoord-alignment.md`.
+
+Lean now proves:
+
+```text
+case2DisplayedSourceChartMap_eq_selectedEntrySignedBoxCenterCoord_chartMap_apply
+```
+
+The displayed Case 2 source-chart map on the old center
+`case2ResidualBlockPivotEntries n S J` is definitionally the same finite map
+as `SelectedEntrySignedBox.CenterCoord.chartMap` at the displayed pivot
+`(J+1,J+1)`.  This gives downstream selected-entry chart/measure code a
+shared vocabulary for the source-supported old chart.
+
+This is not a post-pivot product readout.  It does not identify
+`D_(J+1) * C'_+` with selected-center or successor source-chart coordinates,
+and it proves no source/image equality, normal crossings, pole order, or RLCT.

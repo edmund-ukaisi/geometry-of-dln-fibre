@@ -8485,6 +8485,31 @@ This is finite endpoint reindexing only; the successor source-chart readout,
 selected-center readout, endpoint/source data, compatible factors,
 source/image equality, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 Case 2 displayed-product entry expansion:
+`Case2ResidualFactorProduct.lean` now proves
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply` and
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-entry-expansion.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-entry-expansion.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-entry-expansion.md`.
+This is finite matrix multiplication only; selected-center/source-chart
+readout, endpoint/source data, compatible factors, source/image equality,
+normal crossings, pole order, and RLCT remain open.
+
+Latest A2 Case 2 source-chart CenterCoord alignment:
+`SelectedEntrySignedBoxMeasure.lean` now proves
+`case2DisplayedSourceChartMap_eq_selectedEntrySignedBoxCenterCoord_chartMap_apply`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-case2-source-chart-centercoord-alignment.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-chart-centercoord-alignment.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-chart-centercoord-alignment.md`.
+This is definitional vocabulary alignment for the old Case 2 source chart;
+post-pivot product readout, successor source-chart readout, source/image
+equality, normal crossings, pole order, and RLCT remain open.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
