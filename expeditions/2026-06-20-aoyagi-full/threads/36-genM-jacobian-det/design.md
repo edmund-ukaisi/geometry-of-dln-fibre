@@ -271,15 +271,30 @@ ones flagged).
     boundary `s=1` (`t=2,r=c=1`) → `|det K|^2` = the hand `(z1·z4−z2·z3)^2 = (det K₁)^2` block;
     boundary `s=2` (`t=1,r=1,c=2`) → `|det K|^3` = the hand `z9^3 = |b|^3` block. The single uniform
     `|det Kₛ|^(rₛ+cₛ)` law reproduces BOTH hand K-blocks.
-- **A3 NOT BUILT — route validated, re-rated MEDIUM (not S).** Codex (`a3-ldu-{prompt,answer}.md`) and
-  standalone prototypes agree on the route: parametrize `K = L·diag(q)·U` over `LowIdx`/`UpIdx`/`Fin t`
-  coords; strip the unit-triangular `L,U` (det 1); `det = ∏ q_i^{2(t−1−i)}` from the strict-lower +
-  strict-upper scaling dets (each `∏ q_i^{t−1−i}`). The **scalar-scaling core works** (`det_pi` on
-  `mulRight`-by-`q_i` scalar maps = `∏ q_i`, prototyped clean). The genuine cost (≈5 lemmas, hence the
-  re-rating): (i) the `LDUParam ≃ₗ Matrix` coordinate-split equiv; (ii) two unit-triangular det-1
-  lemmas; (iii) the **multiplicity count** `∏_{LowIdx} q_{p.2} = ∏_j q_j^{t−1−j}` (a `Finset`
-  fiberwise/`prod_subtype_eq_prod_filter` + `card {i : Fin t | j < i} = t−1−j` count — the fiddly
-  combinatorial crux); (iv) the assembly. Deserves its own focused tide; it does NOT gate A2.
+- **A3 DIAGONAL-POINT case LANDED, sorry-free, axiom-clean; general-`L,U` case roadmapped.**
+  Foundation landed (`RouteMSchurFrameDet.lean`, `DLNFibre.DLN.RLCT` namespace): `LowIdx`/`UpIdx`/
+  `LDUParam`, `lowMat`/`upMat`, `assemble_apply`, **`matrixSplit : Matrix ≃ₗ LDUParam`** (coordinate
+  split, the (i) item — DONE), the **multiplicity counts** `prod_lowIdx_col`/`prod_upIdx_row`
+  (`∏_{j<i} q_j = ∏_j q_j^{t−1−j}` via `Fin.card_Ioi` + `Finset.card_bij` + `prod_fiberwise_of_maps_to`
+  — the (iii) crux the coordinator flagged: DONE), `lowerScale_det`/`upperScale_det` (the `q`-scaling
+  blocks, `det = ∏ q^{t−1−i}` via `det_pi`).
+  - **`lduCoreDerivDiag_det : det = ∏_i q_i^{2(t−1−i)}`** (+ `_abs_det`) — the LDU Jacobian at the
+    DIAGONAL point `L=U=1` (`K = diag q`), block-diagonal via `prodMap` + `lowerTri_det`. **VALIDATED**
+    `lduCoreDerivDiag_det_3333_boundary1` (t=2 → `q_0^2` = the hand `Kparam3333Deriv_det = (x 1)^2`).
+  - **GENERAL `L,U` case — the residual** (Phase B needs it: the achiever LDU core is at a general
+    point — `Kparam3333 u 2 = u1·u2` etc. means `L = [[1,0],[u2,1]]`, `U = [[1,u3],[0,1]]`, NOT 1). The
+    general det is the SAME `∏ q_i^{2(t−1−i)}` (unit `L,U` are det 1). Route (Codex
+    `a3-assembly-{prompt,answer}.md`, confirmed): `lduCoreDeriv = E ∘ core`,
+    `E = matrixSplit ∘ (mulLeftMat L' ∘ mulRightMat U') ∘ matrixSplit.symm`, `det E = 1` via `det_conj`
+    + A1 + `det L' = det U' = 1` (`det(1+lowMat l)=1` prototyped clean via `det_of_lowerTriangular`).
+    `core` is block-DIAGONAL over (Low,Diag,Up) but each block is **internally triangular** (the `L'⁻¹`
+    mixing): lower block `dl ↦ matrixSplit_lower(L'⁻¹·lowMat dl·D)` has matrix lower-triangular in lex
+    order on `LowIdx`, diagonal `q p.col` (off-diag from `(L'⁻¹)_{i,i'}`, `i'<i`, same col). `det = ∏
+    q_j^{t−1−j}` via `LinearMap.det_toMatrix'` + `Matrix.det_of_lowerTriangular`. **The one time-sink**
+    (Codex-flagged, with a clean sketch): the inverse-diagonal `(L'⁻¹)_{ii}=1` — from `L'·L'⁻¹=1` +
+    `L'⁻¹` lower-tri (`Matrix.blockTriangular_inv_of_blockTriangular`) the row-`i` sum collapses to
+    `L'_{ii}·(L'⁻¹)_{ii}=1`. Residual ≈6 lemmas (the two block-triangular-det + their triangularity +
+    diagonal + inverse-diagonal + assembly). Does NOT gate A2 or the diagonal-point A3.
 
 **Phase B — the flat chart + det telescope (network-aware).**
 
