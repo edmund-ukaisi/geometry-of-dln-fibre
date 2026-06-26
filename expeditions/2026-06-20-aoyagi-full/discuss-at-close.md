@@ -508,3 +508,16 @@ squeeze, the rectangular LDU, the diffeo bridge, `deepest_diffeo_bridge_L2`). (B
 general claim. I'd been imprecisely narrating toward "L=2 producer complete → L2 gate" — corrected: the gauge-chart producer is general
 machinery, sorryAx from the general-L interior; clean L=2 results are concrete-path. Under charge-ahead I bank the clean L2 bricks and
 hold the general-L interior as the frontier; **recommend the operator pick (A) vs (B) on return** — it determines what "done" means.
+
+## 26. 12th catch (2026-06-26): the joint-Ψ E2 (reg-preservation) is unsound at general frames; the L=2 diffeo needs a triangular-frame bundle re-thread (1a).
+The joint-Ψ cert's E2 (`deepestEFull∘Ψ = deepestEFull`) was verified by pp at IDENTITY endpoint frames only (its recurring
+special-case-verification gap); a8ecfbab + pp's decorrelated re-run found it FAILS 7/8 at general invertible frames (the endpoint
+conjugation leaks Ψ's moved P11 into the read blocks unless the frames are block-triangular). **Route 1 is confirmed mathematically
+sound** (the front-pivot rank-r corner admits an explicit block-lower normalizer `P=[[A11⁻¹,0],[−A21A11⁻¹,I]]`, A11 invertible) — so
+the fix is **(1a): strengthen `rank_normal_form_left_only/_right_only` to RETURN triangular frames + re-thread the frame bundle**. That's
+a Core+producer change. Per Item-25, the L=2 diffeo this unblocks is a building block toward the FAR general headline, NOT the
+concrete-anchor milestone — so a large bundle re-thread for it is lower-VOI; if the ripple is big I'll bank the L2 bridge stub as a
+precise sorry naming the (1a) dependency + roadmap it (joining the general-L gaps), rather than do a bundle-wide change off the milestone
+path. The triangular-normalizer Core lemma itself is clean + bedrock-valuable (banking it regardless). Another data point for the (A)/(B)
+fork: the gauge-chart producer's L=2 close keeps surfacing real, bounded-but-costly soundness work (12 catches), reinforcing that the
+**concrete-anchor milestone (B) is the clean banked deliverable** while the full general-L producer (A) is a long, soundness-intensive grind.
