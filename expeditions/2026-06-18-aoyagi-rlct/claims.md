@@ -6874,6 +6874,24 @@ does not prove local source-stratum coverage, source/image equality,
 residual-product matrix identity, source-measure identification, normal
 crossings, pole order, or RLCT.
 
+Latest A2 selected-entry finite-cover integral assembly:
+`SelectedEntrySignedBoxLocalMeasure.lean` now proves
+`lintegral_prod_restrict_lt_top_of_subset_iUnion_finite` and
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix`.
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower`.
+These assemble the per-pivot selected-entry chart-image finite-integral
+theorems over the finite all-pivot sector cover of a smaller signed box near
+`0`, and then instantiate the result for the original `lossDLN` via the
+adapted-to-original loss comparison.  The reproduction and statement card are
+at
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-cover-integral-assembly.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-finite-cover-integral-assembly.md`.
+This does not prove source-rank-stratum coverage, source/image equality,
+source-measure transport from original coordinates, analytic source-chart
+production, normal crossings, pole order, or RLCT.
+
 Latest A2 selected-entry local-source finite-integral handoff:
 Lean now specializes the local-source monomial-unit finite-integral socket to
 the center-indexed selected-entry signed box.

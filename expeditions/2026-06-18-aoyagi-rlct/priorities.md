@@ -4796,3 +4796,14 @@ Lean combines the concrete two-edge product with the already-landed paper
 factor restriction.  This is the preferred unweighted product-reduction
 handoff when the following factor is Aoyagi's paper `C'`; do not use it as
 source production of successor chart data or selected-entry readout.
+
+A2 selected-entry finite-cover integral assembly has now landed:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-cover-integral-assembly.md`.
+Lean proves a finite-cover product-measure lower-integral handoff and uses it
+to assemble per-pivot selected-entry chart-image finite integrals over a
+smaller signed box covered by all selected-entry sectors.  The original
+square-Frobenius `lossDLN` wrapper is also available.  This makes the
+source-neutral finite atlas gluing reusable; the next meaningful A2 path is
+still either source-produce the Aoyagi p.13 chart/source-measure data or prove
+the p.13 triangular Jacobian-unit calculation, without claiming source-rank
+coverage from the finite sector cover alone.

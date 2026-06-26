@@ -6146,3 +6146,37 @@ representative.
 This is finite product-reduction algebra only.  It does not construct
 successor source data, selected-entry readout, source/image equality, chart
 coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 selected-entry finite-cover integral assembly
+
+Reproduction:
+`reproduction-a2-selected-entry-finite-cover-integral-assembly.md`.
+Statement card:
+`statement-card-a2-selected-entry-finite-cover-integral-assembly.md`.
+Review:
+`review-a2-selected-entry-finite-cover-integral-assembly.md`.
+
+Lean now proves:
+
+```text
+lintegral_prod_restrict_lt_top_of_subset_iUnion_finite
+PaperEndpointFixedBaseRegularCoordinateSourceData.
+  exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix
+PaperEndpointFixedBaseRegularCoordinateSourceData.
+  exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower
+```
+
+The generic measure lemma turns a finite base-set cover into finite lower
+integrability over the covered set after product with the regular-coordinate
+measure.  The selected-entry theorem intersects all fixed-pivot neighborhoods,
+uses the already-proved all-pivot selected-entry sector cover
+`signedBoxSet Sres subset union_p chartMap p '' signedBoxSet Rres`, and
+assembles the per-pivot finite chart-image integrals into a finite integral
+over `signedBoxSet Sres` near `0`.  The original-loss theorem instantiates
+the same assembly for `lossDLN` through the existing adapted-to-original loss
+comparison.
+
+This is finite coordinate-cover and measure bookkeeping only.  It does not
+identify `signedBoxSet Sres` with an Aoyagi source-rank stratum, construct an
+analytic source chart, prove original source-measure transport, produce
+normal crossings, prove pole order, or extract an RLCT.

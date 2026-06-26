@@ -10748,6 +10748,27 @@ This is finite all-pivot sector geometry only, not local source-stratum
 coverage, fixed-base residual readout, source-measure identification, normal
 crossings, pole order, or RLCT.
 
+Latest A2 selected-entry finite-cover integral assembly:
+`SelectedEntrySignedBoxLocalMeasure.lean` now proves the generic finite-cover
+product-measure lower-integral handoff
+`lintegral_prod_restrict_lt_top_of_subset_iUnion_finite` and the selected-entry
+signed-box finite-cover endpoint
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix`.
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves the original-loss
+wrapper
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower`.
+The proof intersects the finitely many per-pivot neighborhoods, uses the
+all-pivot sector cover of `signedBoxSet Sres`, and bounds the integral over
+the covered set by the finite sum of the chart-image integrals.  The original
+loss wrapper supplies the concrete `lossDLN` lower bound by multiplying the
+adapted lower bound with the existing endpoint comparison constant.  Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-cover-integral-assembly.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-finite-cover-integral-assembly.md`.
+This remains source-neutral: no source-rank-stratum equality, analytic source
+chart, original source-measure transport, normal crossings, pole order, or
+RLCT is proved.
+
 The residual-product frontier now has an intermediate-factor API in
 `ProductReduction.lean`: `ChartLocalSuffixState.residualFactorProduct` names
 the explicit decreasing product of supplied residual factors, and
