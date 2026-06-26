@@ -6903,3 +6903,36 @@ with no blocking findings.  This does not prove the supplied raw pushforward,
 source coverage, original DLN source/prior transport, signed-box density
 identification, product-measure pushforward, regular-suspension certification,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 p.13 left-step section-image measure
+
+Reproduction:
+`reproduction-a2-p13-left-step-section-image-measure.md`.
+Statement card:
+`statement-card-a2-p13-left-step-section-image-measure.md`.
+Review:
+`review-a2-p13-left-step-section-image-measure.md`.
+
+Source and pen-and-paper xhigh scouts rechecked the raw-Haar boundary:
+Aoyagi p.13 does not state a full raw determinant-chart pushforward, and the
+p.13 raw tuple is a section fixing raw `C1 = I` and raw `A3 = 0`.  Lean now
+records the honest section-level measure identity:
+
+```text
+map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix
+```
+
+If the actual left-step raw tuple lies in the raw determinant chart a.e., then
+the p.13 raw-order target measure is the raw-order product-step image of the
+actual left-step raw image measure:
+
+```text
+Measure.map Y eta = Measure.map Phi (Measure.map X eta).
+```
+
+This proves only functoriality plus the pointwise p.13 section algebra under
+raw-chart support.  It does not identify `Measure.map X eta` with full raw
+Haar, does not add a density conclusion, and does not prove source coverage,
+source/prior transport, signed-box density identification, product-measure
+pushforward, regular-suspension certification, normal crossings, pole order,
+or RLCT.  Xhigh landed-slice review passed with no blocking findings.

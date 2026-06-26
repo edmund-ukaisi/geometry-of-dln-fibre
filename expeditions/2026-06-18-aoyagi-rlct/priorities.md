@@ -5152,3 +5152,13 @@ source-moving A2 priority remains the actual p.13 source/product-chart
 pushforward and density identification; do not treat finite measurability as
 source coverage, original prior transport, signed-box density identification,
 product-measure pushforward, normal crossings, pole order, or RLCT.
+
+A2 p.13 left-step section-image measure has now landed:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-section-image-measure.md`.
+Lean proves the source-faithful section-level identity
+`Measure.map Y eta = Measure.map Phi (Measure.map X eta)` under a.e. raw-chart
+support and fixed-base edge-matrix measurability.  This is the replacement for
+the false next target of deriving full raw-Haar pushforward from p.13.  The
+next source-moving priority remains either actual p.13 source-chart coverage
+or a conditional regular-suspension/RLCT socket with source coverage,
+transported density, and loss comparison explicitly supplied.

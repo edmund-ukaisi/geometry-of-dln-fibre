@@ -9113,3 +9113,19 @@ This is finite Borel bookkeeping only: no proof of the supplied raw
 pushforward, original source/prior transport, source coverage, signed-box
 density identification, product-measure pushforward, regular-suspension
 certification, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step section-image measure:
+`ProductReductionStepRegularDensity.lean` now proves
+`map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix`.
+Under fixed-base edge-matrix measurability and a.e. raw determinant-chart
+support for the actual left-step raw tuple `X`, Lean proves
+`Measure.map Y eta = Measure.map Phi (Measure.map X eta)` for the p.13
+raw-order target tuple `Y` and the raw-order product-step map `Phi`.  This is
+the section-image theorem recommended by xhigh source/API and pen-and-paper
+scouts after rejecting the full raw-Haar pushforward as false for p.13.
+Reproduction and statement card are at
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-section-image-measure.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-section-image-measure.md`;
+review passed at
+`threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`.

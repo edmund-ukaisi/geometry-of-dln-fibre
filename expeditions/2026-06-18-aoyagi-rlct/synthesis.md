@@ -11884,3 +11884,36 @@ chart, prove source coverage, transport the original DLN source/prior measure,
 identify signed-box density, prove product-measure pushforward, produce a
 regular-suspension certificate, produce normal crossings, compute pole order,
 or prove RLCT.
+
+## Latest A2 p.13 Left-Step Section-Image Measure
+
+Source and pen-and-paper review reconfirmed that p.13 does not supply a full
+raw-Haar determinant-chart parametrisation.  The actual raw tuple is a section
+fixing raw `C1 = I` and raw `A3 = 0`, so its image measure is generally
+singular with respect to full raw Haar on the raw determinant chart.
+
+Lean now proves the section-level measure identity:
+
+```text
+map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix
+```
+
+If the actual left-step raw tuple `X` is supported a.e. on the raw determinant
+chart, then for the p.13 raw-order target tuple `Y` and raw-order product-step
+map `Phi`,
+
+```text
+Measure.map Y eta = Measure.map Phi (Measure.map X eta).
+```
+
+This theorem derives raw tuple a.e.-measurability from fixed-base edge-matrix
+measurability and uses raw-chart support only to justify the pointwise p.13
+section algebra a.e. and the `map_map` composition.  It has no Haar measure
+input and no density conclusion.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-section-image-measure.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-section-image-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`.

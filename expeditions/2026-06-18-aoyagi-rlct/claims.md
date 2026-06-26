@@ -7715,3 +7715,27 @@ Nonclaims: this does not prove the supplied raw pushforward.  It is not source
 coverage, original DLN source/prior transport, signed-box density
 identification, product-measure pushforward, regular-suspension
 certification, normal crossings, pole order, or RLCT.
+
+Latest A2 p.13 left-step section-image measure:
+After xhigh source, Lean/API, and pen-and-paper checks of the p.13 raw-Haar
+boundary, Lean now proves the honest section-level measure identity
+`map_p13RawOrderTuple_eq_map_leftStepRawOrder_image_of_measurable_edgeMatrix`.
+Under fixed-base edge-matrix measurability and a.e. raw determinant-chart
+support for the actual left-step raw tuple `X`, the p.13 target tuple `Y`
+satisfies
+
+```text
+Measure.map Y eta = Measure.map Phi (Measure.map X eta).
+```
+
+This uses the pointwise p.13 raw-preimage algebra plus measure-map
+functoriality on the section image.  It deliberately does not identify
+`Measure.map X eta` with full raw Haar and does not add a density conclusion.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-p13-left-step-section-image-measure.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-left-step-section-image-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-left-step-section-image-measure.md`
+passed with no blocking findings.
