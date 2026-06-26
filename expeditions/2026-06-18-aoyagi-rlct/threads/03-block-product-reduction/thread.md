@@ -8388,3 +8388,35 @@ neighborhoods.
 This is ambient openness for the named source-recursive chart only.  It does
 not prove equality with the whole source image, source-rank coverage, measure
 transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive open partial homeomorphism
+
+Reproduction:
+`reproduction-a2-retained-passive-open-partial-homeomorph.md`.
+Statement card:
+`statement-card-a2-retained-passive-open-partial-homeomorph.md`.
+Review:
+`review-a2-retained-passive-open-partial-homeomorph.md`.
+
+Lean now packages the retained-passive determinant coordinate chart and the
+explicit source-recursive determinant edge chart as an ambient open partial
+homeomorphism:
+
+```text
+RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph
+RetainedPassiveNonredundantCoordinateData.detChart_sourceRecursiveDetChart_openPartialHomeomorph
+```
+
+The source is `detChartSet`, the target is `sourceRecursiveDetChartSet`, the
+forward map is `edgeMatrix`, and the inverse map is `sourceReadback`.  The map
+and inverse-law fields are the already banked finite inverse theorems; the
+openness fields are `isOpen_detChartSet` and
+`isOpen_sourceRecursiveDetChartSet`.  The forward continuity-on-source field
+transports `continuous_edgeMatrix_detChart_subtype` across the named-set
+membership rewrite, and the inverse continuity-on-target field uses
+`continuousAt_sourceReadback` pointwise.
+
+This is a local chart object for the explicit retained-passive chart only.  It
+does not prove equality with the whole source image, source-rank coverage,
+measure transport, density/Jacobian transport, normal crossings, pole order,
+or RLCT.

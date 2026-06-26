@@ -8731,3 +8731,29 @@ passed.
 Nonclaims: no equality with the whole source image, source-rank coverage,
 measure pushforward, density/Jacobian theorem, normal crossings, pole order,
 or RLCT is proved.
+
+Latest A2 retained-passive open partial homeomorphism:
+Lean now defines
+`RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`
+and
+`RetainedPassiveNonredundantCoordinateData.detChart_sourceRecursiveDetChart_openPartialHomeomorph`
+in `RetainedPassiveCoordinatesTopology.lean`.
+
+The open partial homeomorphism has source `detChartSet`, target
+`sourceRecursiveDetChartSet`, forward map `edgeMatrix`, and inverse map
+`sourceReadback`.  Its map-source, map-target, and inverse-law fields are the
+existing finite retained-passive chart theorems, while its source and target
+are the already proved open sets.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-open-partial-homeomorph.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-open-partial-homeomorph.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-open-partial-homeomorph.md`
+passed by xhigh `Helmholtz the 3rd`.
+
+Nonclaims: this is a local chart object for the explicit retained-passive
+chart only.  No equality with the whole source image, source-rank coverage,
+measure pushforward, density/Jacobian theorem, normal crossings, pole order,
+or RLCT is proved.

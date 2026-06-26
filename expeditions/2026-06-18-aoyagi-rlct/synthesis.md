@@ -12879,3 +12879,21 @@ This supplies the ambient open-domain part for the retained-passive
 source-recursive chart.  It still does not prove that this open set is the
 whole source image, source-rank coverage, measure transport, normal crossings,
 pole order, or RLCT.
+
+New follow-up packages the named coordinate and source-recursive domains as an
+ambient open partial homeomorphism.  The source is `detChartSet`, the target is
+`sourceRecursiveDetChartSet`, the forward map is `edgeMatrix`, and the inverse
+map is `sourceReadback`.  Lean first rewrites the existing predicate-subtype
+homeomorphism along `mem_detChartSet` and `mem_sourceRecursiveDetChartSet`,
+then defines `detChart_sourceRecursiveDetChart_openPartialHomeomorph`.
+
+The map-source, map-target, and inverse-law fields are exactly the finite
+retained-passive chart theorems already banked.  The source and target are
+open by the existing openness theorems.  Forward continuity-on-source is the
+previous determinant-subtype continuity transported across the named-set
+membership rewrite, and inverse continuity-on-target is the pointwise
+`continuousAt_sourceReadback` theorem.
+
+This is the local chart object for the explicit retained-passive chart.  It
+still does not prove whole source-image equality, source-rank coverage,
+measure/Jacobian transport, normal crossings, pole order, or RLCT.

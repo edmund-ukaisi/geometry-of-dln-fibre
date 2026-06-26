@@ -9947,3 +9947,23 @@ passed.
 This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
+
+Latest A2 retained-passive open partial homeomorphism:
+`RetainedPassiveCoordinatesTopology.lean` defines
+`RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`
+and
+`RetainedPassiveNonredundantCoordinateData.detChart_sourceRecursiveDetChart_openPartialHomeomorph`.
+
+The first theorem rewrites the predicate-subtype homeomorphism as a
+homeomorphism between the named set subtypes.  The second packages source
+`detChartSet`, target `sourceRecursiveDetChartSet`, forward `edgeMatrix`, and
+inverse `sourceReadback` as an `OpenPartialHomeomorph`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-open-partial-homeomorph.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-open-partial-homeomorph.md`
+passed by xhigh `Helmholtz the 3rd`.
+
+This does not prove equality with the whole source image, source-rank
+coverage, measure pushforward, density/Jacobian theorem, normal crossings,
+pole order, or RLCT.

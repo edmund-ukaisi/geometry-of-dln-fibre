@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.ChartTopology
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
+import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 
 /-!
 # Topology for retained-passive nonredundant coordinates
@@ -1370,6 +1371,108 @@ theorem detChartSet_mem_nhds
     (hdet : data.detChart) :
     detChartSet (K := K) (ρ := ρ) (κ' := κ') ∈ nhds data :=
   IsOpen.mem_nhds isOpen_detChartSet hdet
+
+/-- The subtype homeomorphism rewritten with the named ambient chart sets as
+its source and target subtypes. -/
+def detChartSet_sourceRecursiveDetChartSet_homeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    detChartSet (K := K) (ρ := ρ) (κ' := κ') ≃ₜ
+      sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') :=
+  let hdet :
+      (fun data :
+        RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' ↦
+          data ∈ detChartSet (K := K) (ρ := ρ) (κ' := κ')) =
+        fun data ↦ data.detChart := by
+    funext data
+    exact propext (mem_detChartSet (K := K) (ρ := ρ) (κ' := κ') data)
+  let hsource :
+      (fun E : ∀ p : Fin (M + 1),
+        Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+          E ∈ sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')) =
+        fun E ↦ sourceRecursiveDetChart (K := K) (ρ := ρ) E := by
+    funext E
+    exact propext (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E)
+  (Homeomorph.ofEqSubtypes hdet).trans
+    ((detChart_sourceRecursiveDetChart_homeomorph
+      (ρ := ρ) (κ' := κ') (K := K)).trans
+        (Homeomorph.ofEqSubtypes hsource).symm)
+
+/-- The retained-passive determinant chart as an ambient open partial
+homeomorphism from nonredundant coordinates to source edge families.
+
+The source is exactly `detChartSet`; the target is exactly
+`sourceRecursiveDetChartSet`.  This is an explicit local chart object, not a
+global source-image or rank-coverage theorem, and it carries no measure,
+Jacobian, normal-crossing, pole-order, or RLCT assertion. -/
+def detChart_sourceRecursiveDetChart_openPartialHomeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    OpenPartialHomeomorph
+      (RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+      (∀ p : Fin (M + 1),
+        Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :=
+  let S : Set (RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :=
+    detChartSet (K := K) (ρ := ρ) (κ' := κ')
+  let T : Set (∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K) :=
+    sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+  { toFun := fun data ↦ data.edgeMatrix
+    invFun := fun E ↦ sourceReadback (K := K) (ρ := ρ) E
+    source := S
+    target := T
+    map_source' := by
+      intro data hdata
+      exact
+        (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') data.edgeMatrix).2
+          (sourceRecursiveDetChart_edgeMatrix_of_detChart
+            (K := K) (ρ := ρ) data
+            ((mem_detChartSet (K := K) (ρ := ρ) (κ' := κ') data).1 hdata))
+    map_target' := by
+      intro E hE
+      exact
+        (mem_detChartSet (K := K) (ρ := ρ) (κ' := κ')
+          (sourceReadback (K := K) (ρ := ρ) E)).2
+          (sourceReadback_detChart_of_sourceRecursiveDetChart
+            (K := K) (ρ := ρ) E
+            ((mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E).1 hE))
+    left_inv' := by
+      intro data hdata
+      exact
+        sourceReadback_edgeMatrix_eq (K := K) (ρ := ρ) data
+          ((mem_detChartSet (K := K) (ρ := ρ) (κ' := κ') data).1 hdata)
+    right_inv' := by
+      intro E hE
+      exact
+        edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+          (K := K) (ρ := ρ) E
+          ((mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E).1 hE)
+    open_source := isOpen_detChartSet (K := K) (ρ := ρ) (κ' := κ')
+    open_target := isOpen_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+    continuousOn_toFun := by
+      have hdet :
+          (fun data :
+            RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' ↦
+              data ∈ S) =
+            fun data ↦ data.detChart := by
+        funext data
+        exact propext (mem_detChartSet (K := K) (ρ := ρ) (κ' := κ') data)
+      rw [continuousOn_iff_continuous_restrict]
+      simpa [S, Set.restrict] using
+        (continuous_edgeMatrix_detChart_subtype
+          (ρ := ρ) (κ' := κ') (K := K)).comp
+          (Homeomorph.ofEqSubtypes hdet).continuous
+    continuousOn_invFun := by
+      intro E hE
+      exact
+        (continuousAt_sourceReadback
+          (K := K) (ρ := ρ) (κ' := κ')
+          (E := fun E' ↦ E') (x₀ := E)
+          continuous_id.continuousAt
+          ((mem_sourceRecursiveDetChartSet
+            (K := K) (ρ := ρ) (κ' := κ') E).1 hE)).continuousWithinAt }
 
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState

@@ -5824,3 +5824,20 @@ homeomorphism, or a more explicit bridge from the p. 13 retained-passive chart
 to the existing regular-suspension/product-measure infrastructure.  Do not
 claim global source-image equality or source-rank coverage without a separate
 paper-backed argument.
+
+The retained-passive open partial homeomorphism has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-open-partial-homeomorph.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-open-partial-homeomorph.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-open-partial-homeomorph.md`.
+Lean packages the explicit retained-passive chart as an `OpenPartialHomeomorph`
+with source `detChartSet`, target `sourceRecursiveDetChartSet`, forward
+`edgeMatrix`, and inverse `sourceReadback`.
+
+Next retained-passive target: use this local chart object only where a
+downstream theorem explicitly needs an open partial homeomorphism.
+The next mathematical frontier remains analytic: either reproduce a real
+measure/Jacobian transport statement for this chart or connect it to the
+existing regular-suspension/product-measure infrastructure under explicit
+supplied analytic hypotheses.  Do not infer whole source-image equality,
+source-rank coverage, measure transport, normal crossings, pole order, or RLCT.
