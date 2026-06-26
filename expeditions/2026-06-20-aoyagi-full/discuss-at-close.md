@@ -494,3 +494,17 @@ binomial identities. **Aoyagi-full impact: NONE on the headline** — `aoyagi_le
 between the papers (LR codim/2 = Aoyagi λ = 3/2 for (2,2,2,2,2), F2). **Forward-looking caveat:** if aoyagi-full ever states the
 multiplicity/θ (e.g. the `log log n` order term), it must use Aoyagi's order-form `a(ℓ−a)+1`, NOT LR's binom — they are not
 interchangeable beyond |δ|≤1. Operator decision: whether to adopt / re-home / discard the stray θ-components expedition.
+
+## 25. Item-24 SHARPENED by the #print-axioms reckoning (2026-06-26) — the clearest scope framing.
+a8ecfbab's load-bearing point: `#print axioms` is a static term scan, so `deepest_gauge_construction` carries sorryAx from ANY sorry
+in its body regardless of branch — `aoyagi_rrr` ALREADY carries sorryAx (from the 3041/3046 L≥3-interior); only the concrete
+`aoyagi_rrr_222` is clean, via a SEPARATE Case222 path bypassing the general construction. **Implication:** the gauge-chart producer
+route does NOT yield a clean GENERAL-width headline without closing the general-L interior (3041/3046, research-grade) — closing the
+3195 L=2 diffeo only banks a separate clean lemma (`deepest_diffeo_bridge_L2`), not a clean producer/headline. So the operator's fork
+is now crisp: **(A)** push the FULL general-L producer (3041/3046 + 3195-general + R1-general + general-hdiv + D1 — far, partly
+research-grade) toward a clean GENERAL `aoyagi_learning_coefficient`; vs **(B)** name the CONCRETE-ANCHOR milestone as the deliverable
+— RRR(2,2,2) clean (via Case222) + R1 (3,3,4) clean + the network-free engine + the banked clean L2 bricks (PIN1, PIN2, the Score
+squeeze, the rectangular LDU, the diffeo bridge, `deepest_diffeo_bridge_L2`). (B) is honest + banked-now; (A) is the paper's full
+general claim. I'd been imprecisely narrating toward "L=2 producer complete → L2 gate" — corrected: the gauge-chart producer is general
+machinery, sorryAx from the general-L interior; clean L=2 results are concrete-path. Under charge-ahead I bank the clean L2 bricks and
+hold the general-L interior as the frontier; **recommend the operator pick (A) vs (B) on return** — it determines what "done" means.
