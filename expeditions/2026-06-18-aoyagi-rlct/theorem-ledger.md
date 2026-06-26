@@ -9051,22 +9051,28 @@ normal crossings, pole order, or RLCT.
 Latest A2 p.13 left-step conditional raw pushforward consumer:
 `ProductReductionStepMeasure.lean` now proves
 `aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart`
-and `map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`,
-the generic composition consumer for the raw-order inverse-density pushforward
-under an explicit raw source pushforward hypothesis.  Chart null-measurability
-and raw-order map a.e.-measurability are internal.  `ProductReductionStepRegularDensity.lean`
+`ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict`, and
+`map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`, the
+generic composition consumer for the raw-order inverse-density pushforward
+under an explicit raw source pushforward hypothesis.  Chart null-measurability,
+raw-order map a.e.-measurability, and raw-chart support are internal.
+`ProductReductionStepRegularDensity.lean`
 adds `p13ProductCoordinateLeftStepRawTopologyTuple`,
 `paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one`,
 `paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero`,
 `p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one`,
 `p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero`,
+`ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart`,
+`ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart`,
 `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`, and
 `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map`.
 The public p.13 theorem assumes
 `Measure.map p13ProductCoordinateLeftStepRawTopologyTuple eta =
 m.restrict rawDetChart` and concludes the raw-order target tuple has density
 `productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
-Haar measure.
+Haar measure.  The `Ctop` determinant-unit a.e. fact is derived from raw-chart
+support under the same supplied raw pushforward; it is no longer a separate
+consumer input.
 The section facts record that the p.13 raw preimage fixes raw `C1 = I` and raw
 `A3 = 0`; in nontrivial raw `C1` or `A3` directions this is lower-dimensional,
 so p.13 should not be read as a proof of the full raw-Haar pushforward.
@@ -9077,6 +9083,8 @@ and
 `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
 The follow-up section-guardrail review is at
 `threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md`.
+The follow-up raw-chart-support review is at
+`threads/03-block-product-reduction/review-a2-p13-left-step-ctop-from-raw-chart-support.md`.
 This is a conditional measure consumer only: no proof of the supplied raw
 pushforward, original source/prior transport, source coverage, signed-box
 density identification, product-measure pushforward, regular-suspension

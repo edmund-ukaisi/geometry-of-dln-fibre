@@ -59,3 +59,11 @@ crossings, pole order, or RLCT.
 The reviewer did not run Lean because the review was read-only and builds write
 artifacts.  Residual risk is limited to the already-landed raw-order
 pushforward/Jacobian theorem beneath this consumer.
+
+## Addendum
+
+A follow-up xhigh scout review in
+`review-a2-p13-left-step-ctop-from-raw-chart-support.md` checked the later
+hypothesis reduction.  The `Ctop.det` unit fact is now derived from raw-chart
+support under the supplied raw pushforward and raw-map a.e. measurability,
+rather than taken as a separate consumer input.

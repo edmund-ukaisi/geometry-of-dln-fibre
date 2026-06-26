@@ -258,9 +258,10 @@ No such claim is formalisation-ready until both fields are filled.
   raw-order inverse-density pushforward is now consumed conditionally for the
   actual p.13 left-step raw tuple under an explicit source/product-chart raw
   pushforward hypothesis, with raw chart null-measurability and raw-order
-  a.e.-measurability derived internally. The raw p.13 section facts
-  `C1 = I` and `A3 = 0` are formalized as guardrails against treating the
-  section as a full raw-Haar chart. The full source Theorem 3/RLCT claim remains blocked
+  a.e.-measurability derived internally; the needed `Ctop` determinant-unit
+  a.e. fact is derived internally from raw-chart support. The raw p.13 section
+  facts `C1 = I` and `A3 = 0` are formalized as guardrails against treating
+  the section as a full raw-Haar chart. The full source Theorem 3/RLCT claim remains blocked
   on the analytic product-coordinate regular-square suspension theorem and the
   actual p.13 chart/density construction.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
@@ -733,10 +734,13 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/review-a2-regular-suspension-uniform-product-handoff.md`.
   Also proved
   `aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart`,
+  `ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict`,
   `paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one`,
   `paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero`,
   `p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one`,
   `p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero`,
+  `ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart`,
+  `ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart`,
   `map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian`,
   `p13ProductCoordinateLeftStepRawTopologyTuple`,
   `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map`,
@@ -744,7 +748,8 @@ No such claim is formalisation-ready until both fields are filled.
   `map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map`,
   the conditional p.13 left-step raw pushforward consumer.  It keeps the raw
   source pushforward as an explicit hypothesis and places the inverse-Jacobian
-  density on the restricted raw target measure.
+  density on the restricted raw target measure; `Ctop` unit a.e. is now
+  derived from the supplied raw-chart pushforward.
 - **Assumed.** matrix dimensions encoded by types; determinant-unit chart
   hypotheses `IsUnit C1.det` and `IsUnit A1.det`; finite-dimensional layer
   hypotheses for the chart-data existence theorem; topological ring/open-units

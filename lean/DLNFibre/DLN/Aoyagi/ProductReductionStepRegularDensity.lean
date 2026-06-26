@@ -915,6 +915,201 @@ theorem p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
       (CedgeBase := CedgeBase) xu)
 
 set_option linter.unusedSectionVars false in
+/-- If the explicit p. 13 raw preimage tuple pushes a source measure to the raw
+determinant chart, then its `Ctop` determinant is a unit a.e. -/
+theorem ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (η : Measure (α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))))
+    (m : Measure
+      (ProductReductionStepRawTopologyTuple
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))))
+    [BorelSpace
+      (ProductReductionStepRawTopologyTuple
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))]
+    (hpre :
+      AEMeasurable
+        (paperEndpointFixedBaseP13RawPreimageTuple
+          V Bv U₀ hU₀ CedgeBase)
+        η)
+    (hpre_map :
+      Measure.map
+          (paperEndpointFixedBaseP13RawPreimageTuple
+            V Bv U₀ hU₀ CedgeBase) η =
+        m.restrict
+          (productReductionStepRawDetChartSet
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))) :
+    ∀ᵐ xu ∂η,
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix
+          (fun c : AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det := by
+  classical
+  have hmem :
+      ∀ᵐ xu ∂η,
+        paperEndpointFixedBaseP13RawPreimageTuple V Bv U₀ hU₀ CedgeBase xu ∈
+          productReductionStepRawDetChartSet
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) :=
+    ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
+      (η := η) (m := m)
+      (pre := paperEndpointFixedBaseP13RawPreimageTuple
+        V Bv U₀ hU₀ CedgeBase)
+      hpre hpre_map
+  filter_upwards [hmem] with xu hx
+  simpa [paperEndpointFixedBaseP13RawPreimageTuple,
+    productReductionStepRawDetChartSet] using hx.2
+
+set_option linter.unusedSectionVars false in
+/-- If the actual p. 13 left-step raw tuple pushes a source measure to the raw
+determinant chart, then its `Ctop` determinant is a unit a.e. -/
+theorem ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [MeasurableSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (η : Measure (α × EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0))))
+    (m : Measure
+      (ProductReductionStepRawTopologyTuple
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))))
+    [BorelSpace
+      (ProductReductionStepRawTopologyTuple
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))]
+    (hraw :
+      AEMeasurable
+        (p13ProductCoordinateLeftStepRawTopologyTuple
+          V Bv U₀ hU₀ CedgeBase)
+        η)
+    (hraw_map :
+      Measure.map
+          (p13ProductCoordinateLeftStepRawTopologyTuple
+            V Bv U₀ hU₀ CedgeBase) η =
+        m.restrict
+          (productReductionStepRawDetChartSet
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))) :
+    ∀ᵐ xu ∂η,
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix
+          (fun c : AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det := by
+  classical
+  have hmem :
+      ∀ᵐ xu ∂η,
+        p13ProductCoordinateLeftStepRawTopologyTuple V Bv U₀ hU₀ CedgeBase xu ∈
+          productReductionStepRawDetChartSet
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) :=
+    ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
+      (η := η) (m := m)
+      (pre := p13ProductCoordinateLeftStepRawTopologyTuple
+        V Bv U₀ hU₀ CedgeBase)
+      hraw hraw_map
+  filter_upwards [hmem] with xu hx
+  have htuple :
+      p13ProductCoordinateLeftStepRawTopologyTuple V Bv U₀ hU₀ CedgeBase xu =
+        paperEndpointFixedBaseP13RawPreimageTuple V Bv U₀ hU₀ CedgeBase xu :=
+    p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) xu
+  have hx_pre :
+      paperEndpointFixedBaseP13RawPreimageTuple V Bv U₀ hU₀ CedgeBase xu ∈
+          productReductionStepRawDetChartSet
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)) := by
+    simpa [htuple] using hx
+  simpa [paperEndpointFixedBaseP13RawPreimageTuple,
+    productReductionStepRawDetChartSet] using hx_pre.2
+
+set_option linter.unusedSectionVars false in
 /-- The constructed multi-edge p. 13 product-coordinate matrix family's
 left-step target tuple is the explicit p. 13 raw-shaped target tuple. -/
 theorem p13ProductCoordinateLeftStepRawOrderTargetTuple_eq_rawOrderTuple
@@ -1067,17 +1262,7 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
             (throughSubspaceEndpointComplementIndex
               (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
             (throughSubspaceEndpointComplementIndex
-              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))))
-    (hCtop_ae :
-      ∀ᵐ xu ∂η,
-        IsUnit
-          (AoyagiRegularBlockCoordinateIndex.ctopMatrix
-            (fun c : AoyagiRegularBlockCoordinateIndex
-              (Fin (Module.finrank ℝ U₀))
-              (throughSubspaceEndpointComplementIndex
-                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-              (throughSubspaceEndpointComplementIndex
-                (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det) :
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))) :
     Measure.map
         (paperEndpointFixedBaseP13RawOrderTuple
           V Bv U₀ hU₀ CedgeBase)
@@ -1118,6 +1303,11 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
         (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
       (ν := throughSubspaceEndpointComplementIndex
         (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))
+  have hCtop_ae :=
+    ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := CedgeBase) (η := η) (m := m)
+      hpre hpre_map
   have htarget :
       target =ᵐ[η] fun xu => Φ (pre xu) := by
     filter_upwards [hCtop_ae] with xu hCtop
@@ -1220,17 +1410,7 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
             (throughSubspaceEndpointComplementIndex
               (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).succ))
             (throughSubspaceEndpointComplementIndex
-              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc))))
-    (hCtop_ae :
-      ∀ᵐ xu ∂η,
-        IsUnit
-          (AoyagiRegularBlockCoordinateIndex.ctopMatrix
-            (fun c : AoyagiRegularBlockCoordinateIndex
-              (Fin (Module.finrank ℝ U₀))
-              (throughSubspaceEndpointComplementIndex
-                (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
-              (throughSubspaceEndpointComplementIndex
-                (reverseVertex V) (reverseEdge V Bv) U₀ 0) ↦ xu.2 c)).det) :
+              (reverseVertex V) (reverseEdge V Bv) U₀ ((0 : Fin (M + 2)).castSucc)))) :
     Measure.map
         (paperEndpointFixedBaseP13RawOrderTuple
           V Bv U₀ hU₀ CedgeBase)
@@ -1288,7 +1468,7 @@ theorem map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
     map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
       (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
       (CedgeBase := CedgeBase) (η := η) (m := m)
-      hpre hpre_map hCtop_ae
+      hpre hpre_map
 
 set_option linter.unusedSectionVars false in
 /-- The p. 13 raw-shaped target tuple is continuous at a self-base point. -/

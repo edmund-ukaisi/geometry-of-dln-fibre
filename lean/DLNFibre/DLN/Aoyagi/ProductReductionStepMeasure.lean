@@ -71,6 +71,35 @@ theorem nullMeasurableSet_productReductionStepRawDetChartSet
   (isOpen_productReductionStepRawDetChartSet
     (ρ := ρ) (π := π) (μ := μ) (ν := ν)).measurableSet.nullMeasurableSet
 
+/-- If a parametrisation pushes a measure to Haar measure restricted to the raw
+determinant chart, then it lands in the raw determinant chart a.e. -/
+theorem ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
+    {ρ π μ ν X : Type*} [Fintype ρ] [DecidableEq ρ]
+    [MeasurableSpace X]
+    [MeasurableSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    [BorelSpace (ProductReductionStepRawTopologyTuple ρ π μ ν)]
+    (η : Measure X)
+    (m : Measure (ProductReductionStepRawTopologyTuple ρ π μ ν))
+    (pre : X → ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hpre : AEMeasurable pre η)
+    (hpre_map :
+      Measure.map pre η =
+        m.restrict (productReductionStepRawDetChartSet ρ π μ ν)) :
+    ∀ᵐ x ∂η, pre x ∈ productReductionStepRawDetChartSet ρ π μ ν := by
+  classical
+  let S : Set (ProductReductionStepRawTopologyTuple ρ π μ ν) :=
+    productReductionStepRawDetChartSet ρ π μ ν
+  have hS : MeasurableSet S :=
+    isOpen_productReductionStepRawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) |>.measurableSet
+  have hS_null : NullMeasurableSet S m :=
+    nullMeasurableSet_productReductionStepRawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) m
+  have hmap : ∀ᵐ z ∂Measure.map pre η, z ∈ S := by
+    rw [hpre_map]
+    exact ae_restrict_mem₀ hS_null
+  exact (ae_map_iff hpre hS).1 hmap
+
 private theorem map_withDensity_comp_of_aemeasurable
     {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     {η : Measure α} {f : α → β} {g : β → ℝ≥0∞}

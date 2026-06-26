@@ -11783,6 +11783,7 @@ normal crossings, compute pole order, or prove RLCT.
 
 ```text
 aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
+ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
 ```
 
@@ -11790,7 +11791,9 @@ which says: if a raw source tuple `pre` pushes `eta` to additive Haar measure
 restricted to the raw determinant chart, then composing `pre` with the
 raw-order product-step map gives the inverse-Jacobian weighted raw target
 measure.  The raw-order map's a.e.-measurability for the restricted raw Haar
-measure is derived from chart openness and continuity on the chart.
+measure is derived from chart openness and continuity on the chart.  The
+generic support lemma says that a parametrisation with pushforward
+`m.restrict rawDetChart` lands in the raw determinant chart a.e.
 
 `ProductReductionStepRegularDensity.lean` specializes this twice:
 
@@ -11799,6 +11802,8 @@ paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
 paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
 p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
 p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
+ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart
+ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
@@ -11811,7 +11816,8 @@ p13ProductCoordinateLeftStepRawTopologyTuple
 ```
 
 as an explicit hypothesis, transports it through the equality with
-`(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, and concludes the target tuple
+`(I,Dtail,F3,Ctop,-Ctop*F2,0,C0)`, derives `IsUnit det(Ctop)` a.e. from
+raw-chart support, and concludes the target tuple
 `(Ctop,Dtail,F3,Ctop,F2,0,C0)` has density
 `productReductionStepRawOrderInverseJacobianDensity` over the restricted raw
 Haar measure.
@@ -11829,6 +11835,8 @@ and
 `threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md`.
 The follow-up guardrail review is
 `threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md`.
+The follow-up raw-chart-support review is
+`threads/03-block-product-reduction/review-a2-p13-left-step-ctop-from-raw-chart-support.md`.
 
 This is still conditional.  It does not prove the supplied raw pushforward,
 construct the original p.13 source chart, prove source coverage, transport

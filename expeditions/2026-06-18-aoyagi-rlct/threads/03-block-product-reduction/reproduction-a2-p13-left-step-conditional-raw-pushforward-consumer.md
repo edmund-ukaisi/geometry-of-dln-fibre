@@ -43,6 +43,23 @@ Assume explicitly that the raw preimage map has the required pushforward:
 map X η = m|S.
 ```
 
+Since `m|S` is supported on `S`, functorial support gives
+
+```text
+X(x,u) ∈ S for η-almost every (x,u).
+```
+
+The second raw determinant-chart condition in `S` is the unit condition on the
+`A1` block.  For the p.13 raw preimage tuple, that block is `Ctop(u)`, hence
+
+```text
+IsUnit det(Ctop(u))
+```
+
+holds for `η`-almost every `(x,u)`.  Thus the determinant-unit hypothesis
+needed for the pointwise p.13 product-step identity is not an additional input
+once the raw-chart pushforward and raw-map a.e. measurability are supplied.
+
 The raw product-step theorem gives
 
 ```text
@@ -65,8 +82,8 @@ map (Phi ∘ X) η
   = (m|S).withDensity (ofReal K).
 ```
 
-If `det Ctop(u)` is a unit for `η`-almost every `u`, then the pointwise p.13
-calculation gives `Phi(X(x,u)) = Y(x,u)` almost everywhere, hence
+The derived determinant-unit fact lets us apply the pointwise p.13 calculation
+almost everywhere, giving `Phi(X(x,u)) = Y(x,u)`, hence
 
 ```text
 map Y η
@@ -81,11 +98,14 @@ Lean added a generic raw-product-step composition consumer:
 
 ```text
 aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
+ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
 paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
 paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
 p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
 p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
+ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart
+ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart
 ```
 
 with inputs:
@@ -108,7 +128,7 @@ measure.  Since `Phi` is continuous on the raw determinant chart and
 `map pre η = m|S`, the a.e.-measurability of `Phi` for `map pre η` is derived
 inside the theorem rather than supplied by the caller.
 
-It then specialized this first to the explicit p.13 raw preimage tuple:
+It then specializes this first to the explicit p.13 raw preimage tuple:
 
 ```text
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
@@ -121,9 +141,10 @@ p13ProductCoordinateLeftStepRawTopologyTuple
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
 
-Both p.13 theorems use the additional almost-everywhere determinant-unit
-hypothesis for `Ctop(u)`.  The public left-step theorem takes the supplied
-pushforward hypothesis for the actual constructed left-step raw tuple.
+Both p.13 theorems derive the almost-everywhere determinant-unit fact for
+`Ctop(u)` from the supplied raw pushforward and raw-map a.e. measurability.
+The public left-step theorem takes the supplied pushforward hypothesis for the
+actual constructed left-step raw tuple.
 
 ## Kill Conditions
 

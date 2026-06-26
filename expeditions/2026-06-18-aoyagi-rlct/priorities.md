@@ -5128,7 +5128,9 @@ Lean proves a generic raw-order composition consumer and p.13 specializations
 for both the explicit raw preimage tuple and the actual constructed left-step
 raw tuple.  The source/product-chart raw pushforward is an explicit hypothesis;
 raw chart null-measurability and raw-order map a.e.-measurability are derived
-internally.  The conclusion is the inverse-Jacobian weighted raw target measure
+internally.  Lean now also derives the needed `Ctop` determinant-unit a.e.
+condition from raw-chart support under the same supplied pushforward.  The
+conclusion is the inverse-Jacobian weighted raw target measure
 `(m.restrict rawDetChart).withDensity ...`.  The next genuinely source-moving
 A2 priority is to prove or source-faithfully assume the actual p.13
 source/product-chart pushforward and density identification.  Do not infer

@@ -25,12 +25,15 @@ explicit raw preimage tuple and the actual constructed left-step raw tuple.
 
 ```text
 aemeasurable_productReductionStepTopologyTupleToChartRawOrder_restrict_detChart
+ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict
 map_productReductionStepRawOrder_comp_eq_withDensity_inverseJacobian
 paperEndpointFixedBaseP13RawPreimageTuple_C1_eq_one
 paperEndpointFixedBaseP13RawPreimageTuple_A3_eq_zero
 p13ProductCoordinateLeftStepRawTopologyTuple
 p13ProductCoordinateLeftStepRawTopologyTuple_C1_eq_one
 p13ProductCoordinateLeftStepRawTopologyTuple_A3_eq_zero
+ae_isUnit_ctopMatrix_det_of_p13RawPreimage_map_eq_restrict_rawDetChart
+ae_isUnit_ctopMatrix_det_of_p13LeftStepRaw_map_eq_restrict_rawDetChart
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_rawPreimage_map
 map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 ```
@@ -41,12 +44,14 @@ map_p13RawOrderTuple_eq_withDensity_inverseJacobian_of_leftStepRaw_map
 - A source measure `η`.
 - A supplied pushforward identity saying the p. 13 raw preimage, or the
   actual constructed left-step raw tuple, maps `η` to `m.restrict rawDetChart`.
-- A.e. determinant-unit condition for `Ctop(u)`.
 - A.e. measurability of the raw source tuple.
 
 Null-measurability of the raw determinant chart and a.e. measurability of the
 raw-order map on `m.restrict rawDetChart` are derived internally from openness
-of the chart and continuity on the chart.
+of the chart and continuity on the chart.  The a.e. determinant-unit condition
+for `Ctop(u)` is also derived internally: the supplied raw pushforward implies
+the raw source tuple lies in the raw determinant chart a.e., whose second
+chart condition is exactly `IsUnit det(Ctop)`.
 
 ## Method
 
@@ -68,7 +73,9 @@ to
 (Ctop,Dtail,F3,Ctop,F2,0,C0)
 ```
 
-almost everywhere using the supplied `det Ctop` hypothesis.
+almost everywhere.  The required `det Ctop` unit fact is derived from
+`ae_mem_productReductionStepRawDetChartSet_of_map_eq_restrict` and the supplied
+raw-chart pushforward.
 
 The actual-left-step theorem then uses
 `p13ProductCoordinateLeftStepRawTopologyTuple_eq_rawPreimageTuple` to replace
@@ -102,7 +109,10 @@ Review:
 ```text
 expeditions/2026-06-18-aoyagi-rlct/threads/03-block-product-reduction/review-a2-p13-left-step-conditional-raw-pushforward-consumer.md
 expeditions/2026-06-18-aoyagi-rlct/threads/03-block-product-reduction/review-a2-p13-left-step-raw-section-guardrail.md
+expeditions/2026-06-18-aoyagi-rlct/threads/03-block-product-reduction/review-a2-p13-left-step-ctop-from-raw-chart-support.md
 ```
 
 xhigh review passed on 2026-06-26 with no findings.
 Follow-up xhigh scout review recorded the raw-section guardrail on 2026-06-26.
+Follow-up xhigh scout review recorded the raw-chart-support derivation of the
+`Ctop` a.e. unit fact on 2026-06-26.
