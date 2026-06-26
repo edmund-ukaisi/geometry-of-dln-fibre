@@ -9,14 +9,16 @@ genuine DLN layer product `prod M A` (`prodAux`, a left-associated prefix fold):
 chart consumes `Chain.chain_telescope_zero` (`C_0 · suffix_0 = u • Hmat_0`); with `C_0 = 1` this gives
 `suffix_0 = u • Hmat_0`, so a `suffix_0 = prod M A` bridge would yield the chart identity `prod M A = u • H`.
 
-**STATUS — the two reusable bricks below are BANKED sorry-free; the full bridge is NOT (it needs the
-`prod` front-peel `prod M A = A_0 · prod (tail)`, which is the codebase's deferred `prodAux`
-reassociation XL-cast — the same one `DeepestTelescoping`'s `endpoint_telescoping` deferred).** The
-front-peel reduces (after `prodAux_succ` + `ext`) to a manifestly-true entry equation
-`∑ x, (if i=x then 1) · A⟨0⟩(cast x)(cast j) = A 0 i (cast j)`, but the `Fin (M 0)` vs `Fin (M ⟨0,_⟩)`
-square-ness + `Fin.cast` normalization fights the elaborator at each step. See thread-33 for the wall
-diagnosis + the two escape routes (a dedicated reassociation tide, or re-deriving the telescope engine
-in prefix form to match `prodAux` natively).
+**STATUS — the two reusable bricks below are BANKED sorry-free; the `prod` front-peel itself is now
+LANDED in `RouteMFrontPeel` (`prod_front_peel : prod M A = A_0 · (reindex …) prod (Atail M A)`, axiom-clean
+— the deferred `prodAux` reassociation XL-cast, shared with `DeepestTelescoping.endpoint_telescoping`).**
+The wall the earlier tides hit (a `prodAux_succ` + `ext` entry-chase through the `Fin (M 0)` vs
+`Fin (M ⟨0,_⟩)` square-ness) was dissolved by an INDUCTION-on-prefix-length proof (never `ext`): each step
+combines `prodAux_succ` on parent + tail with `reindex_finCongr_mul`, all cast bookkeeping at the equiv
+level (`finCongr_refl` → `reindex_refl_refl` via `erw`); the reassociation is closed by `set` + a
+fully-applied `Matrix.mul_assoc` term. The REMAINING bridge work (`suffix 0 = prod M A`) is the chain↔`M`
+width-embedding induction (a chain-shift matching `Chain.suffix_succ` against `prod_front_peel`); reachable
+(the `L=0` base typechecks), it is owned by the achiever-chart assembly that constructs the chain.
 
 * `reindex_finCongr_mul` — `reindex (finCongr …)` distributes over matrix products (the Codex-named
   cast-killer; reusable wherever a width-equality reindex meets a product).

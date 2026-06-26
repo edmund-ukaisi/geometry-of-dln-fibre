@@ -1,0 +1,1768 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.2
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f040f-4e90-79c3-bff6-d67ec5199067
+--------
+user
+<task>
+Lean 4 + Mathlib v4.29.0. I am proving `prodAux_front_peel` by induction on k. The BASE CASE is DONE.
+I am stuck on TWO specific mechanical sub-steps in the INDUCTIVE STEP. I need the exact tactics.
+
+## Context (all PROVEN / available)
+
+```lean
+-- left-associated dependent matrix product; prodAux_succ peels the LAST layer:
+theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    (e1 : H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1)) = H ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc))
+    (e2 : H (⟨k + 1, hk⟩ : Fin (L+1)) = H ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ)) :
+    prodAux H A (k + 1) hk = prodAux H A k (Nat.lt_of_succ_lt hk) *
+        (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm) (A ⟨k, Nat.lt_of_succ_lt_succ hk⟩)) := by
+  obtain rfl : e1 = rfl := Subsingleton.elim _ _; obtain rfl : e2 = rfl := Subsingleton.elim _ _; rfl
+
+-- reindex distributes over a product:
+theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+    (X : Matrix (Fin a) (Fin b) ℝ) (Y : Matrix (Fin b) (Fin c) ℝ) :
+    Matrix.reindex (finCongr ha) (finCongr hc) (X * Y)
+      = Matrix.reindex (finCongr ha) (finCongr hb) X * Matrix.reindex (finCongr hb) (finCongr hc) Y
+
+-- the tail layers, as a Params (Mtail M):
+def Mtail (M : Fin (L + 1 + 1) → ℕ) : Fin (L + 1) → ℕ := fun i => M i.succ
+def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+  (by
+    have e1 : Mtail M s.castSucc = M s.succ.castSucc := by simp only [Mtail]; congr 1
+    have e2 : Mtail M s.succ = M s.succ.succ := rfl
+    rw [e1, e2]; exact A s.succ :
+    Matrix (Fin (Mtail M s.castSucc)) (Fin (Mtail M s.succ)) ℝ)
+```
+
+## The inductive step, current state
+
+After `rw [prodAux_succ M A (k+1) hk eP1 eP2]`, `rw [ih ...]`, `rw [prodAux_succ (Mtail M) (Atail M A) k ...]`,
+`rw [reindex_finCongr_mul emid hb ecol ...]`, the GOAL is EXACTLY (copied from Lean, `⋯` = elided proofs):
+
+```
+A 0 * (reindex (finCongr emid) (finCongr ecolk)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+    (reindex (finCongr eP1.symm) (finCongr eP2.symm)) (A ⟨k + 1, ⋯⟩) =
+  A 0 *
+    ((reindex (finCongr emid) (finCongr hb)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+      (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k, ⋯⟩)))
+```
+
+where (ALL these width equalities are `rfl`-TRUE, just not syntactically rfl):
+- `emid : Mtail M 0 = M (Fin.succ 0)`        [row of A0's right factor; fixed]
+- `ecolk : Mtail M ⟨k,_⟩ = M ⟨k+1,_⟩`         [from IH]
+- `hb : Mtail M ⟨k,_⟩ = M ⟨k+1,_⟩`            [middle interface; SAME TYPE as ecolk, rfl]
+- `ecol : Mtail M ⟨k+1,_⟩ = M ⟨k+2,_⟩`        [outer column]
+- `eP1 : M ⟨k+1,_⟩ = M (⟨k+1,_⟩.castSucc)`, `eP2 : M ⟨k+2,_⟩ = M (⟨k+1,_⟩.succ)`  [parent peel, rfl]
+- `eT1 : Mtail M ⟨k,_⟩ = Mtail M (⟨k,_⟩.castSucc)`, `eT2 : Mtail M ⟨k+1,_⟩ = Mtail M (⟨k,_⟩.succ)` [tail peel, rfl]
+
+The matrix types in the goal:
+- `A 0 : Matrix (Fin (M 0)) (Fin (M (Fin.succ 0)))`  [= Fin (M 0) × Fin (M 1)]
+- both `reindex ... (prodAux tail k)` factors : `Matrix (Fin (M 0)) (Fin (M ⟨k+1,_⟩))`
+- `reindex (finCongr eP1.symm)(finCongr eP2.symm)(A ⟨k+1,_⟩)` : `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`
+- the doubly-reindexed `Atail M A ⟨k,_⟩` factor : also `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`
+
+## SUB-STEP 1 (reassociation): I cannot turn LHS `(A0 * X) * Y` into `A0 * (X * Y)`.
+`rw [Matrix.mul_assoc]`, `rw [mul_three_reassoc]` (a Type*-generic `a*b*c = a*(b*c)`), and
+`conv_lhs => rw [mul_three_reassoc]` ALL fail with "Did not find an occurrence of the pattern `?a * ?b * ?c`"
+— the dependent-dimension HMul (`instHMulOfFintypeOfMulOfAddCommMonoid`) defeats higher-order `rw` matching.
+The pattern Lean reports wanting: `@HMul.hMul (Matrix ?m ?m ℝ) (Matrix ?m ?m ℝ) (Matrix ?m ?m ℝ) inst (?a * ?b) ?c`.
+`simp only [Matrix.mul_assoc]` reports "no progress".
+
+## SUB-STEP 2 (layer identification): after I split with `congr 1`, the second goal is
+```
+(reindex (finCongr eP1.symm) (finCongr eP2.symm)) (A ⟨k+1,_⟩)
+  = (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k,_⟩))
+```
+i.e. parent layer `A ⟨k+1,_⟩` reindexed = tail layer `(Atail M A) ⟨k,_⟩` doubly-reindexed. They live at the
+SAME type `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`. The content: `(Atail M A) ⟨k,_⟩` is `A ⟨k,_⟩.succ = A ⟨k+1,_⟩`
+modulo the `Atail` def's `Eq.mpr` cast, and all the finCongr are rfl-true so collapse to refl.
+</task>
+
+<output_contract>
+Give me, CONCRETELY:
+
+1. SUB-STEP 1: the exact tactic to reassociate `(A0 * X) * Y → A0 * (X * Y)` through a dependent-dimension
+   HMul that defeats `rw`. Options to evaluate and pick the most robust: (i) `Matrix.mul_assoc` as a
+   fully-applied TERM in a `calc`/`Eq.trans` (does `exact`'s defeq unification dodge the rw-matching?);
+   (ii) restructure so I never reassociate — e.g. apply `prodAux_succ` to the WHOLE `prodAux M A (k+1+1)`
+   and `ih` in a different order; (iii) `show` the LHS into the explicit dependent type then a term proof.
+   If a fully-applied `Matrix.mul_assoc A0 X Y` term works via `exact` or `rw [Matrix.mul_assoc A0 X Y]`
+   with X, Y given as the exact goal subterms, say so and give the precise syntax for extracting X, Y
+   (e.g. via `set X := ... with hX`).
+
+2. SUB-STEP 2: the exact tactic chain for the layer identification. I expect: collapse all `finCongr e =
+   Equiv.refl _` via `finCongr_refl`, then `reindex_refl_refl` (via `erw`, since plain `rw`/`simp` won't
+   match the dependent `Matrix.reindex`), reducing both sides to `A ⟨k+1,_⟩` vs `Atail M A ⟨k,_⟩`, then a
+   defeq `rfl` or a `cases`-on-the-Atail-cast. Give the precise sequence. In particular: how do I prove
+   `A ⟨k+1,_⟩ = (Atail M A) ⟨k,_⟩` when the two have defeq-but-not-syntactic-equal `Matrix` types and the
+   `Atail` def hides an `Eq.mpr`? (e.g. is the right move to first prove a clean `Atail_apply` rewrite lemma
+   `(Atail M A) ⟨k,h⟩ = reindex (finCongr _) (finCongr _) (A ⟨k+1,_⟩)` by the `prodAux_succ` Subsingleton.elim
+   idiom, then everything is reindex algebra? give that lemma's statement + proof.)
+
+Concrete Lean over prose. Mark any lemma you are unsure exists in v4.29 as VERIFY. <600 words.
+</output_contract>
+
+<grounding_rules>
+Design advice; I run everything locally. Distinguish "this will work" from "shape is right, cast details
+may need a tweak". The base case already worked with: `prodAux_succ` then four
+`rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]` then `erw [Matrix.reindex_refl_refl, ...]`
+then `erw [Matrix.one_mul, Matrix.mul_one]; rfl`. So that idiom is CONFIRMED working in this exact setting.
+</grounding_rules>
+
+codex
+I’ll inspect the local Lean file around `prodAux_front_peel` and the available helper lemmas so the tactics match your exact declarations instead of guessing from the shape.
+exec
+/bin/bash -lc 'rg -n "prodAux_front_peel|prodAux_succ|reindex_finCongr_mul|Atail|finCongr_refl|reindex_refl_refl" -S .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+./lean/DLNFibre.lean:332:-- Reusable bricks toward the `suffix 0 = prod M A` bridge (`reindex_finCongr_mul` cast-killer, `Mtail`/
+./lean/DLNFibre.lean:333:-- `Atail`); the front-peel `prod = A_0·prod(tail)` itself (the deferred `prodAux` reassociation XL-cast,
+./expeditions/codex-front-peel/answer.md:3:Pick **(a)** for a reusable `prod_front_peel`: prove the `k+1` prefix statement by induction on `k`, never by entrywise `ext`. Ranking: **(a) > (d) > (b) > (c)**. Strategy (a) is local, uses your existing `prodAux_succ` and `reindex_finCongr_mul`, and turns the problem into associativity plus cast transport. Strategy (d) is best only if the real target is the `suffix 0 = prod M A` bridge and you do not need a standalone front-peel. Strategy (b) is clean architecturally but creates new API and still needs a `prod = prodFrom 0` reassociation proof. Strategy (c) is highest churn. The cast tools I would rely on are: `prodAux_succ`, `reindex_finCongr_mul`, `Matrix.reindex_apply`, `Matrix.submatrix_mul_equiv`, `Matrix.submatrix_submatrix`, `Equiv.symm_symm`, `Equiv.symm_comp_self`, `Equiv.self_comp_symm`, and `finCongr_refl`. No `HEq`; use proof irrelevance/`Subsingleton.elim` for equality proofs.
+./expeditions/codex-front-peel/answer.md:10:theorem prodAux_front_peel_succ
+./expeditions/codex-front-peel/answer.md:22:          (prodAux (Mtail M) (Atail M A)
+./expeditions/codex-front-peel/answer.md:27:Then `prod_front_peel` is this theorem at `k = L`, followed by collapsing `erow`/`ecol` using `finCongr_refl`.
+./expeditions/codex-front-peel/answer.md:32:rw [prodAux_succ M A (k + 1) hk₂ eP₁ eP₂]
+./expeditions/codex-front-peel/answer.md:33:rw [prodAux_succ (Mtail M) (Atail M A) k hkTail eT₁ eT₂]
+./expeditions/codex-front-peel/answer.md:35:rw [reindex_finCongr_mul]
+./expeditions/codex-front-peel/answer.md:39:The key is: expand the parent last step and the tail last step, distribute the outer tail reindex over the tail product with `reindex_finCongr_mul`, then use associativity to identify
+./expeditions/codex-front-peel/answer.md:47:After unfolding `Atail`, the parent layer `A ⟨k+1,_⟩` and the tail layer `(Atail M A) ⟨k,_⟩` are the same matrix modulo `finCongr_refl`/`Subsingleton.elim` casts. The base `k = 0` should use `prodAux_succ` on the parent plus `prodAux _ _ 0 = 1`; then collapse the boundary reindex and finish with `Matrix.one_mul`/`Matrix.mul_one`.
+./expeditions/codex-front-peel/answer.md:54:rw [show (finCongr e) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/answer.md:61:rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/answer.md:68:rw [show (finCongr erow) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/answer.md:69:    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:45:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout.log:53:    prod M A = (A 0) * (reindex ... (prod (Mtail M) (Atail M A)))
+./expeditions/codex-front-peel/codex-stdout.log:64:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:75:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/codex-stdout.log:83:A naive direct `ext` + `prodAux_succ` reduces (at k=0 base) to an entry equation
+./expeditions/codex-front-peel/codex-stdout.log:90:The deeper structural mismatch: `prodAux` peels the LAST layer (`prodAux_succ`), but the front-peel
+./expeditions/codex-front-peel/codex-stdout.log:101:   (a) induction on k proving a generalized `prodAux M A k = A 0 * reindex (prodAux (Mtail M) (Atail M A) (k-1))`
+./expeditions/codex-front-peel/codex-stdout.log:108:   Be concrete about WHICH Mathlib lemmas do the cast bookkeeping cleanly (e.g. `finCongr_refl`,
+./expeditions/codex-front-peel/codex-stdout.log:113:   out), if your pick is (a). For the inductive step, show precisely how to combine `prodAux_succ` on the
+./expeditions/codex-front-peel/codex-stdout.log:114:   parent with `prodAux_succ` on the tail + `reindex_finCongr_mul` to push the `A 0` factor leftward past
+./expeditions/codex-front-peel/codex-stdout.log:120:   form. (The repo precedent uses `show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _` then `rfl`
+./expeditions/codex-front-peel/codex-stdout.log:135:/bin/bash -lc 'rg -n "theorem finCongr_refl|lemma finCongr_refl|def finCongr|submatrix_mul_equiv|submatrix_submatrix|reindex_apply|symm_symm" $(pwd)/.lake/packages/mathlib/Mathlib $(pwd)/.lake/packages/mathlib/Archive 2>/dev/null' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+./expeditions/codex-front-peel/codex-stdout.log:138:2026-06-26T12:52:08.549777Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg -n "theorem finCongr_refl|lemma finCongr_refl|def finCongr|submatrix_mul_equiv|submatrix_submatrix|reindex_apply|symm_symm" $(pwd)/.lake/packages/mathlib/Mathlib $(pwd)/.lake/packages/mathlib/Archive 2>/dev/null'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+./expeditions/codex-front-peel/codex-stdout.log:140:/bin/bash -lc 'rg -n "prodAux_succ|reindex_finCongr_mul|finCongr_refl|prod_front_peel|Mtail|Atail|submatrix_mul_equiv|submatrix_submatrix|Equiv.symm_symm|Matrix.reindex_apply" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+./expeditions/codex-front-peel/codex-stdout.log:143:./expeditions/codex-front-peel/codex-stdout.log:45:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout.log:146:./expeditions/codex-front-peel/codex-stdout.log:53:    prod M A = (A 0) * (reindex ... (prod (Mtail M) (Atail M A)))
+./expeditions/codex-front-peel/codex-stdout.log:148:./expeditions/codex-front-peel/codex-stdout.log:64:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:149:./expeditions/codex-front-peel/codex-stdout.log:75:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/codex-stdout.log:150:./expeditions/codex-front-peel/codex-stdout.log:83:A naive direct `ext` + `prodAux_succ` reduces (at k=0 base) to an entry equation
+./expeditions/codex-front-peel/codex-stdout.log:151:./expeditions/codex-front-peel/codex-stdout.log:90:The deeper structural mismatch: `prodAux` peels the LAST layer (`prodAux_succ`), but the front-peel
+./expeditions/codex-front-peel/codex-stdout.log:154:./expeditions/codex-front-peel/codex-stdout.log:101:   (a) induction on k proving a generalized `prodAux M A k = A 0 * reindex (prodAux (Mtail M) (Atail M A) (k-1))`
+./expeditions/codex-front-peel/codex-stdout.log:155:./expeditions/codex-front-peel/codex-stdout.log:108:   Be concrete about WHICH Mathlib lemmas do the cast bookkeeping cleanly (e.g. `finCongr_refl`,
+./expeditions/codex-front-peel/codex-stdout.log:157:./expeditions/codex-front-peel/codex-stdout.log:113:   out), if your pick is (a). For the inductive step, show precisely how to combine `prodAux_succ` on the
+./expeditions/codex-front-peel/codex-stdout.log:158:./expeditions/codex-front-peel/codex-stdout.log:114:   parent with `prodAux_succ` on the tail + `reindex_finCongr_mul` to push the `A 0` factor leftward past
+./expeditions/codex-front-peel/codex-stdout.log:159:./expeditions/codex-front-peel/codex-stdout.log:120:   form. (The repo precedent uses `show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _` then `rfl`
+./expeditions/codex-front-peel/codex-stdout.log:160:./expeditions/codex-front-peel/codex-stdout.log:135:/bin/bash -lc 'rg -n "theorem finCongr_refl|lemma finCongr_refl|def finCongr|submatrix_mul_equiv|submatrix_submatrix|reindex_apply|symm_symm" $(pwd)/.lake/packages/mathlib/Mathlib $(pwd)/.lake/packages/mathlib/Archive 2>/dev/null' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+./expeditions/codex-front-peel/codex-stdout.log:161:./expeditions/codex-front-peel/codex-stdout.log:138:2026-06-26T12:52:08.549777Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg -n "theorem finCongr_refl|lemma finCongr_refl|def finCongr|submatrix_mul_equiv|submatrix_submatrix|reindex_apply|symm_symm" $(pwd)/.lake/packages/mathlib/Mathlib $(pwd)/.lake/packages/mathlib/Archive 2>/dev/null'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+./expeditions/codex-front-peel/codex-stdout.log:162:./expeditions/2026-06-20-aoyagi-full/synthesis.md:910:- The flagship resume (a4e6a2de) built piece-1 bricks (`reindex_finCongr_mul` cast-killer, `Mtail`/`Atail`) sorry-free but hit a GENUINE WALL on the `prod` front-peel `prod M A = A_0 · prod (Atail M A)` — the `prodAux` reassociation XL-cast (the `Fin (M k)` reindex normalization fights the elaborator; reduced to a manifestly-true entry equation that won't close through the casts). It did NOT paper it (reverted; clean bricks only). Reported an architectural fork.
+./expeditions/codex-front-peel/codex-stdout.log:163:./expeditions/2026-06-20-aoyagi-full/synthesis.md:1096:- **h1 DONE + integrated (440bbbf8):** `prod_eq_prodAux_mul_last` — af8305f1 cleared the `prodAux_succ` cast grind (a single fold `prod = prodAux m · recast last`, avoiding the `prodAux 0 = 1` One-friction; general-L). With `reindex_mul_schur_factor` this gives h1's `hR` end-to-end. Axiom-clean. The cast (the documented hardest blocker) is BEATEN.
+./expeditions/codex-front-peel/codex-stdout.log:164:./expeditions/2026-06-20-aoyagi-full/synthesis.md:1104:- **Producer wiring commissioned (a2795a88, FRESH formaliser, clean context for the ~300-LoC cast-grind, base 7e987a8e).** The precise 4-step residual: (i) h1 connect `prod(F w)=F_0·F_1` at L=2 (`prodAux_succ` cast reduction) → `reindex_mul_schur_factor` via `hRegBlocks` ⇒ `hR`; (ii) h2 coreΦ-match (`deepestCoreF_coreAbsorb_eq_prodSchur`, clean@L=2); (iii) h3 the REGROUP (dead-end pinned SOUNDNESS-CRITICAL); (iv) L=2 case-split + precise L≥3 guarded sorry → `exact germ_charge_of_schur_factorization`. Non-negotiable: L=2 path axiom-clean (the L≥3 sorry must not leak); PIN1 clean. Spawned FRESH (not re-engaged af8305f1's 322k-token context) — heavy cast work wants a clean context; the design transfers via the precise spec + the documented lemmas.
+./expeditions/codex-front-peel/codex-stdout.log:166:./expeditions/codex-front-peel/prompt.md:31:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout.log:169:./expeditions/codex-front-peel/prompt.md:39:    prod M A = (A 0) * (reindex ... (prod (Mtail M) (Atail M A)))
+./expeditions/codex-front-peel/codex-stdout.log:171:./expeditions/codex-front-peel/prompt.md:50:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:172:./expeditions/codex-front-peel/prompt.md:61:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/codex-stdout.log:173:./expeditions/codex-front-peel/prompt.md:69:A naive direct `ext` + `prodAux_succ` reduces (at k=0 base) to an entry equation
+./expeditions/codex-front-peel/codex-stdout.log:174:./expeditions/codex-front-peel/prompt.md:76:The deeper structural mismatch: `prodAux` peels the LAST layer (`prodAux_succ`), but the front-peel
+./expeditions/codex-front-peel/codex-stdout.log:177:./expeditions/codex-front-peel/prompt.md:87:   (a) induction on k proving a generalized `prodAux M A k = A 0 * reindex (prodAux (Mtail M) (Atail M A) (k-1))`
+./expeditions/codex-front-peel/codex-stdout.log:178:./expeditions/codex-front-peel/prompt.md:94:   Be concrete about WHICH Mathlib lemmas do the cast bookkeeping cleanly (e.g. `finCongr_refl`,
+./expeditions/codex-front-peel/codex-stdout.log:180:./expeditions/codex-front-peel/prompt.md:99:   out), if your pick is (a). For the inductive step, show precisely how to combine `prodAux_succ` on the
+./expeditions/codex-front-peel/codex-stdout.log:181:./expeditions/codex-front-peel/prompt.md:100:   parent with `prodAux_succ` on the tail + `reindex_finCongr_mul` to push the `A 0` factor leftward past
+./expeditions/codex-front-peel/codex-stdout.log:182:./expeditions/codex-front-peel/prompt.md:106:   form. (The repo precedent uses `show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _` then `rfl`
+./expeditions/codex-front-peel/codex-stdout.log:193:./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-prompt.md:34:Available public helpers (same file as the telescope): `prodAux_succ`, `prodAux_succ_layer`,
+./expeditions/codex-front-peel/codex-stdout.log:194:./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-prompt.md:39:and `Subsingleton.elim` for proof irrelevance, and `finCongr_refl` to collapse boundary casts). If (β) is viable
+./expeditions/codex-front-peel/codex-stdout.log:196:./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-answer.md:47:4. In the base step, keep using `prodAux_succ`, `reindex_mul_distrib_left`, then collapse `finCongr e.symm` with `finCongr_refl`.
+./expeditions/codex-front-peel/codex-stdout.log:259:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:28:>   - **cobuild:** after `rw [prodAux_succ … e1 e2]` the layer is
+./expeditions/codex-front-peel/codex-stdout.log:260:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:29:>     `reindex (finCongr e1.symm) (finCongr e2.symm) (…)`; since `e1, e2 : rfl`, `finCongr_refl` rewrites
+./expeditions/codex-front-peel/codex-stdout.log:261:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:34:>   - **crux2:** `prodAux_succ_layer` — the SHARED step-cast kernel; the index-level `cases e1; cases e2`
+./expeditions/codex-front-peel/codex-stdout.log:262:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:41:> - **Building blocks (crux2, axiom-clean):** `prodAux_succ` (explicit `e1/e2` + `Subsingleton.elim`),
+./expeditions/codex-front-peel/codex-stdout.log:263:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:42:>   `prodAux_succ_layer` (the kernel), `corner_reindex_mul` (`submatrix_mul_equiv` + `fromBlocks_multiply`).
+./expeditions/codex-front-peel/codex-stdout.log:264:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:11:`finCongr_refl` (e1,e2 are rfl → outer reindex is Equiv.refl → reindex_refl_refl/rfl), crux2's
+./expeditions/codex-front-peel/codex-stdout.log:265:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:12:`prodAux_succ_layer` kernel (`cases e1; cases e2`). FOLD1 (value) DONE both:
+./expeditions/codex-front-peel/codex-stdout.log:266:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:153:- **crux2's #111 `prodAux_succ` cast** (`obtain rfl + rfl`, COMPLETED) → closes `_base` (the idempotent
+./expeditions/codex-front-peel/codex-stdout.log:267:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:7:`rw [show finCongr e1.symm = Equiv.refl _ from finCongr_refl _, show finCongr e2.symm = Equiv.refl _ ...]`
+./expeditions/codex-front-peel/codex-stdout.log:269:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:84:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:141:(at width `H 0 × H ⟨k⟩`). Proven by `prodAux_succ` + `framedParamsReg_zero` + `fromBlocks_multiply`
+./expeditions/codex-front-peel/codex-stdout.log:270:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:210:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:354:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) 0 hk
+./expeditions/codex-front-peel/codex-stdout.log:271:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:215:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:371:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) k hk
+./expeditions/codex-front-peel/codex-stdout.log:286:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6005:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) 0 hk
+./expeditions/codex-front-peel/codex-stdout.log:287:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6022:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) k hk
+./expeditions/codex-front-peel/codex-stdout.log:288:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6500:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./expeditions/codex-front-peel/codex-stdout.log:289:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6543:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./expeditions/codex-front-peel/codex-stdout.log:290:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6554:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./expeditions/codex-front-peel/codex-stdout.log:291:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6561:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./expeditions/codex-front-peel/codex-stdout.log:292:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6569:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:293:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6570:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:294:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6589:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:295:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6928:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:312:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./expeditions/codex-front-peel/codex-stdout.log:297:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/prodaux-cast-prompt.md:55:   e.g. `prodAux_succ : prodAux H A (k+1) hk = prodAux H A k _ * (cast-free A-term)` stated to AVOID the
+./expeditions/codex-front-peel/codex-stdout.log:298:./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/g151-prodaux-continuity-prompt.md:72:`prodAux_succ`).
+./expeditions/codex-front-peel/codex-stdout.log:321:./expeditions/2026-06-23-fibre-codim/threads/10-base-chart-presentation/codex/01-stdout.log:5592:lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorPower/Basic.lean:105:  (congr_arg (reindex R fun _ ↦ M) <| finCongr_refl h).trans reindex_refl
+./expeditions/codex-front-peel/codex-stdout.log:351:./lean/DLNFibre.lean:332:-- Reusable bricks toward the `suffix 0 = prod M A` bridge (`reindex_finCongr_mul` cast-killer, `Mtail`/
+./expeditions/codex-front-peel/codex-stdout.log:352:./lean/DLNFibre.lean:333:-- `Atail`); the front-peel `prod = A_0·prod(tail)` itself (the deferred `prodAux` reassociation XL-cast,
+./expeditions/codex-front-peel/codex-stdout.log:378:./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:21:banked `prodAux_succ`, so this block-decomposition lemma applies with `G0 = first L−1 grouped product`,
+./expeditions/codex-front-peel/codex-stdout.log:383:./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:132:of the first `m` layers times the last layer — via a single `prodAux_succ` fold. This is the `G0·G1`
+./expeditions/codex-front-peel/codex-stdout.log:384:./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:145:  prodAux_succ H A m (Nat.lt_succ_self (m + 1)) e1 e2
+./expeditions/codex-front-peel/codex-stdout.log:394:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:15:front-peel reduces (after `prodAux_succ` + `ext`) to a manifestly-true entry equation
+./expeditions/codex-front-peel/codex-stdout.log:395:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:21:* `reindex_finCongr_mul` — `reindex (finCongr …)` distributes over matrix products (the Codex-named
+./expeditions/codex-front-peel/codex-stdout.log:396:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:23:* `Mtail` / `Atail` — the tail width-function / tail layers (drop the first layer), recast into
+./expeditions/codex-front-peel/codex-stdout.log:402:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:45:/-- The tail layers `Atail A s = A s.succ` (drop the first layer), recast into `Params (Mtail M)`. -/
+./expeditions/codex-front-peel/codex-stdout.log:403:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:46:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout.log:409:./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:59:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ}
+./expeditions/codex-front-peel/codex-stdout.log:418:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:421:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL Pf Qf (r0, 0)) k hk
+./expeditions/codex-front-peel/codex-stdout.log:420:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:460:  -- `prod = prodAux (m+1)`; `prodAux_succ` unfolds the last fold. `lastLayer hL = ⟨m, _⟩` (defeq).
+./expeditions/codex-front-peel/codex-stdout.log:421:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:471:  rw [prodAux_succ H (framedParamsReg H r hr hL Pf Qf (r0, 0)) m (Nat.lt_succ_self (m + 1)) e1H e2H]
+./expeditions/codex-front-peel/codex-stdout.log:453:./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1589:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./expeditions/codex-front-peel/codex-stdout.log:454:./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1627:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./expeditions/codex-front-peel/codex-stdout.log:455:./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1637:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:456:./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1638:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:457:./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1653:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:466:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderivPivot.lean:94:  -- `prod = prodAux (n+1)`; unfold the last fold via `prodAux_succ`; the prefix `prodAux n` collapses
+./expeditions/codex-front-peel/codex-stdout.log:467:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderivPivot.lean:101:  rw [prodAux_succ H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)) n (Nat.lt_succ_self (n + 1))
+./expeditions/codex-front-peel/codex-stdout.log:469:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:18:- (`prodAux_succ` SHAPE, typechecks) the `k+1` fold IS the running product times the layer transported
+./expeditions/codex-front-peel/codex-stdout.log:470:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:40:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:471:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:58:theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:480:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:141:(at width `H 0 × H ⟨k⟩`). Proven by `prodAux_succ` + `framedParamsReg_zero` + `fromBlocks_multiply`
+./expeditions/codex-front-peel/codex-stdout.log:482:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:269:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./expeditions/codex-front-peel/codex-stdout.log:483:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:312:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./expeditions/codex-front-peel/codex-stdout.log:484:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:323:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./expeditions/codex-front-peel/codex-stdout.log:485:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:330:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./expeditions/codex-front-peel/codex-stdout.log:486:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:338:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:487:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:339:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:488:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:358:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:520:./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:431:write `L = n + 1`; `prod = prodAux (n + 1)`; the last fold unfolds via `prodAux_succ_layer` (the last
+./expeditions/codex-front-peel/codex-stdout.log:521:./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:446:  -- The two running-width identifications are `rfl` (the `prodAux_succ` `e1H/e2H` precedent).
+./expeditions/codex-front-peel/codex-stdout.log:522:./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:454:  -- `prod = prodAux (n+1)`; unfold the last fold (`prodAux_succ`, reindex-explicit form).
+./expeditions/codex-front-peel/codex-stdout.log:523:./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:456:  rw [prodAux_succ H (framedParamsRegPivot H r hr hL J P Q 0) n (Nat.lt_succ_self (n + 1)) e1H e2H]
+./expeditions/codex-front-peel/codex-stdout.log:538:I found the local RouteMAchieverBridge file and several existing uses of the `finCongr_refl` idiom. I’m narrowing to the exact definitions/signatures now, because this is where a small orientation mistake matters.
+./expeditions/codex-front-peel/codex-stdout.log:556:front-peel reduces (after `prodAux_succ` + `ext`) to a manifestly-true entry equation
+./expeditions/codex-front-peel/codex-stdout.log:562:* `reindex_finCongr_mul` — `reindex (finCongr …)` distributes over matrix products (the Codex-named
+./expeditions/codex-front-peel/codex-stdout.log:564:* `Mtail` / `Atail` — the tail width-function / tail layers (drop the first layer), recast into
+./expeditions/codex-front-peel/codex-stdout.log:586:/-- The tail layers `Atail A s = A s.succ` (drop the first layer), recast into `Params (Mtail M)`. -/
+./expeditions/codex-front-peel/codex-stdout.log:587:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout.log:600:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ}
+./expeditions/codex-front-peel/codex-stdout.log:625:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:643:theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout.log:673:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./expeditions/codex-front-peel/codex-stdout.log:680:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./expeditions/codex-front-peel/codex-stdout.log:688:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:689:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:708:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:716:/bin/bash -lc "rg -n \"finCongr_refl|theorem finCongr|lemma finCongr|def finCongr|submatrix_mul_equiv|theorem reindex_apply|def reindex\" lean .lake/packages -g '*.lean'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+./expeditions/codex-front-peel/codex-stdout.log:740:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:330:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./expeditions/codex-front-peel/codex-stdout.log:741:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:338:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:742:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:339:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:743:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:358:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:752:lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1637:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:753:lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1638:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:754:lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1653:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/codex-front-peel/codex-stdout.log:763:The repo confirms `reindex_finCongr_mul` is proved via `Matrix.reindex_apply` and `Matrix.submatrix_mul_equiv`, and the existing successful boundary-cast pattern is exactly the `finCongr_refl` rewrite. I’ll check the underlying Mathlib names from the local lake checkout once more.
+./expeditions/codex-front-peel/codex-stdout.log:765:/bin/bash -lc "rg -n \"theorem finCongr_refl|lemma finCongr_refl|def finCongr|theorem finCongr_symm|lemma finCongr_symm\" lean/.lake/packages/mathlib/Mathlib -g '*.lean'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+./expeditions/codex-front-peel/codex-stdout.log:804:Pick **(a)** for a reusable `prod_front_peel`: prove the `k+1` prefix statement by induction on `k`, never by entrywise `ext`. Ranking: **(a) > (d) > (b) > (c)**. Strategy (a) is local, uses your existing `prodAux_succ` and `reindex_finCongr_mul`, and turns the problem into associativity plus cast transport. Strategy (d) is best only if the real target is the `suffix 0 = prod M A` bridge and you do not need a standalone front-peel. Strategy (b) is clean architecturally but creates new API and still needs a `prod = prodFrom 0` reassociation proof. Strategy (c) is highest churn. The cast tools I would rely on are: `prodAux_succ`, `reindex_finCongr_mul`, `Matrix.reindex_apply`, `Matrix.submatrix_mul_equiv`, `Matrix.submatrix_submatrix`, `Equiv.symm_symm`, `Equiv.symm_comp_self`, `Equiv.self_comp_symm`, and `finCongr_refl`. No `HEq`; use proof irrelevance/`Subsingleton.elim` for equality proofs.
+./expeditions/codex-front-peel/codex-stdout.log:811:theorem prodAux_front_peel_succ
+./expeditions/codex-front-peel/codex-stdout.log:823:          (prodAux (Mtail M) (Atail M A)
+./expeditions/codex-front-peel/codex-stdout.log:828:Then `prod_front_peel` is this theorem at `k = L`, followed by collapsing `erow`/`ecol` using `finCongr_refl`.
+./expeditions/codex-front-peel/codex-stdout.log:833:rw [prodAux_succ M A (k + 1) hk₂ eP₁ eP₂]
+./expeditions/codex-front-peel/codex-stdout.log:834:rw [prodAux_succ (Mtail M) (Atail M A) k hkTail eT₁ eT₂]
+./expeditions/codex-front-peel/codex-stdout.log:836:rw [reindex_finCongr_mul]
+./expeditions/codex-front-peel/codex-stdout.log:840:The key is: expand the parent last step and the tail last step, distribute the outer tail reindex over the tail product with `reindex_finCongr_mul`, then use associativity to identify
+./expeditions/codex-front-peel/codex-stdout.log:848:After unfolding `Atail`, the parent layer `A ⟨k+1,_⟩` and the tail layer `(Atail M A) ⟨k,_⟩` are the same matrix modulo `finCongr_refl`/`Subsingleton.elim` casts. The base `k = 0` should use `prodAux_succ` on the parent plus `prodAux _ _ 0 = 1`; then collapse the boundary reindex and finish with `Matrix.one_mul`/`Matrix.mul_one`.
+./expeditions/codex-front-peel/codex-stdout.log:855:rw [show (finCongr e) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:862:rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:869:rw [show (finCongr erow) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:870:    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:887:Pick **(a)** for a reusable `prod_front_peel`: prove the `k+1` prefix statement by induction on `k`, never by entrywise `ext`. Ranking: **(a) > (d) > (b) > (c)**. Strategy (a) is local, uses your existing `prodAux_succ` and `reindex_finCongr_mul`, and turns the problem into associativity plus cast transport. Strategy (d) is best only if the real target is the `suffix 0 = prod M A` bridge and you do not need a standalone front-peel. Strategy (b) is clean architecturally but creates new API and still needs a `prod = prodFrom 0` reassociation proof. Strategy (c) is highest churn. The cast tools I would rely on are: `prodAux_succ`, `reindex_finCongr_mul`, `Matrix.reindex_apply`, `Matrix.submatrix_mul_equiv`, `Matrix.submatrix_submatrix`, `Equiv.symm_symm`, `Equiv.symm_comp_self`, `Equiv.self_comp_symm`, and `finCongr_refl`. No `HEq`; use proof irrelevance/`Subsingleton.elim` for equality proofs.
+./expeditions/codex-front-peel/codex-stdout.log:894:theorem prodAux_front_peel_succ
+./expeditions/codex-front-peel/codex-stdout.log:906:          (prodAux (Mtail M) (Atail M A)
+./expeditions/codex-front-peel/codex-stdout.log:911:Then `prod_front_peel` is this theorem at `k = L`, followed by collapsing `erow`/`ecol` using `finCongr_refl`.
+./expeditions/codex-front-peel/codex-stdout.log:916:rw [prodAux_succ M A (k + 1) hk₂ eP₁ eP₂]
+./expeditions/codex-front-peel/codex-stdout.log:917:rw [prodAux_succ (Mtail M) (Atail M A) k hkTail eT₁ eT₂]
+./expeditions/codex-front-peel/codex-stdout.log:919:rw [reindex_finCongr_mul]
+./expeditions/codex-front-peel/codex-stdout.log:923:The key is: expand the parent last step and the tail last step, distribute the outer tail reindex over the tail product with `reindex_finCongr_mul`, then use associativity to identify
+./expeditions/codex-front-peel/codex-stdout.log:931:After unfolding `Atail`, the parent layer `A ⟨k+1,_⟩` and the tail layer `(Atail M A) ⟨k,_⟩` are the same matrix modulo `finCongr_refl`/`Subsingleton.elim` casts. The base `k = 0` should use `prodAux_succ` on the parent plus `prodAux _ _ 0 = 1`; then collapse the boundary reindex and finish with `Matrix.one_mul`/`Matrix.mul_one`.
+./expeditions/codex-front-peel/codex-stdout.log:938:rw [show (finCongr e) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:945:rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/codex-stdout.log:952:rw [show (finCongr erow) = Equiv.refl _ from finCongr_refl _,
+./expeditions/codex-front-peel/codex-stdout.log:953:    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+./expeditions/codex-front-peel/prompt.md:31:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/prompt.md:39:    prod M A = (A 0) * (reindex ... (prod (Mtail M) (Atail M A)))
+./expeditions/codex-front-peel/prompt.md:50:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/prompt.md:61:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/prompt.md:69:A naive direct `ext` + `prodAux_succ` reduces (at k=0 base) to an entry equation
+./expeditions/codex-front-peel/prompt.md:76:The deeper structural mismatch: `prodAux` peels the LAST layer (`prodAux_succ`), but the front-peel
+./expeditions/codex-front-peel/prompt.md:87:   (a) induction on k proving a generalized `prodAux M A k = A 0 * reindex (prodAux (Mtail M) (Atail M A) (k-1))`
+./expeditions/codex-front-peel/prompt.md:94:   Be concrete about WHICH Mathlib lemmas do the cast bookkeeping cleanly (e.g. `finCongr_refl`,
+./expeditions/codex-front-peel/prompt.md:99:   out), if your pick is (a). For the inductive step, show precisely how to combine `prodAux_succ` on the
+./expeditions/codex-front-peel/prompt.md:100:   parent with `prodAux_succ` on the tail + `reindex_finCongr_mul` to push the `A 0` factor leftward past
+./expeditions/codex-front-peel/prompt.md:106:   form. (The repo precedent uses `show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _` then `rfl`
+./expeditions/codex-front-peel/codex-stdout2.log:16:Lean 4 + Mathlib v4.29.0. I am proving `prodAux_front_peel` by induction on k. The BASE CASE is DONE.
+./expeditions/codex-front-peel/codex-stdout2.log:22:-- left-associated dependent matrix product; prodAux_succ peels the LAST layer:
+./expeditions/codex-front-peel/codex-stdout2.log:23:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/codex-stdout2.log:31:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/codex-stdout2.log:38:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/codex-stdout2.log:48:After `rw [prodAux_succ M A (k+1) hk eP1 eP2]`, `rw [ih ...]`, `rw [prodAux_succ (Mtail M) (Atail M A) k ...]`,
+./expeditions/codex-front-peel/codex-stdout2.log:49:`rw [reindex_finCongr_mul emid hb ecol ...]`, the GOAL is EXACTLY (copied from Lean, `⋯` = elided proofs):
+./expeditions/codex-front-peel/codex-stdout2.log:52:A 0 * (reindex (finCongr emid) (finCongr ecolk)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+./expeditions/codex-front-peel/codex-stdout2.log:55:    ((reindex (finCongr emid) (finCongr hb)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+./expeditions/codex-front-peel/codex-stdout2.log:56:      (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k, ⋯⟩)))
+./expeditions/codex-front-peel/codex-stdout2.log:71:- the doubly-reindexed `Atail M A ⟨k,_⟩` factor : also `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`
+./expeditions/codex-front-peel/codex-stdout2.log:83:  = (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k,_⟩))
+./expeditions/codex-front-peel/codex-stdout2.log:85:i.e. parent layer `A ⟨k+1,_⟩` reindexed = tail layer `(Atail M A) ⟨k,_⟩` doubly-reindexed. They live at the
+./expeditions/codex-front-peel/codex-stdout2.log:86:SAME type `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`. The content: `(Atail M A) ⟨k,_⟩` is `A ⟨k,_⟩.succ = A ⟨k+1,_⟩`
+./expeditions/codex-front-peel/codex-stdout2.log:87:modulo the `Atail` def's `Eq.mpr` cast, and all the finCongr are rfl-true so collapse to refl.
+./expeditions/codex-front-peel/codex-stdout2.log:96:   (ii) restructure so I never reassociate — e.g. apply `prodAux_succ` to the WHOLE `prodAux M A (k+1+1)`
+./expeditions/codex-front-peel/codex-stdout2.log:103:   Equiv.refl _` via `finCongr_refl`, then `reindex_refl_refl` (via `erw`, since plain `rw`/`simp` won't
+./expeditions/codex-front-peel/codex-stdout2.log:104:   match the dependent `Matrix.reindex`), reducing both sides to `A ⟨k+1,_⟩` vs `Atail M A ⟨k,_⟩`, then a
+./expeditions/codex-front-peel/codex-stdout2.log:105:   defeq `rfl` or a `cases`-on-the-Atail-cast. Give the precise sequence. In particular: how do I prove
+./expeditions/codex-front-peel/codex-stdout2.log:106:   `A ⟨k+1,_⟩ = (Atail M A) ⟨k,_⟩` when the two have defeq-but-not-syntactic-equal `Matrix` types and the
+./expeditions/codex-front-peel/codex-stdout2.log:107:   `Atail` def hides an `Eq.mpr`? (e.g. is the right move to first prove a clean `Atail_apply` rewrite lemma
+./expeditions/codex-front-peel/codex-stdout2.log:108:   `(Atail M A) ⟨k,h⟩ = reindex (finCongr _) (finCongr _) (A ⟨k+1,_⟩)` by the `prodAux_succ` Subsingleton.elim
+./expeditions/codex-front-peel/codex-stdout2.log:116:may need a tweak". The base case already worked with: `prodAux_succ` then four
+./expeditions/codex-front-peel/codex-stdout2.log:117:`rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]` then `erw [Matrix.reindex_refl_refl, ...]`
+./expeditions/codex-front-peel/codex-stdout2.log:122:I’ll inspect the local Lean file around `prodAux_front_peel` and the available helper lemmas so the tactics match your exact declarations instead of guessing from the shape.
+./expeditions/codex-front-peel/prompt2.md:2:Lean 4 + Mathlib v4.29.0. I am proving `prodAux_front_peel` by induction on k. The BASE CASE is DONE.
+./expeditions/codex-front-peel/prompt2.md:8:-- left-associated dependent matrix product; prodAux_succ peels the LAST layer:
+./expeditions/codex-front-peel/prompt2.md:9:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./expeditions/codex-front-peel/prompt2.md:17:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ} (ha : a = a') (hb : b = b') (hc : c = c')
+./expeditions/codex-front-peel/prompt2.md:24:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./expeditions/codex-front-peel/prompt2.md:34:After `rw [prodAux_succ M A (k+1) hk eP1 eP2]`, `rw [ih ...]`, `rw [prodAux_succ (Mtail M) (Atail M A) k ...]`,
+./expeditions/codex-front-peel/prompt2.md:35:`rw [reindex_finCongr_mul emid hb ecol ...]`, the GOAL is EXACTLY (copied from Lean, `⋯` = elided proofs):
+./expeditions/codex-front-peel/prompt2.md:38:A 0 * (reindex (finCongr emid) (finCongr ecolk)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+./expeditions/codex-front-peel/prompt2.md:41:    ((reindex (finCongr emid) (finCongr hb)) (prodAux (Mtail M) (Atail M A) k ⋯) *
+./expeditions/codex-front-peel/prompt2.md:42:      (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k, ⋯⟩)))
+./expeditions/codex-front-peel/prompt2.md:57:- the doubly-reindexed `Atail M A ⟨k,_⟩` factor : also `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`
+./expeditions/codex-front-peel/prompt2.md:69:  = (reindex (finCongr hb) (finCongr ecol)) ((reindex (finCongr eT1.symm) (finCongr eT2.symm)) (Atail M A ⟨k,_⟩))
+./expeditions/codex-front-peel/prompt2.md:71:i.e. parent layer `A ⟨k+1,_⟩` reindexed = tail layer `(Atail M A) ⟨k,_⟩` doubly-reindexed. They live at the
+./expeditions/codex-front-peel/prompt2.md:72:SAME type `Matrix (Fin (M ⟨k+1,_⟩)) (Fin (M ⟨k+2,_⟩))`. The content: `(Atail M A) ⟨k,_⟩` is `A ⟨k,_⟩.succ = A ⟨k+1,_⟩`
+./expeditions/codex-front-peel/prompt2.md:73:modulo the `Atail` def's `Eq.mpr` cast, and all the finCongr are rfl-true so collapse to refl.
+./expeditions/codex-front-peel/prompt2.md:82:   (ii) restructure so I never reassociate — e.g. apply `prodAux_succ` to the WHOLE `prodAux M A (k+1+1)`
+./expeditions/codex-front-peel/prompt2.md:89:   Equiv.refl _` via `finCongr_refl`, then `reindex_refl_refl` (via `erw`, since plain `rw`/`simp` won't
+./expeditions/codex-front-peel/prompt2.md:90:   match the dependent `Matrix.reindex`), reducing both sides to `A ⟨k+1,_⟩` vs `Atail M A ⟨k,_⟩`, then a
+./expeditions/codex-front-peel/prompt2.md:91:   defeq `rfl` or a `cases`-on-the-Atail-cast. Give the precise sequence. In particular: how do I prove
+./expeditions/codex-front-peel/prompt2.md:92:   `A ⟨k+1,_⟩ = (Atail M A) ⟨k,_⟩` when the two have defeq-but-not-syntactic-equal `Matrix` types and the
+./expeditions/codex-front-peel/prompt2.md:93:   `Atail` def hides an `Eq.mpr`? (e.g. is the right move to first prove a clean `Atail_apply` rewrite lemma
+./expeditions/codex-front-peel/prompt2.md:94:   `(Atail M A) ⟨k,h⟩ = reindex (finCongr _) (finCongr _) (A ⟨k+1,_⟩)` by the `prodAux_succ` Subsingleton.elim
+./expeditions/codex-front-peel/prompt2.md:102:may need a tweak". The base case already worked with: `prodAux_succ` then four
+./expeditions/codex-front-peel/prompt2.md:103:`rw [show (finCongr e.symm) = Equiv.refl _ from finCongr_refl _]` then `erw [Matrix.reindex_refl_refl, ...]`
+./expeditions/2026-06-20-aoyagi-full/synthesis.md:910:- The flagship resume (a4e6a2de) built piece-1 bricks (`reindex_finCongr_mul` cast-killer, `Mtail`/`Atail`) sorry-free but hit a GENUINE WALL on the `prod` front-peel `prod M A = A_0 · prod (Atail M A)` — the `prodAux` reassociation XL-cast (the `Fin (M k)` reindex normalization fights the elaborator; reduced to a manifestly-true entry equation that won't close through the casts). It did NOT paper it (reverted; clean bricks only). Reported an architectural fork.
+./expeditions/2026-06-20-aoyagi-full/synthesis.md:1096:- **h1 DONE + integrated (440bbbf8):** `prod_eq_prodAux_mul_last` — af8305f1 cleared the `prodAux_succ` cast grind (a single fold `prod = prodAux m · recast last`, avoiding the `prodAux 0 = 1` One-friction; general-L). With `reindex_mul_schur_factor` this gives h1's `hR` end-to-end. Axiom-clean. The cast (the documented hardest blocker) is BEATEN.
+./expeditions/2026-06-20-aoyagi-full/synthesis.md:1104:- **Producer wiring commissioned (a2795a88, FRESH formaliser, clean context for the ~300-LoC cast-grind, base 7e987a8e).** The precise 4-step residual: (i) h1 connect `prod(F w)=F_0·F_1` at L=2 (`prodAux_succ` cast reduction) → `reindex_mul_schur_factor` via `hRegBlocks` ⇒ `hR`; (ii) h2 coreΦ-match (`deepestCoreF_coreAbsorb_eq_prodSchur`, clean@L=2); (iii) h3 the REGROUP (dead-end pinned SOUNDNESS-CRITICAL); (iv) L=2 case-split + precise L≥3 guarded sorry → `exact germ_charge_of_schur_factorization`. Non-negotiable: L=2 path axiom-clean (the L≥3 sorry must not leak); PIN1 clean. Spawned FRESH (not re-engaged af8305f1's 322k-token context) — heavy cast work wants a clean context; the design transfers via the precise spec + the documented lemmas.
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean:13:-- STEP A: a clean equation for the tail layer.  (Atail M A) s = reindex (over rfl widths) (A s.succ).
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean:14:-- Since Atail def is `rw [e1,e2]; exact A s.succ`, and e1 e2 are rfl-true (Subsingleton), it's defeq to A s.succ
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean:15:-- up to the Fin.cast.  Let me get: (Atail M A) ⟨k,hkL⟩ = reindex (finCongr eA) (finCongr eB) (A ⟨k+1,_⟩) ?
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean:16:-- Try direct: is (Atail M A) ⟨k,_⟩ defeq to A ⟨k,_⟩.succ at the right type?
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean:18:    (Atail M A) (⟨k, by omega⟩ : Fin (L+1))
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:431:write `L = n + 1`; `prod = prodAux (n + 1)`; the last fold unfolds via `prodAux_succ_layer` (the last
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:446:  -- The two running-width identifications are `rfl` (the `prodAux_succ` `e1H/e2H` precedent).
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:454:  -- `prod = prodAux (n+1)`; unfold the last fold (`prodAux_succ`, reindex-explicit form).
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean:456:  rw [prodAux_succ H (framedParamsRegPivot H r hr hL J P Q 0) n (Nat.lt_succ_self (n + 1)) e1H e2H]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderivPivot.lean:94:  -- `prod = prodAux (n+1)`; unfold the last fold via `prodAux_succ`; the prefix `prodAux n` collapses
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderivPivot.lean:101:  rw [prodAux_succ H (framedParamsRegPivot H r hr hL J Pf Qf (r0, 0)) n (Nat.lt_succ_self (n + 1))
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:18:- (`prodAux_succ` SHAPE, typechecks) the `k+1` fold IS the running product times the layer transported
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:40:theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:58:theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:141:(at width `H 0 × H ⟨k⟩`). Proven by `prodAux_succ` + `framedParamsReg_zero` + `fromBlocks_multiply`
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:269:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:289:          -- THEN (indices now syntactic at `H 0`/`H 1`) `reindex_refl_refl` + `Matrix.one_mul` fire.
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:312:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:323:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:330:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:338:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:339:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:358:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1589:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1627:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1637:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1638:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1653:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:421:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL Pf Qf (r0, 0)) k hk
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:460:  -- `prod = prodAux (m+1)`; `prodAux_succ` unfolds the last fold. `lastLayer hL = ⟨m, _⟩` (defeq).
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:471:  rw [prodAux_succ H (framedParamsReg H r hr hL Pf Qf (r0, 0)) m (Nat.lt_succ_self (m + 1)) e1H e2H]
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:21:banked `prodAux_succ`, so this block-decomposition lemma applies with `G0 = first L−1 grouped product`,
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:132:of the first `m` layers times the last layer — via a single `prodAux_succ` fold. This is the `G0·G1`
+./lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean:145:  prodAux_succ H A m (Nat.lt_succ_self (m + 1)) e1 e2
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:20:theorem prodAux_front_peel (M : Fin (L + 1 + 1) → ℕ) (A : Params M)
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:26:          (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt_succ hk))) := by
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:35:      rw [prodAux_succ M A 0 hk e1 e2]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:36:      rw [show (finCongr e1.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:37:          show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:38:          show (finCongr emid) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:39:          show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:40:      erw [Matrix.reindex_refl_refl, Matrix.reindex_refl_refl]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:50:      rw [prodAux_succ M A (k + 1) hk eP1 eP2]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:54:      -- tail last-peel at index k (in chain Mtail M / Atail M A, length L+1).
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:61:      rw [prodAux_succ (Mtail M) (Atail M A) k hktail eT1 eT2]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:65:      rw [reindex_finCongr_mul emid hb ecol (prodAux (Mtail M) (Atail M A) k (by omega))
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:66:        (Matrix.reindex (finCongr eT1.symm) (finCongr eT2.symm) (Atail M A ⟨k, by omega⟩))]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:69:        (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt hk)) with hXdef
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:15:front-peel reduces (after `prodAux_succ` + `ext`) to a manifestly-true entry equation
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:21:* `reindex_finCongr_mul` — `reindex (finCongr …)` distributes over matrix products (the Codex-named
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:23:* `Mtail` / `Atail` — the tail width-function / tail layers (drop the first layer), recast into
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:45:/-- The tail layers `Atail A s = A s.succ` (drop the first layer), recast into `Params (Mtail M)`. -/
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:46:def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+./lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean:59:theorem reindex_finCongr_mul {a b c a' b' c' : ℕ}
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:13:-- BASE CASE k=0. Goal after prodAux_succ + prodAux 0 = 1:
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:23:          (prodAux (Mtail M) (Atail M A) 0 (by omega))) := by
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:28:  rw [prodAux_succ M A 0 hk e1 e2]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:29:  -- collapse all the reindexes to identity-form via finCongr_refl, then both sides are plain matrices.
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:30:  rw [show (finCongr e1.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:31:      show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:32:      show (finCongr emid) = Equiv.refl _ from finCongr_refl _,
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:33:      show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+./lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean:35:  erw [Matrix.reindex_refl_refl, Matrix.reindex_refl_refl]
+./expeditions/2026-06-23-fibre-codim/threads/10-base-chart-presentation/codex/01-stdout.log:5592:lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorPower/Basic.lean:105:  (congr_arg (reindex R fun _ ↦ M) <| finCongr_refl h).trans reindex_refl
+./expeditions/2026-06-23-fibre-codim/threads/10-base-chart-presentation/codex/01-stdout.log:6510:lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean:460:theorem reindex_refl_refl (A : Matrix m n α) : reindex (Equiv.refl _) (Equiv.refl _) A = A :=
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:7:`rw [show finCongr e1.symm = Equiv.refl _ from finCongr_refl _, show finCongr e2.symm = Equiv.refl _ ...]`
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:29:- `rw [Matrix.reindex_refl_refl ...]` → "did not find pattern" (the implicit type metavars don't unify;
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:31:- `simp only [Matrix.reindex_refl_refl]` → "no progress" (likely already defeq-reduced, nothing to rewrite).
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:37:is the defeq-not-syntactic `H 0` vs `H ⟨0,hkL'⟩.castSucc` blocking `one_mul`/`reindex_refl_refl`.
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/fold3-base-onemul-prompt.md:44:`1`/reindex to the syntactic form first; or `Matrix.reindex_refl_refl` applied via `conv`; or
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:28:>   - **cobuild:** after `rw [prodAux_succ … e1 e2]` the layer is
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:29:>     `reindex (finCongr e1.symm) (finCongr e2.symm) (…)`; since `e1, e2 : rfl`, `finCongr_refl` rewrites
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:34:>   - **crux2:** `prodAux_succ_layer` — the SHARED step-cast kernel; the index-level `cases e1; cases e2`
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:41:> - **Building blocks (crux2, axiom-clean):** `prodAux_succ` (explicit `e1/e2` + `Subsingleton.elim`),
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/fold1-prodaux-zero-statement-card.md:42:>   `prodAux_succ_layer` (the kernel), `corner_reindex_mul` (`submatrix_mul_equiv` + `fromBlocks_multiply`).
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:11:`finCongr_refl` (e1,e2 are rfl → outer reindex is Equiv.refl → reindex_refl_refl/rfl), crux2's
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:12:`prodAux_succ_layer` kernel (`cases e1; cases e2`). FOLD1 (value) DONE both:
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/sub34-gate-status.md:153:- **crux2's #111 `prodAux_succ` cast** (`obtain rfl + rfl`, COMPLETED) → closes `_base` (the idempotent
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/prodaux-cast-prompt.md:55:   e.g. `prodAux_succ : prodAux H A (k+1) hk = prodAux H A k _ * (cast-free A-term)` stated to AVOID the
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/g151-prodaux-continuity-prompt.md:72:`prodAux_succ`).
+./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-prompt.md:34:Available public helpers (same file as the telescope): `prodAux_succ`, `prodAux_succ_layer`,
+./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-prompt.md:39:and `Subsingleton.elim` for proof irrelevance, and `finCongr_refl` to collapse boundary casts). If (β) is viable
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:84:./lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:141:(at width `H 0 × H ⟨k⟩`). Proven by `prodAux_succ` + `framedParamsReg_zero` + `fromBlocks_multiply`
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:210:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:354:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) 0 hk
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:215:./lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:371:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) k hk
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6005:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) 0 hk
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6022:        rw [prodAux_succ_layer H (framedParamsReg H r hr hL (r0, 0)) k hk
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6500:        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6520:          -- THEN (indices now syntactic at `H 0`/`H 1`) `reindex_refl_refl` + `Matrix.one_mul` fire.
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6543:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6554:  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6561:    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6569:    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6570:      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6589:      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+./expeditions/2026-06-20-aoyagi-full/threads/14-r1-design/codex/frame-factor-target-answer.md:6928:lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:312:  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+./expeditions/2026-06-20-aoyagi-full/threads/31-pin2-comparability/codex/hs2-witnessed-telescope-answer.md:47:4. In the base step, keep using `prodAux_succ`, `reindex_mul_distrib_left`, then collapse `finCongr e.symm` with `finCongr_refl`.
+
+exec
+/bin/bash -lc "pwd && rg --files | rg '("'^|/)(CLAUDE|AGENTS)'"\\.md"'$|'"\\.lean"'$'"'" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+AGENTS.md
+CLAUDE.md
+expeditions/2026-06-20-aoyagi-full/threads/22-r1-wedge-design/scratch-L2-wip.lean
+lean/DLNFibre.lean
+lean/CLAUDE.md
+lean/DLNFibre/Core/DeterminantalChart.lean
+lean/DLNFibre/Core/ChartGaugeTower.lean
+lean/DLNFibre/Core/ChartPhiFibCoord.lean
+lean/DLNFibre/Core/CTheta.lean
+lean/DLNFibre/Core/AffineDomainDimension.lean
+lean/DLNFibre/Core/CThetaQIPConverse.lean
+lean/DLNFibre/Core/EndpointNormalization.lean
+lean/DLNFibre/Core/ChartPhiSubstitution.lean
+lean/DLNFibre/Core/ChartEvalGaugeCommute.lean
+lean/DLNFibre/Core/OrbitCodim.lean
+lean/DLNFibre/Core/Matrix/RankNormalForm.lean
+lean/DLNFibre/Core/Matrix/RankNormalFormTriangular.lean
+lean/DLNFibre/Core/QSeriesShift.lean
+lean/DLNFibre/Core/RankPattern.lean
+lean/DLNFibre/Core/ChartPsiDescent.lean
+lean/DLNFibre/Core/CotangentJacobian.lean
+lean/DLNFibre/Core/OrbitPullbackDim.lean
+lean/DLNFibre/Core/CCodimCornerMono.lean
+lean/DLNFibre/Core/QSeriesPeel.lean
+lean/DLNFibre/Core/Orbit.lean
+lean/DLNFibre/Core/SchurGauge.lean
+lean/DLNFibre/Core/ChartPsiReconstruct.lean
+lean/DLNFibre/Core/QSeriesDurfee.lean
+lean/DLNFibre/Core/SmoothPointRegular.lean
+lean/DLNFibre/Core/FibreDimFibrationProbe.lean
+lean/DLNFibre/Core/OrbitImageDim.lean
+lean/DLNFibre/Core/BoxMoveGeneral.lean
+lean/DLNFibre/Core/ChartSigmaAwayZero.lean
+lean/DLNFibre/Core/Barcode.lean
+lean/DLNFibre/Core/SigmaComponents.lean
+lean/DLNFibre/Core/CThetaQIP.lean
+lean/DLNFibre/Core/GenericTuple.lean
+lean/DLNFibre/Core/CThetaArbitrary.lean
+lean/DLNFibre/Core/MatrixKaehler.lean
+lean/DLNFibre/Core/DeterminantalStratumDim.lean
+lean/DLNFibre/Core/FibreDimFibration.lean
+lean/DLNFibre/Core/FlatTrivialProductProbe.lean
+lean/DLNFibre/Core/ChartRetraction.lean
+lean/DLNFibre/Core/SchurChartIff.lean
+lean/DLNFibre/Core/ChartGaugeNormalize.lean
+lean/DLNFibre/Core/IntegralDimension.lean
+lean/DLNFibre/Core/ChartPsiDsigUnit.lean
+lean/DLNFibre/Core/Gabriel.lean
+lean/DLNFibre/Core/OrbitVariety.lean
+lean/DLNFibre/Core/CascadeAchiever.lean
+lean/DLNFibre/Core/ChartSigmaEvalRealize.lean
+lean/DLNFibre/Core/DeterminantalBasePresentation.lean
+lean/DLNFibre/Core/QSeriesThm55.lean
+lean/DLNFibre/Core/CascadeRank.lean
+lean/DLNFibre/Core/NullstellensatzCodim.lean
+lean/DLNFibre/Core/QSeriesExtraction.lean
+lean/DLNFibre/Core/VarietyDimBaseChange.lean
+lean/DLNFibre/Core/RankLocusClosed.lean
+lean/DLNFibre/Core/DeterminantalBaseElimination.lean
+lean/DLNFibre/Core/ChartLocalizedPolyDim.lean
+lean/DLNFibre/DLN/RlctPayoffGeneral.lean
+lean/DLNFibre/DLN/RlctPayoff.lean
+lean/DLNFibre/DLN/BundleShiftDischarge.lean
+lean/DLNFibre/DLN/Basic.lean
+lean/DLNFibre/Core/AffineNoetherRank.lean
+lean/DLNFibre/Core/AffineLocalizationNoDrop.lean
+lean/DLNFibre/Core/OrbitLinearCodim.lean
+lean/DLNFibre/Core/CThetaExplicit.lean
+lean/DLNFibre/Core/ChartEvalLemma.lean
+lean/DLNFibre/Core/Submult.lean
+lean/DLNFibre/Core/ChartRoundTripH1.lean
+lean/DLNFibre/Core/JacobianTrdeg.lean
+lean/DLNFibre/Core/DeterminantalChartRing.lean
+lean/DLNFibre/Core/ChartPointEval.lean
+lean/DLNFibre/Core/RadicalCatenary.lean
+lean/DLNFibre/Core/BoxMoveDegeneration.lean
+lean/DLNFibre/Core/Basic.lean
+lean/DLNFibre/Core/ChartSection.lean
+lean/DLNFibre/Core/LocalizationKrullDim.lean
+lean/DLNFibre/Core/BoxMoveGeneration.lean
+lean/DLNFibre/Core/CThetaValue.lean
+lean/DLNFibre/Core/MvPolynomialKerAeval.lean
+lean/DLNFibre/Core/GraphIdealHeight.lean
+lean/DLNFibre/Core/ChartEvalGauge.lean
+lean/DLNFibre/Core/SchurSideNoDrop.lean
+lean/DLNFibre/Core/ChartLocalizedAlgEquiv.lean
+lean/DLNFibre/Core/FibreReducedTrivialization.lean
+lean/DLNFibre/Core/ChartSigmaEvalGauge.lean
+lean/DLNFibre/Core/VarietyDimPolyExtension.lean
+lean/DLNFibre/Core/PolynomialCurveLimit.lean
+lean/DLNFibre/Core/ChartSchurConnect.lean
+lean/DLNFibre/Core/CCodimZeroMono.lean
+lean/DLNFibre/Core/SigmaStratification.lean
+lean/DLNFibre/Core/CThetaThetaBridge.lean
+lean/DLNFibre/Core/FibreJacobian.lean
+lean/DLNFibre/Core/QSeriesFivegon.lean
+lean/DLNFibre/Core/ThetaComponentCount.lean
+lean/DLNFibre/Core/RouteCAssembly.lean
+lean/DLNFibre/Core/ChartFlatnessProbe.lean
+lean/DLNFibre/Core/NoetherMonicPositioning.lean
+lean/DLNFibre/Core/OrbitTangentCotangent.lean
+lean/DLNFibre/Core/MultDifferential.lean
+lean/DLNFibre/Core/CThetaPermInvariance.lean
+lean/DLNFibre/Core/OrbitSmooth.lean
+lean/DLNFibre/Core/QSeries.lean
+lean/DLNFibre/Core/SigmaCodim.lean
+lean/DLNFibre/Core/ChartPhiLoc.lean
+lean/DLNFibre/Core/RankNormalFormDim.lean
+lean/DLNFibre/Core/OrbitDifferentialRank.lean
+lean/DLNFibre/Core/CascadeRealizable.lean
+lean/DLNFibre/Core/CThetaGeometric.lean
+lean/DLNFibre/Core/FibreCodimMinPrimes.lean
+lean/DLNFibre/Core/MultComorphism.lean
+lean/DLNFibre/Core/PrincipalOpenComorphism.lean
+lean/DLNFibre/Core/DeformationExt.lean
+lean/DLNFibre/Core/FibreNormalForm.lean
+lean/DLNFibre/Core/OrbitKostant.lean
+lean/DLNFibre/Core/ChartPsiSubstitution.lean
+lean/DLNFibre/Core/OrbitClosure.lean
+lean/DLNFibre/Core/VoigtDischarge.lean
+lean/DLNFibre/DLN/Aoyagi/ClosedForm.lean
+lean/DLNFibre/Core/ChartLocalizedCoordinates.lean
+lean/DLNFibre/Core/QSeriesOrth.lean
+lean/DLNFibre/Core/ChartEvalRealize.lean
+lean/DLNFibre/Core/CCodimZeroStrict.lean
+lean/DLNFibre/Core/DeepChartRing.lean
+lean/DLNFibre/Core/FibreCodim.lean
+lean/DLNFibre/Core/ChartSigmaGaugeBridge.lean
+lean/DLNFibre/Core/ChartSweepWiring.lean
+lean/DLNFibre/Core/ClosureBridge.lean
+lean/DLNFibre/Core/BaseChange.lean
+lean/DLNFibre/Core/EndBaseChangeSweep.lean
+lean/DLNFibre/Core/FibreCodimFinal.lean
+lean/DLNFibre/Core/SourceNoDrop.lean
+lean/DLNFibre/Core/ChartRoundTrip.lean
+lean/DLNFibre/Core/ChartSigmaEval.lean
+lean/DLNFibre/Core/ChartBijection.lean
+lean/DLNFibre/Core/CThetaDropM.lean
+lean/DLNFibre/Core/FlatQuasiFiniteHeight.lean
+lean/DLNFibre/Core/FibreHeightDirect.lean
+lean/DLNFibre/Core/IntervalModule.lean
+lean/DLNFibre/Core/CThetaGeometricPerm.lean
+lean/DLNFibre/Core/ChartPhiDescent.lean
+lean/DLNFibre/Core/PolynomialDimension.lean
+lean/DLNFibre/Core/GenericFreeness.lean
+lean/DLNFibre/Core/SmoothLocalRelativeDimension.lean
+lean/DLNFibre/Core/MeasureTheory/PolynomialZeroSet.lean
+lean/DLNFibre/Core/Setup.lean
+lean/DLNFibre/Core/SchurFibreVanishing.lean
+lean/DLNFibre/Core/OrbitDifferential.lean
+lean/DLNFibre/Core/VarietyDimRadical.lean
+lean/DLNFibre/DLN/RLCT/AxCheck.lean
+lean/DLNFibre/DLN/RLCT/Skeleton.lean
+lean/DLNFibre/DLN/RLCT/BGEngine.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Cover.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Additive.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1NodeFlatHomog.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Spectator.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1BoxAdditive.lean
+lean/DLNFibre/DLN/RLCT/Foundations/ParamsFlat.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1WeightedProductMin.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1G5.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Fubini.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1SmoothBlock.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1NodeCoverBridge.lean
+lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean
+lean/DLNFibre/DLN/RLCT/Foundations/Lambda.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1NodeBlowup.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1NodeCoverGE.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1RadialMorse.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1BoxSqueeze.lean
+lean/DLNFibre/DLN/RLCT/Foundations/LossContinuity.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1ProductMin.lean
+lean/DLNFibre/DLN/RLCT/Foundations/DeepestSplitHaar.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1NonMPTransport.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Transport.lean
+lean/DLNFibre/DLN/RLCT/Foundations/ParamsReshapeMP.lean
+lean/DLNFibre/DLN/RLCT/Foundations/ParamsFlatLinear.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1BoxProductMin.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1G5Charts.lean
+lean/DLNFibre/DLN/RLCT/Foundations/Rlct.lean
+lean/DLNFibre/DLN/RLCT/Foundations/CoreShearMP.lean
+lean/DLNFibre/DLN/RLCT/Foundations/ParamsFlat222.lean
+lean/DLNFibre/DLN/RLCT/Foundations/S1Local.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMO1Bridge.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerValue.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean
+lean/DLNFibre/DLN/RLCT/Validate/FrontPivotProducer.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiLens.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestFrameRaw.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM334Hfin.lean
+lean/DLNFibre/DLN/RLCT/Validate/SchurState.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case111.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerSplit.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSplitReindex.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestCompositionE1.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMNReg.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMClassify.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222RouteMCover.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestNormalFormWiring.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMValue.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMExtraction.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSchurSmooth.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMBranchRead.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridge.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProduct.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGermCharge.lean
+lean/DLNFibre/DLN/RLCT/Validate/MatMulFibre.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestBaseL1.lean
+lean/DLNFibre/DLN/RLCT/Validate/MvalMultSum.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222RouteMValidation.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMBranch.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegBlockInvertible.lean
+lean/DLNFibre/DLN/RLCT/Validate/FrontPivotWLOG.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222CoverGE.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMNodeDescent.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegAbsorbIFT.lean
+lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestFramedProductPivot.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerCoverGEL2.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderivPivot.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222CoverGETail.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Resolution.lean
+lean/DLNFibre/DLN/RLCT/Validate/MinAdmMono.lean
+lean/DLNFibre/DLN/RLCT/Validate/BindingSpine.lean
+lean/DLNFibre/DLN/RLCT/Validate/RadialResidualPower.lean
+lean/DLNFibre/DLN/RLCT/Validate/GeneralR1Recursion.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverGeneralDet.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case212.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLeaf.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeDiffeo.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMCoverLemmas.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM3333Atom.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMScaffold.lean
+lean/DLNFibre/DLN/RLCT/Validate/NodeAchieverChart.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSchurShift.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMSchur.lean
+lean/DLNFibre/DLN/RLCT/Validate/ResolutionAtlas.lean
+lean/DLNFibre/DLN/RLCT/Validate/SchurNodeAssembly.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerCoverGE.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverTelescope.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Block.lean
+lean/DLNFibre/DLN/RLCT/Validate/BindingArith.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSchurComparability.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMRecursion.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Value.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Lemma2.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSplitConcrete.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Rlct.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222RouteStep.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestEFullSregComparability.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestFrame.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM334Ratiofin.lean
+lean/DLNFibre/DLN/RLCT/Validate/BindingRecursion.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean
+lean/DLNFibre/DLN/RLCT/Validate/RRR.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Cover.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverForce.lean
+lean/DLNFibre/DLN/RLCT/Validate/LossHomogeneity.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMLayerCover.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case323RouteStep.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMGeneralAssembly.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestPivotFrame.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMNodeDescentBuild.lean
+lean/DLNFibre/DLN/RLCT/Validate/NodeHomogeneity.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMState.lean
+lean/DLNFibre/DLN/RLCT/Validate/CascadeAchiever.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean
+lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case111Bridge.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestCoreNonvanishing.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeChart.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case334RouteStep.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM3333.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM4422Hfin.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSplitSmooth.lean
+lean/DLNFibre/DLN/RLCT/Validate/Scratch.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteM4422.lean
+lean/DLNFibre/DLN/RLCT/Validate/RouteMBridge.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222Algebra.lean
+lean/DLNFibre/DLN/RLCT/Validate/DeepestMinRlct.lean
+lean/DLNFibre/DLN/RLCT/Validate/Case222NodeDescent.lean
+expeditions/2026-06-18-voigt-discharge/threads/33-A1-kahler-trdeg-api/probes/KahlerTrdegProbe.lean
+expeditions/2026-06-18-voigt-discharge/threads/33-A1-kahler-trdeg-api/probes/RingKrullTrdegProbe.lean
+
+codex
+The repo already has scratch files for this exact obstruction, including `Scratch2.lean` and `Scratch3.lean`. I’m reading those plus the bridge definitions now; that should tell us which tactic shape Lean has already accepted locally.
+exec
+/bin/bash -lc "sed -n '1,140p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+# geometry-of-dln-fibre
+
+AI-assisted math-research + Lean-formalisation harness for **digesting and formalising** the paper
+*"Geometry of the fibers of the multiplication map of deep linear neural networks"* (Simon Pepin
+Lehalleur & Richárd Rimányi, 2024; `paper-sources/lehalleur-rimanyi-2024-geometry-of-dln-fibre/`).
+Orientation is in [`README.md`](README.md); this file is the disposition and the working discipline.
+The process harness (disposition + policies + roles + skills + the markdown→Lean pipeline) is ported
+from the `ai-research-assistant` harness and is **domain-agnostic** — see [`TEMPLATE.md`](TEMPLATE.md)
+to instantiate it for another paper.
+
+## Disposition
+
+The work here is research. Not coding, not ticking off a support ticket, not shipping a product. 
+The stance: 
+- careful, conscientious, objective as a scientist.
+- meticulous in calculation as Euler, bold as Grothendieck. 
+- methodical as Sherlock Holmes. Observe before theorising. Distinguish data from interpretation. 
+- update like a Bayesian; do not collapse to the mode. 
+
+
+- **Resist the move-fast-and-ship-it instinct.** Stackable, solid progress is the goal; the trap is
+  *visible* progress raced ahead of it — a clean doc or confident headline that travels far while leaving
+  holes behind. When you reach for a confident headline, that is the moment to look for the confound. Each
+  layer should be solid and hole-free before the next stands on it.
+- **Fill the layer — completion is your strength.** *The sea rises inexorably, but not in spikes*
+  ([`docs/policies/bedrock.md`](docs/policies/bedrock.md)): within a boundary already staked, close the holes
+  — the generality a statement promised, the cases it already claims, fidelity to the definition and the
+  underlying spirit it invokes — rather than defer them. Such hardening is high-value, and it is where your
+  **comparative advantage** lies: your bottleneck is scoping, taste, and direction, not the patient completion
+  of well-scoped work — so do not treat that completion capacity, which is *abundant*, as if it were *scarce*.
+  **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
+  *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
+  **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
+  reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
+  Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
+  recurring trap: a `rlct_…`-named result that in fact proves only a *codimension* — the `rlct = ½·codim`
+  reading needs the cited Aoyagi equality.)
+- **Build to bedrock.** A sorry-free build defeats *technical* slop; it never defeats *conceptual* slop —
+  "technically correct but subtly wrong, not The Way." **Bedrock is the rock the rising sea rises over**: build
+  the theory so the next result can stand on it without re-opening it. Where short feedback loops fail, **beauty
+  is the instrument** — a vacuous, mis-scoped, or overclaiming result is *ugly*, and the ugliness is
+  information. The **controller holds this taste and judges against it**; a green build is necessary, never
+  sufficient. See [`docs/policies/bedrock.md`](docs/policies/bedrock.md).
+- **Caveats live next to claims, not in footnotes.** An assumed hypothesis or a cited interface goes in the
+  same paragraph as any claim that depends on it.
+- **Write to figure out the truth, not to persuade.** Concise and fact-based.
+- **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
+  document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
+  mathematically precise. Introduce the objects you use before you use them; prefer a chain of small exact
+  statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md).
+
+## Writing and communication discipline (object-level focus)
+In writing or in communication, focus on object-level. Resist meta-level pull. 
+Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
+The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
+
+## How research runs here
+
+- **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
+  question, a controller delegating to thread teammates (explore / formalisation / infra), reviewers, and a
+  synthesis at close. Run on the Agent Teams substrate (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`); launch with
+  cwd = this repo root.
+- **Pipeline: markdown → Lean.** Theory develops in markdown (`theory/`, expedition notes). A stable claim is
+  formalised in Lean (`lean/`, library `DLNFibre`). The reader-facing digest/expositions live in
+  `docs/expositions/`.
+  - *Scholium* is a **viewer** (renders these markdown docs with KaTeX + callouts), not an editor; write to its
+    conventions in [`docs/policies/scholium-writing-format.md`](docs/policies/scholium-writing-format.md). The
+    recurring trap: display math `$$…$$` needs a **blank line before and after**, fences on their own lines
+    (indented inside `!!!`/`???` callouts) — packed against text it falls through to markdown and the `_`
+    subscripts render as emphasis. A second trap: **fenced code does not render inside a callout** — use an
+    indented code block (8-space indent) there; top-level fenced code is fine.
+- **Claims** carry kill-conditions; new claims are stress-tested, established/cited results verified against
+  source ([`docs/policies/claims.md`](docs/policies/claims.md)).
+- **Codex** is the independent second model for strategy and review
+  ([`docs/policies/codex-consultation.md`](docs/policies/codex-consultation.md)).
+
+## Team structure
+
+Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
+- `controller` — this lead session: meta-planning, delegation, integration.
+- `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
+- `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `formaliser` — formalisation (tide) threads.
+- `reviewer` — controller-spawned independent audit (soundness / fidelity).
+- `hardener` — independent principles / taste reviewer (precision, bedrock).
+
+If dispatched into a role, read its role file and agent definition first.
+
+## Branch discipline
+
+- **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
+- **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
+  `dev`. `master` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  to directly.
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `master` directly. One
+  expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
+  2026-06-12) — push freely to bank and share work. **Opening/merging PRs and the `dev → master` promotion
+  remain operator-gated** (signal-and-wait); the operator performs those. Always confirm the push target is
+  `origin`, never a non-`origin` remote.
+
+## Memory
+
+Persistent context lives **in-repo**: this file, the policies in `docs/policies/`, the expedition docs
+(`synthesis.md` / statement cards / `thread.md`), `ROADMAP.md`, and `lean/CLAUDE.md`. Save conventions and
+decisions there.
+
+**Do NOT write to global Claude memory (`~/.claude/**/memory/`).** It pollutes other workspaces and is
+invisible to collaborators reading the repo. This binds the controller **and every teammate** — the harness
+may prompt you to save a memory there; do not. If a teammate writes one, the controller deletes it and
+re-homes the content in-repo. (Agent-Teams *runtime* state under `~/.claude/teams/` and `~/.claude/tasks/` is
+fine — that's the substrate, not persistent context.)
+
+## The destination, plainly
+
+We want, in honest Lean, the paper's results about the **fibres of matrix multiplication** for deep linear
+networks:
+
+- the space $\operatorname{Rep}_{\underline d}$ of composable matrix tuples, the multiplication map
+  $\operatorname{mult}$, the zero-product / rank-$r$ loci, and the fibres $\operatorname{mult}^{-1}(B)$;
+- via the **type-A quiver** translation (orbits ↔ Kostant partitions ↔ rank patterns, Gabriel, orbit-closure
+  order, the `Ext` codimension): the codimension $C$ and the number $\theta$ of top-dimensional components,
+  in the paper's three forms (Poincaré series, a quadratic integer program, an explicit formula), and the
+  surprising **permutation invariance** of $(C,\theta)$;
+- the payoff: the real log-canonical threshold of the square-Frobenius loss is $C/2$ — DLNs are "mildly
+  singular". The geometric codimension is the new content; the Aoyagi `rlct = ½·codim` **equality** is
+  **Cited** (Watanabe's universal `rlct ≤ ½·codim` + Aoyagi's exact DLN computation — the formal
+  `RlctInterface.cited_aoyagi_dln` is the equality, which the payoff needs).
+
+The reusable **engine** (everything before "the payoff") is network-free and lives in `DLNFibre.Core`; the
+DLN/RLCT **application** lives in `DLNFibre.DLN`. See [`ROADMAP.md`](ROADMAP.md) for the formalisation ladder.
+
+## Pointers
+
+- [`README.md`](README.md) — orientation, how to launch an expedition, Lean build.
+- [`ROADMAP.md`](ROADMAP.md) — the result-map + the Core/DLN formalisation-target ladder.
+- [`docs/policies/`](docs/policies/) — expedition, claims, review, precision, bedrock, codex-consultation, statement-cards, writing-style (+ the reader-facing exposition trio).
+- [`docs/expositions/`](docs/expositions/) — the curated reader-facing digest (starts with `paper-digest/high-level-overview.md`).
+
+exec
+/bin/bash -lc "sed -n '1,130p' lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
+
+/-! Scratch2: the inductive step of the front-peel. NOT for commit. -/
+
+namespace DLNFibre.DLN.RLCT
+
+open scoped BigOperators
+open Matrix
+
+variable {L : ℕ}
+
+-- generic 3-matrix reassoc over Type* (sidesteps dependent-dim rw matching, like mul_four_reassoc).
+theorem mul_three_reassoc {p q r s : Type*} [Fintype p] [Fintype q] [Fintype r]
+    (a : Matrix p q ℝ) (b : Matrix q r ℝ) (c : Matrix r s ℝ) :
+    a * b * c = a * (b * c) := Matrix.mul_assoc a b c
+
+-- The generalized front-peel for prodAux, with explicit middle/column casts.
+-- emid : Mtail M 0 = M (0.succ)  [fixed across k];  the column cast is supplied per-k as a `rfl` hyp.
+theorem prodAux_front_peel (M : Fin (L + 1 + 1) → ℕ) (A : Params M)
+    (emid : Mtail M (0 : Fin (L+1)) = M ((0 : Fin (L+1)).succ)) :
+    ∀ (k : ℕ) (hk : k + 1 < L + 1 + 1)
+      (ecol : Mtail M (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1)) = M (⟨k + 1, hk⟩ : Fin (L+1+1))),
+    prodAux M A (k + 1) hk
+      = (A 0) * (Matrix.reindex (finCongr emid) (finCongr ecol)
+          (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt_succ hk))) := by
+  intro k
+  induction k with
+  | zero =>
+      intro hk ecol
+      have e1 : M (⟨0, Nat.lt_of_succ_lt hk⟩ : Fin (L+1+1))
+          = M ((⟨0, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1)).castSucc) := rfl
+      have e2 : M (⟨0 + 1, hk⟩ : Fin (L+1+1))
+          = M ((⟨0, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1)).succ) := rfl
+      rw [prodAux_succ M A 0 hk e1 e2]
+      rw [show (finCongr e1.symm) = Equiv.refl _ from finCongr_refl _,
+          show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _,
+          show (finCongr emid) = Equiv.refl _ from finCongr_refl _,
+          show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+      erw [Matrix.reindex_refl_refl, Matrix.reindex_refl_refl]
+      erw [Matrix.one_mul, Matrix.mul_one]
+      rfl
+  | succ k ih =>
+      intro hk ecol
+      -- parent last-peel at index (k+1)
+      have eP1 : M (⟨k + 1, Nat.lt_of_succ_lt hk⟩ : Fin (L+1+1))
+          = M ((⟨k + 1, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1)).castSucc) := rfl
+      have eP2 : M (⟨k + 1 + 1, hk⟩ : Fin (L+1+1))
+          = M ((⟨k + 1, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1)).succ) := rfl
+      rw [prodAux_succ M A (k + 1) hk eP1 eP2]
+      -- apply IH to the prefix factor.  IH needs a column-cast at index k:
+      have ecolk : Mtail M (⟨k, by omega⟩ : Fin (L+1)) = M (⟨k + 1, by omega⟩ : Fin (L+1+1)) := rfl
+      rw [ih (Nat.lt_of_succ_lt hk) ecolk]
+      -- tail last-peel at index k (in chain Mtail M / Atail M A, length L+1).
+      -- need k+1 < L+1 i.e. k < L. From hk : k+2 < L+2, k < L.
+      have hktail : k + 1 < L + 1 := by omega
+      have eT1 : Mtail M (⟨k, Nat.lt_of_succ_lt hktail⟩ : Fin (L+1))
+          = Mtail M ((⟨k, Nat.lt_of_succ_lt_succ hktail⟩ : Fin L).castSucc) := rfl
+      have eT2 : Mtail M (⟨k + 1, hktail⟩ : Fin (L+1))
+          = Mtail M ((⟨k, Nat.lt_of_succ_lt_succ hktail⟩ : Fin L).succ) := rfl
+      rw [prodAux_succ (Mtail M) (Atail M A) k hktail eT1 eT2]
+      -- distribute the outer reindex over the tail product.  Middle interface:
+      have emidR : Mtail M (0 : Fin (L+1)) = M ((0 : Fin (L+1)).succ) := emid
+      have hb : Mtail M (⟨k, by omega⟩ : Fin (L+1)) = M (⟨k + 1, by omega⟩ : Fin (L+1+1)) := rfl
+      rw [reindex_finCongr_mul emid hb ecol (prodAux (Mtail M) (Atail M A) k (by omega))
+        (Matrix.reindex (finCongr eT1.symm) (finCongr eT2.symm) (Atail M A ⟨k, by omega⟩))]
+      -- SUB-STEP 1: reassociate LHS via a fully-applied Matrix.mul_assoc on extracted factors.
+      set X := Matrix.reindex (finCongr emid) (finCongr ecolk)
+        (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt hk)) with hXdef
+      set Y := Matrix.reindex (finCongr eP1.symm) (finCongr eP2.symm)
+        (A (⟨k + 1, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L+1))) with hYdef
+      rw [Matrix.mul_assoc (A 0) X Y]
+      change True
+
+end DLNFibre.DLN.RLCT
+
+exec
+/bin/bash -lc "sed -n '1,120p' lean/DLNFibre/DLN/RLCT/Validate/Scratch3.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+import DLNFibre.DLN.RLCT.Validate.DeepestTelescoping
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
+
+/-! Scratch3: the LAYER-IDENTIFICATION sub-step.  NOT for commit. -/
+
+namespace DLNFibre.DLN.RLCT
+
+open scoped BigOperators
+open Matrix
+
+variable {L : ℕ}
+
+-- STEP A: a clean equation for the tail layer.  (Atail M A) s = reindex (over rfl widths) (A s.succ).
+-- Since Atail def is `rw [e1,e2]; exact A s.succ`, and e1 e2 are rfl-true (Subsingleton), it's defeq to A s.succ
+-- up to the Fin.cast.  Let me get: (Atail M A) ⟨k,hkL⟩ = reindex (finCongr eA) (finCongr eB) (A ⟨k+1,_⟩) ?
+-- Try direct: is (Atail M A) ⟨k,_⟩ defeq to A ⟨k,_⟩.succ at the right type?
+example (M : Fin (L + 1 + 1) → ℕ) (A : Params M) (k : ℕ) (hkL : k < L) :
+    (Atail M A) (⟨k, by omega⟩ : Fin (L+1))
+      = (by
+          have e1 : Mtail M (⟨k, by omega⟩ : Fin (L+1)).castSucc = M (⟨k, by omega⟩ : Fin (L+1)).succ := by
+            simp only [Mtail]; congr 1
+          have e2 : Mtail M (⟨k, by omega⟩ : Fin (L+1)).succ = M (⟨k, by omega⟩ : Fin (L+1)).succ.succ := rfl
+          rw [e1, e2]; exact A (⟨k, by omega⟩ : Fin (L+1)).succ :
+          Matrix (Fin (Mtail M (⟨k, by omega⟩ : Fin (L+1)).castSucc))
+            (Fin (Mtail M (⟨k, by omega⟩ : Fin (L+1)).succ)) ℝ) := rfl
+
+end DLNFibre.DLN.RLCT
+
+exec
+/bin/bash -lc "sed -n '1,100p' lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverBridge.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
+import DLNFibre.DLN.RLCT.Foundations.Loss
+
+/-!
+# `RouteMAchieverBridge` — reusable bricks for the `suffix 0 = prod M A` bridge (PARTIAL)
+
+Toward bridging the abstract chained-product telescope (`Chain.suffix`, a right-associated fold) to the
+genuine DLN layer product `prod M A` (`prodAux`, a left-associated prefix fold): the general achiever
+chart consumes `Chain.chain_telescope_zero` (`C_0 · suffix_0 = u • Hmat_0`); with `C_0 = 1` this gives
+`suffix_0 = u • Hmat_0`, so a `suffix_0 = prod M A` bridge would yield the chart identity `prod M A = u • H`.
+
+**STATUS — the two reusable bricks below are BANKED sorry-free; the full bridge is NOT (it needs the
+`prod` front-peel `prod M A = A_0 · prod (tail)`, which is the codebase's deferred `prodAux`
+reassociation XL-cast — the same one `DeepestTelescoping`'s `endpoint_telescoping` deferred).** The
+front-peel reduces (after `prodAux_succ` + `ext`) to a manifestly-true entry equation
+`∑ x, (if i=x then 1) · A⟨0⟩(cast x)(cast j) = A 0 i (cast j)`, but the `Fin (M 0)` vs `Fin (M ⟨0,_⟩)`
+square-ness + `Fin.cast` normalization fights the elaborator at each step. See thread-33 for the wall
+diagnosis + the two escape routes (a dedicated reassociation tide, or re-deriving the telescope engine
+in prefix form to match `prodAux` natively).
+
+* `reindex_finCongr_mul` — `reindex (finCongr …)` distributes over matrix products (the Codex-named
+  cast-killer; reusable wherever a width-equality reindex meets a product).
+* `Mtail` / `Atail` — the tail width-function / tail layers (drop the first layer), recast into
+  `Params (Mtail M)`. The front-peel target's tail chain.
+
+Axiom-clean `[propext, Classical.choice, Quot.sound]` (pure matrix algebra; no analysis).
+-/
+
+namespace DLNFibre.DLN.RLCT
+
+open scoped BigOperators
+open Matrix
+
+variable {L : ℕ}
+
+/-! ## The tail chain and its layers -/
+
+/-- The tail width function `Mtail M k = M (k+1)` (drop the source vertex), as a `Fin (L+1) → ℕ`
+chain (one fewer layer than the `Fin (L+1+1)` parent). -/
+def Mtail (M : Fin (L + 1 + 1) → ℕ) : Fin (L + 1) → ℕ := fun i => M i.succ
+
+@[simp] theorem Mtail_apply (M : Fin (L + 1 + 1) → ℕ) (i : Fin (L + 1)) :
+    Mtail M i = M i.succ := rfl
+
+/-- The tail layers `Atail A s = A s.succ` (drop the first layer), recast into `Params (Mtail M)`. -/
+def Atail (M : Fin (L + 1 + 1) → ℕ) (A : Params M) : Params (Mtail M) := fun s =>
+  (by
+    have e1 : Mtail M s.castSucc = M s.succ.castSucc := by
+      simp only [Mtail]; congr 1
+    have e2 : Mtail M s.succ = M s.succ.succ := rfl
+    rw [e1, e2]; exact A s.succ :
+    Matrix (Fin (Mtail M s.castSucc)) (Fin (Mtail M s.succ)) ℝ)
+
+/-! ## The cast-killer: matrix products commute with `reindex (finCongr …)` -/
+
+/-- **`reindex (finCongr …)` distributes over matrix products** (the Codex-named cast-killer). For
+width-equalities `a=a'`, `b=b'`, `c=c'`, reindexing a product `X·Y` equals the product of the
+reindexed factors. Via `Matrix.reindex_apply` + `Matrix.submatrix_mul_equiv`. -/
+theorem reindex_finCongr_mul {a b c a' b' c' : ℕ}
+    (ha : a = a') (hb : b = b') (hc : c = c')
+    (X : Matrix (Fin a) (Fin b) ℝ) (Y : Matrix (Fin b) (Fin c) ℝ) :
+    Matrix.reindex (finCongr ha) (finCongr hc) (X * Y)
+      = Matrix.reindex (finCongr ha) (finCongr hb) X
+        * Matrix.reindex (finCongr hb) (finCongr hc) Y := by
+  simp only [Matrix.reindex_apply]
+  exact (Matrix.submatrix_mul_equiv X Y (finCongr ha).symm (finCongr hb).symm
+    (finCongr hc).symm).symm
+
+end DLNFibre.DLN.RLCT
+
+codex
+`Scratch2.lean` has the reassociation attempt written in the form you suggested: bind the two opaque factors with `set`, then `rw [Matrix.mul_assoc (A 0) X Y]`. I’m going to run that scratch file once to see whether this is actually accepted or only documented as an intended next step.
+exec
+/bin/bash -lc 'lake env lean lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+2026-06-26T13:12:37.408115Z ERROR codex_app_server::bespoke_event_handling: request failed with client error: JSONRPCErrorError { code: -32000, data: None, message: "command execution approval is not supported in exec mode for thread `019f040f-4e90-79c3-bff6-d67ec5199067`" }
+ exited 1:
+2026-06-26T13:12:37.408430Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'lake env lean lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean'`: CreateProcess { message: "Rejected(\"rejected by user\")" }
+codex
+The compile command was not approved in this sandbox, so I’ll keep this as a source-level answer. I’m checking Mathlib declarations by reading the vendored files only; that is enough to avoid inventing lemma names.
+exec
+/bin/bash -lc 'rg -n "theorem mul_assoc|protected theorem mul_assoc|lemma mul_assoc" lean/.lake/packages/mathlib/Mathlib/Data/Matrix lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+lean/.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean:482:protected theorem mul_assoc (L : Matrix l m α) (M : Matrix m n α) (N : Matrix n o α) :
+
+exec
+/bin/bash -lc "sed -n '250,380p' lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+  -- ENDPOINT-typed boundary frames (the convene resolution): cast P ⟨0⟩ → `Fin (H 0)` and Q ⟨Lm⟩ →
+  -- `Fin (H (last))` ONCE here, via `Fin.ext` on the index. Then the invariant runs endpoint-typed (the
+  -- HMul `P0 * prodAux A k` typechecks at `Fin (H 0)`, NO per-step boundary cast).
+  have h0cs : (⟨0, by omega⟩ : Fin (Lm + 1)).castSucc = (0 : Fin (Lm + 2)) := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have hLs : (⟨Lm, by omega⟩ : Fin (Lm + 1)).succ = Fin.last (Lm + 1) := by
+    apply Fin.ext; simp [Fin.succ, Fin.last]
+  -- INVARIANT `prodAux C k = (h0cs ▸ P ⟨0⟩) * prodAux A k` (1 ≤ k ≤ Lm), P ⟨0⟩ cast to `Fin (H 0)`.
+  have hinv : ∀ (k : ℕ) (hk : k < Lm + 2), 1 ≤ k → k ≤ Lm →
+      prodAux H C k hk = (h0cs ▸ P ⟨0, by omega⟩) * prodAux H A k hk := by
+    intro k
+    induction k with
+    | zero => intro _ hk0; exact absurd hk0 (by norm_num)
+    | succ k ih =>
+        intro hsucc _ hkLm
+        have e1 : H (⟨k, Nat.lt_of_succ_lt hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).castSucc) := rfl
+        have e2 : H (⟨k + 1, hsucc⟩ : Fin (Lm + 2))
+            = H ((⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ : Fin (Lm + 1)).succ) := rfl
+        rw [prodAux_succ H C k hsucc e1 e2, prodAux_succ H A k hsucc e1 e2]
+        rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+        · subst hk0
+          set hkL' := Nat.lt_of_succ_lt_succ hsucc with hkL'def
+          -- k+1 = 1: `prodAux _ 0 = 1` (def); the layer is `reindex (C ⟨0⟩)` vs `reindex (A ⟨0⟩)`, and
+          -- `C ⟨0⟩ = P ⟨0⟩ · A ⟨0⟩` (Q ⟨0⟩ = 1). So `reindex (C ⟨0⟩) = (cast P ⟨0⟩) · reindex (A ⟨0⟩)`.
+          have hC0 : C ⟨0, hkL'⟩
+              = P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩ := by
+            rw [hframe ⟨0, _⟩, hQid ⟨0, _⟩ (by simp; omega), Matrix.mul_one]
+          simp only [show prodAux H C 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+            show prodAux H A 0 (Nat.lt_of_succ_lt hsucc)
+              = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl, Matrix.one_mul, hC0]
+          -- Distribute reindex over the boundary product `P⟨0⟩ · A⟨0⟩` (`reindex_mul_distrib_left`),
+          -- then the left factor `reindex (finCongr e1.symm) (finCongr e1.symm) P⟨0⟩` IS the boundary
+          -- cast `h0cs ▸ P⟨0⟩` (both transport `P⟨0⟩` from `H ⟨0,_⟩.castSucc` to `H ⟨0,hk'⟩ = H 0`, rfl).
+          rw [reindex_mul_distrib_left (P ⟨0, hkL'⟩) (A ⟨0, hkL'⟩)
+            (finCongr e1.symm) (finCongr e2.symm)]
+          -- The left factor collapses (e1 : rfl ⟹ finCongr = refl ⟹ reindex refl refl = id); a full
+          -- `simp` first normalises the casty indices (`H ⟨0,hkL'⟩.castSucc → H 0`, `P ⟨0,hkL'⟩ → P 0`),
+          -- THEN (indices now syntactic at `H 0`/`H 1`) `reindex_refl_refl` + `Matrix.one_mul` fire.
+          -- `reindex (finCongr e1.symm)² P⟨0⟩ ≡ P⟨0⟩` and `reindex … A⟨0⟩ ≡ A⟨0⟩` DEFINITIONALLY
+          -- (finCongr on the rfl-proof e1 is refl; reindex refl refl unfolds to submatrix id id = the
+          -- matrix). `show` forces the goal to the defeq clean form, then `one_mul` clears both `1·`.
+          show (1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+              * (P ⟨0, hkL'⟩ * A ⟨0, hkL'⟩)
+            = P ⟨0, hkL'⟩ * ((1 : Matrix (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc))
+                  (Fin (H (⟨0, hkL'⟩ : Fin (Lm + 1)).castSucc)) ℝ)
+                * A ⟨0, hkL'⟩)
+          rw [Matrix.one_mul, Matrix.one_mul]
+        · -- step (interior): `C k = A k` (hCAint), reindexed layers agree, P0 left-factors by mul_assoc.
+          rw [hCAint ⟨k, Nat.lt_of_succ_lt_succ hsucc⟩ (by simpa using hkpos) (by simp; omega),
+            ih (Nat.lt_of_succ_lt hsucc) hkpos (by omega), Matrix.mul_assoc]
+  -- FINAL: `prod C = prodAux C (Lm+1) = prodAux C Lm * (cast C_Lm)`; `C_Lm = A_Lm·Q_Lm` (P_Lm = 1, hPid);
+  -- hinv ⟹ `= (cast P⟨0⟩)·prodAux A Lm·(cast A_Lm·Q_Lm) = P0 · prod A · QL`. ∃-intro the cast P⟨0⟩, Q⟨Lm⟩.
+  refine ⟨h0cs ▸ P ⟨0, by omega⟩, hLs ▸ Q ⟨Lm, by omega⟩, ?_, ?_⟩
+  on_goal 2 =>
+    -- the boundary frames are the witnesses (cast by `h0cs`/`hLs`); `IsUnit` transports along the cast.
+    intro hP0 hQL
+    refine ⟨?_, ?_⟩
+    · cases h0cs; simpa using hP0
+    · cases hLs; simpa using hQL
+  -- `prod C = prodAux C (Lm+1)`; `prodAux_succ` (k=Lm) unfolds the last layer.
+  have hLm1 : Lm + 1 < Lm + 1 + 1 := Nat.lt_succ_self (Lm + 1)
+  have hLmL : Lm < Lm + 1 := Nat.lt_succ_self _
+  have e1L : H (⟨Lm, Nat.lt_of_succ_lt hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).castSucc) := rfl
+  have e2L : H (⟨Lm + 1, hLm1⟩ : Fin (Lm + 1 + 1))
+      = H ((⟨Lm, hLmL⟩ : Fin (Lm + 1)).succ) := rfl
+  -- `C Lm = A Lm · Q Lm` (the boundary-LEFT frame `P Lm = 1` via `hPid`, OK since `1 ≤ Lm` will hold in
+  -- the `Lm ≥ 1` arm; in the `Lm = 0` arm the single layer carries both frames directly).
+  show prod H C = _
+  simp only [prod]
+  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+  rcases Nat.eq_zero_or_pos Lm with hLm0 | hLmpos
+  · -- `Lm = 0` (L = 1): single layer is BOTH endpoints. `prodAux _ 0 = 1`; `C 0 = P0 · A 0 · Q0`.
+    -- (handed to crux2 — the direct single-layer arm; `prod C = reindex(C 0)`, `C 0 = P0·A0·Q0`.)
+    subst hLm0
+    have hC0 : C ⟨0, hLmL⟩ = P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩ := hframe ⟨0, hLmL⟩
+    -- `prodAux _ 0 = 1`; `C 0 = P0·A0·Q0`; distribute reindex over both factors (left for P0, right for Q0),
+    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+    rw [show prodAux H C 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      show prodAux H A 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      hC0,
+      reindex_mul_distrib_right (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩) (Q ⟨0, hLmL⟩) (finCongr e1L.symm)
+        (finCongr e2L.symm),
+      reindex_mul_distrib_left (P ⟨0, hLmL⟩) (A ⟨0, hLmL⟩) (finCongr e1L.symm) (finCongr e2L.symm)]
+    -- boundary casts: reindex (finCongr e1L.symm)² P0 = P0-cast, reindex (finCongr e2L.symm)² Q0 = QL-cast.
+    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+    -- `show` forces the reindex refl refl to defeq plain matrices; then `one_mul` both `1·`, both sides
+    -- → `P0·A0·Q0` (LHS `1·(P0·A0·Q0)`, RHS `P0·(1·A0)·Q0`).
+    show (1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+          (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ)
+        * (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩)
+      = P ⟨0, hLmL⟩ * ((1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+            (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ) * A ⟨0, hLmL⟩) * Q ⟨0, hLmL⟩
+    rw [Matrix.one_mul, Matrix.one_mul]
+  · -- `Lm ≥ 1`: `hinv Lm` gives `prodAux C Lm = P0 · prodAux A Lm`; `C Lm = A Lm · Q Lm` (`P Lm = 1`);
+    -- `reindex_mul_distrib_right` distributes; the `Q Lm` factor IS the boundary cast `QL` (e2L : rfl).
+    rw [hinv Lm (Nat.lt_of_succ_lt hLm1) hLmpos (le_refl _)]
+    have hCLm : C ⟨Lm, hLmL⟩ = A ⟨Lm, hLmL⟩ * Q ⟨Lm, hLmL⟩ := by
+      rw [hframe ⟨Lm, hLmL⟩, hPid ⟨Lm, hLmL⟩ (by simpa using hLmpos), Matrix.one_mul]
+    rw [hCLm, reindex_mul_distrib_right (A ⟨Lm, hLmL⟩) (Q ⟨Lm, hLmL⟩)
+      (finCongr e1L.symm) (finCongr e2L.symm),
+      show Matrix.reindex (finCongr e2L.symm) (finCongr e2L.symm) (Q ⟨Lm, hLmL⟩)
+        = (hLs ▸ Q ⟨Lm, by omega⟩ :
+            Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
+      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+    -- pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL` — via the clean helper
+    -- `mul_four_reassoc` (sidesteps the dependent-dim explicit-arg matching that blocked inline `mul_assoc`).
+    exact mul_four_reassoc _ _ _ _
+
+end DLNFibre.DLN.RLCT
+
+exec
+/bin/bash -lc 'rg -n "theorem reindex_refl_refl|def reindex|theorem reindex_apply|finCongr_refl" lean/.lake/packages/mathlib/Mathlib' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+lean/.lake/packages/mathlib/Mathlib/Computability/DFA.lean:229:def reindex (g : σ ≃ σ') : DFA α σ ≃ DFA α σ' where
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/ColimitsOfShape.lean:116:noncomputable def reindex {X : C} (h : P.ColimitOfShape J X) (G : J' ⥤ J) [G.Final] :
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/ObjectProperty/LimitsOfShape.lean:109:noncomputable def reindex {X : C} (h : P.LimitOfShape J X) (G : J' ⥤ J) [G.Initial] :
+lean/.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/CStarMatrix.lean:393:def reindexₗ {l o : Type*} [Semiring R] [AddCommMonoid A] [Module R A]
+lean/.lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/CStarMatrix.lean:407:def reindexₐ (R) (A) [Fintype m] [Fintype n] [Semiring R] [AddCommMonoid A] [Mul A] [Module R A]
+lean/.lake/packages/mathlib/Mathlib/AlgebraicTopology/RelativeCellComplex/AttachCells.lean:122:def reindex {ι' : Type w'} (e : ι' ≃ c.ι) :
+lean/.lake/packages/mathlib/Mathlib/AlgebraicTopology/RelativeCellComplex/AttachCells.lean:145:def reindexCellTypes : AttachCells g' f where
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Hypercover/Zero.lean:171:def reindex (E : PreZeroHypercover.{w} T) {ι : Type w'} (e : ι ≃ E.I₀) :
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Sites/Hypercover/Zero.lean:689:def reindex (E : ZeroHypercover.{w} J T) {ι : Type w'} (e : ι ≃ E.I₀) :
+lean/.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/PiL2.lean:761:def reindex (b : OrthonormalBasis ι 𝕜 E) (e : ι ≃ ι') : OrthonormalBasis ι' 𝕜 E :=
+lean/.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/PiL2.lean:764:protected theorem reindex_apply (b : OrthonormalBasis ι 𝕜 E) (e : ι ≃ ι') (i' : ι') :
+lean/.lake/packages/mathlib/Mathlib/GroupTheory/Coxeter/Matrix.lean:90:protected def reindex : CoxeterMatrix B' where
+lean/.lake/packages/mathlib/Mathlib/GroupTheory/Coxeter/Matrix.lean:96:theorem reindex_apply (i i' : B') : M.reindex e i i' = M (e.symm i) (e.symm i') := rfl
+lean/.lake/packages/mathlib/Mathlib/AlgebraicGeometry/AffineSpace.lean:328:def reindex {n m : Type v} (i : m → n) (S : Scheme.{max u v}) : 𝔸(n; S) ⟶ 𝔸(m; S) :=
+lean/.lake/packages/mathlib/Mathlib/GroupTheory/Coxeter/Basic.lean:131:def reindexGroupEquiv : (M.reindex e).Group ≃* M.Group :=
+lean/.lake/packages/mathlib/Mathlib/GroupTheory/Coxeter/Basic.lean:181:protected def reindex (e : B ≃ B') : CoxeterSystem (M.reindex e) W :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Basis/Defs.lean:184:def reindex : Basis ι' R M :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Basis/Defs.lean:187:theorem reindex_apply (i' : ι') : b.reindex e i' = b (e.symm i') :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Basis/Defs.lean:408:def reindexRange : Basis (range b) R M :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Basis/Defs.lean:462:def reindexFinsetRange : Basis (Finset.univ.image b) R M :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Simplex/Basic.lean:242:def reindex {m n : ℕ} (s : Simplex k P m) (e : Fin (m + 1) ≃ Fin (n + 1)) : Simplex k P n :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Basis.lean:127:def reindex (e : ι ≃ ι') : AffineBasis ι' k P :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/Basis.lean:137:theorem reindex_apply (i' : ι') : b.reindex e i' = b (e.symm i') :=
+lean/.lake/packages/mathlib/Mathlib/GroupTheory/FreeGroup/IsFreeGroup.lean:94:protected def reindex (b : FreeGroupBasis ι G) (e : ι ≃ ι') : FreeGroupBasis ι' G :=
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Presentation.lean:114:def reindex (P : ColimitPresentation J X) {J' : Type*} [Category* J'] (F : J' ⥤ J) [F.Final] :
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Presentation.lean:195:def reindex (P : LimitPresentation J X) {J' : Type*} [Category* J'] (F : J' ⥤ J) [F.Initial] :
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/TensorPower/Basic.lean:105:  (congr_arg (reindex R fun _ ↦ M) <| finCongr_refl h).trans reindex_refl
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Shapes/WidePullbacks.lean:461:def reindex {ι : Type*} {X : C} {Y : ι → C} {f : ∀ i, Y i ⟶ X} (s : WidePullbackCone f)
+lean/.lake/packages/mathlib/Mathlib/CategoryTheory/Limits/Shapes/WidePullbacks.lean:478:def reindexIsLimitEquiv {ι : Type*} {X : C} {Y : ι → C} {f : ∀ i, Y i ⟶ X}
+lean/.lake/packages/mathlib/Mathlib/Algebra/Lie/Matrix.lean:84:def reindexLieEquiv : Matrix n n R ≃ₗ⁅R⁆ Matrix m m R :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/PiTensorProduct.lean:677:def reindex (e : ι ≃ ι₂) : (⨂[R] i : ι, s i) ≃ₗ[R] ⨂[R] i : ι₂, s (e.symm i) :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Reindex.lean:44:def reindexLinearEquiv (eₘ : m ≃ m') (eₙ : n ≃ n') : Matrix m n A ≃ₗ[R] Matrix m' n' A where
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Reindex.lean:115:def reindexAlgEquiv (e : m ≃ n) : Matrix m m A ≃ₐ[R] Matrix n n A where
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean:449:def reindex (eₘ : m ≃ l) (eₙ : n ≃ o) : Matrix m n α ≃ Matrix l o α where
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean:456:theorem reindex_apply (eₘ : m ≃ l) (eₙ : n ≃ o) (M : Matrix m n α) :
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean:460:theorem reindex_refl_refl (A : Matrix m n α) : reindex (Equiv.refl _) (Equiv.refl _) A = A :=
+lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Transvection.lean:280:def reindexEquiv (e : n ≃ p) (t : TransvectionStruct n R) : TransvectionStruct p R where
+lean/.lake/packages/mathlib/Mathlib/Combinatorics/HalesJewett.lean:144:def reindex (l : Subspace η α ι) (eη : η ≃ η') (eα : α ≃ α') (eι : ι ≃ ι') : Subspace η' α' ι' where
+lean/.lake/packages/mathlib/Mathlib/Data/Fin/SuccPred.lean:148:lemma _root_.finCongr_refl (h : n = n := rfl) : finCongr h = Equiv.refl (Fin n) := by ext; simp
+lean/.lake/packages/mathlib/Mathlib/RingTheory/Extension/Presentation/Submersive.lean:426:noncomputable def reindex (P : PreSubmersivePresentation R S ι σ)
+lean/.lake/packages/mathlib/Mathlib/RingTheory/Extension/Presentation/Submersive.lean:582:noncomputable def reindex (P : SubmersivePresentation R S ι σ)
+lean/.lake/packages/mathlib/Mathlib/RingTheory/Extension/Presentation/Basic.lean:485:noncomputable def reindex (P : Presentation R S ι σ)
+lean/.lake/packages/mathlib/Mathlib/RingTheory/Extension/Generators.lean:285:noncomputable def reindex (P : Generators R S ι') (e : ι ≃ ι') :
+
+codex
+Mathlib’s declaration is `protected theorem Matrix.mul_assoc (L : Matrix l m α) (M : Matrix m n α) (N : Matrix n o α)`, so a fully applied term is the right primitive. The fragile part is not the theorem; it is making the first two factors syntactically identical to the goal’s head application.
+exec
+/bin/bash -lc "sed -n '470,490p' lean/.lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+  simp_rw [← diagonal_one, ← diagonal_smul, Pi.smul_def, smul_eq_mul, mul_one]
+
+theorem op_smul_one_eq_diagonal [DecidableEq m] (a : α) :
+    MulOpposite.op a • (1 : Matrix m m α) = diagonal fun _ => a := by
+  simp_rw [← diagonal_one, ← diagonal_smul, Pi.smul_def, op_smul_eq_mul, one_mul]
+
+end NonAssocSemiring
+
+section NonUnitalSemiring
+
+variable [NonUnitalSemiring α] [Fintype m] [Fintype n]
+
+protected theorem mul_assoc (L : Matrix l m α) (M : Matrix m n α) (N : Matrix n o α) :
+    L * M * N = L * (M * N) := by
+  ext
+  apply dotProduct_assoc
+
+instance nonUnitalSemiring : NonUnitalSemiring (Matrix n n α) :=
+  { Matrix.nonUnitalNonAssocSemiring with mul_assoc := Matrix.mul_assoc }
+
+end NonUnitalSemiring
+
+exec
+/bin/bash -lc "sed -n '449,462p' lean/.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+def reindex (eₘ : m ≃ l) (eₙ : n ≃ o) : Matrix m n α ≃ Matrix l o α where
+  toFun M := M.submatrix eₘ.symm eₙ.symm
+  invFun M := M.submatrix eₘ eₙ
+  left_inv M := by simp
+  right_inv M := by simp
+
+@[simp]
+theorem reindex_apply (eₘ : m ≃ l) (eₙ : n ≃ o) (M : Matrix m n α) :
+    reindex eₘ eₙ M = M.submatrix eₘ.symm eₙ.symm :=
+  rfl
+
+theorem reindex_refl_refl (A : Matrix m n α) : reindex (Equiv.refl _) (Equiv.refl _) A = A :=
+  A.submatrix_id_id
+
+
+exec
+/bin/bash -lc "sed -n '140,190p' lean/DLNFibre/DLN/RLCT/Validate/DeepestBlockDecomp.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+        = H ((⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)).succ)) :
+    prod H A
+      = (prodAux H A m (Nat.lt_of_succ_lt (Nat.lt_succ_self (m + 1))))
+        * (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm)
+            (A (⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)))) :=
+  prodAux_succ H A m (Nat.lt_succ_self (m + 1)) e1 e2
+
+/-- **The corner-split Schur bridge** (the producer's `Rcore`-shape ↔ the framed-product Schur). The
+producer's global Schur complement is taken over `Mw := reindex(P0·(prod − B)·QL)` with the pivot
+`(Mw.toBlocks₁₁ + 1)⁻¹` (the `+1` from the corner). When the framed reindexed product splits as
+`M̂ = fromBlocks 1 0 0 0 + Mw` (the banked `hRegBlocks`), the corner adds `1` to ONLY the `(1,1)` block,
+so the producer's `Rcore` over `Mw` is exactly the Schur complement of `M̂` over its own `(1,1)` block:
+`Mw₂₂ − Mw₂₁·(Mw₁₁+1)⁻¹·Mw₁₂ = M̂₂₂ − M̂₂₁·(M̂₁₁)⁻¹·M̂₁₂`. Pure `toBlocks`-of-`fromBlocks`-sum
+bookkeeping (the same reads the `hbexact` energy identity uses), so the h1 Schur factorization on `M̂`
+(`reindex_mul_schur_factor`) transfers to the producer's `Rcore`. -/
+theorem rcore_eq_schur_of_corner_split {a b r : ℕ}
+    (Mw Mhat : Matrix (Fin a) (Fin b) ℝ)
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eC : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (hsplit : Matrix.reindex eR eC Mhat
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + Matrix.reindex eR eC Mw) :
+    (Matrix.reindex eR eC Mw).toBlocks₂₂
+        - (Matrix.reindex eR eC Mw).toBlocks₂₁
+          * ((Matrix.reindex eR eC Mw).toBlocks₁₁ + 1)⁻¹
+          * (Matrix.reindex eR eC Mw).toBlocks₁₂
+      = (Matrix.reindex eR eC Mhat).toBlocks₂₂
+        - (Matrix.reindex eR eC Mhat).toBlocks₂₁
+          * ((Matrix.reindex eR eC Mhat).toBlocks₁₁)⁻¹
+          * (Matrix.reindex eR eC Mhat).toBlocks₁₂ := by
+  -- Each `M̂` block reads off the corner-sum: `M̂₁₁ = Mw₁₁ + 1`, the off/`(2,2)` blocks = `Mw`'s.
+  rw [hsplit]
+  have h11 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₁₁
+      = (Matrix.reindex eR eC Mw).toBlocks₁₁ + 1 := by
+    funext i j
+    simp only [Matrix.toBlocks₁₁, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₁₁, Matrix.one_apply]
+    split <;> ring
+  have h12 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₁₂
+      = (Matrix.reindex eR eC Mw).toBlocks₁₂ := by
+    funext i j
+    simp only [Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, zero_add]
+  have h21 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₂₁
+      = (Matrix.reindex eR eC Mw).toBlocks₂₁ := by
+    funext i j
+    simp only [Matrix.toBlocks₂₁, Matrix.add_apply, Matrix.of_apply,
+      Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, zero_add]
+  have h22 : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex eR eC Mw).toBlocks₂₂
+
+codex
+There is also precedent in `DeepestTelescoping`: when dependent dimensions block rewriting, the file either uses `Matrix.mul_assoc` inside an induction after the types are normalized, or uses a small fully-applied reassociation lemma. I’d mirror that style here rather than trying to make generic `rw` search smarter.
+exec
+/bin/bash -lc "rg -n \"mul_four_reassoc|mul_three_reassoc|exact Matrix.mul_assoc|rw \\[.*Matrix.mul_assoc\" lean/DLNFibre/DLN/RLCT/Validate" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean:192:  rw [Matrix.mul_assoc]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean:201:  rw [Matrix.mul_assoc]; exact frobenius_mul_le P (A * Q)
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean:352:      rw [Matrix.one_mul, Matrix.neg_mul, Matrix.mul_assoc, hl1, Matrix.mul_one, neg_add_cancel]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeBlocks.lean:360:    rw [Matrix.mul_one, Matrix.mul_neg, ← Matrix.mul_assoc, hr1, Matrix.one_mul, neg_add_cancel]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestSchurComparability.lean:110:  rw [Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, Matrix.mul_assoc]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestPivotFrame.lean:220:    · rw [Matrix.mul_neg, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv VJ hVJdet,
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:314:    rw [Matrix.mul_assoc, Matrix.mul_assoc,
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:407:        rw [firstShapeF, hQf0, Matrix.mul_one, Matrix.mul_assoc,
+lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:105:theorem mul_four_reassoc {p q s t : Type*} [Fintype p] [Fintype q] [Fintype s]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:360:    -- `mul_four_reassoc` (sidesteps the dependent-dim explicit-arg matching that blocked inline `mul_assoc`).
+lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean:361:    exact mul_four_reassoc _ _ _ _
+lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:13:-- generic 3-matrix reassoc over Type* (sidesteps dependent-dim rw matching, like mul_four_reassoc).
+lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:14:theorem mul_three_reassoc {p q r s : Type*} [Fintype p] [Fintype q] [Fintype r]
+lean/DLNFibre/DLN/RLCT/Validate/Scratch2.lean:72:      rw [Matrix.mul_assoc (A 0) X Y]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestCompositionE1.lean:47:  rw [hR, habs, ← Matrix.mul_assoc]
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverTelescope.lean:175:      rw [← Matrix.mul_assoc, c.step s hlt]
+lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverTelescope.lean:176:      rw [Matrix.add_mul, Matrix.smul_mul, Matrix.mul_assoc, hih]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegBlockInvertible.lean:288:          rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv B22 hB22inv, Matrix.mul_one]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegBlockInvertible.lean:301:          rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul B22 hB22inv, Matrix.mul_one]
+lean/DLNFibre/DLN/RLCT/Validate/GeneralR1Recursion.lean:476:  rw [Matrix.one_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_assoc]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:921:      rw [hC0, hEQ, ← Matrix.mul_assoc, corner_mul_devY]
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:935:      rw [hPD, hEQ, Matrix.mul_assoc (Pf (firstLayer hL)),
+lean/DLNFibre/DLN/RLCT/Validate/DeepestGaugeConstruction.lean:1654:    exact mul_four_reassoc _ _ _ _
+
+exec
+/bin/bash -lc "sed -n '1,80p' lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+import DLNFibre.DLN.RLCT.Foundations.Loss
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
+
+/-!
+# `DLNFibre.DLN.RLCT.Validate.DeepestTelescoping` — the PIN2 endpoint-frame telescoping
+
+The cast-heavy `prodAux` induction behind PIN2's frame bridge:
+`∏C = P₀ · (∏A) · Q_{L-1}` when each layer is framed `C s = P s · A s · Q s` and the interior
+interfaces cancel (`Q s · P (s+1) = 1`). Stated with EXISTENTIAL endpoints (cobuild's banked
+statement-shape, `@eee22a1`) to dodge the `H 0` vs `H ⟨0,_⟩.castSucc` definitional mismatch.
+
+**STATUS (crux2 2026-06-23): the cast mechanics are DE-RISKED, the induction is the XL-cast — DEFERRED
+to a fresh-session-with-Codex (HEq-induction design), per controller's 3-attempt discipline.** Two
+findings shape the eventual proof:
+- (PROBE 1, BUILDS) the running-width identifications `H ⟨k,hk⟩` and `H (⟨k,hkL⟩.castSucc)` are
+  DEFINITIONALLY `rfl` (Fin proof-irrelevance + `castSucc ⟨k,_⟩` reduction). So the index VALUES agree
+  freely — the obstacle is purely the elaborator's `HMul` instance synthesis, NOT a real value-mismatch.
+- (`prodAux_succ` SHAPE, typechecks) the `k+1` fold IS the running product times the layer transported
+  by `Matrix.reindex (finCongr ·) (finCongr ·)` (the explicit form of the def's `rw [e1,e2]`). This is
+  the right unfold; its `rfl`-discharge needs an entry-chase through `reindex_apply` vs the def's `Eq.mpr`
+  cast — the bridge that wants Codex's design (3-attempt cap hit on the entry-chase).
+The `endpoint_telescoping` statement-SHAPE is cobuild's (`@eee22a1`); it typechecks (signature GREEN).
+The remaining work is the prefix-fold induction with interface-cancellation in the reindexed types.
+-/
+
+open Matrix
+namespace DLNFibre.DLN.RLCT
+
+variable {L : ℕ}
+
+/-- **DE-RISK PROBE 1 (BUILDS `rfl`).** The two running-width identifications are definitionally equal —
+the index values agree freely; only `HMul` instance synthesis (not a value-mismatch) is the obstacle. -/
+example (H : Fin (L + 1) → ℕ) (k : ℕ) (hk : k + 1 < L + 1) :
+    H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L + 1))
+      = H ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc) := rfl
+
+/-- **`prodAux` recursion, reindex-explicit** (statement TYPECHECKS; proof is the deferred entry-chase).
+The `k+1` fold is the running product times the `k`-th layer, transported to the running-width type by
+`Matrix.reindex (finCongr ·) (finCongr ·)` — the explicit form of the def's `rw [e1,e2]; exact A …`. -/
+theorem prodAux_succ (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    (e1 : H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1))
+        = H ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc))
+    (e2 : H (⟨k + 1, hk⟩ : Fin (L+1))
+        = H ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ)) :
+    prodAux H A (k + 1) hk
+      = (prodAux H A k (Nat.lt_of_succ_lt hk)) *
+          (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm) (A ⟨k, Nat.lt_of_succ_lt_succ hk⟩)) := by
+  obtain rfl : e1 = rfl := Subsingleton.elim _ _
+  obtain rfl : e2 = rfl := Subsingleton.elim _ _
+  rfl
+
+/-- **SHARED step-cast helper** (#123, the family kernel). If the `k`-th layer of `A` is the reindexed
+block `Matrix.reindex eC.symm eS.symm M` at the running widths, then the `prodAux` succ-step is the clean
+product `prodAux k * reindex eC.symm eS.symm M` — the def's `Eq.mpr` cast is collapsed by the index-level
+`cases e1; cases e2` idiom (the `contDiff_prodAux_entry` precedent). All three folds (value / deriv /
+telescope) apply this then their own block-composition. `eC, eS` are the threshold splits at `H ⟨k,hk'⟩`,
+`H ⟨k+1,hk⟩`. -/
+theorem prodAux_succ_layer (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) (hk : k + 1 < L + 1)
+    {p q : ℕ} (eC : Fin (H (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1))) ≃ Fin p ⊕ Fin q)
+    {p' q' : ℕ} (eS : Fin (H (⟨k + 1, hk⟩ : Fin (L+1))) ≃ Fin p' ⊕ Fin q')
+    (M : Matrix (Fin p ⊕ Fin q) (Fin p' ⊕ Fin q') ℝ)
+    (hlayer : A (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L)
+      = (by rw [show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc
+                = (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.castSucc],
+              show (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ
+                = (⟨k + 1, hk⟩ : Fin (L+1)) from by apply Fin.ext; simp [Fin.succ]]
+            exact Matrix.reindex eC.symm eS.symm M :
+          Matrix (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc))
+            (Fin (H (⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ)) ℝ)) :
+    prodAux H A (k + 1) hk
+      = prodAux H A k (Nat.lt_of_succ_lt hk) * Matrix.reindex eC.symm eS.symm M := by
+  have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+  have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+  have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+    apply Fin.ext; simp [Fin.castSucc]
+  have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+    apply Fin.ext; simp [Fin.succ]
+  show prodAux H A k hk' *
+      ((by rw [e1, e2]; exact A ⟨k, hkL⟩ :
+        Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+
+exec
+/bin/bash -lc "sed -n '320,370p' lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+  -- the `Lm ≥ 1` arm; in the `Lm = 0` arm the single layer carries both frames directly).
+  show prod H C = _
+  simp only [prod]
+  rw [prodAux_succ H C Lm hLm1 e1L e2L, prodAux_succ H A Lm hLm1 e1L e2L]
+  rcases Nat.eq_zero_or_pos Lm with hLm0 | hLmpos
+  · -- `Lm = 0` (L = 1): single layer is BOTH endpoints. `prodAux _ 0 = 1`; `C 0 = P0 · A 0 · Q0`.
+    -- (handed to crux2 — the direct single-layer arm; `prod C = reindex(C 0)`, `C 0 = P0·A0·Q0`.)
+    subst hLm0
+    have hC0 : C ⟨0, hLmL⟩ = P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩ := hframe ⟨0, hLmL⟩
+    -- `prodAux _ 0 = 1`; `C 0 = P0·A0·Q0`; distribute reindex over both factors (left for P0, right for Q0),
+    -- collapse the boundary casts (finCongr_refl), then `one_mul` + the 4-matrix reassoc.
+    rw [show prodAux H C 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      show prodAux H A 0 (Nat.lt_of_succ_lt hLm1) = (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) from rfl,
+      hC0,
+      reindex_mul_distrib_right (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩) (Q ⟨0, hLmL⟩) (finCongr e1L.symm)
+        (finCongr e2L.symm),
+      reindex_mul_distrib_left (P ⟨0, hLmL⟩) (A ⟨0, hLmL⟩) (finCongr e1L.symm) (finCongr e2L.symm)]
+    -- boundary casts: reindex (finCongr e1L.symm)² P0 = P0-cast, reindex (finCongr e2L.symm)² Q0 = QL-cast.
+    rw [show (finCongr e1L.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]
+    -- `show` forces the reindex refl refl to defeq plain matrices; then `one_mul` both `1·`, both sides
+    -- → `P0·A0·Q0` (LHS `1·(P0·A0·Q0)`, RHS `P0·(1·A0)·Q0`).
+    show (1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+          (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ)
+        * (P ⟨0, hLmL⟩ * A ⟨0, hLmL⟩ * Q ⟨0, hLmL⟩)
+      = P ⟨0, hLmL⟩ * ((1 : Matrix (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc))
+            (Fin (H (⟨0, hLmL⟩ : Fin (0+1)).castSucc)) ℝ) * A ⟨0, hLmL⟩) * Q ⟨0, hLmL⟩
+    rw [Matrix.one_mul, Matrix.one_mul]
+  · -- `Lm ≥ 1`: `hinv Lm` gives `prodAux C Lm = P0 · prodAux A Lm`; `C Lm = A Lm · Q Lm` (`P Lm = 1`);
+    -- `reindex_mul_distrib_right` distributes; the `Q Lm` factor IS the boundary cast `QL` (e2L : rfl).
+    rw [hinv Lm (Nat.lt_of_succ_lt hLm1) hLmpos (le_refl _)]
+    have hCLm : C ⟨Lm, hLmL⟩ = A ⟨Lm, hLmL⟩ * Q ⟨Lm, hLmL⟩ := by
+      rw [hframe ⟨Lm, hLmL⟩, hPid ⟨Lm, hLmL⟩ (by simpa using hLmpos), Matrix.one_mul]
+    rw [hCLm, reindex_mul_distrib_right (A ⟨Lm, hLmL⟩) (Q ⟨Lm, hLmL⟩)
+      (finCongr e1L.symm) (finCongr e2L.symm),
+      show Matrix.reindex (finCongr e2L.symm) (finCongr e2L.symm) (Q ⟨Lm, hLmL⟩)
+        = (hLs ▸ Q ⟨Lm, by omega⟩ :
+            Matrix (Fin (H (Fin.last (Lm + 1)))) (Fin (H (Fin.last (Lm + 1)))) ℝ) from by
+      rw [show (finCongr e2L.symm) = Equiv.refl _ from finCongr_refl _]; rfl]
+    -- pure 4-matrix associativity `P0·prodAux·(rA·QL) = P0·(prodAux·rA)·QL` — via the clean helper
+    -- `mul_four_reassoc` (sidesteps the dependent-dim explicit-arg matching that blocked inline `mul_assoc`).
+    exact mul_four_reassoc _ _ _ _
+
+end DLNFibre.DLN.RLCT
+
+codex
+For the second subgoal, the right durable move is to add a tiny `Atail_apply` lemma near `Atail`. I’m checking `Params`’ exact shape so the lemma statement uses the same casts as the definition and can close by the same `Subsingleton.elim` trick.
+exec
+/bin/bash -lc "rg -n \"def Params|abbrev Params|structure Params|def prodAux|def prod \\(\" lean/DLNFibre lean/*.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean:29:def Params (H : Fin (L + 1) → ℕ) : Type :=
+lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean:33:def prodAux (H : Fin (L + 1) → ℕ) (A : Params H) :
+lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean:48:def prod (H : Fin (L + 1) → ℕ) (A : Params H) :
+lean/DLNFibre/DLN/RLCT/Validate/DeepestRegSliceFderiv.lean:491:noncomputable def prodAuxEntryDeriv {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+
+exec
+/bin/bash -lc "sed -n '1,80p' lean/DLNFibre/DLN/RLCT/Foundations/Loss.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+import Mathlib.LinearAlgebra.Matrix.Rank
+import Mathlib.Data.Matrix.Basic
+import Mathlib.Data.Matrix.Mul
+import Mathlib.Data.Real.Basic
+import Mathlib.Topology.Constructions
+
+/-!
+# `DLNFibre.DLN.RLCT.Foundations.Loss` — the deep-linear-network loss
+
+The parameter space `Params H` of composable real matrix tuples, the multiplication map `prod`,
+the square-Frobenius loss `dlnLoss`, and the fibre `optimalSet = mult⁻¹(B)`.
+
+Pure polynomial layer (no measure theory). Faithful to Aoyagi 2023, §0–1 (design-spec §0–1):
+the `L`-layer model `Y = (∏_{s=1}^L A⁽ˢ⁾) X + noise`, widths `H : Fin (L+1) → ℕ` with `H⁽¹⁾ = H 0`
+the **output** dimension and `H⁽ᴸ⁺¹⁾ = H (last)` the **input** dimension, layer `s` a matrix of size
+`H⁽ˢ⁾ × H⁽ˢ⁺¹⁾`. The identity-covariance square-Frobenius loss is RLCT-faithful (`Σ_X` drops out by
+the regular whitening change of coordinates; design-spec §0).
+-/
+
+namespace DLNFibre.DLN.RLCT
+
+open Matrix
+
+variable {L : ℕ}
+
+/-- A network parameter: a composable tuple of layer matrices, layer `s` of size
+`H⁽ˢ⁾ × H⁽ˢ⁺¹⁾ = H s.castSucc × H s.succ`. Definitionally a function space (a `Pi` of `Pi`s),
+so it inherits `TopologicalSpace`/`MeasurableSpace`/`MeasureSpace` by `inferInstanceAs`. -/
+def Params (H : Fin (L + 1) → ℕ) : Type :=
+  ∀ s : Fin L, Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ
+
+/-- The product of the first `k` layer matrices `A⁽¹⁾·…·A⁽ᵏ⁾`, of size `H 0 × H k`. -/
+def prodAux (H : Fin (L + 1) → ℕ) (A : Params H) :
+    (k : ℕ) → (hk : k < L + 1) → Matrix (Fin (H 0)) (Fin (H ⟨k, hk⟩)) ℝ
+  | 0, _ => (1 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
+  | k + 1, hk => by
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      refine (prodAux H A k hk') * ?_
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      rw [e1, e2]; exact A ⟨k, hkL⟩
+
+/-- The multiplication map: the layer product `A⁽¹⁾·A⁽²⁾·…·A⁽ᴸ⁾`, of size
+`H⁽¹⁾ × H⁽ᴸ⁺¹⁾ = H 0 × H (last)`. -/
+def prod (H : Fin (L + 1) → ℕ) (A : Params H) :
+    Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ :=
+  prodAux H A L (Nat.lt_succ_self L)
+
+/-- The square-Frobenius loss `‖prod A − B‖²_F = ∑ᵢⱼ ((prod A − B)ᵢⱼ)²`. An honest polynomial in the
+entries of `A`, hence real-analytic. Faithful to Aoyagi's Kullback function `K(w)` for the Gaussian
+model (design-spec §1). -/
+def dlnLoss (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (A : Params H) : ℝ :=
+  ∑ i, ∑ j, ((prod H A - B) i j) ^ 2
+
+/-- The fibre `mult⁻¹(B) = {A | prod A = B}`, the zero-set of `dlnLoss B` (a sum of squares). -/
+def optimalSet (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) : Set (Params H) :=
+  { A | prod H A = B }
+
+/-- `optimalSet` is exactly the zero-set of `dlnLoss B`: the loss is a sum of squares, zero iff
+`prod A = B`. -/
+theorem optimalSet_eq_loss_zero (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) :
+    optimalSet H B = { A | dlnLoss H B A = 0 } := by
+  ext A
+  simp only [optimalSet, dlnLoss, Set.mem_setOf_eq]
+  constructor
+  · intro h; simp [h]
+  · intro h
+    -- a finite sum of squares is zero iff each square is zero
+    have hsq : ∀ i, ∀ j, ((prod H A - B) i j) ^ 2 = 0 := by
+      have hnn : ∀ i, (0 : ℝ) ≤ ∑ j, ((prod H A - B) i j) ^ 2 := fun i =>
+        Finset.sum_nonneg fun j _ => sq_nonneg _
+      have hi : ∀ i, ∑ j, ((prod H A - B) i j) ^ 2 = 0 := fun i =>
+        (Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h i (Finset.mem_univ i)
+      intro i j
+
+exec
+/bin/bash -lc "sed -n '80,125p' lean/DLNFibre/DLN/RLCT/Validate/DeepestTelescoping.lean" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a872bb0acbf5424ec
+ succeeded in 0ms:
+        Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ)) = _
+  refine congrArg (prodAux H A k hk' * ·) ?_
+  rw [hlayer]; cases e1; cases e2; rfl
+
+/-- **The corner-block idempotent product** (reindex form). The block-normal corner `fromBlocks 1 0 0 0`
+is idempotent under the chain product, and reindexing along a shared middle interface `eB` cancels:
+`reindex eA.symm eB.symm corner * reindex eB.symm eC.symm corner = reindex eA.symm eC.symm corner`.
+Via `reindex_apply` (→ `submatrix`), `submatrix_mul_equiv` (the `eB.symm` interface), `fromBlocks_multiply`
+(`[1,0;0,0]·[1,0;0,0] = [1,0;0,0]`). -/
+theorem corner_reindex_mul {a b c r : ℕ}
+    (eA : Fin a ≃ Fin r ⊕ Fin (a - r)) (eB : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (eC : Fin c ≃ Fin r ⊕ Fin (c - r)) :
+    (Matrix.reindex eA.symm eB.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+        * (Matrix.reindex eB.symm eC.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0))
+      = Matrix.reindex eA.symm eC.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) eA eB eC]
+  congr 1
+  rw [Matrix.fromBlocks_multiply]
+  simp
+
+/-- **4-matrix reassociation** `(a·b)·(c·d) = (a·(b·c))·d` (the FOLD3 endpoint-frame regroup). Clean
+generic statement (no casty terms) so `Matrix.mul_assoc` applies without the dependent-dim explicit-arg
+matching friction; both sides normalise to `a·(b·(c·d))`. -/
+theorem mul_four_reassoc {p q s t : Type*} [Fintype p] [Fintype q] [Fintype s]
+    (a : Matrix p p ℝ) (b : Matrix p q ℝ) (c : Matrix q s ℝ) (d : Matrix s t ℝ) :
+    a * b * (c * d) = a * (b * c) * d := by
+  simp only [Matrix.mul_assoc]
+
+/-- **Reindex distributes over a left endpoint-frame product** (the FOLD3 general-layer kernel). For a
+SQUARE row-frame `P : Matrix m m ℝ` and a general layer `A : Matrix m n ℝ`, reindexing the product
+`P * A` along `(eC, eS)` factors as `(reindex eC eC P) * (reindex eC eS A)` — the frame `P` rides on the
+row-index alone, so its reindex is the diagonal `(eC, eC)` and the shared middle interface `eC.symm`
+cancels (`submatrix_mul_equiv`). This is the boundary-frame extraction the `endpoint_telescoping` base
+step needs (`reindex (C ⟨0⟩) = (cast P₀) · reindex (A ⟨0⟩)` when `C ⟨0⟩ = P₀ · A ⟨0⟩`). Generic over the
+index types — `m, n` any Fintypes, `eC, eS` any reindex equivs. -/
+theorem reindex_mul_distrib_left {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n']
+    (P : Matrix m m ℝ) (A : Matrix m n ℝ) (eC : m ≃ m') (eS : n ≃ n') :
+    Matrix.reindex eC eS (P * A)
+      = Matrix.reindex eC eC P * Matrix.reindex eC eS A := by
+  simp only [Matrix.reindex_apply, Equiv.symm_symm]
+  rw [Matrix.submatrix_mul_equiv P A eC.symm eC.symm eS.symm]
+
+/-- **Reindex distributes over a right endpoint-frame product** (the FOLD3 boundary-`Q` kernel). For a
+
+codex
+One caveat: the `Atail` internal row equality is the potentially non-rfl one (`s.castSucc.succ` versus `s.succ.castSucc`). The best reusable lemma is therefore not “`Atail = A` by bare `rfl`”; it is “`Atail = reindex A`”, proved by reducing the two equality proofs to the same proof when Lean sees the concrete expected type.
+codex
+Pick **(i)**, but use it as a term proof via `trans`, not `rw`.
+
+```lean
+-- after `rw [reindex_finCongr_mul ...]`
+set X := Matrix.reindex (finCongr emid) (finCongr ecolk)
+  (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt hk)) with hX
+set Y := Matrix.reindex (finCongr eP1.symm) (finCongr eP2.symm)
+  (A (⟨k + 1, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L + 1))) with hY
+
+trans A 0 * (X * Y)
+· exact Matrix.mul_assoc (A 0) X Y
+·
+  -- now split the remaining RHS equality
+  congr 1
+  -- then split `X * Y = _ * _` as you were doing
+```
+
+This avoids `rw` occurrence search entirely. `rw [Matrix.mul_assoc (A 0) X Y]` may also work after the `set`s, but `trans ...; exact Matrix.mul_assoc ...` is the robust form.
+
+For the layer goal, add this local lemma. **VERIFY** only because I could not run Lean here, but it is exactly the `Atail` definition exposed as a rewrite lemma.
+
+```lean
+theorem Atail_apply_cast (M : Fin (L + 1 + 1) → ℕ) (A : Params M) (s : Fin L) :
+    (Atail M A) s =
+      (by
+        have e1 : Mtail M s.castSucc = M s.succ.castSucc := by
+          simp only [Mtail]; congr 1
+        have e2 : Mtail M s.succ = M s.succ.succ := rfl
+        rw [e1, e2]
+        exact A s.succ :
+        Matrix (Fin (Mtail M s.castSucc)) (Fin (Mtail M s.succ)) ℝ) := rfl
+```
+
+Then the subgoal closes by collapsing all six reindexes:
+
+```lean
+rw [show (finCongr eP1.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eP2.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr hb) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eT1.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eT2.symm) = Equiv.refl _ from finCongr_refl _]
+erw [Matrix.reindex_refl_refl]
+erw [Matrix.reindex_refl_refl]
+erw [Matrix.reindex_refl_refl]
+
+rw [Atail_apply_cast M A (⟨k, Nat.lt_of_succ_lt_succ hktail⟩ : Fin L)]
+rfl
+```
+
+If your remaining `Atail` index proof is not syntactically `Nat.lt_of_succ_lt_succ hktail`, replace that one proof with the exact proof appearing in the goal; the lemma is proof-irrelevant at the `Fin` index, but `rw` matching is happier when the displayed term matches.
+tokens used
+74,181
+Pick **(i)**, but use it as a term proof via `trans`, not `rw`.
+
+```lean
+-- after `rw [reindex_finCongr_mul ...]`
+set X := Matrix.reindex (finCongr emid) (finCongr ecolk)
+  (prodAux (Mtail M) (Atail M A) k (Nat.lt_of_succ_lt hk)) with hX
+set Y := Matrix.reindex (finCongr eP1.symm) (finCongr eP2.symm)
+  (A (⟨k + 1, Nat.lt_of_succ_lt_succ hk⟩ : Fin (L + 1))) with hY
+
+trans A 0 * (X * Y)
+· exact Matrix.mul_assoc (A 0) X Y
+·
+  -- now split the remaining RHS equality
+  congr 1
+  -- then split `X * Y = _ * _` as you were doing
+```
+
+This avoids `rw` occurrence search entirely. `rw [Matrix.mul_assoc (A 0) X Y]` may also work after the `set`s, but `trans ...; exact Matrix.mul_assoc ...` is the robust form.
+
+For the layer goal, add this local lemma. **VERIFY** only because I could not run Lean here, but it is exactly the `Atail` definition exposed as a rewrite lemma.
+
+```lean
+theorem Atail_apply_cast (M : Fin (L + 1 + 1) → ℕ) (A : Params M) (s : Fin L) :
+    (Atail M A) s =
+      (by
+        have e1 : Mtail M s.castSucc = M s.succ.castSucc := by
+          simp only [Mtail]; congr 1
+        have e2 : Mtail M s.succ = M s.succ.succ := rfl
+        rw [e1, e2]
+        exact A s.succ :
+        Matrix (Fin (Mtail M s.castSucc)) (Fin (Mtail M s.succ)) ℝ) := rfl
+```
+
+Then the subgoal closes by collapsing all six reindexes:
+
+```lean
+rw [show (finCongr eP1.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eP2.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr hb) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eT1.symm) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eT2.symm) = Equiv.refl _ from finCongr_refl _]
+erw [Matrix.reindex_refl_refl]
+erw [Matrix.reindex_refl_refl]
+erw [Matrix.reindex_refl_refl]
+
+rw [Atail_apply_cast M A (⟨k, Nat.lt_of_succ_lt_succ hktail⟩ : Fin L)]
+rfl
+```
+
+If your remaining `Atail` index proof is not syntactically `Nat.lt_of_succ_lt_succ hktail`, replace that one proof with the exact proof appearing in the goal; the lemma is proof-irrelevant at the `Fin` index, but `rw` matching is happier when the displayed term matches.
