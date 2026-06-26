@@ -2,7 +2,23 @@
 
 (Internal ledger; assumes repo context. Flushed every tick; read on re-ground. Not a deliverable.)
 
-## Current read (2026-06-23): re-grounding after compaction — the per-layer-Morse→CITE drift located + CORRECTED; R1 is the S2-only explicit-charts grind, NOT a cite
+## ★ CURRENT STATE (2026-06-26) — CONSOLIDATION PAUSE-POINT; the operator's (A)/(B) scope decision is ripe. (Read this first; UPDATE-99..71 below are the tick-by-tick trail.) HEAD bc102773.
+
+**Where we are.** The L2 gauge-chart producer fold (the dominant long pole) is CONSOLIDATED at a clean checkpoint (decision C, UPDATE-98/99). The 12-catch producer-fold saga is COMPLETE — every catch resolved/banked/roadmapped, no green-but-wrong (the decorrelated-confirmation discipline caught each false intermediate before a wrong build). The aggregator builds green (8351 jobs).
+
+**Banked CLEAN (axiom-clean `[propext, Classical.choice, Quot.sound]`):** the network-free engine (Core: orbits/Kostant/Ext-codim/(C,θ)); RRR(2,2,2) (`aoyagi_rrr_222`, via Case222 + the cited `monomial_rlct`); the R1 (3,3,4) anchor BOTH legs (`routeMCore_M334_threshold_lt_top` + the achiever divergence); the full L2 brick set — PIN1 (`deepestEPivot_regSlice_fderiv`), PIN2 + the Score squeeze (`deepest_loss_squeeze`), the rectangular LDU (`schur_product_ldu`), the germ bridge, E1 (`frobSq_prod_absorbed_eq_rcore`), the split smooth-affine chart, the Ψ lenses, the triangular-normalizer Core lemma (`blockLower/blockUpper_*`), the abstract diffeo bridge (`rlctAtOn_diffeo_bridge_of`).
+
+**Headline status (honest).** The GENERAL `aoyagi_learning_coefficient` is NOT clean — it (and `aoyagi_rrr`) carry `sorryAx` from the general-L frontier. `deepest_gauge_construction` carries 4 roadmapped sorries: 2915 (L2-diffeo via the (1a) `IsDeepLayers` strengthening), 3118/3123 (L≥3 `hinterface` interior, Item 19), 3289 (L≥3 `hstep2` grouped-G0 diffeo). NO `monomial_rlct` beyond the cited Aoyagi axiom in `aoyagi_rrr_222`.
+
+**THE DECISION (operator's, ripe — discuss-at-close Items 24/25/26).** **(A)** push the full general-L producer toward a clean GENERAL headline = the (1a) `IsDeepLayers` bundle-wide strengthening + the L≥3 interior (research-grade) + R1-general (the held (3,3,3,3) Frame-det det wall + the general-r hfin lift) + D1 — far + partly research-grade. **(B)** name the CONCRETE-ANCHOR milestone (RRR + R1 (3,3,4) + the engine + the banked clean L2 bricks) as the deliverable — banked-now, clean. Controller lean: (B) is the honest banked deliverable; (A) is a long, soundness-intensive grind. Either way the FULL general headline additionally needs R1-general + D1.
+
+**Resume-points (if A).** (1a): the triangular Core lemma is banked; the bundle re-thread (strengthen `IsDeepLayers`/`deepestPoint_exists` to leading-block-invertible boundary corners) is roadmapped. L≥3 interior: 3118/3123/3289. R1-general: general-r hfin lift + the (3,3,3,3) general-hdiv (held for bandwidth — now available). D1: the ≥-leg (L2-gated). Gate-close: the `continuous_dlnLoss`/`minAdm_M4422` dedupes (latent — aggregator green) + the Deepest*-subtree aggregator wiring.
+
+**Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
+
+---
+
+## Historical read (2026-06-23): re-grounding after compaction — the per-layer-Morse→CITE drift located + CORRECTED; R1 is the S2-only explicit-charts grind, NOT a cite
 
 **Trigger.** Operator flagged (twice) that my post-compaction context did not reference the expedition
 policies / files — first the deeper regroup ("the 'cite Aoyagi budget' framing is incoherent for an
