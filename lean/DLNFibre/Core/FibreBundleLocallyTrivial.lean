@@ -120,11 +120,11 @@ noncomputable def topLeftBaseToChartAway (d : Fin (N + 1) → ℕ) (r : ℕ)
       →ₐ[k] Localization.Away (ΔPdeep (k := k) d r hp hq) :=
   baseLocMap d r hp hq
 
-/-- **The bridge connects the two inverted localizing elements.** Applying the bridge `AlgHom` to the
-localized ambient top-left pivot minor `algebraMap _ _ (detPivotPoly q p r)` (the element the ambient
+/-- **The bridge connects the two inverted localizing elements.** Applying the bridge `AlgHom` to
+the localized ambient top-left pivot minor `algebraMap _ _ (detPivotPoly q p r)` (the element the
 base chart `D(detMinorPoly)` inverts) lands on the localized deep total pivot minor
-`algebraMap _ _ (ΔPdeep d r)` — the element whose quotient class is `chartDsig`, which `e_β` inverts.
-So the bridge genuinely identifies the inverted denominators of the two presentations, not merely the
+`algebraMap _ _ (ΔPdeep d r)` — the element whose quotient class is `chartDsig`, what `e_β` inverts.
+So the bridge genuinely identifies the inverted denominators of the two presentations, not just the
 ring types. (`baseLocMap_algebraMap` carries `algebraMap x` to `algebraMap (deepBaseComap d x)`;
 `deepBaseComap_detPivot` evaluates `deepBaseComap d (detPivotPoly) = ΔPdeep`.) -/
 theorem topLeftBaseToChartAway_algebraMap_detPivot (d : Fin (N + 1) → ℕ) (r : ℕ)
@@ -206,7 +206,7 @@ example (h : (1 : ℕ) ≤ 2) :
       = detMinorPoly (k := ℚ) (topLeftRows 2 1 h) (topLeftCols 2 1 h) :=
   detMinorPoly_topLeft_rename 2 2 1 h h
 
-/-- **Datum witness.** The top-left local-trivialization datum is genuine data — its chart element is
+/-- **Datum witness.** The top-left local-trivialization datum is genuine data — its chart elt is
 `chartDsig` and its trivialization is the `e_β`-composite — available over any `[Infinite k]` field
 and dimension vector. (Non-vacuous: it is constructed, not asserted.) -/
 noncomputable example {k : Type} [Field k] [Infinite k] {N : ℕ}
