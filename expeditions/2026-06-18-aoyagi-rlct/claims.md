@@ -8080,3 +8080,29 @@ Nonclaims: finite formal tangent algebra only.  No weakening of analytic
 derivative/measure determinant-chart hypotheses, no source coverage, no
 source-measure transport, no density/Jacobian identity for the original DLN
 source, no normal crossings, no pole order, and no RLCT.
+
+Latest A5 Eq5 endpoint first-nonbase upper bound:
+Lean now proves
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`.  For a supplied
+terminal-candidate family, explicit Eq5 endpoint-chain data for every label in
+`TC.terminalMinimumLabels` give the upper bound
+`TC.terminalMinimumLabels.card <= a*(N+1-a)+1`, provided the deterministic
+first-nonbase-or-base selector is supplied injective on
+`TC.terminalMinimumLabels`.
+
+Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-source-attempt-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-first-nonbase-upper-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-first-nonbase-upper-bound-a5.md`.
+
+The same reproduction records the source obstruction: Aoyagi Lemma 5, PDF
+pp. 24-27, gives the interval-count shape but not a Lean-level
+`TC.TerminalMinimumCountDatumClassifier`, classifier injectivity, or
+back-to-label map for arbitrary terminal-minimum labels.
+
+Nonclaims: no source-backed classifier, no proof of selector injectivity,
+no branch-label injectivity, no back-to-label/no-extra theorem, no terminal
+exactness, no pole order, no normal crossings, and no RLCT.

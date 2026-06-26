@@ -12368,3 +12368,27 @@ not theorem-sized wrapper opportunities:
 The durable audit is `frontier-audit-2026-06-26.md`.  Do not reopen A2
 readout, A4 source-production, A5 order-wrapper, or A6 final-socket work unless
 the proposed theorem removes one of the named supplied fields.
+
+## Latest A5 Eq5 Endpoint First-Nonbase Upper Bound
+
+The terminal-minimum counted-datum classifier source attempt is recorded at
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-source-attempt-a5.md`.
+The full classifier remains source-blocked: Aoyagi Lemma 5 gives the interval
+count shape on PDF pp. 24-27, but not a canonical classifier on
+`TC.terminalMinimumLabels`, not injectivity, and not a back-to-label map.
+
+Lean now proves the conditional endpoint-chain upper bound
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase`
+in `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`.  Given Eq5
+piecewise source-vector data, terminal-room inequalities, endpoint chains
+`Hlabel`, endpoint agreement, and terminal endpoint conditions for every
+terminal-minimum label, the existing Eq5 endpoint-chain theorem supplies
+binary increment-prefix deltas.  The existing first-nonbase selector theorem
+then gives
+`TC.terminalMinimumLabels.card <= a*(N+1-a)+1`, assuming the deterministic
+first-nonbase-or-base selector is injective on `TC.terminalMinimumLabels`.
+
+This removes the abstract counted-datum classifier object from this
+conditional Eq5 endpoint-chain route only.  It does not prove selector
+injectivity, branch-label injectivity, back-to-label coverage, no-extra
+coverage, terminal-label exactness, pole order, normal crossings, or RLCT.

@@ -55,6 +55,65 @@ theorem terminalMinimumCountDatum_injOn_of_eq5OwnBlock_pAlpha_injOn
     (N + 1) a M m cut TC.terminalMinimumLabels pOf alphaOf layerWidth T
     hT hblock hpAlpha_inj
 
+/-- Terminal-minimum upper count from supplied Eq5 endpoint-chain data and the
+deterministic first-nonbase selector.
+
+For each terminal-minimum label this assumes an Eq5 endpoint chain whose
+prefix increments are binary by the existing terminal-room theorem.  The
+remaining nonduplication is the explicit injectivity of the deterministic
+first-nonbase-or-base counted datum on `TC.terminalMinimumLabels`.  No source
+classifier, branch-label injectivity, back-to-label map, or exactness theorem
+is constructed here. -/
+theorem terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase
+    {β : Type*} [DecidableEq β]
+    {L : ℕ} {width : ℕ → ℕ} {Sfinal Jfinal : ℕ}
+    {N a : ℕ} {M : ℤ} {m : Fin (N + 2) → ℤ}
+    {t : ℕ → ℕ → ℕ → ℤ} {numerator leastValue : ℕ → ℕ → ℤ}
+    (TC : AoyagiLemma5SuppliedTerminalCandidateFamily β L width Sfinal Jfinal
+      N a M m t numerator leastValue)
+    (ha : a ≤ N + 1)
+    (cut : AoyagiSelectedCutpoints (N + 1))
+    (pOf alphaOf : (Σ _ : ℕ, ℕ) → ℕ)
+    (layerWidth : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (T : (Σ _ : ℕ, ℕ) → ℕ → ℤ)
+    (Hlabel : (Σ _ : ℕ, ℕ) → Fin (N + 2) → ℤ)
+    (hselected :
+      (∑ i : Fin (N + 2), m i) = ((N + 1 : ℕ) : ℤ) * (M - 1) + a)
+    (hT : ∀ label ∈ TC.terminalMinimumLabels,
+      AoyagiLemma5Eq5PiecewiseSourceVector
+        (N + 1) a (pOf label) (alphaOf label) M m cut
+        (layerWidth label) (T label))
+    (hroom : ∀ label ∈ TC.terminalMinimumLabels,
+      pOf label + 2 * a - alphaOf label ≤ N + 1)
+    (hH0 : ∀ label ∈ TC.terminalMinimumLabels,
+      Hlabel label 0 = m 0)
+    (hHlast : ∀ label ∈ TC.terminalMinimumLabels,
+      Hlabel label (Fin.last (N + 1)) = 0)
+    (hH_endpoint : ∀ label ∈ TC.terminalMinimumLabels,
+      ∀ b : Fin (N + 2), 1 ≤ b.val → b.val < N + 1 →
+        Hlabel label b = T label (cut.point b.val - 1))
+    (hinjFirst :
+      Set.InjOn
+        (fun label : Σ _ : ℕ, ℕ ↦
+          aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase
+            (N + 1) (Hlabel label) TC.family.baseValue)
+        ↑TC.terminalMinimumLabels) :
+    TC.terminalMinimumLabels.card ≤ a * (N + 1 - a) + 1 := by
+  exact
+    aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le
+      (N + 1) a M m TC.family.baseValue TC.terminalMinimumLabels Hlabel
+      (Nat.succ_pos N) ha
+      (fun label hlabel ↦ hH0 label hlabel)
+      (fun label hlabel ↦ hHlast label hlabel)
+      hselected
+      (fun label hlabel ↦
+        aoyagiLemma5Eq5_endpointChain_binaryIncrementPrefixDelta_of_terminalRoom
+          (N + 1) a (pOf label) (alphaOf label) M m (Hlabel label) cut
+          (layerWidth label) (T label) (hT label hlabel)
+          (hroom label hlabel) (hH0 label hlabel) (hHlast label hlabel)
+          hselected (hH_endpoint label hlabel))
+      TC.family.baseValue_mem hinjFirst
+
 /-- Build the terminal-minimum counted-datum classifier from supplied Eq5
 own-block common-domain payload data.
 

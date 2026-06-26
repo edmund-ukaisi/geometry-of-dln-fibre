@@ -5640,3 +5640,50 @@ crossings, or extract RLCT.
 
 Independent xhigh review passed with no findings and confirmed that
 `a<=n+1` should remain absent from this cancellation theorem.
+
+## 2026-06-26 Lemma 5 classifier source attempt and Eq5 first-nonbase upper bound
+
+Reproduction:
+`reproduction-lemma5-terminal-minimum-counted-datum-classifier-source-attempt-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-eq5-endpoint-first-nonbase-upper-bound.md`.
+Review:
+`review-lemma5-eq5-endpoint-first-nonbase-upper-bound-a5.md`.
+
+The source attempt confirms that Aoyagi Lemma 5, PDF pp. 24-27, does not
+construct a Lean-level
+
+```text
+TC.TerminalMinimumCountDatumClassifier
+```
+
+from terminal-minimum labels.  The printed interval count gives the codomain
+shape, but not a canonical classifier, injectivity, or a back-to-label map.
+The Case 1(2) sentence that `J` increases by one remains blow-up bookkeeping,
+not a finite injectivity theorem.
+
+Lean now proves the conditional Eq5 endpoint-chain upper bound:
+
+```text
+AoyagiLemma5SuppliedTerminalCandidateFamily.
+  terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase
+```
+
+For every terminal-minimum label, assume an Eq5 piecewise source vector, a
+terminal-room inequality, an endpoint chain `Hlabel`, endpoint agreement with
+the Eq5 vector, and the terminal endpoint conditions `H_0=m_0`,
+`H_(N+1)=0`.  The existing Eq5 endpoint-chain theorem gives binary
+increment-prefix deltas, and the existing first-nonbase selector theorem gives
+
+```text
+TC.terminalMinimumLabels.card <= a*(N+1-a)+1
+```
+
+provided the deterministic first-nonbase-or-base selector is injective on
+`TC.terminalMinimumLabels`.
+
+This removes the abstract counted-datum classifier object from this
+conditional Eq5 endpoint-chain route.  It does not prove selector injectivity,
+branch-label injectivity, back-to-label coverage, no-extra coverage,
+terminal-label exactness, pole order, normal crossings, or RLCT extraction.
+Xhigh review passed after fixing the statement-card verification command.

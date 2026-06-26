@@ -5347,3 +5347,15 @@ terminal-minimum counted-datum classifier from Aoyagi pp. 24-27.  If that
 fails source-fidelity review, record the exact missing fields and move to the
 A2 retained-passive source-chart construction or the A4 analytic-atlas
 production package.
+
+A5 terminal-minimum classifier source attempt is now recorded at
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-source-attempt-a5.md`.
+The result is negative for the full classifier: the printed interval count
+does not provide `classify`, `mapsTo`, `injOn`, or back-to-label data for
+arbitrary `TC.terminalMinimumLabels`.  The useful Lean hardening is narrower:
+`terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase` proves
+the terminal-minimum upper bound from explicit Eq5 endpoint-chain data and
+supplied injectivity of the deterministic first-nonbase selector.  Do not
+promote this to source-backed terminal exactness; selector injectivity,
+branch-label injectivity, no-extra coverage, pole order, normal crossings, and
+RLCT remain open or supplied.

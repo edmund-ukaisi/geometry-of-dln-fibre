@@ -9366,3 +9366,26 @@ and
 `threads/06-dln-translation/review-definition3-equal-width-theorem2-formula-a6.md`.
 No Eq5 production, chart production, normal crossings, pole order, or RLCT is
 proved.
+
+Latest A5 Eq5 endpoint first-nonbase upper bound:
+`threads/05-arithmetic-tail/reproduction-lemma5-terminal-minimum-counted-datum-classifier-source-attempt-a5.md`
+checks the terminal-minimum counted-datum classifier source route against
+Aoyagi Lemma 5, PDF pp. 24-27.  Verdict: the full
+`TC.TerminalMinimumCountDatumClassifier` is not source-constructed by the
+printed paragraph.  The interval count is present, but `classify`, `injOn`,
+and back-to-label/no-extra fields remain supplied.
+
+Lean theorem:
+`AoyagiLemma5SuppliedTerminalCandidateFamily.terminalMinimumLabels_card_le_of_eq5EndpointChain_firstInteriorNonbase`
+is proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5Eq5TerminalClassifier.lean`.
+It consumes explicit Eq5 endpoint-chain data for every terminal-minimum label
+and supplied injectivity of the deterministic first-nonbase-or-base selector,
+then derives `TC.terminalMinimumLabels.card <= a*(N+1-a)+1`.
+Statement card:
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-eq5-endpoint-first-nonbase-upper-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-eq5-endpoint-first-nonbase-upper-bound-a5.md`.
+
+This is a conditional upper-bound hardening only.  It does not prove selector
+injectivity, branch-label injectivity, no-extra coverage, terminal-label
+exactness, pole order, normal crossings, or RLCT.
