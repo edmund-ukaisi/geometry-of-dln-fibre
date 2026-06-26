@@ -4477,6 +4477,18 @@ global `Continuous CedgeBase`.  This is the final wrapper of this shape unless
 a downstream chart construction forces a different measurability boundary.
 The next A2 frontier should move one of the supplied chart/source obligations.
 
+A2 original-loss product-step inverse-density handoff has now landed:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-product-step-inverse-density-handoff.md`.
+Lean specializes that edge-matrix original-loss front end to the concrete
+chart-side inverse product-step Jacobian density along the p.13 raw-order
+tuple.  This removes only the abstract transported-density continuity and
+positivity hypotheses; signed-box source coverage/pushforward, residual
+monomial lower bounds, source-density bounds, and density identification
+remain supplied.  Do not add another finite-integral specialization unless it
+is forced by a downstream chart construction; the next A2 frontier should move
+source coverage, source/product pushforward, residual monomial lower bounds,
+or signed-box density identification.
+
 A2 local-source signed-box and monomial-unit boundary has now landed:
 `threads/03-block-product-reduction/reproduction-a2-local-source-signed-box-monomial-unit-boundary.md`.
 Lean replaces the full source-rank-stratum finite-integral front end by an

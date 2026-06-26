@@ -7596,6 +7596,23 @@ Nonclaims: no source coverage, p.13 product chart construction, product-step
 pushforward identity, original source/prior transport, signed-box density
 identification, normal crossings, pole order, or RLCT.
 
+Latest A2 original-loss product-step inverse-density handoff:
+`OriginalLossLocalMeasure.lean` now specializes the original-loss edge-matrix
+product-family finite-integral front end to the concrete chart-side inverse
+product-step Jacobian density along `paperEndpointFixedBaseP13RawOrderTuple`.
+Lean name:
+`exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase`.
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-product-step-inverse-density-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-original-loss-product-step-inverse-density-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-original-loss-product-step-inverse-density-handoff.md`.
+
+Nonclaims: no p.13 source/product chart construction, source coverage,
+product-step/source pushforward, signed-box density identification, original
+prior transport, normal crossings, pole order, or RLCT.
+
 Latest A2 suffix-step raw-order inverse-density handoff:
 Lean now defines the arbitrary suffix-step raw-shaped target tuple obtained by
 applying the raw-order product-step coordinate map to

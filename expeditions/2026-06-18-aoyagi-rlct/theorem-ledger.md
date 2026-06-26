@@ -8087,6 +8087,23 @@ Nonclaims: no signed-box source chart construction, no pushforward proof, no
 residual monomial lower-bound proof, no density/Jacobian transport, no normal
 crossings, pole order, or RLCT extraction.
 
+Latest A2 original-loss product-step inverse-density handoff:
+`OriginalLossLocalMeasure.lean` now proves
+`exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase`.
+It specializes the existing edge-matrix original-loss product-family front end
+to the concrete chart-side inverse product-step Jacobian density along
+`paperEndpointFixedBaseP13RawOrderTuple`, using the already-proved p.13
+inverse-density continuity and positivity lemmas.  Reproduction and statement
+card:
+`threads/03-block-product-reduction/reproduction-a2-original-loss-product-step-inverse-density-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-original-loss-product-step-inverse-density-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-original-loss-product-step-inverse-density-handoff.md`.
+Nonclaims: no p.13 source chart construction, source coverage, source/product
+pushforward, signed-box density identification, original prior transport,
+normal crossings, pole order, or RLCT extraction.
+
 Latest A2 local-source signed-box and monomial-unit finite-integral boundary:
 `RegularSuspensionLocalMeasure.lean` proves
 `exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_loss_density_bounds`,

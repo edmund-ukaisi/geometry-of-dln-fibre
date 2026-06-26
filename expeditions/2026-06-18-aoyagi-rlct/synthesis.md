@@ -10308,6 +10308,22 @@ front end when future chart construction provides measurability but not global
 continuity of the base edge family.  The signed-box chart, pushforward,
 residual monomial lower bound, and density/Jacobian data remain open/supplied.
 
+Latest A2 original-loss product-step inverse-density handoff:
+`OriginalLossLocalMeasure.lean` now proves
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase
+```
+
+This specializes the edge-matrix original-loss product-family front end by
+using the concrete chart-side inverse product-step Jacobian density along
+`paperEndpointFixedBaseP13RawOrderTuple`.  The proof supplies the abstract
+density continuity and positivity hypotheses from the previous p.13
+inverse-density lemmas, then delegates.  It does not construct the p.13 source
+chart, prove source coverage, prove a product-step/source pushforward,
+identify the signed-box density, transport the original prior, produce normal
+crossings, compute pole order, or prove RLCT.
+
 Latest A2 local-source signed-box/monomial-unit boundary:
 `RegularSuspensionLocalMeasure.lean` now proves
 
