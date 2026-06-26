@@ -40,6 +40,43 @@ variable {M : ℕ}
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 set_option linter.unusedSectionVars false in
+/-- A chart-produced source measure restricts to the retained-passive local
+source when the chart lands there a.e.
+
+This removes only the formal `hmap` equality for a measure already defined as
+the chart pushforward.  It is not a construction of the original source
+measure, a Jacobian theorem, or density transport. -/
+theorem measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α β : Type*} [TopologicalSpace α] [MeasurableSpace α]
+    [OpensMeasurableSpace α] [MeasurableSpace β]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {η : Measure β} {sourceChart : β → α}
+    (hCedge : Continuous Cedge)
+    (hsourceChart : AEMeasurable sourceChart η)
+    (hchart_mem :
+      ∀ᵐ y ∂ η,
+        sourceChart y ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge) :
+    (Measure.map sourceChart η).restrict
+        (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge) =
+      Measure.map sourceChart η := by
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge
+  have hlocal_meas : MeasurableSet localSource := by
+    dsimp [localSource]
+    exact
+      measurableSet_paperEndpointFixedBaseRetainedPassiveP13LocalSource_of_continuous
+        W B U₀ hU₀ Cedge hCedge
+  have hmap_mem : ∀ᵐ x ∂ Measure.map sourceChart η, x ∈ localSource := by
+    exact (ae_map_iff hsourceChart hlocal_meas).2
+      (by simpa [localSource] using hchart_mem)
+  simpa [localSource] using Measure.restrict_eq_self_of_ae_mem hmap_mem
+
+set_option linter.unusedSectionVars false in
 /-- Retained-passive specialization of the source-stratum/local-source
 finite-integral handoff.
 
@@ -813,6 +850,182 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       (by simpa [ρ] using hdensity_le)
 
 set_option linter.unusedSectionVars false in
+/-- Selected-entry signed-box handoff for the chart-produced source measure.
+
+This is the previous selected-entry retained-passive handoff with
+`μ = Measure.map sourceChart signedBoxWithDensity`.  The pushforward equality
+`hmap` is derived from the pointwise fact that the chart lands in the
+retained-passive local source.  The residual readout and local loss/density
+bounds remain explicit hypotheses. -/
+theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [DecidableEq ι]
+    [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {center : Finset ι} (pivot : center) {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {sourceChart : (center → ℝ) → α}
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t Rreg creg Creg : ℝ}
+    {Rres : center → ℝ}
+    (hRreg : 0 < Rreg) (hcreg : 0 < creg) (hCreg : 0 ≤ Creg) (ht : 0 < t)
+    (hCedge : Continuous Cedge)
+    (hbase :
+      Cedge x₀ =
+        fun p : Fin (M + 1) ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hsourceChart : AEMeasurable sourceChart
+      (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hchart_mem :
+      ∀ y : center → ℝ,
+        sourceChart y ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit_pivot :
+      2 * t < ((center.erase pivot.1).card : ℝ) + 1)
+    (hresidual_eq :
+      ∀ y : center → ℝ,
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (sourceChart y)) =
+        SelectedEntrySignedBox.CenterCoord.residual pivot y)
+    (hloss :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            creg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u))
+    (hdensity_nonneg :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            0 ≤ density (x, u))
+    (hdensity_le :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            density (x, u) ≤ Creg) :
+    let sourceMeasure :=
+      (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+        (fun y : center → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))
+    let μ := Measure.map sourceChart sourceMeasure
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge
+    ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+      (∫⁻ z : α × EuclideanSpace ℝ ρ,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρ) Rreg).indicator
+            (fun u =>
+              (loss (z.1, u)) ^
+                  (-(t + (aoyagiTheorem2RegularVariableCount (M + 1) H r : ℝ) / 2)) *
+                density (z.1, u)) z.2) ∂
+          (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  let signedBox :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+  let sourceMeasure :=
+    signedBox.withDensity
+      (fun y : center → ℝ =>
+        ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))
+  let μ := Measure.map sourceChart sourceMeasure
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge
+  have hsourceChart_sourceMeasure : AEMeasurable sourceChart sourceMeasure := by
+    exact hsourceChart.mono_ac
+      (withDensity_absolutelyContinuous signedBox
+        (fun y : center → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y)))
+  have hmap : μ.restrict localSource = Measure.map sourceChart sourceMeasure := by
+    simpa [μ, sourceMeasure, signedBox, localSource] using
+      measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge)
+        (η := sourceMeasure) (sourceChart := sourceChart)
+        hCedge hsourceChart_sourceMeasure
+        (Filter.Eventually.of_forall hchart_mem)
+  simpa [μ, sourceMeasure, signedBox, localSource] using
+    exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity
+      (W := W) (B := B) (pivot := pivot) sourceData
+      (μ := μ) (ν := ν) (sourceChart := sourceChart)
+      (loss := loss) (density := density)
+      (t := t) (Rreg := Rreg) (creg := creg) (Creg := Creg)
+      (Rres := Rres)
+      hRreg hcreg hCreg ht hCedge hbase hsourceChart hmap hRres
+      hcrit_pivot hresidual_eq hloss hdensity_nonneg hdensity_le
+
+set_option linter.unusedSectionVars false in
 /-- If the source chart is realized by retained-passive coordinate data, then
 the retained-passive source readback can be removed from the residual-factor
 matrix hypothesis.
@@ -1272,6 +1485,187 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       (t := t) (Rreg := Rreg) (creg := creg) (Creg := Creg)
       hRreg hcreg hCreg ht hCedge hbase hsourceChart hmap
       hRres hcrit_pivot hresidual_eq hloss hdensity_nonneg hdensity_le
+
+set_option linter.unusedSectionVars false in
+/-- Source-readback selected-entry retained-passive handoff for the
+chart-produced source measure.
+
+This is the no-`hmap` version of
+`..._of_sourceReadback_residualFactorProduct_eq_matrix`: the source measure is
+defined to be the selected-entry signed-box pushforward, and the restriction
+to the retained-passive local source is justified by the supplied chart-image
+membership.  It still does not construct the original DLN source measure,
+prove a source-rank coverage theorem, or compute a Jacobian for an external
+prior. -/
+theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceReadback_residualFactorProduct_eq_matrix_chartProducedMeasure
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [DecidableEq ι]
+    [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {center : Finset ι} (pivot : center) {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {sourceChart : (center → ℝ) → α}
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t Rreg creg Creg : ℝ}
+    {Rres : center → ℝ}
+    (hRreg : 0 < Rreg) (hcreg : 0 < creg) (hCreg : 0 ≤ Creg) (ht : 0 < t)
+    (hCedge : Continuous Cedge)
+    (hbase :
+      Cedge x₀ =
+        fun p : Fin (M + 1) ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hsourceChart : AEMeasurable sourceChart
+      (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hchart_mem :
+      ∀ y : center → ℝ,
+        sourceChart y ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit_pivot :
+      2 * t < ((center.erase pivot.1).card : ℝ) + 1)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (hfactor :
+      ∀ y : center → ℝ,
+        let E :=
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+            (fun p : Fin (M + 1) ↦
+              (Cedge (sourceChart y) p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))
+        ChartLocalSuffixState.residualFactorProduct
+            (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c)))
+    (hloss :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            creg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u))
+    (hdensity_nonneg :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            0 ≤ density (x, u))
+    (hdensity_le :
+      ∀ᶠ x in nhdsWithin x₀
+          (paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+            density (x, u) ≤ Creg) :
+    let sourceMeasure :=
+      (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+        (fun y : center → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))
+    let μ := Measure.map sourceChart sourceMeasure
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge
+    ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+      (∫⁻ z : α × EuclideanSpace ℝ ρ,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρ) Rreg).indicator
+            (fun u =>
+              (loss (z.1, u)) ^
+                  (-(t + (aoyagiTheorem2RegularVariableCount (M + 1) H r : ℝ) / 2)) *
+                density (z.1, u)) z.2) ∂
+          (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  have hresidual_eq :
+      ∀ y : center → ℝ,
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge (sourceChart y)) =
+        SelectedEntrySignedBox.CenterCoord.residual pivot y :=
+    aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_sourceReadback_residualFactorProduct_eq_matrix
+      (W := W) (B := B) (pivot := pivot) sourceChart residualCoordEquiv hfactor
+  exact
+    exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+      (W := W) (B := B) (pivot := pivot) sourceData
+      (ν := ν) (sourceChart := sourceChart)
+      (loss := loss) (density := density)
+      (t := t) (Rreg := Rreg) (creg := creg) (Creg := Creg)
+      (Rres := Rres)
+      hRreg hcreg hCreg ht hCedge hbase hsourceChart hchart_mem hRres
+      hcrit_pivot hresidual_eq hloss hdensity_nonneg hdensity_le
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
