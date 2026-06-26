@@ -13253,3 +13253,26 @@ next determinant calculation.  The one-step forward determinant should be
 checked against the factor `|det A1|^(|rho|-|nu|)`, with additional endpoint
 factors from the nonredundant solves for `A1_0` and `A3_last`.  Current Lean
 only proves one-step determinant-unit facts, not this monomial formula.
+
+Latest retained-passive raw edge tuple target:
+`RetainedPassiveCoordinatesTopology.lean` now also defines the raw edge-family
+tuple equivalence and the retained-passive target-coordinate endomap
+
+```text
+topologyTupleEdgeRawOrder z =
+  edgeFamilyRawOrderTuple (topologyTupleEdgeMatrix z).
+```
+
+The new finite layer proves that raw block extraction/reassembly is a linear
+equivalence between edge families and the existing `TopologyTuple` product
+order, and transfers injectivity on `topologyTupleDetChartSet` from
+`topologyTupleEdgeMatrix` to `topologyTupleEdgeRawOrder`.  The endpoint split
+is by `Fin.cases` for top-left blocks and `Fin.snoc` for lower-left blocks;
+the `M=0` case was explicitly checked.  Bernoulli the 4th passed the
+read-only review and flagged no mathematical blockers.
+
+This is still only a coordinate representation for the target of the future
+Jacobian calculation.  It is not a retained-passive inverse for arbitrary edge
+families, and it proves no derivative, determinant formula, density, measure
+pushforward, image equality, homeomorphism, normal crossings, pole order, or
+RLCT extraction.

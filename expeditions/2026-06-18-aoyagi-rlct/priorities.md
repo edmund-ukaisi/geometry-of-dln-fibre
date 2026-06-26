@@ -6089,3 +6089,16 @@ factors of the form `|det A1|^(|rho|-|nu|)` plus endpoint-solve factors for
 `A1_0` and `A3_last`; this is not yet a Lean theorem.  Do not state a measure
 pushforward before the derivative determinant and target Haar representation
 are in place.
+
+A2 retained-passive raw edge tuple target has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-edge-tuple-target.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-edge-tuple-target.md`.
+Lean adds `edgeFamilyRawOrderLinearEquiv` and the endomap
+`topologyTupleEdgeRawOrder`, with injectivity on `topologyTupleDetChartSet`.
+This closes the target-product-type mismatch needed before derivative work.
+The next priority is now the retained-passive `HasFDerivWithinAt`/Jacobian
+calculation for `topologyTupleEdgeRawOrder` on the tuple determinant chart,
+starting from the pen-and-paper determinant calculation.  Do not claim a
+measure pushforward until that derivative determinant and the corresponding
+target Haar representation are formalized.

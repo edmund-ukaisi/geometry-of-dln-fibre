@@ -206,6 +206,194 @@ theorem image_topologyTupleEdgeMatrix_detChartSet
         (edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
           (K := K) (ρ := ρ) E hchart)
 
+/-- Fixed-base source edge families in the retained-passive shape. -/
+abbrev EdgeFamilyTuple
+    {M : ℕ} (ρ : Type*) (κ' : Fin (M + 2) → Type*) (K : Type*) :=
+  ∀ p : Fin (M + 1), Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K
+
+/-- The raw top-left edge blocks packed in the endpoint order used by
+`TopologyTuple`: edge `0` becomes the endpoint slot and later edges become the
+passive family. -/
+def rawEdgeTupleA1
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    Fin (M + 1) → Matrix ρ ρ K :=
+  Fin.cases
+    (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).Ctop
+    (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).A1passive
+
+/-- The raw lower-left edge blocks packed in the endpoint order used by
+`TopologyTuple`: nonterminal edges become the passive family and the last edge
+becomes the endpoint slot. -/
+def rawEdgeTupleA3
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K :=
+  Fin.snoc
+    (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).A3passive
+    (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).F3
+
+@[simp]
+theorem rawEdgeTupleA1_zero
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') z 0 =
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).Ctop := by
+  simp [rawEdgeTupleA1]
+
+@[simp]
+theorem rawEdgeTupleA1_succ
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) (p : Fin M) :
+    rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') z p.succ =
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).A1passive p := by
+  simp [rawEdgeTupleA1]
+
+@[simp]
+theorem rawEdgeTupleA3_castSucc
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) (p : Fin M) :
+    rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') z p.castSucc =
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).A3passive p := by
+  simp [rawEdgeTupleA3]
+
+@[simp]
+theorem rawEdgeTupleA3_last
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') z (Fin.last M) =
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).F3 := by
+  simp [rawEdgeTupleA3]
+
+/-- Reconstruct an edge family from raw edge blocks packed in the
+`TopologyTuple` product order. -/
+def edgeFamilyOfRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    EdgeFamilyTuple ρ κ' K :=
+  fun p ↦
+    Matrix.fromBlocks
+      (rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') z p)
+      ((ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).F2 p)
+      (rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') z p)
+      ((ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).C p)
+
+/-- Read an edge family into raw block coordinates packed in the
+`TopologyTuple` product order.  This is a target-coordinate readout, not a
+retained-passive coordinate inverse. -/
+def edgeFamilyRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (E : EdgeFamilyTuple ρ κ' K) :
+    TopologyTuple ρ κ' K :=
+  (fun p : Fin M ↦ (E p.succ).toBlocks₁₁,
+    (fun p : Fin (M + 1) ↦ (E p).toBlocks₁₂,
+      (fun p : Fin M ↦ (E p.castSucc).toBlocks₂₁,
+        (fun p : Fin (M + 1) ↦ (E p).toBlocks₂₂,
+          ((E 0).toBlocks₁₁, (E (Fin.last M)).toBlocks₂₁)))))
+
+@[simp]
+theorem edgeFamilyRawOrderTuple_edgeFamilyOfRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    edgeFamilyRawOrderTuple
+        (K := K) (ρ := ρ) (κ' := κ')
+        (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z) = z := by
+  rcases z with ⟨A1passive, F2, A3passive, C, Ctop, F3⟩
+  ext p <;>
+    simp [edgeFamilyRawOrderTuple, edgeFamilyOfRawOrderTuple, ofTopologyTuple,
+      rawEdgeTupleA1,
+      rawEdgeTupleA3]
+
+@[simp]
+theorem edgeFamilyOfRawOrderTuple_edgeFamilyRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (E : EdgeFamilyTuple ρ κ' K) :
+    edgeFamilyOfRawOrderTuple
+        (K := K) (ρ := ρ) (κ' := κ')
+        (edgeFamilyRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') E) = E := by
+  funext p
+  let A : Matrix ρ ρ K :=
+    Fin.cases
+      (motive := fun _ : Fin (M + 1) ↦ Matrix ρ ρ K)
+      (E 0).toBlocks₁₁ (fun q : Fin M ↦ (E q.succ).toBlocks₁₁) p
+  let L : Matrix (κ' p.succ) ρ K :=
+    Fin.snoc
+      (n := M)
+      (α := fun q : Fin (M + 1) ↦ Matrix (κ' q.succ) ρ K)
+      (fun q : Fin M ↦ (E q.castSucc).toBlocks₂₁)
+      (E (Fin.last M)).toBlocks₂₁ p
+  have hA1 : A = (E p).toBlocks₁₁ := by
+    dsimp [A]
+    cases p using Fin.cases <;> simp
+  have hA3 : L = (E p).toBlocks₂₁ := by
+    dsimp [L]
+    cases p using Fin.lastCases <;> simp
+  dsimp [edgeFamilyOfRawOrderTuple, edgeFamilyRawOrderTuple, ofTopologyTuple,
+    rawEdgeTupleA1, rawEdgeTupleA3]
+  change Matrix.fromBlocks A (E p).toBlocks₁₂ L (E p).toBlocks₂₂ = E p
+  rw [hA1, hA3]
+  exact Matrix.fromBlocks_toBlocks (E p)
+
+/-- Block extraction gives a linear equivalence between edge families and raw
+edge blocks packed in the `TopologyTuple` product order. -/
+def edgeFamilyRawOrderLinearEquiv
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [Semiring K] :
+    EdgeFamilyTuple ρ κ' K ≃ₗ[K] TopologyTuple ρ κ' K where
+  toFun := edgeFamilyRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')
+  invFun := edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')
+  map_add' E E' := by
+    rcases M with _ | M
+    · ext <;> rfl
+    · ext <;> rfl
+  map_smul' a E := by
+    rcases M with _ | M
+    · ext <;> rfl
+    · ext <;> rfl
+  left_inv := edgeFamilyOfRawOrderTuple_edgeFamilyRawOrderTuple
+    (K := K) (ρ := ρ) (κ' := κ')
+  right_inv := edgeFamilyRawOrderTuple_edgeFamilyOfRawOrderTuple
+    (K := K) (ρ := ρ) (κ' := κ')
+
+/-- The retained-passive source map with its edge-family output read in raw
+block coordinates.  This is an endomap of the ambient tuple space, intended as
+the target-coordinate map for a future Jacobian theorem. -/
+def topologyTupleEdgeRawOrder
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    TopologyTuple ρ κ' K :=
+  edgeFamilyRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')
+    (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z)
+
+@[simp]
+theorem edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    edgeFamilyOfRawOrderTuple
+        (K := K) (ρ := ρ) (κ' := κ')
+        (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z) =
+      topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z := by
+  simp [topologyTupleEdgeRawOrder]
+
+/-- The raw-order tuple representative of the retained-passive source map is
+injective on the tuple determinant chart. -/
+theorem injOn_topologyTupleEdgeRawOrder_detChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    Set.InjOn
+      (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ'))
+      (topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  intro z hz w hw hraw
+  apply injOn_topologyTupleEdgeMatrix_detChartSet
+      (K := K) (ρ := ρ) (κ' := κ') hz hw
+  have hE := congrArg
+    (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')) hraw
+  simpa using hE
+
 /-- Nonredundant retained-passive coordinates carry the product topology on
 their matrix fields. -/
 instance instTopologicalSpace

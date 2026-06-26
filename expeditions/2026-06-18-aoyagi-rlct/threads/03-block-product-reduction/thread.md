@@ -9087,3 +9087,46 @@ statement.  It does not prove endpoint equivalences, identify a real source
 chart/suffix family, prove pivot nonzero, absorb outside factors, or prove
 source image, pushforward/Jacobian, original-loss, normal-crossing,
 pole-order, or RLCT statements.
+
+## 2026-06-26 A2 retained-passive raw edge tuple target
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-edge-tuple-target.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-edge-tuple-target.md`.
+Review:
+`review-a2-retained-passive-raw-edge-tuple-target.md`
+passed by read-only scout `Bernoulli the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean`.
+
+Lean now exposes:
+
+```text
+EdgeFamilyTuple
+rawEdgeTupleA1
+rawEdgeTupleA3
+edgeFamilyOfRawOrderTuple
+edgeFamilyRawOrderTuple
+edgeFamilyRawOrderLinearEquiv
+topologyTupleEdgeRawOrder
+injOn_topologyTupleEdgeRawOrder_detChartSet
+```
+
+The raw tuple readout packs edge-family blocks into the existing
+`TopologyTuple` order: first top-left block into `Ctop`, later top-left blocks
+into `A1passive`, all upper-right blocks into `F2`, nonterminal lower-left
+blocks into `A3passive`, the last lower-left block into `F3`, and all
+lower-right blocks into `C`.  The inverse reconstructs each edge with
+`Matrix.fromBlocks`; Lean proves the two inverse identities and a linear
+equivalence.
+
+Composing this readout with `topologyTupleEdgeMatrix` gives the endomap
+`topologyTupleEdgeRawOrder`, and injectivity on the tuple determinant chart is
+transferred back through the raw edge-family equivalence.
+
+This removes the target-product mismatch for future retained-passive
+derivative work.  It does not prove a derivative, determinant formula,
+density, measure pushforward, image equality, homeomorphism, source-rank
+coverage, normal-crossing theorem, pole order, or RLCT statement.
