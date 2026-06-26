@@ -11504,3 +11504,29 @@ neighborhood filter of any chart point.
 This is not yet the bounded-density/unit theorem needed for local
 integrability handoffs: no continuity, upper bound, source/prior comparison,
 source coverage, normal crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Product-Step Jacobian Density Continuity
+
+The local unit-control bridge for the source-side forward raw-order
+product-step Jacobian density has landed in `ProductReductionStepMeasure.lean`.
+Lean proves:
+
+```text
+continuousAt_productReductionStepRawOrderJacobianCLM_apply_of_mem_rawDetChartSet
+continuousAt_productReductionStepRawOrderJacobianCLM_of_mem_rawDetChartSet
+continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+exists_pos_eventually_le_productReductionStepRawOrderJacobianAbsDet_nhds
+exists_pos_eventually_productReductionStepRawOrderJacobianAbsDet_le_nhds
+```
+
+The continuity proof is local at determinant-chart points.  It expands the
+formal derivative formula after applying the CLM to a fixed vector, handles
+the inverse terms `A1^{-1}` and `(C1 A1)^{-1}` by determinant-chart
+continuity, and reconstructs CLM-valued continuity by finite basis matrix
+coordinates.  Continuity of determinant and absolute value gives density
+continuity.  Together with positivity, this yields positive lower and upper
+eventual bounds near the base point.
+
+This is not original DLN source/prior transport and not a chart-side inverse
+density theorem.  It does not prove source coverage, normal crossings, pole
+order, or RLCT.

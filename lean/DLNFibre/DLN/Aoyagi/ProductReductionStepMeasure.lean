@@ -193,6 +193,217 @@ theorem eventually_productReductionStepRawOrderJacobianAbsDet_pos_nhds
     productReductionStepRawOrderJacobianAbsDet_pos
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) z hz
 
+/-- Applying the raw-order product-step derivative family to a fixed tangent
+vector varies continuously at determinant-chart points. -/
+theorem continuousAt_productReductionStepRawOrderJacobianCLM_apply_of_mem_rawDetChartSet
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν)
+    (v : ProductReductionStepRawTopologyTuple ρ π μ ν) :
+    ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        productReductionStepRawOrderJacobianCLM
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z v)
+      z₀ := by
+  let dC1 : Matrix ρ ρ ℝ := v.1
+  let dD : Matrix π μ ℝ := v.2.1
+  let dF3old : Matrix π ρ ℝ := v.2.2.1
+  let dA1 : Matrix ρ ρ ℝ := v.2.2.2.1
+  let dA2 : Matrix ρ ν ℝ := v.2.2.2.2.1
+  let dA3 : Matrix μ ρ ℝ := v.2.2.2.2.2.1
+  let dA4 : Matrix μ ν ℝ := v.2.2.2.2.2.2
+  have hA1 : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν => z.2.2.2.1) z₀ := by
+    fun_prop
+  have hA1inv : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν => (z.2.2.2.1)⁻¹) z₀ :=
+    ContinuousAt.comp
+      (x := z₀)
+      (f := fun z : ProductReductionStepRawTopologyTuple ρ π μ ν => z.2.2.2.1)
+      (g := fun A : Matrix ρ ρ ℝ => A⁻¹)
+      (continuousAt_matrix_inv_of_isUnit_det (A := z₀.2.2.2.1) hz₀.2) hA1
+  have hCtop : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν => z.1 * z.2.2.2.1) z₀ := by
+    fun_prop
+  have hCtopUnit : IsUnit (z₀.1 * z₀.2.2.2.1).det := by
+    simpa [Matrix.det_mul] using hz₀.1.mul hz₀.2
+  have hCtopInv : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν => (z.1 * z.2.2.2.1)⁻¹) z₀ :=
+    ContinuousAt.comp
+      (x := z₀)
+      (f := fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        z.1 * z.2.2.2.1)
+      (g := fun A : Matrix ρ ρ ℝ => A⁻¹)
+      (continuousAt_matrix_inv_of_isUnit_det
+        (A := z₀.1 * z₀.2.2.2.1) hCtopUnit) hCtop
+  have hdCtop : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        dC1 * z.2.2.2.1 + z.1 * dA1) z₀ := by
+    fun_prop
+  have hdF2 : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        (z.2.2.2.1)⁻¹ * dA1 * (z.2.2.2.1)⁻¹ * z.2.2.2.2.1 -
+          (z.2.2.2.1)⁻¹ * dA2) z₀ := by
+    fun_prop
+  have hdF3 : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        dF3old
+          - dD * z.2.2.2.2.2.1 * (z.1 * z.2.2.2.1)⁻¹
+          - z.2.1 * dA3 * (z.1 * z.2.2.2.1)⁻¹
+          + z.2.1 * z.2.2.2.2.2.1 * (z.1 * z.2.2.2.1)⁻¹ *
+              (dC1 * z.2.2.2.1 + z.1 * dA1) *
+                (z.1 * z.2.2.2.1)⁻¹) z₀ := by
+    fun_prop
+  have hdC : ContinuousAt
+      (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+        dA4
+          - dA3 * (z.2.2.2.1)⁻¹ * z.2.2.2.2.1
+          + z.2.2.2.2.2.1 * (z.2.2.2.1)⁻¹ * dA1 *
+              (z.2.2.2.1)⁻¹ * z.2.2.2.2.1
+          - z.2.2.2.2.2.1 * (z.2.2.2.1)⁻¹ * dA2) z₀ := by
+    fun_prop
+  simpa [productReductionStepRawOrderJacobianCLM,
+    productReductionStepFormalJacobianRawOrder,
+    productReductionStepFormalJacobian_apply,
+    productReductionStepFormalJacobianFormula,
+    productReductionStepChartTangentRawOrderEquiv,
+    productReductionStepRawCoordinatesOfTopologyTuple,
+    dC1, dD, dF3old, dA1, dA2, dA3, dA4] using
+      hdCtop.prodMk
+        ((continuousAt_const : ContinuousAt
+          (fun _ : ProductReductionStepRawTopologyTuple ρ π μ ν => dD) z₀).prodMk
+          (hdF3.prodMk
+            ((continuousAt_const : ContinuousAt
+              (fun _ : ProductReductionStepRawTopologyTuple ρ π μ ν => dA1) z₀).prodMk
+              (hdF2.prodMk
+                ((continuousAt_const : ContinuousAt
+                  (fun _ : ProductReductionStepRawTopologyTuple ρ π μ ν => dA3) z₀).prodMk
+                  hdC)))))
+
+/-- The raw-order product-step derivative family is continuous at
+determinant-chart points. -/
+theorem continuousAt_productReductionStepRawOrderJacobianCLM_of_mem_rawDetChartSet
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ContinuousAt
+      (productReductionStepRawOrderJacobianCLM
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      z₀ := by
+  classical
+  let E : Type _ := ProductReductionStepRawTopologyTuple ρ π μ ν
+  let b : Module.Basis (Fin (Module.finrank ℝ E)) ℝ E := Module.finBasis ℝ E
+  let J : E → E →L[ℝ] E :=
+    productReductionStepRawOrderJacobianCLM
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  let M : E → Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)) ℝ :=
+    fun z => LinearMap.toMatrix b b ((J z : E →ₗ[ℝ] E))
+  have hM : ContinuousAt M z₀ := by
+    refine continuousAt_pi.2 ?_
+    intro i
+    refine continuousAt_pi.2 ?_
+    intro j
+    have happ : ContinuousAt (fun z : E => J z (b j)) z₀ := by
+      simpa [E, J] using
+        continuousAt_productReductionStepRawOrderJacobianCLM_apply_of_mem_rawDetChartSet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+          (z₀ := z₀) (hz₀ := hz₀) (v := b j)
+    have hcoord : ContinuousAt (fun z : E => b.coord i (J z (b j))) z₀ :=
+      (b.coord i).continuous_of_finiteDimensional.continuousAt.comp happ
+    simpa [M, LinearMap.toMatrix_apply] using hcoord
+  have hrealize : ContinuousAt
+      (fun A : Matrix (Fin (Module.finrank ℝ E)) (Fin (Module.finrank ℝ E)) ℝ =>
+        LinearMap.toContinuousLinearMap (Matrix.toLin b b A))
+      (M z₀) :=
+    (continuous_matrix_toContinuousLinearMap b b).continuousAt
+  have hcomp : ContinuousAt
+      (fun z : E =>
+        LinearMap.toContinuousLinearMap (Matrix.toLin b b (M z)))
+      z₀ :=
+    hrealize.comp hM
+  convert hcomp using 1
+  funext z
+  apply ContinuousLinearMap.ext
+  intro v
+  change J z v =
+    Matrix.toLin b b
+      (LinearMap.toMatrix b b ((J z : E →ₗ[ℝ] E))) v
+  rw [Matrix.toLin_toMatrix]
+  rfl
+
+set_option maxRecDepth 2048 in
+/-- The absolute determinant density of the raw-order product-step derivative
+is continuous at determinant-chart points. -/
+theorem continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ContinuousAt
+      (productReductionStepRawOrderJacobianAbsDet
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν))
+      z₀ := by
+  have hJ :=
+    continuousAt_productReductionStepRawOrderJacobianCLM_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z₀ hz₀
+  change ContinuousAt
+    (fun z : ProductReductionStepRawTopologyTuple ρ π μ ν =>
+      |(productReductionStepRawOrderJacobianCLM
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z).det|)
+    z₀
+  exact (ContinuousLinearMap.continuous_det.continuousAt.comp hJ).abs
+
+/-- Near any determinant-chart point, the raw-order product-step Jacobian
+density admits a positive lower bound. -/
+theorem exists_pos_eventually_le_productReductionStepRawOrderJacobianAbsDet_nhds
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ∃ ε : ℝ, 0 < ε ∧
+      ∀ᶠ z in 𝓝 z₀,
+        ε ≤ productReductionStepRawOrderJacobianAbsDet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z := by
+  let density : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ :=
+    productReductionStepRawOrderJacobianAbsDet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hdensity : ContinuousAt density z₀ :=
+    continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z₀ hz₀
+  have hpos : 0 < density z₀ :=
+    productReductionStepRawOrderJacobianAbsDet_pos
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z₀ hz₀
+  refine ⟨density z₀ / 2, half_pos hpos, ?_⟩
+  have htarget : ∀ᶠ y in 𝓝 (density z₀), density z₀ / 2 ≤ y := by
+    exact eventually_ge_nhds (show density z₀ / 2 < density z₀ by linarith)
+  exact hdensity.eventually htarget
+
+/-- Near any determinant-chart point, the raw-order product-step Jacobian
+density admits a positive upper bound. -/
+theorem exists_pos_eventually_productReductionStepRawOrderJacobianAbsDet_le_nhds
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype π]
+    [Fintype μ] [Fintype ν]
+    (z₀ : ProductReductionStepRawTopologyTuple ρ π μ ν)
+    (hz₀ : z₀ ∈ productReductionStepRawDetChartSet ρ π μ ν) :
+    ∃ K : ℝ, 0 < K ∧
+      ∀ᶠ z in 𝓝 z₀,
+        productReductionStepRawOrderJacobianAbsDet
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z ≤ K := by
+  let density : ProductReductionStepRawTopologyTuple ρ π μ ν → ℝ :=
+    productReductionStepRawOrderJacobianAbsDet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν)
+  have hdensity : ContinuousAt density z₀ :=
+    continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) z₀ hz₀
+  refine ⟨max (density z₀ + 1) 1, ?_, ?_⟩
+  · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
+  · have htarget : ∀ᶠ y in 𝓝 (density z₀), y ≤ density z₀ + 1 := by
+      exact eventually_le_nhds (show density z₀ < density z₀ + 1 by linarith)
+    exact (hdensity.eventually htarget).mono
+      (fun _ hz ↦ hz.trans (le_max_left _ _))
+
 /-- The raw-order p. 13 product-step map preserves the determinant chart. -/
 theorem mapsTo_productReductionStepTopologyTupleToChartRawOrder_detChart
     {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ]

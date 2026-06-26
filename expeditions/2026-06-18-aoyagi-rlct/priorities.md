@@ -5014,3 +5014,15 @@ in the weighted Haar theorem. The next density priority is the harder one:
 continuity/local boundedness or a two-sided local unit estimate if it can be
 proved cleanly. Do not infer original source/prior transport, source
 coverage, normal crossings, pole order, or RLCT.
+
+A2 product-step Jacobian density continuity and local unit bounds have now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-jacobian-density-continuity.md`.
+Lean proves continuity of the raw-order product-step Jacobian CLM family at
+determinant-chart points, continuity of the forward absolute determinant
+density, and positive lower/upper eventual bounds.  The next density
+priority, if needed, is the chart-side inverse-density statement with the
+correct measure orientation.  Do not identify the forward density
+`|det D Phi(x)|` with the inverse chart density
+`|det D Phi(Phi^{-1}(y))|^{-1}`, and do not infer original source/prior
+transport, source coverage, normal crossings, pole order, or RLCT.

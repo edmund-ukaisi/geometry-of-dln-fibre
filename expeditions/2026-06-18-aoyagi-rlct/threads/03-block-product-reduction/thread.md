@@ -6489,3 +6489,34 @@ positivity also holds eventually near any determinant-chart point.
 This is not a continuity theorem, not an upper-bound theorem, not original
 DLN source/prior transport, not source coverage, not normal crossings, not
 pole order, and not RLCT.
+
+## 2026-06-26 A2 product-step Jacobian density continuity
+
+Reproduction:
+`reproduction-a2-product-step-jacobian-density-continuity.md`.
+Statement card:
+`statement-card-a2-product-step-jacobian-density-continuity.md`.
+Review:
+`review-a2-product-step-jacobian-density-continuity.md`.
+
+Lean now proves:
+
+```text
+continuousAt_productReductionStepRawOrderJacobianCLM_apply_of_mem_rawDetChartSet
+continuousAt_productReductionStepRawOrderJacobianCLM_of_mem_rawDetChartSet
+continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet
+exists_pos_eventually_le_productReductionStepRawOrderJacobianAbsDet_nhds
+exists_pos_eventually_productReductionStepRawOrderJacobianAbsDet_le_nhds
+```
+
+The proof expands the formal p. 13 derivative formula at a fixed tangent
+vector, uses local continuity of `A1^{-1}` and `(C1 A1)^{-1}` at
+determinant-chart points, then reconstructs continuity of the
+continuous-linear-map valued derivative family using finite basis matrix
+coordinates.  Determinant and absolute-value continuity give continuity of
+the source-side forward density.  Positivity at the base point gives a
+positive local lower bound; continuity gives a positive local upper bound.
+
+This is source-side forward-density unit control.  It is not chart-side
+inverse-density transport, original DLN source/prior transport, source
+coverage, normal crossings, pole order, or RLCT.

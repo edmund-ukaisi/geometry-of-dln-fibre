@@ -8868,6 +8868,25 @@ and
 This does not prove density continuity, local boundedness above, source/prior
 measure comparison, source coverage, normal crossings, pole order, or RLCT.
 
+Latest A2 product-step Jacobian density continuity:
+`ProductReductionStepMeasure.lean` now proves local continuity and two-sided
+eventual unit bounds for the source-side forward raw-order product-step
+Jacobian density at determinant-chart points. Lean names:
+`continuousAt_productReductionStepRawOrderJacobianCLM_apply_of_mem_rawDetChartSet`,
+`continuousAt_productReductionStepRawOrderJacobianCLM_of_mem_rawDetChartSet`,
+`continuousAt_productReductionStepRawOrderJacobianAbsDet_of_mem_rawDetChartSet`,
+`exists_pos_eventually_le_productReductionStepRawOrderJacobianAbsDet_nhds`,
+and
+`exists_pos_eventually_productReductionStepRawOrderJacobianAbsDet_le_nhds`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-jacobian-density-continuity.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-jacobian-density-continuity.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-jacobian-density-continuity.md`.
+This does not prove chart-side inverse-density transport, original DLN
+source/prior measure comparison, source coverage, normal crossings, pole
+order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source
