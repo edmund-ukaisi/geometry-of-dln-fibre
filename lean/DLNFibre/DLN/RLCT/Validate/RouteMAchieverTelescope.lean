@@ -184,6 +184,31 @@ theorem chain_telescope_zero (c : Chain n u) :
     c.C 0 * c.suffix 0 (Nat.zero_le n) = u • c.Hmat 0 (Nat.zero_le n) :=
   c.chain_telescope n 0 (by omega)
 
+/-! ## Non-vacuity: a length-1 chain telescopes to `u • H`
+
+A concrete `n = 1` chain with the binding shape `C_0 = 1`, `C_1 = u • R`, `B_0 = 0`, `E_0 = R`: the
+single local identity `1 · A_0 = 0 · C_1 + u • R` forces `A_0 = u • R` (one radial pivot on the lone
+layer — the `L = 1` / RRR achiever). The keystone then yields `suffix_0 = A_0 = u • R = u • Hmat_0`,
+confirming the engine fires non-vacuously and reproduces the `prod = u·H` shape at `s = 0`. -/
+example (u : ℝ) (R : Matrix (Fin 1) (Fin 1) ℝ) :
+    True := by
+  let c : Chain 1 u :=
+    { Wwid := fun _ => 1, Twid := fun _ => 1
+      A := fun _ => u • R
+      C := fun k => if k = 0 then 1 else u • R
+      B := fun _ => 0
+      E := fun _ => R
+      R := R
+      step := by
+        intro k hk
+        obtain rfl : k = 0 := by omega
+        simp
+      base := by simp }
+  -- the engine fires: `C_0 · suffix_0 = u • Hmat_0`, i.e. `1 · (u•R) = u • R`
+  have : c.C 0 * c.suffix 0 (Nat.zero_le 1) = u • c.Hmat 0 (Nat.zero_le 1) :=
+    Chain.chain_telescope_zero c
+  trivial
+
 end Chain
 
 end DLNFibre.DLN.RLCT
