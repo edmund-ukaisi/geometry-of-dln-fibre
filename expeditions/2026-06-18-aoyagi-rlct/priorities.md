@@ -4819,3 +4819,13 @@ and passive `D`.  The next meaningful A2 step is either the full product-step
 formal Jacobian unit or direct production of p.13 source-measure/chart data;
 do not infer density transport or analytic change-of-variables from this
 finite formal calculation.
+
+A2 product-step fixed-passive formal Jacobian unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-fixed-passive-formal-jacobian-unit.md`.
+Lean proves the fixed-passive tangent map for the p. 13 one-step coordinate
+change is a linear equivalence and has unit finite determinant. It varies
+`C1`, old `F3`, `A2`, and `A4`, while keeping `D`, `A1`, and `A3` fixed. This
+is the next Jacobian brick after the Schur core, but still not the full
+variable-`D/A1/A3` p. 13 formal Jacobian and not analytic density/Jacobian
+transport. The next Jacobian route is the full product-step tangent map with a
+chart-to-raw tangent reorder before any determinant statement.

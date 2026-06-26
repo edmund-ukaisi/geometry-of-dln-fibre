@@ -6217,3 +6217,40 @@ This remains formal finite Jacobian arithmetic only.  It is not a
 `HasFDerivAt` theorem, not the full p. 13 product-step Jacobian for
 `(C1,D,F3_old,A1,A2,A3,A4)`, not source-measure or density transport, not chart
 coverage, not normal crossings, not pole order, and not RLCT extraction.
+
+## 2026-06-26 A2 product-step fixed-passive formal Jacobian unit
+
+Reproduction:
+`reproduction-a2-product-step-fixed-passive-formal-jacobian-unit.md`.
+Statement card:
+`statement-card-a2-product-step-fixed-passive-formal-jacobian-unit.md`.
+Review:
+`review-a2-product-step-fixed-passive-formal-jacobian-unit.md`.
+
+Lean now proves:
+
+```text
+ProductStepFixedPassiveRawTangent
+ProductStepFixedPassiveChartTangent
+productStepFixedPassiveFormalJacobian
+productStepFixedPassiveFormalJacobianInverse
+productStepFixedPassiveFormalJacobianEquiv
+productStepFixedPassiveFormalJacobian_det_isUnit
+```
+
+This extends the Schur-core formal Jacobian work by allowing the top block
+`C1` and accumulated old `F3` field to vary while keeping `D`, `A1`, and `A3`
+fixed.  The formal tangent formulas are the fixed-passive linearisation of
+
+```text
+Ctop = C1*A1,
+F2   = -(A1^-1*A2),
+F3   = F3old - D*A3*(C1*A1)^-1,
+C    = A4 - A3*A1^-1*A2.
+```
+
+The determinant-unit theorem is finite-dimensional and assumes finite `pi` and
+`nu`. It has no `D.det` hypothesis. This remains a formal finite tangent
+calculation: no full variable-`D/A1/A3` p. 13 Jacobian, no analytic derivative,
+no source-measure or density transport, no normal crossings, no pole order,
+and no RLCT.

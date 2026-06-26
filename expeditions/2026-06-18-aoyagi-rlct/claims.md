@@ -7375,3 +7375,27 @@ and
 Nonclaims: no nonlinear analytic derivative theorem, source-measure
 pushforward, density transport, exact determinant exponent/sign, full p.13
 product-step Jacobian, normal crossings, pole order, or RLCT.
+
+Latest A2 product-step fixed-passive formal Jacobian unit:
+Lean now proves that the fixed-passive p. 13 one-step formal tangent map is a
+linear equivalence, and that its finite determinant is a unit.
+
+Lean names:
+`ProductStepFixedPassiveRawTangent`,
+`ProductStepFixedPassiveChartTangent`,
+`productStepFixedPassiveFormalJacobian`,
+`productStepFixedPassiveFormalJacobianInverse`,
+`productStepFixedPassiveFormalJacobianEquiv`,
+and
+`productStepFixedPassiveFormalJacobian_det_isUnit`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-product-step-fixed-passive-formal-jacobian-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-fixed-passive-formal-jacobian-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-fixed-passive-formal-jacobian-unit.md`.
+
+Nonclaims: this slice varies only `C1`, old `F3`, `A2`, and `A4`, with `D`,
+`A1`, and `A3` fixed. It is not the full p. 13 product-step Jacobian, not an
+analytic derivative theorem, not source-measure pushforward or density
+transport, and not normal crossings, pole order, or RLCT.

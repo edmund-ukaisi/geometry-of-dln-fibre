@@ -11037,3 +11037,29 @@ source pushforward, density transport, exact determinant exponent/sign, or the
 full product-step Jacobian with variable `C1`, `A1`, old `F3`, and passive
 `D`.  The next A2 Jacobian frontier is either that full formal product-step
 linear equivalence or direct source production of the p.13 chart/measure data.
+
+## Latest A2 Product-Step Fixed-Passive Formal Jacobian Unit
+
+`ProductReductionStepJacobian.lean` now also proves a fixed-passive p. 13
+one-step formal tangent slice. Raw tangent variables are
+`(dC1,dF3old,dA2,dA4)`, chart tangent variables are
+`(dCtop,dF3,dF2,dC)`, and the parameters `D`, `A1`, and `A3` are fixed.
+
+Lean names:
+
+```text
+ProductStepFixedPassiveRawTangent
+ProductStepFixedPassiveChartTangent
+productStepFixedPassiveFormalJacobian
+productStepFixedPassiveFormalJacobianInverse
+productStepFixedPassiveFormalJacobianEquiv
+productStepFixedPassiveFormalJacobian_det_isUnit
+```
+
+The theorem proves a formal `LinearEquiv` and then a unit determinant for the
+finite tangent determinant under `[Finite pi] [Finite nu]`. The determinant
+chart still carries `IsUnit C1.det` and `IsUnit A1.det`; no `D.det` hypothesis
+is used. This slice is intentionally not the full p. 13 Jacobian, because it
+omits the `dD`, `dA1`, and `dA3` terms. It is also not analytic
+`HasFDerivAt`, source-measure pushforward, density transport, normal crossings,
+pole order, or RLCT extraction.
