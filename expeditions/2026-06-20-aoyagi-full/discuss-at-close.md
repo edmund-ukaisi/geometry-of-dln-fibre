@@ -632,3 +632,12 @@ but NOT a research wall — per the operator's ambition mandate I'm CHARGING it 
 the Schur-frame det keystone, then bounded sub-builds), not deferring. Flagged for operator awareness: this general det is
 the single largest remaining R1-LOWER-leg piece; the R1-UPPER leg (the depth-`r` hfin recursion) + L2-general + D1 remain
 beyond it. The concrete anchors (334/4422/3333) are banked for all of R1-lower if the ∀M det proves longer than hoped.
+
+## 33. Global-memory pollution from the theta-components stray (2026-06-26, housekeeping flag).
+A design scout flagged global-memory files under `~/.claude/projects/.../memory/` written by OTHER contexts —
+`bundle-per-pivot-conjugation-route.md` (theta-components thread 22), `MEMORY.md`,
+`c2a-fibre-component-dimension-mismatch.md`, `theta-components-count-chain-is-ncard-only.md`. These violate the
+no-global-memory rule but are NOT aoyagi-full's content (they're the theta-components / fibre-codim strays', Items 23/29).
+The controller did NOT delete them (deleting another expedition's notes is not aoyagi-full's call; re-homing them into
+aoyagi-full would be wrong). Operator: as part of the strays' disposition, these global-memory notes should be re-homed
+in-repo (in theta-components' / fibre-codim's docs) and the global files cleared. Aoyagi-full writes in-repo only.
