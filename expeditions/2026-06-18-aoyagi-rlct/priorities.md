@@ -5390,3 +5390,16 @@ normal-crossing certificates, so no global arbitrary-base-point comparison is
 used.  Reopen A3 only if a future theorem claims a global arbitrary-base-point
 RLCT statement or claims that a chosen source-produced certificate attains the
 global DLN RLCT.
+
+## A2/A4/A5 Frontier Saturation - 2026-06-26
+
+The current A2/A4/A5 finite wrapper layer is saturated; see
+`frontier-saturation-audit-2026-06-26.md`.  Xhigh scouts `Bacon the 3rd`,
+`Boole the 3rd`, and `Leibniz the 3rd`, plus controller inspection of Aoyagi
+pp. 24-27, found no source-faithful next theorem that removes a real supplied
+field.  The next progress must start one of the construction packages:
+retained-passive p.13 source chart, analytic selected-entry atlas/source
+production, or A5 terminal no-extra/classifier theorem.  Do not promote finite
+selected-entry coverage/transition names, `SourceProductionObligation`
+constructors, or first-nonbase/cardinal-squeeze theorems into analytic/source
+fields.

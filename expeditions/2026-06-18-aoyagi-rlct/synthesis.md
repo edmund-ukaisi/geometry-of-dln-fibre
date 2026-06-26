@@ -12443,3 +12443,16 @@ deepest-singular-point comparison.  Under the current citation rule, do not
 cite Theorem 4 and do not smuggle it into a supplied boundary.  A3 reopens only
 for a future global arbitrary-base-point theorem or for a source-production
 claim that the selected certificate attains the global DLN RLCT.
+
+## A2/A4/A5 Frontier Saturation - 2026-06-26
+
+The latest frontier audit is
+`frontier-saturation-audit-2026-06-26.md`.  The controller rendered and checked
+Aoyagi pp. 24-27 for Lemma 5 and integrated read-only xhigh scouts on A2, A4,
+and A5.  The conclusion is negative for new wrapper work: A2 still needs an
+explicit retained-passive p.13 source chart with coverage and density
+transport; A4 still needs an analytic selected-entry atlas/source-production
+package; A5 still needs terminal no-extra/classifier data at the Lean
+terminal-label level.  Existing finite theorems remain useful conditional
+infrastructure, but must not be used as analytic coverage, source production,
+selector injectivity, or no-extra terminal-minimum coverage.
