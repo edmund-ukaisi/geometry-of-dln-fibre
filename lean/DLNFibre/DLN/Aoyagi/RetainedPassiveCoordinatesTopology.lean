@@ -41,6 +41,171 @@ def topologyTuple
     TopologyTuple ρ κ' K :=
   (data.A1passive, (data.F2, (data.A3passive, (data.C, (data.Ctop, data.F3)))))
 
+/-- Rebuild retained-passive nonredundant coordinate data from its product
+tuple of fields. -/
+def ofTopologyTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' where
+  A1passive := z.1
+  F2 := z.2.1
+  A3passive := z.2.2.1
+  C := z.2.2.2.1
+  Ctop := z.2.2.2.2.1
+  F3 := z.2.2.2.2.2
+
+@[simp]
+theorem topologyTuple_ofTopologyTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (z : TopologyTuple ρ κ' K) :
+    topologyTuple (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z) = z := by
+  rcases z with ⟨A1passive, F2, A3passive, C, Ctop, F3⟩
+  rfl
+
+@[simp]
+theorem ofTopologyTuple_topologyTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') (topologyTuple data) = data := by
+  cases data
+  rfl
+
+/-- The product tuple representation is injective. -/
+theorem topologyTuple_injective
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} :
+    Function.Injective
+      (topologyTuple :
+        RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' →
+          TopologyTuple ρ κ' K) := by
+  intro data data' h
+  calc
+    data = ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') (topologyTuple data) := by
+      rw [ofTopologyTuple_topologyTuple]
+    _ = ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') (topologyTuple data') := by
+      rw [h]
+    _ = data' := by
+      rw [ofTopologyTuple_topologyTuple]
+
+/-- The retained-passive determinant chart as a set in product-tuple
+coordinates. -/
+def topologyTupleDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] :
+    Set (TopologyTuple ρ κ' K) :=
+  {z | (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).detChart}
+
+@[simp]
+theorem mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ]
+    (z : TopologyTuple ρ κ' K) :
+    z ∈ topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') ↔
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).detChart := by
+  rfl
+
+@[simp]
+theorem topologyTuple_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    topologyTuple data ∈ topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') ↔
+      data.detChart := by
+  simp [topologyTupleDetChartSet]
+
+/-- The retained-passive fixed-base source map written as a map out of the
+product tuple space. -/
+def topologyTupleEdgeMatrix
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    ∀ p : Fin (M + 1), Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K :=
+  (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).edgeMatrix
+
+@[simp]
+theorem topologyTupleEdgeMatrix_topologyTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
+    topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') (topologyTuple data) =
+      data.edgeMatrix := by
+  simp [topologyTupleEdgeMatrix]
+
+/-- The tuple-level retained-passive source map sends the tuple determinant
+chart into the source-recursive determinant chart. -/
+theorem mapsTo_topologyTupleEdgeMatrix_detChartSet_sourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    Set.MapsTo
+      (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ'))
+      (topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ'))
+      (sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  intro z hz
+  exact
+    (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+      (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z)).2
+      (sourceRecursiveDetChart_edgeMatrix_of_detChart
+        (K := K) (ρ := ρ)
+        (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z)
+        ((mem_topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') z).1 hz))
+
+/-- The tuple-level retained-passive source map is injective on the tuple
+determinant chart. -/
+theorem injOn_topologyTupleEdgeMatrix_detChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    Set.InjOn
+      (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ'))
+      (topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  intro z hz w hw hE
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  let data' := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') w
+  have hEdata : data.edgeMatrix = data'.edgeMatrix := by
+    simpa [topologyTupleEdgeMatrix, data, data'] using hE
+  have hdata : data = data' := by
+    exact
+      edgeMatrix_ext_of_detChart (K := K) (ρ := ρ) data data'
+        ((mem_topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') z).1 hz)
+        ((mem_topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') w).1 hw)
+        hEdata
+  calc
+    z = topologyTuple data := by
+      simp [data]
+    _ = topologyTuple data' := by
+      rw [hdata]
+    _ = w := by
+      simp [data']
+
+/-- The tuple-level retained-passive source map has image exactly the
+source-recursive determinant chart. -/
+theorem image_topologyTupleEdgeMatrix_detChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') ''
+        topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') =
+      sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+  ext E
+  constructor
+  · rintro ⟨z, hz, rfl⟩
+    exact
+      mapsTo_topologyTupleEdgeMatrix_detChartSet_sourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') hz
+  · intro hE
+    let data := sourceReadback (K := K) (ρ := ρ) E
+    have hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E :=
+      (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E).1 hE
+    refine ⟨topologyTuple data, ?_, ?_⟩
+    · simpa [data] using
+        (sourceReadback_detChart_of_sourceRecursiveDetChart
+          (K := K) (ρ := ρ) E hchart)
+    · simpa [data, topologyTupleEdgeMatrix] using
+        (edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+          (K := K) (ρ := ρ) E hchart)
+
 /-- Nonredundant retained-passive coordinates carry the product topology on
 their matrix fields. -/
 instance instTopologicalSpace
@@ -48,6 +213,18 @@ instance instTopologicalSpace
     TopologicalSpace
       (RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :=
   TopologicalSpace.induced topologyTuple inferInstance
+
+/-- Rebuilding retained-passive data from product tuples is continuous for the
+induced product topology. -/
+theorem continuous_ofTopologyTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [TopologicalSpace K] :
+    Continuous
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') :
+        TopologyTuple ρ κ' K →
+          RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') := by
+  apply continuous_induced_rng.2
+  change Continuous (fun z : TopologyTuple ρ κ' K ↦ z)
+  exact continuous_id
 
 theorem continuous_topologyTuple
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [TopologicalSpace K] :
@@ -1360,6 +1537,24 @@ theorem isOpen_detChartSet
       ((continuous_Ctop (ρ := ρ) (κ' := κ') (K := K)).matrix_det).isOpen_preimage
         ({a : K | IsUnit a}) isOpen_setOf_isUnit
   simpa [detChartSet, detChart, Set.setOf_and] using hCtop.inter hA1
+
+/-- The retained-passive determinant chart is open in product-tuple
+coordinates. -/
+theorem isOpen_topologyTupleDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [IsOpenUnits K]
+    [Fintype ρ] [DecidableEq ρ] :
+    IsOpen (topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')) := by
+  have hpre :
+      (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')) ⁻¹'
+          detChartSet (K := K) (ρ := ρ) (κ' := κ') =
+        topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+    rfl
+  rw [← hpre]
+  exact
+    (continuous_ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')).isOpen_preimage
+      (detChartSet (K := K) (ρ := ρ) (κ' := κ'))
+      (isOpen_detChartSet (K := K) (ρ := ρ) (κ' := κ'))
 
 /-- A determinant-domain point has the determinant-domain set as a
 neighborhood. -/

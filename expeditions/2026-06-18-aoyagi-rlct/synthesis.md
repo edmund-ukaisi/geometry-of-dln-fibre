@@ -13228,3 +13228,28 @@ measure/Jacobian composition at this head: the missing object is a
 tuple-level differentiable retained-passive source-coordinate map and
 derivative determinant formula.  Existing one-step raw-order measure theorems
 are reusable only after that tuple model and its pushforward theorem exist.
+
+Latest retained-passive tuple source-map foothold:
+`RetainedPassiveCoordinatesTopology.lean` now exposes the product-tuple API
+for the retained-passive source map:
+
+```text
+ofTopologyTuple
+topologyTupleDetChartSet
+topologyTupleEdgeMatrix
+mapsTo_topologyTupleEdgeMatrix_detChartSet_sourceRecursiveDetChartSet
+injOn_topologyTupleEdgeMatrix_detChartSet
+image_topologyTupleEdgeMatrix_detChartSet
+continuous_ofTopologyTuple
+isOpen_topologyTupleDetChartSet
+```
+
+This is the smallest non-wrapper foothold for the measure/Jacobian package:
+the tuple determinant chart is an open ambient tuple set, and the tuple source
+map has the expected source-recursive image by the existing finite inverse.
+It is not a derivative, Jacobian, density, or measure theorem.
+`reproduction-a2-retained-passive-tuple-measure-jacobian-plan.md` records the
+next determinant calculation.  The one-step forward determinant should be
+checked against the factor `|det A1|^(|rho|-|nu|)`, with additional endpoint
+factors from the nonredundant solves for `A1_0` and `A3_last`.  Current Lean
+only proves one-step determinant-unit facts, not this monomial formula.

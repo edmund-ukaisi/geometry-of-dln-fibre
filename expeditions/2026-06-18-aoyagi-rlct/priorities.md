@@ -6073,3 +6073,19 @@ retained-passive source-coordinate map, proving its differentiability on the
 determinant chart, and computing its derivative determinant.  Existing
 one-step raw-order pushforward theorems do not by themselves remove the
 retained-passive `hmap`.
+
+Latest retained-passive tuple source-map foothold:
+`RetainedPassiveCoordinatesTopology.lean` now has the tuple reconstruction
+`ofTopologyTuple`, the tuple determinant chart `topologyTupleDetChartSet`, the
+tuple source map `topologyTupleEdgeMatrix`, maps-to/injectivity/image theorems
+on the determinant chart, and `isOpen_topologyTupleDetChartSet`.  Treat this
+as the starting API for the retained-passive measure/Jacobian package.
+
+Next priority in this lane: build a raw-order edge tuple equivalence or other
+endomap-compatible target representation, then prove the retained-passive
+tuple source map differentiable on `topologyTupleDetChartSet` and compute a
+determinant unit/positive density.  The pen-and-paper check predicts one-step
+factors of the form `|det A1|^(|rho|-|nu|)` plus endpoint-solve factors for
+`A1_0` and `A3_last`; this is not yet a Lean theorem.  Do not state a measure
+pushforward before the derivative determinant and target Haar representation
+are in place.
