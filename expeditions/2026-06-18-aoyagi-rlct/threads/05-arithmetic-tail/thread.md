@@ -5571,3 +5571,38 @@ This is a total finite maps-to adapter only.  The "first" choice is a Lean
 tie-breaker, not Aoyagi's source classifier.  It proves no injection,
 back-to-label map, no-extra coverage, Eq3/Eq4/Eq5 branch construction,
 terminal exactness, pole order, normal crossings, or RLCT extraction.
+
+## 2026-06-26 Lean Lemma 5 first-nonbase cardinal bound
+
+Reproduction:
+`reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
+Statement card:
+`statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
+Review:
+`review-lemma5-first-nonbase-cardinal-bound-a5.md`.
+
+Lean now proves:
+
+```text
+aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le
+```
+
+For a finite supplied candidate set with terminal chains satisfying the same
+binary-prefix-delta hypotheses as the first-nonbase maps-to theorem, the
+deterministic first-nonbase-or-base selector gives
+
+```text
+candidates.card <= a*(ell-a)+1
+```
+
+provided the selector is injective on candidates. The proof builds an
+`AoyagiLemma5CountDatumClassifier` from the deterministic selector, proves its
+`mapsTo` field using the existing terminal first-nonbase maps-to theorem, and
+passes the supplied `injOn` hypothesis to the already-proved counted-datum
+classifier cardinal bound.
+
+This is finite image-cardinality bookkeeping only. It does not construct
+Aoyagi's source vectors, prove that this first-nonbase tie-breaker is the
+source classifier, prove injectivity, prove a back-to-label/no-extra theorem,
+construct Eq3/Eq4/Eq5 branches, identify pole order, prove normal crossings,
+or extract RLCT.

@@ -5184,3 +5184,13 @@ open sets with `C1 != I`.  Therefore no future A2 slice should try to prove
 full raw-Haar pushforward from the p.13 section.  Keep the raw pushforward
 supplied unless a genuine p.13 source chart, source coverage theorem, and
 density/prior transport are constructed for the correct source measure.
+
+A5 Lemma 5 first-nonbase cardinal bound has now landed:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`.
+Lean proves that the deterministic first-nonbase-or-base selector gives the
+upper count `candidates.card <= a*(ell-a)+1` under supplied terminal
+binary-prefix-delta chain data and supplied selector injectivity.  This is a
+small source-faithful consumer of the existing counted-datum codomain count,
+not a proof of Aoyagi's source classifier.  The next A5 source-moving target
+remains the finite minimum/order-formula alignment only after a separate
+pen-and-paper reproduction; do not fill it by assuming the desired equality.

@@ -9195,3 +9195,25 @@ was added; the existing inverse-density consumers keep raw pushforward
 supplied, and the section-image theorem remains the honest replacement.
 Audit:
 `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
+
+Latest A5 Lemma 5 first-nonbase cardinal bound:
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le` is now
+proved in `lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  It consumes
+a finite supplied candidate set, terminal binary-prefix-delta chain data for
+each candidate, supplied base-value interval membership, and supplied
+injectivity of the deterministic first-nonbase-or-base selector.  It produces
+the upper bound `candidates.card <= a*(ell-a)+1` by building an
+`AoyagiLemma5CountDatumClassifier` and applying the existing counted-datum
+classifier cardinal theorem.
+
+This is a finite cardinality adapter only.  It is not a source construction of
+Aoyagi's branch family, a proof of canonical classifier/injectivity, a
+back-to-label/no-extra theorem, a finite minimum-to-`lambda` bridge, pole
+order, normal crossings, or RLCT.
+
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-first-nonbase-cardinal-bound-a5.md`.

@@ -12005,6 +12005,27 @@ and density/prior transport are constructed.
 Audit:
 `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`.
 
+## Latest A5 First-Nonbase Cardinal Bound
+
+`Lemma5SuppliedFamily.lean` now proves
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le`.  This
+packages the deterministic first-nonbase-or-base selector as an
+`AoyagiLemma5CountDatumClassifier`: maps-to is proved from terminal
+binary-prefix-delta chain data, while injectivity remains an explicit
+hypothesis.  The resulting finite image-cardinality argument gives
+`candidates.card <= a*(ell-a)+1`.
+
+This is one step closer to Aoyagi Lemma 5's upper-bound form, but only as a
+conditional adapter.  It still does not construct the source branch family,
+prove that the first-nonbase tie-breaker is source-canonical, prove
+injectivity or back-to-label coverage, identify the finite minimum with
+`lambda`, prove pole order, prove normal crossings, or extract RLCT.
+
+Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
+
 ## Latest A2 Case 2 Post-Pivot Compatible Residual-Factor Audit
 
 Xhigh source and Lean/API scouts killed the proposed source claim that

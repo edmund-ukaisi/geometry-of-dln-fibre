@@ -7799,3 +7799,26 @@ and
 Nonclaims: no full raw-Haar pushforward, no original source/prior transport,
 no source coverage, no density identification, no normal crossings, no pole
 order, and no RLCT.
+
+Latest A5 Lemma 5 first-nonbase cardinal bound:
+Lean now proves
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le` in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5SuppliedFamily.lean`.  For a finite supplied
+candidate set whose terminal chains satisfy the binary-prefix-delta endpoint
+and sum hypotheses, the deterministic first-nonbase-or-base selector maps
+each candidate into the counted-datum set.  If that selector is supplied
+injective on the candidate set, Lean derives
+`candidates.card <= a*(ell-a)+1` from the already-proved counted-datum
+codomain count.
+
+Reproduction and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-cardinal-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-first-nonbase-cardinal-bound-a5.md`.
+
+Nonclaims: no source vector construction, no canonical source classifier, no
+injectivity proof, no back-to-label or no-extra terminal-minimum theorem, no
+Eq3/Eq4/Eq5 branch construction, no finite minimum-to-`lambda` equality, no
+pole order, no normal crossings, and no RLCT.

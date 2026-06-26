@@ -399,6 +399,64 @@ theorem aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binary
   · simpa [aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase, hnonempty] using
       none_mem_aoyagiLemma5CountDatumSet ell a M m baseValue
 
+private theorem firstNonbaseOrBase_mem_terminalBinary
+    (ell a : ℕ) (M : ℤ) (m H : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ)
+    (ha : a ≤ ell)
+    (hH0 : H 0 = m 0)
+    (hHlast : H (Fin.last ell) = 0)
+    (hselected : (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ r : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m H r = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m H r = 1) :
+    aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase ell H baseValue ∈
+      aoyagiLemma5CountDatumSet ell a M m baseValue := by
+  exact
+    aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_mem_of_terminalH_binaryIncrementPrefixDelta
+    ell a M m H baseValue ha hH0 hHlast hselected hbin
+
+/-- An injective first-nonbase-or-base classifier gives Aoyagi Lemma 5's
+displayed upper count.
+
+The classifier itself is the deterministic selector
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase`; injectivity remains an
+explicit hypothesis.  This is finite bookkeeping only and does not construct
+Aoyagi's source branch family or a back-to-label map. -/
+theorem aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le
+    {α : Type*}
+    (ell a : ℕ) (M : ℤ) (m : Fin (ell + 1) → ℤ)
+    (baseValue : ℕ → ℤ) (candidates : Finset α)
+    (H : α → Fin (ell + 1) → ℤ)
+    (hell : 1 ≤ ell) (ha : a ≤ ell)
+    (hH0 : ∀ x ∈ candidates, H x 0 = m 0)
+    (hHlast : ∀ x ∈ candidates, H x (Fin.last ell) = 0)
+    (hselected : (∑ i : Fin (ell + 1), m i) = (ell : ℤ) * (M - 1) + a)
+    (hbin : ∀ x ∈ candidates, ∀ r : Fin ell,
+      aoyagiLemma4IncrementPrefixDelta ell M m (H x) r = 0 ∨
+        aoyagiLemma4IncrementPrefixDelta ell M m (H x) r = 1)
+    (hbase :
+      ∀ {j : ℕ}, j ∈ Finset.Icc 1 (ell - 1) →
+        baseValue j ∈ aoyagiHtildeIntervalValueSetNat ell a M m j)
+    (hinj :
+      Set.InjOn
+        (fun x ↦ aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase
+          ell (H x) baseValue)
+        ↑candidates) :
+    candidates.card ≤ a * (ell - a) + 1 := by
+  classical
+  let classifier :
+      AoyagiLemma5CountDatumClassifier α ell a M m baseValue candidates :=
+    { classify := fun x ↦
+        aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase ell (H x) baseValue
+      mapsTo := by
+        intro x hx
+        exact firstNonbaseOrBase_mem_terminalBinary
+          ell a M m (H x) baseValue ha (hH0 x hx) (hHlast x hx) hselected
+          (hbin x hx)
+      injOn := hinj }
+  exact AoyagiLemma5CountDatumClassifier.candidates_card_le
+    ell a M m baseValue candidates classifier hell ha hbase
+
 /-- Filtering out elements with value `y` maps to erasing `y` from the image.
 
 This is finite-set bookkeeping for turning full coordinate-value coverage into
