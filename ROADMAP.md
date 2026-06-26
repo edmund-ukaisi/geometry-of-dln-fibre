@@ -160,11 +160,14 @@ tides + multiple Codex consults):**
 1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
    (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) — genuinely new scheme-theoretic math (the
    k-point rank-tie, banked, does NOT compose with the prime cover). A fresh multi-tide build, not a finish.
-2. **`e` → full localized iso:** rung 2, the orbit descent `exists_chartComponent_localizedOrbitEquiv`
-   (`(Away chartDsig)⧸chartComponentIdeal → Away Δ (orbitRing (realizerD m))`). ~mid-hundreds LoC, off every
-   critical path (smoothness is unconditional without it), consumed by nothing. NOTE: the *global* /
-   *shifted-orbit* shapes are FALSE — only the localized full-`d`-orbit form is reachable; two dead consumers
-   relabeled as superseded scaffolding.
+2. **`e` → full localized iso:** rung 1 (`schurComponent_chartQuotientEquiv`) + the assembled CONDITIONAL
+   headline `exists_localized_schurComponent_fullOrbitEquiv_of` are landed (axiom-clean); the open input is
+   the typed Prop `LocalizedChartDescent` — the chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal`
+   to `Away Δ (orbitRing (realizerD m))`. Reassessed as a **multi-tide sub-wall** (D1: bridge the keystone
+   `Φ` and the chart `e_β` so the W1/chartE lemmas apply; extract the localization-quotient AlgEquiv; W0
+   descent), off every critical path (smoothness is unconditional without it), consumed by nothing. NOTE: the
+   *global* / *shifted-orbit* shapes are FALSE — only the localized full-`d`-orbit form is reachable; two dead
+   consumers relabeled as superseded scaffolding.
 3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred.
 
 ### Bundle 2 — quiver / orbit geometry  ·  `DLNFibre.Core` (Quiver / Orbit)

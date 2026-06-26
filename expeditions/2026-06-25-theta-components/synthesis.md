@@ -186,7 +186,7 @@ Codex consults. The expedition closes at its honest ceiling.
 | **Generic smoothness of the fibre** | ✅ **Fully unconditional** | `isSmoothAt_sweepFibre_topComponent`, `exists_isSmoothAt_chartDsig_unconditional` |
 | Σ̄^r component ↔ orbit labeling | ✅ Unconditional | `exists_sigma_topComponent_orbitRingEquiv` |
 | Bundle: per-pivot local-product atlas over the rank-`=r` open | ✅ cover+triv+cocycle+intertwining+k-point tie | `reducedFibre_pivotLocalProductAtlasOnRankOpen` |
-| `e` (fibre-component↔orbit), chart-localization transport | ✅ rung 1 | `schurComponent_chartQuotientEquiv` |
+| `e` (fibre-component↔orbit), localized chart transport | ✅ rung 1 + assembled conditional headline | `schurComponent_chartQuotientEquiv`, `exists_localized_schurComponent_fullOrbitEquiv_of` |
 | 3-θ-invariants exposition | ✅ | `docs/expositions/theta-invariants-distinction.md` |
 
 Reusable network-free spin-outs banked along the way: `mvPolynomialAwayMapTensorAlgEquiv`,
@@ -230,9 +230,14 @@ a red herring; the genuine cocycle is base-side over `sweepSigmaRing`).
 1. **Bundle → bare `locallyTrivial`:** the prime-level residue-field-rank bridge (`P ∈ rankROpen ↔ universal
    matrix over κ(P) has rank r`). Substantial NEW scheme-theoretic math, a fresh build — NOT a finishing
    touch.
-2. **`e` → full localized iso:** rung 2, the orbit descent `exists_chartComponent_localizedOrbitEquiv`
-   (`(Away chartDsig)⧸chartComponentIdeal → Away Δ (orbitRing (realizerD m))`). ~mid-hundreds LoC, off every
-   critical path, consumed by nothing.
+2. **`e` → full localized iso:** rung 1 (`schurComponent_chartQuotientEquiv`) + the assembled CONDITIONAL
+   headline `exists_localized_schurComponent_fullOrbitEquiv_of` are landed (axiom-clean); the open input is
+   the typed Prop `LocalizedChartDescent` (the chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal`
+   to `Away Δ (orbitRing (realizerD m))`). REASSESSED (tide, honestly upward): this is a **multi-tide
+   sub-wall**, not the ~mid-hundreds-LoC rung first estimated — the hard part (D1) bridges the product
+   keystone `Φ` and the chart `e_β` (two isos of `Away chartDsig`) so the W1/chartE no-drop/avoidance lemmas
+   apply, + extracts the localization-quotient AlgEquiv, + the W0 sigma descent. Off every critical path,
+   consumed by nothing.
 3. **Type-universe lift** (Core, `k : Type 0 → Type u`): mechanical, deferred, loses nothing for the
    ℝ/ℂ application.
 

@@ -18,13 +18,22 @@ result of the thread.
 to `reducedFibre_chartDsig_tensorEquiv_reducedVariety` by `Ideal.quotientEquivAlg`. Plus
 `chartComponentIdeal` (the fibre component pulled to the localized chart along the keystone).
 
-## Residual (rung 2, precisely costed, NOT built — ~mid-hundreds LoC, multi-tide)
-`exists_chartComponent_localizedOrbitEquiv` — descend `(Away chartDsig)⧸chartComponentIdeal` to
-`Away Δ (orbitRing (realizerD m))` via (i) the localization round-trip + dsig-avoidance bridge, (ii) the
-localization-quotient ring iso inside `TopDimMinPrimesLocalization.ringKrullDim_quotient_map_localizationAway_eq`
-(extract as `AlgEquiv`), (iii) the W0 sigma descent. Composing rung 1 + residual = the honest localized
-`e`: `SchurLoc ⊗_k (R_F⧸I) ≃ₐ[k] Away Δ (orbitRing (realizerD m))`. Off the critical path (smoothness
-fully unconditional; θ-count done); consumed by nothing.
+## Assembled CONDITIONAL headline LANDED (commit eef1f7fc, axiom-clean)
+`exists_localized_schurComponent_fullOrbitEquiv_of` — GIVEN the typed residual Prop `LocalizedChartDescent`,
+`SchurLoc ⊗_k (sweepFibreRing⧸I) ≃ₐ[k] Localization.Away Δ` (a LOCALIZED FULL-`d` orbit ring). Proof =
+rung 1 `.trans` the descent; otherwise fully proved. Honestly named `localized` + `fullOrbit` (NOT global,
+NOT shifted-orbit — those shapes are unreachable, cancellation invalid). Advances NEITHER smoothness (done)
+NOR the θ-count; does NOT feed the dead `…_of_component_orbitPolyEquiv`.
+
+## Residual `LocalizedChartDescent` (typed Prop, NOT built) — REASSESSED upward to a multi-tide sub-wall
+The chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal` to `Away Δ (orbitRing (realizerD m))`.
+Honest reassessment (NOT the ~mid-hundreds-LoC single rung first estimated): the hard part **D1** bridges
+the product keystone `Φ` and the chart `e_β` (two different isos of `Away chartDsig`) so the
+W1/chartE no-drop/avoidance lemmas (stated for `e_β`/`Away gF`) apply to the keystone-defined
+`chartComponentIdeal`; PLUS extracting the localization-quotient ring iso (inside
+`TopDimMinPrimesLocalization.ringKrullDim_quotient_map_localizationAway_eq`) as an `AlgEquiv`; PLUS the W0
+sigma descent. Each is itself a focused build. Off the critical path (smoothness fully unconditional;
+θ-count done); consumed by nothing. ROADMAPPED.
 
 ## Hygiene (commit d6870cce) — two dead consumers RELABELED (not deleted; honest record preserved)
 - `isSmoothAt_sweepFibre_of_component_orbitSmooth` (FibreGenericSmoothUncond) — ⚠ bare-orbitRing
