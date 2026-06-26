@@ -8107,3 +8107,38 @@ density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
 
 Xhigh reviewer `Popper the 3rd` passed the Lean statements, typeclass
 assumptions, documentation boundary, focused build, and diff hygiene.
+
+## 2026-06-26 A2 retained-passive solved-A3 continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a3-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a3-continuity.md`.
+Review:
+`review-a2-retained-passive-solved-a3-continuity.md`.
+
+Lean now proves the finite support lemmas for lower-left endpoint continuity:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_retainedPassiveA3WithoutLast
+RetainedPassiveNonredundantCoordinateData.continuous_residualFactorProduct_C
+RetainedPassiveNonredundantCoordinateData.solvedA1_det_isUnit_of_detChart
+RetainedPassiveNonredundantCoordinateData.continuous_residualFactorProduct_solvedA1_detChart_subtype
+RetainedPassiveNonredundantCoordinateData.residualFactorProduct_solvedA1_det_isUnit_of_detChart
+RetainedPassiveNonredundantCoordinateData.continuous_retainedPassiveLowerLeftProductTailSum_detChart_subtype
+```
+
+It then proves:
+
+```text
+RetainedPassiveNonredundantCoordinateData.continuous_solvedA3_detChart_subtype
+```
+
+This completes endpoint-family continuity for the nonredundant determinant
+chart.  It does not prove continuity of `edgeMatrix`; no image openness,
+source-rank coverage, source/image theorem, measure pushforward,
+density/Jacobian theorem, normal crossings, pole order, or RLCT is proved.
+
+Xhigh reviewer `Sartre the 3rd` passed the Lean statements, inverse-continuity
+usage, typeclass assumptions, documentation boundary, focused build, and diff
+hygiene.

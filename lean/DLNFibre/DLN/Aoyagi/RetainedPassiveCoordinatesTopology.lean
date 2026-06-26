@@ -361,6 +361,524 @@ theorem continuous_solvedA1_detChart_subtype
       simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
         toCoordinateData, Fin.succ_ne_zero] using hseed
 
+/-- The zeroed-final lower-left family is continuous componentwise. -/
+theorem continuous_retainedPassiveA3WithoutLast
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [TopologicalSpace K] (p : Fin (M + 1)) :
+    Continuous
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ' ↦
+        retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.A3seed p) := by
+  by_cases hp : p = Fin.last M
+  · subst p
+    simpa [retainedPassiveA3WithoutLast] using
+      (continuous_const :
+        Continuous
+          (fun _data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            (0 : Matrix (κ' (Fin.last M).succ) ρ K)))
+  · simpa [retainedPassiveA3WithoutLast, hp] using
+      continuous_A3seed (ρ := ρ) (κ' := κ') (K := K) p
+
+/-- Residual products of the stored `C` blocks are continuous. -/
+theorem continuous_residualFactorProduct_C
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    Continuous
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ' ↦
+        residualFactorProduct (K := K) (κ := κ')
+          data.C (Fin.last (M + 1)) i hi) := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    Continuous
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ' ↦
+        residualFactorProduct (K := K) (κ := κ')
+          data.C j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm))
+  have hbase : motive (M + 1) le_rfl := by
+    change
+      Continuous
+        (fun _data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := κ') _ j j le_rfl)
+    simpa using
+      (continuous_const :
+        Continuous
+          (fun _data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            (1 : Matrix (κ' j) (κ' j) K)))
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := K) (κ := κ')
+              data.C j p.succ hpj) := by
+      simpa [motive, j, p] using ih
+    have hfactor :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦ data.C p) :=
+      continuous_C (ρ := ρ) (κ' := κ') (K := K) p
+    have hmul :
+        Continuous
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := K) (κ := κ') data.C j p.succ hpj *
+              data.C p) :=
+      hnext.matrix_mul hfactor
+    change
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := κ') data.C j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj))
+    rw [show
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := K) (κ := κ') data.C j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun data ↦
+            residualFactorProduct (K := K) (κ := κ') data.C j p.succ hpj *
+              data.C p by
+      funext data
+      exact
+        residualFactorProduct_castSucc
+          (K := K) (κ := κ') data.C p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+/-- A determinant-chart point has determinant-unit solved full `A1` blocks. -/
+theorem solvedA1_det_isUnit_of_detChart
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) :
+    ∀ p : Fin (M + 1), IsUnit ((data.toCoordinateData).solvedA1 p).det := by
+  change ∀ p : Fin (M + 1),
+    IsUnit
+      (retainedPassiveSolvedA1 (K := K) (ρ := ρ)
+        data.A1seed data.Ctop p).det
+  exact
+    retainedPassiveA1_det_isUnit_of_A1_zero_eq_tail_inv_mul
+      (K := K) (ρ := ρ)
+      (retainedPassiveSolvedA1 (K := K) (ρ := ρ) data.A1seed data.Ctop)
+      data.Ctop
+      (retainedPassiveSolvedA1_passive_det_isUnit
+        (K := K) (ρ := ρ) data.A1seed data.Ctop
+        (data.toCoordinateData_passiveA1_units hdet.2))
+      hdet.1
+      (retainedPassiveSolvedA1_zero_eq_tail_inv_mul
+        (K := K) (ρ := ρ) data.A1seed data.Ctop)
+
+/-- Residual products of the solved full `A1` family are continuous on the
+determinant-chart subtype. -/
+theorem continuous_residualFactorProduct_solvedA1_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          (Fin.last (M + 1)) i hi) := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm))
+  have hbase : motive (M + 1) le_rfl := by
+    change
+      Continuous
+        (fun _data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            _ j j le_rfl)
+    simpa using
+      (continuous_const :
+        Continuous
+          (fun _data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            (1 : Matrix ρ ρ K)))
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+              j p.succ hpj) := by
+      simpa [motive, j, p] using ih
+    have hfactor :=
+      continuous_solvedA1_detChart_subtype
+        (ρ := ρ) (κ' := κ') (K := K) p
+    have hmul :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              (data.1.toCoordinateData).solvedA1 p) :=
+      hnext.matrix_mul hfactor
+    change
+      Continuous
+        (fun data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj))
+    rw [show
+        (fun data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun data ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              (data.1.toCoordinateData).solvedA1 p by
+      funext data
+      exact
+        residualFactorProduct_castSucc
+          (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+/-- Residual products of the solved full `A1` family are determinant-units on
+the determinant chart. -/
+theorem residualFactorProduct_solvedA1_det_isUnit_of_detChart
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart)
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+        (Fin.last (M + 1)) i hi).det := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let A1 : Fin (M + 1) → Matrix ρ ρ K :=
+    fun p ↦ (data.toCoordinateData).solvedA1 p
+  have hA1 : ∀ p : Fin (M + 1), IsUnit (A1 p).det := by
+    intro p
+    exact solvedA1_det_isUnit_of_detChart (K := K) (ρ := ρ) data hdet p
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)).det
+  have hbase : motive (M + 1) le_rfl := by
+    change IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 j j le_rfl).det
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hprod :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1 j p.castSucc ((Fin.castSucc_le_succ p).trans hpj) =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1 j p.succ hpj * A1 p := by
+      exact
+        residualFactorProduct_castSucc
+          (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ) A1 p hpj
+    change IsUnit
+      (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1 j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)).det
+    rw [hprod]
+    simpa [Matrix.det_mul] using ih.mul (hA1 p)
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j, A1] using hcanon
+
+/-- The explicit lower-left product-tail sum built from solved `A1`, zeroed
+early `A3`, and stored `C` blocks is continuous on the determinant-chart
+subtype. -/
+theorem continuous_retainedPassiveLowerLeftProductTailSum_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (m : ℕ) (hm : m ≤ M + 1) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+          data.1.C m hm) := by
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+          data.1.C m hm)
+  have hbase : motive (M + 1) le_rfl := by
+    change
+      Continuous
+        (fun _data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            _ _ _ (M + 1) le_rfl)
+    simpa using
+      (continuous_const :
+        Continuous
+          (fun _data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            (0 : Matrix (κ' (Fin.last (M + 1))) ρ K)))
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ Fin.last (M + 1) := Fin.val_fin_le.mpr hms
+    have hCprod :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            residualFactorProduct (K := K) (κ := κ') data.1.C
+              (Fin.last (M + 1)) p.succ hpj) :=
+      (continuous_residualFactorProduct_C
+        (ρ := ρ) (κ' := κ') (K := K) p.succ hpj).comp
+          continuous_subtype_val
+    have hA3early :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            retainedPassiveA3WithoutLast (K := K) (ρ := ρ)
+              data.1.A3seed p) :=
+      (continuous_retainedPassiveA3WithoutLast
+        (ρ := ρ) (κ' := κ') (K := K) p).comp continuous_subtype_val
+    have hA1prod :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj)) :=
+      continuous_residualFactorProduct_solvedA1_detChart_subtype
+        (ρ := ρ) (κ' := κ') (K := K) p.castSucc
+        ((Fin.castSucc_le_succ p).trans hpj)
+    have hA1prodInv :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj))⁻¹) :=
+      continuous_matrix_inv_of_forall_isUnit_det hA1prod (fun data ↦
+        residualFactorProduct_solvedA1_det_isUnit_of_detChart
+          (K := K) (ρ := ρ) data.1 data.2 p.castSucc
+          ((Fin.castSucc_le_succ p).trans hpj))
+    have hsummand :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            -(residualFactorProduct (K := K) (κ := κ') data.1.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := K) (ρ := ρ)
+                  data.1.A3seed p *
+                (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹)) := by
+      exact ((hCprod.matrix_mul hA3early).matrix_mul hA1prodInv).neg
+    have htail : motive (m + 1) hms := ih
+    have hsum :
+        Continuous
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            -(residualFactorProduct (K := K) (κ := κ') data.1.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := K) (ρ := ρ)
+                  data.1.A3seed p *
+                (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+                data.1.C (m + 1) hms) :=
+      hsummand.add htail
+    change
+      Continuous
+        (fun data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+            data.1.C p.val (Nat.le_of_lt p.isLt))
+    rw [show
+        (fun data :
+            {data : RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := ρ) κ' // data.detChart} ↦
+          retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+            data.1.C p.val (Nat.le_of_lt p.isLt)) =
+          fun data ↦
+            -(residualFactorProduct (K := K) (κ := κ') data.1.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := K) (ρ := ρ)
+                  data.1.A3seed p *
+                (residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+                data.1.C (m + 1) hms by
+      funext data
+      simpa [p] using
+        retainedPassiveLowerLeftProductTailSum_castSucc
+          (K := K) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+          data.1.C p]
+    simpa [p] using hsum
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+  simpa [motive] using hcanon
+
+/-- On the determinant chart, each solved full `A3` component is continuous. -/
+theorem continuous_solvedA3_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (p : Fin (M + 1)) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart} ↦
+        (data.1.toCoordinateData).solvedA3 p) := by
+  induction p using Fin.lastCases with
+  | last =>
+      have hF3 :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              data.1.F3) :=
+        (continuous_F3 (ρ := ρ) (κ' := κ') (K := K)).comp
+          continuous_subtype_val
+      have hEarlyTail :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              retainedPassiveLowerLeftProductTailSum (K := K) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := K) (ρ := ρ) data.1.A3seed)
+                data.1.C 0 (Nat.zero_le (M + 1))) :=
+        continuous_retainedPassiveLowerLeftProductTailSum_detChart_subtype
+          (ρ := ρ) (κ' := κ') (K := K) 0 (Nat.zero_le (M + 1))
+      have hCtopLast :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.1.toCoordinateData).solvedA1 p)
+                (Fin.last (M + 1)) (Fin.last M).castSucc
+                  (Fin.last M).castSucc.le_last) :=
+        continuous_residualFactorProduct_solvedA1_detChart_subtype
+          (ρ := ρ) (κ' := κ') (K := K) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+      have hlast :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              -(data.1.F3 -
+                  retainedPassiveLowerLeftProductTailSum
+                    (K := K) (ρ := ρ) (κ := κ')
+                    (fun p : Fin (M + 1) ↦
+                      (data.1.toCoordinateData).solvedA1 p)
+                    (retainedPassiveA3WithoutLast
+                      (K := K) (ρ := ρ) data.1.A3seed)
+                    data.1.C 0 (Nat.zero_le (M + 1))) *
+                residualFactorProduct (K := K)
+                  (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    (data.1.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) (Fin.last M).castSucc
+                    (Fin.last M).castSucc.le_last) :=
+        (hF3.sub hEarlyTail).neg.matrix_mul hCtopLast
+      simpa [RetainedPassiveCoordinateData.solvedA3,
+        RetainedPassiveCoordinateData.solvedA1, toCoordinateData] using hlast
+  | cast p =>
+      have hseed :
+          Continuous
+            (fun data :
+                {data : RetainedPassiveNonredundantCoordinateData
+                    (K := K) (ρ := ρ) κ' // data.detChart} ↦
+              data.1.A3seed p.castSucc) :=
+        (continuous_A3seed (ρ := ρ) (κ' := κ') (K := K) p.castSucc).comp
+          continuous_subtype_val
+      have hfun :
+          (fun data :
+              {data : RetainedPassiveNonredundantCoordinateData
+                  (K := K) (ρ := ρ) κ' // data.detChart} ↦
+            (data.1.toCoordinateData).solvedA3 p.castSucc) =
+            fun data ↦ data.1.A3seed p.castSucc := by
+        funext data
+        exact
+          retainedPassiveSolvedA3_eq_of_ne_last
+            (K := K) (ρ := ρ) (κ' := κ')
+            (data.1.toCoordinateData).solvedA1
+            data.1.A3seed data.1.C data.1.F3
+            (Fin.castSucc_ne_last p)
+      rw [hfun]
+      exact hseed
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

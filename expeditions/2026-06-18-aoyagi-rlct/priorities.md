@@ -5692,3 +5692,18 @@ not assert `edgeMatrix` continuity until both solved endpoint families are in
 place, and do not assert image openness, source-rank coverage, source/image
 equality, measure transport, density/Jacobian accounting, normal crossings,
 pole order, or RLCT.
+
+The solved-`A3` determinant-chart continuity layer is now landed/in progress
+in `RetainedPassiveCoordinatesTopology.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a3-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a3-continuity.md`.
+It proves continuity of the finite early lower-left product tail and every
+solved full `A3` component on `{data // data.detChart}`.
+
+Next retained-passive target after review/banking: prove continuity of the
+nonredundant `edgeMatrix` source map on the determinant-chart subtype, using
+the already banked continuity of `F2full`, `C`, `solvedA1`, and `solvedA3`.
+Do not assert image openness, source-rank coverage, source/image equality,
+measure transport, density/Jacobian accounting, normal crossings, pole order,
+or RLCT.

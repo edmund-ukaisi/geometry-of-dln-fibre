@@ -12716,3 +12716,19 @@ This still stops before `solvedA3`, `toCoordinateData`, and `edgeMatrix`
 continuity.  It also says nothing about image openness, source-rank coverage,
 source/image equality, measure pushforward, density/Jacobian accounting,
 normal crossings, pole order, or RLCT.
+
+New follow-up proves the lower-left endpoint continuity.  The zeroed-final
+family `retainedPassiveA3WithoutLast` is continuous componentwise.  Residual
+products of stored `C` blocks are continuous.  Residual products of the solved
+`A1` family are continuous on the determinant-chart subtype, and determinant
+units propagate through those products.  These facts give continuity of every
+fixed lower-left product-tail sum, using inverse continuity only on solved
+`A1` residual products.
+
+With that tail-sum theorem in place, `continuous_solvedA3_detChart_subtype`
+proves each solved lower-left component is continuous: non-final components
+are seed projections, while the final component is
+`-(F3 - earlyTail) * CtopLast`.  This still stops before `edgeMatrix`
+continuity, image openness, source-rank coverage, source/image equality,
+measure pushforward, density/Jacobian accounting, normal crossings, pole
+order, or RLCT.

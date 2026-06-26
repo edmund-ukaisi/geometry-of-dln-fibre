@@ -9751,3 +9751,26 @@ This is solved-top-left endpoint continuity only: no continuity of
 `solvedA3`, `toCoordinateData`, or `edgeMatrix`; no image openness,
 source-rank coverage, source/image theorem, measure pushforward,
 density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive solved-A3 continuity:
+`RetainedPassiveCoordinatesTopology.lean` proves
+`continuous_retainedPassiveA3WithoutLast`, `continuous_residualFactorProduct_C`,
+`solvedA1_det_isUnit_of_detChart`,
+`continuous_residualFactorProduct_solvedA1_detChart_subtype`,
+`residualFactorProduct_solvedA1_det_isUnit_of_detChart`,
+`continuous_retainedPassiveLowerLeftProductTailSum_detChart_subtype`, and
+`continuous_solvedA3_detChart_subtype`.
+
+The final solved `A3` component is continuous because the early lower-left
+tail sum is a finite continuous sum and the solved-`A1` product in each inverse
+factor is determinant-unit on the determinant-chart subtype.  Non-final
+components reduce to `A3seed`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a3-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a3-continuity.md`
+passed.
+
+This completes endpoint-family continuity only: no continuity of `edgeMatrix`;
+no image openness, source-rank coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.

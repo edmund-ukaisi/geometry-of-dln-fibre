@@ -8537,3 +8537,19 @@ Nonclaims: no continuity of `solvedA3`, `toCoordinateData`, or `edgeMatrix`;
 no image openness, source-rank coverage, source/image equality, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
 is proved.
+
+Latest A2 retained-passive solved-A3 continuity:
+Lean now proves componentwise continuity of the solved full `A3` family on the
+nonredundant determinant-chart subtype, together with the finite residual
+product, solved-`A1` product, determinant-unit, and lower-left tail-sum
+continuity lemmas needed for the final component.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a3-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a3-continuity.md`.
+
+Nonclaims: endpoint-family continuity only.  No continuity of `edgeMatrix`;
+no image openness, source-rank coverage, source/image equality, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT
+is proved.
