@@ -5920,3 +5920,16 @@ bounds separately; only the retained-passive source chart, weighted
 pushforward, residual readout, and local loss/density estimates remain
 supplied.  The next real frontier remains source chart/pushforward/Jacobian or
 residual readout construction, not another wrapper over this same socket.
+
+Latest retained-passive source-readback residual readout:
+`RetainedPassiveLocalSource.lean` proves
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`.
+This reduces the fixed-base residual coordinate map to the retained-passive
+`sourceReadback` residual-factor product with no determinant/source/measure
+assumptions.  Treat this as the preferred algebraic bridge before any
+selected-entry residual readout: future selected-entry work should identify
+the residual-factor product entries with selected-entry chart coordinates,
+rather than reusing the opaque square-sum residual-readout hypothesis.
+The measure/Jacobian route remains parked until there is derivative and
+determinant-unit infrastructure for the retained-passive chart or a clearly
+section-level measure statement.

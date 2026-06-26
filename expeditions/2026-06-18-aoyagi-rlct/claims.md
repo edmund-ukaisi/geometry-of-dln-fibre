@@ -8757,3 +8757,31 @@ Nonclaims: this is a local chart object for the explicit retained-passive
 chart only.  No equality with the whole source image, source-rank coverage,
 measure pushforward, density/Jacobian theorem, normal crossings, pole order,
 or RLCT is proved.
+
+Latest A2 retained-passive source-readback residual readout:
+Lean now proves
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`
+in `RetainedPassiveLocalSource.lean`.
+
+Status: Proved.
+
+Claim: for a fixed-base retained-passive-shaped edge family `E`, the p.13
+residual block coordinate map is the scalar-entry map of
+`residualFactorProduct (sourceReadback E).C (Fin.last (M + 1)) 0`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-residual-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-residual-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-residual-readout.md`
+passed by xhigh `Descartes the 3rd`.
+
+Kill condition: using this as a selected-entry residual readout still requires
+an entrywise identification of the retained-passive residual-factor product
+with selected-entry chart coordinates.  The theorem does not provide that
+identification.
+
+Nonclaims: no selected-entry source chart, source image equality,
+pushforward/Jacobian theorem, original-loss comparison, normal crossings, pole
+order, or RLCT is proved.

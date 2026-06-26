@@ -13019,3 +13019,21 @@ Reproduction:
 Nonclaims: no retained-passive source chart construction, no source image
 equality, no measure pushforward proof, no Jacobian/source-density theorem, no
 original-loss comparison, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive source-readback residual readout:
+`RetainedPassiveLocalSource.lean` proves
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`.
+This is the first retained-passive algebra theorem directly reducing the
+opaque residual-readout side of the selected-entry handoff.  It says that for
+the fixed-base p.13 edge family `E`, the residual coordinate map is the scalar
+entry map of
+`residualFactorProduct (sourceReadback E).C (Fin.last (M + 1)) 0`.
+The proof uses only the deterministic suffix-state residual-product readout
+and the retained-passive source-readback `D = residualFactorProduct C`
+theorem.  It uses no determinant-chart, source chart, measure, Jacobian, rank,
+normal-crossing, pole-order, or RLCT assumptions.
+
+Next residual-readout frontier: identify this retained-passive residual-factor
+product entrywise with a concrete selected-entry chart coordinate family,
+under an explicit residual-coordinate equivalence and source-specific factor
+readout.  This still does not construct the source chart or pushforward.

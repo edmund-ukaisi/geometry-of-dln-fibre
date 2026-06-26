@@ -8673,3 +8673,32 @@ pushforward, residual readout, and local loss/density bounds explicit.
 Nonclaims: no source chart construction, no source image equality, no measure
 pushforward/Jacobian proof, no original-loss comparison, no normal crossings,
 no pole order, and no RLCT.
+
+## 2026-06-26 A2 retained-passive source-readback residual readout
+
+Reproduction:
+`reproduction-a2-retained-passive-source-readback-residual-readout.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-readback-residual-readout.md`.
+Review:
+`review-a2-retained-passive-source-readback-residual-readout.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean`.
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct
+```
+
+This rewrites the fixed-base p.13 residual coordinate map as the scalar-entry
+map of the retained-passive source-readback residual-factor product.  It
+combines the existing fixed-base residual-product readout with the existing
+retained-passive source-readback theorem identifying the same suffix `D` block
+with `residualFactorProduct (sourceReadback E).C`.
+
+Nonclaims: no selected-entry source chart is constructed, no entrywise
+selected-entry residual-coordinate identification is proved, and no
+pushforward/Jacobian, original-loss comparison, normal crossings, pole order,
+or RLCT statement is proved.

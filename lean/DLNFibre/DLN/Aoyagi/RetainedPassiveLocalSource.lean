@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.ProductReductionBoundary
+import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 
 /-!
@@ -6,8 +7,9 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 
 This file ties the retained-passive source-recursive determinant chart to the
 fixed-base endpoint edge-family map used by the p.13 local-measure handoff.
-It proves determinant-chart local coverage near the self-base point and
-measurability under global source-edge continuity.  It does not prove
+It proves determinant-chart local coverage near the self-base point,
+measurability under global source-edge continuity, and a finite residual
+readout through the retained-passive source readback.  It does not prove
 exact-rank openness, source-image equality, measure transport, a Jacobian
 theorem, normal crossings, pole order, or RLCT extraction.
 -/
@@ -21,6 +23,7 @@ namespace DLN
 namespace Aoyagi
 
 open ChartLocalSuffixState
+open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
 section RetainedPassiveLocalSource
 
@@ -51,6 +54,69 @@ def paperEndpointFixedBaseRetainedPassiveP13LocalSource
         (K := K) (ρ := Fin (Module.finrank K U₀))
         (κ' := throughSubspaceEndpointComplementIndex
           (reverseVertex W) (reverseEdge W B) U₀)}
+
+set_option linter.unusedSectionVars false in
+/-- Fixed-base residual coordinates read as the residual-factor product of the
+retained-passive source-readback residual blocks. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (x : α) :
+    let E :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (Cedge x p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))
+    paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x =
+      AoyagiResidualBlockCoordinateIndex.value
+        (ChartLocalSuffixState.residualFactorProduct
+          (sourceReadback (K := K) (ρ := Fin (Module.finrank K U₀)) E).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+  intro E
+  let ρ := Fin (Module.finrank K U₀)
+  let κ' := throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U₀
+  let h0 : (0 : Fin (M + 2)) ≤ Fin.last (M + 1) :=
+    Fin.zero_le (Fin.last (M + 1))
+  have hres :
+      paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct E (Fin.last (M + 1)) 0 h0) := by
+    simpa [E, paperEndpointFixedBaseEdgeMatrixOfReverseEdges, ρ, κ', h0] using
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct
+        (K := K) W B U₀ hU₀ Cedge x
+  have hD :
+      (sourceReadbackSuffixState (K := K) (ρ := ρ) (κ' := κ') E 0 h0).D =
+        ChartLocalSuffixState.residualProduct E (Fin.last (M + 1)) 0 h0 := by
+    simpa [sourceReadbackSuffixState, ρ, κ', h0] using
+      ChartLocalSuffixState.suffixState_D_eq_residualProduct
+        (K := K) E h0
+  have hsource :
+      (sourceReadbackSuffixState (K := K) (ρ := ρ) (κ' := κ') E 0 h0).D =
+        ChartLocalSuffixState.residualFactorProduct
+          (sourceReadback (K := K) (ρ := ρ) E).C
+          (Fin.last (M + 1)) 0 h0 := by
+    simpa [ρ, κ', h0] using
+      sourceReadbackSuffixState_D_eq_residualFactorProduct_C
+        (K := K) (ρ := ρ) E 0 h0
+  have hfactor :
+      ChartLocalSuffixState.residualProduct E (Fin.last (M + 1)) 0 h0 =
+        ChartLocalSuffixState.residualFactorProduct
+          (sourceReadback (K := K) (ρ := ρ) E).C
+          (Fin.last (M + 1)) 0 h0 :=
+    hD.symm.trans hsource
+  calc
+    paperEndpointFixedBaseResidualBlockCoordinateMap W B U₀ hU₀ Cedge x =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct E (Fin.last (M + 1)) 0 h0) := hres
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (sourceReadback (K := K) (ρ := ρ) E).C
+            (Fin.last (M + 1)) 0 h0) := by
+      rw [hfactor]
 
 set_option linter.unusedSectionVars false in
 /-- Membership in the retained-passive local source is exactly the existing

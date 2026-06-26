@@ -9948,6 +9948,31 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive source-readback residual readout:
+`RetainedPassiveLocalSource.lean` proves
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-readback-residual-readout.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-readback-residual-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-readback-residual-readout.md`
+passed by xhigh `Descartes the 3rd`.
+
+The theorem rewrites the fixed-base p.13 residual coordinate map through the
+retained-passive source readback: the coordinate map is
+`AoyagiResidualBlockCoordinateIndex.value` of
+`residualFactorProduct (sourceReadback E).C (Fin.last (M + 1)) 0`, with
+`E` the fixed-base edge-matrix family.  It composes the existing
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct` theorem
+with
+`RetainedPassiveNonredundantCoordinateData.sourceReadbackSuffixState_D_eq_residualFactorProduct_C`.
+
+Nonclaims: no selected-entry coordinate readout, no source chart
+construction, no source image equality, no measure pushforward, no
+Jacobian/density theorem, no original-loss comparison, no normal crossings, no
+pole order, and no RLCT.
+
 Latest A2 retained-passive selected-entry signed-box handoff:
 `RetainedPassiveLocalMeasure.lean` proves
 `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.
