@@ -5611,3 +5611,18 @@ bundled object, making clear which coordinates are recovered from the edge
 family and which determinant-unit side conditions are used.  Still before
 source-rank coverage, source/image equality, measure transport,
 density/Jacobian accounting, normal crossings, pole order, or RLCT.
+
+The retained-passive recoverable readback layer is now landed/in progress in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recoverable-readbacks.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recoverable-readbacks.md`.
+It proves local inverse/extensionality only on the recoverable fields,
+explicitly excluding dummy seed fields `A1seed 0` and `A3seed (Fin.last M)`.
+
+Next retained-passive target after review/banking: decide whether the next
+finite step is a named recoverable-coordinate projection object, or whether to
+move to the first topology/domain layer that keeps these same side conditions.
+Do not assert full coordinate-data injectivity, source-rank coverage,
+source/image equality, measure transport, density/Jacobian accounting, normal
+crossings, pole order, or RLCT.

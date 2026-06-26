@@ -12654,3 +12654,12 @@ define `solvedA1`, `solvedA3`, and `edgeMatrix`.  The theorem
 projections and applies the solved-family readback theorem.  This is now a
 named finite retained-passive source-map object, but still lacks topology,
 local inverse, coverage, source-image, or measure/density content.
+
+New follow-up proves the sharp finite local-inverse layer for that source-map
+object.  `edgeMatrix_recoverableReadbacks_eq_targets` recovers the source-left
+fields `F2_0`, `Ctop`, `F3`, and per-edge recoverable fields `A1seed_p` for
+`p != 0`, `F2_{p.castSucc}`, `A3seed_p` for `p != last`, and `C_p`.
+`edgeMatrix_recoverable_ext` compares two data objects with equal edge
+families and proves equality of exactly those recoverable fields, using
+`F2_last=0` for the terminal `F2` coordinate.  It deliberately does not claim
+full data equality because `A1seed 0` and `A3seed last` are placeholders.

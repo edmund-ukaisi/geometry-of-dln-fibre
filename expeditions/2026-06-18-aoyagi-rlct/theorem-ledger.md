@@ -9640,3 +9640,23 @@ Review:
 This is a finite algebraic source-map object only: no open coordinate domain,
 topology, measure, Jacobian, local inverse, source coverage, source/image
 theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive recoverable readbacks:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverableReadbacks_eq_targets`
+and
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverable_ext`.
+The readback theorem recovers exactly the non-dummy retained coordinates from
+the bundled edge family under the finite side conditions: source-left `F2_0`,
+`Ctop`, and `F3`; per-edge `A1seed_p` for `p != 0`, `F2_{p.castSucc}`,
+`A3seed_p` for `p != Fin.last M`, and `C_p`.  The extensionality theorem says
+equal edge families force equality of these recoverable fields, while omitting
+the dummy seed fields `A1seed 0` and `A3seed (Fin.last M)`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recoverable-readbacks.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-recoverable-readbacks.md`
+passed.
+This is finite recoverable-coordinate algebra only: no full record
+injectivity, open coordinate domain, topology, measure, Jacobian, source-rank
+coverage, source/image theorem, normal crossings, pole order, or RLCT.

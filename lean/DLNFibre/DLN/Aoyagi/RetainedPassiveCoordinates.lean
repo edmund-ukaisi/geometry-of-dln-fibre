@@ -1851,6 +1851,191 @@ theorem edgeMatrix_readbacks_eq_targets
       (K := K) (ρ := ρ) (κ' := κ') data.A1seed data.F2 data.A3seed data.C
       data.Ctop data.F3 hF2last hPassiveA1 hCtop
 
+/-- The constructed edge family reads back exactly the retained coordinate
+fields, except for the two dummy endpoint seed fields. -/
+theorem edgeMatrix_recoverableReadbacks_eq_targets
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ')
+    (hF2last : data.F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (data.A1seed p).det)
+    (hCtop : IsUnit data.Ctop.det) :
+    let E := data.edgeMatrix
+    (-(suffixState E (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))).B =
+        data.F2 0) ∧
+      (suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+      lowerLeftBlock
+          (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+      (∀ p : Fin (M + 1), p ≠ 0 →
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        topLeftCorner T = data.A1seed p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        -((topLeftCorner T)⁻¹ * upperRightBlock T) = data.F2 p.castSucc) ∧
+      (∀ p : Fin (M + 1), p ≠ Fin.last M →
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        lowerLeftBlock T = data.A3seed p) ∧
+      (∀ p : Fin (M + 1),
+        let T := transformedEdge E p
+          (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+        schurResidualBlock T = data.C p) := by
+  intro E
+  have hReadbacks :
+      (-(suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).B = data.F2 0) ∧
+        (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+        lowerLeftBlock
+            (suffixState E (Fin.last (M + 1)) 0
+              (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+        (∀ p : Fin (M + 1),
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          topLeftCorner T = data.solvedA1 p ∧
+            upperRightBlock T = -(data.solvedA1 p * data.F2 p.castSucc) ∧
+            -((data.solvedA1 p)⁻¹ * upperRightBlock T) = data.F2 p.castSucc ∧
+            lowerLeftBlock T = data.solvedA3 p ∧
+            schurResidualBlock T = data.C p) := by
+    simpa [E] using
+      edgeMatrix_readbacks_eq_targets
+        (K := K) (ρ := ρ) data hF2last hPassiveA1 hCtop
+  rcases hReadbacks with ⟨hF20, hCtopRead, hF3Read, hEdge⟩
+  refine ⟨hF20, hCtopRead, hF3Read, ?_, ?_, ?_, ?_⟩
+  · intro p hp
+    let T := transformedEdge E p
+      (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+    have hTop : topLeftCorner T = data.solvedA1 p := (hEdge p).1
+    calc
+      topLeftCorner T = data.solvedA1 p := hTop
+      _ = data.A1seed p := by
+        simpa [solvedA1] using
+          retainedPassiveSolvedA1_eq_of_ne_zero
+            (K := K) (ρ := ρ) data.A1seed data.Ctop hp
+  · intro p
+    let T := transformedEdge E p
+      (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+    have hTop : topLeftCorner T = data.solvedA1 p := (hEdge p).1
+    have hF2 : -((data.solvedA1 p)⁻¹ * upperRightBlock T) =
+        data.F2 p.castSucc := (hEdge p).2.2.1
+    change -((topLeftCorner T)⁻¹ * upperRightBlock T) = data.F2 p.castSucc
+    rw [hTop]
+    exact hF2
+  · intro p hp
+    let T := transformedEdge E p
+      (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+    have hA3 : lowerLeftBlock T = data.solvedA3 p := (hEdge p).2.2.2.1
+    calc
+      lowerLeftBlock T = data.solvedA3 p := hA3
+      _ = data.A3seed p := by
+        simpa [solvedA3] using
+          retainedPassiveSolvedA3_eq_of_ne_last
+            (K := K) (ρ := ρ) (κ' := κ') data.solvedA1
+            data.A3seed data.C data.F3 hp
+  · intro p
+    let T := transformedEdge E p
+      (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last)
+    exact (hEdge p).2.2.2.2
+
+/-- Equal constructed edge families have equal recoverable retained-passive
+coordinate fields; the dummy endpoint seed fields are intentionally omitted. -/
+theorem edgeMatrix_recoverable_ext
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data data' : RetainedPassiveCoordinateData (K := K) (ρ := ρ) κ')
+    (hF2last : data.F2 (Fin.last (M + 1)) = 0)
+    (hF2last' : data'.F2 (Fin.last (M + 1)) = 0)
+    (hPassiveA1 :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (data.A1seed p).det)
+    (hPassiveA1' :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (data'.A1seed p).det)
+    (hCtop : IsUnit data.Ctop.det)
+    (hCtop' : IsUnit data'.Ctop.det)
+    (hE : data.edgeMatrix = data'.edgeMatrix) :
+    (∀ p : Fin (M + 1), p ≠ 0 → data.A1seed p = data'.A1seed p) ∧
+      data.F2 = data'.F2 ∧
+      (∀ p : Fin (M + 1), p ≠ Fin.last M →
+        data.A3seed p = data'.A3seed p) ∧
+      data.C = data'.C ∧
+      data.Ctop = data'.Ctop ∧
+      data.F3 = data'.F3 := by
+  let E := data.edgeMatrix
+  have hRead :
+      (-(suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).B = data.F2 0) ∧
+        (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).Ctop = data.Ctop ∧
+        lowerLeftBlock
+            (suffixState E (Fin.last (M + 1)) 0
+              (Fin.zero_le (Fin.last (M + 1)))).L = data.F3 ∧
+        (∀ p : Fin (M + 1), p ≠ 0 →
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          topLeftCorner T = data.A1seed p) ∧
+        (∀ p : Fin (M + 1),
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          -((topLeftCorner T)⁻¹ * upperRightBlock T) = data.F2 p.castSucc) ∧
+        (∀ p : Fin (M + 1), p ≠ Fin.last M →
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          lowerLeftBlock T = data.A3seed p) ∧
+        (∀ p : Fin (M + 1),
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          schurResidualBlock T = data.C p) := by
+    simpa [E] using
+      edgeMatrix_recoverableReadbacks_eq_targets
+        (K := K) (ρ := ρ) data hF2last hPassiveA1 hCtop
+  have hRead' :
+      (-(suffixState E (Fin.last (M + 1)) 0
+          (Fin.zero_le (Fin.last (M + 1)))).B = data'.F2 0) ∧
+        (suffixState E (Fin.last (M + 1)) 0
+            (Fin.zero_le (Fin.last (M + 1)))).Ctop = data'.Ctop ∧
+        lowerLeftBlock
+            (suffixState E (Fin.last (M + 1)) 0
+              (Fin.zero_le (Fin.last (M + 1)))).L = data'.F3 ∧
+        (∀ p : Fin (M + 1), p ≠ 0 →
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          topLeftCorner T = data'.A1seed p) ∧
+        (∀ p : Fin (M + 1),
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          -((topLeftCorner T)⁻¹ * upperRightBlock T) = data'.F2 p.castSucc) ∧
+        (∀ p : Fin (M + 1), p ≠ Fin.last M →
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          lowerLeftBlock T = data'.A3seed p) ∧
+        (∀ p : Fin (M + 1),
+          let T := transformedEdge E p
+            (suffixState E (Fin.last (M + 1)) p.succ p.succ.le_last);
+          schurResidualBlock T = data'.C p) := by
+    simpa [E, hE] using
+      edgeMatrix_recoverableReadbacks_eq_targets
+        (K := K) (ρ := ρ) data' hF2last' hPassiveA1' hCtop'
+  rcases hRead with ⟨hF20, hCtopRead, hF3Read, hA1, hF2, hA3, hC⟩
+  rcases hRead' with ⟨hF20', hCtopRead', hF3Read', hA1', hF2', hA3', hC'⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro p hp
+    exact (hA1 p hp).symm.trans (hA1' p hp)
+  · apply funext
+    exact (Fin.forall_iff_castSucc
+      (P := fun i : Fin (M + 2) ↦ data.F2 i = data'.F2 i)).2
+      ⟨hF2last.trans hF2last'.symm,
+        fun p ↦ (hF2 p).symm.trans (hF2' p)⟩
+  · intro p hp
+    exact (hA3 p hp).symm.trans (hA3' p hp)
+  · funext p
+    exact (hC p).symm.trans (hC' p)
+  · exact hCtopRead.symm.trans hCtopRead'
+  · exact hF3Read.symm.trans hF3Read'
+
 end RetainedPassiveCoordinateData
 
 end RetainedPassive

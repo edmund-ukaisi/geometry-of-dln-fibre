@@ -7387,6 +7387,36 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive recoverable readbacks
+
+Reproduction:
+`reproduction-a2-retained-passive-recoverable-readbacks.md`.
+Statement card:
+`statement-card-a2-retained-passive-recoverable-readbacks.md`.
+Review:
+`review-a2-retained-passive-recoverable-readbacks.md`.
+
+Lean now proves the sharp finite readback and extensionality layer for the
+bundled source-map object:
+
+```text
+ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverableReadbacks_eq_targets
+ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverable_ext
+```
+
+The readback theorem recovers `F2_0`, `Ctop`, and `F3` from the source-left
+suffix state and, from transformed edges, recovers `A1seed_p` for `p != 0`,
+`F2_{p.castSucc}`, `A3seed_p` for `p != last edge`, and `C_p`.  The
+extensionality theorem says equal edge families force equality of those
+recoverable fields, with `F2_last` discharged by the side condition
+`F2_last=0`.
+
+This is not full injectivity of `RetainedPassiveCoordinateData`: `A1seed 0`
+and `A3seed (Fin.last M)` are dummy seed fields and remain outside the
+recoverable coordinate set.  It also proves no topology, source-rank coverage,
+source/image equality, measure transport, density/Jacobian accounting, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-26 A2 retained-passive transformed-edge readbacks
 
 Reproduction:

@@ -8423,3 +8423,28 @@ Review:
 Nonclaims: finite algebraic source-map object only.  No open coordinate domain,
 topology, measure, Jacobian, two-sided local inverse, source-rank coverage,
 source/image equality, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive recoverable readbacks:
+Lean now proves
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverableReadbacks_eq_targets`
+and
+`ChartLocalSuffixState.RetainedPassiveCoordinateData.edgeMatrix_recoverable_ext`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  The first
+theorem reads back the recoverable retained-passive coordinate fields from
+`data.edgeMatrix`: source-left `F2_0`, `Ctop`, `F3`; per-edge `A1seed_p` for
+`p != 0`, `F2_{p.castSucc}`, `A3seed_p` for `p != Fin.last M`, and `C_p`.
+The second theorem proves the corresponding finite extensionality result for
+two data objects with equal edge families.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recoverable-readbacks.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recoverable-readbacks.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-recoverable-readbacks.md`
+passed.
+
+Nonclaims: no full equality of coordinate-data records.  The dummy fields
+`A1seed 0` and `A3seed (Fin.last M)` are not recoverable.  No open coordinate
+domain, topology, measure, Jacobian, source-rank coverage, source/image
+equality, normal crossings, pole order, or RLCT is proved.
