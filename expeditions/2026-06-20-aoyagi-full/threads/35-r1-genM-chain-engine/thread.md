@@ -147,15 +147,43 @@ chainQ_cZero _ _` (the `exact` accepts the defeq `c = 0` that `rw` can't match) 
 `C 0 · suffix = suffix` from `C 0 = 1`: `rw [hC0eq]; exact Matrix.one_mul _` (do NOT write the `1 · suffix`
 explicitly with a literal-`Fin` `1` — the opaque `Wwid 0` blocks the HMul; let `rw` keep the dependent type).
 
-## What remains for the box-divergence atom ∀M (downstream of the chart identity)
-The ACHIEVER `t` (the `minAdm`-realizing descent) instantiates `chainOfMt`; then the Jacobian det
-`|u|^{minAdm−1}` (via `general_composed_clm_abs_det` + `leafH`), the unit `V` bound + a.e.-positivity, the
-cov (`measure_biUnion_null_iff`), the `nodeChartGeneral` bundle, and the atom discharge
-`routeMCore_box_diverges_achiever ∀M`. The rate identity (this checkpoint) is the soundness-critical
-`F∘φ = u²·V`; the det needs the achiever `t` specifically (the rate is path-agnostic).
+## The box-divergence atom ∀M — WALL on the general Jacobian determinant (precise, Codex-corroborated)
+
+The atom `routeMCore_box_diverges_achiever ∀M` reduces (M-agnostically, banked) to a `NodeAchieverChart M`
+bundle. Its fields split by det-dependence:
+
+**Det-INDEPENDENT (fillable ∀M from the rate engine — `RouteMGenLeafIntegrand.lean`, BANKED):**
+- `leaf_integrand_of_rate` — the `leaf_integrand` field is PURE algebra in `F∘φ = u_p²·V` (the loss base
+  `∏|x_j|^{2δ_p} = |x_p|²` factors; `∏|x_j|^{leafH}` cancels). Holds for ANY `leafH`, NO determinant.
+- `VvalGen_nonneg` — `V ≥ 0` (sum of squares). `hpos`/`leafH_pivot`/`Umeas`/`image_subset` are routine.
+
+**The WALL (the residual design problem — NOT a bounded build on the banked machinery):**
+1. **Flat coordinatization.** `phiGen (u : ℝ) M t B hle` has the radial `u` as a SCALAR + opaque block data
+   `B`; `NodeAchieverChart.phi` needs a full-ambient `(Fin N → ℝ) → (Fin N → ℝ)` reading `u_p` and the block
+   data from the `N` flat coordinates. Coordinatizing `B` as functions of `x : Fin N → ℝ` is a prerequisite
+   for EVERY chart field (even the det-free ones above, which are stated abstractly).
+2. **The Jacobian determinant `|det Dφ_{M,t}| = ∏|u_j|^{leafH j}`** — the headline blocker. The
+   `(3,3,3,3)` template (`RouteM3333Atom.lean`) is **hand-instance machinery**, NOT reusable: the literal
+   SCC-grading `frameB : Fin 27 → ℕ`, the hand-built 7×7 K/Kᵀ coupling-block det, the 27-coordinate
+   triangular `injOn` recovery — all depend on the specific widths/coords. `general_composed_clm_abs_det`
+   (banked) only telescopes a `List` of full-ambient CLM dets IF the factors + their dets are already given;
+   it does NOT build the parametric frame factors. My `chainOfMt` builds layers via the ABSTRACT
+   `chainA`/`chainQ` reindexes (network-product algebra), not a flat-coordinate frame product, so even the
+   `(3,3,3,3)` instance of `phiGen` is a DIFFERENT chart from `phi3333` — `phi3333_abs_det` does not transfer.
+   The bottleneck (Codex xhigh, decorrelated, `codex/genM-det-{prompt,answer}`): a **parametric full-ambient
+   Schur-frame/LDU determinant with pullback to source-monomial exponents** — verified math (`|det of the
+   frame (X,K,N,E)↦[[K,KN],[XK,XKN+E]]| = |det K|^{r+c}`, sympy-confirmed `t=1,2`), but the Lean is a
+   matrix-space parametric fderiv-det, a MULTI-WEEK design pass, not a `(3,3,3,3)`-template lift.
+3. **The cov** (det + `injOn` + finite null-slice add-back) rests on (2).
+
+**Honest state.** The atom is BANKED for the three anchors (`(3,3,4)`, `(4,4,2,2)`, `(3,3,3,3)` —
+`routeMCore_box_diverges_achiever_{334,4422,3333}`); the ∀M atom (`RouteMLayerCoverGE:130` `sorry`) is
+GATED on the general determinant. Forcing the per-instance frame method into ∀M would produce fragile
+infrastructure (anti-bedrock). The recommended next unit: a focused `SchurFrame` parametric-det theorem
+(matrix-indexed, `|det K|^{r+c}` then LDU/radial pullback), THEN coordinatization + cov.
 
 ## Files (worktree branch)
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFactor.lean`, `RouteMFactoredChain.lean`,
 `RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
-`RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`.
-NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+`RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`,
+`RouteMGenLeafIntegrand.lean`. NOT yet in the `DLNFibre.lean` aggregator (controller wires).

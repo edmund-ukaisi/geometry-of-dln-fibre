@@ -212,3 +212,24 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   literal-`Fin` `1` — opaque `Wwid 0` blocks the HMul; let `rw` keep the dependent type).
 - The ACHIEVER `t` (the `minAdm` minimiser) instantiates this for the DOWNSTREAM box-divergence atom
   (det `|u|^{minAdm−1}` + cov + `nodeChartGeneral` + `routeMCore_box_diverges_achiever ∀M`).
+
+## Box-divergence atom ∀M — WALL on the general Jacobian det (thread 35, Codex-corroborated)
+- **The `NodeAchieverChart M` `leaf_integrand` field is det-INDEPENDENT** — `RouteMGenLeafIntegrand.lean`'s
+  `leaf_integrand_of_rate` (pure algebra in `F∘φ = u_p²·V`, ANY `leafH`) + `VvalGen_nonneg` are BANKED ∀M.
+- **The WALL is the general Jacobian determinant `|det Dφ_{M,t}| = ∏|u_j|^{leafH j}`** (the headline-gate
+  blocker; `RouteMLayerCoverGE:130` `sorry` stays). NOT a bounded build on the banked machinery:
+  - The `(3,3,3,3)` `RouteM3333Atom` det is **hand-instance machinery** — the literal `frameB : Fin 27 → ℕ`
+    SCC-grading, the hand-built 7×7 K/Kᵀ coupling-block det, the 27-coord triangular `injOn`. NONE lift
+    mechanically (block sizes/grading/coupling all depend on `M`,`t`).
+  - `general_composed_clm_abs_det` only telescopes a `List` of full-ambient CLM dets IF the factors+dets are
+    given; it does NOT build the parametric frame. `chainOfMt` builds layers via the ABSTRACT `chainA`/`chainQ`
+    (network-product algebra), not a flat-coord frame product — so even `(3,3,3,3)`'s `phiGen ≠ phi3333`;
+    `phi3333_abs_det` does NOT transfer.
+  - Bottleneck (decorrelated Codex xhigh, `threads/35-…/codex/genM-det-*`): a **parametric full-ambient
+    Schur-frame/LDU determinant + pullback to source-monomial exponents** (math verified: `|det frame| =
+    |det K|^{r+c}`, sympy). A MULTI-WEEK design pass, not a template lift. A focused matrix-indexed
+    `SchurFrame` det theorem is the recommended next unit; forcing the per-instance method ∀M = fragile
+    (anti-bedrock).
+  - Also needed: **flat coordinatization** of `phiGen` (scalar-radial + opaque block data) as a full-ambient
+    `(Fin N → ℝ) → (Fin N → ℝ)` map — a prerequisite for ALL chart fields.
+- The atom IS banked for the three anchors (`routeMCore_box_diverges_achiever_{334,4422,3333}`); ∀M is gated.
