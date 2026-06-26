@@ -348,5 +348,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMChainRateValid
 import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
 import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
 import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId3333
+-- The det-INDEPENDENT `NodeAchieverChart M` fields ∀M from the rate identity: `leaf_integrand_of_rate`
+-- (the leaf-integrand field, pure algebra in `F∘φ = u_p²·V`, no determinant) + `VvalGen_nonneg` (the unit
+-- `V = ‖Hr‖²` ≥ 0). Isolates the atom's residual to the achiever-`t` Jacobian det + cov + a.e.-positivity.
+import DLNFibre.DLN.RLCT.Validate.RouteMGenLeafIntegrand
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

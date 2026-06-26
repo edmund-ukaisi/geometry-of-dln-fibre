@@ -616,3 +616,19 @@ the Item-30 CLAUDE.md/scripts.lb drift (the branch is now consistent with dev). 
 have been riskier (irreversible history rewrite) for no real benefit. **Going forward:** controller commissions now tell
 worktree formalisers to push their worktree branch only. Operator: no action needed unless you want the expedition
 branch's history kept free of dev catch-ups (then the aoyagi work would be cherry-picked onto a fresh expedition fork).
+
+## 32. R1-lower atom ∀M gated on the general Jacobian determinant (2026-06-26) — settled math, multi-pass Lean; charging via design-then-build.
+The R1-lower box-divergence atom `routeMCore_box_diverges_achiever` ∀M (an in-gate `Skeleton`/`RouteMLayerCoverGE` sorry)
+is now reduced — via the LANDED ∀M chart identity `routeMCore_phiGen = u²·V` + the banked det-free `NodeAchieverChart`
+fields (`RouteMGenLeafIntegrand`) — to ONE residual: the **general achiever-`t` Jacobian determinant**
+`|det Dφ_{M,t}| = ∏_j |u_j|^{leafH j}` (with `leafH p = minAdm−1`), which drives the `cov` field + the a.e.-positivity.
+The math is SETTLED (the parametric Schur-frame/LDU det = `|det K|^{r+c}`, sympy-verified; the descent-product Jacobian
+pulls back to the source-monomial exponents). The LEAN is the work: the (3,3,3,3) `RouteM3333Atom` det is hand-instance
+(literal grading + hand-built 7×7 block det + 27-coord injOn, not reusable), and the rate-engine chart `phiGen` is abstract
+(chainA/chainQ reindexes, not a flat frame product) so its det isn't `phi3333`'s. Routes: (a) flat-coordinatize `phiGen`
++ a parametric Schur-frame det theorem, or (c) re-architect the general chart as a flat frame product (generalizing
+`phi3333`) + re-derive the identity from the rate engine. This is a multi-pass build (the agent + Codex estimate ~multi-week),
+but NOT a research wall — per the operator's ambition mandate I'm CHARGING it (a design pass to adjudicate the route + spec
+the Schur-frame det keystone, then bounded sub-builds), not deferring. Flagged for operator awareness: this general det is
+the single largest remaining R1-LOWER-leg piece; the R1-UPPER leg (the depth-`r` hfin recursion) + L2-general + D1 remain
+beyond it. The concrete anchors (334/4422/3333) are banked for all of R1-lower if the ∀M det proves longer than hoped.
