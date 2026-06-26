@@ -61,4 +61,23 @@ theorem phiFlat_abs_det_of_factored (M t : Fin (L + 1) → ℕ) (hN : 0 < routeM
   rw [(phiFlat_hasFDerivAt_of_factored M t hN hL ht0 hle fs hmap u).fderiv,
     composeFold_abs_det fs u _ rfl, hdet]
 
+/-! ## The map-equality-FREE det (the chart DEFINED as the factored product)
+
+Per the item-3 design (Codex `codex/item3-form-*`): DEFINE the achiever chart AS `composeFold fs`. Then
+its Jacobian determinant is `∏_j |u_j|^{leafH j}` IMMEDIATELY from the banked telescope — NO map
+equality. (The map equality `composeFold fs = paramsEquivFlat ∘ chartParamsGen ∘ genBlkFlatStruct` is
+needed only to TRANSFER the rate, not the determinant.) This is the genuine `phiFlat_abs_det` for the
+factored chart. -/
+
+/-- **The factored chart's Jacobian determinant** `|det (fderiv (composeFold fs) u)| =
+∏_j |u_j|^{leafH j}` — immediate from `composeFold_hasFDerivAt` + the banked telescope
+`composeFold_abs_det` + the item-4 per-factor det bookkeeping. NO map equality. -/
+theorem composeFold_abs_det_leafH {N : ℕ} (fs : List (ChartFactor N))
+    (leafH : Fin N → ℕ) (u : Fin N → ℝ)
+    (hdet : ((foldDerivList fs u).map
+        (fun D : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) ↦ |LinearMap.det D.toLinearMap|)).prod
+      = ∏ j, |u j| ^ (leafH j)) :
+    |LinearMap.det (fderiv ℝ (composeFold fs) u).toLinearMap| = ∏ j, |u j| ^ (leafH j) := by
+  rw [(composeFold_hasFDerivAt fs u).fderiv, composeFold_abs_det fs u _ rfl, hdet]
+
 end DLNFibre.DLN.RLCT

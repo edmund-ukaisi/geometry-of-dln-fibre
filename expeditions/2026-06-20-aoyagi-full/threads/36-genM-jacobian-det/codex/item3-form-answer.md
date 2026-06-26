@@ -1,0 +1,1 @@
+Codex verdict: DEFINE phiFlat := composeFold fs ⟹ phiFlat_abs_det immediate via composeFold_abs_det + item-4; map equality only for RATE (transport routeMCore_phiFlatStruct via the bridge). Route a-prime REJECTED (rebuilds the det proof). chainChartFactor IS the chainA layer assembly.
