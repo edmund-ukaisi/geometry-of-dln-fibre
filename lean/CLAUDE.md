@@ -193,3 +193,22 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   `step`, `base`, layer-match gives `prod = u•H`. The achiever profile is needed only for the DOWNSTREAM
   Jacobian det `|u|^{minAdm−1}` + the `½·minAdm` threshold — the chart-identity checkpoint can use achiever
   widths but prove only the rate.
+
+## ∀M CHART IDENTITY LANDED (`Validate.RouteM{3333Chain,GenChain,GenChartId,GenChartId3333}`, thread 35)
+- **`routeMCore_phiGen : routeMCore M (φ u) = u²·V` is PROVED for ARBITRARY `M` + descent `t`** (sorry-free,
+  axiom-clean), via the rate engine — NO per-entry `ring`. The `(3,3,3,3)` `match`-fields lifted to an
+  opaque-`t`-width recursion (`chainOfMt`); SPECIALIZES to `(3,3,3,3)` (`routeMCore_phiGen_3spec`).
+- **The structural lift was CLEANER than feared** (Codex `S-hybrid` corroboration; my version simpler):
+  uniform `dite`-guarded fields (`if k < L`), `hC`/`hQA` by `dif_pos` + `chainQ_mul_chainA`, `base` by
+  `dif_neg`. The identity boundary `k=0` (`c_0 = 0`) needs NO special-casing — `chainQ`/`chainA` at `c=0` go
+  through `chainQ_mul_chainA` directly. Widths: `Wext`/`Text` ℕ-indexed `dite` (NOT `getD`).
+- **`chainQ_cZero` (`chainQ` at `c=0` is `I`, via `finSplit_refl` + `finSumFinEquiv_symm_apply_castAdd`)** is
+  the identity-boundary fact making `C 0 = 1` reachable (`Bmat 0 = 1`, `Rmat 0 = 0`). Applied via
+  `have hQ := chainQ_cZero _ _` (the `exact`/`have` accepts the defeq `c = Wext 0 − Text 1 = 0` that `rw`
+  can NOT match — `rw [chainQ_cZero]` fails on the unreduced `Fin (Wext 0 − Text 1)`).
+- **More dependent-HMul cast lessons:** (i) the `C 0 = 1` close needs a `show` at LITERAL `Fin n` types to
+  force the opaque-width reduction before `rw [Matrix.one_mul, smul_zero, add_zero]`. (ii) `C 0 · suffix =
+  suffix` from `hC0eq : C 0 = 1`: `rw [hC0eq]; exact Matrix.one_mul _` (do NOT write `1 · suffix` with a
+  literal-`Fin` `1` — opaque `Wwid 0` blocks the HMul; let `rw` keep the dependent type).
+- The ACHIEVER `t` (the `minAdm` minimiser) instantiates this for the DOWNSTREAM box-divergence atom
+  (det `|u|^{minAdm−1}` + cov + `nodeChartGeneral` + `routeMCore_box_diverges_achiever ∀M`).

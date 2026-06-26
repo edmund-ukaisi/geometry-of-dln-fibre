@@ -118,7 +118,44 @@ The remaining genuine work is the opaque-`t`-width recursion for the chain field
 lifted to a general structural recursion). Downstream (Jacobian det / cov / atom) needs the achiever `t`
 specifically (for the `minAdm−1` exponent); the rate identity does not.
 
+## CHECKPOINT REACHED — the ∀M CHART IDENTITY (the structural lift, 2026-06-26)
+
+The `(3,3,3,3)` `match`-defined fields lifted to arbitrary `M` + arbitrary weakly-decreasing descent `t`
+(sorry-free, axiom-clean). The opaque-`t`-width recursion turned out CLEANER than feared (Codex-corroborated
+`S-hybrid`; my construction is even simpler than Codex's proposed special-cased version):
+
+- **`RouteMGenChain.lean`** — `Wext`/`Text` (ℕ-indexed `dite` width families, NOT `getD`), `GenBlk M t`
+  (per-boundary block data at opaque widths), `chainOfMt : FactoredChain L u`. The fields are UNIFORM
+  `dite`-guarded (`if k < L`): `C k = Bmat k · chainQ(N_k) + u • Rmat k`, `A k = chainA(N_k)(W_k)(C(k+1))`,
+  leaf `C L = u • Rfin L`. `hC`/`hQA` discharged uniformly by `dif_pos` + `chainQ_mul_chainA`; `base` by
+  `dif_neg`. **The identity boundary `k = 0` needs NO special-casing** — `chainQ`/`chainA` at `c_0 = 0` work
+  via `chainQ_mul_chainA` directly (the engine is M-agnostic).
+- **`RouteMChainBlock.lean`** (extended) — `finSplit_refl` (`finSplit (le_refl t) j = inl j`, via
+  `finSumFinEquiv_symm_apply_castAdd`) + `chainQ_cZero` (`chainQ` at `c = 0` is `I`). The identity-boundary
+  fact making `C 0 = 1` reachable from `Bmat 0 = 1`, `Rmat 0 = 0`.
+- **`RouteMGenChartId.lean`** — `chartParamsGen` (chain layers reindexed to `M`), `hWgen`/`hAgen`,
+  `prod_chartParamsGen_eq` (the ∀M rate identity, given `hC0 : C 0 · suffix = suffix`), and
+  `routeMCore_phiGen : routeMCore M (φ u) = u²·V` — **the ∀M chart identity**. `hC0` is the suffix bridge's
+  `C 0 = 1` requirement, carried as a hypothesis the achiever block data discharges.
+- **`RouteMGenChartId3333.lean`** — `routeMCore_phiGen_3spec`: the general theorem SPECIALIZES to
+  `M = (3,3,3,3)`, `t = (3,2,1,0)` (`Text = (3,3,2,1)`), discharging `hC0` via `chainQ_cZero` + the
+  identity-boundary block data. Confirms the structural lift reproduces the concrete instance.
+
+**Cast lessons (added):** (i) `hC0` (`C 0 = 1`) at the identity boundary: `chainOfMt_C_zero` + `have hQ :=
+chainQ_cZero _ _` (the `exact` accepts the defeq `c = 0` that `rw` can't match) + a `show` at LITERAL
+`Fin 3` types to force the width reduction, then `rw [Matrix.one_mul, smul_zero, add_zero]`. (ii)
+`C 0 · suffix = suffix` from `C 0 = 1`: `rw [hC0eq]; exact Matrix.one_mul _` (do NOT write the `1 · suffix`
+explicitly with a literal-`Fin` `1` — the opaque `Wwid 0` blocks the HMul; let `rw` keep the dependent type).
+
+## What remains for the box-divergence atom ∀M (downstream of the chart identity)
+The ACHIEVER `t` (the `minAdm`-realizing descent) instantiates `chainOfMt`; then the Jacobian det
+`|u|^{minAdm−1}` (via `general_composed_clm_abs_det` + `leafH`), the unit `V` bound + a.e.-positivity, the
+cov (`measure_biUnion_null_iff`), the `nodeChartGeneral` bundle, and the atom discharge
+`routeMCore_box_diverges_achiever ∀M`. The rate identity (this checkpoint) is the soundness-critical
+`F∘φ = u²·V`; the det needs the achiever `t` specifically (the rate is path-agnostic).
+
 ## Files (worktree branch)
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFactor.lean`, `RouteMFactoredChain.lean`,
 `RouteMChainRate.lean`, `RouteMChainBlock.lean`, `RouteMChainRateValid.lean`, `RouteMChainBlockValid.lean`,
-`RouteM3333Chain.lean`. NOT yet in the `DLNFibre.lean` aggregator (controller wires).
+`RouteM3333Chain.lean`, `RouteMGenChain.lean`, `RouteMGenChartId.lean`, `RouteMGenChartId3333.lean`.
+NOT yet in the `DLNFibre.lean` aggregator (controller wires).
