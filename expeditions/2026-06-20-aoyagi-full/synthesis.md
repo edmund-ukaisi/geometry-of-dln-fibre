@@ -16,6 +16,8 @@
 
 **Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
 
+**LIVE (2026-06-26, UPDATE-100):** after 4 pause-ticks, per the mandate (charge ahead / decide autonomously / don't block), I un-held R1-general's lower leg and commissioned a DESIGN PROBE of the general-M `routeMCore_box_diverges_achiever` (the hdiv det wall) — bounded reachability probe (build-now vs roadmap), provisionally pursuing (A)'s reachable piece, recorded for the operator's (B)-redirect (banked-value regardless: core RLCT-recursion machinery).
+
 ---
 
 ## Historical read (2026-06-23): re-grounding after compaction — the per-layer-Morse→CITE drift located + CORRECTED; R1 is the S2-only explicit-charts grind, NOT a cite
@@ -901,6 +903,11 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
+**UPDATE-100 (2026-06-26) — after 4 consolidation pause-ticks, charging (A)'s reachable lower-leg: R1-general general-hdiv DESIGN PROBE commissioned (decide autonomously per the mandate). HEAD f6119d80.**
+- **Rationale.** The mandate is explicit: charge ahead / decide autonomously / record for operator review / DON'T block. After consolidating + surfacing (A)/(B) over 4 pause-ticks, indefinite holding under-serves it. So I provisionally pursue (A) (the destination = the general result), starting with the most REACHABLE piece, design-first, recorded for the operator's (B)-redirect.
+- **The piece:** R1-general's general-hdiv `routeMCore_box_diverges_achiever` (RouteMLayerCoverGE:120) — the lone general-M divergence sorry ("the genuine analytic content"), with the (3,3,4) (`…GEL2:1243`, single weighted radial) + (4,4,2,2) (`RouteM4422:761`, pure radial blow-up) anchors DONE as templates. Held only for bandwidth (now freed). Commissioned a pen-and-paper WITNESS design probe (ad94adc3): is there a uniform general-M achiever divergence (witness + the Frame-det bound, verified on a new M), and is it build-ready (det-tactic tide) vs the research-grade (3,3,3,3) wall? Honest cost-read decides build-now vs roadmap.
+- **Scope discipline.** This is a BOUNDED reachability probe of R1-general's lower leg — NOT a commitment to the full R1-general build (the upper-leg N2b/N4 hfin lift, RouteMSchur:164/284, is separate + may need design). Banked-value regardless of (A)/(B): the R1 gate is core RLCT-recursion machinery, not L2-producer-specific. The (A)/(B) fork stays the operator's (Items 24/25/26) — this charges the reachable A-piece while it's undecided; if the operator redirects to (B), the R1-general design is banked.
 
 **★ UPDATE-99 (2026-06-26) — C checkpoint INTEGRATED (HEAD f6f0be0d): 5 clean bricks banked + axiom-clean, the L=2 producer at a stable roadmapped state. Aggregator wiring verifying. ★**
 - **Integrated a8ecfbab's finalized C checkpoint.** NEW: `RankNormalFormTriangular` (Core, the Route-1 block-triangular normalizers — wired into DLNFibre.lean) + `DeepestPsiLens` (the Ψ lenses). CHANGED: `DeepestGaugeConstruction` (#1 Score-measurability CLOSED; hstep2 case-split on L; `deepest_diffeo_bridge_L2` = the L=2 diffeo as a PRECISE roadmapped sorry on the (1a) IsDeepLayers strengthening). Forced green-gate (2737 jobs) + controller #print axioms: deepest_loss_squeeze + PIN1 + both Core normalizers + E1 + the abstract bridge ALL `[propext, Classical.choice, Quot.sound]`; deepest_gauge_construction + deepest_diffeo_bridge_L2 sorryAx (the 4 roadmapped: 2915 L2-diffeo, 3118/3123 L≥3 hinterface, 3289 L≥3 hstep2), NO monomial_rlct. Skeleton/RRR green (inputs unchanged); aoyagi_rrr_222 unchanged. The full-aggregator build (verifying the RankNormalFormTriangular Core wiring) is running in the background.
