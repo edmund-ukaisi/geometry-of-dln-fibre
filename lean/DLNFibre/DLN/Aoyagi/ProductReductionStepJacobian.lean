@@ -433,6 +433,68 @@ def productReductionStepFormalJacobianInverseFormula
   let dA4 : Matrix μ ν K := dC - dA3 * y.F2 - y.A3 * dF2
   (dC1, (dD, (dF3old, (dA1, (dA2, (dA3, dA4))))))
 
+/-- The p. 13 chart base point associated to a raw base point for the formal
+tangent calculation. -/
+def productReductionStepFormalJacobianChartBase
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    ProductReductionStepChartCoordinates ρ π μ ν K where
+  Ctop := x.C1 * x.A1
+  D := x.D
+  A1 := x.A1
+  A3 := x.A3
+  F2 := -(x.A1⁻¹ * x.A2)
+  F3 := x.F3 - x.D * x.A3 * (x.C1 * x.A1)⁻¹
+  C := x.A4 - x.A3 * x.A1⁻¹ * x.A2
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_Ctop
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).Ctop =
+      x.C1 * x.A1 := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_D
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).D =
+      x.D := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_A1
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).A1 =
+      x.A1 := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_A3
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).A3 =
+      x.A3 := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_F2
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).F2 =
+      -(x.A1⁻¹ * x.A2) := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_F3
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).F3 =
+      x.F3 - x.D * x.A3 * (x.C1 * x.A1)⁻¹ := rfl
+
+@[simp]
+theorem productReductionStepFormalJacobianChartBase_C
+    (x : ProductReductionStepRawCoordinates ρ π μ ν K) :
+    (productReductionStepFormalJacobianChartBase
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) x).C =
+      x.A4 - x.A3 * x.A1⁻¹ * x.A2 := rfl
+
 /-- Raw tangent projection to `dC1`. -/
 def productReductionStepRawTangent_dC1 :
     ProductReductionStepRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
