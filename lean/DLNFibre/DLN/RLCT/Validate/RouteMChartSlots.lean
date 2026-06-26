@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxEquiv
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
 import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.Data.Matrix.Block
 
 /-!
 # `RouteMChartSlots` — the disjoint role-slot reader API (the shared decoder/factor foundation)
@@ -90,5 +92,110 @@ theorem readSchur_ne_readLift_index (M : Fin (L + 1) → ℕ) (t : ℕ → ℕ)
   have hsnd : (Sum.inl a : Fin (schurDim M t k.val) ⊕ Fin (liftDim M t k.val)) = Sum.inr b := by
     simpa using (Sigma.mk.inj_iff.mp hsig).2
   exact absurd hsnd (by simp)
+
+/-! ## The derived `Bmat` block-stack constructor (the Schur-frame kept part `[K ; X·K]`)
+
+The structured decoder's `Bmat s` is the kept part of the Schur frame: top block `K_s`
+(`Text(s+1) × Text(s+1)`), bottom block `X_s · K_s` (`r_s × Text(s+1)`), stacked to
+`Text s × Text(s+1)` rows under the descent `Text(s+1) ≤ Text s` (`r_s = Text s − Text(s+1)`). The
+validated dependent-width row-stack the next-tide `genBlkFlatStruct` consumes. -/
+
+/-- **The Schur-frame kept block** `Bmat s = [K ; X·K]` (`Text s × Text(s+1)`), the top `K` over the
+first `Text(s+1)` rows, the bottom `X·K` over the residual `r_s = Text s − Text(s+1)` rows
+(`finSumFinEquiv` row split + a `Text(s+1) + r_s = Text s` reindex; needs the descent
+`Text(s+1) ≤ Text s`). -/
+noncomputable def bmatStack {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ) :
+    Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) ℝ :=
+  Matrix.reindex
+    (finCongr (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega))
+    (Equiv.refl _)
+    (Matrix.of (fun (i : Fin (Text M t (k + 1) + (Text M t k - Text M t (k + 1))))
+        (j : Fin (Text M t (k + 1))) =>
+      Sum.elim (fun a => K a j) (fun b => (X * K) b j) (finSumFinEquiv.symm i)))
+
+/-- The top `Text(s+1)` rows of `bmatStack` are `K` (the `finSumFinEquiv` `castAdd` block). -/
+theorem bmatStack_top {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (a : Fin (Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
+    bmatStack M t k hdesc K X
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.castAdd _ a)) j
+      = K a j := by
+  rw [bmatStack, Matrix.reindex_apply]
+  simp only [Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Equiv.refl_symm,
+    Equiv.refl_apply, Matrix.of_apply]
+  rw [show (Fin.cast (show Text M t k = Text M t (k + 1) + (Text M t k - Text M t (k + 1)) by omega)
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.castAdd _ a)))
+        = Fin.castAdd (Text M t k - Text M t (k + 1)) a from by apply Fin.ext; simp,
+    finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]
+
+/-- The bottom `r_s` rows of `bmatStack` are `X·K` (the `finSumFinEquiv` `natAdd` block). -/
+theorem bmatStack_bot {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (b : Fin (Text M t k - Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
+    bmatStack M t k hdesc K X
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.natAdd _ b)) j
+      = (X * K) b j := by
+  rw [bmatStack, Matrix.reindex_apply]
+  simp only [Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Equiv.refl_symm,
+    Equiv.refl_apply, Matrix.of_apply]
+  rw [show (Fin.cast (show Text M t k = Text M t (k + 1) + (Text M t k - Text M t (k + 1)) by omega)
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.natAdd _ b)))
+        = Fin.natAdd (Text M t (k + 1)) b from by apply Fin.ext; simp,
+    finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]
+
+/-! ## The Schur-frame slot K/X/N/E sub-split
+
+The frame slot at GenBlk boundary `s` (size `Text s · Wext s`) sub-splits into the Schur roles
+`K` (`Text(s+1)²`), `X` (`r_s·Text(s+1)`), `N` (`Text(s+1)·c_s`), `E` (`r_s·c_s`), where
+`r_s = Text s − Text(s+1)`, `c_s = Wext s − Text(s+1)`. The `(((K + X) + N) + E) = Text s · Wext s`
+identity is the banked `roleSquare_eq`; the split equiv nests `finSumFinEquiv.symm` left-to-right. -/
+
+/-- **The Schur-frame slot K/X/N/E sub-split equivalence** — `Fin (Text s · Wext s) ≃ (((K ⊕ X) ⊕ N)
+⊕ E)` at the role-block sizes, via `roleSquare_eq` + left-nested `finSumFinEquiv.symm`. The decoder's
+per-frame role accessor base (`K`, `X`, `N`, `E` blocks of the Schur frame at boundary `s`). -/
+def frameSplitEquiv {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s) :
+    Fin (Text M t s * Wext M s) ≃
+      (((Fin (Text M t (s + 1) * Text M t (s + 1)) ⊕
+         Fin ((Text M t s - Text M t (s + 1)) * Text M t (s + 1))) ⊕
+        Fin (Text M t (s + 1) * (Wext M s - Text M t (s + 1)))) ⊕
+       Fin ((Text M t s - Text M t (s + 1)) * (Wext M s - Text M t (s + 1)))) :=
+  (finCongr (roleSquare_eq h1 h2).symm).trans
+    ((finSumFinEquiv.symm).trans
+      (((finSumFinEquiv.symm).trans
+        (((finSumFinEquiv.symm).trans (Equiv.refl _)).sumCongr (Equiv.refl _))).sumCongr
+          (Equiv.refl _)))
+
+/-! ## The derived `Rmat` block-pad constructor (the Schur-frame `u`-carrier `[[0,0],[0,E]]`)
+
+The structured decoder's `Rmat s` is the `u`-carrying residual of the Schur frame: the `E_s`
+(`r_s × c_s`) block placed BOTTOM-RIGHT of a `Text s × Wext s` zero matrix, so
+`C_s = Bmat_s·chainQ(N_s) + u·Rmat_s = [[K, KN],[XK, XKN + uE]]` (the Schur frame). A
+`Matrix.fromBlocks 0 0 0 E` padded by `finSumFinEquiv` row/col reindexes. -/
+
+/-- **The Schur-frame `u`-carrier block** `Rmat s = [[0,0],[0,E]]` (`Text s × Wext s`), the `E_s` block
+(`r_s × c_s`) in the bottom-right, zeros elsewhere (`Matrix.fromBlocks 0 0 0 E` + `finSumFinEquiv`
+row/col reindex to `Text s × Wext s`). -/
+noncomputable def rmatPad {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
+    (E : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ) :
+    Matrix (Fin (Text M t s)) (Fin (Wext M s)) ℝ :=
+  Matrix.reindex
+    (finSumFinEquiv.trans
+      (finCongr (show Text M t (s + 1) + (Text M t s - Text M t (s + 1)) = Text M t s by omega)))
+    (finSumFinEquiv.trans
+      (finCongr (show Text M t (s + 1) + (Wext M s - Text M t (s + 1)) = Wext M s by omega)))
+    (Matrix.fromBlocks (0 : Matrix (Fin (Text M t (s + 1))) (Fin (Text M t (s + 1))) ℝ) 0 0 E)
 
 end DLNFibre.DLN.RLCT

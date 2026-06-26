@@ -387,6 +387,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMConjBlock
 import DLNFibre.DLN.RLCT.Validate.RouteMFactorFDeriv
 import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
 import DLNFibre.DLN.RLCT.Validate.RouteMChartSlots
+-- `RouteMGenFlatStruct`: the STRUCTURED disjoint-slot decoder `genBlkFlatStruct`
+-- (derived Schur-frame blocks), the identity boundary `C0_eq_one`, and the
+-- UNCONDITIONAL rate `routeMCore (phiFlatStruct u) = u²·V` ∀M (`routeMCore_phiFlatStruct`).
+import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
 import DLNFibre.DLN.RLCT.Validate.RouteMPhiFlatDet
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
