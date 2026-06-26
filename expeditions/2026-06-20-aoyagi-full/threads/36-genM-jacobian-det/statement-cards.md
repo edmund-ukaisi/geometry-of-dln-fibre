@@ -61,3 +61,22 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 >   (item 4 bookkeeping). Both deferred — the unconditional `phiFlat_abs_det` is NOT yet established.
 > - **Cited.** none.
 > - **Status.** sorry-free (conditional). The DET SIDE is complete modulo the two named hypotheses.
+
+---
+
+> **Claim.** The achiever-chart flat coordinates split into DISJOINT per-(boundary, role, entry) slots
+> via the banked bijective `chartIdxEquiv` — the foundation that lets the structured decoder + the
+> factor CLEs read the same disjoint coords (the item-3 unblock).
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.schurSlotEquiv`, `liftSlotEquiv`, `readSchur`, `readLift`,
+>   `readSchur_index_injective`, `readSchur_ne_readLift_index`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMChartSlots.lean` @ `85d6642d`)
+> - **Gloss.** `Fin (schurDim k) ≃ Fin t_k × Fin M_{k+1}` (and the lift analog) via `finProdFinEquiv`;
+>   `readSchur … k i j = x (chartIdxEquiv.symm ⟨k, inl (slot (i,j))⟩)` reads a unique flat coord per
+>   `(k,i,j)`; distinct triples / distinct roles read distinct coords (injectivity of `chartIdxEquiv`).
+> - **Proved.** The slot equivalences + the reader disjointness. Slot↔role alignment verified vs
+>   (3,3,3,3): `schurDim k ↔ frame(k+1)`/leaf, `liftDim k ↔ lift W_{k+1}`, `∑ = N`.
+> - **Assumed / Cited / Deferred.** none proved here beyond the readers; the structured decoder that
+>   USES them (`genBlkFlatStruct`) and the item-3 map equality are the next-tide build (see `thread.md`
+>   UPDATE-2).
+> - **Status.** sorry-free. The shared coordinate foundation for the item-3 unblock.

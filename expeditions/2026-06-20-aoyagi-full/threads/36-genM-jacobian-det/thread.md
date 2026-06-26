@@ -103,3 +103,60 @@ verified, so `ofFinrankEq` exists — but must be the STRUCTURED one, sharing ac
 decoder, not abstract); (2) the factor list `fs` from those CLEs; (3) `composeFold fs = phiFlat` by
 boundary induction; (4) re-check `hC0`; (5) the leafH summation (item 4) via `leafH3333_prod_eq`
 pattern; (6) `phiFlat_abs_det` via the banked `phiFlat_abs_det_of_factored`.
+
+---
+
+## UPDATE-2 (same tide, 2026-06-26) — the decoder REDESIGN, dimension accounting RESOLVED, slot foundation banked
+
+The controller authorised the `genBlkFlat` redefinition. Worked it out + decorrelated xhigh Codex
+(`codex/decoder-{prompt,answer}.md`). Banked one more sorry-free + axiom-clean module:
+
+- **`RouteMChartSlots`** — the disjoint role-slot reader API (the shared decoder/factor foundation).
+  `schurSlotEquiv`/`liftSlotEquiv` (`Fin (schurDim k) ≃ Fin t_k × Fin M_{k+1}` via `finProdFinEquiv`),
+  `readSchur`/`readLift` (`chartIdxEquiv`-based scalar readers, disjoint by construction),
+  `readSchur_index_injective` / `readSchur_ne_readLift_index` (disjointness).
+
+### THE KEY STRUCTURAL FINDING (resolves the "how to make it disjoint" question)
+
+The raw `GenBlk` role sizes do **NOT** sum to `N` — they OVER-count. For (3,3,3,3): naive all-roles
+total = 57, free (minus the fixed `Bmat 0 = I`, `Rmat 0 = 0`) = **39 ≠ N = 27**. THIS is why the old
+decoder HAD to collapse coords (a modular hash): you cannot give 39 entries 27 disjoint slots. The
+`GenBlk` blocks are NOT independent — `Bmat s`, `Rmat s`, `Rfin L` are DERIVED from the genuine free
+coords (`K_s`, `X_s`, `N_s`, `E_s`, lift `W_s`) via the Schur-frame structure. Codex confirms: the true
+coordinate space is `radial ⊕ (nonfixed Schur/lift roles) ≃ ChartIdx ≃ Fin (flatDim M)` (size `N`).
+
+**Slot ↔ role alignment (verified vs (3,3,3,3), ∑ = N via `chartDim_eq_flatDim`):**
+- `schurDim k = t_k·M_{k+1}` holds the Schur frame at boundary `s = k+1` for `k < L−1`
+  (`(t_s+r_s)(t_s+c_s) = t_{s-1}·M_s = schurDim(s-1)`); `schurDim(L−1)` holds the LEAF residual
+  `Rfin(L)` (`Text(L)·Wext(L)`).
+- `liftDim k = (M_{k+1}−t_{k+1})·M_{k+2}` holds the lift `W_{k+1}`.
+- (3,3,3,3): schurDim = 9,6,3 (frame(1), frame(2), leaf); liftDim = 3,6 (W_1, W_2). ∑ = 27 = N. ✓
+- The radial pivot `u` is ONE distinguished slot within the boundary-0 frame (Codex: "the fixed
+  residual slot repurposed as `u`" — prefer a named `pRad` over forcing flat coord 0).
+
+### The next-tide structured-decoder build (de-risked plan, in order)
+
+1. **`genBlkFlatStruct`** (NEW module, do NOT edit the gated `genBlkFlat` — `routeMCore_phiGen` is
+   decoder-AGNOSTIC, so build a NEW `GenBlk` and reuse the rate). Per Codex: `Bmat s = [K_s ; X_s·K_s]`
+   (rows `Text(s+1)+r_s = Text s`), `Nblk s = N_s`, `Rmat s` = bottom-right-only `E_s` block (so
+   `C_s = B_s·Q(N_s) + u·R_s = [[K, KN],[XK, XKN+uE]]` — the Schur frame), `Wblk s = W_s`,
+   `Rfin L = E`-leaf. `K_s` is `Text(s+1)×Text(s+1)` (= `t_s²`), assembled by `lduCoreMap` on LDU slots.
+   **NEW HYPOTHESIS NEEDED:** the `Bmat` row-split `Text(s+1) ≤ Text s` (`t` weakly decreasing) —
+   beyond the current `hle : Text(s+1) ≤ Wext s`. Achiever path is strictly decreasing, so it holds;
+   thread it. Heavy: `Matrix.fromBlocks` / `Fin.append` row-split at dependent `Text` widths (the
+   `lean/CLAUDE.md` dependent-`Fin` reassociation kernel applies).
+2. **Rate re-check:** `routeMCore_chartParamsFlat` for `genBlkFlatStruct` via `routeMCore_phiGen` —
+   only `hC0` (identity boundary `C 0 · suffix = suffix`) needs re-proving under the structured decoder
+   (`Bmat 0 = I`, `Rmat 0 = 0`, `chainQ` at `c_0 = 0` is `I`). Audit a.e.-positivity/unit facts.
+3. **Factor list `fs`:** the `E_s` CLEs = the role splits from `RouteMChartSlots` (NOT arbitrary
+   block-extractions). Build `composeFold fs` from the SAME `readSchur`/`readLift` + the item-2
+   `schurChartFactor`/`lduChartFactor`/`chainChartFactor`/`radialFactor`.
+4. **Item-3 (Codex's proof shape — avoid the final-flatten battlefield):** prove the `Params`-level
+   `(paramsEquivFlat M).symm ∘ composeFold fs = chartParamsFlat` by `funext x; ext s i j` + LOCAL stage
+   accessor lemmas (`genBlkFlatStruct_C_s_eq_schurFrame`, `_A_s_eq_chainA`, the `composeFold_after_*`
+   read lemmas), then apply `paramsEquivFlat M` to get `composeFold fs = phiFlat`.
+5. **Item-4 leafH summation** + the banked `phiFlat_abs_det_of_factored` → **`phiFlat_abs_det`**.
+
+This is ≈4–5 modules of dependent-width block algebra — well-defined, no open design questions, but a
+genuine multi-tide sequence (NOT a single tide). The det side (items 2 + 4-skeleton) + the slot
+foundation are banked; the structured decoder + item-3 induction are the remaining build.
