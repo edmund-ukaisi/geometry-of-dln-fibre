@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxEquiv
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
 import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.Data.Matrix.Block
 
 /-!
 # `RouteMChartSlots` — the disjoint role-slot reader API (the shared decoder/factor foundation)
@@ -90,5 +92,66 @@ theorem readSchur_ne_readLift_index (M : Fin (L + 1) → ℕ) (t : ℕ → ℕ)
   have hsnd : (Sum.inl a : Fin (schurDim M t k.val) ⊕ Fin (liftDim M t k.val)) = Sum.inr b := by
     simpa using (Sigma.mk.inj_iff.mp hsig).2
   exact absurd hsnd (by simp)
+
+/-! ## The derived `Bmat` block-stack constructor (the Schur-frame kept part `[K ; X·K]`)
+
+The structured decoder's `Bmat s` is the kept part of the Schur frame: top block `K_s`
+(`Text(s+1) × Text(s+1)`), bottom block `X_s · K_s` (`r_s × Text(s+1)`), stacked to
+`Text s × Text(s+1)` rows under the descent `Text(s+1) ≤ Text s` (`r_s = Text s − Text(s+1)`). The
+validated dependent-width row-stack the next-tide `genBlkFlatStruct` consumes. -/
+
+/-- **The Schur-frame kept block** `Bmat s = [K ; X·K]` (`Text s × Text(s+1)`), the top `K` over the
+first `Text(s+1)` rows, the bottom `X·K` over the residual `r_s = Text s − Text(s+1)` rows
+(`finSumFinEquiv` row split + a `Text(s+1) + r_s = Text s` reindex; needs the descent
+`Text(s+1) ≤ Text s`). -/
+noncomputable def bmatStack {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ) :
+    Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) ℝ :=
+  Matrix.reindex
+    (finCongr (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega))
+    (Equiv.refl _)
+    (Matrix.of (fun (i : Fin (Text M t (k + 1) + (Text M t k - Text M t (k + 1))))
+        (j : Fin (Text M t (k + 1))) =>
+      Sum.elim (fun a => K a j) (fun b => (X * K) b j) (finSumFinEquiv.symm i)))
+
+/-- The top `Text(s+1)` rows of `bmatStack` are `K` (the `finSumFinEquiv` `castAdd` block). -/
+theorem bmatStack_top {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (a : Fin (Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
+    bmatStack M t k hdesc K X
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.castAdd _ a)) j
+      = K a j := by
+  rw [bmatStack, Matrix.reindex_apply]
+  simp only [Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Equiv.refl_symm,
+    Equiv.refl_apply, Matrix.of_apply]
+  rw [show (Fin.cast (show Text M t k = Text M t (k + 1) + (Text M t k - Text M t (k + 1)) by omega)
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.castAdd _ a)))
+        = Fin.castAdd (Text M t k - Text M t (k + 1)) a from by apply Fin.ext; simp,
+    finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl]
+
+/-- The bottom `r_s` rows of `bmatStack` are `X·K` (the `finSumFinEquiv` `natAdd` block). -/
+theorem bmatStack_bot {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
+    (hdesc : Text M t (k + 1) ≤ Text M t k)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (b : Fin (Text M t k - Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
+    bmatStack M t k hdesc K X
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.natAdd _ b)) j
+      = (X * K) b j := by
+  rw [bmatStack, Matrix.reindex_apply]
+  simp only [Matrix.submatrix_apply, finCongr_symm, finCongr_apply, Equiv.refl_symm,
+    Equiv.refl_apply, Matrix.of_apply]
+  rw [show (Fin.cast (show Text M t k = Text M t (k + 1) + (Text M t k - Text M t (k + 1)) by omega)
+        (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
+          (Fin.natAdd _ b)))
+        = Fin.natAdd (Text M t (k + 1)) b from by apply Fin.ext; simp,
+    finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr]
 
 end DLNFibre.DLN.RLCT
