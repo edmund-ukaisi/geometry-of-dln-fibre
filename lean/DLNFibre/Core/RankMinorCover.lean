@@ -130,9 +130,11 @@ def rankEqLocus (r : ℕ) : Set (Matrix (Fin p) (Fin q) k) := {M | M.rank = r}
 
 /-- **The per-minor opens cover the rank-exactly-`r` locus (B3-2 headline).** Every matrix of rank
 exactly `r` lies in some pivot chart `minorChart s t` — it has at least one invertible `r × r`
-minor (`exists_invertible_minor_of_rank`). So the det-open family `{minorChart s t}` over the pivot
-positions `(s, t)` is an open cover of `Mat^{=r} = {M | M.rank = r}`. This is the honest geometric
-content of "the per-minor charts cover `Mat^{=r}`" — a genuine cover, not a single chart. -/
+minor (`exists_invertible_minor_of_rank`). So the det-open family `{minorChart s t}` over all
+selector pairs `(s, t)` is an open cover of `Mat^{=r} = {M | M.rank = r}` (the non-injective
+selectors contribute empty charts — a repeated-index submatrix has det `0`, never a unit — so the
+cover is carried by the genuine injective pivot charts). This is the honest geometric content of
+"the per-minor charts cover `Mat^{=r}`" — a genuine cover, not a single chart. -/
 theorem rankEqLocus_subset_iUnion_minorChart (r : ℕ) :
     rankEqLocus (k := k) (p := p) (q := q) r
       ⊆ ⋃ (st : (Fin r → Fin p) × (Fin r → Fin q)), minorChart k p q st.1 st.2 := by

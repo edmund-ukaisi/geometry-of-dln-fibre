@@ -39,6 +39,9 @@ Thread 18 (`18-perminor-bundle`). Builds the genuine per-minor-position open cov
 >   det-open where the `(s, t)` minor is invertible), `rankEqLocus r := {M | M.rank = r}`. Then
 >   `rankEqLocus r ⊆ ⋃ (st : (Fin r → Fin p) × (Fin r → Fin q)), minorChart k p q st.1 st.2`, and
 >   the refined equality `rankEqLocus r = ⋃ st, (rankEqLocus r ∩ minorChart k p q st.1 st.2)`.
+>   The union ranges over **all** selector pairs `(s, t)`; the non-injective ones contribute empty
+>   charts (a repeated-index submatrix has det `0`, never a unit), so the cover is carried by the
+>   genuine injective pivot charts.
 > - **Proved.** Unconditionally; every rank-`r` matrix lies in some chart (Card 1).
 > - **Assumed.** `[Field k]`.
 > - **Cited.** none. **Deferred.** none.
