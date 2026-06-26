@@ -7387,6 +7387,53 @@ Verification passed with the local shared Lake directory: focused
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates`, full `DLNFibre`,
 `scripts/sorries`, and `git diff --check`.
 
+## 2026-06-26 A2 retained-passive transformed-edge readbacks
+
+Reproduction:
+`reproduction-a2-retained-passive-transformed-edge-readbacks.md`.
+Statement card:
+`statement-card-a2-retained-passive-transformed-edge-readbacks.md`.
+Review:
+`review-a2-retained-passive-transformed-edge-readbacks.md`.
+
+Lean now proves the per-edge transformed-block readbacks:
+
+```text
+ChartLocalSuffixState.retainedPassiveTransformedEdge_readbacks
+ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks
+```
+
+For
+
+```text
+M_p = [A1_p, -A1_p F2_p; A3_p, C_p - A3_p F2_p],
+```
+
+Lean proves
+
+```text
+topLeft(M_p) = A1_p
+upperRight(M_p) = -A1_p * F2_p
+-A1_p^-1 * upperRight(M_p) = F2_p
+lowerLeft(M_p) = A3_p
+schurResidualBlock(M_p) = C_p
+```
+
+under the determinant-unit hypothesis for `A1_p`.  The fixed-base wrapper
+first rewrites the actual deterministic transformed edge to `M_p` by
+`retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq`, then applies the
+readback theorem.
+
+This is the per-edge readback ingredient for the eventual retained-passive
+two-sided coordinate inverse.  It does not construct the coordinate domain,
+prove the bundled inverse, source coverage, source/image equality, measure
+pushforward, density/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Xhigh reviewer `Planck the 3rd` passed the sign/order, inverse-cancellation
+hypothesis, Schur convention, and fixed-base rewrite scope.  The reviewer
+suggested tightening one phrase in the reproduction note from fixed-base
+source map to fixed-base edge-family theorem, which is now applied.
+
 ## 2026-06-26 A2 retained-passive `A1_0` endpoint target
 
 Reproduction:

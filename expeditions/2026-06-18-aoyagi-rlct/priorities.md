@@ -5550,3 +5550,20 @@ structure or prove the two-sided readback/reconstruction theorem at the
 fixed-base transformed-edge level.  Still before source-rank coverage,
 source/image equality, measure transport, density/Jacobian accounting, normal
 crossings, pole order, or RLCT.
+
+Per-edge transformed-edge readbacks now landed in
+`RetainedPassiveCoordinates.lean`; see
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-transformed-edge-readbacks.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-transformed-edge-readbacks.md`.
+Lean proves the direct chart readouts
+`A1_p`, `F2_p`, `A3_p`, and `C_p` from
+`M_p=[A1_p,-A1_p F2_p;A3_p,C_p-A3_p F2_p]`, and the same readouts for the
+actual fixed-base transformed edge after rewriting by the reconstruction
+theorem.
+
+Next retained-passive target remains the bundled coordinate-domain/source-map
+or two-sided readback theorem combining active endpoint package data with
+these per-edge readbacks.  Do not advance to coverage, source/image equality,
+measure transport, density/Jacobian accounting, normal crossings, pole order,
+or RLCT before that finite inverse package is explicit.

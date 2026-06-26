@@ -8325,3 +8325,28 @@ Nonclaims: endpoint fixed-base packaging only.  No bundled coordinate-domain
 structure, no two-sided local inverse, no source-rank coverage, no source/image
 equality, no measure pushforward, no density/Jacobian theorem, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive transformed-edge readbacks:
+Lean now proves the per-edge readbacks for the retained-passive transformed
+block and its fixed-base deterministic transformed-edge instance in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`.  Main names:
+`ChartLocalSuffixState.retainedPassiveTransformedEdge_readbacks` and
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks`.
+For
+`M_p=[A1_p,-A1_p F2_p; A3_p,C_p-A3_p F2_p]`, Lean proves
+`topLeft(M_p)=A1_p`, `upperRight(M_p)=-A1_p*F2_p`,
+`-A1_p^-1*upperRight(M_p)=F2_p` under `IsUnit det(A1_p)`,
+`lowerLeft(M_p)=A3_p`, and `schurResidualBlock(M_p)=C_p`.  The fixed-base
+corollary first rewrites the deterministic transformed edge to `M_p`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-transformed-edge-readbacks.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-transformed-edge-readbacks.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-transformed-edge-readbacks.md`.
+
+Nonclaims: per-edge finite readback only.  No bundled coordinate-domain
+structure, no two-sided local inverse, no source-rank coverage, no source/image
+equality, no measure pushforward, no density/Jacobian theorem, no normal
+crossings, no pole order, and no RLCT.

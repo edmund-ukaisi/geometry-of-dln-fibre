@@ -9569,3 +9569,20 @@ Review:
 This is endpoint fixed-base packaging only: no bundled coordinate domain,
 two-sided local inverse, source coverage, source/image theorem, measure
 pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive transformed-edge readbacks:
+`RetainedPassiveCoordinates.lean` proves
+`ChartLocalSuffixState.retainedPassiveTransformedEdge_readbacks` and
+`ChartLocalSuffixState.retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks`.
+For the retained-passive transformed block
+`M_p=[A1_p,-A1_p F2_p;A3_p,C_p-A3_p F2_p]`, Lean reads back `A1_p`,
+`-A1_p*F2_p`, `F2_p`, `A3_p`, and `C_p`; the `F2_p` readback uses
+`IsUnit det(A1_p)` to cancel `A1_p^-1*A1_p`.  The fixed-base version rewrites
+the deterministic transformed edge to `M_p` before applying the block theorem.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-transformed-edge-readbacks.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-transformed-edge-readbacks.md`.
+This is per-edge finite readback only: no bundled coordinate domain,
+two-sided local inverse, source coverage, source/image theorem, measure
+pushforward, density/Jacobian theorem, normal crossings, pole order, or RLCT.

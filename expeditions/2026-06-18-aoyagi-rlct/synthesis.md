@@ -12611,3 +12611,15 @@ recurrences, and transformed-edge reconstruction.  It proves
 transformed block for every edge.  This is the first endpoint package for the
 retained-passive source map, but it is not a bundled coordinate-domain object
 or two-sided local inverse, and it still avoids coverage and measure claims.
+
+New follow-up proves the per-edge transformed-edge readbacks.  For
+`M_p=[A1_p,-A1_p F2_p;A3_p,C_p-A3_p F2_p]`,
+`retainedPassiveTransformedEdge_readbacks` gives the direct block readbacks
+and the chart formula `-A1_p^-1*upperRight(M_p)=F2_p` under
+`IsUnit det(A1_p)`, plus the Schur residual readback `C_p`.  The fixed-base
+wrapper `retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks`
+transfers this to the deterministic transformed edge using the already-landed
+reconstruction theorem.  This fills the per-edge part of the future two-sided
+coordinate inverse; it still does not define the bundled coordinate domain,
+source coverage, source/image equality, measure transport, normal crossings,
+pole order, or RLCT.

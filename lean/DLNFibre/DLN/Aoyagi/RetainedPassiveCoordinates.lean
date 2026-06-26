@@ -115,6 +115,42 @@ theorem schurResidualBlock_retainedPassiveTransformedEdge
     Matrix.nonsing_inv_mul_cancel_left, hA1, Matrix.mul_assoc,
     sub_eq_add_neg, add_assoc]
 
+omit [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)] in
+/-- The one-step chart readbacks of a retained-passive transformed edge recover
+the supplied retained-passive coordinate blocks. -/
+theorem retainedPassiveTransformedEdge_readbacks
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N)
+    (hA1 : IsUnit (A1 p).det) :
+    topLeftCorner (retainedPassiveTransformedEdge A1 F2 A3 C p) = A1 p ∧
+      upperRightBlock (retainedPassiveTransformedEdge A1 F2 A3 C p) =
+        -(A1 p * F2 p.castSucc) ∧
+      -((A1 p)⁻¹ *
+          upperRightBlock (retainedPassiveTransformedEdge A1 F2 A3 C p)) =
+        F2 p.castSucc ∧
+      lowerLeftBlock (retainedPassiveTransformedEdge A1 F2 A3 C p) = A3 p ∧
+      schurResidualBlock (retainedPassiveTransformedEdge A1 F2 A3 C p) =
+        C p := by
+  constructor
+  · simp [retainedPassiveTransformedEdge]
+  constructor
+  · simp [retainedPassiveTransformedEdge]
+  constructor
+  · rw [retainedPassiveTransformedEdge, upperRightBlock_fromBlocks]
+    rw [Matrix.mul_neg]
+    calc
+      - -((A1 p)⁻¹ * (A1 p * F2 p.castSucc)) =
+          (A1 p)⁻¹ * (A1 p * F2 p.castSucc) := neg_neg _
+      _ = F2 p.castSucc :=
+          Matrix.nonsing_inv_mul_cancel_left
+            (A := A1 p) (B := F2 p.castSucc) hA1
+  constructor
+  · simp [retainedPassiveTransformedEdge]
+  · exact schurResidualBlock_retainedPassiveTransformedEdge A1 F2 A3 C p hA1
+
 /-- One retained-passive step updates the suffix-state residual product by
 multiplying with the prescribed residual block `C_p`. -/
 theorem step_retainedPassiveFixedBaseEdgeMatrix_D
@@ -1262,6 +1298,33 @@ theorem retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
       (suffixState (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C)
         (Fin.last N) p.succ p.succ.le_last)
       hB
+
+/-- For retained-passive fixed-base edges, the one-step chart readbacks of the
+actual deterministic transformed edge recover the supplied coordinate blocks. -/
+theorem retainedPassiveFixedBaseEdgeMatrices_transformedEdge_readbacks
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (hF2last : F2 (Fin.last N) = 0)
+    (hA1 : ∀ p : Fin N, IsUnit (A1 p).det)
+    (p : Fin N) :
+    let E := retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C
+    let M := transformedEdge E p
+      (suffixState E (Fin.last N) p.succ p.succ.le_last)
+    topLeftCorner M = A1 p ∧
+      upperRightBlock M = -(A1 p * F2 p.castSucc) ∧
+      -((A1 p)⁻¹ * upperRightBlock M) = F2 p.castSucc ∧
+      lowerLeftBlock M = A3 p ∧
+      schurResidualBlock M = C p := by
+  intro E M
+  have hM :
+      M = retainedPassiveTransformedEdge A1 F2 A3 C p := by
+    simpa [E, M] using
+      retainedPassiveFixedBaseEdgeMatrices_transformedEdge_eq
+        A1 F2 A3 C hF2last hA1 p
+  rw [hM]
+  exact retainedPassiveTransformedEdge_readbacks A1 F2 A3 C p (hA1 p)
 
 /-- Retained-passive fixed-base edges with the solved endpoint blocks read back
 the active source-left fields `F2_0`, `Ctop`, and `F3`, and still have the
