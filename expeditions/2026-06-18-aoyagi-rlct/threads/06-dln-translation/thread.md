@@ -1680,3 +1680,31 @@ Boundary: finite branch-specific Definition 3/Theorem 2 arithmetic only.  This
 does not choose a canonical branch, prove branch independence, add a final
 socket, construct Eq5 payloads or charts, prove normal crossings, identify pole
 order, or extract RLCT.
+
+## Current slice - 2026-06-26, `L=2` branch-disjunction formula
+
+Reproduction:
+`reproduction-definition3-l-eq-two-branch-disjunction-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-branch-disjunction-formula.md`.
+Review:
+`review-definition3-l-eq-two-branch-disjunction-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.L2RepeatedPositiveTheorem2FormulaBranch
+AoyagiDefinition3SourceData.L2TriangleOddTheorem2FormulaBranch
+AoyagiDefinition3SourceData.L2TriangleEvenTheorem2FormulaBranch
+AoyagiDefinition3SourceData.exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
+```
+
+For concrete natural reduced widths `w1,w2,w3`, any supplied `L=2` Definition
+3 source-data witness now dispatches to an explicit disjunction of finite
+Theorem 2 branch packages: repeated-positive `ell=1`, triangle odd `ell=2`,
+or triangle even `ell=2`.
+
+Boundary: this is branch dispatch only.  It does not select a canonical branch,
+prove branch independence, identify a unique lambda/order from arbitrary
+source data, add a final socket, construct Eq5 payloads or charts, prove
+normal crossings, identify pole order, or extract RLCT.

@@ -8287,6 +8287,24 @@ remove the explicit `hr` argument before delegating to the already reviewed
 branch independence, add a final socket, construct Eq5 payloads or charts,
 prove normal crossings, identify pole order, or extract RLCT.
 
+Latest A6 Definition 3 `L=2` branch-disjunction formula:
+`Definition3Bridge.lean` now packages the three safe finite formula branches as
+Props and proves the source-data dispatcher:
+
+```text
+AoyagiDefinition3SourceData.L2RepeatedPositiveTheorem2FormulaBranch
+AoyagiDefinition3SourceData.L2TriangleOddTheorem2FormulaBranch
+AoyagiDefinition3SourceData.L2TriangleEvenTheorem2FormulaBranch
+AoyagiDefinition3SourceData.exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
+```
+
+Given concrete Nat-valued reduced widths and a supplied `L=2` Definition 3
+source-data witness, Lean uses the already reviewed source-data classification
+and no-`hr` wrappers to return a disjunction of repeated-positive, triangle
+odd, or triangle even formula packages.  This remains branch dispatch only: no
+canonical branch, no branch-independent lambda/order, no final socket, no Eq5,
+no charts, no normal crossings, no pole order, and no RLCT extraction.
+
 Latest A6 Definition 3 branch-overlap diagnostic:
 `Definition3Bridge.lean` now proves
 `AoyagiDefinition3SourceData.exists_L_eq_two_two_three_three_formula_disagreement`.

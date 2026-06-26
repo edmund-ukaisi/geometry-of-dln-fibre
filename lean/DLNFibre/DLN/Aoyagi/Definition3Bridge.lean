@@ -2872,6 +2872,215 @@ theorem exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
       hw1 hw2 hw3 hw1_pos hw2_pos hw3_pos hrep
       (sourceRangeRankWidth_of_three_reducedWidthInt_eq_natCast hw1 hw2 hw3)
 
+/-- The repeated-positive `L=2`, `ell=1` finite Theorem 2 branch package.
+
+This is a package proposition for dispatch theorems.  It records the branch
+tags together with the same conclusion as
+`exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated`. -/
+def L2RepeatedPositiveTheorem2FormulaBranch
+    (H : ℕ → ℕ) (r w1 w2 w3 : ℕ) : Prop :=
+  0 < w1 ∧
+  0 < w2 ∧
+  0 < w3 ∧
+  (w1 = w2 ∨ w1 = w3 ∨ w2 = w3) ∧
+  ∃ (C : AoyagiSelectedCutpoints 1)
+      (u v : ℕ)
+      (m : Fin (1 + 1) → ℤ)
+      (data : AoyagiDefinition3CeilData 1 m),
+    0 < u ∧
+    0 < v ∧
+    AoyagiDefinition3SourceData 2 1 H r C ∧
+    m = aoyagiSelectedReducedWidths H r C ∧
+    data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+    data.aParam = 1 ∧
+    data.theorem2OrderFormula = 1 ∧
+    (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+    (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+    (∀ i : Fin (1 + 1),
+      (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+    (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+    (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+    m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+    m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+    aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+    aoyagiTheorem2Lambda_fromCeilData 2 1 H r m data =
+      aoyagiTheorem2RegularTerm 2 H r + ((u : ℚ) * (v : ℚ)) / 2
+
+/-- The odd-total all-source `L=2`, `ell=2` finite Theorem 2 branch package.
+
+This is a package proposition for dispatch theorems.  It records the triangle
+and parity branch tags together with the same conclusion as
+`exists_consecutive_three_widths_theorem2Formula_of_triangle_odd`. -/
+def L2TriangleOddTheorem2FormulaBranch
+    (H : ℕ → ℕ) (r w1 w2 w3 : ℕ) : Prop :=
+  2 * w1 < w1 + w2 + w3 ∧
+  2 * w2 < w1 + w2 + w3 ∧
+  2 * w3 < w1 + w2 + w3 ∧
+  (w1 + w2 + w3) % 2 = 1 ∧
+  ∃ (C : AoyagiSelectedCutpoints 2)
+      (m : Fin (2 + 1) → ℤ)
+      (data : AoyagiDefinition3CeilData 2 m),
+    (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+    AoyagiDefinition3SourceData 2 2 H r C ∧
+    m = aoyagiSelectedReducedWidths H r C ∧
+    data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) + 1 ∧
+    data.aParam = 1 ∧
+    data.theorem2OrderFormula = 2 ∧
+    (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+    (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+    (∀ i : Fin (2 + 1),
+      (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+    (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+    (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+    m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+    m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+    m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+    aoyagiSelectedWidthPairSum 2 m =
+      (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+        (w2 : ℚ) * (w3 : ℚ) ∧
+    aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+      aoyagiTheorem2RegularTerm 2 H r +
+        ((1 : ℚ) * ((2 : ℚ) - (1 : ℚ))) / 8 -
+        ((((w1 + w2 + w3) / 2 : ℕ) : ℚ) + (1 : ℚ) / 2) ^ 2 / 2 +
+        (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ)) / 2)
+
+/-- The even-total all-source `L=2`, `ell=2` finite Theorem 2 branch package.
+
+This is a package proposition for dispatch theorems.  It records the triangle
+and parity branch tags together with the same conclusion as
+`exists_consecutive_three_widths_theorem2Formula_of_triangle_even`. -/
+def L2TriangleEvenTheorem2FormulaBranch
+    (H : ℕ → ℕ) (r w1 w2 w3 : ℕ) : Prop :=
+  2 * w1 < w1 + w2 + w3 ∧
+  2 * w2 < w1 + w2 + w3 ∧
+  2 * w3 < w1 + w2 + w3 ∧
+  (w1 + w2 + w3) % 2 = 0 ∧
+  ∃ (C : AoyagiSelectedCutpoints 2)
+      (m : Fin (2 + 1) → ℤ)
+      (data : AoyagiDefinition3CeilData 2 m),
+    (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+    AoyagiDefinition3SourceData 2 2 H r C ∧
+    m = aoyagiSelectedReducedWidths H r C ∧
+    data.ceilWidth = ((w1 + w2 + w3) / 2 : ℤ) ∧
+    data.aParam = 2 ∧
+    data.theorem2OrderFormula = 1 ∧
+    (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+    (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+    (∀ i : Fin (2 + 1),
+      (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+    (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+    (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+    m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+    m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+    m (2 : Fin (2 + 1)) = (w3 : ℤ) ∧
+    aoyagiSelectedWidthPairSum 2 m =
+      (w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+        (w2 : ℚ) * (w3 : ℚ) ∧
+    aoyagiTheorem2Lambda_fromCeilData 2 2 H r m data =
+      aoyagiTheorem2RegularTerm 2 H r +
+        ((2 : ℚ) * ((2 : ℚ) - (2 : ℚ))) / 8 -
+        ((((w1 + w2 + w3) / 2 - 1 : ℕ) : ℚ) + (2 : ℚ) / 2) ^ 2 / 2 +
+        (((w1 : ℚ) * (w2 : ℚ) + (w1 : ℚ) * (w3 : ℚ) +
+          (w2 : ℚ) * (w3 : ℚ)) / 2)
+
+/-- Any `L=2` Definition 3 source-data witness yields one of the finite
+Theorem 2 branch packages.
+
+This is deliberately a disjunction.  Aoyagi's printed Definition 3/Theorem 2
+does not choose a canonical branch, and the branch-overlap diagnostics show
+that branch-independent finite lambda/order payloads are unsafe. -/
+theorem exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (hsource :
+      ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+        AoyagiDefinition3SourceData 2 ell H r C) :
+    L2RepeatedPositiveTheorem2FormulaBranch H r w1 w2 w3 ∨
+      L2TriangleOddTheorem2FormulaBranch H r w1 w2 w3 ∨
+        L2TriangleEvenTheorem2FormulaBranch H r w1 w2 w3 := by
+  classical
+  rcases
+      (exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
+        (H := H) (r := r)).mp hsource with hrepInt | htriInt
+  · rcases hrepInt with ⟨hw1_pos_z, hw2_pos_z, hw3_pos_z, hrep_z⟩
+    have hw1_pos_z' : (0 : ℤ) < (w1 : ℤ) := by
+      simpa [hw1] using hw1_pos_z
+    have hw2_pos_z' : (0 : ℤ) < (w2 : ℤ) := by
+      simpa [hw2] using hw2_pos_z
+    have hw3_pos_z' : (0 : ℤ) < (w3 : ℤ) := by
+      simpa [hw3] using hw3_pos_z
+    have hw1_pos : 0 < w1 := by exact_mod_cast hw1_pos_z'
+    have hw2_pos : 0 < w2 := by exact_mod_cast hw2_pos_z'
+    have hw3_pos : 0 < w3 := by exact_mod_cast hw3_pos_z'
+    have hrep : w1 = w2 ∨ w1 = w3 ∨ w2 = w3 := by
+      rcases hrep_z with h12 | h13 | h23
+      · left
+        have h12z : (w1 : ℤ) = (w2 : ℤ) := by
+          simpa [hw1, hw2] using h12
+        exact_mod_cast h12z
+      · right
+        left
+        have h13z : (w1 : ℤ) = (w3 : ℤ) := by
+          simpa [hw1, hw3] using h13
+        exact_mod_cast h13z
+      · right
+        right
+        have h23z : (w2 : ℤ) = (w3 : ℤ) := by
+          simpa [hw2, hw3] using h23
+        exact_mod_cast h23z
+    rcases exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+        (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+        hw1 hw2 hw3 hw1_pos hw2_pos hw3_pos hrep with
+      ⟨C, u, v, m, data, hu_pos, hv_pos, S, hm, hceil, haParam, horder,
+        hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+    left
+    exact
+      ⟨hw1_pos, hw2_pos, hw3_pos, hrep, C, u, v, m, data, hu_pos, hv_pos, S,
+        hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+        hnatNonneg, hm0, hm1, hpair, hlambda⟩
+  · rcases htriInt with ⟨htri1_z, htri2_z, htri3_z⟩
+    have htri1_z' :
+        (2 : ℤ) * (w1 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+      simpa [hw1, hw2, hw3] using htri1_z
+    have htri2_z' :
+        (2 : ℤ) * (w2 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+      simpa [hw1, hw2, hw3] using htri2_z
+    have htri3_z' :
+        (2 : ℤ) * (w3 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+      simpa [hw1, hw2, hw3] using htri3_z
+    have htri1 : 2 * w1 < w1 + w2 + w3 := by exact_mod_cast htri1_z'
+    have htri2 : 2 * w2 < w1 + w2 + w3 := by exact_mod_cast htri2_z'
+    have htri3 : 2 * w3 < w1 + w2 + w3 := by exact_mod_cast htri3_z'
+    by_cases hodd : (w1 + w2 + w3) % 2 = 1
+    · rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+          (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+          hw1 hw2 hw3 htri1 htri2 htri3 hodd with
+        ⟨C, m, data, hC, S, hm, hceil, haParam, horder, hnat, hnonneg,
+          hstrict_m, hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+      right
+      left
+      exact
+        ⟨htri1, htri2, htri3, hodd, C, m, data, hC, S, hm, hceil, haParam,
+          horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hm2,
+          hpair, hlambda⟩
+    · have heven : (w1 + w2 + w3) % 2 = 0 := by
+        have hlt : (w1 + w2 + w3) % 2 < 2 := Nat.mod_lt _ (by norm_num)
+        omega
+      rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+          (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+          hw1 hw2 hw3 htri1 htri2 htri3 heven with
+        ⟨C, m, data, hC, S, hm, hceil, haParam, horder, hnat, hnonneg,
+          hstrict_m, hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+      right
+      right
+      exact
+        ⟨htri1, htri2, htri3, heven, C, m, data, hC, S, hm, hceil, haParam,
+          horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hm2,
+          hpair, hlambda⟩
+
 /-- Diagnostic: the printed `L = 2` Definition 3 conditions can admit both the
 `ell = 1` repeated-positive branch and the `ell = 2` all-source triangle branch
 with different finite Theorem 2 lambda formula values.

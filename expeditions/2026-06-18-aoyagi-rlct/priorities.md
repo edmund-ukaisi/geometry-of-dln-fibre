@@ -5371,3 +5371,12 @@ not turn this into a canonical branch theorem, branch-independent payload,
 final socket, Eq5 construction, chart production, normal-crossing theorem,
 pole-order theorem, or RLCT extraction.  Review:
 `threads/06-dln-translation/review-definition3-l-eq-two-branch-formula-rankwidth-removal-a6.md`.
+
+A6 Definition 3 `L=2` branch-disjunction formula has now passed xhigh review:
+`threads/06-dln-translation/reproduction-definition3-l-eq-two-branch-disjunction-formula-a6.md`.
+This is the safe combined `L=2` theorem shape: from some Definition 3 source
+data and concrete natural widths, return an explicit disjunction of
+repeated-positive, triangle-odd, or triangle-even finite formula packages.
+Do not collapse this disjunction to a canonical branch or a branch-independent
+lambda/order payload.  Review:
+`threads/06-dln-translation/review-definition3-l-eq-two-branch-disjunction-formula-a6.md`.
