@@ -38,7 +38,12 @@ canonical `R`-algebra **transition `AlgEquiv`** between them is `awayOverlapTran
 - **round-trip identity** `awayOverlapTransition_trans_symm`: `(f, g)` then `(g, f)` is `id`;
 - **triple-overlap cocycle** `awayTriple_cocycle`: the three pairwise transitions on
   `D(f) ∩ D(g) ∩ D(h)` compose, around the cycle, to the identity — the genuine cocycle condition
-  `g_{fg} ∘ g_{gh} ∘ g_{hf} = 1`.
+  `g_{fg} ∘ g_{gh} ∘ g_{hf} = 1`;
+- **single-chart restriction** `awayOverlapTransition_restrict_left`: restricting the transition
+  along the chart-`f` localization map `Away f → awayOverlap f g` gives the canonical chart-`f` map
+  `chartToSwappedOverlap` into the swapped overlap `awayOverlap g f` — the genuine overlap-LOCAL
+  statement that the transition identifies the two single-chart presentations *on the overlap* (not
+  merely through a common target).
 
 All of these hold because the localization is initial among `R`-algebras inverting the relevant
 denominators, so any two `R`-algebra maps out of it agree (`IsLocalization.algHom_subsingleton`).
@@ -108,6 +113,46 @@ theorem awayOverlapTransition_trans_symm (f g : R) :
   have : Subsingleton (awayOverlap f g →ₐ[R] awayOverlap f g) :=
     IsLocalization.algHom_subsingleton (Submonoid.powers (f * g))
   AlgEquiv.coe_algHom_injective (Subsingleton.elim _ _)
+
+/-! ### The overlap restriction of the single chart (the genuine overlap-local content) -/
+
+/-- **The chart-`f` denominator `f` is a unit in the swapped overlap `awayOverlap g f`.** Each power
+`f ^ n` maps to a unit: `awayOverlap g f = Away (algebraMap R (Away g) f)`, so the image of `f`
+(through the scalar tower `R → Away g → awayOverlap g f`) is the localizing element, made a unit by
+`IsLocalization.Away.algebraMap_isUnit`. -/
+theorem isUnit_ofId_powers_awayOverlap (f g : R) (y : Submonoid.powers f) :
+    IsUnit ((Algebra.ofId R (awayOverlap g f)) (y : R)) := by
+  obtain ⟨_, n, rfl⟩ := y
+  rw [Algebra.ofId_apply, map_pow]
+  refine IsUnit.pow n ?_
+  rw [IsScalarTower.algebraMap_apply R (Localization.Away g) (awayOverlap g f)]
+  exact IsLocalization.Away.algebraMap_isUnit (algebraMap R (Localization.Away g) f)
+
+/-- **The canonical `R`-algebra map from the single chart `Away f` into the swapped overlap.** Since
+`f` is a unit in `awayOverlap g f` (`isUnit_ofId_powers_awayOverlap`), the localization universal
+property (`IsLocalization.liftAlgHom`) gives a unique `R`-algebra map
+`Localization.Away f →ₐ[R] awayOverlap g f` — the structure map presenting the overlap as a further
+localization of chart `f`. -/
+noncomputable def chartToSwappedOverlap (f g : R) :
+    Localization.Away f →ₐ[R] awayOverlap g f :=
+  IsLocalization.liftAlgHom (A := R) (M := Submonoid.powers f)
+    (S := Localization.Away f) (P := awayOverlap g f)
+    (f := Algebra.ofId R (awayOverlap g f)) (isUnit_ofId_powers_awayOverlap f g)
+
+/-- **The overlap transition restricts to the single chart compatibly (the genuine overlap-local
+cocycle content).** On the double overlap `D(f) ∩ D(g)`, restricting the transition
+`awayOverlapTransition f g` along the chart-`f` localization map `Away f → awayOverlap f g` gives
+the canonical chart-`f` map into the swapped overlap `awayOverlap g f` — i.e. the transition
+genuinely identifies the two single-chart presentations *on the overlap*, not merely through a
+common target. Both composites are `R`-algebra maps out of the localization `Away f`, so they agree
+by the universal property (`IsLocalization.algHom_subsingleton` at `powers f`). -/
+theorem awayOverlapTransition_restrict_left (f g : R) :
+    (awayOverlapTransition f g).toAlgHom.comp
+        (IsScalarTower.toAlgHom R (Localization.Away f) (awayOverlap f g))
+      = chartToSwappedOverlap f g :=
+  have : Subsingleton (Localization.Away f →ₐ[R] awayOverlap g f) :=
+    IsLocalization.algHom_subsingleton (Submonoid.powers f)
+  Subsingleton.elim _ _
 
 end Abstract
 

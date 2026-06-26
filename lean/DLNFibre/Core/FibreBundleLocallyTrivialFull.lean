@@ -41,12 +41,28 @@ bundles, and machine-checks, the local-product data over the open `rankROpen` of
 - the **scheme open-cover** `iSup_pivot_basicOpen_eq_rankROpen` — the per-pivot charts
   `basicOpen (chartDsigAt s t)` cover `rankROpen = (V({chartDsigAt}))ᶜ`; backed by the point-set
   cover `sweepSigma_subset_chartOpen`;
+- the **C1 bridge** `pivotDatumOfSelectors` / atlas field `pivotOfCover` — `schemeCover` is indexed
+  by raw selector pairs `(s, t)`, but `triv` / `overlapTransition` are indexed by `PivotDatum`
+  (which carries the permutations `σ, τ`). An injective selector extends to a permutation carrying
+  the first `r` indices to it (`extendToPerm`), so an injective covering chart `(s, t)` yields a
+  `PivotDatum` at the same localizing element (`pivotElt_pivotDatumOfSelectors`): a cover chart
+  connects to its trivialization;
 - the **per-pivot trivializations** into the standard fibre `SchurLoc ⊗ sweepFibreRing` (thread 22);
 - the **base-side transition cocycle** `chartOverlapTransition` with its laws (banked thread-19
   engine at `R = sweepSigmaRing`);
-- the **intertwining** `chartLocalizedAlgEquivAt_transition_eq_gauge` — the transition between
-  trivializations factors purely through the base-ring gauges (the deep chart `e_β` cancels), so the
-  transitions are base-algebraic (the structure-group content).
+- the **C2 overlap-LOCAL restriction** `chartOverlapTransition_restrict` — the transition,
+  restricted to each single localized chart `Away (pivotElt I)` *on the double overlap*
+  `D(pivotElt I · pivotElt J)`, is the canonical chart-`I` map `chartToSwappedOverlap` into the
+  swapped overlap. This is the genuine overlap-local cocycle content (the transition identifies the
+  two single-chart presentations on the overlap) — it captures the overlap-local coherence, which
+  the common-target cancellation below does not (the two are not ordered by entailment: different
+  base rings, domains, and objects);
+- the **common-target cancellation** `chartLocalizedAlgEquivAt_transition_eq_gauge` /
+  `transitionFactors` — the transition between the two FIXED-target trivializations (after
+  cancelling the common tensor tail) factors purely through the base-ring gauges (the deep chart
+  `e_β` cancels), so it is base-algebraic. This is a `k`-algebra equality between the single chart
+  rings; it is NOT the overlap-local restriction (it does not localize the target on the overlap),
+  so it is recorded alongside, not in place of, `overlapRestrict`.
 
 **Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, twice). Two honest
 limits. (1) `rankROpen` is DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so the cover
@@ -98,6 +114,77 @@ noncomputable def pivotElt (d : Fin (N + 2) → ℕ) (r : ℕ)
     sweepSigmaRing k d r :=
   chartDsigAt d r I.s I.t
 
+/-! ## The bridge from a covering raw chart to its pivot datum (C1)
+
+A chart of `schemeCover` is indexed by a **raw selector pair** `(s, t)`, but `triv` /
+`overlapTransition` are indexed by `PivotDatum` (which carries the permutations `σ, τ` + the proofs
+they carry the first `r` rows/columns to `s, t`). For a chart that genuinely lies in the cover the
+selectors are **injective** (a repeated-row or repeated-column minor has a duplicated row/column, so
+its determinant — and hence `chartDsigAt s t` — vanishes, putting the chart in `V({chartDsigAt})`,
+not in `rankROpen`). An injective `s : Fin r → Fin (d _)` extends to a permutation carrying the
+first `r` indices to it, so an injective raw pair `(s, t)` produces a `PivotDatum` with that very
+`(s, t)`. This is the missing bridge: a covering chart connects to its trivialization. -/
+
+open Equiv in
+/-- **An injective selector extends to a permutation carrying the first `r` indices to it.** For
+injective `s : Fin r → Fin n` (with `r ≤ n`) the permutation `extendToPerm hp s hs : Perm (Fin n)`
+sends `Fin.castLE hp i` to `s i` for every `i` (`extendToPerm_apply`). Built from
+`Equiv.extendSubtype` of the equiv `↥(range (castLE)) ≃ Fin r ≃ ↥(range s)`
+(`(ofInjective (castLE)).symm ≪≫ ofInjective s`). -/
+noncomputable def extendToPerm {r n : ℕ} (hp : r ≤ n) (s : Fin r → Fin n)
+    (hs : Function.Injective s) : Equiv.Perm (Fin n) :=
+  open Classical in
+  ((Equiv.ofInjective (Fin.castLE hp) (Fin.castLE_injective hp)).symm.trans
+    (Equiv.ofInjective s hs)).extendSubtype
+
+open Equiv in
+/-- **`extendToPerm` carries the first `r` indices to the selectors.** `extendToPerm hp s hs` sends
+`Fin.castLE hp i` to `s i`: on the `range (castLE)` subtype `extendSubtype` acts by the chosen equiv
+(`extendSubtype_apply_of_mem`), which is `ofInjective s ∘ (ofInjective (castLE)).symm`, and
+`(ofInjective (castLE)).symm` undoes `castLE` (`ofInjective_symm_apply`). -/
+theorem extendToPerm_apply {r n : ℕ} (hp : r ≤ n) (s : Fin r → Fin n)
+    (hs : Function.Injective s) (i : Fin r) :
+    extendToPerm hp s hs (Fin.castLE hp i) = s i := by
+  classical
+  have hmem : Fin.castLE hp i ∈ Set.range (Fin.castLE hp) := ⟨i, rfl⟩
+  rw [extendToPerm,
+    Equiv.extendSubtype_apply_of_mem
+      ((Equiv.ofInjective (Fin.castLE hp) (Fin.castLE_injective hp)).symm.trans
+        (Equiv.ofInjective s hs)) (Fin.castLE hp i) hmem]
+  simp only [Equiv.trans_apply]
+  rw [Equiv.ofInjective_symm_apply (Fin.castLE_injective hp) i]
+  simp
+
+/-- **The pivot datum of an injective raw selector pair (the C1 bridge).** A covering raw chart
+`(s, t)` (injective selectors) yields a `PivotDatum d r hp hq` whose `.s = s`, `.t = t`, with the
+carried permutations `extendToPerm` carrying the first `r` rows/columns to `s, t`
+(`extendToPerm_apply`). Composing with `pivotElt` gives `pivotElt (pivotDatumOfSelectors …) =
+chartDsigAt s t` (`pivotElt_pivotDatumOfSelectors`), so the chart `basicOpen (chartDsigAt s t)` of
+`schemeCover` connects to its trivialization `triv (pivotDatumOfSelectors …)`. -/
+noncomputable def pivotDatumOfSelectors (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    (hs : Function.Injective s) (ht : Function.Injective t) :
+    PivotDatum d r hp hq where
+  s := s
+  t := t
+  σ := extendToPerm hp s hs
+  τ := extendToPerm hq t ht
+  hσ i := extendToPerm_apply hp s hs i
+  hτ j := extendToPerm_apply hq t ht j
+
+omit [Infinite k] in
+/-- **The bridge lands on the chart's localizing element.** The pivot datum of an injective raw
+selector pair `(s, t)` localizes at exactly `chartDsigAt s t` — the element cutting the
+`schemeCover` chart `basicOpen (chartDsigAt s t)`. So a covering raw chart and its
+`PivotDatum`-indexed trivialization share the same localizing element. -/
+@[simp] theorem pivotElt_pivotDatumOfSelectors (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    (hs : Function.Injective s) (ht : Function.Injective t) :
+    pivotElt (k := k) d r hp hq (pivotDatumOfSelectors d r hp hq s t hs ht)
+      = chartDsigAt d r s t := rfl
+
 /-! ## The chart-side overlap transition cocycle -/
 
 /-- **The chart-side overlap transition.** On the double overlap `D(pivotElt I · pivotElt J)` of two
@@ -141,6 +228,25 @@ theorem chartOverlapTransition_trans_symm (d : Fin (N + 2) → ℕ) (r : ℕ)
         (chartOverlapTransition (k := k) d r hp hq J I)
       = AlgEquiv.refl :=
   awayOverlapTransition_trans_symm _ _
+
+omit [Infinite k] in
+/-- **The pivot overlap transition restricts to the single chart `I` compatibly (C2 — the genuine
+overlap-LOCAL cocycle content).** On the double overlap `D(pivotElt I · pivotElt J)`, restricting
+`chartOverlapTransition I J` along the chart-`I` localization map
+`Away (pivotElt I) → awayOverlap (pivotElt I)(pivotElt J)` gives the canonical chart-`I` map
+`chartToSwappedOverlap` into the swapped overlap `awayOverlap (pivotElt J)(pivotElt I)`. So the
+transition identifies the two single-localized pivot charts *on the overlap* (the genuine
+overlap-local statement), not merely after cancelling the common trivialization target
+(`transitionFactors`). The base-side instance of `awayOverlapTransition_restrict_left` at
+`f = pivotElt I`, `g = pivotElt J`. -/
+theorem chartOverlapTransition_restrict (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I J : PivotDatum d r hp hq) :
+    (chartOverlapTransition (k := k) d r hp hq I J).toAlgHom.comp
+        (IsScalarTower.toAlgHom (sweepSigmaRing k d r)
+          (Localization.Away (pivotElt (k := k) d r hp hq I))
+          (awayOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)))
+      = chartToSwappedOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J) :=
+  awayOverlapTransition_restrict_left _ _
 
 /-! ## The trivialization transition factors through the base gauges (B3-6b)
 
@@ -353,12 +459,19 @@ open scoped TensorProduct in
 /-- **A per-pivot local-product atlas with coherent transitions, over the rank-`r` open.** Bundles,
 for a fixed `(d, r)`: the **scheme-level open-cover** `schemeCover` of the rank-`= r` open
 `rankROpen` of `Spec (sweepSigmaRing)` by the per-pivot charts `basicOpen (chartDsigAt s t)`; the
-backing point-set `cover` of `Σ^r`; a `LocalTrivializationDatum` at every pivot `I` (the
-trivialization `triv I`, into the standard fibre `SchurLoc ⊗ sweepFibreRing`); the base-side overlap
-transition cocycle `overlapTransition` with its identity normalization; and the coherence
-`transitionFactors` that the transition between two trivializations factors through the base-ring
-gauges (so the transitions are base-algebraic — the structure-group content). With the scheme-level
-cover this is the genuine local-triviality data over the rank-`= r` open subscheme. -/
+backing point-set `cover` of `Σ^r`; the **C1 bridge** `pivotOfCover` from every covering raw chart
+`(s, t)` to a `PivotDatum` at the same localizing element (so a cover chart connects to its
+trivialization); a `LocalTrivializationDatum` at every pivot `I` (the trivialization `triv I`, into
+the standard fibre `SchurLoc ⊗ sweepFibreRing`); the base-side overlap transition cocycle
+`overlapTransition` with its identity normalization `transitionRoundTrip` and base normalization
+`transitionCommutes`; the **overlap-LOCAL restriction** `overlapRestrict` — the transition,
+restricted to each single localized chart on the double overlap, is the canonical map into the
+swapped overlap (the genuine overlap-local cocycle content); and the **common-target cancellation**
+`transitionFactors` (the fixed-target trivializations' transition is the base-algebraic
+`chartLocalizedAlgEquivAt`-transition — a single-chart `k`-algebra fact, distinct from the
+overlap-local `overlapRestrict` and not capturing the overlap coherence; see its docstring). With
+the scheme-level cover this is the genuine local-triviality data over the rank-`= r` open
+subscheme. -/
 structure PivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) where
   /-- The scheme-level open-cover: the per-pivot charts `basicOpen (chartDsigAt s t)` cover the
@@ -373,6 +486,15 @@ structure PivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
     ∃ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
       Function.Injective s ∧ Function.Injective t ∧
       IsUnit (eval x (ΔPdeepAt (k := k) d r s t))
+  /-- **The C1 bridge: every covering raw chart has a pivot datum at the same localizing element.**
+  A chart of `schemeCover` / `cover` is indexed by a raw selector pair `(s, t)` with injective
+  selectors; `pivotOfCover` produces a `PivotDatum` whose localizing element `pivotElt` is exactly
+  the chart's `chartDsigAt s t` (so `triv (pivotOfCover …)` is the chart's trivialization, and
+  `overlapTransition (pivotOfCover …) (pivotOfCover …)` its overlap transition). This connects each
+  covering chart to its `PivotDatum`-indexed trivialization data. -/
+  pivotOfCover : ∀ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
+    Function.Injective s → Function.Injective t →
+    {I : PivotDatum d r hp hq // pivotElt (k := k) d r hp hq I = chartDsigAt d r s t}
   /-- A genuine local-trivialization datum at every pivot. -/
   triv : ∀ I : PivotDatum d r hp hq,
     LocalTrivializationDatum k (sweepSigmaRing k d r)
@@ -386,9 +508,38 @@ structure PivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
   /-- The transition cocycle round-trips to the identity. -/
   transitionRoundTrip : ∀ I J : PivotDatum d r hp hq,
     (overlapTransition I J).trans (overlapTransition J I) = AlgEquiv.refl
-  /-- The transition between trivializations equals the schur-side `e_{s,t}` transition (the tensor
-  tail cancels): so it factors through the base gauges
-  (`chartLocalizedAlgEquivAt_transition_eq_gauge`), i.e. the transitions are base-algebraic. -/
+  /-- **Base normalization on the overlap.** The overlap transition fixes the image of the base ring
+  `sweepSigmaRing` (it is a `sweepSigmaRing`-algebra map) — the cocycle's normalization on
+  `D(pivotElt I · pivotElt J)`. -/
+  transitionCommutes : ∀ (I J : PivotDatum d r hp hq) (x : sweepSigmaRing k d r),
+    overlapTransition I J
+        (algebraMap (sweepSigmaRing k d r)
+          (awayOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)) x)
+      = algebraMap (sweepSigmaRing k d r)
+          (awayOverlap (pivotElt (k := k) d r hp hq J) (pivotElt (k := k) d r hp hq I)) x
+  /-- **The overlap transition restricts to the single chart `I` compatibly (the genuine
+  overlap-LOCAL cocycle content).** Restricting `overlapTransition I J` along the chart-`I`
+  localization map `Away (chartDsigAt I.s I.t) → awayOverlap (pivotElt I)(pivotElt J)` gives the
+  canonical chart-`I` map `chartToSwappedOverlap` into the swapped overlap — so the transition
+  identifies the two single-localized charts *on the overlap* (`chartOverlapTransition_restrict`),
+  not merely after cancelling the common trivialization target (`transitionFactors`). -/
+  overlapRestrict : ∀ I J : PivotDatum d r hp hq,
+    (overlapTransition I J).toAlgHom.comp
+        (IsScalarTower.toAlgHom (sweepSigmaRing k d r)
+          (Localization.Away (pivotElt (k := k) d r hp hq I))
+          (awayOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)))
+      = chartToSwappedOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)
+  /-- **Common-target cancellation for the single-chart trivializations** (NOT the overlap cocycle).
+  The transition obtained by composing the two fixed-target trivializations `triv I`, `triv J`
+  equals the transition of the underlying `chartLocalizedAlgEquivAt` maps — the common tensor tail
+  `SchurLoc ⊗ sweepFibreRing` cancels (`chartLocalizedAlgEquivAt_transition_eq_gauge` then shows
+  that residual factors through the base gauges, so it is base-algebraic). This is a `k`-algebra
+  equality between the single localized chart rings
+  `Away (chartDsigAt I.s I.t) ≃ₐ Away (chartDsigAt J.s J.t)`. It is **not** an overlap-restricted
+  cocycle: it does not localize the fixed target on `D(pivotElt I · pivotElt J)`, does not identify
+  the two target-side overlap localizations, and does not assert compatibility with
+  `overlapTransition` — those are the separate overlap data `overlapRestrict` /
+  `transitionCommutes`. -/
   transitionFactors : ∀ I J : PivotDatum d r hp hq,
     (triv I).trivialization.trans (triv J).trivialization.symm
       = (chartLocalizedAlgEquivAt d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ).trans
@@ -404,9 +555,14 @@ noncomputable def pivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
     PivotLocalProductAtlas (k := k) d r hp hq where
   schemeCover := iSup_pivot_basicOpen_eq_rankROpen d r
   cover x hx := sweepSigma_subset_chartOpen d r x hx
+  pivotOfCover s t hs ht :=
+    ⟨pivotDatumOfSelectors d r hp hq s t hs ht,
+      pivotElt_pivotDatumOfSelectors d r hp hq s t hs ht⟩
   triv I := perPivotLocalTrivializationDatum d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ
   overlapTransition I J := chartOverlapTransition d r hp hq I J
   transitionRoundTrip I J := chartOverlapTransition_trans_symm d r hp hq I J
+  transitionCommutes I J x := chartOverlapTransition_commutes d r hp hq I J x
+  overlapRestrict I J := chartOverlapTransition_restrict d r hp hq I J
   transitionFactors I J := by
     -- both trivializations are `chartLocalizedAlgEquivAt ≪≫ (chartGfib tensor)` (the SAME tail);
     -- the tail cancels in `triv I ≪≫ (triv J).symm`, leaving the chart-equiv transition
@@ -496,6 +652,32 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r
     sweepSigma (k := k) d r
       = chartCoverKPoint (k := k) d r ∩ rankLeKPoint (k := k) d r :=
   sweepSigma_eq_chartCoverKPoint_inter_rankLe d r
+
+/-- **C1 bridge witness.** A covering raw chart `(s, t)` (injective selectors) connects to its
+trivialization: `pivotOfCover` yields a `PivotDatum` whose localizing element is exactly the chart's
+`chartDsigAt s t`, so `triv` of that datum is the chart's trivialization. The bridge from a
+`schemeCover` chart to its `PivotDatum`-indexed data. -/
+example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    (hs : Function.Injective s) (ht : Function.Injective t) :
+    letI A := reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq
+    pivotElt (k := k) d r hp hq (A.pivotOfCover s t hs ht).1 = chartDsigAt d r s t :=
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).pivotOfCover s t hs ht |>.2
+
+/-- **C2 overlap-restriction witness.** The atlas's overlap transition genuinely restricts to the
+single chart `I` *on the double overlap*: composed with the chart-`I` localization map it is the
+canonical chart-`I` map into the swapped overlap (`overlapRestrict`) — the genuine overlap-local
+cocycle content, beyond the common-target cancellation `transitionFactors`. -/
+example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ)
+    (r : ℕ) (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I J : PivotDatum d r hp hq) :
+    letI A := reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq
+    (A.overlapTransition I J).toAlgHom.comp
+        (IsScalarTower.toAlgHom (sweepSigmaRing k d r)
+          (Localization.Away (pivotElt (k := k) d r hp hq I))
+          (awayOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)))
+      = chartToSwappedOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J) :=
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).overlapRestrict I J
 
 end Witness
 
