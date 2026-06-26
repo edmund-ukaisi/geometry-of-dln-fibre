@@ -6147,6 +6147,41 @@ This is finite product-reduction algebra only.  It does not construct
 successor source data, selected-entry readout, source/image equality, chart
 coverage, normal crossings, pole order, or RLCT.
 
+## 2026-06-26 A2 Case 2 post-pivot compatible residual-factor identity audit
+
+Reproduction:
+`reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+Statement card:
+`statement-card-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+Review:
+`review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+
+Xhigh source and Lean/API scouts audited the tempting next claim that Aoyagi's
+displayed post-pivot two-edge product supplies the selected-entry
+`CenterCoord.chartMap` matrix identity.  The result is negative.
+
+Aoyagi pp. 19-21 prove the finite Case 2 product algebra:
+
+```text
+D''' = blockdiag(1,D_(J+1)),
+C' = Q^-1 C,
+lower(D''' C') = D_(J+1) * C'_+.
+```
+
+Entrywise, after writing the normalized pivot block as `[1 y; x Z]`, the
+post-pivot lower product has entries
+
+```text
+sum_k (Z_ik - x_i y_k) C_(k,a).
+```
+
+The next selected-entry chart is on the next residual block `D_(J+1)`, not on
+the product `D_(J+1) * C'_+`.  Therefore the equality of this product with a
+successor selected-entry chart-map matrix is not source-backed.  The existing
+Lean `..._of_entrywise` bridges remain the correct interface: the successor
+entrywise readout must stay supplied until a genuine source-production theorem
+constructs it.
+
 ## 2026-06-26 A2 selected-entry finite-cover integral assembly
 
 Reproduction:

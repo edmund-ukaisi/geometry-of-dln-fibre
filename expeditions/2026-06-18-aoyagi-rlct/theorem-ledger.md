@@ -8551,6 +8551,15 @@ This is the unweighted concrete residual-factor-product handoff for Aoyagi's
 paper `C' = Q^-1 C`; successor selected-entry readout, source production,
 source/image equality, normal crossings, pole order, and RLCT remain open.
 
+Latest A2 Case 2 post-pivot compatible residual-factor identity audit:
+`threads/03-block-product-reduction/reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`
+records a killed source claim. Aoyagi's Case 2 calculation supplies the
+post-pivot product `D_(J+1) * C'_+`, but not an identity making that product
+the successor selected-entry `CenterCoord.chartMap` matrix. No Lean theorem
+was added; the existing conditional `..._of_entrywise` bridges remain the
+correct boundary. Review:
+`threads/03-block-product-reduction/review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+
 Latest A2 Schur-core formal Jacobian unit:
 `ProductReductionStepJacobian.lean` now proves that the fixed-pivot Schur-core
 formal tangent map for Aoyagi's coordinate change is a linear equivalence and

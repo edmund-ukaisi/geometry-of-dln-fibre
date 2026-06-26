@@ -4797,6 +4797,15 @@ factor restriction.  This is the preferred unweighted product-reduction
 handoff when the following factor is Aoyagi's paper `C'`; do not use it as
 source production of successor chart data or selected-entry readout.
 
+A2 Case 2 post-pivot compatible residual-factor identity audit:
+`threads/03-block-product-reduction/reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+The unqualified source claim is killed. Aoyagi supports
+`D_(J+1) * C'_+` as the displayed post-pivot product, but does not identify
+that product with the successor selected-entry `CenterCoord.chartMap` matrix.
+Do not add a thin adapter here unless a downstream theorem specifically
+consumes the supplied entrywise readout; the next meaningful work is source
+production of the readout/data or a different source-moving frontier.
+
 A2 selected-entry finite-cover integral assembly has now landed:
 `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-cover-integral-assembly.md`.
 Lean proves a finite-cover product-measure lower-integral handoff and uses it

@@ -11970,3 +11970,36 @@ Reproduction, statement card, and review:
 `threads/03-block-product-reduction/statement-card-a2-p13-left-step-small-ball-section-image.md`,
 and
 `threads/03-block-product-reduction/review-a2-p13-left-step-small-ball-section-image.md`.
+
+## Latest A2 Case 2 Post-Pivot Compatible Residual-Factor Audit
+
+Xhigh source and Lean/API scouts killed the proposed source claim that
+Aoyagi's displayed Case 2 post-pivot two-edge product directly supplies the
+successor selected-entry `CenterCoord.chartMap` matrix identity.  The source
+supports the finite algebra
+
+```text
+D''' = blockdiag(1,D_(J+1)),
+C' = Q^-1 C,
+lower(D''' C') = D_(J+1) * C'_+.
+```
+
+Entrywise, for normalized pivot block `[1 y; x Z]`, the lower product entries
+are
+
+```text
+sum_k (Z_ik - x_i y_k) C_(k,a).
+```
+
+The next selected-entry chart is on `D_(J+1)`, not on the product
+`D_(J+1) * C'_+`.  Thus any theorem identifying the product with a successor
+selected-entry chart-map matrix must keep an explicit entrywise readout,
+endpoint equivalence, and source data hypothesis.  No Lean theorem was added
+for this negative audit; the existing conditional `..._of_entrywise` bridge is
+the right boundary.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-post-pivot-compatible-residual-factor-identity.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.

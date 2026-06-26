@@ -7381,6 +7381,17 @@ Nonclaims: no successor `yNext`, selected-entry readout, source production of
 successor chart data/suffixes/terminal rows, source/image equality, chart
 coverage, normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 post-pivot compatible residual-factor identity audit:
+`threads/03-block-product-reduction/reproduction-a2-case2-post-pivot-compatible-residual-factor-identity.md`
+kills the unqualified source claim that `D_(J+1) * C'_+` is already the
+successor selected-entry `CenterCoord.chartMap` matrix. Aoyagi pp. 19-21
+support the `Q/P` algebra, the paper-`C'` lower-tail identity, and the
+post-pivot product, but the next selected-entry chart is on `D_(J+1)`, not on
+the product with the following factor. The successor entrywise readout,
+endpoint equivalence, source data, source/image equality, normal crossings,
+pole order, and RLCT remain supplied or open. Review:
+`threads/03-block-product-reduction/review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+
 Latest A2 Schur-core formal Jacobian unit:
 Lean now proves the fixed-`B` Schur-core formal tangent map from Aoyagi Lemma 2
 and Theorem 3 is invertible, and that its determinant is a unit in the finite
