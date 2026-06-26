@@ -3742,6 +3742,7 @@ No such claim is formalisation-ready until both fields are filled.
   source-data ceiling, Definition 3 source-data local wrappers, Definition 3
   source-data final-boundary handoff, conditional finite-exponent bridge,
   rank-width regular-shift final-boundary handoff,
+  Case 2 regular-shift finite-formula bridge,
   terminal-order equality-bridge, Eq5 terminal-order bridge, Definition 3 Eq5
   `hsource`/`hlast` bridges, Definition 3 source-data Eq5 terminal-order
   bridge, Definition 3 terminal counted-datum classifier final-boundary
@@ -3851,6 +3852,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/06-dln-translation/source-audit-definition3-branch-selection-a6.md`;
   Case 2 finite-formula wrapper reproduced at
   `threads/06-dln-translation/reproduction-case2-theorem2-finite-formula-bridge-a6.md`;
+  Case 2 regular-shift finite-formula wrapper reproduced at
+  `threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`;
   Case 2 ratio-count finite-formula wrapper reproduced at
   `threads/06-dln-translation/reproduction-case2-theorem2-ratio-count-finite-formula-bridge-a6.md`;
   Case 2 chart-final boundary wrapper reproduced at
@@ -4350,6 +4353,26 @@ Reviews:
 `threads/06-dln-translation/review-case1-theorem2-finite-formula-bridge-a6.md`
 and
 `threads/06-dln-translation/review-case1-theorem2-chart-final-bridge-a6.md`.
+
+Latest A6 Case 2 regular-shift finite-formula wrappers:
+`Case2Theorem2FiniteExponentBridge.lean` now also contains
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_regularVariableCountShift_of_forall_le_of_centerCard_add_regularTerm_eq_fromCeilData`
+and
+`Case2DisplayedContinuingA0ExponentCoordinateBridge.theorem2FiniteExponentFormulaHypothesis_regularVariableCountShift_of_forall_le_of_centerCard_add_regularTerm_eq_fromCeilData_of_countInChartAtRatio_eq_of_forall_le`.
+These consume the reduced Case 2/A0 center-ratio minimum bridge, endpoint rank
+bounds, supplied active-ratio lower bounds, and a supplied shifted lambda
+equality
+`card(case2ResidualBlockPivotEntries n S J)/2 + regularTerm =
+aoyagiTheorem2Lambda_fromCeilData ...`.  They fill the finite formula
+boundary for
+`D.jacobianPriorLossShift (aoyagiTheorem2RegularVariableCount Lthm H r)`.
+The chart-count variant derives only the reduced order equality before the
+shift.  This is finite exponent-array arithmetic, not regular-suspension chart
+construction, analytic transport, normal-crossing production, pole order, or
+RLCT.  Reproduction:
+`threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`.
+Statement card:
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-regular-shift-finite-formula-bridge.md`.
 
 Latest A4/A0 source-chart selected-entry microcertificate adapter:
 `SelectedEntryNormalCrossing.lean` now contains source-point presentation

@@ -12058,3 +12058,39 @@ Artifacts:
 `threads/03-block-product-reduction/statement-card-a2-case2-post-pivot-compatible-residual-factor-identity.md`,
 and
 `threads/03-block-product-reduction/review-a2-case2-post-pivot-compatible-residual-factor-identity.md`.
+
+## Latest A6 Case 2 Regular-Shift Finite Formula Bridge
+
+`Case2Theorem2FiniteExponentBridge.lean` now contains shifted Case 2 finite
+formula wrappers.  The main theorem proves
+
+```text
+AoyagiTheorem2FiniteExponentFormulaHypothesis
+  (D.jacobianPriorLossShift
+    (aoyagiTheorem2RegularVariableCount Lthm H r))
+  Lthm ell H r m data
+```
+
+from the reduced Case 2 center-ratio minimum, endpoint rank bounds, a supplied
+active-ratio lower bound, a supplied shifted lambda equality
+
+```text
+card(case2ResidualBlockPivotEntries n S J)/2
+  + aoyagiTheorem2RegularTerm Lthm H r
+= aoyagiTheorem2Lambda_fromCeilData Lthm ell H r m data,
+```
+
+and a reduced order equality.  The chart-count variant derives the reduced
+order equality from counts at the reduced Case 2 ratio before applying the
+regular-variable shift.
+
+This corrects the theorem shape for full Theorem 2 use: do not identify the
+reduced Case 2 ratio alone with the full lambda unless that stronger equality
+is explicitly supplied for a separate purpose.  This remains finite
+exponent-array arithmetic only; it is not regular-suspension construction,
+analytic transport, normal-crossing production, pole order, or RLCT.
+
+Artifacts:
+`threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`
+and
+`threads/06-dln-translation/statement-card-a6-case2-theorem2-regular-shift-finite-formula-bridge.md`.

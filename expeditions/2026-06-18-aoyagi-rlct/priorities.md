@@ -5194,3 +5194,14 @@ small source-faithful consumer of the existing counted-datum codomain count,
 not a proof of Aoyagi's source classifier.  The next A5 source-moving target
 remains the finite minimum/order-formula alignment only after a separate
 pen-and-paper reproduction; do not fill it by assuming the desired equality.
+
+A6 Case 2 regular-shift finite formula bridge has now landed:
+`threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`.
+Lean now provides the preferred full-Theorem-2-shaped Case 2 finite wrapper:
+the reduced center-cardinality ratio is first identified as the reduced
+minimum, then Aoyagi's regular term is added before comparison with
+`aoyagiTheorem2Lambda_fromCeilData`.  Keep using this shifted shape for full
+lambda work; the older raw bridge is only a conditional socket for situations
+where that raw equality is explicitly supplied.  The shifted lambda equality,
+active-ratio lower bound, endpoint rank bounds, and order/chart-count
+obligations remain supplied.
