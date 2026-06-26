@@ -10547,6 +10547,35 @@ source chart, source-rank coverage, and source-measure transport remain the
 frontier.  Xhigh review passed with no findings on the theorem boundary or
 the local filter/restricted-measure shrink.
 
+Latest A2 source-stratum local-subset local-source consumer:
+`RegularSuspensionLocalMeasure.lean` now proves
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_localSource
+```
+
+This generic theorem assumes an open `Ulocal` containing `x0` and a local
+inclusion
+
+```text
+Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource
+```
+
+then applies the existing local-source p.13 finite-integral theorem, shrinks
+the returned open integration set by `Ulocal`, and uses restricted
+product-measure monotonicity to prove finiteness over the source-rank stratum.
+The Lean statement carries `[SFinite μ]` because the Mathlib
+`Measure.restrict_prod_eq_prod_univ` comparison needs it.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+
+This is a conditional coverage consumer, not coverage.  It does not prove a
+local p.13 inverse, source/image equality, raw-Haar pushforward, source-measure
+transport, density/Jacobian identity, normal crossings, pole order, or RLCT.
+
 Latest A6 all-source strict-rank update:
 `Definition3Bridge.lean` now proves that the all-source strict selected
 inequalities imply source-range rank-width:

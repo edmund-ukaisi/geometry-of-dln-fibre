@@ -4610,6 +4610,20 @@ decomposition.  If the coverage proof is too large, first remove the supplied
 residual-coordinate identity.  Do not turn the conditional source-stratum
 bridge into an unconditional p.13/RLCT claim without that source work.
 
+A2 source-stratum local-subset local-source finite-integral consumer has now
+landed:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+Lean proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_localSource`
+in `RegularSuspensionLocalMeasure.lean`.  This is the generic counterpart of
+the selected-entry local-equality bridge: it assumes an open `Ulocal` with
+`Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource`, shrinks the final integration
+neighborhood into `Ulocal`, and compares restricted product measures.  Treat it
+as the preferred consumer when future chart work proves a local inclusion into
+an explicit local source.  It is not a proof of the inclusion, source
+coverage, raw-Haar pushforward, source-measure transport, density/Jacobian
+identity, normal crossings, pole order, or RLCT.
+
 Post-reorientation source/API scouts have now resolved that immediate question
 at source level:
 `threads/03-block-product-reduction/reproduction-a2-selected-entry-source-chart-coverage-boundary.md`.

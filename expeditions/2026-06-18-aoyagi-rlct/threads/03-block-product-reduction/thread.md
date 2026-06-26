@@ -7073,3 +7073,30 @@ and even then this does not prove the remaining source-map pushforward.
 No Lean theorem was added.  Future inverse-density uses must either keep the
 raw pushforward supplied or construct a genuine p.13 source chart, source
 coverage, and density/prior transport for the correct source measure.
+
+## 2026-06-26 A2 source-stratum local-subset local-source consumer
+
+Reproduction:
+`reproduction-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+Statement card:
+`statement-card-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+Review:
+`review-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+
+Lean now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_localSource
+```
+
+This theorem consumes an open neighborhood `Ulocal` with
+`Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource`.  It applies the existing
+local-source p.13 finite-integral theorem, shrinks the returned open set by
+`Ulocal`, and uses restricted product-measure monotonicity to conclude
+finiteness over the shrunk source-rank-stratum set.  The Lean statement carries
+`[SFinite μ]` for the product-restriction comparison.
+
+This is a conditional consumer only.  It does not prove the local inclusion,
+source coverage, local source/image equality, raw-Haar pushforward,
+source-measure transport, density/Jacobian identity, normal crossings, pole
+order, or RLCT.

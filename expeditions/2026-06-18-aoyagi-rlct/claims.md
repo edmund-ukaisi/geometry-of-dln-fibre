@@ -329,6 +329,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-sector-cover.md`;
   product-coordinate source-rank membership at
   `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-rank-membership.md`;
+  source-stratum local-subset local-source finite-integral consumer at
+  `threads/03-block-product-reduction/reproduction-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`;
   selected-entry residual-factor readout boundary at
   `threads/03-block-product-reduction/reproduction-a2-selected-entry-residual-factor-readout-boundary.md`;
   p.13 left-step conditional raw pushforward consumer at
@@ -395,6 +397,9 @@ No such claim is formalisation-ready until both fields are filled.
   product-coordinate source-rank membership reviewed by xhigh check-ins
   `Bernoulli`, `Banach`, and `Confucius` in
   `threads/03-block-product-reduction/review-a2-product-coordinate-source-rank-membership.md`;
+  source-stratum local-subset local-source consumer reviewed by xhigh scouts
+  `Bohr the 2nd`, `Dirac the 2nd`, and `Heisenberg the 2nd` in
+  `threads/03-block-product-reduction/review-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`;
   selected-entry residual-factor readout boundary reviewed by xhigh source/API
   scouts `Kant` and `Kuhn` in
   `threads/03-block-product-reduction/review-a2-selected-entry-residual-factor-readout-boundary.md`;
@@ -7081,6 +7086,34 @@ and
 Nonclaims: no source coverage, no local source/image equality, no exact-rank
 openness, no inverse chart, no density/Jacobian transport, no normal-crossing
 certificate, no pole-order theorem, and no RLCT theorem.
+
+Latest A2 source-stratum local-subset local-source consumer:
+Lean now proves the generic conditional finite-integral consumer
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_localSource
+```
+
+in `RegularSuspensionLocalMeasure.lean`.  Given an open neighborhood `Ulocal`
+with
+
+```text
+Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource,
+```
+
+it shrinks the local-source finite-integral theorem's returned open set by
+`Ulocal` and compares restricted product measures to obtain finiteness over
+the source-rank stratum.  The theorem carries `[SFinite μ]` for that product
+measure comparison.
+
+Reproduction and review:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`
+and
+`threads/03-block-product-reduction/review-a2-source-stratum-local-subset-local-source-finite-integral-consumer.md`.
+
+Nonclaims: no proof of the local inclusion, no source coverage, no local
+source/image equality, no raw-Haar pushforward, no source-measure transport,
+no density/Jacobian identity, no normal crossings, pole order, or RLCT.
 
 Latest A2 selected-entry residual-factor readout boundary:
 Lean now proves the finite handoff from compatible residual factors to the
