@@ -7841,6 +7841,20 @@ and
 Review:
 `threads/05-arithmetic-tail/review-lemma5-first-nonbase-cardinal-bound-a5.md`.
 
+Follow-up order-notation handoff:
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le_theorem2OrderFormula`
+is proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5FirstNonbaseOrderBridge.lean`.  Under
+`data : AoyagiDefinition3CeilData ell m`, it specializes the same supplied
+first-nonbase hypotheses to `a=data.aParam`, `M=data.ceilWidth` and rewrites
+the bound as `candidates.card <= data.theorem2OrderFormula`.  Reproduction
+and statement card:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-order-formula-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-order-formula-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-first-nonbase-order-formula-bound-a5.md`.
+
 Nonclaims: no source vector construction, no canonical source classifier, no
 injectivity proof, no back-to-label or no-extra terminal-minimum theorem, no
 Eq3/Eq4/Eq5 branch construction, no finite minimum-to-`lambda` equality, no

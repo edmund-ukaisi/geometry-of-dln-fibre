@@ -9218,3 +9218,18 @@ and
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
 Review:
 `threads/05-arithmetic-tail/review-lemma5-first-nonbase-cardinal-bound-a5.md`.
+
+Follow-up order-notation handoff:
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le_theorem2OrderFormula`
+is proved in
+`lean/DLNFibre/DLN/Aoyagi/Lemma5FirstNonbaseOrderBridge.lean`.  It restates
+the same finite first-nonbase bound under Definition 3 ceiling data as
+`candidates.card <= data.theorem2OrderFormula`.  It does not construct the
+source classifier, prove selector injectivity, terminal exactness, pole order,
+normal crossings, or RLCT.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-order-formula-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-order-formula-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-first-nonbase-order-formula-bound-a5.md`.

@@ -12026,6 +12026,19 @@ Reproduction and statement card:
 and
 `threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-cardinal-bound.md`.
 
+Follow-up order-notation handoff:
+`Lemma5FirstNonbaseOrderBridge.lean` now proves
+`aoyagiLemma5FirstInteriorNonbaseCountDatumOrBase_candidates_card_le_theorem2OrderFormula`.
+It uses `AoyagiDefinition3CeilData` to rewrite the same upper bound as
+`candidates.card <= data.theorem2OrderFormula`.  This adds no new source
+classifier or exactness content; all first-nonbase hypotheses remain supplied.
+Artifacts:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-order-formula-bound-a5.md`
+and
+`threads/05-arithmetic-tail/statement-card-a5-lemma5-first-nonbase-order-formula-bound.md`.
+Review:
+`threads/05-arithmetic-tail/review-lemma5-first-nonbase-order-formula-bound-a5.md`.
+
 ## Latest A2 Case 2 Post-Pivot Compatible Residual-Factor Audit
 
 Xhigh source and Lean/API scouts killed the proposed source claim that

@@ -5195,6 +5195,14 @@ not a proof of Aoyagi's source classifier.  The next A5 source-moving target
 remains the finite minimum/order-formula alignment only after a separate
 pen-and-paper reproduction; do not fill it by assuming the desired equality.
 
+A5 first-nonbase order-notation handoff has now landed:
+`threads/05-arithmetic-tail/reproduction-lemma5-first-nonbase-order-formula-bound-a5.md`.
+Lean rewrites the same conditional first-nonbase upper bound under
+Definition 3 ceiling data as `candidates.card <= data.theorem2OrderFormula`.
+This closes only a notation gap; the source classifier, injectivity,
+back-to-label coverage, finite minimum-to-`lambda`, normal crossings, pole
+order, and RLCT remain open or supplied as before.
+
 A6 Case 2 regular-shift finite formula bridge has now landed:
 `threads/06-dln-translation/reproduction-case2-theorem2-regular-shift-finite-formula-bridge-a6.md`.
 Lean now provides the preferred full-Theorem-2-shaped Case 2 finite wrapper:
