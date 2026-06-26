@@ -5892,3 +5892,13 @@ consumer.  Coverage and measurability are now automatic for
 fields are analytic: residual positivity/integrability and local loss/density
 bounds on that retained-passive source.  The separate source-measure
 pushforward/Jacobian-density theorem is still a frontier.
+
+Latest retained-passive signed-box local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` also specializes the weighted signed-box
+residual-source constructor to the retained-passive local source.  Under
+global `Continuous Cedge`, the edge-matrix measurability field is automatic;
+under a supplied weighted signed-box pushforward plus supplied monomial
+residual/density estimates, residual positivity/integrability on the
+retained-passive local source is automatic.  Remaining frontiers: construct
+the actual source chart/pushforward and prove the Jacobian/density and
+original-loss bounds rather than assuming them.

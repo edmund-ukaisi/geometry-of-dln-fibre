@@ -10007,6 +10007,20 @@ source image equality, no measure pushforward, no Jacobian/density theorem, no
 residual integrability proof, no original-loss comparison, no normal
 crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive signed-box local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialLower`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-signed-box-local-measure-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-signed-box-local-measure-handoff.md`.
+Focused build passed.  The theorem discharges edge-matrix measurability and
+residual positivity/integrability for the retained-passive local source from
+global `Continuous Cedge` plus supplied weighted signed-box pushforward and
+monomial residual/density hypotheses.  Nonclaims: no source chart
+construction, no pushforward proof, no Jacobian/density theorem, no
+original-loss comparison, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive open partial homeomorphism:
 `RetainedPassiveCoordinatesTopology.lean` defines
 `RetainedPassiveNonredundantCoordinateData.detChartSet_sourceRecursiveDetChartSet_homeomorph`

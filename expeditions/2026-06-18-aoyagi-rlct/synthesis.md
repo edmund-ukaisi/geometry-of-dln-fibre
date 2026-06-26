@@ -12978,3 +12978,15 @@ residual positivity/integrability and loss/density bounds as hypotheses on the
 retained-passive local source.  It does not construct a source-measure
 pushforward, Jacobian density, original-loss comparison, normal crossings,
 pole order, or RLCT extraction.
+
+Latest A2 retained-passive signed-box local-measure handoff:
+`RetainedPassiveLocalMeasure.lean` proves
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialLower`.
+This composes the retained-passive local-measure handoff with the existing
+weighted signed-box residual-source constructor.  Global `Continuous Cedge`
+supplies edge-matrix measurability; the supplied signed-box weighted
+pushforward and supplied monomial residual/density bounds supply residual
+positivity/integrability on the retained-passive local source.  The theorem
+still assumes the source chart, pushforward, monomial data, and local
+loss/density bounds.  It does not prove Jacobian/density transport,
+original-loss comparison, normal crossings, pole order, or RLCT extraction.

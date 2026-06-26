@@ -8583,3 +8583,35 @@ and local loss/density bounds on the retained-passive local source.  Nonclaims:
 no source image equality, no measure pushforward, no Jacobian/density theorem,
 no residual integrability proof, no original-loss comparison, no normal
 crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-26 A2 retained-passive signed-box local-measure handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-signed-box-local-measure-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-signed-box-local-measure-handoff.md`.
+Review:
+`review-a2-retained-passive-signed-box-local-measure-handoff.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_residualSource_signedBox_withDensity_monomialLower
+```
+
+This specializes the weighted signed-box residual-source constructor to the
+retained-passive determinant-chart local source.  Global `Continuous Cedge`
+gives the measurable fixed-base edge-matrix map; the supplied signed-box
+pushforward and monomial residual/density bounds give residual positivity and
+negative-power integrability on the retained-passive local source; the prior
+retained-passive local-measure handoff gives the finite integral over a local
+source-rank-stratum neighborhood.
+
+It still assumes the signed-box chart, weighted pushforward, monomial
+residual/density estimates, and local loss/density bounds.  Nonclaims: no
+source chart construction, no source image equality, no measure pushforward
+proof, no Jacobian/density theorem, no original-loss comparison, no normal
+crossings, no pole order, and no RLCT extraction.
