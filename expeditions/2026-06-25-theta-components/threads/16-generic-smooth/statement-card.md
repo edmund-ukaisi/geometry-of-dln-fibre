@@ -10,7 +10,7 @@
 > rank `= codim = C+δ` on every top component).
 
 - **Lean (headline):** `DLNFibre.Core.smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre`
-  (`lean/DLNFibre/Core/FibreGenericSmooth.lean` @ `0bef4166`)
+  (`lean/DLNFibre/Core/FibreGenericSmooth.lean` @ `c450983f`)
   - Signature: for `d : Fin (N+2) → ℕ`, `r`, `hp : r ≤ d (last (N+1))`, `hq : r ≤ d 0`, a prime `q`
     of `sweepFibreRing k d r hp hq` with `Algebra.IsSmoothAt k q`, there exists `g ∉ q` with
     `Smooth k (SchurLoc (d 0) (d (last (N+1))) r ⊗[k] Localization.Away g)`.
