@@ -4966,3 +4966,13 @@ injectivity/inverse data and measure pushforward/density transport, or a
 separate normal-crossing chart-certificate consumer. Do not restate this as a
 derivative on the determinant-chart subtype, and do not infer source-measure
 transport, normal crossings, pole order, or RLCT.
+
+A2 product-step raw-order determinant-chart injectivity has now landed:
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-injon-det-chart.md`.
+Lean proves `injOn_productReductionStepTopologyTupleToChart_rawOrder_detChart`
+for the exact raw-order map used by the derivative theorem. This supplies the
+`Set.InjOn` hypothesis required by Mathlib's Jacobian change-of-variables
+theorem. The next measure priority is to package the adapter with a fixed
+measurable-space/additive-Haar measure and normed-space-aligned derivative
+family. Do not infer source-measure pushforward, density transport, normal
+crossings, pole order, or RLCT yet.

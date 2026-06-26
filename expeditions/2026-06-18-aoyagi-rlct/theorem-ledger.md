@@ -8789,6 +8789,23 @@ This closes only the ambient open-domain determinant-chart bridge. It does not
 prove subtype differentiability, local injectivity, source-measure transport,
 density transport, normal crossings, pole order, or RLCT.
 
+Latest A2 product-step raw-order determinant-chart injectivity:
+`ProductReductionStepDerivative.lean` now proves injectivity of the exact
+raw-order product-step tuple map on the raw determinant-chart set. Lean names:
+`ProductReductionStepRawCoordinates.topologyTuple_injective`,
+`ProductReductionStepChartCoordinates.topologyTuple_injective`,
+`productReductionStepRawCoordinatesOfTopologyTuple`,
+`productReductionStepTopologyTupleToChart_ofTopologyTuple`, and
+`injOn_productReductionStepTopologyTupleToChart_rawOrder_detChart`.
+The reproduction, statement card, and review are at
+`threads/03-block-product-reduction/reproduction-a2-product-step-raw-order-injon-det-chart.md`,
+`threads/03-block-product-reduction/statement-card-a2-product-step-raw-order-injon-det-chart.md`,
+and
+`threads/03-block-product-reduction/review-a2-product-step-raw-order-injon-det-chart.md`.
+This supplies only the injectivity hypothesis for future Jacobian
+change-of-variables work. It does not prove source-measure transport, density
+transport, normal crossings, pole order, or RLCT.
+
 ## Ledger rules
 
 - `Source ref` must eventually include PDF page numbers or stable local source

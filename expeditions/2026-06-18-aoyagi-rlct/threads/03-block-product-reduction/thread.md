@@ -6366,3 +6366,32 @@ that open set `fderivWithin` agrees with the already-landed ambient `fderiv`.
 This is not differentiability on the determinant-chart subtype and does not
 prove local injectivity/inverse data for measure change-of-variables, source
 measure pushforward, density transport, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 product-step raw-order injectivity on determinant chart
+
+Reproduction:
+`reproduction-a2-product-step-raw-order-injon-det-chart.md`.
+Statement card:
+`statement-card-a2-product-step-raw-order-injon-det-chart.md`.
+Review:
+`review-a2-product-step-raw-order-injon-det-chart.md`.
+
+Lean now proves:
+
+```text
+ProductReductionStepRawCoordinates.topologyTuple_injective
+ProductReductionStepChartCoordinates.topologyTuple_injective
+productReductionStepRawCoordinatesOfTopologyTuple
+productReductionStepTopologyTupleToChart_ofTopologyTuple
+injOn_productReductionStepTopologyTupleToChart_rawOrder_detChart
+```
+
+The proof packages raw tuples as records, removes the raw-order coordinate
+permutation by injectivity of `productReductionStepChartTangentRawOrderEquiv`,
+uses tuple injectivity to recover equality of chart records, and then applies
+the determinant-chart left inverse `productReductionStepCoordinate_left_inverse`.
+
+This supplies the injectivity hypothesis for a future Mathlib Jacobian
+change-of-variables adapter. It does not prove the adapter itself, source
+measure pushforward, density transport, image equality with the full target
+determinant chart, normal crossings, pole order, or RLCT.

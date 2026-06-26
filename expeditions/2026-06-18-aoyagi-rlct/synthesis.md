@@ -11391,3 +11391,33 @@ or injectivity data plus measure/density transport, or a separate consumer
 that feeds this local derivative into a normal-crossing chart certificate. No
 source-measure pushforward, density transport, change of variables, normal
 crossings, pole order, or RLCT is claimed.
+
+## Latest A2 Product-Step Raw-Order InjOn
+
+The determinant-chart injectivity hypothesis for change-of-variables has
+landed in `ProductReductionStepDerivative.lean`. Lean proves:
+
+```text
+ProductReductionStepRawCoordinates.topologyTuple_injective
+ProductReductionStepChartCoordinates.topologyTuple_injective
+productReductionStepRawCoordinatesOfTopologyTuple
+productReductionStepTopologyTupleToChart_ofTopologyTuple
+injOn_productReductionStepTopologyTupleToChart_rawOrder_detChart
+```
+
+The proof is finite coordinate bookkeeping: equality of raw-order images gives
+equality of chart-order tuple images by the coordinate permutation equivalence;
+tuple injectivity gives equality of chart records; the record-level
+determinant-chart left inverse then recovers the raw records and hence the raw
+tuples.
+
+A direct measure adapter was probed after this checkpoint. Mathlib's target is
+`MeasureTheory.map_withDensity_abs_det_fderiv_eq_addHaar`; it requires a
+null-measurable source set, a derivative family on that set, and this `InjOn`
+hypothesis. The remaining Lean packaging issue is to state the adapter with
+the same normed-space topology used by the derivative theorem, not the plain
+product topology selected by bare tuple `→L`/`fderivWithin` elaboration. Do not
+add a brittle measure module until that instance boundary is pinned.
+
+No source-measure pushforward, density transport, change of variables, normal
+crossings, pole order, or RLCT is claimed.

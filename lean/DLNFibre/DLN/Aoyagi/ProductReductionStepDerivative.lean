@@ -115,6 +115,68 @@ theorem productReductionStepTopologyTupleToChart_topologyTuple_chartBase
           (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ) x) := by
   rfl
 
+/-- The raw topology tuple coordinate map is injective. -/
+theorem ProductReductionStepRawCoordinates.topologyTuple_injective
+    {ρ π μ ν K : Type*} :
+    Function.Injective
+      (ProductReductionStepRawCoordinates.topologyTuple
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) := by
+  intro x y h
+  cases x
+  cases y
+  simpa [ProductReductionStepRawCoordinates.topologyTuple] using h
+
+/-- The chart topology tuple coordinate map is injective. -/
+theorem ProductReductionStepChartCoordinates.topologyTuple_injective
+    {ρ π μ ν K : Type*} :
+    Function.Injective
+      (ProductReductionStepChartCoordinates.topologyTuple
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K)) := by
+  intro x y h
+  cases x
+  cases y
+  simpa [ProductReductionStepChartCoordinates.topologyTuple] using h
+
+/-- Rebuild raw one-step product-reduction coordinates from their topology
+tuple. -/
+def productReductionStepRawCoordinatesOfTopologyTuple
+    {ρ π μ ν K : Type*}
+    (z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν K) :
+    ProductReductionStepRawCoordinates ρ π μ ν K where
+  C1 := z.1
+  D := z.2.1
+  F3 := z.2.2.1
+  A1 := z.2.2.2.1
+  A2 := z.2.2.2.2.1
+  A3 := z.2.2.2.2.2.1
+  A4 := z.2.2.2.2.2.2
+
+@[simp]
+theorem productReductionStepRawCoordinatesOfTopologyTuple_topologyTuple
+    {ρ π μ ν K : Type*}
+    (z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν K) :
+    (productReductionStepRawCoordinatesOfTopologyTuple z).topologyTuple = z := by
+  rfl
+
+@[simp]
+theorem productReductionStepRawCoordinatesOfTopologyTuple_detChart
+    {ρ π μ ν K : Type*} [CommRing K] [Fintype ρ] [DecidableEq ρ]
+    (z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν K) :
+    (productReductionStepRawCoordinatesOfTopologyTuple z).detChart ↔
+      IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det := by
+  rfl
+
+@[simp]
+theorem productReductionStepTopologyTupleToChart_ofTopologyTuple
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ]
+    [DecidableEq μ] [Fintype ν]
+    (z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ) :
+    productReductionStepTopologyTupleToChart
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) z =
+      ProductReductionStepChartCoordinates.topologyTuple
+        ((productReductionStepRawCoordinatesOfTopologyTuple z).toChart) := by
+  rfl
+
 /-- The raw one-step determinant chart is open as a subset of the ambient
 tuple coordinate space. -/
 theorem isOpen_productReductionStepRawTopologyTuple_detChart
@@ -736,6 +798,57 @@ theorem fderivWithin_productReductionStepTopologyTupleToChart_rawOrder_det_isUni
   exact
     fderiv_productReductionStepTopologyTupleToChart_rawOrder_det_isUnit
       (ρ := ρ) (π := π) (μ := μ) (ν := ν) x hC1 hA1
+
+/-- The raw-order p. 13 coordinate map is injective on the raw determinant
+chart. -/
+theorem injOn_productReductionStepTopologyTupleToChart_rawOrder_detChart
+    {ρ π μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Finite π]
+    [Fintype μ] [Finite ν] :
+    Set.InjOn
+      (fun z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ =>
+        productReductionStepChartTangentRawOrderEquiv
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)
+          (productReductionStepTopologyTupleToChart
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z))
+      {z : ProductReductionStepRawCoordinates.TopologyTuple ρ π μ ν ℝ |
+        IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det} := by
+  classical
+  let _ : Fintype π := Fintype.ofFinite π
+  let _ : Fintype ν := Fintype.ofFinite ν
+  intro z hz w hw hzw
+  let X : ProductReductionStepRawCoordinates ρ π μ ν ℝ :=
+    productReductionStepRawCoordinatesOfTopologyTuple z
+  let Y : ProductReductionStepRawCoordinates ρ π μ ν ℝ :=
+    productReductionStepRawCoordinatesOfTopologyTuple w
+  have hX : X.detChart := by
+    change IsUnit z.1.det ∧ IsUnit z.2.2.2.1.det
+    exact hz
+  have hY : Y.detChart := by
+    change IsUnit w.1.det ∧ IsUnit w.2.2.2.1.det
+    exact hw
+  have hchartTuple :
+      productReductionStepTopologyTupleToChart
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) z =
+        productReductionStepTopologyTupleToChart
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) w :=
+    (productReductionStepChartTangentRawOrderEquiv
+      (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := ℝ)).injective hzw
+  have hchartRecord : X.toChart = Y.toChart :=
+    ProductReductionStepChartCoordinates.topologyTuple_injective (by
+      change
+        productReductionStepTopologyTupleToChart
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) z =
+          productReductionStepTopologyTupleToChart
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) w
+      exact hchartTuple)
+  have hrawRecord : X = Y := by
+    have hraw := congrArg ProductReductionStepChartCoordinates.toRaw hchartRecord
+    rw [productReductionStepCoordinate_left_inverse X hX,
+      productReductionStepCoordinate_left_inverse Y hY] at hraw
+    exact hraw
+  have htuple := congrArg ProductReductionStepRawCoordinates.topologyTuple hrawRecord
+  change X.topologyTuple = Y.topologyTuple
+  exact htuple
 
 end Aoyagi
 end DLN
