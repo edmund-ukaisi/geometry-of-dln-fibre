@@ -405,3 +405,59 @@ Then `nodeChartGeneral M (hpos : 1 ≤ minAdm M) : NodeAchieverChart M` assemble
 VALIDATE-SMALL note (Codex): `(2,2,2)` is right for the BRIDGE (chartIdxEquiv, role reads, chainA row
 split); for the LDU DET story use a `2×2`-K case (`(3,3,3,3)` — genuine 2×2 LDU core + multi-pivot
 spectators) — `(2,2,2)`'s 1×1 blocks hide LDU ordering.
+
+---
+
+## UPDATE-11 (formalisation tide cont., 2026-06-27) — bricks (b)/(c)/(d): a PRECISE DECODER WALL surfaced (the det target is not derivable from the current `genBlkFlatStruct`)
+
+Charged (b)/(c)/(d). The funext-s bridge mechanics (c) are de-risked (Codex `codex/bcd-*` gives the
+concrete `(2,2,2)` s=0 proof shape via `chainA_apply_castAdd`; the hardest cast is the row-index
+alignment `hrow`). BUT a decorrelated xhigh Codex consult + my independent verification surfaced a
+**genuine structural wall at the DECODER level** that blocks (d) — and makes building (c)/(d) against the
+current decoder premature.
+
+### THE SHARP SUB-PROBLEM (for the controller to decorrelate — pen-and-paper / Codex on the fix)
+**The current `genBlkFlatStruct` does NOT encode the radial blow-up, so `|det Dφ| = |x p|^{minAdm−1}` is
+NOT derivable from it.** Verified three ways:
+1. **Source:** `genBlkFlatStruct` has `Rfin := fun _ => 0` (`RouteMGenFlatStruct.lean:150`) — the LEAF
+   transition `C_L = u • Rfin L = 0`. And `structPivot := ⟨0, hN⟩` (`RouteMFlatStructV.lean:89`) is just
+   flat coord 0, used as the radial scalar `u` with NO connection to the slot/role structure — so `x p`
+   is simultaneously the radial scalar AND (opaquely, via `chartIdxEquiv`) some role coordinate.
+2. **Mechanism (Codex Q1, my independent confirm):** the achiever blow-up needs active normal coords
+   `(u, z₁,…,z_{m−1})` ↦ `(u, u z₁,…,u z_{m−1})`, det `|u|^{m−1}`, `m = minAdm` — the pivot `u` a
+   DISTINCT slot, scaling a FIXED residual entry `=1` to produce the pivot output. The current decoder
+   reads ALL E-entries as free `readE` coords (none fixed to `1`); `u = x p` enters ONLY linearly as
+   `u • Rmat` (one scalar across the E-blocks). Its Jacobian scales the `Σ r_k c_k = minAdm` E-coords by
+   `x p` giving `|x p|^{minAdm}` (off by one) — OR, since the pivot coord is not cleanly separated, the
+   blow-up structure is simply malformed. Either way ≠ the clean `|x p|^{minAdm−1}`.
+3. **The two DISCHARGED anchors used HAND-BUILT blow-up charts, NOT `genBlkFlatStruct`:** `(4,4,2,2)`'s
+   `chartParams4422 = pack4422 ∘ pivotBlowupOn{0,1,2,3} 0` (`RouteM4422.lean`, 0 uses of
+   `genBlkFlatStruct`); `(3,3,4)` likewise (`RouteMLayerCoverGEL2`, 0 uses). The general structured
+   decoder was built + validated for the RATE ONLY (`routeMCore_phiFlatStruct = u²·V`), NEVER for the
+   det. So this gap was latent.
+
+### What the fix needs (Codex's shape — to be adjudicated)
+Redefine the structured decoder to encode the radial blow-up: a designated `pRad`/`fixedSlot` (a residual
+direction fixed to `1` that `u` scales to the pivot output) + nonzero leaf `Rfin`, so the `minAdm` active
+directions are `(pivot, minAdm−1 free)` and the net radial det is `|u|^{minAdm−1}`. **The banked RATE
+survives a decoder fix** — `routeMCore_phiGen` is decoder-agnostic (consumes only `GenBlk`/`hle`/`hC0`);
+a revised decoder re-checks only `hC0` + re-derives `V`. But this is a structural decoder change, NOT a
+funext-s tactic, and it ripples into `genBlkFlatStruct`/`StructAdm`/`hC0_struct`/`phiFlatStructV` — so it
+wants a design adjudication before I build, lest I funext-s against the wrong target.
+
+### What is BANKED + survives the fix (decoder-independent)
+The brick-(a) spine (`RouteMBridgeCLE`: `bridgeCLE`, `composeFold_bridge_eq`, the cancellation lemmas)
+and the per-role CLE engine (`RouteMRoleCLE`: `paramsBlockSplitCLE` &c.) are decoder-AGNOSTIC — they
+operate on `Params M` / `chartIdxEquiv` and transfer to any revised decoder. The factor det bricks
+(`schurChartFactor`/`lduChartFactor`/`chainVarMap`/`radialFactor` + their dets), `phiTarget_abs_det_of_
+factored`, and the rate `routeMCore_phiFlatStructV` all survive. The Q3 funext-s technique
+(`chainA_apply_castAdd` row-alignment) is validated as the (c) method — to be applied once the decoder is
+fixed.
+
+### Recommendation
+Decorrelate the decoder fix (pen-and-paper / Codex): the precise question is "redefine `genBlkFlatStruct`
++ `structPivot` so the radial blow-up is encoded (fixed-`1` residual slot + nonzero `Rfin`), keeping the
+decoder-agnostic rate `routeMCore_phiGen` interface (`hC0` re-checkable) — give the concrete `Rfin`/
+`pRad`/E-slot redefinition + the `(2,2,2)` det-cross-check." Then (b)/(c)/(d) build against the fixed
+decoder: radial `|u|^{minAdm−1}` + Schur/LDU spectators → `phiTarget_abs_det_of_factored` → `cov` →
+`nodeChartGeneral (hpos)` → atom ∀M.
