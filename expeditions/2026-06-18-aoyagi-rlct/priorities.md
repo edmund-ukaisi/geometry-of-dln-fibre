@@ -21,6 +21,46 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The target-normalizer frontier now has a target-only one-step lower-left core
+and target-only current solved-`A1` helper.  New Lean names:
+
+```text
+retainedPassiveTargetRecoveredSourceCtopAt
+retainedPassiveTargetRecoveredSourceCtopAt_fderiv_eq_sourceCtop
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_succ
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt_fderiv_eq_sourceStepCore
+```
+
+The `Ctop` helper packages the recursive target-staged first top-left branch as
+a recovered source `Ctop` tangent.  The current solved-`A1` helper is
+target-only: zero branch uses recovered `Ctop` and the target-staged passive
+`A1` tail derivative; successor branch uses the target-staged passive `A1`
+tangent at `s.castSucc`.  The one-step lower-left target core preserves the
+existing noncommutative matrix order and replaces only source `C(r)` and
+source `A3free(q)` reads by target-side readouts; `dCnext`, `dAcur`,
+`dPsucc`, and `dNext` remain explicit.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed, full `DLNFibre`
+build passed with only pre-existing warning noise, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Halley the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-target-only-lower-left-step-core.md`.
+
+This does not prove the full target-only lower-left recurrence, does not
+target-stage `dCnext`, construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.
+
+Next frontier: target-stage the remaining `dCnext` suffix-product derivative
+or build the recursive target-only lower-left derivative from this one-step
+core once the `C`-suffix derivative replacement is reproduced.
+
+Previous controller decision:
+
 The target-normalizer frontier now has a narrow recovered-source-pair layer and
 a product determinant helper.  New Lean names:
 

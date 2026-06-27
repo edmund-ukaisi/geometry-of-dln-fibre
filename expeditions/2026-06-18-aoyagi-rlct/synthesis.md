@@ -48,6 +48,79 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Target-Only Lower-Left Step Core
+
+`RetainedPassiveCoordinatesJacobian.lean` now has a target-only one-step
+support layer for the retained-passive lower-left recurrence:
+
+```text
+retainedPassiveTargetRecoveredSourceCtopAt
+retainedPassiveTargetRecoveredSourceCtopAt_fderiv_eq_sourceCtop
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_succ
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt_fderiv_eq_sourceStepCore
+```
+
+The `Ctop` helper packages the recursive target-staged first top-left branch as
+a target-side recovered source `Ctop` tangent.  The current solved-`A1` helper
+has the zero branch
+
+```text
+Tail^-1 * recoveredCtop(w) - Tail^-1 * dTail#(w) * Tail^-1 * data.Ctop
+```
+
+and successor branch
+
+```text
+retainedPassiveTargetStagedA1passiveTangentAt z w s.castSucc.
+```
+
+On actual raw-order derivative targets it agrees with the existing
+source-direction current solved-`A1` tangent.
+
+The target-only lower-left step core keeps `dCnext`, `dAcur`, `dPsucc`, and
+`dNext` explicit and preserves the existing matrix order:
+
+```text
+-(((dCnext * C_r + Cnext * dC_r) * A3p * Pcast^-1)
+- (Cprod * dG * Pcast^-1)
++ Cprod * A3p * Pcast^-1
+    * (dPsucc * solvedA1(p) + Psucc * dAcur)
+    * Pcast^-1
++ dNext.
+```
+
+It replaces `dC_r` by `retainedPassiveTargetRecoveredSourceCAt hz w r` and
+`dG` by `rawEdgeTupleA3 w q.castSucc`.  On actual derivative targets, Lean
+proves this equals the existing source-direction step core; the passive
+lower-left replacement uses the formal raw-order map's identity on the
+passive lower-left component.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-only-lower-left-step-core.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-only-lower-left-step-core.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-only-lower-left-step-core.md`,
+PASS by xhigh `Halley the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched Lean file was clean; direct axiom audits for the new
+theorems reported only `[propext, Classical.choice, Quot.sound]`.
+
+This is not the full target-only lower-left recurrence, does not target-stage
+`dCnext`, and does not construct a determinant-one target normalizer,
+determinant equality, measure transport, normal crossings, pole order, or RLCT.
+The next target is the `C`-suffix target-staged derivative replacement or the
+recursive target-only lower-left derivative built from this core after that
+replacement is reproduced.
+
 ## Latest A2 Target-Recovered Source Pair and Determinant Helper
 
 The target-normalizer frontier now has a small recovered-source-pair layer in

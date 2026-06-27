@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 target-only lower-left step core
+
+Reproduction:
+`reproduction-a2-retained-passive-target-only-lower-left-step-core.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-only-lower-left-step-core.md`.
+Review:
+`review-a2-retained-passive-target-only-lower-left-step-core.md`, PASS by
+xhigh `Halley the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetRecoveredSourceCtopAt
+retainedPassiveTargetRecoveredSourceCtopAt_fderiv_eq_sourceCtop
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_succ
+retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreAt_fderiv_eq_sourceStepCore
+```
+
+The `Ctop` helper recovers the source `Ctop` tangent from an arbitrary target
+tuple by the recursive target-staged first top-left branch.  The current
+solved-`A1` helper is target-only: zero branch uses recovered `Ctop` and the
+target-staged passive `A1` tail derivative; successor branch uses
+`retainedPassiveTargetStagedA1passiveTangentAt z w s.castSucc`.
+
+The target-only lower-left step core preserves the existing source one-step
+matrix order and replaces only `v.C(r)` and `v.A3free(q)` by target-side
+readouts.  It keeps `dCnext`, `dAcur`, `dPsucc`, and `dNext` explicit.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+
+This does not construct the full target-only lower-left recurrence, does not
+target-stage `dCnext`, and does not prove determinant equality, source-prior
+transport, normal crossings, pole order, or RLCT.
+
+Next frontier: target-stage the remaining `dCnext` suffix-product derivative
+or build the recursive target-only lower-left derivative once that `C`-suffix
+replacement is available.
+
 ## 2026-06-27 A2 target-recovered source pair and determinant helper
 
 Reproduction:

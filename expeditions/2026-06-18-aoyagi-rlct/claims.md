@@ -141,7 +141,13 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  retained-passive lower-left derivative recurrence now has a named
+  retained-passive lower-left derivative frontier now has a target-only
+  recovered-`Ctop` helper, current solved-`A1` helper, and one-step lower-left
+  target core which keeps `dCnext`, `dAcur`, `dPsucc`, and `dNext` explicit
+  while replacing current source `C` and passive lower-left source reads by
+  target-side readouts; this target-only step core is proved equal to the
+  existing source step core on actual raw-order derivative targets.  The
+  retained-passive lower-left derivative recurrence also has a named
   one-step helper and generic/zero/successor branch wrappers through that
   helper, with the successor current tangent explicitly `v.1 s.castSucc`;
   the retained-passive zeroed-final lower-left tail now also has a
