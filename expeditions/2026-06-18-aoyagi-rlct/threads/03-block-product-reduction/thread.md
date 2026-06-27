@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly terminal dPcast substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Review:
+`review-a2-retained-passive-dearly-terminal-dpcast-substitution.md`, PASS by
+xhigh `Volta`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_dPcast_apply
+```
+
+This is the terminal counterpart to the nonterminal `dPcast` substitution.  At
+`q = Fin.last M`, with `p = q.castSucc`, it rewrites the terminal explicit
+`dPcast` term as
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p)
+      + Psucc(z) * d(solvedA1 p)_z(v))
+  * Pcast(z)^-1.
+```
+
+The theorem leaves terminal `Psucc` and `d(solvedA1 p)` explicit.  The focused
+module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no terminal `Psucc` cleanup,
+no target staging, no determinant-one `LinearEquiv`, no actual derivative
+determinant equality, no measure transport, no normal crossings, no pole
+order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly dPcast substitution
 
 Reproduction:

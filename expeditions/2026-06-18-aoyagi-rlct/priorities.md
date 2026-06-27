@@ -21,6 +21,43 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The current retained-passive terminal `dEarly` `dPcast` substitution is
+implemented locally after the terminal `dCprod`/`dG` boundary.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+
+Lean now proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_dPcast_apply`
+in `RetainedPassiveCoordinatesDerivative.lean`.  It keeps terminal `Psucc`
+and `d(solvedA1 p)` explicit, preserving the order
+
+```text
+Cprod * A3p * Pcast^-1 * (...) * Pcast^-1.
+```
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Volta` passed the terminal boundary, `M := M + 1` helper
+instantiation, `p.succ` index, factor order, and nonclaims.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no terminal `Psucc` cleanup,
+no target staging, no determinant theorem, no measure theorem, no normal
+crossings, no pole order, and no RLCT.
+
+Next frontier after banking: either terminal empty-product cleanup for
+`Psucc`, or start the solved-`A1` derivative split.  Ptolemy's xhigh scout
+reports the safe split as successor branch `d(solvedA1 q.succ)=v.1 q` and
+zero branch
+`Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop`; do not collapse the zero branch
+to a passive tangent.
+
+Immediate predecessor: nonterminal `dPcast` substitution and terminal
+`dCprod` boundary.
+
 The current retained-passive `dEarly` `dPcast` substitution is implemented
 locally after the `dCprod`/`dG` staging.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-substitution.md`.

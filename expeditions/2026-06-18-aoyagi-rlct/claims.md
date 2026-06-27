@@ -9835,6 +9835,51 @@ Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
 full positive-tail `F3` target staging, no determinant theorem, no measure
 theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly terminal dPcast substitution
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed.
+
+Claim: in the terminal retained-passive `dEarly` recurrence, after the
+terminal `dCprod` and `dG` simplifications, the explicit `dPcast` contribution
+is rewritten using the solved-`A1` residual-product product rule.  At
+`q = Fin.last M`, with `p = q.castSucc`, the terminal contribution
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1 * dPcast_z(v) * Pcast(z)^-1
+```
+
+is rewritten as
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p)
+      + Psucc(z) * d(solvedA1 p)_z(v))
+  * Pcast(z)^-1.
+```
+
+Lean proves this as
+`fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_dPcast_apply`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dpcast-substitution.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+
+Kill condition: if the theorem uses `r.succ` rather than `p.succ` for
+`Psucc`, changes the noncommutative factor order, moves the rightmost
+`Pcast(z)^-1` inside the substituted sum, replaces `d(solvedA1 p)_z(v)` by a
+passive source tangent, or advertises determinant equality, measure transport,
+normal crossings, pole order, or RLCT, it is not the intended slice.
+
+Nonclaims: no derivative formula for `solvedA1 0`, no source-staging of
+`dPcast`, no terminal `Psucc` cleanup, no target staging, no determinant
+theorem, no measure theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive dEarly dPcast substitution
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;

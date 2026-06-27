@@ -48,6 +48,51 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive dEarly Terminal dPcast Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves locally:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_dPcast_apply
+```
+
+This is the terminal counterpart of the already banked nonterminal `dPcast`
+substitution.  At `q = Fin.last M`, with `p = q.castSucc` and `r = q.succ`, it
+substitutes
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v)
+```
+
+into the explicit terminal `dPcast` contribution while preserving the order
+
+```text
+Cprod * A3p * Pcast^-1 * (...) * Pcast^-1.
+```
+
+The theorem deliberately leaves terminal `Psucc` and
+`d(solvedA1 p)_z(v)` explicit.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Volta` passed the theorem boundary, `M := M + 1` helper
+instantiation, `p.succ` successor index, preserved factor order, explicit
+solved-factor derivative, and nonclaims.  The `scripts/sorries` audit,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed; the
+theorem has only the standard `[propext, Classical.choice, Quot.sound]`
+footprint.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no terminal empty-product
+cleanup of `Psucc`, no target staging, no determinant theorem, no measure
+theorem, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive dEarly dPcast Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves locally:
