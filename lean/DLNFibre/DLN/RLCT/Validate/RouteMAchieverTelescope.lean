@@ -155,6 +155,112 @@ theorem Hmat_succ (c : Chain n u) (s : ℕ) (h : s < n) :
   unfold Hmat
   rw [HmatAux_congr c (show n - s = (n - (s + 1)) + 1 by omega) _ (by omega), HmatAux_succ]
 
+/-! ## Coefficient `RingHom` naturality (`eval`-pushing for the `MvPolynomial` encoding)
+
+A ring hom `f : 𝕜 →+* 𝕜'` carries a `Chain n u` to a `Chain n (f u)` by mapping every block matrix
+(`Matrix.map f`), and `suffix`/`Hmat` commute with `f` (matrix mul/add/smul are ring-hom-natural). This
+is the bridge: the polynomial chain (over `MvPolynomial (Fin N) ℝ`) maps under `eval x` to the ℝ chain,
+so the polynomial `Hmat 0` evaluates to the ℝ `Hmat 0` — the keystone for the named `UPolyGen`. -/
+
+/-- `(u • M).map f = f u • M.map f` for a ring hom `f` on `𝕜`-entry matrices (the entry smul is `*`). -/
+private theorem map_smul_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜') (a : 𝕜)
+    (M : Matrix (Fin p) (Fin q) 𝕜) : (a • M).map f = f a • M.map f := by
+  ext i j
+  simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
+
+/-- `(M + N).map f = M.map f + N.map f` for a ring hom `f` (entrywise). -/
+private theorem map_add_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜')
+    (M N : Matrix (Fin p) (Fin q) 𝕜) : (M + N).map f = M.map f + N.map f := by
+  ext i j
+  simp only [Matrix.map_apply, Matrix.add_apply, map_add]
+
+/-- **The `f`-mapped chain** `c.map f : Chain n (f u)` — every block matrix pushed through the ring hom
+`f`. Same widths; `step`/`base` transport by `Matrix.map_mul`/`map_add`/`map_smul_eq`. -/
+noncomputable def map {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    Chain n (f u) where
+  Wwid := c.Wwid
+  Twid := c.Twid
+  A := fun k => (c.A k).map f
+  C := fun k => (c.C k).map f
+  B := fun k => (c.B k).map f
+  E := fun k => (c.E k).map f
+  R := (c.R).map f
+  step := by
+    intro k hk
+    have h2 := congrArg (fun M => M.map f) (c.step k hk)
+    simp only at h2
+    rw [Matrix.map_mul] at h2
+    rw [show (c.B k * c.C (k + 1) + u • c.E k).map f
+          = (c.B k).map f * (c.C (k + 1)).map f + f u • (c.E k).map f from by
+        rw [map_add_eq f, Matrix.map_mul, map_smul_eq f u (c.E k)]] at h2
+    exact h2
+  base := by
+    have h2 := congrArg (fun M => M.map f) c.base
+    simp only at h2
+    rw [show (u • c.R).map f = f u • (c.R).map f from map_smul_eq f u c.R] at h2
+    exact h2
+
+@[simp] theorem map_Wwid {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    (c.map f).Wwid = c.Wwid := rfl
+@[simp] theorem map_Twid {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    (c.map f).Twid = c.Twid := rfl
+
+/-- **`suffix` commutes with `f`**: `(c.map f).suffixAux d s h = (c.suffixAux d s h).map f`. By
+downward induction on `d` (`suffixAux_succ` + `Matrix.map_mul`; base `Matrix.map_one`). -/
+theorem suffixAux_map {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    ∀ d s (h : s + d = n),
+      (c.map f).suffixAux d s h = (c.suffixAux d s h).map f := by
+  intro d
+  induction d with
+  | zero =>
+      intro s h
+      have hs : n = s := by omega
+      subst hs
+      -- both `suffixAux 0 n _` reduce to `1 : Matrix (Fin (c.Wwid n)) (Fin (c.Wwid n))`
+      rw [show (c.map f).suffixAux 0 n h
+            = (1 : Matrix (Fin (c.Wwid n)) (Fin (c.Wwid n)) 𝕜') from by unfold suffixAux; rfl,
+          show c.suffixAux 0 n h
+            = (1 : Matrix (Fin (c.Wwid n)) (Fin (c.Wwid n)) 𝕜) from by unfold suffixAux; rfl,
+          Matrix.map_one f (map_zero f) (map_one f)]
+  | succ d ih =>
+      intro s h
+      rw [suffixAux_succ (c.map f) d s h, suffixAux_succ c d s h, Matrix.map_mul]
+      congr 1
+      exact ih (s + 1) (by omega)
+
+/-- **`Hmat` commutes with `f`**: `(c.map f).HmatAux d s h = (c.HmatAux d s h).map f`. By downward
+induction on `d` (`HmatAux_succ` + `Matrix.map_mul`/`map_add` + `suffixAux_map`; base = `R`). -/
+theorem HmatAux_map {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    ∀ d s (h : s + d = n),
+      (c.map f).HmatAux d s h = (c.HmatAux d s h).map f := by
+  intro d
+  induction d with
+  | zero =>
+      intro s h
+      have hs : n = s := by omega
+      subst hs
+      rw [show (c.map f).HmatAux 0 n h = (c.map f).R from by unfold HmatAux; rfl,
+          show c.HmatAux 0 n h = c.R from by unfold HmatAux; rfl]
+      rfl
+  | succ d ih =>
+      intro s h
+      rw [HmatAux_succ (c.map f) d s h, HmatAux_succ c d s h, map_add_eq f,
+          Matrix.map_mul, Matrix.map_mul]
+      congr 1
+      · -- B_s · Hmat (s+1) block
+        congr 1
+        exact ih (s + 1) (by omega)
+      · -- E_s · suffix (s+1) block
+        congr 1
+        unfold suffix
+        exact suffixAux_map c f (n - (s + 1)) (s + 1) (by omega)
+
+/-- **`Hmat 0` commutes with `f`**: `(c.map f).Hmat 0 _ = (c.Hmat 0 _).map f`. -/
+theorem Hmat_zero_map {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜 →+* 𝕜') :
+    (c.map f).Hmat 0 (Nat.zero_le n) = (c.Hmat 0 (Nat.zero_le n)).map f := by
+  unfold Hmat
+  exact HmatAux_map c f (n - 0) 0 (by omega)
+
 /-! ## The keystone telescoping -/
 
 /-- **The chained-product telescope (keystone).** `C_s · suffix_s = u • Hmat_s` for every `s ≤ n`.
