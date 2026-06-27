@@ -344,6 +344,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteM3333Det
 -- (The `Ubound` a.e.-positivity needs the MvPolynomial `Hmat_0` encoding — the next tide.)
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverStructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverRateFields
+-- ∀M-lift phase 3: the rate-side `Ubound`/`Umeas` ∀M via the MvPolynomial encoding (the chain stack
+-- conservatively generalized to `CommRing 𝕜`, `𝕜:=ℝ` default). `achieverUfun_eq_eval` (the unit IS
+-- `eval x` of the named `UPolyGen`), `achieverUfun_measurable` (Umeas DONE), `achieverUbound`/
+-- `achieverUfun_ae_pos` (Ubound DONE) GIVEN the witness `∃ w, achieverUfun w ≠ 0` (the sole remaining gap).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverVvalPoly
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin

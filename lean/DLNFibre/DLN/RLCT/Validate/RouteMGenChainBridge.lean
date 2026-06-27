@@ -31,13 +31,15 @@ namespace DLNFibre.DLN.RLCT
 
 open Matrix LinearMap
 
+variable {𝕜 : Type*} [CommRing 𝕜]
+
 /-! ## The `chainA` entry laws (opaque widths) -/
 
 /-- **`chainA` kept-row law**: `chainA h N W C (cast (castAdd i)) j = (C − N·W) i j` — the first `t` rows
 of the lift column `[C − N·W ; W]` (the `finSplit` `castAdd` block). The opaque-width generalization of
 the `(3,3,3,3)` probe `chainA_213_entry`'s kept rows. -/
-theorem chainA_apply_castAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
-    (W : Matrix (Fin c) (Fin m') ℝ) (C : Matrix (Fin t) (Fin m') ℝ) (i : Fin t) (j : Fin m') :
+theorem chainA_apply_castAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
+    (W : Matrix (Fin c) (Fin m') 𝕜) (C : Matrix (Fin t) (Fin m') 𝕜) (i : Fin t) (j : Fin m') :
     chainA h N W C (Fin.cast h (Fin.castAdd c i)) j = (C - N * W) i j := by
   simp only [chainA, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,
     Equiv.refl_apply, Equiv.symm_symm]
@@ -50,8 +52,8 @@ theorem chainA_apply_castAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin
 
 /-- **`chainA` lift-row law**: `chainA h N W C (cast (natAdd a)) j = W a j` — the last `c` rows of the
 lift column are the lift `W` (the `finSplit` `natAdd` block). -/
-theorem chainA_apply_natAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
-    (W : Matrix (Fin c) (Fin m') ℝ) (C : Matrix (Fin t) (Fin m') ℝ) (a : Fin c) (j : Fin m') :
+theorem chainA_apply_natAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
+    (W : Matrix (Fin c) (Fin m') 𝕜) (C : Matrix (Fin t) (Fin m') 𝕜) (a : Fin c) (j : Fin m') :
     chainA h N W C (Fin.cast h (Fin.natAdd t a)) j = W a j := by
   simp only [chainA, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,
     Equiv.refl_apply, Equiv.symm_symm]
@@ -68,9 +70,9 @@ theorem chainA_apply_natAdd {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin 
 
 /-- **`chainQ` kept-column law**: `chainQ h N i (cast (castAdd j)) = (1 : t×t) i j` — the first `t`
 columns of the chaining row `[I | N]` are the identity. -/
-theorem chainQ_apply_castAdd {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
+theorem chainQ_apply_castAdd {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
     (i : Fin t) (j : Fin t) :
-    chainQ h N i (Fin.cast h (Fin.castAdd c j)) = (1 : Matrix (Fin t) (Fin t) ℝ) i j := by
+    chainQ h N i (Fin.cast h (Fin.castAdd c j)) = (1 : Matrix (Fin t) (Fin t) 𝕜) i j := by
   simp only [chainQ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,
     Equiv.refl_apply, Equiv.symm_symm]
   rw [show finSplit (show t ≤ M' by omega) (Fin.cast h (Fin.castAdd c j)) = Sum.inl j from by
@@ -82,7 +84,7 @@ theorem chainQ_apply_castAdd {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t)
 
 /-- **`chainQ` residual-column law**: `chainQ h N i (cast (natAdd a)) = N i a` — the last `c` columns of
 the chaining row `[I | N]` are the residual `N`. -/
-theorem chainQ_apply_natAdd {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
+theorem chainQ_apply_natAdd {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
     (i : Fin t) (a : Fin c) :
     chainQ h N i (Fin.cast h (Fin.natAdd t a)) = N i a := by
   simp only [chainQ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,

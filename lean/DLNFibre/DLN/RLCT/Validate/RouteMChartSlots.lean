@@ -31,6 +31,7 @@ namespace DLNFibre.DLN.RLCT
 open scoped BigOperators
 
 variable {L : ℕ}
+variable {𝕜 : Type} [CommRing 𝕜]
 
 /-! ## The per-boundary slot ↔ matrix-index equivalences -/
 
@@ -53,16 +54,16 @@ def liftSlotEquiv (M : Fin (L + 1) → ℕ) (t : ℕ → ℕ) (k : ℕ) (hk : k 
 `(k, i, j)` by `chartIdxEquiv`'s injectivity. -/
 noncomputable def readSchur (M : Fin (L + 1) → ℕ) (t : ℕ → ℕ)
     (h0 : t 0 = M 0) (hc : ∀ p, t (p + 1) ≤ (Wext M) (p + 1)) (hL : 0 < L)
-    (x : Fin (routeMAmbient M) → ℝ) (k : Fin L) (i : Fin (t k.val)) (j : Fin (Wext M (k.val + 1))) :
-    ℝ :=
+    (x : Fin (routeMAmbient M) → 𝕜) (k : Fin L) (i : Fin (t k.val)) (j : Fin (Wext M (k.val + 1))) :
+    𝕜 :=
   x ((chartIdxEquiv M t h0 hc hL).symm ⟨k, Sum.inl ((schurSlotEquiv M t k.val).symm (i, j))⟩)
 
 /-- Read the flat coordinate at the lift slot `(i, j)` of boundary `k` (`k+1 < L`). Disjoint across
 `(k, i, j)`. -/
 noncomputable def readLift (M : Fin (L + 1) → ℕ) (t : ℕ → ℕ)
     (h0 : t 0 = M 0) (hc : ∀ p, t (p + 1) ≤ (Wext M) (p + 1)) (hL : 0 < L)
-    (x : Fin (routeMAmbient M) → ℝ) (k : Fin L) (hk : k.val + 1 < L)
-    (i : Fin (Wext M (k.val + 1) - t (k.val + 1))) (j : Fin (Wext M (k.val + 2))) : ℝ :=
+    (x : Fin (routeMAmbient M) → 𝕜) (k : Fin L) (hk : k.val + 1 < L)
+    (i : Fin (Wext M (k.val + 1) - t (k.val + 1))) (j : Fin (Wext M (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M t h0 hc hL).symm ⟨k, Sum.inr ((liftSlotEquiv M t k.val hk).symm (i, j))⟩)
 
 /-! ## Disjointness: distinct `(boundary, role, entry)` triples read distinct flat coords -/
@@ -106,9 +107,9 @@ first `Text(s+1)` rows, the bottom `X·K` over the residual `r_s = Text s − Te
 `Text(s+1) ≤ Text s`). -/
 noncomputable def bmatStack {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
     (hdesc : Text M t (k + 1) ≤ Text M t k)
-    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
-    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ) :
-    Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) ℝ :=
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜) :
+    Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) 𝕜 :=
   Matrix.reindex
     (finCongr (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega))
     (Equiv.refl _)
@@ -119,8 +120,8 @@ noncomputable def bmatStack {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1)
 /-- The top `Text(s+1)` rows of `bmatStack` are `K` (the `finSumFinEquiv` `castAdd` block). -/
 theorem bmatStack_top {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
     (hdesc : Text M t (k + 1) ≤ Text M t k)
-    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
-    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜)
     (a : Fin (Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
     bmatStack M t k hdesc K X
         (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
@@ -138,8 +139,8 @@ theorem bmatStack_top {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → �
 /-- The bottom `r_s` rows of `bmatStack` are `X·K` (the `finSumFinEquiv` `natAdd` block). -/
 theorem bmatStack_bot {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (k : ℕ)
     (hdesc : Text M t (k + 1) ≤ Text M t k)
-    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
-    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) ℝ)
+    (K : Matrix (Fin (Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜)
+    (X : Matrix (Fin (Text M t k - Text M t (k + 1))) (Fin (Text M t (k + 1))) 𝕜)
     (b : Fin (Text M t k - Text M t (k + 1))) (j : Fin (Text M t (k + 1))) :
     bmatStack M t k hdesc K X
         (Fin.cast (show Text M t (k + 1) + (Text M t k - Text M t (k + 1)) = Text M t k by omega)
@@ -189,13 +190,13 @@ The structured decoder's `Rmat s` is the `u`-carrying residual of the Schur fram
 row/col reindex to `Text s × Wext s`). -/
 noncomputable def rmatPad {L : ℕ} (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (s : ℕ)
     (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
-    (E : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ) :
-    Matrix (Fin (Text M t s)) (Fin (Wext M s)) ℝ :=
+    (E : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) 𝕜) :
+    Matrix (Fin (Text M t s)) (Fin (Wext M s)) 𝕜 :=
   Matrix.reindex
     (finSumFinEquiv.trans
       (finCongr (show Text M t (s + 1) + (Text M t s - Text M t (s + 1)) = Text M t s by omega)))
     (finSumFinEquiv.trans
       (finCongr (show Text M t (s + 1) + (Wext M s - Text M t (s + 1)) = Wext M s by omega)))
-    (Matrix.fromBlocks (0 : Matrix (Fin (Text M t (s + 1))) (Fin (Text M t (s + 1))) ℝ) 0 0 E)
+    (Matrix.fromBlocks (0 : Matrix (Fin (Text M t (s + 1))) (Fin (Text M t (s + 1))) 𝕜) 0 0 E)
 
 end DLNFibre.DLN.RLCT

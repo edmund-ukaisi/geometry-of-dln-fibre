@@ -30,6 +30,7 @@ namespace DLNFibre.DLN.RLCT
 open Matrix
 
 variable {L : ℕ}
+variable {𝕜 : Type} [CommRing 𝕜]
 
 /-! ## The descent-bridge + the per-boundary admissibility hypotheses
 
@@ -83,24 +84,24 @@ Each reader reads a role-block matrix from DISJOINT flat coords: inject the `(i,
 `frameSplitEquiv.symm` to the `schurDim k` slot, then `chartIdxEquiv.symm ⟨k, Sum.inl ·⟩` and read `x`.
 Disjoint by `chartIdxEquiv`'s injectivity + the role sub-block disjointness. -/
 
-variable (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (x : Fin (routeMAmbient M) → ℝ)
+variable (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (x : Fin (routeMAmbient M) → 𝕜)
 
 /-- Read the Schur-frame `K` block (`Text(k+2) × Text(k+2)`) of GenBlk boundary `s = k+1`. -/
-noncomputable def readK (k : Fin L) (i j : Fin (Text M t (k.val + 2))) : ℝ :=
+noncomputable def readK (k : Fin L) (i j : Fin (Text M t (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
     ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i, j))))))⟩)
 
 /-- Read the Schur-frame `X` block (`(Text(k+1)−Text(k+2)) × Text(k+2)`). -/
 noncomputable def readX (k : Fin L)
-    (i : Fin (Text M t (k.val + 1) - Text M t (k.val + 2))) (j : Fin (Text M t (k.val + 2))) : ℝ :=
+    (i : Fin (Text M t (k.val + 1) - Text M t (k.val + 2))) (j : Fin (Text M t (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
     ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (i, j))))))⟩)
 
 /-- Read the Schur-frame `N` block (`Text(k+2) × (Wext(k+1)−Text(k+2))`). -/
 noncomputable def readN (k : Fin L)
-    (i : Fin (Text M t (k.val + 2))) (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : ℝ :=
+    (i : Fin (Text M t (k.val + 2))) (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
     ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inr (finProdFinEquiv (i, j)))))⟩)
@@ -108,7 +109,7 @@ noncomputable def readN (k : Fin L)
 /-- Read the Schur-frame `E` block (`(Text(k+1)−Text(k+2)) × (Wext(k+1)−Text(k+2))`). -/
 noncomputable def readE (k : Fin L)
     (i : Fin (Text M t (k.val + 1) - Text M t (k.val + 2)))
-    (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : ℝ :=
+    (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
     ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inr (finProdFinEquiv (i, j))))⟩)
@@ -116,7 +117,7 @@ noncomputable def readE (k : Fin L)
 /-- Read the lift `W` block of GenBlk boundary `s = k+1` (`(Wext(k+1)−Text(k+2)) × Wext(k+2)`), from
 the lift slot `liftDim k`. -/
 noncomputable def readW (k : Fin L) (hk : k.val + 1 < L)
-    (i : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) (j : Fin (Wext M (k.val + 2))) : ℝ :=
+    (i : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) (j : Fin (Wext M (k.val + 2))) : 𝕜 :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
     ⟨k, Sum.inr ((liftSlotEquiv M (tDesc M t) k.val hk).symm (i, j))⟩)
 
@@ -130,10 +131,10 @@ Assembles the `GenBlk M t` from the readers: identity boundary `k = 0` (`Bmat 0 
 /-- The structured flat decoder `genBlkFlatStruct M t ha x : GenBlk M t` — reads the free
 Schur/lift coords from disjoint slots (`readK/X/N/E/W`) and derives the `GenBlk` blocks via the
 Schur frame (`bmatStack`/`rmatPad`), identity at `k = 0`. -/
-noncomputable def genBlkFlatStruct : GenBlk M t where
+noncomputable def genBlkFlatStruct : GenBlk M t 𝕜 where
   Bmat := fun k => match k with
     | 0 => Matrix.reindex (Equiv.refl _) (finCongr (Text0_eq_Text1_struct M t ha.h0))
-        (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ)
+        (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) 𝕜)
     | (k + 1) =>
       if hk : k < L then
         bmatStack M t (k + 1) (ha.hdesc k hk) (readK M t ha x ⟨k, hk⟩) (readX M t ha x ⟨k, hk⟩)
@@ -148,7 +149,7 @@ noncomputable def genBlkFlatStruct : GenBlk M t where
       if hk : k < L then
         (if hk2 : k + 1 < L then readW M t ha x ⟨k, hk⟩ hk2 else 0) else 0
   Rmat := fun k => match k with
-    | 0 => (0 : Matrix (Fin (Text M t 0)) (Fin (Wext M 0)) ℝ)
+    | 0 => (0 : Matrix (Fin (Text M t 0)) (Fin (Wext M 0)) 𝕜)
     | (k + 1) =>
       if hk : k < L then rmatPad M t (k + 1) (ha.hdesc k hk) (ha.hub k) (readE M t ha x ⟨k, hk⟩) else 0
   Rfin := fun _ => 0

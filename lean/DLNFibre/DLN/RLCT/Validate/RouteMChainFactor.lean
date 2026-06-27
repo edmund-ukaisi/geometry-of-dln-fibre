@@ -34,12 +34,12 @@ chaining identity `Qk · Ak = Cnext`, and the radial-error shape `Ek = Rk · Ak`
 per-level local identity `Ck · Ak = Bk · Cnext + u • Ek` follows by pure scalar matrix algebra
 (`add_mul`, `smul_mul`, `mul_assoc Bk Qk Ak`, the chaining rewrite). Index types arbitrary —
 this is M-agnostic, the seam between the block construction and `Chain.step`. -/
-theorem step_of_factor {tk tk1 wk wk1 : Type*}
+theorem step_of_factor {𝕜 : Type*} [CommRing 𝕜] {tk tk1 wk wk1 : Type*}
     [Fintype tk1] [Fintype wk]
-    (u : ℝ)
-    (Ck : Matrix tk wk ℝ) (Ak : Matrix wk wk1 ℝ) (Bk : Matrix tk tk1 ℝ)
-    (Qk : Matrix tk1 wk ℝ) (Rk : Matrix tk wk ℝ) (Cnext : Matrix tk1 wk1 ℝ)
-    (Ek : Matrix tk wk1 ℝ)
+    (u : 𝕜)
+    (Ck : Matrix tk wk 𝕜) (Ak : Matrix wk wk1 𝕜) (Bk : Matrix tk tk1 𝕜)
+    (Qk : Matrix tk1 wk 𝕜) (Rk : Matrix tk wk 𝕜) (Cnext : Matrix tk1 wk1 𝕜)
+    (Ek : Matrix tk wk1 𝕜)
     (hC : Ck = Bk * Qk + u • Rk) (hQA : Qk * Ak = Cnext) (hE : Ek = Rk * Ak) :
     Ck * Ak = Bk * Cnext + u • Ek := by
   subst hC; subst hE
@@ -57,16 +57,16 @@ satisfies `Q_s A^(s) = C_{s+1}` with `Q_s = [I_{t_s} | N_s]`. On sum-blocks this
 written as the vertical block-column `of (fun (i : t ⊕ c) ↦ Sum.elim (C − N·W) W i)`, when
 premultiplied by `Q = [I | N]` (the horizontal block-row `of (fun i ↦ Sum.elim (1 i) (N i))`), returns
 `C`: the block product is `1·(C − N·W) + N·W = C`. The cert's uniform `B/C`-chaining identity. -/
-theorem chain_block {t c m' : Type*} [Fintype t] [Fintype c] [DecidableEq t]
-    (N : Matrix t c ℝ) (W : Matrix c m' ℝ) (C : Matrix t m' ℝ) :
-    (Matrix.of (fun (i : t) (j : t ⊕ c) => Sum.elim ((1 : Matrix t t ℝ) i) (N i) j))
+theorem chain_block {𝕜 : Type*} [CommRing 𝕜] {t c m' : Type*} [Fintype t] [Fintype c] [DecidableEq t]
+    (N : Matrix t c 𝕜) (W : Matrix c m' 𝕜) (C : Matrix t m' 𝕜) :
+    (Matrix.of (fun (i : t) (j : t ⊕ c) => Sum.elim ((1 : Matrix t t 𝕜) i) (N i) j))
         * (Matrix.of (fun (i : t ⊕ c) (j : m') => Sum.elim (C - N * W) W i j))
       = C := by
   ext i j
   rw [Matrix.mul_apply, Fintype.sum_sum_type]
   simp only [Matrix.of_apply, Sum.elim_inl, Sum.elim_inr]
   -- `∑_k (1 i k)·(C−N·W) k j + ∑_k (N i k)·(W k j) = (C−N·W) i j + (N·W) i j = C i j`
-  rw [← Matrix.mul_apply (M := (1 : Matrix t t ℝ)) (N := C - N * W),
+  rw [← Matrix.mul_apply (M := (1 : Matrix t t 𝕜)) (N := C - N * W),
       ← Matrix.mul_apply (M := N) (N := W)]
   rw [Matrix.one_mul, Matrix.sub_apply]
   ring

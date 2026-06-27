@@ -31,6 +31,7 @@ namespace DLNFibre.DLN.RLCT
 open Matrix
 
 variable {L : ℕ}
+variable {𝕜 : Type} [CommRing 𝕜]
 
 /-! ## The width families (ℕ-indexed, explicit `dite` — NOT `![…].getD`) -/
 
@@ -62,17 +63,18 @@ theorem Text_zero_eq_Wext (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) :
 (`Fin (Twid k) → Fin (Twid (k+1))`), the residual `Nblk` (`Fin (Twid (k+1)) → Fin (Wwid k − Twid (k+1))`),
 the lift `Wblk` (`Fin (Wwid k − Twid (k+1)) → Fin (Wwid (k+1))`), the residual block `Rmat`, and the leaf
 residual `Rfin` (used at `k = L`). All at the opaque `Text`/`Wext` widths. -/
-structure GenBlk (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) where
+structure GenBlk (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) (𝕜 : Type := ℝ)
+    [CommRing 𝕜] where
   /-- The kept part `B_k = P_k K_k`. -/
-  Bmat : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) ℝ
+  Bmat : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Text M t (k + 1))) 𝕜
   /-- The residual block `N_k` (the chaining row's residual). -/
-  Nblk : (k : ℕ) → Matrix (Fin (Text M t (k + 1))) (Fin (Wext M k - Text M t (k + 1))) ℝ
+  Nblk : (k : ℕ) → Matrix (Fin (Text M t (k + 1))) (Fin (Wext M k - Text M t (k + 1))) 𝕜
   /-- The lift `W_k` (the chaining factor's lower rows). -/
-  Wblk : (k : ℕ) → Matrix (Fin (Wext M k - Text M t (k + 1))) (Fin (Wext M (k + 1))) ℝ
+  Wblk : (k : ℕ) → Matrix (Fin (Wext M k - Text M t (k + 1))) (Fin (Wext M (k + 1))) 𝕜
   /-- The residual block `R̄_k` (the `u`-carrying part of `C_k`). -/
-  Rmat : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) ℝ
+  Rmat : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) 𝕜
   /-- The leaf residual (`C_L = u • Rfin L`). -/
-  Rfin : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) ℝ
+  Rfin : (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) 𝕜
 
 /-! ## The chain fields (uniform `dite`-guarded over opaque widths) -/
 
@@ -84,29 +86,29 @@ theorem genWidthEq (M t : Fin (L + 1) → ℕ) (hle : ∀ k, k < L → Text M t 
 
 /-- **The compressed transition `C`** (uniform): interior `C k = Bmat k · chainQ(N_k) + u • Rmat k`
 (`k < L`), leaf `C L = u • Rfin L`. -/
-noncomputable def Cgen (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+noncomputable def Cgen (u : 𝕜) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
-    (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) ℝ := fun k =>
+    (k : ℕ) → Matrix (Fin (Text M t k)) (Fin (Wext M k)) 𝕜 := fun k =>
   if hk : k < L then B.Bmat k * chainQ (genWidthEq M t hle k hk) (B.Nblk k) + u • B.Rmat k
   else u • B.Rfin k
 
 /-- **The layer `A`** (uniform): `A k = chainA(N_k)(W_k)(C (k+1))` (`k < L`), `0` beyond. -/
-noncomputable def Agen (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+noncomputable def Agen (u : 𝕜) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
-    (k : ℕ) → Matrix (Fin (Wext M k)) (Fin (Wext M (k + 1))) ℝ := fun k =>
+    (k : ℕ) → Matrix (Fin (Wext M k)) (Fin (Wext M (k + 1))) 𝕜 := fun k =>
   if hk : k < L then chainA (genWidthEq M t hle k hk) (B.Nblk k) (B.Wblk k) (Cgen u M t B hle (k + 1))
   else 0
 
 /-- **The chaining row `Qmat`** (uniform): `Qmat k = chainQ(N_k)` (`k < L`), `0` beyond. -/
-noncomputable def Qgen (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+noncomputable def Qgen (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
-    (k : ℕ) → Matrix (Fin (Text M t (k + 1))) (Fin (Wext M k)) ℝ := fun k =>
+    (k : ℕ) → Matrix (Fin (Text M t (k + 1))) (Fin (Wext M k)) 𝕜 := fun k =>
   if hk : k < L then chainQ (genWidthEq M t hle k hk) (B.Nblk k) else 0
 
 /-- **The ∀M achiever `FactoredChain`** over `M`, the descent path `t`, and block data `B`. `step`/`base`
 discharged uniformly (`dif_pos`/`dif_neg` + `chainQ_mul_chainA`); the identity boundary `k = 0` (`c_0 = 0`)
 needs no special-casing. -/
-noncomputable def chainOfMt (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+noncomputable def chainOfMt (u : 𝕜) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) : FactoredChain L u where
   Wwid := Wext M
   Twid := Text M t
@@ -132,11 +134,11 @@ noncomputable def chainOfMt (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M 
     unfold Cgen
     rw [dif_neg (lt_irrefl L)]
 
-@[simp] theorem chainOfMt_Wwid (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+@[simp] theorem chainOfMt_Wwid (u : 𝕜) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
     (chainOfMt u M t B hle).toChain.Wwid = Wext M := rfl
 
-@[simp] theorem chainOfMt_C_zero (u : ℝ) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
+@[simp] theorem chainOfMt_C_zero (u : 𝕜) (M t : Fin (L + 1) → ℕ) (B : GenBlk M t 𝕜)
     (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) (hL : 0 < L) :
     (chainOfMt u M t B hle).toChain.C 0
       = B.Bmat 0 * chainQ (genWidthEq M t hle 0 hL) (B.Nblk 0) + u • B.Rmat 0 := by
