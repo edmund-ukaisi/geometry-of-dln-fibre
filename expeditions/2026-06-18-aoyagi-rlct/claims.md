@@ -147,7 +147,9 @@ No such claim is formalisation-ready until both fields are filled.
   the retained-passive zeroed-final lower-left tail now also has a
   Nat-recursive target-staged expression/unfold API, and that recursive
   expression is now proved equal to the actual Frechet derivative under the
-  determinant-chart hypothesis;
+  determinant-chart hypothesis; the positive-tail `F3` bridge now consumes
+  that recursive expression at index `0` and has a matching source-`F3`
+  recovery theorem;
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through
@@ -278,7 +280,11 @@ No such claim is formalisation-ready until both fields are filled.
   claim remains blocked on the analytic product-coordinate regular-square
   suspension theorem and the actual p.13 chart/density construction.  Latest
   retained-passive derivative/Jacobian slice: the two-positive-tail first
-  top-left `Ctop` bridge now recurses once into the remaining suffix derivative
+  `F3` bridge now uses the recursive target-staged lower-left derivative as
+  its `dEarly` term, replacing the previous finite-unroll frontier while
+  keeping the older finite-unroll theorems as compatibility lemmas.  The
+  two-positive-tail first top-left `Ctop` bridge now recurses once into the
+  remaining suffix derivative
   and target-stages the second passive `A1` source tangent.  Lean proves the
   two-positive-tail `Ctop` consumer and `Ctop` recovery companion in
   `RetainedPassiveCoordinatesJacobian.lean`, preserving the factor order
@@ -367,6 +373,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`;
   retained-passive two-positive-tail second passive `A1` target staging at
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`;
+  retained-passive recursive lower-left and positive-tail `F3` plug-in design
+  at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`;
   retained-passive conditional determinant/Jacobian bridge at
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
 - **Reproduction check.** findings at
@@ -382,6 +391,9 @@ No such claim is formalisation-ready until both fields are filled.
   conditional determinant/Jacobian bridge reviewed by xhigh `Noether the 2nd`
   in
   `threads/03-block-product-reduction/review-a2-retained-passive-conditional-determinant-jacobian-bridge.md`;
+  retained-passive positive-tail `F3` recursive `dEarly` plug-in reviewed by
+  xhigh `Franklin the 2nd` in
+  `threads/03-block-product-reduction/review-a2-retained-passive-f3-recursive-dearly-plugin.md`;
   local source-rank endpoint package reviewed in
   `threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`;
   block product-difference algebra independently checked by xhigh

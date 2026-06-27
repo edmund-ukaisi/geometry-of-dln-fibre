@@ -3,8 +3,8 @@
 Date: 2026-06-27.
 
 Status: controller pen-and-paper reproduction and Lean API design; one-step
-core, recursive expression API, and actual Frechet-derivative equality bridge
-proved in Lean.  The recursive positive-tail `F3` plug-in remains open.
+core, recursive expression API, actual Frechet-derivative equality bridge, and
+recursive positive-tail `F3` plug-in proved in Lean.
 
 This note is independent of the quiver-based paper.  It records the recurrence
 that should replace the finite positive-tail `F3` unrolls by a recursive
@@ -228,8 +228,22 @@ hypothesis only into the `dNext` argument.  The actual product-tail side is
 typed with the widened proof `m <= M+2`, while the staged target expression
 keeps the intended index `m <= M+1`.
 
-The next Lean target is to use the staged derivative value at `m=0` as the
-`dEarly` term in the positive-tail `F3` bridge.
+The staged derivative value at `m=0` is now used as the `dEarly` term in the
+positive-tail `F3` bridge by:
+
+```text
+F3_tail_pos_recursive_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_recursive_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The proof starts from the terminal-target-staged positive-tail `F3` theorem at
+`qLast : Fin (M+1) := Fin.last M`, where `qLast.succ = Fin.last (M+1)` by
+definition.  It then rewrites the actual early-tail derivative
+`(fderiv Earlyfun z) v` using
+`fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply` with
+`(M := M)` and `m = 0`.  The resulting `F3` recovery theorem uses the same
+staged expression and the existing formal raw-order recovery lemma, with right
+multiplication by `(-(coord.solvedA1 (Fin.last (M+1))))^-1`.
 
 ## Kill conditions
 
@@ -247,7 +261,6 @@ The next Lean target is to use the staged derivative value at `m=0` as the
 
 ## Nonclaims
 
-This note does not yet prove that the recursive target-staged expression equals
-the actual Frechet derivative.  It does not construct the determinant-one
-target normalizer.  It does not prove source-prior transport, inverse-density
-pushforward, normal crossings, pole order, or RLCT.
+This note and the landed Lean theorems do not construct the determinant-one
+target normalizer.  They do not prove determinant equality, source-prior
+transport, inverse-density pushforward, normal crossings, pole order, or RLCT.
