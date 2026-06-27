@@ -10236,6 +10236,48 @@ global determinant-one shear linear equivalence, full analytic derivative
 factorization, determinant equality, measure/Jacobian-density theorem, normal
 crossings, pole order, or RLCT.
 
+## A2 retained-passive tail endpoint derivative
+
+Status: Proved in Lean locally; pen-and-paper reproduction written; focused
+and full builds passed; pen-and-paper and Lean/API scouts passed; independent
+implementation review passed; sorry scan, whitespace check, and axiom audit
+passed.
+
+Claim: the actual retained-passive top-left tail after the first edge has zero
+derivative in the `M=0` empty-tail case, and in positive length its derivative
+is the first passive suffix-product recurrence step:
+
+```text
+d(Tail)_z(v)
+  = d(Psucc)_z(v) * A1seed_z(p) + Psucc(z) * v.A1passive_0.
+```
+
+Lean proves this as
+`fderiv_retainedPassive_A1TailAfterFirst_zero_apply`,
+`fderiv_retainedPassive_A1TailAfterFirst_succ_apply`, and
+`fderiv_retainedPassive_A1TailAfterFirst_pos_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-endpoint-fderiv.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-endpoint-fderiv.md`.
+
+Review:
+pen-and-paper scout PASS from xhigh `Goodall`; Lean/API scout PASS from xhigh
+`Bohr`; implementation review PASS from xhigh `Russell`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-endpoint-fderiv.md`.
+
+Kill condition: if the theorem includes the dummy `A1seed 0`, requires
+determinant-chart membership, reverses either product-rule order, or claims a
+closed finite-sum expansion of `dTail`, it is not the intended endpoint
+specialization.
+
+Nonclaims: no closed finite-sum formula for `dTail`, no full `Ctop` source
+staging, no `F3` source staging, no target-side determinant-one shear,
+determinant equality, measure/Jacobian-density theorem, normal crossings, pole
+order, or RLCT.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.

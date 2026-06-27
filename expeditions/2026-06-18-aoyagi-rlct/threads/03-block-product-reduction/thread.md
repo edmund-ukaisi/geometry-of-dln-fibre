@@ -256,6 +256,53 @@ recursive product-rule step.  It is not full `Ctop` source staging, not `F3`
 staging, not determinant equality, and not measure transport, normal
 crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 retained-passive tail endpoint FDeriv
+
+The next direct endpoint specialization of the recurrence is implemented
+locally.
+
+Reproduction:
+`reproduction-a2-retained-passive-tail-endpoint-fderiv.md`.
+Statement card:
+`statement-card-a2-retained-passive-tail-endpoint-fderiv.md`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_zero_apply
+fderiv_retainedPassive_A1TailAfterFirst_succ_apply
+fderiv_retainedPassive_A1TailAfterFirst_pos_apply
+```
+
+The zero theorem says that when `M=0`, the tail after the first edge is the
+empty residual product and its derivative is zero.  The successor-indexed and
+positive-length theorems specialize the passive suffix-product recurrence to
+the first passive factor:
+
+```text
+d(Tail)_z(v)
+  = d(Psucc)_z(v) * A1seed_z(p) + Psucc(z) * v.A1passive_0.
+```
+
+Here `Psucc` is the suffix after the first passive factor, `p` is the seed
+index `1`, and the source tangent is the right factor in the second product.
+The dummy `A1seed 0` is not part of the tail.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` build passed.
+Pen-and-paper scout `Goodall` and Lean/API scout `Bohr` both recommended this
+boundary.  Independent xhigh implementation review `Russell` passed, recorded
+in `review-a2-retained-passive-tail-endpoint-fderiv.md`.  Full `DLNFibre`
+build passed.  `scripts/sorries` reported `0 sorry`, `0 #exit`,
+`0 native_decide`, and `0 axiom`; `git diff --check` passed.  Axiom audit for
+the three new theorems reported only `propext`, `Classical.choice`, and
+`Quot.sound`.
+
+This is still not a closed finite-sum formula for `dTail`; it only opens the
+first endpoint recurrence step.  It is not full `Ctop` source staging, not
+`F3` staging, not determinant equality, and not measure transport, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

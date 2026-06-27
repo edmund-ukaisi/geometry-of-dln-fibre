@@ -6495,3 +6495,22 @@ Review note: xhigh `Schrodinger` accepted the Lean recurrence after one
 documentation wording fix about noncommutative order.  The source tangent is
 right factor in `P_{p.succ}(z) * v.A1passive_q`; the suffix product
 left-multiplies it.
+
+A2 retained-passive tail endpoint Frechet-derivative specialization has now
+landed locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-endpoint-fderiv.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-endpoint-fderiv.md`.
+Lean proves
+`fderiv_retainedPassive_A1TailAfterFirst_zero_apply`,
+`fderiv_retainedPassive_A1TailAfterFirst_succ_apply`, and
+`fderiv_retainedPassive_A1TailAfterFirst_pos_apply`.  The first theorem covers
+the `M=0` empty tail.  The positive/successor theorems identify the actual
+tail derivative with the first passive recurrence step, with
+`Psucc(z) * v.A1passive_0` in that order and no dummy `A1seed 0`.
+
+Next priority in this lane: consume the endpoint theorem in the Ctop
+tail-inverse bridge, leaving the remaining `Psucc` derivative explicit.  Do
+not claim a closed finite-sum formula, determinant equality, target-side
+shear equivalence, measure transport, normal crossings, pole order, or RLCT
+from this endpoint slice.

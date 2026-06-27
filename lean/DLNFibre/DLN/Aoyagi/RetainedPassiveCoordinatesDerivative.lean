@@ -1221,6 +1221,123 @@ theorem fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
           simp [Afun, data]
           abel
 
+/-- In the single-edge case, the retained-passive top-left tail after the first
+edge is the empty product, so its Frechet derivative is zero. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_zero_apply
+    {ρ : Type*} {κ' : Fin 2 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) :
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v = 0 := by
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  simp [retainedPassiveA1TailAfterFirst]
+
+/-- For a nonempty retained-passive top-left tail, the derivative of the actual
+tail map is the first step of the passive suffix-product recurrence. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_succ_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let q : Fin (M + 1) := 0
+    let p : Fin ((M + 1) + 1) := q.succ
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA1TailAfterFirst (M := M + 1) (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let q : Fin (M + 1) := 0
+  let p : Fin ((M + 1) + 1) := q.succ
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last ((M + 1) + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+  have htail_eq :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA1TailAfterFirst (M := M + 1) (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) = Pcast := by
+    funext y
+    simp [Pcast, retainedPassiveA1TailAfterFirst, p, q]
+  have hrec :=
+    fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+      (M := M + 1) (ρ := ρ) (κ' := κ') z v q
+  calc
+    (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦
+          retainedPassiveA1TailAfterFirst (M := M + 1) (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v =
+        (fderiv ℝ Pcast z) v := by
+          rw [htail_eq]
+    _ = (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+          simpa [Pcast, Psucc, p, q, data] using hrec
+
+/-- Positive-length wrapper for the retained-passive top-left tail derivative:
+the actual tail derivative is the first step of the passive suffix-product
+recurrence. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_pos_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (hM : 0 < M)
+    (z v : TopologyTuple ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let q : Fin M := ⟨0, hM⟩
+    let p : Fin (M + 1) := q.succ
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let q : Fin M := ⟨0, hM⟩
+  let p : Fin (M + 1) := q.succ
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  have htail_eq :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) = Pcast := by
+    funext y
+    simp [Pcast, retainedPassiveA1TailAfterFirst, p, q]
+  have hrec :=
+    fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+      (M := M) (ρ := ρ) (κ' := κ') z v q
+  calc
+    (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦
+          retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v =
+        (fderiv ℝ Pcast z) v := by
+          rw [htail_eq]
+    _ = (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+          simpa [Pcast, Psucc, p, q, data] using hrec
+
 /-- On the tuple determinant chart, each solved full `A1` block is
 differentiable as an ambient tuple-coordinate function. -/
 theorem differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet

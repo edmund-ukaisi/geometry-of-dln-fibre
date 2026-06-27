@@ -10118,6 +10118,29 @@ full `Ctop` source staging, no `F3` source staging, no target-side
 determinant-one shear, determinant equality, measure transport, normal
 crossings, pole order, or RLCT.
 
+Latest A2 retained-passive tail endpoint derivative:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassive_A1TailAfterFirst_zero_apply`,
+`fderiv_retainedPassive_A1TailAfterFirst_succ_apply`, and
+`fderiv_retainedPassive_A1TailAfterFirst_pos_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-endpoint-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-endpoint-fderiv.md`.
+Review:
+pen-and-paper scout PASS from xhigh `Goodall`; Lean/API scout PASS from xhigh
+`Bohr`; implementation review PASS from xhigh `Russell`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-endpoint-fderiv.md`.
+
+This packages the actual tail map endpoint: `M=0` is the empty product with
+zero derivative; positive tail length is the first recurrence step
+`d(Tail) = d(Psucc)*A1seed_p + Psucc*v.A1passive_0`, with `p` the first
+passive seed index.  It uses no determinant-chart hypothesis and does not
+include dummy `A1seed 0`.  Nonclaims: no closed finite-sum formula for
+`dTail`, no full `Ctop` source staging, no `F3` source staging, no target-side
+determinant-one shear, determinant equality, measure transport, normal
+crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

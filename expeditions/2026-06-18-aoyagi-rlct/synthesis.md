@@ -14431,3 +14431,42 @@ This is not yet a closed finite-sum formula for `dTail`; it is the recursive
 product-rule step.  It is not full `Ctop` source staging, `F3` staging,
 target-side determinant-one shear, determinant equality, measure transport,
 normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Tail Endpoint FDeriv
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_zero_apply
+fderiv_retainedPassive_A1TailAfterFirst_succ_apply
+fderiv_retainedPassive_A1TailAfterFirst_pos_apply
+```
+
+The zero theorem handles the empty tail after the first edge when `M=0`.  The
+successor-indexed and positive-length wrappers specialize the suffix-product
+recurrence to the actual retained-passive tail start:
+
+```text
+d(Tail)_z(v)
+  = d(Psucc)_z(v) * A1seed_z(p) + Psucc(z) * v.A1passive_0.
+```
+
+This is the first endpoint step for `dTail`; `Psucc` is still left as an
+actual suffix-product derivative.  The formula uses no determinant-chart
+hypothesis, does not include `A1seed 0`, and preserves the noncommutative
+order of both product-rule terms.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` build passed.
+Pen-and-paper scout `Goodall` and Lean/API scout `Bohr` both recommended this
+boundary.  Independent xhigh implementation review `Russell` passed, recorded
+in
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-endpoint-fderiv.md`.
+Full `DLNFibre` build passed.  `scripts/sorries` reported `0 sorry`,
+`0 #exit`, `0 native_decide`, and `0 axiom`; `git diff --check` passed.
+Axiom audit for the three new theorems reported only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+This is not a closed finite-sum formula for `dTail`, not full `Ctop` source
+staging, not `F3` staging, not determinant equality, not measure transport,
+not normal crossings, not pole order, and not RLCT.
