@@ -536,3 +536,55 @@ decorrelated, sharp — handed back rather than charged blind (the UPDATE-11 mis
 - `codex/genM-rate-route-{prompt,answer}.md` — the rate-route verdict (the `P_k = D_k C_k + u G_k`
   invariant; 2b lower-risk; the sharp bridge sub-lemma). xhigh, decorrelated.
 - The (2,2,1) validate-small (`RouteM221.lean`) remains banked + INTEGRATED (controller `6fb2e15d`).
+
+---
+
+## UPDATE-13 (formalisation tide, 2026-06-27) — ROUTE 2a: (2,2,2) RATE leg LANDED; DET leg `φ_det_eq` at a mechanical residual
+
+Charged ROUTE 2a (certificate-rate-det-route.md) on the validate-small (2,2,2) [minAdm=3, the smallest
+genuinely MULTI-boundary node — drops at the Schur boundary k=1 AND the leaf]. Built through the GENERAL
+`chainOfMt`/`GenBlk` engine (NOT a hand-built chart). Banked sorry-free + axiom-clean on branch
+`worktree-agent-ad2564eac0d265652`.
+
+### LANDED (committed `659e65ba`, integrated by controller path)
+- **`B_det222 : GenBlk M222 t222`** — the FULL-RANK decoder (the D1 fix). Widths `Text=[2,2,1]`,
+  `Wext=[2,2,2]`, N=8. Identity boundary k=0 (`Bmat 0 = reindex 1`, `Rmat 0 = 0`); Schur drop at k=1
+  (1×1 E-block); **LIVE leaf `Rfin 2 = !![1, x7] ≠ 0`** (entry (0,0)=1 the fixed pivot residual, the
+  thing that defeats UPDATE-11's dead-slot bug).
+- **The RATE leg `routeMCore_phiDet222 u = u²·V`** — ONE LINE via the banked decoder-agnostic
+  `routeMCore_phiGen` at `B_det222`, re-checking only `hC0_222` (`C 0 = 1`, the `C0_eq_one` pattern,
+  proven). NO bridge, NO new telescope. **This validates the certificate's HEADLINE Route-2a claim on a
+  genuine multi-boundary node** (the two drops telescope to ONE `u` via the banked backward
+  `chain_telescope`). Force-`#print axioms`: `[propext, Classical.choice, Quot.sound]` (S2-free).
+- sympy-confirmed (the design): `prod = u·H` (all 4 product entries divisible by exactly `u`); the 8×8
+  flat Jacobian det `= −x4·(x0)²` = `−(spectator)·|x0|^{minAdm−1}` (full-rank off `{x0=0}`).
+
+### DET leg `φ_det_eq` — at a mechanical residual (NOT a conceptual wall)
+The det leg needs `chartParamsGen (x 0) M222 t222 (B_det222 x) hle222 = chartParams222 x` (the explicit
+layer matrices `chartA0_222 = !![x4,x4·x1; x5,x5·x1+x6·x0]`, `chartA1_222 = !![x0−x1·x2, x0·x7−x1·x3;
+x2,x3]`). EVERY piece is confirmed working in isolation (probes):
+- `Cgen222_1/_2` (interior/leaf transition unfolds) — `dif_pos`/`dif_neg`, clean.
+- `chainQ222_1 = !![1,x1]` — via `chainQ_apply_castAdd`/`natAdd` + index normalization. WORKS.
+- the `chainA_apply_castAdd`/`natAdd` row reductions (kept row = `C−N·W`, lift row = `W`) — WORK in
+  isolation (probe_fc2: `chainA ... ⟨1,_⟩ j = W ⟨0,_⟩ j` closes).
+- the final entry equation `(!![x4;x5]*!![1,x1] + x0•!![0,0;0,x6]) i j = chartA0 i j` — closes by
+  `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_one, cons_val*] <;> ring`
+  (probe_ctx2).
+
+THE RESIDUAL (the one Lean friction): assembling these, the layer-0 reduction leaves the goal
+`(P) i j = (P) i j` (P the SAME product expr both sides, `i : Fin (Wext M222 0)`, the matrices
+`Fin 2`-indexed) which `rw`'s auto-`rfl` does NOT close — a dependent-`Fin`-index defeq-vs-syntactic
+quirk (the index coercion `Fin (Wext M222 0)` ≡ `Fin 2` is defeq but the two `P`s aren't syntactically
+`Eq.refl`-closeable after the entrywise `chainA_apply_castAdd` rewrite vs the stated explicit matrix).
+This is the cert's flagged KC#1 (the `hrow` cast at dependent widths). It is **mechanical, bounded, not
+conceptual** — the next step is either (a) a `Matrix.ext`-level reduction that keeps both sides in the
+same canonical index form, or (b) `Fin.cast`-aware `simp`/`conv` so the residual is genuine `rfl`.
+Recommend a short Codex consult on the precise `(P) i j = (P) i j` non-rfl-closure (a sharp, isolated
+Lean-tactic question) rather than more solo iteration.
+
+### Next (bounded)
+Land `φ_det_eq` (the residual above) → then `cov` via the chain rule (`phi_det = paramsEquivFlat ∘
+chartParams222`, `chartParams222 = pack ∘ pivotBlowupOn {…} 0`, det `|x0|²·|x4|` via
+`phiTarget_abs_det_of_factored` + the measure-preserving pack, the 4422/221 template) → `nodeChart222`
+→ discharge the atom for (2,2,2). The rate leg + `B_det222` + the full-rank guard are banked; the det
+leg is the remaining mechanical assembly.
