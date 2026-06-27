@@ -253,3 +253,41 @@ a red herring; the genuine cocycle is base-side over `sweepSigmaRing`).
   shortcut), refusing to build false objects, overriding mis-aimed controller steers, and naming honestly
   (declining `locallyTrivial` four times). Honest scope was upheld throughout; no overclaim survived to a
   headline.
+
+---
+
+# PR #11 — review rounds + capstone (2026-06-26/27, pre-merge)
+
+The expedition went to PR `expedition/theta-components → dev` as a draft and the operator ran **three
+deep review passes** (fidelity + Lean-API precision) plus a **capstone request**. All actioned; tip
+`1e5912e7` verified green (3807 jobs), sorries 0, every headline axiom-clean (`#print axioms` =
+`[propext, Classical.choice, Quot.sound]`).
+
+**Round 0 — automated decorrelated fan-out (4 reviewers).** Fidelity / honesty-naming / gating-axioms /
+adversarial-soundness, each with its own Codex. All PASS; 2 doc-only nits fixed (`309780a3`).
+
+**Round 1 (5 comments) — substantive, all closed/landed:** C1 the cover→`PivotDatum` bridge
+(`pivotOfCover`); C2 base-side overlap restriction + honest `transitionFactors` correction; **C3 the
+arbitrary-`B` θ-count** (`FibreThetaCountArbitrary.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_of_rank`
+— the prose overclaim became a theorem); C4 smoothness non-vacuity (`…_nonvacuous`); C5 `@[deprecated]`
+on both dead consumers (zero build warnings ⟹ genuinely dead).
+
+**Capstone follow-up — the θ-invariants distinction, formalized** (`DLN.Aoyagi.ThetaOrderDistinction`,
+the order-side companion to `codimRepCanonical_fibre_eq_two_paperLambda`): `aoyagiPoleOrder ell a :=
+a(ell−a)+1` (analytic pole order) ≠ the geometric `cTheta`/`numTop` — `numTop_d22222_ne_aoyagiPoleOrder`
+(live `6 ≠ 5` at `(2,2,2,2,2) r=0`) + `choose_eq_aoyagiPoleOrder_iff` (agreement iff `min a (ell−a) ≤ 1`).
+
+**Round 2 (6) — the scheme-level bridge** `pivotOfBasicOpen` (a covering prime forces injectivity, no
+hypothesis) + 5 doc/precision fixes. **Round 3 (7) — pure doc precision**, incl. a genuine exposition
+math-bug fix (the balanced `|δ|=0` case gives order `1`, not `5`), and aligning every docstring/comment
+to the actual proofs (surrogate vs `paperEll`; the transport's real ingredients; the to-be-formalized
+prime rank-tie; "base-side overlap data" not full local triviality).
+
+**Net:** the substance was already settled at expedition close; the review hardened the *consumable
+surface* — the bundle atlas is now genuinely usable (C1/round-2), the θ-count is general (C3), and every
+name/docstring matches what is proved. **Two honest residuals remain** (ROADMAP residuals 4–5): the bundle
+`targetOverlapTransition` (full overlap trivialization cocycle) and the smoothness component-incidence
+(`D(h)∩V(I)`), both off every headline's critical path. **Lesson reinforced:** a human owner's deep
+math-to-Lean read caught fidelity/API nuances the automated decorrelated round PASSed (atlas
+consumability, arbitrary-`B` overclaim, the balanced-case arithmetic) — the two review modes are
+complementary, not redundant.
