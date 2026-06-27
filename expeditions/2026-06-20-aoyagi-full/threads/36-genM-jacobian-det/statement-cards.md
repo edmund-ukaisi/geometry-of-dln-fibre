@@ -496,3 +496,38 @@ cov-split: the Jacobian det of the rational chart derivative is now banked; the 
 >   LANDED; the residual is the off-pole `HasFDerivAt` CLM-matching (a Mathlib-`.div`-gap plumbing pass) +
 >   the standard `cov`-split assembly. Full `lake build DLNFibre` green with the module temp-imported;
 >   aggregator reverted (single-writer). The atom for `(1,2,1)` is NOT yet discharged (pending the fderiv).
+
+---
+
+## Smeared cov-split — off-pole `HasFDerivAt` wall (Lean whnf on the matrix-CLM) + the route
+
+Branch `worktree-agent-a223be0c63e358844`. The chart-derivative det `= 1` is landed (prior card);
+the off-pole `HasFDerivAt` (the last piece before the cov + atom) hit a precise Lean wall.
+
+---
+
+> **The off-pole `shear121_hasFDerivAt` wall — Lean whnf on `Matrix.of ![...]`-CLM, NOT math.**
+>
+> - **The math + the idiom are SOLVED.** Codex (xhigh, `codex/shear-fderiv-{prompt,answer}.md`) gave the
+>   exact v4.29 quotient-fderiv idiom (Mathlib has no `HasFDerivAt.div`): `hasFDerivAt_inv` (the scalar
+>   `Mathlib.Analysis.Calculus.Deriv.Inv` version, cleaner `toSpanSingleton` CLM than `_inv'`) composed
+>   with the coord proj, then `.mul`/`.sub`. Verified the comp-2 sub-piece (`ratio10_hasFDerivAt`) builds.
+> - **The WALL.** Matching the per-component fderivs to `shear121Deriv := (toLin' (Matrix.of ![..]))`
+>   .toContinuousLinearMap` via `congr_fderiv` + `ext v` + the row `dotProduct` TIMES OUT at `whnf`
+>   (200000 heartbeats): expanding `(shear121DerivMat u i) ⬝ᵥ v` for the `Matrix.of ![row0..row3]`
+>   representation is whnf-heavy (the `Matrix.of`/`vecCons` row access doesn't reduce cheaply under
+>   `simp only [shear121DerivMat, dotProduct, Fin.sum_univ_four, …]`). `shear121Deriv_apply` (the row =
+>   `mulVec` law) itself builds via `rw […, Matrix.mulVec]` (NO `rfl` — that whnf-times-out), but the
+>   four component matches still time out.
+> - **The clean next-pass routes (no design wall, both bounded):**
+>   (a) represent the shear derivative as a `ContinuousLinearMap.pi` of explicit per-coord functionals
+>   (NOT `toLin' (Matrix.of ![..])`), so the component apply is definitional — then re-derive `|det| = 1`
+>   from that pi-CLM (a separate small det bridge);
+>   (b) **Codex's recommended route — `MeasurePreserving`** (sidesteps the fderiv+det entirely): the repo
+>   already has `Foundations.CoreShearMP` (`measurePreserving_coreShear` via `MeasurePreserving.skew_product`)
+>   — the shear is a fiberwise `z`-translation (det 1); prove `MeasurePreserving phi121sm` (off-pole or
+>   globally, the pole is null) + `MeasurableEmbedding`, then the `cov` (weight `1` since `leafH121 ≡ 0`)
+>   follows from `MeasurePreserving.setLIntegral_comp_emb` — no `HasFDerivAt`/`|det|` needed.
+> - **Status.** the off-pole `HasFDerivAt` is NOT landed (the matrix-CLM whnf wall). LANDED this pass:
+>   `shear121DerivMat`/`_det = 1`, `shear121Deriv`/`_abs_det = 1`. The `(1,2,1)` atom is NOT discharged
+>   (pending the fderiv-or-MP route + the cov-split + image-null). Recommend route (b) for the next pass.
