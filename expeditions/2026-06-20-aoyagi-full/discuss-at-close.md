@@ -664,3 +664,12 @@ teammates to use worktree-relative paths / `git -C <worktree>` for all git ops; 
 commits to `expedition/aoyagi-full` from a non-controller identity; (iii) accept it (controller verifies each such
 advance is benign before building on it, as done here — Lean-diff check + no-merge check). The controller has been
 doing (iii) successfully each time.
+
+## 35. `codex exec` drifts into repo-dump on broad architecture questions (2026-06-27, minor process).
+A formaliser's `local-codex-consult` for an "architecture/ordering" verdict drifted into a repo-context dump +
+code generation rather than a sharp strategic verdict (not usable; the agent made the scoping call from the
+pen-and-paper certificates directly). Observation for the codex-consultation policy: `codex exec` returns a
+usable VERDICT when the prompt is a sharp decidable question with named options ("adjudicate route (i) vs (ii),
+pick one, give the construction") — and drifts when asked to "analyze the architecture / figure out the ordering."
+Mitigation (already applied to the next decoder-fix consult): frame strategic consults as "give a verdict on
+THESE options, do NOT analyze the repo." Worth a one-line addendum to `docs/policies/codex-consultation.md`.
