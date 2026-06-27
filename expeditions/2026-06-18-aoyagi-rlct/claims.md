@@ -9718,6 +9718,44 @@ no target-side `LinearEquiv`, no determinant-one shear, no actual derivative
 determinant formula, no measure theorem, no normal crossings, pole order, or
 RLCT is proved by this passive `A1` source-staged bridge.
 
+## A2 retained-passive formal non-edge recovery
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+sorry/whitespace/axiom audits passed; xhigh review passed.
+
+Claim: for `u = retainedPassiveFormalRawOrderJacobianAt z v`, the formal
+raw-order map recovers the non-edge source branches by
+
+```text
+u.A1passive_p = v.A1passive_p,
+Tail * u.Ctop = v.Ctop,
+u.F3 * (-(coord.solvedA1 (Fin.last M)))^{-1} = v.F3.
+```
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive`,
+`retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop`, and
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-nonedge-recovery.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-nonedge-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-nonedge-recovery.md`.
+
+Kill condition: these are recovery identities for the formal map only.  If
+they are used to claim that the actual Frechet derivative has been converted to
+the formal map by a determinant-one target-side equivalence, the argument
+overclaims.  The `Ctop` and `F3` formulas must keep the determinant-chart
+hypothesis; only `A1passive` is chart-free.
+
+Nonclaims: no actual derivative identification, no `Ctop` source staging, no
+`F3` source staging, no target-side `LinearEquiv`, no determinant-one shear,
+no actual derivative determinant equality, no measure theorem, no normal
+crossings, pole order, or RLCT is proved by this formal recovery package.
+
 ## A2 retained-passive nonterminal edge-pair staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

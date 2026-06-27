@@ -6426,3 +6426,19 @@ with the tail-inverse, early-tail, and terminal-top derivative obligations
 kept explicit.  Do not claim a fully source-staged tuple, target-side
 `LinearEquiv`, determinant-one shear, determinant equality, measure transport,
 normal crossings, pole order, or RLCT from the passive `A1` slice.
+
+A2 retained-passive formal non-edge recovery has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-nonedge-recovery.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-nonedge-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-nonedge-recovery.md`
+passed by xhigh `Nash`.  Lean proves formal recovery for `A1passive`, `Ctop`,
+and `F3` from `retainedPassiveFormalRawOrderJacobianAt`.
+
+Next priority in this lane: this closes formal-map recovery for all tuple
+branches when combined with the existing `(F2,C)` recovery.  Do not add more
+formal recovery wrappers unless a downstream theorem consumes them.  The next
+genuine frontier is a target-side/shear equivalence or staged actual-derivative
+construction that explicitly handles the remaining `Ctop` tail-inverse
+derivative and `F3` early-tail/terminal-top derivative obligations.

@@ -10025,6 +10025,27 @@ fully source-staged tuple, not a target-side determinant-one equivalence, not
 an actual derivative determinant formula, and not measure transport, normal
 crossings, pole order, or RLCT.
 
+Latest A2 retained-passive formal non-edge recovery:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive`,
+`retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop`, and
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-nonedge-recovery.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-nonedge-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-nonedge-recovery.md`
+passed by xhigh `Nash`.
+
+These are point-specialized formal-map inverse formulas for the non-edge
+branches: passive `A1` by projection, `Ctop` by left multiplication with
+`Tail`, and `F3` by right multiplication with `(-LastTop)⁻¹`.  The `Ctop` and
+`F3` formulas use determinant-chart unit hypotheses.  This is not actual
+derivative identification, not source staging for `Ctop`/`F3`, not a
+target-side determinant-one equivalence, not actual derivative determinant
+equality, and not measure transport, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

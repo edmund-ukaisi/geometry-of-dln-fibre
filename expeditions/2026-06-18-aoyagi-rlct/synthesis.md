@@ -14262,3 +14262,54 @@ This remains passive-`A1` staging only.  It is not a fully source-staged tuple,
 not `Ctop` or `F3` staging, not a target-side `LinearEquiv`, not a
 determinant-one shear, not an actual derivative determinant equality, and not
 measure transport, normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Formal Non-Edge Recovery
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves formal recovery for the
+non-edge branches of the point-specialized formal raw-order map:
+
+```text
+retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive
+retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop
+retainedPassiveFormalRawOrderJacobianAt_recovers_F3
+```
+
+For `u = retainedPassiveFormalRawOrderJacobianAt z v`, the formulas are:
+
+```text
+u.A1passive_p = v.A1passive_p,
+Tail * u.Ctop = v.Ctop,
+u.F3 * (-(coord.solvedA1 (Fin.last M)))^{-1} = v.F3.
+```
+
+The `Ctop` formula uses determinant-unitness of `Tail` and
+`Matrix.mul_nonsing_inv_cancel_left`.  The `F3` formula uses determinant-
+unitness of `coord.solvedA1 (Fin.last M)`, sign preservation for determinant
+units, and `Matrix.mul_nonsing_inv_cancel_right` because the formal terminal
+factor acts on the right.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-nonedge-recovery.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-nonedge-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-nonedge-recovery.md`
+passed by xhigh `Nash`.
+
+Verification:
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the new formal recovery theorems
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorems depend only on
+`[propext, Classical.choice, Quot.sound]`.
+
+This is formal-map recovery only.  It is not `Ctop` or `F3` source staging, not
+a target-side determinant-one equivalence, not actual derivative determinant
+equality, and not measure transport, normal crossings, pole order, or RLCT.

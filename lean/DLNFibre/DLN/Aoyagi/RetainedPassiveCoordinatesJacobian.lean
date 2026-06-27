@@ -952,6 +952,90 @@ theorem retainedPassiveFormalRawOrderJacobianAt_recovers_C
   ext i j
   simp
 
+/-- The point-specialized formal raw-order map recovers the passive top-left
+source tangent by projection. -/
+theorem retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    let u := (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v
+    u.1 p = v.1 p := by
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
+set_option linter.style.longLine false in
+/-- The point-specialized formal raw-order map recovers the `Ctop` source
+tangent by multiplying its formal output by the solved first-edge top-left
+tail. -/
+theorem retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let u := (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+        (K := ℝ) (ρ := ρ) data.A1seed
+    Tail * u.2.2.2.2.1 = v.2.2.2.2.1 := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+      (K := ℝ) (ρ := ρ) data.A1seed
+  have hdet : data.detChart := hz
+  have hPassive :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (coord.A1seed p).det := by
+    simpa [coord, data] using
+      data.toCoordinateData_passiveA1_units hdet.2
+  have hTail : IsUnit Tail.det := by
+    simpa [Tail, coord, data] using
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := ℝ) (ρ := ρ) coord.A1seed hPassive
+  change Tail *
+      ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 =
+    v.2.2.2.2.1
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  change Tail * (Tail⁻¹ * v.2.2.2.2.1) = v.2.2.2.2.1
+  exact Matrix.mul_nonsing_inv_cancel_left Tail v.2.2.2.2.1 hTail
+
+set_option linter.style.longLine false in
+/-- The point-specialized formal raw-order map recovers the terminal `F3`
+source tangent by right-multiplying its formal output by the nonsingular
+inverse of the terminal formal right factor. -/
+theorem retainedPassiveFormalRawOrderJacobianAt_recovers_F3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let u := (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    u.2.2.2.2.2 * (-(coord.solvedA1 (Fin.last M)))⁻¹ = v.2.2.2.2.2 := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let LastTop := coord.solvedA1 (Fin.last M)
+  have hdet : data.detChart := hz
+  have hLast : IsUnit LastTop.det := by
+    simpa [LastTop, coord, data] using
+      solvedA1_det_isUnit_of_detChart
+        (K := ℝ) (ρ := ρ) data hdet (Fin.last M)
+  have hNegLast : IsUnit (-LastTop).det := by
+    exact matrix_det_neg_isUnit_of_det_isUnit LastTop hLast
+  change ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 *
+      (-LastTop)⁻¹ =
+    v.2.2.2.2.2
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  change (v.2.2.2.2.2 * (-LastTop)) * (-LastTop)⁻¹ = v.2.2.2.2.2
+  exact Matrix.mul_nonsing_inv_cancel_right (-LastTop) v.2.2.2.2.2 hNegLast
+
 /-- At the terminal retained-passive edge, the actual target-side normalized
 `(F2,C)` pair agrees with the point-specialized formal edge pair. -/
 theorem F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt

@@ -94,6 +94,37 @@ This is not a fully source-staged tuple, not `Ctop` or `F3` staging, not a
 target-side `LinearEquiv`, not determinant-one shear, not determinant equality,
 and not measure transport, normal crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 formal non-edge recovery
+
+Formal inverse bookkeeping for the non-edge branches of
+`retainedPassiveFormalRawOrderJacobianAt` has landed.
+
+Reproduction:
+`reproduction-a2-retained-passive-formal-nonedge-recovery.md`.
+Statement card:
+`statement-card-a2-retained-passive-formal-nonedge-recovery.md`.
+Review:
+`review-a2-retained-passive-formal-nonedge-recovery.md` passed by xhigh
+`Nash`.
+
+Lean now proves:
+
+```text
+retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive
+retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop
+retainedPassiveFormalRawOrderJacobianAt_recovers_F3
+```
+
+The `A1passive` recovery is projection-level.  The `Ctop` recovery multiplies
+the formal output by the solved first-edge top-left tail and uses determinant
+unitness of `Tail`.  The `F3` recovery right-multiplies by the nonsingular
+inverse of `-(coord.solvedA1 (Fin.last M))`.
+
+This is formal-map recovery only.  It does not identify the actual Frechet
+derivative with the formal map, source-stage `Ctop` or `F3`, prove a
+target-side determinant-one equivalence, determinant equality, measure
+transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is
