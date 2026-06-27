@@ -459,3 +459,40 @@ intrinsically an a.e./lintegral property, so the a.e. field is the faithful form
 > - **Status.** the conceptually-hard pieces (the a.e. leaf_integrand off the pole + the det-1) LANDED;
 >   the `cov`-split `HasFDerivAt`/image-null/assembly is the bounded remaining engineering (a next pass,
 >   no design wall). NOT in DLNFibre.lean (single-writer; controller wires).
+
+---
+
+## Smeared `(1,2,1)` cov-split — chart-derivative det `= 1` LANDED; off-pole `HasFDerivAt` residual
+
+Branch `worktree-agent-a223be0c63e358844` (on the integrated a.e. core `85a5636f`). Charging the
+cov-split: the Jacobian det of the rational chart derivative is now banked; the off-pole `HasFDerivAt`
+(comp-2 quotient) is the bounded residual, blocked on a Mathlib-v4.29 plumbing gap (no `HasFDerivAt.div`).
+
+---
+
+> **Smeared `(1,2,1)` cov-split — det `= 1` of the chart derivative LANDED** (sorry-free, axiom-clean
+> `[propext, Classical.choice, Quot.sound]`).
+>
+> - **Lean (`RouteM121Smeared.lean` @ `0a76ab6b`, new this pass):** `shear121DerivMat` (the explicit
+>   transvection matrix — `1` with row-2 shear shifts), `shear121DerivMat_det = 1` (via a 3-step
+>   transvection chain `Matrix.det_updateRow_add_smul_self`, each row-add det-preserving), `shear121Deriv`
+>   (the chart-derivative CLM `= (toLin' shear121DerivMat).toContinuousLinearMap`), `shear121Deriv_abs_det
+>   = 1` (`LinearMap.det_toLin'` + the matrix det).
+> - **RESIDUAL — `shear121_hasFDerivAt` off the pole (the one stuck piece):** `shear121` comp-2 is
+>   `z − y 1·(y 0)⁻¹·y 3`, C¹ for `u 0 ≠ 0`. The OBSTRUCTION is purely Lean plumbing, NOT math: Mathlib
+>   v4.29 has **no `HasFDerivAt.div`** (only `hasFDerivAt_inv'` for `x⁻¹`), so comp-2's fderiv must be
+>   assembled `(proj 1).mul ((hasFDerivAt_inv' hu).comp (proj 0))` then matched to the matrix-CLM via
+>   `HasFDerivAt.congr_fderiv` (a `ContinuousLinearMap.ext` + `field_simp`/`ring`). That CLM-matching
+>   `ext`/`field_simp` fought several passes (the `mulLeftRight`-shaped inv-deriv vs the explicit `smul`
+>   form). Rested here rather than force it.
+> - **After `shear121_hasFDerivAt`:** `phi121sm_hasFDerivAt` (chain with the measure-preserving linear
+>   `Q121 = paramsEquivFlat ∘ pack121`, det 1) ⟹ `|det Dφ121sm| = 1`; then `phi121sm_cov` via the
+>   `phi334_cov` two-slice split (c-o-v on `S\N0` + the front-identity image-null `φ_sm''(S∩N0) ⊆
+>   {a-coord=0}`); then the `NodeAchieverChart M121` instance + the atom. All bounded, no design wall.
+> - **Already banked (prior passes, this module):** `routeMCore_phi121sm_offpole` (rate off-pole),
+>   `leaf_integrand121_ae` (the a.e. field off the null pole), `Uval121`/`leafH121`/`_pivot`,
+>   `chartParams121_eq_pack_shear`, `shear121_injOn`, `pole121_null`.
+> - **Status.** the conceptually-load-bearing pieces (a.e. leaf_integrand + the chart-deriv det `= 1`) are
+>   LANDED; the residual is the off-pole `HasFDerivAt` CLM-matching (a Mathlib-`.div`-gap plumbing pass) +
+>   the standard `cov`-split assembly. Full `lake build DLNFibre` green with the module temp-imported;
+>   aggregator reverted (single-writer). The atom for `(1,2,1)` is NOT yet discharged (pending the fderiv).

@@ -334,34 +334,57 @@ theorem shear121DerivMat_det (u : Fin 4 → ℝ) : (shear121DerivMat u).det = 1 
         Matrix.of_apply, hc0, hc1, hc3] <;> ring
   rw [hEq, hM3det]
 
+/-! ### The shear fderiv off-pole + `phi121sm_abs_det = 1` -/
+
+/-- The shear fderiv as the CLM of the transvection matrix `shear121DerivMat u` (so the det is the
+banked `shear121DerivMat_det = 1`). -/
+noncomputable def shear121Deriv (u : Fin 4 → ℝ) : (Fin 4 → ℝ) →L[ℝ] (Fin 4 → ℝ) :=
+  (Matrix.toLin' (shear121DerivMat u)).toContinuousLinearMap
+
+/-- **`|det (shear121Deriv u)| = 1`** off-pole (the chart-derivative CLM is the transvection matrix
+`shear121DerivMat u`, det `1` by `shear121DerivMat_det`). -/
+theorem shear121Deriv_abs_det (u : Fin 4 → ℝ) :
+    |(shear121Deriv u : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 4 → ℝ)).det| = 1 := by
+  have h : (shear121Deriv u : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 4 → ℝ)) = Matrix.toLin' (shear121DerivMat u) :=
+    rfl
+  rw [h, LinearMap.det_toLin', shear121DerivMat_det, abs_one]
+
 /-! ### Residual for the full `(1,2,1)` smeared instance (the `cov` split assembly)
 
 LANDED (sorry-free, this module): the chart `phi121sm`, the off-pole rate
 (`routeMCore_phi121sm_offpole`), the **a.e. `leaf_integrand`** (`leaf_integrand121_ae`, the piece
 the
 option-(i) a.e. core unlocks), `Uval121`/`leafH121`/`leafH121_pivot`, the shear factorization
-(`chartParams121_eq_pack_shear`), `shear121_injOn` (off-pole), `pole121_null`, and the shear
-Jacobian
-**det `= 1`** (`shear121DerivMat_det`, via the transvection chain).
+(`chartParams121_eq_pack_shear`), `shear121_injOn` (off-pole), `pole121_null`, the shear Jacobian
+matrix det `= 1` (`shear121DerivMat_det`, via the transvection chain), and the chart-derivative CLM
+`shear121Deriv` with **`|det| = 1`** (`shear121Deriv_abs_det`).
 
-RESIDUAL (the `cov` split + `image_subset` + the instance assembly — standard but fiddly analysis):
-* `shear121_hasFDerivAt` off the pole (the rational comp-`2` `z − (b/a)·sb` is C¹ for `u 0 ≠ 0`;
-  fderiv = `shear121DerivMat u` by `mulVec`) → `phi121sm_hasFDerivAt` (chain with the linear
-  measure-preserving `Q121 = paramsEquivFlat ∘ pack121`), giving `|det Dφ| = 1` (=
-  `∏|u_j|^{leafH121 j}`).
+RESIDUAL (the `cov` split + `image_subset` + the instance assembly):
+* `shear121_hasFDerivAt` off the pole — the rational comp-`2` `z − y 1·(y 0)⁻¹·y 3` is C¹ for `u 0
+≠ 0`
+  (`hasFDerivAt_inv'` ∘ the proj), fderiv `= shear121Deriv u`. The OBSTRUCTION is purely Lean
+  plumbing:
+  Mathlib v4.29 has NO `HasFDerivAt.div`, so comp-2 needs `(hap 1).mul ((hasFDerivAt_inv' hu).comp
+  …)`
+  matched to the matrix-CLM via `congr_fderiv` (a `ContinuousLinearMap.ext` + `field_simp`/`ring`
+  that
+  fought several passes). Then `phi121sm_hasFDerivAt` (chain with the linear measure-preserving
+  `Q121 =
+  paramsEquivFlat ∘ pack121`), giving `|det Dφ| = 1` (via `shear121Deriv_abs_det` × `Q121` det 1).
 * `phi121sm_cov` via the `phi334_cov` TWO-SLICE split: c-o-v
   (`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) on `S \ N0` (`N0 = {u 0 = 0}`, where
-  `phi121sm` is
-  C¹/InjOn/`|det|=1`); add back `S ∩ N0` — RHS null (`leafH121≡0`, weight `1`; `N0` null); LHS
-  image-null
-  `volume (phi121sm '' (S ∩ N0)) = 0` via the FRONT-block-identity containment `⊆ {first flat coord
-  reads `a = 0`}` (a target null hypersurface — NOT Luzin-N, which fails for the non-Lipschitz
-  pole).
+  `phi121sm`
+  is C¹/InjOn/`|det|=1`); add back `S ∩ N0` — RHS null (`leafH121 ≡ 0`, weight `1`; `N0` null); LHS
+  image-null `volume (phi121sm '' (S ∩ N0)) = 0` via the FRONT-block-identity containment `⊆
+  {a-flat-
+  coord = 0}` (a target null hypersurface — NOT Luzin-N, which fails for the non-Lipschitz pole).
 * then the `NodeAchieverChart M121` instance (a.e. `leaf_integrand := leaf_integrand121_ae`) +
   `routeMCore_box_diverges_of_nodeChart` discharges the atom for `(1,2,1)`.
 
-This module establishes the wall-resolution (the a.e. core makes the smeared `leaf_integrand`
-dischargeable) and banks the rate/det; the `cov`-split assembly is the bounded remaining analysis.
--/
+The wall-resolution (a.e. core ⟹ smeared `leaf_integrand` dischargeable) + the rate + the
+chart-deriv
+det are banked; the off-pole `HasFDerivAt` (comp-2 quotient CLM-matching) + the `cov`-split
+assembly is
+the bounded remaining engineering (no design wall). -/
 
 end DLNFibre.DLN.RLCT
