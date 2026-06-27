@@ -31,9 +31,9 @@ the widths; the widths themselves are noncomputable (a chosen argmin). So this i
 split, not a `decide`-evaluable classifier.
 
 The CLEAN branch's chart is the banked whole-deepest radial (`RouteM4422`/`RouteM221` pattern,
-cite); the SMEARED branch's chart is the rational single-pivot `φ_sm` (`certificate-genM-smeared`). Both
-fit the EXISTING single-axis `NodeAchieverChart` (see the smeared `cov` gating analysis in
-`statement-cards.md`).
+cite); the SMEARED branch's chart is the rational single-pivot `φ_sm`
+(`certificate-genM-smeared`). Both fit the EXISTING single-axis `NodeAchieverChart` (see the
+smeared `cov` gating analysis in `statement-cards.md`).
 -/
 
 namespace DLNFibre.DLN.RLCT
