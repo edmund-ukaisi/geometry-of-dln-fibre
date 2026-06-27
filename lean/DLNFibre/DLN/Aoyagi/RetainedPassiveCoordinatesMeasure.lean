@@ -216,6 +216,98 @@ theorem continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_comp_of_mem
   (continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart
     (ρ := ρ) (κ' := κ') (Y a₀) hY₀).comp hY
 
+/-- Composing any target chart tuple with the target-side inverse determinant
+density is positive at raw-order source-recursive determinant-chart points. -/
+theorem topologyTupleEdgeRawOrderInverseJacobianDensity_comp_pos_of_mem_rawSourceChart
+    {M : ℕ} {ρ α : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (Y : α → TopologyTuple ρ κ' ℝ) (a₀ : α)
+    (hY₀ : Y a₀ ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    0 <
+      topologyTupleEdgeRawOrderInverseJacobianDensity
+        (ρ := ρ) (κ' := κ') (Y a₀) :=
+  topologyTupleEdgeRawOrderInverseJacobianDensity_pos_of_mem_rawSourceChart
+    (ρ := ρ) (κ' := κ') hY₀
+
+/-- Near any raw-order source-recursive determinant-chart point, the
+target-side inverse Jacobian density admits a positive lower bound. -/
+theorem exists_pos_eventually_le_topologyTupleEdgeRawOrderInverseJacobianDensity_nhds
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (y₀ : TopologyTuple ρ κ' ℝ)
+    (hy₀ : y₀ ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ∃ ε : ℝ, 0 < ε ∧
+      ∀ᶠ y in 𝓝 y₀,
+        ε ≤ topologyTupleEdgeRawOrderInverseJacobianDensity
+          (ρ := ρ) (κ' := κ') y := by
+  let density : TopologyTuple ρ κ' ℝ → ℝ :=
+    topologyTupleEdgeRawOrderInverseJacobianDensity
+      (ρ := ρ) (κ' := κ')
+  have hdensity : ContinuousAt density y₀ :=
+    continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart
+      (ρ := ρ) (κ' := κ') y₀ hy₀
+  have hpos : 0 < density y₀ :=
+    topologyTupleEdgeRawOrderInverseJacobianDensity_pos_of_mem_rawSourceChart
+      (ρ := ρ) (κ' := κ') hy₀
+  refine ⟨density y₀ / 2, half_pos hpos, ?_⟩
+  have htarget : ∀ᶠ y in 𝓝 (density y₀), density y₀ / 2 ≤ y := by
+    exact eventually_ge_nhds (show density y₀ / 2 < density y₀ by linarith)
+  exact hdensity.eventually htarget
+
+/-- Near any raw-order source-recursive determinant-chart point, the
+target-side inverse Jacobian density admits a positive upper bound. -/
+theorem exists_pos_eventually_topologyTupleEdgeRawOrderInverseJacobianDensity_le_nhds
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (y₀ : TopologyTuple ρ κ' ℝ)
+    (hy₀ : y₀ ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ᶠ y in 𝓝 y₀,
+        topologyTupleEdgeRawOrderInverseJacobianDensity
+          (ρ := ρ) (κ' := κ') y ≤ C := by
+  let density : TopologyTuple ρ κ' ℝ → ℝ :=
+    topologyTupleEdgeRawOrderInverseJacobianDensity
+      (ρ := ρ) (κ' := κ')
+  have hdensity : ContinuousAt density y₀ :=
+    continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart
+      (ρ := ρ) (κ' := κ') y₀ hy₀
+  refine ⟨max (density y₀ + 1) 1, ?_, ?_⟩
+  · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
+  · have htarget : ∀ᶠ y in 𝓝 (density y₀), y ≤ density y₀ + 1 := by
+      exact eventually_le_nhds (show density y₀ < density y₀ + 1 by linarith)
+    exact (hdensity.eventually htarget).mono
+      (fun _ hy ↦ hy.trans (le_max_left _ _))
+
+/-- The retained-passive target-side inverse Jacobian density is a positive
+bounded unit after any source parametrization continuous at a point mapping
+into the raw-order source-recursive determinant chart. -/
+theorem exists_pos_eventually_bounds_topologyTupleEdgeRawOrderInverseJacobianDensity_comp
+    {α : Type*} [TopologicalSpace α]
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {Y : α → TopologyTuple ρ κ' ℝ} {a₀ : α}
+    (hY : ContinuousAt Y a₀)
+    (hY₀ : Y a₀ ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ∃ ε C : ℝ, 0 < ε ∧ 0 < C ∧
+      ∀ᶠ a in 𝓝 a₀,
+        ε ≤ topologyTupleEdgeRawOrderInverseJacobianDensity
+            (ρ := ρ) (κ' := κ') (Y a) ∧
+          topologyTupleEdgeRawOrderInverseJacobianDensity
+            (ρ := ρ) (κ' := κ') (Y a) ≤ C := by
+  rcases exists_pos_eventually_le_topologyTupleEdgeRawOrderInverseJacobianDensity_nhds
+      (ρ := ρ) (κ' := κ') (Y a₀) hY₀ with
+    ⟨ε, hε_pos, hε⟩
+  rcases exists_pos_eventually_topologyTupleEdgeRawOrderInverseJacobianDensity_le_nhds
+      (ρ := ρ) (κ' := κ') (Y a₀) hY₀ with
+    ⟨C, hC_pos, hC⟩
+  refine ⟨ε, C, hε_pos, hC_pos, ?_⟩
+  filter_upwards [hY.eventually hε, hY.eventually hC] with a ha_low ha_high
+  exact ⟨ha_low, ha_high⟩
+
 set_option maxRecDepth 2048 in
 /-- On the retained-passive tuple determinant chart, the raw-order chart map
 pushes the weighted source Haar measure with density `|det Df|` to Haar measure
