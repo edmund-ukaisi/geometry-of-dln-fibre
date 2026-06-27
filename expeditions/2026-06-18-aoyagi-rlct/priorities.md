@@ -21,6 +21,47 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive positive-tail `F3` bridge now has its first recursive
+`Nextfun` term expanded in the two-positive-tail case:
+
+```text
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The theorem writes the tail length as `(M+1)+1`, starts from the landed
+first-index `dEarly` consumer with `M := M+1`, and rewrites only the residual
+`(fderiv Nextfun z) v` by the successor-index theorem with
+`s0 := 0 : Fin (M+1)`.  The successor branch uses
+
+```text
+q1 = s0.succ,
+u1 = s0.castSucc,
+p1 = q1.castSucc,
+r1 = q1.succ,
+```
+
+so the tangent is `v.1 u1`, not `v.1 q1`.  The theorem leaves `dPsucc1`,
+`Psucc1`, and the next recursive derivative explicit; it does not rewrite the
+first-level `dPsucc`, terminal-clean, distribute the outer
+`- dEarly * terminalSolvedA1`, or claim full positive-tail `F3` target
+staging, determinant equality, measure transport, normal crossings, pole
+order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+PASS by xhigh `Dirac`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing unrelated style warnings.
+`scripts/sorries` reported zero forbidden markers, `git diff --check` was
+clean, and the theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Previous controller decision:
+
 The retained-passive positive-tail `F3` bridge now consumes the first-index
 `dEarly` zero-current formula in
 `RetainedPassiveCoordinatesJacobian.lean`:

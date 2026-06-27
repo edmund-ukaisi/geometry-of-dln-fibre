@@ -48,6 +48,48 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 F3 Two-Positive-Tail Next-Successor Substitution
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+This is the first recursive consumer of the explicit `Nextfun` left by the
+positive-tail first-index `dEarly` substitution.  It parameterizes the tail as
+`(M+1)+1`, starts from the landed theorem with `M := M+1`, and rewrites only
+the residual `(fderiv Nextfun z) v` by instantiating the successor-index
+theorem with `s0 := 0 : Fin (M+1)`.
+
+The second-step indexing is
+
+```text
+s0 = 0 : Fin (M+1),
+q1 = s0.succ,
+u1 = s0.castSucc,
+p1 = q1.castSucc,
+r1 = q1.succ.
+```
+
+The successor tangent is `v.1 u1`.  The theorem leaves `dPsucc1`, `Psucc1`,
+and the next recursive derivative explicit, and does not touch the first-level
+`dPsucc`.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing unrelated style warnings.
+`scripts/sorries` reported zero forbidden markers, `git diff --check` was
+clean, and the theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`.  Dirac's xhigh review passed.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+
+This is not full positive-tail `F3` target staging.
+
 ## Latest A2 F3 Positive-Tail dEarly Substitution
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:

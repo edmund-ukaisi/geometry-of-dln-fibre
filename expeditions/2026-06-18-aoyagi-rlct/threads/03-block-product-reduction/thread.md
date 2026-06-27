@@ -18,6 +18,50 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 F3 two-positive-tail next-successor substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+Review:
+`review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+PASS by xhigh `Dirac`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+This is the first recursive consumer of the remaining `Nextfun` term in the
+positive-tail `F3` bridge.  It writes the tail length as `(M+1)+1`, starts from
+the landed first-index `dEarly` substitution theorem with `M := M+1`, and
+rewrites only the residual `(fderiv Nextfun z) v` by instantiating the
+successor-index `dEarly` theorem with `s0 := 0 : Fin (M+1)`.
+
+The second-step indices are
+
+```text
+s0 = 0 : Fin (M+1),
+q1 = s0.succ,
+u1 = s0.castSucc,
+p1 = q1.castSucc,
+r1 = q1.succ.
+```
+
+The successor tangent is `v.1 u1`, not `v.1 q1`.  The theorem leaves
+`dPsucc1`, `Psucc1`, and the next recursive derivative explicit.  It does not
+rewrite the first-level `dPsucc`, does not terminal-clean, and does not claim
+full positive-tail `F3` target staging.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing unrelated style warnings.
+`scripts/sorries` reported zero forbidden markers, `git diff --check` was
+clean, and the theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-06-27 A2 F3 positive-tail dEarly substitution
 
 Reproduction:
