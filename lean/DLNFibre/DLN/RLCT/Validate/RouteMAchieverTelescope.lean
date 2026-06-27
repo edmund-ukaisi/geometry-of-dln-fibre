@@ -163,13 +163,13 @@ is the bridge: the polynomial chain (over `MvPolynomial (Fin N) ℝ`) maps under
 so the polynomial `Hmat 0` evaluates to the ℝ `Hmat 0` — the keystone for the named `UPolyGen`. -/
 
 /-- `(u • M).map f = f u • M.map f` for a ring hom `f` on `𝕜`-entry matrices (the entry smul is `*`). -/
-private theorem map_smul_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜') (a : 𝕜)
+theorem map_smul_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜') (a : 𝕜)
     (M : Matrix (Fin p) (Fin q) 𝕜) : (a • M).map f = f a • M.map f := by
   ext i j
   simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
 
 /-- `(M + N).map f = M.map f + N.map f` for a ring hom `f` (entrywise). -/
-private theorem map_add_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜')
+theorem map_add_eq {𝕜' : Type*} [CommRing 𝕜'] {p q : ℕ} (f : 𝕜 →+* 𝕜')
     (M N : Matrix (Fin p) (Fin q) 𝕜) : (M + N).map f = M.map f + N.map f := by
   ext i j
   simp only [Matrix.map_apply, Matrix.add_apply, map_add]
