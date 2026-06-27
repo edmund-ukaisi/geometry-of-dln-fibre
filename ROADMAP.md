@@ -327,6 +327,42 @@ cheap; it does not grant a worktree-controller parallel teammates. **Acceptance:
 not on the main checkout can still run teammates in genuinely isolated, parallel worktrees (via (ii) or
 (iii)).
 
+## fibration-geometry expedition (closed 2026-06-27) — status + residuals
+
+**Landed (all bedrock: green, sorry-free, axiom-clean, hardener-cleared).** The DLN reduced fibre
+family over the rank-`= r` open is, **chartwise over the in-chart Schur ring `SchurLoc`**, an honest
+over-base local product with flatness:
+
+- **S1** `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — `rankROpen` IS the
+  residue-field rank-`= r` locus (set-of-primes identity).
+- **S2 / S2c** `FibreSmoothBlock` / `FibreSmoothBlockExists` — the smooth-block certificate (Kähler `Ω`
+  free, `rank(Ω) + codim = ambient`), hypothesis-free under the Kostant gate
+  (`exists_topComponent_smoothBlock_certificate`; generic engine `topDimMinPrimes_nonempty`). The
+  RLCT-runway upper-bound local model.
+- **S3** `FibreFlatness` — cheap-flatness verdict + localization/standard-model/`UniversallyOpen` facts.
+- **S4 / S4b** `FibreLocallyTrivial` / `FibreOverBaseTriv` — the `SchurLoc`-linear (over-base)
+  trivialization `Away(chartDsigAt) ≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` (over the honest
+  structure map, non-circular) + chartwise flatness over `SchurLoc`.
+- **S5** `FibreBundleHeadline` — the capstone `reducedFibre_existsOverBaseProductChartAt_rankEq`.
+
+Exposition: `expeditions/2026-06-27-fibration-geometry/expositions/fibration-geometry.md`.
+
+**Residuals (roadmap; sequence as listed — each genuinely reachable, none a wall):**
+
+1. **Chart-base bridge** `SchurLoc ≅ sweepSigmaRing | basicOpen(chartDsigAt s t)` (+ structure-map
+   compatibility). Turns the chartwise `SchurLoc`-flatness into flatness over the genuine base
+   `rankROpen ⊆ Spec(sweepSigmaRing)`. A real build, **ahead of** R1.
+2. **R1 — `targetOverlapTransition`** (the overlap-gluing cocycle). Assembles the per-chart data into a
+   single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After the chart-base bridge.
+3. **S2b — conormal companion** `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler
+   side; conormal exact sequence + rank additivity). A real build.
+4. **S1 in-file non-vacuity `example`** (a concrete `P ∈ rankROpen` in the achievable regime) — a
+   bedrock-hygiene nicety.
+5. **Singular-locus split / RLCT lower bound** (→ the next expedition): the smooth-block gives only the
+   `rlct ≤ ½·codim` upper-bound local model; the equality needs a singular-locus lower bound
+   (`rlct ≥ ½·codim` everywhere). This is the wall the `rlct = ½·codim` Cited axiom rests on; teed up,
+   not closed.
+
 ## Convention
 
 Pick up a **bundle** only when it is whole-in-reach — don't nibble it one lemma at a time. **Reachable-now

@@ -183,3 +183,11 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
     the honest fences); (2) final `synthesis.md` pass; (3) **ROADMAP.md** update (P-bridge → R1 → global
     morphism; S2b conormal; S1 example; singular split / RLCT runway = next expedition); (4) signal-and-wait
     **close-phase PR** (operator merges). No new tides needed; the geometry is built.
+
+- **tick 12 (close deliverables written, 2026-06-27 ~20:00):** exposition
+  `expositions/fibration-geometry.md` written (the honest bundle picture + all fences); `ROADMAP.md`
+  updated with the fibration-geometry close section (landed S1–S5 + residuals: chart-base bridge → R1;
+  S2b; S1 example; singular split/RLCT next expedition). Final synthesis current. **Remaining = the one
+  blocking gate: the close-phase PR (signal-and-wait — operator's go + merge).** Surfacing to operator:
+  open PR (no merge) + fan-out decorrelated review, as last expedition? Roster clean (all tides
+  self-cleared). Branch `expedition/fibration-geometry`; close-commit pending this doc commit.
