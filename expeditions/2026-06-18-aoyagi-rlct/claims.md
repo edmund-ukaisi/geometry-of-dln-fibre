@@ -9632,6 +9632,37 @@ determinant-one shear, no actual derivative determinant formula, no measure
 theorem, no normal crossings, pole order, or RLCT is proved by this all-edge
 package.
 
+## A2 retained-passive edge-pair source-staged tuple assembly
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+xhigh review passed.
+
+Claim: the hybrid whole-tuple package keeps the derivative-staged
+`A1passive`, passive `A3`, `Ctop`, and `F3` entries from
+`shearedTopologyTupleEdgeRawOrderFDerivAt`, replaces only the `(F2,C)`
+edge-family branch by the all-edge source-staged normalized pair, and agrees
+with the point-specialized formal raw-order Jacobian.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt` and
+`edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+
+Kill condition: only the `(F2,C)` branch is source-staged.  If the theorem is
+read as a fully source-staged tuple, target-side linear equivalence,
+determinant-one shear, determinant equality, or measure theorem, it overclaims.
+
+Nonclaims: no target-side `LinearEquiv`, no determinant-one shear, no actual
+derivative determinant formula, no measure theorem, no normal crossings, pole
+order, or RLCT is proved by this hybrid tuple package.
+
 ## A2 retained-passive nonterminal edge-pair staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

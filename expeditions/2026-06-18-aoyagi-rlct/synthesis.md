@@ -14157,3 +14157,46 @@ This remains an edge-pair family packaging lemma.  It is not a target-side
 determinant-one equivalence, not an actual derivative determinant formula, not
 a descending induction, and not measure transport, normal crossings, pole
 order, or RLCT.
+
+## Latest A2 Retained-Passive Edge-Pair Source-Staged Tuple Assembly
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the hybrid whole-tuple
+package:
+
+```text
+edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt
+edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The tuple keeps the derivative-staged `A1passive`, passive `A3`, `Ctop`, and
+`F3` branches from `shearedTopologyTupleEdgeRawOrderFDerivAt`, and replaces
+only the `(F2,C)` branch with the all-edge source-staged normalized family.
+The equality to `retainedPassiveFormalRawOrderJacobianAt z v` follows by
+combining the old tuple equality with the all-edge `(F2,C)` equality.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`
+passed by xhigh `Dalton`.
+
+Verification:
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the new hybrid tuple theorems
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  The new hybrid tuple theorems depend only on `[propext,
+Classical.choice, Quot.sound]`.
+
+This remains hybrid packaging.  It is not a fully source-staged tuple, not a
+target-side `LinearEquiv`, not a determinant-one shear, not an actual
+derivative determinant formula, and not measure transport, normal crossings,
+pole order, or RLCT.

@@ -42,6 +42,28 @@ Nonclaims remain active: no determinant equality, no determinant-one
 target-side `LinearEquiv`, no descending induction, no measure transport, no
 normal crossings, no pole order, and no RLCT.
 
+## 2026-06-27 A2 edge-pair source-staged tuple assembly
+
+Xhigh statement scout `Descartes` passed the next narrow package: a hybrid
+whole-tuple assembly whose `(F2,C)` branch uses the all-edge source-staged
+edge-pair family, while the passive `A1`, passive `A3`, `Ctop`, and `F3`
+branches remain the existing derivative-staged tuple assembly.
+
+Reproduction:
+`reproduction-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Statement card:
+`statement-card-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+
+The intended Lean names are
+`edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt` and
+`edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Lean now proves both.  Review:
+`review-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md` passed
+by xhigh `Dalton`.  The naming must not suggest that the whole tuple is
+source-staged.  Nonclaims: no target-side `LinearEquiv`, determinant-one
+shear, actual derivative determinant equality, measure transport, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

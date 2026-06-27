@@ -1620,6 +1620,75 @@ theorem F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_reco
   rw [hpair]
   simpa using hrec
 
+set_option linter.style.longLine false in
+/-- Hybrid whole-tuple package whose `(F2,C)` edge-family branch is
+source-staged, while `A1passive`, `Ctop`, and `F3` keep the derivative-staged
+corrections from `shearedTopologyTupleEdgeRawOrderFDerivAt`. -/
+def edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple ρ κ' ℝ :=
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let old := shearedTopologyTupleEdgeRawOrderFDerivAt (ρ := ρ) (κ' := κ') z v
+  let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  (old.1,
+    (fun q : Fin (M + 1) ↦
+        Dzv.2.1 q
+          + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+            coord.F2 q.castSucc
+          - Xsucc q * coord.C q,
+      (old.2.2.1,
+        (fun q : Fin (M + 1) ↦
+            Dzv.2.2.2.1 q
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+                coord.F2 q.castSucc,
+          old.2.2.2.2))))
+
+set_option linter.style.longLine false in
+/-- The hybrid whole-tuple package with source-staged `(F2,C)` branch agrees
+with the point-specialized formal raw-order Jacobian.  Only the `(F2,C)` branch
+is source-staged; the other corrections remain derivative-staged. -/
+theorem edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt
+        (ρ := ρ) (κ' := κ') z v =
+      (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let old := shearedTopologyTupleEdgeRawOrderFDerivAt (ρ := ρ) (κ' := κ') z v
+  let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  have hold :=
+    sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  have hF2C :=
+    F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  apply Prod.ext
+  · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt, old] using
+      congrArg Prod.fst hold
+  · apply Prod.ext
+    · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt,
+        raw, coord, Dzv, Xsucc] using congrArg Prod.fst hF2C
+    · apply Prod.ext
+      · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt, old] using
+          congrArg (fun u : RetainedPassiveRawTopologyTuple ρ κ' ℝ ↦ u.2.2.1) hold
+      · apply Prod.ext
+        · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt,
+            raw, coord, Dzv, Xsucc] using congrArg Prod.snd hF2C
+        · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt, old] using
+            congrArg (fun u : RetainedPassiveRawTopologyTuple ρ κ' ℝ ↦ u.2.2.2.2) hold
+
 end Aoyagi
 end DLN
 end DLNFibre

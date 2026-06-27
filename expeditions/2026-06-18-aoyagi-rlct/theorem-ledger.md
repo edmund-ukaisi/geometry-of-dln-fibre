@@ -9974,6 +9974,28 @@ equivalence, not an actual derivative determinant formula, not a descending
 construction, and not measure transport, normal crossings, pole order, or
 RLCT.
 
+Latest A2 retained-passive edge-pair source-staged tuple assembly:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt` and
+`edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-source-staged-tuple-assembly.md`
+passed by xhigh `Dalton`.
+
+The tuple order is `(A1passive, F2, A3passive, C, Ctop, F3)`.  The hybrid
+tuple keeps the derivative-staged `A1passive`, passive `A3`, `Ctop`, and `F3`
+branches from `shearedTopologyTupleEdgeRawOrderFDerivAt`, and replaces only
+`F2` and `C` with the all-edge source-staged normalized families.  It then
+proves equality with the formal raw-order Jacobian by combining the old tuple
+equality with the all-edge `(F2,C)` equality.  This is not a fully
+source-staged tuple, not a target-side determinant-one equivalence, not an
+actual derivative determinant formula, and not measure transport, normal
+crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,
