@@ -95,8 +95,13 @@ noncomputable def phiFlatStructV (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t
     (hN : 0 < routeMAmbient M) (x : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
   phiGen (x (structPivot M hN)) M t (genBlkFlatStruct M t ha x) (hleStruct M t ha)
 
-/-- The unit factor `Ufun x := VvalGen (x p) M t (genBlkFlatStruct M t ha x) hle` (the `(x p)`-free
-factor of the rate `routeMCore = (x p)² · U`). -/
+/-- The rate-quotient unit factor `UvalStructV x := VvalGen (x p) M t (genBlkFlatStruct M t ha x) hle`
+— the radial quotient `routeMCore (phiFlatStructV x) / (x p)²` of the rate `routeMCore = (x p)² · U`.
+A telescoped squared norm `‖reindex (Hmat 0)‖²`. NB it is NOT in general `(x p)`-free: `VvalGen` reads
+the radial scalar `x p` (through `Hmat 0`'s dependence on the chain's `C`-layers, which carry `(x p) •
+Rmat`). The `(4,4,2,2)` pure-radial-blow-up instance `Uval4422` IS pivot-free, but the general
+structured chart does not inherit that; the `leaf_integrand`/`Ubound` interface only needs `U ≤ B` on
+the box + `U > 0` a.e., neither requiring pivot-freeness. -/
 noncomputable def UvalStructV (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (hN : 0 < routeMAmbient M) (x : Fin (routeMAmbient M) → ℝ) : ℝ :=
   VvalGen (x (structPivot M hN)) M t (genBlkFlatStruct M t ha x) (hleStruct M t ha)
