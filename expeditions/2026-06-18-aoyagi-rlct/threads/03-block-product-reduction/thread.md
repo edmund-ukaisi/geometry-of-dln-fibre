@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 conditional determinant/Jacobian bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+Review:
+`review-a2-retained-passive-conditional-determinant-jacobian-bridge.md`,
+PASS by xhigh `Noether the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_of_target_linearEquiv
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_of_target_linearEquiv
+```
+
+The first theorem assumes a supplied retained-passive raw tuple linear
+equivalence `T`, the pointwise comparison
+
+```text
+T ((fderiv topologyTupleEdgeRawOrder z) v)
+  = retainedPassiveFormalRawOrderJacobianAt z v,
+```
+
+and `|det T| = 1`; it proves equality of the actual raw-order forward absolute
+Jacobian determinant and the formal raw-order absolute determinant.  The
+product theorem only rewrites the formal side using
+`retainedPassiveFormalRawOrderJacobianAbsDetAt_eq`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed with no
+focused-module warnings, and the full `DLNFibre` build passed with only
+pre-existing warning noise.  `scripts/sorries` reported zero forbidden markers,
+`git diff --check` passed, and `#print axioms` for both new theorem names
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+This does not construct the target-side determinant-one equivalence, does not
+claim the existing componentwise sheared derivative packaging is already such
+an equivalence, and does not prove source-prior transport, inverse-density
+pushforward, normal crossings, pole order, or RLCT.
+
+Next frontier: construct the target-side determinant-one normalization.  For
+the positive-tail `F3` branch, the better route is a recursive target-staged
+lower-left-tail derivative object, not another unconstrained finite unroll.
+
 ## 2026-06-27 A2 F3 three-positive-tail next-next successor substitution
 
 Reproduction:

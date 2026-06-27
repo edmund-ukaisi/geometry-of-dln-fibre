@@ -21,6 +21,53 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive determinant/Jacobian layer now has a conditional bridge
+socket from the actual raw-order Frechet derivative determinant to the formal
+raw-order product determinant.  New Lean names:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_of_target_linearEquiv
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_of_target_linearEquiv
+```
+
+The first theorem assumes a supplied target-side linear equivalence `T` on the
+retained-passive raw tuple vector space, the pointwise identity
+
+```text
+T ((fderiv topologyTupleEdgeRawOrder z) v)
+  = retainedPassiveFormalRawOrderJacobianAt z v
+```
+
+for every tangent `v`, and `|det T| = 1`; it then proves
+`topologyTupleEdgeRawOrderFDerivAbsDet z =
+retainedPassiveFormalRawOrderJacobianAbsDetAt z`.  The product corollary only
+rewrites this common value using the already-proved formal product formula
+`retainedPassiveFormalRawOrderJacobianAbsDetAt_eq`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed with no warnings from the focused module; the full `DLNFibre` build
+passed with only pre-existing warning noise.  `scripts/sorries` reported zero
+forbidden markers, `git diff --check` was clean, and both new theorem axiom
+audits reported only `[propext, Classical.choice, Quot.sound]`.  Xhigh review
+passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+
+This does not construct the target-side determinant-one linear equivalence and
+does not assert that the current componentwise sheared derivative packaging is
+already such an equivalence.  It does not prove source-prior transport,
+inverse-density pushforward, normal crossings, pole order, or RLCT.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+
+Next frontier: build the target-side determinant-one normalization itself.
+The strongest current lead is the recursive staged derivative object for the
+positive-tail `F3` lower-left product tail; avoid adding a fourth finite
+`pos_pos_pos_pos` theorem unless it is a probe toward that recursive API.
+
+Previous controller decision:
+
 The retained-passive three-positive-tail `F3` bridge now recurses one level
 deeper into the remaining `NextNextfun` derivative, substituting the second
 successor-index `dEarly` formula and adding the matching source-`F3` recovery

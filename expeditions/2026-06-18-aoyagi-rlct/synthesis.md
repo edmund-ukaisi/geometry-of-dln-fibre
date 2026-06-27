@@ -48,6 +48,56 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Conditional Determinant/Jacobian Bridge
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_of_target_linearEquiv
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_of_target_linearEquiv
+```
+
+This is a determinant socket, not construction of the remaining target-side
+normalization.  The first theorem assumes a supplied retained-passive raw tuple
+linear equivalence `T` with pointwise comparison
+
+```text
+T ((fderiv topologyTupleEdgeRawOrder z) v)
+  = retainedPassiveFormalRawOrderJacobianAt z v
+```
+
+and `|det T| = 1`; it concludes that the actual raw-order forward absolute
+Jacobian determinant equals the point-specialized formal raw-order absolute
+determinant.  The proof is the finite-dimensional identity
+`det(F_z) = det(T) * det(D_z)` followed by absolute values.
+
+The product corollary composes this conditional bridge with the existing formal
+determinant product formula `retainedPassiveFormalRawOrderJacobianAbsDetAt_eq`.
+It does not construct `T`, prove that the current componentwise sheared
+derivative is a determinant-one linear equivalence, identify the source prior
+pushforward, prove normal crossings, or prove pole order/RLCT.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-conditional-determinant-jacobian-bridge.md`,
+PASS by xhigh `Noether the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed with no
+focused-module warnings; full `DLNFibre` build passed with only pre-existing
+warning noise; `scripts/sorries` reported zero forbidden markers;
+`git diff --check` passed; `#print axioms` for the two new theorem names
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Strategic read after xhigh scouts: this socket usefully isolates the remaining
+gap.  The next target should be construction of the determinant-one
+target-normalizing linear equivalence.  For the non-edge positive-tail branch,
+that should start from a recursive target-staged lower-left-tail derivative
+object rather than another large finite `F3` unroll.
+
 ## Latest A2 F3 Three-Positive-Tail Second Successor Substitution
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:

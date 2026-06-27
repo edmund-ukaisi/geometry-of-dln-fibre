@@ -258,6 +258,124 @@ theorem retainedPassiveFormalRawOrderJacobianAbsDetAt_pos_of_mem_topologyTupleDe
   rw [retainedPassiveFormalRawOrderJacobianAbsDetAt]
   exact abs_pos.mpr (isUnit_iff_ne_zero.mp hunit)
 
+/-- Conditional determinant bridge from the actual retained-passive raw-order
+Frechet derivative to the point-specialized formal raw-order Jacobian.
+
+The hypothesis is intentionally a supplied target-side linear equivalence with
+absolute determinant one.  This theorem does not construct that equivalence. -/
+theorem topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_of_target_linearEquiv
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (T :
+      RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ≃ₗ[ℝ]
+        RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (hT :
+      ∀ v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ,
+        T ((fderiv ℝ
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z) v) =
+          (retainedPassiveFormalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') z) v)
+    (hdetT :
+      |LinearMap.det
+        (T : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+          RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)| = 1) :
+    topologyTupleEdgeRawOrderFDerivAbsDet
+        (ρ := ρ) (κ' := κ') z =
+      retainedPassiveFormalRawOrderJacobianAbsDetAt
+        (ρ := ρ) (κ' := κ') z := by
+  let E : Type _ := RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ
+  let raw : E → E :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let D : E →ₗ[ℝ] E :=
+    ((fderiv ℝ raw z : E →L[ℝ] E) : E →ₗ[ℝ] E)
+  let F : E →ₗ[ℝ] E :=
+    retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z
+  have hF : F = (T : E →ₗ[ℝ] E).comp D := by
+    apply LinearMap.ext
+    intro v
+    simpa [E, raw, D, F, LinearMap.comp_apply] using (hT v).symm
+  have hdetTE : |LinearMap.det (T : E →ₗ[ℝ] E)| = 1 := by
+    simpa [E] using hdetT
+  have hdetF :
+      LinearMap.det F =
+        LinearMap.det (T : E →ₗ[ℝ] E) * LinearMap.det D := by
+    rw [hF, LinearMap.det_comp]
+  rw [topologyTupleEdgeRawOrderFDerivAbsDet,
+    retainedPassiveFormalRawOrderJacobianAbsDetAt]
+  change |LinearMap.det D| = |LinearMap.det F|
+  rw [hdetF, abs_mul, hdetTE, one_mul]
+
+/-- Product-form version of the conditional retained-passive
+determinant/Jacobian bridge.
+
+The target-side determinant-one linear equivalence remains a hypothesis; the
+right-hand side is only the already-proved formal raw-order product
+determinant. -/
+theorem topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_of_target_linearEquiv
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (T :
+      RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ≃ₗ[ℝ]
+        RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (hT :
+      ∀ v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ,
+        T ((fderiv ℝ
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z) v) =
+          (retainedPassiveFormalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') z) v)
+    (hdetT :
+      |LinearMap.det
+        (T : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+          RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)| = 1) :
+    let data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' :=
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+        (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord :
+        ChartLocalSuffixState.RetainedPassiveCoordinateData
+          (K := ℝ) (ρ := ρ) κ' :=
+      data.toCoordinateData
+    topologyTupleEdgeRawOrderFDerivAbsDet
+        (ρ := ρ) (κ' := κ') z =
+      |((ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+          (K := ℝ) (ρ := ρ) data.A1seed)⁻¹).det| ^ Fintype.card ρ *
+        (∏ p : Fin (M + 1),
+          |(coord.solvedA1 p).det| ^ Fintype.card (κ' p.castSucc)) *
+          |(coord.solvedA1 (Fin.last M)).det| ^
+            Fintype.card (κ' (Fin.last (M + 1))) := by
+  calc
+    topologyTupleEdgeRawOrderFDerivAbsDet
+        (ρ := ρ) (κ' := κ') z =
+      retainedPassiveFormalRawOrderJacobianAbsDetAt
+        (ρ := ρ) (κ' := κ') z := by
+        exact
+          topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_of_target_linearEquiv
+            (ρ := ρ) (κ' := κ') z T hT hdetT
+    _ =
+      (let data :
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' :=
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+          (K := ℝ) (ρ := ρ) (κ' := κ') z
+      let coord :
+          ChartLocalSuffixState.RetainedPassiveCoordinateData
+            (K := ℝ) (ρ := ρ) κ' :=
+        data.toCoordinateData
+      |((ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+          (K := ℝ) (ρ := ρ) data.A1seed)⁻¹).det| ^ Fintype.card ρ *
+        (∏ p : Fin (M + 1),
+          |(coord.solvedA1 p).det| ^ Fintype.card (κ' p.castSucc)) *
+          |(coord.solvedA1 (Fin.last M)).det| ^
+            Fintype.card (κ' (Fin.last (M + 1)))) := by
+        simpa using
+          retainedPassiveFormalRawOrderJacobianAbsDetAt_eq
+            (ρ := ρ) (κ' := κ') z
+
 /-- On the retained-passive determinant chart, both the analytic raw-order
 Frechet derivative determinant and the point-specialized formal raw-order
 determinant are units.

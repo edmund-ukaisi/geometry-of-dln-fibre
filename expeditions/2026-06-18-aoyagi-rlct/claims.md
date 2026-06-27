@@ -278,7 +278,14 @@ No such claim is formalisation-ready until both fields are filled.
   `Tail⁻¹ * (((...) * data.A1seed p0) + ...) * Tail⁻¹ * coord.Ctop` and
   leaving `(fderiv Psucc1 z) v` explicit.  The previous first-passive `Ctop`
   target-staging slice remains the one-positive-tail boundary for this
-  recursive step.
+  recursive step.  Latest determinant/Jacobian assembly slice: Lean now proves
+  a conditional bridge from a supplied determinant-one target-side
+  `LinearEquiv` identifying the actual raw-order Frechet derivative with the
+  point-specialized formal raw-order Jacobian to equality of the actual
+  forward absolute Jacobian determinant and the formal product determinant.
+  This packages the determinant consequence of such a target normalizer; it
+  does not construct the normalizer, prove source-prior transport, or prove
+  normal crossings, pole order, or RLCT.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -352,7 +359,9 @@ No such claim is formalisation-ready until both fields are filled.
   retained-passive first passive `A1` target staging at
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`;
   retained-passive two-positive-tail second passive `A1` target staging at
-  `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`;
+  retained-passive conditional determinant/Jacobian bridge at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-conditional-determinant-jacobian-bridge.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -363,6 +372,9 @@ No such claim is formalisation-ready until both fields are filled.
   endpoint wrapper checked by xhigh reviewer `Kepler`; source-rank-stratum
   endpoint wrapper checked by xhigh reviewer `Carson` in
   `threads/03-block-product-reduction/review-a2-source-rank-stratum-theorem3-boundary.md`;
+  conditional determinant/Jacobian bridge reviewed by xhigh `Noether the 2nd`
+  in
+  `threads/03-block-product-reduction/review-a2-retained-passive-conditional-determinant-jacobian-bridge.md`;
   local source-rank endpoint package reviewed in
   `threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`;
   block product-difference algebra independently checked by xhigh
