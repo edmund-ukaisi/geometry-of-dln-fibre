@@ -9835,6 +9835,53 @@ Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
 full positive-tail `F3` target staging, no determinant theorem, no measure
 theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly terminal dCprod boundary
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; full verification passed:
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audit passed.
+
+Claim: at the terminal boundary of the retained-passive `dEarly` recurrence,
+after the `dCprod` and `dG` factors have been source-staged, the empty
+successor stored-`C` suffix derivative and the successor zeroed-final tail
+derivative vanish.  For `q = Fin.last M : Fin (M+1)`, set
+`p = q.castSucc` and `r = q.succ`.  The current Lean theorem gives the terminal
+recurrence in the explicit form
+
+```text
+dEarly_terminal,z(v)
+  = -((0 * C_z r + Cnext(z) * v.2.2.2.1 r)
+        * A3p(z) * Pcast(z)^-1)
+    - Cprod(z) * dG * Pcast(z)^-1
+    + Cprod(z) * A3p(z) * Pcast(z)^-1
+        * dPcast_z(v) * Pcast(z)^-1.
+```
+
+Lean proves this through
+`fderiv_retainedPassive_C_residualFactorProduct_self_apply` and
+`fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_apply`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dcprod-boundary.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+
+Kill condition: if the source tangent is taken at `q.castSucc` rather than
+`r = q.succ`, if `Cnext(z)` is simplified in the theorem without a separate
+value-cleanup proof, if the noncommutative order is changed, or if this is
+advertised as `dPcast` staging, target staging, determinant equality, measure
+transport, normal crossings, pole order, or RLCT, it is not the intended slice.
+
+Nonclaims: no empty-product value simplification of `Cnext(z)`, no one-edge
+terminal `Cprod(z)` cleanup, no `dPcast` staging, no closed finite-sum formula
+for `dCprod`, no target staging, no full positive-tail `F3` target staging, no
+determinant theorem, no measure theorem, no normal crossings, pole order, or
+RLCT.
+
 ## A2 retained-passive dEarly dCprod source staging
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;

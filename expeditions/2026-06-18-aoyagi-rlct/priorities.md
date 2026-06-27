@@ -21,6 +21,48 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The current retained-passive `dEarly` terminal-boundary slice is implemented
+locally after source-staging the `dCprod` factor.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+
+Lean now proves the empty stored-`C` suffix derivative helper
+`fderiv_retainedPassive_C_residualFactorProduct_self_apply` and the terminal
+wrapper
+`fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_apply`
+in `RetainedPassiveCoordinatesDerivative.lean`.  At
+`q = Fin.last M : Fin (M+1)`, with `p = q.castSucc` and `r = q.succ`, it
+collapses `(fderiv Cnext z) v` to zero and kills the successor-tail
+derivative, leaving the theorem in the explicit form
+
+```text
+-((0 * C_z r + Cnext(z) * v.2.2.2.1 r) * A3p(z) * Pcast(z)^-1)
+  - Cprod(z) * dG * Pcast(z)^-1
+  + Cprod(z) * A3p(z) * Pcast(z)^-1 * dPcast_z(v) * Pcast(z)^-1.
+```
+
+The source tangent is at `r = q.succ`; the factor order is unchanged.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed after the
+post-interruption reorientation.  Xhigh reviewer `Copernicus` passed the
+empty-suffix helper, terminal specialization, `r = q.succ` source tangent,
+factor order, and nonclaims.  `scripts/sorries`, `git diff --check`, the full
+`DLNFibre` build, and theorem axiom audit passed; both new theorem names have
+only the standard `[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no empty-product value simplification of `Cnext(z)`, no one-edge
+terminal `Cprod(z)` cleanup, no `dPcast` staging, no closed finite-sum formula
+for `dCprod`, no target staging, no full positive-tail `F3` target staging,
+no determinant theorem, no measure theorem, no normal crossings, no pole
+order, and no RLCT.
+
+Next frontier after banking: either prove the terminal value cleanup if it is
+needed downstream, iterate the remaining nonterminal `dCnext` recurrence, or
+start the riskier `dPcast` source-staging probe over solved `A1`.
+
+Immediate predecessor: `dCprod` source staging.
+
 The next retained-passive `dEarly` recurrence slice has landed locally:
 source-staging the `dCprod` factor after the `dG` substitution.
 Reproduction:

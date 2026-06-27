@@ -18,6 +18,54 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly terminal dCprod boundary
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Review:
+`review-a2-retained-passive-dearly-terminal-dcprod-boundary.md`, PASS by
+xhigh `Copernicus`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassive_C_residualFactorProduct_self_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_apply
+```
+
+This is the terminal boundary companion to the source-staged `dCprod`
+recurrence.  For `q = Fin.last M : Fin (M+1)`, with `p = q.castSucc` and
+`r = q.succ`, the theorem collapses the empty successor stored-`C` derivative
+and the successor zeroed-final tail derivative:
+
+```text
+dCnext_z(v) = 0,
+dNextTail_z(v) = 0.
+```
+
+The Lean statement deliberately leaves the empty-product value `Cnext(z)`, the
+one-edge boundary value `Cprod(z)`, and `dPcast_z(v)` explicit.  The first
+current-summand term is therefore recorded as
+
+```text
+-((0 * C_z r + Cnext(z) * v.2.2.2.1 r) * A3p(z) * Pcast(z)^-1).
+```
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed after the
+post-interruption reorientation.  The `scripts/sorries` audit,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit also
+passed; both new theorem names have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no empty-product value cleanup, no one-edge `Cprod` cleanup, no
+`dPcast` staging, no closed finite-sum formula for `dCprod`, no target
+staging, no full positive-tail `F3` target staging, no determinant-one
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly dCprod source staging
 
 Reproduction:

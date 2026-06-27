@@ -48,6 +48,47 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive dEarly Terminal dCprod Boundary
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves locally:
+
+```text
+fderiv_retainedPassive_C_residualFactorProduct_self_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_last_product_dCprod_dG_apply
+```
+
+This is the terminal boundary for the already source-staged `dCprod`
+recurrence.  At `q = Fin.last M : Fin (M+1)`, with `p = q.castSucc` and
+`r = q.succ`, the theorem kills `(fderiv Cnext z) v` and the successor-tail
+derivative.  The stored-`C` source tangent is `v.2.2.2.1 r`, not
+`v.2.2.2.1 q.castSucc`.  The first current-summand term remains
+
+```text
+-((0 * C_z r + Cnext(z) * v.2.2.2.1 r) * A3p(z) * Pcast(z)^-1).
+```
+
+The theorem intentionally leaves `Cnext(z)` as an explicit empty-product value,
+leaves the terminal one-edge `Cprod(z)` cleanup open, and leaves `dPcast_z(v)`
+explicit.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed after the
+post-interruption reorientation.  Xhigh reviewer `Copernicus` passed the
+empty-suffix helper, terminal specialization, `r = q.succ` source tangent,
+factor order, and nonclaims.  `scripts/sorries`, `git diff --check`, the full
+`DLNFibre` build, and theorem axiom audit passed; both new theorem names have
+only the standard `[propext, Classical.choice, Quot.sound]` footprint.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.
+
+Nonclaims: no empty-product value cleanup, no one-edge `Cprod` cleanup, no
+`dPcast` staging, no closed finite-sum formula for `dCprod`, no target
+staging, no full positive-tail `F3` target staging, no determinant theorem, no
+measure theorem, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Ctop/F3 Recovery Consumers
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:
