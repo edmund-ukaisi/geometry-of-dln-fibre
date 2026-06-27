@@ -110,6 +110,37 @@ def retainedPassiveFormalRawOrderJacobianAbsDetAt
     (retainedPassiveFormalRawOrderJacobianAt
       (ρ := ρ) (κ' := κ') z)|
 
+/-- Absolute-value product formula for the point-specialized formal raw-order
+Jacobian.
+
+This is a formal determinant formula only.  It does not identify this formal
+absolute determinant with `topologyTupleEdgeRawOrderFDerivAbsDet`. -/
+theorem retainedPassiveFormalRawOrderJacobianAbsDetAt_eq
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' :=
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+        (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord :
+        ChartLocalSuffixState.RetainedPassiveCoordinateData
+          (K := ℝ) (ρ := ρ) κ' :=
+      data.toCoordinateData
+    retainedPassiveFormalRawOrderJacobianAbsDetAt
+        (ρ := ρ) (κ' := κ') z =
+      |((ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+          (K := ℝ) (ρ := ρ) data.A1seed)⁻¹).det| ^ Fintype.card ρ *
+        (∏ p : Fin (M + 1),
+          |(coord.solvedA1 p).det| ^ Fintype.card (κ' p.castSucc)) *
+          |(coord.solvedA1 (Fin.last M)).det| ^
+            Fintype.card (κ' (Fin.last (M + 1))) := by
+  dsimp [retainedPassiveFormalRawOrderJacobianAbsDetAt,
+    retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_abs_det_eq]
+
 /-- The point-specialized formal raw-order absolute determinant is positive on
 the retained-passive determinant chart. -/
 theorem retainedPassiveFormalRawOrderJacobianAbsDetAt_pos_of_mem_topologyTupleDetChartSet

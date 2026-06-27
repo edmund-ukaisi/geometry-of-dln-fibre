@@ -234,6 +234,43 @@ theorem retainedPassiveFormalRawOrderJacobian_det_eq
           (-LastTop).det ^ Fintype.card (κ' (Fin.last (M + 1))) := by
         rw [retainedPassiveTotalFormalBlockJacobian_det_eq]
 
+section RealAbsDet
+
+variable {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+variable [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+
+/-- Absolute determinant of the formal retained-passive raw-order Jacobian.
+
+This is the sign-free version of `retainedPassiveFormalRawOrderJacobian_det_eq`.
+It remains a formal determinant calculation and does not identify the formal
+map with the analytic Frechet derivative of `topologyTupleEdgeRawOrder`. -/
+theorem retainedPassiveFormalRawOrderJacobian_abs_det_eq
+    (Tail : Matrix ρ ρ ℝ)
+    (A : Fin (M + 1) → Matrix ρ ρ ℝ)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) ℝ)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ ℝ)
+    (LastTop : Matrix ρ ρ ℝ) :
+    |LinearMap.det
+      (retainedPassiveFormalRawOrderJacobian
+        (ρ := ρ) (κ' := κ') (K := ℝ) Tail A H G LastTop)| =
+      |(Tail⁻¹).det| ^ Fintype.card ρ *
+        (∏ p : Fin (M + 1), |(A p).det| ^ Fintype.card (κ' p.castSucc)) *
+          |LastTop.det| ^ Fintype.card (κ' (Fin.last (M + 1))) := by
+  rw [retainedPassiveFormalRawOrderJacobian_det_eq]
+  rw [abs_mul, abs_mul, Finset.abs_prod]
+  simp_rw [abs_pow]
+  congr 2
+  · refine Finset.prod_congr rfl ?_
+    intro p _hp
+    have hdet_abs : |(-A p).det| = |(A p).det| := by
+      simp [Matrix.det_neg, abs_mul]
+    rw [hdet_abs]
+  · have hdet_abs : |(-LastTop).det| = |LastTop.det| := by
+      simp [Matrix.det_neg, abs_mul]
+    rw [hdet_abs]
+
+end RealAbsDet
+
 /-- The chart-specialized formal raw-order determinant is a unit.
 
 This uses only the formal determinant formula and the retained-passive
