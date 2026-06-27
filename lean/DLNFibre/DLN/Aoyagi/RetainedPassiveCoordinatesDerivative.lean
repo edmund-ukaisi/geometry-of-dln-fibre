@@ -2191,6 +2191,224 @@ theorem fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply
   rw [fderiv_fun_add hSummand hNext]
   rfl
 
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- The recursive derivative unfold with the current retained-passive summand
+expanded by the noncommutative product rule and the matrix-inverse derivative.
+
+This still leaves the derivatives of `Cprod`, `A3p`, and `Pcast` explicit; it
+does not source-stage or target-stage those derivative pieces. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y r ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 r
+    let A3fun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ r : Fin (M + 1), Matrix (κ' r.succ) ρ ℝ :=
+      fun y ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ r : Fin (M + 1), Matrix (κ' r.succ) (κ' r.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+    let Cprod : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    let A3p : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) ρ ℝ :=
+      fun y ↦ A3fun y p
+    let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+    (fderiv ℝ Tailfun z) v =
+      -((fderiv ℝ Cprod z) v * A3p z * (Pcast z)⁻¹)
+        - (Cprod z * (fderiv ℝ A3p z) v * (Pcast z)⁻¹)
+        + Cprod z * A3p z * (Pcast z)⁻¹ * (fderiv ℝ Pcast z) v * (Pcast z)⁻¹
+        + (fderiv ℝ Nextfun z) v := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := hz
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y r ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 r
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ r : Fin (M + 1), Matrix (κ' r.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ r : Fin (M + 1), Matrix (κ' r.succ) (κ' r.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+  let Cprod : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let A3p : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦ A3fun y p
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Pinv : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (Pcast y)⁻¹
+  let Product : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦ Cprod y * A3p y * Pinv y
+  let Summand : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦ -(Product y)
+  let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+  let BCA : Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ →L[ℝ]
+      Matrix (κ' p.succ) ρ ℝ →L[ℝ]
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    matrixMulContinuousLinearMap
+      (l := κ' (Fin.last (M + 1))) (m := κ' p.succ) (n := ρ)
+  let BHP : Matrix (κ' (Fin.last (M + 1))) ρ ℝ →L[ℝ]
+      Matrix ρ ρ ℝ →L[ℝ]
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    matrixMulContinuousLinearMap (l := κ' (Fin.last (M + 1))) (m := ρ) (n := ρ)
+  have hCprod :
+      DifferentiableAt ℝ Cprod z := by
+    simpa [Cprod, Cfun] using
+      differentiableAt_residualFactorProduct_C
+        (ρ := ρ) (κ' := κ') p.succ p.succ.le_last z
+  have hA3p :
+      DifferentiableAt ℝ A3p z := by
+    simpa [A3p, A3fun] using
+      differentiableAt_retainedPassiveA3WithoutLast
+        (ρ := ρ) (κ' := κ') p z
+  have hPcast :
+      DifferentiableAt ℝ Pcast z := by
+    simpa [Pcast, A1fun] using
+      differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.castSucc p.castSucc.le_last z hz
+  have hPunit : IsUnit (Pcast z).det := by
+    simpa [Pcast, A1fun, data] using
+      residualFactorProduct_solvedA1_det_isUnit_of_detChart
+        (K := ℝ) (ρ := ρ) data hdet p.castSucc p.castSucc.le_last
+  have hPinv :
+      DifferentiableAt ℝ Pinv z := by
+    exact (differentiableAt_matrix_inv_of_isUnit_det (Pcast z) hPunit).comp z hPcast
+  have hCA :
+      DifferentiableAt ℝ (fun y ↦ Cprod y * A3p y) z :=
+    differentiableAt_matrix_mul hCprod hA3p
+  have hProduct : DifferentiableAt ℝ Product z := by
+    simpa [Product, Pinv] using differentiableAt_matrix_mul hCA hPinv
+  have hSummand : DifferentiableAt ℝ Summand z := by
+    simpa [Summand] using hProduct.neg
+  have hNext : DifferentiableAt ℝ Nextfun z := by
+    simpa [Nextfun, A1fun, A3fun, Cfun] using
+      differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (p.val + 1) (Nat.succ_le_of_lt p.isLt) z hz
+  have hTail :
+      (fderiv ℝ Tailfun z) v =
+        (fderiv ℝ Summand z) v + (fderiv ℝ Nextfun z) v := by
+    simpa [Tailfun, Summand, Product, Pinv, Cprod, A3p, Pcast, Nextfun,
+      A1fun, A3fun, Cfun] using
+      fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply
+        (ρ := ρ) (κ' := κ') hz v p
+  have hInvHas : HasFDerivAt Pinv
+      ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Pcast z)⁻¹ (Pcast z)⁻¹)).comp
+        (fderiv ℝ Pcast z)) z := by
+    simpa [Pinv, Function.comp_def] using
+      ((hasFDerivAt_matrix_inv_of_isUnit_det (Pcast z) hPunit).comp
+        (x := z) hPcast.hasFDerivAt)
+  have hPinv_fderiv :
+      fderiv ℝ Pinv z =
+        ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Pcast z)⁻¹ (Pcast z)⁻¹)).comp
+        (fderiv ℝ Pcast z)) :=
+    hInvHas.fderiv
+  have hPinv_apply :
+      (fderiv ℝ Pinv z) v =
+        -((Pcast z)⁻¹ * (fderiv ℝ Pcast z) v * (Pcast z)⁻¹) := by
+    rw [hPinv_fderiv]
+    simp [ContinuousLinearMap.mulLeftRight_apply]
+  have hCA_fderiv :
+      fderiv ℝ (fun y ↦ Cprod y * A3p y) z =
+        BCA.precompR _ (Cprod z) (fderiv ℝ A3p z) +
+          BCA.precompL _ (fderiv ℝ Cprod z) (A3p z) := by
+    simpa [BCA] using
+      (BCA.hasFDerivAt_of_bilinear hCprod.hasFDerivAt hA3p.hasFDerivAt).fderiv
+  have hCA_apply :
+      (fderiv ℝ (fun y ↦ Cprod y * A3p y) z) v =
+        Cprod z * (fderiv ℝ A3p z) v + (fderiv ℝ Cprod z) v * A3p z := by
+    simpa [BCA, matrixMulContinuousLinearMap_apply] using
+      congrArg
+        (fun L : TopologyTuple ρ κ' ℝ →L[ℝ]
+          Matrix (κ' (Fin.last (M + 1))) ρ ℝ ↦ L v)
+        hCA_fderiv
+  have hProduct_fderiv :
+      fderiv ℝ Product z =
+        BHP.precompR _ ((fun y ↦ Cprod y * A3p y) z) (fderiv ℝ Pinv z) +
+          BHP.precompL _ (fderiv ℝ (fun y ↦ Cprod y * A3p y) z) (Pinv z) := by
+    simpa [Product, BHP] using
+      (BHP.hasFDerivAt_of_bilinear hCA.hasFDerivAt hPinv.hasFDerivAt).fderiv
+  have hProduct_apply :
+      (fderiv ℝ Product z) v =
+        (Cprod z * A3p z) * (fderiv ℝ Pinv z) v +
+          (fderiv ℝ (fun y ↦ Cprod y * A3p y) z) v * Pinv z := by
+    simpa [Product, BHP, matrixMulContinuousLinearMap_apply] using
+      congrArg
+        (fun L : TopologyTuple ρ κ' ℝ →L[ℝ]
+          Matrix (κ' (Fin.last (M + 1))) ρ ℝ ↦ L v)
+        hProduct_fderiv
+  have hSummand_apply :
+      (fderiv ℝ Summand z) v =
+        -((fderiv ℝ Cprod z) v * A3p z * (Pcast z)⁻¹)
+          - (Cprod z * (fderiv ℝ A3p z) v * (Pcast z)⁻¹)
+          + Cprod z * A3p z * (Pcast z)⁻¹ * (fderiv ℝ Pcast z) v *
+              (Pcast z)⁻¹ := by
+    calc
+      (fderiv ℝ Summand z) v
+          = -((fderiv ℝ Product z) v) := by
+              simp [Summand]
+      _ =
+          -((Cprod z * A3p z) * (fderiv ℝ Pinv z) v +
+              (fderiv ℝ (fun y ↦ Cprod y * A3p y) z) v * Pinv z) := by
+            rw [hProduct_apply]
+      _ =
+          -((fderiv ℝ Cprod z) v * A3p z * (Pcast z)⁻¹)
+            - (Cprod z * (fderiv ℝ A3p z) v * (Pcast z)⁻¹)
+            + Cprod z * A3p z * (Pcast z)⁻¹ * (fderiv ℝ Pcast z) v *
+                (Pcast z)⁻¹ := by
+            rw [hPinv_apply, hCA_apply]
+            simp only [Pinv, Matrix.mul_assoc, Matrix.add_mul, Matrix.mul_neg]
+            abel_nf
+  calc
+    (fderiv ℝ Tailfun z) v
+        = (fderiv ℝ Summand z) v + (fderiv ℝ Nextfun z) v := hTail
+    _ =
+        -((fderiv ℝ Cprod z) v * A3p z * (Pcast z)⁻¹)
+          - (Cprod z * (fderiv ℝ A3p z) v * (Pcast z)⁻¹)
+          + Cprod z * A3p z * (Pcast z)⁻¹ * (fderiv ℝ Pcast z) v *
+              (Pcast z)⁻¹
+          + (fderiv ℝ Nextfun z) v := by
+        rw [hSummand_apply]
+
 /-- The explicit lower-left product-tail sum built from solved `A1`, zeroed
 early `A3`, and stored `C` blocks is `C^1` at tuple determinant-chart
 points. -/

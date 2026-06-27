@@ -11495,3 +11495,26 @@ Focused module build and full `DLNFibre` build passed; `scripts/sorries`,
 target staging for the summand derivative pieces, no full positive-tail `F3`
 target staging, no determinant theorem, no measure theorem, no normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive dEarly product-rule derivative unfold:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-unfold.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-product-rule-unfold.md`
+passed by xhigh `Wegener`.
+
+The theorem expands the current summand derivative in the recursive lower-left
+tail formula:
+`-dD * G * P^-1 - D * dG * P^-1 + D * G * P^-1 * dP * P^-1`,
+then adds the successor-tail derivative.  The inverse derivative uses
+`d(P^-1) = -P^-1 * dP * P^-1`, and all matrix factors remain in order.
+`G` is `retainedPassiveA3WithoutLast`, not solved terminal `A3`.  Focused
+module build and full `DLNFibre` build passed; `scripts/sorries`,
+`git diff --check`, and axiom audit passed.
+Nonclaims: no source or target staging for `dD`, `dG`, or `dP`, no full
+positive-tail `F3` target staging, no determinant theorem, no measure theorem,
+no normal crossings, pole order, or RLCT.

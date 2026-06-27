@@ -21,6 +21,49 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next retained-passive `dEarly` rung has landed locally and is awaiting
+implementation review/full verification: the product-rule expansion of the
+current summand in the recursive derivative unfold.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-unfold.md`.
+
+Lean proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply` in
+`RetainedPassiveCoordinatesDerivative.lean`.  For arbitrary
+`p : Fin (M + 1)`, it refines the previous recursive derivative theorem by
+expanding the current summand derivative:
+
+```text
+dE_p =
+  -dD_p * G_p * P_p^-1
+  -D_p * dG_p * P_p^-1
+  +D_p * G_p * P_p^-1 * dP_p * P_p^-1
+  +dE_next.
+```
+
+The theorem leaves `(fderiv Cprod)`, `(fderiv A3p)`, `(fderiv Pcast)`, and
+the successor-tail derivative explicit.  It uses `retainedPassiveA3WithoutLast`
+for `G_p`, not the solved terminal lower-left block.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed, the full `DLNFibre` build passed, `scripts/sorries` and
+`git diff --check` passed, and the theorem axiom audit reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scouts `Cicero` and `Euler`
+passed the math and Lean-terrain checks.  Xhigh reviewer `Wegener` passed the
+implementation review.
+
+Nonclaims: no source or target staging for `dD`, `dG`, or `dP`; no full
+positive-tail `F3` target staging; no determinant-one target-side
+`LinearEquiv`; no actual derivative determinant equality; no measure
+transport; no normal crossings; no pole order; and no RLCT.
+
+Next frontier on this local ladder: source- or target-stage `dG` for
+nonterminal passive lower-left coordinates and isolate the terminal-zero
+branch, then stage `dD` and `dP` or iterate the recurrence.
+
+Immediate predecessor: recursive derivative unfold for `dEarly`.
+
 The next local retained-passive derivative rung after terminal `dLast` has
 landed locally: the recursive derivative unfold for `dEarly`.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-recursive-unfold.md`.

@@ -9740,6 +9740,54 @@ staging for `dD`, `dG`, or `dP`, no whole-tuple target-side normalization, no
 target-side determinant-one `LinearEquiv`, no determinant equality, no
 measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly product-rule derivative unfold
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build and full `DLNFibre` build passed; `scripts/sorries`,
+`git diff --check`, and axiom audit passed; xhigh math and Lean-terrain scout
+checks passed; implementation review passed.
+
+Claim: the derivative of the current summand in the retained-passive lower-left
+tail recurrence expands by the noncommutative product rule and the matrix
+inverse derivative.  For arbitrary `p : Fin (M + 1)`, if
+
+```text
+E_p = -(D_p * G_p * P_p^-1) + E_next,
+```
+
+then
+
+```text
+dE_p =
+  -dD_p * G_p * P_p^-1
+  -D_p * dG_p * P_p^-1
+  +D_p * G_p * P_p^-1 * dP_p * P_p^-1
+  +dE_next.
+```
+
+Lean proves this as
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-unfold.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-unfold.md`.
+
+Review:
+xhigh `Wegener` passed the implementation review, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-product-rule-unfold.md`.
+
+Kill condition: if the theorem commutes factors, uses solved terminal `A3`
+instead of `retainedPassiveA3WithoutLast`, or claims source staging, target
+staging, determinant equality, measure transport, normal crossings, pole
+order, or RLCT, it is not the intended slice.
+
+Nonclaims: no source or target staging for `dD`, `dG`, or `dP`, no full
+positive-tail `F3` target staging, no whole-tuple target-side normalization,
+no target-side determinant-one `LinearEquiv`, no determinant equality, no
+measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive target edge-pair recovery
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

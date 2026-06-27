@@ -18,6 +18,49 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly product-rule derivative unfold
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-product-rule-unfold.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-product-rule-unfold.md`.
+Review:
+`review-a2-retained-passive-dearly-product-rule-unfold.md`, PASS by xhigh
+`Wegener`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply
+```
+
+This refines the recursive `dEarly` derivative theorem by expanding the
+current summand derivative with the noncommutative product rule and matrix
+inverse derivative:
+
+```text
+dE_p =
+  -dD_p * G_p * P_p^-1
+  -D_p * dG_p * P_p^-1
+  +D_p * G_p * P_p^-1 * dP_p * P_p^-1
+  +dE_next.
+```
+
+The derivatives `dD_p`, `dG_p`, and `dP_p` remain explicit.  `G_p` is the
+zeroed retained-passive family `retainedPassiveA3WithoutLast`, not the solved
+terminal lower-left block.
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Full
+`DLNFibre` build passed; `scripts/sorries`, `git diff --check`, and axiom audit
+passed.  Xhigh math and Lean-terrain scouts passed.  Xhigh implementation
+review passed.
+
+Nonclaims: no source or target staging for `dD`, `dG`, or `dP`, no full
+positive-tail `F3` target staging, no determinant-one `LinearEquiv`, no actual
+derivative determinant equality, no measure transport, no normal crossings, no
+pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly recursive derivative unfold
 
 Reproduction:

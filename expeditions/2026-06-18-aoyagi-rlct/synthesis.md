@@ -14831,3 +14831,43 @@ reports only `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: no full positive-tail `F3` target staging, no determinant-one
 target-side `LinearEquiv`, no actual derivative determinant equality, no
 measure transport, no normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive dEarly Product-Rule Derivative Unfold
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_apply
+```
+
+This refines the previous recursive `dEarly` derivative theorem by expanding
+the current summand derivative.  For arbitrary `p : Fin (M + 1)`, the theorem
+proves
+
+```text
+dE_p =
+  -dD_p * G_p * P_p^-1
+  -D_p * dG_p * P_p^-1
+  +D_p * G_p * P_p^-1 * dP_p * P_p^-1
+  +dE_next.
+```
+
+The inverse-derivative term uses the order
+`P_p^-1 * dP_p * P_p^-1`; the outer negative turns it into the displayed
+positive contribution.  The current lower-left factor is
+`retainedPassiveA3WithoutLast`, not the solved terminal lower-left block.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-unfold.md`.
+Focused module build and full `DLNFibre` build passed; `scripts/sorries` and
+`git diff --check` passed; theorem axiom audit reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scouts `Cicero` and `Euler`
+passed the math and Lean-terrain checks.  Xhigh reviewer `Wegener` passed the
+implementation review.
+
+Nonclaims: no source or target staging for `dD`, `dG`, or `dP`; no full
+positive-tail `F3` target staging; no determinant-one target-side
+`LinearEquiv`; no actual derivative determinant equality; no measure
+transport; no normal crossings, pole order, or RLCT.
