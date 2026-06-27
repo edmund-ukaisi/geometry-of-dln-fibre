@@ -76,8 +76,13 @@ introduce them in Aoyagi's reduced-and-sorted form, since the rlcm is stated the
     one per layer (Aoyagi indexes the widths $H^{(s)}$ in the reverse order to Lehalleur–Rimányi's
     $d_i$; the shift by $r$ is Aoyagi's Definition 3). The **active set** $\mathcal{M}$ is a
     sub-multiset of the shifted widths, obtained by discarding the widths that are too large to bind
-    — formally, a width $M^{(s)}$ is dropped when it exceeds the sum of all the others, and otherwise
-    kept (Aoyagi's two summation inequalities). Set
+    — intuitively, a width $M^{(s)}$ is dropped when it exceeds the sum of the others, and otherwise
+    kept (Aoyagi's two summation inequalities). *This intuition is informal at the equality boundary*:
+    Aoyagi's Definition 3 uses a **strict** prefix/threshold cutoff, formalized as
+    `DLN.Aoyagi.ClosedForm.paperEll`/`paperResidueA`, which differs from the non-strict
+    Lehalleur–Rimányi/`qipM` surrogate `ell`/`residueA` exactly at equality (e.g. shifted widths
+    $(1,1,2)$). The reasoning below in Aoyagi's $(\ell, a)$ is at the paper-prefixed (Definition-3)
+    surface; on the worked witnesses the two surfaces agree. Set
 
     $$
     \ell = \operatorname{Card}(\mathcal{M}) - 1,
@@ -243,8 +248,12 @@ Aoyagi's order $a(\ell-a)+1$ is the genuine pole order. Three independent checks
 - **Internal consistency.** Aoyagi's general order definition (Theorem 1: a maximum cardinality of
   divisors achieving the minimal ratio), the closed form of Theorem 2, and the equal-width Example
   (which gives $\theta = a(L-a)+1$) all return the same integer.
-- **A positive integer at the balanced point.** When $\lvert\delta\rvert = 0$ the order is
-  $a(\ell-a)+1 \ge 1$, as a pole order must be. The five-layer balanced case gives $5$, never $0$.
+- **A positive integer at the balanced point.** When $\lvert\delta\rvert = 0$ we have $a = \ell$, so
+  the order is $a(\ell-a)+1 = 1$ — positive, as a pole order must be (whereas the LR *printed* rlcm
+  $a(\ell-a)$ would give $0$ here, impossible for a pole order; this is the off-by-one). The balanced
+  five-layer case (e.g. $m=4$, $\tilde S = 12$) gives order $1$, never $0$. The order $5$ belongs to the
+  *non-balanced* five-layer witness $(2,2,2,2,2)$, $r=0$ ($\lvert\delta\rvert = 2$, $a = 2$) — kept
+  separate.
 - **Cross-check against a peer-reviewed computation.** For three-layer networks the model is
   reduced-rank regression, whose multiplicity was computed independently by Aoyagi–Watanabe (2005).
   Aoyagi's $a(\ell-a)+1$ reproduces that classical parity-governed multiplicity exactly across all

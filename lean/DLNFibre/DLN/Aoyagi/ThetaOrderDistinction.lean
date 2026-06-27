@@ -32,9 +32,13 @@ false. It lands two capstones:
 component count. The component count is the harness's `cTheta`/`numTop`. Keeping the names apart is
 the point of the file.
 
-`aoyagiPoleOrder` is stated cleanly on `(ℓ, a) : ℕ`. The correspondence to the paper-side active
-data is `ℓ = DLN.Aoyagi.ClosedForm.ell d r` and `a = (DLN.Aoyagi.ClosedForm.residueA d r).natAbs`;
-for the `(2,2,2,2,2)`, `r = 0` witness these are `ℓ = 4`, `a = 2` (`docs/expositions/`).
+`aoyagiPoleOrder` is stated cleanly on `(ℓ, a) : ℕ`. **Caveat on the paper-side correspondence**: the
+genuine Aoyagi Definition-3 active data are `DLN.Aoyagi.ClosedForm.paperEll` / `paperResidueA` (the
+*strict* prefix cutoff). `ClosedForm.ell` / `residueA` are the non-strict Lehalleur–Rimányi / `qipM`
+**surrogate** coordinates (`ClosedForm` documents `ell = qipM`); they are NOT the source-shaped Aoyagi
+API. The two surfaces agree on the `(2,2,2,2,2)`, `r = 0` witness (`ℓ = 4`, `a = 2`) but can differ at
+the equality boundary in general (e.g. shifted widths `(1,1,2)`), so we use the surrogate value only for
+this concrete witness, not as the definition (`docs/expositions/`).
 -/
 
 namespace DLNFibre.DLN.Aoyagi

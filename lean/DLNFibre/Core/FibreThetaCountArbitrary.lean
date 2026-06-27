@@ -15,9 +15,12 @@ transports that count to an **arbitrary** rank-`r` target `B`: for `B.rank = r`,
 
 The transport is a **same-rank component-count invariance**: two matrices of the same rank are
 `GL × GL`-equivalent (`exists_baseChange_of_rank_eq`), and the base change `A ↦ P • A` is a *linear*
-automorphism of the representation space carrying `mult⁻¹ B` onto `mult⁻¹ E_r`
-(`reducedFibre_baseChangeHomogeneous`), so the two fibre coordinate rings are isomorphic varieties
-and carry the **same** top-dimensional minimal-prime count.
+automorphism of the representation space carrying `mult⁻¹ B` onto `mult⁻¹ E_r`, so the two fibre
+coordinate rings are isomorphic varieties and carry the **same** top-dimensional minimal-prime count.
+(The proof goes DIRECTLY through `exists_baseChange_of_rank_eq` + `image_smul_fibre` +
+`vanishingIdeal_image_smul` (comap along `baseChangeAlgEquiv`) + `Ideal.quotientEquiv` +
+radical-insensitive `topDimMinPrimes_ncard_eq_of_ringEquiv` — `reducedFibre_baseChangeHomogeneous` is
+morally the same homogeneity but is NOT the literal proof dependency.)
 
 ## The mechanism (all rungs LANDED, pure commutative-algebra glue)
 
@@ -57,7 +60,9 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-- **Same-rank component-count invariance (the C3 transport).** For two matrices `B, B'` of equal
 rank, the fibre coordinate rings carry the same top-dimensional minimal-prime count:
 `numTop(R ⧸ fibreGenIdeal d B) = numTop(R ⧸ fibreGenIdeal d B')`. The base change `A ↦ P • A`
-(`exists_baseChange_of_rank_eq`, `N ≥ 1`) is a linear automorphism of `RepCoord d` carrying one
+(`exists_baseChange_of_rank_eq`; the `hN` distinct-endpoints hypothesis `0 ≠ Fin.last`, automatically
+satisfiable for the `Fin (N+2)` indexing — ≥ 2 nodes always) is a linear automorphism of `RepCoord d`
+carrying one
 fibre onto the other; its coordinate-ring `RingEquiv` `baseChangeAlgEquiv P` identifies the two
 radical-quotient rings (`vanishingIdeal_image_smul` + `Ideal.quotientEquiv`), and the count is a
 ring-iso invariant (`topDimMinPrimes_ncard_eq_of_ringEquiv`) and radical-insensitive

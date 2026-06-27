@@ -229,10 +229,12 @@ end TensorAway
 /-! ## C3 — the source chart `Away chartDsig` is smooth on a basic open -/
 
 /-- **C3 — the reduced fibre's source pivot chart is smooth on a basic open.** GIVEN
-`IsSmoothAt k q` of `sweepFibreRing` at a top-component prime `q` (the open input, discharged
-unconditionally-modulo-C2(a) by `isSmoothAt_sweepFibre_of_component_orbitSmooth`), there is a chart
-element `h : Away (chartDsig …)` with `Algebra.Smooth k (Localization.Away h)` — the smooth basic
-open `{h ≠ 0}` of the source pivot chart. Chain:
+`IsSmoothAt k q` of `sweepFibreRing` at a top-component prime `q` (a pure hypothesis here; the genuine
+UNCONDITIONAL discharge is the direct fp-domain route
+`FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent` — NOT the deprecated orbit-iso
+`isSmoothAt_sweepFibre_of_component_orbitSmooth`), there is a chart element `h : Away (chartDsig …)`
+with `Algebra.Smooth k (Localization.Away h)` — the smooth basic open `{h ≠ 0}` of the source pivot
+chart. Chain:
 
 * thread-16 `smooth_schurLoc_tensor_away_of_isSmoothAt_sweepFibre` gives `g ∉ q` with
   `Smooth k (SchurLoc ⊗_k Away g)`;
@@ -323,9 +325,9 @@ source pivot chart at **every** chart prime `p` with `h ∉ p`: the existence
 (`exists_smooth_localizationAway_chartDsig_of_isSmoothAt_sweepFibre`) plus the basic-open bridge
 `isSmoothAt_of_smooth_localizationAway`.
 
-So once C2(a) discharges the input `IsSmoothAt k q`
-(`isSmoothAt_sweepFibre_of_component_orbitSmooth`), the source chart is smooth on the basic open
-of `h`. -/
+So once the input `IsSmoothAt k q` is discharged — UNCONDITIONALLY by the direct fp-domain route
+`FibreComponentOrbitTransport.isSmoothAt_sweepFibre_topComponent` (NOT the deprecated orbit-iso
+consumer) — the source chart is smooth on the basic open of `h`. -/
 theorem isSmoothAt_chartDsig_of_isSmoothAt_sweepFibre
     [IsAlgClosed k] [Infinite k] (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)

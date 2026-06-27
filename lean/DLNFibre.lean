@@ -364,9 +364,10 @@ import DLNFibre.Core.FibreBundleLocallyTrivialFull
 -- descent (rung 2) is a precisely-costed residual, NOT built. Off-critical-path geometric enrichment.
 import DLNFibre.Core.FibreComponentOrbitIso
 -- Review round 1 fix (owner PR #11, C3): the same-rank component-count transport — for ANY `B` with
--- `B.rank = r`, `numTop(mult⁻¹ B) = cTheta(d−r)` (arbitrary `B`, not just the normal form `E_r`), via
--- `reducedFibre_baseChangeHomogeneous` (`mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal
--- TopDimMinPrimes count). Closes the prose overclaim flagged in review (was stated arbitrary, proved E_r).
+-- `B.rank = r`, `numTop(mult⁻¹ B) = cTheta(d−r)` (arbitrary `B`, not just the normal form `E_r`):
+-- `mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal TopDimMinPrimes count, proved directly
+-- via `exists_baseChange_of_rank_eq` + `image_smul_fibre` + `vanishingIdeal_image_smul` + quotient-equiv
+-- + radical-insensitivity (NOT literally `reducedFibre_baseChangeHomogeneous`). Closes the C3 overclaim.
 import DLNFibre.Core.FibreThetaCountArbitrary
 -- θ-invariants DISTINCTION capstone (PR #11 follow-up): the order-side companion to the codim/Aoyagi
 -- capstone. `aoyagiPoleOrder ell a := a*(ell−a)+1` (an ANALYTIC pole order, NOT a component count) —

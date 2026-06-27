@@ -78,7 +78,9 @@ open-cover BY the charts, but it carries little geometric content beyond the tri
 equality. A *bare* `locallyTrivial` over `Spec (sweepSigmaRing) = Σ̄^r` (the closure) is genuinely
 **false** — the rank-`< r` boundary lies in `V({chartDsigAt})`, in no chart. So the honest name is
 "per-pivot local-product atlas over the rank-`r` open", and the residual to a bare scheme-theoretic
-`locallyTrivial` is the Lean-formalized rank-tie `rankROpen = {rank = r}`.
+`locallyTrivial` is the **to-be-formalized** prime/scheme-level rank-tie `rankROpen = {rank = r}` (the
+residue-field-rank bridge) — NOT yet a Lean theorem (only the point-set forward inclusion
+`sweepSigma_subset_chartOpen` is banked).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -565,8 +567,10 @@ swapped overlap (the genuine overlap-local cocycle content); and the **common-ta
 `transitionFactors` (the fixed-target trivializations' transition is the base-algebraic
 `chartLocalizedAlgEquivAt`-transition — a single-chart `k`-algebra fact, distinct from the
 overlap-local `overlapRestrict` and not capturing the overlap coherence; see its docstring). With
-the scheme-level cover this is the genuine local-triviality data over the rank-`= r` open
-subscheme. -/
+the scheme-level cover this is a **local-product atlas with base-side overlap data** over the rank-`= r`
+open subscheme — NOT (yet) full local triviality: the target-side overlap-restricted *trivialization*
+cocycle (`targetOverlapTransition`) is still a roadmapped residual, so the overlap coherence here is
+base-side only. -/
 structure PivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) where
   /-- The scheme-level open-cover: the per-pivot charts `basicOpen (chartDsigAt s t)` cover the
