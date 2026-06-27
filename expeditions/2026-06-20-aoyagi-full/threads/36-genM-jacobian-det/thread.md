@@ -677,3 +677,60 @@ INFRA (controller-actioned): genm-lift's worktree was mis-based at `413566b3` (o
 lacked the aoyagi work, so it read/built against the SHARED checkout. Future BUILD tides on a worktree must
 first `git merge origin/expedition/aoyagi-full` (the pattern option-c-chart/nodechart222-finish used). The
 DESIGN gate (decoder-fix, no Lean) needs no worktree.
+
+---
+
+## BUILD-TIDE ADDENDUM (2026-06-27, rate-side phases 1–3, formaliser)
+
+**Branch:** worktree off `expedition/aoyagi-full` (merged in via the Item-36 fix). **Landed + banked**
+(commit `tach M + StructAdm M (tach M)`): phase-0 of the rate-side ∀M lift, full `lake build DLNFibre` green,
+axiom-clean `[propext, Classical.choice, Quot.sound]`.
+
+### Landed (`RouteMAchieverStructAdm.lean`, ~135 LoC)
+- **`tach M := Fin.cons (M 0) (tStar M)`** — the shifted achiever path (`tach 0 = M 0` identity boundary,
+  `tach (k+1) = tStar M k` descent ranks). `tach_zero`/`tach_succ`/`tach_mk_zero`/`tach_mk_succ` readers.
+- **`structAdm_tach : StructAdm M (tach M)`** (for `0 < L`) — the structured-decoder admissibility for the
+  achiever minimiser, from `tStar ∈ Adm M` (`tStar_le_tPrev`/`tStar_le_Msucc`, banked `RouteMAchieverPath`).
+- **`StructAdm.hdesc` WEAKENED** `∀ k → ∀ k, k < L →` (shared `RouteMGenFlatStruct.lean`, 6 consumer sites
+  patched + `structAdm222` eased). REASON: the achiever path's last rank `tStar (last) = 0` makes the
+  would-be `hdesc L : Text(L+2)=1 ≤ Text(L+1)=0` FALSE; every consumer reads `hdesc` only at `k < L`. `hc`/`hub`
+  stay unconditional (hold for `tach` via the `Wext`/`Text` saturation `1 ≤ 1`). Codex-confirmed
+  (`codex/structadm-achiever-gap-{prompt,answer}`): only `hdesc L` fails; option A (weaken) is lowest-cost +
+  best-bedrock; no `chartIdxEquiv` touch needed.
+
+### The PRECISE WALL — rate-side a.e.-positivity `VvalGen ≢ 0` ∀M (the certificate's §5 residual, sharpened)
+The rate is decoder-agnostic (`routeMCore (phiGen … B …) = (x p)²·VvalGen` for any `B` with `C 0 = 1`), so
+`leaf_integrand` (via banked `leaf_integrand_of_rate`) + `VvalGen_nonneg` are free. The bundle's `Ubound`
+needs **`∀ᵐ x, 0 < VvalGen (x p) M (tach M) (decoder x) hle`** — the genuine remaining work. Two findings
+reshape the certificate's live-leaf framing:
+
+1. **The DEAD leaf already gives `VvalGen ≢ 0` for `L ≥ 2`** (sympy `codex/.../vval_deadleaf_222.py`): even
+   with `genBlkFlatStruct`'s `Rfin = 0` (`C_L = 0`), the telescope `Hmat_s = B_s·Hmat_{s+1} + E_s·suffix(s+1)`
+   has nonzero INTERIOR `E_k = Rmat_k·A_k` terms. On (2,2,2): `Hmat_0 = [[0,0],[E·w0, E·w1]]`,
+   `VvalGen = E²(w0²+w1²)` — a nonzero polynomial, `= 1` at the witness `(E=1, w0=1, rest 0)`. So the EXISTING
+   banked `phiFlatStructV` (dead leaf) suffices for the rate side at `L ≥ 2` — **the certificate's "must use
+   live leaf" is NOT needed for the rate/witness, only for the DET-side full-rank `cov` (next tide).**
+2. **BUT it FAILS for `L = 1`** (Codex Q1, decisive): only the identity boundary + dead terminal leaf remain,
+   so `Hmat_0 = 0`, `VvalGen ≡ 0`. Dead-leaf a.e.-positivity is conditional on "∃ a nonempty usable interior
+   residual block" (`0 < s < L`, nonempty `r_s`/`c_s`). For a UNIFORM ∀M result either (a) the live leaf
+   (clean uniform witness `Hmat_0(0,0)=∏Bmat_k(0,0)·1=1`, but needs the leaf-slot engineering — the leaf
+   `Rfin L : Text L × Wext L` does NOT fit the dead `Rmat L = rmatPad(readE)` E-role slot `r_{L-1}×c_{L-1}`,
+   a genuine slot-accounting sub-design) OR (b) the `L=1`-or-`L≥2` case split + an interior-nonempty hyp.
+
+**The MvPolynomial encoding is required** (Codex Q4 ×2, no v4.29 analytic-zero-set shortcut without naming
+the polynomial). Cleanest route (Codex Q2 rank ii > i > iii): define `PolyHmat`/`PolySuffix` by the SAME
+`HmatAux`/`suffixAux` recursion over `MvPolynomial (Fin N) ℝ`, prove ONE recursion-level `eval`-naturality
+lemma, set `UPolyGen := ∑ (PolyHmat_0 entry)²`, then `MvPolynomial.ae_eval_ne_zero`. Q3's "one entry = 2-coord
+monomial ∀M" does NOT generalise (deepest block propagates through `B_1·…·B_{L-2}`; residual col width >1 → a
+sum). ALSO unbuilt: continuity/measurability of `VvalGen∘decoder` in `x` over opaque widths (`Umeas` + the
+det-side `image_subset`/`cov` continuity) — no banked `continuous_VvalGen`.
+
+### Goal-state for the next tide (the wall)
+`∀ᵐ x : Fin (routeMAmbient M) → ℝ, 0 < VvalGen (x (structPivot M hN)) M (tach M)
+  (genBlkFlatStruct M (tach M) (structAdm_tach M hL) x) (hleStruct M (tach M) (structAdm_tach M hL))`
+— decompose: (i) the recursion-level `PolyHmat` lift + `eval`-naturality (~the bulk, opaque-width casts);
+(ii) the witness `UPolyGen ≠ 0` (single eval at the interior-E witness, `L ≥ 2`); (iii) the `L = 1` handling
+or the interior-nonempty hyp; (iv) continuity of `VvalGen∘decoder` for `Umeas`. RECOMMEND: live-leaf decoder
+`B_det M` (resolves the uniform witness + L=1 in one stroke) IF the leaf-slot accounting is designed first —
+that is the genuine `B_det M` sub-design the §2 certificate under-specified (the leaf dim `Text L × Wext L`
+vs the E-role `r_{L-1}×c_{L-1}`).
