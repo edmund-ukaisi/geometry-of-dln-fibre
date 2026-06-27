@@ -325,6 +325,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteM221
 -- (2,1,1)) + `routeMCore_phiDet222 = u²·V` via a ONE-LINE `routeMCore_phiGen` instantiation
 -- (NO bridge; two rank-drops telescope to one `u`). Confirms route 2a on a multi-boundary node.
 import DLNFibre.DLN.RLCT.Validate.RouteM222Det
+-- `RouteMAchieverPath`: ∀M-lift step 1 — the achiever descent path made width-parametric.
+-- `tStar M` (a chosen `Mval`-minimizer) + `Mval_tStar_eq` (the path realises `minAdm`) + the Aoyagi
+-- residual blocks `rBlock`/`cBlock` + `sum_rBlock_cBlock_eq_minAdm` (the radial `active.card = minAdm`
+-- identity). The (2,2,2) `tach222` generalized; regression-checked on the 5 anchors.
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
