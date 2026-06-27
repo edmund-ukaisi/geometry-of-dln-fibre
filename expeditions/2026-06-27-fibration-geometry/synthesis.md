@@ -217,3 +217,13 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   bridge) — uncommitted, held to match L5. Lean tide `rev-fix-lean` (a585262f) doing L1–L5 (4 module
   docstrings + the S5 type-strengthening) — 4 files dirty, in flight. On its landing → green-gate +
   commit prose+Lean together + push + reply to the 8 owner threads + resolve. Then ready-to-merge.
+
+- **tick 15 (review round 2 fully actioned + answered, 2026-06-27 ~22:00):** all findings fixed at the
+  root and integrated — committed `b778b153`, green-gate 3815 jobs, whole-lib sorries 0, axiom-clean;
+  pushed to PR #12. Posted a comprehensive summary comment + a per-thread reply on all 8 inline owner
+  threads (left resolution to the owner on re-review). The base/total reversal + the S5 existential-type
+  overclaim are both corrected at the root, consistently across Lean docstrings / aggregator / exposition
+  / both cards / ROADMAP. **The expedition's substantive work + close deliverables + both review rounds
+  are complete.** Remaining = the operator's gate: re-review → mark PR #12 ready → merge. Post-merge:
+  run the post-merge protocol (delete cron 76da6f78; the close is interactive now). Roster clean (all
+  tides + reviewers self-cleared).
