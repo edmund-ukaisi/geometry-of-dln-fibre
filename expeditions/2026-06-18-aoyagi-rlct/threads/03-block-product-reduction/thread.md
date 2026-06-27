@@ -18,6 +18,57 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 Ctop two-positive-tail second A1 target staging
+
+Reproduction:
+`reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+Statement card:
+`statement-card-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+Review:
+`review-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`,
+PASS by xhigh `Schrodinger the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+Ctop_tail_pos_pos_firstA1_nextA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_pos_firstA1_nextA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The theorem writes the passive tail length as `(M+1)+1`, starts from the
+first-passive `Ctop` theorem, and rewrites only the remaining suffix derivative
+`(fderiv Psucc z) v` by the generic passive `A1seed` suffix helper at the
+second passive source coordinate.  The indices are:
+
+```text
+q0 = 0 : Fin ((M+1)+1)
+p0 = q0.succ
+s0 = 0 : Fin (M+1)
+q1 = s0.succ : Fin ((M+1)+1)
+p1 = q1.succ
+```
+
+`Psucc` starts at `p0.succ` and `Psucc1` starts at `p1.succ`.  The second
+passive target replacement uses `Dzv.1 q1`; it does not use the `F3` successor
+`castSucc` tangent pattern.  The theorem leaves `(fderiv Psucc1 z) v` explicit
+and preserves the noncommutative order
+
+```text
+Tail⁻¹ * (((...) * data.A1seed p0) + ...) * Tail⁻¹ * coord.Ctop.
+```
+
+The recovery companion applies the same equality and the formal raw-order
+`Ctop` recovery after left multiplication by `Tail`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing style warnings.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and both new
+theorem axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
+This does not simplify the `M=0` terminal second-stage suffix, terminal-clean,
+claim full recursive `Ctop`/`F3` target staging, determinant equality, measure
+transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-27 A2 Ctop first passive A1 target staging
 
 Reproduction:

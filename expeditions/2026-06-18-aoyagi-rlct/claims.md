@@ -270,14 +270,15 @@ No such claim is formalisation-ready until both fields are filled.
   pushforward from the p.13 section alone. The full source Theorem 3/RLCT
   claim remains blocked on the analytic product-coordinate regular-square
   suspension theorem and the actual p.13 chart/density construction.  Latest
-  retained-passive derivative/Jacobian slice: the positive-tail first top-left
-  `Ctop` bridge now target-stages the first passive `A1` source tangent inside
-  the explicit suffix-product derivative term.  Lean proves the generic
-  seed-product helper, the positive-tail wrapper, the `Ctop` consumer, and the
-  `Ctop` recovery companion in
+  retained-passive derivative/Jacobian slice: the two-positive-tail first
+  top-left `Ctop` bridge now recurses once into the remaining suffix derivative
+  and target-stages the second passive `A1` source tangent.  Lean proves the
+  two-positive-tail `Ctop` consumer and `Ctop` recovery companion in
   `RetainedPassiveCoordinatesJacobian.lean`, preserving the factor order
-  `Tail⁻¹ * (...) * Tail⁻¹ * coord.Ctop` and leaving `(fderiv Psucc z) v`
-  explicit.
+  `Tail⁻¹ * (((...) * data.A1seed p0) + ...) * Tail⁻¹ * coord.Ctop` and
+  leaving `(fderiv Psucc1 z) v` explicit.  The previous first-passive `Ctop`
+  target-staging slice remains the one-positive-tail boundary for this
+  recursive step.
 - **Kill-condition.** The reduction silently uses the cited normal-crossing/RLCT
   theorem or another analytic equivalence not represented as a hypothesis.
 - **Evidence/source.** Aoyagi Theorem 3 and following regular-variable
@@ -349,7 +350,9 @@ No such claim is formalisation-ready until both fields are filled.
   p.13 raw pushforward source-boundary audit at
   `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`;
   retained-passive first passive `A1` target staging at
-  `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`;
+  retained-passive two-positive-tail second passive `A1` target staging at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
 - **Reproduction check.** findings at
   `threads/03-block-product-reduction/reproduction-check.md`; not
   formalisation-ready as stated. Repair report at
@@ -424,7 +427,10 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/source-audit-a2-p13-left-step-raw-pushforward-boundary.md`;
   retained-passive first passive `A1` target staging reviewed by xhigh
   `Banach the 2nd` in
-  `threads/03-block-product-reduction/review-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+  `threads/03-block-product-reduction/review-a2-retained-passive-a1-tail-target-staged-first-passive.md`;
+  retained-passive two-positive-tail second passive `A1` target staging
+  reviewed by xhigh `Schrodinger the 2nd` in
+  `threads/03-block-product-reduction/review-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
 - **Lean target.**
   `DLNFibre.DLN.Aoyagi.productReduction_chartLocalInductionStep_fromBlocks` in
   `lean/DLNFibre/DLN/Aoyagi/ProductReduction.lean`; indexed variant

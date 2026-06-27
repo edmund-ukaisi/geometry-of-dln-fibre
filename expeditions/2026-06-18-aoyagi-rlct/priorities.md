@@ -21,6 +21,63 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive two-positive-tail first top-left `Ctop` bridge now
+recurses once into the remaining passive top-left suffix derivative and
+target-stages the second passive `A1` source tangent.  New Lean names:
+
+```text
+Ctop_tail_pos_pos_firstA1_nextA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_pos_firstA1_nextA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The theorem writes the passive tail length as `(M+1)+1` and uses
+
+```text
+q0 = 0 : Fin ((M+1)+1)
+p0 = q0.succ
+s0 = 0 : Fin (M+1)
+q1 = s0.succ : Fin ((M+1)+1)
+p1 = q1.succ
+```
+
+`Psucc` starts at `p0.succ` and `Psucc1` starts at `p1.succ`.  The second
+passive target replacement is the passive seed-product tangent at `q1`, not
+the `F3` successor `castSucc` tangent pattern:
+
+```text
+Dzv.1 q1
+  - XsuccF2 q1.succ * coord.solvedA3 q1.succ
+  - coord.F2 q1.succ.succ * rawEdgeTupleA3 Dzv q1.succ
+```
+
+The `Ctop` consumer preserves matrix order
+
+```text
+Tail⁻¹ *
+  (((fderiv Psucc1 z) v * data.A1seed p1 + Psucc1 z * targetA1(q1))
+    * data.A1seed p0
+    + Psucc z * targetA1(q0))
+  * Tail⁻¹ * coord.Ctop.
+```
+
+The recovery companion left-multiplies the same staged expression by `Tail`
+and uses the formal raw-order `Ctop` recovery.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, the full
+`DLNFibre` build passed with only pre-existing style warnings, `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and both new
+theorem axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
+Xhigh independent review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+
+This does not claim terminal cleanup for `M=0`, full recursive passive suffix
+staging, full `Ctop` or `F3` target staging, determinant equality, measure
+transport, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`.
+
+Previous controller decision:
+
 The retained-passive positive-tail first top-left `Ctop` bridge now has the
 first passive `A1` source tangent target-staged inside the explicit
 suffix-product derivative term.  New Lean names:
