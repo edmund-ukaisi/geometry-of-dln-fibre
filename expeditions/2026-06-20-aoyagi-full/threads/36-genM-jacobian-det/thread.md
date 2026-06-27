@@ -773,3 +773,51 @@ path). The reduction `achieverUfun → eval UPolyGen → ae_eval_ne_zero` is the
 witness-point evaluation over opaque widths remains.
 
 ### Codex consults banked: `codex/{mvpoly-encoding-route,sum-reindex,deadleaf-vval-aepos,structadm-achiever-gap}-{prompt,answer}.md`.
+
+---
+
+## BUILD-TIDE 3 ADDENDUM (2026-06-27, the witness — SHARPENED design; a precise wall)
+
+Charged with the sole remaining gap `∃ w, achieverUfun w ≠ 0`. LANDED the witness FOUNDATION
+(`exists_active_block`) + sharpened the witness design via two decorrelated Codex consults + sympy. Full
+`lake build DLNFibre` green (8486), axiom-clean, sorry-free. The witness telescoping itself is the precise
+remaining wall — now with a CORRECTED construction (the certificate's simple "leaf pivot" is wrong for
+rank-dropping achievers).
+
+### Landed
+- **`exists_active_block`** (`RouteMAchieverVvalPoly`): given `1 ≤ minAdm M`, `∃ j : Fin L,
+  1 ≤ rBlock M j ∧ 1 ≤ cBlock M j` (a nonempty residual block) — from `∑ rBlock·cBlock = minAdm ≥ 1`.
+
+### The SHARPENED witness design (Codex `witness-deadleaf` + `witness-deepest-gap`, sympy-corroborated)
+The certificate §5 witness ("all kept-diag=1, angular=0, leaf pivot=1 ⟹ Hmat_0(0,0)=∏Bmat·1=1") is WRONG
+for the achiever path `tach`, for TWO reasons sympy exposed:
+1. **A non-deepest active boundary does NOT propagate** (sympy: (3,3,3,3) live block at s=1 ⟹ `Hmat 0 = 0`).
+   At the witness `A_{L−1} = [0 ; W]` (dead leaf `C_L=0` ⟹ kept rows 0), and `A_s = [Bmat_{s+1} ; 0]` for
+   `s<L−1` (lift=0), so the suffix kills any column injected before the LAST interior boundary. Only `s=L−1`
+   survives (`suffix L = 1`).
+2. **The leaf is structurally row-empty for `tach`** (`Text L = tach(L−1) = tStar(L−2)`, can be 0 if the
+   penultimate Aoyagi rank dropped) — so the certificate's LIVE-LEAF `Rfin_L` pivot is ALSO infeasible
+   exactly then. The deepest interior `E`-block can likewise be empty if rank dropped early.
+
+**The CORRECT uniform witness (Codex, `2 ≤ L`):** the **effective-leaf** construction — let `q ≤ L` be the
+deepest index with `Text q > 0` (last positive `Text`; `= a+2` where `a` = last positive `tStar` index, or
+the identity boundary `Text 1 = M 0` if no `tStar` positive). Place the pivot in the `E`-block at boundary
+`q`; set the carrier lifts `W_q,…,W_{L−1}` to propagate the injected column to the final output (NOT
+identity — the identity suffix kills it per #1); `K=I, X=N=0`, all other `E/W/Rfin` = 0. Then one `Hmat 0`
+entry is a surviving monomial (`e·ω` of the deep E,W coords) ⟹ `UPolyGen ≠ 0`. So `exists_active_block`
+alone is INSUFFICIENT (it gives some active boundary, not the effective-leaf with carriers).
+
+### THE PRECISE REMAINING WALL (the next focused tide)
+`∃ w, achieverUfun M hL hN w ≠ 0` for `2 ≤ L`, via the effective-leaf witness:
+(i) **effective-leaf selection**: `q := deepest k ≤ L with Text M (tach M) k > 0`, + its `E`-block nonempty
+    (the active-block at `q`; needs the `minAdm ≥ 1` ⟹ some rank-drop, refined to the deepest);
+(ii) **the carrier construction** `W_q,…,W_{L−1}` propagating the column (the non-identity suffix);
+(iii) **the downward `Hmat_succ` induction** carrying the surviving entry's (row,col) via a symbolic
+    `rowPath` (Codex skeleton in `witness-deadleaf-answer`), `Finset.sum_eq_single` per step, over opaque
+    widths (the dependent-`Fin` cast kernel). `UPolyGen_ne_zero_of_witness` + `achieverUbound` (banked)
+    then close `Ubound` fully ⟹ the rate-side `NodeAchieverChart` fields COMPLETE for `2 ≤ L`.
+**L=1**: dead-leaf `achieverUfun ≡ 0` — needs the banked `DeepestBaseL1` pure-radial chart, separate.
+
+This is genuine research-flavored construction (not mechanical telescoping) — the effective-leaf + carrier
+is the corrected design the two Codex consults + sympy converged on. Codex consults banked:
+`codex/{witness-deadleaf,witness-deepest-gap}-{prompt,answer}.md`.
