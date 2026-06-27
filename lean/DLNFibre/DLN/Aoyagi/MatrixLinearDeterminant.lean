@@ -203,6 +203,108 @@ theorem linearEquivUpperShear_det_eq_one
           rw [linearEquiv_det_skewProd_toLinearMap_eq_mul]
           simp
 
+/-- Upper block-triangular linear map on a product:
+`(x,y) ↦ (f x + h y, g y)`. -/
+def linearMapUpperTriangular
+    {R M N : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M]
+    [AddCommMonoid N] [Module R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : N →ₗ[R] M) :
+    (M × N) →ₗ[R] (M × N) where
+  toFun x := (f x.1 + h x.2, g x.2)
+  map_add' x y := by
+    ext <;> simp [map_add, add_assoc, add_left_comm, add_comm]
+  map_smul' a x := by
+    ext <;> simp [map_smul, smul_add]
+
+@[simp]
+theorem linearMapUpperTriangular_apply
+    {R M N : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M]
+    [AddCommMonoid N] [Module R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : N →ₗ[R] M)
+    (x : M × N) :
+    linearMapUpperTriangular f g h x = (f x.1 + h x.2, g x.2) :=
+  rfl
+
+/-- Lower block-triangular linear map on a product:
+`(x,y) ↦ (f x, h x + g y)`. -/
+def linearMapLowerTriangular
+    {R M N : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M]
+    [AddCommMonoid N] [Module R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : M →ₗ[R] N) :
+    (M × N) →ₗ[R] (M × N) where
+  toFun x := (f x.1, h x.1 + g x.2)
+  map_add' x y := by
+    ext <;> simp [map_add, add_assoc, add_left_comm, add_comm]
+  map_smul' a x := by
+    ext <;> simp [map_smul, smul_add]
+
+@[simp]
+theorem linearMapLowerTriangular_apply
+    {R M N : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M]
+    [AddCommMonoid N] [Module R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : M →ₗ[R] N)
+    (x : M × N) :
+    linearMapLowerTriangular f g h x = (f x.1, h x.1 + g x.2) :=
+  rfl
+
+/-- An upper block-triangular linear map has determinant equal to the product
+of its diagonal determinants. -/
+theorem linearMapUpperTriangular_det_eq_mul
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : N →ₗ[R] M) :
+    LinearMap.det (linearMapUpperTriangular f g h) =
+      LinearMap.det f * LinearMap.det g := by
+  classical
+  let b := Module.Free.chooseBasis R M
+  let c := Module.Free.chooseBasis R N
+  haveI : Module.Finite R (M × N) := moduleFinite_prod
+  rw [← LinearMap.det_toMatrix (b.prod c), ← LinearMap.det_toMatrix b,
+    ← LinearMap.det_toMatrix c]
+  have hmat :
+      LinearMap.toMatrix (b.prod c) (b.prod c)
+        (linearMapUpperTriangular f g h) =
+        Matrix.fromBlocks
+          (LinearMap.toMatrix b b f)
+          (LinearMap.toMatrix c b h)
+          0
+          (LinearMap.toMatrix c c g) := by
+    ext (i | i) (j | j) <;>
+      simp [LinearMap.toMatrix, Pi.single_apply]
+  rw [hmat, Matrix.det_fromBlocks_zero₂₁]
+
+/-- A lower block-triangular linear map has determinant equal to the product
+of its diagonal determinants. -/
+theorem linearMapLowerTriangular_det_eq_mul
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) (h : M →ₗ[R] N) :
+    LinearMap.det (linearMapLowerTriangular f g h) =
+      LinearMap.det f * LinearMap.det g := by
+  classical
+  let b := Module.Free.chooseBasis R M
+  let c := Module.Free.chooseBasis R N
+  haveI : Module.Finite R (M × N) := moduleFinite_prod
+  rw [← LinearMap.det_toMatrix (b.prod c), ← LinearMap.det_toMatrix b,
+    ← LinearMap.det_toMatrix c]
+  have hmat :
+      LinearMap.toMatrix (b.prod c) (b.prod c)
+        (linearMapLowerTriangular f g h) =
+        Matrix.fromBlocks
+          (LinearMap.toMatrix b b f)
+          0
+          (LinearMap.toMatrix b c h)
+          (LinearMap.toMatrix c c g) := by
+    ext (i | i) (j | j) <;>
+      simp [LinearMap.toMatrix, Pi.single_apply]
+  rw [hmat, Matrix.det_fromBlocks_zero₁₂]
+
 /-- Read a matrix as a family of columns. -/
 def matrixColumnLinearEquiv (R : Type*) [Semiring R] (m n : Type*) :
     Matrix m n R ≃ₗ[R] (n → m → R) where
