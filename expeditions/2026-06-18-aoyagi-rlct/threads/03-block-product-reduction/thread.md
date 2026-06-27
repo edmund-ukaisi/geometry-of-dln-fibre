@@ -9309,3 +9309,31 @@ This is target-chart bookkeeping for the retained-passive raw-order map.  It
 does not prove differentiability of the inverse, a formal tangent equivalence,
 determinant unit/formula, Jacobian density, measure pushforward, source-rank
 coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive raw-order topological chart
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-topological-chart.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-topological-chart.md`.
+Review:
+`review-a2-retained-passive-raw-order-topological-chart.md`
+passed by xhigh read-only explorer `Peirce the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean`.
+
+Lean now proves continuity of the raw-order edge tuple reassembly/readout maps,
+openness of the raw-order source-recursive determinant target chart, subtype
+continuity of the forward raw-order map and inverse readback map, and packages
+the result as:
+
+```text
+topologyTupleDetChartSet_rawOrderSourceRecursiveDetChartSet_homeomorph
+topologyTupleEdgeRawOrder_openPartialHomeomorph
+```
+
+This turns the set-level raw-order inverse chart into a topological chart.  It
+does not prove inverse differentiability, identify the derivative, prove a
+tangent equivalence, determinant unit/formula, Jacobian density, measure
+pushforward, source-rank coverage, normal crossings, pole order, or RLCT.

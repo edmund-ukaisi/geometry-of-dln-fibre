@@ -6159,3 +6159,20 @@ next slice should use this target-domain bookkeeping while building either
 the direct formal tangent equivalence or a differentiable raw-order readback
 route to determinant unitness.  Do not state density or measure pushforward
 before derivative determinant unitness is proved.
+
+A2 retained-passive raw-order topological chart has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-topological-chart.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-topological-chart.md`.
+Lean proves the raw-order target chart is open, upgrades the set-level inverse
+chart to a subtype homeomorphism, and packages the retained-passive raw-order
+map as an ambient `OpenPartialHomeomorph`.  This is the preferred target-domain
+object for the next determinant-unit route.
+
+Next priority in this lane: prove differentiability of
+`topologyTupleEdgeRawOrderInverse` on
+`topologyTupleRawOrderSourceRecursiveDetChartSet`, or else build the formal
+tangent equivalence directly from the existing forward differentiability and
+chart inverse identities.  Do not state a Jacobian density, measure
+pushforward, normal-crossing, pole-order, or RLCT theorem before determinant
+unitness for the derivative is formalised.

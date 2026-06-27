@@ -778,6 +778,206 @@ theorem continuous_F3
   have h5 := continuous_snd.comp h4
   simpa [topologyTuple] using h5
 
+/-- The raw top-left edge block readout is continuous in tuple coordinates. -/
+theorem continuous_rawEdgeTupleA1
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] (p : Fin (M + 1)) :
+    Continuous
+      (fun z : TopologyTuple ρ κ' K ↦
+        rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') z p) := by
+  cases p using Fin.cases with
+  | zero =>
+      simpa [rawEdgeTupleA1] using
+        (continuous_Ctop (ρ := ρ) (κ' := κ') (K := K)).comp
+          (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+  | succ p =>
+      simpa [rawEdgeTupleA1] using
+        (continuous_A1passive (ρ := ρ) (κ' := κ') (K := K) p).comp
+          (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+
+/-- The raw lower-left edge block readout is continuous in tuple coordinates. -/
+theorem continuous_rawEdgeTupleA3
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] (p : Fin (M + 1)) :
+    Continuous
+      (fun z : TopologyTuple ρ κ' K ↦
+        rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') z p) := by
+  induction p using Fin.lastCases with
+  | last =>
+      simpa [rawEdgeTupleA3] using
+        (continuous_F3 (ρ := ρ) (κ' := κ') (K := K)).comp
+          (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+  | cast p =>
+      simpa [rawEdgeTupleA3] using
+        (continuous_A3passive (ρ := ρ) (κ' := κ') (K := K) p).comp
+          (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+
+/-- Reassembling raw-order tuple coordinates into an edge family is
+continuous. -/
+theorem continuous_edgeFamilyOfRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] :
+    Continuous
+      (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') :
+        TopologyTuple ρ κ' K → EdgeFamilyTuple ρ κ' K) := by
+  refine continuous_pi ?_
+  intro p
+  have hA1 :
+      Continuous
+        (fun z : TopologyTuple ρ κ' K ↦
+          rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') z p) :=
+    continuous_rawEdgeTupleA1 (K := K) (ρ := ρ) (κ' := κ') p
+  have hF2 :
+      Continuous
+        (fun z : TopologyTuple ρ κ' K ↦
+          (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).F2 p) :=
+    (continuous_F2 (ρ := ρ) (κ' := κ') (K := K) p).comp
+      (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+  have hA3 :
+      Continuous
+        (fun z : TopologyTuple ρ κ' K ↦
+          rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') z p) :=
+    continuous_rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ') p
+  have hC :
+      Continuous
+        (fun z : TopologyTuple ρ κ' K ↦
+          (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).C p) :=
+    (continuous_C (ρ := ρ) (κ' := κ') (K := K) p).comp
+      (continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K))
+  simpa [edgeFamilyOfRawOrderTuple] using hA1.matrix_fromBlocks hF2 hA3 hC
+
+/-- Reading an edge family into raw-order tuple coordinates is continuous. -/
+theorem continuous_edgeFamilyRawOrderTuple
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] :
+    Continuous
+      (edgeFamilyRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') :
+        EdgeFamilyTuple ρ κ' K → TopologyTuple ρ κ' K) := by
+  have hA1passive :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦
+          fun p : Fin M ↦ (E p.succ).toBlocks₁₁) := by
+    refine continuous_pi ?_
+    intro p
+    have hproj : Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E p.succ) :=
+      continuous_apply p.succ
+    have hblock :
+        Continuous
+          (fun A :
+              Matrix (ρ ⊕ κ' p.succ.succ) (ρ ⊕ κ' p.succ.castSucc) K ↦
+            A.toBlocks₁₁) := by
+      simpa [Matrix.toBlocks₁₁] using
+        (continuous_id.matrix_submatrix Sum.inl Sum.inl :
+          Continuous
+            (fun A :
+                Matrix (ρ ⊕ κ' p.succ.succ) (ρ ⊕ κ' p.succ.castSucc) K ↦
+              A.submatrix Sum.inl Sum.inl))
+    exact hblock.comp hproj
+  have hF2 :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦
+          fun p : Fin (M + 1) ↦ (E p).toBlocks₁₂) := by
+    refine continuous_pi ?_
+    intro p
+    have hproj : Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E p) :=
+      continuous_apply p
+    have hblock :
+        Continuous
+          (fun A : Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+            A.toBlocks₁₂) := by
+      simpa [Matrix.toBlocks₁₂] using
+        (continuous_id.matrix_submatrix Sum.inl Sum.inr :
+          Continuous
+            (fun A : Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+              A.submatrix Sum.inl Sum.inr))
+    exact hblock.comp hproj
+  have hA3passive :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦
+          fun p : Fin M ↦ (E p.castSucc).toBlocks₂₁) := by
+    refine continuous_pi ?_
+    intro p
+    have hproj : Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E p.castSucc) :=
+      continuous_apply p.castSucc
+    have hblock :
+        Continuous
+          (fun A :
+              Matrix (ρ ⊕ κ' p.castSucc.succ) (ρ ⊕ κ' p.castSucc.castSucc) K ↦
+            A.toBlocks₂₁) := by
+      simpa [Matrix.toBlocks₂₁] using
+        (continuous_id.matrix_submatrix Sum.inr Sum.inl :
+          Continuous
+            (fun A :
+                Matrix (ρ ⊕ κ' p.castSucc.succ) (ρ ⊕ κ' p.castSucc.castSucc) K ↦
+              A.submatrix Sum.inr Sum.inl))
+    exact hblock.comp hproj
+  have hC :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦
+          fun p : Fin (M + 1) ↦ (E p).toBlocks₂₂) := by
+    refine continuous_pi ?_
+    intro p
+    have hproj : Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E p) :=
+      continuous_apply p
+    have hblock :
+        Continuous
+          (fun A : Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+            A.toBlocks₂₂) := by
+      simpa [Matrix.toBlocks₂₂] using
+        (continuous_id.matrix_submatrix Sum.inr Sum.inr :
+          Continuous
+            (fun A : Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K ↦
+              A.submatrix Sum.inr Sum.inr))
+    exact hblock.comp hproj
+  have hCtop :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦ (E 0).toBlocks₁₁) := by
+    have hproj : Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E 0) :=
+      continuous_apply 0
+    have hblock :
+        Continuous
+          (fun A : Matrix (ρ ⊕ κ' (0 : Fin (M + 1)).succ)
+              (ρ ⊕ κ' (0 : Fin (M + 1)).castSucc) K ↦
+            A.toBlocks₁₁) := by
+      simpa [Matrix.toBlocks₁₁] using
+        (continuous_id.matrix_submatrix Sum.inl Sum.inl :
+          Continuous
+            (fun A : Matrix (ρ ⊕ κ' (0 : Fin (M + 1)).succ)
+                (ρ ⊕ κ' (0 : Fin (M + 1)).castSucc) K ↦
+              A.submatrix Sum.inl Sum.inl))
+    exact hblock.comp hproj
+  have hF3 :
+      Continuous
+        (fun E : EdgeFamilyTuple ρ κ' K ↦ (E (Fin.last M)).toBlocks₂₁) := by
+    have hproj :
+        Continuous (fun E : EdgeFamilyTuple ρ κ' K ↦ E (Fin.last M)) :=
+      continuous_apply (Fin.last M)
+    have hblock :
+        Continuous
+          (fun A : Matrix (ρ ⊕ κ' (Fin.last M).succ)
+              (ρ ⊕ κ' (Fin.last M).castSucc) K ↦
+            A.toBlocks₂₁) := by
+      simpa [Matrix.toBlocks₂₁] using
+        (continuous_id.matrix_submatrix Sum.inr Sum.inl :
+          Continuous
+            (fun A : Matrix (ρ ⊕ κ' (Fin.last M).succ)
+                (ρ ⊕ κ' (Fin.last M).castSucc) K ↦
+              A.submatrix Sum.inr Sum.inl))
+    exact hblock.comp hproj
+  change Continuous
+    (fun E : EdgeFamilyTuple ρ κ' K ↦
+      ((fun p : Fin M ↦ (E p.succ).toBlocks₁₁),
+        ((fun p : Fin (M + 1) ↦ (E p).toBlocks₁₂),
+          ((fun p : Fin M ↦ (E p.castSucc).toBlocks₂₁),
+            ((fun p : Fin (M + 1) ↦ (E p).toBlocks₂₂),
+              ((E 0).toBlocks₁₁, (E (Fin.last M)).toBlocks₂₁))))))
+  simpa [edgeFamilyRawOrderTuple] using
+    hA1passive.prodMk
+      (hF2.prodMk
+        (hA3passive.prodMk
+          (hC.prodMk
+            (hCtop.prodMk hF3))))
+
 @[continuity, fun_prop]
 theorem continuous_A1seed
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
@@ -1967,6 +2167,27 @@ theorem isOpen_sourceRecursiveDetChartSet
   intro E hchart
   exact sourceRecursiveDetChartSet_mem_nhds (K := K) (ρ := ρ) (κ' := κ') hchart
 
+/-- The raw-order source-recursive determinant chart is open in tuple
+coordinates. -/
+theorem isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    IsOpen
+      (topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) := by
+  have hpre :
+      (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')) ⁻¹'
+          sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') =
+        topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') := by
+    rfl
+  rw [← hpre]
+  exact
+    (continuous_edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')).isOpen_preimage
+      (sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ'))
+      (isOpen_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ'))
+
 /-- The nonredundant retained-passive determinant-domain set is open. -/
 theorem isOpen_detChartSet
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
@@ -2018,6 +2239,185 @@ theorem detChartSet_mem_nhds
     (hdet : data.detChart) :
     detChartSet (K := K) (ρ := ρ) (κ' := κ') ∈ nhds data :=
   IsOpen.mem_nhds isOpen_detChartSet hdet
+
+/-- The raw-order tuple source map is continuous on the tuple determinant
+chart subtype. -/
+theorem continuous_topologyTupleEdgeRawOrder_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun z :
+          topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') ↦
+        topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z.1) := by
+  let X :=
+    topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+  let Y :=
+    {data : RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := ρ) κ' // data.detChart}
+  have hToData :
+      Continuous
+        (fun z : X ↦
+          (⟨ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z.1,
+            ((mem_topologyTupleDetChartSet
+              (K := K) (ρ := ρ) (κ' := κ') z.1).1 z.2)⟩ : Y)) := by
+    have hamb :
+        Continuous
+          (fun z : X ↦ ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z.1) :=
+      (continuous_ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')).comp
+        continuous_subtype_val
+    exact hamb.subtype_mk _
+  have hEdge :
+      Continuous
+        (fun z : X ↦
+          topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z.1) := by
+    have hEdgeData :
+        Continuous (fun data : Y ↦ data.1.edgeMatrix) :=
+      continuous_edgeMatrix_detChart_subtype (ρ := ρ) (κ' := κ') (K := K)
+    simpa [X, Y, topologyTupleEdgeMatrix] using hEdgeData.comp hToData
+  exact
+    (continuous_edgeFamilyRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')).comp
+      hEdge
+
+/-- Raw-order source readback is continuous at every point of the raw-order
+source-recursive determinant chart. -/
+theorem continuousAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' K}
+    (hz : z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) :
+    ContinuousAt
+      (topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ')) z := by
+  let E : TopologyTuple ρ κ' K → EdgeFamilyTuple ρ κ' K :=
+    edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')
+  have hE : ContinuousAt E z :=
+    (continuous_edgeFamilyOfRawOrderTuple
+      (K := K) (ρ := ρ) (κ' := κ')).continuousAt
+  have hsource : E z ∈
+      sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+    simpa [topologyTupleRawOrderSourceRecursiveDetChartSet, E] using hz
+  have hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) (E z) :=
+    (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') (E z)).1 hsource
+  have hread :
+      ContinuousAt
+        (fun y : TopologyTuple ρ κ' K ↦
+          sourceReadback (K := K) (ρ := ρ) (E y)) z :=
+    continuousAt_sourceReadback
+      (K := K) (ρ := ρ) (κ' := κ') E hE hchart
+  exact
+    continuous_topologyTuple.continuousAt.comp hread
+
+/-- Raw-order source readback is continuous on the raw-order
+source-recursive determinant-chart subtype. -/
+theorem continuous_topologyTupleEdgeRawOrderInverse_rawOrderSourceRecursiveDetChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    Continuous
+      (fun z :
+          topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := K) (ρ := ρ) (κ' := κ') ↦
+        topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') z.1) := by
+  rw [continuous_iff_continuousAt]
+  intro z
+  exact
+    (continuousAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+      (K := K) (ρ := ρ) (κ' := κ') z.2).comp continuous_subtype_val.continuousAt
+
+/-- The tuple determinant chart is homeomorphic to the raw-order encoding of
+the source-recursive determinant chart. -/
+def topologyTupleDetChartSet_rawOrderSourceRecursiveDetChartSet_homeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') ≃ₜ
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') where
+  toFun z :=
+    ⟨topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z.1,
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') z.2⟩
+  invFun z :=
+    ⟨topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') z.1,
+      topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') z.2⟩
+  left_inv z := by
+    apply Subtype.ext
+    exact
+      topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+        (K := K) (ρ := ρ) (κ' := κ') z.2
+  right_inv z := by
+    apply Subtype.ext
+    exact
+      topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+        (K := K) (ρ := ρ) (κ' := κ') z.2
+  continuous_toFun :=
+    (continuous_topologyTupleEdgeRawOrder_detChart_subtype
+      (K := K) (ρ := ρ) (κ' := κ')).subtype_mk _
+  continuous_invFun :=
+    (continuous_topologyTupleEdgeRawOrderInverse_rawOrderSourceRecursiveDetChart_subtype
+      (K := K) (ρ := ρ) (κ' := κ')).subtype_mk _
+
+/-- The retained-passive raw-order map as an ambient open partial
+homeomorphism from tuple determinant coordinates to the raw-order
+source-recursive determinant chart.
+
+This is a topological chart object only; it carries no derivative, Jacobian,
+measure, normal-crossing, pole-order, or RLCT assertion. -/
+def topologyTupleEdgeRawOrder_openPartialHomeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [NontriviallyNormedField K] [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)] :
+    OpenPartialHomeomorph (TopologyTuple ρ κ' K) (TopologyTuple ρ κ' K) :=
+  let S : Set (TopologyTuple ρ κ' K) :=
+    topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' K) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := K) (ρ := ρ) (κ' := κ')
+  { toFun := topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ')
+    invFun := topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ')
+    source := S
+    target := T
+    map_source' := by
+      intro z hz
+      exact
+        mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') hz
+    map_target' := by
+      intro z hz
+      exact
+        topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') hz
+    left_inv' := by
+      intro z hz
+      exact
+        topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+          (K := K) (ρ := ρ) (κ' := κ') hz
+    right_inv' := by
+      intro z hz
+      exact
+        topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+          (K := K) (ρ := ρ) (κ' := κ') hz
+    open_source := isOpen_topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+    open_target :=
+      isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')
+    continuousOn_toFun := by
+      rw [continuousOn_iff_continuous_restrict]
+      change Continuous
+        (fun z :
+            topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') ↦
+          topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z.1)
+      exact
+        continuous_topologyTupleEdgeRawOrder_detChart_subtype
+          (K := K) (ρ := ρ) (κ' := κ')
+    continuousOn_invFun := by
+      intro z hz
+      exact
+        (continuousAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') hz).continuousWithinAt }
 
 /-- The subtype homeomorphism rewritten with the named ambient chart sets as
 its source and target subtypes. -/

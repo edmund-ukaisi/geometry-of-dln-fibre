@@ -13355,3 +13355,28 @@ density, measure pushforward, normal crossings, pole order, or RLCT.  Next
 target: build the formal tangent map/equivalence or prove differentiability
 of the raw-order readback if that gives a shorter route to determinant
 unitness.
+
+Latest retained-passive raw-order topological chart:
+`RetainedPassiveCoordinatesTopology.lean` now proves continuity of raw-order
+edge tuple reassembly/readout, openness of
+`topologyTupleRawOrderSourceRecursiveDetChartSet`, subtype continuity of
+`topologyTupleEdgeRawOrder` on `topologyTupleDetChartSet`, and subtype
+continuity of `topologyTupleEdgeRawOrderInverse` on the raw-order target
+chart.  It packages these as
+
+```text
+topologyTupleDetChartSet_rawOrderSourceRecursiveDetChartSet_homeomorph
+topologyTupleEdgeRawOrder_openPartialHomeomorph
+```
+
+Peirce the 4th passed the xhigh read-only review.  This is a topological chart
+checkpoint only.  It still does not prove inverse differentiability, a formal
+derivative formula, tangent equivalence, determinant unit/formula, Jacobian
+density, measure pushforward, normal crossings, pole order, or RLCT.
+
+Next target in this lane: prove differentiability of the raw-order inverse
+readback on `topologyTupleRawOrderSourceRecursiveDetChartSet`, unless a direct
+formal tangent-equivalence proof is shorter.  The inverse route should mirror
+the existing continuity recursion with differentiable analogues of the
+source-readback suffix-state and transformed-edge lemmas, using determinant
+units from `sourceRecursiveDetChart`.
