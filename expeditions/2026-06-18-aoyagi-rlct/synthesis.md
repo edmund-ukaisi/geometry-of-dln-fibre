@@ -13594,3 +13594,29 @@ determinant-chart points.  It still does not prove an explicit determinant
 formula, inverse-density measurability, original source-prior transport,
 selected-entry target-image equality, source-rank coverage, normal crossings,
 pole order, or RLCT.
+
+Latest retained-passive unconditional inverse-density COV:
+`RetainedPassiveCoordinatesMeasure.lean` now upgrades the retained-passive
+inverse-density COV layer from conditional to unconditional chart-coordinate
+transport.  New Lean names:
+
+```text
+nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet
+continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart
+continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_comp_of_mem_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac
+map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac
+```
+
+Mathematical spine: for `y in T`, the inverse chart point `g y` lies in `S`;
+`g` is continuous at `y`; the previous C1 slice proves the forward determinant
+density `J` is continuous at `g y`; positivity of `J(g y)` permits reciprocal
+continuity by `ContinuousAt.inv0`.  This yields target inverse-density
+continuity and the three a.e.-measurability inputs needed by the older
+conditional theorem.
+
+Scope guard: this is still only tuple-chart Haar measure transport.  It is not
+an explicit determinant formula, original source-prior pushforward,
+selected-entry image equality, source-rank coverage, normal-crossing
+production, pole-order theorem, or RLCT extraction.

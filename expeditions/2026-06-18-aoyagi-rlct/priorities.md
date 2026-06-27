@@ -6314,3 +6314,20 @@ forward-density measurability/boundedness obligations.  It is not an explicit
 determinant formula, inverse-density measurability theorem, source-prior
 transport, original DLN source pushforward, selected-entry target-image
 equality, source-rank coverage, normal crossing, pole order, or RLCT.
+
+A2 retained-passive unconditional inverse-density COV has now landed in the
+working tree:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-unconditional-inverse-density-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Lean proves continuity of the target-side inverse density on the raw-order
+target chart and uses it to remove the explicit density a.e.-measurability
+hypotheses from the inverse-density raw-order COV theorem and its downstream
+composition/edge-family wrappers.
+
+Next priority in this lane: do not add more chart-measure wrappers unless they
+feed a concrete local-source/source-prior step.  The useful remaining A2 work
+is either an explicit determinant formula, a selected-entry target-image/source
+prior handoff with all hypotheses explicit, or a source-rank/source-coverage
+bridge.  Still no original DLN source pushforward, normal crossing, pole
+order, or RLCT follows from this chart-coordinate transport theorem.

@@ -9310,3 +9310,39 @@ original DLN source prior.
 Nonclaims: no determinant-density continuity, inverse-density measurability,
 original source-prior transport, selected-entry target-image equality,
 source-rank coverage, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive unconditional inverse-density COV:
+Lean now proves
+`nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet`,
+`continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart`,
+`continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_comp_of_mem_rawSourceChart`,
+`map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian`,
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac`, and
+`map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac` in
+`RetainedPassiveCoordinatesMeasure.lean`.
+
+Status: Proved; reviewed.
+
+Claim: the retained-passive raw-order map pushes Haar measure restricted to
+the tuple determinant chart to Haar measure restricted to the raw-order target
+chart weighted by the target-side inverse Jacobian density.  The explicit
+a.e.-measurability hypotheses from the earlier conditional theorem are now
+discharged internally from forward density continuity, inverse-chart
+continuity, positivity, and chart openness.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-unconditional-inverse-density-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-unconditional-inverse-density-cov.md`
+accepted by xhigh `Heisenberg the 4th`.
+
+Kill condition: this is still chart-coordinate inverse-density transport for
+additive Haar measure on tuple coordinates.  Do not use it as an explicit
+determinant formula, source-prior density theorem, original DLN source
+pushforward, or selected-entry image theorem.
+
+Nonclaims: no explicit determinant formula, original source-prior transport,
+selected-entry target-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT is proved.

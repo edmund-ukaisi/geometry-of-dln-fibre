@@ -9637,3 +9637,48 @@ determinant-chart points.  It does not prove an explicit determinant formula,
 inverse-density measurability, original source-prior transport, selected-entry
 target-image equality, source-rank coverage, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-27 A2 retained-passive unconditional inverse-density COV
+
+Reproduction:
+`reproduction-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Statement card:
+`statement-card-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Review:
+`review-a2-retained-passive-unconditional-inverse-density-cov.md`
+accepted by xhigh read-only reviewer `Heisenberg the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesMeasure.lean`.
+
+Lean now adds target-chart null-measurability and inverse-density continuity:
+
+```text
+nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet
+continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart
+continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_comp_of_mem_rawSourceChart
+```
+
+It also removes the explicit density measurability hypotheses from the
+retained-passive inverse-density COV layer:
+
+```text
+map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac
+map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac
+```
+
+The proof derives the three a.e.-measurability inputs for the older conditional
+theorem from the previous C1 forward-density continuity checkpoint, continuity
+of the raw-order inverse chart on `T`, positivity of the forward density at the
+inverse point, and continuity of `ENNReal.ofReal`.
+
+Focused `RetainedPassiveCoordinatesMeasure` and full `DLNFibre` builds passed;
+the full build had only pre-existing unrelated linter warnings.
+`scripts/sorries` reported `0 sorry`, `0 #exit`, `0 native_decide`, and
+`0 axiom`.  `git diff --check` passed.  Heisenberg the 4th found no blocking
+issues in xhigh read-only review.
+
+Nonclaims: no explicit determinant formula, source-prior transport, original
+DLN source pushforward, selected-entry target-image equality, source-rank
+coverage, normal crossings, pole order, or RLCT is proved.

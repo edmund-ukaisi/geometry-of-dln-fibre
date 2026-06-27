@@ -9948,6 +9948,34 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive unconditional inverse-density COV:
+`RetainedPassiveCoordinatesMeasure.lean` proves
+`nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet`,
+`continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_of_mem_rawSourceChart`,
+`continuousAt_topologyTupleEdgeRawOrderInverseJacobianDensity_comp_of_mem_rawSourceChart`,
+`map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian`,
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac`, and
+`map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-unconditional-inverse-density-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-unconditional-inverse-density-cov.md`
+accepted by xhigh `Heisenberg the 4th`.
+
+The target-side inverse density is continuous because it is the reciprocal of
+the forward determinant density after the raw-order inverse chart, and the
+denominator is positive on the inverse image of the raw-order target chart.
+This continuity discharges the forward, target-side, and composed density
+a.e.-measurability hypotheses needed by the earlier conditional inverse-density
+COV theorem.  Focused `RetainedPassiveCoordinatesMeasure` and full `DLNFibre`
+builds passed; full build had only pre-existing unrelated linter warnings.
+`scripts/sorries` reported `0 sorry`, `0 #exit`, `0 native_decide`, and
+`0 axiom`; `git diff --check` passed.  Nonclaims: no explicit determinant
+formula, source-prior transport, selected-entry target-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive inverse Jacobian density:
 `RetainedPassiveCoordinatesMeasure.lean` now extends the retained-passive
 raw-order COV layer with the chart-side inverse density
