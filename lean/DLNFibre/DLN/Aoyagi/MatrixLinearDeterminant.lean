@@ -1,7 +1,9 @@
 import Mathlib.Data.Matrix.Bilinear
 import Mathlib.LinearAlgebra.Determinant
+import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Prod
+import Mathlib.LinearAlgebra.StdBasis
 
 /-!
 # Determinants of rectangular matrix multiplication maps
@@ -29,6 +31,50 @@ theorem moduleFinite_prod
   Module.Finite.of_basis
     ((Module.Free.chooseBasis R M).prod (Module.Free.chooseBasis R N))
 
+/-- A finite dependent product of finite free modules is finite. -/
+theorem moduleFinite_pi
+    {R ι : Type*} {M : ι → Type*} [Semiring R] [Finite ι]
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    [∀ i, Module.Free R (M i)] [∀ i, Module.Finite R (M i)] :
+    Module.Finite R (∀ i, M i) :=
+  let _ : Fintype ι := Fintype.ofFinite ι
+  Module.Finite.of_basis
+    (Pi.basis fun i => Module.Free.chooseBasis R (M i))
+
+/-- Determinant of a dependent block-diagonal matrix. -/
+theorem Matrix.det_blockDiagonal'
+    {R ι : Type*} {m : ι → Type*} [CommRing R]
+    [Fintype ι] [DecidableEq ι] [LinearOrder ι]
+    [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
+    (M : ∀ i, Matrix (m i) (m i) R) :
+    (Matrix.blockDiagonal' M).det = ∏ i, (M i).det := by
+  classical
+  have htri :
+      Matrix.BlockTriangular (Matrix.blockDiagonal' M) Sigma.fst :=
+    Matrix.blockTriangular_blockDiagonal' M
+  rw [htri.det_fintype]
+  refine Finset.prod_congr rfl ?_
+  intro i _hi
+  let e : m i ≃ {a : Sigma m // Sigma.fst a = i} :=
+    { toFun := fun x => ⟨⟨i, x⟩, rfl⟩
+      invFun := fun a => cast (congrArg m (by simpa using a.2)) a.1.2
+      left_inv := by
+        intro x
+        simp
+      right_inv := by
+        intro a
+        rcases a with ⟨⟨j, x⟩, h⟩
+        cases h
+        simp }
+  rw [← Matrix.det_reindex_self e (M i)]
+  congr 1
+  ext x y
+  rcases x with ⟨⟨j, x⟩, hx⟩
+  rcases y with ⟨⟨k, y⟩, hy⟩
+  cases hx
+  cases hy
+  simp [Matrix.toSquareBlock_def, Matrix.reindex_apply, e]
+
 /-- Determinant of a product map, with the finite product basis supplied
 locally. -/
 theorem linearMap_det_prodMap_eq_mul
@@ -39,6 +85,35 @@ theorem linearMap_det_prodMap_eq_mul
     LinearMap.det (f.prodMap g) = LinearMap.det f * LinearMap.det g := by
   haveI : Module.Finite R (M × N) := moduleFinite_prod
   exact LinearMap.det_prodMap f g
+
+/-- Determinant of a dependent product map. -/
+theorem linearMap_det_piMap_eq_prod
+    {R ι : Type*} {M : ι → Type*} [CommRing R]
+    [Fintype ι] [LinearOrder ι]
+    [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
+    [∀ i, Module.Free R (M i)] [∀ i, Module.Finite R (M i)]
+    (f : ∀ i, M i →ₗ[R] M i) :
+    LinearMap.det (LinearMap.pi fun i => (f i).comp (LinearMap.proj i)) =
+      ∏ i, LinearMap.det (f i) := by
+  classical
+  haveI : Module.Finite R (∀ i, M i) := moduleFinite_pi
+  let b : ∀ i, Module.Basis (Module.Free.ChooseBasisIndex R (M i)) R (M i) :=
+    fun i => Module.Free.chooseBasis R (M i)
+  let B : Module.Basis (Σ i, Module.Free.ChooseBasisIndex R (M i)) R (∀ i, M i) :=
+    Pi.basis b
+  simp_rw [← LinearMap.det_toMatrix B, ← LinearMap.det_toMatrix (b _)]
+  have hmat :
+      LinearMap.toMatrix B B
+          (LinearMap.pi fun i => (f i).comp (LinearMap.proj i)) =
+        Matrix.blockDiagonal' fun i => LinearMap.toMatrix (b i) (b i) (f i) := by
+    ext ⟨i, a⟩ ⟨j, c⟩
+    by_cases h : i = j
+    · subst j
+      simp [B, Matrix.blockDiagonal'_apply, LinearMap.toMatrix_apply',
+        LinearMap.pi_apply]
+    · simp [B, Matrix.blockDiagonal'_apply, LinearMap.toMatrix_apply',
+        LinearMap.pi_apply, h]
+  rw [hmat, Matrix.det_blockDiagonal']
 
 /-- A lower product shear has determinant equal to the product of its diagonal
 determinants. -/
