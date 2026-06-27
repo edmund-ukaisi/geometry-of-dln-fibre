@@ -2875,6 +2875,32 @@ theorem exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds
       (continuousAt_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
         (ρ := ρ) (κ' := κ') z₀ hz₀)
 
+/-- The retained-passive forward raw-order absolute Jacobian determinant is a
+positive bounded unit after any source parametrization continuous at a point
+mapping into the determinant chart. -/
+theorem exists_pos_eventually_bounds_topologyTupleEdgeRawOrderFDerivAbsDet_comp
+    {α : Type*} [TopologicalSpace α]
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {Y : α → TopologyTuple ρ κ' ℝ} {a₀ : α}
+    (hY : ContinuousAt Y a₀)
+    (hY₀ : Y a₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ∃ ε K : ℝ, 0 < ε ∧ 0 < K ∧
+      ∀ᶠ a in 𝓝 a₀,
+        ε ≤ topologyTupleEdgeRawOrderFDerivAbsDet
+            (ρ := ρ) (κ' := κ') (Y a) ∧
+          topologyTupleEdgeRawOrderFDerivAbsDet
+            (ρ := ρ) (κ' := κ') (Y a) ≤ K := by
+  rcases exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds
+      (ρ := ρ) (κ' := κ') (Y a₀) hY₀ with
+    ⟨ε, hε_pos, hε⟩
+  rcases exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds
+      (ρ := ρ) (κ' := κ') (Y a₀) hY₀ with
+    ⟨K, hK_pos, hK⟩
+  refine ⟨ε, K, hε_pos, hK_pos, ?_⟩
+  filter_upwards [hY.eventually hε, hY.eventually hK] with a ha_low ha_high
+  exact ⟨ha_low, ha_high⟩
+
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState
 end Aoyagi
