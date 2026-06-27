@@ -2237,6 +2237,123 @@ theorem differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartS
           (hCtarget.prodMk
             (hCtopTarget.prodMk hF3target))))
 
+set_option maxRecDepth 2048 in
+/-- The `C` component of the actual raw-order derivative becomes the formal
+`C` component after the lower-left target shear. -/
+theorem fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.1 p) z) v
+      + (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) z) v *
+        coord.F2 p.castSucc =
+      v.2.2.2.1 p - coord.solvedA3 p * v.2.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Cfun : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.C p
+  let Gfun : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3 p
+  let Ffun : TopologyTuple ρ κ' ℝ → Matrix ρ (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2 p.castSucc
+  let B : Matrix (κ' p.succ) ρ ℝ →L[ℝ]
+      Matrix ρ (κ' p.castSucc) ℝ →L[ℝ]
+        Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    matrixMulContinuousLinearMap (l := κ' p.succ) (m := ρ) (n := κ' p.castSucc)
+  have hCdiff : DifferentiableAt ℝ Cfun z := by
+    simpa [Cfun, toCoordinateData] using
+      differentiableAt_C (ρ := ρ) (κ' := κ') p z
+  have hGdiff : DifferentiableAt ℝ Gfun z := by
+    simpa [Gfun] using
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+  have hFdiff : DifferentiableAt ℝ Ffun z := by
+    simpa [Ffun, toCoordinateData] using
+      differentiableAt_F2full (ρ := ρ) (κ' := κ') p.castSucc z
+  have hrawC :
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.1 p) =
+        fun y ↦ Cfun y - Gfun y * Ffun y := by
+    funext y
+    simp [raw, Cfun, Gfun, Ffun, toCoordinateData]
+  have hrawG :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) =
+        Gfun := by
+    funext y
+    simp [raw, Gfun]
+  have hmulFDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Gfun y * Ffun y) z =
+        B.precompR _ (Gfun z) (fderiv ℝ Ffun z) +
+          B.precompL _ (fderiv ℝ Gfun z) (Ffun z) := by
+    simpa [B] using
+      (B.hasFDerivAt_of_bilinear hGdiff.hasFDerivAt hFdiff.hasFDerivAt).fderiv
+  have hC_apply : (fderiv ℝ Cfun z) v = v.2.2.2.1 p := by
+    let LC : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.2.2.1 p
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hLC :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.1 p) z = LC :=
+      LC.fderiv
+    change (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.1 p) z) v = v.2.2.2.1 p
+    rw [hLC]
+    rfl
+  have hF_apply : (fderiv ℝ Ffun z) v = v.2.1 p := by
+    let LF : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ (κ' p.castSucc) ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.1 p
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hFfun :
+        Ffun = fun y : TopologyTuple ρ κ' ℝ ↦ y.2.1 p := by
+      funext y
+      simp [Ffun, toCoordinateData, ofTopologyTuple]
+    have hLF :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.1 p) z = LF :=
+      LF.fderiv
+    rw [hFfun, hLF]
+    rfl
+  calc
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.1 p) z) v
+        + (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) z) v *
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.castSucc
+      = (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Cfun y - Gfun y * Ffun y) z) v
+          + (fderiv ℝ Gfun z) v * Ffun z := by
+          rw [hrawC, hrawG]
+    _ = ((fderiv ℝ Cfun z) v -
+          (Gfun z * (fderiv ℝ Ffun z) v + (fderiv ℝ Gfun z) v * Ffun z))
+          + (fderiv ℝ Gfun z) v * Ffun z := by
+          rw [fderiv_fun_sub hCdiff (differentiableAt_matrix_mul hGdiff hFdiff)]
+          rw [hmulFDeriv]
+          simp [B, matrixMulContinuousLinearMap_apply]
+    _ = (fderiv ℝ Cfun z) v - Gfun z * (fderiv ℝ Ffun z) v := by
+          abel
+    _ = v.2.2.2.1 p -
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3 p *
+          v.2.1 p := by
+          simp [hC_apply, hF_apply, Gfun]
+
 /-- On the tuple determinant chart, the retained-passive edge tuple read in
 raw block order is `C^1` as an ambient tuple-coordinate map.
 
@@ -2398,6 +2515,116 @@ theorem differentiableAt_rawEdgeTupleA3
   | cast p =>
       simpa [rawEdgeTupleA3] using
         differentiableAt_A3passive (ρ := ρ) (κ' := κ') p z
+
+/-- The full Frechet derivative of the retained-passive raw-order map has the
+expected `C` component after the lower-left target shear. -/
+theorem fderiv_topologyTupleEdgeRawOrder_C_unshear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.1 p
+      + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc =
+      v.2.2.2.1 p - coord.solvedA3 p * v.2.1 p := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let raw : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projC : E → Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    fun y ↦ y.2.2.2.1 p
+  let projG : E → Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦ rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') y p
+  let LC : E →L[ℝ] Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.2.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  let LG : E →L[ℝ] Matrix (κ' p.succ) ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') y p
+          map_add' := by
+            intro x y
+            induction p using Fin.lastCases with
+            | last =>
+                rw [rawEdgeTupleA3_last, rawEdgeTupleA3_last, rawEdgeTupleA3_last]
+                change (x + y).2.2.2.2.2 = x.2.2.2.2.2 + y.2.2.2.2.2
+                rfl
+            | cast p =>
+                rw [rawEdgeTupleA3_castSucc, rawEdgeTupleA3_castSucc, rawEdgeTupleA3_castSucc]
+                change (x + y).2.2.1 p = x.2.2.1 p + y.2.2.1 p
+                rfl
+          map_smul' := by
+            intro a y
+            induction p using Fin.lastCases with
+            | last =>
+                rw [rawEdgeTupleA3_last, rawEdgeTupleA3_last]
+                change (a • y).2.2.2.2.2 = a • y.2.2.2.2.2
+                rfl
+            | cast p =>
+                rw [rawEdgeTupleA3_castSucc, rawEdgeTupleA3_castSucc]
+                change (a • y).2.2.1 p = a • y.2.2.1 p
+                rfl }
+      cont := continuous_rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') p }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojCDiff : DifferentiableAt ℝ projC (raw z) := by
+    change DifferentiableAt ℝ LC (raw z)
+    exact LC.differentiableAt
+  have hprojGDiff : DifferentiableAt ℝ projG (raw z) := by
+    change DifferentiableAt ℝ LG (raw z)
+    exact LG.differentiableAt
+  have hCcomp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projC) hprojCDiff hrawDiff
+  have hGcomp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projG) hprojGDiff hrawDiff
+  have hLC : fderiv ℝ projC (raw z) = LC := by
+    change fderiv ℝ LC (raw z) = LC
+    exact LC.fderiv
+  have hLG : fderiv ℝ projG (raw z) = LG := by
+    change fderiv ℝ LG (raw z) = LG
+    exact LG.fderiv
+  have hCproj :
+      ((fderiv ℝ raw z) v).2.2.2.1 p =
+        (fderiv ℝ (fun y : E ↦ projC (raw y)) z) v := by
+    calc
+      ((fderiv ℝ raw z) v).2.2.2.1 p
+          = LC ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projC (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLC]
+            rfl
+      _ = (fderiv ℝ (fun y : E ↦ projC (raw y)) z) v := by
+            rw [← hCcomp]
+  have hGproj :
+      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p =
+        (fderiv ℝ (fun y : E ↦ projG (raw y)) z) v := by
+    calc
+      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p
+          = LG ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projG (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLG]
+            rfl
+      _ = (fderiv ℝ (fun y : E ↦ projG (raw y)) z) v := by
+            rw [← hGcomp]
+  have hcomponent :=
+    fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).2.2.2.1 p
+      + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.castSucc =
+    v.2.2.2.1 p -
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3 p * v.2.1 p
+  rw [hCproj, hGproj]
+  simpa [raw, E, projC, projG] using hcomponent
 
 /-- Reassembling raw-order tuple coordinates into an edge family is
 differentiable. -/

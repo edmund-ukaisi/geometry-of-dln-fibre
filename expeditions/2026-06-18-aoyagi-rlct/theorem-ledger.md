@@ -9948,6 +9948,24 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive actual derivative C unshear:
+`RetainedPassiveCoordinatesTopology.lean` proves
+`rawEdgeTupleA3_topologyTupleEdgeRawOrder`.
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply` and
+`fderiv_topologyTupleEdgeRawOrder_C_unshear_apply`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-c-unshear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-c-unshear.md`.
+
+This is the first retained-passive actual-derivative-to-formal-shape shear
+identity.  It proves only the lower-right `C` component after shearing by the
+lower-left raw derivative component.  Nonclaims: no full analytic derivative
+factorization, no explicit full determinant formula, no equality with
+`retainedPassiveFormalRawOrderJacobianAbsDetAt`, no measure pushforward, no
+normal crossings, no pole order, and no RLCT.
+
 Latest A2 edge-local `(F,C)` pair determinant:
 `MatrixLinearDeterminant.lean` proves
 `edgeLocalFCPairLinearMap_apply` and `edgeLocalFCPairLinearMap_det_eq` for the

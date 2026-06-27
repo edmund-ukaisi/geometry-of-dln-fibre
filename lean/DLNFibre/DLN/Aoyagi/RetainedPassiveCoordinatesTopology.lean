@@ -478,6 +478,29 @@ theorem topologyTupleEdgeRawOrder_F3
     (C := data.toCoordinateData.C) (Fin.last M)
 
 @[simp]
+theorem rawEdgeTupleA3_topologyTupleEdgeRawOrder
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) (p : Fin (M + 1)) :
+    rawEdgeTupleA3 (K := K) (ρ := ρ) (κ' := κ')
+        (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z) p =
+      ((ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA3 p := by
+  induction p using Fin.lastCases with
+  | last =>
+      rw [rawEdgeTupleA3_last]
+      change (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.2.2.2 =
+        ((ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA3
+          (Fin.last M)
+      rw [topologyTupleEdgeRawOrder_F3]
+  | cast p =>
+      rw [rawEdgeTupleA3_castSucc]
+      change (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z).2.2.1 p =
+        ((ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA3
+          p.castSucc
+      rw [topologyTupleEdgeRawOrder_A3passive]
+
+@[simp]
 theorem edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
     [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]

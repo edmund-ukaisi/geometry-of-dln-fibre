@@ -9878,3 +9878,40 @@ theorem reports `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: this is not the full retained-passive raw-order determinant formula,
 not an analytic `fderiv` theorem, not source-prior transport, not normal
 crossings, not pole order, and not RLCT.
+
+## 2026-06-27 A2 retained-passive actual derivative C unshear
+
+Reproduction:
+`reproduction-a2-retained-passive-actual-derivative-formal-shear-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-actual-derivative-c-unshear.md`.
+Review:
+`review-a2-retained-passive-actual-derivative-c-unshear.md`
+accepted by xhigh read-only reviewer `Euler the 5th` after a documentation
+indexing nit was fixed.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean
+```
+
+Lean now proves the first analytic shear identity comparing the actual
+Frechet derivative of `topologyTupleEdgeRawOrder` with the formal raw-order
+Jacobian shape.  The helper
+`rawEdgeTupleA3_topologyTupleEdgeRawOrder` identifies the lower-left raw
+readout with the solved lower-left block.  The theorem
+`fderiv_topologyTupleEdgeRawOrder_C_unshear_apply` proves that, at a
+determinant-chart point, adding the lower-left derivative component multiplied
+by the fixed basepoint `F2` coefficient changes the actual lower-right
+derivative block into
+
+```text
+v.C p - coord.solvedA3 p * v.F2 p.
+```
+
+This is the `C` component of the formal raw-order map after the determinant-one
+target shear.  It is not the full analytic determinant formula, not the
+absolute determinant comparison with the formal raw-order determinant, not a
+measure pushforward, not normal crossings, not pole order, and not RLCT.
