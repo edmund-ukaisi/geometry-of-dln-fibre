@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly terminal zero tail
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Review:
+`review-a2-retained-passive-dearly-terminal-zero-tail.md`, PASS by xhigh
+`Aquinas`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_withoutLast_last_apply
+```
+
+This is the terminal boundary for the retained-passive `dEarly` recurrence
+when the final `A3` block is zeroed by `retainedPassiveA3WithoutLast`.  The
+tail at index `M (Nat.le_succ M)` is pointwise constant zero, by the algebraic
+lemma `retainedPassiveLowerLeftProductTailSum_withoutLast_last`, so its
+Frechet derivative is zero at every ambient tuple and tangent.
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: not a solved terminal `A3` or `F3` derivative theorem, no `dCprod`
+staging, no `dPcast` staging, no target staging, no full positive-tail `F3`
+target staging, no determinant-one `LinearEquiv`, no actual derivative
+determinant equality, no measure transport, no normal crossings, no pole
+order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly product-rule dG substitution
 
 Reproduction:

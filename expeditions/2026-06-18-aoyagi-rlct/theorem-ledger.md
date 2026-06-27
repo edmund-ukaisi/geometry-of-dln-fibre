@@ -11563,3 +11563,27 @@ both new theorems have only the standard `[propext, Classical.choice,
 Quot.sound]` footprint.  Nonclaims: no `dCprod` staging, no `dPcast` staging,
 no target staging, no full positive-tail `F3` target staging, no determinant
 theorem, no measure theorem, no normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive dEarly terminal zero-tail boundary:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_withoutLast_last_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-zero-tail.md`
+passed by xhigh `Aquinas`.
+
+At the terminal tail index `M (Nat.le_succ M)`, the retained-passive lower-left
+product-tail sum built from `retainedPassiveA3WithoutLast` is pointwise the
+constant zero map, by the algebraic lemma
+`retainedPassiveLowerLeftProductTailSum_withoutLast_last`.  The derivative is
+therefore zero without any determinant-chart or invertibility hypothesis.
+Focused module build, `scripts/sorries`, `git diff --check`, full `DLNFibre`
+build, and theorem axiom audit passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+Nonclaims: not solved terminal lower-left `A3`/`F3`, no `dCprod` staging, no
+`dPcast` staging, no target staging, no full positive-tail `F3` target
+staging, no determinant theorem, no measure theorem, no normal crossings,
+pole order, or RLCT.

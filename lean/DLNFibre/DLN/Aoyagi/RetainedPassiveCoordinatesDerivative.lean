@@ -2602,6 +2602,65 @@ theorem fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSu
   rw [hA3] at hprodLocal
   simpa [A1fun, A3fun, Cfun, Tailfun, Cprod, A3p, Pcast, Nextfun, p] using hprodLocal
 
+set_option linter.style.longLine false in
+/-- The terminal retained-passive lower-left tail with the final `A3` block
+zeroed is the constant zero map, so its Frechet derivative is zero.
+
+This is the boundary case for the zeroed-final tail, not a statement about the
+solved terminal lower-left block. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_withoutLast_last_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) :
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y r ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 r
+    let A3fun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ r : Fin (M + 1), Matrix (κ' r.succ) ρ ℝ :=
+      fun y ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ r : Fin (M + 1), Matrix (κ' r.succ) (κ' r.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let TailLastfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) M (Nat.le_succ M)
+    (fderiv ℝ TailLastfun z) v =
+      (0 : Matrix (κ' (Fin.last (M + 1))) ρ ℝ) := by
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y r ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 r
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ r : Fin (M + 1), Matrix (κ' r.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ r : Fin (M + 1), Matrix (κ' r.succ) (κ' r.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let TailLastfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) M (Nat.le_succ M)
+  have hfun :
+      TailLastfun =
+        fun _ : TopologyTuple ρ κ' ℝ ↦
+          (0 : Matrix (κ' (Fin.last (M + 1))) ρ ℝ) := by
+    funext y
+    simp [TailLastfun, A1fun, A3fun, Cfun]
+  change (fderiv ℝ TailLastfun z) v =
+    (0 : Matrix (κ' (Fin.last (M + 1))) ρ ℝ)
+  rw [hfun]
+  rw [fderiv_const_apply]
+  rfl
+
 /-- The explicit lower-left product-tail sum built from solved `A1`, zeroed
 early `A3`, and stored `C` blocks is `C^1` at tuple determinant-chart
 points. -/

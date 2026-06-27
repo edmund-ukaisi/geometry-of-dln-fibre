@@ -21,6 +21,39 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next retained-passive `dEarly` recurrence boundary slice has landed
+locally: the terminal zeroed-tail companion.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-zero-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-zero-tail.md`.
+
+Lean proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_withoutLast_last_apply` in
+`RetainedPassiveCoordinatesDerivative.lean`.  At the terminal tail index
+`M (Nat.le_succ M)`, the lower-left product tail built from
+`retainedPassiveA3WithoutLast` is pointwise the constant zero map, hence its
+Frechet derivative is zero at every `z` and tangent `v`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed.  Xhigh reviewer `Aquinas` passed the terminal-boundary scope and
+proof route.  `scripts/sorries`, `git diff --check`, the full `DLNFibre`
+build, and theorem axiom audit passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: this is not the solved terminal lower-left `A3`/`F3` derivative,
+no `dCprod` staging, no `dPcast` staging, no target staging, no full
+positive-tail `F3` target staging, no determinant-one target-side
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
+Next frontier on this local ladder: source-stage `dCprod` in the retained-
+passive `dEarly` recurrence.  `dPcast` remains riskier because `Pcast` uses
+solved `A1`, including the endpoint inverse/Ctop block.
+
+Immediate predecessor: nonterminal product-rule `dG` substitution.
+
 The next retained-passive `dEarly` recurrence slice has landed locally: the
 nonterminal product-rule `dG` substitution.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`.

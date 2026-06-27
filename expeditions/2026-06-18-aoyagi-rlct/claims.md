@@ -9835,6 +9835,45 @@ Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
 full positive-tail `F3` target staging, no determinant theorem, no measure
 theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly terminal zero tail
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; full verification passed:
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audit passed.
+
+Claim: at the terminal tail index, the retained-passive lower-left product
+tail built from the zeroed-final `A3` family is pointwise constant zero:
+
+```text
+retainedPassiveLowerLeftProductTailSum
+  A1 (retainedPassiveA3WithoutLast A3) C M (Nat.le_succ M) = 0.
+```
+
+Therefore the Frechet derivative of the corresponding topology-tuple function
+is zero at every basepoint `z` and tangent `v`.
+
+Lean proves this as
+`fderiv_retainedPassiveLowerLeftProductTailSum_withoutLast_last_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-zero-tail.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-terminal-zero-tail.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-terminal-zero-tail.md`.
+
+Kill condition: if this theorem is read as a statement about the solved
+terminal lower-left `A3` or the terminal `F3` derivative, if it is given
+determinant-chart/invertibility hypotheses, or if it is advertised as
+`dCprod`/`dPcast` staging, target staging, determinant equality, measure
+transport, normal crossings, pole order, or RLCT, it is not the intended
+slice.
+
+Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
+full positive-tail `F3` target staging, no determinant theorem, no measure
+theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive dEarly dG source staging
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;
