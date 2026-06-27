@@ -14871,3 +14871,44 @@ Nonclaims: no source or target staging for `dD`, `dG`, or `dP`; no full
 positive-tail `F3` target staging; no determinant-one target-side
 `LinearEquiv`; no actual derivative determinant equality; no measure
 transport; no normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive dEarly dG Source Staging
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveA3WithoutLast_castSucc_apply
+fderiv_retainedPassiveA3WithoutLast_last_apply
+```
+
+These theorems source-stage the `dG` factor in the product-rule recurrence.
+For `q : Fin M`,
+
+```text
+d(retainedPassiveA3WithoutLast(data_y.A3seed)(q.castSucc))_z(v)
+  = v.2.2.1 q,
+```
+
+and at the terminal edge
+
+```text
+d(retainedPassiveA3WithoutLast(data_y.A3seed)(Fin.last M))_z(v) = 0.
+```
+
+The terminal zero is the zeroed retained-passive branch, not the solved
+terminal `A3`/`F3` derivative.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dg-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dg-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dg-source-staging.md`
+passed by xhigh `Halley` and xhigh `Nietzsche`.  Focused module build,
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audit passed.  Both new theorems have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no target staging, no `dD` or `dP` staging, no full positive-tail
+`F3` target staging, no determinant theorem, no measure theorem, no normal
+crossings, pole order, or RLCT.

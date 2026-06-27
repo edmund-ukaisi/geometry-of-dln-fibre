@@ -21,6 +21,40 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next retained-passive `dEarly` source-staging slice has landed locally:
+the `dG` factor for the zeroed lower-left family.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dg-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dg-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dg-source-staging.md`.
+
+Lean proves
+`fderiv_retainedPassiveA3WithoutLast_castSucc_apply` and
+`fderiv_retainedPassiveA3WithoutLast_last_apply` in
+`RetainedPassiveCoordinatesDerivative.lean`.  For nonterminal
+`q : Fin M`, the derivative of
+`retainedPassiveA3WithoutLast(data_y.A3seed)(q.castSucc)` is the passive
+source tangent `v.2.2.1 q`.  At `Fin.last M`, the derivative is zero.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed.  Xhigh scouts `Halley` and `Nietzsche` passed the math and
+Lean-terrain checks.  `scripts/sorries`, `git diff --check`, the full
+`DLNFibre` build, and theorem axiom audit passed for this checkpoint; both new
+theorems have only the standard `[propext, Classical.choice, Quot.sound]`
+footprint.
+
+Nonclaims: no target staging, no `dD` or `dP` staging, no full positive-tail
+`F3` target staging, no determinant-one target-side `LinearEquiv`, no actual
+derivative determinant equality, no measure transport, no normal crossings, no
+pole order, and no RLCT.
+
+Next frontier on this local ladder: substitute the source-staged `dG` into the
+product-rule recurrence, then stage `dD` and `dP` or iterate the recurrence.
+
+Immediate predecessor: product-rule expansion of the `dEarly` current
+summand.
+
 The next retained-passive `dEarly` rung has landed locally and is awaiting
 implementation review/full verification: the product-rule expansion of the
 current summand in the recursive derivative unfold.  Reproduction:

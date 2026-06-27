@@ -11518,3 +11518,26 @@ module build and full `DLNFibre` build passed; `scripts/sorries`,
 Nonclaims: no source or target staging for `dD`, `dG`, or `dP`, no full
 positive-tail `F3` target staging, no determinant theorem, no measure theorem,
 no normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive dEarly dG source staging:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassiveA3WithoutLast_castSucc_apply` and
+`fderiv_retainedPassiveA3WithoutLast_last_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dg-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dg-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dg-source-staging.md`
+passed by xhigh `Halley` and xhigh `Nietzsche`.
+
+The nonterminal theorem rewrites the derivative of the zeroed lower-left
+factor at `q.castSucc` as the passive source tangent `v.2.2.1 q`; the terminal
+theorem rewrites the derivative at `Fin.last M` as zero.  This is
+`retainedPassiveA3WithoutLast`, not the solved terminal lower-left derivative.
+Focused module build, `scripts/sorries`, `git diff --check`, full `DLNFibre`
+build, and theorem axiom audit passed; both new theorems have only the
+standard `[propext, Classical.choice, Quot.sound]` footprint.  Nonclaims: no
+target staging, no `dD` or `dP` staging, no full positive-tail `F3` target
+staging, no determinant theorem, no measure theorem, no normal crossings, pole
+order, or RLCT.

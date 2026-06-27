@@ -1535,6 +1535,70 @@ theorem differentiableAt_retainedPassiveA3WithoutLast
   · simpa [retainedPassiveA3WithoutLast, hp] using
       differentiableAt_A3seed (ρ := ρ) (κ' := κ') p z
 
+set_option linter.unusedFintypeInType false in
+/-- At a nonterminal passive lower-left edge, the zeroed-final `A3` family has
+Frechet derivative equal to the corresponding passive source tangent. -/
+theorem fderiv_retainedPassiveA3WithoutLast_castSucc_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [∀ j, Fintype (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) (q : Fin M) :
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+          q.castSucc) z) v =
+      v.2.2.1 q := by
+  let LA3 : TopologyTuple ρ κ' ℝ →L[ℝ]
+      Matrix (κ' q.castSucc.succ) ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.1 q
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  have hfun :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+          q.castSucc) =
+        fun y ↦ y.2.2.1 q := by
+    funext y
+    simp [retainedPassiveA3WithoutLast, ofTopologyTuple]
+  have hLA3 :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.1 q) z = LA3 :=
+    LA3.fderiv
+  rw [hfun, hLA3]
+  rfl
+
+set_option linter.unusedFintypeInType false in
+/-- At the terminal lower-left edge, the zeroed-final `A3` family is constant
+zero, so its Frechet derivative is zero. -/
+theorem fderiv_retainedPassiveA3WithoutLast_last_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [∀ j, Fintype (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) :
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+          (Fin.last M)) z) v =
+      (0 : Matrix (κ' (Fin.last M).succ) ρ ℝ) := by
+  have hfun :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+          (Fin.last M)) =
+        fun _ : TopologyTuple ρ κ' ℝ ↦
+          (0 : Matrix (κ' (Fin.last M).succ) ρ ℝ) := by
+    funext y
+    simp [retainedPassiveA3WithoutLast]
+  rw [hfun]
+  rw [fderiv_const_apply]
+  rfl
+
 /-- The zeroed-final lower-left family is `C^1` componentwise as a function of
 the ambient tuple coordinates. -/
 theorem contDiffAt_retainedPassiveA3WithoutLast

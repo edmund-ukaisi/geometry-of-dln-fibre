@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly dG source staging
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-dg-source-staging.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-dg-source-staging.md`.
+Review:
+`review-a2-retained-passive-dearly-dg-source-staging.md`, PASS by xhigh
+`Halley` and xhigh `Nietzsche`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveA3WithoutLast_castSucc_apply
+fderiv_retainedPassiveA3WithoutLast_last_apply
+```
+
+These theorems source-stage the `dG` factor in the retained-passive `dEarly`
+product-rule recurrence.  For nonterminal `q : Fin M`, the derivative is the
+passive source tangent `v.2.2.1 q`; at the terminal edge `Fin.last M`, it is
+zero.  This is the zeroed retained-passive `G_p`, not the solved terminal
+lower-left block.
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; both new theorems have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no target staging, no `dD` or `dP` staging, no full positive-tail
+`F3` target staging, no determinant-one `LinearEquiv`, no actual derivative
+determinant equality, no measure transport, no normal crossings, no pole
+order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly product-rule derivative unfold
 
 Reproduction:

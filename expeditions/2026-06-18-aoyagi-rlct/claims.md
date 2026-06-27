@@ -9788,6 +9788,46 @@ positive-tail `F3` target staging, no whole-tuple target-side normalization,
 no target-side determinant-one `LinearEquiv`, no determinant equality, no
 measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly dG source staging
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh math and Lean-terrain scout checks passed;
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audit passed.
+
+Claim: the derivative of the zeroed retained-passive lower-left factor
+
+```text
+G_p(y) = retainedPassiveA3WithoutLast(data_y.A3seed)(p)
+```
+
+is source-staged in the two endpoint cases:
+
+```text
+dG_{q.castSucc,z}(v) = v.2.2.1 q,
+dG_{Fin.last M,z}(v) = 0.
+```
+
+Lean proves this as
+`fderiv_retainedPassiveA3WithoutLast_castSucc_apply` and
+`fderiv_retainedPassiveA3WithoutLast_last_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dg-source-staging.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dg-source-staging.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dg-source-staging.md`.
+
+Kill condition: if the terminal zero theorem is read as the solved terminal
+`A3`/`F3` derivative, or if this is advertised as target staging, determinant
+equality, measure transport, normal crossings, pole order, or RLCT, it is not
+the intended slice.
+
+Nonclaims: no target staging, no `dD` or `dP` staging, no full positive-tail
+`F3` target staging, no determinant theorem, no measure theorem, no normal
+crossings, pole order, or RLCT.
+
 ## A2 retained-passive target edge-pair recovery
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;
