@@ -2,6 +2,8 @@ import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteMExtraction
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.Case222CoverGETail
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurAlg
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurShear
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchur` — the general-`M` R1 hfin Schur/radial ladder
@@ -161,7 +163,144 @@ theorem schur_minorPivot_split {r p : ℕ} (j : ℕ) (hj : j ≤ r) :
             ≤ c₁ * (frobSq (fun a : Fin j => rmatMul (fun x y => R x y) S ⟨a, lt_of_lt_of_le a.2 hj⟩)
                   + frobSq (rmatMul (fun a b => Sc a b)
                       (fun a : Fin (r - j) => S ⟨j + a, by omega⟩))) := by
-  sorry
+  -- the uniform constants (Codex route ii: c = 2 + 2·j·(r−j), from the Cauchy-Schwarz shear bound)
+  refine ⟨1 / (2 + 2 * (j : ℝ) * ((r - j : ℕ) : ℝ)), 2 + 2 * (j : ℝ) * ((r - j : ℕ) : ℝ),
+    by positivity, by positivity, ?_⟩
+  intro R S hbd hpivot hne
+  -- the four blocks (raw-function form) and the inverse pivot block
+  set M11f : Fin j → Fin j → ℝ :=
+    fun a b => R ⟨a, lt_of_lt_of_le a.2 hj⟩ ⟨b, lt_of_lt_of_le b.2 hj⟩ with hM11f
+  set M12f : Fin j → Fin (r - j) → ℝ :=
+    fun a b => R ⟨a, lt_of_lt_of_le a.2 hj⟩ ⟨j + b, by omega⟩ with hM12f
+  set M21f : Fin (r - j) → Fin j → ℝ :=
+    fun a b => R ⟨j + a, by omega⟩ ⟨b, lt_of_lt_of_le b.2 hj⟩ with hM21f
+  set M22f : Fin (r - j) → Fin (r - j) → ℝ :=
+    fun a b => R ⟨j + a, by omega⟩ ⟨j + b, by omega⟩ with hM22f
+  set M11 : Matrix (Fin j) (Fin j) ℝ := Matrix.of M11f with hM11
+  -- top/bottom rows of S
+  set Stop : Fin j → Fin p → ℝ := fun a col => S ⟨a, lt_of_lt_of_le a.2 hj⟩ col with hStop
+  set Sbot : Fin (r - j) → Fin p → ℝ := fun a col => S ⟨j + a, by omega⟩ col with hSbot
+  -- the Schur complement as a raw function and matrix
+  set Scf : Fin (r - j) → Fin (r - j) → ℝ :=
+    fun x y => M22f x y - rmatMul (rmatMul M21f (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ)) M12f x y with hScf
+  -- the (R·S) row blocks
+  set gtop : Fin j → Fin p → ℝ :=
+    fun a col => rmatMul (fun x y => R x y) S ⟨a, lt_of_lt_of_le a.2 hj⟩ col with hgtop
+  set gbot : Fin (r - j) → Fin p → ℝ :=
+    fun a col => rmatMul (fun x y => R x y) S ⟨j + a, by omega⟩ col with hgbot
+  set A : Fin (r - j) → Fin j → ℝ := rmatMul M21f (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ) with hA
+  set Sch : Fin (r - j) → Fin p → ℝ := rmatMul Scf Sbot with hSch
+  -- pivot inverse: Minv·M11 = I (left inverse), as a δ-sum
+  have hunit : IsUnit M11.det := isUnit_iff_ne_zero.2 hne
+  have hMinv : ∀ t k, (∑ i, (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ) t i * M11f i k)
+      = if t = k then 1 else 0 := by
+    intro t k
+    have hmul : ((M11⁻¹ : Matrix (Fin j) (Fin j) ℝ) * M11) t k = if t = k then 1 else 0 := by
+      rw [Matrix.nonsing_inv_mul M11 hunit]; simp [Matrix.one_apply]
+    rw [Matrix.mul_apply] at hmul
+    rw [← hmul]; rfl
+  -- the contraction split: gtop = M11·Stop + M12·Sbot, gbot = M21·Stop + M22·Sbot
+  have hgtop_split : ∀ a col,
+      gtop a col = (∑ k, M11f a k * Stop k col) + ∑ b, M12f a b * Sbot b col := by
+    intro a col
+    rw [hgtop]; simp only [rmatMul]
+    rw [fin_sum_block_split j hj (fun x => R ⟨a, lt_of_lt_of_le a.2 hj⟩ x * S x col)]
+  have hgbot_split : ∀ a col,
+      gbot a col = (∑ k, M21f a k * Stop k col) + ∑ b, M22f a b * Sbot b col := by
+    intro a col
+    rw [hgbot]; simp only [rmatMul]
+    rw [fin_sum_block_split j hj (fun x => R ⟨j + a, by omega⟩ x * S x col)]
+  -- the KEY IDENTITY: gbot = A·gtop + Sch
+  have hid : ∀ a col, gbot a col = rmatMul A gtop a col + Sch a col := by
+    intro a col
+    rw [hgbot_split a col]
+    rw [show (rmatMul A gtop a col) = ∑ i, A a i * gtop i col from rfl]
+    have := schur_key_identity M11f M12f M21f M22f
+      (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ) Stop Sbot hMinv a col
+    rw [this]
+    congr 1
+    · refine Finset.sum_congr rfl (fun i _ => ?_); rw [hgtop_split i col]
+  -- index maps: top : Fin j → Fin r, bot : Fin (r−j) → Fin r
+  set topI : Fin j → Fin r := fun a => ⟨a, lt_of_lt_of_le a.2 hj⟩ with htopI
+  set botI : Fin (r - j) → Fin r := fun a => ⟨j + a, by omega⟩ with hbotI
+  -- M11 = R.submatrix topI topI, M21f-matrix = R.submatrix botI topI
+  have hM11_sub : M11 = R.submatrix topI topI := by
+    rw [hM11]; ext a b; simp [Matrix.submatrix_apply, hM11f, htopI]
+  have hM21_sub : Matrix.of M21f = R.submatrix botI topI := by
+    ext a b; simp [Matrix.submatrix_apply, hM21f, htopI, hbotI]
+  -- the shear bound |A| ≤ 1  (rowShear, with top/bot index maps)
+  have hAbd : ∀ a i, |A a i| ≤ 1 := by
+    intro a i
+    have hpiv' : ∀ (I J : Fin j → Fin r),
+        |(R.submatrix I J).det| ≤ |(R.submatrix topI topI).det| := by
+      intro I J; rw [← hM11_sub]; exact hpivot I J
+    have hne' : (R.submatrix topI topI).det ≠ 0 := by rw [← hM11_sub]; exact hne
+    have hrow := rowShear_entry_le_one R topI topI botI hpiv' hne' a i
+    -- bridge A a i = ((R.submatrix botI topI) * (R.submatrix topI topI)⁻¹) a i
+    have hAeq : A a i
+        = ((R.submatrix botI topI) * (R.submatrix topI topI)⁻¹) a i := by
+      rw [hA]
+      rw [show ((R.submatrix botI topI) * (R.submatrix topI topI)⁻¹) a i
+          = ∑ k, (R.submatrix botI topI) a k * (R.submatrix topI topI)⁻¹ k i from
+        by rw [Matrix.mul_apply]]
+      rw [← hM21_sub, ← hM11_sub]
+      rfl
+    rw [hAeq]; exact hrow
+  -- the abstract comparison (provides both bounds with the uniform constants)
+  have hcmp := schur_abstract_comparison gtop gbot Sch A hAbd hid
+  -- the frobSq block split: frobSq(R·S) = frobSq gtop + frobSq gbot
+  have hRSsplit : frobSq (rmatMul (fun a b => R a b) S) = frobSq gtop + frobSq gbot := by
+    rw [frobSq_fin_block_split j hj (rmatMul (fun a b => R a b) S)]
+  -- the Sc·S_bot term matches Sch (Matrix-mult = rmatMul; the Sbot' fun = Sbot)
+  have hScf_eq : (fun a b => (Matrix.of M22f - Matrix.of M21f * M11⁻¹ * Matrix.of M12f) a b) = Scf := by
+    funext x y
+    -- (Matrix.of M21f * M11⁻¹ * Matrix.of M12f) x y = rmatMul (rmatMul M21f M11⁻¹) M12f x y
+    have hprod : (Matrix.of M21f * M11⁻¹ * Matrix.of M12f) x y
+        = rmatMul (rmatMul M21f (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ)) M12f x y := by
+      rw [Matrix.mul_apply]
+      simp only [rmatMul]
+      refine Finset.sum_congr rfl (fun b _ => ?_)
+      rw [Matrix.mul_apply]; rfl
+    rw [hScf]
+    show (Matrix.of M22f - Matrix.of M21f * M11⁻¹ * Matrix.of M12f) x y
+        = M22f x y - rmatMul (rmatMul M21f (M11⁻¹ : Matrix (Fin j) (Fin j) ℝ)) M12f x y
+    rw [Matrix.sub_apply, Matrix.of_apply, hprod]
+  have hSch_eq : frobSq (rmatMul (fun a b => (Matrix.of M22f - Matrix.of M21f * M11⁻¹ * Matrix.of M12f) a b)
+      (fun a : Fin (r - j) => S ⟨j + a, by omega⟩)) = frobSq Sch := by
+    rw [hScf_eq, hSch]
+  -- the (R·S)_top term matches gtop
+  have hgtop_eq : frobSq (fun a : Fin j => rmatMul (fun x y => R x y) S ⟨a, lt_of_lt_of_le a.2 hj⟩)
+      = frobSq gtop := rfl
+  -- provide Sc (the structural pin, rfl) + the three remaining conjuncts
+  refine ⟨Matrix.of M22f - Matrix.of M21f * M11⁻¹ * Matrix.of M12f, rfl, ?_, ?_, ?_⟩
+  · -- the Schur determinant identity  R.det = M11.det · Sc.det (via det_fromBlocks₁₁ + reindex)
+    have hsplit : r = j + (r - j) := by omega
+    let e : Fin r ≃ Fin j ⊕ Fin (r - j) := (finCongr hsplit).trans finSumFinEquiv.symm
+    have hesl : ∀ a : Fin j, e.symm (Sum.inl a) = topI a := by
+      intro a; apply Fin.ext; simp [e, finSumFinEquiv, htopI]
+    have hesr : ∀ b : Fin (r - j), e.symm (Sum.inr b) = botI b := by
+      intro b; apply Fin.ext; simp [e, finSumFinEquiv, hbotI]
+    have hFB : Matrix.fromBlocks M11 (Matrix.of M12f) (Matrix.of M21f) (Matrix.of M22f)
+        = R.submatrix e.symm e.symm := by
+      ext x y
+      cases x with
+      | inl a => cases y with
+        | inl b => simp [Matrix.submatrix_apply, hesl, hM11, hM11f, htopI]
+        | inr b => simp [Matrix.submatrix_apply, hesl, hesr, hM12f, htopI, hbotI]
+      | inr a => cases y with
+        | inl b => simp [Matrix.submatrix_apply, hesl, hesr, hM21f, htopI, hbotI]
+        | inr b => simp [Matrix.submatrix_apply, hesr, hM22f, hbotI]
+    have hInv : Invertible M11 := M11.invertibleOfIsUnitDet hunit
+    have hRdet : R.det = (Matrix.fromBlocks M11 (Matrix.of M12f) (Matrix.of M21f)
+        (Matrix.of M22f)).det := by
+      rw [hFB, Matrix.det_submatrix_equiv_self e.symm]
+    rw [hRdet, Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv]
+  · -- the lower bound  c₀·D ≤ frobSq(R·S)
+    rw [hRSsplit, hgtop_eq, hSch_eq]
+    exact hcmp.1
+  · -- the upper bound  frobSq(R·S) ≤ c₁·D
+    rw [hRSsplit, hgtop_eq, hSch_eq]
+    exact hcmp.2
 
 /-! ## N3 — the per-chart finiteness: the a-axis radial divisor (PROVED) + the chart-integral (SKELETON)
 
