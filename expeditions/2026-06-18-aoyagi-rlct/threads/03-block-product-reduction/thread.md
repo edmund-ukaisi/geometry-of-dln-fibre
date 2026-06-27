@@ -9772,3 +9772,53 @@ Nonclaims: no source-prior transport, selected-entry image equality,
 source-rank coverage, normal crossings, pole order, or RLCT.  The current VM
 could not extract the PDF, so source-fidelity against Aoyagi p.13 still needs
 a manual/PDF-readable check before a final source claim depends on the note.
+
+## 2026-06-27 A2 fixed-passive formal Jacobian determinant
+
+Reproduction:
+`reproduction-a2-fixed-passive-formal-jacobian-determinant.md`.
+Statement card:
+`statement-card-a2-fixed-passive-formal-jacobian-determinant.md`.
+Review:
+`review-a2-fixed-passive-formal-jacobian-determinant.md`
+accepted by xhigh read-only reviewer `Arendt the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionStepJacobian.lean`.
+
+Lean now proves the exact determinant of the one-step fixed-passive p.13
+formal tangent map.  New names:
+
+```text
+productStepFixedPassiveDiagonalFormalJacobian
+productStepFixedPassiveCShear
+productStepFixedPassiveF3Shear
+productStepFixedPassiveFormalJacobian_eq_shear_comp_diagonal
+productStepFixedPassiveDiagonalFormalJacobian_det_eq
+productStepFixedPassiveCShear_det_eq_one
+productStepFixedPassiveF3Shear_det_eq_one
+productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks
+productStepFixedPassiveFormalJacobian_det_eq
+```
+
+The final theorem states
+
+```text
+LinearMap.det (productStepFixedPassiveFormalJacobian C1 D A1 A3)
+  = A1.det ^ Fintype.card rho
+    * (-A1^{-1}).det ^ Fintype.card nu.
+```
+
+The proof factors the map as one diagonal product map followed by two
+determinant-one shears.  This closes the first formal-linear determinant
+subproblem needed for the retained-passive explicit determinant route.
+
+Focused `ProductReductionStepJacobian` and full `DLNFibre` builds passed.
+The full build reports only the existing linter warning profile.  `scripts/sorries`
+reported `0 sorry`, `0 #exit`, `0 native_decide`, and `0 axiom`.
+`git diff --check` passed.  `#print axioms` for the two new determinant
+theorems reports `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: this is not the retained-passive total determinant formula, not an
+analytic `fderiv` theorem, not source-prior transport, not normal crossings,
+not pole order, and not RLCT.

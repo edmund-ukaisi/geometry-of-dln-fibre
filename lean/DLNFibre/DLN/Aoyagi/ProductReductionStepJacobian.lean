@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.ChartTopology
+import DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant
 import Mathlib.Data.Matrix.Bilinear
 import Mathlib.LinearAlgebra.Determinant
 
@@ -275,6 +276,196 @@ def productStepFixedPassiveFormalJacobianInverse
           simp [Matrix.mul_smul]
         · ext i j
           simp [Matrix.mul_smul, sub_eq_add_neg]
+
+/-- A finite product of finite free modules is finite, used locally for
+product-space determinant calculations. -/
+private theorem moduleFiniteProd
+    {R M N : Type*} [Semiring R]
+    [AddCommMonoid M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommMonoid N] [Module R N] [Module.Free R N] [Module.Finite R N] :
+    Module.Finite R (M × N) :=
+  Module.Finite.of_basis
+    ((Module.Free.chooseBasis R M).prod (Module.Free.chooseBasis R N))
+
+/-- Determinant of a product map, with the finite product basis supplied
+locally. -/
+private theorem linearMap_det_prodMap'
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : M →ₗ[R] M) (g : N →ₗ[R] N) :
+    LinearMap.det (f.prodMap g) = LinearMap.det f * LinearMap.det g := by
+  haveI : Module.Finite R (M × N) := moduleFiniteProd
+  exact LinearMap.det_prodMap f g
+
+/-- A lower product shear has determinant equal to the product of its diagonal
+determinants. -/
+private theorem linearEquiv_det_skewProd_toLinearMap
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (eM : M ≃ₗ[R] M) (eN : N ≃ₗ[R] N) (f : M →ₗ[R] N) :
+    LinearMap.det ((eM.skewProd eN f : M × N →ₗ[R] M × N)) =
+      LinearMap.det (eM : M →ₗ[R] M) * LinearMap.det (eN : N →ₗ[R] N) := by
+  classical
+  let b := Module.Free.chooseBasis R M
+  let c := Module.Free.chooseBasis R N
+  haveI : Module.Finite R (M × N) := moduleFiniteProd
+  rw [← LinearMap.det_toMatrix (b.prod c), ← LinearMap.det_toMatrix b,
+    ← LinearMap.det_toMatrix c]
+  have hmat :
+      LinearMap.toMatrix (b.prod c) (b.prod c)
+        ((eM.skewProd eN f : M × N →ₗ[R] M × N)) =
+        Matrix.fromBlocks
+          (LinearMap.toMatrix b b (eM : M →ₗ[R] M)) 0
+          (LinearMap.toMatrix b c f)
+          (LinearMap.toMatrix c c (eN : N →ₗ[R] N)) := by
+    ext (i | i) (j | j) <;>
+      simp [LinearMap.toMatrix, LinearEquiv.skewProd_apply, Pi.single_apply]
+  rw [hmat, Matrix.det_fromBlocks_zero₁₂]
+
+/-- Diagonal part of the fixed-passive p. 13 formal Jacobian. -/
+def productStepFixedPassiveDiagonalFormalJacobian
+    (A1 : Matrix ρ ρ K) :
+    ProductStepFixedPassiveRawTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) →ₗ[K]
+      ProductStepFixedPassiveChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (mulRightLinearMap ρ K A1).prodMap
+    ((LinearMap.id : Matrix π ρ K →ₗ[K] Matrix π ρ K).prodMap
+      ((mulLeftLinearMap ν K (-A1⁻¹)).prodMap
+        (LinearMap.id : Matrix μ ν K →ₗ[K] Matrix μ ν K)))
+
+/-- The fixed-passive `C`-coordinate shear after diagonalizing `F2`. -/
+def productStepFixedPassiveCShear
+    (A3 : Matrix μ ρ K) :
+    ProductStepFixedPassiveChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductStepFixedPassiveChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  (LinearEquiv.refl K (Matrix ρ ρ K)).prodCongr
+    ((LinearEquiv.refl K (Matrix π ρ K)).prodCongr
+      ((LinearEquiv.refl K (Matrix ρ ν K)).skewProd
+        (LinearEquiv.refl K (Matrix μ ν K))
+        (mulLeftLinearMap ν K A3)))
+
+/-- The fixed-passive `F3`-coordinate shear after exposing `Ctop`. -/
+def productStepFixedPassiveF3Shear
+    (C1 : Matrix ρ ρ K) (D : Matrix π μ K)
+    (A1 : Matrix ρ ρ K) (A3 : Matrix μ ρ K) :
+    ProductStepFixedPassiveChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) ≃ₗ[K]
+      ProductStepFixedPassiveChartTangent (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) :=
+  let Ctop : Matrix ρ ρ K := C1 * A1
+  let H : Matrix ρ ρ K →ₗ[K] Matrix π ρ K :=
+    (mulRightLinearMap π K Ctop⁻¹).comp
+      (mulLeftLinearMap ρ K (D * A3 * Ctop⁻¹))
+  (LinearEquiv.refl K (Matrix ρ ρ K)).skewProd
+    (LinearEquiv.refl K
+      (Matrix π ρ K × (Matrix ρ ν K × Matrix μ ν K)))
+    (H.prod (0 : Matrix ρ ρ K →ₗ[K] (Matrix ρ ν K × Matrix μ ν K)))
+
+/-- Factorization of the fixed-passive formal Jacobian into one diagonal map
+and determinant-one shears. -/
+theorem productStepFixedPassiveFormalJacobian_eq_shear_comp_diagonal
+    (C1 : Matrix ρ ρ K) (D : Matrix π μ K)
+    (A1 : Matrix ρ ρ K) (A3 : Matrix μ ρ K) :
+    productStepFixedPassiveFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) C1 D A1 A3 =
+      (productStepFixedPassiveF3Shear
+          (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) C1 D A1 A3).toLinearMap.comp
+        ((productStepFixedPassiveCShear
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) A3).toLinearMap.comp
+          (productStepFixedPassiveDiagonalFormalJacobian
+            (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) A1)) := by
+  apply LinearMap.ext
+  intro v
+  rcases v with ⟨dC1, dF3old, dA2, dA4⟩
+  simp [productStepFixedPassiveFormalJacobian,
+    productStepFixedPassiveDiagonalFormalJacobian,
+    productStepFixedPassiveCShear, productStepFixedPassiveF3Shear,
+    LinearEquiv.skewProd_apply, Matrix.mul_assoc, sub_eq_add_neg]
+
+/-- The diagonal fixed-passive formal Jacobian contributes only the two
+matrix-multiplication determinants. -/
+theorem productStepFixedPassiveDiagonalFormalJacobian_det_eq
+    [Finite π] [Finite ν] (A1 : Matrix ρ ρ K) :
+    LinearMap.det
+      (productStepFixedPassiveDiagonalFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) A1) =
+      LinearMap.det (mulRightLinearMap ρ K A1 :
+          Matrix ρ ρ K →ₗ[K] Matrix ρ ρ K) *
+        LinearMap.det (mulLeftLinearMap ν K (-A1⁻¹) :
+          Matrix ρ ν K →ₗ[K] Matrix ρ ν K) := by
+  unfold productStepFixedPassiveDiagonalFormalJacobian
+  letI : Module.Finite K (Matrix ρ ν K × Matrix μ ν K) := moduleFiniteProd
+  letI :
+      Module.Finite K
+        (Matrix π ρ K × (Matrix ρ ν K × Matrix μ ν K)) :=
+    moduleFiniteProd
+  rw [linearMap_det_prodMap', linearMap_det_prodMap', linearMap_det_prodMap']
+  simp
+
+/-- The fixed-passive `C`-coordinate shear has determinant one. -/
+theorem productStepFixedPassiveCShear_det_eq_one
+    [Finite π] [Finite ν] (A3 : Matrix μ ρ K) :
+    LinearMap.det
+      (productStepFixedPassiveCShear
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) A3).toLinearMap = 1 := by
+  unfold productStepFixedPassiveCShear
+  letI : Module.Finite K (Matrix ρ ν K × Matrix μ ν K) := moduleFiniteProd
+  letI :
+      Module.Finite K
+        (Matrix π ρ K × (Matrix ρ ν K × Matrix μ ν K)) :=
+    moduleFiniteProd
+  rw [LinearEquiv.coe_prodCongr, linearMap_det_prodMap',
+    LinearEquiv.coe_prodCongr, linearMap_det_prodMap',
+    linearEquiv_det_skewProd_toLinearMap]
+  simp
+
+/-- The fixed-passive `F3`-coordinate shear has determinant one. -/
+theorem productStepFixedPassiveF3Shear_det_eq_one
+    [Finite π] [Finite ν]
+    (C1 : Matrix ρ ρ K) (D : Matrix π μ K)
+    (A1 : Matrix ρ ρ K) (A3 : Matrix μ ρ K) :
+    LinearMap.det
+      (productStepFixedPassiveF3Shear
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) C1 D A1 A3).toLinearMap = 1 := by
+  unfold productStepFixedPassiveF3Shear
+  letI : Module.Finite K (Matrix ρ ν K × Matrix μ ν K) := moduleFiniteProd
+  letI :
+      Module.Finite K
+        (Matrix π ρ K × (Matrix ρ ν K × Matrix μ ν K)) :=
+    moduleFiniteProd
+  rw [linearEquiv_det_skewProd_toLinearMap]
+  simp
+
+/-- Exact determinant of the fixed-passive p. 13 formal Jacobian, expressed as
+the two nontrivial diagonal multiplication determinants. -/
+theorem productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks
+    [Finite π] [Finite ν]
+    (C1 : Matrix ρ ρ K) (D : Matrix π μ K)
+    (A1 : Matrix ρ ρ K) (A3 : Matrix μ ρ K) :
+    LinearMap.det
+      (productStepFixedPassiveFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) C1 D A1 A3) =
+      LinearMap.det (mulRightLinearMap ρ K A1 :
+          Matrix ρ ρ K →ₗ[K] Matrix ρ ρ K) *
+        LinearMap.det (mulLeftLinearMap ν K (-A1⁻¹) :
+          Matrix ρ ν K →ₗ[K] Matrix ρ ν K) := by
+  rw [productStepFixedPassiveFormalJacobian_eq_shear_comp_diagonal]
+  rw [LinearMap.det_comp, LinearMap.det_comp]
+  rw [productStepFixedPassiveF3Shear_det_eq_one,
+    productStepFixedPassiveCShear_det_eq_one,
+    productStepFixedPassiveDiagonalFormalJacobian_det_eq]
+  simp
+
+/-- Exact determinant of the fixed-passive p. 13 formal Jacobian. -/
+theorem productStepFixedPassiveFormalJacobian_det_eq
+    [Finite π] [Fintype ν]
+    (C1 : Matrix ρ ρ K) (D : Matrix π μ K)
+    (A1 : Matrix ρ ρ K) (A3 : Matrix μ ρ K) :
+    LinearMap.det
+      (productStepFixedPassiveFormalJacobian
+        (ρ := ρ) (π := π) (μ := μ) (ν := ν) (K := K) C1 D A1 A3) =
+      A1.det ^ Fintype.card ρ * (-A1⁻¹).det ^ Fintype.card ν := by
+  rw [productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks,
+    linearMap_det_mulRightLinearMap, linearMap_det_mulLeftLinearMap]
 
 /-- The fixed-passive p. 13 coordinate change has an invertible formal
 differential on the determinant chart. -/

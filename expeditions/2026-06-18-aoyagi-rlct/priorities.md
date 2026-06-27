@@ -6368,3 +6368,17 @@ this lane is the retained-passive derivative factorization itself.  Do not add
 more local-source measure wrappers unless a concrete downstream theorem
 consumes the exact wrapper.  The source-PDF fidelity check for the determinant
 reproduction is still pending because this VM lacks a PDF text extractor.
+
+A2 fixed-passive formal Jacobian determinant has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-fixed-passive-formal-jacobian-determinant.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-fixed-passive-formal-jacobian-determinant.md`.
+Lean proves
+`productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks` and
+`productStepFixedPassiveFormalJacobian_det_eq` in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionStepJacobian.lean`.
+
+Next priority in this determinant lane: lift from this fixed-passive one-step
+factor to the full retained-passive formal-linear factorization.  Do not use
+the one-step raw-to-chart determinant as the retained-passive total formula
+without matching orientation and endpoint solves (`Tail` and `LastTop`).

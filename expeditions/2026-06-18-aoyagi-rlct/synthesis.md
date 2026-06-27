@@ -13669,3 +13669,31 @@ determinant API
 Remaining gap: no explicit retained-passive factor formula yet; next work is
 the full derivative factorization into determinant-one shears/permutations
 and the `Tail`, edge-local `A p`, and `LastTop` factors.
+
+Latest fixed-passive formal Jacobian determinant:
+`ProductReductionStepJacobian.lean` now proves the exact determinant of the
+one-step fixed-passive p.13 formal map.  The map factors as
+
+```text
+(F3 shear) o (C shear) o (diagonal map),
+```
+
+where the two shears have determinant `1` and the diagonal map contributes
+right multiplication by `A1` on `rho x rho` matrices and left multiplication
+by `-A1^{-1}` on `rho x nu` matrices.  The final Lean theorem is
+
+```text
+productStepFixedPassiveFormalJacobian_det_eq
+```
+
+with determinant
+
+```text
+A1.det ^ Fintype.card rho
+* (-A1^{-1}).det ^ Fintype.card nu.
+```
+
+This is a formal-linear one-step determinant, not the retained-passive total
+formula.  It should be used next as a component in the larger factorization,
+with orientation and endpoint conventions checked against the retained
+coordinate map.

@@ -9413,3 +9413,37 @@ Kill conditions:
 - Do not consume this as a source-prior transport theorem, selected-entry
   target-image theorem, source-rank coverage theorem, normal-crossing theorem,
   pole-order theorem, or RLCT theorem.
+
+## A2 fixed-passive formal Jacobian determinant
+
+Status: Proved in Lean; reproduced on paper; reviewed.
+
+Claim: the one-step fixed-passive p.13 formal Jacobian has determinant
+
+```text
+det(A1)^(|rho|) * det(-A1^{-1})^(|nu|)
+```
+
+in raw-to-chart orientation.  Lean proves this as
+`productStepFixedPassiveFormalJacobian_det_eq`, after first proving the
+factorization
+`productStepFixedPassiveFormalJacobian_eq_shear_comp_diagonal` and the
+intermediate multiplication-block determinant theorem
+`productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-fixed-passive-formal-jacobian-determinant.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-fixed-passive-formal-jacobian-determinant.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-passive-formal-jacobian-determinant.md`
+accepted by xhigh `Arendt the 4th`.
+
+Kill condition: if this theorem is used inside the retained-passive total
+determinant calculation, first match orientation and endpoint conventions.
+The retained-passive total formula has additional `Tail`, edge-local `A p`,
+and `LastTop` factors.
+
+Nonclaims: no analytic `fderiv` theorem, retained-passive total determinant
+formula, source-prior transport, normal crossings, pole order, or RLCT is
+proved by this slice.

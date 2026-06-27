@@ -9948,6 +9948,35 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 fixed-passive formal Jacobian determinant:
+`ProductReductionStepJacobian.lean` defines the diagonal/shear factorization
+of `productStepFixedPassiveFormalJacobian` and proves
+
+```text
+productStepFixedPassiveFormalJacobian_eq_shear_comp_diagonal
+productStepFixedPassiveFormalJacobian_det_eq_multiplication_blocks
+productStepFixedPassiveFormalJacobian_det_eq
+```
+
+The determinant theorem is the raw-to-chart fixed-passive one-step formula
+
+```text
+A1.det ^ Fintype.card rho
+* (-A1^{-1}).det ^ Fintype.card nu.
+```
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-fixed-passive-formal-jacobian-determinant.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-fixed-passive-formal-jacobian-determinant.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-fixed-passive-formal-jacobian-determinant.md`
+accepted by xhigh `Arendt the 4th`.
+
+This is finite formal-linear Jacobian arithmetic only.  It does not prove the
+retained-passive total determinant formula, an analytic derivative theorem,
+source-prior transport, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive raw-order determinant formula reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-determinant-formula.md`
 and
