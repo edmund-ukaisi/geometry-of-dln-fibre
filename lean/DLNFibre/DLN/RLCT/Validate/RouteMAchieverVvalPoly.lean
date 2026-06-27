@@ -366,4 +366,74 @@ theorem achieverUfun_eq_eval (hL : 0 < L) (hN : 0 < routeMAmbient M)
     VvalGen_eq_sqSumHmat0 (x (structPivot M hN)) (genBlkFlatStruct M (tach M) (structAdm_tach M hL) x)
       (hleStruct M (tach M) (structAdm_tach M hL))]
 
+/-! ## `Umeas` (measurability) + `Ubound` a.e.-positivity from `UPolyGen ≠ 0` -/
+
+/-- **`achieverUfun` is measurable** — it equals `eval x UPolyGen`, a polynomial map, hence continuous. -/
+theorem achieverUfun_measurable (hL : 0 < L) (hN : 0 < routeMAmbient M) :
+    Measurable (achieverUfun M hL hN) := by
+  have hcont : Continuous (achieverUfun M hL hN) := by
+    have : achieverUfun M hL hN
+        = fun x => MvPolynomial.eval x (UPolyGen (structAdm_tach M hL) hN
+            (hleStruct M (tach M) (structAdm_tach M hL))) := by
+      funext x; exact achieverUfun_eq_eval hL hN x
+    rw [this]; exact MvPolynomial.continuous_eval _
+  exact hcont.measurable
+
+/-- **`achieverUfun > 0` a.e.** — GIVEN the witness `UPolyGen ≠ 0`. By `achieverUfun_eq_eval` +
+`MvPolynomial.ae_eval_ne_zero` (the zero set is null) + `achieverUfun_nonneg` (`≠ 0 ⟹ > 0`). The only
+remaining input is `UPolyGen ≠ 0` — the pivot-survival witness (`∃ w, achieverUfun w ≠ 0`). -/
+theorem achieverUfun_ae_pos (hL : 0 < L) (hN : 0 < routeMAmbient M)
+    (hUne : UPolyGen (structAdm_tach M hL) hN (hleStruct M (tach M) (structAdm_tach M hL)) ≠ 0) :
+    ∀ᵐ x, 0 < achieverUfun M hL hN x := by
+  have hae := MvPolynomial.ae_eval_ne_zero _ hUne
+  filter_upwards [hae] with x hx
+  rw [achieverUfun_eq_eval hL hN x] at *
+  exact lt_of_le_of_ne (by rw [← achieverUfun_eq_eval hL hN x]; exact achieverUfun_nonneg M hL hN x)
+    (Ne.symm hx)
+
+/-- **The witness reduces to `∃ w, achieverUfun w ≠ 0`**: `UPolyGen ≠ 0` iff some evaluation is nonzero
+(`eval w UPolyGen = achieverUfun w`). So the pivot-survival witness (one flat point with nonzero unit)
+discharges the a.e.-positivity. -/
+theorem UPolyGen_ne_zero_of_witness (hL : 0 < L) (hN : 0 < routeMAmbient M)
+    (w : Fin (routeMAmbient M) → ℝ) (hw : achieverUfun M hL hN w ≠ 0) :
+    UPolyGen (structAdm_tach M hL) hN (hleStruct M (tach M) (structAdm_tach M hL)) ≠ 0 := by
+  intro h0
+  apply hw
+  rw [achieverUfun_eq_eval hL hN w, h0, map_zero]
+
+/-- **`achieverUfun ≤ B` on the source box `[0,δ]^N`** (continuous on a compact box). -/
+theorem achieverUfun_le_on_box (hL : 0 < L) (hN : 0 < routeMAmbient M) (δ : ℝ) :
+    ∃ B, 0 < B ∧ ∀ u ∈ Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ),
+      achieverUfun M hL hN u ≤ B := by
+  have hcont : Continuous (achieverUfun M hL hN) := by
+    have heq : achieverUfun M hL hN
+        = fun x => MvPolynomial.eval x (UPolyGen (structAdm_tach M hL) hN
+            (hleStruct M (tach M) (structAdm_tach M hL))) := by
+      funext x; exact achieverUfun_eq_eval hL hN x
+    rw [heq]; exact MvPolynomial.continuous_eval _
+  have hcpt : IsCompact (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ)) :=
+    isCompact_univ_pi (fun _ => isCompact_Icc)
+  rcases (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ)).eq_empty_or_nonempty
+    with he | hne
+  · exact ⟨1, one_pos, fun u hu => absurd (he ▸ hu) (Set.mem_empty_iff_false u).mp⟩
+  · obtain ⟨u0, _, hu0⟩ := hcpt.exists_isMaxOn hne hcont.continuousOn
+    exact ⟨max 1 (achieverUfun M hL hN u0), lt_of_lt_of_le one_pos (le_max_left _ _),
+      fun u hu => le_trans (hu0 hu) (le_max_right _ _)⟩
+
+/-- **The full `NodeAchieverChart.Ubound` field**, GIVEN the witness `∃ w, achieverUfun w ≠ 0`: the
+box-bound (continuity on a compact box) + the a.e.-positivity (the `UPolyGen ≠ 0` zero-set-null route).
+The single remaining input is the pivot-survival witness. -/
+theorem achieverUbound (hL : 0 < L) (hN : 0 < routeMAmbient M)
+    (w : Fin (routeMAmbient M) → ℝ) (hw : achieverUfun M hL hN w ≠ 0) :
+    ∀ δ : ℝ, ∃ B : ℝ, 0 < B ∧
+      (∀ u ∈ Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ),
+        achieverUfun M hL hN u ≤ B) ∧
+      ∀ᵐ u ∂(volume.restrict
+          (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ))),
+        0 < achieverUfun M hL hN u := by
+  intro δ
+  obtain ⟨B, hB0, hBle⟩ := achieverUfun_le_on_box hL hN δ
+  exact ⟨B, hB0, hBle,
+    ae_restrict_of_ae (achieverUfun_ae_pos hL hN (UPolyGen_ne_zero_of_witness hL hN w hw))⟩
+
 end DLNFibre.DLN.RLCT
