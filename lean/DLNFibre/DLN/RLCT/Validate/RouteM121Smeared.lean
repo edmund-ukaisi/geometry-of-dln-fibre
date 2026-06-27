@@ -702,35 +702,256 @@ theorem routeMCore_box_diverges_of_MPChart {L : ℕ} (M : Fin (L + 1) → ℕ)
     _ ≤ ∫⁻ u in phi ⁻¹' (cubeBox (routeMAmbient M) ε), g (phi u) := lintegral_mono_set hSsub
     _ = ∫⁻ x in cubeBox (routeMAmbient M) ε, g x := hpre
 
-/-! ### Residual: the `(1,2,1)` source certificate `hsrc` + the atom (the bounded finish)
+/-! ### The `(1,2,1)` source certificate `hsrc` + the atom (the bounded finish, route b)
 
-The reusable MP-final-step `routeMCore_box_diverges_of_MPChart` is LANDED (NO `image_subset`). The
-`(1,2,1)` atom needs only the source certificate `hsrc` for `phi121sm`:
-```
-∃ S, MeasurableSet S ∧ S ⊆ phi121sm⁻¹(cubeBox 4 ε) ∧ ∫_S (loss∘φ)^{−c'} = ⊤
-```
-with `S = subBox121 δ := {a = u 0 ∈ [δ/2, δ], b = u 1 ∈ [−δ,δ], z = u 2 ∈ (0,δ), sb = u 3 ∈
-[−δ,δ]}`,
-`δ = ε/4` (Codex `mp-final-step`). Two bounded sub-goals (concrete analysis, no design wall):
+`S = subBox121 δ` (Codex `mp-final-step`): `a = u 0 ∈ [δ/2, δ]` (bounded away from the pole),
+`b = u 1, sb = u 3 ∈ [−δ, δ]`, `z = u 2 ∈ (0, δ)`. Sub-goal 1 (containment): each flat coord of
+`phi121sm u = paramsEquivFlat (chartParams121 u)` is a matrix entry (`rfl` readout), `≤ 4δ` on the
+bounded-away box. Sub-goal 2 (divergence): the rate `z²·a²` + the `z`-axis monomial divergence. -/
 
-1. **Containment** `subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))`: needs the explicit flat coords of
-   `phi121sm u = paramsEquivFlat (chartParams121 u)` — the 4 matrix entries `(a, b, z−(b/a)·sb, sb)`
-   read off via `fin4EquivFlatIdx121`/`flatEquivOf_symm_coord`/`hpack121`. On `Pδ`, `a ≥ δ/2 > 0`,
-   so
-   `|z − (b/a)·sb| ≤ δ + δ·δ/(δ/2) = 3δ < 4δ`; the other three coords are `≤ δ`. (The plumbing: a
-   `phi121sm_apply` flat-coord readout lemma, then per-coord `abs_le` arithmetic.)
-2. **Divergence** `∫_{subBox121 δ} (loss∘φ)^{−c'} = ⊤`: on `Pδ` the rate `loss∘φ = z²·a²`
-   (`routeMCore_phi121sm_offpole`, `a > 0`), so `(z²a²)^{−c'} = |z|^{−2c'}·|a|^{−2c'}` (reads only
-   `z, a`). Peel the `z`-axis (index 2) via `piFinSuccAbove`, `setLIntegral_prod`: the `z`-factor
-   over
-   `(0,δ)` is `⊤` (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1` from `c' ≥ minAdm/2 = ½`), the
-   `a,b,sb`-rest factor positive-finite (`a ≥ δ/2 > 0`). The `prod_rpow_lintegral_Ioo_box_eq_top`
-   template (`Case222Cover`), adapted to the heterogeneous box (`a` over `[δ/2,δ]`, not `(0,δ)`).
+/-- The `(1,2,1)` divergence sub-box `Pδ`. -/
+def subBox121 (δ : ℝ) : Set (Fin 4 → ℝ) :=
+  {u | u 0 ∈ Set.Icc (δ/2) δ ∧ u 1 ∈ Set.Icc (-δ) δ ∧ u 2 ∈ Set.Ioo (0:ℝ) δ ∧
+    u 3 ∈ Set.Icc (-δ) δ}
 
-Then `routeM121sm_box_diverges := routeMCore_box_diverges_of_MPChart M121 phi121sm
-measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc`, and the `(1,2,1)` atom. The
-conceptually-load-bearing pieces (rate, a.e. leaf_integrand, cov-via-MP, the reusable MP-final
-lemma)
-are all LANDED sorry-free; `hsrc` is the concrete-analysis finish. -/
+/-- **Each flat coord of `phi121sm u` is a matrix entry of `chartParams121 u`** (`rfl` —
+`paramsEquivFlat
+A i = A` at the canonical slot `(Fintype.equivFin (FlatIdx M121)).symm i`). -/
+theorem phi121sm_entry (u : Fin 4 → ℝ) (i : Fin (flatDim M121)) :
+    phi121sm u i = (chartParams121 u)
+      ((Fintype.equivFin (FlatIdx M121)).symm i).1.1
+      ((Fintype.equivFin (FlatIdx M121)).symm i).1.2
+      ((Fintype.equivFin (FlatIdx M121)).symm i).2 := rfl
+
+/-- **Every matrix entry of `chartParams121 u` is `≤ 4δ` on `subBox121 δ`** (`δ > 0`). The two
+layer-0
+entries are `a, b`; the two layer-1 entries are `z − (b/a)·sb` (the only nontrivial one, `≤ 3δ`
+since
+`a ≥ δ/2`) and `sb`. -/
+theorem chartParams121_entry_bound {δ : ℝ} (hδ : 0 < δ) {u : Fin 4 → ℝ} (hu : u ∈ subBox121 δ)
+    (s : Fin 2) (i : Fin (M121 s.castSucc)) (j : Fin (M121 s.succ)) :
+    |(chartParams121 u) s i j| ≤ 4 * δ := by
+  obtain ⟨ha, hb, hz, hsb⟩ := hu
+  simp only [Set.mem_Icc] at ha hb hsb
+  simp only [Set.mem_Ioo] at hz
+  have ha0 : (0:ℝ) < u 0 := lt_of_lt_of_le (by linarith) ha.1
+  -- pin the four coord bounds
+  have hba : |u 0| ≤ δ := by rw [abs_of_pos ha0]; exact ha.2
+  have hbb : |u 1| ≤ δ := abs_le.mpr ⟨hb.1, hb.2⟩
+  have hbz : |u 2| ≤ δ := abs_le.mpr ⟨by linarith [hz.1], le_of_lt hz.2⟩
+  have hbsb : |u 3| ≤ δ := abs_le.mpr ⟨hsb.1, hsb.2⟩
+  -- the shear entry bound: |z − (b/a)·sb| ≤ 3δ ≤ 4δ
+  have hak : |u 1| / u 0 ≤ 2 := by
+    rw [div_le_iff₀ ha0]
+    calc |u 1| ≤ δ := hbb
+      _ ≤ 2 * u 0 := by linarith [ha.1]
+  have hbound : |u 1 / u 0 * u 3| ≤ 2 * δ := by
+    rw [abs_mul, abs_div, abs_of_pos ha0]
+    have := mul_le_mul hak hbsb (abs_nonneg _) (by norm_num : (0:ℝ) ≤ 2)
+    linarith [this]
+  have hshear : |u 2 - u 1 / u 0 * u 3| ≤ 4 * δ := by
+    have h1 : |u 2 - u 1 / u 0 * u 3| ≤ |u 2| + |u 1 / u 0 * u 3| := abs_sub _ _
+    linarith [h1, hbz, hbound]
+  -- each of the four entries is one of {a, b, z−(b/a)sb, sb}, all ≤ 4δ
+  fin_cases s
+  · fin_cases i <;> fin_cases j
+    · show |chartA0_121 u 0 0| ≤ 4 * δ
+      simp only [chartA0_121, Matrix.cons_val_zero, Matrix.of_apply, Matrix.cons_val]; linarith [hba]
+    · show |chartA0_121 u 0 1| ≤ 4 * δ
+      simp only [chartA0_121, Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply,
+        Matrix.cons_val]; linarith [hbb]
+  · fin_cases i <;> fin_cases j
+    · show |chartA1_121 u 0 0| ≤ 4 * δ
+      simpa only [chartA1_121, Matrix.cons_val_zero, Matrix.of_apply, Matrix.cons_val,
+        Matrix.cons_val_fin_one] using hshear
+    · show |chartA1_121 u 1 0| ≤ 4 * δ
+      simp only [chartA1_121, Matrix.cons_val_one, Matrix.head_cons, Matrix.of_apply,
+        Matrix.cons_val, Matrix.cons_val_fin_one]; linarith [hbsb]
+
+/-- **Containment** `subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))` (`δ > 0`): each flat coord is a
+matrix
+entry (`phi121sm_entry`), bounded by `4δ` on the box (`chartParams121_entry_bound`). -/
+theorem subBox121_subset_preimage {δ : ℝ} (hδ : 0 < δ) :
+    subBox121 δ ⊆ phi121sm ⁻¹' (cubeBox (flatDim M121) (4 * δ)) := by
+  intro u hu
+  rw [Set.mem_preimage, cubeBox, Set.mem_pi]
+  intro i _
+  rw [Set.mem_Icc, ← abs_le, phi121sm_entry]
+  exact chartParams121_entry_bound hδ hu _ _ _
+
+/-- `subBox121 δ` is measurable (a finite intersection of coordinate-interval preimages). -/
+theorem measurableSet_subBox121 (δ : ℝ) : MeasurableSet (subBox121 δ) := by
+  unfold subBox121
+  refine MeasurableSet.inter (measurableSet_preimage (measurable_pi_apply 0) measurableSet_Icc) ?_
+  refine MeasurableSet.inter (measurableSet_preimage (measurable_pi_apply 1) measurableSet_Icc) ?_
+  exact MeasurableSet.inter (measurableSet_preimage (measurable_pi_apply 2) measurableSet_Ioo)
+    (measurableSet_preimage (measurable_pi_apply 3) measurableSet_Icc)
+
+/-! ### Sub-goal 2 — the divergence on `subBox121` (the rate `z²·a²` + the z-axis monomial)
+
+`subBox121 δ` factors as the `univ.pi` of per-axis intervals; on it the rate `loss∘φ = z²·a²` holds
+(`a ≥ δ/2 > 0`). `(z²a²)^{−c'} = |z|^{−2c'}·|a|^{−2c'}` reads only `z, a`; peel the `z`-axis (index
+2)
+via `piFinSuccAbove`, `setLIntegral_prod` — the `z`-factor over `(0,δ)` is `⊤`
+(`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1` from `c' ≥ minAdm/2 = ½`), the rest
+positive-finite. -/
+
+/-- `subBox121 δ` as a `univ.pi` of per-axis intervals. -/
+theorem subBox121_eq_pi (δ : ℝ) :
+    subBox121 δ = Set.univ.pi
+      (fun i : Fin 4 => if i = 2 then Set.Ioo (0:ℝ) δ
+        else if i = 0 then Set.Icc (δ/2) δ else Set.Icc (-δ) δ) := by
+  ext u
+  simp only [subBox121, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
+  constructor
+  · rintro ⟨h0, h1, h2, h3⟩ i
+    fin_cases i
+    · simpa using h0
+    · simpa using h1
+    · simpa using h2
+    · simpa using h3
+  · intro h
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · have := h 0; simpa using this
+    · have := h 1; simpa using this
+    · have := h 2; simpa using this
+    · have := h 3; simpa using this
+
+/-- **The divergence on `subBox121`** `∫_{subBox121 δ} (|loss∘φ|)^{−c'} = ⊤` for `δ > 0`, `c' ≥ ½`.
+On
+`Pδ` the rate `loss∘φ = (u 2)²·(u 0)²` (`a > 0`), so the integrand is `|u 2|^{−2c'}·|u 0|^{−2c'}`;
+peel
+the `z`-axis (index 2) via `piFinSuccAbove`/`setLIntegral_prod` — the `z`-factor over `(0,δ)` is `⊤`
+(`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1`), the rest positive-finite. -/
+theorem subBox121_diverges {δ : ℝ} (hδ : 0 < δ) {c' : ℝ} (hc' : (1:ℝ)/2 ≤ c') :
+    ∫⁻ u in subBox121 δ,
+      ENNReal.ofReal (|routeMCore M121 (phi121sm u)| ^ (-c')) = ⊤ := by
+  -- rewrite the integrand to the per-axis rpow product `|u 2|^{-2c'} * |u 0|^{-2c'}` on `Pδ`
+  have hrw : ∀ u ∈ subBox121 δ,
+      ENNReal.ofReal (|routeMCore M121 (phi121sm u)| ^ (-c'))
+        = ENNReal.ofReal (|u 2| ^ (-(2*c'))) * ENNReal.ofReal (|u 0| ^ (-(2*c'))) := by
+    intro u hu
+    obtain ⟨ha, _, _, _⟩ := hu
+    simp only [Set.mem_Icc] at ha
+    have ha0 : u 0 ≠ 0 := ne_of_gt (lt_of_lt_of_le (by linarith) ha.1)
+    rw [routeMCore_phi121sm_offpole u ha0]
+    rw [abs_of_nonneg (by positivity : (0:ℝ) ≤ (u 2)^2 * (u 0)^2),
+      show (u 2)^2 * (u 0)^2 = |u 2|^2 * |u 0|^2 by rw [sq_abs, sq_abs]]
+    rw [Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_natCast |u 2| 2,
+      ← Real.rpow_natCast |u 0| 2, ← Real.rpow_mul (abs_nonneg _), ← Real.rpow_mul (abs_nonneg _),
+      ← ENNReal.ofReal_mul (by positivity)]
+    congr 2 <;> push_cast <;> ring
+  rw [setLIntegral_congr_fun (measurableSet_subBox121 δ) (fun u hu => hrw u hu)]
+  rw [subBox121_eq_pi]
+  -- peel the z-axis (index 2) via `piFinSuccAbove`
+  set ee := MeasurableEquiv.piFinSuccAbove (fun _ : Fin 4 => ℝ) 2 with hee
+  have hmpS : MeasurePreserving ee.symm (volume : Measure (ℝ × (Fin 3 → ℝ))) volume := by
+    have h := (volume_preserving_piFinSuccAbove (fun _ : Fin 4 => ℝ) 2).symm
+    rwa [show (volume : Measure (ℝ × (Fin 3 → ℝ))) = (volume : Measure ℝ).prod volume from
+      Measure.volume_eq_prod _ _] at h
+  have hsymapp : ∀ x (y : Fin 3 → ℝ), ee.symm (x, y) = Fin.insertNth 2 x y :=
+    fun x y => by rw [hee, MeasurableEquiv.piFinSuccAbove_symm_apply]; exact List.ofFn_inj.mp rfl
+  -- the box pulls back to `Ioo 0 δ ×ˢ (rest box)`
+  set restSet : Set (Fin 3 → ℝ) := Set.univ.pi
+    (fun k : Fin 3 => if (Fin.succAbove 2 k) = (0 : Fin 4) then Set.Icc (δ/2) δ else Set.Icc (-δ) δ)
+    with hrestSet
+  have hpre : ee.symm ⁻¹' (Set.univ.pi (fun i : Fin 4 => if i = 2 then Set.Ioo (0:ℝ) δ
+        else if i = 0 then Set.Icc (δ/2) δ else Set.Icc (-δ) δ))
+      = (Set.Ioo (0:ℝ) δ) ×ˢ restSet := by
+    ext p; obtain ⟨x, y⟩ := p
+    simp only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_prod, hsymapp,
+      hrestSet]
+    constructor
+    · intro hall
+      refine ⟨?_, fun k => ?_⟩
+      · have := hall 2; rwa [Fin.insertNth_apply_same, if_pos rfl] at this
+      · have := hall (Fin.succAbove 2 k); rw [Fin.insertNth_apply_succAbove] at this
+        rwa [if_neg (Fin.succAbove_ne 2 k)] at this
+    · rintro ⟨h0, hrest⟩ j
+      rcases Fin.eq_self_or_eq_succAbove 2 j with rfl | ⟨k, rfl⟩
+      · rwa [Fin.insertNth_apply_same, if_pos rfl]
+      · rw [Fin.insertNth_apply_succAbove, if_neg (Fin.succAbove_ne 2 k)]; exact hrest k
+  have htrans := hmpS.setLIntegral_comp_preimage_emb (MeasurableEquiv.measurableEmbedding _)
+    (fun u : Fin 4 → ℝ => ENNReal.ofReal (|u 2| ^ (-(2*c'))) * ENNReal.ofReal (|u 0| ^ (-(2*c'))))
+    (Set.univ.pi (fun i : Fin 4 => if i = 2 then Set.Ioo (0:ℝ) δ
+        else if i = 0 then Set.Icc (δ/2) δ else Set.Icc (-δ) δ))
+  rw [hpre] at htrans
+  rw [← htrans]
+  -- the integrand under `ee.symm` is `ofReal(|x|^p) * ofReal(|y₀|^p)` (a = coord 0 = succAbove 2 0)
+  have hidx : Fin.succAbove (2 : Fin 4) (0 : Fin 3) = (0 : Fin 4) := by decide
+  have hfac : ∀ x (y : Fin 3 → ℝ),
+      ENNReal.ofReal (|ee.symm (x, y) 2| ^ (-(2*c'))) * ENNReal.ofReal (|ee.symm (x, y) 0| ^ (-(2*c')))
+        = ENNReal.ofReal (|x| ^ (-(2*c'))) * ENNReal.ofReal (|y 0| ^ (-(2*c'))) := by
+    intro x y
+    have e2 : ee.symm (x, y) 2 = x := by rw [hsymapp, Fin.insertNth_apply_same]
+    have e0 : ee.symm (x, y) 0 = y 0 := by
+      rw [hsymapp, show (0 : Fin 4) = Fin.succAbove 2 0 from hidx.symm, Fin.insertNth_apply_succAbove]
+    rw [e2, e0]
+  simp_rw [hfac]
+  rw [show (volume : Measure (ℝ × (Fin 3 → ℝ))) = (volume : Measure ℝ).prod volume from
+    Measure.volume_eq_prod _ _]
+  rw [setLIntegral_prod _ (by
+    apply Measurable.aemeasurable
+    exact ((by fun_prop : Measurable (fun p : ℝ × (Fin 3 → ℝ) => ENNReal.ofReal (|p.1| ^ (-(2*c'))))).mul
+      (by fun_prop : Measurable (fun p : ℝ × (Fin 3 → ℝ) => ENNReal.ofReal (|p.2 0| ^ (-(2*c')))))))]
+  have hinner : ∀ x, (∫⁻ y in restSet, ENNReal.ofReal (|x| ^ (-(2*c')))
+      * ENNReal.ofReal (|y 0| ^ (-(2*c'))) ∂(volume : Measure (Fin 3 → ℝ)))
+      = ENNReal.ofReal (|x| ^ (-(2*c'))) * (∫⁻ y in restSet,
+        ENNReal.ofReal (|y 0| ^ (-(2*c'))) ∂(volume : Measure (Fin 3 → ℝ))) :=
+    fun x => lintegral_const_mul _ (by fun_prop)
+  simp only [hinner]
+  rw [lintegral_mul_const _ (by fun_prop : Measurable (fun x : ℝ => ENNReal.ofReal (|x| ^ (-(2*c')))))]
+  -- z-factor over (0,δ) = ⊤ (exp -2c' ≤ -1), rest factor > 0
+  rw [abs_rpow_lintegral_Ioo_eq_top _ δ hδ (by linarith)]
+  refine ENNReal.top_mul (ne_of_gt ?_)
+  -- the rest factor is positive: integrand > 0 on the positive-measure rest box
+  rw [hrestSet, setLIntegral_pos_iff (by fun_prop)]
+  have hbox : 0 < (volume : Measure (Fin 3 → ℝ)) (Set.univ.pi
+      (fun k : Fin 3 => if (Fin.succAbove 2 k) = (0 : Fin 4) then Set.Icc (δ/2) δ
+        else Set.Icc (-δ) δ)) := by
+    rw [volume_pi_pi]
+    refine CanonicallyOrderedAdd.prod_pos.mpr (fun k _ => ?_)
+    by_cases hk : (Fin.succAbove 2 k) = (0 : Fin 4)
+    · rw [if_pos hk, Real.volume_Icc, ENNReal.ofReal_pos]; linarith
+    · rw [if_neg hk, Real.volume_Icc, ENNReal.ofReal_pos]; linarith
+  apply lt_of_lt_of_le hbox
+  apply measure_mono
+  intro y hy
+  refine ⟨?_, hy⟩
+  simp only [Set.mem_pi, Set.mem_univ, true_implies] at hy
+  have hy0 : 0 < y 0 := by
+    have := hy 0; rw [hidx, if_pos rfl, Set.mem_Icc] at this; linarith
+  rw [Function.mem_support, ne_eq, ENNReal.ofReal_eq_zero, not_le]
+  exact Real.rpow_pos_of_pos (by rw [abs_pos]; exact ne_of_gt hy0) _
+
+/-! ### The `(1,2,1)` smeared achiever box-divergence atom (route b, via the MP-final lemma) -/
+
+/-- **The `(1,2,1)` smeared box-divergence** — `∫⁻_{cubeBox 4 ε} |routeMCore M121|^{−c'} = ⊤` for
+`c'`
+at-or-above `½·minAdm M121 = ½`, every `ε > 0`. The atom for the smallest boundary-SMEARED node,
+discharged via the reusable MP-final lemma `routeMCore_box_diverges_of_MPChart` (route b — NO
+`image_subset`, NO `HasFDerivAt`) fed the source certificate `hsrc` (the bounded-away sub-box
+`subBox121 (ε/4) ⊆ phi121sm⁻¹(cubeBox 4 ε)` with the rate `z²·a²` giving the monomial divergence).
+-/
+theorem routeM121sm_box_diverges (c' : NNReal) (hc' : (minAdm M121 : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞))
+    (ε : ℝ) (hε : 0 < ε) :
+    ∫⁻ x in cubeBox (routeMAmbient M121) ε,
+      ENNReal.ofReal (|routeMCore M121 x| ^ (-(c' : ℝ))) = ⊤ := by
+  -- `½ ≤ c'` from `minAdm M121 = 1`
+  have hc'half : (1:ℝ)/2 ≤ (c' : ℝ) := by
+    have : (minAdm M121 : ℝ≥0∞) / 2 = ((1:ℝ≥0∞)) / 2 := by rw [minAdm_M121]; norm_num
+    rw [this] at hc'
+    have h2 : ((1:ℝ≥0∞))/2 ≤ (c' : ℝ≥0∞) := hc'
+    have : (1:ℝ)/2 ≤ (c' : ℝ) := by
+      rw [show ((1:ℝ≥0∞))/2 = ENNReal.ofReal (1/2) by
+        rw [ENNReal.ofReal_div_of_pos (by norm_num)]; norm_num] at h2
+      rwa [ENNReal.ofReal_le_iff_le_toReal (by simp), ENNReal.coe_toReal] at h2
+    exact this
+  refine routeMCore_box_diverges_of_MPChart M121 phi121sm measurePreserving_phi121sm
+    measurableEmbedding_phi121sm (c' : ℝ) ε ⟨subBox121 (ε/4), measurableSet_subBox121 _, ?_, ?_⟩
+  · -- containment: `subBox121 (ε/4) ⊆ phi121sm⁻¹(cubeBox _ ε)` (`4·(ε/4) = ε`)
+    have h := subBox121_subset_preimage (by linarith : (0:ℝ) < ε/4)
+    rwa [show 4 * (ε/4) = ε by ring] at h
+  · exact subBox121_diverges (by linarith : (0:ℝ) < ε/4) hc'half
 
 end DLNFibre.DLN.RLCT

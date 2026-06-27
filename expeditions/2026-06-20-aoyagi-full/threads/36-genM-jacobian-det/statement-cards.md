@@ -610,3 +610,42 @@ MP-final-step lemma is landed; the `(1,2,1)` atom needs only the source certific
 > - **Status.** rate + a.e.-leaf_integrand + cov-via-MP + the reusable MP-final lemma all LANDED
 >   sorry-free. The `(1,2,1)` atom is NOT yet discharged (`hsrc` = the two concrete-analysis sub-goals
 >   above). Full `lake build DLNFibre` green with the module temp-imported; aggregator reverted.
+
+---
+
+## Smeared `(1,2,1)` atom LANDED (route b) — `routeM121sm_box_diverges`, S2-FREE
+
+Branch `worktree-agent-a223be0c63e358844`. The smallest boundary-SMEARED achiever box-divergence atom
+is discharged sorry-free via route (b) (MeasurePreserving, NO `image_subset`, NO `HasFDerivAt`). The
+3-file unit (CoreShearMP + ParamsReshapeMP + RouteM121Smeared) is ready for file-level integration.
+
+---
+
+> **`routeM121sm_box_diverges` — the `(1,2,1)` smeared atom, LANDED** (sorry-free; force-elaborated
+> `#print axioms`, olean-deleted: `[propext, Classical.choice, Quot.sound]` — **S2-FREE, NO
+> `monomial_rlct`**).
+>
+> - **Lean (`RouteM121Smeared.lean`):** `∫⁻_{cubeBox 4 ε} |routeMCore M121|^{−c'} = ⊤` for `c' ≥
+>   ½·minAdm M121 = ½`, every `ε > 0`. Via `routeMCore_box_diverges_of_MPChart M121 phi121sm
+>   measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc` (route b — the reusable MP-final
+>   lemma), with `hsrc = ⟨subBox121 (ε/4), measurableSet_subBox121, subBox121_subset_preimage (4·(ε/4)=ε),
+>   subBox121_diverges⟩`.
+> - **The hsrc finish (both sub-goals LANDED):**
+>   - **Containment** `subBox121_subset_preimage : subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))` — via
+>     `phi121sm_entry` (each flat coord = a matrix entry, `rfl` through `Fintype.equivFin (FlatIdx M121)`
+>     — the route-(b) sidestep, NO opaque readout) + `chartParams121_entry_bound` (each entry `≤ 4δ` on the
+>     bounded-away box; the nontrivial `z−(b/a)·sb ≤ 3δ` since `a ≥ δ/2`).
+>   - **Divergence** `subBox121_diverges : ∫_{subBox121 δ} (|loss∘φ|)^{−c'} = ⊤` — the rate `loss∘φ =
+>     z²·a²` on `Pδ` (`a > 0`) ⟹ `|z|^{−2c'}·|a|^{−2c'}`; peel the `z`-axis (`piFinSuccAbove`/
+>     `setLIntegral_prod`), `z`-factor over `(0,δ)` `⊤` (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1`
+>     from `c' ≥ ½`), rest positive (`setLIntegral_pos_iff` + `volume_pi_pi`).
+> - **Notable: S2-FREE.** Route (b)'s divergence is proven from the 1D `abs_rpow_lintegral_Ioo_eq_top`
+>   (the `∫₀ᵟ z^{−2c'} = ⊤` first principle), NOT via the cited `monomial_rlct` S2 atom — so the smeared
+>   atom carries NO `monomial_rlct` (stronger than the polynomial charts, which route through it). The
+>   geometric content (the rate, the MP chart) is fully self-contained.
+> - **Status.** sorry-free + axiom-clean (S2-free). Full `lake build DLNFibre` green with the module
+>   temp-imported; aggregator reverted (single-writer — controller integrates the 3-file unit). The
+>   reusable `routeMCore_box_diverges_of_MPChart` is banked for the ∀M-smeared lift (the 46 M).
+> - **Next:** the ∀M-smeared lift reusing `routeMCore_box_diverges_of_MPChart` — validate a `minAdm ≥ 2`
+>   smeared case ((2,3,1)/(1,3,2)) to exercise the radial det `|z|^{minAdm−1}` composed with the shear
+>   (here `(1,2,1)` is `minAdm = 1`, no radial blow-up).
