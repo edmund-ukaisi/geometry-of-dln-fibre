@@ -1010,3 +1010,19 @@ mode appears only at ≥3 boundaries. **Directed suspicion for the controller:**
 multi-boundary node)?" — if it was only checked on L=2, treat the witness as unverified. (Benign here: caught at
 the build by the sympy-validate-on-the-failing-case discipline, before any wrong Lean was committed.) Mitigation
 now standard: witness-validation consults must sympy the FAILING/hardest case explicitly.
+
+## ∀M witness/positivity claims need EXHAUSTIVE ENUMERATION, not Codex-on-anchors (2026-06-27, the chart-degeneracy)
+The decisive instance of the validate-small family (after UPDATE-133, the split-codim rate, the §5 multi-boundary
+witness): a design certificate's ∀M non-vacuity claim ("achieverUfun ≢ 0, witness exists ∀M") was certified
+WRONG by decoder-fix + Codex THREE times, and EXHAUSTIVE exact-arithmetic enumeration (genm-witness, 351 M over
+{1,2,3}^{L+1}) caught it each time: the claim is FALSE for 19% of M (the achiever chart is structurally
+degenerate there). ROOT of the repeated miss: every validated anchor ((2,2,1)/(2,2,2)/(3,3,4)/(3,3,3,3)) was the
+SAME class (interior rank-drop); the degenerate class (boundary-only-drop) was never instantiated, so "validated
+on anchors" + "Codex says no wall" gave false confidence. **Standing rule:** before a certificate ASSERTS a ∀M
+witness / positivity / non-vacuity / det-nonzero claim, ENUMERATE it exactly over a small but CLASS-COMPLETE M-grid
+(here {1,2,3}^{L+1}, L≤4) and confirm 0 failures — a handful of hand-picked anchors of one class is not validation.
+**Controller directed-suspicion:** when a teammate hands "validated ∀M, no wall," ask "over what grid, and does
+the grid include every structural CLASS (not just every small size)?" If it's anchors-only, treat the ∀M claim as
+unverified and require the enumeration. (Cheap insurance: genm-witness's harness found in minutes what 3 certificate
+rounds asserted falsely.) Codex consults are for STRATEGY/route-choice, not for certifying a universally-quantified
+arithmetic fact — that wants enumeration.
