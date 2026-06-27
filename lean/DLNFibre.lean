@@ -360,6 +360,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
 -- INTERIOR/CLEAN/SMEARED trichotomy (pairwise-exclusive + exhaustive, given the validated bottleneck
 -- `r ≤ m1` carried as a hypothesis — the argmin widths are noncomputable).
 import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryClass
+-- CLEAN/SMEARED-reusable boundary bedrock: `RouteMBoundaryCleanMinAdm` — the chain↔Aoyagi bridge +
+-- the boundary `minAdm M = deepRows·M_last` identity (clean: `m1·M_L`; reused for smeared `r·M_L`).
+-- `RouteMBoundaryCleanChart` — `deepestCoords M` (layer-(L−1) flat coords) + `deepestCoords_card_eq_minAdm`
+-- (the `active.card = minAdm` fact the radial blow-up's det exponent `minAdm−1` consumes).
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanMinAdm
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanChart
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
