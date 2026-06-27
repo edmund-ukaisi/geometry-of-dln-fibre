@@ -330,6 +330,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteM222Det
 -- residual blocks `rBlock`/`cBlock` + `sum_rBlock_cBlock_eq_minAdm` (the radial `active.card = minAdm`
 -- identity). The (2,2,2) `tach222` generalized; regression-checked on the 5 anchors.
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
+-- `RouteM3333Det`: the (3,3,3,3) ROUTE-2a validate-small — the 3-BOUNDARY forcing case
+-- (rank drops at all 3 boundaries, the Schur/LDU coupling the L=2 anchors don't exercise).
+-- `B_det3333` (full-rank, t*=(2,1,0), minAdm 6) + `chartParamsGen_eq_chartParams3333` (THE
+-- width-parametric bridge template) + `phiGen_B_det3333_eq_phi3333` (the route-2a chart EQUALS the
+-- banked hand-built phi3333 ⟹ det |u0|⁵·|u1|⁴·|u4|²·|u9|³ = RouteM3333Atom EXACTLY) → atom via route 2a.
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Det
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
