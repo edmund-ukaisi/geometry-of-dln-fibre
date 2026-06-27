@@ -9106,3 +9106,37 @@ readout, or fixed pivot nonzero provenance.
 
 Nonclaims: no source image, pushforward/Jacobian theorem, original-loss
 comparison, normal crossings, pole order, or RLCT is proved.
+
+Latest A2 retained-passive raw-order Jacobian density interface:
+Lean now defines `topologyTupleEdgeRawOrderFDerivAbsDet` in
+`RetainedPassiveCoordinatesDerivative.lean` and proves
+`topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet`,
+`eventually_topologyTupleEdgeRawOrderFDerivAbsDet_pos_nhds`,
+`exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds_of_continuousAt`,
+and
+`exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds_of_continuousAt`.
+
+Status: Proved; reviewed.
+
+Claim: the forward absolute determinant of
+`fderiv ℝ topologyTupleEdgeRawOrder z` is strictly positive at
+retained-passive tuple determinant-chart points, and eventually positive near
+such points.  If continuity of this absolute determinant function is supplied
+at a base point, it has positive local lower and upper bounds there.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-jacobian-density-interface.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-jacobian-density-interface.md`
+accepted by xhigh `Laplace the 4th`.
+
+Kill condition: local quantitative lower bounds depend on the explicit
+`ContinuousAt` hypothesis; do not infer them from pointwise determinant
+unitness alone.
+
+Nonclaims: no continuity of the retained-passive derivative family, no closed
+determinant formula, no inverse-density formula, no measure pushforward, no
+source-density identity, no normal crossings, no pole order, and no RLCT is
+proved.

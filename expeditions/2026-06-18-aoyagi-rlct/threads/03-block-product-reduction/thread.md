@@ -9409,3 +9409,43 @@ This closes density-free tangent invertibility for the retained-passive
 raw-order chart.  It does not give an explicit derivative formula, determinant
 formula, Jacobian density, measure pushforward, source-rank coverage, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-27 A2 retained-passive raw-order Jacobian density interface
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Review:
+`review-a2-retained-passive-raw-order-jacobian-density-interface.md`
+accepted by xhigh read-only explorer `Laplace the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now defines the forward absolute determinant of the retained-passive
+raw-order ambient derivative:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet
+```
+
+and proves:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+eventually_topologyTupleEdgeRawOrderFDerivAbsDet_pos_nhds
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds_of_continuousAt
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds_of_continuousAt
+```
+
+The pointwise positivity follows from the determinant-unit theorem.  The
+eventual positivity follows from openness of the determinant chart.  The local
+lower and upper bounds require an explicit `ContinuousAt` hypothesis for the
+absolute determinant function.
+
+This is the first retained-passive density-facing API after tangent
+invertibility.  It still does not prove continuity of the retained-passive
+derivative family, an explicit determinant formula, inverse-density formula,
+measure pushforward, source-density identity, normal crossings, pole order, or
+RLCT.

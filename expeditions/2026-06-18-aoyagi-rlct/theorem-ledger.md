@@ -9948,6 +9948,34 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive raw-order Jacobian density interface:
+`RetainedPassiveCoordinatesDerivative.lean` now defines
+`topologyTupleEdgeRawOrderFDerivAbsDet` and proves positivity of the forward
+absolute `fderiv` determinant on `topologyTupleDetChartSet`, eventual
+positivity near chart points, and local lower/upper bounds under an explicit
+`ContinuousAt` hypothesis.  Lean names:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet
+topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+eventually_topologyTupleEdgeRawOrderFDerivAbsDet_pos_nhds
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds_of_continuousAt
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds_of_continuousAt
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-jacobian-density-interface.md`
+accepted by xhigh `Laplace the 4th`.
+
+This is a supplied-continuity density interface only.  It does not prove
+continuity of the retained-passive derivative family, a determinant formula,
+an inverse-density formula, a measure pushforward, a source-density identity,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-26 A2 full-to-adjacent-window outside-factor transport
 
 Reproduction:

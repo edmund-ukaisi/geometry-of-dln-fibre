@@ -13430,3 +13430,34 @@ formula, determinant formula, Jacobian density, measure pushforward,
 source-rank coverage, normal crossings, pole order, or RLCT.  Next target:
 derive a local positive Jacobian-density/lower-bound interface only after
 review confirms this determinant-unit slice.
+
+Latest retained-passive raw-order Jacobian density interface:
+`RetainedPassiveCoordinatesDerivative.lean` now defines
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet
+```
+
+and proves strict positivity on the tuple determinant chart, eventual
+positivity near determinant-chart points, and local positive lower/upper bounds
+under an explicitly supplied `ContinuousAt` hypothesis:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+eventually_topologyTupleEdgeRawOrderFDerivAbsDet_pos_nhds
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds_of_continuousAt
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds_of_continuousAt
+```
+
+Laplace the 4th accepted the xhigh read-only review.  This is a density-facing
+interface only: continuity of the retained-passive derivative/determinant
+family remains unproved and explicitly supplied where used.  There is still no
+explicit determinant formula, inverse-density formula, measure pushforward,
+source-density identity, normal crossing, pole-order, or RLCT theorem.
+
+Next target in this lane should be one of two honest extensions: either prove
+continuity of this retained-passive `fderiv` determinant by an explicit
+derivative-family calculation, or build a retained-passive change-of-variables
+theorem from Mathlib's Jacobian API using the existing differentiability,
+injectivity, and chart-domain facts.  Do not use the pointwise determinant
+unit theorem alone as a local density-bound or pushforward theorem.

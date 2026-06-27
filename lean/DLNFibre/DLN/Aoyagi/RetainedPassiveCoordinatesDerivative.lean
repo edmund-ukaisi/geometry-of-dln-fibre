@@ -1680,6 +1680,104 @@ theorem fderiv_topologyTupleEdgeRawOrder_det_isUnit_of_mem_topologyTupleDetChart
     simpa [ContinuousLinearMap.coe_comp'] using congrArg LinearMap.det hcompLinear
   exact isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul_eq_one hmul)
 
+/-- The absolute determinant of the ambient derivative of the retained-passive
+raw-order chart map.  This is only the forward source-side determinant factor;
+it is not a pushforward theorem or an inverse-density formula. -/
+def topologyTupleEdgeRawOrderFDerivAbsDet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' ℝ) : ℝ :=
+  |LinearMap.det
+    ((fderiv ℝ
+      (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z :
+        TopologyTuple ρ κ' ℝ →L[ℝ] TopologyTuple ρ κ' ℝ) :
+      TopologyTuple ρ κ' ℝ →ₗ[ℝ] TopologyTuple ρ κ' ℝ)|
+
+/-- The retained-passive forward raw-order absolute Jacobian determinant is
+strictly positive at determinant-chart points. -/
+theorem topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    0 < topologyTupleEdgeRawOrderFDerivAbsDet
+      (ρ := ρ) (κ' := κ') z := by
+  have hunit :=
+    fderiv_topologyTupleEdgeRawOrder_det_isUnit_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') hz
+  rw [topologyTupleEdgeRawOrderFDerivAbsDet]
+  exact abs_pos.mpr (isUnit_iff_ne_zero.mp hunit)
+
+/-- Near any retained-passive determinant-chart point, the forward raw-order
+absolute Jacobian determinant is positive.  This uses openness of the chart,
+not continuity of the Jacobian determinant function. -/
+theorem eventually_topologyTupleEdgeRawOrderFDerivAbsDet_pos_nhds
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z₀ : TopologyTuple ρ κ' ℝ)
+    (hz₀ : z₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ∀ᶠ z in 𝓝 z₀,
+      0 < topologyTupleEdgeRawOrderFDerivAbsDet
+        (ρ := ρ) (κ' := κ') z := by
+  filter_upwards [
+    (isOpen_topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')).mem_nhds hz₀]
+    with z hz
+  exact
+    topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') hz
+
+/-- If the retained-passive forward raw-order absolute Jacobian determinant is
+continuous at a determinant-chart point, then it admits a positive local lower
+bound there.  The continuity hypothesis is supplied explicitly. -/
+theorem exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds_of_continuousAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z₀ : TopologyTuple ρ κ' ℝ)
+    (hz₀ : z₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (hcontinuous :
+      ContinuousAt
+        (topologyTupleEdgeRawOrderFDerivAbsDet
+          (ρ := ρ) (κ' := κ')) z₀) :
+    ∃ ε : ℝ, 0 < ε ∧
+      ∀ᶠ z in 𝓝 z₀,
+        ε ≤ topologyTupleEdgeRawOrderFDerivAbsDet
+          (ρ := ρ) (κ' := κ') z := by
+  let density : TopologyTuple ρ κ' ℝ → ℝ :=
+    topologyTupleEdgeRawOrderFDerivAbsDet
+      (ρ := ρ) (κ' := κ')
+  have hpos : 0 < density z₀ :=
+    topologyTupleEdgeRawOrderFDerivAbsDet_pos_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') hz₀
+  refine ⟨density z₀ / 2, half_pos hpos, ?_⟩
+  have htarget : ∀ᶠ y in 𝓝 (density z₀), density z₀ / 2 ≤ y := by
+    exact eventually_ge_nhds (show density z₀ / 2 < density z₀ by linarith)
+  exact hcontinuous.eventually htarget
+
+/-- If the retained-passive forward raw-order absolute Jacobian determinant is
+continuous at a determinant-chart point, then it admits a positive local upper
+bound there.  The continuity hypothesis is supplied explicitly. -/
+theorem exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds_of_continuousAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z₀ : TopologyTuple ρ κ' ℝ)
+    (hcontinuous :
+      ContinuousAt
+        (topologyTupleEdgeRawOrderFDerivAbsDet
+          (ρ := ρ) (κ' := κ')) z₀) :
+    ∃ K : ℝ, 0 < K ∧
+      ∀ᶠ z in 𝓝 z₀,
+        topologyTupleEdgeRawOrderFDerivAbsDet
+          (ρ := ρ) (κ' := κ') z ≤ K := by
+  let density : TopologyTuple ρ κ' ℝ → ℝ :=
+    topologyTupleEdgeRawOrderFDerivAbsDet
+      (ρ := ρ) (κ' := κ')
+  refine ⟨max (density z₀ + 1) 1, ?_, ?_⟩
+  · exact lt_of_lt_of_le zero_lt_one (le_max_right _ _)
+  · have htarget : ∀ᶠ y in 𝓝 (density z₀), y ≤ density z₀ + 1 := by
+      exact eventually_le_nhds (show density z₀ < density z₀ + 1 by linarith)
+    exact (hcontinuous.eventually htarget).mono
+      (fun _ hy ↦ le_trans hy (le_max_left _ _))
+
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState
 end Aoyagi

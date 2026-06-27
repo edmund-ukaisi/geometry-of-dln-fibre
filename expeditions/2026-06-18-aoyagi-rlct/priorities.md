@@ -6211,3 +6211,20 @@ or measure-transport interface for the retained-passive raw-order chart.  Do
 not assert an explicit determinant formula, density formula, measure
 pushforward, normal-crossing, pole-order, or RLCT theorem from this
 determinant-unit result alone.
+
+A2 retained-passive raw-order Jacobian density interface has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-jacobian-density-interface.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-jacobian-density-interface.md`.
+Lean defines `topologyTupleEdgeRawOrderFDerivAbsDet`, proves positivity on the
+tuple determinant chart and eventual positivity near chart points, and derives
+local lower/upper bounds only under an explicit `ContinuousAt` hypothesis for
+that absolute determinant function.  Laplace the 4th accepted the xhigh review.
+
+Next priority in this lane: either prove continuity of the retained-passive
+`fderiv` absolute determinant from an explicit derivative-family calculation,
+or separately prove a retained-passive chart change-of-variables theorem using
+the existing differentiability, injectivity, and chart-domain facts.  Do not
+promote this supplied-continuity interface into an explicit determinant
+formula, inverse-density formula, measure pushforward, normal-crossing,
+pole-order, or RLCT theorem.
