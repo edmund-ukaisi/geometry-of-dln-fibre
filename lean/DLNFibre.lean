@@ -390,3 +390,12 @@ import DLNFibre.Core.FibreSmoothBlock
 -- gluing = R1) and k-algebra-only (the over-base/projection-compatible trivialization = S4b, the
 -- load-bearing completion, queued).
 import DLNFibre.Core.FibreLocallyTrivial
+-- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial Noetherian
+-- ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the smooth-block
+-- existence with NO `I, hI` hypotheses (hypothesis-free under the kostant gate).
+import DLNFibre.Core.FibreSmoothBlockExists
+-- S3: flatness facts around the atlas (HONEST scope — NOT the `Flat π` payoff). `chartInclusion_flat`
+-- (localization), `standardFibreModel_free`/`_flat` over the auxiliary SchurLoc (generic base change),
+-- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. The fibre-family flatness over the base
+-- is OPEN, gated on the SchurLoc-linear trivialization (= S4b) — see the module header's blocker.
+import DLNFibre.Core.FibreFlatness

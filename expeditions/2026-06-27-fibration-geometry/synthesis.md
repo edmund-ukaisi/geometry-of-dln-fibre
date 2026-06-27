@@ -102,3 +102,22 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   import, green-gate `scripts/lb … DLNFibre` → 3810 jobs, sorries 0. Committing. S3 (a177d4ad) + S2c
   (af506f8e) still running; S4's tide self-cleared. **Spine: 3 of 5 rungs landed (S1, S2, S4-partial).**
   Wave-2 hardener pass on S3+S4(+S2c) to convene once they're all in (batched).
+
+- **tick 6 (S3 + S2c landed + integrated; S4b is the convergent keystone, 2026-06-27 ~16:00):**
+  - **S2c** (`FibreSmoothBlockExists.lean`): clean WIN — `topDimMinPrimes_nonempty` (generic, no
+    finite-dim hyp) + `exists_topComponent_smoothBlock_certificate` (genuinely hypothesis-free, drops
+    `I, hI`). Closes S2 Deferred (c). Precision-checked sound.
+  - **S3** (`FibreFlatness.lean`): impeccably honest — the tide PROACTIVELY flagged the brief's `Flat π`
+    target is NOT met, de-escalated all framing to name=content. Delivered the cheap-flatness verdict
+    (cheap on both readings, no miracle/generic) + genuine sub-facts (localization flat; SchurLoc-free
+    standard model; scheme `UniversallyOpen`). `rankAtStalk` N/A (positive-dim fibre).
+  - **THE CONVERGENCE:** S3's primary blocker = S4's dropped structure = **one rung**: the
+    `SchurLoc`-linear (over-base) trivialization `Total ≃ₐ[SchurLoc] SchurLoc ⊗ Fibre`. The banked
+    `chartDsigAt_tensorEquiv` is only `≃ₐ[k]`. Upgrading it to `≃ₐ[SchurLoc]` transports model flatness
+    (`Module.Flat.of_linearEquiv`) ⟹ the `Flat π` payoff, AND makes S4 genuine local triviality. Both
+    tides + Codex judge it "precise and reachable, not a wall." → **commissioned S4b (thread 07)** as the
+    convergent keystone.
+  - Integrated both (green-gate `scripts/lb … DLNFibre` → 3813 jobs, sorries 0). Committing. S3/S2c tides
+    self-cleared. **Spine: S1✓ S2✓(+S2c closed) S4✓(partial); S3 partial; S4b = the keystone in flight.**
+  - Note for the eventual GLOBAL single-morphism `Flat π`/`FiberBundle` over all `rankROpen`: still needs
+    R1 (`targetOverlapTransition`) on top of S4b's chartwise result. S4b gives the chartwise/local content.
