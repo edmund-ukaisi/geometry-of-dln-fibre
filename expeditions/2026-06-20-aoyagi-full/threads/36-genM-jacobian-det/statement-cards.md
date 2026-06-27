@@ -121,3 +121,66 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 > - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first):
 >   `nodeChart221` is S2-free `[propext, Classical.choice, Quot.sound]`; the divergence theorems carry
 >   only the cited `monomial_rlct`.
+
+---
+
+> **Claim.** The achiever-path box-divergence atom `routeMCore_box_diverges_achiever` holds for
+> `M = (2,2,2)` — the smallest genuinely MULTI-BOUNDARY node (`minAdm = 3`, rank drops at the Schur
+> boundary `k=1` AND the leaf), built end-to-end through the GENERAL `chainOfMt`/`GenBlk` engine via
+> ROUTE 2a (`φ_det := phiGen(B_det222)`, the full-rank decoder). A `NodeAchieverChart M222` exists.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.nodeChart222`, `routeMCore_box_diverges_achiever_222`,
+>   `chartParamsGen_eq_chartParams222`, `phi222_abs_det`, `routeMCore_phi222`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteM222Det.lean`, branch `fm/222det-finish` off
+>   `expedition/aoyagi-full`).
+> - **Gloss.** `M222 = ![2,2,2]`, `tach222 = (2,1,0)` (the genuine achiever path, `Text=[2,2,1]`,
+>   chain-codim `= minAdm = 3`), `routeMAmbient = 8`.
+>   - **The bridge** `chartParamsGen_eq_chartParams222`: the chain's layers from the full-rank decoder
+>     `B_det222` (identity boundary `k=0`, Schur drop `k=1` with `1×1` E-block, LIVE leaf
+>     `Rfin 2 = !![1, x7]`), reindexed to the `M`-widths, ARE the explicit Schur-frame matrices
+>     `chartA0_222 = !![x4, x4·x1; x5, x5·x1+x6·x0]` (= `C 1`) and
+>     `chartA1_222 = !![x0−x1·x2, x0·x7−x1·x3; x2, x3]` (= `chainA(N1)(W1)(C2)`). S2-free.
+>   - RATE field (`leaf_integrand`): `routeMCore M222 (phi222 x) = (x0)²·U` exactly
+>     (`routeMCore_phi222`, the product `A0·A1 = x0·M222bar` so `F = x0²·‖M222bar‖²`, sympy-verified),
+>     `U > 0` a.e. via the genuine-polynomial null-zero-set route (`UPoly222 ≠ 0`).
+>   - DET field (`cov`): `|det Dφ| = |x0|²·|x4| = |x0|^{minAdm−1}·|x4|` — the radial `|x0|²` TIMES a
+>     genuine SPECTATOR `|x4|` (the Schur-coupled chart is NOT pure-radial). Via the factorization
+>     `chartParams222 = pack222 ∘ T222`, `T222 = bsubst222 ∘ shear222 ∘ pb222`: `pb222 = pivotBlowupOn
+>     {0,6,7} 0` (det `|x0|²`), `shear222` the det-1 Schur shear, `bsubst222 = pivotBlowupOn {1,4} 4`
+>     (det `|x4|`); `Q222CLM = paramsEquivFlat ∘ pack222` measure-preserving (`|det| = 1`).
+>   - `phi222` is `InjOn` off `{x0=0} ∪ {x4=0}` (the det's vanishing locus, both null); the `cov` runs
+>     on the doubly-punctured complement with the `{x4=0}` slice added back as a TWO-SIDED null
+>     contribution (LHS image null via `phi222_slice_image_null`; RHS weight `|x4| = 0`) — the SAME
+>     two-axis structure as the (3,3,4) `{u1=0}` slice. Binding axis `(k,h) = (1,2)`, threshold
+>     `(2+1)/(2·1) = 3/2 = ½·minAdm` (the spectator `x4` sits on a `k=0` axis, ratio ∞, so it does
+>     NOT lower the threshold).
+> - **Proved.** The `NodeAchieverChart M222` bundle (all fields) and the atom discharge via the
+>   M-agnostic `routeMCore_box_diverges_of_nodeChart`. ROUTE 2a end-to-end through the GENERAL engine
+>   (the bridge to the Schur-frame matrices), so the multi-boundary Schur coupling — load-bearing for
+>   the RATE on split-codim nodes (thread FINDING 1: pure-radial FAILS the rate here) — IS genuinely
+>   exercised, unlike the pure-radial `(2,2,1)`/`(4,4,2,2)` anchors.
+> - **Assumed.** none.
+> - **Cited.** `monomial_rlct` (S2, the leaf monomial RLCT atom), reached through
+>   `monomialIntegrand_lintegral_box_eq_top` — the SAME single citation the `(4,4,2,2)`/`(2,2,1)`/
+>   `(3,3,3,3)` anchors carry (identical force-elaborated `#print axioms` footprint
+>   `[propext, Classical.choice, Quot.sound, monomial_rlct]`).
+> - **Deferred.** the ∀M `nodeChartGeneral M (hpos)`. This card is the (2,2,2) instance — the
+>   multi-boundary validate-small COMPLETE, the headline checkpoint the brief commissioned. NOT the
+>   general atom.
+> - **Structure & ideas observed.** The cast kernel that cracked the bridge (the recurring
+>   dependent-`Fin`-width quirk, now isolated): after `ext`/`fin_cases` the indices are `Fin.mk`s typed
+>   at `Fin (Wext/Text M222 …)` (defeq but not syntactic `Fin n`), so the matrix-apply simp lemmas do
+>   NOT fire and `Fin.zero_eta`/`Fin.mk_one` do NOT normalize them (the width is not a syntactic
+>   succ). The working pattern: prove each entry as a `have` at EXPLICIT `⟨_, by decide⟩` indices (the
+>   LHS row rewritten to the `castAdd`/`natAdd` kept/lift form so `chainA_apply_*` fire; the scalar
+>   `show`-normalized to the clean typed form), then `exact` it into the `fin_cases` goal (Fin
+>   proof-irrelevance unifies `⟨0,⋯⟩` with `⟨0, by decide⟩`). The det-factorization key (Codex
+>   `det222-factorization-*`): ORDER the shear BEFORE the `bsubst` blow-up so the shear uses the BARE
+>   `x1` (slot 1), and `bsubst` replaces slot 1 with `x4·x1` afterward — dissolving the apparent
+>   obstruction (`x1` appearing both as `x4·x1` and bare `x1`).
+> - **Route.** ROUTE 2a (controller, `certificate-rate-det-route.md`): one chart `φ_det = phiGen(B_det)`,
+>   RATE via the decoder-agnostic banked `routeMCore_phiGen`, DET via the bridge to explicit matrices +
+>   the `pack ∘ pivotBlowup ∘ shear` chain-rule (the (3,3,4) two-axis cov template).
+> - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first): `nodeChart222`,
+>   `chartParamsGen_eq_chartParams222`, `phi222_abs_det` are S2-free `[propext, Classical.choice,
+>   Quot.sound]`; `routeMCore_box_diverges_achiever_222` carries only the cited `monomial_rlct`.
