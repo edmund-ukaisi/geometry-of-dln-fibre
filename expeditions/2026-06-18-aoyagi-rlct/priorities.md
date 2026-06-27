@@ -21,6 +21,46 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The solved-`A1` successor derivative formula has been moved upstream from the
+Jacobian leaf into `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+```
+
+The theorem is now stated over the underlying retained-passive `TopologyTuple`,
+not the downstream `RetainedPassiveRawTopologyTuple` abbreviation, so it does
+not import `RetainedPassiveFormalRawOrder.lean`.  For `p : Fin M`,
+
+```text
+d_z(solvedA1(p.succ))(v) = v.1 p.
+```
+
+This is the successor branch only.  It uses `p.succ != 0` and the fact that
+`A1seed(p.succ)` is the passive source coordinate; it needs no determinant-
+chart hypothesis and makes no claim about the zero branch.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and the theorem
+axiom audit (`[propext, Classical.choice, Quot.sound]`).  Xhigh scout `Sagan`
+passed the indexing and no-chart boundary, and required the `TopologyTuple`
+statement adjustment; review note:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a1-successor-fderiv.md`.
+
+Next frontier: prove the zero branch
+
+```text
+d(solvedA1 0) = Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop
+```
+
+with determinant-chart hypothesis and noncommutative order preserved.
+
+Previous controller decision:
+
 The current retained-passive terminal `dEarly` `dPcast` substitution is
 implemented locally after the terminal `dCprod`/`dG` boundary.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dpcast-substitution.md`.

@@ -1418,6 +1418,56 @@ theorem differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
       simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
         toCoordinateData, Fin.succ_ne_zero] using hseed
 
+set_option linter.style.longLine false in
+/-- At a passive top-left edge, the solved `A1` coordinate is the stored
+passive source coordinate, so its Frechet derivative is the passive source
+tangent. -/
+theorem fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    (z v : TopologyTuple ρ κ' ℝ) (p : Fin M) :
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          p.succ) z) v =
+      v.1 p := by
+  have hfun :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          p.succ) =
+        fun y : TopologyTuple ρ κ' ℝ ↦ y.1 p := by
+    funext y
+    change
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+          p.succ =
+        y.1 p
+    have hsolve :=
+      ChartLocalSuffixState.retainedPassiveSolvedA1_eq_of_ne_zero
+        (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).Ctop
+        (Fin.succ_ne_zero p)
+    simpa [ChartLocalSuffixState.RetainedPassiveCoordinateData.solvedA1,
+      toCoordinateData] using hsolve
+  let LA1 : TopologyTuple ρ κ' ℝ →L[ℝ]
+      Matrix ρ ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  rw [hfun]
+  have hLA1 :
+      fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦ y.1 p) z =
+        LA1 := LA1.fderiv
+  rw [hLA1]
+  rfl
+
 /-- The passive top-left tail product is `C^1` as a function of the ambient
 tuple coordinates. -/
 theorem contDiffAt_retainedPassiveA1TailAfterFirst

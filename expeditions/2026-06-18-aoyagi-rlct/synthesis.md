@@ -48,6 +48,59 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Solved-A1 Successor Derivative
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves upstream:
+
+```text
+fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+```
+
+For `p : Fin M`, the theorem states
+
+```text
+d_z(solvedA1(p.succ))(v) = v.1 p.
+```
+
+The proof is the successor branch of the solved-`A1` split: `p.succ != 0`, so
+`solvedA1(p.succ)` unfolds to `A1seed(p.succ)`, and the retained-passive seed
+at a successor index is the raw passive coordinate `y.1 p`.  Therefore the
+map is a continuous linear projection and its Frechet derivative is itself.
+
+Sagan's xhigh audit passed the indexing and no-determinant-chart boundary, but
+required stating the theorem over `TopologyTuple ρ κ' ℝ`, not the downstream
+`RetainedPassiveRawTopologyTuple` abbreviation.  That adjustment is landed, so
+the derivative file remains independent of `RetainedPassiveFormalRawOrder.lean`.
+The duplicate theorem body was removed from `RetainedPassiveCoordinatesJacobian.lean`;
+downstream uses resolve the name through the derivative import.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit passed; the theorem has only
+`[propext, Classical.choice, Quot.sound]`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a1-successor-fderiv.md`.
+
+Nonclaims: no zero-branch formula, no inverse-tail derivative expansion, no
+recursive `dTail` product formula, no complete `dPcast` source staging, no
+determinant theorem, no measure theorem, no normal crossings, pole order, or
+RLCT.
+
+Next frontier: prove the zero solved-`A1` branch
+
+```text
+d(solvedA1 0) = Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop
+```
+
+with determinant-chart hypothesis and factor order preserved.
+
 ## Latest A2 Retained-Passive dEarly Terminal dPcast Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves locally:

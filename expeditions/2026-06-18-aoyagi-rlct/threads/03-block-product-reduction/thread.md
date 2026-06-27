@@ -18,6 +18,54 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 solved-A1 successor derivative
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a1-successor-fderiv.md`.
+Review:
+`review-a2-retained-passive-solved-a1-successor-fderiv.md`, PASS by xhigh
+`Sagan` with statement adjustment to use `TopologyTuple`.
+
+Lean now proves upstream in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+```
+
+For `p : Fin M`, it identifies the successor branch of the solved top-left
+family as the passive source tangent:
+
+```text
+d_z(solvedA1(p.succ))(v) = v.1 p.
+```
+
+The theorem has no determinant-chart hypothesis.  It is stated over
+`TopologyTuple ρ κ' R`, not over the downstream
+`RetainedPassiveRawTopologyTuple` abbreviation, so the derivative file remains
+independent of `RetainedPassiveFormalRawOrder.lean`.  The duplicate theorem
+body was removed from `RetainedPassiveCoordinatesJacobian.lean`; downstream
+uses now import it from the derivative layer.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit passed;
+the theorem has only the standard `[propext, Classical.choice, Quot.sound]`
+footprint.
+
+Nonclaims: no zero-branch formula, no inverse-tail derivative expansion, no
+`dTail` recursive product formula, no complete `dPcast` source-staging, no
+target staging, no determinant theorem, no measure theorem, no normal
+crossings, no pole order, and no RLCT.
+
+Next frontier: the zero solved-`A1` derivative branch
+
+```text
+d(solvedA1 0) = Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop.
+```
+
 ## 2026-06-27 A2 terminal Psucc cleanup obstruction
 
 Obstruction note:
