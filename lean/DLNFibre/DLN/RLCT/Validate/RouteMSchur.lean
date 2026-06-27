@@ -106,7 +106,7 @@ theorem rankOne_outerProduct_split {p : ℕ} (col : Fin 2 → ℝ) (row : Fin 2 
         rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun k _ => by ring)]
   ring
 
-/-- **N2b — `schur_minorPivot_split` (general `r`, SKELETON, correct statement + `sorry`).** On the
+/-- **N2b — `schur_minorPivot_split` (general `r`, PROVED, sorry-free).** On the
 **bounded complete-pivoting cell** (`|R a b| ≤ 1` and the top-left `j×j` minor `M11` is a max-modulus
 `j×j` minor — `minorpivot-cert.md` R2's cell), the disjoint Morse ⊕ Schur-complement TWO-SIDED bounded
 comparison with **UNIFORM** constants (NOT raw equality — the non-orthogonal block-Gauss row-op is absorbed
@@ -302,7 +302,7 @@ theorem schur_minorPivot_split {r p : ℕ} (j : ℕ) (hj : j ≤ r) :
     rw [hRSsplit, hgtop_eq, hSch_eq]
     exact hcmp.2
 
-/-! ## N3 — the per-chart finiteness: the a-axis radial divisor (PROVED) + the chart-integral (SKELETON)
+/-! ## N3 — the per-chart finiteness: the a-axis radial divisor (PROVED) + the chart-integral (PROVED)
 
 On a single radial-`Δ`-blow-up entry-chart `p` of the corank-`r` core `frobSq (Δ·S)`, the per-chart
 integral is finite for `c'` below the per-chart threshold `min(r²/2, inner)` (cert §2, Q4): the radial
@@ -310,7 +310,8 @@ Jacobian `|a|^{r²−1}` (`pivotBlowupOnDeriv_det`) × the N1 factor `a²·frobS
 divisor `∫ |a|^{(r²−1)−2c'} da < ∞ ⟺ c' < r²/2`, Tonelli-separate from the inner `(R,S)`-integral (which
 N2 + the recursion bounds). The threshold is a MINIMUM (both Tonelli factors must be finite, no
 double-count of the two Tonelli roles — cert §2). The a-axis divisor itself (N3a) is the elementary 1-D
-monomial; the full per-chart wiring through `g5_pivotNode` (N3b) is the remaining assembly. -/
+monomial; the per-chart wiring (N3b) Tonelli-separates it from the inner `R`-integral (the `hSfin`
+hypothesis, supplied by the Schur recursion in N4). -/
 
 /-- **N3a — the radial a-axis divisor finiteness (PROVED).** The `a`-axis factor of a radial-`Δ`-blow-up
 chart: `∫_{[−T,T]} |a|^{(r²−1)−2c'} da < ⊤` for `c' < r²/2` — the radial Jacobian `|a|^{r²−1}` against the
@@ -324,16 +325,16 @@ theorem radial_aAxis_divisor_lt_top (r : ℕ) (hr : 1 ≤ r) (T : ℝ) (hT : 0 <
   -- (r² − 1) − 2c' > −1  ⟺  c' < r²/2
   linarith [hc']
 
-/-- **N3b — `radial_loss_chart_lt_top` (SKELETON, faithful per-chart statement).** The per-chart
+/-- **N3b — `radial_loss_chart_lt_top` (PROVED, sorry-free).** The per-chart
 finiteness on a radial-`Δ`-blow-up entry-chart: for the corank-`r` core `frobSq (Δ·S)` with `Δ = a·R` (the
 radial scale `a` ∈ `[−T,T]`, the angular `R` over the bounded matrix box `matBox r r T`, the free block `S`
 fixed), the radial-Jacobian-weighted integral `∫_a ∫_R |a|^{r²−1}·frobSq((a•R)·S)^{−c'}` is finite for
-`c'` below the per-chart threshold `min(r²/2, inner)`. By N1 (`radialDelta_loss_factor`) the integrand
-factors `|a|^{r²−1}·(a²·frobSq(R·S))^{−c'} = |a|^{(r²−1)−2c'}·frobSq(R·S)^{−c'}`, Tonelli-separating the
-a-axis divisor (N3a, PROVED, finite ⟺ `c' < r²/2`) from the inner `R`-integral (bounded by the minor-pivot
-Schur recursion N2). SKELETON (`sorry`) — the Tonelli split + the inner-N2 plug; the a-axis factor is N3a,
-the homogeneity is N1. The radial change-of-variables onto this chart from `Δ`-coords is the existing
-`g5_pivotNode`/`pivotBlowupOnDeriv_det` infra (cert §4 N3, reused verbatim in N4). -/
+`c' < r²/2` given the inner finiteness `hSfin : ∫_R frobSq(R·S)^{−c'} < ⊤`. By N1
+(`radialDelta_loss_factor`) the integrand factors
+`|a|^{r²−1}·(a²·frobSq(R·S))^{−c'} = |a|^{(r²−1)−2c'}·frobSq(R·S)^{−c'}`, Tonelli-separating (a.e. off
+`{a=0}`) the a-axis divisor (N3a, finite ⟺ `c' < r²/2`) from the inner `R`-integral (`hSfin`, supplied by
+the minor-pivot Schur recursion in N4). The radial change-of-variables onto this chart from `Δ`-coords is
+the existing `g5_pivotNode`/`pivotBlowupOnDeriv_det` infra (cert §4 N3, reused verbatim in N4). -/
 theorem radial_loss_chart_lt_top {r p : ℕ} (hr : 1 ≤ r) (T : ℝ) (hT : 0 < T)
     (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c' < (r ^ 2 : ℝ) / 2) (S : Fin r → Fin p → ℝ)
     (hSfin : ∫⁻ R in matBox r r T,
@@ -415,8 +416,12 @@ only the leaf-sum hypothesis side, the same S2 use the headline already rides. N
 `routeMCore_M4422_threshold_lt_top`, via the rank-stratified radial-Schur recursion (N1–N3 + the
 WellFounded-on-corank `recStep` assembly). Directly discharges the `hfin` field of
 `routeMLayerCover_of_atoms` (given the leaf-sum ⟹ `c' < ½·minAdm` premise reduction). SKELETON (`sorry`) —
-the depth-`r` measure-theoretic cover assembly (cert §4 N4, the HIGH-risk long pole); validate on `(3,3,4)`
-depth-2 first. -/
+the depth-`r` measure-theoretic cover assembly (cert §4 N4, the HIGH-risk long pole). The N2b-split ⟶
+Morse-terminal composition the recursion rides is VALIDATED at the smallest binding corank-2 case in
+`RouteMSchurDepth2` (`schurSplit_integrand_le`/`schurSplit_lintegral_le` → `schurSplit_depth2_lt_top`,
+`c' < 2 = λ_{2,4}`, axiom-clean). The remaining gap is the radial-blow-up change-of-variables that turns
+the corank-2 core over the matrix box INTO that split-form `(P, z)`, summed over the `r²` charts by
+`recStep`. -/
 theorem routeMCore_threshold_lt_top {L : ℕ} (M : Fin (L + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∫⁻ x in routeMBaseNbhd M, ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) < ⊤ := by
