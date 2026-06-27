@@ -144,6 +144,9 @@ No such claim is formalisation-ready until both fields are filled.
   retained-passive lower-left derivative recurrence now has a named
   one-step helper and generic/zero/successor branch wrappers through that
   helper, with the successor current tangent explicitly `v.1 s.castSucc`;
+  the retained-passive zeroed-final lower-left tail now also has a
+  Nat-recursive target-staged expression/unfold API, but equality with the
+  actual Frechet derivative remains the next bridge;
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through

@@ -48,7 +48,53 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
-## Latest A2 Lower-Left Step Core
+## Latest A2 Recursive Target-Staged Lower-Left Tail API
+
+`RetainedPassiveCoordinatesDerivative.lean` now defines and proves the
+expression/unfold API for the recursive target-staged derivative of the
+retained-passive zeroed-final lower-left tail:
+
+```text
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_succ
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_succ
+```
+
+The current solved-`A1` target tangent is separated from the recursion.  At
+index `0`, it is
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop`; at successor
+index `s.val+1`, it is `v.1 s.castSucc`.  The recursive derivative expression
+uses `Nat.decreasingInduction`, has base value `0` at `m=M+1`, and unfolds by
+the one-step core with the recursive successor value passed as `dNext`.
+
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Reproduction/design:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-target-staged-lower-left-tail.md`,
+PASS by xhigh `Turing the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; axiom audits for
+all eight new names reported only `[propext, Classical.choice, Quot.sound]`.
+
+This is not yet the theorem that the recursive expression equals the actual
+Frechet derivative of the lower-left tail, and it does not plug into `F3` yet.
+It is also not a target-side determinant-one normalizer, determinant equality,
+source-prior/Jacobian transport, normal crossings, pole order, or RLCT.  Next
+target: prove the actual-derivative bridge under the determinant-chart
+hypothesis, then replace the finite positive-tail `F3` unroll chain by the
+recursive `dEarly` expression.
+
+## Previous A2 Lower-Left Step Core
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves a narrow lower-left
 target-staging API rung:

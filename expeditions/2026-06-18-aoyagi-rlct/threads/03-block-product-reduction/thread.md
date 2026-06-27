@@ -18,6 +18,49 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 recursive target-staged lower-left tail API
+
+Reproduction/design:
+`reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Review:
+`review-a2-retained-passive-recursive-target-staged-lower-left-tail.md`,
+PASS by xhigh `Turing the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_succ
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_succ
+```
+
+The recursive expression has base value zero at `m=M+1`, the zeroed-final tail.
+The generic step unfolds by `retainedPassiveLowerLeftTailStepCoreAt` and passes
+the recursive successor value as `dNext`.  The current solved-`A1` target
+tangent unfolds to the zero branch at index `0` and to `v.1 s.castSucc` at
+successor index `s.val+1`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` passed, and all eight new
+axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
+
+This does not yet prove equality with the actual Frechet derivative of the
+lower-left tail, does not plug into `F3`, does not construct the determinant-one
+target normalizer, and does not prove determinant equality, measure transport,
+normal crossings, pole order, or RLCT.
+
+Next frontier: prove the actual-derivative bridge under the determinant-chart
+hypothesis.
+
 ## 2026-06-27 A2 lower-left step core
 
 Reproduction/design:

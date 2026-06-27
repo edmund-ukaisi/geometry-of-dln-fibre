@@ -21,6 +21,48 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive zeroed-final lower-left tail now has a Nat-recursive
+target-staged derivative expression and unfold API.  New Lean names:
+
+```text
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_succ
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_succ
+```
+
+The recursive base is `m = M+1`, with value zero.  The generic step unfolds by
+`retainedPassiveLowerLeftTailStepCoreAt` and passes the recursive successor
+value as `dNext`.  The zero-current tangent unfolds to
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop`; the successor
+tangent unfolds to `v.1 s.castSucc`, not `v.1 s.succ` or `v.1 q`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed, and the full `DLNFibre` build passed with only pre-existing warning
+noise.  `scripts/sorries` reported zero forbidden markers, `git diff --check`
+passed, and all eight new axiom audits reported only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+
+This does not yet prove equality with the actual Frechet derivative of
+`retainedPassiveLowerLeftProductTailSum`, does not plug into the positive-tail
+`F3` theorem, does not construct a target-side determinant-one linear
+equivalence, and does not prove determinant equality, source-prior transport,
+inverse-density pushforward, normal crossings, pole order, or RLCT.  Statement
+card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+
+Next frontier: prove the determinant-chart bridge from the actual Frechet
+derivative of the zeroed-final lower-left tail to
+`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt`, then use that as the
+`dEarly` term in the positive-tail `F3` bridge.
+
+Previous controller decision:
+
 The retained-passive lower-left derivative recurrence now has a named
 one-step target-staging RHS helper in
 `RetainedPassiveCoordinatesDerivative.lean`.  New Lean names:

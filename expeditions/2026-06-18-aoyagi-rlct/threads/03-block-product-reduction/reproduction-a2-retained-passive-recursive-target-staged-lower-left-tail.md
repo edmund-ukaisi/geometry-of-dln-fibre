@@ -2,8 +2,9 @@
 
 Date: 2026-06-27.
 
-Status: controller pen-and-paper reproduction and Lean API design; first Lean
-rung selected.
+Status: controller pen-and-paper reproduction and Lean API design; one-step
+core and recursive expression API proved in Lean; actual Frechet-derivative
+equality bridge remains open.
 
 This note is independent of the quiver-based paper.  It records the recurrence
 that should replace the finite positive-tail `F3` unrolls by a recursive
@@ -198,6 +199,24 @@ through this helper.  After that compiles, the zero and successor specialized
 theorems can be restated through the same helper.  Only then should we build a
 Nat-recursive target-staged derivative object.
 
+The one-step helper and the Nat-recursive expression API have now landed.  The
+recursive API is:
+
+```text
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_zero
+retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt_succ
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_succ
+```
+
+The next Lean target is the bridge proving that this recursive expression
+equals the actual Frechet derivative of the zeroed-final lower-left product
+tail under the determinant-chart hypothesis.
+
 ## Kill conditions
 
 - Do not use `v.1 q` in the successor branch.  The tangent is `v.1 u` with
@@ -214,7 +233,7 @@ Nat-recursive target-staged derivative object.
 
 ## Nonclaims
 
-This note does not prove the full recursive target-staged derivative object.
-It does not construct the determinant-one target normalizer.  It does not
-prove source-prior transport, inverse-density pushforward, normal crossings,
-pole order, or RLCT.
+This note does not yet prove that the recursive target-staged expression equals
+the actual Frechet derivative.  It does not construct the determinant-one
+target normalizer.  It does not prove source-prior transport, inverse-density
+pushforward, normal crossings, pole order, or RLCT.
