@@ -734,3 +734,42 @@ or the interior-nonempty hyp; (iv) continuity of `VvalGen∘decoder` for `Umeas`
 `B_det M` (resolves the uniform witness + L=1 in one stroke) IF the leaf-slot accounting is designed first —
 that is the genuine `B_det M` sub-design the §2 certificate under-specified (the leaf dim `Text L × Wext L`
 vs the E-role `r_{L-1}×c_{L-1}`).
+
+---
+
+## BUILD-TIDE 2 ADDENDUM (2026-06-27, the MvPolynomial encoding — Ubound+Umeas ∀M modulo ONE witness)
+
+Charged with the last rate-side field (`Ubound` a.e.-positivity + `Umeas`). LANDED the COMPLETE
+MvPolynomial encoding pipeline + `Ubound`/`Umeas` ∀M, reduced to a SINGLE witness. Full `lake build
+DLNFibre` green (8485), all results axiom-clean `[propext, Classical.choice, Quot.sound]`, sorry-free.
+
+### Landed (the conservative chain-stack CommRing generalization + the encoding)
+- **Scoped-generalized the chain engine to `CommRing 𝕜`** (CONSERVATIVE via `GenBlk`'s `𝕜 := ℝ` default;
+  all ℝ consumers unchanged, full build green): `Chain`/`FactoredChain`/`GenBlk`/`Cgen`/`Agen`/`chainOfMt`/
+  `chainQ`/`chainA`/`chain_block`/`step_of_factor`/`chainA_apply_*` readers/`bmatStack`/`rmatPad`/
+  `genBlkFlatStruct`. So the chain (and its `Hmat 0`) instantiates over `MvPolynomial (Fin N) ℝ`.
+- **`Chain.map` + `Hmat`/`suffix` `RingHom`-naturality** (`HmatAux_map`/`Hmat_zero_map`): the poly chain
+  maps under `eval x` to the ℝ chain, so `(polyHmat 0).map (eval x) = ℝ-Hmat 0` (`Hmat0_eval`, via
+  `chainOfMt_map` decoder-`GenBlkMap` + `Chain.Hmat_zero_map`; the dependent `Hmat`-type needs `convert`/
+  `subst`, not `rw`/`▸`).
+- **`UPolyGen` + `eval x UPolyGen = achieverUfun x`** (`achieverUfun_eq_eval`): the rate-side unit IS
+  `eval x` of a NAMED `MvPolynomial` (`sqSumHmat0` of the poly chain; `VvalGen_eq_sqSumHmat0` handles the
+  `HrGen` reindex via `Fintype.sum_prod_type` + `Equiv.prodCongr`, Codex route d).
+- **`Umeas` FULLY DONE** (`achieverUfun_measurable`: `eval x UPolyGen` is continuous).
+- **`Ubound` ∀M modulo the witness** (`achieverUbound`): box-bound (continuity-on-compact
+  `achieverUfun_le_on_box`) + a.e.-positivity (`achieverUfun_ae_pos` via `MvPolynomial.ae_eval_ne_zero` +
+  `achieverUfun_nonneg`), GIVEN `∃ w, achieverUfun w ≠ 0` (`UPolyGen_ne_zero_of_witness`).
+
+### THE ONE REMAINING GAP — the pivot-survival witness (a precise, isolated goal-state)
+`∃ w : Fin (routeMAmbient M) → ℝ, achieverUfun M hL hN w ≠ 0`. Then `achieverUbound`/`UPolyGen_ne_zero_of_witness`
+close `Ubound` fully (everything else is banked). Equivalently (banked `VvalGen_eq_sqSumHmat0`):
+`∃ w, ∑_{i,j} ((chainOfMt (w p) M (tach M) (genBlkFlatStruct M (tach M) (structAdm_tach M hL) w) hle).toChain.Hmat 0 i j)² ≠ 0`
+— i.e. one `Hmat 0` entry survives at `w` (the certificate §5 pivot-survival telescoping over opaque widths).
+CAVEAT (Codex `codex/deadleaf-vval-aepos`): the dead-leaf decoder's `VvalGen ≡ 0` for `L = 1`, so the witness
+holds only for `2 ≤ L` (interior-E nonempty) — the uniform ∀M needs an `L=1` split (the `L=1` chart is a pure
+radial, separate easy case) OR the live-leaf `B_det M`. The witness `w` (cert §5): all kept-diagonal = 1, all
+Nblk/Wblk/angular = 0, the deepest interior E-entry = 1 ⟹ one `Hmat 0` entry = 1 (the all-kept telescoping
+path). The reduction `achieverUfun → eval UPolyGen → ae_eval_ne_zero` is the heavy infra and is DONE; only this
+witness-point evaluation over opaque widths remains.
+
+### Codex consults banked: `codex/{mvpoly-encoding-route,sum-reindex,deadleaf-vval-aepos,structadm-achiever-gap}-{prompt,answer}.md`.
