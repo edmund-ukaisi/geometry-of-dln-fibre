@@ -368,3 +368,9 @@ import DLNFibre.Core.FibreComponentOrbitIso
 -- `reducedFibre_baseChangeHomogeneous` (`mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal
 -- TopDimMinPrimes count). Closes the prose overclaim flagged in review (was stated arbitrary, proved E_r).
 import DLNFibre.Core.FibreThetaCountArbitrary
+-- θ-invariants DISTINCTION capstone (PR #11 follow-up): the order-side companion to the codim/Aoyagi
+-- capstone. `aoyagiPoleOrder ell a := a*(ell−a)+1` (an ANALYTIC pole order, NOT a component count) —
+-- (1) the live mismatch `numTop_d22222_ne_aoyagiPoleOrder` (L&R count 6 ≠ 5 = Aoyagi order at (2,2,2,2,2)
+-- r=0), (2) the agreement regime `choose_eq_aoyagiPoleOrder_iff : choose ell a = a(ell−a)+1 ↔ min a (ell−a)
+-- ≤ 1`. Proves the two θ's DIFFER + pins exactly when they agree; asserts NO (false) equality of them.
+import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
