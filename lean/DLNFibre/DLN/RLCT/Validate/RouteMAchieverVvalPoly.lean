@@ -108,4 +108,34 @@ theorem Agen_map {M t : Fin (L + 1) → ℕ} {Bp : GenBlk M t 𝕜} {Br : GenBlk
   · rw [dif_pos hk, dif_pos hk, chainA_map, hBM.hNblk, hBM.hWblk, Cgen_map hBM u hle (k + 1)]
   · rw [dif_neg hk, dif_neg hk, Matrix.map_zero f (map_zero f)]
 
+/-! ## The chain-level naturality + the `Hmat 0` / `HrGen` evaluation -/
+
+/-- **The mapped chain equals the chain of the mapped decoder**: `(chainOfMt u Bp hle).toChain.map f
+= (chainOfMt (f u) Br hle).toChain` — fieldwise (`Agen_map`/`Cgen_map`; `B`/`R` by `hBmat`/`hRfin`;
+`E_k = Rmat_k · A_k` by `Matrix.map_mul` + `hRmat` + `Agen_map`). -/
+theorem chainOfMt_map {M t : Fin (L + 1) → ℕ} {Bp : GenBlk M t 𝕜} {Br : GenBlk M t 𝕜'}
+    {f : 𝕜 →+* 𝕜'} (hBM : GenBlkMap M t Bp Br f) (u : 𝕜)
+    (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
+    (chainOfMt u M t Bp hle).toChain.map f = (chainOfMt (f u) M t Br hle).toChain := by
+  have hA : ∀ k, ((chainOfMt u M t Bp hle).toChain.A k).map f
+      = (chainOfMt (f u) M t Br hle).toChain.A k := fun k => Agen_map hBM u hle k
+  have hC : ∀ k, ((chainOfMt u M t Bp hle).toChain.C k).map f
+      = (chainOfMt (f u) M t Br hle).toChain.C k := fun k => Cgen_map hBM u hle k
+  have hB : ∀ k, ((chainOfMt u M t Bp hle).toChain.B k).map f
+      = (chainOfMt (f u) M t Br hle).toChain.B k := fun k => hBM.hBmat k
+  have hE : ∀ k, ((chainOfMt u M t Bp hle).toChain.E k).map f
+      = (chainOfMt (f u) M t Br hle).toChain.E k := by
+    intro k
+    show (Bp.Rmat k * Agen u M t Bp hle k).map f = Br.Rmat k * Agen (f u) M t Br hle k
+    rw [Matrix.map_mul, hBM.hRmat, Agen_map hBM u hle k]
+  have hR : ((chainOfMt u M t Bp hle).toChain.R).map f = (chainOfMt (f u) M t Br hle).toChain.R :=
+    hBM.hRfin L
+  -- assemble: both sides are `Chain.mk` with equal data fields; `step`/`base` proof-irrelevant.
+  show Chain.mk _ _ _ _ _ _ _ _ _ = Chain.mk _ _ _ _ _ _ _ _ _
+  congr 1 <;>
+    first
+      | (funext k; first | exact hA k | exact hC k | exact hB k | exact hE k)
+      | exact hR
+      | rfl
+
 end DLNFibre.DLN.RLCT
