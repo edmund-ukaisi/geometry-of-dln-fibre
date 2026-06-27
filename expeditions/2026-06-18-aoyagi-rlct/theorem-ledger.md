@@ -10012,6 +10012,32 @@ measurability, no source-prior density theorem, no original DLN source
 pushforward, no local-source coverage, no normal crossings, no pole order, and
 no RLCT.
 
+Latest A2 retained-passive raw-order local-source COV bridge:
+`RetainedPassiveLocalSource.lean` proves
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization`,
+and `RetainedPassiveLocalMeasure.lean` proves
+`measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_of_realization`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-local-source-cov-bridge.md`
+accepted by xhigh `Parfit the 4th`.
+
+The source lemma turns raw-order target-chart membership into retained-passive
+p.13 local-source membership under an explicit fixed-base edge-family
+realization identity.  The measure theorem combines this membership with the
+already-proved composed weighted COV theorem to prove
+`mu.restrict localSource = Measure.map (sourceChart o topologyTupleEdgeRawOrder)
+((m.restrict S).withDensity (ofReal o J))` for
+`mu = Measure.map sourceChart (m.restrict T)`.
+
+Nonclaims: no determinant-density continuity, inverse-density measurability,
+original source-prior transport, selected-entry target-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive raw-order Jacobian density interface:
 `RetainedPassiveCoordinatesDerivative.lean` now defines
 `topologyTupleEdgeRawOrderFDerivAbsDet` and proves positivity of the forward

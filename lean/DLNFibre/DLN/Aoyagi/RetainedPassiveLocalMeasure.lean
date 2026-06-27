@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
 import DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure
 
@@ -23,6 +24,9 @@ open scoped ENNReal
 namespace DLNFibre
 namespace DLN
 namespace Aoyagi
+
+open ChartLocalSuffixState
+open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
 set_option linter.style.longLine false
 
@@ -75,6 +79,166 @@ theorem measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
     exact (ae_map_iff hsourceChart hlocal_meas).2
       (by simpa [localSource] using hchart_mem)
   simpa [localSource] using Measure.restrict_eq_self_of_ae_mem hmap_mem
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- A realized raw-order retained-passive change of variables produces a
+chart-measure identity restricted to the retained-passive p.13 local source.
+
+The target measure is already the raw-order target pushforward through the
+supplied realization map.  This is not original source-prior transport or a
+Jacobian formula for an external source chart. -/
+theorem measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_of_realization
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    (sourceChart :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ → α)
+    (hCedge : Continuous Cedge)
+    (hsourceChart :
+      AEMeasurable sourceChart
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀))))
+    (hrealize :
+      ∀ y ∈
+          topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀),
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+            (fun p : Fin (M + 1) ↦
+              (Cedge (sourceChart y) p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+          edgeFamilyOfRawOrderTuple
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀) y) :
+    let S : Set
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ) :=
+      topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)
+    let T : Set
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge
+    let μ := Measure.map sourceChart (m.restrict T)
+    μ.restrict localSource =
+      Measure.map
+        (fun z :
+            TopologyTuple (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀) ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀) z))
+        ((m.restrict S).withDensity
+          (fun z :
+              TopologyTuple (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀) ℝ ↦
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderFDerivAbsDet
+                (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀) z))) := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge
+  let μ : Measure α := Measure.map sourceChart (m.restrict T)
+  have hs : NullMeasurableSet S m := by
+    simpa [S, ρ, κ'] using
+      nullMeasurableSet_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hTnull : NullMeasurableSet T m := by
+    exact
+      (isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet.nullMeasurableSet
+  have hchart_mem :
+      ∀ᵐ y ∂ m.restrict T, sourceChart y ∈ localSource := by
+    filter_upwards [ae_restrict_mem₀ hTnull] with y hy
+    exact
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) (sourceChart := sourceChart)
+        (by simpa [T, ρ, κ'] using hy)
+        (by simpa [ρ, κ'] using hrealize y (by simpa [T, ρ, κ'] using hy))
+  have hrestrict :
+      μ.restrict localSource = Measure.map sourceChart (m.restrict T) := by
+    simpa [μ, localSource] using
+      measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge)
+        (η := m.restrict T) (sourceChart := sourceChart)
+        hCedge
+        (by simpa [T, ρ, κ'] using hsourceChart)
+        (by simpa [localSource] using hchart_mem)
+  have hcov :
+      Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          ((m.restrict S).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              ENNReal.ofReal
+                (topologyTupleEdgeRawOrderFDerivAbsDet
+                  (ρ := ρ) (κ' := κ') z))) =
+        Measure.map sourceChart (m.restrict T) := by
+    simpa [S, T, ρ, κ'] using
+      map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+        (ρ := ρ) (κ' := κ') (β := α) m sourceChart hs
+        (by simpa [T, ρ, κ'] using hsourceChart)
+  change μ.restrict localSource =
+      Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderFDerivAbsDet
+                (ρ := ρ) (κ' := κ') z)))
+  rw [hrestrict, hcov]
 
 set_option linter.unusedSectionVars false in
 /-- Retained-passive specialization of the source-stratum/local-source

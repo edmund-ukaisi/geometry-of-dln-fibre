@@ -9567,3 +9567,40 @@ Focused module build, full `DLNFibre` build, `scripts/sorries`, and
 only; it does not prove determinant-density measurability, source-prior
 transport, original DLN source pushforward, local-source coverage, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-27 A2 retained-passive raw-order local-source COV bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Review:
+`review-a2-retained-passive-raw-order-local-source-cov-bridge.md`
+accepted by xhigh read-only reviewer `Parfit the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean` and
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_of_realization
+```
+
+The first theorem says that a raw-order target point `y in T` lands in the
+retained-passive p.13 local source after a supplied fixed-base realization
+whose edge matrices agree with `edgeFamilyOfRawOrderTuple y`.  The second
+theorem applies the already-proved composed weighted raw-order COV theorem and
+restricts the resulting raw-target pushforward
+`mu = Measure.map sourceChart (m.restrict T)` to the local source.
+
+This is a chart-produced local-source measure identity only.  It does not prove
+determinant-density continuity, inverse-density measurability, original
+source-prior transport, selected-entry target-image equality, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
+Focused `RetainedPassiveLocalMeasure`, full `DLNFibre`, `scripts/sorries`, and
+`git diff --check` passed.  The sorry scan reported `0 sorry`, `0 #exit`,
+`0 native_decide`, and `0 axiom`.

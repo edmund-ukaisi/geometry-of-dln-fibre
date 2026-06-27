@@ -13539,3 +13539,32 @@ readback; determinant-density/inverse-density measurability remains explicit
 where needed, and there is still no source-prior density theorem, original DLN
 source pushforward, local-source coverage, normal crossings, pole order, or
 RLCT.
+
+Latest retained-passive raw-order local-source COV bridge:
+`RetainedPassiveLocalSource.lean` and `RetainedPassiveLocalMeasure.lean` now
+bridge the chart-coordinate raw-order COV theorem into the retained-passive
+p.13 local-source orientation under an explicit fixed-base realization map.
+Lean names:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_of_realization
+```
+
+The result is
+`mu.restrict localSource = Measure.map (sourceChart o topologyTupleEdgeRawOrder)
+((m.restrict S).withDensity (ofReal o J))` for
+`mu = Measure.map sourceChart (m.restrict T)`, assuming `sourceChart` is
+a.e.-measurable on `m.restrict T`, `Cedge` is continuous, and the fixed-base
+edge matrices of `Cedge (sourceChart y)` realize `edgeFamilyOfRawOrderTuple y`
+for every `y in T`.
+
+Parfit the 4th accepted the xhigh review.  This is chart-produced local-source
+measure transport only; it still does not prove determinant-density
+continuity, inverse-density measurability, original DLN source-prior transport,
+selected-entry target-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
+Focused `RetainedPassiveLocalMeasure`, full `DLNFibre`, `scripts/sorries`, and
+`git diff --check` passed.  The sorry scan reported `0 sorry`, `0 #exit`,
+`0 native_decide`, and `0 axiom`.

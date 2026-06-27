@@ -9244,3 +9244,35 @@ Nonclaims: no determinant formula, no determinant-density continuity or
 measurability, no source-prior density theorem, no original DLN source
 pushforward, no local-source coverage, no normal crossings, no pole order, and
 no RLCT is proved.
+
+Latest A2 retained-passive raw-order local-source COV bridge:
+Lean now proves
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization`
+in `RetainedPassiveLocalSource.lean` and
+`measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_of_realization`
+in `RetainedPassiveLocalMeasure.lean`.
+
+Status: Proved; reviewed.
+
+Claim: if a supplied realization map `sourceChart` sends every raw-order target
+point `y in T` to retained-passive parameters whose fixed-base edge matrices
+are `edgeFamilyOfRawOrderTuple y`, then the chart-produced measure
+`mu = Measure.map sourceChart (m.restrict T)` restricts to the retained-passive
+p.13 local source as the weighted raw-order source-side map
+`sourceChart o topologyTupleEdgeRawOrder`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-local-source-cov-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-local-source-cov-bridge.md`
+accepted by xhigh `Parfit the 4th`.
+
+Kill condition: this theorem starts from the raw-target pushforward through a
+supplied realization map.  Do not use it as construction or transport of the
+original DLN source prior.
+
+Nonclaims: no determinant-density continuity, inverse-density measurability,
+original source-prior transport, selected-entry target-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT is proved.

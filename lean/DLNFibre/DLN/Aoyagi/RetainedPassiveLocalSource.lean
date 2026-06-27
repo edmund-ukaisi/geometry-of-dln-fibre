@@ -125,6 +125,45 @@ theorem paperEndpointFixedBaseRetainedPassiveP13LocalSource_eq_preimage_sourceEd
   rfl
 
 set_option linter.unusedSectionVars false in
+/-- A raw-order target point realized by the fixed-base edge family lands in
+the retained-passive p.13 local source. -/
+theorem
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (sourceChart :
+      TopologyTuple (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) K → α)
+    {y :
+      TopologyTuple (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) K}
+    (hy : y ∈
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hrealize :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (Cedge (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+        edgeFamilyOfRawOrderTuple
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) y) :
+    sourceChart y ∈
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge := by
+  dsimp [paperEndpointFixedBaseRetainedPassiveP13LocalSource]
+  rw [hrealize]
+  simpa [topologyTupleRawOrderSourceRecursiveDetChartSet] using hy
+
+set_option linter.unusedSectionVars false in
 /-- Fixed-base residual coordinates read as the residual-factor product of the
 retained-passive source-readback residual blocks. -/
 theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct

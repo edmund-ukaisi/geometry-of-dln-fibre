@@ -6282,3 +6282,19 @@ set/realization bridge into the retained-passive p.13 local source, and a real
 unconditional inverse-density pushforward still needs determinant-density
 measurability/continuity.  Do not treat the edge-family readback specialization
 as original source-prior transport.
+
+A2 retained-passive raw-order local-source COV bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-local-source-cov-bridge.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-local-source-cov-bridge.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-local-source-cov-bridge.md`.
+Lean proves that a supplied fixed-base realization of the raw-order target
+coordinates gives a retained-passive p.13 local-source measure identity for
+`mu = Measure.map sourceChart (m.restrict T)`.
+
+Next priority in this lane: either prove determinant-density continuity through
+a C1 upgrade for `topologyTupleEdgeRawOrder`, or continue toward a selected
+entry/source-prior handoff with the target-image and source-prior hypotheses
+kept explicit.  Do not treat this bridge as original DLN source-prior
+transport, selected-entry image equality, source-rank coverage, normal
+crossing, pole order, or RLCT.
