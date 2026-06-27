@@ -714,6 +714,17 @@ genm-upper's work + re-home it into a proper worktree. **This makes `worktree.ba
 `isolation: worktree` reliably isolate) a HIGH-PRIORITY infra fix — the failure mode has gone from "inconvenient"
 to "actively hazardous to the shared checkout."** Until it's fixed, the controller must check `git status` after
 spawning worktree agents and treat any unexpected main-checkout changes as an isolation failure.
+(e) RESOLUTION (2026-06-27): no actual corruption occurred. genm-upper, despite running in the shared
+checkout, committed with TARGETED `git add <explicit paths>` (never `-A`), so its commits (9d1d8b34 N2b proof,
+58f77fde card) contained only its own files; the controller's (1,2,1) integration (e85e0eb7) and UPDATE docs
+interleaved cleanly on a linear history with zero tangle. N2b verified independently (sorry-free, axiom-clean).
+Resolution adopted: (i) serialize-in-place when an agent is already mid-work in the shared checkout (let it
+finish + commit targeted, controller holds builds), and (ii) a STEP-0 **self-healing isolation guard** baked into
+new spawn prompts — the agent runs `git rev-parse --show-toplevel`; if it's the bare main checkout it
+self-creates a worktree (`git worktree add -b <name> .claude/worktrees/<name> origin/expedition/aoyagi-full`)
+and cd's in before any build/edit. genm-recstep launched with this guard. The `worktree.baseRef = head` settings
+fix remains the cleaner permanent fix (operator's call); the guard is the in-band mitigation until then. NOT a
+blocker; surfaced for the operator's settings decision.
 
 ## 37. ∀M achiever-chart STRUCTURAL gap + a process learning (2026-06-27) — operator awareness, NOT a blocker.
 EXHAUSTIVE exact-arithmetic (genm-witness, 351 M over {1,2,3}^{L+1}, L∈{2,3,4}) found the structured-decoder
