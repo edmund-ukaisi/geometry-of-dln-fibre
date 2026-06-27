@@ -313,6 +313,12 @@ import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
 import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
 import DLNFibre.DLN.RLCT.Validate.RouteM4422
+-- `RouteM221`: the (2,2,1) NodeAchieverChart VALIDATE-SMALL — the option-(C) chart
+-- `phi221 = paramsEquivFlat ∘ pack221 ∘ pivotBlowupOn {0,1} 0` (full-rank pack via the banked
+-- `measurePreserving_paramsPack_of_flatIdxEquiv` fed a genuine `Equiv`; the D1 dead-slot guard)
+-- built end-to-end through the GENERAL machinery, discharging the atom for a LAYERED node
+-- (rate `(u 0)²·U` + det `|u 0|^{minAdm−1}`, both via the general bricks the ∀M build reuses).
+import DLNFibre.DLN.RLCT.Validate.RouteM221
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin

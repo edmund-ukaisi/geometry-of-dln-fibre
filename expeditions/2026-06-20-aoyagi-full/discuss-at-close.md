@@ -653,3 +653,14 @@ catch-ups via a separate branch) would tighten integration discipline. (b) threa
 bridge-design Codex consult at `codex/bridge-design-{prompt,answer}.md`, but those files were never written to disk
 (the blueprint content IS captured in thread.md). The fresh `option1-bridge` tide is instructed to re-save it. No
 soundness impact.
+
+(c) THIRD instance (2026-06-27): the `option-c-chart` formaliser's bash used absolute-path `cd`, so a `git commit`
+ran against the MAIN checkout (not its worktree) — landing a stray DOCS commit (`3cf2e5fc`, the (2,2,1) statement
+card) on `expedition/aoyagi-full` + pushing it to origin, and advancing the controller's local HEAD. Again benign
+(docs-only, no Lean), and the agent self-flagged + cherry-picked it onto its feature branch. This is now a clear
+RECURRING pattern with a clear cause: **teammates' bash defaults to the worktree, but an absolute-path `cd <repo>`
+in a command silently retargets git to the main checkout.** Mitigation options for the operator: (i) instruct
+teammates to use worktree-relative paths / `git -C <worktree>` for all git ops; (ii) a pre-commit hook rejecting
+commits to `expedition/aoyagi-full` from a non-controller identity; (iii) accept it (controller verifies each such
+advance is benign before building on it, as done here — Lean-diff check + no-merge check). The controller has been
+doing (iii) successfully each time.
