@@ -664,27 +664,73 @@ theorem phi121sm_cov (V : Set (Fin 4 → ℝ)) (hV : MeasurableSet V)
     (measurableSet_eq_fun (measurable_pi_apply 2) measurable_const)) (fun u _ => ?_)
   simp only [leafH121, pow_zero, Finset.prod_const_one, ENNReal.ofReal_one, one_mul]
 
-/-! ### Residual: the `image_subset` field (the THIRD pole-affected field — handback)
+/-! ### The MP-final-step assembly (route (b), reusable — replaces `image_subset`)
 
-LANDED (route (b), sorry-free + axiom-clean): the rate (`routeMCore_phi121sm_offpole`), the a.e.
-`leaf_integrand` (`leaf_integrand121_ae`), and — the cov-split's clean replacement — `phi121sm` is a
-GLOBAL measure-preserving measurable EMBEDDING (`measurePreserving_phi121sm`,
-`measurableEmbedding_phi121sm`, via the banked `CoreShearMP` skew-product conjugated by `split121`),
-giving the `cov` field directly from `MeasurePreserving.setLIntegral_comp_emb` (`phi121sm_cov`) — NO
-`HasFDerivAt`, NO Jacobian, NO pole-split.
+The rational/MP smeared chart does NOT use image-containment (`φ_sm` is unbounded near its pole).
+The
+box-divergence is discharged by the MeasurePreserving change-of-variables: `∫_{cubeBox ε} g =
+∫_{φ⁻¹(cubeBox ε)} g∘φ` (`setLIntegral_comp_preimage_emb`), lower-bounded by a source sub-box `S ⊆
+φ⁻¹(cubeBox ε)` where the rate `z²·a²` gives the monomial divergence. The reusable shape
+`routeMCore_box_diverges_of_MPChart` takes a **source certificate** `hsrc` (the
+bounded-away-from-pole
+sub-box `S ⊆ φ⁻¹(cubeBox)` with `∫_S (loss∘φ)^{−c} = ⊤`) — the ∀M-smeared lift (46 M) reuses it. The
+banked image_subset core (`routeMCore_box_diverges_of_nodeChart`) is UNTOUCHED — the polynomial
+interior/clean charts keep it (they are not MP). -/
 
-RESIDUAL — the `NodeAchieverChart.image_subset` field is the THIRD pole-affected field: it requires
-`phi121sm '' [0,δ]^4 ⊆ cubeBox 4 ε` (the box image in a small cube), but the RATIONAL `φ_sm` is
-UNBOUNDED near its pole `{a=0}` (the flat coord `z − (b/a)·sb → ∞` as `a → 0` with `b,sb ≠ 0`), so
-its
-image of a box containing `{a=0}` is NOT bounded. The box-divergence assembly
-`routeMCore_box_diverges_of_nodeChart` uses `image_subset` to conclude `∫_{cubeBox} ≥
-∫_{φ''(box\{z=0})}
-= ⊤`. For the rational chart this needs an architecture decision (controller-gated): restrict the
-source
-box to exclude a pole-neighborhood, OR run the FINAL `lintegral_mono_set` step via the MP
-`∫_{cubeBox} = ∫_{φ⁻¹(cubeBox)}` (using `measurePreserving_phi121sm` again) instead of the image
-containment. The `Ubound`/`Umeas`/the instance/the atom ride on that decision. The cov + rate +
-a.e.-leaf_integrand (the conceptually-load-bearing pieces) are all landed. -/
+/-- **The MP-chart box-divergence (route (b), reusable, NO `image_subset`).** Given a
+measure-preserving
+measurable embedding `phi` and a source certificate `hsrc` (a sub-box `S ⊆ phi⁻¹(cubeBox N ε)` on
+which
+the pulled-back loss already diverges), the loss box-integral over `cubeBox N ε` is `⊤`. The whole
+MP
+step: `∫_{cubeBox} = ∫_{phi⁻¹(cubeBox)} (loss∘phi)` ≥ `∫_S (loss∘phi)` = `⊤`. -/
+theorem routeMCore_box_diverges_of_MPChart {L : ℕ} (M : Fin (L + 1) → ℕ)
+    (phi : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ))
+    (hmp : MeasurePreserving phi (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume)
+    (hemb : MeasurableEmbedding phi) (c' : ℝ) (ε : ℝ)
+    (hsrc : ∃ S : Set (Fin (routeMAmbient M) → ℝ), MeasurableSet S ∧
+      S ⊆ phi ⁻¹' (cubeBox (routeMAmbient M) ε) ∧
+      (∫⁻ u in S, ENNReal.ofReal (|routeMCore M (phi u)| ^ (-c'))) = ⊤) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  obtain ⟨S, _, hSsub, hSdiv⟩ := hsrc
+  set g := fun x : Fin (routeMAmbient M) → ℝ => ENNReal.ofReal (|routeMCore M x| ^ (-c')) with hg
+  have hpre := hmp.setLIntegral_comp_preimage_emb hemb g (cubeBox (routeMAmbient M) ε)
+  apply top_le_iff.1
+  calc (⊤ : ℝ≥0∞)
+      = ∫⁻ u in S, g (phi u) := hSdiv.symm
+    _ ≤ ∫⁻ u in phi ⁻¹' (cubeBox (routeMAmbient M) ε), g (phi u) := lintegral_mono_set hSsub
+    _ = ∫⁻ x in cubeBox (routeMAmbient M) ε, g x := hpre
+
+/-! ### Residual: the `(1,2,1)` source certificate `hsrc` + the atom (the bounded finish)
+
+The reusable MP-final-step `routeMCore_box_diverges_of_MPChart` is LANDED (NO `image_subset`). The
+`(1,2,1)` atom needs only the source certificate `hsrc` for `phi121sm`:
+```
+∃ S, MeasurableSet S ∧ S ⊆ phi121sm⁻¹(cubeBox 4 ε) ∧ ∫_S (loss∘φ)^{−c'} = ⊤
+```
+with `S = subBox121 δ := {a = u 0 ∈ [δ/2, δ], b = u 1 ∈ [−δ,δ], z = u 2 ∈ (0,δ), sb = u 3 ∈
+[−δ,δ]}`,
+`δ = ε/4` (Codex `mp-final-step`). Two bounded sub-goals (concrete analysis, no design wall):
+
+1. **Containment** `subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))`: needs the explicit flat coords of
+   `phi121sm u = paramsEquivFlat (chartParams121 u)` — the 4 matrix entries `(a, b, z−(b/a)·sb, sb)`
+   read off via `fin4EquivFlatIdx121`/`flatEquivOf_symm_coord`/`hpack121`. On `Pδ`, `a ≥ δ/2 > 0`,
+   so
+   `|z − (b/a)·sb| ≤ δ + δ·δ/(δ/2) = 3δ < 4δ`; the other three coords are `≤ δ`. (The plumbing: a
+   `phi121sm_apply` flat-coord readout lemma, then per-coord `abs_le` arithmetic.)
+2. **Divergence** `∫_{subBox121 δ} (loss∘φ)^{−c'} = ⊤`: on `Pδ` the rate `loss∘φ = z²·a²`
+   (`routeMCore_phi121sm_offpole`, `a > 0`), so `(z²a²)^{−c'} = |z|^{−2c'}·|a|^{−2c'}` (reads only
+   `z, a`). Peel the `z`-axis (index 2) via `piFinSuccAbove`, `setLIntegral_prod`: the `z`-factor
+   over
+   `(0,δ)` is `⊤` (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1` from `c' ≥ minAdm/2 = ½`), the
+   `a,b,sb`-rest factor positive-finite (`a ≥ δ/2 > 0`). The `prod_rpow_lintegral_Ioo_box_eq_top`
+   template (`Case222Cover`), adapted to the heterogeneous box (`a` over `[δ/2,δ]`, not `(0,δ)`).
+
+Then `routeM121sm_box_diverges := routeMCore_box_diverges_of_MPChart M121 phi121sm
+measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc`, and the `(1,2,1)` atom. The
+conceptually-load-bearing pieces (rate, a.e. leaf_integrand, cov-via-MP, the reusable MP-final
+lemma)
+are all LANDED sorry-free; `hsrc` is the concrete-analysis finish. -/
 
 end DLNFibre.DLN.RLCT
