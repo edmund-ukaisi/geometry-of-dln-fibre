@@ -567,3 +567,46 @@ is now LANDED with NO `HasFDerivAt`/Jacobian (the whnf wall sidestepped), sorry-
 >   LANDED sorry-free. The `(1,2,1)` atom is NOT yet discharged (the `image_subset` architecture
 >   decision + the instance assembly remain). Full `lake build DLNFibre` green with the module
 >   temp-imported; aggregator reverted (single-writer).
+
+---
+
+## Smeared `(1,2,1)` — the reusable MP-final lemma (fix b) LANDED; `hsrc` is the bounded finish
+
+Branch `worktree-agent-a223be0c63e358844` @ `a6b790e6`. Controller approved fix (b). The reusable
+MP-final-step lemma is landed; the `(1,2,1)` atom needs only the source certificate `hsrc`.
+
+---
+
+> **`routeMCore_box_diverges_of_MPChart` (the reusable MP-final-step, fix b) — LANDED**
+> (sorry-free, `[propext, Classical.choice, Quot.sound]`).
+>
+> - **Lean (`RouteM121Smeared.lean` @ `a6b790e6`):** `routeMCore_box_diverges_of_MPChart M phi (hmp :
+>   MeasurePreserving phi) (hemb : MeasurableEmbedding phi) c' ε (hsrc : ∃ S, MeasurableSet S ∧ S ⊆
+>   phi⁻¹(cubeBox N ε) ∧ ∫_S (loss∘phi)^{−c'} = ⊤) : ∫_{cubeBox N ε} (loss)^{−c'} = ⊤`. The whole MP
+>   step is a 3-line `setLIntegral_comp_preimage_emb` + `lintegral_mono_set` calc (the loss pulled
+>   back to `phi⁻¹(cubeBox)`, lower-bounded by the source sub-box `S`).
+> - **Why reusable + additive:** NO `image_subset` (the rational `φ_sm` is unbounded near its pole, so
+>   image-containment fails). The banked `routeMCore_box_diverges_of_nodeChart` (image_subset-based) is
+>   UNTOUCHED — the polynomial interior/clean charts keep it (they are not MP). The ∀M-smeared lift
+>   (46 M) reuses `routeMCore_box_diverges_of_MPChart` with each chart's `hsrc`.
+> - **RESIDUAL — the `(1,2,1)` source certificate `hsrc` (the bounded finish, concrete analysis, NO
+>   design wall).** `S = subBox121 δ := {a=u 0∈[δ/2,δ] (bounded-away-from-pole), b=u 1∈[−δ,δ],
+>   z=u 2∈(0,δ), sb=u 3∈[−δ,δ]}`, `δ=ε/4` (Codex `mp-final-step`). Two sub-goals:
+>   (1) **containment** `subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))` — needs a flat-coord bound: each of
+>   the 4 flat coords of `phi121sm u = paramsEquivFlat(chartParams121 u)` is a matrix entry `≤ 4δ` on
+>   the bounded-away box (the only nontrivial one, `z−(b/a)·sb`, is `≤ δ + δ²/(δ/2) = 3δ` since
+>   `a ≥ δ/2`). Plumbing: a `phi121sm`-flat-coord readout through `Fintype.equivFin (FlatIdx M121)`
+>   (the opaque flat ordering — NO existing forward readout; RouteM221/4422 never needed one), OR show
+>   `Q121 = paramsEquivFlat∘pack121` preserves sup-norm (a coord permutation) so `‖phi121sm u‖_∞ =
+>   ‖shear121 u‖_∞ ≤ 4δ`.
+>   (2) **divergence** `∫_{subBox121 δ} (loss∘φ)^{−c'} = ⊤` — on `Pδ` the rate `loss∘φ = z²·a²`
+>   (`routeMCore_phi121sm_offpole`, `a>0`), `(z²a²)^{−c'} = |z|^{−2c'}·|a|^{−2c'}` (reads only `z,a`);
+>   peel `z` (`piFinSuccAbove`/`setLIntegral_prod`), `z`-factor over `(0,δ)` is `⊤`
+>   (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1` from `c' ≥ minAdm/2 = ½`), rest positive-finite.
+>   The `prod_rpow_lintegral_Ioo_box_eq_top` template (`Case222Cover`), adapted to the heterogeneous box.
+> - **Then** `routeM121sm_box_diverges := routeMCore_box_diverges_of_MPChart M121 phi121sm
+>   measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc` + the atom shape; expect
+>   `#print axioms = [propext, Classical.choice, Quot.sound, monomial_rlct]`.
+> - **Status.** rate + a.e.-leaf_integrand + cov-via-MP + the reusable MP-final lemma all LANDED
+>   sorry-free. The `(1,2,1)` atom is NOT yet discharged (`hsrc` = the two concrete-analysis sub-goals
+>   above). Full `lake build DLNFibre` green with the module temp-imported; aggregator reverted.
