@@ -9337,3 +9337,39 @@ This turns the set-level raw-order inverse chart into a topological chart.  It
 does not prove inverse differentiability, identify the derivative, prove a
 tangent equivalence, determinant unit/formula, Jacobian density, measure
 pushforward, source-rank coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive raw-order inverse differentiability
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-inverse-differentiability.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-inverse-differentiability.md`.
+Review:
+`review-a2-retained-passive-raw-order-inverse-differentiability.md`
+passed by xhigh read-only explorer `Nash the 4th`, with a low dependency
+granularity caveat.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now proves generic real differentiability helpers for matrix submatrix,
+`fromBlocks`, block projections, and Schur residual blocks, then proves
+source-readback suffix-state/transformed-edge differentiability and the final
+inverse theorem:
+
+```text
+differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+```
+
+The proof mirrors the deterministic suffix recursion: the `L` update uses the
+inverse of `S.Ctop * topLeftCorner M`, whose determinant unit comes from the
+induction-carried `S.Ctop` unit and the recursive chart unit for
+`topLeftCorner M`.
+
+This closes inverse differentiability for the raw-order target chart.  It does
+not identify the derivative, prove a tangent equivalence, determinant
+unit/formula, Jacobian density, measure pushforward, source-rank coverage,
+normal crossings, pole order, or RLCT.  Dependency caveat: the module currently
+imports the one-step derivative module for generic matrix inverse/multiplication
+calculus helpers; split those helpers only if module-boundary hygiene becomes a
+concrete blocker.

@@ -13380,3 +13380,31 @@ formal tangent-equivalence proof is shorter.  The inverse route should mirror
 the existing continuity recursion with differentiable analogues of the
 source-readback suffix-state and transformed-edge lemmas, using determinant
 units from `sourceRecursiveDetChart`.
+
+Latest retained-passive raw-order inverse differentiability:
+`RetainedPassiveCoordinatesDerivative.lean` now proves
+
+```text
+differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+```
+
+by adding real matrix-calculus helpers for submatrix, `fromBlocks`, block
+projections, Schur residuals, differentiable suffix-state recursion, source
+readback transformed edges, raw edge-family reassembly, and
+`topologyTuple ∘ sourceReadback`.  Nash the 4th passed the xhigh review.  The
+main checked point is the `L` update: the inverse is
+`(S.Ctop * topLeftCorner M)⁻¹`, with unit determinant from the induction-carried
+`S.Ctop` unit and the recursive determinant-chart unit for `topLeftCorner M`.
+
+This is still differentiability-only.  It does not identify the derivative,
+construct a tangent equivalence, prove determinant unit/formula, Jacobian
+density, measure transport, normal crossings, pole order, or RLCT.  Low
+dependency caveat: the derivative module currently imports the one-step
+derivative module for generic matrix inverse/multiplication calculus helpers;
+split those helpers only if this becomes a concrete module-boundary issue.
+
+Next target in this lane: combine forward and inverse differentiability with
+the open partial homeomorphism identities to construct the formal tangent
+linear equivalence at a determinant-chart point and prove determinant unitness
+of the forward derivative.  Do not state a positive density or measure
+pushforward before that determinant-unit theorem exists.

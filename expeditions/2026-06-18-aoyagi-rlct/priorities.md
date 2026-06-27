@@ -6176,3 +6176,21 @@ tangent equivalence directly from the existing forward differentiability and
 chart inverse identities.  Do not state a Jacobian density, measure
 pushforward, normal-crossing, pole-order, or RLCT theorem before determinant
 unitness for the derivative is formalised.
+
+A2 retained-passive raw-order inverse differentiability has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-inverse-differentiability.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-inverse-differentiability.md`.
+Lean proves differentiability of `topologyTupleEdgeRawOrderInverse` at every
+point of `topologyTupleRawOrderSourceRecursiveDetChartSet`, by differentiating
+the source-readback suffix-state recursion.  Treat this as the preferred route
+to determinant unitness: combine it with the forward differentiability theorem,
+the topological open partial homeomorphism, and the chart inverse identities to
+build a tangent linear equivalence.
+
+Do not move to density or measure pushforward yet.  The next priority is the
+formal tangent equivalence/determinant-unit theorem for
+`fderiv ℝ topologyTupleEdgeRawOrder z`.  Low dependency caveat: generic matrix
+calculus helpers currently come through `ProductReductionStepDerivative`; split
+them into a smaller helper module only if that dependency becomes a concrete
+blocker.

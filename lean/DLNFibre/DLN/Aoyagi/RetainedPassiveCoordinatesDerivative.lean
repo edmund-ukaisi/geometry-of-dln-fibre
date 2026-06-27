@@ -53,6 +53,466 @@ theorem differentiableAt_matrix_mul
         |>.differentiableAt (A x, B x)
   simpa using hbilin.comp x (hA.prodMk hB)
 
+set_option linter.unusedFintypeInType false in
+/-- Taking a finite submatrix is differentiable in a differentiable
+matrix-valued family. -/
+theorem differentiableAt_matrix_submatrix
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {m n l o : Type*} [Fintype m] [Fintype n] [Fintype l] [Fintype o]
+    {A : E → Matrix m n ℝ} {x : E}
+    (hA : DifferentiableAt ℝ A x) (r : l → m) (c : o → n) :
+    DifferentiableAt ℝ (fun y : E ↦ (A y).submatrix r c) x := by
+  change DifferentiableAt ℝ
+    (fun y : E ↦ fun i : l ↦ fun j : o ↦ A y (r i) (c j)) x
+  rw [differentiableAt_pi]
+  intro i
+  rw [differentiableAt_pi]
+  intro j
+  exact differentiableAt_pi.1 (differentiableAt_pi.1 hA (r i)) (c j)
+
+set_option linter.unusedFintypeInType false in
+/-- Reassembling four differentiable block families is differentiable. -/
+theorem differentiableAt_matrix_fromBlocks
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {m n l o : Type*} [Fintype m] [Fintype n] [Fintype l] [Fintype o]
+    {A : E → Matrix m l ℝ} {B : E → Matrix m o ℝ}
+    {C : E → Matrix n l ℝ} {D : E → Matrix n o ℝ} {x : E}
+    (hA : DifferentiableAt ℝ A x) (hB : DifferentiableAt ℝ B x)
+    (hC : DifferentiableAt ℝ C x) (hD : DifferentiableAt ℝ D x) :
+    DifferentiableAt ℝ
+      (fun y : E ↦ fromBlocks (A y) (B y) (C y) (D y)) x := by
+  change DifferentiableAt ℝ
+    (fun y : E ↦ fun i : m ⊕ n ↦ fun j : l ⊕ o ↦
+      fromBlocks (A y) (B y) (C y) (D y) i j) x
+  rw [differentiableAt_pi]
+  intro i
+  cases i with
+  | inl i =>
+      rw [differentiableAt_pi]
+      intro j
+      cases j with
+      | inl j =>
+          simpa [Matrix.fromBlocks] using
+            differentiableAt_pi.1 (differentiableAt_pi.1 hA i) j
+      | inr j =>
+          simpa [Matrix.fromBlocks] using
+            differentiableAt_pi.1 (differentiableAt_pi.1 hB i) j
+  | inr i =>
+      rw [differentiableAt_pi]
+      intro j
+      cases j with
+      | inl j =>
+          simpa [Matrix.fromBlocks] using
+            differentiableAt_pi.1 (differentiableAt_pi.1 hC i) j
+      | inr j =>
+          simpa [Matrix.fromBlocks] using
+            differentiableAt_pi.1 (differentiableAt_pi.1 hD i) j
+
+set_option linter.unusedFintypeInType false in
+/-- The top-left block projection is differentiable on differentiable matrix
+families. -/
+theorem differentiableAt_topLeftCorner
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {ρ μ ν : Type*} [Fintype ρ] [Fintype μ] [Fintype ν]
+    {M : E → Matrix (ρ ⊕ μ) (ρ ⊕ ν) ℝ} {x : E}
+    (hM : DifferentiableAt ℝ M x) :
+    DifferentiableAt ℝ (fun y : E ↦ topLeftCorner (M y)) x := by
+  simpa [topLeftCorner] using
+    differentiableAt_matrix_submatrix hM Sum.inl Sum.inl
+
+set_option linter.unusedFintypeInType false in
+/-- The upper-right block projection is differentiable on differentiable matrix
+families. -/
+theorem differentiableAt_upperRightBlock
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {ρ μ ν : Type*} [Fintype ρ] [Fintype μ] [Fintype ν]
+    {M : E → Matrix (ρ ⊕ μ) (ρ ⊕ ν) ℝ} {x : E}
+    (hM : DifferentiableAt ℝ M x) :
+    DifferentiableAt ℝ (fun y : E ↦ upperRightBlock (M y)) x := by
+  simpa [upperRightBlock] using
+    differentiableAt_matrix_submatrix hM Sum.inl Sum.inr
+
+set_option linter.unusedFintypeInType false in
+/-- The lower-left block projection is differentiable on differentiable matrix
+families. -/
+theorem differentiableAt_lowerLeftBlock
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {ρ μ ν : Type*} [Fintype ρ] [Fintype μ] [Fintype ν]
+    {M : E → Matrix (ρ ⊕ μ) (ρ ⊕ ν) ℝ} {x : E}
+    (hM : DifferentiableAt ℝ M x) :
+    DifferentiableAt ℝ (fun y : E ↦ lowerLeftBlock (M y)) x := by
+  simpa [lowerLeftBlock] using
+    differentiableAt_matrix_submatrix hM Sum.inr Sum.inl
+
+set_option linter.unusedFintypeInType false in
+/-- The lower-right block projection is differentiable on differentiable matrix
+families. -/
+theorem differentiableAt_lowerRightBlock
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {ρ μ ν : Type*} [Fintype ρ] [Fintype μ] [Fintype ν]
+    {M : E → Matrix (ρ ⊕ μ) (ρ ⊕ ν) ℝ} {x : E}
+    (hM : DifferentiableAt ℝ M x) :
+    DifferentiableAt ℝ (fun y : E ↦ lowerRightBlock (M y)) x := by
+  simpa [lowerRightBlock] using
+    differentiableAt_matrix_submatrix hM Sum.inr Sum.inr
+
+set_option linter.unusedFintypeInType false in
+/-- The Schur residual block is differentiable at determinant-chart points of
+a differentiable block-matrix family. -/
+theorem differentiableAt_schurResidualBlock
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ] [Fintype ν]
+    {M : E → Matrix (ρ ⊕ μ) (ρ ⊕ ν) ℝ} {x : E}
+    (hM : DifferentiableAt ℝ M x)
+    (hchart : identityCornerDetChart (M x)) :
+    DifferentiableAt ℝ (fun y : E ↦ schurResidualBlock (M y)) x := by
+  have htop : DifferentiableAt ℝ (fun y : E ↦ topLeftCorner (M y)) x :=
+    differentiableAt_topLeftCorner hM
+  have htopInv :
+      DifferentiableAt ℝ (fun y : E ↦ (topLeftCorner (M y))⁻¹) x :=
+    (differentiableAt_matrix_inv_of_isUnit_det (topLeftCorner (M x)) hchart).comp x htop
+  have hupper : DifferentiableAt ℝ (fun y : E ↦ upperRightBlock (M y)) x :=
+    differentiableAt_upperRightBlock hM
+  have hlower : DifferentiableAt ℝ (fun y : E ↦ lowerLeftBlock (M y)) x :=
+    differentiableAt_lowerLeftBlock hM
+  have hright : DifferentiableAt ℝ (fun y : E ↦ lowerRightBlock (M y)) x :=
+    differentiableAt_lowerRightBlock hM
+  have hleftInv :
+      DifferentiableAt ℝ
+        (fun y : E ↦ lowerLeftBlock (M y) * (topLeftCorner (M y))⁻¹) x :=
+    differentiableAt_matrix_mul hlower htopInv
+  have hcorr :
+      DifferentiableAt ℝ
+        (fun y : E ↦
+          lowerLeftBlock (M y) * (topLeftCorner (M y))⁻¹ * upperRightBlock (M y)) x :=
+    differentiableAt_matrix_mul hleftInv hupper
+  simpa [schurResidualBlock] using hright.sub hcorr
+
+/-- One deterministic suffix-state update is differentiable in the source
+edge and previous suffix fields at determinant-chart points. -/
+theorem differentiableAt_chartLocalSuffixState_step_fields
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {x₀ : E}
+    (F : E → ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    {j : Fin (N + 1)} (p : Fin N)
+    (S : E → ChartLocalSuffixState ρ κ ℝ j p.succ)
+    (hF : DifferentiableAt ℝ (fun x : E ↦ F x p) x₀)
+    (hL : DifferentiableAt ℝ (fun x : E ↦ (S x).L) x₀)
+    (hB : DifferentiableAt ℝ (fun x : E ↦ (S x).B) x₀)
+    (hCtop : DifferentiableAt ℝ (fun x : E ↦ (S x).Ctop) x₀)
+    (hD : DifferentiableAt ℝ (fun x : E ↦ (S x).D) x₀)
+    (hCtopUnit : IsUnit ((S x₀).Ctop.det))
+    (hchart :
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (F x₀) p (S x₀))) :
+    IsUnit ((ChartLocalSuffixState.step (F x₀) p (S x₀)).Ctop.det) ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).L) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).B) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).Ctop) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).D) x₀ := by
+  let M : E → Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+    fun x ↦ ChartLocalSuffixState.transformedEdge (F x) p (S x)
+  have hleft :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) (S x).B 0
+            (1 : Matrix (κ p.succ) (κ p.succ) ℝ)) x₀ := by
+    exact differentiableAt_matrix_fromBlocks (by fun_prop) hB (by fun_prop) (by fun_prop)
+  have hM : DifferentiableAt ℝ M x₀ := by
+    have hmul := differentiableAt_matrix_mul hleft hF
+    simpa [M, ChartLocalSuffixState.transformedEdge] using hmul
+  have htop : DifferentiableAt ℝ (fun x : E ↦ topLeftCorner (M x)) x₀ :=
+    differentiableAt_topLeftCorner hM
+  have htopUnit : IsUnit ((topLeftCorner (M x₀)).det) := by
+    have hchartUnit :
+        IsUnit
+          ((topLeftCorner
+            (ChartLocalSuffixState.transformedEdge (F x₀) p (S x₀))).det) := by
+      simpa only [identityCornerDetChart] using hchart
+    simpa only [M] using hchartUnit
+  have htopInv :
+      DifferentiableAt ℝ (fun x : E ↦ (topLeftCorner (M x))⁻¹) x₀ :=
+    (differentiableAt_matrix_inv_of_isUnit_det (topLeftCorner (M x₀)) htopUnit).comp
+      x₀ htop
+  have hupper : DifferentiableAt ℝ (fun x : E ↦ upperRightBlock (M x)) x₀ :=
+    differentiableAt_upperRightBlock hM
+  have hlower : DifferentiableAt ℝ (fun x : E ↦ lowerLeftBlock (M x)) x₀ :=
+    differentiableAt_lowerLeftBlock hM
+  have hCtopTop :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (S x).Ctop * topLeftCorner (M x)) x₀ :=
+    differentiableAt_matrix_mul hCtop htop
+  have hCtopTopUnit : IsUnit (((S x₀).Ctop * topLeftCorner (M x₀)).det) := by
+    rw [Matrix.det_mul]
+    exact hCtopUnit.mul htopUnit
+  have hCtopTopInv :
+      DifferentiableAt ℝ
+        (fun x : E ↦ ((S x).Ctop * topLeftCorner (M x))⁻¹) x₀ :=
+    (differentiableAt_matrix_inv_of_isUnit_det
+      ((S x₀).Ctop * topLeftCorner (M x₀)) hCtopTopUnit).comp x₀ hCtopTop
+  have hBstep :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).B) x₀ := by
+    change DifferentiableAt ℝ
+      (fun x : E ↦ (topLeftCorner (M x))⁻¹ * upperRightBlock (M x)) x₀
+    exact differentiableAt_matrix_mul htopInv hupper
+  have hCtopStep :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).Ctop) x₀ := by
+    change DifferentiableAt ℝ
+      (fun x : E ↦ (S x).Ctop * topLeftCorner (M x)) x₀
+    exact hCtopTop
+  have hschur : DifferentiableAt ℝ (fun x : E ↦ schurResidualBlock (M x)) x₀ :=
+    differentiableAt_schurResidualBlock hM htopUnit
+  have hDstep :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).D) x₀ := by
+    change DifferentiableAt ℝ
+      (fun x : E ↦ (S x).D * schurResidualBlock (M x)) x₀
+    exact differentiableAt_matrix_mul hD hschur
+  have hDlower :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (S x).D * lowerLeftBlock (M x)) x₀ :=
+    differentiableAt_matrix_mul hD hlower
+  have hX :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (S x).D * lowerLeftBlock (M x) *
+            ((S x).Ctop * topLeftCorner (M x))⁻¹) x₀ :=
+    differentiableAt_matrix_mul hDlower hCtopTopInv
+  have hfactor :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) 0
+            (-((S x).D * lowerLeftBlock (M x) *
+              ((S x).Ctop * topLeftCorner (M x))⁻¹))
+            (1 : Matrix (κ j) (κ j) ℝ)) x₀ := by
+    exact differentiableAt_matrix_fromBlocks (by fun_prop) (by fun_prop) hX.neg (by fun_prop)
+  have hLstep :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (ChartLocalSuffixState.step (F x) p (S x)).L) x₀ := by
+    change DifferentiableAt ℝ
+      (fun x : E ↦
+        fromBlocks (1 : Matrix ρ ρ ℝ) 0
+          (-((S x).D * lowerLeftBlock (M x) *
+            ((S x).Ctop * topLeftCorner (M x))⁻¹))
+          (1 : Matrix (κ j) (κ j) ℝ) * (S x).L) x₀
+    exact differentiableAt_matrix_mul hfactor hL
+  have hCtopUnitStep :
+      IsUnit ((ChartLocalSuffixState.step (F x₀) p (S x₀)).Ctop.det) := by
+    change IsUnit (((S x₀).Ctop * topLeftCorner (M x₀)).det)
+    exact hCtopTopUnit
+  exact ⟨hCtopUnitStep, hLstep, hBstep, hCtopStep, hDstep⟩
+
+/-- All deterministic suffix-state fields are differentiable along a
+differentiable edge-family curve satisfying the recursive determinant chart at
+the basepoint. -/
+theorem differentiableAt_chartLocalSuffixState_suffixState_fields
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {x₀ : E}
+    (F : E → ∀ p : Fin N, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ)
+    (hF : DifferentiableAt ℝ F x₀)
+    {j : Fin (N + 1)}
+    (hchart : ∀ (p : Fin N) (hpj : p.succ ≤ j),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge (F x₀) p
+          (ChartLocalSuffixState.suffixState (F x₀) j p.succ hpj))) :
+    ∀ (i : Fin (N + 1)) (hij : i ≤ j),
+      IsUnit ((ChartLocalSuffixState.suffixState (F x₀) j i hij).Ctop.det) ∧
+        DifferentiableAt ℝ
+          (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j i hij).L) x₀ ∧
+        DifferentiableAt ℝ
+          (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j i hij).B) x₀ ∧
+        DifferentiableAt ℝ
+          (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j i hij).Ctop) x₀ ∧
+        DifferentiableAt ℝ
+          (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j i hij).D) x₀ := by
+  intro i hij
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    IsUnit ((ChartLocalSuffixState.suffixState (F x₀) j im
+          (Fin.val_fin_le.mpr hmj)).Ctop.det) ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j im
+            (Fin.val_fin_le.mpr hmj)).L) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j im
+            (Fin.val_fin_le.mpr hmj)).B) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j im
+            (Fin.val_fin_le.mpr hmj)).Ctop) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j im
+            (Fin.val_fin_le.mpr hmj)).D) x₀
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive]
+    refine ⟨?_, ?_, ?_, ?_, ?_⟩
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+    · simp [ChartLocalSuffixState.suffixState_self, ChartLocalSuffixState.terminal]
+  have hstep : ∀ m (hms : m + 1 ≤ j.val),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (hms.trans_lt j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have ih' :
+        IsUnit ((ChartLocalSuffixState.suffixState (F x₀) j p.succ hpj).Ctop.det) ∧
+          DifferentiableAt ℝ
+            (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j p.succ hpj).L) x₀ ∧
+          DifferentiableAt ℝ
+            (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j p.succ hpj).B) x₀ ∧
+          DifferentiableAt ℝ
+            (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j p.succ hpj).Ctop) x₀ ∧
+          DifferentiableAt ℝ
+            (fun x : E ↦ (ChartLocalSuffixState.suffixState (F x) j p.succ hpj).D) x₀ := by
+      simpa [motive, p, hpj] using ih
+    rcases ih' with ⟨hCtopUnit, hL, hB, hCtop, hD⟩
+    have hF_p : DifferentiableAt ℝ (fun x : E ↦ F x p) x₀ :=
+      differentiableAt_pi.1 hF p
+    have hnext :=
+      differentiableAt_chartLocalSuffixState_step_fields F p
+        (fun x : E ↦ ChartLocalSuffixState.suffixState (F x) j p.succ hpj)
+        hF_p hL hB hCtop hD hCtopUnit (hchart p hpj)
+    rcases hnext with ⟨hCtopUnitNext, hLnext, hBnext, hCtopNext, hDnext⟩
+    have hstate0 :
+        ChartLocalSuffixState.suffixState (F x₀) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj) =
+          ChartLocalSuffixState.step (F x₀) p
+            (ChartLocalSuffixState.suffixState (F x₀) j p.succ hpj) :=
+      ChartLocalSuffixState.suffixState_castSucc (F x₀) p hpj
+    have hstateL :
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).L) =
+        (fun x : E ↦
+          (ChartLocalSuffixState.step (F x) p
+            (ChartLocalSuffixState.suffixState (F x) j p.succ hpj)).L) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateB :
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).B) =
+        (fun x : E ↦
+          (ChartLocalSuffixState.step (F x) p
+            (ChartLocalSuffixState.suffixState (F x) j p.succ hpj)).B) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateCtop :
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).Ctop) =
+        (fun x : E ↦
+          (ChartLocalSuffixState.step (F x) p
+            (ChartLocalSuffixState.suffixState (F x) j p.succ hpj)).Ctop) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    have hstateD :
+        (fun x : E ↦
+          (ChartLocalSuffixState.suffixState (F x) j p.castSucc
+            ((Fin.castSucc_le_succ p).trans hpj)).D) =
+        (fun x : E ↦
+          (ChartLocalSuffixState.step (F x) p
+            (ChartLocalSuffixState.suffixState (F x) j p.succ hpj)).D) := by
+      funext x
+      rw [ChartLocalSuffixState.suffixState_castSucc]
+    rw [← hstate0] at hCtopUnitNext
+    rw [← hstateL] at hLnext
+    rw [← hstateB] at hBnext
+    rw [← hstateCtop] at hCtopNext
+    rw [← hstateD] at hDnext
+    refine ⟨?_, ?_, ?_, ?_, ?_⟩
+    · simpa [motive, p, hpj] using hCtopUnitNext
+    · simpa [motive, p, hpj] using hLnext
+    · simpa [motive, p, hpj] using hBnext
+    · simpa [motive, p, hpj] using hCtopNext
+    · simpa [motive, p, hpj] using hDnext
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hij)
+  simpa [motive] using hcanon
+
+/-- The source-readback suffix-state fields are differentiable along a
+differentiable source edge-family curve satisfying the recursive determinant
+chart at the basepoint. -/
+theorem differentiableAt_sourceReadbackSuffixState_fields
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {x₀ : E}
+    (F : E → EdgeFamilyTuple ρ κ' ℝ)
+    (hF : DifferentiableAt ℝ F x₀)
+    (hchart : sourceRecursiveDetChart (K := ℝ) (ρ := ρ) (F x₀))
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    IsUnit ((sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x₀) i hi).Ctop.det) ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x) i hi).L) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x) i hi).B) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x) i hi).Ctop) x₀ ∧
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x) i hi).D) x₀ := by
+  have hchart' :
+      ∀ (p : Fin (M + 1)) (hp : p.succ ≤ Fin.last (M + 1)),
+        identityCornerDetChart
+          (ChartLocalSuffixState.transformedEdge (F x₀) p
+            (ChartLocalSuffixState.suffixState (F x₀) (Fin.last (M + 1)) p.succ hp)) := by
+    simpa [sourceRecursiveDetChart] using hchart
+  simpa [sourceReadbackSuffixState] using
+    (differentiableAt_chartLocalSuffixState_suffixState_fields
+      (F := F) hF (j := Fin.last (M + 1)) hchart' i hi)
+
+/-- The transformed edge used by source readback is differentiable along a
+differentiable source edge-family curve satisfying the recursive determinant
+chart at the basepoint. -/
+theorem differentiableAt_sourceReadbackTransformedEdge
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {x₀ : E}
+    (F : E → EdgeFamilyTuple ρ κ' ℝ)
+    (hF : DifferentiableAt ℝ F x₀)
+    (hchart : sourceRecursiveDetChart (K := ℝ) (ρ := ρ) (F x₀))
+    (p : Fin (M + 1)) :
+    DifferentiableAt ℝ
+      (fun x : E ↦ sourceReadbackTransformedEdge (K := ℝ) (ρ := ρ) (F x) p) x₀ := by
+  let S : E → ChartLocalSuffixState ρ κ' ℝ (Fin.last (M + 1)) p.succ :=
+    fun x ↦ sourceReadbackSuffixState (K := ℝ) (ρ := ρ) (F x)
+      p.succ p.succ.le_last
+  have hfields :=
+    differentiableAt_sourceReadbackSuffixState_fields
+      (ρ := ρ) (κ' := κ') F hF hchart p.succ p.succ.le_last
+  rcases hfields with ⟨_, _hL, hB, _hCtop, _hD⟩
+  have hF_p : DifferentiableAt ℝ (fun x : E ↦ F x p) x₀ :=
+    differentiableAt_pi.1 hF p
+  have hleft :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) (S x).B 0
+            (1 : Matrix (κ' p.succ) (κ' p.succ) ℝ)) x₀ :=
+    differentiableAt_matrix_fromBlocks (by fun_prop) hB (by fun_prop) (by fun_prop)
+  have hmul := differentiableAt_matrix_mul hleft hF_p
+  simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState, S,
+    ChartLocalSuffixState.transformedEdge] using hmul
+
 @[fun_prop]
 theorem differentiableAt_A1passive
     {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
@@ -889,6 +1349,211 @@ theorem differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartS
         (hA3passive.prodMk
           (hCtarget.prodMk
             (hCtopTarget.prodMk hF3target))))
+
+/-- The raw top-left edge block readout is differentiable in tuple
+coordinates. -/
+theorem differentiableAt_rawEdgeTupleA1
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Finite (κ' j)]
+    (p : Fin (M + 1)) (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') z p) z := by
+  cases p using Fin.cases with
+  | zero =>
+      simpa [rawEdgeTupleA1] using
+        differentiableAt_Ctop (ρ := ρ) (κ' := κ') z
+  | succ p =>
+      simpa [rawEdgeTupleA1] using
+        differentiableAt_A1passive (ρ := ρ) (κ' := κ') p z
+
+/-- The raw lower-left edge block readout is differentiable in tuple
+coordinates. -/
+theorem differentiableAt_rawEdgeTupleA3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Finite (κ' j)]
+    (p : Fin (M + 1)) (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') z p) z := by
+  induction p using Fin.lastCases with
+  | last =>
+      simpa [rawEdgeTupleA3] using
+        differentiableAt_F3 (ρ := ρ) (κ' := κ') z
+  | cast p =>
+      simpa [rawEdgeTupleA3] using
+        differentiableAt_A3passive (ρ := ρ) (κ' := κ') p z
+
+/-- Reassembling raw-order tuple coordinates into an edge family is
+differentiable. -/
+theorem differentiableAt_edgeFamilyOfRawOrderTuple
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Finite (κ' j)]
+    (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') :
+        TopologyTuple ρ κ' ℝ → EdgeFamilyTuple ρ κ' ℝ) z := by
+  let _ : Fintype ρ := Fintype.ofFinite ρ
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  rw [differentiableAt_pi]
+  intro p
+  have hA1 :
+      DifferentiableAt ℝ
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') z p) z :=
+    differentiableAt_rawEdgeTupleA1 (ρ := ρ) (κ' := κ') p z
+  have hF2 :
+      DifferentiableAt ℝ
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).F2 p) z :=
+    differentiableAt_F2 (ρ := ρ) (κ' := κ') p z
+  have hA3 :
+      DifferentiableAt ℝ
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') z p) z :=
+    differentiableAt_rawEdgeTupleA3 (ρ := ρ) (κ' := κ') p z
+  have hC :
+      DifferentiableAt ℝ
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C p) z :=
+    differentiableAt_C (ρ := ρ) (κ' := κ') p z
+  simpa [edgeFamilyOfRawOrderTuple] using
+    differentiableAt_matrix_fromBlocks hA1 hF2 hA3 hC
+
+/-- Source readback, followed by conversion to tuple coordinates, is
+differentiable along differentiable source edge-family curves in the recursive
+determinant chart. -/
+theorem differentiableAt_topologyTuple_sourceReadback
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {x₀ : E}
+    (F : E → EdgeFamilyTuple ρ κ' ℝ)
+    (hF : DifferentiableAt ℝ F x₀)
+    (hchart : sourceRecursiveDetChart (K := ℝ) (ρ := ρ) (F x₀)) :
+    DifferentiableAt ℝ
+      (fun x : E ↦ topologyTuple (sourceReadback (K := ℝ) (ρ := ρ) (F x))) x₀ := by
+  have hchartTransformed :
+      ∀ p : Fin (M + 1),
+        identityCornerDetChart
+          (sourceReadbackTransformedEdge (K := ℝ) (ρ := ρ) (F x₀) p) :=
+    (sourceRecursiveDetChart_iff (K := ℝ) (ρ := ρ) (F x₀)).1 hchart
+  have hA1passive :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadback (K := ℝ) (ρ := ρ) (F x)).A1passive) x₀ := by
+    rw [differentiableAt_pi]
+    intro p
+    have hT :=
+      differentiableAt_sourceReadbackTransformedEdge
+        (ρ := ρ) (κ' := κ') F hF hchart p.succ
+    simpa [sourceReadback] using differentiableAt_topLeftCorner hT
+  have hF2 :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (sourceReadback (K := ℝ) (ρ := ρ) (F x)).F2) x₀ := by
+    rw [differentiableAt_pi]
+    intro p
+    let T : E → Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) ℝ :=
+      fun x ↦ sourceReadbackTransformedEdge (K := ℝ) (ρ := ρ) (F x) p
+    have hT : DifferentiableAt ℝ T x₀ :=
+      differentiableAt_sourceReadbackTransformedEdge
+        (ρ := ρ) (κ' := κ') F hF hchart p
+    have htop : DifferentiableAt ℝ (fun x : E ↦ topLeftCorner (T x)) x₀ :=
+      differentiableAt_topLeftCorner hT
+    have htopUnit : IsUnit ((topLeftCorner (T x₀)).det) := by
+      have hchartp := hchartTransformed p
+      simpa only [identityCornerDetChart, T] using hchartp
+    have htopInv :
+        DifferentiableAt ℝ (fun x : E ↦ (topLeftCorner (T x))⁻¹) x₀ :=
+      (differentiableAt_matrix_inv_of_isUnit_det (topLeftCorner (T x₀)) htopUnit).comp
+        x₀ htop
+    have hupper : DifferentiableAt ℝ (fun x : E ↦ upperRightBlock (T x)) x₀ :=
+      differentiableAt_upperRightBlock hT
+    have hbody :
+        DifferentiableAt ℝ
+          (fun x : E ↦ (topLeftCorner (T x))⁻¹ * upperRightBlock (T x)) x₀ :=
+      differentiableAt_matrix_mul htopInv hupper
+    simpa [sourceReadback, T] using hbody.neg
+  have hA3passive :
+      DifferentiableAt ℝ
+        (fun x : E ↦
+          (sourceReadback (K := ℝ) (ρ := ρ) (F x)).A3passive) x₀ := by
+    rw [differentiableAt_pi]
+    intro p
+    have hT :=
+      differentiableAt_sourceReadbackTransformedEdge
+        (ρ := ρ) (κ' := κ') F hF hchart p.castSucc
+    simpa [sourceReadback] using differentiableAt_lowerLeftBlock hT
+  have hC :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (sourceReadback (K := ℝ) (ρ := ρ) (F x)).C) x₀ := by
+    rw [differentiableAt_pi]
+    intro p
+    let T : E → Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) ℝ :=
+      fun x ↦ sourceReadbackTransformedEdge (K := ℝ) (ρ := ρ) (F x) p
+    have hT : DifferentiableAt ℝ T x₀ :=
+      differentiableAt_sourceReadbackTransformedEdge
+        (ρ := ρ) (κ' := κ') F hF hchart p
+    have htopUnit : IsUnit ((topLeftCorner (T x₀)).det) := by
+      have hchartp := hchartTransformed p
+      simpa only [identityCornerDetChart, T] using hchartp
+    have hschur : DifferentiableAt ℝ (fun x : E ↦ schurResidualBlock (T x)) x₀ :=
+      differentiableAt_schurResidualBlock hT htopUnit
+    simpa [sourceReadback, T] using hschur
+  have hfields0 :=
+    differentiableAt_sourceReadbackSuffixState_fields
+      (ρ := ρ) (κ' := κ') F hF hchart 0
+      (Fin.zero_le (Fin.last (M + 1)))
+  rcases hfields0 with ⟨_, hL0, _hB0, hCtop0, _hD0⟩
+  have hCtop :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (sourceReadback (K := ℝ) (ρ := ρ) (F x)).Ctop) x₀ := by
+    simpa [sourceReadback, sourceReadbackSuffixState] using hCtop0
+  have hF3 :
+      DifferentiableAt ℝ
+        (fun x : E ↦ (sourceReadback (K := ℝ) (ρ := ρ) (F x)).F3) x₀ := by
+    have hLower :=
+      differentiableAt_lowerLeftBlock
+        (ρ := ρ) (μ := κ' (Fin.last (M + 1))) (ν := κ' (Fin.last (M + 1))) hL0
+    simpa [sourceReadback, sourceReadbackSuffixState] using hLower
+  change DifferentiableAt ℝ
+    (fun x : E ↦
+      ((sourceReadback (K := ℝ) (ρ := ρ) (F x)).A1passive,
+        ((sourceReadback (K := ℝ) (ρ := ρ) (F x)).F2,
+          ((sourceReadback (K := ℝ) (ρ := ρ) (F x)).A3passive,
+            ((sourceReadback (K := ℝ) (ρ := ρ) (F x)).C,
+              ((sourceReadback (K := ℝ) (ρ := ρ) (F x)).Ctop,
+                (sourceReadback (K := ℝ) (ρ := ρ) (F x)).F3)))))) x₀
+  exact
+    hA1passive.prodMk
+      (hF2.prodMk
+        (hA3passive.prodMk
+          (hC.prodMk
+            (hCtop.prodMk hF3))))
+
+/-- The raw-order source-readback inverse is differentiable at every point of
+the raw-order source-recursive determinant chart. -/
+theorem differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    DifferentiableAt ℝ
+      (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ')) z := by
+  let F : TopologyTuple ρ κ' ℝ → EdgeFamilyTuple ρ κ' ℝ :=
+    edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hF : DifferentiableAt ℝ F z :=
+    differentiableAt_edgeFamilyOfRawOrderTuple (ρ := ρ) (κ' := κ') z
+  have hsource :
+      F z ∈ sourceRecursiveDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    simpa [topologyTupleRawOrderSourceRecursiveDetChartSet, F] using hz
+  have hchart : sourceRecursiveDetChart (K := ℝ) (ρ := ρ) (F z) :=
+    (mem_sourceRecursiveDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') (F z)).1 hsource
+  have hread :=
+    differentiableAt_topologyTuple_sourceReadback
+      (ρ := ρ) (κ' := κ') F hF hchart
+  simpa [topologyTupleEdgeRawOrderInverse, F] using hread
 
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState
