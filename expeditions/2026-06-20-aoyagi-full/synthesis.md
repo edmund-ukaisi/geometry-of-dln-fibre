@@ -18,7 +18,7 @@
 
 **Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
 
-**LIVE (2026-06-27, UPDATE-149):** CHARGING (A), sea-rising. **Critical path = the R1-lower atom `routeMCore_box_diverges_achiever` ∀M**, reduced M-agnostically to building `NodeAchieverChart M (hpos : 1 ≤ minAdm M)` (ONE chart `phi := phiFlatStructV` with BOTH: RATE `routeMCore (φ u) = (x p)²·U` [`leaf_integrand`] + DET `|det Dφ| = ∏_j |u_j|^{leafH j}` [`cov`]).
+**LIVE (2026-06-27, UPDATE-150):** CHARGING (A), sea-rising. **Critical path = the R1-lower atom `routeMCore_box_diverges_achiever` ∀M**, reduced M-agnostically to building `NodeAchieverChart M (hpos : 1 ≤ minAdm M)` (ONE chart `phi := phiFlatStructV` with BOTH: RATE `routeMCore (φ u) = (x p)²·U` [`leaf_integrand`] + DET `|det Dφ| = ∏_j |u_j|^{leafH j}` [`cov`]).
 - **RATE side CLOSED ∀M** (`routeMCore_phiFlatStructV`, gated `e44feed0`) — NO bridge. The chart's previously-missing half is done.
 - **RATE side: COMPLETE + UNCONDITIONAL ∀M, GATED on origin (`533193a6`, green 8470, axiom-clean S2-free).** `routeMCore_phiFlatStruct` via the structured decoder `genBlkFlatStruct` + `C0_eq_one`. (The rate engine — `Chain`/`chain_telescope`, `prod_front_peel`, the suffix bridge, `chartParamsGen`, `routeMCore_phiGen=u²·V` — all banked.)
 - **DET side: algebra + arithmetic + item-1 coordinatization + item-2 factor conjugates + the assembly skeleton (`phiFlat_abs_det_of_factored`) + all dependent-width decoder bricks BANKED.** Det keystones gated: `schurFrame_abs_det=|det K|^{r+c}`, `lduCoreDeriv_det=∏ q_i^{2(t-1-i)}`, the `composeFold` prefix-fold spine, `general_composed_clm_abs_det`.
@@ -913,6 +913,10 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
+**★★ UPDATE-150 (2026-06-27) — witness VALIDATED (effective-leaf+carrier, correct ∀M, NO research wall, `a4624a90`); the build (the last rate-side gap) in flight (`genm-witness`). ★★**
+- **decoder-fix validated genm-decoder's correction** (sympy on the FAILING cases + a 3rd decorrelated Codex; Codex Q5: no wall). Reproduced its own §5 failure (diligence), confirmed carriers LOAD-BEARING ((3,3,1,3) without them = 0), and RULED OUT its own "q=0 confound" (its miscomputation — used `tStar` as `tach`; `tach = Fin.cons(M_0, tStar)` prepends `M_0` ⟹ `Text_1 = M_0 ≥ 1` ⟹ `q ≥ 1` always). The two-regime witness: q=L (live leaf) → `Hmat_0(0,0)=e`; q<L (dead leaf) → pivot at deepest-E + carriers `W_q..W_{L-1}` → `e·∏w`. Validated `(3,3,3,3)`/`(3,3,4)`/`(3,3,1,3)`/`(1,2,2)`.
+- **IN FLIGHT (`genm-witness`, FRESH, merge-origin-first):** build the two-regime witness (`wLeaf`/`wEW`) + the downward `Hmat_succ` rowPath induction (the dependent-`Fin` kernel + the banked `witness-deadleaf` Codex skeleton) → `∃ w, achieverUfun w ≠ 0` → `Ubound` closes (banked `UPolyGen_ne_zero_of_witness`/`achieverUbound`) ⟹ **rate-side `NodeAchieverChart` fields COMPLETE ∀M (2≤L)**. Validate on `(3,3,1,3)` (the dead-leaf, carriers load-bearing) first. L=1 → banked `DeepestBaseL1`. Then phase 4 (det bridge funext) → phase 5 (cov+`nodeChartGeneral`+atom ∀M).
 
 **⚙ UPDATE-149 (2026-06-27) — witness foundation banked (`exists_active_block`, `47aac2f3`); the certificate §5 witness was WRONG (caught by sympy+2 Codex), CORRECTED to the effective-leaf+carrier construction; decorrelation (decoder-fix) commissioned. ⚙**
 - **`exists_active_block`** (given `1 ≤ minAdm M`, `∃ j, 1 ≤ rBlock j ∧ 1 ≤ cBlock j`) — the witness foundation, banked S2-free.
