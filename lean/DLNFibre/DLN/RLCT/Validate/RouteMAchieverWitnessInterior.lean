@@ -581,7 +581,7 @@ theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 <
     rw [hrlift, chain_A_liftRow s' hs' _ c']
     -- `Wblk s' 0 c' = readW (s'-1) … = carrier indicator`
     obtain ⟨k, rfl⟩ : ∃ k, s' = k + 1 := ⟨s' - 1, by omega⟩
-    show (genBlkFlatStruct M (tach M) ha (wInt M ha p)).Wblk (k + 1) _ c' = _
+    change (genBlkFlatStruct M (tach M) ha (wInt M ha p)).Wblk (k + 1) _ c' = _
     rw [show (genBlkFlatStruct M (tach M) ha (wInt M ha p)).Wblk (k + 1)
           = (if hk : k < L then (if hk2 : k + 1 < L then
               readW M (tach M) ha (wInt M ha p) ⟨k, hk⟩ hk2 else 0) else 0) from rfl,
@@ -600,10 +600,8 @@ theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 <
   set colP : Fin (Wext M (kp + 1)) :=
     Fin.cast (show Text M (tach M) (kp + 2) + (Wext M (kp + 1) - Text M (tach M) (kp + 2))
         = Wext M (kp + 1) by omega) (Fin.natAdd _ ⟨0, by omega⟩) with hcolPdef
-  have hρval : ρcast.val = Text M (tach M) (kp + 1 + 1) := by
-    simp only [hρcastdef, Fin.val_cast, Fin.val_natAdd, Fin.val_zero, Nat.add_zero]
   have hcolPval : colP.val = survRowVal M (tach M) (kp + 1) := by
-    simp only [hcolPdef, Fin.val_cast, Fin.val_natAdd, Fin.val_zero, Nat.add_zero, survRowVal,
+    simp only [hcolPdef, Fin.val_cast, Fin.val_natAdd, Nat.add_zero, survRowVal,
       if_neg (by omega : kp + 1 ≠ L)]
   -- (I-base) `Hmat (kp+1) (ρ, 0) = 1`
   have hpivot : c.Hmat (kp + 1) (le_of_lt hpL) ρcast ⟨0, hML⟩ = 1 := by
@@ -637,7 +635,8 @@ theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 <
       | 0 => exact genBlk_Bmat_zero_top ha (kp + 1) a j _
       | (kk + 1) => exact genBlk_Bmat_succ_top ha (kp + 1) kk (by omega) a j
   -- `sqSumHmat0 ≠ 0` from the surviving entry
-  exact sqSumHmat0_ne_zero_of_entry c (rhoAt M (tach M) (kp + 1) 0 (hρT 0 (by omega))) ⟨0, hML⟩ hHmat0
+  exact sqSumHmat0_ne_zero_of_entry c (rhoAt M (tach M) (kp + 1) 0 (hρT 0 (by omega)))
+    ⟨0, hML⟩ hHmat0
 
 /-- **`Ubound` closes for interior-drop `M`**: the full a.e.-positivity field on the source box, with
 ONLY the interior-drop hypothesis (no separate witness assumption). -/
