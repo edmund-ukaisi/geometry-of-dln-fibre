@@ -18,6 +18,51 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 target-recovered source pair and determinant helper
+
+Reproduction:
+`reproduction-a2-retained-passive-target-recovered-source-pair-det-helper.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-recovered-source-pair-det-helper.md`.
+Review:
+`review-a2-retained-passive-target-recovered-source-pair-det-helper.md`, PASS
+by xhigh `Epicurus the 2nd`.
+
+Lean now proves in `MatrixLinearDeterminant.lean`:
+
+```text
+linearEquiv_prodCongr_det_eq_mul
+```
+
+and in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetRecoveredSourcePairAt
+retainedPassiveTargetRecoveredSourcePairAt_fderiv_eq_sourcePair
+retainedPassiveTargetRecoveredSourceCAt
+retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
+```
+
+The source pair definition first forms the target-side normalized `(F2,C)`
+pair and then applies the point-specialized inverse formal edge-pair
+equivalence.  On an actual raw-order derivative target it recovers
+`(v.F2,v.C)`, and its `C` projection recovers `v.C(q)`.  This supplies one of
+the source-direction replacements needed by the future target-only lower-left
+recurrence.
+
+The determinant helper packages the determinant of `eM.prodCongr eN` as the
+product of the two factor determinants, using the existing product-map
+determinant lemma.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and forbidden-marker search on the touched Lean files
+passed.
+
+This does not construct the target normalizer, prove determinant equality, or
+target-stage the positive-tail lower-left recurrence.
+
 ## 2026-06-27 A2 recursive passive A1-tail Ctop plug-in
 
 Reproduction:

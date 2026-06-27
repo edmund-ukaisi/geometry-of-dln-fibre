@@ -48,6 +48,53 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Target-Recovered Source Pair and Determinant Helper
+
+The target-normalizer frontier now has a small recovered-source-pair layer in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetRecoveredSourcePairAt
+retainedPassiveTargetRecoveredSourcePairAt_fderiv_eq_sourcePair
+retainedPassiveTargetRecoveredSourceCAt
+retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
+```
+
+The definition first forms the target-side normalized `(F2,C)` edge pair and
+then applies the point-specialized inverse formal edge-pair equivalence.  On
+raw-order derivative targets it recovers `(v.F2,v.C)`, and the `C` projection
+recovers `v.C(q)`.
+
+`MatrixLinearDeterminant.lean` also now has:
+
+```text
+linearEquiv_prodCongr_det_eq_mul
+```
+
+This packages the determinant of a product linear equivalence as the product
+of the two factor determinants, for later staged product lifts of target-side
+shears.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-recovered-source-pair-det-helper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-recovered-source-pair-det-helper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-recovered-source-pair-det-helper.md`,
+PASS by xhigh `Epicurus the 2nd`.
+
+Verification: focused builds of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant`
+and `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the
+full `DLNFibre` build passed with only pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and forbidden-marker search on the
+touched Lean files passed.
+
+This is not the target-side determinant-one normalizer, determinant equality,
+target-staged lower-left recurrence, source-prior/Jacobian transport, inverse
+density pushforward, normal crossings, pole order, or RLCT.  The next target
+is the Jacobian-layer target-only lower-left recurrence, not a monolithic
+normalizer.
+
 ## Latest A2 Recursive Passive A1-Tail Ctop Plug-in
 
 `RetainedPassiveCoordinatesJacobian.lean` now defines a target-only recursive

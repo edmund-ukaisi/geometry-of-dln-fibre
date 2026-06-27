@@ -2106,6 +2106,78 @@ theorem retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair
   simpa using hrec
 
 set_option linter.style.longLine false in
+/-- Source `(F2,C)` tangents recovered from an arbitrary target tuple by first
+forming the target-side normalized edge pair and then applying the formal
+edge-pair inverse. -/
+def retainedPassiveTargetRecoveredSourcePairAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ((∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ) ×
+      (∀ q : Fin (M + 1), Matrix (κ' q.succ) (κ' q.castSucc) ℝ)) :=
+  (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+    (retainedPassiveTargetEdgePairShearAt (ρ := ρ) (κ' := κ') z w)
+
+set_option linter.style.longLine false in
+/-- The target-recovered source `(F2,C)` pair recovers the actual source pair
+on raw-order Frechet derivative targets. -/
+theorem retainedPassiveTargetRecoveredSourcePairAt_fderiv_eq_sourcePair
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveTargetRecoveredSourcePairAt
+        (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) =
+      (v.2.1, v.2.2.2.1) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  simpa [retainedPassiveTargetRecoveredSourcePairAt, raw] using
+    retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair
+      (ρ := ρ) (κ' := κ') hz v
+
+set_option linter.style.longLine false in
+/-- Source `C` tangent recovered from an arbitrary target tuple. -/
+def retainedPassiveTargetRecoveredSourceCAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (q : Fin (M + 1)) : Matrix (κ' q.succ) (κ' q.castSucc) ℝ :=
+  (retainedPassiveTargetRecoveredSourcePairAt (ρ := ρ) (κ' := κ') hz w).2 q
+
+set_option linter.style.longLine false in
+/-- The target-recovered source `C` tangent recovers the source `C` component
+on raw-order Frechet derivative targets. -/
+theorem retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (q : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveTargetRecoveredSourceCAt
+        (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) q =
+      v.2.2.2.1 q := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hpair :=
+    retainedPassiveTargetRecoveredSourcePairAt_fderiv_eq_sourcePair
+      (ρ := ρ) (κ' := κ') hz v
+  change
+      (retainedPassiveTargetRecoveredSourcePairAt
+        (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v)).2 q =
+        v.2.2.2.1 q
+  rw [hpair]
+
+set_option linter.style.longLine false in
 /-- Hybrid whole-tuple package whose `(F2,C)` edge-family branch is
 source-staged, while `A1passive`, `Ctop`, and `F3` keep the derivative-staged
 corrections from `shearedTopologyTupleEdgeRawOrderFDerivAt`. -/

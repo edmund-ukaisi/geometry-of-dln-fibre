@@ -21,6 +21,43 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The target-normalizer frontier now has a narrow recovered-source-pair layer and
+a product determinant helper.  New Lean names:
+
+```text
+linearEquiv_prodCongr_det_eq_mul
+retainedPassiveTargetRecoveredSourcePairAt
+retainedPassiveTargetRecoveredSourcePairAt_fderiv_eq_sourcePair
+retainedPassiveTargetRecoveredSourceCAt
+retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
+```
+
+The recovered pair is `E_z^{-1}` applied to the target-side normalized
+`(F2,C)` pair.  On an actual raw-order derivative target it recovers
+`(v.F2,v.C)`, and its `C` projection recovers `v.C(q)`.  This is an input for
+the future target-only lower-left recurrence, where source-direction `C`
+tangents must be replaced by target-side functions.
+
+The determinant helper states that `det (eM.prodCongr eN) = det eM * det eN`.
+
+Focused builds of `MatrixLinearDeterminant` and
+`RetainedPassiveCoordinatesJacobian` passed, and the full `DLNFibre` build
+passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and forbidden-marker search on the touched Lean files also
+passed.
+Xhigh review by `Epicurus the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-target-recovered-source-pair-det-helper.md`.
+
+This does not construct the target-side determinant-one normalizer, prove
+determinant equality, target-stage the lower-left recurrence, source-prior
+transport, inverse-density pushforward, normal crossings, pole order, or RLCT.
+
+Next frontier: build the staged target-side lower-left recurrence in the
+Jacobian layer using recovered source `C`, target-staged passive `A1`, target
+`A3` readout, and recursive `C`/`A1` suffix derivative replacements.
+
+Previous controller decision:
+
 The passive top-left `A1` suffix now has a recursive target-staged derivative
 and `Ctop` plug-in.  New Lean names:
 

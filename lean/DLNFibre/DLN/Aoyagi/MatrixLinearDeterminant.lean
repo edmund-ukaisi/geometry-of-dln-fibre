@@ -86,6 +86,17 @@ theorem linearMap_det_prodMap_eq_mul
   haveI : Module.Finite R (M × N) := moduleFinite_prod
   exact LinearMap.det_prodMap f g
 
+/-- Determinant of a product linear equivalence. -/
+theorem linearEquiv_prodCongr_det_eq_mul
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (eM : M ≃ₗ[R] M) (eN : N ≃ₗ[R] N) :
+    LinearMap.det
+        ((eM.prodCongr eN : (M × N) ≃ₗ[R] (M × N)) : (M × N) →ₗ[R] (M × N)) =
+      LinearMap.det (eM : M →ₗ[R] M) * LinearMap.det (eN : N →ₗ[R] N) := by
+  rw [LinearEquiv.coe_prodCongr, linearMap_det_prodMap_eq_mul]
+
 /-- Determinant of a dependent product map. -/
 theorem linearMap_det_piMap_eq_prod
     {R ι : Type*} {M : ι → Type*} [CommRing R]

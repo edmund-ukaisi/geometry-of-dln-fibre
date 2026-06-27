@@ -150,6 +150,10 @@ No such claim is formalisation-ready until both fields are filled.
   determinant-chart hypothesis; the positive-tail `F3` bridge now consumes
   that recursive expression at index `0` and has a matching source-`F3`
   recovery theorem;
+  the target-normalizer frontier now has a target-recovered source `(F2,C)`
+  pair and source-`C` projection, recovering `(v.F2,v.C)` and `v.C(q)` on
+  actual raw-order derivative targets, plus a general product-linear-equivalence
+  determinant helper;
   the passive top-left `A1` suffix now has a target-only Nat recursion, the
   actual Frechet derivative of every seed-product suffix is proved to agree
   with that recursion on raw-order derivative targets, and the first value is
