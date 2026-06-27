@@ -14568,19 +14568,6 @@ The sign remains positive because this term already came from substituting
 The formula does not commute factors, does not include dummy `A1seed 0`, and
 leaves `(fderiv Psucc z) v` explicit.
 
-Verification:
-
-```text
-env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
-env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre
-scripts/sorries
-git diff --check
-#print axioms for the four new theorem names
-```
-
-The focused and full builds passed.  The sorry audit reported zero forbidden
-markers.  `git diff --check` passed.  The new theorem axiom audits report only
-`[propext, Classical.choice, Quot.sound]`.
 Pen-and-paper scout `Godel` and Lean/API scout `Hooke` both recommended this
 boundary.  Independent xhigh implementation review `Galileo` passed, recorded
 in
@@ -14686,8 +14673,19 @@ Review:
 `threads/03-block-product-reduction/review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`
 passed by xhigh `Einstein`.
 
-Verification so far: focused
-`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+Verification:
+
+```text
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the four new theorem names
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.
 
 This remains Ctop endpoint target staging only.  It is not `F3` target staging,
 not whole-tuple target-side normalization, not a determinant-one target-side

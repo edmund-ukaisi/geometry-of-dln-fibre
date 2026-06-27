@@ -22,7 +22,7 @@ on the session's original cwd.
 ## Latest controller decision - 2026-06-27
 
 After post-interruption reorientation, the retained-passive Ctop target-staged
-endpoint shear has landed locally.  Reproduction:
+endpoint shear has landed.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
