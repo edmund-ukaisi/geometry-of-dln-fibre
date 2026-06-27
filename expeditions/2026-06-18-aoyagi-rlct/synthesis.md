@@ -48,6 +48,49 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive dEarly dPcast Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves locally:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_castSucc_apply
+```
+
+This substitutes the solved-`A1` residual-product product rule into the
+already `dCprod`/`dG`-staged retained-passive `dEarly` recurrence.  For
+`q : Fin M`, with `p = q.castSucc` and `r = q.succ`, the theorem rewrites the
+explicit inverse-derivative contribution as
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p)
+      + Psucc(z) * d(solvedA1 p)_z(v))
+  * Pcast(z)^-1.
+```
+
+The determinant-chart hypothesis is inherited through the solved-`A1`
+product-rule helper.  The derivative of `solvedA1 p` remains explicit; in
+particular, this theorem does not identify the `p = 0` derivative with a
+passive source tangent.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Euclid` passed the theorem boundary, `p.succ` indexing, preserved
+factor order, explicit solved-factor derivative, and nonclaims.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dpcast-substitution.md`.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no iteration of the successor
+`dPsucc` derivative, no closed finite-sum formula, no target staging, no
+determinant theorem, no measure theorem, no normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Retained-Passive dEarly dPcast SolvedA1 Product Rule
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves locally:

@@ -21,6 +21,48 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The current retained-passive `dEarly` `dPcast` substitution is implemented
+locally after the `dCprod`/`dG` staging.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dpcast-substitution.md`.
+
+Lean now proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_castSucc_apply`
+in `RetainedPassiveCoordinatesDerivative.lean`.  For `q : Fin M`, with
+`p = q.castSucc`, the theorem substitutes
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v)
+```
+
+into the already staged `dEarly` current summand, preserving the factor order
+
+```text
+Cprod * A3p * Pcast^-1 * (...) * Pcast^-1.
+```
+
+The determinant-chart hypothesis remains explicit, and the derivative of the
+current solved-`A1` factor remains unstaged.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Euclid` passed the `p.succ` successor index, factor order, explicit
+solved-factor derivative, and nonclaims.  The `scripts/sorries` audit,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed; the
+theorem has only the standard `[propext, Classical.choice, Quot.sound]`
+footprint.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no iteration of `dPsucc`, no
+closed finite-sum formula, no target staging, no determinant theorem, no
+measure theorem, no normal crossings, no pole order, and no RLCT.
+
+Next frontier after banking: either iterate/specialize the successor
+`dPsucc`/terminal branch in the `dEarly` recurrence, or first prove the
+`p = 0`/`p ≠ 0` solved-`A1` derivative split needed for source staging.
+
+Immediate predecessor: solved-`A1` residual-product product rule.
+
 The current retained-passive `dEarly` `dPcast` probe is implemented locally as
 a narrow solved-`A1` residual-product product-rule helper.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.

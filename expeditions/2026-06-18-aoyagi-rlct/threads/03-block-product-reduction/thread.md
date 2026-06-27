@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly dPcast substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-dpcast-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-dpcast-substitution.md`.
+Review:
+`review-a2-retained-passive-dearly-dpcast-substitution.md`, PASS by xhigh
+`Euclid`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_castSucc_apply
+```
+
+This substitutes the solved-`A1` residual-product product rule into the
+already `dCprod`/`dG`-staged retained-passive `dEarly` recurrence.  For
+`q : Fin M`, set `p = q.castSucc` and `r = q.succ`.  The theorem replaces the
+explicit term
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1 * dPcast_z(v) * Pcast(z)^-1
+```
+
+by
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p)
+      + Psucc(z) * d(solvedA1 p)_z(v))
+  * Pcast(z)^-1.
+```
+
+The derivative of the current solved-`A1` factor remains explicit.  The
+focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no source-staging of `d(solvedA1 p)`, no iteration of `dPsucc`, no
+closed finite-sum formula, no target staging, no determinant-one
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly dPcast solvedA1 product rule
 
 Reproduction:
