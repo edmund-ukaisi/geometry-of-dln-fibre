@@ -8,6 +8,8 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 | 01 | scout (pen-and-paper + literature) | R0 — interface design: the 3 cited analytic theorems + the precise geometric hypothesis the lower-bound criterion consumes | closed (survived) |
 | 02 | pen-and-paper | R1 — the decisive computation: local rlct of the deepest stratum of `(2,2,2,2,2)`, `r=0` (mild = ½·codim, or `<`?) | closed (MILD: λ=3/2=½·codim) |
 | 03 | scout | Rm — Mathlib coverage for the local model (regular sequence / lci / Koszul / `KaehlerDifferential`) | closed |
+| 04 | lean-formaliser (tide) | Wave 1a — thin cited interface (C1/C2/C3) + expose/prove the real↔complex transfer T; re-derive downstream from it | in-progress |
+| 05 | pen-and-paper | Wave 1b — R3-route probe: resolved-chart Newton gamble vs Aoyagi bespoke blow-up; spec the resolution datum | in-progress |
 
 **RECON COMPLETE (2026-06-27).** Verdict MILD — green light. Refined plan in `synthesis.md` (§ RECON
 COMPLETE). Spine re-routed (awaiting operator sign-off before Wave 1):
