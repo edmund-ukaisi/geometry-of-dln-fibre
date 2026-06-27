@@ -69,10 +69,13 @@ pass, **name = content**.
   `UniversallyOpen.of_flat`, `rankAtStalk` locally constant. Settle the "is flatness cheap without the
   charts (miracle/generic flatness)?" question *inside* the build — if it is, record it and keep the atlas
   route as the structural statement. Builds on S1.
-- **S4 — Honest `locallyTrivial`.** Promote the per-pivot local-product atlas
-  (`reducedFibre_pivotLocalProductAtlasOnRankOpen`) to the genuine local-triviality statement over
-  `rankROpen`, using S1 (each pivot basic-open is exactly where rank `= r`; charts are isos there).
-  Builds on S1.
+- **S4 — Honest local product over `rankROpen`. [LANDED (partial) — `FibreLocallyTrivial.lean`]**
+  `RankROpenPerPivotLocalProduct` + the pointwise headline `reducedFibre_existsProductChartAt_rankEq`:
+  S1 folded in certifies `rankROpen` genuinely IS the residue-field rank-=r locus; the pivot charts
+  cover it; each chart's localized ring is a `k`-algebra product `SchurLoc ⊗ sweepFibreRing`. Honestly
+  **not** `locallyTrivial` — k-algebra-only + uncocycled. **The load-bearing completion is S4b** (the
+  over-base / projection-compatible `O(U)`-algebra trivialization) + R1 (the overlap gluing); a genuine
+  fibre-bundle = S4 + S4b + R1.
 - **S5 — Reusable scheme-bundle API.** A net-new `IsLocallyTrivialProduct` (MorphismProperty-style)
   scheme predicate (Mathlib has only *topological* fibre bundles), and promote the network-free cocycle
   engine (`awayOverlap`/`awayTriple`, …) into a reusable form. Package S3 + S4 through it.

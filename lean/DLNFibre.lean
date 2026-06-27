@@ -383,3 +383,10 @@ import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
 -- Kähler/relative-dimension side, NOT the conormal rank-=-codim).
 import DLNFibre.Core.FibreRankBridge
 import DLNFibre.Core.FibreSmoothBlock
+-- S4: honest per-chart local PRODUCT over the rank-=r open (`RankROpenPerPivotLocalProduct`,
+-- `reducedFibre_existsProductChartAt_rankEq`). Folds in S1 to certify rankROpen genuinely IS the
+-- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a k-algebra
+-- product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`: per-chart/UNCOCYCLED (overlap
+-- gluing = R1) and k-algebra-only (the over-base/projection-compatible trivialization = S4b, the
+-- load-bearing completion, queued).
+import DLNFibre.Core.FibreLocallyTrivial

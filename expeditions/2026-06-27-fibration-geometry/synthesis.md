@@ -90,3 +90,15 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   minimal prime exists" lemma; closing it makes `exists_smoothBlock_certificate` a hypothesis-free
   existence theorem. S2b (conormal) confirmed REAL-BUILD → roadmap. **Action:** commissioned S2c tide
   (thread 06) for the Just-Do-It. S3/S4 still running. Hardener self-cleared.
+
+- **tick 5 (S4 landed + integrated, 2026-06-27 ~15:30):** S4 (`FibreLocallyTrivial.lean`) delivered
+  green/axiom-clean/fidelity-PASS, committed by the tide (L2 lesson held). **Precision-check finding:**
+  S4 is name=content-honest (scrupulously NOT `locallyTrivial`) but **weaker than full local triviality**
+  — the per-chart iso is `k`-algebra-only; the over-base/projection-compatible (`O(U)`-algebra)
+  trivialization, the genuine load-bearing content, was deliberately dropped ("no packaged base map
+  `SchurLoc → Total`"). Merged S4 as an honest intermediate (banks the cover + S1-folding + per-chart
+  product) and **queued S4b** (the over-base completion) as load-bearing — to sequence AFTER S3 (flatness
+  is over-base, so S3 will show whether the base map is readily available; avoid duplication). Wired
+  import, green-gate `scripts/lb … DLNFibre` → 3810 jobs, sorries 0. Committing. S3 (a177d4ad) + S2c
+  (af506f8e) still running; S4's tide self-cleared. **Spine: 3 of 5 rungs landed (S1, S2, S4-partial).**
+  Wave-2 hardener pass on S3+S4(+S2c) to convene once they're all in (batched).
