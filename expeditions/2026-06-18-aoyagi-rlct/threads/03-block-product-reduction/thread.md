@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 passive A1 target-staged shear
+
+After the target-side `(F2,C)` edge-pair recovery landed, the next branch that
+can consume it without claiming a determinant theorem is passive `A1`.  The
+new reproduction is
+`reproduction-a2-retained-passive-a1passive-target-staged-shear.md`; statement
+card:
+`statement-card-a2-retained-passive-a1passive-target-staged-shear.md`.
+
+Lean now replaces the passive `A1` source-staged successor `F2` correction by
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and replaces the
+source-staged lower-left correction by `rawEdgeTupleA3 Dzv q` only under left
+multiplication by `coord.F2 q.succ`.  The terminal lower-left derivative is
+not claimed to be zero; it is killed by the terminal zero extended `F2` slot.
+
+New Lean names:
+
+```text
+retainedPassive_F2_succ_mul_rawEdgeTupleA3_fderiv_eq_sourceStagedSuccessorA3
+A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive
+```
+
+Review:
+`review-a2-retained-passive-a1passive-target-staged-shear.md`
+passed by xhigh `Boyle`.  Focused/full builds, `scripts/sorries`,
+`git diff --check`, and axiom audit all passed; the new theorems depend only
+on `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no `Ctop` target staging, no `F3` target staging, no whole-tuple
+target-side normalization, no determinant-one `LinearEquiv`, no actual
+derivative determinant equality, no measure transport, no normal crossings,
+no pole order, and no RLCT.
+
 ## 2026-06-27 A2 target-side edge-pair recovery frontier
 
 Post-interruption reorientation found the expedition worktree clean at

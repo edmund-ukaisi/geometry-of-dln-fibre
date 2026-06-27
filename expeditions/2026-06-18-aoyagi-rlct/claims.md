@@ -9640,6 +9640,53 @@ target-side `LinearEquiv`, no actual derivative determinant formula, no
 measure theorem, no normal crossings, pole order, or RLCT is proved by this
 target edge-pair recovery.
 
+## A2 retained-passive passive A1 target-staged shear
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+sorry/whitespace/axiom audits passed; xhigh review passed.
+
+Claim: for `Dzv = d(topologyTupleEdgeRawOrder)_z(v)` and `q = p.succ`, the
+passive top-left correction can be written with the target-recovered successor
+`F2` family and the raw lower-left target readout:
+
+```text
+Dzv.A1passive_p
+  - targetXsuccF2(q) * coord.solvedA3(q)
+  - coord.F2(q.succ) * rawEdgeTupleA3(Dzv,q)
+= formal.A1passive_p.
+```
+
+Applying the formal passive `A1` recovery gives the same expression equal to
+`v.A1passive_p`.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`retainedPassive_F2_succ_mul_rawEdgeTupleA3_fderiv_eq_sourceStagedSuccessorA3`,
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-target-staged-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-target-staged-shear.md`.
+
+Kill condition: the terminal raw lower-left target derivative must not be
+identified with zero before multiplication by `coord.F2(q.succ)`.  The
+successor `F2` correction must be the target-recovered family
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv`, not the source-staged
+family.  If the theorem is read as staging `Ctop`, staging `F3`, whole-tuple
+target-side normalization, determinant equality, or measure transport, it
+overclaims.
+
+Nonclaims: no `Ctop` target staging, no `F3` target staging, no whole-tuple
+target-side normalization, no determinant-one target-side `LinearEquiv`, no
+actual derivative determinant formula, no measure theorem, no normal
+crossings, pole order, or RLCT is proved by this passive `A1` target-staged
+bridge.
+
 ## A2 retained-passive all-edge pair source-staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

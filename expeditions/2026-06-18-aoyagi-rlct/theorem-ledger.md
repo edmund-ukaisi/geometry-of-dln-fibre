@@ -11369,3 +11369,28 @@ edge pair, and the existing formal edge-pair inverse recovers `(v.F2, v.C)`.
 Nonclaims: no whole-tuple target-side normalization, no determinant-one
 target-side `LinearEquiv`, no actual derivative determinant formula, no
 measure transport, no normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive passive A1 target-staged shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`retainedPassive_F2_succ_mul_rawEdgeTupleA3_fderiv_eq_sourceStagedSuccessorA3`,
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-target-staged-shear.md`.
+
+The formula uses the target-recovered successor `F2` family
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and the raw lower-left
+target readout `rawEdgeTupleA3 Dzv q` under multiplication by
+`coord.F2 q.succ`.  The terminal case uses the zero terminal extended `F2`
+slot; it does not identify the terminal raw lower-left target derivative with
+zero.  The recovery theorem then projects through
+`retainedPassiveFormalRawOrderJacobianAt_recovers_A1passive`.
+Nonclaims: no `Ctop` target staging, no `F3` target staging, no whole-tuple
+target-side normalization, no determinant-one target-side `LinearEquiv`, no
+actual derivative determinant formula, no measure theorem, no normal
+crossings, pole order, or RLCT.

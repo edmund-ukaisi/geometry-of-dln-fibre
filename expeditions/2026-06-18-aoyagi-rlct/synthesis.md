@@ -14582,3 +14582,55 @@ Axiom audit for the two new theorems reported only `propext`,
 This is not a closed finite-sum formula for `dTail`, not full `Ctop` source
 staging, not `F3` staging, not determinant equality, not measure transport,
 not normal crossings, not pole order, and not RLCT.
+
+## Latest A2 Retained-Passive Passive A1 Target-Staged Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the next target-side
+passive `A1` slice:
+
+```text
+retainedPassive_F2_succ_mul_rawEdgeTupleA3_fderiv_eq_sourceStagedSuccessorA3
+A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive
+```
+
+For `Dzv = d(topologyTupleEdgeRawOrder)_z(v)` and `q = p.succ`, the theorem
+replaces the source-staged successor `F2` correction by
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and replaces the
+source-staged lower-left correction by the target readout
+`rawEdgeTupleA3 Dzv q` only inside
+
+```text
+coord.F2 q.succ * rawEdgeTupleA3(Dzv,q).
+```
+
+The terminal case uses the terminal zero extended `F2` multiplier.  It does
+not assert that the terminal raw lower-left target derivative is zero.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-target-staged-shear.md`
+passed by xhigh `Boyle`.
+
+Verification:
+
+```text
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the three new theorem names
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorem axiom audits report
+only `[propext, Classical.choice, Quot.sound]`.
+
+This remains passive-`A1` target staging only.  It is not `Ctop` target
+staging, not `F3` target staging, not whole-tuple target-side normalization,
+not a determinant-one target-side `LinearEquiv`, not actual derivative
+determinant equality, and not measure transport, normal crossings, pole order,
+or RLCT.

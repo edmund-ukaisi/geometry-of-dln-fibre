@@ -21,8 +21,31 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
-After post-interruption reorientation, the retained-passive Jacobian target-
-side `(F2,C)` edge-family recovery slice has landed.  Reproduction:
+After post-interruption reorientation, the retained-passive passive `A1`
+target-staged shear has landed.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-target-staged-shear.md`.
+
+Lean proves
+`retainedPassive_F2_succ_mul_rawEdgeTupleA3_fderiv_eq_sourceStagedSuccessorA3`,
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive`.
+This consumes the previously landed target-recovered successor `F2` family and
+uses the raw lower-left target readout only under multiplication by the
+successor extended `F2` slot.  The terminal lower-left target derivative is
+not set to zero; the terminal multiplier is zero.
+
+Nonclaims: no `Ctop` target staging, no `F3` target staging, no whole-tuple
+target-side normalization, no determinant-one target-side `LinearEquiv`, no
+actual derivative determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.
+
+Immediate predecessor: the retained-passive Jacobian target-side `(F2,C)`
+edge-family recovery slice landed.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-recovery.md`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
