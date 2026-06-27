@@ -95,5 +95,13 @@ S2 use the headline already rides. All N1/N2a/N2b/N3a/N3b lemmas + the N2b suppo
   `frobSq_rmatMul_entryBound_le`, `fin_sum_block_split`, `frobSq_fin_block_split`,
   `inv_mulVec_eq_cramer_ratio`, `inv_mul_eq_inv_mulVec_col`, `updateCol_submatrix_eq`) against the whole
   `DLNFibre/` tree — NO clashes.
-- No `axiom`/`native_decide`/`#exit`. Awaiting reviewer fidelity re-confirmation + controller aggregator
-  wiring (the three imports are NOT yet in `DLNFibre.lean` — single-writer).
+- No `axiom`/`native_decide`/`#exit`.
+- **FIDELITY REVIEW: SURVIVED** (independent `reviewer` seat, decorrelated-Codex-corroborated). The Lean
+  statement faithfully encodes the L3.2a minor-pivot Schur comparison: constants uniform (before `∀ R S`),
+  all three cell hyps required+load-bearing, top block `(R·S)_top` not raw `S_top`, `Sc` structurally
+  pinned, det identity + two-sided comparison both delivered. Reviewer independently re-ran the
+  non-vacuity scripts (`|Q − S_bot| = 0` exactly — raw blocks ARE the normal-form blocks) and force-checked
+  the axioms by deleting the olean. Degenerate `j=0`/`j=r` are correct instances, not holes. No mismatch,
+  no vacuity, no over-claim.
+- Awaiting controller aggregator wiring (the three imports `RouteMSchurShear`, `RouteMSchurAlg`,
+  `RouteMSchur` are NOT yet in `DLNFibre.lean` — single-writer).
