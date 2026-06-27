@@ -237,3 +237,48 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 > - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first): the bridge / chart
 >   equality / rate are S2-free `[propext, Classical.choice, Quot.sound]`; the atom carries the cited
 >   `monomial_rlct`. Full `lake build DLNFibre` green (8483 jobs).
+
+---
+
+## Statement card — `exists_achieverUfun_ne_zero_interior` / `achieverUbound_interior` (INTERIOR-drop witness tide)
+
+- **Module.** `lean/DLNFibre/DLN/RLCT/Validate/RouteMAchieverWitnessInterior.lean` (655 LoC). Dep order:
+  imports `RouteMAchieverVvalPoly` (transitively the achiever chain stack); to wire into the aggregator,
+  add `import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior` after `RouteMAchieverVvalPoly`.
+- **Lean (headline).**
+  - `exists_achieverUfun_ne_zero_interior (M : Fin (L+1) → ℕ) (hL : 0 < L) (hN : 0 < routeMAmbient M)
+    (hInt : InteriorDrop M) : ∃ w, achieverUfun M hL hN w ≠ 0`
+  - `achieverUbound_interior … (hInt : InteriorDrop M) : ∀ δ, ∃ B, 0 < B ∧ (∀ u ∈ box, achieverUfun … u
+    ≤ B) ∧ ∀ᵐ u ∂(volume.restrict box), 0 < achieverUfun … u` — the full rate-side `NodeAchieverChart.Ubound`
+    field for interior-drop `M` (the box-bound + a.e.-positivity), with NO separate witness hypothesis.
+- **Hypothesis `InteriorDrop M`** (chain-native, decidable): `0 < Wext M L ∧ ∃ p, 1 ≤ p ∧ p < L ∧
+  Text M (tach M) (p+1) < Text M (tach M) p ∧ ∀ b, p ≤ b → b < L → Text M (tach M) (b+1) < Wext M b`.
+  English: some interior chain boundary `p` drops the row rank, the column rank drops at every boundary of
+  the tail `[p,L−1]`, and the final width `M_L ≥ 1`. **Validated `InteriorDrop ↔` the cert's interior class
+  (`r_p,c_p ≥ 1` at the deepest interior `p*`), 285/285 over the `widths 1..3`/`L∈{2,3,4}` grid** (and
+  `M_L=0` never occurs for interior `M`). So this is exactly the 285/351 interior class, expressed in the
+  widths the achiever chain reads.
+- **Proved.** The witness `wInt := wOnIdx ∘ chartIdxEquiv` realizes the cert's blocks (reader lemmas
+  `readK_wInt = I`, `readX/N_wInt = 0`, `readE_wInt = pivot`, `readW_wInt = carrier`); the structured
+  decoder's blocks discharge to the abstract-induction hypotheses (`genBlk_Bmat_succ_top/_bot`,
+  `genBlk_Bmat_zero_top`, `genBlk_Rmat_succ_zero`, `genBlk_Rmat_pivot`, `genBlk_E_zero`); the three downward
+  inductions (`suffix_carrier`, `Hmat_pivot`, `Hmat_row_thread`) over the banked entry laws give the
+  surviving entry `Hmat 0 (Text(p+1), 0) = 1`; `sqSumHmat0_ne_zero_of_entry` lifts that to `achieverUfun ≠ 0`.
+  All sorry-free.
+- **Assumed.** none.
+- **Cited.** the banked reduction `RouteMAchieverVvalPoly` (`achieverUfun_eq_eval`, `eval_UPolyGen`,
+  `achieverUbound`, `UPolyGen_ne_zero_of_witness`) + the entry laws (`bmatStack_top/_bot`,
+  `chainA_apply_natAdd`) + `genBlkFlatStruct`/`chainOfMt`/`Chain` (suffix/Hmat/telescope).
+- **Deferred.** the BOUNDARY classes (CLEAN-20 cite `RouteM4422`/`RouteM221`; SMEARED-46 the multi-axis
+  bundle) — separate later tides. The `nodeChartGeneral` 4-way assembly. The colPath chart's Jacobian
+  `|det| = |u_p|^{minAdm−1}` (thread-36 det programme, separate).
+- **Build precision (durable note).** The recurring `c.Wwid` vs `c.toChain.Wwid` projection mismatch (same
+  value, distinct projections) breaks `HMul` instance synthesis in matrix products mixing `FactoredChain`
+  and `Chain` fields; resolve by ascribing each matrix to its literal `Wext`/`Text` type via a local `let`
+  (`Hmat_pivot`), or by a generic `mul_three_reassoc' {p q r s} (a b c)` whose abstract index types unify up
+  to defeq (the `lean/CLAUDE.md` fully-applied-term kernel). omega over `Text`/`Wext` needs `k+1+1`
+  normalized to `k+2` (distinct atoms otherwise — `simp only [show k+1+1=k+2 from rfl]`).
+- **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first):
+  `exists_achieverUfun_ne_zero_interior` + `achieverUbound_interior` are S2-free
+  `[propext, Classical.choice, Quot.sound]`. Full `lake build DLNFibre` green WITH the module temp-imported
+  (8518 jobs, 0 name clashes); reverted the aggregator edit for the single-writer controller to wire.
