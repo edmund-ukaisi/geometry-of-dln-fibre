@@ -9728,3 +9728,47 @@ This is still only a chart-produced retained-passive local-source measure
 identity.  It is not original source-prior transport, selected-entry
 target-image equality, source-rank coverage, an explicit determinant formula,
 normal crossings, pole order, or RLCT.
+
+## 2026-06-27 A2 retained-passive raw-order determinant formula reproduction
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-determinant-formula.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-determinant-formula.md`.
+
+The controller reproduced the explicit determinant factorization for the
+already-formalized retained-passive raw-order coordinate map.  The proposed
+forward absolute determinant on the determinant chart is
+
+```text
+|det Tail|^(-|rho|)
+* |det LastTop|^(|kappa'_(M+1)|)
+* product_{p : Fin (M+1)} |det (A p)|^(|kappa'_p|).
+```
+
+Here `A p` is the solved top-left family,
+`Tail = retainedPassiveA1TailAfterFirst A = A_M * ... * A_1` with empty
+product `1`, and
+
+```text
+LastTop =
+  residualFactorProduct A (Fin.last (M+1)) (Fin.last M).castSucc
+    (Fin.last M).castSucc.le_last.
+```
+
+Independent xhigh endpoint check by `Boole the 4th` confirmed that
+`LastTop = solvedA1 (Fin.last M)`: for `M > 0` it is the final passive top
+block, and for `M = 0` it is `Ctop`, not `1`.  The two tails must not be
+identified.
+
+Lean status: the first reusable gap is now closed by
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`, proving
+`linearMap_det_mulLeftLinearMap` and `linearMap_det_mulRightLinearMap`.
+No explicit retained-passive determinant formula has been implemented yet.
+The existing retained-passive library proves only the abstract forward
+determinant is unit/positive/continuous on the chart.
+
+Nonclaims: no source-prior transport, selected-entry image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.  The current VM
+could not extract the PDF, so source-fidelity against Aoyagi p.13 still needs
+a manual/PDF-readable check before a final source claim depends on the note.

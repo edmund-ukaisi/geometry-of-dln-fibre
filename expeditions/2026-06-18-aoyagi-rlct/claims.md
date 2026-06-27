@@ -9375,3 +9375,41 @@ source prior or as selected-entry/source-rank coverage.
 Nonclaims: no selected-entry target-image equality, original source-prior
 transport, source-rank coverage, explicit determinant formula, normal
 crossings, pole order, or RLCT is proved.
+
+## A2 retained-passive raw-order determinant formula
+
+Status: Reproduced; rectangular determinant API Lean-proved; not yet
+Lean-proved as an explicit retained-passive factorization.
+
+Claim: the forward absolute determinant of the retained-passive raw-order map
+on the determinant chart should be
+
+```text
+|det Tail|^(-|rho|)
+* |det LastTop|^(|kappa'_(M+1)|)
+* product_{p : Fin (M+1)} |det (A p)|^(|kappa'_p|).
+```
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-determinant-formula.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-determinant-formula.md`.
+
+Checked convention: `LastTop = solvedA1 (Fin.last M)`, so it is the last
+passive top block when `M > 0` and `Ctop` when `M = 0`.  This is distinct
+from `Tail = retainedPassiveA1TailAfterFirst A`, which is empty/`1` at
+`M = 0`.
+
+Lean support now proved:
+`linearMap_det_mulLeftLinearMap` and `linearMap_det_mulRightLinearMap` in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.
+
+Kill conditions:
+
+- If source review shows Aoyagi p.13 uses a different retained-passive
+  coordinate source convention, this is only a local Lean-chart calculation.
+- If a Lean derivative factorization cannot triangularize the map with edge
+  factors `A p`, the proposed formula must be repaired before formalization.
+- Do not consume this as a source-prior transport theorem, selected-entry
+  target-image theorem, source-rank coverage theorem, normal-crossing theorem,
+  pole-order theorem, or RLCT theorem.

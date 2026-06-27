@@ -9948,6 +9948,44 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive raw-order determinant formula reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-determinant-formula.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-determinant-formula.md`
+record the pen-and-paper determinant calculation for the retained-passive
+raw-order coordinate map.
+
+Status: Reproduced; rectangular determinant API Lean-proved; retained-passive
+explicit product formula not Lean-proved.
+
+Claim target: on `topologyTupleDetChartSet`, the forward absolute determinant
+of `topologyTupleEdgeRawOrder` should factor as
+
+```text
+|det Tail|^(-|rho|)
+* |det LastTop|^(|kappa'_(M+1)|)
+* product_{p : Fin (M+1)} |det (A p)|^(|kappa'_p|).
+```
+
+Endpoint check: xhigh read-only scout `Boole the 4th` confirmed that
+`LastTop` is the local one-edge terminal factor in `retainedPassiveSolvedA3`,
+namely `solvedA1 (Fin.last M)`.  Thus `LastTop` is the last passive top block
+for `M > 0`, and `Ctop` for `M = 0`.  It is not
+`retainedPassiveA1TailAfterFirst`.
+
+Lean landed:
+`linearMap_det_mulLeftLinearMap` and `linearMap_det_mulRightLinearMap` in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.
+
+Remaining Lean gap: factor the Frechet derivative into determinant-one
+shears/permutations plus the `Tail`, edge-local `A p`, and `LastTop` factors.
+
+Kill condition: do not use this card as a proved Lean theorem, source-prior
+pushforward, selected-entry chart theorem, source-rank coverage theorem,
+normal-crossing theorem, pole-order theorem, or RLCT extraction.  The current
+VM could not extract the PDF; source-fidelity against Aoyagi p.13 still needs
+manual/PDF-readable review.
+
 Latest A2 retained-passive canonical local-source COV:
 `RetainedPassiveLocalMeasure.lean` proves
 `measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet`.

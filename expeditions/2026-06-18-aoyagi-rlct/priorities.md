@@ -6352,3 +6352,19 @@ target-image/source-prior handoff with hypotheses explicit; or a real
 source-rank/source-coverage bridge.  This canonical theorem is not original
 DLN source-prior transport, selected-entry image equality, source-rank
 coverage, normal crossing, pole order, or RLCT.
+
+A2 retained-passive raw-order determinant reproduction is now banked:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-determinant-formula.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-determinant-formula.md`.
+Endpoint convention was independently checked by xhigh scout `Boole the 4th`:
+`LastTop = solvedA1 (Fin.last M)`, so the single-edge case contributes
+`|det Ctop|^(|kappa'_1|)`, not `1`.
+
+The reusable rectangular determinant lemmas for `Matrix.mulLeftLinearMap` and
+`Matrix.mulRightLinearMap` are now proved in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.  Next priority in
+this lane is the retained-passive derivative factorization itself.  Do not add
+more local-source measure wrappers unless a concrete downstream theorem
+consumes the exact wrapper.  The source-PDF fidelity check for the determinant
+reproduction is still pending because this VM lacks a PDF text extractor.

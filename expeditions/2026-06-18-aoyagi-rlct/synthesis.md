@@ -13646,3 +13646,26 @@ Scope guard: this is still a chart-produced measure identity for
 `Measure.map sourceChart (m.restrict T)`.  It is not original source-prior
 transport, selected-entry image equality, source-rank coverage, an explicit
 determinant formula, normal crossings, pole order, or RLCT.
+
+Latest retained-passive explicit determinant reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-determinant-formula.md`
+now records the pen-and-paper factorization for the retained-passive
+raw-order map.  The proposed forward absolute determinant is
+
+```text
+|det Tail|^(-|rho|)
+* |det LastTop|^(|kappa'_(M+1)|)
+* product_{p : Fin (M+1)} |det (A p)|^(|kappa'_p|).
+```
+
+Endpoint convention is checked: `LastTop` is the one-edge terminal factor
+`solvedA1 (Fin.last M)`, hence final passive `A_M` for `M > 0` and `Ctop`
+for `M = 0`.  It is not `retainedPassiveA1TailAfterFirst`, which is the
+first-edge solve tail and is empty at `M = 0`.
+
+Lean update: `MatrixLinearDeterminant.lean` now proves the rectangular
+determinant API
+`linearMap_det_mulLeftLinearMap` and `linearMap_det_mulRightLinearMap`.
+Remaining gap: no explicit retained-passive factor formula yet; next work is
+the full derivative factorization into determinant-one shears/permutations
+and the `Tail`, edge-local `A p`, and `LastTop` factors.
