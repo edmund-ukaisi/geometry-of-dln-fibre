@@ -9637,6 +9637,62 @@ Nonclaims: no positive-tail `F3` target staging, no derivative recurrence for
 determinant-one `LinearEquiv`, no determinant equality, no
 measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive F3 positive-tail dLast target-staged shear
+
+Status: Proved in Lean; controller pen-and-paper reproduction written; focused
+and full builds passed; sorry/whitespace/axiom audits passed; independent xhigh
+implementation review passed.
+
+Claim: in positive-tail retained-passive `F3` component bridge, for a supplied
+terminal passive index `q : Fin M` with `q.succ = Fin.last M`, the terminal
+top-factor derivative can be replaced by the target-staged passive `A1`
+expression:
+
+```text
+dLast_z(v) =
+  Dzv.A1passive(q)
+    - retainedPassiveTargetRecoveredSuccessorF2At(z,Dzv)(q.succ)
+        * coord.solvedA3(q.succ)
+    - coord.F2(q.succ.succ) * rawEdgeTupleA3(Dzv,q.succ).
+```
+
+Substituting only this factor into the landed `F3` bridge gives
+
+```text
+Dzv.F3
+  - dEarly_z(v) * coord.solvedA1(Fin.last M)
+  + (coord.F3 - Early(z)) * targetLast
+= formal.F3.
+```
+
+The corresponding recovery right-multiplies by
+`(-(coord.solvedA1(Fin.last M)))^{-1}`.
+
+Lean proves this as
+`fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply`,
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+
+Review:
+xhigh `Raman` passed the implementation review, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+
+Kill condition: if the theorem target-stages or expands `dEarly`, treats
+terminal `rawEdgeTupleA3` as zero, uses the first passive tail as `Last`, or
+claims full positive-tail `F3` target staging, it is not the intended slice.
+
+Nonclaims: no full positive-tail `F3` target staging, no derivative recurrence
+for `Early`, no whole-tuple target-side normalization, no target-side
+determinant-one `LinearEquiv`, no determinant equality, no
+measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive target edge-pair recovery
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

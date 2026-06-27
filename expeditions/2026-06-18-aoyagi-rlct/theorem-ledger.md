@@ -11442,3 +11442,32 @@ keeps `rawEdgeTupleA3 Dzv 0` only under multiplication by
 `Early` derivative recurrence, no whole-tuple target-side normalization, no
 determinant-one target-side `LinearEquiv`, no actual derivative determinant
 formula, no measure theorem, no normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive F3 positive-tail dLast target-staged slice:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply`,
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`
+passed by xhigh `Raman`.
+Focused/full builds passed; `scripts/sorries` reported zero forbidden markers;
+`git diff --check` passed; theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.
+
+The theorem assumes a terminal passive index `q : Fin M` with
+`q.succ = Fin.last M`.  It rewrites the terminal top product in the landed
+`F3` bridge to `coord.solvedA1 (Fin.last M)`, identifies its derivative with
+the passive tangent `v.1 q`, and substitutes the already-landed target-staged
+passive `A1` expression.  The early-tail derivative remains explicit:
+there is still no positive-tail `dEarly` recurrence.  The terminal raw
+lower-left target readout is kept under its displayed `coord.F2 q.succ.succ`
+multiplier; it is not set to zero.  Nonclaims: no full positive-tail `F3`
+target staging, no whole-tuple target-side normalization, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant formula, no
+measure theorem, no normal crossings, pole order, or RLCT.

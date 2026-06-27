@@ -14750,3 +14750,46 @@ positive-tail `F3` target staging, not a derivative recurrence for `Early`, not
 whole-tuple target-side normalization, not a determinant-one target-side
 `LinearEquiv`, not actual derivative determinant equality, and not measure
 transport, normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Positive-Tail dLast Target-Staged Slice
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves a narrow positive-tail
+`F3` consumer that substitutes only the terminal `dLast` factor:
+
+```text
+fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+For a supplied terminal passive index `q : Fin M` with
+`q.succ = Fin.last M`, the terminal top residual product in the landed `F3`
+bridge is the solved top block `coord.solvedA1 (Fin.last M)`.  Rewriting that
+block as the passive slot `q.succ` gives
+
+```text
+(fderiv Lastfun z) v = v.1 q.
+```
+
+The theorem then consumes the landed passive `A1` target-staged recovery to
+replace `v.1 q` by
+
+```text
+Dzv.1 q
+  - retainedPassiveTargetRecoveredSuccessorF2At(z,Dzv)(q.succ)
+      * coord.solvedA3(q.succ)
+  - coord.F2(q.succ.succ) * rawEdgeTupleA3(Dzv,q.succ).
+```
+
+The positive-tail `F3` expression still contains
+
+```text
+-(fderiv Earlyfun z) v * coord.solvedA1 (Fin.last M).
+```
+
+Thus this is a term-level `dLast` substitution, not full positive-tail `F3`
+target staging.  Focused module build and full `DLNFibre` build passed via
+`scripts/lb`; `scripts/sorries` reported zero forbidden markers;
+`git diff --check` passed; theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Raman` passed the
+implementation review.

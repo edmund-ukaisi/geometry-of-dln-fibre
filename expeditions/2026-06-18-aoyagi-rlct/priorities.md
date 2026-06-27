@@ -21,6 +21,40 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+After xhigh scout convergence, the positive-tail terminal `dLast` staging
+slice has been reproduced and formalized locally.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+
+Lean proves
+`fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply`,
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+The theorem assumes a terminal passive index `q : Fin M` with
+`q.succ = Fin.last M`, rewrites the terminal top product `Last` to the solved
+terminal top block, identifies its derivative with the passive `A1` tangent
+at `q`, and then replaces that tangent by the already-landed target-staged
+passive `A1` expression.  The `dEarly` term remains explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` and
+full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries` reported zero
+forbidden markers; `git diff --check` passed; theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Raman` passed the
+implementation review.
+
+Nonclaims: no full positive-tail `F3` target staging, no derivative recurrence
+for `Early`, no whole-tuple target-side normalization, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
+Next frontier: positive-tail `F3` remains blocked by an honest recurrence for
+`dEarly`.  The terminal `dLast` obstruction has been isolated and discharged
+only as a term-level substitution.
+
+Immediate predecessor: the retained-passive `F3` zero-tail target-staged shear.
+
 After post-interruption reorientation, the retained-passive `F3` zero-tail
 target-staged shear has landed.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`.

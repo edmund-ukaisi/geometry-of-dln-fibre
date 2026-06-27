@@ -18,6 +18,48 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 F3 positive-tail dLast target-staged shear
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.
+Review:
+`review-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`, PASS by
+xhigh `Raman`.
+
+Lean now proves the terminal `dLast` substitution slice:
+
+```text
+fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+For a terminal passive index `q : Fin M` with `q.succ = Fin.last M`, the
+terminal top residual product `Last` is the terminal solved top block
+`coord.solvedA1 (Fin.last M)`, and its Frechet derivative is the passive
+source tangent `v.1 q`.  The theorem replaces only this `dLast` factor by the
+target-staged passive `A1` expression
+
+```text
+Dzv.1 q
+  - retainedPassiveTargetRecoveredSuccessorF2At(z,Dzv)(q.succ)
+      * coord.solvedA3(q.succ)
+  - coord.F2(q.succ.succ) * rawEdgeTupleA3(Dzv,q.succ).
+```
+
+The `dEarly` term remains explicit in the positive-tail `F3` bridge.  Focused
+module build and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; theorem axiom
+audits report only `[propext, Classical.choice, Quot.sound]`; independent
+implementation review passed.
+
+Nonclaims: no full positive-tail `F3` target staging, no derivative recurrence
+for `Early`, no whole-tuple target-side normalization, no determinant-one
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 F3 zero-tail target-staged shear
 
 Reproduction:

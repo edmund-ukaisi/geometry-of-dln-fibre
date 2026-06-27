@@ -2085,6 +2085,56 @@ theorem retainedPassiveSourceStagedSuccessorA3_last
   simp [retainedPassiveSourceStagedSuccessorA3]
 
 set_option linter.style.longLine false in
+/-- At a passive top-left edge, the solved `A1` coordinate is the stored
+passive source coordinate, so its Frechet derivative is the passive source
+tangent. -/
+theorem fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    (z v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          p.succ) z) v =
+      v.1 p := by
+  have hfun :
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          p.succ) =
+        fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ y.1 p := by
+    funext y
+    change
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+          p.succ =
+        y.1 p
+    have hsolve :=
+      ChartLocalSuffixState.retainedPassiveSolvedA1_eq_of_ne_zero
+        (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).Ctop
+        (Fin.succ_ne_zero p)
+    simpa [ChartLocalSuffixState.RetainedPassiveCoordinateData.solvedA1,
+      toCoordinateData] using hsolve
+  let LA1 : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →L[ℝ]
+      Matrix ρ ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  rw [hfun]
+  have hLA1 :
+      fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ y.1 p) z =
+        LA1 := LA1.fderiv
+  rw [hLA1]
+  rfl
+
+set_option linter.style.longLine false in
 /-- At a nonterminal lower-left edge, the solved `A3` coordinate is the stored
 passive source coordinate, so its Frechet derivative is the passive source
 tangent. -/
@@ -3209,6 +3259,215 @@ theorem F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
       + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
       ((retainedPassiveFormalRawOrderJacobianAt
           (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 at hF3
+  rw [hF3]
+  simpa [coord, data] using hrec
+
+set_option linter.style.longLine false in
+/-- For positive passive-tail length, the terminal `dLast` factor in the `F3`
+bridge can be staged using the target-recovered successor `F2` family and the
+raw lower-left target readout at the terminal edge.  The early-tail derivative
+remains explicit. -/
+theorem F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (q : Fin M) (hq : q.succ = Fin.last M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le (M + 1))
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    Dzv.2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * coord.solvedA1 (Fin.last M)
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ) =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y)
+        (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        0 (Nat.zero_le (M + 1))
+  let Lastfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hF3 :=
+    F3_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  have hLastfun :
+      Lastfun =
+        fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+            (Fin.last M) := by
+    funext y
+    let A : Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    have hlast :=
+      retainedPassiveLastTopResidualFactorProduct_eq
+        (K := ℝ) (ρ := ρ) (M := M) A
+    change
+      ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ) A
+          (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last =
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+          (Fin.last M)
+    exact hlast
+  have hLastfun_q :
+      Lastfun =
+        fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+            q.succ := by
+    rw [hLastfun]
+    funext y
+    rw [hq]
+  have hLastz : Lastfun z = coord.solvedA1 (Fin.last M) := by
+    rw [hLastfun]
+  have hdLast : (fderiv ℝ Lastfun z) v = v.1 q := by
+    rw [hLastfun_q]
+    exact
+      fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+        (ρ := ρ) (κ' := κ') z v q
+  have hA1 :=
+    A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive
+      (ρ := ρ) (κ' := κ') hz v q
+  change Dzv.1 q
+      - XsuccF2 q.succ * coord.solvedA3 q.succ
+      - coord.F2 q.succ.succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ =
+      v.1 q at hA1
+  change Dzv.2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * Lastfun z
+      + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 at hF3
+  rw [hLastz, hdLast] at hF3
+  rw [← hA1] at hF3
+  exact hF3
+
+set_option linter.style.longLine false in
+/-- For positive passive-tail length, the `F3` bridge with only the terminal
+`dLast` factor target-staged recovers the source `F3` tangent by the usual
+right-multiplication with the inverse of the negative terminal solved top-left
+factor. -/
+theorem F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (q : Fin M) (hq : q.succ = Fin.last M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le (M + 1))
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    (Dzv.2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * coord.solvedA1 (Fin.last M)
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
+        (-(coord.solvedA1 (Fin.last M)))⁻¹ =
+      v.2.2.2.2.2 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y)
+        (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        0 (Nat.zero_le (M + 1))
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hF3 :=
+    F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v q hq
+  have hrec :=
+    retainedPassiveFormalRawOrderJacobianAt_recovers_F3
+      (ρ := ρ) (κ' := κ') hz v
+  change Dzv.2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * coord.solvedA1 (Fin.last M)
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ) =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 at hF3
+  change (Dzv.2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * coord.solvedA1 (Fin.last M)
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
+        (-(coord.solvedA1 (Fin.last M)))⁻¹ =
+      v.2.2.2.2.2
   rw [hF3]
   simpa [coord, data] using hrec
 
