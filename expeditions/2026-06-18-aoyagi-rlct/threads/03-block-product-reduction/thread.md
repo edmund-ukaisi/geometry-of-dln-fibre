@@ -18,6 +18,56 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly successor dPcast substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Review:
+`review-a2-retained-passive-dearly-succ-dpcast-substitution.md`, PASS by
+xhigh `Kierkegaard`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_apply
+```
+
+For `s : Fin M`, the theorem sets
+
+```text
+q = s.succ,
+u = s.castSucc,
+p = q.castSucc,
+r = q.succ.
+```
+
+It instantiates the existing nonterminal `dEarly` wrapper with `M := M+1`,
+uses `Fin.succ_castSucc` to identify `u.succ = p`, and substitutes the
+successor-current solved-`A1` residual-product derivative into the explicit
+`dPcast` contribution:
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p) + Psucc(z) * v.1 u)
+  * Pcast(z)^-1.
+```
+
+The tangent is exactly `v.1 s.castSucc`.  The theorem leaves `dPsucc`,
+`Psucc`, and `solvedA1_z(p)` explicit.  It does not introduce `dTail`, does
+not expand `dPsucc`, and does not terminal-clean.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
+passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Next frontier: reassess the remaining `dEarly` source-staging boundary now
+that the nonterminal current factor is split into zero and successor slices.
+
 ## 2026-06-27 A2 dEarly zero dPcast substitution
 
 Reproduction:

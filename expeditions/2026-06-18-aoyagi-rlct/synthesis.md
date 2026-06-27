@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 dEarly Successor dPcast Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_apply
+```
+
+This is the non-first downstream `dEarly` source-staging slice after the zero
+and successor solved-`A1` `dPcast` helpers.  For `s : Fin M`, it instantiates
+the existing nonterminal retained-passive `dEarly` wrapper with `M := M+1` and
+`q := s.succ : Fin (M+1)`.  It sets `u := s.castSucc`, so
+`u.succ = p := q.castSucc` by `Fin.succ_castSucc`, and rewrites the explicit
+inverse-product derivative contribution as
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * data.toCoordinateData.solvedA1 p
+      + Psucc(z) * v.1 u)
+  * Pcast(z)^-1.
+```
+
+All already-staged `dCprod`, `dG`, and successor-tail terms remain unchanged.
+The theorem deliberately leaves `dPsucc`, `Psucc`, and `solvedA1(p)` explicit.
+It does not introduce the zero-branch `dTail`, does not expand `dPsucc`, and
+does not terminal-clean.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Kierkegaard's xhigh audit passed the `q := s.succ` / `u := s.castSucc`
+indexing, the `Fin.succ_castSucc` bridge, tangent `v.1 u`, factor order, and
+nonclaims.  Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Next frontier: reassess the remaining `dEarly` source-staging boundary.  The
+nonterminal current factors are now split into zero and successor slices; the
+terminal-specific theorem remains a separate boundary because earlier review
+ruled out treating its `Psucc` as an empty product.
+
 ## Latest A2 dEarly Zero dPcast Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves:

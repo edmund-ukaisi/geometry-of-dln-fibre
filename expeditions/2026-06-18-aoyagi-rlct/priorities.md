@@ -21,6 +21,55 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The successor-index retained-passive `dEarly` `dPcast` substitution has landed
+in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_apply
+```
+
+For `s : Fin M`, the theorem specializes the existing nonterminal `dEarly`
+wrapper with `M := M+1` and
+
+```text
+q = s.succ     : Fin (M+1),
+u = s.castSucc : Fin (M+1),
+p = q.castSucc : Fin ((M+1)+1),
+r = q.succ     : Fin ((M+1)+1).
+```
+
+It uses `Fin.succ_castSucc` to identify `p = u.succ`, then substitutes only
+the successor-current solved-`A1` residual-product derivative:
+
+```text
+Cprod * A3p * Pcast^-1
+  * (dPsucc * solvedA1(p) + Psucc * v.1 u)
+  * Pcast^-1.
+```
+
+The tangent is exactly `v.1 s.castSucc`.  The theorem leaves `dPsucc`,
+`Psucc`, and `solvedA1(p)` explicit; it does not introduce `dTail`,
+terminal-clean, or simplify suffix products.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-succ-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-succ-dpcast-substitution.md`,
+PASS by xhigh `Kierkegaard`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+(`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: reassess the remaining downstream `dEarly`
+terminal/source-staging boundary.  The zero and successor nonterminal current
+factors are now staged, while terminal-specific cleanup remains intentionally
+separate.
+
+Previous controller decision:
+
 The first-index retained-passive `dEarly` zero-current `dPcast` substitution
 has landed in `RetainedPassiveCoordinatesDerivative.lean`:
 
