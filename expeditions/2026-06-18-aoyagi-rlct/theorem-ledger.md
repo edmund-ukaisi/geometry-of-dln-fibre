@@ -10141,6 +10141,29 @@ include dummy `A1seed 0`.  Nonclaims: no closed finite-sum formula for
 determinant-one shear, determinant equality, measure transport, normal
 crossings, pole order, or RLCT.
 
+Latest A2 retained-passive Ctop tail endpoint substitution:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+Review:
+pen-and-paper scout PASS from xhigh `Godel`; Lean/API scout PASS from xhigh
+`Hooke`; implementation review PASS from xhigh `Galileo`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+
+This substitutes the endpoint `dTail` theorem into the existing Ctop bridge.
+The zero case kills the empty-tail correction.  The positive case keeps the
+already-positive sign and uses
+`Tail^{-1} * (d(Psucc)*A1seed_p + Psucc*v.A1passive_0) * Tail^{-1} * Ctop`,
+with the suffix derivative still explicit.  Nonclaims: no closed finite-sum
+formula for `dTail`, no full `Ctop` source staging, no `F3` source staging,
+no target-side determinant-one shear, determinant equality, measure transport,
+normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

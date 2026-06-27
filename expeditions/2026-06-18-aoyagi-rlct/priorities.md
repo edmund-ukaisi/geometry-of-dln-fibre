@@ -6514,3 +6514,22 @@ tail-inverse bridge, leaving the remaining `Psucc` derivative explicit.  Do
 not claim a closed finite-sum formula, determinant equality, target-side
 shear equivalence, measure transport, normal crossings, pole order, or RLCT
 from this endpoint slice.
+
+A2 retained-passive Ctop tail endpoint substitution has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-tail-endpoint-substitution.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+Lean proves
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+The zero case removes the empty-tail correction.  The positive case substitutes
+the first passive endpoint recurrence into the existing positive
+`Tail^{-1} * dTail * Tail^{-1} * coord.Ctop` term, leaving `d(Psucc)`
+explicit.
+
+Next priority in this lane: decide whether the next consumer needs iteration
+of this recurrence into a finite sum, or whether staged Ctop/F3 assembly can
+continue with the explicit suffix derivative.  Do not claim determinant
+equality, target-side shear equivalence, measure transport, normal crossings,
+pole order, or RLCT from this substitution slice.

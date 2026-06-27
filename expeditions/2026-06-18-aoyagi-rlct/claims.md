@@ -10278,6 +10278,50 @@ staging, no `F3` source staging, no target-side determinant-one shear,
 determinant equality, measure/Jacobian-density theorem, normal crossings, pole
 order, or RLCT.
 
+## A2 retained-passive Ctop tail endpoint substitution
+
+Status: Proved in Lean locally; pen-and-paper reproduction written; focused
+and full builds passed; pen-and-paper and Lean/API scouts passed; independent
+implementation review passed; sorry scan, whitespace check, and axiom audit
+passed.
+
+Claim: substituting the endpoint tail derivative into the existing Ctop
+tail-inverse bridge gives two cases.  For `M=0`, the tail correction vanishes.
+For `0 < M`, the tail correction becomes
+
+```text
+Tail^{-1}
+  * ((fderiv Psucc z) v * data.A1seed p + Psucc z * v.A1passive_0)
+  * Tail^{-1}
+  * coord.Ctop.
+```
+
+Lean proves this as
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-tail-endpoint-substitution.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+
+Review:
+pen-and-paper scout PASS from xhigh `Godel`; Lean/API scout PASS from xhigh
+`Hooke`; implementation review PASS from xhigh `Galileo`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+
+Kill condition: if the theorem changes the sign of the tail correction,
+commutes/reverses product-rule factors, moves `coord.Ctop` leftward, includes
+dummy `A1seed 0`, or expands the remaining suffix derivative, it is not the
+intended substitution theorem.
+
+Nonclaims: no closed finite-sum formula for `dTail`, no full `Ctop` source
+staging, no `F3` source staging, no target-side determinant-one shear,
+determinant equality, measure/Jacobian-density theorem, normal crossings, pole
+order, or RLCT.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.

@@ -14470,3 +14470,43 @@ Axiom audit for the three new theorems reported only `propext`,
 This is not a closed finite-sum formula for `dTail`, not full `Ctop` source
 staging, not `F3` staging, not determinant equality, not measure transport,
 not normal crossings, not pole order, and not RLCT.
+
+## Latest A2 Retained-Passive Ctop Tail Endpoint Substitution
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The zero theorem rewrites `dTail=0` in the existing Ctop tail-inverse bridge,
+so the tail correction term disappears.  The positive theorem rewrites the
+same bridge with the first passive endpoint recurrence:
+
+```text
+Tail^{-1}
+  * ((fderiv Psucc z) v * data.A1seed p + Psucc z * v.1 q)
+  * Tail^{-1}
+  * coord.Ctop.
+```
+
+The sign remains positive because this term already came from substituting
+`d(Tail^{-1}) = -Tail^{-1} * dTail * Tail^{-1}` into a negative Ctop term.
+The formula does not commute factors, does not include dummy `A1seed 0`, and
+leaves `(fderiv Psucc z) v` explicit.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+Pen-and-paper scout `Godel` and Lean/API scout `Hooke` both recommended this
+boundary.  Independent xhigh implementation review `Galileo` passed, recorded
+in
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+Full `DLNFibre` build passed.  `scripts/sorries` reported `0 sorry`,
+`0 #exit`, `0 native_decide`, and `0 axiom`; `git diff --check` passed.
+Axiom audit for the two new theorems reported only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+This is not a closed finite-sum formula for `dTail`, not full `Ctop` source
+staging, not `F3` staging, not determinant equality, not measure transport,
+not normal crossings, not pole order, and not RLCT.

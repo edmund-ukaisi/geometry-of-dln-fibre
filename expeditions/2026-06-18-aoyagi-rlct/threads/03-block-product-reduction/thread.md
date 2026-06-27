@@ -303,6 +303,52 @@ first endpoint recurrence step.  It is not full `Ctop` source staging, not
 `F3` staging, not determinant equality, and not measure transport, normal
 crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 retained-passive Ctop tail endpoint substitution
+
+The direct Ctop consumer of the endpoint tail derivative is implemented
+locally.
+
+Reproduction:
+`reproduction-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-ctop-tail-endpoint-substitution.md`.
+
+Lean now proves:
+
+```text
+Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The zero theorem uses `dTail=0` for the empty passive tail and removes only
+the tail correction term from the existing Ctop bridge.  The positive theorem
+substitutes the first passive endpoint recurrence into the already positive
+tail-inverse correction term:
+
+```text
++ Tail^{-1}
+    * (d(Psucc)_z(v) * A1seed_z(p) + Psucc(z) * v.A1passive_0)
+    * Tail^{-1}
+    * coord.Ctop.
+```
+
+The remaining suffix derivative `d(Psucc)` is still explicit.  The theorem
+does not introduce the dummy `A1seed 0`.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+Pen-and-paper scout `Godel` and Lean/API scout `Hooke` both recommended this
+boundary.  Independent xhigh implementation review `Galileo` passed, recorded
+in `review-a2-retained-passive-ctop-tail-endpoint-substitution.md`.  Full
+`DLNFibre` build passed.  `scripts/sorries` reported `0 sorry`, `0 #exit`,
+`0 native_decide`, and `0 axiom`; `git diff --check` passed.  Axiom audit for
+the two new theorems reported only `propext`, `Classical.choice`, and
+`Quot.sound`.
+
+This is not a closed finite-sum formula for `dTail` and not full `Ctop`
+source staging.  It is not `F3` staging, determinant equality, measure
+transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is
