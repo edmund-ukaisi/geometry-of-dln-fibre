@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 dEarly Zero dPcast Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply
+```
+
+This is the first downstream `dEarly` source-staging slice after the zero and
+successor solved-`A1` `dPcast` helpers.  It instantiates the existing
+nonterminal retained-passive `dEarly` wrapper with `M := M+1` and
+`q := 0 : Fin (M+1)`, so it does not assume `Fin M` is nonempty.  With
+`p := q.castSucc` and `r := q.succ`, it rewrites the explicit inverse-product
+derivative contribution as
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * data.toCoordinateData.solvedA1 p
+      + Psucc(z) *
+          (Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop))
+  * Pcast(z)^-1.
+```
+
+All already-staged `dCprod`, `dG`, and successor-tail terms remain unchanged.
+The theorem deliberately leaves `dPsucc`, `Psucc`, the first-summand
+`solvedA1(p)`, and `dTail` explicit.  It does not identify `Psucc` with
+`Tail`, does not expand `dTail`, and does not terminal-clean the `M=0` case.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Pasteur's xhigh audit passed the first-index boundary, factor order,
+zero-current substitution, statement-card formula, and nonclaims.  Focused
+builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Next frontier: the successor-current downstream `dEarly` source-staging slice.
+The main indexing issue is that the existing wrapper uses `p = q.castSucc`; to
+use the successor `dPcast` helper, the slice must expose a non-first current
+factor and reindex it as `p = s.succ`.
+
 ## Latest A2 dPcast Successor Solved-A1 Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves:

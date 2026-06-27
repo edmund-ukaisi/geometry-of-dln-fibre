@@ -21,6 +21,49 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The first-index retained-passive `dEarly` zero-current `dPcast` substitution
+has landed in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply
+```
+
+The theorem specializes the existing nonterminal `dEarly` wrapper with
+`M := M+1` and `q := 0 : Fin (M+1)`, avoiding any nonempty `Fin M` assumption.
+It substitutes only the zero-current solved-`A1` residual-product derivative
+inside the already-staged inverse-product contribution:
+
+```text
+Cprod * A3p * Pcast^-1
+  * (dPsucc * solvedA1(p)
+      + Psucc *
+          (Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop))
+  * Pcast^-1.
+```
+
+The theorem leaves `dPsucc`, `Psucc`, `solvedA1(p)`, and `dTail` explicit.
+It does not claim `Psucc = Tail`, does not unfold the first summand, does not
+expand `dTail`, and does not terminal-clean even when `M = 0`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-zero-dpcast-substitution.md`,
+PASS by xhigh `Pasteur`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+(`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: prove the successor-current downstream `dEarly`
+source-staging slice, where the nonterminal wrapper's current factor
+`p = q.castSucc` must be reindexed to a genuine successor factor before using
+the successor `dPcast` helper.
+
+Previous controller decision:
+
 The successor-current solved-`A1` residual-product derivative substitution has
 landed in `RetainedPassiveCoordinatesDerivative.lean`:
 

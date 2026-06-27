@@ -18,6 +18,58 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly zero dPcast substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-zero-dpcast-substitution.md`.
+Review:
+`review-a2-retained-passive-dearly-zero-dpcast-substitution.md`, PASS by
+xhigh `Pasteur`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply
+```
+
+For the first-index nonterminal slice, the theorem sets
+
+```text
+q = 0 : Fin (M+1),
+p = q.castSucc,
+r = q.succ.
+```
+
+It instantiates the existing nonterminal `dEarly` wrapper with `M := M+1` and
+substitutes the zero-current solved-`A1` residual-product derivative into the
+explicit `dPcast` contribution:
+
+```text
+Cprod(z) * A3p(z) * Pcast(z)^-1
+  * (dPsucc_z(v) * solvedA1_z(p)
+      + Psucc(z) *
+          (Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop))
+  * Pcast(z)^-1.
+```
+
+The theorem leaves `dPsucc`, `Psucc`, `solvedA1_z(p)`, and `dTail` explicit.
+It does not claim `Psucc = Tail`, does not expand `dTail`, and does not
+terminal-clean the `M=0` case.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
+passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Next frontier: prove the successor-current downstream `dEarly` source-staging
+slice.  The indexing issue is that the wrapper's current factor is
+`p = q.castSucc`; the next slice should expose a non-first current factor and
+reindex it as a successor before applying the successor `dPcast` helper.
+
 ## 2026-06-27 A2 dPcast successor solved-A1 substitution
 
 Reproduction:
