@@ -158,3 +158,25 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   Multi-tide; route set by the Wave-1 probe.
 - **Wave 3:** **R4 assemble** (compose → refined `cited_aoyagi_dln`); **R5 bundle completion**
   (projection compatibility + R1-gluing).
+
+- **tick 5 (operator sign-off + Wave 1 LAUNCHED, 2026-06-27):** operator chose **"Full proof,
+  probe-first"** (maximal but methodical).
+  - **GROUND-TRUTH CORRECTION (supersedes ticks 2/4's "≈ banked `monomial_rlct`/`Skeleton`"):** controller
+    grep verified there is **NO `monomial_rlct`, NO `aoyagiLambda`, NO `Skeleton`/`Validate` resolution
+    scaffold** on dev. The analytic-rlct side is **GREENFIELD**. What IS banked is GEOMETRY:
+    `codimRepCanonical`, `cCodim`, the proved formula-match `codimRepCanonical_fibre_eq_two_aoyagiLambda`
+    (`codim = 2·Aoyagi.lambda`, `DLN/Aoyagi/ClosedForm.lean`), `realizerD` +
+    `codimRepCanonical_orbitRankLocus_realizerD`. The monolith = `RlctInterface.cited_aoyagi_dln`
+    (`RlctPayoff.lean:288–300`): opaque `rlct` map + one equality field; docstring 267–272 carries the
+    verbatim trap *"No from-scratch real↔complex … base-change lemma is needed"* (the hidden T). So the
+    "thin cited interface" IS C1/C2/C3 stated fresh (not a wrap of existing scaffold) — cleaner: exposing
+    the axioms is the goal.
+  - **Wave 1a — `thin-interface` tide** (lean-formaliser `a756ff2f0ed17ceb6`, isolated worktree, branch
+    `expedition/rlct-bridge-04-thin-interface` from `origin/dev`): monolith → `ThinRlctInterface`
+    (C1/C2/C3) + EXPOSE T (prove via rational `realizerD` if reachable, else explicit named field), delete
+    trap docstring, re-derive downstream; R2/R3 enter as named holes. **Design-proposal-first → controller
+    seam-taste review before finalize.**
+  - **Wave 1b — `r3-route-probe`** (pen-and-paper): resolved-chart-Newton vs Aoyagi-bespoke verdict +
+    resolution-datum spec + R3-tide cost estimate.
+  - Holding for 04's design proposal + 05's verdict. Then: review 04 to equilibrium before integrating;
+    refine R3's Wave-2 shape from 05.
