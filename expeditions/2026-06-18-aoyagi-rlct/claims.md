@@ -9402,7 +9402,15 @@ from `Tail = retainedPassiveA1TailAfterFirst A`, which is empty/`1` at
 
 Lean support now proved:
 `linearMap_det_mulLeftLinearMap` and `linearMap_det_mulRightLinearMap` in
-`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`, and the edge-local
+pair determinant `edgeLocalFCPairLinearMap_det_eq`:
+
+```text
+det ((F,C) |-> (-(A+H*G)F+HC, -GF+C))
+  = det(-A)^(|kappa|)
+```
+
+in the displayed `(F,C)` input/output order.
 
 Kill conditions:
 
@@ -9447,3 +9455,43 @@ and `LastTop` factors.
 Nonclaims: no analytic `fderiv` theorem, retained-passive total determinant
 formula, source-prior transport, normal crossings, pole order, or RLCT is
 proved by this slice.
+
+## A2 edge-local `(F,C)` pair determinant
+
+Status: Proved in Lean; reproduced on paper; reviewed.
+
+Claim: for fixed `A : Matrix rho rho K`, `H : Matrix rho mu K`, and
+`G : Matrix mu rho K`, the finite linear map
+
+```text
+(F, C) |->
+  (-(A + H*G) * F + H*C,
+   -G*F + C)
+```
+
+on `Matrix rho kappa K x Matrix mu kappa K`, in the displayed coordinate
+order, has determinant
+
+```text
+(-A).det ^ Fintype.card kappa.
+```
+
+Lean proves this as `edgeLocalFCPairLinearMap_det_eq`, with the formula lemma
+`edgeLocalFCPairLinearMap_apply`, in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-edge-local-fc-pair-determinant.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-edge-local-fc-pair-determinant.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-edge-local-fc-pair-determinant.md`
+accepted by xhigh `Lagrange the 4th`.
+
+Kill condition: if a later retained-passive assembly changes the input or
+output product ordering, account for the resulting product-space permutation
+sign before using this determinant factor.
+
+Nonclaims: no full retained-passive determinant formula, analytic `fderiv`
+theorem, source-prior transport, density/pushforward theorem, normal
+crossings, pole order, or RLCT is proved by this slice.

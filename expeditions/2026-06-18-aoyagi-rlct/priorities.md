@@ -6382,3 +6382,20 @@ Next priority in this determinant lane: lift from this fixed-passive one-step
 factor to the full retained-passive formal-linear factorization.  Do not use
 the one-step raw-to-chart determinant as the retained-passive total formula
 without matching orientation and endpoint solves (`Tail` and `LastTop`).
+
+A2 edge-local `(F,C)` pair determinant has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-edge-local-fc-pair-determinant.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-edge-local-fc-pair-determinant.md`.
+Lean proves `edgeLocalFCPairLinearMap_det_eq` in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`:
+
+```text
+det ((F,C) |-> (-(A+H*G)F+HC, -GF+C))
+  = det(-A)^(|kappa|)
+```
+
+in the displayed `(F,C)` order.  This is now the preferred local determinant
+factor for retained-passive edge blocks.  Next priority: assemble the
+retained-passive derivative factorization so the `Tail`, all edge-local `A p`,
+and `LastTop` factors appear with the checked endpoint convention.

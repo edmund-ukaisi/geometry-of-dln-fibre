@@ -9822,3 +9822,59 @@ theorems reports `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: this is not the retained-passive total determinant formula, not an
 analytic `fderiv` theorem, not source-prior transport, not normal crossings,
 not pole order, and not RLCT.
+
+## 2026-06-27 A2 edge-local `(F,C)` pair determinant
+
+Reproduction:
+`reproduction-a2-edge-local-fc-pair-determinant.md`.
+Statement card:
+`statement-card-a2-edge-local-fc-pair-determinant.md`.
+Review:
+`review-a2-edge-local-fc-pair-determinant.md`
+accepted by xhigh read-only reviewer `Lagrange the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean`.
+
+Lean now proves the edge-local determinant factor from the retained-passive
+raw-order determinant route.  For fixed
+
+```text
+A : Matrix rho rho K
+H : Matrix rho mu K
+G : Matrix mu rho K
+```
+
+the map
+
+```text
+(F, C) |->
+  (-(A + H*G) * F + H * C,
+   -G * F + C)
+```
+
+on `Matrix rho kappa K x Matrix mu kappa K`, in the displayed `(F,C)` input
+and `(Y12,Y22)` output order, has determinant
+
+```text
+(-A).det ^ Fintype.card kappa.
+```
+
+New Lean names include `linearEquivUpperShear`,
+`linearEquivUpperShear_det_eq_one`, `edgeLocalFCPairLinearMap_apply`, and
+`edgeLocalFCPairLinearMap_det_eq`.  The proof factors the map as lower shear
+`(F,C) |-> (F,C-GF)`, diagonal map `(F,C) |-> (-AF,C)`, and upper shear
+`(F,C) |-> (F+HC,C)`.
+
+Focused `MatrixLinearDeterminant` and downstream
+`ProductReductionStepJacobian` builds passed.  After review, the older private
+product/shear determinant helpers in `ProductReductionStepJacobian.lean` were
+replaced by the promoted helpers in `MatrixLinearDeterminant.lean`.
+Full `DLNFibre` build passed with the existing warning profile.
+`scripts/sorries` reported `0 sorry`, `0 #exit`, `0 native_decide`, and
+`0 axiom`.  `git diff --check` passed.  Axiom audit for the new determinant
+theorem reports `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: this is not the full retained-passive raw-order determinant formula,
+not an analytic `fderiv` theorem, not source-prior transport, not normal
+crossings, not pole order, and not RLCT.

@@ -9948,6 +9948,40 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 edge-local `(F,C)` pair determinant:
+`MatrixLinearDeterminant.lean` proves
+`edgeLocalFCPairLinearMap_apply` and `edgeLocalFCPairLinearMap_det_eq` for the
+finite linear map
+
+```text
+(F, C) |->
+  (-(A + H*G) * F + H*C,
+   -G*F + C).
+```
+
+In the `(F,C)` input and `(Y12,Y22)` output order, the determinant is
+
+```text
+(-A).det ^ Fintype.card kappa.
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-edge-local-fc-pair-determinant.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-edge-local-fc-pair-determinant.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-edge-local-fc-pair-determinant.md`
+passed by xhigh `Lagrange the 4th`.
+
+The proof factors the map into a lower shear, diagonal left multiplication by
+`-A` on the `F` block, and an upper shear.  It also promotes reusable
+product/shear determinant helpers in `MatrixLinearDeterminant.lean`; the older
+private duplicates in `ProductReductionStepJacobian.lean` now use those
+promoted helpers.
+Nonclaims: no full retained-passive determinant formula, analytic derivative
+theorem, source-prior transport, density/pushforward theorem, normal
+crossings, pole order, or RLCT.
+
 Latest A2 fixed-passive formal Jacobian determinant:
 `ProductReductionStepJacobian.lean` defines the diagonal/shear factorization
 of `productStepFixedPassiveFormalJacobian` and proves

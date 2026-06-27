@@ -13697,3 +13697,31 @@ This is a formal-linear one-step determinant, not the retained-passive total
 formula.  It should be used next as a component in the larger factorization,
 with orientation and endpoint conventions checked against the retained
 coordinate map.
+
+Latest edge-local `(F,C)` pair determinant:
+`MatrixLinearDeterminant.lean` now also proves the reusable determinant theorem
+for
+
+```text
+(F, C) |->
+  (-(A + H*G) * F + H*C,
+   -G*F + C).
+```
+
+In the `(F,C)` input and `(Y12,Y22)` output order, the determinant is
+
+```text
+(-A).det ^ Fintype.card kappa.
+```
+
+The proof adds reusable product/shear determinant helpers and factors the map
+as lower shear, diagonal left multiplication by `-A`, and upper shear.  This is
+the next explicit factor needed for the retained-passive raw-order determinant
+formula.  It is still finite formal-linear algebra only: no analytic
+derivative theorem, density/pushforward theorem, source-prior transport,
+normal crossings, pole order, or RLCT.
+
+Verification: focused determinant and downstream step-Jacobian builds passed;
+full `DLNFibre` build passed with the existing warning profile; `scripts/sorries`
+and `git diff --check` passed; the new determinant theorem has axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
