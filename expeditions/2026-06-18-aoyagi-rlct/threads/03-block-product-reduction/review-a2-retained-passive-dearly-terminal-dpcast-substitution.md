@@ -44,7 +44,9 @@ terminal `dPcast` term of the already terminal `dCprod`/`dG` recurrence.
   explicit.  It does not replace it by a passive source tangent.
 
 - The theorem deliberately does not collapse the terminal empty product
-  `Psucc = 1` or its derivative.  That is a separate cleanup slice.
+  `Psucc = 1` or its derivative.  Later xhigh review found that this cleanup
+  is not available at these indices: `p.succ` is the penultimate endpoint, not
+  the final endpoint.
 
 ## Lean Verification
 

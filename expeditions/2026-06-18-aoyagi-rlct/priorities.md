@@ -48,10 +48,16 @@ Nonclaims: no source-staging of `d(solvedA1 p)`, no terminal `Psucc` cleanup,
 no target staging, no determinant theorem, no measure theorem, no normal
 crossings, no pole order, and no RLCT.
 
-Next frontier after banking: either terminal empty-product cleanup for
-`Psucc`, or start the solved-`A1` derivative split.  Ptolemy's xhigh scout
-reports the safe split as successor branch `d(solvedA1 q.succ)=v.1 q` and
-zero branch
+Meitner's xhigh review ruled out terminal empty-product cleanup for `Psucc`:
+with `q = Fin.last M` and `p = q.castSucc`, the endpoint `p.succ` is
+`r.castSucc`, not the final endpoint `r.succ`.  Thus terminal `Psucc` is a
+one-edge solved-`A1` suffix, not `1`; do not retry a theorem asserting
+`Psucc = 1` or `dPsucc = 0`.  Obstruction note:
+`threads/03-block-product-reduction/obstruction-a2-retained-passive-dearly-terminal-psucc-not-empty.md`.
+
+Next frontier after banking: start the solved-`A1` derivative split.
+Ptolemy's xhigh scout reports the safe split as successor branch
+`d(solvedA1 q.succ)=v.1 q` and zero branch
 `Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop`; do not collapse the zero branch
 to a passive tangent.
 

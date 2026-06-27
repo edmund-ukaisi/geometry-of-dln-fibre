@@ -18,6 +18,22 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 terminal Psucc cleanup obstruction
+
+Obstruction note:
+`obstruction-a2-retained-passive-dearly-terminal-psucc-not-empty.md`.
+
+Xhigh reviewer `Meitner` ruled out the proposed terminal cleanup
+`Psucc = 1`, `(fderiv Psucc) = 0`.  In the terminal `dPcast` theorem,
+`q = Fin.last M` and `p = q.castSucc`, but the solved-`A1` successor product
+starts at `p.succ = r.castSucc`, not at the final endpoint `r.succ`.  Thus
+`Psucc` is a one-edge solved-`A1` suffix, not the empty product.
+
+Do not retry this cleanup.  The correct next frontier is the solved-`A1`
+derivative split: successor branch `d(solvedA1 q.succ)=v.1 q`; zero branch
+`Tail^-1*dCtop - Tail^-1*dTail*Tail^-1*Ctop`, with determinant-chart
+hypothesis and noncommutative order preserved.
+
 ## 2026-06-27 A2 dEarly terminal dPcast substitution
 
 Reproduction:
