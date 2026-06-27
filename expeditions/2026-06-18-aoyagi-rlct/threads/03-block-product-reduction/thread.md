@@ -18,6 +18,56 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 F3 positive-tail dEarly substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Review:
+`review-a2-retained-passive-f3-positive-tail-dearly-substitution.md`, PASS by
+xhigh `Sartre`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+For positive tail length written as `M+1`, the theorem keeps the terminal
+`dLast` target-staged expression and substitutes the first-index
+zero-current `dEarly` formula into the remaining earlier-tail derivative:
+
+```text
+Dzv.F3
+  - dEarly * coord.solvedA1(Fin.last (M+1))
+  + (coord.F3 - Earlyfun z) * dLast_target
+  = formal.F3.
+```
+
+The indexing is
+
+```text
+q0 = 0 : Fin (M+1),
+p0 = q0.castSucc,
+r0 = q0.succ,
+qLast = Fin.last M : Fin (M+1).
+```
+
+The theorem leaves `dPsucc`, `dTail`, `dCnext`, and `(fderiv Nextfun z) v`
+explicit.  It does not recurse through the full earlier-tail derivative and
+does not claim full positive-tail `F3` target staging.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
+passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Next frontier: choose between the mechanical recovery theorem for this staged
+expression and a one-step recursion into `Nextfun` using the successor-index
+`dEarly` theorem.
+
 ## 2026-06-27 A2 dEarly successor dPcast substitution
 
 Reproduction:

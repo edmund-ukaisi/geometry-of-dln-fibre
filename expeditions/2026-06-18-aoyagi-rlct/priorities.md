@@ -21,6 +21,63 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive positive-tail `F3` bridge now consumes the first-index
+`dEarly` zero-current formula in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The theorem writes the positive tail as `M+1`, sets the first earlier-tail
+edge to
+
+```text
+q0 = 0 : Fin (M+1),
+p0 = q0.castSucc,
+r0 = q0.succ,
+```
+
+and keeps the terminal `dLast` staging at
+
+```text
+qLast = Fin.last M : Fin (M+1).
+```
+
+It substitutes only
+`fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply`
+into the existing `F3` bridge:
+
+```text
+Dzv.F3
+  - dEarly * coord.solvedA1(Fin.last (M+1))
+  + (coord.F3 - Earlyfun z) * dLast_target
+  = formal.F3.
+```
+
+The theorem deliberately leaves `dPsucc`, `dTail`, `dCnext`, and
+`(fderiv Nextfun z) v` explicit.  It does not claim full positive-tail `F3`
+target staging, a target-side `LinearEquiv`, determinant equality, measure
+transport, normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
+PASS by xhigh `Sartre`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+(`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: decide whether to recurse once into `Nextfun`
+using the successor-index `dEarly` theorem or first add a recovery theorem for
+this staged `F3` expression.  Do not present this slice as a full positive-tail
+`F3` target-stage.
+
+Previous controller decision:
+
 The successor-index retained-passive `dEarly` `dPcast` substitution has landed
 in `RetainedPassiveCoordinatesDerivative.lean`:
 
@@ -68,7 +125,7 @@ terminal/source-staging boundary.  The zero and successor nonterminal current
 factors are now staged, while terminal-specific cleanup remains intentionally
 separate.
 
-Previous controller decision:
+Earlier controller decision:
 
 The first-index retained-passive `dEarly` zero-current `dPcast` substitution
 has landed in `RetainedPassiveCoordinatesDerivative.lean`:

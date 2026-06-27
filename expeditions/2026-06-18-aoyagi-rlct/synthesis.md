@@ -48,6 +48,57 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 F3 Positive-Tail dEarly Substitution
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+This is the first positive-tail terminal `F3` consumer of the landed
+first-index `dEarly` formula.  It parameterizes the positive tail as `M+1`,
+uses
+
+```text
+q0 = 0 : Fin (M+1),
+p0 = q0.castSucc,
+r0 = q0.succ,
+qLast = Fin.last M : Fin (M+1),
+```
+
+and starts from the existing theorem where the terminal `dLast` factor is
+already target-staged.  The new theorem rewrites only
+`(fderiv Earlyfun z) v` by the zero-current `dEarly` formula, producing
+
+```text
+Dzv.F3
+  - dEarly * coord.solvedA1(Fin.last (M+1))
+  + (coord.F3 - Earlyfun z) * dLast_target
+  = formal.F3.
+```
+
+The terminal `dLast` target expression is unchanged.  The expanded `dEarly`
+keeps `dPsucc`, `dTail`, `dCnext`, and `(fderiv Nextfun z) v` explicit and
+preserves noncommutative order.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
+Sartre's xhigh audit passed the `M+1` positive-tail parameterization, zero
+first-index branch, terminal `qLast`, factor order, unchanged terminal target
+term, explicit remaining derivatives, and nonclaims.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Next frontier: either add the mechanical recovery theorem for this expression,
+or recurse once into the successor `Nextfun` using the successor-index
+`dEarly` theorem.  This is not full positive-tail `F3` target staging.
+
 ## Latest A2 dEarly Successor dPcast Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves:
