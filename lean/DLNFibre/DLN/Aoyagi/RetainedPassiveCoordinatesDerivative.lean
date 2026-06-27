@@ -1,5 +1,7 @@
 import DLNFibre.DLN.Aoyagi.ProductReductionStepDerivative
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
+import Mathlib.Analysis.Calculus.FDeriv.Comp
+import Mathlib.Analysis.Calculus.FDeriv.Congr
 
 /-!
 # Derivative footholds for retained-passive raw-order coordinates
@@ -19,6 +21,7 @@ noncomputable section
 
 open Matrix
 open scoped Matrix.Norms.Operator
+open scoped Topology
 
 namespace DLNFibre
 namespace DLN
@@ -1554,6 +1557,128 @@ theorem differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceR
     differentiableAt_topologyTuple_sourceReadback
       (ρ := ρ) (κ' := κ') F hF hchart
   simpa [topologyTupleEdgeRawOrderInverse, F] using hread
+
+/-- The derivative of raw-order readback composed with the derivative of the
+forward raw-order map is the identity on tangent coordinates. -/
+theorem fderiv_topologyTupleEdgeRawOrderInverse_comp_fderiv_topologyTupleEdgeRawOrder
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    (fderiv ℝ
+        (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)).comp
+      (fderiv ℝ
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z) =
+    ContinuousLinearMap.id ℝ (TopologyTuple ρ κ' ℝ) := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let f : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let g : E → E := topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hf : DifferentiableAt ℝ f z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hy : f z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') :=
+    mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') hz
+  have hg : DifferentiableAt ℝ g (f z) :=
+    differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+      (ρ := ρ) (κ' := κ') hy
+  have hS : topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ∈ 𝓝 z :=
+    (isOpen_topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')).mem_nhds hz
+  have hgf : (fun x : E ↦ g (f x)) =ᶠ[𝓝 z] id := by
+    filter_upwards [hS] with x hx
+    exact
+      topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+        (K := ℝ) (ρ := ρ) (κ' := κ') hx
+  calc
+    (fderiv ℝ g (f z)).comp (fderiv ℝ f z)
+        = fderiv ℝ (fun x : E ↦ g (f x)) z := by
+          exact (fderiv_comp' (𝕜 := ℝ) (x := z) (f := f) (g := g) hg hf).symm
+    _ = fderiv ℝ id z := hgf.fderiv_eq
+    _ = ContinuousLinearMap.id ℝ E := fderiv_id
+
+/-- The derivative of the forward raw-order map composed with the derivative
+of raw-order readback is the identity on target tangent coordinates. -/
+theorem fderiv_topologyTupleEdgeRawOrder_comp_fderiv_topologyTupleEdgeRawOrderInverse
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    (fderiv ℝ
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z).comp
+      (fderiv ℝ
+        (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+    ContinuousLinearMap.id ℝ (TopologyTuple ρ κ' ℝ) := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let f : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let g : E → E := topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hf : DifferentiableAt ℝ f z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hy : f z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') :=
+    mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') hz
+  have hg : DifferentiableAt ℝ g (f z) :=
+    differentiableAt_topologyTupleEdgeRawOrderInverse_of_mem_rawOrderSourceRecursiveDetChartSet
+      (ρ := ρ) (κ' := κ') hy
+  have hgz : g (f z) = z :=
+    topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+      (K := ℝ) (ρ := ρ) (κ' := κ') hz
+  have hT : topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') ∈ 𝓝 (f z) :=
+    (isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')).mem_nhds hy
+  have hfg : (fun y : E ↦ f (g y)) =ᶠ[𝓝 (f z)] id := by
+    filter_upwards [hT] with y hy'
+    exact
+      topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+        (K := ℝ) (ρ := ρ) (κ' := κ') hy'
+  calc
+    (fderiv ℝ f z).comp (fderiv ℝ g (f z))
+        = (fderiv ℝ f (g (f z))).comp (fderiv ℝ g (f z)) := by
+          rw [hgz]
+    _ = fderiv ℝ (fun y : E ↦ f (g y)) (f z) := by
+          have hf' : DifferentiableAt ℝ f (g (f z)) := by
+            simpa [hgz] using hf
+          exact (fderiv_comp' (𝕜 := ℝ) (x := f z) (f := g) (g := f) hf' hg).symm
+    _ = fderiv ℝ id (f z) := hfg.fderiv_eq
+    _ = ContinuousLinearMap.id ℝ E := fderiv_id
+
+/-- The ambient Frechet derivative of the retained-passive raw-order chart map
+has unit determinant on the tuple determinant chart. -/
+theorem fderiv_topologyTupleEdgeRawOrder_det_isUnit_of_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    IsUnit
+      (LinearMap.det
+        ((fderiv ℝ
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z :
+            TopologyTuple ρ κ' ℝ →L[ℝ] TopologyTuple ρ κ' ℝ) :
+          TopologyTuple ρ κ' ℝ →ₗ[ℝ] TopologyTuple ρ κ' ℝ)) := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let f : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let g : E → E := topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hcomp :
+      (fderiv ℝ g (f z)).comp (fderiv ℝ f z) = ContinuousLinearMap.id ℝ E := by
+    simpa [E, f, g] using
+      fderiv_topologyTupleEdgeRawOrderInverse_comp_fderiv_topologyTupleEdgeRawOrder
+        (ρ := ρ) (κ' := κ') hz
+  have hcompLinear :
+      (((fderiv ℝ g (f z)).comp (fderiv ℝ f z) : E →L[ℝ] E) : E →ₗ[ℝ] E) =
+        (LinearMap.id : E →ₗ[ℝ] E) :=
+    congrArg (fun L : E →L[ℝ] E ↦ (L : E →ₗ[ℝ] E)) hcomp
+  have hmul :
+      LinearMap.det ((fderiv ℝ g (f z) : E →L[ℝ] E) : E →ₗ[ℝ] E) *
+          LinearMap.det ((fderiv ℝ f z : E →L[ℝ] E) : E →ₗ[ℝ] E) =
+        1 := by
+    rw [← LinearMap.det_comp]
+    simpa [ContinuousLinearMap.coe_comp'] using congrArg LinearMap.det hcompLinear
+  exact isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul_eq_one hmul)
 
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState

@@ -6194,3 +6194,20 @@ formal tangent equivalence/determinant-unit theorem for
 calculus helpers currently come through `ProductReductionStepDerivative`; split
 them into a smaller helper module only if that dependency becomes a concrete
 blocker.
+
+A2 retained-passive raw-order fderiv determinant unit has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-fderiv-det-unit.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-fderiv-det-unit.md`.
+Lean proves the two tangent composition identities for
+`topologyTupleEdgeRawOrder` and `topologyTupleEdgeRawOrderInverse`, then proves
+unitness of the determinant of `fderiv ℝ topologyTupleEdgeRawOrder z` at every
+tuple determinant-chart point.  The proof uses openness only to turn chart
+inverse identities into ambient-neighborhood eventual equalities before
+applying the ordinary chain rule.
+
+After review, the next priority may move to a local positive Jacobian-density
+or measure-transport interface for the retained-passive raw-order chart.  Do
+not assert an explicit determinant formula, density formula, measure
+pushforward, normal-crossing, pole-order, or RLCT theorem from this
+determinant-unit result alone.

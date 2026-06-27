@@ -9373,3 +9373,39 @@ normal crossings, pole order, or RLCT.  Dependency caveat: the module currently
 imports the one-step derivative module for generic matrix inverse/multiplication
 calculus helpers; split those helpers only if module-boundary hygiene becomes a
 concrete blocker.
+
+## 2026-06-26 A2 retained-passive raw-order fderiv determinant unit
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-fderiv-det-unit.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-fderiv-det-unit.md`.
+Review:
+`review-a2-retained-passive-raw-order-fderiv-det-unit.md`
+passed by xhigh read-only explorer `Hilbert the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now proves the local tangent inverse identities
+
+```text
+fderiv_topologyTupleEdgeRawOrderInverse_comp_fderiv_topologyTupleEdgeRawOrder
+fderiv_topologyTupleEdgeRawOrder_comp_fderiv_topologyTupleEdgeRawOrderInverse
+```
+
+and the determinant-unit theorem
+
+```text
+fderiv_topologyTupleEdgeRawOrder_det_isUnit_of_mem_topologyTupleDetChartSet
+```
+
+The proof uses the already-landed open raw-order partial homeomorphism,
+ambient differentiability of the forward and inverse maps, ordinary chain
+rule, and neighborhood-form inverse identities coming from openness of the
+source and target chart sets.
+
+This closes density-free tangent invertibility for the retained-passive
+raw-order chart.  It does not give an explicit derivative formula, determinant
+formula, Jacobian density, measure pushforward, source-rank coverage, normal
+crossings, pole order, or RLCT.

@@ -13408,3 +13408,25 @@ the open partial homeomorphism identities to construct the formal tangent
 linear equivalence at a determinant-chart point and prove determinant unitness
 of the forward derivative.  Do not state a positive density or measure
 pushforward before that determinant-unit theorem exists.
+
+Latest retained-passive raw-order fderiv determinant unit:
+`RetainedPassiveCoordinatesDerivative.lean` now proves
+
+```text
+fderiv_topologyTupleEdgeRawOrderInverse_comp_fderiv_topologyTupleEdgeRawOrder
+fderiv_topologyTupleEdgeRawOrder_comp_fderiv_topologyTupleEdgeRawOrderInverse
+fderiv_topologyTupleEdgeRawOrder_det_isUnit_of_mem_topologyTupleDetChartSet
+```
+
+The proof uses the open raw-order partial homeomorphism only to upgrade the
+set-level inverse identities to eventual equalities in ambient neighborhood
+filters.  Forward and inverse ambient differentiability then give the tangent
+inverse identities by the ordinary chain rule, and the determinant-unit theorem
+follows by taking determinants in one composition identity.
+
+This closes tangent invertibility and determinant unitness for the
+retained-passive raw-order chart.  It still does not identify a derivative
+formula, determinant formula, Jacobian density, measure pushforward,
+source-rank coverage, normal crossings, pole order, or RLCT.  Next target:
+derive a local positive Jacobian-density/lower-bound interface only after
+review confirms this determinant-unit slice.
