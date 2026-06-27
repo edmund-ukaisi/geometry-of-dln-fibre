@@ -38,22 +38,28 @@ open Matrix
 /-- **An abstract chained-product telescope certificate.** The data the general achiever chart's
 layer factorization supplies, per boundary level, decoupled from the block construction. `Wwid k` is
 the ambient width at slot `k` (`= M k` in the chart instance), `Twid k` the compressed (kept-rank)
-width. The single radial pivot `u` is the scalar that telescopes out. -/
-structure Chain (n : ℕ) (u : ℝ) where
+width. The single radial pivot `u` is the scalar that telescopes out.
+
+The coefficient type `𝕜` is an arbitrary `CommRing` (was `ℝ`); the matrix algebra of the telescope
+(`Matrix.mul`/`add`/`smul`/`mul_assoc`) needs no more. The ℝ instance is the chart's; the
+`MvPolynomial (Fin N) ℝ` instance carries the polynomial-valued `Hmat 0` used for the a.e.-positivity
+encoding (`RouteMAchieverVvalPoly`). `𝕜` is IMPLICIT, inferred from `u`, so every ℝ-callsite is
+unchanged. -/
+structure Chain (n : ℕ) {𝕜 : Type*} [CommRing 𝕜] (u : 𝕜) where
   /-- Ambient widths (the layer-product spaces); `Wwid k = M k` in the chart instance. -/
   Wwid : ℕ → ℕ
   /-- Compressed (kept-rank) widths. -/
   Twid : ℕ → ℕ
   /-- The layer matrices `A_k : Fin (Wwid k) → Fin (Wwid (k+1))` (`k < n`); the DLN factors `A^(k)`. -/
-  A : (k : ℕ) → Matrix (Fin (Wwid k)) (Fin (Wwid (k + 1))) ℝ
+  A : (k : ℕ) → Matrix (Fin (Wwid k)) (Fin (Wwid (k + 1))) 𝕜
   /-- The compressed transitions `C_k : Fin (Twid k) → Fin (Wwid k)`. -/
-  C : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) ℝ
+  C : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) 𝕜
   /-- The `P_k K_k` (kept) part of the local identity, `B_k : Fin (Twid k) → Fin (Twid (k+1))`. -/
-  B : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Twid (k + 1))) ℝ
+  B : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Twid (k + 1))) 𝕜
   /-- The radial-error part of the local identity, `E_k : Fin (Twid k) → Fin (Wwid (k+1))`. -/
-  E : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid (k + 1))) ℝ
+  E : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid (k + 1))) 𝕜
   /-- The terminal residual `R : Fin (Twid n) → Fin (Wwid n)` (`C_n = u • R`). -/
-  R : Matrix (Fin (Twid n)) (Fin (Wwid n)) ℝ
+  R : Matrix (Fin (Twid n)) (Fin (Wwid n)) 𝕜
   /-- **The per-level local identity** (the only thing the block construction must prove per layer):
   `C_k · A_k = B_k · C_{k+1} + u • E_k`, for `k < n`. -/
   step : ∀ k, k < n → C k * A k = B k * C (k + 1) + u • E k
@@ -62,29 +68,29 @@ structure Chain (n : ℕ) (u : ℝ) where
 
 namespace Chain
 
-variable {n : ℕ} {u : ℝ}
+variable {n : ℕ} {𝕜 : Type*} [CommRing 𝕜] {u : 𝕜}
 
 /-- The suffix product `A_s · A_{s+1} · ⋯ · A_{n−1} : Mat (Fin (Wwid s)) (Fin (Wwid n))`. Built by
 downward recursion on the remaining length `d = n − s`: `suffixAux d s` (with `s + d = n`) is the
 product of `d` factors from slot `s`. -/
 def suffixAux (c : Chain n u) :
-    (d : ℕ) → (s : ℕ) → s + d = n → Matrix (Fin (c.Wwid s)) (Fin (c.Wwid n)) ℝ
+    (d : ℕ) → (s : ℕ) → s + d = n → Matrix (Fin (c.Wwid s)) (Fin (c.Wwid n)) 𝕜
   | 0, s, h => by
       rw [Nat.add_zero] at h
       subst h
-      exact (1 : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid s)) ℝ)
+      exact (1 : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid s)) 𝕜)
   | d + 1, s, h =>
       have h' : (s + 1) + d = n := by omega
-      (c.A s : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid (s + 1))) ℝ) * c.suffixAux d (s + 1) h'
+      (c.A s : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid (s + 1))) 𝕜) * c.suffixAux d (s + 1) h'
 
 /-- The suffix product from slot `s` (`s ≤ n`): `A_s · ⋯ · A_{n−1}`. -/
-def suffix (c : Chain n u) (s : ℕ) (h : s ≤ n) : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid n)) ℝ :=
+def suffix (c : Chain n u) (s : ℕ) (h : s ≤ n) : Matrix (Fin (c.Wwid s)) (Fin (c.Wwid n)) 𝕜 :=
   c.suffixAux (n - s) s (by omega)
 
 /-- The telescoped quotient `H_s`: `H_n := R`, `H_s := B_s · H_{s+1} + E_s · suffix_{s+1}`. Built by
 downward recursion (the `u`-stripped backward fold the telescope produces). -/
 def HmatAux (c : Chain n u) :
-    (d : ℕ) → (s : ℕ) → s + d = n → Matrix (Fin (c.Twid s)) (Fin (c.Wwid n)) ℝ
+    (d : ℕ) → (s : ℕ) → s + d = n → Matrix (Fin (c.Twid s)) (Fin (c.Wwid n)) 𝕜
   | 0, s, h => by
       rw [Nat.add_zero] at h
       subst h
@@ -92,11 +98,11 @@ def HmatAux (c : Chain n u) :
   | d + 1, s, h =>
       have h' : (s + 1) + d = n := by omega
       have hs1 : s + 1 ≤ n := by omega
-      (c.B s : Matrix (Fin (c.Twid s)) (Fin (c.Twid (s + 1))) ℝ) * c.HmatAux d (s + 1) h'
-        + (c.E s : Matrix (Fin (c.Twid s)) (Fin (c.Wwid (s + 1))) ℝ) * c.suffix (s + 1) hs1
+      (c.B s : Matrix (Fin (c.Twid s)) (Fin (c.Twid (s + 1))) 𝕜) * c.HmatAux d (s + 1) h'
+        + (c.E s : Matrix (Fin (c.Twid s)) (Fin (c.Wwid (s + 1))) 𝕜) * c.suffix (s + 1) hs1
 
 /-- The telescoped quotient from slot `s` (`s ≤ n`). -/
-def Hmat (c : Chain n u) (s : ℕ) (h : s ≤ n) : Matrix (Fin (c.Twid s)) (Fin (c.Wwid n)) ℝ :=
+def Hmat (c : Chain n u) (s : ℕ) (h : s ≤ n) : Matrix (Fin (c.Twid s)) (Fin (c.Wwid n)) 𝕜 :=
   c.HmatAux (n - s) s (by omega)
 
 /-! ## The suffix / quotient unfolding lemmas
@@ -128,7 +134,7 @@ theorem HmatAux_succ (c : Chain n u) (d s : ℕ) (h : s + (d + 1) = n) :
 
 /-- The suffix at `s = n` is the identity. -/
 theorem suffix_last (c : Chain n u) :
-    c.suffix n (le_refl n) = (1 : Matrix (Fin (c.Wwid n)) (Fin (c.Wwid n)) ℝ) :=
+    c.suffix n (le_refl n) = (1 : Matrix (Fin (c.Wwid n)) (Fin (c.Wwid n)) 𝕜) :=
   (suffixAux_congr c (show n - n = 0 by omega) _ (by omega))
 
 /-- The suffix one-step peel: `suffix s = A_s · suffix (s+1)` (for `s < n`). -/
