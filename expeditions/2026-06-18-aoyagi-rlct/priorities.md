@@ -27,6 +27,7 @@ The retained-passive positive-tail `F3` bridge now consumes the first-index
 
 ```text
 F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 The theorem writes the positive tail as `M+1`, sets the first earlier-tail
@@ -56,9 +57,12 @@ Dzv.F3
 ```
 
 The theorem deliberately leaves `dPsucc`, `dTail`, `dCnext`, and
-`(fderiv Nextfun z) v` explicit.  It does not claim full positive-tail `F3`
-target staging, a target-side `LinearEquiv`, determinant equality, measure
-transport, normal crossings, pole order, or RLCT.  Reproduction:
+`(fderiv Nextfun z) v` explicit.  The recovery theorem uses the formal
+raw-order `F3` recovery and right-multiplies by
+`(-(coord.solvedA1(Fin.last (M+1))))^-1`.  This does not claim full
+positive-tail `F3` target staging, a target-side `LinearEquiv`, determinant
+equality, measure transport, normal crossings, pole order, or RLCT.
+Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
@@ -68,13 +72,12 @@ PASS by xhigh `Sartre`.
 
 Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
-`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+`scripts/sorries`, `git diff --check`, and both theorem axiom audits
 (`[propext, Classical.choice, Quot.sound]`).
 
-Next frontier after banking: decide whether to recurse once into `Nextfun`
-using the successor-index `dEarly` theorem or first add a recovery theorem for
-this staged `F3` expression.  Do not present this slice as a full positive-tail
-`F3` target-stage.
+Next frontier after banking: either recurse once into `Nextfun` using the
+successor-index `dEarly` theorem or target-stage one of the remaining explicit
+pieces.  Do not present this slice as a full positive-tail `F3` target-stage.
 
 Previous controller decision:
 

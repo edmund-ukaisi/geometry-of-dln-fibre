@@ -50,18 +50,19 @@ File:
 lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean
 ```
 
-Planned Lean name:
+Lean names:
 
 ```text
 F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 ## Verification
 
 Focused build passed for
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`.  `scripts/sorries`
-reported zero forbidden markers, `git diff --check` was clean, and the theorem
-axiom audit reported only `[propext, Classical.choice, Quot.sound]`.
+reported zero forbidden markers, `git diff --check` was clean, and both theorem
+axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
 
 Review:
 
@@ -72,6 +73,7 @@ review-a2-retained-passive-f3-positive-tail-dearly-substitution.md
 ## Dependencies
 
 - `F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`;
+- `retainedPassiveFormalRawOrderJacobianAt_recovers_F3`;
 - `fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply`;
 - endpoint identity `(Fin.last M).succ = Fin.last (M+1)`.
 

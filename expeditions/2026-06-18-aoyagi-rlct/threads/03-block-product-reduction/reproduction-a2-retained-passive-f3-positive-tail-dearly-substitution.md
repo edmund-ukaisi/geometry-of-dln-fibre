@@ -99,21 +99,24 @@ right-multiplied as a whole by the terminal solved top factor
 
 ## Lean Scope
 
-Planned Lean addition in
+Lean additions in
 `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`:
 
 ```text
 F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
-It should start from
+The equality theorem starts from
 
 ```text
 F3_tail_pos_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
 ```
 
 with `M := M+1`, `q := Fin.last M`, then rewrite `(fderiv Earlyfun z) v` by
-the zero-current `dEarly` theorem above.
+the zero-current `dEarly` theorem above.  The recovery theorem then uses the
+formal raw-order `F3` recovery and right-multiplies the same staged expression
+by `(-(coord.solvedA1(Fin.last (M+1))))^-1`.
 
 ## Kill Conditions
 

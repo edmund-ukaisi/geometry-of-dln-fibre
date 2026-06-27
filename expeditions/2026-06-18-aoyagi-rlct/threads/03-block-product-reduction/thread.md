@@ -32,6 +32,7 @@ Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
 
 ```text
 F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 For positive tail length written as `M+1`, the theorem keeps the terminal
@@ -56,17 +57,18 @@ qLast = Fin.last M : Fin (M+1).
 
 The theorem leaves `dPsucc`, `dTail`, `dCnext`, and `(fderiv Nextfun z) v`
 explicit.  It does not recurse through the full earlier-tail derivative and
-does not claim full positive-tail `F3` target staging.
+does not claim full positive-tail `F3` target staging.  The recovery theorem
+uses the formal raw-order `F3` recovery and right-multiplies the same staged
+expression by `(-(coord.solvedA1(Fin.last (M+1))))^-1`.
 
 Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
-`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
-passed; the theorem has only the standard
+`scripts/sorries` audit, `git diff --check`, and both theorem axiom audits also
+passed; both theorems have only the standard
 `[propext, Classical.choice, Quot.sound]` footprint.
 
-Next frontier: choose between the mechanical recovery theorem for this staged
-expression and a one-step recursion into `Nextfun` using the successor-index
-`dEarly` theorem.
+Next frontier: recurse once into `Nextfun` using the successor-index `dEarly`
+theorem, or target-stage one of the remaining explicit pieces.
 
 ## 2026-06-27 A2 dEarly successor dPcast substitution
 

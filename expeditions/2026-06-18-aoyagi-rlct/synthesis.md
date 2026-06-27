@@ -54,6 +54,7 @@ arithmetic tail, notation translation, and final assembly.
 
 ```text
 F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 This is the first positive-tail terminal `F3` consumer of the landed
@@ -80,7 +81,9 @@ Dzv.F3
 
 The terminal `dLast` target expression is unchanged.  The expanded `dEarly`
 keeps `dPsucc`, `dTail`, `dCnext`, and `(fderiv Nextfun z) v` explicit and
-preserves noncommutative order.
+preserves noncommutative order.  The recovery theorem applies the formal
+raw-order `F3` recovery to the same staged expression and right-multiplies by
+`(-(coord.solvedA1(Fin.last (M+1))))^-1`.
 
 Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`.
@@ -92,12 +95,12 @@ Sartre's xhigh audit passed the `M+1` positive-tail parameterization, zero
 first-index branch, terminal `qLast`, factor order, unchanged terminal target
 term, explicit remaining derivatives, and nonclaims.  Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
-`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+`scripts/sorries` audit and `git diff --check` passed; both theorem axiom audits
 reported only `[propext, Classical.choice, Quot.sound]`.
 
-Next frontier: either add the mechanical recovery theorem for this expression,
-or recurse once into the successor `Nextfun` using the successor-index
-`dEarly` theorem.  This is not full positive-tail `F3` target staging.
+Next frontier: recurse once into the successor `Nextfun` using the
+successor-index `dEarly` theorem, or target-stage one of the remaining explicit
+pieces.  This is not full positive-tail `F3` target staging.
 
 ## Latest A2 dEarly Successor dPcast Substitution
 
