@@ -21,6 +21,48 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The target-normalizer frontier now has the stored-`C` suffix derivative
+target-staged, including the positive-tail `Cnext` slot in the lower-left
+one-step core.  New Lean names:
+
+```text
+retainedPassiveCTailTargetOnlyStepAt
+retainedPassiveCTailTargetOnlyStepAt_fderiv_eq_sourceStep
+retainedPassiveCSuffixTargetStagedFDerivAt
+retainedPassiveCSuffixTargetStagedFDerivAt_self
+retainedPassiveCSuffixTargetStagedFDerivAt_step
+retainedPassiveCSuffixProductAt
+fderiv_retainedPassive_C_residualFactorProduct_targetStaged_apply
+retainedPassiveCnextTargetStagedFDerivAt
+retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sourceStepCore
+```
+
+The recursive suffix derivative is target-only: base `D#_{M+1}=0`, step through
+the one-step product-rule helper
+`dSucc * C_z(p) + Csucc(z) * recoveredC(p)`.  On actual raw-order derivative
+targets it agrees with the Frechet derivative of the stored `C` suffix
+product.  The `Cnext` specialization uses the suffix beginning at `r.succ`,
+not at `r`, and the lower-left wrapper now removes the explicit `dCnext` slot
+while leaving `dAcur`, `dPsucc`, and `dNext` supplied.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed, full `DLNFibre`
+build passed with only pre-existing warning noise, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Maxwell the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-target-staged-c-suffix.md`.
+
+This does not prove the full target-only lower-left recurrence, construct the
+determinant-one target normalizer, prove determinant equality, source-prior
+transport, inverse-density pushforward, normal crossings, pole order, or RLCT.
+
+Next frontier: build the recursive target-only lower-left derivative using the
+target-staged `Cnext`, current solved-`A1`, `dPsucc`, and successor lower-left
+derivative replacements.
+
+Previous controller decision:
+
 The target-normalizer frontier now has a target-only one-step lower-left core
 and target-only current solved-`A1` helper.  New Lean names:
 

@@ -48,6 +48,58 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Target-Staged Stored-C Suffix
+
+`RetainedPassiveCoordinatesJacobian.lean` now target-stages the Frechet
+derivative of stored `C` suffix products:
+
+```text
+retainedPassiveCTailTargetOnlyStepAt
+retainedPassiveCTailTargetOnlyStepAt_fderiv_eq_sourceStep
+retainedPassiveCSuffixTargetStagedFDerivAt
+retainedPassiveCSuffixTargetStagedFDerivAt_self
+retainedPassiveCSuffixTargetStagedFDerivAt_step
+retainedPassiveCSuffixProductAt
+fderiv_retainedPassive_C_residualFactorProduct_targetStaged_apply
+retainedPassiveCnextTargetStagedFDerivAt
+retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sourceStepCore
+```
+
+The one-step helper is the product-rule substitution
+
+```text
+dSucc * C_z(p) + Csucc(z) * recoveredC(p).
+```
+
+The recursive suffix derivative has base zero at the empty suffix and unfolds
+through this one-step helper.  On actual raw-order derivative targets it equals
+the Frechet derivative of the corresponding stored `C` suffix product.  The
+positive-tail `Cnext` specialization stages the suffix beginning at `r.succ`;
+the wrapper feeds it into the existing target-only lower-left step core and
+still keeps `dAcur`, `dPsucc`, and `dNext` explicit.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-staged-c-suffix.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-staged-c-suffix.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-staged-c-suffix.md`,
+PASS by xhigh `Maxwell the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched files was clean; direct axiom audits for the new proof
+theorems reported only `[propext, Classical.choice, Quot.sound]`.
+
+This is not the full target-only lower-left recurrence, determinant-one target
+normalizer, determinant equality, source-prior transport, normal crossings,
+pole order, or RLCT.  The next target is the recursive target-only lower-left
+derivative using this `Cnext` replacement.
+
 ## Latest A2 Target-Only Lower-Left Step Core
 
 `RetainedPassiveCoordinatesJacobian.lean` now has a target-only one-step

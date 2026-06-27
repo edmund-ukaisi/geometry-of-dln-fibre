@@ -2178,6 +2178,269 @@ theorem retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
   rw [hpair]
 
 set_option linter.style.longLine false in
+/-- One target-only product-rule step for the Frechet derivative of a stored
+`C`-block suffix product. -/
+def retainedPassiveCTailTargetOnlyStepAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (p : Fin (M + 1))
+    (dCsucc : Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ) :
+    Matrix (κ' (Fin.last (M + 1))) (κ' p.castSucc) ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let Cfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Csucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  dCsucc * data.C p +
+    Csucc z *
+      retainedPassiveTargetRecoveredSourceCAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w p
+
+set_option linter.style.longLine false in
+/-- On actual raw-order Frechet derivative targets, the target-only `C` suffix
+one-step helper is the product-rule derivative of the suffix beginning at
+`p.castSucc`. -/
+theorem retainedPassiveCTailTargetOnlyStepAt_fderiv_eq_sourceStep
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let Cfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Ccast : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) (κ' p.castSucc) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+          (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Csucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    retainedPassiveCTailTargetOnlyStepAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) p
+        ((fderiv ℝ Csucc z) v) =
+      (fderiv ℝ Ccast z) v := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let Cfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Ccast : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) (κ' p.castSucc) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Csucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  have hprod :=
+    fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply
+      (M := M) (ρ := ρ) (κ' := κ') z v p
+  have hC :=
+    retainedPassiveTargetRecoveredSourceCAt_fderiv_eq_sourceC
+      (M := M) (ρ := ρ) (κ' := κ') hz v p
+  calc
+    retainedPassiveCTailTargetOnlyStepAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv p ((fderiv ℝ Csucc z) v)
+        =
+      (fderiv ℝ Csucc z) v * data.C p + Csucc z * v.2.2.2.1 p := by
+        simp [retainedPassiveCTailTargetOnlyStepAt, raw, Dzv, data, Cfun, Csucc, hC]
+    _ = (fderiv ℝ Ccast z) v := by
+        simpa [data, Cfun, Ccast, Csucc] using hprod.symm
+
+set_option linter.style.longLine false in
+/-- Target-only recursive derivative for a stored `C` suffix product, indexed
+by the first vertex included in the suffix. -/
+def retainedPassiveCSuffixTargetStagedFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    Matrix (κ' (Fin.last (M + 1))) (κ' ⟨m, Nat.lt_succ_of_le hm⟩) ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  Nat.decreasingInduction
+    (motive := fun m hm ↦
+      Matrix (κ' (Fin.last (M + 1))) (κ' ⟨m, Nat.lt_succ_of_le hm⟩) ℝ)
+    (fun n hns acc ↦ by
+      let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let Csucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          data.C (Fin.last (M + 1)) p.succ p.succ.le_last
+      let acc' : Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ := by
+        simpa [p] using acc
+      let step : Matrix (κ' (Fin.last (M + 1))) (κ' p.castSucc) ℝ :=
+        acc' * data.C p +
+          Csucc *
+            retainedPassiveTargetRecoveredSourceCAt
+              (M := M) (ρ := ρ) (κ' := κ') hz w p
+      simpa [p] using step)
+    0
+    hm
+
+@[simp]
+theorem retainedPassiveCSuffixTargetStagedFDerivAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveCSuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w (M + 1) le_rfl =
+      (0 : Matrix (κ' (Fin.last (M + 1))) (κ' (Fin.last (M + 1))) ℝ) := by
+  simp [retainedPassiveCSuffixTargetStagedFDerivAt]
+  rfl
+
+set_option linter.style.longLine false in
+/-- One-step unfold equation for the target-only recursive stored `C` suffix
+derivative. -/
+theorem retainedPassiveCSuffixTargetStagedFDerivAt_step
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassiveCSuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w m (Nat.le_of_lt hm) =
+      let p : Fin (M + 1) := ⟨m, hm⟩
+      let dCsucc : Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ := by
+        simpa [p] using
+          retainedPassiveCSuffixTargetStagedFDerivAt
+            (M := M) (ρ := ρ) (κ' := κ') hz w (m + 1)
+            (Nat.succ_le_of_lt hm)
+      retainedPassiveCTailTargetOnlyStepAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w p dCsucc := by
+  unfold retainedPassiveCSuffixTargetStagedFDerivAt
+  rw [Nat.decreasingInduction_succ_left (smn := Nat.succ_le_of_lt hm)]
+  simp [retainedPassiveCTailTargetOnlyStepAt]
+
+set_option linter.style.longLine false in
+/-- The retained-passive stored `C` suffix product beginning at vertex `m`. -/
+def retainedPassiveCSuffixProductAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (m : ℕ) (hm : m ≤ M + 1) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) (κ' ⟨m, Nat.lt_succ_of_le hm⟩) ℝ :=
+  fun y ↦
+    ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+      (Fin.last (M + 1))
+      ⟨m, Nat.lt_succ_of_le hm⟩
+      (Fin.val_fin_le.mpr hm)
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- The Frechet derivative of a stored `C` suffix product agrees with the
+target-only recursive staged expression on actual raw-order derivative targets. -/
+theorem fderiv_retainedPassive_C_residualFactorProduct_targetStaged_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    (fderiv ℝ
+      (retainedPassiveCSuffixProductAt
+        (M := M) (ρ := ρ) (κ' := κ') m hm) z) v =
+      retainedPassiveCSuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) m hm := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    (fderiv ℝ
+      (retainedPassiveCSuffixProductAt
+        (M := M) (ρ := ρ) (κ' := κ') m hm) z) v =
+      retainedPassiveCSuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv m hm
+  have hbase : motive (M + 1) le_rfl := by
+    dsimp [motive]
+    rw [retainedPassiveCSuffixTargetStagedFDerivAt_self]
+    change
+      (fderiv ℝ
+        (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+            (Fin.last (M + 1)) (Fin.last (M + 1)) le_rfl) z) v =
+        (0 : Matrix (κ' (Fin.last (M + 1))) (κ' (Fin.last (M + 1))) ℝ)
+    exact
+      fderiv_retainedPassive_C_residualFactorProduct_self_apply
+        (M := M) (ρ := ρ) (κ' := κ') z v (Fin.last (M + 1))
+  have hstep : ∀ n (hns : n + 1 ≤ M + 1),
+      motive (n + 1) hns → motive n (Nat.le_of_succ_le hns) := by
+    intro n hns ih
+    let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Csucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    have hstaged :=
+      retainedPassiveCSuffixTargetStagedFDerivAt_step
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv n
+        (Nat.lt_of_succ_le hns)
+    let dCsucc : Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ := by
+      simpa [p] using
+        retainedPassiveCSuffixTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv (n + 1) hns
+    have hih :
+        (fderiv ℝ Csucc z) v = dCsucc := by
+      simpa [motive, retainedPassiveCSuffixProductAt, Csucc, p, dCsucc] using ih
+    have hsourceStep :=
+      retainedPassiveCTailTargetOnlyStepAt_fderiv_eq_sourceStep
+        (M := M) (ρ := ρ) (κ' := κ') hz v p
+    have hleft :
+        (fderiv ℝ
+          (retainedPassiveCSuffixProductAt
+            (M := M) (ρ := ρ) (κ' := κ') n (Nat.le_of_succ_le hns)) z) v =
+          retainedPassiveCTailTargetOnlyStepAt
+            (M := M) (ρ := ρ) (κ' := κ') hz Dzv p dCsucc := by
+      have hleft0 :
+          (fderiv ℝ
+            (retainedPassiveCSuffixProductAt
+              (M := M) (ρ := ρ) (κ' := κ') n (Nat.le_of_succ_le hns)) z) v =
+            retainedPassiveCTailTargetOnlyStepAt
+              (M := M) (ρ := ρ) (κ' := κ') hz Dzv p ((fderiv ℝ Csucc z) v) := by
+        simpa [raw, Dzv, retainedPassiveCSuffixProductAt, Csucc, p] using hsourceStep.symm
+      simpa [hih] using hleft0
+    have hright :
+        retainedPassiveCTailTargetOnlyStepAt
+            (M := M) (ρ := ρ) (κ' := κ') hz Dzv p dCsucc =
+          retainedPassiveCSuffixTargetStagedFDerivAt
+            (M := M) (ρ := ρ) (κ' := κ') hz Dzv n (Nat.le_of_succ_le hns) := by
+      simpa [data, p, Csucc, dCsucc] using hstaged.symm
+    exact hleft.trans hright
+  simpa [motive, raw, Dzv] using
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+
+set_option linter.style.longLine false in
 /-- Hybrid whole-tuple package whose `(F2,C)` edge-family branch is
 source-staged, while `A1passive`, `Ctop`, and `F3` keep the derivative-staged
 corrections from `shearedTopologyTupleEdgeRawOrderFDerivAt`. -/
@@ -3608,6 +3871,137 @@ theorem retainedPassiveLowerLeftTailTargetOnlyStepCoreAt_fderiv_eq_sourceStepCor
     rw [retainedPassiveFormalRawOrderJacobian_apply]
   simp [retainedPassiveLowerLeftTailTargetOnlyStepCoreAt,
     retainedPassiveLowerLeftTailStepCoreAt, raw, Dzv, r, hC, hGsource]
+
+set_option linter.style.longLine false in
+/-- Target-only staged derivative of the `Cnext` suffix appearing in a
+positive-tail lower-left one-step recurrence. -/
+def retainedPassiveCnextTargetStagedFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1)) :
+    Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' q.succ.succ) ℝ := by
+  let r : Fin ((M + 1) + 1) := q.succ
+  let hm : r.succ.val ≤ (M + 1) + 1 := Fin.val_fin_le.mp r.succ.le_last
+  simpa [r] using
+    retainedPassiveCSuffixTargetStagedFDerivAt
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz w r.succ.val hm
+
+set_option linter.style.longLine false in
+/-- On actual raw-order Frechet derivative targets, the target-staged `Cnext`
+suffix derivative agrees with the Frechet derivative of the concrete `Cnext`
+product. -/
+theorem retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let r : Fin ((M + 1) + 1) := q.succ
+    let Cfun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Cnext : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+          (Fin.last ((M + 1) + 1)) r.succ r.succ.le_last
+    retainedPassiveCnextTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) q =
+      (fderiv ℝ Cnext z) v := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let r : Fin ((M + 1) + 1) := q.succ
+  let Cfun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Cnext : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last ((M + 1) + 1)) r.succ r.succ.le_last
+  let hm : r.succ.val ≤ (M + 1) + 1 := Fin.val_fin_le.mp r.succ.le_last
+  have hrec :=
+    fderiv_retainedPassive_C_residualFactorProduct_targetStaged_apply
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz v r.succ.val hm
+  simpa [retainedPassiveCnextTargetStagedFDerivAt, retainedPassiveCSuffixProductAt,
+    raw, Dzv, r, Cfun, Cnext, hm] using hrec.symm
+
+set_option linter.style.longLine false in
+/-- The lower-left one-step core with the `Cnext` suffix derivative supplied
+by the target-staged `C` suffix recursion. -/
+def retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1))
+    (dAcur dPsucc : Matrix ρ ρ ℝ)
+    (dNext : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ) :
+    Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+  retainedPassiveLowerLeftTailTargetOnlyStepCoreAt
+    (M := M) (ρ := ρ) (κ' := κ') hz w q dAcur dPsucc
+    (retainedPassiveCnextTargetStagedFDerivAt
+      (M := M) (ρ := ρ) (κ' := κ') hz w q)
+    dNext
+
+set_option linter.style.longLine false in
+/-- On actual raw-order Frechet derivative targets, the lower-left one-step
+core with target-staged `Cnext` agrees with the existing source-direction
+one-step core. -/
+theorem retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sourceStepCore
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1))
+    (dAcur dPsucc : Matrix ρ ρ ℝ)
+    (dNext : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v)
+        q dAcur dPsucc dNext =
+      retainedPassiveLowerLeftTailStepCoreAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') z v q dAcur dPsucc dNext := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let r : Fin ((M + 1) + 1) := q.succ
+  let Cfun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Cnext : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last ((M + 1) + 1)) r.succ r.succ.le_last
+  have hCnext :=
+    retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
+      (M := M) (ρ := ρ) (κ' := κ') hz v q
+  have hstep :=
+    retainedPassiveLowerLeftTailTargetOnlyStepCoreAt_fderiv_eq_sourceStepCore
+      (M := M) (ρ := ρ) (κ' := κ') hz v q dAcur dPsucc dNext
+  calc
+    retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv q dAcur dPsucc dNext =
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv q dAcur dPsucc
+        ((fderiv ℝ Cnext z) v) dNext := by
+        simp [retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt,
+          raw, Dzv, r, Cfun, Cnext, hCnext]
+    _ =
+      retainedPassiveLowerLeftTailStepCoreAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') z v q dAcur dPsucc dNext := by
+        simpa [raw, Dzv, r, Cfun, Cnext] using hstep
 
 set_option linter.style.longLine false in
 /-- In the single-edge case, the tail derivative term in the source-staged

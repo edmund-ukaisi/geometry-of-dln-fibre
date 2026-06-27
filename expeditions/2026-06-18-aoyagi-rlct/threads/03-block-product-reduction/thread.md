@@ -18,6 +18,55 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 target-staged `C` suffix derivative
+
+Reproduction:
+`reproduction-a2-retained-passive-target-staged-c-suffix.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-staged-c-suffix.md`.
+Review:
+`review-a2-retained-passive-target-staged-c-suffix.md`, PASS by xhigh
+`Maxwell the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveCTailTargetOnlyStepAt
+retainedPassiveCTailTargetOnlyStepAt_fderiv_eq_sourceStep
+retainedPassiveCSuffixTargetStagedFDerivAt
+retainedPassiveCSuffixTargetStagedFDerivAt_self
+retainedPassiveCSuffixTargetStagedFDerivAt_step
+retainedPassiveCSuffixProductAt
+fderiv_retainedPassive_C_residualFactorProduct_targetStaged_apply
+retainedPassiveCnextTargetStagedFDerivAt
+retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sourceStepCore
+```
+
+The one-step helper packages the stored-`C` suffix product rule.  The recursive
+target-staged suffix derivative has terminal value zero and unfolds through
+that one-step helper.  On actual raw-order derivative targets, Lean proves it
+equals the Frechet derivative of the stored `C` suffix product.
+
+The `Cnext` specialization stages the remaining `dCnext` slot in the
+positive-tail lower-left step, where `Cnext` begins at `r.succ`.  The new
+step-core wrapper feeds this staged `dCnext` into the already-landed
+target-only lower-left step core while keeping `dAcur`, `dPsucc`, and `dNext`
+explicit.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+This does not construct the full target-only lower-left recurrence,
+determinant-one normalizer, determinant equality, source-prior transport,
+normal crossings, pole order, or RLCT.
+
+Next frontier: build the recursive target-only lower-left derivative by using
+the target-staged `Cnext`, current solved-`A1`, `dPsucc`, and successor
+lower-left derivative replacements.
+
 ## 2026-06-27 A2 target-only lower-left step core
 
 Reproduction:

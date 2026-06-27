@@ -142,11 +142,14 @@ No such claim is formalisation-ready until both fields are filled.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
   retained-passive lower-left derivative frontier now has a target-only
-  recovered-`Ctop` helper, current solved-`A1` helper, and one-step lower-left
-  target core which keeps `dCnext`, `dAcur`, `dPsucc`, and `dNext` explicit
-  while replacing current source `C` and passive lower-left source reads by
-  target-side readouts; this target-only step core is proved equal to the
-  existing source step core on actual raw-order derivative targets.  The
+  stored-`C` suffix derivative and positive-tail `Cnext` specialization, plus
+  a wrapper that feeds this staged `dCnext` into the one-step lower-left target
+  core while still keeping `dAcur`, `dPsucc`, and `dNext` explicit; the
+  retained-passive frontier also has a target-only recovered-`Ctop` helper,
+  current solved-`A1` helper, and one-step lower-left target core replacing
+  current source `C` and passive lower-left source reads by target-side
+  readouts; these target-only step cores are proved equal to the existing
+  source step core on actual raw-order derivative targets.  The
   retained-passive lower-left derivative recurrence also has a named
   one-step helper and generic/zero/successor branch wrappers through that
   helper, with the successor current tangent explicitly `v.1 s.castSucc`;
