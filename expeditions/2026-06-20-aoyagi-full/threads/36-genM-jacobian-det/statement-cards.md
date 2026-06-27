@@ -184,3 +184,56 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 > - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first): `nodeChart222`,
 >   `chartParamsGen_eq_chartParams222`, `phi222_abs_det` are S2-free `[propext, Classical.choice,
 >   Quot.sound]`; `routeMCore_box_diverges_achiever_222` carries only the cited `monomial_rlct`.
+
+---
+
+> **Claim.** The `(3,3,3,3)` ROUTE-2a parametric-bridge VALIDATE-SMALL: the full-rank decoder `B_det3333`
+> reproduces the banked hand-built explicit chart `chartParams3333` through the general
+> `chainOfMt`/`GenBlk` engine, at the genuine 3-boundary node (`t* = (2,1,0)`, `minAdm = 6`, rank drops
+> at ALL THREE boundaries). The bridge `chartParamsGen(B_det3333 x) = chartParams3333 x` is the
+> width-parametric funext template for the ∀M lift.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.chartParamsGen_eq_chartParams3333`, `phiGen_B_det3333_eq_phi3333`,
+>   `routeMCore_phiDet3333`, `routeMCore_box_diverges_achiever_3333_route2a`, `B_det3333`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteM3333Det.lean`, branch `fm/222det-finish` off
+>   `expedition/aoyagi-full`).
+> - **Gloss.** `M3333 = ![3,3,3,3]`, `tach3333 = (3,2,1,0)` (chain-`t`: `t 0 = M 0 = 3`, Aoyagi
+>   `T* = (2,1,0)`), `Text = [3,3,2,1,0]`, `Wext = [3,3,3,3]`, `routeMAmbient = 27`.
+>   - **The bridge** `chartParamsGen_eq_chartParams3333`: the three chain layers `Agen 0/1/2` (reindexed
+>     to the `M`-widths) ARE the banked explicit `chartA3333`/`chartB3333`/`chartC3333` (sympy-verified
+>     EXACT, `/tmp/match3333.py`). Proven by per-layer `Agen{0,1,2}_3333_eq` (the kept-row
+>     `chainA_apply_castAdd` / lift-row `chainA_apply_natAdd` entry laws + the banked
+>     `have`+`exact`-at-explicit-`⟨_,by decide⟩`-index cast pattern) + the `finCongr` (`rfl`-width)
+>     reindex collapse. The recursive transitions `C_3 = u·Rfin 3` (`Cgen3333_leaf`),
+>     `C_2 = Bmat 2·chainQ(N_2) + u·Rmat 2` (`C2_eq3333`, via `chainQ2_eq3333`), `C_1 = Bmat 1·chainQ(N_1)
+>     + u·Rmat 1` (`C1_eq3333`, via `chainQ1_eq3333`). S2-free.
+>   - **The full-rank decoder** `B_det3333`: identity boundary `Bmat 0 = I₃` (`c_0 = 0`); Schur frame
+>     `Bmat 1` (3×2, the deepest LDU core `K`), `Bmat 2 = [b; ℓb]` (2×1); `Nblk 1 = [m₁;m₂]`,
+>     `Nblk 2 = [n₁,n₂]`; `Wblk 1 = [r]`, `Wblk 2 = [h₁;h₂]`; `Rmat 1 = e₂₂` (the fixed-`1` pivot scaled
+>     by `u`), `Rmat 2 = [[0],[0,η]]`; LIVE leaf `Rfin 3 = [ζ]` (the D1 fix). Every coord lands in some
+>     entry (full-rank).
+>   - **Rate** `routeMCore_phiDet3333 = u²·V` (one-line via the banked decoder-agnostic
+>     `routeMCore_phiGen` + `hC0_3333`; the drops at all 3 boundaries telescope to ONE `u`).
+>   - **Chart equality** `phiGen_B_det3333_eq_phi3333`: the ROUTE-2a chart `phiGen (x 0) M3333 tach3333
+>     (B_det3333 x) hleach3333 = phi3333 x` (via the bridge under `paramsEquivFlat`). So the banked
+>     `phi3333`-based det (`phi3333_abs_det = |u0|⁵·|u1|⁴·|u4|²·|u9|³`), `nodeChart3333`, and the atom
+>     transfer to the ROUTE-2a chart for free — no new bundle.
+> - **Proved.** The bridge + the ROUTE-2a chart equality + the rate, all sorry-free; the atom
+>   `routeMCore_box_diverges_achiever_3333_route2a` (= the banked `_3333`, reached via ROUTE 2a). The
+>   genuine 3-boundary node exercises the multi-boundary Schur/LDU coupling the single-drop anchors
+>   `(2,2,1)`/`(4,4,2,2)` and the 2-boundary `(2,2,2)` do not.
+> - **Assumed.** none.
+> - **Cited.** `monomial_rlct` (S2), reached through the banked `routeMCore_box_diverges_achiever_3333`
+>   — identical footprint to the `(2,2,2)`/`(4,4,2,2)`/`(2,2,1)` anchors
+>   (`[propext, Classical.choice, Quot.sound, monomial_rlct]`).
+> - **Deferred.** the ∀M `nodeChartGeneral M (hpos)` (the `List.ofFn` lift). This card is the (3,3,3,3)
+>   validate-small — the 3-boundary parametric-bridge template, NOT the general atom. The bridge proof
+>   is per-`M`-concrete here (the explicit `B_det3333`/`chartParams3333`); the ∀M version needs `B_det M`
+>   + `pack_M`/`T_M` width-parametric + the bridge funext over opaque `Text`/`Wext` widths.
+> - **Regression (gate, the cert's cross-check).** The det `|u0|⁵·|u1|⁴·|u4|²·|u9|³` matches the banked
+>   `RouteM3333.phi3333_abs_det` EXACTLY — guaranteed by `phiGen_B_det3333_eq_phi3333` (the ROUTE-2a
+>   chart IS `phi3333`). The chain layers `A_0/A_1/A_2` were sympy-verified EXACT against
+>   `chartA3333`/`chartB3333`/`chartC3333` before any Lean.
+> - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first): the bridge / chart
+>   equality / rate are S2-free `[propext, Classical.choice, Quot.sound]`; the atom carries the cited
+>   `monomial_rlct`. Full `lake build DLNFibre` green (8483 jobs).

@@ -425,6 +425,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- `RouteM3333Det`: the (3,3,3,3) ROUTE-2a parametric-bridge VALIDATE-SMALL (3-boundary) — the full-rank
+-- `B_det3333` reproduces the banked explicit `chartParams3333` via the bridge
+-- `chartParamsGen_eq_chartParams3333`; the ROUTE-2a chart `= phi3333`, transferring the banked atom.
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Det
 -- `RouteMAchieverPath`: step 1 of the ∀M R1-lower lift — the chosen Mval-minimizer `tStar M` (the
 -- achiever descent path), the per-boundary Aoyagi residual blocks `rBlock`/`cBlock`, and the
 -- load-bearing `∑_j rBlock·cBlock = minAdm M` (the radial `active.card` identity).
