@@ -6399,3 +6399,11 @@ in the displayed `(F,C)` order.  This is now the preferred local determinant
 factor for retained-passive edge blocks.  Next priority: assemble the
 retained-passive derivative factorization so the `Tail`, all edge-local `A p`,
 and `LastTop` factors appear with the checked endpoint convention.
+
+A2 retained-passive actual derivative passive A3 identity is the current
+derivative-factorization slice.  It proves only that passive nonterminal
+lower-left components are identity components of the actual Frechet derivative
+and agree with the point-specialized formal raw-order map.  Next priority in
+this lane is still the remaining analytic-to-formal component comparison,
+especially endpoint-sensitive pieces, without asserting the full determinant
+equality before the triangular/shear factorization is actually proved.

@@ -13725,3 +13725,14 @@ Verification: focused determinant and downstream step-Jacobian builds passed;
 full `DLNFibre` build passed with the existing warning profile; `scripts/sorries`
 and `git diff --check` passed; the new determinant theorem has axiom footprint
 `[propext, Classical.choice, Quot.sound]`.
+
+Latest A2 retained-passive actual derivative passive A3 identity:
+`RetainedPassiveCoordinatesDerivative.lean` now proves
+`fderiv_topologyTupleEdgeRawOrder_A3passive_apply`, and
+`RetainedPassiveCoordinatesJacobian.lean` adds
+`rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt`.
+This covers only passive nonterminal lower-left coordinates: the actual
+Frechet derivative and the point-specialized formal raw-order map both leave
+`A3passive p` unchanged.  The terminal `F3` endpoint, determinant formula,
+measure pushforward, normal crossings, pole order, and RLCT remain outside
+this slice.

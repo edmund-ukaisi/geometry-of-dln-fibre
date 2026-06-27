@@ -189,6 +189,36 @@ theorem topologyTupleEdgeRawOrder_fderiv_det_and_formal_det_isUnit_of_mem_topolo
       retainedPassiveFormalRawOrderJacobianAt_det_isUnit_of_mem_topologyTupleDetChartSet
         (ρ := ρ) (κ' := κ') hz⟩
 
+/-- The passive lower-left component of the actual raw-order Frechet
+derivative agrees with the point-specialized formal raw-order map. -/
+theorem rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ')
+        ((fderiv ℝ raw z) v) p.castSucc =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.1 p := by
+  change rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ')
+        ((fderiv ℝ
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z) v)
+        p.castSucc =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.1 p
+  rw [rawEdgeTupleA3_castSucc]
+  change ((fderiv ℝ
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')) z) v).2.2.1 p =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.1 p
+  rw [fderiv_topologyTupleEdgeRawOrder_A3passive_apply
+    (ρ := ρ) (κ' := κ') hz v p]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
 end Aoyagi
 end DLN
 end DLNFibre

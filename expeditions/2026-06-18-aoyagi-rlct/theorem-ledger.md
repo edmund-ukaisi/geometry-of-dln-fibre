@@ -9966,6 +9966,26 @@ factorization, no explicit full determinant formula, no equality with
 `retainedPassiveFormalRawOrderJacobianAbsDetAt`, no measure pushforward, no
 normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive actual derivative passive A3 identity:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_topologyTupleEdgeRawOrder_A3passive_apply`.
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+
+This proves that passive nonterminal lower-left coordinates are identity
+components of the actual Frechet derivative and agree with the corresponding
+component of the point-specialized formal raw-order map.  Nonclaims: no
+terminal `F3` component, no full analytic derivative factorization, no
+explicit full determinant formula, no equality with
+`retainedPassiveFormalRawOrderJacobianAbsDetAt`, no measure pushforward, no
+normal crossings, no pole order, and no RLCT.
+
 Latest A2 edge-local `(F,C)` pair determinant:
 `MatrixLinearDeterminant.lean` proves
 `edgeLocalFCPairLinearMap_apply` and `edgeLocalFCPairLinearMap_det_eq` for the

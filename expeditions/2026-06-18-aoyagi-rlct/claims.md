@@ -9495,3 +9495,37 @@ sign before using this determinant factor.
 Nonclaims: no full retained-passive determinant formula, analytic `fderiv`
 theorem, source-prior transport, density/pushforward theorem, normal
 crossings, pole order, or RLCT is proved by this slice.
+
+## A2 retained-passive actual derivative passive A3 identity
+
+Status: Proved in Lean; reproduced on paper; reviewed.
+
+Claim: for a retained-passive tuple `z` in the determinant chart, tangent
+vector `v`, and passive index `p : Fin M`, the actual Frechet derivative of
+`topologyTupleEdgeRawOrder` leaves the stored passive lower-left coordinate
+unchanged:
+
+```text
+((fderiv R topologyTupleEdgeRawOrder z) v).A3passive p = v.A3passive p.
+```
+
+Lean proves this as `fderiv_topologyTupleEdgeRawOrder_A3passive_apply` and
+also proves the matching point-specialized formal raw-order component bridge
+`rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-a3passive-identity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-a3passive-identity.md`
+accepted by xhigh `Mendel the 5th`.
+
+Kill condition: this claim must stay restricted to passive `p : Fin M`, or
+equivalently raw edge `p.castSucc`.  The terminal lower-left coordinate
+`Fin.last M` is the solved `F3` endpoint and is not covered by this identity.
+
+Nonclaims: no terminal `F3` derivative identity, full equality with
+`retainedPassiveFormalRawOrderJacobianAt`, determinant equality,
+measure/Jacobian-density theorem, normal crossings, pole order, or RLCT is
+proved by this slice.

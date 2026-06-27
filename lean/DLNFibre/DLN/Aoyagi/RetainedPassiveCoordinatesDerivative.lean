@@ -2626,6 +2626,79 @@ theorem fderiv_topologyTupleEdgeRawOrder_C_unshear_apply
   rw [hCproj, hGproj]
   simpa [raw, E, projC, projG] using hcomponent
 
+/-- The passive lower-left raw-order component has identity derivative.
+
+This is only for nonterminal passive indices `p : Fin M`; the terminal
+lower-left coordinate is the solved `F3` endpoint and is not covered here. -/
+theorem fderiv_topologyTupleEdgeRawOrder_A3passive_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    ((fderiv ℝ raw z) v).2.2.1 p = v.2.2.1 p := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let raw : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projA3 : E → Matrix (κ' p.castSucc.succ) ρ ℝ :=
+    fun y ↦ y.2.2.1 p
+  let LA3 : E →L[ℝ] Matrix (κ' p.castSucc.succ) ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojDiff : DifferentiableAt ℝ projA3 (raw z) := by
+    change DifferentiableAt ℝ LA3 (raw z)
+    exact LA3.differentiableAt
+  have hcomp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projA3) hprojDiff hrawDiff
+  have hLA3 : fderiv ℝ projA3 (raw z) = LA3 := by
+    change fderiv ℝ LA3 (raw z) = LA3
+    exact LA3.fderiv
+  have hLA3_id : fderiv ℝ (fun y : E ↦ y.2.2.1 p) z = LA3 := by
+    change fderiv ℝ LA3 z = LA3
+    exact LA3.fderiv
+  have hcomponent :
+      (fun y : E ↦ projA3 (raw y)) = fun y ↦ y.2.2.1 p := by
+    funext y
+    change (raw y).2.2.1 p = y.2.2.1 p
+    rw [topologyTupleEdgeRawOrder_A3passive]
+    change
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA3
+          p.castSucc =
+        y.2.2.1 p
+    have hsolve :=
+      retainedPassiveSolvedA3_eq_of_ne_last
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).F3
+        (Fin.castSucc_ne_last p)
+    simpa [RetainedPassiveCoordinateData.solvedA3, toCoordinateData] using hsolve
+  calc
+    ((fderiv ℝ raw z) v).2.2.1 p
+        = LA3 ((fderiv ℝ raw z) v) := rfl
+    _ = ((fderiv ℝ projA3 (raw z)).comp (fderiv ℝ raw z)) v := by
+          rw [hLA3]
+          rfl
+    _ = (fderiv ℝ (fun y : E ↦ projA3 (raw y)) z) v := by
+          rw [← hcomp]
+    _ = (fderiv ℝ (fun y : E ↦ y.2.2.1 p) z) v := by
+          rw [hcomponent]
+    _ = LA3 v := by
+          rw [hLA3_id]
+    _ = v.2.2.1 p := rfl
+
 /-- Reassembling raw-order tuple coordinates into an edge family is
 differentiable. -/
 theorem differentiableAt_edgeFamilyOfRawOrderTuple

@@ -9915,3 +9915,36 @@ This is the `C` component of the formal raw-order map after the determinant-one
 target shear.  It is not the full analytic determinant formula, not the
 absolute determinant comparison with the formal raw-order determinant, not a
 measure pushforward, not normal crossings, not pole order, and not RLCT.
+
+## 2026-06-27 A2 retained-passive actual derivative passive A3 identity
+
+Reproduction:
+`reproduction-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+Statement card:
+`statement-card-a2-retained-passive-actual-derivative-a3passive-identity.md`.
+Review:
+`review-a2-retained-passive-actual-derivative-a3passive-identity.md`
+accepted by xhigh read-only reviewer `Mendel the 5th`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean
+```
+
+Lean now targets the passive nonterminal lower-left component of the actual
+Frechet derivative.  The theorem
+`fderiv_topologyTupleEdgeRawOrder_A3passive_apply` proves that, at a
+determinant-chart point,
+
+```text
+((fderiv R topologyTupleEdgeRawOrder z) v).A3passive p = v.A3passive p.
+```
+
+The bridge theorem
+`rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt`
+then identifies this passive lower-left readout with the matching component of
+the point-specialized formal raw-order map.  This uses only the passive
+`p.castSucc` case; the terminal `F3` coordinate remains determinant-bearing
+and is not covered by this slice.
