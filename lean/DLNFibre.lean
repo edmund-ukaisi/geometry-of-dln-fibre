@@ -355,6 +355,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverVvalPoly
 -- `achieverUbound_interior` — the full `NodeAchieverChart.Ubound` field for interior-drop M (no separate
 -- witness hypothesis). Reviewer-PASS, S2-free. (Boundary CLEAN/SMEARED + the 4-way assembly = later tides.)
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
+-- The ∀M achiever-chart M-CLASSIFIER bedrock (for the `nodeChartGeneral` 3-way+L1 assembly):
+-- `BoundaryClean` (`r=m1`) / `BoundarySmeared` (`r<m1`) complementing `InteriorDrop`, with the
+-- INTERIOR/CLEAN/SMEARED trichotomy (pairwise-exclusive + exhaustive, given the validated bottleneck
+-- `r ≤ m1` carried as a hypothesis — the argmin widths are noncomputable).
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryClass
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
