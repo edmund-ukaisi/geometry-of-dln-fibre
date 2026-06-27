@@ -48,6 +48,46 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Lower-Left Target-Staged Actual Derivative Bridge
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves the bridge from the
+actual Frechet derivative of the retained-passive zeroed-final lower-left tail
+to the recursive target-staged expression:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+```
+
+The theorem is under the retained-passive determinant-chart hypothesis.  It is
+indexed by staged `m <= M+1`, while the explicit actual product-tail call uses
+the widened proof `m <= M+2`, because the lower-left tail has one extra
+zeroed-final slot.  The proof is decreasing induction on `m`: base
+`m=M+1` is the constant zero tail; the zero-current step uses the solved
+top-left tangent
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop`; successor steps
+use `v.1 s.castSucc`.  The induction hypothesis is applied only by congruence
+to the `dNext` slot of `retainedPassiveLowerLeftTailStepCoreAt`.
+
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`.
+Reproduction/design:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`,
+PASS by xhigh `Erdos the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched file was clean; the new theorem's axiom audit reported
+only `[propext, Classical.choice, Quot.sound]`.
+
+This is not yet the positive-tail `F3` recursive plug-in, not a target-side
+determinant-one normalizer, determinant equality, source-prior/Jacobian
+transport, normal crossings, pole order, or RLCT.  Next target: replace the
+finite positive-tail `F3` unroll chain by this recursive `dEarly` value.
+
 ## Latest A2 Recursive Target-Staged Lower-Left Tail API
 
 `RetainedPassiveCoordinatesDerivative.lean` now defines and proves the

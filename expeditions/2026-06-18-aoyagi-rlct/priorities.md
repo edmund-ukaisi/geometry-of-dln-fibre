@@ -21,6 +21,44 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The recursive target-staged lower-left tail expression is now connected to the
+actual Frechet derivative under the retained-passive determinant-chart
+hypothesis.  New Lean name:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+```
+
+The theorem states that, for staged index `m <= M+1`, the Frechet derivative
+of `retainedPassiveLowerLeftProductTailSum` agrees with
+`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt`.  The actual tail
+sum has the widened bound `m <= M+2`, reflecting the zeroed-final slot.  The
+base is `m = M+1` with value zero; the zero-current step uses the solved
+top-left tangent; successor-current steps use `v.1 s.castSucc`; the induction
+substitutes only the recursive successor derivative into the step-core
+`dNext` argument.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed, and the full `DLNFibre` build passed with only pre-existing warning
+noise.  `scripts/sorries` reported zero forbidden markers, `git diff --check`
+passed, forbidden-marker search on the touched file was clean, and the new
+theorem axiom audit reported only `[propext, Classical.choice, Quot.sound]`.
+Xhigh review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`.
+
+This does not plug the recursive derivative into the positive-tail `F3`
+bridge, does not construct a target-side determinant-one linear equivalence,
+and does not prove determinant equality, source-prior transport,
+inverse-density pushforward, normal crossings, pole order, or RLCT.  Statement
+card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`.
+
+Next frontier: use this actual-derivative bridge as the recursive `dEarly`
+term in the positive-tail `F3` bridge, then continue toward the
+determinant-one target normalizer.
+
+Previous controller decision:
+
 The retained-passive zeroed-final lower-left tail now has a Nat-recursive
 target-staged derivative expression and unfold API.  New Lean names:
 
@@ -48,18 +86,17 @@ passed, and all eight new axiom audits reported only `[propext,
 Classical.choice, Quot.sound]`.  Xhigh review passed in
 `threads/03-block-product-reduction/review-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
 
-This does not yet prove equality with the actual Frechet derivative of
-`retainedPassiveLowerLeftProductTailSum`, does not plug into the positive-tail
-`F3` theorem, does not construct a target-side determinant-one linear
-equivalence, and does not prove determinant equality, source-prior transport,
-inverse-density pushforward, normal crossings, pole order, or RLCT.  Statement
-card:
+This API by itself is only the recursive expression/unfold layer; the
+actual-Frechet-derivative bridge is now recorded in the latest controller
+decision above.  It still does not plug into the positive-tail `F3` theorem,
+does not construct a target-side determinant-one linear equivalence, and does
+not prove determinant equality, source-prior transport, inverse-density
+pushforward, normal crossings, pole order, or RLCT.  Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
 
-Next frontier: prove the determinant-chart bridge from the actual Frechet
-derivative of the zeroed-final lower-left tail to
-`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt`, then use that as the
-`dEarly` term in the positive-tail `F3` bridge.
+Next frontier from this older checkpoint was the actual-derivative bridge; it
+is now proved, so the current frontier is using it as the `dEarly` term in the
+positive-tail `F3` bridge.
 
 Previous controller decision:
 

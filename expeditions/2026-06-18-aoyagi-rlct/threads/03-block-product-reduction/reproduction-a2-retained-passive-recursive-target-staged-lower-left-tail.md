@@ -3,8 +3,8 @@
 Date: 2026-06-27.
 
 Status: controller pen-and-paper reproduction and Lean API design; one-step
-core and recursive expression API proved in Lean; actual Frechet-derivative
-equality bridge remains open.
+core, recursive expression API, and actual Frechet-derivative equality bridge
+proved in Lean.  The recursive positive-tail `F3` plug-in remains open.
 
 This note is independent of the quiver-based paper.  It records the recurrence
 that should replace the finite positive-tail `F3` unrolls by a recursive
@@ -213,9 +213,23 @@ retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_zero
 retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_succ
 ```
 
-The next Lean target is the bridge proving that this recursive expression
-equals the actual Frechet derivative of the zeroed-final lower-left product
-tail under the determinant-chart hypothesis.
+The bridge proving that this recursive expression equals the actual Frechet
+derivative of the zeroed-final lower-left product tail under the
+determinant-chart hypothesis has now landed:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+```
+
+The proof is the same recurrence as above, formalised by decreasing induction
+on the tail index.  The base is the zeroed-final tail `m = M+1`; the step uses
+the zero or successor one-step core theorem and substitutes the induction
+hypothesis only into the `dNext` argument.  The actual product-tail side is
+typed with the widened proof `m <= M+2`, while the staged target expression
+keeps the intended index `m <= M+1`.
+
+The next Lean target is to use the staged derivative value at `m=0` as the
+`dEarly` term in the positive-tail `F3` bridge.
 
 ## Kill conditions
 

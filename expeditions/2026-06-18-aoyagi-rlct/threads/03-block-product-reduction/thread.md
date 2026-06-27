@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 lower-left target-staged actual derivative bridge
+
+Reproduction/design:
+`reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`.
+Review:
+`review-a2-retained-passive-lower-left-target-staged-actual-derivative-bridge.md`,
+PASS by xhigh `Erdos the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+```
+
+On the determinant chart, the actual Frechet derivative of the zeroed-final
+retained-passive lower-left product tail agrees with the recursive
+target-staged expression
+`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt`.  The theorem is
+stated for the staged tail index `m <= M+1`; the explicit product-tail call on
+the actual side uses the widened proof `m <= M+2` because that tail has one
+extra zeroed-final slot.
+
+The proof is decreasing induction on `m`.  The base is the zeroed-final tail at
+`m = M+1`.  The zero-current step uses the solved top-left tangent
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop`; successor steps
+use `v.1 s.castSucc`.  In both step cases the induction hypothesis replaces
+only the recursive `dNext` slot of `retainedPassiveLowerLeftTailStepCoreAt`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` passed, forbidden-marker
+search on the touched file was clean, and the new theorem axiom audit reported
+only `[propext, Classical.choice, Quot.sound]`.
+
+This does not plug the recursive derivative into `F3`, construct the
+determinant-one target normalizer, prove determinant equality, or prove
+source-prior transport, inverse-density pushforward, normal crossings, pole
+order, or RLCT.
+
+Next frontier: replace the finite positive-tail `F3` unroll chain by the
+recursive `dEarly = retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+... 0` bridge.
+
 ## 2026-06-27 A2 recursive target-staged lower-left tail API
 
 Reproduction/design:
@@ -53,13 +99,14 @@ Focused build of
 reported zero forbidden markers, `git diff --check` passed, and all eight new
 axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
 
-This does not yet prove equality with the actual Frechet derivative of the
-lower-left tail, does not plug into `F3`, does not construct the determinant-one
-target normalizer, and does not prove determinant equality, measure transport,
-normal crossings, pole order, or RLCT.
+This API by itself is only the recursive expression/unfold layer; the actual
+Frechet-derivative bridge is now recorded in the newer checkpoint above.  It
+still does not plug into `F3`, does not construct the determinant-one target
+normalizer, and does not prove determinant equality, measure transport, normal
+crossings, pole order, or RLCT.
 
-Next frontier: prove the actual-derivative bridge under the determinant-chart
-hypothesis.
+Next frontier from this older checkpoint was the actual-derivative bridge; it
+is now proved, so the current frontier is the recursive `F3` plug-in.
 
 ## 2026-06-27 A2 lower-left step core
 
