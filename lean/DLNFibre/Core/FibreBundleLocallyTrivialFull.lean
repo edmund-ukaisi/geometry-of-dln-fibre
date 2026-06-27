@@ -41,12 +41,17 @@ bundles, and machine-checks, the local-product data over the open `rankROpen` of
 - the **scheme open-cover** `iSup_pivot_basicOpen_eq_rankROpen` — the per-pivot charts
   `basicOpen (chartDsigAt s t)` cover `rankROpen = (V({chartDsigAt}))ᶜ`; backed by the point-set
   cover `sweepSigma_subset_chartOpen`;
-- the **C1 bridge** `pivotDatumOfSelectors` / atlas field `pivotOfCover` — `schemeCover` is indexed
-  by raw selector pairs `(s, t)`, but `triv` / `overlapTransition` are indexed by `PivotDatum`
-  (which carries the permutations `σ, τ`). An injective selector extends to a permutation carrying
-  the first `r` indices to it (`extendToPerm`), so an injective covering chart `(s, t)` yields a
-  `PivotDatum` at the same localizing element (`pivotElt_pivotDatumOfSelectors`): a cover chart
-  connects to its trivialization;
+- the **C1 bridge** `pivotDatumOfSelectors` / atlas fields `pivotOfCover`, `pivotOfBasicOpen` —
+  `schemeCover` is indexed by raw selector pairs `(s, t)`, but `triv` / `overlapTransition` are
+  indexed by `PivotDatum` (which carries the permutations `σ, τ`). An injective selector extends to
+  a permutation carrying the first `r` indices to it (`extendToPerm`), so an injective chart
+  `(s, t)` yields a `PivotDatum` at the same localizing element (`pivotElt_pivotDatumOfSelectors`).
+  **Scheme-side, injectivity comes for free**: a non-injective selector makes the deep minor a
+  determinant with a repeated row/column, so `chartDsigAt s t = 0`
+  (`chartDsigAt_eq_zero_of_not_injective`), whence a prime in `basicOpen (chartDsigAt s t)` has
+  injective selectors (`injective_of_mem_basicOpen_chartDsigAt`). So `pivotOfBasicOpen` /
+  `pivotDatumOfMemBasicOpen` turn `p ∈ basicOpen (chartDsigAt s t)` directly into the chart's
+  `PivotDatum` with NO external injectivity hypothesis — a scheme-cover consumer is usable;
 - the **per-pivot trivializations** into the standard fibre `SchurLoc ⊗ sweepFibreRing` (thread 22);
 - the **base-side transition cocycle** `chartOverlapTransition` with its laws (banked thread-19
   engine at `R = sweepSigmaRing`);
@@ -184,6 +189,93 @@ selector pair `(s, t)` localizes at exactly `chartDsigAt s t` — the element cu
     (hs : Function.Injective s) (ht : Function.Injective t) :
     pivotElt (k := k) d r hp hq (pivotDatumOfSelectors d r hp hq s t hs ht)
       = chartDsigAt d r s t := rfl
+
+/-! ## A non-injective selector kills the chart (the scheme-side half of the C1 bridge)
+
+The C1 bridge `pivotDatumOfSelectors` TAKES `Injective s`, `Injective t` as hypotheses. A
+scheme-level consumer starting from `p ∈ basicOpen (chartDsigAt s t)` needs those for free. Here is
+the missing half: a non-injective selector makes the deep minor a determinant with a repeated
+row/column, so `ΔPdeepAt s t = 0` as a polynomial, hence `chartDsigAt s t = 0` in `sweepSigmaRing`;
+a prime in `basicOpen (chartDsigAt s t)` would then have to omit `0`, impossible — so a covering
+prime has injective selectors with no external hypothesis, and the banked `pivotDatumOfSelectors`
+fires to produce the trivialization. -/
+
+omit [Infinite k] in
+/-- **A repeated-row deep minor vanishes.** If the row selector `s` is non-injective then the
+`(s, t)` deep minor `ΔPdeepAt s t = ((Matrix.of (multPoly d)).submatrix s t).det` is the determinant
+of a matrix with two equal rows, hence `0` as a polynomial (`Matrix.det_zero_of_row_eq`). -/
+theorem ΔPdeepAt_eq_zero_of_not_injective_left (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (s : Fin r → Fin (d (Fin.last N))) (t : Fin r → Fin (d 0)) (hs : ¬ Function.Injective s) :
+    ΔPdeepAt (k := k) d r s t = 0 := by
+  obtain ⟨i, j, hsij, hij⟩ := Function.not_injective_iff.mp hs
+  rw [ΔPdeepAt]
+  refine Matrix.det_zero_of_row_eq hij ?_
+  funext col
+  rw [Matrix.submatrix_apply, Matrix.submatrix_apply, hsij]
+
+omit [Infinite k] in
+/-- **A repeated-column deep minor vanishes.** If the column selector `t` is non-injective then the
+`(s, t)` deep minor has two equal columns, hence `ΔPdeepAt s t = 0` (`det_zero_of_column_eq`). -/
+theorem ΔPdeepAt_eq_zero_of_not_injective_right (d : Fin (N + 1) → ℕ) (r : ℕ)
+    (s : Fin r → Fin (d (Fin.last N))) (t : Fin r → Fin (d 0)) (ht : ¬ Function.Injective t) :
+    ΔPdeepAt (k := k) d r s t = 0 := by
+  obtain ⟨i, j, htij, hij⟩ := Function.not_injective_iff.mp ht
+  rw [ΔPdeepAt]
+  refine Matrix.det_zero_of_column_eq hij (fun row ↦ ?_)
+  rw [Matrix.submatrix_apply, Matrix.submatrix_apply, htij]
+
+omit [Infinite k] in
+/-- **A non-injective selector kills the chart element.** If `s` or `t` is non-injective then the
+chart localizing element `chartDsigAt s t = 0` in `sweepSigmaRing` — the deep minor vanishes
+(`ΔPdeepAt_eq_zero_of_not_injective_left/right`) and `chartDsigAt` is its quotient class. -/
+theorem chartDsigAt_eq_zero_of_not_injective (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    (h : ¬ Function.Injective s ∨ ¬ Function.Injective t) :
+    chartDsigAt (k := k) d r s t = 0 := by
+  have hΔ : ΔPdeepAt (k := k) d r s t = 0 := by
+    cases h with
+    | inl hs => exact ΔPdeepAt_eq_zero_of_not_injective_left d r s t hs
+    | inr ht => exact ΔPdeepAt_eq_zero_of_not_injective_right d r s t ht
+  rw [chartDsigAt, hΔ, map_zero]
+
+open PrimeSpectrum in
+omit [Infinite k] in
+/-- **A prime in a pivot chart has injective selectors (the scheme-side bridge step).** If
+`p ∈ basicOpen (chartDsigAt s t)` then both selectors are injective: were either non-injective the
+chart element would be `0` (`chartDsigAt_eq_zero_of_not_injective`), but `0 ∈ p.asIdeal` always, so
+`p ∉ basicOpen 0` — contradiction with `mem_basicOpen`. -/
+theorem injective_of_mem_basicOpen_chartDsigAt (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    {p : PrimeSpectrum (sweepSigmaRing k d r)}
+    (hp : p ∈ basicOpen (chartDsigAt (k := k) d r s t)) :
+    Function.Injective s ∧ Function.Injective t := by
+  rw [mem_basicOpen] at hp
+  refine ⟨?_, ?_⟩ <;> by_contra hni
+  · have hz : chartDsigAt (k := k) d r s t = 0 :=
+      chartDsigAt_eq_zero_of_not_injective d r s t (Or.inl hni)
+    exact hp (hz ▸ p.asIdeal.zero_mem)
+  · have hz : chartDsigAt (k := k) d r s t = 0 :=
+      chartDsigAt_eq_zero_of_not_injective d r s t (Or.inr hni)
+    exact hp (hz ▸ p.asIdeal.zero_mem)
+
+open PrimeSpectrum in
+/-- **The scheme-level cover→PivotDatum bridge (NO external injectivity hypothesis).** A prime `p`
+in a pivot chart `basicOpen (chartDsigAt s t)` yields a `PivotDatum d r hp hq` whose localizing elt
+`pivotElt` is exactly the chart's `chartDsigAt s t` — so a scheme-cover consumer gets the
+`PivotDatum`-indexed trivialization `triv` with no injectivity to discharge: membership in the chart
+forces the selectors injective (`injective_of_mem_basicOpen_chartDsigAt`), then the banked
+`pivotDatumOfSelectors` fires. This closes the scheme-level half of the C1 bridge that the k-point
+`cover` field already had on the point-set side. -/
+noncomputable def pivotDatumOfMemBasicOpen (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    {p : PrimeSpectrum (sweepSigmaRing k d r)}
+    (hmem : p ∈ basicOpen (chartDsigAt (k := k) d r s t)) :
+    {I : PivotDatum d r hp hq // pivotElt (k := k) d r hp hq I = chartDsigAt d r s t} :=
+  ⟨pivotDatumOfSelectors d r hp hq s t
+      (injective_of_mem_basicOpen_chartDsigAt d r s t hmem).1
+      (injective_of_mem_basicOpen_chartDsigAt d r s t hmem).2,
+    pivotElt_pivotDatumOfSelectors d r hp hq s t _ _⟩
 
 /-! ## The chart-side overlap transition cocycle -/
 
@@ -461,7 +553,10 @@ for a fixed `(d, r)`: the **scheme-level open-cover** `schemeCover` of the rank-
 `rankROpen` of `Spec (sweepSigmaRing)` by the per-pivot charts `basicOpen (chartDsigAt s t)`; the
 backing point-set `cover` of `Σ^r`; the **C1 bridge** `pivotOfCover` from every covering raw chart
 `(s, t)` to a `PivotDatum` at the same localizing element (so a cover chart connects to its
-trivialization); a `LocalTrivializationDatum` at every pivot `I` (the trivialization `triv I`, into
+trivialization), and its **scheme-side** companion `pivotOfBasicOpen` — from a prime
+`p ∈ basicOpen (chartDsigAt s t)` directly to that `PivotDatum`, with NO external injectivity
+hypothesis (chart membership forces the selectors injective); a `LocalTrivializationDatum` at every
+pivot `I` (the trivialization `triv I`, into
 the standard fibre `SchurLoc ⊗ sweepFibreRing`); the base-side overlap transition cocycle
 `overlapTransition` with its identity normalization `transitionRoundTrip` and base normalization
 `transitionCommutes`; the **overlap-LOCAL restriction** `overlapRestrict` — the transition,
@@ -494,6 +589,16 @@ structure PivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
   covering chart to its `PivotDatum`-indexed trivialization data. -/
   pivotOfCover : ∀ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
     Function.Injective s → Function.Injective t →
+    {I : PivotDatum d r hp hq // pivotElt (k := k) d r hp hq I = chartDsigAt d r s t}
+  /-- **The scheme-level C1 bridge (NO external injectivity hypothesis).** From a prime `p` in a
+  pivot chart `basicOpen (chartDsigAt s t)` of `schemeCover`, `pivotOfBasicOpen` produces a
+  `PivotDatum` at the same localizing element `chartDsigAt s t` — chart membership forces the
+  selectors injective (`injective_of_mem_basicOpen_chartDsigAt`), so a scheme-cover consumer gets
+  trivialization `triv (pivotOfBasicOpen …)` with no injectivity to discharge. The scheme-side
+  analogue of `pivotOfCover` (which still takes injectivity, for the point-set `cover`). -/
+  pivotOfBasicOpen : ∀ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    {p : PrimeSpectrum (sweepSigmaRing k d r)},
+    p ∈ PrimeSpectrum.basicOpen (chartDsigAt (k := k) d r s t) →
     {I : PivotDatum d r hp hq // pivotElt (k := k) d r hp hq I = chartDsigAt d r s t}
   /-- A genuine local-trivialization datum at every pivot. -/
   triv : ∀ I : PivotDatum d r hp hq,
@@ -558,6 +663,7 @@ noncomputable def pivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
   pivotOfCover s t hs ht :=
     ⟨pivotDatumOfSelectors d r hp hq s t hs ht,
       pivotElt_pivotDatumOfSelectors d r hp hq s t hs ht⟩
+  pivotOfBasicOpen s t {_p} hmem := pivotDatumOfMemBasicOpen d r hp hq s t hmem
   triv I := perPivotLocalTrivializationDatum d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ
   overlapTransition I J := chartOverlapTransition d r hp hq I J
   transitionRoundTrip I J := chartOverlapTransition_trans_symm d r hp hq I J
@@ -664,6 +770,20 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r
     letI A := reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq
     pivotElt (k := k) d r hp hq (A.pivotOfCover s t hs ht).1 = chartDsigAt d r s t :=
   (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).pivotOfCover s t hs ht |>.2
+
+/-- **Scheme-level C1 bridge witness (no injectivity hypothesis).** A prime `p` in a pivot chart
+`basicOpen (chartDsigAt s t)` of `schemeCover` connects to its trivialization with NO external
+injectivity to discharge: `pivotOfBasicOpen` yields a `PivotDatum` whose localizing element is
+exactly the chart's `chartDsigAt s t`, so `triv` of that datum is the chart's trivialization. The
+scheme-side bridge the owner asked for — a scheme-cover consumer is now usable. -/
+example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
+    (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
+    {p : PrimeSpectrum (sweepSigmaRing k d r)}
+    (hmem : p ∈ PrimeSpectrum.basicOpen (chartDsigAt (k := k) d r s t)) :
+    letI A := reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq
+    pivotElt (k := k) d r hp hq (A.pivotOfBasicOpen s t hmem).1 = chartDsigAt d r s t :=
+  (reducedFibre_pivotLocalProductAtlasOnRankOpen (k := k) d r hp hq).pivotOfBasicOpen s t hmem |>.2
 
 /-- **C2 overlap-restriction witness.** The atlas's overlap transition genuinely restricts to the
 single chart `I` *on the double overlap*: composed with the chart-`I` localization map it is the
