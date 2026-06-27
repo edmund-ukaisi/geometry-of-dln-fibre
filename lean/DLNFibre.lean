@@ -405,5 +405,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteMCLEConj
 import DLNFibre.DLN.RLCT.Validate.RouteMLinearFactor
 import DLNFibre.DLN.RLCT.Validate.RouteMChainVar
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
+-- Brick (a) of the coordinate-alignment bridge (ARCH-1): the single collapse CLE
+-- `bridgeCLE M := (paramsEquivFlatCLE M).symm` absorbs the chartIdxEquiv-slot ↔ Params
+-- alignment by CLE CANCELLATION (`genBlkParamsStruct_bridgeCLE`), reducing the bridge to a
+-- Params-level `funext s` (`composeFold_bridge_eq`). `RouteM222StructAdm` — the LAYERED
+-- validate-small anchor ((2,2,2), t=(2,1,1)); `RouteMRoleCLE` — the per-role Params-split CLE engine.
+import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
+import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
+import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

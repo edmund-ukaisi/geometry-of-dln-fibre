@@ -350,3 +350,58 @@ via `routeMCore_box_diverges_of_nodeChart` (banked).
 **Target signature correction (Codex):** `nodeChartGeneral` MUST take `(hpos : 1 ≤ minAdm M)` — an
 unconditional ∀M form is FALSE (`NodeAchieverChart` carries `hpos`; `minAdm M = 0` has no achiever
 center). The atom `routeMCore_box_diverges_achiever` already has `(hpos : 1 ≤ minAdm M)` in scope.
+
+---
+
+## UPDATE-10 (formalisation tide cont., 2026-06-27) — brick (a) LANDED: the bridgeCLE spine + the per-role Params-split CLE engine (ARCH-1)
+
+Charged the det-bridge crux per the coordinator. Decorrelated xhigh Codex (`codex/brick-a-*`) adjudicated
+the architecture: **ARCH-1** — ONE collapse CLE `bridgeCLE M := (paramsEquivFlatCLE M).symm`, all factors
+`cleConjFactor (bridgeCLE M) g` with `g : Params M → Params M`. The chartIdxEquiv-slot ↔ paramsEquivFlat
+alignment is **ABSORBED by CLE cancellation**, NOT a per-index proof (the key unblock). Banked sorry-free
++ axiom-clean `[propext, Classical.choice, Quot.sound]` (3 new modules + the layered anchor):
+
+- **`RouteM222StructAdm`** — the LAYERED validate-small anchor: `M222=(2,2,2)`, `t222=(2,1,1)`
+  (`Text=[2,2,1,1]`, `Wext=[2,2,2]` ⟹ Schur frame K/X/N/E all 1×1 nontrivial + chainA/Cgen recursion
+  non-degenerate, unlike the pure-radial `(4,4,2,2)` spine-only anchor). `structAdm222 : StructAdm M222
+  t222`.
+- **`RouteMBridgeCLE`** (the brick-(a) SPINE) — `bridgeCLE` + `bridgeCLE_apply`/`_symm_apply`
+  (= `paramsEquivFlat(.symm)`); `genBlkParamsStruct`/`radialParams`/`phiParamsStruct` + their
+  `_bridgeCLE` cancellation lemmas (the alignment absorbed: `genBlkParamsStruct (bridgeCLE x) =
+  genBlkFlatStruct x` via `paramsEquivFlat ∘ paramsEquivFlat.symm = id`); **`composeFold_bridge_eq`** —
+  ANY layer-op list `gs` whose `cleConjMap (bridgeCLE M)`-factors are `fs` gives `composeFold fs =
+  paramsEquivFlat ∘ (gs.foldr) ∘ paramsEquivFlat.symm`, reducing the bridge to the **Params-level**
+  `(gs.foldr) ∘ bridgeCLE = phiParamsStruct ∘ bridgeCLE`; **`phiParamsStruct_bridgeCLE`** — the target
+  `= chartParamsGen (x p) M t (genBlkFlatStruct x) hle`.
+- **`RouteMRoleCLE`** (the brick-(a) per-role CLE ENGINE) — `flatToChartIdxCLE` (`(Fin N→ℝ) ≃L (ChartIdx
+  →ℝ)` via `ContinuousLinearEquiv.piCongrLeft chartIdxEquiv`), `roleSplitCLE ρ` (via `sumPiEquivProdPi`),
+  `flatBlockSplitCLE`/`paramsBlockSplitCLE ρ` (`Params M ≃L (Block→ℝ)×(Rest→ℝ)` — the `S` the ARCH-1
+  factors `conjBlockMap` by, det read at the block via `conjBlock_abs_det`). Parametric in the role
+  reindex `ρ : ChartIdx ≃ Block ⊕ Rest`; the `piCongrLeft`/`sumPiEquivProdPi` chain validated to
+  elaborate against the v4.29 pin.
+
+### What brick (a) delivered + the precise next sub-step
+The two foundational obstacles are CLEARED: (i) the alignment (absorbed by `bridgeCLE` cancellation, no
+opaque-bijection composition); (ii) the Params-split CLE construction (the `paramsBlockSplitCLE` engine,
+parametric in `ρ`). The bridge `composeFold fs = phiFlatStructV` now reduces (via `composeFold_bridge_eq`
++ `phiParamsStruct_bridgeCLE`) to the **Params-level funext-s** `(gs.foldr id)(P) = phiParamsStruct(P)`.
+
+REMAINING (brick (b)/(c)/(d), the next sub-build, in order):
+1. **The role-semantic reindexes** `ρ : ChartIdx ≃ Block ⊕ Rest` per role (the Sigma-of-Sum extraction
+   pulling the boundary-`k` Schur `K`/`X`/`N`/`E`, the lift `W`, the radial slot to the front). This is
+   the role-specific input `paramsBlockSplitCLE` consumes — the next concrete brick.
+2. **The layer-ops `gs`** (deepest-first foldr): `radialOp` (scale active slots, det `|u_p|^{minAdm-1}`),
+   `lduOps` (`chainVarMap`/Schur via the role CLEs, spectator dets), `schurOps`, `chainOps` — each a
+   `cleConjFactor (bridgeCLE M) (conjBlockMap (paramsBlockSplitCLE ρ) op)`.
+3. **The funext-s bridge** `(gs.foldr)(P) = phiParamsStruct(P)` — riskiest sublemma (Codex): the layer
+   source/target split (`C_{s+1} ⊕ W_s` = the top/bottom row split of Params layer `s`, via `finSplit`/
+   `schurSlotEquiv`/`liftSlotEquiv` + the banked `chainA_apply_castAdd/natAdd`), proven at the
+   equivalence level — then `funext s i j` is mechanical.
+4. **`hdet` leafH summation** (radial `minAdm−1` on pivot + GENUINE spectator LDU/Schur exponents on
+   `k=0` axes; Codex-confirmed) → `phiTarget_abs_det_of_factored` (banked) closes `cov`.
+Then `nodeChartGeneral M (hpos : 1 ≤ minAdm M) : NodeAchieverChart M` assembles (rate banked via
+`routeMCore_phiFlatStructV` + the bridge for the loss-base; det via the above) → atom discharged.
+
+VALIDATE-SMALL note (Codex): `(2,2,2)` is right for the BRIDGE (chartIdxEquiv, role reads, chainA row
+split); for the LDU DET story use a `2×2`-K case (`(3,3,3,3)` — genuine 2×2 LDU core + multi-pivot
+spectators) — `(2,2,2)`'s 1×1 blocks hide LDU ordering.
