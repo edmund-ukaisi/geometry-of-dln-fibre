@@ -336,6 +336,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
 -- width-parametric bridge template) + `phiGen_B_det3333_eq_phi3333` (the route-2a chart EQUALS the
 -- banked hand-built phi3333 ⟹ det |u0|⁵·|u1|⁴·|u4|²·|u9|³ = RouteM3333Atom EXACTLY) → atom via route 2a.
 import DLNFibre.DLN.RLCT.Validate.RouteM3333Det
+-- ∀M-lift build phases (1)-(2): the achiever decoder + RATE-side NodeAchieverChart fields, ∀M.
+-- `RouteMAchieverStructAdm`: `tach M = Fin.cons (M 0) (tStar M)` (the shifted achiever path) +
+-- `structAdm_tach` (admissibility ∀M, via the corrected `StructAdm.hdesc` interior-only descent).
+-- `RouteMAchieverRateFields`: `routeMCore_achieverPhi = (x p)²·achieverUfun` (rate ∀M, decoder-agnostic)
+-- + `achiever_leaf_integrand` (the `leaf_integrand` field ∀M, det-free) + `achieverUfun_nonneg`.
+-- (The `Ubound` a.e.-positivity needs the MvPolynomial `Hmat_0` encoding — the next tide.)
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverStructAdm
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverRateFields
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin

@@ -182,3 +182,39 @@ substantial-but-bounded dependent-width work with banked templates, not an open 
 **Next construction that settles it:** build the parametric `B_det M` (the `match`-on-`k` decoder over the
 banked `bmatStack`/`rmatPad`/`FlatIdx`-readers), then the pivot-survival witness lemma, on (3,3,4) first;
 the rate, active.card, leafH, and minAdm≤N are construction-level/banked.
+
+---
+
+## BUILD-TIDE ADDENDUM (2026-06-27) — two corrections to §5
+
+The first build tide (rate-side phases 1–3) landed phase-0 (`tach M` + `StructAdm M (tach M)`, the achiever
+admissibility, with `StructAdm.hdesc` weakened `∀k → ∀k, k<L→` since `tStar(last)=0` makes `hdesc L` false)
++ the FREE rate-side fields (`achiever_leaf_integrand` ∀M, `routeMCore_achieverPhi`, `achieverUfun_nonneg` —
+`RouteMAchieverRateFields.lean`, axiom-clean). Two corrections to §5's framing surfaced:
+
+1. **The live leaf is NOT needed for the RATE side / witness** (only for the DET-side full-rank `cov`). The
+   STRUCTURED DEAD-leaf decoder (`genBlkFlatStruct`, `Rfin=0`) already has `VvalGen ≢ 0` for `L ≥ 2`: the
+   telescope's INTERIOR `E_k = Rmat_k·A_k` terms feed `Hmat_0` even when `Hmat_L = Rfin_L = 0`. Sympy
+   `(2,2,2)`: `Hmat_0 = [[0,0],[E·w0, E·w1]]`, `VvalGen = E²(w0²+w1²)` (=1 at `E=1,w0=1`). So §5's "the dead
+   leaf makes `Hmat_0=0` at the witness" is true ONLY for the all-kept/all-zero witness — a DIFFERENT witness
+   (interior E,W nonzero) makes it nonzero without any live leaf.
+2. **BUT the dead-leaf route FAILS for `L = 1`** (`Hmat_0 = 0`, `VvalGen ≡ 0`: only the identity boundary +
+   dead leaf). So a UNIFORM ∀M a.e.-positivity needs EITHER the live-leaf `B_det M` (clean uniform witness
+   `Hmat_0(0,0) = ∏Bmat_k(0,0)·1 = 1`) OR an `L=1` case split + an interior-nonempty hypothesis.
+
+3. **The `B_det M` live-leaf sub-design §2 UNDER-SPECIFIED** (the genuine residual for the live route): the
+   leaf `Rfin L : Text L × Wext L` does NOT fit the dead `Rmat L = rmatPad(readE)` E-role slot
+   `r_{L-1} × c_{L-1}` — the leaf is the FULL `Text L × Wext L`, the E-role is the residual sub-block. Routing
+   leaf coords needs a slot-accounting design (which flat coords feed the full leaf vs the interior E-blocks)
+   — `flatDim = ∑_k (schurDim k + liftDim k)` has no separate leaf budget; the leaf must reuse the slot the
+   dead `Rmat L` (chart-slot `L-1`'s E-role) currently wastes, but at a LARGER dimension. This is the genuine
+   `B_det M` design question to settle before the live build.
+
+4. **The a.e.-positivity needs the recursion-level `MvPolynomial` encoding REGARDLESS of leaf choice** (Codex
+   `codex/deadleaf-vval-aepos`, ×2 on Q4): the witness gives non-vacuity at ONE point; a.e.-positivity needs
+   `{VvalGen=0}` null, i.e. `MvPolynomial.ae_eval_ne_zero` on a NAMED nonzero `UPolyGen` with
+   `eval x UPolyGen = VvalGen`. The cleanest (Codex Q2 rank ii): a parallel `PolyHmat`/`PolySuffix` recursion
+   over `MvPolynomial (Fin N) ℝ` + ONE `eval`-naturality lemma — but the banked `Chain`/`Hmat`/`suffix`
+   engine is `ℝ`-PINNED, so this is either a ring-generalization of that engine or a hand-built parallel
+   recursion (a substantial, well-defined multi-tide piece). Q3's "one entry = 2-coord monomial ∀M" does NOT
+   generalise (deepest block propagates through `B_1·…·B_{L-2}`; residual col width >1 → a sum).
