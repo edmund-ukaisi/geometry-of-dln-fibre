@@ -642,3 +642,38 @@ reductions, prod0/prod1 identities, Agen0, Agen1-lift PROVEN; only Agen1-kept's 
 resists in-context). The remaining `cov` (chain-rule det `|x0|²·|x4|`, the 4422/221 template) follows
 once `chartParamsGen_eq_chartParams222` lands. Reverted the WIP det-leg to keep the file green; the
 working pieces are documented above for fast resumption.
+
+## UPDATE-16 (controller-integrated from genm-lift's handback, 2026-06-27) — ∀M nodeChartGeneral is MULTI-TIDE; the parametric B_det M is the design gate
+
+genm-lift charged the ∀M `nodeChartGeneral M (hpos)` and rested at REST-CONDITION (c) — a precise
+decorrelated WALL handback (structural read + xhigh Codex `codex/genM-tide-scope-*` + the 15 prior
+updates all converge). **NO Lean written** (heeding the UPDATE-11/12 don't-funext-the-wrong-target lesson).
+Verdict: **full `nodeChartGeneral` ∀M is NOT one-tide scope.**
+
+The 11 `NodeAchieverChart` fields split:
+- **Rate-side banked ∀M:** `leaf_integrand` one line via `leaf_integrand_of_rate` + `routeMCore_phiGen`
+  (decoder-agnostic) + `hC0`; `Ufun := VvalGen`, `VvalGen_nonneg` banked.
+- **Rate-side NOT free:** `Ubound`/`Umeas` need `VvalGen` continuous-in-`x` + `>0` a.e. Full-rank does
+  NOT imply `HrGen ≠ 0` a.e.; the anchors use a CONCRETE nonzero-polynomial witness (`UPoly222_ne_zero`
+  + zero-set nullity) ⟹ ∀M needs a PARAMETRIC nonzero-`VvalGen` witness, coupled to the decoder.
+- **Det-side (the wall):** `cov` ⟹ `|det Dφ_M| = ∏|x_j|^{leafH j}` ⟹ `φ_M = Q_M∘T_M` + the bridge funext
+  over opaque widths, PLUS `InjOn` off the FULL det-zero union + null-slice add-back (chart-specific).
+
+Even the DEFINITIONS aren't cleanly one-tide: (1) **`B_det M` is an open design question** (Codex Q4) — the
+correct live decoder encodes a GLOBAL one-pivot blow-up of the `minAdm` Aoyagi residual normals (one
+fixed-`1` pivot, `x_p` the radial scalar, every other active normal an angular coord × `x_p`) threading the
+per-boundary Schur frame (the global structure `B_det222`/`B_det3333` hand-coded). (2) `active`/`leafH` are
+decoder-coupled (NOT a free `range(minAdm)` — that needs the unbanked `minAdm M ≤ flatDim M`); the target is
+full-rank/`InjOn` off the FULL zero-union (genuine spectator axes). (3) `chartParams222`/`chartParams3333`
+are sympy-computed polynomial TABLES, not parametric-recursion outputs; the ∀M `pack_M(T_M x)` replaces them
+with a `composeFold` whose layers `= chainA(N_s)(W_s)(C(s+1))` over opaque widths.
+
+**The decomposition (Codex scope-rank):** (1) decoder-design certificate (the parametric `B_det M`) → (2)
+build tide `B_det M` + `hC0` + rate + `Ufun`/`Ubound` (~one tide) → (3) the bridge `chartParamsGen = pack_M∘T_M`
+(multi-tide) → (4) `cov` + `nodeChartGeneral` + atom ∀M (multi-tide). The (2,2,2)+(3,3,3,3) validate-smalls
+confirm the route works at 2+3 boundaries; the ∀M lift is the width-parametric generalization.
+
+INFRA (controller-actioned): genm-lift's worktree was mis-based at `413566b3` (old dev-merge-base) — it
+lacked the aoyagi work, so it read/built against the SHARED checkout. Future BUILD tides on a worktree must
+first `git merge origin/expedition/aoyagi-full` (the pattern option-c-chart/nodechart222-finish used). The
+DESIGN gate (decoder-fix, no Lean) needs no worktree.
