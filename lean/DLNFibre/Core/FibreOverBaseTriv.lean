@@ -53,10 +53,16 @@ base-change `algebraTensorAlgEquiv_symm_map`.
 
 ## Scope (honest)
 
-This is the CHARTWISE over-base trivialization + flatness, at every pivot. A single GLOBAL
-`Flat π` / `FiberBundle` morphism over all of `rankROpen` additionally needs the overlap-gluing
-cocycle (R1 `targetOverlapTransition`) to assemble the per-chart data — that stays roadmapped and is
-NOT claimed here.
+This is the CHARTWISE over-base trivialization + flatness, at every pivot, over the **named**
+`SchurLoc`-algebra structure (`schurToDsigAt`). Two things stay open before this reads as flatness of
+the geometric fibre-family projection:
+(i) **projection compatibility** — that `schurToDsigAt : SchurLoc → Total` is the pullback of `mult`'s
+projection from the target/base rank-chart. Until then `chartDsigAt_flat_over_schurLoc` is flatness over
+the named `SchurLoc` algebra, NOT yet verified flatness of the geometric `mult`-projection, even
+chartwise. (`Spec(sweepSigmaRing)` is the source/total; `SchurLoc` is only the base direction.)
+(ii) R1 (`targetOverlapTransition`) — the overlap-gluing cocycle for a single GLOBAL `Flat π` /
+`FiberBundle` morphism over all of `rankROpen`.
+Both roadmapped (projection compatibility ahead of R1); NOT claimed here.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

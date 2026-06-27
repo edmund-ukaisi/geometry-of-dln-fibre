@@ -8,7 +8,7 @@
 > primes.
 >
 > - **Lean:** `DLNFibre.Core.mem_rankROpen_iff_rank_universalMatrixResidue_eq`
->   (`lean/DLNFibre/Core/FibreRankBridge.lean` @ `06b30931` — base; controller pins merge SHA)
+>   (`lean/DLNFibre/Core/FibreRankBridge.lean`; landed `3cb4fc17` on `expedition/fibration-geometry`, PR #12)
 > - **Gloss.** Over a field `k`, for `d : Fin (N+2) → ℕ`, `r : ℕ`, and a prime
 >   `P : PrimeSpectrum (sweepSigmaRing k d r)`:
 >   `P ∈ rankROpen d r ↔ (universalMatrixResidue d r P).rank = r`,

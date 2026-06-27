@@ -2,12 +2,17 @@
 
 ## Central question
 
-> **Harden the DLN fibre geometry into a flat, locally-trivial family.**
+> **Goal — harden the DLN fibre geometry toward a flat, locally-trivial family.**
 > Earn the honest source-side `locallyTrivial` of `mult⁻¹(B) → base` over the rank-`= r` open (via the
 > prime/residue-field **rank bridge** `rankROpen = {rank = r}`); register the **flatness** payoff and its
 > corollaries; certify the **smooth-block** local model at every top-component generic point (the first
 > slab of the RLCT runway); and package the whole through a reusable **scheme-bundle API** — building
 > whatever Mathlib-level scaffolding is missing along the way.
+>
+> **Delivered (this expedition):** the rank bridge (S1), the smooth-block (S2/S2c), and the **chartwise**
+> over-base product + flatness **over the in-chart base direction `SchurLoc`** (S4/S4b/S5). This is **not**
+> a global flat, locally-trivial family: **projection compatibility** (that `schurToDsigAt` is `mult`'s
+> projection pullback) and the global overlap gluing (R1) remain open — see the spine + the fences below.
 
 This is the "geometry side, hardened and cleaner" the operator asked for, scoped as a **hero arc on
 well-established mathematics**. The pieces with no pre-packaged Mathlib lemma (the over-field minor-rank
@@ -17,8 +22,8 @@ criterion, scheme-level local triviality, the lci local model) are **scaffolding
 
 The eventual prize (next expedition) is replacing the cited axiom
 `DLN/RlctPayoff.lean RlctInterface.cited_aoyagi_dln`, which *assumes* `rlct(lossDLN) = ½·codim`. That
-analytic bridge needs a clean geometric substrate: a flat, locally-trivial family with an identified
-smooth locus and a local quadratic (lci) model. **This expedition builds that substrate** and hands over
+analytic bridge needs a clean geometric substrate — eventually a flat, locally-trivial family — with an
+identified singular locus and a local quadratic (lci) model. **This expedition builds that substrate** and hands over
 the RLCT-runway's first slab (the smooth-block upper-bound model), without taking on the analytic layer
 itself (Mathlib has zero RLCT/zeta content — that is the next expedition's hero arc, teed up here).
 
@@ -73,8 +78,9 @@ pass, **name = content**.
   `Away(chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` over the **honest banked structure map**
   (non-circular, confirmed 2 ways) ⟹ `chartDsigAt_flat_over_schurLoc` (chartwise fibre-family flatness
   **over `SchurLoc`**). Completes S4's over-base content + the S3 flatness, chartwise. ⚠ Flatness is over
-  the in-chart Schur ring `SchurLoc`, **not** the literal `Flat π` over `rankROpen` — that needs the
-  **chart-base bridge** `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)` (roadmap, ahead of R1) + R1.
+  the in-chart base direction `SchurLoc`, **not** the literal `Flat π` over the geometric base — that needs
+  **projection compatibility** (`schurToDsigAt` = `mult`'s projection pullback; `Away(chartDsigAt)` is the
+  source/total chart, not the base) (roadmap, ahead of R1) + R1.
 - **S4 — Honest local product over `rankROpen`. [LANDED (partial) — `FibreLocallyTrivial.lean`]**
   `RankROpenPerPivotLocalProduct` + the pointwise headline `reducedFibre_existsProductChartAt_rankEq`:
   S1 folded in certifies `rankROpen` genuinely IS the residue-field rank-=r locus; the pivot charts

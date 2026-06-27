@@ -396,8 +396,9 @@ import DLNFibre.Core.FibreLocallyTrivial
 import DLNFibre.Core.FibreSmoothBlockExists
 -- S3: flatness facts around the atlas (HONEST scope — NOT the `Flat π` payoff). `chartInclusion_flat`
 -- (localization), `standardFibreModel_free`/`_flat` over the auxiliary SchurLoc (generic base change),
--- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. The fibre-family flatness over the base
--- is OPEN, gated on the SchurLoc-linear trivialization (= S4b) — see the module header's blocker.
+-- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. NB S4b (below) DELIVERS the chartwise
+-- `Module.Flat SchurLoc (Away(chartDsigAt …))`; what stays open is projection compatibility
+-- (schurToDsigAt = mult's projection pullback) + R1/global gluing — NOT S4b itself.
 import DLNFibre.Core.FibreFlatness
 -- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
 -- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`

@@ -258,7 +258,11 @@ theorem reducedFibre_existsOverBaseProductChartAt_rankEq_exists_someStructure
     reducedFibre_existsOverBaseProductChartAt_rankEq d r hp hq P hP
   exact ⟨I.s, I.t, hmem, schurToDsigAt d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ, htriv, hflat⟩
 
-/-! ## Non-vacuity witnesses -/
+/-! ## API witnesses (consumer examples)
+
+These are consumer smoke-tests of the structure + headline, **conditional on their inputs** (`P`, `hP`,
+a `PivotDatum`, …); they do NOT exhibit an actual rank-`r` prime, a nonempty `rankROpen`, or a
+nontrivial fibre ring — so they are API examples, not an existential non-vacuity proof. -/
 
 section Witness
 

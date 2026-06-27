@@ -3,16 +3,19 @@
 > **Claim.** Over the rank-`= r` open of the DLN reduced fibre family, the family is, CHARTWISE and
 > OVER the in-chart Schur-direction coordinate ring `SchurLoc` (via an honest structure map), the
 > standard product `SchurLoc ⊗_k sweepFibreRing` AND is flat over `SchurLoc`. Pointwise: every prime
-> `P` with universal-matrix residue-field rank `= r` sits in a pivot chart `basicOpen (chartDsigAt s t)`
-> carrying a named structure map `φ : SchurLoc →ₐ[k] Away (chartDsigAt s t)` over which the chart total
-> ring is `≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` and `Module.Flat SchurLoc (Away (chartDsigAt s t))`.
+> `P` with universal-matrix residue-field rank `= r` sits in a pivot chart (a `PivotDatum I`) over the
+> **named geometric** `SchurLoc`-algebra structure `chartDsigAtSchurLocAlgebra` (`schurToDsigAt`, in the
+> *type* — not an unconstrained `∃ φ`) under which the chart total ring is
+> `≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` and `Module.Flat SchurLoc (Away (chartDsigAt I.s I.t))`.
 
 - **Lean (pointwise headline):** `DLNFibre.Core.reducedFibre_existsOverBaseProductChartAt_rankEq`
-  (`lean/DLNFibre/Core/FibreBundleHeadline.lean` @ `39bded6ed669984fdee94d82922272615236f213`)
+  (`lean/DLNFibre/Core/FibreBundleHeadline.lean`, landed `b778b153` on `expedition/fibration-geometry`,
+  PR #12). The old `∃ φ` form is the separate weaker projection
+  `reducedFibre_existsOverBaseProductChartAt_rankEq_exists_someStructure`.
 - **Lean (bundled structure):** `DLNFibre.Core.RankROpenOverBaseLocalProduct` +
-  `DLNFibre.Core.reducedFibre_rankROpenOverBaseLocalProduct` (same file/SHA)
+  `DLNFibre.Core.reducedFibre_rankROpenOverBaseLocalProduct` (same file)
 - **Lean (per-pivot datum):** `DLNFibre.Core.OverBaseChartDatum` + `DLNFibre.Core.overBaseChartDatum`
-  (same file/SHA)
+  (same file)
 
 ## Exact signatures
 
@@ -44,18 +47,21 @@ theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → �
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (P : PrimeSpectrum (sweepSigmaRing k d r))
     (hP : (universalMatrixResidue d r P).rank = r) :
-    ∃ (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0)),
-      P ∈ PrimeSpectrum.basicOpen (chartDsigAt (k := k) d r s t) ∧
-      ∃ φ : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →ₐ[k]
-          Localization.Away (chartDsigAt (k := k) d r s t),
-        (letI := φ.toRingHom.toAlgebra;
-          Nonempty (Localization.Away (chartDsigAt (k := k) d r s t)
-            ≃ₐ[SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r]
-              SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r
-                ⊗[k] sweepFibreRing k d r hp hq)) ∧
-        (letI := φ.toRingHom.toAlgebra;
-          Module.Flat (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
-            (Localization.Away (chartDsigAt (k := k) d r s t)))
+    ∃ I : PivotDatum d r hp hq,
+      P ∈ PrimeSpectrum.basicOpen (chartDsigAt (k := k) d r I.s I.t) ∧
+      (letI := chartDsigAtSchurLocAlgebra (k := k) d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ;
+        Nonempty (Localization.Away (chartDsigAt (k := k) d r I.s I.t)
+          ≃ₐ[SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r]
+            SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r
+              ⊗[k] sweepFibreRing k d r hp hq)) ∧
+      (letI := chartDsigAtSchurLocAlgebra (k := k) d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ;
+        Module.Flat (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
+          (Localization.Away (chartDsigAt (k := k) d r I.s I.t)))
+
+-- The SchurLoc-algebra is the GEOMETRIC `chartDsigAtSchurLocAlgebra` (= `schurToDsigAt` structure),
+-- named in the type. The old unconstrained `∃ φ` form (satisfiable by a degenerate bare-`≃ₐ[k]`
+-- pullback, no stronger than S4) is kept separately as
+-- `reducedFibre_existsOverBaseProductChartAt_rankEq_exists_someStructure` (strong ⟹ weak, not conversely).
 ```
 
 (Context: `variable {k : Type} [Field k] [Infinite k] {N : ℕ}`.)

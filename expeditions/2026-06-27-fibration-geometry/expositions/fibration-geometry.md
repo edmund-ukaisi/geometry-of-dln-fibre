@@ -125,5 +125,5 @@ The paper's *used* consequence of the local-product picture — the arbitrary-`B
 is already proved independently (`FibreThetaCountArbitrary`), so this geometry is not load-bearing for
 that count; its value is the hardened, honest substrate for the RLCT direction. The smooth-block
 certificate is the first concrete deliverable of that runway. The remaining geometry to make the
-bundle picture global (chart-base bridge → R1) and to turn the upper-bound into the RLCT equality
+bundle picture global (projection compatibility → R1) and to turn the upper-bound into the RLCT equality
 (singular-locus lower bound) is mapped, with the kill-conditions identified.

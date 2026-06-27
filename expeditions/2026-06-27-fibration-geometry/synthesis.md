@@ -227,3 +227,18 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   are complete.** Remaining = the operator's gate: re-review → mark PR #12 ready → merge. Post-merge:
   run the post-merge protocol (delete cron 76da6f78; the close is interactive now). Roster clean (all
   tides + reviewers self-cleared).
+
+- **tick 16 (review round 3 — owner re-review at b9030ee, 2026-06-27 ~22:30):** owner confirmed the S5
+  TYPE fix is good ("no type-level failure"), but caught that round 2 fixed only the *flagged lines* —
+  the same stale framing recurred in spots I didn't sweep. **Lesson: when a framing error is found, grep
+  ALL occurrences, don't fix just the flagged line** (→ lessons.md). Did a complete sweep this round
+  (6 new inline + 2 non-inline notes): FibreFlatness:60 forward-pointer (my own bridge framing →
+  projection compat); FibreBundleLocallyTrivialFull:509 ("honest base" → source/total) + :700/:717
+  ("not formalized" → S1 landed); FibreOverBaseTriv:56 (scope fence + projection compat before R1);
+  FibreBundleHeadline:261 ("Non-vacuity witnesses" → "API witnesses (consumer examples)"); DLNFibre.lean
+  S3-import comment (S4b delivers chartwise flat; open = projection compat + R1, not S4b); brief central
+  question (Goal + Delivered split) + :20/:77; loop-prompt:4; priorities P-proj (was P-bridge) + P4b;
+  threads:23 (P-proj); exposition:128; ROADMAP:363 ("After projection compatibility"); S5 card Claim +
+  exact-signature block (old ∃φ → strong ∃I:PivotDatum) + SHA anchors (cards 01/05/09 → landed PR
+  commits). Final re-sweep clean (synthesis ledger's historical mentions left as honest chronology).
+  Green-gating; on green → commit + push + reply to the new threads. Then ready for the owner's merge.

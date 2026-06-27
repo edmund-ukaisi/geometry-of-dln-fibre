@@ -20,9 +20,10 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 **Close:** spine S1–S5 complete + bedrock; branch pushed; **PR #12 (DRAFT / do-not-merge)** opened
 against `dev`. Close fan-out review (threads 10–11) in flight; on clear → mark PR ready (operator merges).
 
-Parked (roadmap): **P-bridge — chart-base identification** `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)`
-(+ structure-map compat) — turns S4b's flatness-over-SchurLoc into genuine flatness over `rankROpen`;
-real build, AHEAD of R1; **R1** — `targetOverlapTransition` overlap-gluing (single GLOBAL
+Parked (roadmap): **P-proj — projection compatibility** — that `schurToDsigAt : SchurLoc → Away(chartDsigAt)`
+is the pullback of `mult`'s projection from the target/base rank-chart (turns S4b's flatness-over-`SchurLoc`
+into genuine fibre-family flatness over the base; `Away(chartDsigAt)` is the source/total chart, not the
+base); real build, AHEAD of R1; **R1** — `targetOverlapTransition` overlap-gluing (single GLOBAL
 `Flat π`/`FiberBundle` morphism over all `rankROpen`, after P-bridge); S2b — conormal `I/I²` free of
 rank `= codim` (RLCT-relevant dual of S2; REAL-BUILD per hardener); S1 in-file non-vacuity `example`
 (bedrock-2.1 nicety); singular-locus split (R2, RLCT-runway lower bound — next expedition).

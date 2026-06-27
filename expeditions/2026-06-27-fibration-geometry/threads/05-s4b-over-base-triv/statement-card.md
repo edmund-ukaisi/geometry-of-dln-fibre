@@ -136,5 +136,5 @@ theorem chartDsigAt_flat_over_schurLoc (d r) (hp hq) (s t σ τ hσ hτ) :
 
 `#print axioms` for all seven deliverables (+ the helper) = `[propext, Classical.choice, Quot.sound]`.
 
-**Commit SHA:** `0765aa3d` (worktree branch `worktree-agent-a1213bc344fb2138b`; rebases onto
-`expedition/fibration-geometry` at integration).
+**Commit SHA:** landed `caa96288` on `expedition/fibration-geometry` (PR #12); docstring fences refined
+in later review-round commits on the same branch.

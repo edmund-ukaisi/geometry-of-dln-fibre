@@ -56,10 +56,12 @@ records the two cheap true facts and the verdict, not the payoff.
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
 giving chartwise fibre-family flatness **over the in-chart Schur ring `SchurLoc`**. (`FibreFlatness`
 cannot forward-import it: `FibreOverBaseTriv` imports this module.) NB this is flatness over `SchurLoc`,
-which is NOT yet literally `Flat π` over `rankROpen ⊆ Spec(sweepSigmaRing)`: that still needs (i) the
-**chart-base bridge** `SchurLoc ≅ sweepSigmaRing` restricted to `basicOpen (chartDsigAt …)` with
-structure-map compatibility, and (ii) R1 (`targetOverlapTransition`) to glue a single global morphism —
-both roadmapped, the bridge ahead of R1.
+which is NOT yet literally `Flat π` over the geometric base. `SchurLoc` is the in-chart base DIRECTION;
+`Away (chartDsigAt …)` is the source/total chart (a localization of `sweepSigmaRing`, already
+`≅ SchurLoc ⊗ sweepFibreRing`). Reading this as fibre-family flatness over the genuine base needs
+(i) **projection compatibility** — that `schurToDsigAt : SchurLoc → Away (chartDsigAt …)` is the pullback
+of `mult`'s projection from the target/base rank-chart — and (ii) R1 (`targetOverlapTransition`) to glue
+a single global morphism; both roadmapped, projection compatibility ahead of R1.
 
 ## Main results (what is actually proved)
 

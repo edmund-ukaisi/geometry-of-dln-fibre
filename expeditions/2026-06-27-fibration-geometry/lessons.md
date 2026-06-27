@@ -46,3 +46,18 @@ name = content) is unchanged — ambition is in the *target*, rigour in the *gat
   the shared repo). Bake this into every spawn prompt for a rung that depends on an earlier one.
 - **Integration is uniform via worktree-disk copy** (works whether the tide committed or not) + wire the
   aggregator import myself (single-writer) + full `scripts/lb DLNFibre` green-gate before committing.
+
+## L3 — A framing error recurs; fix it by grep, not by line (PR #12 review, 2026-06-27)
+
+**Why:** the owner's first PR review flagged a base/total reversal (`Spec(sweepSigmaRing)` is the
+source/total, not the base) + a nonsensical `SchurLoc ≅ source-chart` bridge at *specific lines*. I fixed
+those exact lines. The owner's re-review found the **same** framing still living in ~8 other spots
+(other docstrings, the brief central question, priorities/threads/loop-prompt, the S5 card's verbatim
+signature block, stale SHA anchors). Two review rounds spent on one root error.
+
+**How to apply:** when a review (or my own check) finds a *framing/naming* error — not a one-off typo —
+treat it as a class: `grep -rn` the stale phrase(s) across **all** live docs + Lean + cards + ROADMAP +
+aggregator + the operational prompts, and fix every occurrence in one pass, then re-grep to confirm clean
+before re-pushing. A framing error is almost never in exactly one place. (Also: keep statement-card SHA
+anchors pointed at *landed PR commits*, never worktree/base/pre-fix SHAs; and the internal `synthesis.md`
+tick-ledger records the journey — leave its historical mentions, don't rewrite history there.)

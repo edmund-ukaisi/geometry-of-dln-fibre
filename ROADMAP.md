@@ -360,7 +360,7 @@ wall, the next expedition):**
    bridge, which would lose the fibre.) This compatibility is what lets the chartwise `SchurLoc`-flatness
    read as genuine fibre-family flatness over the base. A real build, **ahead of** R1.
 2. **R1 — `targetOverlapTransition`** (the overlap-gluing cocycle). Assembles the per-chart data into a
-   single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After the chart-base bridge.
+   single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After projection compatibility.
 3. **S2b — conormal companion** `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler
    side; conormal exact sequence + rank additivity). A real build.
 4. **S1 in-file non-vacuity `example`** (a concrete `P ∈ rankROpen` in the achievable regime) — a

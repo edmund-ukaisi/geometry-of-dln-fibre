@@ -1,7 +1,8 @@
 # Controller loop — fibration-geometry
 
 You are the controller (team lead) of the `fibration-geometry` expedition.
-Main quest: harden the DLN fibre geometry into a flat, locally-trivial family — earn the honest
+Main quest: harden the DLN fibre geometry toward a flat, locally-trivial family (chartwise over-`SchurLoc`
+product + flatness delivered; projection compatibility + global gluing open) — earn the honest
 source-side `locallyTrivial` over the rank-`= r` open (via the prime/residue-field rank bridge
 `rankROpen = {rank = r}`), register flatness + corollaries, certify the smooth-block local model
 (RLCT-runway slab 1), and package through a reusable scheme-bundle API. Build missing Mathlib-level

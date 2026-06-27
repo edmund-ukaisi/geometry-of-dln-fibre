@@ -506,8 +506,9 @@ their union is, by definition, the complement of the common-vanishing locus `V({
 the open `rankROpen` where SOME pivot minor is a unit. On `Σ̄^r` (rank `≤ r` baked into
 `sweepSigmaRing`) that is exactly the rank-`= r` locus. So this is the genuine scheme-level
 open-cover of the rank-`= r` open — not a `span = ⊤` over the closure (false: the rank-`< r` closed
-points lie in `V`), but the open-cover of the rank-`= r` open subscheme, the honest base of
-`mult⁻¹(B) → Mat^{= r}`. -/
+points lie in `V`), but the open-cover of the rank-`= r` open subscheme of the SOURCE/TOTAL `Σ̄^r`.
+(NB this open is the source/total, not the base: the genuine base of `mult⁻¹(B) → Mat^{= r}` is the
+target `Mat^{= r}`; `Spec(sweepSigmaRing)` is the source/total rank-`≤ r` locus.) -/
 
 open PrimeSpectrum in
 /-- **The rank-`= r` open** of `Spec (sweepSigmaRing)`, DEFINED as the complement of the
@@ -695,28 +696,25 @@ The reduced fibre bundle has a **per-pivot local-product atlas over the rank-exa
 (`iSup_pivot_basicOpen_eq_rankROpen`) + the per-pivot trivializations into the standard fibre + the
 coherent (base-algebraic) transition cocycle, all assembled (`pivotLocalProductAtlas`).
 
-**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated, thrice): `rankROpen` is
-defined as the chart-cover-complement, so the scheme open-cover is near-definitional, and the
-prime-level identity `rankROpen = {rank = r}` is not formalized. The genuine content is the
-per-pivot trivializations + the coherent cocycle. A *bare* `locallyTrivial` over
-`Spec (sweepSigmaRing)` (the
-closure) is genuinely false (the rank-`< r` boundary lies in no chart). The **k-point** rank-tie IS
-now banked — `sweepSigma_eq_chartCoverKPoint_inter_rankLe` /
-`mem_chartCoverKPoint_iff_rankEq_of_rankLe`: on the rank-`≤ r` `k`-points the charts cut out exactly
-the rank-`= r` locus. But (Codex) a k-point tie does NOT compose with the prime-level cover
-`iSup_pivot_basicOpen_eq_rankROpen` to license `locallyTrivial`; the genuine residual is the
-**prime/scheme** statement that a prime `P` lies in `rankROpen` iff the universal matrix over the
-residue field at `P` has rank `r` (a residue-field-rank bridge — genuinely new scheme-theoretic
-content, NOT covered by the k-point rank algebra). -/
+**Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated): the genuine content is
+the per-pivot trivializations + the coherent (base-algebraic) cocycle, but the *fixed-target* overlap
+gluing (R1 `targetOverlapTransition`) and the over-base/projection compatibility are not assembled
+here. (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
+identity — in `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq`; so the scheme
+open-cover is genuinely a cover *of the rank-`= r` open*, not merely the near-definitional
+chart-cover-complement. The earlier "residue-field-rank bridge is a genuine residual" note is
+superseded — that bridge is landed.) A *bare* `locallyTrivial` over `Spec (sweepSigmaRing)` (the
+closure) is genuinely false (the rank-`< r` boundary lies in no chart). -/
 
 /-- **The per-pivot local-product atlas over the rank-`= r` open.** The full assembly
 (`pivotLocalProductAtlas`): the scheme open-cover of `rankROpen ⊆ Spec (sweepSigmaRing)` by the
 per-pivot charts, the per-pivot trivializations into the standard fibre `SchurLoc ⊗ sweepFibreRing`,
 and the coherent base-algebraic transition cocycle on overlaps — all genuinely assembled and
-machine-checked. **Not** named `locallyTrivial`: `rankROpen` is defined as the
-chart-cover-complement (so the cover is near-definitional) and its identity with `{rank = r}` is the
-geometric reading, not
-a formalized equality; the genuine content is the trivializations + coherent cocycle. -/
+machine-checked. **Not** named `locallyTrivial`: the genuine content is the trivializations + coherent
+cocycle; the fixed-target overlap gluing (R1) and over-base/projection compatibility are not assembled.
+(Its identity with `{rank = r}` is now formalized as a set-of-primes identity — S1
+`FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — so the cover is genuinely a cover
+of the rank-`= r` open.) -/
 noncomputable def reducedFibre_pivotLocalProductAtlasOnRankOpen (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     PivotLocalProductAtlas (k := k) d r hp hq :=
