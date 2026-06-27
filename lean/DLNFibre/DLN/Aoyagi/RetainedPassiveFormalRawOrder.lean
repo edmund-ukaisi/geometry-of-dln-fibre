@@ -67,6 +67,25 @@ theorem retainedPassiveFormalEdgeTangentLinearEquiv_symm_apply
 
 end EdgeRegrouping
 
+section UnitHelpers
+
+variable {ι K : Type*} [CommRing K] [Fintype ι] [DecidableEq ι]
+
+/-- If a square matrix has determinant a unit, then its total nonsingular
+inverse also has determinant a unit. -/
+theorem matrix_det_inv_isUnit_of_det_isUnit (A : Matrix ι ι K)
+    (hA : IsUnit A.det) : IsUnit (A⁻¹).det :=
+  Matrix.isUnit_det_of_right_inverse (A := A⁻¹) (B := A)
+    (Matrix.nonsing_inv_mul A hA)
+
+/-- Negating a square matrix preserves determinant-unit-ness. -/
+theorem matrix_det_neg_isUnit_of_det_isUnit (A : Matrix ι ι K)
+    (hA : IsUnit A.det) : IsUnit (-A).det := by
+  rw [Matrix.det_neg]
+  exact (isUnit_neg_one.pow _).mul hA
+
+end UnitHelpers
+
 section TotalRawOrder
 
 variable {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [CommRing K]
@@ -214,6 +233,91 @@ theorem retainedPassiveFormalRawOrderJacobian_det_eq
         (∏ p : Fin (M + 1), (-A p).det ^ Fintype.card (κ' p.castSucc)) *
           (-LastTop).det ^ Fintype.card (κ' (Fin.last (M + 1))) := by
         rw [retainedPassiveTotalFormalBlockJacobian_det_eq]
+
+/-- The chart-specialized formal raw-order determinant is a unit.
+
+This uses only the formal determinant formula and the retained-passive
+determinant-chart unit facts.  It does not compare this formal raw-order map
+with the analytic Frechet derivative of `topologyTupleEdgeRawOrder`.
+-/
+theorem retainedPassiveFormalRawOrderJacobian_det_isUnit_of_mem_topologyTupleDetChartSet
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' K)
+    (hz : z ∈
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.topologyTupleDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) :
+    let data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ' :=
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+        (K := K) (ρ := ρ) (κ' := κ') z
+    let coord :
+        ChartLocalSuffixState.RetainedPassiveCoordinateData
+          (K := K) (ρ := ρ) κ' :=
+      data.toCoordinateData
+    IsUnit
+      (LinearMap.det
+        (retainedPassiveFormalRawOrderJacobian
+          (ρ := ρ) (κ' := κ') (K := K)
+          (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+            (K := K) (ρ := ρ) data.A1seed)
+          (fun p : Fin (M + 1) => coord.solvedA1 p)
+          (fun p : Fin (M + 1) => coord.F2 p.succ)
+          (fun p : Fin (M + 1) => coord.solvedA3 p)
+          (coord.solvedA1 (Fin.last M)))) := by
+  classical
+  let data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := ρ) κ' :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+      (K := K) (ρ := ρ) (κ' := κ') z
+  let coord :
+      ChartLocalSuffixState.RetainedPassiveCoordinateData
+        (K := K) (ρ := ρ) κ' :=
+    data.toCoordinateData
+  have hdet : data.detChart := hz
+  have hPassive :
+      ∀ p : Fin (M + 1), p ≠ 0 → IsUnit (coord.A1seed p).det := by
+    simpa [coord, data] using
+      data.toCoordinateData_passiveA1_units hdet.2
+  have hTail :
+      IsUnit
+        (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+          (K := K) (ρ := ρ) data.A1seed).det := by
+    simpa [coord, data] using
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := K) (ρ := ρ) coord.A1seed hPassive
+  have hSolvedA1 : ∀ p : Fin (M + 1), IsUnit (coord.solvedA1 p).det := by
+    let h := open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData in
+      solvedA1_det_isUnit_of_detChart (K := K) (ρ := ρ) data hdet
+    simpa [coord, data] using
+      h
+  change
+    IsUnit
+      (LinearMap.det
+        (retainedPassiveFormalRawOrderJacobian
+          (ρ := ρ) (κ' := κ') (K := K)
+          (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+            (K := K) (ρ := ρ) data.A1seed)
+          (fun p : Fin (M + 1) => coord.solvedA1 p)
+          (fun p : Fin (M + 1) => coord.F2 p.succ)
+          (fun p : Fin (M + 1) => coord.solvedA3 p)
+          (coord.solvedA1 (Fin.last M))))
+  rw [retainedPassiveFormalRawOrderJacobian_det_eq]
+  refine
+    (((matrix_det_inv_isUnit_of_det_isUnit
+      (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+        (K := K) (ρ := ρ) data.A1seed)
+      hTail).pow _).mul ?_).mul ?_
+  · rw [IsUnit.prod_univ_iff]
+    intro p
+    exact
+      (matrix_det_neg_isUnit_of_det_isUnit (coord.solvedA1 p)
+        (hSolvedA1 p)).pow _
+  · exact
+      (matrix_det_neg_isUnit_of_det_isUnit
+        (coord.solvedA1 (Fin.last M))
+        (hSolvedA1 (Fin.last M))).pow _
 
 end TotalRawOrder
 
