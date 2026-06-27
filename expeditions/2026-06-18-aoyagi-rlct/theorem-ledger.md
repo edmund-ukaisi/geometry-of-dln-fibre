@@ -11342,3 +11342,30 @@ Nonclaims: no closed finite-sum tail derivative, no F3 early-tail derivative
 recurrence, no full source-staged tuple, no target-side determinant-one
 equivalence, no determinant equality, no measure transport, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 retained-passive target edge-pair recovery:
+`RetainedPassiveCoordinatesJacobian.lean` defines
+`retainedPassiveTargetRecoveredF2At` and
+`retainedPassiveTargetRecoveredSuccessorF2At`, and proves
+`retainedPassiveTargetRecoveredF2At_fderiv_eq_sourceF2`,
+`retainedPassiveTargetRecoveredSuccessorF2At_fderiv_eq_sourceStagedSuccessorF2`,
+`retainedPassiveTargetEdgePairShearAt_fderiv_eq_formalF2C`, and
+`retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-recovery.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-recovery.md`.
+
+The recovered `F2` family is defined by a backward recurrence: terminal
+successor correction is zero at `Fin.last M`; a nonterminal edge uses the
+already recovered successor `F2` value transported by the
+`Fin.succ_castSucc` cast.  On actual derivative targets the recovered family
+equals the source `F2` tangent family, so the induced target-side successor
+family equals the earlier source-staged successor family.  The target-side
+`(F2,C)` normalized pair therefore rewrites to the point-specialized formal
+edge pair, and the existing formal edge-pair inverse recovers `(v.F2, v.C)`.
+Nonclaims: no whole-tuple target-side normalization, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant formula, no
+measure transport, no normal crossings, pole order, or RLCT.

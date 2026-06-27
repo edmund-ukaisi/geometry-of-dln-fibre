@@ -21,6 +21,21 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+After post-interruption reorientation, the retained-passive Jacobian target-
+side `(F2,C)` edge-family recovery slice has landed.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-recovery.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-recovery.md`.
+
+Lean defines a backward recovered `F2` family from a target tuple `w`, proves
+that on `w = (fderiv raw z) v` it equals the source `F2` tangent, and uses the
+resulting target successor family in the all-edge `(F2,C)` shear.  The
+determinant-chart hypothesis remains explicit.  Do not claim a target-side
+determinant-one `LinearEquiv`, actual determinant equality, measure transport,
+normal crossings, pole order, or RLCT from this slice.
+
 A2 retained-passive Ctop/F3 recovery consumers have landed locally in
 `RetainedPassiveCoordinatesJacobian.lean`:
 `Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,

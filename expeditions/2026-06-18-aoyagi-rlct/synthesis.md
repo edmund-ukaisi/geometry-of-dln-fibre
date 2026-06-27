@@ -91,6 +91,35 @@ not RLCT.  The controller decision is to continue with staged
 determinant/shear consumers while leaving the suffix derivatives explicit
 until a later theorem needs them expanded.
 
+## Next A2 Target-Side Edge-Pair Recovery Decision
+
+After the 2026-06-27 interruption, the controller reoriented in the dedicated
+Aoyagi worktree and consumed the two pending read-only xhigh scout reports.
+The branch was clean and synced with `origin/expedition/aoyagi-rlct` at
+`f7d63f10`.
+
+Do not attempt actual determinant equality yet.  The formal determinant side is
+proved, but the actual derivative side still contains staged shears.  The next
+determinant-relevant step is target-side reconstruction for the `(F2,C)` edge
+family: define a backward recovered `F2` family from a target tuple `w`, prove
+that on `w = (fderiv raw z) v` it equals the source `F2` tangent, and use this
+to replace the source-staged successor family in the all-edge `(F2,C)` shear.
+
+Lean now proves the target-side edge-pair recovery slice.  Pen-and-paper
+reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-recovery.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-recovery.md`.
+
+Guardrails: terminal successor correction is zero only at `Fin.last M`;
+nonterminal successor correction is the recovered next `F2` value with the
+`Fin.succ_castSucc` dependent cast; the determinant-chart hypothesis remains
+explicit; this is still not a target-side determinant-one `LinearEquiv`, not
+determinant equality, not measure transport, not normal crossings, not pole
+order, and not RLCT.
+
 ## VM Rotation Flush - 2026-06-23
 
 Current worktree:

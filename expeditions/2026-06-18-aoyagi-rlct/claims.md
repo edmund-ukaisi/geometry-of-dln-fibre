@@ -9584,6 +9584,62 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive target edge-pair recovery
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+sorry/whitespace/axiom audits passed; xhigh review passed after documentation
+status repair.
+
+Claim: define `retainedPassiveTargetRecoveredF2At z w` by backward induction
+over retained edges.  At `Fin.last M`, the successor correction is zero.  At
+`p.castSucc`, the successor correction is the already recovered target-side
+`F2` value at `p.succ`, transported along
+`Fin.succ_castSucc p : p.castSucc.succ = p.succ.castSucc`.  On an actual
+derivative target `w = (fderiv raw z) v`, this recovered family equals the
+source `F2` tangent family `v.F2`.
+
+The induced target-side successor family then replaces the source-staged
+successor family in the all-edge normalized pair
+
+```text
+U_F(q) = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+         - targetXsucc(q) * coord.C q,
+U_C(q) = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc.
+```
+
+Lean proves that this target-side pair equals the point-specialized formal
+`(F2,C)` output pair, and that the existing formal edge-pair inverse recovers
+`(v.F2, v.C)` from it.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`retainedPassiveTargetRecoveredF2At`,
+`retainedPassiveTargetRecoveredSuccessorF2At`,
+`retainedPassiveTargetRecoveredF2At_fderiv_eq_sourceF2`,
+`retainedPassiveTargetRecoveredSuccessorF2At_fderiv_eq_sourceStagedSuccessorF2`,
+`retainedPassiveTargetEdgePairShearAt`,
+`retainedPassiveTargetEdgePairShearAt_fderiv_eq_formalF2C`, and
+`retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-recovery.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-recovery.md`.
+
+Kill condition: terminal zero is used only at `Fin.last M`; nonterminal edges
+must use the recovered successor `F2`, not zero and not a source tangent
+directly.  If the dependent cast direction is changed, the successor
+correction is not the existing retained-passive successor slot.  If this
+theorem is read as a determinant-one target-side `LinearEquiv`, determinant
+equality, or whole-tuple target normalization, it overclaims.
+
+Nonclaims: no whole-tuple target-side normalization, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant formula, no
+measure theorem, no normal crossings, pole order, or RLCT is proved by this
+target edge-pair recovery.
+
 ## A2 retained-passive all-edge pair source-staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

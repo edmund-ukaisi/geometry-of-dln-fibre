@@ -1707,6 +1707,287 @@ theorem F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_reco
   simpa using hrec
 
 set_option linter.style.longLine false in
+/-- Recover the retained `F2` source family from a target raw tuple by a
+backward edge recurrence.  The terminal edge uses the retained-passive zero
+successor convention; a nonterminal edge uses the already recovered successor
+`F2` value. -/
+def retainedPassiveTargetRecoveredF2At
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  Fin.reverseInduction
+    (let q : Fin (M + 1) := Fin.last M
+     let U_F :=
+      w.2.1 q
+        + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+          coord.F2 q.castSucc
+     let U_C :=
+      w.2.2.2.1 q
+        + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+          coord.F2 q.castSucc
+     (coord.solvedA1 q)⁻¹ * (coord.F2 q.succ * U_C - U_F))
+    (fun p Xnext ↦
+      let q : Fin (M + 1) := p.castSucc
+      let Xsucc : Matrix ρ (κ' q.succ) ℝ :=
+        (LinearEquiv.cast (R := ℝ)
+          (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+          (Fin.succ_castSucc p).symm) Xnext
+      let U_F :=
+        w.2.1 q
+          + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+            coord.F2 q.castSucc
+          - Xsucc * coord.C q
+      let U_C :=
+        w.2.2.2.1 q
+          + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+            coord.F2 q.castSucc
+      (coord.solvedA1 q)⁻¹ * (coord.F2 q.succ * U_C - U_F))
+
+set_option linter.style.longLine false in
+@[simp]
+theorem retainedPassiveTargetRecoveredF2At_last
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let q : Fin (M + 1) := Fin.last M
+    retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w q =
+      (coord.solvedA1 q)⁻¹ *
+        (coord.F2 q.succ *
+            (w.2.2.2.1 q
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+                coord.F2 q.castSucc) -
+          (w.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+              coord.F2 q.castSucc)) := by
+  simp [retainedPassiveTargetRecoveredF2At]
+
+set_option linter.style.longLine false in
+@[simp]
+theorem retainedPassiveTargetRecoveredF2At_castSucc
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let q : Fin (M + 1) := p.castSucc
+    let Xsucc : Matrix ρ (κ' q.succ) ℝ :=
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm)
+        (retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w p.succ)
+    retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w q =
+      (coord.solvedA1 q)⁻¹ *
+        (coord.F2 q.succ *
+            (w.2.2.2.1 q
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+                coord.F2 q.castSucc) -
+          (w.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+              coord.F2 q.castSucc
+            - Xsucc * coord.C q)) := by
+  simp [retainedPassiveTargetRecoveredF2At]
+
+set_option linter.style.longLine false in
+/-- The target-recovered successor `F2` family induced by the backward
+recovery recurrence. -/
+def retainedPassiveTargetRecoveredSuccessorF2At
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ∀ q : Fin (M + 1), Matrix ρ (κ' q.succ) ℝ :=
+  @Fin.snoc (n := M)
+    (α := fun q : Fin (M + 1) ↦ Matrix ρ (κ' q.succ) ℝ)
+    (fun p : Fin M ↦
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm)
+        (retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w p.succ))
+    (0 : Matrix ρ (κ' (Fin.last M).succ) ℝ)
+
+set_option linter.style.longLine false in
+@[simp]
+theorem retainedPassiveTargetRecoveredSuccessorF2At_castSucc
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z w p.castSucc =
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm)
+        (retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w p.succ) := by
+  simp [retainedPassiveTargetRecoveredSuccessorF2At]
+
+@[simp]
+theorem retainedPassiveTargetRecoveredSuccessorF2At_last
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveTargetRecoveredSuccessorF2At
+        (ρ := ρ) (κ' := κ') z w (Fin.last M) = 0 := by
+  simp [retainedPassiveTargetRecoveredSuccessorF2At]
+
+set_option linter.style.longLine false in
+/-- On an actual raw-order derivative target, the target-recovered `F2` family
+is the source `F2` tangent family. -/
+theorem retainedPassiveTargetRecoveredF2At_fderiv_eq_sourceF2
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveTargetRecoveredF2At
+        (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) = v.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  change retainedPassiveTargetRecoveredF2At
+      (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) = v.2.1
+  funext q
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  induction q using Fin.reverseInduction with
+  | last =>
+      have hrec :=
+        F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+          (ρ := ρ) (κ' := κ') hz v
+      rw [retainedPassiveTargetRecoveredF2At_last]
+      simpa [raw, coord, Dzv] using hrec
+  | cast p ih =>
+      have hrec :=
+        F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+          (ρ := ρ) (κ' := κ') hz v p
+      rw [retainedPassiveTargetRecoveredF2At_castSucc]
+      rw [ih]
+      simpa [raw, coord, Dzv] using hrec
+
+set_option linter.style.longLine false in
+/-- On an actual raw-order derivative target, the target-recovered successor
+family agrees with the earlier source-staged successor family. -/
+theorem retainedPassiveTargetRecoveredSuccessorF2At_fderiv_eq_sourceStagedSuccessorF2
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveTargetRecoveredSuccessorF2At
+        (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) =
+      retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  change retainedPassiveTargetRecoveredSuccessorF2At
+      (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) =
+    retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  have hF :=
+    retainedPassiveTargetRecoveredF2At_fderiv_eq_sourceF2
+      (ρ := ρ) (κ' := κ') hz v
+  change retainedPassiveTargetRecoveredF2At
+      (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) = v.2.1 at hF
+  funext q
+  induction q using Fin.lastCases with
+  | last =>
+      simp [retainedPassiveTargetRecoveredSuccessorF2At,
+        retainedPassiveSourceStagedSuccessorF2]
+  | cast p =>
+      have hp := congrFun hF p.succ
+      simp [retainedPassiveTargetRecoveredSuccessorF2At,
+        retainedPassiveSourceStagedSuccessorF2, hp]
+
+set_option linter.style.longLine false in
+/-- Target-side all-edge `(F2,C)` shear using the successor family recovered
+from the target tuple itself. -/
+def retainedPassiveTargetEdgePairShearAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ((∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ) ×
+      (∀ q : Fin (M + 1), Matrix (κ' q.succ) (κ' q.castSucc) ℝ)) :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Xsucc := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z w
+  (fun q : Fin (M + 1) ↦
+      w.2.1 q
+        + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+          coord.F2 q.castSucc
+        - Xsucc q * coord.C q,
+    fun q : Fin (M + 1) ↦
+      w.2.2.2.1 q
+        + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+          coord.F2 q.castSucc)
+
+set_option linter.style.longLine false in
+/-- On an actual raw-order derivative target, the target-side all-edge
+`(F2,C)` shear agrees with the `(F2,C)` component of the point-specialized
+formal raw-order output. -/
+theorem retainedPassiveTargetEdgePairShearAt_fderiv_eq_formalF2C
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveTargetEdgePairShearAt
+        (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) =
+      (((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1,
+        ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  have hX :=
+    retainedPassiveTargetRecoveredSuccessorF2At_fderiv_eq_sourceStagedSuccessorF2
+      (ρ := ρ) (κ' := κ') hz v
+  have hsource :=
+    F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  change retainedPassiveTargetEdgePairShearAt (ρ := ρ) (κ' := κ') z Dzv =
+      (((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1,
+        ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1)
+  rw [retainedPassiveTargetEdgePairShearAt, hX]
+  simpa [raw, coord, Dzv] using hsource
+
+set_option linter.style.longLine false in
+/-- The formal edge-pair inverse recovers the source `(F2,C)` family from the
+target-side all-edge normalized pair on an actual raw-order derivative target. -/
+theorem retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+        (retainedPassiveTargetEdgePairShearAt
+          (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v)) =
+      (v.2.1, v.2.2.2.1) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hpair :=
+    retainedPassiveTargetEdgePairShearAt_fderiv_eq_formalF2C
+      (ρ := ρ) (κ' := κ') hz v
+  have hrec :=
+    retainedPassiveFormalRawF2CLinearEquivAt_symm_recovers_sourcePair
+      (ρ := ρ) (κ' := κ') hz v
+  change (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+      (retainedPassiveTargetEdgePairShearAt
+        (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v)) =
+    (v.2.1, v.2.2.2.1)
+  rw [hpair]
+  simpa using hrec
+
+set_option linter.style.longLine false in
 /-- Hybrid whole-tuple package whose `(F2,C)` edge-family branch is
 source-staged, while `A1passive`, `Ctop`, and `F3` keep the derivative-staged
 corrections from `shearedTopologyTupleEdgeRawOrderFDerivAt`. -/

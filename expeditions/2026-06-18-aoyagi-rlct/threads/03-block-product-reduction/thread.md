@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 target-side edge-pair recovery frontier
+
+Post-interruption reorientation found the expedition worktree clean at
+`f7d63f10` on `origin/expedition/aoyagi-rlct`.  Read-only xhigh scouts `Curie`
+and `Maxwell` both warned against jumping to determinant equality.  Curie
+identified the next determinant-relevant gap as target-side reconstruction of
+the `(F2,C)` edge family; Maxwell independently confirmed that any theorem
+still mentioning source-staged or derivative-staged corrections is not a
+determinant theorem.
+
+Chosen next slice:
+`reproduction-a2-retained-passive-target-edge-pair-recovery.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-edge-pair-recovery.md`.
+Review:
+`review-a2-retained-passive-target-edge-pair-recovery.md`, PASS after
+documentation status repair.
+
+Lean now defines a backward target recurrence: recover terminal `F2` using
+the zero successor correction, recover each nonterminal `F2` using the
+recovered successor value transported by the
+`p.succ.castSucc = p.castSucc.succ` cast, then build the target-side all-edge
+`(F2,C)` shear.  On actual derivatives, this target successor family equals
+the earlier source-staged successor family, so the existing all-edge
+source-staged theorem is reused.
+
+Nonclaims remain active: no whole-tuple target-side normalization, no
+determinant-one `LinearEquiv`, no actual derivative determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 Ctop/F3 source-staged recovery consumers
 
 After the Ctop tail endpoint substitution, the controller chose the small
