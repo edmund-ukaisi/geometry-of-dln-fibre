@@ -75,3 +75,18 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   - **Next**: spawn hardener (decorrelated bedrock on S1+S2, thread 05); launch S3 (flatness) + S4
     (locallyTrivial) tides — both unblocked by S1; instruct to base on `expedition/fibration-geometry`
     (origin/dev lacks the landed modules — the cross-base rule). S2b parked for the next wave.
+
+- **tick 3 (backstop, 2026-06-27 ~14:37):** drift-glance only. Wave-2 agents (S3 `a177d4ad`, S4
+  `aeba477c`, hardener `ae7f3ab0`) all at `3cb4fc17` (have the landed keystone — cross-base step worked),
+  **0 dirty / no own commits / no pings** — still working. No operator edit. Nothing actionable;
+  re-sleep.
+
+- **tick 4 (hardener verdict in, 2026-06-27 ~15:00):** hardener-wave1 returned: **S1 + S2 both
+  PASS-WITH-NOTES, bedrock, no CRITICAL** (name=content, vacuity fenced, Kähler/conormal right; Codex
+  xhigh concurred on both). No fix-loop. Notes: (i) S1 `[Infinite k]` is typecheck-load-bearing for
+  `rankROpen` (card accurate); (ii) no in-file non-vacuity `example` for S1 (bedrock-2.1 nicety →
+  roadmap); (iii) **S2's `TopDimMinPrimes(sweepFibreRing)`-nonempty residual is a flagged Just-Do-It** —
+  plausibly closeable on `fibre_normalForm_nonempty` (gate ⟹ sweepFibreRing nonzero) + a "top-dim
+  minimal prime exists" lemma; closing it makes `exists_smoothBlock_certificate` a hypothesis-free
+  existence theorem. S2b (conormal) confirmed REAL-BUILD → roadmap. **Action:** commissioned S2c tide
+  (thread 06) for the Just-Do-It. S3/S4 still running. Hardener self-cleared.
