@@ -967,3 +967,18 @@ informs the general closed-φ_M chaining det):
    itself stays green + reusable; the det is a scoped follow-up module.
 Corollary for the controller: a green, reusable infra file can be committed UN-WIRED (not in the aggregator) to avoid
 loading a multi-minute build onto every aggregator green-gate — build it on-demand (as with the Deepest* family).
+
+## Validate-small only covers what you RUN THROUGH the general machinery (2026-06-27, the latent decoder det gap)
+The structured decoder `genBlkFlatStruct` was built + validated for the RATE only (`routeMCore_phiFlatStruct
+= u²·V`, proven ∀M). Its DETERMINANT was NEVER exercised — the two discharged anchors ((4,4,2,2), (3,3,4))
+used HAND-BUILT `pivotBlowupOn` charts (`chartParams4422 = pack ∘ pivotBlowupOn`, 0 uses of the decoder), so
+the general decoder's det gap stayed LATENT until the bridge build (b/c/d) tried to derive `|det Dφ| =
+|x p|^{minAdm−1}` from it — and couldn't (the decoder has `Rfin=0`, `structPivot=coord-0`, `u` scaling all
+`minAdm` E-coords → `|u|^{minAdm}` off-by-one, no fixed-1 residual slot for the clean radial blow-up).
+**Lesson:** a "validate-small" anchor only validates the components the small case actually routes through the
+GENERAL machinery. The (4,4,2,2) anchor validated the rate engine but NOT the decoder's det, because its chart
+bypassed the decoder. When a general construction has TWO obligations (here rate + det), validate-small must
+exercise BOTH through the same general object — or the unexercised obligation is an untested claim wearing a
+green build. **Directed suspicion for the controller:** when integrating a general engine, ask "which anchor
+ran THIS specific obligation through THIS specific general definition?" — not "is there a green anchor nearby?"
+Caught at the bridge build, not at decoder-integration, because the decoder's det was never named as a target.
