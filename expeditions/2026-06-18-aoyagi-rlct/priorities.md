@@ -21,6 +21,46 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next retained-passive `dEarly` recurrence slice has landed locally: the
+nonterminal product-rule `dG` substitution.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+
+Lean proves the endpoint helper
+`fderiv_retainedPassiveA3WithoutLast_apply` and the product-rule substitution
+theorem
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSucc_apply`
+in `RetainedPassiveCoordinatesDerivative.lean`.  For a nonterminal current
+edge `p = q.castSucc`, the product-rule term
+
+```text
+- Cprod(z) * (fderiv A3p z)(v) * Pcast(z)^{-1}
+```
+
+is rewritten as
+
+```text
+- Cprod(z) * v.2.2.1 q * Pcast(z)^{-1}.
+```
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed.  Xhigh reviewer `Averroes` passed the theorem boundary, factor order,
+and nonclaims.  `scripts/sorries`, `git diff --check`, the full `DLNFibre`
+build, and theorem axiom audit passed; both new theorems have only the
+standard `[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
+full positive-tail `F3` target staging, no determinant-one target-side
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
+Next frontier on this local ladder: either add the terminal zeroed-tail
+boundary companion or start source-staging `dCprod`.  `dPcast` is riskier
+because `Pcast` uses solved `A1`, including the endpoint inverse/Ctop block.
+
+Immediate predecessor: source-staging of the zeroed lower-left `dG` factor.
+
 The next retained-passive `dEarly` source-staging slice has landed locally:
 the `dG` factor for the zeroed lower-left family.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dg-source-staging.md`.

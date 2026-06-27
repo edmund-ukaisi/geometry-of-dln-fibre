@@ -14912,3 +14912,50 @@ axiom audit passed.  Both new theorems have only the standard
 Nonclaims: no target staging, no `dD` or `dP` staging, no full positive-tail
 `F3` target staging, no determinant theorem, no measure theorem, no normal
 crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive dEarly Product-Rule dG Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveA3WithoutLast_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSucc_apply
+```
+
+The first theorem packages the endpoint split for the zeroed-final `A3`
+family derivative.  The second specializes the retained-passive `dEarly`
+product-rule recurrence to a nonterminal current edge `p = q.castSucc` and
+substitutes
+
+```text
+(fderiv A3p z)(v) = v.2.2.1 q.
+```
+
+Consequently the product-rule term
+
+```text
+- Cprod(z) * (fderiv A3p z)(v) * Pcast(z)^{-1}
+```
+
+becomes
+
+```text
+- Cprod(z) * v.2.2.1 q * Pcast(z)^{-1}.
+```
+
+The derivatives of `Cprod`, `Pcast`, and the successor tail remain explicit.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-product-rule-dg-substitution.md`
+passed by xhigh `Averroes`.  Focused module build, `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed.
+Both new theorems have only the standard `[propext, Classical.choice,
+Quot.sound]` footprint.
+
+Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
+full positive-tail `F3` target staging, no determinant theorem, no measure
+theorem, no normal crossings, pole order, or RLCT.

@@ -9788,6 +9788,53 @@ positive-tail `F3` target staging, no whole-tuple target-side normalization,
 no target-side determinant-one `LinearEquiv`, no determinant equality, no
 measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly product-rule dG substitution
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed.
+
+Claim: in the retained-passive `dEarly` product-rule recurrence, at a
+nonterminal current edge `p = q.castSucc`, the `A3p` derivative factor is
+source-staged:
+
+```text
+dA3p_z(v) = v.2.2.1 q.
+```
+
+Thus the existing product-rule term
+
+```text
+- Cprod(z) * dA3p_z(v) * Pcast(z)^{-1}
+```
+
+is rewritten as
+
+```text
+- Cprod(z) * v.2.2.1 q * Pcast(z)^{-1}.
+```
+
+Lean proves the endpoint helper
+`fderiv_retainedPassiveA3WithoutLast_apply` and the product-rule substitution
+theorem
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSucc_apply`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-dg-substitution.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+
+Kill condition: if this is read as staging `dCprod` or `dPcast`, if the
+matrix factor order is changed, or if it is advertised as target staging,
+determinant equality, measure transport, normal crossings, pole order, or
+RLCT, it is not the intended slice.
+
+Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
+full positive-tail `F3` target staging, no determinant theorem, no measure
+theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive dEarly dG source staging
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;

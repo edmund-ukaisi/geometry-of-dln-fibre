@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly product-rule dG substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Review:
+`review-a2-retained-passive-dearly-product-rule-dg-substitution.md`, PASS by
+xhigh `Averroes`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveA3WithoutLast_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSucc_apply
+```
+
+This substitutes the nonterminal source-staged `dG` factor into the retained-
+passive `dEarly` product-rule recurrence.  For `p = q.castSucc`, the term
+`- Cprod(z) * (fderiv A3p z)(v) * Pcast(z)^{-1}` is rewritten as
+`- Cprod(z) * v.2.2.1 q * Pcast(z)^{-1}`.  The matrix factor order is
+unchanged.
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; both new theorems have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
+full positive-tail `F3` target staging, no determinant-one `LinearEquiv`, no
+actual derivative determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly dG source staging
 
 Reproduction:

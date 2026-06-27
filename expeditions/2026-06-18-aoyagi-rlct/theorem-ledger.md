@@ -11541,3 +11541,25 @@ standard `[propext, Classical.choice, Quot.sound]` footprint.  Nonclaims: no
 target staging, no `dD` or `dP` staging, no full positive-tail `F3` target
 staging, no determinant theorem, no measure theorem, no normal crossings, pole
 order, or RLCT.
+
+Latest A2 retained-passive dEarly product-rule dG substitution:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassiveA3WithoutLast_apply` and
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dG_castSucc_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-product-rule-dg-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-product-rule-dg-substitution.md`
+passed by xhigh `Averroes`.
+
+The product-rule substitution theorem specializes the retained-passive
+`dEarly` current summand to `p = q.castSucc` and rewrites the `A3p` derivative
+factor as the passive source tangent `v.2.2.1 q`, preserving the matrix order
+`Cprod * dG * Pcast^{-1}`.  Focused module build, `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed;
+both new theorems have only the standard `[propext, Classical.choice,
+Quot.sound]` footprint.  Nonclaims: no `dCprod` staging, no `dPcast` staging,
+no target staging, no full positive-tail `F3` target staging, no determinant
+theorem, no measure theorem, no normal crossings, pole order, or RLCT.
