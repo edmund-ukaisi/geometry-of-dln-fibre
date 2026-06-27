@@ -9948,6 +9948,31 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive nonterminal edge-pair staged target shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2`,
+and
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`;
+first xhigh review failed on derivative/source staging, and post-repair xhigh
+review passed.
+The theorem handles one nonterminal edge `q = p.castSucc` under a supplied
+successor input `Xsucc` equal to the source tangent `v.F2_(p.succ)` transported
+along `Fin.succ_castSucc p`, and the projection lemma identifies that casted
+source tangent with the actual derivative of the successor extended `F2` slot.
+It packages the normalized target pair as the formal edge pair and reuses the
+formal inverse to recover the current source `F2` and `C` tangents.  This is
+not a full descending induction, not a
+target-side determinant-one equivalence, not an actual derivative determinant
+formula, and not measure transport, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive terminal edge-pair target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,

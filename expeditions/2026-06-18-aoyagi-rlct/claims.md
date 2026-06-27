@@ -9584,6 +9584,56 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive nonterminal edge-pair staged target shear
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+first xhigh review failed on a derivative/source-staging mismatch; Lean fixed;
+xhigh re-review passed.
+
+Claim: for a nonterminal retained-passive edge `q = p.castSucc` with
+`p : Fin M`, if the staged successor input `Xsucc` is the source tangent
+`v.F2_(p.succ)` transported along
+`Fin.succ_castSucc p : p.castSucc.succ = p.succ.castSucc`, then the normalized
+actual target pair
+
+```text
+U_F = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+      - Xsucc * coord.C q,
+U_C = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc
+```
+
+equals the corresponding point-specialized formal `(F2,C)` output pair, and
+the formal edge inverse recovers the current source `F2` and `C` tangents.
+
+Lean proves the source-staged public package as
+`fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2`,
+and
+`F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C`.
+The internal derivative-staged bridge is
+`F2C_nonterminal_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`F2C_nonterminal_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2`,
+and
+`F2C_nonterminal_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+
+Kill condition: the theorem is one-step and staged.  If read as the full
+descending target-side construction, or if `Xsucc` is silently set to zero at
+a nonterminal edge, it overclaims.  If the dependent-index cast is omitted, the
+statement is not the actual Lean source-tangent theorem.
+
+Nonclaims: no full descending induction, no target-side determinant-one linear
+equivalence, no actual derivative determinant formula, no measure theorem, no
+normal crossings, pole order, or RLCT is proved by this one-step result.
+
 ## A2 retained-passive terminal edge-pair target shear
 
 Status: Proved in Lean; reproduced on paper; xhigh review passed.

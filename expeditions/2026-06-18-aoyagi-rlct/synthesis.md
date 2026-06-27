@@ -14026,3 +14026,73 @@ This remains terminal-edge only.  It is not the nonterminal staged
 construction, not a global determinant-controlled target-side equivalence, not
 an actual derivative determinant formula, and not measure transport, normal
 crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Nonterminal Edge-Pair Staged Target Shear
+
+After a second post-interruption reorientation, `git fetch origin` found
+`HEAD = origin/expedition/aoyagi-rlct =
+547494fb4232651bdb0c4e139eff2b4005752257`.  `origin/dev` had advanced to
+`06b30931f84fe4d710e93d873ab3ed37aaa54b83` through the theta-components
+merge.  That merge did not change the `lean/scripts/lb` wrapper in this
+worktree, so this slice stayed on the expedition branch rather than rebasing
+the whole Aoyagi stack over the unrelated theta merge.
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the first nonterminal
+one-step source-staged target-side edge-pair package:
+
+```text
+fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C
+```
+
+For `p : Fin M`, `q = p.castSucc : Fin (M+1)`, and
+`Dzv = d(topologyTupleEdgeRawOrder)_z(v)`, the staged input is
+
+```text
+Xsucc =
+  cast_{p.succ.castSucc = p.castSucc.succ}(v.F2_(p.succ)).
+```
+
+The projection lemma proves that this casted source tangent is equal to
+`d((ofTopologyTuple ·).toCoordinateData.F2 q.succ)_z(v)`.  The older
+derivative-staged theorems remain as internal bridge lemmas.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`
+records the first xhigh FAIL on the derivative/source-staging mismatch and the
+post-repair xhigh PASS.
+
+The normalized pair is
+
+```text
+U_F = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+      - Xsucc * coord.C q,
+U_C = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc.
+```
+
+The first theorem proves `(U_F,U_C)` equals the corresponding formal raw-order
+output pair.  The recovery theorems then reuse the formal edge inverse to
+recover the current source `F2_q` and `C_q` tangents.
+
+This is a one-step staged result only.  The later descending induction must
+supply or recover this successor tangent before applying the current-edge
+formula.  It is not the full recursive construction,
+not a determinant-one target-side equivalence, not an actual derivative
+determinant formula, and not measure transport, normal crossings, pole order,
+or RLCT.
+
+Verification for this slice:
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the projection/source-staged theorems
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  The new projection/source-staged theorems depend only on
+`[propext, Classical.choice, Quot.sound]`.

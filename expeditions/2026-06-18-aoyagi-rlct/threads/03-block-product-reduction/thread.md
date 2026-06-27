@@ -10412,3 +10412,48 @@ This is still terminal-edge only.  It does not prove the nonterminal staged
 target-side construction, a determinant-one target-side linear equivalence,
 actual derivative determinant equality, measure transport, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-27 A2 retained-passive nonterminal edge-pair staged target shear
+
+Reproduction:
+`reproduction-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+Review:
+`review-a2-retained-passive-nonterminal-edge-pair-staged-target-shear.md`.
+First xhigh read-only review failed on a derivative/source-staging mismatch;
+Lean was fixed with a projection derivative lemma; post-repair xhigh re-review
+passed.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean
+```
+
+Lean now proves the one-step nonterminal source-staged package:
+
+```text
+fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C
+```
+
+For `p : Fin M` and `q = p.castSucc`, the normalized target pair is
+
+```text
+U_F = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+      - Xsucc * coord.C q,
+U_C = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc,
+```
+
+where `Xsucc` is the source tangent `v.F2_(p.succ)` transported along
+`Fin.succ_castSucc p`; the projection lemma identifies it with the actual
+derivative of the successor extended `F2` slot.  With that staged input,
+`(U_F,U_C)` equals the formal edge pair, and the formal inverse recovers
+`v.F2_q` and `v.C_q`.
+
+This is not the descending induction over all edges.  It does not prove a
+target-side `LinearEquiv`, determinant equality, measure transport, normal
+crossings, pole order, or RLCT.
