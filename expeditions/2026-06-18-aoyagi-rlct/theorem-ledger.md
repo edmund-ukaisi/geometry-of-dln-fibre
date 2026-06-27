@@ -9996,6 +9996,35 @@ source-staged tuple, not a target-side determinant-one equivalence, not an
 actual derivative determinant formula, and not measure transport, normal
 crossings, pole order, or RLCT.
 
+Latest A2 retained-passive passive A1 source-staged shear:
+`RetainedPassiveCoordinatesJacobian.lean` defines
+`retainedPassiveSourceStagedSuccessorA3` and proves
+`retainedPassiveSourceStagedSuccessorA3_castSucc`,
+`retainedPassiveSourceStagedSuccessorA3_last`,
+`fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply`,
+`fderiv_retainedPassive_toCoordinateData_F2_succ_apply`,
+`retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3`,
+and
+`A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-source-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-source-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-source-staged-shear.md`
+passed by xhigh `Lagrange`.
+
+The nonterminal solved-`A3` projection derivative is proved only at
+`p.castSucc`.  The all-edge lower-left readout is proved only after
+left-multiplication by `coord.F2 q.succ`; the terminal case is killed by the
+terminal zero extended `F2` slot, not by a false terminal `solvedA3` derivative
+identity.  The passive `A1` staged theorem substitutes this multiplier
+identity and the all-edge successor `F2` derivative readout into the old
+passive `A1` bridge.  This is not `Ctop` staging, not `F3` staging, not a
+fully source-staged tuple, not a target-side determinant-one equivalence, not
+an actual derivative determinant formula, and not measure transport, normal
+crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

@@ -6407,3 +6407,22 @@ and agree with the point-specialized formal raw-order map.  Next priority in
 this lane is still the remaining analytic-to-formal component comparison,
 especially endpoint-sensitive pieces, without asserting the full determinant
 equality before the triangular/shear factorization is actually proved.
+
+A2 retained-passive passive A1 source-staged shear has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-source-staged-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-source-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-source-staged-shear.md`
+passed by xhigh `Lagrange`.  Lean proves the nonterminal `solvedA3`
+projection derivative, the all-edge successor `F2` derivative readout, the
+all-edge lower-left multiplier readout using the terminal zero `F2` slot, and
+`A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+
+Next priority in this lane: continue source-staging only where the derivative
+obligations are explicitly discharged.  Good next candidates are formal
+recovery lemmas for `A1passive`/`Ctop`/`F3`, or a narrow Ctop/F3 staging probe
+with the tail-inverse, early-tail, and terminal-top derivative obligations
+kept explicit.  Do not claim a fully source-staged tuple, target-side
+`LinearEquiv`, determinant-one shear, determinant equality, measure transport,
+normal crossings, pole order, or RLCT from the passive `A1` slice.

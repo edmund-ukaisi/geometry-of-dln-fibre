@@ -9663,6 +9663,61 @@ Nonclaims: no target-side `LinearEquiv`, no determinant-one shear, no actual
 derivative determinant formula, no measure theorem, no normal crossings, pole
 order, or RLCT is proved by this hybrid tuple package.
 
+## A2 retained-passive passive A1 source-staged shear
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+sorry/whitespace/axiom audits passed; xhigh boundary review passed.
+
+Claim: define the all-edge staged successor lower-left tangent family by
+`Fin.snoc`.  For a nonterminal edge `q = p.castSucc`, the family value is the
+stored passive source tangent `v.A3passive_p`; for the terminal edge
+`q = Fin.last M`, the family value is zero.  Lean proves the nonterminal
+projection derivative
+
+```text
+d(solvedA3_{p.castSucc})_z(v) = v.A3passive_p
+```
+
+and the all-edge multiplier identity
+
+```text
+coord.F2 q.succ * d(solvedA3_q)_z(v)
+  = coord.F2 q.succ * XsuccA3(q).
+```
+
+The terminal case uses `coord.F2 (Fin.last (M+1)) = 0`; it does not identify
+the terminal `solvedA3` derivative.  Substituting this identity and the
+all-edge successor `F2` derivative readout into the old passive `A1` bridge
+gives the passive `A1` source-staged formula.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`retainedPassiveSourceStagedSuccessorA3`,
+`retainedPassiveSourceStagedSuccessorA3_castSucc`,
+`retainedPassiveSourceStagedSuccessorA3_last`,
+`fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply`,
+`fderiv_retainedPassive_toCoordinateData_F2_succ_apply`,
+`retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3`,
+and
+`A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-source-staged-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-source-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-source-staged-shear.md`.
+
+Kill condition: if `d(solvedA3_q) = XsuccA3(q)` is asserted for all `q`, the
+claim is false at the terminal edge.  If the terminal zero `F2` multiplier is
+removed, the all-edge multiplier identity overclaims.  If the theorem is read
+as staging `Ctop`, staging `F3`, or staging the whole tuple, it overclaims.
+
+Nonclaims: no `Ctop` staging, no `F3` staging, no fully source-staged tuple,
+no target-side `LinearEquiv`, no determinant-one shear, no actual derivative
+determinant formula, no measure theorem, no normal crossings, pole order, or
+RLCT is proved by this passive `A1` source-staged bridge.
+
 ## A2 retained-passive nonterminal edge-pair staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

@@ -14200,3 +14200,65 @@ This remains hybrid packaging.  It is not a fully source-staged tuple, not a
 target-side `LinearEquiv`, not a determinant-one shear, not an actual
 derivative determinant formula, and not measure transport, normal crossings,
 pole order, or RLCT.
+
+## Latest A2 Retained-Passive Passive A1 Source-Staged Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the next narrow
+source-staging step for the passive `A1` branch:
+
+```text
+retainedPassiveSourceStagedSuccessorA3
+retainedPassiveSourceStagedSuccessorA3_castSucc
+retainedPassiveSourceStagedSuccessorA3_last
+fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply
+fderiv_retainedPassive_toCoordinateData_F2_succ_apply
+retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3
+A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The new `A3` staged successor family is source `A3passive` on nonterminal
+indices and zero at `Fin.last M`.  It is not the derivative of `solvedA3` at
+the terminal index.  Lean proves the actual nonterminal projection derivative
+
+```text
+d(solvedA3_{p.castSucc}) = v.A3passive_p,
+```
+
+then proves the all-edge multiplier identity
+
+```text
+coord.F2 q.succ * d(solvedA3_q)
+  = coord.F2 q.succ * XsuccA3(q).
+```
+
+The terminal case is valid because `coord.F2 (Fin.last (M+1)) = 0`, not
+because the terminal `solvedA3` derivative vanishes.  Substituting this
+identity and the all-edge successor `F2` derivative readout into the old
+passive `A1` bridge yields the source-staged passive `A1` formula.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-source-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1passive-source-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1passive-source-staged-shear.md`
+passed by xhigh `Lagrange`.
+
+Verification so far:
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the new source-staged passive-A1 theorems
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorems depend only on
+`[propext, Classical.choice, Quot.sound]`.
+
+This remains passive-`A1` staging only.  It is not a fully source-staged tuple,
+not `Ctop` or `F3` staging, not a target-side `LinearEquiv`, not a
+determinant-one shear, not an actual derivative determinant equality, and not
+measure transport, normal crossings, pole order, or RLCT.

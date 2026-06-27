@@ -64,6 +64,36 @@ source-staged.  Nonclaims: no target-side `LinearEquiv`, determinant-one
 shear, actual derivative determinant equality, measure transport, normal
 crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 passive A1 source-staged shear
+
+Next narrow derivative-factorization slice: source-stage the passive
+`A1passive` correction terms only, while leaving `Ctop` and `F3`
+derivative-staged.
+
+Reproduction:
+`reproduction-a2-retained-passive-a1passive-source-staged-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-a1passive-source-staged-shear.md`.
+Review:
+`review-a2-retained-passive-a1passive-source-staged-shear.md` passed by xhigh
+`Lagrange`.
+
+Lean now defines the staged successor lower-left family
+`retainedPassiveSourceStagedSuccessorA3`, proves the nonterminal projection
+derivative
+`fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply`, proves the
+all-edge successor `F2` derivative readout, and proves the all-edge
+multiplier identity
+`retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3`.
+The terminal case of that multiplier theorem uses only the terminal zero
+extended `F2` slot; it does not identify the terminal `solvedA3` derivative.
+
+The resulting passive `A1` source-staged bridge is
+`A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+This is not a fully source-staged tuple, not `Ctop` or `F3` staging, not a
+target-side `LinearEquiv`, not determinant-one shear, not determinant equality,
+and not measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

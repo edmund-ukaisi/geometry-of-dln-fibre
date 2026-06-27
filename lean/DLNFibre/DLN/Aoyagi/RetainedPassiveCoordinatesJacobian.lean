@@ -1689,6 +1689,212 @@ theorem edgePairSourceStaged_sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalR
         · simpa [edgePairSourceStagedShearedTopologyTupleEdgeRawOrderFDerivAt, old] using
             congrArg (fun u : RetainedPassiveRawTopologyTuple ρ κ' ℝ ↦ u.2.2.2.2) hold
 
+set_option linter.style.longLine false in
+/-- The all-edge source-staged successor lower-left tangent family: nonterminal
+edges use the stored passive `A3` source tangent, while the terminal edge uses
+zero.  This is not the derivative of `solvedA3` at the terminal edge. -/
+def retainedPassiveSourceStagedSuccessorA3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ∀ q : Fin (M + 1), Matrix (κ' q.succ) ρ ℝ :=
+  @Fin.snoc (n := M)
+    (α := fun q : Fin (M + 1) ↦ Matrix (κ' q.succ) ρ ℝ)
+    (fun p : Fin M ↦ v.2.2.1 p)
+    (0 : Matrix (κ' (Fin.last M).succ) ρ ℝ)
+
+@[simp]
+theorem retainedPassiveSourceStagedSuccessorA3_castSucc
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v p.castSucc =
+      v.2.2.1 p := by
+  simp [retainedPassiveSourceStagedSuccessorA3]
+
+@[simp]
+theorem retainedPassiveSourceStagedSuccessorA3_last
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v (Fin.last M) = 0 := by
+  simp [retainedPassiveSourceStagedSuccessorA3]
+
+set_option linter.style.longLine false in
+/-- At a nonterminal lower-left edge, the solved `A3` coordinate is the stored
+passive source coordinate, so its Frechet derivative is the passive source
+tangent. -/
+theorem fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+          p.castSucc) z) v =
+      v.2.2.1 p := by
+  have hfun :
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+          p.castSucc) =
+        fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ y.2.2.1 p := by
+    funext y
+    change
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA3
+          p.castSucc =
+        y.2.2.1 p
+    have hsolve :=
+      ChartLocalSuffixState.retainedPassiveSolvedA3_eq_of_ne_last
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).F3
+        (Fin.castSucc_ne_last p)
+    simpa [ChartLocalSuffixState.RetainedPassiveCoordinateData.solvedA3, toCoordinateData] using hsolve
+  let LA3 : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →L[ℝ]
+      Matrix (κ' p.castSucc.succ) ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  rw [hfun]
+  have hLA3 :
+      fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ y.2.2.1 p) z =
+        LA3 := LA3.fderiv
+  rw [hLA3]
+  rfl
+
+set_option linter.style.longLine false in
+/-- The derivative of the extended successor `F2` coordinate is exactly the
+all-edge source-staged successor `F2` tangent family. -/
+theorem fderiv_retainedPassive_toCoordinateData_F2_succ_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Finite ρ] [∀ j, Finite (κ' j)]
+    (z v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (q : Fin (M + 1)) :
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+          q.succ) z) v =
+      retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v q := by
+  induction q using Fin.lastCases with
+  | last =>
+      simpa using
+        fderiv_retainedPassive_toCoordinateData_F2_last_apply
+          (ρ := ρ) (κ' := κ') z v
+  | cast p =>
+      simpa using
+        fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply
+          (ρ := ρ) (κ' := κ') z v p
+
+set_option linter.style.longLine false in
+/-- Multiplying by the successor extended `F2` slot makes the source-staged
+lower-left readout valid at every edge.  At nonterminal edges this is the
+projection derivative of `solvedA3`; at the terminal edge both sides have the
+zero terminal extended `F2` factor. -/
+theorem retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (q : Fin (M + 1)) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    coord.F2 q.succ *
+        (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+              q) z) v =
+      coord.F2 q.succ * retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v q := by
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  induction q using Fin.lastCases with
+  | last =>
+      have hF2 : coord.F2 (Fin.last (M + 1)) = 0 := by
+        simp [coord, ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.toCoordinateData]
+      have hF2' : coord.F2 (Fin.last M).succ = 0 := by
+        simpa using hF2
+      change coord.F2 (Fin.last M).succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                (Fin.last M)) z) v =
+        coord.F2 (Fin.last M).succ *
+          retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v (Fin.last M)
+      rw [hF2']
+      rw [Matrix.zero_mul, Matrix.zero_mul]
+  | cast p =>
+      have hA3 :=
+        fderiv_retainedPassive_toCoordinateData_solvedA3_castSucc_apply
+          (ρ := ρ) (κ' := κ') z v p
+      change coord.F2 p.castSucc.succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.castSucc) z) v =
+        coord.F2 p.castSucc.succ *
+          retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v p.castSucc
+      rw [hA3]
+      simp
+
+set_option linter.style.longLine false in
+/-- The passive top-left branch can be staged using explicit successor source
+`F2` and lower-left tangents.  The terminal lower-left derivative is not
+identified with a source tangent; it is killed only after multiplication by
+the terminal zero extended `F2` slot. -/
+theorem A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let XsuccF2 := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+    let XsuccA3 := retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v
+    ((fderiv ℝ raw z) v).1 p
+      - XsuccF2 p.succ * coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ * XsuccA3 p.succ =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let XsuccF2 := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  let XsuccA3 := retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v
+  have hA1 :=
+    A1passive_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v p
+  have hF2 :=
+    fderiv_retainedPassive_toCoordinateData_F2_succ_apply
+      (ρ := ρ) (κ' := κ') z v p.succ
+  have hA3 :=
+    retainedPassive_F2_succ_mul_fderiv_solvedA3_eq_sourceStagedSuccessorA3
+      (ρ := ρ) (κ' := κ') z v p.succ
+  change ((fderiv ℝ raw z) v).1 p
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 p at hA1
+  change coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+        coord.F2 p.succ.succ * XsuccA3 p.succ at hA3
+  rw [hF2] at hA1
+  rw [hA3] at hA1
+  simpa [XsuccF2, XsuccA3] using hA1
+
 end Aoyagi
 end DLN
 end DLNFibre
