@@ -9584,6 +9584,68 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive F3 positive-tail dEarly consumers
+
+Status: Proved in Lean; controller pen-and-paper reproductions written;
+focused and full builds passed; sorry scan, whitespace check, axiom audits,
+and independent xhigh implementation reviews passed.
+
+Claim: in the positive-tail retained-passive `F3` bridge whose terminal
+`dLast` factor is already target-staged, the first-index zero-current
+`dEarly` recurrence can be substituted without expanding the remaining
+recursive derivative.  For tail length `M+1`, with
+
+```text
+q0 = 0 : Fin (M+1),
+p0 = q0.castSucc,
+r0 = q0.succ,
+qLast = Fin.last M,
+```
+
+Lean proves
+`F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and the corresponding recovery theorem
+`F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+The expanded `dEarly` leaves `dPsucc`, `dTail`, `dCnext`, and `(fderiv
+Nextfun z) v` explicit.  The recovery theorem uses the same staged expression
+and right-multiplies by `(-(coord.solvedA1 (Fin.last (M+1))))^-1`.
+
+For tail length `(M+1)+1`, the first recursive `Nextfun` term is then consumed
+once more using the successor-index `dEarly` theorem at
+
+```text
+s0 = 0 : Fin (M+1),
+q1 = s0.succ,
+u1 = s0.castSucc,
+p1 = q1.castSucc,
+r1 = q1.succ.
+```
+
+Lean proves
+`F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and the recovery theorem
+`F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+The successor tangent is `v.1 u1`, not `v.1 q1`; `dPsucc1`, `Psucc1`, and
+the next recursive derivative remain explicit.
+
+Reproduction, statement cards, and reviews:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+
+Kill condition: if the two-positive theorem covers the one-positive-tail case,
+uses tangent `v.1 q1`, rewrites the first-level `dPsucc`, terminal-cleans
+`Psucc1`, commutes matrix factors, or distributes the outer
+`- dEarly * terminalSolvedA1`, it is not the intended slice.
+
+Nonclaims: no full positive-tail `F3` target staging, no closed finite-sum
+formula for `dEarly`, no determinant equality, no measure transport, no
+normal crossings, no pole order, and no RLCT.
+
 ## A2 retained-passive F3 zero-tail target-staged shear
 
 Status: Proved in Lean; controller pen-and-paper reproduction written;
