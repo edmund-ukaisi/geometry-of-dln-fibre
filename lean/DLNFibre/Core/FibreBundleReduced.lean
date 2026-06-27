@@ -139,6 +139,78 @@ noncomputable def mvPolynomialAwayMapTensorAlgEquiv :
     (Localization.Away (MvPolynomial.map (algebraMap k F) f))
     (Localization.Away f ⊗[k] F) e Hpow
 
+/-- **The base-change keystone on a generator.** `mvPolynomialAwayMapTensorAlgEquiv f` sends the
+structure-map image of a single variable `X v` (coefficient-extended to `MvPolynomial ι F`) to the
+left tensor factor `(algebraMap _ (Away f) (X v)) ⊗ₜ 1`. This is the computational handle on the
+opaque `mvPolynomialAwayMapTensorAlgEquiv` (built as `IsLocalization.algEquivOfAlgEquiv … e Hpow`),
+established here — in the section that owns the local `tensorAlgebra` instance — via
+`IsLocalization.algEquivOfAlgEquiv_eq` and the base-change `algebraTensorAlgEquiv_symm_map`.
+The downstream `SchurLoc`-linearity of the chart trivialization reduces to exactly this. -/
+theorem mvPolynomialAwayMapTensorAlgEquiv_algebraMap_X (v : ι) :
+    mvPolynomialAwayMapTensorAlgEquiv (k := k) (F := F) (ι := ι) f
+        (algebraMap (MvPolynomial ι F) (Localization.Away (MvPolynomial.map (algebraMap k F) f))
+          (MvPolynomial.map (algebraMap k F) (X v)))
+      = (algebraMap (MvPolynomial ι k) (Localization.Away f) (X v)) ⊗ₜ[k] (1 : F) := by
+  -- re-derive the `e`, `Hpow` of the def (defeq, since the local instances are this section's).
+  let e : MvPolynomial ι F ≃ₐ[k] MvPolynomial ι k ⊗[k] F :=
+    ((MvPolynomial.algebraTensorAlgEquiv k F).symm.restrictScalars k).trans
+      (Algebra.TensorProduct.comm k F (MvPolynomial ι k))
+  have heg : e (MvPolynomial.map (algebraMap k F) f)
+      = algebraMap (MvPolynomial ι k) (MvPolynomial ι k ⊗[k] F) f := by
+    show (Algebra.TensorProduct.comm k F (MvPolynomial ι k))
+        ((MvPolynomial.algebraTensorAlgEquiv k F).symm
+          (MvPolynomial.map (algebraMap k F) f))
+      = algebraMap (MvPolynomial ι k) (MvPolynomial ι k ⊗[k] F) f
+    rw [MvPolynomial.algebraTensorAlgEquiv_symm_map, Algebra.TensorProduct.comm_tmul,
+      Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]
+  have Hpow : Submonoid.map (e : MvPolynomial ι F →+* MvPolynomial ι k ⊗[k] F)
+        (Submonoid.powers (MvPolynomial.map (algebraMap k F) f))
+      = Submonoid.powers (algebraMap (MvPolynomial ι k) (MvPolynomial ι k ⊗[k] F) f) := by
+    rw [Submonoid.map_powers]; exact congrArg Submonoid.powers heg
+  -- re-derive the `IsLocalization` instance on the target (the def's `hlocTarget`).
+  have H : (algebraMap (MvPolynomial ι k ⊗[k] F) (Localization.Away f ⊗[k] F)).comp
+        Algebra.TensorProduct.includeRight.toRingHom
+      = Algebra.TensorProduct.includeRight.toRingHom := by
+    have hmap : ((Algebra.TensorProduct.map
+          (IsScalarTower.toAlgHom k (MvPolynomial ι k) (Localization.Away f))
+          (AlgHom.id k F)).comp Algebra.TensorProduct.includeRight)
+        = (Algebra.TensorProduct.includeRight.comp (AlgHom.id k F)) :=
+      Algebra.TensorProduct.map_comp_includeRight _ _
+    rw [AlgHom.comp_id] at hmap
+    show ((Algebra.TensorProduct.map
+        (IsScalarTower.toAlgHom k (MvPolynomial ι k) (Localization.Away f))
+        (AlgHom.id k F)).toRingHom).comp Algebra.TensorProduct.includeRight.toRingHom
+      = Algebra.TensorProduct.includeRight.toRingHom
+    exact congrArg AlgHom.toRingHom hmap
+  haveI hlocTarget : IsLocalization
+      (Submonoid.powers (algebraMap (MvPolynomial ι k) (MvPolynomial ι k ⊗[k] F) f))
+      (Localization.Away f ⊗[k] F) := by
+    have := IsLocalization.tensorProduct_tensorProduct (R := k) (S := F)
+      (A := MvPolynomial ι k) (M := Submonoid.powers f) (B := Localization.Away f) H
+    simpa only [Algebra.algebraMapSubmonoid, Submonoid.map_powers] using this
+  -- `mvPolynomialAwayMapTensorAlgEquiv f = algEquivOfAlgEquiv … e Hpow`, then the `_eq` lemma.
+  show IsLocalization.algEquivOfAlgEquiv
+      (Localization.Away (MvPolynomial.map (algebraMap k F) f))
+      (Localization.Away f ⊗[k] F) e Hpow
+      (algebraMap (MvPolynomial ι F) (Localization.Away (MvPolynomial.map (algebraMap k F) f))
+        (MvPolynomial.map (algebraMap k F) (X v)))
+    = (algebraMap (MvPolynomial ι k) (Localization.Away f) (X v)) ⊗ₜ[k] (1 : F)
+  rw [IsLocalization.algEquivOfAlgEquiv_eq]
+  -- `e (map (algebraMap k F) (X v)) = X v ⊗ₜ 1`; then `algebraMap (local) (X v ⊗ₜ 1)`.
+  have he : e (MvPolynomial.map (algebraMap k F) (X v))
+      = (X v : MvPolynomial ι k) ⊗ₜ[k] (1 : F) := by
+    show (Algebra.TensorProduct.comm k F (MvPolynomial ι k))
+        ((MvPolynomial.algebraTensorAlgEquiv k F).symm (MvPolynomial.map (algebraMap k F) (X v)))
+      = (X v : MvPolynomial ι k) ⊗ₜ[k] (1 : F)
+    rw [MvPolynomial.algebraTensorAlgEquiv_symm_map, Algebra.TensorProduct.comm_tmul]
+  rw [he]
+  -- the local `algebraMap` is `Algebra.TensorProduct.map (toAlgHom …) (id F)`, sending `X v ⊗ₜ 1`.
+  show (Algebra.TensorProduct.map
+      (IsScalarTower.toAlgHom k (MvPolynomial ι k) (Localization.Away f)) (AlgHom.id k F))
+      ((X v : MvPolynomial ι k) ⊗ₜ[k] (1 : F))
+    = (algebraMap (MvPolynomial ι k) (Localization.Away f) (X v)) ⊗ₜ[k] (1 : F)
+  rw [Algebra.TensorProduct.map_tmul, map_one, IsScalarTower.coe_toAlgHom']
+
 end TensorBaseChange
 
 section ChartGfib
