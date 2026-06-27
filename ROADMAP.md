@@ -172,8 +172,11 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
 **Roadmapped residuals (deferred at the honest ceiling — all genuinely non-trivial / off-critical-path;
 items 4–5 are the honest residuals surfaced by the PR #11 owner review):**
 1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
-   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) — genuinely new scheme-theoretic math (the
-   k-point rank-tie, banked, does NOT compose with the prime cover). A fresh multi-tide build, not a finish.
+   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) is now **LANDED** — S1
+   `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` (fibration-geometry), as a
+   set-of-primes identity. What remains toward a bare scheme-theoretic `locallyTrivial` is the over-base
+   **projection compatibility** + the overlap-gluing cocycle (R1) — see the fibration-geometry close
+   section below.
 2. **`e` → full localized iso:** rung 1 (`schurComponent_chartQuotientEquiv`) + the assembled CONDITIONAL
    headline `exists_localized_schurComponent_fullOrbitEquiv_of` are landed (axiom-clean); the open input is
    the typed Prop `LocalizedChartDescent` — the chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal`
@@ -326,6 +329,46 @@ change making teammate isolation produce genuine nested worktrees from a worktre
 cheap; it does not grant a worktree-controller parallel teammates. **Acceptance:** a controller that is
 not on the main checkout can still run teammates in genuinely isolated, parallel worktrees (via (ii) or
 (iii)).
+
+## fibration-geometry expedition (closed 2026-06-27) — status + residuals
+
+**Landed (all bedrock: green, sorry-free, axiom-clean, hardener-cleared).** The DLN reduced fibre
+family over the rank-`= r` open is, **chartwise over the in-chart Schur ring `SchurLoc`**, an honest
+over-base local product with flatness:
+
+- **S1** `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — `rankROpen` IS the
+  residue-field rank-`= r` locus (set-of-primes identity).
+- **S2 / S2c** `FibreSmoothBlock` / `FibreSmoothBlockExists` — the smooth-block certificate (Kähler `Ω`
+  free, `rank(Ω) + codim = ambient`), hypothesis-free under the Kostant gate
+  (`exists_topComponent_smoothBlock_certificate`; generic engine `topDimMinPrimes_nonempty`). The
+  RLCT-runway upper-bound local model.
+- **S3** `FibreFlatness` — cheap-flatness verdict + localization/standard-model/`UniversallyOpen` facts.
+- **S4 / S4b** `FibreLocallyTrivial` / `FibreOverBaseTriv` — the `SchurLoc`-linear (over-base)
+  trivialization `Away(chartDsigAt) ≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` (over the honest
+  structure map, non-circular) + chartwise flatness over `SchurLoc`.
+- **S5** `FibreBundleHeadline` — the capstone `reducedFibre_existsOverBaseProductChartAt_rankEq`.
+
+Exposition: `expeditions/2026-06-27-fibration-geometry/expositions/fibration-geometry.md`.
+
+**Residuals (roadmap; sequence as listed — items 1–4 are genuinely reachable; item 5 is the genuine
+wall, the next expedition):**
+
+1. **Projection compatibility** — that the in-chart structure map
+   `schurToDsigAt : SchurLoc → Away(chartDsigAt s t)` is the pullback of `mult`'s projection from the
+   target/base rank-chart. (`SchurLoc` is the in-chart base direction; `Away(chartDsigAt s t)` is the
+   *source/total* chart, already `≅ SchurLoc ⊗ fibre` — so this is NOT a "`SchurLoc ≅ sweepSigmaRing|chart`"
+   bridge, which would lose the fibre.) This compatibility is what lets the chartwise `SchurLoc`-flatness
+   read as genuine fibre-family flatness over the base. A real build, **ahead of** R1.
+2. **R1 — `targetOverlapTransition`** (the overlap-gluing cocycle). Assembles the per-chart data into a
+   single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After projection compatibility.
+3. **S2b — conormal companion** `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler
+   side; conormal exact sequence + rank additivity). A real build.
+4. **S1 in-file non-vacuity `example`** (a concrete `P ∈ rankROpen` in the achievable regime) — a
+   bedrock-hygiene nicety.
+5. **Singular-locus split / RLCT lower bound** (→ the next expedition): the smooth-block gives only the
+   `rlct ≤ ½·codim` upper-bound local model; the equality needs a singular-locus lower bound
+   (`rlct ≥ ½·codim` everywhere). This is the wall the `rlct = ½·codim` Cited axiom rests on; teed up,
+   not closed.
 
 ## Convention
 

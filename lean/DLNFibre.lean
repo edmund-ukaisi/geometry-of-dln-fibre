@@ -350,12 +350,14 @@ import DLNFibre.Core.FibreComponentOrbitTransport
 -- (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot `chartLocalizedAlgEquivAt`).
 -- PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the per-pivot trivializations remains (#133).
 import DLNFibre.Core.FibreChartConjugation
--- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled coherent atlas over the
--- rank-`=r` open — scheme open-cover (`iSup_pivot_basicOpen_eq_rankROpen`) + per-pivot trivializations
--- into `SchurLoc ⊗ sweepFibreRing` + the base-side overlap cocycle (`chartOverlapTransition` over
--- `sweepSigmaRing`, laws inherited) + the intertwining (`e_β` cancels → base-algebraic). Headline
--- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial` (cover is point-set /
--- near-definitional over the OPEN; a bare scheme-theoretic name needs the rank-tie `rankROpen={rank=r}`, #133r).
+-- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled atlas with PAIRWISE
+-- base-side overlap data over the rank-`=r` open — scheme open-cover (`iSup_pivot_basicOpen_eq_rankROpen`)
+-- + per-pivot trivializations into `SchurLoc ⊗ sweepFibreRing` + the base-side overlap transition
+-- (`chartOverlapTransition` over `sweepSigmaRing`, pairwise laws) + the intertwining (`e_β` cancels →
+-- base-algebraic). Headline `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT
+-- `locallyTrivial`: the rank-tie `rankROpen={rank=r}` is now landed (S1, set-of-primes), so the residual
+-- to a bare scheme-theoretic name is the target-side overlap-trivialization cocycle (R1) + projection
+-- compatibility — NOT a bundled triple cocycle (this atlas carries only pairwise base-side data).
 import DLNFibre.Core.FibreBundleLocallyTrivialFull
 -- Scope-3 (variety-level fibre-component↔orbit iso, thread 24 #138): rung 1 of the honest LOCALIZED `e`
 -- — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away chartDsig)⧸chartComponentIdeal`
@@ -375,3 +377,46 @@ import DLNFibre.Core.FibreThetaCountArbitrary
 -- r=0), (2) the agreement regime `choose_eq_aoyagiPoleOrder_iff : choose ell a = a(ell−a)+1 ↔ min a (ell−a)
 -- ≤ 1`. Proves the two θ's DIFFER + pins exactly when they agree; asserts NO (false) equality of them.
 import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
+-- fibration-geometry expedition (spine): S1 rank-bridge keystone + S2 smooth-block certificate.
+-- `FibreRankBridge` — the prime/residue-field rank bridge `P ∈ rankROpen ↔ rank over κ(P) = r`,
+-- closing the scheme-level set-of-primes identity `rankROpen = {rank = r}` (gates flatness + the
+-- honest locallyTrivial). `FibreSmoothBlock` — the standard-smooth local model at a smooth closed
+-- point of a top component: Ω free, `rank(Ω) + codim = ambient` (the RLCT-runway's first slab; the
+-- Kähler/relative-dimension side, NOT the conormal rank-=-codim).
+import DLNFibre.Core.FibreRankBridge
+import DLNFibre.Core.FibreSmoothBlock
+-- S4: honest per-chart local PRODUCT over the rank-=r open (`RankROpenPerPivotLocalProduct`,
+-- `reducedFibre_existsProductChartAt_rankEq`). Folds in S1 to certify rankROpen genuinely IS the
+-- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a k-algebra
+-- product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`: per-chart/UNCOCYCLED (overlap
+-- gluing = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization = S4b, LANDED below; it
+-- is over SchurLoc, NOT yet projection-compatible with mult — that, plus R1, remain open).
+import DLNFibre.Core.FibreLocallyTrivial
+-- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial Noetherian
+-- ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the smooth-block
+-- existence with NO `I, hI` hypotheses (hypothesis-free under the kostant gate).
+import DLNFibre.Core.FibreSmoothBlockExists
+-- S3: flatness facts around the atlas (HONEST scope — NOT the `Flat π` payoff). `chartInclusion_flat`
+-- (localization), `standardFibreModel_free`/`_flat` over the auxiliary SchurLoc (generic base change),
+-- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. NB S4b (below) DELIVERS the chartwise
+-- `Module.Flat SchurLoc (Away(chartDsigAt …))`; what stays open is projection compatibility
+-- (schurToDsigAt = mult's projection pullback) + R1/global gluing — NOT S4b itself.
+import DLNFibre.Core.FibreFlatness
+-- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
+-- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`
+-- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ chartwise
+-- flatness over the in-chart base direction SchurLoc `chartDsigAt_flat_over_schurLoc` AND the genuine
+-- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc, NOT yet
+-- projection-compatible with the geometric `mult` projection (that, plus R1's global overlap gluing,
+-- are the open items toward a single GLOBAL Flat π / FiberBundle over rankROpen).
+import DLNFibre.Core.FibreOverBaseTriv
+-- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
+-- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline
+-- `reducedFibre_existsOverBaseProductChartAt_rankEq` — every rank-=r prime sits in a pivot chart I over
+-- the GEOMETRIC structure `chartDsigAtSchurLocAlgebra` (= schurToDsigAt, named in the TYPE, not an
+-- existential φ a degenerate pullback could satisfy) under which the total ring is
+-- `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND flat over SchurLoc. Base = SchurLoc, the in-chart base
+-- DIRECTION (Spec(sweepSigmaRing) is the SOURCE/TOTAL, NOT the base); reading this as fibre-family
+-- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
+-- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
+import DLNFibre.Core.FibreBundleHeadline
