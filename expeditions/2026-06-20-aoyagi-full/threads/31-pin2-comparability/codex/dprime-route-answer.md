@@ -1,0 +1,13 @@
+1. I do not see a clean route that treats `coreΦ` as a black box. You can avoid naming a standalone `K`, but you still need the same content: identify the absorbed deepest core with `S0*S1`, and identify `Rcore - S0*S1` as a sandwiched regular perturbation. `core_comparability_squeeze` can probably shorten the final inequalities, but it will still need a perturbation estimate whose proof is exactly the telescoped Schur algebra. Also: if you only have `frobSq K ≤ c*Sreg`, that is usually enough for a squeeze-style multiplicative comparison after absorbing cross terms, but not by itself for the stronger additive charge `|Score - coreΦ| ≤ C*Sreg` unless you have the right strengthened/sandwiched estimate.
+
+2. Computed algebra: write `A0 = 1 + X0`, `A1 = 1 + X1`, `S0 = T0 - Z0*⅟A0*Y0`, `S1 = T1 - Z1*⅟A1*Y1`, and let the global pivot be
+   `A = A0*A1 + Y0*Z1`.
+   For `C0*C1 = fromBlocks A B C D`, the blocks are `B = A0*Y1 + Y0*T1`, `C = Z0*A1 + T0*Z1`, `D = Z0*Y1 + T0*T1`. With `[Invertible A]`,
+   `D - C*⅟A*B = S0 * (1 - Z1*⅟A*Y0) * S1`.
+   Thus the exact middle factor is `W = 1 - Z1*⅟A*Y0`, and the exact `K` is `K = Z1*⅟A*Y0`. The useful Lean lemma should state this directly for two compatible block layers, with invertibility assumptions on `A0`, `A1`, and `A`.
+
+3. Inferred from your description: `layer_schur_blockDiag` applies verbatim only after you have stripped/telescoped the `Pf_s,Qf_s` framing into the internal block coordinates. In raw ambient coordinates, `Pf_s · fromBlocks ... · Qf_s` generally perturbs the visible block structure, so the `(0,0)` block is not literally `1+X_s` unless those units are block-identity in that frame. The clean route is: first prove/reuse the bridge equality that the reindexed framed product is `C0*C1` for `C_s = fromBlocks (1+X_s) Y_s Z_s T_s`; then apply the two-layer LDU lemma to `C0,C1`. Your `hRegBlocks` gives the global product blocks, but the key risk is whether it also connects those blocks to the same decoded `X_s,Y_s,Z_s,T_s` used by `coreΦ`.
+
+4. Honest verdict: closing both is realistic in several hundred LoC if the frame-stripping bridge lemma is already essentially available. The telescoped block-LDU itself is algebraic and should be a contained lemma, especially with the two-layer statement above. The hidden build risk is not the formula for `W`; it is proving that the framed-layer decode, cutoff `χ=1`, and absorbed deepest-core decode all use exactly the same `S0,S1`. Smallest honest partial deliverable if time slips: prove `coreΦ = frobSq (S0*S1)` and add the precisely stated two-layer Schur lemma `Rcore = S0*(1 - Z1*⅟A*Y0)*S1` as the only remaining sorry.
+
+VERDICT: EXPLICIT route, achievable.

@@ -1,0 +1,20 @@
+LIB "primdec.lib";
+ring R = 0, (m11,m12,m21,m22, n11,n12,n21,n22), dp;
+matrix M[2][2] = m11,m12,m21,m22;
+matrix N[2][2] = n11,n12,n21,n22;
+matrix P = N*M;
+matrix E[2][2] = 1,0,0,0;
+matrix D = P - E;
+ideal I = D[1,1], D[1,2], D[2,1], D[2,2];
+poly detD = P[1,1];   // top-left 1x1 minor of the product = detDelta for r=1
+list pd = primdecGTZ(I);
+int i;
+for (i=1; i<=size(pd); i++) {
+  "=== COMPONENT", i, "prime generators ===";
+  pd[i][2];
+  // reduce detD - 1 modulo the prime: is detDelta identically 1 on this component?
+  "  NF(detD - 1):", reduce(detD - 1, std(pd[i][2]));
+  // is detD in the prime (i.e. detD vanishes identically)?  NF(detD)=0 would mean V(detD) contains comp
+  "  NF(detD):", reduce(detD, std(pd[i][2]));
+}
+quit;

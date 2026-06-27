@@ -25,6 +25,21 @@
 ## Sorry gate
 - Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
+- **`lake build` / `scripts/lb` exit-0 can MASK a `sorryAx` via a stale olean cache.** If an edit does not
+  invalidate a `.olean` (a downstream-only change, an edit Lean's incremental compiler deems irrelevant), a
+  prior `sorry` / type-error can persist in the cached olean and the build still reports success. **Confirm
+  any "sorry-free" / axiom-footprint claim with `#print axioms` (which FORCES elaboration), never the build's
+  exit status alone** — or force-recompile (delete the `.olean` / `touch` the source). The aggregator's
+  `AxCheck.lean` does this for the load-bearing results on every build; add new load-bearing results there, or
+  run a force-rebuilt `#print axioms` scratch (delete its olean first). (Caught a persisted diagonal-`sorry` +
+  an unreported type-error in `RouteMSchurFrameDet`, 2026-06-26.)
+- **`scripts/lb <Module>` builds a module's import-closure only — it does NOT catch NAME CLASHES with sibling
+  modules the full aggregator imports.** A module that re-defines a constant another module already owns (e.g.
+  two `(2,2,2)` anchor files both defining `t222`/`M222` in the same namespace) builds green in isolation but
+  fails `lake build DLNFibre` with `environment already contains '…'`. **Before reporting a module as
+  integration-ready, green-gate the FULL `lake build DLNFibre`** (or at least `rg` your new top-level names
+  against the siblings you'll sit beside). Reuse shared anchor constants by `import`ing the module that owns
+  them, don't re-declare. (Caught `RouteM222Det` re-defining `RouteM222StructAdm`'s `t222`, 2026-06-27.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —
@@ -64,6 +79,24 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   so `Matrix.cons_val_one`/`_two`/… do not fire on the outer selection. Normalize first with
   `rw [show (⟨k, by omega⟩ : Fin n) = (k : Fin n) from rfl]`, then the `cons_val_*` simp set fires; or prove
   the components as separate `have`s and assemble with `funext i; fin_cases i`.
+- **Matrix-apply `simp` fires in ISOLATION but "no progress" IN-CONTEXT when the index is typed at a
+  DEPENDENT, non-syntactic-`succ` width** (e.g. `i : Fin (Wext M k)` / `Fin (Text M t k)`, defeq but not
+  syntactic `Fin 2`/`Fin 1`). After `ext`/`fin_cases` the indices are `Fin.mk`s at the opaque width, so
+  `Matrix.smul_apply`/`mul_apply`/`cons_val_*` don't fire, AND `Fin.zero_eta`/`Fin.mk_one` can't normalize
+  (the width isn't a syntactic `n+1`), so `change`/`show` to a literal `Fin n` is unavailable. **Working
+  pattern: prove each entry as a `have` at EXPLICIT `⟨_, by decide⟩` (or `by omega`) indices where the
+  matrix-apply lemmas DO fire, then `exact` it into the `fin_cases` goal — `Fin` proof-irrelevance unifies
+  the two index forms.** This is the recurring opaque-width cast quirk; it cost two tides on the (2,2,2)
+  `chartParamsGen_eq_chartParams222` det bridge before the `have`+`exact` form landed it (2026-06-27,
+  Codex-corroborated). Transfers to any entrywise identity over `chainA`/`GenBlk` dependent widths (the
+  ∀M `φ_det_eq` lift).
+- **`FactoredChain`/`Chain` projection mismatch (`c.Wwid` vs `c.toChain.Wwid`) breaks `HMul` instance
+  synthesis** in products mixing the two structures' width fields — the dependent matrix-mul instance can't
+  unify the two defeq-but-syntactically-distinct width projections. Resolve by **literal `Wext`/`Text`
+  `let`-ascription** at the product (pin the widths to the concrete `Wext M k` / `Text M t k` form, cf.
+  `Hmat_pivot`), or a generic `mul_three_reassoc'` whose abstract index types unify up to defeq. Side note:
+  `omega` over `Text`/`Wext` arithmetic needs `k+1+1` normalized to `k+2` first. (Found in the ∀M interior
+  witness build, 2026-06-27; recurs in any achiever-chart product mixing chain layers.)
 - **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
@@ -154,3 +187,17 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
     often exactly 1, no simple `Φ` carries it; every deterministic LOCAL step-selection rule fails —
     the strict step's location is config-dependent (the "involved-in-a-pair + extremal-by-length"
     refinement is load-bearing).
+- **Dependent-dimension matrix reassociation / cast handling — the kernel that cracked the `prodAux`
+  front-peel (deferred twice).** For products over `Fin (M k)`-style dependent dimensions:
+  (i) `rw [Matrix.mul_assoc]` / `simp` / `conv` will NOT match `(a*b)*c = a*(b*c)` through the dependent
+  `HMul` instance (higher-order matching fails). Close it with a **fully-applied term** instead:
+  `set X := …; set Y := …; exact Matrix.mul_assoc a X Y` (or state a generic
+  `mul_three_reassoc {p q r s : Type*} [Fintype …] (a b c) : a*b*c = a*(b*c) := Matrix.mul_assoc a b c`
+  once and reuse — cf. `RouteMFrontPeel.mul_three_reassoc`, generalising `DeepestTelescoping.mul_four_reassoc`).
+  (ii) Do cast bookkeeping at the **equiv level, never entrywise** (`ext` into a cast-wrapped `∑ if…` is the
+  trap that stalled two tides): `finCongr_refl` collapses `finCongr (rfl-true width eq)` to `Equiv.refl`,
+  then `Matrix.reindex_refl_refl` (via `erw` — plain `rw`/`simp` won't match the dependent `Matrix.reindex`)
+  collapses `reindex refl refl` to identity; `RouteMAchieverBridge.reindex_finCongr_mul` distributes a
+  width-reindex over a product. (iii) Peel layer-products by **prefix-length induction reusing
+  `prodAux_succ`**, not entrywise. This kernel transfers to any `prod`/`prodAux` reassociation (e.g. the
+  L2/D1 `endpoint_telescoping`).
