@@ -13736,3 +13736,10 @@ Frechet derivative and the point-specialized formal raw-order map both leave
 `A3passive p` unchanged.  The terminal `F3` endpoint, determinant formula,
 measure pushforward, normal crossings, pole order, and RLCT remain outside
 this slice.
+
+The C-unshear formal-map corollary is also now explicit:
+`C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+rewrites the existing C-unshear derivative theorem as agreement with the
+`C` component of `retainedPassiveFormalRawOrderJacobianAt`.  This is still a
+component bridge after the lower-left target shear, not a full derivative or
+determinant equality.

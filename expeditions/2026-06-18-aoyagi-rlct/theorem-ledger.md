@@ -9954,6 +9954,8 @@ Latest A2 retained-passive actual derivative C unshear:
 `RetainedPassiveCoordinatesDerivative.lean` proves
 `fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply` and
 `fderiv_topologyTupleEdgeRawOrder_C_unshear_apply`.
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-c-unshear.md`.
 Review:
@@ -9961,8 +9963,9 @@ Review:
 
 This is the first retained-passive actual-derivative-to-formal-shape shear
 identity.  It proves only the lower-right `C` component after shearing by the
-lower-left raw derivative component.  Nonclaims: no full analytic derivative
-factorization, no explicit full determinant formula, no equality with
+lower-left raw derivative component, plus its point-specialized formal-map
+component bridge.  Nonclaims: no full analytic derivative factorization, no
+explicit full determinant formula, no equality with
 `retainedPassiveFormalRawOrderJacobianAbsDetAt`, no measure pushforward, no
 normal crossings, no pole order, and no RLCT.
 

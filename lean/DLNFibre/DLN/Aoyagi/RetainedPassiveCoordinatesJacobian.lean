@@ -219,6 +219,39 @@ theorem rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrd
   dsimp [retainedPassiveFormalRawOrderJacobianAt]
   rw [retainedPassiveFormalRawOrderJacobian_apply]
 
+/-- After the lower-left target shear, the `C` component of the actual
+raw-order Frechet derivative agrees with the point-specialized formal
+raw-order map. -/
+theorem C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.1 p
+      + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  have hC :=
+    fderiv_topologyTupleEdgeRawOrder_C_unshear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).2.2.2.1 p
+      + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p
+  rw [hC]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  simpa [coord, sub_eq_add_neg, neg_mul] using
+    (add_comm (v.2.2.2.1 p) (-(coord.solvedA3 p * v.2.1 p)))
+
 end Aoyagi
 end DLN
 end DLNFibre

@@ -9529,3 +9529,24 @@ Nonclaims: no terminal `F3` derivative identity, full equality with
 `retainedPassiveFormalRawOrderJacobianAt`, determinant equality,
 measure/Jacobian-density theorem, normal crossings, pole order, or RLCT is
 proved by this slice.
+
+## A2 retained-passive actual derivative C formal component bridge
+
+Status: Proved in Lean; same reproduction as the C-unshear derivative.
+
+Claim: after the lower-left target shear by the fixed basepoint `F2`
+coefficient, the actual Frechet derivative's `C` component agrees with the
+`C` component of `retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean proves this as
+`C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`, using
+`fderiv_topologyTupleEdgeRawOrder_C_unshear_apply` and the formal raw-order
+apply formula.
+
+Kill condition: this theorem is a sheared component bridge only.  It must not
+be read as equality of the unsheared actual derivative with the formal map.
+
+Nonclaims: no full analytic derivative factorization, determinant equality,
+measure/Jacobian-density theorem, normal crossings, pole order, or RLCT is
+proved by this bridge.

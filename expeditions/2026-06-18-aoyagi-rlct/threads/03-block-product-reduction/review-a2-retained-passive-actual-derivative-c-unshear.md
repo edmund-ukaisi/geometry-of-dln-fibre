@@ -32,6 +32,10 @@ the stored nonterminal coordinate `v.F2 p`, which is `v.2.1 p` in Lean.
 - The full-derivative theorem only transports the component identity through
   linear projections of the ambient Frechet derivative of
   `topologyTupleEdgeRawOrder`.
+- The later bridge corollary
+  `C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+  only rewrites this component identity through the point-specialized formal
+  raw-order apply formula.
 - The notes do not claim a full derivative factorization, full determinant
   formula, measure pushforward, normal crossings, pole order, or RLCT.
 

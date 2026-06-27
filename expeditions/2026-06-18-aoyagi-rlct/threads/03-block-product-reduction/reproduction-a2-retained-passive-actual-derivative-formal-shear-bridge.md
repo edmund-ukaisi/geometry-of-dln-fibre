@@ -118,6 +118,16 @@ This proves a real analytic derivative statement about the actual Frechet
 derivative of `topologyTupleEdgeRawOrder`.  It is not a wrapper around the
 formal determinant theorem.
 
+The matching point-specialized formal-map corollary is
+
+```lean
+C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+It rewrites the right side through `retainedPassiveFormalRawOrderJacobianAt`
+and `retainedPassiveFormalRawOrderJacobian_apply`, proving only the sheared
+`C` component agreement with the formal raw-order map.
+
 ## Guardrails
 
 - Do not infer the full equality

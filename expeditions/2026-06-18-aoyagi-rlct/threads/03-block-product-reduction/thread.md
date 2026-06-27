@@ -9911,6 +9911,11 @@ derivative block into
 v.C p - coord.solvedA3 p * v.F2 p.
 ```
 
+The follow-up bridge
+`C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+packages this as agreement with the `C` component of the point-specialized
+formal raw-order map.
+
 This is the `C` component of the formal raw-order map after the determinant-one
 target shear.  It is not the full analytic determinant formula, not the
 absolute determinant comparison with the formal raw-order determinant, not a

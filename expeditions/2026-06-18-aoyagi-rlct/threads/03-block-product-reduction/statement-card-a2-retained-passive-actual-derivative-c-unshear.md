@@ -1,6 +1,6 @@
 # Statement Card - A2 Retained-Passive Actual Derivative C Unshear
 
-Status: reproduced and Lean-proved; review pending.
+Status: reproduced, Lean-proved, and reviewed.
 
 ## Claim
 
@@ -25,6 +25,7 @@ Lean file:
 ```text
 lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean
 lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean
 ```
 
 New theorem names:
@@ -33,6 +34,7 @@ New theorem names:
 rawEdgeTupleA3_topologyTupleEdgeRawOrder
 fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply
 fderiv_topologyTupleEdgeRawOrder_C_unshear_apply
+C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
 ```
 
 ## Reproduction
@@ -54,6 +56,8 @@ review-a2-retained-passive-actual-derivative-c-unshear.md
 - differentiability of `solvedA3` on `topologyTupleDetChartSet`;
 - projection derivatives for the stored `C` and `F2` coordinates;
 - the bilinear product rule for finite matrix multiplication.
+- the point-specialized formal raw-order apply formula
+  `retainedPassiveFormalRawOrderJacobian_apply`.
 
 ## Nonclaims
 
