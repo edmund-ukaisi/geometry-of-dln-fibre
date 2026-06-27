@@ -38,11 +38,9 @@ theorem structAdm222 : StructAdm M222 t222 := by
     · interval_cases p <;> decide
     · rw [show Wext M222 (p + 1) = 1 from by rw [Wext]; rw [dif_neg (by omega)],
           show tDesc M222 t222 (p + 1) = 1 from by simp only [tDesc, Text]; rw [dif_neg (by omega)]]
-  · intro k
-    rcases lt_or_ge k 3 with h | h
-    · interval_cases k <;> decide
-    · rw [show Text M222 t222 (k + 2) = 1 from by simp only [Text]; rw [dif_neg (by omega)],
-          show Text M222 t222 (k + 1) = 1 from by simp only [Text]; rw [dif_neg (by omega)]]
+  · intro k hk
+    -- hdesc now `k < L = 3`; in-range only
+    interval_cases k <;> decide
   · intro k
     rcases lt_or_ge k 3 with h | h
     · interval_cases k <;> decide

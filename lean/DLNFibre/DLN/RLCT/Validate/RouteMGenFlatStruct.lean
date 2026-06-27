@@ -67,9 +67,13 @@ structure StructAdm (M : Fin (L + 1) → ℕ) (t : Fin (L + 1) → ℕ) : Prop w
   hc : ∀ p, tDesc M t (p + 1) ≤ Wext M (p + 1)
   /-- positive depth. -/
   hL : 0 < L
-  /-- the achiever descent `Text(k+2) ≤ Text(k+1)` (`t` weakly decreasing). -/
-  hdesc : ∀ k, Text M t (k + 2) ≤ Text M t (k + 1)
-  /-- the residual-column bound `Text(k+2) ≤ Wext(k+1)`. -/
+  /-- the achiever descent `Text(k+2) ≤ Text(k+1)` (`t` weakly decreasing), for the interior boundaries
+  `k < L`. Stated `k < L` (not `∀ k`) so the ACHIEVER path `tach M` — whose last rank `tStar (last) = 0`
+  makes the would-be `hdesc L : Text(L+2)=1 ≤ Text(L+1)=0` false — qualifies; every consumer reads it only
+  at `k < L` (the readers take `k : Fin L`; `genBlkFlatStruct` reads it under `if k < L`). -/
+  hdesc : ∀ k, k < L → Text M t (k + 2) ≤ Text M t (k + 1)
+  /-- the residual-column bound `Text(k+2) ≤ Wext(k+1)` (holds `∀ k`: in range from the chart admBound,
+  out of range by the `Wext`/`Text` saturation `1 ≤ 1`). -/
   hub : ∀ k, Text M t (k + 2) ≤ Wext M (k + 1)
 
 /-! ## The matrix-block readers (K / X / N / E from the frame slot; W from the lift slot)
@@ -84,21 +88,21 @@ variable (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (x : Fin (routeMAmbien
 /-- Read the Schur-frame `K` block (`Text(k+2) × Text(k+2)`) of GenBlk boundary `s = k+1`. -/
 noncomputable def readK (k : Fin L) (i j : Fin (Text M t (k.val + 2))) : ℝ :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
-    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val) (ha.hub k.val)).symm
+    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i, j))))))⟩)
 
 /-- Read the Schur-frame `X` block (`(Text(k+1)−Text(k+2)) × Text(k+2)`). -/
 noncomputable def readX (k : Fin L)
     (i : Fin (Text M t (k.val + 1) - Text M t (k.val + 2))) (j : Fin (Text M t (k.val + 2))) : ℝ :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
-    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val) (ha.hub k.val)).symm
+    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (i, j))))))⟩)
 
 /-- Read the Schur-frame `N` block (`Text(k+2) × (Wext(k+1)−Text(k+2))`). -/
 noncomputable def readN (k : Fin L)
     (i : Fin (Text M t (k.val + 2))) (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : ℝ :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
-    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val) (ha.hub k.val)).symm
+    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inl (Sum.inr (finProdFinEquiv (i, j)))))⟩)
 
 /-- Read the Schur-frame `E` block (`(Text(k+1)−Text(k+2)) × (Wext(k+1)−Text(k+2))`). -/
@@ -106,7 +110,7 @@ noncomputable def readE (k : Fin L)
     (i : Fin (Text M t (k.val + 1) - Text M t (k.val + 2)))
     (j : Fin (Wext M (k.val + 1) - Text M t (k.val + 2))) : ℝ :=
   x ((chartIdxEquiv M (tDesc M t) ha.h0 ha.hc ha.hL).symm
-    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val) (ha.hub k.val)).symm
+    ⟨k, Sum.inl ((frameSplitEquiv M t (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm
       (Sum.inr (finProdFinEquiv (i, j))))⟩)
 
 /-- Read the lift `W` block of GenBlk boundary `s = k+1` (`(Wext(k+1)−Text(k+2)) × Wext(k+2)`), from
@@ -132,7 +136,7 @@ noncomputable def genBlkFlatStruct : GenBlk M t where
         (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ)
     | (k + 1) =>
       if hk : k < L then
-        bmatStack M t (k + 1) (ha.hdesc k) (readK M t ha x ⟨k, hk⟩) (readX M t ha x ⟨k, hk⟩)
+        bmatStack M t (k + 1) (ha.hdesc k hk) (readK M t ha x ⟨k, hk⟩) (readX M t ha x ⟨k, hk⟩)
       else 0
   Nblk := fun k => match k with
     | 0 => 0
@@ -146,7 +150,7 @@ noncomputable def genBlkFlatStruct : GenBlk M t where
   Rmat := fun k => match k with
     | 0 => (0 : Matrix (Fin (Text M t 0)) (Fin (Wext M 0)) ℝ)
     | (k + 1) =>
-      if hk : k < L then rmatPad M t (k + 1) (ha.hdesc k) (ha.hub k) (readE M t ha x ⟨k, hk⟩) else 0
+      if hk : k < L then rmatPad M t (k + 1) (ha.hdesc k hk) (ha.hub k) (readE M t ha x ⟨k, hk⟩) else 0
   Rfin := fun _ => 0
 
 /-! ## The rate transfer (the chain admissibility + the chart + the conditional rate)
