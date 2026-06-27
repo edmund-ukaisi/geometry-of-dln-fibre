@@ -13568,3 +13568,29 @@ pole order, or RLCT.
 Focused `RetainedPassiveLocalMeasure`, full `DLNFibre`, `scripts/sorries`, and
 `git diff --check` passed.  The sorry scan reported `0 sorry`, `0 #exit`,
 `0 native_decide`, and `0 axiom`.
+
+Latest retained-passive raw-order C1 and density continuity:
+`RetainedPassiveCoordinatesDerivative.lean` now has a forward `C^1` layer for
+the retained-passive raw-order map.  The proof mirrors the earlier
+differentiability chain through the solved `A1` tail, solved `A3` lower-left
+tail sum, and raw-order component formulas, using finite matrix/block
+`ContDiffAt` helpers for inverse, multiplication, block projections, block
+assembly, and Schur residuals.  It proves:
+
+```text
+contDiffAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_apply_of_mem_topologyTupleDetChartSet
+continuousAt_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds
+```
+
+Focused `RetainedPassiveCoordinatesDerivative` build passed with
+`env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb`.
+
+This removes the forward determinant-density continuity hypothesis at
+determinant-chart points.  It still does not prove an explicit determinant
+formula, inverse-density measurability, original source-prior transport,
+selected-entry target-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.

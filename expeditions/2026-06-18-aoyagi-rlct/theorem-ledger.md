@@ -10066,6 +10066,34 @@ continuity of the retained-passive derivative family, a determinant formula,
 an inverse-density formula, a measure pushforward, a source-density identity,
 normal crossings, pole order, or RLCT.
 
+Latest A2 retained-passive raw-order C1 and density continuity:
+`RetainedPassiveCoordinatesDerivative.lean` now proves the forward raw-order
+map is `C^1` at tuple determinant-chart points and derives continuity of its
+Frechet derivative and absolute determinant density.  Lean names:
+
+```text
+contDiffAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_apply_of_mem_topologyTupleDetChartSet
+continuousAt_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-c1-density-continuity.md`
+accepted by xhigh `Wegener the 4th`.
+
+This supersedes the previous supplied-continuity-only status for the forward
+absolute determinant density.  It does not prove an explicit determinant
+formula, inverse-density measurability, original source-prior transport,
+selected-entry target-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
 Latest A2 retained-passive raw-order weighted change of variables:
 `RetainedPassiveCoordinatesMeasure.lean` packages the retained-passive
 raw-order chart for Mathlib's Jacobian theorem.  Lean names:

@@ -9604,3 +9604,36 @@ coverage, normal crossings, pole order, or RLCT.
 Focused `RetainedPassiveLocalMeasure`, full `DLNFibre`, `scripts/sorries`, and
 `git diff --check` passed.  The sorry scan reported `0 sorry`, `0 #exit`,
 `0 native_decide`, and `0 axiom`.
+
+## 2026-06-27 A2 retained-passive raw-order C1 and density continuity
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Review:
+`review-a2-retained-passive-raw-order-c1-density-continuity.md`
+accepted by xhigh read-only reviewer `Wegener the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Lean now proves a forward `C^1` chain for `topologyTupleEdgeRawOrder`,
+including the solved `A1` tail, solved `A3` lower-left tail sum, and raw-order
+component assembly.  The payoff theorems are:
+
+```text
+contDiffAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+continuousAt_fderiv_topologyTupleEdgeRawOrder_apply_of_mem_topologyTupleDetChartSet
+continuousAt_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds
+exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds
+```
+
+Focused `RetainedPassiveCoordinatesDerivative` build passed.  This removes the
+supplied-continuity hypothesis for forward determinant-density local bounds at
+determinant-chart points.  It does not prove an explicit determinant formula,
+inverse-density measurability, original source-prior transport, selected-entry
+target-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT.

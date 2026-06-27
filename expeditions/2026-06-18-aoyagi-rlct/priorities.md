@@ -6298,3 +6298,19 @@ entry/source-prior handoff with the target-image and source-prior hypotheses
 kept explicit.  Do not treat this bridge as original DLN source-prior
 transport, selected-entry image equality, source-rank coverage, normal
 crossing, pole order, or RLCT.
+
+A2 retained-passive raw-order C1 and density continuity has now landed in the
+working tree:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-c1-density-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Lean proves the forward `C^1` chain for `topologyTupleEdgeRawOrder`, continuity
+of `fderiv`, fixed-vector derivative continuity, continuity of
+`topologyTupleEdgeRawOrderFDerivAbsDet`, and local positive lower/upper bounds
+without a supplied continuity hypothesis.
+
+Next priority in this lane: use the new continuity theorem only to discharge
+forward-density measurability/boundedness obligations.  It is not an explicit
+determinant formula, inverse-density measurability theorem, source-prior
+transport, original DLN source pushforward, selected-entry target-image
+equality, source-rank coverage, normal crossing, pole order, or RLCT.

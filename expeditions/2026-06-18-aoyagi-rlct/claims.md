@@ -9141,6 +9141,40 @@ determinant formula, no inverse-density formula, no measure pushforward, no
 source-density identity, no normal crossings, no pole order, and no RLCT is
 proved.
 
+Latest A2 retained-passive raw-order C1 and density continuity:
+Lean now proves a forward `C^1` chain for `topologyTupleEdgeRawOrder` and
+uses it to discharge continuity of the Frechet derivative and of
+`topologyTupleEdgeRawOrderFDerivAbsDet`.  It also adds no-extra-hypothesis
+local positive lower/upper bounds for the forward absolute determinant density
+at tuple determinant-chart points.
+
+Status: Proved; reviewed.
+
+Lean names include
+`contDiffAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet`,
+`continuousAt_fderiv_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet`,
+`continuousAt_fderiv_topologyTupleEdgeRawOrder_apply_of_mem_topologyTupleDetChartSet`,
+`continuousAt_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet`,
+`exists_pos_eventually_le_topologyTupleEdgeRawOrderFDerivAbsDet_nhds`, and
+`exists_pos_eventually_topologyTupleEdgeRawOrderFDerivAbsDet_le_nhds`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-c1-density-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-c1-density-continuity.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-c1-density-continuity.md`
+accepted by xhigh `Wegener the 4th`.
+
+Kill condition: this proves continuity and local bounds for the already-defined
+forward absolute determinant density only.  It must not be read as a closed
+determinant formula, inverse-density measurability theorem, or source-prior
+transport theorem.
+
+Nonclaims: no explicit determinant formula, inverse-density measurability,
+original source-prior transport, selected-entry target-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT is proved.
+
 Latest A2 retained-passive raw-order weighted change of variables:
 Lean now adds `RetainedPassiveCoordinatesMeasure.lean` and imports it from
 `DLNFibre.lean`.  It proves
