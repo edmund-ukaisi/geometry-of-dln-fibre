@@ -1,6 +1,8 @@
 import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
 import DLNFibre.DLN.RLCT.Validate.RouteM221
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+import DLNFibre.DLN.RLCT.Foundations.CoreShearMP
+import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 import Mathlib.Algebra.MvPolynomial.Basic
 
@@ -82,8 +84,9 @@ noncomputable def chartParams121 (u : Fin 4 → ℝ) : Params M121 :=
   Fin.cons (chartA0_121 u)
     (Fin.cons (chartA1_121 u) (fun i => i.elim0))
 
-/-- **The chart in flat coordinates** `phi121sm := paramsEquivFlat M121 ∘ chartParams121`. -/
-noncomputable def phi121sm (u : Fin 4 → ℝ) : Fin 4 → ℝ :=
+/-- **The chart in flat coordinates** `phi121sm := paramsEquivFlat M121 ∘ chartParams121` (codomain
+`Fin (flatDim M121) → ℝ = Fin 4 → ℝ`, matching the `NodeAchieverChart` field type). -/
+noncomputable def phi121sm (u : Fin 4 → ℝ) : Fin (flatDim M121) → ℝ :=
   paramsEquivFlat M121 (chartParams121 u)
 
 /-! ## The rate `F∘φ = z²·U` — holds OFF the pole `{a=0}`, FAILS at it (the `leaf_integrand` wall)
@@ -349,42 +352,339 @@ theorem shear121Deriv_abs_det (u : Fin 4 → ℝ) :
     rfl
   rw [h, LinearMap.det_toLin', shear121DerivMat_det, abs_one]
 
-/-! ### Residual for the full `(1,2,1)` smeared instance (the `cov` split assembly)
+/-! ### The `cov` field via MeasurePreserving (route (b) — NO `HasFDerivAt`)
 
-LANDED (sorry-free, this module): the chart `phi121sm`, the off-pole rate
-(`routeMCore_phi121sm_offpole`), the **a.e. `leaf_integrand`** (`leaf_integrand121_ae`, the piece
-the
-option-(i) a.e. core unlocks), `Uval121`/`leafH121`/`leafH121_pivot`, the shear factorization
-(`chartParams121_eq_pack_shear`), `shear121_injOn` (off-pole), `pole121_null`, the shear Jacobian
-matrix det `= 1` (`shear121DerivMat_det`, via the transvection chain), and the chart-derivative CLM
-`shear121Deriv` with **`|det| = 1`** (`shear121Deriv_abs_det`).
+`leafH121 ≡ 0` (minAdm = 1), so the `cov` weight `∏|u_j|^{leafH121 j} = 1` and the
+change-of-variables
+is exactly `MeasurePreserving.setLIntegral_comp_emb`: `phi121sm` is a measure-preserving measurable
+EMBEDDING (a global measurable bijection, det 1 — the chart-deriv det records the weight is 1). NO
+Jacobian, NO `HasFDerivAt`, and — since the totalized shear is a GLOBAL measurable bijection (`b/a`
+is `0`
+at `a = 0`, where the fiber translation is the identity) — NO pole-split either. -/
 
-RESIDUAL (the `cov` split + `image_subset` + the instance assembly):
-* `shear121_hasFDerivAt` off the pole — the rational comp-`2` `z − y 1·(y 0)⁻¹·y 3` is C¹ for `u 0
-≠ 0`
-  (`hasFDerivAt_inv'` ∘ the proj), fderiv `= shear121Deriv u`. The OBSTRUCTION is purely Lean
-  plumbing:
-  Mathlib v4.29 has NO `HasFDerivAt.div`, so comp-2 needs `(hap 1).mul ((hasFDerivAt_inv' hu).comp
-  …)`
-  matched to the matrix-CLM via `congr_fderiv` (a `ContinuousLinearMap.ext` + `field_simp`/`ring`
-  that
-  fought several passes). Then `phi121sm_hasFDerivAt` (chain with the linear measure-preserving
-  `Q121 =
-  paramsEquivFlat ∘ pack121`), giving `|det Dφ| = 1` (via `shear121Deriv_abs_det` × `Q121` det 1).
-* `phi121sm_cov` via the `phi334_cov` TWO-SLICE split: c-o-v
-  (`lintegral_image_eq_lintegral_abs_det_fderiv_mul`) on `S \ N0` (`N0 = {u 0 = 0}`, where
-  `phi121sm`
-  is C¹/InjOn/`|det|=1`); add back `S ∩ N0` — RHS null (`leafH121 ≡ 0`, weight `1`; `N0` null); LHS
-  image-null `volume (phi121sm '' (S ∩ N0)) = 0` via the FRONT-block-identity containment `⊆
-  {a-flat-
-  coord = 0}` (a target null hypersurface — NOT Luzin-N, which fails for the non-Lipschitz pole).
-* then the `NodeAchieverChart M121` instance (a.e. `leaf_integrand := leaf_integrand121_ae`) +
-  `routeMCore_box_diverges_of_nodeChart` discharges the atom for `(1,2,1)`.
+/-- **The core-shear MP with a MEASURABLE shift** (the `measurePreserving_coreShear` proof
+verbatim, with
+`Continuous shift` weakened to `Measurable shift` — `skew_product` needs only measurability). -/
+theorem measurePreserving_coreShear_measurable (a b c : ℕ)
+    (shift : (Fin a → ℝ) × (Fin c → ℝ) → (Fin b → ℝ)) (hmshift : Measurable shift) :
+    MeasurePreserving
+      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
+        (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
+      volume volume := by
+  have hreassoc : MeasurePreserving
+      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) => ((q.1, q.2.2), q.2.1))
+      volume volume :=
+    measurePreserving_coreReassoc a b c
+  have hskew : MeasurePreserving
+      (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1, p.2 + shift p.1))
+      ((volume : Measure ((Fin a → ℝ) × (Fin c → ℝ))).prod volume)
+      ((volume : Measure ((Fin a → ℝ) × (Fin c → ℝ))).prod volume) :=
+    MeasurePreserving.skew_product
+      (μa := (volume : Measure ((Fin a → ℝ) × (Fin c → ℝ)))) (μb := volume)
+      (μc := (volume : Measure (Fin b → ℝ))) (μd := volume)
+      (f := id) (g := fun rs core => core + shift rs)
+      (MeasurePreserving.id volume)
+      (measurable_snd.add (hmshift.comp measurable_fst))
+      (ae_of_all _ (fun rs =>
+        (measurePreserving_add_right (volume : Measure (Fin b → ℝ)) (shift rs)).map_eq))
+  have hskew' : MeasurePreserving
+      (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1, p.2 + shift p.1))
+      volume volume := by
+    rw [show (volume : Measure (((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ)))
+          = (volume : Measure ((Fin a → ℝ) × (Fin c → ℝ))).prod volume from
+      Measure.volume_eq_prod _ _]
+    exact hskew
+  have hreassoc' : MeasurePreserving
+      (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1.1, (p.2, p.1.2)))
+      volume volume := by
+    have hassoc : MeasurePreserving
+        (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1.1, (p.1.2, p.2)))
+        volume volume := by
+      rw [show (volume : Measure (((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ)))
+            = ((volume : Measure (Fin a → ℝ)).prod volume).prod volume from by
+            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _],
+        show (volume : Measure ((Fin a → ℝ) × ((Fin c → ℝ) × (Fin b → ℝ))))
+            = (volume : Measure (Fin a → ℝ)).prod
+                ((volume : Measure (Fin c → ℝ)).prod volume) from by
+            rw [Measure.volume_eq_prod _ _, Measure.volume_eq_prod _ _]]
+      exact measurePreserving_prodAssoc (volume : Measure (Fin a → ℝ)) volume volume
+    have hswapinner : MeasurePreserving
+        (Prod.map (id : (Fin a → ℝ) → (Fin a → ℝ))
+          (Prod.swap : (Fin c → ℝ) × (Fin b → ℝ) → (Fin b → ℝ) × (Fin c → ℝ)))
+        volume volume := by
+      rw [show (volume : Measure ((Fin a → ℝ) × ((Fin c → ℝ) × (Fin b → ℝ))))
+            = (volume : Measure (Fin a → ℝ)).prod volume from Measure.volume_eq_prod _ _,
+        show (volume : Measure ((Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ))))
+            = (volume : Measure (Fin a → ℝ)).prod volume from Measure.volume_eq_prod _ _]
+      refine (MeasurePreserving.id (volume : Measure (Fin a → ℝ))).prod ?_
+      rw [show (volume : Measure ((Fin c → ℝ) × (Fin b → ℝ)))
+            = (volume : Measure (Fin c → ℝ)).prod volume from Measure.volume_eq_prod _ _,
+        show (volume : Measure ((Fin b → ℝ) × (Fin c → ℝ)))
+            = (volume : Measure (Fin b → ℝ)).prod volume from Measure.volume_eq_prod _ _]
+      exact Measure.measurePreserving_swap
+    exact hswapinner.comp hassoc
+  have hcomp := (hreassoc'.comp hskew').comp hreassoc
+  have hfun :
+      (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) =>
+          (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
+        = (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1.1, (p.2, p.1.2)))
+            ∘ (fun p : ((Fin a → ℝ) × (Fin c → ℝ)) × (Fin b → ℝ) => (p.1, p.2 + shift p.1))
+            ∘ (fun q : (Fin a → ℝ) × ((Fin b → ℝ) × (Fin c → ℝ)) => ((q.1, q.2.2), q.2.1)) := by
+    funext q; rfl
+  rw [hfun]; exact hcomp
 
-The wall-resolution (a.e. core ⟹ smeared `leaf_integrand` dischargeable) + the rate + the
-chart-deriv
-det are banked; the off-pole `HasFDerivAt` (comp-2 quotient CLM-matching) + the `cov`-split
-assembly is
-the bounded remaining engineering (no design wall). -/
+/-! ### `Q121 = paramsEquivFlat ∘ pack121` measure-preserving (the linear outer reshape) -/
+
+/-- The slot bijection `Fin 4 ≃ FlatIdx M121` pinning `pack121`'s flat-coord → matrix-slot order:
+coords
+`0,1` ↦ layer-`0` `(0,0),(0,1)`; coords `2,3` ↦ layer-`1` `(0,0),(1,0)`. A genuine `Equiv` (no dead
+slots; `left_inv`/`right_inv` by `decide`). -/
+noncomputable def fin4EquivFlatIdx121 : Fin 4 ≃ FlatIdx M121 where
+  toFun := fun k =>
+    match k with
+    | ⟨0,_⟩ => ⟨⟨⟨0,by decide⟩,⟨0,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨1,_⟩ => ⟨⟨⟨0,by decide⟩,⟨0,by decide⟩⟩,⟨1,by decide⟩⟩
+    | ⟨2,_⟩ => ⟨⟨⟨1,by decide⟩,⟨0,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨3,_⟩ => ⟨⟨⟨1,by decide⟩,⟨1,by decide⟩⟩,⟨0,by decide⟩⟩
+    | ⟨n+4,h⟩ => absurd h (by omega)
+  invFun := fun q =>
+    match q with
+    | ⟨⟨⟨0,_⟩,⟨0,_⟩⟩,⟨0,_⟩⟩ => 0
+    | ⟨⟨⟨0,_⟩,⟨0,_⟩⟩,⟨1,_⟩⟩ => 1
+    | ⟨⟨⟨1,_⟩,⟨0,_⟩⟩,⟨0,_⟩⟩ => 2
+    | ⟨⟨⟨1,_⟩,⟨1,_⟩⟩,⟨0,_⟩⟩ => 3
+  left_inv := by decide
+  right_inv := by decide
+
+/-- **The slot equation** `pack121 w q.1.1 q.1.2 q.2 = w (fin4EquivFlatIdx121.symm q)` (`rfl` per
+slot). -/
+theorem hpack121 (w : Fin 4 → ℝ) (q : FlatIdx M121) :
+    pack121 w q.1.1 q.1.2 q.2 = w (fin4EquivFlatIdx121.symm q) := by
+  obtain ⟨⟨s, i⟩, j⟩ := q
+  fin_cases s <;> fin_cases i <;> fin_cases j <;> rfl
+
+/-- **`pack121` is measure-preserving** (the reshape-MP at `fin4EquivFlatIdx121`). -/
+theorem measurePreserving_pack121 :
+    MeasurePreserving pack121 (volume : Measure (Fin 4 → ℝ)) (volume : Measure (Params M121)) :=
+  measurePreserving_paramsPack_of_flatIdxEquiv M121 fin4EquivFlatIdx121 pack121 hpack121
+
+/-- **`Q121 = paramsEquivFlat ∘ pack121` is measure-preserving** (the linear outer reshape). -/
+theorem measurePreserving_Q121 :
+    MeasurePreserving (fun w : Fin 4 → ℝ => paramsEquivFlat M121 (pack121 w))
+      (volume : Measure (Fin 4 → ℝ)) volume :=
+  (measurePreserving_paramsEquivFlat M121).comp measurePreserving_pack121
+
+/-! ### `shear121` is a global measure-preserving measurable bijection (route (b))
+
+`shear121` is `id` on coords `0,1,3` and translates coord `2` by `−(b/a)·sb` (a MEASURABLE function
+of
+the others). It is a GLOBAL measurable bijection (the totalized inverse `v 2 ↦ v 2 + (v 1/v 0)·v 3`
+cancels even at `a = 0`, where `b/a = 0`), measure-preserving by the skew-product (the pole `{a=0}`
+is
+null but not even needed — the translation is a measurable bijection there too). -/
+
+/-- **`shear121` is measure-preserving.** Direct skew-product on `Fin 4 → ℝ` reindexed as
+`(reg=coord 0) × ((core=coord 2) × (spec=coords 1,3))` is the banked `coreShear_measurable` route;
+here
+we prove it via the explicit measurable inverse + the global-bijection MP, packaged below. -/
+noncomputable def shear121Inv (v : Fin 4 → ℝ) : Fin 4 → ℝ :=
+  ![v 0, v 1, v 2 + (v 1 / v 0) * v 3, v 3]
+
+/-- `shear121` and `shear121Inv` are mutually inverse (global — `b/a` totalizes, cancels at `a=0`).
+-/
+theorem shear121_leftInv (u : Fin 4 → ℝ) : shear121Inv (shear121 u) = u := by
+  funext i; fin_cases i <;> simp [shear121, shear121Inv] <;> ring
+
+theorem shear121_rightInv (v : Fin 4 → ℝ) : shear121 (shear121Inv v) = v := by
+  funext i; fin_cases i <;> simp [shear121, shear121Inv] <;> ring
+
+/-- `shear121` is measurable. -/
+theorem shear121_measurable : Measurable shear121 := by
+  apply measurable_pi_iff.2
+  intro i
+  fin_cases i <;> simp only [shear121, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val, Matrix.cons_val_fin_one]
+  · exact measurable_pi_apply 0
+  · exact measurable_pi_apply 1
+  · exact (measurable_pi_apply 2).sub
+      (((measurable_pi_apply 1).div (measurable_pi_apply 0)).mul (measurable_pi_apply 3))
+  · exact measurable_pi_apply 3
+
+/-- `shear121Inv` is measurable. -/
+theorem shear121Inv_measurable : Measurable shear121Inv := by
+  apply measurable_pi_iff.2
+  intro i
+  fin_cases i <;>
+    simp only [shear121Inv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val, Matrix.cons_val_fin_one]
+  · exact measurable_pi_apply 0
+  · exact measurable_pi_apply 1
+  · exact (measurable_pi_apply 2).add
+      (((measurable_pi_apply 1).div (measurable_pi_apply 0)).mul (measurable_pi_apply 3))
+  · exact measurable_pi_apply 3
+
+/-- **`shear121` as a measurable equivalence** (the global bijection). -/
+noncomputable def shear121ME : (Fin 4 → ℝ) ≃ᵐ (Fin 4 → ℝ) where
+  toFun := shear121
+  invFun := shear121Inv
+  left_inv := shear121_leftInv
+  right_inv := shear121_rightInv
+  measurable_toFun := shear121_measurable
+  measurable_invFun := shear121Inv_measurable
+
+/-- The reindex `Fin 4 → ℝ ≃ᵐ (reg=coord 0) × ((core=coord 2) × (spec=coords 1,3))` (`Fin`-factor
+shape, for `coreShear_measurable 1 1 2`): `piFinSuccAbove 0` pulls out coord `0`, then on the `Fin
+3`
+remainder `piFinSuccAbove 1` pulls out the original coord `2`; `funUnique.symm` repackages the bare
+`ℝ` factors as `Fin 1 → ℝ`. -/
+noncomputable def split121 : (Fin 4 → ℝ) ≃ᵐ (Fin 1 → ℝ) × ((Fin 1 → ℝ) × (Fin 2 → ℝ)) :=
+  (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 4 => ℝ) 0).trans
+    (MeasurableEquiv.prodCongr (MeasurableEquiv.funUnique (Fin 1) ℝ).symm
+      ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin 3 => ℝ) 1).trans
+        (MeasurableEquiv.prodCongr (MeasurableEquiv.funUnique (Fin 1) ℝ).symm
+          (MeasurableEquiv.refl (Fin 2 → ℝ)))))
+
+/-- `split121` is measure-preserving (a chain of `piFinSuccAbove`/`funUnique` volume-preservers). -/
+theorem measurePreserving_split121 :
+    MeasurePreserving (split121 : (Fin 4 → ℝ) → _) volume volume := by
+  refine (volume_preserving_piFinSuccAbove (fun _ : Fin 4 => ℝ) 0).trans ?_
+  refine MeasurePreserving.prod (volume_preserving_funUnique (Fin 1) ℝ).symm ?_
+  refine (volume_preserving_piFinSuccAbove (fun _ : Fin 3 => ℝ) 1).trans ?_
+  exact MeasurePreserving.prod (volume_preserving_funUnique (Fin 1) ℝ).symm (MeasurePreserving.id _)
+
+/-- The core-shear shift in the split coordinates: `−(b/a)·sb` (reg `= a = q.1 0`, spec `= (b, sb) =
+(q.2 0, q.2 1)`). -/
+noncomputable def shift121 : (Fin 1 → ℝ) × (Fin 2 → ℝ) → (Fin 1 → ℝ) :=
+  fun q => fun _ => -((q.2 0) / (q.1 0)) * q.2 1
+
+set_option maxHeartbeats 1000000 in
+/-- **The FORWARD conjugation** `split121 (shear121 u) = coreShear121 (split121 u)` — both sides
+apply
+`split121` forward (no `.symm` reduction). The `coreShear` translates the core (coord 2) by the
+shift. -/
+theorem split121_shear121 (u : Fin 4 → ℝ) :
+    split121 (shear121 u)
+      = (fun q : (Fin 1 → ℝ) × ((Fin 1 → ℝ) × (Fin 2 → ℝ)) =>
+          (q.1, (q.2.1 + shift121 (q.1, q.2.2), q.2.2))) (split121 u) := by
+  have htail : ∀ (k : Fin 3), Fin.tail u k = u k.succ := fun _ => rfl
+  apply Prod.ext
+  · -- reg = coord 0
+    funext k; fin_cases k
+    simp [split121, shear121, MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.funUnique,
+      MeasurableEquiv.prodCongr, Fin.insertNthEquiv, Fin.removeNth, Fin.succAbove]
+  apply Prod.ext
+  · -- core = coord 2, shifted
+    funext k; fin_cases k
+    simp [split121, shear121, shift121, MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.funUnique,
+      MeasurableEquiv.prodCongr, Fin.insertNthEquiv, Fin.removeNth, Fin.succAbove, htail,
+      Fin.succ_zero_eq_one, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val, Matrix.cons_val_fin_one]
+    ring
+  · -- spec = coords 1,3 (unchanged)
+    funext k; fin_cases k <;>
+      simp [split121, shear121, MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.funUnique,
+        MeasurableEquiv.prodCongr, Fin.insertNthEquiv, Fin.removeNth, Fin.succAbove, htail,
+        Fin.succ_zero_eq_one]
+
+/-- **`shear121 = split121.symm ∘ coreShear121 ∘ split121`** (pointwise) — from the forward
+identity. -/
+theorem shear121_eq_conj (u : Fin 4 → ℝ) :
+    shear121 u = split121.symm
+      ((fun q : (Fin 1 → ℝ) × ((Fin 1 → ℝ) × (Fin 2 → ℝ)) =>
+          (q.1, (q.2.1 + shift121 (q.1, q.2.2), q.2.2))) (split121 u)) := by
+  rw [← split121_shear121, MeasurableEquiv.symm_apply_apply]
+
+/-- **`shear121` is measure-preserving** (conjugate the banked `coreShear_measurable` by
+`split121`). -/
+theorem measurePreserving_shear121 :
+    MeasurePreserving shear121 (volume : Measure (Fin 4 → ℝ)) volume := by
+  have hcore := measurePreserving_coreShear_measurable 1 1 2 shift121
+    (by unfold shift121; fun_prop)
+  have hconj : MeasurePreserving
+      (split121.symm ∘ (fun q : (Fin 1 → ℝ) × ((Fin 1 → ℝ) × (Fin 2 → ℝ)) =>
+          (q.1, (q.2.1 + shift121 (q.1, q.2.2), q.2.2))) ∘ split121)
+      volume volume :=
+    (measurePreserving_split121.symm split121).comp (hcore.comp measurePreserving_split121)
+  refine hconj.congr shear121_measurable ?_
+  filter_upwards with u
+  exact (shear121_eq_conj u).symm
+
+/-! ### `phi121sm` measure-preserving + measurable embedding, and the `cov` field -/
+
+/-- `phi121sm = Q121 ∘ shear121` (pointwise; `chartParams121 = pack121 ∘ shear121`). -/
+theorem phi121sm_eq_Q121_shear121 (u : Fin 4 → ℝ) :
+    phi121sm u = paramsEquivFlat M121 (pack121 (shear121 u)) := by
+  rw [phi121sm, chartParams121_eq_pack_shear]
+
+/-- **`phi121sm` is measure-preserving** (`Q121 ∘ shear121`, both MP). -/
+theorem measurePreserving_phi121sm :
+    MeasurePreserving phi121sm (volume : Measure (Fin 4 → ℝ)) volume := by
+  have hphimeas : Measurable phi121sm := by
+    have : phi121sm = (fun w : Fin 4 → ℝ => paramsEquivFlat M121 (pack121 w)) ∘ shear121 :=
+      funext (fun u => phi121sm_eq_Q121_shear121 u)
+    rw [this]; exact measurePreserving_Q121.measurable.comp shear121_measurable
+  refine (measurePreserving_Q121.comp measurePreserving_shear121).congr hphimeas ?_
+  filter_upwards with u; exact (phi121sm_eq_Q121_shear121 u).symm
+
+/-- **`phi121sm` packaged as a measurable equivalence** `shear121ME ≫ (flatEquivOf).symm ≫
+paramsEquivFlat` (`pack121 = (flatEquivOf …).symm`, all three measurable bijections; codomain
+`Fin (flatDim M121) → ℝ = Fin 4 → ℝ` defeq). -/
+noncomputable def phi121smME : (Fin 4 → ℝ) ≃ᵐ (Fin (flatDim M121) → ℝ) :=
+  shear121ME.trans
+    (((flatEquivOf M121 fin4EquivFlatIdx121).symm).trans (paramsEquivFlat M121))
+
+/-- `phi121smME` agrees with `phi121sm` (`pack121 = (flatEquivOf …).symm`). The codomains
+`Fin (flatDim M121) → ℝ` and `Fin 4 → ℝ` are defeq. -/
+theorem phi121smME_eq (u : Fin 4 → ℝ) : phi121smME u = phi121sm u := by
+  rw [phi121smME, phi121sm_eq_Q121_shear121]
+  show paramsEquivFlat M121 ((flatEquivOf M121 fin4EquivFlatIdx121).symm (shear121 u)) = _
+  congr 1
+  funext s i j
+  exact (flatEquivOf_symm_coord M121 fin4EquivFlatIdx121 (shear121 u) ⟨⟨s, i⟩, j⟩).trans
+    (hpack121 (shear121 u) ⟨⟨s, i⟩, j⟩).symm
+
+/-- **`phi121sm` is a measurable embedding** (= the measurable equivalence `phi121smME`; codomain
+`Fin (flatDim M121) → ℝ` defeq `Fin 4 → ℝ`). -/
+theorem measurableEmbedding_phi121sm : MeasurableEmbedding phi121sm := by
+  have h : phi121sm = ⇑phi121smME := funext (fun u => (phi121smME_eq u).symm)
+  rw [h]; exact phi121smME.measurableEmbedding
+
+/-- **The `cov` field for `phi121sm`** (route (b)): `leafH121 ≡ 0` ⟹ weight `1`, so the c-o-v is
+exactly
+`MeasurePreserving.setLIntegral_comp_emb` — no `HasFDerivAt`, no Jacobian, no pole-split. -/
+theorem phi121sm_cov (V : Set (Fin 4 → ℝ)) (hV : MeasurableSet V)
+    (g : (Fin (flatDim M121) → ℝ) → ℝ≥0∞) :
+    ∫⁻ x in phi121sm '' (V \ {x | x 2 = 0}), g x
+      = ∫⁻ u in V \ {x | x 2 = 0},
+          ENNReal.ofReal (∏ j, |u j| ^ (leafH121 j)) * g (phi121sm u) := by
+  have hcov := (measurePreserving_phi121sm.setLIntegral_comp_emb measurableEmbedding_phi121sm g
+    (V \ {x | x 2 = 0})).symm
+  rw [hcov]
+  refine setLIntegral_congr_fun (hV.diff
+    (measurableSet_eq_fun (measurable_pi_apply 2) measurable_const)) (fun u _ => ?_)
+  simp only [leafH121, pow_zero, Finset.prod_const_one, ENNReal.ofReal_one, one_mul]
+
+/-! ### Residual: the `image_subset` field (the THIRD pole-affected field — handback)
+
+LANDED (route (b), sorry-free + axiom-clean): the rate (`routeMCore_phi121sm_offpole`), the a.e.
+`leaf_integrand` (`leaf_integrand121_ae`), and — the cov-split's clean replacement — `phi121sm` is a
+GLOBAL measure-preserving measurable EMBEDDING (`measurePreserving_phi121sm`,
+`measurableEmbedding_phi121sm`, via the banked `CoreShearMP` skew-product conjugated by `split121`),
+giving the `cov` field directly from `MeasurePreserving.setLIntegral_comp_emb` (`phi121sm_cov`) — NO
+`HasFDerivAt`, NO Jacobian, NO pole-split.
+
+RESIDUAL — the `NodeAchieverChart.image_subset` field is the THIRD pole-affected field: it requires
+`phi121sm '' [0,δ]^4 ⊆ cubeBox 4 ε` (the box image in a small cube), but the RATIONAL `φ_sm` is
+UNBOUNDED near its pole `{a=0}` (the flat coord `z − (b/a)·sb → ∞` as `a → 0` with `b,sb ≠ 0`), so
+its
+image of a box containing `{a=0}` is NOT bounded. The box-divergence assembly
+`routeMCore_box_diverges_of_nodeChart` uses `image_subset` to conclude `∫_{cubeBox} ≥
+∫_{φ''(box\{z=0})}
+= ⊤`. For the rational chart this needs an architecture decision (controller-gated): restrict the
+source
+box to exclude a pole-neighborhood, OR run the FINAL `lintegral_mono_set` step via the MP
+`∫_{cubeBox} = ∫_{φ⁻¹(cubeBox)}` (using `measurePreserving_phi121sm` again) instead of the image
+containment. The `Ubound`/`Umeas`/the instance/the atom ride on that decision. The cov + rate +
+a.e.-leaf_integrand (the conceptually-load-bearing pieces) are all landed. -/
 
 end DLNFibre.DLN.RLCT
