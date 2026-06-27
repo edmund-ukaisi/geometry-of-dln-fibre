@@ -996,3 +996,17 @@ construction needs MULTI-boundary, which (2,2,1) silently didn't test. **Directe
 when commissioning a generalization, ask "what's the SIMPLEST case that exercises the hardest general feature?" —
 not "is there a green layered anchor?" The single-vs-multi-boundary distinction was invisible until the ∀M build
 probed it. (Benign here: caught by the rest-at-a-wall discipline + decorrelation before any wrong Lean was written.)
+
+## A design certificate's witness/positivity claim can be WRONG on multi-boundary cases while passing the easy anchors (2026-06-27, the §5 witness)
+The B_det certificate §5 asserted a SIMPLE a.e.-positivity witness ("leaf pivot ⟹ Hmat_0(0,0)=∏Bmat·1=1").
+It passed the L=2 anchors (single-/two-boundary) but the build tide (genm-decoder, sympy + 2 Codex) found it
+FALSE for the achiever path on (3,3,3,3) (three-boundary): a non-deepest active boundary doesn't propagate
+(Hmat 0 = 0), and the leaf is structurally row-empty for `tach`. The correct witness needs an effective-leaf +
+carrier-W construction (far more intricate). **Lesson (3rd in this family, after UPDATE-133 + the split-codim
+one):** a design certificate that ASSERTS a witness/positivity/det claim must SYMPY-VALIDATE it on the HARDEST /
+MULTI-BOUNDARY case (here (3,3,3,3)), not just assert it + spot-check the low-boundary anchors — the failure
+mode appears only at ≥3 boundaries. **Directed suspicion for the controller:** when a certificate hands a
+"simple witness," ask "was this evaluated on the case that exercises the full recursion depth (the deepest
+multi-boundary node)?" — if it was only checked on L=2, treat the witness as unverified. (Benign here: caught at
+the build by the sympy-validate-on-the-failing-case discipline, before any wrong Lean was committed.) Mitigation
+now standard: witness-validation consults must sympy the FAILING/hardest case explicitly.
