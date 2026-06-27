@@ -9835,6 +9835,51 @@ Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
 full positive-tail `F3` target staging, no determinant theorem, no measure
 theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly dCprod source staging
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; full verification passed:
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audit passed.
+
+Claim: in the retained-passive `dEarly` product-rule recurrence, after the
+`dG` factor has been source-staged, the stored-`C` suffix product derivative
+is source-staged one step.  For `q : Fin M`, set
+`p = q.castSucc` and `r = q.succ`; then
+
+```text
+dCprod_z(v) = dCnext_z(v) * C_z r + Cnext(z) * v.2.2.2.1 r.
+```
+
+Substitution into the current summand gives
+
+```text
+-((dCnext_z(v) * C_z r + Cnext(z) * v.2.2.2.1 r)
+    * A3p(z) * Pcast(z)^-1).
+```
+
+Lean proves this through
+`fderiv_retainedPassive_C_apply`,
+`fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply`, and
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_castSucc_apply`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dcprod-source-staging.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dcprod-source-staging.md`.
+
+Kill condition: if the source tangent is taken at `q.castSucc` instead of
+`q.succ`, if the noncommutative order is changed, or if this is advertised as
+`dPcast` staging, target staging, determinant equality, measure transport,
+normal crossings, pole order, or RLCT, it is not the intended slice.
+
+Nonclaims: no `dPcast` staging, no closed finite-sum formula for `dCprod`, no
+target staging, no full positive-tail `F3` target staging, no determinant
+theorem, no measure theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive dEarly terminal zero tail
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;

@@ -14989,3 +14989,39 @@ Nonclaims: this is not the solved terminal lower-left `A3`/`F3` derivative,
 no `dCprod` staging, no `dPcast` staging, no target staging, no full
 positive-tail `F3` target staging, no determinant theorem, no measure theorem,
 no normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive dEarly dCprod Source Staging
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassive_C_apply
+fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_castSucc_apply
+```
+
+For `q : Fin M`, with `p = q.castSucc` and `r = q.succ`, the stored-`C`
+suffix product beginning at `p.succ = r.castSucc` satisfies
+
+```text
+dCprod_z(v) = dCnext_z(v) * C_z r + Cnext(z) * v.2.2.2.1 r.
+```
+
+The `dEarly` wrapper substitutes this into the already dG-staged product-rule
+term while keeping `dCnext`, `dPcast`, and the successor-tail derivative
+explicit.  The source tangent is at `q.succ`; the factor order is unchanged.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dcprod-source-staging.md`
+passed by xhigh `Lovelace`.  Focused module build, `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed;
+all three new theorem names have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no `dPcast` staging, no closed finite-sum formula for `dCprod`, no
+target staging, no full positive-tail `F3` target staging, no determinant
+theorem, no measure theorem, no normal crossings, pole order, or RLCT.

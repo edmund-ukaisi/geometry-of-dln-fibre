@@ -21,6 +21,45 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next retained-passive `dEarly` recurrence slice has landed locally:
+source-staging the `dCprod` factor after the `dG` substitution.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dcprod-source-staging.md`.
+
+Lean proves the coordinate helper `fderiv_retainedPassive_C_apply`, the stored
+`C` suffix-product recurrence
+`fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply`, and the
+`dEarly` wrapper
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_castSucc_apply`
+in `RetainedPassiveCoordinatesDerivative.lean`.  For `q : Fin M`, with
+`p = q.castSucc` and `r = q.succ`, the theorem substitutes
+
+```text
+dCprod_z(v) = dCnext_z(v) * C_z r + Cnext(z) * v.2.2.2.1 r.
+```
+
+The source tangent is at `r = q.succ`, and the matrix factor order is
+unchanged.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Lovelace` passed the projection derivative, suffix-product order,
+`q.castSucc`/`q.succ` indexing, and nonclaims.  `scripts/sorries`,
+`git diff --check`, the full `DLNFibre` build, and theorem axiom audit passed;
+all three new theorem names have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no `dPcast` staging, no closed finite-sum formula for `dCprod`, no
+target staging, no full positive-tail `F3` target staging, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
+Next frontier on this local ladder: either terminal-simplify or iterate the
+remaining `dCnext` recurrence, or start the riskier `dPcast` source-staging
+probe over solved `A1`.
+
+Immediate predecessor: terminal zeroed-tail boundary companion.
+
 The next retained-passive `dEarly` recurrence boundary slice has landed
 locally: the terminal zeroed-tail companion.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-zero-tail.md`.

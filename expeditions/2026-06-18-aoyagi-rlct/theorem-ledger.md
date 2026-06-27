@@ -11587,3 +11587,27 @@ Nonclaims: not solved terminal lower-left `A3`/`F3`, no `dCprod` staging, no
 `dPcast` staging, no target staging, no full positive-tail `F3` target
 staging, no determinant theorem, no measure theorem, no normal crossings,
 pole order, or RLCT.
+
+Latest A2 retained-passive dEarly dCprod source staging:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassive_C_apply`,
+`fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply`, and
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_castSucc_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dcprod-source-staging.md`
+passed by xhigh `Lovelace`.
+
+This uses `residualFactorProduct_castSucc` and the product rule to rewrite the
+stored-`C` suffix derivative as
+`dCnext_z(v) * C_z(q.succ) + Cnext(z) * v.2.2.2.1(q.succ)`, then substitutes
+that expression into the already dG-staged `dEarly` current summand.  Focused
+module build, `scripts/sorries`, `git diff --check`, full `DLNFibre` build,
+and theorem axiom audit passed; all three new theorem names have only the
+standard `[propext, Classical.choice, Quot.sound]` footprint.  Nonclaims: no
+`dPcast` staging, no closed finite-sum formula for `dCprod`, no target
+staging, no determinant theorem, no measure theorem, no normal crossings, pole
+order, or RLCT.

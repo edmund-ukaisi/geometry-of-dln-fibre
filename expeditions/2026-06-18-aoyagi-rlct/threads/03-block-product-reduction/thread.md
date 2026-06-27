@@ -18,6 +18,44 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly dCprod source staging
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-dcprod-source-staging.md`.
+Review:
+`review-a2-retained-passive-dearly-dcprod-source-staging.md`, PASS by xhigh
+`Lovelace`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassive_C_apply
+fderiv_retainedPassive_C_residualFactorProduct_castSucc_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_castSucc_apply
+```
+
+This source-stages the `dCprod` factor in the retained-passive `dEarly`
+product-rule recurrence after the `dG` substitution.  For `q : Fin M`, with
+`p = q.castSucc` and `r = q.succ`, it rewrites the suffix-product derivative as
+
+```text
+dCprod_z(v) = dCnext_z(v) * C_z r + Cnext(z) * v.2.2.2.1 r.
+```
+
+The theorem keeps `dCnext`, `dPcast`, and the successor-tail derivative
+explicit.  Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audit also passed; all three new theorem names have only the
+standard `[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no `dPcast` staging, no closed finite-sum formula for `dCprod`, no
+target staging, no full positive-tail `F3` target staging, no determinant-one
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly terminal zero tail
 
 Reproduction:
