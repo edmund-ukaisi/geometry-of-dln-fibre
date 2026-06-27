@@ -125,7 +125,8 @@ theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → �
   `chartDsigAt_flat_over_schurLoc` — lives natively), transporting only the cheap membership Prop across
   `hI : chartDsigAt I.s I.t = chartDsigAt st.1 st.2`; the heavy structure-map algebra is never `▸`-cast
   (avoids the `isDefEq`/`whnf` heartbeat blowup an `hrw ▸` on the over-base data triggers).
-- **Status.** sorry-free + reviewed (reviewer PASS + decorrelated Codex consult concurring:
-  over-base content genuine — honest `schurToDsigAt`, real `≃ₐ[SchurLoc]` B-linearity proved
-  separately, both conjuncts over the same bound `φ`'s algebra, no self-reference; non-vacuous;
-  no overclaim, both open items named).
+- **Status.** sorry-free + reviewed (reviewer PASS + decorrelated Codex concurring: over-base content
+  genuine — the honest `schurToDsigAt` named in the *type*, real `≃ₐ[SchurLoc]` linearity proved
+  separately, both conjuncts over the named geometric `chartDsigAtSchurLocAlgebra` (not a degenerate
+  `∃ φ` packaging); no overclaim, both open items named). The pointwise headline is **conditional on
+  `hP`** and is vacuous in the rank-unachievable regime — not an unconditional non-vacuity claim.

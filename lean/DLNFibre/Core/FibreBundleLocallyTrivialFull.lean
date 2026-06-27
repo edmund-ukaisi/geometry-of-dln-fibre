@@ -696,12 +696,14 @@ noncomputable def pivotLocalProductAtlas (d : Fin (N + 2) → ℕ) (r : ℕ)
 The reduced fibre bundle has a **per-pivot local-product atlas over the rank-exactly-`r` open**
 `rankROpen` of `Spec (sweepSigmaRing)`: the scheme open-cover of that open by the per-pivot charts
 (`iSup_pivot_basicOpen_eq_rankROpen`) + the per-pivot trivializations into the standard fibre + the
-coherent (base-algebraic) transition cocycle, all assembled (`pivotLocalProductAtlas`).
+**pairwise base-side overlap data** (round-trip + base-normalization + overlap-restriction), all
+assembled (`pivotLocalProductAtlas`).
 
 **Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated): the genuine content is
-the per-pivot trivializations + the coherent (base-algebraic) cocycle, but the *fixed-target* overlap
-gluing (R1 `targetOverlapTransition`) and the over-base/projection compatibility are not assembled
-here. (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
+the per-pivot trivializations + the pairwise base-side overlap data (NOT a bundled triple cocycle — the
+triple-overlap cocycle is the abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here),
+but the *fixed-target* overlap gluing (R1 `targetOverlapTransition`) and the over-base/projection
+compatibility are not assembled here. (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
 identity — in `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq`; so the scheme
 open-cover is genuinely a cover *of the rank-`= r` open*, not merely the near-definitional
 chart-cover-complement. The earlier "residue-field-rank bridge is a genuine residual" note is
@@ -711,9 +713,11 @@ closure) is genuinely false (the rank-`< r` boundary lies in no chart). -/
 /-- **The per-pivot local-product atlas over the rank-`= r` open.** The full assembly
 (`pivotLocalProductAtlas`): the scheme open-cover of `rankROpen ⊆ Spec (sweepSigmaRing)` by the
 per-pivot charts, the per-pivot trivializations into the standard fibre `SchurLoc ⊗ sweepFibreRing`,
-and the coherent base-algebraic transition cocycle on overlaps — all genuinely assembled and
-machine-checked. **Not** named `locallyTrivial`: the genuine content is the trivializations + coherent
-cocycle; the fixed-target overlap gluing (R1) and over-base/projection compatibility are not assembled.
+and the pairwise base-side overlap data on overlaps — all genuinely assembled and
+machine-checked. **Not** named `locallyTrivial`: the genuine content is the trivializations + the
+pairwise base-side overlap data (not a bundled triple cocycle — the triple-overlap cocycle is the
+abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here); the fixed-target overlap gluing
+(R1) and over-base/projection compatibility are not assembled.
 (Its identity with `{rank = r}` is now formalized as a set-of-primes identity — S1
 `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — so the cover is genuinely a cover
 of the rank-`= r` open.) -/

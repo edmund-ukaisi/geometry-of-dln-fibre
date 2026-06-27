@@ -30,9 +30,10 @@ itself (Mathlib has zero RLCT/zeta content — that is the next expedition's her
 ## Recon result that reshaped scope (both scouts, 2026-06-27)
 
 - **The keystone is one bridge, not three problems.** The three "bundle" questions collapse onto the
-  prime/residue-field **rank bridge**. `rankROpen` is currently *defined* as the complement of the
-  pivot-minor vanishing locus (`FibreBundleLocallyTrivialFull.lean:520`); its docstring flags that
-  `rankROpen = {rank = r}` is **not yet a theorem**. Closing it is S1.
+  prime/residue-field **rank bridge**. At recon time `rankROpen` was *defined* as the complement of the
+  pivot-minor vanishing locus, with its docstring flagging that `rankROpen = {rank = r}` was *not yet a
+  theorem*; **S1 closed it** — now `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq`, a
+  set-of-primes identity.
 - **The keystone is bounded-but-new, reachable.** Mathlib's `Rank.lean` has the "≥" direction
   (`rank_of_isUnit`, `rank_submatrix_le`); the "≤" direction (all `(r+1)`-minors vanish ⟹ `rank ≤ r`
   over a field) is **not** packaged, but it is the **dual of the banked
@@ -71,8 +72,9 @@ pass, **name = content**.
   tide caught). **RLCT-runway slab 1** (the smooth-locus upper-bound model). Was independent of S1.
 - **S3 — Flatness facts. [LANDED (partial) — `FibreFlatness.lean`]** The cheap-flatness verdict
   (cheap on both readings; no miracle/generic) + honest sub-facts: localization flatness, the
-  `SchurLoc`-free standard model, scheme `UniversallyOpen`. The brief's literal target
-  `Flat π : mult⁻¹(rankROpen) → rankROpen` is **NOT** delivered here — see S4b.
+  `SchurLoc`-free standard model, scheme `UniversallyOpen`. S4b delivers the chartwise `SchurLoc` step;
+  the brief's literal target `Flat π : mult⁻¹(rankROpen) → rankROpen` over the geometric base remains
+  open on projection compatibility + R1.
 - **S4b — `SchurLoc`-linear (over-base) trivialization + chartwise flatness. [LANDED — `FibreOverBaseTriv.lean`;
   the convergent keystone, hardener PASS]** Upgrades the per-pivot trivialization to
   `Away(chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` over the **honest banked structure map**
