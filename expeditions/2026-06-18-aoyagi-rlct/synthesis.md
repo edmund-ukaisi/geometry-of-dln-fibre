@@ -48,6 +48,77 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Recursive Passive A1-Tail Ctop Plug-in
+
+`RetainedPassiveCoordinatesJacobian.lean` now defines a target-only recursive
+derivative for the passive top-left seed-product suffix and uses it in the
+first top-left `Ctop` branch:
+
+```text
+retainedPassiveTargetStagedA1passiveTangentAt
+retainedPassiveTargetStagedA1passiveTangentAt_fderiv_eq_source
+retainedPassiveA1TailTargetStagedFDerivAt
+retainedPassiveA1TailTargetStagedFDerivAt_self
+retainedPassiveA1TailTargetStagedFDerivAt_step
+retainedPassiveA1TailTargetStagedFDerivAt_zero
+retainedPassiveA1seedTailProductAt
+fderiv_retainedPassive_A1seed_residualFactorProduct_targetStaged_apply
+fderiv_retainedPassive_A1TailAfterFirst_targetStaged_apply
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The recurrence is the elementary product-rule recurrence for the passive
+top-left suffix `P_m`:
+
+```text
+D_M#(w) = 0
+D_m#(w) =
+  D_{m+1}#(w) * data.A1seed(p)
+  + P_{m+1}(z) * targetA1(q,w),
+```
+
+with `q : Fin M := <m,m<M>` and `p : Fin (M+1) := q.succ`.  Matrix order is
+preserved.  For `w = (fderiv raw z) v`, Lean proves
+`d(P_m)_z(v)=D_m#(w)` for every `m<=M`, then specializes `m=0` to replace the
+`dTail` term in the `Ctop` branch.
+
+The resulting target-staged first top-left branch is
+
+```text
+Dzv.Ctop
+  - XsuccF2(0) * coord.solvedA3(0)
+  - coord.F2((0 : Fin (M+1)).succ) * rawEdgeTupleA3(Dzv,0)
+  + Tail^-1 * dTail * Tail^-1 * coord.Ctop
+= formal.Ctop.
+```
+
+The recovery companion multiplies the same expression by `Tail` and uses the
+formal raw-order `Ctop` recovery theorem.
+
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-a1-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`,
+PASS by xhigh `Dirac the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched file was clean; direct `#print axioms` audits for the
+two derivative bridges and two `Ctop` theorems reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not the whole target-side determinant-one normalizer, determinant
+equality, source-prior/Jacobian transport, inverse-density pushforward, normal
+crossings, pole order, or RLCT.  The older finite one/two-step `Ctop`
+target-staging theorems remain compatibility lemmas.  Next target: construct
+the determinant-one target normalizer using the recursive `F3` and `Ctop`
+plug-ins plus the passive `A1` target-staging.
+
 ## Latest A2 Positive-Tail F3 Recursive dEarly Plug-in
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves that the positive-tail

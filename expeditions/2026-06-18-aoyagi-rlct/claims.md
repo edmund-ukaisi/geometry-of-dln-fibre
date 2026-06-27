@@ -150,6 +150,10 @@ No such claim is formalisation-ready until both fields are filled.
   determinant-chart hypothesis; the positive-tail `F3` bridge now consumes
   that recursive expression at index `0` and has a matching source-`F3`
   recovery theorem;
+  the passive top-left `A1` suffix now has a target-only Nat recursion, the
+  actual Frechet derivative of every seed-product suffix is proved to agree
+  with that recursion on raw-order derivative targets, and the first value is
+  plugged into the first top-left `Ctop` branch with source-`Ctop` recovery;
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through
@@ -279,19 +283,17 @@ No such claim is formalisation-ready until both fields are filled.
   pushforward from the p.13 section alone. The full source Theorem 3/RLCT
   claim remains blocked on the analytic product-coordinate regular-square
   suspension theorem and the actual p.13 chart/density construction.  Latest
-  retained-passive derivative/Jacobian slice: the two-positive-tail first
-  `F3` bridge now uses the recursive target-staged lower-left derivative as
-  its `dEarly` term, replacing the previous finite-unroll frontier while
-  keeping the older finite-unroll theorems as compatibility lemmas.  The
-  two-positive-tail first top-left `Ctop` bridge now recurses once into the
-  remaining suffix derivative
-  and target-stages the second passive `A1` source tangent.  Lean proves the
-  two-positive-tail `Ctop` consumer and `Ctop` recovery companion in
-  `RetainedPassiveCoordinatesJacobian.lean`, preserving the factor order
-  `Tail⁻¹ * (((...) * data.A1seed p0) + ...) * Tail⁻¹ * coord.Ctop` and
-  leaving `(fderiv Psucc1 z) v` explicit.  The previous first-passive `Ctop`
-  target-staging slice remains the one-positive-tail boundary for this
-  recursive step.  Latest determinant/Jacobian assembly slice: Lean now proves
+  retained-passive derivative/Jacobian slice: the positive-tail `F3` bridge now
+  uses the recursive target-staged lower-left derivative as its `dEarly` term,
+  replacing the previous finite-unroll frontier while keeping the older
+  finite-unroll theorems as compatibility lemmas.  The first top-left `Ctop`
+  branch now uses the full recursive target-staged passive top-left
+  `A1` suffix derivative as its `dTail` term, replacing the previous finite
+  one/two-step `Ctop` suffix expansions while keeping them as compatibility
+  lemmas.  Lean proves the recursive `Ctop` consumer and `Ctop` recovery
+  companion in `RetainedPassiveCoordinatesJacobian.lean`, preserving the order
+  `Tail⁻¹ * dTail * Tail⁻¹ * coord.Ctop`.  Latest determinant/Jacobian
+  assembly slice: Lean now proves
   a conditional bridge from a supplied determinant-one target-side
   `LinearEquiv` identifying the actual raw-order Frechet derivative with the
   point-specialized formal raw-order Jacobian to equality of the actual
@@ -373,6 +375,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`;
   retained-passive two-positive-tail second passive `A1` target staging at
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-two-positive-tail-second-a1-target-staging.md`;
+  retained-passive recursive passive top-left `A1` suffix and `Ctop` plug-in
+  at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-a1-tail.md`;
   retained-passive recursive lower-left and positive-tail `F3` plug-in design
   at
   `threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`;
@@ -394,6 +399,9 @@ No such claim is formalisation-ready until both fields are filled.
   retained-passive positive-tail `F3` recursive `dEarly` plug-in reviewed by
   xhigh `Franklin the 2nd` in
   `threads/03-block-product-reduction/review-a2-retained-passive-f3-recursive-dearly-plugin.md`;
+  retained-passive recursive passive top-left `A1` suffix and `Ctop` plug-in
+  reviewed by xhigh `Dirac the 2nd` in
+  `threads/03-block-product-reduction/review-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`;
   local source-rank endpoint package reviewed in
   `threads/03-block-product-reduction/review-a2-local-source-rank-endpoint-package.md`;
   block product-difference algebra independently checked by xhigh

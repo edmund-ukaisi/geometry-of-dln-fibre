@@ -18,6 +18,75 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 recursive passive A1-tail Ctop plug-in
+
+Reproduction:
+`reproduction-a2-retained-passive-recursive-target-staged-a1-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`.
+Review:
+`review-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`, PASS by xhigh
+`Dirac the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetStagedA1passiveTangentAt
+retainedPassiveTargetStagedA1passiveTangentAt_fderiv_eq_source
+retainedPassiveA1TailTargetStagedFDerivAt
+retainedPassiveA1TailTargetStagedFDerivAt_self
+retainedPassiveA1TailTargetStagedFDerivAt_step
+retainedPassiveA1TailTargetStagedFDerivAt_zero
+retainedPassiveA1seedTailProductAt
+fderiv_retainedPassive_A1seed_residualFactorProduct_targetStaged_apply
+fderiv_retainedPassive_A1TailAfterFirst_targetStaged_apply
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The recursive target-only passive top-left derivative has base `D_M#=0` and
+step
+
+```text
+D_m# =
+  D_{m+1}# * data.A1seed(p)
+  + P_{m+1}(z) * targetA1(q),
+```
+
+where `q : Fin M := <m,m<M>` and `p : Fin (M+1) := q.succ`.  On an actual
+raw-order derivative target, Lean proves that this recursion equals the
+Frechet derivative of the seed-product suffix `P_m`.  The full
+`retainedPassiveA1TailAfterFirst` derivative is the `m=0` case.
+
+The `Ctop` bridge then uses this recursive `dTail`:
+
+```text
+Dzv.Ctop
+  - XsuccF2(0) * coord.solvedA3(0)
+  - coord.F2((0 : Fin (M+1)).succ) * rawEdgeTupleA3(Dzv,0)
+  + Tail^-1 * dTail * Tail^-1 * coord.Ctop
+= formal.Ctop.
+```
+
+The recovery theorem multiplies the same staged branch by `Tail` and recovers
+the source `Ctop` tangent.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` passed, forbidden-marker
+search on the touched file was clean, and direct `#print axioms` audits for the
+two derivative bridges and two `Ctop` theorems reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.
+
+Next frontier: construct the determinant-one target normalizer from the
+recursive `F3` plug-in, this recursive `Ctop` plug-in, and the passive
+`A1` target-staging.
+
 ## 2026-06-27 A2 positive-tail F3 recursive dEarly plug-in
 
 Reproduction/design:

@@ -21,6 +21,71 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The passive top-left `A1` suffix now has a recursive target-staged derivative
+and `Ctop` plug-in.  New Lean names:
+
+```text
+retainedPassiveTargetStagedA1passiveTangentAt
+retainedPassiveTargetStagedA1passiveTangentAt_fderiv_eq_source
+retainedPassiveA1TailTargetStagedFDerivAt
+retainedPassiveA1TailTargetStagedFDerivAt_self
+retainedPassiveA1TailTargetStagedFDerivAt_step
+retainedPassiveA1TailTargetStagedFDerivAt_zero
+retainedPassiveA1seedTailProductAt
+fderiv_retainedPassive_A1seed_residualFactorProduct_targetStaged_apply
+fderiv_retainedPassive_A1TailAfterFirst_targetStaged_apply
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_recursive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The target-only recurrence is indexed by `m <= M`:
+
+```text
+D_M#(w) = 0
+D_m#(w) =
+  D_{m+1}#(w) * data.A1seed(p)
+  + P_{m+1}(z) * targetA1(q,w),
+```
+
+where `q : Fin M := <m, m<M>` and `p : Fin (M+1) := q.succ`.  On an actual
+raw-order derivative target `w = (fderiv raw z) v`, Lean proves
+`d(P_m)_z(v)=D_m#(w)` for every `m<=M`, and in particular replaces the
+`dTail` term in the first top-left `Ctop` branch by
+`D_0#((fderiv raw z) v)`.
+
+The `Ctop` target-staged branch is
+
+```text
+Dzv.Ctop
+  - XsuccF2(0) * coord.solvedA3(0)
+  - coord.F2((0 : Fin (M+1)).succ) * rawEdgeTupleA3(Dzv,0)
+  + Tail^-1 * dTail * Tail^-1 * coord.Ctop
+= formal.Ctop,
+```
+
+and the recovery companion multiplies the same branch by `Tail` to recover
+the source `Ctop` tangent.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed, and the full `DLNFibre` build passed with only pre-existing warning
+noise.  `scripts/sorries` reported zero forbidden markers, `git diff --check`
+passed, forbidden-marker search on the touched file was clean, and direct
+`#print axioms` audits for the two derivative bridge theorems and the two
+`Ctop` theorems reported only `[propext, Classical.choice, Quot.sound]`.
+Xhigh review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-a1-tail-ctop-plugin.md`.
+
+This does not construct the whole target-side determinant-one normalizer, prove
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.  The finite one/two-step passive
+top-left target-staging theorems remain compatibility lemmas.
+
+Next frontier: use the recursive `F3` and `Ctop` plug-ins, together with the
+passive `A1` target-staging, to construct the determinant-one target
+normalizer.
+
+Previous controller decision:
+
 The recursive target-staged lower-left derivative is now plugged into the
 positive-tail `F3` bridge.  New Lean names:
 
