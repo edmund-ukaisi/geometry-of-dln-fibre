@@ -5,10 +5,15 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 
 | NN | type | subject | status |
 |----|------|---------|--------|
-| 01 | scout (pen-and-paper + literature) | R0 — interface design: the 3 cited analytic theorems + the precise geometric hypothesis the lower-bound criterion consumes | in-progress |
-| 02 | pen-and-paper | R1 — the decisive computation: local rlct of the deepest stratum of `(2,2,2,2,2)`, `r=0` (mild = ½·codim, or `<`?) | in-progress |
-| 03 | scout | Rm — Mathlib coverage for the local model (regular sequence / lci / Koszul / `KaehlerDifferential`) | in-progress |
+| 01 | scout (pen-and-paper + literature) | R0 — interface design: the 3 cited analytic theorems + the precise geometric hypothesis the lower-bound criterion consumes | closed (survived) |
+| 02 | pen-and-paper | R1 — the decisive computation: local rlct of the deepest stratum of `(2,2,2,2,2)`, `r=0` (mild = ½·codim, or `<`?) | closed (MILD: λ=3/2=½·codim) |
+| 03 | scout | Rm — Mathlib coverage for the local model (regular sequence / lci / Koszul / `KaehlerDifferential`) | closed |
 
-Queued (spine, post-recon): R2 upper-bound geometry (lci → local rlct = c/2); R3 lower-bound geometry
-(singular-stratum mildness — the wall); R4 assemble the refined bridge; R5 roll-in bundle completion
-(projection compatibility + R1-gluing).
+**RECON COMPLETE (2026-06-27).** Verdict MILD — green light. Refined plan in `synthesis.md` (§ RECON
+COMPLETE). Spine re-routed (awaiting operator sign-off before Wave 1):
+
+Queued (refined spine): **Wave 1** — R2+T upper-bound + real↔complex transfer (achievable, exposes the
+hidden transfer) ∥ R3-route probe (drive the repo `Skeleton`/`Validate` resolution scaffold + test the
+Newton-in-resolved-chart gamble; R3-Newton in standard coords is DEAD). **Wave 2** — R3 lower-bound (the
+wall): resolution → C3 + lower-bracket → `rlct ≥ ½·codim_ℝ`. **Wave 3** — R4 assemble refined
+`cited_aoyagi_dln`; R5 bundle completion (projection compatibility + R1-gluing).

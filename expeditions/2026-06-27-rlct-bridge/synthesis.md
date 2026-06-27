@@ -51,3 +51,110 @@ formaliser tides (per pattern). Then drive.
 
 - **tick 0 (setup, 2026-06-27):** branch + brief + machinery + cron backstop; opening recon (01/02/03)
   launched.
+
+- **tick 1 (Rm coverage landed, 2026-06-27):** recon-mathlib (thread 03) closed. Key results +
+  corrections to the brief's R2 framing:
+  - **R2's algebraic slab is banked / in Mathlib:** the S2b conormal statement (`I/I²` free of rank `c`
+    at a smooth pt) IS Mathlib's `SubmersivePresentation.free_cotangent`/`basisCotangent`; repo has the
+    Jacobian↔conormal bridge (`finrank_cotangentSpace_eq_finrank_ker_jacobian`, `CotangentJacobian`),
+    `smooth_point_isRegularLocalRing`, `fibre_smoothBlock_certificate` (reports Ω rank `ambient−c`,
+    leaving the conormal-rank-`c` side on the table — reachable via `free_cotangent`).
+  - **Brief correction:** "the `c` equations form a regular sequence (lci)" was a partial RED HERRING —
+    a literal length-`c` Koszul/regular sequence is a sub-wall (no Koszul/lci/CM in Mathlib) AND unneeded
+    (it proves no rlct value — that's irreducibly analytic). The **conormal-free** statement carries the
+    upper-bound algebra. ⟹ reframe R2 around conormal-free / Jacobian-rank-`c`, not regular-sequence.
+  - **THE R2 WALL (Codex xhigh-corroborated): the real↔complex / presentation seam**, NOT the lci gap.
+    Banked geometry is over alg-closed `K` (`[IsAlgClosed k]`); the cited analytic rlct is over **ℝ** and
+    needs a REAL map `F:ℝ^N→ℝ^c`, a real smooth point of `F⁻¹(0)`, Jacobian rank `c` THERE. ⟹ R0 + R2
+    must co-design: the refined `RlctInterface` + its geometric hypothesis stated **over ℝ**, with
+    "∃ real smooth pt, rank dF = c" as the PROVED input. **Steered recon-interface (01) accordingly.**
+  - **R2 route (3 rungs):** (1b) read `rank(Jacobian)=c` off banked `CotangentJacobian` — LOW-RISK
+    bounded-but-new; (2) real smooth point over ℝ + the ℝ interface restatement — NET-NEW, the wall;
+    (3) refined `RlctInterface` over ℝ. Mathlib GAP confirmed: no Koszul / lci-scheme / CM / real-RLCT.
+  - **Probe overlap:** whether a real smooth point of `mult⁻¹(0)` over ℝ is constructible — the `(2,2,2)`
+    / `(2,2,2,2,2)` r=0 witness (R1, thread 02) is the natural probe.
+  - Holding the full recon synthesis + rung-ladder refinement (R2–R5) until R0 (01) + R1 (02) land.
+
+- **tick 2 (R0 interface design landed, 2026-06-27):** recon-interface (thread 01) closed, `survived`.
+  Reshapes the seam — three structural findings:
+  - **The lower-bound hypothesis is a condition on the IDEAL, not the set; the brief's R3 candidate
+    ("strata smooth of expected codim ⟹ rlct = ½·codim") is FALSE** (Codex counterexample: `I=(x,y²−z³)`,
+    `F=x²+(y²−z³)²`, rlct = 11/12 < 1 — a deep cusp valuation). **Sharp condition:** the pair
+    `(ℝ^N, c·I_fibre)` is **log canonical**, i.e. `lct(I_fibre) = c`, i.e. the per-divisor inequality
+    `h_E+1 ≥ c·ord_E(I)` for every divisorial valuation `E`. (Same set, different ideal power ⟹ different
+    rlct, so no set-only condition works.) **R3 retargeted: prove `(ℝ^N, c·I_fibre)` log canonical.**
+  - **The three CITED theorems (over ℝ), thin seam:** C1 `rlct(Σ_{i≤c} xᵢ²) = c/2` (ALREADY in repo:
+    `monomial_rlct`, `rlct_additive_smooth_block`); C2 Watanabe `rlct(Σfᵢ²) ≤ ½·codim_ℝ` (cite Lin); C3
+    monomial extraction `rlctAt = ⨅ (hⱼ+1)/(2kⱼ)` over a normal-crossing chart datum (= the existing
+    `monomial_rlct` axiom — the irreducible cited boundary; the lower-bracket
+    `axisRatio_ge_of_mult`/`monomialThreshold_ge_of_mult` already PROVED). NB **C3 must be a
+    log-principalization of the IDEAL, not a resolution of the set.**
+  - **The real↔complex transfer `T` is PROVABLE, not cited (and is the genuine wall, RISK-1):**
+    `codim_ℝ(mult⁻¹_ℝ B) = codim_K(mult⁻¹_K B) + "every minimising component has a real smooth point"`.
+    Scout verified the load-bearing fact — `realizerD` = `intervalDirectSum` of 0/1 entries, defined over
+    ℚ ⊆ ℝ ⟹ each top-dim minimising component has a rational (∴ real) point ⟹ real points Zariski-dense
+    ⟹ `dim_ℝ = dim_K`. The monolith HIDES `T` ("no base-change lemma needed" — the visible-progress
+    trap); the refined interface must EXPOSE it. Banked lever: `codimRepCanonical_orbitRankLocus_realizerD`.
+  - **Existing RLCT scaffolding in the repo** (earlier rlct-payoff expedition): `monomial_rlct` (cited
+    boundary), the proved lower-bracket, `aoyagiLambda`, a `Skeleton.lean`/`Validate/` resolution scaffold.
+    Aoyagi's actual lower bound = a BESPOKE explicit real blow-up (Cases 1/2 induction), citing only the
+    monomial extraction (= C3) once the resolution is in hand; LR Thm 8.6 = pure formula-match
+    `2·λ_Aoyagi = C`. NO `aoyagiLambda = ½·cCodim` bridge in Lean yet (the monolith short-circuits it).
+  - **R3 routes:** (R3-Newton) DLN core Newton-nondegenerate ⟹ ONE citable theorem (Saito–Varchenko)
+    discharges all divisor inequalities — collapses the mountain; **UNTESTED — R1's job** (steered).
+    (R3-resolution) Aoyagi's bespoke blow-up via the banked `Skeleton`/`Mval=codimForm` → combinatorial
+    `min_T Mval ≥ cCodim`. (R3-slc) reduced-lci + semi-log-canonical — heavy.
+  - **RECOMMENDED SEAM:** CITED = C1+C2+C3 (keep `monomial_rlct`); PROVED = loss=Σc-squares (banked) +
+    real resolution/Newton datum → C3 + lower-bracket → `rlct ≥ ½·codim_ℝ` + transfer `T`. Compose
+    C2+R3+T → refined `cited_aoyagi_dln` on a thin named boundary. Do NOT add a standalone "lc-pair ⟹
+    rlct≥½codim" cited field unless R3-Newton/slc discharges cheaply (R1 decides).
+  - **NAME-HONESTY GATE (expedition-wide):** no `rlct_…` may assert `≥½codim` while secretly assuming C3
+    for a resolution it doesn't exhibit, nor bury `T` in a citation. (→ lessons L4.)
+  - **Awaiting R1** (the decisive computation + Newton-nondegeneracy verdict, steered) — then full
+    synthesis + rung ladder + operator sign-off before tides.
+
+- **tick 3 (backstop, 2026-06-27):** drift-glance. R1 (recon-deepest-stratum `a502ccc1`) still running
+  (no commits — pen-and-paper; the `(2,2,2,2,2)` rlct + Newton-nondegeneracy is genuinely hard). No tide
+  to merge, no hardener pending, no operator edit. Discipline self-check: vision held; correctly waiting
+  on R1's decisive verdict (sets R3 cost), not busywork; name-gate banked; sea on the right wall.
+  **NB — isolation watch-item:** the read-only recon scouts' artefacts (thread.md + codex for 01/03)
+  landed in MY worktree's expedition dir (their isolation didn't fully separate). Harmless for read-only
+  recon (lean/ untouched, confirmed), and convenient (I'll bank them at recon-synthesis). BUT verify the
+  first FORMALISER tide gets a genuinely distinct worktree before parallelizing Lean writers (the
+  fibration-geometry tides DID get distinct trees, so likely fine — but confirm). Re-sleep.
+
+- **tick 4 (R1 landed — RECON COMPLETE, 2026-06-27):** recon-deepest-stratum (thread 02) closed.
+  **VERDICT: MILD — green light.** Local rlct at the deepest stratum of `(2,2,2,2,2)` r=0 = **λ = 3/2 =
+  ½·codim** (codim `C=3`, `δ=0`; θ=binom(4,2)=6 matches; repo `Aoyagi.lambda(d22222,0)=3/2`). Certified 3
+  ways: rigorous Jacobian-rank-3 upper bound (smooth codim-3 CI, origin in closure); decorrelated Codex
+  (xhigh, value-withheld) independently → 3/2 via SVD/rank blow-up → toric ideal `J=⟨zr−cp,a(c−zq),dr,adq⟩`;
+  `(2,2,2)` r=0 clean-numeric validation vs the classical Aoyagi–Watanabe value. **The kill-condition
+  (λ<½·codim) does NOT fire.**
+  - **R3-Newton in STANDARD coords is DEAD:** explicit torus point (A₁=A₂=A₃=[[1,1],[1,1]],
+    A₄=[[1,−1],[2,−2]]: all entries ≠0 yet product=0 ⟹ K=0, ∇K=0) ⟹ Newton-degenerate; naive toric bound
+    = 2 ≠ 3/2. So "cite one Saito–Varchenko on the coordinate Newton polyhedron" FAILS. **R3-resolution
+    needed** (rank/SVD blow-up à la Aoyagi, on the repo `Skeleton`/`Validate` scaffold). **Refined gamble
+    that survives:** Newton-nondegenerate IN THE RESOLVED CHART may still discharge R3 with one citable
+    theorem — worth probing first.
+  - **OPEN (the genuine wall, R3):** the rigorous lower bound λ≥3/2 (mildness) is NOT float-certifiable
+    (multiplicity m=5 log factor biases sampling to ~1.2–1.5); no evidence of <3/2, but it must be PROVED
+    in R3. (Minor: pole mult m=5 Aoyagi/repo vs Codex m=4 — low stakes.)
+
+## RECON COMPLETE — the refined plan (for operator sign-off before tides)
+
+**Seam (CITED thin / PROVED prize):** CITED over ℝ = C1 `rlct(Σxᵢ²)=c/2` + C2 Watanabe `≤½·codim_ℝ` + C3
+monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PROVED = loss=Σc-squares
+(banked) + R2/T (upper bound + transfer) + R3 (lower bound) → R4 compose → retire monolith
+`cited_aoyagi_dln`. NAME-GATE: no `rlct_…` may assume C3 for a resolution it doesn't exhibit, nor bury T.
+
+**Rung ladder (recommended sequencing):**
+- **Wave 1 (parallel):** (A) **R2 + T** — the upper-bound + real↔complex transfer: real smooth pt +
+  Jacobian rank c (banked-ish `CotangentJacobian`/`free_cotangent`) → C2; transfer T `codim_ℝ=codim_K`
+  via the rational `realizerD` (banked `codimRepCanonical_orbitRankLocus_realizerD`). Bounded-but-new; the
+  achievable first win that EXPOSES the hidden transfer. (B) **R3-route probe** — drive the repo
+  `Skeleton`/`Validate` resolution scaffold toward the combinatorial `min_T Mval ≥ cCodim`
+  (`Mval=codimForm` banked) + test the refined Newton-in-resolved-chart gamble. Sets R3's cost.
+- **Wave 2:** **R3 (the lower bound, the wall)** — the resolution → C3 + lower-bracket → `rlct ≥ ½·codim_ℝ`.
+  Multi-tide; route set by the Wave-1 probe.
+- **Wave 3:** **R4 assemble** (compose → refined `cited_aoyagi_dln`); **R5 bundle completion**
+  (projection compatibility + R1-gluing).
