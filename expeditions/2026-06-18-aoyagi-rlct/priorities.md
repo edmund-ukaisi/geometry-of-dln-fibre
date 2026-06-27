@@ -21,6 +21,47 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive lower-left derivative recurrence now has a named
+one-step target-staging RHS helper in
+`RetainedPassiveCoordinatesDerivative.lean`.  New Lean names:
+
+```text
+retainedPassiveLowerLeftTailStepCoreAt
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_stepCore_apply
+```
+
+The helper packages the already-proved `dEarly` one-step recurrence after
+`dCprod`, `dG`, and `dPcast` staging, while keeping the current solved-`A1`
+tangent `dAcur`, suffix-product tangent `dPsucc`, and recursive successor
+derivative `dNext` explicit.  The generic, zero-current, and
+successor-current recurrence theorems are definitional restatements through
+this helper.  The zero-current wrapper supplies
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop`; the successor
+wrapper supplies `v.1 s.castSucc`, not `v.1 s.succ` or `v.1 q`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed, and the full `DLNFibre` build passed with only pre-existing warning
+noise.  `scripts/sorries` reported zero forbidden markers, `git diff --check`
+passed, and all four new theorem/definition axiom audits reported only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-lower-left-step-core.md`.
+
+This does not define the full Nat-recursive target-staged lower-left
+derivative, construct a target-side determinant-one linear equivalence, prove
+determinant equality, or prove source-prior transport, inverse-density
+pushforward, normal crossings, pole order, or RLCT.  Reproduction/design:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-lower-left-step-core.md`.
+
+Next frontier: use this helper to build the Nat-recursive target-staged
+lower-left derivative object with base at the zeroed-final tail, then use it
+to replace the finite positive-tail `F3` unroll chain.
+
+Previous controller decision:
+
 The retained-passive determinant/Jacobian layer now has a conditional bridge
 socket from the actual raw-order Frechet derivative determinant to the formal
 raw-order product determinant.  New Lean names:

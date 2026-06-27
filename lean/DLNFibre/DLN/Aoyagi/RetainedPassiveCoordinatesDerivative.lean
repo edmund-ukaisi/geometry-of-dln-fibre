@@ -3418,6 +3418,138 @@ theorem fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG
   simpa [A1fun, A3fun, Cfun, Tailfun, Cprod, Cnext, A3p, dG, Pcast, Psucc,
     Nextfun, data, r, p] using hrecLocal
 
+set_option linter.style.longLine false in
+/-- The named one-step RHS for the retained-passive lower-left tail derivative,
+with the current solved-`A1` tangent, suffix-product tangent, and recursive
+successor derivative supplied explicitly. -/
+def retainedPassiveLowerLeftTailStepCoreAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) (q : Fin M)
+    (dAcur dPsucc : Matrix ρ ρ ℝ)
+    (dNext : Matrix (κ' (Fin.last (M + 1))) ρ ℝ) :
+    Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+  let p : Fin (M + 1) := q.castSucc
+  let r : Fin (M + 1) := q.succ
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin (M + 1), Matrix (κ' s.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Cprod :
+      TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) (κ' r.castSucc) ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) r.castSucc r.castSucc.le_last
+  let Cnext : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) (κ' r.succ) ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := κ') (Cfun y)
+        (Fin.last (M + 1)) r.succ r.succ.le_last
+  let A3p : TopologyTuple ρ κ' ℝ → Matrix (κ' r.castSucc) ρ ℝ :=
+    fun y ↦ by
+      simpa [p, r] using A3fun y p
+  let dG : Matrix (κ' r.castSucc) ρ ℝ := by
+    simpa [p, r] using v.2.2.1 q
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+  let step : Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    -(((fderiv ℝ Cnext z) v * data.C r + Cnext z * v.2.2.2.1 r) *
+        A3p z * (Pcast z)⁻¹)
+      - (Cprod z * dG * (Pcast z)⁻¹)
+      + Cprod z * A3p z * (Pcast z)⁻¹ *
+          (dPsucc * data.toCoordinateData.solvedA1 p + Psucc z * dAcur) *
+          (Pcast z)⁻¹
+      + dNext
+  step
+
+set_option linter.style.longLine false in
+/-- The generic retained-passive lower-left tail derivative recurrence,
+restated through `retainedPassiveLowerLeftTailStepCoreAt`. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_stepCore_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (q : Fin M) :
+    let p : Fin (M + 1) := q.castSucc
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    let A3fun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ s : Fin (M + 1), Matrix (κ' s.succ) ρ ℝ :=
+      fun y ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+    let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+    (fderiv ℝ Tailfun z) v =
+      retainedPassiveLowerLeftTailStepCoreAt (ρ := ρ) (κ' := κ') z v q
+        ((fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ A1fun y p) z) v)
+        ((fderiv ℝ Psucc z) v)
+        ((fderiv ℝ Nextfun z) v) := by
+  let p : Fin (M + 1) := q.castSucc
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin (M + 1), Matrix (κ' s.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin (M + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+  let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+  simpa [retainedPassiveLowerLeftTailStepCoreAt, A1fun, A3fun, Cfun, Tailfun,
+    Psucc, Nextfun, p] using
+    fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_castSucc_apply
+      (ρ := ρ) (κ' := κ') hz v q
+
 set_option maxRecDepth 2048 in
 set_option linter.style.longLine false in
 /-- First-index specialization of the retained-passive `dEarly` recurrence
@@ -3596,6 +3728,94 @@ theorem fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPc
   simpa [A1fun, A3fun, Cfun, Tailfun, Cprod, Cnext, A3p, dG, Pcast, Psucc,
     Tfun, Tail, dTail, dPsucc, Nextfun, data, r, p] using hrecLocal
 
+set_option linter.style.longLine false in
+/-- First-index retained-passive lower-left tail derivative recurrence,
+restated through `retainedPassiveLowerLeftTailStepCoreAt`. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_stepCore_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let q : Fin (M + 1) := 0
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    let A3fun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) ρ ℝ :=
+      fun y ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+    let dPsucc := (fderiv ℝ Psucc z) v
+    let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+    let dTail := (fderiv ℝ Tfun z) v
+    let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+    (fderiv ℝ Tailfun z) v =
+      retainedPassiveLowerLeftTailStepCoreAt (M := M + 1) (ρ := ρ) (κ' := κ') z v q
+        (Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop)
+        dPsucc
+        ((fderiv ℝ Nextfun z) v) := by
+  let q : Fin (M + 1) := 0
+  let p : Fin ((M + 1) + 1) := q.castSucc
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ s : Fin ((M + 1) + 1), Matrix (κ' s.succ) (κ' s.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+  let dPsucc := (fderiv ℝ Psucc z) v
+  let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+  let dTail := (fderiv ℝ Tfun z) v
+  let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+  simpa [retainedPassiveLowerLeftTailStepCoreAt, A1fun, A3fun, Cfun, Tailfun,
+    Psucc, Tfun, Tail, dTail, dPsucc, Nextfun, data, p, q] using
+    fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_apply
+      (M := M) (ρ := ρ) (κ' := κ') hz v
+
 set_option maxRecDepth 2048 in
 set_option linter.style.longLine false in
 /-- Successor-index specialization of the retained-passive `dEarly`
@@ -3759,6 +3979,84 @@ theorem fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPc
   rw [hPsubst] at hrecLocal
   simpa [A1fun, A3fun, Cfun, Tailfun, Cprod, Cnext, A3p, dG, Pcast, Psucc,
     dPsucc, Nextfun, data, r, p, q, u] using hrecLocal
+
+set_option linter.style.longLine false in
+/-- Successor-index retained-passive lower-left tail derivative recurrence,
+restated through `retainedPassiveLowerLeftTailStepCoreAt`. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_stepCore_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (s : Fin M) :
+    let q : Fin (M + 1) := s.succ
+    let u : Fin (M + 1) := s.castSucc
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y t ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 t
+    let A3fun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) ρ ℝ :=
+      fun y ↦
+        retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        TopologyTuple ρ κ' ℝ →
+          ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) (κ' t.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+    let dPsucc := (fderiv ℝ Psucc z) v
+    let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+    (fderiv ℝ Tailfun z) v =
+      retainedPassiveLowerLeftTailStepCoreAt (M := M + 1) (ρ := ρ) (κ' := κ') z v q
+        (v.1 u)
+        dPsucc
+        ((fderiv ℝ Nextfun z) v) := by
+  let q : Fin (M + 1) := s.succ
+  let u : Fin (M + 1) := s.castSucc
+  let p : Fin ((M + 1) + 1) := q.castSucc
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+    fun y t ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 t
+  let A3fun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) ρ ℝ :=
+    fun y ↦
+      retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      TopologyTuple ρ κ' ℝ →
+        ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) (κ' t.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Tailfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p.val (Nat.le_of_lt p.isLt)
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+  let dPsucc := (fderiv ℝ Psucc z) v
+  let Nextfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) (p.val + 1) (Nat.succ_le_of_lt p.isLt)
+  simpa [retainedPassiveLowerLeftTailStepCoreAt, A1fun, A3fun, Cfun, Tailfun,
+    Psucc, dPsucc, Nextfun, p, q, u] using
+    fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_apply
+      (M := M) (ρ := ρ) (κ' := κ') hz v s
 
 set_option linter.style.longLine false in
 /-- The terminal retained-passive lower-left tail with the final `A3` block

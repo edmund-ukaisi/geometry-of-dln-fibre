@@ -48,7 +48,56 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
-## Latest A2 Conditional Determinant/Jacobian Bridge
+## Latest A2 Lower-Left Step Core
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves a narrow lower-left
+target-staging API rung:
+
+```text
+retainedPassiveLowerLeftTailStepCoreAt
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_stepCore_apply
+```
+
+The helper packages the one-step RHS of the retained-passive lower-left tail
+derivative recurrence after the existing `dCprod`, `dG`, and `dPcast`
+staging.  It deliberately leaves three quantities explicit:
+
+```text
+dAcur  : current solved-A1 tangent,
+dPsucc : suffix solved-A1 product tangent,
+dNext  : recursive successor-tail derivative.
+```
+
+The three theorem wrappers are definitional restatements of already-proved
+recurrences.  The zero-current wrapper supplies
+`Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop` as `dAcur`.  The
+successor-current wrapper supplies `v.1 s.castSucc` as `dAcur`; this is the
+important indexing point and is not `v.1 s.succ` / `v.1 q`.
+
+Reproduction/design:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-lower-left-step-core.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-lower-left-step-core.md`,
+PASS by xhigh `Averroes the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; axiom audits for
+all four new names reported only `[propext, Classical.choice, Quot.sound]`.
+
+This is not the full Nat-recursive target-staged lower-left derivative, not
+the target-side determinant-one normalizer, not determinant equality, not
+source-prior/Jacobian transport, and not normal crossings, pole order, or
+RLCT.  Next target: define the recursive staged object with base at the
+zeroed-final tail and use it to replace the finite positive-tail `F3` unroll
+chain.
+
+## Previous A2 Conditional Determinant/Jacobian Bridge
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:
 

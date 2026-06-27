@@ -18,6 +18,55 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 lower-left step core
+
+Reproduction/design:
+`reproduction-a2-retained-passive-recursive-target-staged-lower-left-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-lower-left-step-core.md`.
+Review:
+`review-a2-retained-passive-lower-left-step-core.md`, PASS by xhigh
+`Averroes the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+retainedPassiveLowerLeftTailStepCoreAt
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_zero_product_dCprod_dG_dPcast_stepCore_apply
+fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_stepCore_apply
+```
+
+The helper packages the one-step retained-passive lower-left tail derivative
+RHS after the existing `dCprod`, `dG`, and `dPcast` staging.  It keeps
+`dAcur`, `dPsucc`, and `dNext` explicit.  The generic, zero-current, and
+successor-current wrappers are definitional restatements of already-proved
+recurrence theorems through this helper.
+
+The zero-current wrapper supplies
+
+```text
+Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * coord.Ctop
+```
+
+as `dAcur`.  The successor-current wrapper supplies `v.1 s.castSucc`, not
+`v.1 s.succ` or `v.1 q`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed, and the full
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` passed, and all four
+new axiom audits reported only `[propext, Classical.choice, Quot.sound]`.
+
+This does not define the full Nat-recursive target-staged lower-left
+derivative, construct the determinant-one target linear equivalence, prove
+determinant equality, or prove source-prior transport, inverse-density
+pushforward, normal crossings, pole order, or RLCT.
+
+Next frontier: define the recursive staged derivative object with base at the
+zeroed-final tail, then use it as the `dEarly` term in the positive-tail `F3`
+bridge.
+
 ## 2026-06-27 A2 conditional determinant/Jacobian bridge
 
 Reproduction:

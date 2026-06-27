@@ -141,6 +141,9 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
+  retained-passive lower-left derivative recurrence now has a named
+  one-step helper and generic/zero/successor branch wrappers through that
+  helper, with the successor current tangent explicitly `v.1 s.castSucc`;
   chart-local induction-step block identity, elementary matrix-entry ideal
   transport lemmas, through-subspace transport theorem, and per-edge
   transported-basis matrix block forms are proved; prefix-transported through
