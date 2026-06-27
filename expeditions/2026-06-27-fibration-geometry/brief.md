@@ -64,11 +64,17 @@ pass, **name = content**.
   *conormal* module `I/I²` is the one free of rank `= codim` — a **separate** statement (→ **S2b** /
   roadmap), not this one (brief's earlier "rank = codim" phrasing was a Kähler/conormal conflation the
   tide caught). **RLCT-runway slab 1** (the smooth-locus upper-bound model). Was independent of S1.
-- **S3 — Flatness payoff.** `Flat π : mult⁻¹(rankROpen) → rankROpen` via the atlas (chartwise
-  product-over-field base change ⟹ flat; flat local on the base + stable under base change). Corollaries:
-  `UniversallyOpen.of_flat`, `rankAtStalk` locally constant. Settle the "is flatness cheap without the
-  charts (miracle/generic flatness)?" question *inside* the build — if it is, record it and keep the atlas
-  route as the structural statement. Builds on S1.
+- **S3 — Flatness facts. [LANDED (partial) — `FibreFlatness.lean`]** The cheap-flatness verdict
+  (cheap on both readings; no miracle/generic) + honest sub-facts: localization flatness, the
+  `SchurLoc`-free standard model, scheme `UniversallyOpen`. The brief's literal target
+  `Flat π : mult⁻¹(rankROpen) → rankROpen` is **NOT** delivered here — see S4b.
+- **S4b — `SchurLoc`-linear (over-base) trivialization + chartwise flatness. [LANDED — `FibreOverBaseTriv.lean`;
+  the convergent keystone, hardener PASS]** Upgrades the per-pivot trivialization to
+  `Away(chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` over the **honest banked structure map**
+  (non-circular, confirmed 2 ways) ⟹ `chartDsigAt_flat_over_schurLoc` (chartwise fibre-family flatness
+  **over `SchurLoc`**). Completes S4's over-base content + the S3 flatness, chartwise. ⚠ Flatness is over
+  the in-chart Schur ring `SchurLoc`, **not** the literal `Flat π` over `rankROpen` — that needs the
+  **chart-base bridge** `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)` (roadmap, ahead of R1) + R1.
 - **S4 — Honest local product over `rankROpen`. [LANDED (partial) — `FibreLocallyTrivial.lean`]**
   `RankROpenPerPivotLocalProduct` + the pointwise headline `reducedFibre_existsProductChartAt_rankEq`:
   S1 folded in certifies `rankROpen` genuinely IS the residue-field rank-=r locus; the pivot charts
@@ -76,9 +82,12 @@ pass, **name = content**.
   **not** `locallyTrivial` — k-algebra-only + uncocycled. **The load-bearing completion is S4b** (the
   over-base / projection-compatible `O(U)`-algebra trivialization) + R1 (the overlap gluing); a genuine
   fibre-bundle = S4 + S4b + R1.
-- **S5 — Reusable scheme-bundle API.** A net-new `IsLocallyTrivialProduct` (MorphismProperty-style)
-  scheme predicate (Mathlib has only *topological* fibre bundles), and promote the network-free cocycle
-  engine (`awayOverlap`/`awayTriple`, …) into a reusable form. Package S3 + S4 through it.
+- **S5 — Capstone bundle headline. [in flight — `FibreBundleHeadline.lean`]** Package S4/S4b into a
+  clean reader-facing over-base local-product-with-flatness headline for the DLN fibre family (cover +
+  per-pivot `≃ₐ[SchurLoc]` product + chartwise flatness over `SchurLoc`), carrying the base distinction +
+  named open items (P-bridge, R1). Concrete — **not** a speculative abstract `IsLocallyTrivialProduct`
+  predicate (no second consumer yet; that abstraction is roadmap-only per the extract-when-a-consumer-appears
+  rule).
 
 ## Roadmap — sequenced future waves (reachable; not walls)
 

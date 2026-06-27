@@ -49,9 +49,17 @@ actual chart total ring over (the chart's image of) the base. The atlas's trivia
 * hence model flatness over `SchurLoc` is **not** flatness of the DLN fibre family over the base.
 
 Building the `SchurLoc`-linear trivialization is the genuine missing rung (flagged by the
-target-setting Codex consult, `threads/03-flatness/codex/cheap-flatness-answer.md`). Until it
-exists, S3's fibre-family flatness is **open**; this module records the two cheap true facts and the
-verdict, not the payoff.
+target-setting Codex consult, `threads/03-flatness/codex/cheap-flatness-answer.md`); this module
+records the two cheap true facts and the verdict, not the payoff.
+
+**Forward pointer (S4b, downstream).** The `SchurLoc`-linear upgrade IS delivered downstream in
+`DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
+giving chartwise fibre-family flatness **over the in-chart Schur ring `SchurLoc`**. (`FibreFlatness`
+cannot forward-import it: `FibreOverBaseTriv` imports this module.) NB this is flatness over `SchurLoc`,
+which is NOT yet literally `Flat π` over `rankROpen ⊆ Spec(sweepSigmaRing)`: that still needs (i) the
+**chart-base bridge** `SchurLoc ≅ sweepSigmaRing` restricted to `basicOpen (chartDsigAt …)` with
+structure-map compatibility, and (ii) R1 (`targetOverlapTransition`) to glue a single global morphism —
+both roadmapped, the bridge ahead of R1.
 
 ## Main results (what is actually proved)
 

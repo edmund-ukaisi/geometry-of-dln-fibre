@@ -146,3 +146,25 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   **Spine core essentially complete:** S1✓ S2✓(+S2c hypothesis-free) S3✓(chartwise via S4b) S4✓+S4b✓.
   Remaining: **S5** (reusable API, unblocked) + the **batched hardener pass** (thread 08) over
   S2c/S3/S4/S4b. Roadmap: R1 (global morphism), S2b (conormal), S1 example, singular split (R2).
+
+- **tick 10 (hardener-wave2 verdict + a framing correction, 2026-06-27 ~19:00):** the whole bundle
+  story (S2c/S3/S4/S4b) clears **bedrock, NO CRITICAL**. Authoritative `#print axioms` re-confirmed all
+  13 headlines + helper = `[propext, Classical.choice, Quot.sound]`. **S4b non-circularity GENUINE**,
+  confirmed two ways (source trace + Codex `#print schurToDsigAt`): the `SchurLoc`-action is the honest
+  `IsLocalization.liftAlgHom`/gauge composite `schurToDsigAt`, never a pullback ⟹ the `≃ₐ[SchurLoc]` +
+  flatness are non-vacuous. Per-module: S2c PASS, S3 PASS-WITH-NOTES, S4 PASS (exemplary), S4b PASS
+  (keystone).
+  - **NOTE 1 (Just-Do-It, actioned):** S3's header said "target NOT met / flatness OPEN" — stale. Added a
+    precise forward-pointer (S4b delivers the chartwise upgrade over `SchurLoc`; literal `Flat π` over
+    `rankROpen` still needs the chart-base bridge + R1).
+  - **NOTE 2 (MY framing was overstated — corrected):** I'd been calling S4b "the S3 `Flat π` payoff".
+    Precisely: S4b's flatness is over **`SchurLoc`** (the in-chart Schur-direction ring = `Away detSchurS`),
+    NOT over `rankROpen ⊆ Spec(sweepSigmaRing)` (S3's actual base — a *different* ring; `Away(chartDsigAt)`
+    is a localization OF sweepSigmaRing). The identification `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)`
+    is an **unbuilt bridge** — a real build, prerequisite for global flatness, AHEAD of R1. S4b's Lean
+    name (`chartDsigAt_flat_over_schurLoc`) is honest; my prose conflated. **Corrected across
+    priorities/threads/brief; added the chart-base bridge to the roadmap.** Steered S5 (in flight) to
+    state the base as `SchurLoc` + flag the bridge.
+  - **Honest headline now:** chartwise, over the in-chart Schur ring `SchurLoc`, the total ring is an
+    over-base product AND flat; the SchurLoc≅base-restriction identification (chart-base bridge) and the
+    global single-morphism (R1) are named open items. Spine essentially proved at this honesty level.
