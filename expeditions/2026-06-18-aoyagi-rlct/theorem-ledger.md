@@ -10066,6 +10066,33 @@ formula, no `F3` source staging, no target-side determinant-one shear,
 determinant equality, measure transport, normal crossings, pole order, or
 RLCT.
 
+Latest A2 retained-passive tail-inverse derivative:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv` and
+`Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-inverse-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-inverse-fderiv.md`.
+Review:
+pen-and-paper PASS from xhigh `Boole`; Lean/API scout PASS from xhigh
+`Mencius`; implementation review PASS from xhigh `Epicurus`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-inverse-fderiv.md`.
+
+The first theorem composes the existing passive-tail differentiability theorem
+with the matrix inverse derivative on determinant-unit square matrices and
+uses the passive `A1` determinant-chart hypotheses to prove `IsUnit det(Tail)`.
+It identifies `d(Tail^{-1})` as
+`-Tail^{-1} * dTail * Tail^{-1}` while keeping
+`dTail = (fderiv Tfun z) v` opaque.  The second theorem substitutes this into
+the Ctop successor-staged bridge with the positive sign.  Nonclaims: no
+recursive product formula for `dTail`, no full `Ctop` source staging, no `F3`
+source staging, no target-side determinant-one shear, determinant equality,
+measure transport, normal crossings, pole order, or RLCT.
+Focused and full `DLNFibre` builds passed; `scripts/sorries` reported zero
+forbidden markers; `git diff --check` passed; both new theorem axiom audits
+report only `[propext, Classical.choice, Quot.sound]`.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

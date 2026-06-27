@@ -160,6 +160,55 @@ term.  This is not full `Ctop` source staging, not a tail-product derivative
 formula, not `F3` staging, not a target-side `LinearEquiv`, not determinant
 equality, and not measure transport, normal crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 retained-passive tail-inverse Frechet derivative
+
+The next narrow inverse-tail slice is implemented locally.
+
+Reproduction:
+`reproduction-a2-retained-passive-tail-inverse-fderiv.md`.
+Statement card:
+`statement-card-a2-retained-passive-tail-inverse-fderiv.md`.
+Review:
+`review-a2-retained-passive-tail-inverse-fderiv.md` passed by xhigh
+`Epicurus`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The first theorem applies the matrix-inverse Frechet derivative to the actual
+tail map
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed
+```
+
+and proves
+
+```text
+d_y(Tfun(y)^{-1})_z(v) = -Tail^{-1} * dTail * Tail^{-1},
+```
+
+where `dTail = (fderiv Tfun z) v`.  The determinant-chart hypothesis is used
+only to get `IsUnit det(Tail)` from the passive top-left unit fields.  The
+second theorem substitutes this identity into the previous `Ctop` successor
+staging bridge, changing the `-d(Tail^{-1})*Ctop` term to
+`+Tail^{-1}*dTail*Tail^{-1}*Ctop`.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed and full
+`DLNFibre` build passed.  `scripts/sorries` reported zero forbidden markers,
+`git diff --check` passed, and both new theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This still does not compute `dTail` as a recursive product.  It is not full
+`Ctop` source staging, not `F3` staging, not a target-side `LinearEquiv`, not
+determinant equality, and not measure transport, normal crossings, pole order,
+or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

@@ -15,6 +15,8 @@ triangular/shear factorization.
 
 noncomputable section
 
+open scoped Matrix.Norms.Operator
+
 namespace DLNFibre
 namespace DLN
 namespace Aoyagi
@@ -1979,6 +1981,68 @@ theorem A1passive_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formal
   rw [hA3] at hA1
   simpa [XsuccF2, XsuccA3] using hA1
 
+set_option maxRecDepth 2048 in
+/-- The derivative of the inverse passive top-left tail is the matrix-inverse
+derivative applied to the actual Frechet derivative of the tail map. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let dTail :=
+      (fderiv ℝ
+        (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v =
+      -(Tail⁻¹ * dTail * Tail⁻¹) := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  have hTdiff : DifferentiableAt ℝ Tfun z := by
+    simpa [Tfun] using
+      differentiableAt_retainedPassiveA1TailAfterFirst (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := hz
+  have hTailUnit : IsUnit (Tfun z).det := by
+    change IsUnit
+      (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed).det
+    exact
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := ℝ) (ρ := ρ) data.A1seed
+        (data.toCoordinateData_passiveA1_units hdet.2)
+  have hInvHas : HasFDerivAt
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ (Tfun y)⁻¹)
+      ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Tfun z)⁻¹ (Tfun z)⁻¹)).comp
+        (fderiv ℝ Tfun z)) z := by
+    simpa [Tfun, Function.comp_def] using
+      ((hasFDerivAt_matrix_inv_of_isUnit_det (Tfun z) hTailUnit).comp
+        (x := z) hTdiff.hasFDerivAt)
+  have hInvFDeriv :
+      fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ (Tfun y)⁻¹) z =
+        ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Tfun z)⁻¹ (Tfun z)⁻¹)).comp
+        (fderiv ℝ Tfun z)) :=
+    hInvHas.fderiv
+  change
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦ (Tfun y)⁻¹) z) v =
+      -((Tfun z)⁻¹ * (fderiv ℝ Tfun z) v * (Tfun z)⁻¹)
+  rw [hInvFDeriv]
+  simp [ContinuousLinearMap.mulLeftRight_apply]
+
 set_option linter.style.longLine false in
 /-- The first top-left branch can be source-staged in the successor `F2`
 and multiplied successor lower-left terms, leaving the passive-tail inverse
@@ -2052,6 +2116,70 @@ theorem Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOr
   rw [hF2] at hCtop
   rw [hA3] at hCtop
   simpa [XsuccF2, XsuccA3, dTailInv] using hCtop
+
+set_option linter.style.longLine false in
+/-- Substitute the inverse-tail derivative formula into the source-staged first
+top-left branch, leaving the actual tail derivative unexpanded. -/
+theorem Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let dTail := (fderiv ℝ Tfun z) v
+    let XsuccF2 := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+    let XsuccA3 := retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v
+    ((fderiv ℝ raw z) v).2.2.2.2.1
+      - XsuccF2 0 * coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ * XsuccA3 0
+      + Tail⁻¹ * dTail * Tail⁻¹ * coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      data.A1seed
+  let dTail := (fderiv ℝ Tfun z) v
+  let XsuccF2 := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  let XsuccA3 := retainedPassiveSourceStagedSuccessorA3 (ρ := ρ) (κ' := κ') v
+  have hCtop :=
+    Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  have hInv :=
+    fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+      (ρ := ρ) (κ' := κ') hz v
+  change ((fderiv ℝ raw z) v).2.2.2.2.1
+      - XsuccF2 0 * coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ * XsuccA3 0
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (Tfun y)⁻¹) z) v * coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 at hCtop
+  change
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (Tfun y)⁻¹) z) v =
+      -(Tail⁻¹ * dTail * Tail⁻¹) at hInv
+  rw [hInv] at hCtop
+  simpa [Tfun, Tail, dTail, neg_mul, sub_neg_eq_add, Matrix.mul_assoc] using hCtop
 
 end Aoyagi
 end DLN

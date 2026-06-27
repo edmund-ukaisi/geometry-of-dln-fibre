@@ -14331,11 +14331,57 @@ derivative as the explicit Frechet derivative term
 d_y(Tail(y)^{-1})_z(v) * coord.Ctop.
 ```
 
-The full identity `d(Tail^{-1}) = -Tail^{-1} * dTail * Tail^{-1}` and the
-recursive product formula for `dTail` remain a separate elementary
-calculation; they are not claimed by this slice.
+The inverse-tail identity and the recursive product formula for `dTail` were
+left as separate elementary calculations by this slice.  The inverse-tail
+identity is now handled in the next section; the recursive product formula for
+`dTail` remains open.
 
 Verification for this slice: focused and full `DLNFibre` builds passed,
 `scripts/sorries` reported zero forbidden markers, `git diff --check` passed,
 and the new theorem's axiom audit reports only
 `[propext, Classical.choice, Quot.sound]`.
+
+## Latest A2 Retained-Passive Tail-Inverse FDeriv
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The first theorem sets
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed
+dTail   = (fderiv Tfun z) v
+```
+
+and proves
+
+```text
+d_y(Tfun(y)^{-1})_z(v) = -Tail^{-1} * dTail * Tail^{-1}.
+```
+
+The proof uses the existing passive-tail differentiability theorem, the matrix
+inverse derivative on determinant-unit matrices, and the tail determinant unit
+derived from the passive `A1` determinant-chart hypotheses.  It does not
+expand `dTail` as a recursive product.
+
+The second theorem substitutes this identity into the previous Ctop successor
+staging bridge, replacing the explicit
+`-d_y(Tfun(y)^{-1})_z(v) * coord.Ctop` term by
+`+Tail^{-1} * dTail * Tail^{-1} * coord.Ctop`.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed, and the
+full `DLNFibre` build passed.  Independent xhigh implementation review passed
+in `review-a2-retained-passive-tail-inverse-fderiv.md`.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` passed, and both new
+theorem axiom audits report only `[propext, Classical.choice, Quot.sound]`.
+
+Next step in this lane is the recursive product formula for `dTail`; until
+then this remains an inverse-tail derivative slice, not full `Ctop` source
+staging.  It is not `F3` staging, target-side determinant-one shear,
+determinant equality, measure transport, normal crossings, pole order, or
+RLCT.

@@ -6453,9 +6453,20 @@ which source-stages the successor `F2` derivative and the multiplied successor
 lower-left derivative in the `Ctop` bridge while leaving the tail-inverse
 derivative explicit.
 
-Next priority in this lane: isolate the elementary tail-inverse calculation as
-its own pen-and-paper and Lean slice:
-`d(Tail^{-1}) = -Tail^{-1} * dTail * Tail^{-1}` plus the recursive product
-formula for `dTail`.  Do not describe the current Ctop theorem as full Ctop
-source staging, determinant equality, target-side shear equivalence, measure
-transport, normal crossings, pole order, or RLCT.
+A2 retained-passive tail-inverse Frechet derivative has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-inverse-fderiv.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-inverse-fderiv.md`.
+Lean proves
+`fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv` and
+`Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+This identifies `d(Tail^{-1})` as
+`-Tail^{-1} * dTail * Tail^{-1}`, where
+`dTail = (fderiv Tfun z) v`, and substitutes it into the Ctop bridge with the
+positive sign.
+
+Next priority in this lane: prove the recursive product formula for `dTail`.
+Do not describe the current theorem as full Ctop source staging, because
+`dTail` is still the opaque Frechet derivative of the tail map.  Do not claim
+determinant equality, target-side shear equivalence, measure transport, normal
+crossings, pole order, or RLCT from this slice.

@@ -10140,6 +10140,52 @@ linear equivalence, full analytic derivative factorization, determinant
 equality, measure/Jacobian-density theorem, normal crossings, pole order, or
 RLCT is proved by this bridge.
 
+## A2 retained-passive tail-inverse derivative bridge
+
+Status: Proved in Lean locally; pen-and-paper reproduction written and
+checked; independent xhigh implementation review passed; focused and full
+builds, sorry scan, whitespace check, and axiom audit passed.
+
+Claim: for the passive top-left tail map
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed,
+```
+
+the Frechet derivative of the inverse tail at a determinant-chart point is
+
+```text
+d_y(Tfun(y)^{-1})_z(v) = -Tail^{-1} * dTail * Tail^{-1},
+```
+
+where `Tail = Tfun(z)` and `dTail = (fderiv Tfun z) v`.
+
+Lean proves this as
+`fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`, and also
+proves the Ctop consumer
+`Ctop_tail_fderiv_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-inverse-fderiv.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-inverse-fderiv.md`.
+
+Review:
+pen-and-paper PASS from xhigh `Boole`; Lean/API scout PASS from xhigh
+`Mencius`; implementation review PASS from xhigh `Epicurus`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-inverse-fderiv.md`.
+
+Kill condition: if `dTail` is expanded or named as a source-staged recursive
+product in this theorem, the statement overclaims.  The theorem only identifies
+the inverse derivative in terms of the actual Frechet derivative of the tail
+map.
+
+Nonclaims: no recursive product formula for `dTail`, no full `Ctop` source
+staging, no `F3` source staging, no global determinant-one shear linear
+equivalence, full analytic derivative factorization, determinant equality,
+measure/Jacobian-density theorem, normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.
