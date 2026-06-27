@@ -3,7 +3,7 @@
 Date: 2026-06-27.
 
 Status: xhigh pen-and-paper scouts reproduced; Lean proved; focused/full
-builds and audits passed; xhigh review passed.
+builds and audits passed; xhigh reviews passed.
 
 This note is independent of the quiver-based paper.  It records the next
 consumer step after the positive-tail `F3` theorem whose first `dEarly`
@@ -92,6 +92,19 @@ The terminal `dLast_target` expression is unchanged.  The whole new `dEarly`
 expression is still right-multiplied by the terminal solved top-left factor;
 no distribution across that outer product is part of this slice.
 
+The recovery companion uses exactly the same staged expression.  Since the
+staged expression is the formal raw-order `F3` tangent, the already proved
+formal raw-order recovery gives
+
+```text
+staged_F3 * (-(coord.solvedA1(Fin.last ((M+1)+1))))^-1
+  = source_F3_tangent.
+```
+
+This is only a consumer of the equality theorem and
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`; it performs no further
+expansion of `dEarly` or `Next1`.
+
 ## Lean Scope
 
 Lean addition in
@@ -99,6 +112,7 @@ Lean addition in
 
 ```text
 F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 It should start from

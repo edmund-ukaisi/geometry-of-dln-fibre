@@ -4133,6 +4133,323 @@ theorem F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_t
     Pcast1, Psucc1, dPsucc1, NextNextfun, dNext, dEarly, data, coord, Dzv,
     XsuccF2, qLast, q0, p0, r0, s0, q1, u1, p1, r1] using hF3
 
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- The two-positive-tail `F3` bridge with the first recursive `Nextfun`
+successor recurrence substituted recovers the source `F3` tangent by
+right-multiplication with the inverse of the negative terminal solved top-left
+factor. -/
+theorem F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+    {M : ℕ} {ρ : Type*} {κ' : Fin (((M + 1) + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let qLast : Fin ((M + 1) + 1) := Fin.last (M + 1)
+    let q0 : Fin ((M + 1) + 1) := 0
+    let p0 : Fin (((M + 1) + 1) + 1) := q0.castSucc
+    let r0 : Fin (((M + 1) + 1) + 1) := q0.succ
+    let s0 : Fin (M + 1) := 0
+    let q1 : Fin ((M + 1) + 1) := s0.succ
+    let u1 : Fin ((M + 1) + 1) := s0.castSucc
+    let p1 : Fin (((M + 1) + 1) + 1) := q1.castSucc
+    let r1 : Fin (((M + 1) + 1) + 1) := q1.succ
+    let A1fun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Fin (((M + 1) + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let A3fun :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          ∀ p : Fin (((M + 1) + 1) + 1), Matrix (κ' p.succ) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          ∀ p : Fin (((M + 1) + 1) + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Earlyfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) p0.val (Nat.le_of_lt p0.isLt)
+    let Cprod :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r0.castSucc) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r0.castSucc r0.castSucc.le_last
+    let Cnext :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r0.succ) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r0.succ r0.succ.le_last
+    let A3p :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' r0.castSucc) ρ ℝ :=
+      fun y ↦ by
+        simpa [p0, r0] using A3fun y p0
+    let dG : Matrix (κ' r0.castSucc) ρ ℝ := by
+      simpa [p0, r0] using v.2.2.1 q0
+    let Pcast : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p0.castSucc
+          p0.castSucc.le_last
+    let Psucc : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p0.succ p0.succ.le_last
+    let dPsucc := (fderiv ℝ Psucc z) v
+    let Tfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Tail := ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+      (K := ℝ) (ρ := ρ) data.A1seed
+    let dTail := (fderiv ℝ Tfun z) v
+    let Cprod1 :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r1.castSucc) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r1.castSucc r1.castSucc.le_last
+    let Cnext1 :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r1.succ) ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r1.succ r1.succ.le_last
+    let A3p1 :
+        RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+          Matrix (κ' r1.castSucc) ρ ℝ :=
+      fun y ↦ by
+        simpa [p1, r1] using A3fun y p1
+    let dG1 : Matrix (κ' r1.castSucc) ρ ℝ := by
+      simpa [p1, r1] using v.2.2.1 q1
+    let Pcast1 : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p1.castSucc
+          p1.castSucc.le_last
+    let Psucc1 : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p1.succ p1.succ.le_last
+    let dPsucc1 := (fderiv ℝ Psucc1 z) v
+    let NextNextfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) (p1.val + 1)
+          (Nat.succ_le_of_lt p1.isLt)
+    let dNext : Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+      -(((fderiv ℝ Cnext1 z) v * data.C r1 + Cnext1 z * v.2.2.2.1 r1) *
+          A3p1 z * (Pcast1 z)⁻¹)
+        - (Cprod1 z * dG1 * (Pcast1 z)⁻¹)
+        + Cprod1 z * A3p1 z * (Pcast1 z)⁻¹ *
+            (dPsucc1 * coord.solvedA1 p1 + Psucc1 z * v.1 u1) *
+            (Pcast1 z)⁻¹
+        + (fderiv ℝ NextNextfun z) v
+    let dEarly : Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+      -(((fderiv ℝ Cnext z) v * data.C r0 + Cnext z * v.2.2.2.1 r0) *
+          A3p z * (Pcast z)⁻¹)
+        - (Cprod z * dG * (Pcast z)⁻¹)
+        + Cprod z * A3p z * (Pcast z)⁻¹ *
+            (dPsucc * coord.solvedA1 p0 +
+              Psucc z *
+                (Tail⁻¹ * v.2.2.2.2.1 -
+                  Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop)) *
+            (Pcast z)⁻¹
+        + dNext
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    (Dzv.2.2.2.2.2
+      - dEarly * coord.solvedA1 (Fin.last ((M + 1) + 1))
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 qLast
+            - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+            - coord.F2 qLast.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ)) *
+        (-(coord.solvedA1 (Fin.last ((M + 1) + 1))))⁻¹ =
+      v.2.2.2.2.2 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let qLast : Fin ((M + 1) + 1) := Fin.last (M + 1)
+  let q0 : Fin ((M + 1) + 1) := 0
+  let p0 : Fin (((M + 1) + 1) + 1) := q0.castSucc
+  let r0 : Fin (((M + 1) + 1) + 1) := q0.succ
+  let s0 : Fin (M + 1) := 0
+  let q1 : Fin ((M + 1) + 1) := s0.succ
+  let u1 : Fin ((M + 1) + 1) := s0.castSucc
+  let p1 : Fin (((M + 1) + 1) + 1) := q1.castSucc
+  let r1 : Fin (((M + 1) + 1) + 1) := q1.succ
+  let A1fun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Fin (((M + 1) + 1) + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let A3fun :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        ∀ p : Fin (((M + 1) + 1) + 1), Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        ∀ p : Fin (((M + 1) + 1) + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Earlyfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p0.val (Nat.le_of_lt p0.isLt)
+  let Cprod :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r0.castSucc) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+        (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r0.castSucc r0.castSucc.le_last
+  let Cnext :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r0.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+        (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r0.succ r0.succ.le_last
+  let A3p :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' r0.castSucc) ρ ℝ :=
+    fun y ↦ by
+      simpa [p0, r0] using A3fun y p0
+  let dG : Matrix (κ' r0.castSucc) ρ ℝ := by
+    simpa [p0, r0] using v.2.2.1 q0
+  let Pcast : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p0.castSucc
+        p0.castSucc.le_last
+  let Psucc : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p0.succ p0.succ.le_last
+  let dPsucc := (fderiv ℝ Psucc z) v
+  let Tfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Tail := ChartLocalSuffixState.retainedPassiveA1TailAfterFirst
+    (K := ℝ) (ρ := ρ) data.A1seed
+  let dTail := (fderiv ℝ Tfun z) v
+  let Cprod1 :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r1.castSucc) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+        (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r1.castSucc r1.castSucc.le_last
+  let Cnext1 :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) (κ' r1.succ) ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+        (Cfun y) (Fin.last (((M + 1) + 1) + 1)) r1.succ r1.succ.le_last
+  let A3p1 :
+      RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+        Matrix (κ' r1.castSucc) ρ ℝ :=
+    fun y ↦ by
+      simpa [p1, r1] using A3fun y p1
+  let dG1 : Matrix (κ' r1.castSucc) ρ ℝ := by
+    simpa [p1, r1] using v.2.2.1 q1
+  let Pcast1 : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p1.castSucc
+        p1.castSucc.le_last
+  let Psucc1 : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (((M + 1) + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last (((M + 1) + 1) + 1)) p1.succ p1.succ.le_last
+  let dPsucc1 := (fderiv ℝ Psucc1 z) v
+  let NextNextfun : RetainedPassiveRawTopologyTuple (M := (M + 1) + 1) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) (p1.val + 1)
+        (Nat.succ_le_of_lt p1.isLt)
+  let dNext : Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+    -(((fderiv ℝ Cnext1 z) v * data.C r1 + Cnext1 z * v.2.2.2.1 r1) *
+        A3p1 z * (Pcast1 z)⁻¹)
+      - (Cprod1 z * dG1 * (Pcast1 z)⁻¹)
+      + Cprod1 z * A3p1 z * (Pcast1 z)⁻¹ *
+          (dPsucc1 * coord.solvedA1 p1 + Psucc1 z * v.1 u1) *
+          (Pcast1 z)⁻¹
+      + (fderiv ℝ NextNextfun z) v
+  let dEarly : Matrix (κ' (Fin.last (((M + 1) + 1) + 1))) ρ ℝ :=
+    -(((fderiv ℝ Cnext z) v * data.C r0 + Cnext z * v.2.2.2.1 r0) *
+        A3p z * (Pcast z)⁻¹)
+      - (Cprod z * dG * (Pcast z)⁻¹)
+      + Cprod z * A3p z * (Pcast z)⁻¹ *
+          (dPsucc * coord.solvedA1 p0 +
+            Psucc z *
+              (Tail⁻¹ * v.2.2.2.2.1 -
+                Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop)) *
+          (Pcast z)⁻¹
+      + dNext
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hF3 :=
+    F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (M := M) (ρ := ρ) (κ' := κ') hz v
+  have hrec :=
+    retainedPassiveFormalRawOrderJacobianAt_recovers_F3
+      (ρ := ρ) (κ' := κ') hz v
+  change Dzv.2.2.2.2.2
+      - dEarly * coord.solvedA1 (Fin.last ((M + 1) + 1))
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 qLast
+            - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+            - coord.F2 qLast.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ) =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 at hF3
+  change (Dzv.2.2.2.2.2
+      - dEarly * coord.solvedA1 (Fin.last ((M + 1) + 1))
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 qLast
+            - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+            - coord.F2 qLast.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ)) *
+        (-(coord.solvedA1 (Fin.last ((M + 1) + 1))))⁻¹ =
+      v.2.2.2.2.2
+  rw [hF3]
+  simpa [coord, data] using hrec
+
 set_option linter.style.longLine false in
 /-- In the single-edge case, the terminal `F3` shear can be staged with the
 target-recovered first top-left branch.  No positive-tail lower-left product

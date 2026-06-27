@@ -54,6 +54,7 @@ arithmetic tail, notation translation, and final assembly.
 
 ```text
 F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 This is the first recursive consumer of the explicit `Nextfun` left by the
@@ -74,12 +75,17 @@ r1 = q1.succ.
 
 The successor tangent is `v.1 u1`.  The theorem leaves `dPsucc1`, `Psucc1`,
 and the next recursive derivative explicit, and does not touch the first-level
-`dPsucc`.  Focused build of
+`dPsucc`.  The recovery companion applies
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3` to the same staged
+expression and right-multiplies by the inverse of
+`-(coord.solvedA1 (Fin.last ((M+1)+1)))`; it performs no further recurrence
+expansion.  Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
 `DLNFibre` build passed with only pre-existing unrelated style warnings.
 `scripts/sorries` reported zero forbidden markers, `git diff --check` was
-clean, and the theorem axiom audit reported only
-`[propext, Classical.choice, Quot.sound]`.  Dirac's xhigh review passed.
+clean, the recovery theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`, and Jason's xhigh recovery review
+passed.
 
 Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.

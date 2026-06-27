@@ -1,6 +1,7 @@
 # Statement Card - A2 retained-passive F3 two-positive-tail next-successor substitution
 
-Status: Lean proved; focused/full builds and audits passed; xhigh review passed.
+Status: Lean proved; focused/full builds and audits passed; xhigh reviews
+passed.
 
 ## Claim
 
@@ -42,6 +43,16 @@ The intended replacement is
 Substitute this only into the final summand of the first expanded `dEarly`;
 the terminal `dLast` target-staged factor remains unchanged.
 
+The companion recovery theorem then applies the formal raw-order `F3` recovery
+to the same staged expression:
+
+```text
+staged_F3 * (-(coord.solvedA1(Fin.last ((M+1)+1))))^-1
+  = source_F3_tangent.
+```
+
+It adds no further recurrence expansion.
+
 ## Lean Target
 
 File:
@@ -54,6 +65,7 @@ Lean name:
 
 ```text
 F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 ## Verification
@@ -61,15 +73,16 @@ F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyT
 Focused build passed for
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`; full `DLNFibre`
 build passed with only pre-existing unrelated style warnings.  `scripts/sorries`
-reported zero forbidden markers, `git diff --check` was clean, and the theorem
-axiom audit reported only `[propext, Classical.choice, Quot.sound]`.
-Independent review passed in
+reported zero forbidden markers, `git diff --check` was clean, and the
+recovery theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`.  Independent reviews passed in
 `review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
 
 ## Dependencies
 
 - `F3_tail_pos_dEarly_zero_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`;
 - `fderiv_retainedPassiveLowerLeftProductTailSum_succ_product_dCprod_dG_dPcast_apply`;
+- `retainedPassiveFormalRawOrderJacobianAt_recovers_F3`;
 - `Fin.succ_castSucc` through the successor theorem.
 
 ## Cited

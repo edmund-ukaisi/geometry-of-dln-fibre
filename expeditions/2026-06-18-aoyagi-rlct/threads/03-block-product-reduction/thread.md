@@ -32,6 +32,7 @@ Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
 
 ```text
 F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_dEarly_zero_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
 ```
 
 This is the first recursive consumer of the remaining `Nextfun` term in the
@@ -55,12 +56,18 @@ The successor tangent is `v.1 u1`, not `v.1 q1`.  The theorem leaves
 rewrite the first-level `dPsucc`, does not terminal-clean, and does not claim
 full positive-tail `F3` target staging.
 
+The recovery companion uses the same staged expression and the formal
+raw-order recovery theorem to prove that right-multiplication by
+`(-(coord.solvedA1 (Fin.last ((M+1)+1))))^-1` recovers the source `F3`
+tangent.  It performs no additional recurrence expansion.
+
 Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
 `DLNFibre` build passed with only pre-existing unrelated style warnings.
 `scripts/sorries` reported zero forbidden markers, `git diff --check` was
-clean, and the theorem axiom audit reported only
-`[propext, Classical.choice, Quot.sound]`.
+clean, the recovery theorem axiom audit reported only
+`[propext, Classical.choice, Quot.sound]`, and Jason's xhigh recovery review
+passed.
 
 ## 2026-06-27 A2 F3 positive-tail dEarly substitution
 
