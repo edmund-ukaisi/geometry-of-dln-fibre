@@ -515,8 +515,9 @@ common-vanishing locus `V({chartDsigAt s t})` of the pivot minors. Geometrically
 rank `≤ r` is baked in) this open is the rank-exactly-`r` locus: a point lies in it iff some `r × r`
 product-minor is non-vanishing iff rank `≥ r` iff (with `≤ r`) rank `= r`. The forward inclusion
 "rank-`= r` point ⟹ in `rankROpen`" is `sweepSigma_subset_chartOpen` (point-set); the full
-scheme-level identity `rankROpen = {rank = r}` is not separately formalized (it is the geometric
-reading of the definition, not an extra theorem). -/
+scheme-level identity `rankROpen = {rank = r}` IS now formalized, as a set-of-primes identity, in
+`FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` (`P ∈ rankROpen ↔
+(universalMatrixResidue d r P).rank = r`, over each residue field κ(P)). -/
 def rankROpen (d : Fin (N + 2) → ℕ) (r : ℕ) :
     Set (PrimeSpectrum (sweepSigmaRing k d r)) :=
   (zeroLocus (Set.range (fun st : (Fin r → Fin (d (Fin.last (N + 1)))) × (Fin r → Fin (d 0)) ↦
