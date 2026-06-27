@@ -351,3 +351,4 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesMeasure
 import DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant
 import DLNFibre.DLN.Aoyagi.RetainedPassiveFormalLinearDeterminant
+import DLNFibre.DLN.Aoyagi.RetainedPassiveFormalRawOrder
