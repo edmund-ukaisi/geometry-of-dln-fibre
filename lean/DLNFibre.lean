@@ -406,3 +406,10 @@ import DLNFibre.Core.FibreFlatness
 -- the genuine over-base local triviality (S4's load-bearing completion). Chartwise; a single GLOBAL
 -- Flat π / FiberBundle morphism over all rankROpen additionally needs R1 (targetOverlapTransition).
 import DLNFibre.Core.FibreOverBaseTriv
+-- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
+-- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline
+-- `reducedFibre_existsOverBaseProductChartAt_rankEq` — every rank-=r prime sits in a pivot chart with
+-- an honest structure map φ over which the total ring is `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND
+-- flat over SchurLoc. Base = SchurLoc (NOT the rankROpen base-restriction: chart-base bridge open);
+-- chartwise (global Flat π / FiberBundle = R1). Strict over-base upgrade of S4's bare ≃ₐ[k].
+import DLNFibre.Core.FibreBundleHeadline

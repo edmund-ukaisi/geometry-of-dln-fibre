@@ -13,7 +13,7 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 | 06 | formalisation (tide) | S2c — `TopDimMinPrimes` nonempty → `exists_topComponent_smoothBlock_certificate` (hypothesis-free) | landed · **closes S2 Deferred (c)** |
 | 07 | formalisation (tide) | **S4b — `SchurLoc`-linear (over-base) trivialization** `chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc` (chartwise flatness over **SchurLoc**) | **landed** · hardener PASS (non-circular); completes S4 over-base; flatness over SchurLoc (NOT literal `rankROpen` — P-bridge + R1) |
 | 08 | review (hardener) | batched bedrock pass on the bundle story (S2c, S3, S4, S4b) `@ caa96288` | closed · **all PASS / PASS-WITH-NOTES, no CRITICAL**; S4b non-circular (2 ways + Codex); global-flatness-without-R1 = NO (needs P-bridge) |
-| 09 | formalisation (tide) | S5 — capstone over-base bundle headline (upgrade S4 structure with S4b's `≃ₐ[SchurLoc]` + chartwise flatness; pointwise capstone) | in-progress |
+| 09 | formalisation (tide) | S5 — capstone `RankROpenOverBaseLocalProduct` + `reducedFibre_existsOverBaseProductChartAt_rankEq` (over-base product + flatness over SchurLoc, base distinction + open items carried) | **landed** · reviewer PASS · precision-check PASS |
 
 Parked (roadmap): **P-bridge — chart-base identification** `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)`
 (+ structure-map compat) — turns S4b's flatness-over-SchurLoc into genuine flatness over `rankROpen`;

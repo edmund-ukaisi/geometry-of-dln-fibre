@@ -168,3 +168,18 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   - **Honest headline now:** chartwise, over the in-chart Schur ring `SchurLoc`, the total ring is an
     over-base product AND flat; the SchurLoc≅base-restriction identification (chart-base bridge) and the
     global single-morphism (R1) are named open items. Spine essentially proved at this honesty level.
+
+- **tick 11 (S5 capstone landed — SPINE COMPLETE, 2026-06-27 ~19:40):** S5 (`FibreBundleHeadline.lean`)
+  delivered green/sorry-free/axiom-clean, reviewer PASS + my precision-check PASS. Carried the steer
+  faithfully — `RankROpenOverBaseLocalProduct` + pointwise `reducedFibre_existsOverBaseProductChartAt_rankEq`
+  (every rank-=r prime → a chart with an honest `φ` over which the total ring is `≃ₐ[SchurLoc]` product
+  AND flat over `SchurLoc`), base = `SchurLoc` explicit, P-bridge + R1 named as open items. Scoped as
+  concrete packaging (no speculative abstract predicate — no consumer). Integrating (green-gate in flight).
+  **THE SPINE S1–S5 IS COMPLETE.** Status: S1 keystone ✓ · S2 smooth-block ✓ (+S2c hypothesis-free) ·
+  S3 flatness facts ✓ · S4 local product ✓ · S4b over-base triv + chartwise flatness ✓ (THE keystone) ·
+  S5 capstone headline ✓. All bedrock (hardener-cleared S1/S2; hardener-wave2 cleared S2c/S3/S4/S4b;
+  S5 reviewer+precision PASS).
+  - **→ CLOSE PHASE.** Remaining controller work: (1) the human-facing **exposition** (the bundle picture +
+    the honest fences); (2) final `synthesis.md` pass; (3) **ROADMAP.md** update (P-bridge → R1 → global
+    morphism; S2b conormal; S1 example; singular split / RLCT runway = next expedition); (4) signal-and-wait
+    **close-phase PR** (operator merges). No new tides needed; the geometry is built.
