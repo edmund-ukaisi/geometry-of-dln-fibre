@@ -6470,3 +6470,28 @@ Do not describe the current theorem as full Ctop source staging, because
 `dTail` is still the opaque Frechet derivative of the tail map.  Do not claim
 determinant equality, target-side shear equivalence, measure transport, normal
 crossings, pole order, or RLCT from this slice.
+
+A2 retained-passive tail product Frechet-derivative recursion has now landed
+locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-product-fderiv-recursion.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-product-fderiv-recursion.md`.
+Lean proves
+`differentiableAt_retainedPassiveA1seed_residualFactorProduct`,
+`fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply`, and
+`fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply`.
+This is the recurrence
+`d(P_p)=d(P_{p+1})*A_p+P_{p+1}*dA_p`, specialized to passive factors so
+`dA_{q.succ}=v.A1passive_q`; it does not include the dummy `A1seed 0`.
+
+Next priority in this lane: either package the direct `dTail` endpoint
+specialization from this recurrence, including the `M=0` empty-tail case, or
+iterate the recurrence into a closed finite-sum formula if that is what the
+next `Ctop` consumer needs.  Do not claim full `Ctop` source staging,
+determinant equality, target-side shear equivalence, measure transport,
+normal crossings, pole order, or RLCT from this recurrence slice.
+
+Review note: xhigh `Schrodinger` accepted the Lean recurrence after one
+documentation wording fix about noncommutative order.  The source tangent is
+right factor in `P_{p.succ}(z) * v.A1passive_q`; the suffix product
+left-multiplies it.

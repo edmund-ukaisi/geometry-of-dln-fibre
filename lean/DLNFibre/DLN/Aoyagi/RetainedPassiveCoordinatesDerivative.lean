@@ -1040,6 +1040,187 @@ theorem differentiableAt_retainedPassiveA1TailAfterFirst
   have htail' := htail le_rfl
   simpa [retainedPassiveA1TailAfterFirst, j, motive] using htail'
 
+/-- Every suffix of the passive top-left seed product is differentiable as a
+function of the retained-passive tuple coordinates. -/
+theorem differentiableAt_retainedPassiveA1seed_residualFactorProduct
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1))
+    (z : TopologyTuple ρ κ' ℝ) :
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+          (Fin.last (M + 1)) i hi) z := by
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+          j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)) z
+  have hbase : motive (M + 1) le_rfl := by
+    change DifferentiableAt ℝ
+      (fun _z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          _ j j le_rfl) z
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+              j p.succ hpj) z := by
+      simpa [motive, j, p] using ih
+    have hfactor :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed p) z :=
+      differentiableAt_A1seed (ρ := ρ) (κ' := κ') p z
+    have hmul :
+        DifferentiableAt ℝ
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+                j p.succ hpj *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed p) z :=
+      hnext.mul hfactor
+    change DifferentiableAt ℝ
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+          j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) z
+    rw [show
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun z ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed
+                j p.succ hpj *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed p by
+      funext z
+      exact
+        residualFactorProduct_castSucc
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+/-- The endpoint passive top-left seed product is empty, so its Frechet
+derivative is zero. -/
+theorem fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) :
+    let j : Fin (M + 2) := Fin.last (M + 1)
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          j j le_rfl) z) v = 0 := by
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  simp
+
+set_option maxRecDepth 2048 in
+/-- The Frechet derivative of one passive top-left seed-product suffix obeys
+the noncommutative product rule, with the new passive seed derivative rewritten
+as the corresponding source tangent. -/
+theorem fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    (z v : TopologyTuple ρ κ' ℝ) (q : Fin M) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let p : Fin (M + 1) := q.succ
+    let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    (fderiv ℝ Pcast z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let p : Fin (M + 1) := q.succ
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let Afun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed p
+  let B : Matrix ρ ρ ℝ →L[ℝ] Matrix ρ ρ ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := ρ) (n := ρ)
+  have hPsuccdiff : DifferentiableAt ℝ Psucc z := by
+    simpa [Psucc] using
+      differentiableAt_retainedPassiveA1seed_residualFactorProduct
+        (ρ := ρ) (κ' := κ') p.succ p.succ.le_last z
+  have hAdiff : DifferentiableAt ℝ Afun z := by
+    simpa [Afun] using
+      differentiableAt_A1seed (ρ := ρ) (κ' := κ') p z
+  have hPcast_eq : Pcast = fun y ↦ Psucc y * Afun y := by
+    funext y
+    simpa [Pcast, Psucc, Afun, p, A1seed, ofTopologyTuple] using
+      residualFactorProduct_castSucc
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (j := Fin.last (M + 1)) p p.succ.le_last
+  have hmulDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Psucc y * Afun y) z =
+        B.precompR _ (Psucc z) (fderiv ℝ Afun z) +
+          B.precompL _ (fderiv ℝ Psucc z) (Afun z) := by
+    simpa [B] using
+      (B.hasFDerivAt_of_bilinear hPsuccdiff.hasFDerivAt hAdiff.hasFDerivAt).fderiv
+  have hA_apply : (fderiv ℝ Afun z) v = v.1 q := by
+    let LA : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.1 q
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hAfun : Afun = fun y : TopologyTuple ρ κ' ℝ ↦ y.1 q := by
+      funext y
+      simp [Afun, p, A1seed, ofTopologyTuple]
+    have hLA :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.1 q) z = LA :=
+      LA.fderiv
+    rw [hAfun, hLA]
+    rfl
+  calc
+    (fderiv ℝ Pcast z) v =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Psucc y * Afun y) z) v := by
+          rw [hPcast_eq]
+    _ = Psucc z * (fderiv ℝ Afun z) v + (fderiv ℝ Psucc z) v * Afun z := by
+          rw [hmulDeriv]
+          simp [B, matrixMulContinuousLinearMap_apply]
+    _ = (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q := by
+          rw [hA_apply]
+          simp [Afun, data]
+          abel
+
 /-- On the tuple determinant chart, each solved full `A1` block is
 differentiable as an ambient tuple-coordinate function. -/
 theorem differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet

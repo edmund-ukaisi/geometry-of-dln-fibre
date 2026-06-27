@@ -10186,6 +10186,56 @@ staging, no `F3` source staging, no global determinant-one shear linear
 equivalence, full analytic derivative factorization, determinant equality,
 measure/Jacobian-density theorem, normal crossings, pole order, or RLCT.
 
+## A2 retained-passive tail product derivative recursion
+
+Status: Proved in Lean locally; pen-and-paper reproduction written and
+checked; focused and full builds passed; independent xhigh implementation
+review passed after a documentation wording fix; sorry scan, whitespace check,
+and axiom audit passed.
+
+Claim: for the passive top-left suffix product
+
+```text
+P_i(y) = residualFactorProduct
+  (ofTopologyTuple y).A1seed (Fin.last (M+1)) i,
+```
+
+the endpoint derivative is zero, and for `q : Fin M`, `p=q.succ`, the
+recursive derivative step is
+
+```text
+d(P_{p.castSucc})_z(v)
+  = d(P_{p.succ})_z(v) * A1seed_z(p)
+    + P_{p.succ}(z) * v.A1passive_q.
+```
+
+Lean proves this as
+`differentiableAt_retainedPassiveA1seed_residualFactorProduct`,
+`fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply`, and
+`fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-product-fderiv-recursion.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-product-fderiv-recursion.md`.
+
+Review:
+pen-and-paper PASS from xhigh `Bacon`; Lean/API scout PASS from xhigh `Kuhn`;
+implementation review PASS after documentation wording fix from xhigh
+`Schrodinger`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-product-fderiv-recursion.md`.
+
+Kill condition: if the recurrence includes the dummy `A1seed 0`, reverses the
+noncommutative product-rule terms, or leaves `d(A1seed(q.succ))` opaque
+instead of `v.1 q`, it is not the intended passive-tail recurrence.
+
+Nonclaims: no closed finite-sum formula for `dTail`, no inverse-tail
+derivative theorem, no full `Ctop` source staging, no `F3` source staging, no
+global determinant-one shear linear equivalence, full analytic derivative
+factorization, determinant equality, measure/Jacobian-density theorem, normal
+crossings, pole order, or RLCT.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.

@@ -10093,6 +10093,31 @@ Focused and full `DLNFibre` builds passed; `scripts/sorries` reported zero
 forbidden markers; `git diff --check` passed; both new theorem axiom audits
 report only `[propext, Classical.choice, Quot.sound]`.
 
+Latest A2 retained-passive tail product derivative recursion:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`differentiableAt_retainedPassiveA1seed_residualFactorProduct`,
+`fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply`, and
+`fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-tail-product-fderiv-recursion.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-tail-product-fderiv-recursion.md`.
+Review:
+pen-and-paper PASS from xhigh `Bacon`; Lean/API scout PASS from xhigh `Kuhn`;
+implementation review PASS after documentation wording fix from xhigh
+`Schrodinger`, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-product-fderiv-recursion.md`.
+
+This is the recursive product-rule step for passive top-left suffix products:
+the endpoint empty product has zero derivative, and the nonterminal passive
+step gives
+`d(P_{p.castSucc}) = d(P_{p.succ})*A1seed_p + P_{p.succ}*v.A1passive_q`
+for `p=q.succ`.  It uses no determinant-chart hypothesis and does not include
+the dummy `A1seed 0`.  Nonclaims: no closed finite-sum formula for `dTail`, no
+full `Ctop` source staging, no `F3` source staging, no target-side
+determinant-one shear, determinant equality, measure transport, normal
+crossings, pole order, or RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

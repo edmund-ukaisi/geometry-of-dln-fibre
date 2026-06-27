@@ -209,6 +209,53 @@ This still does not compute `dTail` as a recursive product.  It is not full
 determinant equality, and not measure transport, normal crossings, pole order,
 or RLCT.
 
+## 2026-06-27 A2 retained-passive tail product FDeriv recursion
+
+The next narrow tail-product derivative slice is implemented locally.
+
+Reproduction:
+`reproduction-a2-retained-passive-tail-product-fderiv-recursion.md`.
+Statement card:
+`statement-card-a2-retained-passive-tail-product-fderiv-recursion.md`.
+
+Lean now proves:
+
+```text
+differentiableAt_retainedPassiveA1seed_residualFactorProduct
+fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply
+fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+```
+
+The first theorem exposes differentiability of every suffix of the passive
+`A1seed` product.  The endpoint theorem says the derivative of the empty
+suffix product is zero.  The recursive step says, for `q : Fin M` and
+`p=q.succ`,
+
+```text
+d(P_{p.castSucc})_z(v)
+  = d(P_{p.succ})_z(v) * A1seed_z(p)
+    + P_{p.succ}(z) * v.A1passive_q.
+```
+
+The theorem rewrites the derivative of `A1seed(q.succ)` to the source tangent
+`v.1 q`, so the dummy `A1seed 0` is not part of this passive-tail recurrence.
+No determinant-chart hypothesis is used.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` build passed.
+Independent xhigh implementation review passed after a documentation wording
+fix, recorded in
+`review-a2-retained-passive-tail-product-fderiv-recursion.md`.  Full
+`DLNFibre` build passed.  `scripts/sorries` reported `0 sorry`, `0 #exit`,
+`0 native_decide`, and `0 axiom`; `git diff --check` passed.  Axiom audit for
+the three new theorems reported only `propext`, `Classical.choice`, and
+`Quot.sound`.
+
+This is still not a closed finite-sum formula for `dTail`; it is the
+recursive product-rule step.  It is not full `Ctop` source staging, not `F3`
+staging, not determinant equality, and not measure transport, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

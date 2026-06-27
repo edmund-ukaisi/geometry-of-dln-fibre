@@ -14385,3 +14385,49 @@ then this remains an inverse-tail derivative slice, not full `Ctop` source
 staging.  It is not `F3` staging, target-side determinant-one shear,
 determinant equality, measure transport, normal crossings, pole order, or
 RLCT.
+
+## Latest A2 Retained-Passive Tail Product FDeriv Recursion
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+differentiableAt_retainedPassiveA1seed_residualFactorProduct
+fderiv_retainedPassive_A1seed_residualFactorProduct_self_apply
+fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+```
+
+For
+
+```text
+P_i(y) = residualFactorProduct
+  (ofTopologyTuple y).A1seed (Fin.last (M+1)) i,
+```
+
+the endpoint theorem gives `d(P_j)_z(v)=0`, and the recursive theorem gives,
+for `q : Fin M` and `p=q.succ`,
+
+```text
+d(P_{p.castSucc})_z(v)
+  = d(P_{p.succ})_z(v) * A1seed_z(p)
+    + P_{p.succ}(z) * v.A1passive_q.
+```
+
+The proof is a direct product-rule theorem for the ordered passive top-left
+tail suffix.  It uses no determinant-chart hypothesis and rewrites
+`d(A1seed(q.succ))` to the source tangent `v.1 q`.  The dummy `A1seed 0` does
+not occur in the passive-tail recurrence.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` build passed.
+Independent xhigh implementation review passed after a documentation wording
+fix, recorded in
+`threads/03-block-product-reduction/review-a2-retained-passive-tail-product-fderiv-recursion.md`.
+Full `DLNFibre` build passed.  `scripts/sorries` reported `0 sorry`,
+`0 #exit`, `0 native_decide`, and `0 axiom`; `git diff --check` passed.
+Axiom audit for the three new theorems reported only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+This is not yet a closed finite-sum formula for `dTail`; it is the recursive
+product-rule step.  It is not full `Ctop` source staging, `F3` staging,
+target-side determinant-one shear, determinant equality, measure transport,
+normal crossings, pole order, or RLCT.
