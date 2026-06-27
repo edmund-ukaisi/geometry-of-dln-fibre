@@ -693,3 +693,23 @@ merge-base (`413566b3`, dev) — NOT `expedition/aoyagi-full` — so the worktre
 their worktree. FIX for future build tides: instruct the agent to `git merge origin/expedition/aoyagi-full` as
 step 0 (now baked into spawn prompts), OR set `worktree.baseRef = head` in settings so worktrees branch from the
 current HEAD (which is on expedition/aoyagi-full). Operator may prefer the settings fix.
+
+## 37. ∀M achiever-chart STRUCTURAL gap + a process learning (2026-06-27) — operator awareness, NOT a blocker.
+EXHAUSTIVE exact-arithmetic (genm-witness, 351 M over {1,2,3}^{L+1}, L∈{2,3,4}) found the structured-decoder
+achiever chart `phiFlatStructV` is DEGENERATE (`achieverUfun ≡ 0`, the chart maps into the zero-loss locus) for
+66/351 ≈ 19% of M — exactly those whose achiever rank-drops sit only at boundary layers. Root cause: the chain is
+"one boundary too short" (`tStar`'s final drop falls off the chain leaf). The rate-side fields I reported "DONE
+∀M" (UPDATE-147/148) hold only for the 285 interior-drop M. **Nothing false was banked** — the witness was an
+explicit OPEN hypothesis (precision discipline ⟹ the gap is visible/conditional, not a hidden falsehood).
+PATH (adopted autonomously, least-disruptive, genm-witness's pick): OPTION A — a 3-case ∀M chart: interior-drop
+(the colPath structured-decoder chart) / boundary-drop (a separate chart, likely the pure-radial (4,4,2,2)-anchor
+pattern) / L=1 (banked DeepestBaseL1). This expands the ∀M-chart scope to a 3-case construction (more tides).
+PROCESS LEARNING (the important one): the witness/positivity design was certified WRONG by decoder-fix + Codex
+THREE times (§5 simple witness; the "validated" carriers; the live-leaf model) — and EXHAUSTIVE ENUMERATION
+(genm-witness) is what caught it each time, not Codex consults. The 5 validated anchors were ALL interior-drop,
+so they never exercised the degenerate class. **New standing gate (now in lessons.md): ∀M witness/positivity/
+non-vacuity claims must be exhaustively enumerated over the small-M grid BEFORE a certificate asserts them; a
+Codex "validated, no wall" on hand-picked anchors is insufficient.** Operator levers: (i) sanction option A
+(default, in progress); (ii) prefer option B (re-derive the decoder so the last drop is represented — bigger
+blast radius, makes one uniform chart); (iii) re-scope/re-prioritize. I'm charging (i) autonomously per the (A)
+mandate; flagged for a knowing-decision check since it's architecture-level + the 4th design iteration here.
