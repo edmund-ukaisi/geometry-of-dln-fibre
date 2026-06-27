@@ -48,6 +48,59 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Solved-A1 Zero Derivative
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves upstream:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+fderiv_retainedPassive_toCoordinateData_solvedA1_zero_apply
+```
+
+The inverse-tail theorem has been moved out of the Jacobian leaf and stated
+over `TopologyTuple`.  The zero-branch theorem proves, with
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed,
+Tail    = Tfun(z),
+dTail   = (fderiv Tfun z) v,
+```
+
+that
+
+```text
+d_z(solvedA1(0))(v)
+  = Tail^-1 * v.2.2.2.2.1
+    - Tail^-1 * dTail * Tail^-1 * data.Ctop.
+```
+
+The determinant-chart hypothesis is necessary for the matrix-inverse
+derivative at `Tail`.  The theorem does not expand `dTail`; it keeps the actual
+Frechet derivative of the tail map as the boundary.  The factor order is
+noncommutative and must not be rearranged.
+
+Feynman's xhigh audit passed the theorem boundary, sign/order, hypotheses, and
+dependency direction.  Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audits passed; the theorem names have only
+`[propext, Classical.choice, Quot.sound]`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a1-zero-fderiv.md`.
+
+Nonclaims: no recursive `dTail` formula, no complete `dPcast` source-staging,
+no determinant theorem, no measure theorem, no normal crossings, pole order,
+or RLCT.
+
+Next frontier after banking: substitute this solved-`A1` split into the
+retained-passive `dPcast`/`dEarly` recurrence while leaving `dTail` explicit.
+
 ## Latest A2 Solved-A1 Successor Derivative
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves upstream:

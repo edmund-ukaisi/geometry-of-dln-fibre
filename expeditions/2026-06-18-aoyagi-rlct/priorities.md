@@ -21,6 +21,46 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The solved-`A1` zero derivative branch has landed upstream in
+`RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+fderiv_retainedPassive_toCoordinateData_solvedA1_zero_apply
+```
+
+The inverse-tail theorem is now stated over `TopologyTuple`, not the downstream
+raw-order abbreviation, and the duplicate body has been removed from
+`RetainedPassiveCoordinatesJacobian.lean`.  The zero branch proves
+
+```text
+d_z(solvedA1(0))(v)
+  = Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop.
+```
+
+Here `dTail` is the actual Frechet derivative of the passive top-left tail
+map, not a recursive expansion.  The determinant-chart hypothesis remains
+explicit because the inverse-tail derivative needs `det(Tail)` to be a unit.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-solved-a1-zero-fderiv.md`,
+PASS by xhigh `Feynman`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, full `DLNFibre` build, and theorem
+axiom audits (`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: substitute the solved-`A1` split into the
+retained-passive `dPcast`/`dEarly` terms, preserving the explicit `dTail`
+boundary until the tail-product recursion is intentionally expanded.
+
+Previous controller decision:
+
 The solved-`A1` successor derivative formula has been moved upstream from the
 Jacobian leaf into `RetainedPassiveCoordinatesDerivative.lean`:
 

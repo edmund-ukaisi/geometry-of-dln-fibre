@@ -1468,6 +1468,172 @@ theorem fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
   rw [hLA1]
   rfl
 
+set_option maxRecDepth 2048 in
+/-- The derivative of the inverse passive top-left tail is the matrix-inverse
+derivative applied to the actual Frechet derivative of the tail map. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tail :=
+      retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+    let dTail :=
+      (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦
+          retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed) z) v
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v =
+      -(Tail⁻¹ * dTail * Tail⁻¹) := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  have hTdiff : DifferentiableAt ℝ Tfun z := by
+    simpa [Tfun] using
+      differentiableAt_retainedPassiveA1TailAfterFirst (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := hz
+  have hTailUnit : IsUnit (Tfun z).det := by
+    change IsUnit
+      (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed).det
+    exact
+      retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := ℝ) (ρ := ρ) data.A1seed
+        (data.toCoordinateData_passiveA1_units hdet.2)
+  have hInvHas : HasFDerivAt
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (Tfun y)⁻¹)
+      ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Tfun z)⁻¹ (Tfun z)⁻¹)).comp
+        (fderiv ℝ Tfun z)) z := by
+    simpa [Tfun, Function.comp_def] using
+      ((hasFDerivAt_matrix_inv_of_isUnit_det (Tfun z) hTailUnit).comp
+        (x := z) hTdiff.hasFDerivAt)
+  have hInvFDeriv :
+      fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦ (Tfun y)⁻¹) z =
+        ((-(ContinuousLinearMap.mulLeftRight ℝ (Matrix ρ ρ ℝ)
+          (Tfun z)⁻¹ (Tfun z)⁻¹)).comp
+        (fderiv ℝ Tfun z)) :=
+    hInvHas.fderiv
+  change
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (Tfun y)⁻¹) z) v =
+      -((Tfun z)⁻¹ * (fderiv ℝ Tfun z) v * (Tfun z)⁻¹)
+  rw [hInvFDeriv]
+  simp [ContinuousLinearMap.mulLeftRight_apply]
+
+set_option maxRecDepth 2048 in
+/-- At the solved first top-left block, the Frechet derivative is the endpoint
+source tangent transported by the inverse passive tail, minus the inverse-tail
+product-rule correction. -/
+theorem fderiv_retainedPassive_toCoordinateData_solvedA1_zero_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+    let dTail := (fderiv ℝ Tfun z) v
+    (fderiv ℝ
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          0) z) v =
+      Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+  let dTail := (fderiv ℝ Tfun z) v
+  let Ufun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ := fun y ↦ (Tfun y)⁻¹
+  let Cfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.Ctop
+  let BUC : Matrix ρ ρ ℝ →L[ℝ]
+      Matrix ρ ρ ℝ →L[ℝ]
+        Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := ρ) (n := ρ)
+  have hTdiff : DifferentiableAt ℝ Tfun z := by
+    simpa [Tfun] using
+      differentiableAt_retainedPassiveA1TailAfterFirst (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := hz
+  have hTailUnit : IsUnit (Tfun z).det := by
+    change IsUnit
+      (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed).det
+    exact
+      retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := ℝ) (ρ := ρ) data.A1seed
+        (data.toCoordinateData_passiveA1_units hdet.2)
+  have hUdiff : DifferentiableAt ℝ Ufun z := by
+    exact
+      (differentiableAt_matrix_inv_of_isUnit_det (Tfun z) hTailUnit).comp z hTdiff
+  have hCdiff : DifferentiableAt ℝ Cfun z := by
+    simpa [Cfun, toCoordinateData] using
+      differentiableAt_Ctop (ρ := ρ) (κ' := κ') z
+  have hSolvedEq :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          0) =
+        fun y ↦ Ufun y * Cfun y := by
+    funext y
+    simp [Ufun, Tfun, Cfun, RetainedPassiveCoordinateData.solvedA1,
+      retainedPassiveSolvedA1, toCoordinateData]
+  have hUCDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Ufun y * Cfun y) z =
+        BUC.precompR _ (Ufun z) (fderiv ℝ Cfun z) +
+          BUC.precompL _ (fderiv ℝ Ufun z) (Cfun z) := by
+    simpa [BUC] using
+      (BUC.hasFDerivAt_of_bilinear hUdiff.hasFDerivAt hCdiff.hasFDerivAt).fderiv
+  have hC_apply : (fderiv ℝ Cfun z) v = v.2.2.2.2.1 := by
+    let LCtop : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.2.2.2.1
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hCfun : Cfun = fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.1 := by
+      funext y
+      simp [Cfun, toCoordinateData, ofTopologyTuple]
+    have hLCtop :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.1) z = LCtop :=
+      LCtop.fderiv
+    rw [hCfun, hLCtop]
+    rfl
+  have hInv :=
+    fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+      (ρ := ρ) (κ' := κ') hz v
+  change
+      (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+            0) z) v =
+        Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop
+  rw [hSolvedEq]
+  rw [hUCDeriv]
+  change
+      Ufun z * (fderiv ℝ Cfun z) v + (fderiv ℝ Ufun z) v * Cfun z =
+        Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop
+  rw [hC_apply]
+  have hInv' : (fderiv ℝ Ufun z) v = -(Tail⁻¹ * dTail * Tail⁻¹) := by
+    simpa [Ufun, Tfun, Tail, dTail, data] using hInv
+  rw [hInv']
+  simp [Ufun, Tfun, Cfun, Tail, dTail, data, toCoordinateData,
+    sub_eq_add_neg, Matrix.mul_assoc]
+
 /-- The passive top-left tail product is `C^1` as a function of the ambient
 tuple coordinates. -/
 theorem contDiffAt_retainedPassiveA1TailAfterFirst

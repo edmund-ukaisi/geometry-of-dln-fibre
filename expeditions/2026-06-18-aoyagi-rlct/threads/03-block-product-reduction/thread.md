@@ -18,6 +18,61 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 solved-A1 zero derivative
+
+Reproduction:
+`reproduction-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Statement card:
+`statement-card-a2-retained-passive-solved-a1-zero-fderiv.md`.
+Review:
+`review-a2-retained-passive-solved-a1-zero-fderiv.md`, PASS by xhigh
+`Feynman`.
+
+Lean now proves upstream in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_A1TailAfterFirst_inv_eq_tail_fderiv
+fderiv_retainedPassive_toCoordinateData_solvedA1_zero_apply
+```
+
+For the zero solved top-left block, with
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed,
+Tail    = Tfun(z),
+dTail   = (fderiv Tfun z) v,
+```
+
+the theorem proves
+
+```text
+d_z(solvedA1(0))(v)
+  = Tail^-1 * v.2.2.2.2.1
+    - Tail^-1 * dTail * Tail^-1 * data.Ctop.
+```
+
+The determinant-chart hypothesis is required for the inverse-tail derivative.
+The theorem leaves `dTail` as the actual Frechet derivative of the passive
+tail map; it does not expand it recursively.  The inverse-tail theorem is now
+stated over `TopologyTuple`, not over `RetainedPassiveRawTopologyTuple`, and
+the duplicate downstream body was removed from
+`RetainedPassiveCoordinatesJacobian.lean`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, full `DLNFibre` build, and
+theorem axiom audits also passed; both theorem names have only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no recursive `dTail` formula, no complete `dPcast` source-staging,
+no target staging, no determinant theorem, no measure theorem, no normal
+crossings, no pole order, and no RLCT.
+
+Next frontier: substitute the solved-`A1` derivative split into the
+retained-passive `dPcast`/`dEarly` source-staging theorems, keeping `dTail`
+explicit until the tail recursion is intentionally opened.
+
 ## 2026-06-27 A2 solved-A1 successor derivative
 
 Reproduction:
