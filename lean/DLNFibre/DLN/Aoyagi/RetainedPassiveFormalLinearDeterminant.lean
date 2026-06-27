@@ -44,6 +44,20 @@ def edgeLocalFCPairPiLinearMap
         (ρ := ρ) (μ := κ' p.succ) (κ := κ' p.castSucc) (K := K)
         (A p) (H p) (G p)).comp (LinearMap.proj p)
 
+omit [DecidableEq ρ] in
+/-- Componentwise formula for the dependent product of edge-local maps. -/
+theorem edgeLocalFCPairPiLinearMap_apply
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (v : RetainedPassiveFormalEdgeTangent (ρ := ρ) (κ' := κ') (K := K))
+    (p : Fin (M + 1)) :
+    edgeLocalFCPairPiLinearMap
+        (ρ := ρ) (κ' := κ') (K := K) A H G v p =
+      (-(A p + H p * G p) * (v p).1 + H p * (v p).2,
+        -G p * (v p).1 + (v p).2) := by
+  simp [edgeLocalFCPairPiLinearMap, edgeLocalFCPairLinearMap_apply]
+
 /-- Determinant of the dependent product of edge-local `(F,C)` maps. -/
 theorem edgeLocalFCPairPiLinearMap_det_eq
     (A : Fin (M + 1) → Matrix ρ ρ K)
@@ -115,6 +129,44 @@ def retainedPassiveTotalFormalBlockJacobian
         ((edgeLocalFCPairPiLinearMap
             (ρ := ρ) (κ' := κ') (K := K) A H G).prodMap
           (mulRightLinearMap (κ' (Fin.last (M + 1))) K (-LastTop)))))
+
+/-- Blockwise formula for the formal retained-passive block-order Jacobian. -/
+theorem retainedPassiveTotalFormalBlockJacobian_apply
+    (Tail : Matrix ρ ρ K)
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (LastTop : Matrix ρ ρ K)
+    (v : RetainedPassiveTotalFormalBlockTangent (ρ := ρ) (κ' := κ') (K := K)) :
+    retainedPassiveTotalFormalBlockJacobian
+        (ρ := ρ) (κ' := κ') (K := K) Tail A H G LastTop v =
+      (v.1,
+        (v.2.1,
+          (Tail⁻¹ * v.2.2.1,
+            ((fun p : Fin (M + 1) =>
+                edgeLocalFCPairLinearMap
+                  (ρ := ρ) (μ := κ' p.succ) (κ := κ' p.castSucc) (K := K)
+                  (A p) (H p) (G p) (v.2.2.2.1 p)),
+              v.2.2.2.2 * (-LastTop))))) := by
+  rfl
+
+/-- Expanded component formula for each edge-local block inside the formal
+retained-passive block-order Jacobian. -/
+theorem retainedPassiveTotalFormalBlockJacobian_edge_apply
+    (Tail : Matrix ρ ρ K)
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (LastTop : Matrix ρ ρ K)
+    (v : RetainedPassiveTotalFormalBlockTangent (ρ := ρ) (κ' := κ') (K := K))
+    (p : Fin (M + 1)) :
+    (retainedPassiveTotalFormalBlockJacobian
+        (ρ := ρ) (κ' := κ') (K := K) Tail A H G LastTop v).2.2.2.1 p =
+      (-(A p + H p * G p) * (v.2.2.2.1 p).1 +
+          H p * (v.2.2.2.1 p).2,
+        -G p * (v.2.2.2.1 p).1 + (v.2.2.2.1 p).2) := by
+  simp [retainedPassiveTotalFormalBlockJacobian,
+    edgeLocalFCPairPiLinearMap_apply]
 
 /-- Exact determinant of the formal retained-passive block-order Jacobian.
 
