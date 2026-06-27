@@ -172,8 +172,11 @@ unconditional, axiom-clean** (`k : Type 0`, whole library green 3805):
 **Roadmapped residuals (deferred at the honest ceiling — all genuinely non-trivial / off-critical-path;
 items 4–5 are the honest residuals surfaced by the PR #11 owner review):**
 1. **Bundle → bare scheme-theoretic `locallyTrivial`:** the prime-level **residue-field-rank bridge**
-   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) — genuinely new scheme-theoretic math (the
-   k-point rank-tie, banked, does NOT compose with the prime cover). A fresh multi-tide build, not a finish.
+   (`P ∈ rankROpen ↔ universal matrix over κ(P) has rank r`) is now **LANDED** — S1
+   `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` (fibration-geometry), as a
+   set-of-primes identity. What remains toward a bare scheme-theoretic `locallyTrivial` is the over-base
+   **projection compatibility** + the overlap-gluing cocycle (R1) — see the fibration-geometry close
+   section below.
 2. **`e` → full localized iso:** rung 1 (`schurComponent_chartQuotientEquiv`) + the assembled CONDITIONAL
    headline `exists_localized_schurComponent_fullOrbitEquiv_of` are landed (axiom-clean); the open input is
    the typed Prop `LocalizedChartDescent` — the chart→sigma→orbit descent of `(Away chartDsig)⧸chartComponentIdeal`
@@ -347,11 +350,15 @@ over-base local product with flatness:
 
 Exposition: `expeditions/2026-06-27-fibration-geometry/expositions/fibration-geometry.md`.
 
-**Residuals (roadmap; sequence as listed — each genuinely reachable, none a wall):**
+**Residuals (roadmap; sequence as listed — items 1–4 are genuinely reachable; item 5 is the genuine
+wall, the next expedition):**
 
-1. **Chart-base bridge** `SchurLoc ≅ sweepSigmaRing | basicOpen(chartDsigAt s t)` (+ structure-map
-   compatibility). Turns the chartwise `SchurLoc`-flatness into flatness over the genuine base
-   `rankROpen ⊆ Spec(sweepSigmaRing)`. A real build, **ahead of** R1.
+1. **Projection compatibility** — that the in-chart structure map
+   `schurToDsigAt : SchurLoc → Away(chartDsigAt s t)` is the pullback of `mult`'s projection from the
+   target/base rank-chart. (`SchurLoc` is the in-chart base direction; `Away(chartDsigAt s t)` is the
+   *source/total* chart, already `≅ SchurLoc ⊗ fibre` — so this is NOT a "`SchurLoc ≅ sweepSigmaRing|chart`"
+   bridge, which would lose the fibre.) This compatibility is what lets the chartwise `SchurLoc`-flatness
+   read as genuine fibre-family flatness over the base. A real build, **ahead of** R1.
 2. **R1 — `targetOverlapTransition`** (the overlap-gluing cocycle). Assembles the per-chart data into a
    single global `Flat π` / fibre-bundle morphism over all of `rankROpen`. After the chart-base bridge.
 3. **S2b — conormal companion** `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler

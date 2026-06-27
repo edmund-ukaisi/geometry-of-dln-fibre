@@ -70,36 +70,45 @@ theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → �
     iff its universal-matrix residue rank is `r`), `cover` (the per-pivot `basicOpen (chartDsigAt s t)`
     cover `rankROpen`), and `chart` (an `OverBaseChartDatum` at every pivot).
   - The pointwise theorem: for every prime `P` whose universal product matrix has rank exactly `r` over
-    its residue field, there exist selectors `(s, t)` with `P ∈ basicOpen (chartDsigAt s t)` and an
-    honest structure map `φ : SchurLoc →ₐ[k] Away (chartDsigAt s t)` such that, with the `φ`-induced
-    `SchurLoc`-algebra structure, the chart total ring is `SchurLoc`-algebra-isomorphic to
-    `SchurLoc ⊗_k sweepFibreRing` and is flat over `SchurLoc`.
+    its residue field, there is a pivot datum `I` with `P ∈ basicOpen (chartDsigAt I.s I.t)` such that,
+    over the **named geometric** `SchurLoc`-algebra structure `chartDsigAtSchurLocAlgebra` (i.e. via
+    `schurToDsigAt`, NOT an unconstrained existential `φ`), the chart total ring is
+    `SchurLoc`-algebra-isomorphic to `SchurLoc ⊗_k sweepFibreRing` and is flat over `SchurLoc`. Naming
+    the geometric structure in the *type* is what makes this a genuine over-base statement: an
+    unconstrained `∃ φ` version is satisfiable by a pullback from any bare `≃ₐ[k]` and so carries no
+    more content than S4.
 - **Proved (unconditional).**
   - The full `RankROpenOverBaseLocalProduct` structure and the pointwise headline, sorry-free and
     axiom-clean `[propext, Classical.choice, Quot.sound]`.
   - Each chart datum is the genuine S4b over-base content: `structMap = schurToDsigAt`,
     `triv = chartDsigAt_schurLocTensorEquiv` (a `≃ₐ[SchurLoc]`, not a bare `≃ₐ[k]`),
-    `flat = chartDsigAt_flat_over_schurLoc`. This is a strict upgrade of the S4 headline
-    `reducedFibre_existsProductChartAt_rankEq` (which only gave `Nonempty (… ≃ₐ[k] …)`).
+    `flat = chartDsigAt_flat_over_schurLoc`. Because the pointwise headline names this geometric
+    structure in its TYPE (the `∃ I : PivotDatum`, `letI := chartDsigAtSchurLocAlgebra …` form), it is a
+    genuine strict upgrade of the S4 headline `reducedFibre_existsProductChartAt_rankEq` (bare
+    `Nonempty (… ≃ₐ[k] …)`) — strong ⟹ S4 machine-verified, not conversely.
+  - The old unconstrained `∃ φ` form is retained as
+    `reducedFibre_existsOverBaseProductChartAt_rankEq_exists_someStructure`, proved FROM the strong form
+    (`φ := schurToDsigAt`); its docstring marks it the weaker projection (no more content than S4).
 - **Assumed (hypotheses, same as S4).** `hp : r ≤ d_N`, `hq : r ≤ d_0`, `[Infinite k]`, and the
   per-point hypothesis `hP : (universalMatrixResidue d r P).rank = r`. These match the S1/S4 reviewed
   hypothesis class; `hP` is exactly the S1 rank-locus characterization, so it is reachable (the
   top-left chart witnesses non-emptiness).
 - **Cited.** none (all fields are banked in-repo S1/S4/S4b results).
 - **Deferred (NAMED OPEN ITEMS — read before reusing).**
-  1. **Chart-base bridge (a real build, AHEAD of R1).** The base of the trivialization + flatness is
-     `SchurLoc` = the in-chart Schur-direction coordinate ring (`Localization.Away (detSchurS …)`),
-     which is a DIFFERENT ring from the actual base-restriction of `sweepSigmaRing` to
-     `basicOpen (chartDsigAt s t)` (= `Away (chartDsigAt s t)`, a localization OF `sweepSigmaRing`).
-     There is NO proven identification `SchurLoc ≅ (sweepSigmaRing restricted to basicOpen(chartDsigAt))`
-     with structure-map compatibility. Until that bridge is built, the flatness/triviality is honestly
-     only over `SchurLoc`, NOT over `rankROpen ⊆ Spec(sweepSigmaRing)`. The Lean wording is "over
-     `SchurLoc`" throughout — never "flat over `rankROpen`" / "flat over `sweepSigmaRing`".
+  1. **Projection compatibility (a real build, AHEAD of R1).** The base of the trivialization + flatness
+     is `SchurLoc` = the in-chart base DIRECTION (the Schur/determinantal rank-chart,
+     `Localization.Away (detSchurS …)`). NB `Spec(sweepSigmaRing)` is the **source/total** `Σ̄^r` (NOT
+     the base), and `Away (chartDsigAt s t)` is the **total** chart (already `≅ SchurLoc ⊗ fibre`, a
+     localization OF `sweepSigmaRing`). Reading "flat over `SchurLoc`" as genuine **fibre-family flatness
+     over the base** requires `schurToDsigAt` to be the pullback of `mult`'s projection from the
+     target/base rank-chart — NOT yet proved. (There is no "`SchurLoc ≅ Away (chartDsigAt)`" bridge — it
+     would equate the base direction with the whole total chart, losing the fibre.) The Lean wording is
+     "over `SchurLoc`" throughout — never "flat over `rankROpen`".
   2. **Global `Flat π` / `FiberBundle` over all of `rankROpen` (R1).** This is CHARTWISE only. A single
      global flatness-of-`π` or fibre-bundle statement over the whole `rankROpen` needs the target-side
      overlap-gluing cocycle (roadmap R1 `targetOverlapTransition`) to assemble the per-chart data; not
-     claimed here. (Whether global flatness as a property globalizes from the chartwise data without R1
-     is a separate question assessed elsewhere.)
+     claimed here. (Globalizing the flatness *property* to `rankROpen` first needs the
+     projection-compatibility bridge in item 1, not merely R1.)
   3. No scheme-morphism / continuity / sheaf content: `structMap` is the in-chart *ring* map only.
 - **Route.** Mirror the S4 assembly `reducedFibre_existsProductChartAt_rankEq`: S1 puts `P` in
   `rankROpen = ⋃ basicOpen (chartDsigAt s t)`; `pivotDatumOfMemBasicOpen` turns chart membership into a

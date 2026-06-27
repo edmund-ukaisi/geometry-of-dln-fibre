@@ -408,8 +408,11 @@ import DLNFibre.Core.FibreFlatness
 import DLNFibre.Core.FibreOverBaseTriv
 -- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
 -- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline
--- `reducedFibre_existsOverBaseProductChartAt_rankEq` — every rank-=r prime sits in a pivot chart with
--- an honest structure map φ over which the total ring is `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND
--- flat over SchurLoc. Base = SchurLoc (NOT the rankROpen base-restriction: chart-base bridge open);
--- chartwise (global Flat π / FiberBundle = R1). Strict over-base upgrade of S4's bare ≃ₐ[k].
+-- `reducedFibre_existsOverBaseProductChartAt_rankEq` — every rank-=r prime sits in a pivot chart I over
+-- the GEOMETRIC structure `chartDsigAtSchurLocAlgebra` (= schurToDsigAt, named in the TYPE, not an
+-- existential φ a degenerate pullback could satisfy) under which the total ring is
+-- `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND flat over SchurLoc. Base = SchurLoc, the in-chart base
+-- DIRECTION (Spec(sweepSigmaRing) is the SOURCE/TOTAL, NOT the base); reading this as fibre-family
+-- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
+-- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
 import DLNFibre.Core.FibreBundleHeadline

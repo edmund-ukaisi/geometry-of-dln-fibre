@@ -32,8 +32,9 @@ the definitional cover-complement.
 
 The reader-facing headline is the **pointwise** theorem `reducedFibre_existsProductChartAt_rankEq`:
 for every prime `P` at which the universal matrix has rank `r`, there is a pivot chart containing
-`P` carrying a product trivialization. This reads as genuine local triviality at each point of the
-rank-`= r` open, composed directly from (1)+(2)+(3).
+`P` carrying a product trivialization — a **pointwise local-product chart** at each point of the
+rank-`= r` open, composed directly from (1)+(2)+(3). (NOT local triviality in the bundle sense: the
+charts' products are not glued on overlaps, R1; see below.)
 
 ## What this does NOT claim (the honest residual — read before reusing)
 
@@ -113,16 +114,18 @@ noncomputable def reducedFibre_rankROpenPerPivotLocalProduct (d : Fin (N + 2) �
 
 /-! ## The reader-facing headline: pointwise local product at each rank-`= r` prime -/
 
-/-- **The honest local-triviality headline (pointwise).** For every prime `P` of the chart-closure
-ring `sweepSigmaRing k d r` at which the universal product matrix over the residue field `κ(P)` has
-rank exactly `r`, there is a pivot `(s, t)` whose chart `basicOpen (chartDsigAt s t)` contains `P`
-and over which the localized total ring is, as a `k`-algebra, the product
-`SchurLoc ⊗_k sweepFibreRing` of the local matrix direction with the standard fibre ring. This is
-genuine **local triviality at each point of the rank-`= r` open**: every rank-`= r` prime sits in a
-product-trivialized chart. Composed directly from the S1 rank-bridge (rank `= r` ⟹ `P ∈ rankROpen`),
-the scheme open-cover (`P ∈ rankROpen` ⟹ some chart contains `P`), and the per-pivot product
-trivialization. **Per-chart / uncocycled**: it does NOT assert the charts' products agree on
-overlaps (the target-side overlap cocycle R1 is unbuilt) — hence not named `locallyTrivial`. -/
+/-- **The pointwise local-product chart (per-chart product presentation).** For every prime `P` of
+the chart-closure ring `sweepSigmaRing k d r` at which the universal product matrix over the residue
+field `κ(P)` has rank exactly `r`, there is a pivot `(s, t)` whose chart `basicOpen (chartDsigAt s
+t)` contains `P` and over which the localized total ring is, as a `k`-algebra, the product
+`SchurLoc ⊗_k sweepFibreRing` of the local matrix direction with the standard fibre ring. This is a
+**pointwise local-product chart at each point of the rank-`= r` open**: every rank-`= r` prime sits
+in a product-presented chart. Composed directly from the S1 rank-bridge (rank `= r` ⟹ `P ∈
+rankROpen`), the scheme open-cover (`P ∈ rankROpen` ⟹ some chart contains `P`), and the per-pivot
+product trivialization. **Per-chart / uncocycled, bare `k`-algebra**: it returns only a chart +
+`Nonempty (≃ₐ[k] …)` — NO base-map / projection compatibility, NO overlap cocycle — so it does NOT
+assert the charts' products agree on overlaps (the target-side overlap cocycle R1 is unbuilt), hence
+is not named `locallyTrivial`. -/
 theorem reducedFibre_existsProductChartAt_rankEq (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (P : PrimeSpectrum (sweepSigmaRing k d r))

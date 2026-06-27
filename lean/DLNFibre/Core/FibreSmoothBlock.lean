@@ -204,17 +204,22 @@ theorem codim_add_ringKrullDim_component_eq_card [IsAlgClosed k] [Infinite k]
     rw [varietyDim, hI.2]] at hbridge
 
 /-- **THE SMOOTH-BLOCK CERTIFICATE (per smooth closed point of a top-dimensional fibre component).**
-For a rank-`r` target `B` over an algebraically closed char-`0` field, a top-dimensional component
-`I ∈ TopDimMinPrimes (sweepFibreRing …)` of the reduced fibre, and a maximal ideal `m` of the
-component ring `A := sweepFibreRing … ⧸ I` at which `A` is smooth (a smooth closed point of the
-top-dimensional fibre component), the local Kähler module `Ω[A_m⁄k]` is **free** of finrank `n`,
-with
+Over an algebraically closed char-`0` field, for a top-dimensional component
+`I ∈ TopDimMinPrimes (sweepFibreRing …)` of the **standard / normal-form** fibre ring
+`sweepFibreRing k d r hp hq` (the fibre over `E_r`, NOT the arbitrary-`B` fibre), and a maximal
+ideal `m` of the component ring `A := sweepFibreRing … ⧸ I` at which `A` is smooth (a smooth closed
+point of that standard top-dimensional fibre component), the local Kähler module `Ω[A_m⁄k]` is
+**free** of finrank `n`, with
 
 > `n + codimRepCanonical (fibre d B) = Nat.card (RepCoord d)`,
 
 i.e. `rank(Ω) = ambient − codim` — the free rank pinned to the **proved** fibre codimension
 `codimRepCanonical (fibre d B) = C + δ` (`C = cCodim d r`, `δ = r·(d_N + d_0 − r)`,
-`FibreCodimFinal`). This is the standard-smooth local model the future RLCT bridge consumes.
+`FibreCodimFinal`). The arbitrary rank-`r` target `B` (with `hB : B.rank = r`) enters ONLY through
+this codimension `codimRepCanonical (fibre d B)`, via same-rank codimension invariance — the local
+ring `A_m` and the Kähler module `Ω` live on the STANDARD fibre component `A = sweepFibreRing … ⧸ I`,
+not on a point transported to the arbitrary-`B` fibre. This is the standard-smooth local model the
+future RLCT bridge consumes.
 
 ⚠ The free rank is the **relative dimension** `ambient − codim` (the dimension of the component),
 **not** `codim` itself — the module free of rank `= codim` is the conormal `I/I²`, a different

@@ -6,12 +6,14 @@ expedition: 2026-06-27-fibration-geometry
 
 # The DLN fibre family over the rank-`r` open
 
-This expedition hardens the geometry of the deep-linear-network (DLN) multiplication fibre into a
-flat, locally-trivial family — to the precise extent that is genuinely proved, with every gap named.
-The headline: over the locus where the universal product matrix has rank exactly `r`, the reduced
-fibre family is **locally (per chart) a product over its base direction, and flat over that base** —
-together with a smooth-block certificate that supplies the first slab of the eventual RLCT bridge.
-All statements are formalised in Lean 4 + Mathlib, sorry-free and axiom-clean
+This expedition hardens the geometry of the deep-linear-network (DLN) multiplication fibre — to the
+precise extent genuinely proved, with every gap named. The headline: over the rank-exactly-`r` open of
+the **source/total** space `Σ̄^r`, each localized source chart is, **over its in-chart base direction
+`SchurLoc`, a product `SchurLoc ⊗ (fibre)` and flat over `SchurLoc`** (chartwise) — together with a
+smooth-block certificate that supplies the first slab of the eventual RLCT bridge. This is *not* (yet)
+a global flat, locally-trivial family: that the in-chart structure map is `mult`'s projection
+(source/base projection compatibility) and the global gluing are named open items. All statements are
+formalised in Lean 4 + Mathlib, sorry-free and axiom-clean
 (`[propext, Classical.choice, Quot.sound]`), and each carries its own honesty fences.
 
 ## The objects
@@ -19,13 +21,17 @@ All statements are formalised in Lean 4 + Mathlib, sorry-free and axiom-clean
 Fix a dimension vector `d : Fin (N+2) → ℕ` and a rank `r`. The relevant rings (all in
 `DLNFibre.Core`):
 
-- `sweepSigmaRing k d r` — the coordinate ring of the sweep/Σ̄^r model (the rank-`≤ r` closure in
-  the sweep coordinates); its prime spectrum is the **base** of the family.
-- `rankROpen d r ⊆ Spec(sweepSigmaRing k d r)` — *defined* as the complement of the common-vanishing
-  locus of the `r × r` pivot minors `chartDsigAt s t`.
-- `sweepFibreRing k d r hp hq` — the standard fibre coordinate ring.
-- `SchurLoc k (d 0) (d_N) r = Localization.Away (detSchurS …)` — the in-chart **Schur-direction**
-  coordinate ring (the base direction *within* a chart).
+- `sweepSigmaRing k d r` — the coordinate ring of the **source/total** space `Σ̄^r`, the rank-`≤ r`
+  locus in the source representation coordinates `RepCoord d`
+  (`= MvPolynomial (RepCoord d) k / I(sweepSigma)`, `sweepSigma = canonicalCoord '' productRankLocus`).
+  So `Spec(sweepSigmaRing)` is the **source/total**, *not* the base. (The genuine base is the target
+  rank-`r` matrices `Mat^{=r}`, presented in-chart by `SchurLoc`.)
+- `rankROpen d r ⊆ Spec(sweepSigmaRing k d r)` — the rank-exactly-`r` open of the **source/total**;
+  *defined* as the complement of the common-vanishing locus of the `r × r` pivot minors `chartDsigAt s t`.
+- `sweepFibreRing k d r hp hq` — the **fibre** coordinate ring.
+- `SchurLoc k (d 0) (d_N) r = Localization.Away (detSchurS …)` — the in-chart **base direction**: the
+  Schur/determinantal rank-chart ring presenting the target base. Each total chart `Away(chartDsigAt s t)`
+  is, as proved, the product `SchurLoc ⊗_k sweepFibreRing` (base-direction ⊗ fibre).
 
 ## 1. The rank-bridge keystone (S1)
 
@@ -55,8 +61,12 @@ conormal statement is roadmapped, not claimed.) Under the Kostant gate (and for 
 the certificate is **closed over the top-component input** — the `I, hI` inputs are discharged:
 `FibreSmoothBlockExists.exists_topComponent_smoothBlock_certificate` produces a top component via a
 generic engine (`topDimMinPrimes_nonempty`: a nontrivial Noetherian ring has a minimal prime realising
-the full Krull dimension). This is the smooth-locus *upper-bound* local
-model the future RLCT bridge consumes.
+the full Krull dimension). Two incidence caveats sit next to this claim: the component `I` and the
+local point live on the **standard/normal-form fibre ring** `sweepFibreRing` (the target `B` enters
+only through same-rank codimension invariance — *not* a smooth point transported to `fibre d B`); and
+the smooth closed point produced is *some* point of the dense smooth open, not a prescribed θ-generic
+point or a named chart incidence. This is the smooth-locus *upper-bound* local model the future RLCT
+bridge consumes.
 
 ## 3. The over-base local product, with flatness (S4, S4b, S5)
 
@@ -74,12 +84,16 @@ flatness non-vacuous rather than a tautology. From it the flatness falls out cha
 (`chartDsigAt_flat_over_schurLoc : Module.Flat SchurLoc (Away(chartDsigAt s t))`), by transporting the
 standard model's freeness across the over-base equivalence.
 
-The capstone (S5, `FibreBundleHeadline.reducedFibre_existsOverBaseProductChartAt_rankEq`) packages
-this for the reader:
+The capstone (S5, `FibreBundleHeadline`) packages this. The honest carrier is the structure-side
+`reducedFibre_rankROpenOverBaseLocalProduct`, whose per-pivot `OverBaseChartDatum` carries the
+geometric structure map `schurToDsigAt` as a *named field*. The reader-facing pointwise theorem
+`reducedFibre_existsOverBaseProductChartAt_rankEq` is stated over that **named geometric structure**
+(the pivot datum's `chartDsigAtSchurLocAlgebra`, i.e. `schurToDsigAt`) — not an unconstrained
+existential `φ`, which would carry no more content than S4's bare `≃ₐ[k]`:
 
-> every rank-`= r` prime `P` lies in a pivot chart carrying an honest structure map `φ` over which the
-> chart total ring is the product `SchurLoc ⊗_k sweepFibreRing` (a `SchurLoc`-algebra iso) **and** is
-> flat over `SchurLoc`.
+> every rank-`= r` prime `P` lies in a pivot chart whose total ring is, over the geometric structure
+> map `schurToDsigAt`, the product `SchurLoc ⊗_k sweepFibreRing` (a `SchurLoc`-algebra iso) **and** flat
+> over `SchurLoc`.
 
 ## What is proved, and what is not (the honest fences)
 
@@ -89,12 +103,13 @@ certificate with a hypothesis-free existence form.
 
 **Named open items (not claimed):**
 
-1. **The chart-base bridge** `SchurLoc ≅ sweepSigmaRing` restricted to `basicOpen(chartDsigAt s t)`
-   (with structure-map compatibility). `SchurLoc` is the Schur-direction ring; the actual base
-   restriction `Away(chartDsigAt s t)` (a localization *of* `sweepSigmaRing`) is a different ring, and
-   the two are not yet identified. This bridge is the prerequisite for reading the chartwise
-   `SchurLoc`-flatness as flatness over the genuine base `rankROpen` — a real build, **ahead of** the
-   gluing cocycle.
+1. **Projection compatibility.** The flatness/triviality is over `SchurLoc` via the named structure map
+   `schurToDsigAt : SchurLoc → Away(chartDsigAt s t)`. `SchurLoc` is the in-chart base direction and
+   `Away(chartDsigAt s t)` is the **total** chart (already the product `SchurLoc ⊗ fibre`), so reading
+   "flat over `SchurLoc`" as the genuine **fibre-family flatness over the base** requires `schurToDsigAt`
+   to be the pullback of `mult`'s projection from the target/base rank-chart — which is **not yet
+   proved**. A real build, **ahead of** the gluing cocycle. (There is no "`SchurLoc ≅ Away(chartDsigAt)`"
+   bridge — that would equate the base direction with the whole total chart, losing the fibre.)
 2. **The global morphism (R1).** A single `Flat π` / fibre-bundle statement over all of `rankROpen`
    needs the target-side overlap-gluing cocycle (`targetOverlapTransition`) to assemble the per-chart
    data into one morphism. The present results are chartwise.
@@ -106,7 +121,7 @@ certificate with a hypothesis-free existence form.
 
 ## Why it matters
 
-The paper's *used* consequence of the local-triviality picture — the arbitrary-`B` component count —
+The paper's *used* consequence of the local-product picture — the arbitrary-`B` component count —
 is already proved independently (`FibreThetaCountArbitrary`), so this geometry is not load-bearing for
 that count; its value is the hardened, honest substrate for the RLCT direction. The smooth-block
 certificate is the first concrete deliverable of that runway. The remaining geometry to make the

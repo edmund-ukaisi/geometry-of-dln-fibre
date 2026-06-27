@@ -79,12 +79,16 @@ provable only where the def's local product-algebra instance is in scope).
 >   flat `SchurLoc`-module. The standard model `SchurLoc ⊗_k sweepFibreRing` is `SchurLoc`-free
 >   (`standardFibreModel_flat`); its flatness transports across the `SchurLoc`-LINEAR trivialization
 >   (`Module.Flat.of_linearEquiv`).
-> - **Proved.** Unconditionally. This is the S3 target's content — the family flat over the base —
->   delivered CHARTWISE (the rung `FibreFlatness` recorded as open pending this `SchurLoc`-linear
->   upgrade).
+> - **Proved.** Unconditionally, CHARTWISE: the chart total ring is flat over `SchurLoc` via the named
+>   structure map `schurToDsigAt`. This is **not** the S3 target `Flat π : mult⁻¹(rankROpen) → rankROpen`
+>   itself — `SchurLoc` is the in-chart base DIRECTION and `Spec(sweepSigmaRing)` is the source/total;
+>   reading this as genuine fibre-family flatness over the base needs projection compatibility (Deferred).
 > - **Assumed.** as above.
 > - **Cited.** none.
-> - **Deferred.** the global single-morphism `Flat π` (overlap cocycle R1) — as above.
+> - **Deferred.** (i) **projection compatibility** — that `schurToDsigAt` is the pullback of `mult`'s
+>   projection from the target/base rank-chart (the prerequisite for reading `SchurLoc`-flatness as
+>   genuine fibre-family flatness over the base); (ii) the global single-morphism `Flat π` (overlap
+>   cocycle R1).
 > - **Status.** sorry-free, axiom-clean.
 
 ---

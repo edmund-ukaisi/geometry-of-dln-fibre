@@ -201,3 +201,19 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   - **rev-s5-integration: pending** (S5 bedrock + cross-module consistency; build reconfirm slow after
     the foundational-dep invalidation — not gating the source audit).
   On rev-s5 clear → final "ready to mark PR ready + merge" to operator. Cron backstop stays armed.
+
+- **tick 14 (close review round 2 — OWNER review + rev-s5, 2026-06-27 ~21:30):** the operator posted a
+  deep PR-#12 review (8 inline + top note); rev-s5-integration returned PASS-WITH-NOTES. Two real issues
+  my fan-out missed, both owned + being actioned:
+  (a) **base/total reversal** — `Spec(sweepSigmaRing)` is the SOURCE/TOTAL `Σ̄^r`, not the base;
+  `Away(chartDsigAt)` is the total chart (already `≅ SchurLoc ⊗ fibre`). My "chart-base bridge
+  `SchurLoc ≅ sweepSigmaRing|chart`" was nonsensical; the real open item is **projection compatibility**
+  (`schurToDsigAt` = `mult`'s projection pullback).
+  (b) **S5 existential-type overclaim** — the pointwise headline's `∃ φ` type is satisfiable by a
+  degenerate pullback (no stronger than S4); honesty lived only in the proof witness. Fix = strengthen
+  the TYPE to name the geometric structure (`chartDsigAtSchurLocAlgebra`/`schurToDsigAt`).
+  **Actioned:** controller did all prose (exposition base/total + lead + S2 incidence caveat + projection
+  -compat open item + capstone prose; S4b card; S5 card; ROADMAP old-residual-landed + wall-language +
+  bridge) — uncommitted, held to match L5. Lean tide `rev-fix-lean` (a585262f) doing L1–L5 (4 module
+  docstrings + the S5 type-strengthening) — 4 files dirty, in flight. On its landing → green-gate +
+  commit prose+Lean together + push + reply to the 8 owner threads + resolve. Then ready-to-merge.
