@@ -31,23 +31,23 @@ open Matrix
 `Bmat k` (`= P_k K_k`), the chaining row `Qmat k` (`= Q_k`), and the residual block `Rmat k` (`= R̄_k`).
 The two per-level identities are the cert's: `hC` (`C_k = B_k · Q_k + u·R̄_k`) and `hQA` (`Q_k · A_k =
 C_{k+1}`); `base` is the terminal `C_n = u • R`. -/
-structure FactoredChain (n : ℕ) (u : ℝ) where
+structure FactoredChain (n : ℕ) {𝕜 : Type*} [CommRing 𝕜] (u : 𝕜) where
   /-- Ambient widths (`= M k`). -/
   Wwid : ℕ → ℕ
   /-- Compressed (kept-rank) widths. -/
   Twid : ℕ → ℕ
   /-- The layer matrices `A_k`. -/
-  A : (k : ℕ) → Matrix (Fin (Wwid k)) (Fin (Wwid (k + 1))) ℝ
+  A : (k : ℕ) → Matrix (Fin (Wwid k)) (Fin (Wwid (k + 1))) 𝕜
   /-- The compressed transitions `C_k`. -/
-  C : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) ℝ
+  C : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) 𝕜
   /-- The kept part `B_k = P_k K_k`. -/
-  Bmat : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Twid (k + 1))) ℝ
+  Bmat : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Twid (k + 1))) 𝕜
   /-- The chaining row `Q_k` (`Q_k A_k = C_{k+1}`). -/
-  Qmat : (k : ℕ) → Matrix (Fin (Twid (k + 1))) (Fin (Wwid k)) ℝ
+  Qmat : (k : ℕ) → Matrix (Fin (Twid (k + 1))) (Fin (Wwid k)) 𝕜
   /-- The residual block `R̄_k` (the `u`-carrying part of `C_k`). -/
-  Rmat : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) ℝ
+  Rmat : (k : ℕ) → Matrix (Fin (Twid k)) (Fin (Wwid k)) 𝕜
   /-- The terminal residual `R`. -/
-  R : Matrix (Fin (Twid n)) (Fin (Wwid n)) ℝ
+  R : Matrix (Fin (Twid n)) (Fin (Wwid n)) 𝕜
   /-- **The compressed-transition identity**: `C_k = B_k · Q_k + u • R̄_k`, for `k < n`. -/
   hC : ∀ k, k < n → C k = Bmat k * Qmat k + u • Rmat k
   /-- **The chaining identity**: `Q_k · A_k = C_{k+1}`, for `k < n`. -/
@@ -57,7 +57,7 @@ structure FactoredChain (n : ℕ) (u : ℝ) where
 
 namespace FactoredChain
 
-variable {n : ℕ} {u : ℝ}
+variable {n : ℕ} {𝕜 : Type*} [CommRing 𝕜] {u : 𝕜}
 
 /-- **The produced `Chain`.** `E_k := R̄_k · A_k`; `step` is `step_of_factor` (from `hC`, `hQA`, the
 `E_k` def); `base` is carried over. The telescope's `chain_telescope_zero` then fires. -/

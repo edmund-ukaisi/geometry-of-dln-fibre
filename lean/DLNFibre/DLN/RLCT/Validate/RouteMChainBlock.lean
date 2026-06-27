@@ -28,6 +28,8 @@ namespace DLNFibre.DLN.RLCT
 
 open Matrix
 
+variable {𝕜 : Type*} [CommRing 𝕜]
+
 /-- **The canonical width split** `Fin M ≃ Fin t ⊕ Fin (M − t)` (`t ≤ M`): kept directions first,
 residual second. The single equivalence reused at every block seam (the cast-at-the-equiv-level
 discipline; do NOT rebuild equivalent splits with fresh `by omega` proofs). -/
@@ -37,20 +39,20 @@ noncomputable def finSplit {t M : ℕ} (h : t ≤ M) : Fin M ≃ Fin t ⊕ Fin (
 /-- **The chaining row `Q_s = [I_t | N_s]`** on `Fin M'` columns. The horizontal block `[I | N]` (over
 `Fin t ⊕ Fin (M' − t)`) with the residual block `N : t × c` reindexed to the `Fin (M' − t)` residual
 slot (`c = M' − t`) and the whole row's columns reindexed onto `Fin M'`. -/
-noncomputable def chainQ {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ) :
-    Matrix (Fin t) (Fin M') ℝ :=
+noncomputable def chainQ {M' t c : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜) :
+    Matrix (Fin t) (Fin M') 𝕜 :=
   Matrix.reindex (Equiv.refl (Fin t)) (finSplit (M := M') (t := t) (by omega)).symm
     (Matrix.of (fun (i : Fin t) (j : Fin t ⊕ Fin (M' - t)) =>
-      Sum.elim ((1 : Matrix (Fin t) (Fin t) ℝ) i)
+      Sum.elim ((1 : Matrix (Fin t) (Fin t) 𝕜) i)
         (Matrix.reindex (Equiv.refl (Fin t)) (finCongr (by omega : c = M' - t)) N i) j))
 
 /-- **The lift column `A^(s) = [C_{s+1} − N_s W_{s+1} ; W_{s+1}]`** on `Fin M'` rows. The vertical block
 `[C − N·W ; W]` (over `Fin t ⊕ Fin (M' − t)`) with the residual lift `W : c × m'` reindexed to the
 `Fin (M' − t)` residual slot, and the whole column's rows reindexed onto `Fin M'`. The cert's
 unit-triangular chaining factor `G_s⁻¹ [C_{s+1} ; W_{s+1}]`. -/
-noncomputable def chainA {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
-    (W : Matrix (Fin c) (Fin m') ℝ) (C : Matrix (Fin t) (Fin m') ℝ) :
-    Matrix (Fin M') (Fin m') ℝ :=
+noncomputable def chainA {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
+    (W : Matrix (Fin c) (Fin m') 𝕜) (C : Matrix (Fin t) (Fin m') 𝕜) :
+    Matrix (Fin M') (Fin m') 𝕜 :=
   Matrix.reindex (finSplit (M := M') (t := t) (by omega)).symm (Equiv.refl (Fin m'))
     (Matrix.of (fun (i : Fin t ⊕ Fin (M' - t)) (j : Fin m') =>
       Sum.elim (C - N * W)
@@ -62,8 +64,8 @@ cancels under `submatrix_mul_equiv`, collapsing the product to the on-block `cha
 (`[I | N']·[C − N'·W' ; W'] = C` with `N' = N.submatrix id e.symm`, `W' = W.submatrix e.symm id`; the
 residual-block reindex `e = finCongr (c = M' − t)` distributes through `N'·W' = N·W`). The cert's
 `B/C`-chaining, closed M-agnostically. -/
-theorem chainQ_mul_chainA {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) ℝ)
-    (W : Matrix (Fin c) (Fin m') ℝ) (C : Matrix (Fin t) (Fin m') ℝ) :
+theorem chainQ_mul_chainA {M' t c m' : ℕ} (h : t + c = M') (N : Matrix (Fin t) (Fin c) 𝕜)
+    (W : Matrix (Fin c) (Fin m') 𝕜) (C : Matrix (Fin t) (Fin m') 𝕜) :
     chainQ h N * chainA h N W C = C := by
   unfold chainQ chainA
   simp only [Matrix.reindex_apply, Equiv.refl_symm, Equiv.symm_symm]
@@ -94,8 +96,8 @@ theorem finSplit_refl {t : ℕ} (j : Fin t) : finSplit (le_refl t) j = Sum.inl j
 /-- **`chainQ` at `c = 0` is the identity** `chainQ (h : t + 0 = t) (N : Fin t → Fin 0) = 1` — the
 identity boundary (no residual block; `Q = [I_t | ]`). The `finSplit`-reindex sends every column to the
 kept block (`finSplit_refl`), so the `Sum.elim` selects `1 i`. -/
-theorem chainQ_cZero {t : ℕ} (h : t + 0 = t) (N : Matrix (Fin t) (Fin 0) ℝ) :
-    chainQ h N = (1 : Matrix (Fin t) (Fin t) ℝ) := by
+theorem chainQ_cZero {t : ℕ} (h : t + 0 = t) (N : Matrix (Fin t) (Fin 0) 𝕜) :
+    chainQ h N = (1 : Matrix (Fin t) (Fin t) 𝕜) := by
   ext i j
   simp only [chainQ, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm,
     Equiv.refl_apply, Equiv.symm_symm]
