@@ -9584,6 +9584,54 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive all-edge pair source-staged target shear
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+xhigh review passed.
+
+Claim: define the all-edge staged successor source tangent family by `Fin.snoc`.
+For a nonterminal retained edge `q = p.castSucc`, the family value is the
+source tangent `v.F2_(p.succ)` transported along
+`Fin.succ_castSucc p : p.castSucc.succ = p.succ.castSucc`; for the terminal
+edge `q = Fin.last M`, the family value is zero.  With this family `Xsucc`,
+the normalized actual target edge-family pair
+
+```text
+U_F(q) = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+         - Xsucc(q) * coord.C q,
+U_C(q) = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc
+```
+
+equals the point-specialized formal `(F2,C)` output family.  Applying the
+already-proved formal edge-pair inverse recovers the full source `(F2,C)`
+family `(v.F2, v.C)`.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`retainedPassiveSourceStagedSuccessorF2`,
+`retainedPassiveSourceStagedSuccessorF2_castSucc`,
+`retainedPassiveSourceStagedSuccessorF2_last`,
+`F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_sourcePair`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+
+Kill condition: terminal zero is used only at `Fin.last M`; the edge before the
+terminal edge still uses the stored successor source tangent.  If this theorem
+is read as a target-side determinant-one equivalence, a determinant formula,
+or the full descending construction, it overclaims.
+
+Nonclaims: no descending induction, no target-side `LinearEquiv`, no
+determinant-one shear, no actual derivative determinant formula, no measure
+theorem, no normal crossings, pole order, or RLCT is proved by this all-edge
+package.
+
 ## A2 retained-passive nonterminal edge-pair staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

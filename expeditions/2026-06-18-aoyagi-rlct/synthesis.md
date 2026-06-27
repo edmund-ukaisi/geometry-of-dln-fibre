@@ -14096,3 +14096,64 @@ git diff --check
 The focused and full builds passed.  The sorry audit reported zero forbidden
 markers.  The new projection/source-staged theorems depend only on
 `[propext, Classical.choice, Quot.sound]`.
+
+## Latest A2 Retained-Passive All-Edge Pair Source-Staged Target Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now packages the terminal and
+nonterminal staged edge-pair results into a single all-edge family:
+
+```text
+retainedPassiveSourceStagedSuccessorF2
+retainedPassiveSourceStagedSuccessorF2_castSucc
+retainedPassiveSourceStagedSuccessorF2_last
+F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_sourcePair
+```
+
+The staged successor family is
+
+```text
+Xsucc = Fin.snoc
+  (fun p : Fin M =>
+    cast_{p.succ.castSucc = p.castSucc.succ}(v.F2_(p.succ)))
+  0.
+```
+
+For `q = p.castSucc`, this is the casted successor source tangent.  For
+`q = Fin.last M`, this is zero.  The all-edge normalized target family
+
+```text
+U_F(q) = Dzv.F2_q + rawEdgeTupleA1(Dzv)_q * coord.F2 q.castSucc
+         - Xsucc(q) * coord.C q,
+U_C(q) = Dzv.C_q  + rawEdgeTupleA3(Dzv)_q * coord.F2 q.castSucc
+```
+
+equals the point-specialized formal `(F2,C)` family, and the formal edge-pair
+inverse recovers `(v.F2, v.C)` from `(U_F,U_C)`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`
+passed by xhigh `Dewey`.
+
+Verification:
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the new all-edge theorems
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  The new all-edge theorems depend only on `[propext,
+Classical.choice, Quot.sound]`.
+
+This remains an edge-pair family packaging lemma.  It is not a target-side
+determinant-one equivalence, not an actual derivative determinant formula, not
+a descending induction, and not measure transport, normal crossings, pole
+order, or RLCT.

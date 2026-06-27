@@ -18,6 +18,30 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 all-edge source-staged edge-pair package
+
+After post-crash reorientation in the dedicated worktree, the next retained-
+passive Jacobian slice is the all-edge source-staged `(F2,C)` packaging lemma.
+Xhigh scout `Chandrasekhar` passed the statement shape before implementation.
+
+Reproduction:
+`reproduction-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+
+Lean now defines the staged successor family by `Fin.snoc`: nonterminal edges
+use the casted successor source tangent, and the terminal edge uses zero.  The
+proof splits an arbitrary retained edge by `Fin.lastCases`, reuses the
+terminal edge-pair package in the last case and the nonterminal source-staged
+package in the castSucc case, then applies the formal edge-pair inverse to
+recover `(v.F2, v.C)`.  Review:
+`review-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`
+passed by xhigh `Dewey`.
+
+Nonclaims remain active: no determinant equality, no determinant-one
+target-side `LinearEquiv`, no descending induction, no measure transport, no
+normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

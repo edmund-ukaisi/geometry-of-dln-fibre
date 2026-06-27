@@ -9948,6 +9948,32 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive all-edge pair source-staged target shear:
+`RetainedPassiveCoordinatesJacobian.lean` defines
+`retainedPassiveSourceStagedSuccessorF2` and proves
+`retainedPassiveSourceStagedSuccessorF2_castSucc`,
+`retainedPassiveSourceStagedSuccessorF2_last`,
+`F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+and
+`F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_sourcePair`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-all-edge-pair-source-staged-target-shear.md`
+passed by xhigh `Dewey`.
+
+The staged successor family uses the casted successor source tangent at
+nonterminal edges and zero only at the terminal edge.  The all-edge equality is
+proved by `Fin.lastCases`, using the terminal edge-pair package in the terminal
+case and the source-staged nonterminal package in the `castSucc` case.  The
+source-pair recovery rewrites to the formal edge-pair family and applies the
+formal edge-pair inverse.  This is not a target-side determinant-one
+equivalence, not an actual derivative determinant formula, not a descending
+construction, and not measure transport, normal crossings, pole order, or
+RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

@@ -1462,6 +1462,164 @@ theorem F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOr
     F2C_nonterminal_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C
       (ρ := ρ) (κ' := κ') hz v p Xsucc hXsucc
 
+set_option linter.style.longLine false in
+/-- The all-edge source-staged successor `F2` tangent family: nonterminal
+edges use the casted successor source tangent, while the terminal edge uses
+the retained-passive zero extension. -/
+def retainedPassiveSourceStagedSuccessorF2
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    ∀ q : Fin (M + 1), Matrix ρ (κ' q.succ) ℝ :=
+  @Fin.snoc (n := M)
+    (α := fun q : Fin (M + 1) ↦ Matrix ρ (κ' q.succ) ℝ)
+    (fun p : Fin M ↦
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm) (v.2.1 p.succ))
+    (0 : Matrix ρ (κ' (Fin.last M).succ) ℝ)
+
+set_option linter.style.longLine false in
+@[simp]
+theorem retainedPassiveSourceStagedSuccessorF2_castSucc
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v p.castSucc =
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm) (v.2.1 p.succ) := by
+  simp [retainedPassiveSourceStagedSuccessorF2]
+
+@[simp]
+theorem retainedPassiveSourceStagedSuccessorF2_last
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v (Fin.last M) = 0 := by
+  simp [retainedPassiveSourceStagedSuccessorF2]
+
+set_option linter.style.longLine false in
+/-- The all-edge source-staged actual target-side normalized `(F2,C)` family
+agrees with the point-specialized formal edge-pair family. -/
+theorem F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+    (fun q : Fin (M + 1) ↦
+        Dzv.2.1 q
+          + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+            coord.F2 q.castSucc
+          - Xsucc q * coord.C q,
+      fun q : Fin (M + 1) ↦
+        Dzv.2.2.2.1 q
+          + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+            coord.F2 q.castSucc) =
+      (((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1,
+        ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  apply Prod.ext
+  · funext q
+    induction q using Fin.lastCases with
+    | last =>
+        have hpair :=
+          F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') hz v
+        have hF :
+            Dzv.2.1 (Fin.last M)
+                + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv (Fin.last M) *
+                  coord.F2 (Fin.last M).castSucc =
+              ((retainedPassiveFormalRawOrderJacobianAt
+                (ρ := ρ) (κ' := κ') z) v).2.1 (Fin.last M) := by
+          simpa [raw, coord, Dzv] using congrArg Prod.fst hpair
+        change Dzv.2.1 (Fin.last M)
+              + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv (Fin.last M) *
+                coord.F2 (Fin.last M).castSucc
+              - Xsucc (Fin.last M) * coord.C (Fin.last M) =
+            ((retainedPassiveFormalRawOrderJacobianAt
+              (ρ := ρ) (κ' := κ') z) v).2.1 (Fin.last M)
+        rw [show Xsucc (Fin.last M) = 0 by simp [Xsucc]]
+        rw [Matrix.zero_mul, sub_zero]
+        exact hF
+    | cast p =>
+        have hpair :=
+          F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') hz v p
+        have hF := congrArg Prod.fst hpair
+        simpa [raw, coord, Dzv, Xsucc] using hF
+  · funext q
+    induction q using Fin.lastCases with
+    | last =>
+        have hpair :=
+          F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') hz v
+        have hC := congrArg Prod.snd hpair
+        simpa [raw, coord, Dzv, Xsucc] using hC
+    | cast p =>
+        have hpair :=
+          F2C_nonterminal_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') hz v p
+        have hC := congrArg Prod.snd hpair
+        simpa [raw, coord, Dzv, Xsucc] using hC
+
+set_option linter.style.longLine false in
+/-- The formal edge-pair inverse recovers the source `(F2,C)` family from the
+all-edge source-staged actual target-side normalized family. -/
+theorem F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_sourcePair
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+    (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+      (fun q : Fin (M + 1) ↦
+          Dzv.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+              coord.F2 q.castSucc
+            - Xsucc q * coord.C q,
+        fun q : Fin (M + 1) ↦
+          Dzv.2.2.2.1 q
+            + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+              coord.F2 q.castSucc) =
+      (v.2.1, v.2.2.2.1) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let Xsucc := retainedPassiveSourceStagedSuccessorF2 (ρ := ρ) (κ' := κ') v
+  have hpair :=
+    F2C_all_target_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v
+  have hrec :=
+    retainedPassiveFormalRawF2CLinearEquivAt_symm_recovers_sourcePair
+      (ρ := ρ) (κ' := κ') hz v
+  change (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+      (fun q : Fin (M + 1) ↦
+          Dzv.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+              coord.F2 q.castSucc
+            - Xsucc q * coord.C q,
+        fun q : Fin (M + 1) ↦
+          Dzv.2.2.2.1 q
+            + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q *
+              coord.F2 q.castSucc) =
+      (v.2.1, v.2.2.2.1)
+  rw [hpair]
+  simpa using hrec
+
 end Aoyagi
 end DLN
 end DLNFibre
