@@ -282,3 +282,86 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
   `exists_achieverUfun_ne_zero_interior` + `achieverUbound_interior` are S2-free
   `[propext, Classical.choice, Quot.sound]`. Full `lake build DLNFibre` green WITH the module temp-imported
   (8518 jobs, 0 name clashes); reverted the aggregator edit for the single-writer controller to wire.
+
+---
+
+## Boundary-class tide (CLEAN/SMEARED split + the smeared `cov` gating analysis)
+
+Branch `worktree-agent-a223be0c63e358844` (off `expedition/aoyagi-full`, merged in). The classifier is
+sorry-free + axiom-clean; the smeared `cov` analysis is the GATING finding handed back to the controller.
+
+---
+
+> **Claim (LANDED).** The BOUNDARY class (`¬InteriorDrop M`) of the ∀M achiever-chart 4-way splits into
+> CLEAN (`deepRank M = deepRows M`, i.e. `r = m1`) and SMEARED (`deepRank M < deepRows M`, `r < m1`),
+> EXCLUSIVE and — given the achiever-path bottleneck `r ≤ m1` — EXHAUSTIVE; the three classes INTERIOR /
+> CLEAN / SMEARED partition all `M`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.BoundaryClean`, `BoundarySmeared`, `deepRank`, `deepRows`,
+>   `not_boundaryClean_and_boundarySmeared`, `boundaryClean_or_boundarySmeared`,
+>   `boundary_of_clean_or_smeared`, `not_interiorDrop_and_boundaryClean`,
+>   `not_interiorDrop_and_boundarySmeared`, `interiorDrop_or_boundaryClean_or_boundarySmeared`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMBoundaryClass.lean` @ `8e25eea4`).
+> - **Gloss.** `deepRank M := Text M (tach M) L` (rank into the deepest factor along the achiever path);
+>   `deepRows M := Wext M (L−1) = M (L−1)`. `BoundaryClean M := ¬InteriorDrop M ∧ deepRank = deepRows`;
+>   `BoundarySmeared M := ¬InteriorDrop M ∧ deepRank < deepRows`. `InteriorDrop` is the LANDED
+>   `RouteMAchieverWitnessInterior` predicate (the interior 285/351 class).
+> - **Proved.** Exclusivity (CLEAN∧SMEARED impossible by `omega` on `=`/`<`; INTERIOR∧CLEAN,
+>   INTERIOR∧SMEARED by the `¬InteriorDrop` conjunct). Exhaustiveness over boundary + the total
+>   trichotomy, each GIVEN `hle : deepRank M ≤ deepRows M` (the bottleneck).
+> - **Assumed.** `r ≤ m1` (`deepRank ≤ deepRows`) carried as a hypothesis on the exhaustiveness lemmas —
+>   it is the validated front-bottleneck (`pp_smear_GATE.py` (U): 46/46 + 20/20 clean), but the widths are
+>   noncomputable argmin values, so it is supplied, not `decide`d.
+> - **Cited / Deferred.** none cited. The per-branch CHARTS are deferred (CLEAN radial = a ∀M lift of
+>   `RouteM4422`; SMEARED `φ_sm` = blocked on the `cov` decision below).
+> - **Decidability caveat (next to the claim).** `tStar` is `Classical.choose`, so `tach`/`Text M (tach
+>   M)`/`Wext` are NOT `decide`-reducible: the boundary predicates are genuine `Classical` Props; the
+>   instances are `Classical.propDecidable` (the assembly's `if … then … else` shape). The predicate
+>   FORMULAE are decidable given widths; the widths are noncomputable.
+> - **Status.** sorry-free; force-elaborated `#print axioms` (`lake env lean` scratch): all six results
+>   `[propext, Classical.choice, Quot.sound]`, no `sorryAx`. (`Classical.choice` from `propDecidable` +
+>   the noncomputable widths, expected — NOT a `sorry`.)
+
+---
+
+> **Gating finding (HANDBACK — the flagged uncertainty, the SMEARED `cov`).** The BOUNDARY-SMEARED
+> rational chart `φ_sm` does NOT discharge the EXISTING `NodeAchieverChart.cov` field via the banked
+> route; the existing `cov` is dischargeable only via a SPLIT requiring a new structural null-image
+> lemma OR a structure variant. **Controller decision needed before the SMEARED chart can be built.**
+>
+> - **The interface, precisely.** `NodeAchieverChart.cov` (`NodeAchieverChart.lean:95–98`) demands the
+>   raw lintegral c-o-v `∫⁻_{phi '' (V\{x p=0})} g = ∫⁻_{V\{x p=0}} ofReal(∏|u_j|^{leafH j})·g(phi u)`,
+>   removing ONLY the pivot-zero locus `{x p = 0}`. The banked polynomial charts (`phi4422_cov`,
+>   `phi334_cov`) discharge it via Mathlib `lintegral_image_eq_lintegral_abs_det_fderiv_mul`
+>   (`Mathlib/MeasureTheory/Function/Jacobian.lean:1189`), whose hypothesis is `HasFDerivWithinAt f (f'
+>   x) s x` for **ALL** `x ∈ s = V\{x p=0}` (NOT a.e.), `InjOn f s`, then rewrites `|det f'| = ∏|u_j|^h`.
+> - **Why it fails as-is.** `φ_sm`'s routing `Λ_0 = (P_1ᵀP_1)⁻¹P_1ᵀP_2` is RATIONAL — genuinely
+>   non-differentiable (undefined) on the pole `N0 := {det(P_1ᵀP_1) = 0}`, a Lebesgue-null algebraic
+>   hypersurface in the FRONT coords. `N0 ⊆ s` (it is NOT inside the removed `{z=0}`), so the all-x∈s
+>   differentiability hypothesis of the Mathlib lemma FAILS on `s`. There is NO a.e.-differentiable
+>   variant of `lintegral_image_eq_lintegral_abs_det_fderiv_mul` in Mathlib v4.29 (only the all-x∈s form).
+> - **S1.1 is the WRONG interface for this field.** `weightedThreshold_le_transport` /
+>   `weightedThreshold_transport_aux` (`S1Transport.lean`) DO allow differentiability off a null `E`
+>   (`hderiv : ∀ m ∈ Eᶜ, HasFDerivAt π …`), BUT they produce an equality/inequality of `weightedThreshold`
+>   (an RLCT sSup), NOT the raw lintegral identity `cov` requires. So "route the smeared `cov` through
+>   S1.1" (the cert's hope) does NOT type-check against the `cov` field — these are different objects.
+> - **Codex (xhigh, decorrelated; `codex/smeared-cov-gating-{prompt,answer}.md`).** Verdict: the EXISTING
+>   `cov` IS dischargeable, but via a SPLIT: apply the Mathlib lemma on `s \ N0` (where `φ_sm` is C¹/InjOn
+>   with `|det| = ∏|u_j|^{leafH j}`), then add back `s ∩ N0`. RHS over `s ∩ N0` vanishes (null set, no
+>   integrand finiteness needed). The LHS obstruction is `volume(φ_sm '' (s ∩ N0)) = 0` — NOT automatic
+>   for an arbitrary extension, NOT a Luzin-N consequence (φ_sm is non-Lipschitz on N0). It closes ONLY
+>   if the extension keeps the FRONT block = identity on N0, so `φ_sm '' (s∩N0) ⊆ {target front Gram det
+>   = 0}`, a TARGET algebraic null set — a structural containment, provable, but a new lemma. Box-
+>   divergence survives deleting N0 (a null set never changes an `ℝ≥0∞` lintegral already `= ⊤`).
+> - **The decision (ranked, for the controller).** (a) **Cheapest sound:** prove `cov` for `φ_sm` by the
+>   split — c-o-v on `s\N0` + the structural front-identity image-null `volume(φ_sm''(s∩N0))=0 ⊆
+>   {target Gram det = 0}`. New work: ~1 structural-null lemma + the careful N0-extension; fits the
+>   EXISTING field/structure (no new bundle). (b) Add a `cov'` field/structure variant removing an EXTRA
+>   null set `{x p=0} ∪ N0` + a matching M-agnostic assembly (the box-divergence LOWER bound is monotone,
+>   so removing more null mass is harmless) — more invasive, touches `NodeAchieverChart` +
+>   `routeMCore_box_diverges_of_nodeChart`. **Recommendation: (a).** Both are sound; neither is "as-is".
+> - **Bottom line.** GAP: the SMEARED `cov` needs the split-route null-image lemma (option (a)) — a
+>   bounded but genuinely-new piece, NOT a banked citation and NOT the S1.1 transport the cert named. The
+>   rate (`F=z²U`), `U≢0` (polynomial), det (`|z|^{minAdm−1}`), threshold (`½·minAdm`) are all validated
+>   46/46 (`pp_smear_GATE.py`) and unblocked; only the `cov` rung is gated on this decision.
+> - **Status.** analysis only (no Lean built for the smeared chart, by the GATING-CHECK-FIRST discipline).
