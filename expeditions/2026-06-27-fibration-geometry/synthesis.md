@@ -121,3 +121,28 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
     self-cleared. **Spine: S1✓ S2✓(+S2c closed) S4✓(partial); S3 partial; S4b = the keystone in flight.**
   - Note for the eventual GLOBAL single-morphism `Flat π`/`FiberBundle` over all `rankROpen`: still needs
     R1 (`targetOverlapTransition`) on top of S4b's chartwise result. S4b gives the chartwise/local content.
+
+- **tick 7 (backstop, 2026-06-27 ~16:40):** drift-glance only. S4b tide (`a1213bc3`) at `a2a0b8bb` (has
+  all landed work), 0 dirty / no own commits / no ping — still working (deepest rung; expect a longer
+  run). No operator edit. Nothing actionable; re-sleep. Owed when S4b lands: batched hardener pass over
+  the bundle story (S3+S4+S4b+S2c).
+
+- **tick 8 (backstop, 2026-06-27 ~17:30):** S4b (`a1213bc3`) actively building — new
+  `FibreOverBaseTriv.lean` + **modifying banked `FibreBundleReduced.lean`** (likely exposing the
+  `SchurLoc`-algebra structure). No commit/ping yet. ⚠ Flag: it edits a BANKED module (not just a new
+  one) — **review that diff carefully at merge** (single-writer is safe since S4b is the only active
+  tide, but a banked-code change needs extra scrutiny + a full green-gate). Nothing to integrate yet;
+  re-sleep.
+
+- **tick 9 (S4b landed — THE keystone, 2026-06-27 ~18:10):** S4b (`FibreOverBaseTriv.lean`, +333) + an
+  ADDITIVE generator lemma in banked `FibreBundleReduced.lean` (+72, no deletions — verified safe).
+  Precision-check: **PASS, excellent.** Non-circularity is the key: `SchurLoc` acts on the chart total
+  ring via the **independently-banked connecting map `schurToDsig`** (the honest base→total structure
+  map), and the trivialization is *proved* to respect it — NOT defined by pullback (which would be
+  vacuous). Crux reduces to the generator lemma. Delivered: `chartDsigAt_schurLocTensorEquiv` (genuine
+  `≃ₐ[SchurLoc]` over-base triv — completes S4) + `chartDsigAt_flat_over_schurLoc` (genuine fibre-family
+  flatness over the base, chartwise — the S3 payoff). Scope honest: chartwise; global single-morphism =
+  R1 (roadmap). Integrated (green-gate in flight — bigger rebuild, FibreBundleReduced is foundational).
+  **Spine core essentially complete:** S1✓ S2✓(+S2c hypothesis-free) S3✓(chartwise via S4b) S4✓+S4b✓.
+  Remaining: **S5** (reusable API, unblocked) + the **batched hardener pass** (thread 08) over
+  S2c/S3/S4/S4b. Roadmap: R1 (global morphism), S2b (conormal), S1 example, singular split (R2).
