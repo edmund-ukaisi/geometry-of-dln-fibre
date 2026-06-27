@@ -673,3 +673,23 @@ usable VERDICT when the prompt is a sharp decidable question with named options 
 pick one, give the construction") — and drifts when asked to "analyze the architecture / figure out the ordering."
 Mitigation (already applied to the next decoder-fix consult): frame strategic consults as "give a verdict on
 THESE options, do NOT analyze the repo." Worth a one-line addendum to `docs/policies/codex-consultation.md`.
+
+## 36. ∀M nodeChartGeneral scope recalibration + a worktree-base infra bug (2026-06-27).
+(a) SCOPE (operator awareness, NOT a blocker): decorrelated convergence (genm-lift + xhigh Codex + 15 thread
+updates) puts the full ∀M `nodeChartGeneral` at ~4 more tides — (1) the parametric `B_det M` design cert
+[decoder-fix, in flight], (2) `B_det M`+rate+`Ubound` (~1 build tide), (3) the bridge funext `chartParamsGen =
+pack_M∘T_M` over opaque widths (multi-tide), (4) `cov`+assemble (multi-tide). The (2,2,1)/(2,2,2)/(3,3,4)/(3,3,3,3)
+anchors are all DISCHARGED + the route-(i) template validated at 2+3 boundaries + the rate ∀M banked, so this is
+the width-parametric generalization, not new math. Beyond the R1-lower atom: the R1-UPPER leg, the L2 general-L
+interior, D1, the headline remain. The controller is charging this autonomously per the operator's standing (A)
+mandate (multi-tide-is-fine, charge the general, anchors are templates) — surfaced here for awareness, not a
+decision request. If the operator wants to bank the 4 concrete anchors as an interim deliverable / re-prioritize,
+that's the lever.
+(b) INFRA BUG: spawning a formaliser with `isolation: worktree` bases the worktree off the DEFAULT branch's
+merge-base (`413566b3`, dev) — NOT `expedition/aoyagi-full` — so the worktree LACKS the aoyagi work
+(RouteM3333Det/RouteMAchieverPath absent). genm-lift hit this (worked against the shared checkout instead;
+`git reset --hard` to rebase was correctly denied by the safety classifier). The prior two worktree agents
+(option-c-chart/nodechart222-finish) succeeded only because they `git merge origin/expedition/aoyagi-full` into
+their worktree. FIX for future build tides: instruct the agent to `git merge origin/expedition/aoyagi-full` as
+step 0 (now baked into spawn prompts), OR set `worktree.baseRef = head` in settings so worktrees branch from the
+current HEAD (which is on expedition/aoyagi-full). Operator may prefer the settings fix.
