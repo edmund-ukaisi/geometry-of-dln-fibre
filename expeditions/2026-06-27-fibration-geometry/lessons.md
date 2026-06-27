@@ -32,3 +32,17 @@ name = content) is unchanged — ambition is in the *target*, rigour in the *gat
 - The RLCT runway's true wall is the **singular-locus lower bound** (`rlct ≥ codim/2` everywhere), not
   the smooth locus (which gives only the upper bound). This expedition builds the upper-bound slab and
   roadmaps the lower bound — it cannot close `rlct = codim/2` and must not be named as if it did.
+
+## L2 — Tide commit-hygiene + cross-base integration (wave 1, 2026-06-27)
+
+- **Tides must commit + green-gate BEFORE reporting "ready to merge".** S1 reported done but left its
+  module + artefacts UNCOMMITTED on its worktree disk (branch still at the base SHA). Recoverable
+  (controller integrated from disk), but it loses the provenance SHA and risks loss. Spawn prompts now
+  say "commit to your own branch and green-gate every commit." **How to apply:** when a tide reports,
+  `git ls-tree`/`status` its worktree before assuming a commit exists; integrate from disk if needed.
+- **Cross-base rule.** Isolation worktrees branch from `origin/dev`, which LACKS the controller's
+  just-landed expedition commits. A tide that must build on a prior rung needs
+  `git merge expedition/fibration-geometry --no-edit` as its first step (the branch is a local ref in
+  the shared repo). Bake this into every spawn prompt for a rung that depends on an earlier one.
+- **Integration is uniform via worktree-disk copy** (works whether the tide committed or not) + wire the
+  aggregator import myself (single-writer) + full `scripts/lb DLNFibre` green-gate before committing.
