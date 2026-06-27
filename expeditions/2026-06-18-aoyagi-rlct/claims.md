@@ -9140,3 +9140,38 @@ Nonclaims: no continuity of the retained-passive derivative family, no closed
 determinant formula, no inverse-density formula, no measure pushforward, no
 source-density identity, no normal crossings, no pole order, and no RLCT is
 proved.
+
+Latest A2 retained-passive raw-order weighted change of variables:
+Lean now adds `RetainedPassiveCoordinatesMeasure.lean` and imports it from
+`DLNFibre.lean`.  It proves
+`nullMeasurableSet_topologyTupleDetChartSet`,
+`map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det`,
+`map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart`,
+and the corresponding apostrophe convenience wrappers discharging the
+null-measurability hypothesis from the Borel/open-chart fact.
+
+Status: Proved; reviewed.
+
+Claim: for any additive Haar measure on the retained-passive raw tuple space,
+the raw-order chart map pushes the source measure restricted to the tuple
+determinant chart and weighted by
+`ENNReal.ofReal (topologyTupleEdgeRawOrderFDerivAbsDet z)` to the additive
+Haar measure restricted to the image, equivalently to the raw-order
+source-recursive determinant chart.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-weighted-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-weighted-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-weighted-cov.md`
+accepted by xhigh `Aristotle the 4th`.
+
+Kill condition: this is only a forward weighted Jacobian change-of-variables
+identity.  It may not be used as an unweighted pushforward, inverse-density
+formula, source-prior density identity, or original DLN source-measure theorem
+without additional hypotheses/proofs.
+
+Nonclaims: no explicit determinant formula, no determinant-density continuity,
+no local bounded-density estimate, no inverse Jacobian density, no original DLN
+source pushforward, no normal crossings, no pole order, and no RLCT is proved.

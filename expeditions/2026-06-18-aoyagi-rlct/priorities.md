@@ -6228,3 +6228,21 @@ the existing differentiability, injectivity, and chart-domain facts.  Do not
 promote this supplied-continuity interface into an explicit determinant
 formula, inverse-density formula, measure pushforward, normal-crossing,
 pole-order, or RLCT theorem.
+
+A2 retained-passive raw-order weighted change of variables has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-weighted-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-weighted-cov.md`.
+Lean adds `RetainedPassiveCoordinatesMeasure.lean` and imports it from
+`DLNFibre.lean`.  The module applies Mathlib's Jacobian theorem to prove the
+forward weighted pushforward identity for `topologyTupleEdgeRawOrder` on the
+tuple determinant chart, with target rewritten to the raw-order
+source-recursive determinant chart.  Convenience wrappers discharge
+null-measurability from the open Borel chart.
+
+Next priority in this lane: do not add another forward weighted COV wrapper.
+Move to a real downstream step: determinant-density continuity/explicit
+determinant formula, chart-side inverse-density transport, or connection to a
+concrete retained-passive/local-source measure handoff.  Still do not assert
+inverse density, source-prior pushforward, normal crossing, pole order, or
+RLCT from the forward weighted identity alone.

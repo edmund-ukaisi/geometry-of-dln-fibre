@@ -13461,3 +13461,32 @@ derivative-family calculation, or build a retained-passive change-of-variables
 theorem from Mathlib's Jacobian API using the existing differentiability,
 injectivity, and chart-domain facts.  Do not use the pointwise determinant
 unit theorem alone as a local density-bound or pushforward theorem.
+
+Latest retained-passive raw-order weighted change of variables:
+`RetainedPassiveCoordinatesMeasure.lean` now applies Mathlib's proved
+finite-dimensional Jacobian theorem to `topologyTupleEdgeRawOrder` on
+`topologyTupleDetChartSet`.  Lean proves null-measurability of the tuple
+determinant chart, the image-target weighted pushforward, the named
+raw-source-chart target rewrite, and convenience wrappers discharging the
+null-measurability hypothesis:
+
+```text
+nullMeasurableSet_topologyTupleDetChartSet
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det'
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart'
+```
+
+Aristotle the 4th accepted the xhigh read-only review.  Full `DLNFibre` build,
+`scripts/sorries`, and `git diff --check` passed.  This is forward weighted
+measure transport only; it still does not provide an explicit determinant
+formula, determinant-density continuity, inverse density, source-prior density
+identity, original DLN source pushforward, normal crossing, pole order, or
+RLCT.
+
+Next target in this lane should not be another forward weighted wrapper.  The
+real remaining choices are: prove determinant-density continuity/explicit
+determinant formula, derive a chart-side inverse-density theorem, or connect
+this raw-order chart theorem to a concrete retained-passive/local-source
+measure handoff.

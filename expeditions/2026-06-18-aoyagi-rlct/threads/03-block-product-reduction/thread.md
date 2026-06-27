@@ -9449,3 +9449,39 @@ invertibility.  It still does not prove continuity of the retained-passive
 derivative family, an explicit determinant formula, inverse-density formula,
 measure pushforward, source-density identity, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-27 A2 retained-passive raw-order weighted change of variables
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-weighted-cov.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-weighted-cov.md`.
+Review:
+`review-a2-retained-passive-raw-order-weighted-cov.md`
+accepted by xhigh read-only explorer `Aristotle the 4th`.
+
+Lean files:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesMeasure.lean`,
+`lean/DLNFibre.lean`.
+
+Lean now proves the retained-passive raw-order weighted Jacobian
+change-of-variables theorem:
+
+```text
+nullMeasurableSet_topologyTupleDetChartSet
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det'
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart'
+```
+
+The proof applies Mathlib's finite-dimensional real Jacobian theorem to the
+endomap `topologyTupleEdgeRawOrder` on the tuple determinant chart.  The
+within-derivative input comes from the ambient differentiability theorem, and
+injectivity/image facts come from the retained-passive raw-order chart.
+
+This proves only the forward weighted pushforward identity with the
+source-side `|det Df|` weight.  It does not prove an explicit determinant
+formula, determinant-density continuity, local bounded-density estimate,
+inverse Jacobian density, source-prior density identity, original DLN source
+pushforward, normal crossings, pole order, or RLCT.

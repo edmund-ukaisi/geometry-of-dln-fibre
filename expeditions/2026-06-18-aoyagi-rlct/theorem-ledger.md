@@ -9976,6 +9976,33 @@ continuity of the retained-passive derivative family, a determinant formula,
 an inverse-density formula, a measure pushforward, a source-density identity,
 normal crossings, pole order, or RLCT.
 
+Latest A2 retained-passive raw-order weighted change of variables:
+`RetainedPassiveCoordinatesMeasure.lean` packages the retained-passive
+raw-order chart for Mathlib's Jacobian theorem.  Lean names:
+
+```text
+nullMeasurableSet_topologyTupleDetChartSet
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_withDensity_abs_det'
+map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart'
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-weighted-cov.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-weighted-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-raw-order-weighted-cov.md`
+accepted by xhigh `Aristotle the 4th`.
+
+This is the forward weighted COV identity for
+`topologyTupleEdgeRawOrder` on `topologyTupleDetChartSet`, with source-side
+weight `|det Df|` and target restricted to the image/named raw source chart.
+It does not prove determinant formula/continuity, inverse density, source-prior
+density identity, original DLN source pushforward, normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-26 A2 full-to-adjacent-window outside-factor transport
 
 Reproduction:
