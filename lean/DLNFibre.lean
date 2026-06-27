@@ -319,6 +319,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422
 -- built end-to-end through the GENERAL machinery, discharging the atom for a LAYERED node
 -- (rate `(u 0)²·U` + det `|u 0|^{minAdm−1}`, both via the general bricks the ∀M build reuses).
 import DLNFibre.DLN.RLCT.Validate.RouteM221
+-- `RouteM222Det`: ROUTE 2a on the (2,2,2) multi-boundary node — the RATE leg (det leg WIP).
+-- `B_det222` (fresh FULL-RANK GenBlk, leaf `Rfin 2 = !![1,x7] ≠ 0` — the D1 fix) at the GENUINE
+-- achiever path `tach222 = (2,1,0)` (chain-codim = minAdm = 3, distinct from StructAdm's rate-only
+-- (2,1,1)) + `routeMCore_phiDet222 = u²·V` via a ONE-LINE `routeMCore_phiGen` instantiation
+-- (NO bridge; two rank-drops telescope to one `u`). Confirms route 2a on a multi-boundary node.
+import DLNFibre.DLN.RLCT.Validate.RouteM222Det
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
