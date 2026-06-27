@@ -15,7 +15,7 @@ Module: `lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean`.
 > equal** to Aoyagi's analytic pole order `a(ℓ−a)+1 = 2·2+1 = 5`.
 >
 > - **Lean:** `DLNFibre.DLN.Aoyagi.numTop_d22222_ne_aoyagiPoleOrder`
->   (`lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean` @ `1d3293bb7bc474a0ef22d14d6138f7e018b546a2`)
+>   (`lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean` @ `4af0423dfc3f5cff2e384ba34d30ffff91a73e67`)
 >   - signature: `numTop d22222 0 kostantPartitions_d22222_nonempty ≠ aoyagiPoleOrder 4 2`,
 >     `d22222 : Fin 5 → ℕ := ![2,2,2,2,2]`, `aoyagiPoleOrder ell a := a*(ell-a)+1`.
 > - **Gloss.** The *live* Kostant-side component count `numTop` of the dimension vector
@@ -45,7 +45,7 @@ Module: `lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean`.
 > outside them the binomial is strictly larger.
 >
 > - **Lean:** `DLNFibre.DLN.Aoyagi.choose_eq_aoyagiPoleOrder_iff`
->   (`lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean` @ `1d3293bb7bc474a0ef22d14d6138f7e018b546a2`)
+>   (`lean/DLNFibre/DLN/Aoyagi/ThetaOrderDistinction.lean` @ `4af0423dfc3f5cff2e384ba34d30ffff91a73e67`)
 >   - signature: `(haell : a ≤ ell) : Nat.choose ell a = aoyagiPoleOrder ell a ↔ min a (ell - a) ≤ 1`.
 > - **Gloss.** `choose ℓ a = a(ℓ−a)+1` exactly when `a` or `ℓ−a` is `≤ 1`. The `⟸` direction is the
 >   four computational edge cases; the `⟹` direction is the contrapositive of the genuine content
