@@ -1121,7 +1121,8 @@ noncomputable def nodeChart222 : NodeAchieverChart M222 where
     obtain ⟨B, hB0, hBle⟩ := Uval222_le_on_box δ
     exact ⟨B, hB0, hBle, ae_restrict_of_ae Uval222_ae_pos⟩
   Umeas := continuous_Uval222.measurable
-  leaf_integrand := leaf_integrand222
+  -- the pointwise rate ⟹ the a.e. `leaf_integrand` field (free `of_forall` — `phi222` is polynomial)
+  leaf_integrand := fun c => Filter.Eventually.of_forall (leaf_integrand222 c)
   cov := phi222_cov
   image_subset := phi222_image_subset_cubeBox
 

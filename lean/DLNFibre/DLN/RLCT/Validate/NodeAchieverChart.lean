@@ -83,9 +83,13 @@ structure NodeAchieverChart (M : Fin (L + 1) → ℕ) where
         (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ))), 0 < Ufun u
   /-- `U` is measurable (a polynomial in the chart coordinates). -/
   Umeas : Measurable Ufun
-  /-- The leaf-integrand identity: `(∏_j |u_j|^{leafH j}) · |F ∘ phi|^{−c} = monomialIntegrand · U^{−c}`
-  (the genuine Jacobian × the loss power, on the chart orthant). The M-agnostic `leaf_integrand334`. -/
-  leaf_integrand : ∀ (c : ℝ) (u : Fin (routeMAmbient M) → ℝ),
+  /-- The leaf-integrand identity, holding **a.e.** (`∀ᵐ u ∂volume`): `(∏_j |u_j|^{leafH j}) ·
+  |F ∘ phi|^{−c} = monomialIntegrand · U^{−c}` (the genuine Jacobian × the loss power, on the chart
+  orthant). The box-divergence atom is intrinsically an a.e./lintegral property, so the a.e. form is the
+  faithful one: a POLYNOMIAL chart supplies it ∀u via `Filter.Eventually.of_forall`; a RATIONAL chart
+  (the smeared `φ_sm`) supplies it off its null pole, where the rate `F∘φ = u_p²·U` genuinely holds.
+  The M-agnostic `leaf_integrand334`. -/
+  leaf_integrand : ∀ (c : ℝ), ∀ᵐ u ∂(volume : Measure (Fin (routeMAmbient M) → ℝ)),
     (∏ j, |u j| ^ (leafH j)) * |routeMCore M (phi u)| ^ (-c)
       = monomialIntegrand (routeMAmbient M) (nodeLeafK (routeMAmbient M) p) leafH c u
         * (Ufun u) ^ (-c)
@@ -212,8 +216,11 @@ theorem routeMCore_box_diverges_of_nodeChart (M : Fin (L + 1) → ℕ) (W : Node
         (nodeLeaf_box_div M W (c' : ℝ) hc'0 hthr δ hδ).symm
     _ = ∫⁻ u in P, ENNReal.ofReal (∏ j, |u j| ^ (W.leafH j))
           * ENNReal.ofReal (|routeMCore M (W.phi u)| ^ (-(c' : ℝ))) := by
-        refine setLIntegral_congr_fun hPmeas (fun u _ => ?_)
-        rw [← ENNReal.ofReal_mul (by positivity), W.leaf_integrand]
+        -- the leaf-integrand identity now holds a.e. (off the chart's null pole); the box-divergence
+        -- integral is a.e.-insensitive, so the a.e. congruence suffices (`setLIntegral_congr_fun_ae`).
+        refine setLIntegral_congr_fun_ae hPmeas ?_
+        filter_upwards [W.leaf_integrand (c' : ℝ)] with u hu _
+        rw [← ENNReal.ofReal_mul (by positivity), hu]
     _ = ∫⁻ x in P \ {x | x W.p = 0}, ENNReal.ofReal (∏ j, |x j| ^ (W.leafH j))
           * ENNReal.ofReal (|routeMCore M (W.phi x)| ^ (-(c' : ℝ))) :=
         hdiffnull.symm

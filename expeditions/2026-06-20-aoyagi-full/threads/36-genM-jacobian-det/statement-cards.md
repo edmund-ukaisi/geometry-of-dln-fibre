@@ -413,3 +413,49 @@ a wall EARLIER than the `cov` split — handed back for a structure decision.
 >   `leaf_integrand` + rate/det (validated 46/46) discharge the atom for smeared M.
 > - **Status.** the wall WITNESS is sorry-free + axiom-clean; the chart INSTANCE is NOT built (blocked on
 >   the (i) structure change). NOT in DLNFibre.lean (single-writer; controller wires + decides on (i)).
+
+---
+
+## a.e. `leaf_integrand` core LANDED (option (i)) + smeared `(1,2,1)` on it
+
+Branch `worktree-agent-a223be0c63e358844` @ `50bf346b`. Controller approved option (i) (a.e.
+`leaf_integrand` + a.e. assembly rewrite). The wall is RESOLVED — the box-divergence atom is
+intrinsically an a.e./lintegral property, so the a.e. field is the faithful form.
+
+---
+
+> **The a.e. `NodeAchieverChart.leaf_integrand` core (the faithful generalization).** The field
+> `leaf_integrand : ∀ c, ∀ᵐ u ∂volume, …` (was `∀ c u, …`); the assembly
+> `routeMCore_box_diverges_of_nodeChart` swaps its pointwise `setLIntegral_congr_fun` →
+> `setLIntegral_congr_fun_ae` (filter_upwards on the a.e. field). A RATIONAL chart supplies it off its
+> null pole; a polynomial chart supplies it ∀u via `Filter.Eventually.of_forall`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.NodeAchieverChart.leaf_integrand` (field type) +
+>   `routeMCore_box_diverges_of_nodeChart` (assembly), `NodeAchieverChart.lean` @ `50bf346b`.
+> - **Strict generalization (bedrock guards, all PASS).** All 4 existing instances (221/222/4422/3333)
+>   updated to `leaf_integrand := fun c => Filter.Eventually.of_forall (leaf_integrand_XXX c)` (free —
+>   their charts are polynomial). The (3,3,4) `L2AchieverChart` is a SEPARATE structure, untouched.
+>   Full `lake build DLNFibre` green (8519 jobs); force-elaborated `#print axioms` on
+>   `routeMCore_box_diverges_achiever_222` + `routeM4422_box_diverges`: STILL `[propext,
+>   Classical.choice, Quot.sound, monomial_rlct]` — no new axioms, no `sorryAx`.
+> - **Status.** LANDED, sorry-free, axiom-preserving. The honest, more-faithful form.
+
+---
+
+> **Smeared `(1,2,1)` on the a.e. core — rate + a.e. leaf_integrand + det-1 LANDED.** The validate-small
+> for the rational `φ_sm`, sorry-free + axiom-clean `[propext, Classical.choice, Quot.sound]`.
+>
+> - **Lean (`RouteM121Smeared.lean` @ `50bf346b`):** `phi121sm`, `routeMCore_phi121sm_offpole`
+>   (`F∘φ = z²·a²` off `{a=0}`), `leaf_integrand121_ae` (THE a.e. field, discharged off the null pole),
+>   `Uval121 = a²`, `leafH121 ≡ 0`/`leafH121_pivot`, `chartParams121_eq_pack_shear` (shear factorization),
+>   `shear121_injOn` (off-pole), `pole121_null`, `shear121DerivMat_det = 1` (the Jacobian det via a
+>   transvection chain — `det_updateRow_add_smul_self`, the row-2 shear det-preserving).
+> - **Residual (the `cov`-split assembly — bounded, standard analysis, NOT a wall):**
+>   `shear121_hasFDerivAt` off-pole (the rational comp-2 `z−(b/a)sb` is C¹ for `a≠0`; fderiv =
+>   `shear121DerivMat u`) → `phi121sm_abs_det = 1`; `phi121sm_cov` via the `phi334_cov` two-slice split
+>   (c-o-v on `s\N0` + the FRONT-identity image-null `φ_sm''(s∩N0) ⊆ {a-coord=0}`, target null — NOT
+>   Luzin-N); then the `NodeAchieverChart M121` instance (a.e. `leaf_integrand := leaf_integrand121_ae`)
+>   + `routeMCore_box_diverges_of_nodeChart` discharges the atom for `(1,2,1)`.
+> - **Status.** the conceptually-hard pieces (the a.e. leaf_integrand off the pole + the det-1) LANDED;
+>   the `cov`-split `HasFDerivAt`/image-null/assembly is the bounded remaining engineering (a next pass,
+>   no design wall). NOT in DLNFibre.lean (single-writer; controller wires).

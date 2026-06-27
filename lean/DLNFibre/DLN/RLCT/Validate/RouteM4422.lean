@@ -731,7 +731,8 @@ noncomputable def nodeChart4422 : NodeAchieverChart M4422 where
     -- `0 < Uval4422` a.e. on the box (the global a.e.-positivity, restricted)
     exact ae_restrict_of_ae Uval4422_ae_pos
   Umeas := continuous_Uval4422.measurable
-  leaf_integrand := leaf_integrand4422
+  -- the pointwise rate ⟹ the a.e. `leaf_integrand` field (free `of_forall` — `phi4422` is polynomial)
+  leaf_integrand := fun c => Filter.Eventually.of_forall (leaf_integrand4422 c)
   cov := phi4422_cov
   image_subset := phi4422_image_subset_cubeBox
 
