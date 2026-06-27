@@ -261,6 +261,7 @@ theorem Hmat_zero_map {𝕜' : Type*} [CommRing 𝕜'] (c : Chain n u) (f : 𝕜
   unfold Hmat
   exact HmatAux_map c f (n - 0) 0 (by omega)
 
+
 /-! ## The keystone telescoping -/
 
 /-- **The chained-product telescope (keystone).** `C_s · suffix_s = u • Hmat_s` for every `s ≤ n`.

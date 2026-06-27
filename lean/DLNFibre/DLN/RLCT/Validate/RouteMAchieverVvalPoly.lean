@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
+import DLNFibre.DLN.RLCT.Validate.RouteMFlatStructV
 import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
 /-!
@@ -270,5 +271,28 @@ theorem genBlkFlatStruct_genBlkMap (ha : StructAdm M t) (x : Fin (routeMAmbient 
     intro k
     show (0 : Matrix _ _ _).map (MvPolynomial.eval x) = 0
     rw [Matrix.map_zero _ (map_zero _)]
+
+/-! ## The `Hmat 0` evaluation: ℝ chain `Hmat 0` = `eval x` of the polynomial chain's `Hmat 0` -/
+
+/-- **The polynomial pivot** = `Xvec` at the structured pivot axis; `eval x` sends it to `x p`. -/
+theorem eval_Xvec_pivot (hN : 0 < routeMAmbient M) (x : Fin (routeMAmbient M) → ℝ) :
+    MvPolynomial.eval x (Xvec (routeMAmbient M) (structPivot M hN)) = x (structPivot M hN) :=
+  eval_Xvec x _
+
+/-- **The ℝ chain's `Hmat 0` is `eval x` of the polynomial chain's `Hmat 0`.** Via the decoder
+`GenBlkMap` + `chainOfMt_map` (the mapped poly chain = the ℝ chain) + `Chain.Hmat_zero_map`. -/
+theorem Hmat0_eval (ha : StructAdm M t) (hN : 0 < routeMAmbient M) (x : Fin (routeMAmbient M) → ℝ)
+    (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
+    (chainOfMt (MvPolynomial.eval x (Xvec (routeMAmbient M) (structPivot M hN))) M t
+          (genBlkFlatStruct M t ha x) hle).toChain.Hmat 0 (Nat.zero_le L)
+      = ((chainOfMt (Xvec (routeMAmbient M) (structPivot M hN)) M t
+            (genBlkFlatStruct M t ha (Xvec (routeMAmbient M))) hle).toChain.Hmat 0
+          (Nat.zero_le L)).map (MvPolynomial.eval x) := by
+  -- `chainOfMt_map`: the mapped poly chain = the ℝ chain (at scalar `eval x (X p)`). `convert`
+  -- `Hmat_zero_map` (defeq widths), discharging the chain-identification side goal by `chainOfMt_map`.
+  convert Chain.Hmat_zero_map (chainOfMt (Xvec (routeMAmbient M) (structPivot M hN)) M t
+    (genBlkFlatStruct M t ha (Xvec (routeMAmbient M))) hle).toChain (MvPolynomial.eval x) using 2
+  exact (chainOfMt_map (genBlkFlatStruct_genBlkMap ha x)
+    (Xvec (routeMAmbient M) (structPivot M hN)) hle).symm
 
 end DLNFibre.DLN.RLCT
