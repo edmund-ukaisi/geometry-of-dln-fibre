@@ -80,3 +80,44 @@ Branch `worktree-agent-a3901f84e4049cbfa` (off `expedition/aoyagi-full`). All so
 >   USES them (`genBlkFlatStruct`) and the item-3 map equality are the next-tide build (see `thread.md`
 >   UPDATE-2).
 > - **Status.** sorry-free. The shared coordinate foundation for the item-3 unblock.
+
+---
+
+> **Claim.** The achiever-path box-divergence atom `routeMCore_box_diverges_achiever` holds for
+> `M = (2,2,1)` — the smallest genuinely-layered node, built end-to-end through the general
+> option-(C) machinery (the VALIDATE-SMALL checkpoint for the ∀M chart, decoder-fix +
+> achiever-path certificates). A `NodeAchieverChart M221` exists.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.nodeChart221`, `routeM221_box_diverges`,
+>   `routeMCore_box_diverges_achiever_221`, `routeM221_box_diverges_at_one`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteM221.lean` @ `198aea76`, branch
+>   `worktree-agent-ad2564eac0d265652` off `expedition/aoyagi-full`).
+> - **Gloss.** `M221 = ![2,2,1]`, `minAdm = 2`, `flatDim = 6`. Chart
+>   `phi221 = paramsEquivFlat ∘ pack221 ∘ pivotBlowupOn {0,1} 0`: `A1 = !![u₀; u₀·u₁]` (deepest factor,
+>   pivot `u₀` scaling the fixed-1 residual + 1 active `u₁`), `A0 = !![u2,u3;u4,u5]` (free spectators).
+>   - RATE field (`leaf_integrand`): `routeMCore M221 (phi221 u) = u₀²·U` exactly
+>     (`dlnLoss_chartParams221`, sympy-verified vs certificate §4b), `U > 0` a.e. via the
+>     genuine-polynomial null-zero-set route (`UPoly221 ≠ 0`, `MvPolynomial.ae_eval_ne_zero`).
+>   - DET field (`cov`): `|det Dφ| = |u₀|¹ = |u₀|^{minAdm−1}` via the chain rule
+>     `Q221CLM_abs_det` (`= 1`, measure-preserving pack) · `pb221_abs_det` (`= |u₀|^{card−1}`).
+>   - The pack `pack221` is measure-preserving via the BANKED
+>     `measurePreserving_paramsPack_of_flatIdxEquiv` with a GENUINE `fin6EquivFlatIdx221 :
+>     Fin 6 ≃ FlatIdx M221` (`left_inv`/`right_inv` by `decide` — NO dead slots, the D1 guard from
+>     the certificate). Binding axis `(k,h) = (1,1)`, threshold `1 = ½·minAdm`.
+> - **Proved.** The `NodeAchieverChart M221` bundle (all fields) and the atom discharge via the
+>   M-agnostic assembly `routeMCore_box_diverges_of_nodeChart`. Exercises BOTH chart obligations
+>   (rate + det) through the general option-(C) bricks — `pivotBlowupOn`, `pack` via the banked MP,
+>   the linear reshape `Q221CLM`, the genuine-polynomial `U > 0`. Unlike the prior anchors this rides
+>   the general machinery (the (4,4,2,2)/(3,3,4) anchors hand-built charts; this is the
+>   end-to-end-through-the-engine layered validate-small the brief commissioned).
+> - **Assumed.** none.
+> - **Cited.** `monomial_rlct` (S2, the leaf monomial RLCT atom), reached through
+>   `monomialIntegrand_lintegral_box_eq_top` — the SAME single citation the `routeM4422_box_diverges`
+>   anchor carries (identical force-elaborated `#print axioms` footprint).
+> - **Deferred.** the ∀M `nodeChartGeneral M (hpos)` — needs the opaque-width `e_M : Fin N ≃ FlatIdx M`
+>   placing the chosen-`T*` Aoyagi blocks (the dependent-width bijection, KC2), the per-`M` `pack`/`Q`,
+>   and the layer-op spectator factors for `L ≥ 3` split-codim nodes. This card is the (2,2,1)
+>   instance, the validate-small headline checkpoint — NOT the general atom.
+> - **Status.** sorry-free; force-elaborated `#print axioms` (olean deleted first):
+>   `nodeChart221` is S2-free `[propext, Classical.choice, Quot.sound]`; the divergence theorems carry
+>   only the cited `monomial_rlct`.
