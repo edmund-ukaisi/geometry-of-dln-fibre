@@ -9647,18 +9647,42 @@ and the recovery theorem
 The successor tangent is `v.1 u1`, not `v.1 q1`; `dPsucc1`, `Psucc1`, and
 the next recursive derivative remain explicit.
 
+For tail length `((M+1)+1)+1`, the remaining `NextNextfun` derivative is
+consumed once more using the successor-index `dEarly` theorem at
+
+```text
+t0 = 0 : Fin (M+1),
+s1 = t0.succ,
+q2 = s1.succ,
+u2 = s1.castSucc,
+p2 = q2.castSucc,
+r2 = q2.succ.
+```
+
+Lean proves
+`F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and the recovery theorem
+`F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+The second successor tangent is `v.1 u2`, not `v.1 q2`; `dPsucc`,
+`dPsucc1`, `dPsucc2`, `Psucc*`, and the next recursive derivative remain
+explicit.
+
 Reproduction, statement cards, and reviews:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
 `threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-dearly-substitution.md`,
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`,
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`,
 and
-`threads/03-block-product-reduction/review-a2-retained-passive-f3-two-positive-tail-next-succ-substitution.md`.
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
 
 Kill condition: if the two-positive theorem covers the one-positive-tail case,
-uses tangent `v.1 q1`, rewrites the first-level `dPsucc`, terminal-cleans
-`Psucc1`, commutes matrix factors, or distributes the outer
+the three-positive theorem covers shorter tails, either successor step uses
+the wrong tangent (`v.1 q1` or `v.1 q2`), rewrites `dPsucc*`, terminal-cleans
+`Psucc1`/`Psucc2`, commutes matrix factors, or distributes the outer
 `- dEarly * terminalSolvedA1`, it is not the intended slice.
 
 Nonclaims: no full positive-tail `F3` target staging, no closed finite-sum

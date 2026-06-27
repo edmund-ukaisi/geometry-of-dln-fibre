@@ -48,7 +48,57 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
-## Latest A2 Ctop Two-Positive-Tail Second A1 Target Staging
+## Latest A2 F3 Three-Positive-Tail Second Successor Substitution
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+This is the next recursive consumer after the two-positive-tail `F3`
+next-successor substitution.  It parameterizes the tail as `((M+1)+1)+1`,
+starts from the two-positive-tail theorem with `M := M+1`, and rewrites only
+the remaining `(fderiv NextNextfun z) v` by the successor-index `dEarly`
+theorem at the second successor source parameter.
+
+The second successor indexing is:
+
+```text
+t0 = 0 : Fin (M+1)
+s1 = t0.succ : Fin ((M+1)+1)
+q2 = s1.succ
+u2 = s1.castSucc
+p2 = q2.castSucc
+r2 = q2.succ
+```
+
+The successor tangent is `v.1 u2`, not `v.1 q2`.  The theorem leaves
+`dPsucc`, `dPsucc1`, `dPsucc2`, `Psucc*`, and the next recursive derivative
+explicit, and preserves the factor order
+`Cprod2 * A3p2 * Pcast2^-1 * (...) * Pcast2^-1`.  The recovery companion
+right-multiplies the same staged expression by
+`(-(coord.solvedA1 (Fin.last (((M+1)+1)+1))))^-1` and uses the formal
+raw-order `F3` recovery.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`,
+PASS by xhigh `Parfit the 2nd` and xhigh `Carson the 2nd`.  Focused Jacobian
+build passed, and the full `DLNFibre` build passed with only pre-existing
+style warnings.  `scripts/sorries` reported zero forbidden markers,
+`git diff --check` was clean, and both new theorem axiom audits reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not terminal cleanup, full recursive `dEarly` expansion, full
+positive-tail `F3` target staging, determinant equality, source-prior/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+## Previous A2 Ctop Two-Positive-Tail Second A1 Target Staging
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:
 

@@ -18,6 +18,58 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 F3 three-positive-tail next-next successor substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+Review:
+`review-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`,
+PASS by xhigh `Parfit the 2nd` and xhigh `Carson the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+This is the second recursive consumer of the remaining `NextNextfun` term in
+the positive-tail `F3` bridge.  It writes the tail length as
+`((M+1)+1)+1`, starts from the landed two-positive-tail theorem with
+`M := M+1`, and rewrites only the residual `(fderiv NextNextfun z) v` by
+instantiating the successor-index `dEarly` theorem at
+`s1 := (0 : Fin (M+1)).succ`.
+
+The third-step indices are
+
+```text
+t0 = 0 : Fin (M+1),
+s1 = t0.succ,
+q2 = s1.succ,
+u2 = s1.castSucc,
+p2 = q2.castSucc,
+r2 = q2.succ.
+```
+
+The successor tangent is `v.1 u2`, not `v.1 q2`.  The theorem leaves
+`dPsucc`, `dPsucc1`, `dPsucc2`, `Psucc*`, and the next recursive derivative
+explicit.  It does not recurse into `dNext2`, terminal-clean, or claim full
+positive-tail `F3` target staging.
+
+The recovery companion uses the same staged expression and the formal raw-order
+recovery theorem to prove that right-multiplication by
+`(-(coord.solvedA1 (Fin.last (((M+1)+1)+1))))^-1` recovers the source `F3`
+tangent.  It performs no additional recurrence expansion.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing style warnings.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and both
+theorem axiom audits reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-06-27 A2 Ctop two-positive-tail second A1 target staging
 
 Reproduction:

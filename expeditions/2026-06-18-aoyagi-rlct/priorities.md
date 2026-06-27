@@ -21,6 +21,55 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive three-positive-tail `F3` bridge now recurses one level
+deeper into the remaining `NextNextfun` derivative, substituting the second
+successor-index `dEarly` formula and adding the matching source-`F3` recovery
+companion.  New Lean names:
+
+```text
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_pos_pos_dEarly_zero_next_succ_next_succ_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The theorem writes the tail length as `((M+1)+1)+1`, starts from the landed
+two-positive-tail `F3` theorem with `M := M+1`, and rewrites only the remaining
+`(fderiv NextNextfun z) v` by the successor-index theorem with
+`s1 := (0 : Fin (M+1)).succ`.  The second successor indexing is
+
+```text
+t0 = 0 : Fin (M+1)
+s1 = t0.succ : Fin ((M+1)+1)
+q2 = s1.succ
+u2 = s1.castSucc
+p2 = q2.castSucc
+r2 = q2.succ.
+```
+
+The successor branch uses `Psucc2 z * v.1 u2`, not `v.1 q2`.  The theorem
+leaves `dPsucc`, `dPsucc1`, `dPsucc2`, `Psucc*`, and the next recursive
+derivative explicit, and preserves the factor order
+`Cprod2 * A3p2 * Pcast2^-1 * (...) * Pcast2^-1`.  The recovery companion uses
+the same staged expression and `retainedPassiveFormalRawOrderJacobianAt_recovers_F3`
+after right-multiplication by
+`(-(coord.solvedA1 (Fin.last (((M+1)+1)+1))))^-1`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed, and the full `DLNFibre` build passed with only pre-existing style
+warnings.  `scripts/sorries` reported zero forbidden markers,
+`git diff --check` was clean, and both new theorem axiom audits reported only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh pre-Lean indexing review and
+post-Lean fidelity review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+
+This does not claim terminal cleanup, full recursive `dEarly` expansion, full
+positive-tail `F3` target staging, determinant equality, measure transport,
+normal crossings, pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-three-positive-tail-nextnext-succ-substitution.md`.
+
+Previous controller decision:
+
 The retained-passive two-positive-tail first top-left `Ctop` bridge now
 recurses once into the remaining passive top-left suffix derivative and
 target-stages the second passive `A1` source tangent.  New Lean names:
