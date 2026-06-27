@@ -982,3 +982,17 @@ exercise BOTH through the same general object — or the unexercised obligation 
 green build. **Directed suspicion for the controller:** when integrating a general engine, ask "which anchor
 ran THIS specific obligation through THIS specific general definition?" — not "is there a green anchor nearby?"
 Caught at the bridge build, not at decoder-integration, because the decoder's det was never named as a target.
+
+## A validate-small can miss a structural obligation that only appears at higher complexity (2026-06-27, the split-codim rate)
+The (2,2,1) `NodeAchieverChart` validated the option-(C) chart end-to-end — but (2,2,1)'s achiever path is
+effectively SINGLE-boundary, so its pure-radial chart sufficed. The controller's brief then framed the
+multi-boundary layer-ops as "spectator handling" (a det-side detail). Decorrelated verification (sympy + 2× Codex)
+showed that is WRONG: on SPLIT-codim nodes (rank dropped at ≥2 boundaries, e.g. (3,3,3,3)'s unique T*=(2,1,0)),
+pure-radial FAILS the RATE itself — the surviving-frame×downstream term `[a;c]·β·S` is order-0 in `u`, so `F` isn't
+even `u`-divisible. The Schur/`b=aβ` coupling is LOAD-BEARING for the rate ∀M, not a spectator. **Lesson (extends
+the UPDATE-133 one):** "validate-small on a layered case" is not enough — pick the validate-small to exercise the
+specific GENERAL STRUCTURAL FEATURE the ∀M build relies on. (2,2,1) was "layered" but single-boundary; the general
+construction needs MULTI-boundary, which (2,2,1) silently didn't test. **Directed suspicion for the controller:**
+when commissioning a generalization, ask "what's the SIMPLEST case that exercises the hardest general feature?" —
+not "is there a green layered anchor?" The single-vs-multi-boundary distinction was invisible until the ∀M build
+probed it. (Benign here: caught by the rest-at-a-wall discipline + decorrelation before any wrong Lean was written.)
