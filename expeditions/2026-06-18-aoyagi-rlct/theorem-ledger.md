@@ -9982,6 +9982,36 @@ Nonclaims: no determinant formula, no determinant-density continuity or
 measurability, no source-prior density theorem, no original DLN source
 pushforward, no normal crossings, no pole order, and no RLCT.
 
+Latest A2 retained-passive composed weighted COV:
+`RetainedPassiveCoordinatesMeasure.lean` now proves downstream composition
+forms for the forward weighted and conditional inverse-density raw-order COV
+theorems, plus edge-family decoder specializations.  Lean names:
+
+```text
+map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+map_topologyTupleEdgeMatrix_withDensity_absDet_eq_map_edgeFamilyOfRawOrderTuple
+map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable
+map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac_of_aemeasurable
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-composed-weighted-cov.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-composed-weighted-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-composed-weighted-cov.md`
+accepted by xhigh `Harvey the 4th`.
+
+The generic theorems are `Measure.map` composition after the already-proved
+COV identities.  The edge-family theorems add only the raw-order decoder
+identity by `Measure.map_congr`.  Focused and full builds, `scripts/sorries`,
+and `git diff --check` passed.
+
+Nonclaims: no determinant formula, no determinant-density continuity or
+measurability, no source-prior density theorem, no original DLN source
+pushforward, no local-source coverage, no normal crossings, no pole order, and
+no RLCT.
+
 Latest A2 retained-passive raw-order Jacobian density interface:
 `RetainedPassiveCoordinatesDerivative.lean` now defines
 `topologyTupleEdgeRawOrderFDerivAbsDet` and proves positivity of the forward

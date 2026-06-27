@@ -9210,3 +9210,37 @@ a.e.-measurability hypotheses are separately proved or supplied.
 Nonclaims: no explicit determinant formula, no determinant-density continuity
 or measurability, no source-prior density identity, no original DLN source
 pushforward, no normal crossings, no pole order, and no RLCT is proved.
+
+Latest A2 retained-passive composed weighted COV:
+Lean now proves
+`map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart`,
+`map_topologyTupleEdgeMatrix_withDensity_absDet_eq_map_edgeFamilyOfRawOrderTuple`,
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable`,
+and
+`map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac_of_aemeasurable`
+in `RetainedPassiveCoordinatesMeasure.lean`.
+
+Status: Proved; reviewed.
+
+Claim: the retained-passive raw-order COV theorems can be composed with
+downstream a.e.-measurable maps, and in particular with the raw-order
+edge-family decoder, producing chart-coordinate edge-family measure identities.
+The inverse-density versions retain all explicit determinant-density
+measurability hypotheses.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-composed-weighted-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-composed-weighted-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-composed-weighted-cov.md`
+accepted by xhigh `Harvey the 4th`.
+
+Kill condition: these theorems are only measure-map composition.  Do not use
+them as local-source coverage, original source-prior transport, or unconditional
+inverse-density transport.
+
+Nonclaims: no determinant formula, no determinant-density continuity or
+measurability, no source-prior density theorem, no original DLN source
+pushforward, no local-source coverage, no normal crossings, no pole order, and
+no RLCT is proved.

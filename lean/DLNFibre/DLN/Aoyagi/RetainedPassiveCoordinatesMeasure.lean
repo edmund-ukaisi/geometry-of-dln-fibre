@@ -404,6 +404,355 @@ theorem
         Measure.map Φ (m.restrict S) := by
           rw [withDensity_one]
 
+set_option maxRecDepth 2048 in
+/-- The retained-passive weighted raw-order change-of-variables theorem
+composed with an arbitrary a.e.-measurable target map. -/
+theorem
+    map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+    {M : ℕ} {ρ β : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace β]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (ψ : TopologyTuple ρ κ' ℝ → β)
+    (hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m)
+    (hψ :
+      AEMeasurable ψ
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))) :
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ψ (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderFDerivAbsDet
+                (ρ := ρ) (κ' := κ') z))) =
+      Measure.map ψ
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))) := by
+  classical
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Φ : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let F : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+    fun z =>
+      ENNReal.ofReal
+        (topologyTupleEdgeRawOrderFDerivAbsDet
+          (ρ := ρ) (κ' := κ') z)
+  let μ : Measure (TopologyTuple ρ κ' ℝ) :=
+    (m.restrict S).withDensity F
+  have hΦ_contOn : ContinuousOn Φ S := by
+    rw [continuousOn_iff_continuous_restrict]
+    change Continuous
+      (fun z :
+          topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') =>
+        topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z.1)
+    exact continuous_topologyTupleEdgeRawOrder_detChart_subtype
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hΦ_restrict : AEMeasurable Φ (m.restrict S) :=
+    ContinuousOn.aemeasurable₀ hΦ_contOn (by simpa [S] using hs)
+  have hΦ_μ : AEMeasurable Φ μ := by
+    simpa [μ] using hΦ_restrict.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hcov :
+      Measure.map Φ μ = m.restrict T := by
+    simpa [Φ, F, μ, S, T] using
+      map_topologyTupleEdgeRawOrder_withDensity_absDet_eq_restrict_rawSourceChart
+        (ρ := ρ) (κ' := κ') m hs
+  have hψ_map : AEMeasurable ψ (Measure.map Φ μ) := by
+    rw [hcov]
+    simpa [T] using hψ
+  calc
+    Measure.map (fun z : TopologyTuple ρ κ' ℝ => ψ (Φ z)) μ =
+        Measure.map ψ (Measure.map Φ μ) := by
+          simpa [Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := μ) (g := ψ) (f := Φ) hψ_map hΦ_μ).symm
+    _ =
+        Measure.map ψ (m.restrict T) := by
+          rw [hcov]
+
+set_option maxRecDepth 2048 in
+/-- The retained-passive weighted raw-order change-of-variables theorem read
+through the raw-order edge-family decoder. -/
+theorem
+    map_topologyTupleEdgeMatrix_withDensity_absDet_eq_map_edgeFamilyOfRawOrderTuple
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace (EdgeFamilyTuple ρ κ' ℝ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m)
+    (hread :
+      AEMeasurable
+        (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))) :
+    Measure.map
+        (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ'))
+        ((m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderFDerivAbsDet
+                (ρ := ρ) (κ' := κ') z))) =
+      Measure.map
+        (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))) := by
+  let μ : Measure (TopologyTuple ρ κ' ℝ) :=
+    (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+      (fun z : TopologyTuple ρ κ' ℝ =>
+        ENNReal.ofReal
+          (topologyTupleEdgeRawOrderFDerivAbsDet
+            (ρ := ρ) (κ' := κ') z))
+  have hgeneric :
+      Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          μ =
+        Measure.map
+          (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+          (m.restrict
+            (topologyTupleRawOrderSourceRecursiveDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ'))) := by
+    simpa [μ] using
+      map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+        (ρ := ρ) (κ' := κ')
+        (β := EdgeFamilyTuple ρ κ' ℝ)
+        m (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')) hs hread
+  have hmap :
+      Measure.map
+          (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ')) μ =
+        Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          μ := by
+    refine Measure.map_congr ?_
+    filter_upwards with z
+    exact
+      (edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+        (K := ℝ) (ρ := ρ) (κ' := κ') z).symm
+  rw [hmap]
+  exact hgeneric
+
+set_option maxRecDepth 2048 in
+/-- The conditional inverse-density retained-passive raw-order change of
+variables theorem composed with an arbitrary downstream map. -/
+theorem
+    map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable
+    {M : ℕ} {ρ β : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace β]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (ψ : TopologyTuple ρ κ' ℝ → β)
+    (hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m)
+    (hF :
+      AEMeasurable
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderFDerivAbsDet
+              (ρ := ρ) (κ' := κ') z))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hG :
+      AEMeasurable
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ') y))
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hG_comp :
+      AEMeasurable
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hψ :
+      AEMeasurable ψ
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))) :
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ψ (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))) =
+      Measure.map ψ
+        ((m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+          (fun y : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderInverseJacobianDensity
+                (ρ := ρ) (κ' := κ') y))) := by
+  classical
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Φ : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let G : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+    fun y =>
+      ENNReal.ofReal
+        (topologyTupleEdgeRawOrderInverseJacobianDensity
+          (ρ := ρ) (κ' := κ') y)
+  have hΦ_contOn : ContinuousOn Φ S := by
+    rw [continuousOn_iff_continuous_restrict]
+    change Continuous
+      (fun z :
+          topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') =>
+        topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z.1)
+    exact continuous_topologyTupleEdgeRawOrder_detChart_subtype
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hΦ : AEMeasurable Φ (m.restrict S) :=
+    ContinuousOn.aemeasurable₀ hΦ_contOn (by simpa [S] using hs)
+  have hpush :
+      Measure.map Φ (m.restrict S) =
+        (m.restrict T).withDensity G := by
+    simpa [Φ, G, S, T] using
+      map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable
+        (ρ := ρ) (κ' := κ') m hs hF hG hG_comp
+  have hψ_T : AEMeasurable ψ (m.restrict T) := by
+    simpa [T] using hψ
+  have hψ_target : AEMeasurable ψ ((m.restrict T).withDensity G) :=
+    hψ_T.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hψ_map : AEMeasurable ψ (Measure.map Φ (m.restrict S)) := by
+    rw [hpush]
+    exact hψ_target
+  calc
+    Measure.map (fun z : TopologyTuple ρ κ' ℝ => ψ (Φ z)) (m.restrict S) =
+        Measure.map ψ (Measure.map Φ (m.restrict S)) := by
+          simpa [Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := m.restrict S) (g := ψ) (f := Φ)
+              hψ_map hΦ).symm
+    _ =
+        Measure.map ψ ((m.restrict T).withDensity G) := by
+          rw [hpush]
+
+set_option maxRecDepth 2048 in
+/-- The conditional inverse-density retained-passive raw-order change of
+variables theorem read through the raw-order edge-family decoder. -/
+theorem
+    map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac_of_aemeasurable
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace (EdgeFamilyTuple ρ κ' ℝ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m)
+    (hF :
+      AEMeasurable
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderFDerivAbsDet
+              (ρ := ρ) (κ' := κ') z))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hG :
+      AEMeasurable
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ') y))
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hG_comp :
+      AEMeasurable
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))))
+    (hread :
+      AEMeasurable
+        (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))) :
+    Measure.map
+        (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ'))
+        (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))) =
+      Measure.map
+        (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+        ((m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+          (fun y : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (topologyTupleEdgeRawOrderInverseJacobianDensity
+                (ρ := ρ) (κ' := κ') y))) := by
+  let μ : Measure (TopologyTuple ρ κ' ℝ) :=
+    m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+  have hgeneric :
+      Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          μ =
+        Measure.map
+          (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+          ((m.restrict
+            (topologyTupleRawOrderSourceRecursiveDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+            (fun y : TopologyTuple ρ κ' ℝ =>
+              ENNReal.ofReal
+                (topologyTupleEdgeRawOrderInverseJacobianDensity
+                  (ρ := ρ) (κ' := κ') y))) := by
+    simpa [μ] using
+      map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable
+        (ρ := ρ) (κ' := κ')
+        (β := EdgeFamilyTuple ρ κ' ℝ)
+        m (edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+        hs hF hG hG_comp hread
+  have hmap :
+      Measure.map
+          (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ')) μ =
+        Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          μ := by
+    refine Measure.map_congr ?_
+    filter_upwards with z
+    exact
+      (edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+        (K := ℝ) (ρ := ρ) (κ' := κ') z).symm
+  rw [hmap]
+  exact hgeneric
+
 end RetainedPassiveNonredundantCoordinateData
 end ChartLocalSuffixState
 end Aoyagi

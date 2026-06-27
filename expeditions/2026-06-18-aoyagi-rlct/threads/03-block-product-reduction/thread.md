@@ -9528,3 +9528,42 @@ conditional inverse-density COV form.  It does not prove determinant-density
 continuity or measurability, an explicit determinant formula, source-prior
 density identity, original DLN source pushforward, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-27 A2 retained-passive composed weighted COV
+
+Reproduction:
+`reproduction-a2-retained-passive-composed-weighted-cov.md`.
+Statement card:
+`statement-card-a2-retained-passive-composed-weighted-cov.md`.
+Review:
+`review-a2-retained-passive-composed-weighted-cov.md`
+accepted by xhigh read-only explorer `Harvey the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesMeasure.lean`.
+
+Lean now proves generic downstream composition forms:
+
+```text
+map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable
+```
+
+and edge-family readback specializations:
+
+```text
+map_topologyTupleEdgeMatrix_withDensity_absDet_eq_map_edgeFamilyOfRawOrderTuple
+map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac_of_aemeasurable
+```
+
+The forward form composes the weighted COV theorem with an arbitrary downstream
+a.e.-measurable map.  The inverse form composes the conditional inverse-density
+COV theorem and therefore retains the explicit `hF`, `hG`, and `hG_comp`
+measurability hypotheses.  The edge-family versions use only
+`Measure.map_congr` and the raw-order readback identity.
+
+Focused module build, full `DLNFibre` build, `scripts/sorries`, and
+`git diff --check` passed.  This is chart-coordinate measure-map composition
+only; it does not prove determinant-density measurability, source-prior
+transport, original DLN source pushforward, local-source coverage, normal
+crossings, pole order, or RLCT.

@@ -13513,3 +13513,29 @@ crossings, pole order, or RLCT.  Next value is either determinant-density
 continuity via an explicit derivative-family calculation, or a conditional
 composition/local-source bridge that keeps all realization and measurability
 hypotheses visible.
+
+Latest retained-passive composed COV bridge:
+`RetainedPassiveCoordinatesMeasure.lean` now proves generic downstream
+composition forms for both the forward weighted COV theorem and the conditional
+inverse-density COV theorem:
+
+```text
+map_comp_topologyTupleEdgeRawOrder_withDensity_absDet_eq_map_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac_of_aemeasurable
+```
+
+It also specializes both to the raw-order edge-family decoder, using
+`edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder`:
+
+```text
+map_topologyTupleEdgeMatrix_withDensity_absDet_eq_map_edgeFamilyOfRawOrderTuple
+map_topologyTupleEdgeMatrix_restrict_detChart_eq_map_edgeFamily_invJac_of_aemeasurable
+```
+
+Harvey the 4th accepted the xhigh review.  Focused
+`RetainedPassiveCoordinatesMeasure`, full `DLNFibre`, `scripts/sorries`, and
+`git diff --check` passed.  This is only measure-map composition and edge-family
+readback; determinant-density/inverse-density measurability remains explicit
+where needed, and there is still no source-prior density theorem, original DLN
+source pushforward, local-source coverage, normal crossings, pole order, or
+RLCT.

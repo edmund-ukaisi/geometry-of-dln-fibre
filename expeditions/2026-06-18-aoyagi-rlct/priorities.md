@@ -6267,3 +6267,18 @@ compose the conditional theorem into a retained-passive/local-source handoff
 while keeping the chart realization and a.e.-measurability assumptions explicit.
 Still no source-prior density theorem, original DLN source pushforward, normal
 crossing, pole order, or RLCT follows from this slice.
+
+A2 retained-passive composed COV bridge has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-composed-weighted-cov.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-composed-weighted-cov.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-composed-weighted-cov.md`.
+Lean proves downstream composition forms for the forward weighted COV and the
+conditional inverse-density COV, plus edge-family readback specializations.
+
+Next priority in this lane: use these only as chart-coordinate measure
+composition tools.  A real local-source handoff still needs an explicit target
+set/realization bridge into the retained-passive p.13 local source, and a real
+unconditional inverse-density pushforward still needs determinant-density
+measurability/continuity.  Do not treat the edge-family readback specialization
+as original source-prior transport.
