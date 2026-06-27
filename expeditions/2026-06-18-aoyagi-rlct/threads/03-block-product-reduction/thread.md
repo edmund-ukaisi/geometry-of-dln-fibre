@@ -10366,3 +10366,49 @@ This is terminal-edge only.  Nonterminal edges still require staged
 triangular bookkeeping; the theorem does not prove a global target-side shear,
 determinant equality, measure transport, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-27 A2 retained-passive terminal edge-pair target shear
+
+Reproduction:
+`reproduction-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Review:
+`review-a2-retained-passive-terminal-edge-pair-target-shear.md`, PASS by
+xhigh read-only scouts `Mendel` and `Ramanujan`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean
+```
+
+Lean now packages the terminal actual target-side normalized `(F2,C)` pair and
+recovers the source terminal edge pair from it.  New Lean names:
+
+```text
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C
+```
+
+For `p = Fin.last M` and `Dzv = d(topologyTupleEdgeRawOrder)_z(v)`, set
+
+```text
+U_F = Dzv.F2_p + rawEdgeTupleA1(Dzv)_p * coord.F2 p.castSucc,
+U_C = Dzv.C_p  + rawEdgeTupleA3(Dzv)_p * coord.F2 p.castSucc.
+```
+
+The first theorem proves `(U_F,U_C)` equals the corresponding formal raw-order
+output pair.  The next two theorems substitute this equality into the
+previously landed formal inverse formulas to recover `v.F2_p` and `v.C_p`.
+
+Endpoint guardrail: `p.castSucc` is the stored source-side `F2` slot in the
+target shear, while `p.succ` is the terminal zero slot in the formal inverse.
+For `M = 0`, `LastTop = coord.Ctop` remains separate from this edge-pair
+package.
+
+This is still terminal-edge only.  It does not prove the nonterminal staged
+target-side construction, a determinant-one target-side linear equivalence,
+actual derivative determinant equality, measure transport, normal crossings,
+pole order, or RLCT.

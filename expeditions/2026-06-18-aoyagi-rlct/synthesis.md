@@ -13988,3 +13988,41 @@ case and then handle nonterminal edges in a descending/triangular order.  The
 endpoint warning remains active: `Tail` controls the first `Ctop` factor, while
 `LastTop = coord.solvedA1 (Fin.last M)` controls terminal `F3`; for `M = 0`,
 `Tail = 1` but `LastTop = coord.Ctop`.
+
+## Latest A2 Retained-Passive Terminal Edge-Pair Target Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the first terminal
+edge-pair package after the terminal `F2` slice:
+
+```text
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2
+F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C
+```
+
+At `p = Fin.last M`, the normalized actual target pair
+
+```text
+U_F = Dzv.F2_p + rawEdgeTupleA1(Dzv)_p * coord.F2 p.castSucc,
+U_C = Dzv.C_p  + rawEdgeTupleA3(Dzv)_p * coord.F2 p.castSucc
+```
+
+equals the corresponding point-specialized formal raw-order `(F2,C)` output
+pair.  Substituting that equality into the existing formal inverse formulas
+recovers the source terminal `F2` and `C` tangents.  The endpoint distinction
+is important: the target normalization uses `coord.F2 p.castSucc`, while the
+formal inverse uses `coord.F2 p.succ`, which is the terminal zero slot only
+for `p = Fin.last M`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-terminal-edge-pair-target-shear.md`
+passed by xhigh `Mendel` and `Ramanujan`.
+
+This remains terminal-edge only.  It is not the nonterminal staged
+construction, not a global determinant-controlled target-side equivalence, not
+an actual derivative determinant formula, and not measure transport, normal
+crossings, pole order, or RLCT.

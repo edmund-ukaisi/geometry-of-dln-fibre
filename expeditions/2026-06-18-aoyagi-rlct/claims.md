@@ -9584,6 +9584,48 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive terminal edge-pair target shear
+
+Status: Proved in Lean; reproduced on paper; xhigh review passed.
+
+Claim: at the terminal retained-passive edge `p = Fin.last M`, the normalized
+actual target-side pair
+
+```text
+U_F = Dzv.F2_p + rawEdgeTupleA1(Dzv)_p * coord.F2 p.castSucc,
+U_C = Dzv.C_p  + rawEdgeTupleA3(Dzv)_p * coord.F2 p.castSucc
+```
+
+equals the corresponding point-specialized formal raw-order `(F2,C)` output
+pair.  Therefore the formal inverse formulas recover `v.F2_p` and `v.C_p`
+from `(U_F,U_C)`.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2`,
+and
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-terminal-edge-pair-target-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-terminal-edge-pair-target-shear.md`,
+accepted by xhigh `Mendel` and `Ramanujan`.
+
+Kill condition: this theorem is terminal-edge only.  Nonterminal edges still
+carry the successor-`F2` derivative term and need a descending/triangular
+construction.  The target shear uses `coord.F2 p.castSucc`, while the formal
+inverse uses `coord.F2 p.succ`; confusing these two slots breaks the endpoint
+calculation.
+
+Nonclaims: no nonterminal staged target-side shear, global determinant-one
+linear equivalence, actual derivative determinant equality, measure theorem,
+normal crossings, pole order, or RLCT is proved by this terminal package.
+
 ## A2 retained-passive edge-pair product equivalence
 
 Status: Proved in Lean; reproduced on paper; xhigh implementation review

@@ -9948,6 +9948,25 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive terminal edge-pair target shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F2`, and
+`F2C_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_recovers_C`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-terminal-edge-pair-target-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-terminal-edge-pair-target-shear.md`
+passed by xhigh `Mendel` and `Ramanujan`.
+
+The theorem packages the terminal actual target-side normalized `(F2,C)` pair
+and then applies the already-landed formal inverse formulas to recover the
+source terminal `F2` and `C` tangents.  Nonclaims: no nonterminal staged
+target-side shear, determinant-one target equivalence, actual derivative
+determinant formula, measure theorem, normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive edge-pair product equivalence
 
 Status: Proved in Lean; reproduced on paper; xhigh implementation review
