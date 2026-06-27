@@ -33,6 +33,13 @@
   `AxCheck.lean` does this for the load-bearing results on every build; add new load-bearing results there, or
   run a force-rebuilt `#print axioms` scratch (delete its olean first). (Caught a persisted diagonal-`sorry` +
   an unreported type-error in `RouteMSchurFrameDet`, 2026-06-26.)
+- **`scripts/lb <Module>` builds a module's import-closure only — it does NOT catch NAME CLASHES with sibling
+  modules the full aggregator imports.** A module that re-defines a constant another module already owns (e.g.
+  two `(2,2,2)` anchor files both defining `t222`/`M222` in the same namespace) builds green in isolation but
+  fails `lake build DLNFibre` with `environment already contains '…'`. **Before reporting a module as
+  integration-ready, green-gate the FULL `lake build DLNFibre`** (or at least `rg` your new top-level names
+  against the siblings you'll sit beside). Reuse shared anchor constants by `import`ing the module that owns
+  them, don't re-declare. (Caught `RouteM222Det` re-defining `RouteM222StructAdm`'s `t222`, 2026-06-27.)
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —
