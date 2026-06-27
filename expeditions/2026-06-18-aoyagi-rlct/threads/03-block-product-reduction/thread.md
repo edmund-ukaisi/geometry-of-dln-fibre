@@ -125,6 +125,41 @@ derivative with the formal map, source-stage `Ctop` or `F3`, prove a
 target-side determinant-one equivalence, determinant equality, measure
 transport, normal crossings, pole order, or RLCT.
 
+## 2026-06-27 A2 Ctop source-staged successor shear
+
+The next narrow Ctop derivative slice has landed locally.
+
+Reproduction:
+`reproduction-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+Review:
+`review-a2-retained-passive-ctop-source-staged-successor-shear.md` passed by
+xhigh `Kant`.
+
+Lean now proves:
+
+```text
+Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+The theorem starts from the existing `Ctop` derivative-staged bridge and
+rewrites only the successor `F2` derivative and the multiplied successor
+lower-left derivative:
+
+```text
+Dzv.Ctop
+  - X_F(0) * coord.solvedA3 0
+  - coord.F2 1 * X_G(0)
+  - d(Tail^{-1})_z(v) * coord.Ctop
+= formal(z)(v).Ctop.
+```
+
+The passive-tail inverse derivative remains the explicit Frechet derivative
+term.  This is not full `Ctop` source staging, not a tail-product derivative
+formula, not `F3` staging, not a target-side `LinearEquiv`, not determinant
+equality, and not measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-18 A1 narrow tide
 
 Opened xhigh worker tide `Lovelace` for the first Lean implementation. Scope is

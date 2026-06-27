@@ -10106,6 +10106,40 @@ linear equivalence, full analytic derivative factorization, determinant
 equality, measure/Jacobian-density theorem, normal crossings, pole order, or
 RLCT is proved by this bridge.
 
+## A2 retained-passive actual derivative Ctop successor source-staging bridge
+
+Status: Proved in Lean locally; reproduced on paper; xhigh implementation
+review passed.
+
+Claim: in the actual Frechet derivative's first top-left `Ctop` bridge, the
+successor `F2` derivative and the multiplied successor lower-left derivative
+can be replaced by the staged source tangent families, while the passive-tail
+inverse derivative remains explicit.
+
+Lean proves the bridge as
+`Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-source-staged-successor-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-source-staged-successor-shear.md`
+passed by xhigh `Kant`.
+
+Kill condition: the theorem must keep
+`d_y(Tail(y)^{-1})_z(v) * coord.Ctop` as an explicit term.  Expanding this
+term into `-Tail^{-1} * dTail * Tail^{-1}` requires a separate product and
+inverse derivative calculation.
+
+Nonclaims: no explicit tail-inverse derivative formula, no recursive product
+formula for `dTail`, no `F3` source staging, no global determinant-one shear
+linear equivalence, full analytic derivative factorization, determinant
+equality, measure/Jacobian-density theorem, normal crossings, pole order, or
+RLCT is proved by this bridge.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.

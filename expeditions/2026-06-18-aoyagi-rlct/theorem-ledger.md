@@ -10046,6 +10046,26 @@ derivative identification, not source staging for `Ctop`/`F3`, not a
 target-side determinant-one equivalence, not actual derivative determinant
 equality, and not measure transport, normal crossings, pole order, or RLCT.
 
+Latest A2 retained-passive Ctop source-staged successor shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-source-staged-successor-shear.md`
+passed by xhigh `Kant`.  Focused and full `DLNFibre` builds passed; the sorry
+scan and `git diff --check` passed.  Axiom audit reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+The theorem rewrites only the successor `F2` derivative and the multiplied
+successor lower-left derivative in the existing `Ctop` bridge.  The
+tail-inverse derivative remains explicit.  Nonclaims: no tail-inverse product
+formula, no `F3` source staging, no target-side determinant-one shear,
+determinant equality, measure transport, normal crossings, pole order, or
+RLCT.
+
 Latest A2 retained-passive nonterminal edge-pair staged target shear:
 `RetainedPassiveCoordinatesJacobian.lean` proves
 `fderiv_retainedPassive_toCoordinateData_F2_nonterminal_succ_apply`,

@@ -6442,3 +6442,20 @@ formal recovery wrappers unless a downstream theorem consumes them.  The next
 genuine frontier is a target-side/shear equivalence or staged actual-derivative
 construction that explicitly handles the remaining `Ctop` tail-inverse
 derivative and `F3` early-tail/terminal-top derivative obligations.
+
+A2 retained-passive Ctop source-staged successor shear has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-source-staged-successor-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-source-staged-successor-shear.md`.
+Lean proves
+`Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+which source-stages the successor `F2` derivative and the multiplied successor
+lower-left derivative in the `Ctop` bridge while leaving the tail-inverse
+derivative explicit.
+
+Next priority in this lane: isolate the elementary tail-inverse calculation as
+its own pen-and-paper and Lean slice:
+`d(Tail^{-1}) = -Tail^{-1} * dTail * Tail^{-1}` plus the recursive product
+formula for `dTail`.  Do not describe the current Ctop theorem as full Ctop
+source staging, determinant equality, target-side shear equivalence, measure
+transport, normal crossings, pole order, or RLCT.

@@ -14313,3 +14313,29 @@ markers.  `git diff --check` passed.  The new theorems depend only on
 This is formal-map recovery only.  It is not `Ctop` or `F3` source staging, not
 a target-side determinant-one equivalence, not actual derivative determinant
 equality, and not measure transport, normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Ctop Source-Staged Successor Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+Ctop_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+This rewrites the existing derivative-staged `Ctop` bridge by source-staging
+only `d(coord.F2 1)` and the multiplied term
+`coord.F2 1 * d(coord.solvedA3 0)`.  It deliberately leaves the tail-inverse
+derivative as the explicit Frechet derivative term
+
+```text
+d_y(Tail(y)^{-1})_z(v) * coord.Ctop.
+```
+
+The full identity `d(Tail^{-1}) = -Tail^{-1} * dTail * Tail^{-1}` and the
+recursive product formula for `dTail` remain a separate elementary
+calculation; they are not claimed by this slice.
+
+Verification for this slice: focused and full `DLNFibre` builds passed,
+`scripts/sorries` reported zero forbidden markers, `git diff --check` passed,
+and the new theorem's axiom audit reports only
+`[propext, Classical.choice, Quot.sound]`.
