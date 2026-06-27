@@ -175,4 +175,94 @@ theorem dlnLoss_chartParams121_pole_pos :
         refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => hconst i j))
     _ = 1 := by rw [Finset.sum_const, Finset.sum_const, hcard0, hcard2]; ring
 
+/-! ## The `routeMCore` rate (off-pole) + the a.e. `leaf_integrand`
+
+`routeMCore M121 = dlnLoss M121 0 ∘ (paramsEquivFlat).symm`, and `phi121sm = paramsEquivFlat ∘
+chartParams121`, so the `symm`/`apply` cancel and `routeMCore M121 (phi121sm u) = dlnLoss M121 0
+(chartParams121 u)` — `= (u 2)²·(u 0)²` off the pole (`dlnLoss_chartParams121_offpole`). With the a.e.
+`leaf_integrand` field (the option-(i) core), only this OFF-POLE rate is needed: `{u 0 = 0}` is null. -/
+
+/-- **The `routeMCore` rate, off the pole** `routeMCore M121 (phi121sm u) = (u 2)²·(u 0)²` for
+`u 0 ≠ 0`. -/
+theorem routeMCore_phi121sm_offpole (u : Fin 4 → ℝ) (ha : u 0 ≠ 0) :
+    routeMCore M121 (phi121sm u) = (u 2) ^ 2 * (u 0) ^ 2 := by
+  rw [routeMCore, phi121sm, MeasurableEquiv.symm_apply_apply,
+    dlnLoss_chartParams121_offpole u ha]
+
+/-- The unit factor `U = a² = (u 0)²` (the `z`-free factor of `F = z²·U`). -/
+noncomputable def Uval121 (u : Fin 4 → ℝ) : ℝ := (u 0) ^ 2
+
+/-- `Uval121 ≥ 0`. -/
+theorem Uval121_nonneg (u : Fin 4 → ℝ) : (0 : ℝ) ≤ Uval121 u := by unfold Uval121; positivity
+
+/-- `Uval121` is measurable. -/
+theorem Uval121_measurable : Measurable Uval121 := by
+  unfold Uval121; fun_prop
+
+/-- The leaf exponents `leafH121` — all `0` (`minAdm = 1`, so the radial exponent `minAdm − 1 = 0`; the
+chart has det `|z|⁰ = 1`, no genuine radial blow-up). -/
+def leafH121 : Fin 4 → ℕ := fun _ => 0
+
+/-- `leafH121 p = 0 = minAdm M121 − 1` at the pivot `p = z`-axis. -/
+theorem leafH121_pivot : leafH121 (2 : Fin 4) = minAdm M121 - 1 := by rw [minAdm_M121]; rfl
+
+/-- **The a.e. leaf-integrand identity** (the option-(i) field): off the null pole `{u 0 = 0}`, the
+rate `routeMCore = (u 2)²·U` holds, so the det-free leaf-integrand algebra (the loss base `|u_p|²`
+factors out, `leafH121 ≡ 0`) gives the identity. The pole is `volume`-null (`coordZero_null`), so the
+field holds `∀ᵐ u`. -/
+theorem leaf_integrand121_ae (c : ℝ) :
+    ∀ᵐ u ∂(volume : Measure (Fin 4 → ℝ)),
+      (∏ j, |u j| ^ (leafH121 j)) * |routeMCore M121 (phi121sm u)| ^ (-c)
+        = monomialIntegrand 4 (nodeLeafK 4 (2 : Fin 4)) leafH121 c u * (Uval121 u) ^ (-c) := by
+  -- the bad set `{u 0 = 0}` is null; the identity holds on its complement
+  have hpole : (volume : Measure (Fin 4 → ℝ)) {u : Fin 4 → ℝ | u 0 = 0} = 0 :=
+    coordZero_null (0 : Fin 4)
+  have hcompl : {u : Fin 4 → ℝ | u 0 ≠ 0} ∈ (ae (volume : Measure (Fin 4 → ℝ))) := by
+    rw [mem_ae_iff]; convert hpole using 2; ext u; simp [not_not]
+  filter_upwards [hcompl] with u hu
+  -- off-pole: replicate `leaf_integrand_of_rate`'s algebra at this `u` (rate holds here)
+  unfold monomialIntegrand
+  have hloss : (∏ j, |u j| ^ (2 * (nodeLeafK 4 (2 : Fin 4)) j)) = |u 2| ^ 2 := by
+    rw [Finset.prod_eq_single (2 : Fin 4)]
+    · simp [nodeLeafK]
+    · intro j _ hj; simp [nodeLeafK, hj]
+    · intro h; exact absurd (Finset.mem_univ (2 : Fin 4)) h
+  rw [hloss, routeMCore_phi121sm_offpole u hu, show Uval121 u = (u 0) ^ 2 from rfl,
+    show (∏ j, |u j| ^ (leafH121 j)) = 1 by simp [leafH121]]
+  rw [abs_of_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)),
+    Real.mul_rpow (sq_nonneg _) (sq_nonneg _), ← sq_abs (u 2)]
+  ring
+
+/-! ## The `cov` split (the genuinely-new piece — the rational pole image-null)
+
+`phi121sm = Q121 ∘ shear121`, where `shear121 (a,b,z,sb) = (a, b, z − (b/a)·sb, sb)` is the RATIONAL
+shear in coordinate space (a self-map of `Fin 4 → ℝ`) and `Q121 = paramsEquivFlat ∘ pack121` is the
+measure-preserving linear reshape (det ±1). Off the pole `N0 = {a = 0}` the shear is a C¹ diffeo with
+`|det| = 1` (lower-unitriangular: `∂(z−(b/a)sb)/∂z = 1`, the shear shift reads only other coords). The
+`cov` runs the two-slice split (the `phi334_cov` pattern): c-o-v on `S \ N0`, then add back `S ∩ N0`
+— RHS null (`leafH121 ≡ 0` weight `1`, integrand finite, `N0` null); LHS image-null via the FRONT-block
+identity `shear121` fixes `(a,b)`, so `phi121sm '' (S ∩ N0) ⊆ {first flat coord lands `a = 0`}`. -/
+
+/-- **The coordinate-space rational shear** `shear121 (a,b,z,sb) = (a, b, z − (b/a)·sb, sb)`. -/
+noncomputable def shear121 (u : Fin 4 → ℝ) : Fin 4 → ℝ :=
+  ![u 0, u 1, u 2 - (u 1 / u 0) * u 3, u 3]
+
+/-- **The linear reshape** `pack121 : (Fin 4 → ℝ) → Params M121` (flat coords → matrix slots): coords
+`0,1` ↦ layer-`0` (`A⁰`) entries `(0,0)`,`(0,1)`; coords `2,3` ↦ layer-`1` (`A¹`) entries
+`(0,0)`,`(1,0)`. Each output entry is one input coordinate. -/
+noncomputable def pack121 (w : Fin 4 → ℝ) : Params M121 :=
+  Fin.cons (!![w 0, w 1] : Matrix (Fin 1) (Fin 2) ℝ)
+    (Fin.cons (!![w 2; w 3] : Matrix (Fin 2) (Fin 1) ℝ) (fun i => i.elim0))
+
+/-- **The factorization** `chartParams121 u = pack121 (shear121 u)`: the shear produces the 4 flat
+entries `(a, b, z−(b/a)sb, sb)`, `pack121` reshapes them into `A⁰=[a,b]`, `A¹=[z−(b/a)sb ; sb]`. -/
+theorem chartParams121_eq_pack_shear (u : Fin 4 → ℝ) :
+    chartParams121 u = pack121 (shear121 u) := by
+  funext s
+  fin_cases s
+  · show chartA0_121 u = (pack121 (shear121 u)) 0
+    funext i j; fin_cases i <;> fin_cases j <;> rfl
+  · show chartA1_121 u = (pack121 (shear121 u)) 1
+    funext i j; fin_cases i <;> fin_cases j <;> simp [chartA1_121, pack121, shear121]
+
 end DLNFibre.DLN.RLCT

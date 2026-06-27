@@ -570,7 +570,8 @@ noncomputable def nodeChart221 : NodeAchieverChart M221 where
     refine ⟨B, hB0, hBle, ?_⟩
     exact ae_restrict_of_ae Uval221_ae_pos
   Umeas := continuous_Uval221.measurable
-  leaf_integrand := leaf_integrand221
+  -- the pointwise rate ⟹ the a.e. `leaf_integrand` field (free `of_forall` — `phi221` is polynomial)
+  leaf_integrand := fun c => Filter.Eventually.of_forall (leaf_integrand221 c)
   cov := phi221_cov
   image_subset := phi221_image_subset_cubeBox
 

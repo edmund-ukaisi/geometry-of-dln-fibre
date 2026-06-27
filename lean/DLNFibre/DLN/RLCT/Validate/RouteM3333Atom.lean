@@ -749,7 +749,8 @@ noncomputable def nodeChart3333 : NodeAchieverChart M3333 where
     obtain ⟨B, hB0, hBle⟩ := Vval3333_le_on_box δ
     exact ⟨B, hB0, hBle, ae_restrict_of_ae Vval3333_ae_pos⟩
   Umeas := continuous_Vval3333.measurable
-  leaf_integrand := leaf_integrand3333
+  -- the pointwise rate ⟹ the a.e. `leaf_integrand` field (free `of_forall` — `phi3333` is polynomial)
+  leaf_integrand := fun c => Filter.Eventually.of_forall (leaf_integrand3333 c)
   cov := phi3333_cov
   image_subset := phi3333_image_subset_cubeBox
 
