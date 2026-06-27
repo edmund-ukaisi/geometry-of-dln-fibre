@@ -18,7 +18,7 @@
 
 **Strays (operator):** `expeditions/2026-06-23-fibre-codim/` + `expeditions/2026-06-25-theta-components/` (untracked, not this expedition's — flagged Item 23 + the LR-θ≠Aoyagi-θ finding).
 
-**LIVE (2026-06-27, UPDATE-155):** CHARGING (A), sea-rising. **Critical path = the R1-lower atom `routeMCore_box_diverges_achiever` ∀M**, reduced M-agnostically to building `NodeAchieverChart M (hpos : 1 ≤ minAdm M)` (ONE chart `phi := phiFlatStructV` with BOTH: RATE `routeMCore (φ u) = (x p)²·U` [`leaf_integrand`] + DET `|det Dφ| = ∏_j |u_j|^{leafH j}` [`cov`]).
+**LIVE (2026-06-27, UPDATE-156):** CHARGING (A), sea-rising. **Critical path = the R1-lower atom `routeMCore_box_diverges_achiever` ∀M**, reduced M-agnostically to building `NodeAchieverChart M (hpos : 1 ≤ minAdm M)` (ONE chart `phi := phiFlatStructV` with BOTH: RATE `routeMCore (φ u) = (x p)²·U` [`leaf_integrand`] + DET `|det Dφ| = ∏_j |u_j|^{leafH j}` [`cov`]).
 - **RATE side CLOSED ∀M** (`routeMCore_phiFlatStructV`, gated `e44feed0`) — NO bridge. The chart's previously-missing half is done.
 - **RATE side: COMPLETE + UNCONDITIONAL ∀M, GATED on origin (`533193a6`, green 8470, axiom-clean S2-free).** `routeMCore_phiFlatStruct` via the structured decoder `genBlkFlatStruct` + `C0_eq_one`. (The rate engine — `Chain`/`chain_telescope`, `prod_front_peel`, the suffix bridge, `chartParamsGen`, `routeMCore_phiGen=u²·V` — all banked.)
 - **DET side: algebra + arithmetic + item-1 coordinatization + item-2 factor conjugates + the assembly skeleton (`phiFlat_abs_det_of_factored`) + all dependent-width decoder bricks BANKED.** Det keystones gated: `schurFrame_abs_det=|det K|^{r+c}`, `lduCoreDeriv_det=∏ q_i^{2(t-1-i)}`, the `composeFold` prefix-fold spine, `general_composed_clm_abs_det`.
@@ -913,6 +913,11 @@ The validate-det≠0-first discipline (the slip lesson) worked. 2 tides: l2-geom
 - Secondary (pp-pin2-rearch): (i) pivot/threshold column = NOT a real inconsistency (evaporates once framedParamsRegPivot
   leaves the squeeze path); (ii) endpoint_telescoping hinterface needed only L≥3 (L=2 target fine).
 - 1 design agent: pp-pin2-rearch (PIN1-risk + full-reg spec). pp-r1-genM on-call (R1 r²-chart). No builds running.
+
+**★ UPDATE-156 (2026-06-27) — CLEAN bedrock banked (`minAdm = m1·M_L` + `deepestCoords`, `b167dcaf`, S2-free); CLEAN chart factorization (WALL 2) + SMEARED cov building in parallel. ★**
+- **`RouteMBoundaryCleanMinAdm`** (the chain↔Aoyagi bridge + `minAdm M = deepRows·M_last`; reusable for SMEARED `r·M_L`) + **`RouteMBoundaryCleanChart`** (`deepestCoords M` + `deepestCoords_card_eq_minAdm`). Both S2-free, green 8490. The CLEAN chart = `pivotBlowupOn deepestCoords` (generic S1G5, POLYNOMIAL cov — the easy branch), keyed on `NoInteriorBothDrop`.
+- **TWO walls reported:** WALL 2 (the chart factorization `routeMCore(phi)=u_p²·U` + NodeAchieverChart fields, ~300-400 LoC, the opaque-`paramsEquivFlat` decode — same plumbing as the interior witness) — **IN FLIGHT (`genm-clean-chart`, FRESH; `genm-interior` rested at 3MB, bricks banked)**; WALL 1 (the argmin `BoundaryClean ⟹ NoInteriorBothDrop` reconciliation, ~50-100 LoC) — DEFERRED to the assembly tide.
+- **IN PARALLEL:** `genm-boundary` → SMEARED cov (option a); `genm-clean-chart` → CLEAN chart (WALL 2). Then the `nodeChartGeneral` 3-way+L1 assembly (incl. WALL 1) → rate-side ∀M COMPLETE → phase 4 det bridge → phase 5 cov+atom. (Note: Codex was down this session — the CLEAN architecture is the prior tide's own analysis, reusing banked generic machinery; re-fire backstop pending.)
 
 **★ UPDATE-155 (2026-06-27) — boundary M-classifier bedrock BANKED (`507d1774`, the INTERIOR/CLEAN/SMEARED trichotomy, S2-free); the SMEARED `cov` wall RESOLVED (option a); both boundary branches now building IN PARALLEL. ★**
 - **`RouteMBoundaryClass`** — `BoundaryClean`(r=m1)/`BoundarySmeared`(r<m1) + the total INTERIOR/CLEAN/SMEARED trichotomy (pairwise-exclusive + exhaustive, given `r ≤ m1` as a hypothesis). The assembly's case-split foundation.
