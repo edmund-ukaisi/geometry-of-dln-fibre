@@ -1,0 +1,17 @@
+LIB "primdec.lib";
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22,b31,b32, c11,c12,c13,c21,c22,c23), dp;
+matrix A1[2][2]=a11,a12,a21,a22;
+matrix A2[3][2]=b11,b12,b21,b22,b31,b32;
+matrix A3[2][3]=c11,c12,c13,c21,c22,c23;
+matrix P = A3*A2*A1;
+ideal I = det(P);
+poly detD = P[1,1];
+list pd = minAssGTZ(I);
+int i; intvec dims; int dmax=-1;
+for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); dims[i]=dim(pri); if(dims[i]>dmax){dmax=dims[i];} }
+for(i=1;i<=size(pd);i++){
+  if(dims[i]==dmax){ ideal pri=std(pd[i]);
+    "COMP",i,": NF(detD) = ", reduce(detD,pri);
+  }
+}
+quit;

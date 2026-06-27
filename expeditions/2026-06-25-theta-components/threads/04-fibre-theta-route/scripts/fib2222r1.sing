@@ -1,0 +1,21 @@
+LIB "primdec.lib";
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22, c11,c12,c21,c22), dp;
+matrix A[2][2] = a11,a12,a21,a22;   // A_1
+matrix B[2][2] = b11,b12,b21,b22;   // A_2
+matrix C[2][2] = c11,c12,c21,c22;   // A_3
+matrix P = C*B*A;                    // mult = A_3 A_2 A_1
+matrix E[2][2] = 1,0,0,0;
+matrix D = P - E;
+ideal I = D[1,1], D[1,2], D[2,1], D[2,2];
+ideal sI = std(I);
+"DIM:", dim(sI);
+"CODIM:", 12 - dim(sI);
+list pd = primdecGTZ(I);
+"NCOMP:", size(pd);
+poly detD = P[1,1];
+int i;
+for (i=1; i<=size(pd); i++) {
+  ideal sp = std(pd[i][2]);
+  "COMP", i, "primdim:", dim(std(pd[i][1])), "primedim:", dim(sp), "NF(detD-1):", reduce(detD-1, sp), "NF(detD):", reduce(detD, sp);
+}
+quit;

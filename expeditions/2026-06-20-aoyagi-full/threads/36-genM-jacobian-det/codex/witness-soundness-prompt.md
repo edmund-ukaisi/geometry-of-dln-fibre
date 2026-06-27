@@ -1,0 +1,22 @@
+# Decorrelation check: is `achieverUfun ≡ 0` for ~19% of M a real soundness gap or my model artifact?
+
+I'm formalising `∃ w, achieverUfun M hL hN w ≠ 0` (a rate-side gap, `2 ≤ L`). It reduces to: the ℝ-matrix `Hmat 0` of a telescope chain (built from a STRUCTURED decoder `genBlkFlatStruct`) is nonzero at some witness point. `achieverUfun w = VvalGen (w p) M (tach M) (genBlkFlatStruct … w) = ∑∑ (Hmat 0 i j)²` (sum of squares).
+
+## Setup (exact)
+- `M : Fin (L+1) → ℕ` (layer widths, all ≥1). `tStar M : Fin L → ℕ` = achiever (argmin of Aoyagi `Mval` over admissible cone; admissibility forces `tStar (last) = 0`). `tach M = cons(M 0, tStar M) : Fin(L+1)→ℕ`.
+- Width families: `Wext k = M k`; `Text 0 = M 0`, `Text (k+1) = tach k`. So the chain leaf width `Text L = tach (L-1) = tStar (L-2)` (the SECOND-to-last tStar, since tach prepends M0).
+- The structured decoder `genBlkFlatStruct` has: `Bmat (k+1) = [K_k ; X_k K_k]` (bmatStack), `Rmat (k+1) = [[0,0],[0,E_k]]` (rmatPad, E at bottom-right), `Nblk`,`Wblk` from free coords, AND CRUCIALLY `Rfin ≡ 0` and `Wblk(L) = 0` (the leaf has no residual and no lift; `readW k` needs `k+1<L`).
+- Chain: `C k = Bmat k · chainQ(N_k) + u·Rmat k` (k<L), `C L = u·Rfin L = 0`. `A k = chainA(N_k, W_k, C(k+1))` (top rows `C(k+1)-N·W`, bottom rows `W`). `E_chain k = Rmat k · A k`. `R_chain = Rfin L = 0`. `Hmat L = 0`; `Hmat s = Bmat s · Hmat(s+1) + E_chain s · suffix(s+1)`; `suffix L = I`.
+
+## What I found (numerically, exact-arithmetic model validated against the prior sympy cert on M=(3,3,1,3))
+1. For M where some INTERIOR GenBlk boundary `p ∈ [1, L-1]` has a nonempty E-block (`r_p = Text p - Text(p+1) ≥ 1` and `c_p = Wext p - Text(p+1) ≥ 1`): a clean witness EXISTS — pivot E_p at (0,0), carriers `W_b(0, colPath(b))` for `b ∈ [p, L-1]` with `colPath` tracking the pivot column (surviving col of suffix(b+1)). Exhaustively `Hmat 0 ≠ 0` over all 285 such M (L∈{2,3,4}, widths 1..3, minAdm≥1). GOOD.
+2. For ~19% of M (66/351 with minAdm≥1), the ONLY rank-drop / E-nonempty boundary is at the LEAF (GenBlk boundary L), where `Rfin = 0` and `Rmat(L)` feeds `C(L)=u·Rfin(L)=0` (Rmat(L) is NEVER used; the leaf E is dead). For these, FULL-FREEDOM random block assignment gives `Hmat 0 ≡ 0` (max over 40 random = exactly 0). Examples: M=(1,2,1) [tStar=(1,0), Text=(1,1,0)], (2,1,1), (3,2,1), (2,2,1,1) [tStar=(2,1,0)], (1,2,2,1). Common feature: the achiever rank only drops at the FIRST layer (M0 small, e.g. M0=1) or the LAST layer (M_L < M_{L-1}).
+
+## The question
+If finding #2 is REAL, then `achieverUfun ≡ 0` for those M, so `∃ w, achieverUfun w ≠ 0` is FALSE, and the rate-side `Ubound` (a.e.-positivity of U) CANNOT hold via this chart — a soundness gap in the achiever-chart construction (`phiFlatStructV` would map into the zero-loss locus for those M), not just a witness-finding difficulty.
+
+(a) Is finding #2 plausibly REAL given the structure (Rfin≡0, leaf E dead, drop-at-edge)? Or is it more likely a model artifact (e.g. I mis-placed the pivot, or the leaf drop is actually carried by `Bmat`/`Nblk` in a way my "full freedom" missed)?
+(b) For a drop ONLY at the last layer (M_L < M_{L-1}, e.g. (3,2,1) — rank drops 3→? at layer 2), where does the chart's nonzero `Hmat 0` come from, if anywhere? The last-layer rank drop should appear in `E_{L-1}` (GenBlk boundary L-1, NOT L) — is my "boundary index" off by one (should the leaf drop sit at boundary L-1, which DOES have a usable Rmat)? Recompute: for (3,2,1), L=2, tStar=(2,0), tach=(3,2,0), Text=(3,2,0). GenBlk boundary 1: r=Text1-Text2=2-0=2, c=Wext1-Text2=2-0=2 — NONEMPTY! So (3,2,1) DOES have an interior E at boundary 1. Did I mis-tabulate it as "leaf-only"? Please sanity-check my Text for (3,2,1): is Text=(3,2,0) right (so boundary-1 E is nonempty, case #1, witness exists)?
+(c) If my Text indexing is the bug (tach prepends M0, shifting everything), the 66 "dead" cases might actually be case #1 and the theorem TRUE ∀M. Walk through (1,2,1): tStar=(1,0), tach=(1,1,0), Text=(1,1,0). GenBlk boundary 1: r=Text1-Text2=1-0=1, c=Wext1-Text2=2-0=2 — NONEMPTY. So (1,2,1) ALSO has an interior E at boundary 1?! Then why did my model give Hmat0≡0 for it? Likely my model used the WRONG tach (a non-achiever). Please reason about whether (1,2,1) with Text=(1,1,0) has a nonzero Hmat 0 witness.
+
+Be concrete and terse. The crux: did I mistabulate the 66 cases due to a tach/Text off-by-one, making the theorem actually TRUE ∀M via the case-#1 colPath construction?

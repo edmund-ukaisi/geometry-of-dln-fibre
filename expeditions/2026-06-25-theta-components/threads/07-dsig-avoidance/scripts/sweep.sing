@@ -1,0 +1,82 @@
+LIB "primdec.lib";
+LIB "matrix.lib";
+
+proc runcase(intvec dv, int r)
+{
+  // dv = (d_0,...,d_N). N = size(dv)-1 arrows. A_i : d_i x d_{i-1}.
+  int N = size(dv)-1;
+  int nv = 0; int i;
+  for(i=1;i<=N;i++){ nv = nv + dv[i+1]*dv[i]; }  // sum d_i * d_{i-1}
+  // build a ring with nv vars
+  ring Rloc = 0, x(1..nv), dp;
+  // build factor matrices and the product
+  list facs;
+  int idx = 0;
+  for(i=1;i<=N;i++){
+    int rows = dv[i+1]; int cols = dv[i];
+    matrix Ai[rows][cols];
+    int a; int b;
+    for(a=1;a<=rows;a++){ for(b=1;b<=cols;b++){ idx++; Ai[a,b]=x(idx); } }
+    facs[i]=Ai;
+  }
+  matrix P = facs[N];
+  for(i=N-1;i>=1;i--){ P = P * facs[i]; }
+  int pr = nrows(P); int pc = ncols(P);
+  // sigmaIdeal: all (r+1) minors of P
+  ideal I;
+  if (r+1 <= pr && r+1 <= pc) { I = minor(P, r+1); } else { I = 0; }
+  // detDelta: top-left r x r minor (if r>=1)
+  poly detD;
+  if (r==0) { detD = 1; }
+  else {
+    matrix Ptl[r][r];
+    int a; int b;
+    for(a=1;a<=r;a++){ for(b=1;b<=r;b++){ Ptl[a,b]=P[a,b]; } }
+    detD = det(Ptl);
+  }
+  ideal sI = std(I);
+  int totdim = dim(sI);
+  string tag = "d="+string(dv)+" r="+string(r);
+  list pd = minAssGTZ(I);
+  int dmax = -1;
+  intvec dims;
+  for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); dims[i]=dim(pri); if(dims[i]>dmax){dmax=dims[i];} }
+  int ntop=0; int badcount=0; int lowrank_top=0;
+  for(i=1;i<=size(pd);i++){
+    if(dims[i]==dmax){
+      ntop++;
+      ideal pri=std(pd[i]);
+      poly nf = reduce(detD, pri);
+      if (nf==0 && r>0) { badcount++; }
+      // generic rank on comp: do all r x r minors of P vanish on comp? (=> generic rank < r => lowrank top)
+      if (r>0) {
+        ideal mr = minor(P, r);
+        int allvanish = 1; int t;
+        for(t=1;t<=size(mr);t++){ if(reduce(mr[t],pri)!=0){allvanish=0;break;} }
+        if (allvanish==1) { lowrank_top++; }
+      }
+    }
+  }
+  tag = tag + " | nvars="+string(nv)+" mincodim="+string(nv-dmax)+" #top="+string(ntop)
+        +" #BAD(detD in p)="+string(badcount)+" #lowrank_top="+string(lowrank_top);
+  tag;
+  kill Rloc;
+}
+
+runcase(intvec(2,2,2),1);
+runcase(intvec(2,2,2,2),1);
+runcase(intvec(3,3,3),1);
+runcase(intvec(3,3,3),2);
+runcase(intvec(2,2,3),1);
+runcase(intvec(3,2,3),1);   // valley r=1
+runcase(intvec(2,3,2),1);   // peak r=1
+runcase(intvec(2,3,2),2);   // peak r=2 (=min width 2)
+runcase(intvec(3,2,2),1);
+runcase(intvec(2,2,2,2,2),1);
+runcase(intvec(4,4,4),2);
+runcase(intvec(4,4,4),3);
+runcase(intvec(3,4,3),2);   // peak
+runcase(intvec(4,3,4),2);   // valley, r=2=min width
+runcase(intvec(2,3,4),1);   // increasing
+runcase(intvec(4,3,2),1);   // decreasing
+quit;

@@ -13,7 +13,7 @@
   - `DLNFibre.Core.isSmooth_of_algEquiv_chart_of_isUnit_subJacobian` (transport wrapper)
   - `DLNFibre.Core.isStandardSmoothOfRelativeDimension_of_algEquiv_chart_of_isUnit_subJacobian`
   - supporting: `chartPreSubmersive`, `subJacobian`, `subJacobian_eq`, `chartSubmersive`
-  - (`lean/DLNFibre/Core/FibreSmoothPlumbing.lean` @ `d46e667b`)
+  - (`lean/DLNFibre/Core/FibreSmoothPlumbing.lean` @ `<commit-sha>`)
 
 - **Gloss.** `ChartAlg v := MvPolynomial (Fin n) k ⧸ Ideal.span (Set.range v)`. `subJacobian v a ha`
   is the `c × c` minor determinant `det (fun i j ↦ pderiv (a i) (v j))` pushed into `ChartAlg v` (the
@@ -49,5 +49,4 @@
 
 - **Axioms.** All six results: `[propext, Classical.choice, Quot.sound]` — no `sorryAx`.
 
-- **Status.** sorry-free + reviewed (fidelity PASS, independent reviewer + decorrelated Codex on the
-  `n − c` orientation / `naive` σ/ι swap; axiom gate re-run clean, no `sorryAx`).
+- **Status.** sorry-free (awaiting reviewer fidelity check).

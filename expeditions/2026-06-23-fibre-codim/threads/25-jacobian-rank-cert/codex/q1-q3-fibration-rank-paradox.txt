@@ -1,0 +1,143 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Reading prompt from stdin...
+OpenAI Codex v0.142.0
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/fibre-codim/lean
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019efa22-a6cd-75f2-9fd2-1eefd4cdc593
+--------
+user
+<task>
+Independent second-opinion, algebraic geometry. Be terse, object-level, fact vs inference explicit.
+Do NOT rubber-stamp. ~400 words max.
+
+SETUP. d=(d_0,...,d_N) positive ints. Rep_d = tuples A=(A_0,...,A_{N-1}), A_i a d_{i+1} x d_i matrix
+over alg-closed char-0 k. card=dim Rep_d = sum_{i} d_{i+1} d_i. mult(A)=A_{N-1}...A_0 in Mat_{d_N x d_0}.
+E = diag(I_r,0) rank r. Fibre F = mult^{-1}(E). 
+C := codim in Rep_d of Sigma^r={A: rank(mult A)<=r} (the paper's combinatorial codim, GIVEN/proved).
+delta := r(d_0+d_N-r) = dim of the rank-r stratum of the target Mat_{d_N x d_0}.
+
+ESTABLISHED BY EXACT COMPUTATION (Singular Krull dimension, exact rational):
+  dim F = card - C - delta  in ALL these cases:
+   (2,2,2): r=0 dim5(=8-3-0), r=1 dim4(=8-1-3), r=2 dim4(=8-0-4)
+   (2,2,3): r=0 dim6, r=1 dim5, r=2 dim4
+   (3,3,3): r=1 dim10, r=2 dim9
+   (1,2,1): r=0 dim3, r=1 dim3
+  Also: F is REDUCIBLE; components have DIFFERENT dims. On the TOP component (dim = card-C-delta)
+  the Jacobian d(mult) has rank exactly C+delta; LOWER-dim components carry HIGHER rank (up to
+  d_N d_0). E.g. (2,2,3) r=1: profile {A_0 rank1, A_1 rank2} gives the top component dim 5, rank 5
+  = C+delta; profile {A_0 rank2, A_1 rank1} gives a dim-4 component, rank 6.
+
+The differential image = sum_i ColSpace(A_{N-1}..A_{i+1}) (x) RowSpace(A_{i-1}..A_0).
+
+QUESTIONS (answer each TRUE/FALSE/NEEDS-HYP + 1-2 line reason):
+Q1. Is "dim F = card - C - delta" the right/expected formula? This is LR Lemma 4.6 territory
+    (codim of the fibre of the DLN mult map). Sanity-check the delta = r(d_0+d_N-r) shift: does the
+    fibre over a rank-r matrix E have codim = (codim Sigma^r) + (dim rank-r stratum)? Give the clean
+    reason: e.g. mult restricted to Sigma^r is dominant onto the rank-<=r matrices; the generic fibre
+    of mult|Sigma^r over the rank-r stratum has codim ... reconstruct the +delta.
+Q2. The structural reason rank(d mult)=C+delta on the TOP component, NOT d_N d_0: Sigma^r has codim C
+    in Rep, so a generic A in Sigma^r has rank(d mult) <= d_N d_0 - (something)? Actually image of
+    d(mult)_A lies in T_E(Sigma^r-bar)? dim T_E Sigma^r = d_N d_0 - C only if E smooth on Sigma^r,
+    but E (rank r) IS smooth on the rank-<=r locus (rank-r stratum is the smooth locus). So
+    image(d mult) ⊆ T_E(rank-<=r locus), dim = d_N d_0 - (codim of rank-<=r in Mat) = d_N d_0 -
+    (d_N-r)(d_0-r). Check (2,2,2)r=1: d_N d_0 - (2-1)(2-1) = 4-1 = 3. But rank=4 there?! 4 > 3.
+    CONTRADICTION — image can't exceed T_E(target rank locus). RESOLVE THIS: is the image really
+    inside T_E(rank-<=r locus)? (mult lands in Sigma^r-image which is rank-<=r matrices; but does
+    d(mult) land in the tangent to that locus AT E?) Reconcile rank 4 vs the bound 3.
+Q3. Given dim F = card-C-delta (exact, proved by us) and char 0: does generic smoothness of F's top
+    component FORCE rank(d mult) = C+delta generically there (= card - dim)? State precisely what's
+    needed (top component generically reduced).
+</task>
+<grounding_rules>
+char 0 alg closed. dim{rank=r in Mat_{mxn}}=r(m+n-r), codim of rank-<=r locus =(m-r)(n-r). "codim
+Sigma^r = C" GIVEN. Reason from the multi-factor product structure. Flag any smoothness as hypothesis.
+</grounding_rules>
+
+codex
+**Q1: TRUE, with hypotheses.**  
+Fact: if `mult|Sigma^r : Sigma^r -> Mat_{d_N x d_0}^{<=r}` is dominant and `E` has rank `r`, then
+
+```text
+dim mult^{-1}(E) = dim Sigma^r - dim(rank-r stratum)
+                 = (card - C) - r(d_0+d_N-r).
+```
+
+So the fibre codimension in `Rep_d` is `C + delta`. The `+delta` is not a tangent-space correction; it is the loss from fixing a point inside the rank-`r` stratum after first imposing `rank(mult)<=r`. Need nonempty/dominance onto the rank-`r` stratum, e.g. effectively `r <= min_i d_i`.
+
+**Q2: FALSE as stated; the tangent-containment claim is wrong.**  
+Fact: `mult` does **not** land in the determinantal variety `Mat^{<=r}` on a neighborhood of `A`; only the chosen point `A` lies in `Sigma^r = mult^{-1}(Mat^{<=r})`. Therefore
+
+```text
+d(mult)_A(T_A Rep_d) ⊆ T_E Mat^{<=r}
+```
+
+does not follow.
+
+Correct statement: if one restricts the differential to `T_A Sigma^r`, then its image lies in `T_E Mat^{<=r}`. But the full differential on `T_A Rep_d` may point transversely out of the rank-`<=r` locus. Hence `(2,2,2), r=1` can have rank `4` although `dim T_E Mat^{<=1}=3`.
+
+Inference: on the top fibre component, `rank d(mult)=C+delta` says the fibre equations have expected rank there; it is not bounded by the tangent dimension of the target determinantal locus.
+
+**Q3: NEEDS-HYP.**  
+Generic smoothness of the map `mult : Rep_d -> Mat` alone does not force smoothness over a fixed singular-value fibre `E`.
+
+What is enough: if a top-dimensional irreducible component `Z` of `F=mult^{-1}(E)` is generically reduced/smooth of dimension `card-C-delta`, and locally `F` is cut out as the fibre of `mult`, then at a generic smooth point `A in Z`,
+
+```text
+dim ker d(mult)_A = dim Z = card-C-delta,
+```
+
+so
+
+```text
+rank d(mult)_A = C+delta.
+```
+
+Thus the rank conclusion is true generically on a generically reduced top component. Lower-dimensional components may have larger differential rank, exactly as your computations show.
+tokens used
+4,902
+**Q1: TRUE, with hypotheses.**  
+Fact: if `mult|Sigma^r : Sigma^r -> Mat_{d_N x d_0}^{<=r}` is dominant and `E` has rank `r`, then
+
+```text
+dim mult^{-1}(E) = dim Sigma^r - dim(rank-r stratum)
+                 = (card - C) - r(d_0+d_N-r).
+```
+
+So the fibre codimension in `Rep_d` is `C + delta`. The `+delta` is not a tangent-space correction; it is the loss from fixing a point inside the rank-`r` stratum after first imposing `rank(mult)<=r`. Need nonempty/dominance onto the rank-`r` stratum, e.g. effectively `r <= min_i d_i`.
+
+**Q2: FALSE as stated; the tangent-containment claim is wrong.**  
+Fact: `mult` does **not** land in the determinantal variety `Mat^{<=r}` on a neighborhood of `A`; only the chosen point `A` lies in `Sigma^r = mult^{-1}(Mat^{<=r})`. Therefore
+
+```text
+d(mult)_A(T_A Rep_d) ⊆ T_E Mat^{<=r}
+```
+
+does not follow.
+
+Correct statement: if one restricts the differential to `T_A Sigma^r`, then its image lies in `T_E Mat^{<=r}`. But the full differential on `T_A Rep_d` may point transversely out of the rank-`<=r` locus. Hence `(2,2,2), r=1` can have rank `4` although `dim T_E Mat^{<=1}=3`.
+
+Inference: on the top fibre component, `rank d(mult)=C+delta` says the fibre equations have expected rank there; it is not bounded by the tangent dimension of the target determinantal locus.
+
+**Q3: NEEDS-HYP.**  
+Generic smoothness of the map `mult : Rep_d -> Mat` alone does not force smoothness over a fixed singular-value fibre `E`.
+
+What is enough: if a top-dimensional irreducible component `Z` of `F=mult^{-1}(E)` is generically reduced/smooth of dimension `card-C-delta`, and locally `F` is cut out as the fibre of `mult`, then at a generic smooth point `A in Z`,
+
+```text
+dim ker d(mult)_A = dim Z = card-C-delta,
+```
+
+so
+
+```text
+rank d(mult)_A = C+delta.
+```
+
+Thus the rank conclusion is true generically on a generically reduced top component. Lower-dimensional components may have larger differential rank, exactly as your computations show.

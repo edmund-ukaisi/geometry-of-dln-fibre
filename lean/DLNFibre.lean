@@ -22,6 +22,7 @@ import DLNFibre.Core.CThetaExplicit
 import DLNFibre.Core.CThetaDropM
 import DLNFibre.Core.CThetaValue
 import DLNFibre.Core.CThetaThetaBridge
+-- Voigt-discharge / geometric-codimension Core engine (PR #4, merged to dev).
 import DLNFibre.Core.IntegralDimension
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NoetherMonicPositioning
@@ -375,3 +376,191 @@ import DLNFibre.Core.FibreThetaCountArbitrary
 -- r=0), (2) the agreement regime `choose_eq_aoyagiPoleOrder_iff : choose ell a = a(ell−a)+1 ↔ min a (ell−a)
 -- ≤ 1`. Proves the two θ's DIFFER + pins exactly when they agree; asserts NO (false) equality of them.
 import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
+import DLNFibre.DLN.RLCT.Foundations.Loss
+import DLNFibre.DLN.RLCT.Foundations.Rlct
+import DLNFibre.DLN.RLCT.Foundations.Lambda
+import DLNFibre.DLN.RLCT.BGEngine
+import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Validate.Case111Bridge
+import DLNFibre.DLN.RLCT.Validate.Case111
+-- Measure-side engines, built ahead of their consumers. Kept in the green-gate explicitly: else
+-- `lake build DLNFibre` only covers the headline's transitive closure and an orphan engine (broken
+-- or unsound) escapes the gate. Re-importing an already-reachable module is harmless (deduped).
+import DLNFibre.DLN.RLCT.Foundations.S1Transport
+import DLNFibre.DLN.RLCT.Foundations.S1Local
+import DLNFibre.DLN.RLCT.Foundations.S1SmoothBlock
+import DLNFibre.DLN.RLCT.Foundations.S1Additive
+import DLNFibre.DLN.RLCT.Foundations.S1Fubini
+import DLNFibre.DLN.RLCT.Foundations.S1G5
+import DLNFibre.DLN.RLCT.Foundations.S1G5Charts
+import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
+import DLNFibre.DLN.RLCT.Foundations.S1Cover
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlat222
+import DLNFibre.DLN.RLCT.Validate.Case212
+import DLNFibre.DLN.RLCT.Validate.Case222Value
+import DLNFibre.DLN.RLCT.Validate.Case222Cover
+import DLNFibre.DLN.RLCT.Validate.Case222Algebra
+import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
+import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+-- (2,2,2) ≥-cover + RLCT headline (ladder 3/3). `Case222Rlct` transitively pulls the cover
+-- (`Case222CoverGE`/`Case222CoverGETail`) into the green-gate — else the eq headline + the ≥-cover
+-- are not in the build's transitive closure and escape the gate.
+import DLNFibre.DLN.RLCT.Validate.Case222Rlct
+-- General-M resolution recursion (det-1 straightening phase): the sound recursion-step
+-- + `rlctAtOn_germ_local` + the L=1 smooth-block leaf. Kept in the green-gate (0 sorry).
+import DLNFibre.DLN.RLCT.Validate.GeneralR1Recursion
+-- RRR (L=2 / reduced-rank-regression): Aoyagi Thm 1 as the L=2 instance of the general headline
+-- (`aoyagi_rrr`) + sorry-free anchors (3/2, 1) + combinatorial `rrrTheta`. General-L-first.
+import DLNFibre.DLN.RLCT.Validate.RRR
+-- LayerSplit re-architecture: the layer-collapsing carrier + keystone `minAdmRec_eq_minAdm` (R1 carrier
+-- blocker resolved; not yet wired into routeStep — the controller-gated migration). Aggregator-gated.
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerValue
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerCover
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGE
+import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGEL2
+import DLNFibre.Core.Matrix.RankNormalForm
+import DLNFibre.Core.Matrix.RankNormalFormTriangular
+import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
+import DLNFibre.DLN.RLCT.Validate.DeepestBaseL1
+import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
+import DLNFibre.DLN.RLCT.Validate.RouteM4422
+-- `RouteM221`: the (2,2,1) NodeAchieverChart VALIDATE-SMALL — the option-(C) chart
+-- `phi221 = paramsEquivFlat ∘ pack221 ∘ pivotBlowupOn {0,1} 0` (full-rank pack via the banked
+-- `measurePreserving_paramsPack_of_flatIdxEquiv` fed a genuine `Equiv`; the D1 dead-slot guard)
+-- built end-to-end through the GENERAL machinery, discharging the atom for a LAYERED node
+-- (rate `(u 0)²·U` + det `|u 0|^{minAdm−1}`, both via the general bricks the ∀M build reuses).
+import DLNFibre.DLN.RLCT.Validate.RouteM221
+-- `RouteM222Det`: ROUTE 2a on the (2,2,2) multi-boundary node — the RATE leg (det leg WIP).
+-- `B_det222` (fresh FULL-RANK GenBlk, leaf `Rfin 2 = !![1,x7] ≠ 0` — the D1 fix) at the GENUINE
+-- achiever path `tach222 = (2,1,0)` (chain-codim = minAdm = 3, distinct from StructAdm's rate-only
+-- (2,1,1)) + `routeMCore_phiDet222 = u²·V` via a ONE-LINE `routeMCore_phiGen` instantiation
+-- (NO bridge; two rank-drops telescope to one `u`). Confirms route 2a on a multi-boundary node.
+import DLNFibre.DLN.RLCT.Validate.RouteM222Det
+-- `RouteMAchieverPath`: ∀M-lift step 1 — the achiever descent path made width-parametric.
+-- `tStar M` (a chosen `Mval`-minimizer) + `Mval_tStar_eq` (the path realises `minAdm`) + the Aoyagi
+-- residual blocks `rBlock`/`cBlock` + `sum_rBlock_cBlock_eq_minAdm` (the radial `active.card = minAdm`
+-- identity). The (2,2,2) `tach222` generalized; regression-checked on the 5 anchors.
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
+-- `RouteM3333Det`: the (3,3,3,3) ROUTE-2a validate-small — the 3-BOUNDARY forcing case
+-- (rank drops at all 3 boundaries, the Schur/LDU coupling the L=2 anchors don't exercise).
+-- `B_det3333` (full-rank, t*=(2,1,0), minAdm 6) + `chartParamsGen_eq_chartParams3333` (THE
+-- width-parametric bridge template) + `phiGen_B_det3333_eq_phi3333` (the route-2a chart EQUALS the
+-- banked hand-built phi3333 ⟹ det |u0|⁵·|u1|⁴·|u4|²·|u9|³ = RouteM3333Atom EXACTLY) → atom via route 2a.
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Det
+-- ∀M-lift build phases (1)-(2): the achiever decoder + RATE-side NodeAchieverChart fields, ∀M.
+-- `RouteMAchieverStructAdm`: `tach M = Fin.cons (M 0) (tStar M)` (the shifted achiever path) +
+-- `structAdm_tach` (admissibility ∀M, via the corrected `StructAdm.hdesc` interior-only descent).
+-- `RouteMAchieverRateFields`: `routeMCore_achieverPhi = (x p)²·achieverUfun` (rate ∀M, decoder-agnostic)
+-- + `achiever_leaf_integrand` (the `leaf_integrand` field ∀M, det-free) + `achieverUfun_nonneg`.
+-- (The `Ubound` a.e.-positivity needs the MvPolynomial `Hmat_0` encoding — the next tide.)
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverStructAdm
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverRateFields
+-- ∀M-lift phase 3: the rate-side `Ubound`/`Umeas` ∀M via the MvPolynomial encoding (the chain stack
+-- conservatively generalized to `CommRing 𝕜`, `𝕜:=ℝ` default). `achieverUfun_eq_eval` (the unit IS
+-- `eval x` of the named `UPolyGen`), `achieverUfun_measurable` (Umeas DONE), `achieverUbound`/
+-- `achieverUfun_ae_pos` (Ubound DONE) GIVEN the witness `∃ w, achieverUfun w ≠ 0` (the sole remaining gap).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverVvalPoly
+import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
+import DLNFibre.DLN.RLCT.Validate.MatMulFibre
+import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
+-- R1 (3,3,3,3) achiever box-divergence anchor — the decisive multi-pivot L=3 node; the THIRD
+-- concrete R1 instance (det/cov/atom on the RouteM3333 chart). The det/cov/injOn lemmas are S2-free;
+-- the atom matches the (4,4,2,2)/(3,3,4) siblings (cites `monomial_rlct`, the S2 divergence leaf).
+import DLNFibre.DLN.RLCT.Validate.RouteM3333
+import DLNFibre.DLN.RLCT.Validate.RouteM3333Atom
+-- R1-general achiever ENGINES (toward the (A) general lower-atom). Two reusable, axiom-clean pieces:
+-- the composed-det telescoping (`general_composed_clm_abs_det` — the variable-length Jacobian det via
+-- the det monoid-hom, promoted from the spike) + the chained-product telescope
+-- (`Chain.chain_telescope`, the algebraic heart of the chart identity `prod M (φ_M u) = u·H`).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverTelescope
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverGeneralDet
+-- Reusable bricks toward the `suffix 0 = prod M A` bridge (`reindex_finCongr_mul` cast-killer, `Mtail`/
+-- `Atail`), then the `prod` front-peel `prod M A = A_0 · (reindex)(prod (Mtail M)(Atail M A))` (the
+-- deferred-twice `prodAux` reassociation XL-cast, CRACKED + axiom-clean; `prodAux_succ` now lives in
+-- `Foundations/Loss`, so this no longer pulls the `Deepest*` clash), then the chain↔DLN-product bridge
+-- `Chain.suffix 0 = prod M A` (`RouteMSuffixBridge`). Shared with L2/D1's `endpoint_telescoping`.
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverBridge
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSuffixBridge
+-- R1-general achiever CHART (∀M): the abstract chain engine (`FactoredChain` + `step_of_factor` +
+-- `chain_block` + `chainQ_mul_chainA` — M-agnostic block algebra) + the per-M achiever chain `chainOfMt`
+-- (a structural recursion over opaque `t`-widths) → the ∀M chart identity `routeMCore_phiGen : F∘φ = u²·V`
+-- (path-agnostic rate), validated to specialize to (3,3,3,3). Sorry-free + axiom-clean.
+import DLNFibre.DLN.RLCT.Validate.RouteMChainFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMChainBlockValid
+import DLNFibre.DLN.RLCT.Validate.RouteMFactoredChain
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRate
+import DLNFibre.DLN.RLCT.Validate.RouteMChainRateValid
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChain
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId3333
+-- The det-INDEPENDENT `NodeAchieverChart M` fields ∀M from the rate identity: `leaf_integrand_of_rate`
+-- (the leaf-integrand field, pure algebra in `F∘φ = u_p²·V`, no determinant) + `VvalGen_nonneg` (the unit
+-- `V = ‖Hr‖²` ≥ 0). Isolates the atom's residual to the achiever-`t` Jacobian det + cov + a.e.-positivity.
+import DLNFibre.DLN.RLCT.Validate.RouteMGenLeafIntegrand
+-- Phase A of the general achiever Jacobian det (network-free, pure matrix algebra): the parametric
+-- Schur-frame det `schurFrame_abs_det : |det DS| = |det K|^{r+c}` (via an abstract `lowerTri` block-
+-- triangular nest — the `frameB`-free replacement for the (3,3,3,3) hand det), + the A1 `det_mulLeft/Right`
+-- blocks. Validated to reproduce `Frame3333Deriv_det`'s K-blocks. The det-engine keystone for the ∀M atom.
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurFrameDet
+-- Phase B (toward the ∀M achiever atom): the general flat-frame chart `chartParamsFlat := chartParamsGen ∘
+-- genBlkFlat` with the ∀M general C1 keystone `chartParamsFlat_eq_chartParamsGen` (definitional `rfl`) —
+-- so `routeMCore_chartParamsFlat = u²·V` (the RATE side complete ∀M) — + the opaque-width chain↔frame
+-- entry-law bricks (`chainA/Q_apply_castAdd/natAdd`, `chainUnit_det`) bridging the abstract chart to the
+-- Phase-A Schur/LDU factors. (`phiFlat_abs_det` — the det telescope — is the next multi-pass build.)
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChainBridge
+import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatChart
+-- The B3 prefix-fold det SPINE (the det algebra fully assembled): `ChartFactor` + `composeFold`
+-- (chain rule folded over a factor list, with the prefix-evaluation `Frame3333Deriv (Kparam3333 u)`
+-- pattern) + `composeFold_abs_det` (the det telescope via `general_composed_clm_abs_det`). Consumes the
+-- per-factor dets (Schur/LDU/chain/radial). `phiFlat_abs_det` (the opaque-width chart reconciliation) is next.
+import DLNFibre.DLN.RLCT.Validate.RouteMChartFactorFold
+-- Item-1 of the ∀M achiever Jacobian det: the det-ready bijective coordinatization. `RouteMChartIdxCard`
+-- (the per-role cardinality bricks) + `RouteMChartIdx` (`chartDim_eq_flatDim` — the chart-coord count
+-- = `flatDim M`, ∀M) + `RouteMChartIdxEquiv` (`chartIdxEquiv : Fin (routeMAmbient M) ≃ ChartIdx M t`).
+-- + `RouteMRadialFactor` (the radial `ChartFactor` + its det `|u_p|^{card−1}`, item-2 first factor).
+import DLNFibre.DLN.RLCT.Validate.RouteMExtraction
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxCard
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdx
+import DLNFibre.DLN.RLCT.Validate.RouteMChartIdxEquiv
+import DLNFibre.DLN.RLCT.Validate.RouteMRadialFactor
+-- Item-2 of the ∀M achiever Jacobian det (the factor conjugates, DONE ∀M) + the item-3 slot-reader
+-- foundation: `RouteMConjBlock` (det-preserving block conjugation), `RouteMFactorFDeriv`
+-- (`HasFDerivAt.matMul`), `RouteMFactorMaps` (the Schur/LDU/chain `ChartFactor` conjugates + dets),
+-- `RouteMChartSlots` (the DISJOINT role-slot reader API on `chartIdxEquiv`), `RouteMPhiFlatDet`
+-- (`phiFlat_abs_det_of_factored` — the det telescope, conditional on the item-3 map equality + leafH).
+import DLNFibre.DLN.RLCT.Validate.RouteMConjBlock
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorFDeriv
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
+import DLNFibre.DLN.RLCT.Validate.RouteMChartSlots
+-- `RouteMGenFlatStruct`: the STRUCTURED disjoint-slot decoder `genBlkFlatStruct`
+-- (derived Schur-frame blocks), the identity boundary `C0_eq_one`, and the
+-- UNCONDITIONAL rate `routeMCore (phiFlatStruct u) = u²·V` ∀M (`routeMCore_phiFlatStruct`).
+import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
+import DLNFibre.DLN.RLCT.Validate.RouteMPhiFlatDet
+-- The general-M achiever chart, RATE side ∀M + the bridge bricks (thread 36):
+-- `RouteMFlatStructV` — the vector chart `phiFlatStructV` + the RATE ∀M with NO bridge
+-- (`routeMCore_phiFlatStructV : routeMCore M (phiFlatStructV x) = (x p)²·U`); `RouteMPhiTargetDet`
+-- (`phiTarget_abs_det_of_factored`, det for ANY target given `composeFold fs = φ`); `RouteMCLEConj`
+-- (`composeFold_eq_cleConj_foldr` — the OPTION-1 collapse to a Params-level `funext s`);
+-- `RouteMLinearFactor` / `RouteMChainVar` (the reusable + variable-N chain factor bricks, det 1);
+-- `RouteM4422Bridge` (validate-small: the (4,4,2,2) chart AS a fold, det via the generic machinery).
+import DLNFibre.DLN.RLCT.Validate.RouteMFlatStructV
+import DLNFibre.DLN.RLCT.Validate.RouteMPhiTargetDet
+import DLNFibre.DLN.RLCT.Validate.RouteMCLEConj
+import DLNFibre.DLN.RLCT.Validate.RouteMLinearFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMChainVar
+import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
+-- Brick (a) of the coordinate-alignment bridge (ARCH-1): the single collapse CLE
+-- `bridgeCLE M := (paramsEquivFlatCLE M).symm` absorbs the chartIdxEquiv-slot ↔ Params
+-- alignment by CLE CANCELLATION (`genBlkParamsStruct_bridgeCLE`), reducing the bridge to a
+-- Params-level `funext s` (`composeFold_bridge_eq`). `RouteM222StructAdm` — the LAYERED
+-- validate-small anchor ((2,2,2), t=(2,1,1)); `RouteMRoleCLE` — the per-role Params-split CLE engine.
+import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
+import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
+import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
+import DLNFibre.DLN.RLCT.AxCheck

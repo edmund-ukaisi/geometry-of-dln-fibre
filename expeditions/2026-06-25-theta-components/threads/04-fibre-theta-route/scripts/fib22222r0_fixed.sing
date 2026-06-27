@@ -1,0 +1,22 @@
+LIB "primdec.lib";
+// (2,2,2,2,2): 5 vertices d_0..d_4 => N=4 arrows => 4 factors A_1,A_2,A_3,A_4.
+// mult = A_4 A_3 A_2 A_1.  r=0 => mult^{-1}(0) zero-product locus in k^16.
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22, c11,c12,c21,c22, e11,e12,e21,e22), dp;
+matrix A[2][2] = a11,a12,a21,a22;
+matrix B[2][2] = b11,b12,b21,b22;
+matrix C[2][2] = c11,c12,c21,c22;
+matrix E[2][2] = e11,e12,e21,e22;
+matrix P = E*C*B*A;       // 4 factors
+ideal I = P[1,1],P[1,2],P[2,1],P[2,2];
+ideal sI = std(I);
+"DIM:", dim(sI), "CODIM:", 16 - dim(sI);
+list mp = minAssGTZ(I);
+"NMINPRIMES:", size(mp);
+int i; int top=0; int lower=0; int cod=16-dim(sI);
+for(i=1;i<=size(mp);i++){
+  int dd = dim(std(mp[i]));
+  if (16-dd==cod){top=top+1;} else {lower=lower+1;}
+  "  comp",i,"dim",dd,"codim",16-dd;
+}
+"TOP(codim",cod,"):",top," LOWER:",lower;
+quit;

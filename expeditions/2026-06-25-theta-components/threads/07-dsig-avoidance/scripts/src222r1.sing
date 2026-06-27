@@ -1,0 +1,38 @@
+LIB "primdec.lib";
+// (2,2,2): N=2, two 2x2 factor matrices A1 (arrow 0->1), A2 (arrow 1->2). mult = A2 * A1.
+// d = (2,2,2). r=1. Source side: Sigma^1 = {rank(A2*A1) <= 1}.
+// sigmaIdeal = ideal of all 2x2 minors of P = A2*A1 (the (r+1)=(2)-minors).
+ring R = 0, (a11,a12,a21,a22, b11,b12,b21,b22), dp;
+matrix A1[2][2] = a11,a12,a21,a22;
+matrix A2[2][2] = b11,b12,b21,b22;
+matrix P = A2*A1;
+// 2x2 minors of P (P is 2x2, so just det P): rank<=1 means det P = 0.
+ideal I = det(P);
+// detDelta = top-left r x r = top-left 1x1 minor of P = P[1,1]
+poly detD = P[1,1];
+int nv = nvars(R);
+"nvars =", nv;
+ideal Ir = radical(I);
+list pd = minAssGTZ(I);
+"num minimal primes =", size(pd);
+int i;
+int dmax = -1;
+intvec dims;
+for (i=1; i<=size(pd); i++) {
+  ideal pri = std(pd[i]);
+  int di = dim(pri);
+  dims[i] = di;
+  if (di > dmax) { dmax = di; }
+}
+"dims of components (variety dim) =", dims;
+"max dim =", dmax, "  => min codim =", nv - dmax;
+"--- per top-dim component: is detD in p? (NF(detD)==0 means detD vanishes => BAD) ---";
+for (i=1; i<=size(pd); i++) {
+  if (dims[i] == dmax) {
+    ideal pri = std(pd[i]);
+    "COMPONENT", i, " dim=", dims[i], " codim=", nv-dims[i];
+    "  generators:", pd[i];
+    "  NF(detD) mod p =", reduce(detD, pri), "   (0 => detD in p => BAD)";
+  }
+}
+quit;

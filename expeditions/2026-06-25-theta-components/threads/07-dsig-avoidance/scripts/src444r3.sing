@@ -1,0 +1,15 @@
+LIB "primdec.lib";
+ring R = 0, (a(1..16), b(1..16)), dp;
+matrix A1[4][4]=a(1..16);
+matrix A2[4][4]=b(1..16);
+matrix P = A2*A1;
+ideal I = det(P);
+matrix Ptl[3][3]=P[1,1],P[1,2],P[1,3],P[2,1],P[2,2],P[2,3],P[3,1],P[3,2],P[3,3];
+poly detD=det(Ptl);
+list pd=minAssGTZ(I);
+int i; intvec dims; int dmax=-1;
+for(i=1;i<=size(pd);i++){ ideal pri=std(pd[i]); dims[i]=dim(pri); if(dims[i]>dmax){dmax=dims[i];} }
+int ntop=0; int bad=0;
+for(i=1;i<=size(pd);i++){ if(dims[i]==dmax){ ntop++; ideal pri=std(pd[i]); if(reduce(detD,pri)==0){bad++;} } }
+"(4,4,4) r=3: nvars=32 mincodim=",32-dmax," #top=",ntop," #BAD=",bad;
+quit;
