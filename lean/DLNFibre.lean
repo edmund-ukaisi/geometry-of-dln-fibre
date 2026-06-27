@@ -479,6 +479,23 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryClass
 -- (the `active.card = minAdm` fact the radial blow-up's det exponent `minAdm−1` consumes).
 import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanMinAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanChart
+-- BOUNDARY-CLEAN branch (WALL 2): the clean radial chart `pivotBlowupOn deepestCoords` discharges the
+-- achiever atom ∀ M with `NoInteriorBothDrop` — `RouteMBoundaryCleanRate` (`routeMCore_cleanPhi`, the
+-- loss factorization via the once-paid `paramsEquivFlat_symm_decode`), `RouteMBoundaryCleanU`
+-- (`UPolyClean_ne_zero`/`cleanUbound`, U≢0 a.e.), `RouteMBoundaryCleanChartFull` (`cleanNodeChart` +
+-- `routeMCore_box_diverges_clean`, a.e. `leaf_integrand` via `Eventually.of_forall`, det/cov via the
+-- GENERIC `pivotBlowupOn` lemmas — the easy polynomial branch). Reviewer-PASS, validated on (4,4,2,2).
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanRate
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanU
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanChartFull
+-- R1-general achiever SMEARED branch — (1,2,1) validate-small. The boundary-SMEARED M (r < m1) use a
+-- RATIONAL single-pivot chart whose pole makes `image_subset` fail, so the reusable
+-- `routeMCore_box_diverges_of_MPChart` discharges the atom via a MeasurePreserving final step
+-- (`∫_{cubeBox}=∫_{φ⁻¹(cubeBox)}`, no image-containment) — the polynomial interior/clean charts keep
+-- `image_subset` untouched. The (1,2,1) atom `routeM121sm_box_diverges` is S2-FREE (divergence from the 1D
+-- `abs_rpow_lintegral_Ioo_eq_top` first principle, NOT `monomial_rlct`). Banks the ∀M-smeared lift shape.
+-- (Foundations CoreShearMP/ParamsReshapeMP already imported transitively.)
+import DLNFibre.DLN.RLCT.Validate.RouteM121Smeared
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin

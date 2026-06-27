@@ -1,13 +1,17 @@
-# Statement card — `RouteMSchur` (general-M R1 hfin Schur/radial ladder): N1, N2a, N3a, N3b PROVED; N2b, N4 skeleton
+# Statement card — `RouteMSchur` (general-M R1 hfin Schur/radial ladder): N1, N2a, N2b, N3a, N3b PROVED; N4 skeleton
 
 > **Module.** `DLNFibre.DLN.RLCT.Validate.RouteMSchur`
 > (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSchur.lean` @ `<uncommitted — controller pins SHA>`;
-> base merge of `origin/expedition/aoyagi-full` @ `8161f79e`). NOT yet wired into `DLNFibre.lean`
-> (single-writer aggregator — controller adds the import).
+> base `origin/expedition/aoyagi-full`). **Two NEW helper modules** carry the N2b infrastructure:
+> `RouteMSchurShear.lean` (the Cramer minor-ratio shear bounds) and `RouteMSchurAlg.lean` (the frobSq
+> algebra + the abstract key identity + the abstract comparison + the `Fin r` block split). NOT yet
+> wired into `DLNFibre.lean` (single-writer aggregator — controller adds the three imports
+> `RouteMSchurShear`, `RouteMSchurAlg`, `RouteMSchur`).
 >
 > **Scope.** The four NEW targets of the `L32a-cover-cert.md` §4 build-ready design for the general-`M`
 > R1 hfin (upper-bound finiteness) ladder, validated toward the smallest binding corank-2 case `(3,3,4)`.
-> Five lemmas PROVED axiom-clean; two honest skeletons (correct, faithful statements + `sorry`).
+> N1, N2a, **N2b (general `r`)**, N3a, N3b PROVED axiom-clean; one honest skeleton (N4, the multi-tide
+> measure-theoretic endpoint).
 
 ## Proved (axiom-clean `[propext, Classical.choice, Quot.sound]`, no `monomial_rlct`, no new axiom)
 
@@ -32,21 +36,35 @@
   Tonelli (`lintegral_const_mul'`/`lintegral_mul_const'`) separates the a-axis (N3a) from the inner
   R-integral (`hSfin`); `ENNReal.mul_lt_top` of two finites. **Closed in full** (the cert rated N3 MEDIUM
   risk; the a-axis/inner Tonelli split went through cleanly given the inner hypothesis). S2-FREE.
+- **N2b `schur_minorPivot_split` (general `r`, PROVED)** — on the **bounded complete-pivoting cell**
+  (`|R a b| ≤ 1` AND `M11` = a max-modulus `j×j` minor, `det M11 ≠ 0`), the two-sided UNIFORM-constant
+  comparison `c₀·(frobSq (R·S)_top + frobSq (Sc·S_bot)) ≤ frobSq (R·S) ≤ c₁·(...)` with explicit
+  `(c₀, c₁) = (1/(2+2·j·(r−j)), 2+2·j·(r−j))` (quantified BEFORE `∀ R S` — uniform), the structural Schur
+  complement `Sc = M22 − M21·M11⁻¹·M12`, and the Schur det identity `R.det = M11.det · Sc.det`. NON-VACUITY
+  GATE PASSED (exhaustive + adversarial + det→0-edge, `L32a_N2b_{exact_lean,adversarial}.py`): the ratio
+  `frobSq(R·S)/D ∈ [0.245, 3.39]` across `r=2,3,4` all `j` ON the cell, UNbounded (spread up to 2e8) OFF
+  the cell. **The de-risking finding** (`L32a_N2b_{rawvsQ,keyident}.py`, residual `< 1.6e-12` up to `r=5`):
+  the whole `L⁻¹·diag·U⁻¹` block-Gauss machinery is UNNECESSARY — one algebraic identity collapses it:
+  `(R·S)_bot = (M21·M11⁻¹)·(R·S)_top + Sc·S_bot` (needs only `M11·M11⁻¹ = 1`). Importantly the statement's
+  raw blocks `(R·S)_top` and `Sc·S_bot` ARE the natural normal-form blocks (`Q = S_bot` and
+  `(R·S)_top = M11·P` exactly), so no fidelity gap. **Proof route (Codex route ii, raw-frobSq, no opNorm):**
+  `schur_key_identity` (the collapse) + `rowShear_entry_le_one` (the Cramer minor-ratio `|A entry| ≤ 1`,
+  the documented long-pole) + `frobSq_add_le` + `frobSq_rmatMul_entryBound_le` (Cauchy-Schwarz) +
+  `frobSq_fin_block_split` + the Schur det identity (`det_fromBlocks₁₁` + a `Fin r ≃ Fin j ⊕ Fin (r−j)`
+  reindex). S2-FREE. The `r=2` rank-1 case is the clean N2a (subsumed).
+
+### N2b supporting lemmas (all PROVED axiom-clean, in the two helper modules)
+- `RouteMSchurShear.colShear_entry_le_one` / `rowShear_entry_le_one` — `|(M11⁻¹·M12) entry| ≤ 1` and
+  `|(M21·M11⁻¹) entry| ≤ 1` on the max-modulus-minor cell (via `inv_def` + `cramer_apply` +
+  `updateCol_submatrix_eq` + `hpivot`; the row version is the transpose dual). The cert's "main
+  formalisation cost."
+- `RouteMSchurAlg.schur_key_identity` — the abstract algebraic collapse.
+- `RouteMSchurAlg.schur_abstract_comparison` — the abstract two-sided frobSq comparison, explicit constants.
+- `RouteMSchurAlg.frobSq_add_le`, `frobSq_rmatMul_entryBound_le`, `fin_sum_block_split`,
+  `frobSq_fin_block_split` — the elementary frobSq algebra + the `Fin r` block reindex.
 
 ## Skeleton (correct, faithful statement + `sorry` — building blocks, NOT committed)
 
-- **N2b `schur_minorPivot_split` (general `r`)** — on the **bounded complete-pivoting cell**
-  (`|R a b| ≤ 1` AND `M11` = a max-modulus `j×j` minor), the **two-sided UNIFORM-constant comparison**
-  `c₀·(frobSq (R·S)_top + frobSq (Sc·S_bot)) ≤ frobSq (R·S) ≤ c₁·(...)`. Three soundness pins
-  (reviewer/Codex-checked, after the first draft was found VACUOUS): (1) `c₀,c₁` quantified BEFORE `∀ R S`
-  (uniform) — the cell hypotheses are REQUIRED, not decorative: numerically the ratio `‖R·S‖²/D` is
-  UNbounded over all `{det M11 ≠ 0}` (range 0.0025–26) but tight `≈[0.47, 2.5]` on the cell across
-  `r=2,3,4`; (2) Morse block `P := (R·S)_top` (the sheared block `M11·S'_top`), NOT raw `S_top` (which
-  is FALSE); `Q := S_bot`; (3) `Sc` STRUCTURALLY pinned to `M22 − M21·M11⁻¹·M12` (not merely by det) +
-  the Schur det identity `R.det = M11.det · Sc.det`. The `r=2` rank-1 case is the clean equality N2a.
-  **GAP:** the general `r ≥ 3` block-Gauss det-1 normal form `L·R·U = diag(M11, Sc)` (positive-definite
-  rank-`j` coupling Gram). De-risked in `minorpivot-cert.md` (R1–R4: comparison-not-equality, Cramer
-  minor-ratio shear ≤1, deterministic tie-break, per-level re-pinning). MEDIUM risk.
 - **N4 `routeMCore_threshold_lt_top` (the hfin conclusion)** — for `c' < ½·minAdm M`,
   `∫_{routeMBaseNbhd M} |routeMCore M x|^{−c'} < ⊤`. The general-`M` analog of
   `routeMCore_M4422_threshold_lt_top`. Discharges the `hfin` field of `routeMLayerCover_of_atoms` (given
@@ -60,13 +78,30 @@
 ## S2-hygiene
 The hfin CONCLUSION is proven S2-FREE (Morse leaves, the a-divisor 1-D monomial, Tonelli, Schur splits,
 radial Jacobian dets). `monomial_rlct` (S2) enters ONLY the leaf-sum hypothesis side of `hfin` — the same
-S2 use the headline already rides. The five proved lemmas are each `[propext, Classical.choice, Quot.sound]`
-(verified by `#print axioms`). No NEW axiom. When N4 is filled, its `#print axioms` must stay within
+S2 use the headline already rides. All N1/N2a/N2b/N3a/N3b lemmas + the N2b supporting lemmas are each
+`[propext, Classical.choice, Quot.sound]` (verified by FORCED `#print axioms` after a force-rebuild — no
+`sorryAx`, no `monomial_rlct`, no new axiom). When N4 is filled, its `#print axioms` must stay within
 `[propext, Classical.choice, Quot.sound, monomial_rlct]`.
 
 ## Status
-Module builds green via `scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSchur` (286 LoC). Two `sorry`
-(N2b, N4), both faithful non-vacuous statements (N2b repaired after a reviewer/Codex vacuity finding —
-the first draft re-chose constants per `(R,S)`). No `axiom`/`native_decide`/`#exit`. The base headline
-gate (`DLNFibre.DLN.RLCT.AxCheck`) still builds green post-merge. Awaiting reviewer re-confirmation +
-controller aggregator wiring (NOT yet imported in `DLNFibre.lean`).
+- `RouteMSchurShear.lean` builds green (`scripts/lb`, 8248 jobs); `RouteMSchurAlg.lean` green (2682 jobs);
+  `RouteMSchur.lean` green (8281 jobs, force-rebuilt after olean delete). The full base `scripts/lb
+  DLNFibre` still builds green (8494 jobs) post-edits.
+- **N2b PROVED sorry-free + axiom-clean** (`#print axioms schur_minorPivot_split` →
+  `[propext, Classical.choice, Quot.sound]`, forced). The ONLY remaining `sorry` in `RouteMSchur.lean` is
+  N4 (the multi-tide measure-theoretic endpoint, out of this leg's scope).
+- Name-clash gate: `rg` of all new top-level names (`schur_minorPivot_split`, `schur_key_identity`,
+  `schur_abstract_comparison`, `colShear/rowShear_entry_le_one`, `frobSq_add_le`,
+  `frobSq_rmatMul_entryBound_le`, `fin_sum_block_split`, `frobSq_fin_block_split`,
+  `inv_mulVec_eq_cramer_ratio`, `inv_mul_eq_inv_mulVec_col`, `updateCol_submatrix_eq`) against the whole
+  `DLNFibre/` tree — NO clashes.
+- No `axiom`/`native_decide`/`#exit`.
+- **FIDELITY REVIEW: SURVIVED** (independent `reviewer` seat, decorrelated-Codex-corroborated). The Lean
+  statement faithfully encodes the L3.2a minor-pivot Schur comparison: constants uniform (before `∀ R S`),
+  all three cell hyps required+load-bearing, top block `(R·S)_top` not raw `S_top`, `Sc` structurally
+  pinned, det identity + two-sided comparison both delivered. Reviewer independently re-ran the
+  non-vacuity scripts (`|Q − S_bot| = 0` exactly — raw blocks ARE the normal-form blocks) and force-checked
+  the axioms by deleting the olean. Degenerate `j=0`/`j=r` are correct instances, not holes. No mismatch,
+  no vacuity, no over-claim.
+- Awaiting controller aggregator wiring (the three imports `RouteMSchurShear`, `RouteMSchurAlg`,
+  `RouteMSchur` are NOT yet in `DLNFibre.lean` — single-writer).

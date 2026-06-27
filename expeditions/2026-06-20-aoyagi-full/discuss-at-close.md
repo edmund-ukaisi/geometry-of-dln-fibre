@@ -693,6 +693,27 @@ merge-base (`413566b3`, dev) — NOT `expedition/aoyagi-full` — so the worktre
 their worktree. FIX for future build tides: instruct the agent to `git merge origin/expedition/aoyagi-full` as
 step 0 (now baked into spawn prompts), OR set `worktree.baseRef = head` in settings so worktrees branch from the
 current HEAD (which is on expedition/aoyagi-full). Operator may prefer the settings fix.
+(c) RECURRENCE + INTEGRATION-SIDE CONSEQUENCE (2026-06-27, confirmed 2nd instance): genm-boundary's worktree
+branch carries a `Merge pull request #11 theta-components` in its history (the worktree-base picked up dev's
+PR-#11 content — `Core/TopDimMinPrimes*`, `ThetaOrderDistinction` — which is NOT on `expedition/aoyagi-full`).
+Consequence for the CONTROLLER: a raw `git diff <my-HEAD> <worktree-HEAD>` is misleading (it mixes PR-#11 base
+noise + shows integrated CLEAN modules as spuriously "deleted"), so branch-level merge of a worktree branch is
+UNSAFE. The mitigation is **file-level copy of the specific deliverable files onto the clean HEAD** (identify the
+agent's own commits via `git log <merge-base>..HEAD`, copy only its touched files, green-gate on my tree). This
+adds per-integration overhead and is now standard practice. **This strengthens the case for the settings fix
+(`worktree.baseRef = head`)** — it would eliminate both the agent-side build gap (36b) and this integration-side
+base-divergence in one stroke. Recommend the operator apply it.
+(d) ESCALATION — the bug now causes a SHARED-CHECKOUT TANGLE, not just a stale base (2026-06-27). `genm-upper`
+(R1-UPPER N2b), spawned with `isolation: worktree`, did NOT get an isolated worktree — it operated with cwd =
+the CONTROLLER's main checkout and wrote its work there (`RouteMSchur.lean` modified + `RouteMSchurAlg`/
+`RouteMSchurShear`/`DetScratch` created, all uncommitted). This is worse than 36b (genm-lift merely lacked the
+aoyagi work): two agents (controller + genm-upper) now share one working tree, risking (i) concurrent `lake build`
+races and (ii) a stray `git add -A` tangling both parties' uncommitted files into one commit. Mitigation this
+time: I asked genm-upper to REST, am holding my (1,2,1) integration until the tree is quiescent, will preserve
+genm-upper's work + re-home it into a proper worktree. **This makes `worktree.baseRef = head` (or whatever makes
+`isolation: worktree` reliably isolate) a HIGH-PRIORITY infra fix — the failure mode has gone from "inconvenient"
+to "actively hazardous to the shared checkout."** Until it's fixed, the controller must check `git status` after
+spawning worktree agents and treat any unexpected main-checkout changes as an isolation failure.
 
 ## 37. ∀M achiever-chart STRUCTURAL gap + a process learning (2026-06-27) — operator awareness, NOT a blocker.
 EXHAUSTIVE exact-arithmetic (genm-witness, 351 M over {1,2,3}^{L+1}, L∈{2,3,4}) found the structured-decoder
