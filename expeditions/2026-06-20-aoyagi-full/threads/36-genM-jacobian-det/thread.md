@@ -588,3 +588,57 @@ chartParams222`, `chartParams222 = pack ∘ pivotBlowupOn {…} 0`, det `|x0|²�
 `phiTarget_abs_det_of_factored` + the measure-preserving pack, the 4422/221 template) → `nodeChart222`
 → discharge the atom for (2,2,2). The rate leg + `B_det222` + the full-rank guard are banked; the det
 leg is the remaining mechanical assembly.
+
+---
+
+## UPDATE-14 (formalisation tide, 2026-06-27) — (2,2,2) DEDUPE + FULL green-gate LANDED; det-leg `φ_det_eq` near-complete, ONE simp-asymmetry handed back
+
+### LANDED (committed `e89c38aa`, pushed; FULL aggregator green)
+- **Dedupe of the clash the controller's green-gate caught** (`RouteM222StructAdm` already defines
+  `M222`/`t222`): `RouteM222Det` now imports `RouteM222StructAdm` and REUSES the shared `M222 = ![2,2,2]`;
+  my achiever-path descent RENAMED `t222 → tach222 = (2,1,0)`, `hle222 → hleach222` (StructAdm's
+  `t222 = (2,1,1)` is the rate-only path, chain-codim 1 ≠ minAdm 3; mine is the genuine achiever path,
+  Text=[2,2,1], chain-codim = minAdm = 3 — GENUINELY differ, hence rename). Dropped the duplicate
+  `routeMAmbient_M222`.
+- **Wired into `DLNFibre.lean`; `scripts/lb` (FULL library) GREEN: `Build completed successfully (8481
+  jobs)`, exit 0, no errors.** The clash is gone; the RATE leg rides the aggregator.
+  (`aoyagi_learning_coefficient`'s `sorryAx` in AxCheck = the expected open headline atom.)
+
+### DET leg `φ_det_eq` — Codex applied; Agen0 LANDED; Agen1 kept-row at a simp-asymmetry (handed back)
+Codex (`codex/cast-residual-*`) diagnosed the `rfl` failure (non-defeq `Fin.cast`/`finCongr` index
+transport from `chainA_apply_castAdd`); fix = `Fin.cast_eq_self` / index normalization. Applied with a
+clean STRUCTURE that LANDED most of it:
+- **Clean chainA helpers** (`chainA0_kept`, `chainA1_kept`, `chainA1_lift`): rewrite the LHS index ONLY
+  (`conv_lhs` + `chainA_apply_castAdd`/`_natAdd`), RHS untouched. PROVEN.
+- **Split** `Agen s = (explicit product form)` (chain reduction) THEN `(product) = chartA*_222` (clean
+  matrix identity, `prod0_eq`/`prod1_eq`). The product identities `prod0_eq`/`prod1_eq` PROVEN
+  (`fin_cases <;> simp <;> ring_nf`).
+- **`Agen0_222_eq` LANDED** (`rw [hA, ← prod0_eq]; ext; conv_lhs reduce; fin_cases <;> rfl` — the
+  `← prod0_eq` puts BOTH sides in the same product form so `fin_cases <;> rfl` closes; the winning
+  pattern). **`Agen1_222_eq` lift-row LANDED.**
+
+THE ONE RESIDUAL (`Agen1_222_eq` kept row): after the chainA reduction + index normalization, the goal
+is the CLEAN scalar `(x 0 • !![1,x 7]) 0 0 - (!![x 1] * !![x 2,x 3]) 0 0 = x 0 - x 1 * x 2` (literal
+`0 0` indices). This EXACT goal closes by bare `simp [Matrix.sub_apply, Matrix.mul_apply,
+Fin.sum_univ_one, Matrix.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+smul_eq_mul]` IN ISOLATION (`/tmp/probe_280.lean` passes, `ring_nf` then errors "no goals"). But the
+SAME tactic IN-CONTEXT reports "simp made no progress" / leaves the goal — an asymmetry where `simp`
+reduces the RHS (`prod1_eq`'s `!![(x0•1)−x1x2,..]` → `x0−x1x2`) but does NOT fire `Matrix.smul_apply`/
+`mul_apply` on the IDENTICAL-looking LHS. Likely the in-context `0` indices are typed at
+`Fin (Wext M222 2)` / `Fin (Text M222 tach222 2)` (defeq `Fin 2`/`Fin 1` but not syntactic), so the
+`@[simp]`-form `Matrix.smul_apply` etc. unify in the isolated `Fin 1`/`Fin 2` probe but not on the
+Wext/Text-typed indices.
+
+This is the cert's KC#1 (dependent-Fin-width index plumbing), now isolated to ONE scalar goal. Per the
+coordinator's fallback ("if the cast quirk STILL resists after the Codex angle, hand me the goal-state +
+what Codex said"). Likely escalation angles: (a) `change`/`show` the LHS indices to the literal `Fin 1`/
+`Fin 2` types before simp (so the matrix-apply lemmas fire as in the probe); (b) a `Matrix.ext`-free
+`prod1_eq`-style direct entry lemma proven AT the Wext/Text-typed indices; (c) `simp only [Matrix.smul_apply,
+Matrix.mul_apply]` with explicit `Finset.univ` unfolding to force the apply through the typed index.
+
+### Status
+Rate leg + dedupe + full green-gate banked + integrated. Det leg ~90% (B_det222, the rate, all chainA
+reductions, prod0/prod1 identities, Agen0, Agen1-lift PROVEN; only Agen1-kept's final scalar simp
+resists in-context). The remaining `cov` (chain-rule det `|x0|²·|x4|`, the 4422/221 template) follows
+once `chartParamsGen_eq_chartParams222` lands. Reverted the WIP det-leg to keep the file green; the
+working pieces are documented above for fast resumption.
