@@ -21,6 +21,40 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The next local retained-passive derivative rung after terminal `dLast` has
+landed locally: the recursive derivative unfold for `dEarly`.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-recursive-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-recursive-unfold.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-recursive-unfold.md`.
+
+Lean proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply` in
+`RetainedPassiveCoordinatesDerivative.lean`.  For arbitrary
+`p : Fin (M + 1)`, it rewrites the Frechet derivative of the lower-left
+product-tail sum at `p` into the derivative of the current summand
+`-(Cprod * A3p * Pcast^-1)` plus the successor-tail derivative.  The summand
+derivative remains explicit, and `A3p` is `retainedPassiveA3WithoutLast`, not
+the solved terminal lower-left block.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative`
+passed, the full `DLNFibre` build passed, `scripts/sorries` and
+`git diff --check` passed, and the theorem axiom audit reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Faraday` passed
+the implementation review.
+
+Nonclaims: no full positive-tail `F3` target staging, no source or target
+staging for `dD`, `dG`, or `dP`, no determinant-one target-side `LinearEquiv`,
+no actual derivative determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.
+
+Next frontier on this local ladder: expand or stage the current summand
+derivative pieces `dD`, `dG`, and `dP`, then iterate the `dEarly` recurrence
+before substituting it into the positive-tail `F3` bridge.
+
+Immediate predecessor: positive-tail terminal `dLast` staging.
+
 After xhigh scout convergence, the positive-tail terminal `dLast` staging
 slice has been reproduced and formalized locally.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-dlast-target-staged.md`.

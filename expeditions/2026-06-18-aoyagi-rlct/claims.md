@@ -9693,6 +9693,53 @@ for `Early`, no whole-tuple target-side normalization, no target-side
 determinant-one `LinearEquiv`, no determinant equality, no
 measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly recursive derivative unfold
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build and full `DLNFibre` build passed; `scripts/sorries`,
+`git diff --check`, and axiom audit passed; xhigh math/Lean/hardener scout
+checks and implementation review passed.
+
+Claim: the derivative of the lower-left product-tail sum used as `Early`
+unfolds recursively.  For arbitrary `p : Fin (M + 1)`, the Frechet derivative
+of
+
+```text
+retainedPassiveLowerLeftProductTailSum A_y B_y C_y p.val
+```
+
+is the derivative of the current summand
+
+```text
+fun y => -(Cprod y * A3p y * (Pcast y)^-1)
+```
+
+plus the derivative of the successor tail.  The current summand derivative is
+kept explicit.
+
+Lean proves this as
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-recursive-unfold.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-recursive-unfold.md`.
+
+Review:
+xhigh `Faraday` passed the implementation review, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-recursive-unfold.md`.
+
+Kill condition: if the theorem replaces `retainedPassiveA3WithoutLast` by the
+solved terminal lower-left block, commutes matrix factors, or claims source
+staging, target staging, determinant equality, measure transport, normal
+crossings, pole order, or RLCT, it is not the intended slice.
+
+Nonclaims: no full positive-tail `F3` target staging, no source or target
+staging for `dD`, `dG`, or `dP`, no whole-tuple target-side normalization, no
+target-side determinant-one `LinearEquiv`, no determinant equality, no
+measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive target edge-pair recovery
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

@@ -14793,3 +14793,41 @@ target staging.  Focused module build and full `DLNFibre` build passed via
 `git diff --check` passed; theorem axiom audits report only
 `[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Raman` passed the
 implementation review.
+
+## Latest A2 Retained-Passive dEarly Recursive Derivative Unfold
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply
+```
+
+This is the first `dEarly` rung after the positive-tail terminal `dLast`
+substitution.  It applies the existing structural recurrence for
+`retainedPassiveLowerLeftProductTailSum` under `fderiv`: for arbitrary
+`p : Fin (M + 1)`, the derivative of the tail at `p.val` is the derivative of
+the current summand
+
+```text
+fun y => -(Cprod y * A3p y * (Pcast y)^-1)
+```
+
+plus the derivative of the successor tail.  The theorem deliberately keeps the
+current summand derivative explicit.  It does not expand the inverse
+derivative and does not source-stage or target-stage `dD`, `dG`, or `dP`.
+The lower-left factor `A3p` is `retainedPassiveA3WithoutLast`, whose terminal
+value is zero; it is not the solved terminal lower-left block.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-recursive-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-recursive-unfold.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-recursive-unfold.md`
+passed by xhigh `Faraday`.  Focused module build and full `DLNFibre` build
+passed; `scripts/sorries` and `git diff --check` passed; theorem axiom audit
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full positive-tail `F3` target staging, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant equality, no
+measure transport, no normal crossings, pole order, or RLCT.

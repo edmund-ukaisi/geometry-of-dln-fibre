@@ -11471,3 +11471,27 @@ multiplier; it is not set to zero.  Nonclaims: no full positive-tail `F3`
 target staging, no whole-tuple target-side normalization, no determinant-one
 target-side `LinearEquiv`, no actual derivative determinant formula, no
 measure theorem, no normal crossings, pole order, or RLCT.
+
+Latest A2 retained-passive dEarly recursive derivative unfold:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-recursive-unfold.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-recursive-unfold.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-recursive-unfold.md`
+passed by xhigh `Faraday`.
+
+The theorem applies the structural recurrence
+`retainedPassiveLowerLeftProductTailSum_castSucc` under `fderiv`: for arbitrary
+`p : Fin (M + 1)`, the derivative of the lower-left product-tail sum at `p`
+is the derivative of the current summand
+`-(Cprod * A3p * Pcast^-1)` plus the derivative of the successor tail.  The
+current summand derivative remains explicit.  `A3p` is the zeroed family
+`retainedPassiveA3WithoutLast`, not the solved terminal lower-left block.
+Focused module build and full `DLNFibre` build passed; `scripts/sorries`,
+`git diff --check`, and axiom audit passed.  Nonclaims: no source or
+target staging for the summand derivative pieces, no full positive-tail `F3`
+target staging, no determinant theorem, no measure theorem, no normal
+crossings, pole order, or RLCT.

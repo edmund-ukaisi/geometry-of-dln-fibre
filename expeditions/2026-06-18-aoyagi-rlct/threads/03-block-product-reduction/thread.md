@@ -18,6 +18,46 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly recursive derivative unfold
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-recursive-unfold.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-recursive-unfold.md`.
+Review:
+`review-a2-retained-passive-dearly-recursive-unfold.md`, PASS by xhigh
+`Faraday`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassiveLowerLeftProductTailSum_castSucc_apply
+```
+
+This is the minimal recursive `dEarly` derivative unfold.  For arbitrary
+`p : Fin (M + 1)`, the derivative of the tail
+`retainedPassiveLowerLeftProductTailSum ... p.val` is rewritten as the
+derivative of the current summand
+
+```text
+fun y => -(Cprod y * A3p y * (Pcast y)^-1)
+```
+
+plus the derivative of the successor tail.  The current summand derivative is
+kept explicit; no source or target staging is claimed.  `A3p` is the zeroed
+family `retainedPassiveA3WithoutLast`, not the solved terminal lower-left
+block.
+
+Focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Full
+`DLNFibre` build passed; `scripts/sorries`, `git diff --check`, and axiom audit
+passed.
+
+Nonclaims: no full positive-tail `F3` target staging, no source or target
+staging for `dD`, `dG`, or `dP`, no determinant-one `LinearEquiv`, no actual
+derivative determinant equality, no measure transport, no normal crossings, no
+pole order, and no RLCT.
+
 ## 2026-06-27 A2 F3 positive-tail dLast target-staged shear
 
 Reproduction:
