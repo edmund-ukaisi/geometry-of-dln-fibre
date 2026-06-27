@@ -48,3 +48,30 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
 - S3: atlas-routed vs cheap flatness (resolve in-tide).
 - S4: is source-side local-triviality over `rankROpen` satisfying without R1's full overlap cocycle?
   (decide at S4 integration).
+
+## Tick log
+
+- **tick 1 (backstop, 2026-06-27 ~13:37):** drift-glance only. S1 tide = agent `af34fd6c…` in
+  `worktree-agent-af34fd6c6aa0a2a92`; S2 tide = agent `ae7ddc5b…` in
+  `worktree-agent-ae7ddc5b65cb7e502` — both branched from `origin/dev` (06b30931), **no commits yet**,
+  still running (no completion ping). Isolation confirmed working (distinct worktrees) despite controller
+  being in a worktree. Tides report via SendMessage (their worktrees lack the expedition dir — controller
+  owns canonical docs). No operator edit to `priorities.md`. Nothing actionable; re-sleep. Other repo
+  expeditions active (`aoyagi-rlct`, `aoyagi-full`) — not ours, untouched.
+
+- **tick 2 (both spine tides landed + integrated, 2026-06-27 ~13:35):** S1 (`FibreRankBridge.lean`) and
+  S2 (`FibreSmoothBlock.lean`) both delivered green/sorry-free/axiom-clean, each fidelity-reviewed +
+  Codex-concurred. Controller precision-check: PASS on both (name=content, residuals named).
+  - **S1**: full `↔` `mem_rankROpen_iff_rank_universalMatrixResidue_eq`; the "≤" criterion was already
+    banked (`rank_le_iff_forall_submatrix_det_eq_zero`, `RankLocusClosed`) — reused. Scope: set-of-primes
+    identity (no structure-sheaf object); vacuous in rank-unachievable regime (recorded).
+  - **S2**: caught my brief's Kähler/conormal conflation — delivered the honest `rank(Ω)+codim=ambient`
+    (Kähler/relative-dimension side); conormal-rank-=-codim split out as **S2b**.
+  - **Integration**: S1 left its work UNCOMMITTED in its worktree (process slip; product sound) — copied
+    from disk; S2 committed (7f8ccd2c) — also copied from disk for uniformity. Wired both imports into
+    `DLNFibre.lean` (append-only). **Green-gate: `scripts/lb … DLNFibre` → 3809 jobs, success; sorries
+    0/0/0/0; no new warnings** (the two long-line warnings at `DLNFibre.lean:375-76` are pre-existing
+    `ThetaOrderDistinction` comments). Committed to `expedition/fibration-geometry`.
+  - **Next**: spawn hardener (decorrelated bedrock on S1+S2, thread 05); launch S3 (flatness) + S4
+    (locallyTrivial) tides — both unblocked by S1; instruct to base on `expedition/fibration-geometry`
+    (origin/dev lacks the landed modules — the cross-base rule). S2b parked for the next wave.

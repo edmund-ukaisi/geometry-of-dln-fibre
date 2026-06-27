@@ -50,17 +50,20 @@ itself (Mathlib has zero RLCT/zeta content — that is the next expedition's her
 Each rung is a tide to bedrock: green, sorry-free, axiom-clean, AUDIT + decorrelated review + hardener
 pass, **name = content**.
 
-- **S1 — Rank-bridge keystone.** Build the over-field minor-rank criterion (the "≤" direction:
-  all `(r+1)`-minors vanish ⟹ `rank ≤ r` over a field), dual to
-  `RankMinorCover.exists_invertible_minor_of_rank`. Then the prime/residue-field rank bridge:
-  for `P ∈ Spec(sweepSigmaRing)`, `P ∈ rankROpen ↔ rank over κ(P) of the universal matrix = r`
-  (det-side route: `RingHom.map_det` + κ(P) is a field). Lands the scheme-level identity
-  `rankROpen = {rank = r}`. **Keystone — gates S3, S4.**
-- **S2 — Smooth-block certificate.** At each top-component generic point, the conormal/Kähler module is
-  **free of rank = codim** (the standard-smooth Jacobian local model), via
-  `IsSmoothAt.exists_notMem_isStandardSmooth` + `StandardSmoothCotangent.free_cotangent`/`basisCotangent`,
-  on top of the banked unconditional generic smoothness (`isSmoothAt_sweepFibre_topComponent`).
-  **RLCT-runway slab 1** (the local upper-bound model). Independent of S1 — runs in parallel.
+- **S1 — Rank-bridge keystone. [LANDED — `FibreRankBridge.lean`]** The prime/residue-field rank bridge
+  `mem_rankROpen_iff_rank_universalMatrixResidue_eq`: for `P ∈ Spec(sweepSigmaRing)`,
+  `P ∈ rankROpen ↔ (universal matrix over κ(P)).rank = r` (full `↔`). The "≤" over-field minor criterion
+  was **already banked** (`rank_le_iff_forall_submatrix_det_eq_zero`, `RankLocusClosed`) — reused, not
+  rebuilt. Closes the scheme-level **set-of-primes** identity `rankROpen = {P | rank over κ(P) = r}`
+  (no structure-sheaf object claimed; vacuously true in the rank-unachievable regime). **Keystone —
+  gates S3, S4.**
+- **S2 — Smooth-block certificate. [LANDED — `FibreSmoothBlock.lean`]** At a smooth closed point of a
+  top-dimensional component, the local **Kähler** module `Ω[A_m⁄k]` is **free**, with
+  `rank(Ω) + codim = ambient` — i.e. `rank(Ω) = ambient − codim = dim(component)` (the *relative*
+  dimension), pinned to the proved codim `C + δ` (`fibre_smoothBlock_certificate`). ⚠ The
+  *conormal* module `I/I²` is the one free of rank `= codim` — a **separate** statement (→ **S2b** /
+  roadmap), not this one (brief's earlier "rank = codim" phrasing was a Kähler/conormal conflation the
+  tide caught). **RLCT-runway slab 1** (the smooth-locus upper-bound model). Was independent of S1.
 - **S3 — Flatness payoff.** `Flat π : mult⁻¹(rankROpen) → rankROpen` via the atlas (chartwise
   product-over-field base change ⟹ flat; flat local on the base + stable under base change). Corollaries:
   `UniversallyOpen.of_flat`, `rankAtStalk` locally constant. Settle the "is flatness cheap without the

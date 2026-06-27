@@ -375,3 +375,11 @@ import DLNFibre.Core.FibreThetaCountArbitrary
 -- r=0), (2) the agreement regime `choose_eq_aoyagiPoleOrder_iff : choose ell a = a(ell−a)+1 ↔ min a (ell−a)
 -- ≤ 1`. Proves the two θ's DIFFER + pins exactly when they agree; asserts NO (false) equality of them.
 import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
+-- fibration-geometry expedition (spine): S1 rank-bridge keystone + S2 smooth-block certificate.
+-- `FibreRankBridge` — the prime/residue-field rank bridge `P ∈ rankROpen ↔ rank over κ(P) = r`,
+-- closing the scheme-level set-of-primes identity `rankROpen = {rank = r}` (gates flatness + the
+-- honest locallyTrivial). `FibreSmoothBlock` — the standard-smooth local model at a smooth closed
+-- point of a top component: Ω free, `rank(Ω) + codim = ambient` (the RLCT-runway's first slab; the
+-- Kähler/relative-dimension side, NOT the conormal rank-=-codim).
+import DLNFibre.Core.FibreRankBridge
+import DLNFibre.Core.FibreSmoothBlock

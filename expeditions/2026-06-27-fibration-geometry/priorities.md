@@ -7,11 +7,12 @@ directly** (highest-authority signal). Nothing unranked; "unclear-but-keep-going
 
 | # | item | status | VOI / note |
 |---|------|--------|-----------|
-| P1 | **S1 rank-bridge keystone** — over-field "≤" minor criterion → prime/κ(P) rank bridge → `rankROpen = {rank = r}` | pursue (tide live) | **highest** — gates S3, S4; the one scheme-level identity still missing. Dual of banked `exists_invertible_minor_of_rank`. |
-| P2 | **S2 smooth-block certificate** — Ω/conormal free rank = codim at top-component generic points | pursue (tide live) | high — SURE-ish; RLCT-runway slab 1; independent of S1 (parallel). |
-| P3 | **S3 flatness payoff** — `Flat π` over `rankROpen` + `UniversallyOpen.of_flat` + `rankAtStalk` loc. const. | queued (after S1) | high — load-bearing global consequence; Mathlib coverage rich. Test "cheap flatness?" inside build. |
-| P4 | **S4 honest `locallyTrivial`** — promote the atlas over `rankROpen` using S1 | queued (after S1) | high — the headline deliverable; name = content gate critical. |
+| P1 | **S1 rank-bridge keystone** — `mem_rankROpen_iff_rank_universalMatrixResidue_eq` | **LANDED** · hardener-pending | done — green/axiom-clean; "≤" reused banked `rank_le_iff_forall_submatrix_det_eq_zero`. Set-of-primes identity; gates S3/S4. |
+| P2 | **S2 smooth-block certificate** — `fibre_smoothBlock_certificate` (Kähler Ω free, `rank+codim=ambient`) | **LANDED** · hardener-pending | done — green/axiom-clean; caught + corrected the Kähler/conormal conflation. RLCT-runway slab 1. |
+| P3 | **S3 flatness payoff** — `Flat π` over `rankROpen` + `UniversallyOpen.of_flat` + `rankAtStalk` loc. const. | pursue (tide live) | high — load-bearing global consequence; Mathlib coverage rich. **Test "cheap flatness?" inside build.** Unblocked by S1. |
+| P4 | **S4 honest `locallyTrivial`** — promote the atlas over `rankROpen` using S1 | pursue (tide live) | high — the headline deliverable; name = content gate critical. Unblocked by S1. |
 | P5 | **S5 reusable scheme-bundle API** — `IsLocallyTrivialProduct` predicate + cocycle-engine spin-out | queued (after S3/S4) | medium-high — net-new; packages the spine; reusable. |
+| P2b | **S2b conormal companion** — `I/I²` free of rank `= codim` (the RLCT-relevant dual of S2's Kähler side) | parked (next wave) | medium — completes the smooth-block; reuses the s2 seat's machinery. |
 
 ## Parked — roadmap (not this expedition unless a spine rung forces it)
 

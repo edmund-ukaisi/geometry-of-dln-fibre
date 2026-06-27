@@ -1,0 +1,253 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.3
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af34fd6c6aa0a2a92
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f0913-2d90-7471-a62d-5b3c610dbf62
+--------
+user
+<task>
+Lean 4 + Mathlib v4.29. I am formalising a scheme-level "rank bridge" for a determinantal locus and want a design red-team BEFORE I write ~250 lines. Please vet the plan for correctness and for the cleanest Mathlib route, and flag any gotcha at the v4.29 pin.
+
+CONTEXT (banked objects, all proved/defined in the repo):
+- `d : Fin (N+2) → ℕ`, `r : ℕ`. `RepCoord d` is a Fintype index of coordinate variables.
+- `multPoly d : Fin (d last) → Fin (d 0) → MvPolynomial (RepCoord d) k` : the "universal product matrix" entries (entries of the generic matrix product), over a field `k`.
+- The universal matrix is `U := Matrix.of (multPoly d) : Matrix (Fin (d last)) (Fin (d 0)) (MvPolynomial (RepCoord d) k)`.
+- `sweepSigma k d r : Set (RepCoord d → k)` is the image (under coordinate iso) of the rank-EXACTLY-r product locus `{A | (mult d A).rank = r}`.
+- `sweepSigmaRing k d r := MvPolynomial (RepCoord d) k ⧸ MvPolynomial.vanishingIdeal k (sweepSigma k d r)`. Call this `R`. `mk : MvPolynomial _ k →+* R` is `Ideal.Quotient.mk _`.
+- `ΔPdeepAt d r s t := ((U).submatrix s t).det : MvPolynomial _ k`, for selectors `s : Fin r → Fin (d last)`, `t : Fin r → Fin (d 0)`.
+- `chartDsigAt d r s t := mk (ΔPdeepAt d r s t) : R`.
+- `rankROpen d r : Set (PrimeSpectrum R)` is DEFINED as `(PrimeSpectrum.zeroLocus (Set.range (fun st ↦ chartDsigAt d r st.1 st.2)))ᶜ` — complement of common-vanishing locus of all the pivot minors.
+- BANKED matrix lemmas (over a field): `rank_le_iff_forall_submatrix_det_eq_zero : A.rank ≤ r ↔ ∀ er ec, ((A.submatrix er ec).det) = 0` (er,ec : Fin (r+1) → ...). `rank_submatrix_le_rank`, `Matrix.rank_of_isUnit`, `Matrix.isUnit_iff_isUnit_det`.
+- BANKED: `det_submatrix_multPoly_mem_sigmaIdeal` says every (r+1)-minor of U lies in the vanishing ideal of the rank-≤-r locus `productRankLocusLE`. But I want it for `sweepSigma` (rank EXACTLY r), so I will RE-PROVE it directly on `sweepSigma` via `eval_det_submatrix_multPoly` (eval of a minor of U at coords of A = that minor of `mult d A`) + `submatrix_det_eq_zero_of_rank_le` (rank=r ≤ r ⟹ (r+1)-minor = 0). `mem_vanishingIdeal_iff : p ∈ vanishingIdeal k V ↔ ∀ x ∈ V, aeval x p = 0`.
+
+Mathlib v4.29 residue-field API I plan to use:
+- For a prime `I : Ideal Rr` `[I.IsPrime]`, `I.ResidueField := IsLocalRing.ResidueField (Localization.AtPrime I)`, with `algebraMap Rr I.ResidueField : Rr →+* κ`.
+- `Ideal.algebraMap_residueField_eq_zero : algebraMap Rr I.ResidueField x = 0 ↔ x ∈ I`.
+- `Ideal.ResidueField` is a Field (so `Nontrivial`, and "nonzero ⟹ IsUnit" in a field).
+- `PrimeSpectrum.mem_basicOpen f x ↔ f ∉ x.asIdeal`; `mem_zeroLocus x s ↔ s ⊆ x.asIdeal`.
+
+THE PLAN (the theorem I want):
+For `P : PrimeSpectrum R`, set `κ := P.asIdeal.ResidueField`, `φ := (algebraMap R κ).comp mk : MvPolynomial _ k →+* κ`, and `Mκ := U.map φ : Matrix _ _ κ`. Claim:
+  `P ∈ rankROpen d r  ↔  Mκ.rank = r`.
+
+Proof sketch:
+- minor det over κ: `(Mκ.submatrix s t).det = φ (ΔPdeepAt s t) = algebraMap R κ (chartDsigAt s t)` (RingHom.map_det + map/submatrix commute).
+- (⟹, rank ≥ r): `P ∈ rankROpen` ⟺ `∃ (s,t), chartDsigAt s t ∉ P.asIdeal` (unfold zeroLocus complement + Set.range_subset_iff + not_forall) ⟹ `algebraMap R κ (chartDsigAt s t) ≠ 0` (algebraMap_residueField_eq_zero) ⟹ that r×r minor of Mκ is a nonzero det ⟹ IsUnit (field) ⟹ Mκ.submatrix has rank r ⟹ Mκ.rank ≥ r (rank_submatrix_le_rank).
+- (rank ≤ r always on `Spec R`): every (r+1)-minor of U is in `vanishingIdeal (sweepSigma)`, i.e. `mk` kills it, so `φ` kills it, so `(Mκ.submatrix er ec).det = 0` for all (r+1)-selectors ⟹ `Mκ.rank ≤ r` (rank_le_iff_forall_submatrix_det_eq_zero).
+- Combine: rank = r iff (rank ≤ r always) ∧ rank ≥ r, and rank ≥ r ⟺ some pivot minor nonzero ⟺ P ∈ rankROpen. So the iff is `P ∈ rankROpen ↔ Mκ.rank = r`.
+
+QUESTIONS:
+1. Is the iff `P ∈ rankROpen ↔ Mκ.rank = r` correct as stated, given rank ≤ r holds for EVERY prime P of R? In particular: is rankROpen exactly the set of P with rank ≥ r (equivalently = r)? Any edge case at r=0 (then there are no (r... ) selectors issues; Fin 0 → ...; the "≥ r" direction is vacuous and rankROpen would be... the complement of zeroLocus of range over Fin 0 → ... selectors; chartDsigAt with r=0 is det of 0×0 submatrix = 1, the unit, so basicOpen(1) = ⊤, rankROpen = univ, and Mκ.rank ≥ 0 = r always — consistent. Confirm r=0 is fine, not a special case to carve out.)
+2. The cleanest way in Lean v4.29 to get `(Mκ.submatrix s t).det = algebraMap R κ (chartDsigAt s t)`. Is `RingHom.map_det φ (U.submatrix s t)` plus `Matrix.submatrix_map`/`(U.map φ).submatrix = (U.submatrix).map φ` the right chain? Exact lemma names for "map and submatrix commute" and "det commutes with map" at this pin.
+3. `Matrix.rank_of_isUnit` needs `[Nontrivial R]` on the ring and `[DecidableEq n]` on the index — κ is a field so Nontrivial is fine; the submatrix index is `Fin r`, DecidableEq fine. Any `Fintype`/`StrongRankCondition` instance that won't be found automatically for `Matrix _ _ κ` where κ is `IsLocalRing.ResidueField (Localization.AtPrime ...)`? Will typeclass inference find `Field κ`, `Fintype (Fin _)`, etc., or do I need explicit `haveI`?
+4. Universe issue: `R : Type u`, `MvPolynomial (RepCoord d) k : Type u`, κ is built from `Localization.AtPrime` of `R` so also `Type u`. `Matrix.rank` works over a commutative ring with the right instances. Any universe pitfall combining `PrimeSpectrum R` (lives where?) with the matrix rank machinery?
+5. Is there a SHORTER packaging — e.g. should I instead phrase the headline as `P ∈ rankROpen ↔ r ≤ Mκ.rank` (since ≤ r is automatic) and add `Mκ.rank = r` as a corollary, or vice versa? Which is the more honest/useful "rank bridge" name? I will also state `Mκ.rank ≤ r` as its own lemma (true for all P).
+6. Any reason the composite `φ = (algebraMap R κ).comp mk` is not literally `algebraMap (MvPolynomial _ k) κ`? `mk` is the quotient algebra map and `algebraMap R κ` exists; is there an `IsScalarTower`/`algebraMap_eq` that makes `φ` definitionally the MvPolynomial→κ algebra map, simplifying `map_det`?
+</task>
+
+<output_contract>
+Answer the 6 numbered questions, each ≤ 8 lines. Lead with a one-line GO / GO-WITH-CHANGES / RECONSIDER verdict on the overall plan. Then, if any step is wrong or has a cleaner route, give the corrected lemma chain (names only, no full proofs). Flag explicitly which claims are v4.29-confirmed vs your inference.
+</output_contract>
+
+<grounding_rules>
+You do NOT have the repo. Treat banked lemma names as given (assume they typecheck as described). For Mathlib lemma names, mark each as "confident" or "guess — verify with grep" since the pin is v4.29 and names drift. Do not invent lemmas; if unsure a lemma exists, say so and name the most likely candidate.
+</grounding_rules>
+
+codex
+I’ll check the v4.29 Mathlib surface only where it matters for lemma names, then I’ll keep the response scoped to the six design questions.
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs Mathlib v4.29 Matrix map_det submatrix_map
+web search: 
+web search: Mathlib Matrix.map_det Lean 4
+web search: 
+web search: github mathlib4 v4.29.0 Matrix map_det
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean
+codex
+The public docs search did not expose the exact pinned names cleanly. I’m going to use local read-only inspection only for Mathlib API names, not for your repo-specific banked material.
+exec
+/bin/bash -lc "rg --files -g 'Basic.lean' -g '*Residue*.lean' -g '*PrimeSpectrum*.lean' .lake/packages/mathlib/Mathlib | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af34fd6c6aa0a2a92
+ succeeded in 0ms:
+rg: .lake/packages/mathlib/Mathlib: IO error for operation on .lake/packages/mathlib/Mathlib: No such file or directory (os error 2)
+
+exec
+/bin/bash -lc "find . -maxdepth 4 -name 'Mathlib' -type d | head -20" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-af34fd6c6aa0a2a92
+ succeeded in 0ms:
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html
+web search: 
+web search: https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.29.0/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean
+web search: 
+web search: https://github.com/leanprover-community/mathlib4/blob/v4.29.0/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean
+web search: 
+web search: "v4.29.0" "RingHom.map_det"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Basic.html
+web search: 
+web search: 'submatrix_map' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix submatrix Lean Matrix.submatrix
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Defs.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Mul.html
+web search: 
+web search: 'submatrix_map' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Mul.html
+web search: 
+web search: 'Matrix . map' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Matrix/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "Ideal.algebraMap_residueField_eq_zero"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Localization/AtPrime.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Localization/AtPrime/Basic.html
+web search: 
+web search: 'ResidueField' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Localization/AtPrime/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib "IsLocalRing.ResidueField"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/LocalRing/Basic.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/LocalRing/ResidueField/Basic.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/LocalRing/ResidueField/Defs.html
+web search: 
+web search: "Ideal.ResidueField" "Mathlib"
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Spectrum "residue" "PrimeSpectrum"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/
+web search: 
+web search: Lean mathlib4_docs v4.29.0 documentation
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Rank.html
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Rank.html
+web search: 
+web search: 'isUnit_iff_isUnit_det' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs/Mathlib "isUnit_iff_isUnit_det" "Matrix"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/NonsingularInverse.html
+web search: 
+web search: site:leanprover-community.github.io/mathlib4_docs "IsScalarTower.algebraMap_eq"
+web search: 
+web search: https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Algebra/Tower.html
+web search: 
+web search: 'Ideal . Quotient . algebra' in https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Ideal/Quotient/Defs.html
+codex
+GO-WITH-CHANGES: the theorem is right, but make the “rank ≥ r iff some r-minor is nonzero” step an explicit lemma, with a real `r = 0` proof path.
+
+1. Yes, correct, assuming your global `Mκ.rank ≤ r` lemma and an explicit r-minor existence lemma.
+`rankROpen` is exactly “some `r × r` chart minor is not in `P.asIdeal`”, hence nonzero in κ.
+Then automatic `rank ≤ r` turns “rank ≥ r” into “rank = r”.
+`r = 0` is mathematically fine: `Fin 0` selectors exist uniquely, `det` is `1`, so the open is `⊤`.
+Lean still likely wants a case split for proving `r ≤ rank → ∃ nonzero r-minor`.
+Status: inference; banked zero-locus/residue facts as you stated.
+
+2. Use a local bridge lemma:
+`((U.map φ).submatrix s t).det = φ ((U.submatrix s t).det)`.
+`RingHom.map_det` is the right determinant lemma; orientation is usually `φ A.det = (A.map φ).det` [confident, current-docs confirmed; verify v4.29].
+For map/submatrix, do not rely on a name: it should be `rfl`/`change`/`ext i j; rfl`; `Matrix.submatrix_map` is only a guess.
+Then unfold `ΔPdeepAt`, `chartDsigAt`, `φ`, `mk`.
+Current docs confirm `RingHom.map_det`, not v4.29 specifically. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html))
+
+3. Mostly automatic.
+Current `Matrix.rank_of_isUnit` needs `Fintype`, `DecidableEq`, `CommSemiring`, `StrongRankCondition`; a field supplies the ring/rank-condition side [confident; verify v4.29].
+Add `haveI : P.asIdeal.IsPrime := P.isPrime` before defining/using κ if inference stalls.
+`Fin r` gives `Fintype`/`DecidableEq`; κ should give `Field`.
+You may need the import containing `Matrix.isUnit_iff_isUnit_det`.
+Current docs confirm `rank_of_isUnit`, `rank_submatrix_le`, and `isUnit_iff_isUnit_det`. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Rank.html))
+
+4. No serious universe pitfall expected.
+`Localization.AtPrime P.asIdeal` and `IsLocalRing.ResidueField` live in the same universe as `R` [confident; current-docs confirmed for these definitions, verify v4.29].
+`Matrix.rank` is universe-polymorphic enough here.
+The only practical issue is typeclass inference, not universes.
+Use explicit `haveI` for `P.asIdeal.IsPrime`/`Field κ` if Lean hesitates.
+Current docs show `ResidueField R : Type u` and `Localization.AtPrime P : Type u`. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/LocalRing/ResidueField/Defs.html))
+
+5. Best packaging:
+state `rank_le_residue : Mκ.rank ≤ r` separately.
+Then prove `mem_rankROpen_iff_rank_ge : P ∈ rankROpen d r ↔ r ≤ Mκ.rank`.
+Headline theorem should be `mem_rankROpen_iff_rank_eq`, obtained by antisymmetry with `rank_le_residue`.
+This is the cleanest proof architecture and the most useful public “rank bridge”.
+Status: inference/design recommendation.
+
+6. Do not count on definitional equality.
+`φ = (algebraMap R κ).comp mk` may be propositionally equal to `algebraMap (MvPolynomial _ k) κ` if the quotient algebra/tower instances line up.
+Use `IsScalarTower.algebraMap_eq` or `IsScalarTower.algebraMap_apply` [confident current-docs; verify v4.29].
+But for this proof, explicit `φ` is cleaner and avoids instance search churn.
+Current docs confirm those tower lemmas. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Algebra/Tower.html))
+
+Corrected lemma chain, names only:
+
+`Set.mem_compl_iff`, `PrimeSpectrum.mem_zeroLocus`, `Set.range_subset_iff`, `not_forall`, `Ideal.algebraMap_residueField_eq_zero`.
+
+`RingHom.map_det` [confident], `rfl`/`change` for map-submatrix, `ΔPdeepAt`, `chartDsigAt`.
+
+`isUnit_iff_ne_zero` [confident], `Matrix.isUnit_iff_isUnit_det` [confident], `Matrix.rank_of_isUnit` [confident], `Matrix.rank_submatrix_le` or banked `rank_submatrix_le_rank`.
+
+`rank_le_iff_forall_submatrix_det_eq_zero` at `n` when `r = n+1`; `not_forall`; separate `r = 0` via `Matrix.det_isEmpty` or `Matrix.det_eq_one_of_card_eq_zero` [confident/verify].
+tokens used
+166,408
+GO-WITH-CHANGES: the theorem is right, but make the “rank ≥ r iff some r-minor is nonzero” step an explicit lemma, with a real `r = 0` proof path.
+
+1. Yes, correct, assuming your global `Mκ.rank ≤ r` lemma and an explicit r-minor existence lemma.
+`rankROpen` is exactly “some `r × r` chart minor is not in `P.asIdeal`”, hence nonzero in κ.
+Then automatic `rank ≤ r` turns “rank ≥ r” into “rank = r”.
+`r = 0` is mathematically fine: `Fin 0` selectors exist uniquely, `det` is `1`, so the open is `⊤`.
+Lean still likely wants a case split for proving `r ≤ rank → ∃ nonzero r-minor`.
+Status: inference; banked zero-locus/residue facts as you stated.
+
+2. Use a local bridge lemma:
+`((U.map φ).submatrix s t).det = φ ((U.submatrix s t).det)`.
+`RingHom.map_det` is the right determinant lemma; orientation is usually `φ A.det = (A.map φ).det` [confident, current-docs confirmed; verify v4.29].
+For map/submatrix, do not rely on a name: it should be `rfl`/`change`/`ext i j; rfl`; `Matrix.submatrix_map` is only a guess.
+Then unfold `ΔPdeepAt`, `chartDsigAt`, `φ`, `mk`.
+Current docs confirm `RingHom.map_det`, not v4.29 specifically. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html))
+
+3. Mostly automatic.
+Current `Matrix.rank_of_isUnit` needs `Fintype`, `DecidableEq`, `CommSemiring`, `StrongRankCondition`; a field supplies the ring/rank-condition side [confident; verify v4.29].
+Add `haveI : P.asIdeal.IsPrime := P.isPrime` before defining/using κ if inference stalls.
+`Fin r` gives `Fintype`/`DecidableEq`; κ should give `Field`.
+You may need the import containing `Matrix.isUnit_iff_isUnit_det`.
+Current docs confirm `rank_of_isUnit`, `rank_submatrix_le`, and `isUnit_iff_isUnit_det`. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Rank.html))
+
+4. No serious universe pitfall expected.
+`Localization.AtPrime P.asIdeal` and `IsLocalRing.ResidueField` live in the same universe as `R` [confident; current-docs confirmed for these definitions, verify v4.29].
+`Matrix.rank` is universe-polymorphic enough here.
+The only practical issue is typeclass inference, not universes.
+Use explicit `haveI` for `P.asIdeal.IsPrime`/`Field κ` if Lean hesitates.
+Current docs show `ResidueField R : Type u` and `Localization.AtPrime P : Type u`. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/LocalRing/ResidueField/Defs.html))
+
+5. Best packaging:
+state `rank_le_residue : Mκ.rank ≤ r` separately.
+Then prove `mem_rankROpen_iff_rank_ge : P ∈ rankROpen d r ↔ r ≤ Mκ.rank`.
+Headline theorem should be `mem_rankROpen_iff_rank_eq`, obtained by antisymmetry with `rank_le_residue`.
+This is the cleanest proof architecture and the most useful public “rank bridge”.
+Status: inference/design recommendation.
+
+6. Do not count on definitional equality.
+`φ = (algebraMap R κ).comp mk` may be propositionally equal to `algebraMap (MvPolynomial _ k) κ` if the quotient algebra/tower instances line up.
+Use `IsScalarTower.algebraMap_eq` or `IsScalarTower.algebraMap_apply` [confident current-docs; verify v4.29].
+But for this proof, explicit `φ` is cleaner and avoids instance search churn.
+Current docs confirm those tower lemmas. ([leanprover-community.github.io](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Algebra/Tower.html))
+
+Corrected lemma chain, names only:
+
+`Set.mem_compl_iff`, `PrimeSpectrum.mem_zeroLocus`, `Set.range_subset_iff`, `not_forall`, `Ideal.algebraMap_residueField_eq_zero`.
+
+`RingHom.map_det` [confident], `rfl`/`change` for map-submatrix, `ΔPdeepAt`, `chartDsigAt`.
+
+`isUnit_iff_ne_zero` [confident], `Matrix.isUnit_iff_isUnit_det` [confident], `Matrix.rank_of_isUnit` [confident], `Matrix.rank_submatrix_le` or banked `rank_submatrix_le_rank`.
+
+`rank_le_iff_forall_submatrix_det_eq_zero` at `n` when `r = n+1`; `not_forall`; separate `r = 0` via `Matrix.det_isEmpty` or `Matrix.det_eq_one_of_card_eq_zero` [confident/verify].
