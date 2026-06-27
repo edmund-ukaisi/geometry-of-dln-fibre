@@ -265,3 +265,30 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   brief S4b bullet (S4b NOT projection-compatible) + S5 [LANDED] + P-proj; S4b card title/intro/§/Claim;
   P-bridge→projection compatibility (threads+priorities). Sharpened lessons.md L3 with the 4 concrete
   failure modes. Final re-grep CLEAN. Green-gating; on green → commit + push + reply to the 4 items.
+
+- **tick 19 (review round 5 = FINAL; close-out, 2026-06-27 ~00:10):** owner final re-review at
+  `13da899f`: "Lean surface sound, sorries clean, no theorem-level math/API problem"; 4 last stale
+  active-doc phrases. Actioned (commit `598b1590`): DLNFibre atlas + S4b import comments
+  ("coherent"→pairwise; rank-tie landed; S4b landed/not-projection-compatible);
+  FibreBundleLocallyTrivialFull both atlas docstrings ("coherent cocycle"→"pairwise base-side overlap
+  data", triple-overlap = abstract awayTriple_cocycle, not a field); brief rank-tie history past-tense +
+  S3 Flat-π wording; S5 card "non-vacuous"→conditional-on-hP. Final re-grep clean; green-gate 3815 jobs,
+  whole-lib 0/0/0/0. Replied; **PR #12 marked READY (un-drafted)**.
+
+## CLOSE
+
+**Expedition `fibration-geometry` is closed.** The geometry side is hardened: spine S1–S5 landed to
+bedrock (green, sorry-free, axiom-clean), all framing name=content-honest after five owner review rounds.
+Deliverable: chartwise, over the in-chart base direction `SchurLoc`, the DLN reduced fibre family is an
+over-base product and flat; plus the rank-bridge keystone (S1) and the smooth-block RLCT-runway slab
+(S2/S2c). Honestly fenced roadmap: projection compatibility → R1 (global morphism); S2b (conormal);
+singular-locus/RLCT lower bound (next expedition). Exposition + cards + ROADMAP written; PR #12 ready,
+14 commits, awaiting the operator's merge into `dev`.
+
+**Process learnings banked** (lessons.md): L0 rising-sea disposition; L1 recon findings; L2 tide
+commit-hygiene + cross-base; L3 (sharpened) a framing error recurs — sweep the semantic class across all
+files/artefacts, not the flagged line. The five review rounds were ALL prose/docstring name=content
+(the math/Lean was bedrock throughout) — the cost of my repeated literal-phrase under-sweeps.
+
+**Post-merge (controller, after the operator merges):** verify `dev` green at the merge commit; retire
+the cron backstop (done at close); the team roster is already clean (all tides/reviewers self-cleared).
