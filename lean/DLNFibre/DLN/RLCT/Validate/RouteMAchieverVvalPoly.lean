@@ -436,4 +436,33 @@ theorem achieverUbound (hL : 0 < L) (hN : 0 < routeMAmbient M)
   exact ⟨B, hB0, hBle,
     ae_restrict_of_ae (achieverUfun_ae_pos hL hN (UPolyGen_ne_zero_of_witness hL hN w hw))⟩
 
+/-! ## The active-boundary selection (the witness's foundation)
+
+The pivot-survival witness places a live `E`/`W` block at an interior boundary whose residual block
+`r_j × c_j` is NONEMPTY. Such a boundary exists when `1 ≤ minAdm M`: `∑_j r_j·c_j = minAdm ≥ 1`
+(`sum_rBlock_cBlock_eq_minAdm`, all summands `≥ 0`), so some `j` has `r_j·c_j ≥ 1`, hence `r_j ≥ 1` and
+`c_j ≥ 1`. -/
+
+/-- **An active interior boundary exists** (given `1 ≤ minAdm M`): some `j : Fin L` has
+`1 ≤ rBlock M j` and `1 ≤ cBlock M j` (a nonempty residual block `r_j × c_j`). The flat slot for the
+pivot-survival witness's live `E`/`W`. -/
+theorem exists_active_block (M : Fin (L + 1) → ℕ) (hpos : 1 ≤ minAdm M) :
+    ∃ j : Fin L, 1 ≤ rBlock M j ∧ 1 ≤ cBlock M j := by
+  -- `∑_j rBlock·cBlock = minAdm ≥ 1`, all summands `≥ 0` ⟹ some summand `≥ 1`.
+  by_contra hno
+  push_neg at hno
+  have hsum := sum_rBlock_cBlock_eq_minAdm M
+  have heach : ∀ j : Fin L, rBlock M j * cBlock M j = 0 := by
+    intro j
+    rcases lt_or_ge (rBlock M j) 1 with hr | hr
+    · have : rBlock M j = 0 := le_antisymm (by omega) (rBlock_nonneg M j)
+      rw [this, zero_mul]
+    · have hc : cBlock M j < 1 := hno j hr
+      have : cBlock M j = 0 := le_antisymm (by omega) (cBlock_nonneg M j)
+      rw [this, mul_zero]
+  have hz : ∑ j : Fin L, rBlock M j * cBlock M j = 0 := Finset.sum_eq_zero (fun j _ => heach j)
+  rw [hz] at hsum
+  have : (1 : ℤ) ≤ (minAdm M : ℤ) := by exact_mod_cast hpos
+  omega
+
 end DLNFibre.DLN.RLCT
