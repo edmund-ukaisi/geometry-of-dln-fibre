@@ -6331,3 +6331,24 @@ is either an explicit determinant formula, a selected-entry target-image/source
 prior handoff with all hypotheses explicit, or a source-rank/source-coverage
 bridge.  Still no original DLN source pushforward, normal crossing, pole
 order, or RLCT follows from this chart-coordinate transport theorem.
+
+A2 retained-passive canonical local-source COV has now landed locally:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-canonical-local-source-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-canonical-local-source-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-canonical-local-source-cov.md`
+passed by xhigh `Sartre the 4th`.
+Lean proves the canonical fixed-base source edge-family chart from
+`ofTopologyTuple (topologyTupleEdgeRawOrderInverse y)` realizes the raw-order
+edge family on `T` and is a.e.-measurable on `m.restrict T`, so the previous
+local-source COV theorem applies with `Cedge = id`.
+
+Next priority in this lane: stop adding chart-produced local-source measure
+specializations unless a downstream theorem consumes exactly this canonical
+form.  The remaining genuine frontiers are: a pen-and-paper determinant
+formula calculation before any scalar determinant Lean work; selected-entry
+target-image/source-prior handoff with hypotheses explicit; or a real
+source-rank/source-coverage bridge.  This canonical theorem is not original
+DLN source-prior transport, selected-entry image equality, source-rank
+coverage, normal crossing, pole order, or RLCT.

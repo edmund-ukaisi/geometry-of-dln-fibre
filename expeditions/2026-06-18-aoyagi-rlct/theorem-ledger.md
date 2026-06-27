@@ -9948,6 +9948,25 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive canonical local-source COV:
+`RetainedPassiveLocalMeasure.lean` proves
+`measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-canonical-local-source-cov.md`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-canonical-local-source-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-canonical-local-source-cov.md`
+passed by xhigh `Sartre the 4th`.
+
+This theorem specializes the previous local-source COV bridge to the canonical
+fixed-base source edge-family chart built from raw-order inverse coordinates.
+It removes the external realization-map and a.e.-measurability hypotheses for
+that canonical chart-produced measure, using fixed-base edge realization and
+continuity on the raw-order target chart.  Nonclaims: no original source-prior
+transport, selected-entry image equality, source-rank coverage, explicit
+determinant formula, normal crossings, pole order, or RLCT.
+
 Latest A2 retained-passive unconditional inverse-density COV:
 `RetainedPassiveCoordinatesMeasure.lean` proves
 `nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet`,

@@ -9346,3 +9346,32 @@ pushforward, or selected-entry image theorem.
 Nonclaims: no explicit determinant formula, original source-prior transport,
 selected-entry target-image equality, source-rank coverage, normal crossings,
 pole order, or RLCT is proved.
+
+Latest A2 retained-passive canonical local-source COV:
+Lean now proves
+`measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet`
+in `RetainedPassiveLocalMeasure.lean`.
+
+Status: Proved; reviewed.
+
+Claim: the canonical fixed-base source edge-family chart obtained from
+`ofTopologyTuple (topologyTupleEdgeRawOrderInverse y)` realizes the raw-order
+edge family on `T` and is a.e.-measurable on `m.restrict T`, so the earlier
+retained-passive local-source COV theorem applies with `Cedge = id` and no
+external realization map.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-canonical-local-source-cov.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-canonical-local-source-cov.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-canonical-local-source-cov.md`
+accepted by xhigh `Sartre the 4th`.
+
+Kill condition: this theorem is only for the chart-produced measure
+`Measure.map sourceChart (m.restrict T)`.  Do not use it as the original DLN
+source prior or as selected-entry/source-rank coverage.
+
+Nonclaims: no selected-entry target-image equality, original source-prior
+transport, source-rank coverage, explicit determinant formula, normal
+crossings, pole order, or RLCT is proved.

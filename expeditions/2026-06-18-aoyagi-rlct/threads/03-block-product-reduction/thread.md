@@ -9682,3 +9682,49 @@ issues in xhigh read-only review.
 Nonclaims: no explicit determinant formula, source-prior transport, original
 DLN source pushforward, selected-entry target-image equality, source-rank
 coverage, normal crossings, pole order, or RLCT is proved.
+
+## 2026-06-27 A2 retained-passive canonical local-source COV
+
+Reproduction:
+`reproduction-a2-retained-passive-canonical-local-source-cov.md`.
+Statement card:
+`statement-card-a2-retained-passive-canonical-local-source-cov.md`.
+Review:
+`review-a2-retained-passive-canonical-local-source-cov.md`
+accepted by xhigh read-only reviewer `Sartre the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean`.
+
+Lean now proves:
+
+```text
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet
+```
+
+This specializes the previous arbitrary-realization local-source COV theorem
+to the canonical fixed-base source edge-family chart
+
+```text
+y |-> paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        (ofTopologyTuple (topologyTupleEdgeRawOrderInverse y)).
+```
+
+The proof checks two hypotheses internally.  First, on the raw-order target
+chart `T`, the canonical edge family realizes `edgeFamilyOfRawOrderTuple y`
+because fixed-base readback gives the edge matrix of
+`ofTopologyTuple (topologyTupleEdgeRawOrderInverse y)` and the raw-order
+right-inverse theorem gives `topologyTupleEdgeRawOrder (g y) = y`.  Second,
+the canonical source chart is continuous on `T`, hence a.e.-measurable, by
+composing raw-order inverse continuity, `ofTopologyTuple` continuity, and the
+fixed-base determinant-chart source-chart continuity.
+
+Focused `RetainedPassiveLocalMeasure` build passed.  Full `DLNFibre` build
+passed with pre-existing unrelated linter warnings.  `scripts/sorries`
+reported `0 sorry`, `0 #exit`, `0 native_decide`, and `0 axiom`.
+`git diff --check` passed.  Independent xhigh review passed.
+
+This is still only a chart-produced retained-passive local-source measure
+identity.  It is not original source-prior transport, selected-entry
+target-image equality, source-rank coverage, an explicit determinant formula,
+normal crossings, pole order, or RLCT.

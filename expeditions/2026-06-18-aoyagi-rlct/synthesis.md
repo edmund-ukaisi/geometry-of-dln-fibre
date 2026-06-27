@@ -13620,3 +13620,29 @@ Scope guard: this is still only tuple-chart Haar measure transport.  It is not
 an explicit determinant formula, original source-prior pushforward,
 selected-entry image equality, source-rank coverage, normal-crossing
 production, pole-order theorem, or RLCT extraction.
+
+Latest retained-passive canonical local-source COV:
+`RetainedPassiveLocalMeasure.lean` now specializes the arbitrary-realization
+local-source COV theorem to the canonical fixed-base retained-passive source
+edge-family chart
+
+```text
+y |-> paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        (ofTopologyTuple (topologyTupleEdgeRawOrderInverse y)).
+```
+
+New Lean name:
+
+```text
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_absDet
+```
+
+The proof verifies internally that this canonical chart realizes
+`edgeFamilyOfRawOrderTuple y` for `y in T` and is a.e.-measurable on
+`m.restrict T` by continuity on the raw-order target chart.  The target
+edge-family type is assumed Borel so that `ContinuousOn.aemeasurable0` applies.
+
+Scope guard: this is still a chart-produced measure identity for
+`Measure.map sourceChart (m.restrict T)`.  It is not original source-prior
+transport, selected-entry image equality, source-rank coverage, an explicit
+determinant formula, normal crossings, pole order, or RLCT.
