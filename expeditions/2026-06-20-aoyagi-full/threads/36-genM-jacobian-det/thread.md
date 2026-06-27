@@ -290,3 +290,63 @@ depth; A′ is the cheapest + serves both fields). The DESIGN FREEDOM: choose `f
 near-definitional — represent the factor fold as producing the `chainA` layers SEMANTICALLY (Codex).
 This is the last wall; both endpoints (rate of phiFlatStruct; det of composeFold fs) + all
 infrastructure are banked.
+
+---
+
+## UPDATE-9 (formalisation tide, 2026-06-27) — RATE ∀M LANDED (no bridge); det bridge-bricks banked + validated; the remaining crux isolated
+
+The headline reframe (decorrelated xhigh Codex `codex/bridge-build-*` confirms it sound):
+**the RATE is FREE at a general vector `x` — only the DET needs the bridge.** Banked sorry-free +
+axiom-clean `[propext, Classical.choice, Quot.sound]` (force-elaborated `#print axioms`) on branch
+`fm-genM-jacobian-det` (off `expedition/aoyagi-full`). New modules (controller: wire into aggregator,
+dep order as listed):
+
+1. **`RouteMFlatStructV`** — the VECTOR-parametrized structured chart + its rate ∀M. `phiFlatStructV M t
+   ha hN x := phiGen (x p) M t (genBlkFlatStruct M t ha x) (hleStruct …)` (`p = ⟨0,hN⟩`), a genuine
+   full chart map. `C0_eq_one_gen`/`hC0_struct_gen` generalize the identity-boundary `C 0 = 1` to an
+   ARBITRARY decoder argument `x` + arbitrary scalar `v` (the proof reads only the x-independent
+   constants `Bmat 0 = reindex 1`, `Rmat 0 = 0`). **`routeMCore_phiFlatStructV : routeMCore M
+   (phiFlatStructV x) = (x p)² · UvalStructV x`** — the `NodeAchieverChart.leaf_integrand` rate factor
+   for arbitrary `M`, with NO bridge, straight from the decoder-agnostic `routeMCore_phiGen`. This is
+   the half of the chart that was missing; it is now closed ∀M.
+2. **`RouteMPhiTargetDet`** — `phiTarget_abs_det_of_factored`: `|det Dφ| = ∏_j |u_j|^{leafH j}` for ANY
+   target `φ` given `composeFold fs = φ` + the per-factor det bookkeeping (the det/cov compatibility
+   step; `RouteMPhiFlatDet`'s `phiFlat`-specific lemma, freed to arbitrary target).
+3. **`RouteMCLEConj`** — whole-space CLE conjugation `cleConjFactor E g gD hg : ChartFactor N` (`E.symm
+   ∘ g ∘ E`, det `|det gD (E u)|` via `det_conj`) + **`composeFold_eq_cleConj_foldr`**: a list of
+   `cleConjFactor E gᵢ` (same `E`) telescopes to `E.symm ∘ (gs.foldr) ∘ E`. This is the OPTION-1
+   collapse — it **reduces the bridge `composeFold fs = phiFlatStructV` to a `Params`-LEVEL equality**
+   `(gs.foldr id) = chartParamsGen ∘ genBlkFlatStruct` (the funext-s crux, not a flat induction).
+4. **`RouteMLinearFactor`** — `linearFactor T` (a CLM as a `ChartFactor`, det `|det T|`), for the
+   reshape/permutation factors.
+5. **`RouteM4422Bridge`** (VALIDATE-SMALL-FIRST) — the factor-fold→real-chart route validated end-to-end
+   on the cleanest anchor: `phi4422 = composeFold [linearFactor Q4422CLM, radialFactor {0,1,2,3} 0]`
+   (`phi4422_eq_composeFold`), and the GENERIC `phiTarget_abs_det_of_factored` delivers `|det Dφ4422| =
+   ∏_j |u_j|^{leafH4422 j} = |u 0|³` (`phi4422_abs_det_via_fold`). Confirms the whole det
+   infrastructure wires to a real achiever chart. (NB `(4,4,2,2)` is a PURE radial blow-up — it does
+   NOT exercise the Schur/LDU layer-ops; it validates the SPINE, not the general layer reconstruction.)
+6. **`RouteMChainVar`** — `chainVarMap (N,W,C) = (N, W, C − N·W)` (variable-`N`, the OPTION-1 chain
+   correction UPDATE-8 flagged), fderiv `chainVarD` (product rule), `chainVarD_abs_det = 1`
+   (block-lower-triangular via `lowerTri`/`det_conj`/`prodAssoc`).
+
+### The remaining crux (precisely isolated; the genuine multi-tide wall)
+`composeFold fs = phiFlatStructV` reduces (via `composeFold_eq_cleConj_foldr`, `E = (paramsEquivFlatCLE
+M).symm`) to the **`Params`-level layer equality**
+`(gs.foldr id) (paramsEquivFlat.symm x) = chartParamsGen (x p) M t (genBlkFlatStruct M t ha x) hle`,
+provable `funext s`. The irreducible difficulty is the **coordinate-alignment**: `genBlkFlatStruct`
+decodes `x` via `chartIdxEquiv` ROLE SLOTS (K/X/N/E/W), while `paramsEquivFlat.symm x` decodes `x` into
+the RAW Params layer layout — the layer-ops `gs` must read the role data from the Params point and match
+it to `chartParamsGen`'s `chainA_s = [C_{s+1} − N_s W_s ; W_s]`, `C_s = bmatStack(K,X)·chainQ(N) +
+(x p)·rmatPad(E)` recursion, over OPAQUE `Text`/`Wext` widths. The remaining build (UPDATE-8 OPTION-1
+steps 1, 4, 6): (a) the structural per-layer `Params`-split CLEs exposing the role slots (dependent
+widths — the hardest brick); (b) the layer-ops `gs` from `radialFactor`/`lduChartFactor`/Schur
+frame/`chainVarMap` at the Params level; (c) the `funext s` matching (factor order = deepest-first
+foldr; prefix states; `chainVarMap`; `Text`/`Wext` casts); (d) the `hdet` leafH summation
+(spectator LDU/Schur exponents are GENUINE — leafH must carry them, Codex-confirmed; `leafH p =
+minAdm − 1` is the only threshold-relevant entry). Then `phiTarget_abs_det_of_factored` (banked) closes
+`cov`, and `nodeChartGeneral M (hpos : 1 ≤ minAdm M) : NodeAchieverChart M` assembles → atom discharged
+via `routeMCore_box_diverges_of_nodeChart` (banked).
+
+**Target signature correction (Codex):** `nodeChartGeneral` MUST take `(hpos : 1 ≤ minAdm M)` — an
+unconditional ∀M form is FALSE (`NodeAchieverChart` carries `hpos`; `minAdm M = 0` has no achiever
+center). The atom `routeMCore_box_diverges_achiever` already has `(hpos : 1 ≤ minAdm M)` in scope.

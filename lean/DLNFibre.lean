@@ -392,5 +392,18 @@ import DLNFibre.DLN.RLCT.Validate.RouteMChartSlots
 -- UNCONDITIONAL rate `routeMCore (phiFlatStruct u) = u²·V` ∀M (`routeMCore_phiFlatStruct`).
 import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
 import DLNFibre.DLN.RLCT.Validate.RouteMPhiFlatDet
+-- The general-M achiever chart, RATE side ∀M + the bridge bricks (thread 36):
+-- `RouteMFlatStructV` — the vector chart `phiFlatStructV` + the RATE ∀M with NO bridge
+-- (`routeMCore_phiFlatStructV : routeMCore M (phiFlatStructV x) = (x p)²·U`); `RouteMPhiTargetDet`
+-- (`phiTarget_abs_det_of_factored`, det for ANY target given `composeFold fs = φ`); `RouteMCLEConj`
+-- (`composeFold_eq_cleConj_foldr` — the OPTION-1 collapse to a Params-level `funext s`);
+-- `RouteMLinearFactor` / `RouteMChainVar` (the reusable + variable-N chain factor bricks, det 1);
+-- `RouteM4422Bridge` (validate-small: the (4,4,2,2) chart AS a fold, det via the generic machinery).
+import DLNFibre.DLN.RLCT.Validate.RouteMFlatStructV
+import DLNFibre.DLN.RLCT.Validate.RouteMPhiTargetDet
+import DLNFibre.DLN.RLCT.Validate.RouteMCLEConj
+import DLNFibre.DLN.RLCT.Validate.RouteMLinearFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMChainVar
+import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
