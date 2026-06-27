@@ -96,9 +96,11 @@ theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → �
     `reducedFibre_existsOverBaseProductChartAt_rankEq_exists_someStructure`, proved FROM the strong form
     (`φ := schurToDsigAt`); its docstring marks it the weaker projection (no more content than S4).
 - **Assumed (hypotheses, same as S4).** `hp : r ≤ d_N`, `hq : r ≤ d_0`, `[Infinite k]`, and the
-  per-point hypothesis `hP : (universalMatrixResidue d r P).rank = r`. These match the S1/S4 reviewed
-  hypothesis class; `hP` is exactly the S1 rank-locus characterization, so it is reachable (the
-  top-left chart witnesses non-emptiness).
+  per-point hypothesis `hP : (universalMatrixResidue d r P).rank = r`. `hP` is a genuine **conditional**
+  hypothesis: `hp`/`hq` alone do NOT make a rank-`r` prime exist — an intermediate layer of width `< r`
+  blocks it, so non-emptiness of the rank-`r` locus needs the stronger feasibility `∀ i, r ≤ d i` (the
+  Kostant gate `(kostantPartitions d r).Nonempty`). The headline is stated conditional on `hP` (= the S1
+  rank-locus characterization), and is vacuous in the rank-unachievable regime.
 - **Cited.** none (all fields are banked in-repo S1/S4/S4b results).
 - **Deferred (NAMED OPEN ITEMS — read before reusing).**
   1. **Projection compatibility (a real build, AHEAD of R1).** The base of the trivialization + flatness

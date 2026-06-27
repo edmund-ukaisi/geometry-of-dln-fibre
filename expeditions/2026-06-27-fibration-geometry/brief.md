@@ -85,13 +85,15 @@ pass, **name = content**.
   `RankROpenPerPivotLocalProduct` + the pointwise headline `reducedFibre_existsProductChartAt_rankEq`:
   S1 folded in certifies `rankROpen` genuinely IS the residue-field rank-=r locus; the pivot charts
   cover it; each chart's localized ring is a `k`-algebra product `SchurLoc ⊗ sweepFibreRing`. Honestly
-  **not** `locallyTrivial` — k-algebra-only + uncocycled. **The load-bearing completion is S4b** (the
-  over-base / projection-compatible `O(U)`-algebra trivialization) + R1 (the overlap gluing); a genuine
-  fibre-bundle = S4 + S4b + R1.
-- **S5 — Capstone bundle headline. [in flight — `FibreBundleHeadline.lean`]** Package S4/S4b into a
+  **not** `locallyTrivial` — k-algebra-only + uncocycled. **The over-base completion is S4b** (the
+  `SchurLoc`-linear `≃ₐ[SchurLoc]` trivialization). Genuine fibre-family flatness over the *geometric*
+  base further needs **projection compatibility** (`schurToDsigAt` = `mult`'s projection pullback — S4b
+  is over `SchurLoc`, not yet projection-compatible) + R1 (the overlap gluing); a genuine fibre-bundle =
+  S4 + S4b + projection compatibility + R1.
+- **S5 — Capstone bundle headline. [LANDED — `FibreBundleHeadline.lean`]** Package S4/S4b into a
   clean reader-facing over-base local-product-with-flatness headline for the DLN fibre family (cover +
   per-pivot `≃ₐ[SchurLoc]` product + chartwise flatness over `SchurLoc`), carrying the base distinction +
-  named open items (P-bridge, R1). Concrete — **not** a speculative abstract `IsLocallyTrivialProduct`
+  named open items (projection compatibility, R1). Concrete — **not** a speculative abstract `IsLocallyTrivialProduct`
   predicate (no second consumer yet; that abstraction is roadmap-only per the extract-when-a-consumer-appears
   rule).
 

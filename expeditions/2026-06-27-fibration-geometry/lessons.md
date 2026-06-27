@@ -61,3 +61,16 @@ aggregator + the operational prompts, and fix every occurrence in one pass, then
 before re-pushing. A framing error is almost never in exactly one place. (Also: keep statement-card SHA
 anchors pointed at *landed PR commits*, never worktree/base/pre-fix SHAs; and the internal `synthesis.md`
 tick-ledger records the journey — leave its historical mentions, don't rewrite history there.)
+
+**Sharpening (after under-sweeping THREE rounds, 2026-06-27).** Grepping the *exact phrases I'd seen* is
+not enough — the same error wears many phrasings. The concrete failure modes that bit me, each a search
+to run explicitly: (1) **same file, other sections** — I fixed a forward-pointer but not the main blocker
+prose in the same module; a card's Proved/Deferred but not its title/intro/section-header/Claim; a `def`
+docstring but not the module-header docstring. Read the WHOLE file's prose, not just the flagged line.
+(2) **semantic class, not literal string** — "S3 target NOT met", "missing rung", "the S3 payoff",
+"to-be-formalized", "coherent/triple cocycle", "P-bridge", "in flight", "witnesses non-emptiness" are all
+the *same* stale frames in different words; grep each variant. (3) **non-repo artefacts** — the PR
+*description* carried the same framing (grep can't reach it; re-read it after every framing fix).
+(4) **cross-references to a renamed item** — renaming the `P-bridge` row left stale `P-bridge` mentions
+elsewhere. After any rename, grep the old name repo-wide. Re-grep ALL of these and read the changed files'
+full prose before declaring a sweep done.

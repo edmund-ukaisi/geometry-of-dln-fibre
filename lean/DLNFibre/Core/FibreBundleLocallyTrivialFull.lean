@@ -29,8 +29,9 @@ instantiated at `R = sweepSigmaRing`, `f = chartDsigAt s t`, `g = chartDsigAt s'
   localizing element of `sweepSigmaRing`.
 - `chartOverlapTransition I J := awayOverlapTransition (pivotElt I) (pivotElt J)` over
   `sweepSigmaRing` — the genuine transition `AlgEquiv` on the double overlap `D(g_I · g_J)`, with
-  the inherited cocycle laws (`_commutes`, `_symm`, `_trans_symm`, the triple cocycle), all FROM the
-  banked thread-19 engine (localization initiality).
+  the pairwise cocycle laws it exposes (`_commutes`, `_symm`, `_trans_symm`) from the banked thread-19
+  engine (localization initiality). The triple-overlap cocycle is available abstractly as
+  `FibreBundleTransition.awayTriple_cocycle`, but is NOT exposed as a field of the atlas below.
 
 ## Scope (honest) — the per-pivot local-product atlas over the rank-`r` open
 
@@ -73,14 +74,14 @@ bundles, and machine-checks, the local-product data over the open `rankROpen` of
 limits. (1) `rankROpen` is DEFINED as the chart-cover-complement `(V({chartDsigAt}))ᶜ`, so the cover
 `iSup_pivot_basicOpen_eq_rankROpen` is the `PrimeSpectrum` definition unfolded — a genuine scheme
 open-cover BY the charts, but it carries little geometric content beyond the trivializations/cocycle
-(which ARE the genuine content). (2) The identity `rankROpen = {rank = r}` is the geometric reading
-(forward inclusion banked: `sweepSigma_subset_chartOpen`), not a separately-formalized scheme
-equality. A *bare* `locallyTrivial` over `Spec (sweepSigmaRing) = Σ̄^r` (the closure) is genuinely
+(which ARE the genuine content). (2) The identity `rankROpen = {rank = r}` **IS** now formalized, as a
+set-of-primes identity, in `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` (the
+residue-field-rank bridge; the point-set forward inclusion `sweepSigma_subset_chartOpen` is the older
+banked half). A *bare* `locallyTrivial` over `Spec (sweepSigmaRing) = Σ̄^r` (the closure) is genuinely
 **false** — the rank-`< r` boundary lies in `V({chartDsigAt})`, in no chart. So the honest name is
 "per-pivot local-product atlas over the rank-`r` open", and the residual to a bare scheme-theoretic
-`locallyTrivial` is the **to-be-formalized** prime/scheme-level rank-tie `rankROpen = {rank = r}` (the
-residue-field-rank bridge) — NOT yet a Lean theorem (only the point-set forward inclusion
-`sweepSigma_subset_chartOpen` is banked).
+`locallyTrivial` is now the **target-side overlap-trivialization cocycle** (R1 `targetOverlapTransition`)
+plus projection compatibility — NOT the rank-tie (landed via S1).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -542,17 +543,18 @@ theorem iSup_pivot_basicOpen_eq_rankROpen (d : Fin (N + 2) → ℕ) (r : ℕ) :
   rw [Set.mem_iUnion, Set.mem_compl_iff, mem_zeroLocus, Set.range_subset_iff, not_forall]
   exact exists_congr (fun st ↦ mem_basicOpen (chartDsigAt d r st.1 st.2) p)
 
-/-! ## The per-pivot local-product atlas with coherent transitions (B3-6c)
+/-! ## The per-pivot local-product atlas with base-side overlap data (B3-6c)
 
-The genuine assembly: for a fixed `(d, r)` the per-pivot data forms a **local-product atlas with a
-coherent transition cocycle** — a `LocalTrivializationDatum` at every pivot (thread 22), the
-base-side overlap transition cocycle (above), and the coherence that the transitions between
-trivializations
-factor through the base gauges (above). This is the structure-group content of local triviality,
-assembled and machine-checked. -/
+The genuine assembly: for a fixed `(d, r)` the per-pivot data forms a **local-product atlas with
+pairwise base-side overlap data** — a `LocalTrivializationDatum` at every pivot (thread 22), the
+base-side overlap transition with its pairwise laws (round-trip + base-normalization +
+overlap-restriction), and the cancellation that the transitions factor through the base gauges. It
+does **NOT** bundle a coherent (triple-overlap) *trivialization* cocycle — only the pairwise base-side
+data; the abstract triple-overlap cocycle is `FibreBundleTransition.awayTriple_cocycle`, not a field
+here. Assembled and machine-checked. -/
 
 open scoped TensorProduct in
-/-- **A per-pivot local-product atlas with coherent transitions, over the rank-`r` open.** Bundles,
+/-- **A per-pivot local-product atlas with pairwise base-side overlap data, over the rank-`r` open.** Bundles,
 for a fixed `(d, r)`: the **scheme-level open-cover** `schemeCover` of the rank-`= r` open
 `rankROpen` of `Spec (sweepSigmaRing)` by the per-pivot charts `basicOpen (chartDsigAt s t)`; the
 backing point-set `cover` of `Σ^r`; the **C1 bridge** `pivotOfCover` from every covering raw chart

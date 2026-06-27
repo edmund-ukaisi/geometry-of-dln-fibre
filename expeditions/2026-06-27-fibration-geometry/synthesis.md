@@ -242,3 +242,26 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   exact-signature block (old ∃φ → strong ∃I:PivotDatum) + SHA anchors (cards 01/05/09 → landed PR
   commits). Final re-sweep clean (synthesis ledger's historical mentions left as honest chronology).
   Green-gating; on green → commit + push + reply to the new threads. Then ready for the owner's merge.
+
+- **tick 17 (backstop, 2026-06-27 ~23:10):** drift-glance. PR #12 open/draft/not-merged, mergeable_state
+  clean, HEAD `f7ba1417`; no new owner comments since the 21:47 replies. BUT found the same framing error
+  in the **PR description itself** (a non-repo artefact my grep-sweep couldn't reach): "into a flat,
+  locally-trivial family", "the literal base `rankROpen`", "chart-base bridge `SchurLoc ≅ sweepSigmaRing`".
+  Corrected the PR body via `update_pull_request` (Goal-framing; source/total; projection compatibility).
+  L3 applies to non-repo artefacts too. **Nothing else actionable — awaiting the owner's re-review → mark
+  ready → merge.** Cron backstop stays armed; post-merge protocol queued (retire cron 76da6f78, stand
+  down, final synthesis).
+
+- **tick 18 (review round 4 — owner re-review at f7ba1417, 2026-06-27 ~23:40):** owner: S5 theorem
+  surface "materially cleaner"; 4 fix-before-ready items + minor cleanup, all the SAME stale frames in
+  spots I under-swept AGAIN (3rd incomplete sweep). Did the genuinely-exhaustive sweep this time (read
+  whole files, grep semantic class + cross-refs + the PR body): FibreFlatness blocker (39-53 + 240-249)
+  → SchurLoc-linear rung lands downstream (S4b); S3 `Flat π` open on projection compat + R1.
+  FibreBundleLocallyTrivialFull top docstring (76-83 → rank-tie landed via S1) + cocycle wording
+  (30-33, 545-555 → "pairwise base-side overlap data", not coherent/triple cocycle — the structure has
+  only pairwise fields). S5 card non-vacuity (98-101 → hP conditional; non-emptiness needs ∀i, r≤d i /
+  kostant gate, not just endpoints). Item-1 consistency: FibreOverBaseTriv "S3 payoff" → "chartwise
+  SchurLoc-flatness; S3 Flat-π needs projection compat" (header + 2 theorem titles); DLNFibre S4b comment;
+  brief S4b bullet (S4b NOT projection-compatible) + S5 [LANDED] + P-proj; S4b card title/intro/§/Claim;
+  P-bridge→projection compatibility (threads+priorities). Sharpened lessons.md L3 with the 4 concrete
+  failure modes. Final re-grep CLEAN. Green-gating; on green → commit + push + reply to the 4 items.

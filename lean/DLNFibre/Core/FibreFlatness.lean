@@ -36,21 +36,25 @@ The "structure map of the bundle's coordinate ring over the base" reads two ways
    `standardFibreModel_free` / `standardFibreModel_flat`. Cheap; **not** the fibre-family flatness
    over the base either (see the blocker).
 
-## ⚠ THE S3 TARGET IS NOT MET — the blocker (honest gap)
+## ⚠ THE S3 `Flat π` TARGET IS NOT MET HERE — the `SchurLoc`-linear rung now lands downstream (S4b)
 
-The brief asks for `Flat π : mult⁻¹(rankROpen) → rankROpen` (the fibre family flat over the base).
-Delivering that through the atlas needs the chart trivialization to be **`SchurLoc`-linear** —
-`Total ≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` — so that the model's flatness transports to the
-actual chart total ring over (the chart's image of) the base. The atlas's trivialization
-`chartDsigAt_tensorEquiv` is only a **`k`-algebra** equiv (`≃ₐ[k]`), so:
+The brief asks for `Flat π : mult⁻¹(rankROpen) → rankROpen` (the fibre family flat over the geometric
+base). Delivering it through the atlas needs the chart trivialization to be **`SchurLoc`-linear** —
+`Total ≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing`. THIS module's `chartDsigAt_tensorEquiv` is only a
+**`k`-algebra** equiv (`≃ₐ[k]`), so:
 
-* `standardFibreModel_flat` does **NOT** transport to `Localization.Away (chartDsigAt s t)` — that
-  chart ring carries no `SchurLoc`-module structure compatible with the trivialization;
-* hence model flatness over `SchurLoc` is **not** flatness of the DLN fibre family over the base.
+* `standardFibreModel_flat` does **NOT** transport here — `Localization.Away (chartDsigAt s t)` carries
+  no `SchurLoc`-module structure compatible with the bare `k`-trivialization;
+* so the facts in this module are over the *auxiliary* `SchurLoc` (generic base change), not a base.
 
-Building the `SchurLoc`-linear trivialization is the genuine missing rung (flagged by the
-target-setting Codex consult, `threads/03-flatness/codex/cheap-flatness-answer.md`); this module
-records the two cheap true facts and the verdict, not the payoff.
+The `SchurLoc`-linear trivialization rung **is now built downstream** in
+`DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
+giving chartwise flatness over the in-chart base direction `SchurLoc`. (`FibreFlatness` cannot
+forward-import it — `FibreOverBaseTriv` imports this module.) That still does **not** close the `Flat π`
+target: the remaining open items are (i) **projection compatibility** — that the in-chart structure map
+`schurToDsigAt` is the pullback of `mult`'s projection from the target/base rank-chart — and (ii)
+R1/global gluing. This module records the two cheap true facts + the cheap-flatness verdict, not the
+payoff.
 
 **Forward pointer (S4b, downstream).** The `SchurLoc`-linear upgrade IS delivered downstream in
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
@@ -237,16 +241,15 @@ end AtlasConnection
 
 /-! ## Recorded gaps (honesty)
 
-* **⚠ THE S3 TARGET — fibre-family flatness over the base — IS NOT DELIVERED (primary blocker).**
-  The brief's S3 is `Flat π : mult⁻¹(rankROpen) → rankROpen`. Routing it through the atlas needs the
-  chart trivialization to be **`SchurLoc`-linear** (`≃ₐ[SchurLoc]`, not just `≃ₐ[k]`)
-  so the model's `SchurLoc`-flatness transports to the chart total ring over (the chart's image of)
-  the base. The atlas's `chartDsigAt_tensorEquiv` is only **`k`-linear** (`≃ₐ[k]`), so
-  `standardFibreModel_flat` does NOT transport, and `standardFibreModel_flat` is flatness over the
-  *auxiliary* `SchurLoc` (generic base change), NOT the bundle base. **Missing rung:** build the
-  `SchurLoc`-linear trivialization (flagged by the target-setting Codex consult). Until then S3's
-  fibre-family flatness is OPEN; this module delivers the cheap-flatness verdict + two true
-  side-facts, not the payoff.
+* **⚠ THE S3 `Flat π` TARGET — flatness of the fibre family over the geometric base — is NOT delivered
+  in THIS module.** The brief's S3 is `Flat π : mult⁻¹(rankROpen) → rankROpen`. This module's
+  `chartDsigAt_tensorEquiv` is only `k`-linear (`≃ₐ[k]`), so `standardFibreModel_flat` (flatness over
+  the *auxiliary* `SchurLoc`, generic base change) does NOT transport here. The `SchurLoc`-linear
+  trivialization rung is built **downstream** (`FibreOverBaseTriv`: `chartDsigAt_schurLocTensorEquiv` /
+  `chartDsigAt_flat_over_schurLoc`), giving chartwise flatness over `SchurLoc`; the `Flat π` target then
+  remains open on (i) **projection compatibility** (the in-chart structure map = `mult`'s projection
+  pullback) and (ii) R1/global gluing — see those modules. This module delivers the cheap-flatness
+  verdict + two true side-facts, not the payoff.
 * **Global (single-morphism) flatness over all of `rankROpen`.** Even granting a per-chart
   fibre-family flatness, a single *global* `AlgebraicGeometry.Flat` for one morphism over the whole
   `rankROpen ⊆ Spec(sweepSigmaRing)` would additionally need the target-overlap gluing data

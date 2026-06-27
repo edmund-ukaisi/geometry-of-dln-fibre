@@ -402,10 +402,11 @@ import DLNFibre.Core.FibreSmoothBlockExists
 import DLNFibre.Core.FibreFlatness
 -- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
 -- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`
--- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ the genuine
--- fibre-family flatness over the base `chartDsigAt_flat_over_schurLoc` (the S3 payoff, chartwise) AND
--- the genuine over-base local triviality (S4's load-bearing completion). Chartwise; a single GLOBAL
--- Flat π / FiberBundle morphism over all rankROpen additionally needs R1 (targetOverlapTransition).
+-- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ chartwise
+-- flatness over the in-chart base direction SchurLoc `chartDsigAt_flat_over_schurLoc` AND the genuine
+-- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc, NOT yet
+-- projection-compatible with the geometric `mult` projection (that, plus R1's global overlap gluing,
+-- are the open items toward a single GLOBAL Flat π / FiberBundle over rankROpen).
 import DLNFibre.Core.FibreOverBaseTriv
 -- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
 -- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline

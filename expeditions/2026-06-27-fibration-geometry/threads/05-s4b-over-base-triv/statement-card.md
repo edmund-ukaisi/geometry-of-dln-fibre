@@ -1,9 +1,10 @@
-# S4b — the `SchurLoc`-linear (over-base) trivialization + fibre-family flatness over the base
+# S4b — the `SchurLoc`-linear (over-base) trivialization + chartwise flatness over `SchurLoc`
 
 The convergent keystone S3 (flatness) and S4 (local triviality) both needed: upgrade the banked
 per-pivot trivialization from a **`k`-algebra** equiv to a **`SchurLoc`-algebra** equiv (over the
-in-chart Schur/base coordinate ring), then read off the genuine fibre-family flatness over the base,
-chartwise.
+in-chart Schur/base direction), then read off chartwise flatness over that base direction `SchurLoc`.
+(The S3 `Flat π` payoff — flatness over the *geometric* base — additionally needs **projection
+compatibility**; see the flatness section's Deferred.)
 
 Module: `lean/DLNFibre/Core/FibreOverBaseTriv.lean` (new). One additive helper lemma added to
 `lean/DLNFibre/Core/FibreBundleReduced.lean` (the keystone base-change's action on a generator —
@@ -64,11 +65,12 @@ provable only where the def's local product-algebra instance is in scope).
 
 ---
 
-## The fibre-family flatness over the base (S3 payoff) — top-left and every pivot
+## Chartwise flatness over `SchurLoc` (toward the S3 payoff) — top-left and every pivot
 
-> **Claim.** Each chart total ring is FLAT over the in-chart base `SchurLoc` (the genuine
-> fibre-family flatness over the base, chartwise): `Module.Flat SchurLoc (Away (chartDsig))`
-> (top-left) and `Module.Flat SchurLoc (Away (chartDsigAt s t))` at every pivot.
+> **Claim.** Each chart total ring is FLAT over the in-chart base direction `SchurLoc` (chartwise):
+> `Module.Flat SchurLoc (Away (chartDsig))` (top-left) and `Module.Flat SchurLoc (Away (chartDsigAt s t))`
+> at every pivot. (Reading this as the S3 `Flat π` payoff over the *geometric* base needs projection
+> compatibility — Deferred.)
 >
 > - **Lean (top-left):** `DLNFibre.Core.chartDsig_flat_over_schurLoc`
 > - **Lean (per-pivot):** `DLNFibre.Core.chartDsigAt_flat_over_schurLoc`

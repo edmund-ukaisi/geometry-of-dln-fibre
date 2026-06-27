@@ -10,8 +10,9 @@ import Mathlib.RingTheory.Flat.Basic
 # `DLNFibre.Core.FibreOverBaseTriv` — the `SchurLoc`-linear (over-base) trivialization (S4b)
 
 This module upgrades the per-pivot chart trivialization from a **`k`-algebra** equiv to a
-**`SchurLoc`-algebra** equiv (over the in-chart Schur/base coordinate ring), and reads off the
-genuine fibre-family flatness over the base, chartwise.
+**`SchurLoc`-algebra** equiv (over the in-chart Schur/base coordinate ring), and reads off chartwise
+flatness over that in-chart base direction `SchurLoc`. (The S3 `Flat π` payoff — flatness over the
+*geometric* base — additionally needs projection compatibility; see Scope.)
 
 ## The rung that was missing (S3/S4 convergent keystone)
 
@@ -47,9 +48,9 @@ base-change `algebraTensorAlgEquiv_symm_map`.
   sweepFibreRing` (the over-base local triviality; the per-pivot one over the `letI` structure-map
   algebra `chartDsigAtSchurLocAlgebra`, as the gauge `(σ, τ)` is not determined by the type).
 * `chartDsig_flat_over_schurLoc` / `chartDsigAt_flat_over_schurLoc` — the top-left / per-pivot
-  **fibre-family flatness over the base** `Module.Flat SchurLoc (Away (chartDsig[At]))`, by
-  `standardFibreModel_flat` across the `SchurLoc`-linear trivialization (the genuine S3 payoff,
-  chartwise).
+  **flatness over the in-chart base direction `SchurLoc`** `Module.Flat SchurLoc (Away (chartDsig[At]))`,
+  by `standardFibreModel_flat` across the `SchurLoc`-linear trivialization (chartwise; the S3 `Flat π`
+  payoff additionally needs projection compatibility — see Scope).
 
 ## Scope (honest)
 
@@ -204,7 +205,8 @@ end PerPivotStruct
 
 We register the banked `schurToDsig` as the `SchurLoc`-algebra structure on `Away chartDsig` (a
 `local instance`, confined to this module), promote the top-left trivialization to a
-**`SchurLoc`-algebra** equiv, and read off the genuine fibre-family flatness over the base. -/
+**`SchurLoc`-algebra** equiv, and read off chartwise flatness over the in-chart base direction
+`SchurLoc` (the S3 `Flat π` payoff additionally needs projection compatibility). -/
 
 section TopLeftFlat
 
@@ -252,7 +254,7 @@ noncomputable def chartDsig_schurLocTensorEquiv :
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]
       exact reducedFibre_chartDsig_tensorEquiv_schurToDsig d r hp hq x)
 
-/-- **The top-left chart total ring is FLAT over the base `SchurLoc` (S3 payoff, top-left chart).**
+/-- **The top-left chart total ring is FLAT over `SchurLoc` (chartwise; the S3 `Flat π` payoff additionally needs projection compatibility).**
 `Module.Flat SchurLoc (Away chartDsig)`: the genuine fibre-family flatness over the in-chart base,
 chartwise. Transport of the standard model's `SchurLoc`-flatness (`standardFibreModel_flat`:
 `SchurLoc ⊗_k sweepFibreRing` is `SchurLoc`-free) across the `SchurLoc`-LINEAR trivialization
@@ -318,7 +320,7 @@ noncomputable def chartDsigAt_schurLocTensorEquiv :
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]
       exact chartDsigAt_tensorEquiv_schurToDsigAt d r hp hq s t σ τ hσ hτ x)
 
-/-- **The per-pivot chart total ring is FLAT over the base `SchurLoc` (S3 payoff, every pivot).**
+/-- **The per-pivot chart total ring is FLAT over `SchurLoc` (chartwise, every pivot; the S3 `Flat π` payoff additionally needs projection compatibility).**
 `Module.Flat SchurLoc (Away (chartDsigAt s t))` (over the `letI` structure-map algebra
 `chartDsigAtSchurLocAlgebra`): the genuine fibre-family flatness over the in-chart base, chartwise,
 at EVERY pivot. Transport of `standardFibreModel_flat` across the `SchurLoc`-LINEAR trivialization

@@ -11,8 +11,8 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 | 04 | formalisation (tide) | S4 — honest per-chart local PRODUCT over `rankROpen` (`RankROpenPerPivotLocalProduct`; k-algebra, uncocycled) | landed · fidelity PASS |
 | 05 | review (hardener) | decorrelated bedrock pass on S1 + S2 (`@ 3cb4fc17`) | closed · **both PASS-WITH-NOTES, bedrock, no CRITICAL** |
 | 06 | formalisation (tide) | S2c — `TopDimMinPrimes` nonempty → `exists_topComponent_smoothBlock_certificate` (hypothesis-free) | landed · **closes S2 Deferred (c)** |
-| 07 | formalisation (tide) | **S4b — `SchurLoc`-linear (over-base) trivialization** `chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc` (chartwise flatness over **SchurLoc**) | **landed** · hardener PASS (non-circular); completes S4 over-base; flatness over SchurLoc (NOT literal `rankROpen` — P-bridge + R1) |
-| 08 | review (hardener) | batched bedrock pass on the bundle story (S2c, S3, S4, S4b) `@ caa96288` | closed · **all PASS / PASS-WITH-NOTES, no CRITICAL**; S4b non-circular (2 ways + Codex); global-flatness-without-R1 = NO (needs P-bridge) |
+| 07 | formalisation (tide) | **S4b — `SchurLoc`-linear (over-base) trivialization** `chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc` (chartwise flatness over **SchurLoc**) | **landed** · hardener PASS (non-circular); completes S4 over-base; flatness over SchurLoc (NOT literal `rankROpen` — projection compatibility + R1) |
+| 08 | review (hardener) | batched bedrock pass on the bundle story (S2c, S3, S4, S4b) `@ caa96288` | closed · **all PASS / PASS-WITH-NOTES, no CRITICAL**; S4b non-circular (2 ways + Codex); global-flatness-without-R1 = NO (needs projection compatibility) |
 | 09 | formalisation (tide) | S5 — capstone `RankROpenOverBaseLocalProduct` + `reducedFibre_existsOverBaseProductChartAt_rankEq` (over-base product + flatness over SchurLoc, base distinction + open items carried) | **landed** · reviewer PASS · precision-check PASS |
 | 10 | review (close fan-out) | exposition fidelity vs Lean headlines (no overclaim / scope match / fences honest) | in-progress |
 | 11 | review (close fan-out) | S5 bedrock (existential-φ honesty, #print axioms) + cross-module SchurLoc-vs-base consistency | in-progress |
@@ -24,6 +24,6 @@ Parked (roadmap): **P-proj — projection compatibility** — that `schurToDsigA
 is the pullback of `mult`'s projection from the target/base rank-chart (turns S4b's flatness-over-`SchurLoc`
 into genuine fibre-family flatness over the base; `Away(chartDsigAt)` is the source/total chart, not the
 base); real build, AHEAD of R1; **R1** — `targetOverlapTransition` overlap-gluing (single GLOBAL
-`Flat π`/`FiberBundle` morphism over all `rankROpen`, after P-bridge); S2b — conormal `I/I²` free of
+`Flat π`/`FiberBundle` morphism over all `rankROpen`, after projection compatibility); S2b — conormal `I/I²` free of
 rank `= codim` (RLCT-relevant dual of S2; REAL-BUILD per hardener); S1 in-file non-vacuity `example`
 (bedrock-2.1 nicety); singular-locus split (R2, RLCT-runway lower bound — next expedition).
