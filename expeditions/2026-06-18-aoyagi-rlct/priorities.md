@@ -21,6 +21,50 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The current retained-passive `dEarly` `dPcast` probe is implemented locally as
+a narrow solved-`A1` residual-product product-rule helper.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+
+Lean now proves
+`fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply` in
+`RetainedPassiveCoordinatesDerivative.lean`.  For `p : Fin (M+1)`, with
+
+```text
+Pcast(y) = residualFactorProduct solvedA1_y final p.castSucc,
+Psucc(y) = residualFactorProduct solvedA1_y final p.succ,
+```
+
+the theorem proves
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v).
+```
+
+The determinant-chart hypothesis `hz` is retained because `solvedA1 0`
+contains the inverse top-left tail.  The derivative of the current
+solved-`A1` factor is deliberately left explicit.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Fermat` passed the theorem boundary, chart hypothesis, indexing,
+explicit solved-factor derivative, and nonclaims.  `scripts/sorries`,
+`git diff --check`, the full `DLNFibre` build, and theorem axiom audit passed;
+the new theorem has only the standard `[propext, Classical.choice,
+Quot.sound]` footprint.
+
+Nonclaims: no derivative formula for `solvedA1 0`, no complete source-staging
+of `dPcast`, no substitution into the `dEarly` recurrence, no closed finite-
+sum formula, no target staging, no determinant theorem, no measure theorem, no
+normal crossings, no pole order, and no RLCT.
+
+Next frontier after banking: substitute this product-rule helper into the
+already `dCprod`/`dG`-staged `dEarly` recurrence, or first probe the
+`p = 0`/`p ≠ 0` solved-`A1` derivative split if source staging needs it.
+
+Immediate predecessor: terminal `dCprod` boundary.
+
 The current retained-passive `dEarly` terminal-boundary slice is implemented
 locally after source-staging the `dCprod` factor.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-terminal-dcprod-boundary.md`.

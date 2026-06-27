@@ -9835,6 +9835,51 @@ Nonclaims: no `dCprod` staging, no `dPcast` staging, no target staging, no
 full positive-tail `F3` target staging, no determinant theorem, no measure
 theorem, no normal crossings, pole order, or RLCT.
 
+## A2 retained-passive dEarly dPcast solvedA1 product rule
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused module build passed; xhigh review passed; `scripts/sorries`,
+`git diff --check`, full `DLNFibre` build, and theorem axiom audit passed.
+
+Claim: the solved-`A1` residual product that appears as `Pcast` in the
+retained-passive `dEarly` recurrence obeys the ordinary noncommutative
+product rule.  For `p : Fin (M+1)`, define
+
+```text
+Pcast(y) = residualFactorProduct solvedA1_y final p.castSucc,
+Psucc(y) = residualFactorProduct solvedA1_y final p.succ.
+```
+
+Then at a determinant-chart point `z`,
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v).
+```
+
+Lean proves this as
+`fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+
+Kill condition: if `(fderiv solvedA1 p)` is replaced by a passive source
+tangent for all `p`, if a downstream Jacobian theorem is imported into the
+derivative file, if the factor order is changed, or if this is advertised as
+complete `dPcast` source staging, determinant equality, measure transport,
+normal crossings, pole order, or RLCT, it is not the intended slice.
+
+Nonclaims: no derivative formula for `solvedA1 0`, no complete source-staging
+of `dPcast`, no substitution into the `dEarly` recurrence, no closed finite-
+sum formula, no target staging, no determinant theorem, no measure theorem, no
+normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive dEarly terminal dCprod boundary
 
 Status: Proved in Lean locally; controller pen-and-paper reproduction written;

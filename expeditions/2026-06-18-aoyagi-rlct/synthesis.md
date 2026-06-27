@@ -48,6 +48,47 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive dEarly dPcast SolvedA1 Product Rule
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves locally:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply
+```
+
+For `p : Fin (M+1)`, it unfolds the solved-`A1` residual product at
+`p.castSucc` as the successor product at `p.succ` times the current solved
+factor, then applies the Frechet product rule:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v).
+```
+
+The determinant-chart hypothesis remains explicit and is consumed by the
+existing solved-`A1` differentiability lemmas.  The derivative of
+`solvedA1 p` is left explicit; in particular the theorem does not identify
+the `p=0` derivative with a passive source tangent.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  Xhigh
+reviewer `Fermat` passed the theorem boundary, chart hypothesis, indexing,
+explicit solved-factor derivative, and nonclaims.  `scripts/sorries`,
+`git diff --check`, the full `DLNFibre` build, and theorem axiom audit passed;
+the new theorem has only the standard `[propext, Classical.choice,
+Quot.sound]` footprint.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+
+Nonclaims: no derivative formula for `solvedA1 0`, no complete `dPcast`
+source-staging, no downstream Jacobian import, no substitution into the
+`dEarly` recurrence, no target staging, no determinant theorem, no measure
+theorem, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive dEarly Terminal dCprod Boundary
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves locally:

@@ -1940,6 +1940,80 @@ theorem differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetC
     Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
   simpa [motive, j] using hcanon
 
+set_option maxRecDepth 2048 in
+/-- The Frechet derivative of a solved-`A1` suffix product obeys the
+noncommutative product rule.  The current solved-factor derivative is left
+explicit, since it is not uniformly a passive source tangent. -/
+theorem fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+    (fderiv ℝ Pcast z) v =
+      (fderiv ℝ Psucc z) v * data.toCoordinateData.solvedA1 p +
+        Psucc z * (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ A1fun y p) z) v := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+  let Acur : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ A1fun y p
+  let B : Matrix ρ ρ ℝ →L[ℝ] Matrix ρ ρ ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := ρ) (n := ρ)
+  have hPsuccdiff : DifferentiableAt ℝ Psucc z := by
+    simpa [Psucc, A1fun] using
+      differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.succ p.succ.le_last z hz
+  have hAcurdiff : DifferentiableAt ℝ Acur z := by
+    simpa [Acur, A1fun] using
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+  have hPcast_eq : Pcast = fun y ↦ Psucc y * Acur y := by
+    funext y
+    simpa [Pcast, Psucc, Acur, A1fun] using
+      residualFactorProduct_castSucc
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (j := Fin.last (M + 1)) p p.succ.le_last
+  have hmulDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Psucc y * Acur y) z =
+        B.precompR _ (Psucc z) (fderiv ℝ Acur z) +
+          B.precompL _ (fderiv ℝ Psucc z) (Acur z) := by
+    simpa [B] using
+      (B.hasFDerivAt_of_bilinear hPsuccdiff.hasFDerivAt hAcurdiff.hasFDerivAt).fderiv
+  calc
+    (fderiv ℝ Pcast z) v =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Psucc y * Acur y) z) v := by
+          rw [hPcast_eq]
+    _ = Psucc z * (fderiv ℝ Acur z) v + (fderiv ℝ Psucc z) v * Acur z := by
+          rw [hmulDeriv]
+          simp [B, matrixMulContinuousLinearMap_apply]
+    _ = (fderiv ℝ Psucc z) v * data.toCoordinateData.solvedA1 p +
+          Psucc z * (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ A1fun y p) z) v := by
+          simp [Acur, A1fun, data]
+          abel
+
 /-- Residual products of the stored `C` blocks are `C^1` as functions of the
 ambient tuple coordinates. -/
 theorem contDiffAt_residualFactorProduct_C

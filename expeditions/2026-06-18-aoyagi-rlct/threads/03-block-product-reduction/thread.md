@@ -18,6 +18,46 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dEarly dPcast solvedA1 product rule
+
+Reproduction:
+`reproduction-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Statement card:
+`statement-card-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`.
+Review:
+`review-a2-retained-passive-dearly-dpcast-solveda1-product-rule.md`, PASS by
+xhigh `Fermat`.
+
+Lean now proves:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply
+```
+
+This is the narrow product-rule expansion for the solved-`A1` residual product
+appearing as `Pcast` in the retained-passive `dEarly` recurrence.  For a
+general `p : Fin (M+1)`,
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v).
+```
+
+The theorem keeps the determinant-chart hypothesis because solved `A1` uses
+matrix inversion at `p=0`, and it leaves `d(solvedA1 p)_z(v)` explicit.  The
+focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` passed.  The
+`scripts/sorries` audit, `git diff --check`, and full `DLNFibre` build also
+passed; theorem axiom audit reports only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Nonclaims: no derivative formula for `solvedA1 0`, no complete `dPcast`
+source-staging, no downstream Jacobian import, no substitution into the
+`dEarly` recurrence, no target staging, no determinant-one `LinearEquiv`, no
+actual derivative determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 dEarly terminal dCprod boundary
 
 Reproduction:
