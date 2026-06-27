@@ -79,6 +79,17 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   so `Matrix.cons_val_one`/`_two`/… do not fire on the outer selection. Normalize first with
   `rw [show (⟨k, by omega⟩ : Fin n) = (k : Fin n) from rfl]`, then the `cons_val_*` simp set fires; or prove
   the components as separate `have`s and assemble with `funext i; fin_cases i`.
+- **Matrix-apply `simp` fires in ISOLATION but "no progress" IN-CONTEXT when the index is typed at a
+  DEPENDENT, non-syntactic-`succ` width** (e.g. `i : Fin (Wext M k)` / `Fin (Text M t k)`, defeq but not
+  syntactic `Fin 2`/`Fin 1`). After `ext`/`fin_cases` the indices are `Fin.mk`s at the opaque width, so
+  `Matrix.smul_apply`/`mul_apply`/`cons_val_*` don't fire, AND `Fin.zero_eta`/`Fin.mk_one` can't normalize
+  (the width isn't a syntactic `n+1`), so `change`/`show` to a literal `Fin n` is unavailable. **Working
+  pattern: prove each entry as a `have` at EXPLICIT `⟨_, by decide⟩` (or `by omega`) indices where the
+  matrix-apply lemmas DO fire, then `exact` it into the `fin_cases` goal — `Fin` proof-irrelevance unifies
+  the two index forms.** This is the recurring opaque-width cast quirk; it cost two tides on the (2,2,2)
+  `chartParamsGen_eq_chartParams222` det bridge before the `have`+`exact` form landed it (2026-06-27,
+  Codex-corroborated). Transfers to any entrywise identity over `chainA`/`GenBlk` dependent widths (the
+  ∀M `φ_det_eq` lift).
 - **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
