@@ -51,10 +51,11 @@ with its rank pinned to the *proved* geometric codimension
 
 i.e. `rank(Ω) = ambient − codim = dim(component)` — the **relative** dimension. (The module that is
 free of rank `= codim` is the *conormal* `I/I²`, a different object — a deliberate distinction; the
-conormal statement is roadmapped, not claimed.) The certificate is **hypothesis-free** under the
-Kostant gate: `FibreSmoothBlockExists.exists_topComponent_smoothBlock_certificate` discharges the
-top-component input via a generic engine (`topDimMinPrimes_nonempty`: a nontrivial Noetherian ring has
-a minimal prime realising the full Krull dimension). This is the smooth-locus *upper-bound* local
+conormal statement is roadmapped, not claimed.) Under the Kostant gate (and for a rank-`r` target `B`),
+the certificate is **closed over the top-component input** — the `I, hI` inputs are discharged:
+`FibreSmoothBlockExists.exists_topComponent_smoothBlock_certificate` produces a top component via a
+generic engine (`topDimMinPrimes_nonempty`: a nontrivial Noetherian ring has a minimal prime realising
+the full Krull dimension). This is the smooth-locus *upper-bound* local
 model the future RLCT bridge consumes.
 
 ## 3. The over-base local product, with flatness (S4, S4b, S5)
@@ -68,9 +69,8 @@ upgrades it to a genuine **over-base** trivialization:
 
 where `SchurLoc` acts via an **honest structure map** `schurToDsigAt` (a composite of the banked
 connecting map, the deep-chart equivalence, and a gauge transport) — *not* a pullback along the
-equivalence being upgraded. This non-circularity is the load-bearing point (machine-verified, and
-independently re-checked): it is what makes the `≃ₐ[SchurLoc]` and the consequent flatness
-non-vacuous. From it the flatness falls out chartwise
+equivalence being upgraded. This non-circularity is what makes the `≃ₐ[SchurLoc]` and the consequent
+flatness non-vacuous rather than a tautology. From it the flatness falls out chartwise
 (`chartDsigAt_flat_over_schurLoc : Module.Flat SchurLoc (Away(chartDsigAt s t))`), by transporting the
 standard model's freeness across the over-base equivalence.
 

@@ -191,3 +191,13 @@ prime/residue-field bridge `P ∈ rankROpen ↔ rank over κ(P) = r`:
   blocking gate: the close-phase PR (signal-and-wait — operator's go + merge).** Surfacing to operator:
   open PR (no merge) + fan-out decorrelated review, as last expedition? Roster clean (all tides
   self-cleared). Branch `expedition/fibration-geometry`; close-commit pending this doc commit.
+
+- **tick 13 (close fan-out review round, 2026-06-27 ~20:40):** operator chose "open PR + fan-out review".
+  Branch pushed; **PR #12 opened as DRAFT** (do-not-merge) against `dev`. Two decorrelated review seats:
+  - **rev-exposition: FAITHFUL** (Codex-concurred) — no overclaim/scope-mismatch/missing-fence; the
+    SchurLoc-vs-base + Kähler-vs-conormal distinctions both confirmed honest. Two wording sharpenings
+    **actioned**: "hypothesis-free" → "closed over the top-component input" (matches Lean docstring);
+    dropped the self-reassuring "(machine-verified, …)" parenthetical.
+  - **rev-s5-integration: pending** (S5 bedrock + cross-module consistency; build reconfirm slow after
+    the foundational-dep invalidation — not gating the source audit).
+  On rev-s5 clear → final "ready to mark PR ready + merge" to operator. Cron backstop stays armed.

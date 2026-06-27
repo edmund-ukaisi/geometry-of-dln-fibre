@@ -14,6 +14,11 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 | 07 | formalisation (tide) | **S4b — `SchurLoc`-linear (over-base) trivialization** `chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc` (chartwise flatness over **SchurLoc**) | **landed** · hardener PASS (non-circular); completes S4 over-base; flatness over SchurLoc (NOT literal `rankROpen` — P-bridge + R1) |
 | 08 | review (hardener) | batched bedrock pass on the bundle story (S2c, S3, S4, S4b) `@ caa96288` | closed · **all PASS / PASS-WITH-NOTES, no CRITICAL**; S4b non-circular (2 ways + Codex); global-flatness-without-R1 = NO (needs P-bridge) |
 | 09 | formalisation (tide) | S5 — capstone `RankROpenOverBaseLocalProduct` + `reducedFibre_existsOverBaseProductChartAt_rankEq` (over-base product + flatness over SchurLoc, base distinction + open items carried) | **landed** · reviewer PASS · precision-check PASS |
+| 10 | review (close fan-out) | exposition fidelity vs Lean headlines (no overclaim / scope match / fences honest) | in-progress |
+| 11 | review (close fan-out) | S5 bedrock (existential-φ honesty, #print axioms) + cross-module SchurLoc-vs-base consistency | in-progress |
+
+**Close:** spine S1–S5 complete + bedrock; branch pushed; **PR #12 (DRAFT / do-not-merge)** opened
+against `dev`. Close fan-out review (threads 10–11) in flight; on clear → mark PR ready (operator merges).
 
 Parked (roadmap): **P-bridge — chart-base identification** `SchurLoc ≅ sweepSigmaRing|basicOpen(chartDsigAt)`
 (+ structure-map compat) — turns S4b's flatness-over-SchurLoc into genuine flatness over `rankROpen`;
