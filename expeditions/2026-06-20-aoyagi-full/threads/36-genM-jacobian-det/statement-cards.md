@@ -365,3 +365,51 @@ sorry-free + axiom-clean; the smeared `cov` analysis is the GATING finding hande
 >   rate (`F=z²U`), `U≢0` (polynomial), det (`|z|^{minAdm−1}`), threshold (`½·minAdm`) are all validated
 >   46/46 (`pp_smear_GATE.py`) and unblocked; only the `cov` rung is gated on this decision.
 > - **Status.** analysis only (no Lean built for the smeared chart, by the GATING-CHECK-FIRST discipline).
+
+---
+
+## SMEARED `cov` build attempt → SHARPER wall (the validate-small `(1,2,1)` finding)
+
+Branch `worktree-agent-a223be0c63e358844`. Controller chose option (a) (least-disruptive `cov` split,
+no bundle change) and directed building the SMEARED chart. Building the validate-small `(1,2,1)` surfaced
+a wall EARLIER than the `cov` split — handed back for a structure decision.
+
+---
+
+> **Finding (HANDBACK, supersedes "only `cov` is pole-affected").** The rational chart `φ_sm` does NOT
+> fit the EXISTING `NodeAchieverChart` — TWO fields are pole-affected, not one. The `leaf_integrand`
+> field (∀ u, POINTWISE) breaks at the rational pole, BEFORE the `cov` split is even reached.
+>
+> - **Lean (the wall witness, sorry-free + axiom-clean `[propext, Classical.choice, Quot.sound]`):**
+>   `DLNFibre.DLN.RLCT.dlnLoss_chartParams121_offpole`, `dlnLoss_chartParams121_pole_pos`,
+>   `prod_chartParams121_entry`, + the chart defs `chartA0_121`/`chartA1_121`/`chartParams121`/`phi121sm`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteM121Smeared.lean` @ `36654c1a`). Full `lake build DLNFibre`
+>   green with the module temp-imported.
+> - **The case.** `M = (1,2,1)`, the smallest boundary-smeared node: `r=1, c=1, m1=2, s=1, minAdm=1,
+>   flatDim=4`. Chart coords `(a,b,z,sb)`; `A⁰=[a,b]`, `A¹=[z−(b/a)·sb ; sb]`, pole `N0={a=0}`.
+> - **The wall, Lean-checked.** OFF the pole (`a≠0`): `dlnLoss = z²·a²` (`dlnLoss_chartParams121_offpole`,
+>   the `b·sb` shear cancels). ON the pole, Lean totalizes `b/a = b·0⁻¹ = 0`, so `A⁰·A¹ = b·sb`:
+>   at `(0,1,7,1)` the loss is `1 > 0` (`dlnLoss_chartParams121_pole_pos`), while any `z²·U = z²·a² = 0`.
+>   So the rate `F∘φ = z²·U` holds ONLY off `N0`. NO diffeo-preserving extension fixes it: at `a=0`,
+>   `A⁰·A¹ = b·(A¹ bottom)` and the bottom row `sb` is a FREE coord, so it cannot be forced to `0`.
+> - **Why this breaks `leaf_integrand` (∀ u).** `routeMCore_box_diverges_of_nodeChart` (the banked
+>   M-agnostic assembly) rewrites `W.leaf_integrand` via `setLIntegral_congr_fun hPmeas` — POINTWISE on
+>   ALL of the box `P = [0,δ]^N`, including the pole slice `N0` (a null subset of `P`). The field asserts
+>   `F∘φ = u_p²·U` pointwise, which the rational chart cannot supply. So option (a) ("fits the existing
+>   structure, only `cov` changes") does NOT hold: `leaf_integrand` is a SECOND pole-affected field.
+> - **Codex (xhigh, decorrelated; `codex/smeared-leafintegrand-{prompt,answer}.md`).** Confirms: option
+>   (a) as framed does not survive. Ruled out the `Ufun_sm := |F∘φ|/(u_p)²` dodge — it is NOT a legal
+>   `Ufun` (bounded-on-box fails: on `{a=0, z→0}` it is `(b·sb)²/z²`, unbounded). Cheapest sound fix:
+>   **(i)** weaken `leaf_integrand` to an a.e. statement (`∀ᵐ u`) AND change the assembly's
+>   `setLIntegral_congr_fun` to an a.e. `setLIntegral_congr` dropping the pole-null set — i.e. EDIT the
+>   banked M-agnostic core `routeMCore_box_diverges_of_nodeChart` + the structure field type. Existing
+>   polynomial instances supply the a.e. field for free via `Filter.Eventually.of_forall`. (Most
+>   disruptive alternative: a separate `NodeAchieverChartAE` with a.e. fields + its own assembly.)
+> - **The decision (controller-gated).** Fix (i) touches the banked core that all instances + the interior
+>   branch consume; the a.e. weakening is a strict generalization (polynomial instances unaffected, free
+>   `of_forall`), but it is a structure/assembly change, not a per-instance discharge. Recommend (i): one
+>   field type change + one `setLIntegral_congr_fun → congr` swap (drop the `{a=0}∪{z=0}` null set) + the
+>   `cov` split (the originally-scoped piece). After (i), the smeared chart's `cov` split + the a.e.
+>   `leaf_integrand` + rate/det (validated 46/46) discharge the atom for smeared M.
+> - **Status.** the wall WITNESS is sorry-free + axiom-clean; the chart INSTANCE is NOT built (blocked on
+>   the (i) structure change). NOT in DLNFibre.lean (single-writer; controller wires + decides on (i)).
