@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Ctop First Passive A1 Target Staging
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_target_staged_apply
+fderiv_retainedPassive_A1TailAfterFirst_pos_target_staged_apply
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+This is a narrow target-staging slice for the positive-tail first top-left
+`Ctop` bridge.  The generic seed-product helper refines the existing
+noncommutative product-rule derivative by replacing only the current passive
+source tangent `v.1 q` with the target-staged passive `A1` expression:
+
+```text
+Dzv.1 q
+  - XsuccF2 q.succ * coord.solvedA3 q.succ
+  - coord.F2 q.succ.succ * rawEdgeTupleA3 Dzv q.succ.
+```
+
+The positive-tail wrapper uses `q : Fin M := ⟨0,hM⟩` and `p := q.succ`.
+The `Ctop` consumer keeps the endpoint shear index `0 : Fin (M+1)` separate
+from the passive replacement index `q.succ`, preserves factor order
+`Tail⁻¹ * (...) * Tail⁻¹ * coord.Ctop`, and leaves `(fderiv Psucc z) v`
+explicit.  The recovery companion uses the same equality and the formal
+raw-order `Ctop` recovery after multiplying by `Tail`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-tail-target-staged-first-passive.md`,
+PASS by xhigh `Banach the 2nd`.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, the full
+`DLNFibre` build passed with only pre-existing style warnings, `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and the four
+new theorem axiom audits reported only `[propext, Classical.choice,
+Quot.sound]`.
+
+This is not empty-suffix cleanup for `M=1`, terminal lower-left zero cleanup,
+full `Ctop`/`F3` target staging, determinant equality, source-prior/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 F3 Two-Positive-Tail Next-Successor Substitution
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves:

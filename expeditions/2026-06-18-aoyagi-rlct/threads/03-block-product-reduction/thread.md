@@ -18,6 +18,55 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 Ctop first passive A1 target staging
+
+Reproduction:
+`reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+Statement card:
+`statement-card-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+Review:
+`review-a2-retained-passive-a1-tail-target-staged-first-passive.md`, PASS by
+xhigh `Banach the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_target_staged_apply
+fderiv_retainedPassive_A1TailAfterFirst_pos_target_staged_apply
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The generic helper starts from the passive seed-product suffix product rule and
+replaces only the current passive tangent `v.1 q` using the target-staged
+passive `A1` recovery.  The positive-tail wrapper specializes this to
+`q : Fin M := ⟨0,hM⟩` and `p := q.succ`.  The Ctop consumer starts from the
+existing positive-tail target-staged Ctop equality and rewrites only
+
+```text
+Psucc z * v.1 q
+```
+
+inside the explicit first suffix-derivative recurrence.  It keeps
+`(fderiv Psucc z) v` explicit and preserves the noncommutative order
+
+```text
+Tail⁻¹ * (...) * Tail⁻¹ * coord.Ctop.
+```
+
+The passive replacement uses `q.succ`, not the separate Ctop endpoint edge
+index `0 : Fin (M+1)`.  The recovery companion applies the same equality and
+the formal raw-order `Ctop` recovery after left multiplication by `Tail`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, and the full
+`DLNFibre` build passed with only pre-existing style warnings.  `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and all four
+new theorem axiom audits reported only `[propext, Classical.choice,
+Quot.sound]`.  This does not simplify the `M=1` empty suffix, terminal-clean,
+expand the remaining suffix derivative, claim full `Ctop`/`F3` target staging,
+determinant equality, measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-27 A2 F3 two-positive-tail next-successor substitution
 
 Reproduction:

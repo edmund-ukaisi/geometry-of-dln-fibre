@@ -2409,6 +2409,151 @@ theorem A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_
   simpa using hrec
 
 set_option linter.style.longLine false in
+/-- The passive top-left seed-product suffix derivative can be target-staged
+at its current passive seed, leaving the remaining suffix derivative explicit. -/
+theorem fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_target_staged_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (q : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let p : Fin (M + 1) := q.succ
+    let Pcast : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    (fderiv ℝ Pcast z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p +
+        Psucc z *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let p : Fin (M + 1) := q.succ
+  let Pcast : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hbase :=
+    fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_apply
+      (M := M) (ρ := ρ) (κ' := κ') z v q
+  have hA1 :=
+    A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive
+      (ρ := ρ) (κ' := κ') hz v q
+  change (fderiv ℝ Pcast z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q at hbase
+  change Dzv.1 q
+      - XsuccF2 q.succ * coord.solvedA3 q.succ
+      - coord.F2 q.succ.succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ =
+      v.1 q at hA1
+  rw [← hA1] at hbase
+  simpa [raw, data, coord, Dzv, p, Pcast, Psucc, XsuccF2] using hbase
+
+set_option linter.style.longLine false in
+/-- For a positive retained-passive top-left tail, target-stage the first
+passive seed tangent in the first suffix-product derivative step. -/
+theorem fderiv_retainedPassive_A1TailAfterFirst_pos_target_staged_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (hM : 0 < M)
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let q : Fin M := ⟨0, hM⟩
+    let p : Fin (M + 1) := q.succ
+    let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    (fderiv ℝ Tfun z) v =
+      (fderiv ℝ Psucc z) v * data.A1seed p +
+        Psucc z *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let q : Fin M := ⟨0, hM⟩
+  let p : Fin (M + 1) := q.succ
+  let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Pcast : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+        (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+        (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have htail_eq : Tfun = Pcast := by
+    funext y
+    simp [Tfun, Pcast, ChartLocalSuffixState.retainedPassiveA1TailAfterFirst, p, q]
+  have hrec :=
+    fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_target_staged_apply
+      (M := M) (ρ := ρ) (κ' := κ') hz v q
+  calc
+    (fderiv ℝ Tfun z) v = (fderiv ℝ Pcast z) v := by
+      rw [htail_eq]
+    _ =
+      (fderiv ℝ Psucc z) v * data.A1seed p +
+        Psucc z *
+          (Dzv.1 q
+            - XsuccF2 q.succ * coord.solvedA3 q.succ
+            - coord.F2 q.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ) := by
+      simpa [raw, data, coord, Dzv, q, p, Pcast, Psucc, XsuccF2] using hrec
+
+set_option linter.style.longLine false in
 /-- The first top-left branch can be source-staged in the successor `F2`
 and multiplied successor lower-left terms, leaving the passive-tail inverse
 derivative term explicit. -/
@@ -2938,6 +3083,85 @@ theorem Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_fo
   exact hsource
 
 set_option linter.style.longLine false in
+/-- For positive passive-tail length, additionally target-stage the first
+passive `A1` tangent in the explicit first suffix-derivative recurrence term. -/
+theorem Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (hM : 0 < M)
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let q : Fin M := ⟨0, hM⟩
+    let p : Fin (M + 1) := q.succ
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    Dzv.2.2.2.2.1
+      - XsuccF2 0 * coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
+      + Tail⁻¹ *
+          ((fderiv ℝ Psucc z) v * data.A1seed p +
+            Psucc z *
+              (Dzv.1 q
+                - XsuccF2 q.succ * coord.solvedA3 q.succ
+                - coord.F2 q.succ.succ *
+                    rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
+          Tail⁻¹ * coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      data.A1seed
+  let q : Fin M := ⟨0, hM⟩
+  let p : Fin (M + 1) := q.succ
+  let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+        (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hCtop :=
+    Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hM hz v
+  have hA1 :=
+    A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_A1passive
+      (ρ := ρ) (κ' := κ') hz v q
+  change Dzv.1 q
+      - XsuccF2 q.succ * coord.solvedA3 q.succ
+      - coord.F2 q.succ.succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ =
+      v.1 q at hA1
+  change Dzv.2.2.2.2.1
+      - XsuccF2 0 * coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
+      + Tail⁻¹ * ((fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q) *
+          Tail⁻¹ * coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 at hCtop
+  rw [← hA1] at hCtop
+  simpa [raw, data, coord, Dzv, Tail, q, p, Psucc, XsuccF2, add_assoc] using hCtop
+
+set_option linter.style.longLine false in
 /-- In the single-edge case, the target-staged first top-left branch recovers
 the source `Ctop` tangent after multiplication by the passive tail. -/
 theorem Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
@@ -3061,6 +3285,101 @@ theorem Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recov
       - coord.F2 (0 : Fin (M + 1)).succ *
           rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
       + Tail⁻¹ * ((fderiv ℝ Psucc z) v * data.A1seed p + Psucc z * v.1 q) *
+          Tail⁻¹ * coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 at hCtop
+  rw [hCtop]
+  simpa [Tail, data] using hrec
+
+set_option linter.style.longLine false in
+/-- For positive passive-tail length, the first-`A1` target-staged first
+top-left branch recovers the source `Ctop` tangent after multiplication by the
+passive tail. -/
+theorem Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (hM : 0 < M)
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Dzv := (fderiv ℝ raw z) v
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let q : Fin M := ⟨0, hM⟩
+    let p : Fin (M + 1) := q.succ
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+          (Fin.last (M + 1)) p.succ p.succ.le_last
+    let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+    Tail *
+      (Dzv.2.2.2.2.1
+        - XsuccF2 0 * coord.solvedA3 0
+        - coord.F2 (0 : Fin (M + 1)).succ *
+            rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
+        + Tail⁻¹ *
+            ((fderiv ℝ Psucc z) v * data.A1seed p +
+              Psucc z *
+                (Dzv.1 q
+                  - XsuccF2 q.succ * coord.solvedA3 q.succ
+                  - coord.F2 q.succ.succ *
+                      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
+            Tail⁻¹ * coord.Ctop) =
+      v.2.2.2.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      data.A1seed
+  let q : Fin M := ⟨0, hM⟩
+  let p : Fin (M + 1) := q.succ
+  let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+        (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+        (Fin.last (M + 1)) p.succ p.succ.le_last
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hCtop :=
+    Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hM hz v
+  have hrec :=
+    retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop
+      (ρ := ρ) (κ' := κ') hz v
+  change Tail *
+      (Dzv.2.2.2.2.1
+        - XsuccF2 0 * coord.solvedA3 0
+        - coord.F2 (0 : Fin (M + 1)).succ *
+            rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
+        + Tail⁻¹ *
+            ((fderiv ℝ Psucc z) v * data.A1seed p +
+              Psucc z *
+                (Dzv.1 q
+                  - XsuccF2 q.succ * coord.solvedA3 q.succ
+                  - coord.F2 q.succ.succ *
+                      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
+            Tail⁻¹ * coord.Ctop) =
+      v.2.2.2.2.1
+  change Dzv.2.2.2.2.1
+      - XsuccF2 0 * coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv 0
+      + Tail⁻¹ *
+          ((fderiv ℝ Psucc z) v * data.A1seed p +
+            Psucc z *
+              (Dzv.1 q
+                - XsuccF2 q.succ * coord.solvedA3 q.succ
+                - coord.F2 q.succ.succ *
+                    rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.succ)) *
           Tail⁻¹ * coord.Ctop =
       ((retainedPassiveFormalRawOrderJacobianAt
           (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 at hCtop

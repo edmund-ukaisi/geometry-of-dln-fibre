@@ -21,6 +21,50 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The retained-passive positive-tail first top-left `Ctop` bridge now has the
+first passive `A1` source tangent target-staged inside the explicit
+suffix-product derivative term.  New Lean names:
+
+```text
+fderiv_retainedPassive_A1seed_residualFactorProduct_succ_castSucc_target_staged_apply
+fderiv_retainedPassive_A1TailAfterFirst_pos_target_staged_apply
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_firstA1_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The theorem uses positive tail index `q : Fin M := ⟨0,hM⟩` and
+`p : Fin (M+1) := q.succ`, while the `Ctop` endpoint shear still uses the
+separate edge index `0 : Fin (M+1)`.  Only the factor `Psucc z * v.1 q` is
+rewritten to
+
+```text
+Psucc z *
+  (Dzv.1 q
+    - XsuccF2 q.succ * coord.solvedA3 q.succ
+    - coord.F2 q.succ.succ * rawEdgeTupleA3 Dzv q.succ)
+```
+
+and `(fderiv Psucc z) v` remains explicit.  The `Ctop` consumer preserves
+matrix order
+`Tail⁻¹ * (...) * Tail⁻¹ * coord.Ctop`.  The recovery companion left-multiplies
+the same target-staged expression by `Tail` and uses the formal raw-order
+`Ctop` recovery.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, the full
+`DLNFibre` build passed with only pre-existing style warnings, `scripts/sorries`
+reported zero forbidden markers, `git diff --check` was clean, and the four
+new theorem axiom audits reported only `[propext, Classical.choice,
+Quot.sound]`.  Xhigh independent review passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+
+This does not claim empty-suffix cleanup for `M=1`, full `Ctop` or `F3`
+target staging, determinant equality, measure transport, normal crossings,
+pole order, or RLCT.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-a1-tail-target-staged-first-passive.md`.
+
+Previous controller decision:
+
 The retained-passive positive-tail `F3` bridge now has its first recursive
 `Nextfun` term expanded in the two-positive-tail case, together with the
 matching source-`F3` recovery companion:
