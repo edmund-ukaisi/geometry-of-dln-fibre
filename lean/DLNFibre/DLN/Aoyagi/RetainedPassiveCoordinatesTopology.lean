@@ -505,6 +505,159 @@ theorem injOn_topologyTupleEdgeRawOrder_detChartSet
     (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')) hraw
   simpa using hE
 
+/-- The source-recursive determinant chart read in raw-order tuple
+coordinates. -/
+def topologyTupleRawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    Set (TopologyTuple ρ κ' K) :=
+  {z | edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z ∈
+    sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')}
+
+@[simp]
+theorem mem_topologyTupleRawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] (z : TopologyTuple ρ κ' K) :
+    z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') ↔
+      edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z ∈
+        sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+  rfl
+
+/-- Source readback after rebuilding the edge family from a raw-order target
+tuple. -/
+def topologyTupleEdgeRawOrderInverse
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : TopologyTuple ρ κ' K) :
+    TopologyTuple ρ κ' K :=
+  topologyTuple
+    (sourceReadback (K := K) (ρ := ρ)
+      (edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z))
+
+/-- The retained-passive raw-order source map sends the tuple determinant chart
+into the raw-order source-recursive determinant chart. -/
+theorem mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    Set.MapsTo
+      (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ'))
+      (topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ'))
+      (topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) := by
+  intro z hz
+  have hsource :
+      topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z ∈
+        sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') :=
+    mapsTo_topologyTupleEdgeMatrix_detChartSet_sourceRecursiveDetChartSet
+      (K := K) (ρ := ρ) (κ' := κ') hz
+  simpa [topologyTupleRawOrderSourceRecursiveDetChartSet] using hsource
+
+/-- Raw-order source readback lands back in the tuple determinant chart on the
+raw-order source-recursive determinant chart. -/
+theorem topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' K}
+    (hz : z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) :
+    topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') z ∈
+      topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+  let E := edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z
+  have hsource :
+      E ∈ sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+    simpa [topologyTupleRawOrderSourceRecursiveDetChartSet, E] using hz
+  have hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E :=
+    (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E).1 hsource
+  simpa [topologyTupleEdgeRawOrderInverse, E] using
+    (sourceReadback_detChart_of_sourceRecursiveDetChart
+      (K := K) (ρ := ρ) E hchart)
+
+/-- On the tuple determinant chart, raw-order readback is a left inverse to the
+retained-passive raw-order source map. -/
+theorem topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' K}
+    (hz : z ∈ topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ')) :
+    topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ')
+        (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z) =
+      z := by
+  let data := ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart :=
+    (mem_topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') z).1 hz
+  have hread :
+      sourceReadback (K := K) (ρ := ρ)
+          (topologyTupleEdgeMatrix (K := K) (ρ := ρ) (κ' := κ') z) =
+        data := by
+    simpa [topologyTupleEdgeMatrix, data] using
+      (sourceReadback_edgeMatrix_eq (K := K) (ρ := ρ) (data := data) hdet)
+  dsimp [topologyTupleEdgeRawOrderInverse]
+  rw [edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder]
+  rw [hread]
+  simp [data]
+
+/-- On the raw-order source-recursive determinant chart, the retained-passive
+raw-order source map is a right inverse to raw-order readback. -/
+theorem topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' K}
+    (hz : z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ')) :
+    topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ')
+        (topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') z) =
+      z := by
+  let E := edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') z
+  have hsource :
+      E ∈ sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+    simpa [topologyTupleRawOrderSourceRecursiveDetChartSet, E] using hz
+  have hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) E :=
+    (mem_sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') E).1 hsource
+  have hedge :
+      (sourceReadback (K := K) (ρ := ρ) E).edgeMatrix = E :=
+    edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+      (K := K) (ρ := ρ) E hchart
+  dsimp [topologyTupleEdgeRawOrderInverse, topologyTupleEdgeRawOrder]
+  rw [topologyTupleEdgeMatrix_topologyTuple]
+  rw [hedge]
+  exact edgeFamilyRawOrderTuple_edgeFamilyOfRawOrderTuple
+    (K := K) (ρ := ρ) (κ' := κ') z
+
+/-- The image of the tuple determinant chart under the retained-passive
+raw-order source map is exactly the raw-order source-recursive determinant
+chart. -/
+theorem image_topologyTupleEdgeRawOrder_detChartSet
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [CommRing K] [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)] :
+    topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') ''
+        topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') =
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') := by
+  ext z
+  constructor
+  · rintro ⟨w, hw, rfl⟩
+    exact
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') hw
+  · intro hz
+    refine ⟨topologyTupleEdgeRawOrderInverse
+        (K := K) (ρ := ρ) (κ' := κ') z, ?_, ?_⟩
+    · exact
+        topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') hz
+    · exact
+        topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+          (K := K) (ρ := ρ) (κ' := κ') hz
+
 /-- Nonredundant retained-passive coordinates carry the product topology on
 their matrix fields. -/
 instance instTopologicalSpace

@@ -9269,3 +9269,43 @@ raw-order target-coordinate endomap.  It does not identify the derivative,
 prove a tangent equivalence, determinant unit/formula, Jacobian density,
 measure pushforward, image equality, source-rank coverage, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-26 A2 retained-passive raw-order inverse chart
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-inverse-chart.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-inverse-chart.md`.
+Review:
+`review-a2-retained-passive-raw-order-inverse-chart.md`
+passed by xhigh read-only explorer `Meitner the 4th`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesTopology.lean`.
+
+Lean now defines the raw-order target chart
+
+```text
+topologyTupleRawOrderSourceRecursiveDetChartSet
+```
+
+and the explicit raw-order readback
+
+```text
+topologyTupleEdgeRawOrderInverse
+```
+
+then proves maps-to, inverse-on-chart, and image equality:
+
+```text
+mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+image_topologyTupleEdgeRawOrder_detChartSet
+```
+
+This is target-chart bookkeeping for the retained-passive raw-order map.  It
+does not prove differentiability of the inverse, a formal tangent equivalence,
+determinant unit/formula, Jacobian density, measure pushforward, source-rank
+coverage, normal crossings, pole order, or RLCT.

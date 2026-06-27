@@ -6147,3 +6147,15 @@ build the formal tangent map/equivalence for the retained-passive raw-order
 endomap and prove determinant unitness.  Keep the exact determinant formula,
 Jacobian density, and measure pushforward separate until the formal tangent
 map has been identified with the derivative.
+
+A2 retained-passive raw-order inverse chart has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-inverse-chart.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-inverse-chart.md`.
+Lean defines the raw-order encoding of `sourceRecursiveDetChartSet`, the
+raw-order readback inverse, and proves maps-to, inverse-on-chart, and image
+equality for `topologyTupleEdgeRawOrder` on `topologyTupleDetChartSet`.  The
+next slice should use this target-domain bookkeeping while building either
+the direct formal tangent equivalence or a differentiable raw-order readback
+route to determinant unitness.  Do not state density or measure pushforward
+before derivative determinant unitness is proved.

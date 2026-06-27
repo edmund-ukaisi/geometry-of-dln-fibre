@@ -13336,3 +13336,22 @@ derivative formula, tangent equivalence, determinant unit/formula, density,
 measure pushforward, normal crossings, pole order, or RLCT.  Next target:
 construct the formal tangent map/equivalence and prove determinant unitness
 before any positive Jacobian density or pushforward theorem.
+
+Latest retained-passive raw-order inverse-chart foothold:
+`RetainedPassiveCoordinatesTopology.lean` now defines
+`topologyTupleRawOrderSourceRecursiveDetChartSet` as the raw-order tuple
+encoding of `sourceRecursiveDetChartSet`, and
+`topologyTupleEdgeRawOrderInverse` as
+`topologyTuple ∘ sourceReadback ∘ edgeFamilyOfRawOrderTuple`.  Lean proves
+that `topologyTupleEdgeRawOrder` maps the tuple determinant chart into this
+raw-order target chart, that the inverse lands back in the determinant chart,
+that the two maps are inverse on their chart domains, and that the image of
+the determinant chart is exactly the raw-order target chart.
+
+This closes the set-level target-domain bookkeeping for the retained-passive
+raw-order map.  It still does not prove differentiability of the inverse, a
+formal derivative formula, tangent equivalence, determinant unit/formula,
+density, measure pushforward, normal crossings, pole order, or RLCT.  Next
+target: build the formal tangent map/equivalence or prove differentiability
+of the raw-order readback if that gives a shorter route to determinant
+unitness.
