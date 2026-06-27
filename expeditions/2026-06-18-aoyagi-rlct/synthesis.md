@@ -14568,8 +14568,19 @@ The sign remains positive because this term already came from substituting
 The formula does not commute factors, does not include dummy `A1seed 0`, and
 leaves `(fderiv Psucc z) v` explicit.
 
-Verification so far: focused
-`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+Verification:
+
+```text
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the four new theorem names
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.
 Pen-and-paper scout `Godel` and Lean/API scout `Hooke` both recommended this
 boundary.  Independent xhigh implementation review `Galileo` passed, recorded
 in
@@ -14634,3 +14645,51 @@ staging, not `F3` target staging, not whole-tuple target-side normalization,
 not a determinant-one target-side `LinearEquiv`, not actual derivative
 determinant equality, and not measure transport, normal crossings, pole order,
 or RLCT.
+
+## Latest A2 Retained-Passive Ctop Target-Staged Endpoint Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the target-staged Ctop
+endpoint slice:
+
+```text
+Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+The zero-tail theorem handles `M = 0`; the positive-tail theorem assumes
+`0 < M`.  Both replace the source-staged successor `F2` correction at the
+first retained edge by `retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and
+replace the source-staged lower-left correction by
+
+```text
+coord.F2 0.succ * rawEdgeTupleA3(Dzv,0).
+```
+
+For `M = 0`, this still does not identify the terminal raw lower-left target
+derivative with zero; the terminal extended `F2` multiplier is zero.  For
+`0 < M`, the theorem preserves the explicit suffix derivative term
+
+```text
+Tail^{-1} * ((fderiv Psucc z) v * data.A1seed p + Psucc z * v.1 q)
+  * Tail^{-1} * coord.Ctop
+```
+
+in the same noncommutative order as the source-staged endpoint theorem.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`
+passed by xhigh `Einstein`.
+
+Verification so far: focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+
+This remains Ctop endpoint target staging only.  It is not `F3` target staging,
+not whole-tuple target-side normalization, not a determinant-one target-side
+`LinearEquiv`, not actual derivative determinant equality, and not measure
+transport, normal crossings, pole order, or RLCT.

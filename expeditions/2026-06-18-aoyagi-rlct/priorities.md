@@ -21,7 +21,32 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
-After post-interruption reorientation, the retained-passive passive `A1`
+After post-interruption reorientation, the retained-passive Ctop target-staged
+endpoint shear has landed locally.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+
+Lean proves the zero/positive Ctop endpoint target-staged formulas and
+recovery theorems:
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`.
+This consumes the target-recovered successor `F2` family and the multiplied
+raw lower-left target readout at the first retained edge.  The positive-tail
+formula keeps the suffix derivative term explicit and in the previously
+checked noncommutative order.
+
+Nonclaims: no `F3` target staging, no whole-tuple target-side normalization,
+no determinant-one target-side `LinearEquiv`, no actual derivative determinant
+equality, no measure transport, no normal crossings, no pole order, and no
+RLCT.
+
+Immediate predecessor: the retained-passive passive `A1`
 target-staged shear has landed.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-a1passive-target-staged-shear.md`.
 Statement card:

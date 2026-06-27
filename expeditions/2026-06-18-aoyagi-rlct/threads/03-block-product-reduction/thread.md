@@ -18,6 +18,43 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 Ctop target-staged endpoint shear
+
+After passive `A1` target staging, the analogous Ctop endpoint step is to
+consume the target-recovered successor `F2` family and the multiplied raw
+lower-left target readout at the first retained edge `0 : Fin (M+1)`.
+Reproduction:
+`reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+
+Lean now keeps the already-landed zero/positive tail split.  For `M = 0`, it
+replaces the two source-staged successor terms in the empty-tail Ctop formula.
+For `0 < M`, it makes the same replacement while leaving the explicit suffix derivative
+`(fderiv Psucc z) v * data.A1seed p + Psucc z * v.A1passive_q` in the same
+noncommutative order.  The terminal lower-left target derivative is not
+claimed to be zero; in the zero-tail case it is used only under the terminal
+zero extended `F2` multiplier.
+
+New Lean names:
+
+```text
+Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+```
+
+Review:
+`review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`
+passed by xhigh `Einstein`.  Focused/full builds, `scripts/sorries`,
+`git diff --check`, and axiom audit all passed; the new theorems depend only
+on `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no `F3` target staging, no whole-tuple target-side normalization,
+no determinant-one `LinearEquiv`, no actual derivative determinant equality,
+no measure transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 passive A1 target-staged shear
 
 After the target-side `(F2,C)` edge-pair recovery landed, the next branch that

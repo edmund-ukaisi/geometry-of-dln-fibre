@@ -11394,3 +11394,28 @@ Nonclaims: no `Ctop` target staging, no `F3` target staging, no whole-tuple
 target-side normalization, no determinant-one target-side `LinearEquiv`, no
 actual derivative determinant formula, no measure theorem, no normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive Ctop target-staged endpoint shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+
+The formula replaces the first-edge source-staged successor `F2` correction by
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and replaces the
+source-staged lower-left correction by `rawEdgeTupleA3 Dzv 0` only under
+left multiplication by `coord.F2 0.succ`.  The zero-tail case uses the
+terminal zero extended `F2` slot rather than a zero raw lower-left derivative.
+The positive-tail theorem preserves the explicit suffix derivative expression
+in the landed order.  Nonclaims: no `F3` target staging, no whole-tuple
+target-side normalization, no determinant-one target-side `LinearEquiv`, no
+actual derivative determinant formula, no measure theorem, no normal
+crossings, pole order, or RLCT.

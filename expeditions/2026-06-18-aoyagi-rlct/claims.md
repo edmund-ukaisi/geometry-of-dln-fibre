@@ -9687,6 +9687,55 @@ actual derivative determinant formula, no measure theorem, no normal
 crossings, pole order, or RLCT is proved by this passive `A1` target-staged
 bridge.
 
+## A2 retained-passive Ctop target-staged endpoint shear
+
+Status: Proved in Lean; reproduced on paper; focused and full builds passed;
+sorry/whitespace/axiom audits passed; xhigh checker passed.
+
+Claim: in the zero-tail and positive-tail Ctop endpoint formulas, the
+successor correction at `0 : Fin (M+1)` can be written using the
+target-recovered successor `F2` family and the raw lower-left target readout:
+
+```text
+Dzv.Ctop
+  - targetXsuccF2(0) * coord.solvedA3(0)
+  - coord.F2(0.succ) * rawEdgeTupleA3(Dzv,0)
+  + explicit_tail_term
+= formal.Ctop.
+```
+
+For `M = 0`, `explicit_tail_term` is absent.  For `0 < M`, it is the already-
+proved first suffix-product derivative expression, kept in the landed
+noncommutative order.  Multiplication by `Tail` recovers the source `Ctop`
+tangent.
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean` as
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`,
+`Ctop_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and
+`Ctop_tail_pos_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
+
+Kill condition: in the `M = 0` case, the terminal raw lower-left target
+derivative must not be identified with zero before multiplication by the
+terminal zero extended `F2` slot.  In the positive-tail case, the explicit
+suffix derivative term must not be dropped, expanded, or reordered.  If the
+theorem is read as `F3` target staging, whole-tuple target-side normalization,
+determinant equality, or measure transport, it overclaims.
+
+Nonclaims: no `F3` target staging, no whole-tuple target-side normalization,
+no determinant-one target-side `LinearEquiv`, no actual derivative determinant
+formula, no measure theorem, no normal crossings, pole order, or RLCT is
+proved by this Ctop target-staged endpoint bridge.
+
 ## A2 retained-passive all-edge pair source-staged target shear
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;
