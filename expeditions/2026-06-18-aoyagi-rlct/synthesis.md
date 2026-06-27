@@ -48,6 +48,49 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Ctop/F3 Recovery Consumers
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves:
+
+```text
+Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The theorems are recovery consumers for existing staged component equalities.
+For `Ctop`, the zero and positive tail cases rewrite the staged Ctop component
+to the formal Ctop component and apply
+`retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop`, so
+`Tail * U_Ctop = v.Ctop`.  In the positive case the first passive recurrence
+substitution remains
+
+```text
+Tail^{-1}
+  * ((fderiv Psucc z) v * data.A1seed p + Psucc z * v.1 q)
+  * Tail^{-1}
+  * coord.Ctop.
+```
+
+For `F3`, the theorem rewrites the terminal lower-left staged component to the
+formal F3 component and applies
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`, so the normalized
+component right-multiplied by
+`(-(coord.solvedA1 (Fin.last M)))^{-1}` recovers `v.F3`.
+
+All three theorems require `z in topologyTupleDetChartSet`; this determinant
+chart hypothesis is now explicit in the statement card after xhigh review.
+The terminal F3 factor is `coord.solvedA1 (Fin.last M)`, hence `coord.Ctop`
+when `M=0`, not the passive `Tail`.
+
+This is not a closed finite-sum formula for `dTail`, not a lower-left
+early-tail derivative recurrence, not a fully source-staged tuple theorem,
+not a target-side determinant-one linear equivalence, not determinant
+equality, not measure transport, not normal crossings, not pole order, and
+not RLCT.  The controller decision is to continue with staged
+determinant/shear consumers while leaving the suffix derivatives explicit
+until a later theorem needs them expanded.
+
 ## VM Rotation Flush - 2026-06-23
 
 Current worktree:

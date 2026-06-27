@@ -19,6 +19,25 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-27
+
+A2 retained-passive Ctop/F3 recovery consumers have landed locally in
+`RetainedPassiveCoordinatesJacobian.lean`:
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and `F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+
+The next retained-passive determinant/shear work can consume these recovery
+theorems with the determinant-chart hypothesis explicit.  Do not spend the
+next slice on a closed finite-sum formula for `dTail` unless a downstream
+determinant or source-staging theorem requires that exact expansion.  Keep
+`F3` early-tail derivatives and terminal-top derivatives explicit until their
+own product-rule recurrences are proved.
+
 ## Current controller decision - 2026-06-24
 
 Definition 3 branch-selection audit is now pinned at

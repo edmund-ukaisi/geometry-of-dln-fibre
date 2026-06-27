@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 Ctop/F3 source-staged recovery consumers
+
+After the Ctop tail endpoint substitution, the controller chose the small
+consumer slice rather than a closed finite-sum expansion of `dTail`.  The
+finite-sum formula remains plausible, but it is not needed for the next
+determinant/shear consumers and would introduce dependent-index and
+noncommutative-order friction before a downstream theorem needs it.
+
+Reproduction:
+`reproduction-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+Statement card:
+`statement-card-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+Review:
+`review-a2-retained-passive-ctop-f3-recovery-consumers.md`, PASS after
+documentation repair by xhigh `Turing`.  Focused Jacobian build, full
+`DLNFibre` build, `scripts/sorries`, `git diff --check`, and theorem axiom
+audit all passed.
+
+Lean now proves:
+
+```text
+Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop
+F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The two `Ctop` theorems rewrite the already-landed staged component equality
+into the formal `Ctop` component and then use
+`retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop`.  The positive-tail
+theorem keeps the first passive recurrence substitution inside the two
+`Tail^{-1}` factors and leaves the suffix derivative `(fderiv Psucc z) v`
+explicit.
+
+The `F3` theorem rewrites the terminal lower-left staged expression into the
+formal `F3` component and then uses
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`, right-multiplying by
+the inverse of `-(coord.solvedA1 (Fin.last M))`.  This terminal factor is
+`coord.Ctop` when `M=0`; it is not the passive tail.
+
+All three theorems assume `z in topologyTupleDetChartSet`; the statement card
+now records this determinant-chart hypothesis explicitly.  Nonclaims remain:
+no closed finite-sum formula for `dTail`, no F3 early-tail derivative formula,
+no full source-staged tuple theorem, no target-side determinant-one
+`LinearEquiv`, no determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 all-edge source-staged edge-pair package
 
 After post-crash reorientation in the dedicated worktree, the next retained-

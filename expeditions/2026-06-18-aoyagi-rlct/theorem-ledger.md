@@ -11318,3 +11318,27 @@ passed by xhigh `Helmholtz the 3rd`.
 This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
+
+Latest A2 retained-passive Ctop/F3 recovery consumers:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and `F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+
+These theorems consume existing staged component equalities together with
+`retainedPassiveFormalRawOrderJacobianAt_recovers_Ctop` and
+`retainedPassiveFormalRawOrderJacobianAt_recovers_F3`.  They require
+`z in topologyTupleDetChartSet`; the docs now expose that hypothesis.  The
+positive Ctop theorem preserves the order and sign of the first passive
+recurrence substitution inside the two inverse-tail factors, and the F3 theorem
+uses the terminal solved top-left factor `coord.solvedA1 (Fin.last M)`.
+Nonclaims: no closed finite-sum tail derivative, no F3 early-tail derivative
+recurrence, no full source-staged tuple, no target-side determinant-one
+equivalence, no determinant equality, no measure transport, no normal
+crossings, no pole order, and no RLCT.

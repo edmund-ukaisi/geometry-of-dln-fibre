@@ -10322,6 +10322,50 @@ staging, no `F3` source staging, no target-side determinant-one shear,
 determinant equality, measure/Jacobian-density theorem, normal crossings, pole
 order, or RLCT.
 
+## A2 retained-passive Ctop/F3 recovery consumers
+
+Status: Proved in Lean locally; controller pen-and-paper reproduction written;
+focused and full builds passed; sorry scan, whitespace check, and axiom audit
+passed; independent xhigh implementation review passed after a documentation
+repair exposing the determinant-chart hypothesis.
+
+Claim: under `z in topologyTupleDetChartSet`, the already-landed staged Ctop
+component equalities and F3 component equality recover the source tangent
+components after the corresponding formal inverse normalizations:
+
+```text
+Tail * U_Ctop = v.Ctop
+U_F3 * (-(coord.solvedA1 (Fin.last M)))^{-1} = v.F3.
+```
+
+Lean proves this as
+`Ctop_tail_zero_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+`Ctop_tail_pos_source_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_Ctop`,
+and
+`F3_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-f3-recovery-consumers.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+
+Review:
+xhigh `Turing` found no Lean fidelity issue and required only the explicit
+determinant-chart assumption in the docs, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-ctop-f3-recovery-consumers.md`.
+
+Kill condition: if the positive Ctop correction changes sign, moves outside
+the two `Tail^{-1}` factors, expands the remaining suffix derivative as if a
+finite-sum formula were proved, or if the F3 normalization uses passive
+`Tail` instead of `coord.solvedA1 (Fin.last M)`, this is not the intended
+consumer theorem.
+
+Nonclaims: no closed finite-sum formula for `dTail`, no F3 early-tail
+derivative recurrence, no full source-staged tuple theorem, no target-side
+determinant-one shear, determinant equality, measure/Jacobian-density theorem,
+normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive actual derivative F3 formal component bridge
 
 Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.
