@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
 import DLNFibre.DLN.RLCT.Validate.RouteMFlatStructV
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverRateFields
 import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
 /-!
@@ -294,5 +295,75 @@ theorem Hmat0_eval (ha : StructAdm M t) (hN : 0 < routeMAmbient M) (x : Fin (rou
     (genBlkFlatStruct M t ha (Xvec (routeMAmbient M))) hle).toChain (MvPolynomial.eval x) using 2
   exact (chainOfMt_map (genBlkFlatStruct_genBlkMap ha x)
     (Xvec (routeMAmbient M) (structPivot M hN)) hle).symm
+
+/-! ## `VvalGen` as `eval x` of the named `UPolyGen`
+
+`VvalGen u M t B hle = ∑_{i,j} (HrGen …)²` and `HrGen = reindex (Hmat 0)`; the reindex is a
+value-preserving bijection on entries, so `∑∑ over the reindex = ∑∑ over the raw `Hmat 0``. The
+polynomial unit `UPolyGen` is the raw sum-of-squares of the POLYNOMIAL chain's `Hmat 0`; `eval x` (a ring
+hom) pushes through the sum/squares, and `Hmat0_eval` identifies the evaluated poly `Hmat 0` with the ℝ
+chain's. -/
+
+/-- The raw sum-of-squares of a chain's `Hmat 0` (no reindex) — equals `VvalGen` (the reindex permutes
+entries, preserving the sum). -/
+noncomputable def sqSumHmat0 {𝕜₀ : Type} [CommRing 𝕜₀] {u₀ : 𝕜₀} (c : Chain L u₀) : 𝕜₀ :=
+  ∑ i, ∑ j, (c.Hmat 0 (Nat.zero_le L) i j) ^ 2
+
+/-- **The polynomial unit `UPolyGen`** — `sqSumHmat0` of the POLYNOMIAL chain (the `X`-decoder, `Xvec`
+pivot). -/
+noncomputable def UPolyGen (ha : StructAdm M t) (hN : 0 < routeMAmbient M)
+    (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) : MvPolynomial (Fin (routeMAmbient M)) ℝ :=
+  sqSumHmat0 (chainOfMt (Xvec (routeMAmbient M) (structPivot M hN)) M t
+    (genBlkFlatStruct M t ha (Xvec (routeMAmbient M))) hle).toChain
+
+/-- **`eval x UPolyGen = sqSumHmat0 (ℝ decoder chain)`** — `eval x` (a ring hom) pushes through `∑∑·²`,
+and `Hmat0_eval` identifies the evaluated poly `Hmat 0` with the ℝ chain's. -/
+theorem eval_UPolyGen (ha : StructAdm M t) (hN : 0 < routeMAmbient M)
+    (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) (x : Fin (routeMAmbient M) → ℝ) :
+    MvPolynomial.eval x (UPolyGen ha hN hle)
+      = sqSumHmat0 (chainOfMt (x (structPivot M hN)) M t (genBlkFlatStruct M t ha x) hle).toChain := by
+  unfold UPolyGen sqSumHmat0
+  rw [map_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [map_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [map_pow]
+  -- the `(i,j)` entry: `eval x (polyHmat 0 i j) = (ℝ-decoder Hmat 0) i j` (from `Hmat0_eval`, entrywise)
+  have hpt := congrFun (congrFun (Hmat0_eval ha hN x hle).symm i) j
+  rw [Matrix.map_apply] at hpt
+  -- `hpt : eval x (polyHmat 0 i j) = (decoderChain at eval x (X p)) Hmat 0 i j`; the scalar = `x p`
+  rw [eval_Xvec_pivot hN x] at hpt
+  rw [hpt]
+
+/-- **`VvalGen = sqSumHmat0`** — the `HrGen` reindex is a value-preserving bijection, so the sum of squares
+over the reindexed `Hmat 0` equals the raw sum (`Equiv.sum_comp` over the two `finCongr` equivs). -/
+theorem VvalGen_eq_sqSumHmat0 (u : ℝ) (B : GenBlk M t)
+    (hle : ∀ k, k < L → Text M t (k + 1) ≤ Wext M k) :
+    VvalGen u M t B hle = sqSumHmat0 (chainOfMt u M t B hle).toChain := by
+  unfold VvalGen HrGen sqSumHmat0
+  -- entrywise reindex `reindex e₁ e₂ (Hmat 0) i j = Hmat 0 (e₁.symm i)(e₂.symm j)`; flatten both double
+  -- sums to product sums, reindex by `Equiv.prodCongr` of the two `finCongr` bijections (Codex route d).
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_symm]
+  set H := (chainOfMt u M t B hle).toChain.Hmat 0 (Nat.zero_le L) with hH
+  set e0 := finCongr (hWgen u M t B hle 0 (Nat.zero_le L)).symm with he0
+  set eL := finCongr (hWgen u M t B hle L (le_refl L)).symm with heL
+  calc (∑ x, ∑ x_1, (H (e0 x) (eL x_1)) ^ 2)
+      = ∑ p : Fin (M 0) × Fin (M (Fin.last L)), (H (e0 p.1) (eL p.2)) ^ 2 :=
+        (Fintype.sum_prod_type (fun p : Fin (M 0) × Fin (M (Fin.last L)) => (H (e0 p.1) (eL p.2)) ^ 2)).symm
+    _ = ∑ p : Fin (M 0) × Fin (M (Fin.last L)),
+          (fun q : Fin _ × Fin _ => (H q.1 q.2) ^ 2) (Equiv.prodCongr e0 eL p) := by
+        refine Finset.sum_congr rfl (fun p _ => ?_); rw [Equiv.prodCongr_apply]; rfl
+    _ = ∑ q : Fin _ × Fin _, (H q.1 q.2) ^ 2 :=
+        Equiv.sum_comp (Equiv.prodCongr e0 eL) (fun q => (H q.1 q.2) ^ 2)
+    _ = ∑ i, ∑ j, (H i j) ^ 2 := Fintype.sum_prod_type _
+
+/-- **`achieverUfun = eval x UPolyGen`** — the rate-side unit is `eval x` of the named `UPolyGen`. -/
+theorem achieverUfun_eq_eval (hL : 0 < L) (hN : 0 < routeMAmbient M)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    achieverUfun M hL hN x = MvPolynomial.eval x (UPolyGen (structAdm_tach M hL) hN
+      (hleStruct M (tach M) (structAdm_tach M hL))) := by
+  rw [achieverUfun, UvalStructV, eval_UPolyGen,
+    VvalGen_eq_sqSumHmat0 (x (structPivot M hN)) (genBlkFlatStruct M (tach M) (structAdm_tach M hL) x)
+      (hleStruct M (tach M) (structAdm_tach M hL))]
 
 end DLNFibre.DLN.RLCT
