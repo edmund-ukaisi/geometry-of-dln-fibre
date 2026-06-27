@@ -531,3 +531,39 @@ the off-pole `HasFDerivAt` (the last piece before the cov + atom) hit a precise 
 > - **Status.** the off-pole `HasFDerivAt` is NOT landed (the matrix-CLM whnf wall). LANDED this pass:
 >   `shear121DerivMat`/`_det = 1`, `shear121Deriv`/`_abs_det = 1`. The `(1,2,1)` atom is NOT discharged
 >   (pending the fderiv-or-MP route + the cov-split + image-null). Recommend route (b) for the next pass.
+
+---
+
+## Smeared `(1,2,1)` cov LANDED via route (b) (MeasurePreserving) — `image_subset` residual
+
+Branch `worktree-agent-a223be0c63e358844` @ `04b37988`. Controller approved route (b). The `cov` field
+is now LANDED with NO `HasFDerivAt`/Jacobian (the whnf wall sidestepped), sorry-free + axiom-clean.
+
+---
+
+> **Smeared `(1,2,1)` `cov` via MeasurePreserving (route (b)) — LANDED.**
+>
+> - **Lean (`RouteM121Smeared.lean` @ `04b37988`, all `[propext, Classical.choice, Quot.sound]`):**
+>   `measurePreserving_coreShear_measurable` (the banked `coreShear` MP, `Continuous`→`Measurable` shift —
+>   `skew_product` needs only measurability); `fin4EquivFlatIdx121`/`pack121`/`measurePreserving_pack121`/
+>   `measurePreserving_Q121` (the linear outer reshape MP); `shear121ME` (the rational shear as a GLOBAL
+>   measurable bijection — the totalized `b/a` cancels at `a=0`, Codex Q3: NO pole-split); `split121`
+>   (`Fin 4 → ℝ ≃ᵐ reg×(core×spec)` via `piFinSuccAbove`+`funUnique`) + MP; `split121_shear121` (the
+>   forward conjugation); `measurePreserving_shear121` (conjugate `coreShear_measurable` by `split121`);
+>   `measurePreserving_phi121sm` + `measurableEmbedding_phi121sm` (`phi121sm = Q121 ∘ shear121`, packaged
+>   `phi121smME` via `flatEquivOf`); **`phi121sm_cov`** — the `cov` field directly from
+>   `MeasurePreserving.setLIntegral_comp_emb` (`leafH121 ≡ 0` ⟹ weight `1`).
+> - **The win:** route (b) sidesteps the off-pole `HasFDerivAt` whnf wall entirely — no Jacobian, no
+>   image-null split. The shear's measure-preservation is the banked `CoreShearMP` skew-product
+>   conjugated by `split121`; the cov is a one-liner `setLIntegral_comp_emb` + the weight-1 rewrite.
+> - **RESIDUAL — `image_subset` is the THIRD pole-affected field (handback).** The
+>   `NodeAchieverChart.image_subset` field needs `phi121sm '' [0,δ]^4 ⊆ cubeBox 4 ε`, but the rational
+>   `φ_sm` is UNBOUNDED near its pole `{a=0}` (the flat coord `z − (b/a)·sb → ∞` as `a→0`, `b,sb≠0`), so
+>   its box-image is not bounded. The assembly `routeMCore_box_diverges_of_nodeChart` uses `image_subset`
+>   for the final `∫_{cubeBox} ≥ ∫_{φ''(box\{z=0})} = ⊤` step. Controller-gated fix: restrict the source
+>   box to exclude a pole-neighborhood, OR run the final step via the MP `∫_{cubeBox} = ∫_{φ⁻¹(cubeBox)}`
+>   (reuse `measurePreserving_phi121sm`) instead of image-containment. Then `Ubound`/`Umeas`/instance/atom.
+> - **Status.** rate + a.e.-`leaf_integrand` + the `cov` (the conceptually-load-bearing pieces) all
+>   LANDED sorry-free. The `(1,2,1)` atom is NOT yet discharged (the `image_subset` architecture
+>   decision + the instance assembly remain). Full `lake build DLNFibre` green with the module
+>   temp-imported; aggregator reverted (single-writer).
