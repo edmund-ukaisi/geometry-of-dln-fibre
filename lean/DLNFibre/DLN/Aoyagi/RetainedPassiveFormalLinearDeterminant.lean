@@ -58,6 +58,52 @@ theorem edgeLocalFCPairPiLinearMap_apply
         -G p * (v p).1 + (v p).2) := by
   simp [edgeLocalFCPairPiLinearMap, edgeLocalFCPairLinearMap_apply]
 
+/-- The dependent product of edge-local `(F,C)` linear equivalences on the
+determinant chart. -/
+def edgeLocalFCPairPiLinearEquiv
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det) :
+    RetainedPassiveFormalEdgeTangent (ρ := ρ) (κ' := κ') (K := K) ≃ₗ[K]
+      RetainedPassiveFormalEdgeTangent (ρ := ρ) (κ' := κ') (K := K) :=
+  LinearEquiv.piCongrRight fun p =>
+    edgeLocalFCPairLinearEquiv
+      (ρ := ρ) (μ := κ' p.succ) (κ := κ' p.castSucc) (K := K)
+      (A p) (H p) (G p) (hA p)
+
+/-- The product equivalence has the same forward map as
+`edgeLocalFCPairPiLinearMap`. -/
+theorem edgeLocalFCPairPiLinearEquiv_apply
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det)
+    (v : RetainedPassiveFormalEdgeTangent (ρ := ρ) (κ' := κ') (K := K)) :
+    edgeLocalFCPairPiLinearEquiv
+        (ρ := ρ) (κ' := κ') (K := K) A H G hA v =
+      edgeLocalFCPairPiLinearMap
+        (ρ := ρ) (κ' := κ') (K := K) A H G v := by
+  funext p
+  simp [edgeLocalFCPairPiLinearEquiv, edgeLocalFCPairPiLinearMap]
+
+/-- Componentwise inverse formula for the dependent product of edge-local
+equivalences. -/
+theorem edgeLocalFCPairPiLinearEquiv_symm_apply
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det)
+    (v : RetainedPassiveFormalEdgeTangent (ρ := ρ) (κ' := κ') (K := K)) :
+    (edgeLocalFCPairPiLinearEquiv
+        (ρ := ρ) (κ' := κ') (K := K) A H G hA).symm v =
+      fun p : Fin (M + 1) =>
+        edgeLocalFCPairLinearMapInverse
+          (ρ := ρ) (μ := κ' p.succ) (κ := κ' p.castSucc) (K := K)
+          (A p) (H p) (G p) (v p) := by
+  funext p
+  simp [edgeLocalFCPairPiLinearEquiv]
+
 /-- Determinant of the dependent product of edge-local `(F,C)` maps. -/
 theorem edgeLocalFCPairPiLinearMap_det_eq
     (A : Fin (M + 1) → Matrix ρ ρ K)

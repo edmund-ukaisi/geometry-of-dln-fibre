@@ -451,6 +451,139 @@ theorem edgeLocalFCPairLinearMap_apply
       LinearEquiv.skewProd_apply, Matrix.add_mul, Matrix.mul_add,
       Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, add_left_comm, add_comm]
 
+/-- Inverse formula for the edge-local pair map on the determinant chart
+`IsUnit A.det`.
+
+For target coordinates `(U,V)`, this recovers
+`F = A⁻¹ * (H*V - U)` and then `C = V + G*F`. -/
+def edgeLocalFCPairLinearMapInverse
+    (A : Matrix ρ ρ K) (H : Matrix ρ μ K) (G : Matrix μ ρ K) :
+    EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) →ₗ[K]
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) :=
+  let fstL :
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) →ₗ[K]
+        Matrix ρ κ K :=
+    LinearMap.fst K (Matrix ρ κ K) (Matrix μ κ K)
+  let sndL :
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) →ₗ[K]
+        Matrix μ κ K :=
+    LinearMap.snd K (Matrix ρ κ K) (Matrix μ κ K)
+  let preF :
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) →ₗ[K]
+        Matrix ρ κ K :=
+    (mulLeftLinearMap κ K H).comp sndL - fstL
+  let recF :
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) →ₗ[K]
+        Matrix ρ κ K :=
+    (mulLeftLinearMap κ K A⁻¹).comp preF
+  recF.prod (sndL + (mulLeftLinearMap κ K G).comp recF)
+
+omit [Fintype κ] in
+/-- Apply formula for the inverse edge-local pair map. -/
+theorem edgeLocalFCPairLinearMapInverse_apply
+    (A : Matrix ρ ρ K) (H : Matrix ρ μ K) (G : Matrix μ ρ K)
+    (v : EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K)) :
+    edgeLocalFCPairLinearMapInverse
+        (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G v =
+      (A⁻¹ * (H * v.2 - v.1),
+        v.2 + G * (A⁻¹ * (H * v.2 - v.1))) :=
+  rfl
+
+/-- On the determinant chart `IsUnit A.det`, the edge-local pair map is a
+linear equivalence with inverse `edgeLocalFCPairLinearMapInverse`. -/
+def edgeLocalFCPairLinearEquiv
+    (A : Matrix ρ ρ K) (H : Matrix ρ μ K) (G : Matrix μ ρ K)
+    (hA : IsUnit A.det) :
+    EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) ≃ₗ[K]
+      EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K) :=
+  LinearEquiv.ofLinear
+    (edgeLocalFCPairLinearMap
+      (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G)
+    (edgeLocalFCPairLinearMapInverse
+      (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G)
+    (by
+      apply LinearMap.ext
+      intro v
+      rcases v with ⟨U, V⟩
+      have hx :
+          A * (A⁻¹ * (H * V - U)) = H * V - U :=
+        Matrix.mul_nonsing_inv_cancel_left A (H * V - U) hA
+      apply Prod.ext
+      · rw [LinearMap.comp_apply, edgeLocalFCPairLinearMapInverse_apply,
+          edgeLocalFCPairLinearMap_apply]
+        change
+          -(A + H * G) * (A⁻¹ * (H * V - U)) +
+              H * (V + G * (A⁻¹ * (H * V - U))) =
+            U
+        calc
+          -(A + H * G) * (A⁻¹ * (H * V - U)) +
+              H * (V + G * (A⁻¹ * (H * V - U))) =
+            H * V - A * (A⁻¹ * (H * V - U)) := by
+              simp [Matrix.mul_add, Matrix.neg_mul, Matrix.add_mul,
+                Matrix.mul_assoc, sub_eq_add_neg]
+              abel
+          _ = H * V - (H * V - U) := by rw [hx]
+          _ = U := by abel
+      · rw [LinearMap.comp_apply, edgeLocalFCPairLinearMapInverse_apply,
+          edgeLocalFCPairLinearMap_apply]
+        change
+          -G * (A⁻¹ * (H * V - U)) +
+              (V + G * (A⁻¹ * (H * V - U))) =
+            V
+        ext i j
+        simp)
+    (by
+      apply LinearMap.ext
+      intro v
+      rcases v with ⟨F, C⟩
+      have hpre :
+          H * (-G * F + C) - (-(A + H * G) * F + H * C) = A * F := by
+        simp [Matrix.mul_add, Matrix.neg_mul, Matrix.add_mul,
+          Matrix.mul_assoc, sub_eq_add_neg]
+        abel
+      apply Prod.ext
+      · rw [LinearMap.comp_apply, edgeLocalFCPairLinearMap_apply,
+          edgeLocalFCPairLinearMapInverse_apply]
+        change
+          A⁻¹ * (H * (-G * F + C) - (-(A + H * G) * F + H * C)) =
+            F
+        rw [hpre]
+        exact Matrix.nonsing_inv_mul_cancel_left A F hA
+      · rw [LinearMap.comp_apply, edgeLocalFCPairLinearMap_apply,
+          edgeLocalFCPairLinearMapInverse_apply]
+        change
+          (-G * F + C) +
+              G * (A⁻¹ * (H * (-G * F + C) - (-(A + H * G) * F + H * C))) =
+            C
+        rw [hpre]
+        rw [Matrix.nonsing_inv_mul_cancel_left A F hA]
+        ext i j
+        simp)
+
+omit [Fintype κ] in
+@[simp]
+theorem edgeLocalFCPairLinearEquiv_apply
+    (A : Matrix ρ ρ K) (H : Matrix ρ μ K) (G : Matrix μ ρ K)
+    (hA : IsUnit A.det)
+    (v : EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K)) :
+    edgeLocalFCPairLinearEquiv
+        (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G hA v =
+      edgeLocalFCPairLinearMap
+        (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G v :=
+  rfl
+
+omit [Fintype κ] in
+@[simp]
+theorem edgeLocalFCPairLinearEquiv_symm_apply
+    (A : Matrix ρ ρ K) (H : Matrix ρ μ K) (G : Matrix μ ρ K)
+    (hA : IsUnit A.det)
+    (v : EdgeLocalFCPairTangent (ρ := ρ) (μ := μ) (κ := κ) (K := K)) :
+    (edgeLocalFCPairLinearEquiv
+        (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G hA).symm v =
+      edgeLocalFCPairLinearMapInverse
+        (ρ := ρ) (μ := μ) (κ := κ) (K := K) A H G v :=
+  rfl
+
 omit [DecidableEq ρ] [Fintype μ] [Fintype κ] in
 /-- The edge-local lower shear has determinant one. -/
 theorem edgeLocalFCPairLowerShear_det_eq_one

@@ -2354,6 +2354,306 @@ theorem fderiv_topologyTupleEdgeRawOrder_C_component_unshear_apply
           v.2.1 p := by
           simp [hC_apply, hF_apply, Gfun]
 
+set_option maxHeartbeats 800000 in
+-- This component proof expands five coupled matrix-product derivatives and
+-- then performs one entrywise cancellation; the default heartbeat budget is
+-- too small for the finite bookkeeping.
+set_option maxRecDepth 2048 in
+/-- The `F2` component of the actual raw-order derivative becomes the formal
+`F2` component after the top-left and next-`F2` shear corrections. -/
+theorem fderiv_topologyTupleEdgeRawOrder_F2_component_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.1 p) z) v
+      + (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) z) v *
+          coord.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+          coord.C p =
+      -(coord.solvedA1 p + coord.F2 p.succ * coord.solvedA3 p) * v.2.1 p
+        + coord.F2 p.succ * v.2.2.2.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Afun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1 p
+  let Ffun : TopologyTuple ρ κ' ℝ → Matrix ρ (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2 p.castSucc
+  let Hfun : TopologyTuple ρ κ' ℝ → Matrix ρ (κ' p.succ) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2 p.succ
+  let Gfun : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3 p
+  let Cfun : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.C p
+  let BAF : Matrix ρ ρ ℝ →L[ℝ]
+      Matrix ρ (κ' p.castSucc) ℝ →L[ℝ]
+        Matrix ρ (κ' p.castSucc) ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := ρ) (n := κ' p.castSucc)
+  let BHG : Matrix ρ (κ' p.succ) ℝ →L[ℝ]
+      Matrix (κ' p.succ) ρ ℝ →L[ℝ]
+        Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := κ' p.succ) (n := ρ)
+  let BGF : Matrix (κ' p.succ) ρ ℝ →L[ℝ]
+      Matrix ρ (κ' p.castSucc) ℝ →L[ℝ]
+        Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    matrixMulContinuousLinearMap (l := κ' p.succ) (m := ρ) (n := κ' p.castSucc)
+  let BHB : Matrix ρ (κ' p.succ) ℝ →L[ℝ]
+      Matrix (κ' p.succ) (κ' p.castSucc) ℝ →L[ℝ]
+        Matrix ρ (κ' p.castSucc) ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := κ' p.succ) (n := κ' p.castSucc)
+  have hAdiff : DifferentiableAt ℝ Afun z := by
+    simpa [Afun] using
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+  have hFdiff : DifferentiableAt ℝ Ffun z := by
+    simpa [Ffun, toCoordinateData] using
+      differentiableAt_F2full (ρ := ρ) (κ' := κ') p.castSucc z
+  have hHdiff : DifferentiableAt ℝ Hfun z := by
+    simpa [Hfun, toCoordinateData] using
+      differentiableAt_F2full (ρ := ρ) (κ' := κ') p.succ z
+  have hGdiff : DifferentiableAt ℝ Gfun z := by
+    simpa [Gfun] using
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p z hz
+  have hCdiff : DifferentiableAt ℝ Cfun z := by
+    simpa [Cfun, toCoordinateData] using
+      differentiableAt_C (ρ := ρ) (κ' := κ') p z
+  have hrawF :
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.1 p) =
+        fun y ↦ -(Afun y * Ffun y) +
+          Hfun y * (Cfun y - Gfun y * Ffun y) := by
+    funext y
+    simp [raw, Afun, Ffun, Hfun, Gfun, Cfun, toCoordinateData]
+  have hrawA :
+      (fun y : TopologyTuple ρ κ' ℝ ↦
+          rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) =
+        fun y ↦ Afun y + Hfun y * Gfun y := by
+    funext y
+    cases p using Fin.cases with
+    | zero =>
+        change (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y).2.2.2.2.1 =
+          Afun y + Hfun y * Gfun y
+        rw [topologyTupleEdgeRawOrder_Ctop]
+    | succ p =>
+        change (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y).1 p =
+          Afun y + Hfun y * Gfun y
+        rw [topologyTupleEdgeRawOrder_A1passive]
+  have hAFDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Afun y * Ffun y) z =
+        BAF.precompR _ (Afun z) (fderiv ℝ Ffun z) +
+          BAF.precompL _ (fderiv ℝ Afun z) (Ffun z) := by
+    simpa [BAF] using
+      (BAF.hasFDerivAt_of_bilinear hAdiff.hasFDerivAt hFdiff.hasFDerivAt).fderiv
+  have hHGDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z =
+        BHG.precompR _ (Hfun z) (fderiv ℝ Gfun z) +
+          BHG.precompL _ (fderiv ℝ Hfun z) (Gfun z) := by
+    simpa [BHG] using
+      (BHG.hasFDerivAt_of_bilinear hHdiff.hasFDerivAt hGdiff.hasFDerivAt).fderiv
+  have hGFDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Gfun y * Ffun y) z =
+        BGF.precompR _ (Gfun z) (fderiv ℝ Ffun z) +
+          BGF.precompL _ (fderiv ℝ Gfun z) (Ffun z) := by
+    simpa [BGF] using
+      (BGF.hasFDerivAt_of_bilinear hGdiff.hasFDerivAt hFdiff.hasFDerivAt).fderiv
+  have hHCDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Hfun y * (Cfun y - Gfun y * Ffun y)) z =
+        BHB.precompR _ (Hfun z)
+            (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+              Cfun y - Gfun y * Ffun y) z) +
+          BHB.precompL _ (fderiv ℝ Hfun z) (Cfun z - Gfun z * Ffun z) := by
+    have hinner :
+        DifferentiableAt ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦ Cfun y - Gfun y * Ffun y) z :=
+      hCdiff.sub (differentiableAt_matrix_mul hGdiff hFdiff)
+    simpa [BHB] using
+      (BHB.hasFDerivAt_of_bilinear hHdiff.hasFDerivAt hinner.hasFDerivAt).fderiv
+  have hrawFDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          -(Afun y * Ffun y) + Hfun y * (Cfun y - Gfun y * Ffun y)) z =
+        -fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Afun y * Ffun y) z +
+          fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+            Hfun y * (Cfun y - Gfun y * Ffun y)) z := by
+    calc
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          -(Afun y * Ffun y) + Hfun y * (Cfun y - Gfun y * Ffun y)) z =
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ -(Afun y * Ffun y)) z +
+          fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+            Hfun y * (Cfun y - Gfun y * Ffun y)) z := by
+          simpa only using
+            fderiv_fun_add
+              ((differentiableAt_matrix_mul hAdiff hFdiff).neg)
+              (differentiableAt_matrix_mul hHdiff
+                (hCdiff.sub (differentiableAt_matrix_mul hGdiff hFdiff)))
+      _ =
+        -fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Afun y * Ffun y) z +
+          fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+            Hfun y * (Cfun y - Gfun y * Ffun y)) z := by
+          rw [fderiv_fun_neg]
+  have hrawADeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Afun y + Hfun y * Gfun y) z =
+        fderiv ℝ Afun z +
+          fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z := by
+    rw [fderiv_fun_add hAdiff (differentiableAt_matrix_mul hHdiff hGdiff)]
+  have hF_apply : (fderiv ℝ Ffun z) v = v.2.1 p := by
+    let LF : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ (κ' p.castSucc) ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.1 p
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hFfun :
+        Ffun = fun y : TopologyTuple ρ κ' ℝ ↦ y.2.1 p := by
+      funext y
+      simp [Ffun, toCoordinateData, ofTopologyTuple]
+    have hLF :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.1 p) z = LF :=
+      LF.fderiv
+    rw [hFfun, hLF]
+    rfl
+  have hC_apply : (fderiv ℝ Cfun z) v = v.2.2.2.1 p := by
+    let LC : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.2.2.1 p
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hLC :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.1 p) z = LC :=
+      LC.fderiv
+    change (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.1 p) z) v = v.2.2.2.1 p
+    rw [hLC]
+    rfl
+  let dA : Matrix ρ ρ ℝ := (fderiv ℝ Afun z) v
+  let dF : Matrix ρ (κ' p.castSucc) ℝ := (fderiv ℝ Ffun z) v
+  let dH : Matrix ρ (κ' p.succ) ℝ := (fderiv ℝ Hfun z) v
+  let dG : Matrix (κ' p.succ) ρ ℝ := (fderiv ℝ Gfun z) v
+  let dC : Matrix (κ' p.succ) (κ' p.castSucc) ℝ := (fderiv ℝ Cfun z) v
+  have hAF_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Afun y * Ffun y) z) v =
+        Afun z * dF + dA * Ffun z := by
+    dsimp [dA, dF]
+    rw [hAFDeriv]
+    simp [BAF, matrixMulContinuousLinearMap_apply]
+  have hHG_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z) v =
+        Hfun z * dG + dH * Gfun z := by
+    dsimp [dH, dG]
+    rw [hHGDeriv]
+    simp [BHG, matrixMulContinuousLinearMap_apply]
+  have hGF_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Gfun y * Ffun y) z) v =
+        Gfun z * dF + dG * Ffun z := by
+    dsimp [dF, dG]
+    rw [hGFDeriv]
+    simp [BGF, matrixMulContinuousLinearMap_apply]
+  have hCFDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Cfun y - Gfun y * Ffun y) z =
+        fderiv ℝ Cfun z -
+          (BGF.precompR _ (Gfun z) (fderiv ℝ Ffun z) +
+            BGF.precompL _ (fderiv ℝ Gfun z) (Ffun z)) := by
+    simpa [BGF] using
+      (hCdiff.hasFDerivAt.sub
+        (BGF.hasFDerivAt_of_bilinear hGdiff.hasFDerivAt hFdiff.hasFDerivAt)).fderiv
+  have hCF_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Cfun y - Gfun y * Ffun y) z) v =
+        dC - (Gfun z * dF + dG * Ffun z) := by
+    dsimp [dC, dF, dG]
+    rw [hCFDeriv]
+    simp [BGF, matrixMulContinuousLinearMap_apply]
+  have hHC_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Hfun y * (Cfun y - Gfun y * Ffun y)) z) v =
+        Hfun z * (dC - (Gfun z * dF + dG * Ffun z)) +
+          dH * (Cfun z - Gfun z * Ffun z) := by
+    dsimp [dH]
+    rw [hHCDeriv]
+    simp [BHB, matrixMulContinuousLinearMap_apply, hCF_apply, Matrix.mul_sub]
+  have hrawF_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          -(Afun y * Ffun y) + Hfun y * (Cfun y - Gfun y * Ffun y)) z) v =
+        -(Afun z * dF + dA * Ffun z) +
+          (Hfun z * (dC - (Gfun z * dF + dG * Ffun z)) +
+            dH * (Cfun z - Gfun z * Ffun z)) := by
+    rw [hrawFDeriv]
+    simp [hAF_apply, hHC_apply]
+  have hrawA_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Afun y + Hfun y * Gfun y) z) v =
+        dA + (Hfun z * dG + dH * Gfun z) := by
+    rw [hrawADeriv]
+    simp [hHG_apply, dA]
+  have hcancel :
+      (-(Afun z * dF + dA * Ffun z)
+          + (Hfun z * (dC - (Gfun z * dF + dG * Ffun z))
+            + dH * (Cfun z - Gfun z * Ffun z)))
+        + (dA + (Hfun z * dG + dH * Gfun z)) * Ffun z
+        - dH * Cfun z =
+      -(Afun z + Hfun z * Gfun z) * dF + Hfun z * dC := by
+    ext i j
+    simp [sub_eq_add_neg, Matrix.mul_apply, Matrix.mul_assoc, Matrix.mul_add,
+      Matrix.add_mul]
+    abel_nf
+  calc
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.1 p) z) v
+        + (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') (raw y) p) z) v *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.castSucc
+        - (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                p.succ) z) v *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.C p
+      =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+            -(Afun y * Ffun y) +
+              Hfun y * (Cfun y - Gfun y * Ffun y)) z) v
+        + (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+            Afun y + Hfun y * Gfun y) z) v * Ffun z
+        - (fderiv ℝ Hfun z) v * Cfun z := by
+          rw [hrawF, hrawA]
+    _ =
+        (-(Afun z * dF + dA * Ffun z)
+          + (Hfun z * (dC - (Gfun z * dF + dG * Ffun z))
+            + dH * (Cfun z - Gfun z * Ffun z)))
+        + (dA + (Hfun z * dG + dH * Gfun z)) * Ffun z
+        - dH * Cfun z := by
+          rw [hrawF_apply, hrawA_apply]
+    _ = -(Afun z + Hfun z * Gfun z) * (fderiv ℝ Ffun z) v
+        + Hfun z * (fderiv ℝ Cfun z) v := by
+          simpa [dF, dC] using hcancel
+    _ =
+        -((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA1 p +
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.succ *
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3 p) *
+            v.2.1 p +
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.succ *
+            v.2.2.2.1 p := by
+          simp [Afun, Ffun, Hfun, Gfun, Cfun, hF_apply, hC_apply]
+
 /-- On the tuple determinant chart, the retained-passive edge tuple read in
 raw block order is `C^1` as an ambient tuple-coordinate map.
 
@@ -2626,6 +2926,609 @@ theorem fderiv_topologyTupleEdgeRawOrder_C_unshear_apply
   rw [hCproj, hGproj]
   simpa [raw, E, projC, projG] using hcomponent
 
+/-- The full Frechet derivative of the retained-passive raw-order map has the
+expected `F2` component after the top-left and next-`F2` shear corrections. -/
+theorem fderiv_topologyTupleEdgeRawOrder_F2_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+        coord.C p =
+      -(coord.solvedA1 p + coord.F2 p.succ * coord.solvedA3 p) * v.2.1 p
+        + coord.F2 p.succ * v.2.2.2.1 p := by
+  let E : Type _ := TopologyTuple ρ κ' ℝ
+  let raw : E → E := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projF2 : E → Matrix ρ (κ' p.castSucc) ℝ :=
+    fun y ↦ y.2.1 p
+  let projA1 : E → Matrix ρ ρ ℝ :=
+    fun y ↦ rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') y p
+  let LF2 : E →L[ℝ] Matrix ρ (κ' p.castSucc) ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  let LA1 : E →L[ℝ] Matrix ρ ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') y p
+          map_add' := by
+            intro x y
+            cases p using Fin.cases with
+            | zero =>
+                rw [rawEdgeTupleA1_zero, rawEdgeTupleA1_zero, rawEdgeTupleA1_zero]
+                change (x + y).2.2.2.2.1 = x.2.2.2.2.1 + y.2.2.2.2.1
+                rfl
+            | succ p =>
+                rw [rawEdgeTupleA1_succ, rawEdgeTupleA1_succ, rawEdgeTupleA1_succ]
+                change (x + y).1 p = x.1 p + y.1 p
+                rfl
+          map_smul' := by
+            intro a y
+            cases p using Fin.cases with
+            | zero =>
+                rw [rawEdgeTupleA1_zero, rawEdgeTupleA1_zero]
+                change (a • y).2.2.2.2.1 = a • y.2.2.2.2.1
+                rfl
+            | succ p =>
+                rw [rawEdgeTupleA1_succ, rawEdgeTupleA1_succ]
+                change (a • y).1 p = a • y.1 p
+                rfl }
+      cont := continuous_rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') p }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojF2Diff : DifferentiableAt ℝ projF2 (raw z) := by
+    change DifferentiableAt ℝ LF2 (raw z)
+    exact LF2.differentiableAt
+  have hprojA1Diff : DifferentiableAt ℝ projA1 (raw z) := by
+    change DifferentiableAt ℝ LA1 (raw z)
+    exact LA1.differentiableAt
+  have hF2comp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projF2) hprojF2Diff hrawDiff
+  have hA1comp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projA1) hprojA1Diff hrawDiff
+  have hLF2 : fderiv ℝ projF2 (raw z) = LF2 := by
+    change fderiv ℝ LF2 (raw z) = LF2
+    exact LF2.fderiv
+  have hLA1 : fderiv ℝ projA1 (raw z) = LA1 := by
+    change fderiv ℝ LA1 (raw z) = LA1
+    exact LA1.fderiv
+  have hF2proj :
+      ((fderiv ℝ raw z) v).2.1 p =
+        (fderiv ℝ (fun y : E ↦ projF2 (raw y)) z) v := by
+    calc
+      ((fderiv ℝ raw z) v).2.1 p
+          = LF2 ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projF2 (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLF2]
+            rfl
+      _ = (fderiv ℝ (fun y : E ↦ projF2 (raw y)) z) v := by
+            rw [← hF2comp]
+  have hA1proj :
+      rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p =
+        (fderiv ℝ (fun y : E ↦ projA1 (raw y)) z) v := by
+    calc
+      rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p
+          = LA1 ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projA1 (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLA1]
+            rfl
+      _ = (fderiv ℝ (fun y : E ↦ projA1 (raw y)) z) v := by
+            rw [← hA1comp]
+  have hcomponent :=
+    fderiv_topologyTupleEdgeRawOrder_F2_component_shear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : E ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.C p =
+      -((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA1 p +
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.succ *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3 p) *
+        v.2.1 p +
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2 p.succ *
+        v.2.2.2.1 p
+  rw [hF2proj, hA1proj]
+  simpa [raw, E, projF2, projA1] using hcomponent
+
+set_option maxRecDepth 2048 in
+/-- The passive top-left component of the actual raw-order derivative becomes
+the identity component after subtracting the next-`F2`/lower-left product
+derivative. -/
+theorem fderiv_topologyTupleEdgeRawOrder_A1passive_component_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).1 p) z) v
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      v.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Afun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+      p.succ
+  let Hfun : TopologyTuple ρ κ' ℝ → Matrix ρ (κ' p.succ.succ) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+      p.succ.succ
+  let Gfun : TopologyTuple ρ κ' ℝ → Matrix (κ' p.succ.succ) ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+      p.succ
+  let BHG : Matrix ρ (κ' p.succ.succ) ℝ →L[ℝ]
+      Matrix (κ' p.succ.succ) ρ ℝ →L[ℝ]
+        Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := κ' p.succ.succ) (n := ρ)
+  have hAdiff : DifferentiableAt ℝ Afun z := by
+    simpa [Afun] using
+      differentiableAt_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.succ z hz
+  have hHdiff : DifferentiableAt ℝ Hfun z := by
+    simpa [Hfun, toCoordinateData] using
+      differentiableAt_F2full (ρ := ρ) (κ' := κ') p.succ.succ z
+  have hGdiff : DifferentiableAt ℝ Gfun z := by
+    simpa [Gfun] using
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') p.succ z hz
+  have hrawA :
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).1 p) =
+        fun y ↦ Afun y + Hfun y * Gfun y := by
+    funext y
+    simp [raw, Afun, Hfun, Gfun, toCoordinateData]
+  have hHGDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z =
+        BHG.precompR _ (Hfun z) (fderiv ℝ Gfun z) +
+          BHG.precompL _ (fderiv ℝ Hfun z) (Gfun z) := by
+    simpa [BHG] using
+      (BHG.hasFDerivAt_of_bilinear hHdiff.hasFDerivAt hGdiff.hasFDerivAt).fderiv
+  have hAfun :
+      Afun = fun y : TopologyTuple ρ κ' ℝ ↦ y.1 p := by
+    funext y
+    change
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+          p.succ =
+        y.1 p
+    rw [RetainedPassiveCoordinateData.solvedA1]
+    rw [retainedPassiveSolvedA1_eq_of_ne_zero
+      (K := ℝ) (ρ := ρ)
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).A1seed
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).Ctop
+      (Fin.succ_ne_zero p)]
+    change (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1passive p = y.1 p
+    rfl
+  have hA_apply : (fderiv ℝ Afun z) v = v.1 p := by
+    let LA : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.1 p
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hLA :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.1 p) z = LA :=
+      LA.fderiv
+    rw [hAfun, hLA]
+    rfl
+  calc
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).1 p) z) v
+        - (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                p.succ.succ) z) v *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3
+              p.succ
+        - (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2
+            p.succ.succ *
+            (fderiv ℝ
+              (fun y : TopologyTuple ρ κ' ℝ ↦
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                  p.succ) z) v
+      =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Afun y + Hfun y * Gfun y) z) v
+          - (fderiv ℝ Hfun z) v * Gfun z
+          - Hfun z * (fderiv ℝ Gfun z) v := by
+          rw [hrawA]
+    _ =
+        ((fderiv ℝ Afun z) v +
+          (Hfun z * (fderiv ℝ Gfun z) v + (fderiv ℝ Hfun z) v * Gfun z))
+          - (fderiv ℝ Hfun z) v * Gfun z
+          - Hfun z * (fderiv ℝ Gfun z) v := by
+          rw [fderiv_fun_add hAdiff (differentiableAt_matrix_mul hHdiff hGdiff)]
+          rw [hHGDeriv]
+          simp [BHG, matrixMulContinuousLinearMap_apply]
+    _ = (fderiv ℝ Afun z) v := by
+          abel
+    _ = v.1 p := hA_apply
+
+/-- The full Frechet derivative of the retained-passive raw-order map has the
+expected passive top-left component after the next-`F2`/lower-left product
+corrections. -/
+theorem fderiv_topologyTupleEdgeRawOrder_A1passive_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).1 p
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      v.1 p := by
+  let raw : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projA1 : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ := fun y ↦ y.1 p
+  let LA1 : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.1 p
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojA1Diff : DifferentiableAt ℝ projA1 (raw z) := by
+    change DifferentiableAt ℝ LA1 (raw z)
+    exact LA1.differentiableAt
+  have hA1comp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projA1) hprojA1Diff hrawDiff
+  have hLA1 : fderiv ℝ projA1 (raw z) = LA1 := by
+    change fderiv ℝ LA1 (raw z) = LA1
+    exact LA1.fderiv
+  have hA1proj :
+      ((fderiv ℝ raw z) v).1 p =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projA1 (raw y)) z) v := by
+    calc
+      ((fderiv ℝ raw z) v).1 p
+          = LA1 ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projA1 (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLA1]
+            rfl
+      _ = (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projA1 (raw y)) z) v := by
+            rw [← hA1comp]
+  have hcomponent :=
+    fderiv_topologyTupleEdgeRawOrder_A1passive_component_shear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).1 p
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3
+            p.succ
+      - (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2
+          p.succ.succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      v.1 p
+  rw [hA1proj]
+  simpa [raw, projA1] using hcomponent
+
+set_option maxRecDepth 2048 in
+/-- The first top-left raw-order component becomes the formal `Ctop`
+component after subtracting the successor-`F2`/lower-left product derivative
+and the passive-tail inverse correction. -/
+theorem fderiv_topologyTupleEdgeRawOrder_Ctop_component_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.1) z) v
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              (0 : Fin (M + 1)).succ) z) v *
+          coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                0) z) v
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+          coord.Ctop =
+      Tail⁻¹ * v.2.2.2.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let Tfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+  let Ufun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ := fun y ↦ (Tfun y)⁻¹
+  let Cfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.Ctop
+  let Hfun : TopologyTuple ρ κ' ℝ → Matrix ρ (κ' (0 : Fin (M + 1)).succ) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+      (0 : Fin (M + 1)).succ
+  let Gfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (0 : Fin (M + 1)).succ) ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+      0
+  let BUC : Matrix ρ ρ ℝ →L[ℝ]
+      Matrix ρ ρ ℝ →L[ℝ]
+        Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := ρ) (n := ρ)
+  let BHG : Matrix ρ (κ' (0 : Fin (M + 1)).succ) ℝ →L[ℝ]
+      Matrix (κ' (0 : Fin (M + 1)).succ) ρ ℝ →L[ℝ]
+        Matrix ρ ρ ℝ :=
+    matrixMulContinuousLinearMap (l := ρ) (m := κ' (0 : Fin (M + 1)).succ) (n := ρ)
+  have hTdiff : DifferentiableAt ℝ Tfun z := by
+    simpa [Tfun] using
+      differentiableAt_retainedPassiveA1TailAfterFirst
+        (ρ := ρ) (κ' := κ') z
+  have hdet : data.detChart := by
+    exact hz
+  have hTailUnit : IsUnit (Tfun z).det := by
+    change IsUnit
+      (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed).det
+    exact
+      retainedPassiveA1TailAfterFirst_det_isUnit_of_passive
+        (K := ℝ) (ρ := ρ) data.A1seed
+        (data.toCoordinateData_passiveA1_units hdet.2)
+  have hUdiff : DifferentiableAt ℝ Ufun z := by
+    exact
+      (differentiableAt_matrix_inv_of_isUnit_det (Tfun z) hTailUnit).comp z hTdiff
+  have hCdiff : DifferentiableAt ℝ Cfun z := by
+    simpa [Cfun, toCoordinateData] using
+      differentiableAt_Ctop (ρ := ρ) (κ' := κ') z
+  have hHdiff : DifferentiableAt ℝ Hfun z := by
+    simpa [Hfun, toCoordinateData] using
+      differentiableAt_F2full (ρ := ρ) (κ' := κ') (0 : Fin (M + 1)).succ z
+  have hGdiff : DifferentiableAt ℝ Gfun z := by
+    simpa [Gfun] using
+      differentiableAt_solvedA3_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (0 : Fin (M + 1)) z hz
+  have hrawCtop :
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.1) =
+        fun y ↦ Ufun y * Cfun y + Hfun y * Gfun y := by
+    funext y
+    rw [topologyTupleEdgeRawOrder_Ctop]
+    simp [Ufun, Tfun, Cfun, Hfun, Gfun,
+      RetainedPassiveCoordinateData.solvedA1, toCoordinateData]
+  have hUCDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Ufun y * Cfun y) z =
+        BUC.precompR _ (Ufun z) (fderiv ℝ Cfun z) +
+          BUC.precompL _ (fderiv ℝ Ufun z) (Cfun z) := by
+    simpa [BUC] using
+      (BUC.hasFDerivAt_of_bilinear hUdiff.hasFDerivAt hCdiff.hasFDerivAt).fderiv
+  have hHGDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z =
+        BHG.precompR _ (Hfun z) (fderiv ℝ Gfun z) +
+          BHG.precompL _ (fderiv ℝ Hfun z) (Gfun z) := by
+    simpa [BHG] using
+      (BHG.hasFDerivAt_of_bilinear hHdiff.hasFDerivAt hGdiff.hasFDerivAt).fderiv
+  have hCtop_apply : (fderiv ℝ Cfun z) v = v.2.2.2.2.1 := by
+    let LCtop : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.2.2.2.1
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hLCtop :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.1) z = LCtop :=
+      LCtop.fderiv
+    change (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.1) z) v =
+      v.2.2.2.2.1
+    rw [hLCtop]
+    rfl
+  let dU : Matrix ρ ρ ℝ := (fderiv ℝ Ufun z) v
+  let dCtop : Matrix ρ ρ ℝ := (fderiv ℝ Cfun z) v
+  let dH : Matrix ρ (κ' (0 : Fin (M + 1)).succ) ℝ := (fderiv ℝ Hfun z) v
+  let dG : Matrix (κ' (0 : Fin (M + 1)).succ) ρ ℝ := (fderiv ℝ Gfun z) v
+  have hUC_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Ufun y * Cfun y) z) v =
+        Ufun z * dCtop + dU * Cfun z := by
+    simpa [dU, dCtop, BUC, matrixMulContinuousLinearMap_apply] using
+      congrArg (fun L : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ ↦ L v) hUCDeriv
+  have hHG_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z) v =
+        Hfun z * dG + dH * Gfun z := by
+    simpa [dH, dG, BHG, matrixMulContinuousLinearMap_apply] using
+      congrArg (fun L :
+          TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ ↦ L v) hHGDeriv
+  calc
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.1) z) v
+        - (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                (0 : Fin (M + 1)).succ) z) v *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3
+              0
+        - (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2
+            (0 : Fin (M + 1)).succ *
+            (fderiv ℝ
+              (fun y : TopologyTuple ρ κ' ℝ ↦
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                  0) z) v
+        - (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.Ctop
+      =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          Ufun y * Cfun y + Hfun y * Gfun y) z) v
+          - (fderiv ℝ Hfun z) v * Gfun z
+          - Hfun z * (fderiv ℝ Gfun z) v
+          - (fderiv ℝ Ufun z) v * Cfun z := by
+          rw [hrawCtop]
+    _ =
+        ((fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Ufun y * Cfun y) z) v +
+          (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Hfun y * Gfun y) z) v)
+          - (fderiv ℝ Hfun z) v * Gfun z
+          - Hfun z * (fderiv ℝ Gfun z) v
+          - (fderiv ℝ Ufun z) v * Cfun z := by
+          rw [fderiv_fun_add (differentiableAt_matrix_mul hUdiff hCdiff)
+            (differentiableAt_matrix_mul hHdiff hGdiff)]
+          simp
+    _ =
+        (Ufun z * dCtop + dU * Cfun z + (Hfun z * dG + dH * Gfun z))
+          - dH * Gfun z - Hfun z * dG - dU * Cfun z := by
+          rw [hUC_apply, hHG_apply]
+    _ = Ufun z * dCtop := by
+          abel
+    _ =
+        (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed)⁻¹ *
+          v.2.2.2.2.1 := by
+          simp [Ufun, Tfun, dCtop, hCtop_apply]
+
+/-- The full Frechet derivative of the retained-passive raw-order map has the
+expected `Ctop` component after the successor-`F2`/lower-left product and
+passive-tail inverse corrections. -/
+theorem fderiv_topologyTupleEdgeRawOrder_Ctop_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let Tail := retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ) data.A1seed
+    ((fderiv ℝ raw z) v).2.2.2.2.1
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              (0 : Fin (M + 1)).succ) z) v *
+          coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                0) z) v
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+          coord.Ctop =
+      Tail⁻¹ * v.2.2.2.2.1 := by
+  let raw : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projCtop : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ := fun y ↦ y.2.2.2.2.1
+  let LCtop : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix ρ ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.2.2.1
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojCtopDiff : DifferentiableAt ℝ projCtop (raw z) := by
+    change DifferentiableAt ℝ LCtop (raw z)
+    exact LCtop.differentiableAt
+  have hCtopComp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projCtop)
+      hprojCtopDiff hrawDiff
+  have hLCtop : fderiv ℝ projCtop (raw z) = LCtop := by
+    change fderiv ℝ LCtop (raw z) = LCtop
+    exact LCtop.fderiv
+  have hCtopProj :
+      ((fderiv ℝ raw z) v).2.2.2.2.1 =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projCtop (raw y)) z) v := by
+    calc
+      ((fderiv ℝ raw z) v).2.2.2.2.1
+          = LCtop ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projCtop (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLCtop]
+            rfl
+      _ = (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projCtop (raw y)) z) v := by
+            rw [← hCtopComp]
+  have hcomponent :=
+    fderiv_topologyTupleEdgeRawOrder_Ctop_component_shear_apply
+      (ρ := ρ) (κ' := κ') hz v
+  change ((fderiv ℝ raw z) v).2.2.2.2.1
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              (0 : Fin (M + 1)).succ) z) v *
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.solvedA3
+            0
+      - (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F2
+          (0 : Fin (M + 1)).succ *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                0) z) v
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.Ctop =
+      (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A1seed)⁻¹ *
+        v.2.2.2.2.1
+  rw [hCtopProj]
+  simpa [raw, projCtop] using hcomponent
+
 /-- The passive lower-left raw-order component has identity derivative.
 
 This is only for nonterminal passive indices `p : Fin M`; the terminal
@@ -2698,6 +3601,289 @@ theorem fderiv_topologyTupleEdgeRawOrder_A3passive_apply
     _ = LA3 v := by
           rw [hLA3_id]
     _ = v.2.2.1 p := rfl
+
+set_option maxRecDepth 2048 in
+/-- The terminal lower-left raw-order component becomes the formal `F3`
+component after subtracting the earlier-tail derivative and adding the
+terminal top-factor derivative correction. -/
+theorem fderiv_topologyTupleEdgeRawOrder_F3_component_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le (M + 1))
+    let Lastfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.2) z) v
+      - (fderiv ℝ Earlyfun z) v * Lastfun z
+      + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+      v.2.2.2.2.2 * (-(Lastfun z)) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let Earlyfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y)
+        (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        0 (Nat.zero_le (M + 1))
+  let Lastfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+  let F3fun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).F3
+  let Dfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦ F3fun y - Earlyfun y
+  let BFL : Matrix (κ' (Fin.last (M + 1))) ρ ℝ →L[ℝ]
+      Matrix ρ ρ ℝ →L[ℝ]
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    matrixMulContinuousLinearMap (l := κ' (Fin.last (M + 1))) (m := ρ) (n := ρ)
+  have hF3diff : DifferentiableAt ℝ F3fun z := by
+    simpa [F3fun] using
+      differentiableAt_F3 (ρ := ρ) (κ' := κ') z
+  have hEdiff : DifferentiableAt ℝ Earlyfun z := by
+    simpa [A1fun, Earlyfun] using
+      differentiableAt_retainedPassiveLowerLeftProductTailSum_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') 0 (Nat.zero_le (M + 1)) z hz
+  have hLdiff : DifferentiableAt ℝ Lastfun z := by
+    simpa [A1fun, Lastfun] using
+      differentiableAt_residualFactorProduct_solvedA1_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') (Fin.last M).castSucc
+        (Fin.last M).castSucc.le_last z hz
+  have hrawF3 :
+      (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.2) =
+        fun y ↦ -(Dfun y * Lastfun y) := by
+    funext y
+    rw [topologyTupleEdgeRawOrder_F3]
+    change
+      retainedPassiveSolvedA3 (K := ℝ) (ρ := ρ) (κ' := κ')
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).F3
+          (Fin.last M) =
+        -(Dfun y * Lastfun y)
+    rw [retainedPassiveSolvedA3_last]
+    have hA1eta :
+        (fun p : Fin (M + 1) ↦
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p) =
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 := by
+      funext p
+      rfl
+    rw [Matrix.neg_mul]
+  have hDdiff : DifferentiableAt ℝ Dfun z := by
+    simpa [Dfun] using hF3diff.sub hEdiff
+  have hFLDeriv :
+      fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Dfun y * Lastfun y) z =
+        BFL.precompR _ (Dfun z) (fderiv ℝ Lastfun z) +
+          BFL.precompL _ (fderiv ℝ Dfun z) (Lastfun z) := by
+    simpa [BFL] using
+      (BFL.hasFDerivAt_of_bilinear hDdiff.hasFDerivAt hLdiff.hasFDerivAt).fderiv
+  have hF3_apply : (fderiv ℝ F3fun z) v = v.2.2.2.2.2 := by
+    let LF3 : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      { toLinearMap :=
+          { toFun := fun y ↦ y.2.2.2.2.2
+            map_add' := by
+              intro x y
+              rfl
+            map_smul' := by
+              intro a y
+              rfl }
+        cont := by fun_prop }
+    have hLF3 :
+        fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.2) z = LF3 :=
+      LF3.fderiv
+    change (fderiv ℝ
+        (fun y : TopologyTuple ρ κ' ℝ ↦ y.2.2.2.2.2) z) v =
+      v.2.2.2.2.2
+    rw [hLF3]
+    rfl
+  let dF3 : Matrix (κ' (Fin.last (M + 1))) ρ ℝ := (fderiv ℝ F3fun z) v
+  let dE : Matrix (κ' (Fin.last (M + 1))) ρ ℝ := (fderiv ℝ Earlyfun z) v
+  let dL : Matrix ρ ρ ℝ := (fderiv ℝ Lastfun z) v
+  have hD_apply :
+      (fderiv ℝ Dfun z) v =
+        dF3 - dE := by
+    change (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ F3fun y - Earlyfun y) z) v =
+      dF3 - dE
+    rw [fderiv_fun_sub hF3diff hEdiff]
+    rfl
+  have hFL_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ Dfun y * Lastfun y) z) v =
+        Dfun z * dL + (dF3 * Lastfun z - dE * Lastfun z) := by
+    simpa [dF3, dE, dL, BFL, matrixMulContinuousLinearMap_apply, hD_apply] using
+      congrArg
+        (fun L : TopologyTuple ρ κ' ℝ →L[ℝ]
+          Matrix (κ' (Fin.last (M + 1))) ρ ℝ ↦ L v)
+        hFLDeriv
+  have hraw_apply :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          -(Dfun y * Lastfun y)) z) v =
+        -(Dfun z * dL + (dF3 * Lastfun z - dE * Lastfun z)) := by
+    rw [fderiv_fun_neg]
+    simp [hFL_apply]
+  have hcancel :
+      -(Dfun z * dL + (dF3 * Lastfun z - dE * Lastfun z))
+        - dE * Lastfun z + Dfun z * dL =
+      dF3 * (-(Lastfun z)) := by
+    rw [Matrix.mul_neg]
+    ext i j
+    simp [sub_eq_add_neg, Matrix.mul_apply]
+    abel_nf
+  calc
+    (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ (raw y).2.2.2.2.2) z) v
+        - (fderiv ℝ Earlyfun z) v * Lastfun z
+        + (((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).F3 -
+            Earlyfun z) * (fderiv ℝ Lastfun z) v
+      =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦
+          -(Dfun y * Lastfun y)) z) v
+          - (fderiv ℝ Earlyfun z) v * Lastfun z
+          + Dfun z * (fderiv ℝ Lastfun z) v := by
+          rw [hrawF3]
+          rfl
+    _ =
+        -(Dfun z * dL + (dF3 * Lastfun z - dE * Lastfun z))
+          - dE * Lastfun z + Dfun z * dL := by
+          rw [hraw_apply]
+    _ = dF3 * (-(Lastfun z)) := hcancel
+    _ = v.2.2.2.2.2 * (-(Lastfun z)) := by
+          simp [dF3, hF3_apply]
+
+/-- The full Frechet derivative of the retained-passive raw-order map has the
+expected terminal `F3` component after the earlier-tail and terminal-top-factor
+corrections. -/
+theorem fderiv_topologyTupleEdgeRawOrder_F3_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le (M + 1))
+    let Lastfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * Lastfun z
+      + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+      v.2.2.2.2.2 * (-(Lastfun z)) := by
+  let raw : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let projF3 : TopologyTuple ρ κ' ℝ → Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦ y.2.2.2.2.2
+  let LF3 : TopologyTuple ρ κ' ℝ →L[ℝ] Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    { toLinearMap :=
+        { toFun := fun y ↦ y.2.2.2.2.2
+          map_add' := by
+            intro x y
+            rfl
+          map_smul' := by
+            intro a y
+            rfl }
+      cont := by fun_prop }
+  have hrawDiff : DifferentiableAt ℝ raw z :=
+    differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') z hz
+  have hprojF3Diff : DifferentiableAt ℝ projF3 (raw z) := by
+    change DifferentiableAt ℝ LF3 (raw z)
+    exact LF3.differentiableAt
+  have hF3comp :=
+    fderiv_comp' (𝕜 := ℝ) (x := z) (f := raw) (g := projF3)
+      hprojF3Diff hrawDiff
+  have hLF3 : fderiv ℝ projF3 (raw z) = LF3 := by
+    change fderiv ℝ LF3 (raw z) = LF3
+    exact LF3.fderiv
+  have hF3proj :
+      ((fderiv ℝ raw z) v).2.2.2.2.2 =
+        (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projF3 (raw y)) z) v := by
+    calc
+      ((fderiv ℝ raw z) v).2.2.2.2.2
+          = LF3 ((fderiv ℝ raw z) v) := rfl
+      _ = ((fderiv ℝ projF3 (raw z)).comp (fderiv ℝ raw z)) v := by
+            rw [hLF3]
+            rfl
+      _ = (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ projF3 (raw y)) z) v := by
+            rw [← hF3comp]
+  have hcomponent :=
+    fderiv_topologyTupleEdgeRawOrder_F3_component_shear_apply
+      (ρ := ρ) (κ' := κ') hz v
+  change ((fderiv ℝ raw z) v).2.2.2.2.2
+      - (fderiv ℝ
+          (fun y : TopologyTuple ρ κ' ℝ ↦
+            retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+              (fun p : Fin (M + 1) ↦
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p)
+              (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+              0 (Nat.zero_le (M + 1))) z) v *
+          (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            (Fin.last (M + 1)) (Fin.last M).castSucc
+              (Fin.last M).castSucc.le_last)
+      + ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData.F3 -
+          retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            0 (Nat.zero_le (M + 1))) *
+          (fderiv ℝ
+            (fun y : TopologyTuple ρ κ' ℝ ↦
+              residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p)
+                (Fin.last (M + 1)) (Fin.last M).castSucc
+                  (Fin.last M).castSucc.le_last) z) v =
+      v.2.2.2.2.2 *
+        (-(residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦
+            ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+          (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last))
+  rw [hF3proj]
+  simpa [raw, projF3] using hcomponent
 
 /-- Reassembling raw-order tuple coordinates into an edge family is
 differentiable. -/

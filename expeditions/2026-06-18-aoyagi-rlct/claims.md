@@ -9550,3 +9550,330 @@ be read as equality of the unsheared actual derivative with the formal map.
 Nonclaims: no full analytic derivative factorization, determinant equality,
 measure/Jacobian-density theorem, normal crossings, pole order, or RLCT is
 proved by this bridge.
+
+## A2 retained-passive actual derivative F2 formal component bridge
+
+Status: Proved in Lean; reproduced on paper; xhigh implementation review
+passed.
+
+Claim: after the top-left and successor-`F2` shear corrections, the actual
+Frechet derivative's `F2` component agrees with the `F2` component of
+`retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean proves the component identity as
+`fderiv_topologyTupleEdgeRawOrder_F2_shear_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`, and the
+formal component bridge as
+`F2_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-f2-shear-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-f2-shear-bridge.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-f2-shear-bridge.md`.
+
+Kill condition: the correction term
+`- d(coord.F2 p.succ)(v) * coord.C p` is essential.  Dropping it leaves an
+uncancelled successor-`F2` variation.  The theorem must keep the full
+`F2full` endpoint convention or explicitly split terminal/nonterminal cases.
+
+Nonclaims: no global determinant-one shear linear equivalence, full analytic
+derivative factorization, determinant equality, measure/Jacobian-density
+theorem, normal crossings, pole order, or RLCT is proved by this bridge.
+
+## A2 retained-passive edge-pair product equivalence
+
+Status: Proved in Lean; reproduced on paper; xhigh implementation review
+passed.
+
+Claim: the edge-local formal `(F,C)` equivalence packages over all
+retained-passive edges and transports to raw-order separated `(F2,C)` families.
+At a determinant-chart point, the inverse recovers the source edge-pair
+families from the formal raw-order output.
+
+Lean names include `edgeLocalFCPairPiLinearEquiv`,
+`retainedPassiveFormalRawF2CLinearEquiv`,
+`retainedPassiveFormalRawF2CLinearEquivAt`, and
+`retainedPassiveFormalRawF2CLinearEquivAt_symm_recovers_sourcePair`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-product-equiv.md`,
+accepted by xhigh `Huygens`.
+
+Kill condition: this is not a statement about the actual Frechet derivative
+and does not include endpoint `Ctop`/`F3` factors.
+
+Nonclaims: no full determinant equality, measure theorem, normal crossings,
+pole order, or RLCT is proved by this equivalence.
+
+## A2 retained-passive terminal `F2` target shear
+
+Status: Proved in Lean; reproduced on paper; xhigh implementation review
+passed.
+
+Claim: for the terminal retained-passive edge, the successor `F2` coordinate is
+the constant zero coordinate, so the actual `F2` target-shear bridge simplifies
+to `dY12_p + dA1_p * coord.F2 p.castSucc = formal.F2_p`.
+
+Lean names:
+
+```text
+fderiv_retainedPassive_toCoordinateData_F2_last_apply
+F2_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+```
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-terminal-f2-target-shear.md`,
+accepted by xhigh `Huygens`.
+
+Kill condition: this claim is terminal-edge only.  Applying it to all edges
+would be wrong because nonterminal edges still have the successor derivative.
+
+Nonclaims: no nonterminal staged shear, determinant equality, measure theorem,
+normal crossings, pole order, or RLCT is proved by this bridge.
+
+## A2 retained-passive actual derivative tuple assembly
+
+Status: Proved in Lean; reproduced on paper; xhigh review passed.
+
+Claim: the tuple obtained from the actual raw-order Frechet derivative by the
+six landed retained-passive component corrections agrees with
+`retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean defines `shearedTopologyTupleEdgeRawOrderFDerivAt` and proves
+`sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-tuple-shear-assembly.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-tuple-shear-assembly.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-tuple-shear-assembly.md`.
+
+Kill condition: this theorem must remain componentwise tuple packaging.  If it
+is used for determinant equality before a determinant-one target-side linear
+equivalence is constructed, the argument overclaims.
+
+Nonclaims: no actual derivative determinant formula, no measure/Jacobian-
+density theorem, no normal crossings, pole order, or RLCT is proved by this
+assembly.
+
+## A2 retained-passive formal F2 recovery
+
+Status: Proved in Lean; reproduced on paper; xhigh review passed.
+
+Claim: from the formal output
+`u = retainedPassiveFormalRawOrderJacobianAt z v`, each source `F2` tangent is
+recovered by
+
+```text
+(coord.solvedA1 p)^-1 *
+  (coord.F2 p.succ * u.C_p - u.F2_p)
+= v.F2_p.
+```
+
+Lean proves this as `retainedPassiveFormalRawOrderJacobianAt_recovers_F2` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-f2-recovery.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-f2-recovery.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-f2-recovery.md`.
+
+Kill condition: the theorem depends on determinant-chart invertibility of
+`coord.solvedA1 p`; it is not available off chart and must not be read as a
+statement about the actual Frechet derivative.
+
+Nonclaims: no staged target-side shear, determinant equality, measure theorem,
+normal crossings, pole order, or RLCT is proved by this recovery identity.
+
+## A2 edge-local `(F,C)` pair inverse equivalence
+
+Status: Proved in Lean; reproduced on paper; xhigh review passed.
+
+Claim: for `det A` a unit, the generic finite edge-local formal map
+
+```text
+(F,C) |-> (-(A + H*G)*F + H*C, -G*F + C)
+```
+
+is a linear equivalence.  The inverse sends `(U,V)` to
+
+```text
+(A^{-1} * (H*V - U),
+ V + G * (A^{-1} * (H*V - U))).
+```
+
+Lean proves this in
+`lean/DLNFibre/DLN/Aoyagi/MatrixLinearDeterminant.lean` as
+`edgeLocalFCPairLinearMapInverse`, `edgeLocalFCPairLinearMapInverse_apply`,
+`edgeLocalFCPairLinearEquiv`, `edgeLocalFCPairLinearEquiv_apply`, and
+`edgeLocalFCPairLinearEquiv_symm_apply`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-edge-local-fc-pair-inverse-equiv.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-edge-local-fc-pair-inverse-equiv.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-edge-local-fc-pair-inverse-equiv.md`,
+accepted by xhigh `Halley the 5th`.
+
+Kill condition: this theorem is generic edge-local finite linear algebra.  It
+must not be used as the retained-passive total target-side shear without
+separately packaging the product/regrouping over all edges.
+
+Nonclaims: no retained-passive total target-side shear, actual derivative
+determinant comparison, measure theorem, normal crossings, pole order, or RLCT
+is proved by this edge-local equivalence.
+
+## A2 retained-passive formal C recovery
+
+Status: Proved in Lean; reproduced on paper; xhigh review passed.
+
+Claim: from the formal output
+`u = retainedPassiveFormalRawOrderJacobianAt z v`, each source `C` tangent is
+recovered by adding back the lower-left shear using the previously recovered
+source `F2` tangent:
+
+```text
+u.C_p + coord.solvedA3 p *
+  ((coord.solvedA1 p)^-1 * (coord.F2 p.succ * u.C_p - u.F2_p))
+= v.C_p.
+```
+
+Lean proves this as `retainedPassiveFormalRawOrderJacobianAt_recovers_C` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-formal-c-recovery.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-formal-c-recovery.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-formal-c-recovery.md`,
+accepted by xhigh `Huygens the 5th`.
+
+Kill condition: this theorem must continue to use the formal `F2` recovery and
+the formal `C` formula only.  It is not a substitute for constructing the
+target-side determinant-one shear.
+
+Nonclaims: no staged target-side shear, determinant equality, measure theorem,
+normal crossings, pole order, or RLCT is proved by this recovery identity.
+
+## A2 retained-passive actual derivative passive A1 formal component bridge
+
+Status: Proved in Lean; reproduced on paper; xhigh implementation review
+passed.
+
+Claim: after the successor-`F2`/lower-left product corrections, the actual
+Frechet derivative's passive `A1` component agrees with the passive `A1`
+component of `retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean proves the component identity as
+`fderiv_topologyTupleEdgeRawOrder_A1passive_shear_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`, and the
+formal component bridge as
+`A1passive_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-a1passive-shear-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-a1passive-shear-bridge.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-a1passive-shear-bridge.md`.
+
+Kill condition: the theorem must stay restricted to passive top-left indices
+`p : Fin M`.  The first top-left coordinate is `Ctop`, not a stored passive
+coordinate, and requires the solved first-edge top-left block and tail-product
+derivative corrections.
+
+Nonclaims: no `Ctop` derivative bridge, terminal `F3` derivative bridge,
+global determinant-one shear linear equivalence, full analytic derivative
+factorization, determinant equality, measure/Jacobian-density theorem, normal
+crossings, pole order, or RLCT is proved by this bridge.
+
+## A2 retained-passive actual derivative Ctop formal component bridge
+
+Status: Proved in Lean; reproduced on paper; independent xhigh pen-and-paper
+check passed; xhigh implementation review passed.
+
+Claim: after the successor-`F2`/lower-left product corrections and the
+passive-tail inverse correction, the actual Frechet derivative's first
+top-left `Ctop` component agrees with the `Ctop` component of
+`retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean proves the component identity as
+`fderiv_topologyTupleEdgeRawOrder_Ctop_shear_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`, and the
+formal component bridge as
+`Ctop_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-ctop-shear-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-ctop-shear-bridge.md`.
+
+Pen-and-paper review:
+`Einstein the 5th`, xhigh read-only reviewer, PASS.
+
+Implementation review:
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-ctop-shear-bridge.md`
+accepted by xhigh `Bohr the 5th`.
+
+Kill condition: the correction term
+`- d(Tail^{-1})(v) * coord.Ctop` is essential.  Dropping it leaves the
+variation of the passive top-left tail.  The theorem must keep the full
+`F2full` successor slot `coord.F2 ((0 : Fin (M+1)).succ)`.
+
+Nonclaims: no terminal `F3` derivative bridge, global determinant-one shear
+linear equivalence, full analytic derivative factorization, determinant
+equality, measure/Jacobian-density theorem, normal crossings, pole order, or
+RLCT is proved by this bridge.
+
+## A2 retained-passive actual derivative F3 formal component bridge
+
+Status: Proved in Lean; reproduced on paper; independent xhigh checks passed.
+
+Claim: after the earlier lower-left tail derivative correction and terminal
+top-factor derivative correction, the actual Frechet derivative's terminal
+`F3` component agrees with the `F3` component of
+`retainedPassiveFormalRawOrderJacobianAt`.
+
+Lean proves the component identity as
+`fderiv_topologyTupleEdgeRawOrder_F3_shear_apply` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesDerivative.lean`, and the
+formal component bridge as
+`F3_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt` in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-actual-derivative-f3-shear-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-actual-derivative-f3-shear-bridge.md`.
+
+Reviews:
+`Epicurus the 5th` pen-and-paper PASS,
+`Godel the 5th` Lean reconnaissance PASS, and
+`threads/03-block-product-reduction/review-a2-retained-passive-actual-derivative-f3-shear-bridge.md`
+accepted by xhigh `Jason the 5th`.
+
+Kill condition: the theorem must keep right multiplication by the terminal
+factor.  `LastTop` is `coord.solvedA1 (Fin.last M)` by the one-edge terminal
+residual-factor lemma; for `M = 0` this is `coord.Ctop`, not an empty identity
+and not the passive first-edge `Tail`.
+
+Nonclaims: no global determinant-one shear linear equivalence, full analytic
+derivative factorization, determinant equality, measure/Jacobian-density
+theorem, normal crossings, pole order, or RLCT is proved by this bridge.

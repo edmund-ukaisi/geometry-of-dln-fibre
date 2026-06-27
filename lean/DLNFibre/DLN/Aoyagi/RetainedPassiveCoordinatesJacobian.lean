@@ -53,6 +53,103 @@ abbrev retainedPassiveFormalRawOrderJacobianAt
     (fun p : Fin (M + 1) => coord.solvedA3 p)
     (coord.solvedA1 (Fin.last M))
 
+/-- The point-specialized formal edge-pair equivalence on separated raw-order
+`(F2,C)` families. -/
+def retainedPassiveFormalRawF2CLinearEquivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    ((∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) ℝ) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ)) ≃ₗ[ℝ]
+      ((∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) ℝ) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ)) :=
+  let data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ' :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+      (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord :
+      ChartLocalSuffixState.RetainedPassiveCoordinateData
+        (K := ℝ) (ρ := ρ) κ' :=
+    data.toCoordinateData
+  let hA : ∀ p : Fin (M + 1), IsUnit (coord.solvedA1 p).det := by
+    intro p
+    have hdet : data.detChart := hz
+    simpa [coord, data] using
+      solvedA1_det_isUnit_of_detChart
+        (K := ℝ) (ρ := ρ) data hdet p
+  retainedPassiveFormalRawF2CLinearEquiv
+    (ρ := ρ) (κ' := κ') (K := ℝ)
+    (fun p : Fin (M + 1) => coord.solvedA1 p)
+    (fun p : Fin (M + 1) => coord.F2 p.succ)
+    (fun p : Fin (M + 1) => coord.solvedA3 p)
+    hA
+
+/-- The point-specialized formal edge-pair equivalence sends the source
+`(F2,C)` families to the `(F2,C)` families of the formal raw-order output. -/
+theorem retainedPassiveFormalRawF2CLinearEquivAt_apply_sourcePair
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz
+        (v.2.1, v.2.2.2.1) =
+      (((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1,
+        ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.1) := by
+  dsimp [retainedPassiveFormalRawF2CLinearEquivAt,
+    retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawF2CLinearEquiv_apply]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
+/-- Inverse formula for the point-specialized formal edge-pair equivalence. -/
+theorem retainedPassiveFormalRawF2CLinearEquivAt_symm_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (u :
+      (∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) ℝ) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ)) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm u =
+      (fun p : Fin (M + 1) =>
+          (coord.solvedA1 p)⁻¹ * (coord.F2 p.succ * u.2 p - u.1 p),
+        fun p : Fin (M + 1) =>
+          u.2 p + coord.solvedA3 p *
+            ((coord.solvedA1 p)⁻¹ * (coord.F2 p.succ * u.2 p - u.1 p))) := by
+  dsimp [retainedPassiveFormalRawF2CLinearEquivAt]
+  rw [retainedPassiveFormalRawF2CLinearEquiv_symm_apply]
+
+/-- The inverse point-specialized edge-pair equivalence recovers the source
+`(F2,C)` families from the formal raw-order output. -/
+theorem retainedPassiveFormalRawF2CLinearEquivAt_symm_recovers_sourcePair
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+        (((retainedPassiveFormalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') z) v).2.1,
+          ((retainedPassiveFormalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') z) v).2.2.2.1) =
+      (v.2.1, v.2.2.2.1) := by
+  have h :=
+    retainedPassiveFormalRawF2CLinearEquivAt_apply_sourcePair
+      (ρ := ρ) (κ' := κ') hz v
+  rw [← h]
+  exact
+    (retainedPassiveFormalRawF2CLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz).left_inv (v.2.1, v.2.2.2.1)
+
 /-- The determinant formula for the point-specialized formal raw-order
 Jacobian. -/
 theorem retainedPassiveFormalRawOrderJacobianAt_det_eq
@@ -251,6 +348,540 @@ theorem C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
   rw [retainedPassiveFormalRawOrderJacobian_apply]
   simpa [coord, sub_eq_add_neg, neg_mul] using
     (add_comm (v.2.2.2.1 p) (-(coord.solvedA3 p * v.2.1 p)))
+
+/-- After the top-left and successor-`F2` shear corrections, the `F2`
+component of the actual raw-order Frechet derivative agrees with the
+point-specialized formal raw-order map. -/
+theorem F2_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+        coord.C p =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  have hF2 :=
+    fderiv_topologyTupleEdgeRawOrder_F2_shear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+        coord.C p =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1 p
+  rw [hF2]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
+/-- The terminal extended `F2` coordinate is the constant zero map, so its
+Frechet derivative vanishes. -/
+theorem fderiv_retainedPassive_toCoordinateData_F2_last_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (z v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    (fderiv ℝ
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+          (Fin.last (M + 1))) z) v = 0 := by
+  have hfun :
+      (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+          (Fin.last (M + 1))) =
+        fun _ : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          (0 : Matrix ρ (κ' (Fin.last (M + 1))) ℝ) := by
+    funext y
+    simp [ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.toCoordinateData]
+  rw [hfun]
+  simp
+
+/-- At the terminal edge, the successor-`F2` derivative term in the actual
+`F2` shear vanishes by the retained-passive terminal zero convention. -/
+theorem F2_terminal_target_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let p : Fin (M + 1) := Fin.last M
+    ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let p : Fin (M + 1) := Fin.last M
+  have hzero :
+      (fderiv ℝ
+        (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+            p.succ) z) v = 0 := by
+    simpa [p] using
+      fderiv_retainedPassive_toCoordinateData_F2_last_apply
+        (ρ := ρ) (κ' := κ') z v
+  have hF2 :=
+    F2_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).2.1 p
+      + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') ((fderiv ℝ raw z) v) p *
+        coord.F2 p.castSucc
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ) z) v *
+        coord.C p =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.1 p at hF2
+  rw [hzero] at hF2
+  have hmul : (0 : Matrix ρ (κ' p.succ) ℝ) * coord.C p = 0 := by
+    ext i j
+    simp [Matrix.mul_apply]
+  rw [hmul, sub_zero] at hF2
+  exact hF2
+
+/-- After the successor-`F2`/lower-left product corrections, the passive
+top-left component of the actual raw-order Frechet derivative agrees with the
+point-specialized formal raw-order map. -/
+theorem A1passive_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    ((fderiv ℝ raw z) v).1 p
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 p := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  have hA1 :=
+    fderiv_topologyTupleEdgeRawOrder_A1passive_shear_apply
+      (ρ := ρ) (κ' := κ') hz v p
+  change ((fderiv ℝ raw z) v).1 p
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              p.succ.succ) z) v *
+          coord.solvedA3 p.succ
+      - coord.F2 p.succ.succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                p.succ) z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 p
+  rw [hA1]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
+/-- After the successor-`F2`/lower-left product corrections and the
+passive-tail inverse correction, the first top-left `Ctop` component of the
+actual raw-order Frechet derivative agrees with the point-specialized formal
+raw-order map. -/
+theorem Ctop_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.2.1
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              (0 : Fin (M + 1)).succ) z) v *
+          coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                0) z) v
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+          coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  have hCtop :=
+    fderiv_topologyTupleEdgeRawOrder_Ctop_shear_apply
+      (ρ := ρ) (κ' := κ') hz v
+  change ((fderiv ℝ raw z) v).2.2.2.2.1
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+              (0 : Fin (M + 1)).succ) z) v *
+          coord.solvedA3 0
+      - coord.F2 (0 : Fin (M + 1)).succ *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                0) z) v
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+          coord.Ctop =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.1
+  rw [hCtop]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+
+/-- After the terminal lower-left shear, the terminal `F3` component of the
+actual raw-order Frechet derivative agrees with the point-specialized formal
+raw-order map. -/
+theorem F3_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le (M + 1))
+    let Lastfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+            (Fin.last M).castSucc.le_last
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.2.2
+      - (fderiv ℝ Earlyfun z) v * Lastfun z
+      + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  have hF3 :=
+    fderiv_topologyTupleEdgeRawOrder_F3_shear_apply
+      (ρ := ρ) (κ' := κ') hz v
+  change ((fderiv ℝ raw z) v).2.2.2.2.2
+      - (fderiv ℝ
+          (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+            ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+              (K := ℝ) (ρ := ρ) (κ := κ')
+              (fun p : Fin (M + 1) ↦
+                ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p)
+              (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+              0 (Nat.zero_le (M + 1))) z) v *
+          (ChartLocalSuffixState.residualFactorProduct
+            (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            (Fin.last (M + 1)) (Fin.last M).castSucc
+              (Fin.last M).castSucc.le_last)
+      + (((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).F3 -
+          ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+            (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦
+              ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData).solvedA1 p)
+            (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).A3seed)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            0 (Nat.zero_le (M + 1))) *
+          (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              ChartLocalSuffixState.residualFactorProduct
+                (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦
+                  ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p)
+                (Fin.last (M + 1)) (Fin.last M).castSucc
+                  (Fin.last M).castSucc.le_last) z) v =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2
+  rw [hF3]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  rw [retainedPassiveLastTopResidualFactorProduct_eq]
+
+/-- The actual retained-passive raw-order Frechet derivative after all
+component-level shear corrections.
+
+This is a tuple-level packaging of the landed component identities.  It is not
+itself a determinant-one linear shear factorization, because the displayed
+corrections still use source-side Frechet derivatives such as `d(Early)` and
+`d(LastTop)`. -/
+def shearedTopologyTupleEdgeRawOrderFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple ρ κ' ℝ :=
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let Earlyfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix (κ' (Fin.last (M + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y)
+        (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        0 (Nat.zero_le (M + 1))
+  let Lastfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Matrix ρ ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.residualFactorProduct
+        (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+  (fun p : Fin M ↦
+      Dzv.1 p
+        - (fderiv ℝ
+            (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                p.succ.succ) z) v *
+            coord.solvedA3 p.succ
+        - coord.F2 p.succ.succ *
+            (fderiv ℝ
+              (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                  p.succ) z) v,
+    (fun p : Fin (M + 1) ↦
+        Dzv.2.1 p
+          + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv p *
+            coord.F2 p.castSucc
+          - (fderiv ℝ
+              (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                  p.succ) z) v *
+            coord.C p,
+      (Dzv.2.2.1,
+        (fun p : Fin (M + 1) ↦
+            Dzv.2.2.2.1 p
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv p *
+                coord.F2 p.castSucc,
+          (Dzv.2.2.2.2.1
+              - (fderiv ℝ
+                  (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                    (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.F2
+                      (0 : Fin (M + 1)).succ) z) v *
+                  coord.solvedA3 0
+              - coord.F2 (0 : Fin (M + 1)).succ *
+                  (fderiv ℝ
+                    (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA3
+                        0) z) v
+              - (fderiv ℝ
+                  (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                    (ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+                      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed)⁻¹) z) v *
+                  coord.Ctop,
+            Dzv.2.2.2.2.2
+              - (fderiv ℝ Earlyfun z) v * Lastfun z
+              + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v)))))
+
+/-- The fully sheared actual retained-passive raw-order derivative agrees
+componentwise with the point-specialized formal raw-order Jacobian.
+
+This theorem assembles the landed component bridges.  It is deliberately weaker
+than an absolute determinant formula: it does not prove that the correction
+packaging above is a determinant-one shear of the actual Frechet derivative. -/
+theorem sheared_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    shearedTopologyTupleEdgeRawOrderFDerivAt (ρ := ρ) (κ' := κ') z v =
+      (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v := by
+  apply Prod.ext
+  · funext p
+    simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using
+      A1passive_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+        (ρ := ρ) (κ' := κ') hz v p
+  · apply Prod.ext
+    · funext p
+      simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using
+        F2_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') hz v p
+    · apply Prod.ext
+      · funext p
+        have hA3 :=
+          rawEdgeTupleA3_fderiv_topologyTupleEdgeRawOrder_castSucc_eq_formalRawOrderJacobianAt
+            (ρ := ρ) (κ' := κ') hz v p
+        simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using hA3
+      · apply Prod.ext
+        · funext p
+          simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using
+            C_unshear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+              (ρ := ρ) (κ' := κ') hz v p
+        · apply Prod.ext
+          · simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using
+              Ctop_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+                (ρ := ρ) (κ' := κ') hz v
+          · simpa [shearedTopologyTupleEdgeRawOrderFDerivAt] using
+              F3_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+                (ρ := ρ) (κ' := κ') hz v
+
+/-- The point-specialized formal raw-order map recovers the source `F2`
+tangent from its normalized `(F2,C)` edge pair.
+
+This is the first recovery brick for a future staged target-side shear
+factorization.  The inverse `coord.solvedA1 p` occurs only in this off-diagonal
+recovery calculation; the determinant-bearing formal map is unchanged. -/
+theorem retainedPassiveFormalRawOrderJacobianAt_recovers_F2
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin (M + 1)) :
+    let u := (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    (coord.solvedA1 p)⁻¹ * (coord.F2 p.succ * u.2.2.2.1 p - u.2.1 p) =
+      v.2.1 p := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  have hdet : data.detChart := hz
+  have hA : IsUnit (coord.solvedA1 p).det := by
+    simpa [coord, data] using
+      solvedA1_det_isUnit_of_detChart
+        (K := ℝ) (ρ := ρ) data hdet p
+  change (coord.solvedA1 p)⁻¹ *
+      (coord.F2 p.succ *
+          ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p -
+        ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.1 p) =
+    v.2.1 p
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  change (coord.solvedA1 p)⁻¹ *
+      (coord.F2 p.succ *
+          (-coord.solvedA3 p * v.2.1 p + v.2.2.2.1 p) -
+        (-(coord.solvedA1 p + coord.F2 p.succ * coord.solvedA3 p) *
+            v.2.1 p + coord.F2 p.succ * v.2.2.2.1 p)) =
+    v.2.1 p
+  have hinside :
+      coord.F2 p.succ *
+          (-coord.solvedA3 p * v.2.1 p + v.2.2.2.1 p) -
+        (-(coord.solvedA1 p + coord.F2 p.succ * coord.solvedA3 p) *
+            v.2.1 p + coord.F2 p.succ * v.2.2.2.1 p) =
+      coord.solvedA1 p * v.2.1 p := by
+    have hleft :
+        coord.F2 p.succ *
+            (-coord.solvedA3 p * v.2.1 p + v.2.2.2.1 p) =
+          -(coord.F2 p.succ * coord.solvedA3 p * v.2.1 p) +
+            coord.F2 p.succ * v.2.2.2.1 p := by
+      rw [Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc]
+    have hright :
+        -(coord.solvedA1 p + coord.F2 p.succ * coord.solvedA3 p) *
+            v.2.1 p + coord.F2 p.succ * v.2.2.2.1 p =
+          -(coord.solvedA1 p * v.2.1 p +
+              coord.F2 p.succ * coord.solvedA3 p * v.2.1 p) +
+            coord.F2 p.succ * v.2.2.2.1 p := by
+      rw [Matrix.neg_mul, Matrix.add_mul, Matrix.mul_assoc]
+    rw [hleft, hright]
+    abel
+  rw [hinside]
+  exact Matrix.nonsing_inv_mul_cancel_left (coord.solvedA1 p) (v.2.1 p) hA
+
+/-- The point-specialized formal raw-order map recovers the source `C` tangent
+from the same normalized `(F2,C)` edge pair, after substituting the recovered
+source `F2` tangent. -/
+theorem retainedPassiveFormalRawOrderJacobianAt_recovers_C
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin (M + 1)) :
+    let u := (retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    u.2.2.2.1 p +
+        coord.solvedA3 p *
+          ((coord.solvedA1 p)⁻¹ * (coord.F2 p.succ * u.2.2.2.1 p - u.2.1 p)) =
+      v.2.2.2.1 p := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  have hF2 :
+      (coord.solvedA1 p)⁻¹ *
+          (coord.F2 p.succ *
+              ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p -
+            ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.1 p) =
+        v.2.1 p := by
+    simpa [coord, data] using
+      retainedPassiveFormalRawOrderJacobianAt_recovers_F2
+        (ρ := ρ) (κ' := κ') hz v p
+  change ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p +
+        coord.solvedA3 p *
+          ((coord.solvedA1 p)⁻¹ *
+            (coord.F2 p.succ *
+                ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.2.2.1 p -
+              ((retainedPassiveFormalRawOrderJacobianAt (ρ := ρ) (κ' := κ') z) v).2.1 p)) =
+      v.2.2.2.1 p
+  rw [hF2]
+  dsimp [retainedPassiveFormalRawOrderJacobianAt]
+  rw [retainedPassiveFormalRawOrderJacobian_apply]
+  change (-coord.solvedA3 p * v.2.1 p + v.2.2.2.1 p) +
+      coord.solvedA3 p * v.2.1 p =
+    v.2.2.2.1 p
+  ext i j
+  simp
 
 end Aoyagi
 end DLN

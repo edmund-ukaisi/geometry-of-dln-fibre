@@ -67,6 +67,78 @@ theorem retainedPassiveFormalEdgeTangentLinearEquiv_symm_apply
 
 end EdgeRegrouping
 
+section EdgePairRawEquiv
+
+variable {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [CommRing K]
+variable [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+
+/-- The edge-local product equivalence transported to separated raw-order
+`(F2,C)` families. -/
+def retainedPassiveFormalRawF2CLinearEquiv
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det) :
+    ((∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) K) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)) ≃ₗ[K]
+      ((∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) K) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)) :=
+  ((retainedPassiveFormalEdgeTangentLinearEquiv
+      (ρ := ρ) (κ' := κ') (K := K)).symm.trans
+    (edgeLocalFCPairPiLinearEquiv
+      (ρ := ρ) (κ' := κ') (K := K) A H G hA)).trans
+    (retainedPassiveFormalEdgeTangentLinearEquiv
+      (ρ := ρ) (κ' := κ') (K := K))
+
+/-- Forward formula for the raw-order `(F2,C)` edge-pair product
+equivalence. -/
+theorem retainedPassiveFormalRawF2CLinearEquiv_apply
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det)
+    (v :
+      (∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) K) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)) :
+    retainedPassiveFormalRawF2CLinearEquiv
+        (ρ := ρ) (κ' := κ') (K := K) A H G hA v =
+      (fun p : Fin (M + 1) =>
+          -(A p + H p * G p) * v.1 p + H p * v.2 p,
+        fun p : Fin (M + 1) =>
+          -G p * v.1 p + v.2 p) := by
+  apply Prod.ext
+  · funext p
+    simp [retainedPassiveFormalRawF2CLinearEquiv,
+      edgeLocalFCPairPiLinearEquiv, edgeLocalFCPairLinearMap_apply]
+  · funext p
+    simp [retainedPassiveFormalRawF2CLinearEquiv,
+      edgeLocalFCPairPiLinearEquiv, edgeLocalFCPairLinearMap_apply]
+
+/-- Inverse formula for the raw-order `(F2,C)` edge-pair product
+equivalence. -/
+theorem retainedPassiveFormalRawF2CLinearEquiv_symm_apply
+    (A : Fin (M + 1) → Matrix ρ ρ K)
+    (H : ∀ p : Fin (M + 1), Matrix ρ (κ' p.succ) K)
+    (G : ∀ p : Fin (M + 1), Matrix (κ' p.succ) ρ K)
+    (hA : ∀ p : Fin (M + 1), IsUnit (A p).det)
+    (v :
+      (∀ p : Fin (M + 1), Matrix ρ (κ' p.castSucc) K) ×
+        (∀ p : Fin (M + 1), Matrix (κ' p.succ) (κ' p.castSucc) K)) :
+    (retainedPassiveFormalRawF2CLinearEquiv
+        (ρ := ρ) (κ' := κ') (K := K) A H G hA).symm v =
+      (fun p : Fin (M + 1) => (A p)⁻¹ * (H p * v.2 p - v.1 p),
+        fun p : Fin (M + 1) =>
+          v.2 p + G p * ((A p)⁻¹ * (H p * v.2 p - v.1 p))) := by
+  apply Prod.ext
+  · funext p
+    simp [retainedPassiveFormalRawF2CLinearEquiv,
+      edgeLocalFCPairPiLinearEquiv, edgeLocalFCPairLinearMapInverse_apply]
+  · funext p
+    simp [retainedPassiveFormalRawF2CLinearEquiv,
+      edgeLocalFCPairPiLinearEquiv, edgeLocalFCPairLinearMapInverse_apply]
+
+end EdgePairRawEquiv
+
 section UnitHelpers
 
 variable {ι K : Type*} [CommRing K] [Fintype ι] [DecidableEq ι]
