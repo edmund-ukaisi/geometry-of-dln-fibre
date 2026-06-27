@@ -14691,3 +14691,62 @@ This remains Ctop endpoint target staging only.  It is not `F3` target staging,
 not whole-tuple target-side normalization, not a determinant-one target-side
 `LinearEquiv`, not actual derivative determinant equality, and not measure
 transport, normal crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive F3 Zero-Tail Target-Staged Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves the one-edge target-staged
+`F3` slice:
+
+```text
+F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+For `M = 0`, the early lower-left source tail entering the landed `F3` bridge
+is zero, and the terminal one-edge top factor is `coord.Ctop`.  The new theorem
+therefore rewrites the collapsed `F3` bridge as
+
+```text
+Dzv.F3 + coord.F3 * targetCtop = formal.F3,
+```
+
+where
+
+```text
+targetCtop =
+  Dzv.Ctop
+    - retainedPassiveTargetRecoveredSuccessorF2At(z,Dzv)(0) * coord.solvedA3(0)
+    - coord.F2(0.succ) * rawEdgeTupleA3(Dzv,0).
+```
+
+The raw lower-left target derivative is not identified with zero; it appears
+only under the terminal zero extended `F2` multiplier.  The recovery theorem
+right-multiplies by `(-(coord.Ctop))⁻¹`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-mzero-target-staged-shear.md`
+passed by xhigh `Bernoulli`.
+
+Verification:
+
+```text
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian
+env LAKE_SHARED=/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct/lean/.lake-local-shared scripts/lb DLNFibre
+scripts/sorries
+git diff --check
+#print axioms for the two new theorem names
+```
+
+The focused and full builds passed.  The sorry audit reported zero forbidden
+markers.  `git diff --check` passed.  The new theorem axiom audits report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This remains the one-edge `F3` target-staged slice only.  It is not
+positive-tail `F3` target staging, not a derivative recurrence for `Early`, not
+whole-tuple target-side normalization, not a determinant-one target-side
+`LinearEquiv`, not actual derivative determinant equality, and not measure
+transport, normal crossings, pole order, or RLCT.

@@ -9584,6 +9584,59 @@ Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
 
+## A2 retained-passive F3 zero-tail target-staged shear
+
+Status: Proved in Lean; controller pen-and-paper reproduction written;
+focused and full builds passed; sorry scan, whitespace check, and axiom audit
+passed; independent xhigh implementation review passed.
+
+Claim: in the one-edge retained-passive case `M = 0`, the terminal `F3`
+component bridge can be rewritten using the target-staged Ctop expression:
+
+```text
+Dzv.F3 + coord.F3 * targetCtop = formal.F3,
+```
+
+where
+
+```text
+targetCtop =
+  Dzv.Ctop
+    - retainedPassiveTargetRecoveredSuccessorF2At(z,Dzv)(0) * coord.solvedA3(0)
+    - coord.F2(0.succ) * rawEdgeTupleA3(Dzv,0).
+```
+
+The corresponding recovery theorem is
+
+```text
+(Dzv.F3 + coord.F3 * targetCtop) * (-(coord.Ctop))^{-1} = v.F3.
+```
+
+Lean proves this as
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`
+in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+
+Review:
+xhigh `Bernoulli` passed the implementation review, recorded at
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+
+Kill condition: if the theorem treats terminal `rawEdgeTupleA3` as zero,
+uses a source-staged `Ctop` tangent in the advertised expression, uses the
+passive `Tail` instead of the right factor `coord.Ctop` in recovery, or
+claims anything for `0 < M`, it is not the intended one-edge theorem.
+
+Nonclaims: no positive-tail `F3` target staging, no derivative recurrence for
+`Early`, no whole-tuple target-side normalization, no target-side
+determinant-one `LinearEquiv`, no determinant equality, no
+measure/Jacobian-density theorem, no normal crossings, pole order, or RLCT.
+
 ## A2 retained-passive target edge-pair recovery
 
 Status: Proved in Lean; reproduced on paper; focused and full builds passed;

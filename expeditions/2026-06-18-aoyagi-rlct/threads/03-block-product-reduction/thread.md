@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 F3 zero-tail target-staged shear
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Review:
+`review-a2-retained-passive-f3-mzero-target-staged-shear.md`, PASS by xhigh
+`Bernoulli`.
+
+Lean now proves the one-edge (`M = 0`) `F3` target-staged formula:
+
+```text
+F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The theorem collapses the landed `F3` source-staged bridge by proving the
+one-edge `Early` source tail is zero and the one-edge `Last` top factor is
+`coord.Ctop`.  It then substitutes the landed Ctop zero-tail target-staged
+recovery.  The final expression contains
+`retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and the raw target readout
+`rawEdgeTupleA3 Dzv 0` only inside
+`coord.F2 (0 : Fin 1).succ * rawEdgeTupleA3 Dzv 0`.  Recovery right-multiplies
+by `(-(coord.Ctop))⁻¹`.
+
+Focused/full builds, `scripts/sorries`, `git diff --check`, and axiom audit
+all passed; the new theorems depend only on
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no positive-tail `F3` target staging, no derivative recurrence for
+`Early`, no whole-tuple target-side normalization, no determinant-one
+`LinearEquiv`, no actual derivative determinant equality, no measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-27 A2 Ctop target-staged endpoint shear
 
 After passive `A1` target staging, the analogous Ctop endpoint step is to

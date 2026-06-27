@@ -21,8 +21,35 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
-After post-interruption reorientation, the retained-passive Ctop target-staged
-endpoint shear has landed.  Reproduction:
+After post-interruption reorientation, the retained-passive `F3` zero-tail
+target-staged shear has landed.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+
+Lean proves the one-edge (`M = 0`) `F3` target-staged formula and recovery:
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+The theorem consumes the landed Ctop zero-tail target-staged recovery to replace
+the source `Ctop` tangent in the collapsed one-edge `F3` product-rule formula.
+The target expression uses `retainedPassiveTargetRecoveredSuccessorF2At z Dzv`
+and keeps `rawEdgeTupleA3 Dzv 0` only under the terminal zero extended `F2`
+multiplier.  The recovery factor is the right multiplier `(-(coord.Ctop))⁻¹`.
+
+Nonclaims: no positive-tail `F3` target staging, no derivative recurrence for
+`Early`, no whole-tuple target-side normalization, no determinant-one
+target-side `LinearEquiv`, no actual derivative determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
+Next frontier: positive-tail `F3` remains blocked by an honest recurrence for
+`dEarly`.  A narrow `Lastfun` terminal-top derivative/staging theorem may be
+Lean-ready, but it should be reproduced and checked separately before Lean.
+
+Immediate predecessor: the retained-passive Ctop target-staged endpoint shear
+has landed.  Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
 Statement card:
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-ctop-target-staged-endpoint-shear.md`.
@@ -41,10 +68,10 @@ raw lower-left target readout at the first retained edge.  The positive-tail
 formula keeps the suffix derivative term explicit and in the previously
 checked noncommutative order.
 
-Nonclaims: no `F3` target staging, no whole-tuple target-side normalization,
-no determinant-one target-side `LinearEquiv`, no actual derivative determinant
-equality, no measure transport, no normal crossings, no pole order, and no
-RLCT.
+Nonclaims: no positive-tail `F3` target staging, no whole-tuple target-side
+normalization, no determinant-one target-side `LinearEquiv`, no actual
+derivative determinant equality, no measure transport, no normal crossings, no
+pole order, and no RLCT.
 
 Immediate predecessor: the retained-passive passive `A1`
 target-staged shear has landed.  Reproduction:

@@ -11419,3 +11419,26 @@ in the landed order.  Nonclaims: no `F3` target staging, no whole-tuple
 target-side normalization, no determinant-one target-side `LinearEquiv`, no
 actual derivative determinant formula, no measure theorem, no normal
 crossings, pole order, or RLCT.
+
+Latest A2 retained-passive F3 zero-tail target-staged shear:
+`RetainedPassiveCoordinatesJacobian.lean` proves
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`
+and
+`F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3`.
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-mzero-target-staged-shear.md`.
+
+For `M = 0`, the proof collapses the landed `F3` bridge by zeroing the one-edge
+`Early` source tail and identifying the terminal top factor with `coord.Ctop`.
+It substitutes the landed Ctop zero-tail target-staged recovery, so the final
+target expression uses `retainedPassiveTargetRecoveredSuccessorF2At z Dzv` and
+keeps `rawEdgeTupleA3 Dzv 0` only under multiplication by
+`coord.F2 (0 : Fin 1).succ`.  Recovery right-multiplies by
+`(-(coord.Ctop))⁻¹`.  Nonclaims: no positive-tail `F3` target staging, no
+`Early` derivative recurrence, no whole-tuple target-side normalization, no
+determinant-one target-side `LinearEquiv`, no actual derivative determinant
+formula, no measure theorem, no normal crossings, pole order, or RLCT.
