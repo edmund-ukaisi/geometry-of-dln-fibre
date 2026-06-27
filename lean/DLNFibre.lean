@@ -262,3 +262,116 @@ import DLNFibre.Core.FibreCodimFinal
 import DLNFibre.DLN.BundleShiftDischarge
 -- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
 import DLNFibre.DLN.Aoyagi.ClosedForm
+-- θ-components (Route-A fibre entry): detΔ ≡ 1 on the fibre ⟹ localizing O(fibre) at detΔ is an iso
+-- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
+import DLNFibre.Core.FibreDetUnit
+import DLNFibre.Core.CThetaShiftCount
+-- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework + the
+-- polynomial-extension minimal-prime descent + the Σ̄^r / fibre count endpoints.
+import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.TopDimMinPrimesPoly
+import DLNFibre.Core.TopDimMinPrimesBridge
+import DLNFibre.Core.TopComponentsTopDim
+import DLNFibre.Core.FibreTopDimDetUnit
+-- θ-components (fibre-count wiring, thread 08): the keystone localization-survival of the top-dim
+-- minimal-prime count, + radical-insensitivity (W3), the chart-e count carry, and the W2 avoidance.
+import DLNFibre.Core.TopDimMinPrimesLocalization
+import DLNFibre.Core.TopDimMinPrimesRadical
+import DLNFibre.Core.TopDimMinPrimesChartE
+import DLNFibre.Core.TopDimMinPrimesGfibAvoid
+-- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r ↔
+-- exact =r at the top-dim minimal-prime level), via unconditional recovery + corner-monotonicity.
+import DLNFibre.Core.TopDimMinPrimesW0
+-- θ-components (count composition): W1 survival + avoidances, the W2 survival, and the headline
+-- numTop(fibre d E_r) = cTheta(d−r) composing the count chain (the `_of` form; hW2 supplied by W2).
+import DLNFibre.Core.TopDimMinPrimesW1W2
+import DLNFibre.Core.TopDimMinPrimesW2
+import DLNFibre.Core.FibreThetaCount
+-- Scope-3 (Tier-R bundle, thread 11): the reduced-fibre product trivialization — the reusable B1
+-- tensor-package `Away (map f) ≃ₐ Away f ⊗ F`, its chart specializations, rank-r base-change
+-- homogeneity, and the single-chart triviality headline (on the REDUCED variety, not the scheme
+-- cut; a full per-minor open cover is NOT built — see the module's B3 disclaimer).
+import DLNFibre.Core.FibreBundleReduced
+-- Scope-3 (smoothness rungs S2+S3, thread 15): the reusable, reducedness-free submersive plumbing —
+-- a chart where a chosen `(C+δ)`-square Jacobian minor is a unit is `Smooth k` (and standard-smooth
+-- of relative dimension `n − c`), via Mathlib `SubmersivePresentation → IsStandardSmooth → Smooth`,
+-- with `…of_algEquiv…` transport hooks the θ-chart atlas consumes. Conditional on the minor-unit
+-- input (discharged by the rank=C+δ tide), NOT a fibre-is-smooth claim.
+import DLNFibre.Core.FibreSmoothPlumbing
+-- Scope-3 (generic smoothness, thread 16): reusable unconditional bricks — `Smooth (A ⊗ B)`,
+-- `SchurLoc` smooth, the basic-open `IsSmoothAt` bridge — plus the CONDITIONAL headline: given
+-- `IsSmoothAt` of the reduced-fibre factor at a top-component generic prime (= thread-14 fact (C),
+-- NOT discharged), the chart product `SchurLoc ⊗ Away g` is `Smooth k`. The fibre is reducible for
+-- θ≥2, so the honest object is `IsSmoothAt` (generic), never a global `Smooth k`.
+import DLNFibre.Core.FibreGenericSmooth
+-- Scope-3 (per-minor bundle, thread 18): the genuine open cover of `Mat^{=r}` by the `{r×r minor ≠ 0}`
+-- opens + the per-minor chart family. Keystone `exists_invertible_minor_of_rank` (a rank-r matrix has
+-- some invertible r×r minor — a Mathlib v4.29 gap, network-free spin-out candidate). B3-3 transition
+-- coherence is NOT built (the cocycle on overlaps) — so this is cover + family, NOT yet `locallyTrivial`.
+import DLNFibre.Core.RankMinorCover
+import DLNFibre.Core.FibreBundlePerMinor
+-- Scope-3 (bundle transition cocycle, thread 19): the genuine ring-level transition `AlgEquiv` on the
+-- per-minor principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` + full coherence (commutes/symm/
+-- round-trip/triple-overlap cocycle), via localization initiality. The abstract `awayOverlap`/
+-- `awayTriple` engine is network-free (spin-out candidate). DISCLAIMER: this cocycle is on the AMBIENT
+-- `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the bundle is NOT `locallyTrivial`.
+import DLNFibre.Core.FibreBundleTransition
+-- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric fact.
+-- C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime meeting
+-- one minimal prime recovers that component's local ring (sub-walls (a)+(b) of thread-16, banked). C3
+-- `FibreGenericSmoothUncond` — `S ⊗ Away g ≃ Away (1⊗g)` transport ⟹ `IsSmoothAt` of the fibre chart
+-- from `IsSmoothAt` of `sweepFibreRing`. (The thread-17 C2(a) framing — "sole remaining input" — is
+-- SUPERSEDED: smoothness is fully unconditional via FibreComponentOrbitTransport's fp-domain route, no
+-- C2(a) needed; that bare-orbit iso was dimensionally impossible. See FibreComponentOrbitTransport below.)
+import DLNFibre.Core.LocalizationAtComponent
+import DLNFibre.Core.FibreGenericSmoothUncond
+-- Scope-3 (bundle bridge B3-4, thread 21): the genuine TOP-LEFT `e_β`↔ambient identification — the seam
+-- `detMinorPoly_topLeft_rename`, the bridge AlgHom `topLeftBaseToChartAway` (identifies the inverted
+-- denominators, load-bearing), and a genuinely-instantiated `LocalTrivializationDatum` at the top-left
+-- chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial` — the per-pivot
+-- trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it remain (#123).
+import DLNFibre.Core.FibreBundleLocallyTrivial
+-- Scope-3 (C2(a) dimension finding + sigma labeling, thread 20): thread-17's bare iso `sweepFibreRing⧸I ≃
+-- orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure × Aᵟ, δ=r(d_last+d_0−r)>0), and
+-- the dimension-corrected `…_of_component_orbitPolyEquiv` shape is ALSO globally false (thread 24) — both
+-- orbit-iso consumers are now `@[deprecated]` dead scaffolding. The LIVE contribution is the UNCONDITIONAL
+-- sigma-side labeling `exists_sigma_topComponent_orbitRingEquiv` (every top component of O(Σ̄^r) IS
+-- `orbitRing (realizerD m)`). NB smoothness is fully unconditional WITHOUT any orbit iso — via the direct
+-- fp-domain route in the next import (FibreComponentOrbitTransport), NOT modulo any fibre≅orbit iso.
+import DLNFibre.Core.FibreComponentOrbit
+-- Scope-3 (smoothness FULLY UNCONDITIONAL, thread 20 #128): the orbit-iso detour proved UNNECESSARY —
+-- a fibre top component `sweepFibreRing⧸I` is a finitely-presented DOMAIN over an alg-closed field,
+-- hence generically smooth (`IsSmoothAt k ⊥`); the C1 bridge lifts that to `IsSmoothAt k I`. Headlines
+-- `isSmoothAt_sweepFibre_topComponent` + `exists_isSmoothAt_chartDsig_unconditional`: generic
+-- smoothness of the DLN fibre, NO open hypothesis remaining.
+import DLNFibre.Core.FibreComponentOrbitTransport
+-- Scope-3 (per-pivot conjugation skeleton, thread 22 #123): the endpoint-permutation gauge carries the
+-- top-left deep chart `e_β` to a genuine `LocalTrivializationDatum` at EVERY pivot `(s,t)` of the cover
+-- (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot `chartLocalizedAlgEquivAt`).
+-- PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the per-pivot trivializations remains (#133).
+import DLNFibre.Core.FibreChartConjugation
+-- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled coherent atlas over the
+-- rank-`=r` open — scheme open-cover (`iSup_pivot_basicOpen_eq_rankROpen`) + per-pivot trivializations
+-- into `SchurLoc ⊗ sweepFibreRing` + the base-side overlap cocycle (`chartOverlapTransition` over
+-- `sweepSigmaRing`, laws inherited) + the intertwining (`e_β` cancels → base-algebraic). Headline
+-- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial` (cover is point-set /
+-- near-definitional over the OPEN; a bare scheme-theoretic name needs the rank-tie `rankROpen={rank=r}`, #133r).
+import DLNFibre.Core.FibreBundleLocallyTrivialFull
+-- Scope-3 (variety-level fibre-component↔orbit iso, thread 24 #138): rung 1 of the honest LOCALIZED `e`
+-- — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away chartDsig)⧸chartComponentIdeal`
+-- (the chart-localization component transport). The consumer-shaped global/shifted-orbit `e` is FALSE
+-- (chart is intrinsically localized); only the LOCALIZED full-d-orbit form is reachable — the orbit
+-- descent (rung 2) is a precisely-costed residual, NOT built. Off-critical-path geometric enrichment.
+import DLNFibre.Core.FibreComponentOrbitIso
+-- Review round 1 fix (owner PR #11, C3): the same-rank component-count transport — for ANY `B` with
+-- `B.rank = r`, `numTop(mult⁻¹ B) = cTheta(d−r)` (arbitrary `B`, not just the normal form `E_r`):
+-- `mult⁻¹ B` a `GL×GL` translate of `mult⁻¹ E_r` ⟹ iso ⟹ equal TopDimMinPrimes count, proved directly
+-- via `exists_baseChange_of_rank_eq` + `image_smul_fibre` + `vanishingIdeal_image_smul` + quotient-equiv
+-- + radical-insensitivity (NOT literally `reducedFibre_baseChangeHomogeneous`). Closes the C3 overclaim.
+import DLNFibre.Core.FibreThetaCountArbitrary
+-- θ-invariants DISTINCTION capstone (PR #11 follow-up): the order-side companion to the codim/Aoyagi
+-- capstone. `aoyagiPoleOrder ell a := a*(ell−a)+1` (an ANALYTIC pole order, NOT a component count) —
+-- (1) the live mismatch `numTop_d22222_ne_aoyagiPoleOrder` (L&R count 6 ≠ 5 = Aoyagi order at (2,2,2,2,2)
+-- r=0), (2) the agreement regime `choose_eq_aoyagiPoleOrder_iff : choose ell a = a(ell−a)+1 ↔ min a (ell−a)
+-- ≤ 1`. Proves the two θ's DIFFER + pins exactly when they agree; asserts NO (false) equality of them.
+import DLNFibre.DLN.Aoyagi.ThetaOrderDistinction
