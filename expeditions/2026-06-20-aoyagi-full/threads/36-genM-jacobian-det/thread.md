@@ -461,3 +461,78 @@ decoder-agnostic rate `routeMCore_phiGen` interface (`hC0` re-checkable) — giv
 `pRad`/E-slot redefinition + the `(2,2,2)` det-cross-check." Then (b)/(c)/(d) build against the fixed
 decoder: radial `|u|^{minAdm−1}` + Schur/LDU spectators → `phiTarget_abs_det_of_factored` → `cov` →
 `nodeChartGeneral (hpos)` → atom ∀M.
+
+---
+
+## UPDATE-12 (formalisation tide, 2026-06-27) — ∀M checkpoint (b): the (2,2,1) pattern does NOT generalize; the genuine wall sharply re-characterized (decorrelated: sympy + 2× xhigh Codex)
+
+Charged checkpoint (b) (the ∀M `nodeChartGeneral`). The controller's brief assumed the banked
+(2,2,1) pure-radial pattern generalizes (multi-boundary = "spectator handling"). **Decorrelated
+verification (my sympy + two xhigh Codex consults, `codex/genM-chart-arch-*`, `codex/genM-rate-route-*`)
+shows that framing is WRONG, and re-sharpens the wall.** All findings banked sorry-free in the
+inventory below; NO speculative Lean written (heeding UPDATE-11's lesson: do not funext-s against the
+wrong target).
+
+### FINDING 1 — pure radial FAILS the RATE on split-codim nodes (not just the det)
+The (2,2,1)/(4,4,2,2) charts are pure-radial because their achiever path drops rank at ONE boundary.
+For a split-codim node (rank dropped at ≥2 boundaries) a pure radial blow-up of the residual blocks
+does NOT give `prod = u·H`: the surviving-frame × downstream term `[a;c]·β·S` is **order-0 in u**
+(uncancelled), so `F` is not even divisible by `u`. Verified exact (sympy `/tmp`): the naive dense
+radial (3,3,4) chart has 12/12 product entries with an O(1) part; the cert-faithful Schur chart has
+0/12. Codex Q1 (independent) gives the same obstruction: "the split-incidence condition — the
+downstream matrix must vanish on the image frame of the upstream rank part." **The Schur / `b=aβ`
+coupling (`T_next = u·Γ − β·S`) is LOAD-BEARING for the rate, uniformly ∀M, not a per-case artifact.**
+
+### FINDING 2 (gating) — the vanishing order is EXACTLY u^1 across multiple Schur boundaries
+Settled (Codex Q2 + the BANKED `chain_telescope`): a single global pivot `u` gives order EXACTLY 1
+even with rank drops at several boundaries — the cancellations telescope through `D_{k+1}=D_k·B_k`.
+The clean prefix invariant is `P_k = D_k·C_k + u·G_k` (NOT "u-divisible after the first drop", which
+is false), terminal `C_L = u·R` ⟹ `P_L = u·(D_L·R + G_L)`. **This is the forward form of the
+already-banked SUFFIX telescope `RouteMAchieverTelescope.chain_telescope` (`C_s·suffix_s = u·H_s`).**
+So the single-global-pivot design HOLDS; per-boundary independent pivots are NOT needed. The achiever
+minimizer T* genuinely spreads drops in general — (3,3,3,3)'s UNIQUE minimizer T*=(2,1,0) drops at
+ALL 3 boundaries (`/tmp` minimizer scan) — so multi-boundary coupling is unavoidable, but order stays 1.
+
+### FINDING 3 — the RATE ∀M is ALREADY BANKED; the wall is purely the DET-side bridge
+`routeMCore_phiFlatStructV M t ha = (x p)²·V` is banked ∀M (consumes only `GenBlk`/`hle`/`hC0`, proven
+via `chain_telescope`). The genuine charts (221/4422/334) re-derive the rate per-case (`dlnLoss_chartParams*`,
+0 uses of the banked theorem), but the banked theorem covers `phiFlatStructV` ∀M. The DET of
+`phiFlatStructV` is identically ZERO (UPDATE-11's D1: dead slots), so the det needs a DIFFERENT,
+factored chart `φ_det`. **The wall = relate `φ_det`'s loss to the banked rate** (the
+`composeFold fs = φ` map-equality, UPDATE-11's wall), OR re-derive the rate on `φ_det` (Route 2a,
+duplicates the telescope + reopens dependent-width casts — Codex ranks it higher-risk).
+
+### FINDING 4 — Codex Q4 DISSOLVES the controller's "hardest brick #1" (the e_M bijection)
+The charged brick #1 (build `e_M : Fin N ≃ FlatIdx M` placing the T* blocks) is NOT needed. Keep the
+CANONICAL `FlatIdx` order (pack = trivial, det 1 by construction), and put all slot selection into a
+DECIDABLE `active : Finset (Fin (routeMAmbient M))` (a `Finset.filter` on the decoded FlatIdx for the
+T*-residual slots). `pivotBlowupOn active p` needs only `active.card`, NOT contiguity. So the
+dependent-width bijection engineering EVAPORATES — there is no Equiv to build, no left/right_inv over
+opaque widths. (This is a strict improvement over the brief's plan.)
+
+### THE SHARP SUB-PROBLEM (for the controller — design adjudication, routes to decoder-fix)
+The remaining wall is a DESIGN decision, not a tactic: **on which decoder API do the RATE chart
+(`phiFlatStructV`, banked rate, det 0) and the DET chart (`φ_det = Q ∘ radial ∘ Schur/LDU factors`,
+genuine det, rate TBD) get UNIFIED, so the bridge `routeMCore(φ_det u) = (u_p)²·U` is a structural
+`funext` over SHARED accessors rather than "permutation archaeology" (Codex's phrase)?** Two sub-routes:
+- **2b (bridge):** prove `φ_det = phiFlatStructV` (or their GenBlk-decodings agree) over opaque
+  Text/Wext widths — the chartIdxEquiv K/X/N/E role-slot ↔ raw Params layer-layout alignment, funext-s.
+  This is UPDATE-11's precise wall; the brick-(a) `bridgeCLE`/`paramsBlockSplitCLE` engine (banked)
+  was built to absorb exactly this, but the funext-s never landed.
+- **2a (re-derive):** define `φ_det` directly, prove `dlnLoss(φ_det) = u²·U` by prefix induction with
+  invariant `P_k = D_k·C_k + u·G_k` (FINDING 2) — abstractly via a FORWARD `chain_telescope` variant
+  (Codex: "prove this abstractly once, not entrywise"). Sidesteps the bridge entirely but reopens the
+  dependent-width Schur-block construction (`chartParamsGeneral`'s per-layer matrices over opaque widths).
+
+**Recommendation:** decorrelate the decoder-API-unification decision (decoder-fix / Codex), exactly as
+the cert's option-(C) verdict was reached. The math is fully settled (order-1, uniform Schur, no e_M);
+the open part is purely "which Lean decoder API makes the det-chart↔rate bridge a clean funext." This
+is above a leaf-executor's scope (it picks the target the whole next tide funext-s against). Banked,
+decorrelated, sharp — handed back rather than charged blind (the UPDATE-11 mistake).
+
+### Banked artifacts (this tide)
+- `codex/genM-chart-arch-{prompt,answer}.md` — architecture verdict (Q1 pure-radial fails / Q2 order-1
+  / Q3 hybrid B+Q4 / Q4 keep-FlatIdx-order). xhigh, decorrelated.
+- `codex/genM-rate-route-{prompt,answer}.md` — the rate-route verdict (the `P_k = D_k C_k + u G_k`
+  invariant; 2b lower-risk; the sharp bridge sub-lemma). xhigh, decorrelated.
+- The (2,2,1) validate-small (`RouteM221.lean`) remains banked + INTEGRATED (controller `6fb2e15d`).
