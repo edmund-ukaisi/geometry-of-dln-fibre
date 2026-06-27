@@ -9948,6 +9948,40 @@ This does not prove equality with the whole source image, source-rank
 coverage, measure pushforward, density/Jacobian theorem, normal crossings,
 pole order, or RLCT.
 
+Latest A2 retained-passive inverse Jacobian density:
+`RetainedPassiveCoordinatesMeasure.lean` now extends the retained-passive
+raw-order COV layer with the chart-side inverse density
+`topologyTupleEdgeRawOrderInverseJacobianDensity`.  Lean names:
+
+```text
+topologyTupleEdgeRawOrderInverseJacobianDensity
+topologyTupleEdgeRawOrderInverseJacobianDensity_apply_chartMap
+topologyTupleEdgeRawOrderFDerivAbsDet_mul_inverseJacobianDensity_apply_chartMap
+topologyTupleEdgeRawOrderInverseJacobianDensity_pos_of_mem_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-density.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-density.md`
+accepted by xhigh `Raman the 4th`.
+
+The pointwise theorem proves that the target-side density
+`J(topologyTupleEdgeRawOrderInverse y)⁻¹` restricts to `J(z)⁻¹` on
+`y = topologyTupleEdgeRawOrder z`, and that it cancels the forward
+`ENNReal.ofReal J(z)` density on the determinant chart.  The measure theorem
+is an inverse-density pushforward only under explicit a.e.-measurability
+hypotheses for the forward density, inverse density, and composed inverse
+density.  Focused and full builds, `scripts/sorries`, and `git diff --check`
+passed.
+
+Nonclaims: no determinant formula, no determinant-density continuity or
+measurability, no source-prior density theorem, no original DLN source
+pushforward, no normal crossings, no pole order, and no RLCT.
+
 Latest A2 retained-passive raw-order Jacobian density interface:
 `RetainedPassiveCoordinatesDerivative.lean` now defines
 `topologyTupleEdgeRawOrderFDerivAbsDet` and proves positivity of the forward

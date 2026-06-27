@@ -9485,3 +9485,46 @@ source-side `|det Df|` weight.  It does not prove an explicit determinant
 formula, determinant-density continuity, local bounded-density estimate,
 inverse Jacobian density, source-prior density identity, original DLN source
 pushforward, normal crossings, pole order, or RLCT.
+
+## 2026-06-27 A2 retained-passive inverse Jacobian density
+
+Reproduction:
+`reproduction-a2-retained-passive-inverse-jacobian-density.md`.
+Statement card:
+`statement-card-a2-retained-passive-inverse-jacobian-density.md`.
+Review:
+`review-a2-retained-passive-inverse-jacobian-density.md`
+accepted by xhigh read-only explorer `Raman the 4th` after a module-docstring
+repair.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesMeasure.lean`.
+
+Lean now defines the target-side inverse Jacobian density:
+
+```text
+topologyTupleEdgeRawOrderInverseJacobianDensity
+```
+
+and proves:
+
+```text
+topologyTupleEdgeRawOrderInverseJacobianDensity_apply_chartMap
+topologyTupleEdgeRawOrderFDerivAbsDet_mul_inverseJacobianDensity_apply_chartMap
+topologyTupleEdgeRawOrderInverseJacobianDensity_pos_of_mem_rawSourceChart
+map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable
+```
+
+The pointwise algebra defines `K(y)=J(g y)⁻¹`, where `J` is the forward
+absolute determinant and `g` is raw-order source readback.  The determinant
+chart inverse law gives `K(f z)=J(z)⁻¹`; positivity of `J(z)` gives the
+`ENNReal.ofReal` cancellation.  The measure theorem is deliberately conditional
+on a.e.-measurability of the forward density, inverse density, and composed
+inverse density.
+
+Focused module build, full `DLNFibre` build, `scripts/sorries`, and
+`git diff --check` passed.  This proves pointwise inverse-density algebra and a
+conditional inverse-density COV form.  It does not prove determinant-density
+continuity or measurability, an explicit determinant formula, source-prior
+density identity, original DLN source pushforward, normal crossings, pole
+order, or RLCT.

@@ -9175,3 +9175,38 @@ without additional hypotheses/proofs.
 Nonclaims: no explicit determinant formula, no determinant-density continuity,
 no local bounded-density estimate, no inverse Jacobian density, no original DLN
 source pushforward, no normal crossings, no pole order, and no RLCT is proved.
+
+Latest A2 retained-passive inverse Jacobian density:
+Lean now defines `topologyTupleEdgeRawOrderInverseJacobianDensity` in
+`RetainedPassiveCoordinatesMeasure.lean` and proves
+`topologyTupleEdgeRawOrderInverseJacobianDensity_apply_chartMap`,
+`topologyTupleEdgeRawOrderFDerivAbsDet_mul_inverseJacobianDensity_apply_chartMap`,
+`topologyTupleEdgeRawOrderInverseJacobianDensity_pos_of_mem_rawSourceChart`,
+and
+`map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable`.
+
+Status: Proved; reviewed.
+
+Claim: the chart-side inverse density is the reciprocal of the forward
+absolute determinant after raw-order source readback.  On the determinant
+chart it cancels the forward density pointwise.  Under explicit
+a.e.-measurability hypotheses for the forward density, inverse density, and
+composed inverse density, the unweighted restricted source Haar measure pushes
+forward to the raw-order target-chart Haar measure weighted by this inverse
+density.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-density.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-density.md`
+accepted by xhigh `Raman the 4th` after a docstring repair.
+
+Kill condition: the inverse-density pushforward theorem is conditional; do not
+use it as an unconditional measure transport theorem unless the required
+a.e.-measurability hypotheses are separately proved or supplied.
+
+Nonclaims: no explicit determinant formula, no determinant-density continuity
+or measurability, no source-prior density identity, no original DLN source
+pushforward, no normal crossings, no pole order, and no RLCT is proved.

@@ -13490,3 +13490,26 @@ real remaining choices are: prove determinant-density continuity/explicit
 determinant formula, derive a chart-side inverse-density theorem, or connect
 this raw-order chart theorem to a concrete retained-passive/local-source
 measure handoff.
+
+Latest retained-passive inverse Jacobian density:
+`RetainedPassiveCoordinatesMeasure.lean` now defines
+`topologyTupleEdgeRawOrderInverseJacobianDensity`, proves that it evaluates to
+the reciprocal of the forward `topologyTupleEdgeRawOrderFDerivAbsDet` after the
+raw-order chart map, proves `ENNReal.ofReal` cancellation on the determinant
+chart, and proves positivity on the raw-order source-recursive target chart.
+It also proves
+`map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable`,
+an inverse-density pushforward identity with explicit a.e.-measurability
+hypotheses for the forward density, inverse density, and composed inverse
+density.
+
+Raman the 4th accepted the xhigh review after a docstring repair.  Focused
+`RetainedPassiveCoordinatesMeasure`, full `DLNFibre`, `scripts/sorries`, and
+`git diff --check` passed.  This closes the pointwise chart-side inverse-density
+algebra and a conditional measure form, but it still does not prove
+determinant-density continuity/measurability, an explicit determinant formula,
+source-prior density identity, original DLN source pushforward, normal
+crossings, pole order, or RLCT.  Next value is either determinant-density
+continuity via an explicit derivative-family calculation, or a conditional
+composition/local-source bridge that keeps all realization and measurability
+hypotheses visible.

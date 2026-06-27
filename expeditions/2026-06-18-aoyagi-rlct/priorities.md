@@ -6246,3 +6246,24 @@ determinant formula, chart-side inverse-density transport, or connection to a
 concrete retained-passive/local-source measure handoff.  Still do not assert
 inverse density, source-prior pushforward, normal crossing, pole order, or
 RLCT from the forward weighted identity alone.
+
+A2 retained-passive inverse Jacobian density has now landed:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-density.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-density.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-density.md`.
+Lean defines the chart-side inverse density
+`topologyTupleEdgeRawOrderInverseJacobianDensity`, proves its reciprocal
+formula on raw-order chart images, proves cancellation with the forward
+`topologyTupleEdgeRawOrderFDerivAbsDet`, proves positivity on the raw-order
+target chart, and proves an inverse-density pushforward theorem only under
+explicit a.e.-measurability hypotheses:
+`map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian_of_aemeasurable`.
+
+Next priority in this lane: do not treat the conditional theorem as an
+unconditional inverse-density pushforward.  Either prove determinant-density
+continuity/measurability from an explicit derivative-family calculation, or
+compose the conditional theorem into a retained-passive/local-source handoff
+while keeping the chart realization and a.e.-measurability assumptions explicit.
+Still no source-prior density theorem, original DLN source pushforward, normal
+crossing, pole order, or RLCT follows from this slice.
