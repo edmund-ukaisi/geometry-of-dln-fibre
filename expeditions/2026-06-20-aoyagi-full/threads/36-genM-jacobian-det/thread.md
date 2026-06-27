@@ -821,3 +821,51 @@ alone is INSUFFICIENT (it gives some active boundary, not the effective-leaf wit
 This is genuine research-flavored construction (not mechanical telescoping) — the effective-leaf + carrier
 is the corrected design the two Codex consults + sympy converged on. Codex consults banked:
 `codex/{witness-deadleaf,witness-deepest-gap}-{prompt,answer}.md`.
+
+---
+
+## pp-boundary-chart finding (witness seat, 2026-06-27)
+
+Certificate: `certificate-boundary-chart.md`. Codex: `codex/pp-boundary-chart-{prompt,answer}.md`.
+Scripts: `scripts/pp_*.py` (gate: `pp_GATE.py`).
+
+**Verdict:** the boundary-drop chart is NOT one clean single-pivot construction. The 66 split exactly:
+- **CLEAN (20, r=m1):** whole-deepest radial, SINGLE pivot, fits banked `NodeAchieverChart`/`RouteM4422`
+  verbatim. F=u²U, U≢0, det=|u_p|^{minAdm−1} (radial active.card=minAdm). CITE the banked radial.
+- **SMEAR-A (20, r<m1 ∧ m2=r):** rational single-pivot chart (F=z²U, det |z|^{minAdm−1}); a.e.-analytic
+  diffeo (the routing Λ=P₁⁻¹P₂ divides by an r×r minor — NOT polynomial). Needs S1.1 transport, not the
+  polynomial single-pivot bundle.
+- **SMEAR-B (26, r<m1 ∧ m2>r):** NO global polynomial single-pivot chart exists (Codex-confirmed: the
+  polynomialized routing costs an extra |x|^s Jacobian factor). The resolution is a TWO-AXIS polynomial
+  chart F=(x·z)²·U, det=|x|^s·|z|^{minAdm−1}, genuine diffeo off {x=0}∪{z=0} (verified (1,3,2): det=x²z).
+
+**Threshold stays minAdm/2 (46/46 EXACT):** the binding axis is z at minAdm/2 iff r·c ≤ s+1, which holds
+for ALL 46 smeared. The routing axis x (k=1, h=s) is non-binding.
+
+**New Lean (scoped, bounded):** all 46 smeared need a multi-axis `NodeAchieverChartMultiAxis` bundle
+(leafK a vector, k_z=k_x=1) — reuses the SAME cited atom `monomialIntegrand_lintegral_box_eq_top`
+(which already takes arbitrary multi-axis (k,h)), NO new citation. SMEAR-A↔SMEAR-B unification is a HOPE,
+not verified (the naive shear/routing tie does not cancel for r≥2; decouple them or use two constructions).
+
+---
+
+## witness tide v2 — UNIFIED 3-case certificate (formaliser DESIGN+VALIDATE pass, 2026-06-27)
+
+Certificate: `certificate-genM-witness-v2.md` (supersedes the WRONG v1 `certificate-genM-witness.md`).
+Gate scripts: `scripts/witness_tide_v2_validate.py` (INTERIOR), `scripts/pp_GATE.py` (BOUNDARY).
+
+The ∀M achiever chart (`2 ≤ L`) splits by a DECIDABLE classifier (exhaustive + exclusive, `minAdm≥1`
+total — 0/671):
+- **INTERIOR (285): `∃ p∈[1,L−1], r_p≥1 ∧ c_p≥1`** → the colPath Schur chart, pinned to BUILD precision:
+  pivot at deepest such `p*`, rowPath = const `ρ=Text(p*+1)`, colPath carriers `W_b(0, Text(b+2))`,
+  surviving entry `Hmat 0 (ρ,0)=1` via 3 downward inductions (`Finset.sum_eq_single` over the banked
+  entry laws). EXACT 285/285 (+240/240 on the 1..4 grid). [The v1 cert's uniform-(0,0) carriers + "leaf
+  always dead" were WRONG — corrected here.]
+- **BOUNDARY (66): else** → the 3-way split above (CLEAN-20 banked radial; SMEAR-A-20 rational;
+  SMEAR-B-26 two-axis), per `certificate-boundary-chart.md`. The smeared 46 need the new
+  `NodeAchieverChartMultiAxis` bundle.
+- **L=1**: out of scope, rides banked `DeepestBaseL1`.
+
+Assembly `nodeChartGeneral M hpos`: 4-way decidable case-split → the appropriate chart → discharge the
+box-divergence atom ∀M. The INTERIOR `achieverUfun ≠ 0` Lean is bounded (the next tide, gated by the v2
+harness); the SMEAR-B multi-axis bundle is bounded-but-genuinely-new.
