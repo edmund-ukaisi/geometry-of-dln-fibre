@@ -419,5 +419,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- `RouteM222Det` — the (2,2,2) ROUTE-2a validate-small (genuine multi-boundary, achiever path
+-- `tach222 = (2,1,0)`): the full-rank `B_det222` + the one-line RATE leg via the decoder-agnostic
+-- `routeMCore_phiGen`. Reuses `M222` from `RouteM222StructAdm`; `tach222` is the achiever path,
+-- distinct from that anchor's rate-only `t222 = (2,1,1)`.
+import DLNFibre.DLN.RLCT.Validate.RouteM222Det
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

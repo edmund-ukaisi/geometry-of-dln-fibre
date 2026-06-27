@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMGenFlatStruct
+import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 
 /-!
 # `RouteM222Det` — the `(2,2,2)` ROUTE-2a validate-small (the genuine multi-boundary node)
@@ -16,7 +17,7 @@ smallest genuinely MULTI-BOUNDARY node `M = (2,2,2)` (`minAdm = 3`, two rank-dro
 
 ## The widths + the decoder (`Text = [2,2,1]`, `Wext = [2,2,2]`, `N = 8`)
 
-`t222 = (2,1,0)` (`t 0 = M 0 = 2` the identity-boundary convention; `t 1 = 1`, `t 2 = 0` the descent).
+`tach222 = (2,1,0)` (`t 0 = M 0 = 2` the identity-boundary convention; `t 1 = 1`, `t 2 = 0` the descent).
 `Text 0 = Text 1 = 2` (identity boundary `k = 0`), `Text 2 = 1` (the Schur drop `2 → 1` at `k = 1`),
 leaf rank `1` (`C 2 = u·Rfin 2`, `1×2`). minAdm `= 3 = 1` (the `k=1` E-block `1×1`) `+ 2` (the leaf
 `Rfin` `1×2`). The radial scalar is `u = x 0`; the 7 other coords feed the blocks.
@@ -33,33 +34,31 @@ open scoped BigOperators
 
 namespace DLNFibre.DLN.RLCT
 
-/-- `M222 = (2,2,2)` (the smallest genuinely multi-boundary achiever node). -/
-abbrev M222 : Fin 3 → ℕ := ![2, 2, 2]
-
-/-- The descent path `t222 = (2,1,0)`: `t 0 = M 0 = 2` (the identity-boundary convention, `Text 1 =
-Text 0`), `t 1 = 1` (the Schur drop `2 → 1`), `t 2 = 0`. -/
-abbrev t222 : Fin 3 → ℕ := ![2, 1, 0]
+/-- The ACHIEVER descent path for `(2,2,2)`: `tach222 = (2,1,0)` (`t 0 = M 0 = 2` the identity-boundary
+convention, `Text 1 = Text 0`; `t 1 = 1` the Schur drop `2 → 1`; `t 2 = 0`). DISTINCT from the
+rate-only `RouteM222StructAdm.t222 = (2,1,1)` (which has chain-codim 1 ≠ minAdm 3 — the decoder-fix cert
+§4a); this is the genuine achiever path (`Text = [2,2,1]`, chain-codim `= minAdm = 3`). Reuses the
+shared `M222 = ![2,2,2]` from `RouteM222StructAdm`. -/
+abbrev tach222 : Fin 3 → ℕ := ![2, 1, 0]
 
 theorem minAdm_M222 : minAdm M222 = 3 := by rw [← minAdmRec_eq_minAdm]; decide
 
-theorem routeMAmbient_M222 : routeMAmbient M222 = 8 := by decide
-
 /-! ## The widths (all `rfl` at the concrete node) -/
 
-theorem Text222_0 : Text M222 t222 0 = 2 := rfl
-theorem Text222_1 : Text M222 t222 1 = 2 := rfl
-theorem Text222_2 : Text M222 t222 2 = 1 := rfl
+theorem Text222_0 : Text M222 tach222 0 = 2 := rfl
+theorem Text222_1 : Text M222 tach222 1 = 2 := rfl
+theorem Text222_2 : Text M222 tach222 2 = 1 := rfl
 theorem Wext222_0 : Wext M222 0 = 2 := rfl
 theorem Wext222_1 : Wext M222 1 = 2 := rfl
 theorem Wext222_2 : Wext M222 2 = 2 := rfl
 
 /-- The chain admissibility `hle : Text(k+1) ≤ Wext k` for `(2,2,2)` (all `k < 2`: `Text 1 = 2 ≤ 2`,
 `Text 2 = 1 ≤ 2`). -/
-theorem hle222 : ∀ k, k < 2 → Text M222 t222 (k + 1) ≤ Wext M222 k := by
+theorem hleach222 : ∀ k, k < 2 → Text M222 tach222 (k + 1) ≤ Wext M222 k := by
   intro k hk
   interval_cases k <;> decide
 
-/-! ## The full-rank decoder `B_det222 : GenBlk M222 t222`
+/-! ## The full-rank decoder `B_det222 : GenBlk M222 tach222`
 
 The five block fields, at the concrete `(2,2,2)` widths. The leaf `Rfin 2 = !![1, x 7]` is NONZERO
 (the D1 fix; entry `(0,0) = 1` the fixed pivot residual, `(0,1) = x 7` the active leaf direction). The
@@ -69,11 +68,11 @@ is supplied separately to `phiGen`. -/
 
 /-- The full-rank `(2,2,2)` decoder. Identity boundary `k = 0` (`Bmat 0 = 1`, `Rmat 0 = 0`, `Nblk 0`
 empty); the Schur drop at `k = 1`; the LIVE leaf `Rfin 2 = !![1, x 7]` (the D1 fix). -/
-noncomputable def B_det222 (x : Fin 8 → ℝ) : GenBlk M222 t222 where
+noncomputable def B_det222 (x : Fin 8 → ℝ) : GenBlk M222 tach222 where
   Bmat := fun k => match k with
     | 0 => Matrix.reindex (Equiv.refl _)
-        (finCongr (show Text M222 t222 0 = Text M222 t222 1 from rfl))
-        (1 : Matrix (Fin (Text M222 t222 0)) (Fin (Text M222 t222 0)) ℝ)
+        (finCongr (show Text M222 tach222 0 = Text M222 tach222 1 from rfl))
+        (1 : Matrix (Fin (Text M222 tach222 0)) (Fin (Text M222 tach222 0)) ℝ)
     | 1 => (!![x 4; x 5] : Matrix (Fin 2) (Fin 1) ℝ)
     | (_ + 2) => 0
   Nblk := fun k => match k with
@@ -91,7 +90,7 @@ noncomputable def B_det222 (x : Fin 8 → ℝ) : GenBlk M222 t222 where
 
 /-! ## The rate leg (one-line via the banked decoder-agnostic `routeMCore_phiGen`)
 
-The chart `φ_det222 x := phiGen (x 0) M222 t222 (B_det222 x) hle222` (radial `u = x 0`). The RATE
+The chart `φ_det222 x := phiGen (x 0) M222 tach222 (B_det222 x) hleach222` (radial `u = x 0`). The RATE
 `routeMCore M222 (φ_det222 x) = (x 0)² · V` is the BANKED `routeMCore_phiGen` instantiated at
 `B_det222 x`, re-checking only the identity boundary `hC0` (`C 0 = 1`). -/
 
@@ -99,23 +98,23 @@ The chart `φ_det222 x := phiGen (x 0) M222 t222 (B_det222 x) hle222` (radial `u
 chainQ(N_0) + u·Rmat 0 = (reindex 1)·I + u·0 = 1`. `Bmat 0 = reindex 1`, `Rmat 0 = 0`,
 `chainQ(N_0) = I` at `c_0 = Wext 0 − Text 1 = 0`. -/
 theorem C0_eq_one_222 (u : ℝ) :
-    (chainOfMt u M222 t222 (B_det222 (fun _ => u)) hle222).toChain.C 0
-      = (1 : Matrix (Fin (Text M222 t222 0)) (Fin (Text M222 t222 0)) ℝ) := by
-  rw [chainOfMt_C_zero u M222 t222 _ hle222 (by norm_num),
+    (chainOfMt u M222 tach222 (B_det222 (fun _ => u)) hleach222).toChain.C 0
+      = (1 : Matrix (Fin (Text M222 tach222 0)) (Fin (Text M222 tach222 0)) ℝ) := by
+  rw [chainOfMt_C_zero u M222 tach222 _ hleach222 (by norm_num),
     show (B_det222 (fun _ => u)).Rmat 0 = 0 from rfl, smul_zero, add_zero]
   have hBmat : (B_det222 (fun _ => u)).Bmat 0
       = Matrix.reindex (Equiv.refl _)
-          (finCongr (show Text M222 t222 0 = Text M222 t222 1 from rfl))
-          (1 : Matrix (Fin (Text M222 t222 0)) (Fin (Text M222 t222 0)) ℝ) := rfl
+          (finCongr (show Text M222 tach222 0 = Text M222 tach222 1 from rfl))
+          (1 : Matrix (Fin (Text M222 tach222 0)) (Fin (Text M222 tach222 0)) ℝ) := rfl
   rw [hBmat]
   ext i j
   rw [Matrix.mul_apply,
-    Finset.sum_eq_single (Fin.cast (show Text M222 t222 0 = Text M222 t222 1 from rfl) i)]
+    Finset.sum_eq_single (Fin.cast (show Text M222 tach222 0 = Text M222 tach222 1 from rfl) i)]
   · rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
       finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self, Matrix.one_apply_eq, one_mul]
-    have hjcol : (j : Fin (Wext M222 0)) = Fin.cast (genWidthEq M222 t222 hle222 0 (by norm_num))
-        (Fin.castAdd (Wext M222 0 - Text M222 t222 (0 + 1))
-          (Fin.cast (show Text M222 t222 1 = Wext M222 0 from rfl).symm j)) := by
+    have hjcol : (j : Fin (Wext M222 0)) = Fin.cast (genWidthEq M222 tach222 hleach222 0 (by norm_num))
+        (Fin.castAdd (Wext M222 0 - Text M222 tach222 (0 + 1))
+          (Fin.cast (show Text M222 tach222 1 = Wext M222 0 from rfl).symm j)) := by
       apply Fin.ext; simp
     rw [hjcol, chainQ_apply_castAdd, Matrix.one_apply, Matrix.one_apply]
     by_cases h : (i : ℕ) = (j : ℕ)
@@ -125,31 +124,31 @@ theorem C0_eq_one_222 (u : ℝ) :
   · intro b _ hb
     rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
       finCongr_symm, finCongr_apply]
-    rw [show (1 : Matrix (Fin (Text M222 t222 0)) (Fin (Text M222 t222 0)) ℝ) i
-          (Fin.cast (show Text M222 t222 0 = Text M222 t222 1 from rfl).symm b) = 0 from by
+    rw [show (1 : Matrix (Fin (Text M222 tach222 0)) (Fin (Text M222 tach222 0)) ℝ) i
+          (Fin.cast (show Text M222 tach222 0 = Text M222 tach222 1 from rfl).symm b) = 0 from by
       rw [Matrix.one_apply, if_neg]; intro hc; apply hb; rw [hc]; apply Fin.ext; simp]
     rw [zero_mul]
   · intro hi; exact absurd (Finset.mem_univ _) hi
 
 /-- **`hC0` for `B_det222`** (`C 0 · suffix 0 = suffix 0` from `C 0 = 1`). -/
 theorem hC0_222 (u : ℝ) :
-    (chainOfMt u M222 t222 (B_det222 (fun _ => u)) hle222).toChain.C 0
-        * (chainOfMt u M222 t222 (B_det222 (fun _ => u)) hle222).toChain.suffix 0 (Nat.zero_le 2)
-      = (chainOfMt u M222 t222 (B_det222 (fun _ => u)) hle222).toChain.suffix 0 (Nat.zero_le 2) := by
+    (chainOfMt u M222 tach222 (B_det222 (fun _ => u)) hleach222).toChain.C 0
+        * (chainOfMt u M222 tach222 (B_det222 (fun _ => u)) hleach222).toChain.suffix 0 (Nat.zero_le 2)
+      = (chainOfMt u M222 tach222 (B_det222 (fun _ => u)) hleach222).toChain.suffix 0 (Nat.zero_le 2) := by
   rw [C0_eq_one_222 u]; exact Matrix.one_mul _
 
-/-- **The `(2,2,2)` structured flat chart** `phiDet222 u := phiGen u M222 t222 (B_det222 (fun _ => u))
-hle222`. (As in `phiFlatStruct`, the decoder is fed the constant `u`-vector; the genuine `x`-dependence
+/-- **The `(2,2,2)` structured flat chart** `phiDet222 u := phiGen u M222 tach222 (B_det222 (fun _ => u))
+hleach222`. (As in `phiFlatStruct`, the decoder is fed the constant `u`-vector; the genuine `x`-dependence
 of `B_det222` is exercised by the det leg's coordinate map.) -/
 noncomputable def phiDet222 (u : ℝ) : Fin (routeMAmbient M222) → ℝ :=
-  phiGen u M222 t222 (B_det222 (fun _ => u)) hle222
+  phiGen u M222 tach222 (B_det222 (fun _ => u)) hleach222
 
 /-- **The RATE leg (one-line, banked).** `routeMCore M222 (phiDet222 u) = u²·V` via the banked
 decoder-agnostic `routeMCore_phiGen` at the full-rank `B_det222`, re-checking only `hC0_222`. NO
 bridge, NO new telescope — the validated Route-2a rate on the genuine multi-boundary node. -/
 theorem routeMCore_phiDet222 (u : ℝ) :
     routeMCore M222 (phiDet222 u)
-      = u ^ 2 * VvalGen u M222 t222 (B_det222 (fun _ => u)) hle222 :=
-  routeMCore_phiGen u M222 t222 (B_det222 (fun _ => u)) hle222 (hC0_222 u)
+      = u ^ 2 * VvalGen u M222 tach222 (B_det222 (fun _ => u)) hleach222 :=
+  routeMCore_phiGen u M222 tach222 (B_det222 (fun _ => u)) hleach222 (hC0_222 u)
 
 end DLNFibre.DLN.RLCT
