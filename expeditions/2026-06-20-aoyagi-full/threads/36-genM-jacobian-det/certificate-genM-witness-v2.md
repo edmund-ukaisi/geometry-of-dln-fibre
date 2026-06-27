@@ -110,43 +110,36 @@ CORRECTED: rowPath = const `Text(p*+1)`, colPath = `Text(b+1)`, NOT uniform `(0,
 
 ---
 
-## 3. CASE BOUNDARY (66/66) — the Schur∘radial chart  [factor-level VALIDATED; diffeo/det in `certificate-boundary-chart.md`]
+## 3. CASE BOUNDARY (66/66) — TWO charts, both single-pivot  [SETTLED in `certificate-genM-smeared.md`]
 
-All codim at the last boundary: `minAdm = r_{L−1}·c_{L−1} = Text(L)·M_L`. The achiever-path struct
-decoder gives `achieverUfun ≡ 0` here (`Rfin ≡ 0` kills the only available pivot — the last-layer one),
-so this class needs a SEPARATE chart (OPTION A). The pen-and-paper witness-seat certificate
-(`certificate-boundary-chart.md`, exhaustive EXACT over all 66, decorrelated xhigh Codex) splits the 66
-into THREE sub-classes (with `r := Text(L)`, `c := M_L`, `m1 := M_{L−1}`, `m2 := M_{L−2}`, `s := m1 − r`;
-`minAdm = r·c`):
+All codim at the last boundary: `minAdm = r·c`, `r := Text(L)`, `c := M_L`, `m1 := M_{L−1}`. The
+achiever-path struct decoder gives `achieverUfun ≡ 0` here (`Rfin ≡ 0`), so this class needs a SEPARATE
+chart (OPTION A). The 66 split into TWO sub-classes, **both single-pivot** (the earlier 3-way SMEAR-A/B
+split + the multi-axis conclusion are RETRACTED — see `certificate-genM-smeared.md`, which settled the
+two residuals):
 
 - **CLEAN (20): `r = m1`** ⟹ the active block = the WHOLE deepest factor. The banked
   `(4,4,2,2)`/`(2,2,1)`-style **single-pivot whole-deepest radial** (`pivotBlowupOn` on all `m1·c`
   deepest coords, `det = |u_p|^{m1·c−1} = |u_p|^{minAdm−1}`) fits `NodeAchieverChart` VERBATIM. EXACT
-  20/20 (`F = u_p²·U`, `U ≠ 0`, `radial.card = minAdm`, single pivot). **Cite banked `RouteM4422`.**
-- **SMEAR-A (20): `r < m1 ∧ m2 = r`** (the kept frame is square invertible): the **rational
-  single-pivot** chart `A⁽ᴸ⁻¹⁾ = [z·H̄ − Λ·S_bot ; S_bot]` with the rational routing `Λ = P_1⁻¹·P_2`,
-  giving `F = z²·U` (single pivot `z`), `U = ‖P_1 H̄‖² ≢ 0`, det `|z|^{minAdm−1}` at threshold level.
-  EXACT 20/20. **Caveat:** `Λ` is RATIONAL — an a.e.-analytic (not polynomial) diffeo, so its `cov` goes
-  through `S1.1 weightedThreshold_transport` (off the minor-zero null set), NOT polynomial `pivotBlowupOn`.
-  The rational-shear `det = 1` (off the minor) is certified at the THRESHOLD level only (the p&p cert
-  argued it structurally; the full rational Jacobian was not ground out) — the formaliser must verify it
-  end-to-end.
-- **SMEAR-B (26): `r < m1 ∧ m2 > r`** (genuine deficit `s·(m2−r) ≥ 1`): a **polynomial TWO-AXIS** chart
-  `F = (x·z)²·U` (`k_x = k_z = 1`), det `|x|^s·|z|^{minAdm−1}`, a genuine diffeo off `{x=0}∪{z=0}`.
-  **Does NOT fit the single-pivot `NodeAchieverChart`** (one binding axis). EXACT 26/26.
+  20/20. **Cite banked `RouteM4422`.**
+- **SMEARED (46): `r < m1`** ⟹ the **rational single-pivot chart** `φ_sm` (`certificate-genM-smeared.md`):
+  `A⁽ᴸ⁻¹⁾ = [z·H̄ − Λ_0·S_bot ; S_bot]`, `Λ_0 = (P_1ᵀP_1)⁻¹P_1ᵀP_2` the rational routing of the FRONT
+  product `P = A⁽⁰⁾···A⁽ᴸ⁻²⁾`. The unifying fact (EXACT, 652/652 wider grid): the **front bottleneck
+  `min(M_0,…,M_{L−1}) = r`** for ALL smeared `M`, so `P_1` is left-invertible and `P_2 ∈ col(P_1)` — the
+  routing is well-defined and `P·A⁽ᴸ⁻¹⁾ = z·P_1 H̄`, giving `F = z²·U`, `U = ‖P_1 H̄‖²` (POLYNOMIAL,
+  `≢ 0`). **Single pivot `z`** (NOT two-axis — the prior two-axis chart was an L=2-only artifact). Det
+  `= |z|^{minAdm−1}` EXACTLY (block-triangular: identity front + unit-triangular rational shear + radial
+  `pivotBlowupOn`), threshold exactly `½·minAdm`. **Fits the EXISTING `NodeAchieverChart`** (single axis);
+  the ONE new piece is the `cov` proof via `S1.1 weightedThreshold_transport` (the rational map is
+  a.e.-analytic, off the null set `{det P_1ᵀP_1 = 0}`). EXACT 46/46 on all checks (`scripts/pp_smear_GATE.py`:
+  unification + `F=z²U`/`U≠0`/`U` polynomial + det `z^{minAdm−1}` + coord count `= N` + threshold `½·minAdm`).
 
-**The brief's hoped-for "Schur-shear det-1 ∘ radial, single pivot, det exactly `|u_p|^{minAdm−1}`" chart
-DOES NOT EXIST as a global polynomial chart for smeared `M`** (exact obstruction: the routing shear
-`Λ = P_1⁻¹P_2` divides by an `r×r` incoming minor; polynomializing it costs an extra `|x|^s` Jacobian
-factor — Codex-confirmed). My earlier factor-level "route P to rank r, radial top-block" validation was an
-OVER-simplification (it set `P`'s last columns to 0 as a constraint, missing the `z`-binding / the
-deficit). **SCOPE: the 46 smeared cases need a genuinely NEW `NodeAchieverChartMultiAxis` bundle**
-(multi-axis loss base `leafK`, threshold via a binding axis `z` at `minAdm/2` + a routing-axis
-multiplicity bound `minAdm·k_x ≤ h_x+1 = r·c ≤ s+1`, which holds 46/46) — bounded new construction reusing
-the SAME cited atom `monomial_rlct` (`monomialIntegrand_lintegral_box_eq_top` already takes a multi-axis
-`(k,h)`), NOT an open design question. Whether SMEAR-A also admits a uniform POLYNOMIAL two-axis chart
-(so one construction covers all 46) is OPEN (flagged in the boundary cert, §6). See
-`certificate-boundary-chart.md` for the explicit `φ_bd` per sub-class + the Lean cost.
+**Both residuals SETTLED** (Residual 1: the 46 smeared UNIFY under one rational single-pivot chart —
+NO multi-axis bundle; Residual 2: the rational shear is unit-triangular, det EXACTLY `|z|^{minAdm−1}`
+end-to-end). The brief's hoped-for single-pivot chart DOES exist for ALL smeared `M`, just RATIONAL (not
+polynomial) — the routing divides by the front Gram minor. See `certificate-genM-smeared.md` for the
+explicit `φ_sm`, the four `NodeAchieverChart` facts, and the Lean cost (the only new piece: the rational
+`cov`).
 
 ---
 
@@ -167,23 +160,23 @@ nodeChartGeneral M hpos :=        -- 2 ≤ L
   then  the colPath Schur achiever chart (§2)         -- achieverUfun ≠ 0 via Hmat 0 (Text(p*+1), 0) = 1
   else if  Text(L) = M_{L−1}        -- BOUNDARY-clean (decidable)
   then  the banked single-pivot whole-deepest radial (§3, cites RouteM4422/RouteM221)
-  else  the SMEARED chart (§3 — multi-axis `M0=1` / rational `M0>1`; GENUINELY NEW, not banked)
+  else  φ_sm : the rational single-pivot smeared chart (§3, certificate-genM-smeared.md)
 ```
-each branch must supply a `NodeAchieverChart M` (`hpos`, `phi`, `p`, `leafH`, `leafH_pivot`, `Ufun`,
+each branch supplies a `NodeAchieverChart M` (`hpos`, `phi`, `p`, `leafH`, `leafH_pivot`, `Ufun`,
 `Ubound`, `Umeas`, `leaf_integrand`, `cov`, `image_subset`), so the assembly
 `routeMCore_box_diverges_of_nodeChart` discharges the box-divergence atom ∀M (`2 ≤ L`). `L = 1` is the
-separate `DeepestBaseL1` branch. The (now FOUR) cases are exhaustive (§1) and each guard is decidable.
-**CAVEAT (the honest gap):** the SMEARED-`M0=1` chart is MULTI-AXIS (`F = (x·z)²·U`), which the current
-single-binding-axis `NodeAchieverChart` bundle does NOT express — so either the bundle is generalized to a
-product-of-monomials binding (the threshold is still `½·minAdm`, `monomialThreshold` already handles
-products), or these 46 `M` get a bespoke divergence argument. This is a genuine design residual, not a
-mechanical fill — see `certificate-boundary-chart.md` and §6.
+separate `DeepestBaseL1` branch. The four cases are exhaustive (§1) and each guard is decidable.
+**The multi-axis caveat is RETRACTED** (`certificate-genM-smeared.md`): all three `2≤L` branches are
+SINGLE-pivot, so all fit the EXISTING single-axis `NodeAchieverChart` — no multi-axis bundle. The smeared
+branch's chart is RATIONAL (the only structural difference), so its `cov` field is discharged via
+`S1.1 weightedThreshold_transport` (a.e.-analytic), not the polynomial `pivotBlowupOn` `cov`.
 
-**The binding pivot + threshold (both branches):** `leafH_pivot : leafH p = minAdm − 1` (the radial
+**The binding pivot + threshold (all branches):** `leafH_pivot : leafH p = minAdm − 1` (the radial
 exponent), threshold `(minAdm−1+1)/(2·1) = ½·minAdm` (`nodeChart_thresholdLe`). INTERIOR: the radial
 exponent comes from the chart's full Jacobian (the colPath chart's `|det| = |u_p|^{minAdm−1}` is the
-thread-36 det programme — SEPARATE from this witness, already scoped). BOUNDARY: `|u_p|^{minAdm−1}` from
-the radial `active.card−1` + Schur det `1` (§3).
+thread-36 det programme — SEPARATE from this witness, already scoped). BOUNDARY-CLEAN: `|u_p|^{minAdm−1}`
+from the radial `active.card−1`. SMEARED: `|z|^{minAdm−1}` from the radial `r·c−1 = minAdm−1` + the
+unit-triangular rational shear (det 1), EXACT end-to-end (`certificate-genM-smeared.md` §3).
 
 ---
 
@@ -192,19 +185,22 @@ the radial `active.card−1` + Schur det `1` (§3).
 - **PROVED (exhaustively validated, this pass):** the classifier is exhaustive/exclusive/decidable + total
   (`minAdm≥1` ∀ in-scope `M`, 0/671); the INTERIOR colPath construction yields `Hmat 0 (Text(p*+1),0) = 1`
   (351/351 + 240/240 — `scripts/witness_tide_v2_validate.py`); the BOUNDARY-CLEAN single-pivot radial
-  (`F=u_p²U`, `U≠0`, `radial.card=minAdm`, 20/20) and the BOUNDARY-SMEARED loss-base structure
-  (`M0=1`: `F=(xz)²U`, `det=x^s z^{rc−1}`, 17/17; `M0>1`: the 3-monomial leak, 29/29 —
-  `scripts/pp_CERTIFICATE_validation.py`).
-- **TO BUILD (Lean):** (a) **INTERIOR, BOUNDED:** `wOnIdx` + the 3 downward inductions → `achieverUfun ≠ 0`
-  (closes `Ubound` rate-positivity for the 285 interior `M`); the colPath chart's Jacobian
-  `|det| = |u_p|^{minAdm−1}` is the SEPARATE thread-36 det programme. (b) **BOUNDARY-CLEAN (20), BOUNDED:**
-  the `NodeAchieverChart` fields from the banked `RouteM4422`/`RouteM221` radial. (c) **BOUNDARY-SMEARED
-  (46), GENUINELY NEW:** the multi-axis (`M0=1`) / rational (`M0>1`) chart — needs either a generalized
-  multi-axis `NodeAchieverChart` bundle or a bespoke argument; NOT a mechanical fill. (d) the
-  `nodeChartGeneral` 4-way case-split assembly.
-- **CITED:** `DeepestBaseL1` (L=1); `RouteM4422`/`RouteM221` radial (boundary-clean 20); the banked
-  reduction (`achieverUfun_eq_eval`, `Hmat0_eval`, `UPolyGen_ne_zero_of_witness`, `achieverUbound`) +
-  entry laws (`bmatStack_top`, `chainA_apply_natAdd`, `rmatPad`).
+  (`F=u_p²U`, `U≠0`, `radial.card=minAdm`, 20/20); the BOUNDARY-SMEARED rational single-pivot chart
+  (front-bottleneck`=r` 652/652, `F=z²U` single-pivot + `U≢0` polynomial + det `z^{minAdm−1}` + coord
+  `=N` + threshold `½·minAdm`, 46/46 — `scripts/pp_smear_GATE.py`; `certificate-genM-smeared.md`).
+- **TO BUILD (Lean):** (a) **INTERIOR, BOUNDED — DONE, integrated** (285/351, reviewer-PASS): the colPath
+  witness `achieverUfun ≠ 0`; the colPath chart's Jacobian is the SEPARATE thread-36 det programme. (b)
+  **BOUNDARY-CLEAN (20), BOUNDED:** the `NodeAchieverChart` fields from the banked `RouteM4422`/`RouteM221`
+  radial. (c) **BOUNDARY-SMEARED (46), BOUNDED:** the rational single-pivot chart `φ_sm` — fits the
+  EXISTING `NodeAchieverChart` (single axis); the only new piece is the rational `cov` via
+  `S1.1 weightedThreshold_transport` (NO new bundle, NO new citation). (d) the `nodeChartGeneral` 4-way
+  case-split assembly.
+- **CITED:** `DeepestBaseL1` (L=1); `RouteM4422`/`RouteM221` radial (boundary-clean 20);
+  `S1.1 weightedThreshold_transport` (smeared rational `cov`); the banked reduction
+  (`achieverUfun_eq_eval`, `Hmat0_eval`, `UPolyGen_ne_zero_of_witness`, `achieverUbound`) + entry laws
+  (`bmatStack_top`, `chainA_apply_natAdd`, `rmatPad`); `monomialIntegrand_lintegral_box_eq_top` (reused,
+  single-axis, all branches).
 
-The validation harness `scripts/witness_tide_v2_validate.py` is the durable gate: re-run before any Lean
-tide; it must print `FAILS=0` on both grids.
+The durable gates: `scripts/witness_tide_v2_validate.py` (interior 285/285 + 240/240),
+`scripts/pp_smear_GATE.py` (smeared 46/46, all 5 checks). Re-run before any Lean tide; both must print
+`0 failures`.

@@ -462,6 +462,17 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverRateFields
 -- `eval x` of the named `UPolyGen`), `achieverUfun_measurable` (Umeas DONE), `achieverUbound`/
 -- `achieverUfun_ae_pos` (Ubound DONE) GIVEN the witness `∃ w, achieverUfun w ≠ 0` (the sole remaining gap).
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverVvalPoly
+-- ∀M-lift, the INTERIOR-DROP branch (285/351 M) of the v2 4-branch witness: `InteriorDrop M` (the
+-- chain-native decidable classifier, validated ↔ the cert's deepest-interior class) + the corrected
+-- colPath witness `exists_achieverUfun_ne_zero_interior` (Hmat_0(ρ,0)=1 via three downward inductions) →
+-- `achieverUbound_interior` — the full `NodeAchieverChart.Ubound` field for interior-drop M (no separate
+-- witness hypothesis). Reviewer-PASS, S2-free. (Boundary CLEAN/SMEARED + the 4-way assembly = later tides.)
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
+-- The ∀M achiever-chart M-CLASSIFIER bedrock (for the `nodeChartGeneral` 3-way+L1 assembly):
+-- `BoundaryClean` (`r=m1`) / `BoundarySmeared` (`r<m1`) complementing `InteriorDrop`, with the
+-- INTERIOR/CLEAN/SMEARED trichotomy (pairwise-exclusive + exhaustive, given the validated bottleneck
+-- `r ≤ m1` carried as a hypothesis — the argmin widths are noncomputable).
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryClass
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin

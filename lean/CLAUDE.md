@@ -90,6 +90,13 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   `chartParamsGen_eq_chartParams222` det bridge before the `have`+`exact` form landed it (2026-06-27,
   Codex-corroborated). Transfers to any entrywise identity over `chainA`/`GenBlk` dependent widths (the
   ∀M `φ_det_eq` lift).
+- **`FactoredChain`/`Chain` projection mismatch (`c.Wwid` vs `c.toChain.Wwid`) breaks `HMul` instance
+  synthesis** in products mixing the two structures' width fields — the dependent matrix-mul instance can't
+  unify the two defeq-but-syntactically-distinct width projections. Resolve by **literal `Wext`/`Text`
+  `let`-ascription** at the product (pin the widths to the concrete `Wext M k` / `Text M t k` form, cf.
+  `Hmat_pivot`), or a generic `mul_three_reassoc'` whose abstract index types unify up to defeq. Side note:
+  `omega` over `Text`/`Wext` arithmetic needs `k+1+1` normalized to `k+2` first. (Found in the ∀M interior
+  witness build, 2026-06-27; recurs in any achiever-chart product mixing chain layers.)
 - **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not

@@ -869,3 +869,26 @@ total — 0/671):
 Assembly `nodeChartGeneral M hpos`: 4-way decidable case-split → the appropriate chart → discharge the
 box-divergence atom ∀M. The INTERIOR `achieverUfun ≠ 0` Lean is bounded (the next tide, gated by the v2
 harness); the SMEAR-B multi-axis bundle is bounded-but-genuinely-new.
+
+---
+
+## smeared residuals SETTLED — single-pivot UNIFICATION (formaliser DESIGN+VALIDATE, 2026-06-27)
+
+Certificate: `certificate-genM-smeared.md`. Gate: `scripts/pp_smear_GATE.py` (46/46, 5 checks, 0 fails).
+The two residuals the v2 cert flagged are resolved — and the design SIMPLIFIES (the multi-axis bundle is
+RETRACTED):
+
+- **RESIDUAL 1 (unification): the 46 smeared cases UNIFY under ONE rational single-pivot chart** `F=z²U`.
+  The prior two-axis / SMEAR-A vs SMEAR-B 3-way split (`m2=r` vs `m0=r`) was an L=2-only artifact. The
+  unifying EXACT fact (652/652 wider grid): the FRONT-product bottleneck `min(M_0,…,M_{L−1}) = r =
+  Text(L)`, so the front routes to rank `r`, `P_1` is left-invertible, `P_2∈col(P_1)`, and
+  `Λ_0=(P_1ᵀP_1)⁻¹P_1ᵀP_2` gives `P·A⁽ᴸ⁻¹⁾ = z·P_1 H̄` ⟹ `F = z²·‖P_1 H̄‖²`. `U=‖P_1 H̄‖²` is POLYNOMIAL
+  (Λ_0 cancels out of F). Single binding axis `z`.
+- **RESIDUAL 2 (the rational shear det, END-TO-END): EXACTLY `|z|^{minAdm−1}`** (28/28 symbolic + L=4 reps;
+  block-triangular: id front + unit-triangular rational shear + radial `pivotBlowupOn`). Threshold `½·minAdm`.
+- **BUNDLE: fits the EXISTING single-axis `NodeAchieverChart`** — NO multi-axis bundle. The ONLY new Lean
+  piece is the smeared `cov` via `S1.1 weightedThreshold_transport` (the chart is RATIONAL, a.e.-analytic
+  off the null set `{det P_1ᵀP_1=0}`); `monomialIntegrand_lintegral_box_eq_top` reused as-is.
+
+The 4-way assembly: INTERIOR colPath (DONE, integrated) / BOUNDARY-CLEAN-20 banked radial / SMEARED-46
+rational single-pivot / L=1 DeepestBaseL1.
