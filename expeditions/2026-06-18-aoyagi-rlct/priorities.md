@@ -21,6 +21,48 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The first zero-current solved-`A1` residual-product derivative substitution has
+landed in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_zero_castSucc_apply
+```
+
+For the solved-`A1` suffix product at the current factor
+`p = 0 : Fin (M+1)`, it specializes the generic product-rule helper and
+substitutes only the zero solved-`A1` derivative:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(0)
+    + Psucc(z) *
+        (Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop).
+```
+
+Here `dPsucc` and `dTail` remain explicit; `dTail` is the actual Frechet
+derivative of the passive top-left tail map.  The theorem does not claim
+`Psucc = Tail`, does not unfold `solvedA1_z(0)` in the first summand, and does
+not touch downstream `dEarly` wrappers.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dpcast-zero-solveda1-substitution.md`,
+PASS by xhigh `Hypatia`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+(`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: prove the matching successor-current-factor
+residual-product derivative helper using
+`fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply`, then choose the
+smallest downstream `dEarly` specialization.
+
+Previous controller decision:
+
 The solved-`A1` zero derivative branch has landed upstream in
 `RetainedPassiveCoordinatesDerivative.lean`:
 

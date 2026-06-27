@@ -48,6 +48,65 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 dPcast Zero Solved-A1 Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_zero_castSucc_apply
+```
+
+This is the first source-staging specialization of the solved-`A1` residual
+product derivative.  It fixes `p : Fin (M+1) := 0`, keeps
+
+```text
+Pcast(y) = residualFactorProduct solvedA1_y final p.castSucc,
+Psucc(y) = residualFactorProduct solvedA1_y final p.succ,
+```
+
+and substitutes the zero solved-`A1` derivative into only the current-factor
+term:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * data.toCoordinateData.solvedA1 p
+    + Psucc(z) *
+        (Tail^-1 * v.2.2.2.2.1
+          - Tail^-1 * dTail * Tail^-1 * data.Ctop).
+```
+
+Here
+
+```text
+Tfun(y) = retainedPassiveA1TailAfterFirst (ofTopologyTuple y).A1seed,
+Tail    = retainedPassiveA1TailAfterFirst data.A1seed,
+dTail   = (fderiv Tfun z) v.
+```
+
+The theorem deliberately leaves `dPsucc` explicit, leaves
+`data.toCoordinateData.solvedA1 p` in the first summand, and does not expand
+`dTail`.  It does not claim `Psucc = Tail`, does not collapse the formula to
+`dCtop`, and does not specialize a downstream `dEarly` wrapper.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Hypatia's xhigh audit passed the theorem boundary, determinant-chart
+hypothesis, factor order, explicit `dPsucc`/`dTail` boundary, and dependency
+direction.  Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Next frontier: prove the analogous successor-current-factor residual-product
+helper using `fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply`,
+then decide whether to specialize the nonterminal or terminal `dEarly`
+wrapper first.
+
 ## Latest A2 Solved-A1 Zero Derivative
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves upstream:

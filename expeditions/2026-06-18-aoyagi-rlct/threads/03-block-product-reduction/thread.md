@@ -18,6 +18,62 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dPcast zero solved-A1 substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dpcast-zero-solveda1-substitution.md`.
+Review:
+`review-a2-retained-passive-dpcast-zero-solveda1-substitution.md`, PASS by
+xhigh `Hypatia`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_zero_castSucc_apply
+```
+
+For `p : Fin (M+1) := 0`, the theorem specializes the solved-`A1` residual
+product derivative
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * d(solvedA1 p)_z(v)
+```
+
+and substitutes only the zero solved-`A1` derivative:
+
+```text
+d(solvedA1 0)_z(v)
+  = Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop.
+```
+
+Thus the proved result has the staged shape
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(0)
+    + Psucc(z) *
+        (Tail^-1 * v.Ctop - Tail^-1 * dTail * Tail^-1 * data.Ctop).
+```
+
+The theorem leaves `dPsucc` and `dTail` explicit, and also leaves the
+first-summand pointwise factor `solvedA1_z(0)` explicit.  It does not assert
+`Psucc = Tail`, does not expand `dTail`, and does not specialize a downstream
+`dEarly` wrapper.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
+passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Next frontier: prove the matching successor-current-factor residual-product
+helper before consuming the split in a downstream `dEarly` wrapper.
+
 ## 2026-06-27 A2 solved-A1 zero derivative
 
 Reproduction:
