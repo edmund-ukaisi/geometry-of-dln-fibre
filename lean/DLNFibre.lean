@@ -425,5 +425,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- `RouteMAchieverPath`: step 1 of the ∀M R1-lower lift — the chosen Mval-minimizer `tStar M` (the
+-- achiever descent path), the per-boundary Aoyagi residual blocks `rBlock`/`cBlock`, and the
+-- load-bearing `∑_j rBlock·cBlock = minAdm M` (the radial `active.card` identity).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverPath
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
