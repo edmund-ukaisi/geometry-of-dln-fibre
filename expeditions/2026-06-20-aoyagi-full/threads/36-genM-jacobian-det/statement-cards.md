@@ -649,3 +649,44 @@ is discharged sorry-free via route (b) (MeasurePreserving, NO `image_subset`, NO
 > - **Next:** the ∀M-smeared lift reusing `routeMCore_box_diverges_of_MPChart` — validate a `minAdm ≥ 2`
 >   smeared case ((2,3,1)/(1,3,2)) to exercise the radial det `|z|^{minAdm−1}` composed with the shear
 >   (here `(1,2,1)` is `minAdm = 1`, no radial blow-up).
+
+---
+
+## ∀M-smeared lift — the radial-MP assembly (minAdm≥2) + the (2,3,1) chart/cancellation
+
+Branch `worktree-agent-a223be0c63e358844` @ `1977e45c`. Toward the 46 boundary-smeared M. The
+minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blow-up (det |z|^{minAdm−1}).
+
+---
+
+> **`routeMCore_box_diverges_of_RadialMPChart` — the reusable minAdm≥2 assembly, LANDED**
+> (`RouteM121Smeared.lean` @ `5fa4d32f`, sorry-free, `[propext, Classical.choice, Quot.sound]`).
+>
+> - φ = ψ ∘ R: ψ = Q∘shear (measure-preserving + measurable embedding, the rational pole confined to ψ,
+>   NEVER differentiated); R the polynomial radial (the ONLY Jacobian carrier: HasFDerivWithinAt/InjOn/
+>   |det| = |u_p|^{minAdm−1} on a certified preimage source S). Source certificate `hsrc` is WEIGHTED:
+>   ∫_S |u_p|^{minAdm−1}·(loss∘φ)^{−c} = ⊤ (the radial Jacobian absorbed into the binding-axis
+>   divergence — exponent minAdm−1−2c ≤ −1 from c ≥ minAdm/2). C-o-v: ψ-preimage
+>   (setLIntegral_comp_preimage_emb) + R-image Jacobian (lintegral_image_eq_lintegral_abs_det_fderiv_mul).
+> - `routeMCore_box_diverges_of_MPChart` (minAdm=1) is the R=id, h=0 sibling. Codex `radial-mp-assembly`
+>   confirmed the factorization + the exponent arithmetic.
+> - Validated 46/46 exhaustively (`pp_smear_GATE.py` (D): det Dφ = z^{minAdm−1} across the smeared class).
+
+---
+
+> **(2,3,1) smeared validate-small (minAdm=2) — chart + shear-cancellation LANDED; rate/MP/atom WIP.**
+> `RouteM231Smeared.lean` @ `1977e45c` (sorry-free).
+>
+> - LANDED: M231=(2,3,1) anchor (minAdm=2, flatDim=9); the chart (chartA0/A1_231, chartParams231,
+>   phi231sm, lam231 = the rational Λ₀); **P1_lam231** — the load-bearing shear cancellation P₁·Λ₀ = P₂
+>   off det P₁ ≠ 0, via (P₁ᵀP₁)⁻¹P₁ᵀ = P₁⁻¹ for an invertible square P₁ (Matrix.mul_inv_rev +
+>   nonsing_inv_mul). The 2×2 analog of (1,2,1)'s scalar b/a cancellation — the conceptually-hard piece.
+> - RESIDUAL (multi-pass, documented in-file): (1) the rate routeMCore_phi231sm_offpole = z²·U (entry
+>   telescoping via P1_lam231 — the opaque-index `i : Fin (M231 0)` vs Fin 2 plumbing, the recurring
+>   `lean/CLAUDE.md` have+exact kernel; this fought a pass and is the next chunk); (2) the MP factorization
+>   φ=ψ∘R at Fin 9 (R = pivotBlowupOn radial — NEW vs (1,2,1) which had no radial; ψ = Q231∘shear231, the
+>   split121/shear121ME pattern at Fin 9); (3) the weighted hsrc (subBox231 bounded away from det P₁ = 0,
+>   z-axis divergence at exp 1−2c≤−1); (4) the atom via routeMCore_box_diverges_of_RadialMPChart.
+> - Status: the reusable assembly (the ∀M load-bearing piece) + the (2,3,1) chart + the hard cancellation
+>   are banked. The mechanical entry-telescoping + the Fin-9 MP-factorization are the bounded fresh-tide
+>   finish. Full `lake build DLNFibre` green with both modules temp-imported (8528 jobs).
