@@ -18,6 +18,47 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 dPcast successor solved-A1 substitution
+
+Reproduction:
+`reproduction-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Statement card:
+`statement-card-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Review:
+`review-a2-retained-passive-dpcast-succ-solveda1-substitution.md`, PASS by
+xhigh `Banach`.
+
+Lean now proves in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_succ_castSucc_apply
+```
+
+For `q : Fin M` and `p : Fin (M+1) := q.succ`, it specializes the solved-`A1`
+residual product derivative and substitutes only the successor solved-`A1`
+derivative:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * v.1 q.
+```
+
+The theorem leaves `dPsucc` and `solvedA1_z(p)` explicit.  The tangent is
+exactly `v.1 q`, not a successor-indexed tangent.  It does not specialize a
+downstream `dEarly` wrapper and does not claim terminal `Psucc` cleanup.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit, `git diff --check`, and theorem axiom audit also
+passed; the theorem has only the standard
+`[propext, Classical.choice, Quot.sound]` footprint.
+
+Next frontier: consume the zero/successor current-factor split in the
+downstream `dEarly` recurrence, explicitly handling the local current factor
+`q.castSucc`.
+
 ## 2026-06-27 A2 dPcast zero solved-A1 substitution
 
 Reproduction:

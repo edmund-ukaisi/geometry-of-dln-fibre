@@ -48,6 +48,49 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 dPcast Successor Solved-A1 Substitution
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_succ_castSucc_apply
+```
+
+For `q : Fin M`, with `p : Fin (M+1) := q.succ`, the theorem specializes the
+generic solved-`A1` residual-product derivative and substitutes the successor
+current-factor derivative:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * data.toCoordinateData.solvedA1 p
+    + Psucc(z) * v.1 q.
+```
+
+The source tangent is exactly `v.1 q`; no successor-indexed tangent appears.
+The theorem keeps `dPsucc` explicit and does not simplify
+`data.toCoordinateData.solvedA1 p`.  It does not touch a downstream `dEarly`
+wrapper.  The determinant-chart hypothesis is inherited from the generic
+product-rule theorem; the successor solved-`A1` derivative itself remains
+chart-free.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Banach's xhigh audit passed the theorem boundary, determinant-chart
+inheritance, factor order, exact tangent index, explicit `dPsucc` boundary, and
+dependency direction.  Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The
+`scripts/sorries` audit and `git diff --check` passed; the theorem axiom audit
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Next frontier: consume the zero/successor current-factor split in a downstream
+`dEarly` helper, explicitly handling that the existing dEarly wrapper's local
+current factor is `q.castSucc`, not directly `q.succ`.
+
 ## Latest A2 dPcast Zero Solved-A1 Substitution
 
 `RetainedPassiveCoordinatesDerivative.lean` now proves:

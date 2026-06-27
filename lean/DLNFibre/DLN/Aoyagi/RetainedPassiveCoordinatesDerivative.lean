@@ -2301,6 +2301,64 @@ theorem fderiv_retainedPassive_solvedA1_residualFactorProduct_zero_castSucc_appl
   rw [hzero] at hprod
   simpa [dPsucc] using hprod
 
+set_option maxRecDepth 2048 in
+/-- Non-first-factor specialization of the solved-`A1` residual-product
+derivative, with the successor solved-`A1` derivative substituted. -/
+theorem fderiv_retainedPassive_solvedA1_residualFactorProduct_succ_castSucc_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Finite (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) (q : Fin M) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let p : Fin (M + 1) := q.succ
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+    let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+    let dPsucc := (fderiv ℝ Psucc z) v
+    (fderiv ℝ Pcast z) v =
+      dPsucc * data.toCoordinateData.solvedA1 p + Psucc z * v.1 q := by
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let _ : ∀ j, Fintype (κ' j) := fun j ↦ Fintype.ofFinite (κ' j)
+  let p : Fin (M + 1) := q.succ
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  let Pcast : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+  let dPsucc := (fderiv ℝ Psucc z) v
+  have hprod :
+      (fderiv ℝ Pcast z) v =
+        (fderiv ℝ Psucc z) v * data.toCoordinateData.solvedA1 p +
+          Psucc z *
+            (fderiv ℝ
+              (fun y : TopologyTuple ρ κ' ℝ ↦ A1fun y p) z) v := by
+    simpa [A1fun, Pcast, Psucc, data, p] using
+      fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply
+        (ρ := ρ) (κ' := κ') hz v p
+  have hsucc :
+      (fderiv ℝ (fun y : TopologyTuple ρ κ' ℝ ↦ A1fun y p) z) v =
+        v.1 q := by
+    simpa [A1fun, p] using
+      fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+        (ρ := ρ) (κ' := κ') z v q
+  rw [hsucc] at hprod
+  simpa [dPsucc] using hprod
+
 /-- Residual products of the stored `C` blocks are `C^1` as functions of the
 ambient tuple coordinates. -/
 theorem contDiffAt_residualFactorProduct_C

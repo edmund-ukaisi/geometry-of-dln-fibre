@@ -21,6 +21,46 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The successor-current solved-`A1` residual-product derivative substitution has
+landed in `RetainedPassiveCoordinatesDerivative.lean`:
+
+```text
+fderiv_retainedPassive_solvedA1_residualFactorProduct_succ_castSucc_apply
+```
+
+For `q : Fin M` and `p : Fin (M+1) := q.succ`, it specializes the generic
+product-rule helper and substitutes only the successor solved-`A1` derivative:
+
+```text
+dPcast_z(v)
+  = dPsucc_z(v) * solvedA1_z(p)
+    + Psucc(z) * v.1 q.
+```
+
+The theorem keeps `dPsucc` explicit and does not simplify the pointwise factor
+`solvedA1_z(p)`.  The determinant-chart hypothesis is inherited from the
+generic product-rule helper even though the successor solved-`A1` derivative
+itself is chart-free.  Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-dpcast-succ-solveda1-substitution.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-dpcast-succ-solveda1-substitution.md`,
+PASS by xhigh `Banach`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesDerivative` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed, as did
+`scripts/sorries`, `git diff --check`, and the theorem axiom audit
+(`[propext, Classical.choice, Quot.sound]`).
+
+Next frontier after banking: consume the zero/successor current-factor split
+in a downstream `dEarly` helper.  The existing `dEarly` product-rule wrapper
+uses a local current factor `q.castSucc`, not directly `q.succ`, so the next
+step must first handle that zero/successor reindexing boundary explicitly.
+
+Previous controller decision:
+
 The first zero-current solved-`A1` residual-product derivative substitution has
 landed in `RetainedPassiveCoordinatesDerivative.lean`:
 
