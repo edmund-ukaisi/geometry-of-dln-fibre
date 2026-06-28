@@ -51,8 +51,34 @@ Jac≡1 → `core_schur2_lt_top` applies at exponent `c'−2`.
 - The shifted-exponent atom `radial_morse_residual_power_le` (in `RadialResidualPower`/`RouteM334Hfin`,
   not yet in my module's closure — import or copy).
 
+## BUILT so far (sorry-free, banked, green)
+- Outer 9-chart cover: `matToFlat3`/`measurePreserving_matToFlat3`, `flatBox3`/`matBox3_flatBox_preimage`/
+  `gFlat3`/`matBox3_outer_flat`, `gFlat3_cover_sum` (recStep), `Rmat3`, `gFlat3_blowup_radial` (N1 pull-out).
+- Per-chart support: `flatBox3_blowup_mem_iff`, `innerS3` (the inner angular S-integral),
+  `chart_integrand_factor3` (radial decouple `|y p|⁸ → |y p|^{8−2c'}`, needs `y p ≠ 0`).
+
+## THE PRECISE REMAINING WALL — the JOINT residual-domination (the block-index bookkeeping)
+
+The genuinely-new piece + the per-chart finiteness + the 9-chart sum. The hardest sub-goal (controller
+flagged the block bookkeeping as the fiddly part) is the JOINT residual-domination:
+
+> After N2b j=1 (r=3) + the inverse-power flip (`schurSplit_integrand_le`) + Tonelli `S=(S_row0,S_bot)` +
+> the shifted-exponent peel of the top Morse block (`radial_morse_residual_power_le`, threshold 2, leaving
+> the residual at exponent `c'−2`), the residual is `∫_{R-ang}∫_{S_bot} frobSq(Sc(R)·S_bot)^{−(c'−2)}`
+> with `Sc(R)` the 2×2 Schur complement `M22 − M21·M11⁻¹·M12`. CLOSE it: per fixed spectators (M21,M12),
+> `M22 ↦ Sc` is a translation (Jac≡1) into an enlarged box (shift bounded via `rowShear_entry_le_one`) ⟹
+> `core_schur2_lt_top` at exponent `c'−2 < 2` × spectator-box-vol.
+
+The fiddly Lean cost (REST HERE rather than grind, per the controller): the 3×3-block index bookkeeping —
+extracting the M22 sub-block (rows/cols {1,2} for the (0,0) pivot) of `Rmat3` as a `Fin 2 → Fin 2 → ℝ`
+free-coordinate sub-vector to translate, matching `core_schur2`'s `Δ : Fin 2 → Fin 2` and
+`S_bot : Fin 2 → Fin 4` (rows {1,2} of S, reindexed `Fin (3−1)=Fin 2`); the matrix-block-translate (a
+4-coord translation embedded in the 9-coord `Rmat3`, other 5 coords spectators) needs a `matBox`-block
+analog of `lintegral_translate_le_local`. The MATH is settled (O2 cert + Codex ×2); the remaining cost is
+the block reindex/translate plumbing.
+
 ## Status
-Design sharp + cert-grounded (threshold 4, Codex's 2 rejected). Surfaced the threshold knowing-decision to
-the controller before sinking the ~350-line build. The corank-2 base case stands closed/reviewed/integrated.
-Building corank-3 with the c'<4 target pending the controller's threshold confirmation (or proceeding if
-no objection — the cert λ-values are unambiguous).
+Design sharp + cert-grounded (threshold 4 CONFIRMED, Codex's 2 rejected; R-integrated inner CONFIRMED,
+fixed-R rejected). Outer cover + per-chart support BUILT sorry-free, banked green. Resting at the JOINT
+residual-domination block-bookkeeping wall (exact sub-goal above) per the controller's firm rest-valve.
+The corank-2 base case stands closed/reviewed/integrated.
