@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurGenCover
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
+import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchurFiring` — the generic per-corank `SchurRecStep` firing (SKELETON)
@@ -415,6 +416,77 @@ theorem ofReal_rpow_neg_le_one_addG (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0
         _ = 1 := Real.rpow_zero x
     · refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_left (le_refl _))
       exact Real.rpow_le_rpow_of_exponent_ge hx0 (le_of_lt h1) (by linarith)
+
+/-! ### The generic joint-core a.e.-positivity (the Morse-peel's `0 < w` hypothesis)
+
+After the carve, the Morse peel sees the FREE `(Δ, S)` joint corank-`m` core (`m = r−1`); it needs
+`frobSq (Δ·S) > 0` a.e. The core is a nonzero polynomial in the flattened `(Δ,S)` coords (witness `Δ = I_m`,
+`S = e₁` gives core `= 1`), so its zero set is null (`MvPolynomial.ae_eval_ne_zero`). Generic analog of
+`RouteMSchurCorank3.frobSqR2c3_ne_zero_ae`. -/
+
+/-- The joint corank-`m` residual core as an `MvPolynomial ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ℝ`
+(Δ-coords `inl (i,k)`, S-coords `inr (k,j)`) — the `frobSq (Δ·S)` polynomial. Indexing by the product
+type (NOT `Fin N` div/mod) keeps the eval readback `rfl`-clean. -/
+noncomputable def corePolyGen (m : ℕ) :
+    MvPolynomial ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ℝ :=
+  ∑ i : Fin m, ∑ j : Fin 4,
+    (∑ k : Fin m,
+      (MvPolynomial.X (Sum.inl (i, k)) * MvPolynomial.X (Sum.inr (k, j)))) ^ 2
+
+/-- The flatten `(Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) → (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ)`
+(Δ → `inl`, S → `inr`) — the eval-variable assignment for `corePolyGen`. -/
+noncomputable def flatGenJoint (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
+    ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ :=
+  Sum.elim (fun ik => q.1 ik.1 ik.2) (fun kj => q.2 kj.1 kj.2)
+
+/-- `eval (flatGenJoint m q) (corePolyGen m) = frobSq (q.1 · q.2)`. -/
+theorem eval_corePolyGen (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
+    MvPolynomial.eval (flatGenJoint m q) (corePolyGen m) = frobSq (rmatMul q.1 q.2) := by
+  rw [corePolyGen]
+  unfold frobSq rmatMul flatGenJoint
+  simp only [map_sum, map_pow, map_mul, MvPolynomial.eval_X, Sum.elim_inl, Sum.elim_inr]
+
+open MvPolynomial in
+/-- `corePolyGen m ≠ 0` for `m ≥ 1` (witness `Δ = I_m`, `S = e₁` ⟹ core `= 1`). -/
+theorem corePolyGen_ne_zero (m : ℕ) (hm : 1 ≤ m) : corePolyGen m ≠ 0 := by
+  intro h0
+  -- witness assignment: Δ = identity (inl (i,k) ↦ if i=k then 1 else 0), S = e₁ (inr (k,j) ↦ if k=0∧j=0 then 1 else 0)
+  set w : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ :=
+    Sum.elim (fun ik => if ik.1 = ik.2 then (1:ℝ) else 0)
+      (fun kj => if kj.1 = ⟨0, by omega⟩ ∧ kj.2 = 0 then (1:ℝ) else 0) with hw
+  have hval : MvPolynomial.eval w (corePolyGen m) = 1 := by
+    have hq : flatGenJoint m
+        (⟨fun i k => if i = k then (1:ℝ) else 0,
+          fun k j => if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0⟩
+          : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) = w := by
+      funext c; cases c with
+      | inl ik => rfl
+      | inr kj => rfl
+    rw [← hq, eval_corePolyGen]
+    -- frobSq(I·e₁) = 1: (I·e₁)_{ij} = e₁_{ij} = [i=0∧j=0]; frobSq = 1
+    unfold frobSq rmatMul
+    have hentry : ∀ i : Fin m, ∀ j : Fin 4,
+        (∑ k, (if i = k then (1:ℝ) else 0) * (if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0))
+          = if i = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0 := by
+      intro i j
+      rw [Finset.sum_eq_single i]
+      · simp
+      · intro k _ hk; rw [if_neg (Ne.symm hk), zero_mul]
+      · intro hi; exact absurd (Finset.mem_univ i) hi
+    rw [show (∑ i : Fin m, ∑ j : Fin 4,
+        (∑ k, (if i = k then (1:ℝ) else 0) * (if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0)) ^ 2)
+        = ∑ i : Fin m, ∑ j : Fin 4,
+          (if i = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0) ^ 2 from by
+      refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
+      rw [hentry i j]]
+    rw [Finset.sum_eq_single (⟨0, by omega⟩ : Fin m)]
+    · rw [Finset.sum_eq_single (0 : Fin 4)]
+      · simp
+      · intro j _ hj; simp [hj]
+      · intro hj; exact absurd (Finset.mem_univ _) hj
+    · intro i _ hi; refine Finset.sum_eq_zero (fun j _ => ?_); simp [hi]
+    · intro hi; exact absurd (Finset.mem_univ _) hi
+  rw [h0] at hval; simp at hval
 
 /-! ### The carving core — the residual translate-domination into the abstract lower IH
 
