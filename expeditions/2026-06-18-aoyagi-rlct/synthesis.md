@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest Reorientation: A2 Source-Readout Frontier
+
+After the interruption, the controller rechecked the Aoyagi worktree:
+`expedition/aoyagi-rlct` is clean at `2b0ff263` and aligned with
+`origin/expedition/aoyagi-rlct`; `origin/dev` is already an ancestor of the
+expedition branch.  No live Lean/build processes survived in the sandbox.
+`scripts/sorries` reported zero forbidden markers and `git diff --check` was
+clean before new documentation edits.
+
+The source-readout scout, tuple/Jacobian scout, and controller PDF check agree
+on the frontier.  The source-readback spine is already present:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct
+sourceReadback_edgeMatrix_eq
+sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+```
+
+The remaining selected-entry field is not the existence of readback data.  It
+is factor alignment and pivot provenance: for an actual source/readback point,
+prove that the two stored `C` factors are Aoyagi's displayed Case 2 post-pivot
+residual block and following factor, and prove the selected pivot is nonzero or
+replace the fixed pivot by an all-pivot finite cover.  A wrapper that defines
+`retainedData y := sourceReadback E_y` while keeping `hD`, `hF`, and `hpivot`
+does not move the boundary.
+
+The tuple-level retained-passive COV is already essentially available under
+the existing `topologyTupleEdgeRawOrder` names.  If the target is a p.13
+source/prior pushforward, the missing data remain original/source measure,
+source/prior density identification, and coverage.  A useful non-wrapper
+source-chart identity to consider, if a downstream construction needs it, is
+the pointwise determinant-chart identity
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+  (topologyTupleEdgeRawOrder z)
+=
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData (ofTopologyTuple z).
+```
+
+The controller wrote the boundary reproduction at
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`.
+It records the p.13 product-difference kill-test and the fixed-pivot nonzero
+kill-test.  No Lean target is selected from this reorientation alone.
+
 ## Latest A2 Raw-Order Source-Chart Product-Density Pushforward
 
 `RetainedPassiveLocalJacobianMeasure.lean` now exposes the public raw-order

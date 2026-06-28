@@ -174,6 +174,17 @@ No such claim is formalisation-ready until both fields are filled.
   transport, full source-rank coverage, retained-passive-to-selected-entry
   signed-box density identification, residual positivity/integrability,
   normal crossings, pole order, or RLCT.
+- **Current status addendum, source-readout frontier, 2026-06-28.** A
+  post-interruption controller/source audit recorded in
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`
+  confirms that Aoyagi pp. 10-13 and pp. 19-22 support the retained-passive
+  signs, the p.13 literal product-difference block, the Case 2 fixed-pivot
+  chart algebra, and the two-edge factor order.  They do not prove fixed-pivot
+  nonzero coverage or factor alignment for an actual `sourceReadback` point.
+  Therefore the next source-moving target is to prove the displayed
+  post-pivot/following-factor identities for actual retained-passive readback
+  data and prove pivot provenance or an all-pivot cover; a wrapper retaining
+  `hD`, `hF`, and `hpivot` is not formalisation progress.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

@@ -51,6 +51,14 @@ assigning a substantial Lean tide, confirm there is a pen-and-paper
 reproduction artifact and a separate checker verdict for the calculation it
 formalises.
 
+Current A2 frontier after the 2026-06-28 interruption recovery: do not add a
+retained-passive-to-selected-entry wrapper that merely defines
+`retainedData y := sourceReadback E_y` while retaining `hD`, `hF`, and
+`hpivot`.  The source-moving work is factor alignment for actual
+retained-passive readback data, pivot provenance/all-pivot coverage, or a
+downstream-needed direct source-chart identity.  See
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`.
+
 ## Flush before yielding
 
 Land new state in `synthesis.md`, `priorities.md`, `threads.md`, `claims.md`, and

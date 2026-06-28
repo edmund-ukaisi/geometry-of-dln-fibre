@@ -18,6 +18,42 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 post-interruption source-readout frontier
+
+Reproduction:
+`reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`.
+
+The worktree was rechecked after interruption: branch
+`expedition/aoyagi-rlct` is clean at `2b0ff263` and aligned with
+`origin/expedition/aoyagi-rlct`; `origin/dev` is already an ancestor of this
+branch.  `scripts/sorries` reported zero forbidden markers and
+`git diff --check` was clean before new documentation edits.
+
+Xhigh read-only scouts and the controller PDF check agree that the current
+A2 retained-passive-to-selected-entry source-readout frontier is not another
+wrapper around `sourceReadback`.  Existing Lean already has source-readback
+recovery and residual readout.  The missing source-moving fields are:
+
+- factor alignment for an actual retained-passive source/readback point:
+  `(sourceReadback E).C 1` is the displayed post-pivot residual block and
+  `(sourceReadback E).C 0` is the following free factor;
+- pivot provenance, or an all-pivot finite selected-entry cover;
+- later source/prior transport if the route needs an original source measure.
+
+Aoyagi pp. 10-13 support the retained-passive signs and product order:
+`F2 = -A1^-1 A2`, `F3 = -A3 A1^-1`, and
+`C4 = A4 - A3 A1^-1 A2`.  The p.13 literal product-difference lower-right
+block is `product C - F3 F2`, so identifying the literal square sum with the
+cleaned residual square sum is overclaiming without a comparison/generator
+argument.  Aoyagi pp. 19-22 support the fixed selected-pivot Case 2 chart and
+the two-edge order "post-pivot residual block then following factor"; they do
+not prove that this fixed pivot is nonzero globally.
+
+Controller decision: do not add a theorem that only sets
+`retainedData y := sourceReadback E_y` while keeping `hD`, `hF`, and `hpivot`.
+The next Lean move must remove one of those fields or expose a direct
+source-chart identity needed by such a construction.
+
 ## 2026-06-28 A2 retained-passive Case 2 pivot-nonzero selected-entry hardening
 
 Existing reproduction/card updated:

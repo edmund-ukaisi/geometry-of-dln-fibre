@@ -19,6 +19,47 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-interruption source-readout frontier
+
+After VM recovery the expedition worktree is clean at
+`2b0ff263 Bank Aoyagi raw-order source pushforward` and aligned with
+`origin/expedition/aoyagi-rlct`.  Fresh `origin/dev` is already an ancestor of
+the expedition branch.
+
+Xhigh reorientation scouts and a controller source check agree that the next
+retained-passive-to-selected-entry step is not a Lean wrapper.  The existing
+source-readback API already recovers retained-passive coordinate data from
+fixed-base edge matrices, and the existing Case 2 bridges already consume a
+displayed two-edge factor readout plus a nonzero selected pivot.  A new theorem
+that only sets `retainedData y := sourceReadback E_y` while retaining `hD`,
+`hF`, and `hpivot` would not remove a real field.
+
+The source-backed content from Aoyagi pp. 10-13 and pp. 19-22 is: the signs
+`F2 = -A1^-1 A2`, `F3 = -A3 A1^-1`, `C4 = A4 - A3 A1^-1 A2`; the p.13 literal
+product-difference block with lower-right term `product C - F3 F2`; the Case 2
+selected-pivot chart algebra; and the two-edge order "post-pivot residual block
+then following factor".  The paper does not prove fixed-pivot nonzero
+coverage, selected-entry chart coverage, retained-passive source factor
+alignment for `sourceReadback E`, source/prior transport, normal crossings, or
+RLCT.
+
+New durable reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`.
+
+The next source-moving target is one of:
+
+- prove factor alignment for an actual retained-passive source/readback point:
+  `(sourceReadback E).C 1` is the displayed post-pivot residual block and
+  `(sourceReadback E).C 0` is the following factor;
+- prove pivot provenance, or replace fixed pivot by an all-pivot finite
+  selected-entry cover;
+- add the useful non-wrapper pointwise identity exposing
+  `paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+    (topologyTupleEdgeRawOrder z)`
+  as `paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+    (ofTopologyTuple z)` on the determinant chart, if a later construction
+  needs that direct source-chart presentation.
+
 ## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart product-density pushforward
 
 The public raw-order retained-passive source chart now has explicit
