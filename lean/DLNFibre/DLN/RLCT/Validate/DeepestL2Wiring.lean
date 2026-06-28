@@ -481,7 +481,10 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
         -- BOUNDED CAST-BRIDGE (cast-only): the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport of
-        -- toBlocks₂₁=0 + `← hpivJ` (Jb = pivotJSucc J) + defeq widths. SECONDARY residual.
+        -- toBlocks₂₁=0. Under `hJfront'` both splits collapse to `rThr` (`pivotThresholdSplit_frontEmbed`
+        -- / `_pivotJSucc_frontEmbed`); the bundle `hQtri` gives it on `Qf (lastLayer)`; the residual is the
+        -- `(lastLayer).succ = Fin.last L` Matrix-width `▸`-cast transport (needs a reindex-cast helper).
+        -- SECONDARY residual (cast-only, no math).
         sorry
       -- **hsub3reg** — reg-energy invariance under the joint move (RELATIVE: ψ-moved vs unmoved, SAME
       -- frames Pf/Qf, so the endpoint-frame conjugation CANCELS — UNAFFECTED by the sub-4 boundary-A11
