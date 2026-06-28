@@ -1,8 +1,11 @@
 # Threads — `rlct-bridge`
 
-**EXPEDITION CLOSED (2026-06-28).** All threads resolved; branch `expedition/rlct-bridge` green +
-pushed; **PR #13** open into `dev` (operator-gated, not merged). Full account in `synthesis.md`
-(§ EXPEDITION CLOSE); lessons in `lessons.md`.
+**PHASE 1 CLOSED; PHASE 2 ACTIVE (2026-06-28).** Phase 1 (thin cited interface + proved DLN geometry)
+landed — branch `expedition/rlct-bridge` green + pushed; **PR #13** open into `dev` (operator-gated, NOT
+merged — grows into the well-rounded Phase-1+2 PR). **Phase 2 (operator directive): discharge the cited
+transfer `hT` (`codim_ℝ = codim_K`) by building the real-AG library Mathlib lacks** — leaving the payoff
+on only the two analytic citations. Recon thread 08 live. Phase 1 account in `synthesis.md` (§ EXPEDITION
+CLOSE — now § Phase 1 close); lessons in `lessons.md`.
 
 Index: status / type / one-line subject. Per-thread notes in `threads/<NN>-<slug>/thread.md`.
 
@@ -14,20 +17,27 @@ Index: status / type / one-line subject. Per-thread notes in `threads/<NN>-<slug
 | 04 | lean-formaliser (tide) | **Foundation** — thin cited interface (`RlctRealInterface`: 2 bounds) + honest `codim_ℝ` + connector + compose `rlct=½·C` + retire the monolith | **closed** — landed + integrated green; twice-reviewed (fidelity PASS + hardener SOLID, re-confirmed after a re-guard tightening) |
 | 05 | pen-and-paper | R3-route probe — resolved-chart Newton vs Aoyagi bespoke | **closed** — VIABLE width-2 / NEEDED general; mildness reconfirmed (decorrelated). Resolution-spec out of scope under BLIND/cite |
 | 06 | lean-formaliser (tide) | **R5 bundle completion** — projection compatibility + target-side overlap | **closed** (honest ceiling) — projection compatibility LANDED (closes the prior fibration-geometry S5/S4b item (i)); global `Flat π` / target-side cocycle = named residuals; fidelity PASS |
-| 07 | pen-and-paper (Wave B recon) | Transfer-T route — feasibility of proving T at Mathlib v4.29 | **closed** — VERDICT (iii): **T is CITED** (TRUE but not bounded-provable at v4.29). Full proof ROADMAPPED (future `rlct-runway-target` expedition) |
+| 07 | pen-and-paper (Wave B recon) | Transfer-T route — feasibility of proving T at Mathlib v4.29 | **closed** — VERDICT (iii): **T is CITED** for Phase 1 (TRUE but not bounded-provable at v4.29). Proof escalated to **Phase 2** (below). |
+
+### Phase 2 — discharge `hT` (build the real-AG)
+
+| NN | type | subject | status |
+|----|------|---------|--------|
+| 08 | scout (recon) | **Real-AG route recon** — map Mathlib v4.29 + adjudicate route (smooth-pt/IFT vs ℚ-unirationality) + the lemma ladder to prove `varietyDim_ℝ ≥ varietyDim_K` (⟹ `hT`) | **in-progress** (`realag-recon`) |
+
+(Build threads 09+ open after the recon sets the route + rung ladder.)
 
 (Post-close: a small `prose-sweep` follow-up on the PR #13 review — stale "projection compat — open"
 framing + an "IS the comorphism" overclaim softened to the precomposition form; prose/docs only, no proof
 change.)
 
-## Roadmap (named residuals → future expeditions, NOT this blind/cite line)
-- **Prove T** (`codim_ℝ = codim_K` via `realizerD` smooth-rational density) — the `rlct-runway-target`
-  wall; needs real-AG in Mathlib (real radical / semialgebraic dim, absent at v4.29); ℚ-unirationality the
-  clean sufficient hypothesis.
-- **Global `Flat π` / fibre bundle over `rankROpen`** — target-side cocycle round-trip (blocked on
-  Mathlib-v4.29 `AlgEquiv.trans_assoc`/`refl_trans` + double-localized kernel-cost) + triple-overlap +
+## Roadmap
+- **Prove `hT`** (`codim_ℝ = codim_K` via `realizerD` smooth-rational density / real dim) — **NOW PHASE 2
+  of this expedition** (was the `rlct-runway-target`); building the real-AG Mathlib lacks. Recon 08 live.
+- **Global `Flat π` / fibre bundle over `rankROpen`** *(future)* — target-side cocycle round-trip (blocked
+  on Mathlib-v4.29 `AlgEquiv.trans_assoc`/`refl_trans` + double-localized kernel-cost) + triple-overlap +
   local-to-global flatness.
-- **(Cross-paper)** connect to `aoyagi-full`'s genuine `rlctAt` via the field-free `aoyagiLambda ↔
+- **(Cross-paper, future)** connect to `aoyagi-full`'s genuine `rlctAt` via the field-free `aoyagiLambda ↔
   Aoyagi.lambda` identity (the re-guard keeps this fold possible).
 
 ## Historical log (chronological — superseded by the close above; kept for provenance)

@@ -10,6 +10,25 @@ fibration geometry — was substrate for *this*. The deliverable: the DLN-specif
 result becomes genuine Lean, resting only on a small, named, legitimately-citable layer of general
 singular-learning-theory.
 
+## Phase status (updated 2026-06-28)
+
+- **Phase 1 — DONE (PR #13, open).** The monolith `cited_aoyagi_dln` is retired → `RlctRealInterface`
+  (opaque `rlct` + the two cited analytic bounds Watanabe `≤` / Aoyagi `≥`) + the threaded cited transfer
+  `hT`; payoff `rlct = ½·codim_ℝ = ½·codim_K = ½·C`; connector + catenary reduction + `codim_K = C` +
+  projection-compatibility (R5) all PROVED; twice-decorrelated-reviewed; green/sorry-free/axiom-clean;
+  BLIND to the parallel aoyagi-paper formalisation. The Phase-1 spine + recon are recorded historically
+  below + in `synthesis.md`.
+- **Phase 2 — ACTIVE (operator, 2026-06-28): discharge `hT` by building the real-AG.** The one cited
+  *geometric* fact, `hT : codim_ℝ(fibre ℝ d B) = codimRepCanonical(k:=K)(fibre K d (B.map ι))`, is TRUE
+  (the `realizerD` is a smooth full-dim rational point per top component — scout-verified) but cited only
+  because Mathlib v4.29 lacks the real-AG. **Phase 2 BUILDS that well-established real-AG** (real
+  dimension via a smooth-rational-point/IFT route, or ℚ-unirationality of the orbit closures — recon
+  thread 08 picks), in `DLNFibre.Core` (reusable, eventual Mathlib-upstream), then discharges the `hT`
+  hypothesis across the interface + the 7 consumers. **Reduction:** via the banked field-generic catenary
+  `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)`; `≤` is free, so the work is `varietyDim_ℝ ≥
+  varietyDim_K` per top component. `#13` stays open → the final PR delivers interface + proved geometry +
+  **DISCHARGED `hT`** (only the two analytic bounds cited).
+
 ## The seam (operator decision, 2026-06-27): thin cited interface + prove all DLN geometry
 
 The RLCT is **analytic**: for the loss `K(w) ≥ 0`, `rlct(K)` is the smallest pole of
@@ -73,8 +92,13 @@ computation; let the sea rise toward the wall.
 - Bundle completion (R5) landed or honestly roadmapped.
 - Exposition + final synthesis; PR against `dev` (signal-and-wait).
 
-## Scope fences (NOT in this expedition)
+## Scope fences
 
-- Building the analytic RLCT core (zeta / meromorphic continuation / resolution of singularities /
-  Watanabe SLT / rlct-of-a-quadratic from scratch) — Cited, as the thin interface. (The maximal
-  "build a real RLCT layer" option was considered and declined for this expedition.)
+- **Still CITED (the analytic core, NOT in scope):** zeta / meromorphic continuation / resolution of
+  singularities / Watanabe SLT / rlct-of-a-quadratic — the two analytic bounds (Watanabe `≤`, Aoyagi `≥`)
+  stay a thin named cited interface. Faithful to L&R, who cite Aoyagi.
+- **NOW IN SCOPE (Phase 2):** the real-AG *geometry* — real dimension theory + the smooth-real-point/IFT
+  or ℚ-unirationality machinery to PROVE the transfer `hT` (`codim_ℝ = codim_K`). This is geometry, not the
+  analytic core; well-established maths Mathlib v4.29 happens to lack. Built in `DLNFibre.Core`.
+- **Still BLIND:** never import/copy/depend on the parallel aoyagi-paper formalisation
+  (`origin/expedition/aoyagi-full`'s `RLCT/*`) — decorrelation; the analytic bounds stay cited.

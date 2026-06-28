@@ -489,3 +489,31 @@ inhabitability → the re-guard), L3-recurrence (re-grep the class to empty). Se
 ### Status: CLOSE shape — branch `expedition/rlct-bridge` pushed (`9560b0e6`), green. PR
 operator-gated (signal-and-wait): controller signals ready, does NOT open/merge unilaterally.
 **PR #13 opened into `dev` (2026-06-28, operator-authorized) — https://github.com/edmund-ukaisi/geometry-of-dln-fibre/pull/13 — NOT merged (operator merges). Awaiting review.**
+
+(The "EXPEDITION CLOSE" above is now the **Phase 1 close**. PR #13 review came in — no math blocker; 5
+prose/precision/bookkeeping items, addressed: aggregator + status-file + whitespace by controller, the
+`FibreProjectionCompat`/`FibreOverBaseTriv`/`FibreFlatness` prose by the `prose-sweep` tide. **#13 stays
+open** to grow into the well-rounded Phase-1+2 PR.)
+
+---
+
+## PHASE 2 (RE-OPENED 2026-06-28, operator) — discharge `hT` by building real-AG
+
+**Operator directive:** don't leave `hT` cited — build the (well-established, Mathlib-v4.29-absent) real-AG
+to PROVE it, folded into THIS expedition. The payoff then rests on only the two analytic citations
+(Watanabe `≤`, Aoyagi `≥`); every geometric fact — including the real↔complex transfer — proved.
+
+- **Reduction (banked):** `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)` (field-generic catenary);
+  `≤` free ⟹ the work is `varietyDim_ℝ ≥ varietyDim_K` per top component.
+- **Two routes (recon 08 picks):** (1) smooth rational point `realizerD` + IFT ⟹ real `d`-manifold ⟹
+  `dim ≥ d` (crux bridges: `pderiv`↔`fderiv`, the IFT/constant-rank API, manifold-dim ↔ `varietyDim`); (2)
+  ℚ-unirationality of the GL-orbit closures ⟹ ℝ-points dense + full-dim.
+- **Plan:** recon 08 (`realag-recon`, live) → route + lemma ladder (surface for sign-off) → build rungs in
+  `DLNFibre.Core` (reusable, eventual Mathlib-upstream), decorrelated-reviewed to bedrock → generalize the
+  `realizerD` smooth-full-dim certificate (all `d,r`) → discharge `hT` across interface + 7 consumers →
+  `#13` grows into the well-rounded final PR (operator wants one complete PR; willing to wait).
+- **Scaffold updated for Phase 2:** `brief.md` (Phase-2 central question + scope fences), `loop-prompt.md`
+  (Phase status; load-bearing = the real-AG build; "do NOT stop at Phase-1 close"), `priorities.md`
+  (Phase-2 rung table), `threads.md` (Phase 1 closed / Phase 2 active + thread 08). Backstop cron
+  re-established (`f5b4cf8a`, hourly). Tasks #9–#11. Still BLIND to the aoyagi `RLCT/*`.
+- **In flight:** recon 08 (route map) + the `#13` prose-sweep tide (review fixes). Holding for both.

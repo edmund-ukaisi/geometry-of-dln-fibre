@@ -25,8 +25,20 @@ rlct is CITED, not formalised — fidelity to L&R who cite Aoyagi). Final:
 | R4 (assemble) | compose → retire monolithic `cited_aoyagi_dln` | **DONE** (within tide 04). Cited boundary = exactly {Watanabe ≤, Aoyagi ≥, T}. name=content held (L4), two decorrelated review rounds. |
 | R5 (bundle) | projection compatibility + bundle | **PARTIAL (honest ceiling)** — projection compatibility LANDED (closes the prior fibration-geometry S5/S4b item (i)); global `Flat π` / target-side cocycle = named residuals → roadmap. |
 
-## Roadmap (named residuals → future expeditions)
-- **Prove T** — the `rlct-runway-target` wall (real-AG in Mathlib; ℚ-unirationality the clean hypothesis).
+## PHASE 2 — discharge `hT` by building real-AG (ACTIVE, operator 2026-06-28)
+
+Prove the one cited *geometric* fact: `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)` (banked
+catenary); `≤` free ⟹ the work is `varietyDim_ℝ ≥ varietyDim_K` per top component. Build in
+`DLNFibre.Core` (reusable real-AG, eventual upstream).
+
+| # | item | status | note |
+|---|------|--------|------|
+| P2-recon | **Real-AG route recon** (thread 08) — map Mathlib v4.29 + pick route (smooth-pt/IFT vs ℚ-unirationality) + lemma ladder | **in-progress** | sets the whole build; decorrelated Codex. |
+| P2-build | **The real-AG rungs** (the lemma ladder) — e.g. `pderiv↔fderiv` bridge / IFT-submersion ⟹ real `d`-manifold / manifold-dim ↔ `varietyDim`; OR the unirational-density route | queued (after recon) | decorrelated-reviewed to bedrock; the crux rung flagged by recon. |
+| P2-realizer | **`realizerD` smooth full-dim per top component, all `d,r`** — generalize the `t-route-scout` exact-Jacobian-rank certificate | queued | builds on banked `FibreGenericSmooth`/`CotangentJacobian`/`realizerD`. |
+| P2-discharge | **Discharge `hT`** across the interface + 7 consumers; remove the cited hypothesis | queued (after the build) | the payoff then rests on only Watanabe `≤` + Aoyagi `≥`. |
+
+## Roadmap (still future expeditions — NOT Phase 2)
 - **Global `Flat π`** — target-side cocycle (Mathlib `AlgEquiv` gaps) + triple-overlap + local-to-global.
 - **(Cross-paper)** fold to `aoyagi-full`'s genuine `rlctAt` via `aoyagiLambda ↔ Aoyagi.lambda`.
 
