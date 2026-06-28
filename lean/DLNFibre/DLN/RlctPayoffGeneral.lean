@@ -107,8 +107,8 @@ variable {d : Fin (N + 1) → ℕ}
 
 /-- **The general-`r` RLCT payoff, through the two Cited analytic bounds, the transfer `hT`, AND the
 Lemma-4.5/4.6 shift interface.** Given the analytic interface `I` (`RlctRealInterface`, the two Cited
-Watanabe/Aoyagi bounds), the Cited transfer `hT` (`codim_ℝ(real fibre) = codim_K(complex fibre)` — a
-real-vs-complex fact reducing to the atomic real-dim = complex-dim equality), and the shift interface
+Watanabe/Aoyagi bounds), the Cited transfer `hT` (`codim_ℝ(real fibre) = codim_K(complex fibre)`, a
+real-vs-complex fact), and the shift interface
 `J` (Lemma 4.5/4.6 bundle
 shift, a codimension identity Proved in `Core.FibreCodimFinal`; `DLN.BundleShiftDischarge` discharges
 `J` from Core), for a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of the
@@ -127,7 +127,7 @@ theorem rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi
     (hT : codimRealFibre d B = codimRepCanonical (k := K) (fibre (k := K) d (B.map ι))) :
     I.rlct (lossDLN d B)
       = (((cCodim d r h).toNat : ℝ) + (r * (d 0 + d (Fin.last N) - r) : ℕ)) / 2 := by
-  rw [rlct_lossDLN_eq_half_codimFibre_of_transfer (K := K) (ι := ι) I hN B hT,
+  rw [rlct_lossDLN_eq_half_codimFibre_of_transfer (K := K) (ι := ι) I hN B hB hr hT,
     J.cited_bundle_shift B r hN hB hr]
   -- split the `ℕ∞.toNat` of the sum: both summands finite
   have hAfin : codimRepCanonical (productRankLocusLE (k := K) d r) ≠ ⊤ := by
