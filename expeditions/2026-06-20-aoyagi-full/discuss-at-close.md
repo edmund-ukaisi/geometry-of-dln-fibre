@@ -761,3 +761,21 @@ L2 leg has a research-risk at 3289; a clean L=2 instance is bounded + in progres
 bounded L=2 path autonomously; surfaced because 3289 is the genuine general-L wall-candidate. Also a process note: I
 had carried the stale "20 sorries / entangled" L2 read for ~2 ticks (used it to justify holding L2) — the scout's
 source-trace corrected it; lesson = re-derive sorry-counts from `grep -c '^\s*sorry'` + the actual term, not synthesis prose.
+
+## 39. R1-UPPER ∀M N4 general-corank lift hit a research-adjacent obstruction (2026-06-28) — the (A) "no wall" premise under test at the long pole.
+genm-recstep STOP+reported (correctly, BEFORE any Lean build) that the general-corank N4 finiteness recursion has a
+genuine research-adjacent gap, not laborious plumbing. The closed (3,3,4) depth-2 weld (`core_schur2_lt_top`, banked
+sorry-free) is a TERMINAL base case — Sc is a scalar at corank-2, so the recursion is never exercised; corank-3 is
+where the corank-(r−1) Schur core is first a non-leaf and the real recursion appears. Two gates: O1 = a j×j-minor-
+dominant chart cover (the minors are degree-j polynomials, not coordinates, so the banked `pivotBlowupOn` doesn't
+apply — NEW covering machinery, sizeable); O2 (the kill-condition) = the Sc-core pushforward density inequality
+(`Sc = M22−M21·M11⁻¹·M12` is rational in R, so recursing on `‖Sc·S_bot‖²` via the corank-(r−1) IH needs `Sc-law ≼
+free-(r−j)-box` with constants independent of the spectator entries — if it fails, the recursion plan breaks). I
+commissioned a `pen-and-paper` (n4-o2-adjudicate) to settle O2 at corank-3 BEFORE declaring a wall or sinking a build.
+OPERATOR AWARENESS: this is exactly where the (A) "no research wall" premise was always least secure (the N4 long
+pole, flagged HIGH-risk from the start). Decorrelating first per the mandate (operator reserved for *confirmed*
+research walls). If O2's verdict is OBSTRUCTION (the pushforward fails / needs spectator-dependent constants), the
+∀M R1-UPPER finiteness needs an operator-level re-scope or a different N4 route — I'll surface it as a decision then.
+NOT a blocker now: the corank-2 weld + N1/N2a/N2b/N3a/N3b stand; R1-LOWER, L2, D1 continue. The fallback if O2 walls:
+R1-UPPER's finiteness already has a CITED route (Watanabe's universal `rlct ≤ ½codim`) — the from-scratch N4 is the
+"go the distance" upgrade, and a scoped retreat to the cited upper bound keeps the headline intact if N4 proves a wall.
