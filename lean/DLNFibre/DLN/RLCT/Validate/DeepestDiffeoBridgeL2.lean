@@ -2503,6 +2503,142 @@ theorem deepestEFull_sq_sum_eq_of_resid_blocks (H : Fin (L + 1) → ℕ) (r : �
       Matrix.zero_apply, zero_add]
   rw [e11 R₁, e11 R₂, e12 R₁, e12 R₂, e21 R₁, e21 R₂, h11, h12, h21]
 
+/-- **The residual `{11,12,21}` blocks read off the raw-middle's `{11,12,21}`** (the frame-handling
+half of sub-3, frame-block + reindex-distribution). For block-LOWER `reindex(endpointP0)` (hPtri) and
+block-UPPER `reindex(endpointQL)` (hQtri), the `{11,12,21}` of `reindex(endpointP0·(prod A − B)·endpointQL)`
+read off `reindex(prod A − B)`'s `{11,12,21}` only. So two raw middles `prod A₁`/`prod A₂` agreeing on
+`{11,12,21}` give residuals agreeing on `{11,12,21}`. Pure `reindex_mul_split` distribution +
+`framed_regBlocks_eq_of_mid`. -/
+theorem resid_regBlocks_eq_of_mid_agree (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (A₁ A₂ : Params H)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₁)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₂)).toBlocks₁₁)
+    (hm12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₁)).toBlocks₁₂
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₂)).toBlocks₁₂)
+    (hm21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₁)).toBlocks₂₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H A₂)).toBlocks₂₁) :
+    ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₁₁)
+      ∧ ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₁₂
+          = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₁₂)
+      ∧ ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₂₁
+          = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₂₁) := by
+  -- Abbreviate the outer split equivs.
+  set eR := rThresholdSplit r (H 0) (hr 0) with heR
+  set eC := pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J with heC
+  set P0 := endpointP0 H hL Pf with hP0
+  set QL := endpointQL H hL Qf with hQL
+  -- Distribute the reindex of the triple product into the three reindexed factors (the middle keyed by
+  -- `(eR, eC)`, the frames square via `eR`/`eC`).  `reindex(P0·M·QL) = reindex(P0)·reindex(M)·reindex(QL)`.
+  have hdist : ∀ A : Params H,
+      Matrix.reindex eR eC (P0 * (prod H A - B) * QL)
+        = Matrix.reindex eR eR P0 * Matrix.reindex eR eC (prod H A - B) * Matrix.reindex eC eC QL := by
+    intro A
+    rw [reindex_mul_split eR eC eC (P0 * (prod H A - B)) QL,
+      reindex_mul_split eR eR eC P0 (prod H A - B)]
+  -- The frames as `fromBlocks` (block-LOWER `P0` via hPtri; block-UPPER `QL` via hQtri).
+  have hP0fb : Matrix.reindex eR eR P0
+      = Matrix.fromBlocks (Matrix.reindex eR eR P0).toBlocks₁₁ 0
+          (Matrix.reindex eR eR P0).toBlocks₂₁ (Matrix.reindex eR eR P0).toBlocks₂₂ := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eR eR P0)]
+    rw [hPtri]
+  have hQLfb : Matrix.reindex eC eC QL
+      = Matrix.fromBlocks (Matrix.reindex eC eC QL).toBlocks₁₁ (Matrix.reindex eC eC QL).toBlocks₁₂
+          0 (Matrix.reindex eC eC QL).toBlocks₂₂ := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eC eC QL)]
+    rw [hQtri]
+  -- The two middles `reindex(prod A₁ − B)`, `reindex(prod A₂ − B)` as `fromBlocks`; their {11,12,21}
+  -- agree (the common `− reindex B` cancels via `hm11/hm12/hm21` on `reindex(prod A)`).
+  have hsub : ∀ A : Params H, Matrix.reindex eR eC (prod H A - B)
+      = Matrix.reindex eR eC (prod H A) - Matrix.reindex eR eC B := by
+    intro A; ext i j; simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.sub_apply]
+  have hMidEq : ∀ (ij : Fin 3),
+      True := fun _ => trivial  -- placeholder; the three block eqs are derived inline below
+  -- Middle block agreements (subtract the common `reindex B`).
+  have hmid11 : (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₁
+      = (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₁ := by
+    rw [hsub, hsub]; ext i j
+    simp only [Matrix.toBlocks₁₁, Matrix.sub_apply, Matrix.of_apply]
+    have := congrFun (congrFun hm11 i) j
+    simp only [Matrix.toBlocks₁₁, Matrix.of_apply] at this
+    rw [this]
+  have hmid12 : (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₂
+      = (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₂ := by
+    rw [hsub, hsub]; ext i j
+    simp only [Matrix.toBlocks₁₂, Matrix.sub_apply, Matrix.of_apply]
+    have := congrFun (congrFun hm12 i) j
+    simp only [Matrix.toBlocks₁₂, Matrix.of_apply] at this
+    rw [this]
+  have hmid21 : (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₂₁
+      = (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₂₁ := by
+    rw [hsub, hsub]; ext i j
+    simp only [Matrix.toBlocks₂₁, Matrix.sub_apply, Matrix.of_apply]
+    have := congrFun (congrFun hm21 i) j
+    simp only [Matrix.toBlocks₂₁, Matrix.of_apply] at this
+    rw [this]
+  clear hMidEq
+  -- Apply `framed_regBlocks_eq_of_mid` (explicit block args to avoid a `whnf` unification blowup) to
+  -- the distributed product, with both middles written as `fromBlocks` of their `toBlocks`.
+  have hkey := framed_regBlocks_eq_of_mid
+    (Matrix.reindex eR eR P0).toBlocks₁₁ (Matrix.reindex eR eR P0).toBlocks₂₁
+    (Matrix.reindex eR eR P0).toBlocks₂₂
+    (Matrix.reindex eC eC QL).toBlocks₁₁ (Matrix.reindex eC eC QL).toBlocks₁₂
+    (Matrix.reindex eC eC QL).toBlocks₂₂
+    (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₁
+    (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₂
+    (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₂₁
+    (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₂₂
+    (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₁
+    (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₂
+    (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₂₁
+    (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₂₂
+    hmid11 hmid12 hmid21
+  -- Rewrite the goal's products into the `fromBlocks · fromBlocks · fromBlocks` shape `hkey` proves.
+  -- The middle factors → `fromBlocks` of their `toBlocks` (BOTH middles, all occurrences), then frames.
+  rw [hdist A₁, hdist A₂,
+    show Matrix.reindex eR eC (prod H A₁ - B)
+        = Matrix.fromBlocks (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₁
+            (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₁₂
+            (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₂₁
+            (Matrix.reindex eR eC (prod H A₁ - B)).toBlocks₂₂ from
+          (Matrix.fromBlocks_toBlocks _).symm,
+    show Matrix.reindex eR eC (prod H A₂ - B)
+        = Matrix.fromBlocks (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₁
+            (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₁₂
+            (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₂₁
+            (Matrix.reindex eR eC (prod H A₂ - B)).toBlocks₂₂ from
+          (Matrix.fromBlocks_toBlocks _).symm,
+    hP0fb, hQLfb]
+  exact hkey
+
 theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2)
     (J : Fin r ↪ Fin (H (Fin.last L)))
@@ -2516,20 +2652,6 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
-  -- SCOPED RESIDUAL (route A, telescope-bound). BANKED THIS TIDE — the FULL skeleton is plumbed:
-  --   • `deepestEFull_sq_sum_eq_of_resid_blocks` (corner-split + reg-block reduction): reduces this to
-  --     the three conjugated-residual {11,12,21} block equalities `h11/h12/h21` for the raw tuples
-  --     `Aψ`/`Aq` (the telescope frames `hframeψ`/`hframeq`/`hinterface`/`hS3b` are route-A inputs).
-  --   • `framed_regBlocks_eq_of_mid` (the E2/leak-kill frame fact, frame-free): given block-LOWER
-  --     `reindex(endpointP0)` / block-UPPER `reindex(endpointQL)`, the framed {11,12,21} read off the
-  --     MIDDLE's {11,12,21} — so `h11/h12/h21` follow from the MIDDLE `(prod Aψ − B)` vs `(prod Aq − B)`
-  --     agreeing on {11,12,21}, i.e. `prod Aψ` vs `prod Aq` agreeing on {11,12,21}.
-  -- REMAINING (the last instantiation brick): (i) derive `Aψ`/`Aq` + the telescope frames (route-A,
-  -- controller-discharged from the deepest frames); (ii) the raw {11,12,21} agreement of `prod Aψ` vs
-  -- `prod Aq` via `reindex_mul_fromBlocks` (raw 2-layer product, the moved last-layer Y→l2Y1p/T→l2T1p
-  -- only hits {22}; {11}=A0A1+Y0Z1, {21}=Z0A1+T0Z1 are T1,Y1-free, {12}=P01 fixed by `e2_regPreserve`);
-  -- (iii) express `reindex(endpointP0/QL)` as `fromBlocks _ 0 _ _` / `fromBlocks _ _ 0 _` (hPtri/hQtri
-  -- + `fromBlocks_toBlocks`) to feed `framed_regBlocks_eq_of_mid`. Cast-heavy reindex bookkeeping.
   sorry
 
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
