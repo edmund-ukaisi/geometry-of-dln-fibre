@@ -2994,7 +2994,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- connects to the body's `J`), and `.choose_spec` for the rest of the bundle.
   set Jb : Fin r ↪ Fin (H ((lastLayer hL).succ)) :=
     (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJb_def
-  obtain ⟨Pf, Qf, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner⟩ :=
+  obtain ⟨Pf, Qf, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, _hQUpper⟩ :=
     (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
   -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
   -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).
