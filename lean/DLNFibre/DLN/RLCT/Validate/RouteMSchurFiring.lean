@@ -1370,6 +1370,22 @@ theorem zEG_box_preimage (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fi
       rwa [show slotCellG r N hN hr p (Sum.inr gb) = i from
         by rw [← cellEquivG_apply]; exact hs] at this
 
+/-- The top row of `R'·S` as a coupled shear: for `R' ⟨0⟩ ⟨0⟩ = 1`,
+`(rmatMul R' S) ⟨0,_⟩ q = S ⟨0,_⟩ q + ∑_a R' ⟨0,_⟩ ⟨1+a,_⟩ · S ⟨1+a,_⟩ q`. The `j=1` `fin_sum_block_split`. -/
+theorem topRow_shear (r : ℕ) (hr : 3 ≤ r) (R' : Fin r → Fin r → ℝ)
+    (hpiv : R' ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (S : Fin r → Fin 4 → ℝ) (q : Fin 4) :
+    rmatMul R' S ⟨0, by omega⟩ q
+      = S ⟨0, by omega⟩ q + ∑ a : Fin (r - 1), R' ⟨0, by omega⟩ ⟨1 + a, by omega⟩ * S ⟨1 + a, by omega⟩ q := by
+  show (∑ k, R' ⟨0, by omega⟩ k * S k q) = _
+  rw [fin_sum_block_split 1 (by omega) (fun k => R' ⟨0, by omega⟩ k * S k q)]
+  have hhead : (∑ a : Fin 1, R' ⟨0, by omega⟩ ⟨(a : ℕ), lt_of_lt_of_le a.2 (by omega)⟩
+        * S ⟨(a : ℕ), lt_of_lt_of_le a.2 (by omega)⟩ q)
+      = S ⟨0, by omega⟩ q := by
+    rw [Fin.sum_univ_one]
+    rw [show (⟨((0 : Fin 1) : ℕ), lt_of_lt_of_le (0 : Fin 1).2 (by omega)⟩ : Fin r)
+        = ⟨0, by omega⟩ from rfl, hpiv, one_mul]
+  rw [hhead]
+
 /-! ### The N2b `j=1` Schur-complement readback: `Sc = matOf M22 − bgShiftG (g,b)` -/
 
 /-- **The `j=1` rank-1 Schur reduction.** For a `1×1` pivot block `M11` with `M11 0 0 = 1`,
