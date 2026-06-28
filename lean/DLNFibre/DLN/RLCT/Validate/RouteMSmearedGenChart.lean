@@ -246,10 +246,23 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
   -- The opaque-width collapse (LANDED): `f=frontMat i, d=deepCol, lam=routing 0` closes the `if`-form sum.
   have hfin := sum_smearedCol_collapse_opaque (L := m + 1) (n := M (deepLayer M hL).castSucc) hrow
     (frontMat M hL u i) (deepCol M hL u hcol) (routing M hL u hm1 0) hfr
-  -- REMAINING (WIP, surface friction): `hfin` IS the collapsed identity. The single blocker is rewriting
-  -- the goal sum body `frontMat i j · smearedDeepLayer j jc` into `hfin`'s `if`-form — every `rw`/`simp`
-  -- of this sum fails to MATCH the `smearedDeepLayer … j jc` pattern (the `subst`/`Fin.last` column
-  -- proof-term coercion), not a math gap. `hfin` + the pivot index `⟨0,hrow⟩ = ⟨0,hm1⟩` (rfl) finishes.
-  sorry
+  -- Per-term readout (term-mode, column kept as `jc`; `hjc : jc = ⟨0,hcol⟩` recovers `deepCol`). Dodges
+  -- the `rw`/`simp` pattern-fail by building the per-term `Eq` and feeding `Finset.sum_congr`.
+  have hjc : jc = ⟨0, hcol⟩ := Fin.ext (by have := jc.isLt; have : M (Fin.last (m + 1)) = 1 := hc1; omega)
+  have hbody : ∀ j, frontMat M hL u i j * smearedDeepLayer M hL u hrow hcol hm1 j jc
+      = frontMat M hL u i j * (if j = ⟨0, hrow⟩
+          then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol else deepCol M hL u hcol j) :=
+    fun j => congrArg (frontMat M hL u i j * ·) (by
+      -- WIP (the single residual): the per-row `smearedDeepLayer j jc` readout equals the `if`-form.
+      -- `rw [smearedDeepLayer, Matrix.updateRow_apply, hjc]` exposes the `if`; the branches are
+      -- defeq to the RHS (`deepCol = baseParams · ⟨0,hcol⟩`), but the `ite`-instance + `if x=x` reduction
+      -- resists `if_pos`/`simp only`/`split_ifs` (the recurring `ite` surface nit). Isolated here.
+      sorry)
+  calc (∑ j, frontMat M hL u i j * smearedDeepLayer M hL u hrow hcol hm1 j jc)
+      = ∑ j, frontMat M hL u i j * (if j = ⟨0, hrow⟩
+          then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol else deepCol M hL u hcol j) :=
+        Finset.sum_congr rfl (fun j _ => hbody j)
+    _ = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hrow⟩ := hfin
+    _ = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hm1⟩ := rfl
 
 end DLNFibre.DLN.RLCT
