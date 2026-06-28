@@ -66,3 +66,27 @@ The assembly mirrors `schur_matBoxG_chart_lt_top` (RouteMSchurFiring:1982): per 
 = |y p|^{r²−1}` + `chart_integrand_factorG` (needs the (r,p) gFlatGen analog) + the `piRatioG` Tonelli split
 (a-axis divisor × ratio residual). The intricate per-chart reduction — the one remaining directMorse piece.
 Then cap-A carve-peel + dispatch + routeMBoxThresholdFinite_rrp.
+
+
+## schurCoreP_directMorse — the precise remaining chart-cover chain (resumption detail)
+
+The ONE remaining directMorse lemma. It mirrors `schur_matBoxG_chart_lt_top` (RouteMSchurFiring:1982) +
+`schurCoreGen_firing` (:2063), but the per-chart factor machinery is `gFlatG`/`innerSGen`-based (Fin-4) and
+must be `gFlatGen`/`innerSGenP`-generalized. Sub-lemmas to transcribe (each a mechanical gFlatG→gFlatGen /
+innerSGen→innerSGenP / 4→p swap, but cast-heavy — the pivotBlowupOn/piRatioG opaque-width territory):
+
+1. `gFlatGen_blowup_radial` — the (r,p) analog of `gFlatG_blowup_radial` (gFlatGen at the blow-up point =
+   (y_p)²-radial × innerSGenP). [the gFlatGen blow-up identity]
+2. `flatBoxGen_blowup_mem_iff` — the (r,p) analog of `flatBoxG_blowup_mem_iff` (membership ⟺ |y_p|≤T).
+   [likely p-FREE — it's about the flat box, check if reusable as-is]
+3. `chart_integrand_factorGen` — the (r,p) analog of `chart_integrand_factorG` (41 lines; the per-chart
+   factor = radial indicator × innerSGenP). Uses 1+2.
+4. `schur_matBoxGenP_chart_lt_top` — the (r,p) analog of `schur_matBoxG_chart_lt_top` (~120 lines; the
+   piRatioG MP + Tonelli a-axis(radial_aAxis_divisor_lt_top, c'<r²/2) × ratio-residual
+   (schurRatioResidP_capB_lt_top, c'<p/2) split). The intricate core.
+5. `schurCoreP_directMorse` = `rw [SchurCore, matBoxGen_outer_flat, gFlatGen_cover_sum]` +
+   `ENNReal.sum_lt_top` over the r² charts, each by (4). Trivial given (4).
+
+RISK: cast-heavy (the pivotBlowupOn/piRatioG/opaque-width quirk, CLAUDE.md). Mechanical but detailed —
+best done fresh, not at the tail of a long session. NO research wall. After it: cap-A carve-peel + dispatch
++ routeMBoxThresholdFinite_rrp.
