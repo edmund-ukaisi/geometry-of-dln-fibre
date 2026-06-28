@@ -19,6 +19,49 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 determinant-chart selected-entry residual handoff
+
+The generic selected-entry determinant-chart residual handoff now has a
+two-edge Case 2 endpoint-transport specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
+```
+
+It fixes
+
+```text
+chart y =
+  topologyTuple
+    ((case2PostPivotSelectedEntryRetainedPassiveData
+      n hS hcont hnext y eNext).endpointTransport e)
+```
+
+and proves the chart a.e. measurability by continuity of the Case 2 data,
+endpoint transport, and `topologyTuple`.  It also discharges the residual
+readout using the existing endpoint-transport Case 2 theorem; the simplification
+of `directChart (chart y)` uses `ofTopologyTuple_topologyTuple`.
+
+The theorem still keeps the determinant-chart pushforward identity and target
+positive-set measurability explicit, then concludes a.e. positivity and finite
+negative-power integral for the retained-passive determinant-chart residual.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-det-chart-selected-entry-residual-handoff.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-det-chart-selected-entry-residual-handoff.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-det-chart-selected-entry-residual-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, direct axiom probe, and xhigh review passed; the new
+declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is a Case 2 specialization only.  It does not prove the determinant-chart
+pushforward identity, chart coverage, original external source-prior transport,
+local loss/density bounds, source-rank coverage, normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive selected-entry determinant-chart residual handoff
 
 The retained-passive p.13 determinant-chart residual hypotheses now have a

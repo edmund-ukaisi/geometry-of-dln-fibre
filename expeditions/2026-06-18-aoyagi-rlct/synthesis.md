@@ -48,6 +48,68 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Determinant-Chart Selected-Entry Residual Handoff
+
+The generic retained-passive selected-entry determinant-chart residual handoff
+now has the two-edge Case 2 specialization
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
+```
+
+for
+
+```text
+chart y =
+  topologyTuple
+    ((case2PostPivotSelectedEntryRetainedPassiveData
+      n hS hcont hnext y eNext).endpointTransport e).
+```
+
+The proof supplies the generic theorem's chart a.e. measurability by composing
+continuity of the Case 2 selected-entry retained-passive datum, endpoint
+transport, and `topologyTuple`.  It supplies the generic theorem's residual
+readout from
+
+```text
+aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+with the `directChart (chart y)` simplification by unfolding and
+`ofTopologyTuple_topologyTuple`.
+
+The determinant-chart pushforward identity
+
+```text
+m.restrict topologyTupleDetChartSet =
+  Measure.map chart
+    (signedBox.withDensity
+      (fun y => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)))
+```
+
+and target positive-set measurability remain explicit hypotheses.  Under
+`0 <= t`, positive radii, and the selected-entry exponent inequality, the
+theorem concludes the determinant-chart a.e. residual positivity and finite
+negative-power lower integral.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-det-chart-selected-entry-residual-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-det-chart-selected-entry-residual-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-det-chart-selected-entry-residual-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a determinant-chart measure construction.  It does not prove the
+pushforward identity, chart coverage, original external source-prior transport,
+local loss/density bounds, source-rank coverage, normal crossings, pole order,
+or RLCT.
+
 ## Latest A2 Retained-Passive Selected-Entry Determinant-Chart Residual Handoff
 
 The determinant-chart residual hypotheses used by the retained-passive
