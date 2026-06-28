@@ -935,3 +935,20 @@ proven trivially about a placeholder def. Before recording a leg as near-done, v
 diff-gate caught it before it travelled. The R1-UPPER firing, by contrast, IS genuinely ~1-piece (carving) — its pieces
 are really sorry-free (reviewer-PASS, force-#print-axioms), not trivial-about-placeholder. So the dual-near-completion
 claim was half-right; the L2 bridge is the longer pole (~2 tides). No overstated "done" shipped; corrected in UPDATE-218.
+
+### Item 47 — Carving coordination tangle: consolidate on the de-facto builder + commit-forward-only (2026-06-28)
+The R1-UPPER carving handoff tangled: after genm-firing delivered the firing (reviewed-PASS, modulo the carving) and
+recommended a fresh `genm-carving` tide, I dispatched genm-carving + told genm-firing to stand down. But genm-firing
+(message-crossing) kept productively working — banked +2 carving prereqs, reused the canonical cover, then FORCE-PUSHED
+(a4c053e9, rebased onto 92485be7) — so the base genm-carving was told to rebase onto (e5396a3d) was rewritten, leaving
+genm-carving chasing a moving target. Three agents (genm-firing, genm-carving, genm-recstep-on-call) entangled on one heart.
+
+**Resolution + lesson:** consolidated on genm-firing (the de-facto builder — best state, all prereqs banked, actively
+executing the carving sub-tasks), stood down genm-carving, and mandated **commit-forward-only** (force-push rewrites
+history + breaks others' rebases — it's what tangled this). General controller pattern when a teammate doesn't heed a
+stand-down due to crossing AND has out-executed the handoff: don't fight to enforce the original plan — adapt to reality
+(consolidate on whoever holds the best state + is executing), stand down the now-redundant tide, and enforce no-force-push
+on the shared branch. The underlying friction is message-crossing (teammates iterate faster than the relay); mitigations
+already in use: anchor on each teammate's LATEST substantive state, flag crossings explicitly, resolve collisions decisively.
+No work was lost (all prereqs banked on genm-firing's branch). Operator note: this is process friction, not a math wall —
+the carving itself is bounded (ROUTE-A, prereqs done); only the bespoke generic zEG reshape remains.
