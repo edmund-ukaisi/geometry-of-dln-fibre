@@ -140,6 +140,15 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, source-readback center-matrix handoff,
+  2026-06-28.** Lean now exposes
+  `case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`,
+  which rewrites the explicit Case 2 source family's actual source-readback
+  residual-factor product into the selected-entry center-coordinate matrix
+  shape expected by local-measure `hfactor` consumers.  This is not itself a
+  local-measure theorem and does not prove source-prior pushforward, chart-image
+  membership, Jacobian density comparison, arbitrary retained-passive coverage,
+  source-rank coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, explicit selected-entry source-family regularity,
   2026-06-28.** The constructed Case 2 selected-entry-to-source family now has
   finite-coordinate regularity.  Lean proves continuity of the successor

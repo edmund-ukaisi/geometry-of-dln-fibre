@@ -48,6 +48,40 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Source-Readback Center-Matrix Handoff
+
+The explicit Case 2 selected-entry source family now has a content-named
+readback equality in the selected-entry center-coordinate matrix shape:
+
+```text
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+The proof uses
+`case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix`
+and unfolds `case2SuccessorSelectedEntryMatrix`.  This gives the exact
+`AoyagiResidualBlockCoordinateIndex.matrix (chartMap pivotNext yNext ...)`
+right-hand side expected by selected-entry local-measure `hfactor` consumers.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+Xhigh review by `Galileo` passed:
+`threads/03-block-product-reduction/review-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+`scripts/sorries`, `git diff --check`, touched-Lean-file forbidden-marker
+search, and direct axiom-footprint probe passed; the new endpoint reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This is only an exact-shape finite readback equality.  It does not apply the
+family to a fixed-base retained-passive local source, prove source-prior
+pushforward, chart-image membership, Jacobian density comparison, arbitrary
+retained-passive coverage, source-rank coverage, normal crossings, pole order,
+or RLCT.
+
 ## Latest A2 Case 2 Explicit Selected-Entry Source-Family Regularity
 
 The explicit selected-entry-to-source family from the previous Case 2 source

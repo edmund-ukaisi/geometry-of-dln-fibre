@@ -354,6 +354,43 @@ theorem case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_succe
       n hS hcont hnext yNext eNext
 
 set_option linter.style.longLine false in
+/-- The explicit selected-entry source edge family's actual readback has
+residual-factor product equal to the selected-entry center-coordinate matrix.
+
+This is the same finite equality as
+`case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix`,
+with the successor selected-entry matrix unfolded into the exact matrix shape
+used by selected-entry local-measure handoffs. -/
+theorem case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+          (K := ℝ) (ρ := ρ)
+          (case2PostPivotSelectedEntrySourceEdgeFamily
+            (ρ := ρ) n hS hcont hnext yNext eNext)).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext c)) := by
+  simpa [case2SuccessorSelectedEntryMatrix] using
+    case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+      (ρ := ρ) n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry source edge family's readback product is
 nonzero when the displayed successor selected-entry pivot coordinate is
 nonzero. -/

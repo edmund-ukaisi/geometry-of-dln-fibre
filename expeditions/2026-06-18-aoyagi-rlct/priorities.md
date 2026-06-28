@@ -19,6 +19,36 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, explicit Case 2 source-readback center-matrix handoff
+
+The explicit Case 2 selected-entry source family now exposes its actual
+source-readback residual-factor product in the exact selected-entry
+center-coordinate matrix shape used by the local-measure `hfactor` consumers:
+
+```text
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This is a content-named rewrite of the already-proved equality to
+`case2SuccessorSelectedEntryMatrix`, with that matrix unfolded into
+`AoyagiResidualBlockCoordinateIndex.matrix (chartMap pivotNext yNext ...)`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed.
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+Xhigh review by `Galileo` passed:
+`threads/03-block-product-reduction/review-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+`scripts/sorries`, `git diff --check`, touched-Lean-file forbidden-marker
+search, and direct axiom-footprint probe also passed; the new endpoint reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not apply the theorem to a fixed-base retained-passive local source,
+prove source-prior pushforward, chart-image membership, Jacobian density
+comparison, arbitrary retained-passive coverage, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, explicit selected-entry Case 2 source-family regularity
 
 The constructed Case 2 selected-entry-to-source family now has finite-coordinate

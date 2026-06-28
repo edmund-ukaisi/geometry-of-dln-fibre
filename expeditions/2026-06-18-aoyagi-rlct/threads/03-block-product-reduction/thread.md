@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 source-readback selected-entry center-matrix handoff
+
+Reproduction:
+`reproduction-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+Statement card:
+`statement-card-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+
+Lean now exposes the explicit Case 2 source family's actual source-readback
+product in the selected-entry center-coordinate matrix shape:
+
+```text
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This is the existing equality to `case2SuccessorSelectedEntryMatrix` with that
+matrix unfolded.  It is intended as an exact `hfactor`-shape theorem for later
+local-measure consumers.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+Xhigh review by `Galileo` passed:
+`review-a2-case2-source-readback-selected-entry-center-matrix-handoff.md`.
+`scripts/sorries`, `git diff --check`, touched-Lean-file forbidden-marker
+search, and direct axiom-footprint probe passed; the new endpoint reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This is only a finite readback equality.  It does not apply the family to a
+fixed-base retained-passive local source, prove source-prior pushforward,
+chart-image membership, Jacobian density comparison, arbitrary retained-passive
+coverage, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 explicit selected-entry source-family regularity
 
 Reproduction:
