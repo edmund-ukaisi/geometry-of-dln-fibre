@@ -180,3 +180,37 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     resolution-datum spec + R3-tide cost estimate.
   - Holding for 04's design proposal + 05's verdict. Then: review 04 to equilibrium before integrating;
     refine R3's Wave-2 shape from 05.
+
+- **tick 6 (MAJOR PIVOT — discovery of the parallel aoyagi line + operator's BLIND decision, 2026-06-28):**
+  - **Discovery (tide 04 + controller git-verified):** there is a large ACTIVE parallel formalisation of
+    **Aoyagi's paper** (separate from L&R), on `origin/expedition/aoyagi-full` (tip `648ebe18`) + many
+    `fm*`/`g1*`/`crux2*`/`cover/*` branches — **183 RLCT files, 12 code sorries, ONE axiom (`monomial_rlct`)**,
+    the GENUINE `rlctAt` (Aoyagi integral def), headline `aoyagi_learning_coefficient : ⨅ rlctAt =
+    aoyagiLambda` (Skeleton.lean:1725), and `(2,2,2)` rlct computed END-TO-END from `rlctAt` modulo only
+    `monomial_rlct` (no sorry). **NOT on dev.** It shares ZERO Lean dependency with dev/Core (does not
+    import `codimRepCanonical`/`fibre`/`mult`); the two worlds meet only at the field-free combinatorial
+    identity `aoyagiLambda_RLCT(H) ↔ Aoyagi.lambda_dev(d)` (H↔d index reversal). My "greenfield" tick-5
+    correction was right about dev but blind to these unmerged branches.
+  - **OPERATOR DECISION: the L&R/rlct-bridge line stays BLIND to the aoyagi expeditions.** No import, no
+    copy, no dependency on `rlctAt`/`aoyagiLambda_RLCT`/`monomial_rlct`/Skeleton. Rationale: decorrelation
+    (two independent formalisations of `rlct=½·codim` cross-check on later reconciliation), self-contained
+    cleanliness (inherit none of that line's sorries/churn), fidelity to L&R (who CITE Aoyagi). **This is
+    the original charter made strict** (loop-prompt: "the analytic RLCT core we CITE as the thin honest
+    seam — that is the scope, not a retreat").
+  - **Entailment (surfaced to operator, awaiting final nod):** blindness FORCES the opaque `rlct` (dev has
+    no genuine `rlctAt`), so the thin **opaque** cited interface (tide 04's design — C1/C2/C3 + expose T)
+    is the principled deliverable. **The analytic LOWER bound `rlct ≥ ½·codim` (Aoyagi's bespoke
+    resolution) is CITED, NOT formalised on our side** — formalising it blind = re-deriving Aoyagi in the
+    Tuple world (huge, duplicative-in-spirit). "Full proof" narrows honestly to: full proof of the L&R
+    GEOMETRY + a thin named cited analytic seam (Watanabe `≤`, Aoyagi `=`). Transfer T stays ours (prove
+    via dev `realizerD` if reachable, else explicit named field).
+  - **R1/R5 probe (05) CLOSED — banked as decorrelated L&R-side confidence in the citation** (NOT copied):
+    independent mildness confirmation rlct=3/2=½·codim at the `(2,2,2,2,2)` r=0 deepest stratum via exact
+    monomial-sos reduction `w₁²+w₂²+δ²(s²+v²)` (Newton-LP + polar integral, decorrelated Codex agreed).
+    Width-split map of what the citation rests on: VIABLE (one citable theorem per step on a clean monomial
+    depth-(L−1) tower) for all-width-2; NEEDED (bespoke recursive blow-up, the corank-≥2 shear = Aoyagi
+    diag(b)) for general widths ≥3. (Resolution-datum spec + L=3 next-construction → out of scope under
+    blind/cite.) Probe stood down.
+  - **NEXT (on operator nod):** resume tide 04 to finalize the blind thin interface (C1/C2/C3 + T,
+    re-derive downstream, delete trap docstring, retire monolith — green/sorry-free/axiom-clean/blind),
+    then the proved-geometry rungs (R2 upper bound via Watanabe+T+connector; R5 bundle completion).
