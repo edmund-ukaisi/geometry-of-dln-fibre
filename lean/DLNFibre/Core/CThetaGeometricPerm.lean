@@ -30,7 +30,7 @@ variable {N : ℕ} {k : Type u} [Field k]
 locus `Σ̄^r` is permutation-invariant — `codim (Σ̄^r of d ∘ σ) = codim (Σ̄^r of d)`. The bridge
 `codimRepCanonical_productRankLocusLE_eq_cCodim` (`codim Σ̄^r = cCodim`) on both sides + the
 combinatorial `cCodim_comp_perm`. The `.toNat` form (the ℕ∞ form is below). -/
-theorem codim_productRankLocusLE_toNat_comp_perm [IsAlgClosed k] [CharZero k]
+theorem codim_productRankLocusLE_toNat_comp_perm [CharZero k] [Infinite k]
     (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ j, r ≤ d j)
     (h : (kostantPartitions (d ∘ σ) r).Nonempty) (h' : (kostantPartitions d r).Nonempty) :
     (codimRepCanonical (productRankLocusLE (k := k) (d ∘ σ) r)).toNat
@@ -46,7 +46,7 @@ theorem codim_productRankLocusLE_toNat_comp_perm [IsAlgClosed k] [CharZero k]
 
 /-- **Geometric Cor 5.10, sorted form:** the geometric codimension of `Σ̄^r` equals that of the
 monotone rearrangement `Σ̄^r of d ∘ Tuple.sort d`. -/
-theorem codim_productRankLocusLE_toNat_comp_sort [IsAlgClosed k] [CharZero k]
+theorem codim_productRankLocusLE_toNat_comp_sort [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ j, r ≤ d j)
     (h : (kostantPartitions (d ∘ _root_.Tuple.sort d) r).Nonempty)
     (h' : (kostantPartitions d r).Nonempty) :
@@ -57,7 +57,7 @@ theorem codim_productRankLocusLE_toNat_comp_sort [IsAlgClosed k] [CharZero k]
 /-- **Geometric Cor 5.10 (codimension, ℕ∞ form):** the geometric codimension of `Σ̄^r` (in `ℕ∞`) is
 permutation-invariant. The `ℕ∞` form is preferred over `.toNat` — it does not silently erase a `⊤`
 case (finiteness is known here, but the stronger statement is the cleaner public API). -/
-theorem codimRepCanonical_productRankLocusLE_comp_perm [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_productRankLocusLE_comp_perm [CharZero k] [Infinite k]
     (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ j, r ≤ d j)
     (h : (kostantPartitions (d ∘ σ) r).Nonempty) (h' : (kostantPartitions d r).Nonempty) :
     codimRepCanonical (productRankLocusLE (k := k) (d ∘ σ) r)
@@ -70,7 +70,7 @@ theorem codimRepCanonical_productRankLocusLE_comp_perm [IsAlgClosed k] [CharZero
 permutation-invariant — `#topComponents (d ∘ σ) r = #topComponents d r`, given both Kostant-set
 finsets are nonempty. The bridge `numTop_eq_ncard_topComponents` on both sides + the combinatorial
 `numTop_comp_perm`. -/
-theorem ncard_topComponents_comp_perm [IsAlgClosed k] [CharZero k]
+theorem ncard_topComponents_comp_perm [CharZero k] [Infinite k]
     (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ j, r ≤ d j)
     (h : (kostantPartitions (d ∘ σ) r).Nonempty) (h' : (kostantPartitions d r).Nonempty) :
     (topComponents (k := k) (d ∘ σ) r h).ncard = (topComponents (k := k) d r h').ncard := by
@@ -78,7 +78,7 @@ theorem ncard_topComponents_comp_perm [IsAlgClosed k] [CharZero k]
     numTop_comp_perm σ d r hr h h']
 
 /-- **Geometric Cor 5.10 (component count), sorted form.** -/
-theorem ncard_topComponents_comp_sort [IsAlgClosed k] [CharZero k]
+theorem ncard_topComponents_comp_sort [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : ∀ j, r ≤ d j)
     (h : (kostantPartitions (d ∘ _root_.Tuple.sort d) r).Nonempty)
     (h' : (kostantPartitions d r).Nonempty) :
@@ -93,7 +93,7 @@ the following are conditional only on `1 ≤ N` and `r ≤ min d` (at every vert
 
 /-- **Geometric Cor 5.10 (codimension, ℕ∞), from `1 ≤ N` + `r ≤ min d`.** The Kostant-set
 nonemptiness is discharged by `kostantPartitions_nonempty_of_le`. -/
-theorem codimRepCanonical_productRankLocusLE_comp_perm_of_le [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_productRankLocusLE_comp_perm_of_le [CharZero k] [Infinite k]
     (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ)
     (hN : 1 ≤ N) (hr : ∀ j, r ≤ d j) :
     codimRepCanonical (productRankLocusLE (k := k) (d ∘ σ) r)
@@ -103,7 +103,7 @@ theorem codimRepCanonical_productRankLocusLE_comp_perm_of_le [IsAlgClosed k] [Ch
     (kostantPartitions_nonempty_of_le hN hr)
 
 /-- **Geometric Cor 5.10 (component count), from `1 ≤ N` + `r ≤ min d`.** -/
-theorem ncard_topComponents_comp_perm_of_le [IsAlgClosed k] [CharZero k]
+theorem ncard_topComponents_comp_perm_of_le [CharZero k] [Infinite k]
     (σ : Equiv.Perm (Fin (N + 1))) (d : Fin (N + 1) → ℕ) (r : ℕ)
     (hN : 1 ≤ N) (hr : ∀ j, r ≤ d j) :
     (topComponents (k := k) (d ∘ σ) r

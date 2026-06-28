@@ -72,11 +72,11 @@ variable {k : Type u} [Field k]
 
 variable {N : ℕ}
 
-/-- `sweepFibreRing` is **reduced** (over `[IsAlgClosed k]`): it is
+/-- `sweepFibreRing` is **reduced**, over ANY field `k`: it is
 `MvPolynomial (RepCoord d) k ⧸ vanishingIdeal(F)`, and the vanishing ideal of any subset is radical
-(strong Nullstellensatz, `MvPolynomial.vanishingIdeal_isRadical`), so the quotient is reduced
-(`Ideal.isRadical_iff_quotient_reduced`). -/
-instance isReduced_sweepFibreRing [IsAlgClosed k] (d : Fin (N + 2) → ℕ) (r : ℕ)
+(field-generically — `MvPolynomial.vanishingIdeal_isRadical`, no Nullstellensatz), so the quotient is
+reduced (`Ideal.isRadical_iff_quotient_reduced`). -/
+instance isReduced_sweepFibreRing (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     IsReduced (sweepFibreRing k d r hp hq) :=
   (Ideal.isRadical_iff_quotient_reduced _).mp

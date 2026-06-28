@@ -130,7 +130,7 @@ over the chart-closure coordinate ring `O(Σ^r) = sweepSigmaRing` does not drop 
 
 The exact source no-drop that `Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv` consumes,
 anchored on the rank-exactly-`r` ring (no wrapper restate). -/
-theorem ringKrullDim_localizationAway_chartDsig_eq [IsAlgClosed k] [CharZero k]
+theorem ringKrullDim_localizationAway_chartDsig_eq [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))

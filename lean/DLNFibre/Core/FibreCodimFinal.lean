@@ -74,7 +74,7 @@ theorem vanishingIdeal_sweepFibre_ne_top [Infinite k]
 `Core.SchurSideNoDrop.ringKrullDim_localizationAway_eq_of_schurSide` at a top-dimensional prime of
 the fibre coordinate ring `O(F) = sweepFibreRing`, with the unit-`k`-coefficient witness
 `detSchurS ≠ 0`. -/
-theorem ringKrullDim_localizationAway_chartGfib_eq [IsAlgClosed k] [CharZero k]
+theorem ringKrullDim_localizationAway_chartGfib_eq [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))
@@ -114,7 +114,7 @@ theorem ringKrullDim_localizationAway_chartGfib_eq [IsAlgClosed k] [CharZero k]
 /-- **`hSweep`: the homogeneous-sweep dimension identity** `varietyDim Σ^r = δ + varietyDim F`.
 Feeds the four discharged route-β inputs (`e`, `hsig`, `hP`, `hF`) into
 `Core.ChartSweepWiring.sweep_of_localizedChartAlgEquiv`. The expedition's penultimate rung. -/
-theorem varietyDim_sweepSigma_eq_shift [IsAlgClosed k] [CharZero k]
+theorem varietyDim_sweepSigma_eq_shift [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))
@@ -136,7 +136,7 @@ theorem varietyDim_sweepSigma_eq_shift [IsAlgClosed k] [CharZero k]
 in-repo closure bridge `hClosure` and the reducible-locus catenary): for the rank-`r` normal form
 `E = normalForm`, `codimRepCanonical (fibre d E) = C + δ`, `C = cCodim d r`,
 `δ = r·(d_N + d_0 − r)`. -/
-theorem codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (hN : (0 : Fin (N + 2)) ≠ Fin.last (N + 1))
@@ -167,7 +167,7 @@ every vertex), and `N ≥ 1` (`(0 : Fin (N+2)) ≠ Fin.last (N+1)`) is vacuously
 the new content underneath the (Cited) RLCT `= ½·codim` reading. Scope: this is the **codimension
 identity** of LR Lemma 4.6; the lemma's locally-trivial-bundle / component-count / smoothness content
 is separate. -/
-theorem codimRepCanonical_fibre_eq_cCodim_add_shift [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift [CharZero k] [Infinite k]
     (d : Fin (N + 2) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last (N + 1)))) (Fin (d 0)) k) (hB : B.rank = r) :
     codimRepCanonical (fibre d B)

@@ -185,7 +185,7 @@ theorem vanishingIdeal_orbitRankLocus_le_iff (d : Fin (N + 1) → ℕ)
 
 /-- Every member of the orbit-ideal family is prime: it is `vanishingIdeal (Ō_M)`, prime over an
 algebraically closed field (`Core.OrbitClosure.isPrime_vanishingIdeal_orbitRankLocus`). -/
-theorem orbitIdeals_isPrime [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+theorem orbitIdeals_isPrime [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     {p : Ideal (MvPolynomial (RepCoord d) k)} (hp : p ∈ orbitIdeals (k := k) d r) : p.IsPrime := by
   obtain ⟨M, _, rfl⟩ := hp
   exact isPrime_vanishingIdeal_orbitRankLocus M
@@ -203,7 +203,7 @@ elements of `R^{≤r}`"; the geometrically-correct object is the inclusion-**max
 inclusion-**minimal** vanishing ideals (the all-zero pattern is the order-minimal one and sits inside
 every closure, so is never a component). Settled by the worked `(2,2,2)`/`(2,3,2)` examples (recon
 thread 02); this is what the theorem proves. -/
-theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+theorem minimalPrimes_sigmaIdeal_eq [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
     (sigmaIdeal (k := k) d r).minimalPrimes
       = {p | p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q} := by
   rw [sigmaIdeal_eq_sInf_orbitIdeals]
@@ -214,7 +214,7 @@ theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r
 incarnation of) `Σ̄^r`, namely `zeroLocus (sigmaIdeal d r)`, are in inclusion-reversing bijection
 with the inclusion-minimal orbit ideals = the maximal orbit closures `Ō_M`. The Mathlib bridge
 `Ideal.minimalPrimes.equivIrreducibleComponents`, combined with `minimalPrimes_sigmaIdeal_eq`. -/
-noncomputable def irreducibleComponents_sigmaIdeal_equiv [IsAlgClosed k] (d : Fin (N + 1) → ℕ)
+noncomputable def irreducibleComponents_sigmaIdeal_equiv [Infinite k] (d : Fin (N + 1) → ℕ)
     (r : ℕ) :
     {p // p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q}
       ≃o (irreducibleComponents (PrimeSpectrum.zeroLocus
@@ -261,7 +261,7 @@ component of `Σ̄^r` — the geometric "min-codim is top-dimensional, hence a c
 `vanishingIdeal Ō_M' ⊊ vanishingIdeal Ō_M` and the strict-height brick
 (`Ideal.height_strict_mono_of_is_prime`) forces `codim Ō_M' < codim Ō_M`, contradicting minimality.
 `[IsAlgClosed k]` (for primality of the orbit ideals). -/
-theorem orbitRankLocus_minCodim_mem_minimalPrimes [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+theorem orbitRankLocus_minCodim_mem_minimalPrimes [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (M : Tuple (k := k) d) (hM : (mult d M).rank ≤ r)
     (hmin : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       codimRepCanonical (orbitRankLocus M) ≤ codimRepCanonical (orbitRankLocus M')) :

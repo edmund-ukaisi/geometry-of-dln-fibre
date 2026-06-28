@@ -433,3 +433,8 @@ import DLNFibre.Core.FibreProjectionCompat
 -- ROUND-TRIP proof is infra-blocked (kernel-cost on reducible double-localized type + missing
 -- AlgEquiv.trans_assoc/refl_trans in v4.29) — named residual, NOT claimed; global Flat π unbuilt.
 import DLNFibre.Core.FibreTargetOverlap
+-- L7 (rlct-bridge): finrank (range deformationδ) is base-change invariant along a field extension
+-- K/k — the orbit-tangent dimension is the SAME integer over ℝ and K. General conjugacy lemma
+-- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
+-- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
+import DLNFibre.Core.DeformationBaseChange

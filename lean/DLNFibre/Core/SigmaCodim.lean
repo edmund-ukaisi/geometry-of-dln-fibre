@@ -56,7 +56,7 @@ codimension of its irreducible components". General in `r`: `sigmaIdeal d r = sI
 and `minimalPrimes_sigmaIdeal_eq` are both general in `r` (`Core.SigmaComponents`). `[IsAlgClosed k]`
 (orbit-ideal primality). -/
 theorem codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim
-    [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+    [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
     codimRepCanonical (productRankLocusLE (k := k) d r)
       = ⨅ M ∈ {M : Tuple (k := k) d | (mult d M).rank ≤ r},
           codimRepCanonical (orbitRankLocus M) := by
@@ -98,7 +98,7 @@ the combinatorial `C = cCodim d r`. Both inequalities come from bridge (a): the 
 (`cCodim_le_codimRepCanonical_of cCodim_zero_mono` — uses only the **weak** monotonicity) and the
 realizer of a minimising Kostant partition attaining the minimum. `[IsAlgClosed k] [CharZero k]`
 (the Voigt-discharge scope where `C` is the geometric codimension). -/
-theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     codimRepCanonical (productRankLocusLE (k := k) d r) = ((cCodim d r h).toNat : ℕ∞) := by
   rw [codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim]
@@ -133,7 +133,7 @@ theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [IsAlgClosed k] [Cha
 (Lehalleur–Rimányi's `C`). The same orbit-closure machinery that proved the `r = 0` case, general in
 `r`; the per-orbit lower bound uses only the **weak** dimension-monotonicity (`cCodim_zero_mono` — not
 the strict version). `[IsAlgClosed k] [CharZero k]`. -/
-theorem codimRepCanonical_productRankLocusLE_eq_cCodim [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_productRankLocusLE_eq_cCodim [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     ((codimRepCanonical (productRankLocusLE (k := k) d r)).toNat : ℤ) = cCodim d r h := by
   rw [codimRepCanonical_productRankLocusLE_eq_cCodim_enat d r h, ENat.toNat_coe]
