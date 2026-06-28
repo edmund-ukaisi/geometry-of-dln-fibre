@@ -67,6 +67,48 @@ determinant chart image, external source-prior transport, source-rank coverage,
 normal crossings, pole order, or RLCT.  The arbitrary-measure theorem keeps its
 determinant-chart pushforward identity hypothesis.
 
+## Latest controller decision - 2026-06-28, Case 2 inverse-Jacobian continuous-density wrapper
+
+The raw-order inverse-Jacobian Case 2 finite-integral theorem now has a
+radius-shrinking wrapper for a positive continuous supplied integrand density:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map_continuousAt_pos_density
+```
+
+The theorem applies
+`exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos`
+to replace supplied local density nonnegativity and upper-bound hypotheses by
+`ContinuousAt density (base, 0)` and `0 < density (base, 0)`, after shrinking
+from `Rmax` to a returned `R <= Rmax`.  It then calls the existing raw-order
+inverse-Jacobian Case 2 finite-integral theorem with the returned bound `C`.
+
+The determinant-chart pushforward identity
+
+```text
+m.restrict topologyTupleDetChartSet = Measure.map chart weightedBox
+```
+
+remains explicit, as do the selected-entry residual radii and exponent
+condition and the local loss lower bound on `ball 0 Rmax`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct axiom
+probe passed; the new declaration reports only `[propext, Classical.choice,
+Quot.sound]`.
+
+This is a local density-bound wrapper only.  It does not prove the
+determinant-chart pushforward identity, identify Haar measure or an external
+source prior, prove chart coverage or source-rank coverage, construct normal
+crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-06-28, direct-chart positive-set measurability hardening
 
 The direct retained-passive p.13 residual positive set is now measurable on

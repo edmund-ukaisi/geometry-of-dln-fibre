@@ -99,6 +99,52 @@ passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
 probe passed; the declaration reports only `[propext, Classical.choice,
 Quot.sound]`.
 
+## Latest A2 Case 2 Inverse-Jacobian Continuous-Density Wrapper
+
+The raw-order inverse-Jacobian Case 2 finite-integral theorem now has a wrapper
+that removes the supplied local nonnegativity and boundedness hypotheses for
+the integrand density:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map_continuousAt_pos_density
+```
+
+It assumes positive continuity of the supplied density factor at `(base,0)`:
+
+```text
+ContinuousAt density (base, 0)
+0 < density (base, 0)
+```
+
+and a local loss lower bound on `ball 0 Rmax`.  The local-measure helper returns
+`R`, `C` with `0 < R`, `R <= Rmax`, and `0 <= C`, plus eventual density
+nonnegativity and upper bound on `ball 0 R`; `Metric.ball_subset_ball` restricts
+the loss bound from `Rmax` to `R`.  The proof then applies the existing
+raw-order inverse-Jacobian Case 2 finite-integral theorem.
+
+The determinant-chart pushforward identity remains explicit, as do the
+selected-entry residual radii and exponent condition.  The measure is still
+
+```text
+Measure.map rawChart ((m.restrict T).withDensity invJacDensity).
+```
+
+This is not a theorem about original/external source priors, chart coverage,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct axiom
+probe passed; the declaration reports only `[propext, Classical.choice,
+Quot.sound]`.
+
 ## Latest A2 Direct-Chart Positive-Set Measurability Hardening
 
 The retained-passive direct-chart residual positive set is now proved

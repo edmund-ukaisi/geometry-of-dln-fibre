@@ -14727,3 +14727,45 @@ This is a chart-produced determinant-measure theorem only.  It does not remove
 the supplied-map hypothesis from the arbitrary-measure theorem, identify Haar
 measure or an external source prior, prove full determinant-chart coverage,
 source-rank coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 inverse-Jacobian continuous-density finite-integral wrapper
+
+Reproduction:
+`reproduction-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+Statement card:
+`statement-card-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`.
+Review:
+`review-a2-case2-inverse-jacobian-density-continuousat-finite-integral.md`,
+PASS by xhigh read-only checker `Darwin`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map_continuousAt_pos_density
+```
+
+For the endpoint-transported Case 2 raw-order inverse-Jacobian source measure,
+positive continuity of the supplied integrand density at `(base,0)` supplies
+local density nonnegativity and boundedness after shrinking the regular-
+coordinate radius.  The theorem returns `R`, `C`, and `U` with `0 < R`,
+`R <= Rmax`, `0 <= C`, `IsOpen U`, and `base ∈ U`, plus the finite-integral
+conclusion over
+`Measure.map rawChart ((m.restrict T).withDensity invJacDensity)`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probe passed; the
+new declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+The determinant-chart pushforward identity, selected-entry residual radii and
+critical exponent inequality, and local loss lower bound remain explicit.  This
+does not identify Haar measure or an external source prior, prove chart
+coverage, prove source-rank coverage, construct normal crossings, compute pole
+order, or extract RLCT.
