@@ -22,7 +22,20 @@ Branch `genm-l2cle` (off `origin/genm-l2-wt`). Build: `scripts/lb DLNFibre.DLN.R
 **S4a matrix-entry strict-fderiv-0 helpers** (generic over `X`, proven):
 `hasStrictFDerivAt_matrix_mul_entry_of_left_zero` / `_of_right_zero` / `_triple_mul_entry_zero`.
 
+**S4a' ContDiffAt det/adj/inv variants + W⁻¹ derivative** (proven, the one new piece — CRACKED):
+`contDiffAt_matrix_{det,adjugate_entry,inv_entry}_of_..._at` (ContDiffAt-family inverse ladder, since
+W carries A_s⁻¹), `winv_sub_one_eq` (W⁻¹−1 = −(W⁻¹·(W−1)) on unit locus), and
+`hasStrictFDerivAt_winv_sub_one_entry_zero` (D(W⁻¹−1)(x)=0 via eventuallyEq on {det W≠0}).
+
 **S4b at-0 values** (proven): `gaugeProj_zero`, `l2A0_zero`/`l2A1_zero` (=1), `l2Y0_zero`/`l2Z1_zero`/`l2Y1_zero`/`l2T1_zero` (=0).
+
+**S4 TOOLKIT NOW COMPLETE** — all conceptually-hard pieces landed. Remaining S4 = pure mechanical
+assembly (~250-400 LoC): ContDiff entries for all named matrices (pattern shown: `1 + readX∘gaugeProj`,
+reads ContDiff via `contDiff_read*_entry.comp contDiff_gaugeProj`); ContDiffAt-at-0 of A0⁻¹/A1⁻¹/P00⁻¹/W⁻¹
+(dets =1 at 0); the normalizations (matrix `ext`+`simp` or `Matrix.mul_sub`/`sub_mul`); then per-summand
+deriv-0 via the helpers; CORE payload (`l2T1p−l2T1`) FIRST, then GAUGE payload (`l2Y1p−l2Y1`) reuses it as
+the `(T1−T1')` right-zero factor; descend via `pi'`; wire the CLE-reduction (validated skeleton in the
+resumption notes / git history).
 
 Scalar atoms available: `hasStrictFDerivAt_triple_mul_zero` (DeepestSchurSmooth), and (built but NOT yet
 moved to the bridge — re-derive or lift from git history of ScratchS4) `hasStrictFDerivAt_mul_zero_zero`,
