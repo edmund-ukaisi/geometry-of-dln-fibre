@@ -918,4 +918,18 @@ theorem schurCoreP_one (p : ℕ) (hp : 0 < p) (c' : ℝ) (hc0 : 0 < c') (hc' : c
   exact ENNReal.mul_lt_top (schurOne_delta_divisor_lt_top c' hc' T hT)
     (schurOneP_morse_lt_top p hp c' hc0 hcp T hT)
 
+/-! ## The cap-A interior cover (mirror of `schurCoreP_directMorse`, swapping the carve residual) -/
+
+/-- **The cap-A interior firing at corank `r ≥ 3`.** `SchurCore p r c' T` for `0 < c' < schurLambdaP p r`
+with the binding stratum interior (`schurLambdaP p r > p/2`): the `r²`-chart radial-`Δ` cover
+(`matBoxGen_outer_flat` + `gFlatGen_cover_sum`, DONE `(r,p)`-general) reduces to `r²` charts, each finite by
+the cap-A per-chart `schur_matBoxGenP_chart_capA_lt_top`. The `Fin p` analog of `schurCoreGen_firing`. -/
+theorem schurCoreP_capA_interior (p r : ℕ) (hr : 3 ≤ r) (hp : 0 < p)
+    (hIH : SchurLowerIH p (schurLambdaP p) r) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p r)
+    (hmid : (p : ℝ) / 2 < schurLambdaP p r) (T : ℝ) (hT : 0 < T) :
+    SchurCore p r c' T := by
+  rw [SchurCore, matBoxGen_outer_flat r p c' T, gFlatGen_cover_sum r p (by positivity) c' T]
+  exact ENNReal.sum_lt_top.2
+    (fun q _ => schur_matBoxGenP_chart_capA_lt_top r p hr hp hIH c' hc0 hc' hmid q T hT)
+
 end DLNFibre.DLN.RLCT
