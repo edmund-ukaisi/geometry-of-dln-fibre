@@ -1267,6 +1267,46 @@ theorem bgShiftG_entry_le (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) (hv : ∀ s, |
         mul_le_mul (hv _) (hv _) (abs_nonneg _) (by norm_num)
     _ = 1 := by norm_num
 
+/-- The slot-of-cell map: `Fin N`-index of the cell `s`'s `RmatGnorm` entry. -/
+noncomputable def slotCellG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) : Fin N :=
+  slotMatG r N hN hr p (cellRowColG r hr s).1 (cellRowColG r hr s).2
+
+theorem slotCellG_injective (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    Function.Injective (slotCellG r N hN hr p) := by
+  intro s1 s2 h
+  have hc1 := cellRowColG_ne_zero r hr s1
+  have hc2 := cellRowColG_ne_zero r hr s2
+  have hs1 := slotMatG_spec r N hN hr p (cellRowColG r hr s1).1 (cellRowColG r hr s1).2 hc1
+  have hs2 := slotMatG_spec r N hN hr p (cellRowColG r hr s2).1 (cellRowColG r hr s2).2 hc2
+  -- equal slots ⟹ equal succAbove-images ⟹ equal eG-images ⟹ equal cells
+  have hsucc : (finCongr hN p).succAbove (slotCellG r N hN hr p s1)
+      = (finCongr hN p).succAbove (slotCellG r N hN hr p s2) := by rw [h]
+  rw [slotCellG, slotCellG, hs1, hs2] at hsucc
+  have heG := (finCongr hN).injective hsucc
+  obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heG
+  have hrow : (cellRowColG r hr s1).1 = (cellRowColG r hr s2).1 :=
+    (Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩).injective hi
+  have hcol : (cellRowColG r hr s1).2 = (cellRowColG r hr s2).2 :=
+    (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩).injective hj
+  exact cellRowColG_injective r hr (Prod.ext hrow hcol)
+
+theorem card_cellSumG (r : ℕ) (hr : 3 ≤ r) :
+    Fintype.card ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) = r * r - 1 := by
+  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  -- (r-1)² + ((r-1)+(r-1)) = r² - 1; set m = r-1, r = m+1
+  obtain ⟨m, rfl⟩ : ∃ m, r = m + 1 := ⟨r - 1, by omega⟩
+  simp only [Nat.add_sub_cancel]
+  ring_nf
+  omega
+
+/-- **The cell↔slot bijection** `cellEquivG : ((Fin(r-1)×Fin(r-1)) ⊕ (Fin(r-1)⊕Fin(r-1))) ≃ Fin N`. -/
+noncomputable def cellEquivG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) ≃ Fin N :=
+  Equiv.ofBijective (slotCellG r N hN hr p)
+    ((Fintype.bijective_iff_injective_and_card _).2
+      ⟨slotCellG_injective r N hN hr p, by rw [card_cellSumG r hr, Fintype.card_fin]; omega⟩)
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
