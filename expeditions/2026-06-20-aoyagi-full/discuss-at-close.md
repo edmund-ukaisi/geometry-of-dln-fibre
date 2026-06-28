@@ -1129,3 +1129,16 @@ genm-n4 is building the honest reduction + named gap NOW; this item is about the
 three successive overclaims in the R1 chain (the missing routeMCore_le_matBox; the carve≠∀M-engine). A green branch + a worked
 family is NOT the ∀M headline. Always: name the family the result covers, grep that the "generic" consumer actually exists at the
 claimed generality, and check the worked anchor's special structure (here L=2, p=4) isn't load-bearing before calling it ∀M.
+
+### Item 56 — The task-completion stop-signal is necessary but NOT sufficient: a crossed/stale message can still trigger a re-derive of an already-closed result (2026-06-28)
+A near-miss (caught, no wasted build). After #137 (`schurRatioResidGen_mid`, the carve) closed + axiom-verified on
+genm-assemble, I assigned genm-firing the INTEGRATION role (#143 = reconcile/port the existing close onto the canonical line,
+explicitly "NOT re-derive"). genm-firing then **crossed signals** — it read a prior/stale message as a "Go" and announced it was
+"starting now" to re-wire/re-close #137 on its own branch (a second divergent close). It even flagged the two-closes risk itself
+but was proceeding. I halted it and re-confirmed the cherry-pick/reconcile framing; it had offered exactly that off-ramp.
+**The pattern (caps Items 47/48/53):** the task-list completion flag worked as a stop-signal once (UPDATE-255), but it is not
+self-sufficient — when a reassignment message and a task-close land close together, a teammate can still read the older signal as
+authorization to build. **Mitigation that worked:** on any reassignment AFTER a result closes, (a) state "do NOT re-derive — port
+the existing close" in the same message, (b) name the closing branch + commit, and (c) require an explicit confirm-before-build
+ack, not just a task-status flip. Cheap to apply; this near-miss cost zero build time because the redirect landed before the wire.
+The deeper structural fix (Item 53) still stands: one closer per result, integration is a distinct role from derivation.
