@@ -769,3 +769,33 @@ real structural correction over §10.3 (which treated directMorse as standalone-
 KILL-CONDITION status: this is the "2nd mechanical-looking that's structural" the controller flagged — caught
 it by studying the p=4 bases + Codex, BEFORE building. Not a wall (the math is the carve's own N2b bound,
 residual-dropped); a build-order + decomposition correction. Proceeding to build the shared `Fin p` plumbing.
+
+## 13. BUILD PROGRESS TRACKER (#146, live — updated 2026-06-28)
+
+Base: genm-pbuild = capstone @c2777384 + grafted {RouteMBoxReduction, RouteMBoxThresholdRR4} from genm-n4.
+Item-58 green-confirmed (closed carve schurRecStep_four CLEAN-THREE intact, 0 sorries). All increments below
+green-gated + forced #print axioms clean-three [propext, Classical.choice, Quot.sound], S2-FREE.
+
+LANDED (sorry-free, pushed to genm-pbuild):
+- [✅ piece iv] RouteMSchurThresholdP.lean — schurLambdaP p r := minAdm(![r,r,p])/2; minAdm_rrp_eq_inf;
+  schurLambdaP_zero/le_sq; minAdm_rrp_subadd (keystone, stratum-lift); schurLambdaP_peel_le →
+  schurLambdaP_satisfies_threshold (contract inhabited ∀p); minAdm_rr4_val_ge2 + schurLambdaP_four_eq.
+- [✅ shared plumbing 1] frobSqTopRowP_eq_shearP (RouteMSchurDirectMorseP.lean) — Fin p top-row identity.
+- [✅ shared plumbing 2] stepShearGP + stepShearP_r — the Fin p foundational shear (4→p verbatim, ~50 LoC m.t.).
+
+REMAINING (cap-B directMorse branch, then cap-A peel, then hfin):
+- [ ] innerSGenP (+ measurability) — the Fin p inner-S integrand (Fin 4 → Fin p of innerSGen, RouteMSchurFiring:275).
+- [ ] innerSGenP_directMorse_le_const — N2b j=1 LOWER bound (schur_minorPivot_split {r p}, ALREADY p-parametric)
+      + frobSqTopRowP_eq_shearP + stepShearP_r + DROP the frobSq(Sc·S_bot) residual; uniform in the angular z.
+      THE cap-B-specific lemma (the carve-peel keeps the residual + recurses; directMorse drops it + Morse-leaf).
+- [ ] schurRatioResidP_capB_lt_top — integrate the uniform inner bound over the bounded ratio box (sumSqND_box).
+- [ ] schurCoreP_directMorse — gFlatGen cover (DONE p-general, RouteMSchurGenCover) + radial axis (DONE,
+      radial_aAxis_divisor_lt_top) + schurRatioResidP_capB_lt_top. Proves SchurCore p r c' T for c' < min(p,r²)/2.
+- [ ] the cap-A carve 4→p peel (schurRatioResidGenP_mid with hc2: p/2 < c') — reuses plumbing 1/2 + innerSGenP
+      + the residual (NOT dropped) + the corank IH. The carve's ~600-LoC 4→p swap (mechanical, large).
+- [ ] schurRecStep_p dispatch (le_or_lt (lam r) (p/2) → directMorse | peel; r=0 vacuous; 1≤p) +
+      core_schurGen_lt_top wiring → routeMBoxThresholdFinite_rrp → routeMCore_threshold_lt_top at M=![r,r,p].
+
+De-risk status: the shared-plumbing 4→p swaps confirmed mechanical (2/2 verbatim). The genuinely-new content is
+innerSGenP_directMorse_le_const (the residual-drop) — Codex-designed (§12). No research wall. schur_minorPivot_split
++ sumSqND_box_lt_top + gFlatGen + radial axis all confirmed p-general/DONE on the base.
