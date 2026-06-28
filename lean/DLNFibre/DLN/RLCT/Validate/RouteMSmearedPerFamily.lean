@@ -65,4 +65,50 @@ example (M : Fin (L + 1) → ℕ)
   routeMCore_box_diverges_smearedContract M ψ R D p h hmp hemb c' ε S hSmeas hSpre hRderiv hRinj hRdet
     hSdiv
 
+/-! ### Sub-tide 1 — general matrix-inverse entrywise measurability (the `shiftM`/Λ₀ foundation)
+
+The (2,3,1) `lam231_measurable` uses an explicit `2×2` cofactor inverse (no transport to opaque widths).
+The GENERAL route, valid at any width: `A⁻¹ i j = (det A)⁻¹ • adjugate A i j` (`Matrix.inv_def`), with
+`adjugate`/`det` continuous (hence measurable) in the entries and `(·)⁻¹` measurable. This unblocks the
+opaque-width `Λ₀ = (P₁ᵀP₁)⁻¹P₁ᵀP₂` shift measurability (FLAG-1, resolved). -/
+
+/-- **General matrix-`det` entrywise measurability.** For a matrix-valued map with measurable ENTRIES,
+`det (A x)` is measurable in `x`. Via `det_apply'` (`det = ∑_σ ε σ · ∏_i A (σ i) i`) + `Finset` sum/prod
+measurability — avoids the `Matrix` `MeasurableSpace` instance (works entrywise, like `lam231`). -/
+theorem measurable_matrixDet {X : Type*} [MeasurableSpace X] {n : ℕ}
+    (A : X → Fin n → Fin n → ℝ) (hA : ∀ i j, Measurable (fun x => A x i j)) :
+    Measurable (fun x => (Matrix.of (A x)).det) := by
+  simp only [Matrix.det_apply']
+  refine Finset.measurable_sum _ (fun σ _ => ?_)
+  refine (measurable_const).mul (Finset.measurable_prod _ (fun i _ => ?_))
+  exact hA (σ i) i
+
+/-- **General matrix-`adjugate` entrywise measurability.** Each `adjugate (A x) i j = (updateRow j (e i)).det`
+(`adjugate_apply`), a `det` of an entry-measurable matrix — measurable by `measurable_matrixDet`. -/
+theorem measurable_matrixAdjugate {X : Type*} [MeasurableSpace X] {n : ℕ}
+    (A : X → Fin n → Fin n → ℝ) (hA : ∀ i j, Measurable (fun x => A x i j)) (i j : Fin n) :
+    Measurable (fun x => (Matrix.of (A x)).adjugate i j) := by
+  simp only [Matrix.adjugate_apply]
+  -- (updateRow (A x) j (Pi.single i 1)).det — entries measurable (updateRow swaps row j for a constant)
+  refine measurable_matrixDet (fun x => (Matrix.of (A x)).updateRow j (Pi.single i 1)) (fun a b => ?_)
+  by_cases haj : a = j
+  · subst haj
+    simp only [Matrix.updateRow_self]
+    exact measurable_const
+  · simp only [Matrix.updateRow_ne haj, Matrix.of_apply]
+    exact hA a b
+
+/-- **General matrix-inverse entrywise measurability (the `shiftM`/Λ₀ foundation).** For a matrix-valued
+map with measurable ENTRIES, each inverse entry `(A x)⁻¹ i j` is measurable. Via `Matrix.inv_def`
+(`A⁻¹ = (det A)⁻¹ • adjugate A`) + `measurable_matrixDet`/`measurable_matrixAdjugate` + `Measurable.inv`.
+The opaque-width replacement for the `(2,3,1)` explicit-`2×2`-cofactor `lam231_measurable` (FLAG-1). -/
+theorem measurable_matrixInv_entry {X : Type*} [MeasurableSpace X] {n : ℕ}
+    (A : X → Fin n → Fin n → ℝ) (hA : ∀ i j, Measurable (fun x => A x i j)) (i j : Fin n) :
+    Measurable (fun x => (Matrix.of (A x))⁻¹ i j) := by
+  have hentry : ∀ x, (Matrix.of (A x))⁻¹ i j
+      = (Matrix.of (A x)).det⁻¹ * (Matrix.of (A x)).adjugate i j := by
+    intro x; rw [Matrix.inv_def]; simp [Matrix.smul_apply, smul_eq_mul]
+  simp only [hentry]
+  exact (measurable_matrixDet A hA).inv.mul (measurable_matrixAdjugate A hA i j)
+
 end DLNFibre.DLN.RLCT
