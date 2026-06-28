@@ -1351,6 +1351,48 @@ theorem zσG_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * 
     zσG r N hN hr p (slotMatG r N hN hr p (cellR r hr s).1 (cellR r hr s).2) = s :=
   (Equiv.ofBijective _ (slotFunR_bijective r N hN hr p)).symm_apply_apply s
 
+/-- M22-cell carve readback: `RmatGnorm (zEG.symm (M,v)) ⟨a+1⟩ ⟨b+1⟩ = M (a,b)`. -/
+theorem RmatGnorm_carve_M22 (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (a b : Fin (r - 1)) :
+    RmatGnorm r N hN hr p ((zEG r N hN hr p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = M (a, b) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG r N hN hr p ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatG r N hN hr p (cellR r hr (Sum.inl (a, b))).1
+          (cellR r hr (Sum.inl (a, b))).2 from rfl,
+    zEG_symm_apply, zσG_slot]
+  rfl
+
+/-- g-cell carve readback: `RmatGnorm (zEG.symm (M,v)) ⟨a+1⟩ ⟨0⟩ = v (inl a)`. -/
+theorem RmatGnorm_carve_g (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (a : Fin (r - 1)) :
+    RmatGnorm r N hN hr p ((zEG r N hN hr p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩ = v (Sum.inl a) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨0, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG r N hN hr p ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩
+      = slotMatG r N hN hr p (cellR r hr (Sum.inr (Sum.inl a))).1
+          (cellR r hr (Sum.inr (Sum.inl a))).2 from rfl,
+    zEG_symm_apply, zσG_slot]
+  rfl
+
+/-- b-cell carve readback: `RmatGnorm (zEG.symm (M,v)) ⟨0⟩ ⟨b+1⟩ = v (inr b)`. -/
+theorem RmatGnorm_carve_b (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (b : Fin (r - 1)) :
+    RmatGnorm r N hN hr p ((zEG r N hN hr p).symm (M, v))
+        ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = v (Sum.inr b) := by
+  have hab : ¬ ((⟨0, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG r N hN hr p ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatG r N hN hr p (cellR r hr (Sum.inr (Sum.inr b))).1
+          (cellR r hr (Sum.inr (Sum.inr b))).2 from rfl,
+    zEG_symm_apply, zσG_slot]
+  rfl
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
