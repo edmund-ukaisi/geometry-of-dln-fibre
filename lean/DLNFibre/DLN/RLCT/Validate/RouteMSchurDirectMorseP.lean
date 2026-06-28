@@ -219,4 +219,119 @@ theorem measurable_innerSGenP (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r *
     exact hy.comp measurable_fst
   · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd)
 
+/-! ## The cap-B per-`R` inner bound (the genuinely-new directMorse content) -/
+
+/-- **The cap-B inner-`S` finiteness, per angular matrix `R`.** For an `r×r` matrix `R` (`r ≥ 3`) with pivot
+`R ⟨0⟩ ⟨0⟩ = 1` and bounded entries `|R a b| ≤ 1`, and `c' < p/2`, the inner-`S` integral
+`∫_{S∈matBox r p T} frobSq(R·S)^{−c'} < ⊤` — WITHOUT recursion. The N2b (`j = 1`) two-sided bound bounds
+`frobSq(R·S)^{−c'} ≤ c₀^{−c'}·(frobSq(top row) + frobSq(Sc·S_bot))^{−c'}` (`ofReal_rpow_le_const_mul`, the
+zero-guard from the upper bound); the split value `X = topRow + frobSq(Sc·S_bot)` rewrites the top row via
+`frobSqTopRowP_eq_shearP`; `stepShearP_r` peels the `Fin p` Morse block to `morseBox p (r·T)`; and the
+abstract-`Z` Morse dominator `radial_morse_dominates_absZ_lt_top` (`m+1 = p`, `Z = matBox (r-1) p (r·T)`,
+`W = frobSq(Sc·S_bot)`) closes it for `c' < p/2`. The constant `c₀` is uniform (chosen before `R`). Cap-B
+keeps the residual (the binding stratum `t = 0`); no recursion, unlike the cap-A carve. -/
+theorem frobSq_capB_inner_lt_top (r p : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r → ℝ)
+    (hpiv : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (hbd : ∀ a b, |R a b| ≤ 1)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < (p : ℝ) / 2) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ S in matBox r p T, ENNReal.ofReal ((frobSq (rmatMul R S)) ^ (-c'))) < ⊤ := by
+  classical
+  have hrm1 : (1 : ℕ) ≤ r := by omega
+  -- view R as a Matrix for the Matrix-API spots (.submatrix/.det); rmatMul RM = rmatMul R (defeq)
+  set RM : Matrix (Fin r) (Fin r) ℝ := Matrix.of R with hRM
+  set c₀ := (schur_minorPivot_split (r := r) (p := p) 1 (by omega)).choose with hc₀def
+  obtain ⟨c₁, hc₀, hc₁, hN2b⟩ := (schur_minorPivot_split (r := r) (p := p) 1 hrm1).choose_spec
+  -- the 1×1 pivot minor M11 = [1]: det = 1, dominance from |entries| ≤ 1, det ≠ 0
+  set M11 : Matrix (Fin 1) (Fin 1) ℝ :=
+    Matrix.of (fun a b : Fin 1 => RM ⟨a, lt_of_lt_of_le a.2 hrm1⟩ ⟨b, lt_of_lt_of_le b.2 hrm1⟩) with hM11
+  have hM11_one : M11 = 1 := by
+    ext a b; fin_cases a; fin_cases b
+    simp only [hM11, hRM, Matrix.of_apply, Matrix.one_apply_eq]; exact hpiv
+  have hpivdet : M11.det = 1 := by rw [hM11_one]; simp
+  have hpivot : ∀ I J : Fin 1 → Fin r, |(RM.submatrix I J).det| ≤ |M11.det| := by
+    intro I J
+    rw [Matrix.det_fin_one, hpivdet, abs_one, Matrix.submatrix_apply]
+    exact hbd (I 0) (J 0)
+  have hne : M11.det ≠ 0 := by rw [hpivdet]; norm_num
+  -- fix Sc via a dummy extraction; the split value X and the per-S two-sided bound
+  obtain ⟨Sc, hSceq, _hdet, _, _⟩ := hN2b RM (fun _ _ => 0) hbd hpivot hne
+  set X : (Fin r → Fin p → ℝ) → ℝ := fun S =>
+    frobSq (fun a : Fin 1 => rmatMul (fun x y => RM x y) S ⟨a, lt_of_lt_of_le a.2 hrm1⟩)
+      + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩)) with hXdef
+  have hXnn : ∀ S, 0 ≤ X S := fun S => add_nonneg (frobSq_nonneg _) (frobSq_nonneg _)
+  have hlow : ∀ S, c₀ * X S ≤ frobSq (rmatMul RM S) := by
+    intro S
+    obtain ⟨Sc', hSceq', _, hlo, _⟩ := hN2b RM S hbd hpivot hne
+    have : Sc' = Sc := by rw [hSceq', ← hSceq]
+    subst this; simpa only [hXdef] using hlo
+  have hupp : ∀ S, frobSq (rmatMul RM S) ≤ c₁ * X S := by
+    intro S
+    obtain ⟨Sc', hSceq', _, _, hup⟩ := hN2b RM S hbd hpivot hne
+    have : Sc' = Sc := by rw [hSceq', ← hSceq]
+    subst this; simpa only [hXdef] using hup
+  -- rpow domination
+  have hpt : ∀ S, ENNReal.ofReal ((frobSq (rmatMul R S)) ^ (-c'))
+      ≤ ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal ((X S) ^ (-c')) := by
+    intro S
+    refine ofReal_rpow_le_const_mul (X S) (frobSq (rmatMul R S)) c₀ c'
+      hc0 hc₀ (hXnn S) (frobSq_nonneg _) (hlow S) ?_
+    intro hX0
+    have := hupp S; rw [hX0, mul_zero] at this
+    exact le_antisymm this (frobSq_nonneg _)
+  -- the coupling row b a = RM ⟨0⟩ ⟨1+a⟩, |b| ≤ 1; pivot for frobSqTopRowP
+  set bcoup : Fin (r - 1) → ℝ := fun a => RM ⟨0, by omega⟩ ⟨1 + (a : ℕ), by omega⟩ with hbcoup
+  have hbcoup_le : ∀ a, |bcoup a| ≤ 1 := fun a => hbd _ _
+  have hpiv' : (fun x y => RM x y) ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := hpiv
+  -- X S = (shear sum) + frobSq(Sc·S_bot)  (frobSqTopRowP_eq_shearP)
+  have hXrw : ∀ S, X S
+      = (∑ q, (S ⟨0, by omega⟩ q + ∑ a, bcoup a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+        + frobSq (rmatMul (fun a b => Sc a b) (fun a q => S ⟨1 + (a : ℕ), by omega⟩ q)) := by
+    intro S
+    simp only [hXdef]
+    rw [frobSqTopRowP_eq_shearP r p hr (fun x y => RM x y) hpiv' S]
+  -- assemble: rpow domination → pull constant → frobSqTopRowP bridge → stepShearP_r → Morse dominator
+  obtain ⟨pm, hpm⟩ : ∃ pm, p = pm + 1 := by
+    refine ⟨p - 1, ?_⟩
+    have : 0 < p := by
+      by_contra h
+      push_neg at h; interval_cases p; simp at hc'; linarith
+    omega
+  calc (∫⁻ S in matBox r p T, ENNReal.ofReal ((frobSq (rmatMul R S)) ^ (-c')))
+      ≤ ∫⁻ S in matBox r p T, ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal ((X S) ^ (-c')) :=
+        lintegral_mono hpt
+    _ = ENNReal.ofReal (c₀ ^ (-c')) * ∫⁻ S in matBox r p T, ENNReal.ofReal ((X S) ^ (-c')) := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+    _ = ENNReal.ofReal (c₀ ^ (-c'))
+          * ∫⁻ S in matBox r p T,
+              ENNReal.ofReal (((∑ q, (S ⟨0, by omega⟩ q
+                  + ∑ a, bcoup a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+                + frobSq (rmatMul (fun a b => Sc a b)
+                    (fun a q => S ⟨1 + (a : ℕ), by omega⟩ q))) ^ (-c')) := by
+        congr 1; exact lintegral_congr (fun S => by rw [hXrw S])
+    _ ≤ ENNReal.ofReal (c₀ ^ (-c'))
+          * (∫⁻ S_bot in matBox (r - 1) p T, ∫⁻ T' in morseBox p ((r : ℕ) * T),
+              ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                + frobSq (rmatMul (fun a b => Sc a b) S_bot)) ^ (-c'))) :=
+        mul_le_mul_left' (stepShearP_r r p hr bcoup hbcoup_le (Matrix.of (fun a b => Sc a b)) T hT c') _
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+        -- the residual-kept double integral is finite via the abstract-Z Morse dominator (c' < p/2)
+        have hcap : c' < ((pm + 1 : ℝ)) / 2 := by rw [hpm] at hc'; push_cast at hc'; exact hc'
+        have hrT : 0 < (r : ℕ) * T := by positivity
+        have hZfin : volume (matBox (r - 1) p ((r : ℕ) * T)) < ⊤ :=
+          matBox_volume_lt_top (r - 1) p ((r : ℕ) * T)
+        have hmain := radial_morse_dominates_absZ_lt_top (m := pm) (Ω := Fin (r - 1) → Fin p → ℝ)
+          (volume) c' hcap hc0.le ((r : ℕ) * T) hrT
+          (fun S_bot => frobSq (rmatMul (fun a b => Sc a b) S_bot))
+          (fun _ => frobSq_nonneg _) (matBox (r - 1) p ((r : ℕ) * T)) hZfin
+        -- hmain: ∫_{Z} ∫_{morseBox (pm+1) (r·T)} (∑P² + W)^{−c'} < ⊤; rewrite pm+1 = p, Z radius T ⊆ r·T
+        have hpconv : pm + 1 = p := hpm.symm
+        subst hpconv
+        -- the LHS box (S_bot at radius T) ⊆ (S_bot at radius r·T) — enlarge, then hmain
+        have hsub : matBox (r - 1) (pm + 1) T ⊆ matBox (r - 1) (pm + 1) ((r : ℕ) * T) := by
+          intro Y hY i k; have := Set.mem_Icc.1 (hY i k); rw [Set.mem_Icc]
+          have hTrT : T ≤ (r : ℕ) * T := le_mul_of_one_le_left hT.le
+            (by exact_mod_cast (show (1:ℕ) ≤ r by omega))
+          constructor <;> [linarith [this.1]; linarith [this.2]]
+        exact lt_of_le_of_lt (lintegral_mono_set hsub) hmain
+
 end DLNFibre.DLN.RLCT
