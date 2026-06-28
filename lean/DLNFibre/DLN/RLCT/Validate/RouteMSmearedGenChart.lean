@@ -233,13 +233,12 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
           else deepCol M hL u hcol j) := by
     intro j
     simp only [smearedDeepLayer, Matrix.updateRow_apply, deepCol]
-  -- REMAINING (mechanical, fully scoped): rewrite the sum body by `hsdl`, then apply the LANDED generic
-  -- `sum_smearedCol_collapse` with `f = frontMat i`, `d = deepCol`, `lam = routing 0`, and the front-fact
-  -- relation `frontMat_routing_eq_resid` (LANDED) for its `hfront` hypothesis. The only friction left is
-  -- the cast plumbing: the deepest-row index type `Fin (M (deepLayer).castSucc)` ↔ `Fin (w+1)` (the
-  -- opaque-`m1` destructure) and the `Fin.last`/`(deepLayer).succ` column-type alignment, plus matching
-  -- `residSel r` to `Fin.succ r`. All the MATH (peel, mul_apply, reindex, the per-row readout `hsdl`, the
-  -- front-fact entry cancellation, the sum collapse) is LANDED sorry-free; this is surface cast friction.
+  -- REMAINING (the sum-arithmetic, fully scoped — WIP): apply the LANDED `sum_smearedCol_collapse`
+  -- (`f = frontMat i`, `d = deepCol`, `lam = routing 0`) using the LANDED front-fact relation
+  -- `frontMat_routing_eq_resid` for its `hfront` hypothesis. The friction is the cast plumbing: rewriting
+  -- the goal sum by `hsdl` (the `subst jc` leaves the column at `Fin.last` not `(deepLayer).succ`), the
+  -- opaque-`m1` width recast `Fin (M⟨deepLayer⟩.castSucc) ↔ Fin (w+1)`, and `residSel ↔ Fin.succ`. All the
+  -- MATH is landed sorry-free (peel, mul_apply, reindex, hsdl readout, front-fact entry, sum collapse).
   sorry
 
 end DLNFibre.DLN.RLCT
