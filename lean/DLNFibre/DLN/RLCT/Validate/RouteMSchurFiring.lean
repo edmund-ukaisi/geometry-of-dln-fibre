@@ -1,5 +1,4 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurGeneral
-import DLNFibre.DLN.RLCT.Validate.RouteMSchurGenCover
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
 import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
@@ -161,31 +160,96 @@ theorem schurCore4_one (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 1 / 2) (T : ℝ) (h
   exact ENNReal.mul_lt_top (schurOne_delta_divisor_lt_top c' hc' T hT)
     (schurOne_morse_lt_top c' hc0 hc' T hT)
 
-/-! ## The generic outer radial-Δ `r²`-chart cover
+/-! ## The generic outer radial-Δ `r²`-chart cover (mirror of corank-3 `matToFlat3`/`gFlat3_*`) -/
 
-The generic flatten + `r²`-chart radial cover is the CANONICAL `RouteMSchurGenCover`
-(`matToFlatGen`/`flatBoxGen`/`matBoxGen_outer_flat`/`gFlatGen_cover_sum`, sorry-free, axiom-clean,
-`p`-general). This file reuses it (at `p = 4`) — only the radial pull-out `RmatG`/`gFlatG_blowup_radial`
-is local to the firing. -/
+/-- The generic matrix flatten `matToFlatG r : (Fin r → Fin r → ℝ) ≃ᵐ (Fin (r*r) → ℝ)` (uncurry + the
+`Fin r × Fin r ≃ Fin (r·r)` index reindex). -/
+noncomputable def matToFlatG (r : ℕ) : (Fin r → Fin r → ℝ) ≃ᵐ (Fin (r * r) → ℝ) :=
+  (MeasurableEquiv.piCurry (fun (_ : Fin r) (_ : Fin r) => ℝ)).symm.trans
+    (MeasurableEquiv.arrowCongr'
+      ((Equiv.sigmaEquivProd (Fin r) (Fin r)).trans finProdFinEquiv) (MeasurableEquiv.refl ℝ))
+
+theorem measurePreserving_matToFlatG (r : ℕ) :
+    MeasurePreserving (matToFlatG r) (volume : Measure (Fin r → Fin r → ℝ))
+      (volume : Measure (Fin (r * r) → ℝ)) := by
+  unfold matToFlatG
+  refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+    ((Equiv.sigmaEquivProd (Fin r) (Fin r)).trans finProdFinEquiv)
+    (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+  exact (measurePreserving_piCurry (fun (_ : Fin r) (_ : Fin r) => ℝ)
+    (fun _ _ => (volume : Measure ℝ))).symm
+    (MeasurableEquiv.piCurry (fun (_ : Fin r) (_ : Fin r) => ℝ))
+
+/-- The flattened `Δ`-box on the `Fin (r*r)` carrier: `[−T,T]^{r²}`. -/
+def flatBoxG (r : ℕ) (T : ℝ) : Set (Fin (r * r) → ℝ) := {y | ∀ i, y i ∈ Set.Icc (-T) T}
+
+theorem flatBoxG_measurableSet (r : ℕ) (T : ℝ) : MeasurableSet (flatBoxG r T) := by
+  rw [flatBoxG, Set.setOf_forall]
+  exact MeasurableSet.iInter (fun i => (measurable_pi_apply i) measurableSet_Icc)
+
+/-- `matBox r r T = matToFlatG r ⁻¹' flatBoxG r T`. -/
+theorem matBoxG_flatBox_preimage (r : ℕ) (T : ℝ) :
+    matBox r r T = matToFlatG r ⁻¹' flatBoxG r T := by
+  ext Δ
+  simp only [matBox, flatBoxG, Set.mem_setOf_eq, Set.mem_preimage]
+  set e : (Σ _ : Fin r, Fin r) ≃ Fin (r * r) :=
+    (Equiv.sigmaEquivProd (Fin r) (Fin r)).trans finProdFinEquiv with he
+  have hcoord : ∀ i : Fin (r * r), (matToFlatG r Δ) i = Δ (e.symm i).1 (e.symm i).2 := fun i => rfl
+  constructor
+  · intro h i; rw [hcoord i]; exact h (e.symm i).1 (e.symm i).2
+  · intro h k j
+    have := h (e ⟨k, j⟩)
+    rw [hcoord (e ⟨k, j⟩), Equiv.symm_apply_apply] at this
+    exact this
+
+/-- The flat-`Δ` cover integrand: `gFlatG c' T y = ∫_{S∈box r 4} frobSq(rmatMul (matToFlatG.symm y) S)^{−c'}`. -/
+noncomputable def gFlatG (r : ℕ) (c' : ℝ) (T : ℝ) (y : Fin (r * r) → ℝ) : ℝ≥0∞ :=
+  ∫⁻ S in matBox r 4 T,
+    ENNReal.ofReal ((frobSq (rmatMul ((matToFlatG r).symm y) S)) ^ (-c'))
+
+/-- The `Δ`-outer integral reindexes to the flat `gFlatG` integral over `flatBoxG`. -/
+theorem matBoxG_outer_flat (r : ℕ) (c' : ℝ) (T : ℝ) :
+    (∫⁻ Δ in matBox r r T, ∫⁻ S in matBox r 4 T,
+        ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c')))
+      = ∫⁻ y in flatBoxG r T, gFlatG r c' T y := by
+  have hmp := measurePreserving_matToFlatG r
+  have hcomp := hmp.setLIntegral_comp_preimage_emb (matToFlatG r).measurableEmbedding
+    (gFlatG r c' T) (flatBoxG r T)
+  rw [matBoxG_flatBox_preimage, ← hcomp]
+  refine setLIntegral_congr_fun ((matToFlatG r).measurable (flatBoxG_measurableSet r T))
+    (fun Δ _ => ?_)
+  rw [gFlatG, MeasurableEquiv.symm_apply_apply]
+
+/-- The cover-to-sum on the `Fin (r*r)` flat carrier (`recStep`, the `r²`-entry argmax cover). Needs
+`0 < r` for a pivot to exist (`r ≥ 1` since `r ≥ 3` in the firing). -/
+theorem gFlatG_cover_sum (r : ℕ) (hr : 0 < r * r) (c' : ℝ) (T : ℝ) :
+    (∫⁻ y in flatBoxG r T, gFlatG r c' T y)
+      = ∑ p ∈ (Finset.univ : Finset (Fin (r * r))),
+          ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (r * r))) p \ pivotZeroOn p,
+            ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (r * r))) p y).det|
+              * (flatBoxG r T).indicator (gFlatG r c' T) (pivotBlowupOn
+                  (Finset.univ : Finset (Fin (r * r))) p y) :=
+  recStep (Finset.univ : Finset (Fin (r * r))) ⟨0, hr⟩ (Finset.mem_univ _)
+    (flatBoxG r T) (flatBoxG_measurableSet r T) (gFlatG r c' T)
 
 /-- The unflattened angular matrix on chart `p`: `RmatG p y` is the `r×r` matrix with `R_p = 1`,
-`R_k = y_k` (`k ≠ p`), via the canonical flatten `matToFlatGen`. -/
+`R_k = y_k` (`k ≠ p`). -/
 noncomputable def RmatG (r : ℕ) (p : Fin (r * r)) (y : Fin (r * r) → ℝ) : Fin r → Fin r → ℝ :=
-  (matToFlatGen r).symm (fun i => if i = p then 1 else y i)
+  (matToFlatG r).symm (fun i => if i = p then 1 else y i)
 
-/-- **The radial pull-out** (N1 degree-2 homogeneity): `gFlatGen r 4 c' T (blowup) =
+/-- **The radial pull-out** (N1 degree-2 homogeneity): `gFlatG c' T (blowup) =
 ∫_S ((y p)²·frobSq(RmatG·S))^{−c'}`. -/
 theorem gFlatG_blowup_radial (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y : Fin (r * r) → ℝ) :
-    gFlatGen r 4 c' T (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y)
+    gFlatG r c' T (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y)
       = ∫⁻ S in matBox r 4 T,
           ENNReal.ofReal (((y p) ^ 2 * frobSq (rmatMul (RmatG r p y) S)) ^ (-c')) := by
-  unfold gFlatGen RmatG
+  unfold gFlatG RmatG
   refine lintegral_congr (fun S => ?_)
   congr 1
-  have hbl : (matToFlatGen r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y)
-      = fun a b => (y p) * ((matToFlatGen r).symm (fun i => if i = p then 1 else y i)) a b := by
+  have hbl : (matToFlatG r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y)
+      = fun a b => (y p) * ((matToFlatG r).symm (fun i => if i = p then 1 else y i)) a b := by
     funext a b
-    show (matToFlatGen r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y) a b = _
+    show (matToFlatG r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y) a b = _
     rw [show pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y
         = (fun i => (y p) * (if i = p then 1 else y i)) from by
       funext i; unfold pivotBlowupOn
@@ -193,7 +257,7 @@ theorem gFlatG_blowup_radial (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y
       · subst hi; simp
       · simp [hi]]
     rfl
-  rw [hbl, radialDelta_loss_factor (y p) ((matToFlatGen r).symm (fun i => if i = p then 1 else y i)) S]
+  rw [hbl, radialDelta_loss_factor (y p) ((matToFlatG r).symm (fun i => if i = p then 1 else y i)) S]
 
 /-! ## The generic firing at corank r ≥ 3
 
@@ -211,7 +275,7 @@ noncomputable def innerSGen (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y 
 
 /-! ### Per-chart support (mirror of corank-3 `Rmat3_*` / `innerS3_*` / `flatBox3_blowup_mem_iff`) -/
 
-/-- The matrix↔flat index equiv `eG r : Fin r × Fin r ≃ Fin (r*r)`, matching `matToFlatGen`'s index reindex. -/
+/-- The matrix↔flat index equiv `eG r : Fin r × Fin r ≃ Fin (r*r)`, matching `matToFlatG`'s index reindex. -/
 noncomputable def eG (r : ℕ) : Fin r × Fin r ≃ Fin (r * r) :=
   ((Equiv.sigmaEquivProd (Fin r) (Fin r)).symm).trans
     ((Equiv.sigmaEquivProd (Fin r) (Fin r)).trans finProdFinEquiv)
@@ -305,11 +369,11 @@ theorem measurable_innerSGen (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) :
     exact hy.comp measurable_fst
   · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd)
 
-/-- On the chart, the blown-up point lands in `flatBoxGen r T` IFF `|y p| ≤ T`. -/
+/-- On the chart, the blown-up point lands in `flatBoxG r T` IFF `|y p| ≤ T`. -/
 theorem flatBoxG_blowup_mem_iff (r : ℕ) (T : ℝ) (p : Fin (r * r)) (y : Fin (r * r) → ℝ)
     (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (r * r))) p) :
-    pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y ∈ flatBoxGen r T ↔ |y p| ≤ T := by
-  unfold flatBoxGen chartDomOn at *
+    pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y ∈ flatBoxG r T ↔ |y p| ≤ T := by
+  unfold flatBoxG chartDomOn at *
   simp only [Set.mem_setOf_eq] at *
   constructor
   · intro h
@@ -417,192 +481,191 @@ theorem ofReal_rpow_neg_le_one_addG (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0
     · refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_left (le_refl _))
       exact Real.rpow_le_rpow_of_exponent_ge hx0 (le_of_lt h1) (by linarith)
 
-/-! ### The generic joint-core a.e.-positivity (the Morse-peel's `0 < w` hypothesis)
+/-! ### The free-core a.e.-positivity (the Morse-peel `w > 0` feed)
 
-After the carve, the Morse peel sees the FREE `(Δ, S)` joint corank-`m` core (`m = r−1`); it needs
-`frobSq (Δ·S) > 0` a.e. The core is a nonzero polynomial in the flattened `(Δ,S)` coords (witness `Δ = I_m`,
-`S = e₁` gives core `= 1`), so its zero set is null (`MvPolynomial.ae_eval_ne_zero`). Generic analog of
-`RouteMSchurCorank3.frobSqR2c3_ne_zero_ae`. -/
+The shifted Morse peel `radial_morse_residual_power_le` needs `w = frobSq (Sc·S_bot) > 0`. For the FREE
+corank-`m` core (`Δ` a full `m×m` matrix, `S` an `m×4` matrix), `frobSq (Δ·S) > 0` a.e.: the entry
+`(Δ·S) 0 0 = ∑ₖ Δ(0,k)·S(k,0)` is a nonzero `MvPolynomial` in the joint coords (witness `Δ(0,0)=S(0,0)=1`,
+rest `0`), so its zero set is null (`MvPolynomial.ae_eval_ne_zero`), and `frobSq (Δ·S) ≥ ((Δ·S) 0 0)²`.
+The polynomial is kept index-natural over `(Fin m × Fin m) ⊕ (Fin m × Fin 4)` (the `Δ`-cube ⊕ `S`-cube),
+transported to `Fin n` by the fintype index equiv (`MvPolynomial.renameEquiv` + `piCongrLeft`), so the
+coordinate readback stays `rfl`-clean (no `Fin n` index arithmetic). Generic analog of
+`RouteMSchurCorank3.frobSqR2c3_ne_zero_ae` / `frobSqShiftR2c3_ne_zero_ae`. -/
 
-/-- The joint corank-`m` residual core as an `MvPolynomial ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ℝ`
-(Δ-coords `inl (i,k)`, S-coords `inr (k,j)`) — the `frobSq (Δ·S)` polynomial. Indexing by the product
-type (NOT `Fin N` div/mod) keeps the eval readback `rfl`-clean. -/
-noncomputable def corePolyGen (m : ℕ) :
-    MvPolynomial ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ℝ :=
-  ∑ i : Fin m, ∑ j : Fin 4,
-    (∑ k : Fin m,
-      (MvPolynomial.X (Sum.inl (i, k)) * MvPolynomial.X (Sum.inr (k, j)))) ^ 2
+/-- The matrix-to-product-index uncurry `(Fin a → Fin b → ℝ) ≃ᵐ ((Fin a × Fin b) → ℝ)`
+(`piCurry.symm` to the `Σ`-index, then the `Σ ≃ ×` reindex). MP for volume. -/
+noncomputable def matToProdG (a b : ℕ) : (Fin a → Fin b → ℝ) ≃ᵐ ((Fin a × Fin b) → ℝ) :=
+  (MeasurableEquiv.piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ)).symm.trans
+    (MeasurableEquiv.piCongrLeft (fun _ : Fin a × Fin b => ℝ)
+      (Equiv.sigmaEquivProd (Fin a) (Fin b)))
 
-/-- The flatten `(Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) → (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ)`
-(Δ → `inl`, S → `inr`) — the eval-variable assignment for `corePolyGen`. -/
-noncomputable def flatGenJoint (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
-    ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ :=
-  Sum.elim (fun ik => q.1 ik.1 ik.2) (fun kj => q.2 kj.1 kj.2)
+theorem matToProdG_apply (a b : ℕ) (M : Fin a → Fin b → ℝ) (i : Fin a) (j : Fin b) :
+    matToProdG a b M (i, j) = M i j := by
+  show MeasurableEquiv.piCongrLeft (fun _ : Fin a × Fin b => ℝ)
+      (Equiv.sigmaEquivProd (Fin a) (Fin b))
+      ((MeasurableEquiv.piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ)).symm M) (i, j) = M i j
+  rw [← Equiv.apply_symm_apply (Equiv.sigmaEquivProd (Fin a) (Fin b)) (i, j),
+    MeasurableEquiv.piCongrLeft_apply_apply]
+  rfl
 
-/-- `eval (flatGenJoint m q) (corePolyGen m) = frobSq (q.1 · q.2)`. -/
-theorem eval_corePolyGen (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
-    MvPolynomial.eval (flatGenJoint m q) (corePolyGen m) = frobSq (rmatMul q.1 q.2) := by
-  rw [corePolyGen]
-  unfold frobSq rmatMul flatGenJoint
-  simp only [map_sum, map_pow, map_mul, MvPolynomial.eval_X, Sum.elim_inl, Sum.elim_inr]
+theorem measurePreserving_matToProdG (a b : ℕ) :
+    MeasurePreserving (matToProdG a b) (volume : Measure (Fin a → Fin b → ℝ))
+      (volume : Measure ((Fin a × Fin b) → ℝ)) :=
+  ((measurePreserving_piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ) (fun _ _ => volume)).symm
+      (MeasurableEquiv.piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ))).trans
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin a × Fin b => ℝ)
+      (Equiv.sigmaEquivProd (Fin a) (Fin b)))
 
-open MvPolynomial in
-/-- `corePolyGen m ≠ 0` for `m ≥ 1` (witness `Δ = I_m`, `S = e₁` ⟹ core `= 1`). -/
-theorem corePolyGen_ne_zero (m : ℕ) (hm : 1 ≤ m) : corePolyGen m ≠ 0 := by
-  intro h0
-  -- witness assignment: Δ = identity (inl (i,k) ↦ if i=k then 1 else 0), S = e₁ (inr (k,j) ↦ if k=0∧j=0 then 1 else 0)
-  set w : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ :=
-    Sum.elim (fun ik => if ik.1 = ik.2 then (1:ℝ) else 0)
-      (fun kj => if kj.1 = ⟨0, by omega⟩ ∧ kj.2 = 0 then (1:ℝ) else 0) with hw
-  have hval : MvPolynomial.eval w (corePolyGen m) = 1 := by
-    have hq : flatGenJoint m
-        (⟨fun i k => if i = k then (1:ℝ) else 0,
-          fun k j => if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0⟩
-          : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) = w := by
-      funext c; cases c with
-      | inl ik => rfl
-      | inr kj => rfl
-    rw [← hq, eval_corePolyGen]
-    -- frobSq(I·e₁) = 1: (I·e₁)_{ij} = e₁_{ij} = [i=0∧j=0]; frobSq = 1
-    unfold frobSq rmatMul
-    have hentry : ∀ i : Fin m, ∀ j : Fin 4,
-        (∑ k, (if i = k then (1:ℝ) else 0) * (if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0))
-          = if i = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0 := by
-      intro i j
-      rw [Finset.sum_eq_single i]
-      · simp
-      · intro k _ hk; rw [if_neg (Ne.symm hk), zero_mul]
-      · intro hi; exact absurd (Finset.mem_univ i) hi
-    rw [show (∑ i : Fin m, ∑ j : Fin 4,
-        (∑ k, (if i = k then (1:ℝ) else 0) * (if k = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0)) ^ 2)
-        = ∑ i : Fin m, ∑ j : Fin 4,
-          (if i = ⟨0, by omega⟩ ∧ j = 0 then (1:ℝ) else 0) ^ 2 from by
-      refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
-      rw [hentry i j]]
-    rw [Finset.sum_eq_single (⟨0, by omega⟩ : Fin m)]
-    · rw [Finset.sum_eq_single (0 : Fin 4)]
-      · simp
-      · intro j _ hj; simp [hj]
-      · intro hj; exact absurd (Finset.mem_univ _) hj
-    · intro i _ hi; refine Finset.sum_eq_zero (fun j _ => ?_); simp [hi]
-    · intro hi; exact absurd (Finset.mem_univ _) hi
-  rw [h0] at hval; simp at hval
-
-/-- The measure-preserving flatten `(Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ≃ᵐ ((Sum type) → ℝ)`,
-matching `flatGenJoint` (Δ-curry to `Fin m × Fin m`, S-curry to `Fin m × Fin 4`, glue by
-`sumPiEquivProdPi.symm`). -/
-noncomputable def flatGenJointEquiv (m : ℕ) :
-    ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) ≃ᵐ (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ) :=
-  (MeasurableEquiv.prodCongr
-    ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
-      (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
-    ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
-      (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4))
-        (MeasurableEquiv.refl ℝ)))).trans
+/-- The joint coords `(Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ≃ᵐ ((Fin m × Fin m) ⊕ (Fin m × Fin 4) → ℝ)`
+(uncurry both matrices to product indices, then `sumPiEquivProdPi`). -/
+noncomputable def coreJoinG (m : ℕ) :
+    ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))
+      ≃ᵐ (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ) :=
+  ((matToProdG m m).prodCongr (matToProdG m 4)).trans
     (MeasurableEquiv.sumPiEquivProdPi (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ)).symm
 
-theorem measurePreserving_flatGenJointEquiv (m : ℕ) :
-    MeasurePreserving (flatGenJointEquiv m)
+theorem coreJoinG_inl (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) (i j : Fin m) :
+    coreJoinG m q (Sum.inl (i, j)) = q.1 i j := by
+  show (MeasurableEquiv.sumPiEquivProdPi (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ)).symm
+      (matToProdG m m q.1, matToProdG m 4 q.2) (Sum.inl (i, j)) = q.1 i j
+  rw [MeasurableEquiv.coe_sumPiEquivProdPi_symm]
+  show matToProdG m m q.1 (i, j) = q.1 i j
+  rw [matToProdG_apply]
+
+theorem coreJoinG_inr (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) (k : Fin m) (j : Fin 4) :
+    coreJoinG m q (Sum.inr (k, j)) = q.2 k j := by
+  show (MeasurableEquiv.sumPiEquivProdPi (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ)).symm
+      (matToProdG m m q.1, matToProdG m 4 q.2) (Sum.inr (k, j)) = q.2 k j
+  rw [MeasurableEquiv.coe_sumPiEquivProdPi_symm]
+  show matToProdG m 4 q.2 (k, j) = q.2 k j
+  rw [matToProdG_apply]
+
+theorem measurePreserving_coreJoinG (m : ℕ) :
+    MeasurePreserving (coreJoinG m)
       (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
       (volume : Measure (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ)) := by
-  unfold flatGenJointEquiv
-  -- MP of the two curry factors
-  have hΔ : MeasurePreserving
-      ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
-        (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
-      (volume : Measure (Fin m → Fin m → ℝ)) (volume : Measure (Fin m × Fin m → ℝ)) := by
-    refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
-      (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
-    exact (measurePreserving_piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)
-      (fun _ _ => (volume : Measure ℝ))).symm (MeasurableEquiv.piCurry _)
-  have hS : MeasurePreserving
-      ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
-        (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ)))
-      (volume : Measure (Fin m → Fin 4 → ℝ)) (volume : Measure (Fin m × Fin 4 → ℝ)) := by
-    refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
-      (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
-    exact (measurePreserving_piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)
-      (fun _ _ => (volume : Measure ℝ))).symm (MeasurableEquiv.piCurry _)
-  have hprod : MeasurePreserving
-      (MeasurableEquiv.prodCongr
-        ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
-          (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
-        ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
-          (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ))))
-      (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
-      (volume : Measure ((Fin m × Fin m → ℝ) × (Fin m × Fin 4 → ℝ))) := by
-    rw [show (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
-        = volume.prod volume from rfl,
-      show (volume : Measure ((Fin m × Fin m → ℝ) × (Fin m × Fin 4 → ℝ)))
-        = volume.prod volume from rfl]
-    exact hΔ.prod hS
-  exact hprod.trans
+  unfold coreJoinG
+  refine MeasurePreserving.trans ?_
     (volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ))
-
-theorem flatGenJointEquiv_apply (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
-    flatGenJointEquiv m q = flatGenJoint m q := by
-  funext c; cases c with
-  | inl ik => rfl
-  | inr kj => rfl
+  rw [show (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))) = volume.prod volume
+    from rfl,
+    show (volume : Measure (((Fin m × Fin m) → ℝ) × ((Fin m × Fin 4) → ℝ))) = volume.prod volume
+    from rfl]
+  exact (measurePreserving_matToProdG m m).prod (measurePreserving_matToProdG m 4)
 
 open MvPolynomial in
-/-- **The generic joint corank-`m` residual core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq (Δ·S)` for
-`m ≥ 1` (the Morse-peel's `0 < w` hypothesis). The core is a nonzero polynomial (`corePolyGen_ne_zero`),
-so its zero set is null (`MvPolynomial.ae_eval_ne_zero` — transported to `Fin n` via the Fintype-equiv
-`rename`), pulled back along the measure-preserving `flatGenJointEquiv`. Generic analog of
-`frobSqR2c3_ne_zero_ae`. -/
-theorem frobSqGenJoint_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) :
+/-- The `(0,0)`-entry polynomial of `Δ·S` over the joint index `(Fin m × Fin m) ⊕ (Fin m × Fin 4)`:
+`∑ₖ X(inl(⟨0⟩,k))·X(inr(k,⟨0⟩))` — equals `(Δ·S) 0 0 = ∑ₖ Δ(0,k)·S(k,0)` after eval at `coreJoinG`. -/
+noncomputable def coreEntryPolyG (m : ℕ) (hm : 0 < m) :
+    MvPolynomial ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ℝ :=
+  ∑ k : Fin m,
+    X (Sum.inl (⟨0, hm⟩, k)) * X (Sum.inr (k, ⟨0, by omega⟩))
+
+open MvPolynomial in
+/-- **A nonzero MvPolynomial over a FINITE index type is a.e.-nonzero** (the `Fin n`-`ae_eval_ne_zero`
+transported through `Fintype.equivFin` via `rename` + the MP coordinate-reindex `arrowCongr'`). Reusable. -/
+theorem ae_eval_ne_zero_fintype {ι : Type*} [Fintype ι] (p : MvPolynomial ι ℝ) (hp : p ≠ 0) :
+    ∀ᵐ x : ι → ℝ, MvPolynomial.eval x p ≠ 0 := by
+  classical
+  set e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι with he
+  -- transported polynomial over Fin n
+  set q : MvPolynomial (Fin (Fintype.card ι)) ℝ := MvPolynomial.rename e p with hq
+  have hqne : q ≠ 0 := by
+    rw [hq]; intro h0; exact hp ((MvPolynomial.rename_injective _ e.injective)
+      (by rw [h0, MvPolynomial.rename_zero]))
+  have hae : ∀ᵐ y : Fin (Fintype.card ι) → ℝ, MvPolynomial.eval y q ≠ 0 :=
+    MvPolynomial.ae_eval_ne_zero q hqne
+  -- pull back along the MP coordinate-reindex E x = x ∘ e.symm : (ι → ℝ) ≃ᵐ (Fin n → ℝ)
+  set E : (ι → ℝ) ≃ᵐ (Fin (Fintype.card ι) → ℝ) :=
+    MeasurableEquiv.arrowCongr' e (MeasurableEquiv.refl ℝ) with hE
+  have hmp : MeasurePreserving E volume volume := by
+    rw [hE]; exact volume_preserving_arrowCongr' e (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _)
+  have hms : MeasurableSet {y : Fin (Fintype.card ι) → ℝ | MvPolynomial.eval y q ≠ 0} :=
+    (MvPolynomial.measurableSet_zeroSet q).compl.congr (by ext y; simp)
+  have hpull : ∀ᵐ x : ι → ℝ, MvPolynomial.eval (E x) q ≠ 0 := by
+    rw [← hmp.map_eq] at hae
+    exact (ae_map_iff hmp.measurable.aemeasurable hms).1 hae
+  refine hpull.mono (fun x hx => ?_)
+  -- eval (E x) q = eval ((x ∘ e.symm) ∘ e) p = eval x p
+  rw [hq, MvPolynomial.eval_rename] at hx
+  have hcomp : (E x) ∘ e = x := by
+    funext i
+    show E x (e i) = x i
+    rw [hE]
+    show x (e.symm (e i)) = x i
+    rw [Equiv.symm_apply_apply]
+  rw [hcomp] at hx; exact hx
+
+open MvPolynomial in
+/-- `eval (coreJoinG m q) (coreEntryPolyG m hm) = ∑ₖ q.1 ⟨0⟩ k · q.2 k ⟨0⟩` (= `(rmatMul q.1 q.2) ⟨0⟩ ⟨0⟩`). -/
+theorem eval_coreEntryPolyG (m : ℕ) (hm : 0 < m)
+    (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
+    MvPolynomial.eval (coreJoinG m q) (coreEntryPolyG m hm)
+      = ∑ k : Fin m, q.1 ⟨0, hm⟩ k * q.2 k ⟨0, by omega⟩ := by
+  rw [coreEntryPolyG, map_sum]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  rw [map_mul, MvPolynomial.eval_X, MvPolynomial.eval_X, coreJoinG_inl, coreJoinG_inr]
+
+open MvPolynomial in
+/-- `coreEntryPolyG m hm ≠ 0` (witness `Δ ⟨0⟩ ⟨0⟩ = 1`, `S ⟨0⟩ ⟨0⟩ = 1`, rest `0`: eval `= 1`). -/
+theorem coreEntryPolyG_ne_zero (m : ℕ) (hm : 0 < m) : coreEntryPolyG m hm ≠ 0 := by
+  intro h0
+  set Δ0 : Fin m → Fin m → ℝ := fun i k => if i = ⟨0, hm⟩ ∧ k = ⟨0, hm⟩ then 1 else 0 with hΔ0
+  set S0 : Fin m → Fin 4 → ℝ := fun k j => if k = ⟨0, hm⟩ ∧ j = ⟨0, by omega⟩ then 1 else 0 with hS0
+  have hval : MvPolynomial.eval (coreJoinG m (Δ0, S0)) (coreEntryPolyG m hm) = 1 := by
+    rw [eval_coreEntryPolyG]
+    rw [Finset.sum_eq_single (⟨0, hm⟩ : Fin m)]
+    · rw [hΔ0, hS0]; simp
+    · intro k _ hk; rw [hΔ0]; simp [hk]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  rw [h0] at hval; simp at hval
+
+/-- **The free core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq (rmatMul Δ S)` over the free `m×m` × `m×4`
+box (`m > 0`): `frobSq ≥ ((Δ·S) ⟨0⟩ ⟨0⟩)²`, and `(Δ·S) ⟨0⟩ ⟨0⟩ = eval (coreJoinG) (coreEntryPolyG) ≠ 0`
+a.e. (`ae_eval_ne_zero_fintype` + the MP `coreJoinG`). Generic analog of `frobSqR2c3_ne_zero_ae`. -/
+theorem frobSqG_ne_zero_ae (m : ℕ) (hm : 0 < m) :
     ∀ᵐ q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
       0 < frobSq (rmatMul q.1 q.2) := by
-  -- transport corePolyGen (Sum-indexed) to Fin n via the Fintype equiv, apply ae_eval_ne_zero
-  set σ : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ≃ Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) :=
-    Fintype.equivFin _ with hσ
-  set pFin : MvPolynomial (Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4)))) ℝ :=
-    MvPolynomial.rename σ (corePolyGen m) with hpFin
-  have hpFin_ne : pFin ≠ 0 := by
-    rw [hpFin]
-    simp only [ne_eq, MvPolynomial.rename_eq_zero_iff_of_injective _ σ.injective]
-    exact corePolyGen_ne_zero m hm
-  have hae_fin : ∀ᵐ x : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ,
-      MvPolynomial.eval x pFin ≠ 0 := MvPolynomial.ae_eval_ne_zero pFin hpFin_ne
-  have hmsFin : MeasurableSet {x : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ |
-      MvPolynomial.eval x pFin ≠ 0} :=
-    (MvPolynomial.measurableSet_zeroSet pFin).compl.congr (by ext x; simp)
-  -- the SINGLE composite MP transport `(Δ,S) ≃ᵐ (Fin n → ℝ)`
-  set Φ := (flatGenJointEquiv m).trans
-    (MeasurableEquiv.piCongrLeft
-      (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ) with hΦ
-  have hmpΦ : MeasurePreserving Φ
-      (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
-      (volume : Measure (Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ)) :=
-    (measurePreserving_flatGenJointEquiv m).trans
-      (volume_measurePreserving_piCongrLeft
-        (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ)
+  have hae : ∀ᵐ x : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ,
+      MvPolynomial.eval x (coreEntryPolyG m hm) ≠ 0 :=
+    ae_eval_ne_zero_fintype (coreEntryPolyG m hm) (coreEntryPolyG_ne_zero m hm)
+  have hms : MeasurableSet
+      {x : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ | MvPolynomial.eval x (coreEntryPolyG m hm) ≠ 0} := by
+    have : MeasurableSet {x : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ |
+        MvPolynomial.eval x (coreEntryPolyG m hm) = 0} :=
+      (MvPolynomial.continuous_eval (coreEntryPolyG m hm)).measurable (measurableSet_singleton 0)
+    exact this.compl.congr (by ext x; simp)
   have hpull : ∀ᵐ q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
-      MvPolynomial.eval (Φ q) pFin ≠ 0 :=
-    (ae_map_iff hmpΦ.measurable.aemeasurable hmsFin).1 (by rw [hmpΦ.map_eq]; exact hae_fin)
+      MvPolynomial.eval (coreJoinG m q) (coreEntryPolyG m hm) ≠ 0 := by
+    rw [← (measurePreserving_coreJoinG m).map_eq] at hae
+    exact (ae_map_iff (measurePreserving_coreJoinG m).measurable.aemeasurable hms).1 hae
   refine hpull.mono (fun q hq => ?_)
-  -- eval (Φ q) pFin = eval ((Φ q) ∘ σ) corePolyGen = eval (flatGenJointEquiv q) corePolyGen = frobSq
-  rw [hpFin, MvPolynomial.eval_rename] at hq
-  have hcomp : (Φ q) ∘ σ = flatGenJointEquiv m q := by
-    funext s
-    have : Φ q = MeasurableEquiv.piCongrLeft
-        (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ
-        (flatGenJointEquiv m q) := rfl
-    show (Φ q) (σ s) = flatGenJointEquiv m q s
-    rw [this, MeasurableEquiv.piCongrLeft_apply_apply]
-  rw [hcomp, flatGenJointEquiv_apply, eval_corePolyGen] at hq
-  exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hq)
+  rw [eval_coreEntryPolyG] at hq
+  -- frobSq ≥ ((Δ·S) ⟨0⟩ ⟨0⟩)² > 0
+  have hentry : (rmatMul q.1 q.2) ⟨0, hm⟩ ⟨0, by omega⟩ = ∑ k, q.1 ⟨0, hm⟩ k * q.2 k ⟨0, by omega⟩ :=
+    rfl
+  have hne : (rmatMul q.1 q.2) ⟨0, hm⟩ ⟨0, by omega⟩ ≠ 0 := by rw [hentry]; exact hq
+  have hpos : 0 < ((rmatMul q.1 q.2) ⟨0, hm⟩ ⟨0, by omega⟩) ^ 2 :=
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hne))
+  refine lt_of_lt_of_le hpos ?_
+  -- frobSq = ∑ᵢⱼ (Δ·S)ᵢⱼ² ≥ the single (⟨0⟩,⟨0⟩) term
+  unfold frobSq
+  calc ((rmatMul q.1 q.2) ⟨0, hm⟩ ⟨0, by omega⟩) ^ 2
+      = ∑ j ∈ {(⟨0, by omega⟩ : Fin 4)}, ((rmatMul q.1 q.2) ⟨0, hm⟩ j) ^ 2 := by simp
+    _ ≤ ∑ j, ((rmatMul q.1 q.2) ⟨0, hm⟩ j) ^ 2 :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => sq_nonneg _)
+    _ ≤ ∑ i, ∑ j, ((rmatMul q.1 q.2) i j) ^ 2 :=
+        Finset.single_le_sum (f := fun i => ∑ j, ((rmatMul q.1 q.2) i j) ^ 2)
+          (fun _ _ => Finset.sum_nonneg (fun _ _ => sq_nonneg _)) (Finset.mem_univ _)
 
-/-- **The SHIFTED generic core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq ((Δ − Sh)·S)` for any fixed shift
-`Sh : Fin m → Fin m → ℝ`, `m ≥ 1`: the translation `Δ ↦ Δ + Sh` (measure-preserving) pulls the unshifted
-`frobSqGenJoint_ne_zero_ae` back. The peel's `0 < w` hypothesis at the per-`Sh` carve slice. Generic analog
-of `frobSqShiftR2c3_ne_zero_ae`. -/
-theorem frobSqShiftGen_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) (Sh : Fin m → Fin m → ℝ) :
-    ∀ᵐ p : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
-      0 < frobSq (rmatMul (fun i j => p.1 i j - Sh i j) p.2) := by
+/-- **The shifted free core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq ((Δ − Sh)·S)` for any fixed `Sh`
+(`m > 0`): the translation `(Δ,S) ↦ (Δ + Sh, S)` (MP) reduces it to the unshifted `frobSqG_ne_zero_ae`.
+Generic analog of `frobSqShiftR2c3_ne_zero_ae`. -/
+theorem frobSqShiftG_ne_zero_ae (m : ℕ) (hm : 0 < m) (Sh : Fin m → Fin m → ℝ) :
+    ∀ᵐ q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
+      0 < frobSq (rmatMul (fun i j => q.1 i j - Sh i j) q.2) := by
   set τ : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) → (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) :=
-    fun p => (p.1 + (fun i j => -Sh i j), p.2) with hτ
+    fun q => (q.1 + (fun i j => -Sh i j), q.2) with hτ
   have hmpΔ : MeasurePreserving (fun Δ : Fin m → Fin m → ℝ => Δ + (fun i j => -Sh i j))
       volume volume :=
     measurePreserving_add_right volume (fun i j => -Sh i j)
@@ -614,83 +677,17 @@ theorem frobSqShiftGen_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) (Sh : Fin m → Fin m
       0 < frobSq (rmatMul q.1 q.2)} :=
     measurableSet_lt measurable_const (by unfold frobSq rmatMul; fun_prop)
   have hae : ∀ᵐ x ∂(volume.map τ), 0 < frobSq (rmatMul x.1 x.2) := by
-    rw [hmp.map_eq]; exact frobSqGenJoint_ne_zero_ae m hm
-  have hpull : ∀ᵐ p ∂(volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))),
-      0 < frobSq (rmatMul (τ p).1 (τ p).2) :=
+    rw [hmp.map_eq]; exact frobSqG_ne_zero_ae m hm
+  have hpull : ∀ᵐ q ∂(volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))),
+      0 < frobSq (rmatMul (τ q).1 (τ q).2) :=
     (ae_map_iff hmp.measurable.aemeasurable hmsSet).1 hae
-  refine hpull.mono (fun p hp => ?_)
-  have hΔeq : (τ p).1 = (fun i j => p.1 i j - Sh i j) := by
-    funext i j; show (p.1 + (fun i j => -Sh i j)) i j = p.1 i j - Sh i j
+  refine hpull.mono (fun q hq => ?_)
+  have hΔeq : (τ q).1 = (fun i j => q.1 i j - Sh i j) := by
+    funext i j; show (q.1 + (fun i j => -Sh i j)) i j = q.1 i j - Sh i j
     simp [Pi.add_apply, sub_eq_add_neg]
-  have hSeq : (τ p).2 = p.2 := rfl
-  rw [hΔeq, hSeq] at hp
-  exact hp
-
-/-! ### The slot bijection `cellOfG` (the M22/g/b cell enumeration, `m`-ambient)
-
-The carving carves the `r²−1` non-pivot cells of the `(0,0)`-pivot `Fin (m+1) × Fin (m+1)` matrix
-(`m = r−1`) into the `M22` block ⊕ the `g` (=M21 col) ⊕ the `b` (=M12 row): `(m)² + m + m = (m+1)²−1`.
-`cellOfG` is the explicit enumeration (analog of corank-3 `cellOf`), injective onto the non-pivot cells. -/
-
-/-- The non-pivot cell of `Fin (m+1) × Fin (m+1)` for a carve-slot: `M22 (a,b) ↦ (a.succ, b.succ)`,
-`g a ↦ (a.succ, 0)`, `b b ↦ (0, b.succ)`. -/
-def cellOfG (m : ℕ) : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m) → Fin (m + 1) × Fin (m + 1)
-  | Sum.inl (a, b) => (a.succ, b.succ)
-  | Sum.inr (Sum.inl a) => (a.succ, 0)
-  | Sum.inr (Sum.inr b) => (0, b.succ)
-
-/-- `cellOfG` lands on non-pivot cells (never `(0,0)`). -/
-theorem cellOfG_ne_zero (m : ℕ) (s : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) :
-    ¬ ((cellOfG m s).1 = 0 ∧ (cellOfG m s).2 = 0) := by
-  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellOfG, Fin.succ_ne_zero]
-
-/-- `cellOfG` is injective (the `m+1` cells are distinct). -/
-theorem cellOfG_injective (m : ℕ) : Function.Injective (cellOfG m) := by
-  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
-    simp only [cellOfG, Prod.mk.injEq] at h
-  · obtain ⟨ha, hb⟩ := h; rw [Fin.succ_inj] at ha hb; subst ha; subst hb; rfl
-  · exact absurd h.2 (Fin.succ_ne_zero b1)
-  · exact absurd h.1 (Fin.succ_ne_zero a1)
-  · exact absurd h.2.symm (Fin.succ_ne_zero b2)
-  · obtain ⟨ha, _⟩ := h; rw [Fin.succ_inj] at ha; subst ha; rfl
-  · exact absurd h.1 (Fin.succ_ne_zero a1)
-  · exact absurd h.1.symm (Fin.succ_ne_zero a2)
-  · exact absurd h.1.symm (Fin.succ_ne_zero a2)
-  · obtain ⟨_, hb⟩ := h; rw [Fin.succ_inj] at hb; subst hb; rfl
-
-/-! ### The pivot-(0,0) Schur readback `Sc = M22 − M21·M12` (the carving's algebra, `m`-ambient)
-
-The N2b (`j = 1`) Schur complement at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ` (`R 0 0 = 1`):
-`M11 = [1]` (`1×1`), so `M11⁻¹ = [1]` EXACTLY, and `Sc = M22 − M21·M12` is the entrywise outer-product
-de-shift `Sc a b = R a.succ b.succ − R a.succ 0 · R 0 b.succ`. Parametrising by `m` (ambient `Fin (m+1)`)
-dodges the `Fin r` `0`/`succ` cast-friction (Codex's mitigation). -/
-
-/-- The `1×1` top-left minor of a `(0,0)`-pivot matrix is the identity, so its inverse is the identity. -/
-theorem pivotMinor_inv_one {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ)
-    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) :
-    (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
-      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
-  have h1 : (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))
-      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
-    ext i j; fin_cases i; fin_cases j
-    show R ⟨0, by omega⟩ ⟨0, by omega⟩ = (1 : Matrix (Fin 1) (Fin 1) ℝ) 0 0
-    rw [Matrix.one_apply_eq]; exact h00
-  rw [h1, inv_one]
-
-/-- **The N2b `j = 1` Schur readback** at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ`: the genuine
-Schur complement `M22 − M21·M11⁻¹·M12` equals the entrywise outer-product de-shift
-`Sc a b = R ⟨1+a⟩ ⟨1+b⟩ − R ⟨1+a⟩ 0 · R 0 ⟨1+b⟩` (since `M11⁻¹ = [1]`, `pivotMinor_inv_one`). The
-`M22 ↦ Sc` shift is `Sh a b = R ⟨1+a⟩ 0 · R 0 ⟨1+b⟩` (the outer product `M21·M12`). -/
-theorem schurSc_readback {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ)
-    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (a b : Fin m) :
-    ((Matrix.of (fun a b : Fin m => R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩))
-      - (Matrix.of (fun (a : Fin m) (b : Fin 1) => R ⟨1 + a, by omega⟩ ⟨b, by omega⟩))
-        * (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
-        * (Matrix.of (fun (a : Fin 1) (b : Fin m) => R ⟨a, by omega⟩ ⟨1 + b, by omega⟩))) a b
-      = R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
-        - R ⟨1 + a, by omega⟩ ⟨0, by omega⟩ * R ⟨0, by omega⟩ ⟨1 + b, by omega⟩ := by
-  rw [pivotMinor_inv_one R h00, Matrix.mul_one]
-  simp only [Matrix.sub_apply, Matrix.mul_apply, Matrix.of_apply, Fin.sum_univ_one, Fin.val_zero]
+  have hSeq : (τ q).2 = q.2 := rfl
+  rw [hΔeq, hSeq] at hq
+  exact hq
 
 /-! ### The carving core — the residual translate-domination into the abstract lower IH
 
@@ -701,31 +698,6 @@ Cramer shift (`|Sh| ≤ B`). The `Δ ↦ Δ − Sh` matrix-space translation (Ja
 `K + B`, and the ABSTRACT lower IH `SchurLowerIH 4 schurLambda r` at corank `r − 1`, radius `K + B`, closes
 it (`c'' < λ_{r−1}`). The generic analog of `RouteMSchurCorank3.schurResid2_translate_le`, invoking the IH
 instead of the banked `core_schur2_lt_top`. -/
-
-/-- **The a.e. Tonelli `T`-peel bound (generic `m`).** With `w > 0` only a.e. on `Z`, the joint Morse-block
-peel `∫_z ∫_T (∑Tᵢ² + w z)^{−c'} ≤ Cresid·∫_z (w z)^{−(c'−(m+1)/2)}`. Local copy of
-`RouteM334Hfin.core_T_peel_le_ae` (avoiding that file's unrelated `sorry`); built on the imported
-`radial_morse_residual_power_le`. The Morse-peel-under-integral the carve-first assembly consumes (peel
-AFTER carving, over the FREE `(M22, S_bot)` joint core, where `w > 0` a.e. by the nonzero-poly argument). -/
-theorem core_T_peel_le_ae_G {m : ℕ} {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
-    (c' : ℝ) (hc' : (m + 1 : ℝ) / 2 < c')
-    (Tw : ℝ) (hTw : 0 < Tw) (w : Ω → ℝ) (Z : Set Ω)
-    (hwpos : ∀ᵐ z ∂(μ.restrict Z), 0 < w z) :
-    (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
-        ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
-      ≤ ENNReal.ofReal (Cresid (m + 1) c')
-        * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
-  calc (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
-          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
-      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (m + 1) c')
-          * ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
-        refine lintegral_mono_ae (hwpos.mono (fun z hz => ?_))
-        rw [← ENNReal.ofReal_mul (Cresid_nonneg _ _)]
-        exact radial_morse_residual_power_le m c' hc' Tw hTw (w z) hz
-    _ = ENNReal.ofReal (Cresid (m + 1) c')
-          * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
-        rw [lintegral_const_mul']
-        exact ENNReal.ofReal_ne_top
 
 /-- **Matrix-box translate-enlarge (generic `(r−1)×(r−1)`).** `∫_{Δ∈matBox m m K} f(Δ + Sh) ≤
 ∫_{Δ'∈matBox m m Kg} f Δ'` when `(·+Sh)''(matBox m m K) ⊆ matBox m m Kg`. Measure-preserving matrix-space
@@ -795,33 +767,40 @@ theorem schurResidG_translate_lt_top (r : ℕ) (hr : 3 ≤ r)
   refine lt_of_le_of_lt (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) ?_
   exact hcore
 
-/-- **The unshifted corank-`(r−1)` core value** `coreSchurGenVal r c'' Kr := ∫_{Δ∈matBox (r−1)(r−1) Kr}
-∫_{S∈matBox (r−1) 4 Kr} frobSq(Δ·S)^{−c''}` — the `Sh`-independent finite constant the shifted residual is
-bounded by (the carve-first assembly integrates the residual over the `rest`/shift coords, so it needs a
-bound INDEPENDENT of `Sh`). Generic analog of `coreSchur2Val`. -/
-noncomputable def coreSchurGenVal (r : ℕ) (c'' Kr : ℝ) : ℝ≥0∞ :=
-  ∫⁻ Δ in matBox (r - 1) (r - 1) Kr, ∫⁻ S in matBox (r - 1) 4 Kr,
+/-! ### The Sh-UNIFORM `_le` residual (for integration over the boundary `(g,b)` box)
+
+`schurResidG_translate_lt_top` is only `< ⊤` — pointwise finiteness in the shift `Sh` does not integrate
+over the `(g,b)` boundary box. The carving integrates the residual over `Sh = bgShiftG(g,b)` (a finite
+box), so it needs a bound INDEPENDENT of `Sh`: bound the shifted residual by the named constant
+`coreSchurGenVal (r−1) c'' (K+B)` (the unshifted free corank-`(r−1)` core at the enlarged radius `K+B`,
+finite by the abstract IH). Generic analog of `RouteMSchurCorank3.coreSchur2Val` / `schurResid2_translate_le`. -/
+
+/-- **The unshifted free corank-`m` core value** `coreSchurGenVal m c'' Kr := ∫_{Δ∈matBox m m Kr}
+∫_{S∈matBox m 4 Kr} frobSq(Δ·S)^{−c''}` — the `Sh`-independent constant the shifted residual is bounded by. -/
+noncomputable def coreSchurGenVal (m : ℕ) (c'' Kr : ℝ) : ℝ≥0∞ :=
+  ∫⁻ Δ in matBox m m Kr, ∫⁻ S in matBox m 4 Kr,
     ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c''))
 
-/-- `coreSchurGenVal r c'' Kr < ⊤` for `0 < c'' < schurLambda (r−1)`, `0 < Kr`, `r ≥ 3` — via the abstract
-lower IH at corank `r − 1`. -/
+/-- `coreSchurGenVal (r−1) c'' Kr < ⊤` for `0 < c'' < schurLambda (r−1)`, `0 < Kr`, `r ≥ 3` — exactly
+`SchurCore 4 (r−1) c'' Kr` from the abstract IH (at `j = 1`). -/
 theorem coreSchurGenVal_lt_top (r : ℕ) (hr : 3 ≤ r) (hIH : SchurLowerIH 4 schurLambda r)
     (c'' : ℝ) (hc0 : 0 < c'') (hclam : c'' < schurLambda (r - 1)) (Kr : ℝ) (hKr : 0 < Kr) :
-    coreSchurGenVal r c'' Kr < ⊤ := by
-  have := hIH 1 (le_refl 1) (by omega) c'' hc0 (by simpa using hclam) Kr hKr
-  rw [SchurCore] at this
-  simpa [coreSchurGenVal] using this
+    coreSchurGenVal (r - 1) c'' Kr < ⊤ := by
+  have hcore : SchurCore 4 (r - 1) c'' Kr :=
+    hIH 1 (le_refl 1) (by omega) c'' hc0 (by simpa using hclam) Kr hKr
+  rwa [SchurCore] at hcore
 
-/-- **The generic shifted-residual UNIFORM `_le` bound.** For a fixed shift `Sh` with `|Sh| ≤ B`, the
-shifted corank-`(r−1)` core integral is `≤ coreSchurGenVal r c'' (K+B)` — a bound INDEPENDENT of `Sh` (only
-the radius `K+B` records the shift size). Same chain as `schurResidG_translate_lt_top` (`Δ ↦ Δ − Sh`
-translate into radius `K+B`), ending at the named value rather than `< ⊤`. The boundary-integrable form the
-carve-first assembly consumes (mirror of `schurResid2_translate_le`). -/
-theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → Fin (r - 1) → ℝ)
-    (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B) (c'' : ℝ) (K : ℝ) :
+/-- **The Sh-uniform `_le` residual bound.** For a fixed shift `Sh : Fin (r−1) → Fin (r−1) → ℝ` with
+`|Sh| ≤ B`, the shifted corank-`(r−1)` core integral is `≤ coreSchurGenVal (r−1) c'' (K+B)` — a bound
+INDEPENDENT of `Sh` (only the radius `K+B` records the shift's size). Same chain as
+`schurResidG_translate_lt_top` (S-monotone enlarge `K → K+B`, then translate `Δ ↦ Δ − Sh` into radius
+`K+B`), ending at the named value rather than `< ⊤`. Generic analog of `schurResid2_translate_le`. -/
+theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (c'' : ℝ) (K : ℝ) :
     (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
         ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
-      ≤ coreSchurGenVal r c'' (K + B) := by
+      ≤ coreSchurGenVal (r - 1) c'' (K + B) := by
   have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (hB ⟨0, by omega⟩ ⟨0, by omega⟩)
   set g : (Fin (r - 1) → Fin (r - 1) → ℝ) → ℝ≥0∞ := fun Δ =>
     ∫⁻ S in matBox (r - 1) 4 (K + B),
@@ -839,9 +818,7 @@ theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → 
     refine le_trans hmono (le_of_eq ?_)
     have heqfun : (fun i j => Δ i j - Sh i j) = (Δ + (fun i j => -Sh i j)) := by
       funext i j; simp [Pi.add_apply, sub_eq_add_neg]
-    rw [hg]
-    refine lintegral_congr (fun S => ?_)
-    rw [heqfun]
+    rw [hg]; refine lintegral_congr (fun S => ?_); rw [heqfun]
   refine le_trans (lintegral_mono hle1) ?_
   have hsub : (fun Δ => Δ + (fun i j => -Sh i j)) '' (matBox (r - 1) (r - 1) K)
       ⊆ matBox (r - 1) (r - 1) (K + B) := by
@@ -853,6 +830,392 @@ theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → 
     constructor <;> [linarith [hΔij.1, hShij.2]; linarith [hΔij.2, hShij.1]]
   refine le_trans (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) (le_of_eq ?_)
   rw [coreSchurGenVal]
+
+/-! ### The a.e. Tonelli `T`-peel (the shifted Morse-block peel, local copy of `core_T_peel_le_ae_c3`) -/
+
+/-- **The a.e. Tonelli `T`-peel bound** (local copy of `RouteMSchurCorank3.core_T_peel_le_ae_c3`, built
+on the imported `radial_morse_residual_power_le`). With `w > 0` only a.e. on `Z`, the joint Morse-block
+peel `∫_z ∫_T (∑Tᵢ² + w z)^{−c'} ≤ Cresid·∫_z (w z)^{−(c'−(m+1)/2)}`. -/
+theorem core_T_peel_le_aeG {m : ℕ} {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
+    (c' : ℝ) (hc' : (m + 1 : ℝ) / 2 < c')
+    (Tw : ℝ) (hTw : 0 < Tw) (w : Ω → ℝ) (Z : Set Ω)
+    (hwpos : ∀ᵐ z ∂(μ.restrict Z), 0 < w z) :
+    (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ENNReal.ofReal (Cresid (m + 1) c')
+        * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+  calc (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (m + 1) c')
+          * ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        refine lintegral_mono_ae (hwpos.mono (fun z hz => ?_))
+        rw [← ENNReal.ofReal_mul (Cresid_nonneg _ _)]
+        exact radial_morse_residual_power_le m c' hc' Tw hTw (w z) hz
+    _ = ENNReal.ofReal (Cresid (m + 1) c')
+          * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        rw [lintegral_const_mul']; exact ENNReal.ofReal_ne_top
+
+/-! ### The SHIFTED resolved-form (the JOINT brick: a.e. peel + uniform shifted residual)
+
+The corank-`r` inner-`S`, after the N2b `j=1` split and the top-row shear, is the SHIFTED resolved form:
+a `Fin 4` Morse spectator `T` disjoint-summed onto the SHIFTED corank-`(r−1)` core
+`frobSq ((Δ − Sh)·S)` (`Δ = M22` the free angular block, `Sh = g·bᵀ` the boundary-ratio rank-1 shift,
+`S = S_bot`). The a.e. peel (`core_T_peel_le_aeG`, threshold `4/2 = 2 < c'`) leaves the shifted residual
+at exponent `c'' = c'−2 < λ_{r−1}`, bounded UNIFORMLY in `Sh` by `coreSchurGenVal (r−1) (c'−2) (K+B)`
+(`schurResidG_translate_le`). Generic analog of `RouteMSchurCorank3.resolvedShiftR2c3_le`. -/
+
+/-- **The SHIFTED resolved-form UNIFORM `_le` bound (the JOINT brick).** For a fixed shift
+`Sh : Fin (r−1) → Fin (r−1) → ℝ` with `|Sh i j| ≤ B`, `2 < c'`, every `K > 0`,
+`∫_{Δ∈matBox (r−1)(r−1) K}∫_{S∈matBox (r−1) 4 K}∫_{T∈morseBox 4 K}(∑T² + frobSq((Δ−Sh)·S))^{−c'}` is
+bounded by `ofReal(Cresid 4 c') · coreSchurGenVal (r−1) (c'−2) (K+B)` — INDEPENDENT of `Sh`. The `T`-peel
+(`core_T_peel_le_aeG`, `m=3`, threshold `2`) on the shifted core (`> 0` a.e. by `frobSqShiftG_ne_zero_ae`)
+leaves the residual at `c'−2`, closed by `schurResidG_translate_le`. Generic analog of `resolvedShiftR2c3_le`. -/
+theorem resolvedShiftRG_le (r : ℕ) (hr : 3 ≤ r)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (K : ℝ) (hK : 0 < K) (c' : ℝ) (hc2 : 2 < c') :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2
+          + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c')))
+      ≤ ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal (r - 1) (c' - 2) (K + B) := by
+  have hm : 0 < r - 1 := by omega
+  set w : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) → ℝ :=
+    fun q => frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2) with hwdef
+  have hmeasT : Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ))
+      × (Fin 4 → ℝ) => ENNReal.ofReal ((∑ i, (q.2 i) ^ 2 + w q.1) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    show Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ))
+        × (Fin 4 → ℝ) =>
+        (∑ i, (q.2 i) ^ 2 + frobSq (rmatMul (fun a b => q.1.1 a b - Sh a b) q.1.2)))
+    unfold frobSq rmatMul; fun_prop
+  -- Step 1: Tonelli ∫_Δ∫_S∫_T = ∫_{(Δ,S)}∫_T over the product box
+  have hstep1 : ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c'))
+      = ∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K), (∫⁻ T in morseBox 4 K,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w q) ^ (-c'))) ∂volume := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ (Measurable.lintegral_prod_right hmeasT).aemeasurable]
+  rw [hstep1]
+  -- Step 2: the a.e. T-peel (m = 3): bound by Cresid · ∫_{(Δ,S)} w^{−(c'−2)}
+  have hwpos : ∀ᵐ z ∂(volume.restrict (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K)), 0 < w z :=
+    ae_restrict_of_ae (frobSqShiftG_ne_zero_ae (r - 1) hm Sh)
+  have hpeel := core_T_peel_le_aeG (m := 3) (volume) c' (by norm_num; linarith) K hK w
+    (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K) hwpos
+  refine le_trans hpeel ?_
+  -- Step 3: the residual ∫_{(Δ,S)} w^{−(c'−2)} = ∫_Δ∫_S frobSq((Δ−Sh)·S)^{−(c'−2)} ≤ schurResidG_translate_le
+  refine mul_le_mul_left' ?_ _
+  have hmeasResid : Measurable
+      (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        ENNReal.ofReal ((w q) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2)))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))) (by fun_prop)
+    show Measurable (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2))
+    unfold frobSq rmatMul; fun_prop
+  have hresid : (∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K),
+        ENNReal.ofReal ((w q) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))))
+      = ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-(c' - 2))) := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ hmeasResid.aemeasurable]
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) (r - 1) K) (fun Δ _ => ?_)
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) 4 K) (fun S _ => ?_)
+    rw [hwdef]; norm_num
+  rw [hresid]
+  exact schurResidG_translate_le r hr Sh B hB (c' - 2) K
+
+/-! ### Pivot-WLOG: the `(0,0)`-normalised angular matrix (mirror of `Rmat334norm`/`angA1Int_eq_norm`) -/
+
+/-- For `k ≠ p`, the read-back `((piRatioG r N hN p).symm (0,z)) k` is some ratio `z j ∈ [−1,1]`, so
+`|·| ≤ 1` on the box `[−1,1]^N`. (The pivot-axis-`0` read-back is `≤ 1` off the pivot; mirror of the
+chart-domain pullback in `schur_matBoxG_chart_lt_top`.) -/
+theorem piRatioG_symm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (k : Fin (r * r)) (hk : k ≠ p) :
+    |((piRatioG r N hN p).symm (0, z)) k| ≤ 1 := by
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hk ((finCongr hN).injective h)
+  obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+  have hk_eq : k = (finCongr hN).symm ((finCongr hN p).succAbove j) := by
+    rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+  -- ((piRatioG …).symm (0,z)) k = (piRatioG …) forward inverse; off-pivot it reads z j
+  have hval : ((piRatioG r N hN p).symm (0, z)) k = z j := by
+    rw [piRatioG_symm_apply, hk_eq]
+    -- finCongr hN k = (finCongr hN p).succAbove j, so insertNth reads z at j
+    have : finCongr hN ((finCongr hN).symm ((finCongr hN p).succAbove j))
+        = (finCongr hN p).succAbove j := (finCongr hN).apply_symm_apply _
+    rw [this]
+    simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+  rw [hval]
+  have := hz j (Set.mem_univ j); rw [Set.mem_Icc, ← abs_le] at this; exact this
+
+/-- The pivot-normalised angular matrix on chart `p`, ratios `z : Fin N → ℝ` (`r*r = N+1`):
+`R' a b = RmatG r p (…symm(0,z)) (σr a) (σc b)` with `σr = swap r₀ 0`, `σc = swap c₀ 0`,
+`(r₀,c₀) = (eG r).symm p`. Pivot `1` at `(0,0)`. (Threads the shared `hN` so all proof terms unify.) -/
+noncomputable def RmatGnorm (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) : Fin r → Fin r → ℝ :=
+  fun a b => RmatG r p ((piRatioG r N hN p).symm (0, z))
+    ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a) ((Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)
+
+/-- `RmatGnorm … z ⟨0⟩ ⟨0⟩ = 1`: the `(0,0)` entry is the pivot. -/
+theorem RmatGnorm_pivot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) :
+    RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+  unfold RmatGnorm
+  rw [Equiv.swap_apply_right, Equiv.swap_apply_right, RmatG_entry, if_pos]
+  rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+
+/-- The matrix index of `(σr a, σc b)` is the pivot `p` iff `(a,b) = (0,0)`; off `(0,0)` it is `≠ p`. -/
+theorem RmatGnorm_offpivot_idx (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (a b : Fin r)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p := by
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hσr0 : σr ⟨0, by omega⟩ = ((eG r).symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc ⟨0, by omega⟩ = ((eG r).symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eG r (((eG r).symm p).1, ((eG r).symm p).2) = p := by
+    rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+  intro heq
+  rw [← hpe] at heq
+  obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+  rw [← hσr0] at hi; rw [← hσc0] at hj
+  exact hab ⟨σr.injective hi, σc.injective hj⟩
+
+/-- Off-`(0,0)` entries of `RmatGnorm … z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
+theorem RmatGnorm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    |RmatGnorm r N hN hr p z a b| ≤ 1 := by
+  unfold RmatGnorm
+  rw [RmatG_entry, if_neg (RmatGnorm_offpivot_idx r hr p a b hab)]
+  exact piRatioG_symm_offpivot_le r N hN p z hz _ (RmatGnorm_offpivot_idx r hr p a b hab)
+
+/-- **`innerSGen` in the pivot-normalised form.** `innerSGen r c' T p (…symm(0,z)) = ∫_{S∈box r 4 T}
+frobSq(RmatGnorm·S)^{−c'}`: row/col-permute `RmatG` by `σr,σc` (`frobSq_rmatMul_permG`) under the
+`S`-row-permute change of variables (`matBox_rowperm_lintegralG`). Mirror of `angA1Int_eq_norm`. -/
+theorem innerSGen_eq_norm (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ)
+    (p : Fin (r * r)) (z : Fin N → ℝ) :
+    innerSGen r c' T p ((piRatioG r N hN p).symm (0, z))
+      = ∫⁻ S in matBox r 4 T,
+          ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr p z) S)) ^ (-c')) := by
+  set y := (piRatioG r N hN p).symm (0, z) with hy
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  rw [innerSGen]
+  rw [matBox_rowperm_lintegralG T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr p z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
+
+/-- The `z`-slot of a matrix cell `(a,b) ≠ (0,0)`: the `Fin N` index whose `piRatioG`-decode is
+`eG (σr a, σc b)`. Generic analog of `zslot`; spec is `RmatGnorm_eq_slot`. -/
+noncomputable def slotMatG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (a b : Fin r) : Fin N :=
+  if h : eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p then
+    (Fin.exists_succAbove_eq (show
+      finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b))
+      ≠ finCongr hN p from fun he => h ((finCongr hN).injective he))).choose
+  else ⟨0, by have h9 : 3 * 3 ≤ r * r := Nat.mul_le_mul hr hr; omega⟩
+
+/-- The read-back: `RmatGnorm … z a b = z (slotMatG … a b)` for `(a,b) ≠ (0,0)`. Generic analog of
+`Rmat334norm_eq_zslot`. -/
+theorem RmatGnorm_eq_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    RmatGnorm r N hN hr p z a b = z (slotMatG r N hN hr p a b) := by
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hidx : eG r (σr a, σc b) ≠ p := RmatGnorm_offpivot_idx r hr p a b hab
+  have hentry : RmatGnorm r N hN hr p z a b = (piRatioG r N hN p).symm (0, z) (eG r (σr a, σc b)) := by
+    rw [RmatGnorm, RmatG_entry, if_neg hidx]
+  rw [hentry]
+  have hne : finCongr hN (eG r (σr a, σc b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  have hslot : slotMatG r N hN hr p a b = (Fin.exists_succAbove_eq hne).choose := by
+    rw [slotMatG, dif_pos hidx]
+  have hspec : (finCongr hN p).succAbove (slotMatG r N hN hr p a b)
+      = finCongr hN (eG r (σr a, σc b)) := by
+    rw [hslot]; exact (Fin.exists_succAbove_eq hne).choose_spec
+  rw [piRatioG_symm_apply, ← hspec]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+
+/-! ### The N2b lower bound → top-row shear → resolved form (per-`z`; mirror of `angularA1_integral_le` + `step3a`) -/
+
+/-- **Pointwise antitone domination from a two-sided comparison's lower leg.** If `c₀·X ≤ F` with
+`0 < c₀`, `0 ≤ X`, `0 ≤ F`, then `F^{−c'} ≤ c₀^{−c'}·X^{−c'}` (`0 < c'`): on `X > 0` (so `F > 0`) the
+base-antitone `rpow`; at `X = 0` the LHS `F^{−c'} ≤` … but `F` may be `> 0`, giving `F^{−c'} ≤ ∞ = c₀^{−c'}·0^{−c'}`
+since `0^{−c'} = 0` makes the RHS `0` — handled by the `X=0 ⟹ F=0` coincidence: `c₀·0 ≤ F` is vacuous, so
+we instead require the zero-coincidence `X = 0 → F = 0`. -/
+theorem ofReal_rpow_le_const_mul (X F c₀ c' : ℝ) (hc0 : 0 < c') (hcc : 0 < c₀)
+    (hX : 0 ≤ X) (hF : 0 ≤ F) (hle : c₀ * X ≤ F) (hzero : X = 0 → F = 0) :
+    ENNReal.ofReal (F ^ (-c')) ≤ ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal (X ^ (-c')) := by
+  rcases eq_or_lt_of_le hX with hX0 | hX0
+  · -- X = 0 ⟹ F = 0: LHS = 0^{−c'} = 0
+    rw [hzero hX0.symm, Real.zero_rpow (by linarith), ENNReal.ofReal_zero]; exact zero_le _
+  · -- X > 0 ⟹ c₀·X > 0; F ≥ c₀·X, base-antitone rpow
+    have hcX : (0 : ℝ) < c₀ * X := by positivity
+    rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (le_of_lt hcc) _),
+      ← Real.mul_rpow (le_of_lt hcc) (le_of_lt hX0)]
+    refine ENNReal.ofReal_le_ofReal ?_
+    exact Real.rpow_le_rpow_of_nonpos hcX hle (by linarith)
+
+/-- **The translation-and-enlargement atom** (local copy of `RouteM334Ratiofin.lintegral_translate_le`):
+`∫_{v∈B} f (v + s) ≤ ∫_{w∈BG} f w` when `(·+s)''B ⊆ BG` (`measurePreserving_add_right` + `lintegral_mono_set`). -/
+theorem lintegral_translate_leG (n : ℕ) (s : Fin n → ℝ)
+    (B BG : Set (Fin n → ℝ)) (f : (Fin n → ℝ) → ℝ≥0∞)
+    (hsub : (fun v => v + s) '' B ⊆ BG) :
+    (∫⁻ v in B, f (v + s)) ≤ ∫⁻ w in BG, f w := by
+  set τ : (Fin n → ℝ) → (Fin n → ℝ) := fun v => v + s with hτ
+  have hmp : MeasurePreserving τ volume volume := measurePreserving_add_right volume s
+  have hemb : MeasurableEmbedding τ := (Homeomorph.addRight s).measurableEmbedding
+  have h1 : (∫⁻ v in B, f (τ v)) = ∫⁻ w in τ '' B, f w := by
+    rw [← hmp.setLIntegral_comp_preimage_emb hemb f (τ '' B),
+      Set.preimage_image_eq B hemb.injective]
+  calc (∫⁻ v in B, f (v + s)) = ∫⁻ w in τ '' B, f w := h1
+    _ ≤ ∫⁻ w in BG, f w := lintegral_mono_set hsub
+
+/-- **The top-row shear (generic `step3a`).** For couplings `b : Fin m → ℝ` (`|b a| ≤ 1`) and a fixed
+`m×m` `Sc`, the `(m+1)×4` `S`-box integral of the top-row-coupled integrand is dominated by the
+`(S_bot, T')` resolved form: split `S = S_top × S_bot` (`piFinSuccAbove 0`, MP), then the per-`S_bot`
+translation `S_top ↦ T' = S_top + (b·S_bot)` peels the spectator row (`|b·S_bot| ≤ m·T`, box
+`[−T,T]^4 → [−(m+1)T,(m+1)T]^4 = morseBox 4 ((m+1)·T)`). Mirror of `RouteM334Ratiofin.step3a`. -/
+theorem stepShearG (m : ℕ) (b : Fin m → ℝ) (hb : ∀ a, |b a| ≤ 1)
+    (Sc : Matrix (Fin m) (Fin m) ℝ) (T : ℝ) (hT : 0 < T) (c' : ℝ) :
+    (∫⁻ S in matBox (m + 1) 4 T,
+        ENNReal.ofReal (((∑ q, (S 0 q + ∑ a, b a * S a.succ q) ^ 2)
+          + frobSq (rmatMul Sc (fun a q => S a.succ q))) ^ (-c')))
+      ≤ ∫⁻ S_bot in matBox m 4 T, ∫⁻ T' in morseBox 4 ((m + 1 : ℕ) * T),
+          ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul Sc S_bot)) ^ (-c')) := by
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => Fin 4 → ℝ) 0 with he
+  have hmp : MeasurePreserving e volume volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (m + 1) => Fin 4 → ℝ) 0
+  -- the joint integrand on (S_top, S_bot)
+  set H : (Fin 4 → ℝ) × (Fin m → Fin 4 → ℝ) → ℝ≥0∞ := fun q =>
+    ENNReal.ofReal (((∑ qq, (q.1 qq + ∑ a, b a * q.2 a qq) ^ 2)
+      + frobSq (rmatMul Sc q.2)) ^ (-c')) with hHdef
+  have hHmeas : Measurable H := by
+    rw [hHdef]
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    refine Measurable.add ?_ ?_
+    · refine Finset.measurable_sum _ (fun qq _ => ?_)
+      refine Measurable.pow_const ?_ 2
+      have h0 : Measurable (fun q : (Fin 4 → ℝ) × (Fin m → Fin 4 → ℝ) => q.1 qq) :=
+        (measurable_pi_apply qq).comp measurable_fst
+      refine h0.add (Finset.measurable_sum _ (fun a _ => ?_))
+      exact measurable_const.mul ((measurable_pi_apply qq).comp
+        ((measurable_pi_apply a).comp measurable_snd))
+    · unfold frobSq rmatMul
+      refine Finset.measurable_sum _ (fun i _ => ?_)
+      refine Finset.measurable_sum _ (fun j _ => ?_)
+      refine Measurable.pow_const ?_ 2
+      refine Finset.measurable_sum _ (fun k _ => ?_)
+      exact measurable_const.mul ((measurable_pi_apply j).comp
+        ((measurable_pi_apply k).comp measurable_snd))
+  -- the box split: matBox (m+1) 4 T = e ⁻¹' (matBox 1-row × matBox m 4 T) — as a Fin 4 row box × matBox
+  have hsplit : matBox (m + 1) 4 T
+      = e ⁻¹' ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T) := by
+    ext S
+    simp only [he, Set.mem_preimage, Set.mem_prod, matBox, Set.mem_setOf_eq, Set.mem_pi,
+      Set.mem_univ, true_implies]
+    constructor
+    · intro h
+      refine ⟨fun q => h 0 q, fun a q => h a.succ q⟩
+    · rintro ⟨h1, h2⟩ i k
+      rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨i', rfl⟩
+      · exact h1 k
+      · exact h2 i' k
+  -- LHS = ∫ over (S_top × S_bot) of H, then Tonelli (S_bot outer)
+  have hLHS : (∫⁻ S in matBox (m + 1) 4 T,
+      ENNReal.ofReal (((∑ q, (S 0 q + ∑ a, b a * S a.succ q) ^ 2)
+        + frobSq (rmatMul Sc (fun a q => S a.succ q))) ^ (-c')))
+      = ∫⁻ pq in ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T), H pq := by
+    rw [hsplit, ← hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding H
+        ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T)]
+    refine setLIntegral_congr_fun ?_ (fun S _ => rfl)
+    exact e.measurable (MeasurableSet.prod
+      (MeasurableSet.univ_pi (fun _ => measurableSet_Icc)) (matBox_measurableSet m 4 T))
+  rw [hLHS, Measure.volume_eq_prod, setLIntegral_prod _ hHmeas.aemeasurable,
+    lintegral_lintegral_swap hHmeas.aemeasurable]
+  -- now ∫_{S_bot}∫_{S_top} H (S_top, S_bot); shear S_top ↦ T' per fixed S_bot
+  refine setLIntegral_mono_ae' (matBox_measurableSet m 4 T) (ae_of_all _ (fun S_bot hSbot => ?_))
+  -- per S_bot: translate S_top ↦ T' = S_top + (b·S_bot), box enlarges to morseBox 4 ((m+1)T)
+  set shift : Fin 4 → ℝ := fun q => ∑ a, b a * S_bot a q with hshift
+  set f : (Fin 4 → ℝ) → ℝ≥0∞ := fun T' =>
+    ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul Sc S_bot)) ^ (-c')) with hf
+  have hrw : ∀ S_top : Fin 4 → ℝ, H (S_top, S_bot) = f (S_top + shift) := by
+    intro S_top; rw [hHdef, hf]; rfl
+  rw [lintegral_congr hrw]
+  refine lintegral_translate_leG 4 shift (Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T))
+    (morseBox 4 ((m + 1 : ℕ) * T)) f ?_
+  rintro T' ⟨v, hv, rfl⟩
+  simp only [morseBox, Set.mem_pi, Set.mem_univ, true_implies] at hv ⊢
+  intro q
+  have hvq := Set.mem_Icc.1 (hv q)
+  -- |shift q| = |∑ a b a · S_bot a q| ≤ m·T ≤ ... ; v q + shift q ∈ [−(m+1)T, (m+1)T]
+  have htermbd : ∀ a : Fin m, |b a * S_bot a q| ≤ T := by
+    intro a
+    rw [abs_mul]
+    have hSa := Set.mem_Icc.1 (hSbot a q)
+    calc |b a| * |S_bot a q| ≤ 1 * T :=
+          mul_le_mul (hb a) (abs_le.2 hSa) (abs_nonneg _) (by norm_num)
+      _ = T := by ring
+  have hshiftbd : |shift q| ≤ (m : ℝ) * T := by
+    rw [hshift]
+    calc |∑ a, b a * S_bot a q| ≤ ∑ a, |b a * S_bot a q| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _a : Fin m, T := Finset.sum_le_sum (fun a _ => htermbd a)
+      _ = (m : ℝ) * T := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  rw [Set.mem_Icc, Pi.add_apply, hshift]
+  have habs := abs_le.1 hshiftbd
+  push_cast
+  constructor <;> [nlinarith [hvq.1, habs.1, hT]; nlinarith [hvq.2, habs.2, hT]]
+
+/-! ### The carve: `z ≅ (M22, g, b)` coordinate permutation + the `Sc = matOf M22 − bgShiftG (g,b)` readback
+
+The `N = r²−1` ratio coords `z` are exactly the off-`(0,0)` cells of the `(0,0)`-normalised angular matrix,
+partitioned into the `(r−1)²` lower-right `M22` cells `(a.succ, b.succ)`, the `(r−1)` `g`-cells
+`(a.succ, 0)`, and the `(r−1)` `b`-cells `(0, b.succ)` (`(r−1)²+2(r−1)=r²−1=N`). The slot bijection
+`zσG` carries this; the reshape `zEG` (`piCongrLeft ∘ sumPiEquivProdPi`, MP) splits `z` into the `M22`-cube
+and the `(g,b)`-cube; at `j=1` the Schur complement reads `Sc = matOf M22 − bgShiftG (g,b)`
+(`Sh_{ab} = g a · b b`, `|Sh| ≤ 1`). Generic analog of `RouteM334Ratiofin.cellOf`/`zslot`/`zσ`/`zE`/`Δof_eq_zE`. -/
+
+/-- The enumeration of the off-`(0,0)` cells: `inl (a,b) ↦ (a.succ, b.succ)` (M22), `inr (inl a) ↦
+(a.succ, 0)` (g), `inr (inr b) ↦ (0, b.succ)` (b). -/
+def cellOfG (m : ℕ) : ((Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) → Fin (m + 1) × Fin (m + 1)
+  | Sum.inl (a, b) => (a.succ, b.succ)
+  | Sum.inr (Sum.inl a) => (a.succ, 0)
+  | Sum.inr (Sum.inr b) => (0, b.succ)
+
+theorem cellOfG_ne_zero (m : ℕ) (s : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) :
+    ¬ ((cellOfG m s).1 = 0 ∧ (cellOfG m s).2 = 0) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellOfG, Fin.succ_ne_zero]
+
+theorem cellOfG_injective (m : ℕ) : Function.Injective (cellOfG m) := by
+  rintro s1 s2 h
+  rcases s1 with ⟨a1, b1⟩ | (a1 | b1) <;> rcases s2 with ⟨a2, b2⟩ | (a2 | b2) <;>
+    simp only [cellOfG, Prod.mk.injEq] at h <;>
+    first
+      | (obtain ⟨ha, hb⟩ := h; rw [Fin.succ_inj] at ha hb; subst ha; subst hb; rfl)
+      | (obtain ⟨ha, _⟩ := h; rw [Fin.succ_inj] at ha; subst ha; rfl)
+      | (obtain ⟨_, hb⟩ := h; rw [Fin.succ_inj] at hb; subst hb; rfl)
+      | (exact absurd h.1 (Fin.succ_ne_zero _))
+      | (exact absurd h.2 (Fin.succ_ne_zero _))
+      | (exact absurd h.1.symm (Fin.succ_ne_zero _))
+      | (exact absurd h.2.symm (Fin.succ_ne_zero _))
+
+/-- The bg-shift matrix `g·bᵀ` from the `(g,b)`-cube `v : Fin m ⊕ Fin m → ℝ`:
+`bgShiftG v a b = v (inl a) · v (inr b)` (the rank-1 Cramer shift, `M21·M11⁻¹·M12` at `j=1`). -/
+noncomputable def bgShiftG (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) : Matrix (Fin m) (Fin m) ℝ :=
+  fun a b => v (Sum.inl a) * v (Sum.inr b)
+
+theorem bgShiftG_entry_le (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) (hv : ∀ s, |v s| ≤ 1) (a b : Fin m) :
+    |bgShiftG m v a b| ≤ 1 := by
+  rw [bgShiftG, abs_mul]
+  calc |v (Sum.inl a)| * |v (Sum.inr b)| ≤ 1 * 1 :=
+        mul_le_mul (hv _) (hv _) (abs_nonneg _) (by norm_num)
+    _ = 1 := by norm_num
 
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
@@ -932,12 +1295,12 @@ theorem chart_integrand_factorG (r : ℕ) (c' : ℝ) (hc0 : 0 < c') (T : ℝ) (h
     (p : Fin (r * r)) (y : Fin (r * r) → ℝ) (hyp0 : y p ≠ 0)
     (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (r * r))) p) :
     ENNReal.ofReal (|y p| ^ (r * r - 1))
-        * (flatBoxGen r T).indicator (gFlatGen r 4 c' T) (pivotBlowupOn
+        * (flatBoxG r T).indicator (gFlatG r c' T) (pivotBlowupOn
             (Finset.univ : Finset (Fin (r * r))) p y)
       = (Set.Icc (-T) T).indicator
           (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) (y p)
         * innerSGen r c' T p y := by
-  by_cases hmem : pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y ∈ flatBoxGen r T
+  by_cases hmem : pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) p y ∈ flatBoxG r T
   · have hyp : |y p| ≤ T := (flatBoxG_blowup_mem_iff r T p y hy).1 hmem
     rw [Set.indicator_of_mem hmem,
       Set.indicator_of_mem (s := Set.Icc (-T) T) (by rw [Set.mem_Icc, ← abs_le]; exact hyp)]
@@ -973,7 +1336,7 @@ theorem schur_matBoxG_chart_lt_top (r : ℕ) (hr : 3 ≤ r)
     (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
     ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (r * r))) p \ pivotZeroOn p,
         ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (r * r))) p y).det|
-          * (flatBoxGen r T).indicator (gFlatGen r 4 c' T) (pivotBlowupOn
+          * (flatBoxG r T).indicator (gFlatG r c' T) (pivotBlowupOn
               (Finset.univ : Finset (Fin (r * r))) p y)
       < ⊤ := by
   have hrr : 0 < r * r := by positivity
@@ -1122,8 +1485,8 @@ theorem schurCoreGen_firing (r : ℕ) (hr : 3 ≤ r)
     (hIH : SchurLowerIH 4 schurLambda r)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambda r) (T : ℝ) (hT : 0 < T) :
     SchurCore 4 r c' T := by
-  rw [SchurCore, matBoxGen_outer_flat r 4 c' T,
-    gFlatGen_cover_sum r 4 (by positivity) c' T]
+  rw [SchurCore, matBoxG_outer_flat r c' T,
+    gFlatG_cover_sum r (by positivity) c' T]
   exact ENNReal.sum_lt_top.2 (fun p _ => schur_matBoxG_chart_lt_top r hr hIH c' hc0 hc' p T hT)
 
 /-! ## The dispatch: `SchurRecStep 4 schurLambda` -/
