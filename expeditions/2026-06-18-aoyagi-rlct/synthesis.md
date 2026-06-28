@@ -48,6 +48,41 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Constructed Source-Readback Production
+
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now exposes:
+
+```text
+exists_sourceRecursive_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+exists_sourceRecursiveEdgeFamily_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+```
+
+Given successor selected-entry coordinates `yNext`, endpoint equivalence
+`eNext`, and nonzero displayed successor pivot coordinate, Lean constructs a
+two-edge retained-passive-shaped source family `E` in the source-recursive
+determinant chart.  The actual `sourceReadback E` residual-factor product is
+the successor selected-entry matrix and is nonzero.
+
+The construction uses the displayed-product source witnesses `residual` and
+`Cprime`, packages them as `case2PostPivotRetainedPassiveData`, takes
+`E = data.edgeMatrix`, then applies `sourceRecursiveDetChart_edgeMatrix_of_detChart`
+and `sourceReadback_edgeMatrix_eq`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-constructed-source-readback-production.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-constructed-source-readback-production.md`.
+Focused build passed with pre-existing imported warning noise, and full
+`DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, changed-Lean-file forbidden-marker search, and direct
+axiom-footprint audit passed; the new endpoints report
+`[propext, Classical.choice, Quot.sound]`.  Review is PASS by xhigh `Boole`, recorded at
+`threads/03-block-product-reduction/review-a2-case2-constructed-source-readback-production.md`.
+
+This remains constructed source production only.  It does not prove arbitrary
+retained-passive `sourceReadback E` factor alignment, source/prior transport,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Constructed Displayed-Product Nonzero Source Production
 
 `Case2ResidualFactorProduct.lean` now has finite constructed-data helpers:

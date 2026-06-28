@@ -748,6 +748,139 @@ theorem exists_case2PostPivotRetainedPassiveData_residualFactorProduct_eq_succes
       case2PostPivotRetainedPassiveData_hdataFactor_of_entrywise
         (ρ := ρ) n hS hcont hnext residual Cprime yNext eNext hentry⟩
 
+set_option linter.style.longLine false in
+/-- Constructed source-recursive Case 2 source data whose actual
+`sourceReadback` residual-factor product is the successor selected-entry
+matrix.
+
+This theorem passes the finite constructed Case 2 data through the
+retained-passive source map/readback pair: the source family is the `edgeMatrix`
+of the synthetic two-edge retained-passive datum, and the determinant-chart
+readback-after-source inverse theorem identifies its `sourceReadback` with that datum.  It is
+constructed source data only; it does not prove arbitrary retained-passive
+coverage, source-prior transport, normal crossings, pole order, or RLCT. -/
+theorem exists_sourceRecursive_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hyNext :
+      yNext (⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0) :
+    ∃ residual : ℕ × ℕ → ℝ,
+    ∃ Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ,
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+          (K := ℝ) (ρ := ρ)
+          (case2PostPivotRetainedPassiveData
+            (ρ := ρ) n hS hcont residual Cprime).edgeMatrix ∧
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := ρ)
+            (case2PostPivotRetainedPassiveData
+              (ρ := ρ) n hS hcont residual Cprime).edgeMatrix).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext ∧
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := ρ)
+            (case2PostPivotRetainedPassiveData
+              (ρ := ρ) n hS hcont residual Cprime).edgeMatrix).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) ≠ 0 := by
+  rcases
+    exists_residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+      n hS hcont hnext yNext eNext hyNext with
+    ⟨residual, Cprime, hprod, hprod_ne⟩
+  let data :=
+    case2PostPivotRetainedPassiveData
+      (ρ := ρ) n hS hcont residual Cprime
+  have hdet : data.detChart :=
+    case2PostPivotRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont residual Cprime
+  have hsource :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+          (K := ℝ) (ρ := ρ) data.edgeMatrix :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart
+      (K := ℝ) (ρ := ρ) data hdet
+  have hread :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+          (K := ℝ) (ρ := ρ) data.edgeMatrix = data :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback_edgeMatrix_eq
+      (K := ℝ) (ρ := ρ) (data := data) hdet
+  have hC :
+      (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+          (K := ℝ) (ρ := ρ) data.edgeMatrix).C =
+        data.C := by
+    exact congrArg
+      (fun data' :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) ↦ data'.C)
+      hread
+  have hsourceProduct :
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := ρ) data.edgeMatrix).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        ChartLocalSuffixState.residualFactorProduct
+          (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont residual Cprime)
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) := by
+    rw [hC]
+    rfl
+  refine ⟨residual, Cprime, ?_, ?_, ?_⟩
+  · simpa [data] using hsource
+  · exact hsourceProduct.trans hprod
+  · intro hzero
+    exact hprod_ne (by
+      rw [← hsourceProduct]
+      exact hzero)
+
+set_option linter.style.longLine false in
+/-- Standalone source-edge-family form of
+`exists_sourceRecursive_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero`.
+
+The produced source family is the retained-passive source map of the synthetic
+Case 2 datum.  This is constructed source production in the two-edge Case 2
+window, not arbitrary retained-passive coverage. -/
+theorem exists_sourceRecursiveEdgeFamily_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hyNext :
+      yNext (⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0) :
+    ∃ E : ∀ p : Fin 2,
+      Matrix
+        (ρ ⊕ case2PostPivotTwoEdgeDomain n S J τ p.succ)
+        (ρ ⊕ case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ,
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+          (K := ℝ) (ρ := ρ) E ∧
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := ρ) E).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext ∧
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := ρ) E).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) ≠ 0 := by
+  rcases
+    exists_sourceRecursive_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+      (ρ := ρ) n hS hcont hnext yNext eNext hyNext with
+    ⟨residual, Cprime, hsource, hprod, hprod_ne⟩
+  exact
+    ⟨(case2PostPivotRetainedPassiveData
+        (ρ := ρ) n hS hcont residual Cprime).edgeMatrix,
+      hsource, hprod, hprod_ne⟩
+
 end Aoyagi
 end DLN
 end DLNFibre

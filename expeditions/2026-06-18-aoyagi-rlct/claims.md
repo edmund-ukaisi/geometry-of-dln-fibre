@@ -230,6 +230,16 @@ No such claim is formalisation-ready until both fields are filled.
   This removes nonzeroness only for constructed displayed data; it does not
   prove arbitrary retained-passive `sourceReadback` factor alignment or
   nonzeroness, source/prior transport, normal crossings, pole order, or RLCT.
+- **Current status addendum, constructed Case 2 source-readback production,
+  2026-06-28.** Lean now proves
+  `exists_sourceRecursiveEdgeFamily_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero`.
+  From successor selected-entry coordinates with nonzero displayed successor
+  pivot coordinate, the theorem constructs a two-edge source family `E` in the
+  source-recursive determinant chart such that the actual `sourceReadback E`
+  residual-factor product is the successor selected-entry matrix and is
+  nonzero.  This is constructed source production only; it does not prove
+  arbitrary retained-passive `sourceReadback E` factor alignment,
+  source/prior transport, normal crossings, pole order, or RLCT.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

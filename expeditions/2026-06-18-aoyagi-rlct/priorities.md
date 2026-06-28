@@ -19,6 +19,34 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, constructed source-readback Case 2 production
+
+The finite constructed Case 2 product has been pushed through the
+retained-passive source/readback pair.  New endpoints:
+
+```text
+exists_sourceRecursive_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+exists_sourceRecursiveEdgeFamily_case2PostPivot_sourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+```
+
+The theorem constructs a two-edge source family `E` in the source-recursive
+determinant chart whose actual `sourceReadback E` residual-factor product is
+the successor selected-entry matrix and nonzero.  This uses the synthetic
+Case 2 retained-passive datum, its determinant-chart proof, and the
+`sourceReadback_edgeMatrix_eq` inverse theorem.
+
+Focused build, full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+changed-Lean-file forbidden-marker search, and direct axiom-footprint audit
+passed; the new endpoints report `[propext, Classical.choice, Quot.sound]`.
+Xhigh scouts agreed that arbitrary retained-passive factor alignment is still
+a separate missing theorem; product equality alone does not determine
+per-factor alignment.  Xhigh implementation review by `Boole` passed after a
+docstring wording fix.
+
+This is constructed source production, not arbitrary retained-passive
+coverage.  The active frontier remains selected-entry source/prior measure
+transport or retained-passive chart-side normal-crossing assembly.
+
 ## Latest controller decision - 2026-06-28, finite constructed Case 2 source production
 
 The expedition now has a finite constructed-data theorem for the continuing
