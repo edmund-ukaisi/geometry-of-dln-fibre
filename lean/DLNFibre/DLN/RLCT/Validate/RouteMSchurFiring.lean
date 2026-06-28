@@ -1172,6 +1172,83 @@ theorem stepShearG (m : ℕ) (b : Fin m → ℝ) (hb : ∀ a, |b a| ≤ 1)
   push_cast
   constructor <;> [nlinarith [hvq.1, habs.1, hT]; nlinarith [hvq.2, habs.2, hT]]
 
+/-- **`stepShearG` transported to the `Fin r` `S`-box** (the single `Fin r` ↔ `Fin ((r−1)+1)` boundary,
+isolated). For `r ≥ 3`, `b : Fin (r−1) → ℝ` (`|b a| ≤ 1`), `Sc : Matrix (Fin (r−1)) (Fin (r−1)) ℝ`, the
+`Fin r` `S`-box integral of the shear integrand (top row `S ⟨0⟩` + couplings to the `S ⟨1+a⟩` rows) is
+dominated by the resolved `(S_bot, T')` form. Proven by a measure-preserving `finCongr (r = (r−1)+1)`
+`S`-row reindex (`piCongrLeft`) into `stepShearG (m := r−1)`. -/
+theorem stepShearG_r (r : ℕ) (hr : 3 ≤ r) (b : Fin (r - 1) → ℝ) (hb : ∀ a, |b a| ≤ 1)
+    (Sc : Matrix (Fin (r - 1)) (Fin (r - 1)) ℝ) (T : ℝ) (hT : 0 < T) (c' : ℝ) :
+    (∫⁻ S in matBox r 4 T,
+        ENNReal.ofReal (((∑ q, (S ⟨0, by omega⟩ q
+              + ∑ a : Fin (r - 1), b a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+          + frobSq (rmatMul Sc (fun a : Fin (r - 1) => S ⟨1 + (a : ℕ), by omega⟩))) ^ (-c')))
+      ≤ ∫⁻ S_bot in matBox (r - 1) 4 T, ∫⁻ T' in morseBox 4 ((r - 1 + 1 : ℕ) * T),
+          ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul Sc S_bot)) ^ (-c')) := by
+  have h1r : 1 ≤ r := by omega
+  have hr_cast : (r - 1) + 1 = r := Nat.sub_add_cancel h1r
+  let e : Fin ((r - 1) + 1) ≃ Fin r := finCongr hr_cast
+  let E : (Fin ((r - 1) + 1) → Fin 4 → ℝ) ≃ᵐ (Fin r → Fin 4 → ℝ) :=
+    MeasurableEquiv.piCongrLeft (fun _ : Fin r => Fin 4 → ℝ) e
+  have hmp : MeasurePreserving E
+      (volume : Measure (Fin ((r - 1) + 1) → Fin 4 → ℝ))
+      (volume : Measure (Fin r → Fin 4 → ℝ)) :=
+    volume_measurePreserving_piCongrLeft (fun _ : Fin r => Fin 4 → ℝ) e
+  have he0 : (⟨0, by omega⟩ : Fin r) = e 0 := by apply Fin.ext; simp [e]
+  have hesucc : ∀ a : Fin (r - 1), (⟨1 + (a : ℕ), by omega⟩ : Fin r) = e a.succ := by
+    intro a; apply Fin.ext; simp only [e, finCongr_apply, Fin.coe_cast, Fin.val_succ]; omega
+  have hEcoord : ∀ (S : Fin ((r - 1) + 1) → Fin 4 → ℝ) (j : Fin ((r - 1) + 1)) (q : Fin 4),
+      (E S) (e j) q = S j q := by
+    intro S j q
+    show (MeasurableEquiv.piCongrLeft (fun _ : Fin r => Fin 4 → ℝ) e S) (e j) q = S j q
+    rw [MeasurableEquiv.piCongrLeft_apply_apply]
+  have hE0 : ∀ (S : Fin ((r - 1) + 1) → Fin 4 → ℝ) (q : Fin 4),
+      (E S) ⟨0, by omega⟩ q = S 0 q := by
+    intro S q; rw [he0, hEcoord]
+  have hEsucc : ∀ (S : Fin ((r - 1) + 1) → Fin 4 → ℝ) (a : Fin (r - 1)) (q : Fin 4),
+      (E S) ⟨1 + (a : ℕ), by omega⟩ q = S a.succ q := by
+    intro S a q; rw [hesucc, hEcoord]
+  have hpre : matBox ((r - 1) + 1) 4 T = E ⁻¹' (matBox r 4 T) := by
+    ext S
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i q
+      obtain ⟨j, rfl⟩ := e.surjective i
+      rw [hEcoord]; exact h _ q
+    · intro h j q; rw [← hEcoord S j q]; exact h (e j) q
+  set F : (Fin r → Fin 4 → ℝ) → ℝ≥0∞ := fun S =>
+    ENNReal.ofReal (((∑ q, (S ⟨0, by omega⟩ q
+          + ∑ a : Fin (r - 1), b a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+      + frobSq (rmatMul Sc (fun a : Fin (r - 1) => S ⟨1 + (a : ℕ), by omega⟩))) ^ (-c')) with hFdef
+  have key := hmp.setLIntegral_comp_preimage_emb E.measurableEmbedding F (matBox r 4 T)
+  have hcast : (∫⁻ S in matBox r 4 T, F S)
+      = ∫⁻ S in matBox ((r - 1) + 1) 4 T,
+          ENNReal.ofReal (((∑ q, (S 0 q + ∑ a : Fin (r - 1), b a * S a.succ q) ^ 2)
+            + frobSq (rmatMul Sc (fun a : Fin (r - 1) => S a.succ))) ^ (-c')) := by
+    rw [key.symm, ← hpre]
+    refine setLIntegral_congr_fun (matBox_measurableSet _ _ _) (fun S _ => ?_)
+    show F (E S) = _
+    rw [hFdef]
+    -- peel `ofReal(· ^ (-c'))`, then the `top + residual` sum, via explicit congrArg (avoid `congr`
+    -- over-reduction into the rpow, which heartbeat-times-out)
+    refine congrArg (fun t : ℝ => ENNReal.ofReal (t ^ (-c'))) ?_
+    have htop : (∑ q, ((E S) ⟨0, by omega⟩ q
+          + ∑ a : Fin (r - 1), b a * (E S) ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+        = ∑ q, (S 0 q + ∑ a : Fin (r - 1), b a * S a.succ q) ^ 2 := by
+      refine Finset.sum_congr rfl (fun q _ => ?_)
+      rw [hE0 S q]
+      have hinner : (∑ a : Fin (r - 1), b a * (E S) ⟨1 + (a : ℕ), by omega⟩ q)
+          = ∑ a : Fin (r - 1), b a * S a.succ q := by
+        refine Finset.sum_congr rfl (fun a _ => ?_); rw [hEsucc S a q]
+      rw [hinner]
+    have hres : frobSq (rmatMul Sc (fun a : Fin (r - 1) => (E S) ⟨1 + (a : ℕ), by omega⟩))
+        = frobSq (rmatMul Sc (fun a : Fin (r - 1) => S a.succ)) := by
+      refine congrArg (fun f => frobSq (rmatMul Sc f)) (funext (fun a => funext (fun q => ?_)))
+      exact hEsucc S a q
+    rw [htop, hres]
+  rw [hcast]
+  exact stepShearG (r - 1) b hb Sc T hT c'
+
 /-! ### The carve: `z ≅ (M22, g, b)` coordinate permutation + the `Sc = matOf M22 − bgShiftG (g,b)` readback
 
 The `N = r²−1` ratio coords `z` are exactly the off-`(0,0)` cells of the `(0,0)`-normalised angular matrix,
