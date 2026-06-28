@@ -918,6 +918,43 @@ theorem RmatGnorm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
   rw [Set.mem_Icc, ← abs_le] at this
   exact this
 
+/-- The pivot-normalized angular matrix reads `z` at a slot off `(0,0)`:
+`RmatGnorm r N hN p z i j = z (slotG …)` for `(i,j) ≠ (0,0)`. The readback the carve consumes
+(generic analog of `RouteM334Ratiofin.Rmat334norm_eq_zslot`). -/
+theorem RmatGnorm_eq_zslot (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (z : Fin N → ℝ)
+    (i j : Fin r) (h0r : 0 < r) (hij : ¬ (i = ⟨0, h0r⟩ ∧ j = ⟨0, h0r⟩)) :
+    ∃ jj : Fin N, RmatGnorm r N hN p z i j = z jj := by
+  unfold RmatGnorm
+  set z0 : Fin r := ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩ with hz0
+  have hz0eq : z0 = (⟨0, h0r⟩ : Fin r) := rfl
+  set r0 := ((eG r).symm p).1 with hr0
+  set c0 := ((eG r).symm p).2 with hc0
+  set σr := Equiv.swap r0 z0 with hσr
+  set σc := Equiv.swap c0 z0 with hσc
+  set y := (piRatioG r N hN p).symm (0, z) with hy
+  have hσr0 : σr z0 = r0 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc z0 = c0 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eG r (r0, c0) = p := by
+    rw [show (r0, c0) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : eG r (σr i, σc j) ≠ p := by
+    intro heq
+    rw [← hpe] at heq
+    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+    rw [← hσr0] at hi; rw [← hσc0] at hj
+    exact hij ⟨hz0eq ▸ σr.injective hi, hz0eq ▸ σc.injective hj⟩
+  rw [RmatG_entry, if_neg hidx]
+  set k := eG r (σr i, σc j) with hk
+  have hkp : k ≠ p := hidx
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hkp ((finCongr hN).injective h)
+  obtain ⟨jj, hjj⟩ := Fin.exists_succAbove_eq hne
+  have hkdec : k = (finCongr hN).symm ((finCongr hN p).succAbove jj) := by
+    rw [hjj]; exact ((finCongr hN).symm_apply_apply k).symm
+  refine ⟨jj, ?_⟩
+  have h1 : (piRatioG r N hN p y).2 jj = y k := by
+    rw [piRatioG_apply_snd r N hN p y jj, hkdec]
+  have h2 : piRatioG r N hN p y = (0, z) := by rw [hy, MeasurableEquiv.apply_symm_apply]
+  rw [h2] at h1; exact h1.symm
+
 /-- **`innerSGen` in the pivot-normalized form.** `innerSGen r c' T p ((piRatioG …).symm (0,z))
 = ∫_{S} frobSq (RmatGnorm·S)^{−c'}` (the `(0,0)`-pivot reorder, via `frobSq_rmatMul_permG` under the
 `S`-row-permute CoV `matBox_rowperm_lintegralG`). -/
