@@ -1250,6 +1250,138 @@ theorem psiL2_contDiff (H : Fin (L + 1) → ℕ) (r : ℕ)
     ((contDiff_psiSplitCutL2 H r hr hL).comp
       (contDiff_deepestSplit H r hr hL (wstarL2 H r B hB hr hL)))
 
+/-! ### S4e — the gauge payload deriv-0 + the CLE-reduction (joint correction strict-deriv 0) -/
+
+-- l2Y1p - l2Y1 = A0⁻¹ * Y0 * (T1 - T1').
+theorem l2Y1p_sub_Y1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q
+      = (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+          * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) := by
+  rw [l2Y1p]; abel
+
+-- (T1 - T1') entry value 0 + strict-deriv 0 at origin.
+theorem hasStrictFDerivAt_l2T1_sub_T1p_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt (fun q => (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have hneg := (hasStrictFDerivAt_l2T1p_sub_T1_entry_zero H r hr hL hL2eq i j).neg
+  simp only [neg_zero] at hneg
+  refine hneg.congr_of_eventuallyEq ?_
+  filter_upwards with q
+  simp only [Pi.neg_apply, Matrix.sub_apply]; ring
+
+theorem l2T1p_sub_T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2T1p H r hr hL hL2eq 0 - l2T1 H r hr hL 0 = 0 := by
+  rw [l2T1p_sub_T1, l2Br_sub_T1, l2K_zero, l2R_zero]
+  simp [Matrix.zero_mul, l2W_zero]
+
+theorem l2T1_sub_T1p_zero_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    (l2T1 H r hr hL 0 - l2T1p H r hr hL hL2eq 0) i j = 0 := by
+  have h0 := l2T1p_sub_T1_zero H r hr hL hL2eq
+  have : l2T1 H r hr hL 0 - l2T1p H r hr hL hL2eq 0 = 0 := by
+    rw [← neg_sub, h0, neg_zero]
+  rw [this]; rfl
+
+-- A0⁻¹*Y0 entries ContDiffAt at 0.
+theorem contDiffAt_l2A0invY0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => ((l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q) i j) 0 :=
+  contDiffAt_matrix_mul_entry (fun a k => contDiffAt_l2A0inv_entry H r hr hL a k)
+    (fun k b => (contDiff_l2Y0_entry H r hr hL hL2eq k b).contDiffAt) i j
+
+-- (l2Y1p - l2Y1) entry strict-deriv-0 (= A0⁻¹*Y0*(T1-T1'), right factor (T1-T1') value+deriv 0).
+theorem hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt (fun q => (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j)
+      = fun q => (((l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q)
+          * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q)) i j := by
+    funext q; rw [l2Y1p_sub_Y1, Matrix.mul_assoc]
+  rw [heq]
+  exact hasStrictFDerivAt_matrix_mul_entry_of_right_zero i j
+    (fun k => contDiffAt_l2A0invY0_entry H r hr hL hL2eq i k)
+    (fun k => hasStrictFDerivAt_l2T1_sub_T1p_entry_zero H r hr hL hL2eq k j)
+    (fun k => l2T1_sub_T1p_zero_entry H r hr hL hL2eq k j)
+
+-- The gauge payload l2GaugeΔ has strict-deriv 0 at 0 (only last-layer Y-tags nonzero).
+theorem hasStrictFDerivAt_l2GaugeΔ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt (l2GaugeΔ H r hr hL hL2eq)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
+  refine hasStrictFDerivAt_pi'.2 (fun idx => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  -- l2GaugeΔ q idx = l2g' q idx - g q idx; by cases on idx (only last Y-tag nonzero).
+  obtain ⟨s, rest⟩ := idx
+  rcases rest with (rest | rest)
+  · rcases rest with rest | ⟨i, j⟩
+    · -- X-tag: l2GaugeΔ = 0.
+      have h0 : (fun q => l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inl rest)⟩) = fun _ => (0 : ℝ) := by
+        funext q; simp only [l2GaugeΔ, l2g', Pi.sub_apply]; ring
+      rw [h0]; exact hasStrictFDerivAt_const _ _
+    · -- Y-tag: 0 off last, (l2Y1p - l2Y1) i (cast j) at last.
+      by_cases h : s = lastLayer hL
+      · subst h
+        have hY : (fun q => l2GaugeΔ H r hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+            = fun q => (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j := by
+          funext q
+          have hg : regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
+              ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩ = l2Y1 H r hr hL q i j := rfl
+          simp only [l2GaugeΔ, l2g', Pi.sub_apply, dif_pos, hg, Matrix.sub_apply]
+        rw [hY]; exact hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero H r hr hL hL2eq i j
+      · have h0 : (fun q => l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+            = fun _ => (0 : ℝ) := by
+          funext q; simp only [l2GaugeΔ, l2g', Pi.sub_apply, dif_neg h]; ring
+        rw [h0]; exact hasStrictFDerivAt_const _ _
+  · -- Z-tag: l2GaugeΔ = 0.
+    have h0 : (fun q => l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inr rest⟩) = fun _ => (0 : ℝ) := by
+      funext q; simp only [l2GaugeΔ, l2g', Pi.sub_apply]; ring
+    rw [h0]; exact hasStrictFDerivAt_const _ _
+
+-- The joint correction psiSplitRawL2Core - id has strict-deriv 0 at 0 (CLE-reduction).
+theorem hasStrictFDerivAt_psiSplitDeltaL2Core_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt (fun q => psiSplitRawL2Core H r hr hL hL2eq q - q)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 := by
+  have heq : (fun q => psiSplitRawL2Core H r hr hL hL2eq q - q)
+      = fun q => (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q),
+            ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).2)) := by
+    funext q; exact psiSplitDeltaL2Core_eq_payload H r hr hL hL2eq q
+  rw [heq]
+  -- The reg/spec encode regGaugeSlotCLE.symm ∘ l2GaugeΔ has deriv 0.
+  have hrg : HasStrictFDerivAt
+      (fun q => (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ]
+        ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) 0 := by
+    have hcle := ((regGaugeSlotCLE H r hr hL).symm.toContinuousLinearMap).hasStrictFDerivAt
+      (x := l2GaugeΔ H r hr hL hL2eq 0)
+    have hcomp := hcle.comp 0 (hasStrictFDerivAt_l2GaugeΔ_zero H r hr hL hL2eq)
+    simpa using hcomp
+  -- The core encode paramsEquivFlatCLE ∘ l2CoreΔTuple has deriv 0 (landed directly).
+  have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTuple_zero H r hr hL hL2eq
+  have h1 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).1)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  have h3 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).2)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNGauge H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.snd ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  exact h1.prodMk (hcore.prodMk h3)
+
 /-- **The joint-action correction has vanishing strict derivative at the split origin.** The
 `(T1,Y1)` correction `psiSplitRawL2 q − q` is `O(read³)` (each delta block is a product with at least
 two vanishing factors — `K = O(read²)`, `S1 = O(read)`, `W − I = O(read²)`), so its strict derivative
@@ -1262,11 +1394,16 @@ theorem hasStrictFDerivAt_psiSplitDeltaL2_zero (H : Fin (L + 1) → ℕ) (r : �
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
       (0 : DeepestSplit H r (deepestNGauge H r)) := by
   rcases eq_or_ne L 2 with hL2 | hL2
-  · -- **L = 2: the real O(read³) deriv-vanishing (the genuine S4 leaf — NOT yet built).** Each
-    -- correction block (`T1'−T1`, `Y1'−Y1`) is a sum of products with ≥ 2 vanishing-at-`0` read
-    -- factors (`K = O(read²)`, `S1 = O(read)`, `W−I = O(read²)`), so `D(δ)(0) = 0` — componentwise
-    -- product rule through the encode/decode + reindex casts (NOT from the reads, which are linear).
-    sorry
+  · -- **L = 2: the certified O(read²) deriv-vanishing.** `psiSplitDeltaL2 = psiSplitRawL2Core − id`
+    -- (dif_pos), whose strict derivative at `0` is `0` by the lens-decomposition CLE-reduction
+    -- (`hasStrictFDerivAt_psiSplitDeltaL2Core_zero`): the two decoded payloads (`l2CoreΔTuple`,
+    -- `l2GaugeΔ`) are each `O(read²)` (`T1'−T1` normalized via `(W⁻¹−1)·Br + (−K·S1 + R·T1)`;
+    -- `Y1'−Y1 = A0⁻¹·Y0·(T1−T1')`), so their CLE encodings have strict derivative `0`.
+    have heq : psiSplitDeltaL2 H r hr hL
+        = fun q => psiSplitRawL2Core H r hr hL hL2 q - q := by
+      funext q; simp only [psiSplitDeltaL2, psiSplitRawL2, dif_pos hL2]
+    rw [heq]
+    exact hasStrictFDerivAt_psiSplitDeltaL2Core_zero H r hr hL hL2
   · -- L ≠ 2: `psiSplitRawL2 = id`, so `δ = 0`, strict deriv `0` by `hasStrictFDerivAt_const`.
     have heq : psiSplitDeltaL2 H r hr hL
         = fun _ : DeepestSplit H r (deepestNGauge H r) =>
