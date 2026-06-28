@@ -38,7 +38,48 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
-## Latest controller decision - 2026-06-28, Case 2 fixed-pivot source-readback readout
+## Latest controller decision - 2026-06-28, Case 2 topology-tuple source-family alignment
+
+The raw-order p.13 source chart now has a determinant-chart datum
+specialization:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+```
+
+For any retained-passive determinant-chart datum, the raw-order source chart
+evaluated at `topologyTupleEdgeRawOrder (topologyTuple data)` is the direct
+fixed-base p.13 source edge family of `data`.  The Case 2 specialization is:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+It applies to the endpoint-transported explicit selected-entry datum and
+discharges the determinant-chart input with
+`case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart`.
+This removes a real `ofTopologyTuple`/direct-datum mismatch for the concrete
+raw-order p.13 source path.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-topology-tuple-source-family-alignment.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-topology-tuple-source-family-alignment.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-topology-tuple-source-family-alignment.md`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; both declarations report only
+`[propext, Classical.choice, Quot.sound]`.  This is not endpoint provenance,
+source-image equality, pushforward-measure transport, source-rank coverage,
+Jacobian comparison, normal crossings, pole order, or RLCT.  Next high-value
+A2 moves are endpoint provenance if labelled data appears, or the
+chart-produced finite-integral density wrapper identified by `Sartre`; avoid
+another wrapper that keeps the same remaining endpoint/source/measure
+hypotheses.
+
+## Previous controller decision - 2026-06-28, Case 2 fixed-pivot source-readback readout
 
 The endpoint-transported explicit Case 2 selected-entry datum now has
 fixed-pivot pointwise product readout:

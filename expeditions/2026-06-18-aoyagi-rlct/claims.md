@@ -140,6 +140,21 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 topology-tuple source-family alignment,
+  2026-06-28.** Lean now exposes
+  `paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData`,
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_case2EndpointTransport_sourceEdgeFamilyOfData`.
+  For any determinant-chart retained-passive datum, the raw-order p.13 source
+  chart evaluated at `topologyTupleEdgeRawOrder (topologyTuple data)` is the
+  direct fixed-base p.13 source edge family of `data`; for the endpoint-
+  transported explicit Case 2 selected-entry datum, the determinant-chart
+  hypothesis is discharged by the existing endpoint-transport determinant
+  theorem.  This removes the concrete `ofTopologyTuple`/direct-datum mismatch
+  on the raw-order p.13 source path.  It is not endpoint provenance,
+  source-image equality, pushforward-measure transport, source-rank coverage,
+  source-prior transport, Jacobian comparison, normal crossings, pole order, or
+  RLCT.
 - **Current status addendum, Case 2 fixed-pivot source-readback readout,
   2026-06-28.** Lean now exposes
   `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext`,

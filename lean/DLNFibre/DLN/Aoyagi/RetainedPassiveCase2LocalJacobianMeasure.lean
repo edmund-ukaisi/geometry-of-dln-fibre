@@ -31,6 +31,65 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The raw-order p.13 source chart of the topology tuple attached to the
+endpoint-transported explicit Case 2 datum is the direct fixed-base p.13
+source edge family of that datum.
+
+This is a source-family presentation identity only.  It is not endpoint
+provenance, source-image equality, pushforward-measure transport, source-rank
+coverage, a Jacobian comparison, normal crossings, pole order, or RLCT
+extraction. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_case2EndpointTransport_sourceEdgeFamilyOfData
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ) :
+    let data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      (case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := Fin (Module.finrank ℝ U₀))
+        n hS hcont hnext yNext eNext).endpointTransport e
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W₂ B₂ U₀ hU₀
+        (topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+          (topologyTuple data)) =
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
+        data := by
+  intro data
+  exact
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+      (K := ℝ) (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀) data
+      (by
+        simpa [data] using
+          case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+            (ρ := Fin (Module.finrank ℝ U₀))
+            n hS hcont hnext yNext eNext e)
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The fixed-base source readback of the endpoint-transported explicit Case 2
 source edge family recovers the transported retained-passive datum. -/
 theorem sourceReadback_eq_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_of_case2EndpointTransport_sourceEdgeFamilyOfData

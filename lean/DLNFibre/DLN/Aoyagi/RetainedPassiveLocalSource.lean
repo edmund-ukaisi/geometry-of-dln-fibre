@@ -163,6 +163,46 @@ theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupl
           (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') w))
       hinv
 
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- For a retained-passive determinant-chart datum, the raw-order p.13 source
+chart evaluated on the raw-order tuple of `topologyTuple data` is the direct
+fixed-base p.13 source edge family of `data`.
+
+This is a pointwise source-family presentation identity.  It is not a
+source-image equality, pushforward-measure theorem, source-rank coverage,
+Jacobian comparison, normal crossings, pole order, or RLCT extraction. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart) :
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀
+        (topologyTupleEdgeRawOrder
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀)
+          (topologyTuple data)) =
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        data := by
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  have hz :
+      topologyTuple data ∈
+        topologyTupleDetChartSet
+          (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ') :=
+    (topologyTuple_mem_topologyTupleDetChartSet
+      (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ') data).2 hdet
+  simpa [κ'] using
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData
+      (K := K) (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (z := topologyTuple data) hz
+
 /-- Continuous fixed-base retained-passive source edge families whose extracted
 edge matrices lie in the source-recursive determinant chart. -/
 def paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet

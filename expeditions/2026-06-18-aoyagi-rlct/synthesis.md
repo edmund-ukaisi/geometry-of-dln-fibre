@@ -84,7 +84,49 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
-## Latest A2 Case 2 Fixed-Pivot Source-Readback Readout
+## Latest A2 Case 2 Topology-Tuple Source-Family Alignment
+
+The raw-order p.13 source chart now has a direct topology-tuple datum
+specialization:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+```
+
+For any retained-passive determinant-chart datum, evaluating the raw-order
+source chart at `topologyTupleEdgeRawOrder (topologyTuple data)` gives the
+direct fixed-base p.13 source edge family attached to `data`.  The proof uses
+the existing raw-order composition identity and rewrites
+`ofTopologyTuple (topologyTuple data)` back to `data`.
+
+The Case 2 endpoint-transported selected-entry datum has the corresponding
+fixed-base specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+Its determinant-chart input is discharged by
+`case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart`.
+This removes the concrete `ofTopologyTuple`/direct-datum mismatch on the
+constructed raw-order p.13 source path.  It is not endpoint provenance,
+source-image equality, pushforward-measure transport, source-rank coverage,
+Jacobian comparison, normal crossings, pole order, or RLCT.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-topology-tuple-source-family-alignment.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-topology-tuple-source-family-alignment.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-topology-tuple-source-family-alignment.md`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; both declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+## Previous A2 Case 2 Fixed-Pivot Source-Readback Readout
 
 The endpoint-transported explicit Case 2 selected-entry datum now preserves
 the actual displayed successor pivot in its pointwise product readout:

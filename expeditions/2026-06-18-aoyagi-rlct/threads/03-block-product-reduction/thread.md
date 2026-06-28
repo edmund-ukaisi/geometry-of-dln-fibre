@@ -14365,3 +14365,50 @@ endpoint-transported datum.  It does not construct `tau`, prove `hTau`, give
 label-preserving endpoint provenance, identify arbitrary `ofTopologyTuple`
 data, transport source priors, compare Jacobians, prove normal crossings,
 compute pole order, or extract RLCT.
+
+## 2026-06-28 A2 Case 2 topology-tuple source-family alignment
+
+Reproduction:
+`reproduction-a2-case2-topology-tuple-source-family-alignment.md`.
+Statement card:
+`statement-card-a2-case2-topology-tuple-source-family-alignment.md`.
+Review:
+`review-a2-case2-topology-tuple-source-family-alignment.md`, PASS by xhigh
+read-only checker `Helmholtz`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+For any retained-passive determinant-chart datum, the raw-order p.13 source
+chart evaluated at `topologyTupleEdgeRawOrder (topologyTuple data)` is the
+direct fixed-base p.13 source edge family of `data`.  The proof composes the
+existing raw-order source-chart identity with `ofTopologyTuple_topologyTuple`.
+
+For the endpoint-transported explicit Case 2 selected-entry datum, the
+determinant-chart input is discharged by
+`case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart`.
+This removes the concrete `ofTopologyTuple`/direct-datum mismatch on the
+raw-order p.13 source path.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff
+--check`, touched Lean-file forbidden-marker search, and direct axiom probes
+passed; both declarations report only `[propext, Classical.choice,
+Quot.sound]`.
+
+This is source-family presentation only.  It is not endpoint provenance,
+endpoint canonicity, source-image equality, pushforward-measure transport,
+source-rank coverage, source-prior transport, Jacobian comparison, normal
+crossings, pole order, or RLCT.
