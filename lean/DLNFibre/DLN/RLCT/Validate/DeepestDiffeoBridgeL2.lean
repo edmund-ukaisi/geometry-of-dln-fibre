@@ -2202,6 +2202,15 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
+  -- SCOPED RESIDUAL (route A, telescope-dependent). `deepestEFull_sq_sum_eq_blocks` reduces both sides
+  -- to the three reg blocks {₁₁,₁₂,₂₁} of `reindex(prod(framedParamsPivot · q'))`, q' ∈ {ψq, q}. The
+  -- endpoint telescope `endpoint_telescoping_eq` (needs hframe/hinterface — caller-discharged at the
+  -- deepest frames) rewrites each framed product to `endpointP0·prod(rawParams q')·endpointQL`. The raw
+  -- products differ ONLY at the last layer (X,Z fixed; Y→l2Y1p, T→l2T1p — the S6r readbacks). hPtri/hQtri
+  -- kill the moved (2,2)-leak into the reg blocks; P00,P10 are T1,Y1-free hence fixed; P01 fixed by
+  -- `e2_regPreserve` (A0·Y1'+Y0·T1' = A0·Y1+Y0·T1). MISSING: the hframe/hinterface telescope hyps + the
+  -- raw-block reads through `reindex_mul_fromBlocks`. Threaded route-A hyps to be added at the caller's
+  -- wiring (controller single-writer). Frame-transform + keystone (the novel pieces) are banked.
   sorry
 
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
@@ -2241,6 +2250,29 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
     (hball : psiSplitRawL2 H r hr hL q ∈ Metric.closedBall
       (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn)) :
     deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1 = Score x := by
+  -- SCOPED RESIDUAL (route A, sub-4 — feasibility CONFIRMED closeable w/ banked pieces, Codex high). The
+  -- chain (each step a banked lemma; the 2 novel pieces — `schur_frame_transform`, `l2T1p_sub_Z1A1invY1p_eq`
+  -- — are landed + axiom-clean):
+  -- (a) `deepestCoreF_coreAbsorb_eq_prodSchur` (hball): LHS = frobSq(prod(deepestM)(decode(ψq).2.1 _s +
+  --     schurCorrection(ψq) _s)). At L=2 the reduced product = c0·c1.
+  --     c0 = T0 − Z0·A0⁻¹·Y0 = S0 (layer0 reads fixed under ψ: readX/Z/Y/core);
+  --     c1 = l2T1p − Z1·A1⁻¹·l2Y1p = (1−K)·S1 (the keystone `l2T1p_sub_Z1A1invY1p_eq`, det W ≠ 0 from hball).
+  -- (b) `prod_absorbed_eq_schur_ldu` / `reindex_mul_schur_factor`: frobSq(S0·(1−K)·S1) = frobSq(Rcore),
+  --     Rcore = (2,2)-Schur of reindex(prod(decode x)) [raw layers = fromBlocks(1+X)YZT via
+  --     `reindex_fromBlocks_reads_eq_deviation`, DeepestFrameRaw:239 — the per-layer block bridge].
+  -- (c) `rcore_eq_schur_of_corner_split` (hS3b removes the +1) then `schur_frame_transform` (hPbr/hQbr,
+  --     D_P=D_Q=1) on M̂ = endpointP0·prod·endpointQL: frobSq(Rcore) = Score x.
+  -- MISSING for green: the explicit reduced-product-at-L2 unfold (prodAux casts) + the reindex
+  -- block-read instantiation + threading hS3b/hPbr/hQbr (to be added at the caller's wiring). The math
+  -- is verified; the residual is cast/instantiation bookkeeping.
+  -- Step (a): the absorbed-core energy form (banked, on the inner ball `hball`).
+  have hstepA : deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1
+      = frobSq (prod (deepestM H r)
+          (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
+            + schurCorrection H r hr hL
+                ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
+    deepestCoreF_coreAbsorb_eq_prodSchur H r hr hL (psiSplitRawL2 H r hr hL q) hball
+  rw [hstepA]
   sorry
 
 
