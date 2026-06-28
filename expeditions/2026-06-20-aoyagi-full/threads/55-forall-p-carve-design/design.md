@@ -233,6 +233,55 @@ as I first scoped.
 - **Boundary check at p=4**: genm-n4's `minAdm_rr4_eq` (`½·minAdm(![r,r,4]) = schurLambda r`, un-halved `4r−4`) is
   EXACTLY `schurLambdaP 4 r` — the ∀p firing window specializes to the binding-p=4 window, so they compose at p=4.
 
+
+## STEP-0 RESOLUTION (the ∀p gate) — derivation + decorrelated Codex verdict (2026-06-28)
+
+**Verdict: the depth-2 ∀p firing is REACHABLE — `½·minAdm(r,r,p)` IS achievable — but needs ONE new chart
+(the `{Δ=0}` divisor) beyond the lifted p=4 carve.** My derivation and a decorrelated Codex (gpt-5-codex,
+xhigh) CONVERGED; Codex added a sharper mechanism for why p=4 hid the new chart.
+
+### The exact recursion identity (mine; Codex independently re-derived it algebraically)
+    ½·minAdm(r,r,p) = min( ½·minAdm(r−1,r−1,p) + p/2 ,  r²/2 ),    base ½·minAdm(1,1,p) = ½.
+Codex's algebra: split `minAdm = min_{t≥0}[(r−t)²+pt]` at t=0 vs t≥1; for t≥1 put `t=1+u` ⟹
+`p + [(r−1−u)²+pu] = p + minAdm(r−1,r−1,p)`. So the min of the two caps is exact (verified numerically r≤9,p≤11).
+
+### The two caps = two divergence strata of the rank-drop locus of `Δ·S` (`Δ:r×r`, `S:r×p`)
+- **Cap A — PEEL-RECURSE `½·minAdm(r−1,r−1,p) + p/2`** (the rank-drop cascade, `t* ≥ 1`): the EXISTING carve.
+  Peel a width-`p` Morse block at threshold `p/2`, recurse at corank `r−1`. The carve is p-INVARIANT (reshapes
+  only the `r×r` ratio block, `N=r²−1` p-free) — lifts verbatim.
+- **Cap B — NO-RANK-DROP `r²/2`** (the stratum `{Δ = 0}`, `t* = 0`): `{Δ=0}` has codim `r²` in `ℝ^{r×r}×ℝ^{r×p}`;
+  the `r×p` entries of `Δ·S` have linear parts spanning an `r²`-dim space (rank `r²` once `S` is full rank), so the
+  ideal is a NORMAL CROSSING of `r²` independent linear forms → RLCT `= codim/2 = r²/2`; `‖Δ·S‖^{−c'}` diverges
+  there exactly for `c' ≥ r²/2`. (Codex Q2, confirmed.)
+
+### The binding stratum `t*(r,p)` MOVES (crossover at `p = 2r`)
+`t* = argmin_t[(r−t)²+pt]`; continuous minimizer `t* = r − p/2`. So cap A (`t*≥1`) binds for `p < 2r`, cap B
+(`t*=0`, `r²/2`) binds for `p ≥ 2r`. **Why p=4 hid cap B (Codex's sharper mechanism):** the p=4 radial chart
+FIXES a nonzero PIVOT entry of `Δ` before introducing ratio coordinates — this structurally EXCLUDES a
+neighborhood of `{Δ=0}`, so the p=4 proof never exposes the `Δ=0` divisor. For p=4, cap A dominates for all
+r≥3 (and r=2 is the corank-2 base, where `r²/2=2` is handled directly), so the omission went unnoticed. For
+`p ≥ 2r` cap B BINDS and the pivot-fixing chart MISSES it — the naive a-axis divisor `(r·p)/2` overshoots
+`r²/2` (e.g. (3,6): `(rp)/2=9` vs true `4.5`), wrongly claiming finiteness past the `Δ=0` divergence.
+
+### The genuine NEW content (the only non-mechanical piece)
+A **`{Δ=0}` chart / divisor**: an additional chart that keeps `Δ` itself radial (does NOT pivot-fix away from
+`Δ=0`), delivering the `r²/2` valuation. This is the normal-crossing estimate on the `r²` independent linear
+forms — standard RLCT-of-normal-crossing, NOT a research wall. NO deeper obstruction (Codex Q5): the r→r−1
+induction only feeds cap A, so switching to cap B at higher rank does not invalidate lower-r IH.
+
+### Integer-min (Codex Q4, confirmed)
+The singular set is stratified by INTEGER rank drops; the Lean threshold is `½·min_{t∈{0..r}}[(r−t)²+pt]`,
+NOT the continuous `(pr−p²/4)/2` (which under-states at odd p, e.g. (3,3) 3.375 vs 3.5).
+
+### Updated build plan delta (STEP-0 → build)
+The §5 build now has, BEFORE the firing: a `minAdm`-recursion lemma (`½minAdm = min(peel+p/2, r²/2)`, Codex's
+t=1+u algebra, ~25 lines on genm-n4's `minAdmRec` inf'-witness template) + a **`{Δ=0}` normal-crossing chart**
+(the new cap-B chart, ~the only genuinely new analytic lemma — a normal-crossing RLCT bound on `r²` linear
+forms; medium, NOT a wall). The lifted p=4 carve supplies cap A. Dispatch picks `min(A,B)` by `t*` vs `p=2r`.
+
+**STEP-0 PASSES: ∀p depth-2 firing is reachable. Gate cleared (pending controller diff-gate of this section +
+the binding-p=4 family). Build remains next-layer (no rush).**
+
 ## 6. Open questions for the controller / pen-and-paper (UPDATED)
 
 - Q-A (RESOLVED): `λ(p,r) = (r−1)p/2` is WRONG for p≠4; the true threshold is `½·minAdm(r,r,p)` (quadratic).
