@@ -48,6 +48,44 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Raw-Order Source-Chart Image
+
+`RetainedPassiveLocalSource.lean` now exposes the canonical retained-passive
+raw-order source chart:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+```
+
+and proves:
+
+```text
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sourceEdgeFamilySet
+```
+
+The readout theorem says that, for
+`y ∈ topologyTupleRawOrderSourceRecursiveDetChartSet`, applying the fixed-base
+edge-matrix readout to the canonical raw-order source chart gives exactly
+`edgeFamilyOfRawOrderTuple y`.  The image theorem says that this chart maps the
+raw-order source-recursive determinant chart onto exactly
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U0 hU0`.
+The proof is the raw-order inverse/source-readback calculation already used
+privately in the local Jacobian measure module, now moved to the source module
+as public API.  The private canonical realization helper in
+`RetainedPassiveLocalJacobianMeasure.lean` now delegates to it.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, and touched-file forbidden-marker
+search passed.  Full `DLNFibre` build passed with pre-existing warning noise.
+Xhigh review by `Aristotle the 3rd` passed with no findings.
+
+Nonclaims: no original DLN source-rank coverage, no original prior or measure
+transport, no new Jacobian theorem, no residual zero-locus/nullity, no
+chart-side a.e. positivity, no finite negative-power integrability, no normal
+crossings, no pole order, and no RLCT.
+
 ## Latest A2 Case 2 Canonical Chart Selected-Entry Square-Sum
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

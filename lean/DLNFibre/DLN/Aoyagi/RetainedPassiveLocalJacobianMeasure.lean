@@ -594,56 +594,10 @@ private theorem retainedPassiveP13CanonicalSourceChart_realize
           (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
           (κ' := throughSubspaceEndpointComplementIndex
             (reverseVertex W) (reverseEdge W B) U₀) y := by
-  let ρ := Fin (Module.finrank ℝ U₀)
-  let κ' :=
-    throughSubspaceEndpointComplementIndex
-      (reverseVertex W) (reverseEdge W B) U₀
-  let EFam := ∀ p : Fin (M + 1),
-    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
-  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
-    fun y ↦
-      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
-        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
   intro y hy
-  have hraw :
-      topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y) =
-        y :=
-    topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
-      (K := ℝ) (ρ := ρ) (κ' := κ') hy
-  calc
-    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
-        (fun p : Fin (M + 1) ↦
-          ((fun E : EFam ↦ E) (sourceChart y) p :
-            reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
-        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrderInverse
-            (K := ℝ) (ρ := ρ) (κ' := κ') y)).edgeMatrix := by
-      simpa [sourceChart, EFam] using
-        paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
-          (K := ℝ) W B (U₀ := U₀) (hU₀ := hU₀)
-          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
-            (topologyTupleEdgeRawOrderInverse
-              (K := ℝ) (ρ := ρ) (κ' := κ') y))
-    _ =
-        topologyTupleEdgeMatrix
-          (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrderInverse
-            (K := ℝ) (ρ := ρ) (κ' := κ') y) := by
-      rfl
-    _ =
-        edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
-            (topologyTupleEdgeRawOrderInverse
-              (K := ℝ) (ρ := ρ) (κ' := κ') y)) := by
-      exact
-        (edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
-          (K := ℝ) (ρ := ρ) (κ' := κ')
-          (topologyTupleEdgeRawOrderInverse
-            (K := ℝ) (ρ := ρ) (κ' := κ') y)).symm
-    _ = edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := by
-      rw [hraw]
+  simpa [paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart] using
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+      (K := ℝ) W B (U₀ := U₀) (hU₀ := hU₀) (y := y) hy
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in

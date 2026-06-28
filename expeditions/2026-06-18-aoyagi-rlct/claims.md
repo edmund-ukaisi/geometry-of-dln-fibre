@@ -145,8 +145,9 @@ No such claim is formalisation-ready until both fields are filled.
   full target normaliser/determinant bridge, formal/product-density
   change-of-variables, canonical local-source COV, canonical product-density
   residual and finite-integral handoffs, source-side residual positive-set
-  measurability for the canonical identity source, and the canonical
-  chart-side residual readout as both
+  measurability for the canonical identity source, the canonical raw-order
+  source-map image theorem onto the fixed-base retained-passive source
+  edge-family set, and the canonical chart-side residual readout as both
   `residualProduct (topologyTupleEdgeMatrix z)` and
   `residualFactorProduct (ofTopologyTuple z).C`.  The current A2 frontier is
   chart-side residual zero-locus/a.e. positivity/finite negative-power

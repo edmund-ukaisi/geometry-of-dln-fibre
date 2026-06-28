@@ -19,6 +19,38 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart image
+
+The canonical retained-passive raw-order source map is now public in
+`RetainedPassiveLocalSource.lean`:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sourceEdgeFamilySet
+```
+
+For a raw-order source-recursive determinant-chart tuple `y`, the readout
+theorem identifies the fixed-base edge matrices of the canonical raw-order
+source chart with `edgeFamilyOfRawOrderTuple y`.  The image theorem proves
+that the image of the raw-order source-recursive determinant chart under this
+source map is exactly the fixed-base retained-passive continuous source
+edge-family set.  The older private canonical realization helper in
+`RetainedPassiveLocalJacobianMeasure.lean` now delegates to this public
+readout theorem.
+
+This prepares the retained-passive source-map/image field for later source
+measure work, but it is still only a reduced fixed-base retained-passive chart
+statement.  It does not prove original DLN source-rank coverage, original
+prior/measure transport, new Jacobian transport, residual positivity or
+integrability, normal crossings, pole order, or RLCT.
+
+Focused builds of `RetainedPassiveLocalSource` and
+`RetainedPassiveLocalJacobianMeasure` passed.  `scripts/sorries`,
+`git diff --check`, and touched-file forbidden-marker search passed.  Full
+`DLNFibre` build passed with pre-existing warning noise.  Xhigh review by
+`Aristotle the 3rd` passed.
+
 ## Latest controller decision - 2026-06-28, retained-passive Case 2 canonical chart selected-entry square-sum
 
 The retained-passive canonical p.13 chart now has a two-edge Case 2

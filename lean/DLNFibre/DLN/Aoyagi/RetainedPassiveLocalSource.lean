@@ -8,10 +8,11 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology
 This file ties the retained-passive source-recursive determinant chart to the
 fixed-base endpoint edge-family map used by the p.13 local-measure handoff.
 It proves determinant-chart local coverage near the self-base point,
-measurability under global source-edge continuity, and a finite residual
-readout through the retained-passive source readback.  It does not prove
-exact-rank openness, source-image equality, measure transport, a Jacobian
-theorem, normal crossings, pole order, or RLCT extraction.
+the raw-order source-chart image inside the reduced retained-passive
+coordinates, measurability under global source-edge continuity, and a finite
+residual readout through the retained-passive source readback.  It does not
+prove original-source exact-rank coverage, original-prior measure transport, a
+Jacobian theorem, normal crossings, pole order, or RLCT extraction.
 -/
 
 noncomputable section
@@ -91,6 +92,28 @@ def paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
       reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
   paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices
     W B U₀ hU₀ data.edgeMatrix
+
+/-- The canonical raw-order retained-passive source chart obtained by first
+reading a raw-order tuple back into determinant-chart coordinates, then
+realising its retained edge matrices as fixed-base continuous reversed edge
+maps. -/
+def paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (y :
+      TopologyTuple (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) K) :
+    ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+    (ofTopologyTuple (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ')
+      (topologyTupleEdgeRawOrderInverse
+        (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ') y))
 
 /-- Continuous fixed-base retained-passive source edge families whose extracted
 edge matrices lie in the source-recursive determinant chart. -/
@@ -304,6 +327,75 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceE
   simpa [paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData] using
     paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOf_retainedPassiveEdgeMatrix
       (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- On the raw-order source-recursive determinant chart, the canonical
+raw-order retained-passive source chart has exactly the raw-order tuple's edge
+matrices. -/
+theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {y :
+      TopologyTuple (Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) K}
+    (hy : y ∈
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)) :
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ y p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+      edgeFamilyOfRawOrderTuple
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) y := by
+  let ρ := Fin (Module.finrank K U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  have hraw :
+      topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') y) =
+        y :=
+    topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+      (K := K) (ρ := ρ) (κ' := κ') hy
+  calc
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ y p :
+            reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) =
+        (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse
+            (K := K) (ρ := ρ) (κ' := κ') y)).edgeMatrix := by
+      simpa [paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart, ρ, κ'] using
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+          (K := K) W B (U₀ := U₀) (hU₀ := hU₀)
+          (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse
+              (K := K) (ρ := ρ) (κ' := κ') y))
+    _ =
+        topologyTupleEdgeMatrix
+          (K := K) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse
+            (K := K) (ρ := ρ) (κ' := κ') y) := by
+      rfl
+    _ =
+        edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse
+              (K := K) (ρ := ρ) (κ' := κ') y)) := by
+      exact
+        (edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+          (K := K) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse
+            (K := K) (ρ := ρ) (κ' := κ') y)).symm
+    _ = edgeFamilyOfRawOrderTuple (K := K) (ρ := ρ) (κ' := κ') y := by
+      rw [hraw]
 
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
@@ -665,6 +757,93 @@ def paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph
           (K := K)).comp hToSourceMatrix
     simpa [paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyReadback] using
       hReadValue.subtype_mk _
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The canonical raw-order retained-passive source chart maps the raw-order
+source-recursive determinant chart onto exactly the fixed-base continuous
+source edge-family set.
+
+This is a reduced retained-passive source-image theorem.  It is not original
+DLN source-rank coverage, measure transport, a Jacobian theorem, normal
+crossings, pole order, or RLCT extraction. -/
+theorem image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sourceEdgeFamilySet
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ ''
+        topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := K) (ρ := Fin (Module.finrank K U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) =
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀ := by
+  let ρ := Fin (Module.finrank K U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  ext E
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    change
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ y p :
+              reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)) ∈
+        sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ')
+    rw [paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) (y := y)
+      (hy := by simpa [ρ, κ'] using hy)]
+    simpa [topologyTupleRawOrderSourceRecursiveDetChartSet, ρ, κ'] using hy
+  · intro hE
+    let EMat :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+        (fun p : Fin (M + 1) ↦
+          (E p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ))
+    have hsource :
+        EMat ∈ sourceRecursiveDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+      simpa [paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet, ρ, κ', EMat] using hE
+    have hchart : sourceRecursiveDetChart (K := K) (ρ := ρ) EMat :=
+      (mem_sourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') EMat).1 hsource
+    let data := sourceReadback (K := K) (ρ := ρ) EMat
+    have hdet : data.detChart :=
+      sourceReadback_detChart_of_sourceRecursiveDetChart
+        (K := K) (ρ := ρ) EMat hchart
+    let z : TopologyTuple ρ κ' K := topologyTuple data
+    let y : TopologyTuple ρ κ' K :=
+      topologyTupleEdgeRawOrder (K := K) (ρ := ρ) (κ' := κ') z
+    have hzdet :
+        z ∈ topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') := by
+      simpa [z] using hdet
+    have hy :
+        y ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := K) (ρ := ρ) (κ' := κ') :=
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := ρ) (κ' := κ') hzdet
+    refine ⟨y, hy, ?_⟩
+    have hinv :
+        topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') y = z := by
+      simpa [y] using
+        topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+          (K := K) (ρ := ρ) (κ' := κ') hzdet
+    have hreadEdge : data.edgeMatrix = EMat :=
+      edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart
+        (K := K) (ρ := ρ) EMat hchart
+    have hsourceChart_eq :
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀ data = E := by
+      simpa [paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData, EMat, hreadEdge] using
+        paperEndpointFixedBaseContinuousReverseEdgeFamilyOfMatrices_edgeMatrixOfReverseEdges
+          (K := K) W B U₀ hU₀ E
+    calc
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ y =
+          paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+            (ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrderInverse (K := K) (ρ := ρ) (κ' := κ') y)) := by
+        rfl
+      _ = paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀ data := by
+        rw [hinv]
+        simp [z]
+      _ = E := hsourceChart_eq
 
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in

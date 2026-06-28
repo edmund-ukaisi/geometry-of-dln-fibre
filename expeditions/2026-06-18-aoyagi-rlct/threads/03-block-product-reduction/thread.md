@@ -18,6 +18,44 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive raw-order source-chart image
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-source-chart-image.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-source-chart-image.md`.
+
+Lean now exposes the canonical raw-order retained-passive source map and its
+image theorem in `RetainedPassiveLocalSource.lean`:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sourceEdgeFamilySet
+```
+
+The readout theorem proves that, on
+`topologyTupleRawOrderSourceRecursiveDetChartSet`, the fixed-base edge matrices
+of the canonical raw-order source chart are exactly
+`edgeFamilyOfRawOrderTuple y`.  The image theorem proves that this source chart
+maps the raw-order source-recursive determinant chart onto exactly
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U0 hU0`.
+The older private canonical realization helper in
+`RetainedPassiveLocalJacobianMeasure.lean` now delegates to this public theorem.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, and the touched Lean file
+forbidden-marker search passed.  Full `DLNFibre` build passed with
+pre-existing warning noise.  Xhigh review by `Aristotle the 3rd` passed:
+`review-a2-retained-passive-raw-order-source-chart-image.md`.
+
+Nonclaims: no original DLN source-rank coverage, no original source prior or
+measure transport, no Jacobian theorem beyond existing chart densities, no
+residual zero-locus/nullity, no chart-side a.e. positivity, no finite
+negative-power integrability, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 retained-passive Case 2 canonical chart selected-entry square-sum
 
 Reproduction:
