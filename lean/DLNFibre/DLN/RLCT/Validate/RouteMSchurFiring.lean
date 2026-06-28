@@ -1041,6 +1041,56 @@ theorem RmatGnorm_eq_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : F
   rw [piRatioG_symm_apply, ← hspec]
   simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
 
+/-- The defining spec of `slotMatG`: `succAbove (slot) = finCongr (eG (σr a, σc b))` for `(a,b) ≠ (0,0)`. -/
+theorem slotMatG_spec (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    (finCongr hN p).succAbove (slotMatG r N hN hr p a b)
+      = finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+          (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) := by
+  have hidx := RmatGnorm_offpivot_idx r hr p a b hab
+  have hne : finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  have hslot : slotMatG r N hN hr p a b = (Fin.exists_succAbove_eq hne).choose := by
+    rw [slotMatG, dif_pos hidx]
+  rw [hslot]; exact (Fin.exists_succAbove_eq hne).choose_spec
+
+/-- The block-row index of a carve cell: `⟨1+a, _⟩ : Fin r` for the `succ`-part, `⟨0,_⟩` for the head. -/
+def succIdxG (r : ℕ) (hr : 3 ≤ r) (a : Fin (r - 1)) : Fin r := ⟨1 + a, by omega⟩
+
+theorem succIdxG_ne_zero (r : ℕ) (hr : 3 ≤ r) (a : Fin (r - 1)) :
+    succIdxG r hr a ≠ ⟨0, by omega⟩ := by
+  rw [succIdxG]; intro h; rw [Fin.mk.injEq] at h; omega
+
+theorem succIdxG_injective (r : ℕ) (hr : 3 ≤ r) : Function.Injective (succIdxG r hr) := by
+  intro a b h; rw [succIdxG, succIdxG, Fin.mk.injEq] at h
+  exact Fin.ext (by omega)
+
+/-- The carve cell `(row, col) : Fin r × Fin r` of a slot-source `s`: M22 `(1+a,1+b)`, g `(1+a,0)`,
+b `(0,1+b)`. -/
+def cellRowColG (r : ℕ) (hr : 3 ≤ r) :
+    ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) → Fin r × Fin r
+  | Sum.inl (a, b) => (succIdxG r hr a, succIdxG r hr b)
+  | Sum.inr (Sum.inl a) => (succIdxG r hr a, ⟨0, by omega⟩)
+  | Sum.inr (Sum.inr b) => (⟨0, by omega⟩, succIdxG r hr b)
+
+theorem cellRowColG_ne_zero (r : ℕ) (hr : 3 ≤ r)
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    ¬ ((cellRowColG r hr s).1 = ⟨0, by omega⟩ ∧ (cellRowColG r hr s).2 = ⟨0, by omega⟩) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;>
+    simp only [cellRowColG, succIdxG, Fin.mk.injEq] <;> rintro ⟨h1, h2⟩ <;> omega
+
+theorem cellRowColG_injective (r : ℕ) (hr : 3 ≤ r) : Function.Injective (cellRowColG r hr) := by
+  rintro s1 s2 h
+  rcases s1 with ⟨a1, b1⟩ | (a1 | b1) <;> rcases s2 with ⟨a2, b2⟩ | (a2 | b2) <;>
+    simp only [cellRowColG, succIdxG, Prod.mk.injEq, Fin.mk.injEq] at h <;>
+    first
+      | (obtain ⟨ha, hb⟩ := h
+         exact congrArg₂ (fun x y => Sum.inl (x, y)) (Fin.ext (by omega)) (Fin.ext (by omega)))
+      | (exfalso; omega)
+      | (rw [show a1 = a2 from Fin.ext (by omega)])
+      | (rw [show b1 = b2 from Fin.ext (by omega)])
+
 /-! ### The N2b lower bound → top-row shear → resolved form (per-`z`; mirror of `angularA1_integral_le` + `step3a`) -/
 
 /-- **Pointwise antitone domination from a two-sided comparison's lower leg.** If `c₀·X ≤ F` with
