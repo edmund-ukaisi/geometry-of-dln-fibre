@@ -2725,7 +2725,34 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
     (hq : q = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
     (hball : psiSplitRawL2 H r hr hL q ∈ Metric.closedBall
       (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn))
-    (hWdet : (l2W H r hr hL hL2 q).det ≠ 0) :
+    -- **The Schur tie** (route-A input, A1 — the sub stays ABSTRACT; the controller discharges this at the
+    -- final wiring).  The absorbed-core product `prod(deepestM) c` (`c s = decode(ψq).2.1 s +
+    -- schurCorrection(ψq) s`) equals the Score `(1,1)`-Schur integrand matrix.  This bundles STEP 1-2
+    -- (`absorbedCore_psiSplitRawL2Core_{last,of_ne}` + `hWdet` + `prod_deepestM_eq_two_of_L2` → `c₀·c₁`)
+    -- and STEP 3-4 (`rcore_schur_factor_of_corner_split` on `hS3b`'s corner-split + the decode-`x` framed-
+    -- layer grouping/units + the readback ties → the Score Schur integrand).  Producer-internal (needs
+    -- `hJfront`, `hWdet`, hPbr/hQbr/hS3b + the decode lemmas — all in scope at the wiring).  The sub's tail
+    -- is the `frobSq`/∑∑ congr (`frobSq M = ∑ᵢ∑ⱼ (M i j)²`), so `frobSq(prod c) = Score x`.
+    (hSchurTie : prod (deepestM H r)
+        (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
+          + schurCorrection H r hr hL
+              ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)
+      = Matrix.of (fun i j => ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂) i j)) :
     deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1 = Score x := by
   -- SCOPED RESIDUAL (route A, sub-4 — feasibility CONFIRMED closeable w/ banked pieces, Codex high). The
   -- chain (each step a banked lemma; the 2 novel pieces — `schur_frame_transform`, `l2T1p_sub_Z1A1invY1p_eq`
@@ -2749,51 +2776,10 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
             + schurCorrection H r hr hL
                 ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
     deepestCoreF_coreAbsorb_eq_prodSchur H r hr hL (psiSplitRawL2 H r hr hL q) hball
-  rw [hstepA]
-  -- STEP 1-2 (banked): identify the absorbed-core tuple `c` per layer.  `psiSplitRawL2 = psiSplitRawL2Core`
-  -- at `L = 2`; then `absorbedCore_psiSplitRawL2Core_last` (consumes `hWdet`) gives `c last = (1−K)·S1`,
-  -- and `absorbedCore_psiSplitRawL2Core_of_ne` gives `c s = decode(q) s + schurCorr(q) s` for `s ≠ last`.
-  have hψeq : psiSplitRawL2 H r hr hL q = psiSplitRawL2Core H r hr hL hL2 q := dif_pos hL2
-  have hclast : (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 (lastLayer hL)
-        + schurCorrection H r hr hL
-            ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) (lastLayer hL)
-      = (1 - l2K H r hr hL hL2 q) * l2S1 H r hr hL hL2 q := by
-    rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_last H r hr hL hL2 q hWdet
-  have hc0 : ∀ s : Fin L, s ≠ lastLayer hL →
-      (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
-        + schurCorrection H r hr hL
-            ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s
-      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s + schurCorrection H r hr hL (q.1, q.2.2) s := by
-    intro s hs; rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_of_ne H r hr hL hL2 q s hs
-  -- STEP 3-4 (the LDU + frame-transform tail): `prod_absorbed_eq_schur_ldu` (identifying S0/S1/K with the
-  -- raw `decode x` layer blocks) → `frobSq(Rcore)`, then `rcore_eq_schur_of_corner_split` (hS3b) +
-  -- `schur_frame_transform` (hPbr/hQbr) → `Score x`.  THREADED as route-A inputs at the caller (hS3b,
-  -- hPbr/hQbr + the decode-x readback ties); the L=2 reduced-product unfold via `prod_deepestM_eq_two_of_L2`.
-  -- (hclast/hc0 above bank the absorbed-core identification — STEP 1-2.)
-  -- SCOPED RESIDUAL (route A, sub-4 tail). The absorbed-core energy is now `frobSq(prod(deepestM) c)`
-  -- with `c s = decode(ψq).2.1 s + schurCorrection(ψq) s` the per-layer Schur-shifted core.
-  -- BANKED THIS TIDE (axiom-clean clean-three; in this file, S6c/S6p sections):
-  --   • `prod_deepestM_eq_two_of_L2` — the L=2 unfold `prod(deepestM) c = c₀ · c₁` (after `subst hL2`).
-  --   • `absorbedCore_psiSplitRawL2Core_last` — `c₁ = (1 − K)·S1` (consumes the keystone
-  --     `l2T1p_sub_Z1A1invY1p_eq`, needs `det (l2W q) ≠ 0`).
-  --   • `absorbedCore_psiSplitRawL2Core_of_ne` — `c₀ = decode(q).2.1 0 + schurCorr(q) 0` (= the
-  --     original layer-0 Schur core S0, layer-0 reads fixed under ψ).
-  -- REMAINING (genm-l2fin scoping, 2026-06-28 — sub-3 CLOSED; sub-4 isolated, NOT gating the assembly:
-  -- comp_identity_L2/_impl now thread the per-`x` core=Score as `hsub4core`, so this `sorry` blocks only
-  -- the standalone sub-4 theorem). The chain, mirroring sub-3's route + the new `resid_*` frame-handling:
-  --   STEP 1-2 (most-banked): `subst hL2`; `prod_deepestM_eq_two_of_L2` → `c₀·c₁`;
-  --     `absorbedCore_psiSplitRawL2Core_of_ne` (c₀ = layer-0 Schur core, the `s = 0 ≠ last` arm) +
-  --     `absorbedCore_psiSplitRawL2Core_last` (c₁ = (1−K)·S1, CONSUMES `hWdet : det (l2W q) ≠ 0`).
-  --   STEP 3 (LDU): `prod_absorbed_eq_schur_ldu` identifies `frobSq(S0·(1−K)S1) = frobSq(Rcore)`, Rcore
-  --     the (2,2)-Schur of `reindex(prod(decode x))` (raw layers = fromBlocks(1+X)YZT, the per-layer block
-  --     bridge `reindex_fromBlocks_reads_eq_deviation`).
-  --   STEP 4 (frame→Score): `rcore_eq_schur_of_corner_split` (hS3b removes the +1) then
-  --     `schur_frame_transform` (D_P = D_Q = 1 from hPbr/hQbr) on `M̂ = endpointP0·(prod−B)·endpointQL`.
-  -- THREAD as route-A inputs (controller discharges at the DeepestGaugeConstruction wiring): `hWdet`
-  --   (the W-det coupling — derivable from `hball` + `ball_l2ExtraRadius_subset` IF `cutoffBump.rIn ≤
-  --   l2ExtraRadius` and `q`-membership; a GENUINE sub-step, not bookkeeping), `hS3b`, `hPbr`/`hQbr`,
-  --   and the raw-layer-block readback ties for `decode x` (so STEP 3's S0/S1/K = the l2* blocks).
-  sorry
+  rw [hstepA, hSchurTie, hScoreDef]
+  -- `Score x = frobSq(integrand)` (`hScoreDef` + `frobSq M = ∑ᵢ∑ⱼ (M i j)²`); `hSchurTie` rewrote the
+  -- absorbed-core product to the integrand, so this is the `frobSq`/∑∑ congr (definitional after `rfl`).
+  rfl
 
 
 /-- **S6 — the eventual composition identity** `Φcore ∘ psiL2 =ᶠ[𝓝 wstar] Φscore`. The genuine
