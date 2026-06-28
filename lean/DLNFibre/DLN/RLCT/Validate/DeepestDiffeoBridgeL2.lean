@@ -2480,16 +2480,20 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
-  -- SCOPED RESIDUAL (route A, telescope-bound). The shared plumbing `deepestEFull_sq_sum_eq_of_resid_blocks`
-  -- (BANKED this tide) reduces this to: equal conjugated-residual {11,12,21} reg blocks for the moved/
-  -- un-moved raw tuples `Aψ`/`Aq` (differ only at the last layer Y→l2Y1p, T→l2T1p). That equality is the
-  -- E2/leak-kill content: via `reindex_mul_fromBlocks`, the raw product's {11} (= A0A1+Y0Z1) and {21}
-  -- (= Z0A1+T0Z1) are T1,Y1-free hence fixed; the {12} (= A0Y1'+Y0T1' = P01) is fixed by `e2_regPreserve`;
-  -- the moved (2,2) leak into the framed reg blocks is killed by hPtri/hQtri. REMAINING: derive `Aψ`/`Aq`
-  -- (the raw decoded tuples) + the telescope frames `hframeψ`/`hframeq` (`endpoint_telescoping_eq` at the
-  -- deepest frames — route-A, controller-discharged) + the per-layer raw-block reads (S6r readbacks +
-  -- `reindex_mul_fromBlocks`) feeding the three block equalities `h11/h12/h21`. The corner-split + block-
-  -- sum plumbing (`framedReindexProd_corner_split`, `deepestEFull_sq_sum_eq_of_resid_blocks`) is banked.
+  -- SCOPED RESIDUAL (route A, telescope-bound). BANKED THIS TIDE — the FULL skeleton is plumbed:
+  --   • `deepestEFull_sq_sum_eq_of_resid_blocks` (corner-split + reg-block reduction): reduces this to
+  --     the three conjugated-residual {11,12,21} block equalities `h11/h12/h21` for the raw tuples
+  --     `Aψ`/`Aq` (the telescope frames `hframeψ`/`hframeq`/`hinterface`/`hS3b` are route-A inputs).
+  --   • `framed_regBlocks_eq_of_mid` (the E2/leak-kill frame fact, frame-free): given block-LOWER
+  --     `reindex(endpointP0)` / block-UPPER `reindex(endpointQL)`, the framed {11,12,21} read off the
+  --     MIDDLE's {11,12,21} — so `h11/h12/h21` follow from the MIDDLE `(prod Aψ − B)` vs `(prod Aq − B)`
+  --     agreeing on {11,12,21}, i.e. `prod Aψ` vs `prod Aq` agreeing on {11,12,21}.
+  -- REMAINING (the last instantiation brick): (i) derive `Aψ`/`Aq` + the telescope frames (route-A,
+  -- controller-discharged from the deepest frames); (ii) the raw {11,12,21} agreement of `prod Aψ` vs
+  -- `prod Aq` via `reindex_mul_fromBlocks` (raw 2-layer product, the moved last-layer Y→l2Y1p/T→l2T1p
+  -- only hits {22}; {11}=A0A1+Y0Z1, {21}=Z0A1+T0Z1 are T1,Y1-free, {12}=P01 fixed by `e2_regPreserve`);
+  -- (iii) express `reindex(endpointP0/QL)` as `fromBlocks _ 0 _ _` / `fromBlocks _ _ 0 _` (hPtri/hQtri
+  -- + `fromBlocks_toBlocks`) to feed `framed_regBlocks_eq_of_mid`. Cast-heavy reindex bookkeeping.
   sorry
 
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
