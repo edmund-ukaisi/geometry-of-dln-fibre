@@ -283,3 +283,14 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     of the orbit/sweep = the clean sufficient hypothesis.** NOT this blind/cite expedition.
   - 04 messaged to wire T′ as the cited field (T′+catenary preferred). Task #5 reframed (cited-wiring;
     proof roadmapped). Holding for 04 finalize + 06/R5.
+
+- **tick 10 (backstop, 2026-06-28):** drift-glance — no operator edit; both tides (04 foundation, 06/R5
+  bundle) still working (neither branch pushed); 07 closed. Self-check vs the CORRECTED plan (not the stale
+  cron "lower bound = wall to formalise"): vision held; load-bearing geometry in flight (04 + R5); lower
+  bound + T CITED (genuine Mathlib-v4.29 blockers, roadmapped — not busywork-avoidance); name=content
+  intact. Nothing actionable. **Integration/review plan for when 04 lands:** (1) pull from worktree disk;
+  (2) green-gate — `scripts/lb DLNFibre` + `scripts/sorries` + `#print axioms` on the composed payoff
+  (expect `[propext, Classical.choice, Quot.sound]`, the 3 cited facts as structure fields, NO new global
+  axiom); (3) wire the aggregator (single-writer); (4) **convene hardener + a decorrelated reviewer on the
+  name=content seam — L4 existential** (no `rlct_…` overclaiming; the 3 cited facts each sourced + caveated;
+  T′ visible, no shim); (5) integrate R5 likewise. Re-sleep.
