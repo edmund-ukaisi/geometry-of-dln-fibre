@@ -90,8 +90,23 @@ free-coordinate sub-vector to translate, matching `core_schur2`'s `Δ : Fin 2 �
 analog of `lintegral_translate_le_local`. The MATH is settled (O2 cert + Codex ×2); the remaining cost is
 the block reindex/translate plumbing.
 
-## Status
-Design sharp + cert-grounded (threshold 4 CONFIRMED, Codex's 2 rejected; R-integrated inner CONFIRMED,
-fixed-R rejected). Outer cover + per-chart support BUILT sorry-free, banked green. Resting at the JOINT
-residual-domination block-bookkeeping wall (exact sub-goal above) per the controller's firm rest-valve.
-The corank-2 base case stands closed/reviewed/integrated.
+## Status (2026-06-28)
+Design sharp + cert-grounded (threshold 4 CONFIRMED; R-integrated inner CONFIRMED). BUILT sorry-free,
+banked green: the outer 9-chart cover + per-chart support + **the JOINT residual-domination
+(`matBox2_translate_le` + `schurResid2_translate_lt_top`, the genuinely-new corank-3 math, CLOSED)**.
+
+REMAINING — the per-chart-assembly WIRING (no new math, the recognition + the sum):
+- `matBox3_chart_lt_top` (the `matBox2_chart_lt_top` analog): radial CoV (`chart_integrand_factor3`) +
+  `piFinSuccAbove` Tonelli a-axis + the JOINT ratio-residual. The ratio-residual differs from corank-2's
+  (which used a UNIFORM per-z bound — the fixed-R undershoot): for corank-3 it is the JOINT z-S domination
+  `∫_z∫_S frobSq(Rmat3(e.symm(0,z))·S)^{−c'}` → N2b j=1 flip + Tonelli + shifted-peel →
+  `∫_z∫_{S_bot} frobSq(Sc(z)·S_bot)^{−(c'−2)}` → Fubini z=(M22-ratios, spectators), recognize
+  `Sc(z) = M22(z) − Sh(spectators)` as the `Δ−Sh` shape → `schurResid2_translate_lt_top` per spectator ×
+  spectator-vol. The block-index recognition (the M22 sub-block of `Rmat3` as `schurResid2`'s free `Δ`) is
+  the fiddly step.
+- `core_schur3_lt_top` = `matBox3_outer_flat` + `gFlat3_cover_sum` + `ENNReal.sum_lt_top` over
+  `matBox3_chart_lt_top`. c' < 4.
+
+The corank-2 base case stands closed/reviewed/integrated; the JOINT-domination milestone is banked. The
+remaining per-chart wiring is the next focused sub-build (the controller pre-named the per-chart Sc=Δ−Sh
+recognition / 9-chart index-matching as a valid rest point).
