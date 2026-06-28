@@ -424,6 +424,22 @@ theorem piRatioG_ratioIdx_ne (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) 
     rw [h]
   rwa [(finCongr hN).apply_symm_apply] at h'
 
+/-- **Pointwise rpow domination** `ofReal(x^{−c'}) ≤ 1 + ofReal(x^{−c''})` for `x ≥ 0`, `0 < c' ≤ c''`
+(local copy of `RouteMSchurCorank3.ofReal_rpow_neg_le_one_add`, kept local to avoid coupling the generic
+firing to the bespoke corank-3 file). On `x ≥ 1` the LHS `≤ 1`; on `0 < x < 1` the LHS `≤ x^{−c''}`; at
+`x = 0` both `0^{neg} = 0`. The subcritical reduction of the `c' ≤ 2` ratio-residual to `c'' = 3`. -/
+theorem ofReal_rpow_neg_le_one_add (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0 : 0 < c') (hcc : c' ≤ c'') :
+    ENNReal.ofReal (x ^ (-c')) ≤ 1 + ENNReal.ofReal (x ^ (-c'')) := by
+  rcases eq_or_lt_of_le hx with hx0 | hx0
+  · rw [← hx0, Real.zero_rpow (by linarith), ENNReal.ofReal_zero]
+    exact zero_le _
+  · rcases le_or_gt 1 x with h1 | h1
+    · refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_right (le_of_eq ENNReal.ofReal_one))
+      calc x ^ (-c') ≤ x ^ (0 : ℝ) := Real.rpow_le_rpow_of_exponent_le h1 (by linarith)
+        _ = 1 := Real.rpow_zero x
+    · refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_left (le_refl _))
+      exact Real.rpow_le_rpow_of_exponent_ge hx0 (le_of_lt h1) (by linarith)
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
@@ -447,7 +463,37 @@ theorem schurRatioResidGen (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
     (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
         innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
       < ⊤ := by
-  sorry
+  -- `3 ∈ (2, λ_r)` for `r ≥ 3` (λ_r = 2r−2 ≥ 4)
+  have h3lt : (3 : ℝ) < schurLambda r := by
+    rw [schurLambda_eq_of_ge_two (by omega)]
+    have : (3 : ℝ) ≤ (r : ℝ) := by exact_mod_cast hr
+    linarith
+  rcases lt_or_ge 2 c' with hc2 | hc2
+  · exact schurRatioResidGen_mid r N hN hr hIH c' hc2 hc' p T hT
+  · -- c' ≤ 2: dominate the inner integrand by `1 + (·)^{−3}`, reduce to the c'' = 3 mid case
+    set q := (piRatioG r N hN p).symm (0, ·) with hq
+    -- per z: innerSGen c' (q z) ≤ vol(matBox r 4 T) + innerSGen 3 (q z)
+    have hdom : ∀ z : Fin N → ℝ,
+        innerSGen r c' T p (q z)
+          ≤ volume (matBox r 4 T) + innerSGen r 3 T p (q z) := by
+      intro z
+      rw [innerSGen, innerSGen]
+      calc (∫⁻ S in matBox r 4 T,
+              ENNReal.ofReal ((frobSq (rmatMul (RmatG r p (q z)) S)) ^ (-c')))
+          ≤ ∫⁻ S in matBox r 4 T,
+              (1 + ENNReal.ofReal ((frobSq (rmatMul (RmatG r p (q z)) S)) ^ (-(3 : ℝ)))) :=
+            lintegral_mono (fun S =>
+              ofReal_rpow_neg_le_one_add _ (frobSq_nonneg _) c' 3 hc0 (by linarith))
+        _ = volume (matBox r 4 T) + ∫⁻ S in matBox r 4 T,
+              ENNReal.ofReal ((frobSq (rmatMul (RmatG r p (q z)) S)) ^ (-(3 : ℝ))) := by
+            rw [lintegral_add_left measurable_const, setLIntegral_const, one_mul]
+    refine lt_of_le_of_lt (lintegral_mono hdom) ?_
+    rw [lintegral_add_left measurable_const, setLIntegral_const]
+    refine ENNReal.add_lt_top.2 ⟨?_, ?_⟩
+    · exact ENNReal.mul_lt_top (matBox_volume_lt_top r 4 T)
+        (by rw [show (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)) = morseBox N 1 from by
+          rw [morseBox]]; exact morseBox_volume_lt_top N 1)
+    · exact schurRatioResidGen_mid r N hN hr hIH 3 (by norm_num) h3lt p T hT
 
 /-- The chart integrand factors as `radInd(y p) · innerSGen` (`|y p|^{r²−1} → |y p|^{(r²−1)−2c'}` via
 the radial peel, `y p ≠ 0` from `\ pivotZeroOn`). Mirror of `chart_integrand_factor3` at generic `r`. -/
