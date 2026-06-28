@@ -339,3 +339,24 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   - **Held:** dispatch the consolidated tightening (task #8) to tide 04 only AFTER the fidelity reviewer
     (`a3ed3e41`) lands — integrate both decorrelated reviews, avoid fix-then-contradict. Then re-green-gate
     + re-#print-axioms + hardener re-review. Holding for fidelity + R5.
+
+- **tick 13 (fidelity PASS + reviews reconciled + tightening DISPATCHED, 2026-06-28):** `fidelity-rev-04`
+  (`a3ed3e41`): **PASS on all 6 checks** (cited boundary = exactly the 3 facts via force-elaborated
+  `#print axioms` on 14 decls; bounds' asymmetry verified vs paper main.tex — upper = universal Atiyah/
+  Watanabe `eqn:rlct_upper_bound_glob`, lower = DLN `thm:aoyagi-rlct` citing Aoyagi Thm 1; codim_ℝ honest;
+  T threaded no-shim; composition sound; L3 clean). Beyond brief: CONSTRUCTED axiom-clean inhabitant
+  `rlctRealInterfaceWitness d` (formal non-vacuity).
+  - **Reviews RECONCILE (not contradict):** fidelity's witness = a CONSTRUCTED rlct (½codim on-image, 0
+    off-image) ⟹ FORMAL inhabitability ✓; hardener's HARDEN-2 = the INTENDED analytic rlctAt (∞ off-image)
+    can't satisfy the UNGUARDED upper bound ⟹ re-guard needed for the real rlctAt to discharge it (the
+    aoyagi-full fold). Complementary. Fidelity flag (banked): re-guarding the bound FIELDS ⟹ the witness
+    must be re-shown inhabitable under the (weaker, easier) re-guarded struct; docstring = "the interface
+    TYPE is inhabited," NOT "the rlct exists."
+  - **CONSOLIDATED TIGHTENING DISPATCHED → tide 04 (task #8):** (1) re-guard both bounds `B.rank=r → ∀k',
+    r≤d k'` + thread 7 consumers [HARDEN-2]; (2) permanent in-file `rlctRealInterfaceWitness` re-derived
+    under the re-guarded struct, honest docstring [bedrock non-vacuity]; (3) orphan-`hdim` prose → cite
+    codim-level `hT` [HARDEN-1]; (4) banned-word scrub (full L3 sweep) [fidelity-1]; (5) verify/soften "LR
+    Thm 8.6" [fidelity-4]. Re-green-gate + re-#print-axioms + bump card. `_via_aoyagi` left as-is (both
+    reviews agree hT-in-type is sufficient).
+  - Both reviewers thanked + stood down; will re-review the landed tightening. Holding for 04's tightening +
+    R5 (06, bundle).
