@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 self-endpoint transport
+
+Reproduction:
+`reproduction-a2-case2-self-endpoint-transport.md`.
+Statement card:
+`statement-card-a2-case2-self-endpoint-transport.md`.
+Review:
+`review-a2-case2-self-endpoint-transport.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData
+```
+
+This is the self-endpoint specialization of the supplied-equivalence
+endpoint-transport source-family theorem.  It fixes
+`tau := Case2ResidualColIndex n S (J + 1)` and uses `Equiv.refl _` for the
+former `eNext` argument.  The endpoint-family equivalences `e` are still
+supplied.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct theorem axiom probe
+passed; the theorem reports only `[propext, Classical.choice, Quot.sound]`.
+Independent xhigh review passed.
+
+This is not proof of `hTau`, construction of the endpoint-family equivalences,
+label-preserving endpoint provenance, selected-entry preservation, source-prior
+transport, Jacobian comparison, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 residual endpoint scalar cardinalities
 
 Reproduction:

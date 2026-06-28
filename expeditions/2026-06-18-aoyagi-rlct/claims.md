@@ -140,6 +140,20 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 self-endpoint transport, 2026-06-28.** Lean
+  now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData`
+  in `RetainedPassiveCase2LocalJacobianMeasure.lean`.  This theorem is exactly
+  the self-endpoint specialization of the supplied-equivalence
+  endpoint-transport source-family theorem: it sets
+  `tau := Case2ResidualColIndex n S (J + 1)` and uses
+  `eNext := Equiv.refl _`.  The endpoint-family equivalences `e` remain
+  supplied.  Focused build, sorry scan, whitespace check, touched Lean-file
+  forbidden-marker search, direct axiom probe, and independent xhigh review
+  passed with the standard `[propext, Classical.choice, Quot.sound]` footprint.
+  This does not prove `hTau`, construct endpoint-family equivalences, prove
+  endpoint provenance or label preservation, compare source priors or Jacobians,
+  prove normal crossings, compute pole order, or extract RLCT.
 - **Current status addendum, Case 2 residual endpoint scalar cardinalities,
   2026-06-28.** Lean now exposes
   `case2ResidualEndpoint_card_eqs_of_width_rank` and

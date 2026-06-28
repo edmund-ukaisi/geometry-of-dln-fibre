@@ -123,6 +123,84 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Self-endpoint specialization of the Case 2 endpoint-transported fixed-base
+source-family inputs.
+
+Here the free right endpoint is chosen to be the successor residual-column
+index, so the `eNext` argument of the general theorem is `Equiv.refl _`.  The
+endpoint-family equivalences `e` are still supplied. -/
+theorem retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J
+            (Case2ResidualColIndex n S (J + 1)) q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext
+          (Equiv.refl (Case2ResidualColIndex n S (J + 1)))).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    (∀ yNext : center → ℝ,
+      sourceChart yNext ∈
+        paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+          (fun E : EdgeFamily ↦ E)) ∧
+    (∀ yNext : center → ℝ,
+      let E :=
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+          (fun p : Fin 2 ↦
+            (sourceChart yNext p :
+              reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+              (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+                n S (J + 1) (e (Fin.last 2)).symm
+                ((e 0).symm.trans
+                  (Equiv.refl (Case2ResidualColIndex n S (J + 1)))) c))) := by
+  intro center pivotNext EdgeFamily retainedData sourceChart
+  simpa [retainedData, sourceChart] using
+    retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+      W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
+      (Equiv.refl (Case2ResidualColIndex n S (J + 1))) e
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Cardinality equalities supply the endpoint equivalences for the Case 2
 endpoint-transported fixed-base source-family local-source and source-readback
 matrix inputs.

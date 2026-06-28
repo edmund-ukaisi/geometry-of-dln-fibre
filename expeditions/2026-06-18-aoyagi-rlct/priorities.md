@@ -19,6 +19,61 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Earlier post-interruption controller checkpoint - 2026-06-28
+
+An earlier reorientation after the interruption found the controller in the correct
+worktree on `expedition/aoyagi-rlct`, aligned with
+`origin/expedition/aoyagi-rlct` at
+`22e9d790 Bank A2 Case2 residual endpoint cardinalities`.  The worktree was
+clean.  `scripts/sorries`, `git diff --check`, touched-file forbidden-marker
+search for the latest A2 files, and a focused build of
+`DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via the worktree-local
+`scripts/lb` command.
+
+Immediate priority remains A2, but not stale derivative work and not another
+wrapper retaining the same supplied fields.  The next formalisation target
+must remove one of the real remaining fields: `tau`/`hTau` or endpoint
+provenance, actual source-readback adjacent factor identities, fixed-pivot
+nonzero/all-pivot source production, or retained-passive p.13
+source-chart/pushforward data.  A4 and A5 remain at the source boundaries
+recorded in `frontier-saturation-audit-2026-06-26.md`.
+
+## Latest controller decision - 2026-06-28, Case 2 self-endpoint transport
+
+The endpoint-transported Case 2 source-family theorem now has the narrow
+self-endpoint specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData
+```
+
+This fixes the free right endpoint to
+`Case2ResidualColIndex n S (J + 1)` and applies the existing supplied-
+equivalence theorem with `eNext := Equiv.refl _`.  The supplied endpoint-family
+equivalences `e` remain in the statement.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-self-endpoint-transport.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-self-endpoint-transport.md`.
+Xhigh review:
+`threads/03-block-product-reduction/review-a2-case2-self-endpoint-transport.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via
+`scripts/lb`; `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, and direct theorem axiom probe passed.  The theorem
+reports only `[propext, Classical.choice, Quot.sound]`.  Independent xhigh
+review passed.
+
+This removes only the explicit `eNext` field for the self-endpoint use case. It
+does not prove `hTau`, construct endpoint-family equivalences, give
+label-preserving endpoint provenance, preserve selected-entry labels under
+noncanonical endpoint choices, compare source priors or Jacobians, prove normal
+crossings, compute pole order, or extract RLCT.  The next useful target should
+remove a real remaining field rather than add another wrapper over the same
+supplied endpoint/factor/pivot/measure hypotheses.
+
 ## Latest controller decision - 2026-06-28, Case 2 residual endpoint scalar cardinalities
 
 The successor Case 2 residual-column and residual-row endpoint sizes can now

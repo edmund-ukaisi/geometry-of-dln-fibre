@@ -48,6 +48,91 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Post-Interruption Reorientation - 2026-06-28
+
+The controller re-grounded after the interruption in the dedicated worktree
+
+```text
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct
+```
+
+on branch `expedition/aoyagi-rlct`.  `git fetch --prune origin` completed, the
+branch is aligned with `origin/expedition/aoyagi-rlct`, and the worktree was
+clean at
+
+```text
+22e9d790 Bank A2 Case2 residual endpoint cardinalities
+```
+
+No live `lake`/`lean`/agent process was found from the worktree process check.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker search for
+the latest A2 files, and a focused build of
+`DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+
+```text
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct
+```
+
+The live mathematical frontier remains A2.  The derivative lane is already
+banked through the retained-passive target-staged pieces and should not be
+resumed from stale notes.  A4 and A5 remain at the source-boundary described in
+`frontier-saturation-audit-2026-06-26.md`.  The next A2 work should remove a
+real field: either produce the remaining Case 2 endpoint data (`tau`/`hTau` or
+label-preserving endpoint provenance), prove actual source-readback adjacent
+factor identities, prove fixed-pivot nonzero/all-pivot source production, or
+construct a retained-passive p.13 source chart/pushforward field.  Do not add a
+new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
+Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
+
+## Latest A2 Case 2 Self-Endpoint Transport
+
+The endpoint-transported fixed-base source-family input theorem now has a
+self-endpoint specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData
+```
+
+It sets
+
+```text
+tau = Case2ResidualColIndex n S (J + 1)
+eNext = Equiv.refl _
+```
+
+in the already proved supplied-equivalence theorem
+`retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData`.
+The endpoint-family equivalences
+
+```text
+e q :
+  case2PostPivotTwoEdgeDomain n S J (Case2ResidualColIndex n S (J + 1)) q
+    ~= throughSubspaceEndpointComplementIndex ... q
+```
+
+remain supplied.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-self-endpoint-transport.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-self-endpoint-transport.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-self-endpoint-transport.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed through
+the worktree-local `scripts/lb` command, with only existing imported warnings.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the new theorem has only
+`[propext, Classical.choice, Quot.sound]`.  Independent xhigh review passed.
+
+This is endpoint plumbing, not source mathematics from Aoyagi's PDF.  It does
+not prove `hTau`, endpoint family equivalences, endpoint provenance, label
+preservation, source-prior transport, Jacobian comparison, normal crossings,
+pole order, or RLCT.  The scouts' stronger frontier remains unchanged:
+actual fixed-base/source-readback adjacent factor identities and product
+nonzeroness are still blocked on source-backed factor alignment.
+
 ## Latest A2 Case 2 Residual Endpoint Scalar Cardinalities
 
 The successor Case 2 residual-column and residual-row scalar endpoint counts
