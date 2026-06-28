@@ -463,9 +463,32 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
               + deepestCoreF H r (coreAbsorb (split x)).2.1)
           ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
     rcases Nat.lt_or_ge L 3 with hLlt | hL3
-    · -- **L = 2 branch** (`2 ≤ L < 3`): the collapsed joint Ψ, axiom-clean (separate lemma).
+    · -- **L = 2 branch** (`2 ≤ L < 3`): the collapsed joint Ψ, the R-A `deepest_diffeo_bridge_L2_wired`
+      -- (= `_impl`), fed the triangular-bundle frames + hPtri/hQtri + the two per-`x` discharges.
       have hL2eq : L = 2 := by omega
-      sorry  -- L2-DISCHARGE PLACEHOLDER: deepest_diffeo_bridge_L2_wired + hPtri/hQtri/hsub3reg/hsub4core (to fill)
+      -- **hsub3reg** — per-`x` reg-energy invariance under the joint move.
+      have hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+          (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
+            = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
+        sorry
+      -- **hsub4core** — per-`x` core = Score on the inner ball.
+      have hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+          deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1
+            = Score x := by
+        sorry
+      -- Transport hPtri/hQtri from the bundle form (`Pf (firstLayer)` / `Qf (lastLayer)` with `Jb`)
+      -- to the `_wired` form (`endpointP0`/`endpointQL` with `J`): the endpoint frames are casts of the
+      -- boundary layers, and `pivotJSucc J = Jb` bridges the last-layer pivot split.
+      have hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+          (endpointP0 H hL Pf)).toBlocks₁₂ = 0 := by
+        sorry
+      have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
+        sorry
+      exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
+        split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
+        hsub4core Φscore hΦscore wstar hwstar hL2eq
     · -- **L ≥ 3 branch (general-`L` grouped-`G0` diffeo GAP).** The cert's `(T1, Y1)` Ψ generalises to
       -- the two-grouping `G0 = prodAux (L−1)` (first `L−1` layers), `G1 = last layer`: `A0, Y0, Z0, T0`
       -- become the grouped-product blocks and `W`/`⅟P00` carry the grouped pivot `A0⁻¹`. The recursive
