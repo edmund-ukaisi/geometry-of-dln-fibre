@@ -19,6 +19,31 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint cardinalities from source data
+
+The Case 2 two-edge endpoint-cardinality hypothesis can now be derived from
+fixed-base source data plus three explicit scalar size equalities:
+
+```text
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData
+```
+
+For `q = 0,1,2`, the theorem unfolds the displayed two-edge endpoint family as
+`tau`, `Case2ResidualColIndex n S (J+1)`, and
+`Case2ResidualRowIndex n S (J+1)`, and compares these with the source-data
+endpoint complement counts `H 3-r`, `H 2-r`, and `H 1-r`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-cardinalities-from-source-data.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-cardinalities-from-source-data.md`.
+
+This removes only the pointwise `hEndpoints` cardinality family once `hTau`,
+`hCol`, and `hRow` are known.  It does not prove those scalar equalities,
+construct `tau`, build canonical endpoint labels, preserve selected entries,
+identify source priors, compare Jacobians, prove normal crossings, compute pole
+order, or extract RLCT.
+
 ## Latest controller decision - 2026-06-28, endpoint equivalences from cardinalities
 
 The Case 2 endpoint-transport wrappers now have the finite constructor for the

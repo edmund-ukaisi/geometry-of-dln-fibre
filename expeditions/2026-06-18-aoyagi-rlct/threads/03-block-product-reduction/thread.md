@@ -18,6 +18,32 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 endpoint cardinalities from source data
+
+Reproduction:
+`reproduction-a2-case2-endpoint-cardinalities-from-source-data.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-cardinalities-from-source-data.md`.
+
+Lean now exposes:
+
+```text
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData
+```
+
+The theorem derives the pointwise `hEndpoints` cardinality family by unfolding
+the three endpoints of `case2PostPivotTwoEdgeDomain` and comparing them with
+the fixed-base source-data endpoint complement counts.  It still requires
+explicit scalar equalities for `tau`, the successor residual-column type, and
+the successor residual-row type.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+the worktree-local `scripts/lb` command.
+
+This is not proof of those scalar equalities, construction of `tau`, canonical
+endpoint labelling, selected-entry preservation, measure transport, Jacobian
+comparison, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 endpoint equivalences from cardinalities
 
 Reproduction:

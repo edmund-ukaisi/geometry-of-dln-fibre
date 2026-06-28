@@ -98,6 +98,63 @@ noncomputable def case2EndpointTransportEquivs_of_card_eq
   exact ⟨Fintype.equivOfCardEq hNext,
     fun q ↦ Fintype.equivOfCardEq (hEndpoints q)⟩
 
+universe u v
+
+set_option linter.unusedSectionVars false in
+/-- Source data and explicit scalar endpoint-size equalities give the pointwise
+endpoint-cardinality hypotheses for the displayed Case 2 two-edge family.
+
+This does not construct `τ`, prove the scalar size equalities, or make the
+resulting endpoint equivalences canonical. -/
+theorem case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData
+    {K : Type u} [NontriviallyNormedField K] [CompleteSpace K]
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module K (W₂ i)]
+    [∀ i, ContinuousSMul K (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[K] W₂ i.castSucc)
+    [∀ j, FiniteDimensional K (W₂ j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    {Cedge : α → ∀ p : Fin 2,
+      reverseVertex W₂ p.castSucc →L[K] reverseVertex W₂ p.succ}
+    {τ : Type} [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := K) W₂ B₂ U₀ hU₀ x₀ Cedge H r rEdge)
+    (hTau : Fintype.card τ = H 3 - r)
+    (hCol :
+      Fintype.card (Case2ResidualColIndex n S (J + 1)) = H 2 - r)
+    (hRow :
+      Fintype.card (Case2ResidualRowIndex n S (J + 1)) = H 1 - r) :
+    ∀ q : Fin 3,
+      Fintype.card (case2PostPivotTwoEdgeDomain n S J τ q) =
+        Fintype.card
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) := by
+  intro q
+  have hEndpoint :=
+    PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank
+      (K := K) (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := Cedge) sourceData q
+  fin_cases q
+  · simpa [case2PostPivotTwoEdgeDomain] using hTau.trans hEndpoint.symm
+  · change
+      Fintype.card (Case2ResidualColIndex n S (J + 1)) =
+        Fintype.card
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (1 : Fin 3))
+    exact hCol.trans hEndpoint.symm
+  · change
+      Fintype.card (Case2ResidualRowIndex n S (J + 1)) =
+        Fintype.card
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (2 : Fin 3))
+    exact hRow.trans hEndpoint.symm
+
 /-- The concrete two-factor family for the displayed Case 2 post-pivot lower
 product: first the free `C'` tail, then the post-pivot residual block. -/
 noncomputable def case2PostPivotFreeTwoEdgeFactorFamily

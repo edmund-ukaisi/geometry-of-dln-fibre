@@ -140,6 +140,17 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 endpoint cardinalities from source data,
+  2026-06-28.** Lean now exposes
+  `case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData`
+  in `Case2ResidualFactorProduct.lean`.  It derives the pointwise endpoint-
+  cardinality family for `case2PostPivotTwoEdgeDomain n S J tau` from fixed-
+  base source data and explicit scalar equalities for `tau`, the residual
+  column type, and the residual row type.  This removes only `hEndpoints` once
+  those scalar equalities are supplied.  It does not prove the scalar
+  equalities, construct `tau`, produce canonical endpoint labels, preserve
+  selected entries, compare source priors or Jacobians, prove normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, endpoint equivalences from cardinalities,
   2026-06-28.** Lean now exposes
   `case2EndpointTransportEquivs_of_card_eq` in

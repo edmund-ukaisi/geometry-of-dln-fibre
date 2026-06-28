@@ -48,6 +48,36 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Endpoint Cardinalities From Source Data
+
+The pointwise endpoint-cardinality family required by
+`case2EndpointTransportEquivs_of_card_eq` can now be derived from source data
+and three scalar size equalities:
+
+```text
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData
+```
+
+For the displayed two-edge Case 2 endpoint family, the three endpoint cases are
+definitionally `tau`, `Case2ResidualColIndex n S (J+1)`, and
+`Case2ResidualRowIndex n S (J+1)`.  The theorem compares these with
+`PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank`
+at `q = 0,1,2`, giving source endpoint counts `H 3-r`, `H 2-r`, and `H 1-r`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+the worktree-local `scripts/lb` command.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-cardinalities-from-source-data.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-cardinalities-from-source-data.md`.
+
+This is endpoint cardinality bookkeeping only.  It leaves the three scalar size
+equalities explicit, especially `tau`'s size.  It does not construct `tau`,
+prove canonical endpoint labels, preserve selected entries, compare source
+priors or Jacobians, prove normal crossings, compute pole order, or extract
+RLCT.
+
 ## Latest A2 Endpoint Equivalences From Cardinalities
 
 The endpoint-transported Case 2 wrappers now have a finite constructor for the
