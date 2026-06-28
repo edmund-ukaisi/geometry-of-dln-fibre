@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 fixed-pivot source-readback readout
+
+Reproduction:
+`reproduction-a2-case2-fixed-pivot-source-readback-readout.md`.
+Statement card:
+`statement-card-a2-case2-fixed-pivot-source-readback-readout.md`.
+Review:
+`review-a2-case2-fixed-pivot-source-readback-readout.md`.
+
+Lean now exposes:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_ne_zero_of_yNext_pivot_ne_zero
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_eq_yNext_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_ne_zero_of_case2EndpointTransport_sourceEdgeFamilyOfData_yNext_pivot_ne_zero
+```
+
+The first theorem evaluates the endpoint-transported selected-entry matrix
+identity at the coordinate corresponding to the displayed successor pivot
+`(J+2,J+2)` and proves the product entry is `yNext pivotNext`.  The nonzero
+corollary consumes `hyNext`.  The fixed-base theorems lift this pointwise
+readout through the p.13 source edge family by rewriting the source readback to
+the endpoint-transported datum.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with
+only the known imported warning profile.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct axiom
+probes passed; the new declarations report only `[propext, Classical.choice,
+Quot.sound]`.
+
+This removes the all-pivot existential ambiguity for the constructed
+endpoint-transported source-readback branch.  It does not construct `tau`,
+prove `hTau`, prove canonical endpoint labelling, identify arbitrary
+`ofTopologyTuple` data, transport source priors, compare Jacobians, prove
+normal crossings, compute pole order, or extract RLCT.
+
 ## 2026-06-28 A2 Case 2 self-endpoint transport
 
 Reproduction:

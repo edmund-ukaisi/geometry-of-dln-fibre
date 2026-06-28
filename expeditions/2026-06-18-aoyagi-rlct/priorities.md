@@ -38,7 +38,51 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
-## Latest controller decision - 2026-06-28, Case 2 source-readback factor provenance
+## Latest controller decision - 2026-06-28, Case 2 fixed-pivot source-readback readout
+
+The endpoint-transported explicit Case 2 selected-entry datum now has
+fixed-pivot pointwise product readout:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_ne_zero_of_yNext_pivot_ne_zero
+```
+
+The fixed-base p.13 source readback of the source edge family built from that
+datum has the same fixed-pivot readout:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_eq_yNext_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_ne_zero_of_case2EndpointTransport_sourceEdgeFamilyOfData_yNext_pivot_ne_zero
+```
+
+This evaluates the existing selected-entry matrix identity at
+`residualCoordEquiv.symm pivotNext`, where `pivotNext` is the displayed
+successor pivot `(J+2,J+2)`, and uses
+`SelectedEntrySignedBox.CenterCoord.chartMap_pivot`.  The fixed-base lift then
+rewrites the source readback to the endpoint-transported datum by the
+source-readback provenance theorem.  It removes the prior all-pivot
+existential ambiguity for this constructed branch: the pivot and coordinate
+are the actual displayed pivot and supplied `yNext`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-fixed-pivot-source-readback-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-fixed-pivot-source-readback-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-fixed-pivot-source-readback-readout.md`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with only
+the known imported warning profile.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probes passed; the
+new declarations report only `[propext, Classical.choice, Quot.sound]`.  This
+does not construct `tau`, prove `hTau`, give canonical endpoint labelling or
+label-preserving endpoint provenance, identify arbitrary `ofTopologyTuple`
+data, transport source priors, compare Jacobians, prove normal crossings,
+compute pole order, or extract RLCT.
+
+## Previous controller decision - 2026-06-28, Case 2 source-readback factor provenance
 
 The fixed-base p.13 source edge family built from the endpoint-transported
 explicit Case 2 selected-entry retained-passive datum now has actual

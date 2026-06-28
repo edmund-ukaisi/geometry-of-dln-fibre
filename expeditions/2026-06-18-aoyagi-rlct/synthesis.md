@@ -84,7 +84,50 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
-## Latest A2 Case 2 Source-Readback Factor Provenance
+## Latest A2 Case 2 Fixed-Pivot Source-Readback Readout
+
+The endpoint-transported explicit Case 2 selected-entry datum now preserves
+the actual displayed successor pivot in its pointwise product readout:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_ne_zero_of_yNext_pivot_ne_zero
+```
+
+The same fixed-pivot statement is lifted to the fixed-base p.13 source
+readback:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_eq_yNext_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_ne_zero_of_case2EndpointTransport_sourceEdgeFamilyOfData_yNext_pivot_ne_zero
+```
+
+The proof evaluates the existing endpoint-transported selected-entry matrix
+identity at `residualCoordEquiv.symm pivotNext`, applies `value_matrix`, then
+uses `chartMap_pivot`.  The fixed-base theorem rewrites the source readback to
+the transported datum using the source-readback equality from the previous
+checkpoint.  This removes the all-pivot ambiguity for this constructed
+branch: the nonzero entry is the actual `(J+2,J+2)` coordinate supplied by
+`yNext`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-fixed-pivot-source-readback-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-fixed-pivot-source-readback-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-fixed-pivot-source-readback-readout.md`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; the new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Nonclaims: `tau`/`hTau`,
+canonical endpoint labels, arbitrary `ofTopologyTuple` alignment,
+source-prior transport, Jacobian comparison, normal crossings, pole order, and
+RLCT are still open.
+
+## Previous A2 Case 2 Source-Readback Factor Provenance
 
 The fixed-base p.13 source edge family built from the endpoint-transported
 explicit Case 2 selected-entry retained-passive datum now reads back to that

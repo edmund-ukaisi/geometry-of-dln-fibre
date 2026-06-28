@@ -496,6 +496,112 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residua
   rw [htransport, hbase]
   rfl
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.style.longLine false in
+/-- The endpoint-transported explicit Case 2 selected-entry datum has the
+displayed successor pivot as the actual selected-entry product coordinate. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    let pivotNext :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩
+    let residualCoordEquiv :
+        AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ≃
+          (case2ResidualBlockPivotEntries n S (J + 1) : Type) :=
+      case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+        n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+    AoyagiResidualBlockCoordinateIndex.value
+        (ChartLocalSuffixState.residualFactorProduct
+          ((case2PostPivotSelectedEntryRetainedPassiveData
+            (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)))
+        (residualCoordEquiv.symm pivotNext) =
+      yNext pivotNext := by
+  intro pivotNext residualCoordEquiv
+  let product :=
+    ChartLocalSuffixState.residualFactorProduct
+      ((case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+      (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))
+  have hmatrix :
+      product =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+              (residualCoordEquiv c)) := by
+    simpa [product, pivotNext, residualCoordEquiv] using
+      case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+        (ρ := ρ) n hS hcont hnext yNext eNext e
+  calc
+    AoyagiResidualBlockCoordinateIndex.value product
+        (residualCoordEquiv.symm pivotNext) =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+          (residualCoordEquiv (residualCoordEquiv.symm pivotNext)) := by
+      rw [hmatrix]
+      simpa using
+        congrFun
+          (AoyagiResidualBlockCoordinateIndex.value_matrix
+            (fun c : AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+                (residualCoordEquiv c)))
+          (residualCoordEquiv.symm pivotNext)
+    _ = yNext pivotNext := by
+      rw [Equiv.apply_symm_apply]
+      exact SelectedEntrySignedBox.CenterCoord.chartMap_pivot pivotNext yNext
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.style.longLine false in
+/-- The endpoint-transported explicit Case 2 selected-entry datum has a
+nonzero fixed successor-pivot product coordinate when the supplied successor
+pivot coordinate is nonzero. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_ne_zero_of_yNext_pivot_ne_zero
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hyNext :
+      yNext (⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0) :
+    let pivotNext :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩
+    let residualCoordEquiv :
+        AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ≃
+          (case2ResidualBlockPivotEntries n S (J + 1) : Type) :=
+      case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+        n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+    AoyagiResidualBlockCoordinateIndex.value
+        (ChartLocalSuffixState.residualFactorProduct
+          ((case2PostPivotSelectedEntryRetainedPassiveData
+            (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)))
+        (residualCoordEquiv.symm pivotNext) ≠ 0 := by
+  intro pivotNext residualCoordEquiv
+  rw [
+    case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext
+      (ρ := ρ) n hS hcont hnext yNext eNext e]
+  exact hyNext
+
 set_option linter.style.longLine false in
 /-- The post-pivot residual `C 1` factor of the endpoint-transported explicit
 Case 2 selected-entry retained-passive datum is the displayed post-pivot

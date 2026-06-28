@@ -140,6 +140,23 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 fixed-pivot source-readback readout,
+  2026-06-28.** Lean now exposes
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_eq_yNext`,
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_fixedPivot_entry_ne_zero_of_yNext_pivot_ne_zero`,
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_eq_yNext_of_case2EndpointTransport_sourceEdgeFamilyOfData`,
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_residualFactorProduct_fixedPivot_entry_ne_zero_of_case2EndpointTransport_sourceEdgeFamilyOfData_yNext_pivot_ne_zero`
+  in the Case 2 selected-entry/local-jacobian bridge files.  For the
+  endpoint-transported explicit Case 2 datum, and for the fixed-base source
+  readback of the p.13 source edge family built from it, the residual-factor
+  product entry corresponding to the displayed successor pivot `(J + 2,J + 2)`
+  is exactly `yNext pivotNext`; under `hyNext` that fixed entry is nonzero.
+  This removes the all-pivot existential ambiguity for this constructed
+  branch, but does not construct `tau`, prove `hTau`, give canonical endpoint
+  labelling, identify arbitrary `ofTopologyTuple` data, transport source
+  priors, compare Jacobians, prove normal crossings, compute pole order, or
+  extract RLCT.
 - **Current status addendum, Case 2 endpoint-transport factor alignment,
   2026-06-28.** Lean now exposes
   `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock`,
