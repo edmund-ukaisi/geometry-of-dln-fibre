@@ -975,6 +975,43 @@ theorem innerSGen_eq_norm (r N : ℕ) (hN : r * r = N + 1) (c' : ℝ) (T : ℝ) 
   -- frobSq(R·S) = frobSq(R'·Sσc) with R' = RmatGnorm p z (= R reordered by σr,σc).
   exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
 
+/-! ### The carve carrier — the cell bijection `CoreIdx ⊕ RestIdx ≃ {non-pivot cells}`
+
+The `r²−1` non-pivot cells of `Fin r × Fin r` (pivot at `(0,0)`) partition as M22 `{1..r-1}²` ⊕
+M21 `{1..r-1}×{0}` ⊕ M12 `{0}×{1..r-1}`. Generic analog of `RouteM334Ratiofin.cellOf` (the corank-3
+`(Fin 2×Fin 2)⊕Fin 4` enumeration). The cell map into `Fin r × Fin r` uses `⟨1+a,_⟩` (matching
+`schur_minorPivot_split`'s block indexing), so the M22 block is `Fin (r-1) × Fin (r-1)`. -/
+
+/-- The non-pivot-cell index carrier `(Fin(r-1)×Fin(r-1)) ⊕ Fin(r-1) ⊕ Fin(r-1)` (M22 ⊕ M21 ⊕ M12). -/
+abbrev cellIdxG (r : ℕ) : Type := (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))
+
+/-- The cell map `cellIdxG r → Fin r × Fin r`: M22 `(a,b)↦(1+a,1+b)`, M21 `a↦(1+a,0)`, M12 `b↦(0,1+b)`. -/
+def cellG (r : ℕ) (hr : 3 ≤ r) : cellIdxG r → Fin r × Fin r
+  | Sum.inl (a, b) => (⟨1 + a, by omega⟩, ⟨1 + b, by omega⟩)
+  | Sum.inr (Sum.inl a) => (⟨1 + a, by omega⟩, ⟨0, by omega⟩)
+  | Sum.inr (Sum.inr b) => (⟨0, by omega⟩, ⟨1 + b, by omega⟩)
+
+/-- Every cell `cellG r hr s` is off the pivot `(⟨0,_⟩, ⟨0,_⟩)`. -/
+theorem cellG_ne_pivot (r : ℕ) (hr : 3 ≤ r) (s : cellIdxG r) (h0r : 0 < r) :
+    ¬ ((cellG r hr s).1 = ⟨0, h0r⟩ ∧ (cellG r hr s).2 = ⟨0, h0r⟩) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;>
+    simp only [cellG] <;>
+    · rintro ⟨h1, h2⟩
+      simp only [Fin.mk.injEq] at h1 h2
+      omega
+
+/-- `cellG r hr` is injective. -/
+theorem cellG_injective (r : ℕ) (hr : 3 ≤ r) : Function.Injective (cellG r hr) := by
+  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
+    simp only [cellG, Prod.mk.injEq, Fin.mk.injEq] at h <;>
+    first
+      | (obtain ⟨h1, h2⟩ := h
+         simp only [Sum.inl.injEq, Sum.inr.injEq, Prod.mk.injEq]
+         constructor <;> (apply Fin.ext; omega))
+      | (omega)
+      | (obtain ⟨h1, h2⟩ := h; simp only [Sum.inl.injEq, Sum.inr.injEq]; apply Fin.ext; omega)
+      | (exfalso; omega)
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
