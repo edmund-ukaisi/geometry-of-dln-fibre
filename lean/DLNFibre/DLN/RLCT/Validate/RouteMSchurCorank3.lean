@@ -135,4 +135,69 @@ theorem gFlat3_blowup_radial (c' : ℝ) (T : ℝ) (p : Fin (3 * 3)) (y : Fin (3 
     rfl
   rw [hbl, radialDelta_loss_factor (y p) (matToFlat3.symm (fun i => if i = p then 1 else y i)) S]
 
+/-! ## Per-chart support (threshold-agnostic; mirror of corank-2) -/
+
+/-- On the chart, the blown-up point lands in `flatBox3 T` IFF `|y p| ≤ T`. -/
+theorem flatBox3_blowup_mem_iff (T : ℝ) (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (3 * 3))) p) :
+    pivotBlowupOn (Finset.univ : Finset (Fin (3 * 3))) p y ∈ flatBox3 T ↔ |y p| ≤ T := by
+  unfold flatBox3 chartDomOn at *
+  simp only [Set.mem_setOf_eq] at *
+  constructor
+  · intro h
+    have hpp := h p
+    rw [pivotBlowupOn] at hpp
+    simp only [if_pos rfl, Set.mem_Icc] at hpp
+    rw [abs_le]; exact hpp
+  · intro hp i
+    rw [pivotBlowupOn]
+    by_cases hi : i = p
+    · subst hi; simp only [if_pos rfl, Set.mem_Icc]; rw [abs_le] at hp; exact hp
+    · simp only [if_neg hi, Finset.mem_univ, if_true, Set.mem_Icc]
+      have hyi : |y i| ≤ 1 := hy i (Finset.mem_univ i) hi
+      have hb : |y p * y i| ≤ |y p| := by
+        rw [abs_mul]; nlinarith [abs_nonneg (y p), abs_nonneg (y i), abs_nonneg (y p * y i)]
+      have hbb : |y p * y i| ≤ T := le_trans hb hp
+      rw [abs_le] at hbb; exact hbb
+
+/-- The inner angular S-integral on chart `p`: `innerS3 c' T p y = ∫_{S∈box 3 4} frobSq(Rmat3 p y·S)^{−c'}`. -/
+noncomputable def innerS3 (c' : ℝ) (T : ℝ) (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ) : ℝ≥0∞ :=
+  ∫⁻ S in matBox 3 4 T, ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p y) S)) ^ (-c'))
+
+/-- The chart integrand factors as `radInd(y p) · innerS3` (`|y p|³ → |y p|^{8−2c'}` via the radial peel,
+`y p ≠ 0` from `\ pivotZeroOn`). Mirror of `chart_integrand_factor2` (Jacobian `|y p|⁸`, card 9). -/
+theorem chart_integrand_factor3 (c' : ℝ) (hc0 : 0 < c') (T : ℝ) (hT : 0 < T)
+    (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ) (hyp0 : y p ≠ 0)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (3 * 3))) p) :
+    ENNReal.ofReal (|y p| ^ 8)
+        * (flatBox3 T).indicator (gFlat3 c' T) (pivotBlowupOn
+            (Finset.univ : Finset (Fin (3 * 3))) p y)
+      = (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ ((8 : ℝ) - 2 * c'))) (y p) * innerS3 c' T p y := by
+  by_cases hmem : pivotBlowupOn (Finset.univ : Finset (Fin (3 * 3))) p y ∈ flatBox3 T
+  · have hyp : |y p| ≤ T := (flatBox3_blowup_mem_iff T p y hy).1 hmem
+    rw [Set.indicator_of_mem hmem,
+      Set.indicator_of_mem (s := Set.Icc (-T) T) (by rw [Set.mem_Icc, ← abs_le]; exact hyp)]
+    rw [gFlat3_blowup_radial c' T p y, innerS3]
+    have hpull : ∀ S : Fin 3 → Fin 4 → ℝ,
+        ENNReal.ofReal (((y p) ^ 2 * frobSq (rmatMul (Rmat3 p y) S)) ^ (-c'))
+          = ENNReal.ofReal ((((y p) ^ 2) ^ (-c')))
+            * ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p y) S)) ^ (-c')) := by
+      intro S
+      rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity) _),
+        ← Real.mul_rpow (by positivity) (frobSq_nonneg _)]
+    rw [lintegral_congr hpull, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc]
+    congr 1
+    rw [← ENNReal.ofReal_mul (by positivity)]
+    congr 1
+    have hb : ((y p) ^ 2 : ℝ) = |y p| ^ (2 : ℝ) := by
+      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
+    have hpos : (0 : ℝ) < |y p| := abs_pos.2 hyp0
+    rw [hb, ← Real.rpow_natCast (|y p|) 8, ← Real.rpow_mul (le_of_lt hpos), ← Real.rpow_add hpos]
+    congr 1; push_cast; ring
+  · have hyp : ¬ |y p| ≤ T := fun h => hmem ((flatBox3_blowup_mem_iff T p y hy).2 h)
+    rw [Set.indicator_of_notMem hmem,
+      Set.indicator_of_notMem (s := Set.Icc (-T) T)
+        (by rw [Set.mem_Icc, ← abs_le]; exact hyp), zero_mul, mul_zero]
+
 end DLNFibre.DLN.RLCT
