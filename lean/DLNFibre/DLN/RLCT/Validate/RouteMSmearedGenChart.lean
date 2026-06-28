@@ -238,15 +238,18 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
   erw [Matrix.reindex_refl_refl]
   rw [hfront, hlayer]
   -- Goal: `∑ j, frontMat i j * smearedDeepLayer j jc = deepCol ⟨0,hrow⟩ * frontMat i ⟨0,hm1⟩`.
-  -- REMAINING (WIP, surface friction): the LANDED bricks compose to close this —
-  --   (a) `hjc : jc = ⟨0,hcol⟩` (single deepest column, `M_L = 1`, `Fin.ext`);
-  --   (b) the front-fact relation `frontMat i ⟨0,hrow⟩ · routing 0 r = frontMat i (cast r.succ)`
-  --       (LANDED `frontMat_routing_eq_resid`, pivot index `⟨0,hrow⟩↔⟨0,hm1⟩` via `Fin.ext`);
-  --   (c) `sum_smearedCol_collapse_opaque hrow (frontMat i) deepCol (routing 0) (b)` (LANDED) closes the
-  --       `if`-form sum `= deepCol ⟨0,hrow⟩ · frontMat i ⟨0,hrow⟩`.
-  -- The one blocker is rewriting the goal sum body (via `hjc` + `Matrix.updateRow_apply`) into the EXACT
-  -- `if`-form of the collapse — a Decidable-instance unification (both `if`s are `j = ⟨0,hrow⟩`, different
-  -- instances), NOT a math gap. All math is landed sorry-free.
+  -- The front-fact relation in the `cast∘succ` residual form (LANDED `frontMat_routing_eq_resid`).
+  have hfr : ∀ r, frontMat M hL u i ⟨0, hrow⟩ * routing M hL u hm1 0 r
+      = frontMat M hL u i (Fin.cast (by omega) r.succ) := fun r => by
+    have h := frontMat_routing_eq_resid M hL u p hp hp1 hple hm1 hc i r
+    rw [residSel] at h; convert h using 3
+  -- The opaque-width collapse (LANDED): `f=frontMat i, d=deepCol, lam=routing 0` closes the `if`-form sum.
+  have hfin := sum_smearedCol_collapse_opaque (L := m + 1) (n := M (deepLayer M hL).castSucc) hrow
+    (frontMat M hL u i) (deepCol M hL u hcol) (routing M hL u hm1 0) hfr
+  -- REMAINING (WIP, surface friction): `hfin` IS the collapsed identity. The single blocker is rewriting
+  -- the goal sum body `frontMat i j · smearedDeepLayer j jc` into `hfin`'s `if`-form — every `rw`/`simp`
+  -- of this sum fails to MATCH the `smearedDeepLayer … j jc` pattern (the `subst`/`Fin.last` column
+  -- proof-term coercion), not a math gap. `hfin` + the pivot index `⟨0,hrow⟩ = ⟨0,hm1⟩` (rfl) finishes.
   sorry
 
 end DLNFibre.DLN.RLCT
