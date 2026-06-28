@@ -234,4 +234,50 @@ theorem rcore_schur_factor_of_corner_split {a b c r : ℕ}
   -- Step 2: Schur of `reindex (G0*G1)` = the two-layer LDU form (`reindex_mul_schur_factor`).
   exact reindex_mul_schur_factor eR eMid eC G0 G1
 
+/-- **Frame-transform of the `(1,1)`-Schur complement** (the network-free L = 2 endpoint-frame piece).
+For a block-LOWER left frame `P = fromBlocks a 0 c D_P`, an arbitrary middle `M = fromBlocks A B C D`,
+and a block-UPPER right frame `Q = fromBlocks e f 0 D_Q` (all on the `r ⊕ rest` split, with `a, A, e`
+the `r×r` corners), the `(2,2)`-Schur complement of the framed product `P·M·Q` over its `(1,1)` block
+is `D_P · Schur₂₂(M) · D_Q`: the off-diagonal/top-left frame blocks `a, e, c, f` fully cancel through
+the inverse `(a·A·e)⁻¹ = ⅟e·⅟A·⅟a`, leaving only the bottom-right `D_P, D_Q`. Stated with `⅟` (the
+caller instantiates `Invertible` from the units); `a, A, e` invertible are the only conditions. -/
+theorem schur_frame_transform {r s t : Type*}
+    [Fintype r] [DecidableEq r] [Fintype s] [Fintype t]
+    (a : Matrix r r ℝ) (c : Matrix s r ℝ) (DP : Matrix s s ℝ)
+    (A : Matrix r r ℝ) (B : Matrix r t ℝ) (C : Matrix s r ℝ) (D : Matrix s t ℝ)
+    (e : Matrix r r ℝ) (f : Matrix r t ℝ) (DQ : Matrix t t ℝ)
+    [Invertible a] [Invertible A] [Invertible e] :
+    (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D * Matrix.fromBlocks e f 0 DQ).toBlocks₂₂
+        - (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D
+              * Matrix.fromBlocks e f 0 DQ).toBlocks₂₁
+          * ((Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D
+              * Matrix.fromBlocks e f 0 DQ).toBlocks₁₁)⁻¹
+          * (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D
+              * Matrix.fromBlocks e f 0 DQ).toBlocks₁₂
+      = DP * (D - C * A⁻¹ * B) * DQ := by
+  -- Compute the framed product's blocks. `P·M = fromBlocks (aA) (aB) (cA+DP·C) (cB+DP·D)`.
+  have hPM : Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D
+      = Matrix.fromBlocks (a * A) (a * B) (c * A + DP * C) (c * B + DP * D) := by
+    rw [Matrix.fromBlocks_multiply]
+    simp only [Matrix.zero_mul, add_zero]
+  -- `(P·M)·Q = fromBlocks (aAe) (aAf+aB·DQ) ((cA+DP·C)e) ((cA+DP·C)f+(cB+DP·D)DQ)`.
+  have hN : Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D * Matrix.fromBlocks e f 0 DQ
+      = Matrix.fromBlocks (a * A * e) (a * A * f + a * B * DQ)
+          ((c * A + DP * C) * e) ((c * A + DP * C) * f + (c * B + DP * D) * DQ) := by
+    rw [hPM, Matrix.fromBlocks_multiply]
+    simp only [Matrix.mul_zero, add_zero, Matrix.mul_add]
+  rw [hN, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]
+  -- The `(1,1)` inverse `(a·A·e)⁻¹ = ⅟e·⅟A·⅟a`; pull `⅟`-forms in for the cancel.
+  haveI : Invertible (a * A) := invertibleMul a A
+  haveI : Invertible (a * A * e) := invertibleMul (a * A) e
+  rw [← invOf_eq_nonsing_inv (a * A * e), ← invOf_eq_nonsing_inv A]
+  rw [show ⅟(a * A * e) = ⅟e * ⅟A * ⅟a by rw [invOf_mul (a * A) e, invOf_mul a A,
+    Matrix.mul_assoc]]
+  -- Fully right-associate, distribute, then run the two-sided RECTANGULAR `⅟`-cancels to fixpoint
+  -- (`Matrix.{invOf,mul}_invOf_cancel_left` are the heterogeneous `r×r · r×t` forms).
+  simp only [Matrix.mul_assoc, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub,
+    Matrix.mul_invOf_cancel_left, Matrix.invOf_mul_cancel_left]
+  abel
+
 end DLNFibre.DLN.RLCT

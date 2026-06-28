@@ -1981,6 +1981,56 @@ theorem e2_regPreserve {p1 p2 q1 : Type*} [Fintype p1] [Fintype q1] [DecidableEq
   -- `A0·Y1 + (Y0·T1 − Y0·T1') + Y0·T1' = A0·Y1 + Y0·T1`.
   rw [add_assoc, sub_add_cancel]
 
+/-- **The absorbed last-layer core IS `(1 − K)·S1`** (the sub-4 keystone, on the inner ball where
+`det W ≠ 0`). The last-layer Schur-shifted core read off `psiSplitRawL2Core q` — `T1' − Z1·A1⁻¹·Y1'`
+— collapses to `(1 − K)·S1`: substituting `Y1' = Y1 + A0⁻¹·Y0·(T1 − T1')` and `T1' = W⁻¹·Br`,
+the `W·W⁻¹ = 1` cancel (from `det W ≠ 0`) turns `(1 + R)·T1' = W·W⁻¹·Br = Br`, and `Br`'s definition
+unwinds to `(1 − K)·S1` after the `Z1·A1⁻¹·Y1` and `R·T1` terms cancel. This is the matrix identity the
+absorbed-core energy chain (`deepestCoreF_coreAbsorb_eq_prodSchur` → LDU) consumes. -/
+theorem l2T1p_sub_Z1A1invY1p_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (hW : (l2W H r hr hL hL2eq q).det ≠ 0) :
+    l2T1p H r hr hL hL2eq q
+        - l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹ * l2Y1p H r hr hL hL2eq q
+      = (1 - l2K H r hr hL hL2eq q) * l2S1 H r hr hL hL2eq q := by
+  -- Abbreviations matching the `l2*` defs.
+  set Z1 := l2Z1 H r hr hL q with hZ1
+  set A1i := (l2A1 H r hr hL q)⁻¹ with hA1i
+  set A0i := (l2A0 H r hr hL q)⁻¹ with hA0i
+  set Y0 := l2Y0 H r hr hL hL2eq q with hY0
+  set Y1 := l2Y1 H r hr hL q with hY1
+  set T1 := l2T1 H r hr hL q with hT1
+  set T1' := l2T1p H r hr hL hL2eq q with hT1'
+  set K := l2K H r hr hL hL2eq q with hK
+  set S1 := l2S1 H r hr hL hL2eq q with hS1
+  -- `R = Z1·A1⁻¹·A0⁻¹·Y0`, `W = 1 + R`, and the inner-ball cancel `W·W⁻¹ = 1`.
+  have hRdef : l2R H r hr hL hL2eq q = Z1 * A1i * A0i * Y0 := rfl
+  -- `Y1' = Y1 + A0⁻¹·Y0·(T1 − T1')`.
+  have hY1p : l2Y1p H r hr hL hL2eq q = Y1 + A0i * Y0 * (T1 - T1') := rfl
+  -- `Z1·A1⁻¹·Y1' = Z1·A1⁻¹·Y1 + R·(T1 − T1')`.
+  have hZAY1p : Z1 * A1i * l2Y1p H r hr hL hL2eq q
+      = Z1 * A1i * Y1 + l2R H r hr hL hL2eq q * (T1 - T1') := by
+    rw [hY1p, Matrix.mul_add, hRdef]
+    simp only [Matrix.mul_assoc]
+  -- `W·T1' = Br` (the `W·W⁻¹ = 1` cancel).
+  have hWWi : l2W H r hr hL hL2eq q * (l2W H r hr hL hL2eq q)⁻¹ = 1 :=
+    Matrix.mul_nonsing_inv _ (Ne.isUnit hW)
+  have hWT1' : l2W H r hr hL hL2eq q * T1' = l2Br H r hr hL hL2eq q := by
+    rw [hT1', l2T1p_eq, ← Matrix.mul_assoc, hWWi, Matrix.one_mul]
+  -- Assemble: T1' − Z1·A1⁻¹·Y1' = (1+R)·T1' − Z1·A1⁻¹·Y1 − R·T1 = W·T1' − … = Br − … = (1−K)·S1.
+  rw [hZAY1p, hRdef] at *
+  -- Reduce the LHS to `Br − Z1·A1⁻¹·Y1 − (Z1·A1⁻¹·A0⁻¹·Y0)·T1` using `(1+R)·T1' = W·T1' = Br`.
+  have hWdef : l2W H r hr hL hL2eq q = 1 + Z1 * A1i * A0i * Y0 := rfl
+  have key : T1' - (Z1 * A1i * Y1 + Z1 * A1i * A0i * Y0 * (T1 - T1'))
+      = l2Br H r hr hL hL2eq q - Z1 * A1i * Y1 - Z1 * A1i * A0i * Y0 * T1 := by
+    rw [← hWT1', hWdef]
+    rw [Matrix.add_mul, Matrix.one_mul, Matrix.mul_sub]
+    abel
+  rw [key, l2Br]
+  -- `Br = (1−K)·S1 + Z1·A1⁻¹·Y1 + (Z1·A1⁻¹·A0⁻¹·Y0)·T1`; the last two cancel.
+  rw [Matrix.mul_assoc (Z1 * A1i * A0i) Y0 T1]
+  abel
+
 /-! ### S6r — joint-move readbacks (the shared foundation for both S6 geometric subs)
 
 `psiSplitRawL2Core` edits ONLY the last-layer `readY` (→ `l2Y1p`) and the last-layer core (→ `l2T1p`);
