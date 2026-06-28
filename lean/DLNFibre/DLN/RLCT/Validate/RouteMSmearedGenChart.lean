@@ -355,4 +355,56 @@ theorem deepCol_update_pivot_resid (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
   have := congrArg Fin.val hval
   simp only [Fin.val_cast, Fin.val_succ] at this; omega
 
+/-- **The routing is unchanged by the pivot-coord update** (it is built from `pivotCol`/`residCols`,
+both reading only `frontMat`). -/
+theorem routing_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    routing M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1
+      = routing M hL u hm1 := by
+  have hp : pivotCol M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1
+      = pivotCol M hL u hm1 := by
+    funext i j; rw [pivotCol, pivotCol, frontMat_update_pivot M hL u a hrow hcol]
+  have hr : residCols M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1
+      = residCols M hL u hm1 := by
+    funext i r; rw [residCols, residCols, frontMat_update_pivot M hL u a hrow hcol]
+  rw [routing, routing, hp, hr]
+
+/-- **`smearShift` is invariant under the pivot-coord update** (Codex's flagged risk, now discharged):
+the front coords (`routing`) and the residual rows (`deepCol (residSel r)`) are all unchanged. -/
+theorem smearShift_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    smearShift M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1 hcol
+      = smearShift M hL u hm1 hcol := by
+  rw [smearShift, smearShift]
+  refine Finset.sum_congr rfl (fun r _ => ?_)
+  rw [routing_update_pivot M hL u a hrow hcol hm1, deepCol_update_pivot_resid M hL u a hrow hcol hm1 r]
+
+/-- The flat chart `phiSm`: a single subtractive shear at the deepest-`(0,0)` coord `smPivotCoord`, by
+`smearShift` (the front-coords routing × residual deepest-rows). -/
+noncomputable def phiSm (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) : Fin (routeMAmbient M) → ℝ :=
+  Function.update u (smPivotCoord M hL hrow hcol)
+    (u (smPivotCoord M hL hrow hcol) - smearShift M hL u hm1 hcol)
+
+/-- **`smearShift` (as a function of the flat point) is measurable.** `frontMat`/`routing`/`deepCol`
+are continuous polynomial/rational-away-from-pole reads of `u` (the `1×1` Gram inverse is `(·)⁻¹`,
+measurable everywhere). -/
+theorem smearShiftFlat_measurable (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => smearShift M hL u hm1 hcol) := by
+  sorry
+
+/-- **`phiSm` is measure-preserving** — the subtractive shear at `smPivotCoord` by the pivot-coord-
+invariant `smearShift` (the landed `measurePreserving_updateSub_of_coordInvariant`). -/
+theorem measurePreserving_phiSm (hrow : 0 < M (deepLayer M hL).castSucc)
+    (hcol : 0 < M (deepLayer M hL).succ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    MeasurePreserving (fun u => phiSm M hL u hrow hcol hm1)
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume := by
+  exact measurePreserving_updateSub_of_coordInvariant (smPivotCoord M hL hrow hcol)
+    (fun u => smearShift M hL u hm1 hcol) (smearShiftFlat_measurable M hL hcol hm1)
+    (fun u a => smearShift_update_pivot M hL u a hrow hcol hm1)
+
 end DLNFibre.DLN.RLCT
