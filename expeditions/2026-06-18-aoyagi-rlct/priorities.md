@@ -19,6 +19,43 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, target edge-pair raw-tuple linear inverse
+
+The target edge-pair branch now has the first full raw-tuple lift and inverse
+linear-map package.  New public Lean names:
+
+```text
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_apply
+retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst
+```
+
+The forward map fixes `A1passive`, `A3passive`, `Ctop`, and `F3` and replaces
+only `(F2,C)` by `retainedPassiveTargetEdgePairShearAt z w`.  The inverse map
+fixes the same side fields, uses only the first component of the formal
+edge-pair inverse as the recovered `X`, and explicitly subtracts the raw
+side-field contributions from `F2` and `C`.  Lean proves that applying the
+formal edge-pair inverse to the target edge-pair shear recovers the backward
+target `F2` recurrence in first component.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed.  `scripts/sorries`,
+`git diff --check`, code-only forbidden-marker search, and direct axiom audits
+also passed.  Xhigh review by `Mendel the 2nd` passed for the inverse algebra
+and no-overclaim boundary.
+
+This is not yet a `LinearEquiv`, determinant-one theorem, full target
+normalizer, determinant equality, source-prior transport, normal crossings,
+pole order, or RLCT.  A naive inverse-after-forward proof timed out; next
+frontier is an explicit, non-simp-heavy mutual-inverse proof, using staged
+`rawEdgeTupleA1/A3` replacement lemmas and successor-family rewrites before
+unfolding `retainedPassiveTargetEdgePairShearAt`; then a
+determinant-one proof only from a real unitriangular factorization or direct
+determinant computation.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, target edge-pair linear map
 
 The target-normalizer frontier now has the first actual target-side component

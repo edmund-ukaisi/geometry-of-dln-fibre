@@ -48,6 +48,62 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Target Edge-Pair Raw-Tuple Linear Inverse
+
+`RetainedPassiveCoordinatesJacobian.lean` now lifts the target edge-pair shear
+to a full raw-tuple linear map and defines its candidate inverse as a linear
+map.  New public Lean names:
+
+```text
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_apply
+retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst
+```
+
+The forward map fixes `A1passive`, `A3passive`, `Ctop`, and `F3`, while
+replacing `(F2,C)` by `retainedPassiveTargetEdgePairShearAt z w`.  The inverse
+map also fixes the side fields.  It forms
+`sourcePair := (retainedPassiveFormalRawF2CLinearEquivAt hz).symm (w.F2,w.C)`,
+uses only `sourcePair.1` to build the successor `Xsucc`, and defines
+`F2 := U_F - rawA1*H + Xsucc*Ccoord` and `C := U_C - rawA3*H`.
+
+Lean proves the essential arbitrary-tuple first-component identity:
+the first component of the formal edge-pair inverse of
+`retainedPassiveTargetEdgePairShearAt z w` is exactly
+`retainedPassiveTargetRecoveredF2At z w`.  This is the algebra needed for the
+inverse-after-forward direction.  The checker `Mendel the 2nd` passed the
+pen-and-paper algebra and emphasized that the formal inverse's second
+component must not be used as the raw `C` recovery for arbitrary target
+tuples.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-raw-tuple-equivalence.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-raw-tuple-equivalence.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-raw-tuple-linear-inverse.md`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed;
+`scripts/sorries` reported zero forbidden Lean constructs; `git diff --check`
+passed; code-only forbidden-marker search was clean; direct `#print axioms`
+audits for the three proof theorems reported only
+`[propext, Classical.choice, Quot.sound]`.  A naive
+`simp`-heavy inverse-after-forward theorem timed out and was not kept.  A
+later local `LinearEquiv` attempt also failed at the component cancellation
+stage and was trimmed back to this reviewed green checkpoint.  Carver's xhigh
+audit recommends the next attempt use explicit "replace only `(F2,C)`"
+readback lemmas for `rawEdgeTupleA1/A3`, staged successor rewrites from the
+first-component recovery lemma, and only then unfold `retainedPassiveTargetEdgePairShearAt`;
+do not put all of these in one broad `simp` pass.
+
+This is not yet a `LinearEquiv`, determinant-one theorem, raw coordinate
+Jacobian determinant equality, source-prior transport, normal crossings, pole
+order, or RLCT.  The next safe rung is a hand-tooled mutual-inverse proof for
+the two linear maps, followed only later by determinant control.
+
 ## Latest A2 Retained-Passive Target Edge-Pair Linear Map
 
 `RetainedPassiveCoordinatesJacobian.lean` now packages the target-side all-edge
