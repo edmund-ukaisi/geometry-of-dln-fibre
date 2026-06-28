@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 full target normaliser determinant bridge
+
+Lean now has the full raw-tuple target-normaliser equality in the zero-tail and
+positive-tail cases:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_eq_formalRawOrderJacobianAt
+```
+
+The proof assembles the existing component bridges for `A1passive`, `(F2,C)`,
+`A3passive`, `Ctop`, and `F3`; the final `F3` shear preserves all earlier
+components.  A small private helper records that the `Ctop` stage preserves
+`A3passive`.
+
+The conditional determinant bridge is now instantiated:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_zeroTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_zeroTail
+```
+
+Focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no measure transport, normal crossings, pole order, or RLCT.  The
+zero-tail and positive-tail theorems remain separate statements.
+
 ## 2026-06-28 A2 positive-tail post-`Ctop` `F3` shear
 
 Lean now has the positive-tail `F3` raw-tuple shear after the edge-pair,

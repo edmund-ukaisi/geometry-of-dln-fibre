@@ -48,6 +48,43 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Full Target Normaliser Determinant Bridge
+
+The retained-passive target-side normaliser after the edge-pair, `A1passive`,
+`Ctop`, and `F3` stages is now packaged as a full raw-tuple equality in the two
+implemented cases:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_eq_formalRawOrderJacobianAt
+```
+
+The proof is componentwise.  `A1passive`, `A3passive`, and `(F2,C)` are carried
+from the first two stages through `Ctop`; `Ctop` uses the existing staged
+component theorem; `F3` uses the already green zero-tail and positive-tail
+post-`Ctop` `F3` component bridges.  The final `F3` shears preserve the first
+five raw fields.
+
+The existing conditional determinant bridge is now instantiated with the
+determinant-one composed target maps:
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_zeroTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_zeroTail
+```
+
+This proves actual absolute Frechet determinant equality for the raw-order map
+and the formal product formula in the zero-tail and positive-tail cases.  It
+does not prove measure transport, normal crossings, pole order, or RLCT, and it
+does not expose a single all-`M` theorem.
+
+Focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed after the
+checkpoint.  `scripts/sorries`, `git diff --check`, and code-only
+forbidden-marker search passed.
+
 ## Latest A2 Positive-Tail Post-`Ctop` `F3` Shear
 
 The positive-tail `F3` normalisation stage after `T123` is now green.  The new

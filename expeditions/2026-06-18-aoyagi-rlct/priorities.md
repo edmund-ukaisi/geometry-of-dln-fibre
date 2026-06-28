@@ -19,6 +19,36 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, full target normaliser determinant bridge
+
+The retained-passive target normaliser is now packaged as full raw-tuple
+equality in the two implemented cases, and the conditional determinant bridge
+has been instantiated.  New Lean names in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_eq_formalRawOrderJacobianAt
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_eq_formalRawOrderAbsDetAt_zeroTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_posTail
+topologyTupleEdgeRawOrderFDerivAbsDet_product_eq_zeroTail
+```
+
+The proof is componentwise: `A1passive`, `(F2,C)`, `A3passive`, `Ctop`, and
+`F3` use the existing staged component bridges, plus preservation through the
+final `F3` shear.  The determinant/product results apply the existing
+conditional bridge with the zero-tail or positive-tail determinant-one
+`LinearEquiv`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This still does not prove measure transport, normal crossings, pole order, or
+RLCT.  It also keeps the zero-tail and positive-tail statements separate rather
+than claiming a single all-`M` theorem.
+
 ## Latest controller decision - 2026-06-28, positive-tail post-`Ctop` `F3` shear
 
 The positive-tail post-`Ctop` `F3` stage is now implemented and green in
