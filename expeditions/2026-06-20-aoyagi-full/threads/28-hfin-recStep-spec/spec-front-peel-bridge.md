@@ -118,3 +118,75 @@ theorem routeMBoxThresholdFinite_rr4_of_schurRecStep
 
 theorem minAdm_rr4_eq (r : ℕ) : (minAdm (![r, r, 4] : Fin 3 → ℕ) : ℝ) / 2 = schurLambda r
 ```
+
+---
+
+## (d) BUILD SPEC — exact lemmas + proof strategy (for the design-gate)
+
+**Crucial honesty note.** For the `(r,r,4)` family the "front-peel / rank-stratification" Stage 1 is
+**EMPTY**: `prod (![r,r,4]) A = A0·A1` is ALREADY a two-matrix product (depth-2, `L=2`). So there is NO
+L-fold→2-matrix reduction to do here — that genuine-new-math reduction is the depth-`≥3` research wall
+(NOT this build). The `(r,r,4)` build is the *reshape + threshold-arithmetic + assembly* that lifts the
+banked carve (`SchurCore 4 r`) to `RouteMBoxThresholdFinite (![r,r,4])`. New file
+`RouteMBoxThresholdRR4.lean` (imports `RouteMBoxReduction` + the SchurCore chain). Lemmas in order:
+
+### D1 — `minAdm_rr4_eq` (the threshold arithmetic) ~50-70 lines
+```lean
+theorem minAdm_rr4_eq (r : ℕ) : (minAdm (![r, r, 4] : Fin 3 → ℕ) : ℝ) / 2 = schurLambda r
+```
+Strategy: `minAdm = minAdmRec` (keystone `minAdmRec_eq_minAdm`); `minAdmRec_succ_succ` unfolds
+`minAdmRec (![r,r,4]) = inf'_{t∈range(min r r +1)} ((r−t)(r−t) + minAdmRec (redChain t (![r,r,4])))`;
+`redChain t (![r,r,4]) = ![t,4]` (a `Fin 2` leaf), `minAdmRec_leaf` gives `= t*4`. So
+`minAdmRec (![r,r,4]) = inf'_{t≤r} ((r−t)² + 4t)`. Then `= 4r−4` (r≥2) by `le_antisymm`: `≤` via the
+witness `t = r−2` (`(r−(r−2))²+4(r−2) = 4+4r−8 = 4r−4`); `≥` via `(r−t)²+4t ≥ 4r−4 ⟺ ((r−t)−2)² ≥ 0`
+(`Finset.le_inf'`/`nlinarith`). Boundaries r=0 (`inf' {0} = 0`), r=1 (`inf' {(1−t)²+4t : t≤1} =
+min(1,4) = 1`) by `decide`/direct. Cast to ℝ, `/2`, match `schurLambda r` (`schurLambda_eq_of_ge_two`
++ the r=0,1 values). **The one piece with friction (the `inf'` two-sided bound) — numerically
+verified: `minAdm(r,r,4) = 4r−4 = 2·schurLambda r`, r=0..7 exact.**
+
+### D2 — `eParamsRR4 r` (the depth-2 layer reshape) ~50-70 lines
+```lean
+noncomputable def eParamsRR4 (r : ℕ) :
+    Params (![r, r, 4] : Fin 3 → ℕ) ≃ᵐ (Fin r → Fin r → ℝ) × (Fin r → Fin 4 → ℝ)
+theorem measurePreserving_eParamsRR4 (r : ℕ) :
+    MeasurePreserving (eParamsRR4 r) volume volume
+```
+Strategy: literal generalisation of `eParams334`/`measurePreserving_eParams334` (RouteM334Hfin:709) with
+`![3,3,4] ↦ ![r,r,4]` and `TailFam334 ↦ TailFamRR4 r`. `piFinSuccAbove … 0` (peel layer 0 = the `r×r`
+A0) `.trans` `prodCongr refl (piUnique TailFamRR4)` (collapse the `Fin 1` tail = the `r×4` A1). The
+widths `(![r,r,4]) 0 = r`, `1 = r`, `2 = 4` are `rfl` on the literal `![r,r,4]`. MP via
+`volume_preserving_piFinSuccAbove` + `volume_preserving_piUnique` (same as the 334 proof). Components
+`(eParamsRR4 r A).1 = A 0`, `.2 = A 1` definitional.
+
+### D3 — `routeMLayerBoxIntegral_rr4_eq` (the reshape identity) ~40-50 lines
+```lean
+theorem routeMLayerBoxIntegral_rr4_eq (r : ℕ) (c' : ℝ) :
+    routeMLayerBoxIntegral (![r, r, 4] : Fin 3 → ℕ) c' 1
+      = ∫⁻ A0 in matBox r r 1, ∫⁻ A1 in matBox r 4 1,
+          ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-c'))
+```
+Strategy: literal generalisation of `routeMLayerBoxIntegral_M334_eq` (Witness file). `paramsBoxM (![r,r,4])
+1 = paramsBox-via-eParamsRR4` (the all-entries box); `eParamsRR4`-MP `setLIntegral_comp_preimage_emb` to
+the two layer boxes; `frobSq (prod (![r,r,4]) A) = frobSq (rmatMul (A 0) (A 1))` via the GENERIC
+`prod_two_layer334` (already `∀ M : Fin 3`, reused verbatim) + `frobSq` congr; Tonelli
+(`setLIntegral_prod`). Needs a generic `eParamsRR4_preimage_box` + `frobSq_prod_eq_eParamsRR4` (templated
+from the 334 versions).
+
+### D4 — `routeMBoxThresholdFinite_rr4_of_schurRecStep` (the assembly) ~30-40 lines
+```lean
+theorem routeMBoxThresholdFinite_rr4_of_schurRecStep
+    (hstep : SchurRecStep 4 schurLambda) (r : ℕ) :
+    RouteMBoxThresholdFinite (![r, r, 4] : Fin 3 → ℕ)
+```
+Strategy: unfold `RouteMBoxThresholdFinite`; intro `c'`, `hc' : c' < ½·minAdm`. Rewrite `½·minAdm =
+schurLambda r` (D1). `c' = 0`: volume bound (the box is compact, `(·)^0 = 1`). `0 < c'`: `D3` rewrites
+the box integral to `∫∫ frobSq(A0·A1)^{−c'}`, which is `SchurCore 4 r c' 1` (definitional: `Δ = A0` r×r,
+`S = A1` r×4); `schurGen_lt_top_modulo_recStep hstep r c' (0<c') (c'<schurLambda r) 1 (0<1)` gives `< ⊤`.
+Carries `hstep` until the carve merges into genm-n4.
+
+**Build order:** D1 (independent) ∥ D2 → D3 → D4. **Total ~170-230 lines.** All non-`hstep` bricks
+banked. Force `#print axioms` per lemma: D1/D2/D3 carry `monomial_rlct` only if they touch the SchurCore
+side (D3/D4 do, via the `SchurCore` defn's `monomial_rlct`-free integral — actually SchurCore is an
+integral predicate, S2-free; the `hstep` hypothesis is where the carve's content sits). Expected
+footprint: `[propext, Classical.choice, Quot.sound]` + `hstep` hyp (no `monomial_rlct` — the carve route
+is S2-free per RouteMSchurFiring's header). D1 (`minAdm`) is pure `ℕ`/`inf'` arithmetic — CLEAN-three.
