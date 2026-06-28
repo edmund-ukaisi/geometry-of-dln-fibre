@@ -19,6 +19,54 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 chart-produced determinant residual support wrapper
+
+The endpoint-transported explicit Case 2 selected-entry determinant-chart
+residual theorem now has a chart-produced-measure wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_chartProducedMeasure
+```
+
+The theorem fixes the target measure to
+
+```text
+Measure.map chart weightedBox
+```
+
+where `chart y = topologyTuple (retainedData y)` and `weightedBox` is the
+selected-entry signed-box measure with density
+`SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext`.  It proves the
+determinant-chart restriction identity internally:
+
+```text
+(Measure.map chart weightedBox).restrict topologyTupleDetChartSet =
+  Measure.map chart weightedBox.
+```
+
+The proof uses pointwise determinant-chart membership of the endpoint-
+transported Case 2 selected-entry datum, measurability of the open determinant
+chart set, `withDensity_absolutelyContinuous`, `ae_map_iff`, and
+`Measure.restrict_eq_self_of_ae_mem`, then applies the existing supplied-map
+Case 2 determinant residual theorem.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-det-chart-selected-entry-chart-produced-residual.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-det-chart-selected-entry-chart-produced-residual.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct axiom
+probe passed; the new declaration reports only `[propext, Classical.choice,
+Quot.sound]`.
+
+This is deliberately not a theorem about arbitrary `m`, Haar measure, the full
+determinant chart image, external source-prior transport, source-rank coverage,
+normal crossings, pole order, or RLCT.  The arbitrary-measure theorem keeps its
+determinant-chart pushforward identity hypothesis.
+
 ## Latest controller decision - 2026-06-28, direct-chart positive-set measurability hardening
 
 The direct retained-passive p.13 residual positive set is now measurable on
@@ -153,7 +201,7 @@ It consumes a selected-entry center/pivot, positive radii, `0 <= t`, the sharp
 selected-entry exponent condition
 
 ```text
-2 * t < ((center.erase pivot.1).card : R) + 1,
+2 * t < ((center.erase pivot.1).card : ℝ) + 1,
 ```
 
 a.e. measurability of the determinant-chart map on the signed box, a supplied

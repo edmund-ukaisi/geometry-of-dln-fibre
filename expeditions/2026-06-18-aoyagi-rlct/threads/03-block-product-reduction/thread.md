@@ -14687,3 +14687,43 @@ This is still a chart-produced source-measure theorem.  It does not construct
 endpoint equivalences, prove endpoint provenance, identify an original prior or
 external source measure, compare Jacobians for such a prior, prove source-rank
 coverage, prove normal crossings, compute pole order, or extract RLCT.
+
+## 2026-06-28 A2 Case 2 chart-produced determinant residual support wrapper
+
+Reproduction:
+`reproduction-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+Statement card:
+`statement-card-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+Review:
+`review-a2-case2-det-chart-selected-entry-chart-produced-residual.md`, PASS by
+xhigh read-only checker `Volta`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_chartProducedMeasure
+```
+
+For the endpoint-transported explicit Case 2 selected-entry retained-passive
+chart, the selected-entry weighted signed-box pushforward measure is supported
+on `topologyTupleDetChartSet`.  The proof obtains pointwise determinant-chart
+membership from the endpoint-transported Case 2 datum, converts it through
+`topologyTuple`, proves the pushed-forward measure restricts to itself on the
+determinant chart, and then applies the existing supplied-map residual theorem.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probe passed; the
+new declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is a chart-produced determinant-measure theorem only.  It does not remove
+the supplied-map hypothesis from the arbitrary-measure theorem, identify Haar
+measure or an external source prior, prove full determinant-chart coverage,
+source-rank coverage, normal crossings, pole order, or RLCT.

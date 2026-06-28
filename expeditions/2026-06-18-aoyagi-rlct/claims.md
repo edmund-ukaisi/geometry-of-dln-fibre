@@ -140,6 +140,21 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 chart-produced determinant residual
+  support wrapper, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_chartProducedMeasure`.
+  For the endpoint-transported explicit Case 2 selected-entry retained-passive
+  chart, the selected-entry weighted signed-box pushforward measure is
+  supported on `topologyTupleDetChartSet`; hence the existing supplied-map Case
+  2 determinant residual theorem applies with the target measure fixed to that
+  chart-produced measure.  The proof uses endpoint-transport determinant-chart
+  membership, `topologyTuple`, open determinant-chart measurability,
+  `withDensity_absolutelyContinuous`, `ae_map_iff`, and
+  `Measure.restrict_eq_self_of_ae_mem`.  This does not remove the supplied-map
+  hypothesis from the arbitrary-measure theorem, identify Haar measure or an
+  external source prior, prove full determinant-chart coverage, prove
+  source-rank coverage, prove normal crossings, compute pole order, or extract
+  RLCT.
 - **Current status addendum, retained-passive direct source-chart
   inverse-Jacobian measure, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian`.

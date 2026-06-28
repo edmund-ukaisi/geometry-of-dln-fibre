@@ -48,6 +48,57 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Chart-Produced Determinant Residual Support Wrapper
+
+The endpoint-transported explicit Case 2 selected-entry determinant-chart
+residual theorem now has a no-supplied-map chart-produced wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_chartProducedMeasure
+```
+
+It sets
+
+```text
+targetMeasure =
+  Measure.map chart
+    (signedBox.withDensity
+      (fun y => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)))
+```
+
+and proves the local support identity
+
+```text
+targetMeasure.restrict topologyTupleDetChartSet = targetMeasure.
+```
+
+This uses `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart`
+to show `chart y` lies in the retained-passive determinant chart for every
+selected-entry coordinate vector, `isOpen_topologyTupleDetChartSet.measurableSet`
+for the target event, `withDensity_absolutelyContinuous` to transfer
+a.e. measurability from the signed box to the weighted box, and
+`ae_map_iff` plus `Measure.restrict_eq_self_of_ae_mem`.
+
+The result then applies the existing supplied-map theorem.  Therefore it proves
+residual a.e. positivity and finite negative-power residual integral for the
+chart-produced determinant measure only.  It does not prove the arbitrary-
+measure pushforward hypothesis, Haar/source-prior transport, full
+determinant-chart image coverage, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-det-chart-selected-entry-chart-produced-residual.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct axiom
+probe passed; the declaration reports only `[propext, Classical.choice,
+Quot.sound]`.
+
 ## Latest A2 Direct-Chart Positive-Set Measurability Hardening
 
 The retained-passive direct-chart residual positive set is now proved
@@ -253,7 +304,7 @@ through `ae_map_iff` and `lintegral_map_le`, yielding:
 under `0 <= t`, positive radii, and
 
 ```text
-2 * t < ((center.erase pivot.1).card : R) + 1.
+2 * t < ((center.erase pivot.1).card : ℝ) + 1.
 ```
 
 Reproduction:
