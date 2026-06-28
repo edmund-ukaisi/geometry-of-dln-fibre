@@ -18,6 +18,32 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive formal-density change of variables
+
+Lean now has a retained-passive formal/product-density specialization of the
+raw-order change-of-variables theorem in
+`RetainedPassiveCoordinatesJacobianMeasure.lean`:
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_zeroTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_zeroTail
+```
+
+These theorems replace the abstract `topologyTupleEdgeRawOrderFDerivAbsDet`
+density a.e. on the determinant chart by the formal determinant, or by its
+solved-`A1` product formula, then reuse the existing retained-passive
+change-of-variables theorem.
+
+Focused build of the new module passed.  The top-level `DLNFibre` build also
+passed, with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and code-only forbidden-marker search passed.
+
+Nonclaims: no original-source prior, no signed-box source-density
+identification, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 full target normaliser determinant bridge
 
 Lean now has the full raw-tuple target-normaliser equality in the zero-tail and

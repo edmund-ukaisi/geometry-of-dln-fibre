@@ -511,3 +511,4 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
 -- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
 import DLNFibre.Core.FibreBundleHeadline
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure

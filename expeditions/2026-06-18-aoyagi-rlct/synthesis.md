@@ -48,6 +48,43 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Formal-Density Change Of Variables
+
+`RetainedPassiveCoordinatesJacobianMeasure.lean` is now a leaf bridge importing
+the retained-passive measure theorem and the new determinant bridge.  It proves
+that the raw-order change of variables can be stated with the formal
+determinant density and with the solved-`A1` product density:
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_zeroTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_zeroTail
+```
+
+The proof does not redo measure transport.  On `S = topologyTupleDetChartSet`,
+the previous determinant checkpoint gives
+
+```text
+topologyTupleEdgeRawOrderFDerivAbsDet z =
+  retainedPassiveFormalRawOrderJacobianAbsDetAt z
+```
+
+or the explicit product formula, depending on the theorem.  Since the source
+measure is restricted to `S`, `withDensity_congr_ae` replaces the density in
+the already landed change-of-variables theorem.  This produces a formal/product
+density statement without changing the underlying chart map.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure`
+passed, and the top-level `DLNFibre` build passed with only pre-existing
+warning noise.  `scripts/sorries`, `git diff --check`, and code-only
+forbidden-marker search on the new file passed.
+
+Nonclaims: no original-source prior, no signed-box source-density
+identification, no normal crossings, no pole order, and no RLCT.  Zero-tail and
+positive-tail cases remain separate.
+
 ## Latest A2 Full Target Normaliser Determinant Bridge
 
 The retained-passive target-side normaliser after the edge-pair, `A1passive`,

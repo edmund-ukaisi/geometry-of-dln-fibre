@@ -19,6 +19,40 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive formal-density change of variables
+
+The retained-passive raw-order change-of-variables theorem now has a leaf
+specialization replacing the abstract forward density `|det D raw|` by the
+formal determinant density and by the solved-`A1` product density.  New Lean
+file:
+
+```text
+RetainedPassiveCoordinatesJacobianMeasure.lean
+```
+
+New Lean names:
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart_zeroTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_posTail
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_zeroTail
+```
+
+The proof is an a.e. density replacement under `m.restrict S`, using the
+zero-tail or positive-tail determinant bridge from the previous checkpoint and
+the existing retained-passive measure theorem with abstract
+`topologyTupleEdgeRawOrderFDerivAbsDet` density.
+
+Focused build of the new module passed, and the top-level `DLNFibre` build
+passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and the new-file forbidden-marker search passed.
+
+This still does not construct an original-source prior, prove signed-box
+source-density identification, normal crossings, pole order, or RLCT.  The
+zero-tail and positive-tail theorems remain separate.
+
 ## Latest controller decision - 2026-06-28, full target normaliser determinant bridge
 
 The retained-passive target normaliser is now packaged as full raw-tuple
