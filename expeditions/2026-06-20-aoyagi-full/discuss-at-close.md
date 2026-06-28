@@ -1288,3 +1288,26 @@ done/in-flight. This item is the four-research-gate scope decision — the centr
   (piece-by-piece, as each leg lands), and landing on `dev` = a wholesale lineage→dev PR = an operator promotion (like
   dev→master), operator-gated. The R1-UPPER #143 Phase-1 (the gated headline) is DONE on the lineage; its dev-merge is part
   of that eventual promotion, not a separate tide task.
+
+### Item 60 — The L2 bridge sub-3 frame-design gap: "9 helpers = mechanical instantiation" was an over-claim; the framed reg-energy is not move-invariant under the B-normalizing frame (2026-06-28)
+genm-l2subs banked 9 axiom-clean helpers decomposing both L2 S6 subs and reported "the entire mathematical content is
+banked; only mechanical cast/reindex instantiation remains." The continuation genm-l2fin (with a numeric witness +
+decorrelated Codex xhigh + a cross-check against the original E2 certificate) found this was an OVER-CLAIM: sub-3 has a
+real GEOMETRIC gap. `deepestEFull` reads the FRAMED product's reg blocks; the joint move's framed {12} block
+= (1 − p11)·ΔY·d' (p11 = reindex(endpointP0).toBlocks₁₁) is zero ONLY if the frame is UNIPOTENT, but the producer's frame
+is B-NORMALIZING (p11 = ⅟A11 ≠ 1) — and unipotency conflicts with B-normalization (hS3b needs ⅟A11). The original cert
+verified E2 on the RAW product; E2 holds raw, not framed-with-general-Pf. So the framed reg energy is not move-invariant
+as scoped, and closing sub-3 needs a frame-design FIX, not cast bookkeeping.
+
+**Two things for the operator:**
+1. **The discipline worked (the headline this validates):** the kill-condition caught the hole BEFORE a wasted ~150-LoC
+   rebuild on a false target. The "complete toolkit / mechanical instantiation" framing is exactly the *visible-progress
+   raced ahead of solid progress* trap the disposition warns about — a confident headline that travelled while a hole
+   remained. The 9 helpers ARE real (clean-three); the over-claim was about what *remained*.
+2. **L2 scope is longer than "9 helpers done" suggested.** sub-3 needs one of {frame-aware move / conjugate the move by
+   the frame / two-frame split / read raw} — a bounded-but-deep psiSplitRawL2Core/move rebuild, NOT a research wall.
+   A decorrelated pen-and-paper adjudication (`genm-frameadj`) is in flight to pick the resolution + the minimal spec;
+   the controller's prior is that reg + singular must be co-framed (so the framed reading is correct and "read raw" is
+   disfavored). Once the resolution lands, the rebuild + close is bounded. This shifts the L2-bridge ETA out by one
+   design-resolution + rebuild cycle; flagging so the bounded-result-vs-walls scope picture (Item 59) stays honest:
+   L2 is still bounded, just not as near-done as the prior tick implied.
