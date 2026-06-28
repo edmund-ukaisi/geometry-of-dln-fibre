@@ -2708,6 +2708,27 @@ The per-factor block readback (the `l2A0/Y0/Z1/A1/Y1/T1` reads ARE the `reindex 
 is the genuinely-new content; it rests on `reindex_fromBlocks_reads_eq_deviation` + the `1+readX`
 deepest-normalization absorbing the threshold corner. -/
 
+/-- **Layer-deviation reindex bridge** (the per-factor readback's foundation, ANY layer `s`). The
+reindexed deviation layer `reindex (rThr s.castSucc) (rThr s.succ) ((decode (w − w0)) s)` reads off as
+the `fromBlocks` of the four reads `(readX, readY, readZ, core)` evaluated at the deepest-split point
+`deepestSplit w0 w`. This is `reindex_fromBlocks_reads_eq_deviation` cast to the FORWARD
+(reindex-of-deviation) direction. -/
+theorem reindex_decodeDev_eq_fromBlocks_reads (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (w0 w : Fin (flatDim H) → ℝ) (s : Fin L) :
+    Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (((paramsEquivFlat H).symm (w - w0)) s)
+      = Matrix.fromBlocks
+          (readX H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          (readY H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          (readZ H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          ((paramsEquivFlat (deepestM H r)).symm (deepestSplit H r hr hL w0 w).2.1 s) := by
+  -- Invert `reindex_fromBlocks_reads_eq_deviation` (it states `reindex.symm (fromBlocks reads) = dev`).
+  -- Apply `reindex (rThr) (rThr)` to BOTH sides of `h`; the LHS round-trips to `fromBlocks`.
+  have h := reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w s
+  rw [← h]
+  rw [← Matrix.reindex_symm, Equiv.apply_symm_apply]
+
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
 -- inner ball (where coreAbsorb = honest Schur). [HARDEST: LDU + the framed Score dictionary]
 
