@@ -290,4 +290,163 @@ theorem innerSGenP_eq_norm (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (c'
   congr 2
   exact frobSq_rmatMul_permGP (RmatG r pivot y) S σr σc
 
+/-! ## The per-`(M,v)` carve bound (the heart, `Fin p`; 4 → p of `innerSGenCarve_le`) -/
+
+/-- **The per-`(M,v)` carve bound at output width `p` (the firing heart, `M` FREE).** For the carved
+angular matrix `R = RmatGnorm (zEG.symm (M,v))` (pivot `1`, `|entries| ≤ 1` when `M,v ∈ [−1,1]`),
+`p/2 < c'`, the inner-`S` integral over `matBox r p T` is bounded by `ofReal(c₀^{−c'})` times the per-`M`
+resolved slice (radius `K = max 1 (r·T)`, shift `Sh = bgShiftG v`): N2b (`j = 1`) lower-bounds
+`frobSq(R·S)` by `c₀·(frobSq row0 + frobSq(Sc·S_bot))` (`ofReal_rpow_le_const_mul`); the top-row bridge
+(`frobSqTopRowP_eq_shearP`) + `stepShearP_r` peel the `Fin p` Morse spectator (box enlarged to `K`); the
+carve-`Sc` readback (`ScCarve_eq`) turns `Sc` into `(fun a b => M(a,b) − bgShiftG v a b)`. `M` stays free
+so the outer `∫_M` fires in the assembling theorem. The constant `c₀` is the `(p := p)` N2b `.choose`. -/
+theorem innerSGenCarveP_le (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (hp : 0 < p) (c' : ℝ)
+    (hcp : (p : ℝ) / 2 < c')
+    (pivot : Fin (r * r)) (T : ℝ) (hT : 0 < T)
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ)
+    (hM : M ∈ Set.univ.pi (fun _ : (Fin (r - 1) × Fin (r - 1)) => Set.Icc (-1 : ℝ) 1))
+    (hv : v ∈ Set.univ.pi (fun _ : (Fin (r - 1) ⊕ Fin (r - 1)) => Set.Icc (-1 : ℝ) 1)) :
+    (∫⁻ S in matBox r p T,
+        ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr pivot ((zEG r N hN hr pivot).symm (M, v))) S))
+          ^ (-c')))
+      ≤ ENNReal.ofReal
+          (((schur_minorPivot_split (r := r) (p := p) 1 (by omega)).choose) ^ (-c'))
+        * (∫⁻ S_bot in matBox (r - 1) p (max 1 ((r : ℝ) * T)),
+            ∫⁻ T' in morseBox p (max 1 ((r : ℝ) * T)),
+              ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                + frobSq (rmatMul (fun a b => M (a, b) - bgShiftG (r - 1) v a b) S_bot)) ^ (-c'))) := by
+  classical
+  have hc0 : 0 < c' := lt_trans (by positivity) hcp
+  set z := (zEG r N hN hr pivot).symm (M, v) with hzdef
+  set R : Matrix (Fin r) (Fin r) ℝ := Matrix.of (RmatGnorm r N hN hr pivot z) with hRdef
+  have hrm1 : (1 : ℕ) ≤ r := by omega
+  have hzbox : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1) := by
+    intro k _
+    rw [hzdef, zEG_symm_apply]
+    rcases (zσG r N hN hr pivot k) with s | s
+    · exact hM s (Set.mem_univ s)
+    · exact hv s (Set.mem_univ s)
+  have hpiv : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := RmatGnorm_pivot r N hN hr pivot z
+  have hbd : ∀ a b, |R a b| ≤ 1 := by
+    intro a b
+    by_cases hab : a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩
+    · rw [hab.1, hab.2, hpiv]; norm_num
+    · exact RmatGnorm_offpivot_le r N hN hr pivot z hzbox a b hab
+  set c₀ := (schur_minorPivot_split (r := r) (p := p) 1 (by omega)).choose with hc₀def
+  obtain ⟨c₁, hc₀, hc₁, hN2b⟩ := (schur_minorPivot_split (r := r) (p := p) 1 hrm1).choose_spec
+  set M11 : Matrix (Fin 1) (Fin 1) ℝ :=
+    Matrix.of (fun a b : Fin 1 => R ⟨a, lt_of_lt_of_le a.2 hrm1⟩ ⟨b, lt_of_lt_of_le b.2 hrm1⟩) with hM11
+  have hM11_one : M11 = 1 := by
+    ext a b; fin_cases a; fin_cases b
+    simp only [hM11, Matrix.of_apply, Matrix.one_apply_eq]
+    exact hpiv
+  have hpivdet : M11.det = 1 := by rw [hM11_one]; simp
+  have hpivot : ∀ I J : Fin 1 → Fin r, |(R.submatrix I J).det| ≤ |M11.det| := by
+    intro I J
+    rw [Matrix.det_fin_one, hpivdet, abs_one, Matrix.submatrix_apply]
+    exact hbd (I 0) (J 0)
+  have hne : M11.det ≠ 0 := by rw [hpivdet]; norm_num
+  obtain ⟨Sc, hSceq, _hdet, _, _⟩ := hN2b R (fun _ _ => 0) hbd hpivot hne
+  set X : (Fin r → Fin p → ℝ) → ℝ := fun S =>
+    frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, lt_of_lt_of_le a.2 hrm1⟩)
+      + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩)) with hXdef
+  have hlow : ∀ S, c₀ * X S ≤ frobSq (rmatMul (fun a b => R a b) S) := by
+    intro S
+    obtain ⟨Sc', hSceq', _, hlo, _⟩ := hN2b R S hbd hpivot hne
+    have hSceq2 : Sc' = Sc := by rw [hSceq', ← hSceq]
+    subst hSceq2
+    simpa only [hXdef] using hlo
+  have hupp : ∀ S, frobSq (rmatMul (fun a b => R a b) S) ≤ c₁ * X S := by
+    intro S
+    obtain ⟨Sc', hSceq', _, _, hup⟩ := hN2b R S hbd hpivot hne
+    have hSceq2 : Sc' = Sc := by rw [hSceq', ← hSceq]
+    subst hSceq2
+    simpa only [hXdef] using hup
+  have hXnn : ∀ S, 0 ≤ X S := fun S => by
+    rw [hXdef]; exact add_nonneg (frobSq_nonneg _) (frobSq_nonneg _)
+  have hpt : ∀ S, ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c'))
+      ≤ ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal ((X S) ^ (-c')) := by
+    intro S
+    refine ofReal_rpow_le_const_mul (X S) (frobSq (rmatMul (fun a b => R a b) S)) c₀ c'
+      hc0 hc₀ (hXnn S) (frobSq_nonneg _) (hlow S) ?_
+    intro hX0
+    have := hupp S
+    rw [hX0, mul_zero] at this
+    exact le_antisymm this (frobSq_nonneg _)
+  have hM11_one' : (Matrix.of (fun a b : Fin 1 =>
+      R ⟨a, lt_of_lt_of_le a.2 hrm1⟩ ⟨b, lt_of_lt_of_le b.2 hrm1⟩)) = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+    ext a b; fin_cases a; fin_cases b
+    simp only [Matrix.of_apply, Matrix.one_apply_eq]; exact hpiv
+  have hM11inv : ∀ s t : Fin 1,
+      (Matrix.of (fun a b : Fin 1 => R ⟨a, lt_of_lt_of_le a.2 hrm1⟩ ⟨b, lt_of_lt_of_le b.2 hrm1⟩))⁻¹ s t
+        = if s = t then 1 else 0 := by
+    intro s t; rw [hM11_one']; simp [Matrix.one_apply]
+  have hSc_carve : (fun a b => Sc a b) = fun a b : Fin (r - 1) => M (a, b) - bgShiftG (r - 1) v a b := by
+    funext a b
+    rw [hSceq]
+    simp only [Matrix.sub_apply, Matrix.of_apply, Matrix.mul_apply, hM11inv]
+    simp only [Finset.univ_unique, Fin.default_eq_zero, Finset.sum_singleton, if_true,
+      mul_one, mul_ite, mul_zero]
+    simp only [hRdef, Matrix.of_apply]
+    have hcarve := ScCarve_eq r N hN hr pivot M v a b
+    have h0idx : (⟨(0 : Fin 1), lt_of_lt_of_le (0 : Fin 1).2 hrm1⟩ : Fin r) = ⟨0, by omega⟩ := rfl
+    rw [h0idx] at *
+    convert hcarve using 2
+  set K := max 1 ((r : ℝ) * T) with hKdef
+  have hKpos : 0 < K := lt_of_lt_of_le zero_lt_one (le_max_left _ _)
+  set bcoup : Fin (r - 1) → ℝ := fun a => R ⟨0, by omega⟩ ⟨1 + (a : ℕ), by omega⟩ with hbcoup
+  have hbcoup_le : ∀ a, |bcoup a| ≤ 1 := fun a => hbd _ _
+  calc (∫⁻ S in matBox r p T,
+          ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c')))
+      ≤ ∫⁻ S in matBox r p T, ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal ((X S) ^ (-c')) :=
+        lintegral_mono hpt
+    _ = ENNReal.ofReal (c₀ ^ (-c'))
+          * ∫⁻ S in matBox r p T, ENNReal.ofReal ((X S) ^ (-c')) := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+    _ ≤ ENNReal.ofReal (c₀ ^ (-c'))
+          * (∫⁻ S_bot in matBox (r - 1) p K, ∫⁻ T' in morseBox p K,
+              ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                + frobSq (rmatMul (fun a b => M (a, b) - bgShiftG (r - 1) v a b) S_bot)) ^ (-c'))) := by
+        refine mul_le_mul_left' ?_ _
+        have hpiv' : (fun x y => R x y) ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := hpiv
+        have hXrw : ∀ S, X S
+            = (∑ q, (S ⟨0, by omega⟩ q
+                + ∑ a, bcoup a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+              + frobSq (rmatMul (fun a b => Sc a b) (fun a q => S ⟨1 + (a : ℕ), by omega⟩ q)) := by
+          intro S
+          simp only [hXdef]
+          rw [frobSqTopRowP_eq_shearP r p hr (fun x y => R x y) hpiv' S]
+        calc (∫⁻ S in matBox r p T, ENNReal.ofReal ((X S) ^ (-c')))
+            = ∫⁻ S in matBox r p T,
+                ENNReal.ofReal (((∑ q, (S ⟨0, by omega⟩ q
+                    + ∑ a, bcoup a * S ⟨1 + (a : ℕ), by omega⟩ q) ^ 2)
+                  + frobSq (rmatMul (fun a b => Sc a b)
+                      (fun a q => S ⟨1 + (a : ℕ), by omega⟩ q))) ^ (-c')) := by
+              refine lintegral_congr (fun S => ?_); rw [hXrw S]
+          _ ≤ ∫⁻ S_bot in matBox (r - 1) p T, ∫⁻ T' in morseBox p ((r : ℕ) * T),
+                ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                  + frobSq (rmatMul (fun a b => Sc a b) S_bot)) ^ (-c')) :=
+              stepShearP_r r p hr bcoup hbcoup_le (Matrix.of (fun a b => Sc a b)) T hT c'
+          _ ≤ ∫⁻ S_bot in matBox (r - 1) p K, ∫⁻ T' in morseBox p K,
+                ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                  + frobSq (rmatMul (fun a b => M (a, b) - bgShiftG (r - 1) v a b) S_bot)) ^ (-c')) := by
+              have hSsub : matBox (r - 1) p T ⊆ matBox (r - 1) p K := by
+                intro Y hY i k; have := Set.mem_Icc.1 (hY i k); rw [Set.mem_Icc]
+                have hTK : T ≤ K := le_trans (le_mul_of_one_le_left hT.le
+                  (by exact_mod_cast (show (1:ℕ) ≤ r by omega))) (le_max_right _ _)
+                constructor <;> [linarith [this.1]; linarith [this.2]]
+              have hTsub : morseBox p ((r : ℕ) * T) ⊆ morseBox p K := by
+                intro Y hY
+                simp only [morseBox, Set.mem_pi, Set.mem_univ, true_implies] at hY ⊢
+                intro i
+                have hrTK : ((r : ℕ) : ℝ) * T ≤ K := le_max_right _ _
+                have := Set.mem_Icc.1 (hY i); rw [Set.mem_Icc]
+                constructor <;> [linarith [this.1]; linarith [this.2]]
+              refine le_trans (lintegral_mono_set hSsub) ?_
+              refine lintegral_mono (fun S_bot => ?_)
+              refine le_trans (lintegral_mono_set hTsub) ?_
+              refine lintegral_mono (fun T' => ?_)
+              rw [show (fun a b => Sc a b) = (fun a b : Fin (r - 1) => M (a, b) - bgShiftG (r - 1) v a b)
+                from hSc_carve]
+
 end DLNFibre.DLN.RLCT
