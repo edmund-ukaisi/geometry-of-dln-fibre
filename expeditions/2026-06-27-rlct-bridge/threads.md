@@ -21,7 +21,7 @@ Wave A (live):
 | 04 | lean-formaliser (tide, RESUMED) | **Foundation** — honest interface (cite `rlct=½·codim_ℝ`) + honest `codim_ℝ` def + connector (`loss=Σres²`, real zero-set=fibre) + compose with T as named hole + re-derive downstream + delete trap docstring. Design-proposal-first (codim_ℝ def + T-feasibility). | in-progress |
 | 06 | lean-formaliser (tide) | **R5 bundle completion** — projection compatibility + overlap-gluing → `Flat π` over `rankROpen`. Pure L&R geometry, independent. | in-progress |
 
-| 07 | pen-and-paper (Wave B recon) | **Transfer-T route** — scope the proof of `codimRepCanonical(ℝ)(fibre ℝ B)=codimRepCanonical(K)(fibre K)` via `realizerD` smooth rational points; Mathlib inventory; feasibility verdict (bounded tide / big build / honest cited fallback) | in-progress |
+| 07 | pen-and-paper (Wave B recon) | **Transfer-T route** — feasibility of proving T at v4.29 | closed — VERDICT (iii): **T is CITED** (TRUE but not bounded-provable; no real radical/semialg dim/vanishingIdeal base-change). Sharpening: cite atomic **T′** (dim_ℝ=dim_K) + derive codim via banked catenary. Full proof ROADMAPPED (future `rlct-runway-target` expedition). |
 
 Gated (Wave B, after 04 green + 07 verdict): **T** transfer proof (the geometric wall); **compose** →
 `rlct=½·C`, retire monolith + wire/harden the banked `C/θ` engine (three forms + perm invariance + θ, all

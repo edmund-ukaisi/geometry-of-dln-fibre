@@ -256,3 +256,30 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     FEASIBILITY VERDICT (bounded tide / big build / honest cited fallback). Gated on 04's pinned def (done),
     not on 04's green — runs in parallel. **T is the expedition CRUX.**
   - 3 fronts live: 04 finalizing, 06/R5 bundle, 07 T-route. Holding for their reports.
+
+- **tick 9 (T-route VERDICT — T is CITED; the crux settled, 2026-06-28):** thread 07 closed. **Verdict
+  (iii): T is TRUE but NOT bounded-provable at Mathlib v4.29** — `codim_ℝ = height(vanishingIdeal_ℝ) =
+  height(REAL RADICAL)`; v4.29 has NO real radical / real-Nullstellensatz / semialgebraic dim /
+  `vanishingIdeal` base-change (`IsRealClosed` is purely field-theoretic). So T is a **named CITED field** —
+  fidelity to L&R/Aoyagi's real-analytic-over-ℝ resolution, not a retreat. This SUPERSEDES tick 8's "T =
+  to-be-proved Wave-B hole" — T is cited, not a hole; Wave B (a T-PROOF tide) is cancelled for this
+  expedition.
+  - **Sharpening (taken):** the catenary `codim + varietyDim = card` is field-generic (banked
+    `RadicalCatenary.codimRepCanonical_add_varietyDim_eq_card_of_nonempty`, card field-independent) ⟹
+    **T ⟺ T′** with both fibres nonempty. So cite the ATOMIC **T′: `varietyDim_ℝ(fibre ℝ B) =
+    varietyDim_K(fibre K)`** (real dim = complex dim — the real-radical-density fact) and **PROVE**
+    `codim_ℝ=codim_K` from T′ + the banked catenary. Cited content shrinks to the irreducible fact; the
+    codim bridge is proved. (Fallback: cite codim_ℝ=codim_K directly.)
+  - **T confirmed TRUE** (exact-rational Jacobian, not float): `realizerD` smooth full-dim at (2,2,2) r=0
+    and (2,3,2) r=1; disjoint-interval-support lands it in a single smooth component (other 0/1 points sit
+    at component crossings, Jrank≠codim). Banked as soundness of the citation + seed for the future proof.
+  - **Cited boundary (final, honest):** {`cited_watanabe_upper` (analytic, universal), `cited_aoyagi_lower`
+    (analytic, DLN/Aoyagi), **T′** (geometric real↔complex dim)} — three named atomic cited facts, each
+    sourced + caveated. Everything else PROVED: catenary, codim_K=C, connector, the C/θ engine, R5.
+  - **ROADMAP (future expedition — the `rlct-runway-target` wall):** PROVE T′. Scout's 4-step ladder:
+    varietyDim↔height [banked] → "smooth full-dim real pt ⟹ real dim = complex dim" (regular-local-dim over
+    ℝ + real-radical density) → "`realizerD` smooth full-dim per top component, all d,r" (generalize the
+    Jacobian-rank certificate; disjoint-support ⟹ single component) → glue per-component. **ℚ-unirationality
+    of the orbit/sweep = the clean sufficient hypothesis.** NOT this blind/cite expedition.
+  - 04 messaged to wire T′ as the cited field (T′+catenary preferred). Task #5 reframed (cited-wiring;
+    proof roadmapped). Holding for 04 finalize + 06/R5.
