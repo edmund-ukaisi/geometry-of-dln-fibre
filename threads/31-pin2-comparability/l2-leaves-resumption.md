@@ -3,6 +3,24 @@
 Bridge file: `lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeL2.lean`.
 Branch `genm-l2cle` (off `origin/genm-l2-wt`). Build: `scripts/lb DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2` from the worktree `lean/`.
 
+## STATUS (2026-06-28): S4 CLOSED — bridge has 2 sorries (S2 + S6 only)
+
+**S4 (`hasStrictFDerivAt_psiSplitDeltaL2_zero`) is DONE** (commit a416c5cc), axiom-clean. The full
+O(read²) chain (S4a–S4e, ~530 LoC) is in the bridge: matrix-entry strict-fderiv-0 helpers, ContDiffAt
+det/adj/inv variants, W⁻¹-1 deriv-0, composites K/R/W/S1/Br + normalizations, the core payload
+(`hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTuple_zero`, flat-codomain descent), the gauge payload
+(`hasStrictFDerivAt_l2GaugeΔ_zero`), and the CLE-reduction (`hasStrictFDerivAt_psiSplitDeltaL2Core_zero`).
+
+**S2** (`contDiffAt_psiSplitDeltaL2_of_mem_tsupport`) — NOW LARGELY IN REACH: reuse the same payload
+decomposition (`psiSplitDeltaL2Core_eq_payload`) + `regGaugeSlotCLE.contDiff`/`paramsEquivFlatCLE.contDiff`
++ `contDiffAt_pi'`; the ContDiffAt of `l2T1p`/`l2Y1p` entries reuses the landed composite ContDiffAt
+lemmas (S4c/S4d) BUT at a general support point (not 0) — so it needs the `det≠0` conditions there. The
+`cutoffBumpSplit` RADIX re-key (det(1+readX), det l2P00, det l2W all ≠0 on the support) is the one design
+piece; the ContDiffAt-inv `_at` variant is landed. Mirror the S4d composite-ContDiffAt lemmas with the
+hypotheses at the support point `q` instead of `0`.
+
+**S6** (`comp_identity_L2`) — the genuine geometric leaf, unstarted (LDU energy wiring; see below).
+
 ## LANDED this tide (sorry-free, committed @355515d1)
 
 **The #138 brick already existed** — `regGaugeSlotCLE` + `contDiff_regGaugeSlotEquiv` are in
