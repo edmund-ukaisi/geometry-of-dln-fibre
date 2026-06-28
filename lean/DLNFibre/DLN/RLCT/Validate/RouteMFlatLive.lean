@@ -345,20 +345,26 @@ theorem readE_wInt_pivot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
 /-- **The live decoder at `rfin = 0` IS the dead-leaf structured decoder.** Field-wise: Bmat/Nblk/Wblk/Rmat
 are definitional copies; the `Rfin` field's `h ▸ 0` transported-zero equals `genBlkFlatStruct`'s `0`.
 
-SORRY (a well-diagnosed micro-cast ceiling — the recurring `h ▸ 0` Rfin transport, NOT math): the only
-non-`rfl` field is `Rfin`, where `(genBlkFlatLive … 0 …).Rfin s = (if h : s = L then h ▸ (0:Matrix …)
-else 0)` and `genBlkFlatStruct`'s is `0`. The goal `h ▸ (0:Matrix (Fin (Text L)) (Fin (Wext L))) = 0`
-is TRIVIALLY true and DOES close as a bare goal (`split; · rename_i h; subst h; rfl; · rfl`, verified in a
-standalone probe). But threading it through the structure-projection `.Rfin s` defeats the motive: `change`/
-`show` to the dite fails "invalid ▸, expected result type of cast", and `unfold`+`split` can't expose the
-dite under the projection. Thrashed >6× across turns on this exact micro-wall; deferred per cast-discipline.
-FIX (fresh eye): either restate `genBlkFlatLive`'s `Rfin` field WITHOUT the `h ▸` cast (e.g. via an
-`Fin.cast`-free leaf reader, or `fun k => if k = L then rfin else 0` with a width-eq hypothesis), or an
-`eqRec_zero`/`@[ext] GenBlk` lemma. The load-bearing `genBlkFlatLiveR1_wInt_Rmat` (pivot agreement) is PROVEN. -/
+The `Rfin` `h ▸ 0` transported-zero is closed by `simp only [genBlkFlatLive]` (exposing the dite under the
+projection) + `split` + `subst h; rfl` — the `simp only` is the load-bearing step (`show`/`change`/`unfold`
+all fail the `▸` motive; `simp only [genBlkFlatLive]` reduces the projection cleanly). -/
 theorem genBlkFlatLive_zero_eq (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (x : Fin (routeMAmbient M) → ℝ) :
     genBlkFlatLive M t ha 0 x = genBlkFlatStruct M t ha x := by
-  sorry
+  have hRfin : (genBlkFlatLive M t ha 0 x).Rfin = (genBlkFlatStruct M t ha x).Rfin := by
+    funext s
+    rw [show (genBlkFlatStruct M t ha x).Rfin s = 0 from by cases s <;> rfl]
+    simp only [genBlkFlatLive]
+    split
+    · rename_i h; subst h; rfl
+    · rfl
+  -- the other four fields are definitional copies; assemble via the constructor injectivity
+  have heq : genBlkFlatLive M t ha 0 x
+      = GenBlk.mk (genBlkFlatStruct M t ha x).Bmat (genBlkFlatStruct M t ha x).Nblk
+          (genBlkFlatStruct M t ha x).Wblk (genBlkFlatStruct M t ha x).Rmat
+          (genBlkFlatStruct M t ha x).Rfin := by
+    rw [← hRfin]; rfl
+  rw [heq]
 
 /-- **The R1 decoder at `(wInt p, rfin = 0)` equals the dead-leaf structured decoder at `wInt p`.**
 Field-by-field: Bmat/Nblk/Wblk are the structured decoder's (unchanged); `Rfin = 0` on both; `Rmat`
@@ -380,25 +386,56 @@ theorem genBlkFlatLiveR1_wInt_Rmat (M : Fin (L + 1) → ℕ) (ha : StructAdm M (
     rw [dif_pos hk, readE_wInt_pivot_eq M ha k hk]
   · rw [Function.update_of_ne hs]; rfl
 
-/-- **The R1 interior witness** (the count-free `Ubound` input): a flat point where the R1 unit is
-nonzero, for an interior-drop `M` at its pivot `p* = k+1`. The R1 decoder at `(wInt, rfin=0)` agrees with
-the dead-leaf `genBlkFlatStruct` (Bmat/Nblk/Wblk identical; Rfin=0 both; Rmat agrees via
-`genBlkFlatLiveR1_wInt_Rmat` — the fixed pivot = `readE (wInt) p`), so `VvalGen` agrees and the dead-leaf
-`exists_achieverUfun_ne_zero_interior` gives the nonzero.
+/-- **The R1 decoder at `(wInt p, rfin = 0)` IS the dead-leaf structured decoder at `wInt p`.** Combines
+`genBlkFlatLive_zero_eq` (the `rfin=0` reduction: Bmat/Nblk/Wblk/Rfin) with `genBlkFlatLiveR1_wInt_Rmat`
+(the Rmat fixed-pivot = the structured `readE (wInt) p`). The R1 fixed pivot is invisible at `wInt`
+because `wInt`'s `readE` at `p` IS the same `(0,0)=1` indicator. -/
+theorem genBlkFlatLiveR1_wInt_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : ℕ) (hk : k < L)
+    (hp1 : Text M (tach M) (k + 1 + 1) ≤ Text M (tach M) (k + 1))
+    (hp2 : Text M (tach M) (k + 1 + 1) ≤ Wext M (k + 1)) :
+    genBlkFlatLiveR1 M (tach M) ha (k + 1) hp1 hp2 0 (wInt M ha (k + 1))
+      = genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1)) := by
+  have hbase : genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))
+      = genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1)) := genBlkFlatLive_zero_eq M (tach M) ha _
+  have heq : genBlkFlatLiveR1 M (tach M) ha (k + 1) hp1 hp2 0 (wInt M ha (k + 1))
+      = GenBlk.mk (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Bmat
+          (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Nblk
+          (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Wblk
+          (genBlkFlatLiveR1 M (tach M) ha (k + 1) hp1 hp2 0 (wInt M ha (k + 1))).Rmat
+          (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Rfin := rfl
+  rw [heq, genBlkFlatLiveR1_wInt_Rmat M ha k hk hp1 hp2,
+    show (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Bmat
+      = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Bmat from by rw [hbase],
+    show (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Nblk
+      = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Nblk from by rw [hbase],
+    show (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Wblk
+      = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Wblk from by rw [hbase],
+    show (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Rfin
+      = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Rfin from by rw [hbase]]
 
-SORRY (count-FREE; one targeted refactor): the final step needs the dead-leaf witness's nonzero AT THE
-SPECIFIC `wInt M ha p` (it currently returns `∃ w, achieverUfun w ≠ 0`, hiding `w = wInt M ha p`). Two
-clean closes (no new math): (i) refactor `exists_achieverUfun_ne_zero_interior` to expose
-`achieverUfun (wInt M ha p) ≠ 0` (its proof already establishes exactly this at the `hInt`-pivot `p`); or
-(ii) a `VvalGen`-congruence from the field-wise decoder agreement (`genBlkFlatLiveR1_wInt_Rmat` + Rfin=0 +
-Bmat/Nblk/Wblk rfl) avoiding the `GenBlk` structure-ext (which thrashed >4× on the `h ▸ 0` Rfin cast). The
-Rmat agreement (the load-bearing pivot fact) IS proven (`genBlkFlatLiveR1_wInt_Rmat`). -/
+/-- **The R1 interior witness** (the count-free `Ubound` input): a flat point where the R1 unit is
+nonzero, for an interior-drop `M`. The R1 decoder at `(wInt p, rfin=0)` IS the dead-leaf
+`genBlkFlatStruct` (`genBlkFlatLiveR1_wInt_eq`), so `UvalLiveR1 … 0 (wInt p) = achieverUfun (wInt p)`,
+nonzero by the dead-leaf `exists_achieverUfun_ne_zero_interior` — count-free (non-vanishing, not the
+`minAdm−1` degree). The pivot `p = k+1` is the interior-drop pivot (`interiorDrop_pivot_hyps`). -/
 theorem exists_UvalLiveR1_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hN : 0 < routeMAmbient M) (hInt : InteriorDrop M) (k : ℕ) (hk : k < L)
     (hp1 : Text M (tach M) (k + 1 + 1) ≤ Text M (tach M) (k + 1))
     (hp2 : Text M (tach M) (k + 1 + 1) ≤ Wext M (k + 1)) :
     ∃ w : Fin (routeMAmbient M) → ℝ,
       UvalLiveR1 M (tach M) (structAdm_tach M hL) hN (k + 1) hp1 hp2 (fun _ => 0) w ≠ 0 := by
+  refine ⟨wInt M (structAdm_tach M hL) (k + 1), ?_⟩
+  rw [UvalLiveR1, genBlkFlatLiveR1_wInt_eq M (structAdm_tach M hL) k hk hp1 hp2]
+  -- `VvalGen … (genBlkFlatStruct … wInt) = achieverUfun (wInt)` (definitional); nonzero by the dead-leaf
+  show achieverUfun M hL hN (wInt M (structAdm_tach M hL) (k + 1)) ≠ 0
+  -- SORRY (count-FREE; a mechanical body-extraction, NOT math): the dead-leaf
+  -- `exists_achieverUfun_ne_zero_interior` proves EXACTLY `achieverUfun (wInt M ha p) ≠ 0` at the
+  -- `hInt`-pivot `p` (its `refine ⟨wInt M ha p, ?_⟩` body), but returns it behind `∃ w`. Closing this
+  -- needs the dead-leaf body exposed as `achieverUfun_wInt_ne_zero` (a thin refactor of the banked
+  -- witness, controller-authorized option (i)) + aligning `k+1` to the `hInt`-pivot. The LOAD-BEARING
+  -- reduction (`genBlkFlatLiveR1_wInt_eq` — the R1 decoder at `(wInt,0)` IS the dead-leaf decoder) is
+  -- PROVEN above; all the hard casts (`genBlkFlatLive_zero_eq`, `genBlkFlatLiveR1_wInt_Rmat`,
+  -- `readE_wInt_pivot_eq`) are SOLVED. Only the existential-exposure remains.
   sorry
 
 end DLNFibre.DLN.RLCT
