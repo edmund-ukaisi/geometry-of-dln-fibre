@@ -223,6 +223,7 @@ as I first scoped.
 
 
 ### Coordination + template (genm-n4, 2026-06-28)
+- **`minAdmRec` tactic idiom (genm-n4, build-time)**: `minAdmRec_rr4_ge2` (`origin/genm-n4 RouteMBoxThresholdRR4.lean:63-83`, + `four_mul_le_sq_add_four`, `rr4_term_ge`) dodges the inf'-dependent-nonempty-motive trap by reducing `(![r,r,4]) 0/1 = r` in the LEAF goals (NEVER rewriting `min` under `inf'`). Transfers verbatim to ∀p (the `(![r,r,p]) 0/1` reductions) — use this exact tactic shape for the `minAdm(r,r,p)`-recursion lower-bound lemma.
 - **Box-reduction infra is genm-n4's** (landed, reviewer-survived on `origin/genm-n4`): `RouteMBoxThresholdFinite`,
   `routeMCore_le_matBox`, `routeMCore_threshold_lt_top_of_box`. The ∀p build CONSUMES these — does NOT redefine.
 - **The `minAdm` integer-min lower-bound template**: genm-n4's `minAdmRec_rr4_ge2`
