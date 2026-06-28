@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanRate
 import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
+import DLNFibre.DLN.RLCT.Validate.RouteM121Smeared
 
 /-!
 # `RouteMSmearedGenChart` — the ∀M-(1,1)-smeared Option-A chart (rate leg)
@@ -20,7 +21,7 @@ This file is the RATE leg; the MP leg + subBox/divergence assembly are the remai
 -/
 
 open Matrix MeasureTheory
-open scoped BigOperators
+open scoped BigOperators ENNReal
 
 namespace DLNFibre.DLN.RLCT
 
@@ -608,5 +609,79 @@ theorem frontU_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
     (hm1 : 0 < M ⟨L - 1, by omega⟩) :
     frontU M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1 = frontU M hL u hm1 := by
   rw [frontU, frontU, frontMat_update_pivot M hL u a hrow hcol]
+
+/-! ## The abstract pivot-peel (the reusable Tonelli measure-theory primitive)
+
+The subBox divergence factors as a Tonelli peel at the (opaque) pivot coordinate: on a source set
+`S = ee⁻¹(Ioo 0 α ×ˢ R)` (`ee = piFinSuccAbove p`), an integrand `|u_p|^s · U(u)^{−c'}` with `U`
+pivot-independent and `> 0` on the rest box `R` integrates to `(∫_{(0,α)} |x|^s)·(∫_R U^{−c'}) = ⊤·(>0)`.
+This lemma is the network-free core; everything chart-specific feeds it through its hypotheses. -/
+
+/-- **The abstract pivot Tonelli peel `= ⊤`.** For a pivot `p : Fin (n+1)`, a pivot-independent
+`U` (`hUindep`), `c'` with the 1-D divergence `htop` (`∫_{(0,α)} |x|^s = ⊤`, supplied by the caller as
+the `s ≤ −1` rpow atom), and a positive-measure rest box `R` on which `U > 0`, the source-box integral
+of `|u_p|^s · U(u)^{−c'}` is `⊤`. The c-o-v is `piFinSuccAbove p` (volume-preserving) + `setLIntegral_prod`;
+the pivot factor is `⊤`, the rest factor `∫_R U^{−c'} > 0` (`setLIntegral_pos_iff` + the witness box). -/
+theorem subBox_pivot_peel_diverges {n : ℕ} (p : Fin (n + 1)) (α : ℝ) (hα : 0 < α) (s c' : ℝ)
+    (U : (Fin (n + 1) → ℝ) → ℝ) (hUmeas : Measurable U)
+    (hUindep : ∀ (x : ℝ) (y : Fin n → ℝ), U (Fin.insertNth p x y) = U (Fin.insertNth p 0 y))
+    (R : Set (Fin n → ℝ)) (hRmeas : MeasurableSet R) (hRpos : 0 < (volume : Measure (Fin n → ℝ)) R)
+    (hRU : ∀ y ∈ R, 0 < U (Fin.insertNth p 0 y))
+    (integ : (Fin (n + 1) → ℝ) → ℝ≥0∞)
+    (hinteg : ∀ u, integ u = ENNReal.ofReal (|u p| ^ s) * ENNReal.ofReal (U u ^ (-c')))
+    (htop : (∫⁻ x in Set.Ioo (0 : ℝ) α, ENNReal.ofReal (|x| ^ s)) = ⊤) :
+    ∫⁻ u in (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℝ) p) ⁻¹'
+        (Set.Ioo (0 : ℝ) α ×ˢ R), integ u = ⊤ := by
+  set ee := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℝ) p with hee
+  have hmp : MeasurePreserving ee (volume : Measure (Fin (n + 1) → ℝ)) volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (n + 1) => ℝ) p
+  have hsymapp : ∀ x (y : Fin n → ℝ), ee.symm (x, y) = Fin.insertNth p x y :=
+    fun x y => by rw [hee, MeasurableEquiv.piFinSuccAbove_symm_apply]; rfl
+  -- `integ = (integ ∘ ee.symm) ∘ ee` pointwise (valid everywhere; rewrite on the source set), then peel.
+  rw [setLIntegral_congr_fun (ee.measurable (measurableSet_Ioo.prod hRmeas))
+    (fun u _ => by rw [show integ u = integ (ee.symm (ee u)) from by
+      rw [MeasurableEquiv.symm_apply_apply]])]
+  rw [hmp.setLIntegral_comp_preimage_emb ee.measurableEmbedding
+    (fun q : ℝ × (Fin n → ℝ) => integ (ee.symm q)) (Set.Ioo (0 : ℝ) α ×ˢ R)]
+  -- under `ee.symm`, the integrand is `|x|^s · U(insertNth p 0 y)^{−c'}` (pivot = first prod factor).
+  have hfac : ∀ (q : ℝ × (Fin n → ℝ)),
+      integ (ee.symm q)
+        = ENNReal.ofReal (|q.1| ^ s) * ENNReal.ofReal (U (Fin.insertNth p 0 q.2) ^ (-c')) := by
+    rintro ⟨x, y⟩
+    rw [hinteg]
+    have ep : ee.symm (x, y) p = x := by rw [hsymapp, Fin.insertNth_apply_same]
+    rw [ep, hsymapp, hUindep]
+  simp_rw [hfac]
+  rw [show (volume : Measure (ℝ × (Fin n → ℝ))) = (volume : Measure ℝ).prod volume from
+    Measure.volume_eq_prod _ _]
+  -- the rest factor `U(insertNth p 0 y)^{−c'}` is measurable in `y`.
+  have hins : Measurable (fun y : Fin n → ℝ => (@Fin.insertNth n (fun _ => ℝ) p (0 : ℝ) y)) := by
+    rw [measurable_pi_iff]; intro j
+    rcases Fin.eq_self_or_eq_succAbove p j with rfl | ⟨k, rfl⟩
+    · simp only [Fin.insertNth_apply_same]; exact measurable_const
+    · simp only [Fin.insertNth_apply_succAbove]; exact measurable_pi_apply k
+  have hUcomp : Measurable (fun y : Fin n → ℝ => U (Fin.insertNth p 0 y)) := hUmeas.comp hins
+  have hUm2 : Measurable (fun y : Fin n → ℝ => ENNReal.ofReal (U (Fin.insertNth p 0 y) ^ (-c'))) :=
+    ENNReal.measurable_ofReal.comp (by fun_prop)
+  rw [setLIntegral_prod _ (by
+    apply Measurable.aemeasurable
+    exact (by fun_prop : Measurable (fun q : ℝ × (Fin n → ℝ) => ENNReal.ofReal (|q.1| ^ s))).mul
+      (hUm2.comp measurable_snd))]
+  have hinner : ∀ x, (∫⁻ y in R, ENNReal.ofReal (|x| ^ s)
+      * ENNReal.ofReal (U (Fin.insertNth p 0 y) ^ (-c')) ∂(volume : Measure (Fin n → ℝ)))
+      = ENNReal.ofReal (|x| ^ s) * (∫⁻ y in R,
+        ENNReal.ofReal (U (Fin.insertNth p 0 y) ^ (-c')) ∂(volume : Measure (Fin n → ℝ))) :=
+    fun x => lintegral_const_mul _ hUm2
+  simp only [hinner]
+  rw [lintegral_mul_const _ (by fun_prop : Measurable (fun x : ℝ => ENNReal.ofReal (|x| ^ s)))]
+  rw [htop]
+  refine ENNReal.top_mul (ne_of_gt ?_)
+  rw [setLIntegral_pos_iff hUm2]
+  apply lt_of_lt_of_le hRpos
+  apply measure_mono
+  intro y hy
+  refine ⟨?_, hy⟩
+  rw [Function.mem_support, ne_eq, ENNReal.ofReal_eq_zero, not_le]
+  exact Real.rpow_pos_of_pos (hRU y hy) _
 
 end DLNFibre.DLN.RLCT
