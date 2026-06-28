@@ -15,6 +15,11 @@ These are the analytic landing pads + the pivot spine. The carve assembly chains
   `innerSGen_eq_norm` (`innerSGen r c' T p ((piRatioG…).symm(0,z)) = ∫_S frobSq(RmatGnorm·S)^{−c'}`).
 - **Slot readback** (#135 foundation): `RmatGnorm_eq_zslot` — for `(i,j)≠(0,0)`, `∃ jj, RmatGnorm … i j = z jj`
   (EXISTENTIAL — the carve needs a CONCRETE `slotG : RatioIdx → Fin N` bijection; see "remaining" below).
+- **Carve cell map** (#135 combinatorial spine, BANKED): `cellIdxG r := (Fin(r-1)×Fin(r-1)) ⊕ Fin(r-1) ⊕ Fin(r-1)`
+  (M22⊕M21⊕M12); `cellG r hr : cellIdxG r → Fin r × Fin r` (M22 `(a,b)↦(⟨1+a,_⟩,⟨1+b,_⟩)`, M21 `a↦(⟨1+a,_⟩,⟨0,_⟩)`,
+  M12 `b↦(⟨0,_⟩,⟨1+b,_⟩)`); `cellG_ne_pivot` (off (0,0)); `cellG_injective`. Since `card cellIdxG = (r-1)²+2(r-1)
+  = r²−1 = N` and `cellG` is injective into the `N` non-pivot cells, it is a bijection onto them (use
+  `Fintype.card`/`Finite.injective_iff_bijective` for the surjectivity, no hand surjectivity proof needed).
 - **Generic a.e.-positivity** (#134): `frobSqG_ne_zero_ae (m n q)(hm hn hq) : ∀ᵐ (Δ,S), 0 < frobSq(Δ·S)`
   via the single-(0,0)-entry `entryPolyG` (nonzero, E00 witness) + the new general flatten
   `matToFlatAB`/`combineMNQ`/`genFlatPair` (MP) + read-backs `genFlatPair_idxΔ/_idxS`. Imports Core
