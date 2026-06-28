@@ -467,7 +467,7 @@ theorem piRatioG_ratioIdx_ne (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) 
 (local copy of `RouteMSchurCorank3.ofReal_rpow_neg_le_one_add`, kept local to avoid coupling the generic
 firing to the bespoke corank-3 file). On `x ≥ 1` the LHS `≤ 1`; on `0 < x < 1` the LHS `≤ x^{−c''}`; at
 `x = 0` both `0^{neg} = 0`. The subcritical reduction of the `c' ≤ 2` ratio-residual to `c'' = 3`. -/
-theorem ofReal_rpow_neg_le_one_add (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0 : 0 < c') (hcc : c' ≤ c'') :
+theorem ofReal_rpow_neg_le_one_addG (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0 : 0 < c') (hcc : c' ≤ c'') :
     ENNReal.ofReal (x ^ (-c')) ≤ 1 + ENNReal.ofReal (x ^ (-c'')) := by
   rcases eq_or_lt_of_le hx with hx0 | hx0
   · rw [← hx0, Real.zero_rpow (by linarith), ENNReal.ofReal_zero]
@@ -616,7 +616,7 @@ theorem schurRatioResidGen (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
           ≤ ∫⁻ S in matBox r 4 T,
               (1 + ENNReal.ofReal ((frobSq (rmatMul (RmatG r p (q z)) S)) ^ (-(3 : ℝ)))) :=
             lintegral_mono (fun S =>
-              ofReal_rpow_neg_le_one_add _ (frobSq_nonneg _) c' 3 hc0 (by linarith))
+              ofReal_rpow_neg_le_one_addG _ (frobSq_nonneg _) c' 3 hc0 (by linarith))
         _ = volume (matBox r 4 T) + ∫⁻ S in matBox r 4 T,
               ENNReal.ofReal ((frobSq (rmatMul (RmatG r p (q z)) S)) ^ (-(3 : ℝ))) := by
             rw [lintegral_add_left measurable_const, setLIntegral_const, one_mul]
