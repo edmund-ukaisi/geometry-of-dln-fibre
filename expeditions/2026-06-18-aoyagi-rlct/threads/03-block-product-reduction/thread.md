@@ -18,6 +18,43 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 selected-entry weighted signed-box residual hypotheses
+
+Reproduction:
+`reproduction-a2-selected-entry-weighted-box-residual-hypotheses.md`.
+Statement card:
+`statement-card-a2-selected-entry-weighted-box-residual-hypotheses.md`.
+
+Lean now proves the selected-entry model's own weighted signed-box residual
+field in `SelectedEntrySignedBoxMeasure.lean`:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+```
+
+For positive signed-box radii, `t >= 0`, and
+`2 * t < ((center.erase pivot.1).card : R) + 1`, the theorem proves residual
+positivity almost everywhere and finite lower integral of
+`ofReal ((residual pivot y)^(-t))` under the signed-box product measure
+weighted by `ofReal (sourceDensity pivot y)`.
+
+The pen-and-paper calculation is the selected-entry identity
+`residual = |pivot|^2 * unit` with `unit >= 1`, and
+`sourceDensity = |pivot|^(card(center.erase pivot.1))`.  Thus only the pivot
+coordinate contributes a nontrivial integrability inequality.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing imported warning noise.  Full `DLNFibre` build passed with
+pre-existing warning noise.  Xhigh review by `Maxwell the 3rd` passed:
+`review-a2-selected-entry-weighted-box-residual-hypotheses.md`.  The new
+theorem's logical footprint is `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no retained-passive determinant-chart source production, no
+pushforward from retained-passive coordinates to selected-entry signed-box
+coordinates, no original prior transport, no normal crossings, no pole order,
+and no RLCT.
+
 ## 2026-06-28 A2 retained-passive raw-order source-chart homeomorphism
 
 Reproduction:

@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, selected-entry weighted signed-box residual hypotheses
+
+The selected-entry finite coordinate model now discharges its own chart-side
+residual positivity and negative-power integrability field under the formal
+pivot-Jacobian source density.  New Lean name in
+`SelectedEntrySignedBoxMeasure.lean`:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+```
+
+The theorem assumes positive signed-box radii, `t >= 0`, and
+
+```text
+2 * t < ((center.erase pivot.1).card : R) + 1.
+```
+
+It proves `0 < residual pivot y` almost everywhere and finite lower integral of
+`ofReal ((residual pivot y)^(-t))` for the signed-box product measure weighted
+by `ofReal (sourceDensity pivot y)`.  This is the honest selected-entry
+calculation: the pivot coordinate contributes loss exponent `2` and density
+exponent `card(center.erase pivot.1)`, while every non-pivot coordinate has
+loss exponent `0` and density exponent `0`.
+
+This is not a retained-passive field filler.  The current frontier remains a
+genuine source-production/pushforward bridge from retained-passive
+determinant-chart coordinates to selected-entry signed-box coordinates, or an
+equivalent retained-passive chart-side monomial/normal-crossing construction.
+Focused and full `DLNFibre` builds passed with pre-existing warning noise, and
+xhigh review by `Maxwell the 3rd` passed.  No original prior transport, normal
+crossings, pole order, or RLCT is proved.
+
 ## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart homeomorphism
 
 The reduced fixed-base raw-order retained-passive source chart now has an

@@ -150,13 +150,19 @@ No such claim is formalisation-ready until both fields are filled.
   edge-family set, the matching raw-order source-chart homeomorphism/local
   inverse package, and the canonical chart-side residual readout as both
   `residualProduct (topologyTupleEdgeMatrix z)` and
-  `residualFactorProduct (ofTopologyTuple z).C`.  The current A2 frontier is
-  chart-side residual zero-locus/a.e. positivity/finite negative-power
-  integrability or a genuine monomial/normal-crossing construction, plus
-  source-prior/density transport if that route is used.  This addendum
-  supersedes older "positive-tail F3 open", "not full target normalisation",
-  and "construction of target equivalence remains separate" phrases retained
-  below as historical detail.
+  `residualFactorProduct (ofTopologyTuple z).C`.  The selected-entry finite
+  coordinate model also now proves residual a.e. positivity and finite
+  negative-power integrability under its own formal pivot-Jacobian source
+  density, with integrability condition
+  `2 * t < ((center.erase pivot.1).card : R) + 1`.  The current A2 frontier is
+  not another selected-entry retained-passive wrapper, but a genuine
+  source-production/pushforward bridge from retained-passive determinant-chart
+  coordinates to selected-entry signed-box coordinates, or an equivalent
+  retained-passive chart-side monomial/normal-crossing construction.  Original
+  source-prior/density transport remains separate if that route is used.  This
+  addendum supersedes older "positive-tail F3 open", "not full target
+  normalisation", and "construction of target equivalence remains separate"
+  phrases retained below as historical detail.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

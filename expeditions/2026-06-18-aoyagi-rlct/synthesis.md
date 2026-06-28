@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Selected-Entry Weighted-Box Residual Hypotheses
+
+`SelectedEntrySignedBoxMeasure.lean` now proves the selected-entry weighted
+signed-box residual field under the formal pivot-Jacobian source density:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+```
+
+For a center pivot, positive signed-box radii, `t >= 0`, and
+
+```text
+2 * t < ((center.erase pivot.1).card : R) + 1,
+```
+
+the weighted product signed-box measure
+
+```text
+(Measure.pi fun i => volume.restrict (Ioo (-(R i)) (R i))).withDensity
+  (fun y => ofReal (sourceDensity pivot y))
+```
+
+has `0 < residual pivot y` almost everywhere and finite lower integral of
+`ofReal ((residual pivot y)^(-t))`.  The pen-and-paper calculation is the
+selected-entry identity
+
+```text
+residual(y) = |y_p|^2 * (1 + sum_{i != p} y_i^2),
+sourceDensity(y) = |y_p|^(|center|-1),
+```
+
+so finite integrability is the one-dimensional condition
+`(|center|-1) - 2*t > -1`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing warning noise from an imported module.  Full `DLNFibre`
+build passed with pre-existing warning noise.  Xhigh review by `Maxwell the
+3rd` passed.
+
+Nonclaims: this is selected-entry finite coordinate analysis only.  It does not
+identify the retained-passive determinant-chart source measure with the
+weighted signed-box measure, produce the retained-passive-to-selected-entry
+pushforward/source map, prove original source prior transport, construct
+normal crossings, compute pole order, or extract an RLCT.
+
 ## Latest A2 Raw-Order Source-Chart Homeomorphism
 
 The reduced fixed-base raw-order retained-passive source chart now has a

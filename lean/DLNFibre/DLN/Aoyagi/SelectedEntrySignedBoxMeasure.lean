@@ -1013,6 +1013,113 @@ theorem monomialLower_sourceDensityBounds {center : Finset ι} (pivot : center)
       hdensityUnit_aemeas hres_eq hsourceDensity_eq hresUnit_lower
       hdensityUnit_nonneg hdensityUnit_le
 
+set_option linter.style.longLine false in
+/-- Selected-entry weighted signed-box residual positivity and finite
+negative-power integral.
+
+This proves the actual selected-entry model field under the formal
+pivot-Jacobian source density.  It does not identify any retained-passive or
+original DLN source measure with this weighted signed-box measure. -/
+theorem residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+    {center : Finset ι} (pivot : center) {t : ℝ} {R : center → ℝ}
+    (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : 2 * t < ((center.erase pivot.1).card : ℝ) + 1) :
+    let signedBox : Measure (center → ℝ) :=
+      Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+    let weightedBox : Measure (center → ℝ) :=
+      signedBox.withDensity
+        (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+    (∀ᵐ y ∂ weightedBox, 0 < residual pivot y) ∧
+      (∫⁻ y : center → ℝ,
+        ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ weightedBox) < ∞ := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+  rcases monomialLower_sourceDensityBounds pivot R with
+    ⟨hsourceDensity_aemeas, hres_lower, hsourceDensity_nonneg, hsourceDensity_le⟩
+  have hcrit_all :
+      ∀ i : center,
+        2 * t * (lossExp pivot i : ℝ) <
+          (densityExp pivot i : ℝ) + 1 := by
+    intro i
+    by_cases hi : i = pivot
+    · subst i
+      simpa [lossExp, densityExp, mul_assoc] using hcrit
+    · simp [lossExp, densityExp, hi]
+  have hpos_signed :
+      ∀ᵐ y ∂ signedBox, 0 < residual pivot y := by
+    have hcoord :
+        ∀ᵐ y : center → ℝ ∂ signedBox, ∀ i, 0 < |y i| := by
+      dsimp [signedBox]
+      exact ae_forall_abs_pos_measure_pi_restrict_Ioo_neg (R := R) (ι := center)
+    filter_upwards [hcoord, hres_lower] with y hyabs hylower
+    have hmonomial_pos :
+        0 < ∏ i, |y i| ^ (2 * (lossExp pivot i : ℝ)) := by
+      exact Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hyabs i) _
+    exact lt_of_lt_of_le (by simpa using hmonomial_pos) hylower
+  have hpos_weighted :
+      ∀ᵐ y ∂ weightedBox, 0 < residual pivot y := by
+    exact
+      (withDensity_absolutelyContinuous signedBox
+        (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).ae_le
+        hpos_signed
+  have hfinite_signed :
+      (∫⁻ y : center → ℝ,
+        ENNReal.ofReal ((residual pivot y) ^ (-t) * sourceDensity pivot y)
+          ∂ signedBox) < ∞ := by
+    dsimp [signedBox]
+    exact
+      lintegral_ofReal_loss_rpow_neg_mul_density_signedBox_lt_top
+        (h := densityExp pivot) (k := lossExp pivot) (t := t) (R := R)
+        (c := 1) (C := 1) (loss := residual pivot)
+        (density := sourceDensity pivot)
+        (by norm_num) (by norm_num) ht hR hcrit_all hres_lower
+        hsourceDensity_nonneg hsourceDensity_le
+  have hfinite_weighted :
+      (∫⁻ y : center → ℝ,
+        ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ weightedBox) < ∞ := by
+    have hdensity_lt_top :
+        ∀ᵐ y : center → ℝ ∂ signedBox,
+          ENNReal.ofReal (sourceDensity pivot y) < ∞ := by
+      filter_upwards with y
+      exact ENNReal.ofReal_lt_top
+    have hwith :
+        (∫⁻ y : center → ℝ,
+          ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ weightedBox) =
+            ∫⁻ y : center → ℝ,
+              ENNReal.ofReal (sourceDensity pivot y) *
+                ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ signedBox := by
+      dsimp [weightedBox]
+      rw [lintegral_withDensity_eq_lintegral_mul_non_measurable₀
+        signedBox (by simpa [signedBox] using hsourceDensity_aemeas)
+        hdensity_lt_top
+        (fun y : center → ℝ => ENNReal.ofReal ((residual pivot y) ^ (-t)))]
+      simp [Pi.mul_apply]
+    have hmul :
+        (∫⁻ y : center → ℝ,
+          ENNReal.ofReal (sourceDensity pivot y) *
+            ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ signedBox) =
+            ∫⁻ y : center → ℝ,
+              ENNReal.ofReal ((residual pivot y) ^ (-t) * sourceDensity pivot y)
+                ∂ signedBox := by
+      apply lintegral_congr_ae
+      filter_upwards [hsourceDensity_nonneg] with y hyden_nonneg
+      rw [mul_comm]
+      exact (ENNReal.ofReal_mul' hyden_nonneg).symm
+    calc
+      (∫⁻ y : center → ℝ,
+        ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ weightedBox)
+          = ∫⁻ y : center → ℝ,
+              ENNReal.ofReal (sourceDensity pivot y) *
+                ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ signedBox := hwith
+      _ = ∫⁻ y : center → ℝ,
+            ENNReal.ofReal ((residual pivot y) ^ (-t) * sourceDensity pivot y)
+              ∂ signedBox := hmul
+      _ < ∞ := hfinite_signed
+  exact ⟨hpos_weighted, hfinite_weighted⟩
+
 end CenterCoord
 
 end SelectedEntrySignedBox
