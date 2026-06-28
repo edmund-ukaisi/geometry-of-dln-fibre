@@ -1,5 +1,27 @@
 # genm-capa build state — #146 cap-A carve: INTERIOR done clean-three, r=2 base is the sole open piece
 
+> **UPDATE (genm-capa2 @ branch `genm-capa2`, off @105cadfd): `schurCoreP_two` CLOSED, sorry-free.**
+> `routeMBoxThresholdFinite_rrp` (#146) is now FULLY sorry-free, **clean-three**
+> `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`, oleans force-rebuilt:
+> CapACarveP/RecStepP/RRP deleted then rebuilt). Whole chain clean: `schurCoreP_two` /
+> `schurCoreP_capA` / `schurRecStep_p` / `routeMBoxThresholdFinite_rrp`.
+> - **cap-B half** (`c' < p/2`, all p≥4 + small-p slice): 4-chart radial cover at r=2 (cover machinery
+>   `matBoxGen_outer_flat`/`gFlatGen_cover_sum` is r-general, NOT hr-gated) + the banked
+>   `frobSq_capB_inner_two_le`; the 3≤r-gated `RmatGnorm` avoided by inline row/col-permuting `RmatG`
+>   (r-general `RmatG_pivot`/`RmatG_entry_le`). Lemmas: `schurRatioResidP_capB_two_lt_top`,
+>   `schur_matBoxGen2_chart_capB_lt_top`, `schurCoreP_two_capB`.
+> - **interior half** (`p/2 ≤ c' < schurLambdaP p 2`, only p∈{1,2,3}): took the predecessor's KEY option —
+>   reproduced the reshape ONCE at `hr : 2 ≤ r` (NOT literal r=2). The firing's `3≤r` is an artefact
+>   (bodies need only `0<r`/`1≤r`/`0<r*r`); copies suffixed `2`: `RmatGnorm2`/`slotMatG2`/`cellR2`/
+>   `zσG2`/`zEG2` + readbacks `RmatGnorm2_carve_M22/g/b`/`ScCarve2_eq`, then the carve chain
+>   `innerSGenCarve2_le` (via the landed `1≤r` shears `frobSqTopRowP_eq_shearP1`/`stepShearP_r1`),
+>   `resolvedShiftRG2_le` (+ `schurResidGP2_translate_le`/`coreSchurGenValP2_lt_top`),
+>   `schurRatioResidGen2_mid`/`schurRatioResidGen2`, `schur_matBoxGen2_chart_capA_lt_top`,
+>   `schurCoreP_two_interior`. NO cast thrash — the `2≤r` (vs literal r=2) route kept indices generic
+>   `Fin (r-1)`, sidestepping the Fin-1-collapse cast-risk; built first try after each sub-lemma.
+> All `2≤r` copies are verbatim-from-firing with `3≤r → 2≤r`; reusable for a future unified `2≤r` carve.
+
+
 Branch: `genm-capa` (off `origin/genm-pbuild2`@04c2eb85). Tip after this thread: `bfe1ff14` (pushed).
 Do NOT edit `genm-pbuild`/`genm-pbuild2` or `RouteMSchurFiring`/`RouteMSchurDirectMorseP` (siblings;
 single-writer firing).
