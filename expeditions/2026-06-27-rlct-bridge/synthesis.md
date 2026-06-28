@@ -615,3 +615,19 @@ headline; witnesses ℂ/AlgClosure-ℚ are Type 0 — honest, documented in the 
   honest / rank-lemma relocation / L3) + bedrock (discharge genuine-not-sleight / name=content / cited
   boundary honestly 2 / non-vacuity / beauty). Loop to equilibrium → then `#13` is the well-rounded PR.
   Task #11 lands on the re-review PASS.
+  - **HARDENER re-review: SOLID** (`a2b12a44`, decorrelated Codex converged). VERIFIED (not relayed): the
+    `git show` diff shows `hT` dropped at the signature level + the proved theorem invoked internally; the
+    interface carries NO geometric field; `bundleShift_of_core` is a proved axiom-clean instance ⟹ `J` also
+    genuinely discharged; all 10 load-bearing decls axiom-clean over the ℝ-compatible `[CharZero][Infinite]`
+    Core headline (full build typechecks at `k:=ℝ`). The `x²+y²` pathology genuinely doesn't bite (both
+    sides = the field-INDEPENDENT `cCodim`+δ; `realizerD` gives an explicit ℝ-rational full-rank top-component
+    point via `[Infinite]`, not `[IsAlgClosed]`). name=content holds; Type-0 narrowing honest (inherited
+    same-universe from the Schur-side no-drop); non-vacuous. **2 cosmetics → consolidation:** restore
+    `_via_aoyagi` on the 2 fully-J-discharged BundleShiftDischarge payoffs (still rest on `I` = the cited
+    bounds); fix 2 >100-char comment lines (`:117,:124`).
+  - **Framing-precision correction (hardener caught my dispatch prose):** what's proved is the **codimension
+    identity + the real↔complex codim TRANSFER**, NOT "all real↔complex geometry" — the fibre-bundle/
+    component-count/smoothness layer over ℝ (LR Lemma 4.6) is separate + roadmapped, not the payoff's
+    dependency. (Looser word didn't reach the repo/card.) Keep operator-facing language precise.
+  - Holding for fidelity (`a15102e4`), then ONE consolidation pass (the 2 cosmetics + any fidelity findings)
+    → finalize → `#13` well-rounded PR.
