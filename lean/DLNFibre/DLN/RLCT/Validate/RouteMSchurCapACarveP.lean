@@ -932,4 +932,70 @@ theorem schurCoreP_capA_interior (p r : ℕ) (hr : 3 ≤ r) (hp : 0 < p)
   exact ENNReal.sum_lt_top.2
     (fun q _ => schur_matBoxGenP_chart_capA_lt_top r p hr hp hIH c' hc0 hc' hmid q T hT)
 
+/-! ## p = 0 vacuity + the corank-2 base threshold -/
+
+/-- `schurLambdaP 0 r = 0` (output width `0`): `minAdm(![r,r,0]) = inf'_{t} (r−t)²`, minimised at `t = r`
+(value `0`). So the `p = 0` cap-A hypothesis `c' < schurLambdaP 0 r` is incompatible with `0 < c'`. -/
+theorem schurLambdaP_p_zero (r : ℕ) : schurLambdaP 0 r = 0 := by
+  rw [schurLambdaP, minAdm_rrp_eq_inf]
+  rw [show ((Finset.range (r + 1)).inf' (by simp) (fun t => (r - t) * (r - t) + t * 0) : ℕ) = 0 from by
+    refine le_antisymm ?_ (Nat.zero_le _)
+    have hmem : r ∈ Finset.range (r + 1) := by simp
+    refine le_trans (Finset.inf'_le _ hmem) ?_; simp]
+  norm_num
+
+/-- `schurLambdaP p 2 ≤ 2` for any `p` (the `t = 0` stratum `(2)² + 0·p = 4` caps the `inf'`); the cap-A
+corank-2 base's radial cap `c' < r²/2 = 2`. -/
+theorem schurLambdaP_two_le (p : ℕ) : schurLambdaP p 2 ≤ 2 := by
+  have := schurLambdaP_le_sq p 2
+  norm_num at this ⊢; linarith
+
+/-! ## The corank-2 base (OPEN — the `Fin p` r=2 chart cover)
+
+The cap-A `r = 2` leaf needs a `p`-general corank-2 finiteness `SchurCore p 2 c' T` for
+`0 < c' < schurLambdaP p 2`. The carve machinery (`schur_matBoxGenP_chart_capA_lt_top`, ...) carries
+`hr : 3 ≤ r` (it reuses `RouteMSchurFiring`'s `RmatGnorm` / `slotMatG` / `cellR`, all stated at `3 ≤ r`),
+so it does NOT fire at `r = 2`. The base is a dedicated 4-chart radial cover at `r = 2`: the explicit `2×2`
+pivot charts (Jacobian `|y_pivot|³`), the a-axis divisor (`c' < r²/2 = 2`), and the `1×1` Schur residual
+(N2b `j = 1` gives `Sc : Fin 1 × Fin 1`), closed below `c' < min(2, ½(p+1)) = schurLambdaP p 2` by the
+abstract corank-1 IH `SchurCore p 1` (or, when `c' < p/2`, by the `Fin p` Morse dominator directly).
+This is `Fin 4`-hardcoded in `RouteMSchurDepth2` (`core_schur2_lt_top`, `c' < 2`); the `Fin p`
+generalisation is the one open sub-chain. -/
+
+/-- **The `Fin p` corank-2 base (OPEN).** `SchurCore p 2 c' T` for `0 < c' < schurLambdaP p 2`. The cap-A
+`r = 2` leaf. -/
+theorem schurCoreP_two (p : ℕ) (hp : 0 < p) (hIH : SchurLowerIH p (schurLambdaP p) 2)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p 2) (T : ℝ) (hT : 0 < T) :
+    SchurCore p 2 c' T := by
+  sorry
+
+/-! ## The full cap-A dispatch (the #146 deliverable input) -/
+
+/-- **The cap-A / corank-leaf per-corank step** (`schurCoreP_capA`, the dispatch contract). For
+`0 < c' < schurLambdaP p r` NOT covered by the `t = 0` cap-B directMorse: `r = 0` vacuous (`lam 0 = 0`),
+`r = 1` the Morse leaf (`schurCoreP_one`), `r = 2` the corank-2 base (`schurCoreP_two`), `r ≥ 3` either
+the cap-B directMorse (`schurLambdaP p r ≤ p/2`) or the interior carve (`schurCoreP_capA_interior`). -/
+theorem schurCoreP_capA' (p r : ℕ) (hIH : SchurLowerIH p (schurLambdaP p) r)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p r) (T : ℝ) (hT : 0 < T) :
+    SchurCore p r c' T := by
+  -- p = 0 is vacuous: schurLambdaP 0 r = 0, so c' < 0 contradicts 0 < c'
+  rcases Nat.eq_zero_or_pos p with hp0 | hp
+  · rw [hp0, schurLambdaP_p_zero] at hc'; exact absurd hc' (not_lt.2 hc0.le)
+  -- dispatch on the corank r
+  match r, hc', hIH with
+  | 0, hc', _ =>
+      exact absurd hc' (by rw [schurLambdaP_zero]; exact not_lt.2 hc0.le)
+  | 1, hc', _ =>
+      exact schurCoreP_one p hp c' hc0 hc' T hT
+  | 2, hc', hIH =>
+      exact schurCoreP_two p hp hIH c' hc0 hc' T hT
+  | (n + 3), hc', hIH =>
+      -- r = n + 3 ≥ 3: cap-B (lam r ≤ p/2) directMorse, else the interior carve
+      rcases le_or_gt (schurLambdaP p (n + 3)) ((p : ℝ) / 2) with hcap | hcap
+      · have hcp : c' < (p : ℝ) / 2 := lt_of_lt_of_le hc' hcap
+        have hcr : c' < (((n + 3 : ℕ) : ℝ) ^ 2) / 2 :=
+          lt_of_lt_of_le hc' (schurLambdaP_le_sq p (n + 3))
+        exact schurCoreP_directMorse p (n + 3) (by omega) c' hc0 hcp hcr T hT
+      · exact schurCoreP_capA_interior p (n + 3) (by omega) hp hIH c' hc0 hc' hcap T hT
+
 end DLNFibre.DLN.RLCT
