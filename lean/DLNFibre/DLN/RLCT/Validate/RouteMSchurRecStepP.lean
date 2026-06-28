@@ -33,9 +33,9 @@ NOT covered by the `t = 0` cap-B directMorse — i.e. either the binding stratum
 carve (`schurRatioResidGen_mid` + the lower IH `hIH` via the `M22 ↦ Sc` translation-domination) and the
 `p`-general `r ∈ {1,2}` leaves.
 
-OPEN: the `4 → p` transcription of `RouteMSchurFiring`'s carve chain (`schurRatioResidGen_mid`,
-`schurResidG_translate_lt_top`, `innerSGen_eq_norm`, `zEG`, ~1170 LoC), plus the `(r,p)` `r=1,2` leaves.
-Documented `sorry` on the WIP branch; the cap-B content it sits beside is real and axiom-clean. -/
+CLOSED (sorry-free, clean-three): the `4 → p` transcription of `RouteMSchurFiring`'s carve chain
+(`schurRatioResidGenP_mid`, `resolvedShiftRGP_le`, `innerSGenP_eq_norm`, `zEG`) for `r ≥ 3`, the `r = 2`
+base (`schurCoreP_two`: cap-B 4-chart cover + the `2 ≤ r` interior carve), and the `r ∈ {0,1}` leaves. -/
 theorem schurCoreP_capA (p r : ℕ) (hIH : SchurLowerIH p (schurLambdaP p) r)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p r) (T : ℝ) (hT : 0 < T) :
     SchurCore p r c' T :=
@@ -46,7 +46,7 @@ theorem schurCoreP_capA (p r : ℕ) (hIH : SchurLowerIH p (schurLambdaP p) r)
 /-- **The ∀p per-corank firing.** `SchurRecStep p (schurLambdaP p)` — the SOLE remaining R1-UPPER input
 to the ∀p finiteness. Dispatches on the binding stratum `le_or_lt (schurLambdaP p r) (p/2)`: cap-B
 (`≤ p/2`, `r ≥ 3`) is `schurCoreP_directMorse` (real, no recursion); the interior / leaf cases route to
-`schurCoreP_capA` (the open carve). -/
+`schurCoreP_capA` (the carve, now CLOSED — sorry-free, clean-three). -/
 theorem schurRecStep_p (p : ℕ) : SchurRecStep p (schurLambdaP p) := by
   intro r hlam hIH c' hc0 hclt T hT
   -- the `t = 0` cap-B regime is `schurLambdaP p r ≤ p/2` AND `r ≥ 3` (directMorse's corank floor)

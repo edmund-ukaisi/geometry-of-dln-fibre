@@ -20,8 +20,8 @@ two-matrix core `prod (![r,r,p]) A = A0·A1` (`A0 : r×r`, `A1 : r×p`) is exact
 This is the **#146 deliverable** (the `(r,r,p)` ∀p R1-UPPER leg). It rides only the per-corank dispatch
 `schurRecStep_p` (no `monomial_rlct`, no new axiom). `schurRecStep_p`'s cap-B (`t = 0` binding stratum,
 `r ≥ 3`) is `schurCoreP_directMorse` — real and axiom-clean; its cap-A (interior stratum) + corank-leaf
-branch is the still-open `schurCoreP_capA` carve. So `routeMBoxThresholdFinite_rrp` is the complete
-SKELETON of the deliverable, with the genuinely-hard cap-B content wired in real.
+branch is `schurCoreP_capA`, now CLOSED (sorry-free, clean-three). So `routeMBoxThresholdFinite_rrp` is
+FULLY sorry-free: `[propext, Classical.choice, Quot.sound]`, no `sorryAx`, no `monomial_rlct`.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -145,7 +145,7 @@ Assembly: the threshold match (`rfl`) + the reshape (`routeMLayerBoxIntegral_rrp
 r` two-matrix box, finite by `core_schurGen_lt_top (p) (schurLambdaP p) (schurLambdaP_satisfies_threshold
 p) (schurRecStep_p p)`; the `c' = 0` branch is the box-volume bound. The ∀p generalisation of
 `routeMBoxThresholdFinite_rr4_of_schurRecStep`. (Rides only `schurRecStep_p`, whose cap-A leaf carve
-`schurCoreP_capA` is the WIP-branch sorry; the cap-B `schurCoreP_directMorse` it wires in is real.) -/
+`schurCoreP_capA` is now CLOSED; the cap-B `schurCoreP_directMorse` it wires in is real. FULLY sorry-free.) -/
 theorem routeMBoxThresholdFinite_rrp (r p : ℕ) :
     RouteMBoxThresholdFinite (![r, r, p] : Fin 3 → ℕ) := by
   intro c' hc'
