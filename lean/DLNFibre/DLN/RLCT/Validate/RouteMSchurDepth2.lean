@@ -513,4 +513,95 @@ theorem gFlat2_blowup_radial (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) (y : Fin (2 
     rfl
   rw [hbl, radialDelta_loss_factor (y p) (matToFlat2.symm (fun i => if i = p then 1 else y i)) S]
 
+/-! ### Perm-invariance atoms (bring an arbitrary pivot to `(0,0)`) -/
+
+/-- `frobSq (R·S)` is invariant under a row-perm `σr` of `R` + a simultaneous col-perm `σc` of `R`
+(= row-perm of `S`). The 2×2 / `Fin 4` analog of `frobSq_rmatMul_perm`. -/
+theorem frobSq_rmatMul_perm2 (R : Fin 2 → Fin 2 → ℝ) (S : Fin 2 → Fin 4 → ℝ) (σr σc : Fin 2 ≃ Fin 2) :
+    frobSq (rmatMul R S)
+      = frobSq (rmatMul (fun r c => R (σr r) (σc c)) (fun k j => S (σc k) j)) := by
+  unfold frobSq rmatMul
+  rw [← Equiv.sum_comp σr (fun r => ∑ j, (∑ k, R r k * S k j) ^ 2)]
+  refine Finset.sum_congr rfl (fun r _ => ?_)
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  congr 1
+  rw [← Equiv.sum_comp σc (fun k => R (σr r) k * S k j)]
+
+/-- The `S` row-permutation change of variables on the symmetric box `matBox 2 4 T`: permuting the
+`Fin 2` row-index of `S` by `σc` is measure-preserving (`piCongrLeft`) and the box is `σc`-invariant. -/
+theorem matBox24_rowperm_lintegral (T : ℝ) (σc : Fin 2 ≃ Fin 2) (f : (Fin 2 → Fin 4 → ℝ) → ℝ≥0∞) :
+    (∫⁻ S in matBox 2 4 T, f S) = ∫⁻ S in matBox 2 4 T, f (fun k j => S (σc k) j) := by
+  set E := MeasurableEquiv.piCongrLeft (fun _ : Fin 2 => Fin 4 → ℝ) σc with hE
+  have hmp : MeasurePreserving E.symm volume volume :=
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin 2 => Fin 4 → ℝ) σc).symm E
+  have hpre : matBox 2 4 T = E.symm ⁻¹' (matBox 2 4 T) := by
+    ext S
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k; exact h (σc i) k
+    · intro h i k
+      have := h (σc.symm i) k
+      rw [show E.symm S (σc.symm i) k = S i k from by
+        show S (σc (σc.symm i)) k = S i k; rw [Equiv.apply_symm_apply]] at this
+      exact this
+  have key := hmp.setLIntegral_comp_preimage_emb E.symm.measurableEmbedding f (matBox 2 4 T)
+  have hrhs : (∫⁻ S in matBox 2 4 T, f (fun k j => S (σc k) j))
+      = ∫⁻ S in matBox 2 4 T, f (E.symm S) := rfl
+  rw [hrhs]
+  rw [← hpre] at key
+  exact key.symm
+
+/-- **Inner-S finiteness at an ARBITRARY pivot** (the per-chart plug). For `R` with `R i₀ j₀ = 1`
+(any entry) and `|R i k| ≤ 1`, `∫_{S∈matBox 2 4 T} frobSq (R·S)^{−c'} < ⊤` for `0 < c' < 2`: swap the
+pivot row/col to `(0,0)` (`Equiv.swap`, `frobSq_rmatMul_perm2` + `matBox24_rowperm_lintegral` MP) and
+apply `schurInner_S_le`. The pivot-(0,0) chart is the `σ = id` special case. -/
+theorem schurInner_S_le_pivot (R : Fin 2 → Fin 2 → ℝ) (i₀ j₀ : Fin 2) (hpiv : R i₀ j₀ = 1)
+    (hbd : ∀ i k, |R i k| ≤ 1) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 2) (T : ℝ) (hT : 0 < T) :
+    ∫⁻ S in matBox 2 4 T, ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c')) < ⊤ := by
+  set σr := Equiv.swap i₀ 0 with hσr
+  set σc := Equiv.swap j₀ 0 with hσc
+  -- permuted matrix R' r c = R (σr r) (σc c); R' 0 0 = R i₀ j₀ = 1, |R' i k| ≤ 1
+  set R' : Fin 2 → Fin 2 → ℝ := fun r c => R (σr r) (σc c) with hR'
+  have h00' : R' 0 0 = 1 := by
+    show R (σr 0) (σc 0) = 1
+    rw [hσr, hσc, Equiv.swap_apply_right, Equiv.swap_apply_right]; exact hpiv
+  have hbd' : ∀ i k, |R' i k| ≤ 1 := fun i k => hbd (σr i) (σc k)
+  -- rewrite the integrand by frobSq perm-invariance, then row-perm the S-box (MP)
+  have hrw : ∀ S : Fin 2 → Fin 4 → ℝ,
+      ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c'))
+        = ENNReal.ofReal ((frobSq (rmatMul (fun a b => R' a b) (fun k j => S (σc k) j))) ^ (-c')) := by
+    intro S; rw [frobSq_rmatMul_perm2 R S σr σc]
+  rw [setLIntegral_congr_fun (matBox_measurableSet 2 4 T) (fun S _ => hrw S)]
+  rw [← matBox24_rowperm_lintegral T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (fun a b => R' a b) S)) ^ (-c')))]
+  exact schurInner_S_le R' h00' hbd' c' hc0 hc' T hT
+
+/-! ### The per-chart finiteness + the assembly -/
+
+/-- On `chartDomOn univ p` (ratios `|y_k| ≤ T·…`, here the radial chart uses radius `1` for the ratios),
+the blown-up point lands in `flatBox2 T` IFF the radial coordinate `|y p| ≤ T`. The box indicator depends
+only on `|y p|` — decoupling the radial axis from the 3 ratios. (Chart ratios at radius `1`, the box at
+radius `T`: off-pivot blown-up entries are `y p · y_k`, `|y_k| ≤ 1`, so `|y p · y_k| ≤ |y p|`.) -/
+theorem flatBox2_blowup_mem_iff (T : ℝ) (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (2 * 2))) p) :
+    pivotBlowupOn (Finset.univ : Finset (Fin (2 * 2))) p y ∈ flatBox2 T ↔ |y p| ≤ T := by
+  unfold flatBox2 chartDomOn at *
+  simp only [Set.mem_setOf_eq] at *
+  constructor
+  · intro h
+    have hpp := h p
+    rw [pivotBlowupOn] at hpp
+    simp only [if_pos rfl, Set.mem_Icc] at hpp
+    rw [abs_le]; exact hpp
+  · intro hp i
+    rw [pivotBlowupOn]
+    by_cases hi : i = p
+    · subst hi; simp only [if_pos rfl, Set.mem_Icc]; rw [abs_le] at hp; exact hp
+    · simp only [if_neg hi, Finset.mem_univ, if_true, Set.mem_Icc]
+      have hyi : |y i| ≤ 1 := hy i (Finset.mem_univ i) hi
+      have hb : |y p * y i| ≤ |y p| := by
+        rw [abs_mul]; nlinarith [abs_nonneg (y p), abs_nonneg (y i), abs_nonneg (y p * y i)]
+      have hbb : |y p * y i| ≤ T := le_trans hb hp
+      rw [abs_le] at hbb; exact hbb
+
 end DLNFibre.DLN.RLCT
