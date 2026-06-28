@@ -948,62 +948,98 @@ theorem piRatioG_symm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r *
   rw [hval]
   have := hz j (Set.mem_univ j); rw [Set.mem_Icc, ← abs_le] at this; exact this
 
-/-- The pivot-normalised angular matrix on chart `p`, ratios `z`: `R' a b = RmatG r p (…symm(0,z))
-(σr a) (σc b)` with `σr = swap r₀ 0`, `σc = swap c₀ 0`, `(r₀,c₀) = (eG r).symm p`. Pivot `1` at `(0,0)`. -/
-noncomputable def RmatGnorm (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ) :
-    Fin r → Fin r → ℝ :=
-  fun a b => RmatG r p ((piRatioG r (r * r - 1)
-      (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z))
+/-- The pivot-normalised angular matrix on chart `p`, ratios `z : Fin N → ℝ` (`r*r = N+1`):
+`R' a b = RmatG r p (…symm(0,z)) (σr a) (σc b)` with `σr = swap r₀ 0`, `σc = swap c₀ 0`,
+`(r₀,c₀) = (eG r).symm p`. Pivot `1` at `(0,0)`. (Threads the shared `hN` so all proof terms unify.) -/
+noncomputable def RmatGnorm (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) : Fin r → Fin r → ℝ :=
+  fun a b => RmatG r p ((piRatioG r N hN p).symm (0, z))
     ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a) ((Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)
 
-/-- `RmatGnorm r hr p z ⟨0⟩ ⟨0⟩ = 1`: the `(0,0)` entry is the pivot. -/
-theorem RmatGnorm_pivot (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ) :
-    RmatGnorm r hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+/-- `RmatGnorm … z ⟨0⟩ ⟨0⟩ = 1`: the `(0,0)` entry is the pivot. -/
+theorem RmatGnorm_pivot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) :
+    RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
   unfold RmatGnorm
   rw [Equiv.swap_apply_right, Equiv.swap_apply_right, RmatG_entry, if_pos]
   rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
 
-/-- Off-`(0,0)` entries of `RmatGnorm r hr p z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
-theorem RmatGnorm_offpivot_le (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ)
-    (hz : z ∈ Set.univ.pi (fun _ : Fin (r * r - 1) => Set.Icc (-1 : ℝ) 1))
-    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
-    |RmatGnorm r hr p z a b| ≤ 1 := by
-  unfold RmatGnorm
+/-- The matrix index of `(σr a, σc b)` is the pivot `p` iff `(a,b) = (0,0)`; off `(0,0)` it is `≠ p`. -/
+theorem RmatGnorm_offpivot_idx (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (a b : Fin r)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p := by
   set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
   set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
   have hσr0 : σr ⟨0, by omega⟩ = ((eG r).symm p).1 := by rw [hσr, Equiv.swap_apply_right]
   have hσc0 : σc ⟨0, by omega⟩ = ((eG r).symm p).2 := by rw [hσc, Equiv.swap_apply_right]
   have hpe : eG r (((eG r).symm p).1, ((eG r).symm p).2) = p := by
     rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
-  have hidx : eG r (σr a, σc b) ≠ p := by
-    intro heq
-    rw [← hpe] at heq
-    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
-    rw [← hσr0] at hi; rw [← hσc0] at hj
-    exact hab ⟨σr.injective hi, σc.injective hj⟩
-  rw [RmatG_entry, if_neg hidx]
-  exact piRatioG_symm_offpivot_le r (r * r - 1)
-    (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p z hz _ hidx
+  intro heq
+  rw [← hpe] at heq
+  obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+  rw [← hσr0] at hi; rw [← hσc0] at hj
+  exact hab ⟨σr.injective hi, σc.injective hj⟩
+
+/-- Off-`(0,0)` entries of `RmatGnorm … z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
+theorem RmatGnorm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    |RmatGnorm r N hN hr p z a b| ≤ 1 := by
+  unfold RmatGnorm
+  rw [RmatG_entry, if_neg (RmatGnorm_offpivot_idx r hr p a b hab)]
+  exact piRatioG_symm_offpivot_le r N hN p z hz _ (RmatGnorm_offpivot_idx r hr p a b hab)
 
 /-- **`innerSGen` in the pivot-normalised form.** `innerSGen r c' T p (…symm(0,z)) = ∫_{S∈box r 4 T}
 frobSq(RmatGnorm·S)^{−c'}`: row/col-permute `RmatG` by `σr,σc` (`frobSq_rmatMul_permG`) under the
 `S`-row-permute change of variables (`matBox_rowperm_lintegralG`). Mirror of `angA1Int_eq_norm`. -/
-theorem innerSGen_eq_norm (r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ) (p : Fin (r * r))
-    (z : Fin (r * r - 1) → ℝ) :
-    innerSGen r c' T p
-        ((piRatioG r (r * r - 1)
-          (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z))
-      = ∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r hr p z) S)) ^ (-c')) := by
-  set y := (piRatioG r (r * r - 1)
-      (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z) with hy
+theorem innerSGen_eq_norm (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ)
+    (p : Fin (r * r)) (z : Fin N → ℝ) :
+    innerSGen r c' T p ((piRatioG r N hN p).symm (0, z))
+      = ∫⁻ S in matBox r 4 T,
+          ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr p z) S)) ^ (-c')) := by
+  set y := (piRatioG r N hN p).symm (0, z) with hy
   set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
   set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
   rw [innerSGen]
   rw [matBox_rowperm_lintegralG T σc
-    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r hr p z) S)) ^ (-c')))]
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr p z) S)) ^ (-c')))]
   refine lintegral_congr (fun S => ?_)
   congr 2
   exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
+
+/-- The `z`-slot of a matrix cell `(a,b) ≠ (0,0)`: the `Fin N` index whose `piRatioG`-decode is
+`eG (σr a, σc b)`. Generic analog of `zslot`; spec is `RmatGnorm_eq_slot`. -/
+noncomputable def slotMatG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (a b : Fin r) : Fin N :=
+  if h : eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p then
+    (Fin.exists_succAbove_eq (show
+      finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b))
+      ≠ finCongr hN p from fun he => h ((finCongr hN).injective he))).choose
+  else ⟨0, by have h9 : 3 * 3 ≤ r * r := Nat.mul_le_mul hr hr; omega⟩
+
+/-- The read-back: `RmatGnorm … z a b = z (slotMatG … a b)` for `(a,b) ≠ (0,0)`. Generic analog of
+`Rmat334norm_eq_zslot`. -/
+theorem RmatGnorm_eq_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    RmatGnorm r N hN hr p z a b = z (slotMatG r N hN hr p a b) := by
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hidx : eG r (σr a, σc b) ≠ p := RmatGnorm_offpivot_idx r hr p a b hab
+  have hentry : RmatGnorm r N hN hr p z a b = (piRatioG r N hN p).symm (0, z) (eG r (σr a, σc b)) := by
+    rw [RmatGnorm, RmatG_entry, if_neg hidx]
+  rw [hentry]
+  have hne : finCongr hN (eG r (σr a, σc b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  have hslot : slotMatG r N hN hr p a b = (Fin.exists_succAbove_eq hne).choose := by
+    rw [slotMatG, dif_pos hidx]
+  have hspec : (finCongr hN p).succAbove (slotMatG r N hN hr p a b)
+      = finCongr hN (eG r (σr a, σc b)) := by
+    rw [hslot]; exact (Fin.exists_succAbove_eq hne).choose_spec
+  rw [piRatioG_symm_apply, ← hspec]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
 
 /-! ### The N2b lower bound → top-row shear → resolved form (per-`z`; mirror of `angularA1_integral_le` + `step3a`) -/
 
