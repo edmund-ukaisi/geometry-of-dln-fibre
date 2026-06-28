@@ -481,10 +481,16 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       -- boundary layers, and `pivotJSucc J = Jb` bridges the last-layer pivot split.
       have hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
           (endpointP0 H hL Pf)).toBlocks₁₂ = 0 := by
-        sorry
+        -- `endpointP0 H hL Pf` is `Pf (firstLayer)` up to the `(firstLayer).castSucc = 0` index cast,
+        -- and `H 0 = H (firstLayer).castSucc` defeq; the bundle's `hPtri` is the same statement.
+        have hfl : (firstLayer hL : Fin L) = ⟨0, by omega⟩ := Fin.ext (by simp [firstLayer])
+        simpa only [endpointP0, hfl] using hPtri
       have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
+        -- BOUNDED CAST-BRIDGE (not new math; templates: `hQf22`/`hcorner'` above, same Jb→J via hpivJ +
+        -- the `endpointQL = Qf (lastLayer)` / `(lastLayer).succ = Fin.last L` width casts). The bundle's
+        -- `hQtri` (about `Qf (lastLayer)` with `Jb = pivotJSucc J`) IS this up to those casts.
         sorry
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
