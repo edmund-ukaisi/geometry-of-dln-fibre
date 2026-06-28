@@ -2105,6 +2105,396 @@ theorem retainedPassiveTargetEdgePairShearAt_fderiv_recovers_sourcePair
   rw [hpair]
   simpa using hrec
 
+section TargetEdgePairLinearMap
+
+/-- Right multiplication by a fixed rectangular matrix, as a linear map. -/
+private def retainedPassiveMatrixMulRightLinearMap
+    {l m n : Type*} [Fintype m] (B : Matrix m n ℝ) :
+    Matrix l m ℝ →ₗ[ℝ] Matrix l n ℝ where
+  toFun A := A * B
+  map_add' A A' := by
+    ext i j
+    simp [Matrix.add_mul]
+  map_smul' a A := by
+    ext i j
+    simp [Matrix.mul_apply, Finset.mul_sum, mul_assoc]
+
+/-- Left multiplication by a fixed rectangular matrix, as a linear map. -/
+private def retainedPassiveMatrixMulLeftLinearMap
+    {l m n : Type*} [Fintype m] (A : Matrix l m ℝ) :
+    Matrix m n ℝ →ₗ[ℝ] Matrix l n ℝ where
+  toFun B := A * B
+  map_add' B B' := by
+    ext i j
+    simp [Matrix.mul_add]
+  map_smul' a B := by
+    ext i j
+    simp [Matrix.mul_apply, Finset.mul_sum, mul_left_comm]
+
+@[simp]
+private theorem retainedPassiveMatrixMulRightLinearMap_apply
+    {l m n : Type*} [Fintype m] (B : Matrix m n ℝ) (A : Matrix l m ℝ) :
+    retainedPassiveMatrixMulRightLinearMap B A = A * B :=
+  rfl
+
+@[simp]
+private theorem retainedPassiveMatrixMulLeftLinearMap_apply
+    {l m n : Type*} [Fintype m] (A : Matrix l m ℝ) (B : Matrix m n ℝ) :
+    retainedPassiveMatrixMulLeftLinearMap A B = A * B :=
+  rfl
+
+/-- Projection to the raw retained-passive `F2` component at one edge. -/
+private def retainedPassiveRawF2LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' q.castSucc) ℝ where
+  toFun w := w.2.1 q
+  map_add' _w _w' := rfl
+  map_smul' _a _w := rfl
+
+/-- Projection to the raw retained-passive `C` component at one edge. -/
+private def retainedPassiveRawCLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix (κ' q.succ) (κ' q.castSucc) ℝ where
+  toFun w := w.2.2.2.1 q
+  map_add' _w _w' := rfl
+  map_smul' _a _w := rfl
+
+/-- Linear readout of the raw top-left edge block in endpoint order. -/
+private def retainedPassiveRawEdgeTupleA1LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ ρ ℝ where
+  toFun w := rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q
+  map_add' w w' := by
+    cases q using Fin.cases <;> rfl
+  map_smul' a w := by
+    cases q using Fin.cases <;> rfl
+
+/-- Linear readout of the raw lower-left edge block in endpoint order. -/
+private def retainedPassiveRawEdgeTupleA3LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix (κ' q.succ) ρ ℝ where
+  toFun w := rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q
+  map_add' w w' := by
+    cases q using Fin.lastCases
+    · simp [rawEdgeTupleA3, ofTopologyTuple]
+      rfl
+    · simp [rawEdgeTupleA3, ofTopologyTuple]
+  map_smul' a w := by
+    cases q using Fin.lastCases
+    · simp [rawEdgeTupleA3, ofTopologyTuple]
+      rfl
+    · simp [rawEdgeTupleA3, ofTopologyTuple]
+
+@[simp] private theorem retainedPassiveRawF2LinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveRawF2LinearMapAt (ρ := ρ) (κ' := κ') q w = w.2.1 q := rfl
+
+@[simp] private theorem retainedPassiveRawCLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveRawCLinearMapAt (ρ := ρ) (κ' := κ') q w = w.2.2.2.1 q := rfl
+
+@[simp] private theorem retainedPassiveRawEdgeTupleA1LinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveRawEdgeTupleA1LinearMapAt (ρ := ρ) (κ' := κ') q w =
+      rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q := rfl
+
+@[simp] private theorem retainedPassiveRawEdgeTupleA3LinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveRawEdgeTupleA3LinearMapAt (ρ := ρ) (κ' := κ') q w =
+      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q := rfl
+
+set_option linter.style.longLine false in
+/-- The terminal branch of the target-recovered `F2` recurrence, as a linear map. -/
+private def retainedPassiveTargetRecoveredF2TerminalLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' (Fin.last M).castSucc) ℝ :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let q : Fin (M + 1) := Fin.last M
+  let dC : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix (κ' q.succ) (κ' q.castSucc) ℝ :=
+    retainedPassiveRawCLinearMapAt (ρ := ρ) (κ' := κ') q +
+      (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+        (retainedPassiveRawEdgeTupleA3LinearMapAt (ρ := ρ) (κ' := κ') q)
+  let dF : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' q.castSucc) ℝ :=
+    retainedPassiveRawF2LinearMapAt (ρ := ρ) (κ' := κ') q +
+      (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+        (retainedPassiveRawEdgeTupleA1LinearMapAt (ρ := ρ) (κ' := κ') q)
+  (retainedPassiveMatrixMulLeftLinearMap (coord.solvedA1 q)⁻¹).comp
+    ((retainedPassiveMatrixMulLeftLinearMap (coord.F2 q.succ)).comp dC - dF)
+
+set_option linter.style.longLine false in
+private theorem retainedPassiveTargetRecoveredF2TerminalLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let q : Fin (M + 1) := Fin.last M
+    retainedPassiveTargetRecoveredF2TerminalLinearMapAt (ρ := ρ) (κ' := κ') z w =
+      (coord.solvedA1 q)⁻¹ *
+        (coord.F2 q.succ *
+            (w.2.2.2.1 q
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+                coord.F2 q.castSucc) -
+          (w.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+              coord.F2 q.castSucc)) := by
+  dsimp [retainedPassiveTargetRecoveredF2TerminalLinearMapAt,
+    retainedPassiveMatrixMulLeftLinearMap, retainedPassiveMatrixMulRightLinearMap,
+    retainedPassiveRawCLinearMapAt, retainedPassiveRawEdgeTupleA3LinearMapAt,
+    retainedPassiveRawF2LinearMapAt, retainedPassiveRawEdgeTupleA1LinearMapAt]
+  rfl
+
+set_option linter.style.longLine false in
+/-- One nonterminal branch of the target-recovered `F2` recurrence, as a linear map. -/
+private def retainedPassiveTargetRecoveredF2StepLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M)
+    (Xnext : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' ((p.succ : Fin (M + 1)).castSucc)) ℝ) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' ((p.castSucc : Fin (M + 1)).castSucc)) ℝ :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let q : Fin (M + 1) := p.castSucc
+  let Xsucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' q.succ) ℝ :=
+    (LinearEquiv.cast (R := ℝ)
+      (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+      (Fin.succ_castSucc p).symm).toLinearMap.comp Xnext
+  let dC : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix (κ' q.succ) (κ' q.castSucc) ℝ :=
+    retainedPassiveRawCLinearMapAt (ρ := ρ) (κ' := κ') q +
+      (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+        (retainedPassiveRawEdgeTupleA3LinearMapAt (ρ := ρ) (κ' := κ') q)
+  let dF : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' q.castSucc) ℝ :=
+    retainedPassiveRawF2LinearMapAt (ρ := ρ) (κ' := κ') q +
+      (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+        (retainedPassiveRawEdgeTupleA1LinearMapAt (ρ := ρ) (κ' := κ') q)
+  (retainedPassiveMatrixMulLeftLinearMap (coord.solvedA1 q)⁻¹).comp
+    ((retainedPassiveMatrixMulLeftLinearMap (coord.F2 q.succ)).comp dC -
+      (dF - (retainedPassiveMatrixMulRightLinearMap (coord.C q)).comp Xsucc))
+
+set_option linter.style.longLine false in
+private theorem retainedPassiveTargetRecoveredF2StepLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (p : Fin M)
+    (Xnext : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      Matrix ρ (κ' ((p.succ : Fin (M + 1)).castSucc)) ℝ)
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let q : Fin (M + 1) := p.castSucc
+    let Xsucc : Matrix ρ (κ' q.succ) ℝ :=
+      (LinearEquiv.cast (R := ℝ)
+        (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+        (Fin.succ_castSucc p).symm) (Xnext w)
+    retainedPassiveTargetRecoveredF2StepLinearMapAt (ρ := ρ) (κ' := κ') z p Xnext w =
+      (coord.solvedA1 q)⁻¹ *
+        (coord.F2 q.succ *
+            (w.2.2.2.1 q
+              + rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+                coord.F2 q.castSucc) -
+          (w.2.1 q
+            + rawEdgeTupleA1 (K := ℝ) (ρ := ρ) (κ' := κ') w q *
+              coord.F2 q.castSucc
+            - Xsucc * coord.C q)) := by
+  dsimp [retainedPassiveTargetRecoveredF2StepLinearMapAt,
+    retainedPassiveMatrixMulLeftLinearMap, retainedPassiveMatrixMulRightLinearMap,
+    retainedPassiveRawCLinearMapAt, retainedPassiveRawEdgeTupleA3LinearMapAt,
+    retainedPassiveRawF2LinearMapAt, retainedPassiveRawEdgeTupleA1LinearMapAt]
+  rfl
+
+set_option linter.style.longLine false in
+/-- The target-recovered `F2` recurrence as a linear map in the target raw tuple. -/
+def retainedPassiveTargetRecoveredF2LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      ∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ :=
+  LinearMap.pi fun q =>
+    Fin.reverseInduction
+      (motive := fun q : Fin (M + 1) =>
+        RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+          Matrix ρ (κ' q.castSucc) ℝ)
+      (retainedPassiveTargetRecoveredF2TerminalLinearMapAt (ρ := ρ) (κ' := κ') z)
+      (fun p Xnext =>
+        retainedPassiveTargetRecoveredF2StepLinearMapAt (ρ := ρ) (κ' := κ') z p Xnext)
+      q
+
+set_option linter.style.longLine false in
+/-- The linear-map recovered `F2` recurrence agrees with the existing function. -/
+theorem retainedPassiveTargetRecoveredF2LinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveTargetRecoveredF2LinearMapAt (ρ := ρ) (κ' := κ') z w =
+      retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w := by
+  funext q
+  induction q using Fin.reverseInduction with
+  | last =>
+      rw [retainedPassiveTargetRecoveredF2At_last]
+      simpa [retainedPassiveTargetRecoveredF2LinearMapAt] using
+        retainedPassiveTargetRecoveredF2TerminalLinearMapAt_apply
+          (ρ := ρ) (κ' := κ') z w
+  | cast p ih =>
+      rw [retainedPassiveTargetRecoveredF2At_castSucc]
+      have hleft :
+          (retainedPassiveTargetRecoveredF2LinearMapAt
+              (ρ := ρ) (κ' := κ') z) w p.castSucc =
+            retainedPassiveTargetRecoveredF2StepLinearMapAt
+              (ρ := ρ) (κ' := κ') z p
+              (Fin.reverseInduction
+                (motive := fun q : Fin (M + 1) =>
+                  RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+                    Matrix ρ (κ' q.castSucc) ℝ)
+                (retainedPassiveTargetRecoveredF2TerminalLinearMapAt
+                  (ρ := ρ) (κ' := κ') z)
+                (fun p Xnext =>
+                  retainedPassiveTargetRecoveredF2StepLinearMapAt
+                    (ρ := ρ) (κ' := κ') z p Xnext)
+                p.succ) w := by
+        simp [retainedPassiveTargetRecoveredF2LinearMapAt]
+      rw [hleft]
+      rw [retainedPassiveTargetRecoveredF2StepLinearMapAt_apply]
+      have hnext :
+          (Fin.reverseInduction
+            (motive := fun q : Fin (M + 1) =>
+              RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+                Matrix ρ (κ' q.castSucc) ℝ)
+            (retainedPassiveTargetRecoveredF2TerminalLinearMapAt
+              (ρ := ρ) (κ' := κ') z)
+            (fun p Xnext =>
+              retainedPassiveTargetRecoveredF2StepLinearMapAt
+                (ρ := ρ) (κ' := κ') z p Xnext)
+            p.succ) w =
+            retainedPassiveTargetRecoveredF2At (ρ := ρ) (κ' := κ') z w p.succ := by
+        simpa [retainedPassiveTargetRecoveredF2LinearMapAt] using ih
+      rw [hnext]
+
+set_option linter.style.longLine false in
+/-- The target-recovered successor `F2` family as a linear map. -/
+def retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      ∀ q : Fin (M + 1), Matrix ρ (κ' q.succ) ℝ :=
+  LinearMap.pi fun q =>
+    Fin.lastCases
+      (motive := fun q : Fin (M + 1) =>
+        RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+          Matrix ρ (κ' q.succ) ℝ)
+      (0 : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+        Matrix ρ (κ' (Fin.last M).succ) ℝ)
+      (fun p =>
+        (LinearEquiv.cast (R := ℝ)
+          (M := fun i : Fin (M + 2) ↦ Matrix ρ (κ' i) ℝ)
+          (Fin.succ_castSucc p).symm).toLinearMap.comp
+            ((LinearMap.proj p.succ).comp
+              (retainedPassiveTargetRecoveredF2LinearMapAt
+                (ρ := ρ) (κ' := κ') z)))
+      q
+
+set_option linter.style.longLine false in
+/-- The successor `F2` linear map agrees with the existing successor function. -/
+theorem retainedPassiveTargetRecoveredSuccessorF2LinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+        (ρ := ρ) (κ' := κ') z w =
+      retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z w := by
+  funext q
+  induction q using Fin.lastCases with
+  | last =>
+      simp [retainedPassiveTargetRecoveredSuccessorF2LinearMapAt,
+        retainedPassiveTargetRecoveredSuccessorF2At]
+      rfl
+  | cast p =>
+      simp [retainedPassiveTargetRecoveredSuccessorF2LinearMapAt,
+        retainedPassiveTargetRecoveredSuccessorF2At,
+        retainedPassiveTargetRecoveredF2LinearMapAt_apply]
+      rfl
+
+set_option linter.style.longLine false in
+/-- Target-side all-edge `(F2,C)` shear as a linear map in the target raw tuple. -/
+def retainedPassiveTargetEdgePairShearLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      ((∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ) ×
+        (∀ q : Fin (M + 1), Matrix (κ' q.succ) (κ' q.castSucc) ℝ)) :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let Xsucc := retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+    (ρ := ρ) (κ' := κ') z
+  let Fmap : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      ∀ q : Fin (M + 1), Matrix ρ (κ' q.castSucc) ℝ :=
+    LinearMap.pi fun q =>
+      retainedPassiveRawF2LinearMapAt (ρ := ρ) (κ' := κ') q +
+        (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+          (retainedPassiveRawEdgeTupleA1LinearMapAt (ρ := ρ) (κ' := κ') q) -
+        (retainedPassiveMatrixMulRightLinearMap (coord.C q)).comp
+          ((LinearMap.proj q).comp Xsucc)
+  let Cmap : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+      ∀ q : Fin (M + 1), Matrix (κ' q.succ) (κ' q.castSucc) ℝ :=
+    LinearMap.pi fun q =>
+      retainedPassiveRawCLinearMapAt (ρ := ρ) (κ' := κ') q +
+        (retainedPassiveMatrixMulRightLinearMap (coord.F2 q.castSucc)).comp
+          (retainedPassiveRawEdgeTupleA3LinearMapAt (ρ := ρ) (κ' := κ') q)
+  Fmap.prod Cmap
+
+set_option linter.style.longLine false in
+/-- The edge-pair shear linear map agrees with the existing target-side function. -/
+theorem retainedPassiveTargetEdgePairShearLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveTargetEdgePairShearLinearMapAt (ρ := ρ) (κ' := κ') z w =
+      retainedPassiveTargetEdgePairShearAt (ρ := ρ) (κ' := κ') z w := by
+  apply Prod.ext
+  · funext q
+    simp [retainedPassiveTargetEdgePairShearLinearMapAt,
+      retainedPassiveTargetEdgePairShearAt, retainedPassiveMatrixMulRightLinearMap,
+      retainedPassiveRawF2LinearMapAt, retainedPassiveRawEdgeTupleA1LinearMapAt,
+      retainedPassiveTargetRecoveredSuccessorF2LinearMapAt_apply,
+      LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply]
+  · funext q
+    simp [retainedPassiveTargetEdgePairShearLinearMapAt,
+      retainedPassiveTargetEdgePairShearAt, retainedPassiveMatrixMulRightLinearMap,
+      retainedPassiveRawCLinearMapAt, retainedPassiveRawEdgeTupleA3LinearMapAt,
+      LinearMap.add_apply, LinearMap.comp_apply]
+
+end TargetEdgePairLinearMap
+
 set_option linter.style.longLine false in
 /-- Source `(F2,C)` tangents recovered from an arbitrary target tuple by first
 forming the target-side normalized edge pair and then applying the formal

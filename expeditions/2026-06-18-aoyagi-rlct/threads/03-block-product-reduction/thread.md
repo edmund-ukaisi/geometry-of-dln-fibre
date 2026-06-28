@@ -18,6 +18,50 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 target edge-pair linear map
+
+Reproduction:
+`reproduction-a2-retained-passive-target-edge-pair-linear-map.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-edge-pair-linear-map.md`.
+Review:
+`review-a2-retained-passive-target-edge-pair-linear-map.md`, PASS by xhigh
+`Lovelace the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetRecoveredF2LinearMapAt
+retainedPassiveTargetRecoveredF2LinearMapAt_apply
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt_apply
+retainedPassiveTargetEdgePairShearLinearMapAt
+retainedPassiveTargetEdgePairShearLinearMapAt_apply
+```
+
+For fixed retained-passive `z`, the backward target-recovered `F2` recurrence
+is now a `LinearMap` in the target raw tuple `w`; the target-recovered
+successor family is also a `LinearMap`; and the all-edge target-side normalized
+`(F2,C)` pair agrees with `retainedPassiveTargetEdgePairShearAt z w`.
+
+The terminal zero branch, nonterminal `Fin.succ_castSucc` cast, and
+noncommutative `Xsucc * coord.C q` term are preserved.  Implementation helpers
+for matrix multiplication, raw projections, and recurrence branches are
+private; this checkpoint exposes only the six component linear-map names above.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with pre-existing warning noise; `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+
+This does not construct a target-side `LinearEquiv`, whole raw-tuple
+normalizer, determinant-one theorem, determinant equality, source-prior
+transport, normal crossings, pole order, or RLCT.
+
+Next frontier: reproduce and package an explicit inverse/equivalence for this
+narrow edge-pair component, or lift it to a whole raw-tuple component shear
+without claiming determinant control prematurely.
+
 ## 2026-06-28 A2 generic shear/product abs-det wrappers
 
 Reproduction:

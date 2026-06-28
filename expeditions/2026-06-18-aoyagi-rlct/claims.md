@@ -141,6 +141,12 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: generic
+  the target-side all-edge `(F2,C)` branch now has a linear-map package:
+  the backward target-recovered `F2` recurrence, its successor family, and
+  `retainedPassiveTargetEdgePairShearAt z w` are all packaged as `LinearMap`s
+  in the target raw tuple, with terminal zero, nonterminal `Fin.succ_castSucc`
+  cast, and the `Xsucc * coord.C q` term preserved; this is only a component
+  linear map, not an equivalence, normalizer, or determinant theorem.  Generic
   determinant infrastructure now has abs-det-one wrappers for product
   congruences, lower refl/refl skew shears, and upper shears; these wrappers
   support a future target-side normalizer but do not construct it.  The

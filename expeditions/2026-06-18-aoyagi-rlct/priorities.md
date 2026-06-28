@@ -19,6 +19,44 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, target edge-pair linear map
+
+The target-normalizer frontier now has the first actual target-side component
+packaged as a linear map.  New public Lean names:
+
+```text
+retainedPassiveTargetRecoveredF2LinearMapAt
+retainedPassiveTargetRecoveredF2LinearMapAt_apply
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt_apply
+retainedPassiveTargetEdgePairShearLinearMapAt
+retainedPassiveTargetEdgePairShearLinearMapAt_apply
+```
+
+For fixed retained-passive `z`, the backward target-recovered `F2` recurrence
+is linear in the target raw tuple `w`; the successor family is linear; and the
+all-edge target-side normalized `(F2,C)` pair
+`retainedPassiveTargetEdgePairShearAt z w` is packaged as a `LinearMap`.
+Terminal zero, the nonterminal `Fin.succ_castSucc` cast, and the
+`Xsucc * coord.C q` term are preserved.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed, full `DLNFibre`
+build passed with pre-existing warning noise, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Lovelace the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-linear-map.md`.
+
+This does not construct a target-side `LinearEquiv`, whole raw-tuple
+normalizer, determinant-one theorem, determinant equality, source-prior
+transport, normal crossings, pole order, or RLCT.
+
+Next frontier: package a narrow target-side edge-pair equivalence or raw-tuple
+component shear only after an explicit inverse has been reproduced; then use
+the generic abs-det wrappers only after determinant-one component identities
+are proved.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, generic determinant wrappers
 
 The target-normalizer frontier now has small generic abs-det-one wrappers for

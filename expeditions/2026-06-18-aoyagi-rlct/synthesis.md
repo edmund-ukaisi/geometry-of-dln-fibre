@@ -48,6 +48,52 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Target Edge-Pair Linear Map
+
+`RetainedPassiveCoordinatesJacobian.lean` now packages the target-side all-edge
+`(F2,C)` component shear as an actual linear map in the target raw tuple.  New
+public Lean names:
+
+```text
+retainedPassiveTargetRecoveredF2LinearMapAt
+retainedPassiveTargetRecoveredF2LinearMapAt_apply
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt
+retainedPassiveTargetRecoveredSuccessorF2LinearMapAt_apply
+retainedPassiveTargetEdgePairShearLinearMapAt
+retainedPassiveTargetEdgePairShearLinearMapAt_apply
+```
+
+The construction first packages the backward target-recovered `F2` recurrence
+as a `LinearMap`, with the terminal formula matching
+`retainedPassiveTargetRecoveredF2At_last` and the nonterminal formula matching
+`retainedPassiveTargetRecoveredF2At_castSucc`, including the
+`Fin.succ_castSucc` cast and the `Xsucc * coord.C q` subtraction.  It then
+packages the successor family by terminal zero/nonterminal cast, and finally
+packages `retainedPassiveTargetEdgePairShearAt z w` as the product of the
+linear `F2`-output family and linear `C`-output family.  Implementation
+helpers are private; the public API is the six names above.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-linear-map.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-linear-map.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-linear-map.md`,
+PASS by xhigh `Lovelace the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with pre-existing warning noise; `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+The three public apply theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a target-side `LinearEquiv`, raw-tuple normalizer,
+determinant-one theorem, raw coordinate Jacobian determinant equality,
+source-prior transport, normal crossings, pole order, or RLCT.  The next safe
+rung is an explicit inverse/equivalence for this narrow edge-pair component or
+a whole raw-tuple component shear built from it.
+
 ## Latest A2 Generic Shear/Product Abs-Det Wrappers
 
 `MatrixLinearDeterminant.lean` now has four generic determinant infrastructure
