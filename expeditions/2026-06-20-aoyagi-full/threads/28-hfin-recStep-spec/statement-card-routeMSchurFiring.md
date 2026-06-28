@@ -42,11 +42,16 @@ recurse on the lower corank-`(r−1)` Schur core via the abstract IH — yieldin
   finiteness — a-axis divisor `c' < r²/2` × the ratio residual) — **fully proven**.
 - `schurRatioResidGen` (the subcritical fold `c' ≤ 2 → c'' = 3` via `ofReal_rpow_neg_le_one_addG`).
 - the generic perm helpers `frobSq_rmatMul_permG`, `matBox_rowperm_lintegralG` (pivot → (0,0)).
-- the IH-invoking carving CORE `schurResidG_translate_lt_top` (`matBoxSq_translate_le` + the abstract
-  `SchurLowerIH`). **axiom-clean**.
+- the generic flatten + `r²`-chart cover REUSES the canonical `RouteMSchurGenCover` (at `p = 4`);
+  only `RmatG` / `gFlatG_blowup_radial` (the radial pull-out) are local.
+- **all the carving's ANALYTIC prerequisites, each axiom-clean:** `core_T_peel_le_ae_G` (generic
+  Morse-peel-under-integral), `matBoxSq_translate_le`, the IH-invoking `schurResidG_translate_lt_top`
+  (`< ⊤`), and the `Sh`-UNIFORM `_le` form `coreSchurGenVal` + `coreSchurGenVal_lt_top` +
+  `schurResidG_translate_le` (the boundary-integrable bound the carve-first outer `rest`-integral consumes).
 
 `#print axioms` (force-recompiled, per the olean-masking gate): `schurCore4_one`,
-`schurResidG_translate_lt_top` are `[propext, Classical.choice, Quot.sound]` (clean); the chain through
+`schurResidG_translate_lt_top`, `schurResidG_translate_le`, `coreSchurGenVal_lt_top`,
+`gFlatG_blowup_radial` are `[propext, Classical.choice, Quot.sound]` (clean); the chain through
 `schur_matBoxG_chart_lt_top` / `schurRatioResidGen` / `schurCoreGen_firing` correctly shows `sorryAx`,
 confined to the single `schurRatioResidGen_mid`.
 
