@@ -342,6 +342,24 @@ theorem readE_wInt_pivot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
   rw [readE_wInt M ha (k + 1) ⟨k, hk⟩ i j, pivotEIndicator, Matrix.of_apply]
   simp only [Fin.val_mk, true_and]
 
+/-- **The live decoder at `rfin = 0` IS the dead-leaf structured decoder.** Field-wise: Bmat/Nblk/Wblk/Rmat
+are definitional copies; the `Rfin` field's `h ▸ 0` transported-zero equals `genBlkFlatStruct`'s `0`.
+
+SORRY (a well-diagnosed micro-cast ceiling — the recurring `h ▸ 0` Rfin transport, NOT math): the only
+non-`rfl` field is `Rfin`, where `(genBlkFlatLive … 0 …).Rfin s = (if h : s = L then h ▸ (0:Matrix …)
+else 0)` and `genBlkFlatStruct`'s is `0`. The goal `h ▸ (0:Matrix (Fin (Text L)) (Fin (Wext L))) = 0`
+is TRIVIALLY true and DOES close as a bare goal (`split; · rename_i h; subst h; rfl; · rfl`, verified in a
+standalone probe). But threading it through the structure-projection `.Rfin s` defeats the motive: `change`/
+`show` to the dite fails "invalid ▸, expected result type of cast", and `unfold`+`split` can't expose the
+dite under the projection. Thrashed >6× across turns on this exact micro-wall; deferred per cast-discipline.
+FIX (fresh eye): either restate `genBlkFlatLive`'s `Rfin` field WITHOUT the `h ▸` cast (e.g. via an
+`Fin.cast`-free leaf reader, or `fun k => if k = L then rfin else 0` with a width-eq hypothesis), or an
+`eqRec_zero`/`@[ext] GenBlk` lemma. The load-bearing `genBlkFlatLiveR1_wInt_Rmat` (pivot agreement) is PROVEN. -/
+theorem genBlkFlatLive_zero_eq (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    genBlkFlatLive M t ha 0 x = genBlkFlatStruct M t ha x := by
+  sorry
+
 /-- **The R1 decoder at `(wInt p, rfin = 0)` equals the dead-leaf structured decoder at `wInt p`.**
 Field-by-field: Bmat/Nblk/Wblk are the structured decoder's (unchanged); `Rfin = 0` on both; `Rmat`
 agrees — away from `p` the `Function.update` is the identity, and at `p` the fixed `rmatPad(pivotEIndicator)`
