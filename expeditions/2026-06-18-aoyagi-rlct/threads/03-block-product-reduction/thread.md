@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 endpoint-transport chart-produced finite integral
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-chart-produced-finite-integral.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-chart-produced-finite-integral.md`.
+
+Lean now exposes endpoint-transport continuity and the Case 2
+chart-produced finite-integral handoff:
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype
+PaperEndpointFixedBaseRegularCoordinateSourceData.continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+```
+
+The continuity layer removes the separate `hsourceChart` hypothesis for the
+exact endpoint-transported Case 2 source chart.  The finite-integral theorem is
+still chart-produced only: the measure is the selected-entry signed-box
+pushforward by `sourceChart`, and the theorem keeps local loss/density
+hypotheses, source-data, positive radii, exponent inequality, endpoint
+equivalences, and source-edge-family measurable/Borel structure explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed with only the existing imported warning profile.
+
+This does not identify an original source prior, compare Jacobians for an
+external prior, prove source-rank coverage, normal crossings, pole order, or
+RLCT.
+
 ## 2026-06-28 A2 fixed-base retained-passive pre-measure inputs
 
 Reproduction:

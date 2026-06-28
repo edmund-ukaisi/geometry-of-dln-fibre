@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint-transport chart-produced finite integral
+
+The endpoint-transported explicit Case 2 source chart now has the local
+chart-produced finite-integral handoff:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+```
+
+Supporting continuity infrastructure also landed:
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype
+PaperEndpointFixedBaseRegularCoordinateSourceData.continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport
+```
+
+This removes the separate `hsourceChart : AEMeasurable sourceChart ...`
+hypothesis for this exact Case 2 endpoint-transport chart.  The finite-integral
+theorem still keeps the local loss lower bound, density nonnegativity and upper
+bound, positive radii, exponent inequality, fixed-base source-data hypothesis,
+endpoint equivalences, and measurable/Borel structure on the source
+edge-family space explicit.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-chart-produced-finite-integral.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-chart-produced-finite-integral.md`.
+
+This is a chart-produced measure result only.  It does not identify an original
+source prior, compare Jacobians for an external prior, prove source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint-transport source-family residual square-sum
 
 The endpoint-transported explicit Case 2 source-family chart now has a

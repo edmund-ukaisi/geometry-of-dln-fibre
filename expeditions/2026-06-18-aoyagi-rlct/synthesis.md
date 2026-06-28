@@ -48,6 +48,39 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Endpoint-Transport Chart-Produced Finite Integral
+
+The endpoint-transported explicit Case 2 fixed-base source chart is now
+continuous and feeds the generic chart-produced selected-entry finite-integral
+handoff:
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype
+PaperEndpointFixedBaseRegularCoordinateSourceData.continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+```
+
+The proof first shows endpoint transport is finite product-coordinate
+submatrix reindexing and therefore continuous.  It then composes the continuous
+Case 2 selected-entry retained-passive datum, endpoint transport, and the
+fixed-base retained-passive source-chart map.  The finite-integral theorem
+applies the generic chart-produced local-measure handoff with `M = 1`, using
+the already-proved Case 2 local-source membership and source-readback matrix
+identity.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-chart-produced-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-chart-produced-finite-integral.md`.
+
+This is not original source-prior transport.  The source measure is explicitly
+the selected-entry signed-box measure pushed forward by the endpoint-transport
+chart.  Local loss/density hypotheses, source-data, radii, exponent inequality,
+endpoint equivalences, and measurable/Borel structure on the source edge-family
+space remain explicit.  No normal crossings, pole order, or RLCT extraction is
+proved here.
+
 ## Latest A2 Case 2 Endpoint-Transport Source-Family Residual Square-Sum
 
 The two-edge Case 2 endpoint-transport source chart now exposes its fixed-base

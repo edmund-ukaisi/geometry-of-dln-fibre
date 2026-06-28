@@ -827,6 +827,97 @@ theorem continuous_F3
   have h5 := continuous_snd.comp h4
   simpa [topologyTuple] using h5
 
+@[continuity, fun_prop]
+theorem continuous_endpointTransport
+    {M : ℕ} {ρ K : Type*} {κ κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] (e : ∀ j, κ j ≃ κ' j) :
+    Continuous
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := K) (ρ := ρ) κ ↦ data.endpointTransport e) := by
+  have hA1 :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          data.A1passive) := by
+    refine continuous_pi ?_
+    intro p
+    exact continuous_A1passive (K := K) (ρ := ρ) (κ' := κ) p
+  have hF2 :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          fun p : Fin (M + 1) ↦
+            (data.F2 p).submatrix id (e p.castSucc).symm) := by
+    refine continuous_pi ?_
+    intro p
+    exact
+      (continuous_F2 (K := K) (ρ := ρ) (κ' := κ) p).matrix_submatrix
+        id (e p.castSucc).symm
+  have hA3 :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          fun p : Fin M ↦
+            (data.A3passive p).submatrix (e p.castSucc.succ).symm id) := by
+    refine continuous_pi ?_
+    intro p
+    exact
+      (continuous_A3passive (K := K) (ρ := ρ) (κ' := κ) p).matrix_submatrix
+        (e p.castSucc.succ).symm id
+  have hC :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          fun p : Fin (M + 1) ↦
+            (data.C p).submatrix (e p.succ).symm (e p.castSucc).symm) := by
+    refine continuous_pi ?_
+    intro p
+    exact
+      (continuous_C (K := K) (ρ := ρ) (κ' := κ) p).matrix_submatrix
+        (e p.succ).symm (e p.castSucc).symm
+  have hCtop :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          data.Ctop) :=
+    continuous_Ctop (K := K) (ρ := ρ) (κ' := κ)
+  have hF3 :
+      Continuous
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := ρ) κ ↦
+          data.F3.submatrix (e (Fin.last (M + 1))).symm id) :=
+    (continuous_F3 (K := K) (ρ := ρ) (κ' := κ)).matrix_submatrix
+      (e (Fin.last (M + 1))).symm id
+  apply continuous_induced_rng.2
+  change Continuous
+    (fun data : RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := ρ) κ ↦
+      ((data.A1passive),
+        ((fun p : Fin (M + 1) ↦
+            (data.F2 p).submatrix id (e p.castSucc).symm),
+          ((fun p : Fin M ↦
+              (data.A3passive p).submatrix (e p.castSucc.succ).symm id),
+            ((fun p : Fin (M + 1) ↦
+                (data.C p).submatrix (e p.succ).symm (e p.castSucc).symm),
+              (data.Ctop,
+                data.F3.submatrix (e (Fin.last (M + 1))).symm id))))))
+  exact hA1.prodMk (hF2.prodMk (hA3.prodMk (hC.prodMk (hCtop.prodMk hF3))))
+
+theorem continuous_endpointTransport_detChart_subtype
+    {M : ℕ} {ρ K : Type*} {κ κ' : Fin (M + 2) → Type*}
+    [CommRing K] [TopologicalSpace K] [Fintype ρ] [DecidableEq ρ]
+    (e : ∀ j, κ j ≃ κ' j) :
+    Continuous
+      (fun data :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ // data.detChart} ↦
+        (⟨data.1.endpointTransport e,
+          (endpointTransport_detChart (K := K) (ρ := ρ) e data.1).2 data.2⟩ :
+          {data : RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := ρ) κ' // data.detChart})) :=
+  ((continuous_endpointTransport (K := K) (ρ := ρ) e).comp
+    continuous_subtype_val).subtype_mk _
+
 /-- The raw top-left edge block readout is continuous in tuple coordinates. -/
 theorem continuous_rawEdgeTupleA1
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}

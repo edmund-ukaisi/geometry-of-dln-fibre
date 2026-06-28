@@ -140,6 +140,22 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 endpoint-transport chart-produced finite
+  integral, 2026-06-28.** Lean now exposes
+  `ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport`,
+  `ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype`,
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport`,
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure`.
+  The endpoint-transported explicit Case 2 fixed-base source chart is
+  continuous, hence supplies the measurability input for the generic
+  chart-produced selected-entry finite-integral handoff.  The source measure is
+  the selected-entry signed-box pushforward by this chart; local loss and
+  density bounds, source-data, radii, exponent inequality, endpoint
+  equivalences, and measurable/Borel structure on the source edge-family space
+  remain explicit.  This does not identify an original source prior, compare
+  Jacobians for an external prior, prove source-rank coverage, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, Case 2 endpoint-transport source-family residual
   square-sum, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData`
