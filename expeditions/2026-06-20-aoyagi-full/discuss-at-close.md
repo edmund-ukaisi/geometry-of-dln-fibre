@@ -811,3 +811,27 @@ as a REUSABLE `local_constant_rank_chart` interface that BOTH L2 (1131) and D1(a
 producer-internal specialization. If built reusable, D1 collapses to (a)=reuse + (b)=pure algebra. Surface to genm-l2
 when it transitions KC1 → producer; don't block. Net for this tick: the critical path is at **maximal sound
 parallelism** (4 fronts on named sorries); no further front is warranted without front-running a dependency.
+
+### Item 41 — FRAMING CORRECTION: the ∀M-smeared lift is materially larger than "template parametrization" (2026-06-28)
+genm-boundary (R1-LOWER smeared, bg `a223…`) rested at a genuine wall with a finding that **corrects the controller's
+de-risking**. I had de-risked the ∀M-smeared lift (UPDATE-191) to "3 bounded families, all r·c≤2 — just parametrize
+the (1,2,1)/(2,3,1)/(1,3,2) validate-small templates, charge through." genm-boundary + a decorrelated Codex
+(`genM11-arch`) found this **under-estimates the (1,1) family** (34/46, the largest): it spans **L∈{2,3,4}** with
+varying bottleneck layer + flatDim, and for L≥3 the front `P = A⁰·A¹·…` is a **degree-(L−1) matrix product**. The
+validate-smalls' per-M explicit reshape (`packNNN`/`finNEquivFlatIdxNNN`/`splitN`) is **scaffolding, not the ∀M
+substrate** — it can't generalize over varying L/flatDim. The lift must adopt the **boundary-CLEAN "Option-A"
+flat-coordinate architecture** (generic `deepestCoords`/`paramsEquivFlat_symm_decode`/`LossHomogeneity`, front product
+carried abstractly), not a template reshape.
+
+**Still a BOUNDED build, NOT a research wall** (per the ambition calibration): the missing piece — the front-bottleneck
+→ rank-one bridge — is standard linear algebra (product through a `Text=r=1` width-1 layer ⟹ likely a literal outer
+product `u·vᵀ` ⟹ rank-one columns). genm-boundary banked the load-bearing generic cancellation
+(`scalarGram_cancel_of_rankOneColumns`, sorry-free/S2-free/validated-5/5, on branch `aoyagi-full-genM-smeared-lift`,
+NOT yet on canonical) and rested soundly at the fresh-infrastructure sub-target rather than sinking it silently under a
+"charge through" framing. **Controller decision:** took genm-boundary's recommendation (b)-then-(a) — spawned a
+decorrelated pen-and-paper (`genm-frontrank`) to adjudicate the front-bottleneck → rank-one structural fact (mechanism
++ exact statement + minimal Lean bridge + whether the (2,1)/(1,2) families also need Option-A) BEFORE the large
+formalise, given the framing was just corrected (bedrock-checkpoint: decorrelate before a large fresh build). genm-boundary
+stood down; its lemma stays banked on the feature branch (integrate the (1,1) atom as a complete unit, not the lone lemma).
+**Operator note:** the R1-LOWER smeared branch is a larger build than synthesis UPDATE-191 implied; no research wall,
+but the "3 quick template parametrizations" estimate was wrong. Watching whether the recalibration extends to all 3 families.
