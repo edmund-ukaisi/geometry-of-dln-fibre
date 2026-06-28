@@ -72,3 +72,18 @@ do NOT taint `core_schur3_lt_top` — `#print axioms` confirms).
 and the (3,3,4) reuse (`ratioResidual_lt_top`) is radius-1-baked (the angular z-box is always [−1,1]^8; only
 the S-box radius differs). ROADMAP: build the matrix-space `lintegral_comp_smul` (or radius-T versions of
 the (3,3,4) `Jint`/`Ginner` route) to lift to general T. The c'≤2 range IS covered (exponent-bump to c''=3).
+
+## GENERAL-T LIFT LANDED (2026-06-28, genm-c3wire)
+
+The T=1 caveat is now CLOSED. Added (all sorry-free, `#print axioms = [propext, Classical.choice, Quot.sound]`):
+- `lintegral_matBox_smul (r n)(T)(0<T)(g)(hg) : ∫_{matBox r n T} g = ofReal(T^(r*n)) · ∫_{matBox r n 1} g(T•·)`
+  — the REUSABLE matrix-space radius change-of-variables. Built from `Measure.map_addHaar_smul` (volume on
+  `Fin r → Fin n → ℝ` is addHaar, `finrank = r*n`) + `lintegral_map` + `lintegral_smul_measure`, via the
+  indicator form. The shared dependency genm-recstep consumes for its own radius lifts.
+- `smul_mem_matBox_iff` (T•Y ∈ matBox r n T ↔ Y ∈ matBox r n 1), `frobSq_rmatMul_smul_both`
+  (degree-4 homogeneity `frobSq((T•Δ)·(T•S)) = T⁴·frobSq(Δ·S)`).
+- `core_schur3_lt_top (c')(0<c')(c'<4)(T)(0<T)` — the BARE name is now GENERAL-T (symmetry with
+  `core_schur2_lt_top`); the former unit-box is demoted to `core_schur3_lt_top_unitBox`. General-T
+  `= ofReal(T^{21−4c'})·(unit box)`: scale the Δ-box (outer, Jac T^9) then the S-box (inner, Jac T^12) via
+  the primitive, pull `T^{−4c'}` out of the integrand by the degree-4 homogeneity, the radius factor
+  `T^{21−4c'}` is a finite constant ⟹ finiteness from the unit box.

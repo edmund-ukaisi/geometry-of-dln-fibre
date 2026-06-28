@@ -851,12 +851,147 @@ NOT the corank-2 `2`) — at the unit box (the `(3,3,4)` `routeMBaseNbhd` radius
 firing: the `Δ`-outer integral reindexes to the `Fin 9` flat carrier (`matBox3_outer_flat`), `recStep`
 covers it by the 9 max-modulus-entry charts (`gFlat3_cover_sum`), each chart finite
 (`matBox3_chart_lt_top`), summed by `ENNReal.sum_lt_top`. The inner JOINT heart reuses the `(3,3,4)` anchor's
-`zE`/`bgShift` `M22 ↦ Δ−Sh` recognition (`ratioResidual_lt_top`, S2-free). The general-`T` box-scaling
-(`= T^{21−4c'}·` this) is a roadmapped extension (needs the matrix-space `lintegral_comp_smul`). -/
-theorem core_schur3_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) :
+`zE`/`bgShift` `M22 ↦ Δ−Sh` recognition (`ratioResidual_lt_top`, S2-free). The general-`T` form
+(`= T^{21−4c'}·` this) is `core_schur3_lt_top`, lifted via the box-scaling primitive `lintegral_matBox_smul`. -/
+theorem core_schur3_lt_top_unitBox (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) :
     (∫⁻ Δ in matBox 3 3 1, ∫⁻ S in matBox 3 4 1,
         ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))) < ⊤ := by
   rw [matBox3_outer_flat c' 1, gFlat3_cover_sum c' 1]
   exact ENNReal.sum_lt_top.2 (fun p _ => matBox3_chart_lt_top c' hc0 hc' p)
+
+/-! ## The matrix-box scaling primitive (general `r, n` — the reusable radius-change-of-variables)
+
+The `Fin r → Fin n → ℝ` matrix space is a finite-dimensional normed space with `finrank = r·n` and
+`volume` an additive-Haar measure, so the dilation `X ↦ T • X` (`T ≠ 0`) scales `volume` by `|T|^{r·n}`
+(`Measure.map_addHaar_smul`). The box `matBox r n T` is the `T`-dilation of the unit box `matBox r n 1`,
+so a box-integral at radius `T` equals `T^{r·n}` times the unit-box integral of the `T`-dilated integrand.
+The reusable radius-change-of-variables the corank-3 (and recursion) general-`T` lifts consume. -/
+
+/-- `T • Y ∈ matBox r n T ↔ Y ∈ matBox r n 1` for `T > 0` (`|T·Y i k| ≤ T ⟺ |Y i k| ≤ 1`, entrywise). -/
+theorem smul_mem_matBox_iff (r n : ℕ) (T : ℝ) (hT : 0 < T) (Y : Fin r → Fin n → ℝ) :
+    (T • Y) ∈ matBox r n T ↔ Y ∈ matBox r n 1 := by
+  simp only [matBox, Set.mem_setOf_eq, Pi.smul_apply, smul_eq_mul, Set.mem_Icc]
+  constructor
+  · intro h i k; have := h i k
+    constructor <;> nlinarith [this.1, this.2]
+  · intro h i k; have := h i k
+    constructor <;> nlinarith [this.1, this.2]
+
+/-- **The matrix-box scaling primitive (reusable).** For `T > 0` and a measurable `g`,
+`∫_{matBox r n T} g = ofReal(T^{r·n}) · ∫_{matBox r n 1} g(T • ·)`. The radius-change-of-variables: the
+dilation `X ↦ T·X` scales `volume` by `|T|^{r·n}` (`Measure.map_addHaar_smul`, `finrank = r·n`), and
+carries the unit box onto `matBox r n T`. -/
+theorem lintegral_matBox_smul (r n : ℕ) (T : ℝ) (hT : 0 < T)
+    (g : (Fin r → Fin n → ℝ) → ℝ≥0∞) (hg : Measurable g) :
+    (∫⁻ X in matBox r n T, g X)
+      = ENNReal.ofReal (T ^ (r * n)) * ∫⁻ Y in matBox r n 1, g (T • Y) := by
+  have hfr : Module.finrank ℝ (Fin r → Fin n → ℝ) = r * n := by
+    rw [Module.finrank_pi_fintype]; simp [Fintype.card_fin]
+  set φ : (Fin r → Fin n → ℝ) → (Fin r → Fin n → ℝ) := fun Y => T • Y with hφ
+  -- map φ volume = ofReal |（T^{r·n})⁻¹| • volume
+  have hmap : Measure.map φ (volume : Measure (Fin r → Fin n → ℝ))
+      = ENNReal.ofReal (|(T ^ (r * n))⁻¹|) • volume := by
+    have := Measure.map_addHaar_smul (volume : Measure (Fin r → Fin n → ℝ)) (ne_of_gt hT)
+    rwa [hfr] at this
+  -- the indicator form: ∫_{matBox r n T} g = ∫ (matBox r n T).indicator g ∂volume
+  rw [← lintegral_indicator (matBox_measurableSet r n T),
+      ← lintegral_indicator (matBox_measurableSet r n 1)]
+  -- pull the constant out of the RHS indicator integral
+  have hgsmul : Measurable (fun Y => g (T • Y)) := hg.comp (measurable_const_smul T)
+  -- rewrite RHS: ofReal(T^{rn}) · ∫ (box1).indicator (g∘φ) = ∫ (box1).indicator (g∘φ) scaled
+  -- LHS via map: ∫ (boxT).indicator g ∂volume = ofReal(T^{rn}) · ∫ ((boxT).indicator g)∘φ ∂volume
+  -- the constant product `T^{rn} · |（T^{rn})⁻¹| = 1`
+  have hconst : ENNReal.ofReal (T ^ (r * n)) * ENNReal.ofReal (|(T ^ (r * n))⁻¹|) = 1 := by
+    rw [← ENNReal.ofReal_mul (by positivity), abs_of_nonneg (by positivity),
+      mul_inv_cancel₀ (by positivity), ENNReal.ofReal_one]
+  have hkey : (∫⁻ X, (matBox r n T).indicator g X ∂volume)
+      = ENNReal.ofReal (T ^ (r * n)) * ∫⁻ Y, ((matBox r n T).indicator g) (φ Y) ∂volume := by
+    have hmeas_ind : Measurable ((matBox r n T).indicator g) :=
+      hg.indicator (matBox_measurableSet r n T)
+    -- ∫ h ∂(map φ vol) = ∫ h∘φ ∂vol  (lintegral_map)
+    have h1 : (∫⁻ Y, ((matBox r n T).indicator g) (φ Y) ∂volume)
+        = ∫⁻ X, (matBox r n T).indicator g X ∂(Measure.map φ volume) :=
+      (lintegral_map hmeas_ind (by fun_prop)).symm
+    rw [h1, hmap, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hconst, one_mul]
+  rw [hkey]
+  congr 1
+  -- ((boxT).indicator g)(φ Y) = (box1).indicator (g∘φ) Y, since φ Y ∈ boxT ⟺ Y ∈ box1
+  refine lintegral_congr (fun Y => ?_)
+  by_cases hY : Y ∈ matBox r n 1
+  · have hφY : φ Y ∈ matBox r n T := (smul_mem_matBox_iff r n T hT Y).2 hY
+    rw [Set.indicator_of_mem hφY, Set.indicator_of_mem hY]
+  · have hφY : φ Y ∉ matBox r n T := fun h => hY ((smul_mem_matBox_iff r n T hT Y).1 h)
+    rw [Set.indicator_of_notMem hφY, Set.indicator_of_notMem hY]
+
+/-- **Degree-4 homogeneity of the corank-`r` core** `frobSq((T•Δ)·(T•S)) = T⁴·frobSq(Δ·S)`: each factor
+contributes degree 2 (`radialDelta_loss_factor` left + a right pull-through), squared in `frobSq`. -/
+theorem frobSq_rmatMul_smul_both {r n p : ℕ} (T : ℝ) (Δ : Fin r → Fin n → ℝ) (S : Fin n → Fin p → ℝ) :
+    frobSq (rmatMul (T • Δ) (T • S)) = T ^ 4 * frobSq (rmatMul Δ S) := by
+  have hentry : rmatMul (T • Δ) (T • S) = fun i j => T ^ 2 * rmatMul Δ S i j := by
+    funext i j
+    unfold rmatMul
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    show (T • Δ) i k * (T • S) k j = T ^ 2 * (Δ i k * S k j)
+    simp only [Pi.smul_apply, smul_eq_mul]; ring
+  rw [hentry]
+  unfold frobSq
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  ring
+
+/-- **The corank-3 core finiteness, CLOSED (general box radius `T`).** `∫_{Δ∈matBox 3 3 T}∫_{S∈matBox 3 4 T}
+frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}`, every `T > 0`. The general-`T` form (symmetry with the
+corank-2 `core_schur2_lt_top`), lifted from the unit box `core_schur3_lt_top_unitBox` via the box-scaling
+primitive `lintegral_matBox_smul` (radius CoV on both the `Δ`- and `S`-boxes, Jacobian `T^9·T^{12}`) plus the
+degree-4 core homogeneity `frobSq_rmatMul_smul_both` (`frobSq((T•Δ)·(T•S)) = T⁴·frobSq(Δ·S)`): the radius
+contributes the finite constant factor `T^{21−4c'}`, so finiteness transfers from the unit box. -/
+theorem core_schur3_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ Δ in matBox 3 3 T, ∫⁻ S in matBox 3 4 T,
+        ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))) < ⊤ := by
+  -- the inner S-integrand (a function of Δ) and the joint (Δ,S)-integrand, both measurable
+  have hmeasS : ∀ Δ : Fin 3 → Fin 3 → ℝ,
+      Measurable (fun S : Fin 3 → Fin 4 → ℝ => ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))) := by
+    intro Δ
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    unfold frobSq rmatMul; fun_prop
+  have hmeasΔ : Measurable (fun Δ : Fin 3 → Fin 3 → ℝ =>
+      ∫⁻ S in matBox 3 4 T, ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))) := by
+    apply Measurable.lintegral_prod_right (f := fun Δ S =>
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c')))
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    unfold frobSq rmatMul; fun_prop
+  -- scale the Δ-box (outer), then the S-box (inner), then pull the radius constants out
+  rw [lintegral_matBox_smul 3 3 T hT _ hmeasΔ]
+  have hinner : ∀ Δ : Fin 3 → Fin 3 → ℝ,
+      (∫⁻ S in matBox 3 4 T, ENNReal.ofReal ((frobSq (rmatMul (T • Δ) S)) ^ (-c')))
+        = ENNReal.ofReal (T ^ (3 * 4)) * ENNReal.ofReal (T ^ (-(4 : ℝ) * c'))
+          * ∫⁻ S' in matBox 3 4 1, ENNReal.ofReal ((frobSq (rmatMul Δ S')) ^ (-c')) := by
+    intro Δ
+    rw [lintegral_matBox_smul 3 4 T hT _ (hmeasS (T • Δ))]
+    rw [mul_assoc]
+    congr 1
+    rw [← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+    refine lintegral_congr (fun S' => ?_)
+    rw [frobSq_rmatMul_smul_both T Δ S']
+    -- (T⁴·F)^{−c'} = T^{−4c'}·F^{−c'}
+    rw [← ENNReal.ofReal_mul (by positivity)]
+    congr 1
+    rw [Real.mul_rpow (by positivity) (frobSq_nonneg _)]
+    congr 1
+    rw [← Real.rpow_natCast T 4, ← Real.rpow_mul (le_of_lt hT)]
+    congr 1; push_cast; ring
+  rw [lintegral_congr hinner]
+  -- pull all radius constants out: ofReal(T^9)·∫_Δ' [ofReal(T^12)·ofReal(T^{−4c'})·(inner unit)]
+  rw [lintegral_const_mul' _ _ (by
+    exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top)]
+  -- finiteness: the constant `ofReal(T^9)·ofReal(T^12)·ofReal(T^{−4c'})` is < ⊤, and the unit-box integral
+  refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.mul_lt_top
+    (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top) ?_)
+  exact core_schur3_lt_top_unitBox c' hc0 hc'
 
 end DLNFibre.DLN.RLCT
