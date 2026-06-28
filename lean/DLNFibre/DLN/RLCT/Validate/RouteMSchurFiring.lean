@@ -1217,6 +1217,54 @@ theorem bgShiftG_entry_le (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) (hv : ∀ s, |
         mul_le_mul (hv _) (hv _) (abs_nonneg _) (by norm_num)
     _ = 1 := by norm_num
 
+/-- The defining spec of `slotMatG` on a non-`(0,0)` cell: `(finCongr hN p).succAbove (slotMatG … a b)
+= finCongr hN (eG r (σr a, σc b))` (the `Fin N`-slot decodes to the cell's flattened index). The bijection
+keystone (`Fin N ≃ {non-pivot cells}` via `succAbove`/`finCongr`/`eG`). -/
+theorem slotMatG_spec (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) (a b : Fin r)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    (finCongr hN p).succAbove (slotMatG r N hN hr p a b)
+      = finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+          (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) := by
+  have hidx : eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p :=
+    RmatGnorm_offpivot_idx r hr p a b hab
+  have hne : finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  rw [slotMatG, dif_pos hidx]
+  exact (Fin.exists_succAbove_eq hne).choose_spec
+
+/-- The off-`(0,0)` cell of `Fin r × Fin r` for a carve-slot, in the firing's `Fin r` world (NOT
+`cellOfG`'s `Fin ((r-1)+1)`, which forces a cast): `M22 (a,b) ↦ (a+1, b+1)`, `g a ↦ (a+1, 0)`,
+`b b ↦ (0, b+1)`. The `Fin r`-native cell enumeration for the `zEG` carve. -/
+noncomputable def cellR (r : ℕ) (hr : 3 ≤ r) :
+    (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) → Fin r × Fin r
+  | Sum.inl (a, b) => (⟨(a : ℕ) + 1, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+  | Sum.inr (Sum.inl a) => (⟨(a : ℕ) + 1, by omega⟩, ⟨0, by omega⟩)
+  | Sum.inr (Sum.inr b) => (⟨0, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+
+/-- `cellR` lands on non-`(0,0)` cells. -/
+theorem cellR_ne_zero (r : ℕ) (hr : 3 ≤ r) (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    ¬ ((cellR r hr s).1 = ⟨0, by omega⟩ ∧ (cellR r hr s).2 = ⟨0, by omega⟩) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellR, Fin.ext_iff]
+
+/-- `cellR` is injective. -/
+theorem cellR_injective (r : ℕ) (hr : 3 ≤ r) : Function.Injective (cellR r hr) := by
+  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
+    simp only [cellR, Prod.mk.injEq, Fin.ext_iff] at h
+  · obtain ⟨h1, h2⟩ := h
+    have ea : a1 = a2 := Fin.ext (by omega)
+    have eb : b1 = b2 := Fin.ext (by omega)
+    subst ea; subst eb; rfl
+  · omega
+  · omega
+  · omega
+  · have ea : a1 = a2 := Fin.ext (by omega); subst ea; rfl
+  · omega
+  · omega
+  · omega
+  · have eb : b1 = b2 := Fin.ext (by omega); subst eb; rfl
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
