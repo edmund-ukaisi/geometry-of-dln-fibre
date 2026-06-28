@@ -443,4 +443,198 @@ theorem l2T1pConj_sub_T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     l2RConj_zero H r B hB hr hL hL2eq hZ]
   simp [Matrix.zero_mul, l2WConj_zero H r B hB hr hL hL2eq hZ]
 
+/-! ## S2/S4 — entrywise `ContDiff` of the conjugated blocks (deepBlk const + read)
+
+Each conjugated block entry is `ContDiff ⊤` (the bare's `contDiff_l2·_entry` plus a `deepBlk·` constant
+summand). The inverses `(A0c)⁻¹/(A1c)⁻¹/(P00c)⁻¹` are `ContDiffAt` at the origin where the det `≠ 0` —
+`det(A0c 0) = det(deepBlkA_0)` (needs `hDA0`), likewise for `A1c`. `P00c(0) = deepBlkA_0·deepBlkA_1`
+(boundary `Y0c(0) = 0`), whose det `≠ 0` from both units. -/
+
+/-- Each `l2A0Conj` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2A0Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A0Conj H r B hB hr hL q i j) := by
+  have : (fun q => l2A0Conj H r B hB hr hL q i j)
+      = fun q => deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L) i j
+          + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i j := by
+    funext q; rw [l2A0Conj, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2A1Conj` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2A1Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A1Conj H r B hB hr hL q i j) := by
+  have : (fun q => l2A1Conj H r B hB hr hL q i j)
+      = fun q => deepBlkA H r B hB hr hL (lastLayer hL) i j
+          + readX H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+    funext q; rw [l2A1Conj, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2Z1Conj` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2Z1Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Z1Conj H r B hB hr hL q i j) := by
+  have : (fun q => l2Z1Conj H r B hB hr hL q i j)
+      = fun q => deepBlkZ H r B hB hr hL (lastLayer hL) i j
+          + readZ H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+    funext q; rw [l2Z1Conj, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readZ_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2Y1Conj` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2Y1Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y1Conj H r B hB hr hL q i j) := by
+  have : (fun q => l2Y1Conj H r B hB hr hL q i j)
+      = fun q => deepBlkY H r B hB hr hL (lastLayer hL) i j
+          + readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+    funext q; rw [l2Y1Conj, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readY_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2T1Conj` entry is `ContDiff ⊤` (= the bare `l2T1`). -/
+theorem contDiff_l2T1Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2T1Conj H r hr hL q i j) :=
+  contDiff_l2T1_entry H r hr hL i j
+
+/-- Each `l2Y0Conj` entry is `ContDiff ⊤` (deepBlkY const + col-reindexed first-layer `readY`). -/
+theorem contDiff_l2Y0Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y0Conj H r B hB hr hL hL2eq q i j) := by
+  have : (fun q => l2Y0Conj H r B hB hr hL hL2eq q i j)
+      = fun q => deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) i
+            ((finCongr (midWidth_eq_of_L2 H r hL hL2eq)).symm j)
+          + readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i
+            ((finCongr (midWidth_eq_of_L2 H r hL hL2eq)).symm j) := by
+    funext q
+    rw [l2Y0Conj, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+      Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readY_entry H r hr hL _ i _).comp (contDiff_gaugeProj H r))
+
+/-! ## S2/S4 — the conjugated pivots at the origin + their inverse `ContDiffAt`
+
+`A0c(0) = deepBlkA_0`, `A1c(0) = deepBlkA_last`; with the pivot-base units `hDA0`/`hDA1` their dets are
+`≠ 0`, so the inverse entries are `ContDiffAt` at the origin. `P00c(0) = deepBlkA_0·deepBlkA_last`
+(boundary `Y0c(0) = 0`), a product of units, hence `det ≠ 0`. -/
+
+/-- `A0c = deepBlkA_0` at the origin. -/
+theorem l2A0Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    l2A0Conj H r B hB hr hL 0 = deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L) := by
+  rw [l2A0Conj, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+
+/-- `A1c = deepBlkA_last` at the origin. -/
+theorem l2A1Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    l2A1Conj H r B hB hr hL 0 = deepBlkA H r B hB hr hL (lastLayer hL) := by
+  rw [l2A1Conj, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+
+/-- `P00c = deepBlkA_0·deepBlkA_last` at the origin (`Y0c(0) = 0`, boundary `hY`). -/
+theorem l2P00Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    l2P00Conj H r B hB hr hL hL2eq 0
+      = deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L) * deepBlkA H r B hB hr hL (lastLayer hL) := by
+  rw [l2P00Conj, l2A0Conj_zero, l2A1Conj_zero, l2Y0Conj_zero H r B hB hr hL hL2eq hY,
+    Matrix.zero_mul, add_zero]
+
+/-- The pivot-base unit `hDA0` gives `det(A0c 0) ≠ 0`. -/
+theorem l2A0Conj_det_ne_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L))) :
+    (l2A0Conj H r B hB hr hL 0).det ≠ 0 := by
+  rw [l2A0Conj_zero]
+  exact ((Matrix.isUnit_iff_isUnit_det _).mp hDA0).ne_zero
+
+/-- The pivot-base unit `hDA1` gives `det(A1c 0) ≠ 0`. -/
+theorem l2A1Conj_det_ne_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL))) :
+    (l2A1Conj H r B hB hr hL 0).det ≠ 0 := by
+  rw [l2A1Conj_zero]
+  exact ((Matrix.isUnit_iff_isUnit_det _).mp hDA1).ne_zero
+
+/-- `det(P00c 0) ≠ 0` (product of the two pivot-base units). -/
+theorem l2P00Conj_det_ne_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    (l2P00Conj H r B hB hr hL hL2eq 0).det ≠ 0 := by
+  rw [l2P00Conj_zero H r B hB hr hL hL2eq hY, Matrix.det_mul]
+  exact mul_ne_zero (((Matrix.isUnit_iff_isUnit_det _).mp hDA0).ne_zero)
+    (((Matrix.isUnit_iff_isUnit_det _).mp hDA1).ne_zero)
+
+/-- `(A0c)⁻¹` entries `ContDiffAt` at the origin (`hDA0`). -/
+theorem contDiffAt_l2A0Conjinv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L))) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A0Conj H r B hB hr hL q)⁻¹ i j) 0 :=
+  contDiffAt_matrix_inv_entry_of_det_ne_zero_at
+    (fun a b => (contDiff_l2A0Conj_entry H r B hB hr hL a b).contDiffAt)
+    (l2A0Conj_det_ne_zero H r B hB hr hL hDA0) i j
+
+/-- `(A1c)⁻¹` entries `ContDiffAt` at the origin (`hDA1`). -/
+theorem contDiffAt_l2A1Conjinv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL))) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A1Conj H r B hB hr hL q)⁻¹ i j) 0 :=
+  contDiffAt_matrix_inv_entry_of_det_ne_zero_at
+    (fun a b => (contDiff_l2A1Conj_entry H r B hB hr hL a b).contDiffAt)
+    (l2A1Conj_det_ne_zero H r B hB hr hL hDA1) i j
+
+/-- `(P00c)⁻¹` entries `ContDiffAt` at the origin (`hDA0`, `hDA1`, `hY`). -/
+theorem contDiffAt_l2P00Conjinv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2P00Conj H r B hB hr hL hL2eq q)⁻¹ i j) 0 := by
+  refine contDiffAt_matrix_inv_entry_of_det_ne_zero_at (fun a b => ?_)
+    (l2P00Conj_det_ne_zero H r B hB hr hL hL2eq hDA0 hDA1 hY) i j
+  have hpe : (fun q => l2P00Conj H r B hB hr hL hL2eq q a b)
+      = fun q => (l2A0Conj H r B hB hr hL q * l2A1Conj H r B hB hr hL q) a b
+        + (l2Y0Conj H r B hB hr hL hL2eq q * l2Z1Conj H r B hB hr hL q) a b := by
+    funext q; rw [l2P00Conj, Matrix.add_apply]
+  rw [hpe]
+  exact (contDiffAt_matrix_mul_entry
+      (fun a' k => (contDiff_l2A0Conj_entry H r B hB hr hL a' k).contDiffAt)
+      (fun k b' => (contDiff_l2A1Conj_entry H r B hB hr hL k b').contDiffAt) a b).add
+    (contDiffAt_matrix_mul_entry
+      (fun a' k => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq a' k).contDiffAt)
+      (fun k b' => (contDiff_l2Z1Conj_entry H r B hB hr hL k b').contDiffAt) a b)
+
+/-- `(A1c⁻¹·A0c⁻¹)` entries `ContDiffAt` at the origin (`hDA0`, `hDA1`). -/
+theorem contDiffAt_l2A1invA0invConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL))) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹) i j) 0 :=
+  contDiffAt_matrix_mul_entry (fun a k => contDiffAt_l2A1Conjinv_entry H r B hB hr hL hDA1 a k)
+    (fun k b => contDiffAt_l2A0Conjinv_entry H r B hB hr hL hDA0 k b) i j
+
 end DLNFibre.DLN.RLCT
