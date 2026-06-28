@@ -488,10 +488,12 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
-        -- BOUNDED CAST-BRIDGE (not new math; the `hQf22`/`hcorner'` templates above bridge the SAME
-        -- Jb→J via `hpivJ`, + the `endpointQL = Qf (lastLayer)` / `(lastLayer).succ = Fin.last L` width
-        -- casts). One-shot `convert`/`simpa` resist the compounded casts; needs the hcorner'-style
-        -- staged `rw [hpivJ]` after re-expressing `endpointQL`. Deferred (cast-only, no math).
+        -- BOUNDED CAST-BRIDGE (cast-only, no math): bundle `hQtri` (about `Qf (lastLayer)`, `Jb`) →
+        -- `_wired` form (`endpointQL`, `J`). Needs: the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport
+        -- of `toBlocks₂₁=0` (the `isUnit_endpointQL`/`isUnit_index_cast` pattern, but the `Fin.last L`
+        -- target is rigid so plain `generalize`+`subst` fails — needs a `toBlocks₂₁`-transport helper or
+        -- `Fin.cast` rewrite) + `← hpivJ` (Jb = pivotJSucc J) + the defeq widths. 5 tactic shapes tried
+        -- (convert/simpa/subst); resists one-shot. Left as a precisely-bounded cast sorry.
         sorry
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
