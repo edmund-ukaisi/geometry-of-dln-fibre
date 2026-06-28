@@ -19,6 +19,33 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive Case 2 canonical chart selected-entry square-sum
+
+The retained-passive canonical p.13 chart now has a two-edge Case 2
+selected-entry square-sum bridge in the new leaf module
+`RetainedPassiveCase2LocalJacobianMeasure.lean`:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_entrywise
+```
+
+For `M = 1`, determinant-chart `z`, and the canonical retained-passive source
+chart, the theorem replaces the previously supplied selected-entry matrix
+identity for `residualFactorProduct (ofTopologyTuple z).C (Fin.last 2) 0` by
+the displayed Case 2 factor identities for `(ofTopologyTuple z).C 1` and
+`(ofTopologyTuple z).C 0`, plus the displayed two-edge product entrywise
+selected-entry readout.  The conclusion is that the canonical chart-side
+residual square-sum is `SelectedEntrySignedBox.CenterCoord.residual pivot y`.
+
+This is still not the general full-suffix construction.  It applies only to
+the exact two-edge retained-passive suffix, keeps the displayed factor
+identities and entrywise readout explicit, and proves no zero-locus nullity,
+positivity, integrability, density transport, normal crossings, pole order, or
+RLCT.  Focused build and full `DLNFibre` build passed, the latter with
+pre-existing warning noise.  `scripts/sorries`, `git diff --check`, touched
+Lean file forbidden-marker search, and xhigh review by `Lorentz the 3rd`
+passed after a documentation status correction.
+
 ## Latest controller decision - 2026-06-28, retained-passive two-edge `ofTopologyTuple` selected-entry adapter
 
 The retained-passive Case 2 selected-entry bridge now has a topology-tuple

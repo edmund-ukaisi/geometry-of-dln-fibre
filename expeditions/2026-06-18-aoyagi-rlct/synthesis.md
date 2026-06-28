@@ -48,6 +48,36 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Canonical Chart Selected-Entry Square-Sum
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_entrywise
+```
+
+This is the two-edge Case 2 specialization of the canonical retained-passive
+chart-side square-sum bridge.  It composes the `M = 1`
+`ofTopologyTuple` selected-entry residual-factor product adapter with
+`aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix`.
+
+The theorem removes only the explicit `hfactor` matrix hypothesis from the
+canonical square-sum bridge in the exact two-edge lane.  In its place it asks
+for the two displayed Case 2 factor identities for `(ofTopologyTuple z).C 1`
+and `(ofTopologyTuple z).C 0`, endpoint equivalences, and the displayed
+two-edge product's entrywise selected-entry readout.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed.  Full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and the touched Lean file
+forbidden-marker search passed.  Xhigh review by `Lorentz the 3rd` found no
+Lean/formal issue and one stale documentation-status issue, corrected.
+
+Nonclaims: no longer-suffix selected-entry identity, no outside-factor removal
+or absorption, no zero-locus nullity, no chart-side a.e. positivity, no
+finite negative-power integrability, no density transport, no normal crossings,
+no pole order, and no RLCT.
+
 ## Latest A2 Two-Edge `ofTopologyTuple` Selected-Entry Product Adapter
 
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` now proves:

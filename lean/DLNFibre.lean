@@ -513,3 +513,4 @@ import DLNFibre.Core.FibreOverBaseTriv
 import DLNFibre.Core.FibreBundleHeadline
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure

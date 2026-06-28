@@ -18,6 +18,47 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive Case 2 canonical chart selected-entry square-sum
+
+Reproduction:
+`reproduction-a2-retained-passive-case2-canonical-chart-selected-entry-square-sum.md`.
+Statement card:
+`statement-card-a2-retained-passive-case2-canonical-chart-selected-entry-square-sum.md`.
+
+Lean target:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_entrywise
+```
+
+The theorem lives in the new leaf module
+`RetainedPassiveCase2LocalJacobianMeasure.lean`.  It composes the two-edge
+`ofTopologyTuple` Case 2 selected-entry residual-factor product theorem with
+the canonical chart selected-entry square-sum bridge.  The previous supplied
+matrix hypothesis
+
+```text
+residualFactorProduct (ofTopologyTuple z).C (Fin.last 2) 0
+  = matrix (fun c => CenterCoord.chartMap pivot y (residualCoordEquiv c))
+```
+
+is replaced by the displayed Case 2 factor identities for `(ofTopologyTuple
+z).C 1` and `(ofTopologyTuple z).C 0`, plus the displayed two-edge product
+entrywise readout.  The theorem is specialized to `M = 1`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Full `DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and the touched Lean file forbidden-marker search passed.
+Xhigh review by `Lorentz the 3rd` found no Lean/formal issue and one stale
+documentation-status issue, corrected.  Review:
+`review-a2-retained-passive-case2-canonical-chart-selected-entry-square-sum.md`.
+
+Nonclaims: no arbitrary full-suffix selected-entry matrix identity, no outside
+factor absorption, no residual zero-locus nullity, no chart-side a.e.
+positivity, no finite negative-power integrability, no source-density/prior
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 retained-passive two-edge `ofTopologyTuple` selected-entry product adapter
 
 Reproduction:
