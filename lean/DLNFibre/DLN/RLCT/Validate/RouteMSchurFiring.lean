@@ -489,6 +489,31 @@ Cramer shift (`|Sh| ≤ B`). The `Δ ↦ Δ − Sh` matrix-space translation (Ja
 it (`c'' < λ_{r−1}`). The generic analog of `RouteMSchurCorank3.schurResid2_translate_le`, invoking the IH
 instead of the banked `core_schur2_lt_top`. -/
 
+/-- **The a.e. Tonelli `T`-peel bound (generic `m`).** With `w > 0` only a.e. on `Z`, the joint Morse-block
+peel `∫_z ∫_T (∑Tᵢ² + w z)^{−c'} ≤ Cresid·∫_z (w z)^{−(c'−(m+1)/2)}`. Local copy of
+`RouteM334Hfin.core_T_peel_le_ae` (avoiding that file's unrelated `sorry`); built on the imported
+`radial_morse_residual_power_le`. The Morse-peel-under-integral the carve-first assembly consumes (peel
+AFTER carving, over the FREE `(M22, S_bot)` joint core, where `w > 0` a.e. by the nonzero-poly argument). -/
+theorem core_T_peel_le_ae_G {m : ℕ} {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
+    (c' : ℝ) (hc' : (m + 1 : ℝ) / 2 < c')
+    (Tw : ℝ) (hTw : 0 < Tw) (w : Ω → ℝ) (Z : Set Ω)
+    (hwpos : ∀ᵐ z ∂(μ.restrict Z), 0 < w z) :
+    (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ENNReal.ofReal (Cresid (m + 1) c')
+        * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+  calc (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (m + 1) c')
+          * ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        refine lintegral_mono_ae (hwpos.mono (fun z hz => ?_))
+        rw [← ENNReal.ofReal_mul (Cresid_nonneg _ _)]
+        exact radial_morse_residual_power_le m c' hc' Tw hTw (w z) hz
+    _ = ENNReal.ofReal (Cresid (m + 1) c')
+          * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        rw [lintegral_const_mul']
+        exact ENNReal.ofReal_ne_top
+
 /-- **Matrix-box translate-enlarge (generic `(r−1)×(r−1)`).** `∫_{Δ∈matBox m m K} f(Δ + Sh) ≤
 ∫_{Δ'∈matBox m m Kg} f Δ'` when `(·+Sh)''(matBox m m K) ⊆ matBox m m Kg`. Measure-preserving matrix-space
 translation (`measurePreserving_add_right`) + `lintegral_mono_set`. Mirror of `matBox2_translate_le`. -/
