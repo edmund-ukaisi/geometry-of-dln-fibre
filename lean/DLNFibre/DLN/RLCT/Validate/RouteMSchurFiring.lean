@@ -594,6 +594,38 @@ theorem frobSqGenJoint_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) :
   rw [hcomp, flatGenJointEquiv_apply, eval_corePolyGen] at hq
   exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hq)
 
+/-- **The SHIFTED generic core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq ((Δ − Sh)·S)` for any fixed shift
+`Sh : Fin m → Fin m → ℝ`, `m ≥ 1`: the translation `Δ ↦ Δ + Sh` (measure-preserving) pulls the unshifted
+`frobSqGenJoint_ne_zero_ae` back. The peel's `0 < w` hypothesis at the per-`Sh` carve slice. Generic analog
+of `frobSqShiftR2c3_ne_zero_ae`. -/
+theorem frobSqShiftGen_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) (Sh : Fin m → Fin m → ℝ) :
+    ∀ᵐ p : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
+      0 < frobSq (rmatMul (fun i j => p.1 i j - Sh i j) p.2) := by
+  set τ : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) → (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) :=
+    fun p => (p.1 + (fun i j => -Sh i j), p.2) with hτ
+  have hmpΔ : MeasurePreserving (fun Δ : Fin m → Fin m → ℝ => Δ + (fun i j => -Sh i j))
+      volume volume :=
+    measurePreserving_add_right volume (fun i j => -Sh i j)
+  have hmp : MeasurePreserving τ volume volume := by
+    rw [show (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))) = volume.prod volume
+      from rfl]
+    exact hmpΔ.prod (MeasurePreserving.id volume)
+  have hmsSet : MeasurableSet {q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) |
+      0 < frobSq (rmatMul q.1 q.2)} :=
+    measurableSet_lt measurable_const (by unfold frobSq rmatMul; fun_prop)
+  have hae : ∀ᵐ x ∂(volume.map τ), 0 < frobSq (rmatMul x.1 x.2) := by
+    rw [hmp.map_eq]; exact frobSqGenJoint_ne_zero_ae m hm
+  have hpull : ∀ᵐ p ∂(volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ))),
+      0 < frobSq (rmatMul (τ p).1 (τ p).2) :=
+    (ae_map_iff hmp.measurable.aemeasurable hmsSet).1 hae
+  refine hpull.mono (fun p hp => ?_)
+  have hΔeq : (τ p).1 = (fun i j => p.1 i j - Sh i j) := by
+    funext i j; show (p.1 + (fun i j => -Sh i j)) i j = p.1 i j - Sh i j
+    simp [Pi.add_apply, sub_eq_add_neg]
+  have hSeq : (τ p).2 = p.2 := rfl
+  rw [hΔeq, hSeq] at hp
+  exact hp
+
 /-! ### The pivot-(0,0) Schur readback `Sc = M22 − M21·M12` (the carving's algebra, `m`-ambient)
 
 The N2b (`j = 1`) Schur complement at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ` (`R 0 0 = 1`):
