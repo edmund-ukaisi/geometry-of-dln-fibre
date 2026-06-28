@@ -714,6 +714,17 @@ genm-upper's work + re-home it into a proper worktree. **This makes `worktree.ba
 `isolation: worktree` reliably isolate) a HIGH-PRIORITY infra fix — the failure mode has gone from "inconvenient"
 to "actively hazardous to the shared checkout."** Until it's fixed, the controller must check `git status` after
 spawning worktree agents and treat any unexpected main-checkout changes as an isolation failure.
+(e) RESOLUTION (2026-06-27): no actual corruption occurred. genm-upper, despite running in the shared
+checkout, committed with TARGETED `git add <explicit paths>` (never `-A`), so its commits (9d1d8b34 N2b proof,
+58f77fde card) contained only its own files; the controller's (1,2,1) integration (e85e0eb7) and UPDATE docs
+interleaved cleanly on a linear history with zero tangle. N2b verified independently (sorry-free, axiom-clean).
+Resolution adopted: (i) serialize-in-place when an agent is already mid-work in the shared checkout (let it
+finish + commit targeted, controller holds builds), and (ii) a STEP-0 **self-healing isolation guard** baked into
+new spawn prompts — the agent runs `git rev-parse --show-toplevel`; if it's the bare main checkout it
+self-creates a worktree (`git worktree add -b <name> .claude/worktrees/<name> origin/expedition/aoyagi-full`)
+and cd's in before any build/edit. genm-recstep launched with this guard. The `worktree.baseRef = head` settings
+fix remains the cleaner permanent fix (operator's call); the guard is the in-band mitigation until then. NOT a
+blocker; surfaced for the operator's settings decision.
 
 ## 37. ∀M achiever-chart STRUCTURAL gap + a process learning (2026-06-27) — operator awareness, NOT a blocker.
 EXHAUSTIVE exact-arithmetic (genm-witness, 351 M over {1,2,3}^{L+1}, L∈{2,3,4}) found the structured-decoder
@@ -734,3 +745,48 @@ Codex "validated, no wall" on hand-picked anchors is insufficient.** Operator le
 (default, in progress); (ii) prefer option B (re-derive the decoder so the last drop is represented — bigger
 blast radius, makes one uniform chart); (iii) re-scope/re-prioritize. I'm charging (i) autonomously per the (A)
 mandate; flagged for a knowing-decision check since it's architecture-level + the 4th design iteration here.
+
+## 38. L2 leg re-scoped (l2-scope, 2026-06-28) — the L2 path is MUCH cleaner than the synthesis implied + one research-risk surfaced.
+A read-only scout (source-verified + Codex-xhigh) corrected the L2 picture: (a) the headline's actual L2 `sorryAx`
+is a SINGLE bare sorry `deepest_regular_core_normal_form` (Skeleton:1131), not the elaborate
+`deepest_gauge_construction` (whose 4 sorries are DISCONNECTED — the producer `deepest_gauge_squeeze_exists`:403 is
+itself a bare sorry and the 3 modules aren't even imported into DLNFibre.lean); (b) the prior "~20 sorries / 3099/3104"
+framing was stale (grep artifact; 4 active sorries); (c) **a clean BOUNDED L=2 headline needs only wiring
+(Skeleton:1131 := the unwired bridge + 3 imports) + the (1a)/2915 `IsDeepLayers` strengthening** — at L=2 the L≥3
+sorries (3118/3123/3289) are vacuous. (A)-PREMISE VERDICT (partly true): the L=2 leg is bounded (no research wall;
+(1a) is invasive-but-localized); 3118/3123 bounded; **3289 (L≥3 grouped recursive diffeo) is a GENUINE RESEARCH-RISK
+— the one place the (A) "no walls" premise is least secure.** Operator awareness: the FULLY-GENERAL (∀L) headline's
+L2 leg has a research-risk at 3289; a clean L=2 instance is bounded + in progress (genm-l2). If 3289 walls, the
+∀L-L2 may need operator-level design (or a scoped L=2 deliverable as an interim). NOT a blocker now — charging the
+bounded L=2 path autonomously; surfaced because 3289 is the genuine general-L wall-candidate. Also a process note: I
+had carried the stale "20 sorries / entangled" L2 read for ~2 ticks (used it to justify holding L2) — the scout's
+source-trace corrected it; lesson = re-derive sorry-counts from `grep -c '^\s*sorry'` + the actual term, not synthesis prose.
+
+## 39. R1-UPPER ∀M N4 general-corank lift hit a research-adjacent obstruction (2026-06-28) — the (A) "no wall" premise under test at the long pole.
+genm-recstep STOP+reported (correctly, BEFORE any Lean build) that the general-corank N4 finiteness recursion has a
+genuine research-adjacent gap, not laborious plumbing. The closed (3,3,4) depth-2 weld (`core_schur2_lt_top`, banked
+sorry-free) is a TERMINAL base case — Sc is a scalar at corank-2, so the recursion is never exercised; corank-3 is
+where the corank-(r−1) Schur core is first a non-leaf and the real recursion appears. Two gates: O1 = a j×j-minor-
+dominant chart cover (the minors are degree-j polynomials, not coordinates, so the banked `pivotBlowupOn` doesn't
+apply — NEW covering machinery, sizeable); O2 (the kill-condition) = the Sc-core pushforward density inequality
+(`Sc = M22−M21·M11⁻¹·M12` is rational in R, so recursing on `‖Sc·S_bot‖²` via the corank-(r−1) IH needs `Sc-law ≼
+free-(r−j)-box` with constants independent of the spectator entries — if it fails, the recursion plan breaks). I
+commissioned a `pen-and-paper` (n4-o2-adjudicate) to settle O2 at corank-3 BEFORE declaring a wall or sinking a build.
+OPERATOR AWARENESS: this is exactly where the (A) "no research wall" premise was always least secure (the N4 long
+pole, flagged HIGH-risk from the start). Decorrelating first per the mandate (operator reserved for *confirmed*
+research walls). If O2's verdict is OBSTRUCTION (the pushforward fails / needs spectator-dependent constants), the
+∀M R1-UPPER finiteness needs an operator-level re-scope or a different N4 route — I'll surface it as a decision then.
+NOT a blocker now: the corank-2 weld + N1/N2a/N2b/N3a/N3b stand; R1-LOWER, L2, D1 continue. The fallback if O2 walls:
+R1-UPPER's finiteness already has a CITED route (Watanabe's universal `rlct ≤ ½codim`) — the from-scratch N4 is the
+"go the distance" upgrade, and a scoped retreat to the cited upper bound keeps the headline intact if N4 proves a wall.
+
+**Item 39 RESOLVED (2026-06-28, same day):** `n4-o2-adjudicate` (pen-and-paper, exact algebra r=3,j=1 + r=4,j=2 +
+decorrelated Codex-xhigh) returned **O2 HOLDS (witness)**. The controller's "pushforward density `dR ≽ ρ·dSc`"
+framing was the wrong lens — the recursion never changes variables R→Sc; at fixed spectators `M22↦Sc` is a pure
+translation (Jac≡1) into a fixed spectator-independent box, so the Sc-core R-integral is spectator-uniformly
+dominated by the free-box corank-(r−j) JOINT core (the IH). The additive threshold survives (Morse block integrated
+jointly). O1 (the minor-dominant cover) is a build cost, not a math wall (minorpivot-cert BUILD-READY). **The ∀M
+R1-UPPER N4 is bounded-after-machinery; the (A) "no research wall" premise SURVIVES the N4 long pole.** No operator
+re-scope needed; genm-recstep re-engaged on the build (corank-3 first; the one fragile Lean point is the JOINT-core
+IH statement shape). The cited-rlct fallback stays unused. Net: the decorrelation both confirmed the gate AND
+corrected the controller's framing — the bedrock-checkpoint discipline working a fourth time this expedition.
