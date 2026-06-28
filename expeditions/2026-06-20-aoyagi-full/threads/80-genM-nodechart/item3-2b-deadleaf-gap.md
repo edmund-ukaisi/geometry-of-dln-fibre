@@ -123,3 +123,27 @@ HOLDING the genBlkFlatLive generalization for genm-budget's (2,2,4) active-cente
 confirmation (is interior Rmat free-E or fixed-pivot in the live model?) — requested via controller, to build
 the correct pivot-placement once. The no-regret decoder + rate (@edeb60b2) stand; only the pivot placement +
 the (active-center vs leaf) routing need the cert.
+
+## WIDTH-BRIDGE STRUCTURE worked out (no-wait move 2, 2026-06-28) — the budget identity's chain form
+Reading (a) CONFIRMED by controller (interior E-blocks + leaf Rfin BOTH free-angular; the refinement is ONLY
+the fixed-pivot+radial-u placement, dispatched on ρ=Text(L): leaf for ~280, interior/leading for the 71).
+genBlkFlatLive already spans both block families; only the pivot/u placement needs the active-center dispatch.
+
+The budget identity (sub-tide 2) chain form + its reduction to the BANKED Aoyagi core:
+- Banked: `sum_rBlock_cBlock_eq_minAdm : ∑_{j:Fin L} rBlock·cBlock = minAdm`, `rBlock j = tPrev−tStar_j`,
+  `cBlock j = M_{j+1}−tStar_j` (`Mval_tStar_eq`). `Mval = ∑_j (tPrev−T_j)(M_{j+1}−T_j)`, `tPrev j = M0`(j=0)
+  else `T_{j-1}`.
+- Chain widths (achiever `tach M`): `Text M (tach M) (k+1) = tach k` (`Text_tach_succ`+`tach_succ`); `tach 0 =
+  M0`, `tach(k+1) = tStar_k`; `Wext k = M k`. So chain `r_k = Text k − Text(k+1)`, `c_k = M k − Text(k+1)`.
+- KEY STRUCTURE (worked out): chain boundary k=0 has `r_0 = M0 − tach(0) = M0 − M0 = 0` ⟹ the IDENTITY
+  boundary contributes ZERO E-block. So the chain E-blocks live at k=1..L-1, and the budget is
+  `Σ_{k=1..L-1} r_k·c_k + (leaf term Text(L)·Wext(L)) = minAdm` — EXACTLY the controller's stated form. The
+  `k=1..L-1` range (not 0..L-1) is BECAUSE boundary 0 is zero; the leaf term is separate because the chain's
+  per-boundary E-block stops at L-1 while Aoyagi's `Fin L` sum's last term (j=L-1) becomes the leaf
+  `Text(L)·Wext(L)` after the saturation `Text(L) = tStar(last)` (or 1 / 0 per the +1 convention).
+- The reduction to banked: re-index the chain `Σ_{k=1..L-1} r_k c_k + leaf` to the Aoyagi `∑_{j:Fin L}
+  rBlock·cBlock` (chain boundary k+1 ↔ Aoyagi j=k for interior; leaf ↔ j=L-1), then `sum_rBlock_cBlock_eq_minAdm`.
+  The delicate piece = the leaf saturation index-match (Text(L) chain vs Aoyagi leaf), which interacts with the
+  active-center (Text(L)=0 for the 71). HOLDING the exact statement for genm-budget's (2,2,4) slot map +
+  identity-proof structure (the leaf-index convention is decoder-layout-dependent — building it on the wrong
+  convention would redo it). Artefacts not yet on any remote branch (genm-budget local); requested via controller.
