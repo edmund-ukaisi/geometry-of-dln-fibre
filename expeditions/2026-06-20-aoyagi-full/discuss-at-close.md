@@ -779,3 +779,14 @@ research walls). If O2's verdict is OBSTRUCTION (the pushforward fails / needs s
 NOT a blocker now: the corank-2 weld + N1/N2a/N2b/N3a/N3b stand; R1-LOWER, L2, D1 continue. The fallback if O2 walls:
 R1-UPPER's finiteness already has a CITED route (Watanabe's universal `rlct ≤ ½codim`) — the from-scratch N4 is the
 "go the distance" upgrade, and a scoped retreat to the cited upper bound keeps the headline intact if N4 proves a wall.
+
+**Item 39 RESOLVED (2026-06-28, same day):** `n4-o2-adjudicate` (pen-and-paper, exact algebra r=3,j=1 + r=4,j=2 +
+decorrelated Codex-xhigh) returned **O2 HOLDS (witness)**. The controller's "pushforward density `dR ≽ ρ·dSc`"
+framing was the wrong lens — the recursion never changes variables R→Sc; at fixed spectators `M22↦Sc` is a pure
+translation (Jac≡1) into a fixed spectator-independent box, so the Sc-core R-integral is spectator-uniformly
+dominated by the free-box corank-(r−j) JOINT core (the IH). The additive threshold survives (Morse block integrated
+jointly). O1 (the minor-dominant cover) is a build cost, not a math wall (minorpivot-cert BUILD-READY). **The ∀M
+R1-UPPER N4 is bounded-after-machinery; the (A) "no research wall" premise SURVIVES the N4 long pole.** No operator
+re-scope needed; genm-recstep re-engaged on the build (corank-3 first; the one fragile Lean point is the JOINT-core
+IH statement shape). The cited-rlct fallback stays unused. Net: the decorrelation both confirmed the gate AND
+corrected the controller's framing — the bedrock-checkpoint discipline working a fourth time this expedition.
