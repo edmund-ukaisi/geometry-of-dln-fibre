@@ -48,6 +48,68 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Canonical Product-Density Residual Handoff
+
+The named retained-passive solved-`A1` product density is now packaged as a
+local unit on the determinant chart in
+`RetainedPassiveCoordinatesJacobianMeasure.lean`.
+
+New names:
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt_eq_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt_pos_of_mem_topologyTupleDetChartSet
+continuousAt_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_of_mem_topologyTupleDetChartSet
+exists_pos_eventually_le_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_nhds
+exists_pos_eventually_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_le_nhds
+exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_comp
+```
+
+The proof case-splits on `M` and reuses the zero-tail and positive-tail product
+formula theorems to identify the product density with the actual forward
+raw-order Frechet absolute determinant on `topologyTupleDetChartSet`.  Openness
+of the determinant chart transfers actual-determinant positivity, continuity,
+and local bounds to the named product density.
+
+`RetainedPassiveLocalJacobianMeasure.lean` now also has the canonical residual
+source handoff:
+
+```text
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+```
+
+The private helper
+`retainedPassiveP13CanonicalSourceChart_comp_topologyTupleEdgeRawOrder_aemeasurable_withDensity_formalProductAbsDet`
+proves a.e.-measurability of the composed canonical chart under the weighted
+determinant-chart measure.  It uses a.e.-measurability of raw-order on
+`m.restrict S`, absolute continuity of `withDensity`, the product-density COV
+`map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart`,
+and the existing canonical source-chart a.e.-measurability on `m.restrict T`.
+
+The public residual theorem calls `residualSourceHypotheses_of_measure_map`
+with the canonical product-density COV as `hmap`.  It removes the supplied
+source-measure pushforward and composed-chart a.e.-measurability fields for the
+canonical retained-passive local source.  It still assumes the residual positive
+set is measurable, the chart-side residual is positive a.e., and the chart-side
+negative-power integral is finite under
+`(m.restrict S).withDensity (ofReal productDensity)`.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.  The top-level
+`DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and the touched-file forbidden-marker search passed.
+
+Xhigh review by `Sagan the 2nd` passed.  It checked determinant-chart locality
+of the product-density API, that the residual theorem leaves residual
+positive-set measurability, chart-side positivity, and chart-side finite
+integral explicit, and that the source-side measure transport goes only through
+the canonical product-density COV.
+
+Nonclaims: no original source prior, no selected-entry signed-box density, no
+monomial residual lower bound, no normal-crossing production, no pole-order
+theorem, and no RLCT theorem.
+
 ## Latest A2 Local Formal/Product-Density Change Of Variables
 
 `RetainedPassiveLocalJacobianMeasure.lean` is now a leaf bridge from the

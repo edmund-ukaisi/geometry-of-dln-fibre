@@ -19,6 +19,42 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical product-density residual handoff
+
+The retained-passive solved-`A1` product density now has a local-unit API in
+`RetainedPassiveCoordinatesJacobianMeasure.lean`:
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt_eq_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt_pos_of_mem_topologyTupleDetChartSet
+continuousAt_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_of_mem_topologyTupleDetChartSet
+exists_pos_eventually_le_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_nhds
+exists_pos_eventually_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_le_nhds
+exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_comp
+```
+
+The canonical retained-passive local source also now has a product-density
+residual-source handoff in `RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+```
+
+This removes the supplied source-measure pushforward and composed-chart
+a.e.-measurability fields for the canonical retained-passive raw-coordinate
+source, by using the canonical product-density COV and the existing canonical
+source-chart measurability.  It still leaves chart-side residual positivity,
+residual positive-set measurability, and chart-side finite residual integral
+as hypotheses.
+
+Focused coordinate/local builds, top-level `DLNFibre`, `scripts/sorries`,
+`git diff --check`, and touched-file forbidden-marker search passed.  Xhigh
+review by `Sagan the 2nd` passed.
+
+This still does not construct an original-source prior, prove selected-entry
+signed-box source-density identification, prove a monomial residual lower
+bound, produce normal crossings, compute pole order, or extract an RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive local formal/product-density COV
 
 The retained-passive local-source measure socket now has a leaf bridge
