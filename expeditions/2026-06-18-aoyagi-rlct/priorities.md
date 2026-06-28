@@ -19,6 +19,32 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, A4 analytic-atlas/source-production frontier recheck
+
+The corrected next A4 target is not a Lean constructor from the finite
+selected-entry certificate to `SelectedEntryAnalyticAtlasBoundary`.  Aoyagi
+pp. 19-22 support the displayed Case 2 local algebra: selected pivot chart,
+`D_J = u D'_J`, `b'_i = u b_i`, regular `Q/P` operations,
+`C'_J^(S+1) = Q^-1 C_J^(S+1)`, the cleared `D'''_J` block, the displayed
+product identity, and continue/stop prose.  They do not define analytic chart
+domains, source-neighborhood coverage, analytic overlaps, analytic
+Jacobian/volume-form compatibility, source-produced successor/suffix data, or
+branch termination as an atlas theorem.
+
+New boundary artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-source-production-frontier.md`.
+
+Do not build
+`SelectedEntryAnalyticAtlasBoundary.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate_finiteSuppliedBranch`
+if it fills analytic fields from finite selected-entry coverage,
+`SelectedEntryFiniteAffineTransitionRegularFamily`, or
+`SourceProductionObligation` constructors.  The stopped Case 2 branches must
+also remain separated into continuing, actual-width stopped, and row-exhausted
+stopped payloads.  The A2 adjacent-window source-readback adapter remains
+parked unless a downstream theorem needs exactly that interface.
+
 ## Latest controller decision - 2026-06-28, generic selected-entry chart-produced determinant residual
 
 The retained-passive selected-entry determinant residual handoff now has a

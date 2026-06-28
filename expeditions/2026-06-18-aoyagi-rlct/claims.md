@@ -11826,3 +11826,38 @@ and not the passive first-edge `Tail`.
 Nonclaims: no global determinant-one shear linear equivalence, full analytic
 derivative factorization, determinant equality, measure/Jacobian-density
 theorem, normal crossings, pole order, or RLCT is proved by this bridge.
+
+## A4 selected-entry analytic atlas/source-production frontier recheck
+
+Status: Boundary recorded; no Lean theorem proposed.
+
+Claim: Aoyagi pp. 19-22 justify the displayed Case 2 finite selected-entry
+matrix algebra, but not a constructor from the finite selected-entry
+certificate to `SelectedEntryAnalyticAtlasBoundary`.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-source-production-frontier.md`.
+
+Positive content: the source supports the selected pivot chart, `D_J = u D'_J`,
+`b'_i = u b_i`, regular `Q/P`, `C'_J^(S+1) = Q^-1 C_J^(S+1)`, the cleared
+`D'''_J` block, displayed product identities, and the continue/stop
+instructions.
+
+Negative content: the source does not define analytic chart domains,
+source-neighborhood coverage, analytic overlap maps, analytic
+Jacobian/volume-form compatibility, source-produced successor/suffix data, or
+branch termination as an atlas theorem.
+
+Kill condition: reject any theorem named like
+`SelectedEntryAnalyticAtlasBoundary.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate_finiteSuppliedBranch`
+if it fills `coverage`, `transition_regular`, `source_production`, or other
+analytic fields from finite selected-entry coverage,
+`SelectedEntryFiniteAffineTransitionRegularFamily`, or
+`SourceProductionObligation` constructors.  Also reject a future producer that
+collapses the continuing, actual-width stopped, and row-exhausted stopped
+payloads.
+
+Nonclaims: no analytic atlas existence, source production, transition
+regularity, analytic Jacobian theorem, normal crossings, pole order, or RLCT.

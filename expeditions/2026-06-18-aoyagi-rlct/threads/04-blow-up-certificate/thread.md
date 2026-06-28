@@ -6695,3 +6695,25 @@ non-displayed pivot chart.  No analytic atlas coverage, chart regularity,
 transition regularity, unit regularity, analytic Jacobian/volume-form
 compatibility, branch termination, global active-ratio/chart-count facts,
 normal crossings, pole order, or RLCT is proved.
+
+## 2026-06-28 Pen-and-paper analytic-atlas/source-production frontier recheck
+
+Reproduction:
+`reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-analytic-atlas-source-production-frontier.md`.
+
+The corrected A4 frontier is now recorded without a Lean theorem.  Aoyagi
+pp. 19-22 support the displayed Case 2 selected-pivot chart, `D_J = u D'_J`,
+`b'_i = u b_i`, regular `Q/P`, `C'_J^(S+1) = Q^-1 C_J^(S+1)`, the cleared
+`D'''_J` block, the displayed product identity, and the continue/stop prose.
+They do not define analytic chart domains, source-neighborhood coverage,
+analytic overlaps, analytic Jacobian/volume-form compatibility, source-
+produced successor/suffix data, or branch termination as an atlas theorem.
+
+Controller decision: do not build a constructor from
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate` to
+`SelectedEntryAnalyticAtlasBoundary` if it fills analytic fields using finite
+selected-entry coverage, `SelectedEntryFiniteAffineTransitionRegularFamily`,
+or `SourceProductionObligation`.  Future source production must separately
+handle continuing, actual-width stopped, and row-exhausted stopped branches.

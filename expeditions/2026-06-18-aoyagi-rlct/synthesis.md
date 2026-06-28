@@ -19552,3 +19552,46 @@ all three new theorem names have only the standard
 Nonclaims: no `dPcast` staging, no closed finite-sum formula for `dCprod`, no
 target staging, no full positive-tail `F3` target staging, no determinant
 theorem, no measure theorem, no normal crossings, pole order, or RLCT.
+
+## Latest A4 Selected-Entry Analytic Atlas/Source-Production Frontier Recheck
+
+After the interruption, the A4 scout correction was integrated as a
+pen-and-paper frontier note rather than as Lean.  A local PDF recheck of Aoyagi
+pp. 19-22 confirms that the source supports the displayed Case 2 finite
+algebra: selected pivot chart, `D_J = u D'_J`, the weight convention
+`b'_i = u b_i`, regular `Q/P` operations, `C'_J^(S+1) = Q^-1 C_J^(S+1)`,
+the cleared `D'''_J` block, displayed product identities, and continue/stop
+instructions.
+
+The same source pages do not define analytic chart domains, source-
+neighborhood coverage, analytic overlap maps, analytic Jacobian/volume-form
+compatibility, source-produced successor/suffix data, or branch termination as
+an atlas theorem.  Therefore the forbidden constructor remains forbidden:
+
+```text
+SelectedEntryAnalyticAtlasBoundary.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate_finiteSuppliedBranch
+```
+
+must not be introduced if it fills analytic fields from finite selected-entry
+coverage, `SelectedEntryFiniteAffineTransitionRegularFamily`, or
+`SourceProductionObligation` constructors.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-source-production-frontier.md`.
+
+The branch table to preserve for any future producer is:
+
+```text
+continuing:            J+2 <= prefixMinNat n (S+1)
+actual-width stopped:  n (S+1) = J+1
+row-exhausted stopped: prefixMinNat n S = J+1
+```
+
+No Lean theorem was added.  The next real A4 target is an analytic
+atlas/source-production specification with chart domains/tokens, full chart
+maps, source-neighborhood coverage, regular overlaps, unit/Jacobian/volume
+compatibility, produced successor/suffix/terminal data, and branch/termination
+coverage.  The A2 adjacent-window source-readback adapter is parked unless a
+downstream theorem needs exactly that interface.

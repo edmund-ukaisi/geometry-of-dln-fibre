@@ -11707,3 +11707,18 @@ standard `[propext, Classical.choice, Quot.sound]` footprint.  Nonclaims: no
 `dPcast` staging, no closed finite-sum formula for `dCprod`, no target
 staging, no determinant theorem, no measure theorem, no normal crossings, pole
 order, or RLCT.
+
+Latest A4 selected-entry analytic-atlas/source-production frontier recheck:
+no Lean theorem.  Source: Aoyagi pp. 19-22.  Expedition artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-source-production-frontier.md`.
+
+Ledger status: boundary/guardrail.  The source supports displayed Case 2
+finite matrix algebra but not analytic atlas fields.  Do not construct
+`SelectedEntryAnalyticAtlasBoundary` from finite selected-entry coverage,
+`SelectedEntryFiniteAffineTransitionRegularFamily`, or
+`SourceProductionObligation`; a genuine future producer must supply chart
+domains/tokens, full chart maps, source-neighborhood coverage, regular
+overlaps, unit/Jacobian/volume compatibility, source-produced successor/suffix
+data, and branch/termination coverage.
