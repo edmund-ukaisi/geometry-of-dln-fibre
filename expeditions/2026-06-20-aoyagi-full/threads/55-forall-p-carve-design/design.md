@@ -221,6 +221,18 @@ lines lift verbatim + ~150 lines box-dim/window-rethread friction; §4 ~50 (disp
 STEP 0 + the window-rethread in §3 (the recursion against the quadratic threshold) — NOT a pure token-swap
 as I first scoped.
 
+
+### Coordination + template (genm-n4, 2026-06-28)
+- **Box-reduction infra is genm-n4's** (landed, reviewer-survived on `origin/genm-n4`): `RouteMBoxThresholdFinite`,
+  `routeMCore_le_matBox`, `routeMCore_threshold_lt_top_of_box`. The ∀p build CONSUMES these — does NOT redefine.
+- **The `minAdm` integer-min lower-bound template**: genm-n4's `minAdmRec_rr4_ge2`
+  (`RouteMBoxThresholdRR4.lean`) is the inf'-over-`Finset.range` route with explicit witness `t = r−2` and the
+  `(s−2)² ≥ 0` core — the EXACT shape `schurLambdaP p r := ½·minAdm(r,r,p)`'s lower bound needs. Generalize the
+  witness `t = r−2 → t*(r,p) = argmin_t [(r−t)²+pt]` (and track its parity-dependent closed value); the inf'-witness
+  structure carries verbatim. Build the ∀p threshold-bound ON this, don't re-derive.
+- **Boundary check at p=4**: genm-n4's `minAdm_rr4_eq` (`½·minAdm(![r,r,4]) = schurLambda r`, un-halved `4r−4`) is
+  EXACTLY `schurLambdaP 4 r` — the ∀p firing window specializes to the binding-p=4 window, so they compose at p=4.
+
 ## 6. Open questions for the controller / pen-and-paper (UPDATED)
 
 - Q-A (RESOLVED): `λ(p,r) = (r−1)p/2` is WRONG for p≠4; the true threshold is `½·minAdm(r,r,p)` (quadratic).
