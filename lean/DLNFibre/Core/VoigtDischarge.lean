@@ -81,8 +81,8 @@ theorem codimRep_orbitRankLocus_eq_orbitLinearCodim
 /-! ## The unconditional headlines -/
 
 /-- **`hVoigt` at the canonical flattening, discharged (`ℕ∞` form).** The geometric codimension of the
-orbit closure equals `dim Ext¹(M,M)`, now UNCONDITIONAL (char 0, algebraically closed): Voigt's lemma
-`codimRep_orbitRankLocus_eq_orbitLinearCodim` chained with the engine's
+orbit closure equals `dim Ext¹(M,M)`, now UNCONDITIONAL over any characteristic-zero field: Voigt's
+lemma `codimRep_orbitRankLocus_eq_orbitLinearCodim` chained with the engine's
 `orbitLinearCodim_eq_finrank_deformationExt1`. -/
 theorem codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1_unconditional
     [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
@@ -95,7 +95,7 @@ theorem codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1_unconditiona
 PROVED in-engine, `Core.OrbitClosure.vanishingIdeal_orbitRankLocus_eq_orbitSet`) equals the paper's
 quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}` — no longer modulo
 `hVoigt`. `hVoigt` is discharged by `codimRep_orbitRankLocus_eq_orbitLinearCodim` (the squeeze + L7),
-so the expedition's deliverable holds with hypotheses `[IsAlgClosed k] [CharZero k]` only. -/
+so the expedition's deliverable holds with hypothesis `[CharZero k]` only. -/
 theorem codimRepCanonical_orbitRankLocus_eq_multSum_unconditional
     [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
     ((codimRepCanonical (orbitRankLocus (intervalDirectSum (k := k) L))).toNat : ℤ)
@@ -105,17 +105,16 @@ theorem codimRepCanonical_orbitRankLocus_eq_multSum_unconditional
   codimRepCanonical_orbitRankLocus_eq_multSum L
     (codimRep_orbitRankLocus_eq_orbitLinearCodim (intervalDirectSum (k := k) L))
 
-/-! ## Capstone non-vacuity witness — the hypotheses fire on a genuine orbit
+/-! ## Capstone non-vacuity witness — the hypothesis fires on a genuine orbit
 
-The capstone carries `[IsAlgClosed k] [CharZero k]`. The committed `(2,2,2)` examples in
-`OrbitLinearCodim`/`OrbitVariety` are over `ℚ`, where neither instance holds, so they do not exhibit
-the capstone firing over its actual hypotheses. `AlgebraicClosure ℚ` carries both (`IsAlgClosed` from
-`AlgebraicClosure.isAlgClosed`, `CharZero` from `ℚ`'s), so instantiating the capstone there shows the
-antecedents are satisfiable on the genuine `(2,2,2)` `(1,1)`-orbit normal form
-`M = M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}` (`L = [(0,0),(0,1),(1,2),(2,2)]`, Le Halleur–Rimányi Ex 4.3).
+The capstone carries `[CharZero k]`. `AlgebraicClosure ℚ` is a characteristic-zero field, so
+instantiating the capstone there shows the antecedent is satisfiable on the genuine `(2,2,2)`
+`(1,1)`-orbit normal form `M = M_{00} ⊕ M_{01} ⊕ M_{12} ⊕ M_{22}`
+(`L = [(0,0),(0,1),(1,2),(2,2)]`, Le Halleur–Rimányi Ex 4.3). (The stronger `ℝ` witnesses below
+exhibit the same capstone over a non-algebraically-closed field, the point of the crux relaxation.)
 -/
 
-/-- The algebraic closure of `ℚ`: an `[IsAlgClosed] [CharZero]` field — the capstone's witness. -/
+/-- The algebraic closure of `ℚ`: a `[CharZero]` field — a capstone witness. -/
 noncomputable abbrev VoigtWitnessField : Type := AlgebraicClosure ℚ
 
 /-- The `(2,2,2)` `(1,1)`-orbit normal form as an interval direct-sum list,
@@ -124,11 +123,11 @@ def voigtWitnessList222 : List (Fin 3 × Fin 3) :=
   [((0 : Fin 3), (0 : Fin 3)), (0, 1), (1, 2), (2, 2)]
 
 /-- **Capstone non-vacuity (`(2,2,2)` over `AlgebraicClosure ℚ`).** The discharged Voigt lemma
-`codimRep_orbitRankLocus_eq_orbitLinearCodim` fires over its actual hypotheses
-`[IsAlgClosed k] [CharZero k]` — instantiated at `k = AlgebraicClosure ℚ` on the genuine `(2,2,2)`
-`(1,1)`-orbit `M = ⊕_{(a,b)∈L} M_{ab}`, `L = [(0,0),(0,1),(1,2),(2,2)]`: the geometric codimension of
-the orbit closure equals the expected codimension `orbitLinearCodim M`. An in-file witness that the
-antecedents are satisfiable (the committed `(2,2,2)` examples are over `ℚ`, where they are not). -/
+`codimRep_orbitRankLocus_eq_orbitLinearCodim` fires over its actual hypothesis `[CharZero k]` —
+instantiated at `k = AlgebraicClosure ℚ` on the genuine `(2,2,2)` `(1,1)`-orbit
+`M = ⊕_{(a,b)∈L} M_{ab}`, `L = [(0,0),(0,1),(1,2),(2,2)]`: the geometric codimension of the orbit
+closure equals the expected codimension `orbitLinearCodim M`. An in-file witness that the antecedent
+is satisfiable. -/
 theorem voigtDischarge_witness_222 :
     codimRep (canonicalCoord (foldDim voigtWitnessList222))
         (orbitRankLocus (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222))
