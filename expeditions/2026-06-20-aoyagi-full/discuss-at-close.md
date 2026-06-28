@@ -1256,6 +1256,13 @@ done/in-flight. This item is the four-research-gate scope decision — the centr
   binds at p<2r, cap B at p≥2r (p=4 hid cap B because the pivot-fixing chart excludes {Δ=0}). The ONLY new content = one
   `{Δ=0}` normal-crossing chart (MEDIUM, NOT a wall); cleared to build (gated on the cap-B design diff-gate). So the
   research-scale gates are now **THREE**: depth-≥3 hfin (#1), hdiv-∀M-chart (#3), L2-3289 (#4).
+  - *Cap-B architecture refinement (genm-assemble, 2nd Codex consult + the in-repo `Vzero-termination-cert.md`, 2026-06-28):*
+    cap B is NOT a bolt-on parallel chart — it's the **radial a-axis of the `Δ=a·R` blow-up**, with cap A the **angular**
+    part of the *same* blow-up: `(frobSq)^{−c'} = a^{−2c'}·(frobSq(R·S))^{−c'}` → a-axis `∫₀^T a^{(r²−1)−2c'}` = cap B
+    (c'<r²/2), angular = cap A, window = intersection `min(capA,capB)` by Tonelli. SOUNDNESS CATCH: for p≥2r `capA>capB`,
+    so the lifted carve *alone* would overclaim finiteness in `(r²/2, capA)` where `{Δ=0}` diverges — the p=4 pivot-fixing
+    chart folded the a-axis away. The build = expose the a-axis + `schurCore_radialAxis_lt_top` + the `Δ=a·R` c-o-v + joint
+    Tonelli (bounded-medium, cert-grounded). genm-assemble cleared to deep-build.
 - **The dev-merge is an OPERATOR PROMOTION, not a tide.** genm-firing's 39-module finding: dev lacks the ENTIRE RLCT engine
   (the carve stack's import closure = 39 modules, all missing from dev; ~1189-commit lineage divergence). So the EXPEDITION
   LINEAGE's aggregator IS the canonical line; "integration into canonical DLNFibre.lean" happens on the lineage
