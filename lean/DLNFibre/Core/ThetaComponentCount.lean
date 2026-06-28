@@ -170,7 +170,7 @@ theorem rank_mult_realizerD {d : Fin (N + 1) → ℕ} {r : ℕ}
 /-- **The realizer's geometric codim is `codimForm`.** `codimRepCanonical (Ō_{realizerD m})` has
 `.toNat = codimForm N (extendℤ m)` — the per-partition geometric reading transported to the
 realizer over `d`. -/
-theorem codimRepCanonical_orbitRankLocus_realizerD [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_orbitRankLocus_realizerD [CharZero k]
     {d : Fin (N + 1) → ℕ} {r : ℕ}
     {m : Fin (N + 1) × Fin (N + 1) → ℕ} (hm : m ∈ kostantPartitions d r) :
     ((codimRepCanonical (orbitRankLocus (realizerD (k := k) hm))).toNat : ℤ)
@@ -294,7 +294,7 @@ top-dimensional ones) is the content delivered by the gating hypotheses `hLowerB
 `bijOn_partitionIdeal_topComponents_of`, not asserted here: `cCodim` is a fixed combinatorial integer
 (the min over corner-`r` *orbits*), independent of the minimal primes, so this is a genuine Spec-side
 subset, not an alias of the bijection's image. -/
-def topComponents [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+def topComponents [CharZero k] [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) :
     Set (Ideal (MvPolynomial (RepCoord d) k)) :=
   {p | p ∈ (sigmaIdeal (k := k) d r).minimalPrimes ∧ p.height = (cCodim d r h).toNat}
@@ -337,7 +337,7 @@ corner-`≤ r` orbit has codim `≥ cCodim`, so a minimising realizer is globall
 bijection from the minimising Kostant partitions (counted by `numTop`) onto the top-dimensional
 components of `Σ̄^r`. The injectivity is unconditional (`partition_eq_of_rankPattern_realizerD_eq`);
 the minimising property in `SurjOn` is *derived* from the top-dimensional height, not assumed. -/
-theorem bijOn_partitionIdeal_topComponents_of [IsAlgClosed k] [CharZero k]
+theorem bijOn_partitionIdeal_topComponents_of [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
@@ -421,7 +421,7 @@ two unbuilt `Core` lemmas — the corner-monotonicity of `cCodim` and the Gabrie
 of a corner-`r` Kostant partition — recorded in the module roadmap. The realizer infrastructure and
 the bijection's **injectivity** are proved unconditionally; `MapsTo`/`SurjOn` are reduced to
 `hLowerBound`/`hRecover`. -/
-theorem numTop_eq_ncard_topComponents_of [IsAlgClosed k] [CharZero k]
+theorem numTop_eq_ncard_topComponents_of [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (hLowerBound : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       ((cCodim d r h).toNat : ℕ∞) ≤ codimRepCanonical (orbitRankLocus M'))
