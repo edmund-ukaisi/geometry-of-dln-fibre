@@ -393,3 +393,74 @@ This design covers EXACTLY the depth-2 object `SchurCore p r` = `∫∫ ‖Δ·S
 
 So: this design + the depth-2 `(r,r,p)` build it scopes = the FULL output-width generalization; the depth
 generalization is a clearly-separated, named research wall, not part of this thread.
+
+## 8. DEPTH-2 N4 WELD ASSESSMENT (2026-06-28, controller-commissioned, design-only)
+
+**Question (controller):** is the DEPTH-2 part of N4 — the `(r,r,p)` cover weld (the done radial charts +
+genm-n4's `(r,r,4)` recStep template, extended to `(r,r,p)`, NO L-layer joint) — separably BOUNDED (→ a real
+bounded `(r,r,p)` ∀p-hfin deliverable), or does it bleed into the depth-≥3 N4 long pole?
+
+**Verdict: the depth-2 `(r,r,p)` hfin is SEPARABLY BOUNDED — it does NOT touch the depth-≥3 long pole.** It is
+a genuine bounded `(r,r,p)` ∀p-hfin deliverable. Evidence, from reading the landed depth-stratified infra:
+
+**(i) The two-matrix-box reduction is the depth-2 essence, and it is ALREADY GENERIC in `r` (genm-n4).** The
+N4 statement `routeMCore_threshold_lt_top {L} M` quantifies over all `M`, but its proof at depth-2 does NOT go
+through the depth-`r` WellFounded-on-corank `recStep` Schur-ATLAS (the abandoned `RouteMSchur` route). It goes
+through the **two-matrix-box reduction**: dominate the open box by the closed cube → transport via
+`paramsEquivFlat` (MP) → reshape via a depth-2 MP equiv `eParams` splitting `Params (![r,r,p])` into EXACTLY
+two factors `(A0 : matBox r r, A1 : matBox r p)` → Tonelli to `∫_{A0}∫_{A1} frobSq(A0·A1)^{−c'}`. This is the
+`(3,3,4)` route (`routeMCore_M334_le_matBox` + `matBox334_blowup_lt_top`, both sorry-free, S2-free, axiom-clean
+at RouteM334{Hfin,Ratiofin}). genm-n4 has ALREADY built this reshape generic in `r`: `eParamsRR4 (r)`,
+`measurePreserving_eParamsRR4 (r)`, `eParamsRR4_preimage_box (r)`, `frobSq_prod_eq_eParamsRR4 (r)`,
+`routeMLayerBoxIntegral_rr4_eq (r)`, `routeMBoxThresholdFinite_rr4_of_schurRecStep (r)` (RouteMBoxThresholdRR4,
+sorry-free ∀r, gated only on `schurRecStep_four`). The ONLY thing fixing `p=4` in genm-n4's build is the
+threshold-arithmetic (`rr4_term_ge`, `minAdmRec_rr4_ge2`, `minAdm_rr4_eq`) and the box-integral gate
+`schurRecStep_four`. The MP reshape itself is `prod (![r,r,p]) A = A0·A1` — a SINGLE matrix product — for any
+`p`, generic.
+
+**(ii) Why this is the wall against L≥3, structurally.** `prod M A = A⁽¹⁾·…·A⁽ᴸ⁾` is a product of `L` matrices
+(`Foundations/Loss.lean:48`). At depth-2 (`M : Fin 3 → ℕ`, `L=2`, two layers) the product is `A0·A1` — one
+`frobSq(A0·A1)`, reducible to a two-box integral, then the SINGLE radial-`Δ` blow-up of the done charts. At
+depth-3 (`M4422`, `L=3`) the reshape is into THREE boxes `(A2,A1,A0)` and the integrand is
+`frobSq(rmatMul (rmatMul A0 A1) A2)` — a product of three matrices, bounded by a depth-3-SPECIFIC argument
+(`triple_fibre_lt_top`), NOT the two-matrix blow-up. So "the L-layer joint" the depth-≥3 wall needs is exactly
+the structure that depth-2 LACKS: the depth-2 reduction is a clean Tonelli split into two independent factors,
+and the cap-A/cap-B radial blow-up acts on the single product `Δ·S`. No iterated/joint resolution. The depth-2
+`(r,r,p)` build therefore lives ENTIRELY inside the two-matrix-box world — it cannot bleed into the L≥3 long
+pole because it never forms a ≥3-factor product.
+
+**(iii) The remaining bounded pieces (the `(r,r,p)` deliverable), all reusing landed infra:**
+1. **Reshape ∀p:** generalize genm-n4's `eParamsRR4 (r)` from `p=4` to `eParamsRRP (r) (p)` (same MP plumbing —
+   `piFinSuccAbove` + `prodUnique`; only the `Fin 4 → Fin p` width changes). LOW risk, mechanical.
+2. **`routeMCore_le_matBox` ∀p:** the open→cube→`paramsEquivFlat`→`eParamsRRP`→Tonelli chain, byte-for-byte the
+   `(3,3,4)` / genm-n4 `(r,r,4)` proof with `4 ⟶ p`. LOW risk.
+3. **The inner box-integral finiteness `∫_{A0∈matBox r r}∫_{A1∈matBox r p} frobSq(A0·A1)^{−c'} < ⊤` for
+   `c' < ½·minAdm(r,r,p)`:** the `r²`-chart radial-`Δ` cover (`recStep` over the `r²` max-modulus charts) +
+   per-chart `radial_loss_chart_lt_top {r p}` (DONE, p-general) + the angular `hSfin` from the corank-`(r−1)`
+   recursion. The corank recursion here is the genuine MEDIUM piece — but it is the depth-2 Schur recursion
+   (`SchurCore p r`, the recStep this design's STEP-0 validated reaches `½·minAdm(r,r,p)`), NOT the depth-`r`
+   atlas. This is the `schurRecStep_four` gate, generalized to `schurRecStep_p` / the `½·minAdm(r,r,p)` IH.
+4. **Threshold arithmetic ∀p:** generalize genm-n4's `minAdmRec_rr4_ge2`/`minAdm_rr4_eq` (the `inf'`-witness
+   `minAdm(r,r,p)/2 = schurLambda_p r` recursion) to the `½·minAdm(r,r,p) = min(½·minAdm(r−1,r−1,p)+p/2, r²/2)`
+   identity (cert-verified 10/10, the recursion this design banks). MEDIUM (integer-min arithmetic, parity).
+
+**(iv) Boundary with the depth-≥3 long pole — clean.** Piece 3's corank recursion is `SchurCore p r` recursing
+on corank (the depth-2 single-product Schur split), terminating at the `r=1` Morse leaf — depth ≤ r in the
+RANK measure, NOT in the LAYER count `L`. The N4 statement is `∀M`, but the depth-2 instantiation
+`M = ![r,r,p]` is discharged by this two-box route with ZERO reference to `recStep`-over-layers or the L-layer
+joint resolution. So instantiating N4 at `(r,r,p)` is a SELF-CONTAINED corollary lane that does not unblock,
+and is not blocked by, the `∀M` (L≥3) proof. The shared `routeMCore_threshold_lt_top {L} M` sorry is discharged
+for `L≥3` by a DIFFERENT argument (the triple/general-`L` fibre bound + the L-layer resolution — the genm-n4
+research wall); the `(r,r,p)` lane is a parallel, independent instantiation.
+
+**CONCLUSION for commissioning.** There IS a bounded `(r,r,p)` ∀p-hfin deliverable, separable from the L≥3 N4
+long pole: pieces (iii).1–4, all reusing the landed depth-2 / genm-n4 infra, gated on the `½·minAdm(r,r,p)`
+Schur recursion (the natural ∀p generalization of `schurRecStep_four`, STEP-0-validated as reachable). Risk
+profile: 1–2 LOW (mechanical p-generalization of MP reshapes), 3 MEDIUM (the corank Schur recursion ∀p —
+bounded, the depth-2 single-product split, NOT the atlas), 4 MEDIUM (integer-min threshold arithmetic ∀p). It
+is NOT a single bounded-medium chip (it is the corank recursion + reshape + arithmetic bundle), but it is
+bounded-and-standard end-to-end — no research wall. The one genuine dependency is `schurRecStep_p` (the ∀p
+recStep), which subsumes/generalizes genm-n4's `schurRecStep_four` gate; if the controller wants ONE commission
+that lands the `(r,r,p)` family, it is "the ∀p Schur recStep + the four reshape/arithmetic generalizations,
+instantiating `routeMCore_threshold_lt_top` at `M = ![r,r,p]`." This does not require, and is not required by,
+the L≥3 N4 weld.
