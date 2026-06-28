@@ -1981,6 +1981,97 @@ theorem e2_regPreserve {p1 p2 q1 : Type*} [Fintype p1] [Fintype q1] [DecidableEq
   -- `A0·Y1 + (Y0·T1 − Y0·T1') + Y0·T1' = A0·Y1 + Y0·T1`.
   rw [add_assoc, sub_add_cancel]
 
+/-! ### S6r — joint-move readbacks (the shared foundation for both S6 geometric subs)
+
+`psiSplitRawL2Core` edits ONLY the last-layer `readY` (→ `l2Y1p`) and the last-layer core (→ `l2T1p`);
+every other per-layer read is fixed. These readbacks (via the `DeepestPsiLens` round-trips) are what the
+reg-invariance + core=Score subs consume to reduce `framedParamsPivot (psiSplitRawL2Core q)` to the
+original `framedParamsPivot q` with the two last-layer blocks swapped. -/
+
+-- The gauge slot of psiSplitRawL2Core q is regGaugeSlotEquiv.symm (l2g' q).
+theorem psiSplitRawL2Core_gauge (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    ((psiSplitRawL2Core H r hr hL hL2eq q).1, (psiSplitRawL2Core H r hr hL hL2eq q).2.2)
+      = (regGaugeSlotEquiv H r hr hL).symm (l2g' H r hr hL hL2eq q) := by
+  rw [psiSplitRawL2Core_eq]
+
+-- readX of the moved gauge = original (g' fixes all X-tags).
+theorem readX_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (i j : Fin r) :
+    readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
+      = readX H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, readX_regGaugeSlotEquiv_symm]
+  -- l2g' at the X-tag = g idx = regGaugeSlotEquiv (q.1,q.2.2) (X-tag) = readX (q.1,q.2.2) s i j.
+  rfl
+
+-- readZ of the moved gauge = original.
+theorem readZ_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L)
+    (i : Fin (H s.castSucc - r)) (j : Fin r) :
+    readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
+      = readZ H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, readZ_regGaugeSlotEquiv_symm]; rfl
+
+-- readY of the moved gauge at a NON-last layer = original.
+theorem readY_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL)
+    (i : Fin r) (j : Fin (H s.succ - r)) :
+    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
+      = readY H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, readY_regGaugeSlotEquiv_symm]
+  -- l2g' at the Y-tag ⟨s, inl(inr(i,j))⟩ with s ≠ last → the `else` branch = g idx = readY q s i j.
+  show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩ = readY H r hr hL (q.1, q.2.2) s i j
+  rw [l2g']; simp only [dif_neg hs]; rfl
+
+-- readY of the moved gauge at the LAST layer = l2Y1p (the moved reg block).
+theorem readY_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (i : Fin r) (j : Fin (H (lastLayer hL).succ - r)) :
+    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) (lastLayer hL) i j
+      = l2Y1p H r hr hL hL2eq q i j := by
+  rw [psiSplitRawL2Core_gauge, readY_regGaugeSlotEquiv_symm]
+  show l2g' H r hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+      = l2Y1p H r hr hL hL2eq q i j
+  rw [l2g']
+  simp only [dif_pos rfl]
+  rfl
+
+-- coreRead of the moved core slot at a NON-last layer = original.
+theorem coreRead_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 s
+      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s := by
+  -- (psiSplitRawL2Core q).2.1 = core' = paramsEquivFlat(update(decode q.2.1, last, T1')).
+  have hcore : (psiSplitRawL2Core H r hr hL hL2eq q).2.1
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+            (lastLayer hL) (l2T1p H r hr hL hL2eq q)) := by
+    rw [psiSplitRawL2Core_eq]
+  rw [hcore, coreDecode_paramsEquivFlat, Function.update_of_ne hs]
+
+-- coreRead of the moved core slot at the LAST layer = l2T1p.
+theorem coreRead_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 (lastLayer hL)
+      = l2T1p H r hr hL hL2eq q := by
+  have hcore : (psiSplitRawL2Core H r hr hL hL2eq q).2.1
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+            (lastLayer hL) (l2T1p H r hr hL hL2eq q)) := by
+    rw [psiSplitRawL2Core_eq]
+  rw [hcore, coreDecode_paramsEquivFlat, Function.update_self]
+
 /-! ### S6 sub-lemmas (the decomposition; assembly proven, two geometric subs sorried) -/
 
 theorem psiRawL2_split (H : Fin (L + 1) → ℕ) (r : ℕ)
