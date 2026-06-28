@@ -211,4 +211,236 @@ noncomputable def l2Y1pConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     + (l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q
       * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q)
 
+/-! ## S0b — the conjugated joint action `psiSplitRawL2CoreConj` + its lens decomposition
+
+`psiSplitRawL2CoreConj` re-encodes the last-layer core block (`T1c ↦ T1'c`) and the last-layer reg
+`Y`-tag (`Y1c ↦ Y1'c`) through `paramsEquivFlat`/`regGaugeSlotEquiv`, exactly like the bare
+`psiSplitRawL2Core` but with the conjugated `l2T1pConj`/`l2Y1pConj`. Defined directly in terms of the
+named blocks so the lens decomposition is `rfl`. -/
+
+/-- The conjugated edited reg/gauge function `g'c` (last-layer `Y`-tag set to `Y1'c`, else `g`). -/
+noncomputable def l2g'Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : RegGaugeIdx H r → ℝ := fun idx =>
+  match idx with
+  | ⟨s, Sum.inl (Sum.inr (i, j))⟩ =>
+      if h : s = lastLayer hL then l2Y1pConj H r B hB hr hL hL2eq q i (h ▸ j)
+        else regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
+  | _ => regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
+
+/-- **The conjugated joint `(T1c,Y1c)` action on `DeepestSplit`** (`L = 2`): the bare
+`psiSplitRawL2Core` with conjugated pivots/off-diagonals. The core slot updates `lastLayer ↦ T1'c`, the
+reg/gauge slot sets the last-layer `Y`-tag to `Y1'c`. -/
+noncomputable def psiSplitRawL2CoreConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
+  let core' : Fin (flatDim (deepestM H r)) → ℝ :=
+    paramsEquivFlat (deepestM H r)
+      (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1) (lastLayer hL)
+        (l2T1pConj H r B hB hr hL hL2eq q))
+  let regspec' := (regGaugeSlotEquiv H r hr hL).symm (l2g'Conj H r B hB hr hL hL2eq q)
+  (regspec'.1, (core', regspec'.2))
+
+/-- **`psiSplitRawL2CoreConj` IS the encoded triple** in terms of `l2g'Conj`/`l2T1pConj` (`rfl`). -/
+theorem psiSplitRawL2CoreConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    psiSplitRawL2CoreConj H r B hB hr hL hL2eq q
+      = (((regGaugeSlotEquiv H r hr hL).symm (l2g'Conj H r B hB hr hL hL2eq q)).1,
+          (paramsEquivFlat (deepestM H r)
+            (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+              (lastLayer hL) (l2T1pConj H r B hB hr hL hL2eq q)),
+          ((regGaugeSlotEquiv H r hr hL).symm (l2g'Conj H r B hB hr hL hL2eq q)).2)) := rfl
+
+/-- The conjugated decoded **core** delta payload: `0` except at the last layer, where it is `T1'c − T1c`. -/
+noncomputable def l2CoreΔTupleConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Params (deepestM H r) :=
+  Function.update (0 : Params (deepestM H r)) (lastLayer hL)
+    (l2T1pConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q)
+
+/-- The conjugated decoded **reg/gauge** delta payload `g'c − g` (nonzero only at the last-layer `Y`-tags). -/
+noncomputable def l2GaugeΔConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : RegGaugeIdx H r → ℝ :=
+  l2g'Conj H r B hB hr hL hL2eq q - regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
+
+/-- The conjugated core payload encoded by `paramsEquivFlatCLE` is the flat `core'c − q.2.1`
+(mirror of `paramsEquivFlatCLE_l2CoreΔTuple_eq`). -/
+theorem paramsEquivFlatCLE_l2CoreΔTupleConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q)
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1) (lastLayer hL)
+            (l2T1pConj H r B hB hr hL hL2eq q))
+        - q.2.1 := by
+  let d : Params (deepestM H r) := (paramsEquivFlat (deepestM H r)).symm q.2.1
+  let u : Params (deepestM H r) := Function.update d (lastLayer hL) (l2T1pConj H r B hB hr hL hL2eq q)
+  have hd_last : d (lastLayer hL) = l2T1Conj H r hr hL q := rfl
+  have hΔ : l2CoreΔTupleConj H r B hB hr hL hL2eq q = u - d := by
+    funext s
+    show l2CoreΔTupleConj H r B hB hr hL hL2eq q s = u s - d s
+    rcases eq_or_ne s (lastLayer hL) with h | h
+    · subst h
+      rw [show u (lastLayer hL) = l2T1pConj H r B hB hr hL hL2eq q from Function.update_self _ _ _,
+        hd_last]
+      simp only [l2CoreΔTupleConj, Function.update_self]
+    · rw [show u s = d s from Function.update_of_ne h _ _, sub_self]
+      show l2CoreΔTupleConj H r B hB hr hL hL2eq q s = 0
+      rw [l2CoreΔTupleConj, Function.update_of_ne h]; rfl
+  rw [hΔ, map_sub, paramsEquivFlatCLE_coe]
+  show paramsEquivFlat (deepestM H r) u - paramsEquivFlat (deepestM H r) d
+    = paramsEquivFlat (deepestM H r) u - q.2.1
+  rw [(paramsEquivFlat (deepestM H r)).apply_symm_apply]
+
+/-- **The conjugated lens decomposition** `psiSplitRawL2CoreConj q − q = (encoded payloads)`
+(mirror of `psiSplitDeltaL2Core_eq_payload`): reg/spec slots `regGaugeSlotCLE.symm (l2GaugeΔConj q)`,
+core slot `paramsEquivFlatCLE (l2CoreΔTupleConj q)`. -/
+theorem psiSplitDeltaL2CoreConj_eq_payload (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    psiSplitRawL2CoreConj H r B hB hr hL hL2eq q - q
+      = (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q),
+            ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).2)) := by
+  have hcore := paramsEquivFlatCLE_l2CoreΔTupleConj_eq H r B hB hr hL hL2eq q
+  have hgg : (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)
+      = (regGaugeSlotEquiv H r hr hL).symm (l2g'Conj H r B hB hr hL hL2eq q) - (q.1, q.2.2) := by
+    rw [l2GaugeΔConj, map_sub, regGaugeSlotCLE_symm_coe]
+    congr 1
+    rw [(regGaugeSlotEquiv H r hr hL).symm_apply_apply]
+  rw [psiSplitRawL2CoreConj_eq, hcore]
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · rw [Prod.fst_sub, hgg, Prod.fst_sub]
+  · rfl
+  · rw [Prod.snd_sub, Prod.snd_sub, hgg, Prod.snd_sub]
+
+/-! ## S4b — the conjugated named blocks at the split origin
+
+At `q = 0` all reads vanish (`readX/Y/Z_zero`), so `A0c = deepBlkA_0`, `A1c = deepBlkA_last`, and the
+off-diagonals collapse to the deepest blocks: `Y0c = deepBlkY_0`, `Z1c = deepBlkZ_last`, `T1c = 0`. At
+the L=2 boundary `deepBlkY_0 = 0` (`hY`) and `deepBlkZ_last = 0` (`hZ`), so `Y0c(0) = Z1c(0) = 0` — the
+conjugated derivative-vanishing input (mirror of the bare `l2Z1_zero`/`l2Y0_zero`). -/
+
+/-- `Z1c = deepBlkZ_last` at the origin; `= 0` at the L=2 boundary (`hZ`). -/
+theorem l2Z1Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    l2Z1Conj H r B hB hr hL 0 = 0 := by
+  rw [l2Z1Conj, gaugeProj_zero, readZ_zero H r hr hL, add_zero, hZ]
+
+/-- `Y0c = deepBlkY_0 (cols cast)` at the origin; `= 0` at the L=2 boundary (`hY`). -/
+theorem l2Y0Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    l2Y0Conj H r B hB hr hL hL2eq 0 = 0 := by
+  rw [l2Y0Conj, gaugeProj_zero, readY_zero H r hr hL, add_zero, hY]
+  simp only [Matrix.reindex_apply, Matrix.submatrix_zero, Pi.zero_apply]
+
+/-- `T1c = 0` at the origin (`coreLast 0 = 0`). -/
+theorem l2T1Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    l2T1Conj H r hr hL 0 = 0 := l2T1_zero H r hr hL
+
+/-! ## S4b' — the conjugated composite blocks at the origin (`Kc = Rc = 0`, `Wc = 1`)
+
+With `Z1c(0) = 0` (boundary `hZ`), every composite that carries a `Z1c` left factor vanishes at the
+origin: `Rc(0) = 0`, `Wc(0) = 1`, `Kc(0) = 0`, and `T1'c(0) − T1c(0) = 0`. The pivots `A0c, A1c` being
+deepest blocks (not `1`) is invisible — the vanishing rides on the `Z1c`/`Y0c` factors. -/
+
+/-- `Rc = 0` at the origin (carries `Z1c(0) = 0`). -/
+theorem l2RConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    l2RConj H r B hB hr hL hL2eq 0 = 0 := by
+  rw [l2RConj, l2Z1Conj_zero H r B hB hr hL hZ]; simp [Matrix.zero_mul]
+
+/-- `Wc = 1` at the origin. -/
+theorem l2WConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    l2WConj H r B hB hr hL hL2eq 0 = 1 := by
+  rw [l2WConj, l2RConj_zero H r B hB hr hL hL2eq hZ, add_zero]
+
+/-- `Kc = 0` at the origin (carries `Z1c(0) = 0`). -/
+theorem l2KConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    l2KConj H r B hB hr hL hL2eq 0 = 0 := by
+  rw [l2KConj, l2Z1Conj_zero H r B hB hr hL hZ]; simp [Matrix.zero_mul]
+
+/-! ## S4c — the conjugated `T1'c − T1c` normalization (pure algebra, mirrors `l2Br_sub_T1`)
+
+`T1'c = Wc⁻¹·Brc` and `Brc − T1c = −Kc·S1c + Rc·T1c`, so `T1'c − T1c = (Wc⁻¹ − 1)·Brc + (Brc − T1c)`.
+Each summand carries a `Z1c`/`Y0c` factor (`Kc, Rc, Wc⁻¹ − 1` all vanish at the origin), so the strict
+derivative at `0` is `0`. Identical algebra to the bare. -/
+
+/-- `T1'c = Wc⁻¹·Brc` (`rfl`). -/
+theorem l2T1pConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2T1pConj H r B hB hr hL hL2eq q
+      = (l2WConj H r B hB hr hL hL2eq q)⁻¹ * l2BrConj H r B hB hr hL hL2eq q := rfl
+
+/-- `Brc − T1c = −(Kc·S1c) + Rc·T1c` (the `±Z1c·A1c⁻¹·Y1c` cancel). -/
+theorem l2BrConj_sub_T1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2BrConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q
+      = -(l2KConj H r B hB hr hL hL2eq q * l2S1Conj H r B hB hr hL hL2eq q)
+        + l2RConj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q := by
+  rw [l2BrConj, l2S1Conj, l2RConj]
+  set Z1 := l2Z1Conj H r B hB hr hL q
+  set A1i := (l2A1Conj H r B hB hr hL q)⁻¹
+  set A0i := (l2A0Conj H r B hB hr hL q)⁻¹
+  set Y0 := l2Y0Conj H r B hB hr hL hL2eq q
+  set Y1 := l2Y1Conj H r B hB hr hL q
+  set T1 := l2T1Conj H r hr hL q
+  set K := l2KConj H r B hB hr hL hL2eq q
+  show (1 - K) * (T1 - Z1 * A1i * Y1) + Z1 * A1i * Y1
+      + Z1 * A1i * A0i * Y0 * T1 - T1
+    = -(K * (T1 - Z1 * A1i * Y1)) + Z1 * A1i * A0i * Y0 * T1
+  rw [Matrix.sub_mul, Matrix.one_mul]
+  abel
+
+/-- `T1'c − T1c = (Wc⁻¹ − 1)·Brc + (Brc − T1c)`. -/
+theorem l2T1pConj_sub_T1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2T1pConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q
+      = ((l2WConj H r B hB hr hL hL2eq q)⁻¹ - 1) * l2BrConj H r B hB hr hL hL2eq q
+        + (l2BrConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q) := by
+  rw [l2T1pConj_eq]
+  set Wi := (l2WConj H r B hB hr hL hL2eq q)⁻¹
+  set Br := l2BrConj H r B hB hr hL hL2eq q
+  set T1 := l2T1Conj H r hr hL q
+  rw [Matrix.sub_mul, Matrix.one_mul]
+  abel
+
+/-- `T1'c − T1c = 0` at the origin (`Kc = Rc = 0`, `Wc = 1`, so `Wc⁻¹ − 1 = 0` and `Brc − T1c = 0`). -/
+theorem l2T1pConj_sub_T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    l2T1pConj H r B hB hr hL hL2eq 0 - l2T1Conj H r hr hL 0 = 0 := by
+  rw [l2T1pConj_sub_T1, l2BrConj_sub_T1, l2KConj_zero H r B hB hr hL hL2eq hZ,
+    l2RConj_zero H r B hB hr hL hL2eq hZ]
+  simp [Matrix.zero_mul, l2WConj_zero H r B hB hr hL hL2eq hZ]
+
 end DLNFibre.DLN.RLCT
