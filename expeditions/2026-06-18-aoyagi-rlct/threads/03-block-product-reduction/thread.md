@@ -13917,3 +13917,43 @@ derivative of the successor extended `F2` slot.  With that staged input,
 This is not the descending induction over all edges.  It does not prove a
 target-side `LinearEquiv`, determinant equality, measure transport, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 retained-passive source-edge-family pre-measure inputs
+
+Reproduction:
+`reproduction-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+Review:
+`review-a2-retained-passive-source-edge-family-premeasure-inputs.md`, PASS by
+xhigh read-only reviewer `Linnaeus`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData
+```
+
+For retained-passive coordinate data `retainedData y`, the canonical source
+edge-family map
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+  W B U₀ hU₀ (retainedData y)
+```
+
+supplies the fixed-base local-source membership and source-readback
+selected-entry residual-factor matrix inputs.  The separate realization
+hypothesis from the generic bridge is discharged by
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq`.
+
+This is fixed-base source-family plumbing only.  It does not transport
+`edgeMatrix` or `sourceReadback`, prove fixed-base realization for transported
+explicit Case 2 data, compare source priors or Jacobians, prove normal
+crossings, pole order, or RLCT.

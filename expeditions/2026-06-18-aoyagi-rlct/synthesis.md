@@ -48,6 +48,48 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Source-Edge-Family Pre-Measure Inputs
+
+The generic fixed-base retained-passive pre-measure input bridge now has the
+source-family-of-data specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData
+```
+
+For
+
+```text
+sourceChart y =
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+    W B U₀ hU₀ (retainedData y),
+```
+
+the fixed-base edge-matrix realization hypothesis is discharged by
+
+```text
+paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq.
+```
+
+The theorem then returns local-source membership and the source-readback
+selected-entry residual-factor matrix identity from `hdet` and `hdataFactor`,
+with the fixed index context and residual-coordinate equivalence still supplied.
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed with
+the existing imported warning profile.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-premeasure-inputs.md`,
+PASS by xhigh `Linnaeus`.
+
+This is not endpoint transport and not a fixed-base realization theorem for the
+transported explicit Case 2 data. It does not transport `edgeMatrix` or
+`sourceReadback`, compare source priors or Jacobians, prove normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Fixed-Base Retained-Passive Pre-Measure Inputs
 
 The source-facing fixed-base inputs identified by xhigh `Pasteur` are now

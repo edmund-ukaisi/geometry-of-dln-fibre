@@ -140,6 +140,19 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, source-edge-family pre-measure specialization,
+  2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData`,
+  which specializes the fixed-base pre-measure input bridge to the canonical
+  source edge-family map attached to retained-passive coordinate data.  It
+  removes the separate `hedge` input only in this fixed-base source-family
+  setting, by using
+  `paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq`.
+  It still assumes determinant-chart proofs and the stored-data residual-factor
+  readout, and it does not transport `edgeMatrix` or `sourceReadback`, prove
+  endpoint-transported explicit Case 2 fixed-base realization, source-prior
+  pushforward, Jacobian density comparison, normal crossings, pole order, or
+  RLCT.
 - **Current status addendum, fixed-base retained-passive pre-measure inputs,
   2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix`,

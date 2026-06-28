@@ -19,6 +19,43 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, source-edge-family pre-measure specialization
+
+The fixed-base retained-passive pre-measure input bridge now has the canonical
+source-edge-family specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData
+```
+
+For a family of fixed-base retained-passive coordinate data `retainedData y`,
+the source chart
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+  W B U₀ hU₀ (retainedData y)
+```
+
+automatically supplies the edge-matrix realization hypothesis needed by the
+previous pre-measure input theorem, using
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq`.
+The conclusion is local-source membership plus the source-readback
+residual-factor matrix readout, with the fixed index context and residual-
+coordinate equivalence still supplied, assuming the determinant-chart proofs
+`hdet` and the stored-data residual-factor matrix identity `hdataFactor`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-premeasure-inputs.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+Xhigh read-only review by `Linnaeus` passed at
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-premeasure-inputs.md`.
+
+This is still fixed-base source-family plumbing. It does not transport
+`edgeMatrix` or `sourceReadback` across endpoint equivalences, prove fixed-base
+realization for transported explicit Case 2 data, compare source priors or
+Jacobians, prove normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, fixed-base retained-passive pre-measure inputs
 
 The fixed-base retained-passive local-measure inputs can now be packaged from

@@ -1562,6 +1562,79 @@ theorem retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProdu
         (Cedge := Cedge) sourceChart retainedData hdet hedge
         residualCoordEquiv hdataFactor
 
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+/-- The fixed-base source edge-family map attached to retained-passive data
+supplies the local-source and source-readback matrix inputs without a separate
+edge-realization hypothesis.
+
+This is the source-family-of-data specialization of
+`retainedPassiveP13LocalSource_mem_and_sourceReadback...`: the realization
+hypothesis `hedge` is discharged by the definition of
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData`. -/
+theorem retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (retainedData :
+      (center → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : ∀ y : center → ℝ, (retainedData y).detChart)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (hdataFactor :
+      ∀ y : center → ℝ,
+        ChartLocalSuffixState.residualFactorProduct (retainedData y).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c))) :
+    let EdgeFamily :=
+      ∀ p : Fin (M + 1), reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W B U₀ hU₀ (retainedData y)
+    (∀ y : center → ℝ,
+      sourceChart y ∈
+        paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+          (fun E : EdgeFamily ↦ E)) ∧
+    (∀ y : center → ℝ,
+      let E :=
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (sourceChart y p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) := by
+  intro EdgeFamily sourceChart
+  exact
+    retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+      (W := W) (B := B) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := fun E : EdgeFamily ↦ E)
+      sourceChart retainedData hdet
+      (fun y ↦ by
+        simpa [sourceChart] using
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+            (K := ℝ) W B (U₀ := U₀) (hU₀ := hU₀) (retainedData y))
+      residualCoordEquiv hdataFactor
+
 set_option linter.unusedSectionVars false in
 /-- A retained-passive source-readback residual-factor identity gives the
 selected-entry residual square-sum expected by the local-measure handoff.
