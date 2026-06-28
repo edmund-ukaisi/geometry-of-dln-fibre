@@ -497,5 +497,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- R1-LOWER ∀M-(1,1)-smeared FRONT FACT (the architecture cert's flagged biggest risk, now in hand):
+-- §3a `rankOneColumns_of_factorsThroughOne` (P=U·V through Fin 1 ⟹ rank-one columns off the pole,
+-- literal outer product not rank theory) + §3b `prodAux_factorsThroughOne` (the cast-heavy prefix
+-- split, existential-right-factor form, any k≥p) + §3c `prodAux_frontScalarShear_cancel` (wired into
+-- `scalarGram_cancel_of_rankOneColumns`: P₁·Λ₀=P₂). All S2-FREE, fidelity-reviewed. Feeds STEP 4 (the
+-- (1,1) Option-A chart). `RouteMSmearedGenRate` owns the generic scalar-Gram cancellation it consumes.
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedGenRate
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

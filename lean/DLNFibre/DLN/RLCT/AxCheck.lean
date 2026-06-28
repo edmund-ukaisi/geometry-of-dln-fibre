@@ -3,6 +3,7 @@ import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 
 /-!
 # Axiom-hygiene check
@@ -57,6 +58,11 @@ open DLNFibre.DLN.RLCT
 -- m.p. transport ∘ the loss-identity seam ∘ the `=` value. Same axiom profile as `_eq`:
 -- [propext, Classical.choice, Quot.sound, monomial_rlct], NO `sorryAx`.
 #print axioms case222_rlct
+
+-- R1-LOWER ∀M-(1,1)-smeared front fact (`prodAux_frontScalarShear_cancel`, the cert's biggest-risk piece) —
+-- must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE (literal outer-product cancellation,
+-- no analysis axiom), no `sorryAx`.
+#print axioms prodAux_frontScalarShear_cancel
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
