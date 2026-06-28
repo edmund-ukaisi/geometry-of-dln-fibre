@@ -790,3 +790,68 @@ R1-UPPER N4 is bounded-after-machinery; the (A) "no research wall" premise SURVI
 re-scope needed; genm-recstep re-engaged on the build (corank-3 first; the one fragile Lean point is the JOINT-core
 IH statement shape). The cited-rlct fallback stays unused. Net: the decorrelation both confirmed the gate AND
 corrected the controller's framing — the bedrock-checkpoint discipline working a fourth time this expedition.
+
+### Item 40 — D1 is L2-COUPLED via a shared gauge-slice; build it REUSABLE (heartbeat 2026-06-28)
+Goal-distance map (this tick, verified against Skeleton): the headline `aoyagi_learning_coefficient` (1725) rests on
+exactly four named sorries — **1234 `resolution_charts` (R1)** [staffed: genm-boundary LOWER + genm-c3wire/genm-recstep
+UPPER], **1131 `deepest_regular_core_normal_form` (L2)** [staffed: genm-l2 KC1 + the producer #102], **1177
+`rlctAt_deepest_le_of_optimal` (D1)** [UNSTAFFED], and **1707 `aoyagiTheta_eq` (A2/θ)** [secondary, off the λ path,
+standing decision 6]. A1 (`lambdaCore_eq_clean`, the closed-form↔core-value Karamata bridge, 4246) is **PROVED** — so
+the "headline arithmetic" is NOT an open decoupled piece (it was a candidate 5th front; recon retired it).
+
+**D1 finding (re-read cert #112 / thread 04-d1-scope):** D1≥ is value-free and closes parallel to R1, but its hard
+obligation **(a)** — the homogeneous-residual constant-rank chart at an arbitrary optimal `v` — is *the same
+gauge-slice / Morse-with-parameters machinery* as L2's `deepest_regular_core_normal_form` (#44/1131). So D1(a) is
+**L2-coupled, not a clean decoupled front** — spawning a D1 Lean build now would front-run L2's unvalidated gauge-slice
+machinery (the same "don't stand on an unvalidated instance" bar applied to genm-recstep's recStep this morning).
+Obligation **(b)** (the fibre-cone closure `prod(t•A)=t^L·prod A`, pure algebra) IS decoupled + small.
+
+**ARCHITECTURE ITEM (action when the L2 producer phase #102 starts):** the producer's gauge-slice lemma should be built
+as a REUSABLE `local_constant_rank_chart` interface that BOTH L2 (1131) and D1(a) (1177) consume, rather than a
+producer-internal specialization. If built reusable, D1 collapses to (a)=reuse + (b)=pure algebra. Surface to genm-l2
+when it transitions KC1 → producer; don't block. Net for this tick: the critical path is at **maximal sound
+parallelism** (4 fronts on named sorries); no further front is warranted without front-running a dependency.
+
+### Item 41 — FRAMING CORRECTION: the ∀M-smeared lift is materially larger than "template parametrization" (2026-06-28)
+genm-boundary (R1-LOWER smeared, bg `a223…`) rested at a genuine wall with a finding that **corrects the controller's
+de-risking**. I had de-risked the ∀M-smeared lift (UPDATE-191) to "3 bounded families, all r·c≤2 — just parametrize
+the (1,2,1)/(2,3,1)/(1,3,2) validate-small templates, charge through." genm-boundary + a decorrelated Codex
+(`genM11-arch`) found this **under-estimates the (1,1) family** (34/46, the largest): it spans **L∈{2,3,4}** with
+varying bottleneck layer + flatDim, and for L≥3 the front `P = A⁰·A¹·…` is a **degree-(L−1) matrix product**. The
+validate-smalls' per-M explicit reshape (`packNNN`/`finNEquivFlatIdxNNN`/`splitN`) is **scaffolding, not the ∀M
+substrate** — it can't generalize over varying L/flatDim. The lift must adopt the **boundary-CLEAN "Option-A"
+flat-coordinate architecture** (generic `deepestCoords`/`paramsEquivFlat_symm_decode`/`LossHomogeneity`, front product
+carried abstractly), not a template reshape.
+
+**Still a BOUNDED build, NOT a research wall** (per the ambition calibration): the missing piece — the front-bottleneck
+→ rank-one bridge — is standard linear algebra (product through a `Text=r=1` width-1 layer ⟹ likely a literal outer
+product `u·vᵀ` ⟹ rank-one columns). genm-boundary banked the load-bearing generic cancellation
+(`scalarGram_cancel_of_rankOneColumns`, sorry-free/S2-free/validated-5/5, on branch `aoyagi-full-genM-smeared-lift`,
+NOT yet on canonical) and rested soundly at the fresh-infrastructure sub-target rather than sinking it silently under a
+"charge through" framing. **Controller decision:** took genm-boundary's recommendation (b)-then-(a) — spawned a
+decorrelated pen-and-paper (`genm-frontrank`) to adjudicate the front-bottleneck → rank-one structural fact (mechanism
++ exact statement + minimal Lean bridge + whether the (2,1)/(1,2) families also need Option-A) BEFORE the large
+formalise, given the framing was just corrected (bedrock-checkpoint: decorrelate before a large fresh build). genm-boundary
+stood down; its lemma stays banked on the feature branch (integrate the (1,1) atom as a complete unit, not the lone lemma).
+**Operator note:** the R1-LOWER smeared branch is a larger build than synthesis UPDATE-191 implied; no research wall,
+but the "3 quick template parametrizations" estimate was wrong. Watching whether the recalibration extends to all 3 families.
+
+### Item 42 — Cross-lineage name-clash deconfliction REQUIRED before final-headline aggregation (2026-06-28)
+Integrating `core_schur3_lt_top` (R1-UPPER corank-3) into the FULL `DLNFibre` aggregator surfaced latent top-level
+name-clashes between two separately-developed concrete-anchor lineages that had never been co-aggregated:
+the **(3,3,4)-anchor lineage** (`Case334RouteStep`, `RouteM334Ratiofin`, `RouteMSchurDepth2`, `RouteMSchurCorank3`)
+vs the **(4,4,2,2)/(3,3,3,3) lineage** (`RouteM4422`, `RouteM3333Atom`). Confirmed clashes: `e2`
+(RouteMSchurDepth2 `Fin2×Fin2≃Fin4` vs RouteM3333Atom `Fin3≃{frameB=2}`), `minAdm_M4422` (Case334RouteStep vs
+RouteM4422); likely more. Each is a generic file-local helper that both lineages happened to name the same.
+
+**Controller decision:** `core_schur3_lt_top` is sound — sorry-free, **axiom-clean** `[propext, Classical.choice,
+Quot.sound]` (verified via the AxCheck import closure, which excludes RouteM4422 → no clash), **standalone-green**
+(8290 jobs). Banked as a **verified file** on canonical (`09a16420`, the bdca2da3 pattern), NOT aggregated. The
+co-aggregation is a **mechanical packaging cleanup**, NOT on the immediate critical path — each leg (R1-UPPER recStep,
+R1-LOWER, L2) builds in its own import closure where the lineages don't collide. It IS required eventually: the final
+`aoyagi_learning_coefficient` proof will import both lineages (R1's resolution_charts needs the Schur recursion AND the
+achiever atoms), so the clashes must be resolved before the monolithic headline builds. Deferred to a dedicated
+formaliser tide (task #113): enumerate ALL clashes across the two lineages, rename/namespace the colliding helpers in
+ONE systematic pass + single rebuild — NOT whack-a-mole (the iteration cost is ~5-10min/rebuild). **Operator note:** this
+is the first concrete sign that the separately-grown concrete-anchor modules will need a namespacing/deconfliction pass
+to co-exist in the final headline — a known, bounded, mechanical cost, surfaced early.
