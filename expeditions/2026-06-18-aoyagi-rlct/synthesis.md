@@ -48,6 +48,33 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Two-Edge `ofTopologyTuple` Selected-Entry Product Adapter
+
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now proves:
+
+```text
+residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+```
+
+For a retained-passive topology tuple with `M = 1`, the theorem specializes the
+existing data-level Case 2 selected-entry product bridge to
+`data := ofTopologyTuple z`.  The hypotheses still supply the two displayed
+factor identities for `(ofTopologyTuple z).C 1` and `(ofTopologyTuple z).C 0`,
+plus the entrywise selected-entry readout of the displayed two-edge product.
+The conclusion identifies the whole two-edge residual-factor product from
+`Fin.last 2` to `0` with the selected-entry matrix.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge`
+and full `DLNFibre` build passed.  `scripts/sorries`, `git diff --check`, and
+touched-file forbidden-marker search passed.  Xhigh review by `Noether the 3rd`
+passed.
+
+Nonclaims: this is not a general full-suffix selected-entry product theorem.
+For a longer suffix, replacing a Case 2 adjacent window leaves outside factors
+explicit; this theorem does not prove they are identities, harmless, or
+loss-preserving.  It also does not prove zero-locus nullity, positivity,
+integrability, density transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Canonical Chart Residual Readout
 
 `RetainedPassiveLocalJacobianMeasure.lean` now proves that the canonical

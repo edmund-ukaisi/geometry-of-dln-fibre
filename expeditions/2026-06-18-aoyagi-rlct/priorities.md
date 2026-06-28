@@ -19,6 +19,29 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive two-edge `ofTopologyTuple` selected-entry adapter
+
+The retained-passive Case 2 selected-entry bridge now has a topology-tuple
+adapter for the exact two-edge whole-suffix case.  New Lean name in
+`RetainedPassiveCase2SelectedEntryChartBridge.lean`:
+
+```text
+residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+```
+
+For `M = 1`, if the two stored factors of `(ofTopologyTuple z).C` are supplied
+as Aoyagi's displayed Case 2 post-pivot residual block and following free
+factor after endpoint equivalences, and if the displayed two-edge product has
+the selected-entry center-coordinate readout entrywise, then the whole
+two-edge residual-factor product of `(ofTopologyTuple z).C` is the
+selected-entry matrix.
+
+This is not the general full-suffix product construction.  It applies only
+because the suffix has exactly two edges; for longer suffixes the outside
+factors remain explicit.  Focused build, `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, and full `DLNFibre`
+build passed.  Xhigh review by `Noether the 3rd` passed.
+
 ## Latest controller decision - 2026-06-28, canonical chart selected-entry square-sum bridge
 
 The canonical retained-passive chart-side residual readout now has a pointwise

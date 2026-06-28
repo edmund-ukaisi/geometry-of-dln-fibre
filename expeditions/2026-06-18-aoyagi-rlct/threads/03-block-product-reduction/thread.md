@@ -18,6 +18,32 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive two-edge `ofTopologyTuple` selected-entry product adapter
+
+Reproduction:
+`reproduction-a2-retained-passive-two-edge-ofTopologyTuple-selected-entry-product.md`.
+Statement card:
+`statement-card-a2-retained-passive-two-edge-ofTopologyTuple-selected-entry-product.md`.
+
+Lean target:
+
+```text
+residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+```
+
+This is a narrow adapter from the retained-passive topology tuple wrapper to
+the existing two-edge data-level Case 2 selected-entry product theorem.  The
+scope is exactly the whole suffix when the suffix has two edges (`M = 1`).
+It must not be used to collapse an arbitrary longer canonical suffix product;
+outside factors in longer suffixes remain explicit.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed.
+`scripts/sorries`, `git diff --check`, and the touched Lean file
+forbidden-marker search passed.  Xhigh review by `Noether the 3rd` passed.
+Review:
+`review-a2-retained-passive-two-edge-ofTopologyTuple-selected-entry-product.md`.
+
 ## 2026-06-28 A2 canonical retained-passive chart residual readout
 
 Lean now identifies the canonical retained-passive chart-side residual
