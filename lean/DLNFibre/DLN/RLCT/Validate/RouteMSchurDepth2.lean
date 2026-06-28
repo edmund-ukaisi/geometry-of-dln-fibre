@@ -398,4 +398,119 @@ theorem schurInner_S_le (R : Fin 2 → Fin 2 → ℝ) (h00 : R 0 0 = 1) (hbd : �
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top
     (schurSplitD_lintegral_lt_top R Sc h00 hbd c' hc0 hc' T hT)
 
+/-! ## The OUTER radial-Δ blow-up cover — the joint corank-2 core finiteness via the Schur route
+
+The outer half of the depth-2 weld: cover the `2×2` `Δ`-box by the `r² = 4` max-modulus-entry charts
+(`recStep`/`g5_pivotNode` on the `Fin 4` flat carrier), pull the radial scale `a` out of each chart
+(Jacobian `|a|³` via `pivotBlowupOnDeriv_det`, the N1 degree-2 homogeneity), Tonelli-separate the a-axis
+divisor (N3a, `c' < r²/2 = 2`) from the inner angular `∫_{R-ang}∫_S`, and close the inner integral by
+`schurInner_S_le` (the inner-S weld). This CHAINS the two halves into the joint corank-2 core finiteness
+`∫_Δ ∫_S frobSq (Δ·S)^{−c'} < ⊤` for `c' < 2 = λ_{2,4}` — the depth-2 weld END-TO-END (the Schur-route
+re-proof of `core334_lt_top`'s `(3,3,4)` corank-2 core, validating the generic recursion path).
+
+Mirrors `matBox334_chart_lt_top`'s radial-CoV plumbing at scale `r² = 4` (the `(3,3,4)` route does this
+for its 9 A0-entry charts). The small flatten/box atoms are copied locally (avoiding the heavy
+`RouteM334Hfin` import). -/
+
+/-- Local `matToFlatEquiv 2 2 : (Fin 2 → Fin 2 → ℝ) ≃ᵐ (Fin 4 → ℝ)` (avoiding the heavy `RouteM334Hfin`
+import): uncurry + the `Fin 2 × Fin 2 ≃ Fin 4` index reindex. -/
+noncomputable def matToFlat2 : (Fin 2 → Fin 2 → ℝ) ≃ᵐ (Fin (2 * 2) → ℝ) :=
+  (MeasurableEquiv.piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ)).symm.trans
+    (MeasurableEquiv.arrowCongr'
+      ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans finProdFinEquiv) (MeasurableEquiv.refl ℝ))
+
+theorem measurePreserving_matToFlat2 :
+    MeasurePreserving matToFlat2 (volume : Measure (Fin 2 → Fin 2 → ℝ))
+      (volume : Measure (Fin (2 * 2) → ℝ)) := by
+  unfold matToFlat2
+  refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+    ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans finProdFinEquiv)
+    (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+  exact (measurePreserving_piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ)
+    (fun _ _ => (volume : Measure ℝ))).symm
+    (MeasurableEquiv.piCurry (fun (_ : Fin 2) (_ : Fin 2) => ℝ))
+
+/-- The flattened `Δ`-box on the `Fin 4` carrier: `[−T,T]^4`. -/
+def flatBox2 (T : ℝ) : Set (Fin (2 * 2) → ℝ) := {y | ∀ i, y i ∈ Set.Icc (-T) T}
+
+theorem flatBox2_measurableSet (T : ℝ) : MeasurableSet (flatBox2 T) := by
+  rw [flatBox2, Set.setOf_forall]
+  exact MeasurableSet.iInter (fun i => (measurable_pi_apply i) measurableSet_Icc)
+
+/-- `matBox 2 2 T = matToFlat2 ⁻¹' flatBox2 T` (coordinatewise; the entry↔`Fin 4` reindex). -/
+theorem matBox2_flatBox_preimage (T : ℝ) : matBox 2 2 T = matToFlat2 ⁻¹' flatBox2 T := by
+  ext Δ
+  simp only [matBox, flatBox2, Set.mem_setOf_eq, Set.mem_preimage]
+  set e : (Σ _ : Fin 2, Fin 2) ≃ Fin (2 * 2) :=
+    (Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans finProdFinEquiv with he
+  have hcoord : ∀ i : Fin (2 * 2), (matToFlat2 Δ) i = Δ (e.symm i).1 (e.symm i).2 := fun i => rfl
+  constructor
+  · intro h i; rw [hcoord i]; exact h (e.symm i).1 (e.symm i).2
+  · intro h k j
+    have := h (e ⟨k, j⟩)
+    rw [hcoord (e ⟨k, j⟩), Equiv.symm_apply_apply] at this
+    exact this
+
+/-- The flat-`Δ` cover integrand: `gFlat2 c' T y = ∫_{S∈box} frobSq(rmatMul (matToFlat2.symm y) S)^{−c'}`,
+the (`S`-integrated) `Δ`-integrand reindexed by the `Fin 4` flatten. The `g` of `recStep` on `Fin 4`. -/
+noncomputable def gFlat2 (c' : ℝ) (T : ℝ) (y : Fin (2 * 2) → ℝ) : ℝ≥0∞ :=
+  ∫⁻ S in matBox 2 4 T,
+    ENNReal.ofReal ((frobSq (rmatMul (matToFlat2.symm y) S)) ^ (-c'))
+
+/-- The `Δ`-outer integral reindexes to the flat `gFlat2` integral over `flatBox2`
+(via `measurePreserving_matToFlat2` + `matBox2_flatBox_preimage`). -/
+theorem matBox2_outer_flat (c' : ℝ) (T : ℝ) :
+    (∫⁻ Δ in matBox 2 2 T, ∫⁻ S in matBox 2 4 T,
+        ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c')))
+      = ∫⁻ y in flatBox2 T, gFlat2 c' T y := by
+  have hmp := measurePreserving_matToFlat2
+  have hcomp := hmp.setLIntegral_comp_preimage_emb matToFlat2.measurableEmbedding
+    (gFlat2 c' T) (flatBox2 T)
+  rw [matBox2_flatBox_preimage, ← hcomp]
+  refine setLIntegral_congr_fun (matToFlat2.measurable (flatBox2_measurableSet T)) (fun Δ _ => ?_)
+  rw [gFlat2, MeasurableEquiv.symm_apply_apply]
+
+/-- The cover-to-sum on the `Fin 4` flat carrier: `∫_{flatBox2} gFlat2 = ∑_{p} ∫_{chart p} |det|·
+gFlat2(blowup)`, via `recStep` (the `univ` argmax-cover of the 4 `Δ`-entries). -/
+theorem gFlat2_cover_sum (c' : ℝ) (T : ℝ) :
+    (∫⁻ y in flatBox2 T, gFlat2 c' T y)
+      = ∑ p ∈ (Finset.univ : Finset (Fin (2 * 2))),
+          ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (2 * 2))) p \ pivotZeroOn p,
+            ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (2 * 2))) p y).det|
+              * (flatBox2 T).indicator (gFlat2 c' T) (pivotBlowupOn
+                  (Finset.univ : Finset (Fin (2 * 2))) p y) := by
+  exact recStep (Finset.univ : Finset (Fin (2 * 2))) 0 (Finset.mem_univ 0)
+    (flatBox2 T) (flatBox2_measurableSet T) (gFlat2 c' T)
+
+/-- The unflattened angular matrix on chart `p`: `Rmat2 p y` is the `2×2` matrix with `R_p = 1` and
+`R_k = y_k` (`k ≠ p`) — the bounded direction of the radial blow-up `Δ = (y p)·R`. -/
+noncomputable def Rmat2 (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) : Fin 2 → Fin 2 → ℝ :=
+  matToFlat2.symm (fun i => if i = p then 1 else y i)
+
+/-- **The radial pull-out (the homogeneity step).** `gFlat2 c' T` of the pivot blow-up factors the radial
+scale `a = y p` out with degree `2` (`radialDelta_loss_factor`): the blown-up flat `Δ` unflattens to
+`(y p) • (Rmat2 p y)`, so `gFlat2 c' T (blowup) = ∫_S ofReal(((y p)²·frobSq(Rmat2·S))^{−c'})`. -/
+theorem gFlat2_blowup_radial (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) :
+    gFlat2 c' T (pivotBlowupOn (Finset.univ : Finset (Fin (2 * 2))) p y)
+      = ∫⁻ S in matBox 2 4 T,
+          ENNReal.ofReal (((y p) ^ 2 * frobSq (rmatMul (Rmat2 p y) S)) ^ (-c')) := by
+  unfold gFlat2 Rmat2
+  refine lintegral_congr (fun S => ?_)
+  congr 1
+  have hbl : matToFlat2.symm (pivotBlowupOn (Finset.univ : Finset (Fin (2 * 2))) p y)
+      = fun r c => (y p) * (matToFlat2.symm (fun i => if i = p then 1 else y i)) r c := by
+    funext r c
+    show matToFlat2.symm (pivotBlowupOn (Finset.univ : Finset (Fin (2 * 2))) p y) r c = _
+    rw [show pivotBlowupOn (Finset.univ : Finset (Fin (2 * 2))) p y
+        = (fun i => (y p) * (if i = p then 1 else y i)) from by
+      funext i; unfold pivotBlowupOn
+      by_cases hi : i = p
+      · subst hi; simp
+      · simp [hi]]
+    -- matToFlat2.symm is linear in the flat vector entrywise (a reindex), so the scalar pulls through
+    show matToFlat2.symm (fun i => (y p) * (if i = p then 1 else y i)) r c
+        = (y p) * matToFlat2.symm (fun i => if i = p then 1 else y i) r c
+    rfl
+  rw [hbl, radialDelta_loss_factor (y p) (matToFlat2.symm (fun i => if i = p then 1 else y i)) S]
+
 end DLNFibre.DLN.RLCT
