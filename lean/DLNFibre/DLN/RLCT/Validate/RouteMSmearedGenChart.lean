@@ -299,6 +299,31 @@ theorem measurePreserving_updateSub_of_coordInvariant {N : ℕ} (p : Fin N)
     rw [hrec, hinv u 0, sub_eq_add_neg]
   rw [← hmap]; exact hsh
 
+/-- **The single-coordinate subtractive shear as a `MeasurableEquiv`** (for a coord-`p`-invariant `f`).
+The inverse is the additive shear `v ↦ update v p (v p + f v)`. Used to get `MeasurableEmbedding` (MP
+alone does not). -/
+noncomputable def updateSubME {N : ℕ} (p : Fin N) (f : (Fin N → ℝ) → ℝ) (hf : Measurable f)
+    (hinv : ∀ (u : Fin N → ℝ) (a : ℝ), f (Function.update u p a) = f u) :
+    (Fin N → ℝ) ≃ᵐ (Fin N → ℝ) where
+  toFun u := Function.update u p (u p - f u)
+  invFun v := Function.update v p (v p + f v)
+  left_inv u := by
+    have hfu : f (Function.update u p (u p - f u)) = f u := hinv u _
+    funext k
+    by_cases hk : k = p
+    · subst hk; simp only [Function.update_self, hfu]; ring
+    · simp only [Function.update_of_ne hk]
+  right_inv v := by
+    have hfv : f (Function.update v p (v p + f v)) = f v := hinv v _
+    funext k
+    by_cases hk : k = p
+    · subst hk; simp only [Function.update_self, hfv]; ring
+    · simp only [Function.update_of_ne hk]
+  measurable_toFun :=
+    measurable_update'.comp (measurable_id.prodMk ((measurable_pi_apply p).sub hf))
+  measurable_invFun :=
+    measurable_update'.comp (measurable_id.prodMk ((measurable_pi_apply p).add hf))
+
 /-- The deepest-`(0,0)` flat coordinate: `flatCoordOf` of the `FlatIdx` slot `(deepLayer, row 0, col 0)`.
 The single coord the smear shears. -/
 noncomputable def smPivotCoord (hrow : 0 < M (deepLayer M hL).castSucc)
@@ -512,5 +537,17 @@ theorem paramsEquivFlat_symm_phiSm_eq_smParams (u : Fin (routeMAmbient M) → �
     rw [phiSm, Function.update_of_ne hne]
     rw [smParams_apply_ne_pivot M hL u hrow hcol hm1 hc1 q hqp]
     rw [baseParams, paramsEquivFlat_symm_decode]
+
+/-- **`phiSm` is a measurable embedding** (it is the `updateSubME` shear, a measurable equivalence). -/
+theorem measurableEmbedding_phiSm (hrow : 0 < M (deepLayer M hL).castSucc)
+    (hcol : 0 < M (deepLayer M hL).succ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    MeasurableEmbedding (fun u => phiSm M hL u hrow hcol hm1) := by
+  have h : (fun u => phiSm M hL u hrow hcol hm1)
+      = updateSubME (smPivotCoord M hL hrow hcol) (fun u => smearShift M hL u hm1 hcol)
+        (smearShiftFlat_measurable M hL hcol hm1)
+        (fun u a => smearShift_update_pivot M hL u a hrow hcol hm1) := by
+    funext u; rfl
+  rw [h]
+  exact (updateSubME _ _ _ _).measurableEmbedding
 
 end DLNFibre.DLN.RLCT
