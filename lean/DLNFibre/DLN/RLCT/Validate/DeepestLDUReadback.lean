@@ -18,7 +18,7 @@ symbolically here): the Score IS the **unframed actual-layer-pivot** core LDU. T
 `P0/QL` cancel at the Schur level (they are the explicit triangular normalizers, `DP = DQ = 1` —
 `schur_frame_transform`), so the framed Score = the UNFRAMED Schur of `reindex(prod(decode x))`, which
 the two-factor LDU (`reindex_mul_schur_factor` on `layer0 · layer1 = prod(decode x)`) expands to the
-unframed-layer cores `Ŝ0·(1−K̂)·Ŝ1`. This is a restatement (dictionary conjugation); the L2
+unframed-layer cores `S0c·(1−Kc)·S1c`. This is a restatement (dictionary conjugation); the L2
 kill-condition does not reopen. The exact-truth note: `Score − [unframed-actual-layer LDU] = 0`
 symbolically + 3 random rational points, needing ONLY the boundary `u1 = v1 = 0` (NOT `u0·v0 = 1`).
 
@@ -133,17 +133,13 @@ theorem score_eq_unframedSchur_prodDecode (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- **The unframed Schur of `prod (decode x)` IS the two-layer LDU** (`L = 2`). With `Mid = prod (decode
 x) = layer0 · layer1` and the middle split `eMid = rThresholdSplit r (H 1)`, `reindex_mul_schur_factor`
-expands the unframed `(1,1)`-Schur complement of `reindex(Mid)` into the LDU `Ŝ0·(1 − K̂)·Ŝ1` of the
+expands the unframed `(1,1)`-Schur complement of `reindex(Mid)` into the LDU `S0c·(1 − Kc)·S1c` of the
 per-layer cores read off the two reindexed decode layers (under `J = frontEmbed`, the right column split
 is the threshold split, `pivotThresholdSplit_frontEmbed`). The middle pivots `Â0, Â1` and the product
 pivot are invertible. -/
 theorem unframedSchur_prodDecode_eq_ldu (H : Fin 3 → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin 3, r ≤ H s) (A : Params (L := 2) H)
+    (hr : ∀ s : Fin 3, r ≤ H s)
     (G0 : Matrix (Fin (H 0)) (Fin (H 1)) ℝ) (G1 : Matrix (Fin (H 1)) (Fin (H 2)) ℝ)
-    (hG0 : G0 = Matrix.reindex (finCongr (rfl : H 0 = H ((0 : Fin 2)).castSucc))
-        (finCongr (rfl : H 1 = H ((0 : Fin 2)).succ)) (A (0 : Fin 2)))
-    (hG1 : G1 = Matrix.reindex (finCongr (rfl : H 1 = H ((1 : Fin 2)).castSucc))
-        (finCongr (rfl : H 2 = H (Fin.last 2)) ) (A (1 : Fin 2)))
     [Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
         G0).toBlocks₁₁]
     [Invertible (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
@@ -196,5 +192,138 @@ theorem prodDecode_eq_two_of_L2 (H : Fin 3 → ℕ) (A : Params (L := 2) H) :
   congr 1
   rw [prodAux_succ H A 0 (by omega) rfl rfl]
   exact Matrix.one_mul _
+
+/-- **The hLDUtie readback-tie, W-a CONJUGATED dictionary** (standalone, sub-4's matrix-equality
+residual). The reduced two-layer core product `prod (deepestM) C` over the **conjugated**
+(actual-layer-pivot) core tuple `C` — whose two layers read back as the unframed Schur cores
+`C 0 = S0c`, `C 1 = (1 − Kc)·S1c` of the reindexed decode layers (`hC0`/`hC1`, supplied by the producer's
+conjugated reads at the wire) — equals the Score `(1,1)`-Schur integrand over the framed reindexed
+product. TRUE (the bare-pivot form was false: deepest boundary `A11 ≠ 1`).
+
+Proof: `prod_deepestM_eq_two_of_L2` (the abstract two-factor unfold) + `hC0`/`hC1` reduce the LHS to the
+LDU `S0c·(1 − Kc)·S1c`; `prodDecode_eq_two_of_L2` + `unframedSchur_prodDecode_eq_ldu` identify that LDU
+with the unframed Schur of `prod (decode x)`; `score_eq_unframedSchur_prodDecode` identifies that with the
+Score. -/
+theorem prod_deepestM_eq_schur_ldu_readback (H : Fin 3 → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1 : ℕ) ≤ 2)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin 2) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin 2) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₂₂ = 1)
+    (hQ22 : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (endpointQL H hL Qf)).toBlocks₂₂ = 1)
+    (x : Fin (flatDim H) → ℝ)
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hP11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf)).toBlocks₁₁)
+    (hQ11inv : Invertible (Matrix.reindex (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (endpointQL H hL Qf)).toBlocks₁₁)
+    (hMid11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+        (prod H ((paramsEquivFlat H).symm x))).toBlocks₁₁)
+    -- the layer-pivot invertibilities (decode layers have nonzero leading block near the deepest point).
+    (hA0inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+        (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁)
+    (hA1inv : Invertible (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+        (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₁)
+    -- the conjugated tuple `C`, with the two readback conditions (supplied by the conjugated producer).
+    (C : Params (L := 2) (deepestM H r))
+    (hC0 : Matrix.reindex (finCongr (rfl : deepestM H r 0 = deepestM H r ((0 : Fin 2)).castSucc))
+        (finCongr (rfl : deepestM H r 1 = deepestM H r ((0 : Fin 2)).succ)) (C (0 : Fin 2))
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+            (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+              (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+                (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+                (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂)
+    (hC1 : Matrix.reindex (finCongr (rfl : deepestM H r 1 = deepestM H r ((1 : Fin 2)).castSucc))
+        (finCongr (rfl : deepestM H r (Fin.last 2) = deepestM H r ((1 : Fin 2)).succ)) (C (1 : Fin 2))
+      = (1 - (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+              (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₂₁
+              * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 2) (hr 2))
+                  (prod H ((paramsEquivFlat H).symm x))).toBlocks₁₁)⁻¹
+              * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+                  (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂)
+          * ((Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+                (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₂₂
+            - (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+                (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₂₁
+              * ((Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+                  (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₁)⁻¹
+              * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+                  (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₂)) :
+    prod (deepestM H r) C
+      = Matrix.of (fun i j => ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂) i j) := by
+  -- `eC = rThresholdSplit r (H 2)` under `J = frontEmbed` (`pivotThresholdSplit_frontEmbed`).
+  have heC : pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J
+      = rThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) := by
+    rw [hJfront]; exact pivotThresholdSplit_frontEmbed H r hr
+  -- The two decode layers as bare matrices (their `Fin`-index types are defeq to `H 0/1/2`).
+  set L0 : Matrix (Fin (H 0)) (Fin (H 1)) ℝ := ((paramsEquivFlat H).symm x) (0 : Fin 2) with hL0
+  set L1 : Matrix (Fin (H 1)) (Fin (H 2)) ℝ := ((paramsEquivFlat H).symm x) (1 : Fin 2) with hL1
+  -- `Mid = prod (decode x) = L0 · L1` (the trivial `finCongr` reindexes collapse).
+  have hMidfac : prod H ((paramsEquivFlat H).symm x) = L0 * L1 := by
+    rw [prodDecode_eq_two_of_L2 H ((paramsEquivFlat H).symm x)]
+    simp only [finCongr_refl, Matrix.reindex_refl_refl, hL0, hL1]
+  -- The product-pivot invertibility on `L0 · L1` (= `hMid11inv` after `heC` + `hMidfac`).
+  letI := hA0inv; letI := hA1inv
+  letI hMidLDU : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+      (rThresholdSplit r (H 2) (hr 2)) (L0 * L1)).toBlocks₁₁ := by
+    rw [heC] at hMid11inv; rw [hMidfac] at hMid11inv; exact hMid11inv
+  -- The LDU of the unframed Schur of `L0 · L1`.
+  have hldu := unframedSchur_prodDecode_eq_ldu H r hr L0 L1
+  -- The Score (RHS) = unframed Schur of `Mid` (= `L0·L1`).
+  have hscore := score_eq_unframedSchur_prodDecode H r B hB hr hL (rfl) J hJfront Pf Qf
+    hPtri hQtri hP22 hQ22 x hS3b hP11inv hQ11inv hMid11inv
+  -- Normalize to a common middle `unframed Schur [rThr, prod(decode x)]`: `heC` collapses hscore's
+  -- `pivotThr ↦ rThr` (BOTH its Score-leak LHS and unframed-Schur RHS); `← hMidfac` folds hldu's product
+  -- pivot `L0·L1 ↦ prod` (the separate `L0`/`L1` core reads untouched).
+  rw [heC] at hscore
+  rw [← hMidfac] at hldu
+  -- LHS `prod(deepestM) C` unfolds (via `hC0`/`hC1`) to `S0c·((1−Kc)·S1c)` (right-assoc); hldu's RHS is
+  -- the LEFT-assoc `S0c·(1−Kc)·S1c`. Bridge by `Matrix.mul_assoc` (the THREE explicit top-level factors
+  -- the LDU reads off `L0`/`L1`), so the LDU entry from hldu matches the unfolded LHS.
+  rw [prod_deepestM_eq_two_of_L2 H r C, hC0, hC1]
+  rw [Matrix.mul_assoc
+    ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) L0).toBlocks₂₂
+      - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) L0).toBlocks₂₁
+        * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) L0).toBlocks₁₁)⁻¹
+        * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) L0).toBlocks₁₂)] at hldu
+  -- Now hldu : `unframed Schur [rThr, prod] = S0c · ((1−Kc) · S1c)` — entrywise it ties the goal RHS
+  -- (`ScoreLeak`, via hscore) to the unfolded LHS. The split widths `H (Fin.last 2)`/`H 2` are defeq.
+  ext i j
+  rw [Matrix.of_apply, heC]
+  have hsc := congrFun (congrFun hscore i) j
+  have hld := congrFun (congrFun hldu i) j
+  rw [hsc]
+  exact hld.symm
 
 end DLNFibre.DLN.RLCT
