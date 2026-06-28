@@ -48,6 +48,55 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Generic Selected-Entry Chart-Produced Determinant Residual
+
+The retained-passive selected-entry determinant residual handoff now has a
+generic chart-produced-measure front end:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure
+```
+
+Given a selected-entry chart `chart`, it assumes:
+
+```text
+AEMeasurable chart signedBox
+MeasurableSet S
+∀ y, chart y ∈ S
+```
+
+where `S = topologyTupleDetChartSet`, plus direct residual positive-set
+measurability and the residual readout.  It proves the support identity for the
+chart-produced measure, then calls the existing supplied-map theorem:
+
+```text
+(Measure.map chart weightedBox).restrict S = Measure.map chart weightedBox.
+```
+
+This avoids duplicating that support argument in individual Case 1/Case 2
+selected-entry chart specializations.  The existing Case 2 chart-produced
+determinant residual theorem now calls this generic wrapper directly, while
+still deriving its support from endpoint-transport determinant-chart
+membership and its residual readout from the Case 2 source-edge-family theorem.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probes passed; the
+generic declaration and the refactored Case 2 declaration report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a theorem about arbitrary measures, Haar/source-prior transport,
+full determinant-chart image coverage, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Case 2 Chart-Produced Determinant Residual Support Wrapper
 
 The endpoint-transported explicit Case 2 selected-entry determinant-chart

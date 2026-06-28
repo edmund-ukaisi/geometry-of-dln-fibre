@@ -1245,13 +1245,6 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
     exact htop.comp hretained_cont
   have hchart_signed : AEMeasurable chart signedBox :=
     hchart_cont.aemeasurable
-  have hchart_weighted : AEMeasurable chart weightedBox := by
-    exact
-      hchart_signed.mono_ac (by
-        simpa [weightedBox] using
-          withDensity_absolutelyContinuous signedBox
-            (fun y : center → ℝ ↦
-              ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)))
   have hSdet_meas : MeasurableSet Sdet := by
     simpa [Sdet] using
       (isOpen_topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
@@ -1265,38 +1258,46 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
     simpa [chart, Sdet, retainedData, ρ, κ'] using
       (topologyTuple_mem_topologyTupleDetChartSet
         (K := ℝ) (ρ := ρ) (κ' := κ') (retainedData yNext)).2 hdet
-  have hmap_mem :
-      ∀ᵐ z ∂ Measure.map chart weightedBox, z ∈ Sdet := by
-    exact
-      (ae_map_iff hchart_weighted hSdet_meas).2
-        (Filter.Eventually.of_forall hchart_mem)
-  have hmap :
-      (Measure.map chart weightedBox).restrict Sdet = Measure.map chart weightedBox :=
-    Measure.restrict_eq_self_of_ae_mem hmap_mem
-  have hres :
-      (∀ᵐ z ∂ (Measure.map chart weightedBox).restrict Sdet,
+  have hsource_residual :
+      ∀ yNext : center → ℝ,
+        aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+              (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+                W₂ B₂ U₀ hU₀ (retainedData yNext))) =
+          SelectedEntrySignedBox.CenterCoord.residual pivotNext yNext := by
+    simpa [center, pivotNext, EdgeFamily, retainedData, ρ, κ'] using
+      aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+  have hresidual_eq :
+      ∀ yNext : center → ℝ,
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+            (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+              W₂ B₂ U₀ hU₀
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') (chart yNext)))) =
+          SelectedEntrySignedBox.CenterCoord.residual pivotNext yNext := by
+    intro yNext
+    simpa [chart, retainedData, ρ, κ'] using hsource_residual yNext
+  have hpos_meas :
+      MeasurableSet {z : TopologyTuple ρ κ' ℝ |
         0 < aoyagiCoordinateSquareSum
           (paperEndpointFixedBaseResidualBlockCoordinateMap
             (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
             (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
               W₂ B₂ U₀ hU₀
-              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ∧
-        (∫⁻ z : TopologyTuple ρ κ' ℝ,
-          ENNReal.ofReal
-            ((aoyagiCoordinateSquareSum
-              (paperEndpointFixedBaseResidualBlockCoordinateMap
-                (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
-                (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
-                  W₂ B₂ U₀ hU₀
-                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ^ (-t))
-            ∂ (Measure.map chart weightedBox).restrict Sdet) < ∞ := by
-    simpa [center, pivotNext, ρ, κ', EdgeFamily, retainedData, chart, Sdet, signedBox,
-      weightedBox] using
-      retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
-        (W₂ := W₂) (B₂ := B₂) n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
-        eNext e (m := Measure.map chart weightedBox) (t := t) (Rres := Rres)
-        hmap ht hRres hcrit
-  simpa [ρ, κ', EdgeFamily, signedBox, weightedBox, hmap] using hres
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)))} := by
+    simpa [ρ, κ', EdgeFamily] using
+      measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
+        (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+  simpa [center, pivotNext, ρ, κ', EdgeFamily, retainedData, chart, signedBox,
+    weightedBox] using
+    retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure
+      (W := W₂) (B := B₂) (pivot := pivotNext)
+      (U₀ := U₀) (hU₀ := hU₀)
+      (t := t) (Rres := Rres) (chart := chart)
+      hchart_signed hSdet_meas hchart_mem hpos_meas ht hRres hcrit hresidual_eq
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in

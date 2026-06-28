@@ -140,6 +140,17 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, generic selected-entry chart-produced determinant
+  residual, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure`.
+  For any selected-entry chart-produced measure supported on the retained-
+  passive determinant chart, this theorem proves determinant-chart residual
+  positivity and finite negative-power residual integral from direct residual
+  positive-set measurability and the selected-entry residual readout.  The Case
+  2 chart-produced determinant residual theorem now uses this generic front
+  end.  This is not an arbitrary-measure theorem, Haar/source-prior transport,
+  full determinant-chart coverage, source-rank coverage, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, Case 2 chart-produced determinant residual
   support wrapper, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_chartProducedMeasure`.

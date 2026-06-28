@@ -19,6 +19,49 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, generic selected-entry chart-produced determinant residual
+
+The retained-passive selected-entry determinant residual handoff now has a
+generic chart-produced front end:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure
+```
+
+It instantiates the existing supplied-map theorem with
+`m := Measure.map chart weightedBox`, proving
+
+```text
+(Measure.map chart weightedBox).restrict topologyTupleDetChartSet =
+  Measure.map chart weightedBox
+```
+
+from explicit chart support in the determinant chart.  The inputs are
+`AEMeasurable chart signedBox`, `MeasurableSet S`, `∀ y, chart y ∈ S`, the
+direct residual positive-set measurability, the selected-entry radii/exponent
+condition, and the residual readout.  No `BorelSpace` assumption is needed at
+the generic level.
+
+The Case 2 chart-produced determinant residual theorem now uses this generic
+front end instead of duplicating the support/restriction proof.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-chart-produced-det-residual.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-chart-produced-det-residual.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probes passed; the
+new generic declaration and the refactored Case 2 declaration report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is a chart-produced support wrapper only.  It does not identify Haar
+measure, an external source prior, full determinant-chart coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 chart-produced determinant residual support wrapper
 
 The endpoint-transported explicit Case 2 selected-entry determinant-chart

@@ -2534,6 +2534,137 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
+/-- Determinant-chart residual hypotheses for a chart-produced selected-entry
+measure.
+
+This is the chart-produced version of
+`retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map`.
+It proves the determinant-chart restriction identity from explicit support of
+the chart image in `topologyTupleDetChartSet`, then applies the supplied-map
+theorem.  It does not identify Haar measure, an external/original source prior,
+full determinant-chart coverage, local loss/density bounds, normal crossings,
+pole order, or RLCT extraction. -/
+theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι : Type*} [DecidableEq ι] {center : Finset ι} (pivot : center)
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    {t : ℝ} {Rres : center → ℝ}
+    {chart :
+      (center → ℝ) →
+        TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ} :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let directChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
+    let signedBox : Measure (center → ℝ) :=
+      Measure.pi (fun i : center ↦ volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (center → ℝ) :=
+      signedBox.withDensity
+        (fun y : center → ℝ ↦
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))
+    let targetMeasure : Measure (TopologyTuple ρ κ' ℝ) :=
+      Measure.map chart weightedBox
+    AEMeasurable chart signedBox →
+    MeasurableSet S →
+    (∀ y : center → ℝ, chart y ∈ S) →
+    MeasurableSet {z : TopologyTuple ρ κ' ℝ |
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (directChart z))} →
+    0 ≤ t →
+    (∀ i, 0 < Rres i) →
+    2 * t < ((center.erase pivot.1).card : ℝ) + 1 →
+    (∀ y : center → ℝ,
+      aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (directChart (chart y))) =
+        SelectedEntrySignedBox.CenterCoord.residual pivot y) →
+    (∀ᵐ z ∂ targetMeasure,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (directChart z))) ∧
+      (∫⁻ z : TopologyTuple ρ κ' ℝ,
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (directChart z))) ^ (-t))
+          ∂ targetMeasure) < ∞ := by
+  dsimp only
+  intro hchart hS_meas hchart_mem hpos_meas ht hRres hcrit hresidual_eq
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center ↦ volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ ↦
+        ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))
+  have hchart_signed :
+      AEMeasurable chart signedBox := by
+    simpa [signedBox] using hchart
+  have hchart_weighted : AEMeasurable chart weightedBox := by
+    exact
+      hchart_signed.mono_ac (by
+        simpa [weightedBox] using
+          withDensity_absolutelyContinuous signedBox
+            (fun y : center → ℝ ↦
+              ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y)))
+  have hmap_mem :
+      ∀ᵐ z ∂ Measure.map chart weightedBox, z ∈ S := by
+    exact
+      (ae_map_iff hchart_weighted hS_meas).2
+        (Filter.Eventually.of_forall (by
+          intro y
+          simpa [S, ρ, κ'] using hchart_mem y))
+  have hmap :
+      (Measure.map chart weightedBox).restrict S = Measure.map chart weightedBox :=
+    Measure.restrict_eq_self_of_ae_mem hmap_mem
+  have hres :
+      (∀ᵐ z ∂ (Measure.map chart weightedBox).restrict S,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ∧
+        (∫⁻ z : TopologyTuple ρ κ' ℝ,
+          ENNReal.ofReal
+            ((aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+                (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+                  (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ^ (-t))
+            ∂ (Measure.map chart weightedBox).restrict S) < ∞ := by
+    simpa [ρ, κ', S, EFam, signedBox, weightedBox] using
+      retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map
+        (W := W) (B := B) (pivot := pivot)
+        (U₀ := U₀) (hU₀ := hU₀) (m := Measure.map chart weightedBox)
+        (t := t) (Rres := Rres) (chart := chart)
+        hchart hmap hpos_meas ht hRres hcrit hresidual_eq
+  simpa [ρ, κ', EFam, signedBox, weightedBox, hmap] using hres
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
 /-- Raw-order retained-passive inverse-Jacobian residual-source hypotheses from
 chart-side hypotheses only.
 

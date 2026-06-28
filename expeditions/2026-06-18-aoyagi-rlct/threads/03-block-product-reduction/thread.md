@@ -14769,3 +14769,48 @@ critical exponent inequality, and local loss lower bound remain explicit.  This
 does not identify Haar measure or an external source prior, prove chart
 coverage, prove source-rank coverage, construct normal crossings, compute pole
 order, or extract RLCT.
+
+## 2026-06-28 A2 generic selected-entry chart-produced determinant residual
+
+Reproduction:
+`reproduction-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+Statement card:
+`statement-card-a2-retained-passive-selected-entry-chart-produced-det-residual.md`.
+Review:
+`review-a2-retained-passive-selected-entry-chart-produced-det-residual.md`,
+PASS by xhigh read-only checker `Arendt`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalJacobianMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure
+```
+
+For any selected-entry chart-produced measure supported on the retained-passive
+determinant chart, the generic theorem proves determinant-chart residual
+positivity and finite negative-power residual integral from direct residual
+positive-set measurability and the selected-entry residual readout.  It proves
+the restriction identity for `Measure.map chart weightedBox` using
+`withDensity_absolutelyContinuous`, `ae_map_iff`, and
+`Measure.restrict_eq_self_of_ae_mem`, then calls the supplied-map theorem.
+
+The Case 2 chart-produced determinant residual theorem now uses this generic
+front end instead of duplicating the support/restriction proof.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probes passed; the
+new generic declaration and the refactored Case 2 declaration report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is chart-produced support infrastructure only.  It is not an arbitrary-
+measure theorem, Haar/source-prior transport, full determinant-chart coverage,
+source-rank coverage, normal crossings, pole order, or RLCT.
