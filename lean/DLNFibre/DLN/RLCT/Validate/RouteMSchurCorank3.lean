@@ -160,6 +160,75 @@ theorem flatBox3_blowup_mem_iff (T : ℝ) (p : Fin (3 * 3)) (y : Fin (3 * 3) →
       have hbb : |y p * y i| ≤ T := le_trans hb hp
       rw [abs_le] at hbb; exact hbb
 
+/-! ## The JOINT residual-domination (the genuinely-new corank-3 piece)
+
+After the N2b j=1 split + the shifted-exponent peel, the corank-2 residual `∫_Δ∫_S frobSq(Sc·S)^{−c''}`
+with `Sc = Δ_{M22} − Sh` (`Δ_{M22}` the free `2×2` block, `Sh` the fixed Schur shift). The `Δ_{M22} ↦ Sc`
+translation (Jac ≡ 1, the matrix-space addition is measure-preserving) box-enlarges `Δ_{M22}` to radius
+`T + B` (`B` = the shift bound), and `core_schur2_lt_top` at radius `T + B` closes it. The controller's
+decomposition: the matrix-translate is the `Fin 2 → Fin 2 → ℝ` analog of `lintegral_translate_le_local`. -/
+
+/-- **Matrix-box translate-enlarge** (the `Fin 2 → Fin 2 → ℝ` analog of `lintegral_translate_le_local`):
+`∫_{Δ∈matBox 2 2 T} f(Δ + Sh) ≤ ∫_{Δ'∈matBox 2 2 Tg} f Δ'` when `(·+Sh)''(matBox 2 2 T) ⊆ matBox 2 2 Tg`.
+Measure-preserving matrix-space translation (`measurePreserving_add_right`) + `lintegral_mono_set`. -/
+theorem matBox2_translate_le (Sh : Fin 2 → Fin 2 → ℝ) (T Tg : ℝ)
+    (f : (Fin 2 → Fin 2 → ℝ) → ℝ≥0∞)
+    (hsub : (fun Δ => Δ + Sh) '' (matBox 2 2 T) ⊆ matBox 2 2 Tg) :
+    (∫⁻ Δ in matBox 2 2 T, f (Δ + Sh)) ≤ ∫⁻ Δ' in matBox 2 2 Tg, f Δ' := by
+  set τ : (Fin 2 → Fin 2 → ℝ) → (Fin 2 → Fin 2 → ℝ) := fun Δ => Δ + Sh with hτ
+  have hmp : MeasurePreserving τ volume volume := measurePreserving_add_right volume Sh
+  have hemb : MeasurableEmbedding τ := (Homeomorph.addRight Sh).measurableEmbedding
+  have h1 : (∫⁻ Δ in matBox 2 2 T, f (τ Δ)) = ∫⁻ Δ' in τ '' (matBox 2 2 T), f Δ' := by
+    rw [← hmp.setLIntegral_comp_preimage_emb hemb f (τ '' (matBox 2 2 T)),
+      Set.preimage_image_eq (matBox 2 2 T) hemb.injective]
+  calc (∫⁻ Δ in matBox 2 2 T, f (Δ + Sh)) = ∫⁻ Δ' in τ '' (matBox 2 2 T), f Δ' := h1
+    _ ≤ ∫⁻ Δ' in matBox 2 2 Tg, f Δ' := lintegral_mono_set hsub
+
+/-- **The JOINT residual-domination.** For a fixed shift `Sh` with `|Sh i j| ≤ B`, the shifted corank-2
+core integral `∫_{Δ∈matBox 2 2 T}∫_{S∈matBox 2 4 T} frobSq((Δ − Sh)·S)^{−c''}` is finite for `0 < c'' < 2`:
+the `Δ ↦ Δ − Sh` translation box-enlarges `Δ` to radius `T + B` (Jac ≡ 1), then `core_schur2_lt_top` at
+radius `T + B`. The R-integrated residual the corank-3 recursion produces (Sc varies, not fixed). -/
+theorem schurResid2_translate_lt_top (Sh : Fin 2 → Fin 2 → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (c'' : ℝ) (hc0 : 0 < c'') (hc2 : c'' < 2) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ Δ in matBox 2 2 T, ∫⁻ S in matBox 2 4 T,
+        ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c''))) < ⊤ := by
+  -- bound S over the ENLARGED box T+B (S-monotone, T ≤ T+B), then translate Δ ↦ Δ − Sh into radius T+B,
+  -- then core_schur2 at T+B (both Δ and S over T+B).
+  have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (hB 0 0)
+  set g : (Fin 2 → Fin 2 → ℝ) → ℝ≥0∞ := fun Δ =>
+    ∫⁻ S in matBox 2 4 (T + B), ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'')) with hg
+  -- Step 1: S-monotone enlarge + translate-recognition: residual integrand ≤ g (Δ + (−Sh))
+  have hSsub : matBox 2 4 T ⊆ matBox 2 4 (T + B) := by
+    intro X hX i k; have := Set.mem_Icc.1 (hX i k); rw [Set.mem_Icc]
+    constructor <;> [linarith [this.1]; linarith [this.2]]
+  have hle1 : ∀ Δ : Fin 2 → Fin 2 → ℝ,
+      (∫⁻ S in matBox 2 4 T, ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+        ≤ g (Δ + (fun i j => -Sh i j)) := by
+    intro Δ
+    have hmono := lintegral_mono_set (μ := volume) hSsub
+      (f := fun S => ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+    refine le_trans hmono (le_of_eq ?_)
+    show (∫⁻ S in matBox 2 4 (T + B),
+        ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+      = ∫⁻ S in matBox 2 4 (T + B),
+          ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j + -Sh i j) S)) ^ (-c''))
+    refine lintegral_congr (fun S => ?_)
+    have : (fun i j => Δ i j - Sh i j) = (fun i j => Δ i j + -Sh i j) := by funext i j; ring
+    rw [this]
+  refine lt_of_le_of_lt (lintegral_mono hle1) ?_
+  -- box-enlarge Δ: |Δ i j + (−Sh i j)| ≤ T + B
+  have hsub : (fun Δ => Δ + (fun i j => -Sh i j)) '' (matBox 2 2 T) ⊆ matBox 2 2 (T + B) := by
+    rintro Δ' ⟨Δ, hΔ, rfl⟩
+    intro i j
+    show -(T + B) ≤ Δ i j + (-Sh i j) ∧ Δ i j + (-Sh i j) ≤ T + B
+    have hΔij := Set.mem_Icc.1 (hΔ i j)
+    have hShij := abs_le.1 (hB i j)
+    constructor <;> [linarith [hΔij.1, hShij.2]; linarith [hΔij.2, hShij.1]]
+  refine lt_of_le_of_lt (matBox2_translate_le (fun i j => -Sh i j) T (T + B) g hsub) ?_
+  show (∫⁻ Δ' in matBox 2 2 (T + B), ∫⁻ S in matBox 2 4 (T + B),
+      ENNReal.ofReal ((frobSq (rmatMul Δ' S)) ^ (-c''))) < ⊤
+  exact core_schur2_lt_top c'' hc0 hc2 (T + B) (by linarith)
+
 /-- The inner angular S-integral on chart `p`: `innerS3 c' T p y = ∫_{S∈box 3 4} frobSq(Rmat3 p y·S)^{−c'}`. -/
 noncomputable def innerS3 (c' : ℝ) (T : ℝ) (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ) : ℝ≥0∞ :=
   ∫⁻ S in matBox 3 4 T, ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p y) S)) ^ (-c'))
