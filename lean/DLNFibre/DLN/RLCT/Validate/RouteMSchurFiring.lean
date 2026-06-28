@@ -306,6 +306,45 @@ theorem innerSGen_offpivot (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y y
     · rw [if_neg hij, if_neg hij]; exact h _ hij
   rw [innerSGen, innerSGen, hR]
 
+/-- `frobSq (R·S)` is invariant under a row-perm `σr` of `R` + a simultaneous col-perm `σc` of `R`
+(= row-perm of `S`). The generic-`r` analog of `frobSq_rmatMul_perm2`. -/
+theorem frobSq_rmatMul_permG {r : ℕ} (R : Fin r → Fin r → ℝ) (S : Fin r → Fin 4 → ℝ)
+    (σr σc : Fin r ≃ Fin r) :
+    frobSq (rmatMul R S)
+      = frobSq (rmatMul (fun a c => R (σr a) (σc c)) (fun k j => S (σc k) j)) := by
+  unfold frobSq rmatMul
+  rw [← Equiv.sum_comp σr (fun a => ∑ j, (∑ k, R a k * S k j) ^ 2)]
+  refine Finset.sum_congr rfl (fun a _ => ?_)
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  congr 1
+  rw [← Equiv.sum_comp σc (fun k => R (σr a) k * S k j)]
+
+/-- The `S` row-permutation change of variables on the symmetric box `matBox r 4 T`: permuting the
+`Fin r` row-index of `S` by `σc` is measure-preserving (`piCongrLeft`) and the box is `σc`-invariant.
+The generic-`r` analog of `matBox24_rowperm_lintegral`. -/
+theorem matBox_rowperm_lintegralG {r : ℕ} (T : ℝ) (σc : Fin r ≃ Fin r)
+    (f : (Fin r → Fin 4 → ℝ) → ℝ≥0∞) :
+    (∫⁻ S in matBox r 4 T, f S) = ∫⁻ S in matBox r 4 T, f (fun k j => S (σc k) j) := by
+  set E := MeasurableEquiv.piCongrLeft (fun _ : Fin r => Fin 4 → ℝ) σc with hE
+  have hmp : MeasurePreserving E.symm volume volume :=
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin r => Fin 4 → ℝ) σc).symm E
+  have hpre : matBox r 4 T = E.symm ⁻¹' (matBox r 4 T) := by
+    ext S
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k; exact h (σc i) k
+    · intro h i k
+      have := h (σc.symm i) k
+      rw [show E.symm S (σc.symm i) k = S i k from by
+        show S (σc (σc.symm i)) k = S i k; rw [Equiv.apply_symm_apply]] at this
+      exact this
+  have key := hmp.setLIntegral_comp_preimage_emb E.symm.measurableEmbedding f (matBox r 4 T)
+  have hrhs : (∫⁻ S in matBox r 4 T, f (fun k j => S (σc k) j))
+      = ∫⁻ S in matBox r 4 T, f (E.symm S) := rfl
+  rw [hrhs]
+  rw [← hpre] at key
+  exact key.symm
+
 /-- `innerSGen r c' T p` is measurable in `y`. -/
 theorem measurable_innerSGen (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) :
     Measurable (innerSGen r c' T p) := by
