@@ -544,3 +544,16 @@ both DOMINATED by this (the repo's smooth-point machinery IS the algebraic IFT).
   `[PerfectField k]` + green-build over ℝ; pin the exact L7 base-change lemma shape. Settles the crux + the
   biggest unknown before the full build commits. Build placement: `DLNFibre.Core` (reusable, upstream
   candidate). Task #9 done; #10 (build) gated on the probe.
+
+### PR #13 review CLOSED OUT (2026-06-28)
+
+Owner deep-review (no math-fidelity blocker) → all 5 items resolved. The `prose-sweep` tide (the 5 Core
+files) + controller's aggregator/status/whitespace parts merged green (merge `4c09c28e`, pushed):
+(1) stale "projection compat — open" swept — **L3 re-grep of the full class now EMPTY across aggregator +
+Core** (it recurred in MORE sites than flagged, incl. `FibreBundleHeadline:138` — the sweep had been
+incomplete twice; re-grep-to-empty is the fix); (2) "IS the comorphism" softened to the precomposition
+form + doc-names fixed; (3) PR-body Watanabe scope corrected (universal-in-source / attainability-scoped);
+(4) `threads.md`+`priorities.md` → final/Phase-2 state; (5) trailing whitespace stripped. PR body updated
+(via REST — `gh pr edit` choked on a Projects-classic GraphQL deprecation) + marked **NOT-ready-to-merge**
+(Phase 2 growing it); itemized reply posted to the PR. Build green 3817 jobs, sorry-free, axiom-clean.
+**#13 now carries Phase 1 complete + review-addressed; Phase 2 (discharge `T`) crux-probe in flight.**
