@@ -1345,6 +1345,31 @@ theorem zEG_snd_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (
     Equiv.piCongrLeft_symm_apply]
   rfl
 
+/-- The box `[−1,1]^N` pulls back along `zEG` to (M22-cube `[−1,1]`) ×ˢ ((g,b)-cube `[−1,1]`):
+`[−1,1]^N = zEG ⁻¹' (boxM22 ×ˢ boxGB)`. -/
+theorem zEG_box_preimage (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+      = zEG r N hN hr p ⁻¹'
+          ((Set.univ.pi (fun _ : Fin (r - 1) × Fin (r - 1) => Set.Icc (-1 : ℝ) 1))
+            ×ˢ (Set.univ.pi (fun _ : Fin (r - 1) ⊕ Fin (r - 1) => Set.Icc (-1 : ℝ) 1))) := by
+  ext z
+  simp only [Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies]
+  constructor
+  · intro h
+    refine ⟨fun ab => ?_, fun s => ?_⟩
+    · rw [zEG_fst_apply]; exact h _
+    · rw [zEG_snd_apply]; exact h _
+  · rintro ⟨h1, h2⟩ i
+    -- every z i is read by some cell via the cellEquivG bijection
+    obtain ⟨s, hs⟩ := (cellEquivG r N hN hr p).surjective i
+    rcases s with ab | gb
+    · have := h1 ab; rw [zEG_fst_apply] at this
+      rwa [show slotCellG r N hN hr p (Sum.inl ab) = i from
+        by rw [← cellEquivG_apply]; exact hs] at this
+    · have := h2 gb; rw [zEG_snd_apply] at this
+      rwa [show slotCellG r N hN hr p (Sum.inr gb) = i from
+        by rw [← cellEquivG_apply]; exact hs] at this
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
@@ -1371,18 +1396,23 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
   --       `coreSchurGenVal_lt_top` (the abstract IH at c''=c'-2 < λ_{r-1}).
   --   • the carve slot read-back: `RmatGnorm_eq_slot` (RmatGnorm entry = z at `slotMatG`), `cellOfG`
   --       (off-(0,0) cell enumeration, injective), `bgShiftG` (Sh = g·bᵀ, |·|≤1, = M21·M11⁻¹·M12 at j=1).
-  -- REMAINING glue (Codex Q3/Q4: an EQUALITY by coordinate permutation, NOT a domination):
-  --   (1) `cellEquivG : ((Fin(r-1)×Fin(r-1)) ⊕ (Fin(r-1)⊕Fin(r-1))) ≃ Fin N` via `slotMatG ∘ cellOfG`
-  --       (injective by `cellOfG_injective` + `slotMatG` injective; bijective by card = N);
-  --   (2) reshape `zEG := piCongrLeft cellEquivG ∘ sumPiEquivProdPi` (MP); the box `[-1,1]^N` pulls back
-  --       to (M22-cube [-1,1] × (g,b)-cube [-1,1]);
-  --   (3) Sc readback `Sc(z) = matOf(M22) − bgShiftG(g,b)` (via `RmatGnorm_eq_slot` per cell + the j=1
-  --       `schur_minorPivot_split` `Sc = M22 − M21·M11⁻¹·M12` with M11=[1]);
-  --   (4) per-z: N2b + `ofReal_rpow_le_const_mul` + `stepShearG` → bound innerSGen by
-  --       c₀^{-c'}·∫_{S_bot}∫_{T'} (∑T'²+frobSq(Sc·S_bot))^{-c'}; integrate z, Tonelli to (g,b)-outer,
-  --       feed `resolvedShiftRG_le` (B=1, K=max 1 (r·T)) × finite (g,b)-vol × c₀^{-c'} const.
-  -- The (1)+(2)+(3) reshape is the `Fin.succ`-vs-`⟨1+a,_⟩` index bridge between `cellOfG` and N2b's
-  -- `Sc` blocks. ~120-150 generic-r lines; no design wall (Codex Q1-Q5 confirmed; radius fixed).
+  -- REMAINING glue (the carve BACKBONE is now LANDED — (1)(2) below DONE):
+  --   (1) DONE `cellEquivG : ((Fin(r-1)×Fin(r-1)) ⊕ (Fin(r-1)⊕Fin(r-1))) ≃ Fin N` (`slotCellG`
+  --       injective via `slotMatG_spec` + `cellRowColG_injective`; bijective by `card_cellSumG` = N).
+  --   (2) DONE reshape `zEG : (Fin N→ℝ) ≃ᵐ (M22-cube × (g,b)-cube)` (MP, `zEG_measurePreserving`);
+  --       apply lemmas `zEG_fst_apply`/`zEG_snd_apply` (= z at the cell slots `slotCellG`).
+  --   (3) Sc readback `Sc(z) a b = (zEG z).1 (a,b) − (zEG z).2 (inl a)·(zEG z).2 (inr b)` via
+  --       `RmatGnorm_eq_slot` per cell (`cellRowColG`: M22=(succIdx a,succIdx b), g=(succIdx a,0),
+  --       b=(0,succIdx b)) matched to N2b's j=1 `Sc = M22 − M21·M11⁻¹·M12` (M11=[1] ⟹ rank-1 g·bᵀ).
+  --   (4) per-z bound: N2b (`schur_minorPivot_split` 1, complete-pivot from |RmatGnorm|≤1, M11.det=1 via
+  --       `det_fin_one`) + `ofReal_rpow_le_const_mul` (zero-coincidence from N2b upper leg) + the top-row
+  --       shear (`stepShearG` at m=r-1, `finCongr`-bridge `Fin ((r-1)+1) = Fin r` for the `S a.succ` rows)
+  --       → bound innerSGen by c₀^{-c'}·∫_{S_bot}∫_{T'} (∑T'²+frobSq(Sc·S_bot))^{-c'}.
+  --   (5) integrate z; CoV via `zEG` (box `[-1,1]^N` → M22-cube × (g,b)-cube), Tonelli to (g,b)-outer;
+  --       per-(g,b) the M22-integral with `Sc = matOf M22 − bgShiftG(g,b)` feeds `resolvedShiftRG_le`
+  --       (B=1, K=max 1 (r·T)) × finite (g,b)-vol × the c₀^{-c'} const.
+  -- The remaining (3)+(4)+(5) is the `Fin.succ`/`⟨1+a,_⟩` index bridge between N2b's `Sc` blocks and the
+  -- carve cells, + the Tonelli wiring. ~80-100 lines; backbone + all bricks PRESENT, no design wall.
   sorry
 
 /-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
