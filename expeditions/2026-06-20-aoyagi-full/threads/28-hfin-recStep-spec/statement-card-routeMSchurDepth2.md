@@ -136,11 +136,38 @@ The abstract ends are now WELDED for the inner `S`-integral. New lemmas (all axi
   `j·p = 4`-entry Morse block); `W` nonneg + measurable (the corank-1 Schur residual, automatically
   nonneg as a `frobSq`).
 
-## Deferred — the OUTER radial-R blow-up cover (the remaining N4 gap, NOT this leg)
+## Outer radial-Δ cover — SCAFFOLDING + support lemmas BUILT (2026-06-28, the weld outer leg)
 
-The INNER-S half is now welded (`schurInner_S_le`). The remaining N4 gap is the OUTER radial-R blow-up
-that turns the joint corank-2 core `∫_Δ ∫_S frobSq(Δ·S)^{−c'}` over the `Δ`-box INTO the per-chart
-`∫_a ∫_{R-ang} ∫_S` form that `schurInner_S_le` closes:
+The outer half is substantially built (all sorry-free, axiom-clean `[propext, Classical.choice,
+Quot.sound]`):
+- **Flatten + cover-to-sum**: `matToFlat2`/`measurePreserving_matToFlat2` (local `Fin 2×2 ≃ Fin 4`),
+  `flatBox2`/`matBox2_flatBox_preimage`/`gFlat2`/`matBox2_outer_flat`, `gFlat2_cover_sum` (`recStep`
+  4-chart cover-to-sum).
+- **Radial pull-out**: `Rmat2`, `gFlat2_blowup_radial` (N1 homogeneity).
+- **Pivot atoms**: `frobSq_rmatMul_perm2`/`matBox24_rowperm_lintegral`, `schurInner_S_le_pivot` (inner-S
+  finiteness at an ARBITRARY pivot via `Equiv.swap` → (0,0)).
+- **Per-chart support**: `e2`/`Rmat2_entry`/`_pivot`/`_entry_le`, `innerS2`/`innerS2_offpivot`/
+  `measurable_innerS2`, `flatBox2_blowup_mem_iff`.
+
+### THE PRECISE REMAINING WALL (the exact sub-goal + what was tried)
+
+The assembling `matBox2_chart_lt_top` + `core_schur2_lt_top` need a **UNIFORM (R-independent) bound** from
+`schurInner_S_le`. The per-chart finiteness's ratio-residual sub-goal is
+`∫_{z∈[−1,1]³} innerS2(e.symm(0,z)) dz < ⊤` — the integral OVER the ratios `z`. `schurInner_S_le_pivot`
+gives `innerS2(…) < ⊤` per fixed `z`, but the INTEGRAL over the compact ratio-box needs `innerS2(…) ≤ K`
+UNIFORMLY (then `∫_z K = K·vol < ⊤`). The bound IS R-uniform (Codex-confirmed; visible in the proof):
+`c₀ = 1/(2+2·1·1) = 1/4` (R-independent) and `∫_S schurSplitD^{−c'} ≤ Kbound 4 c' (2T)·vol(matBox 1 4 T)`
+(R-independent), so `K := ofReal((1/4)^{−c'})·Kbound 4 c' (2T)·vol(matBox 1 4 T)`. The refactor: a `≤`-form
+`radial_morse_dominates_absZ_le` (the `_lt_top` proves `≤ Kbound·μZ` internally — extract), a
+`schurSplitD_lintegral_le` (`≤ Kbound·vol`; needs `hbd : |R 0 1| ≤ 1` re-added — dropping it walled the
+box-enlarge in the first attempt), `schurInner_S_le_pivot_bound` (`≤ K`), then `hratiofin = ∫_z K`. Shape
+fully determined; ~60 lines of `≤`-threading + the chart-finiteness assembly. Not landed in this leg
+(the `_le` refactor + build-cycle cost under shared-semaphore contention).
+
+## Deferred — the remaining N4 outer assembly (the radial CoV chaining)
+
+After the uniform-bound piece above, the remaining N4 gap is the OUTER assembly chaining the per-chart
+finiteness into the joint `∫_Δ ∫_S frobSq(Δ·S)^{−c'}`:
 - cover `matBox 2 2 T` (the `Δ`-box) by the `r² = 4` max-modulus-entry charts (`recStep`/`g5_pivotNode`);
 - per chart, N1 (`radialDelta_loss_factor`) pulls the radial scale `a` (Jacobian `|a|³`,
   `pivotBlowupOnDeriv_det`), N3a/N3b the a-axis divisor; Tonelli separates `a` from the inner `∫_{R-ang}∫_S`;
