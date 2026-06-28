@@ -1393,36 +1393,439 @@ theorem RmatGnorm_carve_b (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : F
     zEG_symm_apply, zσG_slot]
   rfl
 
-/-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
-the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
-`2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
-`|entries| ≤ 1`; N2b (`j = 1`) peels the top `Fin 4` Morse block (threshold `2`), leaving the residual at
-`c'' = c' − 2 ∈ (0, λ_{r−1})`; the `M22 ↦ Sc` carving + the lower IH `hIH` (via
-`schurResidG_translate_lt_top`) close it. The genuinely-new generic content. `N = r²−1`
-(so `r * r = N + 1`). -/
+/-! ### The final-chain support lemmas (carve-free; wired onto genm-firing's `zEG`/`RmatGnorm_carve_*`). -/
+
+/-- `(zEG z).1 ab = z ((zσG).symm (inl ab))` (the M22-cube reads the inl slots). -/
+theorem zEG_fst_applyA (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (ab : Fin (r - 1) × Fin (r - 1)) :
+    (zEG r N hN hr p z).1 ab = z ((zσG r N hN hr p).symm (Sum.inl ab)) := by
+  have : (zEG r N hN hr p z).1 ab
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG r N hN hr p) z (Sum.inl ab) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσG r N hN hr p) (Sum.inl ab),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+/-- `(zEG z).2 j = z ((zσG).symm (inr j))` (the (g,b)-cube reads the inr slots). -/
+theorem zEG_snd_applyA (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (j : Fin (r - 1) ⊕ Fin (r - 1)) :
+    (zEG r N hN hr p z).2 j = z ((zσG r N hN hr p).symm (Sum.inr j)) := by
+  have : (zEG r N hN hr p z).2 j
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG r N hN hr p) z (Sum.inr j) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσG r N hN hr p) (Sum.inr j),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+/-- The carved Schur readback in the FORWARD direction: `RmatGnorm z ⟨1+a⟩ ⟨1+b⟩ − RmatGnorm z ⟨1+a⟩ 0 ·
+RmatGnorm z 0 ⟨1+b⟩ = (zEG z).1 (a,b) − bgShiftG ((zEG z).2) a b`. -/
+theorem schurSc_carve_eqA (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (a b : Fin (r - 1)) :
+    RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
+        - RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨0, by omega⟩
+          * RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨1 + b, by omega⟩
+      = (zEG r N hN hr p z).1 (a, b) - bgShiftG (r - 1) (zEG r N hN hr p z).2 a b := by
+  have e1 : (⟨1 + (a : ℕ), by have := a.isLt; omega⟩ : Fin r)
+      = ⟨(a : ℕ) + 1, by have := a.isLt; omega⟩ :=
+    Fin.ext (show 1 + (a : ℕ) = (a : ℕ) + 1 by omega)
+  have e1b : (⟨1 + (b : ℕ), by have := b.isLt; omega⟩ : Fin r)
+      = ⟨(b : ℕ) + 1, by have := b.isLt; omega⟩ :=
+    Fin.ext (show 1 + (b : ℕ) = (b : ℕ) + 1 by omega)
+  -- the slot equalities `slotMatG ⟨·+1⟩… = (zσG).symm (cell)` from `zσG_slot` + `cellR` defn
+  have hslM : slotMatG r N hN hr p ⟨(a : ℕ) + 1, by have := a.isLt; omega⟩
+      ⟨(b : ℕ) + 1, by have := b.isLt; omega⟩ = (zσG r N hN hr p).symm (Sum.inl (a, b)) := by
+    rw [Equiv.eq_symm_apply]; exact zσG_slot r N hN hr p (Sum.inl (a, b))
+  have hslg : slotMatG r N hN hr p ⟨(a : ℕ) + 1, by have := a.isLt; omega⟩ ⟨0, by omega⟩
+      = (zσG r N hN hr p).symm (Sum.inr (Sum.inl a)) := by
+    rw [Equiv.eq_symm_apply]; exact zσG_slot r N hN hr p (Sum.inr (Sum.inl a))
+  have hslb : slotMatG r N hN hr p ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by have := b.isLt; omega⟩
+      = (zσG r N hN hr p).symm (Sum.inr (Sum.inr b)) := by
+    rw [Equiv.eq_symm_apply]; exact zσG_slot r N hN hr p (Sum.inr (Sum.inr b))
+  have hM : RmatGnorm r N hN hr p z ⟨(a : ℕ) + 1, by have := a.isLt; omega⟩
+      ⟨(b : ℕ) + 1, by have := b.isLt; omega⟩ = (zEG r N hN hr p z).1 (a, b) := by
+    rw [RmatGnorm_eq_slot r N hN hr p z _ _
+        (by rintro ⟨h, _⟩; simp only [Fin.mk.injEq] at h; have := a.isLt; omega),
+      hslM, zEG_fst_applyA]
+  have hg : RmatGnorm r N hN hr p z ⟨(a : ℕ) + 1, by have := a.isLt; omega⟩ ⟨0, by omega⟩
+      = (zEG r N hN hr p z).2 (Sum.inl a) := by
+    rw [RmatGnorm_eq_slot r N hN hr p z _ _
+        (by rintro ⟨h, _⟩; simp only [Fin.mk.injEq] at h; have := a.isLt; omega),
+      hslg, zEG_snd_applyA]
+  have hb : RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by have := b.isLt; omega⟩
+      = (zEG r N hN hr p z).2 (Sum.inr b) := by
+    rw [RmatGnorm_eq_slot r N hN hr p z _ _
+        (by rintro ⟨_, h⟩; simp only [Fin.mk.injEq] at h; have := b.isLt; omega),
+      hslb, zEG_snd_applyA]
+  rw [e1, e1b, hM, hg, hb, bgShiftG]
+
+/-- The `1×1` pivot minor of a `(0,0)`-pivot matrix is the identity. -/
+theorem pivotMinor_inv_oneA {r : ℕ} (hr1 : 1 ≤ r) (R : Fin r → Fin r → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) :
+    (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+  have h1 : (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))
+      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+    ext i j; fin_cases i; fin_cases j
+    show R ⟨0, by omega⟩ ⟨0, by omega⟩ = (1 : Matrix (Fin 1) (Fin 1) ℝ) 0 0
+    rw [Matrix.one_apply_eq]; exact h00
+  rw [h1, inv_one]
+
+/-- **The N2b `j = 1` Schur readback** at a `(0,0)`-pivot `R : Fin r → Fin r → ℝ` (`r ≥ 1`). -/
+theorem schurSc_readbackA {r : ℕ} (hr1 : 1 ≤ r) (R : Fin r → Fin r → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (a b : Fin (r - 1)) :
+    ((Matrix.of (fun a b : Fin (r - 1) => R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩))
+      - (Matrix.of (fun (a : Fin (r - 1)) (b : Fin 1) => R ⟨1 + a, by omega⟩ ⟨b, by omega⟩))
+        * (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+        * (Matrix.of (fun (a : Fin 1) (b : Fin (r - 1)) => R ⟨a, by omega⟩ ⟨1 + b, by omega⟩))) a b
+      = R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
+        - R ⟨1 + a, by omega⟩ ⟨0, by omega⟩ * R ⟨0, by omega⟩ ⟨1 + b, by omega⟩ := by
+  rw [pivotMinor_inv_oneA hr1 R h00, Matrix.mul_one]
+  simp only [Matrix.sub_apply, Matrix.mul_apply, Matrix.of_apply, Fin.sum_univ_one, Fin.val_zero]
+
+/-- **The top-row sum split** at a `(0,0)`-pivot `R`. -/
+theorem topRow_sum_splitA (r : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (S : Fin r → Fin 4 → ℝ) (q : Fin 4) :
+    ∑ b : Fin r, R ⟨0, by omega⟩ b * S b q
+      = S ⟨0, by omega⟩ q
+        + ∑ a : Fin (r - 1), R ⟨0, by omega⟩ ⟨1 + a, by omega⟩ * S ⟨1 + a, by omega⟩ q := by
+  rw [← Finset.sum_erase_add _ _ (Finset.mem_univ (⟨0, by omega⟩ : Fin r)), h00, one_mul, add_comm]
+  congr 1
+  refine (Finset.sum_nbij' (fun (a : Fin (r - 1)) => (⟨1 + a, by omega⟩ : Fin r))
+    (fun (b : Fin r) => (⟨b.val - 1, by have := b.isLt; omega⟩ : Fin (r - 1))) ?_ ?_ ?_ ?_ ?_).symm
+  · intro a _
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true, ne_eq, Fin.mk.injEq]
+    have := a.isLt; omega
+  · intro b _; exact Finset.mem_univ _
+  · intro a _
+    have := a.isLt
+    exact Fin.ext (by simp only [Fin.val_mk]; omega)
+  · intro b hb
+    have hb0 : b.val ≠ 0 := by
+      simp only [Finset.mem_erase, Finset.mem_univ, and_true, ne_eq, Fin.ext_iff, Fin.val_mk] at hb
+      omega
+    exact Fin.ext (by simp only [Fin.val_mk]; omega)
+  · intro a _; rfl
+
+/-- **The top-`Fin 1` row Frobenius = `stepShearG`'s coupled-row form** at a `(0,0)`-pivot `R`. -/
+theorem topRow_frobSq_coupledA (r : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (S : Fin r → Fin 4 → ℝ) :
+    frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+      = ∑ q : Fin 4, (S ⟨0, by omega⟩ q
+          + ∑ a : Fin (r - 1), R ⟨0, by omega⟩ ⟨1 + a, by omega⟩ * S ⟨1 + a, by omega⟩ q) ^ 2 := by
+  rw [frobSq, Fin.sum_univ_one]
+  refine Finset.sum_congr rfl (fun q _ => ?_)
+  rw [show (⟨(0 : Fin 1), by omega⟩ : Fin r) = ⟨0, by omega⟩ from rfl, rmatMul,
+    topRow_sum_splitA r hr R h00 S q]
+
+/-- The resolved `(S_bot, T')` inner integral at a fixed `(r−1)×(r−1)` Schur block `Sc`, radius `T`. -/
+noncomputable def GinnerGA (r : ℕ) (c' T : ℝ) (Sc : Matrix (Fin (r - 1)) (Fin (r - 1)) ℝ) : ℝ≥0∞ :=
+  ∫⁻ S_bot in matBox (r - 1) 4 T, ∫⁻ T' in morseBox 4 ((r : ℝ) * T),
+    ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul (fun a b => Sc a b) S_bot)) ^ (-c'))
+
+/-- **The per-`z` resolved bound** (`Sc` explicit, carve-free). -/
+theorem innerS_norm_le_resolvedA (r : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1)
+    (hbd0 : ∀ a : Fin (r - 1), |R ⟨0, by omega⟩ ⟨1 + a, by have := a.isLt; omega⟩| ≤ 1)
+    (Sc : Fin (r - 1) → Fin (r - 1) → ℝ)
+    (c₀ c₁ : ℝ) (hc0' : 0 < c₀) (c' : ℝ) (hc0 : 0 < c') (T : ℝ) (hT : 0 < T)
+    (hsplit : ∀ S : Fin r → Fin 4 → ℝ,
+      c₀ * (frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+            + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩)))
+        ≤ frobSq (rmatMul (fun a b => R a b) S))
+    (hsplit' : ∀ S : Fin r → Fin 4 → ℝ,
+      frobSq (rmatMul (fun a b => R a b) S)
+        ≤ c₁ * (frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+            + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩)))) :
+    (∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c')))
+      ≤ ENNReal.ofReal (c₀ ^ (-c')) * GinnerGA r c' T (Matrix.of Sc) := by
+  calc (∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c')))
+      ≤ ∫⁻ S in matBox r 4 T, ENNReal.ofReal (c₀ ^ (-c'))
+          * ENNReal.ofReal (((frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+              + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩))))
+              ^ (-c')) := by
+        refine lintegral_mono (fun S => ?_)
+        refine ofReal_rpow_le_const_mul _ _ c₀ c' hc0 hc0' ?_ (frobSq_nonneg _) (hsplit S) ?_
+        · exact add_nonneg (frobSq_nonneg _) (frobSq_nonneg _)
+        · intro hX
+          have hup := hsplit' S
+          rw [hX, mul_zero] at hup
+          exact le_antisymm hup (frobSq_nonneg _)
+      _ = ENNReal.ofReal (c₀ ^ (-c'))
+          * ∫⁻ S in matBox r 4 T,
+              ENNReal.ofReal (((frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+                + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩))))
+                ^ (-c')) := by
+        rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+      _ ≤ ENNReal.ofReal (c₀ ^ (-c')) * GinnerGA r c' T (Matrix.of Sc) := by
+        refine mul_le_mul_left' ?_ _
+        rw [show (fun S : Fin r → Fin 4 → ℝ =>
+              ENNReal.ofReal (((frobSq (fun a : Fin 1 => rmatMul (fun x y => R x y) S ⟨a, by omega⟩)
+                + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩))))
+                ^ (-c')))
+            = (fun S : Fin r → Fin 4 → ℝ =>
+              ENNReal.ofReal (((∑ q, (S ⟨0, by omega⟩ q
+                  + ∑ a : Fin (r - 1), R ⟨0, by omega⟩ ⟨1 + a, by omega⟩ * S ⟨1 + a, by omega⟩ q) ^ 2)
+                + frobSq (rmatMul (fun a b => Sc a b) (fun a : Fin (r - 1) => S ⟨1 + a, by omega⟩)))
+                ^ (-c'))) from by
+          funext S; rw [topRow_frobSq_coupledA r hr R h00 S]]
+        obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt (lt_of_lt_of_le (by decide) hr))
+        have hidx : ∀ (a : Fin m), (⟨1 + (a : ℕ), by omega⟩ : Fin (m + 1)) = a.succ :=
+          fun a => Fin.ext (by simp [Fin.val_succ]; omega)
+        refine le_trans (le_of_eq (lintegral_congr (fun S => ?_)))
+          (le_trans (stepShearG m (fun a => R ⟨0, by omega⟩ a.succ) ?_ (Matrix.of Sc) T hT c')
+            (le_of_eq ?_))
+        · simp only [hidx]; rfl
+        · intro a
+          have := hbd0 a
+          simpa [hidx a] using this
+        · rfl
+
+/-- **`GinnerGA` at a SHIFTED block, integrated over a free M22-box, bounded uniformly in the shift.** -/
+theorem ginnerGA_shift_box_le (r : ℕ) (hr : 3 ≤ r)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (hSh : ∀ i j, |Sh i j| ≤ 1)
+    (c' : ℝ) (hc2 : 2 < c') (T : ℝ) (hT : 0 < T) :
+    (∫⁻ M in matBox (r - 1) (r - 1) (max 1 ((r : ℝ) * T)),
+        GinnerGA r c' T (Matrix.of (fun a b => M a b - Sh a b)))
+      ≤ ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal (r - 1) (c' - 2) (max 1 ((r : ℝ) * T) + 1) := by
+  set K := max 1 ((r : ℝ) * T) with hK
+  have hK1 : (1 : ℝ) ≤ K := le_max_left _ _
+  have hKrT : (r : ℝ) * T ≤ K := le_max_right _ _
+  have hK0 : 0 < K := lt_of_lt_of_le one_pos hK1
+  have hTK : T ≤ K := by
+    have hrr : (3 : ℝ) ≤ r := by exact_mod_cast hr
+    have : T ≤ (r : ℝ) * T := by nlinarith [hT, hrr, mul_pos (show (0:ℝ) < r by linarith) hT]
+    linarith
+  have hSsub : matBox (r - 1) 4 T ⊆ matBox (r - 1) 4 K := fun X hX i k => by
+    have := hX i k; rw [Set.mem_Icc] at this ⊢; constructor <;> linarith [this.1, this.2]
+  have hMsub : morseBox 4 ((r : ℝ) * T) ⊆ morseBox 4 K := by
+    intro X hX
+    simp only [morseBox, Set.mem_pi, Set.mem_univ, true_implies] at hX ⊢
+    intro i; have := hX i; rw [Set.mem_Icc] at this ⊢; constructor <;> linarith [this.1, this.2]
+  have hpm : ∀ M : Fin (r - 1) → Fin (r - 1) → ℝ,
+      GinnerGA r c' T (Matrix.of (fun a b => M a b - Sh a b))
+        ≤ ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T' in morseBox 4 K,
+            ENNReal.ofReal ((∑ i, (T' i) ^ 2
+              + frobSq (rmatMul (fun a b => M a b - Sh a b) S)) ^ (-c')) := by
+    intro M
+    rw [GinnerGA]
+    refine le_trans (lintegral_mono_set (μ := volume) hSsub) (lintegral_mono (fun S_bot => ?_))
+    exact lintegral_mono_set (μ := volume) hMsub
+  refine le_trans (lintegral_mono hpm) ?_
+  exact resolvedShiftRG_le r hr Sh 1 hSh K hK0 c' hc2
+
+/-- The curry equiv `(Fin (r−1) × Fin (r−1) → ℝ) ≃ᵐ (Fin (r−1) → Fin (r−1) → ℝ)`, MP for volume. -/
+noncomputable def matOfGEquivA (r : ℕ) :
+    (Fin (r - 1) × Fin (r - 1) → ℝ) ≃ᵐ (Fin (r - 1) → Fin (r - 1) → ℝ) :=
+  (MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin (r - 1), Fin (r - 1)) => ℝ)
+      (Equiv.sigmaEquivProd (Fin (r - 1)) (Fin (r - 1))).symm).trans
+    (MeasurableEquiv.piCurry (fun (_ : Fin (r - 1)) (_ : Fin (r - 1)) => ℝ))
+
+theorem matOfGEquivA_apply (r : ℕ) (M : Fin (r - 1) × Fin (r - 1) → ℝ) (i k : Fin (r - 1)) :
+    matOfGEquivA r M i k = M (i, k) := by
+  show MeasurableEquiv.piCurry (fun (_ : Fin (r - 1)) (_ : Fin (r - 1)) => ℝ)
+      (MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin (r - 1), Fin (r - 1)) => ℝ)
+        (Equiv.sigmaEquivProd (Fin (r - 1)) (Fin (r - 1))).symm M) i k = M (i, k)
+  rw [MeasurableEquiv.coe_piCurry]
+  show MeasurableEquiv.piCongrLeft (fun _ : (Σ _ : Fin (r - 1), Fin (r - 1)) => ℝ)
+      (Equiv.sigmaEquivProd (Fin (r - 1)) (Fin (r - 1))).symm M ⟨i, k⟩ = M (i, k)
+  rw [← Equiv.apply_symm_apply (Equiv.sigmaEquivProd (Fin (r - 1)) (Fin (r - 1))).symm
+      (⟨i, k⟩ : Σ _ : Fin (r - 1), Fin (r - 1)),
+    MeasurableEquiv.piCongrLeft_apply_apply]
+  rfl
+
+theorem matOfGEquivA_measurePreserving (r : ℕ) : MeasurePreserving (matOfGEquivA r) volume volume :=
+  (volume_measurePreserving_piCongrLeft (fun _ => ℝ)
+    (Equiv.sigmaEquivProd (Fin (r - 1)) (Fin (r - 1))).symm).trans
+      (measurePreserving_piCurry (fun (_ : Fin (r - 1)) (_ : Fin (r - 1)) => ℝ) (fun _ _ => volume))
+
+/-- `GinnerGA r c' T (Matrix.of (fun a b => M (a,b) − bgShiftG v a b))` is jointly measurable in `(M, v)`. -/
+theorem measurable_GinnerGA_carve (r : ℕ) (hr : 3 ≤ r) (c' T : ℝ) :
+    Measurable (fun q : (Fin (r - 1) × Fin (r - 1) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) =>
+      GinnerGA r c' T (Matrix.of (fun a b => q.1 (a, b) - bgShiftG (r - 1) q.2 a b))) := by
+  unfold GinnerGA
+  have hbase : Measurable
+      (fun w : (((Fin (r - 1) × Fin (r - 1) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ))
+          × (Fin (r - 1) → Fin 4 → ℝ)) × (Fin 4 → ℝ) =>
+        ENNReal.ofReal (((∑ q, (w.2 q) ^ 2)
+          + frobSq (rmatMul (fun a b => Matrix.of (fun a b => w.1.1.1 (a, b)
+              - bgShiftG (r - 1) w.1.1.2 a b) a b) w.1.2)) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    refine Measurable.add ?_ ?_
+    · exact Finset.measurable_sum _ (fun q _ =>
+        Measurable.pow_const ((measurable_pi_apply q).comp measurable_snd) 2)
+    · unfold frobSq rmatMul
+      refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+      refine Measurable.pow_const (Finset.measurable_sum _ (fun k _ => ?_)) 2
+      refine Measurable.mul ?_ ?_
+      · simp only [Matrix.of_apply, bgShiftG]
+        refine Measurable.sub ?_ ?_
+        · exact (measurable_pi_apply _).comp
+            (measurable_fst.comp (measurable_fst.comp measurable_fst))
+        · exact (((measurable_pi_apply _).comp
+              (measurable_snd.comp (measurable_fst.comp measurable_fst))).mul
+            ((measurable_pi_apply _).comp (measurable_snd.comp (measurable_fst.comp measurable_fst))))
+      · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp
+          (measurable_snd.comp measurable_fst))
+  exact (hbase.lintegral_prod_right).lintegral_prod_right
+
+/-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** CLOSED — carve-first
+assembly wired onto genm-firing's `zEG` carve: pivot-WLOG (`innerSGen_eq_norm`) → per-z N2b split
+(`schur_minorPivot_split` j=1, `Sc = matOf M22 − bgShiftG (g,b)` via `schurSc_carve_eqA`) + antitone rpow
++ top-row shear (`innerS_norm_le_resolvedA`) → carve `z = (M,v)` via `zEG` CoV + Tonelli `v`-outer →
+`ginnerGA_shift_box_le` (K = max 1 (r·T), B = 1) → `coreSchurGenVal_lt_top` × finite `v`-box. `N = r²−1`. -/
 theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
     (hIH : SchurLowerIH 4 schurLambda r) (c' : ℝ) (hc2 : 2 < c') (hc' : c' < schurLambda r)
     (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
     (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
         innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
       < ⊤ := by
-  -- DEFERRED (the sole remaining R1-UPPER input): the per-`z` N2b → Morse-peel → carve assembly.
-  -- The IH-invoking carving CORE `schurResidG_translate_lt_top` is PROVED above; this lemma is the
-  -- per-`z` glue. Codex (xhigh, decorrelated) confirmed the route — ORDER: CARVE-FIRST:
-  --   pivot-WLOG (frobSq_rmatMul_permG + matBox_rowperm_lintegralG, pivot → (0,0))
-  --   → carve `z` = (M22 ⊕ rest) via a generic `zE_G : (Fin N → ℝ) ≃ᵐ
-  --       ((Fin (r-1) × Fin (r-1) → ℝ) × (Fin (2(r-1)) → ℝ))` with readback `Sc = M22 − Sh(rest)`
-  --       (the HARDEST sub-step — the M22/M21/M12 index bijection + the Schur-formula readback)
-  --   → pointwise N2b/split (`schur_minorPivot_split` j=1 — the TWO-SIDED uniform-constant comparison
-  --       `c₀(frobSq row0 + frobSq(Sc·S_bot)) ≤ frobSq(R·S) ≤ c₁(…)`, NOT a constant-1 bound) + top-row shear
-  --   → Tonelli + a.e. Morse peel over the FREE `(M22, S_bot)` joint core (`radial_morse_residual_power_le`,
-  --       a.e.-positive by the nonzero-`MvPolynomial` argument — peel AFTER carving so positivity is clean)
-  --   → `schurResidG_translate_lt_top` per fixed `rest` at exponent `c' − 2` and residual radius
-  --       `K = max 1 T` (M22 box radius 1, S_bot box radius T — Codex radius fix), `B = 1` (|Sh| ≤ 1)
-  --   → the outer bounded-`rest`-box volume is a finite constant.
-  -- A standalone `resolvedShiftRG_le` (generic analog of `resolvedShiftR2c3_le`) is the recommended next
-  -- brick. ~200 generic-r lines; well-scoped, no design wall (all ingredients PROVED/CONFIRMED).
-  sorry
+  have hc0 : 0 < c' := by linarith
+  set box := Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1) with hbox
+  have hboxms : MeasurableSet box := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  set Sc : (Fin N → ℝ) → Fin (r - 1) → Fin (r - 1) → ℝ := fun z a b =>
+    (zEG r N hN hr p z).1 (a, b) - bgShiftG (r - 1) (zEG r N hN hr p z).2 a b with hScdef
+  obtain ⟨c₀, c₁, hc0pos, hc1pos, hsplitAll⟩ := schur_minorPivot_split (r := r) (p := 4) 1 (by omega)
+  -- STEP 1: per-z bound innerSGen ≤ ofReal(c₀^{-c'}) · GinnerGA r c' T (Matrix.of (Sc z))
+  have hstep1 : ∀ z ∈ box,
+      innerSGen r c' T p ((piRatioG r N hN p).symm (0, z))
+        ≤ ENNReal.ofReal (c₀ ^ (-c')) * GinnerGA r c' T (Matrix.of (Sc z)) := by
+    intro z hz
+    rw [innerSGen_eq_norm r N hN hr c' T p z]
+    set R : Fin r → Fin r → ℝ := RmatGnorm r N hN hr p z with hR
+    have h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := RmatGnorm_pivot r N hN hr p z
+    have hbd : ∀ a b, |R a b| ≤ 1 := by
+      intro a b
+      by_cases hab : a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩
+      · rw [hab.1, hab.2, h00]; norm_num
+      · exact RmatGnorm_offpivot_le r N hN hr p z hz a b hab
+    have hM11 : (Matrix.of (fun a b : Fin 1 => R ⟨a, lt_of_lt_of_le a.2 (by omega)⟩
+        ⟨b, lt_of_lt_of_le b.2 (by omega)⟩)) = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+      ext i j; fin_cases i; fin_cases j
+      show R ⟨0, _⟩ ⟨0, _⟩ = (1 : Matrix (Fin 1) (Fin 1) ℝ) 0 0
+      rw [Matrix.one_apply_eq]; exact h00
+    have hne : (Matrix.of (fun a b : Fin 1 => R ⟨a, lt_of_lt_of_le a.2 (by omega)⟩
+        ⟨b, lt_of_lt_of_le b.2 (by omega)⟩)).det ≠ 0 := by
+      rw [hM11, Matrix.det_one]; norm_num
+    have hpivot : ∀ (I J : Fin 1 → Fin r),
+        |((Matrix.of R).submatrix I J).det| ≤ |(Matrix.of (fun a b : Fin 1 =>
+          R ⟨a, lt_of_lt_of_le a.2 (by omega)⟩ ⟨b, lt_of_lt_of_le b.2 (by omega)⟩)).det| := by
+      intro I J
+      rw [hM11, Matrix.det_one, Matrix.det_fin_one]
+      simp only [Matrix.submatrix_apply, Matrix.of_apply, abs_one]
+      exact hbd _ _
+    -- the split's `Sc'` (formula) = the carved `Sc z`
+    have hSceq : ∀ Sc' : Matrix (Fin (r - 1)) (Fin (r - 1)) ℝ,
+        Sc' = (Matrix.of (fun a b : Fin (r - 1) => R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩))
+            - (Matrix.of (fun (a : Fin (r - 1)) (b : Fin 1) => R ⟨1 + a, by omega⟩ ⟨b, by omega⟩))
+              * (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+              * (Matrix.of (fun (a : Fin 1) (b : Fin (r - 1)) => R ⟨a, by omega⟩ ⟨1 + b, by omega⟩)) →
+        ∀ a b, Sc' a b = Sc z a b := by
+      intro Sc' hScform a b
+      rw [hScform, schurSc_readbackA (by omega) R h00 a b, hScdef, hR]
+      exact schurSc_carve_eqA r N hN hr p z a b
+    refine innerS_norm_le_resolvedA r hr R h00 (fun a => hbd _ _) (Sc z) c₀ c₁ hc0pos c' hc0 T hT ?_ ?_
+    · intro S
+      obtain ⟨Sc', hScform, _, hlow, _⟩ := hsplitAll R S hbd hpivot hne
+      have hScf : (fun a b => Sc z a b) = (fun a b => Sc' a b) := by
+        funext a b; exact (hSceq Sc' hScform a b).symm
+      refine le_trans (le_of_eq ?_) hlow
+      congr 1; rw [hScf]
+    · intro S
+      obtain ⟨Sc', hScform, _, _, hupp⟩ := hsplitAll R S hbd hpivot hne
+      have hScf : (fun a b => Sc z a b) = (fun a b => Sc' a b) := by
+        funext a b; exact (hSceq Sc' hScform a b).symm
+      refine le_trans hupp (le_of_eq ?_)
+      congr 1; rw [hScf]
+  -- STEP 2: integrate the per-z bound; carve z = (M,v); per-v `ginnerGA_shift_box_le`.
+  have hint : (∫⁻ z in box, innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
+      ≤ ENNReal.ofReal (c₀ ^ (-c')) * ∫⁻ z in box, GinnerGA r c' T (Matrix.of (Sc z)) := by
+    refine le_trans (setLIntegral_mono_ae' hboxms (ae_of_all _ (fun z hz => hstep1 z hz))) ?_
+    rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  refine lt_of_le_of_lt hint (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_)
+  set vbox := Set.univ.pi (fun _ : (Fin (r - 1) ⊕ Fin (r - 1)) => Set.Icc (-1 : ℝ) 1) with hvbox
+  set Mbox := Set.univ.pi (fun _ : Fin (r - 1) × Fin (r - 1) => Set.Icc (-1 : ℝ) 1) with hMbox
+  have hfac : (∫⁻ z in box, GinnerGA r c' T (Matrix.of (Sc z)))
+      = ∫⁻ z in box,
+          (fun q : (Fin (r - 1) × Fin (r - 1) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) =>
+            GinnerGA r c' T (Matrix.of (fun a b => q.1 (a, b) - bgShiftG (r - 1) q.2 a b)))
+            (zEG r N hN hr p z) := by
+    refine lintegral_congr (fun z => ?_); rfl
+  have hpre : box = zEG r N hN hr p ⁻¹' (Mbox ×ˢ vbox) := by
+    ext z
+    simp only [hbox, hMbox, hvbox, Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ,
+      true_implies]
+    constructor
+    · intro h
+      exact ⟨fun ab => by rw [zEG_fst_applyA]; exact h _, fun j => by rw [zEG_snd_applyA]; exact h _⟩
+    · rintro ⟨h1, h2⟩ i
+      obtain ⟨s, hs⟩ := (zσG r N hN hr p).symm.surjective i
+      rcases s with ab | j
+      · have := h1 ab; rw [zEG_fst_applyA, hs] at this; exact this
+      · have := h2 j; rw [zEG_snd_applyA, hs] at this; exact this
+  rw [hfac, hpre]
+  rw [(measurePreserving_zEG r N hN hr p).setLIntegral_comp_preimage_emb
+    (zEG r N hN hr p).measurableEmbedding
+    (fun q : (Fin (r - 1) × Fin (r - 1) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) =>
+      GinnerGA r c' T (Matrix.of (fun a b => q.1 (a, b) - bgShiftG (r - 1) q.2 a b)))
+    (Mbox ×ˢ vbox)]
+  have hMboxms : MeasurableSet Mbox := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  have hvboxms : MeasurableSet vbox := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  rw [Measure.volume_eq_prod, setLIntegral_prod _ (measurable_GinnerGA_carve r hr c' T).aemeasurable,
+    lintegral_lintegral_swap (measurable_GinnerGA_carve r hr c' T).aemeasurable]
+  set K := max 1 ((r : ℝ) * T) with hK
+  have hK1 : (1 : ℝ) ≤ K := le_max_left _ _
+  calc (∫⁻ v in vbox, ∫⁻ M in Mbox,
+          GinnerGA r c' T (Matrix.of (fun a b => M (a, b) - bgShiftG (r - 1) v a b)))
+      ≤ ∫⁻ _v in vbox,
+          ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal (r - 1) (c' - 2) (K + 1) := by
+        refine setLIntegral_mono_ae' hvboxms (ae_of_all _ (fun v hv => ?_))
+        have hv1 : ∀ s, |v s| ≤ 1 := by
+          intro s; have := hv s (Set.mem_univ s); rw [Set.mem_Icc, ← abs_le] at this; exact this
+        have hShle : ∀ i j, |bgShiftG (r - 1) v i j| ≤ 1 := fun i j => bgShiftG_entry_le _ v hv1 i j
+        calc (∫⁻ M in Mbox,
+                GinnerGA r c' T (Matrix.of (fun a b => M (a, b) - bgShiftG (r - 1) v a b)))
+            = ∫⁻ M in matBox (r - 1) (r - 1) 1,
+                GinnerGA r c' T (Matrix.of (fun a b => M a b - bgShiftG (r - 1) v a b)) := by
+              have hpreM : Mbox = matOfGEquivA r ⁻¹' (matBox (r - 1) (r - 1) 1) := by
+                ext M
+                simp only [hMbox, Set.mem_preimage, matBox, Set.mem_setOf_eq, Set.mem_pi,
+                  Set.mem_univ, true_implies]
+                constructor
+                · intro h i k; rw [matOfGEquivA_apply]; exact h (i, k)
+                · intro h ik; have := h ik.1 ik.2; rw [matOfGEquivA_apply] at this; simpa using this
+              rw [hpreM]
+              rw [show (∫⁻ M in matOfGEquivA r ⁻¹' matBox (r - 1) (r - 1) 1,
+                    GinnerGA r c' T (Matrix.of (fun a b => M (a, b) - bgShiftG (r - 1) v a b)))
+                  = ∫⁻ M in matOfGEquivA r ⁻¹' matBox (r - 1) (r - 1) 1,
+                    (fun M' : Fin (r - 1) → Fin (r - 1) → ℝ =>
+                      GinnerGA r c' T (Matrix.of (fun a b => M' a b - bgShiftG (r - 1) v a b)))
+                      (matOfGEquivA r M) from by
+                refine lintegral_congr (fun M => ?_)
+                show GinnerGA r c' T (Matrix.of (fun a b => M (a, b) - bgShiftG (r - 1) v a b))
+                  = GinnerGA r c' T (Matrix.of (fun a b => matOfGEquivA r M a b - bgShiftG (r - 1) v a b))
+                simp only [matOfGEquivA_apply]]
+              rw [(matOfGEquivA_measurePreserving r).setLIntegral_comp_preimage_emb
+                (matOfGEquivA r).measurableEmbedding
+                (fun M' : Fin (r - 1) → Fin (r - 1) → ℝ =>
+                  GinnerGA r c' T (Matrix.of (fun a b => M' a b - bgShiftG (r - 1) v a b)))
+                (matBox (r - 1) (r - 1) 1)]
+          _ ≤ ∫⁻ M in matBox (r - 1) (r - 1) K,
+                GinnerGA r c' T (Matrix.of (fun a b => M a b - bgShiftG (r - 1) v a b)) :=
+              lintegral_mono_set (μ := volume)
+                (show matBox (r - 1) (r - 1) 1 ⊆ matBox (r - 1) (r - 1) K from fun X hX i k => by
+                  have := hX i k; rw [Set.mem_Icc] at this ⊢; constructor <;> linarith [this.1, this.2])
+          _ ≤ _ := ginnerGA_shift_box_le r hr (bgShiftG (r - 1) v) hShle c' hc2 T hT
+    _ = (ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal (r - 1) (c' - 2) (K + 1)) * volume vbox := by
+        rw [setLIntegral_const]
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_) ?_
+        · refine coreSchurGenVal_lt_top r hr hIH (c' - 2) (by linarith) ?_ (K + 1) (by linarith)
+          rw [schurLambda_eq_of_ge_two (by omega)] at hc' ⊢
+          push_cast [Nat.cast_sub (show 1 ≤ r by omega)] at hc' ⊢
+          linarith
+        · rw [hvbox]
+          exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
 
 /-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
 `schurRatioResidGen_mid`; subcritical `c' ≤ 2` dominates `F^{−c'} ≤ 1 + F^{−3}` and reduces to the
