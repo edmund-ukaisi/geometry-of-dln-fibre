@@ -48,6 +48,56 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Constructed Displayed-Product Nonzero Source Production
+
+`Case2ResidualFactorProduct.lean` now has finite constructed-data helpers:
+
+```text
+case2SourceResidualBlockExtension
+case2SourceResidualBlock_extension
+case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension
+case2DisplayedPostPivotFreeCprimeOfFollowingFactor
+case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor
+Matrix.submatrix_id_equiv_symm_mul_one_submatrix_id_equiv
+exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_matrix_of_colEquiv
+```
+
+`Case2ResidualSelectedEntryChartBridge.lean` now packages the successor
+selected-entry target:
+
+```text
+case2SuccessorSelectedEntryMatrix
+case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero
+exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+exists_residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+```
+
+Given `hcont`, `hnext`, a successor coordinate vector `yNext`, a right-endpoint
+equivalence, and `yNext (J+2,J+2) != 0`, the theorem constructs residual data
+and a free `Cprime` so that the displayed post-pivot product is exactly the
+successor selected-entry matrix and is nonzero.  The residual is a
+zero-extension of the target matrix reindexed to successor residual columns;
+the free following factor is the matching reindexed identity.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-nonzero-source-production.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-displayed-product-nonzero-source-production.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.Case2ResidualSelectedEntryChartBridge` passed, rebuilding
+the product-side dependency as needed, with only pre-existing imported warning
+noise.  Full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, changed-Lean-file
+forbidden-marker search, and direct axiom-footprint audit passed; the new
+public endpoints report `[propext, Classical.choice, Quot.sound]`.  Xhigh
+review by `Wegener` is PASS, recorded at
+`threads/03-block-product-reduction/review-a2-case2-displayed-product-nonzero-source-production.md`.
+
+This removes the displayed-product nonzeroness field only for constructed
+finite displayed data.  It does not prove factor alignment or nonzeroness for
+an arbitrary retained-passive `sourceReadback` point, source/prior transport,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Case 2 All-Pivot Selected-Entry Adapter
 
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` now exposes all-pivot

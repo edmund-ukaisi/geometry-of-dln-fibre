@@ -216,6 +216,20 @@ No such claim is formalisation-ready until both fields are filled.
   hypothesis that the displayed post-pivot product matrix is nonzero.  They do
   not prove that nonzeroness, actual retained-passive factor alignment,
   source/prior transport, normal crossings, pole order, or RLCT.
+- **Current status addendum, constructed Case 2 displayed-product
+  nonzeroness, 2026-06-28.** Lean now proves a constructed finite-data source
+  production theorem:
+  `exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero`
+  and its concrete two-edge residual-factor-family form
+  `exists_residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero`.
+  From a successor selected-entry coordinate vector with nonzero displayed
+  successor pivot coordinate, the theorem constructs residual data and free
+  `Cprime` so the displayed post-pivot product is exactly the successor
+  selected-entry matrix and hence nonzero.  Reproduction:
+  `threads/03-block-product-reduction/reproduction-a2-case2-displayed-product-nonzero-source-production.md`.
+  This removes nonzeroness only for constructed displayed data; it does not
+  prove arbitrary retained-passive `sourceReadback` factor alignment or
+  nonzeroness, source/prior transport, normal crossings, pole order, or RLCT.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

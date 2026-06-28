@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 displayed product nonzero source production
+
+Reproduction:
+`reproduction-a2-case2-displayed-product-nonzero-source-production.md`.
+Statement card:
+`statement-card-a2-case2-displayed-product-nonzero-source-production.md`.
+
+Lean now proves a finite constructed-data source-production theorem for the
+continuing Case 2 displayed product.  New product-side names:
+
+```text
+case2SourceResidualBlockExtension
+case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension
+case2DisplayedPostPivotFreeCprimeOfFollowingFactor
+exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_matrix_of_colEquiv
+```
+
+New selected-entry names:
+
+```text
+case2SuccessorSelectedEntryMatrix
+case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero
+exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+exists_residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+```
+
+Given successor selected-entry coordinates `yNext` and a nonzero displayed
+successor pivot coordinate at `(J+2,J+2)`, the construction zero-extends the
+target matrix reindexed to successor residual columns, so the old displayed
+Schur complement is the target matrix.  It chooses the free following factor
+as the reindexed identity.  Therefore the post-pivot free two-edge product is
+the successor selected-entry matrix and is nonzero.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` and
+`DLNFibre.DLN.Aoyagi.Case2ResidualSelectedEntryChartBridge` passed with only
+pre-existing imported warning noise.  Xhigh review by `Wegener` passed:
+`review-a2-case2-displayed-product-nonzero-source-production.md`.
+Full `DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, changed-Lean-file forbidden-marker search, and direct
+axiom-footprint audit passed; the new public endpoints report
+`[propext, Classical.choice, Quot.sound]`.
+
+This is constructed finite data only.  It does not prove displayed-product
+nonzeroness for an arbitrary retained-passive `sourceReadback` point, factor
+alignment, measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 retained-passive Case 2 all-pivot selected-entry adapter
 
 Statement card:

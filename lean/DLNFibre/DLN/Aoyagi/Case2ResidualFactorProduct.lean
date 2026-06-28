@@ -313,6 +313,193 @@ theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_apply_eq_sum_freeCprime
     case2DisplayedPostPivotFreeFollowingFactor, case2DisplayedFreeCprimeTail, Matrix.mul_apply]
 
 set_option linter.style.longLine false in
+/-- Zero-extend a prescribed Case 2 residual block to source-coordinate
+residual data.
+
+This is finite source-coordinate bookkeeping only.  It is not chart production,
+coverage, a transition invariant, normal crossings, pole order, or RLCT
+content. -/
+noncomputable def case2SourceResidualBlockExtension
+    {R : Type*} [Zero R]
+    (n : ℕ → ℕ) {S J : ℕ}
+    (D : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    ℕ × ℕ → R :=
+  fun p ↦
+    if hi : p.1 ∈ case2ResidualBlockRows n S J then
+      if hj : p.2 ∈ case2ResidualBlockCols n S J then
+        D ⟨p.1, hi⟩ ⟨p.2, hj⟩
+      else 0
+    else 0
+
+/-- Restricting the zero extension to its residual block recovers the
+prescribed matrix. -/
+theorem case2SourceResidualBlock_extension
+    {R : Type*} [Zero R]
+    (n : ℕ → ℕ) {S J : ℕ}
+    (D : Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R) :
+    case2SourceResidualBlock (n := n) (S := S) (J := J)
+        (case2SourceResidualBlockExtension n D) = D := by
+  ext i j
+  simp [case2SourceResidualBlock, case2SourceResidualBlockExtension]
+
+set_option linter.style.longLine false in
+/-- The successor-block zero extension realizes any prescribed post-pivot
+Schur block in the displayed Case 2 calculation.
+
+The construction sets the old displayed pivot row and column to zero off the
+pivot and reads the supplied matrix on the lower-right successor block.  This
+is finite constructed-data algebra only; it is not a theorem about an arbitrary
+retained-passive source/readback point. -/
+theorem case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension
+    {R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (D :
+      Matrix (Case2ResidualRowIndex n S (J + 1))
+        (Case2ResidualColIndex n S (J + 1)) R) :
+    case2DisplayedPostPivotResidualBlock n hS hcont
+        (case2SourceResidualBlockExtension (n := n) (S := S) (J := J + 1) D) =
+      D := by
+  ext i j
+  let er := case2DisplayedPivotRowComplementEquivResidualRowSucc n hS hcont
+  let ec := case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont
+  let residual :=
+    case2SourceResidualBlockExtension (n := n) (S := S) (J := J + 1) D
+  let A := case2DisplayedPaperDchart n hS hcont residual
+  have hi_succ : i.1 ∈ case2ResidualBlockRows n S (J + 1) := i.2
+  have hj_succ : j.1 ∈ case2ResidualBlockCols n S (J + 1) := j.2
+  have hi_ge : J + 2 ≤ i.1 := ((mem_case2ResidualBlockRows n S (J + 1) i.1).mp i.2).1
+  have hj_ge : J + 2 ≤ j.1 := ((mem_case2ResidualBlockCols n S (J + 1) j.1).mp j.2).1
+  have hi_ne_pivot : i.1 ≠ J + 1 := by omega
+  have hj_ne_pivot : j.1 ≠ J + 1 := by omega
+  have hD_entry :
+      A (er.symm i).1 (ec.symm j).1 = D i j := by
+    simp [A, residual, case2DisplayedPaperDchart,
+      case2DisplayedSourceNormalizedBlock, case2DisplayedSourceNormalizedMap,
+      selectedEntryNormalizedMap, case2SourceResidualBlockExtension,
+      hi_ne_pivot, hi_succ, hj_succ, er, ec]
+  have hleft_zero :
+      A (er.symm i).1 (case2DisplayedPivotCol n hS hcont) = 0 := by
+    simp [A, residual, case2DisplayedPaperDchart,
+      case2DisplayedSourceNormalizedBlock, case2DisplayedSourceNormalizedMap,
+      selectedEntryNormalizedMap, case2SourceResidualBlockExtension,
+      hi_ne_pivot, case2DisplayedPivotCol, er]
+  have htop_zero :
+      A (case2DisplayedPivotRow n hS hcont) (ec.symm j).1 = 0 := by
+    simp [A, residual, case2DisplayedPaperDchart,
+      case2DisplayedSourceNormalizedBlock, case2DisplayedSourceNormalizedMap,
+      selectedEntryNormalizedMap, case2SourceResidualBlockExtension,
+      hj_ne_pivot, case2DisplayedPivotRow, ec]
+  rw [case2DisplayedPostPivotResidualBlock]
+  change
+    (pivotFirstD (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont) A -
+        pivotFirstX (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont) A *
+          pivotFirstY (case2DisplayedPivotRow n hS hcont)
+            (case2DisplayedPivotCol n hS hcont) A)
+        (er.symm i) (ec.symm j) = D i j
+  rw [pivotFirstSchurComplement_apply]
+  rw [hD_entry, hleft_zero, htop_zero]
+  simp
+
+set_option linter.style.longLine false in
+/-- A free pivot-first `C'` whose post-pivot following-factor tail is the
+prescribed successor following matrix.
+
+The top row is set to zero because it is ignored by
+`case2DisplayedPostPivotFreeFollowingFactor`. -/
+noncomputable def case2DisplayedPostPivotFreeCprimeOfFollowingFactor
+    {τ R : Type*} [Zero R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (F : Matrix (Case2ResidualColIndex n S (J + 1)) τ R) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  fun i t ↦
+    match i with
+    | Sum.inl _ => 0
+    | Sum.inr j =>
+        F (case2DisplayedPivotColComplementEquivResidualColSucc n hS hcont j) t
+
+/-- The free `C'` constructor realizes the prescribed post-pivot following
+factor. -/
+theorem case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor
+    {τ R : Type*} [Zero R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (F : Matrix (Case2ResidualColIndex n S (J + 1)) τ R) :
+    case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+        (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont F) =
+      F := by
+  ext j t
+  simp [case2DisplayedPostPivotFreeFollowingFactor,
+    case2DisplayedFreeCprimeTail,
+    case2DisplayedPostPivotFreeCprimeOfFollowingFactor]
+
+set_option linter.style.longLine false in
+/-- Multiplying a matrix reindexed on the right by the matching reindexed
+identity recovers the original matrix. -/
+theorem Matrix.submatrix_id_equiv_symm_mul_one_submatrix_id_equiv
+    {ι κ τ R : Type*} [CommRing R] [Fintype κ] [DecidableEq κ]
+    (M : Matrix ι τ R) (e : τ ≃ κ) :
+    M.submatrix id e.symm *
+        ((1 : Matrix κ κ R).submatrix id e) =
+      M := by
+  ext i t
+  rw [Matrix.mul_apply]
+  classical
+  calc
+    (∑ j : κ, M i (e.symm j) * (1 : Matrix κ κ R) j (e t)) =
+        M i (e.symm (e t)) * (1 : Matrix κ κ R) (e t) (e t) := by
+      exact Finset.sum_eq_single (e t)
+        (by
+          intro b _ hb
+          simp [hb])
+        (by
+          intro hmissing
+          exact False.elim (hmissing (Finset.mem_univ (e t))))
+    _ = M i t := by
+      simp
+
+set_option linter.style.longLine false in
+/-- Any matrix whose right endpoint is equivalent to the successor residual
+column domain can be realized as a constructed displayed Case 2 post-pivot
+free two-edge product.
+
+The residual block is chosen to be the target matrix with its right endpoint
+reindexed to successor columns, and the following factor is the matching
+reindexed identity.  This is constructed finite data, not an arbitrary
+retained-passive readback statement. -/
+theorem exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_matrix_of_colEquiv
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ∃ residual : ℕ × ℕ → R,
+    ∃ Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R,
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime = M := by
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) R :=
+    M.submatrix id eNext.symm
+  let residual : ℕ × ℕ → R :=
+    case2SourceResidualBlockExtension (n := n) (S := S) (J := J + 1) D
+  let F :
+      Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
+    (1 : Matrix
+      (Case2ResidualColIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) R).submatrix id eNext
+  let Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+    case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont F
+  refine ⟨residual, Cprime, ?_⟩
+  rw [case2DisplayedPostPivotFreeTwoEdgeFactorProduct]
+  rw [case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+  rw [case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor]
+  exact Matrix.submatrix_id_equiv_symm_mul_one_submatrix_id_equiv M eNext
+
+set_option linter.style.longLine false in
 /-- Entrywise selected-center readout gives the displayed Case 2 post-pivot
 product as the selected-center coordinate matrix after endpoint reindexing.
 

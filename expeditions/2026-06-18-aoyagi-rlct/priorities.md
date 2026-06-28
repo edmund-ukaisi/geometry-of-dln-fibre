@@ -19,6 +19,35 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, finite constructed Case 2 source production
+
+The expedition now has a finite constructed-data theorem for the continuing
+Case 2 displayed product:
+
+```text
+exists_case2DisplayedPostPivotFreeTwoEdgeFactorProduct_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+exists_residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_successorSelectedEntryMatrix_of_yNext_pivot_ne_zero
+```
+
+Supporting product-side helpers construct an old residual whose displayed
+post-pivot Schur block is any prescribed successor matrix, and a free `Cprime`
+whose tail is any prescribed successor following factor.  Applying this to the
+successor selected-entry matrix and the reindexed identity following factor
+gives a nonzero displayed product from the supplied nonzero successor pivot
+coordinate.
+
+Focused build, full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+changed-Lean-file forbidden-marker search, direct axiom-footprint audit, and
+xhigh review by `Wegener` passed.  The new public endpoints report the
+standard footprint `[propext, Classical.choice, Quot.sound]`.
+
+This is worth keeping, but its scope is deliberately narrow: it removes the
+`hprod`/nonzeroness issue only for constructed finite displayed data.  It does
+not prove the missing retained-passive source/readback factor alignment or
+nonzeroness for arbitrary `ofTopologyTuple z`.  The active retained-passive
+frontier remains actual factor alignment, a source-production/pushforward
+bridge, or a retained-passive chart-side normal-crossing construction.
+
 ## Latest controller decision - 2026-06-28, retained-passive Case 2 all-pivot selected-entry adapter
 
 The finite selected-entry all-pivot inverse has been lifted into the
