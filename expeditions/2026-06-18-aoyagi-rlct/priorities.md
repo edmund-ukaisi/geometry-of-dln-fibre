@@ -45,6 +45,44 @@ also remain separated into continuing, actual-width stopped, and row-exhausted
 stopped payloads.  The A2 adjacent-window source-readback adapter remains
 parked unless a downstream theorem needs exactly that interface.
 
+## Latest controller decision - 2026-06-28, A4 selected-entry analytic atlas producer interface
+
+The first non-wrapper A4 Lean slice after the frontier recheck is a supplied
+producer interface, not an existence theorem:
+
+```text
+SelectedEntrySuppliedAnalyticAtlasProducer
+SelectedEntrySuppliedAnalyticAtlasProducer.toBoundary
+```
+
+in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAnalyticAtlasProducer.lean`.
+
+The producer carries data-bearing fields for one shared atlas context,
+source/open coverage, chart regularity, transition regularity, unit regularity,
+nonzero chart-domain weighted pushforward compatibility, branchwise produced
+source data with chart/source-domain witnesses, and well-founded termination.
+It projects into
+`SelectedEntryAnalyticAtlasBoundary`; it does not construct those data.  There
+is no constructor from finite selected-entry coverage, finite affine transition
+regularity, or `SourceProductionObligation`, and no extraction theorem is
+derived.
+
+The `toBoundary` projection is intentionally forgetful.  Downstream work that
+needs shared-context coherence should consume the producer, not an arbitrary
+`SelectedEntryAnalyticAtlasBoundary` assembled from the exported predicates.
+
+Reproduction and statement card:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-producer-interface-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-producer-interface.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-producer-interface-a4.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer`
+passed via the worktree-local `scripts/lb` route.  Xhigh Lean-interface and
+source-boundary reviews passed.  Remaining limitation: the density is supplied
+analytic data, not derived from `C.jacobianPrior`.
+
 ## Latest controller decision - 2026-06-28, generic selected-entry chart-produced determinant residual
 
 The retained-passive selected-entry determinant residual handoff now has a

@@ -11722,3 +11722,26 @@ finite matrix algebra but not analytic atlas fields.  Do not construct
 domains/tokens, full chart maps, source-neighborhood coverage, regular
 overlaps, unit/Jacobian/volume compatibility, source-produced successor/suffix
 data, and branch/termination coverage.
+
+Latest A4 selected-entry analytic atlas producer interface:
+`SelectedEntryAnalyticAtlasProducer.lean` defines
+`SelectedEntrySuppliedAnalyticAtlasProducer` and
+`SelectedEntrySuppliedAnalyticAtlasProducer.toBoundary`.
+
+Ledger status: supplied interface only.  The field records are data-bearing
+and mention one shared atlas context, source/open coverage, continuity-style
+regularity, chart-domain weighted pushforward equality against nonzero
+restricted source measure, branchwise produced payloads with chart/source-domain
+witnesses, and termination data.  No constructor from finite selected-entry
+coverage, finite affine transition regularity, or `SourceProductionObligation`
+is provided.  Focused build passed for
+`DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer`; xhigh review passed
+at
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-producer-interface-a4.md`.
+
+Projection note: `toBoundary` is forgetful.  Shared-context coherence belongs
+to `SelectedEntrySuppliedAnalyticAtlasProducer`, not to arbitrary boundaries
+assembled from the exported predicates.
+
+Limitation: the density is supplied analytic data, not derived from
+`C.jacobianPrior`.

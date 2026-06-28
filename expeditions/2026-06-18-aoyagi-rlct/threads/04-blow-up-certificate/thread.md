@@ -6717,3 +6717,31 @@ Controller decision: do not build a constructor from
 selected-entry coverage, `SelectedEntryFiniteAffineTransitionRegularFamily`,
 or `SourceProductionObligation`.  Future source production must separately
 handle continuing, actual-width stopped, and row-exhausted stopped branches.
+
+## 2026-06-28 Lean selected-entry analytic atlas producer interface
+
+Reproduction:
+`reproduction-selected-entry-analytic-atlas-producer-interface-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-analytic-atlas-producer-interface.md`.
+Review:
+`review-selected-entry-analytic-atlas-producer-interface-a4.md`.
+
+Lean now adds `SelectedEntryAnalyticAtlasProducer.lean`, with a supplied
+producer structure:
+
+```text
+SelectedEntrySuppliedAnalyticAtlasProducer
+SelectedEntrySuppliedAnalyticAtlasProducer.toBoundary
+```
+
+The producer carries one shared atlas context, source/open coverage, chart
+regularity, transition regularity, unit regularity, nonzero chart-domain
+weighted pushforward compatibility, branchwise source-production payloads with
+chart/source-domain witnesses, and termination data as supplied records.  It
+projects into
+`SelectedEntryAnalyticAtlasBoundary` but does not construct the analytic atlas
+or prove extraction.  The projection is forgetful; shared-context coherence
+should be consumed through the producer.  Focused build passed; independent
+Lean-interface and source-boundary reviews passed.  The density remains
+supplied analytic data, not derived from `C.jacobianPrior`.

@@ -19595,3 +19595,51 @@ maps, source-neighborhood coverage, regular overlaps, unit/Jacobian/volume
 compatibility, produced successor/suffix/terminal data, and branch/termination
 coverage.  The A2 adjacent-window source-readback adapter is parked unless a
 downstream theorem needs exactly that interface.
+
+## Latest A4 Selected-Entry Analytic Atlas Producer Interface
+
+The next A4 Lean slice is now a supplied producer interface, not a constructor
+from finite selected-entry algebra:
+
+```text
+SelectedEntrySuppliedAnalyticAtlasProducer
+SelectedEntrySuppliedAnalyticAtlasProducer.toBoundary
+```
+
+in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAnalyticAtlasProducer.lean`.
+
+The producer's fields are concrete data records:
+`SelectedEntryAnalyticAtlasContext`,
+`SelectedEntryAnalyticSourceCoverageData`,
+`SelectedEntryAnalyticChartRegularData`,
+`SelectedEntryAnalyticTransitionRegularData`,
+`SelectedEntryAnalyticUnitRegularData`,
+`SelectedEntryAnalyticJacobianVolumeData`,
+`SelectedEntryAtlasProducedBranchData`, and
+`SelectedEntryBranchTerminationData`.
+
+The nontriviality comes from the field types: they mention one shared atlas
+context, open source/chart domains, continuity-style regularity, chart-domain
+weighted pushforward equality against a nonzero restricted source measure,
+separate continuing / actual-width stopped / row-exhausted stopped payloads
+with produced chart/source-domain witnesses, and a well-founded branch
+relation.  `toBoundary` only wraps these supplied data into the
+predicate fields expected by `SelectedEntryAnalyticAtlasBoundary`.  It proves
+no extraction, normal crossings, pole order, RLCT, source-rank coverage, or
+final Theorem 2 statement.
+
+The projection is forgetful: the existing boundary socket records separate
+predicate fields, so shared-context coherence should be consumed through
+`SelectedEntrySuppliedAnalyticAtlasProducer` itself.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-producer-interface-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-producer-interface.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-producer-interface-a4.md`.
+
+Focused build passed with
+`env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer`.
+Xhigh Lean-interface and source-boundary reviews passed.  Remaining limitation:
+the density is supplied analytic data, not derived from `C.jacobianPrior`.

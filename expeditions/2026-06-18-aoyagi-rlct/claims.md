@@ -11861,3 +11861,43 @@ payloads.
 
 Nonclaims: no analytic atlas existence, source production, transition
 regularity, analytic Jacobian theorem, normal crossings, pole order, or RLCT.
+
+## A4 selected-entry analytic atlas producer interface
+
+Status: Lean interface checked locally; xhigh reviews passed.
+
+Claim: `SelectedEntrySuppliedAnalyticAtlasProducer` is a supplied,
+data-bearing interface above the finite selected-entry certificate layer.  Its
+projection
+`SelectedEntrySuppliedAnalyticAtlasProducer.toBoundary` fills the existing
+`SelectedEntryAnalyticAtlasBoundary` socket with predicate wrappers around the
+supplied data.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-producer-interface-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-producer-interface.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-producer-interface-a4.md`.
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntryAnalyticAtlasProducer.lean`.
+
+The interface records one shared atlas context, open/source coverage, chart and
+transition regularity, unit regularity, nonzero chart-domain weighted
+pushforward measure compatibility, separate continuing / actual-width stopped /
+row-exhausted stopped branch payloads with produced chart/source-domain
+witnesses, and well-founded branch termination.  There is no constructor from
+finite selected-entry coverage, finite affine transition regularity, or
+`SourceProductionObligation`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer`.
+
+The projection to `SelectedEntryAnalyticAtlasBoundary` is forgetful; shared
+context coherence is a property of the producer, not of arbitrary boundaries
+assembled from the exported predicate wrappers.
+
+Nonclaims: no analytic atlas construction, extraction hypothesis, proved
+Jacobian-density formula from `C.jacobianPrior`, normal crossings, pole order,
+RLCT, source-rank coverage, or final Theorem 2 statement is proved.
