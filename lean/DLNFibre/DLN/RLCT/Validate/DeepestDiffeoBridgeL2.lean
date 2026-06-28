@@ -128,6 +128,187 @@ noncomputable def psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
   let regspec' := (regGaugeSlotEquiv H r hr hL).symm g'
   (regspec'.1, (core', regspec'.2))
 
+/-! ### S0b — the joint action as a decode→edit→encode lens (Codex option A, the S2/S4 foundation)
+
+`psiSplitRawL2Core` re-encodes through `paramsEquivFlat`/`regGaugeSlotEquiv`, editing the last-layer
+core block (`T1 ↦ T1'`) and the last-layer reg `Y`-tag (`Y1 ↦ Y1'`). To prove `δ = psiSplitRawL2Core
+− id` is `ContDiffAt` (S2) and strict-deriv-`0` (S4) without fighting `Function.update`/`match` casts,
+express `δ` through two DECODED delta-payloads (`l2CoreΔTuple`, `l2GaugeΔ`) re-encoded by the CLEs
+(`paramsEquivFlatCLE`, `regGaugeSlotCLE`). The named last-layer matrices (`l2A0…l2Y1p`, matching the
+`let` bodies of `psiSplitRawL2Core` exactly), the `rfl`-confirmed `psiSplitRawL2Core_eq`, and the
+decomposition `psiSplitDeltaL2Core_eq_payload` are the load-bearing facts. -/
+
+/-- `paramsEquivFlatCLE.symm` and `paramsEquivFlat.symm` coerce to the same function. -/
+theorem paramsEquivFlatCLE_symm_coe (M : Fin (L + 1) → ℕ) :
+    ⇑(paramsEquivFlatCLE M).symm = ⇑(paramsEquivFlat M).symm := by
+  funext y
+  apply (paramsEquivFlat M).injective
+  rw [(paramsEquivFlat M).apply_symm_apply, ← paramsEquivFlatCLE_coe M,
+    (paramsEquivFlatCLE M).apply_symm_apply]
+
+/-- `regGaugeSlotCLE.symm` and `regGaugeSlotEquiv.symm` coerce to the same function. -/
+theorem regGaugeSlotCLE_symm_coe (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ⇑(regGaugeSlotCLE H r hr hL).symm = ⇑(regGaugeSlotEquiv H r hr hL).symm := by
+  funext g
+  apply (regGaugeSlotEquiv H r hr hL).injective
+  rw [(regGaugeSlotEquiv H r hr hL).apply_symm_apply, ← regGaugeSlotCLE_coe H r hr hL,
+    (regGaugeSlotCLE H r hr hL).apply_symm_apply]
+
+/-- The `A0 = 1 + readX_0` block (last-layer joint action, matching `psiSplitRawL2Core`'s `let`). -/
+noncomputable def l2A0 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Matrix (Fin r) (Fin r) ℝ :=
+  1 + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L)
+
+/-- The `A1 = 1 + readX_last` block. -/
+noncomputable def l2A1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Matrix (Fin r) (Fin r) ℝ :=
+  1 + readX H r hr hL (q.1, q.2.2) (lastLayer hL)
+
+/-- The `Y0 = readY_0` block, cols bridged to the middle interface (`midWidth_eq_of_L2`). -/
+noncomputable def l2Y0 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
+  Matrix.reindex (Equiv.refl (Fin r)) (finCongr (midWidth_eq_of_L2 H r hL hL2eq))
+    (readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L))
+
+/-- The `Z1 = readZ_last` block. -/
+noncomputable def l2Z1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin r) ℝ :=
+  readZ H r hr hL (q.1, q.2.2) (lastLayer hL)
+
+/-- The `Y1 = readY_last` block (the reg block the joint action edits). -/
+noncomputable def l2Y1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  readY H r hr hL (q.1, q.2.2) (lastLayer hL)
+
+/-- The `T1 = coreLast` block (the core block the joint action edits). -/
+noncomputable def l2T1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+      (Fin (deepestM H r (lastLayer hL).succ)) ℝ := coreLast H r hL q
+
+/-- The full-product `(1,1)` block `P00 = A0·A1 + Y0·Z1`. -/
+noncomputable def l2P00 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Matrix (Fin r) (Fin r) ℝ :=
+  l2A0 H r hr hL q * l2A1 H r hr hL q + l2Y0 H r hr hL hL2eq q * l2Z1 H r hr hL q
+
+/-- The new last-layer core block `T1' = W⁻¹·[(1−K)·S1 + Z1·A1⁻¹·Y1 + Z1·A1⁻¹·A0⁻¹·Y0·T1]`. -/
+noncomputable def l2T1p (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+      (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  let A0 := l2A0 H r hr hL q; let A1 := l2A1 H r hr hL q; let Y0 := l2Y0 H r hr hL hL2eq q
+  let Z1 := l2Z1 H r hr hL q; let Y1 := l2Y1 H r hr hL q; let T1 := l2T1 H r hr hL q
+  let P00 := l2P00 H r hr hL hL2eq q
+  let K := Z1 * P00⁻¹ * Y0
+  let W := 1 + Z1 * A1⁻¹ * A0⁻¹ * Y0
+  let S1 := T1 - Z1 * A1⁻¹ * Y1
+  W⁻¹ * ((1 - K) * S1 + Z1 * A1⁻¹ * Y1 + Z1 * A1⁻¹ * A0⁻¹ * Y0 * T1)
+
+/-- The new last-layer reg block `Y1' = Y1 + A0⁻¹·Y0·(T1 − T1')`. -/
+noncomputable def l2Y1p (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  l2Y1 H r hr hL q
+    + (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+      * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q)
+
+/-- The edited reg/gauge function `g'` (the last-layer `Y`-tag set to `Y1'`, else `g`). -/
+noncomputable def l2g' (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : RegGaugeIdx H r → ℝ := fun idx =>
+  match idx with
+  | ⟨s, Sum.inl (Sum.inr (i, j))⟩ =>
+      if h : s = lastLayer hL then l2Y1p H r hr hL hL2eq q i (h ▸ j)
+        else regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
+  | _ => regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
+
+/-- **`psiSplitRawL2Core` IS the encoded triple** in terms of `l2g'`/`l2T1p` (`rfl` — the named
+matrices are exactly the def's `let` bodies). -/
+theorem psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    psiSplitRawL2Core H r hr hL hL2eq q
+      = (((regGaugeSlotEquiv H r hr hL).symm (l2g' H r hr hL hL2eq q)).1,
+          (paramsEquivFlat (deepestM H r)
+            (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+              (lastLayer hL) (l2T1p H r hr hL hL2eq q)),
+          ((regGaugeSlotEquiv H r hr hL).symm (l2g' H r hr hL hL2eq q)).2)) := rfl
+
+/-- The decoded **core** delta payload: `0` on every layer except the last, where it is `T1' − T1`. -/
+noncomputable def l2CoreΔTuple (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : Params (deepestM H r) :=
+  Function.update (0 : Params (deepestM H r)) (lastLayer hL)
+    (l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q)
+
+/-- The decoded **reg/gauge** delta payload `g' − g` (nonzero only at the last-layer `Y`-tags). -/
+noncomputable def l2GaugeΔ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : RegGaugeIdx H r → ℝ :=
+  l2g' H r hr hL hL2eq q - regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
+
+/-- The core payload encoded by `paramsEquivFlatCLE` is the flat `core' − q.2.1`. -/
+theorem paramsEquivFlatCLE_l2CoreΔTuple_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q)
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1) (lastLayer hL)
+            (l2T1p H r hr hL hL2eq q))
+        - q.2.1 := by
+  let d : Params (deepestM H r) := (paramsEquivFlat (deepestM H r)).symm q.2.1
+  let u : Params (deepestM H r) := Function.update d (lastLayer hL) (l2T1p H r hr hL hL2eq q)
+  have hd_last : d (lastLayer hL) = l2T1 H r hr hL q := rfl
+  have hΔ : l2CoreΔTuple H r hr hL hL2eq q = u - d := by
+    funext s
+    show l2CoreΔTuple H r hr hL hL2eq q s = u s - d s
+    rcases eq_or_ne s (lastLayer hL) with h | h
+    · subst h
+      rw [show u (lastLayer hL) = l2T1p H r hr hL hL2eq q from Function.update_self _ _ _, hd_last]
+      simp only [l2CoreΔTuple, Function.update_self]
+    · rw [show u s = d s from Function.update_of_ne h _ _, sub_self]
+      show l2CoreΔTuple H r hr hL hL2eq q s = 0
+      rw [l2CoreΔTuple, Function.update_of_ne h]; rfl
+  rw [hΔ, map_sub, paramsEquivFlatCLE_coe]
+  show paramsEquivFlat (deepestM H r) u - paramsEquivFlat (deepestM H r) d
+    = paramsEquivFlat (deepestM H r) u - q.2.1
+  rw [(paramsEquivFlat (deepestM H r)).apply_symm_apply]
+
+/-- **The decomposition** `psiSplitRawL2Core q − q = (encoded payloads)` (the S2/S4 foundation): the
+reg/spec slots are `regGaugeSlotCLE.symm (l2GaugeΔ q)`, the core slot `paramsEquivFlatCLE (l2CoreΔTuple
+q)`. -/
+theorem psiSplitDeltaL2Core_eq_payload (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    psiSplitRawL2Core H r hr hL hL2eq q - q
+      = (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q),
+            ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)).2)) := by
+  have hcore := paramsEquivFlatCLE_l2CoreΔTuple_eq H r hr hL hL2eq q
+  have hgg : (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q)
+      = (regGaugeSlotEquiv H r hr hL).symm (l2g' H r hr hL hL2eq q) - (q.1, q.2.2) := by
+    rw [l2GaugeΔ, map_sub, regGaugeSlotCLE_symm_coe]
+    congr 1
+    rw [(regGaugeSlotEquiv H r hr hL).symm_apply_apply]
+  rw [psiSplitRawL2Core_eq, hcore]
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · rw [Prod.fst_sub, hgg, Prod.fst_sub]
+  · rfl
+  · rw [Prod.snd_sub, Prod.snd_sub, hgg, Prod.snd_sub]
+
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
 where the joint action's mid-interface widths coincide — `midWidth_eq_of_L2`). Keeps the public
