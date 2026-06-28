@@ -1211,3 +1211,40 @@ build, the close is in the base. Plan-gated (it surfaces the integration plan be
   reusable brick (`stepShearG_r`), and never committed a divergent close. The valve discipline contained the drift —
   without it, this would have been a wasteful divergent-lineage rebuild. (This is the upside of the strict valve from the
   earlier duplication items: drift is caught early, not after a full wasted close.)
+- **RESOLUTION (2026-06-28): the fresh-tide handoff WORKED.** A fresh lean-formaliser (`genm-wire`), framed "base on
+  capstone @c2777384, add only the wire, touch zero carve lemmas," completed #143 Phase-1 cleanly in one pass — the gated
+  R1-UPPER headline proven + axiom-clean, zero carve files touched, no drift. Validates the Item-58 fix.
+
+### Item 59 — The fully-general headline's RESEARCH-GATE MAP: four research-scale gates vs the bounded-reachable result (consolidates Items 55/57) (2026-06-28)
+As the bounded legs landed and the pre-build adjudications ran (genm-n4 / genm-s6scope / genm-assemble, each + decorrelated
+Codex), the honest map of the FULLY-GENERAL `aoyagi_learning_coefficient` (arbitrary L, M) is now precise. It decomposes
+into BOUNDED pieces (done / in-flight) + FOUR genuinely research-scale gates.
+
+**BOUNDED (done or in-flight — no research wall):**
+- R1-UPPER carve (`schurRatioResidGen_mid` → `schurRecStep_four` → `SchurCore` ∀r): DONE, quadruply-certified, clean-three.
+- R1 hfin `(r,r,4)` ∀r (`routeMBoxThresholdFinite_rr4`): DONE, S2-free, fidelity-SURVIVED — generalizes the M334 anchor to all r.
+- R1-UPPER gated headline (#143 Phase-1, `r1Upper_resolution_charts_of_box`): DONE, proven, tier-(ii) [clean-three + the
+  permitted `monomial_rlct`]. (dev-aggregation = Phase 2, deferred to a consolidation.)
+- L2 bridge: S4 + S2 DONE (clean-three); S6 de-risked + GREENLIT (exact-`frobSq` reachable via the rank normalizers' identity
+  bottom-right; fresh tide building the 2 subs + the ~40-60 LoC frame-transform lemma).
+- The concrete anchors (222 / 334 / 4422 / 3333): complete.
+
+**RESEARCH-SCALE (the four gates of the fully-general ∀M — each NOT a bounded build):**
+1. **R1 hfin, depth ≥3** (Item 57): the iterated-fibre caps codim at `min_s M_s/2`; `½·minAdm` is the SUM over the binding
+   rank path. Reaching it needs an L-layer JOINT resolution = new geometry.
+2. **R1 hfin, ∀p output-width** (∀p STEP-0, in pen-and-paper): the threshold `½·minAdm(r,r,p)` is QUADRATIC in p (not the
+   naive linear); the SchurCore-p recursion's window must be re-threaded against the moving binding stratum `t*(r,p)` — open
+   whether the blow-up achieves it.
+3. **R1 hdiv ∀M** (this tick, genm-n4 + Codex, verdict C): the divergence lower bound needs the general `NodeAchieverChart` ∀M
+   = an explicit diffeomorphism + a COMPUTED general-dimension Jacobian + exact loss factorization + cov — the ∀M-chart
+   programme (#75-#80; the r=3 instance alone is ~1285 bespoke lines). NOT a measure-preserving reshape (that asymmetry —
+   hfin measure-preserving/bounded vs hdiv Jacobian/research — is the key finding).
+4. **L2 3289** (long-flagged): the L≥3 grouped recursive diffeo.
+
+**OPERATOR SCOPE CALL (consolidates Items 55/57).** The fully-general headline is NOT a single bounded build — it has four
+research-scale gates (two on R1-hfin: depth + width; one on R1-hdiv: the chart; one on L2: 3289). Each is "large-but-the-
+paper-proves-it" in principle, but each is a multi-tide research effort, not a break-it-down bounded build. Honest options:
+(i) fund the four gates (a multi-expedition programme); (ii) **bank the bounded result** — the anchors complete + `(r,r,4)`
+hfin ∀r + the gated R1-UPPER headline + (once S6 lands) the full L2 bridge + D1, i.e. the **L=2 / `(r,r,4)`-and-anchor-family
+headline** — and roadmap the four gates; (iii) a scoped middle. NO bounded work is deferred: everything bounded is
+done/in-flight. This item is the four-research-gate scope decision — the central call awaiting the operator's return.
