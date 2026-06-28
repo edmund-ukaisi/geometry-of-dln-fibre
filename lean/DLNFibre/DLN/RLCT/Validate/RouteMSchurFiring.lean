@@ -1136,6 +1136,51 @@ theorem stepShearG (m : ℕ) (b : Fin m → ℝ) (hb : ∀ a, |b a| ≤ 1)
   push_cast
   constructor <;> [nlinarith [hvq.1, habs.1, hT]; nlinarith [hvq.2, habs.2, hT]]
 
+/-! ### The carve: `z ≅ (M22, g, b)` coordinate permutation + the `Sc = matOf M22 − bgShiftG (g,b)` readback
+
+The `N = r²−1` ratio coords `z` are exactly the off-`(0,0)` cells of the `(0,0)`-normalised angular matrix,
+partitioned into the `(r−1)²` lower-right `M22` cells `(a.succ, b.succ)`, the `(r−1)` `g`-cells
+`(a.succ, 0)`, and the `(r−1)` `b`-cells `(0, b.succ)` (`(r−1)²+2(r−1)=r²−1=N`). The slot bijection
+`zσG` carries this; the reshape `zEG` (`piCongrLeft ∘ sumPiEquivProdPi`, MP) splits `z` into the `M22`-cube
+and the `(g,b)`-cube; at `j=1` the Schur complement reads `Sc = matOf M22 − bgShiftG (g,b)`
+(`Sh_{ab} = g a · b b`, `|Sh| ≤ 1`). Generic analog of `RouteM334Ratiofin.cellOf`/`zslot`/`zσ`/`zE`/`Δof_eq_zE`. -/
+
+/-- The enumeration of the off-`(0,0)` cells: `inl (a,b) ↦ (a.succ, b.succ)` (M22), `inr (inl a) ↦
+(a.succ, 0)` (g), `inr (inr b) ↦ (0, b.succ)` (b). -/
+def cellOfG (m : ℕ) : ((Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) → Fin (m + 1) × Fin (m + 1)
+  | Sum.inl (a, b) => (a.succ, b.succ)
+  | Sum.inr (Sum.inl a) => (a.succ, 0)
+  | Sum.inr (Sum.inr b) => (0, b.succ)
+
+theorem cellOfG_ne_zero (m : ℕ) (s : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) :
+    ¬ ((cellOfG m s).1 = 0 ∧ (cellOfG m s).2 = 0) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellOfG, Fin.succ_ne_zero]
+
+theorem cellOfG_injective (m : ℕ) : Function.Injective (cellOfG m) := by
+  rintro s1 s2 h
+  rcases s1 with ⟨a1, b1⟩ | (a1 | b1) <;> rcases s2 with ⟨a2, b2⟩ | (a2 | b2) <;>
+    simp only [cellOfG, Prod.mk.injEq] at h <;>
+    first
+      | (obtain ⟨ha, hb⟩ := h; rw [Fin.succ_inj] at ha hb; subst ha; subst hb; rfl)
+      | (obtain ⟨ha, _⟩ := h; rw [Fin.succ_inj] at ha; subst ha; rfl)
+      | (obtain ⟨_, hb⟩ := h; rw [Fin.succ_inj] at hb; subst hb; rfl)
+      | (exact absurd h.1 (Fin.succ_ne_zero _))
+      | (exact absurd h.2 (Fin.succ_ne_zero _))
+      | (exact absurd h.1.symm (Fin.succ_ne_zero _))
+      | (exact absurd h.2.symm (Fin.succ_ne_zero _))
+
+/-- The bg-shift matrix `g·bᵀ` from the `(g,b)`-cube `v : Fin m ⊕ Fin m → ℝ`:
+`bgShiftG v a b = v (inl a) · v (inr b)` (the rank-1 Cramer shift, `M21·M11⁻¹·M12` at `j=1`). -/
+noncomputable def bgShiftG (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) : Matrix (Fin m) (Fin m) ℝ :=
+  fun a b => v (Sum.inl a) * v (Sum.inr b)
+
+theorem bgShiftG_entry_le (m : ℕ) (v : Fin m ⊕ Fin m → ℝ) (hv : ∀ s, |v s| ≤ 1) (a b : Fin m) :
+    |bgShiftG m v a b| ≤ 1 := by
+  rw [bgShiftG, abs_mul]
+  calc |v (Sum.inl a)| * |v (Sum.inr b)| ≤ 1 * 1 :=
+        mul_le_mul (hv _) (hv _) (abs_nonneg _) (by norm_num)
+    _ = 1 := by norm_num
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
