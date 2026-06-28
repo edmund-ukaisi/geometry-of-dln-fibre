@@ -63,16 +63,18 @@ def IsZariskiIrreducible (Z : Set (σ → k)) : Prop :=
 
 /-! ## Nullstellensatz pieces (over an algebraically closed field) -/
 
-/-- The vanishing ideal of any subset of `σ → k` is **radical** (over `[IsAlgClosed k]`): by the
-strong Nullstellensatz it equals its own radical, via `vanishingIdeal Z = vanishingIdeal (zeroLocus
-(vanishingIdeal Z))` `= (vanishingIdeal Z).radical`. -/
-theorem vanishingIdeal_isRadical [IsAlgClosed k] [Finite σ] (Z : Set (σ → k)) :
+/-- The vanishing ideal of any subset of `σ → k` is **radical**, over ANY field `k` (no
+algebraic-closedness, no Nullstellensatz): if `pⁿ` vanishes on `Z` then `(p x)ⁿ = 0` at each `x ∈ Z`,
+so `p x = 0` (a field has no nonzero nilpotents), i.e. `p` vanishes on `Z`. -/
+theorem vanishingIdeal_isRadical (Z : Set (σ → k)) :
     (vanishingIdeal k Z : Ideal (MvPolynomial σ k)).IsRadical := by
-  have h : vanishingIdeal k Z = (vanishingIdeal k Z).radical := by
-    conv_lhs =>
-      rw [← (zeroLocus_vanishingIdeal_galoisConnection (σ := σ) (k := k) (K := k)).u_l_u_eq_u Z,
-        vanishingIdeal_zeroLocus_eq_radical (K := k)]
-  rw [h]; exact radical_isRadical _
+  intro p hp
+  obtain ⟨n, hn⟩ := hp
+  rw [MvPolynomial.mem_vanishingIdeal_iff] at hn ⊢
+  intro x hx
+  have h2 := hn x hx
+  rw [map_pow] at h2
+  exact pow_eq_zero_iff (n := n) (by rintro rfl; simpa using h2) |>.mp h2
 
 /-- **Irreducible ⟺ prime vanishing ideal.** `Z` is Zariski-irreducible iff its vanishing ideal is
 prime — the algebraic translation of geometric irreducibility, via the `pointToPoint` image and
@@ -180,7 +182,7 @@ variable {N : ℕ}
 Rep_d` whose image `coord '' Z` is an irreducible variety, the geometric codimension `codimRep coord
 Z` plus the variety dimension of `coord '' Z` equals the ambient dimension `Nat.card (RepCoord d)`.
 `height_vanishingIdeal_add_varietyDim_eq_card` at `σ := RepCoord d`, `Z := coord '' Z`. -/
-theorem codimRep_add_varietyDim_eq_card [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRep_add_varietyDim_eq_card {d : Fin (N + 1) → ℕ}
     (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
     codimRep coord Z + varietyDim (coord '' Z) = (Nat.card (RepCoord d) : ℕ∞) :=
@@ -189,7 +191,7 @@ theorem codimRep_add_varietyDim_eq_card [IsAlgClosed k] {d : Fin (N + 1) → ℕ
 /-- **The bridge at `codimRep` (subtraction).** `codimRep coord Z = Nat.card (RepCoord d) −
 varietyDim (coord '' Z)` for an irreducible variety `coord '' Z`: geometric codimension `=` ambient
 `−` variety dimension. -/
-theorem codimRep_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRep_eq_card_sub_varietyDim {d : Fin (N + 1) → ℕ}
     (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
     codimRep coord Z = (Nat.card (RepCoord d) : ℕ∞) - varietyDim (coord '' Z) :=
@@ -198,7 +200,7 @@ theorem codimRep_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ
 /-- **The bridge at `codimRepCanonical` (subtraction).** At the canonical entry-flattening
 `canonicalCoord d`, `codimRepCanonical Z = Nat.card (RepCoord d) − varietyDim (canonicalCoord d ''
 Z)` for an irreducible variety — the genuine geometric codimension. -/
-theorem codimRepCanonical_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRepCanonical_eq_card_sub_varietyDim {d : Fin (N + 1) → ℕ}
     (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (canonicalCoord d '' Z) :
       Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :

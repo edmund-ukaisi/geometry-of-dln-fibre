@@ -80,8 +80,9 @@ residue-field-rank bridge; the point-set forward inclusion `sweepSigma_subset_ch
 banked half). A *bare* `locallyTrivial` over `Spec (sweepSigmaRing) = Σ̄^r` (the closure) is genuinely
 **false** — the rank-`< r` boundary lies in `V({chartDsigAt})`, in no chart. So the honest name is
 "per-pivot local-product atlas over the rank-`r` open", and the residual to a bare scheme-theoretic
-`locallyTrivial` is now the **target-side overlap-trivialization cocycle** (R1 `targetOverlapTransition`)
-plus projection compatibility — NOT the rank-tie (landed via S1).
+`locallyTrivial` is now ONLY the **target-side overlap-trivialization cocycle** (R1
+`targetOverlapTransition`) — NOT projection compatibility (CLOSED in `Core.FibreProjectionCompat`, R5),
+NOT the rank-tie (landed via S1).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -702,8 +703,9 @@ assembled (`pivotLocalProductAtlas`).
 **Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated): the genuine content is
 the per-pivot trivializations + the pairwise base-side overlap data (NOT a bundled triple cocycle — the
 triple-overlap cocycle is the abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here),
-but the *fixed-target* overlap gluing (R1 `targetOverlapTransition`) and the over-base/projection
-compatibility are not assembled here. (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
+but the *fixed-target* overlap gluing (R1 `targetOverlapTransition`) and the over-base `SchurLoc`-linear
+structure are not assembled into THIS atlas object. (Projection compatibility is now CLOSED, separately,
+in `Core.FibreProjectionCompat` (R5); it is not a residual.) (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
 identity — in `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq`; so the scheme
 open-cover is genuinely a cover *of the rank-`= r` open*, not merely the near-definitional
 chart-cover-complement. The earlier "residue-field-rank bridge is a genuine residual" note is
@@ -717,7 +719,8 @@ and the pairwise base-side overlap data on overlaps — all genuinely assembled 
 machine-checked. **Not** named `locallyTrivial`: the genuine content is the trivializations + the
 pairwise base-side overlap data (not a bundled triple cocycle — the triple-overlap cocycle is the
 abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here); the fixed-target overlap gluing
-(R1) and over-base/projection compatibility are not assembled.
+(R1) and the over-base `SchurLoc`-linear structure are not assembled into THIS object (projection
+compatibility is CLOSED, separately, in `Core.FibreProjectionCompat`, R5 — not a residual).
 (Its identity with `{rank = r}` is now formalized as a set-of-primes identity — S1
 `FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq` — so the cover is genuinely a cover
 of the rank-`= r` open.) -/

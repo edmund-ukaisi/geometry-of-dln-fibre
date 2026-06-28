@@ -1562,7 +1562,7 @@ Given the strict all-vertex dimension-mono `hMonoStrict`, `numTop d r = #{top-di
 — the weak `hMono` is supplied by `cCodim_zero_mono`. The fully unconditional version (with
 `hMonoStrict` also discharged via `Core.CCodimZeroStrict.cCodim_zero_strict`) is
 `Core.CCodimZeroStrict.numTop_eq_ncard_topComponents`. -/
-theorem numTop_eq_ncard_topComponents_of_strict {k : Type u} [Field k] [IsAlgClosed k] [CharZero k]
+theorem numTop_eq_ncard_topComponents_of_strict {k : Type u} [Field k] [CharZero k] [Infinite k]
     (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
       (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
       cCodim e 0 he < cCodim e' 0 he')

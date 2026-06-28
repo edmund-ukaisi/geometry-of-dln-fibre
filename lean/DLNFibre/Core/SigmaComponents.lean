@@ -184,8 +184,8 @@ theorem vanishingIdeal_orbitRankLocus_le_iff (d : Fin (N + 1) → ℕ)
 /-! ## G3 — the minimal primes of `Σ̄^r` are the maximal orbit closures -/
 
 /-- Every member of the orbit-ideal family is prime: it is `vanishingIdeal (Ō_M)`, prime over an
-algebraically closed field (`Core.OrbitClosure.isPrime_vanishingIdeal_orbitRankLocus`). -/
-theorem orbitIdeals_isPrime [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+infinite field (`Core.OrbitClosure.isPrime_vanishingIdeal_orbitRankLocus`, `[Infinite k]`). -/
+theorem orbitIdeals_isPrime [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     {p : Ideal (MvPolynomial (RepCoord d) k)} (hp : p ∈ orbitIdeals (k := k) d r) : p.IsPrime := by
   obtain ⟨M, _, rfl⟩ := hp
   exact isPrime_vanishingIdeal_orbitRankLocus M
@@ -197,13 +197,13 @@ corner-`≤ r` family. Since `vanishingIdeal` is order-reversing
 `Ō_M`" (orbit-closure / rank-pattern order, Thm 3.8 `O_s ⊆ Ō_r ⟺ s ≤ r`): the irreducible components
 of `Σ̄^r` are the maximal `Ō_M`.
 From the bridge `sigmaIdeal = sInf orbitIdeals` + the SPIKE (`minimalPrimes` of `sInf` of a finite
-family of primes = its inclusion-minimal members). `[IsAlgClosed k]` (for primality).
+family of primes = its inclusion-minimal members). `[Infinite k]` (for primality).
 **Caveat (paper transcription).** Le Halleur–Rimányi Cor 4.4(b) as printed reads "the **minimal**
 elements of `R^{≤r}`"; the geometrically-correct object is the inclusion-**maximal** orbit closures =
 inclusion-**minimal** vanishing ideals (the all-zero pattern is the order-minimal one and sits inside
 every closure, so is never a component). Settled by the worked `(2,2,2)`/`(2,3,2)` examples (recon
 thread 02); this is what the theorem proves. -/
-theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+theorem minimalPrimes_sigmaIdeal_eq [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
     (sigmaIdeal (k := k) d r).minimalPrimes
       = {p | p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q} := by
   rw [sigmaIdeal_eq_sInf_orbitIdeals]
@@ -214,7 +214,7 @@ theorem minimalPrimes_sigmaIdeal_eq [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r
 incarnation of) `Σ̄^r`, namely `zeroLocus (sigmaIdeal d r)`, are in inclusion-reversing bijection
 with the inclusion-minimal orbit ideals = the maximal orbit closures `Ō_M`. The Mathlib bridge
 `Ideal.minimalPrimes.equivIrreducibleComponents`, combined with `minimalPrimes_sigmaIdeal_eq`. -/
-noncomputable def irreducibleComponents_sigmaIdeal_equiv [IsAlgClosed k] (d : Fin (N + 1) → ℕ)
+noncomputable def irreducibleComponents_sigmaIdeal_equiv [Infinite k] (d : Fin (N + 1) → ℕ)
     (r : ℕ) :
     {p // p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q}
       ≃o (irreducibleComponents (PrimeSpectrum.zeroLocus
@@ -260,8 +260,8 @@ component of `Σ̄^r` — the geometric "min-codim is top-dimensional, hence a c
 `Ō_M` were not maximal, some corner closure `Ō_M'` would strictly contain it (`Ō_M ⊊ Ō_M'`), so
 `vanishingIdeal Ō_M' ⊊ vanishingIdeal Ō_M` and the strict-height brick
 (`Ideal.height_strict_mono_of_is_prime`) forces `codim Ō_M' < codim Ō_M`, contradicting minimality.
-`[IsAlgClosed k]` (for primality of the orbit ideals). -/
-theorem orbitRankLocus_minCodim_mem_minimalPrimes [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+`[Infinite k]` (for primality of the orbit ideals). -/
+theorem orbitRankLocus_minCodim_mem_minimalPrimes [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (M : Tuple (k := k) d) (hM : (mult d M).rank ≤ r)
     (hmin : ∀ M' : Tuple (k := k) d, (mult d M').rank ≤ r →
       codimRepCanonical (orbitRankLocus M) ≤ codimRepCanonical (orbitRankLocus M')) :
@@ -290,8 +290,8 @@ product `0` (rank `0 ≤ 0`), so it lies in `Σ̄^0` and its orbit ideal is in t
 d222 0`; the bridge `sigmaIdeal = sInf orbitIdeals` and the G3 minimal-primes characterisation fire.
 This is the geometric side of the LANDED combinatorial cross-check (`Core.CTheta`:
 `numTop_d222_zero = 1`, three Kostant partitions are maximal so three components, one top-dimensional)
-— here the machinery (family nonempty, `sigmaIdeal` the `sInf`, G3) is shown to fire over the genuine
-`[IsAlgClosed]` setting. -/
+— here the machinery (family nonempty, `sigmaIdeal` the `sInf`, G3 — which needs only `[Infinite k]`)
+is shown to fire on the concrete `AlgebraicClosure ℚ` witness. -/
 
 /-- The zero tuple of `(2,2,2)` over `AlgebraicClosure ℚ` lies in the zero-product locus `Σ̄^0`:
 its product is `0`, rank `0 ≤ 0`. -/

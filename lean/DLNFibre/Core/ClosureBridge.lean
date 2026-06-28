@@ -68,7 +68,7 @@ theorem orbitAsTuples_realizerD_subset_productRankLocus {d : Fin (N + 1) → ℕ
 /-- The realizer orbit attains codimension `C`: its vanishing ideal is that of `orbitRankLocus M₀`
 (`vanishingIdeal_orbitRankLocus_eq_orbitSet`), whose codim is `C`
 (`codimRepCanonical_orbitRankLocus_realizerD`). -/
-theorem codimRepCanonical_orbitAsTuples_realizerD [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_orbitAsTuples_realizerD [CharZero k] [Infinite k]
     {d : Fin (N + 1) → ℕ} {r : ℕ} {m : Fin (N + 1) × Fin (N + 1) → ℕ}
     (hm : m ∈ kostantPartitions d r) :
     codimRepCanonical (orbitAsTuples (realizerD (k := k) hm))
@@ -78,7 +78,7 @@ theorem codimRepCanonical_orbitAsTuples_realizerD [IsAlgClosed k] [CharZero k]
 
 /-- **L8 — `codim Σ^r = C` (the codimension sandwich).** `C = codim Σ̄^r ≤ codim Σ^r` (anti-mono on
 `Σ^r ⊆ Σ̄^r`), and `codim Σ^r ≤ C` via the realizer orbit `W ⊆ Σ^r` with `codim W = C`. -/
-theorem codimRepCanonical_productRankLocus_eq_cCodim_enat [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_productRankLocus_eq_cCodim_enat [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     codimRepCanonical (productRankLocus (k := k) d r) = ((cCodim d r h).toNat : ℕ∞) := by
   -- a minimising Kostant partition `m₀` and its realizer `M₀`
@@ -124,7 +124,7 @@ theorem nonempty_image_productRankLocus (d : Fin (N + 1) → ℕ) (r : ℕ)
 /-- **L9 — `hClosure`: `varietyDim Σ^r = varietyDim Σ̄^r`.** Both loci satisfy the
 irreducibility-free catenary `codim Z + varietyDim Z = card`; with `codim Σ^r = C = codim Σ̄^r`
 (L8 + `SigmaCodim`), left-cancelling the finite codim gives equal `varietyDim`. -/
-theorem varietyDim_productRankLocus_eq_productRankLocusLE [IsAlgClosed k] [CharZero k]
+theorem varietyDim_productRankLocus_eq_productRankLocusLE [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     varietyDim (canonicalCoord d '' productRankLocus (k := k) d r)
       = varietyDim (canonicalCoord d '' productRankLocusLE (k := k) d r) := by
@@ -158,7 +158,7 @@ theorem varietyDim_productRankLocus_eq_productRankLocusLE [IsAlgClosed k] [CharZ
 hypothesis is the homogeneous-sweep dimension identity `hSweep`. Zero-cite: the closure bridge is
 proved, not assumed. -/
 theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep_closure
-    [IsAlgClosed k] [CharZero k]
+    [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (hB : B.rank = r)
     (hFne : (canonicalCoord d '' fibre d B).Nonempty)

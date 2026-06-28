@@ -334,3 +334,32 @@ example : canonicalCoord dWitness tupleWitnessQ
 end Witness
 
 end DLNFibre.Core
+
+/-! ## Rank base-change under an injective field hom (top-level `Matrix` lemma)
+
+Stated outside `DLNFibre.Core` so the name lands in the genuine `Matrix` namespace (declaring a
+`Matrix.…` lemma *inside* `DLNFibre.Core` would shadow the top-level `Matrix` namespace for every
+downstream Core file). -/
+
+namespace Matrix
+
+/-- **Matrix rank is preserved by an injective ring hom (between fields).** For an injective
+`ι : R →+* S` between fields, the entrywise map `B ↦ B.map ι` preserves rank. Proof: via the
+determinantal-rank bridge `DLNFibre.Core.rank_le_iff_forall_submatrix_det_eq_zero`,
+`(B.map ι).rank ≤ r ↔ B.rank ≤ r` for every `r`, because each `(r+1)×(r+1)` minor satisfies
+`det ((B.map ι).submatrix er ec) = ι (det (B.submatrix er ec))` (`Matrix.submatrix_map` +
+`RingHom.map_det`), and `ι` injective gives `ι x = 0 ↔ x = 0`. The rank base-change micro-lemma the
+real↔complex codim transfer rests on. -/
+theorem rank_map_eq_of_injective {R S : Type*} [Field R] [Field S]
+    {p q : ℕ} (B : Matrix (Fin p) (Fin q) R) (ι : R →+* S) (hι : Function.Injective ι) :
+    (B.map ι).rank = B.rank := by
+  have hiff : ∀ r : ℕ, (B.map ι).rank ≤ r ↔ B.rank ≤ r := by
+    intro r
+    rw [DLNFibre.Core.rank_le_iff_forall_submatrix_det_eq_zero (B.map ι),
+      DLNFibre.Core.rank_le_iff_forall_submatrix_det_eq_zero B]
+    refine forall₂_congr (fun er ec ↦ ?_)
+    rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
+    exact map_eq_zero_iff ι hι
+  exact le_antisymm ((hiff _).2 le_rfl) ((hiff _).1 le_rfl)
+
+end Matrix

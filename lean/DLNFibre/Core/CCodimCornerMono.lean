@@ -29,8 +29,9 @@ Two bricks, both reducing to that one combinatorial monotonicity of `cCodim`:
 `≥ cCodim d r`); `hRecover` is the Gabriel bridge plus corner-monotonicity forcing corner `= r` on a
 top-dimensional component.
 
-**Typeclass.** `[Field k]` for the bridge; `[IsAlgClosed k] [CharZero k]` for the geometric reading
-(`codimRepCanonical = codimForm`). **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+**Typeclass.** `[Field k]` for the bridge; `[CharZero k] [Infinite k]` for the geometric reading
+(`codimRepCanonical = codimForm`; no algebraic closedness). **Dependency rule:** `Core` only — never
+import `DLNFibre.DLN`.
 -/
 
 namespace DLNFibre.Core
@@ -302,7 +303,7 @@ Gabriel Kostant partition (corner `s = (mult M').rank ≤ r`), `≥ cCodim d s �
 `≥ cCodim d r`. Via the Gabriel bridge (`codimRep(Ō_{M'}) = codimForm (extendℤ (gabrielPartition))`,
 corner `(mult M').rank`), `Finset.inf'_le` (`codimForm ≥ cCodim d s`), and corner-monotonicity
 (`cCodim d r ≤ cCodim d s` for `s ≤ r`). -/
-theorem cCodim_le_codimRepCanonical_of [IsAlgClosed k] [CharZero k]
+theorem cCodim_le_codimRepCanonical_of [CharZero k] [Infinite k]
     (hMono : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
       (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k ≤ e' k) →
       cCodim e 0 he ≤ cCodim e' 0 he')
@@ -375,7 +376,7 @@ partition. From G3 (`minimalPrimes_sigmaIdeal_eq`) `p = vanishingIdeal (Ō_{M'})
 tuple `M'`; the Gabriel partition has corner `s = (mult M').rank ≤ r` and the same orbit ideal; the
 top-dimensional height `cCodim d r = codimForm (gabrielPartition) ≥ cCodim d s` with strict
 corner-monotonicity (`s < r ⟹ cCodim d r < cCodim d s`) forces `s = r`. -/
-theorem exists_kostantPartition_partitionIdeal_eq_of [IsAlgClosed k] [CharZero k]
+theorem exists_kostantPartition_partitionIdeal_eq_of [CharZero k] [Infinite k]
     (hMonoStrict : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
       (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k < e' k) →
       cCodim e 0 he < cCodim e' 0 he')
@@ -431,7 +432,7 @@ headline `numTop d r = #top-dim components` holds given those two combinatorial 
 (`hMonoStrict`) dimension-monotonicities of `cCodim · 0`, `numTop d r = #{top-dim irreducible
 components of Σ̄^r}` — the two corner-selection hypotheses of `numTop_eq_ncard_topComponents_of`
 discharged. -/
-theorem numTop_eq_ncard_topComponents_of_dimMono [IsAlgClosed k] [CharZero k]
+theorem numTop_eq_ncard_topComponents_of_dimMono [CharZero k] [Infinite k]
     (hMono : ∀ {e e' : Fin (N + 1) → ℕ} (he : (kostantPartitions e 0).Nonempty)
       (he' : (kostantPartitions e' 0).Nonempty), (∀ k, e k ≤ e' k) →
       cCodim e 0 he ≤ cCodim e' 0 he')
