@@ -38,21 +38,65 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
+/-! ## `minAdm ≤ routeMAmbient` (codim ≤ ambient dimension) -/
+
+/-- **The predecessor rank `tPrev (tStar) j ≤ M (j.castSucc)`** — `tPrev_0 = M 0 = M(0.castSucc)`;
+`tPrev_{j>0} = tStar_{j−1} ≤ M_j = M(j.castSucc)` (`tStar_le_Msucc` at `j−1`). The width bound for the
+codim ≤ dim comparison. -/
+theorem tPrev_tStar_le_Mcastsucc (M : Fin (L + 1) → ℕ) (j : Fin L) :
+    tPrev M (tStar M) j ≤ (M j.castSucc : ℤ) := by
+  rw [tPrev]
+  by_cases hj0 : j.val = 0
+  · rw [if_pos hj0]
+    have : M j.castSucc = M 0 := by congr 1; apply Fin.ext; simp [Fin.castSucc, Fin.castAdd, hj0]
+    rw [this]
+  · rw [if_neg hj0]
+    have hpred := tStar_le_Msucc M (tStar M) (tStar_mem M) ⟨j.val - 1, by omega⟩
+    have hcs : (⟨j.val - 1, by omega⟩ : Fin L).succ = j.castSucc := by
+      apply Fin.ext; simp [Fin.succ, Fin.castSucc, Fin.castAdd]; omega
+    rwa [hcs] at hpred
+
+/-- **`minAdm M ≤ routeMAmbient M`** — the achiever-center codimension is at most the ambient parameter
+dimension `flatDim = ∑_s M_s·M_{s+1}`. Per-term: `(tPrev_j − tStar_j)(M_{j+1} − tStar_j) ≤
+M(j.castSucc)·M(j.succ)` (both factors nonneg and bounded — `tPrev ≤ M(castSucc)`, `M_{j+1} − tStar ≤
+M_{j+1} = M(succ)`); sum `Mval (tStar) ≤ flatDim`, then `minAdm = Mval.toNat ≤ flatDim = routeMAmbient`.
+Closes the open hypothesis of `radialActive_exists`. -/
+theorem minAdm_le_routeMAmbient (M : Fin (L + 1) → ℕ) : minAdm M ≤ routeMAmbient M := by
+  have hsum : Mval M (tStar M) ≤ (routeMAmbient M : ℤ) := by
+    rw [routeMAmbient, flatDim_eq, Mval, Nat.cast_sum]
+    refine Finset.sum_le_sum (fun j _ => ?_)
+    have hrn : (0 : ℤ) ≤ tPrev M (tStar M) j - (tStar M j : ℤ) := by
+      have := tStar_le_tPrev M (tStar M) (tStar_mem M) j; linarith
+    have hcn : (0 : ℤ) ≤ (M j.succ : ℤ) - (tStar M j : ℤ) := by
+      have := tStar_le_Msucc M (tStar M) (tStar_mem M) j; linarith
+    have hr : tPrev M (tStar M) j - (tStar M j : ℤ) ≤ (M j.castSucc : ℤ) := by
+      have := tPrev_tStar_le_Mcastsucc M j
+      have := tStar_le_Msucc M (tStar M) (tStar_mem M) j; linarith [(tStar M j).cast_nonneg (α := ℤ)]
+    have hc : (M j.succ : ℤ) - (tStar M j : ℤ) ≤ (M j.succ : ℤ) := by
+      linarith [(tStar M j).cast_nonneg (α := ℤ)]
+    calc (tPrev M (tStar M) j - (tStar M j : ℤ)) * ((M j.succ : ℤ) - (tStar M j : ℤ))
+        ≤ (M j.castSucc : ℤ) * ((M j.succ : ℤ) - (tStar M j : ℤ)) :=
+          mul_le_mul_of_nonneg_right hr hcn
+      _ ≤ (M j.castSucc : ℤ) * (M j.succ : ℤ) :=
+          mul_le_mul_of_nonneg_left hc (by positivity)
+  rw [Mval_tStar_eq] at hsum
+  exact_mod_cast hsum
+
 /-! ## The achiever radial active set (existence + cardinality) -/
 
-/-- **The achiever radial active set exists**: given `1 ≤ minAdm M ≤ routeMAmbient M`, there is a
-`Finset (Fin (routeMAmbient M))` of cardinality `minAdm M` containing the radial pivot `structPivot`.
-The blow-up active set of the codim-`minAdm` achiever center. (`Finset.exists_superset_card_eq` from the
-singleton `{p}`: `1 ≤ minAdm` gives `{p}.card = 1 ≤ minAdm`, `minAdm ≤ N` gives room in `univ`.) -/
+/-- **The achiever radial active set exists**: given `1 ≤ minAdm M`, there is a
+`Finset (Fin (routeMAmbient M))` of cardinality `minAdm M` containing the radial pivot `structPivot`
+(the codim ≤ dim bound `minAdm_le_routeMAmbient` is now discharged internally, NO open hypothesis).
+The blow-up active set of the codim-`minAdm` achiever center. -/
 theorem radialActive_exists (M : Fin (L + 1) → ℕ) (hN : 0 < routeMAmbient M)
-    (hpos : 1 ≤ minAdm M) (hle : minAdm M ≤ routeMAmbient M) :
+    (hpos : 1 ≤ minAdm M) :
     ∃ active : Finset (Fin (routeMAmbient M)),
       structPivot M hN ∈ active ∧ active.card = minAdm M := by
   obtain ⟨active, hsub, hcard⟩ := Finset.exists_superset_card_eq
     (show ({structPivot M hN} : Finset (Fin (routeMAmbient M))).card ≤ minAdm M by
       rw [Finset.card_singleton]; exact hpos)
     (show minAdm M ≤ (Finset.univ : Finset (Fin (routeMAmbient M))).card by
-      rw [Finset.card_univ, Fintype.card_fin]; exact hle)
+      rw [Finset.card_univ, Fintype.card_fin]; exact minAdm_le_routeMAmbient M)
   exact ⟨active, hsub (Finset.mem_singleton_self _), hcard⟩
 
 /-! ## The radial determinant at the achiever active set + the −1 lemma -/
