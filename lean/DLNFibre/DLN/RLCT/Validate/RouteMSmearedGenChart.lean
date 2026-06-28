@@ -991,4 +991,159 @@ theorem subBoxGen_diverges (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < 
   congr 2
   push_cast; ring
 
+/-- **The `(1,1)`-family smeared box-divergence atom.** For the `(1,1)` family (`M_{deepLayer.succ} = 1`,
+`m1 = M_{L-1} ≥ 2`, all widths `M_s ≥ 1`) with a width-1 front pivot `pp ≤ L-1` and `c' ≥ ½`
+(`= ½·minAdm`, `minAdm = 1`), every `ε > 0`:
+`∫⁻_{cubeBox ε} |routeMCore M x|^{−c'} = ⊤`. Discharged via `routeMCore_box_diverges_of_MPChart` (the
+measure-preserving `phiSm` chart) fed the source certificate `subBoxGen_diverges` — the rest box from
+`exists_rest_box` around the scaled off-pole `e₀₀` witness, with `α = ε/4`, witness scale `t = ε/8`. -/
+theorem routeMsm_box_diverges (hrow : 0 < M (deepLayer M hL).castSucc)
+    (hcol : 0 < M (deepLayer M hL).succ) (hc1 : M (deepLayer M hL).succ = 1)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) (hpos : ∀ s, 1 ≤ M s)
+    (pp : ℕ) (hpp : pp < L + 1) (hpp1 : M ⟨pp, hpp⟩ = 1) (hpple : pp ≤ L - 1)
+    (c' : ℝ) (hc' : (1 : ℝ) / 2 ≤ c') (ε : ℝ) (hε : 0 < ε) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  classical
+  have hNpos : 0 < routeMAmbient M :=
+    lt_of_le_of_lt (Nat.zero_le _) (smPivotCoord M hL hrow hcol).isLt
+  obtain ⟨n, hn⟩ : ∃ n, routeMAmbient M = n + 1 := ⟨routeMAmbient M - 1, by omega⟩
+  set e := MeasurableEquiv.arrowCongr' (finCongr hn) (MeasurableEquiv.refl ℝ) with he
+  set p : Fin (n + 1) := finCongr hn (smPivotCoord M hL hrow hcol) with hp
+  set t : ℝ := ε / 8 with ht
+  set w := offPoleWitness M t with hw
+  set y₀ : Fin n → ℝ := fun k => e w (p.succAbove k) with hy₀
+  set F := fun y : Fin n → ℝ => frontU M hL (e.symm (Fin.insertNth p 0 y)) hm1 with hF
+  set G := fun y : Fin n → ℝ => smearShift M hL (e.symm (Fin.insertNth p 0 y)) hm1 hcol with hG
+  -- `insertNth p 0 y₀` recovers `update (e w) p 0`; `e.symm` of that is `update w smPivotCoord 0`.
+  have hins : (@Fin.insertNth n (fun _ => ℝ) p 0 y₀) = Function.update (e w) p 0 := by
+    funext j; rcases Fin.eq_self_or_eq_succAbove p j with rfl | ⟨k, rfl⟩
+    · rw [Fin.insertNth_apply_same, Function.update_self]
+    · rw [Fin.insertNth_apply_succAbove, Function.update_of_ne (Fin.succAbove_ne p k)]
+  have hsymupd : e.symm (Function.update (e w) p 0)
+      = Function.update w (smPivotCoord M hL hrow hcol) 0 := by
+    funext i
+    by_cases hi : i = smPivotCoord M hL hrow hcol
+    · subst hi; rw [Function.update_self]
+      show (Function.update (e w) p 0) (finCongr hn (smPivotCoord M hL hrow hcol)) = 0
+      rw [← hp, Function.update_self]
+    · rw [Function.update_of_ne hi]
+      show (Function.update (e w) p 0) (finCongr hn i) = w i
+      rw [Function.update_of_ne (fun h => hi ((finCongr hn).injective h))]; rfl
+  have hewsymm : e.symm (Fin.insertNth p 0 y₀) = Function.update w (smPivotCoord M hL hrow hcol) 0 := by
+    rw [hins, hsymupd]
+  have ht0 : t ≠ 0 := by rw [ht]; positivity
+  -- the witness facts `F y₀ > 0`, `G y₀ = 0`.
+  have hFpos : 0 < F y₀ := by
+    show 0 < frontU M hL (e.symm (Fin.insertNth p 0 y₀)) hm1
+    rw [hewsymm, frontU_update_pivot, hw]; exact frontU_offPoleWitness_pos M hL t ht0 hpos hm1
+  have hG0 : G y₀ = 0 := by
+    show smearShift M hL (e.symm (Fin.insertNth p 0 y₀)) hm1 hcol = 0
+    rw [hewsymm, smearShift_update_pivot, hw]; exact smearShift_offPoleWitness M hL t hcol hm1
+  have hoffy : (∑ i, (frontMat M hL (e.symm (Fin.insertNth p 0 y₀)) i ⟨0, hm1⟩) ^ 2) ≠ 0 :=
+    ne_of_gt hFpos
+  -- `F`, `G` continuity (at `y₀`).
+  have hins_cont : Continuous (fun y : Fin n → ℝ => e.symm (@Fin.insertNth n (fun _ => ℝ) p 0 y)) := by
+    rw [show (fun y : Fin n → ℝ => e.symm (@Fin.insertNth n (fun _ => ℝ) p 0 y))
+        = fun y i => (@Fin.insertNth n (fun _ => ℝ) p 0 y) (finCongr hn i) from rfl,
+      continuous_pi_iff]
+    intro i
+    rcases Fin.eq_self_or_eq_succAbove p (finCongr hn i) with hh | ⟨k, hh⟩
+    · rw [show (fun y : Fin n → ℝ => (@Fin.insertNth n (fun _ => ℝ) p 0 y) (finCongr hn i))
+        = fun _ => (0 : ℝ) from by funext y; rw [hh, Fin.insertNth_apply_same]]
+      exact continuous_const
+    · rw [show (fun y : Fin n → ℝ => (@Fin.insertNth n (fun _ => ℝ) p 0 y) (finCongr hn i))
+        = fun y => y k from by funext y; rw [hh, Fin.insertNth_apply_succAbove]]
+      exact continuous_apply k
+  have hFcont : ContinuousAt F y₀ := ((continuous_frontU M hL hm1).comp hins_cont).continuousAt
+  have hGcont : ContinuousAt G y₀ :=
+    ContinuousAt.comp (g := fun u => smearShift M hL u hm1 hcol)
+      (continuousAt_smearShift_offpole M hL (e.symm (Fin.insertNth p 0 y₀)) hcol hm1 hoffy)
+      hins_cont.continuousAt
+  -- the rest box `R'` from `exists_rest_box` (`ε` slot `= ε/4`).
+  obtain ⟨R', hR'meas, hR'pos, hR'F, hR'G, hR'coord⟩ :=
+    exists_rest_box F G y₀ hFcont hFpos hGcont hG0 (ε / 4) (by linarith)
+  -- the source set + its divergence (`subBoxGen_diverges`, `α = ε/4`).
+  have hdiv := subBoxGen_diverges M hL hrow hcol hc1 hm1 pp hpp hpp1 hpple c' hc' (ε / 4)
+    (by linarith) n hn R' hR'meas hR'pos hR'F
+  -- the witness coords are small: `|y₀ k| ≤ |t| = ε/8`.
+  have hy₀small : ∀ k, |y₀ k| ≤ ε / 8 := by
+    intro k
+    have : |y₀ k| ≤ |t| := by
+      show |e w (p.succAbove k)| ≤ |t|
+      show |w ((finCongr hn).symm (p.succAbove k))| ≤ |t|
+      rw [hw]; exact offPoleWitness_coord_le M t _
+    rw [ht, abs_of_pos (by positivity : (0:ℝ) < ε/8)] at this; exact this
+  -- discharge via the MP-chart box-divergence, fed the source certificate.
+  refine routeMCore_box_diverges_of_MPChart M (fun u => phiSm M hL u hrow hcol hm1)
+    (measurePreserving_phiSm M hL hrow hcol hm1) (measurableEmbedding_phiSm M hL hrow hcol hm1)
+    c' ε ⟨_, ?_, ?_, hdiv⟩
+  · -- the source set is measurable (preimage of a measurable box under the measurable `e`/`piFinSuccAbove`).
+    exact e.measurable ((MeasurableEquiv.piFinSuccAbove _ p).measurable
+      (measurableSet_Ioo.prod hR'meas))
+  · -- containment: source ⊆ phiSm⁻¹(cubeBox ε).
+    intro u hu
+    rw [Set.mem_preimage, Set.mem_preimage, Set.mem_prod,
+      MeasurableEquiv.piFinSuccAbove_apply] at hu
+    obtain ⟨hup, hurest⟩ := hu
+    -- `e u p = u smPivotCoord` and the rest coords are `(e u) (succAbove k)`.
+    have heup : e u p = u (smPivotCoord M hL hrow hcol) := by
+      show u ((finCongr hn).symm p) = u (smPivotCoord M hL hrow hcol)
+      rw [hp]; simp
+    rw [Set.mem_Ioo] at hup
+    -- the rest coords of `e u` lie in `R'`; `e.symm (insertNth p 0 (rest)) = update u smPivotCoord 0`.
+    have hrestmem : (fun k => e u (p.succAbove k)) ∈ R' := hurest
+    have hesymm_rest : e.symm (@Fin.insertNth n (fun _ => ℝ) p 0 (fun k => e u (p.succAbove k)))
+        = Function.update u (smPivotCoord M hL hrow hcol) 0 := by
+      funext i
+      by_cases hi : i = smPivotCoord M hL hrow hcol
+      · subst hi; rw [Function.update_self]
+        show (@Fin.insertNth n (fun _ => ℝ) p 0 (fun k => e u (p.succAbove k)))
+            (finCongr hn (smPivotCoord M hL hrow hcol)) = 0
+        rw [← hp, Fin.insertNth_apply_same]
+      · rw [Function.update_of_ne hi]
+        show (@Fin.insertNth n (fun _ => ℝ) p 0 (fun k => e u (p.succAbove k))) (finCongr hn i) = u i
+        have hne : finCongr hn i ≠ p := fun h => hi ((finCongr hn).injective h)
+        obtain ⟨k, hk⟩ := (Fin.eq_self_or_eq_succAbove p (finCongr hn i)).resolve_left hne
+        rw [hk, Fin.insertNth_apply_succAbove]
+        show e u (p.succAbove k) = u i
+        rw [← hk]; show u ((finCongr hn).symm (finCongr hn i)) = u i; simp
+    -- `smearShift u = G (rest)` (via pivot-indep), bounded (`≤ ε/16 ≤ ε/4`).
+    have hsmear_bd : |smearShift M hL u hm1 hcol| ≤ ε / 4 := by
+      have heq : smearShift M hL u hm1 hcol = G (fun k => e u (p.succAbove k)) := by
+        rw [hG]
+        show smearShift M hL u hm1 hcol
+          = smearShift M hL (e.symm (Fin.insertNth p 0 (fun k => e u (p.succAbove k)))) hm1 hcol
+        rw [hesymm_rest, smearShift_update_pivot]
+      rw [heq]; exact le_trans (hR'G _ hrestmem) (by linarith)
+    -- the non-pivot coords of `u` are rest coords, bounded by `|y₀ ·| + ε/4 ≤ ε/8 + ε/4 < ε`.
+    have hcoord_bd : ∀ k : Fin n, |e u (p.succAbove k)| ≤ ε / 8 + ε / 4 := by
+      intro k
+      have := hR'coord _ hrestmem k
+      exact le_trans this (by linarith [hy₀small k])
+    -- containment: every flat coord of `phiSm u` is `≤ ε`.
+    rw [Set.mem_preimage, cubeBox, Set.mem_pi]
+    intro k _
+    rw [Set.mem_Icc, ← abs_le]
+    rw [phiSm]
+    by_cases hk : k = smPivotCoord M hL hrow hcol
+    · subst hk; rw [Function.update_self]
+      have hup' : 0 < u (smPivotCoord M hL hrow hcol)
+          ∧ u (smPivotCoord M hL hrow hcol) < ε / 4 := heup ▸ hup
+      calc |u (smPivotCoord M hL hrow hcol) - smearShift M hL u hm1 hcol|
+          ≤ |u (smPivotCoord M hL hrow hcol)| + |smearShift M hL u hm1 hcol| := abs_sub _ _
+        _ ≤ ε / 4 + ε / 4 := by
+            refine add_le_add ?_ hsmear_bd
+            rw [abs_of_pos hup'.1]; linarith [hup'.2]
+        _ ≤ ε := by linarith
+    · rw [Function.update_of_ne hk]
+      -- `u k = e u (p.succAbove (corresponding index))` for non-pivot `k`.
+      have hne : finCongr hn k ≠ p := fun h => hk ((finCongr hn).injective h)
+      obtain ⟨k', hk'⟩ := (Fin.eq_self_or_eq_succAbove p (finCongr hn k)).resolve_left hne
+      have hukval : u k = e u (p.succAbove k') := by
+        show u k = u ((finCongr hn).symm (p.succAbove k'))
+        rw [← hk']; simp
+      rw [hukval]
+      exact le_trans (hcoord_bd k') (by linarith)
+
 end DLNFibre.DLN.RLCT
