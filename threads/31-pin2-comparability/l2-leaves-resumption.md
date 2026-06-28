@@ -3,7 +3,28 @@
 Bridge file: `lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeL2.lean`.
 Branch `genm-l2cle` (off `origin/genm-l2-wt`). Build: `scripts/lb DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2` from the worktree `lean/`.
 
-## STATUS (2026-06-28): S4 + S2 CLOSED — bridge has 1 sorry (S6 only)
+## STATUS (2026-06-28): S4 + S2 CLOSED, S6 SPECIFIED — bridge has 2 sorries (both S6 geometric subs)
+
+**S6 (`comp_identity_L2`) SPECIFIED + assembly PROVEN** (commit 1d81e020). The germ assembly closes
+`comp_identity_L2` from the sub-lemma statements; the 1 monolithic sorry is now 2 isolated geometric
+sub-lemma sorries (Codex-validated decomposition, artefact `codex/s6-chain-answer.md`):
+- `psiRawL2_split` — PROVEN: `split ∘ psiRawL2 = psiSplitRawL2 ∘ split`.
+- `deepestEFull_sq_sum_psiSplitRawL2_eq` — SORRIED: `∑ (deepestEFull (psiSplitRawL2 q))² = ∑ (deepestEFull q)²`
+  (reg residual invariant under the joint (T1,Y1) move). Route: raw block facts `P00'=P00`, `P10'=P10`,
+  `P01'=P01` (the last via `e2_regPreserve`), lifted through the framed-product packing; needs `hPtri/hQtri`
+  to stop the moved (2,2) block leaking into the framed regular blocks. `framedParamsPivot` is NOT in the
+  gauge-aligned frame — the L=2 frame dictionary reduces it to the raw 2-layer block product first.
+- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` — SORRIED: absorbed core energy = the Schur-complement
+  `Score`. Chain: `deepestCoreF_coreAbsorb_eq_prodSchur` → `frobSq(prod(core'+schurCorr'))` → (new
+  `psiSplitRawL2Core_absorbed_reads`: first core = `T0−Z0⅟A0Y0`, last = `(1−K)(T1−Z1⅟A1Y1)`) → `frobSq(S0·S1')`
+  → `prod_absorbed_eq_schur_ldu` → `frobSq Rcore` → `Score` (the framed corner-split dictionary,
+  `rcore_schur_factor_of_corner_split`). **CODEX-FLAGGED RESEARCH-RISK**: the public `Score` dictionary is
+  the riskiest step — exact `frobSq` equality may need bottom-right identity/unitriangular endpoint
+  normalizers beyond `hPtri/hQtri`, OR the core diffeo must absorb those units. Resolve the reachability of
+  the EXACT equality (vs ≍) before grinding. Also: `⅟` (landed algebra) vs `⁻¹` (Ψ/Score) — instantiate
+  `Invertible` from `det≠0`, rewrite `invOf_eq_nonsing_inv`.
+
+## (historical) STATUS: S4 + S2 CLOSED — bridge has 1 sorry (S6 only)
 
 **S4 (`hasStrictFDerivAt_psiSplitDeltaL2_zero`) DONE** (commit a416c5cc), axiom-clean. Full O(read²)
 chain (S4a–S4e): matrix-entry strict-fderiv-0 helpers, ContDiffAt det/adj/inv variants, W⁻¹-1 deriv-0,
