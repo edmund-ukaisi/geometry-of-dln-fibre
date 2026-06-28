@@ -1034,6 +1034,64 @@ theorem contDiffAt_l2W_inv_entry_at (H : Fin (L + 1) → ℕ) (r : ℕ)
   contDiffAt_matrix_inv_entry_of_det_ne_zero_at
     (fun a b => contDiffAt_l2W_entry_at H r hr hL hL2eq p hA0 hA1 a b) hW i j
 
+/-- `l2Y1p = Y1 + A0⁻¹·Y0·(T1 − T1')` (`rfl` from the def). -/
+theorem l2Y1p_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Y1p H r hr hL hL2eq q
+      = l2Y1 H r hr hL q + (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+        * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) := rfl
+
+/-- Each `T1'` (=`l2T1p`) entry is `ContDiffAt p` when `det A0, A1, P00, W ≠ 0` at `p` (`W⁻¹·Br`). -/
+theorem contDiffAt_l2T1p_entry_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (p : DeepestSplit H r (deepestNGauge H r))
+    (hA0 : (l2A0 H r hr hL p).det ≠ 0) (hA1 : (l2A1 H r hr hL p).det ≠ 0)
+    (hP00 : (l2P00 H r hr hL hL2eq p).det ≠ 0) (hW : (l2W H r hr hL hL2eq p).det ≠ 0)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2T1p H r hr hL hL2eq q i j) p := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2T1p H r hr hL hL2eq q i j)
+      = fun q => ((l2W H r hr hL hL2eq q)⁻¹ * l2Br H r hr hL hL2eq q) i j := by
+    funext q; rw [l2T1p_eq_Winv_Br]
+  rw [heq]
+  exact contDiffAt_matrix_mul_entry
+    (fun a k => contDiffAt_l2W_inv_entry_at H r hr hL hL2eq p hA0 hA1 hW a k)
+    (fun k b => contDiffAt_l2Br_entry_at H r hr hL hL2eq p hA0 hA1 hP00 k b) i j
+
+/-- Each `Y1'` (=`l2Y1p`) entry is `ContDiffAt p` when `det A0, A1, P00, W ≠ 0` at `p`
+(`Y1 + A0⁻¹·Y0·(T1 − T1')`). -/
+theorem contDiffAt_l2Y1p_entry_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (p : DeepestSplit H r (deepestNGauge H r))
+    (hA0 : (l2A0 H r hr hL p).det ≠ 0) (hA1 : (l2A1 H r hr hL p).det ≠ 0)
+    (hP00 : (l2P00 H r hr hL hL2eq p).det ≠ 0) (hW : (l2W H r hr hL hL2eq p).det ≠ 0)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2Y1p H r hr hL hL2eq q i j) p := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2Y1p H r hr hL hL2eq q i j)
+      = fun q => l2Y1 H r hr hL q i j
+          + (((l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+              * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) :
+            Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j := by
+    funext q; rw [l2Y1p_eq, Matrix.add_apply]
+  rw [heq]
+  refine (contDiff_l2Y1_entry H r hr hL i j).contDiffAt.add ?_
+  -- `(A0⁻¹·Y0)·(T1 − T1')` entry: mul-entry of the `ContDiffAt` factors.
+  refine contDiffAt_matrix_mul_entry
+    (A := fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q)
+    (B := fun q : DeepestSplit H r (deepestNGauge H r) =>
+      l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) (fun a k => ?_) (fun k b => ?_) i j
+  · exact contDiffAt_matrix_mul_entry
+      (fun a' k' => contDiffAt_l2A0_inv_entry_at H r hr hL p hA0 a' k')
+      (fun k' b' => (contDiff_l2Y0_entry H r hr hL hL2eq k' b').contDiffAt) a k
+  · have hsub : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) k b)
+        = fun q => l2T1 H r hr hL q k b - l2T1p H r hr hL hL2eq q k b := by
+      funext q; rw [Matrix.sub_apply]
+    rw [hsub]
+    exact (contDiff_l2T1_entry H r hr hL k b).contDiffAt.sub
+      (contDiffAt_l2T1p_entry_at H r hr hL hL2eq p hA0 hA1 hP00 hW k b)
+
 /-! ### S4g — the `O(read²)` strict-`fderiv`-`0` blocks (`K`, `R`, `W⁻¹ − 1`)
 
 The genuine higher-order vanishing: `K = Z1·P00⁻¹·Y0` and `R = Z1·A1⁻¹·A0⁻¹·Y0` are triple products
@@ -1260,14 +1318,6 @@ theorem hasStrictFDerivAt_l2T1p_sub_T1_entry_zero (H : Fin (L + 1) → ℕ) (r :
     (hnegKS1.add (hasStrictFDerivAt_l2R_mul_T1_entry_zero H r hr hL hL2eq i j))
   simpa only [add_zero, Pi.add_apply] using hsum
 
-/-- `l2Y1p = Y1 + A0⁻¹·Y0·(T1 − T1')` (`rfl` from the def). -/
-theorem l2Y1p_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
-    (q : DeepestSplit H r (deepestNGauge H r)) :
-    l2Y1p H r hr hL hL2eq q
-      = l2Y1 H r hr hL q + (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
-        * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) := rfl
-
 /-- **Each `Y1' − Y1` entry has strict-`fderiv`-`0` at `0`** (the reg payload-block;
 `Y1'−Y1 = (A0⁻¹·Y0)·(T1−T1')`, right factor `(T1−T1')` vanishes value+deriv). -/
 theorem hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -1461,20 +1511,136 @@ noncomputable def psiRawL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
     (psiSplitRawL2 H r hr hL (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
 
+/-! ### The joint-unit locus and its radius (the S2 re-key)
+
+The cutoff support must sit in the locus where ALL the joint-action denominators are invertible:
+the per-pivot `1 + readX_s` (`unitSet`, pulled back through the `q ↦ (q.1, q.2.2)` projection) AND, at
+`L = 2`, `det P00 ≠ 0` and `det W ≠ 0`. All three hold at `0` (`P00 = W = 1`); the W/P00 conditions are
+`ContinuousOn` the readX-locus (where `A0⁻¹/A1⁻¹` are defined), so the joint locus is open and contains
+`0` — yielding a positive radius `jointUnitRadius` to which `cutoffBumpSplit` is keyed. -/
+
+/-- The joint-unit locus on `DeepestSplit`: the per-pivot unit set (via the gauge projection), and at
+`L = 2` also `det P00 ≠ 0` and `det W ≠ 0`. -/
+def jointUnitSet (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Set (DeepestSplit H r (deepestNGauge H r)) :=
+  {q | (q.1, q.2.2) ∈ unitSet H r hr hL}
+    ∩ {q | ∀ h : L = 2, (l2P00 H r hr hL h q).det ≠ 0 ∧ (l2W H r hr hL h q).det ≠ 0}
+
+/-- `0 ∈ jointUnitSet` (`P00 = W = 1` at `0`, and `0` is in the per-pivot unit set). -/
+theorem mem_jointUnitSet_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (0 : DeepestSplit H r (deepestNGauge H r)) ∈ jointUnitSet H r hr hL := by
+  constructor
+  · show ((0 : DeepestSplit H r (deepestNGauge H r)).1,
+        (0 : DeepestSplit H r (deepestNGauge H r)).2.2) ∈ unitSet H r hr hL
+    rw [gaugeProj_zero]; exact mem_unitSet_zero H r hr hL
+  · intro h
+    exact ⟨l2P00_det_zero_ne H r hr hL h, l2W_det_zero_ne H r hr hL h⟩
+
+/-- `jointUnitSet` is open. -/
+theorem isOpen_jointUnitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsOpen (jointUnitSet H r hr hL) := by
+  -- The readX-unit part: preimage of the open `unitSet` under the continuous gauge projection.
+  have hUnitOpen : IsOpen {q : DeepestSplit H r (deepestNGauge H r) |
+      (q.1, q.2.2) ∈ unitSet H r hr hL} :=
+    (isOpen_unitSet H r hr hL).preimage (contDiff_gaugeProj H r).continuous
+  rcases eq_or_ne L 2 with hL2 | hL2
+  · -- L = 2: intersect with `{det P00 ≠ 0} ∩ {det W ≠ 0}`, both `ContinuousOn` the readX-locus.
+    -- `det P00` is globally continuous (`P00 = A0·A1 + Y0·Z1`, no inverses).
+    have hP00cont : Continuous (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2P00 H r hr hL hL2 q).det) :=
+      (continuous_matrix (fun i j => (contDiff_l2P00_entry H r hr hL hL2 i j).continuous)).matrix_det
+    have hP00open : IsOpen {q : DeepestSplit H r (deepestNGauge H r) |
+        (l2P00 H r hr hL hL2 q).det ≠ 0} := hP00cont.isOpen_preimage _ isOpen_ne
+    -- `det W` is `ContinuousOn` the readX-locus (where `A0⁻¹/A1⁻¹` exist): at each locus point `q`,
+    -- the entries are `ContDiffAt`, so `det` (a polynomial of entries) is `ContDiffAt`, hence continuous.
+    have hWcontOn : ContinuousOn (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2W H r hr hL hL2 q).det)
+        {q | (q.1, q.2.2) ∈ unitSet H r hr hL} := by
+      intro q hq
+      refine (contDiffAt_matrix_det_of_entries (A := fun q => l2W H r hr hL hL2 q) (x := q)
+        (fun i j => ?_)).continuousAt.continuousWithinAt
+      exact contDiffAt_l2W_entry_at H r hr hL hL2 q (hq (⟨0, by omega⟩ : Fin L)) (hq (lastLayer hL)) i j
+    have hWopen : IsOpen ({q : DeepestSplit H r (deepestNGauge H r) |
+          (q.1, q.2.2) ∈ unitSet H r hr hL}
+        ∩ (fun q => (l2W H r hr hL hL2 q).det) ⁻¹' {x | x ≠ 0}) :=
+      hWcontOn.isOpen_inter_preimage hUnitOpen isOpen_ne
+    have hrw : jointUnitSet H r hr hL
+        = ({q : DeepestSplit H r (deepestNGauge H r) | (q.1, q.2.2) ∈ unitSet H r hr hL}
+            ∩ {q | (l2P00 H r hr hL hL2 q).det ≠ 0})
+          ∩ ({q | (q.1, q.2.2) ∈ unitSet H r hr hL}
+            ∩ (fun q => (l2W H r hr hL hL2 q).det) ⁻¹' {x | x ≠ 0}) := by
+      ext q
+      simp only [jointUnitSet, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_preimage]
+      constructor
+      · rintro ⟨hu, hPW⟩
+        obtain ⟨hP, hW⟩ := hPW hL2
+        exact ⟨⟨hu, hP⟩, hu, hW⟩
+      · rintro ⟨⟨hu, hP⟩, _, hW⟩
+        refine ⟨hu, fun h => ?_⟩
+        -- `h : L = 2`; `hL2 : L = 2`; the det facts are the same by `Subsingleton`-of-`Eq`.
+        obtain rfl : h = hL2 := rfl
+        exact ⟨hP, hW⟩
+    rw [hrw]
+    exact (hUnitOpen.inter hP00open).inter hWopen
+  · -- L ≠ 2: the joint set is just the readX-locus (the `∀ h : L = 2` part is vacuous).
+    have hrw : jointUnitSet H r hr hL
+        = {q : DeepestSplit H r (deepestNGauge H r) | (q.1, q.2.2) ∈ unitSet H r hr hL} := by
+      ext q
+      simp only [jointUnitSet, Set.mem_inter_iff, Set.mem_setOf_eq]
+      exact ⟨fun h => h.1, fun h => ⟨h, fun heq => absurd heq hL2⟩⟩
+    rw [hrw]; exact hUnitOpen
+
+/-- A positive radius `ε` with `ball 0 ε ⊆ jointUnitSet`. -/
+theorem exists_ball_subset_jointUnitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    ∃ ε > 0, Metric.ball (0 : DeepestSplit H r (deepestNGauge H r)) ε ⊆ jointUnitSet H r hr hL :=
+  Metric.isOpen_iff.mp (isOpen_jointUnitSet H r hr hL) 0 (mem_jointUnitSet_zero H r hr hL)
+
+/-- The chosen joint-unit radius `ε > 0` (with `ball 0 ε ⊆ jointUnitSet`). -/
+noncomputable def jointUnitRadius (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : ℝ :=
+  (exists_ball_subset_jointUnitSet H r hr hL).choose
+
+theorem jointUnitRadius_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : 0 < jointUnitRadius H r hr hL :=
+  (exists_ball_subset_jointUnitSet H r hr hL).choose_spec.1
+
+theorem ball_jointUnitRadius_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Metric.ball (0 : DeepestSplit H r (deepestNGauge H r)) (jointUnitRadius H r hr hL)
+      ⊆ jointUnitSet H r hr hL :=
+  (exists_ball_subset_jointUnitSet H r hr hL).choose_spec.2
+
 /-- A fresh `ContDiffBump` at `0` on the FULL split `DeepestSplit` (Codex's "do not reuse the reg/spec
-bump as a full-split bump"). Its inner/outer radii are `unitRadius/4`, `unitRadius/2` — the same
-positive radii as the reg/spec `cutoffBump`, so its support sits inside the unit locus pulled back
-through the reg/spec projection (the per-layer `1 + readX_s` invertibility). The composite `W`/`P00`
-det conditions are `1` at `0` too, so shrinking the radius if needed keeps the support in the joint
-unit locus; the chosen radius suffices once `psiSplitRawL2` is filled (the raw correction is `ContDiffAt`
-on that support). -/
+bump as a full-split bump"). Its inner/outer radii are `jointUnitRadius/4`, `jointUnitRadius/2`, so its
+(closed) support sits inside the JOINT-unit locus `jointUnitSet` — where every joint-action denominator
+(`1 + readX_s`, and at `L = 2` also `P00`, `W`) is invertible — making the rational correction
+`ContDiffAt` on the support. -/
 noncomputable def cutoffBumpSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)) where
-  rIn := unitRadius H r hr hL / 4
-  rOut := unitRadius H r hr hL / 2
-  rIn_pos := by have := unitRadius_pos H r hr hL; linarith
-  rIn_lt_rOut := by have := unitRadius_pos H r hr hL; linarith
+  rIn := jointUnitRadius H r hr hL / 4
+  rOut := jointUnitRadius H r hr hL / 2
+  rIn_pos := by have := jointUnitRadius_pos H r hr hL; linarith
+  rIn_lt_rOut := by have := jointUnitRadius_pos H r hr hL; linarith
+
+/-- The (closed) support of the joint cutoff bump sits inside the joint-unit locus:
+`tsupport χ = closedBall 0 (ε/2) ⊆ ball 0 ε ⊆ jointUnitSet`. -/
+theorem tsupport_cutoffBumpSplit_subset_jointUnitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    tsupport (⇑(cutoffBumpSplit H r hr hL)) ⊆ jointUnitSet H r hr hL := by
+  rw [(cutoffBumpSplit H r hr hL).tsupport_eq]
+  refine subset_trans ?_ (ball_jointUnitRadius_subset H r hr hL)
+  intro x hx
+  rw [Metric.mem_closedBall] at hx
+  rw [Metric.mem_ball]
+  have hpos := jointUnitRadius_pos H r hr hL
+  show dist x 0 < jointUnitRadius H r hr hL
+  have hrout : (cutoffBumpSplit H r hr hL).rOut = jointUnitRadius H r hr hL / 2 := rfl
+  rw [hrout] at hx
+  linarith
 
 /-- The χ-cutoff joint action on `DeepestSplit`: `q + χ q • (psiSplitRawL2 q − q)`. The bump `χ`
 (`cutoffBumpSplit`, a fresh `ContDiffBump` at `0` on `DeepestSplit` whose support sits in the unit
@@ -1610,12 +1776,119 @@ theorem contDiffAt_psiSplitDeltaL2_of_mem_tsupport (H : Fin (L + 1) → ℕ) (r 
     (_hq : q ∈ tsupport (fun y => ((cutoffBumpSplit H r hr hL) y : ℝ))) :
     ContDiffAt ℝ (⊤ : ℕ∞) (psiSplitDeltaL2 H r hr hL) q := by
   rcases eq_or_ne L 2 with hL2 | hL2
-  · -- **L = 2: the real composite-inverse ContDiff (the heaviest leaf — NOT yet built).** The
-    -- correction `δ = psiSplitRawL2Core − id` carries `W⁻¹`, `P00⁻¹`, `A_s⁻¹`, smooth on the unit locus
-    -- (`tsupport (cutoffBumpSplit) ⊆ {dets ≠ 0}`), via the banked
-    -- `contDiffAt_matrix_inv_entry_of_det_ne_zero` + `contDiffAt_matrix_mul_entry` +
-    -- `contDiffAt_inv_one_add_readX_entry` through the encode/decode + reindex casts. Genuine S2.
-    sorry
+  · -- **L = 2: the genuine composite-inverse ContDiff (S2).** At `q ∈ tsupport ⊆ jointUnitSet` all four
+    -- joint dets are nonzero; `δ = psiSplitRawL2Core − id` rewrites (lens) to the payload triple, each
+    -- payload `ContDiffAt q` (core flat-decode, gauge `pi'`), assembled by `prodMk` + the CLE.
+    -- Extract the det conditions from `q ∈ tsupport ⊆ jointUnitSet`.
+    have hmem : q ∈ jointUnitSet H r hr hL :=
+      tsupport_cutoffBumpSplit_subset_jointUnitSet H r hr hL _hq
+    have hA0 : (l2A0 H r hr hL q).det ≠ 0 := by
+      have := hmem.1 (⟨0, by omega⟩ : Fin L); rwa [l2A0]
+    have hA1 : (l2A1 H r hr hL q).det ≠ 0 := by
+      have := hmem.1 (lastLayer hL); rwa [l2A1]
+    obtain ⟨hP00, hW⟩ := hmem.2 hL2
+    -- Rewrite `δ` to the payload triple at `q` (the lens decomposition).
+    have hδeq : psiSplitDeltaL2 H r hr hL
+        = fun q' => (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q')).1,
+            (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q'),
+              ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q')).2)) := by
+      funext q'
+      rw [psiSplitDeltaL2, psiSplitRawL2, dif_pos hL2]
+      exact psiSplitDeltaL2Core_eq_payload H r hr hL hL2 q'
+    rw [hδeq]
+    -- Core payload `ContDiffAt q` (flat-decode; each flat coord is a `l2T1p` entry or const-0).
+    have hcore : ContDiffAt ℝ (⊤ : ℕ∞)
+        (fun q' => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q')) q := by
+      have hcoe : (fun q' => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q'))
+          = fun q' => paramsEquivFlat (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q') := by
+        funext q'; rw [paramsEquivFlatCLE_coe]
+      rw [hcoe]
+      refine contDiffAt_pi.2 (fun k => ?_)
+      set d := (Fintype.equivFin (FlatIdx (deepestM H r))).symm k with hd
+      have hcoord : (fun q' => paramsEquivFlat (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q') k)
+          = fun q' => l2CoreΔTuple H r hr hL hL2 q' d.1.1 d.1.2 d.2 := rfl
+      rw [hcoord]
+      clear_value d
+      obtain ⟨⟨s₀, i₀⟩, j₀⟩ := d
+      rcases eq_or_ne s₀ (lastLayer hL) with hlast | hlast
+      · subst hlast
+        have heq : (fun q' => l2CoreΔTuple H r hr hL hL2 q' (lastLayer hL) i₀ j₀)
+            = fun q' => (l2T1p H r hr hL hL2 q' - l2T1 H r hr hL q') i₀ j₀ := by
+          funext q'; rw [l2CoreΔTuple, Function.update_self]
+        rw [heq]
+        have hsub : (fun q' : DeepestSplit H r (deepestNGauge H r) =>
+            (l2T1p H r hr hL hL2 q' - l2T1 H r hr hL q') i₀ j₀)
+            = fun q' => l2T1p H r hr hL hL2 q' i₀ j₀ - l2T1 H r hr hL q' i₀ j₀ := by
+          funext q'; rw [Matrix.sub_apply]
+        rw [hsub]
+        exact (contDiffAt_l2T1p_entry_at H r hr hL hL2 q hA0 hA1 hP00 hW i₀ j₀).sub
+          (contDiff_l2T1_entry H r hr hL i₀ j₀).contDiffAt
+      · have heq : (fun q' => l2CoreΔTuple H r hr hL hL2 q' s₀ i₀ j₀)
+            = fun _ : DeepestSplit H r (deepestNGauge H r) => (0 : ℝ) := by
+          funext q'; rw [l2CoreΔTuple, Function.update_of_ne hlast]; rfl
+        rw [heq]; exact contDiffAt_const
+    -- Gauge payload `ContDiffAt q` (per `RegGaugeIdx`; last Y-tag = `l2Y1p − l2Y1`, else const).
+    have hgaugeΔ : ContDiffAt ℝ (⊤ : ℕ∞) (l2GaugeΔ H r hr hL hL2) q := by
+      refine contDiffAt_pi.2 (fun idx => ?_)
+      obtain ⟨s, tag⟩ := idx
+      rcases tag with tagXY | tagZ
+      · rcases tagXY with tagX | ⟨i, j⟩
+        · have h0 : (fun q' : DeepestSplit H r (deepestNGauge H r) =>
+                l2GaugeΔ H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inl tagX)⟩) = fun _ => (0 : ℝ) := by
+            funext q'
+            show l2g' H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inl tagX)⟩
+              - regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inl tagX)⟩ = 0
+            rw [show l2g' H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inl tagX)⟩
+              = regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inl tagX)⟩ from rfl,
+              sub_self]
+          rw [h0]; exact contDiffAt_const
+        · by_cases hs : s = lastLayer hL
+          · subst hs
+            have hval : (fun q' : DeepestSplit H r (deepestNGauge H r) =>
+                  l2GaugeΔ H r hr hL hL2 q' ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+                = fun q' => l2Y1p H r hr hL hL2 q' i j - l2Y1 H r hr hL q' i j := by
+              funext q'
+              show l2g' H r hr hL hL2 q' ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+                - regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+                = l2Y1p H r hr hL hL2 q' i j - l2Y1 H r hr hL q' i j
+              congr 1
+              show (if h : (lastLayer hL) = lastLayer hL then l2Y1p H r hr hL hL2 q' i (h ▸ j)
+                  else _) = l2Y1p H r hr hL hL2 q' i j
+              rw [dif_pos rfl]
+            rw [hval]
+            exact (contDiffAt_l2Y1p_entry_at H r hr hL hL2 q hA0 hA1 hP00 hW i j).sub
+              (contDiff_l2Y1_entry H r hr hL i j).contDiffAt
+          · have h0 : (fun q' : DeepestSplit H r (deepestNGauge H r) =>
+                  l2GaugeΔ H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inr (i, j))⟩) = fun _ => (0 : ℝ) := by
+              funext q'
+              show l2g' H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inr (i, j))⟩
+                - regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩ = 0
+              rw [show l2g' H r hr hL hL2 q' ⟨s, Sum.inl (Sum.inr (i, j))⟩
+                = regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩ from by
+                show (if h : s = lastLayer hL then l2Y1p H r hr hL hL2 q' i (h ▸ j)
+                    else regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+                  = regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩
+                rw [dif_neg hs], sub_self]
+            rw [h0]; exact contDiffAt_const
+      · have h0 : (fun q' : DeepestSplit H r (deepestNGauge H r) =>
+              l2GaugeΔ H r hr hL hL2 q' ⟨s, Sum.inr tagZ⟩) = fun _ => (0 : ℝ) := by
+          funext q'
+          show l2g' H r hr hL hL2 q' ⟨s, Sum.inr tagZ⟩
+            - regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inr tagZ⟩ = 0
+          rw [show l2g' H r hr hL hL2 q' ⟨s, Sum.inr tagZ⟩
+            = regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2) ⟨s, Sum.inr tagZ⟩ from rfl, sub_self]
+        rw [h0]; exact contDiffAt_const
+    -- The gauge payload via the CLE, then its two projections.
+    have hgauge : ContDiffAt ℝ (⊤ : ℕ∞)
+        (fun q' => (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q')) q :=
+      ((regGaugeSlotCLE H r hr hL).symm.contDiff.contDiffAt).comp q hgaugeΔ
+    have hg1 : ContDiffAt ℝ (⊤ : ℕ∞)
+        (fun q' => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q')).1) q :=
+      (contDiffAt_fst).comp q hgauge
+    have hg2 : ContDiffAt ℝ (⊤ : ℕ∞)
+        (fun q' => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q')).2) q :=
+      (contDiffAt_snd).comp q hgauge
+    exact hg1.prodMk (hcore.prodMk hg2)
   · -- L ≠ 2: `psiSplitRawL2 = id`, so `δ = id − id = 0`, `ContDiffAt` by `contDiffAt_const`.
     have heq : psiSplitDeltaL2 H r hr hL
         = fun _ : DeepestSplit H r (deepestNGauge H r) =>
