@@ -419,5 +419,15 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND flat over SchurLoc. Base = SchurLoc, the in-chart base
 -- DIRECTION (Spec(sweepSigmaRing) is the SOURCE/TOTAL, NOT the base); reading this as fibre-family
 -- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
--- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
+-- pullback) — CLOSED by R5 in FibreProjectionCompat (below); global Flat π / FiberBundle still R1.
 import DLNFibre.Core.FibreBundleHeadline
+-- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt IS mult's
+-- comorphism multComap (gauge-transported) — schurToDsigAt_comp_localizeSchur, every pivot; +
+-- ProjCompatOverBaseChart (projection-compat + over-base triv + flatness). Closes "schurToDsigAt =
+-- mult's projection pullback"; global Flat π / target-side cocycle still residual (R1).
+import DLNFibre.Core.FibreProjectionCompat
+-- R5 target-side overlap (R1 partial): awayCongr' (generalized localization transport) +
+-- targetProductOverlapTransition (the double-localized pairwise transition OBJECT). The cocycle
+-- ROUND-TRIP proof is infra-blocked (kernel-cost on reducible double-localized type + missing
+-- AlgEquiv.trans_assoc/refl_trans in v4.29) — named residual, NOT claimed; global Flat π unbuilt.
+import DLNFibre.Core.FibreTargetOverlap
