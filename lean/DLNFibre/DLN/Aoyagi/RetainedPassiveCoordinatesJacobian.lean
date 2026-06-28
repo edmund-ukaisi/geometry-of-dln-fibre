@@ -3708,6 +3708,221 @@ theorem retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_abs_det_eq_one
   rw [retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_det_eq_one
     (ρ := ρ) (κ' := κ') hz, abs_one]
 
+private abbrev retainedPassiveRawA1passiveRestFamily
+    {M : ℕ} (ρ : Type*) (κ' : Fin (M + 2) → Type*) :=
+  retainedPassiveRawF2Family (M := M) ρ κ' ×
+    (retainedPassiveRawA3PassiveFamily (M := M) ρ κ' ×
+      (retainedPassiveRawCFamily (M := M) κ' ×
+        (retainedPassiveRawCtopFamily ρ ×
+          retainedPassiveRawF3Family (M := M) ρ κ')))
+
+private def retainedPassiveRawA1passiveRestF2CProjectionLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*} :
+    retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+      retainedPassiveRawF2CFamily (M := M) ρ κ' where
+  toFun w := (w.1, w.2.2.1)
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+private def retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (q : Fin (M + 1)) :
+    retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+      Matrix (κ' q.succ) ρ ℝ where
+  toFun w := Fin.lastCases w.2.2.2.2 (fun p => w.2.1 p) q
+  map_add' w w' := by
+    induction q using Fin.lastCases with
+    | last =>
+        simp only [Fin.lastCases_last]
+        rfl
+    | cast p =>
+        simp only [Fin.lastCases_castSucc]
+        rfl
+  map_smul' a w := by
+    induction q using Fin.lastCases with
+    | last =>
+        simp only [Fin.lastCases_last]
+        rfl
+    | cast p =>
+        simp only [Fin.lastCases_castSucc]
+        rfl
+
+private theorem retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt_apply_rawTupleRest
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (q : Fin (M + 1)) :
+    retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt
+        (ρ := ρ) (κ' := κ') q w.2 =
+      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w q := by
+  induction q using Fin.lastCases with
+  | last =>
+      unfold retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt
+      change Fin.lastCases w.2.2.2.2.2 (fun p => w.2.2.1 p) (Fin.last M) =
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w (Fin.last M)
+      simp [rawEdgeTupleA3, ofTopologyTuple]
+  | cast p =>
+      unfold retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt
+      change Fin.lastCases w.2.2.2.2.2 (fun p => w.2.2.1 p) p.castSucc =
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w p.castSucc
+      simp [rawEdgeTupleA3, ofTopologyTuple]
+
+set_option linter.style.longLine false in
+/-- The post-edge-pair passive `A1` correction, read from the already
+normalised `(F2,C)` pair and the unchanged lower-left raw readout. -/
+private def retainedPassivePostEdgePairA1passiveCorrectionLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+      retainedPassiveRawA1PassiveFamily (M := M) ρ :=
+  let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+  let sourcePair :
+      retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+        retainedPassiveRawF2CFamily (M := M) ρ κ' :=
+    (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm.toLinearMap.comp
+      retainedPassiveRawA1passiveRestF2CProjectionLinearMapAt
+  let X :
+      retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+        retainedPassiveRawF2Family (M := M) ρ κ' :=
+    (LinearMap.fst ℝ
+      (retainedPassiveRawF2Family (M := M) ρ κ')
+      (retainedPassiveRawCFamily (M := M) κ')).comp sourcePair
+  let Xsucc :
+      retainedPassiveRawA1passiveRestFamily (M := M) ρ κ' →ₗ[ℝ]
+        retainedPassiveRawF2SuccessorFamily (M := M) ρ κ' :=
+    retainedPassiveF2SuccessorFamilyLinearMap.comp X
+  LinearMap.pi fun p : Fin M =>
+    (retainedPassiveMatrixMulRightLinearMap (coord.solvedA3 p.succ)).comp
+        ((LinearMap.proj p.succ).comp Xsucc) +
+      (retainedPassiveMatrixMulLeftLinearMap (coord.F2 p.succ.succ)).comp
+        (retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt
+          (ρ := ρ) (κ' := κ') p.succ)
+
+set_option linter.style.longLine false in
+/-- After the target edge-pair shear, change only the passive `A1` field by
+subtracting the target-staged correction read from the normalised `(F2,C)`
+pair. -/
+def retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ≃ₗ[ℝ]
+      RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ :=
+  linearEquivUpperShear
+    (R := ℝ)
+    (M := retainedPassiveRawA1PassiveFamily (M := M) ρ)
+    (N := retainedPassiveRawA1passiveRestFamily (M := M) ρ κ')
+    (-(retainedPassivePostEdgePairA1passiveCorrectionLinearMapAt
+      (ρ := ρ) (κ' := κ') hz))
+
+set_option linter.style.longLine false in
+/-- Formula for the post-edge-pair passive `A1` raw-tuple shear. -/
+theorem retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let sourcePair :=
+      (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+        (w.2.1, w.2.2.2.1)
+    let Xsucc : retainedPassiveRawF2SuccessorFamily (M := M) ρ κ' :=
+      retainedPassiveF2SuccessorFamilyLinearMap (ρ := ρ) (κ' := κ') sourcePair.1
+    retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz w =
+      (fun p : Fin M =>
+          w.1 p
+            - Xsucc p.succ * coord.solvedA3 p.succ
+            - coord.F2 p.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w p.succ,
+        w.2) := by
+  apply Prod.ext
+  · funext p
+    simp [retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt,
+      retainedPassivePostEdgePairA1passiveCorrectionLinearMapAt,
+      retainedPassiveRawA1passiveRestF2CProjectionLinearMapAt,
+      retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt_apply_rawTupleRest,
+      retainedPassiveMatrixMulRightLinearMap,
+      retainedPassiveMatrixMulLeftLinearMap,
+      sub_eq_add_neg, add_left_comm, add_comm]
+  · rfl
+
+set_option linter.style.longLine false in
+/-- Formula for the inverse post-edge-pair passive `A1` raw-tuple shear. -/
+theorem retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_symm_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let coord := (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).toCoordinateData
+    let sourcePair :=
+      (retainedPassiveFormalRawF2CLinearEquivAt (ρ := ρ) (κ' := κ') hz).symm
+        (w.2.1, w.2.2.2.1)
+    let Xsucc : retainedPassiveRawF2SuccessorFamily (M := M) ρ κ' :=
+      retainedPassiveF2SuccessorFamilyLinearMap (ρ := ρ) (κ' := κ') sourcePair.1
+    (retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz).symm w =
+      (fun p : Fin M =>
+          w.1 p
+            + Xsucc p.succ * coord.solvedA3 p.succ
+            + coord.F2 p.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') w p.succ,
+        w.2) := by
+  apply Prod.ext
+  · funext p
+    simp [retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt,
+      retainedPassivePostEdgePairA1passiveCorrectionLinearMapAt,
+      retainedPassiveRawA1passiveRestF2CProjectionLinearMapAt,
+      retainedPassiveRawA1passiveRestEdgeTupleA3LinearMapAt_apply_rawTupleRest,
+      retainedPassiveMatrixMulRightLinearMap,
+      retainedPassiveMatrixMulLeftLinearMap,
+      sub_eq_add_neg, add_left_comm, add_comm]
+  · rfl
+
+/-- The post-edge-pair passive `A1` raw-tuple shear has determinant one. -/
+theorem retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_det_eq_one
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    LinearMap.det
+      (retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz :
+          RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+            RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) = 1 := by
+  simpa [retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt] using
+    linearEquivUpperShear_det_eq_one
+      (R := ℝ)
+      (M := retainedPassiveRawA1PassiveFamily (M := M) ρ)
+      (N := retainedPassiveRawA1passiveRestFamily (M := M) ρ κ')
+      (f := -(retainedPassivePostEdgePairA1passiveCorrectionLinearMapAt
+        (ρ := ρ) (κ' := κ') hz))
+
+/-- The post-edge-pair passive `A1` raw-tuple shear has absolute determinant
+one. -/
+theorem retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    |LinearMap.det
+      (retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz :
+          RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →ₗ[ℝ]
+            RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)| = 1 := by
+  rw [retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_det_eq_one
+    (ρ := ρ) (κ' := κ') hz, abs_one]
+
 end TargetEdgePairLinearMap
 
 set_option linter.style.longLine false in

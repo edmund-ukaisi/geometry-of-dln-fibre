@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-edge-pair `A1passive` raw-tuple shear
+
+Reproduction:
+`reproduction-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`.
+Review:
+`review-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`,
+PASS by xhigh `James the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_symm_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+and in `MatrixLinearDeterminant.lean`:
+
+```text
+linearEquivUpperShear_symm_apply
+```
+
+The map is explicitly post-edge-pair: it computes the source `F2` successor
+family from the formal inverse of the already-normalised `(F2,C)` pair, not
+from the pre-edge-pair target recovery recurrence.  It fixes
+`(F2,A3passive,C,Ctop,F3)` and changes only `A1passive`, so the determinant is
+the determinant of an upper product shear on `A1passive × rest`, hence one.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+Direct axiom audit reported `[propext, Classical.choice, Quot.sound]` for
+the new public post-edge-pair shear theorems, and `[propext, Quot.sound]` for
+`linearEquivUpperShear_symm_apply`.
+
+This does not yet compose the edge-pair and `A1passive` shears, prove the
+partial actual-derivative bridge, prove actual Frechet determinant equality,
+or prove measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 target edge-pair raw-tuple determinant
 
 Reproduction:

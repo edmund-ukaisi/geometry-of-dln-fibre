@@ -452,6 +452,15 @@ theorem linearEquivUpperShear_apply
     (linearEquivUpperShear f) x = (x.1 + f x.2, x.2) :=
   rfl
 
+@[simp]
+theorem linearEquivUpperShear_symm_apply
+    {R M N : Type*} [Semiring R]
+    [AddCommGroup M] [Module R M]
+    [AddCommGroup N] [Module R N]
+    (f : N →ₗ[R] M) (x : M × N) :
+    (linearEquivUpperShear f).symm x = (x.1 - f x.2, x.2) :=
+  rfl
+
 /-- An upper product shear has determinant one. -/
 theorem linearEquivUpperShear_det_eq_one
     {R M N : Type*} [CommRing R]

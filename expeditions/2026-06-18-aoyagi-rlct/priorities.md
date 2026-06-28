@@ -19,6 +19,49 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-edge-pair `A1passive` raw-tuple shear
+
+The target normalizer frontier now has the next determinant-one raw-tuple
+component after the target edge-pair shear.  New public Lean names:
+
+```text
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_symm_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+New generic helper:
+
+```text
+linearEquivUpperShear_symm_apply
+```
+
+The post-edge-pair shear fixes `(F2,A3passive,C,Ctop,F3)` and changes only
+`A1passive`.  Its correction reads the successor `F2` family from the already
+normalised post-edge-pair `(F2,C)` pair by applying
+`(retainedPassiveFormalRawF2CLinearEquivAt hz).symm`; it does not use the
+pre-edge-pair target recovery recurrence `retainedPassiveTargetRecoveredF2At`,
+which would re-normalise the pair and read the raw `A1` field.  The determinant
+is one because the raw tuple is already in product order `A1passive × rest` and
+the map is the upper shear `(A1,rest) ↦ (A1 - L(rest), rest)`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, and code-only forbidden-marker search passed.
+Direct axiom audit reported `[propext, Classical.choice, Quot.sound]` for
+the new public post-edge-pair shear theorems, and `[propext, Quot.sound]` for
+`linearEquivUpperShear_symm_apply`.  Xhigh review by `James the 2nd` passed.
+
+This is not the composed target normalizer and does not yet prove the partial
+actual-derivative bridge after edge-pair composition.  It also does not prove
+actual raw-order Frechet determinant equality, source-prior transport, normal
+crossings, pole order, or RLCT.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, target edge-pair raw-tuple determinant
 
 The target edge-pair branch now proves determinant one for the full raw-tuple

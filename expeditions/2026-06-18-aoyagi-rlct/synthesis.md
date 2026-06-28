@@ -48,6 +48,60 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-Edge-Pair `A1passive` Raw-Tuple Shear
+
+`RetainedPassiveCoordinatesJacobian.lean` now packages the next raw-tuple
+target normalisation component after the target edge-pair shear.  New public
+Lean names:
+
+```text
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_symm_apply
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+`MatrixLinearDeterminant.lean` also has
+`linearEquivUpperShear_symm_apply`, a generic formula for the inverse of the
+existing upper product shear.
+
+The new shear fixes the post-edge-pair rest fields
+`(F2,A3passive,C,Ctop,F3)` and subtracts from `A1passive` the target-staged
+correction
+
+```text
+Xsucc(p.succ) * coord.solvedA3(p.succ)
+  + coord.F2(p.succ.succ) * rawEdgeTupleA3(w)(p.succ),
+```
+
+where `Xsucc` is computed from
+`((retainedPassiveFormalRawF2CLinearEquivAt hz).symm (w.F2,w.C)).1`.  This is
+the post-edge-pair choice: `retainedPassiveTargetRecoveredF2At z w` is the
+pre-edge-pair recovery recurrence and would read raw `A1` again.  The
+determinant-one proof is the product-shear calculation on the existing tuple
+order `A1passive × rest`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, and code-only forbidden-marker search passed.
+Direct axiom audit reported `[propext, Classical.choice, Quot.sound]` for
+the new public post-edge-pair shear theorems, and `[propext, Quot.sound]` for
+`linearEquivUpperShear_symm_apply`.
+Xhigh review by `James the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-post-edge-pair-a1passive-raw-tuple-shear.md`.
+
+This is not the composed target normalizer, not the actual raw-order Frechet
+determinant equality, and not source-prior transport, normal crossings, pole
+order, or RLCT.  The next narrow target is the composition wrapper and partial
+actual-derivative bridge for the edge-pair-then-`A1passive` stages.
+
 ## Latest A2 Target Edge-Pair Raw-Tuple Determinant
 
 `RetainedPassiveCoordinatesJacobian.lean` now proves determinant one for the

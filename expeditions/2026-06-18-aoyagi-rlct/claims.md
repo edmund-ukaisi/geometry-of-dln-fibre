@@ -141,7 +141,15 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  target edge-pair branch now has a full raw-tuple linear equivalence fixing
+  post-edge-pair passive `A1` branch now has a raw-tuple linear equivalence
+  fixing `(F2,A3passive,C,Ctop,F3)`, changing only `A1passive`, and proving
+  determinant one/absolute determinant one by the product-shear calculation on
+  `A1passive × rest`.  Its correction reads the successor `F2` family from
+  `(retainedPassiveFormalRawF2CLinearEquivAt hz).symm (w.F2,w.C)`, the
+  already-normalised post-edge-pair pair, rather than from the pre-edge-pair
+  target recovery recurrence.  This is not yet the composed target normalizer
+  or actual raw-order determinant equality.  The target edge-pair branch now
+  has a full raw-tuple linear equivalence fixing
   `A1passive`, `A3passive`, `Ctop`, and `F3`, replacing only `(F2,C)` by the
   target edge-pair shear, and using only the formal inverse's first component
   as recovered `X` in the inverse map.  The same full raw-tuple equivalence
