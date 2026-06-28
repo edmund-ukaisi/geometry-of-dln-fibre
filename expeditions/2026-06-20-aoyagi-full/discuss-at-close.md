@@ -761,3 +761,77 @@ L2 leg has a research-risk at 3289; a clean L=2 instance is bounded + in progres
 bounded L=2 path autonomously; surfaced because 3289 is the genuine general-L wall-candidate. Also a process note: I
 had carried the stale "20 sorries / entangled" L2 read for ~2 ticks (used it to justify holding L2) — the scout's
 source-trace corrected it; lesson = re-derive sorry-counts from `grep -c '^\s*sorry'` + the actual term, not synthesis prose.
+
+## 39. R1-UPPER ∀M N4 general-corank lift hit a research-adjacent obstruction (2026-06-28) — the (A) "no wall" premise under test at the long pole.
+genm-recstep STOP+reported (correctly, BEFORE any Lean build) that the general-corank N4 finiteness recursion has a
+genuine research-adjacent gap, not laborious plumbing. The closed (3,3,4) depth-2 weld (`core_schur2_lt_top`, banked
+sorry-free) is a TERMINAL base case — Sc is a scalar at corank-2, so the recursion is never exercised; corank-3 is
+where the corank-(r−1) Schur core is first a non-leaf and the real recursion appears. Two gates: O1 = a j×j-minor-
+dominant chart cover (the minors are degree-j polynomials, not coordinates, so the banked `pivotBlowupOn` doesn't
+apply — NEW covering machinery, sizeable); O2 (the kill-condition) = the Sc-core pushforward density inequality
+(`Sc = M22−M21·M11⁻¹·M12` is rational in R, so recursing on `‖Sc·S_bot‖²` via the corank-(r−1) IH needs `Sc-law ≼
+free-(r−j)-box` with constants independent of the spectator entries — if it fails, the recursion plan breaks). I
+commissioned a `pen-and-paper` (n4-o2-adjudicate) to settle O2 at corank-3 BEFORE declaring a wall or sinking a build.
+OPERATOR AWARENESS: this is exactly where the (A) "no research wall" premise was always least secure (the N4 long
+pole, flagged HIGH-risk from the start). Decorrelating first per the mandate (operator reserved for *confirmed*
+research walls). If O2's verdict is OBSTRUCTION (the pushforward fails / needs spectator-dependent constants), the
+∀M R1-UPPER finiteness needs an operator-level re-scope or a different N4 route — I'll surface it as a decision then.
+NOT a blocker now: the corank-2 weld + N1/N2a/N2b/N3a/N3b stand; R1-LOWER, L2, D1 continue. The fallback if O2 walls:
+R1-UPPER's finiteness already has a CITED route (Watanabe's universal `rlct ≤ ½codim`) — the from-scratch N4 is the
+"go the distance" upgrade, and a scoped retreat to the cited upper bound keeps the headline intact if N4 proves a wall.
+
+**Item 39 RESOLVED (2026-06-28, same day):** `n4-o2-adjudicate` (pen-and-paper, exact algebra r=3,j=1 + r=4,j=2 +
+decorrelated Codex-xhigh) returned **O2 HOLDS (witness)**. The controller's "pushforward density `dR ≽ ρ·dSc`"
+framing was the wrong lens — the recursion never changes variables R→Sc; at fixed spectators `M22↦Sc` is a pure
+translation (Jac≡1) into a fixed spectator-independent box, so the Sc-core R-integral is spectator-uniformly
+dominated by the free-box corank-(r−j) JOINT core (the IH). The additive threshold survives (Morse block integrated
+jointly). O1 (the minor-dominant cover) is a build cost, not a math wall (minorpivot-cert BUILD-READY). **The ∀M
+R1-UPPER N4 is bounded-after-machinery; the (A) "no research wall" premise SURVIVES the N4 long pole.** No operator
+re-scope needed; genm-recstep re-engaged on the build (corank-3 first; the one fragile Lean point is the JOINT-core
+IH statement shape). The cited-rlct fallback stays unused. Net: the decorrelation both confirmed the gate AND
+corrected the controller's framing — the bedrock-checkpoint discipline working a fourth time this expedition.
+
+### Item 40 — D1 is L2-COUPLED via a shared gauge-slice; build it REUSABLE (heartbeat 2026-06-28)
+Goal-distance map (this tick, verified against Skeleton): the headline `aoyagi_learning_coefficient` (1725) rests on
+exactly four named sorries — **1234 `resolution_charts` (R1)** [staffed: genm-boundary LOWER + genm-c3wire/genm-recstep
+UPPER], **1131 `deepest_regular_core_normal_form` (L2)** [staffed: genm-l2 KC1 + the producer #102], **1177
+`rlctAt_deepest_le_of_optimal` (D1)** [UNSTAFFED], and **1707 `aoyagiTheta_eq` (A2/θ)** [secondary, off the λ path,
+standing decision 6]. A1 (`lambdaCore_eq_clean`, the closed-form↔core-value Karamata bridge, 4246) is **PROVED** — so
+the "headline arithmetic" is NOT an open decoupled piece (it was a candidate 5th front; recon retired it).
+
+**D1 finding (re-read cert #112 / thread 04-d1-scope):** D1≥ is value-free and closes parallel to R1, but its hard
+obligation **(a)** — the homogeneous-residual constant-rank chart at an arbitrary optimal `v` — is *the same
+gauge-slice / Morse-with-parameters machinery* as L2's `deepest_regular_core_normal_form` (#44/1131). So D1(a) is
+**L2-coupled, not a clean decoupled front** — spawning a D1 Lean build now would front-run L2's unvalidated gauge-slice
+machinery (the same "don't stand on an unvalidated instance" bar applied to genm-recstep's recStep this morning).
+Obligation **(b)** (the fibre-cone closure `prod(t•A)=t^L·prod A`, pure algebra) IS decoupled + small.
+
+**ARCHITECTURE ITEM (action when the L2 producer phase #102 starts):** the producer's gauge-slice lemma should be built
+as a REUSABLE `local_constant_rank_chart` interface that BOTH L2 (1131) and D1(a) (1177) consume, rather than a
+producer-internal specialization. If built reusable, D1 collapses to (a)=reuse + (b)=pure algebra. Surface to genm-l2
+when it transitions KC1 → producer; don't block. Net for this tick: the critical path is at **maximal sound
+parallelism** (4 fronts on named sorries); no further front is warranted without front-running a dependency.
+
+### Item 41 — FRAMING CORRECTION: the ∀M-smeared lift is materially larger than "template parametrization" (2026-06-28)
+genm-boundary (R1-LOWER smeared, bg `a223…`) rested at a genuine wall with a finding that **corrects the controller's
+de-risking**. I had de-risked the ∀M-smeared lift (UPDATE-191) to "3 bounded families, all r·c≤2 — just parametrize
+the (1,2,1)/(2,3,1)/(1,3,2) validate-small templates, charge through." genm-boundary + a decorrelated Codex
+(`genM11-arch`) found this **under-estimates the (1,1) family** (34/46, the largest): it spans **L∈{2,3,4}** with
+varying bottleneck layer + flatDim, and for L≥3 the front `P = A⁰·A¹·…` is a **degree-(L−1) matrix product**. The
+validate-smalls' per-M explicit reshape (`packNNN`/`finNEquivFlatIdxNNN`/`splitN`) is **scaffolding, not the ∀M
+substrate** — it can't generalize over varying L/flatDim. The lift must adopt the **boundary-CLEAN "Option-A"
+flat-coordinate architecture** (generic `deepestCoords`/`paramsEquivFlat_symm_decode`/`LossHomogeneity`, front product
+carried abstractly), not a template reshape.
+
+**Still a BOUNDED build, NOT a research wall** (per the ambition calibration): the missing piece — the front-bottleneck
+→ rank-one bridge — is standard linear algebra (product through a `Text=r=1` width-1 layer ⟹ likely a literal outer
+product `u·vᵀ` ⟹ rank-one columns). genm-boundary banked the load-bearing generic cancellation
+(`scalarGram_cancel_of_rankOneColumns`, sorry-free/S2-free/validated-5/5, on branch `aoyagi-full-genM-smeared-lift`,
+NOT yet on canonical) and rested soundly at the fresh-infrastructure sub-target rather than sinking it silently under a
+"charge through" framing. **Controller decision:** took genm-boundary's recommendation (b)-then-(a) — spawned a
+decorrelated pen-and-paper (`genm-frontrank`) to adjudicate the front-bottleneck → rank-one structural fact (mechanism
++ exact statement + minimal Lean bridge + whether the (2,1)/(1,2) families also need Option-A) BEFORE the large
+formalise, given the framing was just corrected (bedrock-checkpoint: decorrelate before a large fresh build). genm-boundary
+stood down; its lemma stays banked on the feature branch (integrate the (1,1) atom as a complete unit, not the lone lemma).
+**Operator note:** the R1-LOWER smeared branch is a larger build than synthesis UPDATE-191 implied; no research wall,
+but the "3 quick template parametrizations" estimate was wrong. Watching whether the recalibration extends to all 3 families.

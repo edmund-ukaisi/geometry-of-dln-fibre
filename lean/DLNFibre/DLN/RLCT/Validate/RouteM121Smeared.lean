@@ -702,6 +702,63 @@ theorem routeMCore_box_diverges_of_MPChart {L : ℕ} (M : Fin (L + 1) → ℕ)
     _ ≤ ∫⁻ u in phi ⁻¹' (cubeBox (routeMAmbient M) ε), g (phi u) := lintegral_mono_set hSsub
     _ = ∫⁻ x in cubeBox (routeMAmbient M) ε, g x := hpre
 
+/-! ### The radial-MP-chart box-divergence (route b, `minAdm ≥ 2` — radial Jacobian
+`|z|^{minAdm−1}`)
+
+For `minAdm ≥ 2` the smeared chart `φ = ψ ∘ R` has a RADIAL blow-up `R` (det `|z|^{minAdm−1} ≠ 1`,
+so
+`φ` is NOT measure-preserving). The reusable assembly (Codex `radial-mp-assembly`): `ψ = Q ∘ shear`
+is
+the measure-preserving measurable-embedding part (the rational pole confined here, NEVER
+differentiated);
+`R` is the polynomial radial (differentiable everywhere, the ONLY Jacobian carrier). The source
+certificate `hsrc` is now WEIGHTED — `∫_S |u_p|^{minAdm−1}·(loss∘φ)^{−c} = ⊤` (the radial Jacobian
+absorbed into the binding-axis divergence: exponent `minAdm−1−2c ≤ −1` from `c ≥ minAdm/2`).
+`routeMCore_box_diverges_of_MPChart` is the `R = id, h = 0` special case (kept as the lighter
+sibling). -/
+
+/-- **The radial-MP-chart box-divergence (route b, reusable, `minAdm ≥ 2`).** `φ = ψ ∘ R`, `ψ`
+measure-preserving + measurable embedding (the rational/MP part), `R` the radial blow-up
+(`HasFDerivWithinAt`/`InjOn`/`|det| = |u_p|^{minAdm−1}` on a certified preimage source `S`), and a
+WEIGHTED source-divergence `∫_S |u_p|^{h}·(loss∘ψ∘R)^{−c} = ⊤`. The c-o-v: `ψ`-preimage
+(`setLIntegral_comp_preimage_emb`) + `R`-image Jacobian
+(`lintegral_image_eq_lintegral_abs_det_fderiv_mul`). -/
+theorem routeMCore_box_diverges_of_RadialMPChart {L : ℕ} (M : Fin (L + 1) → ℕ)
+    (ψ R : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ))
+    (D : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) →L[ℝ] (Fin (routeMAmbient M) → ℝ))
+    (p : Fin (routeMAmbient M)) (h : ℕ)
+    (hmp : MeasurePreserving ψ (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume)
+    (hemb : MeasurableEmbedding ψ) (c' : ℝ) (ε : ℝ)
+    (hsrc : ∃ S : Set (Fin (routeMAmbient M) → ℝ), MeasurableSet S ∧
+      S ⊆ (fun u => ψ (R u)) ⁻¹' (cubeBox (routeMAmbient M) ε) ∧
+      (∀ u ∈ S, HasFDerivWithinAt R (D u) S u) ∧ Set.InjOn R S ∧
+      (∀ u ∈ S, |(D u).det| = |u p| ^ h) ∧
+      (∫⁻ u in S, ENNReal.ofReal (|u p| ^ h)
+        * ENNReal.ofReal (|routeMCore M (ψ (R u))| ^ (-c'))) = ⊤) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  obtain ⟨S, hSmeas, hSpre, hRderiv, hRinj, hRdet, hSdiv⟩ := hsrc
+  set g := fun x : Fin (routeMAmbient M) → ℝ => ENNReal.ofReal (|routeMCore M x| ^ (-c')) with hg
+  -- ψ-preimage c-o-v: ∫_{ψ⁻¹(cubeBox)} g∘ψ = ∫_{cubeBox} g
+  have hψ : ∫⁻ y in ψ ⁻¹' (cubeBox (routeMAmbient M) ε), g (ψ y)
+      = ∫⁻ x in cubeBox (routeMAmbient M) ε, g x :=
+    hmp.setLIntegral_comp_preimage_emb hemb g (cubeBox (routeMAmbient M) ε)
+  -- R '' S ⊆ ψ⁻¹(cubeBox) (since S ⊆ (ψ∘R)⁻¹(cubeBox))
+  have hRimage : R '' S ⊆ ψ ⁻¹' (cubeBox (routeMAmbient M) ε) := by
+    rintro y ⟨u, hu, rfl⟩; exact hSpre hu
+  -- R-image Jacobian c-o-v on S
+  have hcov : ∫⁻ y in R '' S, g (ψ y)
+      = ∫⁻ u in S, ENNReal.ofReal (|u p| ^ h) * g (ψ (R u)) := by
+    rw [lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hSmeas hRderiv hRinj (fun y => g (ψ y))]
+    refine setLIntegral_congr_fun hSmeas (fun u hu => ?_)
+    rw [hRdet u hu]
+  apply top_le_iff.1
+  calc (⊤ : ℝ≥0∞)
+      = ∫⁻ u in S, ENNReal.ofReal (|u p| ^ h) * g (ψ (R u)) := hSdiv.symm
+    _ = ∫⁻ y in R '' S, g (ψ y) := hcov.symm
+    _ ≤ ∫⁻ y in ψ ⁻¹' (cubeBox (routeMAmbient M) ε), g (ψ y) := lintegral_mono_set hRimage
+    _ = ∫⁻ x in cubeBox (routeMAmbient M) ε, g x := hψ
+
 /-! ### The `(1,2,1)` source certificate `hsrc` + the atom (the bounded finish, route b)
 
 `S = subBox121 δ` (Codex `mp-final-step`): `a = u 0 ∈ [δ/2, δ]` (bounded away from the pole),
