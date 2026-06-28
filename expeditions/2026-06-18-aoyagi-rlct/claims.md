@@ -141,6 +141,11 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
+  positive-tail terminal `F3` bridge now has a target-only `dEarly` wrapper,
+  replacing the source-staged recursive early lower-left derivative by
+  `retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt (M := M) ... 0`
+  on actual raw-order derivative targets, while preserving the terminal
+  `dLast#` factor and the order `- dEarly * solvedA1(last)`; the
   retained-passive lower-left derivative frontier now has a full recursive
   target-only derivative for the zeroed-final lower-left tail.  It target-stages
   the current solved-`A1`, stored-`C`/`Cnext`, solved-`A1` suffix `dPsucc`

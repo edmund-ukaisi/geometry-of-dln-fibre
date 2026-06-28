@@ -48,6 +48,50 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 F3 Positive-Tail Target-Only dEarly
+
+`RetainedPassiveCoordinatesJacobian.lean` now has target-only wrappers for the
+positive-tail terminal `F3` bridge:
+
+```text
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+In the positive-tail setup the tuple parameter is `M := M+1`, while the
+lower-left early-tail derivative is the target-only recursion with parameter
+`(M := M)` at index `0`.  On actual raw-order derivative targets, the previously
+proved comparison theorem rewrites this target-only value to the source-staged
+recursive value, so the existing recursive `F3` bridge and recovery theorem
+apply directly.  The terminal `dLast#` factor is unchanged, and the matrix
+order remains
+
+```text
+- dEarly * coord.solvedA1 (Fin.last (M+1)).
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-positive-tail-target-only-dearly.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-positive-tail-target-only-dearly.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-target-only-dearly.md`,
+PASS by xhigh `Poincare the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched files was clean; direct axiom audits for the two new
+proof theorems reported only `[propext, Classical.choice, Quot.sound]`.
+
+This is not a target-side linear equivalence, determinant-one target normalizer,
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.  The next target remains the
+target-side normalizer/shear package and determinant control; a small generic
+determinant rung would be abs-det-one wrappers for the existing shear/product
+linear equivalences.
+
 ## Latest A2 Recursive Target-Only Lower-Left Tail
 
 `RetainedPassiveCoordinates.lean` now records the pure positive-suffix algebra

@@ -19,6 +19,47 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28
+
+The positive-tail terminal `F3` bridge now has a target-only `dEarly` wrapper.
+New Lean names:
+
+```text
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+In the positive-tail setup `z : RetainedPassiveRawTopologyTuple (M := M+1)`,
+the source-staged early lower-left derivative slot is replaced by
+
+```text
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+  (M := M) hz ((fderiv ℝ raw z) v) 0 (Nat.zero_le (M + 1)).
+```
+
+The proof is only the previously proved equality between this target-only
+recursion and the source-staged lower-left recursion at `m = 0`, followed by
+the existing recursive `F3` bridge and recovery theorem.  The terminal
+`dLast#` factor and the noncommutative order
+`- dEarly * coord.solvedA1 (Fin.last (M+1))` are unchanged.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed, full `DLNFibre`
+build passed with only pre-existing warning noise, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Poincare the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-positive-tail-target-only-dearly.md`.
+
+This does not construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.
+
+Next frontier: assemble the target-side normalizer/shear package and determinant
+control from the target-staged `Ctop`, `F3`, current/suffix `A1`, `Cnext`, and
+lower-left pieces; the safest first determinant rung remains generic
+abs-det-one wrappers for existing shear/product equivalences.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-27
 
 The target-normalizer frontier now has the full recursive target-only

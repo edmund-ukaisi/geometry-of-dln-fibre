@@ -18,6 +18,42 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 positive-tail `F3` target-only `dEarly`
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-positive-tail-target-only-dearly.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-positive-tail-target-only-dearly.md`.
+Review:
+`review-a2-retained-passive-f3-positive-tail-target-only-dearly.md`, PASS by
+xhigh `Poincare the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recovers_F3
+```
+
+The positive-tail tuple parameter is `M := M+1`, and the early lower-left slot
+is the target-only recursive lower-left derivative with parameter `(M := M)` at
+index `0`.  The proof rewrites that value to the already-proved source-staged
+recursive expression and reuses the existing recursive `F3` bridge.  The
+terminal `dLast#` factor is unchanged, and the matrix order remains
+`- dEarly * coord.solvedA1 (Fin.last (M+1))`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+
+This does not construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, normal crossings, pole order, or
+RLCT.
+
+Next frontier: assemble the target-side normalizer/shear package and determinant
+control from the staged target-side derivative pieces.
+
 ## 2026-06-27 A2 recursive target-only lower-left tail
 
 Reproduction:
