@@ -30,6 +30,20 @@ Target: `∫_{R∈matBox 3 3 T} ∫_{S∈matBox 3 4 T} ‖R·S‖_F^{−2c'} < �
 So corank-3 BOTTOMS OUT in `core_schur2_lt_top` (no fresh general-r induction yet) — but the leaf is
 `core_schur2_lt_top` AT THE SHIFTED EXPONENT `c'−2`, NOT `schurInner_S_le` at threshold 2.
 
+## CORRECTION (Codex-confirmed) — the inner is R-INTEGRATED, NOT fixed-R
+
+A second design check (Codex xhigh) caught a subtlety I nearly built wrong: the corank-3 inner per-chart
+object must keep angular `R` **INTEGRATED** (`∫_{R-ang}∫_S`), NOT a fixed-`R` lemma like corank-2's
+`schurInner_S_le`. At FIXED `R`, the residual `‖Sc·S_bot‖²` (Sc 2×2) contributes its full threshold only
+when Sc is full-rank; the `{Sc rank-drop}` locus has POSITIVE measure in the fixed-`R` slice, forcing the
+exponent back to 2 (undershoot). Integrating the angular coords lets the corank-2 estimate absorb that
+locus. corank-2 worked fixed-`R` only because its residual was a SCALAR Sc (always a Morse block in S
+regardless of Sc's value). **So corank-3 does NOT factor through a fixed-R inner lemma** — no
+`schurInner3_S_le` analog; the headline mirrors `core_schur2_lt_top` one `r` up, R-integrated throughout.
+The Morse peel (row-0 vs S-row0) removes ALL row-0 terms — the residual depends only on M21,M22,S_bot, no
+row-0 coupling. M22 lives in free box-coords (ratios ∈[-1,1]) so `M22↦Sc` is a free-coord translation,
+Jac≡1 → `core_schur2_lt_top` applies at exponent `c'−2`.
+
 ## Genuinely-new pieces (vs corank-2)
 - The JOINT-core SHIFTED peel (corank-2 had both blocks Morse → both leaves; corank-3 has a Morse top +
   a corank-2 residual → peel top, recurse-via-core_schur2 the residual at the shifted exponent).
