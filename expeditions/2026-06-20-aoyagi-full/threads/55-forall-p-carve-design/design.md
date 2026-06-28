@@ -707,3 +707,65 @@ the controller to either (a) bless capstone+RR4-cherry-pick as my build base, or
 integration branch that already has the union, or (c) have #143's owner produce the union base first. Pending
 that, I CANNOT green-confirm a base, so the build is HELD at the base gate (correctly — Item-58 says confirm
 the 3 prereqs GREEN before extending, and no base currently provides them).
+
+## 12. directMorse DESIGN — Codex-corrected (2026-06-28, decorrelated xhigh, repo-verified)
+
+After the base landed, I studied the p=4 cap-B bases to build `schurCoreP_directMorse` and found my §10.3
+"uniform Morse over the whole window" sketch was WRONG — the p=4 cap-B bases (schurCore4_one r=1,
+core_schur2_lt_top r=2) use the SAME r²-chart RADIAL COVER as the firing, with the angular integral bounded
+WITHOUT recursion. Fired a decorrelated Codex xhigh pass (`codex/directMorse-design-{prompt,answer}.md`) to
+nail the exact angular bound. Corrected design:
+
+### 12.1 The cap-B angular bound (Codex-corrected; the §10.3 sketch was naive)
+
+- WRONG (my §10.3): `frobSq(R·S) ≥ c₀·frobSq(S)` (a uniform norm bound). Codex: **FALSE** — `R` can annihilate
+  `S` (e.g. `R = diag(1,0,…)`, `S` with zero top row). VERIFIED counterexample. The pivot controls only the
+  SHEARED TOP ROW, not all of `S`.
+- RIGHT: the SAME N2b one-pivot Schur/Morse lower bound the carve uses (`schur_minorPivot_split` j=1,
+  already p-parametric), THEN DROP the residual `frobSq(Sc·Sbot)` term (cap-B doesn't need it) and bound the
+  surviving sheared-top-row Morse factor by the generic Morse leaf:
+      frobSq(R·S)^{−c'} ≤ c₀^{−c'} · (∑_q (S₀q + ∑_a b_a·Sbot_aq)²)^{−c'}
+  shear `S₀ ↦ Τ = S₀ + b·Sbot` (shifted box ⊆ `morseBox p (max 1 (r·T))`), then
+      ∫_{S₀} (…) ≤ ∫_{Τ∈morseBox p K} (∑_q Τq²)^{−c'} < ⊤   for c' < p/2  (generic `sumSqND_box_lt_top`).
+  So directMorse proves **`c' < min(p, r²)/2`** (angular `c'<p/2` × radial `c'<r²/2`). This covers cap-B
+  exactly (binding stratum t=0 ⟹ `lam = r²/2 ≤ p/2`, so the window `c'<lam r ≤ min(p,r²)/2` is inside). Above
+  `p/2` (cap-A) directMorse is NOT enough — that's the peel branch. The dispatch `lam r vs p/2` (refinement 1)
+  is exactly this boundary. CONSISTENT.
+
+### 12.2 Codex's "fixed-S route fails" (rules OUT a tempting shortcut)
+
+Do NOT supply `radial_loss_chart_lt_top`'s `hSfin` via a fixed-`S` lemma `∫_R frobSq(R·S)^{−c'}<⊤`: it FAILS
+at `S=0` / low-rank `S`, and even a.e.-fixed-`S` loses the codimension in `S` needed for JOINT integrability.
+directMorse must be the joint (R-angular, S) integral via the shear+Morse-leaf, NOT radial_loss_chart with a
+per-S hSfin. (radial_loss_chart stays useful for the cap-A peel where the IH supplies a genuine joint hSfin.)
+
+### 12.3 REPO FIND that shrinks the plumbing (Codex's "bite" is smaller than it inferred)
+
+Codex's top risk was "p-generalize the Fin 4 chart plumbing." I VERIFIED the repo: `RouteMSchurGenCover.lean`
+(on the genm-pbuild base, sorry-free) ALREADY has the `(r,p)`-PARAMETRIC outer cover — `gFlatGen (r p)`,
+`matBoxGen_outer_flat (r p)`, `gFlatGen_cover_sum (r p)`. So the r²-chart cover is DONE p-general; I do NOT
+rebuild it. The remaining `Fin 4 → Fin p` work is the narrower PER-CHART angular layer:
+`innerSGen`/`stepShearG_r`/`frobSqTopRow_eq_shear` (all `Fin 4` at RouteMSchurFiring:275/1405/1462), which
+BOTH directMorse and the peel branch share. `schur_minorPivot_split` + `sumSqND_box_lt_top` are already
+p-parametric (verified). So the shared `Fin p` plumbing = {top-row identity, stepShear, innerSGen} p-versions.
+
+### 12.4 Corrected lemma decomposition + build order (revises §9.5/§10.3)
+
+SHARED `Fin p` chart plumbing FIRST (both branches need it), then the two branches:
+1. `frobSqTopRowP_eq_shearP` [LOW] — p-general top-row identity (`Fin 4 → Fin p` in frobSqTopRow_eq_shear).
+2. `stepShearP_r` [MED] — p-general `stepShearG_r` over `morseBox p`.
+3. `innerSGenP` + its measurability — p-general `innerSGen`.
+Then the cap-B branch:
+4. `innerSGenP_directMorse_le_const` [MED] — N2b j=1 lower bound + shear + DROP residual; uniform in angular z.
+5. `schurRatioResidP_capB_lt_top` [LOW] — integrate the uniform inner bound over the bounded ratio box.
+6. `schurCoreP_directMorse` [MED] — `gFlatGen` cover (DONE) + radial axis (DONE) + (5).
+Then the cap-A branch (the carve 4→p) reuses 1–3 + the IH + the residual (NOT dropped) + the recursion.
+
+REVISED RISK: the shared plumbing (1–3) is the real bulk (the carve's `Fin 4` machinery, ~mechanical but
+large); directMorse (4–6) is then ~120 LoC of genuinely-new cap-B content. NO research wall. The build order
+flips: shared `Fin p` plumbing BEFORE either branch (directMorse and peel both consume it). This is the one
+real structural correction over §10.3 (which treated directMorse as standalone-trivial).
+
+KILL-CONDITION status: this is the "2nd mechanical-looking that's structural" the controller flagged — caught
+it by studying the p=4 bases + Codex, BEFORE building. Not a wall (the math is the carve's own N2b bound,
+residual-dropped); a build-order + decomposition correction. Proceeding to build the shared `Fin p` plumbing.
