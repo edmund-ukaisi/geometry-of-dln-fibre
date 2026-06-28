@@ -48,6 +48,53 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Endpoint Equivalences From Cardinalities
+
+The endpoint-transported Case 2 wrappers now have a finite constructor for the
+equivalence data they require:
+
+```text
+case2EndpointTransportEquivs_of_card_eq
+```
+
+This declaration lives in `Case2ResidualFactorProduct.lean` as a
+`noncomputable def`, because it returns equivalence data rather than a
+proposition.  It constructs `eNext : tau ~= Case2ResidualColIndex n S (J + 1)`
+from an explicit `hNext` cardinality equality, and constructs endpoint
+equivalences pointwise from
+`Fintype.card (case2PostPivotTwoEdgeDomain n S J tau q) =
+Fintype.card (kappa q)`.
+
+The fixed-base source-data package also now gives the endpoint complement size:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank
+```
+
+For each `q : Fin (N + 1)`, it rewrites the cardinality of
+`throughSubspaceEndpointComplementIndex (reverseVertex W) (reverseEdge W B) U0 q`
+as `H (q.rev.val + 1) - r`.  The proof uses
+`paperEndpointEndpointComplementIndex_card_eq_layerSubRank`,
+`sourceData.dimensionConvention q.rev`, and
+`sourceData.localSourceCertificate.source_basepoint.1` together with the
+basepoint complement certificate.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+`env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb ...`, rebuilding
+`RegularSuspensionCoordinates` as a dependency.  `scripts/sorries`,
+`git diff --check`, touched-Lean-file forbidden-marker search, and direct axiom
+probes passed with `[propext, Classical.choice, Quot.sound]`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-equivalences-from-cardinalities.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-equivalences-from-cardinalities.md`.
+
+This removes only the finite-cardinality construction of endpoint equivalence
+data.  The equivalences are noncanonical and do not preserve labels, selected
+entries, pivot order, chart/source membership, source priors, Jacobians, normal
+crossings, pole order, or RLCT.
+
 ## Latest A4 Case 2 Concrete Selected-Entry Source Production
 
 The selected-entry analytic-atlas Case 2 source-production predicate is now

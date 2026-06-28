@@ -6467,6 +6467,38 @@ structure PaperEndpointFixedBaseRegularCoordinateSourceData
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
+section FixedBaseSourceDataEndpointCards
+
+set_option linter.unusedSectionVars false in
+/-- Source data computes every endpoint-compatible complement index cardinality
+as the displayed layer width minus the base product rank. -/
+theorem endpointComplementIndex_card_eq_H_rev_sub_rank
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        W B U₀ hU₀ x₀ Cedge H r rEdge)
+    (q : Fin (N + 1)) :
+    Fintype.card
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ q) =
+      H (q.rev.val + 1) - r := by
+  rw [paperEndpointEndpointComplementIndex_card_eq_layerSubRank W B U₀ hU₀ q]
+  have hvertex :
+      Module.finrank K (reverseVertex W q) = H (q.rev.val + 1) := by
+    simpa [reverseVertex] using (sourceData.dimensionConvention q.rev).symm
+  have hUfin : Module.finrank K U₀ = r :=
+    (paperEndpointBasepointCertificate_of_isCompl W B U₀ hU₀).finrank_eq_range.trans
+      sourceData.localSourceCertificate.source_basepoint.1
+  rw [hvertex, hUfin]
+
+end FixedBaseSourceDataEndpointCards
+
 set_option linter.unusedSectionVars false in
 /-- The source-data package supplies a centered continuous Pi-valued regular
 block coordinate map. -/

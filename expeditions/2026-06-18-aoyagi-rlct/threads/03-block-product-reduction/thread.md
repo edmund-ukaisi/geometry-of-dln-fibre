@@ -18,6 +18,34 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 endpoint equivalences from cardinalities
+
+Reproduction:
+`reproduction-a2-case2-endpoint-equivalences-from-cardinalities.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-equivalences-from-cardinalities.md`.
+
+Lean now exposes:
+
+```text
+case2EndpointTransportEquivs_of_card_eq
+PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank
+```
+
+The first declaration is a `noncomputable def` producing arbitrary finite
+equivalence data from explicit cardinality equalities.  The second computes the
+fixed-base endpoint complement cardinalities from source data as
+`H (q.rev.val + 1) - r`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+the worktree-local `scripts/lb` command, rebuilding `RegularSuspensionCoordinates`.
+`scripts/sorries`, `git diff --check`, touched-Lean-file forbidden-marker
+search, and direct axiom-footprint probes passed with the expected footprint.
+
+This is not canonical endpoint labelling, geometric provenance for `tau`,
+selected-entry preservation, chart/source membership, measure transport,
+Jacobian comparison, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 endpoint-transport chart-produced finite integral
 
 Reproduction:

@@ -76,6 +76,28 @@ instance case2PostPivotTwoEdgeDomain.decidableEq
       · intro q
         exact Fin.elim0 q
 
+/-- Cardinality equalities supply the endpoint equivalences used by Case 2
+endpoint transport.
+
+This is noncanonical finite reindexing only.  It does not preserve labels,
+selected entries, chart membership, Jacobians, or analytic/RLCT content. -/
+noncomputable def case2EndpointTransportEquivs_of_card_eq
+    {τ : Type} [Fintype τ]
+    {κ : Fin 3 → Type*} [∀ q, Fintype (κ q)]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (hNext :
+      Fintype.card τ =
+        Fintype.card (Case2ResidualColIndex n S (J + 1)))
+    (hEndpoints :
+      ∀ q : Fin 3,
+        Fintype.card (case2PostPivotTwoEdgeDomain n S J τ q) =
+          Fintype.card (κ q)) :
+    (τ ≃ Case2ResidualColIndex n S (J + 1)) ×
+      (∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ q) := by
+  classical
+  exact ⟨Fintype.equivOfCardEq hNext,
+    fun q ↦ Fintype.equivOfCardEq (hEndpoints q)⟩
+
 /-- The concrete two-factor family for the displayed Case 2 post-pivot lower
 product: first the free `C'` tail, then the post-pivot residual block. -/
 noncomputable def case2PostPivotFreeTwoEdgeFactorFamily

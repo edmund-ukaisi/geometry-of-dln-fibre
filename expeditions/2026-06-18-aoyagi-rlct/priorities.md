@@ -19,6 +19,44 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, endpoint equivalences from cardinalities
+
+The Case 2 endpoint-transport wrappers now have the finite constructor for the
+endpoint equivalence data they consume:
+
+```text
+case2EndpointTransportEquivs_of_card_eq
+```
+
+This is a `noncomputable def`, not a proposition: it returns an arbitrary
+finite equivalence `tau ~= Case2ResidualColIndex n S (J + 1)` from `hNext`,
+and arbitrary endpoint-family equivalences from pointwise endpoint cardinality
+equalities.  Keeping `hNext` separate is required because the endpoint family
+equality at `q = 0` identifies `tau` with the target endpoint `kappa 0`, not
+with the successor residual-column type.
+
+Fixed-base source data also now exposes the endpoint complement count:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank
+```
+
+This rewrites each
+`throughSubspaceEndpointComplementIndex ... q` cardinality as
+`H (q.rev.val + 1) - r`, using the source-data dimension convention and base
+product-rank certificate.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-equivalences-from-cardinalities.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-equivalences-from-cardinalities.md`.
+
+This is finite cardinality/reindexing infrastructure only.  It does not provide
+canonical or label-preserving endpoint equivalences, prove the geometric origin
+of `tau`, preserve selected entries or pivot order, construct charts, identify
+source priors, compare Jacobians, prove source-rank coverage, produce normal
+crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-06-28, concrete Case 2 all-pivot source-production payload
 
 The selected-entry analytic-atlas Case 2 source-production predicate now has a

@@ -140,6 +140,21 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, endpoint equivalences from cardinalities,
+  2026-06-28.** Lean now exposes
+  `case2EndpointTransportEquivs_of_card_eq` in
+  `Case2ResidualFactorProduct.lean`, a noncomputable finite constructor for
+  the endpoint equivalence data required by the Case 2 endpoint-transport
+  wrappers.  It requires explicit cardinality equalities for `eNext` and for
+  each endpoint of the displayed two-edge family.  Lean also exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.endpointComplementIndex_card_eq_H_rev_sub_rank`
+  in `RegularSuspensionCoordinates.lean`, computing fixed-base endpoint
+  complement cardinalities as `H (q.rev.val + 1) - r` from source data.  This
+  is finite cardinality/reindexing infrastructure only; it does not construct
+  canonical or label-preserving endpoint equivalences, prove the geometric
+  origin of `tau`, preserve selected entries or pivot order, construct charts,
+  compare source priors or Jacobians, prove source-rank coverage, produce
+  normal crossings, compute pole order, or extract RLCT.
 - **Current status addendum, Case 2 endpoint-transport chart-produced finite
   integral, 2026-06-28.** Lean now exposes
   `ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport`,
