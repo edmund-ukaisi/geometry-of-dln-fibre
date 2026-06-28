@@ -21,9 +21,16 @@ Wave A (live):
 | 04 | lean-formaliser (tide, RESUMED) | **Foundation** — honest interface (cite `rlct=½·codim_ℝ`) + honest `codim_ℝ` def + connector (`loss=Σres²`, real zero-set=fibre) + compose with T as named hole + re-derive downstream + delete trap docstring. Design-proposal-first (codim_ℝ def + T-feasibility). | in-progress |
 | 06 | lean-formaliser (tide) | **R5 bundle completion** — projection compatibility + overlap-gluing → `Flat π` over `rankROpen`. Pure L&R geometry, independent. | in-progress |
 
-Gated (Wave B, after 04 pins `codim_ℝ`): **T** transfer `codim_ℝ=codim_K` via `realizerD` (the geometric
-wall); **compose** → `rlct=½·C`, retire monolith + wire/harden the banked `C/θ` engine (three forms + perm
-invariance + θ, all banked). Tracked as tasks #4–#7.
+| 07 | pen-and-paper (Wave B recon) | **Transfer-T route** — scope the proof of `codimRepCanonical(ℝ)(fibre ℝ B)=codimRepCanonical(K)(fibre K)` via `realizerD` smooth rational points; Mathlib inventory; feasibility verdict (bounded tide / big build / honest cited fallback) | in-progress |
+
+Gated (Wave B, after 04 green + 07 verdict): **T** transfer proof (the geometric wall); **compose** →
+`rlct=½·C`, retire monolith + wire/harden the banked `C/θ` engine (three forms + perm invariance + θ, all
+banked). Tracked as tasks #4–#7.
+
+**04 DESIGN APPROVED (tick 8):** `codim_ℝ := codimRepCanonical(k:=ℝ)` (the banked def at ℝ IS the honest
+real-locus codim — x²+y² discriminator confirms); two cited bounds (`watanabe_upper` universal +
+`aoyagi_lower` 0<N), equality derived; **T = standalone named hypothesis (NOT a cited structure field — it's
+to-be-proved geometry)**; re-point the 7 consumers threading T (NO `ofReal` shim — it re-buries T).
 
 **RECON COMPLETE (2026-06-27).** Verdict MILD — green light. Refined plan in `synthesis.md` (§ RECON
 COMPLETE). Spine re-routed (awaiting operator sign-off before Wave 1):

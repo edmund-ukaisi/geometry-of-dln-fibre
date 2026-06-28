@@ -232,3 +232,27 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     wire/harden** → retire monolith. Tracked tasks #4–#7 (#5 T blocked-by #4; #7 compose blocked-by #4,#5;
     #6 R5 independent).
   - Holding for 04's design proposal (codim_ℝ + T-feasibility — controller seam-taste review) + R5's report.
+
+- **tick 8 (04 design APPROVED + T-route scout launched, 2026-06-28):** 04 posted its fuller-scope design
+  proposal (decorrelated Codex on the load-bearing def); controller seam-taste review settled (a)-(d):
+  - **codim_ℝ** = `codimRepCanonical (k:=ℝ)` as a named abbrev (`codimRealLocus`/`codimRealFibre`). KEY: the
+    banked field-parametric def, evaluated at ℝ, IS the honest real-locus codim (height of the real-points
+    vanishing ideal). Discriminator: `x²+y²` has generator-ideal height 1 but `vanishingIdeal ℝ {0}=(x,y)`
+    height 2 = real codim. (The earlier "don't reuse over ℝ" caveat was about ASSUMING =codim_K, not the
+    DEFINITION.) Docstring records the discriminator + "bare real-locus codim, NONE of the alg-closed
+    geometry — T bridges to K".
+  - **Two cited bounds** `cited_watanabe_upper` (universal, no guard) + `cited_aoyagi_lower` (DLN, 0<N),
+    equality derived by `le_antisymm`. Drop C1/C3.
+  - **T = standalone NAMED hypothesis, NOT a cited structure field** — it's to-be-PROVED geometry (Wave B),
+    not cited analytic content; the cited boundary is honestly just the two bounds; T discharges + drops out
+    when proved.
+  - **Re-point the 7 consumers threading T — NO `ofReal` shim** (the shim re-buries T one def deep = the
+    visible-progress trap; name=content forbids it). L3 sweep on the trap-docstring deletion + framing.
+  - **T-feasibility verdict (04):** NOT provable this tide. Gap: rational point alone insufficient — need a
+    SMOOTH real point per top component + the real-density⟹dim bridge; Mathlib v4.29 lacks semialgebraic
+    dim / real-Nullstellensatz / `height` base-change. T is the single named hole.
+  - **Wave B recon launched — thread 07 `t-route-scout`** (pen-and-paper): scope the T proof route
+    (smooth-realizer check; height=dim−trdeg vs chain-of-primes vs height-base-change; Mathlib inventory) +
+    FEASIBILITY VERDICT (bounded tide / big build / honest cited fallback). Gated on 04's pinned def (done),
+    not on 04's green — runs in parallel. **T is the expedition CRUX.**
+  - 3 fronts live: 04 finalizing, 06/R5 bundle, 07 T-route. Holding for their reports.
