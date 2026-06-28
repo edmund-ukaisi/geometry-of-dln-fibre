@@ -48,6 +48,43 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` Recursive `dEarly` Comparison
+
+The post-`Ctop` positive-tail lower-left recursion is now compared all the way
+to the existing target-only recursion on actual raw-order derivative targets.
+New private Lean names in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopCnextFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_apply
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_after_T123_eq_targetOnly
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_after_T123_eq_targetOnly
+```
+
+The final recursive bridge states that for
+`Dzv = (fderiv raw z) v`, `u = T123 Dzv`, and
+`rest = (retainedPassiveRawF3FocusLinearEquiv u).2`,
+
+```text
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt hz m hm rest
+  =
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv m hm.
+```
+
+The proof is by decreasing induction on `m`.  The base case is the zero
+linear map at `M + 1`; the step unfolds both recursions, applies the post-`Ctop`
+one-step comparison, and supplies the induction hypothesis as the successor
+`dNext` comparison.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.
+
+Next frontier: use the `m = 0` instance of this recursive bridge to define the
+positive-tail post-`Ctop` `F3` shear and reduce its `F3` component to
+`F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt`.
+No determinant-one package or full target normalisation is claimed yet.
+
 ## Latest A2 Post-`Ctop` Suffix Comparison Bridges
 
 The next private comparison slice after `Ctop` is now green in

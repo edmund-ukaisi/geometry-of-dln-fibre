@@ -19,6 +19,38 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` recursive `dEarly` comparison
+
+The positive-tail post-`Ctop` bridge now has the remaining private comparison
+layer for the lower-left early-tail derivative in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopCnextFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_apply
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_after_T123_eq_targetOnly
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_after_T123_eq_targetOnly
+```
+
+For `Dzv = (fderiv raw z) v` and
+`u = T123 Dzv`, the post-`Ctop` rest-tuple recursion
+`retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt` agrees at every
+tail index with the existing target-only recursion
+`retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv`.  The proof is a
+decreasing induction whose step uses the post-`Ctop` one-step core comparison;
+the one-step comparison in turn uses the already green source-`C`, raw-`A3`,
+current solved-`A1`, solved-`A1` suffix, `Cnext`, and successor-derivative
+bridges.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This still does not define the positive-tail `F3` shear or prove its
+determinant-one/readout package.  No full target normalisation, actual Frechet
+determinant equality, measure transport, normal crossings, pole order, or RLCT
+result is claimed.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` suffix comparison bridges
 
 The positive-tail post-`Ctop` bridge now has three additional green private

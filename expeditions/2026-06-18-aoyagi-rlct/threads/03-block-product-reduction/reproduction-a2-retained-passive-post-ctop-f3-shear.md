@@ -259,6 +259,20 @@ with the existing target-only lower-left product derivative on
 `(fderiv raw z) v`.  Only after that comparison can the positive-tail `F3`
 shear be stated and reduced to the existing target-only `F3` theorem.
 
+That recursive comparison is now implemented privately.  The new bridge proves
+the equality at every tail index by decreasing induction: the terminal case is
+zero, and the step unfolds both the post-`Ctop` linear-map recursion and the
+target-only recursion, then uses the one-step comparison with the successor
+derivative supplied by the induction hypothesis.  Thus the next Lean target is
+no longer `dEarly_postC`; it is the positive-tail `F3` shear itself:
+
+```text
+F3' =
+  u.F3
+    - dEarly_postC(rest) * coord.solvedA1 (Fin.last (M + 1))
+    + (coord.F3 - Earlyfun z) * u.A1passive(Fin.last M).
+```
+
 The first comparison slice after `T123` is now also implemented: the
 post-`Ctop` solved-`A1` tangent, solved-`A1` suffix derivative, and stored-`C`
 suffix derivative agree with the existing target-staged objects on

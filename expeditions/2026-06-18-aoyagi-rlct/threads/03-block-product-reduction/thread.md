@@ -18,6 +18,33 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` recursive `dEarly` comparison
+
+Lean now has the private comparison chain from the post-`Ctop` lower-left
+early-tail recursion on the `F3`-focused rest tuple to the existing target-only
+recursion:
+
+```text
+retainedPassivePostCtopCnextFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_apply
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_after_T123_eq_targetOnly
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_after_T123_eq_targetOnly
+```
+
+The recursive bridge proves, for every `m ≤ M + 1`, that evaluating
+`retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt hz m hm` on the
+rest of `T123 ((fderiv raw z) v)` gives
+`retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz ((fderiv raw z) v) m hm`.
+
+Focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no positive-tail `F3` shear yet, no determinant-one package for it,
+no full target normalisation, no actual Frechet determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` suffix comparison bridges
 
 Lean now has three further private post-`Ctop` comparison lemmas in

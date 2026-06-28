@@ -7207,6 +7207,69 @@ private def retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
   (- termC) - termG + termA + dNext
 
 set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (q : Fin (M + 1))
+    (dAcur dPsucc :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ)
+    (dCnext :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' q.succ.succ) ℝ)
+    (dNext :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ)
+    (rest : retainedPassiveRawF3RestFamily (M := M + 1) ρ κ') :
+    retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q dAcur dPsucc dCnext dNext rest =
+      let p : Fin ((M + 1) + 1) := q.castSucc
+      let r : Fin ((M + 1) + 1) := q.succ
+      let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+      let coord := data.toCoordinateData
+      let Cprod : Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.castSucc) ℝ :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') data.C
+          (Fin.last ((M + 1) + 1)) r.castSucc r.castSucc.le_last
+      let Cnext : Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') data.C
+          (Fin.last ((M + 1) + 1)) r.succ r.succ.le_last
+      let A3p : Matrix (κ' r.castSucc) ρ ℝ := by
+        simpa [p, r] using
+          ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            data.A3seed p
+      let Pcast : Matrix ρ ρ ℝ :=
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          coord.solvedA1 (Fin.last ((M + 1) + 1)) p.castSucc p.castSucc.le_last
+      let Psucc : Matrix ρ ρ ℝ :=
+        ChartLocalSuffixState.residualFactorProduct
+          (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          coord.solvedA1 (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+      let dCnext' : Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ := (by
+        simpa [r] using dCnext rest)
+      let dG : Matrix (κ' r.castSucc) ρ ℝ := (by
+        simpa [r] using
+          retainedPassiveRawF3RestA3passiveLinearMapAt
+            (M := M + 1) (ρ := ρ) (κ' := κ') q rest);
+      -((dCnext' * data.C r +
+            Cnext *
+              retainedPassivePostCtopSourceCAtLinearMapAt
+                (M := M + 1) (ρ := ρ) (κ' := κ') hz r rest) *
+          A3p * Pcast⁻¹)
+        - (Cprod * dG * Pcast⁻¹)
+        + Cprod * A3p * Pcast⁻¹ *
+            (dPsucc rest * coord.solvedA1 p + Psucc * dAcur rest) *
+            Pcast⁻¹
+        + dNext rest := by
+  dsimp [retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt,
+    retainedPassiveMatrixMulRightLinearMap, retainedPassiveMatrixMulLeftLinearMap,
+    LinearMap.comp_apply, LinearMap.add_apply, LinearMap.neg_apply, LinearMap.sub_apply]
+  rfl
+
+set_option linter.style.longLine false in
 private def retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
     {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ]
@@ -8614,6 +8677,43 @@ theorem retainedPassiveCnextTargetStagedFDerivAt_fderiv_eq_source
     raw, Dzv, r, Cfun, Cnext, hm] using hrec.symm
 
 set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopCnextFDerivLinearMapAt_after_T123_eq_targetStaged
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1)) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let Dzv := (fderiv ℝ raw z) v
+    let u :=
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz Dzv
+    let rest :=
+      (retainedPassiveRawF3FocusLinearEquiv
+        (ρ := ρ) (κ' := κ') u).2
+    retainedPassivePostCtopCnextFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q rest =
+      retainedPassiveCnextTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv q := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let u :=
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz Dzv
+  let rest :=
+    (retainedPassiveRawF3FocusLinearEquiv
+      (ρ := ρ) (κ' := κ') u).2
+  let r : Fin ((M + 1) + 1) := q.succ
+  let hm : r.succ.val ≤ (M + 1) + 1 := Fin.val_fin_le.mp r.succ.le_last
+  have hsuffix :=
+    retainedPassivePostCtopCSuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz v r.succ.val hm
+  simpa [retainedPassivePostCtopCnextFDerivLinearMapAt,
+    retainedPassiveCnextTargetStagedFDerivAt, raw, Dzv, u, rest, r, hm] using hsuffix
+
+set_option linter.style.longLine false in
 /-- The lower-left one-step core with the `Cnext` suffix derivative supplied
 by the target-staged `C` suffix recursion. -/
 def retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
@@ -8682,6 +8782,146 @@ theorem retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sour
       retainedPassiveLowerLeftTailStepCoreAt
         (M := M + 1) (ρ := ρ) (κ' := κ') z v q dAcur dPsucc dNext := by
         simpa [raw, Dzv, r, Cfun, Cnext] using hstep
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_after_T123_eq_targetOnly
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (q : Fin (M + 1))
+    (dNext :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ)
+    (dNextTarget : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ)
+    (hNext :
+      let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+      let Dzv := (fderiv ℝ raw z) v
+      let u :=
+        retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+          (ρ := ρ) (κ' := κ') hz Dzv
+      let rest :=
+        (retainedPassiveRawF3FocusLinearEquiv
+          (ρ := ρ) (κ' := κ') u).2
+      dNext rest = dNextTarget) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let Dzv := (fderiv ℝ raw z) v
+    let u :=
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz Dzv
+    let rest :=
+      (retainedPassiveRawF3FocusLinearEquiv
+        (ρ := ρ) (κ' := κ') u).2
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q
+        (retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') z q.val q.isLt)
+        (retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last))
+        (retainedPassivePostCtopCnextFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q)
+        dNext rest =
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv q
+        (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z Dzv q.val q.isLt)
+        (retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z Dzv p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last))
+        dNextTarget := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let u :=
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz Dzv
+  let rest :=
+    (retainedPassiveRawF3FocusLinearEquiv
+      (ρ := ρ) (κ' := κ') u).2
+  let p : Fin ((M + 1) + 1) := q.castSucc
+  let r : Fin ((M + 1) + 1) := q.succ
+  change dNext rest = dNextTarget at hNext
+  have hAcur :
+      retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') z q.val q.isLt rest =
+        retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z Dzv q.val q.isLt := by
+    simpa [raw, Dzv, u, rest] using
+      retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_after_T123_eq_targetOnly
+        (M := M) (ρ := ρ) (κ' := κ') hz v q.val q.isLt
+  have hPsucc :
+      retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last) rest =
+        retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z Dzv p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last) := by
+    simpa [raw, Dzv, u, rest, p] using
+      retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz v p.succ.val
+        (Fin.val_fin_le.mp p.succ.le_last)
+  have hCnext :
+      retainedPassivePostCtopCnextFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q rest =
+        retainedPassiveCnextTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv q := by
+    simpa [raw, Dzv, u, rest] using
+      retainedPassivePostCtopCnextFDerivLinearMapAt_after_T123_eq_targetStaged
+        (M := M) (ρ := ρ) (κ' := κ') hz v q
+  have hCcur :
+      retainedPassivePostCtopSourceCAtLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') hz r rest =
+        retainedPassiveTargetRecoveredSourceCAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') hz Dzv r := by
+    simpa [raw, Dzv, u, rest, r] using
+      retainedPassivePostCtopSourceCAtLinearMapAt_after_T123_eq_targetRecovered
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz Dzv r
+  have hA3rest :
+      retainedPassiveRawF3RestA3passiveLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') q rest =
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') u q.castSucc := by
+    simpa [u, rest] using
+      retainedPassiveRawF3RestA3passiveLinearMapAt_apply_rawTupleRest
+        (M := M + 1) (ρ := ρ) (κ' := κ') u q
+  have hA3pres :
+      rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') u q.castSucc =
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.castSucc := by
+    simpa [u] using
+      rawEdgeTupleA3_retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz Dzv q.castSucc
+  have hA3 :
+      retainedPassiveRawF3RestA3passiveLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') q rest =
+        rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv q.castSucc :=
+    hA3rest.trans hA3pres
+  dsimp [p, r] at hPsucc hCcur
+  change
+    retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q
+        (retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') z q.val q.isLt)
+        (retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last))
+        (retainedPassivePostCtopCnextFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q)
+        dNext rest =
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv q
+        (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z Dzv q.val q.isLt)
+        (retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z Dzv p.succ.val
+          (Fin.val_fin_le.mp p.succ.le_last))
+        dNextTarget
+  rw [retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_apply]
+  dsimp [p, r]
+  rw [hCnext, hCcur, hA3, hPsucc, hAcur, hNext]
+  simp [retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt,
+    retainedPassiveLowerLeftTailTargetOnlyStepCoreAt, rawEdgeTupleA3, ofTopologyTuple]
 
 set_option linter.style.longLine false in
 /-- Target-only recursive derivative for the retained-passive lower-left
@@ -8755,6 +8995,106 @@ theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
           (M := M) (ρ := ρ) (κ' := κ') hz w (m + 1) (Nat.succ_le_of_lt hm)) := by
   unfold retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
   rw [Nat.decreasingInduction_succ_left]
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_after_T123_eq_targetOnly
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let Dzv := (fderiv ℝ raw z) v
+    let u :=
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz Dzv
+    let rest :=
+      (retainedPassiveRawF3FocusLinearEquiv
+        (ρ := ρ) (κ' := κ') u).2
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz m hm rest =
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv m hm := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let u :=
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz Dzv
+  let rest :=
+    (retainedPassiveRawF3FocusLinearEquiv
+      (ρ := ρ) (κ' := κ') u).2
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz m hm rest =
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv m hm
+  have hbase : motive (M + 1) le_rfl := by
+    dsimp [motive]
+    simp
+  have hstep : ∀ n (hns : n + 1 ≤ M + 1),
+      motive (n + 1) hns → motive n (Nat.le_of_succ_le hns) := by
+    intro n hns ih
+    let q : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let postNext :=
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz (n + 1) hns
+    let targetNext :=
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv (n + 1) hns
+    have hpostStep :=
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_step
+        (M := M) (ρ := ρ) (κ' := κ') hz n (Nat.lt_of_succ_le hns)
+    have htargetStep :=
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv n (Nat.lt_of_succ_le hns)
+    have hNext :
+        let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+        let Dzv := (fderiv ℝ raw z) v
+        let u :=
+          retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+            (ρ := ρ) (κ' := κ') hz Dzv
+        let rest :=
+          (retainedPassiveRawF3FocusLinearEquiv
+            (ρ := ρ) (κ' := κ') u).2
+        postNext rest = targetNext := by
+      simpa [raw, Dzv, u, rest, postNext, targetNext, motive] using ih
+    have hcore :=
+      retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt_after_T123_eq_targetOnly
+        (M := M) (ρ := ρ) (κ' := κ') hz v q postNext targetNext hNext
+    calc
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz n (Nat.le_of_succ_le hns) rest =
+        retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q
+          (retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+            (M := M) (ρ := ρ) (κ' := κ') z n (Nat.lt_of_succ_le hns))
+          (retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+            (M := M + 1) (ρ := ρ) (κ' := κ') z p.succ.val
+            (Fin.val_fin_le.mp p.succ.le_last))
+          (retainedPassivePostCtopCnextFDerivLinearMapAt
+            (M := M) (ρ := ρ) (κ' := κ') hz q)
+          postNext rest := by
+          simpa [q, p, postNext] using congrArg (fun L ↦ L rest) hpostStep
+      _ =
+        retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv q
+          (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+            (M := M) (ρ := ρ) (κ' := κ') z Dzv n (Nat.lt_of_succ_le hns))
+          (retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+            (M := M + 1) (ρ := ρ) (κ' := κ') z Dzv p.succ.val
+            (Fin.val_fin_le.mp p.succ.le_last))
+          targetNext := by
+          simpa [raw, Dzv, u, rest, q, p, postNext, targetNext] using hcore
+      _ =
+        retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv n (Nat.le_of_succ_le hns) := by
+          simpa [q, p, targetNext] using htargetStep.symm
+  simpa [motive, raw, Dzv, u, rest] using
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
 
 set_option linter.style.longLine false in
 /-- First-index unfold equation for the recursive target-only lower-left tail
