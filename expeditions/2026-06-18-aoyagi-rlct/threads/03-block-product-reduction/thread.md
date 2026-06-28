@@ -18,6 +18,39 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 inverse-Jacobian residual-source handoff
+
+Reproduction:
+`reproduction-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+Statement card:
+`statement-card-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+Review:
+`review-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+```
+
+These compose the Case 2 selected-entry determinant-chart residual theorem with
+the raw-order inverse-Jacobian `_of_chartSide` sockets.  The determinant-chart
+pushforward identity and target positive-set measurability remain explicit;
+the finite-integral theorem also keeps local loss and density hypotheses
+explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, direct dependency
+probes, and xhigh read-only review by Godel passed; both declarations report
+only `[propext, Classical.choice, Quot.sound]`.
+
+This is not proof of the determinant-chart pushforward identity, target
+positive-set measurability, chart coverage, original external prior transport,
+local loss or density bounds, source-rank coverage, normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-28 A2 retained-passive inverse-Jacobian chart-side measurability wrapper
 
 Reproduction:

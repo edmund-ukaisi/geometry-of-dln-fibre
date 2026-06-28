@@ -48,6 +48,66 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Inverse-Jacobian Residual-Source Handoff
+
+The two-edge Case 2 endpoint-transported selected-entry determinant-chart
+residual theorem now composes into the raw-order inverse-Jacobian sockets:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+```
+
+The first theorem fixes the Case 2 selected-entry determinant-chart map
+
+```text
+chart y =
+  topologyTuple
+    ((case2PostPivotSelectedEntryRetainedPassiveData
+      n hS hcont hnext y eNext).endpointTransport e)
+```
+
+and the raw-order inverse-Jacobian source measure
+
+```text
+mu =
+  Measure.map rawChart
+    ((m.restrict topologyTupleRawOrderSourceRecursiveDetChartSet)
+      .withDensity inverseJacobianDensity).
+```
+
+It assumes the determinant-chart pushforward identity for `chart`, target
+positive-set measurability, `0 <= t`, positive radii, and the selected-entry
+exponent inequality.  It obtains chart-side residual positivity/integrability
+from the Case 2 selected-entry determinant-chart residual theorem and feeds the
+pair into
+`residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide`.
+
+The finite-integral theorem adds `sourceData`, `[SFinite m]`, regular-coordinate
+Haar measure `nu`, `loss`, `density`, `0 < R`, `0 < c`, `0 <= C`, `0 < t`,
+and the local loss/density hypotheses, then feeds the same residual pair into
+the raw-order p.13 finite-integral socket.  The proof weakens `0 < t` to
+`0 <= t` only for the selected-entry residual theorem; the finite-integral
+socket receives `0 < t` directly.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, direct dependency
+probes, and xhigh reviews passed; both declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a determinant-chart measure construction and not a local
+loss/density theorem.  It does not prove the pushforward identity, target
+positive-set measurability, chart coverage, original external source-prior
+transport, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Determinant-Chart Selected-Entry Residual Handoff
 
 The generic retained-passive selected-entry determinant-chart residual handoff

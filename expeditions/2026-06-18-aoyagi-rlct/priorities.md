@@ -19,6 +19,42 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 inverse-Jacobian residual-source handoff
+
+The two-edge Case 2 endpoint-transported selected-entry residual theorem now
+feeds the raw-order inverse-Jacobian source-measure sockets:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
+```
+
+The residual-source theorem first obtains determinant-chart residual positivity
+and finite negative-power integral from the Case 2 selected-entry
+determinant-chart theorem, then passes exactly those two facts to the raw-order
+inverse-Jacobian `_of_chartSide` socket.  The finite-integral theorem does the
+same and then applies the raw-order p.13 regular-coordinate finite-integral
+socket.  It uses `0 < t` and weakens it to `0 <= t` only for the selected-entry
+residual call.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-inverse-jacobian-residual-source-handoff.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-inverse-jacobian-residual-source-handoff.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-inverse-jacobian-residual-source-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched-file forbidden-marker
+search, direct dependency probes, and xhigh review passed; both declarations
+report only `[propext, Classical.choice, Quot.sound]`.
+
+This removes the chart-side residual hypotheses from the Case 2 raw-order
+inverse-Jacobian sockets, but it still assumes the determinant-chart
+pushforward identity, target positive-set measurability, and, for the
+finite-integral theorem, local loss and density bounds.  It does not prove
+chart coverage, original external source-prior transport, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 determinant-chart selected-entry residual handoff
 
 The generic selected-entry determinant-chart residual handoff now has a
