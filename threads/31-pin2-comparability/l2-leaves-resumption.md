@@ -5,10 +5,18 @@ Branch `genm-l2cle` (off `origin/genm-l2-wt`). Build: `scripts/lb DLNFibre.DLN.R
 
 ## STATUS (2026-06-28): S4 + S2 CLOSED, S6 SPECIFIED — bridge has 2 sorries (both S6 geometric subs)
 
-**S6 (`comp_identity_L2`) SPECIFIED + assembly PROVEN** (commit 1d81e020). The germ assembly closes
-`comp_identity_L2` from the sub-lemma statements; the 1 monolithic sorry is now 2 isolated geometric
-sub-lemma sorries (Codex-validated decomposition, artefact `codex/s6-chain-answer.md`):
+**S6 (`comp_identity_L2`) SPECIFIED + assembly PROVEN + READBACK LAYER LANDED** (commits 1d81e020,
+c76d0e74). The germ assembly closes `comp_identity_L2` from the sub-lemma statements; the 1 monolithic
+sorry is now 2 isolated geometric sub-lemma sorries (Codex-validated decomposition, artefact
+`codex/s6-chain-answer.md`):
 - `psiRawL2_split` — PROVEN: `split ∘ psiRawL2 = psiSplitRawL2 ∘ split`.
+- **S6r readback layer — PROVEN (commit c76d0e74)**: `psiSplitRawL2Core_gauge`,
+  `readX/readZ_psiSplitRawL2Core` (unchanged), `readY_psiSplitRawL2Core_of_ne`/`_last` (= `l2Y1p` at last),
+  `coreRead_psiSplitRawL2Core_of_ne`/`_last` (= `l2T1p` at last). The shared entry point: it reduces
+  `framedParamsPivot (psiSplitRawL2Core q)` to `framedParamsPivot q` with the last-layer Y/core blocks
+  swapped to `l2Y1p`/`l2T1p`. NEXT STEP for both subs: `framedParamsPivot_psiSplitRawL2Core` — assemble
+  these readbacks into the per-layer `framedParamsPivot` equality (non-last layers identical; last layer
+  has the `fromBlocks (readX) (l2Y1p) (readZ) (l2T1p)` form vs original `fromBlocks (readX)(readY)(readZ)(T1)`).
 - `deepestEFull_sq_sum_psiSplitRawL2_eq` — SORRIED: `∑ (deepestEFull (psiSplitRawL2 q))² = ∑ (deepestEFull q)²`
   (reg residual invariant under the joint (T1,Y1) move). Route: raw block facts `P00'=P00`, `P10'=P10`,
   `P01'=P01` (the last via `e2_regPreserve`), lifted through the framed-product packing; needs `hPtri/hQtri`
