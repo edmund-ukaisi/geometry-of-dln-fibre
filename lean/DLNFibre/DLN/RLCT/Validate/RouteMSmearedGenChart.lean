@@ -185,6 +185,20 @@ theorem sum_smearedCol_collapse {w : ℕ} (f d : Fin (w + 1) → ℝ) (lam : Fin
     fun r => by rw [← mul_assoc, hfront r]
   rw [Finset.sum_congr rfl (fun r _ => hh r)]; ring
 
+/-- **The smeared-column sum collapse at an opaque positive width** (the chart-shaped instance of
+`sum_smearedCol_collapse`). For `0 < n`, pivot `⟨0,hn⟩`, residual selector `Fin.cast _ ∘ Fin.succ`
+(matching `residSel`), and the front-fact relation `f ⟨0,hn⟩ · lam r = f (cast (r.succ))`, the shear
+cancels: `∑ⱼ f j · (if j = ⟨0,hn⟩ then d ⟨0,hn⟩ − ∑ᵣ lam r · d (cast r.succ) else d j) = d ⟨0,hn⟩ · f ⟨0,hn⟩`.
+Destructures `n = w+1` and reduces to `sum_smearedCol_collapse`. -/
+theorem sum_smearedCol_collapse_opaque {n : ℕ} (hn : 0 < n) (f d : Fin n → ℝ) (lam : Fin (n - 1) → ℝ)
+    (hf : ∀ r : Fin (n - 1), f ⟨0, hn⟩ * lam r = f (Fin.cast (by omega) r.succ)) :
+    (∑ j, f j * (if j = ⟨0, hn⟩ then d ⟨0, hn⟩ - (∑ r, lam r * d (Fin.cast (by omega) r.succ))
+        else d j)) = d ⟨0, hn⟩ * f ⟨0, hn⟩ := by
+  obtain ⟨w, rfl⟩ : ∃ w, n = w + 1 := ⟨n - 1, by omega⟩
+  have key := sum_smearedCol_collapse (w := w) f d (fun r => lam (Fin.cast (by omega) r)) ?_
+  · convert key using 2 <;> simp
+  · intro r; have := hf (Fin.cast (by omega) r); simpa using this
+
 /-- **The telescope (the keystone): the chart product is `u_p`-scaled column 0 of the front product.**
 Off the pole `‖col 0‖² ≠ 0`, the deepest-layer shear cancels via the front fact, leaving
 `prod M (smParams u) i ⟨0,_⟩ = u_p · frontMat u i ⟨0,_⟩` (with `u_p = deepCol u ⟨0,_⟩` the pivot row
@@ -224,21 +238,15 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
   erw [Matrix.reindex_refl_refl]
   rw [hfront, hlayer]
   -- Goal: `∑ j, frontMat i j * smearedDeepLayer j jc = deepCol ⟨0,hrow⟩ * frontMat i ⟨0,hm1⟩`.
-  -- `jc = ⟨0,hcol⟩` (single deepest column, `M_L = 1`).
-  have hjc : jc = ⟨0, hcol⟩ := Fin.ext (by have := jc.isLt; have : M (Fin.last (m + 1)) = 1 := hc1; omega)
-  subst hjc
-  -- Per-row readout of the smeared deepest column: pivot row `0` ↦ `u_p − shift`, residual rows ↦ free.
-  have hsdl : ∀ j, smearedDeepLayer M hL u hrow hcol hm1 j ⟨0, hcol⟩
-      = (if j = ⟨0, hrow⟩ then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol
-          else deepCol M hL u hcol j) := by
-    intro j
-    simp only [smearedDeepLayer, Matrix.updateRow_apply, deepCol]
-  -- REMAINING (the sum-arithmetic, fully scoped — WIP): apply the LANDED `sum_smearedCol_collapse`
-  -- (`f = frontMat i`, `d = deepCol`, `lam = routing 0`) using the LANDED front-fact relation
-  -- `frontMat_routing_eq_resid` for its `hfront` hypothesis. The friction is the cast plumbing: rewriting
-  -- the goal sum by `hsdl` (the `subst jc` leaves the column at `Fin.last` not `(deepLayer).succ`), the
-  -- opaque-`m1` width recast `Fin (M⟨deepLayer⟩.castSucc) ↔ Fin (w+1)`, and `residSel ↔ Fin.succ`. All the
-  -- MATH is landed sorry-free (peel, mul_apply, reindex, hsdl readout, front-fact entry, sum collapse).
+  -- REMAINING (WIP, surface friction): the LANDED bricks compose to close this —
+  --   (a) `hjc : jc = ⟨0,hcol⟩` (single deepest column, `M_L = 1`, `Fin.ext`);
+  --   (b) the front-fact relation `frontMat i ⟨0,hrow⟩ · routing 0 r = frontMat i (cast r.succ)`
+  --       (LANDED `frontMat_routing_eq_resid`, pivot index `⟨0,hrow⟩↔⟨0,hm1⟩` via `Fin.ext`);
+  --   (c) `sum_smearedCol_collapse_opaque hrow (frontMat i) deepCol (routing 0) (b)` (LANDED) closes the
+  --       `if`-form sum `= deepCol ⟨0,hrow⟩ · frontMat i ⟨0,hrow⟩`.
+  -- The one blocker is rewriting the goal sum body (via `hjc` + `Matrix.updateRow_apply`) into the EXACT
+  -- `if`-form of the collapse — a Decidable-instance unification (both `if`s are `j = ⟨0,hrow⟩`, different
+  -- instances), NOT a math gap. All math is landed sorry-free.
   sorry
 
 end DLNFibre.DLN.RLCT
