@@ -55,11 +55,12 @@ map `structMap = schurToDsigAt`. The wording throughout is "over `SchurLoc`", ne
 `rankROpen`" or "flat over `sweepSigmaRing`" (those are the source/total, not the base).
 
 - **CLOSED (R5, `Core.FibreProjectionCompat`) — projection compatibility.** The structure map
-  `schurToDsigAt : SchurLoc →ₐ[k] Away (chartDsigAt s t)` IS the **pullback of `mult`'s projection**:
-  `schurToDsigAt_comp_localizeSchur` / `chartPhiSchurAeval_eq_comp_multComap` factor the in-chart base
-  map through `mult`'s comorphism `multComap` at every pivot (so the in-chart base direction agrees with
-  the geometric projection `mult⁻¹(B) → Mat^{= r}` restricted to the chart). The over-base content is
-  now that the trivialization respects the geometric projection, not merely the named in-chart base map.
+  `schurToDsigAt : SchurLoc →ₐ[k] Away (chartDsigAt s t)` **agrees with the pullback of `mult`'s
+  projection** after precomposition with `localizeSchur`: `schurToDsigAt_comp_localizeSchur` /
+  `chartPhiSchurAeval_eq_comp_multComap` factor the in-chart base map through `mult`'s comorphism
+  `multComap` at every pivot (so the in-chart base direction agrees with the geometric projection
+  `mult⁻¹(B) → Mat^{= r}` restricted to the chart). The over-base content is now that the trivialization
+  respects the geometric projection, not merely the named in-chart base map.
 - **OPEN ITEM — NOT `Flat π` / `FiberBundle` over all of `rankROpen` (NOT a GLOBAL morphism, R1).**
   This is the CHARTWISE over-base local product + chartwise flatness, at every pivot / every
   rank-`= r` point. A single GLOBAL flatness-of-`π` or fibre-bundle statement over the whole
@@ -97,8 +98,9 @@ structure OverBaseChartDatum (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I : PivotDatum d r hp hq) where
   /-- The HONEST structure map (`schurToDsigAt`): `SchurLoc →ₐ[k] Away (chartDsigAt I.s I.t)`, the
   in-chart base direction (Schur-direction coordinate ring `Away (detSchurS …)`), exhibiting the
-  chart total ring as a `SchurLoc`-algebra. Proven to be the pullback of `mult`'s projection
-  (projection compatibility, CLOSED in `Core.FibreProjectionCompat`, R5). -/
+  chart total ring as a `SchurLoc`-algebra. Proven to agree with the pullback of `mult`'s projection
+  after precomposition with `localizeSchur` (projection compatibility, CLOSED in
+  `Core.FibreProjectionCompat`, R5). -/
   structMap : SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r →ₐ[k]
     Localization.Away (chartDsigAt (k := k) d r I.s I.t)
   /-- The OVER-BASE trivialization: with the `structMap`-induced `SchurLoc`-algebra structure on the
@@ -135,8 +137,8 @@ open-cover `cover` of `rankROpen`; (3) per-pivot the HONEST structure map + over
 + flatness over the base (`chart`, an `OverBaseChartDatum`). This UPGRADES S4's
 `RankROpenPerPivotLocalProduct` (bare `k`-algebra products) to the over-base version: each chart is
 a product OVER the in-chart base direction `SchurLoc` (via a named structure map), flat
-over `SchurLoc`. (`schurToDsigAt` IS the pullback of `mult`'s projection: projection
-compatibility, CLOSED in `Core.FibreProjectionCompat`, R5.)
+over `SchurLoc`. (`schurToDsigAt` agrees with the pullback of `mult`'s projection after precomposition
+with `localizeSchur`: projection compatibility, CLOSED in `Core.FibreProjectionCompat`, R5.)
 **Chartwise / per-chart**: it does NOT carry a target-side overlap cocycle (R1), so it is NOT a
 global `Flat π` / `FiberBundle`; see the module docstring. -/
 structure RankROpenOverBaseLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
@@ -193,9 +195,10 @@ This UPGRADES the S4 headline `reducedFibre_existsProductChartAt_rankEq` (bare
 `Nonempty (… ≃ₐ[k] …)`)
 to the genuine over-base version. Composed from the S1 rank-bridge, the scheme open-cover, and the
 S4b per-pivot over-base data. **Chartwise / uncocycled, base = `SchurLoc`**: it does not itself fold in
-that `schurToDsigAt` is the pullback of `mult`'s projection (projection compatibility — proven
-separately in `Core.FibreProjectionCompat`, R5), and does NOT assert a global `Flat π` / fibre bundle
-over all of `rankROpen` (the target-side overlap cocycle R1 is unbuilt). -/
+that `schurToDsigAt` agrees with the pullback of `mult`'s projection after precomposition with
+`localizeSchur` (projection compatibility — proven separately in `Core.FibreProjectionCompat`, R5), and
+does NOT assert a global `Flat π` / fibre bundle over all of `rankROpen` (the target-side overlap
+cocycle R1 is unbuilt). -/
 theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (P : PrimeSpectrum (sweepSigmaRing k d r))

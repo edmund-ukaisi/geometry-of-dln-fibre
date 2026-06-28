@@ -5,7 +5,7 @@ import DLNFibre.Core.FibreOverBaseTriv
 import DLNFibre.Core.MultComorphism
 
 /-!
-# `DLNFibre.Core.FibreProjectionCompat` — the in-chart base map IS `mult`'s comorphism (projection compatibility)
+# `DLNFibre.Core.FibreProjectionCompat` — the in-chart base map agrees with `mult`'s comorphism after precomposing `localizeSchur` (projection compatibility)
 
 The S4b/S5 over-base trivialization is over the **named** structure map `schurToDsigAt :
 SchurLoc →ₐ[k] Away (chartDsigAt s t)`. The S5 capstone names one honest residual: that this base map
@@ -22,8 +22,8 @@ with `chartPhiSchurAeval = aeval chartPhiVarSub` (`Core.ChartPhiSubstitution`). 
 coordinate-ring image of `mult`): the Δ-block generator `Sum.inl (i, j)` maps to
 `mk_Σ (multPoly (castLE i) (castLE j))`, the `B12`/`B21` generators to the corresponding bordering
 entries. Those product entries are exactly `multComap`'s images of the target matrix coordinate
-variables (`multComap_X`). So the in-chart base map factors through `mult`'s comorphism — the structure
-map IS the geometric projection, descended to the chart, not an artificial chart base map.
+variables (`multComap_X`). So the in-chart base map factors through `mult`'s comorphism — descended to
+the chart, the structure map agrees with the geometric projection, not an artificial chart base map.
 
 ## Main results
 
@@ -36,11 +36,15 @@ map IS the geometric projection, descended to the chart, not an artificial chart
 * `chartPhiSchurAeval_eq_comp_multComap` — **the factorization**: the Φ Schur comorphism equals
   `phiSourceHom ∘ multComap ∘ targetSchurEmbed`. So the Schur-coordinate aeval is `mult`'s comorphism,
   restricted to the Schur block and descended to the chart localization.
-* `schurToDsig_comp_targetSchurLocEmbed` — the localized statement on `schurToDsig`: the top-left base
-  map, precomposed with the localized Schur embedding, equals `mult`'s comorphism localized. The honest
-  "the base map is the pullback of `mult`'s projection" at the top-left chart.
-* `schurToDsigAt_factors_multComap` — the per-pivot carry: `schurToDsigAt` factors through `mult`'s
-  comorphism via the gauge transport (the geometric structure map at every pivot).
+* `schurToDsig_comp_localizeSchur` — the localized statement on `schurToDsig`: precomposed with the
+  canonical Schur localization hom `localizeSchur`, the top-left base map equals
+  `phiSourceHom ∘ multComap ∘ targetSchurEmbed`. So `schurToDsig` **agrees with** `mult`'s comorphism
+  `multComap` **after precomposition with `localizeSchur`** (on the Schur-coordinate generators), at the
+  top-left chart.
+* `schurToDsigAt_comp_localizeSchur` — the per-pivot carry: precomposed with `localizeSchur`,
+  `schurToDsigAt` equals the gauge transport of `phiSourceHom ∘ multComap ∘ targetSchurEmbed`. So at
+  every pivot `schurToDsigAt` agrees with `mult`'s comorphism (gauge-transported) after precomposition
+  with `localizeSchur`.
 
 ## Scope (honest)
 
@@ -48,8 +52,8 @@ This proves projection compatibility as a **ring-level factorization through `mu
 `multComap`, at every pivot. It is NOT a scheme-morphism / continuity statement, and it does not by
 itself assemble a global `Flat π` / `FiberBundle` (that additionally needs the target-side overlap
 cocycle R1). What it removes is the S5/S4b open item "(i) projection compatibility": the named base map
-`schurToDsigAt` is no longer an artificial chart base map — it is `mult`'s comorphism on the Schur block,
-descended to the chart.
+`schurToDsigAt` is no longer an artificial chart base map — after precomposition with `localizeSchur` it
+agrees with `mult`'s comorphism on the Schur block, descended to the chart.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -173,16 +177,19 @@ noncomputable def localizeSchur (d : Fin (N + 2) → ℕ) (r : ℕ) :
   IsScalarTower.toAlgHom k (MvPolynomial (SchurVar (d 0) (d (Fin.last (N + 1))) r) k)
     (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
 
-/-- **The top-left base map IS `mult`'s comorphism (projection compatibility, top-left chart).**
-Precomposed with the canonical Schur localization hom `localizeSchur`, the top-left structure map
-`schurToDsig : SchurLoc →ₐ[k] Away (chartDsig)` equals `mult`'s comorphism `multComap` (restricted to
-the Schur block via `targetSchurEmbed`) descended-and-localized to the chart (via `phiSourceHom`):
+/-- **The top-left base map agrees with `mult`'s comorphism after precomposing `localizeSchur`
+(projection compatibility, top-left chart).** Precomposed with the canonical Schur localization hom
+`localizeSchur`, the top-left structure map `schurToDsig : SchurLoc →ₐ[k] Away (chartDsig)` equals
+`mult`'s comorphism `multComap` (restricted to the Schur block via `targetSchurEmbed`)
+descended-and-localized to the chart (via `phiSourceHom`):
 
 > `schurToDsig ∘ localizeSchur = phiSourceHom ∘ multComap ∘ targetSchurEmbed`.
 
-So the in-chart base direction is the geometric multiplication map on the Schur block, descended to the
-chart localization — not an artificial chart base map. Proof: `schurToDsig (algebraMap f) =
-chartPhiSchurAeval f` (`schurToDsig_algebraMap`) then the factorization
+So, after precomposition with `localizeSchur` (on the Schur-coordinate generators), the in-chart base
+direction agrees with the geometric multiplication map on the Schur block, descended to the chart
+localization — not an artificial chart base map. (This is an AlgHom equality out of the UNLOCALIZED
+Schur coordinate ring; it is not a `SchurLoc`-level lifted comorphism.) Proof:
+`schurToDsig (algebraMap f) = chartPhiSchurAeval f` (`schurToDsig_algebraMap`) then the factorization
 `chartPhiSchurAeval_eq_comp_multComap`. -/
 theorem schurToDsig_comp_localizeSchur (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
@@ -207,8 +214,9 @@ gauge transport `awayCongr (gaugeEquivSigma (pivotGauge σ τ))` applied to `mul
 > `schurToDsigAt ∘ localizeSchur = awayCongr(gauge) ∘ phiSourceHom ∘ multComap ∘ targetSchurEmbed`.
 
 Carries `schurToDsig_comp_localizeSchur` along the gauge `awayCongr` (`schurToDsigAt = awayCongr(gauge)
-∘ schurToDsig`). So at EVERY pivot the named structure map is `mult`'s comorphism, transported by the
-pivot gauge — the geometric projection in chart coordinates, not an artificial base map. -/
+∘ schurToDsig`). So at EVERY pivot the named structure map agrees with `mult`'s comorphism (transported
+by the pivot gauge) after precomposition with `localizeSchur` — the geometric projection in chart
+coordinates, not an artificial base map. -/
 theorem schurToDsigAt_comp_localizeSchur (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
@@ -233,32 +241,34 @@ theorem schurToDsigAt_comp_localizeSchur (d : Fin (N + 2) → ℕ) (r : ℕ)
 /-! ## The projection-compatible over-base chart datum (the S4b over-base triv, now over `mult`)
 
 Packaging C2: at a pivot, the over-base trivialization `chartDsigAt_schurLocTensorEquiv` is over the
-NAMED structure map `schurToDsigAt`, and (projection compatibility above) `schurToDsigAt` is `mult`'s
-comorphism transported by the pivot gauge. So the chartwise over-base product + flatness is genuinely
-over the geometric projection (chartwise), not over an artificial base map. This bundles the two banked
-S4b facts with the projection-compatibility equality, so a consumer reads both off one object. -/
+NAMED structure map `schurToDsigAt`, and (projection compatibility above) `schurToDsigAt` agrees with
+`mult`'s comorphism (transported by the pivot gauge) after precomposition with `localizeSchur`. So the
+chartwise over-base product + flatness is genuinely over the geometric projection (chartwise), not over
+an artificial base map. This bundles the two banked S4b facts with the projection-compatibility
+equality, so a consumer reads both off one object. -/
 
 /-- **The projection-compatible over-base chart datum at a pivot.** For a pivot `(s, t)` (with `σ, τ`
 carrying the first `r` rows/columns to it), bundles the three facts that, together, say the chart total
 ring is the standard fibre product OVER THE GEOMETRIC PROJECTION (chartwise):
 
 * `projCompat` — projection compatibility: `schurToDsigAt ∘ localizeSchur = gauge ∘ phiSourceHom ∘
-  multComap ∘ targetSchurEmbed`, i.e. the in-chart base map IS `mult`'s comorphism (Schur block,
-  gauge-transported);
+  multComap ∘ targetSchurEmbed`, i.e. the in-chart base map agrees with `mult`'s comorphism (Schur
+  block, gauge-transported) after precomposition with `localizeSchur`;
 * `triv` — the over-base trivialization (S4b `chartDsigAt_schurLocTensorEquiv`): over the
   `schurToDsigAt`-induced `SchurLoc`-algebra, `Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗_k
   sweepFibreRing`;
 * `flat` — flatness over the base (S4b `chartDsigAt_flat_over_schurLoc`).
 
-The S4b `triv`/`flat` were over the NAMED `schurToDsigAt`; `projCompat` certifies that this named map is
-the geometric projection — closing the S5/S4b open item "(i) projection compatibility". Still chartwise
-(R1 global gluing remains). -/
+The S4b `triv`/`flat` were over the NAMED `schurToDsigAt`; `projCompat` certifies that this named map
+agrees with the geometric projection after precomposition with `localizeSchur` — closing the S5/S4b
+open item "(i) projection compatibility". Still chartwise (R1 global gluing remains). -/
 structure ProjCompatOverBaseChart (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
     (σ : Equiv.Perm (Fin (d (Fin.last (N + 1))))) (τ : Equiv.Perm (Fin (d 0)))
     (hσ : ∀ i : Fin r, σ (Fin.castLE hp i) = s i) (hτ : ∀ j : Fin r, τ (Fin.castLE hq j) = t j) where
-  /-- Projection compatibility: the in-chart base map is `mult`'s comorphism, gauge-transported. -/
+  /-- Projection compatibility: the in-chart base map agrees with `mult`'s comorphism (gauge-transported)
+  after precomposition with `localizeSchur`. -/
   projCompat : (schurToDsigAt d r hp hq s t σ τ hσ hτ).comp (localizeSchur k d r)
       = ((awayCongr (gaugeEquivSigma d r (pivotGauge d σ τ)) (chartDsig k d r hp hq)
             (chartDsigAt d r s t)
@@ -295,8 +305,9 @@ noncomputable def projCompatOverBaseChart (d : Fin (N + 2) → ℕ) (r : ℕ)
 
 section Witness
 
-/-- **Projection-compatibility witness.** The per-pivot base map equals `mult`'s comorphism transported
-by the pivot gauge — the genuine geometric content (it mentions `multComap`, not only `schurToDsigAt`). -/
+/-- **Projection-compatibility witness.** The per-pivot base map, precomposed with `localizeSchur`,
+equals `mult`'s comorphism transported by the pivot gauge — the genuine geometric content (it mentions
+`multComap`, not only `schurToDsigAt`). -/
 example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (s : Fin r → Fin (d (Fin.last (N + 1)))) (t : Fin r → Fin (d 0))
