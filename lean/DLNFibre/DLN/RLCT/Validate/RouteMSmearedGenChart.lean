@@ -457,4 +457,60 @@ theorem measurePreserving_phiSm (hrow : 0 < M (deepLayer M hL).castSucc)
     (fun u => smearShift M hL u hm1 hcol) (smearShiftFlat_measurable M hL hcol hm1)
     (fun u a => smearShift_update_pivot M hL u a hrow hcol hm1)
 
+/-! ## The connection `(paramsEquivFlat).symm (phiSm u) = smParams u` -/
+
+/-- **`smParams` at a non-pivot slot equals `baseParams`.** For `q ≠ (deepLayer, 0, 0)` with `M_L = 1`:
+off the deepest layer `Function.update_of_ne`; on the deepest layer the row `i ≠ ⟨0,hrow⟩` (else, the
+column being forced `0` by `M_L = 1`, `q = q*`), so `Matrix.updateRow_ne`. -/
+theorem smParams_apply_ne_pivot (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) (hc1 : M (deepLayer M hL).succ = 1)
+    (q : FlatIdx M) (hq : q ≠ ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩) :
+    (smParams M hL u hrow hcol hm1) q.1.1 q.1.2 q.2 = (baseParams M u) q.1.1 q.1.2 q.2 := by
+  obtain ⟨⟨s, i⟩, j⟩ := q
+  rw [smParams]
+  by_cases hs : s = deepLayer M hL
+  · subst hs
+    rw [Function.update_self, smearedDeepLayer, Matrix.updateRow_apply, if_neg]
+    -- `i ≠ ⟨0,hrow⟩`: else, `j = ⟨0,hcol⟩` (subsingleton col, `M_L = 1`), giving `q = q*`.
+    intro hi; subst hi
+    apply hq
+    have hjsub : Subsingleton (Fin (M (deepLayer M hL).succ)) := by rw [hc1]; infer_instance
+    rw [hjsub.elim j ⟨0, hcol⟩]
+  · rw [Function.update_of_ne hs]
+
+/-- **The connection: `(paramsEquivFlat).symm (phiSm u) = smParams u`.** The flat chart `phiSm`
+(single-coord shear at `smPivotCoord`) decodes to the Params-level `smParams` (deepest-row-0 shear).
+Per-slot: at the pivot `q*` both give `u_p − smearShift`; off it, `phiSm` is `u` (unchanged coord) and
+`smParams` is `baseParams` (the `smParams_apply_ne_pivot` helper, using `M_L = 1`). -/
+theorem paramsEquivFlat_symm_phiSm_eq_smParams (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) (hc1 : M (deepLayer M hL).succ = 1) :
+    (paramsEquivFlat M).symm (phiSm M hL u hrow hcol hm1) = smParams M hL u hrow hcol hm1 := by
+  funext s i j
+  set q : FlatIdx M := ⟨⟨s, i⟩, j⟩ with hq
+  -- LHS decodes to `phiSm u (flatCoordOf q)`.
+  rw [show ((paramsEquivFlat M).symm (phiSm M hL u hrow hcol hm1)) s i j
+      = phiSm M hL u hrow hcol hm1 (flatCoordOf M q) from
+    paramsEquivFlat_symm_decode M (phiSm M hL u hrow hcol hm1) q]
+  by_cases hqp : q = ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩
+  · -- pivot slot: both sides are `u_p − smearShift`.
+    have hcoord : flatCoordOf M q = smPivotCoord M hL hrow hcol := by rw [hqp]; rfl
+    rw [phiSm, hcoord, Function.update_self]
+    -- RHS: `smParams q* = smearedDeepLayer ... ⟨0,hrow⟩ ⟨0,hcol⟩ = u_p − smearShift`.
+    have hrhs : (smParams M hL u hrow hcol hm1) q.1.1 q.1.2 q.2
+        = deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol := by
+      rw [hqp, smParams, Function.update_self, smearedDeepLayer, Matrix.updateRow_self]
+    rw [hrhs]
+    -- `u smPivotCoord = deepCol ⟨0,hrow⟩` (the pivot coord decodes to the deepest (0,0) entry).
+    have hup : u (smPivotCoord M hL hrow hcol) = deepCol M hL u hcol ⟨0, hrow⟩ :=
+      (paramsEquivFlat_symm_decode M u ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩).symm
+    rw [hup]
+  · -- non-pivot slot: `phiSm` unchanged (= `u (flatCoordOf q) = baseParams ...`), `smParams = baseParams`.
+    have hne : flatCoordOf M q ≠ smPivotCoord M hL hrow hcol :=
+      fun h => hqp (flatCoordOf_injective M h)
+    rw [phiSm, Function.update_of_ne hne]
+    rw [smParams_apply_ne_pivot M hL u hrow hcol hm1 hc1 q hqp]
+    rw [baseParams, paramsEquivFlat_symm_decode]
+
 end DLNFibre.DLN.RLCT
