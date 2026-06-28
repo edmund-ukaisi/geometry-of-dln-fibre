@@ -1149,6 +1149,137 @@ theorem hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero (H : Fin (L + 1) → ℕ) (r :
     show (l2T1 H r hr hL 0 - l2T1p H r hr hL hL2eq 0) k j = 0
     rw [l2T1_zero, l2T1p_zero, sub_zero]; rfl
 
+/-! ### S4j — the encoded core payload `paramsEquivFlatCLE (l2CoreΔTuple)` has strict-`fderiv`-`0`
+
+Flat-coordinate route (mirrors `hasStrictFDerivAt_schurShiftRaw_zero`): each flat coordinate `k` decodes
+(by `rfl`) to `(l2CoreΔTuple q) d.1.1 d.1.2 d.2`, which (`Function.update 0 lastLayer (T1'−T1)`) is
+`(T1'−T1) d.1.2 d.2` if `d.1.1 = lastLayer` (strict-`fderiv`-`0` by the core payload-block fact) and `0`
+otherwise (`const`). `paramsEquivFlatCLE = paramsEquivFlat` as functions. -/
+
+/-- The encoded core payload `paramsEquivFlat (l2CoreΔTuple)` has strict-`fderiv`-`0` at `0`. -/
+theorem hasStrictFDerivAt_paramsEquivFlat_l2CoreΔTuple_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt
+      (fun q => paramsEquivFlat (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
+  refine hasStrictFDerivAt_pi'.2 (fun k => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  -- The flat coordinate decodes to `(l2CoreΔTuple q) d.1.1 d.1.2 d.2` (by `rfl`).
+  set d := (Fintype.equivFin (FlatIdx (deepestM H r))).symm k with hd
+  have hcoord : (fun q => paramsEquivFlat (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q) k)
+      = fun q => l2CoreΔTuple H r hr hL hL2eq q d.1.1 d.1.2 d.2 := rfl
+  rw [hcoord]
+  -- Make `d` opaque, then destructure so the `lastLayer` case can substitute the layer.
+  clear_value d
+  obtain ⟨⟨s₀, i₀⟩, j₀⟩ := d
+  rcases eq_or_ne s₀ (lastLayer hL) with hlast | hlast
+  · -- Last layer: the update writes `T1' − T1`. Substituting `s₀ = lastLayer` aligns the widths.
+    subst hlast
+    have heq : (fun q => l2CoreΔTuple H r hr hL hL2eq q (lastLayer hL) i₀ j₀)
+        = fun q => (l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q) i₀ j₀ := by
+      funext q
+      rw [l2CoreΔTuple, Function.update_self]
+    rw [heq]
+    exact hasStrictFDerivAt_l2T1p_sub_T1_entry_zero H r hr hL hL2eq i₀ j₀
+  · -- Other layers: the update leaves `0`.
+    have heq : (fun q => l2CoreΔTuple H r hr hL hL2eq q s₀ i₀ j₀)
+        = fun _ : DeepestSplit H r (deepestNGauge H r) => (0 : ℝ) := by
+      funext q
+      rw [l2CoreΔTuple, Function.update_of_ne hlast]; rfl
+    rw [heq]
+    exact hasStrictFDerivAt_const _ _
+
+/-- The encoded core payload via the CLE has strict-`fderiv`-`0` at `0` (`paramsEquivFlatCLE = paramsEquivFlat`). -/
+theorem hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTuple_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt
+      (fun q => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
+  refine (hasStrictFDerivAt_paramsEquivFlat_l2CoreΔTuple_zero H r hr hL hL2eq).congr_of_eventuallyEq ?_
+  filter_upwards with q
+  rw [paramsEquivFlatCLE_coe]
+
+/-! ### S4k — the gauge payload `l2GaugeΔ` has strict-`fderiv`-`0`
+
+`l2GaugeΔ q = l2g' q − regGaugeSlotEquiv (q.1, q.2.2)`. Per `RegGaugeIdx` coordinate (`hasStrictFDerivAt_pi'`):
+non-Y-tags and non-last-layer Y-tags give `l2g' = regGaugeSlotEquiv` (difference `0`, `const`); a
+last-layer Y-tag gives `l2Y1p i (h ▸ j) − l2Y1 i j = (Y1'−Y1)` (the reg payload-block fact). Then
+`regGaugeSlotCLE.symm` (a CLE) composes. -/
+
+/-- The gauge payload `l2GaugeΔ` has strict-`fderiv`-`0` at `0`. -/
+theorem hasStrictFDerivAt_l2GaugeΔ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt (l2GaugeΔ H r hr hL hL2eq)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
+  refine hasStrictFDerivAt_pi'.2 (fun idx => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  obtain ⟨s, tag⟩ := idx
+  rcases tag with tagXY | tagZ
+  · rcases tagXY with tagX | ⟨i, j⟩
+    · -- X-tag: `l2g'` falls to the `_` branch, `= regGaugeSlotEquiv`; difference `0`.
+      have h0 : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inl tagX)⟩) = fun _ => (0 : ℝ) := by
+        funext q
+        show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inl tagX)⟩
+          - regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inl tagX)⟩ = 0
+        rw [show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inl tagX)⟩
+          = regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inl tagX)⟩ from rfl, sub_self]
+      rw [h0]; exact hasStrictFDerivAt_const _ _
+    · -- Y-tag: case on `s = lastLayer`.
+      by_cases hs : s = lastLayer hL
+      · subst hs
+        -- `l2g' = l2Y1p i j`, `regGaugeSlotEquiv = readY = l2Y1 i j`; difference `(Y1'−Y1) i j`.
+        have hval : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+              l2GaugeΔ H r hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+            = fun q => (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j := by
+          funext q
+          show l2g' H r hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+            - regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+            = (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j
+          rw [Matrix.sub_apply]
+          congr 1
+          show (if h : (lastLayer hL) = lastLayer hL then l2Y1p H r hr hL hL2eq q i (h ▸ j)
+              else _) = l2Y1p H r hr hL hL2eq q i j
+          rw [dif_pos rfl]
+        rw [hval]
+        exact hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero H r hr hL hL2eq i j
+      · -- Non-last Y-tag: `l2g'` `dif_neg` falls to `regGaugeSlotEquiv`; difference `0`.
+        have h0 : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+              l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩) = fun _ => (0 : ℝ) := by
+          funext q
+          show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩
+            - regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩ = 0
+          rw [show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩
+            = regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩ from by
+            show (if h : s = lastLayer hL then l2Y1p H r hr hL hL2eq q i (h ▸ j)
+                else regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+              = regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inl (Sum.inr (i, j))⟩
+            rw [dif_neg hs], sub_self]
+        rw [h0]; exact hasStrictFDerivAt_const _ _
+  · -- Z-tag: `_` branch, difference `0`.
+    have h0 : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          l2GaugeΔ H r hr hL hL2eq q ⟨s, Sum.inr tagZ⟩) = fun _ => (0 : ℝ) := by
+      funext q
+      show l2g' H r hr hL hL2eq q ⟨s, Sum.inr tagZ⟩
+        - regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inr tagZ⟩ = 0
+      rw [show l2g' H r hr hL hL2eq q ⟨s, Sum.inr tagZ⟩
+        = regGaugeSlotEquiv H r hr hL (q.1, q.2.2) ⟨s, Sum.inr tagZ⟩ from rfl, sub_self]
+    rw [h0]; exact hasStrictFDerivAt_const _ _
+
+/-- The gauge payload via `regGaugeSlotCLE.symm` has strict-`fderiv`-`0` at `0`. -/
+theorem hasStrictFDerivAt_regGaugeSlotCLE_symm_l2GaugeΔ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    HasStrictFDerivAt
+      (fun q => (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ]
+        ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) 0 := by
+  have hinner := hasStrictFDerivAt_l2GaugeΔ_zero H r hr hL hL2eq
+  have houter := (regGaugeSlotCLE H r hr hL).symm.toContinuousLinearMap.hasStrictFDerivAt
+    (x := l2GaugeΔ H r hr hL hL2eq 0)
+  have hcle := houter.comp (x := (0 : DeepestSplit H r (deepestNGauge H r))) hinner
+  -- The composed derivative `CLE.symm ∘ 0 = 0`.
+  simpa using hcle
+
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
 where the joint action's mid-interface widths coincide — `midWidth_eq_of_L2`). Keeps the public
