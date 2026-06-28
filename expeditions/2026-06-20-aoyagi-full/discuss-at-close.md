@@ -974,3 +974,26 @@ snapshot → genm-l2cle, so nothing was lost.
 4. **Separate worktrees are the safety net** — even under a full duplicate-dispatch, separate worktrees prevent
    corruption (only wasted tokens), and a killed agent's result-snapshot can still be harvested. Keep one-tide =
    one-worktree.
+
+### Item 49 — A depth-checkpoint that didn't stick: when a teammate builds through a stand-down AND lands clean work (2026-06-28)
+genm-firing depth-checkpointed the carving (UPDATE-220) → I spawned genm-carve2 + stood genm-firing down. But genm-firing
+kept building through the stand-down (message-crossing, as in Items 47/48) and landed REAL clean work: #133 + #134
+(`frobSqGenJoint_ne_zero_ae`, the substantial a.e.-positivity) axiom-clean + green, plus a Codex zEG consult that resolved
+the carving's only design risk (pure-volume, no gap). So two agents (genm-firing + genm-carve2) were on the carving, and
+genm-firing — the one I'd stood down — held the best state.
+
+**Call:** reversed the handoff, consolidated FINALLY on genm-firing, stood down genm-carve2 (harvest-first). Rationale:
+(1) Item-47 — consolidate on the de-facto builder holding the best state; (2) the depth-checkpoint's PURPOSE (avoid bad
+late commits) was being served regardless — genm-firing landed axiom-clean, not green-but-wrong; (3) the Codex consult
+*removed* the design risk that made depth-thrash scary, so the remaining work is mechanical volume (low thrash-risk even
+for a deep agent); (4) keeping the fresh-but-behind genm-carve2 would waste the landed #134 + re-run the consult + require
+fighting genm-firing to stop (failed 3× via crossing).
+
+**The discipline isn't "obey the checkpoint ritually" — it's "don't charge work your depth makes risky."** When the depth
+isn't biting (clean commits) and the design risk is gone, the fresh-tide swap loses more than it saves. **But the flip-flop
+itself (approve→checkpoint→re-approve across 3 ticks) is the real cost** — each flip seeded a duplicate-dispatch tangle.
+Mitigation going forward: (a) a depth-checkpoint acceptance must come with "ACTUALLY STOP — tell me + rest, don't build
+through it" so the next checkpoint is real; (b) don't pre-emptively spawn the fresh tide until the deep agent CONFIRMS it
+stopped (the spawn-then-it-keeps-going is what creates the duplicate); (c) one firm consolidation, then hold it — resist
+re-flipping on the next crossed message. Net: no work lost (harvest), carving materially de-risked, but ~2 ticks of churn
+that tighter sequencing (confirm-stop-before-spawn) would have avoided.
