@@ -439,3 +439,52 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     (factors through multComap, not a vacuous restatement — Codex's flagged trap) + the global Flat π/cocycle
     are honestly NAMED residuals not overclaimed. #6 completes on its PASS.
   - Holding for the fidelity verdict → then expedition CLOSE shape.
+
+---
+
+## EXPEDITION CLOSE (2026-06-28)
+
+**Central question (achieved):** replace the monolithic Cited axiom `RlctInterface.cited_aoyagi_dln`
+(`rlct = ½·codim` in one opaque field) with a **thin cited analytic interface + genuinely-proved DLN
+geometry**. DONE — the L&R line stayed BLIND to the parallel aoyagi-paper formalisation (decorrelation).
+
+### Proved / landed (all green, sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`)
+- **Monolith RETIRED.** `RlctRealInterface d` (opaque `rlct` + 2 cited bounds `cited_watanabe_upper`
+  [universal] + `cited_aoyagi_lower` [DLN, 0<N, attainability-guarded]); equality `rlct = ½·codim_ℝ`
+  DERIVED by `le_antisymm`. The payoff composes `rlct = ½·codim_ℝ → ½·codim_K → ½·C`.
+- **`codimRealFibre := codimRepCanonical (k:=ℝ)`** — the honest real-locus codim (x²+y² discriminator).
+- **Connector** (`loss = Σ residuals²`, real zero-set = fibre) + **catenary reduction**
+  (`codimRealFibre_eq_codimRepCanonical_of_dimTransfer`: atomic dim-transfer ⟹ codim, via the banked
+  field-generic `RadicalCatenary` catenary) + **`codim_K = C`** (banked engine) — all PROVED.
+- **Non-vacuity witness** `rlctRealInterfaceWitness d : RlctRealInterface d` (formal inhabitant, NOT the
+  analytic rlct — honestly docstring'd; re-guarded for intended-inhabitability so the genuine `rlctAt` can
+  discharge the interface — the future aoyagi-full fold stays possible).
+- **R5 bonus: projection compatibility** (`schurToDsigAt_comp_localizeSchur` /
+  `chartPhiSchurAeval_eq_comp_multComap` — `schurToDsigAt` IS `mult`'s comorphism `multComap`) — **closes
+  the prior fibration-geometry S5/S4b open item (i)**; + `ProjCompatOverBaseChart`, `awayCongr'`,
+  `targetProductOverlapTransition`.
+
+### Cited boundary (the honest thin seam) — exactly THREE named atomic facts
+1. **Watanabe `≤`** (universal analytic upper bound), 2. **Aoyagi `≥`** (DLN-specific analytic lower bound),
+3. **real↔complex dim-transfer T** (`codim_ℝ = codim_K`). Each named, sourced (Aoyagi Thm 1 / LR §8
+`thm:aoyagi-rlct`), caveated, attainability-guarded. Everything else PROVED. **Verified by TWO decorrelated
+review rounds each** (seam: fidelity PASS + hardener SOLID, re-confirmed after the tightening; R5: fidelity
+PASS).
+
+### Roadmap (named residuals — future expeditions, NOT this blind/cite line)
+- **Prove T** (`codim_ℝ = codim_K` via `realizerD` smooth-rational density) — the `rlct-runway-target`
+  wall; needs real-AG in Mathlib (real radical / real-Nullstellensatz / semialgebraic dim, all absent at
+  v4.29). Scout's ladder: varietyDim↔height [banked] → smooth-full-dim-real-pt ⟹ dim-eq → realizerD smooth
+  per top component → glue; **ℚ-unirationality of the orbit/sweep = the clean sufficient hypothesis.**
+- **Global `Flat π` / fibre bundle over `rankROpen`** — the target-side cocycle round-trip (math immediate,
+  blocked on Mathlib-v4.29 `AlgEquiv.trans_assoc`/`refl_trans` + double-localized kernel-cost) + triple-
+  overlap + local-to-global flatness.
+- **(Cross-paper)** connect to aoyagi-full's genuine `rlctAt` via the field-free `aoyagiLambda ↔
+  Aoyagi.lambda` identity (the re-guard keeps this fold possible).
+
+### Lessons banked
+L5 (blindness=decorrelation), L6 (codim_ℝ def vs the transfer assumption), L7 (formal vs intended
+inhabitability → the re-guard), L3-recurrence (re-grep the class to empty). See `lessons.md`.
+
+### Status: CLOSE shape — branch `expedition/rlct-bridge` pushed (`9560b0e6`), green. PR
+operator-gated (signal-and-wait): controller signals ready, does NOT open/merge unilaterally.
