@@ -595,3 +595,23 @@ field — reproved directly).
   clean. Then controller convenes the decorrelated fidelity+hardener re-review (cited boundary 3→2).
 - **NOT in scope (roadmap):** the fibre-component/θ-count-AT-fibre layer (~10 files still `[IsAlgClosed]`,
   the LR Lemma 4.6 bundle content) — NOT needed for `hT`; a separate full-relaxation tide if wanted.
+
+### CAPSTONE LANDED — `hT` PROVED + discharged; cited boundary 3→2 (2026-06-28)
+
+Capstone tide integrated (merge `58ebb01c`, pushed; full aggregator GREEN 3818 jobs, sorry-free,
+axiom-clean). **`hT` is now a PROVED theorem** `DLN.codimRealFibre_eq_codimRepCanonical_baseChange` (both
+`codim_ℝ(fibre B)` and `codim_K(fibre B·ι)` = the same field-independent `C+δ` via the relaxed Core
+headline + `Matrix.rank_map_eq_of_injective`; DIRECT route, no `T′`). The `hT` hypothesis is REMOVED from
+all 8 payoffs ⟹ **`rlct(K^DLN_B) = ½·C` rests on ONLY {Watanabe `≤`, Aoyagi `≥`}** — every geometric fact,
+incl. the real↔complex transfer, PROVED. `#print axioms` clean (no new axiom — hT a genuine theorem); L3
+re-grep empty (no "hT cited" prose). Two traps caught: `Matrix.`-namespace-shadow (rank lemma → top-level
+`Matrix` in `Core.RankLocusClosed`); Type-0 narrowing of the R/R2 sections (inherited from the Type-0 Core
+headline; witnesses ℂ/AlgClosure-ℚ are Type 0 — honest, documented in the card's Scope note).
+- **PHASE-2 GOAL ACHIEVED** (pending re-review): the operator's "discharge hT by building the real-AG" is
+  done — and the real-AG turned out to be a typeclass relaxation of the repo's own field-generic squeeze,
+  not a from-scratch build.
+- **Decorrelated re-review convened (the final gate):** `fidelity-cap` (`a15102e4`) + `hardener-cap`
+  (`a2b12a44`) on the capstone — fidelity (#print axioms / transfer genuine / discharge complete / Type-0
+  honest / rank-lemma relocation / L3) + bedrock (discharge genuine-not-sleight / name=content / cited
+  boundary honestly 2 / non-vacuity / beauty). Loop to equilibrium → then `#13` is the well-rounded PR.
+  Task #11 lands on the re-review PASS.
