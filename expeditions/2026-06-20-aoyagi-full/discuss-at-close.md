@@ -882,3 +882,25 @@ two lineages co-exist, `core_schur3_lt_top`/`lintegral_matBox_smul` clean-three 
 Integrated to canonical (`b515a412`). The cross-lineage co-aggregation WORKS — this de-risks the eventual
 final-headline aggregation (the concrete-anchor lineages can co-exist; the remaining aggregation cost is
 mechanical, demonstrated bounded). The mechanical-cost prediction held exactly.
+
+### Item 44 — L2 bridge sig was UNSOUND (the (1a) triangularity gap); controller-miss owned + route (A) (2026-06-28)
+genm-l2 + a decorrelated Codex (xhigh, consult 8a0e82ad) caught that `deepest_diffeo_bridge_L2` (2853, the L2 bridge
+the 2915 sorry must fill) is UNSOUND as stated: E2 (`deepestEFull∘Ψ=deepestEFull`) reads the reg blocks through the
+GENERIC endpoint frames (`endpointP0=Pf 0`, `endpointQL=Qf last`), and the (2,2) block leaks into P01 via
+`(Pf 0)₀₁·M11·(Qf 1)₁₀` — FALSE at general frames. The sig is missing `(Pf 0)₀₁=0` + `(Qf last)₁₀=0` (block-triangular
+boundary frames). This is the synthesis **Item-26 (1a)** gap, now precisely located in-Lean.
+
+**Controller-miss owned:** my skeleton-approval (UPDATE-211) verified the `_impl` sig typechecks + matches the 2915
+obligation, but did NOT verify the OBLIGATION (the 2853 sig) is itself PROVABLE — and it isn't. genm-l2 correctly
+refused to fill the unsound verbatim sig despite the approval (precision + don't-build-green-but-wrong). **Lesson for the
+controller's skeleton-gate: a sig that typechecks + matches an existing sorry can still be a WRONG-STATEMENT sorry
+upstream — verify the obligation's soundness, not just the sig-match.** (The 2853 sig was authored unsound originally;
+the diff-gate's spirit + the decorrelated Codex caught it before any green-but-wrong shipped.)
+
+**Route decided (A):** amend the bridge `_impl` + the 2853 sig to add the two triangularity hyps; CONSTRUCT triangular
+frames in genm-l2's `_L2` wrapper (deepestPoint_leadingBlock_isUnit + the banked blockLower/Upper normalizers); the
+frame producer + Core stay UNTOUCHED (generic path stays sorryAx). The one soundness check: the SAME triangular frames
+through both the bridge AND the `_L2` squeeze. **Fallback → O1** (controller strengthens `deepestPoint_frame_pivot_exists`
+to return triangular frames — the Item-26 (1a) Core+producer re-thread) if the frames turn out producer-internal.
+**Operator-relevant:** the L2 bridge is a bit larger than the "~2-tide" estimate (the (1a) triangular-frame construction
+rides on top), but still bounded + sound via route A; no new research-risk (3289 remains the only one).
