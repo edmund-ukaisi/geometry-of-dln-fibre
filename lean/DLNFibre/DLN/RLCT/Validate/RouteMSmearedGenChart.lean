@@ -610,6 +610,97 @@ theorem frontU_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
     frontU M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1 = frontU M hL u hm1 := by
   rw [frontU, frontU, frontMat_update_pivot M hL u a hrow hcol]
 
+/-! ## The off-pole witness (`frontU > 0` somewhere): the `e₀₀` chain
+
+`frontU` is a polynomial in the front coords; it is non-degenerate exactly when every width `M_s ≥ 1`
+(else the front product is identically zero — the chart is vacuous). The witness is the `e₀₀` chain
+(every layer `= 1` at `(0,0)`): its front product's `(0,0)` entry is `1`, so `frontU ≥ 1 > 0` there.
+These three are a local copy of `DeepestCoreNonvanishing.{e00Witness, cast_e00_entry,
+prodAux_e00Witness_zero}` (renamed `…Gen` — that module clashes with this file's import closure on
+`continuous_dlnLoss`, so it cannot be imported here). -/
+
+/-- The `e₀₀`-chain witness parameter (local copy, see `DeepestCoreNonvanishing.e00Witness`). -/
+noncomputable def e00WitnessGen (M : Fin (L + 1) → ℕ) : Params M :=
+  fun _ => Matrix.of fun i j => if (i : ℕ) = 0 ∧ (j : ℕ) = 0 then (1 : ℝ) else 0
+
+/-- A matrix-type cast pushes through entries of an `e₀₀`-style `of` matrix (local copy). -/
+private theorem cast_e00_entryGen {a a' b b' : ℕ} (ha : a = a') (hb : b = b')
+    (h : Matrix (Fin a) (Fin b) ℝ = Matrix (Fin a') (Fin b') ℝ)
+    (f : Fin a → Fin b → ℝ) (i : Fin a') (j : Fin b') :
+    (cast h (Matrix.of f)) i j = f (Fin.cast ha.symm i) (Fin.cast hb.symm j) := by
+  subst ha; subst hb; rfl
+
+/-- The `(0,0)` entry of the `e₀₀`-witness partial product is `1` (local copy, see
+`DeepestCoreNonvanishing.prodAux_e00Witness_zero`). -/
+theorem prodAux_e00WitnessGen_zero (M : Fin (L + 1) → ℕ) (hpos : ∀ s, 1 ≤ M s)
+    (k : ℕ) (hk : k < L + 1) :
+    prodAux M (e00WitnessGen M) k hk ⟨0, hpos 0⟩ ⟨0, hpos ⟨k, hk⟩⟩ = 1 := by
+  induction k with
+  | zero => simp [prodAux, Matrix.one_apply]
+  | succ k ih =>
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc := by
+        apply Fin.ext; simp [Fin.castSucc]
+      have e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ := by
+        apply Fin.ext; simp [Fin.succ]
+      set Lyr : Matrix (Fin (M ⟨k, hk'⟩)) (Fin (M ⟨k + 1, hk⟩)) ℝ :=
+        (by rw [e1, e2]; exact e00WitnessGen M ⟨k, hkL⟩) with hLyr
+      have hLyr_entry : ∀ (i : Fin (M ⟨k, hk'⟩)) (j : Fin (M ⟨k + 1, hk⟩)),
+          Lyr i j = if (i : ℕ) = 0 ∧ (j : ℕ) = 0 then (1 : ℝ) else 0 := by
+        intro i j
+        simp only [hLyr, e00WitnessGen, eq_mpr_eq_cast, cast_cast]
+        exact (cast_e00_entryGen (congrArg M e1) (congrArg M e2) (by rw [e1, e2]) _ i j).trans (by
+          simp [Fin.coe_cast])
+      show (prodAux M (e00WitnessGen M) k hk' * Lyr) ⟨0, hpos 0⟩ ⟨0, hpos ⟨k + 1, hk⟩⟩ = 1
+      rw [Matrix.mul_apply,
+        Finset.sum_eq_single (⟨0, hpos ⟨k, hk'⟩⟩ : Fin (M ⟨k, hk'⟩))]
+      · rw [ih hk', hLyr_entry]; simp
+      · intro l _ hl
+        have hl0 : (l : ℕ) ≠ 0 := fun h => hl (Fin.ext h)
+        rw [hLyr_entry]; simp [hl0]
+      · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- The off-pole flat witness point: the `e₀₀` chain encoded to flat coords. -/
+noncomputable def offPoleWitness : Fin (routeMAmbient M) → ℝ :=
+  paramsEquivFlat M (e00WitnessGen M)
+
+/-- **`baseParams (offPoleWitness) = e00WitnessGen`** (the encode/decode round-trip). -/
+theorem baseParams_offPoleWitness :
+    baseParams M (offPoleWitness M) = e00WitnessGen M := by
+  rw [baseParams, offPoleWitness, MeasurableEquiv.symm_apply_apply]
+
+/-- **`frontU > 0` at the off-pole witness** (the front product's `(0,0)` entry is `1`), when all
+widths `M_s ≥ 1`. The `(0,0)` summand of `frontU = ∑ᵢ (frontMat i ⟨0⟩)²` is `1 > 0`. -/
+theorem frontU_offPoleWitness_pos (hpos : ∀ s, 1 ≤ M s) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    0 < frontU M hL (offPoleWitness M) hm1 := by
+  -- the front product's `(0,0)` entry is `1`, so the `i = ⟨0⟩` summand is `1`.
+  have hentry : frontMat M hL (offPoleWitness M) ⟨0, hpos 0⟩ ⟨0, hm1⟩ = 1 := by
+    rw [frontMat, baseParams_offPoleWitness]
+    exact prodAux_e00WitnessGen_zero M hpos (L - 1) (by omega)
+  rw [frontU]
+  refine Finset.sum_pos' (fun i _ => sq_nonneg _) ⟨⟨0, hpos 0⟩, Finset.mem_univ _, ?_⟩
+  rw [hentry]; norm_num
+
+/-- **`smearShift = 0` at the off-pole witness** (the deepest residual rows of the `e₀₀` chain are all
+`0`, so every term of the shift sum vanishes). -/
+theorem smearShift_offPoleWitness (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    smearShift M hL (offPoleWitness M) hm1 hcol = 0 := by
+  rw [smearShift]
+  refine Finset.sum_eq_zero (fun r _ => ?_)
+  -- `deepCol (residSel r) = e00WitnessGen deepLayer (residSel r) ⟨0⟩ = 0` (residSel r has val ≥ 1).
+  have hdeep : deepCol M hL (offPoleWitness M) hcol (residSel M hL hm1 r) = 0 := by
+    rw [deepCol, baseParams_offPoleWitness, e00WitnessGen]
+    simp only [Matrix.of_apply]
+    rw [if_neg]
+    intro h
+    -- `residSel r` has `val = (r.succ : ℕ) ≥ 1`, contradicting `↑(residSel r) = 0`.
+    have hr0 : ((residSel M hL hm1 r : Fin (M ⟨L - 1, by omega⟩)) : ℕ) = 0 := h.1
+    rw [residSel] at hr0
+    simp only [Fin.val_cast, Fin.val_succ] at hr0; omega
+  rw [hdeep, mul_zero]
+
 /-! ## The abstract pivot-peel (the reusable Tonelli measure-theory primitive)
 
 The subBox divergence factors as a Tonelli peel at the (opaque) pivot coordinate: on a source set
