@@ -484,12 +484,67 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         -- toBlocks₂₁=0 + `← hpivJ` (Jb = pivotJSucc J) + defeq widths. 5 tactic shapes tried; resists
         -- one-shot (needs a toBlocks₂₁-transport helper). Left documented.
         sorry
-      -- **hsub3reg** — GERM-LOCAL reg-energy invariance (via sub-3 + §iii + e2; on the inner-ball germ).
+      -- **hsub3reg** — reg-energy invariance under the joint move (RELATIVE: ψ-moved vs unmoved, SAME
+      -- frames Pf/Qf, so the endpoint-frame conjugation CANCELS — UNAFFECTED by the sub-4 boundary-A11
+      -- dictionary issue). Holds `∀ x` (stated germ-local for the body's `filter_upwards`). Via the
+      -- sub-3 lemma `deepestEFull_sq_sum_psiSplitRawL2_eq` with `q := split x`, the framed params
+      -- `Aψ/Aq` (§iii `framedParamsPivot_eq_frame_of_front`), `hinterface`, `hS3b`, and the raw-middle
+      -- block agreement `hm11/hm12/hm21` (the e2/leak-kill readback — the SHARED per-layer readback piece).
       have hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
           nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
             = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
-        sorry
+        -- `hS3b`: the framed B-corner is the threshold corner `fromBlocks 1 0 0 0` (producer pattern —
+        -- `B = prod(deepestPoint)`, framed at the basepoint = `framedParamsRegPivot 0`, reindexes to corM).
+        have hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+          = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+          sorry
+        apply Filter.Eventually.of_forall
+        intro x
+        -- The two framed raw params: `Aq = decode x`, `Aψ = decode (split.symm (ψ (split x)))`.
+        set Aq : Params H := (paramsEquivFlat H).symm x with hAq
+        set Aψ : Params H :=
+          (paramsEquivFlat H).symm (split.symm (psiSplitRawL2 H r hr hL (split x))) with hAψ
+        -- `hframeq`: §iii at `w := x` (`split x = deepestSplit w0 x` by `hsplit x` + `hwstar`-base).
+        have hframeq : ∀ s : Fin L,
+            framedParamsPivot H r hr hL J Pf Qf (split x) s = Pf s * Aq s * Qf s := by
+          intro s
+          rw [hsplit x]
+          exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' x s
+        -- `hframeψ`: §iii at `w := split.symm (ψ (split x))`; `ψ (split x) = split (split.symm (ψ (split x)))`
+        -- (homeomorph round-trip), then `split … = deepestSplit w0 …` (`hsplit`).
+        have hframeψ : ∀ s : Fin L,
+            framedParamsPivot H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) s
+              = Pf s * Aψ s * Qf s := by
+          intro s
+          have hrt : psiSplitRawL2 H r hr hL (split x)
+              = split (split.symm (psiSplitRawL2 H r hr hL (split x))) :=
+            (split.apply_symm_apply _).symm
+          rw [hrt, hsplit (split.symm (psiSplitRawL2 H r hr hL (split x)))]
+          exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
+            (split.symm (psiSplitRawL2 H r hr hL (split x))) s
+        -- `hm11/hm12/hm21`: the raw-middle `{11,12,21}` block agreement — the SHARED per-layer readback
+        -- piece (genm-l2fill's Codex (d), most-likely-to-thrash; couples to the readback genm-l2fill is
+        -- restructuring for the sub-4 dictionary fix). Isolated here pending that settle.
+        have hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₁
+            = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₁ := by
+          sorry
+        have hm12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₂
+            = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₂ := by
+          sorry
+        have hm21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₂₁
+            = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₂₁ := by
+          sorry
+        exact deepestEFull_sq_sum_psiSplitRawL2_eq H r hr hL hL2eq J Pf Qf hPtri' hQtri'
+          (split x) B Aψ Aq hframeψ hframeq hinterface hS3b hm11 hm12 hm21
       -- **The shared inner-ball germ** (GOAL 1): near the basepoint, `psiSplitRawL2 (split x) ∈ closedBall
       -- 0 rIn`. `psiSplitRawL2 = δ + id` is ContinuousAt 0 (δ strict-deriv at 0), `psiSplitRawL2 0 = 0`;
       -- `split` continuous, `split basepoint = 0`; the composite → 0, the ball is a nhd of 0.
