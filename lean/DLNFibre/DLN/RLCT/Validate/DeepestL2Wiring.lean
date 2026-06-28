@@ -182,7 +182,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- carries the SAME conclusions as the producer bundle PLUS `hJtri` (front-embed identity, from
   -- `hJfront`), `hPtri`, `hQtri`. The frame facts the body consumes are frame-generic, so the switch is a
   -- drop-in; `hPtri`/`hQtri` feed the L=2 diffeo bridge.
-  obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri⟩ :=
+  obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
+      hP22one, hQ22one⟩ :=
     deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
   -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
   -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).

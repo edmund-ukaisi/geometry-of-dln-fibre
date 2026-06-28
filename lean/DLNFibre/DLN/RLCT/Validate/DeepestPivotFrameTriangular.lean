@@ -88,7 +88,12 @@ private theorem deepest_layer0_blockLower_frame (H : Fin (L + 1) → ℕ) (r : �
           (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) P).toBlocks₁₂ = 0 ∧
       P * (deepestPoint H r B hB hr hL (firstLayer hL))
         = Matrix.of (fun (i : Fin (H (firstLayer hL).castSucc)) (j : Fin (H (firstLayer hL).succ)) =>
-            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) ∧
+      -- The frame's ₂₂-block is the IDENTITY (the explicit normalizer's bottom-right is literally `1`;
+      -- the `DP = 1` fact `schur_frame_transform` needs to strip the layer-0 endpoint frame).
+      (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+          (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) P).toBlocks₂₂
+        = (1 : Matrix (Fin (H (firstLayer hL).castSucc - r)) (Fin (H (firstLayer hL).castSucc - r)) ℝ) := by
   classical
   -- Abbreviations for the layer-0 widths and matrix.
   set a := H (firstLayer hL).castSucc with ha_def
@@ -137,7 +142,8 @@ private theorem deepest_layer0_blockLower_frame (H : Fin (L + 1) → ℕ) (r : �
   set Pt : Matrix (Fin r ⊕ Fin (a - r)) (Fin r ⊕ Fin (a - r)) ℝ :=
     Matrix.fromBlocks (⅟A11) 0 (-(A21 * ⅟A11)) 1 with hPt
   -- The ambient frame `P := reindex.symm P̃`.
-  refine ⟨Matrix.reindex (rThresholdSplit r a hra).symm (rThresholdSplit r a hra).symm Pt, ?_, ?_, ?_⟩
+  refine ⟨Matrix.reindex (rThresholdSplit r a hra).symm (rThresholdSplit r a hra).symm Pt,
+    ?_, ?_, ?_, ?_⟩
   · -- `IsUnit P` from `IsUnit P̃` (reindex by an equiv preserves units).
     rw [Matrix.reindex_apply, Equiv.symm_symm]
     exact (Matrix.isUnit_submatrix_equiv _ _).mpr hPtunit
@@ -171,6 +177,12 @@ private theorem deepest_layer0_blockLower_frame (H : Fin (L + 1) → ℕ) (r : �
       (rThresholdSplit r b hrb)).symm_apply_apply (P * A0)
     rw [hprod] at hround
     rw [← hround, Matrix.reindex_symm, tri_reindex_fromBlocks_one_eq_corM r a b hra hrb]
+  · -- `reindex P = P̃ = fromBlocks (⅟A11) 0 (−A21⅟A11) 1`, so `toBlocks₂₂ = 1`.
+    have hree : Matrix.reindex (rThresholdSplit r a hra) (rThresholdSplit r a hra)
+        (Matrix.reindex (rThresholdSplit r a hra).symm (rThresholdSplit r a hra).symm Pt) = Pt := by
+      rw [Matrix.reindex_apply, Matrix.reindex_apply, Equiv.symm_symm,
+        Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]
+    rw [hree, hPt, Matrix.toBlocks_fromBlocks₂₂]
 
 /-- **The block-triangular deepest-point boundary-frame bundle** (L=2 bridge precondition). Under the
 row-alignment `htop` (target `B`'s top `r` rows full rank), the deepest-point per-layer gauge frame
@@ -214,22 +226,32 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
       -- **hQtri**: layer-(L−1) endpoint frame `Q (lastLayer)` is block-UPPER under the pivot split.
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
-          (Q (lastLayer hL))).toBlocks₂₁ = 0 := by
+          (Q (lastLayer hL))).toBlocks₂₁ = 0 ∧
+      -- **hP22one**: layer-0 endpoint frame `P (firstLayer)` has IDENTITY ₂₂-block (`DP = 1` frame-strip).
+      (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+          (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+          (P (firstLayer hL))).toBlocks₂₂
+        = (1 : Matrix (Fin (H (firstLayer hL).castSucc - r)) (Fin (H (firstLayer hL).castSucc - r)) ℝ) ∧
+      -- **hQ22one**: layer-(L−1) endpoint frame `Q (lastLayer)` has IDENTITY ₂₂-block (`DQ = 1`).
+      (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (Q (lastLayer hL))).toBlocks₂₂
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
   classical
   -- The (now block-upper-aware) producer bundle — use `.choose`/`.choose_spec` so the output `J` IS
   -- the producer's `.choose` pivot, and the threaded `hJfront` (about `.choose`) is its front-identity.
   set J := (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJ_def
-  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper⟩ :=
+  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper, hQf22one⟩ :=
     (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
   -- The block-LOWER layer-0 frame (htop-conditional).
-  obtain ⟨P0new, hP0new_unit, hP0new_tri, hP0new_nf⟩ :=
+  obtain ⟨P0new, hP0new_unit, hP0new_tri, hP0new_nf, hP0new_22one⟩ :=
     deepest_layer0_blockLower_frame H r B hB hr hL hL2 htop
   -- `firstLayer ≠ lastLayer` (`2 ≤ L`).
   have hfne : firstLayer hL ≠ lastLayer hL := by
     intro h; have := congrArg Fin.val h; simp only [firstLayer, lastLayer] at this; omega
   -- The new frame family: `P0` with layer-0 overridden by the block-lower frame.
   refine ⟨J, Function.update P0 (firstLayer hL) P0new, Q0, hJfront, ?_, hQunit0, hQf0, ?_, ?_, hQf22,
-    hcorner, ?_, hQUpper⟩
+    hcorner, ?_, hQUpper, ?_, hQf22one⟩
   · -- `IsUnit (P s)`: `P0new` at firstLayer, `P0` elsewhere.
     intro s
     by_cases hs : s = firstLayer hL
@@ -247,5 +269,7 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
     · rw [Function.update_of_ne hsf]; exact hNF0 s hs
   · -- `hPtri`: `P firstLayer = P0new` is block-lower.
     rw [Function.update_self]; exact hP0new_tri
+  · -- `hP22one`: `P firstLayer = P0new` has identity ₂₂-block.
+    rw [Function.update_self]; exact hP0new_22one
 
 end DLNFibre.DLN.RLCT

@@ -155,7 +155,12 @@ theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r
         = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 ∧
       -- The frame is block-UPPER under the pivot split: its split form is `fromBlocks _ _ 0 1`.
       (Matrix.reindex (pivotThresholdSplit r b ha J)
-          (pivotThresholdSplit r b ha J) Q).toBlocks₂₁ = 0 := by
+          (pivotThresholdSplit r b ha J) Q).toBlocks₂₁ = 0 ∧
+      -- The frame's ₂₂-block under the pivot split is the IDENTITY (the explicit normalizer's bottom-right
+      -- is literally `1`; the `DQ = 1` fact `schur_frame_transform` needs to strip the endpoint frame).
+      (Matrix.reindex (pivotThresholdSplit r b ha J)
+          (pivotThresholdSplit r b ha J) Q).toBlocks₂₂
+        = (1 : Matrix (Fin (b - r)) (Fin (b - r)) ℝ) := by
   classical
   -- The top-`r`-rows row factor `V` and its pivot column set `J`.
   set V : Matrix (Fin r) (Fin b) ℝ := A.submatrix (Fin.castLE hra) id with hV
@@ -182,7 +187,7 @@ theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r
     rw [Matrix.reindex_apply, Matrix.reindex_apply, Equiv.symm_symm,
       Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]
   -- The actual frame `Q := reindex e.symm e.symm Q̃` (so `reindex e e Q = Q̃`).
-  refine ⟨J, Matrix.reindex e.symm e.symm Qt, ?_, ?_, ?_, ?_⟩
+  refine ⟨J, Matrix.reindex e.symm e.symm Qt, ?_, ?_, ?_, ?_, ?_⟩
   · -- `IsUnit Q` from `IsUnit Q̃` (reindex is a unit-preserving submatrix by an equiv).
     rw [Matrix.reindex_apply, Equiv.symm_symm]
     exact (Matrix.isUnit_submatrix_equiv e e).mpr hQtunit
@@ -223,6 +228,8 @@ theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r
     · rw [Matrix.zero_mul, Matrix.zero_mul, add_zero]
   · -- Block-UPPER: `reindex e e Q = Q̃ = fromBlocks _ _ 0 1`, so `toBlocks₂₁ = 0`.
     rw [hree, hQt, Matrix.toBlocks_fromBlocks₂₁]
+  · -- ₂₂-block `= 1`: `reindex e e Q = Q̃ = fromBlocks _ _ 0 1`, so `toBlocks₂₂ = 1`.
+    rw [hree, hQt, Matrix.toBlocks_fromBlocks₂₂]
 
 /-- **The deepest-point last-layer pivot frame** (the deepest-point instance of (a), `2 ≤ L`). At the
 deepest point's last layer (tail rows vanish at `2 ≤ L`, rank exactly `r`), there is a `B`-determined
@@ -246,7 +253,11 @@ theorem exists_deepest_lastLayer_pivotFrame {L : ℕ} (H : Fin (L + 1) → ℕ) 
         = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 ∧
       -- The frame is block-UPPER under the pivot split (`toBlocks₂₁ = 0`).
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
-          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J) Q).toBlocks₂₁ = 0 := by
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J) Q).toBlocks₂₁ = 0 ∧
+      -- The frame's ₂₂-block under the pivot split is the IDENTITY (`DQ = 1` for the frame-strip).
+      (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J) Q).toBlocks₂₂
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
   have hrank : (deepestPoint H r B hB hr hL (lastLayer hL)).rank = r :=
     (deepestPoint_isDeep H r B hB hr hL).2.1 (lastLayer hL)
   -- The last layer's tail ROWS vanish (`2 ≤ L`, `(lastLayer:ℕ)+1 = L`).
@@ -299,10 +310,15 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       -- The last-layer frame `Q (lastLayer)` is block-UPPER under the pivot split (`toBlocks₂₁ = 0`).
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
-          (Q (lastLayer hL))).toBlocks₂₁ = 0 := by
+          (Q (lastLayer hL))).toBlocks₂₁ = 0 ∧
+      -- The last-layer frame's ₂₂-block under the pivot split is the IDENTITY (`DQ = 1`, frame-strip).
+      (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
+          (Q (lastLayer hL))).toBlocks₂₂
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
   classical
   -- The abstract pivot frame for the deepest point's last layer.
-  obtain ⟨J, QL, hQLunit, hB22, hcorner, hQUpper⟩ :=
+  obtain ⟨J, QL, hQLunit, hB22, hcorner, hQUpper, hB22one⟩ :=
     exists_deepest_lastLayer_pivotFrame H r B hB hr hL hL2
   -- The frame family: the existing `deepestPoint_frame` off the last layer; the pivot `QL` on it.
   -- Last-layer detection by the DEPENDENT `dite` on `s = lastLayer hL` (gives the equality in scope
@@ -316,7 +332,7 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     simp only [hQpiv, dif_pos rfl]
   refine ⟨J,
     fun s => (deepestPoint_frame H r B hB hr hL s).1, Qpiv,
-    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · -- `IsUnit (P s)`: the first arm is always `deepestPoint_frame.1`.
     intro s; exact (deepestPoint_frame_invertible H r B hB hr hL s).1
   · -- `IsUnit (Q s)`: pivot `QL` on the last layer, `deepestPoint_frame.2` elsewhere.
@@ -344,5 +360,7 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [hQlast]; exact hcorner
   · -- Block-UPPER last-layer frame. `Qpiv (lastLayer) = QL`, then `hQUpper`.
     rw [hQlast]; exact hQUpper
+  · -- ₂₂-block `= 1` last-layer frame. `Qpiv (lastLayer) = QL`, then `hB22one`.
+    rw [hQlast]; exact hB22one
 
 end DLNFibre.DLN.RLCT
