@@ -1,9 +1,10 @@
 # Statement card — `RouteMSchurFiring` (the generic per-corank `SchurRecStep` firing)
 
-**Status:** `1-sorry` (the build is green; exactly ONE named `sorry`, under a correct statement, confined
-to the carving heart `schurRatioResidGen_mid`). All surrounding firing pieces are sorry-free.
+**Status:** `sorry-free` (the build is green; ZERO `sorry`/`axiom`/`native_decide` in the file — the
+carving heart `schurRatioResidGen_mid` is CLOSED). Awaiting reviewer fidelity check.
 
-**File:** `lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurFiring.lean` (branch `genm-firing`).
+**File:** `lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurFiring.lean` (branch `genm-capstone`
+@ `3e26a171`; bump on change).
 
 ## The headline
 
@@ -28,7 +29,7 @@ recurse on the lower corank-`(r−1)` Schur core via the abstract IH — yieldin
 | `r = 0` | vacuous (`c' < λ_0 = 0` contra `0 < c'`) | sorry-free |
 | `r = 1` | `schurCore4_one` — Morse leaf (`Δ₀₀`-axis divisor × `Fin 4` Morse block) | **sorry-free, axiom-clean** |
 | `r = 2` | `schurCore4_two` (the banked corank-2 base, general `T`) | sorry-free |
-| `r ≥ 3` | `schurCoreGen_firing` — the genuine firing | sorry-free *modulo* the carving |
+| `r ≥ 3` | `schurCoreGen_firing` — the genuine firing | **sorry-free** (carving closed) |
 
 ## What is PROVED sorry-free (the firing skeleton + all plumbing)
 
@@ -49,13 +50,12 @@ recurse on the lower corank-`(r−1)` Schur core via the abstract IH — yieldin
   (`< ⊤`), and the `Sh`-UNIFORM `_le` form `coreSchurGenVal` + `coreSchurGenVal_lt_top` +
   `schurResidG_translate_le` (the boundary-integrable bound the carve-first outer `rest`-integral consumes).
 
-`#print axioms` (force-recompiled, per the olean-masking gate): `schurCore4_one`,
-`schurResidG_translate_lt_top`, `schurResidG_translate_le`, `coreSchurGenVal_lt_top`,
-`gFlatG_blowup_radial` are `[propext, Classical.choice, Quot.sound]` (clean); the chain through
-`schur_matBoxG_chart_lt_top` / `schurRatioResidGen` / `schurCoreGen_firing` correctly shows `sorryAx`,
-confined to the single `schurRatioResidGen_mid`.
+`#print axioms` (force-recompiled on the olean-DELETED target, per the olean-masking gate):
+`schurRatioResidGen_mid`, `schurRatioResidGen`, `innerSGenCarve_le`, `stepShearG_r`,
+`frobSqTopRow_eq_shear`, `ScCarve_eq` are ALL `[propext, Classical.choice, Quot.sound]` — clean-three,
+**no `sorryAx`, no `monomial_rlct` (S2-FREE), no `native_decide`**.
 
-## The ONE remaining sorry — `schurRatioResidGen_mid` (the carving)
+## The carving — `schurRatioResidGen_mid` — CLOSED
 
 ```lean
 theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
@@ -65,13 +65,28 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
         innerSGen r c' T p ((piRatioG r N hN p).symm (0, z))) < ⊤
 ```
 
-The JOINT ratio-residual (over the `r²−1` angular ratios `z` AND `S`). Codex (xhigh, decorrelated, twice)
-confirmed the route is REACHABLE-PLUMBING, ROUTE A, **no design wall** — `~200` generic-`r` lines.
-ORDER **carve-first**; HARDEST sub-step = the generic readback `Sc = M22 − Sh(rest)` (the
-`zE_G` reshape carving the `(r−1)²` M22-coords + the `2(r−1)` M21/M12 shift-coords out of the ratios).
-The plan (recorded in-file at the sorry): pivot-WLOG → carve `z = (M22 ⊕ rest)` → pointwise N2b/split →
-shear → Tonelli → a.e. Morse peel over the FREE `(M22, S_bot)` joint core → `schurResidG_translate_lt_top`
-per fixed `rest` at exponent `c'−2`, radius `K = max 1 T` → bounded-`rest`-box volume.
+The JOINT ratio-residual (over the `r²−1` angular ratios `z` AND `S`), proven sorry-free by WIRING the
+landed bricks in the Codex-confirmed carve-first order. The proof and its five new helpers:
+
+- **`innerSGenCarve_le`** (the per-`(M,v)` heart, `M` free): for the carved angular matrix
+  `R = RmatGnorm (zEG.symm (M,v))`, the inner-`S` integral is `≤ ofReal(c₀^{−c'})` times the per-`M`
+  resolved slice (`S_bot`/`T'` boxes at radius `K = max 1 (r·T)`, shift `Sh = bgShiftG v`).
+- **N2b** (`schur_minorPivot_split` `j=1`): the lower leg `c₀·(frobSq row0 + frobSq(Sc·S_bot)) ≤
+  frobSq(R·S)` feeds `ofReal_rpow_le_const_mul` (pivot minor `M11 = [1]`, so `hpivot`/`hne` are trivial,
+  and the zero-coincidence comes from the N2b UPPER leg).
+- **`frobSqTopRow_eq_shear`** (the N2b↔shear bridge): the `j=1` top block `frobSq((R·S) row0)` expands to
+  `∑_q (S₀q + ∑_a R₀,ₐ₊₁·Sₐ₊₁,q)²` via `Fin.sum_univ_one` + `fin_sum_block_split 1` + the pivot
+  `R₀₀ = 1`.
+- **`stepShearG_r`** (the width-`r` shear wrapper): `finCongr` row-reindex of `stepShearG` to N2b's
+  `Fin r` `⟨1+a⟩`/`⟨0⟩` index conventions; peels the `Fin 4` Morse spectator.
+- **`ScCarve_eq`** (the carve-`Sc` readback): N2b's `Sc = M22 − M21·M11⁻¹·M12` reads off the carve as
+  `M(a,b) − v(inl a)·v(inr b) = (matOf M − bgShiftG v)`.
+- **`zEG_fst_apply`/`zEG_snd_apply`** (forward `zEG` slot read-backs): close the box preimage
+  `[−1,1]^N = zEG⁻¹(Mbox ×ˢ vbox)`.
+- **assembly:** `innerSGen_eq_norm` (pivot-WLOG) → CoV `z ↦ (M,v)` via `measurePreserving_zEG` + Tonelli
+  (`v` outer) → per-`(M,v)` `innerSGenCarve_le` → curry `M ↦ Δ` (a `piCurry`/`arrowCongr'` MP equiv) +
+  enlarge `Mbox` (radius 1 ⊆ K) → `resolvedShiftRG_le` (`B = 1`, `|bgShiftG v| ≤ 1`) → the abstract IH
+  `coreSchurGenVal_lt_top` (`c'−2 < schurLambda (r−1)`) → the bounded `v`-box volume.
 
 ## Fidelity notes (for the reviewer)
 
@@ -83,4 +98,10 @@ per fixed `rest` at exponent `c'−2`, radius `K = max 1 T` → bounded-`rest`-b
   `2 < c' < λ_r` gives `c'' = c'−2 ∈ (0, λ_{r−1})`; the subcritical `c'' = 3` target sits in `(2, λ_r)` for
   all `r ≥ 3`. ✓
 - NOT yet aggregated into `DLNFibre.lean` (single-writer; the controller wires it). No sibling name clashes
-  (comprehensive grep over the tree; `ofReal_rpow_neg_le_one_addG` renamed to dodge the Corank3 clash).
+  (comprehensive grep over the tree; the six new helpers each defined in exactly one file;
+  `ofReal_rpow_neg_le_one_addG` renamed to dodge the Corank3 clash).
+- The carve close reuses the (3,3,4) anchor's TEMPLATE structure but NOT its `r=3`-specific
+  `angularR_reconstruct`/`frobSq_angularR_ge` (a `nlinarith`-clean explicit comparability that does not
+  generalize); the generic route goes through the N2b two-sided comparison `schur_minorPivot_split`. ✓
+- The per-`(M,v)` bound leaves `M` FREE (it is the carved `M22` cube); the outer `∫_M` is the SAME as
+  `resolvedShiftRG_le`'s `∫_Δ` after the curry `M ↦ Δ` — the `M`-integration is NOT hidden in a constant. ✓
