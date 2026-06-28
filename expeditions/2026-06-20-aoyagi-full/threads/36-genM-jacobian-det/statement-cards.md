@@ -881,3 +881,42 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 >   feeding the landed `routeMCore_box_diverges_of_MPChart` → the (1,1)-family atom ∀M. Mechanical-but-large
 >   (mirrors the validate-small `subBox121_diverges`, ~150 lines), generalized over the opaque widths.
 > - **Status.** chart substrate sorry-free; the atom is gated only on this subBox/divergence assembly.
+
+---
+
+> **STEP-4 COMPLETE — the (1,1)-family R1-LOWER atom LANDED.** `RouteMSmearedGenChart.lean`
+> (@ `ea144978`, branch `genm-subbox`) — ZERO sorries; `#print axioms routeMsm_box_diverges =
+> [propext, Classical.choice, Quot.sound]` (forced, no `monomial_rlct`/`native_decide`).
+>
+> - **Headline (the atom):** `routeMsm_box_diverges` — for the `(1,1)` family
+>   (`M (deepLayer M hL).succ = 1`, `hm1 : 0 < M ⟨L-1,_⟩`, **all widths `∀ s, 1 ≤ M s`**) with a width-1
+>   front pivot `pp ≤ L-1` (`M ⟨pp,_⟩ = 1`) and `c' ≥ ½` (`= ½·minAdm`, `minAdm = 1`), every `ε > 0`:
+>   `∫⁻_{cubeBox (routeMAmbient M) ε} ENNReal.ofReal (|routeMCore M x|^(−c')) = ⊤`.
+> - **The assembly (all sorry-free, this file):**
+>   - `subBox_pivot_peel_diverges` — the abstract Tonelli pivot peel over `Fin (n+1)`: integrand
+>     `|u_p|^s · U(u)^{−c'}` (`U` pivot-indep, `>0` on the rest box) gives `(∫_{Ioo}|x|^s)·(∫_R U^{−c'}) = ⊤·(>0)`.
+>   - `exists_rest_box` — the continuity-shrink sub-crux (abstract): a 𝓝-`y₀` cube where `F>0`, `|G|≤ε/4`,
+>     coords `≤ |y₀ k|+ε`, around an off-pole (`F>0`) zero-shift (`G=0`) witness.
+>   - off-pole witness: the SCALED `e₀₀` chain `offPoleWitness M t` (`prodAux_e00WitnessGen_zero`: front
+>     product `(0,0) = t^{L-1}`) — `frontU>0`, `smearShift=0`, every coord `≤|t|` (`offPoleWitness_coord_le`);
+>     `t = ε/8` keeps the cube inside the `ε`-cube.
+>   - `continuousAt_smearShift_offpole` (+ `routing_eq_scalarGram`) — `smearShift` ContinuousAt off-pole
+>     (routing's `(frontU)⁻¹` continuous there).
+>   - `subBoxGen_diverges` — the transported source-box divergence: reindex `Fin (routeMAmbient M) →
+>     Fin (n+1)` via `arrowCongr' (finCongr hn) (refl ℝ)` (CAST-FREE, unlike `piCongrLeft`), then the
+>     off-pole rate `routeMCore (phiSm w) = (w smPivotCoord)²·frontU w` becomes `|v p|^{−2c'}·U'(v)^{−c'}`.
+>   - the atom: `exists_rest_box → subBoxGen_diverges → routeMCore_box_diverges_of_MPChart` (the landed
+>     measure-preserving `phiSm` chart), containment via the `smearShift ≤ ε/4` bound + the small-witness
+>     coord bound.
+> - **Proved.** The full (1,1)-family R1-LOWER box-divergence atom, ∀M.
+> - **Cited/Assumed.** Mathlib v4.29: `volume_preserving_arrowCongr'`, `volume_preserving_piFinSuccAbove`,
+>   `setLIntegral_pos_iff`, `MeasurableEquiv.piFinSuccAbove_symm_apply`, `measure_closedBall_pos`-family.
+>   In-repo (landed): `routeMCore_box_diverges_of_MPChart`, `abs_rpow_lintegral_Ioo_eq_top`
+>   (`RouteM121Smeared`/`Case222Cover`); the chart substrate (`routeMCore_phiSm_offpole`,
+>   `measurePreserving_phiSm`, `measurableEmbedding_phiSm`); the front fact
+>   `prodAux_frontScalarShear_cancel`. The `e₀₀` non-degeneracy needs **all widths `M_s ≥ 1`** (faithful;
+>   if a width is 0 the front product `≡ 0` and the chart is vacuous — matches `DeepestCoreNonvanishing`).
+> - **Scope note.** The atom is the **lower-bound divergence** (`c' ≥ ½ ⟹ ∫ = ⊤`); names denote exactly
+>   that. It does NOT by itself give the rlct value — it is the (1,1) R1-LOWER input to the rung.
+> - **Status.** R1-LOWER (1,1) DONE — module `RouteMSmearedGenChart` sorry-free, NOT yet wired into the
+>   aggregator (controller's single-writer step).
