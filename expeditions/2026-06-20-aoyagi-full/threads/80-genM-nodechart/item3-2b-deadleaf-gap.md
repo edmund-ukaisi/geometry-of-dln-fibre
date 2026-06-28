@@ -147,3 +147,26 @@ The budget identity (sub-tide 2) chain form + its reduction to the BANKED Aoyagi
   active-center (Text(L)=0 for the 71). HOLDING the exact statement for genm-budget's (2,2,4) slot map +
   identity-proof structure (the leaf-index convention is decoder-layout-dependent — building it on the wrong
   convention would redo it). Artefacts not yet on any remote branch (genm-budget local); requested via controller.
+
+## STEP-3 SCOPING: the −1 lemma (leafH_pivot = minAdm−1) — 2026-06-28
+genm-budgetrev's precision catch (correct): budget_identity proves TOTAL budget = minAdm, NOT
+#angular = minAdm−1. The −1 (fixed radial pivot) is a SEPARATE lemma. Per the Explore (map of the path):
+- `leafH` is STILL OPEN (a NodeAchieverChart field / contract hypothesis); no general-M Jacobian exponent
+  vector is defined yet — 2b-i's det constructs it. So `leafH_pivot = minAdm−1` can't be stated until leafH
+  is defined.
+- The count-theoretic route: define `leafH p := active.card − 1` (radial blow-up degree), prove
+  `active.card = minAdm` where `active` = the R-block (u-scaled) coordinate slots. `radialFactor_abs_det =
+  |u_p|^{active.card−1}` (banked) is the link. The −1 = (one fixed pivot, the gauge).
+- The GAP: `active : Finset (Fin N)` for the achiever center is NOT yet defined; and `budget_identity` is
+  over ℤ (∑ chainEdimZ + leaf = minAdm) — connecting it to `active.card = minAdm` (a ℕ Finset cardinality)
+  needs (i) the `active` Finset definition (which Fin-N slots are the R-block coords) + (ii) the ℤ→ℕ-card
+  bridge (all chainEdimZ ≥ 0 via rBlock/cBlock_nonneg, then Int.toNat round-trip + the slot↔card identity).
+  This is a substantial piece (the slot-cardinality genm-budget's budget_identity supports but doesn't give
+  as a Finset.card), entangled with 2b-i's leafH construction.
+
+SCOPING VERDICT: the −1 lemma is NOT a thin corollary of budget_identity — it needs the `active` Finset +
+the ℤ→ℕ-card bridge (or 2b-i's leafH). It is best built TOGETHER with 2b-i (the det defines leafH; the
+radial exponent IS active.card−1 = minAdm−1 via the card bridge). Recommend: do NOT state a standalone
+−1 lemma on an undefined leafH; instead build leafH IN 2b-i and prove leafH_pivot = minAdm−1 there, with
+the `active.card = minAdm` card-bridge as the supporting lemma (count-level, from budget_identity +
+rBlock/cBlock_nonneg). Surfacing for the controller's 2b-i spec-gate.
