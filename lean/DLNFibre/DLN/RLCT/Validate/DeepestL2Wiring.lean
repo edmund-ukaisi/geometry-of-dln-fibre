@@ -56,7 +56,8 @@ theorem deepest_diffeo_bridge_L2_wired (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
-    (hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
         = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
@@ -83,7 +84,8 @@ theorem deepest_diffeo_bridge_L2_wired (H : Fin (L + 1) → ℕ) (r : ℕ)
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
                 * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
-    (hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x)
     (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
     (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
@@ -466,13 +468,15 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     · -- **L = 2 branch** (`2 ≤ L < 3`): the collapsed joint Ψ, the R-A `deepest_diffeo_bridge_L2_wired`
       -- (= `_impl`), fed the triangular-bundle frames + hPtri/hQtri + the two per-`x` discharges.
       have hL2eq : L = 2 := by omega
-      -- **hsub3reg** — per-`x` reg-energy invariance under the joint move.
-      have hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+      -- **hsub3reg** — GERM-LOCAL reg-energy invariance (via sub-3 + §iii + e2; on the inner-ball germ).
+      have hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+          nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
             = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
         sorry
-      -- **hsub4core** — per-`x` core = Score on the inner ball.
-      have hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+      -- **hsub4core** — GERM-LOCAL core = Score (via Option-2 sub-4; on the inner-ball germ).
+      have hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+          nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1
             = Score x := by
         sorry

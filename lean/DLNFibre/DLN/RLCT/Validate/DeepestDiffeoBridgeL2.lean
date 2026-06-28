@@ -2832,10 +2832,12 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
-    -- **Sub-3 per-`x` reg-energy invariance** (route-A input; the controller discharges it at the final
-    -- wiring by `deepestEFull_sq_sum_psiSplitRawL2_eq` fed the producer's de-framed tuples `A(split x)` +
-    -- the witnessed frames + the raw-middle `{11,12,21}` agreement — all in scope in `DeepestGaugeConstruction`).
-    (hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+    -- **Sub-3 reg-energy invariance — GERM-LOCAL** (route-A input; discharged at the final wiring by
+    -- `deepestEFull_sq_sum_psiSplitRawL2_eq` on the inner-ball germ). Stated `∀ᶠ x in 𝓝 (basepoint)`
+    -- because the sub-3 hyps (`hm`, via the unit-locus `A0`-invertibility) hold only NEAR the basepoint;
+    -- the body consumes it on the SAME `filter_upwards` germ (Codex-flagged: the prior ∀x was over-strong).
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
         = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
@@ -2862,9 +2864,11 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
                 * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
-    -- **Sub-4 per-`x` core=Score** (route-A input; the controller discharges it at the final wiring by
-    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball with the frame-transform hyps).
-    (hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+    -- **Sub-4 core=Score — GERM-LOCAL** (route-A input; discharged at the final wiring by
+    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball). `∀ᶠ x in 𝓝 (basepoint)`: sub-4
+    -- needs `hball`/`hWdet` (det l2W ≠ 0), which hold only NEAR the basepoint; consumed on the body's germ.
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x)
     (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
     (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
@@ -2897,8 +2901,12 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
       ⁻¹' Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn)
       ∈ nhds wstar :=
     htend (Metric.closedBall_mem_nhds 0 (cutoffBump H r hr hL).rIn_pos)
-  -- Combine the germs.
-  filter_upwards [hgerm, hballgerm] with x hx hxball
+  -- The germ-local sub hyps live in `nhds (basepoint)`; the body's germ is `nhds wstar = nhds basepoint`
+  -- (`hwstar`), so they join the `filter_upwards`.
+  have hsub3germ := hwstar ▸ hsub3reg
+  have hsub4germ := hwstar ▸ hsub4core
+  -- Combine the germs (incl. the two sub discharges, consumed at the germ `x`).
+  filter_upwards [hgerm, hballgerm, hsub3germ, hsub4germ] with x hx hxball hsub3x hsub4x
   -- Reduce ∘ at x; rewrite psiL2 x = psiRawL2 x, split = deepestSplit.
   show (∑ i, (regStraighten (split (psiL2 H r B hB hr hL J Pf Qf x))).1 i ^ 2)
       + deepestCoreF H r (coreAbsorb (split (psiL2 H r B hB hr hL J Pf Qf x))).2.1 = Φscore x
@@ -2908,15 +2916,15 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
       = psiSplitRawL2 H r hr hL (split x) := by
     rw [hsplit, hsplit, ← wstarL2, psiRawL2_split H r B hB hr hL J Pf Qf x]
   rw [hsp, hcoreabs, hΦscore]
-  -- The reg term: invariant under the joint move (sub-lemma 3 via hregval).
+  -- The reg term: invariant under the joint move (sub-lemma 3 via hregval), on the germ.
   have hreg : (∑ i, (regStraighten (psiSplitRawL2 H r hr hL (split x))).1 i ^ 2)
       = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
     simp only [hregval]
-    exact hsub3reg x
-  -- The core term = Score x (sub-lemma 4 on the inner ball, threaded as `hsub4core`).
+    exact hsub3x
+  -- The core term = Score x (sub-lemma 4 on the inner ball, on the germ).
   have hcore : deepestCoreF H r
       (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x :=
-    hsub4core x
+    hsub4x
   rw [hreg, hcore]
 
 /-- **FINAL — the L=2 diffeo bridge** (the content of `deepest_diffeo_bridge_L2`). Signature is
@@ -2945,10 +2953,12 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
-    -- **Sub-3 per-`x` reg-energy invariance** (route-A input; the controller discharges it at the final
-    -- wiring by `deepestEFull_sq_sum_psiSplitRawL2_eq` fed the producer's de-framed tuples `A(split x)` +
-    -- the witnessed frames + the raw-middle `{11,12,21}` agreement — all in scope in `DeepestGaugeConstruction`).
-    (hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+    -- **Sub-3 reg-energy invariance — GERM-LOCAL** (route-A input; discharged at the final wiring by
+    -- `deepestEFull_sq_sum_psiSplitRawL2_eq` on the inner-ball germ). Stated `∀ᶠ x in 𝓝 (basepoint)`
+    -- because the sub-3 hyps (`hm`, via the unit-locus `A0`-invertibility) hold only NEAR the basepoint;
+    -- the body consumes it on the SAME `filter_upwards` germ (Codex-flagged: the prior ∀x was over-strong).
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
         = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
@@ -2975,9 +2985,11 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
                 * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
-    -- **Sub-4 per-`x` core=Score** (route-A input; the controller discharges it at the final wiring by
-    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball with the frame-transform hyps).
-    (hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+    -- **Sub-4 core=Score — GERM-LOCAL** (route-A input; discharged at the final wiring by
+    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball). `∀ᶠ x in 𝓝 (basepoint)`: sub-4
+    -- needs `hball`/`hWdet` (det l2W ≠ 0), which hold only NEAR the basepoint; consumed on the body's germ.
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
       deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x)
     (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
     (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
