@@ -180,7 +180,7 @@ variable {N : ℕ}
 Rep_d` whose image `coord '' Z` is an irreducible variety, the geometric codimension `codimRep coord
 Z` plus the variety dimension of `coord '' Z` equals the ambient dimension `Nat.card (RepCoord d)`.
 `height_vanishingIdeal_add_varietyDim_eq_card` at `σ := RepCoord d`, `Z := coord '' Z`. -/
-theorem codimRep_add_varietyDim_eq_card [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRep_add_varietyDim_eq_card {d : Fin (N + 1) → ℕ}
     (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
     codimRep coord Z + varietyDim (coord '' Z) = (Nat.card (RepCoord d) : ℕ∞) :=
@@ -189,7 +189,7 @@ theorem codimRep_add_varietyDim_eq_card [IsAlgClosed k] {d : Fin (N + 1) → ℕ
 /-- **The bridge at `codimRep` (subtraction).** `codimRep coord Z = Nat.card (RepCoord d) −
 varietyDim (coord '' Z)` for an irreducible variety `coord '' Z`: geometric codimension `=` ambient
 `−` variety dimension. -/
-theorem codimRep_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRep_eq_card_sub_varietyDim {d : Fin (N + 1) → ℕ}
     (coord : Tuple (k := k) d ≃ (RepCoord d → k)) (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (coord '' Z) : Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :
     codimRep coord Z = (Nat.card (RepCoord d) : ℕ∞) - varietyDim (coord '' Z) :=
@@ -198,7 +198,7 @@ theorem codimRep_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ
 /-- **The bridge at `codimRepCanonical` (subtraction).** At the canonical entry-flattening
 `canonicalCoord d`, `codimRepCanonical Z = Nat.card (RepCoord d) − varietyDim (canonicalCoord d ''
 Z)` for an irreducible variety — the genuine geometric codimension. -/
-theorem codimRepCanonical_eq_card_sub_varietyDim [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem codimRepCanonical_eq_card_sub_varietyDim {d : Fin (N + 1) → ℕ}
     (Z : Set (Tuple (k := k) d))
     (hp : (vanishingIdeal k (canonicalCoord d '' Z) :
       Ideal (MvPolynomial (RepCoord d) k)).IsPrime) :

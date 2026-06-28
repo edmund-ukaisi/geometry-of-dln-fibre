@@ -1,6 +1,7 @@
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.NullstellensatzCodim
+import Mathlib.Algebra.CharZero.Infinite
 
 /-!
 # `DLNFibre.Core.VoigtDischarge` — A6.2: the squeeze + L7, discharging `hVoigt`
@@ -15,11 +16,12 @@ dimension). The additive **L7** arithmetic then yields **Voigt's lemma** `hVoigt
 
 cancelling the finite `r = finrank (range δ⁰)` from the two additive identities
 `codimRep + r = card` (L0 + squeeze) and `orbitLinearCodim + r = card` (rank-nullity + `card = finrank C¹`).
-Discharging `hVoigt` makes `codimRepCanonical_orbitRankLocus_eq_multSum` **UNCONDITIONAL** (char 0,
-algebraically closed) — the expedition's deliverable.
+Discharging `hVoigt` makes `codimRepCanonical_orbitRankLocus_eq_multSum` **UNCONDITIONAL** over any
+characteristic-zero field — the expedition's deliverable.
 
-**Typeclass.** `[Field k] [IsAlgClosed k] [CharZero k]`: `IsAlgClosed` from A6.1/L0/L1/M3 (which also
-gives `Infinite`), `CharZero` only from A4's separability side. **Dependency rule:** `Core` only.
+**Typeclass.** `[Field k] [CharZero k]` only. `CharZero` supplies both `PerfectField` (smooth point ⟹
+regular, A6.1/M3) and `Infinite` (orbit primeness L0/L1, A4 separability) as Mathlib instances; algebraic
+closedness is not used. The squeeze holds over `ℝ` (witnessed below). **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -34,9 +36,10 @@ variable {k : Type u} [Field k] {N : ℕ}
 
 /-- **The squeeze (Voigt's geometric heart).** The variety dimension of the orbit closure `Z_M =
 canonicalCoord '' orbitRankLocus M` equals the dimension of the orbit tangent image `range δ⁰`:
-`le_antisymm` of A4's submersion bound (`≤`, char 0) and A6.1's reverse inequality (`≥`). -/
+`le_antisymm` of A4's submersion bound (`≤`, char 0) and A6.1's reverse inequality (`≥`,
+`[PerfectField]`, supplied by `CharZero`). Holds over any characteristic-zero field, `ℝ` included. -/
 theorem varietyDim_orbitRankLocus_eq_finrank_range_deformationδ
-    [IsAlgClosed k] [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+    [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     varietyDim (canonicalCoord d '' orbitRankLocus M)
       = (finrank k (LinearMap.range (deformationδ M M)) : ℕ∞) := by
   letI : Fintype (RepCoord d) := Fintype.ofFinite _
@@ -52,7 +55,7 @@ identities — `codimRep + r = card` (L0 bridge + the squeeze, `r = finrank (ran
 `orbitLinearCodim + r = card` (rank-nullity `orbitLinearCodim = finrank C¹ − r` + `card = finrank C¹`,
 GAP1) — by cancelling the finite `r : ℕ∞`. -/
 theorem codimRep_orbitRankLocus_eq_orbitLinearCodim
-    [IsAlgClosed k] [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+    [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     codimRep (canonicalCoord d) (orbitRankLocus M) = (orbitLinearCodim M : ℕ∞) := by
   set r : ℕ := finrank k (LinearMap.range (deformationδ M M)) with hr
   set c1 : ℕ := finrank k (cochain1 (k := k) d d) with hc1
@@ -82,7 +85,7 @@ orbit closure equals `dim Ext¹(M,M)`, now UNCONDITIONAL (char 0, algebraically 
 `codimRep_orbitRankLocus_eq_orbitLinearCodim` chained with the engine's
 `orbitLinearCodim_eq_finrank_deformationExt1`. -/
 theorem codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1_unconditional
-    [IsAlgClosed k] [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+    [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     codimRepCanonical (orbitRankLocus M) = (finrank k (deformationExt1 M M) : ℕ∞) :=
   codimRepCanonical_orbitRankLocus_eq_finrank_deformationExt1 M
     (codimRep_orbitRankLocus_eq_orbitLinearCodim M)
@@ -94,7 +97,7 @@ quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}` — no longer mod
 `hVoigt`. `hVoigt` is discharged by `codimRep_orbitRankLocus_eq_orbitLinearCodim` (the squeeze + L7),
 so the expedition's deliverable holds with hypotheses `[IsAlgClosed k] [CharZero k]` only. -/
 theorem codimRepCanonical_orbitRankLocus_eq_multSum_unconditional
-    [IsAlgClosed k] [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
+    [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
     ((codimRepCanonical (orbitRankLocus (intervalDirectSum (k := k) L))).toNat : ℤ)
       = ∑ i ∈ Finset.Icc (1 : ℤ) N, ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),
           ∑ v ∈ Finset.Icc j (N : ℤ),
@@ -132,5 +135,35 @@ theorem voigtDischarge_witness_222 :
       = (orbitLinearCodim (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222) : ℕ∞) :=
   codimRep_orbitRankLocus_eq_orbitLinearCodim
     (intervalDirectSum (k := VoigtWitnessField) voigtWitnessList222)
+
+/-! ## The squeeze over `ℝ` — the crux relaxation, witnessed
+
+`ℝ` is `[CharZero]` (hence `[PerfectField]` and `[Infinite]`) but not algebraically closed. The crux
+relaxation `[IsAlgClosed k] → [PerfectField k]` on the A6.1 reverse inequality lets the squeeze
+`varietyDim Z_M = finrank (range δ⁰)` and Voigt's lemma `codimRep = orbitLinearCodim` fire over `ℝ`,
+witnessed here on the genuine `(2,2,2)` `(1,1)`-orbit normal form. These are the deliverables that
+were previously unreachable over `ℝ` (the orbit-dimension chain consumed algebraic closedness). -/
+
+/-- **The squeeze fires over `ℝ`.** The variety dimension of the `(2,2,2)` orbit closure over `ℝ`
+equals the dimension of its orbit tangent image — the crux relaxation `[IsAlgClosed] →
+[PerfectField]` made real, on a non-algebraically-closed field. -/
+example :
+    varietyDim (canonicalCoord (foldDim voigtWitnessList222) ''
+        orbitRankLocus (intervalDirectSum (k := ℝ) voigtWitnessList222))
+      = (finrank ℝ (LinearMap.range (deformationδ
+          (intervalDirectSum (k := ℝ) voigtWitnessList222)
+          (intervalDirectSum (k := ℝ) voigtWitnessList222))) : ℕ∞) :=
+  varietyDim_orbitRankLocus_eq_finrank_range_deformationδ
+    (intervalDirectSum (k := ℝ) voigtWitnessList222)
+
+/-- **Voigt's lemma fires over `ℝ`.** The geometric codimension of the `(2,2,2)` orbit closure over
+`ℝ` equals its expected (tangent-space) codimension `orbitLinearCodim` — discharged with no
+algebraic closedness, over a characteristic-zero field. -/
+example :
+    codimRep (canonicalCoord (foldDim voigtWitnessList222))
+        (orbitRankLocus (intervalDirectSum (k := ℝ) voigtWitnessList222))
+      = (orbitLinearCodim (intervalDirectSum (k := ℝ) voigtWitnessList222) : ℕ∞) :=
+  codimRep_orbitRankLocus_eq_orbitLinearCodim
+    (intervalDirectSum (k := ℝ) voigtWitnessList222)
 
 end DLNFibre.Core
