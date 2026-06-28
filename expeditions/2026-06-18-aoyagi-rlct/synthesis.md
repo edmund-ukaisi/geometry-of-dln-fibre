@@ -48,6 +48,74 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Source-Readback Square-Sum Prehandoff
+
+The explicit Case 2 selected-entry source family now has a source-readback
+square-sum readout:
+
+```text
+aoyagiCoordinateSquareSum_case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenter_residual
+```
+
+The proof uses the source-readback center-matrix handoff, reads
+`AoyagiResidualBlockCoordinateIndex.matrix` back to coordinates, reindexes the
+square-sum by the residual-coordinate equivalence to successor pivot entries,
+and applies the selected-entry identity
+`CenterCoord.residual = aoyagiCoordinateSquareSum CenterCoord.chartMap`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-readback-square-sum-prehandoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-source-readback-square-sum-prehandoff.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+
+This is only a finite source-readback square-sum calculation.  It does not
+identify the explicit Case 2 source family with a fixed-base p.13 source chart,
+and it does not prove local-source membership, measure transport, Jacobian
+density comparison, normal crossings, pole order, or RLCT.
+
+## Latest A2 Case 2 Retained-Passive Datum Center-Matrix Handoff
+
+The explicit Case 2 selected-entry retained-passive datum now has the stored
+`C` residual-factor product equality:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+The proof unfolds
+`case2PostPivotSelectedEntryRetainedPassiveData` and
+`case2PostPivotRetainedPassiveData`, uses the finite two-edge product theorem
+`residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq`,
+and unfolds `case2SuccessorSelectedEntryMatrix`.  This gives the
+`AoyagiResidualBlockCoordinateIndex.matrix (chartMap pivotNext yNext ...)`
+right-hand side at the retained-passive datum level, without passing through
+`sourceReadback (edgeMatrix data)`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-retained-passive-data-center-matrix-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-retained-passive-data-center-matrix-handoff.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+
+Fixed-base inspection by xhigh `Newton` found the next real blocker: the
+explicit Case 2 datum is indexed by `case2PostPivotTwoEdgeDomain n S J τ`, while
+the fixed-base retained-passive local-source/canonical chart-measure sockets are
+indexed by `throughSubspaceEndpointComplementIndex (reverseVertex W)
+(reverseEdge W B) U₀`.  There is not yet a retained-passive endpoint-transport
+API preserving determinant charts, edge matrices, source readback, and residual
+products along endpoint equivalences.  Until that exists, this rung is not a
+fixed-base local-source theorem and not a measure theorem.
+
+This is only a finite retained-passive datum equality.  It does not prove
+fixed-base endpoint transport, local-source membership, source-prior pushforward,
+chart-image membership, Jacobian density comparison, arbitrary retained-passive
+coverage, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Source-Readback Center-Matrix Handoff
 
 The explicit Case 2 selected-entry source family now has a content-named

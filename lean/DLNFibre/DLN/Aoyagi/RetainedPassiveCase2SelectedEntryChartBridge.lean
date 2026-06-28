@@ -391,6 +391,146 @@ theorem case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_succe
       (ρ := ρ) n hS hcont hnext yNext eNext
 
 set_option linter.style.longLine false in
+/-- The explicit selected-entry retained-passive datum itself has
+residual-factor product equal to the selected-entry center-coordinate matrix.
+
+This is the datum-level version of
+`case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`.
+It removes only the `sourceReadback (edgeMatrix data)` wrapper by unfolding
+the explicit datum's `C` field. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+    {ρ : Type*} {τ : Type} [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := ρ) n hS hcont hnext yNext eNext).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl _) eNext c)) := by
+  simpa [case2PostPivotSelectedEntryRetainedPassiveData,
+    case2PostPivotRetainedPassiveData, case2SuccessorSelectedEntryMatrix] using
+    residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+      n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
+/-- The explicit selected-entry source readback's residual-factor product has
+square-sum equal to the selected-entry center residual.
+
+This is a pre-handoff algebraic readout.  It does not identify the explicit
+Case 2 source family with a fixed-base p.13 source chart. -/
+theorem aoyagiCoordinateSquareSum_case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenter_residual
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+              (K := ℝ) (ρ := ρ)
+              (case2PostPivotSelectedEntrySourceEdgeFamily
+                (ρ := ρ) n hS hcont hnext yNext eNext)).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)))) =
+      SelectedEntrySignedBox.CenterCoord.residual
+        (⟨(J + 2, J + 2),
+          case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+        yNext := by
+  let pivotNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} :=
+    ⟨(J + 2, J + 2),
+      case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1)) τ ≃
+        (case2ResidualBlockPivotEntries n S (J + 1) : Type) :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) eNext
+  let product :=
+    ChartLocalSuffixState.residualFactorProduct
+      (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+        (K := ℝ) (ρ := ρ)
+        (case2PostPivotSelectedEntrySourceEdgeFamily
+          (ρ := ρ) n hS hcont hnext yNext eNext)).C
+      (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))
+  have hmatrix :
+      product =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1)) τ ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+              (residualCoordEquiv c)) := by
+    simpa [product, pivotNext, residualCoordEquiv] using
+      case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+        (ρ := ρ) n hS hcont hnext yNext eNext
+  have hcoord :
+      AoyagiResidualBlockCoordinateIndex.value product =
+        fun c : AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1)) τ ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+            (residualCoordEquiv c) := by
+    funext c
+    have hmatrix_c :
+        (AoyagiResidualBlockCoordinateIndex.value product) c =
+          (AoyagiResidualBlockCoordinateIndex.value
+            (AoyagiResidualBlockCoordinateIndex.matrix
+              (fun c : AoyagiResidualBlockCoordinateIndex
+                  (Case2ResidualRowIndex n S (J + 1)) τ ↦
+                SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+                  (residualCoordEquiv c)))) c := by
+      rw [hmatrix]
+      rfl
+    have hvalue_c :
+        (AoyagiResidualBlockCoordinateIndex.value
+          (AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c : AoyagiResidualBlockCoordinateIndex
+                (Case2ResidualRowIndex n S (J + 1)) τ ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+                (residualCoordEquiv c)))) c =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+            (residualCoordEquiv c) := by
+      simpa using congrFun
+        (AoyagiResidualBlockCoordinateIndex.value_matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1)) τ ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+              (residualCoordEquiv c))) c
+    exact hmatrix_c.trans hvalue_c
+  calc
+    aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value product) =
+        aoyagiCoordinateSquareSum
+          (fun c : AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1)) τ ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+              (residualCoordEquiv c)) := by
+      rw [hcoord]
+      rfl
+    _ = aoyagiCoordinateSquareSum
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext) :=
+      aoyagiCoordinateSquareSum_comp_equiv residualCoordEquiv
+        (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext)
+    _ = SelectedEntrySignedBox.CenterCoord.residual pivotNext yNext :=
+      (SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap
+        pivotNext yNext).symm
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry source edge family's readback product is
 nonzero when the displayed successor selected-entry pivot coordinate is
 nonzero. -/

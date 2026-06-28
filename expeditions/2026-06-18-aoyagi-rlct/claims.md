@@ -149,6 +149,25 @@ No such claim is formalisation-ready until both fields are filled.
   local-measure theorem and does not prove source-prior pushforward, chart-image
   membership, Jacobian density comparison, arbitrary retained-passive coverage,
   source-rank coverage, normal crossings, pole order, or RLCT.
+- **Current status addendum, source-readback square-sum prehandoff,
+  2026-06-28.** Lean now exposes
+  `aoyagiCoordinateSquareSum_case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenter_residual`,
+  which reads the explicit source-readback center-matrix product through
+  `AoyagiResidualBlockCoordinateIndex.value`, reindexes the square-sum, and
+  identifies it with the selected-entry center residual.  This is still only a
+  finite pre-handoff readout; it does not identify the source family with a
+  fixed-base p.13 source chart and does not prove a finite-integral theorem.
+- **Current status addendum, retained-passive datum center-matrix handoff,
+  2026-06-28.** Lean now exposes
+  `case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`,
+  the stored-`C` datum-level version of the selected-entry center-coordinate
+  matrix equality.  This removes only the source-readback wrapper from the
+  previous handoff.  The fixed-base local-source frontier is endpoint transport:
+  the explicit Case 2 datum is indexed by `case2PostPivotTwoEdgeDomain`, while
+  fixed-base retained-passive sockets use `throughSubspaceEndpointComplementIndex`.
+  This is not a local-source theorem and does not prove source-prior pushforward,
+  chart-image membership, Jacobian density comparison, coverage, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, explicit selected-entry source-family regularity,
   2026-06-28.** The constructed Case 2 selected-entry-to-source family now has
   finite-coordinate regularity.  Lean proves continuity of the successor

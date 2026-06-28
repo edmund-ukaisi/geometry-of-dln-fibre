@@ -18,6 +18,69 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 source-readback square-sum prehandoff
+
+Reproduction:
+`reproduction-a2-case2-source-readback-square-sum-prehandoff.md`.
+Statement card:
+`statement-card-a2-case2-source-readback-square-sum-prehandoff.md`.
+
+Lean now exposes the square-sum of the explicit Case 2 source family's actual
+source-readback product:
+
+```text
+aoyagiCoordinateSquareSum_case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenter_residual
+```
+
+This uses the source-readback center-matrix theorem, the
+`AoyagiResidualBlockCoordinateIndex.value_matrix` inverse, square-sum reindexing
+by `aoyagiCoordinateSquareSum_comp_equiv`, and the selected-entry residual
+identity.  Xhigh `Beauvoir` identified this as the smallest useful pre-handoff
+readout for local-measure consumers.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+
+This is not a finite-integral theorem.  It does not identify the explicit Case
+2 source family with a fixed-base p.13 source chart and does not prove
+local-source membership, source-prior pushforward, chart-image membership,
+Jacobian density comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 retained-passive datum selected-entry center-matrix handoff
+
+Reproduction:
+`reproduction-a2-case2-retained-passive-data-center-matrix-handoff.md`.
+Statement card:
+`statement-card-a2-case2-retained-passive-data-center-matrix-handoff.md`.
+
+Lean now exposes the explicit Case 2 selected-entry retained-passive datum's
+stored `C` product in the selected-entry center-coordinate matrix shape:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This is the datum-level analogue of the source-readback handoff.  It unfolds
+the explicit datum and uses the finite constructed two-edge product equality.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+
+Xhigh fixed-base inspection by `Newton` found the next real blocker: fixed-base
+retained-passive local-source and canonical chart-measure infrastructure is
+indexed by `throughSubspaceEndpointComplementIndex`, while the explicit Case 2
+datum is indexed by `case2PostPivotTwoEdgeDomain`.  A transport/reindex API for
+retained-passive data, edge matrices, source readback, and residual products
+along endpoint equivalences is still needed before claiming a fixed-base
+local-source or measure theorem.
+
+This is only a finite retained-passive datum equality.  It does not prove
+fixed-base endpoint transport, local-source membership, source-prior
+pushforward, chart-image membership, Jacobian density comparison, coverage,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 source-readback selected-entry center-matrix handoff
 
 Reproduction:
