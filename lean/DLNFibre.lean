@@ -511,5 +511,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 -- cross-lineage clashes vs the (4,4,2,2)/(3,3,3,3) lineage deconflicted by renaming the (3,3,4) side
 -- (`e2_22`, `e3_334`, `minAdm_M4422_c334`, `paramsEquivFlat_decode_hfin`, `prod_two_layer334_hfin`).
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
+-- R1-UPPER ∀p leg (the rank-stratified radial-Schur recursion, every corank): the clean-three
+-- `routeMBoxThresholdFinite_rrp` (`∫_{matBox r (r+p) T} frobSq(R·S)^{−c'} < ⊤` for `0 < c' < ½·minAdm`,
+-- all `r, p`). Chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`
+-- (RouteMBoxThresholdRRP imports RouteMBoxReduction + RouteMSchurRecStepP, transitively pulling the whole
+-- P-chain: RouteMSchurCapACarveP/CapAP/DirectMorseP/ThresholdP/GenCover/Firing/General). S2-FREE, clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

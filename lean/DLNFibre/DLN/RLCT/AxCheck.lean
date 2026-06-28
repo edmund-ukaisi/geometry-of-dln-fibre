@@ -5,6 +5,7 @@ import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
+import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 
 /-!
 # Axiom-hygiene check
@@ -72,6 +73,12 @@ open DLNFibre.DLN.RLCT
 -- closure carrying unrelated sorries in RouteMRecursion/RouteMSchur — they do not leak here).
 #print axioms core_schur3_lt_top
 #print axioms lintegral_matBox_smul
+
+-- R1-UPPER ∀p leg (the rank-stratified radial-Schur recursion at every corank) — `routeMBoxThresholdFinite_rrp`
+-- (`∫_{matBox r (r+p) T} frobSq(R·S)^{−c'} < ⊤` for `0 < c' < ½·minAdm r (r+p)`, all `r, p`), via the
+-- clean-three chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`.
+-- Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE, no `monomial_rlct`, no `sorryAx`.
+#print axioms routeMBoxThresholdFinite_rrp
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
