@@ -416,12 +416,13 @@ only the leaf-sum hypothesis side, the same S2 use the headline already rides. N
 `routeMCore_M4422_threshold_lt_top`, via the rank-stratified radial-Schur recursion (N1–N3 + the
 WellFounded-on-corank `recStep` assembly). Directly discharges the `hfin` field of
 `routeMLayerCover_of_atoms` (given the leaf-sum ⟹ `c' < ½·minAdm` premise reduction). SKELETON (`sorry`) —
-the depth-`r` measure-theoretic cover assembly (cert §4 N4, the HIGH-risk long pole). The N2b-split ⟶
-Morse-terminal composition the recursion rides is VALIDATED at the smallest binding corank-2 case in
-`RouteMSchurDepth2` (`schurSplit_integrand_le`/`schurSplit_lintegral_le` → `schurSplit_depth2_lt_top`,
-`c' < 2 = λ_{2,4}`, axiom-clean). The remaining gap is the radial-blow-up change-of-variables that turns
-the corank-2 core over the matrix box INTO that split-form `(P, z)`, summed over the `r²` charts by
-`recStep`. -/
+the depth-`r` measure-theoretic cover assembly (cert §4 N4, the HIGH-risk long pole). The two ENDS of the
+corank-2 N2b→Morse reduction are built (sorry-free, axiom-clean) in `RouteMSchurDepth2`: the inverse-power
+reduction `schurSplit_integrand_le`/`schurSplit_lintegral_le` (core → split form, GIVEN the N2b
+comparison) and the Morse terminal `schurSplit_depth2_lt_top` (split form → `< ⊤`, `c' < 2 = λ_{2,4}`).
+They are NOT yet chained — the remaining weld (the HIGH-risk part) is the radial-blow-up
+change-of-variables that turns the corank-2 core over the matrix box INTO that split form, summed over the
+`r²` charts by `recStep`. -/
 theorem routeMCore_threshold_lt_top {L : ℕ} (M : Fin (L + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∫⁻ x in routeMBaseNbhd M, ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) < ⊤ := by

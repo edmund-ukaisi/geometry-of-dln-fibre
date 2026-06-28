@@ -1,39 +1,40 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchur
 
 /-!
-# `DLNFibre.DLN.RLCT.Validate.RouteMSchurDepth2` — the depth-2 recStep composition validator
+# `DLNFibre.DLN.RLCT.Validate.RouteMSchurDepth2` — the corank-2 N2b→Morse reduction END-PIECES
 
-The **depth-2 regression test** for the rank-stratified radial-Schur recursion (cert §4 N4,
-`expeditions/2026-06-20-aoyagi-full/threads/28-hfin-recStep-spec/L32a-cover-cert.md`): the smallest
-binding corank-2 case (`r = 2`, ONE nested minor-pivot level). It validates that the certified pieces —
-N2b `schur_minorPivot_split` (the corank-`2`→corank-`1` Schur drop), the radial-blow-up homogeneity N1,
-and the Morse terminal `radial_morse_dominates_lt_top` — **compose** into a finiteness proof, the way the
-∀M N4 assembly needs.
+The two ends of the rank-stratified radial-Schur recursion (cert §4 N4,
+`expeditions/2026-06-20-aoyagi-full/threads/28-hfin-recStep-spec/L32a-cover-cert.md`) at the smallest
+binding corank-2 case (`r = 2`, ONE nested minor-pivot level): (i) the N2b-shaped inverse-power reduction
+that replaces a core `F` two-sided-comparable to a split form `D` by `D^{−c'}`, and (ii) the finiteness of
+the `Fin 4` Morse terminal for `c' < 2 = λ_{2,4}`. These are the INGREDIENTS the depth-2 recursion needs;
+they are **three separate lemmas, NOT chained end-to-end** — the missing weld is the radial-blow-up
+change-of-variables that turns the corank-2 core `∫_R frobSq (R·S)^{−c'}` over the matrix box INTO the
+split form, which stays the deferred N4 long pole (`RouteMSchur` N4 `routeMCore_threshold_lt_top`).
 
 Codex (xhigh, 2026-06-27, decorrelated) confirmed the design at `r = 2`: the `recStep` entry-chart cover
 coincides with the max-modulus `1×1`-minor cover (a `1×1` minor IS a single entry), so depth-2 needs NO
 genuinely-nested second cover; N2b (the comparison) is the right tool for the first drop, with N2a
 (`rankOne_outerProduct_split`) the terminal rank-1 leaf. The certified design has no hole at `r = 2`.
 
-## What this file delivers (the composition, S2-FREE)
+## What this file delivers (the two reduction ends, S2-FREE — NOT their composition)
 
-* **`schurSplit_integrand_le`** — the pointwise integrand domination the recursion produces: on the
-  N2b pivot cell, `frobSq (R·S)^{−c'} ≤ c₀^{−c'}·(frobSq (R·S)_top + frobSq (Sc·S_bot))^{−c'}` — the
-  inverse-power flip of N2b's LOWER bound `c₀·D ≤ frobSq (R·S)`, zero-guarded by the UPPER bound.
-* **`schurSplit_lintegral_le`** — its integral form: on any set where the N2b comparison holds
-  pointwise, `∫_Z frobSq (R·S)^{−c'} ≤ c₀^{−c'} · ∫_Z D^{−c'}`. The corank-2 → split-form reduction.
-* **`schurSplit_depth2_lt_top`** — the depth-2 composition CLOSED: chaining the reduction into the Morse
-  terminal `radial_morse_dominates_lt_top`, the split-form `D = frobSq P + W z` (Morse block `P : Fin 4`
-  ⊕ corank-1 residual `W ≥ 0`) integrates finitely for `c' < 2 = λ_{2,4}`. The N2b-split ⟶ Morse-leaf
-  composition the ∀M N4 assembly rides, validated at the smallest binding corank-2 case.
-
-The remaining cover-assembly (the radial-blow-up change-of-variables that turns the corank-2 core over
-the matrix box into the split-form Morse coordinates `(P, z)` above, summed over the `r²` charts by
-`recStep`) is the heavy N4 long pole, skeletoned in `RouteMSchur` (N4 `routeMCore_threshold_lt_top`).
+* **`schurSplit_integrand_le`** — the pointwise inverse-power flip: for reals `c₀·D ≤ F ≤ c₁·D` (the N2b
+  comparison shape; `D, F` abstract reals, NO matrix), `ofReal (F^{−c'}) ≤ ofReal (c₀^{−c'}·D^{−c'})`.
+  The flip of the LOWER bound, zero-guarded by the UPPER bound. Takes the comparison as a HYPOTHESIS — it
+  does not invoke N2b (`schur_minorPivot_split`) to produce it.
+* **`schurSplit_lintegral_le`** — its integral form: on a set where `c₀·D z ≤ F z ≤ c₁·D z` holds
+  pointwise (abstract `D, F : Ω → ℝ`), `∫_Z F^{−c'} ≤ c₀^{−c'} · ∫_Z D^{−c'}`. The core → split-form
+  reduction, given the comparison.
+* **`schurSplit_depth2_lt_top`** — the Morse-terminal END: the split-form integral
+  `∫_z ∫_P (∑ⱼ (P j)² + W z)^{−c'}` (`P : Fin 4` a FREE Morse block, `W ≥ 0` an arbitrary residual)
+  is finite for `c' < 2 = λ_{2,4}`. This is `radial_morse_dominates_lt_top` at `m+1 = 4`; it takes the
+  split form as its STARTING point (it does NOT start from the corank-2 core, and does NOT consume the two
+  reduction lemmas above). The core → split-form weld (the radial-blow-up CoV) is the deferred N4 step.
 
 ## S2-hygiene
-S2-FREE: the domination is the elementary inverse-power flip + N2b (itself S2-free). No `monomial_rlct`,
-no new axiom.
+S2-FREE: the reduction is the elementary inverse-power flip; the terminal is `radial_ball_iff`-based. No
+`monomial_rlct`, no new axiom.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -57,12 +58,13 @@ The inverse-power antitone flip of N2b's LOWER bound `c₀·D ≤ F`; the zero-g
 supplied by N2b's UPPER bound `F ≤ c₁·D` (so `D = 0 ⟹ F = 0`). Both sides of the two-sided N2b
 comparison are load-bearing: the lower for the bound, the upper for the guard. The pointwise reduction
 the per-chart cover consumes. -/
-theorem schurSplit_integrand_le {c₀ c₁ Dval F : ℝ} (hc₀ : 0 < c₀) (hD : 0 ≤ Dval) (hF : 0 ≤ F)
+theorem schurSplit_integrand_le {c₀ c₁ Dval F : ℝ} (hc₀ : 0 < c₀) (hD : 0 ≤ Dval)
     (hlow : c₀ * Dval ≤ F) (hupp : F ≤ c₁ * Dval) (c' : ℝ) (hc' : 0 < c') :
     ENNReal.ofReal (F ^ (-c'))
       ≤ ENNReal.ofReal ((c₀ ^ (-c')) * (Dval ^ (-c'))) := by
   -- `c₀·D ≤ F`, both nonneg; the inverse power flips it, then split the constant out.
   have hcD : (0 : ℝ) ≤ c₀ * Dval := by positivity
+  have hF : (0 : ℝ) ≤ F := le_trans hcD hlow
   have hsplit : (c₀ * Dval) ^ (-c') = (c₀ ^ (-c')) * (Dval ^ (-c')) :=
     Real.mul_rpow (le_of_lt hc₀) hD
   rw [← hsplit]
@@ -95,31 +97,30 @@ theorem schurSplit_lintegral_le {Ω : Type*} [MeasurableSpace Ω] (μ : Measure 
   calc (∫⁻ z in Z, ENNReal.ofReal ((F z) ^ (-c')) ∂μ)
       ≤ ∫⁻ z in Z, ENNReal.ofReal ((c₀ ^ (-c')) * ((D z) ^ (-c'))) ∂μ :=
         lintegral_mono (fun z =>
-          schurSplit_integrand_le hc₀ (hD z) (hF z) (hlow z) (hupp z) c' hc')
+          schurSplit_integrand_le hc₀ (hD z) (hlow z) (hupp z) c' hc')
     _ = ∫⁻ z in Z, ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal ((D z) ^ (-c')) ∂μ := by
         refine lintegral_congr (fun z => ?_)
         rw [ENNReal.ofReal_mul (Real.rpow_nonneg (le_of_lt hc₀) _)]
     _ = ENNReal.ofReal (c₀ ^ (-c')) * ∫⁻ z in Z, ENNReal.ofReal ((D z) ^ (-c')) ∂μ :=
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
 
-/-! ## The depth-2 composition CLOSED — N2b split ⟶ Morse terminal at the binding threshold
+/-! ## The Morse-terminal END — the split-form integral at the binding corank-2 threshold
 
-The recursion's terminal step at corank 2, made explicit: after the radial-blow-up change-of-variables
-(the heavy N4 cover step, skeletoned in `RouteMSchur` N4) the corank-2 core integral becomes the
-split-form integral over `(P, z)` — `P : Fin 4` the disjoint Morse block (the `j·p = 1·4 = 4` entries of
-the top row `(R·S)_top`) and `W z ≥ 0` the corank-1 Schur residual `frobSq (Sc·S_bot)`. The N2b
-comparison `c₀·(frobSq P + W z) ≤ frobSq (R·S) ≤ c₁·(frobSq P + W z)` then reduces it
-(`schurSplit_lintegral_le`) to `∫ (frobSq P + W z)^{−c'}`, which the Morse terminal
-`radial_morse_dominates_lt_top` closes for `c' < 4/2 = 2 = λ_{2,4}`. This validates that N2b's split feeds
-the Morse leaf at exactly the binding threshold — the corank-2 → corank-1 → corank-0 chain composes. -/
+The terminal of the corank-2 recursion, on the split form the N4 radial-blow-up CoV produces (that CoV
+is the deferred weld — this lemma takes the split form as GIVEN, it does not derive it from the core).
+`P : Fin 4` is the disjoint Morse block (the `j·p = 1·4 = 4` entries of the top row `(R·S)_top`),
+`W z ≥ 0` an arbitrary residual standing for the corank-1 Schur core `frobSq (Sc·S_bot)`. The split-form
+integral `∫_z ∫_P (∑ⱼ (P j)² + W z)^{−c'}` is `radial_morse_dominates_lt_top` at `m+1 = 4`, finite for
+`c' < 4/2 = 2 = λ_{2,4}` — the binding corank-2 threshold (cf. `core334_lt_top`, also `c'' < 2`). -/
 
-/-- **The depth-2 composition, CLOSED (S2-FREE).** The split-form integral `∫_z ∫_P (frobSq P + W z)^{−c'}`
-— the form the radial-blow-up CoV turns the corank-2 core into — is finite for `c' < 2 = λ_{2,4}`, with
-`P : Fin 4` the top Morse block (`j·p = 1·4`) and `W ≥ 0` the corank-1 Schur residual. The N2b split
-(`schur_minorPivot_split`) ⟶ Morse terminal (`radial_morse_dominates_lt_top`, `m+1 = 4`) composition the
-∀M N4 assembly rides, validated at the smallest binding corank-2 case (Codex-confirmed: no hole at `r=2`).
-`∑ⱼ (P j)²` (`P : Fin 4 → ℝ`) is the `Fin 4` Morse sum-of-squares modelling the flattened top row
-`(R·S)_top`; the `radial_morse_dominates_lt_top` bound (`m+1 = 4`, threshold `2`) gives `< ⊤`. -/
+/-- **The Morse-terminal finiteness at the corank-2 threshold (S2-FREE).** The split-form integral
+`∫_z ∫_P (∑ⱼ (P j)² + W z)^{−c'}` is finite for `c' < 2 = λ_{2,4}`, with `P : Fin 4` a FREE Morse block
+(modelling the flattened top row `(R·S)_top`, `j·p = 1·4`) and `W ≥ 0` an arbitrary residual (standing
+for the corank-1 Schur core `frobSq (Sc·S_bot)`). This is `radial_morse_dominates_lt_top` at `m+1 = 4`,
+the END of the corank-2 N2b→Morse reduction. It takes the split form as its STARTING point — the core →
+split-form weld (the radial-blow-up CoV, summed over the `r²` charts by `recStep`) is the deferred N4
+step (`RouteMSchur` N4); this lemma does NOT consume `schurSplit_lintegral_le` / `schur_minorPivot_split`.
+The threshold `2 = (m+1)/2` is binding (Codex-confirmed: the certified recursion has no hole at `r=2`). -/
 theorem schurSplit_depth2_lt_top {k : ℕ} (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c' < 2)
     (T : ℝ) (hT : 0 < T) (W : (Fin k → ℝ) → ℝ) (hWnn : ∀ z, 0 ≤ W z) (hWmeas : Measurable W) :
     ∫⁻ z in morseBox k T, ∫⁻ P in morseBox 4 T,
