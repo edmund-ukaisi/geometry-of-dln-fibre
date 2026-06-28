@@ -19,7 +19,28 @@ FALSE — `D(schurCorrectionConj)(0) = −M̄Z_0·M̄A_0⁻¹·D(readY_0) ≠ 0`
 
 The conjugated pivot `M̄A_s + readX_s` is invertible near the origin iff `M̄A_s = deepBlkA_s` is a unit
 (`readX → 0` at `0`). That unit-ness (`hDA`) is threaded as a hypothesis here — discharged at the wire
-(layer-0 via `deepestPoint_leadingBlock_isUnit`/`htop`; layer-`(L−1)` via the column-WLOG dual).
+(layer-0 via `deepestPoint_leadingBlock_isUnit`/`htop`; layer-`(L−1)` via the column-WLOG dual, the
+row-WLOG seam #154).
+
+## The atom-free `hstep2` route: `Φbare —[Step Θ]→ Φconj —[Step Ψ_conj]→ Φscore` (both RLCT equalities)
+
+LANDED here (stages 1-5):
+* Step Θ (`rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb`): `rlctAtOn(reg²+coreF∘bareAbsorb) =
+  rlctAtOn(reg²+coreF∘conjAbsorb)` at `0`, via the MP core-shear `Θ = coreShearHomeo (schurCutoffShiftConj
+  − schurCutoffShift)` (det-1, basepoint-fixing, reg-fixing; `rlctAtOn_comp_homeomorph`, NO derivative).
+* `deepestCoreF_coreAbsorbConj_eq_prodSchur` (inner ball): the conjugated absorbed-core energy.
+
+REMAINING — Step Ψ_conj (the conjugated joint move). **The bare `psiSplitRawL2` is tuned to the bare
+pivot `1 + readX` (numerically verified: bare-ψ + conj-absorb ≠ Score), so Step Ψ needs a CONJUGATED
+joint move `psiSplitRawL2Conj`** (the W/K/S1/T1'/Y1' closed form with conjugated pivots `M̄A+readX` and
+conjugated off-diagonals `M̄·+read·`; verified numerically to give `coreF(conjAbsorb(Ψ_conj q)).last =
+(1−Kc)·S1c`, the keystone's conjugated last-layer LDU). KEY SIMPLIFICATION: `D(Ψ_conj)(wstar) = id`
+(at the basepoint `K̂ = Z1 = 0` by the boundary `M̄Z1 = 0` + reads `= 0`, and `Y0 = M̄Y0 = 0`), so the
+conjugated bridge reuses `e = ContinuousLinearEquiv.refl` — structurally identical to the bare bridge,
+NO new derivative subtlety. Scope: parallel the bare joint-Ψ apparatus (`psiSplitRawL2Core` lens +
+ContDiff + strict-fderiv-id + fixpoint + the comp-identity `Φconj ∘ psiL2Conj = Φscore`, the last via the
+keystone `absorbedCoreConj_eq_schurCore` + readback `prod_deepestM_eq_schur_ldu_readback` + banked
+`deepBlkT_{layer0,layerLast}_zero`). Then `hstep2 = Step Θ ∘ Step Ψ_conj`.
 -/
 
 open MeasureTheory Matrix
