@@ -81,6 +81,32 @@ factor alignment for actual `sourceReadback` data, no pivot provenance or
 all-pivot cover, no original source-rank coverage, no source/prior measure
 transport, no normal crossings, no pole order, and no RLCT.
 
+## Latest A2 Selected-Entry All-Pivot Nonzero Coverage
+
+`SelectedEntrySignedBoxMeasure.lean` now exposes:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_pivot_chartMap_eq_value_of_ne_zero
+SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero
+```
+
+At the finite selected-entry level, a nonzero center-coordinate vector has a
+nonzero coordinate, and choosing that coordinate as pivot gives a selected-entry
+chart preimage by the existing fixed-pivot inverse.  A nonzero residual matrix
+similarly has a nonzero entry; after a supplied residual-coordinate equivalence,
+that entry becomes the selected pivot and the existing fixed-pivot matrix
+inverse applies.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing imported linter warning noise.  Xhigh review by
+`Boyle the 3rd` passed, and direct axiom-footprint check reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This removes fixed-pivot provenance only after nonzeroness is known.  It does
+not prove retained-passive source/readback nonzero production, factor alignment
+for Aoyagi's displayed post-pivot and following factors, source/prior measure
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest Reorientation: A2 Source-Readout Frontier
 
 After the interruption, the controller rechecked the Aoyagi worktree:

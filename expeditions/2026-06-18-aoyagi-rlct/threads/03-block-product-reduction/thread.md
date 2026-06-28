@@ -45,6 +45,37 @@ This is not retained-passive-to-selected-entry factor alignment, pivot
 provenance, all-pivot coverage, original source-rank coverage, measure/prior
 transport, normal crossings, pole order, or RLCT.
 
+## 2026-06-28 A2 selected-entry all-pivot nonzero coverage
+
+Reproduction:
+`reproduction-a2-selected-entry-all-pivot-nonzero-coverage.md`.
+Statement card:
+`statement-card-a2-selected-entry-all-pivot-nonzero-coverage.md`.
+
+Lean now has the finite all-pivot selected-entry inverse:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_pivot_chartMap_eq_value_of_ne_zero
+SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero
+```
+
+The center-coordinate theorem chooses a nonzero coordinate of a nonzero center
+value and applies the existing fixed-pivot inverse.  The matrix theorem chooses
+a nonzero residual-matrix entry, sends it through the supplied
+residual-coordinate equivalence as the pivot, and applies the fixed-pivot
+matrix inverse.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing imported linter warning noise.  Xhigh review by
+`Boyle the 3rd` passed:
+`review-a2-selected-entry-all-pivot-nonzero-coverage.md`.  Direct
+axiom-footprint check reports `[propext, Classical.choice, Quot.sound]`.
+
+This removes fixed-pivot provenance only at the finite selected-entry layer
+once nonzeroness is known.  It does not prove retained-passive source/readback
+nonzero production, Aoyagi displayed-factor alignment, source/prior transport,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 post-interruption source-readout frontier
 
 Reproduction:

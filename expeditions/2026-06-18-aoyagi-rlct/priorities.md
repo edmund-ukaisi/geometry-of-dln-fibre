@@ -42,6 +42,32 @@ retained-passive-to-selected-entry factor alignment, pivot provenance/all-pivot
 coverage, original source-rank coverage, measure or prior transport, normal
 crossings, pole order, or RLCT.
 
+## Latest controller decision - 2026-06-28, selected-entry all-pivot nonzero coverage
+
+The finite selected-entry inverse has an all-pivot nonzero form in
+`SelectedEntrySignedBoxMeasure.lean`:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_pivot_chartMap_eq_value_of_ne_zero
+SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero
+```
+
+The first theorem says any nonzero center-coordinate vector lies in some
+selected-entry chart image.  The second transports this through a supplied
+residual-coordinate equivalence: any nonzero residual matrix is a selected-entry
+chart matrix for some pivot.  This removes the need to preselect a globally
+nonzero fixed pivot at the finite selected-entry algebra layer.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing imported warning noise.  Xhigh review by `Boyle the 3rd`
+passed, and direct axiom-footprint check reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not prove that an actual retained-passive/source-readback residual
+matrix is nonzero, does not identify Aoyagi's displayed post-pivot and
+following factors, and does not transport source measure, construct normal
+crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-06-28, post-interruption source-readout frontier
 
 After VM recovery the expedition worktree is clean at

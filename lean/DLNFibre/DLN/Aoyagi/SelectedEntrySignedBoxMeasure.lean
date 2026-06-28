@@ -325,6 +325,60 @@ theorem exists_matrix_eq_chartMap_of_pivot_ne_zero {center : Finset ι}
   have hcoord := congrFun hy (residualCoordEquiv (i, j))
   simpa [value, AoyagiResidualBlockCoordinateIndex.matrix] using hcoord.symm
 
+set_option linter.style.longLine false in
+/-- All-pivot selected-entry inverse in center coordinates: any nonzero
+center-coordinate vector belongs to some selected-entry chart image.
+
+This is finite coordinate coverage only.  It does not construct retained-passive
+source data or prove that a particular source lands in the nonzero locus. -/
+theorem exists_pivot_chartMap_eq_value_of_ne_zero {center : Finset ι}
+    (value : center → ℝ) (hvalue : value ≠ 0) :
+    ∃ pivot : center, ∃ y : center → ℝ, chartMap pivot y = value := by
+  classical
+  have hentry : ∃ pivot : center, value pivot ≠ 0 := by
+    by_contra hnone
+    apply hvalue
+    funext pivot
+    exact not_not.mp (fun hpivot ↦ hnone ⟨pivot, hpivot⟩)
+  rcases hentry with ⟨pivot, hpivot⟩
+  rcases exists_chartMap_eq_value_of_pivot_ne_zero pivot value hpivot with
+    ⟨y, hy⟩
+  exact ⟨pivot, y, hy⟩
+
+set_option linter.style.longLine false in
+/-- Matrix form of the all-pivot selected-entry inverse: any nonzero residual
+matrix is a selected-entry chart matrix for some pivot after the supplied
+residual-coordinate equivalence.
+
+This removes the need to preselect a fixed nonzero pivot at the finite
+selected-entry level.  It does not prove retained-passive source production,
+factor alignment, measure transport, normal crossings, pole order, or RLCT. -/
+theorem exists_pivot_matrix_eq_chartMap_of_ne_zero {center : Finset ι}
+    {μ ν : Type*} (D : Matrix μ ν ℝ)
+    (residualCoordEquiv : AoyagiResidualBlockCoordinateIndex μ ν ≃ center)
+    (hD : D ≠ 0) :
+    ∃ pivot : center, ∃ y : center → ℝ,
+      D =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex μ ν ↦
+            chartMap pivot y (residualCoordEquiv c)) := by
+  classical
+  have hentry :
+      ∃ c : AoyagiResidualBlockCoordinateIndex μ ν, D c.1 c.2 ≠ 0 := by
+    by_contra hnone
+    apply hD
+    ext i j
+    exact not_not.mp (fun hij ↦ hnone ⟨(i, j), hij⟩)
+  rcases hentry with ⟨c, hc⟩
+  let pivot : center := residualCoordEquiv c
+  have hpivot :
+      D (residualCoordEquiv.symm pivot).1
+        (residualCoordEquiv.symm pivot).2 ≠ 0 := by
+    simpa [pivot] using hc
+  rcases exists_matrix_eq_chartMap_of_pivot_ne_zero pivot D residualCoordEquiv hpivot with
+    ⟨y, hy⟩
+  exact ⟨pivot, y, hy⟩
+
 /-- The center-indexed selected-entry chart map is continuous. -/
 theorem continuous_chartMap {center : Finset ι} (pivot : center) :
     Continuous (chartMap pivot) := by

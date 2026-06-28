@@ -195,6 +195,16 @@ No such claim is formalisation-ready until both fields are filled.
   fields: factor alignment for actual `sourceReadback` data, pivot
   provenance/all-pivot coverage, original source-rank coverage, measure/prior
   transport, normal crossings, pole order, and RLCT remain open.
+- **Current status addendum, selected-entry all-pivot coverage, 2026-06-28.**
+  Lean now proves finite all-pivot selected-entry inverse lemmas
+  `SelectedEntrySignedBox.CenterCoord.exists_pivot_chartMap_eq_value_of_ne_zero`
+  and
+  `SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero`.
+  These remove the fixed-pivot choice once a nonzero center vector or nonzero
+  residual matrix is known.  They do not prove retained-passive source/readback
+  nonzero production, factor alignment for the displayed post-pivot and
+  following factors, original source-rank coverage, measure/prior transport,
+  normal crossings, pole order, or RLCT.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed
