@@ -1393,6 +1393,39 @@ theorem RmatGnorm_carve_b (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : F
     zEG_symm_apply, zσG_slot]
   rfl
 
+/-- **The carve box-preimage.** The ratio box `[−1,1]^N` is the `zEG`-preimage of the product of the
+`M22`-cube box `[−1,1]^{(r−1)²}` and the `(g,b)`-cube box `[−1,1]^{2(r−1)}`: `zEG` permutes the `N`
+coordinates onto the slots, so "all `z`-coords in `[−1,1]`" ⟺ "all cube-coords in `[−1,1]`". The keystone
+for the carve change of variables. Generic analog of the corank-3 `hpre` in `ginnerZ_lt_top`. -/
+theorem zEG_box_preimage (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+      = (zEG r N hN hr p) ⁻¹'
+          ((Set.univ.pi (fun _ : (Fin (r - 1) × Fin (r - 1)) => Set.Icc (-1 : ℝ) 1))
+            ×ˢ (Set.univ.pi (fun _ : (Fin (r - 1) ⊕ Fin (r - 1)) => Set.Icc (-1 : ℝ) 1))) := by
+  ext z
+  -- round-trip: z = zEG.symm (zEG z), so z k = Sum.elim M v (zσG k) where (M,v) = zEG z
+  set M := (zEG r N hN hr p z).1 with hM
+  set v := (zEG r N hN hr p z).2 with hv
+  have hzval : ∀ k, z k = Sum.elim M v (zσG r N hN hr p k) := by
+    intro k
+    have hrt : z = (zEG r N hN hr p).symm (M, v) := by
+      rw [hM, hv]; exact ((zEG r N hN hr p).symm_apply_apply z).symm
+    rw [hrt, zEG_symm_apply]
+  simp only [Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies]
+  constructor
+  · intro hzbox
+    -- every slot value is read by some z-index (zσG is a bijection)
+    refine ⟨fun ik => ?_, fun s => ?_⟩
+    · obtain ⟨k, hk⟩ := (zσG r N hN hr p).surjective (Sum.inl ik)
+      have := hzbox k; rw [hzval k, hk] at this; simpa using this
+    · obtain ⟨k, hk⟩ := (zσG r N hN hr p).surjective (Sum.inr s)
+      have := hzbox k; rw [hzval k, hk] at this; simpa using this
+  · rintro ⟨hMbox, hvbox⟩ k
+    rw [hzval k]
+    rcases hslot : zσG r N hN hr p k with ik | s
+    · simpa using hMbox ik
+    · simpa using hvbox s
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
