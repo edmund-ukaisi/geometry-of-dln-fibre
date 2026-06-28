@@ -97,3 +97,29 @@ The budget identity (2a') is the load-bearing delicate piece. Recommend the cont
 general-M live-leaf decoder + its budget identity within this thread's scope, or does it want a pen-and-paper
 `witness` adjudication of the minAdm−1 slot-cardinality FIRST (it's a fresh combinatorial identity over opaque
 widths, decorrelated from the radial-sep cert)?
+
+## BUDGET WITNESS RECEIVED + a BANKED-IDENTITY find (2026-06-28)
+genm-budget's witness: `#angular = minAdm−1` is a THEOREM (`Σ_{k=1..L-1} r_k·c_k + Text(L)·Wext(L) = minAdm`,
+129k cases + symbolic L=2..5 + Codex); square-chart + det=u^{minAdm−1}·(u-free) verified. CRITICAL REFINEMENT:
+71/351 interior M (e.g. (2,2,4), (2,2,2,4)) have NO live-leaf (Text(L)=0 → empty leaf Rfin); the angular
+coords + the fixed pivot RELOCATE to the active-center block (interior/leading, not leaf). So
+`genBlkFlatLive` (live-LEAF @edeb60b2) is correct for ~280 M but DEGENERATE for the 71 → generalize to
+active-center placement (parameterized by the achiever path).
+
+**FIND: the budget identity's CORE is ALREADY BANKED.** `RouteMAchieverPath.sum_rBlock_cBlock_eq_minAdm`:
+`∑_{j:Fin L} rBlock·cBlock = minAdm M`, with `rBlock j = tPrev − tStar_j`, `cBlock j = M_{j+1} − tStar_j`
+(over ℤ; via `Mval_tStar_eq : Mval (tStar) = minAdm`, all banked). The controller's
+`Σ_{k=1..L-1} r_k·c_k + Text(L)·Wext(L)` is the SAME `Fin L` sum reorganized: the `j=L-1` (leaf) summand IS
+the `Text(L)·Wext(L)` term after the chain↔Aoyagi width translation (`Text(tach)(k+1) = tStar k`). So
+sub-tide 2 (the budget identity) reduces to: a WIDTH BRIDGE connecting the chart's chain-width E-block + leaf
+dims (`Text`/`Wext`) to the banked Aoyagi `rBlock`/`cBlock`. The combinatorial heavy-lift is DONE banked;
+the remaining is the cast/width bridge — much lighter than a fresh ∑-identity.
+
+NB the leaf saturation: `Text M (tach M) (k+2) = 1` for the leaf when `tStar(last)=0` (the +1 convention,
+RouteMAchieverStructAdm:88) — this is the `ρ = Text(L)` business and the source of the 71-case `Text(L)=0`
+distinction (active center off-leaf). The active-center placement must respect this.
+
+HOLDING the genBlkFlatLive generalization for genm-budget's (2,2,4) active-center layout + the structural
+confirmation (is interior Rmat free-E or fixed-pivot in the live model?) — requested via controller, to build
+the correct pivot-placement once. The no-regret decoder + rate (@edeb60b2) stand; only the pivot placement +
+the (active-center vs leaf) routing need the cert.
