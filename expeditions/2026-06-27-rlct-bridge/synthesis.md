@@ -425,3 +425,17 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   - **Remaining for close:** integrate R5 (06, finishing gates + commit — projection-compatibility landed,
     global Flat π = named ceiling), then expedition close shape → synthesis + close summary + PR behind
     signal-and-wait (operator-gated; controller opens, does NOT merge). Holding for R5's committed report.
+
+- **tick 18 (R5 INTEGRATED GREEN + fidelity review running, 2026-06-28):** R5 committed (branch @
+  `d137cbfb`); controller merged → `expedition/rlct-bridge` + wired the single-writer aggregator
+  (`FibreProjectionCompat` then `FibreTargetOverlap`, dependency order; updated the stale FibreBundleHeadline
+  "projection compat — open" → "CLOSED by R5") → `e357a168` (pushed). **Gates: full `scripts/lb DLNFibre`
+  GREEN (3817 jobs, +2 modules), sorries clean.** Landed: `schurToDsigAt_comp_localizeSchur` +
+  `chartPhiSchurAeval_eq_comp_multComap` (projection compatibility — closes fibration-geometry S5/S4b item
+  (i)) + `ProjCompatOverBaseChart` + `awayCongr'` + `targetProductOverlapTransition` +
+  `chartOverlapTransitionK_trans_symm`. Named residuals: target-side cocycle round-trip (Mathlib-v4.29
+  `AlgEquiv.trans_assoc`/`refl_trans` gaps + double-localized kernel-cost) + global `Flat π` over rankROpen.
+  - **Fidelity review (`fidelity-rev-06` `a54cd3f3`) RUNNING** — key checks: projection-compat is GENUINE
+    (factors through multComap, not a vacuous restatement — Codex's flagged trap) + the global Flat π/cocycle
+    are honestly NAMED residuals not overclaimed. #6 completes on its PASS.
+  - Holding for the fidelity verdict → then expedition CLOSE shape.
