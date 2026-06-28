@@ -521,6 +521,104 @@ theorem l2T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [show ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) = 0 from rfl,
     paramsEquivFlat_symm_zero]
 
+/-! ### S4c — entrywise `ContDiff` of the named matrices + inverse `ContDiffAt` at the origin
+
+Each named matrix entry is `ContDiff ℝ ⊤` (the reads via `contDiff_read*_entry ∘ contDiff_gaugeProj`,
+the core via `contDiff_coreRead_entry`). At the origin the pivots `A0, A1, P00, W` are `1` (so `det = 1
+≠ 0`), giving `ContDiffAt` of their inverse entries via the `_at` inverse lemma. These are the
+`ContDiffAt` hypotheses the S4 strict-derivative helpers and the S2 smoothness leaf consume. -/
+
+/-- The gauge projection `q ↦ (q.1, q.2.2)` is `ContDiff ⊤`. -/
+theorem contDiff_gaugeProj (H : Fin (L + 1) → ℕ) (r : ℕ) :
+    ContDiff ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) => (q.1, q.2.2)) :=
+  contDiff_fst.prodMk (contDiff_snd.comp contDiff_snd)
+
+/-- Each `l2A0` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2A0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A0 H r hr hL q i j) := by
+  have : (fun q => l2A0 H r hr hL q i j)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
+          + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i j := by
+    funext q; rw [l2A0, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2A1` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2A1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A1 H r hr hL q i j) := by
+  have : (fun q => l2A1 H r hr hL q i j)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
+          + readX H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+    funext q; rw [l2A1, Matrix.add_apply]
+  rw [this]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+
+/-- Each `l2Z1` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2Z1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Z1 H r hr hL q i j) := by
+  have : (fun q => l2Z1 H r hr hL q i j)
+      = fun q => readZ H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Z1]
+  rw [this]; exact (contDiff_readZ_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
+
+/-- Each `l2Y1` entry is `ContDiff ⊤`. -/
+theorem contDiff_l2Y1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y1 H r hr hL q i j) := by
+  have : (fun q => l2Y1 H r hr hL q i j)
+      = fun q => readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Y1]
+  rw [this]; exact (contDiff_readY_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
+
+/-- Each `l2T1` entry is `ContDiff ⊤` (the last-layer core read). -/
+theorem contDiff_l2T1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2T1 H r hr hL q i j) := by
+  have : (fun q => l2T1 H r hr hL q i j)
+      = fun q => (paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL) i j := by
+    funext q; rw [l2T1, coreLast]
+  rw [this]; exact contDiff_coreRead_entry H r hr hL (lastLayer hL) i j
+
+/-- Each `l2Y0` entry is `ContDiff ⊤` (the col-reindexed first-layer `readY`). -/
+theorem contDiff_l2Y0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y0 H r hr hL hL2eq q i j) := by
+  have : (fun q => l2Y0 H r hr hL hL2eq q i j)
+      = fun q => readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i
+          ((finCongr (midWidth_eq_of_L2 H r hL hL2eq)).symm j) := by
+    funext q
+    rw [l2Y0, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply]
+  rw [this]
+  exact (contDiff_readY_entry H r hr hL _ i _).comp (contDiff_gaugeProj H r)
+
+/-- `l2P00 = 1` at the origin (`A0·A1 + Y0·Z1 = 1·1 + 0·0`). -/
+theorem l2P00_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2P00 H r hr hL hL2eq 0 = 1 := by
+  rw [l2P00, l2A0_zero, l2A1_zero, l2Y0_zero, l2Z1_zero, Matrix.mul_one, Matrix.zero_mul, add_zero]
+
+/-- Each `A0⁻¹` entry is `ContDiffAt` at the origin (`det (A0 0) = det 1 = 1 ≠ 0`). -/
+theorem contDiffAt_l2A0inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A0 H r hr hL q)⁻¹ i j) 0 := by
+  refine contDiffAt_matrix_inv_entry_of_det_ne_zero_at
+    (fun a b => (contDiff_l2A0_entry H r hr hL a b).contDiffAt) ?_ i j
+  rw [l2A0_zero, Matrix.det_one]; exact one_ne_zero
+
+/-- Each `A1⁻¹` entry is `ContDiffAt` at the origin. -/
+theorem contDiffAt_l2A1inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A1 H r hr hL q)⁻¹ i j) 0 := by
+  refine contDiffAt_matrix_inv_entry_of_det_ne_zero_at
+    (fun a b => (contDiff_l2A1_entry H r hr hL a b).contDiffAt) ?_ i j
+  rw [l2A1_zero, Matrix.det_one]; exact one_ne_zero
+
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
 where the joint action's mid-interface widths coincide — `midWidth_eq_of_L2`). Keeps the public
