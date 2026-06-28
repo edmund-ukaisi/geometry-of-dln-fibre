@@ -18,11 +18,21 @@ sub-lemma sorries (Codex-validated decomposition, artefact `codex/s6-chain-answe
   `Score`. Chain: `deepestCoreF_coreAbsorb_eq_prodSchur` → `frobSq(prod(core'+schurCorr'))` → (new
   `psiSplitRawL2Core_absorbed_reads`: first core = `T0−Z0⅟A0Y0`, last = `(1−K)(T1−Z1⅟A1Y1)`) → `frobSq(S0·S1')`
   → `prod_absorbed_eq_schur_ldu` → `frobSq Rcore` → `Score` (the framed corner-split dictionary,
-  `rcore_schur_factor_of_corner_split`). **CODEX-FLAGGED RESEARCH-RISK**: the public `Score` dictionary is
-  the riskiest step — exact `frobSq` equality may need bottom-right identity/unitriangular endpoint
-  normalizers beyond `hPtri/hQtri`, OR the core diffeo must absorb those units. Resolve the reachability of
-  the EXACT equality (vs ≍) before grinding. Also: `⅟` (landed algebra) vs `⁻¹` (Ψ/Score) — instantiate
+  `rcore_schur_factor_of_corner_split`). Also: `⅟` (landed algebra) vs `⁻¹` (Ψ/Score) — instantiate
   `Invertible` from `det≠0`, rewrite `invOf_eq_nonsing_inv`.
+
+  **RESEARCH-RISK RESOLVED — POSITIVELY (de-risk pass 2026-06-28, read-only).** The exact `frobSq`
+  equality IS reachable; the `=ᶠ` conclusion shape is RIGHT (not a ≍ fallback). Decisive: `Core.Matrix.
+  RankNormalFormTriangular` already gives the endpoint frames with IDENTITY rest-diagonal —
+  `blockLower_left_normalizer` (`P = fromBlocks ⅟A11 0 (−A21⅟A11) 1`, toBlocks₂₂ = 1, block-lower) and
+  `blockUpper_right_normalizer` (`Q = fromBlocks ⅟A11 (−⅟A11·A12) 0 1`, toBlocks₂₂ = 1, block-upper); its
+  docstring states it is "the frame the diffeo-bridge's endpointP0/endpointQL needs." Conjugating the framed
+  loss by a block-triangular frame with identity rest-diagonal preserves the (2,2) Schur complement EXACTLY
+  (the rest-block transforms as `1·(·)·1`), so `Score` (Schur of `P0·(prod−B)·QL`) = LDU `Rcore` (Schur of
+  raw `prod`) exactly. CONDITION the S6 tide must honor: the `_L2` wrapper supplies `Pf 0 =
+  blockLower_left_normalizer`, `Qf last = blockUpper_right_normalizer` — which it must do anyway to discharge
+  `hPtri`/`hQtri` (= `toBlocks₁₂=0`/`toBlocks₂₁=0`). The generic `deepestPoint_frame` (Classical.choose,
+  arbitrary rest-diagonal) would NOT give exact equality — but the caller isn't using that.
 
 ## (historical) STATUS: S4 + S2 CLOSED — bridge has 1 sorry (S6 only)
 
