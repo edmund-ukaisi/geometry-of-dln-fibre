@@ -1625,6 +1625,81 @@ theorem retainedPassiveSolvedA1_eq_of_ne_zero
     retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop p = A1seed p := by
   simp [retainedPassiveSolvedA1, hp]
 
+/-- Positive suffix products are unchanged by solving the omitted first
+retained-passive top-left block. -/
+theorem retainedPassiveSolvedA1_residualFactorProduct_eq_A1seed_of_pos
+    {M : ℕ}
+    (A1seed : Fin (M + 1) → Matrix ρ ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (m : ℕ) (hm : m ≤ M + 1) (hmpos : 1 ≤ m) :
+    let A1sol := retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop
+    let j : Fin (M + 2) := Fin.last (M + 1)
+    residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1sol j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm) =
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+        A1seed j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm) := by
+  let A1sol := retainedPassiveSolvedA1 (K := K) (ρ := ρ) A1seed Ctop
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    1 ≤ m →
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm) =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm)
+  have hbase : motive (M + 1) le_rfl := by
+    intro _hmpos
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j j le_rfl =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j j le_rfl
+    simp
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih hmpos'
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hp_ne : p ≠ 0 := by
+      intro hp
+      have hval : p.val = (0 : Fin (M + 1)).val := congrArg Fin.val hp
+      simp [p] at hval
+      omega
+    have hprodSol :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1sol j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1sol j p.succ p.succ.le_last * A1sol p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1sol (j := j) p p.succ.le_last
+    have hprodSeed :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.castSucc p.castSucc.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              A1seed j p.succ p.succ.le_last * A1seed p := by
+      simpa [j, p] using
+        residualFactorProduct_castSucc (K := K)
+          (κ := fun _ : Fin (M + 2) ↦ ρ) A1seed (j := j) p p.succ.le_last
+    have ih' :
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1sol j p.succ p.succ.le_last =
+          residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            A1seed j p.succ p.succ.le_last := by
+      have hmpos_succ : 1 ≤ m + 1 := Nat.succ_pos m
+      simpa [motive, j, p] using ih hmpos_succ
+    have hA1p : A1sol p = A1seed p := by
+      simpa [A1sol] using
+        retainedPassiveSolvedA1_eq_of_ne_zero
+          (K := K) (ρ := ρ) A1seed Ctop hp_ne
+    change
+      residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1sol j p.castSucc p.castSucc.le_last =
+        residualFactorProduct (K := K) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          A1seed j p.castSucc p.castSucc.le_last
+    rw [hprodSol, hprodSeed, ih', hA1p]
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+  simpa [motive, A1sol, j] using hcanon hmpos
+
 /-- The passive top-left tail is unchanged by solving the first block. -/
 theorem retainedPassiveA1TailAfterFirst_solvedA1
     {M : ℕ}

@@ -18,6 +18,66 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-27 A2 recursive target-only lower-left tail
+
+Reproduction:
+`reproduction-a2-retained-passive-recursive-target-only-lower-left-tail.md`.
+Statement card:
+`statement-card-a2-retained-passive-recursive-target-only-lower-left-tail.md`.
+Review:
+`review-a2-retained-passive-recursive-target-only-lower-left-tail.md`, PASS by
+xhigh `Meitner the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinates.lean`:
+
+```text
+retainedPassiveSolvedA1_residualFactorProduct_eq_A1seed_of_pos
+```
+
+and in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveSolvedA1TargetStagedTangentAt
+retainedPassiveSolvedA1TargetStagedTangentAt_zero
+retainedPassiveSolvedA1TargetStagedTangentAt_succ
+retainedPassiveSolvedA1TargetStagedTangentAt_fderiv_eq_source
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_self
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_step
+retainedPassiveSolvedA1SuffixProductAt
+fderiv_retainedPassive_solvedA1_residualFactorProduct_targetStaged_apply
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_succ
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_fderiv_eq_sourceStaged
+fderiv_retainedPassiveLowerLeftProductTailSum_targetOnly_apply
+```
+
+The solved-`A1` suffix derivative is target-staged across the whole solved
+family, including the terminal factor.  The lower-left recursion has terminal
+value `0` at `M+1`; each step uses the target-only current solved-`A1` tangent,
+the staged `Cnext` suffix beginning at `r.succ`, the solved-`A1` suffix tangent
+beginning at `p.succ.val`, and the successor lower-left derivative.
+
+On actual raw-order derivative targets, Lean proves the target-only recursion
+equals the existing source-staged recursion, and then proves the Frechet
+derivative of the zeroed-final lower-left product tail is this target-only
+recursive expression.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+
+This does not construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, normal crossings, pole order, or
+RLCT.
+
+Next frontier: assemble the target-side normalizer/shear package and determinant
+control from the staged target-side derivative pieces.
+
 ## 2026-06-27 A2 target-staged `C` suffix derivative
 
 Reproduction:

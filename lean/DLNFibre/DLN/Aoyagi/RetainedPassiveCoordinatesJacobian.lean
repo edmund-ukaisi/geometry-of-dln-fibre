@@ -3631,6 +3631,339 @@ theorem retainedPassiveTargetRecoveredSourceCtopAt_fderiv_eq_sourceCtop
       (ρ := ρ) (κ' := κ') hz v
 
 set_option linter.style.longLine false in
+/-- Target-only staged tangent for an arbitrary solved `A1` coordinate. -/
+def retainedPassiveSolvedA1TargetStagedTangentAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    Matrix ρ ρ ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      data.A1seed
+  let dTail :=
+    retainedPassiveA1TailTargetStagedFDerivAt
+      (M := M) (ρ := ρ) (κ' := κ') z w 0 (Nat.zero_le M)
+  if h0 : m = 0 then
+    Tail⁻¹ * retainedPassiveTargetRecoveredSourceCtopAt
+        (M := M) (ρ := ρ) (κ' := κ') z w
+      - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop
+  else
+    retainedPassiveTargetStagedA1passiveTangentAt
+      (M := M) (ρ := ρ) (κ' := κ') z w
+      ⟨m - 1, by omega⟩
+
+@[simp]
+theorem retainedPassiveSolvedA1TargetStagedTangentAt_zero
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let dTail :=
+      retainedPassiveA1TailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z w 0 (Nat.zero_le M)
+    retainedPassiveSolvedA1TargetStagedTangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z w 0 (Nat.succ_pos M) =
+      Tail⁻¹ * retainedPassiveTargetRecoveredSourceCtopAt
+          (M := M) (ρ := ρ) (κ' := κ') z w
+        - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop := by
+  simp [retainedPassiveSolvedA1TargetStagedTangentAt]
+
+set_option linter.flexible false in
+@[simp]
+theorem retainedPassiveSolvedA1TargetStagedTangentAt_succ
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) (s : Fin M) :
+    retainedPassiveSolvedA1TargetStagedTangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z w (s.val + 1)
+        (Nat.succ_lt_succ s.isLt) =
+      retainedPassiveTargetStagedA1passiveTangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z w s := by
+  simp [retainedPassiveSolvedA1TargetStagedTangentAt]
+
+set_option linter.style.longLine false in
+/-- On actual raw-order Frechet derivative targets, the target-only solved
+`A1` tangent agrees with the actual derivative of the solved `A1` coordinate. -/
+theorem retainedPassiveSolvedA1TargetStagedTangentAt_fderiv_eq_source
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    retainedPassiveSolvedA1TargetStagedTangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) m hm =
+      (fderiv ℝ
+        (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          A1fun y ⟨m, hm⟩) z) v := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+      Fin (M + 1) → Matrix ρ ρ ℝ :=
+    fun y s ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+  by_cases h0 : m = 0
+  · subst m
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tfun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A1seed
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let dTailActual := (fderiv ℝ Tfun z) v
+    let dTail :=
+      retainedPassiveA1TailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z Dzv 0 (Nat.zero_le M)
+    have hCtop :=
+      retainedPassiveTargetRecoveredSourceCtopAt_fderiv_eq_sourceCtop
+        (M := M) (ρ := ρ) (κ' := κ') hz v
+    have hTail :=
+      fderiv_retainedPassive_A1TailAfterFirst_targetStaged_apply
+        (M := M) (ρ := ρ) (κ' := κ') hz v
+    have hzero :=
+      fderiv_retainedPassive_toCoordinateData_solvedA1_zero_apply
+        (M := M) (ρ := ρ) (κ' := κ') hz v
+    change dTailActual = dTail at hTail
+    change (fderiv ℝ (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        A1fun y 0) z) v =
+      Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTailActual * Tail⁻¹ * data.Ctop at hzero
+    calc
+      retainedPassiveSolvedA1TargetStagedTangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z Dzv 0 (Nat.succ_pos M)
+          =
+        Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop := by
+          simp [retainedPassiveSolvedA1TargetStagedTangentAt, raw, Dzv, data,
+            Tail, dTail, hCtop]
+      _ =
+        Tail⁻¹ * v.2.2.2.2.1 - Tail⁻¹ * dTailActual * Tail⁻¹ * data.Ctop := by
+          rw [← hTail]
+      _ =
+        (fderiv ℝ (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+          A1fun y 0) z) v := hzero.symm
+  · let q : Fin M := ⟨m - 1, by omega⟩
+    have hidx : (⟨m, hm⟩ : Fin (M + 1)) = q.succ := by
+      ext
+      simp [q]
+      omega
+    have hA1 :=
+      retainedPassiveTargetStagedA1passiveTangentAt_fderiv_eq_source
+        (M := M) (ρ := ρ) (κ' := κ') hz v q
+    have hsucc :=
+      fderiv_retainedPassive_toCoordinateData_solvedA1_succ_apply
+        (M := M) (ρ := ρ) (κ' := κ') z v q
+    change retainedPassiveTargetStagedA1passiveTangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z Dzv q =
+      v.1 q at hA1
+    change (fderiv ℝ (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+        A1fun y q.succ) z) v = v.1 q at hsucc
+    simp [retainedPassiveSolvedA1TargetStagedTangentAt, raw, Dzv, A1fun,
+      h0, q, hA1, ← hsucc, hidx]
+
+set_option linter.style.longLine false in
+/-- Target-only recursive derivative for a suffix product of the solved `A1`
+family, indexed by the first vertex included in the suffix. -/
+def retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) : Matrix ρ ρ ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦ Matrix ρ ρ ℝ)
+    (fun n hns acc ↦
+      let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let Psucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          data.toCoordinateData.solvedA1 (Fin.last (M + 1)) p.succ p.succ.le_last
+      acc * data.toCoordinateData.solvedA1 p +
+        Psucc *
+          retainedPassiveSolvedA1TargetStagedTangentAt
+            (M := M) (ρ := ρ) (κ' := κ') z w n (Nat.lt_of_succ_le hns))
+    0
+    hm
+
+@[simp]
+theorem retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z w (M + 1) le_rfl =
+      (0 : Matrix ρ ρ ℝ) := by
+  simp [retainedPassiveSolvedA1SuffixTargetStagedFDerivAt]
+
+set_option linter.style.longLine false in
+/-- One-step unfold equation for the target-only solved-`A1` suffix
+derivative. -/
+theorem retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_step
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z w m (Nat.le_of_lt hm) =
+      let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+      let p : Fin (M + 1) := ⟨m, hm⟩
+      let Psucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          data.toCoordinateData.solvedA1 (Fin.last (M + 1)) p.succ p.succ.le_last
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') z w (m + 1) (Nat.succ_le_of_lt hm) *
+        data.toCoordinateData.solvedA1 p +
+          Psucc *
+            retainedPassiveSolvedA1TargetStagedTangentAt
+              (M := M) (ρ := ρ) (κ' := κ') z w m hm := by
+  unfold retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+  rw [Nat.decreasingInduction_succ_left]
+
+set_option linter.style.longLine false in
+/-- The solved `A1` suffix product beginning at vertex `m`. -/
+def retainedPassiveSolvedA1SuffixProductAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (m : ℕ) (hm : m ≤ M + 1) :
+    RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+  fun y ↦
+    ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+      (κ := fun _ : Fin (M + 2) ↦ ρ)
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+      (Fin.last (M + 1))
+      ⟨m, Nat.lt_succ_of_le hm⟩
+      (Fin.val_fin_le.mpr hm)
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- The Frechet derivative of any solved-`A1` suffix product agrees with the
+target-only recursive staged expression on actual raw-order derivative
+targets. -/
+theorem fderiv_retainedPassive_solvedA1_residualFactorProduct_targetStaged_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    (fderiv ℝ
+      (retainedPassiveSolvedA1SuffixProductAt
+        (M := M) (ρ := ρ) (κ' := κ') m hm) z) v =
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z ((fderiv ℝ raw z) v) m hm := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    (fderiv ℝ
+      (retainedPassiveSolvedA1SuffixProductAt
+        (M := M) (ρ := ρ) (κ' := κ') m hm) z) v =
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z Dzv m hm
+  have hbase : motive (M + 1) le_rfl := by
+    dsimp [motive]
+    rw [retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_self]
+    let Pself : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData.solvedA1
+          (Fin.last (M + 1)) (Fin.last (M + 1)) le_rfl
+    have hfun :
+        retainedPassiveSolvedA1SuffixProductAt
+            (M := M) (ρ := ρ) (κ' := κ') (M + 1) le_rfl = Pself := by
+      funext y
+      dsimp [retainedPassiveSolvedA1SuffixProductAt, Pself]
+      congr
+    rw [hfun]
+    simp [Pself]
+  have hstep : ∀ n (hns : n + 1 ≤ M + 1),
+      motive (n + 1) hns → motive n (Nat.le_of_succ_le hns) := by
+    intro n hns ih
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ →
+        Fin (M + 1) → Matrix ρ ρ ℝ :=
+      fun y s ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 s
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (A1fun y) (Fin.last (M + 1)) p.succ p.succ.le_last
+    have hactual :=
+      fderiv_retainedPassive_solvedA1_residualFactorProduct_castSucc_apply
+        (M := M) (ρ := ρ) (κ' := κ') hz v p
+    have hcur :=
+      retainedPassiveSolvedA1TargetStagedTangentAt_fderiv_eq_source
+        (M := M) (ρ := ρ) (κ' := κ') hz v n (Nat.lt_of_succ_le hns)
+    have hstaged :=
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_step
+        (M := M) (ρ := ρ) (κ' := κ') z Dzv n (Nat.lt_of_succ_le hns)
+    calc
+      (fderiv ℝ
+        (retainedPassiveSolvedA1SuffixProductAt
+          (M := M) (ρ := ρ) (κ' := κ') n (Nat.le_of_succ_le hns)) z) v
+          =
+        (fderiv ℝ Psucc z) v * data.toCoordinateData.solvedA1 p +
+          Psucc z *
+            (fderiv ℝ
+              (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                A1fun y p) z) v := by
+          simpa [retainedPassiveSolvedA1SuffixProductAt, data, p, A1fun,
+            Psucc] using hactual
+      _ =
+        retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+            (M := M) (ρ := ρ) (κ' := κ') z Dzv (n + 1) hns *
+          data.toCoordinateData.solvedA1 p +
+            Psucc z *
+              retainedPassiveSolvedA1TargetStagedTangentAt
+                (M := M) (ρ := ρ) (κ' := κ') z Dzv n
+                (Nat.lt_of_succ_le hns) := by
+          have hih :
+              (fderiv ℝ Psucc z) v =
+                retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+                  (M := M) (ρ := ρ) (κ' := κ') z Dzv (n + 1) hns := by
+            simpa [motive, retainedPassiveSolvedA1SuffixProductAt, p, A1fun,
+              Psucc] using ih
+          have hcur' :
+              retainedPassiveSolvedA1TargetStagedTangentAt
+                  (M := M) (ρ := ρ) (κ' := κ') z Dzv n
+                  (Nat.lt_of_succ_le hns) =
+                (fderiv ℝ
+                  (fun y : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ ↦
+                    A1fun y p) z) v := by
+            simpa [raw, Dzv, A1fun, p] using hcur
+          rw [hih, ← hcur']
+      _ =
+        retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') z Dzv n
+          (Nat.le_of_succ_le hns) := by
+          simpa [data, p, A1fun, Psucc] using hstaged.symm
+  simpa [motive, raw, Dzv] using
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+
+set_option linter.style.longLine false in
 /-- Target-only staged tangent for the current solved `A1` factor in the
 positive-tail lower-left recurrence. -/
 def retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
@@ -4002,6 +4335,322 @@ theorem retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sour
       retainedPassiveLowerLeftTailStepCoreAt
         (M := M + 1) (ρ := ρ) (κ' := κ') z v q dAcur dPsucc dNext := by
         simpa [raw, Dzv, r, Cfun, Cnext] using hstep
+
+set_option linter.style.longLine false in
+/-- Target-only recursive derivative for the retained-passive lower-left
+zeroed-final tail, with `Cnext`, current solved `A1`, solved-`A1` suffix, and
+successor lower-left derivative all target-staged. -/
+def retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦ Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ)
+    (fun n hns acc ↦
+      let q : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let p : Fin ((M + 1) + 1) := q.castSucc
+      let dPsucc :=
+        retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z w
+          p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w q
+        (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z w n (Nat.lt_of_succ_le hns))
+        dPsucc
+        acc)
+    0
+    hm
+
+@[simp]
+theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) :
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w (M + 1) le_rfl =
+      (0 : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ) := by
+  simp [retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt]
+
+set_option linter.style.longLine false in
+/-- One-step unfold equation for the recursive target-only lower-left tail
+derivative. -/
+theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w m (Nat.le_of_lt hm) =
+      let q : Fin (M + 1) := ⟨m, hm⟩
+      let p : Fin ((M + 1) + 1) := q.castSucc
+      let dPsucc :=
+        retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z w
+          p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w q
+        (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z w m hm)
+        dPsucc
+        (retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz w (m + 1) (Nat.succ_le_of_lt hm)) := by
+  unfold retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+  rw [Nat.decreasingInduction_succ_left]
+
+set_option linter.style.longLine false in
+/-- First-index unfold equation for the recursive target-only lower-left tail
+derivative. -/
+theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_zero
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) :
+    let q : Fin (M + 1) := 0
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let dPsucc :=
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') z w
+        p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w 0 (Nat.zero_le (M + 1)) =
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w q
+        (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+          (M := M) (ρ := ρ) (κ' := κ') z w 0 (Nat.succ_pos M))
+        dPsucc
+        (retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz w 1
+          (Nat.succ_le_succ (Nat.zero_le M))) := by
+  simpa using
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+      (M := M) (ρ := ρ) (κ' := κ') hz w 0 (Nat.succ_pos M)
+
+set_option linter.style.longLine false in
+/-- Successor-index unfold equation for the recursive target-only lower-left
+tail derivative. -/
+theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_succ
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (s : Fin M) :
+    let q : Fin (M + 1) := s.succ
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let dPsucc :=
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') z w
+        p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w (s.val + 1)
+        (Nat.le_of_lt (Nat.succ_lt_succ s.isLt)) =
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w q
+        (retainedPassiveTargetStagedA1passiveTangentAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z w s.castSucc)
+        dPsucc
+        (retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz w (s.val + 2)
+          (Nat.succ_le_of_lt (Nat.succ_lt_succ s.isLt))) := by
+  simpa [retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_succ] using
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+      (M := M) (ρ := ρ) (κ' := κ') hz w (s.val + 1)
+      (Nat.succ_lt_succ s.isLt)
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- On actual raw-order Frechet derivative targets, the recursive target-only
+lower-left expression agrees with the existing source-staged recursion. -/
+theorem retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_fderiv_eq_sourceStaged
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) m hm =
+      retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z v m hm := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv m hm =
+      retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z v m hm
+  have hbase : motive (M + 1) le_rfl := by
+    dsimp [motive]
+    simp
+  have hstep : ∀ n (hns : n + 1 ≤ M + 1),
+      motive (n + 1) hns → motive n (Nat.le_of_succ_le hns) := by
+    intro n hns ih
+    let q : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+    let p : Fin ((M + 1) + 1) := q.castSucc
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y t ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 t
+    let Psucc : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+    let hpSucc : p.succ.val ≤ (M + 1) + 1 := Fin.val_fin_le.mp p.succ.le_last
+    let dAcur :=
+      retainedPassiveLowerLeftTailCurrentTargetSolvedA1TangentAt
+        (M := M) (ρ := ρ) (κ' := κ') z v n (Nat.lt_of_succ_le hns)
+    let dPsucc := (fderiv ℝ Psucc z) v
+    let dNext :=
+      retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z v (n + 1) hns
+    let targetPsucc :=
+      retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') z Dzv p.succ.val hpSucc
+    let targetNext :=
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv (n + 1) hns
+    have htargetStep :=
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv n (Nat.lt_of_succ_le hns)
+    have hsourceStep :=
+      retainedPassiveLowerLeftProductTailTargetStagedFDerivAt_step
+        (M := M) (ρ := ρ) (κ' := κ') z v n (Nat.lt_of_succ_le hns)
+    have hAcur :=
+      retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt_fderiv_eq_source
+        (M := M) (ρ := ρ) (κ' := κ') hz v n (Nat.lt_of_succ_le hns)
+    have hPsuccBridge :=
+      fderiv_retainedPassive_solvedA1_residualFactorProduct_targetStaged_apply
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz v p.succ.val hpSucc
+    have hPsucc :
+        targetPsucc = dPsucc := by
+      simpa [retainedPassiveSolvedA1SuffixProductAt, raw, Dzv, A1fun, Psucc,
+        dPsucc, targetPsucc, hpSucc] using hPsuccBridge.symm
+    have hNext : targetNext = dNext := by
+      simpa [targetNext, dNext] using ih
+    have hcore :=
+      retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt_fderiv_eq_sourceStepCore
+        (M := M) (ρ := ρ) (κ' := κ') hz v q dAcur dPsucc dNext
+    calc
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv n (Nat.le_of_succ_le hns)
+          =
+        retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv q
+          (retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt
+            (M := M) (ρ := ρ) (κ' := κ') z Dzv n (Nat.lt_of_succ_le hns))
+          targetPsucc
+          targetNext := by
+          simpa [motive, raw, Dzv, q, p, A1fun, Psucc, hpSucc, dAcur, dPsucc,
+            dNext, targetPsucc, targetNext] using htargetStep
+      _ =
+        retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt
+          (M := M) (ρ := ρ) (κ' := κ') hz Dzv q dAcur dPsucc dNext := by
+          rw [hAcur, hPsucc, hNext]
+      _ =
+        retainedPassiveLowerLeftTailStepCoreAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z v q dAcur dPsucc dNext := by
+          simpa [raw, Dzv, dAcur, dPsucc, dNext] using hcore
+      _ =
+        retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') z v n (Nat.le_of_succ_le hns) := by
+          simpa [q, p, A1fun, Psucc, dAcur, dPsucc, dNext] using hsourceStep.symm
+  simpa [motive, raw, Dzv] using
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- The Frechet derivative of the retained-passive zeroed-final lower-left
+tail is the recursive target-only staged expression on the determinant chart. -/
+theorem fderiv_retainedPassiveLowerLeftProductTailSum_targetOnly_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y t ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 t
+    let A3fun :
+        RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+          ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+    let Cfun :
+        RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+          ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) (κ' t.castSucc) ℝ :=
+      fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+    let Tailfun :
+        RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+          Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y) (A3fun y) (Cfun y) m (hm.trans (Nat.le_succ (M + 1)))
+    (fderiv ℝ Tailfun z) v =
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v) m hm := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Dzv := (fderiv ℝ raw z) v
+  have hsource :=
+    fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+      (M := M) (ρ := ρ) (κ' := κ') hz v m hm
+  have htarget :=
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_fderiv_eq_sourceStaged
+      (M := M) (ρ := ρ) (κ' := κ') hz v m hm
+  calc
+    (let A1fun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+          Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+        fun y t ↦
+          ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 t
+      let A3fun :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+            ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) ρ ℝ :=
+        fun y ↦
+          ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+      let Cfun :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+            ∀ t : Fin ((M + 1) + 1), Matrix (κ' t.succ) (κ' t.castSucc) ℝ :=
+        fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+      let Tailfun :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+            Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+        fun y ↦
+          ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+            (K := ℝ) (ρ := ρ) (κ := κ')
+            (A1fun y) (A3fun y) (Cfun y) m (hm.trans (Nat.le_succ (M + 1)))
+      (fderiv ℝ Tailfun z) v)
+        =
+      retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') z v m hm := by
+        simpa [raw] using hsource
+    _ =
+      retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv m hm := by
+        simpa [raw, Dzv] using htarget.symm
 
 set_option linter.style.longLine false in
 /-- In the single-edge case, the tail derivative term in the source-staged

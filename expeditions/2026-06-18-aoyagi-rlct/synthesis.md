@@ -48,6 +48,78 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Recursive Target-Only Lower-Left Tail
+
+`RetainedPassiveCoordinates.lean` now records the pure positive-suffix algebra
+lemma:
+
+```text
+retainedPassiveSolvedA1_residualFactorProduct_eq_A1seed_of_pos
+```
+
+Positive suffix products of the solved retained-passive `A1` family agree with
+the original passive seed suffix; the theorem is explicitly scoped by
+`1 <= m`.
+
+`RetainedPassiveCoordinatesJacobian.lean` now target-stages solved-`A1` suffix
+derivatives and the retained-passive zeroed-final lower-left derivative:
+
+```text
+retainedPassiveSolvedA1TargetStagedTangentAt
+retainedPassiveSolvedA1TargetStagedTangentAt_zero
+retainedPassiveSolvedA1TargetStagedTangentAt_succ
+retainedPassiveSolvedA1TargetStagedTangentAt_fderiv_eq_source
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_self
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_step
+retainedPassiveSolvedA1SuffixProductAt
+fderiv_retainedPassive_solvedA1_residualFactorProduct_targetStaged_apply
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_succ
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_fderiv_eq_sourceStaged
+fderiv_retainedPassiveLowerLeftProductTailSum_targetOnly_apply
+```
+
+The solved-`A1` suffix derivative covers the whole solved family, including the
+terminal factor.  The lower-left target-only recursion has base `D#_{M+1}=0`
+and step
+
+```text
+StepWithCnext(q, dAcur#, dPsucc#, D#_{n+1}),
+```
+
+where `dAcur#` is the target-only current solved-`A1` tangent, `dPsucc#` is the
+solved-`A1` suffix derivative beginning at `p.succ.val`, and the `Cnext`
+component is the prior target-staged stored-`C` suffix beginning at `r.succ`.
+On actual raw-order derivative targets, Lean proves this target-only recursion
+equals the existing source-staged recursion, and then proves it is the Frechet
+derivative of the zeroed-final lower-left tail.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-recursive-target-only-lower-left-tail.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-recursive-target-only-lower-left-tail.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-target-only-lower-left-tail.md`,
+PASS by xhigh `Meitner the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed; full
+`DLNFibre` build passed with only pre-existing warning noise; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched Lean and note files was clean; direct axiom audits for
+the five new proof theorems reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a determinant-one target normalizer, determinant equality,
+source-prior transport, inverse-density pushforward, normal crossings, pole
+order, or RLCT.  The next target is the target-side normalizer/shear package
+and determinant control using the now-target-staged `Ctop`, `F3`, `A1`, `Cnext`,
+and lower-left pieces.
+
 ## Latest A2 Target-Staged Stored-C Suffix
 
 `RetainedPassiveCoordinatesJacobian.lean` now target-stages the Frechet

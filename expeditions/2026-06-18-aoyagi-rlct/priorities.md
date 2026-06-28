@@ -21,6 +21,54 @@ on the session's original cwd.
 
 ## Latest controller decision - 2026-06-27
 
+The target-normalizer frontier now has the full recursive target-only
+lower-left derivative for the retained-passive zeroed-final tail.  New Lean
+names:
+
+```text
+retainedPassiveSolvedA1_residualFactorProduct_eq_A1seed_of_pos
+retainedPassiveSolvedA1TargetStagedTangentAt
+retainedPassiveSolvedA1TargetStagedTangentAt_zero
+retainedPassiveSolvedA1TargetStagedTangentAt_succ
+retainedPassiveSolvedA1TargetStagedTangentAt_fderiv_eq_source
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_self
+retainedPassiveSolvedA1SuffixTargetStagedFDerivAt_step
+retainedPassiveSolvedA1SuffixProductAt
+fderiv_retainedPassive_solvedA1_residualFactorProduct_targetStaged_apply
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_self
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_step
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_zero
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_succ
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt_fderiv_eq_sourceStaged
+fderiv_retainedPassiveLowerLeftProductTailSum_targetOnly_apply
+```
+
+The solved-`A1` suffix derivative is target-staged for the whole solved family,
+including the terminal factor.  The lower-left recursion has base
+`D#_{M+1}=0` and step through
+`retainedPassiveLowerLeftTailTargetOnlyStepCoreWithCnextAt`, with current
+solved-`A1`, `Cnext`, solved-`A1` suffix `dPsucc`, and successor lower-left
+derivative all target-staged.  The `dPsucc` suffix begins at `p.succ.val`; the
+`Cnext` input remains the prior `r.succ` suffix specialization.
+
+Focused `RetainedPassiveCoordinatesJacobian` build passed, full `DLNFibre`
+build passed with only pre-existing warning noise, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Meitner the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-retained-passive-recursive-target-only-lower-left-tail.md`.
+
+This does not construct the determinant-one target normalizer, prove
+determinant equality, source-prior transport, inverse-density pushforward,
+normal crossings, pole order, or RLCT.
+
+Next frontier: assemble the target-side normalizer/shear package and determinant
+control from the target-staged `Ctop`, `F3`, current/suffix `A1`, `Cnext`, and
+lower-left pieces.
+
+Previous controller decision:
+
 The target-normalizer frontier now has the stored-`C` suffix derivative
 target-staged, including the positive-tail `Cnext` slot in the lower-left
 one-step core.  New Lean names:

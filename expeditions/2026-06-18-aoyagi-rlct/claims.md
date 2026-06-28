@@ -141,7 +141,16 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  retained-passive lower-left derivative frontier now has a target-only
+  retained-passive lower-left derivative frontier now has a full recursive
+  target-only derivative for the zeroed-final lower-left tail.  It target-stages
+  the current solved-`A1`, stored-`C`/`Cnext`, solved-`A1` suffix `dPsucc`
+  beginning at `p.succ.val`, and successor lower-left terms, proves equality
+  with the existing source-staged recursion on actual raw-order derivative
+  targets, and proves the resulting Frechet derivative formula.  The same layer
+  also has a solved-`A1` suffix derivative API covering the terminal solved
+  factor and a positive-suffix algebra lemma relating solved suffixes to passive
+  seed suffixes when `1 <= m`; the
+  retained-passive lower-left derivative frontier also has a target-only
   stored-`C` suffix derivative and positive-tail `Cnext` specialization, plus
   a wrapper that feeds this staged `dCnext` into the one-step lower-left target
   core while still keeping `dAcur`, `dPsucc`, and `dNext` explicit; the
