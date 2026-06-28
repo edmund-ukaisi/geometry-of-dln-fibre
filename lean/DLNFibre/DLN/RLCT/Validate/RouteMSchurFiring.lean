@@ -577,7 +577,8 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
   --   → carve `z` = (M22 ⊕ rest) via a generic `zE_G : (Fin N → ℝ) ≃ᵐ
   --       ((Fin (r-1) × Fin (r-1) → ℝ) × (Fin (2(r-1)) → ℝ))` with readback `Sc = M22 − Sh(rest)`
   --       (the HARDEST sub-step — the M22/M21/M12 index bijection + the Schur-formula readback)
-  --   → pointwise N2b/split (`schur_minorPivot_split` j=1) + top-row shear
+  --   → pointwise N2b/split (`schur_minorPivot_split` j=1 — the TWO-SIDED uniform-constant comparison
+  --       `c₀(frobSq row0 + frobSq(Sc·S_bot)) ≤ frobSq(R·S) ≤ c₁(…)`, NOT a constant-1 bound) + top-row shear
   --   → Tonelli + a.e. Morse peel over the FREE `(M22, S_bot)` joint core (`radial_morse_residual_power_le`,
   --       a.e.-positive by the nonzero-`MvPolynomial` argument — peel AFTER carving so positivity is clean)
   --   → `schurResidG_translate_lt_top` per fixed `rest` at exponent `c' − 2` and residual radius
