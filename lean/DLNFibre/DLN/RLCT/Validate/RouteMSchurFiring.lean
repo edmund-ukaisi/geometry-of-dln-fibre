@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurGenCover
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
+import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchurFiring` — the generic per-corank `SchurRecStep` firing (SKELETON)
@@ -450,6 +451,183 @@ theorem core_T_peel_le_ae_G {m : ℕ} {Ω : Type*} [MeasurableSpace Ω] (μ : Me
           * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
         rw [lintegral_const_mul']
         exact ENNReal.ofReal_ne_top
+
+/-! ### Generic a.e.-positivity of the determinantal core (the peel's `w > 0`)
+
+`∀ᵐ (Δ, S), 0 < frobSq (Δ·S)` for `Δ : Fin m → Fin n → ℝ`, `S : Fin n → Fin q → ℝ` (`m,n,q ≥ 1`).
+Generic analog of `RouteMSchurCorank3.frobSqR2c3_ne_zero_ae`. The single-entry route: the `(0,0)` product
+entry `(Δ·S)₀₀ = ∑ₖ Δ₀ₖ·Sₖ₀` is a NONZERO `MvPolynomial` (witness `Δ = S = E₀₀` gives `1`), so its zero
+set is Lebesgue-null (`MvPolynomial.ae_eval_ne_zero`); off it `frobSq (Δ·S) ≥ ((Δ·S)₀₀)² > 0`. Avoids the
+full-`frobSq` polynomial (the single entry suffices). -/
+
+/-- A general matrix-space flatten `(Fin a → Fin b → ℝ) ≃ᵐ (Fin (a * b) → ℝ)` (local copy of
+`RouteMSchurCorank3.matToFlatEquivc3`). -/
+noncomputable def matToFlatAB (a b : ℕ) : (Fin a → Fin b → ℝ) ≃ᵐ (Fin (a * b) → ℝ) :=
+  (MeasurableEquiv.piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ)).symm.trans
+    (MeasurableEquiv.arrowCongr'
+      ((Equiv.sigmaEquivProd (Fin a) (Fin b)).trans finProdFinEquiv) (MeasurableEquiv.refl ℝ))
+
+theorem measurePreserving_matToFlatAB (a b : ℕ) :
+    MeasurePreserving (matToFlatAB a b)
+      (volume : Measure (Fin a → Fin b → ℝ)) (volume : Measure (Fin (a * b) → ℝ)) := by
+  unfold matToFlatAB
+  refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+    ((Equiv.sigmaEquivProd (Fin a) (Fin b)).trans finProdFinEquiv)
+    (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+  exact (measurePreserving_piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ)
+    (fun _ _ => (volume : Measure ℝ))).symm
+    (MeasurableEquiv.piCurry (fun (_ : Fin a) (_ : Fin b) => ℝ))
+
+/-- The combine `(Fin (m*n) → ℝ) × (Fin (n*q) → ℝ) ≃ᵐ (Fin (m*n + n*q) → ℝ)` (generic analog of
+`combine48c3`). -/
+noncomputable def combineMNQ (m n q : ℕ) :
+    ((Fin (m * n) → ℝ) × (Fin (n * q) → ℝ)) ≃ᵐ (Fin (m * n + n * q) → ℝ) :=
+  (MeasurableEquiv.sumPiEquivProdPi (fun _ : Fin (m * n) ⊕ Fin (n * q) => ℝ)).symm.trans
+    (MeasurableEquiv.piCongrLeft (fun _ : Fin (m * n + n * q) => ℝ)
+      (finSumFinEquiv : Fin (m * n) ⊕ Fin (n * q) ≃ Fin (m * n + n * q)))
+
+theorem measurePreserving_combineMNQ (m n q : ℕ) :
+    MeasurePreserving (combineMNQ m n q)
+      (volume : Measure ((Fin (m * n) → ℝ) × (Fin (n * q) → ℝ)))
+      (volume : Measure (Fin (m * n + n * q) → ℝ)) := by
+  unfold combineMNQ
+  exact (volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin (m * n) ⊕ Fin (n * q) => ℝ)).trans
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin (m * n + n * q) => ℝ)
+      (finSumFinEquiv : Fin (m * n) ⊕ Fin (n * q) ≃ Fin (m * n + n * q)))
+
+/-- The combined flatten `(Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ) ≃ᵐ (Fin (m*n + n*q) → ℝ)`
+(Δ-block ⊕ S-block), MP for the product volume. Generic analog of `RouteMSchurCorank3.flatR2c3`'s combine. -/
+noncomputable def genFlatPair (m n q : ℕ) :
+    ((Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ)) ≃ᵐ (Fin (m * n + n * q) → ℝ) :=
+  ((matToFlatAB m n).prodCongr (matToFlatAB n q)).trans (combineMNQ m n q)
+
+theorem measurePreserving_genFlatPair (m n q : ℕ) :
+    MeasurePreserving (genFlatPair m n q)
+      (volume : Measure ((Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ)))
+      (volume : Measure (Fin (m * n + n * q) → ℝ)) := by
+  have hpp : MeasurePreserving ((matToFlatAB m n).prodCongr (matToFlatAB n q))
+      (volume : Measure ((Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ)))
+      (volume : Measure ((Fin (m * n) → ℝ) × (Fin (n * q) → ℝ))) := by
+    rw [show (volume : Measure ((Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ))) = volume.prod volume
+      from rfl, show (volume : Measure ((Fin (m * n) → ℝ) × (Fin (n * q) → ℝ))) = volume.prod volume
+      from rfl]
+    exact (measurePreserving_matToFlatAB m n).prod (measurePreserving_matToFlatAB n q)
+  exact hpp.trans (measurePreserving_combineMNQ m n q)
+
+/-- The flat index of the `Δ`-cell `(a,b)`: `inl`-block, reindexed by `finProdFinEquiv`. -/
+noncomputable def idxΔG (m n q : ℕ) (a : Fin m) (b : Fin n) : Fin (m * n + n * q) :=
+  finSumFinEquiv (Sum.inl (finProdFinEquiv (a, b)))
+
+/-- The flat index of the `S`-cell `(a,b)`: `inr`-block, reindexed by `finProdFinEquiv`. -/
+noncomputable def idxSG (m n q : ℕ) (a : Fin n) (b : Fin q) : Fin (m * n + n * q) :=
+  finSumFinEquiv (Sum.inr (finProdFinEquiv (a, b)))
+
+/-- The combine read-back (inl): `combineMNQ m n q (yΔ, yS) (idxΔG m n q a b) = yΔ (finProdFinEquiv (a,b))`. -/
+theorem combineMNQ_idxΔ (m n q : ℕ) (yΔ : Fin (m * n) → ℝ) (yS : Fin (n * q) → ℝ)
+    (a : Fin m) (b : Fin n) :
+    combineMNQ m n q (yΔ, yS) (idxΔG m n q a b) = yΔ (finProdFinEquiv (a, b)) := by
+  unfold combineMNQ idxΔG
+  rw [MeasurableEquiv.trans_apply, MeasurableEquiv.coe_piCongrLeft]
+  rw [MeasurableEquiv.symm, MeasurableEquiv.coe_mk]
+  exact Equiv.piCongrLeft_sumInl (fun _ : Fin (m * n + n * q) => ℝ) finSumFinEquiv yΔ yS
+    (finProdFinEquiv (a, b))
+
+/-- The combine read-back (inr): `combineMNQ m n q (yΔ, yS) (idxSG m n q a b) = yS (finProdFinEquiv (a,b))`. -/
+theorem combineMNQ_idxS (m n q : ℕ) (yΔ : Fin (m * n) → ℝ) (yS : Fin (n * q) → ℝ)
+    (a : Fin n) (b : Fin q) :
+    combineMNQ m n q (yΔ, yS) (idxSG m n q a b) = yS (finProdFinEquiv (a, b)) := by
+  unfold combineMNQ idxSG
+  rw [MeasurableEquiv.trans_apply, MeasurableEquiv.coe_piCongrLeft]
+  rw [MeasurableEquiv.symm, MeasurableEquiv.coe_mk]
+  exact Equiv.piCongrLeft_sumInr (fun _ : Fin (m * n + n * q) => ℝ) finSumFinEquiv yΔ yS
+    (finProdFinEquiv (a, b))
+
+/-- The flatten forward at a `finProdFinEquiv`-encoded index reads the matrix cell:
+`matToFlatAB a b M (finProdFinEquiv (i,j)) = M i j`. -/
+theorem matToFlatAB_apply_finProd (a b : ℕ) (M : Fin a → Fin b → ℝ) (i : Fin a) (j : Fin b) :
+    matToFlatAB a b M (finProdFinEquiv (i, j)) = M i j := by
+  show M (((Equiv.sigmaEquivProd (Fin a) (Fin b)).trans finProdFinEquiv).symm
+    (finProdFinEquiv (i, j))).1 (((Equiv.sigmaEquivProd (Fin a) (Fin b)).trans finProdFinEquiv).symm
+    (finProdFinEquiv (i, j))).2 = M i j
+  have hidx : ((Equiv.sigmaEquivProd (Fin a) (Fin b)).trans finProdFinEquiv).symm
+      (finProdFinEquiv (i, j)) = ⟨i, j⟩ := by
+    rw [Equiv.symm_trans_apply, Equiv.symm_apply_apply]
+    rfl
+  rw [hidx]
+
+/-- Forward read-back of the `Δ`-block: `genFlatPair m n q p (idxΔG m n q a b) = p.1 a b`. -/
+theorem genFlatPair_idxΔ (m n q : ℕ) (p : (Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ))
+    (a : Fin m) (b : Fin n) : genFlatPair m n q p (idxΔG m n q a b) = p.1 a b := by
+  show combineMNQ m n q (matToFlatAB m n p.1, matToFlatAB n q p.2) (idxΔG m n q a b) = p.1 a b
+  rw [combineMNQ_idxΔ, matToFlatAB_apply_finProd]
+
+/-- Forward read-back of the `S`-block: `genFlatPair m n q p (idxSG m n q a b) = p.2 a b`. -/
+theorem genFlatPair_idxS (m n q : ℕ) (p : (Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ))
+    (a : Fin n) (b : Fin q) : genFlatPair m n q p (idxSG m n q a b) = p.2 a b := by
+  show combineMNQ m n q (matToFlatAB m n p.1, matToFlatAB n q p.2) (idxSG m n q a b) = p.2 a b
+  rw [combineMNQ_idxS, matToFlatAB_apply_finProd]
+
+open MvPolynomial in
+/-- The single product-entry `(Δ·S)₀₀ = ∑ₖ Δ₀ₖ·Sₖ₀` as an `MvPolynomial` in the flat joint coordinates. -/
+noncomputable def entryPolyG (m n q : ℕ) (h0m : 0 < m) (h0q : 0 < q) : MvPolynomial (Fin (m * n + n * q)) ℝ :=
+  ∑ k : Fin n, (X (idxΔG m n q ⟨0, h0m⟩ k)) * (X (idxSG m n q k ⟨0, h0q⟩))
+
+open MvPolynomial in
+/-- `eval (genFlatPair p) entryPolyG = (Δ·S)₀₀ = (rmatMul p.1 p.2) ⟨0,_⟩ ⟨0,_⟩`. -/
+theorem eval_entryPolyG (m n q : ℕ) (h0m : 0 < m) (h0n : 0 < n) (h0q : 0 < q)
+    (p : (Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ)) :
+    MvPolynomial.eval (genFlatPair m n q p) (entryPolyG m n q h0m h0q)
+      = (rmatMul p.1 p.2) ⟨0, h0m⟩ ⟨0, h0q⟩ := by
+  unfold entryPolyG rmatMul
+  rw [map_sum]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  rw [map_mul, MvPolynomial.eval_X, MvPolynomial.eval_X,
+    genFlatPair_idxΔ, genFlatPair_idxS]
+
+open MvPolynomial in
+/-- `entryPolyG ≠ 0` (witness `Δ = E₀₀`, `S = E₀₀` gives `(Δ·S)₀₀ = 1`). -/
+theorem entryPolyG_ne_zero (m n q : ℕ) (h0m : 0 < m) (h0n : 0 < n) (h0q : 0 < q) :
+    entryPolyG m n q h0m h0q ≠ 0 := by
+  intro h0
+  -- witness: Δ = E₀₀ (single (0,0)), S = E₀₀; eval = ∑_k Δ₀ₖ·Sₖ₀ = Δ₀₀·S₀₀ = 1
+  set Δ : Fin m → Fin n → ℝ := fun i j => if i = ⟨0, h0m⟩ ∧ j = ⟨0, h0n⟩ then 1 else 0 with hΔ
+  set S : Fin n → Fin q → ℝ := fun i j => if i = ⟨0, h0n⟩ ∧ j = ⟨0, h0q⟩ then 1 else 0 with hS
+  have hval : MvPolynomial.eval (genFlatPair m n q (Δ, S)) (entryPolyG m n q h0m h0q) = 1 := by
+    rw [eval_entryPolyG m n q h0m h0n h0q]
+    unfold rmatMul
+    rw [Finset.sum_eq_single (⟨0, h0n⟩ : Fin n)]
+    · rw [hΔ, hS]; simp
+    · intro k _ hk; rw [hS]; simp [hk]
+    · intro h; exact absurd (Finset.mem_univ _) h
+  rw [h0] at hval; simp at hval
+
+/-- **Generic a.e.-positivity of the determinantal core.** `∀ᵐ (Δ,S), 0 < frobSq (Δ·S)` for
+`Δ : Fin m → Fin n → ℝ`, `S : Fin n → Fin q → ℝ` with `m,n,q ≥ 1`. -/
+theorem frobSqG_ne_zero_ae (m n q : ℕ) (hm : 0 < m) (hn : 0 < n) (hq : 0 < q) :
+    ∀ᵐ p : (Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ) ∂(volume),
+      0 < frobSq (rmatMul p.1 p.2) := by
+  have hae : ∀ᵐ x : Fin (m * n + n * q) → ℝ,
+      MvPolynomial.eval x (entryPolyG m n q hm hq) ≠ 0 :=
+    MvPolynomial.ae_eval_ne_zero (entryPolyG m n q hm hq) (entryPolyG_ne_zero m n q hm hn hq)
+  have hmeasSet : MeasurableSet {x : Fin (m * n + n * q) → ℝ |
+      MvPolynomial.eval x (entryPolyG m n q hm hq) ≠ 0} :=
+    (MvPolynomial.measurableSet_zeroSet (entryPolyG m n q hm hq)).compl.congr (by ext x; simp)
+  have hpull : ∀ᵐ p : (Fin m → Fin n → ℝ) × (Fin n → Fin q → ℝ) ∂(volume),
+      MvPolynomial.eval (genFlatPair m n q p) (entryPolyG m n q hm hq) ≠ 0 := by
+    rw [← (measurePreserving_genFlatPair m n q).map_eq] at hae
+    exact (ae_map_iff (measurePreserving_genFlatPair m n q).measurable.aemeasurable hmeasSet).1 hae
+  refine hpull.mono (fun p hp => ?_)
+  rw [eval_entryPolyG m n q hm hn hq] at hp
+  -- `frobSq ≥ ((Δ·S)₀₀)² > 0`
+  have hsq : 0 < ((rmatMul p.1 p.2) ⟨0, hm⟩ ⟨0, hq⟩) ^ 2 := by positivity
+  refine lt_of_lt_of_le hsq ?_
+  unfold frobSq
+  calc ((rmatMul p.1 p.2) ⟨0, hm⟩ ⟨0, hq⟩) ^ 2
+      ≤ ∑ j, ((rmatMul p.1 p.2) ⟨0, hm⟩ j) ^ 2 :=
+        Finset.single_le_sum (fun j _ => sq_nonneg _) (Finset.mem_univ (⟨0, hq⟩ : Fin q))
+    _ ≤ ∑ i, ∑ j, ((rmatMul p.1 p.2) i j) ^ 2 :=
+        Finset.single_le_sum (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _))
+          (Finset.mem_univ (⟨0, hm⟩ : Fin m))
 
 /-- **Matrix-box translate-enlarge (generic `(r−1)×(r−1)`).** `∫_{Δ∈matBox m m K} f(Δ + Sh) ≤
 ∫_{Δ'∈matBox m m Kg} f Δ'` when `(·+Sh)''(matBox m m K) ⊆ matBox m m Kg`. Measure-preserving matrix-space
