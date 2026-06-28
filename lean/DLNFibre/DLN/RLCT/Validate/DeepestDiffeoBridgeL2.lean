@@ -2272,6 +2272,42 @@ theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r :
     readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
     coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
 
+/-! ### S6d — the raw 2-factor product reg-block invariance (the e2/leak-kill at the RAW level)
+
+For a 2-factor reindexed product `reindex(G0·G1)` (the L=2 raw layer product), the `{11,12,21}` blocks
+read (via `reindex_mul_fromBlocks`) off `G0`'s blocks and `G1`'s blocks: `{11} = G0₁₁·G1₁₁ + G0₁₂·G1₂₁`,
+`{21} = G0₂₁·G1₁₁ + G0₂₂·G1₂₁` (both read only `G1`'s `{11},{21}`), and `{12} = G0₁₁·G1₁₂ + G0₁₂·G1₂₂`
+(the `A0·Y1' + Y0·T1'` combination — fixed by `e2_regPreserve`). So two last-layers `G1ψ`/`G1q` whose
+reindexed `{11},{21}` agree and whose `{12}/{22}` satisfy the e2 relation give products agreeing on
+`{11,12,21}`. This is the RAW-level E2/leak-kill (`framed_regBlocks_eq_of_mid` then carries it through the
+endpoint frames). -/
+
+/-- **Raw 2-factor product `{11,12,21}` invariance under an e2-preserving last-layer move.** Sharing the
+first factor `G0`, if the reindexed last factors agree on `{11}` and `{21}`, and their `{12}/{22}` satisfy
+the e2 combination `G0₁₁·G1ψ₁₂ + G0₁₂·G1ψ₂₂ = G0₁₁·G1q₁₂ + G0₁₂·G1q₂₂`, then `reindex(G0·G1ψ)` and
+`reindex(G0·G1q)` agree on `{11,12,21}`. -/
+theorem reindex_prod_regBlocks_eq_of_e2 {a b c r : ℕ}
+    (eR : Fin a ≃ Fin r ⊕ Fin (a - r)) (eMid : Fin c ≃ Fin r ⊕ Fin (c - r))
+    (eC : Fin b ≃ Fin r ⊕ Fin (b - r))
+    (G0 G1ψ G1q : Matrix (Fin a) (Fin c) ℝ) (G1ψ' G1q' : Matrix (Fin c) (Fin b) ℝ)
+    (h11G : (Matrix.reindex eMid eC G1ψ').toBlocks₁₁ = (Matrix.reindex eMid eC G1q').toBlocks₁₁)
+    (h21G : (Matrix.reindex eMid eC G1ψ').toBlocks₂₁ = (Matrix.reindex eMid eC G1q').toBlocks₂₁)
+    (he2 : (Matrix.reindex eR eMid G0).toBlocks₁₁ * (Matrix.reindex eMid eC G1ψ').toBlocks₁₂
+          + (Matrix.reindex eR eMid G0).toBlocks₁₂ * (Matrix.reindex eMid eC G1ψ').toBlocks₂₂
+        = (Matrix.reindex eR eMid G0).toBlocks₁₁ * (Matrix.reindex eMid eC G1q').toBlocks₁₂
+          + (Matrix.reindex eR eMid G0).toBlocks₁₂ * (Matrix.reindex eMid eC G1q').toBlocks₂₂) :
+    ((Matrix.reindex eR eC (G0 * G1ψ')).toBlocks₁₁ = (Matrix.reindex eR eC (G0 * G1q')).toBlocks₁₁)
+      ∧ ((Matrix.reindex eR eC (G0 * G1ψ')).toBlocks₁₂ = (Matrix.reindex eR eC (G0 * G1q')).toBlocks₁₂)
+      ∧ ((Matrix.reindex eR eC (G0 * G1ψ')).toBlocks₂₁
+          = (Matrix.reindex eR eC (G0 * G1q')).toBlocks₂₁) := by
+  rw [reindex_mul_fromBlocks eR eMid eC G0 G1ψ', reindex_mul_fromBlocks eR eMid eC G0 G1q']
+  rw [Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₁]
+  refine ⟨?_, ?_, ?_⟩
+  · rw [h11G, h21G]
+  · rw [he2]
+  · rw [h11G, h21G]
+
 /-! ### S6e — the frame-block fact (block-lower P · M · block-upper Q reads {11,12,21} off M's)
 
 The reg-counterpart to `schur_frame_transform`: for `P = fromBlocks a 0 c D_P` (block-LOWER) and
