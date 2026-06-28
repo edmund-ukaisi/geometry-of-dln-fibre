@@ -19,6 +19,31 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint-transport source-family residual square-sum
+
+The endpoint-transported explicit Case 2 source-family chart now has a
+fixed-base residual-square-sum readout:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+This theorem applies the endpoint-transport source-family pre-measure wrapper
+to obtain the source-readback selected-entry matrix identity and then uses the
+generic fixed-base residual-square-sum bridge.  It is a two-edge (`M = 1`)
+Case 2 leaf result.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+Xhigh read-only review by `Einstein` passed at
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+
+This does not construct endpoint equivalences, prove source-chart
+measurability, compare source priors or Jacobians, prove positivity,
+integrability, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint-transport source-family pre-measure inputs
 
 The two-edge Case 2 endpoint-transport source-family wrapper is now proved in

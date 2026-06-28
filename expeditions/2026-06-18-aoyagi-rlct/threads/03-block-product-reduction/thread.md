@@ -13992,3 +13992,36 @@ Case2-free.  It still does not construct the endpoint equivalences, prove
 standalone endpoint transport of `edgeMatrix` or `sourceReadback`, compare
 source priors or Jacobians, prove positivity/integrability, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 endpoint-transport source-edge-family residual square-sum
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+Review:
+`review-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`,
+PASS by xhigh read-only reviewer `Einstein`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+For the source chart built from the endpoint-transported explicit Case 2
+retained-passive datum, the fixed-base residual-block coordinate square-sum is
+the successor selected-entry center residual.  The proof composes the
+endpoint-transport source-family pre-measure wrapper with the generic
+source-readback-to-residual-square-sum bridge.
+
+This is still finite residual readout plumbing.  It does not construct endpoint
+equivalences, prove source-chart measurability, compare source priors or
+Jacobians, prove positivity/integrability, normal crossings, pole order, or
+RLCT.

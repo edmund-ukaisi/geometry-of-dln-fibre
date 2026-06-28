@@ -48,6 +48,42 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Endpoint-Transport Source-Family Residual Square-Sum
+
+The two-edge Case 2 endpoint-transport source chart now exposes its fixed-base
+residual-square-sum readout:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_residual_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+The proof uses the endpoint-transport source-family pre-measure wrapper to get
+the source-readback selected-entry matrix identity for
+
+```text
+sourceChart yNext =
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+    W₂ B₂ U₀ hU₀
+    ((case2PostPivotSelectedEntryRetainedPassiveData ... yNext eNext)
+      .endpointTransport e),
+```
+
+then applies the generic residual-square-sum bridge at `M = 1`.  Focused build
+of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with
+the existing imported warning profile.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-source-edge-family-residual-square-sum.md`,
+PASS by xhigh `Einstein`.
+
+This theorem does not construct endpoint equivalences, prove source-chart
+measurability, compare source priors or Jacobians, prove positivity,
+integrability, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Endpoint-Transport Source-Family Pre-Measure Inputs
 
 The endpoint-transported explicit Case 2 retained-passive datum now feeds the
