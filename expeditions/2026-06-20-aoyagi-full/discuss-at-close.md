@@ -1248,3 +1248,17 @@ paper-proves-it" in principle, but each is a multi-tide research effort, not a b
 hfin ∀r + the gated R1-UPPER headline + (once S6 lands) the full L2 bridge + D1, i.e. the **L=2 / `(r,r,4)`-and-anchor-family
 headline** — and roadmap the four gates; (iii) a scoped middle. NO bounded work is deferred: everything bounded is
 done/in-flight. This item is the four-research-gate scope decision — the central call awaiting the operator's return.
+
+**UPDATE (2026-06-28, post-adjudications) — one gate DOWNGRADED + the dev-merge clarified:**
+- **Gate #2 (∀p hfin) DOWNGRADED to BOUNDED.** genm-assemble's STEP-0 + decorrelated Codex (converged) resolved it:
+  `½·minAdm(r,r,p) = min(cap A: ½·minAdm(r−1,r−1,p)+p/2 [the existing carve, p-invariant, lifts verbatim], cap B: r²/2
+  [the {Δ=0} stratum = a NORMAL CROSSING of r² linear forms, S full-rank])`. The binding stratum `t*=r−p/2` moves; cap A
+  binds at p<2r, cap B at p≥2r (p=4 hid cap B because the pivot-fixing chart excludes {Δ=0}). The ONLY new content = one
+  `{Δ=0}` normal-crossing chart (MEDIUM, NOT a wall); cleared to build (gated on the cap-B design diff-gate). So the
+  research-scale gates are now **THREE**: depth-≥3 hfin (#1), hdiv-∀M-chart (#3), L2-3289 (#4).
+- **The dev-merge is an OPERATOR PROMOTION, not a tide.** genm-firing's 39-module finding: dev lacks the ENTIRE RLCT engine
+  (the carve stack's import closure = 39 modules, all missing from dev; ~1189-commit lineage divergence). So the EXPEDITION
+  LINEAGE's aggregator IS the canonical line; "integration into canonical DLNFibre.lean" happens on the lineage
+  (piece-by-piece, as each leg lands), and landing on `dev` = a wholesale lineage→dev PR = an operator promotion (like
+  dev→master), operator-gated. The R1-UPPER #143 Phase-1 (the gated headline) is DONE on the lineage; its dev-merge is part
+  of that eventual promotion, not a separate tide task.
