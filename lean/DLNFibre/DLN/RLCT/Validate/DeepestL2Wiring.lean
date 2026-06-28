@@ -474,11 +474,40 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
             = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
         sorry
-      -- **hsub4core** — GERM-LOCAL core = Score (via Option-2 sub-4; on the inner-ball germ).
+      -- **The shared inner-ball germ** (GOAL 1): near the basepoint, `psiSplitRawL2 (split x) ∈ closedBall
+      -- 0 rIn`. `psiSplitRawL2 = δ + id` is ContinuousAt 0 (δ strict-deriv at 0), `psiSplitRawL2 0 = 0`;
+      -- `split` continuous, `split basepoint = 0`; the composite → 0, the ball is a nhd of 0.
+      have hpsiCA : ContinuousAt (psiSplitRawL2 H r hr hL)
+          (0 : DeepestSplit H r (deepestNGauge H r)) := by
+        have hδ : ContinuousAt (psiSplitDeltaL2 H r hr hL)
+            (0 : DeepestSplit H r (deepestNGauge H r)) :=
+          (hasStrictFDerivAt_psiSplitDeltaL2_zero H r hr hL).continuousAt
+        have hid : psiSplitRawL2 H r hr hL
+            = fun q => psiSplitDeltaL2 H r hr hL q + q := by
+          funext q; simp only [psiSplitDeltaL2, sub_add_cancel]
+        rw [hid]; exact hδ.add continuousAt_id
+      have htend : Filter.Tendsto (fun x => psiSplitRawL2 H r hr hL (split x))
+          (nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))) (nhds 0) := by
+        have hcomp : ContinuousAt (fun x => psiSplitRawL2 H r hr hL (split x))
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+          have h1 : ContinuousAt split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :=
+            split.continuous.continuousAt
+          exact (hsplit_base ▸ hpsiCA).comp h1
+        have h0 : psiSplitRawL2 H r hr hL
+            (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))) = 0 := by
+          rw [hsplit_base]; exact psiSplitRawL2_zero H r hr hL
+        rw [← h0]; exact hcomp
+      have hballgerm : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+          nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+          psiSplitRawL2 H r hr hL (split x) ∈ Metric.closedBall
+            (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn) :=
+        htend (Metric.closedBall_mem_nhds 0 (cutoffBump H r hr hL).rIn_pos)
+      -- **hsub4core** — GERM-LOCAL core = Score (Option-2 sub-4 on the inner-ball germ).
       have hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
           nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1
             = Score x := by
+        filter_upwards [hballgerm] with x hball
         sorry
       -- Transport hPtri/hQtri from the bundle form (`Pf (firstLayer)` / `Qf (lastLayer)` with `Jb`)
       -- to the `_wired` form (`endpointP0`/`endpointQL` with `J`): the endpoint frames are casts of the
