@@ -578,6 +578,69 @@ theorem schurInner_S_le_pivot (R : Fin 2 → Fin 2 → ℝ) (i₀ j₀ : Fin 2) 
 
 /-! ### The per-chart finiteness + the assembly -/
 
+/-- The matrix↔flat index equiv `e2 : Fin 2 × Fin 2 ≃ Fin 4`, `e2 (i,j) = matToFlat2-index`. -/
+noncomputable def e2 : Fin 2 × Fin 2 ≃ Fin (2 * 2) :=
+  ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm).trans
+    ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans finProdFinEquiv)
+
+/-- `Rmat2 p y i j = if e2 (i,j) = p then 1 else y (e2 (i,j))` — the unflattened "1 at the pivot, `y`
+elsewhere" angular matrix entrywise. -/
+theorem Rmat2_entry (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) (i j : Fin 2) :
+    Rmat2 p y i j = if e2 (i, j) = p then 1 else y (e2 (i, j)) := rfl
+
+/-- The pivot entry of `Rmat2 p y` is `1` (at the matrix index `e2.symm p`). -/
+theorem Rmat2_pivot (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) :
+    Rmat2 p y (e2.symm p).1 (e2.symm p).2 = 1 := by
+  rw [Rmat2_entry]
+  rw [if_pos]
+  rw [show ((e2.symm p).1, (e2.symm p).2) = e2.symm p from rfl, Equiv.apply_symm_apply]
+
+/-- Off-pivot entries of `Rmat2 p y` are `y`-components, hence `|·| ≤ 1` on the ratio chart `|y_k| ≤ 1`
+(`k ≠ p`); the pivot entry is `1`. So `|Rmat2 p y i j| ≤ 1` everywhere on the chart. -/
+theorem Rmat2_entry_le (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ)
+    (hy : ∀ k, k ≠ p → |y k| ≤ 1) (i j : Fin 2) : |Rmat2 p y i j| ≤ 1 := by
+  rw [Rmat2_entry]
+  by_cases h : e2 (i, j) = p
+  · rw [if_pos h]; norm_num
+  · rw [if_neg h]; exact hy _ h
+
+/-- The inner angular S-integral on chart `p` (the ratio-residual): `innerS2 c' T p y = ∫_{S∈box}
+frobSq(Rmat2 p y · S)^{−c'}`. Reads `y` only through the off-pivot ratios (`Rmat2 p y` ignores `y p`). -/
+noncomputable def innerS2 (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) : ℝ≥0∞ :=
+  ∫⁻ S in matBox 2 4 T, ENNReal.ofReal ((frobSq (rmatMul (Rmat2 p y) S)) ^ (-c'))
+
+/-- `innerS2` is `y p`-invariant: `Rmat2 p y` reads `y i` only for `i ≠ p` (the pivot entry is `1`). -/
+theorem innerS2_offpivot (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) (y y' : Fin (2 * 2) → ℝ)
+    (h : ∀ i, i ≠ p → y i = y' i) : innerS2 c' T p y = innerS2 c' T p y' := by
+  have hR : Rmat2 p y = Rmat2 p y' := by
+    funext i j; rw [Rmat2_entry, Rmat2_entry]
+    by_cases hij : e2 (i, j) = p
+    · rw [if_pos hij, if_pos hij]
+    · rw [if_neg hij, if_neg hij]; exact h _ hij
+  rw [innerS2, innerS2, hR]
+
+/-- `innerS2 c' T p` is measurable in `y` (the S-integral of the measurable joint integrand). -/
+theorem measurable_innerS2 (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) : Measurable (innerS2 c' T p) := by
+  unfold innerS2
+  apply Measurable.lintegral_prod_right (f := fun y S =>
+    ENNReal.ofReal ((frobSq (rmatMul (Rmat2 p y) S)) ^ (-c')))
+  apply ENNReal.measurable_ofReal.comp
+  apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+  unfold frobSq rmatMul
+  apply Finset.measurable_sum; intro i _
+  apply Finset.measurable_sum; intro j _
+  apply Measurable.pow_const
+  apply Finset.measurable_sum; intro k _
+  apply Measurable.mul
+  · -- Rmat2 p y i k is measurable in y (it is `if … then 1 else y (e2 (i,k))`)
+    have hy : Measurable (fun y : Fin (2 * 2) → ℝ => Rmat2 p y i k) := by
+      simp only [Rmat2_entry]
+      by_cases h : e2 (i, k) = p
+      · simp only [if_pos h]; exact measurable_const
+      · simp only [if_neg h]; exact measurable_pi_apply _
+    exact hy.comp measurable_fst
+  · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd)
+
 /-- On `chartDomOn univ p` (ratios `|y_k| ≤ T·…`, here the radial chart uses radius `1` for the ratios),
 the blown-up point lands in `flatBox2 T` IFF the radial coordinate `|y p| ≤ T`. The box indicator depends
 only on `|y p|` — decoupling the radial axis from the 3 ratios. (Chart ratios at radius `1`, the box at
