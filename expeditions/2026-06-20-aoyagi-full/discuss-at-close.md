@@ -790,3 +790,24 @@ R1-UPPER N4 is bounded-after-machinery; the (A) "no research wall" premise SURVI
 re-scope needed; genm-recstep re-engaged on the build (corank-3 first; the one fragile Lean point is the JOINT-core
 IH statement shape). The cited-rlct fallback stays unused. Net: the decorrelation both confirmed the gate AND
 corrected the controller's framing — the bedrock-checkpoint discipline working a fourth time this expedition.
+
+### Item 40 — D1 is L2-COUPLED via a shared gauge-slice; build it REUSABLE (heartbeat 2026-06-28)
+Goal-distance map (this tick, verified against Skeleton): the headline `aoyagi_learning_coefficient` (1725) rests on
+exactly four named sorries — **1234 `resolution_charts` (R1)** [staffed: genm-boundary LOWER + genm-c3wire/genm-recstep
+UPPER], **1131 `deepest_regular_core_normal_form` (L2)** [staffed: genm-l2 KC1 + the producer #102], **1177
+`rlctAt_deepest_le_of_optimal` (D1)** [UNSTAFFED], and **1707 `aoyagiTheta_eq` (A2/θ)** [secondary, off the λ path,
+standing decision 6]. A1 (`lambdaCore_eq_clean`, the closed-form↔core-value Karamata bridge, 4246) is **PROVED** — so
+the "headline arithmetic" is NOT an open decoupled piece (it was a candidate 5th front; recon retired it).
+
+**D1 finding (re-read cert #112 / thread 04-d1-scope):** D1≥ is value-free and closes parallel to R1, but its hard
+obligation **(a)** — the homogeneous-residual constant-rank chart at an arbitrary optimal `v` — is *the same
+gauge-slice / Morse-with-parameters machinery* as L2's `deepest_regular_core_normal_form` (#44/1131). So D1(a) is
+**L2-coupled, not a clean decoupled front** — spawning a D1 Lean build now would front-run L2's unvalidated gauge-slice
+machinery (the same "don't stand on an unvalidated instance" bar applied to genm-recstep's recStep this morning).
+Obligation **(b)** (the fibre-cone closure `prod(t•A)=t^L·prod A`, pure algebra) IS decoupled + small.
+
+**ARCHITECTURE ITEM (action when the L2 producer phase #102 starts):** the producer's gauge-slice lemma should be built
+as a REUSABLE `local_constant_rank_chart` interface that BOTH L2 (1131) and D1(a) (1177) consume, rather than a
+producer-internal specialization. If built reusable, D1 collapses to (a)=reuse + (b)=pure algebra. Surface to genm-l2
+when it transitions KC1 → producer; don't block. Net for this tick: the critical path is at **maximal sound
+parallelism** (4 fronts on named sorries); no further front is warranted without front-running a dependency.
