@@ -626,6 +626,38 @@ theorem frobSqShiftGen_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) (Sh : Fin m → Fin m
   rw [hΔeq, hSeq] at hp
   exact hp
 
+/-! ### The slot bijection `cellOfG` (the M22/g/b cell enumeration, `m`-ambient)
+
+The carving carves the `r²−1` non-pivot cells of the `(0,0)`-pivot `Fin (m+1) × Fin (m+1)` matrix
+(`m = r−1`) into the `M22` block ⊕ the `g` (=M21 col) ⊕ the `b` (=M12 row): `(m)² + m + m = (m+1)²−1`.
+`cellOfG` is the explicit enumeration (analog of corank-3 `cellOf`), injective onto the non-pivot cells. -/
+
+/-- The non-pivot cell of `Fin (m+1) × Fin (m+1)` for a carve-slot: `M22 (a,b) ↦ (a.succ, b.succ)`,
+`g a ↦ (a.succ, 0)`, `b b ↦ (0, b.succ)`. -/
+def cellOfG (m : ℕ) : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m) → Fin (m + 1) × Fin (m + 1)
+  | Sum.inl (a, b) => (a.succ, b.succ)
+  | Sum.inr (Sum.inl a) => (a.succ, 0)
+  | Sum.inr (Sum.inr b) => (0, b.succ)
+
+/-- `cellOfG` lands on non-pivot cells (never `(0,0)`). -/
+theorem cellOfG_ne_zero (m : ℕ) (s : (Fin m × Fin m) ⊕ (Fin m ⊕ Fin m)) :
+    ¬ ((cellOfG m s).1 = 0 ∧ (cellOfG m s).2 = 0) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellOfG, Fin.succ_ne_zero]
+
+/-- `cellOfG` is injective (the `m+1` cells are distinct). -/
+theorem cellOfG_injective (m : ℕ) : Function.Injective (cellOfG m) := by
+  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
+    simp only [cellOfG, Prod.mk.injEq] at h
+  · obtain ⟨ha, hb⟩ := h; rw [Fin.succ_inj] at ha hb; subst ha; subst hb; rfl
+  · exact absurd h.2 (Fin.succ_ne_zero b1)
+  · exact absurd h.1 (Fin.succ_ne_zero a1)
+  · exact absurd h.2.symm (Fin.succ_ne_zero b2)
+  · obtain ⟨ha, _⟩ := h; rw [Fin.succ_inj] at ha; subst ha; rfl
+  · exact absurd h.1 (Fin.succ_ne_zero a1)
+  · exact absurd h.1.symm (Fin.succ_ne_zero a2)
+  · exact absurd h.1.symm (Fin.succ_ne_zero a2)
+  · obtain ⟨_, hb⟩ := h; rw [Fin.succ_inj] at hb; subst hb; rfl
+
 /-! ### The pivot-(0,0) Schur readback `Sc = M22 − M21·M12` (the carving's algebra, `m`-ambient)
 
 The N2b (`j = 1`) Schur complement at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ` (`R 0 0 = 1`):
