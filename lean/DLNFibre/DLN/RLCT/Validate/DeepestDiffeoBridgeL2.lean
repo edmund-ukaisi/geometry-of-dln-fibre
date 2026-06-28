@@ -982,6 +982,173 @@ theorem hasStrictFDerivAt_l2Winv_sub_one_entry_zero (H : Fin (L + 1) → ℕ) (r
   filter_upwards [hne] with q hq
   rw [l2Winv_sub_one_eq H r hr hL hL2eq q hq]
 
+/-! ### S4h — the matrix normalization `T1' − T1 = (W⁻¹ − 1)·Br + (Br − T1)`
+
+Purely additive/distributive matrix identities (no `W`-invertibility needed): `Br − T1 = −(K·S1) + R·T1`
+(via `S1 = T1 − U` and `(1−K)·S1 = S1 − K·S1`), and `T1' − T1 = W⁻¹·Br − T1 = (W⁻¹−1)·Br + (Br − T1)`
+(via `(W⁻¹−1)·Br = W⁻¹·Br − Br`). These split the entry derivative into the `O(read²)` blocks. -/
+
+/-- `Br − T1 = −(K·S1) + R·T1` (additive: `(1−K)·S1 + U = (T1 − U) − K·S1 + U = T1 − K·S1`). -/
+theorem l2Br_sub_T1_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Br H r hr hL hL2eq q - l2T1 H r hr hL q
+      = -(l2K H r hr hL hL2eq q * l2S1 H r hr hL q)
+        + l2R H r hr hL hL2eq q * l2T1 H r hr hL q := by
+  rw [l2Br, l2S1, Matrix.sub_mul, Matrix.one_mul]
+  -- `(T1 − U) − K·(T1 − U) + U + R·T1 − T1`. Reduce: `(T1 − U) + U − T1 = 0`, leaving `−K·(T1−U) + R·T1`.
+  -- But `S1 = T1 − U`, so `−K·S1`. Use `abel` after isolating the `−(K * (T1 − U))` term.
+  have hexpand : l2T1 H r hr hL q - l2U H r hr hL q
+        - l2K H r hr hL hL2eq q * (l2T1 H r hr hL q - l2U H r hr hL q)
+        + l2U H r hr hL q + l2R H r hr hL hL2eq q * l2T1 H r hr hL q
+        - l2T1 H r hr hL q
+      = -(l2K H r hr hL hL2eq q * (l2T1 H r hr hL q - l2U H r hr hL q))
+        + l2R H r hr hL hL2eq q * l2T1 H r hr hL q := by abel
+  rw [hexpand]
+
+/-- `T1' − T1 = (W⁻¹ − 1)·Br + (Br − T1)` (additive: `(W⁻¹−1)·Br = W⁻¹·Br − Br`). -/
+theorem l2T1p_sub_T1_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q
+      = ((l2W H r hr hL hL2eq q)⁻¹ - 1) * l2Br H r hr hL hL2eq q
+        + (l2Br H r hr hL hL2eq q - l2T1 H r hr hL q) := by
+  rw [l2T1p_eq_Winv_Br, Matrix.sub_mul, Matrix.one_mul]
+  abel
+
+/-! ### S4i — the two payload-block entry strict-`fderiv`-`0` facts (`T1' − T1`, `Y1' − Y1`)
+
+Assemble: `(T1'−T1)_{ij} = ((W⁻¹−1)·Br)_{ij} + (−(K·S1)+R·T1)_{ij}` (the normalization), each entry-helper
+on a block whose left factor (`W⁻¹−1`, `K`, `R`) vanishes value+deriv at `0`. `(Y1'−Y1)_{ij} =
+(A0⁻¹·Y0·(T1−T1'))_{ij}`, with `Y0` (right of `A0⁻¹·Y0`) value+deriv... no — `Y0` is a read (deriv ≠ 0);
+the vanishing comes from the RIGHT factor `(T1−T1')`, which is `0` value+deriv (right-zero helper). -/
+
+/-- Each `(K·S1)` entry has strict-`fderiv`-`0` at `0` (left `K` vanishes value+deriv, `S1` `ContDiffAt`). -/
+theorem hasStrictFDerivAt_l2K_mul_S1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        ((l2K H r hr hL hL2eq q * l2S1 H r hr hL q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+  hasStrictFDerivAt_matrix_mul_entry_of_left_zero (i := i) (j := j)
+    (fun k => hasStrictFDerivAt_l2K_entry_zero H r hr hL hL2eq i k)
+    (fun k => by simp only [l2K_zero, Matrix.zero_apply])
+    (fun k => contDiffAt_l2S1_entry H r hr hL k j)
+
+/-- Each `(R·T1)` entry has strict-`fderiv`-`0` at `0` (left `R` vanishes value+deriv). -/
+theorem hasStrictFDerivAt_l2R_mul_T1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        ((l2R H r hr hL hL2eq q * l2T1 H r hr hL q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+  hasStrictFDerivAt_matrix_mul_entry_of_left_zero (i := i) (j := j)
+    (fun k => hasStrictFDerivAt_l2R_entry_zero H r hr hL hL2eq i k)
+    (fun k => by simp only [l2R_zero, Matrix.zero_apply])
+    (fun k => (contDiff_l2T1_entry H r hr hL k j).contDiffAt)
+
+/-- Each `((W⁻¹−1)·Br)` entry has strict-`fderiv`-`0` at `0` (left `W⁻¹−1` vanishes value+deriv). -/
+theorem hasStrictFDerivAt_l2WinvSub1_mul_Br_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        ((((l2W H r hr hL hL2eq q)⁻¹ - 1) * l2Br H r hr hL hL2eq q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+  hasStrictFDerivAt_matrix_mul_entry_of_left_zero (i := i) (j := j)
+    (fun k => hasStrictFDerivAt_l2Winv_sub_one_entry_zero H r hr hL hL2eq i k)
+    (fun k => by
+      simp only [Matrix.sub_apply, l2W_zero, inv_one, sub_self, Matrix.zero_apply])
+    (fun k => contDiffAt_l2Br_entry H r hr hL hL2eq k j)
+
+/-- **Each `T1' − T1` entry has strict-`fderiv`-`0` at `0`** (the core payload-block; the
+normalization `T1'−T1 = (W⁻¹−1)·Br + (−(K·S1) + R·T1)`, each summand strict-`fderiv`-`0`). -/
+theorem hasStrictFDerivAt_l2T1p_sub_T1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  -- Rewrite the entry via the two matrix normalizations.
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q) i j)
+      = fun q => ((((l2W H r hr hL hL2eq q)⁻¹ - 1) * l2Br H r hr hL hL2eq q :
+            Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+              (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j
+          + (-((l2K H r hr hL hL2eq q * l2S1 H r hr hL q :
+              Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+                (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j
+            + ((l2R H r hr hL hL2eq q * l2T1 H r hr hL q :
+              Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+                (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j) := by
+    funext q
+    rw [l2T1p_sub_T1_eq, Matrix.add_apply, l2Br_sub_T1_eq, Matrix.add_apply, Matrix.neg_apply]
+  rw [heq]
+  -- `−(K·S1)` entry strict-deriv-`0` (the negation of the `K·S1` block fact).
+  have hnegKS1 : HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        -((l2K H r hr hL hL2eq q * l2S1 H r hr hL q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+    simpa using (hasStrictFDerivAt_l2K_mul_S1_entry_zero H r hr hL hL2eq i j).neg
+  have hsum := (hasStrictFDerivAt_l2WinvSub1_mul_Br_entry_zero H r hr hL hL2eq i j).add
+    (hnegKS1.add (hasStrictFDerivAt_l2R_mul_T1_entry_zero H r hr hL hL2eq i j))
+  simpa only [add_zero, Pi.add_apply] using hsum
+
+/-- `l2Y1p = Y1 + A0⁻¹·Y0·(T1 − T1')` (`rfl` from the def). -/
+theorem l2Y1p_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Y1p H r hr hL hL2eq q
+      = l2Y1 H r hr hL q + (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+        * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) := rfl
+
+/-- **Each `Y1' − Y1` entry has strict-`fderiv`-`0` at `0`** (the reg payload-block;
+`Y1'−Y1 = (A0⁻¹·Y0)·(T1−T1')`, right factor `(T1−T1')` vanishes value+deriv). -/
+theorem hasStrictFDerivAt_l2Y1p_sub_Y1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  -- `Y1'−Y1 = (A0⁻¹·Y0)·(T1−T1')` entrywise.
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2Y1p H r hr hL hL2eq q - l2Y1 H r hr hL q) i j)
+      = fun q => (((l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q)
+          * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q) :
+          Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ) i j := by
+    funext q
+    rw [l2Y1p_eq, Matrix.sub_apply, Matrix.add_apply, add_sub_cancel_left]
+  rw [heq]
+  -- Right-zero helper: partner `A0⁻¹·Y0` `ContDiffAt`; right `(T1−T1')` value+deriv `0`.
+  refine hasStrictFDerivAt_matrix_mul_entry_of_right_zero (i := i) (j := j) (fun k => ?_)
+    (fun k => ?_) (fun k => ?_)
+  · exact contDiffAt_matrix_mul_entry (fun a k' => contDiffAt_l2A0_inv_entry H r hr hL a k')
+      (fun k' b => (contDiff_l2Y0_entry H r hr hL hL2eq k' b).contDiffAt) i k
+  · -- `(T1 − T1')_{kj}` strict-deriv-`0` = negation of `(T1'−T1)_{kj}`.
+    have hneg : HasStrictFDerivAt (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        -((l2T1p H r hr hL hL2eq q - l2T1 H r hr hL q) k j))
+        (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+      have := (hasStrictFDerivAt_l2T1p_sub_T1_entry_zero H r hr hL hL2eq k j).neg
+      rwa [neg_zero] at this
+    refine hneg.congr_of_eventuallyEq ?_
+    filter_upwards with q
+    rw [Matrix.sub_apply, Matrix.sub_apply, neg_sub]
+  · -- `(T1 − T1')_{kj} 0 = 0` (both `T1 0 = 0`, `T1' 0 = 0`).
+    show (l2T1 H r hr hL 0 - l2T1p H r hr hL hL2eq 0) k j = 0
+    rw [l2T1_zero, l2T1p_zero, sub_zero]; rfl
+
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
 where the joint action's mid-interface widths coincide — `midWidth_eq_of_L2`). Keeps the public
