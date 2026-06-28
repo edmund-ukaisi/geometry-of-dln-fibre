@@ -283,6 +283,60 @@ forms; medium, NOT a wall). The lifted p=4 carve supplies cap A. Dispatch picks 
 **STEP-0 PASSES: ∀p depth-2 firing is reachable. Gate cleared (pending controller diff-gate of this section +
 the binding-p=4 family). Build remains next-layer (no rush).**
 
+
+## CAP-B {Δ=0} CHART DESIGN (controller-gated, surface BEFORE deep-build) — cert-grounded
+
+The controller cleared the ∀p build with ONE gate: surface the cap-B {Δ=0} chart design first. After Codex
+(2nd decorrelated consult on the capA>capB overclaim) I found this is ALREADY worked pen-and-paper in-repo:
+**`expeditions/2026-06-20-aoyagi-full/threads/27-r1-hfin-completeness/Vzero-termination-cert.md`** (pen-and-paper
+seat, Codex-red-teamed, VERDICT: S2-only feasible, depth ≤ r). My STEP-0 independently reproduced its recursion.
+This design CONSUMES that cert as the authoritative resolution; below is the chart structure + the Lean shape.
+
+### The architecture correction (important): cap B is NOT a bolt-on chart — it's the RADIAL AXIS of the
+### `Δ = a·R` blow-up; cap A is the ANGULAR part of the SAME blow-up.
+The honest resolution of `SchurCore p r` is the **`Δ = a·R` radial blow-up** (cert §1,§3):
+- `Δ = a·R`, `a ∈ [0,T]` the scale, `R` on the bounded `r²`-chart atlas (chart-`(i,j)`: `|Δ_{ij}|` maximal ⟹
+  `R_{ij}=1`, `|R_{kl}| ≤ 1` — unit polydisc, angular coords BOUNDED). Jacobian `|a|^{r²−1}` (≠ 0 off `a=0`,
+  a genuine c-o-v; the `r²` charts cover `{Δ≠0}`, `{Δ=0}` is the `a=0` null divisor).
+- `‖Δ·S‖² = a²·‖R·S‖²`. So `(frobSq(Δ·S))^{−c'} = a^{−2c'}·(frobSq(R·S))^{−c'}`.
+- **`a`-axis = CAP B**: `∫₀^T a^{(r²−1) − 2c'} da < ⊤ ⟺ (r²−1) − 2c' > −1 ⟺ c' < r²/2`. (Cert line 53:
+  corank-2 `∫a^{3−2c'} ⟺ c'<2 = r²/2`. The `r²−1` is the Jacobian dim; the `−2c'` is the SQUARED-Frobenius.)
+- **angular `R`-integral = CAP A**: `∫_{R atlas} (frobSq(R·S))^{−c'}` is the EXISTING carve (`R` pivot-normalized,
+  the rank-stratified Morse-block ⊕ lower-core recursion) — threshold capA = `½minAdm(r−1,r−1,p)+p/2` (in fact
+  the full `min_{1≤j≤r}(jp/2 + λ_{r−j,p})`, cert line 107). p-INVARIANT (the carve reshapes only R's r² ratios).
+- **JOINT (Δ,S) σ_min→0 worry, RESOLVED** (Codex Q3 + cert §4c-2): after `Δ=a·R` and pivot-normalizing R on
+  each bounded chart, the inner `‖R·S‖²` is a UNIFORMLY-elliptic Morse form in S (the bounded unit-polydisc R
+  gives uniform lower bounds); Tonelli + the radial disjoint-sum lemma keep it uniform despite σ_min(SSᵀ)→0.
+  So the fixed-S non-uniform bound is NOT the route — the bounded-angular-chart localization is.
+
+### Why this is the CORRECT fix for the capA>capB overclaim (p ≥ 2r)
+The window is `c' < min(capA, capB)` = the INTERSECTION (both the `a`-axis AND the angular integral must be
+subcritical): the product `a^{−2c'}·(frobSq(R·S))^{−c'}` is integrable iff BOTH factors are (Tonelli, disjoint
+var groups `a` vs `(R,S)`). The p=4 carve omitted the `a`-axis factor (its chart fixed a nonzero pivot of Δ,
+EXCLUDING `a→0`), so it only ever saw capA — fine for p=4 (capA ≤ capB for r≥3) but OVERCLAIMS for p≥2r. The
+`Δ=a·R` blow-up restores the `a`-axis factor → the min binds correctly.
+
+### The genuinely-new Lean lemma (cap B, the only new analytic content)
+`schurCore_radialAxis_lt_top` (shape): `∫₀^T a^{(r²−1)−2c'} da < ⊤` for `c' < r²/2` — a 1-D radial-divisor
+integral, S2-free (Mathlib `integrableOn` of `a^k` on `[0,T]`, or the existing `radial_aAxis_divisor_lt_top`
+generalized from the p=4 `a`-axis to exponent `r²−1`). Then the JOINT finiteness:
+`schurCore_p_lt_top (c' < ½minAdm) = a-divisor (capB) ⊗ angular-carve (capA)` via Tonelli + `lintegral_const_mul`.
+The angular carve is the lifted existing carve (cap A); the disjoint-sum glue `rlct(‖P‖²+H)=½dimP+rlct(H)`
+(cert line 104, S2-free radial integration) is the rank-stratified recursion's step — ALREADY the carve's
+`stepShearG`+`resolvedShiftRG_le` shape, generalized.
+
+### Build plan (cap B), gated:
+1. `radial_aAxis_divisor_lt_top` at exponent `r²−1` (generalize the p=4 `a`-axis lemma; ~15L, S2-free).
+2. The `Δ = a·R` blow-up c-o-v (Jacobian `|a|^{r²−1}`) — generalize the p=4 `pivotBlowup`/`chart_integrand_factorG`
+   to expose the `a`-axis (the p=4 version folds it into the chart; need the `a` factor explicit). ~MEDIUM.
+3. Joint Tonelli: `SchurCore p r < ⊤ ⟺ c' < min(capB [a-axis], capA [angular carve])`. ~30L given 1,2 + the carve.
+The cert's corank-2 worked identity (`G∘π = a²·[(1+v²)‖P'‖² + (e²/(1+v²))‖Q‖²]`) is the validate-small anchor.
+
+**Surfacing for diff-gate.** The cap-B chart = the `a`-axis of the `Δ=a·R` blow-up at threshold r²/2 (cert-grounded,
+S2-free). The architecture correction (cap A = angular part of the SAME blow-up, NOT a parallel chart; window =
+INTERSECTION via the product factorization) is the load-bearing design point — please diff-gate that framing
+before I deep-build. No new geometry beyond the cert; bounded-medium confirmed (2 Codex consults + the cert).
+
 ## 6. Open questions for the controller / pen-and-paper (UPDATED)
 
 - Q-A (RESOLVED): `λ(p,r) = (r−1)p/2` is WRONG for p≠4; the true threshold is `½·minAdm(r,r,p)` (quadratic).
