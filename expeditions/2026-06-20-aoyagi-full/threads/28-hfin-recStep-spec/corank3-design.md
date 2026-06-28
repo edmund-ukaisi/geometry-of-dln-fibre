@@ -57,10 +57,23 @@ Jac≡1 → `core_schur2_lt_top` applies at exponent `c'−2`.
 - Per-chart support: `flatBox3_blowup_mem_iff`, `innerS3` (the inner angular S-integral),
   `chart_integrand_factor3` (radial decouple `|y p|⁸ → |y p|^{8−2c'}`, needs `y p ≠ 0`).
 
-## THE PRECISE REMAINING WALL — the JOINT residual-domination (the block-index bookkeeping)
+## JOINT residual-domination — CLOSED (2026-06-28, the controller's named milestone)
 
-The genuinely-new piece + the per-chart finiteness + the 9-chart sum. The hardest sub-goal (controller
-flagged the block bookkeeping as the fiddly part) is the JOINT residual-domination:
+The genuinely-new corank-3 piece is BUILT sorry-free (controller's Fubini/translate decomposition):
+- **`matBox2_translate_le`** — the `Fin 2 → Fin 2 → ℝ` matrix-box translate-enlarge
+  (`measurePreserving_add_right` + `lintegral_mono_set`; the matrix analog of `lintegral_translate_le_local`).
+- **`schurResid2_translate_lt_top`** — for a fixed shift `Sh` (`|Sh i j| ≤ B`),
+  `∫_{Δ∈matBox 2 2 T}∫_{S∈matBox 2 4 T} frobSq((Δ − Sh)·S)^{−c''} < ⊤` for `0 < c'' < 2`. Via S-monotone
+  enlarge (`matBox 2 4 T ⊆ T+B`) + the `Δ ↦ Δ − Sh` translate (Jac≡1, box-enlarge to `T+B`) →
+  `core_schur2_lt_top` at radius `T+B`. The M22↦Sc translation = exactly this (`Sc = M22 − Sh`). The
+  R-integrated residual the corank-3 recursion produces (Sc varies, dominated by the free 2×2 box).
+
+REMAINING (the wiring, intricate but no new math): recognize the N2b split's `Sc = M22 − M21·M11⁻¹·M12` as
+the `Δ − Sh` shape of `schurResid2_translate_lt_top` (the spectator shift `Sh = M21·M11⁻¹·M12`, bounded via
+`rowShear_entry_le_one`) inside the per-chart finiteness (N2b split + inverse-power flip + Tonelli +
+shifted-peel feed this residual), then the 9-chart sum → `core_schur3_lt_top`.
+
+(superseded — the JOINT residual-domination is now CLOSED, not a wall):
 
 > After N2b j=1 (r=3) + the inverse-power flip (`schurSplit_integrand_le`) + Tonelli `S=(S_row0,S_bot)` +
 > the shifted-exponent peel of the top Morse block (`radial_morse_residual_power_le`, threshold 2, leaving
