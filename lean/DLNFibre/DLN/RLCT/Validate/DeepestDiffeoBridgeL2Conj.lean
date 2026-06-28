@@ -1117,4 +1117,46 @@ theorem hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTupleConj_zero (H : Fin (L 
   rw [hcoord]
   exact hasStrictFDerivAt_l2CoreΔTupleConj_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ d.1.1 d.1.2 d.2
 
+/-- **S4 — the conjugated joint correction has strict derivative `0` at the split origin**
+(`psiSplitRawL2CoreConj q − q`), via the lens decomposition: both encoded payloads have strict-deriv
+`0`. The conjugated analogue of `hasStrictFDerivAt_psiSplitDeltaL2Core_zero`. -/
+theorem hasStrictFDerivAt_psiSplitDeltaL2CoreConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    HasStrictFDerivAt (fun q => psiSplitRawL2CoreConj H r B hB hr hL hL2eq q - q)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 := by
+  have heq : (fun q => psiSplitRawL2CoreConj H r B hB hr hL hL2eq q - q)
+      = fun q => (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q),
+            ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).2)) := by
+    funext q; exact psiSplitDeltaL2CoreConj_eq_payload H r B hB hr hL hL2eq q
+  rw [heq]
+  have hrg : HasStrictFDerivAt
+      (fun q => (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ]
+        ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) 0 := by
+    have hcle := ((regGaugeSlotCLE H r hr hL).symm.toContinuousLinearMap).hasStrictFDerivAt
+      (x := l2GaugeΔConj H r B hB hr hL hL2eq 0)
+    have hcomp := hcle.comp 0 (hasStrictFDerivAt_l2GaugeΔConj_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ)
+    simpa using hcomp
+  have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTupleConj_zero H r B hB hr hL hL2eq
+    hDA0 hDA1 hY hZ
+  have h1 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).1)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  have h3 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q)).2)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNGauge H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.snd ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  exact h1.prodMk (hcore.prodMk h3)
+
 end DLNFibre.DLN.RLCT
