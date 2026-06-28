@@ -257,40 +257,84 @@ theorem gFlatG_blowup_radial (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y
     rfl
   rw [hbl, radialDelta_loss_factor (y p) ((matToFlatG r).symm (fun i => if i = p then 1 else y i)) S]
 
-/-! ## The generic firing at corank r ≥ 3 -/
+/-! ## The generic firing at corank r ≥ 3
 
-/-- **The generic per-chart inner-S finiteness (the firing heart, mid case `2 < c' < λ_r`).** For the
-angular matrix `R` (pivot `1`, `|entries| ≤ 1`) at corank `r ≥ 3`,
-`∫_{S∈matBox r 4 T} frobSq (R·S)^{−c'}` is finite, via N2b (`j = 1`) → shifted `Fin 4` Morse peel → the
-residual at `c'' = c' − 2`, translation-dominated `M22 ↦ Sc` into a free `(r−1)×(r−1)` box and closed by
-the lower IH. -/
-theorem schurInnerGen_S_lt_top (r : ℕ) (hr : 3 ≤ r)
-    (hIH : SchurLowerIH 4 schurLambda r)
-    (R : Fin r → Fin r → ℝ) (i₀ j₀ : Fin r) (hpiv : R i₀ j₀ = 1) (hbd : ∀ i k, |R i k| ≤ 1)
-    (c' : ℝ) (hc2 : 2 < c') (hc' : c' < schurLambda r) (T : ℝ) (hT : 0 < T) :
-    (∫⁻ S in matBox r 4 T,
-        ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c'))) < ⊤ := by
+The firing's heart is NOT a fixed-`R` inner-`S` finiteness (that is FALSE — `∫_S frobSq (R·S)^{−c'}`
+diverges when `R` is rank-deficient, e.g. `Sc` singular). It is the JOINT RATIO-RESIDUAL `∫_z ∫_S
+frobSq (R(z)·S)^{−c'}` over the angular ratios `z` AND `S`: integrating over `z` is what carries the free
+`M22` block the lower IH consumes (the corank-3 `schurInner3_ratiofin` likewise integrates over `z`, not a
+fixed `R`). The `M22 ↦ Sc` carving identifies the `(r−1)²` ratio coordinates forming `M22` and translation-
+dominates `Sc` into the free `(r−1)×(r−1)` IH box. -/
+
+/-- The inner angular `S`-integral at the angular matrix `RmatG r p y` (pivot `1`, `|entries| ≤ 1` on the
+ratio chart): `innerSGen r c' T p y = ∫_{S∈matBox r 4 T} frobSq (RmatG r p y · S)^{−c'}`. -/
+noncomputable def innerSGen (r : ℕ) (c' : ℝ) (T : ℝ) (p : Fin (r * r)) (y : Fin (r * r) → ℝ) : ℝ≥0∞ :=
+  ∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (RmatG r p y) S)) ^ (-c'))
+
+/-- **The pivot-axis ↔ ratios reshape** `piRatioG r N hN p : (Fin (r*r) → ℝ) ≃ᵐ ℝ × (Fin N → ℝ)` (the
+`Fin (r*r)`-carrier analogue of `piFinSuccAbove`): reindex `Fin (r*r) ≃ Fin (N+1)` (`finCongr hN`,
+`r*r = N+1`), then split off the pivot axis `p`. Measure-preserving (`measurePreserving_piRatioG`). -/
+noncomputable def piRatioG (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) :
+    (Fin (r * r) → ℝ) ≃ᵐ ℝ × (Fin N → ℝ) :=
+  (MeasurableEquiv.piCongrLeft (fun _ : Fin (N + 1) => ℝ) (finCongr hN)).trans
+    (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+
+theorem measurePreserving_piRatioG (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) :
+    MeasurePreserving (piRatioG r N hN p) (volume : Measure (Fin (r * r) → ℝ))
+      (volume : Measure (ℝ × (Fin N → ℝ))) :=
+  (volume_measurePreserving_piCongrLeft (fun _ : Fin (N + 1) => ℝ) (finCongr hN)).trans
+    (volume_preserving_piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+
+/-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
+the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
+`2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
+`|entries| ≤ 1`; N2b (`j = 1`) peels the top `Fin 4` Morse block (threshold `2`), leaving the residual at
+`c'' = c' − 2 ∈ (0, λ_{r−1})`; the `M22 ↦ Sc` carving + the lower IH `hIH` close it. The genuinely-new
+generic content. `N = r²−1` (so `r * r = N + 1`). -/
+theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
+    (hIH : SchurLowerIH 4 schurLambda r) (c' : ℝ) (hc2 : 2 < c') (hc' : c' < schurLambda r)
+    (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
+      < ⊤ := by
   sorry
 
-/-- **The generic per-chart inner-S, all `0 < c' < λ_r` (subcritical fold).** Splits on `c'`: the mid
-case `2 < c'` is `schurInnerGen_S_lt_top`; the subcritical `c' ≤ 2` dominates `F^{−c'} ≤ 1 + F^{−3}` and
-reduces to the `c'' = 3` mid case (`3 ∈ (2, λ_r)` since `λ_r = 2r−2 ≥ 4` for `r ≥ 3`). -/
-theorem schurInnerGen_S_lt_top_all (r : ℕ) (hr : 3 ≤ r)
-    (hIH : SchurLowerIH 4 schurLambda r)
-    (R : Fin r → Fin r → ℝ) (i₀ j₀ : Fin r) (hpiv : R i₀ j₀ = 1) (hbd : ∀ i k, |R i k| ≤ 1)
-    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambda r) (T : ℝ) (hT : 0 < T) :
-    (∫⁻ S in matBox r 4 T,
-        ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c'))) < ⊤ := by
+/-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
+`schurRatioResidGen_mid`; subcritical `c' ≤ 2` dominates `F^{−c'} ≤ 1 + F^{−3}` and reduces to the
+`c'' = 3` mid case (`3 ∈ (2, λ_r)` since `λ_r = 2r−2 ≥ 4` for `r ≥ 3`). -/
+theorem schurRatioResidGen (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
+    (hIH : SchurLowerIH 4 schurLambda r) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambda r)
+    (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
+      < ⊤ := by
+  sorry
+
+/-- **The generic per-chart finiteness.** Mirror of `matBox3_chart_lt_top` at generic `r`: the radial
+blow-up chart integral (Jacobian `|y p|^{r²−1}`) is finite for `0 < c' < λ_r`, `r ≥ 3`. The
+`piFinSuccAbove p` MP + Tonelli factor the pivot axis (a-axis divisor finite for `c' < r²/2`, holds since
+`c' < λ_r ≤ r²/2`) from the `r²−1` ratios; the ratio residual is `schurRatioResidGen_mid` (subcritical
+`c' ≤ 2` folded by `ofReal_rpow…` domination to the `c'' = 3` mid case). -/
+theorem schur_matBoxG_chart_lt_top (r : ℕ) (hr : 3 ≤ r)
+    (hIH : SchurLowerIH 4 schurLambda r) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambda r)
+    (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
+    ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (r * r))) p \ pivotZeroOn p,
+        ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (r * r))) p y).det|
+          * (flatBoxG r T).indicator (gFlatG r c' T) (pivotBlowupOn
+              (Finset.univ : Finset (Fin (r * r))) p y)
+      < ⊤ := by
   sorry
 
 /-- **The generic firing at corank r ≥ 3.** `SchurCore 4 r c' T` for `0 < c' < schurLambda r`: flatten
-`Δ → Fin (r²)`, `recStep` `r²`-chart cover, per chart radial pull-out + a-axis divisor + ratio residual
-(`schurInnerGen_S_lt_top_all`), summed by `ENNReal.sum_lt_top`. -/
+`Δ → Fin (r²)`, `recStep` `r²`-chart cover, each chart finite (`schur_matBoxG_chart_lt_top`), summed by
+`ENNReal.sum_lt_top`. -/
 theorem schurCoreGen_firing (r : ℕ) (hr : 3 ≤ r)
     (hIH : SchurLowerIH 4 schurLambda r)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambda r) (T : ℝ) (hT : 0 < T) :
     SchurCore 4 r c' T := by
-  sorry
+  rw [SchurCore, matBoxG_outer_flat r c' T,
+    gFlatG_cover_sum r (by positivity) c' T]
+  exact ENNReal.sum_lt_top.2 (fun p _ => schur_matBoxG_chart_lt_top r hr hIH c' hc0 hc' p T hT)
 
 /-! ## The dispatch: `SchurRecStep 4 schurLambda` -/
 
