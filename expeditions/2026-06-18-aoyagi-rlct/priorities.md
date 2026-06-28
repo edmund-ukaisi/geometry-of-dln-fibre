@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical product-density finite-integral handoff
+
+The canonical retained-passive solved-`A1` product-density source measure now
+feeds directly into the retained-passive p.13 finite-integral socket.  New Lean
+name in `RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+```
+
+The theorem specializes to the identity edge-family source map centered at the
+reverse-edge base family and defines the canonical source measure as
+`Measure.map sourceChart (m.restrict T)`.  It uses the previous canonical
+product-density residual handoff to derive the local-source residual positivity
+and residual negative-power integrability required by the finite-integral
+socket from chart-side residual hypotheses under
+`(m.restrict S).withDensity (ofReal productDensity)`.
+
+The chart-side residual positive-set measurability, chart-side positivity, and
+chart-side finite residual integral remain explicit.  The local loss lower
+bound and local density bounds remain explicit.  The theorem has an explicit
+`[SFinite m]` hypothesis so Lean can infer the existing local socket's
+`[SFinite μ]` requirement for the chart-produced source measure.
+
+Focused `RetainedPassiveLocalJacobianMeasure` build passed.  Full `DLNFibre`
+build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and touched-file forbidden-marker search passed.  Xhigh
+review by `Linnaeus the 2nd` passed.
+
+This still does not construct an original-source prior, prove selected-entry
+signed-box source-density identification, prove a monomial residual lower
+bound, produce normal crossings, compute pole order, or extract an RLCT.
+
 ## Latest controller decision - 2026-06-28, canonical product-density residual handoff
 
 The retained-passive solved-`A1` product density now has a local-unit API in

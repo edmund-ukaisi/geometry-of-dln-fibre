@@ -48,6 +48,46 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Canonical Product-Density Finite-Integral Handoff
+
+`RetainedPassiveLocalJacobianMeasure.lean` now has a canonical retained-passive
+finite-integral wrapper for the solved-`A1` product-density source measure:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+```
+
+The theorem takes source data for the identity edge-family source map centered
+at the reverse-edge base family, sets
+
+```text
+mu = Measure.map sourceChart (m.restrict T),
+nuChart = (m.restrict S).withDensity (fun z => ofReal productDensity(z)),
+```
+
+and returns the p.13 regular-coordinate finite-integral conclusion over
+`(mu.restrict (U ∩ sourceStratum)).prod nuReg`.  The proof first calls
+`residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet`
+to turn chart-side residual positivity and chart-side residual negative-power
+integrability under `nuChart` into the local-source residual hypotheses.  It
+then calls the existing retained-passive p.13 local finite-integral socket with
+`Cedge = id` and the base equality by `rfl`.
+
+The new wrapper keeps chart-side residual positive-set measurability,
+chart-side residual positivity, chart-side finite residual integral, local loss
+lower bound, density nonnegativity, and density upper bound explicit.  It adds
+`[SFinite m]` as the Lean typeclass bridge needed for the existing socket's
+`[SFinite μ]` requirement.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  Full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and touched-file forbidden-marker search
+passed.  Xhigh review by `Linnaeus the 2nd` passed.
+
+Nonclaims: no original source prior, no selected-entry signed-box density, no
+monomial residual lower bound, no normal-crossing production, no pole-order
+theorem, and no RLCT theorem.
+
 ## Latest A2 Canonical Product-Density Residual Handoff
 
 The named retained-passive solved-`A1` product density is now packaged as a
