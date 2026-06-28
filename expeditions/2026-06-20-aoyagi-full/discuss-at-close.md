@@ -997,3 +997,27 @@ through it" so the next checkpoint is real; (b) don't pre-emptively spawn the fr
 stopped (the spawn-then-it-keeps-going is what creates the duplicate); (c) one firm consolidation, then hold it — resist
 re-flipping on the next crossed message. Net: no work lost (harvest), carving materially de-risked, but ~2 ticks of churn
 that tighter sequencing (confirm-stop-before-spawn) would have avoided.
+
+### Item 50 — Carving split-brain: a branch audit should have caught the parallel duplicate earlier (2026-06-28)
+The carving (R1-UPPER's `schurRatioResidGen_mid`) ended up split across two diverged branches: genm-firing (+29 from
+base 162fc569: readback + a.e.-pos + cover + design consult) and genm-carving (+18: #135 carve cellOfG/bgShiftG + #136
+resolvedShiftRG_le + a 2nd a.e.-pos + inner machinery). Both still `sorry` at the final lemma. They built COMPLEMENTARY
+halves (plus an overlapping a.e.-positivity, done two different ways) — so neither branch alone closes the lemma, and
+genm-firing was about to RE-DERIVE #135/#136 (~250-300 lines) that genm-carving had already built.
+
+**My error:** across Items 47-49 I repeatedly framed genm-carving as a "redundant duplicate to harvest + stop," and acted
+on confirm-stops, without ever AUDITING what it had actually built. The git log (lemma names per branch) showed it was
+producing the load-bearing half — I only ran that audit this tick, after it had diverged 18 commits. The harvest-relays
+I did send (stepShearG, cellOfG) were piecemeal; I never stepped back to see the whole parallel build.
+
+**Resolution:** redirected genm-firing to RECONCILE genm-carving's bricks (read via `git show origin/<branch>:<file>`,
+re-place additive defs, resolve the a.e.-pos name overlap) + assemble — NOT re-derive. genm-firing stays integrator
+(canonical, active, holds design+cover+readback); genm-carving stopped with full credit.
+
+**Lesson / standing mitigation:** when two tides touch the SAME target (even if one is nominally "stood down"), run a
+periodic **branch audit** — `git log --all` + per-branch lemma-name diff (`git show <branch>:<file> | grep '^theorem'`)
+— BEFORE the branches diverge far, not after. A confirm-stop that doesn't stick (Items 47-49) is a signal to AUDIT what
+the non-stopping tide is producing, not just to re-send the stop. Cheaper still: never let two tides own overlapping
+sub-bricks of one lemma — assign disjoint sub-bricks explicitly, or accept ONE builder and truly enforce it. The
+reconcile cost here (~one focused tide) is the price of the split; it's recoverable (no work lost, all bricks banked),
+but a 5-line branch audit two ticks earlier would have prevented the divergence.
