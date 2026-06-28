@@ -1,0 +1,13 @@
+**Q1**
+AGREE. ASSUMING your trace is accurate: the construction sorries are not on the headline proof path unless some imported theorem actually references them. The load-bearing point is Lean’s dependency graph: imported files do not matter by themselves; only constants used in the proof term do. Your most plausible miss is an indirect import or duplicate/reexported symbol where `deepest_gauge_squeeze_exists` or `deepest_regular_core_normal_form` is already defined/wired elsewhere. To verify, I’d need `Skeleton.lean`, `DeepestGaugeChart.lean`, `DeepestNormalFormWiring.lean`, `DLNFibre.lean`, and `#print axioms aoyagi_learning_coefficient`.
+
+**Q2**
+PARTIAL. ASSUMING your trace is accurate: wiring is highest VOI for decision clarity, but not necessarily highest VOI for mathematical completion. The single key reason is that wiring converts hidden producer debt into visible headline debt. If `deepest_gauge_squeeze_exists` still bottoms out in ~20 construction sorries after wiring, then item 1 does not clean the theorem; it makes the true blockers observable. So commission wiring first if the goal is honest dependency accounting, but not if the goal is immediate reduction of `sorryAx`.
+
+**Q3**
+PARTIAL. The L=2 “IsDeepLayers strengthening” sounds bounded but invasive; 3289 smells like the real research-risk item. ASSUMING your trace is accurate: 2915 depends on making an existing triangular-normalizer argument applicable by strengthening a bundle invariant, which is engineering-heavy but conceptually localized. By contrast, 3289 is a recursive multi-factor diffeomorphism claim; failures there can expose missing compatibility lemmas or even a wrong parametrization. The L≥3 interior frame issue sounds bounded if identity frames are mathematically admissible throughout the bundle API.
+
+**Q4**
+AGREE. A smaller L=2-only path sounds like the cleanest probe. ASSUMING your trace is accurate: an `L = 2` version of `deepest_gauge_squeeze_exists` could bypass 3118/3123 and 3289 entirely, forcing only the RRR/front-pivot seam plus 2915-style triangular normalizers. That would give a sharper VOI split: if L=2 closes cleanly, general-L difficulty is isolated to interior/grouped recursion; if not, the boundary strengthening is the real bottleneck.
+
+**BIGGEST RISK IN THIS PLAN:** wiring first may reveal that the “banked producer” is not semantically strong enough to prove the squeeze theorem without additional unplanned interface lemmas.
