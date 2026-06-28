@@ -637,4 +637,155 @@ theorem contDiffAt_l2A1invA0invConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
   contDiffAt_matrix_mul_entry (fun a k => contDiffAt_l2A1Conjinv_entry H r B hB hr hL hDA1 a k)
     (fun k b => contDiffAt_l2A0Conjinv_entry H r B hB hr hL hDA0 k b) i j
 
+/-! ## S2/S4 — the conjugated composite `ContDiffAt` (R, S1, Br) at the origin
+
+Mirror the bare `contDiffAt_l2R_entry`/`_l2S1_entry`/`_l2Br_entry`, threading the conjugated inverse
+`ContDiffAt` (which carry `hDA0`/`hDA1`/`hY`). -/
+
+/-- `Rc` entries `ContDiffAt` at the origin. -/
+theorem contDiffAt_l2RConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2RConj H r B hB hr hL hL2eq q i j) 0 := by
+  have heq : (fun q => l2RConj H r B hB hr hL hL2eq q i j)
+      = fun q => (l2Z1Conj H r B hB hr hL q
+          * ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)
+          * l2Y0Conj H r B hB hr hL hL2eq q) i j := by
+    funext q
+    have hassoc : l2RConj H r B hB hr hL hL2eq q
+        = l2Z1Conj H r B hB hr hL q
+          * ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)
+          * l2Y0Conj H r B hB hr hL hL2eq q := by
+      rw [l2RConj, Matrix.mul_assoc (l2Z1Conj H r B hB hr hL q) (l2A1Conj H r B hB hr hL q)⁻¹
+        (l2A0Conj H r B hB hr hL q)⁻¹]
+    rw [hassoc]
+  rw [heq]
+  refine contDiffAt_matrix_mul_entry (A := fun q => l2Z1Conj H r B hB hr hL q
+      * ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)) ?_
+    (fun k b => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq k b).contDiffAt) i j
+  intro a k
+  exact contDiffAt_matrix_mul_entry
+    (fun a' k' => (contDiff_l2Z1Conj_entry H r B hB hr hL a' k').contDiffAt)
+    (fun k' b' => contDiffAt_l2A1invA0invConj_entry H r B hB hr hL hDA0 hDA1 k' b') a k
+
+/-- `Wc` entries `ContDiffAt` at the origin (`1 + Rc`). -/
+theorem contDiffAt_l2WConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2WConj H r B hB hr hL hL2eq q i j) 0 := by
+  have heq : (fun q => l2WConj H r B hB hr hL hL2eq q i j)
+      = fun q => (1 : Matrix _ _ ℝ) i j + l2RConj H r B hB hr hL hL2eq q i j := by
+    funext q; rw [l2WConj, Matrix.add_apply]
+  rw [heq]; exact contDiffAt_const.add (contDiffAt_l2RConj_entry H r B hB hr hL hL2eq hDA0 hDA1 i j)
+
+/-- `S1c` entries `ContDiffAt` at the origin. -/
+theorem contDiffAt_l2S1Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2S1Conj H r B hB hr hL hL2eq q i j) 0 := by
+  have heq : (fun q => l2S1Conj H r B hB hr hL hL2eq q i j)
+      = fun q => l2T1Conj H r hr hL q i j
+          - (l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹
+              * l2Y1Conj H r B hB hr hL q) i j := by
+    funext q; rw [l2S1Conj, Matrix.sub_apply]
+  rw [heq]
+  refine (contDiff_l2T1Conj_entry H r hr hL i j).contDiffAt.sub ?_
+  refine contDiffAt_matrix_mul_entry
+    (A := fun q => l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹) ?_
+    (fun k b => (contDiff_l2Y1Conj_entry H r B hB hr hL k b).contDiffAt) i j
+  intro a k
+  exact contDiffAt_matrix_mul_entry
+    (fun a' k' => (contDiff_l2Z1Conj_entry H r B hB hr hL a' k').contDiffAt)
+    (fun k' b' => contDiffAt_l2A1Conjinv_entry H r B hB hr hL hDA1 k' b') a k
+
+/-- `Brc` entries `ContDiffAt` at the origin (the three-summand bracket). -/
+theorem contDiffAt_l2BrConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2BrConj H r B hB hr hL hL2eq q i j) 0 := by
+  have h1 : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (((1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ) - l2KConj H r B hB hr hL hL2eq q)
+          * l2S1Conj H r B hB hr hL hL2eq q) i j) 0 := by
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => (1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+        (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ) - l2KConj H r B hB hr hL hL2eq q) ?_
+      (fun k b => contDiffAt_l2S1Conj_entry H r B hB hr hL hL2eq hDA1 k b) i j
+    intro a k
+    have hsub : (fun q => (1 - l2KConj H r B hB hr hL hL2eq q) a k)
+        = fun q => (1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ) a k
+            - l2KConj H r B hB hr hL hL2eq q a k := by
+      funext q; rw [Matrix.sub_apply]
+    rw [hsub]
+    refine contDiffAt_const.sub ?_
+    have hKeq : (fun q => l2KConj H r B hB hr hL hL2eq q a k)
+        = fun q => (l2Z1Conj H r B hB hr hL q * (l2P00Conj H r B hB hr hL hL2eq q)⁻¹
+            * l2Y0Conj H r B hB hr hL hL2eq q) a k := by
+      funext q; rw [l2KConj]
+    rw [hKeq]
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => l2Z1Conj H r B hB hr hL q * (l2P00Conj H r B hB hr hL hL2eq q)⁻¹) ?_
+      (fun k' b' => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq k' b').contDiffAt) a k
+    intro a' k'
+    exact contDiffAt_matrix_mul_entry
+      (fun a'' k'' => (contDiff_l2Z1Conj_entry H r B hB hr hL a'' k'').contDiffAt)
+      (fun k'' b'' => contDiffAt_l2P00Conjinv_entry H r B hB hr hL hL2eq hDA0 hDA1 hY k'' b'') a' k'
+  have h2 : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹
+          * l2Y1Conj H r B hB hr hL q) i j) 0 := by
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹) ?_
+      (fun k b => (contDiff_l2Y1Conj_entry H r B hB hr hL k b).contDiffAt) i j
+    intro a k
+    exact contDiffAt_matrix_mul_entry
+      (fun a' k' => (contDiff_l2Z1Conj_entry H r B hB hr hL a' k').contDiffAt)
+      (fun k' b' => contDiffAt_l2A1Conjinv_entry H r B hB hr hL hDA1 k' b') a k
+  have h3 : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹
+          * l2Y0Conj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q) i j) 0 := by
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹
+          * (l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q) ?_
+      (fun k b => (contDiff_l2T1Conj_entry H r hr hL k b).contDiffAt) i j
+    intro a k
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹
+          * (l2A0Conj H r B hB hr hL q)⁻¹) ?_
+      (fun k' b' => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq k' b').contDiffAt) a k
+    intro a' k'
+    refine contDiffAt_matrix_mul_entry
+      (A := fun q => l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹) ?_
+      (fun k'' b'' => contDiffAt_l2A0Conjinv_entry H r B hB hr hL hDA0 k'' b'') a' k'
+    intro a'' k''
+    exact contDiffAt_matrix_mul_entry
+      (fun a3 k3 => (contDiff_l2Z1Conj_entry H r B hB hr hL a3 k3).contDiffAt)
+      (fun k3 b3 => contDiffAt_l2A1Conjinv_entry H r B hB hr hL hDA1 k3 b3) a'' k''
+  have heq : (fun q => l2BrConj H r B hB hr hL hL2eq q i j)
+      = fun q => (((1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ) - l2KConj H r B hB hr hL hL2eq q)
+          * l2S1Conj H r B hB hr hL hL2eq q) i j
+          + (l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹
+              * l2Y1Conj H r B hB hr hL q) i j
+          + (l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹
+              * l2Y0Conj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q) i j := by
+    funext q; rw [l2BrConj, Matrix.add_apply, Matrix.add_apply]
+  rw [heq]
+  exact (h1.add h2).add h3
+
 end DLNFibre.DLN.RLCT
