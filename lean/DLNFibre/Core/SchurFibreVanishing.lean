@@ -17,7 +17,7 @@ The proof is the two-stage decomposition Codex named:
 1. fix `y ∈ F`; `evalFibrePt y : O(F) →ₐ[k] k` evaluates a coordinate class at `y` (well-defined: the
    point lies on `F`, so `vanishingIdeal F` is killed). `MvPolynomial.map (evalFibrePt y) h :
    MvPolynomial σ k` vanishes at every `s` (the hypothesis), so it is `0` by `MvPolynomial.funext`
-   (`k` infinite — alg-closed);
+   (`k` infinite);
 2. hence each coefficient `evalFibrePt y (coeff m h) = 0` for all `y ∈ F` (`MvPolynomial.coeff_map`),
    i.e. the representative of `coeff m h` lies in `vanishingIdeal F`, so `coeff m h = 0` in `O(F)`;
 3. all coefficients zero ⟹ `h = 0` (`MvPolynomial.ext`).

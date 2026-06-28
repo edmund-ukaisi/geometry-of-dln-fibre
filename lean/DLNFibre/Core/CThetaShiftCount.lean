@@ -14,7 +14,7 @@ top-dimensional component count of `Σ̄^r`, in terms of the **shifted** dimensi
 * `CThetaThetaBridge.numTop_zero_eq_cTheta` — `numTop e 0 = cTheta e = C(m, |δ|)` (Thm 7.10,
   `r = 0`), for weakly-increasing `e`;
 * `CCodimZeroStrict.numTop_eq_ncard_topComponents` — `numTop d r = #{top-dim components of Σ̄^r}`
-  (unconditional, over `[IsAlgClosed][CharZero]`).
+  (unconditional, over `[CharZero][Infinite]`).
 
 The combinatorial conclusion `cTheta (d − r) = numTop d r` needs only `Monotone (d − r)` (which
 follows from `Monotone d`) and `r ≤ d k` everywhere; it is field-free. Stacking the geometric

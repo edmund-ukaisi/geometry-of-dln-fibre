@@ -19,7 +19,7 @@ geometric codimension `codim Ō_M` of the orbit closure **only if** the orbit is
 `dim Ō_M = dim (tangent space at M)` — that the orbit tangent space is `B¹` (orbit smoothness /
 the orbit-map differential is surjective onto `B¹`) and that `dim Ō = dim C¹ − dim Ext¹` (Voigt's
 theorem, the orbit-dimension bridge). Those algebraic-geometry facts are **now PROVED** in
-`Core.VoigtDischarge` (`codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`)
+`Core.VoigtDischarge` (`codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[CharZero k]`)
 — this module itself does not invoke them; it stays the honest **linear shadow** (`orbitLinearCodim`
 is by definition `dim C¹ ⧸ B¹`, not the geometric codim), and the geometric reading is recorded in
 `Core.CThetaGeometric`. Hence no declaration here is named `codim O` / `codim_orbit`.
@@ -58,8 +58,7 @@ theorem orbitLinearCodim_eq_finrank_deformationExt1 {d : Fin (N + 1) → ℕ} (M
 `M = intervalDirectSum L` over a field, the expected (tangent-space) codimension is the paper's
 quadratic form `Σ_{1≤i≤u≤j≤v≤N} m_{i-1,j-1} m_{uv}`, `m = multiplicityArray L`. Rank–nullity chained
 with the committed headline `finrank_deformationExt1_self_eq_multSum`. The geometric reading
-`= codim Ō` is proved in `Core.VoigtDischarge` / `Core.CThetaGeometric` (`[IsAlgClosed k]
-[CharZero k]`). -/
+`= codim Ō` is proved in `Core.VoigtDischarge` / `Core.CThetaGeometric` (`[CharZero k]`). -/
 theorem orbitLinearCodim_eq_multSum (L : List (Fin (N + 1) × Fin (N + 1))) :
     (orbitLinearCodim (intervalDirectSum (k := k) L) : ℤ)
       = ∑ i ∈ Finset.Icc (1 : ℤ) N, ∑ u ∈ Finset.Icc i (N : ℤ), ∑ j ∈ Finset.Icc u (N : ℤ),

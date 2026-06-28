@@ -33,8 +33,9 @@ is `RankLocusClosed.vanishingIdeal_orbitRankLocus_le_orbitSet`). Architecture (C
    orbitRankLocus M) = vanishingIdeal (orbitSet M)`.
 5. **Primeness** (`isPrime_vanishingIdeal_orbitRankLocus`): the headline + L1.
 
-**Typeclass.** `[Field k] [Infinite k]` for the degeneration engine; `[IsAlgClosed k]` only for the
-primeness corollary (which inherits L1's hypothesis). **Dependency rule:** `Core` only.
+**Typeclass.** `[Field k] [Infinite k]` for the degeneration engine; the primeness corollary
+`isPrime_vanishingIdeal_orbitRankLocus` needs only `[Infinite k]` too (inherits L1's hypothesis —
+no algebraic closedness). **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core

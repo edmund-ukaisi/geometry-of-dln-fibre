@@ -10,8 +10,8 @@ The **geometric** codimension of the `G_d`-orbit closure inside `Rep_d`, deliver
 defined-objects form, stated here in implication form against a named hypothesis (`hVoigt`). Phase A
 proved the *algebraic* / tangent codimension `orbitLinearCodim M = dim Ext¹(M,M) = Σ m_{i-1,j-1} m_{uv}`
 (`OrbitLinearCodim`); the geometric equality `codim Ō_M = orbitLinearCodim M` is Voigt's theorem,
-**now PROVED in the engine** (`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, char 0
-+ algebraically closed, via the dimension squeeze + L7). Here we:
+**now PROVED in the engine** (`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, char 0,
+via the dimension squeeze + L7; no algebraic closedness). Here we:
 
 1. name the orbit closure concretely as the **rank locus** `orbitRankLocus M` (Lehalleur–Rimányi
    2024 Thm 3.8: for the equioriented type-`A` quiver the `G_d`-orbit closure of `M` is exactly the
@@ -138,7 +138,7 @@ noncomputable def codimRepCanonical {d : Fin (N + 1) → ℕ} (Z : Set (Tuple (k
 `hVoigt` is **Voigt's lemma**: the geometric codimension of the orbit closure equals the tangent /
 expected codimension `orbitLinearCodim M = dim Ext¹(M,M)`. It enters these theorems as an explicit
 hypothesis (NOT a global axiom). `hVoigt` is **PROVED in the engine**
-(`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, char 0 + algebraically closed);
+(`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, char 0; no algebraic closedness);
 the unconditional headlines that supply it live in `Core.VoigtDischarge`. The theorems below keep
 their implication form (input `hVoigt`, conclude the Cor 3.5 form); given `hVoigt`, the headline is
 `orbitLinearCodim_eq_multSum` cast through `ENat.toNat`. -/
