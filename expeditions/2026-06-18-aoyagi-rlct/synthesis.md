@@ -48,6 +48,46 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Canonical Residual Measurability Handoff
+
+`RetainedPassiveLocalJacobianMeasure.lean` now proves the source-side residual
+positive-set measurability required by the canonical retained-passive identity
+source:
+
+```text
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+```
+
+The proof path is finite Borel bookkeeping.  The identity edge-family map on
+`EFam` is continuous.  The retained-passive fixed-base edge-matrix theorem
+turns this into continuity, hence measurability, of the fixed-basis matrix
+coordinates.  The existing residual-coordinate measurability theorem then
+proves the residual block coordinate map is measurable, and the existing
+square-sum positive-set theorem gives the desired measurable set.
+
+Three canonical front ends now consume only chart-side residual hypotheses:
+
+```text
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density_of_chartSide
+```
+
+They remove only the source-side residual positive-set measurability argument.
+The chart-side residual positivity and chart-side finite residual integral
+remain explicit.  The finite-integral wrappers also keep local loss and density
+hypotheses explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  Full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and touched-file forbidden-marker search
+passed.  Xhigh review by `Hegel the 2nd` passed.
+
+Nonclaims: no residual zero-locus nullity, no chart-side a.e. positivity, no
+residual negative-power integrability, no monomial residual lower bound, no
+selected-entry signed-box source-density identification, no original-prior
+transport, no normal crossings, no pole-order theorem, and no RLCT theorem.
+
 ## Latest A2 Canonical Product-Density Continuous-Density Handoff
 
 `RetainedPassiveLocalJacobianMeasure.lean` now has a radius-shrinking wrapper

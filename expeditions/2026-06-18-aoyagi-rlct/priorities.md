@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical residual measurability handoff
+
+The canonical retained-passive identity source now discharges source-side
+residual positive-set measurability internally.  New Lean names in
+`RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density_of_chartSide
+```
+
+The measurability proof uses only finite fixed-base coordinate bookkeeping:
+`continuous_id`, the retained-passive edge-matrix continuity theorem,
+residual-block-coordinate measurability from measurable edge matrices, and
+measurability of the positive set of a finite coordinate square-sum.  The
+wrappers remove only the source-side residual positive-set measurability
+argument from the canonical residual, fixed-radius finite-integral, and
+continuous-density finite-integral front ends.
+
+The chart-side residual positivity and chart-side finite residual integral
+remain explicit, as do the local loss and density hypotheses in the
+finite-integral front ends.  Focused `RetainedPassiveLocalJacobianMeasure` and
+full `DLNFibre` builds passed, the latter with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and touched-file forbidden-marker search
+passed.  Xhigh review by `Hegel the 2nd` passed.
+
+This still does not prove residual zero-locus nullity, chart-side a.e.
+positivity, residual negative-power integrability, a monomial residual lower
+bound, selected-entry signed-box source-density identification, original-prior
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, canonical product-density continuous-density handoff
 
 The canonical retained-passive product-density finite-integral handoff now has

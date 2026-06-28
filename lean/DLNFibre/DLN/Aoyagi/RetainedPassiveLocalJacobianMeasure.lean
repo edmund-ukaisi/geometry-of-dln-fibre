@@ -1000,6 +1000,67 @@ private theorem retainedPassiveP13CanonicalSourceChart_comp_topologyTupleEdgeRaw
   simpa [Function.comp_def, Φ, sourceChart, ν, ρ, κ', EFam] using
     hsource_map.comp_aemeasurable hΦ_ν
 
+set_option linter.unusedSectionVars false in
+/-- In the canonical retained-passive p.13 identity-source case, the residual
+square-sum positive set is measurable.
+
+This is finite fixed-base coordinate bookkeeping: the identity edge-family map
+is continuous, so the fixed-basis edge-matrix family is continuous, the residual
+block coordinate map is measurable, and the positive set of its square-sum is
+measurable. -/
+theorem measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)] :
+    MeasurableSet {x :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) |
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀
+          (fun E :
+            (∀ p : Fin (M + 1),
+              reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ↦ E) x)} := by
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  have hCedge : Continuous (fun E : EFam ↦ E) := by
+    simpa [EFam] using (continuous_id : Continuous (fun E : EFam ↦ E))
+  have hEdgeMatrixCont :
+      Continuous fun x : EFam ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) x p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) := by
+    simpa [EFam] using
+      continuous_paperEndpointFixedBaseRetainedPassiveP13EdgeMatrix_of_continuous
+        (K := ℝ) (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := fun E : EFam ↦ E) hCedge
+  have hEdgeMatrix :
+      Measurable fun x : EFam ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) x p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) :=
+    hEdgeMatrixCont.measurable
+  have hresidual :
+      Measurable
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)) := by
+    exact
+      measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := fun E : EFam ↦ E) hEdgeMatrix
+  simpa [EFam] using
+    measurableSet_residualSquareSum_pos_of_measurable
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := fun E : EFam ↦ E) hresidual
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
 /-- Canonical fixed-base retained-passive local-source residual hypotheses
@@ -1132,6 +1193,129 @@ theorem residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_forma
       (Cedge := fun E : EFam ↦ E)
       (source := localSource) (μ := μ) (ν := ν) (chart := chart) (t := t)
       hchart hmap hpos_meas hpos_chart hbase_chart
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- Canonical fixed-base retained-passive local-source residual hypotheses from
+chart-side hypotheses only.
+
+Compared with
+`residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet`,
+this front end discharges the source-side residual positive-set measurability
+for the canonical identity source family.  The chart-side residual positivity
+and finite residual integral remain explicit. -/
+theorem residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure] {t : ℝ} :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (fun E : EFam ↦ E)
+    let μ := Measure.map sourceChart (m.restrict T)
+    let ν :=
+      (m.restrict S).withDensity
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ENNReal.ofReal
+            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := M) (ρ := ρ) (κ' := κ') z))
+    (∀ᵐ z ∂ ν,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := ρ) (κ' := κ') z)))) →
+    (∫⁻ z : TopologyTuple ρ κ' ℝ,
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (sourceChart
+              (topologyTupleEdgeRawOrder
+                (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ^ (-t)) ∂ ν) < ∞ →
+    (∀ᵐ x ∂ μ.restrict localSource,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (fun E : EFam ↦ E) localSource μ t := by
+  dsimp only
+  intro hpos_chart hbase_chart
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun y ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+      (fun E : EFam ↦ E)
+  let μ : Measure EFam := Measure.map sourceChart (m.restrict T)
+  let ν : Measure (TopologyTuple ρ κ' ℝ) :=
+    (m.restrict S).withDensity
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := M) (ρ := ρ) (κ' := κ') z))
+  have hpos_meas :
+      MeasurableSet {x : EFam |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)} := by
+    simpa [EFam] using
+      measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+  simpa [ρ, κ', S, T, EFam, sourceChart, localSource, μ, ν] using
+    residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (m := m) (t := t)
+      hpos_meas hpos_chart hbase_chart
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
@@ -1356,6 +1540,171 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
+/-- Canonical fixed-base retained-passive finite-integral handoff from
+chart-side residual hypotheses only.
+
+This front end discharges the source-side residual positive-set measurability
+for the canonical identity source family, then delegates to
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet`.
+The chart-side residual positivity, chart-side finite residual integral, local
+loss lower bound, and local density bounds remain explicit. -/
+theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀
+        ((fun p : Fin (M + 1) ↦
+          LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+          ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+        (fun E :
+            (∀ p : Fin (M + 1),
+              reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ↦ E)
+        H r rEdge)
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure] [SFinite m]
+    {ν :
+      Measure
+        (EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss density :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ×
+        EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t R c C : ℝ}
+    (hR : 0 < R) (hc : 0 < c) (hC : 0 ≤ C) (ht : 0 < t) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let base : EFam :=
+      fun p : Fin (M + 1) ↦
+        LinearMap.toContinuousLinearMap (reverseEdge W B p)
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (fun E : EFam ↦ E)
+    let μ := Measure.map sourceChart (m.restrict T)
+    let νChart :=
+      (m.restrict S).withDensity
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ENNReal.ofReal
+            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := M) (ρ := ρ) (κ' := κ') z))
+    let ρreg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B (fun E : EFam ↦ E) r rEdge
+    (∀ᵐ z ∂ νChart,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := ρ) (κ' := κ') z)))) →
+    (∫⁻ z : TopologyTuple ρ κ' ℝ,
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (sourceChart
+              (topologyTupleEdgeRawOrder
+                (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ^ (-t)) ∂ νChart) < ∞ →
+    (∀ᶠ x in nhdsWithin base localSource,
+      ∀ u : EuclideanSpace ℝ ρreg,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+          c * (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x) +
+            aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) →
+    (∀ᶠ x in nhdsWithin base localSource,
+      ∀ u : EuclideanSpace ℝ ρreg,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+          0 ≤ density (x, u)) →
+    (∀ᶠ x in nhdsWithin base localSource,
+      ∀ u : EuclideanSpace ℝ ρreg,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+          density (x, u) ≤ C) →
+    ∃ U : Set EFam, IsOpen U ∧ base ∈ U ∧
+      (∫⁻ z : EFam × EuclideanSpace ℝ ρreg,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρreg) R).indicator
+            (fun u =>
+              (loss (z.1, u)) ^
+                  (-(t + (aoyagiTheorem2RegularVariableCount (M + 1) H r : ℝ) / 2)) *
+                density (z.1, u)) z.2) ∂
+          (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  dsimp only
+  intro hpos_chart hbase_chart hloss hdensity_nonneg hdensity_le
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  have hpos_meas :
+      MeasurableSet {x : EFam |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)} := by
+    simpa [EFam] using
+      measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+  simpa [EFam] using
+    exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+      (W := W) (B := B) sourceData (m := m) (ν := ν)
+      (loss := loss) (density := density) (t := t) (R := R) (c := c) (C := C)
+      hR hc hC ht hpos_meas hpos_chart hbase_chart
+      hloss hdensity_nonneg hdensity_le
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
 /-- Canonical fixed-base retained-passive finite-integral handoff for a
 continuous positive transported density factor.
 
@@ -1567,6 +1916,165 @@ theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13Regular
   exact
     ⟨R, C, U, hR, hRle, hC, hUopen, by simpa [base] using hbaseU,
       by simpa [ρreg, sourceStratum, μ, sourceChart, T, base, localSource, EFam] using hfinite⟩
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- Radius-shrinking canonical fixed-base retained-passive finite-integral
+handoff from chart-side residual hypotheses and a continuous positive density.
+
+This front end combines the canonical residual positive-set measurability lemma
+with
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density`.
+The chart-side residual positivity, chart-side finite residual integral, and
+local loss lower bound remain explicit. -/
+theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density_of_chartSide
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀
+        ((fun p : Fin (M + 1) ↦
+          LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+          ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)
+        (fun E :
+            (∀ p : Fin (M + 1),
+              reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ↦ E)
+        H r rEdge)
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure] [SFinite m]
+    {ν :
+      Measure
+        (EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss density :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ×
+        EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t Rmax c : ℝ}
+    (hRmax : 0 < Rmax) (hc : 0 < c) (ht : 0 < t) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let base : EFam :=
+      fun p : Fin (M + 1) ↦
+        LinearMap.toContinuousLinearMap (reverseEdge W B p)
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (fun E : EFam ↦ E)
+    let μ := Measure.map sourceChart (m.restrict T)
+    let νChart :=
+      (m.restrict S).withDensity
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ENNReal.ofReal
+            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := M) (ρ := ρ) (κ' := κ') z))
+    let ρreg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B (fun E : EFam ↦ E) r rEdge
+    ContinuousAt density (base, (0 : EuclideanSpace ℝ ρreg)) →
+    0 < density (base, (0 : EuclideanSpace ℝ ρreg)) →
+    (∀ᵐ z ∂ νChart,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := ρ) (κ' := κ') z)))) →
+    (∫⁻ z : TopologyTuple ρ κ' ℝ,
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (sourceChart
+              (topologyTupleEdgeRawOrder
+                (K := ℝ) (ρ := ρ) (κ' := κ') z)))) ^ (-t)) ∂ νChart) < ∞ →
+    (∀ᶠ x in nhdsWithin base localSource,
+      ∀ u : EuclideanSpace ℝ ρreg,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) Rmax →
+          c * (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x) +
+            aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) →
+    ∃ R C : ℝ, ∃ U : Set EFam,
+      0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ base ∈ U ∧
+      (∫⁻ z : EFam × EuclideanSpace ℝ ρreg,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρreg) R).indicator
+            (fun u =>
+              (loss (z.1, u)) ^
+                  (-(t + (aoyagiTheorem2RegularVariableCount (M + 1) H r : ℝ) / 2)) *
+                density (z.1, u)) z.2) ∂
+          (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  dsimp only
+  intro hdensity_cont hdensity_pos hpos_chart hbase_chart hloss
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  have hpos_meas :
+      MeasurableSet {x : EFam |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)} := by
+    simpa [EFam] using
+      measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+  simpa [EFam] using
+    exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density
+      (W := W) (B := B) sourceData (m := m) (ν := ν)
+      (loss := loss) (density := density) (t := t) (Rmax := Rmax) (c := c)
+      hRmax hc ht hdensity_cont hdensity_pos hpos_meas hpos_chart hbase_chart hloss
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
