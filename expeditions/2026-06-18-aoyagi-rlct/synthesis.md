@@ -48,6 +48,51 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Inverse-Jacobian Finite-Integral Handoff
+
+The raw-order retained-passive p.13 source measure with inverse-Jacobian
+density now has the finite-integral handoff
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+```
+
+The proof first obtains p.13 residual-source positivity and
+`residualNegPowerIntegrableOn` for
+
+```text
+μ =
+  Measure.map rawChart
+    ((m.restrict T).withDensity
+      (fun y => ofReal (topologyTupleEdgeRawOrderInverseJacobianDensity y)))
+```
+
+by applying the retained-passive inverse-Jacobian residual-source handoff.
+It then calls the retained-passive local finite-integral socket with
+`Cedge := fun E => E`, base identity by `rfl`, and continuity by
+`continuous_id`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+The review caught and the notes now fix one precision issue: source-space
+residual positive-set measurability is an explicit theorem input, separate
+from the determinant-chart residual positivity/integrability inputs.  This
+theorem still does not prove source-space residual measurability,
+determinant-chart residual positivity/integrability, selected-entry residual
+integrability, source-rank coverage, original external DLN source-prior
+transport, normal crossings, pole order, or RLCT extraction.
+
 ## Latest A2 Retained-Passive DetData Continuity-To-AEMeasurable
 
 The retained-passive local-measure layer now has

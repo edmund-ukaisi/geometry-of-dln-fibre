@@ -18,6 +18,44 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive inverse-Jacobian finite-integral handoff
+
+Reproduction:
+`reproduction-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+Statement card:
+`statement-card-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+Review:
+`review-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It composes the retained-passive inverse-Jacobian residual-source handoff with
+the p.13 local finite-integral socket for the identity retained-passive local
+source.  The proof uses the raw-order source measure
+
+```text
+Measure.map rawChart ((m.restrict T).withDensity invJacDensity)
+```
+
+and applies the socket with `Cedge := fun E => E`, the base identity by `rfl`,
+and continuity by `continuous_id`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct theorem
+axiom probe, and xhigh review passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is a retained-passive chart-layer finite-integral handoff.  It does not
+prove source-space residual positive-set measurability, determinant-chart
+residual positivity/integrability, selected-entry residual integrability,
+source-rank coverage, original external DLN-prior transport, normal crossings,
+pole order, or RLCT extraction.
+
 ## 2026-06-28 A2 retained-passive direct source-chart inverse-Jacobian measure
 
 Reproduction:

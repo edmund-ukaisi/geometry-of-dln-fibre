@@ -19,6 +19,38 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian finite-integral handoff
+
+The raw-order retained-passive p.13 source measure with inverse-Jacobian
+density now feeds the p.13 regular-coordinate finite-integral socket:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It composes the inverse-Jacobian residual-source handoff with the
+retained-passive local finite-integral theorem.  The source-space residual
+positive-set measurability, direct determinant-chart a.e. residual positivity,
+direct determinant-chart finite residual negative-power integral, local loss
+lower bound, and local density bounds remain explicit inputs.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-finite-integral-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, direct axiom probe, and xhigh review passed; the
+declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is still a chart-layer finite-integral handoff.  It does not prove the
+source-space residual positive-set measurability, determinant-chart residual
+positivity/integrability, selected-entry residual integrability, source-rank
+coverage, original external DLN-prior transport, normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive DetData continuity-to-a.e.-measurability adapter
 
 The retained-passive source-edge-family handoffs now have the helper
