@@ -2724,7 +2724,8 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
     (q : DeepestSplit H r (deepestNGauge H r))
     (hq : q = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
     (hball : psiSplitRawL2 H r hr hL q ∈ Metric.closedBall
-      (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn)) :
+      (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn))
+    (hWdet : (l2W H r hr hL hL2 q).det ≠ 0) :
     deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1 = Score x := by
   -- SCOPED RESIDUAL (route A, sub-4 — feasibility CONFIRMED closeable w/ banked pieces, Codex high). The
   -- chain (each step a banked lemma; the 2 novel pieces — `schur_frame_transform`, `l2T1p_sub_Z1A1invY1p_eq`
@@ -2749,6 +2750,26 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
                 ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
     deepestCoreF_coreAbsorb_eq_prodSchur H r hr hL (psiSplitRawL2 H r hr hL q) hball
   rw [hstepA]
+  -- STEP 1-2 (banked): identify the absorbed-core tuple `c` per layer.  `psiSplitRawL2 = psiSplitRawL2Core`
+  -- at `L = 2`; then `absorbedCore_psiSplitRawL2Core_last` (consumes `hWdet`) gives `c last = (1−K)·S1`,
+  -- and `absorbedCore_psiSplitRawL2Core_of_ne` gives `c s = decode(q) s + schurCorr(q) s` for `s ≠ last`.
+  have hψeq : psiSplitRawL2 H r hr hL q = psiSplitRawL2Core H r hr hL hL2 q := dif_pos hL2
+  have hclast : (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 (lastLayer hL)
+        + schurCorrection H r hr hL
+            ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) (lastLayer hL)
+      = (1 - l2K H r hr hL hL2 q) * l2S1 H r hr hL hL2 q := by
+    rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_last H r hr hL hL2 q hWdet
+  have hc0 : ∀ s : Fin L, s ≠ lastLayer hL →
+      (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
+        + schurCorrection H r hr hL
+            ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s
+      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s + schurCorrection H r hr hL (q.1, q.2.2) s := by
+    intro s hs; rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_of_ne H r hr hL hL2 q s hs
+  -- STEP 3-4 (the LDU + frame-transform tail): `prod_absorbed_eq_schur_ldu` (identifying S0/S1/K with the
+  -- raw `decode x` layer blocks) → `frobSq(Rcore)`, then `rcore_eq_schur_of_corner_split` (hS3b) +
+  -- `schur_frame_transform` (hPbr/hQbr) → `Score x`.  THREADED as route-A inputs at the caller (hS3b,
+  -- hPbr/hQbr + the decode-x readback ties); the L=2 reduced-product unfold via `prod_deepestM_eq_two_of_L2`.
+  -- (hclast/hc0 above bank the absorbed-core identification — STEP 1-2.)
   -- SCOPED RESIDUAL (route A, sub-4 tail). The absorbed-core energy is now `frobSq(prod(deepestM) c)`
   -- with `c s = decode(ψq).2.1 s + schurCorrection(ψq) s` the per-layer Schur-shifted core.
   -- BANKED THIS TIDE (axiom-clean clean-three; in this file, S6c/S6p sections):
