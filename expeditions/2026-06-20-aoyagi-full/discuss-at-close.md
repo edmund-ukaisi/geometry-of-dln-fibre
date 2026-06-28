@@ -904,3 +904,19 @@ through both the bridge AND the `_L2` squeeze. **Fallback → O1** (controller s
 to return triangular frames — the Item-26 (1a) Core+producer re-thread) if the frames turn out producer-internal.
 **Operator-relevant:** the L2 bridge is a bit larger than the "~2-tide" estimate (the (1a) triangular-frame construction
 rides on top), but still bounded + sound via route A; no new research-risk (3289 remains the only one).
+
+### Item 45 — R1-UPPER firing PASS modulo carving; the "fixed-R inner is false, the JOINT is needed" soundness point (2026-06-28)
+genm-firing built the full R1-UPPER recStep firing (`schurRecStep_four : SchurRecStep 4 schurLambda`, ~770 LoC,
+RouteMSchurFiring.lean) — fidelity-reviewed PASS, ALL pieces sorry-free + axiom-clean except the one scoped carving
+`schurRatioResidGen_mid`. The abstract-IH decoupling HELD end-to-end (no concrete general-T core_schur3 needed — the
+firing invokes the abstract `SchurLowerIH`). Dispatched the carving (~200 generic-r lines, Codex×3+reviewer ROUTE-A/no-wall)
+to a dedicated `genm-carving` tide on genm-firing's branch; genm-firing stood down. When the carving lands →
+`schurRecStep_four` sorry-free → `schurGen_lt_top_modulo_recStep` capstone CLOSES R1-UPPER.
+
+**Soundness point (recurring — record for the Schur recursion):** genm-firing caught (reviewer-confirmed) that a
+*fixed-R* inner-S finiteness `∫_S frobSq(R·S)^{−c'} < ⊤` is FALSE (it DIVERGES at singular R) — the heart must be the
+**JOINT ratio-residual** (integrate z carrying the free M22 that the IH consumes), mirroring corank-3's
+`schurInner3_ratiofin`. This is the same shape as the earlier corank-3 "R-integrated inner" finding (n4-o2): the fixed-R
+slice undershoots/diverges; the joint free-(M22,S_bot) core is the correct, IH-consuming abstraction. Any future
+Schur-recursion work (the general ∀p lift beyond p=4, etc.) must use the JOINT residual, never a fixed-R inner. Caught
+before sinking, both times — the decorrelated-Codex + reviewer discipline working.
