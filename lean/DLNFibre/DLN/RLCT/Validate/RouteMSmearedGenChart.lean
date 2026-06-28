@@ -145,6 +145,28 @@ theorem smParams_deepLayer (u : Fin (routeMAmbient M) → ℝ)
     smParams M hL u hrow hcol hm1 (deepLayer M hL) = smearedDeepLayer M hL u hrow hcol hm1 := by
   rw [smParams, Function.update_self]
 
+/-- **The front-fact entry relation** (the shear cancellation, entrywise). Off the pole, with a width-1
+layer at `p` (`M ⟨p,_⟩ = 1`, `p ≤ L−1`), the routing applied to the pivot column reproduces each
+residual column entrywise: `frontMat i ⟨0,_⟩ · routing 0 r = frontMat i (residSel r)`. This is the
+`(i,r)` entry of the landed `prodAux_frontScalarShear_cancel` (`P₁·Λ₀ = P₂`). -/
+theorem frontMat_routing_eq_resid (u : Fin (routeMAmbient M) → ℝ)
+    (p : ℕ) (hp : p < L + 1) (hp1 : M ⟨p, hp⟩ = 1) (hple : p ≤ L - 1)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (hc : (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2) ≠ 0)
+    (i : Fin (M 0)) (r : Fin (M ⟨L - 1, by omega⟩ - 1)) :
+    frontMat M hL u i ⟨0, hm1⟩ * routing M hL u hm1 0 r
+      = frontMat M hL u i (residSel M hL hm1 r) := by
+  -- `P₁ = pivotCol`, `P₂ = residCols`, `Λ₀ = routing`; the cancellation `P₁·Λ₀ = P₂` from §3.
+  have hcancel := prodAux_frontScalarShear_cancel M (baseParams M u) p hp hp1
+    (L - 1) hple (by omega) hm1 (by rw [← frontMat]; exact hc) (residSel M hL hm1)
+    (pivotCol M hL u hm1) (residCols M hL u hm1)
+    (fun i => rfl) (fun i r => rfl)
+  -- `routing = (P₁ᵀP₁)⁻¹P₁ᵀP₂`, so `hcancel : P₁ * routing = residCols`. Read entry `(i, r)`.
+  have hr : (pivotCol M hL u hm1 * routing M hL u hm1) i r = residCols M hL u hm1 i r := by
+    rw [routing]; rw [← Matrix.mul_assoc, ← Matrix.mul_assoc] at hcancel ⊢; rw [hcancel]
+  rw [Matrix.mul_apply, Fin.sum_univ_one, pivotCol, residCols] at hr
+  exact hr
+
 /-- **The telescope (the keystone): the chart product is `u_p`-scaled column 0 of the front product.**
 Off the pole `‖col 0‖² ≠ 0`, the deepest-layer shear cancels via the front fact, leaving
 `prod M (smParams u) i ⟨0,_⟩ = u_p · frontMat u i ⟨0,_⟩` (with `u_p = deepCol u ⟨0,_⟩` the pivot row
@@ -152,6 +174,7 @@ entry). `c = M_L = 1` (the single deepest column), so the product is a single co
 theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
     (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
     (hc1 : M (deepLayer M hL).succ = 1)
+    (p : ℕ) (hp : p < L + 1) (hp1 : M ⟨p, hp⟩ = 1) (hple : p ≤ L - 1)
     (hm1 : 0 < M ⟨L - 1, by omega⟩)
     (hc : (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2) ≠ 0)
     (i : Fin (M 0)) (jc : Fin (M (Fin.last L))) :
@@ -182,9 +205,21 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
       show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _]
   erw [Matrix.reindex_refl_refl]
   rw [hfront, hlayer]
-  -- REMAINING (the generic-`m1` final-layer split, Codex's flagged wall): split the middle sum at the
-  -- pivot row `0` via `Fin.sum_univ_succAbove`, read off `smearedDeepLayer` (pivot = u_p − shift,
-  -- residual = free), and cancel the shear with `prodAux_frontScalarShear_cancel`.
+  -- Goal: `∑ j, frontMat i j * smearedDeepLayer j jc = deepCol ⟨0,hrow⟩ * frontMat i ⟨0,hm1⟩`.
+  -- `jc = ⟨0,hcol⟩` (single deepest column, `M_L = 1`).
+  have hjc : jc = ⟨0, hcol⟩ := Fin.ext (by have := jc.isLt; have : M (Fin.last (m + 1)) = 1 := hc1; omega)
+  subst hjc
+  -- Per-row readout of the smeared deepest column: pivot row `0` ↦ `u_p − shift`, residual rows ↦ free.
+  have hsdl : ∀ j, smearedDeepLayer M hL u hrow hcol hm1 j ⟨0, hcol⟩
+      = (if j = ⟨0, hrow⟩ then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol
+          else deepCol M hL u hcol j) := by
+    intro j
+    simp only [smearedDeepLayer, Matrix.updateRow_apply, deepCol]
+  -- REMAINING (mechanical sum-arithmetic): with `hsdl`, split `∑ j` at the pivot `0`
+  -- (`Finset.sum_eq_add_sum_diff_singleton`), reindex the residual sum `{j ≠ 0}` by `residSel`, and
+  -- cancel the shear via the landed `frontMat_routing_eq_resid` (the front fact, entrywise). Surface
+  -- friction only: the `if`-readout (`hsdl`'s `updateRow_apply`) + the residual `succAbove`/`residSel`
+  -- reindex bijection; the front-fact cancellation itself is `frontMat_routing_eq_resid` (LANDED).
   sorry
 
 end DLNFibre.DLN.RLCT
