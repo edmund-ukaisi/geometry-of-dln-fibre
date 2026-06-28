@@ -2260,6 +2260,102 @@ theorem measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
       (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
       (Cedge := fun E : EFam ↦ E) hresidual
 
+set_option linter.unusedSectionVars false in
+/-- In the canonical retained-passive p.13 direct-chart case, the residual
+square-sum positive set is measurable.
+
+The direct chart reads a topology tuple as retained-passive data.  Its
+fixed-base edge matrices are the retained edge matrices of that data, and those
+matrices are Borel-measurable on the ambient tuple space. -/
+theorem measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)] :
+    MeasurableSet {z :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ |
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀
+          (fun E :
+            (∀ p : Fin (M + 1),
+              reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) ↦ E)
+          (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+            W B U₀ hU₀
+            (ofTopologyTuple (K := ℝ)
+              (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' :=
+                throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀) z)))} := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let Data := RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ'
+  letI : MeasurableSpace Data := borel Data
+  letI : BorelSpace Data := ⟨rfl⟩
+  let directChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun z ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
+  have hof :
+      Measurable
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z) :=
+    (continuous_ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')).measurable
+  have hDataEdge :
+      Measurable (fun data : Data ↦ data.edgeMatrix) := by
+    simpa [Data, ρ, κ'] using
+      (measurable_edgeMatrix_real (M := M) (ρ := ρ) (κ' := κ') :
+        Measurable (fun data : Data ↦ data.edgeMatrix))
+  have hEdgeMatrix :
+      Measurable fun z : TopologyTuple ρ κ' ℝ ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (directChart z p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) := by
+    have hcomp :
+        Measurable fun z : TopologyTuple ρ κ' ℝ ↦
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).edgeMatrix :=
+      hDataEdge.comp hof
+    rw [show
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+            (fun p : Fin (M + 1) ↦
+              (directChart z p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))) =
+          fun z : TopologyTuple ρ κ' ℝ ↦
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).edgeMatrix by
+      funext z
+      simpa [directChart] using
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+          (K := ℝ) (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)]
+    exact hcomp
+  have hresidual :
+      Measurable
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ directChart) := by
+    exact
+      measurable_paperEndpointFixedBaseResidualBlockCoordinateMap_of_measurable_edgeMatrix
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := directChart) hEdgeMatrix
+  simpa [directChart, EFam, ρ, κ'] using
+    measurableSet_residualSquareSum_pos_of_measurable
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := directChart) hresidual
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
 /-- Determinant-chart residual hypotheses from a selected-entry signed-box

@@ -1932,6 +1932,536 @@ theorem continuous_edgeMatrix_detChart_subtype
   exact continuous_edgeMatrix_detChart_subtype_apply
     (ρ := ρ) (κ' := κ') (K := K) p
 
+private theorem measurable_matrix_mul_real
+    {α m n p : Type*} [MeasurableSpace α]
+    [Finite m] [Fintype n] [Finite p]
+    {A : α → Matrix m n ℝ} {B : α → Matrix n p ℝ}
+    (hA : Measurable A) (hB : Measurable B) :
+    Measurable (fun x ↦ A x * B x) := by
+  letI := Fintype.ofFinite m
+  letI := Fintype.ofFinite p
+  have hmul : Continuous (fun q : Matrix m n ℝ × Matrix n p ℝ ↦ q.1 * q.2) :=
+    continuous_fst.matrix_mul continuous_snd
+  exact hmul.measurable.comp (hA.prodMk hB)
+
+private theorem measurable_matrix_fromBlocks_real
+    {α m n p q : Type*} [MeasurableSpace α]
+    [Finite m] [Finite n] [Finite p] [Finite q]
+    {A : α → Matrix m n ℝ} {B : α → Matrix m q ℝ}
+    {C : α → Matrix p n ℝ} {D : α → Matrix p q ℝ}
+    (hA : Measurable A) (hB : Measurable B)
+    (hC : Measurable C) (hD : Measurable D) :
+    Measurable (fun x ↦ Matrix.fromBlocks (A x) (B x) (C x) (D x)) := by
+  letI := Fintype.ofFinite m
+  letI := Fintype.ofFinite n
+  letI := Fintype.ofFinite p
+  letI := Fintype.ofFinite q
+  have hfrom :
+      Continuous
+        (fun q : Matrix m n ℝ × (Matrix m q ℝ ×
+            (Matrix p n ℝ × Matrix p q ℝ)) ↦
+          Matrix.fromBlocks q.1 q.2.1 q.2.2.1 q.2.2.2) :=
+    continuous_fst.matrix_fromBlocks
+      (continuous_fst.comp continuous_snd)
+      ((continuous_fst.comp continuous_snd).comp continuous_snd)
+      ((continuous_snd.comp continuous_snd).comp continuous_snd)
+  exact hfrom.measurable.comp (hA.prodMk (hB.prodMk (hC.prodMk hD)))
+
+set_option linter.unusedSectionVars false in
+/-- Over real retained-passive coordinates, each solved full `A1` component is
+Borel-measurable on the whole ambient coordinate space. -/
+theorem measurable_solvedA1_real
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    (p : Fin (M + 1)) :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        (data.toCoordinateData).solvedA1 p) := by
+  cases p using Fin.cases with
+  | zero =>
+      have htail :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+                data.A1seed) :=
+        (continuous_retainedPassiveA1TailAfterFirst
+          (ρ := ρ) (κ' := κ') (K := ℝ)).measurable
+      have htailInv :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+                data.A1seed)⁻¹) :=
+        measurable_matrix_inv_real.comp htail
+      have hCtop :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦ data.Ctop) :=
+        (continuous_Ctop (ρ := ρ) (κ' := κ') (K := ℝ)).measurable
+      have hmul :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              (retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+                  data.A1seed)⁻¹ *
+                data.Ctop) :=
+        measurable_matrix_mul_real htailInv hCtop
+      simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
+        toCoordinateData] using hmul
+  | succ p =>
+      have hseed :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦ data.A1seed p.succ) :=
+        (continuous_A1seed (ρ := ρ) (κ' := κ') (K := ℝ) p.succ).measurable
+      simpa [RetainedPassiveCoordinateData.solvedA1, retainedPassiveSolvedA1,
+        toCoordinateData, Fin.succ_ne_zero] using hseed
+
+set_option linter.unusedSectionVars false in
+/-- Residual products of the solved full `A1` family are Borel-measurable on
+the whole ambient real coordinate space. -/
+theorem measurable_residualFactorProduct_solvedA1_real
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          (Fin.last (M + 1)) i hi) := by
+  let j : Fin (M + 2) := Fin.last (M + 1)
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          j ⟨m, Nat.lt_succ_of_le hm⟩ (Fin.val_fin_le.mpr hm))
+  have hbase : motive (M + 1) le_rfl := by
+    change
+      Measurable
+        (fun _data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            _ j j le_rfl)
+    simp [residualFactorProduct_self]
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hms
+    have hnext :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+              j p.succ hpj) := by
+      simpa [motive, j, p] using ih
+    have hfactor :=
+      measurable_solvedA1_real (ρ := ρ) (κ' := κ') p
+    have hmul :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              (data.toCoordinateData).solvedA1 p) :=
+      measurable_matrix_mul_real hnext hfactor
+    change
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj))
+    rw [show
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+            (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+            j p.castSucc ((Fin.castSucc_le_succ p).trans hpj)) =
+          fun data ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                j p.succ hpj *
+              (data.toCoordinateData).solvedA1 p by
+      funext data
+      exact
+        residualFactorProduct_castSucc
+          (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          p hpj]
+    simpa [p] using hmul
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase (Fin.val_fin_le.mp hi)
+  simpa [motive, j] using hcanon
+
+set_option linter.unusedSectionVars false in
+/-- The explicit lower-left product-tail sum built from solved `A1`, zeroed
+early `A3`, and stored `C` blocks is Borel-measurable on the whole ambient real
+coordinate space. -/
+theorem measurable_retainedPassiveLowerLeftProductTailSum_real
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    (m : ℕ) (hm : m ≤ M + 1) :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+          data.C m hm) := by
+  let motive : (m : ℕ) → m ≤ M + 1 → Prop := fun m hm ↦
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+          data.C m hm)
+  have hbase : motive (M + 1) le_rfl := by
+    change
+      Measurable
+        (fun _data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+            _ _ _ (M + 1) le_rfl)
+    simp [retainedPassiveLowerLeftProductTailSum_self]
+  have hstep : ∀ m (hms : m + 1 ≤ M + 1),
+      motive (m + 1) hms → motive m (Nat.le_of_succ_le hms) := by
+    intro m hms ih
+    let p : Fin (M + 1) := ⟨m, Nat.lt_of_succ_le hms⟩
+    have hpj : p.succ ≤ Fin.last (M + 1) := Fin.val_fin_le.mpr hms
+    have hCprod :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := ℝ) (κ := κ') data.C
+              (Fin.last (M + 1)) p.succ hpj) :=
+      (continuous_residualFactorProduct_C
+        (ρ := ρ) (κ' := κ') (K := ℝ) p.succ hpj).measurable
+    have hA3early :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+              data.A3seed p) :=
+      (continuous_retainedPassiveA3WithoutLast
+        (ρ := ρ) (κ' := κ') (K := ℝ) p).measurable
+    have hA1prod :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj)) :=
+      measurable_residualFactorProduct_solvedA1_real
+        (ρ := ρ) (κ' := κ') p.castSucc
+        ((Fin.castSucc_le_succ p).trans hpj)
+    have hA1prodInv :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+              (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+              (Fin.last (M + 1)) p.castSucc
+                ((Fin.castSucc_le_succ p).trans hpj))⁻¹) :=
+      measurable_matrix_inv_real.comp hA1prod
+    have hsummand :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ') data.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  data.A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹)) := by
+      exact (measurable_matrix_mul_real
+        (measurable_matrix_mul_real hCprod hA3early) hA1prodInv).neg
+    have htail : motive (m + 1) hms := ih
+    have hsum :
+        Measurable
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ') data.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  data.A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+                data.C (m + 1) hms) :=
+      hsummand.add htail
+    change
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+            data.C p.val (Nat.le_of_lt p.isLt))
+    rw [show
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+            (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+            data.C p.val (Nat.le_of_lt p.isLt)) =
+          fun data ↦
+            -(residualFactorProduct (K := ℝ) (κ := κ') data.C
+                  (Fin.last (M + 1)) p.succ hpj *
+                retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+                  data.A3seed p *
+                (residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) p.castSucc
+                    ((Fin.castSucc_le_succ p).trans hpj))⁻¹) +
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+                data.C (m + 1) hms by
+      funext data
+      simpa [p] using
+        retainedPassiveLowerLeftProductTailSum_castSucc
+          (K := ℝ) (ρ := ρ) (κ := κ')
+          (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+          data.C p]
+    simpa [p] using hsum
+  have hcanon :=
+    Nat.decreasingInduction (motive := motive) hstep hbase hm
+  simpa [motive] using hcanon
+
+set_option linter.unusedSectionVars false in
+/-- Over real retained-passive coordinates, each solved full `A3` component is
+Borel-measurable on the whole ambient coordinate space. -/
+theorem measurable_solvedA3_real
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    (p : Fin (M + 1)) :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦
+        (data.toCoordinateData).solvedA3 p) := by
+  induction p using Fin.lastCases with
+  | last =>
+      have hF3 :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦ data.F3) :=
+        (continuous_F3 (ρ := ρ) (κ' := κ') (K := ℝ)).measurable
+      have hEarlyTail :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ) data.A3seed)
+                data.C 0 (Nat.zero_le (M + 1))) :=
+        measurable_retainedPassiveLowerLeftProductTailSum_real
+          (ρ := ρ) (κ' := κ') 0 (Nat.zero_le (M + 1))
+      have hCtopLast :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              residualFactorProduct (K := ℝ) (κ := fun _ : Fin (M + 2) ↦ ρ)
+                (fun p : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 p)
+                (Fin.last (M + 1)) (Fin.last M).castSucc
+                  (Fin.last M).castSucc.le_last) :=
+        measurable_residualFactorProduct_solvedA1_real
+          (ρ := ρ) (κ' := κ') (Fin.last M).castSucc
+          (Fin.last M).castSucc.le_last
+      have hlast :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              -(data.F3 -
+                  retainedPassiveLowerLeftProductTailSum
+                    (K := ℝ) (ρ := ρ) (κ := κ')
+                    (fun p : Fin (M + 1) ↦
+                      (data.toCoordinateData).solvedA1 p)
+                    (retainedPassiveA3WithoutLast
+                      (K := ℝ) (ρ := ρ) data.A3seed)
+                    data.C 0 (Nat.zero_le (M + 1))) *
+                residualFactorProduct (K := ℝ)
+                  (κ := fun _ : Fin (M + 2) ↦ ρ)
+                  (fun p : Fin (M + 1) ↦
+                    (data.toCoordinateData).solvedA1 p)
+                  (Fin.last (M + 1)) (Fin.last M).castSucc
+                    (Fin.last M).castSucc.le_last) :=
+        measurable_matrix_mul_real (hF3.sub hEarlyTail).neg hCtopLast
+      simpa [RetainedPassiveCoordinateData.solvedA3,
+        RetainedPassiveCoordinateData.solvedA1, toCoordinateData] using hlast
+  | cast p =>
+      have hseed :
+          Measurable
+            (fun data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦ data.A3seed p.castSucc) :=
+        (continuous_A3seed (ρ := ρ) (κ' := κ') (K := ℝ) p.castSucc).measurable
+      have hfun :
+          (fun data : RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ' ↦
+            (data.toCoordinateData).solvedA3 p.castSucc) =
+            fun data ↦ data.A3seed p.castSucc := by
+        funext data
+        exact
+          retainedPassiveSolvedA3_eq_of_ne_last
+            (K := ℝ) (ρ := ρ) (κ' := κ')
+            (data.toCoordinateData).solvedA1
+            data.A3seed data.C data.F3
+            (Fin.castSucc_ne_last p)
+      rw [hfun]
+      exact hseed
+
+set_option linter.unusedSectionVars false in
+/-- Over real retained-passive coordinates, each fixed-base source edge matrix
+is Borel-measurable on the whole ambient coordinate space. -/
+theorem measurable_edgeMatrix_real_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    (p : Fin (M + 1)) :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦ data.edgeMatrix p) := by
+  have hA1 :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          (data.toCoordinateData).solvedA1 p) :=
+    measurable_solvedA1_real (ρ := ρ) (κ' := κ') p
+  have hA3 :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          (data.toCoordinateData).solvedA3 p) :=
+    measurable_solvedA3_real (ρ := ρ) (κ' := κ') p
+  have hF2current :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦ data.F2full p.castSucc) :=
+    (continuous_F2full (ρ := ρ) (κ' := κ') (K := ℝ) p.castSucc).measurable
+  have hF2next :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦ data.F2full p.succ) :=
+    (continuous_F2full (ρ := ρ) (κ' := κ') (K := ℝ) p.succ).measurable
+  have hC :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦ data.C p) :=
+    (continuous_C (ρ := ρ) (κ' := κ') (K := ℝ) p).measurable
+  have hA1F2 :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          (data.toCoordinateData).solvedA1 p * data.F2full p.castSucc) :=
+    measurable_matrix_mul_real hA1 hF2current
+  have hA3F2 :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          (data.toCoordinateData).solvedA3 p * data.F2full p.castSucc) :=
+    measurable_matrix_mul_real hA3 hF2current
+  have hTransformed :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          retainedPassiveTransformedEdge (K := ℝ) (ρ := ρ) (κ := κ')
+            (fun q : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 q)
+            data.F2full
+            (fun q : Fin (M + 1) ↦ (data.toCoordinateData).solvedA3 q)
+            data.C p) := by
+    simpa [retainedPassiveTransformedEdge] using
+      measurable_matrix_fromBlocks_real hA1 hA1F2.neg hA3 (hC.sub hA3F2)
+  have hLeft :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) (data.F2full p.succ)
+            (0 : Matrix (κ' p.succ) ρ ℝ)
+            (1 : Matrix (κ' p.succ) (κ' p.succ) ℝ)) := by
+    simpa using
+      measurable_matrix_fromBlocks_real measurable_const hF2next
+        (measurable_const :
+          Measurable
+            (fun _data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              (0 : Matrix (κ' p.succ) ρ ℝ)))
+        (measurable_const :
+          Measurable
+            (fun _data : RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' ↦
+              (1 : Matrix (κ' p.succ) (κ' p.succ) ℝ)))
+  have hEdge :
+      Measurable
+        (fun data : RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' ↦
+          fromBlocks (1 : Matrix ρ ρ ℝ) (data.F2full p.succ)
+              (0 : Matrix (κ' p.succ) ρ ℝ)
+              (1 : Matrix (κ' p.succ) (κ' p.succ) ℝ) *
+            retainedPassiveTransformedEdge (K := ℝ) (ρ := ρ) (κ := κ')
+              (fun q : Fin (M + 1) ↦ (data.toCoordinateData).solvedA1 q)
+              data.F2full
+              (fun q : Fin (M + 1) ↦ (data.toCoordinateData).solvedA3 q)
+              data.C p) :=
+    measurable_matrix_mul_real hLeft hTransformed
+  simpa [edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix,
+    retainedPassiveFixedBaseEdgeMatrix, toCoordinateData] using hEdge
+
+set_option linter.unusedSectionVars false in
+/-- Over real retained-passive coordinates, the fixed-base source edge-matrix
+family is Borel-measurable on the whole ambient coordinate space. -/
+theorem measurable_edgeMatrix_real
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')]
+    [BorelSpace
+      (RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ')] :
+    Measurable
+      (fun data : RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' ↦ data.edgeMatrix) := by
+  refine measurable_pi_lambda _ ?_
+  intro p
+  exact measurable_edgeMatrix_real_apply (ρ := ρ) (κ' := κ') p
+
 /-- The deterministic source-readback suffix-state fields are continuous at a
 base edge family satisfying the recursive determinant-chart predicate. -/
 theorem continuousAt_sourceReadbackSuffixState_fields

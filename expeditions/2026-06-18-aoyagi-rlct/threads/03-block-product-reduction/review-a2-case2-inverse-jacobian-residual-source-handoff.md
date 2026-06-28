@@ -23,16 +23,18 @@ determinant-chart residual theorem, and the raw-order inverse-Jacobian sockets.
 
 - The declarations are in the requested namespace and their names match their
   content.
-- The residual-source theorem keeps the determinant-chart pushforward identity,
-  target positive-set measurability, `0 <= t`, positive radii, and selected-entry
-  exponent inequality explicit.
+- The original reviewed version kept the determinant-chart pushforward
+  identity, target positive-set measurability, `0 <= t`, positive radii, and
+  selected-entry exponent inequality explicit.  The later direct-chart
+  positive-set measurability hardening discharges target positive-set
+  measurability internally; the determinant-chart pushforward identity remains
+  explicit.
 - The finite-integral theorem uses `0 < t`; the only weakening to `0 <= t` is
   `le_of_lt ht` for the selected-entry residual call, while the finite-integral
   socket receives `ht` directly.
 - The docs and Lean comments do not claim determinant-chart pushforward proof,
-  target positive-set measurability, chart coverage, original prior transport,
-  local loss/density proof, source-rank coverage, normal crossings, pole order,
-  or RLCT extraction.
+  chart coverage, original prior transport, local loss/density proof,
+  source-rank coverage, normal crossings, pole order, or RLCT extraction.
 
 ## Verification Note
 

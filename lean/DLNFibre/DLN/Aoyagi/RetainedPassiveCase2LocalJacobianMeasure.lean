@@ -909,9 +909,9 @@ pushforward identity.
 This specializes the generic selected-entry determinant-chart residual handoff.
 It proves the chart a.e. measurability and residual readout from the Case 2
 endpoint-transport data, but still assumes the determinant-chart pushforward
-identity and target positive-set measurability.  It does not identify an
-external/original source prior, prove chart coverage, compare Jacobians for
-such a prior, construct normal crossings, compute pole order, or extract RLCT. -/
+identity.  It does not identify an external/original source prior, prove chart
+coverage, compare Jacobians for such a prior, construct normal crossings,
+compute pole order, or extract RLCT. -/
 theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
     (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
     [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
@@ -979,10 +979,6 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
         paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
           (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
     m.restrict Sdet = Measure.map chart weightedBox →
-    MeasurableSet {z : TopologyTuple ρ κ' ℝ |
-      0 < aoyagiCoordinateSquareSum
-        (paperEndpointFixedBaseResidualBlockCoordinateMap
-          (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) (directChart z))} →
     0 ≤ t →
     (∀ i, 0 < Rres i) →
     2 * t < ((center.erase pivotNext.1).card : ℝ) + 1 →
@@ -997,7 +993,7 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
               (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) (directChart z))) ^ (-t))
           ∂ m.restrict Sdet) < ∞ := by
   dsimp only
-  intro hmap hpos_meas ht hRres hcrit
+  intro hmap ht hRres hcrit
   let center : Finset (ℕ × ℕ) :=
     case2ResidualBlockPivotEntries n S (J + 1)
   let pivotNext : center :=
@@ -1080,6 +1076,14 @@ theorem retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_
           SelectedEntrySignedBox.CenterCoord.residual pivotNext yNext := by
     intro yNext
     simpa [directChart, chart, retainedData, ρ, κ'] using hsource_residual yNext
+  have hpos_meas :
+      MeasurableSet {z : TopologyTuple ρ κ' ℝ |
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) (directChart z))} := by
+    simpa [ρ, κ', EdgeFamily, directChart] using
+      measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
+        (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
   exact
     retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map
       (W := W₂) (B := B₂) (pivot := pivotNext)
@@ -1097,10 +1101,9 @@ raw-order inverse-Jacobian residual-source hypotheses.
 
 This composes the Case 2 selected-entry determinant-chart residual theorem with
 the raw-order inverse-Jacobian source-measure socket.  The determinant-chart
-pushforward identity and target positive-set measurability remain explicit.
-This does not prove chart coverage, identify an external/original source prior,
-prove local loss/density bounds, construct normal crossings, compute pole
-order, or extract RLCT. -/
+pushforward identity remains explicit.  This does not prove chart coverage,
+identify an external/original source prior, prove local loss/density bounds,
+construct normal crossings, compute pole order, or extract RLCT. -/
 theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
     (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
     [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
@@ -1171,10 +1174,6 @@ theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDe
       signedBox.withDensity
         (fun y : center → ℝ ↦
           ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
-    let directChart : TopologyTuple ρ κ' ℝ → EdgeFamily :=
-      fun z ↦
-        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
-          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
     let rawChart : TopologyTuple ρ κ' ℝ → EdgeFamily :=
       paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W₂ B₂ U₀ hU₀
     let invJacDensity : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
@@ -1187,10 +1186,6 @@ theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDe
         (fun E : EdgeFamily ↦ E)
     let μ := Measure.map rawChart ((m.restrict T).withDensity invJacDensity)
     m.restrict Sdet = Measure.map chart weightedBox →
-    MeasurableSet {z : TopologyTuple ρ κ' ℝ |
-      0 < aoyagiCoordinateSquareSum
-        (paperEndpointFixedBaseResidualBlockCoordinateMap
-          (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) (directChart z))} →
     0 ≤ t →
     (∀ i, 0 < Rres i) →
     2 * t < ((center.erase pivotNext.1).card : ℝ) + 1 →
@@ -1202,7 +1197,7 @@ theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDe
         (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
         (fun E : EdgeFamily ↦ E) localSource μ t := by
   dsimp only
-  intro hmap hpos_meas ht hRres hcrit
+  intro hmap ht hRres hcrit
   let center : Finset (ℕ × ℕ) :=
     case2ResidualBlockPivotEntries n S (J + 1)
   let pivotNext : center :=
@@ -1236,7 +1231,7 @@ theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDe
       retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
         (W₂ := W₂) (B₂ := B₂) n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
         eNext e (m := m) (t := t) (Rres := Rres)
-        hmap hpos_meas ht hRres hcrit
+        hmap ht hRres hcrit
   simpa [ρ, κ', EdgeFamily] using
     residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
       (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀) (m := m) (t := t)
@@ -1252,10 +1247,9 @@ raw-order inverse-Jacobian finite-integral handoff.
 
 This composes the Case 2 selected-entry determinant-chart residual theorem with
 the raw-order inverse-Jacobian finite-integral socket.  The determinant-chart
-pushforward identity, target positive-set measurability, local loss lower
-bound, and local density bounds remain explicit.  This does not prove chart
-coverage, identify an external/original source prior, construct normal
-crossings, compute pole order, or extract RLCT. -/
+pushforward identity, local loss lower bound, and local density bounds remain
+explicit.  This does not prove chart coverage, identify an external/original
+source prior, construct normal crossings, compute pole order, or extract RLCT. -/
 theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_case2EndpointTransport_selectedEntrySignedBox_map
     (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
     [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
@@ -1362,10 +1356,6 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       signedBox.withDensity
         (fun y : center → ℝ ↦
           ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
-    let directChart : TopologyTuple ρ κ' ℝ → EdgeFamily :=
-      fun z ↦
-        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
-          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
     let rawChart : TopologyTuple ρ κ' ℝ → EdgeFamily :=
       paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W₂ B₂ U₀ hU₀
     let invJacDensity : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
@@ -1388,10 +1378,6 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       paperEndpointFixedBaseSourceRankStratum
         (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
     m.restrict Sdet = Measure.map chart weightedBox →
-    MeasurableSet {z : TopologyTuple ρ κ' ℝ |
-      0 < aoyagiCoordinateSquareSum
-        (paperEndpointFixedBaseResidualBlockCoordinateMap
-          (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) (directChart z))} →
     (∀ i, 0 < Rres i) →
     2 * t < ((center.erase pivotNext.1).card : ℝ) + 1 →
     (∀ᶠ x in nhdsWithin base localSource,
@@ -1419,7 +1405,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
                 density (z.1, u)) z.2) ∂
           (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
   dsimp only
-  intro hmap hpos_meas hRres hcrit hloss hdensity_nonneg hdensity_le
+  intro hmap hRres hcrit hloss hdensity_nonneg hdensity_le
   let center : Finset (ℕ × ℕ) :=
     case2ResidualBlockPivotEntries n S (J + 1)
   let pivotNext : center :=
@@ -1453,7 +1439,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
         (W₂ := W₂) (B₂ := B₂) n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
         eNext e (m := m) (t := t) (Rres := Rres)
-        hmap hpos_meas (le_of_lt ht) hRres hcrit
+        hmap (le_of_lt ht) hRres hcrit
   simpa [ρ, κ', EdgeFamily] using
     exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
       (W := W₂) (B := B₂) sourceData (m := m) (ν := ν)

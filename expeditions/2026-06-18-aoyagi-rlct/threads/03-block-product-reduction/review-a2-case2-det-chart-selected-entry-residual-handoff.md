@@ -24,9 +24,11 @@ against the relevant retained-passive and selected-entry APIs.
 - `directChart (chart y)` matches the Case 2 source family used by the
   residual readout.  The simplification is by unfolding together with
   `ofTopologyTuple_topologyTuple`.
-- The determinant-chart pushforward identity and target positive-set
-  measurability are explicit hypotheses, matching the generic theorem's
-  actual boundary.
+- The original reviewed version kept the determinant-chart pushforward
+  identity and target positive-set measurability explicit.  The later
+  direct-chart positive-set measurability hardening discharges the latter
+  internally for this Case 2 specialization; the determinant-chart pushforward
+  identity remains explicit.
 - No source-prior, Jacobian comparison, chart-coverage, normal-crossing,
   pole-order, or RLCT statement is claimed.
 

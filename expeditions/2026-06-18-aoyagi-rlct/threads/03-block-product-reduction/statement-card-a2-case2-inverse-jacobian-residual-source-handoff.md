@@ -45,8 +45,7 @@ mu =
       .withDensity inverseJacobianDensity).
 ```
 
-Assume the determinant-chart pushforward identity for `chart`, target
-positive-set measurability for the direct retained-passive residual, positive
+Assume the determinant-chart pushforward identity for `chart`, positive
 signed-box radii, `0 <= t`, and the selected-entry exponent inequality
 
 ```text
@@ -74,6 +73,7 @@ raw-order inverse-Jacobian source-measure sockets:
 
 ```text
 retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_selectedEntrySignedBox_map
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
 residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
 exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
 ```
@@ -82,10 +82,9 @@ exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_
 
 This discharges the chart-side residual hypotheses for the raw-order
 inverse-Jacobian sockets in the Case 2 endpoint-transported selected-entry
-lane.  It does not prove the determinant-chart pushforward identity, target
-positive-set measurability, chart coverage, original external source-prior
-transport, local loss or density bounds, source-rank coverage, normal
-crossings, pole order, or RLCT extraction.
+lane.  It does not prove the determinant-chart pushforward identity, chart
+coverage, original external source-prior transport, local loss or density
+bounds, source-rank coverage, normal crossings, pole order, or RLCT extraction.
 
 ## Verification Plan
 

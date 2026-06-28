@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 direct-chart positive-set measurability hardening
+
+Reproduction:
+`reproduction-a2-retained-passive-direct-chart-positive-set-measurability.md`.
+Statement card:
+`statement-card-a2-retained-passive-direct-chart-positive-set-measurability.md`.
+Review:
+`review-a2-retained-passive-direct-chart-positive-set-measurability.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
+```
+
+and uses it to remove the explicit direct-chart target positive-set
+measurability hypothesis from the Case 2 determinant-chart selected-entry
+residual theorem and the two Case 2 raw-order inverse-Jacobian consumers.  The
+determinant-chart pushforward identity remains explicit; the finite-integral
+consumer still keeps the local loss and density hypotheses explicit.
+
+Focused builds passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesTopology`,
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`, and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` via the
+worktree-local `scripts/lb` command.  Kant gave an xhigh read-only PASS on the
+pen-and-paper note, with the Lean-surface caveat addressed by proving the
+helper on the `TopologyTuple` surface and using only a local Borel structure on
+retained-passive data.
+
+This is only finite coordinate measurability.  It is not residual positivity,
+residual integrability, determinant-chart pushforward, chart coverage,
+original external prior transport, local loss or density bounds, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 inverse-Jacobian residual-source handoff
 
 Reproduction:
@@ -35,10 +70,11 @@ PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_l
 ```
 
 These compose the Case 2 selected-entry determinant-chart residual theorem with
-the raw-order inverse-Jacobian `_of_chartSide` sockets.  The determinant-chart
-pushforward identity and target positive-set measurability remain explicit;
-the finite-integral theorem also keeps local loss and density hypotheses
-explicit.
+the raw-order inverse-Jacobian `_of_chartSide` sockets.  After the direct-chart
+positive-set measurability hardening, the determinant-chart pushforward
+identity remains explicit, while target positive-set measurability is
+discharged internally; the finite-integral theorem also keeps local loss and
+density hypotheses explicit.
 
 Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`
 passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
@@ -46,10 +82,9 @@ passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
 probes, and xhigh read-only review by Godel passed; both declarations report
 only `[propext, Classical.choice, Quot.sound]`.
 
-This is not proof of the determinant-chart pushforward identity, target
-positive-set measurability, chart coverage, original external prior transport,
-local loss or density bounds, source-rank coverage, normal crossings, pole
-order, or RLCT.
+This is not proof of the determinant-chart pushforward identity, chart
+coverage, original external prior transport, local loss or density bounds,
+source-rank coverage, normal crossings, pole order, or RLCT.
 
 ## 2026-06-28 A2 retained-passive inverse-Jacobian chart-side measurability wrapper
 

@@ -48,6 +48,39 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Direct-Chart Positive-Set Measurability Hardening
+
+The retained-passive direct-chart residual positive set is now proved
+measurable on the ambient `TopologyTuple`:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
+```
+
+The proof is finite coordinate bookkeeping.  It puts a local Borel measurable
+space on retained-passive data, uses continuity of `ofTopologyTuple`, proves
+measurability of the retained-passive edge-matrix family by the solved `A1` and
+`A3` formulas plus global Borel measurability of real matrix inverse, rewrites
+the direct chart through
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq`,
+and applies the residual-coordinate positive-set API.
+
+The Case 2 determinant-chart selected-entry theorem and its two raw-order
+inverse-Jacobian consumers no longer assume target positive-set measurability.
+They still assume the determinant-chart pushforward identity, and the
+finite-integral consumer still assumes local loss and density bounds.
+
+Focused builds passed for `RetainedPassiveCoordinatesTopology`,
+`RetainedPassiveLocalJacobianMeasure`, and
+`RetainedPassiveCase2LocalJacobianMeasure` via the worktree-local `scripts/lb`
+command.  Kant's xhigh read-only review passed on the reproduction note; the
+Lean-surface caveat was addressed by keeping the theorem on the
+`TopologyTuple` measurable surface.
+
+This does not prove residual positivity, residual integrability, determinant-
+chart pushforward, chart coverage, original external source-prior transport,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Inverse-Jacobian Residual-Source Handoff
 
 The two-edge Case 2 endpoint-transported selected-entry determinant-chart
@@ -76,11 +109,11 @@ mu =
       .withDensity inverseJacobianDensity).
 ```
 
-It assumes the determinant-chart pushforward identity for `chart`, target
-positive-set measurability, `0 <= t`, positive radii, and the selected-entry
-exponent inequality.  It obtains chart-side residual positivity/integrability
-from the Case 2 selected-entry determinant-chart residual theorem and feeds the
-pair into
+After the direct-chart positive-set measurability hardening, it assumes the
+determinant-chart pushforward identity for `chart`, `0 <= t`, positive radii,
+and the selected-entry exponent inequality.  It obtains chart-side residual
+positivity/integrability from the Case 2 selected-entry determinant-chart
+residual theorem and feeds the pair into
 `residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide`.
 
 The finite-integral theorem adds `sourceData`, `[SFinite m]`, regular-coordinate
@@ -104,9 +137,9 @@ probes, and xhigh reviews passed; both declarations report only
 `[propext, Classical.choice, Quot.sound]`.
 
 This is not a determinant-chart measure construction and not a local
-loss/density theorem.  It does not prove the pushforward identity, target
-positive-set measurability, chart coverage, original external source-prior
-transport, source-rank coverage, normal crossings, pole order, or RLCT.
+loss/density theorem.  It does not prove the pushforward identity, chart
+coverage, original external source-prior transport, source-rank coverage,
+normal crossings, pole order, or RLCT.
 
 ## Latest A2 Case 2 Determinant-Chart Selected-Entry Residual Handoff
 
@@ -147,9 +180,11 @@ m.restrict topologyTupleDetChartSet =
       (fun y => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)))
 ```
 
-and target positive-set measurability remain explicit hypotheses.  Under
-`0 <= t`, positive radii, and the selected-entry exponent inequality, the
-theorem concludes the determinant-chart a.e. residual positivity and finite
+remains an explicit hypothesis.  Direct-chart target positive-set measurability
+is now discharged by
+`measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart`.
+Under `0 <= t`, positive radii, and the selected-entry exponent inequality,
+the theorem concludes the determinant-chart a.e. residual positivity and finite
 negative-power lower integral.
 
 Reproduction:

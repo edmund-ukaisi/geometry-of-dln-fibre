@@ -34,8 +34,14 @@ m.restrict topologyTupleDetChartSet =
         (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)))
 ```
 
-and target positive-set measurability.  Under positive signed-box radii,
-`0 <= t`, and
+The direct retained-passive residual positive-set measurability is discharged
+by
+
+```text
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart.
+```
+
+Under positive signed-box radii, `0 <= t`, and
 
 ```text
 2 * t < ((center.erase pivotNext.1).card : R) + 1,
@@ -52,6 +58,7 @@ and pp. 19-22 for the Case 2 selected-entry chart.  Lean dependencies:
 
 ```text
 retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_directChart
 continuous_case2PostPivotSelectedEntryRetainedPassiveData
 RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport
 RetainedPassiveNonredundantCoordinateData.continuous_topologyTuple
