@@ -1,4 +1,14 @@
-# Statement card — `RouteMSchurDepth2` (the corank-2 N2b→Morse weld; inner-S CLOSED)
+# Statement card — `RouteMSchurDepth2` (the (3,3,4) depth-2 weld — CLOSED end-to-end)
+
+> **MILESTONE (2026-06-28).** The (3,3,4) depth-2 weld is CLOSED sorry-free:
+> `core_schur2_lt_top : ∫_Δ ∫_S frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 2 = λ_{2,4}`, via the generic Schur
+> radial-recStep route (NOT the transpose route of `core334_lt_top`). Axiom-clean
+> `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`) — S2-FREE. Both halves built:
+> inner-S (`schurInner_S_bound`) ⟶ outer radial-Δ 4-chart cover (`gFlat2_cover_sum` →
+> `matBox2_chart_lt_top` → `ENNReal.sum_lt_top`). The uniform-bound refactor (`c0N2b` via
+> `Classical.choose`, `radial_morse_dominates_absZ_le`, `schurSplitD_lintegral_le`, `schurInnerBnd2`,
+> `schurInner_S_bound[_pivot]`) made the ratio-residual `∫_z K = K·vol` finite. Generic-N2b re-proof of
+> the (3,3,4) corank-2 core — the path that lifts to ∀M.
 
 > **UPDATE (2026-06-28, the weld leg).** The INNER-S half of the weld is now built end-to-end:
 > `schurInner_S_le` chains N2b (`j=1`, cell hyps discharged) → END 1 (`schurSplit_lintegral_le`) → the
