@@ -1263,6 +1263,17 @@ done/in-flight. This item is the four-research-gate scope decision — the centr
     so the lifted carve *alone* would overclaim finiteness in `(r²/2, capA)` where `{Δ=0}` diverges — the p=4 pivot-fixing
     chart folded the a-axis away. The build = expose the a-axis + `schurCore_radialAxis_lt_top` + the `Δ=a·R` c-o-v + joint
     Tonelli (bounded-medium, cert-grounded). genm-assemble cleared to deep-build.
+  - *CORRECTION (genm-assemble, 2026-06-28, pre-build infra check — resisted visible-progress):* the cap-B chart is
+    **ALREADY BUILT** ({r,p}-general, sorry-free, in `RouteMSchur.lean`: `radialDelta_loss_factor`,
+    `radial_aAxis_divisor_lt_top`, `radial_loss_chart_lt_top`). So the cap-B was NOT new content. The REAL ∀p gap is
+    **N4** = `routeMCore_threshold_lt_top ∀M` (RouteMSchur:429) = the depth-r WellFounded-on-corank cover-assembly weld
+    (the cert's "HIGH-risk long pole"), the SHARED whole-M hfin — which OVERLAPS the depth-≥3 gate (#1). So **gate #2 (∀p)
+    is NOT cleanly separable — it is subsumed by N4** (the general-M hfin cover assembly). The over-optimistic "∀p downgraded
+    to bounded" is corrected: the cap-B chart is done, but the ∀p hfin = the N4 cover weld (HIGH-risk). OPEN (genm-assemble
+    assessing, design-only): is the DEPTH-2 part of N4 — the (r,r,p) cover weld (the done radial charts + genm-n4's (r,r,4)
+    recStep template, NO L-layer joint) — separably BOUNDED (→ a real bounded (r,r,p) ∀p-hfin), or does it bleed into the
+    depth-≥3 N4 long pole? **Net: the research-scale gates are R1-hfin-N4 (the whole-M cover assembly, spanning depth-≥3 +
+    general shape), R1-hdiv-∀M-chart (#3), L2-3289 (#4)** — gate #2 folded into N4, pending the depth-2 boundedness check.
 - **The dev-merge is an OPERATOR PROMOTION, not a tide.** genm-firing's 39-module finding: dev lacks the ENTIRE RLCT engine
   (the carve stack's import closure = 39 modules, all missing from dev; ~1189-commit lineage divergence). So the EXPEDITION
   LINEAGE's aggregator IS the canonical line; "integration into canonical DLNFibre.lean" happens on the lineage
