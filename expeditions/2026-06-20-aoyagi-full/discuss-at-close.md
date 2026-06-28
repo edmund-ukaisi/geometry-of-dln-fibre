@@ -835,3 +835,23 @@ formalise, given the framing was just corrected (bedrock-checkpoint: decorrelate
 stood down; its lemma stays banked on the feature branch (integrate the (1,1) atom as a complete unit, not the lone lemma).
 **Operator note:** the R1-LOWER smeared branch is a larger build than synthesis UPDATE-191 implied; no research wall,
 but the "3 quick template parametrizations" estimate was wrong. Watching whether the recalibration extends to all 3 families.
+
+### Item 42 — Cross-lineage name-clash deconfliction REQUIRED before final-headline aggregation (2026-06-28)
+Integrating `core_schur3_lt_top` (R1-UPPER corank-3) into the FULL `DLNFibre` aggregator surfaced latent top-level
+name-clashes between two separately-developed concrete-anchor lineages that had never been co-aggregated:
+the **(3,3,4)-anchor lineage** (`Case334RouteStep`, `RouteM334Ratiofin`, `RouteMSchurDepth2`, `RouteMSchurCorank3`)
+vs the **(4,4,2,2)/(3,3,3,3) lineage** (`RouteM4422`, `RouteM3333Atom`). Confirmed clashes: `e2`
+(RouteMSchurDepth2 `Fin2×Fin2≃Fin4` vs RouteM3333Atom `Fin3≃{frameB=2}`), `minAdm_M4422` (Case334RouteStep vs
+RouteM4422); likely more. Each is a generic file-local helper that both lineages happened to name the same.
+
+**Controller decision:** `core_schur3_lt_top` is sound — sorry-free, **axiom-clean** `[propext, Classical.choice,
+Quot.sound]` (verified via the AxCheck import closure, which excludes RouteM4422 → no clash), **standalone-green**
+(8290 jobs). Banked as a **verified file** on canonical (`09a16420`, the bdca2da3 pattern), NOT aggregated. The
+co-aggregation is a **mechanical packaging cleanup**, NOT on the immediate critical path — each leg (R1-UPPER recStep,
+R1-LOWER, L2) builds in its own import closure where the lineages don't collide. It IS required eventually: the final
+`aoyagi_learning_coefficient` proof will import both lineages (R1's resolution_charts needs the Schur recursion AND the
+achiever atoms), so the clashes must be resolved before the monolithic headline builds. Deferred to a dedicated
+formaliser tide (task #113): enumerate ALL clashes across the two lineages, rename/namespace the colliding helpers in
+ONE systematic pass + single rebuild — NOT whack-a-mole (the iteration cost is ~5-10min/rebuild). **Operator note:** this
+is the first concrete sign that the separately-grown concrete-anchor modules will need a namespacing/deconfliction pass
+to co-exist in the final headline — a known, bounded, mechanical cost, surfaced early.
