@@ -48,6 +48,48 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` `F3` Zero-Tail Bridge
+
+`RetainedPassiveCoordinatesJacobian.lean` now adds the single-edge (`M = 0`)
+terminal `F3` target-side stage after the edge-pair, post-edge-pair
+`A1passive`, and post-`A1passive` `Ctop` stages.  New public Lean names:
+
+```text
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The post-`Ctop` zero-tail shear fixes every raw field except `F3` and sends
+`F3` to `F3 + coord.F3 * Ctop`.  It has determinant one by regrouping as
+`F3 × rest`.  The composed bridge proves `F3` component agreement with the
+formal raw-order Jacobian in the zero-tail case by combining the existing
+zero-tail `Ctop` staged theorem, zero-tail `F3` staged theorem, and preservation
+of `F3` through the first three stages.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-post-ctop-f3-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-post-ctop-f3-zero-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-post-ctop-f3-zero-shear.md`,
+PASS by xhigh `Nietzsche the 2nd`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, direct axiom audit, and xhigh review passed;
+the new public theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not close the positive-tail `F3` bridge.  The positive-tail case
+needs a post-`Ctop` linear-map package for `dEarly_postC`; do not feed the
+existing pre-edge target recovery helpers directly with post-`Ctop` data.
+
 ## Latest A2 Edge-Pair Then `A1passive` Then `Ctop` Component Bridge
 
 `RetainedPassiveCoordinatesJacobian.lean` now adds the next target-side

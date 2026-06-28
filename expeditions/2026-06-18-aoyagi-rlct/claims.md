@@ -141,6 +141,11 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
+  post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
+  determinant-one raw-tuple shear fixing all fields except `F3`, with composed
+  zero-tail `F3` component agreement against the formal raw-order Jacobian;
+  the positive-tail `F3` bridge remains open and needs a post-`Ctop`
+  `dEarly_postC` linear-map package.  The
   edge-pair, post-edge-pair passive `A1`, and post-`A1passive` `Ctop` stages
   are now composed in Lean through the `Ctop` component, with absolute
   determinant one and actual-derivative agreement for `Ctop` against the formal

@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` `F3` zero-tail bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-post-ctop-f3-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-post-ctop-f3-zero-shear.md`.
+Review:
+`review-a2-retained-passive-post-ctop-f3-zero-shear.md`,
+PASS by xhigh `Nietzsche the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The single-edge post-`Ctop` `F3` shear changes only `F3` by
+`coord.F3 * Ctop`.  It is determinant one after regrouping the raw tuple as
+`F3 × rest` and applying the upper-shear determinant calculation.  Composed
+after the first three target-side stages, it proves zero-tail `F3` component
+agreement with the formal raw-order Jacobian.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, direct axiom audit, and xhigh review
+passed; the new public theorem names have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not the positive-tail `F3` bridge, full target normalisation, full
+raw-tuple equality, actual Frechet determinant equality, measure transport,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 edge-pair, `A1passive`, then `Ctop` component bridge
 
 Reproduction:

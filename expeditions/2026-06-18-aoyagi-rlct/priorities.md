@@ -19,6 +19,43 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` `F3` zero-tail bridge
+
+The target-normalizer frontier now has the single-edge (`M = 0`) `F3` stage
+packaged after the edge-pair, `A1passive`, and `Ctop` stages.  New public Lean
+names:
+
+```text
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The zero-tail post-`Ctop` shear changes only `F3` by
+`coord.F3 * Ctop`.  Its determinant is one by focusing the raw tuple as
+`F3 × rest` and applying the existing upper-shear determinant lemma.  The
+composed zero-tail bridge uses the existing zero-tail `Ctop` and `F3`
+target-staged theorems and the fact that the first three stages leave `F3`
+unchanged.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, direct axiom audit, and xhigh review by
+`Nietzsche the 2nd` passed; the new public theorem names have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not close the positive-tail `F3` bridge.  The positive-tail case
+still needs a post-`Ctop` linear-map package for `dEarly_postC`, with source
+`C` decoded from the formal inverse of already normalised `(F2,C)` fields and
+zero-index solved `A1` read from the target `Ctop` coordinate.  Do not claim
+full raw-tuple equality, actual Frechet determinant equality, measure
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, edge-pair then `A1passive` then `Ctop` component bridge
 
 The target-normalizer frontier now has the first top-left component packaged as
