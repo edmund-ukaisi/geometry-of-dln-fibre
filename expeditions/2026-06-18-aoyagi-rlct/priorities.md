@@ -38,6 +38,41 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint-transport pivot nonzero consumer
+
+The endpoint-transported explicit Case 2 selected-entry retained-passive datum
+now has an all-pivot selected-entry residual-product consumer under the
+concrete successor pivot-coordinate nonzero hypothesis:
+
+```text
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_yNext_pivot_ne_zero
+```
+
+This composes the prior factor-aligned explicit-datum consumer with
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq`
+and
+`case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+downstream focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  The theorem removes the separate
+displayed-product nonzero input only for the explicit endpoint-transported
+datum under `hyNext`.  Its all-pivot conclusion does not identify the
+existential pivot with `(J + 2, J + 2)` or the produced coordinates with
+`yNext`.  The next non-wrapper move remains actual fixed-base/source-readback
+provenance or endpoint provenance; do not add another explicit-datum wrapper
+unless it removes a newly named live field.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint-transport factor alignment
 
 The endpoint-transported explicit Case 2 selected-entry retained-passive datum

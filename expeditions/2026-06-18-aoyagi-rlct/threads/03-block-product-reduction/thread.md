@@ -14241,3 +14241,46 @@ This is finite factor alignment only.  It does not prove product nonzeroness,
 fixed-pivot nonzeroness, arbitrary `ofTopologyTuple` factor alignment,
 fixed-base source-readback provenance, source-prior transport, Jacobian
 comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 endpoint-transport pivot nonzero consumer
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+Review:
+`review-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`, PASS by
+xhigh read-only checkers `Raman` and `Ohm`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean
+```
+
+Lean now proves:
+
+```text
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_yNext_pivot_ne_zero
+```
+
+For the endpoint-transported explicit Case 2 selected-entry retained-passive
+datum, the all-pivot selected-entry residual-product readout follows from the
+successor pivot-coordinate nonzero hypothesis `hyNext`.  The displayed-product
+nonzero input is discharged by the successor-source product equality and the
+successor selected-entry matrix nonzero lemma.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+downstream focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is constructed finite Case 2 nonzeroness only.  The all-pivot conclusion
+produces some pivot and coordinates; it does not identify them with
+`(J + 2, J + 2)` or the supplied `yNext`.  It also does not prove arbitrary
+`ofTopologyTuple` factor alignment, fixed-base source-readback provenance,
+source-prior transport, Jacobian comparison, normal crossings, pole order, or
+RLCT.

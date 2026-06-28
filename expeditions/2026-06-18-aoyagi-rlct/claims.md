@@ -157,6 +157,19 @@ No such claim is formalisation-ready until both fields are filled.
   source-readback provenance, source-prior transport, Jacobian comparison,
   normal crossings, pole order, or RLCT.  Focused build and xhigh read-only
   statement/orientation check passed.
+- **Current status addendum, Case 2 endpoint-transport pivot nonzero consumer,
+  2026-06-28.** Lean now exposes
+  `exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_yNext_pivot_ne_zero`
+  in `RetainedPassiveCase2SelectedEntryChartBridge.lean`.  This theorem
+  applies the explicit-datum endpoint-transport factor-aligned all-pivot
+  consumer under the concrete successor pivot-coordinate nonzero hypothesis
+  `hyNext`, deriving displayed-product nonzeroness from the successor-source
+  product equality and successor selected-entry matrix nonzero lemma.  The
+  conclusion still returns some pivot and coordinates; it does not identify
+  them with `(J + 2, J + 2)` or the supplied `yNext`.  This does not prove
+  arbitrary `ofTopologyTuple` factor alignment, fixed-base source-readback
+  provenance, source-prior transport, Jacobian comparison, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, Case 2 self-endpoint transport, 2026-06-28.** Lean
   now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData`

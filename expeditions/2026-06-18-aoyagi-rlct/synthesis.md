@@ -84,6 +84,43 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
+## Latest A2 Case 2 Endpoint-Transport Pivot Nonzero Consumer
+
+The endpoint-transported explicit Case 2 selected-entry retained-passive datum
+now has an all-pivot selected-entry residual-product consumer under the
+concrete successor pivot-coordinate nonzero hypothesis:
+
+```text
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_yNext_pivot_ne_zero
+```
+
+It discharges the displayed-product nonzero input of the prior explicit-datum
+consumer by rewriting the constructed displayed product to the successor
+selected-entry matrix and using the successor matrix nonzero theorem from
+`hyNext`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-pivot-nonzero-consumer.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+downstream focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is still an explicit constructed-datum theorem.  The all-pivot conclusion
+returns some pivot and coordinates; it does not identify them with the
+successor pivot `(J + 2, J + 2)` or with the supplied `yNext`.  It does not
+prove arbitrary `ofTopologyTuple` factor alignment, fixed-base source-readback
+provenance, source-prior transport, Jacobian comparison, normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Case 2 Endpoint-Transport Factor Alignment
 
 The explicit endpoint-transported Case 2 selected-entry retained-passive datum
