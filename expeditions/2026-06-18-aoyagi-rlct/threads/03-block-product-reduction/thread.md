@@ -14201,3 +14201,43 @@ This is still finite residual readout plumbing.  It does not construct endpoint
 equivalences, prove source-chart measurability, compare source priors or
 Jacobians, prove positivity/integrability, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-28 A2 Case 2 endpoint-transport factor alignment
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-factor-alignment.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-factor-alignment.md`.
+Review:
+`review-a2-case2-endpoint-transport-factor-alignment.md`, PASS by xhigh
+read-only checker `Epicurus`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean
+```
+
+Lean now proves:
+
+```text
+matrix_submatrix_equiv_symm_submatrix_equiv
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_ne_zero
+```
+
+For the endpoint-transported explicit Case 2 selected-entry retained-passive
+datum, the stored `C 1` factor becomes Aoyagi's displayed post-pivot residual
+block after submatrixing by the forward endpoint equivalences `e 2` and `e 1`.
+The stored `C 0` factor becomes the displayed free following factor after
+submatrixing by `e 1` and `e 0`.  The product order is `C 1 * C 0`.
+
+The new all-pivot consumer applies the existing finite selected-entry residual
+product theorem to this explicit transported datum without supplied `hD` and
+`hF`.  It still assumes nonzeroness of the displayed two-edge product.
+
+This is finite factor alignment only.  It does not prove product nonzeroness,
+fixed-pivot nonzeroness, arbitrary `ofTopologyTuple` factor alignment,
+fixed-base source-readback provenance, source-prior transport, Jacobian
+comparison, normal crossings, pole order, or RLCT.

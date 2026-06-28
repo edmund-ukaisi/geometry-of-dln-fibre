@@ -38,6 +38,46 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint-transport factor alignment
+
+The endpoint-transported explicit Case 2 selected-entry retained-passive datum
+now supplies its own displayed factor identities:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor
+```
+
+The all-pivot selected-entry residual-product consumer for this explicit
+transported datum is:
+
+```text
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_ne_zero
+```
+
+This removes supplied `hD` and `hF` only for the explicit endpoint-transported
+selected-entry retained-passive datum.  It keeps the displayed-product
+nonzero hypothesis explicit.  It also does not prove arbitrary
+`ofTopologyTuple` factor alignment, fixed-base source-readback provenance,
+source-prior transport, Jacobian comparison, normal crossings, pole order, or
+RLCT.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-factor-alignment.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-factor-alignment.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-factor-alignment.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed via
+the worktree-local `scripts/lb` command.  Xhigh `Epicurus` review passed on
+the statement shape and endpoint orientation.  The next non-wrapper move is
+not another explicit-datum factor wrapper; it must either prove displayed
+product nonzeroness/source production for an actual constructed point, or
+build the actual fixed-base/source-readback provenance that identifies an
+arbitrary retained-passive source-readback adjacent window with this Case 2
+datum.
+
 ## Latest controller decision - 2026-06-28, Case 2 self-endpoint transport
 
 The endpoint-transported Case 2 source-family theorem now has the narrow

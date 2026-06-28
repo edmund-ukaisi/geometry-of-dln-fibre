@@ -84,6 +84,52 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
+## Latest A2 Case 2 Endpoint-Transport Factor Alignment
+
+The explicit endpoint-transported Case 2 selected-entry retained-passive datum
+now has displayed factor-alignment theorems:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor
+```
+
+The first theorem says that `C 1` of the endpoint-transported datum,
+submatrixed by the forward endpoint equivalences `e (Fin.last 2)` and
+`e (1 : Fin 3)`, is the displayed post-pivot residual block.  The second says
+that `C 0`, submatrixed by `e (1 : Fin 3)` and `e 0`, is the displayed free
+following factor.  The endpoint orientation was checked independently by
+xhigh `Epicurus`.
+
+Lean also now exposes the narrow all-pivot consumer:
+
+```text
+exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_ne_zero
+```
+
+This applies the existing finite selected-entry residual-product theorem to
+the explicit transported datum without supplied `hD` and `hF`, while retaining
+the displayed-product nonzero hypothesis.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-factor-alignment.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-factor-alignment.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-factor-alignment.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed via
+the worktree-local `scripts/lb` command.
+
+This is finite factor alignment only.  It does not prove product nonzeroness,
+fixed-pivot nonzeroness, arbitrary `ofTopologyTuple` factor alignment,
+fixed-base source-readback provenance, source-prior transport, Jacobian
+comparison, normal crossings, pole order, or RLCT.  The next non-wrapper move
+should target displayed-product nonzeroness/source production or actual
+fixed-base/source-readback provenance, not another wrapper over the same
+explicit datum.
+
 ## Latest A2 Case 2 Self-Endpoint Transport
 
 The endpoint-transported fixed-base source-family input theorem now has a

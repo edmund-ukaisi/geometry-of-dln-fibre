@@ -140,6 +140,23 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 endpoint-transport factor alignment,
+  2026-06-28.** Lean now exposes
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock`,
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor`,
+  and
+  `exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_ne_zero`
+  in `RetainedPassiveCase2SelectedEntryChartBridge.lean`.  For the
+  endpoint-transported explicit Case 2 selected-entry retained-passive datum,
+  the displayed post-pivot residual block and displayed free following factor
+  are recovered from `C 1` and `C 0` by submatrixing with the forward endpoint
+  equivalences.  The new all-pivot consumer removes supplied `hD`/`hF` for this
+  explicit transported datum, while retaining the displayed-product nonzero
+  hypothesis.  This does not prove product nonzeroness, fixed-pivot
+  nonzeroness, arbitrary `ofTopologyTuple` factor alignment, fixed-base
+  source-readback provenance, source-prior transport, Jacobian comparison,
+  normal crossings, pole order, or RLCT.  Focused build and xhigh read-only
+  statement/orientation check passed.
 - **Current status addendum, Case 2 self-endpoint transport, 2026-06-28.** Lean
   now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData`

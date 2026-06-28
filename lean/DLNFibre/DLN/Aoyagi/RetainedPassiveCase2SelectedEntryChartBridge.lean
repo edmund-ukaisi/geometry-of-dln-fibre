@@ -15,6 +15,15 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- Submatrixing first by inverse endpoint equivalences and then by the forward
+equivalences recovers the original matrix. -/
+theorem matrix_submatrix_equiv_symm_submatrix_equiv
+    {ι κ ι' κ' R : Type*} (A : Matrix ι κ R)
+    (eι : ι ≃ ι') (eκ : κ ≃ κ') :
+    (A.submatrix eι.symm eκ.symm).submatrix eι eκ = A := by
+  simp only [Matrix.submatrix_submatrix, Matrix.submatrix_id_id,
+    Equiv.symm_comp_self]
+
 /-- The synthetic two-edge retained-passive datum whose active `C` factors are
 Aoyagi's displayed Case 2 post-pivot residual block and following factor.
 
@@ -488,6 +497,104 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residua
   rfl
 
 set_option linter.style.longLine false in
+/-- The post-pivot residual `C 1` factor of the endpoint-transported explicit
+Case 2 selected-entry retained-passive datum is the displayed post-pivot
+residual block after reindexing back by the forward endpoint equivalences. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    (show Matrix (κ' (Fin.last 2)) (κ' (1 : Fin 3)) ℝ from
+      by
+        simpa using
+          ((case2PostPivotSelectedEntryRetainedPassiveData
+            (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+            (1 : Fin 2)).submatrix (e (Fin.last 2)) (e (1 : Fin 3)) =
+      case2DisplayedPostPivotResidualBlock n hS hcont
+        (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext) := by
+  change
+    (((case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := ρ) n hS hcont hnext yNext eNext).C
+        (1 : Fin 2)).submatrix (e (Fin.last 2)).symm (e (1 : Fin 3)).symm).submatrix
+      (e (Fin.last 2)) (e (1 : Fin 3)) =
+      case2DisplayedPostPivotResidualBlock n hS hcont
+        (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+  have hcancel :=
+    matrix_submatrix_equiv_symm_submatrix_equiv
+      ((case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).C (1 : Fin 2))
+      (e (Fin.last 2)) (e (1 : Fin 3))
+  have hbase :
+      (case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).C (1 : Fin 2) =
+        case2DisplayedPostPivotResidualBlock n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext) := by
+    change
+      case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+          (1 : Fin 2) =
+        case2DisplayedPostPivotResidualBlock n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+    rfl
+  exact hcancel.trans hbase
+
+set_option linter.style.longLine false in
+/-- The free-following `C 0` factor of the endpoint-transported explicit Case 2
+selected-entry retained-passive datum is the displayed free following factor
+after reindexing back by the forward endpoint equivalences. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    (show Matrix (κ' (1 : Fin 3)) (κ' 0) ℝ from
+      by
+        simpa using
+          ((case2PostPivotSelectedEntryRetainedPassiveData
+            (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+            (0 : Fin 2)).submatrix (e (1 : Fin 3)) (e 0) =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+        (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext) := by
+  change
+    (((case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := ρ) n hS hcont hnext yNext eNext).C
+        (0 : Fin 2)).submatrix (e (1 : Fin 3)).symm (e 0).symm).submatrix
+      (e (1 : Fin 3)) (e 0) =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+        (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+  have hcancel :=
+    matrix_submatrix_equiv_symm_submatrix_equiv
+      ((case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).C (0 : Fin 2))
+      (e (1 : Fin 3)) (e 0)
+  have hbase :
+      (case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).C (0 : Fin 2) =
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext) := by
+    change
+      case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+          (0 : Fin 2) =
+        case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+    rfl
+  exact hcancel.trans hbase
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry source readback's residual-factor product has
 square-sum equal to the selected-entry center residual.
 
@@ -874,6 +981,55 @@ theorem exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_sele
     residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
       (ρ := ρ) (τ := τ) (ι := ι) (κ := κ) (center := center)
       pivot n hS hcont residual Cprime data y residualCoordEquiv e₂ e₁ e₀ hD hF hentry
+
+set_option linter.style.longLine false in
+/-- The endpoint-transported explicit Case 2 selected-entry retained-passive
+datum satisfies the all-pivot selected-entry residual-product readout once the
+displayed two-edge product is nonzero.
+
+The two displayed factor identities are discharged by the explicit datum's
+endpoint-transport factor-alignment lemmas.  The product nonzeroness hypothesis
+remains supplied. -/
+theorem exists_pivot_residualFactorProduct_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_eq_selectedEntryCenter_matrix_of_ne_zero
+    {ρ ι : Type*} {τ : Type} [DecidableEq ρ] [DecidableEq ι]
+    {κ' : Fin 3 → Type*} [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {center : Finset ι}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ≃ center)
+    (hprod :
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont
+        (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+        (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext) ≠ 0) :
+    ∃ pivot : center, ∃ y : center → ℝ,
+      ChartLocalSuffixState.residualFactorProduct
+          ((case2PostPivotSelectedEntryRetainedPassiveData
+            (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := by
+  exact
+    exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+      (ρ := ρ) (τ := τ) (ι := ι) (κ := κ') (center := center)
+      n hS hcont
+      (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+      (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+      ((case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e)
+      residualCoordEquiv (e (Fin.last 2)) (e (1 : Fin 3)) (e 0)
+      (case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_one_submatrix_eq_displayedPostPivotResidualBlock
+        (ρ := ρ) n hS hcont hnext yNext eNext e)
+      (case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor
+        (ρ := ρ) n hS hcont hnext yNext eNext e)
+      hprod
 
 set_option linter.style.longLine false in
 /-- The two-edge `ofTopologyTuple` specialization of the retained-passive
