@@ -141,7 +141,14 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  post-edge-pair passive `A1` branch now has a raw-tuple linear equivalence
+  edge-pair and post-edge-pair passive `A1` shears are now composed in Lean,
+  with absolute determinant one and componentwise actual-derivative agreement
+  for `A1passive`, `(F2,C)`, and `A3passive` against the formal raw-order
+  Jacobian; xhigh `Pasteur the 2nd` review passed.  This is not full target
+  normalisation: `Ctop` and `F3` agreement remain open, so it is not a full
+  tuple equality or actual raw-order determinant equality.  The post-edge-pair
+  passive `A1` branch now has a
+  raw-tuple linear equivalence
   fixing `(F2,A3passive,C,Ctop,F3)`, changing only `A1passive`, and proving
   determinant one/absolute determinant one by the product-shear calculation on
   `A1passive × rest`.  Its correction reads the successor `F2` family from

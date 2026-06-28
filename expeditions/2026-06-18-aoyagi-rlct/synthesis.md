@@ -48,6 +48,42 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Edge-Pair Then `A1passive` Component Bridge
+
+`RetainedPassiveCoordinatesJacobian.lean` now composes the first two
+target-side raw-tuple normalisation stages.  New public Lean names:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A1passive_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_F2C_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A3passive_eq_formalRawOrderJacobianAt
+```
+
+The composition order is edge-pair first, post-edge-pair `A1passive` second.
+The absolute determinant is one by determinant multiplicativity and the two
+already-proved absolute determinant-one results.  Componentwise actual-derivative
+bridges are proved for `A1passive`, `(F2,C)`, and `A3passive`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-edge-pair-then-a1passive-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-pair-then-a1passive-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-then-a1passive-bridge.md`,
+PASS by xhigh `Pasteur the 2nd`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The sorry gate, whitespace check, code-only forbidden-marker search, and direct
+axiom audit passed; the new composed theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a full target normalizer: `Ctop` and `F3` agreement remain open.
+It is not full raw-tuple equality, not actual Frechet determinant equality,
+and not source-prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Post-Edge-Pair `A1passive` Raw-Tuple Shear
 
 `RetainedPassiveCoordinatesJacobian.lean` now packages the next raw-tuple

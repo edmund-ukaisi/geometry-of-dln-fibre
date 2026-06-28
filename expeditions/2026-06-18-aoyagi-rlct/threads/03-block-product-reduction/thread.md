@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 edge-pair then `A1passive` component bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-edge-pair-then-a1passive-bridge.md`.
+Statement card:
+`statement-card-a2-retained-passive-edge-pair-then-a1passive-bridge.md`.
+Review:
+`review-a2-retained-passive-edge-pair-then-a1passive-bridge.md`,
+PASS by xhigh `Pasteur the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A1passive_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_F2C_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A3passive_eq_formalRawOrderJacobianAt
+```
+
+The composition applies the target edge-pair shear first and the
+post-edge-pair `A1passive` shear second.  Its absolute determinant is one.  On
+actual raw-order derivative targets it gives componentwise agreement with the
+formal raw-order Jacobian for `A1passive`, `(F2,C)`, and `A3passive`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, code-only forbidden-marker search, and
+direct axiom audit passed; the new composed theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not full target normalisation, full raw-tuple equality, actual Frechet
+determinant equality, measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 post-edge-pair `A1passive` raw-tuple shear
 
 Reproduction:

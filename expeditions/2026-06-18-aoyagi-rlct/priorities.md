@@ -19,6 +19,48 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, edge-pair then `A1passive` component bridge
+
+The first two target-side normalisation stages are now composed.  New public
+Lean names:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A1passive_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_F2C_eq_formalRawOrderJacobianAt
+retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A3passive_eq_formalRawOrderJacobianAt
+```
+
+The composed equivalence is
+`retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt.trans
+retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt`, so the
+edge-pair stage is applied first and the post-edge-pair `A1passive` shear
+second.  Its absolute determinant is one by `LinearMap.det_comp` and the two
+component determinant-one theorems.  On actual raw-order derivative targets,
+Lean now proves componentwise agreement with the formal raw-order Jacobian for
+`A1passive`, `(F2,C)`, and `A3passive`.
+
+The `A1passive` proof uses the formal inverse of the edge-pair-normalised
+`(F2,C)` pair to recover the pre-edge-pair target-recovered `F2` family, then
+uses the existing target-staged `A1passive` theorem.  It does not re-run the
+target edge-pair recovery on already normalised data.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The sorry gate, whitespace check, code-only forbidden-marker search, and direct
+axiom audit passed; the new composed theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.  Xhigh review by
+`Pasteur the 2nd` passed, checking composition order, determinant scope,
+component bridges, and nonclaim boundaries.
+
+This is not full target normalisation: there is no `Ctop` or `F3` agreement
+yet, no full tuple equality, and no use of the conditional determinant bridge.
+It also does not prove actual Frechet determinant equality, source-prior
+transport, normal crossings, pole order, or RLCT.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, post-edge-pair `A1passive` raw-tuple shear
 
 The target normalizer frontier now has the next determinant-one raw-tuple
