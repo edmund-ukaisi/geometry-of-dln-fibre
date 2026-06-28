@@ -519,6 +519,65 @@ theorem schurResidG_translate_lt_top (r : ℕ) (hr : 3 ≤ r)
   refine lt_of_le_of_lt (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) ?_
   exact hcore
 
+/-- **The unshifted corank-`(r−1)` core value** `coreSchurGenVal r c'' Kr := ∫_{Δ∈matBox (r−1)(r−1) Kr}
+∫_{S∈matBox (r−1) 4 Kr} frobSq(Δ·S)^{−c''}` — the `Sh`-independent finite constant the shifted residual is
+bounded by (the carve-first assembly integrates the residual over the `rest`/shift coords, so it needs a
+bound INDEPENDENT of `Sh`). Generic analog of `coreSchur2Val`. -/
+noncomputable def coreSchurGenVal (r : ℕ) (c'' Kr : ℝ) : ℝ≥0∞ :=
+  ∫⁻ Δ in matBox (r - 1) (r - 1) Kr, ∫⁻ S in matBox (r - 1) 4 Kr,
+    ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c''))
+
+/-- `coreSchurGenVal r c'' Kr < ⊤` for `0 < c'' < schurLambda (r−1)`, `0 < Kr`, `r ≥ 3` — via the abstract
+lower IH at corank `r − 1`. -/
+theorem coreSchurGenVal_lt_top (r : ℕ) (hr : 3 ≤ r) (hIH : SchurLowerIH 4 schurLambda r)
+    (c'' : ℝ) (hc0 : 0 < c'') (hclam : c'' < schurLambda (r - 1)) (Kr : ℝ) (hKr : 0 < Kr) :
+    coreSchurGenVal r c'' Kr < ⊤ := by
+  have := hIH 1 (le_refl 1) (by omega) c'' hc0 (by simpa using hclam) Kr hKr
+  rw [SchurCore] at this
+  simpa [coreSchurGenVal] using this
+
+/-- **The generic shifted-residual UNIFORM `_le` bound.** For a fixed shift `Sh` with `|Sh| ≤ B`, the
+shifted corank-`(r−1)` core integral is `≤ coreSchurGenVal r c'' (K+B)` — a bound INDEPENDENT of `Sh` (only
+the radius `K+B` records the shift size). Same chain as `schurResidG_translate_lt_top` (`Δ ↦ Δ − Sh`
+translate into radius `K+B`), ending at the named value rather than `< ⊤`. The boundary-integrable form the
+carve-first assembly consumes (mirror of `schurResid2_translate_le`). -/
+theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → Fin (r - 1) → ℝ)
+    (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B) (c'' : ℝ) (K : ℝ) :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
+        ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+      ≤ coreSchurGenVal r c'' (K + B) := by
+  have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (hB ⟨0, by omega⟩ ⟨0, by omega⟩)
+  set g : (Fin (r - 1) → Fin (r - 1) → ℝ) → ℝ≥0∞ := fun Δ =>
+    ∫⁻ S in matBox (r - 1) 4 (K + B),
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'')) with hg
+  have hSsub : matBox (r - 1) 4 K ⊆ matBox (r - 1) 4 (K + B) := by
+    intro X hX i k; have := Set.mem_Icc.1 (hX i k); rw [Set.mem_Icc]
+    constructor <;> [linarith [this.1]; linarith [this.2]]
+  have hle1 : ∀ Δ : Fin (r - 1) → Fin (r - 1) → ℝ,
+      (∫⁻ S in matBox (r - 1) 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+        ≤ g (Δ + (fun i j => -Sh i j)) := by
+    intro Δ
+    have hmono := lintegral_mono_set (μ := volume) hSsub
+      (f := fun S => ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+    refine le_trans hmono (le_of_eq ?_)
+    have heqfun : (fun i j => Δ i j - Sh i j) = (Δ + (fun i j => -Sh i j)) := by
+      funext i j; simp [Pi.add_apply, sub_eq_add_neg]
+    rw [hg]
+    refine lintegral_congr (fun S => ?_)
+    rw [heqfun]
+  refine le_trans (lintegral_mono hle1) ?_
+  have hsub : (fun Δ => Δ + (fun i j => -Sh i j)) '' (matBox (r - 1) (r - 1) K)
+      ⊆ matBox (r - 1) (r - 1) (K + B) := by
+    rintro Δ' ⟨Δ, hΔ, rfl⟩
+    intro i j
+    show -(K + B) ≤ Δ i j + (-Sh i j) ∧ Δ i j + (-Sh i j) ≤ K + B
+    have hΔij := Set.mem_Icc.1 (hΔ i j)
+    have hShij := abs_le.1 (hB i j)
+    constructor <;> [linarith [hΔij.1, hShij.2]; linarith [hΔij.2, hShij.1]]
+  refine le_trans (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) (le_of_eq ?_)
+  rw [coreSchurGenVal]
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
