@@ -668,3 +668,42 @@ exponent-routing (directMorse `c'≤p/2` / peel `p/2<c'` with a `c★` device) a
 mechanical swap. The `1 ≤ p` honesty hypothesis (DLN output width ≥ 1) is added. Everything else (Option B
 witness, `peel_le` lift, r=2 base, carve angular p-invariance, cap-B = done radial axis) stands and is
 Codex-corroborated. Build still gated on controller diff-gate of THIS (corrected) plan.
+
+## 11. BUILD KICKOFF — refinements folded + BASE-SELECTION blocker (2026-06-28)
+
+Controller DIFF-GATE = GO. The 5 refinements (all verified before folding):
+1. **Dispatch PURELY predicate-driven** `le_or_lt (lam r) (p/2)` — NEVER a fixed corank cutoff. VERIFIED
+   (`refine_check.py`): r=2 routes PEEL at p≤3, directMorse at p≥4 — my §10.4 "r=2 base" WAS a p=4-ism.
+   Corrected: r=2 is not special; it routes by the predicate like every r.
+2. **c★ = (p/2 + lam r)/2** when `lam r > p/2`. VERIFIED strict-interior, gap ≥ 1/2 ∀(r,p) (both endpoints
+   half-integers since minAdm ∈ ℤ). Generalizes p=4's fallback "3" cleanly.
+3. **`1 ≤ p` honesty hyp** — thread it (DLN output width ≥ 1). FOLD IN.
+4. Base discipline (Item-58) — see BLOCKER below.
+5. Incremental build per §9.5/§10.3; green per step; REPORT at the first MED piece (peel_le or
+   schurCoreP_directMorse), do not go dark for ~1000 LoC. KILL-CONDITION: a 2nd hidden p=4-ism ⟹ STOP+report.
+
+### 11.1 BASE-SELECTION BLOCKER (surfaced to controller — NOT solo-decidable)
+
+Refinement 4 suggested base = `origin/genm-n4 @6ff61035`. AUDIT (Item-58 prereq check) — **genm-n4 does NOT
+have all 3 prerequisites**:
+| branch | prereq-1 closed carve (schurRatioResidGen_mid) | prereq-2 RR4 (minAdm/eParamsRR4) | prereq-3 radial chart |
+|---|---|---|---|
+| origin/genm-n4 @6ff61035 | **OPEN** (sorry at RouteMSchurFiring:1425) | YES (sorry-free) | YES |
+| origin/genm-capstone @c2777384 | **CLOSED** (header COMPLETE, clean-three) | NO | YES |
+| genm-assemble @dd162c10 (mine) | **CLOSED** | NO | YES |
+
+NO single existing branch has the union {closed carve + RR4 + radial}. genm-n4's carve is OPEN (it's based on
+e2941aa1, pre-carve-close); capstone/mine have the closed carve but lack genm-n4's `RouteMBoxThresholdRR4`.
+
+GOOD NEWS: `RouteMBoxThresholdRR4` imports ONLY `RouteMBoxReduction` + `RouteMSchurGeneral` (both on
+capstone's lineage; merge-base of capstone & genm-n4 is e2941aa1). So it GRAFTS cleanly onto capstone.
+
+**RECOMMENDED base: `origin/genm-capstone @c2777384` (closed carve + radial, controller's canonical) +
+cherry-pick genm-n4's `RouteMBoxThresholdRR4.lean` (one self-contained file).** This is the union, minimal.
+
+BUT: assembling a cross-lineage base (capstone ⊎ genm-n4's RR4 file) is an INTEGRATION act that overlaps #143
+(the canonical integration the controller gates). I will NOT unilaterally merge cross-lineage — surfacing for
+the controller to either (a) bless capstone+RR4-cherry-pick as my build base, or (b) point me at an existing
+integration branch that already has the union, or (c) have #143's owner produce the union base first. Pending
+that, I CANNOT green-confirm a base, so the build is HELD at the base gate (correctly — Item-58 says confirm
+the 3 prereqs GREEN before extending, and no base currently provides them).
