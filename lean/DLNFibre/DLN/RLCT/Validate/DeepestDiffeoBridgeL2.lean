@@ -102,8 +102,10 @@ theorem psiL2_hasStrictFDerivAt (H : Fin (L + 1) → ℕ) (r : ℕ)
       (ContinuousLinearMap.id ℝ (Fin (flatDim H) → ℝ)) wstar := by
   sorry
 
-/-- **FINAL — the L=2 diffeo bridge** (the content of `deepest_diffeo_bridge_L2`). Signature matches
-`DeepestGaugeConstruction.lean:2853` verbatim; the controller `exact`s this into the 2915 site.
+/-- **FINAL — the L=2 diffeo bridge** (the content of `deepest_diffeo_bridge_L2`). Signature is
+`DeepestGaugeConstruction.lean:2853` PLUS the two triangularity hypotheses `hPtri`/`hQtri` (the
+soundness amendment — the verbatim-2853 sig is unsound, E2 false at general frames). The R-param
+producer edit lifts THIS (sound) conclusion; the `_L2` caller supplies the triangularity proofs.
 Assembles via the banked abstract bridge: S6 comp-identity (germ) + S2 (ContDiff) + S4 (fderiv) +
 S3 (fixpoint), fed to `rlctAtOn_comp_localDiffeo` + `rlctAtOn_germ_local`. -/
 theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -113,6 +115,18 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
     (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    -- **TRIANGULARITY (soundness, Codex-confirmed E2 wall, consult `e2-frame-soundness`).** The
+    -- framed product `P = endpointP0·(prod−B)·endpointQL = (Pf 0)·(prod−B)·(Qf last)` reads its reg
+    -- blocks through the GENERIC endpoint frames; E2 (`deepestEFull ∘ Ψ = deepestEFull`) is FALSE at
+    -- general frames (the moved (2,2) block leaks into `P01` via `(Pf 0)₀₁·M·(Qf last)₁₀`). Sound
+    -- iff `Pf 0` is block-LOWER (top-right `toBlocks₁₂ = 0`) and `Qf last` block-UPPER (bottom-left
+    -- `toBlocks₂₁ = 0`) on the `r/rest` split. Discharged at the `_L2` caller by the explicit
+    -- triangular normalizers (`deepestPoint_leadingBlock_isUnit` + Core `blockLower/blockUpper`).
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
