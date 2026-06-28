@@ -479,12 +479,89 @@ theorem ofReal_rpow_neg_le_one_add (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0 
     · refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_left (le_refl _))
       exact Real.rpow_le_rpow_of_exponent_ge hx0 (le_of_lt h1) (by linarith)
 
+/-! ### The carving core — the residual translate-domination into the abstract lower IH
+
+After N2b (`j = 1`) + the shifted `Fin 4` Morse peel, the corank-`r` ratio-residual reduces to the
+corank-`(r−1)` JOINT core `∫_{Δ free}∫_{S} frobSq ((Δ − Sh)·S)^{−c''}` at the SHIFTED exponent `c'' =
+c' − 2`, with `Δ` the free `(r−1)×(r−1)` block (the `M22` carved from the ratios) and `Sh` the fixed
+Cramer shift (`|Sh| ≤ B`). The `Δ ↦ Δ − Sh` matrix-space translation (Jac ≡ 1) box-enlarges `Δ` to radius
+`K + B`, and the ABSTRACT lower IH `SchurLowerIH 4 schurLambda r` at corank `r − 1`, radius `K + B`, closes
+it (`c'' < λ_{r−1}`). The generic analog of `RouteMSchurCorank3.schurResid2_translate_le`, invoking the IH
+instead of the banked `core_schur2_lt_top`. -/
+
+/-- **Matrix-box translate-enlarge (generic `(r−1)×(r−1)`).** `∫_{Δ∈matBox m m K} f(Δ + Sh) ≤
+∫_{Δ'∈matBox m m Kg} f Δ'` when `(·+Sh)''(matBox m m K) ⊆ matBox m m Kg`. Measure-preserving matrix-space
+translation (`measurePreserving_add_right`) + `lintegral_mono_set`. Mirror of `matBox2_translate_le`. -/
+theorem matBoxSq_translate_le {m : ℕ} (Sh : Fin m → Fin m → ℝ) (K Kg : ℝ)
+    (f : (Fin m → Fin m → ℝ) → ℝ≥0∞)
+    (hsub : (fun Δ => Δ + Sh) '' (matBox m m K) ⊆ matBox m m Kg) :
+    (∫⁻ Δ in matBox m m K, f (Δ + Sh)) ≤ ∫⁻ Δ' in matBox m m Kg, f Δ' := by
+  set τ : (Fin m → Fin m → ℝ) → (Fin m → Fin m → ℝ) := fun Δ => Δ + Sh with hτ
+  have hmp : MeasurePreserving τ volume volume := measurePreserving_add_right volume Sh
+  have hemb : MeasurableEmbedding τ := (Homeomorph.addRight Sh).measurableEmbedding
+  have h1 : (∫⁻ Δ in matBox m m K, f (τ Δ)) = ∫⁻ Δ' in τ '' (matBox m m K), f Δ' := by
+    rw [← hmp.setLIntegral_comp_preimage_emb hemb f (τ '' (matBox m m K)),
+      Set.preimage_image_eq (matBox m m K) hemb.injective]
+  calc (∫⁻ Δ in matBox m m K, f (Δ + Sh)) = ∫⁻ Δ' in τ '' (matBox m m K), f Δ' := h1
+    _ ≤ ∫⁻ Δ' in matBox m m Kg, f Δ' := lintegral_mono_set hsub
+
+/-- **The carving-core residual bound (invokes the abstract IH).** For a fixed shift
+`Sh : Fin (r−1) → Fin (r−1) → ℝ` with `|Sh| ≤ B`, `0 < c'' < schurLambda (r−1)`, `K > 0`, `r ≥ 3`,
+the shifted corank-`(r−1)` core integral
+`∫_{Δ∈matBox (r−1)(r−1) K}∫_{S∈matBox (r−1) 4 K} frobSq ((Δ − Sh)·S)^{−c''}` is finite: the `Δ ↦ Δ − Sh`
+translation box-enlarges `Δ` to radius `K + B` (`matBoxSq_translate_le`), and the lower IH at corank
+`r − 1`, radius `K + B`, closes it (`SchurCore 4 (r−1) c'' (K+B) < ⊤`). The generic analog of
+`schurResid2_translate_lt_top`. -/
+theorem schurResidG_translate_lt_top (r : ℕ) (hr : 3 ≤ r)
+    (hIH : SchurLowerIH 4 schurLambda r)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (c'' : ℝ) (hc0 : 0 < c'') (hclam : c'' < schurLambda (r - 1)) (K : ℝ) (hK : 0 < K) :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
+        ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c''))) < ⊤ := by
+  have hB0 : 0 ≤ B := le_trans (abs_nonneg _) (hB ⟨0, by omega⟩ ⟨0, by omega⟩)
+  -- the lower IH at corank r−1, radius K+B (j = 1, so r − j = r − 1)
+  have hcore : SchurCore 4 (r - 1) c'' (K + B) := by
+    have hj1 : (1 : ℕ) ≤ 1 := le_refl 1
+    have hjr : (1 : ℕ) ≤ r := by omega
+    have := hIH 1 hj1 hjr c'' hc0 (by simpa using hclam) (K + B) (by linarith)
+    simpa using this
+  rw [SchurCore] at hcore
+  set g : (Fin (r - 1) → Fin (r - 1) → ℝ) → ℝ≥0∞ := fun Δ =>
+    ∫⁻ S in matBox (r - 1) 4 (K + B),
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'')) with hg
+  have hSsub : matBox (r - 1) 4 K ⊆ matBox (r - 1) 4 (K + B) := by
+    intro X hX i k; have := Set.mem_Icc.1 (hX i k); rw [Set.mem_Icc]
+    constructor <;> [linarith [this.1]; linarith [this.2]]
+  have hle1 : ∀ Δ : Fin (r - 1) → Fin (r - 1) → ℝ,
+      (∫⁻ S in matBox (r - 1) 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+        ≤ g (Δ + (fun i j => -Sh i j)) := by
+    intro Δ
+    have hmono := lintegral_mono_set (μ := volume) hSsub
+      (f := fun S => ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
+    refine le_trans hmono (le_of_eq ?_)
+    refine lintegral_congr (fun S => ?_)
+    congr 2
+    funext i j; ring
+  refine lt_of_le_of_lt (lintegral_mono hle1) ?_
+  have hsub : (fun Δ => Δ + (fun i j => -Sh i j)) '' (matBox (r - 1) (r - 1) K)
+      ⊆ matBox (r - 1) (r - 1) (K + B) := by
+    rintro Δ' ⟨Δ, hΔ, rfl⟩
+    intro i j
+    show -(K + B) ≤ Δ i j + (-Sh i j) ∧ Δ i j + (-Sh i j) ≤ K + B
+    have hΔij := Set.mem_Icc.1 (hΔ i j)
+    have hShij := abs_le.1 (hB i j)
+    constructor <;> [linarith [hΔij.1, hShij.2]; linarith [hΔij.2, hShij.1]]
+  refine lt_of_le_of_lt (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) ?_
+  exact hcore
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
 `|entries| ≤ 1`; N2b (`j = 1`) peels the top `Fin 4` Morse block (threshold `2`), leaving the residual at
-`c'' = c' − 2 ∈ (0, λ_{r−1})`; the `M22 ↦ Sc` carving + the lower IH `hIH` close it. The genuinely-new
-generic content. `N = r²−1` (so `r * r = N + 1`). -/
+`c'' = c' − 2 ∈ (0, λ_{r−1})`; the `M22 ↦ Sc` carving + the lower IH `hIH` (via
+`schurResidG_translate_lt_top`) close it. The genuinely-new generic content. `N = r²−1`
+(so `r * r = N + 1`). -/
 theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
     (hIH : SchurLowerIH 4 schurLambda r) (c' : ℝ) (hc2 : 2 < c') (hc' : c' < schurLambda r)
     (p : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
