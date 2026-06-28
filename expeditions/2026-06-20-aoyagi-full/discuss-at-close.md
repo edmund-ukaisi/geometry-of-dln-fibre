@@ -1289,25 +1289,29 @@ done/in-flight. This item is the four-research-gate scope decision — the centr
   dev→master), operator-gated. The R1-UPPER #143 Phase-1 (the gated headline) is DONE on the lineage; its dev-merge is part
   of that eventual promotion, not a separate tide task.
 
-### Item 60 — The L2 bridge sub-3 frame-design gap: "9 helpers = mechanical instantiation" was an over-claim; the framed reg-energy is not move-invariant under the B-normalizing frame (2026-06-28)
-genm-l2subs banked 9 axiom-clean helpers decomposing both L2 S6 subs and reported "the entire mathematical content is
-banked; only mechanical cast/reindex instantiation remains." The continuation genm-l2fin (with a numeric witness +
-decorrelated Codex xhigh + a cross-check against the original E2 certificate) found this was an OVER-CLAIM: sub-3 has a
-real GEOMETRIC gap. `deepestEFull` reads the FRAMED product's reg blocks; the joint move's framed {12} block
-= (1 − p11)·ΔY·d' (p11 = reindex(endpointP0).toBlocks₁₁) is zero ONLY if the frame is UNIPOTENT, but the producer's frame
-is B-NORMALIZING (p11 = ⅟A11 ≠ 1) — and unipotency conflicts with B-normalization (hS3b needs ⅟A11). The original cert
-verified E2 on the RAW product; E2 holds raw, not framed-with-general-Pf. So the framed reg energy is not move-invariant
-as scoped, and closing sub-3 needs a frame-design FIX, not cast bookkeeping.
+### Item 60 — A raised-and-RETRACTED L2 sub-3 kill-condition: the leak was a wrong-route artifact, not a design gap — and the controller meta-lesson (don't write the post-mortem before the verification lands) (2026-06-28)
+[This item originally read as a confirmed "frame-design gap / genm-l2subs over-claimed" narrative; it is CORRECTED below — the kill-condition was retracted within the hour.]
 
-**Two things for the operator:**
-1. **The discipline worked (the headline this validates):** the kill-condition caught the hole BEFORE a wasted ~150-LoC
-   rebuild on a false target. The "complete toolkit / mechanical instantiation" framing is exactly the *visible-progress
-   raced ahead of solid progress* trap the disposition warns about — a confident headline that travelled while a hole
-   remained. The 9 helpers ARE real (clean-three); the over-claim was about what *remained*.
-2. **L2 scope is longer than "9 helpers done" suggested.** sub-3 needs one of {frame-aware move / conjugate the move by
-   the frame / two-frame split / read raw} — a bounded-but-deep psiSplitRawL2Core/move rebuild, NOT a research wall.
-   A decorrelated pen-and-paper adjudication (`genm-frameadj`) is in flight to pick the resolution + the minimal spec;
-   the controller's prior is that reg + singular must be co-framed (so the framed reading is correct and "read raw" is
-   disfavored). Once the resolution lands, the rebuild + close is bounded. This shifts the L2-bridge ETA out by one
-   design-resolution + rebuild cycle; flagging so the bounded-result-vs-walls scope picture (Item 59) stays honest:
-   L2 is still bounded, just not as near-done as the prior tick implied.
+**What happened.** Closing L2 S6 sub-3, genm-l2fin hit what looked like a hard kill-condition: the framed reg-energy {12}
+block = (1 − p11)·ΔY·d' is zero only if the frame is UNIPOTENT, but the producer's frame is B-NORMALIZING (p11 = ⅟A11 ≠ 1)
+— with a numeric witness + Codex xhigh + a cross-check against the E2-raw cert. It read as a genuine geometric gap. The
+controller accepted it, spawned a decorrelated frame-design adjudication (`genm-frameadj`), and wrote this item as an
+"over-claim" post-mortem. **Then genm-l2fin self-corrected:** the leak was an ARTIFACT of a WRONG route it took
+(comparing `prod(framedParamsPivot ψq)` directly, with the per-layer frame Pf0 sitting INSIDE between layers, which mixes
+the moved {12}/{22} into the framed {12}). genm-l2subs's BANKED route avoids it exactly: the telescope
+`endpoint_telescoping_eq` pulls all per-layer frames to the ENDPOINTS, leaving the middle product FRAME-FREE → raw
+`e2_regPreserve` → `framed_regBlocks_eq_of_mid` lifts through the block-TRIANGULAR endpoints. Numeric-confirmed leak-free
+(non-unipotent endpoints → {11}={12}={21}=0). So **block-triangular suffices, no unipotency, no frame-design rebuild** —
+genm-l2subs's route + the 9 helpers were SOUND, and the remaining work IS the instantiation, plus one bounded
+wiring-contract decision (resolved: thread the concrete de-framed tuple `Aψ` + frame hyps + readback-tie as inputs, the
+controller discharges at the final wiring). genm-frameadj stood down (moot).
+
+**The real takeaways for the operator:**
+1. **Net no harm, fast self-correction.** No build was wasted (genm-l2fin caught its own route before genm-frameadj
+   finished); the L2 bridge is on track via the original telescope route. The 9 helpers are real (clean-three).
+2. **Controller meta-lesson (the durable one):** a leak on ONE route does NOT mean the architecture is broken. The error
+   was jumping from "leak on route X" to "design gap" — and *editorializing it into a post-mortem* (this item, v1) before
+   the decorrelated verification landed. Accepting a well-evidenced kill-condition and commissioning a decorrelated check
+   was correct; writing the blame narrative early was not. The fix: when a kill-condition is on a route, first ask "does
+   it hold on the INTENDED route?"; commission the check, but HOLD the narrative until it confirms. (See also Item 56 — a
+   stop-signal is necessary-not-sufficient; this is its dual for kill-conditions.)
