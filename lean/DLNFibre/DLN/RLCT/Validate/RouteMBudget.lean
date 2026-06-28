@@ -75,14 +75,24 @@ tPrev_{L−1} − 0 = tach(L−1) = Text(L)` and `cBlock_{L−1} = M_L − 0 = W
 theorem leafTerm_eq_rBlock_cBlock (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
     (Text M (tach M) L : ℤ) * (Wext M L : ℤ)
       = rBlock M ⟨L - 1, by omega⟩ * cBlock M ⟨L - 1, by omega⟩ := by
-  -- TODO(cast-assist): the leaf-block cast bridge. The MATH is settled (genm-budget: tStar_{L−1}=0 ⟹
-  -- rBlock_{L−1} = tach(L−1) = Text(L), cBlock_{L−1} = M_L = Wext(L); 129k cases + symbolic L=2..5). The
-  -- remaining is the `Fin`/dependent-cast bookkeeping: rewriting `L → (L−1)+1` to fire `Text_tach_succ`
-  -- breaks the dependent `Fin (L+1)` motive (`conv`/`rw` "motive not type correct"). Needs a motive-stable
-  -- approach (generalize `L`, or an `Nat`-indexed `Text` reader stated at `L` directly). Thrashed >4× on
-  -- the cast; deferred per cast-discipline. The per-term interior bridge (`chainEdimZ_succ_eq_rBlock_cBlock`)
-  -- and `tPrev_tStar_eq_tach` ARE proven; this is the LEAF (j=L−1) cast only.
-  sorry
+  -- The leaf index `jL = ⟨L−1, _⟩ : Fin L`.
+  set jL : Fin L := ⟨L - 1, by omega⟩ with hjL
+  -- Leaf admissibility (`admPred`'s third clause): `tStar M jL = 0` since `jL.val = L − 1`.
+  have hzero : tStar M jL = 0 :=
+    (Finset.mem_filter.1 (tStar_mem M)).2.2.2 jL (by simp [hjL])
+  -- RHS, with `tStar M jL = 0`:  rBlock = tPrev, cBlock = M jL.succ.
+  rw [rBlock, cBlock, hzero, Nat.cast_zero, sub_zero, sub_zero]
+  -- The successor `jL.succ : Fin (L+1)` is the in-range index `⟨L, _⟩`, so `M jL.succ = Wext M L`.
+  have hsucc : M jL.succ = Wext M L := by
+    rw [Wext_apply M L (by omega)]; congr 1
+    apply Fin.ext; rw [Fin.val_succ, hjL]; simp; omega
+  -- The compressed leaf width `Text M (tach M) L = tach M ⟨L−1, _⟩ = tPrev M (tStar M) jL`.
+  have hT : (Text M (tach M) L : ℤ) = tPrev M (tStar M) jL := by
+    rw [tPrev_tStar_eq_tach M jL]
+    have hidx : (⟨jL.val, by omega⟩ : Fin (L + 1)) = ⟨L - 1, by omega⟩ := by
+      apply Fin.ext; simp [hjL]
+    rw [hidx, ← Text_tach_succ M (L - 1) (by omega), Nat.sub_add_cancel hL]
+  rw [hT, hsucc]
 
 /-- **THE BUDGET IDENTITY (★)** over ℤ: `∑_{k:Fin L} (Text k − Text(k+1))(Wext k − Text(k+1)) +
 Text(L)·Wext(L) = minAdm M` (at the achiever path). The interior chain E-blocks (`k = 1..L−1`; the
@@ -93,14 +103,32 @@ block (`leafTerm_eq_rBlock_cBlock`). -/
 theorem budget_identity (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
     (∑ k : Fin L, chainEdimZ M k.val) + (Text M (tach M) L : ℤ) * (Wext M L : ℤ)
       = (minAdm M : ℤ) := by
-  -- The REINDEX is fully specified (genm-budget): `∑_{j:Fin L} rBlock·cBlock = minAdm` (banked
-  -- `sum_rBlock_cBlock_eq_minAdm`); split the Aoyagi sum at j=last (= the leaf term via
-  -- `leafTerm_eq_rBlock_cBlock`), and match the rest to the chain sum — `Fin.sum_univ_succ` peels the
-  -- chain k=0 term (= 0, since `Text 0 = Text 1 = M 0` ⟹ r_0 = 0), and the chain tail
-  -- `chainEdimZ (k+1) = rBlock_k·cBlock_k` (PROVEN `chainEdimZ_succ_eq_rBlock_cBlock`) matches the Aoyagi
-  -- castSucc terms. Gated on `leafTerm_eq_rBlock_cBlock` (the leaf cast, sorry'd above) + the
-  -- `Fin.sum_univ_succ`/`sum_univ_castSucc` index alignment (`L = n+1` rewrite, motive-sensitive). Math
-  -- settled; deferred with leafTerm per cast-discipline (one targeted cast-assist closes both).
-  sorry
+  -- Make `L` syntactically `L' + 1` everywhere (motive-stable; no dependent-`Fin` rewrite).
+  obtain ⟨L', rfl⟩ : ∃ L', L = L' + 1 := ⟨L - 1, by omega⟩
+  -- Aoyagi side: `∑_{j:Fin (L'+1)} rBlock·cBlock = minAdm`.
+  rw [← sum_rBlock_cBlock_eq_minAdm M]
+  -- Peel the leaf (last) Aoyagi term; the leaf-block bridge identifies it with the leaf residual.
+  rw [Fin.sum_univ_castSucc (f := fun j => rBlock M j * cBlock M j)]
+  have hleaf : (Text M (tach M) (L' + 1) : ℤ) * (Wext M (L' + 1) : ℤ)
+      = rBlock M (Fin.last L') * cBlock M (Fin.last L') := by
+    have := leafTerm_eq_rBlock_cBlock M hL
+    rwa [show (⟨L' + 1 - 1, by omega⟩ : Fin (L' + 1)) = Fin.last L' from by
+      apply Fin.ext; simp] at this
+  rw [hleaf]
+  -- Peel the chain `k = 0` term (`= 0`, since `Text 0 = Text 1 = M 0`).
+  rw [Fin.sum_univ_succ (f := fun k => chainEdimZ M k.val)]
+  have hchain0 : chainEdimZ M (0 : Fin (L' + 1)).val = 0 := by
+    simp only [Fin.val_zero, chainEdimZ]
+    rw [Text_zero, Text_tach_succ M 0 (by omega), tach_mk_zero M (by omega)]
+    ring
+  rw [hchain0, zero_add]
+  -- Match the interior chain terms to the Aoyagi `castSucc` terms via the proven width bridge.
+  rw [add_left_inj]
+  apply Finset.sum_congr rfl
+  intro i _
+  have h := chainEdimZ_succ_eq_rBlock_cBlock M i.castSucc
+  rw [Fin.val_castSucc] at h
+  rw [Fin.val_succ]
+  exact h
 
 end DLNFibre.DLN.RLCT
