@@ -2192,6 +2192,44 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       hcrit_pivot hresidual_eq hloss hdensity_nonneg hdensity_le
 
 set_option linter.unusedSectionVars false in
+/-- A continuous retained-passive determinant-chart data family is
+ae-measurable for the selected-entry signed-box measure.
+
+This discharges the exact `hretainedData` hypothesis used by the retained-passive
+source-edge-family finite-integral handoffs when the constructed data are
+available as a continuous map into the determinant-chart subtype. -/
+theorem retainedPassiveDetData_aemeasurable_of_continuous
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι : Type*} {center : Finset ι}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    (retainedData :
+      (center → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : ∀ y : center → ℝ, (retainedData y).detChart)
+    (Rres : center → ℝ) :
+    let DetData :=
+      {data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) // data.detChart}
+    let signedBox :=
+      Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    ∀ [MeasurableSpace DetData] [BorelSpace DetData],
+      Continuous
+        (fun y : center → ℝ ↦
+          (⟨retainedData y, hdet y⟩ : DetData)) →
+      AEMeasurable
+        (fun y : center → ℝ ↦
+          (⟨retainedData y, hdet y⟩ : DetData))
+        signedBox := by
+  intro DetData signedBox _ _ hcont
+  exact hcont.aemeasurable
+
+set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
 /-- Retained-passive data feeding the fixed-base p.13 source edge-family map
 give the chart-produced selected-entry local-measure handoff.

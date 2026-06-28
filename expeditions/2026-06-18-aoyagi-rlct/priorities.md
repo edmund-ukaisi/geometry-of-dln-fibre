@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive DetData continuity-to-a.e.-measurability adapter
+
+The retained-passive source-edge-family handoffs now have the helper
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveDetData_aemeasurable_of_continuous
+```
+
+which turns continuity of
+
+```text
+fun y => (⟨retainedData y, hdet y⟩ : DetData)
+```
+
+into the exact `AEMeasurable ... signedBox` hypothesis consumed by the
+existing source-edge-family finite-integral handoffs.  This is small but
+non-cosmetic: downstream constructed chart data usually arrive by continuity
+into the determinant-chart subtype, not directly as measure-theoretic
+a.e.-measurable maps.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-detdata-continuity-aemeasurable.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-detdata-continuity-aemeasurable.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.  This is only a measurability
+adapter: it does not construct retained data, prove determinant-chart
+membership, source-image or residual identities, Jacobian comparison, finite
+integrability, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian residual-source handoff
 
 The retained-passive inverse-Jacobian raw-order source measure now has the

@@ -48,6 +48,40 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive DetData Continuity-To-AEMeasurable
+
+The retained-passive local-measure layer now has
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveDetData_aemeasurable_of_continuous
+```
+
+for converting a continuous constructed data family
+
+```text
+fun y => (⟨retainedData y, hdet y⟩ : DetData)
+```
+
+into the `AEMeasurable` hypothesis required by the retained-passive
+source-edge-family finite-integral handoffs.  The proof is only
+`Continuous.aemeasurable`, with the determinant-chart subtype kept explicit.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-detdata-continuity-aemeasurable.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-detdata-continuity-aemeasurable.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct
+axiom probe passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is only a measurability adapter.  It does not construct retained data,
+prove determinant-chart membership, source-image or residual identities,
+Jacobian comparison, finite integrability, normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Retained-Passive Inverse-Jacobian Residual-Source Handoff
 
 The retained-passive raw-order inverse-Jacobian source measure now has a
