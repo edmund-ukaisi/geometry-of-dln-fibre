@@ -407,3 +407,84 @@ theorem rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb (H : Fin (L + 1) → ℕ) (r : �
       bareAbsorb_thetaConj_eq_conjAbsorb H r B hB hr hL hDA q]
   rw [hGΘ] at hkey
   exact hkey.symm
+
+/-! ## The conjugated absorbed-core energy on the inner ball (the Step-Ψ foundation)
+
+On the inner ball (`χ_conj = 1`) the conjugated cutoff equals the raw conjugated shift, so the absorbed
+core decodes additively to `decode(q).core_s + schurCorrectionConj_s` — the conjugated analogue of
+`deepestCoreF_coreAbsorb_eq_prodSchur`. -/
+
+/-- On the conjugated inner ball the cutoff equals the raw conjugated shift (`χ_conj = 1`). -/
+theorem schurCutoffShiftConj_eq_raw_of_mem_closedBall (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+    (hp : p ∈ Metric.closedBall (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+      ((cutoffBumpConj H r B hB hr hL hDA).rIn)) :
+    schurCutoffShiftConj H r B hB hr hL hDA p = schurShiftRawConj H r B hB hr hL p := by
+  simp only [schurCutoffShiftConj,
+    (cutoffBumpConj H r B hB hr hL hDA).one_of_mem_closedBall hp, one_smul]
+
+/-- **The conjugated absorbed-core energy** (inner ball): `deepestCoreF (deepestCoreAbsorbConj q).2.1 =
+frobSq(prod(deepestM)(decode(q).core_s + schurCorrectionConj_s))`. Conjugated analogue of
+`deepestCoreF_coreAbsorb_eq_prodSchur` (`coreShearHomeo` ADD-form + χ_conj=1 + `paramsEquivFlat`
+additivity/round-trip). -/
+theorem deepestCoreF_coreAbsorbConj_eq_prodSchur (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hq : q ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
+      ((cutoffBumpConj H r B hB hr hL hDA).rIn)) :
+    deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1
+      = frobSq (prod (deepestM H r)
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s)) := by
+  -- The absorbed core slot: ADD-form `(coreAbsorbConj q).2.1 = q.2.1 + schurCutoffShiftConj (q.1, q.2.2)`.
+  have hcore : (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1
+      = q.2.1 + schurCutoffShiftConj H r B hB hr hL hDA (q.1, q.2.2) := rfl
+  -- On the inner ball the cutoff = raw conjugated shift.
+  have hraw : schurCutoffShiftConj H r B hB hr hL hDA (q.1, q.2.2)
+      = schurShiftRawConj H r B hB hr hL (q.1, q.2.2) := by
+    apply schurCutoffShiftConj_eq_raw_of_mem_closedBall
+    rw [Metric.mem_closedBall, dist_zero_right] at hq ⊢
+    refine le_trans ?_ hq
+    have h1 : ‖q.1‖ ≤ ‖q‖ := by rw [Prod.norm_def q]; exact le_max_left _ _
+    have h2 : ‖q.2.2‖ ≤ ‖q‖ := by
+      rw [Prod.norm_def q, Prod.norm_def q.2]
+      exact le_trans (le_max_right _ _) (le_max_right _ _)
+    rw [Prod.norm_def (q.1, q.2.2)]
+    exact max_le h1 h2
+  have hsr : schurShiftRawConj H r B hB hr hL (q.1, q.2.2)
+      = paramsEquivFlat (deepestM H r) (schurCorrectionConj H r B hB hr hL (q.1, q.2.2)) := rfl
+  -- The decoded core tuple: additivity of `.symm` + round-trip.
+  have hdecode : (paramsEquivFlat (deepestM H r)).symm ((deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+      = (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+          + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s) := by
+    rw [hcore, hraw, hsr]
+    have hsymmL : ∀ y, (paramsEquivFlat (deepestM H r)).symm y
+        = (paramsEquivFlatLinear (deepestM H r)).symm y := by
+      intro y
+      apply (paramsEquivFlatLinear (deepestM H r)).injective
+      rw [(paramsEquivFlatLinear (deepestM H r)).apply_symm_apply,
+        show (paramsEquivFlatLinear (deepestM H r)) ((paramsEquivFlat (deepestM H r)).symm y)
+          = (paramsEquivFlat (deepestM H r)) ((paramsEquivFlat (deepestM H r)).symm y) from
+          congrFun (paramsEquivFlatLinear_coe (deepestM H r)) _,
+        (paramsEquivFlat (deepestM H r)).apply_symm_apply]
+    have hrt : (paramsEquivFlatLinear (deepestM H r)).symm
+        (paramsEquivFlat (deepestM H r) (schurCorrectionConj H r B hB hr hL (q.1, q.2.2)))
+          = schurCorrectionConj H r B hB hr hL (q.1, q.2.2) := by
+      rw [show (paramsEquivFlat (deepestM H r)) (schurCorrectionConj H r B hB hr hL (q.1, q.2.2))
+          = (paramsEquivFlatLinear (deepestM H r)) (schurCorrectionConj H r B hB hr hL (q.1, q.2.2)) from
+          (congrFun (paramsEquivFlatLinear_coe (deepestM H r)) _).symm,
+        (paramsEquivFlatLinear (deepestM H r)).symm_apply_apply]
+    rw [hsymmL (q.2.1 + paramsEquivFlat (deepestM H r) (schurCorrectionConj H r B hB hr hL (q.1, q.2.2))),
+      map_add, hrt, ← hsymmL q.2.1]
+    rfl
+  show dlnLoss (deepestM H r)
+      (0 : Matrix (Fin (deepestM H r 0)) (Fin (deepestM H r (Fin.last L))) ℝ)
+      ((paramsEquivFlat (deepestM H r)).symm (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+    = frobSq _
+  rw [hdecode]
+  simp only [dlnLoss, frobSq, sub_zero]
