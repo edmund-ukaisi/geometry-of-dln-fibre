@@ -519,17 +519,18 @@ theorem sqSumHmat0_ne_zero_of_entry {n : ℕ} {u₀ : ℝ} (c : Chain n u₀)
   rw [hentry, one_pow] at hterm
   exact one_ne_zero hterm
 
-/-- **The interior-drop pivot-survival witness** (the sole remaining `Ubound` input on this class):
-there is a flat point where the achiever unit is nonzero. The witness `wInt` realizes the cert's blocks;
-the three abstract inductions give the surviving entry `Hmat 0 (Text(p+1), 0) = 1 ≠ 0`. -/
-theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hN : 0 < routeMAmbient M) (hInt : InteriorDrop M) :
-    ∃ w : Fin (routeMAmbient M) → ℝ, achieverUfun M hL hN w ≠ 0 := by
-  obtain ⟨hML, p, hp1, hpL, hr, hcd⟩ := hInt
+/-- **The achiever unit is nonzero AT THE WITNESS POINT `wInt M ha p`** (the exposed, `wInt`-specific
+form of the interior-drop survival witness), for the unpacked interior-drop data at a pivot `p`
+(`1 ≤ p < L`, the row-drop `hr`, the tail column-drops `hcd`, the leaf `hML`). The `wInt` realizes the
+cert's blocks; the three abstract inductions give the surviving entry `Hmat 0 (Text(p+1), 0) = 1 ≠ 0`.
+The `∃`-form `exists_achieverUfun_ne_zero_interior` is a thin wrapper (preserved). -/
+theorem achieverUfun_wInt_ne_zero (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hN : 0 < routeMAmbient M) (hML : 0 < Wext M L) (p : ℕ) (hp1 : 1 ≤ p) (hpL : p < L)
+    (hr : Text M (tach M) (p + 1) < Text M (tach M) p)
+    (hcd : ∀ b, p ≤ b → b < L → Text M (tach M) (b + 1) < Wext M b) :
+    achieverUfun M hL hN (wInt M (structAdm_tach M hL) p) ≠ 0 := by
   set ha := structAdm_tach M hL with hadef
   set hle := hleStruct M (tach M) ha with hledef
-  -- the witness vector
-  refine ⟨wInt M ha p, ?_⟩
   -- reduce `achieverUfun w` to `sqSumHmat0` of the ℝ decoder chain
   rw [achieverUfun_eq_eval hL hN, eval_UPolyGen]
   -- the chain at the witness
@@ -637,6 +638,15 @@ theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 <
   -- `sqSumHmat0 ≠ 0` from the surviving entry
   exact sqSumHmat0_ne_zero_of_entry c (rhoAt M (tach M) (kp + 1) 0 (hρT 0 (by omega)))
     ⟨0, hML⟩ hHmat0
+
+/-- **The interior-drop pivot-survival witness** (the `∃`-form, the original `Ubound` input on this
+class): there is a flat point where the achiever unit is nonzero. A thin wrapper over the exposed
+`achieverUfun_wInt_ne_zero` at the interior-drop pivot `p`. (API preserved.) -/
+theorem exists_achieverUfun_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hN : 0 < routeMAmbient M) (hInt : InteriorDrop M) :
+    ∃ w : Fin (routeMAmbient M) → ℝ, achieverUfun M hL hN w ≠ 0 := by
+  obtain ⟨hML, p, hp1, hpL, hr, hcd⟩ := hInt
+  exact ⟨wInt M (structAdm_tach M hL) p, achieverUfun_wInt_ne_zero M hL hN hML p hp1 hpL hr hcd⟩
 
 /-- **`Ubound` closes for interior-drop `M`**: the full a.e.-positivity field on the source box, with
 ONLY the interior-drop hypothesis (no separate witness assumption). -/

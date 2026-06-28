@@ -413,29 +413,25 @@ theorem genBlkFlatLiveR1_wInt_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (ta
     show (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Rfin
       = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Rfin from by rw [hbase]]
 
-/-- **The R1 interior witness** (the count-free `Ubound` input): a flat point where the R1 unit is
-nonzero, for an interior-drop `M`. The R1 decoder at `(wInt p, rfin=0)` IS the dead-leaf
-`genBlkFlatStruct` (`genBlkFlatLiveR1_wInt_eq`), so `UvalLiveR1 … 0 (wInt p) = achieverUfun (wInt p)`,
-nonzero by the dead-leaf `exists_achieverUfun_ne_zero_interior` — count-free (non-vanishing, not the
-`minAdm−1` degree). The pivot `p = k+1` is the interior-drop pivot (`interiorDrop_pivot_hyps`). -/
+/-- **The R1 interior witness** (the count-free `Ubound` input, now CLOSED): a flat point where the R1
+unit is nonzero, at an interior-drop pivot `p = k+1` (the STRICT row-drop `hr` + the tail column-drops
+`hcd`, both supplied from `InteriorDrop`'s `p*`; `hML` the leaf). The R1 decoder at `(wInt p, rfin=0)`
+IS the dead-leaf `genBlkFlatStruct` (`genBlkFlatLiveR1_wInt_eq`), so `UvalLiveR1 … 0 (wInt p) =
+achieverUfun (wInt p)`, nonzero by the exposed dead-leaf `achieverUfun_wInt_ne_zero` — count-free
+(non-vanishing, NOT the `minAdm−1` degree). -/
 theorem exists_UvalLiveR1_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hN : 0 < routeMAmbient M) (hInt : InteriorDrop M) (k : ℕ) (hk : k < L)
-    (hp1 : Text M (tach M) (k + 1 + 1) ≤ Text M (tach M) (k + 1))
-    (hp2 : Text M (tach M) (k + 1 + 1) ≤ Wext M (k + 1)) :
+    (hN : 0 < routeMAmbient M) (k : ℕ) (hkL : k + 1 < L) (hML : 0 < Wext M L)
+    (hr : Text M (tach M) (k + 1 + 1) < Text M (tach M) (k + 1))
+    (hcd : ∀ b, k + 1 ≤ b → b < L → Text M (tach M) (b + 1) < Wext M b) :
     ∃ w : Fin (routeMAmbient M) → ℝ,
-      UvalLiveR1 M (tach M) (structAdm_tach M hL) hN (k + 1) hp1 hp2 (fun _ => 0) w ≠ 0 := by
+      UvalLiveR1 M (tach M) (structAdm_tach M hL) hN (k + 1)
+        (le_of_lt hr) (le_of_lt (hcd (k + 1) (le_refl _) hkL)) (fun _ => 0) w ≠ 0 := by
   refine ⟨wInt M (structAdm_tach M hL) (k + 1), ?_⟩
-  rw [UvalLiveR1, genBlkFlatLiveR1_wInt_eq M (structAdm_tach M hL) k hk hp1 hp2]
-  -- `VvalGen … (genBlkFlatStruct … wInt) = achieverUfun (wInt)` (definitional); nonzero by the dead-leaf
+  rw [UvalLiveR1, genBlkFlatLiveR1_wInt_eq M (structAdm_tach M hL) k (by omega)
+    (le_of_lt hr) (le_of_lt (hcd (k + 1) (le_refl _) hkL))]
+  -- `VvalGen … (genBlkFlatStruct … wInt) = achieverUfun (wInt)` (definitional); nonzero by the exposed
+  -- dead-leaf survival witness at the pivot `p = k+1` (the LOAD-BEARING reduction is proven above).
   show achieverUfun M hL hN (wInt M (structAdm_tach M hL) (k + 1)) ≠ 0
-  -- SORRY (count-FREE; a mechanical body-extraction, NOT math): the dead-leaf
-  -- `exists_achieverUfun_ne_zero_interior` proves EXACTLY `achieverUfun (wInt M ha p) ≠ 0` at the
-  -- `hInt`-pivot `p` (its `refine ⟨wInt M ha p, ?_⟩` body), but returns it behind `∃ w`. Closing this
-  -- needs the dead-leaf body exposed as `achieverUfun_wInt_ne_zero` (a thin refactor of the banked
-  -- witness, controller-authorized option (i)) + aligning `k+1` to the `hInt`-pivot. The LOAD-BEARING
-  -- reduction (`genBlkFlatLiveR1_wInt_eq` — the R1 decoder at `(wInt,0)` IS the dead-leaf decoder) is
-  -- PROVEN above; all the hard casts (`genBlkFlatLive_zero_eq`, `genBlkFlatLiveR1_wInt_Rmat`,
-  -- `readE_wInt_pivot_eq`) are SOLVED. Only the existential-exposure remains.
-  sorry
+  exact achieverUfun_wInt_ne_zero M hL hN hML (k + 1) (by omega) hkL hr hcd
 
 end DLNFibre.DLN.RLCT
