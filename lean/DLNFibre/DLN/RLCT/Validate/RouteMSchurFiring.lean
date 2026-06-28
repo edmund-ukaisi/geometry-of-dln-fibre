@@ -1005,6 +1005,137 @@ theorem innerSGen_eq_norm (r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ) (p : Fin
   congr 2
   exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
 
+/-! ### The N2b lower bound → top-row shear → resolved form (per-`z`; mirror of `angularA1_integral_le` + `step3a`) -/
+
+/-- **Pointwise antitone domination from a two-sided comparison's lower leg.** If `c₀·X ≤ F` with
+`0 < c₀`, `0 ≤ X`, `0 ≤ F`, then `F^{−c'} ≤ c₀^{−c'}·X^{−c'}` (`0 < c'`): on `X > 0` (so `F > 0`) the
+base-antitone `rpow`; at `X = 0` the LHS `F^{−c'} ≤` … but `F` may be `> 0`, giving `F^{−c'} ≤ ∞ = c₀^{−c'}·0^{−c'}`
+since `0^{−c'} = 0` makes the RHS `0` — handled by the `X=0 ⟹ F=0` coincidence: `c₀·0 ≤ F` is vacuous, so
+we instead require the zero-coincidence `X = 0 → F = 0`. -/
+theorem ofReal_rpow_le_const_mul (X F c₀ c' : ℝ) (hc0 : 0 < c') (hcc : 0 < c₀)
+    (hX : 0 ≤ X) (hF : 0 ≤ F) (hle : c₀ * X ≤ F) (hzero : X = 0 → F = 0) :
+    ENNReal.ofReal (F ^ (-c')) ≤ ENNReal.ofReal (c₀ ^ (-c')) * ENNReal.ofReal (X ^ (-c')) := by
+  rcases eq_or_lt_of_le hX with hX0 | hX0
+  · -- X = 0 ⟹ F = 0: LHS = 0^{−c'} = 0
+    rw [hzero hX0.symm, Real.zero_rpow (by linarith), ENNReal.ofReal_zero]; exact zero_le _
+  · -- X > 0 ⟹ c₀·X > 0; F ≥ c₀·X, base-antitone rpow
+    have hcX : (0 : ℝ) < c₀ * X := by positivity
+    rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (le_of_lt hcc) _),
+      ← Real.mul_rpow (le_of_lt hcc) (le_of_lt hX0)]
+    refine ENNReal.ofReal_le_ofReal ?_
+    exact Real.rpow_le_rpow_of_nonpos hcX hle (by linarith)
+
+/-- **The translation-and-enlargement atom** (local copy of `RouteM334Ratiofin.lintegral_translate_le`):
+`∫_{v∈B} f (v + s) ≤ ∫_{w∈BG} f w` when `(·+s)''B ⊆ BG` (`measurePreserving_add_right` + `lintegral_mono_set`). -/
+theorem lintegral_translate_leG (n : ℕ) (s : Fin n → ℝ)
+    (B BG : Set (Fin n → ℝ)) (f : (Fin n → ℝ) → ℝ≥0∞)
+    (hsub : (fun v => v + s) '' B ⊆ BG) :
+    (∫⁻ v in B, f (v + s)) ≤ ∫⁻ w in BG, f w := by
+  set τ : (Fin n → ℝ) → (Fin n → ℝ) := fun v => v + s with hτ
+  have hmp : MeasurePreserving τ volume volume := measurePreserving_add_right volume s
+  have hemb : MeasurableEmbedding τ := (Homeomorph.addRight s).measurableEmbedding
+  have h1 : (∫⁻ v in B, f (τ v)) = ∫⁻ w in τ '' B, f w := by
+    rw [← hmp.setLIntegral_comp_preimage_emb hemb f (τ '' B),
+      Set.preimage_image_eq B hemb.injective]
+  calc (∫⁻ v in B, f (v + s)) = ∫⁻ w in τ '' B, f w := h1
+    _ ≤ ∫⁻ w in BG, f w := lintegral_mono_set hsub
+
+/-- **The top-row shear (generic `step3a`).** For couplings `b : Fin m → ℝ` (`|b a| ≤ 1`) and a fixed
+`m×m` `Sc`, the `(m+1)×4` `S`-box integral of the top-row-coupled integrand is dominated by the
+`(S_bot, T')` resolved form: split `S = S_top × S_bot` (`piFinSuccAbove 0`, MP), then the per-`S_bot`
+translation `S_top ↦ T' = S_top + (b·S_bot)` peels the spectator row (`|b·S_bot| ≤ m·T`, box
+`[−T,T]^4 → [−(m+1)T,(m+1)T]^4 = morseBox 4 ((m+1)·T)`). Mirror of `RouteM334Ratiofin.step3a`. -/
+theorem stepShearG (m : ℕ) (b : Fin m → ℝ) (hb : ∀ a, |b a| ≤ 1)
+    (Sc : Matrix (Fin m) (Fin m) ℝ) (T : ℝ) (hT : 0 < T) (c' : ℝ) :
+    (∫⁻ S in matBox (m + 1) 4 T,
+        ENNReal.ofReal (((∑ q, (S 0 q + ∑ a, b a * S a.succ q) ^ 2)
+          + frobSq (rmatMul Sc (fun a q => S a.succ q))) ^ (-c')))
+      ≤ ∫⁻ S_bot in matBox m 4 T, ∫⁻ T' in morseBox 4 ((m + 1 : ℕ) * T),
+          ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul Sc S_bot)) ^ (-c')) := by
+  set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => Fin 4 → ℝ) 0 with he
+  have hmp : MeasurePreserving e volume volume :=
+    volume_preserving_piFinSuccAbove (fun _ : Fin (m + 1) => Fin 4 → ℝ) 0
+  -- the joint integrand on (S_top, S_bot)
+  set H : (Fin 4 → ℝ) × (Fin m → Fin 4 → ℝ) → ℝ≥0∞ := fun q =>
+    ENNReal.ofReal (((∑ qq, (q.1 qq + ∑ a, b a * q.2 a qq) ^ 2)
+      + frobSq (rmatMul Sc q.2)) ^ (-c')) with hHdef
+  have hHmeas : Measurable H := by
+    rw [hHdef]
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    refine Measurable.add ?_ ?_
+    · refine Finset.measurable_sum _ (fun qq _ => ?_)
+      refine Measurable.pow_const ?_ 2
+      have h0 : Measurable (fun q : (Fin 4 → ℝ) × (Fin m → Fin 4 → ℝ) => q.1 qq) :=
+        (measurable_pi_apply qq).comp measurable_fst
+      refine h0.add (Finset.measurable_sum _ (fun a _ => ?_))
+      exact measurable_const.mul ((measurable_pi_apply qq).comp
+        ((measurable_pi_apply a).comp measurable_snd))
+    · unfold frobSq rmatMul
+      refine Finset.measurable_sum _ (fun i _ => ?_)
+      refine Finset.measurable_sum _ (fun j _ => ?_)
+      refine Measurable.pow_const ?_ 2
+      refine Finset.measurable_sum _ (fun k _ => ?_)
+      exact measurable_const.mul ((measurable_pi_apply j).comp
+        ((measurable_pi_apply k).comp measurable_snd))
+  -- the box split: matBox (m+1) 4 T = e ⁻¹' (matBox 1-row × matBox m 4 T) — as a Fin 4 row box × matBox
+  have hsplit : matBox (m + 1) 4 T
+      = e ⁻¹' ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T) := by
+    ext S
+    simp only [he, Set.mem_preimage, Set.mem_prod, matBox, Set.mem_setOf_eq, Set.mem_pi,
+      Set.mem_univ, true_implies]
+    constructor
+    · intro h
+      refine ⟨fun q => h 0 q, fun a q => h a.succ q⟩
+    · rintro ⟨h1, h2⟩ i k
+      rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨i', rfl⟩
+      · exact h1 k
+      · exact h2 i' k
+  -- LHS = ∫ over (S_top × S_bot) of H, then Tonelli (S_bot outer)
+  have hLHS : (∫⁻ S in matBox (m + 1) 4 T,
+      ENNReal.ofReal (((∑ q, (S 0 q + ∑ a, b a * S a.succ q) ^ 2)
+        + frobSq (rmatMul Sc (fun a q => S a.succ q))) ^ (-c')))
+      = ∫⁻ pq in ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T), H pq := by
+    rw [hsplit, ← hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding H
+        ((Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T)) ×ˢ matBox m 4 T)]
+    refine setLIntegral_congr_fun ?_ (fun S _ => rfl)
+    exact e.measurable (MeasurableSet.prod
+      (MeasurableSet.univ_pi (fun _ => measurableSet_Icc)) (matBox_measurableSet m 4 T))
+  rw [hLHS, Measure.volume_eq_prod, setLIntegral_prod _ hHmeas.aemeasurable,
+    lintegral_lintegral_swap hHmeas.aemeasurable]
+  -- now ∫_{S_bot}∫_{S_top} H (S_top, S_bot); shear S_top ↦ T' per fixed S_bot
+  refine setLIntegral_mono_ae' (matBox_measurableSet m 4 T) (ae_of_all _ (fun S_bot hSbot => ?_))
+  -- per S_bot: translate S_top ↦ T' = S_top + (b·S_bot), box enlarges to morseBox 4 ((m+1)T)
+  set shift : Fin 4 → ℝ := fun q => ∑ a, b a * S_bot a q with hshift
+  set f : (Fin 4 → ℝ) → ℝ≥0∞ := fun T' =>
+    ENNReal.ofReal (((∑ q, (T' q) ^ 2) + frobSq (rmatMul Sc S_bot)) ^ (-c')) with hf
+  have hrw : ∀ S_top : Fin 4 → ℝ, H (S_top, S_bot) = f (S_top + shift) := by
+    intro S_top; rw [hHdef, hf]; rfl
+  rw [lintegral_congr hrw]
+  refine lintegral_translate_leG 4 shift (Set.univ.pi (fun _ : Fin 4 => Set.Icc (-T) T))
+    (morseBox 4 ((m + 1 : ℕ) * T)) f ?_
+  rintro T' ⟨v, hv, rfl⟩
+  simp only [morseBox, Set.mem_pi, Set.mem_univ, true_implies] at hv ⊢
+  intro q
+  have hvq := Set.mem_Icc.1 (hv q)
+  -- |shift q| = |∑ a b a · S_bot a q| ≤ m·T ≤ ... ; v q + shift q ∈ [−(m+1)T, (m+1)T]
+  have htermbd : ∀ a : Fin m, |b a * S_bot a q| ≤ T := by
+    intro a
+    rw [abs_mul]
+    have hSa := Set.mem_Icc.1 (hSbot a q)
+    calc |b a| * |S_bot a q| ≤ 1 * T :=
+          mul_le_mul (hb a) (abs_le.2 hSa) (abs_nonneg _) (by norm_num)
+      _ = T := by ring
+  have hshiftbd : |shift q| ≤ (m : ℝ) * T := by
+    rw [hshift]
+    calc |∑ a, b a * S_bot a q| ≤ ∑ a, |b a * S_bot a q| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _a : Fin m, T := Finset.sum_le_sum (fun a _ => htermbd a)
+      _ = (m : ℝ) * T := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  rw [Set.mem_Icc, Pi.add_apply, hshift]
+  have habs := abs_le.1 hshiftbd
+  push_cast
+  constructor <;> [nlinarith [hvq.1, habs.1, hT]; nlinarith [hvq.2, habs.2, hT]]
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
