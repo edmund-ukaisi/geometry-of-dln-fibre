@@ -2729,6 +2729,88 @@ theorem reindex_decodeDev_eq_fromBlocks_reads (H : Fin (L + 1) → ℕ) (r : ℕ
   rw [← h]
   rw [← Matrix.reindex_symm, Equiv.apply_symm_apply]
 
+/-- **The frame-strip** (`hLDUtie` piece 4): the producer's `(Mw₁₁+1)⁻¹`-pivot `Rcore` over the FRAMED
+product `Mw = P0·(prod A − B)·QL` equals the honest `(M̂₁₁)⁻¹`-pivot Schur of `M̂ = P0·prod A·QL`, and —
+since the endpoint frames are the explicit normalizers with IDENTITY ₂₂-blocks (`hP22one`/`hQ22one`,
+so `DP = DQ = 1`) — that framed Schur equals the UNFRAMED Schur of `reindex(prod A)`.
+
+Routes through: `rcore_eq_schur_of_corner_split` (the `B`-corner adds `1` to only the `(1,1)`-block:
+`reindex M̂ = fromBlocks 1 0 0 0 + reindex Mw` is the banked `hcorner`-split) ∘ `schur_frame_transform`
+(frames `fromBlocks a 0 c 1` / `fromBlocks e f 0 1`, `DP = DQ = 1`). -/
+theorem framedSchur_eq_unframedSchur_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ) (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
+    (M : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        P0).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) QL).toBlocks₂₁ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        P0).toBlocks₂₂ = 1)
+    (hQ22 : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) QL).toBlocks₂₂ = 1)
+    (hP11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (rThresholdSplit r (H 0) (hr 0)) P0).toBlocks₁₁)
+    (hQ11inv : Invertible (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) QL).toBlocks₁₁)
+    (hMid11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) M).toBlocks₁₁) :
+    (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * M * QL)).toBlocks₂₂
+        - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * M * QL)).toBlocks₂₁
+          * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * M * QL)).toBlocks₁₁)⁻¹
+          * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (P0 * M * QL)).toBlocks₁₂
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) M).toBlocks₂₂
+        - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) M).toBlocks₂₁
+          * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) M).toBlocks₁₁)⁻¹
+          * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) M).toBlocks₁₂ := by
+  set eR := rThresholdSplit r (H 0) (hr 0) with heR
+  set eC := pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J with heC
+  -- Distribute the reindex over the triple product: `reindex(P0·M·QL) = reindex P0 · reindex M · reindex QL`.
+  have hdist : Matrix.reindex eR eC (P0 * M * QL)
+      = Matrix.reindex eR eR P0 * Matrix.reindex eR eC M * Matrix.reindex eC eC QL := by
+    rw [reindex_mul_split eR eC eC (P0 * M) QL, reindex_mul_split eR eR eC P0 M]
+  -- Write the frames as `fromBlocks` (block-LOWER `P0`, block-UPPER `QL`), with identity ₂₂-blocks.
+  have hP0fb : Matrix.reindex eR eR P0
+      = Matrix.fromBlocks (Matrix.reindex eR eR P0).toBlocks₁₁ 0
+          (Matrix.reindex eR eR P0).toBlocks₂₁ 1 := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eR eR P0)]
+    rw [hPtri, hP22]
+  have hQLfb : Matrix.reindex eC eC QL
+      = Matrix.fromBlocks (Matrix.reindex eC eC QL).toBlocks₁₁ (Matrix.reindex eC eC QL).toBlocks₁₂
+          0 1 := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eC eC QL)]
+    rw [hQtri, hQ22]
+  -- Write the middle as `fromBlocks` of its own blocks.
+  have hMfb : Matrix.reindex eR eC M
+      = Matrix.fromBlocks (Matrix.reindex eR eC M).toBlocks₁₁ (Matrix.reindex eR eC M).toBlocks₁₂
+          (Matrix.reindex eR eC M).toBlocks₂₁ (Matrix.reindex eR eC M).toBlocks₂₂ :=
+    (Matrix.fromBlocks_toBlocks _).symm
+  -- Apply `schur_frame_transform` with `DP = DQ = 1`; `1·(Schur M)·1 = Schur M`.
+  rw [hdist, hP0fb, hQLfb]
+  -- The middle in the frame-transform must be `fromBlocks` form (so the `[Invertible …toBlocks₁₁]` the
+  -- transform needs is on `M`'s `(1,1)` block); rewrite it.
+  rw [hMfb]
+  letI : Invertible (Matrix.reindex eR eR P0).toBlocks₁₁ := hP11inv
+  letI : Invertible (Matrix.reindex eR eC M).toBlocks₁₁ := hMid11inv
+  letI : Invertible (Matrix.reindex eC eC QL).toBlocks₁₁ := hQ11inv
+  rw [schur_frame_transform (Matrix.reindex eR eR P0).toBlocks₁₁ (Matrix.reindex eR eR P0).toBlocks₂₁
+    1 (Matrix.reindex eR eC M).toBlocks₁₁ (Matrix.reindex eR eC M).toBlocks₁₂
+    (Matrix.reindex eR eC M).toBlocks₂₁ (Matrix.reindex eR eC M).toBlocks₂₂
+    (Matrix.reindex eC eC QL).toBlocks₁₁ (Matrix.reindex eC eC QL).toBlocks₁₂ 1]
+  -- `1 · (M₂₂ − M₂₁·M₁₁⁻¹·M₁₂) · 1`; the `hMfb` rewrite also wrapped the goal RHS's `M`-blocks in
+  -- `fromBlocks`, so collapse them back via `toBlocks_fromBlocks`.
+  simp only [Matrix.one_mul, Matrix.mul_one, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]
+
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
 -- inner ball (where coreAbsorb = honest Schur). [HARDEST: LDU + the framed Score dictionary]
 
