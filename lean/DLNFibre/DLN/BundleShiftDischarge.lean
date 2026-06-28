@@ -107,8 +107,8 @@ variable {d : Fin (N + 1) → ℕ}
 /-- **The general-`r` RLCT payoff, through the two Cited analytic bounds + the Cited transfer `hT`.**
 The geometric bundle-shift half is now Proved from `Core` (via `bundleShift_of_core`), so the carried
 dependencies are `I : RlctRealInterface` (the two Cited Watanabe/Aoyagi bounds) and the Cited transfer
-`hT` (`codim_ℝ(real fibre) = codim_K(complex fibre)` — a real-vs-complex fact reducing to the atomic
-real-dim = complex-dim equality). For a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the
+`hT` (`codim_ℝ(real fibre) = codim_K(complex fibre)`, a real-vs-complex fact). For a genuine deep
+network (`0 < N`) and `B` of rank `r ≤ min d`, the
 rlct of the DLN square-Frobenius loss `K^DLN_B` equals `(cCodim d r + r(d_0+d_N−r))/2`: `C/2` + shift.
 `via_aoyagi` names the cited source; `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the
 geometric codimension). -/

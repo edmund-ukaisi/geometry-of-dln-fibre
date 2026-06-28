@@ -17,14 +17,16 @@ The application layer (`DLNFibre.DLN`, consuming `Core`): the deep-linear-networ
 loss `K^DLN_B`, its zero-set (the multiplication fibre `mult⁻¹(B)`), the geometric codimension of
 the zero-product fibre at corner `r = 0`, and the real-log-canonical-threshold payoff
 `rlct(K^DLN_0) = ½·codim mult⁻¹(0)` through a **minimal Cited** analytic interface (two bounds) plus a
-**named Cited real-vs-complex transfer** `T` (`codim_ℝ = codim_K`, reducing to the atomic real-dim =
-complex-dim equality via the proved catenary — see `codimRealFibre_eq_codimRepCanonical_of_dimTransfer`).
+**named Cited real-vs-complex transfer** `T` (`codim_ℝ = codim_K`; a banked reduction
+`codimRealFibre_eq_codimRepCanonical_of_dimTransfer` derives it from the real-dim = complex-dim
+equality via the catenary, though the payoffs thread `T` directly).
 
 ## What is Proved / Cited / scoped here
 
 * **D2 (Proved, field = ℝ).** `lossDLN d B A = ‖mult A − B‖²_F = Tr((mult A − B)ᵀ (mult A − B))`,
-  `lossDLN_nonneg`, and the load-bearing **`zeroLocus_lossDLN_eq_fibre`** (the loss vanishes exactly
-  on the fibre `mult⁻¹(B)`). The Frobenius core `Tr(MᵀM) = 0 ↔ M = 0` is Mathlib's
+  `lossDLN_nonneg`, and **`zeroLocus_lossDLN_eq_fibre`** (the loss vanishes exactly
+  on the fibre `mult⁻¹(B)`; the connector the interface and the witness use). The Frobenius core
+  `Tr(MᵀM) = 0 ↔ M = 0` is Mathlib's
   `Matrix.trace_conjTranspose_mul_self_eq_zero_iff` (over ℝ, `conjTranspose = transpose`).
 
 * **D3 bridge (a) (Proved, `[IsAlgClosed k]`).** The geometric codimension of the zero-product fibre
@@ -43,19 +45,21 @@ complex-dim equality via the proved catenary — see `codimRealFibre_eq_codimRep
 
 * **R (Cited bounds + Cited transfer + Proved geometry, name = content).**
   `RlctRealInterface` carries the rlct as an opaque map and the **minimal Cited** analytic content as
-  TWO bounds — the universal Watanabe upper bound `rlct ≤ ½·codim_ℝ` (unconditional) and the
-  DLN-specific Aoyagi lower bound `½·codim_ℝ ≤ rlct` (`0 < N`, Aoyagi Thm 1 / LR Thm 8.6) — both about
+  TWO bounds — the universal Watanabe upper bound `rlct ≤ ½·codim_ℝ` and the DLN-specific Aoyagi lower
+  bound `½·codim_ℝ ≤ rlct` (Aoyagi Thm 1 / Lehalleur–Rimányi §8, `thm:aoyagi-rlct`) — both about
   `codim_ℝ`, the codimension of the loss's **real** zero-set (`codimRealFibre`, the real fibre
-  `mult⁻¹(B)`). Their `le_antisymm` gives the analytic equality `rlct = ½·codim_ℝ`
+  `mult⁻¹(B)`), under the same inhabited-fibre guard `0 < N → B.rank = r → (∀ k', r ≤ d k')`. Their
+  `le_antisymm` gives the analytic equality `rlct = ½·codim_ℝ`
   (`rlct_lossDLN_eq_half_codimRealFibre`). The passage to the codimension `C` over the
   algebraically-closed `K` factors as: the **transfer** `T : codim_ℝ = codim_K` (a **Cited**
-  real-vs-complex fact `hT`, reducing to the atomic real-dim = complex-dim equality via the proved
-  catenary `codimRealFibre_eq_codimRepCanonical_of_dimTransfer`), then bridge (b) `codim_K = C`
-  (Proved). So the payoff theorems (`rlct_lossDLN_…_via_aoyagi`) carry `I`, `hT` explicit in the
-  type — `via_aoyagi` names the cited source, `hT` names the cited transfer; **not** an unconditional
-  `rlct = C/2`. The cited boundary is honestly `{cited_watanabe_upper, cited_aoyagi_lower, T}` (three
-  named atomic cited facts); everything else (catenary, `codim_K = C`) is Proved, and `#print axioms`
-  on the payoffs stays `[propext, Classical.choice, Quot.sound]`.
+  real-vs-complex fact `hT`; a banked reduction `codimRealFibre_eq_codimRepCanonical_of_dimTransfer`
+  derives `hT` from the atomic real-dim = complex-dim equality + both fibres nonempty via the catenary,
+  but that route is not threaded this tide), then bridge (b) `codim_K = C` (Proved). So the payoff
+  theorems (`rlct_lossDLN_…_via_aoyagi`) carry `I`, `hT` explicit in the type — `via_aoyagi` names the
+  cited source, `hT` names the cited transfer; **not** an unconditional `rlct = C/2`. The cited
+  boundary is `{cited_watanabe_upper, cited_aoyagi_lower, T}`; everything else (catenary,
+  `codim_K = C`) is Proved, and `#print axioms` on the payoffs stays `[propext, Classical.choice,
+  Quot.sound]`.
 
 **Dependency rule:** `DLN` depends on `Core`; `Core` never imports `DLN`.
 -/
@@ -85,7 +89,8 @@ theorem lossDLN_nonneg (d : Fin (N + 1) → ℕ)
   exact (posSemidef_conjTranspose_mul_self _).trace_nonneg
 
 /-- **The loss vanishes exactly on the fibre** `mult⁻¹(B)`: `{A | K^DLN_B(A) = 0} = mult⁻¹(B)`. The
-load-bearing zero-set identity, via the Frobenius fact `Tr(MᵀM) = 0 ↔ M = 0`. -/
+zero-set identity (the connector the interface and the witness use), via the Frobenius fact
+`Tr(MᵀM) = 0 ↔ M = 0`. -/
 theorem zeroLocus_lossDLN_eq_fibre (d : Fin (N + 1) → ℕ)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) :
     {A : Tuple (k := ℝ) d | lossDLN d B A = 0} = fibre d B := by
@@ -279,10 +284,10 @@ The honest decomposition (what the monolith's single `rlct = ½·codim_K` field 
 3. the **transfer `T`** `codim_ℝ(real fibre) = codim_K(complex fibre)` — a **Cited** real-vs-complex
    fact (a named *hypothesis*, not a global axiom): true (the smooth full-dim real points of the top
    components, e.g. the rational realizers `realizerD`, make the real points Zariski-dense so the real
-   dimension equals the complex one), but not bounded-provable at this Mathlib pin. It reduces to the
-   **atomic** real-dim = complex-dim equality via the proved catenary
-   (`codimRealFibre_eq_codimRepCanonical_of_dimTransfer`), so the irreducible cited content is that
-   dimension equality; the codim form `T` is its convenient consumer-facing shape.
+   dimension equals the complex one), but not bounded-provable at this Mathlib pin. A banked reduction
+   (`codimRealFibre_eq_codimRepCanonical_of_dimTransfer`) derives `T` from the real-dim = complex-dim
+   equality + both fibres nonempty via the catenary, but the payoff theorems thread the codim-level `T`
+   directly (that atomic route is not used this tide; general-rank real-fibre nonemptiness is deferred).
 
 So the **cited** boundary here is exactly `{cited_watanabe_upper, cited_aoyagi_lower, T}`; everything
 else — the connector, the catenary reduction, and bridge (b) `codim_K = C` — is Proved. -/
@@ -306,9 +311,9 @@ vanishing ideal need not equal the complex geometric codimension; bridging the t
 geometry fact — NOT something `codim_ℝ` knows. (Discriminator: the real zero-set of `x² + y²` is the
 point `{0}`, real codim `2`, matching `height (vanishingIdeal ℝ {0}) = height (x, y) = 2`; the
 generator-ideal height `height (x² + y²) = 1` would be the *wrong* number, which is why `codim_ℝ` is
-the vanishing-ideal-of-real-points height — the meaning `codimRepCanonical (k := ℝ)` already has.) The
-transfer `T` reduces to the atomic real-dim = complex-dim equality via the catenary
-(`codimRealFibre_eq_codimRepCanonical_of_dimTransfer`), so the cited content is just that dim equality. -/
+the vanishing-ideal-of-real-points height — the meaning `codimRepCanonical (k := ℝ)` already has.) A
+banked reduction (`codimRealFibre_eq_codimRepCanonical_of_dimTransfer`) derives the transfer `T` from
+the real-dim = complex-dim equality + both fibres nonempty via the catenary. -/
 noncomputable abbrev codimRealFibre (d : Fin (N + 1) → ℕ)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) : ℕ∞ :=
   codimRepCanonical (k := ℝ) (fibre (k := ℝ) d B)
@@ -331,11 +336,18 @@ the rlct of the real square-Frobenius DLN loss between `½·codim_ℝ` of its re
 fibre `mult⁻¹(B)`). Both fields are carried hypotheses (NOT global `axiom`s); the Cited dependency is
 visible in any type using this structure.
 
-The two bounds carry **different status** (name = content):
-* `cited_watanabe_upper` is the **universal** Watanabe inequality `rlct ≤ ½·codim_ℝ` — true for *any*
-  real loss, with no network/scope guard;
-* `cited_aoyagi_lower` is the **DLN-specific** matching lower bound `½·codim_ℝ ≤ rlct` (Aoyagi Thm 1 =
-  Lehalleur–Rimányi Thm 8.6), guarded by `0 < N` (the genuine-deep-network scope where it holds).
+Both bounds carry the **same scope guard** `0 < N → B.rank = r → (∀ k', r ≤ d k')` — exactly the
+monolith's guard, which is precisely the condition that the fibre `mult⁻¹(B)` is NONEMPTY (a rank-`r`
+target with `r ≤ min d` factors through the layers). The guard does real work on the upper bound: off
+`image(mult)` the fibre is empty, so `codim_ℝ = height ⊤`, `(⊤).toNat = 0`, and an *unguarded*
+`rlct ≤ ½·codim_ℝ` would read `rlct ≤ 0` — which the genuine `rlctAt` (`+∞` on a nowhere-vanishing
+loss) violates, so only a fake `rlct` could discharge it. The guard restricts both bounds to the
+inhabited fibres where the analytic theory applies.
+
+The two bounds carry **different sources** (name = content):
+* `cited_watanabe_upper` — Watanabe's universal log-canonical-threshold upper bound `rlct ≤ ½·codim_ℝ`;
+* `cited_aoyagi_lower` — the DLN-specific matching lower bound `½·codim_ℝ ≤ rlct` (Aoyagi Thm 1 /
+  Lehalleur–Rimányi §8, the `rlct = ½·codim` theorem).
 
 The interface stops at `codim_ℝ` (the **real** codimension); the passage to the geometric codimension
 over an algebraically-closed `K` is the transfer `T` (a Cited real-vs-complex fact, reducing to the
@@ -344,30 +356,51 @@ NOT a field of this *analytic* interface, since it is real-algebraic geometry, n
 structure RlctRealInterface (d : Fin (N + 1) → ℕ) where
   /-- The opaque real log-canonical threshold of a (real) loss function on `Rep_d`. -/
   rlct : (Tuple (k := ℝ) d → ℝ) → ℝ
-  /-- **Cited (Watanabe, universal — no scope guard):** the rlct of any real square-Frobenius DLN loss
-  is at most half the codimension of its real zero-set (the real fibre `mult⁻¹(B)`). Watanabe's
-  universal log-canonical-threshold upper bound `λ ≤ codim_ℝ / 2`; assumed analytic content. -/
-  cited_watanabe_upper : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ),
+  /-- **Cited (Watanabe's universal upper bound, scope = nonempty fibre).** For a genuine deep network
+  (`0 < N`) and a rank-`r` target with `r ≤ min d` (so `mult⁻¹(B)` is nonempty), the rlct of the real
+  square-Frobenius DLN loss is at most half the codimension of its real zero-set (the real fibre
+  `mult⁻¹(B)`). Watanabe's universal log-canonical-threshold upper bound `λ ≤ codim_ℝ / 2`; assumed
+  analytic content. The guard is the inhabited-fibre scope: off `image(mult)` the fibre is empty,
+  `(codim_ℝ).toNat = (⊤).toNat = 0`, and an unguarded bound would force the false `rlct ≤ 0`. -/
+  cited_watanabe_upper : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (r : ℕ),
+    0 < N → B.rank = r → (∀ k', r ≤ d k') →
     rlct (lossDLN d B) ≤ ((codimRealFibre d B).toNat : ℝ) / 2
-  /-- **Cited (Aoyagi Thm 1 / LR Thm 8.6, scope `0 < N`):** for a genuine deep network, the rlct of the
-  real square-Frobenius DLN loss is at least half the codimension of its real zero-set (the real fibre
-  `mult⁻¹(B)`) — the DLN-specific matching lower bound. Assumed analytic content. The `0 < N` guard is
-  the scope of Aoyagi's theorem (an `N ≥ 1` deep linear network); at `N = 0` the "product" `mult` is the
+  /-- **Cited (Aoyagi Thm 1 / LR §8, scope = nonempty fibre).** For a genuine deep network (`0 < N`) and
+  a rank-`r` target with `r ≤ min d` (so `mult⁻¹(B)` is nonempty), the rlct of the real square-Frobenius
+  DLN loss is at least half the codimension of its real zero-set (the real fibre `mult⁻¹(B)`) — the
+  DLN-specific matching lower bound. Assumed analytic content. The `0 < N` part of the guard is the
+  scope of Aoyagi's theorem (an `N ≥ 1` deep linear network); at `N = 0` the "product" `mult` is the
   empty product and the statement is outside the cited scope. -/
-  cited_aoyagi_lower : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ),
-    0 < N → ((codimRealFibre d B).toNat : ℝ) / 2 ≤ rlct (lossDLN d B)
+  cited_aoyagi_lower : ∀ (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (r : ℕ),
+    0 < N → B.rank = r → (∀ k', r ≤ d k') →
+    ((codimRealFibre d B).toNat : ℝ) / 2 ≤ rlct (lossDLN d B)
+
+/-- **A permanent in-file non-vacuity witness `rlctRealInterfaceWitness d : RlctRealInterface d`.** A
+formal inhabitant proving the interface type is non-vacuous — its `rlct` reads `½·codim_ℝ` off the
+loss's own real zero-set (`rlct F := ½·(codimRepCanonical ℝ {A | F A = 0}).toNat`), so on the DLN loss
+`{A | lossDLN d B A = 0} = mult⁻¹(B)` (`zeroLocus_lossDLN_eq_fibre`) gives `rlct (lossDLN d B) =
+½·codim_ℝ` exactly, discharging both bounds by `le_refl` (no scope needed). **This is NOT the analytic
+rlct** — it is a placeholder that happens to equal `½·codim_ℝ`; inhabitation by the genuine `rlctAt`
+(real-analytic, Aoyagi's theorem) is the aoyagi-full fold, roadmapped. Axiom-clean. -/
+noncomputable def rlctRealInterfaceWitness (d : Fin (N + 1) → ℕ) : RlctRealInterface d where
+  rlct F := ((codimRepCanonical (k := ℝ) {A : Tuple (k := ℝ) d | F A = 0}).toNat : ℝ) / 2
+  cited_watanabe_upper B _ _ _ _ := by
+    rw [zeroLocus_lossDLN_eq_fibre]
+  cited_aoyagi_lower B _ _ _ _ := by
+    rw [zeroLocus_lossDLN_eq_fibre]
 
 variable {K : Type v} [Field K] [IsAlgClosed K] [CharZero K] {ι : ℝ →+* K}
 
-/-- **The transfer reduces to the atomic real-dim = complex-dim equality (catenary).** Given the
-**atomic** cited fact `hdim : varietyDim(real fibre) = varietyDim(complex fibre)` (the real-locus
-dimension equals the complex variety dimension — the real-radical-density content, the smallest honest
-cited piece) and both fibres nonempty, the codimension transfer `codim_ℝ = codim_K` is **PROVED** here:
-the field-generic catenary `codimRepCanonical + varietyDim = card (RepCoord d)` holds over each field,
-the ambient `card` is field-independent, and cancelling the equal `varietyDim`s gives the codimensions
-equal. So the cited boundary is the atomic dim-transfer `hdim`, not the codim equality — the latter is
-derived. (`x² + y²`: a rational point per component is NOT enough — `hdim` needs a *smooth full-dim*
-real point per top component; cf. the `codimRealFibre` docstring's discriminator.) -/
+/-- **The codim transfer `codim_ℝ = codim_K` from the real-dim = complex-dim equality (catenary).**
+Given `hdim : varietyDim(real fibre) = varietyDim(complex fibre)` (the real-locus dimension equals the
+complex variety dimension) and both fibres nonempty, the codimension transfer `codim_ℝ = codim_K` is
+**PROVED** here: the field-generic catenary `codimRepCanonical + varietyDim = card (RepCoord d)` holds
+over each field, the ambient `card` is field-independent, and cancelling the equal `varietyDim`s gives
+the codimensions equal. **This lemma is currently unused by the payoff theorems** — they thread the
+codim-level `hT` directly (general-rank real-fibre nonemptiness is deferred); it is banked to show `hT`
+follows from the dimension equality when that nonemptiness lands. (`x² + y²`: a rational point per
+component is not enough — `hdim` needs a *smooth full-dim* real point per top component; cf. the
+`codimRealFibre` docstring's discriminator.) -/
 theorem codimRealFibre_eq_codimRepCanonical_of_dimTransfer
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ)
     (hRne : (fibre (k := ℝ) d B).Nonempty)
@@ -389,29 +422,32 @@ theorem codimRealFibre_eq_codimRepCanonical_of_dimTransfer
 universal Watanabe upper bound and the DLN-specific Aoyagi lower bound: the rlct of the real DLN loss
 `K^DLN_B` equals half the codimension of its real zero-set (the real fibre `mult⁻¹(B)`). This is the
 purely-analytic half — no transfer to `K`, no combinatorics; the geometric passage is `…_of_transfer`.
-The `0 < N` guard is the Cited scope of the (DLN-specific) lower bound. -/
-theorem rlct_lossDLN_eq_half_codimRealFibre (I : RlctRealInterface d) (hN : 0 < N)
-    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) :
+The guard `0 < N → B.rank = r → (∀ k', r ≤ d k')` is the Cited scope of both bounds (the inhabited
+fibre where the analytic theory applies). -/
+theorem rlct_lossDLN_eq_half_codimRealFibre (I : RlctRealInterface d) {r : ℕ} (hN : 0 < N)
+    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') :
     I.rlct (lossDLN d B) = ((codimRealFibre d B).toNat : ℝ) / 2 :=
-  le_antisymm (I.cited_watanabe_upper B) (I.cited_aoyagi_lower B hN)
+  le_antisymm (I.cited_watanabe_upper B r hN hB hr) (I.cited_aoyagi_lower B r hN hB hr)
 
 /-- **The DLN RLCT payoff `rlct(K^DLN_B) = ½·codim mult⁻¹(B)` (over `K`), via the transfer `T`.**
 The analytic equality `rlct = ½·codim_ℝ` (the two Cited bounds) composed with the transfer
-`hT : codim_ℝ(real fibre) = codim_K(complex fibre)`. `hT` is the **Cited** real-vs-complex transfer
-(real-radical density — true, but not bounded-provable at this Mathlib pin: no real-Nullstellensatz /
-semialgebraic dimension), visible in the type next to the rlct claim. It is the codim-level form of the
-**atomic** real-dim = complex-dim fact, from which it is DERIVED by the proved catenary reduction
-`codimRealFibre_eq_codimRepCanonical_of_dimTransfer` — so the irreducible cited content is that atomic
-dimension equality (caveat: a rational point per component is not enough — need a smooth full-dim real
-point per top component, x²+y² style; PROOF roadmapped to a future expedition, cf. rlct-runway-target).
-This recovers the monolith's old `cited_aoyagi_dln` shape as a DERIVED theorem; the cited boundary is
-now `{cited_watanabe_upper, cited_aoyagi_lower, T}`. The `0 < N` guard is the Cited (lower-bound) scope. -/
-theorem rlct_lossDLN_eq_half_codimFibre_of_transfer (I : RlctRealInterface d) (hN : 0 < N)
-    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ)
+`hT : codim_ℝ(real fibre) = codim_K(complex fibre)`. The payoff cites the codim-level `hT` — a Cited
+real-vs-complex fact (real-radical density: true, but not bounded-provable at this Mathlib pin — no
+real-Nullstellensatz / semialgebraic dimension), visible in the type next to the rlct claim. A separate
+banked reduction `codimRealFibre_eq_codimRepCanonical_of_dimTransfer` shows `hT` follows from the atomic
+real-dim = complex-dim equality `hdim` + both fibres nonempty (via the catenary), but that atomic route
+is not threaded this tide (general-rank real-fibre nonemptiness is deferred); the payoff theorems carry
+`hT` directly. A full proof of `hT` (a smooth full-dim real point per top component ⟹ real points
+Zariski-dense ⟹ real dim = complex dim; a rational point alone is not enough, x²+y² style) is roadmapped
+to a future expedition (cf. rlct-runway-target). This recovers the monolith's old `cited_aoyagi_dln`
+shape as a DERIVED theorem; the cited boundary is now `{cited_watanabe_upper, cited_aoyagi_lower, T}`.
+The guard `0 < N → B.rank = r → (∀ k', r ≤ d k')` is the Cited (inhabited-fibre) scope. -/
+theorem rlct_lossDLN_eq_half_codimFibre_of_transfer (I : RlctRealInterface d) {r : ℕ} (hN : 0 < N)
+    (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ) (hB : B.rank = r) (hr : ∀ k', r ≤ d k')
     (hT : codimRealFibre d B = codimRepCanonical (k := K) (fibre (k := K) d (B.map ι))) :
     I.rlct (lossDLN d B)
       = ((codimRepCanonical (fibre (k := K) d (B.map ι))).toNat : ℝ) / 2 := by
-  rw [rlct_lossDLN_eq_half_codimRealFibre I hN B, hT]
+  rw [rlct_lossDLN_eq_half_codimRealFibre I hN B hB hr, hT]
 
 /-- **The RLCT payoff at `r = 0`, modulo the transfer `T`.** The rlct of the zero-product DLN loss
 `K^DLN_0` equals half the geometric codimension of the zero-product fibre `mult⁻¹(0) = Σ̄^0` (over `K`),
@@ -422,7 +458,7 @@ theorem rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi (I : RlctRealInterface d
       = codimRepCanonical (k := K) (fibre (k := K) d 0)) :
     I.rlct (lossDLN d 0)
       = ((codimRepCanonical (fibre (k := K) d 0)).toNat : ℝ) / 2 := by
-  rw [rlct_lossDLN_eq_half_codimRealFibre I hN 0, hT]
+  rw [rlct_lossDLN_eq_half_codimRealFibre I hN 0 Matrix.rank_zero (fun _ ↦ Nat.zero_le _), hT]
 
 /-- **The RLCT payoff at `r = 0` against the orbit-codim infimum (bridge (a)), modulo the transfer.**
 Combining the `r = 0` payoff with bridge (a) (`codimRepCanonical_fibre_zero_eq_iInf_orbitCodim`): the
@@ -482,8 +518,9 @@ theorem codimRepCanonical_fibre_d222_zero :
 analytic bounds and the Cited transfer `hT`. `C = 3` (LR Ex 4.3), so `rlct = C/2 = 3/2`: the `(2,2,2)`
 zero-product DLN is mildly singular. `(2,2,2)` has `N = 2 > 0`, so the `0 < N` Cited-scope guard is
 met. `I` is the explicit Cited analytic interface; `hT` is the explicit Cited transfer (`codim_ℝ =
-codim_ℂ` at `(2,2,2)`, `B = 0`; for this `B = 0` the real fibre is nonempty via `fibre_zero_nonempty`,
-so the catenary reduction to the atomic dim-transfer applies). -/
+codim_ℂ` at `(2,2,2)`, `B = 0`). For this `B = 0` the real fibre is nonempty (`fibre_zero_nonempty`),
+so the banked reduction would derive `hT` from the dimension equality — though `hT` is threaded
+directly here. -/
 theorem rlct_lossDLN_d222_zero_eq_three_halves_via_aoyagi
     (I : RlctRealInterface Core.d222)
     (hT : codimRealFibre Core.d222 (0 : Matrix (Fin (Core.d222 (Fin.last 2))) (Fin (Core.d222 0)) ℝ)

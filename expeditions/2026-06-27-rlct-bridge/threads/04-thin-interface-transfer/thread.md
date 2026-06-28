@@ -220,3 +220,27 @@ atomic cited facts; catenary + codim_K=C PROVED.
 ### FLAGGED to controller (single-writer aggregator): `DLNFibre.lean:261` import comment still says
 "rests on ONLY the Cited Aoyagi RlctInterface" — stale (now `RlctRealInterface` two bounds + Cited
 transfer T). Controller owns `DLNFibre.lean` (single-writer); I do not edit it. Controller to sweep.
+
+## TIGHTENING PASS (both decorrelated reviews reconciled, 2026-06-28) — commit `a3bd2b5f`
+
+Hardener (SOLID + 2) + fidelity (PASS + 1 construction + scrubs). Applied all 5:
+1. **HARDEN-2 (soundness, core).** Re-guarded BOTH bounds with `0 < N → B.rank = r → (∀ k', r ≤ d k')`
+   (the monolith's guard = fibre-nonempty). The unguarded `∀ B` upper bound was uninhabitable by the
+   true rlct: off `image(mult)` the fibre is ∅ ⟹ `codimRealFibre = height ⊤` ⟹ `(⊤).toNat = 0` ⟹
+   `rlct ≤ 0`, which `rlctAt` (∞ on a nowhere-zero loss) violates — only a fake rlct could discharge it.
+   My earlier "refinement" (drop the upper guard) was a soundness regression; reverted. Threaded through
+   all 7 consumers + `rlct_lossDLN_eq_half_codimRealFibre`. (2,2,2) witnesses (B=0, rank-0) satisfy it.
+2. **Non-vacuity witness.** `rlctRealInterfaceWitness d : RlctRealInterface d` PROVED axiom-clean — rlct
+   reads `½·codim_ℝ` off the loss's own real zero-set; connector `zeroLocus_lossDLN_eq_fibre` makes both
+   re-guarded bounds hold by `le_refl`. Docstring: formal inhabitant, NOT the analytic rlct (aoyagi-full
+   fold roadmapped).
+3. **HARDEN-1 (prose).** The reduction lemma is ORPHAN (payoffs thread codim-level `hT`); dropped the
+   "irreducible cited content is the atomic hdim" overclaim → "banked reduction derives hT from the dim
+   equality, but not threaded this tide".
+4. **fidelity (banned words).** Scrubbed "honestly"/"just"/"load-bearing" across all 3 files.
+5. **fidelity (citation).** Verified the paper uses `\ref{thm:aoyagi-rlct}` (autonumbered, NOT "8.6");
+   softened "LR Thm 8.6" → "Aoyagi Thm 1 / Lehalleur–Rimányi §8 (thm:aoyagi-rlct)".
+
+GATES (re-run): full `scripts/lb DLNFibre` GREEN (3815 jobs); sorry-free; `#print axioms`
+(force-elaborated) on all 11 load-bearing decls (incl. the witness) = `[propext, Classical.choice,
+Quot.sound]`. Statement card updated (SHA bumped to a3bd2b5f). Committed + pushed.
