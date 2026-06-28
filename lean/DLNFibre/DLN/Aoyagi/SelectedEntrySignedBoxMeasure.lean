@@ -1120,6 +1120,95 @@ theorem residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
       _ < ∞ := hfinite_signed
   exact ⟨hpos_weighted, hfinite_weighted⟩
 
+set_option linter.style.longLine false in
+/-- Selected-entry chart-image residual positivity and finite negative-power
+integral.
+
+This pushes the selected-entry weighted source-box theorem through the
+center-indexed selected-entry chart map.  It is still only a finite
+selected-entry target-image statement, not a retained-passive source
+production theorem. -/
+theorem aoyagiCoordinateSquareSum_pos_ae_and_lintegral_rpow_neg_restrict_chartMap_image
+    {center : Finset ι} (pivot : center) {t : ℝ} {R : center → ℝ}
+    (ht : 0 ≤ t) (hR : ∀ i, 0 < R i)
+    (hcrit : 2 * t < ((center.erase pivot.1).card : ℝ) + 1) :
+    (∀ᵐ x ∂ (volume : Measure (center → ℝ)).restrict
+        (chartMap pivot '' signedBoxSet R),
+        0 < aoyagiCoordinateSquareSum x) ∧
+      (∫⁻ x : center → ℝ,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum x) ^ (-t))
+          ∂ (volume : Measure (center → ℝ)).restrict
+              (chartMap pivot '' signedBoxSet R)) < ∞ := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+  have hmap :
+      Measure.map (chartMap pivot) weightedBox =
+        (volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R) := by
+    dsimp [weightedBox, signedBox]
+    exact map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image
+      pivot R
+  rcases
+      residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+        pivot ht hR hcrit with
+    ⟨hpos_source, hfinite_source⟩
+  change (∀ᵐ y ∂ weightedBox, 0 < residual pivot y) at hpos_source
+  change
+    (∫⁻ y : center → ℝ,
+      ENNReal.ofReal ((residual pivot y) ^ (-t)) ∂ weightedBox) < ∞
+    at hfinite_source
+  have hpos_meas :
+      MeasurableSet {x : center → ℝ | 0 < aoyagiCoordinateSquareSum x} := by
+    have hsquare :
+        Measurable (fun x : center → ℝ => aoyagiCoordinateSquareSum x) :=
+      measurable_aoyagiCoordinateSquareSum measurable_id
+    simpa [Set.preimage] using hsquare measurableSet_Ioi
+  have hpos_chart :
+      ∀ᵐ y ∂ weightedBox,
+        0 < aoyagiCoordinateSquareSum (chartMap pivot y) := by
+    filter_upwards [hpos_source] with y hy
+    simpa [residual_eq_aoyagiCoordinateSquareSum_chartMap pivot y] using hy
+  have hpos_target :
+      ∀ᵐ x ∂ (volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R),
+        0 < aoyagiCoordinateSquareSum x := by
+    have hpos_map :
+        ∀ᵐ x ∂ Measure.map (chartMap pivot) weightedBox,
+          0 < aoyagiCoordinateSquareSum x :=
+      (ae_map_iff (measurable_chartMap pivot).aemeasurable hpos_meas).2 hpos_chart
+    simpa [hmap] using hpos_map
+  have hfinite_chart :
+      (∫⁻ y : center → ℝ,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (chartMap pivot y)) ^ (-t))
+          ∂ weightedBox) < ∞ := by
+    refine lt_of_eq_of_lt ?_ hfinite_source
+    apply lintegral_congr_ae
+    filter_upwards with y
+    rw [← residual_eq_aoyagiCoordinateSquareSum_chartMap pivot y]
+  have hfinite_target :
+      (∫⁻ x : center → ℝ,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum x) ^ (-t))
+          ∂ (volume : Measure (center → ℝ)).restrict
+              (chartMap pivot '' signedBoxSet R)) < ∞ := by
+    have hle :
+        (∫⁻ x : center → ℝ,
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum x) ^ (-t))
+            ∂ Measure.map (chartMap pivot) weightedBox) ≤
+          ∫⁻ y : center → ℝ,
+            ENNReal.ofReal
+              ((aoyagiCoordinateSquareSum (chartMap pivot y)) ^ (-t))
+              ∂ weightedBox := by
+      exact
+        lintegral_map_le
+          (fun x : center → ℝ =>
+            ENNReal.ofReal ((aoyagiCoordinateSquareSum x) ^ (-t)))
+          (chartMap pivot)
+    exact lt_of_le_of_lt (by simpa [hmap] using hle) hfinite_chart
+  exact ⟨hpos_target, hfinite_target⟩
+
 end CenterCoord
 
 end SelectedEntrySignedBox

@@ -154,15 +154,17 @@ No such claim is formalisation-ready until both fields are filled.
   coordinate model also now proves residual a.e. positivity and finite
   negative-power integrability under its own formal pivot-Jacobian source
   density, with integrability condition
-  `2 * t < ((center.erase pivot.1).card : R) + 1`.  The current A2 frontier is
-  not another selected-entry retained-passive wrapper, but a genuine
-  source-production/pushforward bridge from retained-passive determinant-chart
-  coordinates to selected-entry signed-box coordinates, or an equivalent
-  retained-passive chart-side monomial/normal-crossing construction.  Original
-  source-prior/density transport remains separate if that route is used.  This
-  addendum supersedes older "positive-tail F3 open", "not full target
-  normalisation", and "construction of target equivalence remains separate"
-  phrases retained below as historical detail.
+  `2 * t < ((center.erase pivot.1).card : ℝ) + 1`, and this result has now
+  been pushed forward to Lebesgue measure restricted to the selected-entry
+  target chart image.  The current A2 frontier is not another selected-entry
+  retained-passive wrapper, but a genuine source-production/pushforward bridge
+  from retained-passive determinant-chart coordinates to selected-entry
+  signed-box coordinates, or an equivalent retained-passive chart-side
+  monomial/normal-crossing construction.  Original source-prior/density
+  transport remains separate if that route is used.  This addendum supersedes
+  older "positive-tail F3 open", "not full target normalisation", and
+  "construction of target equivalence remains separate" phrases retained below
+  as historical detail.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

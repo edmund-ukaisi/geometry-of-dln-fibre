@@ -18,6 +18,44 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 selected-entry target-image residual hypotheses
+
+Reproduction:
+`reproduction-a2-selected-entry-target-image-residual-hypotheses.md`.
+Statement card:
+`statement-card-a2-selected-entry-target-image-residual-hypotheses.md`.
+
+Lean now pushes the selected-entry weighted source-box theorem through the
+finite selected-entry chart map:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  aoyagiCoordinateSquareSum_pos_ae_and_lintegral_rpow_neg_restrict_chartMap_image
+```
+
+For positive signed-box radii, `t >= 0`, and
+`2 * t < ((center.erase pivot.1).card : ℝ) + 1`, the theorem proves target
+square-sum positivity almost everywhere and finite lower integral of
+`ofReal ((aoyagiCoordinateSquareSum x)^(-t))` under
+`volume.restrict (chartMap pivot '' signedBoxSet R)`.
+
+The proof uses the selected-entry chart pushforward, the identity
+`residual pivot y = aoyagiCoordinateSquareSum (chartMap pivot y)`, and the
+landed weighted source-box theorem.  Positivity transfers by `ae_map_iff`;
+finite integrability transfers by `lintegral_map_le`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed
+with pre-existing imported warning noise.  Xhigh review by `Lagrange the 3rd`
+passed after a statement-card cast typo fix:
+`review-a2-selected-entry-target-image-residual-hypotheses.md`.
+Post-recovery full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+diff-only forbidden-marker search, and theorem logical-footprint audit passed.
+The new theorem depends only on `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no retained-passive determinant-chart source production, no
+retained-passive-to-selected-entry pushforward, no original prior transport,
+no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 selected-entry weighted signed-box residual hypotheses
 
 Reproduction:
@@ -34,7 +72,7 @@ SelectedEntrySignedBox.CenterCoord.
 ```
 
 For positive signed-box radii, `t >= 0`, and
-`2 * t < ((center.erase pivot.1).card : R) + 1`, the theorem proves residual
+`2 * t < ((center.erase pivot.1).card : ℝ) + 1`, the theorem proves residual
 positivity almost everywhere and finite lower integral of
 `ofReal ((residual pivot y)^(-t))` under the signed-box product measure
 weighted by `ofReal (sourceDensity pivot y)`.

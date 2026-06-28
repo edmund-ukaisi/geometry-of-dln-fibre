@@ -19,6 +19,35 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, selected-entry target-image residual hypotheses
+
+The selected-entry weighted source-box theorem has been pushed through the
+finite selected-entry chart map to a target-image measure statement.  New Lean
+name in `SelectedEntrySignedBoxMeasure.lean`:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  aoyagiCoordinateSquareSum_pos_ae_and_lintegral_rpow_neg_restrict_chartMap_image
+```
+
+For positive radii, `t >= 0`, and
+`2 * t < ((center.erase pivot.1).card : ℝ) + 1`, the theorem proves
+`aoyagiCoordinateSquareSum > 0` a.e. and finite negative-power lower integral
+under `volume.restrict (chartMap pivot '' signedBoxSet R)`.
+
+This is the right A-layer follow-up to the weighted source-box theorem: it uses
+the existing selected-entry Jacobian pushforward and residual identity to move
+from source signed-box coordinates to the selected-entry target chart image.
+It is still not retained-passive source production.  The real frontier remains
+constructing the retained-passive-to-selected-entry coordinate split or
+pushforward, or proving an equivalent retained-passive chart-side
+monomial/normal-crossing statement.
+
+Post-recovery verification passed: full `DLNFibre` build via the local
+`LAKE_SHARED` `scripts/lb` workflow, `scripts/sorries`, `git diff --check`,
+diff-only forbidden-marker search, and direct logical-footprint audit.  The
+new theorem depends only on `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-06-28, selected-entry weighted signed-box residual hypotheses
 
 The selected-entry finite coordinate model now discharges its own chart-side
@@ -34,7 +63,7 @@ SelectedEntrySignedBox.CenterCoord.
 The theorem assumes positive signed-box radii, `t >= 0`, and
 
 ```text
-2 * t < ((center.erase pivot.1).card : R) + 1.
+2 * t < ((center.erase pivot.1).card : ℝ) + 1.
 ```
 
 It proves `0 < residual pivot y` almost everywhere and finite lower integral of

@@ -48,6 +48,53 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Selected-Entry Target-Image Residual Hypotheses
+
+`SelectedEntrySignedBoxMeasure.lean` now pushes the selected-entry weighted
+source-box residual theorem through the finite selected-entry chart map:
+
+```text
+SelectedEntrySignedBox.CenterCoord.
+  aoyagiCoordinateSquareSum_pos_ae_and_lintegral_rpow_neg_restrict_chartMap_image
+```
+
+For positive signed-box radii, `t >= 0`, and
+
+```text
+2 * t < ((center.erase pivot.1).card : ℝ) + 1,
+```
+
+Lebesgue measure restricted to the selected-entry chart image
+
+```text
+chartMap pivot '' signedBoxSet R
+```
+
+has `0 < aoyagiCoordinateSquareSum x` almost everywhere and finite lower
+integral of `ofReal ((aoyagiCoordinateSquareSum x)^(-t))`.
+
+The proof composes:
+
+```text
+map chartMap (signedBox.withDensity sourceDensity)
+  = volume.restrict (chartMap '' signedBoxSet R),
+residual pivot y = aoyagiCoordinateSquareSum (chartMap pivot y),
+```
+
+with the landed weighted source-box theorem.  Positivity transfers by
+`ae_map_iff`; finite integrability transfers by `lintegral_map_le`.
+
+Post-recovery verification passed: full `DLNFibre` build via the local
+`LAKE_SHARED` `scripts/lb` workflow, `scripts/sorries`, `git diff --check`,
+diff-only forbidden-marker search, and direct logical-footprint audit.  The
+new theorem depends only on `[propext, Classical.choice, Quot.sound]`.
+
+This is useful target-image measure transport, but it is not retained-passive
+source production.  It does not identify the retained-passive determinant-chart
+source measure with a selected-entry signed-box measure, construct the
+retained-passive-to-selected-entry coordinate split, transport an original
+prior, produce normal crossings, compute pole order, or extract an RLCT.
+
 ## Latest A2 Selected-Entry Weighted-Box Residual Hypotheses
 
 `SelectedEntrySignedBoxMeasure.lean` now proves the selected-entry weighted
@@ -61,7 +108,7 @@ SelectedEntrySignedBox.CenterCoord.
 For a center pivot, positive signed-box radii, `t >= 0`, and
 
 ```text
-2 * t < ((center.erase pivot.1).card : R) + 1,
+2 * t < ((center.erase pivot.1).card : ℝ) + 1,
 ```
 
 the weighted product signed-box measure
