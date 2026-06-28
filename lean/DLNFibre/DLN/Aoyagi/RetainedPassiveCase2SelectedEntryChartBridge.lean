@@ -55,6 +55,175 @@ theorem case2PostPivotRetainedPassiveData_detChart
     simp [case2PostPivotRetainedPassiveData]
 
 set_option linter.style.longLine false in
+/-- Explicit retained-passive datum attached to successor selected-entry
+coordinates in the continuing Case 2 branch. -/
+noncomputable def case2PostPivotSelectedEntryRetainedPassiveData
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+  case2PostPivotRetainedPassiveData (ρ := ρ) n hS hcont
+    (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+    (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+
+set_option linter.style.longLine false in
+/-- The explicit selected-entry retained-passive datum lies in the finite
+retained-passive determinant chart for every coordinate vector `yNext`. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_detChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    (case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext).detChart := by
+  simpa [case2PostPivotSelectedEntryRetainedPassiveData] using
+    case2PostPivotRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont
+      (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+      (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+
+set_option linter.style.longLine false in
+/-- Explicit source edge family attached to successor selected-entry
+coordinates in the continuing Case 2 branch. -/
+noncomputable def case2PostPivotSelectedEntrySourceEdgeFamily
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ∀ p : Fin 2,
+      Matrix
+        (ρ ⊕ case2PostPivotTwoEdgeDomain n S J τ p.succ)
+        (ρ ⊕ case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ :=
+  (case2PostPivotSelectedEntryRetainedPassiveData
+    (ρ := ρ) n hS hcont hnext yNext eNext).edgeMatrix
+
+set_option linter.style.longLine false in
+/-- The explicit selected-entry source edge family lies in the source-recursive
+determinant chart. -/
+theorem case2PostPivotSelectedEntrySourceEdgeFamily_sourceRecursiveDetChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+        (K := ℝ) (ρ := ρ)
+        (case2PostPivotSelectedEntrySourceEdgeFamily
+          (ρ := ρ) n hS hcont hnext yNext eNext) := by
+  let data :=
+    case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hdet : data.detChart :=
+    case2PostPivotSelectedEntryRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  simpa [case2PostPivotSelectedEntrySourceEdgeFamily, data] using
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart
+      (K := ℝ) (ρ := ρ) data hdet
+
+set_option linter.style.longLine false in
+/-- Readback of the explicit selected-entry source edge family recovers the
+explicit selected-entry retained-passive datum. -/
+theorem case2PostPivotSelectedEntrySourceReadback_eq_retainedPassiveData
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+        (K := ℝ) (ρ := ρ)
+        (case2PostPivotSelectedEntrySourceEdgeFamily
+          (ρ := ρ) n hS hcont hnext yNext eNext) =
+      case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext := by
+  let data :=
+    case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hdet : data.detChart :=
+    case2PostPivotSelectedEntryRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  simpa [case2PostPivotSelectedEntrySourceEdgeFamily, data] using
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback_edgeMatrix_eq
+      (K := ℝ) (ρ := ρ) (data := data) hdet
+
+set_option linter.style.longLine false in
+/-- The explicit selected-entry source edge family's actual readback has
+residual-factor product equal to the successor selected-entry matrix.
+
+This is a parametric source-chart statement: no witness is chosen by
+`Classical.choose`, and no nonzero pivot hypothesis is needed for the equality. -/
+theorem case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+          (K := ℝ) (ρ := ρ)
+          (case2PostPivotSelectedEntrySourceEdgeFamily
+            (ρ := ρ) n hS hcont hnext yNext eNext)).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext := by
+  have hread :=
+    case2PostPivotSelectedEntrySourceReadback_eq_retainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  rw [hread]
+  simpa [case2PostPivotSelectedEntryRetainedPassiveData] using
+    residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+      n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
+/-- The explicit selected-entry source edge family's readback product is
+nonzero when the displayed successor selected-entry pivot coordinate is
+nonzero. -/
+theorem case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_ne_zero_of_yNext_pivot_ne_zero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hyNext :
+      yNext (⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0) :
+    ChartLocalSuffixState.residualFactorProduct
+        (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+          (K := ℝ) (ρ := ρ)
+          (case2PostPivotSelectedEntrySourceEdgeFamily
+            (ρ := ρ) n hS hcont hnext yNext eNext)).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) ≠ 0 := by
+  rw [
+    case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+      (ρ := ρ) n hS hcont hnext yNext eNext]
+  exact
+    case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero
+      n hS hnext yNext eNext hyNext
+
+set_option linter.style.longLine false in
 /-- For the synthetic Case 2 retained-passive datum, the Schur residual block
 of the transformed source edge at edge `1` is the displayed post-pivot residual
 block. -/

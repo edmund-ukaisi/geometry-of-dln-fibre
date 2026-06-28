@@ -462,6 +462,58 @@ theorem Matrix.submatrix_id_equiv_symm_mul_one_submatrix_id_equiv
       simp
 
 set_option linter.style.longLine false in
+/-- Source residual data obtained by zero-extending a target successor residual
+matrix after reindexing its right endpoint to successor residual columns. -/
+noncomputable def case2DisplayedPostPivotSourceResidualOfMatrix
+    {τ R : Type*} [Zero R]
+    (n : ℕ → ℕ) {S J : ℕ}
+    (M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ℕ × ℕ → R :=
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) R :=
+    M.submatrix id eNext.symm
+  case2SourceResidualBlockExtension (n := n) (S := S) (J := J + 1) D
+
+set_option linter.style.longLine false in
+/-- Free `Cprime` data whose post-pivot following-factor tail is the
+reindexed identity on successor residual columns. -/
+noncomputable def case2DisplayedPostPivotFreeCprimeOfMatrix
+    {τ R : Type*} [Zero R] [One R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (_M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ R :=
+  let F :
+      Matrix (Case2ResidualColIndex n S (J + 1)) τ R :=
+    (1 : Matrix
+      (Case2ResidualColIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) R).submatrix id eNext
+  case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont F
+
+set_option linter.style.longLine false in
+/-- The explicit zero-extension residual and reindexed-identity `Cprime`
+realize the prescribed successor matrix as the displayed Case 2 post-pivot
+free two-edge product. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_sourceResidualOfMatrix_freeCprimeOfMatrix
+    {τ R : Type*} [CommRing R]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont
+        (case2DisplayedPostPivotSourceResidualOfMatrix n M eNext)
+        (case2DisplayedPostPivotFreeCprimeOfMatrix n hS hcont M eNext) =
+      M := by
+  rw [case2DisplayedPostPivotFreeTwoEdgeFactorProduct]
+  rw [case2DisplayedPostPivotSourceResidualOfMatrix]
+  rw [case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+  rw [case2DisplayedPostPivotFreeCprimeOfMatrix]
+  rw [case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor]
+  exact Matrix.submatrix_id_equiv_symm_mul_one_submatrix_id_equiv M eNext
+
+set_option linter.style.longLine false in
 /-- Any matrix whose right endpoint is equivalent to the successor residual
 column domain can be realized as a constructed displayed Case 2 post-pivot
 free two-edge product.

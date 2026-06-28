@@ -568,6 +568,107 @@ theorem case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero
     simpa [pivotNext] using hentry.symm.trans hzero_entry)
 
 set_option linter.style.longLine false in
+/-- Explicit source residual data attached to successor selected-entry
+coordinates in the continuing Case 2 branch. -/
+noncomputable def case2SuccessorSelectedEntrySourceResidual
+    {τ : Type*}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ℕ × ℕ → ℝ :=
+  case2DisplayedPostPivotSourceResidualOfMatrix n
+    (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+
+set_option linter.style.longLine false in
+/-- Explicit free `Cprime` attached to successor selected-entry coordinates in
+the continuing Case 2 branch.  Its post-pivot following-factor tail is the
+reindexed identity. -/
+noncomputable def case2SuccessorSelectedEntrySourceCprime
+    {τ : Type*}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ :=
+  case2DisplayedPostPivotFreeCprimeOfMatrix n hS hcont
+    (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+
+set_option linter.style.longLine false in
+/-- The explicit source residual and `Cprime` attached to successor
+selected-entry coordinates realize the successor selected-entry matrix as the
+displayed Case 2 post-pivot free two-edge product. -/
+theorem case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq
+    {τ : Type*}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont
+        (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+        (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext) =
+      case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext := by
+  simpa [case2SuccessorSelectedEntrySourceResidual,
+    case2SuccessorSelectedEntrySourceCprime] using
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct_sourceResidualOfMatrix_freeCprimeOfMatrix
+      n hS hcont
+      (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+
+set_option linter.style.longLine false in
+/-- Concrete two-edge residual-factor family form of
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq`. -/
+theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext))
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext := by
+  rw [residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_eq_freeTwoEdgeFactorProduct]
+  exact
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq
+      n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
+/-- The explicitly constructed two-edge residual-factor product is nonzero
+when the displayed successor selected-entry pivot coordinate is nonzero. -/
+theorem residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_ne_zero_of_yNext_pivot_ne_zero
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hyNext :
+      yNext (⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+        {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0) :
+    ChartLocalSuffixState.residualFactorProduct
+        (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+          (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext))
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) ≠ 0 := by
+  rw [
+    residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+      n hS hcont hnext yNext eNext]
+  exact
+    case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero
+      n hS hnext yNext eNext hyNext
+
+set_option linter.style.longLine false in
 /-- Construct displayed Case 2 finite data whose post-pivot free two-edge
 product is the successor selected-entry matrix.
 

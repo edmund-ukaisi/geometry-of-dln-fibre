@@ -48,6 +48,68 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Explicit Selected-Entry Source Chart
+
+The constructed Case 2 source-production theorem now has an explicit
+selected-entry-to-source family rather than only existential witnesses.
+
+Product-side definitions and theorem:
+
+```text
+case2DisplayedPostPivotSourceResidualOfMatrix
+case2DisplayedPostPivotFreeCprimeOfMatrix
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_sourceResidualOfMatrix_freeCprimeOfMatrix
+```
+
+Successor selected-entry specializations:
+
+```text
+case2SuccessorSelectedEntrySourceResidual
+case2SuccessorSelectedEntrySourceCprime
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_ne_zero_of_yNext_pivot_ne_zero
+```
+
+Retained-passive source/readback endpoints:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData
+case2PostPivotSelectedEntrySourceEdgeFamily
+case2PostPivotSelectedEntrySourceEdgeFamily_sourceRecursiveDetChart
+case2PostPivotSelectedEntrySourceReadback_eq_retainedPassiveData
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_ne_zero_of_yNext_pivot_ne_zero
+```
+
+For every successor selected-entry coordinate vector `yNext`, Lean constructs
+the old residual as the zero extension of
+`case2SuccessorSelectedEntryMatrix yNext eNext` reindexed on the right by
+`eNext.symm`, and constructs the free `Cprime` from the reindexed identity
+`(1).submatrix id eNext`.  Their displayed post-pivot product is exactly the
+successor selected-entry matrix.  Packaging those factors as
+`case2PostPivotRetainedPassiveData` and applying `edgeMatrix` gives a concrete
+source family in `sourceRecursiveDetChart`; `sourceReadback_edgeMatrix_eq`
+then identifies the actual readback with the constructed datum.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-explicit-selected-entry-source-chart.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-explicit-selected-entry-source-chart.md`.
+Focused and full builds passed with the existing warning profile.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker search,
+and direct axiom-footprint audit passed; the new endpoints report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh pen-and-paper check by
+`Zeno` passed.  Implementation review by `Hypatia` passed.
+
+This is the first parametric selected-entry-to-source map in the constructed
+Case 2 lane.  It does not yet prove continuity/measurability, Jacobian or
+source-prior pushforward, arbitrary retained-passive coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.  The next real move is to
+use the explicit map for continuity/measurability and a chart-produced measure
+statement, or to package it into a chart certificate with honest coverage and
+extraction hypotheses.
+
 ## Latest A2 Case 2 Constructed Source-Readback Production
 
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` now exposes:

@@ -19,6 +19,44 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, explicit selected-entry Case 2 source chart
+
+The constructed Case 2 source-production map is now exposed as a parametric
+selected-entry-to-source family, not only through existential witnesses.  New
+endpoints:
+
+```text
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_sourceResidualOfMatrix_freeCprimeOfMatrix
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+case2PostPivotSelectedEntrySourceEdgeFamily_sourceRecursiveDetChart
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_ne_zero_of_yNext_pivot_ne_zero
+```
+
+For every successor selected-entry coordinate vector `yNext`, Lean defines an
+explicit residual zero-extension and free `Cprime` reindexed identity, packages
+them as a retained-passive datum, and takes its `edgeMatrix`.  The resulting
+source family lies in the source-recursive determinant chart, and its actual
+`sourceReadback` residual-factor product is the successor selected-entry
+matrix.  This equality does not require a pivot nonzero hypothesis; nonzeroness
+is a separate corollary from the displayed successor pivot coordinate being
+nonzero.
+
+Focused build, full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+touched-file forbidden-marker search, and direct axiom-footprint audit passed;
+the new endpoints report `[propext, Classical.choice, Quot.sound]`.  Xhigh
+pen-and-paper review by `Zeno` passed.  Implementation review by `Hypatia` passed.
+
+This is a genuine source-family improvement over the prior existential
+production theorem.  It still does not prove continuity or measurability of the
+chart map, any Jacobian/source-prior pushforward, arbitrary retained-passive
+coverage, source-rank coverage, normal crossings, pole order, or RLCT.  The
+next source-moving frontier is to use this explicit map for continuity/
+measurability and then for a chart-produced or transported measure statement,
+or to package it into a normal-crossing chart certificate with honest analytic
+coverage hypotheses.
+
 ## Latest controller decision - 2026-06-28, constructed source-readback Case 2 production
 
 The finite constructed Case 2 product has been pushed through the

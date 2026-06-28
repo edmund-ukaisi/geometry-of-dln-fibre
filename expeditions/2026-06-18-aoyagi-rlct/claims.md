@@ -140,6 +140,20 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, explicit selected-entry source chart, 2026-06-28.**
+  The constructed Case 2 source-production lane now has an explicit parametric
+  source-family map.  Lean defines the old residual as a zero-extension of the
+  successor selected-entry matrix reindexed by `eNext.symm`, defines the free
+  `Cprime` from the reindexed identity `(1).submatrix id eNext`, packages these
+  as `case2PostPivotRetainedPassiveData`, and takes `edgeMatrix`.  The resulting
+  source family lies in `sourceRecursiveDetChart`, and its actual
+  `sourceReadback` residual-factor product equals the successor selected-entry
+  matrix for all `yNext`.  Nonzeroness is a separate corollary from the
+  displayed successor pivot coordinate being nonzero.  This removes the
+  `Classical.choose`/existential-map obstruction for this constructed Case 2
+  lane, but it still does not prove continuity/measurability, Jacobian or
+  source-prior pushforward, arbitrary retained-passive coverage, source-rank
+  coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, 2026-06-28.** The old target-normaliser
   determinant frontier has been surpassed.  Lean now has the retained-passive
   full target normaliser/determinant bridge, formal/product-density

@@ -18,6 +18,68 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 explicit selected-entry source chart
+
+Reproduction:
+`reproduction-a2-case2-explicit-selected-entry-source-chart.md`.
+Statement card:
+`statement-card-a2-case2-explicit-selected-entry-source-chart.md`.
+
+Lean now exposes the constructed Case 2 source-production map as explicit
+functions of successor selected-entry coordinates, instead of only through
+existential witnesses.  New product-side names:
+
+```text
+case2DisplayedPostPivotSourceResidualOfMatrix
+case2DisplayedPostPivotFreeCprimeOfMatrix
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_sourceResidualOfMatrix_freeCprimeOfMatrix
+```
+
+New successor selected-entry names:
+
+```text
+case2SuccessorSelectedEntrySourceResidual
+case2SuccessorSelectedEntrySourceCprime
+case2DisplayedPostPivotFreeTwoEdgeFactorProduct_successorSelectedEntrySource_eq
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
+residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_ne_zero_of_yNext_pivot_ne_zero
+```
+
+New retained-passive source/readback names:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData
+case2PostPivotSelectedEntryRetainedPassiveData_detChart
+case2PostPivotSelectedEntrySourceEdgeFamily
+case2PostPivotSelectedEntrySourceEdgeFamily_sourceRecursiveDetChart
+case2PostPivotSelectedEntrySourceReadback_eq_retainedPassiveData
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryMatrix
+case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_ne_zero_of_yNext_pivot_ne_zero
+```
+
+The construction sends `yNext` to the target successor selected-entry matrix,
+zero-extends the right-reindexed target into the old residual data, uses the
+reindexed identity as the free following factor, packages the result as
+`case2PostPivotRetainedPassiveData`, and then takes its `edgeMatrix`.  The
+source-recursive determinant-chart proof and readback equality are inherited
+from the retained-passive determinant-chart inverse theorem.
+
+The main equality theorem holds for all `yNext`; the nonzero theorem adds only
+the expected displayed successor pivot nonzero hypothesis.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+only pre-existing imported warning noise.  Full `DLNFibre` build passed with
+the existing warning profile.  `scripts/sorries`, `git diff --check`,
+touched-Lean-file forbidden-marker search, and direct axiom-footprint audit
+passed; the new endpoints report `[propext, Classical.choice, Quot.sound]`.
+Xhigh reproduction check by `Zeno` passed.  Implementation review by `Hypatia` passed.
+
+This is a parametric constructed source family, not arbitrary retained-passive
+coverage.  It does not prove continuity/measurability of the selected-entry to
+source map, Jacobian or source-prior pushforward, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 constructed source-readback production
 
 Reproduction:
