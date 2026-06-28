@@ -91,6 +91,25 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_detChart
       (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
 
 set_option linter.style.longLine false in
+/-- Endpoint transport preserves the determinant-chart proof for the explicit
+selected-entry Case 2 retained-passive datum. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    ((case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).detChart := by
+  simpa using
+    case2PostPivotSelectedEntryRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry retained-passive datum is continuous as a
 function of the successor selected-entry coordinates. -/
 theorem continuous_case2PostPivotSelectedEntryRetainedPassiveData
@@ -424,6 +443,49 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_
     case2PostPivotRetainedPassiveData, case2SuccessorSelectedEntryMatrix] using
     residualFactorProduct_case2PostPivotFreeTwoEdgeFactorFamily_successorSelectedEntrySource_eq
       n hS hcont hnext yNext eNext
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.style.longLine false in
+/-- Endpoint-transported form of the explicit Case 2 retained-passive datum's
+stored residual-factor selected-entry matrix readout. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    ChartLocalSuffixState.residualFactorProduct
+        ((case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := ρ) n hS hcont hnext yNext eNext).endpointTransport e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (e (Fin.last 2)).symm
+              ((e 0).symm.trans eNext) c)) := by
+  have htransport :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.residualFactorProduct_C_endpointTransport
+      (K := ℝ) (ρ := ρ)
+      (e := e)
+      (data := case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext)
+      (i := 0) (j := Fin.last 2) (Fin.zero_le (Fin.last 2))
+  have hbase :=
+    case2PostPivotSelectedEntryRetainedPassiveData_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  rw [htransport, hbase]
+  rfl
 
 set_option linter.style.longLine false in
 /-- The explicit selected-entry source readback's residual-factor product has

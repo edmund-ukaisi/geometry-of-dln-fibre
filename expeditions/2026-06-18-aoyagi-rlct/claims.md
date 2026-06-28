@@ -140,6 +140,23 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive endpoint transport,
+  2026-06-28.** Lean now exposes
+  `ChartLocalSuffixState.residualFactorProduct_endpointTransport`,
+  `RetainedPassiveNonredundantCoordinateData.endpointTransport`,
+  `RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart`,
+  `RetainedPassiveNonredundantCoordinateData.residualFactorProduct_C_endpointTransport`,
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart`,
+  and
+  `case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`.
+  These prove endpoint reindexing of explicit residual-factor products and
+  the stored `C` product of retained-passive data, including the explicit Case
+  2 selected-entry datum.  This supplies a finite `hdataFactor` transport
+  ingredient for fixed-base work, but it does not transport `edgeMatrix`,
+  `sourceRecursiveDetChart`, `sourceReadback`, or suffix-recursion states, and
+  it does not prove fixed-base local-source membership, source-prior
+  pushforward, chart-image membership, Jacobian density comparison, coverage,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, source-readback center-matrix handoff,
   2026-06-28.** Lean now exposes
   `case2PostPivotSelectedEntrySourceReadback_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`,

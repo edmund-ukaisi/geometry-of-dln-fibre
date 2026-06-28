@@ -2343,6 +2343,49 @@ structure RetainedPassiveNonredundantCoordinateData
 
 namespace RetainedPassiveNonredundantCoordinateData
 
+omit [CommRing K] [Fintype ρ] [DecidableEq ρ] in
+/-- Reindex the retained-passive endpoint coordinate types by endpoint
+equivalences, leaving the square retained blocks unchanged. -/
+def endpointTransport
+    {M : ℕ} {κ κ' : Fin (M + 2) → Type*}
+    (e : ∀ j, κ j ≃ κ' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ) :
+    RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' where
+  A1passive := data.A1passive
+  F2 := fun p ↦ (data.F2 p).submatrix id (e p.castSucc).symm
+  A3passive := fun p ↦ (data.A3passive p).submatrix (e p.castSucc.succ).symm id
+  C := fun p ↦ (data.C p).submatrix (e p.succ).symm (e p.castSucc).symm
+  Ctop := data.Ctop
+  F3 := data.F3.submatrix (e (Fin.last (M + 1))).symm id
+
+omit [CommRing K] [Fintype ρ] [DecidableEq ρ] in
+@[simp]
+theorem endpointTransport_C
+    {M : ℕ} {κ κ' : Fin (M + 2) → Type*}
+    (e : ∀ j, κ j ≃ κ' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ)
+    (p : Fin (M + 1)) :
+    (data.endpointTransport e).C p =
+      (data.C p).submatrix (e p.succ).symm (e p.castSucc).symm := by
+  rfl
+
+omit [Fintype ρ] [DecidableEq ρ] in
+/-- Endpoint transport of retained-passive coordinate data transports the
+stored residual-factor product by endpoint submatrices. -/
+theorem residualFactorProduct_C_endpointTransport
+    {M : ℕ} {κ κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (e : ∀ j, κ j ≃ κ' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ)
+    {i j : Fin (M + 2)} (hij : i ≤ j) :
+    residualFactorProduct (K := K) (κ := κ') (data.endpointTransport e).C j i hij =
+      (residualFactorProduct (K := K) (κ := κ) data.C j i hij).submatrix
+        (e j).symm (e i).symm := by
+  simpa [endpointTransport] using
+    (residualFactorProduct_endpointTransport (K := K) (N := M + 1)
+      (κ := κ) (κ' := κ') e data.C (i := i) (j := j) hij)
+
 /-- Embed passive `A1` coordinates into the older seed family by filling the
 dummy first seed with zero. -/
 def A1seed
@@ -2447,6 +2490,14 @@ def detChart
     (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ') :
     Prop :=
   IsUnit data.Ctop.det ∧ ∀ p : Fin M, IsUnit (data.A1passive p).det
+
+@[simp]
+theorem endpointTransport_detChart
+    {M : ℕ} {κ κ' : Fin (M + 2) → Type*}
+    (e : ∀ j, κ j ≃ κ' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ) :
+    (data.endpointTransport e).detChart ↔ data.detChart := by
+  rfl
 
 /-- The finite determinant-domain set for nonredundant retained-passive
 coordinates. -/

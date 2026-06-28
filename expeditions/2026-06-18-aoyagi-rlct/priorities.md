@@ -19,6 +19,35 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive endpoint transport
+
+The expedition now has the first retained-passive endpoint-transport layer:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_endpointTransport
+RetainedPassiveNonredundantCoordinateData.endpointTransport
+RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart
+RetainedPassiveNonredundantCoordinateData.residualFactorProduct_C_endpointTransport
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This proves that endpoint equivalences reindex the explicit residual-factor
+product and the stored `C` product of retained-passive nonredundant coordinate
+data.  The Case 2 selected-entry datum can now be transported from
+`case2PostPivotTwoEdgeDomain n S J τ` to any equivalent three-endpoint family
+while preserving the determinant-chart proof and the selected-entry
+center-coordinate matrix readout.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-endpoint-transport.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-endpoint-transport.md`.
+
+This still does not transport `edgeMatrix`, `sourceRecursiveDetChart`,
+`sourceReadback`, or suffix-recursion states.  It therefore does not by itself
+prove fixed-base source-chart realization, local-source membership,
+source-prior pushforward, Jacobian density comparison, normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, explicit Case 2 source-readback square-sum prehandoff
 
 The explicit Case 2 selected-entry source family now also exposes the

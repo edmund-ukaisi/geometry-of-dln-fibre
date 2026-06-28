@@ -2046,6 +2046,72 @@ theorem residualFactorProduct_castSucc
   · congr 1
   · exact Fin.val_fin_le.mp hpj
 
+/-- Reindexing every endpoint of a supplied residual-factor family transports
+the whole explicit residual-factor product by the same endpoint equivalences. -/
+theorem residualFactorProduct_endpointTransport
+    {N : ℕ} {κ κ' : Fin (N + 1) → Type*}
+    [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (e : ∀ j, κ j ≃ κ' j)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    {i j : Fin (N + 1)} (hij : i ≤ j) :
+    residualFactorProduct (K := K) (κ := κ')
+        (fun p ↦ (C p).submatrix (e p.succ).symm (e p.castSucc).symm)
+        j i hij =
+      (residualFactorProduct (K := K) (κ := κ) C j i hij).submatrix
+        (e j).symm (e i).symm := by
+  let C' : ∀ p : Fin N, Matrix (κ' p.succ) (κ' p.castSucc) K :=
+    fun p ↦ (C p).submatrix (e p.succ).symm (e p.castSucc).symm
+  let motive : (m : ℕ) → m ≤ j.val → Prop := fun m hmj ↦
+    let im : Fin (N + 1) := ⟨m, lt_of_le_of_lt hmj j.isLt⟩
+    residualFactorProduct (K := K) (κ := κ') C' j im (Fin.val_fin_le.mpr hmj) =
+      (residualFactorProduct (K := K) (κ := κ) C j im
+          (Fin.val_fin_le.mpr hmj)).submatrix (e j).symm (e im).symm
+  have hbase : motive j.val le_rfl := by
+    dsimp [motive, C']
+    simp
+  have hstep : ∀ m (hmj : m + 1 ≤ j.val),
+      motive (m + 1) hmj → motive m (Nat.le_of_succ_le hmj) := by
+    intro m hmj ih
+    let p : Fin N := ⟨m, Nat.lt_of_succ_lt_succ (lt_of_le_of_lt hmj j.isLt)⟩
+    have hpj : p.succ ≤ j := Fin.val_fin_le.mpr hmj
+    have ih' :
+        residualFactorProduct (K := K) (κ := κ') C' j p.succ hpj =
+          (residualFactorProduct (K := K) (κ := κ) C j p.succ hpj).submatrix
+            (e j).symm (e p.succ).symm := by
+      simpa [motive, C', p, hpj] using ih
+    calc
+      residualFactorProduct (K := K) (κ := κ') C' j p.castSucc
+          ((Fin.castSucc_le_succ p).trans hpj) =
+          residualFactorProduct (K := K) (κ := κ') C' j p.succ hpj * C' p := by
+            rw [residualFactorProduct_castSucc]
+      _ =
+          (residualFactorProduct (K := K) (κ := κ) C j p.succ hpj).submatrix
+              (e j).symm (e p.succ).symm *
+            (C p).submatrix (e p.succ).symm (e p.castSucc).symm := by
+            rw [ih']
+      _ =
+          (residualFactorProduct (K := K) (κ := κ) C j p.succ hpj * C p).submatrix
+            (e j).symm (e p.castSucc).symm := by
+            exact Matrix.submatrix_mul_equiv
+              (residualFactorProduct (K := K) (κ := κ) C j p.succ hpj) (C p)
+              (e j).symm (e p.succ).symm (e p.castSucc).symm
+      _ =
+          (residualFactorProduct (K := K) (κ := κ) C j p.castSucc
+              ((Fin.castSucc_le_succ p).trans hpj)).submatrix
+            (e j).symm (e p.castSucc).symm := by
+            rw [residualFactorProduct_castSucc]
+  have hcanon := Nat.decreasingInduction (motive := motive) hstep hbase
+    (Fin.val_fin_le.mp hij)
+  have hcanon' :
+      residualFactorProduct (K := K) (κ := κ') C' j i
+          (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij)) =
+        (residualFactorProduct (K := K) (κ := κ) C j i
+            (Fin.val_fin_le.mpr (Fin.val_fin_le.mp hij))).submatrix
+          (e j).symm (e i).symm := by
+    simpa [motive] using hcanon
+  simpa [C'] using hcanon'
+
 /-- The explicit residual-factor product over one edge is that supplied
 factor. -/
 theorem residualFactorProduct_one_edge_eq_factor

@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive endpoint transport
+
+Reproduction:
+`reproduction-a2-retained-passive-endpoint-transport.md`.
+Statement card:
+`statement-card-a2-retained-passive-endpoint-transport.md`.
+
+Lean now exposes a retained-passive endpoint-transport layer:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_endpointTransport
+RetainedPassiveNonredundantCoordinateData.endpointTransport
+RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart
+RetainedPassiveNonredundantCoordinateData.residualFactorProduct_C_endpointTransport
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+The generic theorem proves that an explicit residual-factor product commutes
+with endpoint reindexing.  The retained-passive wrapper transports the
+endpoint-dependent fields, preserves `detChart`, and transports the stored `C`
+product.  The Case 2 specialization applies this to the explicit
+selected-entry datum and rewrites the transported residual-coordinate readout
+using `(e last).symm` and `(e 0).symm.trans eNext`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+only the existing imported warning profile.
+
+This is not `edgeMatrix` transport, source-recursive determinant-chart
+transport, source-readback transport, fixed-base source-chart realization,
+local-source membership, measure transport, normal crossings, pole order, or
+RLCT.
+
 ## 2026-06-28 A2 Case 2 source-readback square-sum prehandoff
 
 Reproduction:

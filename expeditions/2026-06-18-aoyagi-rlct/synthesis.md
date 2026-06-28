@@ -48,6 +48,60 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Endpoint Transport
+
+The first endpoint-transport layer for retained-passive Case 2 work has landed.
+
+New generic product endpoint:
+
+```text
+ChartLocalSuffixState.residualFactorProduct_endpointTransport
+```
+
+Given endpoint equivalences `e j : κ j ≃ κ' j`, and transported factors
+`C' p = (C p).submatrix (e p.succ).symm (e p.castSucc).symm`, the explicit
+residual-factor product of `C'` equals the original product submatrixed by
+`(e j).symm` and `(e i).symm`.
+
+New retained-passive endpoints:
+
+```text
+RetainedPassiveNonredundantCoordinateData.endpointTransport
+RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart
+RetainedPassiveNonredundantCoordinateData.residualFactorProduct_C_endpointTransport
+```
+
+The endpoint transport keeps `A1passive` and `Ctop` unchanged, so `detChart` is
+preserved.  Its stored `C` residual-factor product is the transported product
+from the generic theorem.
+
+New Case 2 endpoints:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+These transport the explicit selected-entry Case 2 retained-passive datum from
+`case2PostPivotTwoEdgeDomain n S J τ` to any equivalent three-endpoint family.
+The selected-entry residual-coordinate equivalence is correspondingly
+`case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs n S (J+1)
+(e last).symm ((e 0).symm.trans eNext)`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-endpoint-transport.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-endpoint-transport.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+
+This is endpoint algebra only.  It does not transport `edgeMatrix`,
+`sourceRecursiveDetChart`, `sourceReadback`, or the suffix recursion.  It does
+not prove fixed-base source-chart realization, local-source membership,
+source-prior pushforward, chart-image membership, Jacobian density comparison,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Source-Readback Square-Sum Prehandoff
 
 The explicit Case 2 selected-entry source family now has a source-readback
