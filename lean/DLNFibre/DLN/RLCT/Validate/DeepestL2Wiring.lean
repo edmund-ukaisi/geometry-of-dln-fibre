@@ -481,8 +481,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
         -- BOUNDED CAST-BRIDGE (cast-only): the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport of
-        -- toBlocks₂₁=0 + `← hpivJ` (Jb = pivotJSucc J) + defeq widths. 5 tactic shapes tried; resists
-        -- one-shot (needs a toBlocks₂₁-transport helper). Left documented.
+        -- toBlocks₂₁=0 + `← hpivJ` (Jb = pivotJSucc J) + defeq widths. SECONDARY residual.
         sorry
       -- **hsub3reg** — reg-energy invariance under the joint move (RELATIVE: ψ-moved vs unmoved, SAME
       -- frames Pf/Qf, so the endpoint-frame conjugation CANCELS — UNAFFECTED by the sub-4 boundary-A11
@@ -639,17 +638,17 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1
             = Score x := by
         filter_upwards [hballgerm, hWdetgerm] with x hball hWdet
-        -- `q := split x = deepestSplit w0 x` (hsplit); apply Option-2 sub-4 with hball/hWdet/hScoreDef.
-        refine deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score H r B hB hr hL hL2eq J Pf Qf
-          hPtri' hQtri' Score hScoreDef x (split x) (hsplit x) hball hWdet ?_
-        -- hLDUtie: the readback-tie (prod(deepestM) cleaned-tuple = Score (1,1)-Schur integrand) is
-        -- EXTRACTED to the standalone `prod_deepestM_eq_schur_ldu_readback` (DeepestLDUReadback.lean) for a
-        -- collision-free fill. ⚠ That statement is currently MIS-DICTIONARIED (numerically false for the
-        -- bare-read `l2*` dictionary — the deepest boundary leading block `A11 ≠ 1`; triple-confirmed:
-        -- my numerics + two decorrelated Codex + the Lean defs). The fix (frame-conjugated reads) is
-        -- pending adjudication; until then the standalone carries the `sorry` with the finding documented.
-        exact prod_deepestM_eq_schur_ldu_readback H r B hB hr hL hL2eq J Pf Qf hPtri' hQtri'
-          x (split x) (hsplit x) hWdet
+        -- **SECONDARY RESIDUAL (W-a wire, blocked on the conjugated producer).** sub-4
+        -- (`deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score`) consumes `hLDUtie` with the BARE-pivot shape
+        -- `prod(deepestM)(decode + schurCorrection) = Score`, which is **FALSE** (deepest boundary
+        -- `A11 ≠ 1`; the W-a falsity). The TRUE readback is the standalone `prod_deepestM_eq_schur_ldu_readback`
+        -- (DeepestLDUReadback.lean, CLOSED clean-three) over the **conjugated** dictionary (pivot `M̄_s +
+        -- readX_s`). To close this discharge, the global `schurCorrection`/`l2K`/`l2S1` must be
+        -- frame-conjugated (gain a `B` arg for `M̄_s = (reindex deepestPoint_s).toBlocks₁₁`) so sub-4's
+        -- `frobSq(prod(decode + schurCorrection))` IS the conjugated product and `hC0`/`hC1` discharge.
+        -- That `B`-signature refactor (schurCorrection→schurShiftRaw→schurCutoffShift→deepestCoreAbsorb +
+        -- the 5 S2/S4 re-derivations) is the SECONDARY scope, in flight.
+        sorry
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
         hsub4core Φscore hΦscore wstar hwstar hL2eq
