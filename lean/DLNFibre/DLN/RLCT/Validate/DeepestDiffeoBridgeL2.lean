@@ -2072,6 +2072,59 @@ theorem coreRead_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [psiSplitRawL2Core_eq]
   rw [hcore, coreDecode_paramsEquivFlat, Function.update_self]
 
+/-! ### S6f — framedParamsPivot under the joint move (non-last layers identical) -/
+
+-- Matrix-level readbacks (from the entrywise ones).
+theorem readX_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
+      = readX H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact readX_psiSplitRawL2Core H r hr hL hL2eq q s i j
+
+theorem readZ_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
+      = readZ H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact readZ_psiSplitRawL2Core H r hr hL hL2eq q s i j
+
+theorem readY_psiSplitRawL2Core_of_ne_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
+      = readY H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact readY_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs i j
+
+-- framedParamsPivot of the moved point: per-layer, equals the original EXCEPT last-layer Y/core.
+theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    framedParamsPivot H r hr hL J P Q (psiSplitRawL2Core H r hr hL hL2eq q) s
+      = framedParamsPivot H r hr hL J P Q q s := by
+  rw [framedParamsPivot_of_ne_last H r hr hL J P Q (psiSplitRawL2Core H r hr hL hL2eq q) s hs,
+    framedParamsPivot_of_ne_last H r hr hL J P Q q s hs]
+  show framedLayer H r hr s (P s) (Q s)
+      (readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
+      (readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
+      (readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
+      ((paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 s)
+    = framedLayer H r hr s (P s) (Q s)
+      (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
+  rw [readX_psiSplitRawL2Core_eq, readZ_psiSplitRawL2Core_eq,
+    readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
+    coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
+
 /-! ### S6 sub-lemmas (the decomposition; assembly proven, two geometric subs sorried) -/
 
 theorem psiRawL2_split (H : Fin (L + 1) → ℕ) (r : ℕ)
