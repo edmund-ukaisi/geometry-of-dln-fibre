@@ -391,7 +391,8 @@ import DLNFibre.Core.FibreSmoothBlock
 -- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a k-algebra
 -- product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`: per-chart/UNCOCYCLED (overlap
 -- gluing = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization = S4b, LANDED below; it
--- is over SchurLoc, NOT yet projection-compatible with mult — that, plus R1, remain open).
+-- is over SchurLoc; projection-compatibility with mult is CLOSED (R5, FibreProjectionCompat), the
+-- overlap-gluing R1 is the remaining residual).
 import DLNFibre.Core.FibreLocallyTrivial
 -- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial Noetherian
 -- ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the smooth-block
@@ -400,16 +401,16 @@ import DLNFibre.Core.FibreSmoothBlockExists
 -- S3: flatness facts around the atlas (HONEST scope — NOT the `Flat π` payoff). `chartInclusion_flat`
 -- (localization), `standardFibreModel_free`/`_flat` over the auxiliary SchurLoc (generic base change),
 -- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. NB S4b (below) DELIVERS the chartwise
--- `Module.Flat SchurLoc (Away(chartDsigAt …))`; what stays open is projection compatibility
--- (schurToDsigAt = mult's projection pullback) + R1/global gluing — NOT S4b itself.
+-- `Module.Flat SchurLoc (Away(chartDsigAt …))`; projection compatibility (schurToDsigAt vs mult's
+-- projection) is now CLOSED (R5, FibreProjectionCompat); what stays open is R1/global gluing — NOT S4b.
 import DLNFibre.Core.FibreFlatness
 -- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
 -- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`
 -- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ chartwise
 -- flatness over the in-chart base direction SchurLoc `chartDsigAt_flat_over_schurLoc` AND the genuine
--- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc, NOT yet
--- projection-compatible with the geometric `mult` projection (that, plus R1's global overlap gluing,
--- are the open items toward a single GLOBAL Flat π / FiberBundle over rankROpen).
+-- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc;
+-- projection-compatibility with the geometric `mult` projection is CLOSED (R5, FibreProjectionCompat),
+-- so R1's global overlap gluing is the remaining open item toward a single GLOBAL Flat π / FiberBundle.
 import DLNFibre.Core.FibreOverBaseTriv
 -- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
 -- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline
@@ -421,10 +422,11 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
 -- pullback) — CLOSED by R5 in FibreProjectionCompat (below); global Flat π / FiberBundle still R1.
 import DLNFibre.Core.FibreBundleHeadline
--- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt IS mult's
--- comorphism multComap (gauge-transported) — schurToDsigAt_comp_localizeSchur, every pivot; +
--- ProjCompatOverBaseChart (projection-compat + over-base triv + flatness). Closes "schurToDsigAt =
--- mult's projection pullback"; global Flat π / target-side cocycle still residual (R1).
+-- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt AGREES with
+-- mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
+-- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat + over-base
+-- triv + flatness). Closes the S5/S4b "projection compatibility" item; global Flat π / target-side
+-- cocycle still residual (R1).
 import DLNFibre.Core.FibreProjectionCompat
 -- R5 target-side overlap (R1 partial): awayCongr' (generalized localization transport) +
 -- targetProductOverlapTransition (the double-localized pairwise transition OBJECT). The cocycle

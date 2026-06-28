@@ -12,7 +12,7 @@ and the radial measure contributes `rho_i^3 d rho_i`, giving radial threshold `2
 
 Near the deepest angular stratum, put
 
-`D_i = diag(1,u_i)`,  
+`D_i = diag(1,u_i)`,
 `R_j ~ [[c_j, -1], [1, c_j]]`.
 
 Then the relevant product is

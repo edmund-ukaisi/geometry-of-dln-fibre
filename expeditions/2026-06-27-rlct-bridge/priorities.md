@@ -11,21 +11,26 @@ unranked; "unclear-but-keep-going" is first-class.
 | R1 | **The decisive computation** — local rlct of the deepest stratum of `(2,2,2,2,2)`, `r=0` | **closed — MILD** | λ=3/2=½·codim (3 ways). Kill-condition does NOT fire. R3-Newton in standard coords DEAD (Newton-degenerate witness) → R3-resolution needed; refined gamble = Newton-nondegenerate in the *resolved* chart. |
 | Rm | **Mathlib-coverage recon** for the local model | **closed** | lci-scheme API is an upstream gap; the conormal-free statement carries R2 (the real wall is the ℝ-seam, not lci). |
 
-## Proposed refined spine (controller proposal — **operator signs off / edits**)
+## The spine — FINAL OUTCOMES (expedition CLOSED 2026-06-28; superseded the proposed waves below)
 
-| # | item | status | note |
-|---|------|--------|------|
-| R2+T | **Wave 1a — upper bound + real↔complex transfer** — real smooth pt + Jacobian rank c (banked-ish `CotangentJacobian`/`free_cotangent`) → C2; transfer T `codim_ℝ=codim_K` via rational `realizerD` | proposed (Wave 1) | achievable first win; EXPOSES the hidden transfer. |
-| R3-probe | **Wave 1b — R3-route probe** — drive the repo `Skeleton`/`Validate` resolution scaffold toward `min_T Mval ≥ cCodim`; test the Newton-in-resolved-chart gamble | proposed (Wave 1) | sets R3's cost (one citable theorem vs full bespoke blow-up). |
-| R3 | **Wave 2 — lower-bound geometry (the wall)** — resolution → C3 + lower-bracket → `rlct ≥ ½·codim_ℝ` | proposed (Wave 2) | the DLN-specific heart; multi-tide; route set by R3-probe. |
-| R4 | **Wave 3 — assemble the refined bridge** — compose C1/C2/C3 (cited) ∘ R2/T/R3 (proved); retire monolithic `cited_aoyagi_dln` | proposed (Wave 3) | close deliverable; **name=content gate critical** (L4). |
-| R5 | **Wave 3 — roll-in: complete the bundle geometry** — projection compatibility (`schurToDsigAt`=`mult` projection) + R1-overlap-gluing → global `Flat π` / fibre bundle over `rankROpen` | proposed (Wave 3) | the fibration-geometry residual; independent of R3. |
+The proposed "prove the lower bound" spine was re-routed by the operator's BLIND decision (the analytic
+rlct is CITED, not formalised — fidelity to L&R who cite Aoyagi). Final:
 
-## Open ambiguities (unclear-but-keep-going)
+| # | item | final outcome |
+|---|------|---------------|
+| Foundation (was R2+T) | thin cited interface + honest `codim_ℝ` + connector + compose + retire monolith | **DONE** (tide 04, integrated green; twice-reviewed). `rlct=½·codim_ℝ` derived from the two cited bounds; composed to `½·C`. |
+| T (real↔complex transfer) | `codim_ℝ=codim_K` | **CITED** (verdict iii, thread 07): TRUE but not bounded-provable at Mathlib v4.29. Threaded as a named hypothesis; the catenary reduction to the atomic dim-equality is PROVED. Full proof → roadmap. |
+| Upper bound (was the "achievable" half) | `rlct ≤ ½·codim_ℝ` | **CITED** (`cited_watanabe_upper`, universal Watanabe; carried on the attainability scope). |
+| Lower bound (was R3, "the wall") | `rlct ≥ ½·codim_ℝ` | **CITED** (`cited_aoyagi_lower`, Aoyagi Thm 1). NOT formalised — blind/cite; the bespoke resolution stays Aoyagi's. |
+| R4 (assemble) | compose → retire monolithic `cited_aoyagi_dln` | **DONE** (within tide 04). Cited boundary = exactly {Watanabe ≤, Aoyagi ≥, T}. name=content held (L4), two decorrelated review rounds. |
+| R5 (bundle) | projection compatibility + bundle | **PARTIAL (honest ceiling)** — projection compatibility LANDED (closes the prior fibration-geometry S5/S4b item (i)); global `Flat π` / target-side cocycle = named residuals → roadmap. |
 
-- **(resolved by R0)** Lower-bound hypothesis = log-canonical pair / `lct(I)=c` (ideal, not set);
-  stated as a real log-principalization datum with `hⱼ+1 ≥ c·kⱼ` per divisor.
-- **(resolved by R1)** Standard-coordinate Newton route is dead (degenerate); R3 needs the rank/SVD
-  resolution. Surviving question for R3-probe: is the *resolved* chart Newton-nondegenerate (→ one
-  citable theorem) or does it need Aoyagi's full recursive blow-up?
-- R5 (global flat bundle) is **independent** of R3's stratification (can run in parallel in Wave 1/3).
+## Roadmap (named residuals → future expeditions)
+- **Prove T** — the `rlct-runway-target` wall (real-AG in Mathlib; ℚ-unirationality the clean hypothesis).
+- **Global `Flat π`** — target-side cocycle (Mathlib `AlgEquiv` gaps) + triple-overlap + local-to-global.
+- **(Cross-paper)** fold to `aoyagi-full`'s genuine `rlctAt` via `aoyagiLambda ↔ Aoyagi.lambda`.
+
+## Open ambiguities — RESOLVED (historical)
+- Lower-bound hypothesis = log-canonical pair / `lct(I)=c` (R0); standard-coord Newton route dead, resolved
+  chart viable width-2 / bespoke general (R1+probe). Both moot under blind/cite (the analytic side is cited).
+- R5 (bundle) independent of the rlct seam — confirmed; landed as the projection-compat partial.

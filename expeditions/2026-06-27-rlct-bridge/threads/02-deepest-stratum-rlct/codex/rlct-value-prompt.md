@@ -15,7 +15,7 @@ equivalently lambda = sup{ z>0 : integral K^{-z} converges near 0 }. (For a sum 
 
 <output_contract>
 1. FIRST LINE: your best value of lambda (the RLCT) as an exact rational if you can, else a decimal to 3 sig figs. State the pole multiplicity m (order of the pole) too if you can.
-2. The METHOD you used (toric/Newton-polyhedron resolution with a nondegeneracy verdict; an explicit blow-up / monomialization; a known closed form for deep-linear / matrix-multiplication / reduced-rank-regression models; or a careful numeric zeta/volume estimate with the log-multiplicity correction). 
+2. The METHOD you used (toric/Newton-polyhedron resolution with a nondegeneracy verdict; an explicit blow-up / monomialization; a known closed form for deep-linear / matrix-multiplication / reduced-rank-regression models; or a careful numeric zeta/volume estimate with the log-multiplicity correction).
 3. If Newton-polyhedron: state whether K is Newton-NONDEGENERATE w.r.t. its Newton boundary, and if not, why the naive Newton bound is not the answer.
 4. A second, independent cross-check of the value if at all possible (e.g. a different weight/blow-up, or the c/2-at-a-smooth-point sanity check, or a small analogous case like the 3-layer 2x2 product A2 A1).
 5. State your confidence and the single most likely way your value is wrong.
