@@ -234,6 +234,18 @@ theorem measurable_innerSGenP (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r *
     exact hy.comp measurable_fst
   · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd)
 
+/-- `innerSGenP` is `y pivot`-invariant (`RmatG r pivot y` reads `y i` only for `i ≠ pivot`); the
+`Fin p` analog of `innerSGen_offpivot`. -/
+theorem innerSGenP_offpivot (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r * r))
+    (y y' : Fin (r * r) → ℝ) (h : ∀ i, i ≠ pivot → y i = y' i) :
+    innerSGenP r p c' T pivot y = innerSGenP r p c' T pivot y' := by
+  have hR : RmatG r pivot y = RmatG r pivot y' := by
+    funext i j; rw [RmatG_entry, RmatG_entry]
+    by_cases hij : eG r (i, j) = pivot
+    · rw [if_pos hij, if_pos hij]
+    · rw [if_neg hij, if_neg hij]; exact h _ hij
+  rw [innerSGenP, innerSGenP, hR]
+
 /-! ## The cap-B per-`R` inner bound (the genuinely-new directMorse content) -/
 
 /-- **The cap-B inner-`S` finiteness, per angular matrix `R`.** For an `r×r` matrix `R` (`r ≥ 3`) with pivot
@@ -610,11 +622,163 @@ theorem schurRatioResidP_capB_lt_top (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 
     rw [hpm]; exact hKfin
   · exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
 
+/-- **The `(r,p)` cap-B per-chart finiteness** (`Fin p` analog of `schur_matBoxG_chart_lt_top`). The
+radial blow-up chart integral (Jacobian `|y p|^{r²−1}`) is finite for `0 < c' < min(p,r²)/2`, `r ≥ 3`.
+The `piRatioG` MP + Tonelli factor the pivot axis (`radial_aAxis_divisor_lt_top`, `c' < r²/2`) from the
+`r²−1` ratios; the ratio residual is the cap-B `schurRatioResidP_capB_lt_top` (`c' < p/2`, NO recursion). -/
+theorem schur_matBoxGenP_chart_lt_top (r p : ℕ) (hr : 3 ≤ r)
+    (c' : ℝ) (hc0 : 0 < c') (hcp : c' < (p : ℝ) / 2) (hcr : c' < (r ^ 2 : ℝ) / 2)
+    (pivot : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
+    ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot \ pivotZeroOn pivot,
+        ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (r * r))) pivot y).det|
+          * (flatBoxGen r T).indicator (gFlatGen r p c' T) (pivotBlowupOn
+              (Finset.univ : Finset (Fin (r * r))) pivot y)
+      < ⊤ := by
+  have hrr : 0 < r * r := by positivity
+  obtain ⟨N, hN⟩ : ∃ N, r * r = N + 1 := ⟨r * r - 1, by omega⟩
+  -- |det| = |y pivot|^{r²−1}
+  have hdet : ∀ y : Fin (r * r) → ℝ,
+      |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (r * r))) pivot y).det|
+        = |y pivot| ^ (r * r - 1) := by
+    intro y
+    rw [pivotBlowupOnDeriv_det (Finset.univ : Finset (Fin (r * r))) pivot (Finset.mem_univ pivot) y,
+      Finset.card_univ, Fintype.card_fin]
+    simp [abs_pow]
+  simp only [hdet]
+  -- the chart domain is measurable
+  have hmsD : MeasurableSet
+      (chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot \ pivotZeroOn pivot) := by
+    refine MeasurableSet.diff ?_ ?_
+    · have heq : chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot
+          = ⋂ k ∈ (Finset.univ.erase pivot), {y : Fin (r * r) → ℝ | |y k| ≤ 1} := by
+        ext y
+        simp only [chartDomOn, Set.mem_setOf_eq, Set.mem_iInter, Finset.mem_erase,
+          Finset.mem_univ, true_and, and_true, true_implies]
+      rw [heq]
+      refine Finset.measurableSet_biInter (Finset.univ.erase pivot) (fun k _ => ?_)
+      exact measurableSet_le ((measurable_pi_apply k).abs) measurable_const
+    · exact (measurable_pi_apply pivot (measurableSet_singleton 0))
+  rw [setLIntegral_congr_fun hmsD
+    (fun y hy => chart_integrand_factorGen r p c' hc0 T hT pivot y hy.2 hy.1)]
+  -- reshape Fin(r*r)→ℝ ≃ ℝ × (Fin N → ℝ) via piRatioG
+  set e := piRatioG r N hN pivot with he
+  have hmp : MeasurePreserving e (volume) (volume) := measurePreserving_piRatioG r N hN pivot
+  -- the chart domain pulls back to ({a ≠ 0}) ×ˢ (ratio box over Fin N)
+  have hpre : (chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot \ pivotZeroOn pivot)
+      = e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))) := by
+    ext y
+    simp only [chartDomOn, pivotZeroOn, Set.mem_diff, Set.mem_setOf_eq, Set.mem_preimage,
+      Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, he]
+    constructor
+    · rintro ⟨h1, h2⟩
+      refine ⟨by rw [piRatioG_apply_fst]; exact h2, fun j => ?_⟩
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd]
+      exact h1 _ (Finset.mem_univ _) (piRatioG_ratioIdx_ne r N hN pivot j)
+    · rintro ⟨h1, h2⟩
+      rw [piRatioG_apply_fst] at h1
+      refine ⟨fun k _ hk => ?_, h1⟩
+      have hne : finCongr hN k ≠ finCongr hN pivot := fun h => hk ((finCongr hN).injective h)
+      obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+      have hk_eq : k = (finCongr hN).symm ((finCongr hN pivot).succAbove j) := by
+        rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+      have hj2 := h2 j
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd r N hN pivot y j] at hj2
+      rw [hk_eq]; exact hj2
+  set g : (Fin (r * r) → ℝ) → ℝ≥0∞ := fun y =>
+    (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) (y pivot)
+      * innerSGenP r p c' T pivot y with hgdef
+  have hgmeas : Measurable g := by
+    rw [hgdef]
+    refine Measurable.mul ?_ (measurable_innerSGenP r p c' T pivot)
+    have hind : Measurable (fun a : ℝ =>
+        (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a) := by
+      refine Measurable.indicator ?_ measurableSet_Icc
+      exact ENNReal.measurable_ofReal.comp ((measurable_id.abs).pow_const _)
+    exact hind.comp (measurable_pi_apply pivot)
+  rw [hpre]
+  have hSms : MeasurableSet
+      (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))) :=
+    MeasurableSet.prod (by measurability) (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+  have key := hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding (fun q => g (e.symm q))
+    (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)))
+  have htrans : (∫⁻ y in e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ
+        (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))), g y)
+      = ∫⁻ q in (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))),
+          g (e.symm q) := by
+    rw [← key]
+    refine setLIntegral_congr_fun (e.measurable hSms) (fun y _ => ?_)
+    rw [MeasurableEquiv.symm_apply_apply]
+  rw [htrans]
+  have hgsymm_meas : Measurable (fun q : ℝ × (Fin N → ℝ) => g (e.symm q)) :=
+    hgmeas.comp e.symm.measurable
+  rw [Measure.volume_eq_prod ℝ (Fin N → ℝ), setLIntegral_prod _ hgsymm_meas.aemeasurable]
+  -- the joint factorisation: g (e.symm (a,z)) = radInd a · innerSGenP … (e.symm (0,z))
+  have hfactor : ∀ a : ℝ, ∀ z : Fin N → ℝ,
+      g (e.symm (a, z))
+        = (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a
+          * innerSGenP r p c' T pivot (e.symm (0, z)) := by
+    intro a z
+    have hp_eq : (e.symm (a, z)) pivot = a := by rw [he]; exact piRatioG_symm_pivot r N hN pivot a z
+    have hoff : innerSGenP r p c' T pivot (e.symm (a, z))
+        = innerSGenP r p c' T pivot (e.symm (0, z)) := by
+      refine innerSGenP_offpivot r p c' T pivot _ _ (fun i hi => ?_)
+      rw [he]; exact piRatioG_symm_offpivot r N hN pivot a 0 z i hi
+    show (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) ((e.symm (a, z)) pivot)
+        * innerSGenP r p c' T pivot (e.symm (a, z)) = _
+    rw [hp_eq, hoff]
+  -- radial-axis factor finite (c' < r²/2 ⟹ exponent (r²−1)−2c' > −1)
+  have hN3a : (∫⁻ a in Set.Icc (-T) T,
+      ENNReal.ofReal (|a| ^ ((r ^ 2 : ℝ) - 1 - 2 * c'))) < ⊤ :=
+    radial_aAxis_divisor_lt_top r (by omega) T hT c' hcr
+  have hexp : ((r ^ 2 : ℝ) - 1 - 2 * c') = (((r * r - 1 : ℕ) : ℝ) - 2 * c') := by
+    rw [Nat.cast_sub (by omega), Nat.cast_one]; push_cast [pow_two]; ring
+  rw [hexp] at hN3a
+  have hradfin : (∫⁻ a in {a : ℝ | a ≠ 0},
+        (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a) < ⊤ := by
+    have hle1 : (∫⁻ a in {a : ℝ | a ≠ 0},
+          (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a)
+        ≤ ∫⁻ a, (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a := by
+      have := lintegral_mono_set (μ := volume) (s := {a : ℝ | a ≠ 0}) (t := Set.univ)
+        (Set.subset_univ _)
+        (f := (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))))
+      rwa [setLIntegral_univ] at this
+    have heq2 : (∫⁻ a, (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a)
+        = ∫⁻ a in Set.Icc (-T) T, ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c')) :=
+      lintegral_indicator measurableSet_Icc _
+    rw [heq2] at hle1
+    exact lt_of_le_of_lt hle1 hN3a
+  -- ratio residual finite via the cap-B schurRatioResidP_capB_lt_top
+  have hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP r p c' T pivot (e.symm (0, z))) < ⊤ :=
+    schurRatioResidP_capB_lt_top r N p hN hr c' hc0 hcp pivot T hT
+  have hinner : ∀ a : ℝ,
+      (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)), g (e.symm (a, z)))
+        = (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a
+          * ∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+              innerSGenP r p c' T pivot (e.symm (0, z)) := by
+    intro a
+    have hradne : (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a ≠ ⊤ := by
+      rw [Set.indicator_apply]; split <;> simp [ENNReal.ofReal_ne_top]
+    rw [lintegral_congr (fun z => hfactor a z), lintegral_const_mul' _ _ hradne]
+  rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
+  exact ENNReal.mul_lt_top hradfin hratiofin
+
 /-- **The cap-B directMorse finiteness.** `SchurCore p r c' T` for `0 < c' < min(p, r²)/2` (the cap-B regime,
 where the binding stratum is `t = 0`, so `½·minAdm = r²/2 ≤ p/2`). The `r²`-chart radial-`Δ` cover
 (`matBoxGen_outer_flat` + `gFlatGen_cover_sum`, DONE `(r,p)`-general) reduces to a sum over `r²` charts; each
 chart = the radial axis `|y|^{r²−1−2c'}` (`radial_aAxis_divisor_lt_top`, DONE, `c' < r²/2`) × the angular
-residual (`schurRatioResidP_capB_lt_top`, `c' < p/2`). NO recursion (unlike the cap-A firing). WIP. -/
+residual (`schurRatioResidP_capB_lt_top`, `c' < p/2`). NO recursion (unlike the cap-A firing). -/
 theorem schurCoreP_directMorse (p r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (hc0 : 0 < c')
     (hcp : c' < (p : ℝ) / 2) (hcr : c' < (r ^ 2 : ℝ) / 2) (T : ℝ) (hT : 0 < T) :
     SchurCore p r c' T := by
