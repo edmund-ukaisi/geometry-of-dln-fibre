@@ -325,4 +325,62 @@ theorem interiorDrop_pivot_hyps (M : Fin (L + 1) → ℕ) (hInt : InteriorDrop M
   obtain ⟨_, p, hp1, hpL, hr, hcd⟩ := hInt
   exact ⟨p, by omega, hr, hcd p (le_refl p) hpL⟩
 
+/-! ## The R1 interior witness (count-FREE; reuses the dead-leaf witness)
+
+The `Ubound` a.e.-positivity input for the R1 chart: `∃ w, UvalLiveR1 … w ≠ 0`. At the dead-leaf witness
+point `wInt M ha p` (with the leaf `rfin = 0`), the R1 decoder and the dead-leaf `genBlkFlatStruct` AGREE:
+the only R1 override is `Rmat p = rmatPad(pivotEIndicator)`, and at `wInt` the dead-leaf reads
+`Rmat p = rmatPad(readE (wInt p) p)` where `readE (wInt p)` at the pivot IS the `(0,0)=1` indicator
+(`readE_wInt`); `Rfin = 0` matches. So `UvalLiveR1 … 0 wInt = UvalStructV … wInt = achieverUfun wInt ≠ 0`
+by the banked `exists_achieverUfun_ne_zero_interior`. NO new induction — count-free non-vanishing. -/
+
+/-- **`readE (wInt p)` at the pivot boundary `p = k+1` IS `pivotEIndicator`** (both the `(0,0)=1`
+indicator). The decoder-agreement input. -/
+theorem readE_wInt_pivot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : ℕ) (hk : k < L) :
+    readE M (tach M) ha (wInt M ha (k + 1)) ⟨k, hk⟩ = pivotEIndicator M (tach M) (k + 1) := by
+  funext i j
+  rw [readE_wInt M ha (k + 1) ⟨k, hk⟩ i j, pivotEIndicator, Matrix.of_apply]
+  simp only [Fin.val_mk, true_and]
+
+/-- **The R1 decoder at `(wInt p, rfin = 0)` equals the dead-leaf structured decoder at `wInt p`.**
+Field-by-field: Bmat/Nblk/Wblk are the structured decoder's (unchanged); `Rfin = 0` on both; `Rmat`
+agrees — away from `p` the `Function.update` is the identity, and at `p` the fixed `rmatPad(pivotEIndicator)`
+equals the structured `rmatPad(readE (wInt p) p)` (`readE_wInt_pivot_eq`). -/
+theorem genBlkFlatLiveR1_wInt_Rmat (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : ℕ) (hk : k < L)
+    (hp1 : Text M (tach M) (k + 1 + 1) ≤ Text M (tach M) (k + 1))
+    (hp2 : Text M (tach M) (k + 1 + 1) ≤ Wext M (k + 1)) :
+    (genBlkFlatLiveR1 M (tach M) ha (k + 1) hp1 hp2 0 (wInt M ha (k + 1))).Rmat
+      = (genBlkFlatStruct M (tach M) ha (wInt M ha (k + 1))).Rmat := by
+  funext s
+  show Function.update (genBlkFlatLive M (tach M) ha 0 (wInt M ha (k + 1))).Rmat (k + 1)
+      (rmatPad M (tach M) (k + 1) hp1 hp2 (pivotEIndicator M (tach M) (k + 1))) s = _
+  by_cases hs : s = k + 1
+  · subst hs
+    rw [Function.update_self]
+    show _ = (if hk' : k < L then rmatPad M (tach M) (k + 1) (ha.hdesc k hk') (ha.hub k)
+        (readE M (tach M) ha (wInt M ha (k + 1)) ⟨k, hk'⟩) else 0)
+    rw [dif_pos hk, readE_wInt_pivot_eq M ha k hk]
+  · rw [Function.update_of_ne hs]; rfl
+
+/-- **The R1 interior witness** (the count-free `Ubound` input): a flat point where the R1 unit is
+nonzero, for an interior-drop `M` at its pivot `p* = k+1`. The R1 decoder at `(wInt, rfin=0)` agrees with
+the dead-leaf `genBlkFlatStruct` (Bmat/Nblk/Wblk identical; Rfin=0 both; Rmat agrees via
+`genBlkFlatLiveR1_wInt_Rmat` — the fixed pivot = `readE (wInt) p`), so `VvalGen` agrees and the dead-leaf
+`exists_achieverUfun_ne_zero_interior` gives the nonzero.
+
+SORRY (count-FREE; one targeted refactor): the final step needs the dead-leaf witness's nonzero AT THE
+SPECIFIC `wInt M ha p` (it currently returns `∃ w, achieverUfun w ≠ 0`, hiding `w = wInt M ha p`). Two
+clean closes (no new math): (i) refactor `exists_achieverUfun_ne_zero_interior` to expose
+`achieverUfun (wInt M ha p) ≠ 0` (its proof already establishes exactly this at the `hInt`-pivot `p`); or
+(ii) a `VvalGen`-congruence from the field-wise decoder agreement (`genBlkFlatLiveR1_wInt_Rmat` + Rfin=0 +
+Bmat/Nblk/Wblk rfl) avoiding the `GenBlk` structure-ext (which thrashed >4× on the `h ▸ 0` Rfin cast). The
+Rmat agreement (the load-bearing pivot fact) IS proven (`genBlkFlatLiveR1_wInt_Rmat`). -/
+theorem exists_UvalLiveR1_ne_zero_interior (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hN : 0 < routeMAmbient M) (hInt : InteriorDrop M) (k : ℕ) (hk : k < L)
+    (hp1 : Text M (tach M) (k + 1 + 1) ≤ Text M (tach M) (k + 1))
+    (hp2 : Text M (tach M) (k + 1 + 1) ≤ Wext M (k + 1)) :
+    ∃ w : Fin (routeMAmbient M) → ℝ,
+      UvalLiveR1 M (tach M) (structAdm_tach M hL) hN (k + 1) hp1 hp2 (fun _ => 0) w ≠ 0 := by
+  sorry
+
 end DLNFibre.DLN.RLCT
