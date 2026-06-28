@@ -14412,3 +14412,44 @@ This is source-family presentation only.  It is not endpoint provenance,
 endpoint canonicity, source-image equality, pushforward-measure transport,
 source-rank coverage, source-prior transport, Jacobian comparison, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 chart-produced density continuous-at finite integral
+
+Reproduction:
+`reproduction-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+Statement card:
+`statement-card-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+Review:
+`review-a2-case2-chart-produced-density-continuousat-finite-integral.md`, PASS
+with corrections by xhigh read-only checker `Bohr`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density
+```
+
+For the endpoint-transported explicit Case 2 selected-entry chart-produced
+measure, positive continuity of the transported density at `(base,0)` supplies
+local nonnegativity and boundedness of the density after shrinking the
+regular-coordinate radius.  The theorem removes supplied `Rreg`, `Creg`,
+`0 <= Creg`, eventual density nonnegativity, and eventual density boundedness
+as inputs.  It returns `R`, `C`, and `U` with `0 < R`, `R <= Rmax`, `0 <= C`,
+`IsOpen U`, `base ∈ U`, and the finite-integral conclusion over `ball 0 R`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probe passed; the
+declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is still a chart-produced source-measure theorem.  It does not construct
+endpoint equivalences, prove endpoint provenance, identify an original prior or
+external source measure, compare Jacobians for such a prior, prove source-rank
+coverage, prove normal crossings, compute pole order, or extract RLCT.

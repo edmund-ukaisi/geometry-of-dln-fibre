@@ -84,7 +84,44 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
-## Latest A2 Case 2 Topology-Tuple Source-Family Alignment
+## Latest A2 Case 2 Chart-Produced Density Continuous-At Finite Integral
+
+The endpoint-transported explicit Case 2 chart-produced finite-integral handoff
+now has a radius-shrinking density wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density
+```
+
+It replaces the supplied regular radius `Rreg`, density bound `Creg`, and
+eventual density nonnegativity/boundedness hypotheses of the prior
+chart-produced theorem by `Rmax`, `ContinuousAt density (base,0)`, and
+`0 < density (base,0)`.  The conclusion returns a smaller `R`, a bound `C`,
+and an open source neighborhood `U`, with `0 < R`, `R <= Rmax`, and `0 <= C`.
+The proof applies the existing relative density-bounds lemma and then runs the
+old Case 2 theorem at radius `R`, shrinking the loss lower-bound hypothesis
+from `Rmax` to `R` via `Metric.ball_subset_ball`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker search, and direct axiom probe passed; the
+declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This removes a real density-field burden for the chart-produced measure
+handoff.  It still does not construct endpoint equivalences, prove endpoint
+provenance, identify an original prior or external source measure, compare
+Jacobians for such a prior, prove source-rank coverage, prove normal
+crossings, compute pole order, or extract RLCT.
+
+## Previous A2 Case 2 Topology-Tuple Source-Family Alignment
 
 The raw-order p.13 source chart now has a direct topology-tuple datum
 specialization:

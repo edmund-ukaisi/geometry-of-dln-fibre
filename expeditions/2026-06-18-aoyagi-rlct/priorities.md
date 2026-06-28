@@ -38,7 +38,45 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
-## Latest controller decision - 2026-06-28, Case 2 topology-tuple source-family alignment
+## Latest controller decision - 2026-06-28, Case 2 chart-produced density continuous-at finite integral
+
+The endpoint-transported explicit Case 2 chart-produced finite-integral handoff
+now has a continuous-positive-density wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density
+```
+
+It removes supplied `Rreg`, `Creg`, `0 <= Creg`, eventual density
+nonnegativity, and eventual density boundedness as inputs.  Instead, the
+theorem assumes `0 < Rmax`, `ContinuousAt density (base,0)`, and
+`0 < density (base,0)`, then returns `R`, `C`, and `U` with `0 < R`,
+`R <= Rmax`, `0 <= C`, `IsOpen U`, `base ∈ U`, and the finite-integral
+conclusion over `ball 0 R`.  The local loss lower bound is retained on the
+larger ball `ball 0 Rmax` and restricted to `R` by ball inclusion.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-chart-produced-density-continuousat-finite-integral.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-chart-produced-density-continuousat-finite-integral.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-chart-produced-density-continuousat-finite-integral.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.  This is still a chart-produced
+source measure theorem: it does not construct endpoint equivalences, prove
+endpoint provenance, identify an original prior/external source measure,
+compare Jacobians for such a prior, prove source-rank coverage, prove normal
+crossings, compute pole order, or extract RLCT.
+
+Next high-value A2 moves are now endpoint provenance if labelled data appears,
+or deeper p.13 source-chart/source-prior transport.  Do not add another wrapper
+that keeps the same endpoint/source/measure hypotheses unless it removes a
+named field from the next actual consumer.
+
+## Previous controller decision - 2026-06-28, Case 2 topology-tuple source-family alignment
 
 The raw-order p.13 source chart now has a determinant-chart datum
 specialization:

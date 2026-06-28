@@ -140,6 +140,19 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 chart-produced density continuous-at
+  finite integral, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density`.
+  For the endpoint-transported explicit Case 2 selected-entry chart-produced
+  measure, positive continuity of the transported density at `(base,0)`
+  supplies local density nonnegativity and boundedness after shrinking the
+  regular-coordinate radius.  The theorem removes supplied `Rreg`, `Creg`,
+  `0 <= Creg`, eventual density nonnegativity, and eventual density boundedness
+  as inputs, returning a smaller `R`, a bound `C`, and an open neighborhood
+  `U`.  This does not construct endpoint equivalences, prove endpoint
+  provenance, identify an original prior or external source measure, compare
+  Jacobians for such a prior, prove source-rank coverage, prove normal
+  crossings, compute pole order, or extract RLCT.
 - **Current status addendum, Case 2 topology-tuple source-family alignment,
   2026-06-28.** Lean now exposes
   `paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData`,
