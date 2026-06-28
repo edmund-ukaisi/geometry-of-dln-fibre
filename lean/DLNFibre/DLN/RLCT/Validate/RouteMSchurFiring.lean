@@ -578,6 +578,97 @@ theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → 
   refine le_trans (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) (le_of_eq ?_)
   rw [coreSchurGenVal]
 
+/-! ### The generic carving — pivot-normalization, N2b+shear+peel, the M22 ⊕ rest reshape
+
+The genuinely-new generic content (`schurRatioResidGen_mid`). Carve-first (Codex xhigh ×3 + reviewer-Codex
+confirmed): pivot-WLOG to `(0,0)` (`RmatGnorm`), split the `r²−1` ratios `z` into the FREE `(r−1)×(r−1)`
+M22 block ⊕ the `2(r−1)` boundary ratios `rest = (M21, M12)`, fix `rest`, then per `rest` do the
+N2b (`j = 1`) two-sided dominate → top-row shear → `Fin 4` Morse peel (threshold `2`) over the FREE
+`(M22, S_bot)` joint core, landing on the SHIFTED corank-`(r−1)` residual at `c'' = c' − 2`, closed
+UNIFORMLY in `rest` by `schurResidG_translate_le` + the abstract lower IH. The outer `rest`-box volume is
+finite. -/
+
+/-- The pivot-normalized angular matrix on chart `p`, ratios `z`: `RmatGnorm r p z r' c' = RmatG r p
+((piRatioG …).symm (0,z)) (σr r') (σc c')` with `σr = swap r₀ 0`, `σc = swap c₀ 0`, `(r₀,c₀) = (eG r).symm p`.
+Pivot `1` at `(0,0)`. Generic analog of `RouteM334Ratiofin.Rmat334norm`. -/
+noncomputable def RmatGnorm (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (z : Fin N → ℝ) :
+    Fin r → Fin r → ℝ :=
+  fun i j => RmatG r p ((piRatioG r N hN p).symm (0, z))
+    ((Equiv.swap ((eG r).symm p).1 ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩) i)
+    ((Equiv.swap ((eG r).symm p).2 ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩) j)
+
+/-- `RmatGnorm r N hN p z 0 0 = 1`: the `(0,0)` entry is the pivot. The `⟨0,_⟩` form matches the def's
+swap target (`(0 : Fin r)` would need a `NeZero r` instance the bare-`ℕ` statement lacks). -/
+theorem RmatGnorm_pivot (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (z : Fin N → ℝ) (h0r : 0 < r) :
+    RmatGnorm r N hN p z ⟨0, h0r⟩ ⟨0, h0r⟩ = 1 := by
+  unfold RmatGnorm
+  rw [show (⟨0, h0r⟩ : Fin r) = ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩ from rfl,
+    Equiv.swap_apply_right, Equiv.swap_apply_right, RmatG_entry, if_pos]
+  rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+
+/-- Off-`(0,0)` entries of `RmatGnorm r N hN p z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
+theorem RmatGnorm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (z : Fin N → ℝ)
+    (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)) (i j : Fin r) (h0r : 0 < r)
+    (hij : ¬ (i = ⟨0, h0r⟩ ∧ j = ⟨0, h0r⟩)) : |RmatGnorm r N hN p z i j| ≤ 1 := by
+  unfold RmatGnorm
+  set z0 : Fin r := ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩ with hz0
+  have hz0eq : z0 = (⟨0, h0r⟩ : Fin r) := rfl
+  set r0 := ((eG r).symm p).1 with hr0
+  set c0 := ((eG r).symm p).2 with hc0
+  set σr := Equiv.swap r0 z0 with hσr
+  set σc := Equiv.swap c0 z0 with hσc
+  set y := (piRatioG r N hN p).symm (0, z) with hy
+  have hσr0 : σr z0 = r0 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc z0 = c0 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eG r (r0, c0) = p := by
+    rw [show (r0, c0) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+  -- the flat index of the reordered cell ≠ p (swap-injectivity), so `RmatG` reads `y`
+  have hidx : eG r (σr i, σc j) ≠ p := by
+    intro heq
+    rw [← hpe] at heq
+    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+    rw [← hσr0] at hi; rw [← hσc0] at hj
+    exact hij ⟨hz0eq ▸ σr.injective hi, hz0eq ▸ σc.injective hj⟩
+  rw [RmatG_entry, if_neg hidx]
+  -- `y k = z (decoded slot)` for `k = eG r (σr i, σc j) ≠ p`; the value is in `[−1,1]`
+  set k := eG r (σr i, σc j) with hk
+  have hkp : k ≠ p := hidx
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hkp ((finCongr hN).injective h)
+  obtain ⟨jj, hjj⟩ := Fin.exists_succAbove_eq hne
+  have hkdec : k = (finCongr hN).symm ((finCongr hN p).succAbove jj) := by
+    rw [hjj]; exact ((finCongr hN).symm_apply_apply k).symm
+  -- `y k = z jj`: `(piRatioG y).2 jj = y (decoded k)` and `piRatioG y = (0,z)` so `= z jj`
+  have hyk : y k = z jj := by
+    have h1 : (piRatioG r N hN p y).2 jj = y k := by
+      rw [piRatioG_apply_snd r N hN p y jj, hkdec]
+    have h2 : piRatioG r N hN p y = (0, z) := by rw [hy, MeasurableEquiv.apply_symm_apply]
+    rw [h2] at h1; exact h1.symm
+  rw [hyk]
+  have := hz jj (Set.mem_univ jj)
+  rw [Set.mem_Icc, ← abs_le] at this
+  exact this
+
+/-- **`innerSGen` in the pivot-normalized form.** `innerSGen r c' T p ((piRatioG …).symm (0,z))
+= ∫_{S} frobSq (RmatGnorm·S)^{−c'}` (the `(0,0)`-pivot reorder, via `frobSq_rmatMul_permG` under the
+`S`-row-permute CoV `matBox_rowperm_lintegralG`). -/
+theorem innerSGen_eq_norm (r N : ℕ) (hN : r * r = N + 1) (c' : ℝ) (T : ℝ) (p : Fin (r * r))
+    (z : Fin N → ℝ) :
+    innerSGen r c' T p ((piRatioG r N hN p).symm (0, z))
+      = ∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN p z) S)) ^ (-c')) := by
+  set y := (piRatioG r N hN p).symm (0, z) with hy
+  set z0 : Fin r := ⟨0, by have : 0 < r * r := hN ▸ N.succ_pos; nlinarith⟩ with hz0
+  set σr := Equiv.swap ((eG r).symm p).1 z0 with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 z0 with hσc
+  unfold innerSGen
+  -- rewrite the RHS (normalized integral) by the S-row-permute CoV, matching the LHS pointwise.
+  rw [matBox_rowperm_lintegralG (r := r) T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN p z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  -- frobSq(R·S) = frobSq(R'·Sσc) with R' = RmatGnorm p z (= R reordered by σr,σc).
+  exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
