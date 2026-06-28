@@ -418,10 +418,31 @@ theorem smearShiftFlat_measurable (hcol : 0 < M (deepLayer M hL).succ)
       exact hc
     exact this.measurable
   -- `routing 0 r = (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))` (the landed
-  -- `scalarGram` `1×1`-Gram closed form). The closed form makes measurability `measurable_inv` + sums of
-  -- `hfront` products — but its in-place derivation hits the `mul_apply`-nesting friction; isolated WIP.
+  -- `scalarGram` `1×1`-Gram closed form), measurable via `measurable_inv` + sums of `hfront` products.
+  have hroutingForm : ∀ (u : Fin (routeMAmbient M) → ℝ) (r),
+      routing M hL u hm1 0 r
+        = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
+          * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)) := by
+    intro u r
+    have hinv : (((pivotCol M hL u hm1).transpose * pivotCol M hL u hm1)⁻¹ : Matrix (Fin 1) (Fin 1) ℝ) 0 0
+        = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹ := by
+      rw [Matrix.inv_def, Matrix.det_fin_one, Matrix.adjugate_fin_one]
+      simp only [Matrix.smul_apply, Matrix.of_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one,
+        Ring.inverse_eq_inv', Matrix.mul_apply, Matrix.transpose_apply, pivotCol, Fin.sum_univ_one]
+      exact congrArg _ (Finset.sum_congr rfl (fun i _ => by rw [sq]))
+    rw [routing, Matrix.mul_apply, Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun x _ => ?_)
+    rw [Matrix.mul_apply, Fin.sum_univ_one, hinv]
+    simp only [Matrix.transpose_apply, pivotCol, residCols]; ring
   have hrouting : ∀ r, Measurable (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r) := by
-    sorry
+    intro r
+    have heq : (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r)
+        = fun u => (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
+          * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)) :=
+      funext (fun u => hroutingForm u r)
+    rw [heq]
+    refine ((Finset.measurable_sum _ (fun i _ => (hfront i ⟨0, hm1⟩).pow_const 2)).inv).mul ?_
+    exact Finset.measurable_sum _ (fun i _ => (hfront i ⟨0, hm1⟩).mul (hfront i (residSel M hL hm1 r)))
   -- `smearShift = ∑ r, routing 0 r · deepCol (residSel r)`.
   refine Finset.measurable_sum _ (fun r _ => ?_)
   exact (hrouting r).mul (hdeep (residSel M hL hm1 r))
