@@ -273,6 +273,21 @@ F3' =
     + (coord.F3 - Earlyfun z) * u.A1passive(Fin.last M).
 ```
 
+The positive-tail `F3` shear is now implemented.  It uses this correction as a
+linear map on the `F3`-focused rest tuple and therefore has determinant one by
+the same upper-shear argument as the zero-tail case.  On actual derivative
+targets, the `F3` component proof rewrites the post-`Ctop` correction to the
+target-only theorem using:
+
+```text
+u.F3 = Dzv.F3,
+dEarly_postC(rest(T123(Dzv))) = dEarly_targetOnly(Dzv),
+u.A1passive(Fin.last M) = target-staged terminal A1passive expression.
+```
+
+This closes the positive-tail `F3` component bridge, but it does not yet bundle
+all component bridges into a single raw-tuple equality.
+
 The first comparison slice after `T123` is now also implemented: the
 post-`Ctop` solved-`A1` tangent, solved-`A1` suffix derivative, and stored-`C`
 suffix derivative agree with the existing target-staged objects on

@@ -7544,6 +7544,264 @@ theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3ZeroShearRawTupl
           RetainedPassiveRawTopologyTuple (M := 0) ρ κ' ℝ))| = 1
   rw [LinearMap.det_comp, abs_mul, hS, hE, one_mul]
 
+set_option linter.style.longLine false in
+private def retainedPassivePostCtopF3PosCorrectionLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+      retainedPassiveRawF3Family (M := M + 1) ρ κ' :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let qLast : Fin (M + 1) := Fin.last M
+  let q0 : Fin (M + 1) := 0
+  let p0 : Fin ((M + 1) + 1) := q0.castSucc
+  let Early : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+      (K := ℝ) (ρ := ρ) (κ := κ')
+      coord.solvedA1
+      (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        data.A3seed)
+      data.C p0.val (Nat.le_of_lt p0.isLt)
+  let dEarly :=
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+      (M := M) (ρ := ρ) (κ' := κ') hz 0 (Nat.zero_le (M + 1));
+  -((retainedPassiveMatrixMulRightLinearMap
+      (coord.solvedA1 (Fin.last (M + 1)))).comp dEarly) +
+    (retainedPassiveMatrixMulLeftLinearMap (coord.F3 - Early)).comp
+      (retainedPassiveRawF3RestA1passiveLinearMapAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') qLast)
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopF3PosCorrectionLinearMapAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (r : retainedPassiveRawF3RestFamily (M := M + 1) ρ κ') :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let qLast : Fin (M + 1) := Fin.last M
+    let q0 : Fin (M + 1) := 0
+    let p0 : Fin ((M + 1) + 1) := q0.castSucc
+    let Early : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        coord.solvedA1
+        (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          data.A3seed)
+        data.C p0.val (Nat.le_of_lt p0.isLt)
+    let dEarly :=
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz 0 (Nat.zero_le (M + 1)) r;
+    retainedPassivePostCtopF3PosCorrectionLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz r =
+      -(dEarly * coord.solvedA1 (Fin.last (M + 1))) +
+        (coord.F3 - Early) * r.1 qLast := by
+  dsimp [retainedPassivePostCtopF3PosCorrectionLinearMapAt,
+    retainedPassiveRawF3RestA1passiveLinearMapAt,
+    retainedPassiveMatrixMulRightLinearMap,
+    retainedPassiveMatrixMulLeftLinearMap]
+
+set_option linter.style.longLine false in
+/-- In the positive-tail case after the `Ctop` stage, change only `F3` by the
+target-staged final lower-left correction. -/
+def retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ ≃ₗ[ℝ]
+      RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ :=
+  retainedPassiveRawF3FocusLinearEquiv.trans
+    ((linearEquivUpperShear
+      (R := ℝ)
+      (M := retainedPassiveRawF3Family (M := M + 1) ρ κ')
+      (N := retainedPassiveRawF3RestFamily (M := M + 1) ρ κ')
+      (retainedPassivePostCtopF3PosCorrectionLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz)).trans
+      retainedPassiveRawF3FocusLinearEquiv.symm)
+
+set_option linter.style.longLine false in
+/-- Formula for the positive-tail post-`Ctop` `F3` raw-tuple shear. -/
+theorem retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    let qLast : Fin (M + 1) := Fin.last M
+    let q0 : Fin (M + 1) := 0
+    let p0 : Fin ((M + 1) + 1) := q0.castSucc
+    let Early : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        coord.solvedA1
+        (ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          data.A3seed)
+        data.C p0.val (Nat.le_of_lt p0.isLt)
+    let rest :=
+      (retainedPassiveRawF3FocusLinearEquiv
+        (ρ := ρ) (κ' := κ') w).2
+    let dEarly :=
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz 0 (Nat.zero_le (M + 1)) rest
+    retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w =
+      (w.1,
+        (w.2.1,
+          (w.2.2.1,
+            (w.2.2.2.1,
+              (w.2.2.2.2.1,
+                w.2.2.2.2.2
+                  - dEarly * coord.solvedA1 (Fin.last (M + 1))
+                  + (coord.F3 - Early) * w.1 qLast))))) := by
+  rw [retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt]
+  simp [retainedPassivePostCtopF3PosCorrectionLinearMapAt_apply,
+    sub_eq_add_neg, add_assoc]
+
+set_option linter.style.longLine false in
+/-- The positive-tail post-`Ctop` `F3` raw-tuple shear has determinant one. -/
+theorem retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_det_eq_one
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    LinearMap.det
+      (retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+            RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) = 1 := by
+  let E :=
+    retainedPassiveRawF3FocusLinearEquiv
+      (M := M + 1) (ρ := ρ) (κ' := κ')
+  let S :=
+    linearEquivUpperShear
+      (R := ℝ)
+      (M := retainedPassiveRawF3Family (M := M + 1) ρ κ')
+      (N := retainedPassiveRawF3RestFamily (M := M + 1) ρ κ')
+      (retainedPassivePostCtopF3PosCorrectionLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz)
+  have hconj :
+      LinearMap.det
+        (retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+          (M := M) (ρ := ρ) (κ' := κ') hz :
+            RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+              RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) =
+        LinearMap.det
+          (S : (retainedPassiveRawF3Family (M := M + 1) ρ κ' ×
+              retainedPassiveRawF3RestFamily (M := M + 1) ρ κ') →ₗ[ℝ]
+              (retainedPassiveRawF3Family (M := M + 1) ρ κ' ×
+                retainedPassiveRawF3RestFamily (M := M + 1) ρ κ')) := by
+    simpa [retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt,
+      E, S] using
+      (LinearMap.det_conj
+        (S : (retainedPassiveRawF3Family (M := M + 1) ρ κ' ×
+            retainedPassiveRawF3RestFamily (M := M + 1) ρ κ') →ₗ[ℝ]
+            (retainedPassiveRawF3Family (M := M + 1) ρ κ' ×
+              retainedPassiveRawF3RestFamily (M := M + 1) ρ κ'))
+        E.symm)
+  rw [hconj]
+  exact
+    linearEquivUpperShear_det_eq_one
+      (R := ℝ)
+      (M := retainedPassiveRawF3Family (M := M + 1) ρ κ')
+      (N := retainedPassiveRawF3RestFamily (M := M + 1) ρ κ')
+      (f := retainedPassivePostCtopF3PosCorrectionLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz)
+
+/-- The positive-tail post-`Ctop` `F3` raw-tuple shear has absolute determinant
+one. -/
+theorem retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    |LinearMap.det
+      (retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+            RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)| = 1 := by
+  rw [retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_det_eq_one
+    (M := M) (ρ := ρ) (κ' := κ') hz, abs_one]
+
+set_option linter.style.longLine false in
+/-- In the positive-tail case, the first four target-side normalisation
+stages: edge pair, passive `A1`, `Ctop`, and terminal `F3`. -/
+def retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ ≃ₗ[ℝ]
+      RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ :=
+  (retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz).trans
+    (retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+      (M := M) (ρ := ρ) (κ' := κ') hz)
+
+theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) :
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz w =
+      retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz
+        (retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+          (ρ := ρ) (κ' := κ') hz w) := rfl
+
+set_option linter.style.longLine false in
+theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    |LinearMap.det
+      (retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz :
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+            RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)| = 1 := by
+  let E :=
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz
+  let S :=
+    retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+      (M := M) (ρ := ρ) (κ' := κ') hz
+  have hE :
+      |LinearMap.det
+        (E : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)| = 1 := by
+    simpa [E] using
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+        (ρ := ρ) (κ' := κ') hz
+  have hS :
+      |LinearMap.det
+        (S : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ)| = 1 := by
+    simpa [S] using
+      retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+        (M := M) (ρ := ρ) (κ' := κ') hz
+  change |LinearMap.det ((S : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+      RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ).comp
+        (E : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →ₗ[ℝ]
+          RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ))| = 1
+  rw [LinearMap.det_comp, abs_mul, hS, hE, one_mul]
+
 private theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_F3
     {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
@@ -7560,6 +7818,21 @@ private theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleL
   rw [retainedPassivePostEdgePairA1passiveShearRawTupleLinearEquivAt_apply]
   rw [retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_apply]
   rw [retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply]
+
+set_option linter.style.longLine false in
+private theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_A1passive
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (w : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    (retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz w).1 =
+      (retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+        (ρ := ρ) (κ' := κ') hz w).1 := by
+  rw [retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_apply]
+  rw [retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_apply]
 
 set_option linter.style.longLine false in
 /-- Target-only staged tangent for an arbitrary solved `A1` coordinate. -/
@@ -13134,6 +13407,132 @@ theorem F3_tail_zero_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_recove
   simpa [coord, data, ChartLocalSuffixState.RetainedPassiveCoordinateData.solvedA1,
     ChartLocalSuffixState.retainedPassiveSolvedA1,
     ChartLocalSuffixState.retainedPassiveA1TailAfterFirst] using hrec
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- In the positive-tail case, after the first four target-side normalisation
+stages, the terminal `F3` component of the actual raw-order derivative agrees
+with the formal raw-order Jacobian. -/
+theorem retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_F3_eq_formalRawOrderJacobianAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    (retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz ((fderiv ℝ raw z) v)).2.2.2.2.2 =
+      ((retainedPassiveFormalRawOrderJacobianAt
+        (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Dzv := (fderiv ℝ raw z) v
+  let u :=
+    retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+      (ρ := ρ) (κ' := κ') hz Dzv
+  let rest :=
+    (retainedPassiveRawF3FocusLinearEquiv
+      (ρ := ρ) (κ' := κ') u).2
+  let qLast : Fin (M + 1) := Fin.last M
+  let q0 : Fin (M + 1) := 0
+  let p0 : Fin ((M + 1) + 1) := q0.castSucc
+  let A1fun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let A3fun :
+      RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        ∀ p : Fin ((M + 1) + 1), Matrix (κ' p.succ) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed
+  let Cfun :
+      RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+        ∀ p : Fin ((M + 1) + 1), Matrix (κ' p.succ) (κ' p.castSucc) ℝ :=
+    fun y ↦ (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+  let Earlyfun : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ →
+      Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      ChartLocalSuffixState.retainedPassiveLowerLeftProductTailSum
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y) (A3fun y) (Cfun y) p0.val (Nat.le_of_lt p0.isLt)
+  let dEarly :=
+    retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt
+      (M := M) (ρ := ρ) (κ' := κ') hz Dzv 0 (Nat.zero_le (M + 1))
+  let postDEarly :=
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+      (M := M) (ρ := ρ) (κ' := κ') hz 0 (Nat.zero_le (M + 1)) rest
+  let XsuccF2 := retainedPassiveTargetRecoveredSuccessorF2At (ρ := ρ) (κ' := κ') z Dzv
+  have hF3 :=
+    F3_tail_pos_targetOnly_dEarly_dLast_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (M := M) (ρ := ρ) (κ' := κ') hz v
+  have huF3 :
+      u.2.2.2.2.2 = Dzv.2.2.2.2.2 := by
+    simpa [u] using
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_F3
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz Dzv
+  have hDEarly : postDEarly = dEarly := by
+    simpa [raw, Dzv, u, rest, postDEarly, dEarly] using
+      retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_after_T123_eq_targetOnly
+        (M := M) (ρ := ρ) (κ' := κ') hz v 0 (Nat.zero_le (M + 1))
+  have hT123A1 :
+      u.1 qLast =
+        (retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+          (ρ := ρ) (κ' := κ') hz Dzv).1 qLast := by
+    have h :=
+      retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_A1passive
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz Dzv
+    simpa [u] using congrArg (fun A : Fin (M + 1) → Matrix ρ ρ ℝ ↦ A qLast) h
+  have hT12A1formal :
+      (retainedPassiveTargetEdgePairThenA1passiveShearRawTupleLinearEquivAt
+          (ρ := ρ) (κ' := κ') hz Dzv).1 qLast =
+        ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 qLast := by
+    have h :=
+      retainedPassiveTargetEdgePairThenA1passiveShear_fderiv_A1passive_eq_formalRawOrderJacobianAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') hz v
+    simpa [raw, Dzv] using congrArg (fun A : Fin (M + 1) → Matrix ρ ρ ℝ ↦ A qLast) h
+  have hA1stage :=
+    A1passive_target_staged_shear_fderiv_topologyTupleEdgeRawOrder_eq_formalRawOrderJacobianAt
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz v qLast
+  have hA1 :
+      u.1 qLast =
+        Dzv.1 qLast
+          - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+          - coord.F2 qLast.succ.succ *
+              rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ := by
+    change Dzv.1 qLast
+        - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+        - coord.F2 qLast.succ.succ *
+            rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).1 qLast at hA1stage
+    exact hT123A1.trans (hT12A1formal.trans hA1stage.symm)
+  change Dzv.2.2.2.2.2
+      - dEarly * coord.solvedA1 (Fin.last (M + 1))
+      + (coord.F3 - Earlyfun z) *
+          (Dzv.1 qLast
+            - XsuccF2 qLast.succ * coord.solvedA3 qLast.succ
+            - coord.F2 qLast.succ.succ *
+                rawEdgeTupleA3 (K := ℝ) (ρ := ρ) (κ' := κ') Dzv qLast.succ) =
+      ((retainedPassiveFormalRawOrderJacobianAt
+          (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2 at hF3
+  change
+    (retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+        (M := M) (ρ := ρ) (κ' := κ') hz Dzv).2.2.2.2.2 =
+      ((retainedPassiveFormalRawOrderJacobianAt
+        (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2
+  rw [retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_apply]
+  rw [retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_apply]
+  change u.2.2.2.2.2
+      - postDEarly * coord.solvedA1 (Fin.last (M + 1))
+      + (coord.F3 - Earlyfun z) * u.1 qLast =
+    ((retainedPassiveFormalRawOrderJacobianAt
+        (ρ := ρ) (κ' := κ') z) v).2.2.2.2.2
+  rw [huF3, hDEarly, hA1]
+  exact hF3
 
 set_option linter.style.longLine false in
 /-- In the single-edge case, after the first four target-side normalisation

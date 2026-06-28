@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 positive-tail post-`Ctop` `F3` shear
+
+Lean now has the positive-tail `F3` raw-tuple shear after the edge-pair,
+`A1passive`, and `Ctop` stages:
+
+```text
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The correction uses the post-`Ctop` recursive `dEarly` map and the terminal
+staged passive `A1` coordinate.  The determinant is one by the `F3 × rest`
+upper-shear calculation, and the component bridge reduces to the existing
+target-only positive-tail `F3` theorem.
+
+Focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no single full raw-tuple equality yet, no actual Frechet determinant
+equality, no measure transport, no normal crossings, no pole order, and no
+RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` recursive `dEarly` comparison
 
 Lean now has the private comparison chain from the post-`Ctop` lower-left

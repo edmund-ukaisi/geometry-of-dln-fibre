@@ -19,6 +19,43 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, positive-tail post-`Ctop` `F3` shear
+
+The positive-tail post-`Ctop` `F3` stage is now implemented and green in
+`RetainedPassiveCoordinatesJacobian.lean`.  New Lean names:
+
+```text
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The post-`Ctop` positive-tail correction is the linear map on the `F3`-focused
+rest tuple
+
+```text
+- dEarly_postC(rest) * coord.solvedA1(Fin.last (M + 1))
+  + (coord.F3 - Earlyfun z) * rest.A1passive(Fin.last M).
+```
+
+The component bridge reduces the composed stage after `T123` to the existing
+target-only positive-tail `F3` theorem using the previous recursive
+`dEarly_postC` comparison, `F3` preservation through `T123`, and terminal
+`A1passive` preservation through the `Ctop` stage.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This still does not package all components into one full raw-tuple equality,
+prove actual Frechet determinant equality for the complete coordinate change,
+or prove measure transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` recursive `dEarly` comparison
 
 The positive-tail post-`Ctop` bridge now has the remaining private comparison

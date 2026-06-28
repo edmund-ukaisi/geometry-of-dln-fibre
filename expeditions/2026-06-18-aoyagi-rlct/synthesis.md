@@ -48,6 +48,48 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Positive-Tail Post-`Ctop` `F3` Shear
+
+The positive-tail `F3` normalisation stage after `T123` is now green.  The new
+post-`Ctop` shear fixes every raw field except `F3`; on the `F3`-focused rest
+tuple its correction is
+
+```text
+- dEarly_postC(rest) * coord.solvedA1(Fin.last (M + 1))
+  + (coord.F3 - Earlyfun z) * rest.A1passive(Fin.last M).
+```
+
+New Lean names:
+
+```text
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_apply
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostCtopF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopThenF3PosShear_fderiv_F3_eq_formalRawOrderJacobianAt
+```
+
+The determinant-one proof is the same upper-shear argument as the zero-tail
+case after regrouping the raw tuple as `F3 × rest`.  The `F3` component proof
+rewrites the composed stage to the existing target-only positive-tail theorem
+using three inputs: `T123` preserves `F3`, the new recursive bridge identifies
+`dEarly_postC(rest(T123(Dzv)))` with
+`retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv 0`, and the
+`Ctop` stage preserves the terminal passive `A1` coordinate already staged by
+the post-edge-pair `A1passive` shear.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.
+
+Remaining Lean work: package componentwise normalisation into a full raw-tuple
+statement if needed, then connect the determinant-one linear equivalences to an
+actual Frechet determinant statement and the later normal-crossing/RLCT
+interface.  No analytic result is claimed here.
+
 ## Latest A2 Post-`Ctop` Recursive `dEarly` Comparison
 
 The post-`Ctop` positive-tail lower-left recursion is now compared all the way
