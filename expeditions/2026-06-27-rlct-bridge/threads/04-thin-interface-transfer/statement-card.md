@@ -1,5 +1,13 @@
 # Statement card — Thread 04: thin RLCT interface (cite only `rlct = ½·codim_ℝ`, prove the geometry)
 
+> **SUPERSEDED ON THE TRANSFER (thread 11, capstone).** This card lists the real↔complex transfer
+> `T` (`codim_ℝ = codim_K`) as **Cited / Assumed / Deferred** and the boundary as
+> `{watanabe_upper, aoyagi_lower, T}`. As of thread 11 (`expedition/rlct-bridge-discharge`), `T` is a
+> **PROVED theorem** (`DLNFibre.DLN.codimRealFibre_eq_codimRepCanonical_baseChange`): both sides equal
+> the same field-independent `C + δ`. The `hT` hypothesis is removed from every payoff. The cited
+> boundary is now `{watanabe_upper, aoyagi_lower}`. See
+> `threads/11-discharge-hT/statement-card.md` — the sections below describing `T` as cited are stale.
+
 Branch `expedition/rlct-bridge-04-thin-interface`, commit `a3bd2b5f` (tightening pass). Files:
 `lean/DLNFibre/DLN/{RlctPayoff,RlctPayoffGeneral,BundleShiftDischarge}.lean`.
 

@@ -258,8 +258,9 @@ import DLNFibre.Core.SourceNoDrop
 -- THE CENTRAL RESULT: codim(fibre d B) = C + δ = cCodim + r·(d_N+d_0−r), unconditional (k : Type 0).
 import DLNFibre.Core.FibreCodimFinal
 -- THE PAYOFF (destination): BundleShiftInterface discharged from Core — rlct(K^DLN_B)=(C+δ)/2 rests on
--- the thin honest RlctRealInterface: 3 named atomic Cited facts (Watanabe ≤, Aoyagi ≥, real↔complex
--- dim-transfer T); the connector, the catenary reduction, and codim_K=C are Proved (k : Type 0). [#52/G4]
+-- the thin honest RlctRealInterface: 2 named atomic Cited facts (Watanabe ≤, Aoyagi ≥); the real↔complex
+-- transfer T is now PROVED (codimRealFibre_eq_codimRepCanonical_baseChange — both sides = field-indep
+-- C+δ), as are the connector, the catenary reduction, and codim_K=C (k : Type 0). [#52/G4, capstone]
 import DLNFibre.DLN.BundleShiftDischarge
 -- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
 import DLNFibre.DLN.Aoyagi.ClosedForm
