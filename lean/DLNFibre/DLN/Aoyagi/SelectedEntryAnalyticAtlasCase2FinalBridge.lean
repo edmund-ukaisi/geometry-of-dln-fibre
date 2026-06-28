@@ -75,6 +75,54 @@ def SelectedEntryCase2DisplayedA0SourceProduction
       (pre := pre) (u := u) (residual := residual) (hS := hS)
       (hcont := hcont) (Ccase := Ccase) Cnc)
 
+namespace SelectedEntryCase2DisplayedA0SourceProduction
+
+/-- Construct displayed Case 2 source-production payload for the concrete
+all-pivot finite selected-entry chart certificate.
+
+This fills only the `SelectedEntryCase2DisplayedA0SourceProduction` predicate
+for `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate`.  It does
+not construct an analytic atlas, prove coverage or regularity, prove analytic
+Jacobian compatibility, or supply global active-ratio/chart-count hypotheses. -/
+theorem of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+    {τ K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    {Lcase : ℕ} {n : ℕ → ℕ} {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState Lcase n S J K)
+    (u : K) (residual : ℕ × ℕ → K)
+    (hS : 1 ≤ S) (hSL : S ≤ Lcase)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (exponentPre : IntroducedLabelExponentCertificates Lcase n S J t numerator leastValue)
+    (levelInv : IntroducedLabelLevelInvariants Lcase n S J pre.level leastValue)
+    (leastValueGap : case2IntroducedLabelLeastValueGap Lcase n S J leastValue)
+    (Ccase : ℕ → τ → K)
+    (c : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+      (K := K) n hS hcont).exponentData.numCharts) :
+    SelectedEntryCase2DisplayedA0SourceProduction
+      (τ := τ) (K := K) (Lcase := Lcase) (n := n) (S := S) (J := J)
+      (t := t) (numerator := numerator) (leastValue := leastValue)
+      (pre := pre) (u := u) (residual := residual) (hS := hS)
+      (hcont := hcont) (Ccase := Ccase)
+      (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont) := by
+  let cert :=
+    sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily
+      pre u residual hS hSL hcont hnext exponentPre levelInv leastValueGap
+      Ccase
+  refine ⟨?_⟩
+  refine
+    { cert := cert
+      activeCoord := (c, (0 : Fin 1))
+      a0Coord := ?_ }
+  exact
+    { toExponentCoordinateBridge :=
+        case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart
+          cert c }
+
+end SelectedEntryCase2DisplayedA0SourceProduction
+
 namespace SelectedEntryAnalyticAtlasBoundary
 
 variable {Param R : Type*} [CommMonoid R]

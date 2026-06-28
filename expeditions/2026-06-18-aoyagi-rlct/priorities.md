@@ -19,6 +19,33 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, concrete Case 2 all-pivot source-production payload
+
+The selected-entry analytic-atlas Case 2 source-production predicate now has a
+constructor for the concrete all-pivot finite chart certificate:
+
+```text
+SelectedEntryCase2DisplayedA0SourceProduction.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+```
+
+This fills `SelectedEntryCase2DisplayedA0SourceProduction
+(case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate n hS hcont)`
+from the displayed continuing Case 2 center-square/formal-Jacobian certificate
+and the existing all-pivot local exponent-coordinate adapter.  It removes the
+opaque source-production payload only for this concrete finite certificate.
+
+Reproduction, statement card, and review:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`,
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-case2-concrete-source-production.md`,
+and
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+
+This is not arbitrary-chart-certificate source production.  It does not prove
+analytic atlas coverage, regularity, analytic Jacobian compatibility, branch
+termination, global active-ratio/chart-count facts, normal crossings, pole
+order, or RLCT.  The arbitrary chart index `c` is only an exponent-coordinate
+adapter inside the finite all-pivot certificate.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint-transport chart-produced finite integral
 
 The endpoint-transported explicit Case 2 source chart now has the local

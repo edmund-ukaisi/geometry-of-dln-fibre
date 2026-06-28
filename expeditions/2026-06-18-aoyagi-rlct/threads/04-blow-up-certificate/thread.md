@@ -6655,3 +6655,43 @@ printed p. 21 extra final `u` is not formalized under the p. 20 convention.
 This is finite matrix algebra only.  It does not construct chart coverage,
 source-produced `C'`, successor data, residual-index equivalence, analytic
 Jacobian/density control, normal crossings, pole order, or RLCT.
+
+## 2026-06-28 Lean Case 2 concrete selected-entry source-production payload
+
+Reproduction:
+`reproduction-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+Statement card:
+`statement-card-a4-selected-entry-analytic-atlas-case2-concrete-source-production.md`.
+Review:
+`review-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+
+Lean now constructs the nonvacuous selected-entry analytic-atlas Case 2
+source-production payload for the concrete finite all-pivot chart certificate:
+
+```text
+SelectedEntryCase2DisplayedA0SourceProduction.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+```
+
+The theorem builds the displayed continuing Case 2 center-square/formal-
+Jacobian certificate using the chart-family-free constructor, chooses an
+all-pivot chart coordinate `(c,0)`, and fills the A0-facing exponent bridge
+with
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart`.
+It therefore removes an opaque
+`SelectedEntryCase2DisplayedA0SourceProduction` payload for
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate n hS hcont`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasCase2FinalBridge` passed via
+the worktree-local `scripts/lb` route.  `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, and direct axiom
+probe passed.  Xhigh review passed after correcting the reproduction note to
+say that `Case2DisplayedContinuingA0ExponentCoordinateBridge` is a one-field
+wrapper around the finite exponent bridge.
+
+This is not arbitrary `Cnc` source production.  The chart index `c` is only a
+finite exponent-coordinate adapter; it is not source production of every
+non-displayed pivot chart.  No analytic atlas coverage, chart regularity,
+transition regularity, unit regularity, analytic Jacobian/volume-form
+compatibility, branch termination, global active-ratio/chart-count facts,
+normal crossings, pole order, or RLCT is proved.

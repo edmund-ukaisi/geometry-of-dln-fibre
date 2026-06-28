@@ -48,6 +48,41 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A4 Case 2 Concrete Selected-Entry Source Production
+
+The selected-entry analytic-atlas Case 2 source-production predicate is now
+inhabited for the concrete all-pivot finite chart certificate:
+
+```text
+SelectedEntryCase2DisplayedA0SourceProduction.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+```
+
+The theorem builds the displayed continuing Case 2 center-square/formal-
+Jacobian certificate by
+`sourceChartMap_continuingCenterSqFormalJacobianCertificate_withoutChartFamily`,
+chooses an all-pivot chart coordinate `(c,0)`, and fills the A0-facing wrapper
+using
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.localExponentCoordinateBridge_anyChart`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasCase2FinalBridge` passed via
+`env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb ...`; `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, and direct axiom
+probe passed.  Xhigh review passed after a reproduction wording fix.
+
+Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-case2-concrete-source-production.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+
+This removes only the opaque
+`SelectedEntryCase2DisplayedA0SourceProduction` payload for the concrete finite
+all-pivot certificate.  It is not arbitrary `Cnc` source production and does
+not prove analytic atlas coverage, regularity, analytic Jacobian compatibility,
+branch termination, global active-ratio/chart-count facts, normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Case 2 Endpoint-Transport Chart-Produced Finite Integral
 
 The endpoint-transported explicit Case 2 fixed-base source chart is now

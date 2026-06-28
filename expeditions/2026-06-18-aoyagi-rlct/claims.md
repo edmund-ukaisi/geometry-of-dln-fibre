@@ -5663,6 +5663,28 @@ Statement card:
 Review:
 `threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-final-socket-a4.md`.
 
+Latest A4 concrete selected-entry analytic atlas Case 2 source-production
+payload:
+`SelectedEntryAnalyticAtlasCase2FinalBridge.lean` now proves
+`SelectedEntryCase2DisplayedA0SourceProduction.of_case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate`.
+For the concrete all-pivot finite chart certificate
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate n hS hcont`,
+the theorem constructs the nonvacuous
+`SelectedEntryCase2DisplayedA0SourceProduction` payload from the displayed
+continuing Case 2 center-square/formal-Jacobian certificate and the existing
+all-pivot local exponent-coordinate adapter.  This removes an opaque
+source-production payload only for that concrete finite certificate.  It does
+not prove source production for arbitrary `Cnc`, analytic atlas coverage,
+chart or transition regularity, analytic Jacobian/volume-form compatibility,
+branch termination, global active-ratio/chart-count facts, normal crossings,
+pole order, or RLCT.  The arbitrary chart index `c` is only a finite
+exponent-coordinate adapter.  Reproduction:
+`threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+Statement card:
+`threads/04-blow-up-certificate/statement-card-a4-selected-entry-analytic-atlas-case2-concrete-source-production.md`.
+Review:
+`threads/04-blow-up-certificate/review-selected-entry-analytic-atlas-case2-concrete-source-production-a4.md`.
+
 Latest A4 selected-entry coordinate postdata:
 `SelectedEntryNormalCrossing.lean` now proves the generic coordinate
 equalities
