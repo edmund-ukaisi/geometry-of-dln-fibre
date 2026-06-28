@@ -742,3 +742,51 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 > (2,1)→RouteM231Smeared (minAdm=2, 2×2 Gram, RadialMPChart); (1,2)→RouteM132Smeared (minAdm=2, scalar
 > Gram + multi-col radial, RadialMPChart). Next: the family-parametric ∀M lift (each template → ∀ M in
 > its (r,c) family, dispatch by shape).
+
+---
+
+> **Claim (the ∀M-(1,1)-smeared front fact).** In the `(1,1)`-smeared regime the front product
+> `P = prodAux M A (L−1)` factors through a width-1 inner layer at the first width-1 position `p*`, so
+> off the pole `‖col 0‖² ≠ 0` every column of `P` is a scalar multiple of column 0; consequently the
+> scalar-Gram shear cancels, `P₁ · (P₁ᵀP₁)⁻¹P₁ᵀP₂ = P₂`, for the pivot column `P₁` and any residual
+> block `P₂` selecting columns of `P`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.rankOneColumns_of_factorsThroughOne` (§3a),
+>   `prodAux_split_exists` + `prodAux_factorsThroughOne` (§3b),
+>   `frontScalarShear_cancel_of_factorsThroughOne` + `prodAux_frontScalarShear_cancel` (§3c)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMFrontBottleneck.lean` @ `cdf345ef`)
+> - **Gloss.**
+>   - §3a: for `P = U·V` with `U : rows × Fin 1`, `V : Fin 1 × Fin m1`, off `∑ᵢ(P i 0)² ≠ 0`, there
+>     exist `c₀ = P.col 0` and `μ` with `μ 0 = 1` and `∀ i j, P i j = μ j · c₀ i`. Mechanism: the
+>     literal outer product `(U·V) i j = U i 0 · V 0 j`; `V 0 0 ≠ 0` extracted from the off-pole sum.
+>   - §3b: `prodAux_split_exists` — for `p ≤ k`, `prodAux M A k = prodAux M A p * Y` for some `Y`
+>     (existential right-factor split, `Nat.le_induction` on `k`, `prodAux_succ` + `mul_three_reassoc`).
+>     `prodAux_factorsThroughOne` — with `M ⟨p,_⟩ = 1`, `prodAux M A k = U·V`, `U : Fin(M 0) × Fin 1`,
+>     `V : Fin 1 × Fin(M⟨k,_⟩)` (collapse the middle width to `Fin 1` via `finCongr` at the equiv level).
+>   - §3c: §3a ∘ §3b ∘ landed `scalarGram_cancel_of_rankOneColumns` ⟹ `P₁·Λ₀ = P₂`.
+> - **Proved.** All five results sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`
+>   (forced `#print axioms` via `lake env lean`, S2-free — no analysis axioms). The factorization is
+>   unconditional; the column-normalization (and the cancellation) hold off the pole `‖col 0‖² ≠ 0`.
+> - **Assumed.** `0 < m1` / `0 < M⟨k,_⟩` (the column index `⟨0,_⟩` is well-typed); `p ≤ k`,
+>   `M ⟨p,_⟩ = 1` (the width-1 bottleneck position); `hc : ‖col 0‖² ≠ 0` (off-pole). These are exactly
+>   the hypotheses the consumer `scalarGram_cancel_of_rankOneColumns` and the chart supply.
+> - **Cited.** `scalarGram_cancel_of_rankOneColumns` (LANDED, `RouteMSmearedGenRate.lean`); the
+>   `RouteMFrontPeel` cast kernel (`prodAux_succ`, `mul_three_reassoc`, `reindex_finCongr_mul`,
+>   `finCongr_refl`/`reindex_refl_refl`); `Matrix.mul_apply`, `Fin.sum_univ_one`, `div_self` (Mathlib v4.29).
+> - **Deferred.** The (1,1)-family Option-A CHART (STEP 4 of the dispatch): the generic flat scalar-shear
+>   + its MP (`measurePreserving_shearAt` to arbitrary `p`), the generic rate `routeMCore(sheared)=u_p²·U`,
+>   the subBox/containment/`routeMCore_box_diverges_of_MPChart` assembly. This front fact is the chart's
+>   load-bearing input (the architecture cert's flagged "biggest risk"), now in hand; the chart consumes it.
+> - **Structure & ideas observed (p&p certificate, `certificate-frontbottleneck-rankone.md`).** The
+>   mechanism is a LITERAL `Fin 1` outer product, NOT rank theory; `p*` is never `L−1` (the right factor
+>   `V` always has ≥1 genuine layer); the off-pole hypothesis is load-bearing (Codex `[0 1]` counterexample
+>   — columns are multiples of the HIDDEN `U`, not of `P.col 0`, without `V 0 0 ≠ 0`). (1,2) reuses this
+>   scalar bridge verbatim; (2,1) needs a `Fin 2` / 2×2-Gram analogue (§3a generalizes by `Fin 1 → Fin r`).
+> - **Route (formaliser).** Reformulated §3b as an EXISTENTIAL right-factor split (no canonical suffix
+>   product, no entry formula, no shifted-chain reindex) — decorrelated Codex independently recommended
+>   the same route (`codex/frontprod-split-answer.md`). The `U·V` form is stated directly (no outer
+>   reindex), so it feeds §3a/§3c without a wrapping cast.
+> - **Status.** sorry-free (fidelity review pending).
+
+> The R1-LOWER smeared branch's front fact (the architecture cert §3 residual-1 + the dispatch STEPs 1-3)
+> is banked. STEP 4 (the (1,1) Option-A chart) remains; its load-bearing dependency is now landed.
