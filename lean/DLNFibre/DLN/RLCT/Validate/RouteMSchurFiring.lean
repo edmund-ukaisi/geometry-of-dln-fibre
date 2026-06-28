@@ -924,6 +924,87 @@ theorem resolvedShiftRG_le (r : ℕ) (hr : 3 ≤ r)
   rw [hresid]
   exact schurResidG_translate_le r hr Sh B hB (c' - 2) K
 
+/-! ### Pivot-WLOG: the `(0,0)`-normalised angular matrix (mirror of `Rmat334norm`/`angA1Int_eq_norm`) -/
+
+/-- For `k ≠ p`, the read-back `((piRatioG r N hN p).symm (0,z)) k` is some ratio `z j ∈ [−1,1]`, so
+`|·| ≤ 1` on the box `[−1,1]^N`. (The pivot-axis-`0` read-back is `≤ 1` off the pivot; mirror of the
+chart-domain pullback in `schur_matBoxG_chart_lt_top`.) -/
+theorem piRatioG_symm_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (k : Fin (r * r)) (hk : k ≠ p) :
+    |((piRatioG r N hN p).symm (0, z)) k| ≤ 1 := by
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hk ((finCongr hN).injective h)
+  obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+  have hk_eq : k = (finCongr hN).symm ((finCongr hN p).succAbove j) := by
+    rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+  -- ((piRatioG …).symm (0,z)) k = (piRatioG …) forward inverse; off-pivot it reads z j
+  have hval : ((piRatioG r N hN p).symm (0, z)) k = z j := by
+    rw [piRatioG_symm_apply, hk_eq]
+    -- finCongr hN k = (finCongr hN p).succAbove j, so insertNth reads z at j
+    have : finCongr hN ((finCongr hN).symm ((finCongr hN p).succAbove j))
+        = (finCongr hN p).succAbove j := (finCongr hN).apply_symm_apply _
+    rw [this]
+    simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+  rw [hval]
+  have := hz j (Set.mem_univ j); rw [Set.mem_Icc, ← abs_le] at this; exact this
+
+/-- The pivot-normalised angular matrix on chart `p`, ratios `z`: `R' a b = RmatG r p (…symm(0,z))
+(σr a) (σc b)` with `σr = swap r₀ 0`, `σc = swap c₀ 0`, `(r₀,c₀) = (eG r).symm p`. Pivot `1` at `(0,0)`. -/
+noncomputable def RmatGnorm (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ) :
+    Fin r → Fin r → ℝ :=
+  fun a b => RmatG r p ((piRatioG r (r * r - 1)
+      (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z))
+    ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a) ((Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)
+
+/-- `RmatGnorm r hr p z ⟨0⟩ ⟨0⟩ = 1`: the `(0,0)` entry is the pivot. -/
+theorem RmatGnorm_pivot (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ) :
+    RmatGnorm r hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+  unfold RmatGnorm
+  rw [Equiv.swap_apply_right, Equiv.swap_apply_right, RmatG_entry, if_pos]
+  rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+
+/-- Off-`(0,0)` entries of `RmatGnorm r hr p z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
+theorem RmatGnorm_offpivot_le (r : ℕ) (hr : 3 ≤ r) (p : Fin (r * r)) (z : Fin (r * r - 1) → ℝ)
+    (hz : z ∈ Set.univ.pi (fun _ : Fin (r * r - 1) => Set.Icc (-1 : ℝ) 1))
+    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    |RmatGnorm r hr p z a b| ≤ 1 := by
+  unfold RmatGnorm
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hσr0 : σr ⟨0, by omega⟩ = ((eG r).symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc ⟨0, by omega⟩ = ((eG r).symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eG r (((eG r).symm p).1, ((eG r).symm p).2) = p := by
+    rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : eG r (σr a, σc b) ≠ p := by
+    intro heq
+    rw [← hpe] at heq
+    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+    rw [← hσr0] at hi; rw [← hσc0] at hj
+    exact hab ⟨σr.injective hi, σc.injective hj⟩
+  rw [RmatG_entry, if_neg hidx]
+  exact piRatioG_symm_offpivot_le r (r * r - 1)
+    (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p z hz _ hidx
+
+/-- **`innerSGen` in the pivot-normalised form.** `innerSGen r c' T p (…symm(0,z)) = ∫_{S∈box r 4 T}
+frobSq(RmatGnorm·S)^{−c'}`: row/col-permute `RmatG` by `σr,σc` (`frobSq_rmatMul_permG`) under the
+`S`-row-permute change of variables (`matBox_rowperm_lintegralG`). Mirror of `angA1Int_eq_norm`. -/
+theorem innerSGen_eq_norm (r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ) (p : Fin (r * r))
+    (z : Fin (r * r - 1) → ℝ) :
+    innerSGen r c' T p
+        ((piRatioG r (r * r - 1)
+          (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z))
+      = ∫⁻ S in matBox r 4 T, ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r hr p z) S)) ^ (-c')) := by
+  set y := (piRatioG r (r * r - 1)
+      (by have : 0 < r * r := Nat.mul_pos (by omega) (by omega); omega) p).symm (0, z) with hy
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  rw [innerSGen]
+  rw [matBox_rowperm_lintegralG T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r hr p z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  exact frobSq_rmatMul_permG (RmatG r p y) S σr σc
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
