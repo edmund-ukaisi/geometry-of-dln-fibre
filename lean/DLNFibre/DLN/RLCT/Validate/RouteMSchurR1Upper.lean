@@ -52,10 +52,13 @@ Both results are built only from sorry-free upstream (`schurRecStep_four`,
   statement, no RLCT value).
 * `r1Upper_resolution_charts_of_box` → `[propext, Classical.choice, Quot.sound, monomial_rlct]` —
   the clean three plus `monomial_rlct`, the single permitted S2 citation (Aoyagi/Hironaka, the
-  monomial-RLCT threshold; `Skeleton.lean`). It rides this because the conclusion is an `rlctAtOn`
-  EQUALITY (`= ⨅ leaf, monomialThreshold`), and the value lane `resolution_charts_of_layerCover`
-  legitimately depends on the cited threshold axiom (same footprint as `routeM334_box_diverges`).
-  Expected and named — NOT a hidden gap.
+  monomial-RLCT threshold; `Skeleton.lean`). The citation enters via the **`hfin` LEG**
+  (`layerCover_hfin_of_box`, forced `#print axioms` = clean-three + `monomial_rlct`): its premise
+  reduction uses the achiever-leaf box-divergence (`monomialThreshold_singleton` +
+  `monomialIntegrand_lintegral_box_eq_top`), which rides the cited monomial threshold. The value
+  lane `resolution_charts_of_layerCover` is itself **clean-three** (forced-checked), as is the
+  cover assembly `routeMLayerCover_of_atoms`. Same NET footprint as `routeM334_box_diverges` —
+  expected and named, NOT a hidden gap.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -89,7 +92,8 @@ with `rlctAtOn (dlnLoss M 0) (deepest) = ⨅ leaf, monomialThreshold`. The `hfin
 `layerCover_hfin_of_box M hpos hbox` (the R1-UPPER finiteness leg, sorry-free); the cover assembles
 via `routeMLayerCover_of_atoms`; the value lane via `resolution_charts_of_layerCover`. No `sorry`
 upstream of either supplied field; the axiom footprint is the clean three plus the single cited S2
-axiom `monomial_rlct` (the value lane's monomial-RLCT threshold citation). -/
+axiom `monomial_rlct`, which enters via the `hfin` LEG (`layerCover_hfin_of_box`, the achiever-leaf
+box-divergence) — the value lane and the cover assembly are themselves clean-three. -/
 theorem r1Upper_resolution_charts_of_box (M : Fin (L + 1) → ℕ) (hpos : 1 ≤ minAdm M)
     (hbox : RouteMBoxThresholdFinite M)
     (hdiv : ∀ c' : NNReal,

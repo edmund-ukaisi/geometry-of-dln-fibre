@@ -54,11 +54,15 @@
 >     rides the open R1-LOWER `sorry` `routeMCore_box_diverges_achiever` — routing through it would
 >     import that `sorry` into the headline's axiom footprint.
 > - **Cited.** `monomial_rlct` (`Skeleton.lean`) — the single permitted external citation (S2:
->   Aoyagi p.6 / Hironaka resolution; the monomial-RLCT threshold value + pole order). The
->   `r1Upper_resolution_charts_of_box` conclusion is an `rlctAtOn` EQUALITY, so the value lane
->   `resolution_charts_of_layerCover` legitimately depends on this cited axiom — the SAME footprint as
->   the in-tree `routeM334_box_diverges`. `schurGenFin` does NOT cite it (no RLCT value). The matBox /
->   `frobSq` / `rmatMul` primitives, `Nat.strong_induction_on`, and the measure-preserving plumbing are
+>   Aoyagi p.6 / Hironaka resolution; the monomial-RLCT threshold value + pole order). It enters the
+>   headline through the **`hfin` LEG** `layerCover_hfin_of_box` (forced `#print axioms` = clean-three
+>   + `monomial_rlct`): the premise reduction `layerCover_leafSum_lt_top_imp_lt_half_minAdm` uses the
+>   achiever-leaf box-divergence (`monomialThreshold_singleton` + `monomialIntegrand_lintegral_box_eq_top`),
+>   which rides the cited monomial threshold. The value lane `resolution_charts_of_layerCover` and the
+>   cover assembly `routeMLayerCover_of_atoms` are themselves **clean-three** (both forced-checked) —
+>   NOT the carriers, despite the `rlctAtOn`-equality conclusion. Same NET footprint as the in-tree
+>   `routeM334_box_diverges`. `schurGenFin` does NOT cite it (no RLCT value). The matBox / `frobSq` /
+>   `rmatMul` primitives, `Nat.strong_induction_on`, and the measure-preserving plumbing are
 >   Mathlib v4.29 / proved on our side.
 > - **Deferred.** The discharge of the two gating hypotheses (folded in later, NOT in this file):
 >   - `hbox` ← the **binding `(r,r,4)` family** discharge `routeMBoxThresholdFinite_rr4_of_schurRecStep
@@ -85,8 +89,10 @@
         [propext, Classical.choice, Quot.sound, monomial_rlct]
 
 `schurGenFin` is the clean three. `r1Upper_resolution_charts_of_box` adds `monomial_rlct` — the single
-cited S2 axiom (tier-(ii)) the `rlctAtOn`-equality value lane rides; expected and named, NOT a hidden
-gap, and NOT a `sorryAx`.
+cited S2 axiom (tier-(ii)), which enters via the `hfin` leg `layerCover_hfin_of_box` (forced-checked
+clean-three + `monomial_rlct`, the achiever-leaf box-divergence). The value lane
+`resolution_charts_of_layerCover` and the cover assembly `routeMLayerCover_of_atoms` are themselves
+forced-checked clean-three. Expected and named, NOT a hidden gap, and NOT a `sorryAx`.
 
 ## What this rung banks (the wire, not the discharge)
 
