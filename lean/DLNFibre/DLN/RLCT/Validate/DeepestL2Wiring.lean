@@ -38,6 +38,22 @@ namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
 
+/-- **Width-cast transport of `toBlocks₂₁ = 0` for an `rThresholdSplit`-reindexed square matrix.**
+For a `Fin (L+1)`-index equality `e : a = b`, the `(2,1)`-block of `reindex (rThr (H b)) (rThr (H b))
+(e ▸ M)` vanishes iff that of `reindex (rThr (H a)) (rThr (H a)) M` does — `subst e` collapses the `▸`
+cast (the widths `H a`, `H b` and the two threshold splits coincide). This is the cast-only residual in
+`hQtri'` (the `(lastLayer).succ = Fin.last L` width transport from the bundle's `Qf (lastLayer)` to
+`endpointQL`); no matrix math. Stated as `∀`-quantified over the cast proof so the goal-side `▸` matches
+syntactically (avoids the `rewrite` "motive not type correct" wall). -/
+private theorem reindex_rThr_toBlocks21_zero_cast (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) {a b : Fin (L + 1)} (e : a = b)
+    (M : Matrix (Fin (H a)) (Fin (H a)) ℝ)
+    (hM : (Matrix.reindex (rThresholdSplit r (H a) (hr a)) (rThresholdSplit r (H a) (hr a)) M).toBlocks₂₁
+      = 0) :
+    (Matrix.reindex (rThresholdSplit r (H b) (hr b)) (rThresholdSplit r (H b) (hr b))
+        (e ▸ M)).toBlocks₂₁ = 0 := by
+  subst e; exact hM
+
 /-- **The L=2 public diffeo bridge, WIRED** (R-A). Thin forward to the sorry-free assembly
 `deepest_diffeo_bridge_L2_impl`. Same conclusion as the gauge file's `deepest_diffeo_bridge_L2`
 (DeepestGaugeConstruction:2853), but with the soundness-amendment hypotheses `hPtri`/`hQtri` (endpoint
@@ -483,9 +499,25 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         -- BOUNDED CAST-BRIDGE (cast-only): the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport of
         -- toBlocks₂₁=0. Under `hJfront'` both splits collapse to `rThr` (`pivotThresholdSplit_frontEmbed`
         -- / `_pivotJSucc_frontEmbed`); the bundle `hQtri` gives it on `Qf (lastLayer)`; the residual is the
-        -- `(lastLayer).succ = Fin.last L` Matrix-width `▸`-cast transport (needs a reindex-cast helper).
-        -- SECONDARY residual (cast-only, no math).
-        sorry
+        -- `(lastLayer).succ = Fin.last L` Matrix-width `▸`-cast transport (`reindex_rThr_toBlocks21_zero_cast`).
+        -- The goal split collapses to `rThr (H (Fin.last L))` (J = frontEmbed).
+        rw [hJfront', pivotThresholdSplit_frontEmbed H r hr]
+        -- The boundary index cast (`endpointQL = hcast0 ▸ Qf (lastLayer)` definitionally; `lastLayer = ⟨L-1,_⟩`).
+        have hcast0 : ((lastLayer hL).succ) = Fin.last L :=
+          Fin.ext (by simp [lastLayer, Fin.succ, Fin.last]; omega)
+        -- The bundle `hQtri` on `Qf (lastLayer)`, split collapsed to `rThr (H ((lastLayer).succ))`
+        -- (via `hpivJ : pivotJSucc J = Jb` + `hJfront'` + `_pivotJSucc_frontEmbed`).
+        have hQtriR : (Matrix.reindex (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+            (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+            (Qf (lastLayer hL))).toBlocks₂₁ = 0 := by
+          have h := hQtri
+          rw [← hpivJ, hJfront', pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL] at h
+          exact h
+        -- `endpointQL` IS `hcast0 ▸ Qf (lastLayer)` (def); the helper transports the bundle fact along `hcast0`.
+        show (Matrix.reindex (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (hcast0 ▸ Qf (lastLayer hL))).toBlocks₂₁ = 0
+        exact reindex_rThr_toBlocks21_zero_cast H r hr hcast0 (Qf (lastLayer hL)) hQtriR
       -- **hsub3reg** — reg-energy invariance under the joint move (RELATIVE: ψ-moved vs unmoved, SAME
       -- frames Pf/Qf, so the endpoint-frame conjugation CANCELS — UNAFFECTED by the sub-4 boundary-A11
       -- dictionary issue). Holds `∀ x` (stated germ-local for the body's `filter_upwards`). Via the
