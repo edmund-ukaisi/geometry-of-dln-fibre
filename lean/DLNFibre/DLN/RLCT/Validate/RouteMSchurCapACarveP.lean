@@ -1124,16 +1124,242 @@ theorem frobSq_capB_inner_two_le (p : ℕ) (hp : 0 < p) (R : Fin 2 → Fin 2 →
           (fun S_bot => frobSq (rmatMul (fun a b => Sc a b) S_bot))
           (fun _ => frobSq_nonneg _) (matBox (2 - 1) (pm + 1) ((2 : ℕ) * T))
 
+/-! ## The corank-2 cap-B branch (the `c' < p/2` sub-case, banked bricks wired)
+
+The cap-B half of `schurCoreP_two`: a 4-chart radial cover at `r = 2` (the cover machinery
+`matBoxGen_outer_flat` / `gFlatGen_cover_sum` is `r`-general, NOT `hr`-gated), with the per-chart angular
+residual supplied by the `z`-uniform `frobSq_capB_inner_two_le`. The only `3 ≤ r`-gated brick avoided is
+`RmatGnorm`: at `r = 2` the pivot-normalised matrix is built inline by row/col-permuting `RmatG` (the
+`r`-general `RmatG_pivot` / `RmatG_entry_le` give pivot `1` + `|entries| ≤ 1`). -/
+
+/-- **The corank-2 cap-B angular residual finiteness (per chart).** The `r = 2` analog of
+`schurRatioResidP_capB_lt_top` (`c' < p/2`, NO recursion). Per `z`, the angular matrix `RmatG 2 pivot
+(piRatioG.symm (0,z))`, row/col-permuted to pivot `(0,0)`, has pivot `1` (`RmatG_pivot`) and `|entries| ≤ 1`
+(`RmatG_entry_le`), so the `z`-uniform `frobSq_capB_inner_two_le` bounds the inner-`S` integral; the bound is
+`z`-free, so the integral over the finite-volume ratio box is finite. -/
+theorem schurRatioResidP_capB_two_lt_top (N p : ℕ) (hN : 2 * 2 = N + 1) (hp : 0 < p)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < (p : ℝ) / 2) (pivot : Fin (2 * 2)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP 2 p c' T pivot ((piRatioG 2 N hN pivot).symm (0, z)))
+      < ⊤ := by
+  classical
+  -- the z-uniform constant bound (R-free): C := ofReal(c₀^{−c'})·(Kbound p c' (2T)·vol(matBox 1 p (2T)))
+  set C : ℝ≥0∞ :=
+    ENNReal.ofReal ((schur_minorPivot_split (r := 2) (p := p) 1 (by omega)).choose ^ (-c'))
+      * (Kbound p c' ((2 : ℕ) * T) * volume (matBox (2 - 1) p ((2 : ℕ) * T))) with hC
+  have hpt : ∀ z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1),
+      innerSGenP 2 p c' T pivot ((piRatioG 2 N hN pivot).symm (0, z)) ≤ C := by
+    intro z hz
+    -- pivot-normalise: row/col-permute RmatG to put the pivot at (0,0) (inline, no RmatGnorm)
+    set y := (piRatioG 2 N hN pivot).symm (0, z) with hy
+    set σr := Equiv.swap ((eG 2).symm pivot).1 (⟨0, by omega⟩ : Fin 2) with hσr
+    set σc := Equiv.swap ((eG 2).symm pivot).2 (⟨0, by omega⟩ : Fin 2) with hσc
+    set Rp : Fin 2 → Fin 2 → ℝ := fun a b => RmatG 2 pivot y (σr a) (σc b) with hRp
+    have heq : innerSGenP 2 p c' T pivot y
+        = ∫⁻ S in matBox 2 p T, ENNReal.ofReal ((frobSq (rmatMul Rp S)) ^ (-c')) := by
+      rw [innerSGenP]
+      rw [matBox_rowperm_lintegralGP T σc
+        (fun S => ENNReal.ofReal ((frobSq (rmatMul Rp S)) ^ (-c')))]
+      refine lintegral_congr (fun S => ?_)
+      congr 2
+      exact frobSq_rmatMul_permGP (RmatG 2 pivot y) S σr σc
+    rw [heq]
+    -- Rp has pivot 1 + |entries| ≤ 1
+    have hyoff : ∀ k, k ≠ pivot → |y k| ≤ 1 := fun k hk =>
+      piRatioG_symm_offpivot_le 2 N hN pivot z hz k hk
+    have hpiv : Rp ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+      show RmatG 2 pivot y (σr ⟨0, by omega⟩) (σc ⟨0, by omega⟩) = 1
+      rw [hσr, hσc, Equiv.swap_apply_right, Equiv.swap_apply_right]
+      exact RmatG_pivot 2 pivot y
+    have hbd : ∀ a b, |Rp a b| ≤ 1 := fun a b => RmatG_entry_le 2 pivot y hyoff (σr a) (σc b)
+    exact frobSq_capB_inner_two_le p hp Rp hpiv hbd c' hc0 hc' T hT
+  -- integrate the uniform bound over the finite-volume ratio box
+  have hbox : (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP 2 p c' T pivot ((piRatioG 2 N hN pivot).symm (0, z)))
+      ≤ ∫⁻ _z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)), C :=
+    setLIntegral_mono_ae' (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+      (ae_of_all _ (fun z hz => hpt z hz))
+  refine lt_of_le_of_lt hbox ?_
+  rw [setLIntegral_const]
+  refine ENNReal.mul_lt_top ?_ ?_
+  · refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+    obtain ⟨pm, hpm⟩ : ∃ pm, p = pm + 1 := ⟨p - 1, by omega⟩
+    have hcap : c' < ((pm + 1 : ℝ)) / 2 := by rw [hpm] at hc'; push_cast at hc'; exact hc'
+    have hKfin := Kbound_lt_top pm ((2 : ℕ) * T) (by positivity) c' hcap
+    refine ENNReal.mul_lt_top ?_ (matBox_volume_lt_top (2 - 1) p ((2 : ℕ) * T))
+    rw [hpm]; exact hKfin
+  · exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
+
+/-- **The corank-2 cap-B per-chart finiteness** (`r = 2` analog of `schur_matBoxGenP_chart_lt_top`). The
+radial blow-up chart integral (Jacobian `|y pivot|^{2²−1}`) is finite for `0 < c' < min(p, 4)/2`. The
+`piRatioG` MP + Tonelli factor the pivot axis (`radial_aAxis_divisor_lt_top`, `c' < 4/2 = 2`) from the `3`
+ratios; the ratio residual is the cap-B `schurRatioResidP_capB_two_lt_top` (`c' < p/2`, NO recursion). -/
+theorem schur_matBoxGen2_chart_capB_lt_top (p : ℕ) (hp : 0 < p)
+    (c' : ℝ) (hc0 : 0 < c') (hcp : c' < (p : ℝ) / 2) (hcr : c' < ((2 : ℕ) ^ 2 : ℝ) / 2)
+    (pivot : Fin (2 * 2)) (T : ℝ) (hT : 0 < T) :
+    ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (2 * 2))) pivot \ pivotZeroOn pivot,
+        ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (2 * 2))) pivot y).det|
+          * (flatBoxGen 2 T).indicator (gFlatGen 2 p c' T) (pivotBlowupOn
+              (Finset.univ : Finset (Fin (2 * 2))) pivot y)
+      < ⊤ := by
+  obtain ⟨N, hN⟩ : ∃ N, 2 * 2 = N + 1 := ⟨2 * 2 - 1, by omega⟩
+  have hdet : ∀ y : Fin (2 * 2) → ℝ,
+      |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (2 * 2))) pivot y).det|
+        = |y pivot| ^ (2 * 2 - 1) := by
+    intro y
+    rw [pivotBlowupOnDeriv_det (Finset.univ : Finset (Fin (2 * 2))) pivot (Finset.mem_univ pivot) y,
+      Finset.card_univ, Fintype.card_fin]
+    simp [abs_pow]
+  simp only [hdet]
+  have hmsD : MeasurableSet
+      (chartDomOn (Finset.univ : Finset (Fin (2 * 2))) pivot \ pivotZeroOn pivot) := by
+    refine MeasurableSet.diff ?_ ?_
+    · have heq : chartDomOn (Finset.univ : Finset (Fin (2 * 2))) pivot
+          = ⋂ k ∈ (Finset.univ.erase pivot), {y : Fin (2 * 2) → ℝ | |y k| ≤ 1} := by
+        ext y
+        simp only [chartDomOn, Set.mem_setOf_eq, Set.mem_iInter, Finset.mem_erase,
+          Finset.mem_univ, and_true, true_implies]
+      rw [heq]
+      refine Finset.measurableSet_biInter (Finset.univ.erase pivot) (fun k _ => ?_)
+      exact measurableSet_le ((measurable_pi_apply k).abs) measurable_const
+    · exact (measurable_pi_apply pivot (measurableSet_singleton 0))
+  rw [setLIntegral_congr_fun hmsD
+    (fun y hy => chart_integrand_factorGen 2 p c' hc0 T hT pivot y hy.2 hy.1)]
+  set e := piRatioG 2 N hN pivot with he
+  have hmp : MeasurePreserving e (volume) (volume) := measurePreserving_piRatioG 2 N hN pivot
+  have hpre : (chartDomOn (Finset.univ : Finset (Fin (2 * 2))) pivot \ pivotZeroOn pivot)
+      = e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))) := by
+    ext y
+    simp only [chartDomOn, pivotZeroOn, Set.mem_diff, Set.mem_setOf_eq, Set.mem_preimage,
+      Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, he]
+    constructor
+    · rintro ⟨h1, h2⟩
+      refine ⟨by rw [piRatioG_apply_fst]; exact h2, fun j => ?_⟩
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd]
+      exact h1 _ (Finset.mem_univ _) (piRatioG_ratioIdx_ne 2 N hN pivot j)
+    · rintro ⟨h1, h2⟩
+      rw [piRatioG_apply_fst] at h1
+      refine ⟨fun k _ hk => ?_, h1⟩
+      have hne : finCongr hN k ≠ finCongr hN pivot := fun h => hk ((finCongr hN).injective h)
+      obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+      have hk_eq : k = (finCongr hN).symm ((finCongr hN pivot).succAbove j) := by
+        rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+      have hj2 := h2 j
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd 2 N hN pivot y j] at hj2
+      rw [hk_eq]; exact hj2
+  set g : (Fin (2 * 2) → ℝ) → ℝ≥0∞ := fun y =>
+    (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) (y pivot)
+      * innerSGenP 2 p c' T pivot y with hgdef
+  have hgmeas : Measurable g := by
+    rw [hgdef]
+    refine Measurable.mul ?_ (measurable_innerSGenP 2 p c' T pivot)
+    have hind : Measurable (fun a : ℝ =>
+        (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a) := by
+      refine Measurable.indicator ?_ measurableSet_Icc
+      exact ENNReal.measurable_ofReal.comp ((measurable_id.abs).pow_const _)
+    exact hind.comp (measurable_pi_apply pivot)
+  rw [hpre]
+  have hSms : MeasurableSet
+      (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))) :=
+    MeasurableSet.prod (by measurability) (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+  have key := hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding (fun q => g (e.symm q))
+    (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)))
+  have htrans : (∫⁻ y in e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ
+        (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))), g y)
+      = ∫⁻ q in (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))),
+          g (e.symm q) := by
+    rw [← key]
+    refine setLIntegral_congr_fun (e.measurable hSms) (fun y _ => ?_)
+    rw [MeasurableEquiv.symm_apply_apply]
+  rw [htrans]
+  have hgsymm_meas : Measurable (fun q : ℝ × (Fin N → ℝ) => g (e.symm q)) :=
+    hgmeas.comp e.symm.measurable
+  rw [Measure.volume_eq_prod ℝ (Fin N → ℝ), setLIntegral_prod _ hgsymm_meas.aemeasurable]
+  have hfactor : ∀ a : ℝ, ∀ z : Fin N → ℝ,
+      g (e.symm (a, z))
+        = (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a
+          * innerSGenP 2 p c' T pivot (e.symm (0, z)) := by
+    intro a z
+    have hp_eq : (e.symm (a, z)) pivot = a := by rw [he]; exact piRatioG_symm_pivot 2 N hN pivot a z
+    have hoff : innerSGenP 2 p c' T pivot (e.symm (a, z))
+        = innerSGenP 2 p c' T pivot (e.symm (0, z)) := by
+      refine innerSGenP_offpivot 2 p c' T pivot _ _ (fun i hi => ?_)
+      rw [he]; exact piRatioG_symm_offpivot 2 N hN pivot a 0 z i hi
+    show (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) ((e.symm (a, z)) pivot)
+        * innerSGenP 2 p c' T pivot (e.symm (a, z)) = _
+    rw [hp_eq, hoff]
+  have hN3a : (∫⁻ a in Set.Icc (-T) T,
+      ENNReal.ofReal (|a| ^ ((2 ^ 2 : ℝ) - 1 - 2 * c'))) < ⊤ :=
+    radial_aAxis_divisor_lt_top 2 (by omega) T hT c' hcr
+  have hexp : ((2 ^ 2 : ℝ) - 1 - 2 * c') = (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c') := by
+    norm_num
+  rw [hexp] at hN3a
+  have hradfin : (∫⁻ a in {a : ℝ | a ≠ 0},
+        (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a) < ⊤ := by
+    have hle1 : (∫⁻ a in {a : ℝ | a ≠ 0},
+          (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a)
+        ≤ ∫⁻ a, (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a := by
+      have := lintegral_mono_set (μ := volume) (s := {a : ℝ | a ≠ 0}) (t := Set.univ)
+        (Set.subset_univ _)
+        (f := (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))))
+      rwa [setLIntegral_univ] at this
+    have heq2 : (∫⁻ a, (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a)
+        = ∫⁻ a in Set.Icc (-T) T, ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c')) :=
+      lintegral_indicator measurableSet_Icc _
+    rw [heq2] at hle1
+    exact lt_of_le_of_lt hle1 hN3a
+  have hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP 2 p c' T pivot (e.symm (0, z))) < ⊤ :=
+    schurRatioResidP_capB_two_lt_top N p hN hp c' hc0 hcp pivot T hT
+  have hinner : ∀ a : ℝ,
+      (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)), g (e.symm (a, z)))
+        = (Set.Icc (-T) T).indicator
+            (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a
+          * ∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+              innerSGenP 2 p c' T pivot (e.symm (0, z)) := by
+    intro a
+    have hradne : (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((2 * 2 - 1 : ℕ) : ℝ) - 2 * c'))) a ≠ ⊤ := by
+      rw [Set.indicator_apply]; split <;> simp [ENNReal.ofReal_ne_top]
+    rw [lintegral_congr (fun z => hfactor a z), lintegral_const_mul' _ _ hradne]
+  rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
+  exact ENNReal.mul_lt_top hradfin hratiofin
+
+/-- **The corank-2 cap-B finiteness.** `SchurCore p 2 c' T` for `0 < c' < p/2` (the cap-B regime, where the
+binding stratum is `t = 0`). The `4`-chart radial-`Δ` cover (`matBoxGen_outer_flat` + `gFlatGen_cover_sum`,
+`r`-general) reduces to a sum over `4` charts; each chart finite by
+`schur_matBoxGen2_chart_capB_lt_top`. NO recursion. -/
+theorem schurCoreP_two_capB (p : ℕ) (hp : 0 < p) (c' : ℝ) (hc0 : 0 < c')
+    (hcp : c' < (p : ℝ) / 2) (hcr : c' < ((2 : ℕ) ^ 2 : ℝ) / 2) (T : ℝ) (hT : 0 < T) :
+    SchurCore p 2 c' T := by
+  rw [SchurCore, matBoxGen_outer_flat 2 p c' T, gFlatGen_cover_sum 2 p (by norm_num) c' T]
+  exact ENNReal.sum_lt_top.2
+    (fun q _ => schur_matBoxGen2_chart_capB_lt_top p hp c' hc0 hcp hcr q T hT)
+
 /-- **The `Fin p` corank-2 base (OPEN — only the interior small-`p` sub-case).** `SchurCore p 2 c' T` for
 `0 < c' < schurLambdaP p 2`. The cap-B sub-case (`c' < p/2`, which is ALL of `p ≥ 4` since
-`schurLambdaP p 2 = 2 ≤ p/2` there) is closed by the 4-chart cover with the `z`-uniform
-`frobSq_capB_inner_two_le`; the interior sub-case (`p/2 ≤ c' < schurLambdaP p 2`, only `p ∈ {1,2,3}`) needs
-the `r = 2` carve (the `Fin 1`-cube reshape, an `r = 2` copy of `RmatGnorm`/`zEG`/`ScCarve_eq`) — the one
-remaining open sub-chain. -/
+`schurLambdaP p 2 = 2 ≤ p/2` there) is closed by `schurCoreP_two_capB`; the interior sub-case
+(`p/2 ≤ c' < schurLambdaP p 2`, only `p ∈ {1,2,3}`) needs the `r = 2` carve (the `Fin 1`-cube reshape, an
+`r = 2` copy of `RmatGnorm`/`zEG`/`ScCarve_eq`) — the one remaining open sub-chain. -/
 theorem schurCoreP_two (p : ℕ) (hp : 0 < p) (hIH : SchurLowerIH p (schurLambdaP p) 2)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p 2) (T : ℝ) (hT : 0 < T) :
     SchurCore p 2 c' T := by
-  sorry
+  have hcr : c' < ((2 : ℕ) ^ 2 : ℝ) / 2 := by
+    have := schurLambdaP_le_sq p 2; norm_num at this ⊢; linarith
+  rcases le_or_gt ((p : ℝ) / 2) c' with hcap | hcap
+  · -- interior: p/2 ≤ c' < schurLambdaP p 2 (only p ∈ {1,2,3})
+    sorry
+  · -- cap-B: c' < p/2
+    exact schurCoreP_two_capB p hp c' hc0 hcap hcr T hT
 
 /-! ## The full cap-A dispatch (the #146 deliverable input) -/
 
