@@ -1142,3 +1142,47 @@ authorization to build. **Mitigation that worked:** on any reassignment AFTER a 
 the existing close" in the same message, (b) name the closing branch + commit, and (c) require an explicit confirm-before-build
 ack, not just a task-status flip. Cheap to apply; this near-miss cost zero build time because the redirect landed before the wire.
 The deeper structural fix (Item 53) still stands: one closer per result, integration is a distinct role from derivation.
+
+### Item 57 — The depth-≥3 research wall: the R1 hfin (upper bound) for arbitrary-depth ∀M is NOT a bounded build (sharpens Item-55; both legs wall at L≥3) (2026-06-28)
+genm-n4 + Codex (xhigh, decorrelated) precisely located a genuine research wall in the R1 `hfin` (box-finiteness /
+upper-bound) leg, while diff-gating the carve-based `RouteMBoxThresholdFinite` discharge. This is the sharpest scope
+finding of the expedition and bears directly on whether "(A) GO THE DISTANCE → fully-general arbitrary-depth ∀M" is a
+bounded build or a research effort.
+
+**The obstruction (two independent, both verified).**
+1. **Threshold undershoot (depth ≥3).** The iterated-fibre front-peel (the paper's `fibre_lintegral_mul_le` engine) caps
+   each peeled layer's codim at `min_s M_s/2` — the SINGLE most-binding layer. But `½·minAdm` is a SUM over the binding
+   rank path (a multi-layer codim). So the iterated-fibre **fundamentally undershoots** at depth ≥3. Concrete (sympy on the
+   real `minAdmRec`): `(3,3,4,4)` ½·minAdm=4 vs front-peel cap 3/2; `(4,4,4,4)` 5.5 vs 2; `(3,3,3,4)` 3.5 vs 1.5.
+2. **Shape mismatch (depth 2 off `(r,r,4)`).** Matching `SchurCore 4 r` (Δ square r×r, S r×4) needs exactly
+   `M_{L-2}=r, M_{L-1}=r, M_L=4`; a general `(a,b,c)` leaves a non-square or `p≠4` core.
+
+**What this makes reachable vs. walled.**
+- **Bounded-reachable now:** the **`(r,r,4)` family ∀r** (R1 hfin) — `minAdm(r,r,4)=4r−4=2·schurLambda r`, threshold matches
+  ½·minAdm exactly (sympy r=0..7); generalizes the M334 anchor (r=3) to all r. **Approved + being built (genm-n4), gated
+  on schurRecStep_four (landed + triply-certified).**
+- **Bounded-ish next:** the depth-2 **`(r,r,p)` ∀p** output-width extension — a "different carve" (`SchurCore p r`),
+  genm-assemble's ∀p DESIGN (design-only, gated).
+- **RESEARCH WALL:** the fully-general **arbitrary-depth** hfin (`RouteMBoxThresholdFinite ∀M`, L≥3) needs the carve's
+  radial blow-up generalized to an **L-layer JOINT resolution** — new geometry, multi-tide; the iterated-fibre cannot reach
+  ½·minAdm. This is NOT a bounded single-tide build.
+
+**Both legs wall at L≥3.** This R1 finding connects to the L2 leg's **`3289`** (L≥3 grouped recursive diffeo, long flagged
+as the research-risk). So the fully-general arbitrary-depth headline `aoyagi_learning_coefficient` is gated on TWO genuine
+L≥3 research walls (R1 hfin joint resolution + L2 3289). At **L=2** (and the depth-2 `(r,r,4)`/`(r,r,p)` families) everything
+is reachable; arbitrary depth is the wall.
+
+**OPERATOR STRATEGIC CALL (sharpens Item-55, now with the precise obstruction + decorrelated Codex).** The honest options:
+- (i) **Fund the L-layer joint-resolution research** (R1) + 3289 (L2) as a multi-tide effort this expedition — charge the wall.
+- (ii) **Bank the L=2 + `(r,r,4)`/`(r,r,p)` families as the deliverable** + roadmap the two L≥3 walls (the honest "build
+  everything bounded, name the wall" close).
+- (iii) **Scoped middle** (e.g. arbitrary depth for a stated structural sub-class where the binding path is single-layer).
+My read: the L≥3 obstruction is GENUINE research (the min-vs-sum gap is structural, Codex-corroborated), not a "break-it-down"
+bounded build — so (ii)/(iii) is the honest call unless the operator wants to fund the multi-tide L-layer-resolution research.
+**No action is deferred silently:** every bounded-reachable piece (the `(r,r,4)` build, the ∀p design, L2 S6, the R1-UPPER
+wire) is in flight NOW; this item is specifically the L≥3-wall scope decision, which only the operator should make.
+
+**Lesson (caps Item-55):** a pre-build decorrelated diff-gate (genm-n4 + Codex, before writing the proof) converted a vague
+"is ∀M reachable?" into a precisely-located wall + a sharply-characterized reachable family — exactly the bedrock discipline
+(name the family the result covers; locate the wall before claiming generality). The carve being DONE did not make the
+arbitrary-depth headline a bounded build; the wall is one layer above the carve.
