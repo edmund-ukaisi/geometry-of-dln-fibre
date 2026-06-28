@@ -1052,20 +1052,107 @@ noncomputable def psiRawL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
     (psiSplitRawL2 H r hr hL (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
 
-/-- A fresh `ContDiffBump` at `0` on the FULL split `DeepestSplit` (Codex's "do not reuse the reg/spec
-bump as a full-split bump"). Its inner/outer radii are `unitRadius/4`, `unitRadius/2` — the same
-positive radii as the reg/spec `cutoffBump`, so its support sits inside the unit locus pulled back
-through the reg/spec projection (the per-layer `1 + readX_s` invertibility). The composite `W`/`P00`
-det conditions are `1` at `0` too, so shrinking the radius if needed keeps the support in the joint
-unit locus; the chosen radius suffices once `psiSplitRawL2` is filled (the raw correction is `ContDiffAt`
-on that support). -/
+/-! ### S2a — the joint unit radius (the `cutoffBumpSplit` re-key)
+
+`cutoffBumpSplit`'s support must sit in the JOINT unit locus where the per-layer `1 + readX_s`, the
+full-product `P00`, and the Schur `W` are ALL invertible — only then is the raw correction `δ` (which
+carries `A_s⁻¹`, `P00⁻¹`, `W⁻¹`) `ContDiffAt` there (S2). The `1 + readX_s` part is `unitRadius`; the
+extra `det P00 ≠ 0 ∧ det W ≠ 0` part holds on a ball at `0` (both dets `= 1` at `0`, continuous), only
+meaningful at `L = 2`. The joint radius is `unitRadius ⊓ (the extra radius)` at `L = 2`, `unitRadius`
+otherwise (the bump stays `L`-generic; the `dite` lives only in this scalar). -/
+
+/-- The `L = 2` extra unit locus: `det P00 ≠ 0 ∧ det W ≠ 0`. -/
+def l2ExtraUnitSetSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) :
+    Set (DeepestSplit H r (deepestNGauge H r)) :=
+  {q | (l2P00 H r hr hL hL2 q).det ≠ 0 ∧ (l2W H r hr hL hL2 q).det ≠ 0}
+
+/-- A ball at `0` inside the `L = 2` extra locus (`P00`, `W` det continuous at `0`, `= 1` there). -/
+theorem exists_ball_subset_l2ExtraUnitSetSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) :
+    ∃ ε > 0, Metric.ball (0 : DeepestSplit H r (deepestNGauge H r)) ε
+      ⊆ l2ExtraUnitSetSplit H r hr hL hL2 := by
+  have hP00cont : ContinuousAt (fun q => (l2P00 H r hr hL hL2 q).det) 0 := by
+    refine (contDiffAt_matrix_det_of_entries (fun a b => ?_)).continuousAt
+    have hpe : (fun q => l2P00 H r hr hL hL2 q a b)
+        = fun q => (l2A0 H r hr hL q * l2A1 H r hr hL q) a b
+          + (l2Y0 H r hr hL hL2 q * l2Z1 H r hr hL q) a b := by
+      funext q; rw [l2P00, Matrix.add_apply]
+    rw [hpe]
+    exact (contDiffAt_matrix_mul_entry (fun a' k => (contDiff_l2A0_entry H r hr hL a' k).contDiffAt)
+        (fun k b' => (contDiff_l2A1_entry H r hr hL k b').contDiffAt) a b).add
+      (contDiffAt_matrix_mul_entry (fun a' k => (contDiff_l2Y0_entry H r hr hL hL2 a' k).contDiffAt)
+        (fun k b' => (contDiff_l2Z1_entry H r hr hL k b').contDiffAt) a b)
+  have hWcont : ContinuousAt (fun q => (l2W H r hr hL hL2 q).det) 0 :=
+    (contDiffAt_matrix_det_of_entries
+      (fun a b => contDiffAt_l2W_entry H r hr hL hL2 a b)).continuousAt
+  have hP00ne : (l2P00 H r hr hL hL2 0).det ≠ 0 := by
+    rw [l2P00_zero, Matrix.det_one]; exact one_ne_zero
+  have hWne : (l2W H r hr hL hL2 0).det ≠ 0 := by
+    rw [l2W_zero, Matrix.det_one]; exact one_ne_zero
+  have hnbhd : {q | (l2P00 H r hr hL hL2 q).det ≠ 0 ∧ (l2W H r hr hL hL2 q).det ≠ 0}
+      ∈ nhds (0 : DeepestSplit H r (deepestNGauge H r)) :=
+    Filter.inter_mem (hP00cont.preimage_mem_nhds (isOpen_ne.mem_nhds hP00ne))
+      (hWcont.preimage_mem_nhds (isOpen_ne.mem_nhds hWne))
+  obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.mp hnbhd
+  exact ⟨ε, hε, hball⟩
+
+/-- The chosen `L = 2` extra radius (positive, ball ⊆ extra locus). -/
+noncomputable def l2ExtraRadius (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) : ℝ :=
+  (exists_ball_subset_l2ExtraUnitSetSplit H r hr hL hL2).choose
+
+theorem l2ExtraRadius_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) :
+    0 < l2ExtraRadius H r hr hL hL2 :=
+  (exists_ball_subset_l2ExtraUnitSetSplit H r hr hL hL2).choose_spec.1
+
+theorem ball_l2ExtraRadius_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) :
+    Metric.ball (0 : DeepestSplit H r (deepestNGauge H r)) (l2ExtraRadius H r hr hL hL2)
+      ⊆ l2ExtraUnitSetSplit H r hr hL hL2 :=
+  (exists_ball_subset_l2ExtraUnitSetSplit H r hr hL hL2).choose_spec.2
+
+/-- The joint unit radius: `unitRadius ⊓ (extra)` at `L = 2`, `unitRadius` otherwise. -/
+noncomputable def jointUnitRadiusSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : ℝ :=
+  if h : L = 2 then min (unitRadius H r hr hL) (l2ExtraRadius H r hr hL h)
+  else unitRadius H r hr hL
+
+theorem jointUnitRadiusSplit_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    0 < jointUnitRadiusSplit H r hr hL := by
+  unfold jointUnitRadiusSplit
+  by_cases h : L = 2
+  · rw [dif_pos h]
+    exact lt_min (unitRadius_pos H r hr hL) (l2ExtraRadius_pos H r hr hL h)
+  · rw [dif_neg h]; exact unitRadius_pos H r hr hL
+
+/-- `jointUnitRadiusSplit ≤ unitRadius` (the reg-read locus radius). -/
+theorem jointUnitRadiusSplit_le_unitRadius (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    jointUnitRadiusSplit H r hr hL ≤ unitRadius H r hr hL := by
+  unfold jointUnitRadiusSplit
+  by_cases h : L = 2
+  · rw [dif_pos h]; exact min_le_left _ _
+  · rw [dif_neg h]
+
+/-- At `L = 2`, `jointUnitRadiusSplit ≤ l2ExtraRadius`. -/
+theorem jointUnitRadiusSplit_le_l2ExtraRadius (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2) :
+    jointUnitRadiusSplit H r hr hL ≤ l2ExtraRadius H r hr hL hL2 := by
+  unfold jointUnitRadiusSplit; rw [dif_pos hL2]; exact min_le_right _ _
+
+/-- A fresh `ContDiffBump` at `0` on the FULL split `DeepestSplit`, keyed to the JOINT unit radius
+(`jointUnitRadiusSplit/4`, `/2`), so its support sits in the joint unit locus (`1 + readX_s`, `P00`,
+`W` all invertible) — exactly where the raw correction `δ` is `ContDiffAt` (S2). -/
 noncomputable def cutoffBumpSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)) where
-  rIn := unitRadius H r hr hL / 4
-  rOut := unitRadius H r hr hL / 2
-  rIn_pos := by have := unitRadius_pos H r hr hL; linarith
-  rIn_lt_rOut := by have := unitRadius_pos H r hr hL; linarith
+  rIn := jointUnitRadiusSplit H r hr hL / 4
+  rOut := jointUnitRadiusSplit H r hr hL / 2
+  rIn_pos := by have := jointUnitRadiusSplit_pos H r hr hL; linarith
+  rIn_lt_rOut := by have := jointUnitRadiusSplit_pos H r hr hL; linarith
 
 /-- The χ-cutoff joint action on `DeepestSplit`: `q + χ q • (psiSplitRawL2 q − q)`. The bump `χ`
 (`cutoffBumpSplit`, a fresh `ContDiffBump` at `0` on `DeepestSplit` whose support sits in the unit
