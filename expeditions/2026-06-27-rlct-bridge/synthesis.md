@@ -386,3 +386,42 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   residual; don't force/overclaim new math) + asked for status (a close-to-green / b at-ceiling /
   c stuck). Self-check vs corrected plan: vision held; seam core landed+hardened; R5 = the remaining
   proved-geometry rung; correctly waiting, not busywork. Re-sleep.
+
+- **tick 16 (R5 at HONEST CEILING — projection compatibility landed, 2026-06-28):** R5 (`a8c0b116`)
+  replied (b): at the honest ceiling, landing partials (finishing gates + commit on
+  `…-06-bundle-completion`). **Genuine win:** `Core/FibreProjectionCompat.lean` — **projection
+  compatibility** (`schurToDsigAt` IS `mult`'s comorphism `multComap`, gauge-transported, at every pivot;
+  factors through `multPoly` via `chartPhiVarSub` — genuine, dodges the vacuous-restatement trap) +
+  `ProjCompatOverBaseChart` (projection-compat + S4b over-base triv + flatness). **This closes the S5/S4b
+  open item (i)** the fibration-geometry expedition left as its residual. Axiom-clean. Also
+  `Core/FibreTargetOverlap.lean` — the R1 target-side transition OBJECT (`targetProductOverlapTransition`,
+  pairwise) + reusable `awayCongr'` brick + base round-trip.
+  - **Named residuals (NOT forced, honest ceiling):** (i) the target-side cocycle ROUND-TRIP PROOF — math
+    immediate from the base round-trip, but stalls on Lean infra (kernel-cost blowup on the double-localized
+    reducible type via `ext`; missing `AlgEquiv.trans_assoc`/`refl_trans` in Mathlib v4.29). (ii) global
+    `Flat π` over `rankROpen` — needs the cocycle + triple-overlap + local-to-global flatness = infra beyond
+    the banked atlas + S1 rank-tie. **ROADMAP (future infra tide):** the two Mathlib-v4.29 AlgEquiv gaps +
+    the double-localized kernel-cost workaround → then the cocycle → triple-overlap → global Flat π.
+  - Steered R5: build via `scripts/lb` (not bare lake), name=content on the headline (global Flat π / cocycle
+    EXPLICITLY named residuals in file + card, in-file roadmap), commit + report → I integrate.
+  - Holding for R5's committed report + the hardener re-review (`af1b0a5d`).
+
+- **tick 17 (hardener RE-REVIEW SOLID → 04 seam CLOSED, 2026-06-28):** `hardener-04` re-review of the
+  tightening (@ `5bc1e7e4`): **SOLID — all 5 fixes sound, nothing regressed; the seam holds at the L4 gate
+  without the two HARDEN caveats.** Verified: re-guard threaded through all 7 consumers (none silently
+  dropped; r=0 discharges inline via `Matrix.rank_zero`, general-r forwards `hB hr`); the witness
+  type-checks as a genuine `RlctRealInterface Core.d222` inhabitant under the re-guarded fields (rebuilt via
+  `scripts/lb` after catching + resolving a stale-`.olean` artifact — "don't trust a cached green"); `#print
+  axioms` clean incl. the witness; HARDEN-1 prose fixed (orphan lemma docstring'd "unused by payoffs");
+  banned words + citation clean. **Micro-note adjudicated:** the two card "load-bearing" uses
+  ("…for soundness", "…decls") are the precision.md technical term-of-art, NOT the banned `this is
+  loadbearing` self-reassurance — LEFT as-is (controller taste call, hardener concurred). **Tasks #7
+  (compose+retire) + #8 (tightening) COMPLETED.**
+  - **04 thin-interface seam CLOSED:** monolith `cited_aoyagi_dln` retired; honest `rlct = ½·C` on the
+    3-fact cited boundary {Watanabe ≤, Aoyagi ≥, transfer T}; re-guarded for intended-inhabitability
+    (the genuine rlctAt can discharge it → aoyagi-full fold stays possible); non-vacuous (in-file witness);
+    axiom-clean `[propext, Classical.choice, Quot.sound]`; name=content confirmed by TWO decorrelated review
+    rounds (fidelity PASS + hardener SOLID, each re-confirmed).
+  - **Remaining for close:** integrate R5 (06, finishing gates + commit — projection-compatibility landed,
+    global Flat π = named ceiling), then expedition close shape → synthesis + close summary + PR behind
+    signal-and-wait (operator-gated; controller opens, does NOT merge). Holding for R5's committed report.
