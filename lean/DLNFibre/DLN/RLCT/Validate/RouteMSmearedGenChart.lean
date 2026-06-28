@@ -167,6 +167,24 @@ theorem frontMat_routing_eq_resid (u : Fin (routeMAmbient M) → ℝ)
   rw [Matrix.mul_apply, Fin.sum_univ_one, pivotCol, residCols] at hr
   exact hr
 
+/-- **The smeared-column sum collapse** (generic, the sum-arithmetic core). With the front-fact relation
+`f 0 · lam r = f (r.succ)`, the pivot-row shear `−∑ lam·d` cancels the residual sum, leaving the pivot
+term: `∑ⱼ f j · (if j = 0 then d 0 − ∑ᵣ lam r · d (r.succ) else d j) = d 0 · f 0`. Pure `Fin (w+1)`
+sum-arithmetic (`Fin.sum_univ_succAbove` at the pivot `0` + `Fin.succAbove_zero`). -/
+theorem sum_smearedCol_collapse {w : ℕ} (f d : Fin (w + 1) → ℝ) (lam : Fin w → ℝ)
+    (hfront : ∀ r : Fin w, f 0 * lam r = f (Fin.succ r)) :
+    (∑ j, f j * (if j = 0 then d 0 - (∑ r, lam r * d (Fin.succ r)) else d j)) = d 0 * f 0 := by
+  rw [Fin.sum_univ_succAbove _ (0 : Fin (w + 1))]
+  simp only [Fin.succAbove_zero, if_true]
+  have hres : ∀ r : Fin w,
+      f (Fin.succ r) * (if (Fin.succ r) = 0 then d 0 - (∑ r, lam r * d (Fin.succ r))
+        else d (Fin.succ r)) = f (Fin.succ r) * d (Fin.succ r) :=
+    fun r => by rw [if_neg (Fin.succ_ne_zero r)]
+  rw [Finset.sum_congr rfl (fun r _ => hres r), mul_sub, Finset.mul_sum]
+  have hh : ∀ r : Fin w, f 0 * (lam r * d (Fin.succ r)) = f (Fin.succ r) * d (Fin.succ r) :=
+    fun r => by rw [← mul_assoc, hfront r]
+  rw [Finset.sum_congr rfl (fun r _ => hh r)]; ring
+
 /-- **The telescope (the keystone): the chart product is `u_p`-scaled column 0 of the front product.**
 Off the pole `‖col 0‖² ≠ 0`, the deepest-layer shear cancels via the front fact, leaving
 `prod M (smParams u) i ⟨0,_⟩ = u_p · frontMat u i ⟨0,_⟩` (with `u_p = deepCol u ⟨0,_⟩` the pivot row
