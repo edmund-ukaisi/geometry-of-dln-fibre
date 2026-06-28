@@ -140,6 +140,21 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 residual endpoint scalar cardinalities,
+  2026-06-28.** Lean now exposes
+  `case2ResidualEndpoint_card_eqs_of_width_rank` and
+  `case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData_width_rank`
+  in `Case2ResidualFactorProduct.lean`.  The first theorem proves the
+  successor residual column and row scalar cardinalities from the explicit
+  hypotheses `H 2 = n (S + 1)`, `H 1 = prefixMinNat n S`, and `r = J + 1`, using
+  finite interval cardinality.  The second theorem applies the existing
+  source-data endpoint-cardinality bridge, leaving `hTau : card tau = H 3 - r`
+  explicit.  This does not prove the width/rank identifications, prove `hTau`,
+  construct `tau`, produce canonical endpoint labels, preserve selected
+  entries, compare source priors or Jacobians, prove normal crossings, pole
+  order, or RLCT.  Focused build, sorry scan, whitespace check, touched
+  Lean-file forbidden-marker search, direct axiom probes, and xhigh review
+  passed.
 - **Current status addendum, Case 2 endpoint cardinalities from source data,
   2026-06-28.** Lean now exposes
   `case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData`

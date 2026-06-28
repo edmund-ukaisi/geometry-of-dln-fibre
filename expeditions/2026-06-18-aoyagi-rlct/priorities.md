@@ -19,6 +19,42 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 residual endpoint scalar cardinalities
+
+The successor Case 2 residual-column and residual-row endpoint sizes can now
+be discharged from interval cardinality once the displayed source rank and
+widths are explicitly identified:
+
+```text
+case2ResidualEndpoint_card_eqs_of_width_rank
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData_width_rank
+```
+
+The first theorem rewrites the finite subtype cardinalities for
+`Case2ResidualColIndex n S (J + 1)` and `Case2ResidualRowIndex n S (J + 1)` using
+`Fintype.card_coe`, `case2ResidualBlockCols_card`, and
+`case2ResidualBlockRows_card`.  The second theorem feeds those two scalar
+equalities into the existing source-data endpoint-cardinality bridge, leaving
+the free right endpoint equality `hTau : card tau = H 3 - r` explicit.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-endpoint-scalar-cardinalities.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+Xhigh review:
+`threads/03-block-product-reduction/review-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+
+Focused build, `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, and direct theorem axiom probes passed.  Both new
+theorems report only `[propext, Classical.choice, Quot.sound]`.
+
+This removes only the residual row/column scalar-cardinality hypotheses once
+`r = J + 1`, `H 2 = n (S + 1)`, and `H 1 = prefixMinNat n S` are supplied.  It does not
+prove those width/rank identifications, prove `hTau`, construct `tau`, build
+canonical endpoint labels, preserve selected entries, identify source priors,
+compare Jacobians, prove normal crossings, compute pole order, or extract
+RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint cardinalities from source data
 
 The Case 2 two-edge endpoint-cardinality hypothesis can now be derived from

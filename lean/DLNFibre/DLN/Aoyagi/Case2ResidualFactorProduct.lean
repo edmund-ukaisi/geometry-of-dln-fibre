@@ -155,6 +155,64 @@ theorem case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceDat
             (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (2 : Fin 3))
     exact hRow.trans hEndpoint.symm
 
+set_option linter.unusedSectionVars false in
+/-- The successor Case 2 residual-column and residual-row endpoint sizes are
+the displayed width-minus-rank counts under explicit width/rank identifications.
+
+This is finite interval cardinality only; it does not prove the width/rank
+identifications themselves or construct the free right endpoint `τ`. -/
+theorem case2ResidualEndpoint_card_eqs_of_width_rank
+    (n : ℕ → ℕ) {S J : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    (hH₁ : H 1 = prefixMinNat n S)
+    (hH₂ : H 2 = n (S + 1))
+    (hr : r = J + 1) :
+    Fintype.card (Case2ResidualColIndex n S (J + 1)) = H 2 - r ∧
+      Fintype.card (Case2ResidualRowIndex n S (J + 1)) = H 1 - r := by
+  constructor
+  · rw [Fintype.card_coe, case2ResidualBlockCols_card, hH₂, hr]
+  · rw [Fintype.card_coe, case2ResidualBlockRows_card, hH₁, hr]
+
+set_option linter.unusedSectionVars false in
+/-- Source data, explicit `hTau`, and the displayed width/rank identifications supply the
+pointwise Case 2 two-edge endpoint-cardinality hypotheses, except for the
+free right endpoint `τ`, whose scalar size remains explicit.
+
+This removes only the residual row/column scalar-cardinality inputs from
+`case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData`. -/
+theorem case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData_width_rank
+    {K : Type u} [NontriviallyNormedField K] [CompleteSpace K]
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module K (W₂ i)]
+    [∀ i, ContinuousSMul K (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[K] W₂ i.castSucc)
+    [∀ j, FiniteDimensional K (W₂ j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    {U₀ : Submodule K (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    {Cedge : α → ∀ p : Fin 2,
+      reverseVertex W₂ p.castSucc →L[K] reverseVertex W₂ p.succ}
+    {τ : Type} [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := K) W₂ B₂ U₀ hU₀ x₀ Cedge H r rEdge)
+    (hTau : Fintype.card τ = H 3 - r)
+    (hH₁ : H 1 = prefixMinNat n S)
+    (hH₂ : H 2 = n (S + 1))
+    (hr : r = J + 1) :
+    ∀ q : Fin 3,
+      Fintype.card (case2PostPivotTwoEdgeDomain n S J τ q) =
+        Fintype.card
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) := by
+  have hCards :=
+    case2ResidualEndpoint_card_eqs_of_width_rank n hH₁ hH₂ hr
+  exact
+    case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData
+      W₂ B₂ n sourceData hTau hCards.1 hCards.2
+
 /-- The concrete two-factor family for the displayed Case 2 post-pivot lower
 product: first the free `C'` tail, then the post-pivot residual block. -/
 noncomputable def case2PostPivotFreeTwoEdgeFactorFamily

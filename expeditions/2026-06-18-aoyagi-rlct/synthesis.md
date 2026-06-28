@@ -48,6 +48,51 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Residual Endpoint Scalar Cardinalities
+
+The successor Case 2 residual-column and residual-row scalar endpoint counts
+are now proved from explicit displayed width/rank identifications:
+
+```text
+case2ResidualEndpoint_card_eqs_of_width_rank
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData_width_rank
+```
+
+The first theorem proves
+
+```text
+card (Case2ResidualColIndex n S (J + 1)) = H 2 - r
+card (Case2ResidualRowIndex n S (J + 1)) = H 1 - r
+```
+
+from `H 2 = n (S + 1)`, `H 1 = prefixMinNat n S`, and `r = J + 1`, using
+`Fintype.card_coe` plus the existing interval-cardinality lemmas
+`case2ResidualBlockCols_card` and `case2ResidualBlockRows_card`.  The second
+theorem feeds these two equalities into
+`case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData`,
+so only `hTau : card tau = H 3 - r` remains as a free endpoint scalar-size
+input.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+the worktree-local `scripts/lb` command.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct theorem axiom probes passed.  Both new theorems report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is interval-cardinality bookkeeping plus application of the earlier
+source-data endpoint-cardinality bridge.  It does not prove `r = J + 1`, the
+width equalities, `hTau`, construction of `tau`, canonical endpoint labels,
+selected-entry preservation, source-prior transport, Jacobian comparison,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Endpoint Cardinalities From Source Data
 
 The pointwise endpoint-cardinality family required by

@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 residual endpoint scalar cardinalities
+
+Reproduction:
+`reproduction-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+Statement card:
+`statement-card-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+Review:
+`review-a2-case2-residual-endpoint-scalar-cardinalities.md`.
+
+Lean now exposes:
+
+```text
+case2ResidualEndpoint_card_eqs_of_width_rank
+case2PostPivotTwoEdgeDomain_card_eq_endpointComplementIndex_of_sourceData_width_rank
+```
+
+The first theorem proves the successor residual column and row cardinalities
+from the explicit equalities `H 2 = n (S + 1)`, `H 1 = prefixMinNat n S`, and
+`r = J + 1`, using `Fintype.card_coe` and the finite interval-cardinality lemmas.
+The second theorem feeds those two scalar equalities into the source-data
+endpoint-cardinality theorem and leaves `hTau : card tau = H 3 - r` explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.Case2ResidualFactorProduct` passed via
+the worktree-local `scripts/lb` command.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, direct theorem axiom probes, and xhigh review passed.
+
+This is not proof of those width/rank equalities, proof of `hTau`,
+construction of `tau`, canonical endpoint labelling, selected-entry
+preservation, measure transport, Jacobian comparison, normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 endpoint cardinalities from source data
 
 Reproduction:
