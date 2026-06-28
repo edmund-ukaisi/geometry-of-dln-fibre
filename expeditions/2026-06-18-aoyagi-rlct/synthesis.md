@@ -48,6 +48,57 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Inverse-Jacobian Residual-Source Handoff
+
+The retained-passive raw-order inverse-Jacobian source measure now has a
+residual-source handoff:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It proves the p.13 residual-source positivity and
+`residualNegPowerIntegrableOn` conclusions for
+
+```text
+μ =
+  Measure.map rawChart
+    ((m.restrict T).withDensity
+      (fun y => ofReal (topologyTupleEdgeRawOrderInverseJacobianDensity y)))
+```
+
+from the direct determinant-chart assumptions that
+`residualSquareSum (directChart z)` is positive a.e. for `m.restrict S` and
+has finite negative `t`-power integral over `m.restrict S`.  The source-side
+positive-set measurability remains an explicit input.
+
+The proof also lands the reusable arbitrary-density support lemma
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+showing that `Measure.map rawChart ((m.restrict T).withDensity J)` restricts
+to the identity retained-passive local source as itself for any density `J`.
+This uses the raw-order source chart edge-matrix realization on `T` and
+absolute continuity of `withDensity`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-residual-source-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-residual-source-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probes, and xhigh review passed; both new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is real retained-passive chart-layer measure transport.  It still does
+not prove the chart-side residual positivity/integrability hypotheses,
+selected-entry residual integrability, source-rank coverage, original external
+DLN source-prior transport, normal crossings, pole order, or RLCT extraction.
+
 ## Post-Interruption Reorientation - 2026-06-28
 
 The controller re-grounded after the interruption in the dedicated worktree

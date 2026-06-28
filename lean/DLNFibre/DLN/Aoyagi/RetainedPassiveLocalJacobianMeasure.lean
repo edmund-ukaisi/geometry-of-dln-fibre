@@ -681,6 +681,292 @@ theorem measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfDa
     _ =
         Measure.map rawChart ((m.restrict T).withDensity G) := hcov
 
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- The raw-order retained-passive p.13 source chart, with any density on the
+raw-order determinant chart, is supported on the identity retained-passive local
+source.
+
+This is source-support bookkeeping.  The density is arbitrary; no residual
+positivity, finite integral, normal crossing, pole order, RLCT extraction, or
+original external source-prior identification is claimed. -/
+theorem measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    (J :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ → ℝ≥0∞) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let rawChart : TopologyTuple ρ κ' ℝ → EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (fun E : EFam ↦ E)
+    let η := (m.restrict T).withDensity J
+    (Measure.map rawChart η).restrict localSource =
+      Measure.map rawChart η := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let rawChart : TopologyTuple ρ κ' ℝ → EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+      (fun E : EFam ↦ E)
+  let η : Measure (TopologyTuple ρ κ' ℝ) := (m.restrict T).withDensity J
+  have hrawChart_base : AEMeasurable rawChart (m.restrict T) := by
+    simpa [rawChart, paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart,
+      T, ρ, κ', EFam] using
+      retainedPassiveP13CanonicalSourceChart_aemeasurable
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+  have hrawChart : AEMeasurable rawChart η := by
+    simpa [η] using hrawChart_base.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hTnull : NullMeasurableSet T m := by
+    simpa [T, ρ, κ'] using
+      nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hchart_mem_base :
+      ∀ᵐ y ∂ m.restrict T, rawChart y ∈ localSource := by
+    filter_upwards [ae_restrict_mem₀ hTnull] with y hy
+    have hrealize :
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+            (fun p : Fin (M + 1) ↦
+              ((fun E : EFam ↦ E) (rawChart y) p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+          edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := by
+      simpa [rawChart, EFam, ρ, κ'] using
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq
+          (K := ℝ) (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+          (y := y) (by simpa [T, ρ, κ'] using hy)
+    exact
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource_mem_of_edgeFamilyOfRawOrderTuple_realization
+        (K := ℝ) (W := W) (B := B) U₀ hU₀
+        (fun E : EFam ↦ E) rawChart
+        (by simpa [T, ρ, κ'] using hy)
+        (by simpa [rawChart, localSource, EFam, ρ, κ'] using hrealize)
+  have hchart_mem :
+      ∀ᵐ y ∂ η, rawChart y ∈ localSource := by
+    simpa [η] using
+      (withDensity_absolutelyContinuous _ _).ae_le hchart_mem_base
+  have hCedge : Continuous (fun E : EFam ↦ E) := by
+    simpa [EFam] using (continuous_id : Continuous (fun E : EFam ↦ E))
+  simpa [η, rawChart, localSource, T, ρ, κ', EFam] using
+    measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := fun E : EFam ↦ E) (η := η) (sourceChart := rawChart)
+      hCedge hrawChart hchart_mem
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- Residual-source hypotheses for the raw-order retained-passive p.13 source
+measure with inverse-Jacobian density, transported from direct determinant-chart
+hypotheses.
+
+The chart-side a.e. residual positivity and finite residual negative-power
+integral remain explicit hypotheses.  This theorem only supplies the
+source-measure pushforward and local-source restriction needed by the generic
+residual-source socket; it does not prove selected-entry residual integrability,
+source-rank coverage, normal crossings, pole order, RLCT extraction, or
+original external source-prior transport. -/
+theorem residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure] {t : ℝ} :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let directChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
+    let rawChart : TopologyTuple ρ κ' ℝ → EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+    let invJacDensity : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+      fun y ↦
+        ENNReal.ofReal
+          (topologyTupleEdgeRawOrderInverseJacobianDensity
+            (ρ := ρ) (κ' := κ') y)
+    let localSource :=
+      paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+        (fun E : EFam ↦ E)
+    let μ := Measure.map rawChart ((m.restrict T).withDensity invJacDensity)
+    MeasurableSet {x : EFam |
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)} →
+    (∀ᵐ z ∂ m.restrict S,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (directChart z))) →
+    (∫⁻ z : TopologyTuple ρ κ' ℝ,
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (directChart z))) ^ (-t)) ∂ m.restrict S) < ∞ →
+    (∀ᵐ x ∂ μ.restrict localSource,
+        0 < aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) x)) ∧
+      residualNegPowerIntegrableOn
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (fun E : EFam ↦ E) localSource μ t := by
+  dsimp only
+  intro hpos_meas hpos_chart hbase_chart
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let directChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun z ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z)
+  let rawChart : TopologyTuple ρ κ' ℝ → EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+  let invJacDensity : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+    fun y ↦
+      ENNReal.ofReal
+        (topologyTupleEdgeRawOrderInverseJacobianDensity
+          (ρ := ρ) (κ' := κ') y)
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀
+      (fun E : EFam ↦ E)
+  let μ : Measure EFam :=
+    Measure.map rawChart ((m.restrict T).withDensity invJacDensity)
+  have hs : NullMeasurableSet S m := by
+    simpa [S, ρ, κ'] using
+      nullMeasurableSet_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hdirect_contOn : ContinuousOn directChart S := by
+    rw [continuousOn_iff_continuous_restrict]
+    let toDetChart :
+        S →
+          {data :
+            RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' //
+            data.detChart} :=
+      fun z ↦
+        ⟨ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z.1,
+          (mem_topologyTupleDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ') z.1).1
+            (by exact z.2)⟩
+    have hToDetChart : Continuous toDetChart := by
+      have hamb :
+          Continuous
+            (fun z : S ↦
+              ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z.1) :=
+        (continuous_ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')).comp
+          continuous_subtype_val
+      exact hamb.subtype_mk _
+    have hchart :
+        Continuous
+          (fun data :
+              {data :
+                RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' //
+                data.detChart} ↦
+            paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data) :=
+      continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart
+        (K := ℝ) W B U₀ hU₀
+    simpa [directChart, toDetChart,
+      paperEndpointFixedBaseRetainedPassiveP13SourceChart,
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData] using
+      hchart.comp hToDetChart
+  have hdirect : AEMeasurable directChart (m.restrict S) :=
+    ContinuousOn.aemeasurable₀ hdirect_contOn hs
+  have hsupport : μ.restrict localSource = μ := by
+    simpa [μ, invJacDensity, rawChart, localSource, T, ρ, κ', EFam] using
+      measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+        (m := m) (J := invJacDensity)
+  have hmeasure :
+      Measure.map directChart (m.restrict S) = μ := by
+    simpa [μ, invJacDensity, directChart, rawChart, S, T, ρ, κ', EFam] using
+      measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+  have hmap :
+      μ.restrict localSource = Measure.map directChart (m.restrict S) := by
+    calc
+      μ.restrict localSource = μ := hsupport
+      _ = Measure.map directChart (m.restrict S) := hmeasure.symm
+  exact
+    residualSourceHypotheses_of_measure_map
+      (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := fun E : EFam ↦ E)
+      (source := localSource) (μ := μ) (ν := m.restrict S)
+      (chart := directChart) (t := t)
+      hdirect hmap hpos_meas hpos_chart hbase_chart
+
 private theorem retainedPassiveP13CanonicalSourceChart_realize
     [∀ j, FiniteDimensional ℝ (W j)]
     {U₀ : Submodule ℝ (reverseVertex W 0)}

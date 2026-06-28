@@ -19,6 +19,55 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian residual-source handoff
+
+The retained-passive inverse-Jacobian raw-order source measure now has the
+residual-source handoff:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It consumes determinant-chart residual hypotheses for the direct source chart:
+
+```text
+∀ᵐ z ∂ m.restrict S, residualSquareSum (directChart z) > 0
+∫⁻ z, ofReal (residualSquareSum (directChart z)^(-t)) ∂ m.restrict S < ∞
+```
+
+and concludes a.e. residual positivity and `residualNegPowerIntegrableOn` for
+
+```text
+μ =
+  Measure.map rawChart
+    ((m.restrict T).withDensity topologyTupleEdgeRawOrderInverseJacobianDensity)
+```
+
+restricted to the identity retained-passive local source.  The proof first
+lands the density-independent support lemma
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+for arbitrary raw-order chart density, then combines it with the already
+banked direct-source/raw-order inverse-Jacobian measure comparison and
+`residualSourceHypotheses_of_measure_map`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-residual-source-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-residual-source-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, direct axiom probes, and xhigh review passed; both
+new declarations report only `[propext, Classical.choice, Quot.sound]`.  This
+is still only a retained-passive chart-layer measure transport theorem: it
+does not prove the chart-side residual hypotheses, selected-entry residual
+integrability, source-rank coverage, original external DLN-prior transport,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive direct source-chart inverse-Jacobian measure
 
 The retained-passive chart-layer direct source measure is now compared with
