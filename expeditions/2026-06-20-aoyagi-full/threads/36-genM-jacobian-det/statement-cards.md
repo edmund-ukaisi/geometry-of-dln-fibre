@@ -459,3 +459,334 @@ intrinsically an a.e./lintegral property, so the a.e. field is the faithful form
 > - **Status.** the conceptually-hard pieces (the a.e. leaf_integrand off the pole + the det-1) LANDED;
 >   the `cov`-split `HasFDerivAt`/image-null/assembly is the bounded remaining engineering (a next pass,
 >   no design wall). NOT in DLNFibre.lean (single-writer; controller wires).
+
+---
+
+## Smeared `(1,2,1)` cov-split — chart-derivative det `= 1` LANDED; off-pole `HasFDerivAt` residual
+
+Branch `worktree-agent-a223be0c63e358844` (on the integrated a.e. core `85a5636f`). Charging the
+cov-split: the Jacobian det of the rational chart derivative is now banked; the off-pole `HasFDerivAt`
+(comp-2 quotient) is the bounded residual, blocked on a Mathlib-v4.29 plumbing gap (no `HasFDerivAt.div`).
+
+---
+
+> **Smeared `(1,2,1)` cov-split — det `= 1` of the chart derivative LANDED** (sorry-free, axiom-clean
+> `[propext, Classical.choice, Quot.sound]`).
+>
+> - **Lean (`RouteM121Smeared.lean` @ `0a76ab6b`, new this pass):** `shear121DerivMat` (the explicit
+>   transvection matrix — `1` with row-2 shear shifts), `shear121DerivMat_det = 1` (via a 3-step
+>   transvection chain `Matrix.det_updateRow_add_smul_self`, each row-add det-preserving), `shear121Deriv`
+>   (the chart-derivative CLM `= (toLin' shear121DerivMat).toContinuousLinearMap`), `shear121Deriv_abs_det
+>   = 1` (`LinearMap.det_toLin'` + the matrix det).
+> - **RESIDUAL — `shear121_hasFDerivAt` off the pole (the one stuck piece):** `shear121` comp-2 is
+>   `z − y 1·(y 0)⁻¹·y 3`, C¹ for `u 0 ≠ 0`. The OBSTRUCTION is purely Lean plumbing, NOT math: Mathlib
+>   v4.29 has **no `HasFDerivAt.div`** (only `hasFDerivAt_inv'` for `x⁻¹`), so comp-2's fderiv must be
+>   assembled `(proj 1).mul ((hasFDerivAt_inv' hu).comp (proj 0))` then matched to the matrix-CLM via
+>   `HasFDerivAt.congr_fderiv` (a `ContinuousLinearMap.ext` + `field_simp`/`ring`). That CLM-matching
+>   `ext`/`field_simp` fought several passes (the `mulLeftRight`-shaped inv-deriv vs the explicit `smul`
+>   form). Rested here rather than force it.
+> - **After `shear121_hasFDerivAt`:** `phi121sm_hasFDerivAt` (chain with the measure-preserving linear
+>   `Q121 = paramsEquivFlat ∘ pack121`, det 1) ⟹ `|det Dφ121sm| = 1`; then `phi121sm_cov` via the
+>   `phi334_cov` two-slice split (c-o-v on `S\N0` + the front-identity image-null `φ_sm''(S∩N0) ⊆
+>   {a-coord=0}`); then the `NodeAchieverChart M121` instance + the atom. All bounded, no design wall.
+> - **Already banked (prior passes, this module):** `routeMCore_phi121sm_offpole` (rate off-pole),
+>   `leaf_integrand121_ae` (the a.e. field off the null pole), `Uval121`/`leafH121`/`_pivot`,
+>   `chartParams121_eq_pack_shear`, `shear121_injOn`, `pole121_null`.
+> - **Status.** the conceptually-load-bearing pieces (a.e. leaf_integrand + the chart-deriv det `= 1`) are
+>   LANDED; the residual is the off-pole `HasFDerivAt` CLM-matching (a Mathlib-`.div`-gap plumbing pass) +
+>   the standard `cov`-split assembly. Full `lake build DLNFibre` green with the module temp-imported;
+>   aggregator reverted (single-writer). The atom for `(1,2,1)` is NOT yet discharged (pending the fderiv).
+
+---
+
+## Smeared cov-split — off-pole `HasFDerivAt` wall (Lean whnf on the matrix-CLM) + the route
+
+Branch `worktree-agent-a223be0c63e358844`. The chart-derivative det `= 1` is landed (prior card);
+the off-pole `HasFDerivAt` (the last piece before the cov + atom) hit a precise Lean wall.
+
+---
+
+> **The off-pole `shear121_hasFDerivAt` wall — Lean whnf on `Matrix.of ![...]`-CLM, NOT math.**
+>
+> - **The math + the idiom are SOLVED.** Codex (xhigh, `codex/shear-fderiv-{prompt,answer}.md`) gave the
+>   exact v4.29 quotient-fderiv idiom (Mathlib has no `HasFDerivAt.div`): `hasFDerivAt_inv` (the scalar
+>   `Mathlib.Analysis.Calculus.Deriv.Inv` version, cleaner `toSpanSingleton` CLM than `_inv'`) composed
+>   with the coord proj, then `.mul`/`.sub`. Verified the comp-2 sub-piece (`ratio10_hasFDerivAt`) builds.
+> - **The WALL.** Matching the per-component fderivs to `shear121Deriv := (toLin' (Matrix.of ![..]))`
+>   .toContinuousLinearMap` via `congr_fderiv` + `ext v` + the row `dotProduct` TIMES OUT at `whnf`
+>   (200000 heartbeats): expanding `(shear121DerivMat u i) ⬝ᵥ v` for the `Matrix.of ![row0..row3]`
+>   representation is whnf-heavy (the `Matrix.of`/`vecCons` row access doesn't reduce cheaply under
+>   `simp only [shear121DerivMat, dotProduct, Fin.sum_univ_four, …]`). `shear121Deriv_apply` (the row =
+>   `mulVec` law) itself builds via `rw […, Matrix.mulVec]` (NO `rfl` — that whnf-times-out), but the
+>   four component matches still time out.
+> - **The clean next-pass routes (no design wall, both bounded):**
+>   (a) represent the shear derivative as a `ContinuousLinearMap.pi` of explicit per-coord functionals
+>   (NOT `toLin' (Matrix.of ![..])`), so the component apply is definitional — then re-derive `|det| = 1`
+>   from that pi-CLM (a separate small det bridge);
+>   (b) **Codex's recommended route — `MeasurePreserving`** (sidesteps the fderiv+det entirely): the repo
+>   already has `Foundations.CoreShearMP` (`measurePreserving_coreShear` via `MeasurePreserving.skew_product`)
+>   — the shear is a fiberwise `z`-translation (det 1); prove `MeasurePreserving phi121sm` (off-pole or
+>   globally, the pole is null) + `MeasurableEmbedding`, then the `cov` (weight `1` since `leafH121 ≡ 0`)
+>   follows from `MeasurePreserving.setLIntegral_comp_emb` — no `HasFDerivAt`/`|det|` needed.
+> - **Status.** the off-pole `HasFDerivAt` is NOT landed (the matrix-CLM whnf wall). LANDED this pass:
+>   `shear121DerivMat`/`_det = 1`, `shear121Deriv`/`_abs_det = 1`. The `(1,2,1)` atom is NOT discharged
+>   (pending the fderiv-or-MP route + the cov-split + image-null). Recommend route (b) for the next pass.
+
+---
+
+## Smeared `(1,2,1)` cov LANDED via route (b) (MeasurePreserving) — `image_subset` residual
+
+Branch `worktree-agent-a223be0c63e358844` @ `04b37988`. Controller approved route (b). The `cov` field
+is now LANDED with NO `HasFDerivAt`/Jacobian (the whnf wall sidestepped), sorry-free + axiom-clean.
+
+---
+
+> **Smeared `(1,2,1)` `cov` via MeasurePreserving (route (b)) — LANDED.**
+>
+> - **Lean (`RouteM121Smeared.lean` @ `04b37988`, all `[propext, Classical.choice, Quot.sound]`):**
+>   `measurePreserving_coreShear_measurable` (the banked `coreShear` MP, `Continuous`→`Measurable` shift —
+>   `skew_product` needs only measurability); `fin4EquivFlatIdx121`/`pack121`/`measurePreserving_pack121`/
+>   `measurePreserving_Q121` (the linear outer reshape MP); `shear121ME` (the rational shear as a GLOBAL
+>   measurable bijection — the totalized `b/a` cancels at `a=0`, Codex Q3: NO pole-split); `split121`
+>   (`Fin 4 → ℝ ≃ᵐ reg×(core×spec)` via `piFinSuccAbove`+`funUnique`) + MP; `split121_shear121` (the
+>   forward conjugation); `measurePreserving_shear121` (conjugate `coreShear_measurable` by `split121`);
+>   `measurePreserving_phi121sm` + `measurableEmbedding_phi121sm` (`phi121sm = Q121 ∘ shear121`, packaged
+>   `phi121smME` via `flatEquivOf`); **`phi121sm_cov`** — the `cov` field directly from
+>   `MeasurePreserving.setLIntegral_comp_emb` (`leafH121 ≡ 0` ⟹ weight `1`).
+> - **The win:** route (b) sidesteps the off-pole `HasFDerivAt` whnf wall entirely — no Jacobian, no
+>   image-null split. The shear's measure-preservation is the banked `CoreShearMP` skew-product
+>   conjugated by `split121`; the cov is a one-liner `setLIntegral_comp_emb` + the weight-1 rewrite.
+> - **RESIDUAL — `image_subset` is the THIRD pole-affected field (handback).** The
+>   `NodeAchieverChart.image_subset` field needs `phi121sm '' [0,δ]^4 ⊆ cubeBox 4 ε`, but the rational
+>   `φ_sm` is UNBOUNDED near its pole `{a=0}` (the flat coord `z − (b/a)·sb → ∞` as `a→0`, `b,sb≠0`), so
+>   its box-image is not bounded. The assembly `routeMCore_box_diverges_of_nodeChart` uses `image_subset`
+>   for the final `∫_{cubeBox} ≥ ∫_{φ''(box\{z=0})} = ⊤` step. Controller-gated fix: restrict the source
+>   box to exclude a pole-neighborhood, OR run the final step via the MP `∫_{cubeBox} = ∫_{φ⁻¹(cubeBox)}`
+>   (reuse `measurePreserving_phi121sm`) instead of image-containment. Then `Ubound`/`Umeas`/instance/atom.
+> - **Status.** rate + a.e.-`leaf_integrand` + the `cov` (the conceptually-load-bearing pieces) all
+>   LANDED sorry-free. The `(1,2,1)` atom is NOT yet discharged (the `image_subset` architecture
+>   decision + the instance assembly remain). Full `lake build DLNFibre` green with the module
+>   temp-imported; aggregator reverted (single-writer).
+
+---
+
+## Smeared `(1,2,1)` — the reusable MP-final lemma (fix b) LANDED; `hsrc` is the bounded finish
+
+Branch `worktree-agent-a223be0c63e358844` @ `a6b790e6`. Controller approved fix (b). The reusable
+MP-final-step lemma is landed; the `(1,2,1)` atom needs only the source certificate `hsrc`.
+
+---
+
+> **`routeMCore_box_diverges_of_MPChart` (the reusable MP-final-step, fix b) — LANDED**
+> (sorry-free, `[propext, Classical.choice, Quot.sound]`).
+>
+> - **Lean (`RouteM121Smeared.lean` @ `a6b790e6`):** `routeMCore_box_diverges_of_MPChart M phi (hmp :
+>   MeasurePreserving phi) (hemb : MeasurableEmbedding phi) c' ε (hsrc : ∃ S, MeasurableSet S ∧ S ⊆
+>   phi⁻¹(cubeBox N ε) ∧ ∫_S (loss∘phi)^{−c'} = ⊤) : ∫_{cubeBox N ε} (loss)^{−c'} = ⊤`. The whole MP
+>   step is a 3-line `setLIntegral_comp_preimage_emb` + `lintegral_mono_set` calc (the loss pulled
+>   back to `phi⁻¹(cubeBox)`, lower-bounded by the source sub-box `S`).
+> - **Why reusable + additive:** NO `image_subset` (the rational `φ_sm` is unbounded near its pole, so
+>   image-containment fails). The banked `routeMCore_box_diverges_of_nodeChart` (image_subset-based) is
+>   UNTOUCHED — the polynomial interior/clean charts keep it (they are not MP). The ∀M-smeared lift
+>   (46 M) reuses `routeMCore_box_diverges_of_MPChart` with each chart's `hsrc`.
+> - **RESIDUAL — the `(1,2,1)` source certificate `hsrc` (the bounded finish, concrete analysis, NO
+>   design wall).** `S = subBox121 δ := {a=u 0∈[δ/2,δ] (bounded-away-from-pole), b=u 1∈[−δ,δ],
+>   z=u 2∈(0,δ), sb=u 3∈[−δ,δ]}`, `δ=ε/4` (Codex `mp-final-step`). Two sub-goals:
+>   (1) **containment** `subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))` — needs a flat-coord bound: each of
+>   the 4 flat coords of `phi121sm u = paramsEquivFlat(chartParams121 u)` is a matrix entry `≤ 4δ` on
+>   the bounded-away box (the only nontrivial one, `z−(b/a)·sb`, is `≤ δ + δ²/(δ/2) = 3δ` since
+>   `a ≥ δ/2`). Plumbing: a `phi121sm`-flat-coord readout through `Fintype.equivFin (FlatIdx M121)`
+>   (the opaque flat ordering — NO existing forward readout; RouteM221/4422 never needed one), OR show
+>   `Q121 = paramsEquivFlat∘pack121` preserves sup-norm (a coord permutation) so `‖phi121sm u‖_∞ =
+>   ‖shear121 u‖_∞ ≤ 4δ`.
+>   (2) **divergence** `∫_{subBox121 δ} (loss∘φ)^{−c'} = ⊤` — on `Pδ` the rate `loss∘φ = z²·a²`
+>   (`routeMCore_phi121sm_offpole`, `a>0`), `(z²a²)^{−c'} = |z|^{−2c'}·|a|^{−2c'}` (reads only `z,a`);
+>   peel `z` (`piFinSuccAbove`/`setLIntegral_prod`), `z`-factor over `(0,δ)` is `⊤`
+>   (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1` from `c' ≥ minAdm/2 = ½`), rest positive-finite.
+>   The `prod_rpow_lintegral_Ioo_box_eq_top` template (`Case222Cover`), adapted to the heterogeneous box.
+> - **Then** `routeM121sm_box_diverges := routeMCore_box_diverges_of_MPChart M121 phi121sm
+>   measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc` + the atom shape; expect
+>   `#print axioms = [propext, Classical.choice, Quot.sound, monomial_rlct]`.
+> - **Status.** rate + a.e.-leaf_integrand + cov-via-MP + the reusable MP-final lemma all LANDED
+>   sorry-free. The `(1,2,1)` atom is NOT yet discharged (`hsrc` = the two concrete-analysis sub-goals
+>   above). Full `lake build DLNFibre` green with the module temp-imported; aggregator reverted.
+
+---
+
+## Smeared `(1,2,1)` atom LANDED (route b) — `routeM121sm_box_diverges`, S2-FREE
+
+Branch `worktree-agent-a223be0c63e358844`. The smallest boundary-SMEARED achiever box-divergence atom
+is discharged sorry-free via route (b) (MeasurePreserving, NO `image_subset`, NO `HasFDerivAt`). The
+3-file unit (CoreShearMP + ParamsReshapeMP + RouteM121Smeared) is ready for file-level integration.
+
+---
+
+> **`routeM121sm_box_diverges` — the `(1,2,1)` smeared atom, LANDED** (sorry-free; force-elaborated
+> `#print axioms`, olean-deleted: `[propext, Classical.choice, Quot.sound]` — **S2-FREE, NO
+> `monomial_rlct`**).
+>
+> - **Lean (`RouteM121Smeared.lean`):** `∫⁻_{cubeBox 4 ε} |routeMCore M121|^{−c'} = ⊤` for `c' ≥
+>   ½·minAdm M121 = ½`, every `ε > 0`. Via `routeMCore_box_diverges_of_MPChart M121 phi121sm
+>   measurePreserving_phi121sm measurableEmbedding_phi121sm c' ε hsrc` (route b — the reusable MP-final
+>   lemma), with `hsrc = ⟨subBox121 (ε/4), measurableSet_subBox121, subBox121_subset_preimage (4·(ε/4)=ε),
+>   subBox121_diverges⟩`.
+> - **The hsrc finish (both sub-goals LANDED):**
+>   - **Containment** `subBox121_subset_preimage : subBox121 δ ⊆ phi121sm⁻¹(cubeBox 4 (4δ))` — via
+>     `phi121sm_entry` (each flat coord = a matrix entry, `rfl` through `Fintype.equivFin (FlatIdx M121)`
+>     — the route-(b) sidestep, NO opaque readout) + `chartParams121_entry_bound` (each entry `≤ 4δ` on the
+>     bounded-away box; the nontrivial `z−(b/a)·sb ≤ 3δ` since `a ≥ δ/2`).
+>   - **Divergence** `subBox121_diverges : ∫_{subBox121 δ} (|loss∘φ|)^{−c'} = ⊤` — the rate `loss∘φ =
+>     z²·a²` on `Pδ` (`a > 0`) ⟹ `|z|^{−2c'}·|a|^{−2c'}`; peel the `z`-axis (`piFinSuccAbove`/
+>     `setLIntegral_prod`), `z`-factor over `(0,δ)` `⊤` (`abs_rpow_lintegral_Ioo_eq_top`, exp `−2c' ≤ −1`
+>     from `c' ≥ ½`), rest positive (`setLIntegral_pos_iff` + `volume_pi_pi`).
+> - **Notable: S2-FREE.** Route (b)'s divergence is proven from the 1D `abs_rpow_lintegral_Ioo_eq_top`
+>   (the `∫₀ᵟ z^{−2c'} = ⊤` first principle), NOT via the cited `monomial_rlct` S2 atom — so the smeared
+>   atom carries NO `monomial_rlct` (stronger than the polynomial charts, which route through it). The
+>   geometric content (the rate, the MP chart) is fully self-contained.
+> - **Status.** sorry-free + axiom-clean (S2-free). Full `lake build DLNFibre` green with the module
+>   temp-imported; aggregator reverted (single-writer — controller integrates the 3-file unit). The
+>   reusable `routeMCore_box_diverges_of_MPChart` is banked for the ∀M-smeared lift (the 46 M).
+> - **Next:** the ∀M-smeared lift reusing `routeMCore_box_diverges_of_MPChart` — validate a `minAdm ≥ 2`
+>   smeared case ((2,3,1)/(1,3,2)) to exercise the radial det `|z|^{minAdm−1}` composed with the shear
+>   (here `(1,2,1)` is `minAdm = 1`, no radial blow-up).
+
+---
+
+## ∀M-smeared lift — the radial-MP assembly (minAdm≥2) + the (2,3,1) chart/cancellation
+
+Branch `worktree-agent-a223be0c63e358844` @ `1977e45c`. Toward the 46 boundary-smeared M. The
+minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blow-up (det |z|^{minAdm−1}).
+
+---
+
+> **`routeMCore_box_diverges_of_RadialMPChart` — the reusable minAdm≥2 assembly, LANDED**
+> (`RouteM121Smeared.lean` @ `5fa4d32f`, sorry-free, `[propext, Classical.choice, Quot.sound]`).
+>
+> - φ = ψ ∘ R: ψ = Q∘shear (measure-preserving + measurable embedding, the rational pole confined to ψ,
+>   NEVER differentiated); R the polynomial radial (the ONLY Jacobian carrier: HasFDerivWithinAt/InjOn/
+>   |det| = |u_p|^{minAdm−1} on a certified preimage source S). Source certificate `hsrc` is WEIGHTED:
+>   ∫_S |u_p|^{minAdm−1}·(loss∘φ)^{−c} = ⊤ (the radial Jacobian absorbed into the binding-axis
+>   divergence — exponent minAdm−1−2c ≤ −1 from c ≥ minAdm/2). C-o-v: ψ-preimage
+>   (setLIntegral_comp_preimage_emb) + R-image Jacobian (lintegral_image_eq_lintegral_abs_det_fderiv_mul).
+> - `routeMCore_box_diverges_of_MPChart` (minAdm=1) is the R=id, h=0 sibling. Codex `radial-mp-assembly`
+>   confirmed the factorization + the exponent arithmetic.
+> - Validated 46/46 exhaustively (`pp_smear_GATE.py` (D): det Dφ = z^{minAdm−1} across the smeared class).
+
+---
+
+> **(2,3,1) smeared validate-small (minAdm=2) — chart + shear-cancellation LANDED; rate/MP/atom WIP.**
+> `RouteM231Smeared.lean` @ `1977e45c` (sorry-free).
+>
+> - LANDED: M231=(2,3,1) anchor (minAdm=2, flatDim=9); the chart (chartA0/A1_231, chartParams231,
+>   phi231sm, lam231 = the rational Λ₀); **P1_lam231** — the load-bearing shear cancellation P₁·Λ₀ = P₂
+>   off det P₁ ≠ 0, via (P₁ᵀP₁)⁻¹P₁ᵀ = P₁⁻¹ for an invertible square P₁ (Matrix.mul_inv_rev +
+>   nonsing_inv_mul). The 2×2 analog of (1,2,1)'s scalar b/a cancellation — the conceptually-hard piece.
+> - RESIDUAL (multi-pass, documented in-file): (1) the rate routeMCore_phi231sm_offpole = z²·U (entry
+>   telescoping via P1_lam231 — the opaque-index `i : Fin (M231 0)` vs Fin 2 plumbing, the recurring
+>   `lean/CLAUDE.md` have+exact kernel; this fought a pass and is the next chunk); (2) the MP factorization
+>   φ=ψ∘R at Fin 9 (R = pivotBlowupOn radial — NEW vs (1,2,1) which had no radial; ψ = Q231∘shear231, the
+>   split121/shear121ME pattern at Fin 9); (3) the weighted hsrc (subBox231 bounded away from det P₁ = 0,
+>   z-axis divergence at exp 1−2c≤−1); (4) the atom via routeMCore_box_diverges_of_RadialMPChart.
+> - Status: the reusable assembly (the ∀M load-bearing piece) + the (2,3,1) chart + the hard cancellation
+>   are banked. The mechanical entry-telescoping + the Fin-9 MP-factorization are the bounded fresh-tide
+>   finish. Full `lake build DLNFibre` green with both modules temp-imported (8528 jobs).
+
+---
+
+> **(2,3,1) smeared validate-small (minAdm=2) — COMPLETE: rate + MP factorization + atom LANDED.**
+> `RouteM231Smeared.lean` (sorry-free; `#print axioms routeM231sm_box_diverges` force-elaborated =
+> `[propext, Classical.choice, Quot.sound]`, S2-free — verified after deleting the olean). 1125 LoC.
+>
+> **Headline theorem** `routeM231sm_box_diverges (c' : ℝ≥0) (hc' : (minAdm M231 : ℝ≥0∞)/2 ≤ c') (ε : ℝ)
+> (hε : 0 < ε) : ∫⁻ x in cubeBox (routeMAmbient M231) ε, ENNReal.ofReal (|routeMCore M231 x|^(−(c':ℝ)))
+> = ⊤`. The first `minAdm ≥ 2` boundary-SMEARED achiever box-divergence atom, discharged via the banked
+> reusable `routeMCore_box_diverges_of_RadialMPChart` (route b).
+>
+> Pieces (all sorry-free):
+> - **Rate** `routeMCore_phi231sm_offpole : routeMCore M231 (phi231sm u) = (u 6)²·Uval231 u` off
+>   `det P₁ ≠ 0`, via `dlnLoss_chartParams231_offpole` (entry telescoping `prod_chartParams231_entry`
+>   = `z·(a_{i0}+a_{i1}h1)`, the `sb`-shear cancelling through `P1_lam231`).
+> - **MP factorization** `phi231sm_eq_psi_R : phi231sm u = psi231 (R231 u)`: `R231 = pivotBlowupOn {6,7} 6`
+>   (the radial, sole Jacobian carrier, `D231_abs_det : |det (D231 u)| = |u 6|¹`); `psi231 = Q231∘shear231`
+>   measure-preserving (`measurePreserving_psi231`) + measurable embedding (`measurableEmbedding_psi231`).
+>   The `shear231` MP (`measurePreserving_shear231`) via the Codex Option-B single 2-core split
+>   `split231` + `coreShear_measurable 1 2 6` (the `shear231-mp` consult); the rational `lam231` measurable
+>   via the explicit `lam231_explicit` 2×2 `(P₁ᵀP₁)⁻¹P₁ᵀP₂` rational form.
+> - **Weighted source** `subBox231_diverges : ∫_{subBox231 δ} |u6|¹·(|loss∘φ|)^{−c'} = ⊤` (`0<δ≤1`,
+>   `c'≥1`): on the bounded-away box (`u0,u4∈[δ/2,δ]`, smalls in `[−δ/8,δ/8]`, `z=u6∈(0,δ)`) the rate is
+>   `z²·U` (`subBox231_det_ne`, `subBox231_U_pos`), so the integrand is `|u6|^{1−2c'}·U^{−c'}`; the z-axis
+>   `∫_{(0,δ)}|u6|^{1−2c'}=⊤` (`abs_rpow_lintegral_Ioo_eq_top`, `1−2c'≤−1`), the rest `U^{−c'}`
+>   positive-finite. Containment `subBox231 δ ⊆ phi231sm⁻¹(cubeBox 9 (2δ))` (`chartParams231_entry_bound`,
+>   `lam231` bounded `≤9/8` via `subBox231_lam_bound`); atom picks `δ = min(ε/2, 1)`.
+> - This realizes the `(2,3,1)` instance of the reusable `RadialMPChart` assembly — the `minAdm≥2`
+>   companion to the `(1,2,1)` weight-1 atom. NOT yet wired into `DLNFibre.lean` (single-writer); the
+>   controller wires `RouteM231Smeared` when integrating.
+
+---
+
+> **(1,3,2) smeared validate-small — COMPLETE: the `(r,c)=(1,2)` shape's atom LANDED.**
+> `RouteM132Smeared.lean` (sorry-free; `#print axioms routeM132sm_box_diverges` force-elaborated =
+> `[propext, Classical.choice, Quot.sound]`, S2-free). The genuinely-NEW third smeared shape (scalar
+> Gram `r=1` like (1,2,1), `1×2` radial `c=2` `minAdm=2` like (2,3,1)). Completes ALL THREE family
+> templates — each smeared (r,c) shape now has a sorry-free validate-small.
+>
+> **Headline** `routeM132sm_box_diverges (c' : ℝ≥0) (hc' : (minAdm M132 : ℝ≥0∞)/2 ≤ c') (ε > 0) :
+> ∫⁻ cubeBox (routeMAmbient M132) ε, ofReal (|routeMCore M132 x|^(−c')) = ⊤`. Via
+> `routeMCore_box_diverges_of_RadialMPChart` (route b), `φ = ψ132 ∘ R132`: `R132 = pivotBlowupOn {3,4} 3`
+> (radial, `|det|=|u3|¹`); `ψ132 = Q132∘shear132` MP + measurable embedding (the SCALAR shear, `lam132 =
+> [u1/u0, u2/u0]` — no matrix inverse; MP via `split132` 2-core {3,4} + `coreShear_measurable 1 2 6`);
+> rate `routeMCore_phi132sm_offpole = (u3)²·U`, `U = u0²·(u4²+1)`; weighted source `subBox132 δ` bounded
+> away from `{u0=0}`. NOT wired (single-writer DLNFibre.lean) — controller wires `RouteM132Smeared`.
+>
+> The three family templates are now all banked sorry-free: (1,1)→RouteM121Smeared (minAdm=1, MPChart);
+> (2,1)→RouteM231Smeared (minAdm=2, 2×2 Gram, RadialMPChart); (1,2)→RouteM132Smeared (minAdm=2, scalar
+> Gram + multi-col radial, RadialMPChart). Next: the family-parametric ∀M lift (each template → ∀ M in
+> its (r,c) family, dispatch by shape).
+
+---
+
+> **Claim (the ∀M-(1,1)-smeared front fact).** In the `(1,1)`-smeared regime the front product
+> `P = prodAux M A (L−1)` factors through a width-1 inner layer at the first width-1 position `p*`, so
+> off the pole `‖col 0‖² ≠ 0` every column of `P` is a scalar multiple of column 0; consequently the
+> scalar-Gram shear cancels, `P₁ · (P₁ᵀP₁)⁻¹P₁ᵀP₂ = P₂`, for the pivot column `P₁` and any residual
+> block `P₂` selecting columns of `P`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.rankOneColumns_of_factorsThroughOne` (§3a),
+>   `prodAux_split_exists` + `prodAux_factorsThroughOne` (§3b),
+>   `frontScalarShear_cancel_of_factorsThroughOne` + `prodAux_frontScalarShear_cancel` (§3c)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMFrontBottleneck.lean` @ `cdf345ef`)
+> - **Gloss.**
+>   - §3a: for `P = U·V` with `U : rows × Fin 1`, `V : Fin 1 × Fin m1`, off `∑ᵢ(P i 0)² ≠ 0`, there
+>     exist `c₀ = P.col 0` and `μ` with `μ 0 = 1` and `∀ i j, P i j = μ j · c₀ i`. Mechanism: the
+>     literal outer product `(U·V) i j = U i 0 · V 0 j`; `V 0 0 ≠ 0` extracted from the off-pole sum.
+>   - §3b: `prodAux_split_exists` — for `p ≤ k`, `prodAux M A k = prodAux M A p * Y` for some `Y`
+>     (existential right-factor split, `Nat.le_induction` on `k`, `prodAux_succ` + `mul_three_reassoc`).
+>     `prodAux_factorsThroughOne` — with `M ⟨p,_⟩ = 1`, `prodAux M A k = U·V`, `U : Fin(M 0) × Fin 1`,
+>     `V : Fin 1 × Fin(M⟨k,_⟩)` (collapse the middle width to `Fin 1` via `finCongr` at the equiv level).
+>   - §3c: §3a ∘ §3b ∘ landed `scalarGram_cancel_of_rankOneColumns` ⟹ `P₁·Λ₀ = P₂`.
+> - **Proved.** All five results sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`
+>   (forced `#print axioms` via `lake env lean`, S2-free — no analysis axioms). The factorization is
+>   unconditional; the column-normalization (and the cancellation) hold off the pole `‖col 0‖² ≠ 0`.
+> - **Assumed.** `0 < m1` / `0 < M⟨k,_⟩` (the column index `⟨0,_⟩` is well-typed); `p ≤ k`,
+>   `M ⟨p,_⟩ = 1` (the width-1 bottleneck position); `hc : ‖col 0‖² ≠ 0` (off-pole). These are exactly
+>   the hypotheses the consumer `scalarGram_cancel_of_rankOneColumns` and the chart supply.
+> - **Cited.** `scalarGram_cancel_of_rankOneColumns` (LANDED, `RouteMSmearedGenRate.lean`); the
+>   `RouteMFrontPeel` cast kernel (`prodAux_succ`, `mul_three_reassoc`, `reindex_finCongr_mul`,
+>   `finCongr_refl`/`reindex_refl_refl`); `Matrix.mul_apply`, `Fin.sum_univ_one`, `div_self` (Mathlib v4.29).
+> - **Deferred.** The (1,1)-family Option-A CHART (STEP 4 of the dispatch): the generic flat scalar-shear
+>   + its MP (`measurePreserving_shearAt` to arbitrary `p`), the generic rate `routeMCore(sheared)=u_p²·U`,
+>   the subBox/containment/`routeMCore_box_diverges_of_MPChart` assembly. This front fact is the chart's
+>   load-bearing input (the architecture cert's flagged "biggest risk"), now in hand; the chart consumes it.
+> - **Structure & ideas observed (p&p certificate, `certificate-frontbottleneck-rankone.md`).** The
+>   mechanism is a LITERAL `Fin 1` outer product, NOT rank theory; `p*` is never `L−1` (the right factor
+>   `V` always has ≥1 genuine layer); the off-pole hypothesis is load-bearing (Codex `[0 1]` counterexample
+>   — columns are multiples of the HIDDEN `U`, not of `P.col 0`, without `V 0 0 ≠ 0`). (1,2) reuses this
+>   scalar bridge verbatim; (2,1) needs a `Fin 2` / 2×2-Gram analogue (§3a generalizes by `Fin 1 → Fin r`).
+> - **Route (formaliser).** Reformulated §3b as an EXISTENTIAL right-factor split (no canonical suffix
+>   product, no entry formula, no shifted-chain reindex) — decorrelated Codex independently recommended
+>   the same route (`codex/frontprod-split-answer.md`). The `U·V` form is stated directly (no outer
+>   reindex), so it feeds §3a/§3c without a wrapping cast.
+> - **Status.** sorry-free (fidelity review pending).
+
+> The R1-LOWER smeared branch's front fact (the architecture cert §3 residual-1 + the dispatch STEPs 1-3)
+> is banked. STEP 4 (the (1,1) Option-A chart) remains; its load-bearing dependency is now landed.
