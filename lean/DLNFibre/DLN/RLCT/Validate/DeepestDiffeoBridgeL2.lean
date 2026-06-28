@@ -2737,7 +2737,7 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
     -- integrand.  Stated abstractly over `Fin L` via `Function.update` (NO `Fin 2` cast-wall — the explicit
     -- `c₀·c₁` form is unstateable in the abstract sig; `Function.update` sidesteps it); STEP 1-2 rewrites
     -- the raw absorbed core `c` to `c''` (`hc_eq`) before applying it.
-    (hSchurTie : prod (deepestM H r)
+    (hLDUtie : prod (deepestM H r)
         (Function.update
           (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
             + schurCorrection H r hr hL (q.1, q.2.2) s)
@@ -2802,9 +2802,9 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
       rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_last H r hr hL hL2 q hWdet
     · rw [Function.update_of_ne hs]
       rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_of_ne H r hr hL hL2 q s hs
-  -- STEP 3-4 (threaded `hSchurTie`, producer-internal LDU) + the `frobSq`/∑∑ congr:
-  -- `frobSq(prod c) = frobSq(prod c'') [hc_eq] = frobSq(integrand) [hSchurTie] = Score x [hScoreDef]`.
-  rw [hc_eq, hSchurTie, hScoreDef]
+  -- STEP 3-4 (threaded `hLDUtie`, producer-internal LDU) + the `frobSq`/∑∑ congr:
+  -- `frobSq(prod c) = frobSq(prod c'') [hc_eq] = frobSq(integrand) [hLDUtie] = Score x [hScoreDef]`.
+  rw [hc_eq, hLDUtie, hScoreDef]
   rfl
 
 
