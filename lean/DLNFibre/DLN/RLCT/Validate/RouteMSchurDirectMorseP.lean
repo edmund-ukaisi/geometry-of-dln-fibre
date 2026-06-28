@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurFiring
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurGenCover
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchurDirectMorseP` — the shared `Fin p` chart plumbing + cap-B branch
@@ -450,6 +451,81 @@ theorem frobSq_capB_inner_le (r p : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r →
         have hpconv : pm + 1 = p := hpm.symm
         subst hpconv
         exact hle
+
+/-! ## The `(r,p)` gen blow-up factor machinery (`4 → p` of the firing's `gFlatG_*` chain) -/
+
+/-- **The `(r,p)` radial pull-out** (`Fin p` analog of `gFlatG_blowup_radial`). The N1 degree-2
+homogeneity: `gFlatGen r p c' T (blowup) = ∫_S ((y p)²·frobSq(RmatG·S))^{−c'}`. The angular matrix
+`RmatG r p y` is `p`-free (it reshapes the `r×r` ratio chart via `matToFlatGen.symm = matToFlatG.symm`);
+only the inner `S`-box width is `p`. Verbatim from `gFlatG_blowup_radial` (`4 → p`, `matToFlatG → matToFlatGen`). -/
+theorem gFlatGen_blowup_radial (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r * r)) (y : Fin (r * r) → ℝ) :
+    gFlatGen r p c' T (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y)
+      = ∫⁻ S in matBox r p T,
+          ENNReal.ofReal (((y pivot) ^ 2 * frobSq (rmatMul (RmatG r pivot y) S)) ^ (-c')) := by
+  unfold gFlatGen
+  refine lintegral_congr (fun S => ?_)
+  congr 1
+  show (frobSq (rmatMul ((matToFlatGen r).symm
+      (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y)) S)) ^ (-c') = _
+  have hbl : (matToFlatGen r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y)
+      = fun a b => (y pivot) * (RmatG r pivot y) a b := by
+    funext a b
+    show (matToFlatGen r).symm (pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y) a b = _
+    rw [show pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y
+        = (fun i => (y pivot) * (if i = pivot then 1 else y i)) from by
+      funext i; unfold pivotBlowupOn
+      by_cases hi : i = pivot
+      · subst hi; simp
+      · simp [hi]]
+    rfl
+  rw [hbl, radialDelta_loss_factor (y pivot) (RmatG r pivot y) S]
+
+/-- **The `(r,p)` blow-up membership** (`Fin p` analog of `flatBoxG_blowup_mem_iff`). Since
+`flatBoxGen r T = flatBoxG r T` definitionally, this is the firing lemma re-stated on the gen box. -/
+theorem flatBoxGen_blowup_mem_iff (r : ℕ) (T : ℝ) (pivot : Fin (r * r)) (y : Fin (r * r) → ℝ)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot) :
+    pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y ∈ flatBoxGen r T ↔ |y pivot| ≤ T :=
+  flatBoxG_blowup_mem_iff r T pivot y hy
+
+/-- **The `(r,p)` per-chart factor** (`Fin p` analog of `chart_integrand_factorG`). On the chart, the
+flattened radial-Jacobian × `gFlatGen`-indicator factors as the radial `a`-axis indicator
+`|y p|^{(r²−1)−2c'}` × the `Fin p` angular residual `innerSGenP`. Verbatim from `chart_integrand_factorG`
+(`4 → p`, `gFlatG → gFlatGen`, `flatBoxG → flatBoxGen`, `innerSGen → innerSGenP`). -/
+theorem chart_integrand_factorGen (r p : ℕ) (c' : ℝ) (hc0 : 0 < c') (T : ℝ) (hT : 0 < T)
+    (pivot : Fin (r * r)) (y : Fin (r * r) → ℝ) (hyp0 : y pivot ≠ 0)
+    (hy : y ∈ chartDomOn (Finset.univ : Finset (Fin (r * r))) pivot) :
+    ENNReal.ofReal (|y pivot| ^ (r * r - 1))
+        * (flatBoxGen r T).indicator (gFlatGen r p c' T) (pivotBlowupOn
+            (Finset.univ : Finset (Fin (r * r))) pivot y)
+      = (Set.Icc (-T) T).indicator
+          (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) (y pivot)
+        * innerSGenP r p c' T pivot y := by
+  by_cases hmem : pivotBlowupOn (Finset.univ : Finset (Fin (r * r))) pivot y ∈ flatBoxGen r T
+  · have hyp : |y pivot| ≤ T := (flatBoxGen_blowup_mem_iff r T pivot y hy).1 hmem
+    rw [Set.indicator_of_mem hmem,
+      Set.indicator_of_mem (s := Set.Icc (-T) T) (by rw [Set.mem_Icc, ← abs_le]; exact hyp)]
+    rw [gFlatGen_blowup_radial r p c' T pivot y, innerSGenP]
+    have hpull : ∀ S : Fin r → Fin p → ℝ,
+        ENNReal.ofReal (((y pivot) ^ 2 * frobSq (rmatMul (RmatG r pivot y) S)) ^ (-c'))
+          = ENNReal.ofReal ((((y pivot) ^ 2) ^ (-c')))
+            * ENNReal.ofReal ((frobSq (rmatMul (RmatG r pivot y) S)) ^ (-c')) := by
+      intro S
+      rw [← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity) _),
+        ← Real.mul_rpow (by positivity) (frobSq_nonneg _)]
+    rw [lintegral_congr hpull, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc]
+    congr 1
+    rw [← ENNReal.ofReal_mul (by positivity)]
+    congr 1
+    have hb : ((y pivot) ^ 2 : ℝ) = |y pivot| ^ (2 : ℝ) := by
+      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
+    have hpos : (0 : ℝ) < |y pivot| := abs_pos.2 hyp0
+    rw [hb, ← Real.rpow_natCast (|y pivot|) (r * r - 1), ← Real.rpow_mul (le_of_lt hpos),
+      ← Real.rpow_add hpos]
+    congr 1; push_cast; ring
+  · have hyp : ¬ |y pivot| ≤ T := fun h => hmem ((flatBoxGen_blowup_mem_iff r T pivot y hy).2 h)
+    rw [Set.indicator_of_notMem hmem,
+      Set.indicator_of_notMem (s := Set.Icc (-T) T)
+        (by rw [Set.mem_Icc, ← abs_le]; exact hyp), zero_mul, mul_zero]
 
 /-! ## The cap-B per-chart angular residual + the directMorse cover (WIP) -/
 
