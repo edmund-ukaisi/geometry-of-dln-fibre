@@ -2272,6 +2272,56 @@ theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r :
     readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
     coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
 
+/-! ### S6e — the frame-block fact (block-lower P · M · block-upper Q reads {11,12,21} off M's)
+
+The reg-counterpart to `schur_frame_transform`: for `P = fromBlocks a 0 c D_P` (block-LOWER) and
+`Q = fromBlocks e f 0 D_Q` (block-UPPER), the `{11,12,21}` blocks of `P·M·Q` depend on `M = fromBlocks A
+B C D` only through `M`'s `{11,12,21}` (= `A, B, C`), NOT its `{22}` (= `D`):
+`{11} = a·A·e`, `{12} = a·(A·f + B·D_Q)`, `{21} = (c·A + D_P·C)·e`. So two middles agreeing on
+`{11,12,21}` give framed products agreeing on `{11,12,21}` — the E2/leak-kill content of sub-3, frame-free.
+This is exactly the moved-(2,2) leak-kill: the joint move changes only `M`'s `{22}` (after `e2_regPreserve`
+fixes `M`'s `{12}` = P01), so the reg blocks `{11,12,21}` of the framed product are invariant. -/
+
+/-- **The framed `{11,12,21}` blocks read off the middle's `{11,12,21}`** (block-lower `P` / block-upper
+`Q`). Two middles with equal `{11,12,21}` blocks give framed products with equal `{11,12,21}` blocks. -/
+theorem framed_regBlocks_eq_of_mid {r s t : Type*}
+    [Fintype r] [DecidableEq r] [Fintype s] [Fintype t]
+    (a : Matrix r r ℝ) (c : Matrix s r ℝ) (DP : Matrix s s ℝ)
+    (e : Matrix r r ℝ) (f : Matrix r t ℝ) (DQ : Matrix t t ℝ)
+    (A₁ : Matrix r r ℝ) (B₁ : Matrix r t ℝ) (C₁ : Matrix s r ℝ) (D₁ : Matrix s t ℝ)
+    (A₂ : Matrix r r ℝ) (B₂ : Matrix r t ℝ) (C₂ : Matrix s r ℝ) (D₂ : Matrix s t ℝ)
+    (hA : A₁ = A₂) (hB : B₁ = B₂) (hC : C₁ = C₂) :
+    ((Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₁ B₁ C₁ D₁
+          * Matrix.fromBlocks e f 0 DQ).toBlocks₁₁
+        = (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₂ B₂ C₂ D₂
+            * Matrix.fromBlocks e f 0 DQ).toBlocks₁₁)
+      ∧ ((Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₁ B₁ C₁ D₁
+            * Matrix.fromBlocks e f 0 DQ).toBlocks₁₂
+          = (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₂ B₂ C₂ D₂
+              * Matrix.fromBlocks e f 0 DQ).toBlocks₁₂)
+      ∧ ((Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₁ B₁ C₁ D₁
+            * Matrix.fromBlocks e f 0 DQ).toBlocks₂₁
+          = (Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A₂ B₂ C₂ D₂
+              * Matrix.fromBlocks e f 0 DQ).toBlocks₂₁) := by
+  -- The framed product's blocks (reuses `schur_frame_transform`'s `hN`-style computation).
+  have hN : ∀ (A : Matrix r r ℝ) (B : Matrix r t ℝ) (C : Matrix s r ℝ) (D : Matrix s t ℝ),
+      Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D * Matrix.fromBlocks e f 0 DQ
+        = Matrix.fromBlocks (a * A * e) (a * A * f + a * B * DQ)
+            ((c * A + DP * C) * e) ((c * A + DP * C) * f + (c * B + DP * D) * DQ) := by
+    intro A B C D
+    rw [show Matrix.fromBlocks a 0 c DP * Matrix.fromBlocks A B C D
+          = Matrix.fromBlocks (a * A) (a * B) (c * A + DP * C) (c * B + DP * D) from by
+        rw [Matrix.fromBlocks_multiply]; simp only [Matrix.zero_mul, add_zero],
+      Matrix.fromBlocks_multiply]
+    simp only [Matrix.mul_zero, add_zero, Matrix.mul_add]
+  refine ⟨?_, ?_, ?_⟩
+  · rw [hN A₁ B₁ C₁ D₁, hN A₂ B₂ C₂ D₂, Matrix.toBlocks_fromBlocks₁₁,
+      Matrix.toBlocks_fromBlocks₁₁, hA]
+  · rw [hN A₁ B₁ C₁ D₁, hN A₂ B₂ C₂ D₂, Matrix.toBlocks_fromBlocks₁₂,
+      Matrix.toBlocks_fromBlocks₁₂, hA, hB]
+  · rw [hN A₁ B₁ C₁ D₁, hN A₂ B₂ C₂ D₂, Matrix.toBlocks_fromBlocks₂₁,
+      Matrix.toBlocks_fromBlocks₂₁, hA, hC]
+
 /-! ### S6t — the SHARED endpoint-telescope corner split (the `hRegBlocks` core both subs consume)
 
 For a framed point whose per-layer frame is clean (`hframe : framedParamsPivot … = Pf · A · Qf`, the
