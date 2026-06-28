@@ -169,6 +169,25 @@ theorem frontMat_routing_eq_resid (u : Fin (routeMAmbient M) → ℝ)
   rw [Matrix.mul_apply, Fin.sum_univ_one, pivotCol, residCols] at hr
   exact hr
 
+/-- **`routing 0 r` in scalar-Gram closed form** (the `1×1`-Gram `(‖P₁‖²)⁻¹·(P₁ᵀ P₂)`): `routing 0 r
+= (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))`. The denominator is `frontU`,
+so `routing` is continuous away from the pole `{frontU = 0}`. -/
+theorem routing_eq_scalarGram (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (r : Fin (M ⟨L - 1, by omega⟩ - 1)) :
+    routing M hL u hm1 0 r
+      = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
+        * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)) := by
+  have hinv : (((pivotCol M hL u hm1).transpose * pivotCol M hL u hm1)⁻¹ : Matrix (Fin 1) (Fin 1) ℝ) 0 0
+      = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹ := by
+    rw [Matrix.inv_def, Matrix.det_fin_one, Matrix.adjugate_fin_one]
+    simp only [Matrix.smul_apply, Matrix.of_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one,
+      Ring.inverse_eq_inv', Matrix.mul_apply, Matrix.transpose_apply, pivotCol, Fin.sum_univ_one]
+    exact congrArg _ (Finset.sum_congr rfl (fun i _ => by rw [sq]))
+  rw [routing, Matrix.mul_apply, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun x _ => ?_)
+  rw [Matrix.mul_apply, Fin.sum_univ_one, hinv]
+  simp only [Matrix.transpose_apply, pivotCol, residCols]; ring
+
 /-- **The smeared-column sum collapse** (generic, the sum-arithmetic core). With the front-fact relation
 `f 0 · lam r = f (r.succ)`, the pivot-row shear `−∑ lam·d` cancels the residual sum, leaving the pivot
 term: `∑ⱼ f j · (if j = 0 then d 0 − ∑ᵣ lam r · d (r.succ) else d j) = d 0 · f 0`. Pure `Fin (w+1)`
@@ -443,29 +462,14 @@ theorem smearShiftFlat_measurable (hcol : 0 < M (deepLayer M hL).succ)
         (((continuous_apply (deepLayer M hL)).comp hsymm).matrix_elem i ⟨0, hcol⟩)
       exact hc
     exact this.measurable
-  -- `routing 0 r = (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))` (the landed
-  -- `scalarGram` `1×1`-Gram closed form), measurable via `measurable_inv` + sums of `hfront` products.
-  have hroutingForm : ∀ (u : Fin (routeMAmbient M) → ℝ) (r),
-      routing M hL u hm1 0 r
-        = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
-          * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)) := by
-    intro u r
-    have hinv : (((pivotCol M hL u hm1).transpose * pivotCol M hL u hm1)⁻¹ : Matrix (Fin 1) (Fin 1) ℝ) 0 0
-        = (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹ := by
-      rw [Matrix.inv_def, Matrix.det_fin_one, Matrix.adjugate_fin_one]
-      simp only [Matrix.smul_apply, Matrix.of_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one,
-        Ring.inverse_eq_inv', Matrix.mul_apply, Matrix.transpose_apply, pivotCol, Fin.sum_univ_one]
-      exact congrArg _ (Finset.sum_congr rfl (fun i _ => by rw [sq]))
-    rw [routing, Matrix.mul_apply, Finset.mul_sum]
-    refine Finset.sum_congr rfl (fun x _ => ?_)
-    rw [Matrix.mul_apply, Fin.sum_univ_one, hinv]
-    simp only [Matrix.transpose_apply, pivotCol, residCols]; ring
+  -- `routing 0 r` in scalar-Gram closed form (`routing_eq_scalarGram`), measurable via `measurable_inv`
+  -- + sums of `hfront` products.
   have hrouting : ∀ r, Measurable (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r) := by
     intro r
     have heq : (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r)
         = fun u => (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
           * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)) :=
-      funext (fun u => hroutingForm u r)
+      funext (fun u => routing_eq_scalarGram M hL u hm1 r)
     rw [heq]
     refine ((Finset.measurable_sum _ (fun i _ => (hfront i ⟨0, hm1⟩).pow_const 2)).inv).mul ?_
     exact Finset.measurable_sum _ (fun i _ => (hfront i ⟨0, hm1⟩).mul (hfront i (residSel M hL hm1 r)))
@@ -609,6 +613,42 @@ theorem frontU_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
     (hm1 : 0 < M ⟨L - 1, by omega⟩) :
     frontU M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1 = frontU M hL u hm1 := by
   rw [frontU, frontU, frontMat_update_pivot M hL u a hrow hcol]
+
+/-- **`smearShift` is continuous at any off-pole point** (`frontU u₀ ≠ 0`). `smearShift = ∑ᵣ routing 0 r ·
+deepCol (residSel r)`; `routing 0 r = (frontU)⁻¹ · (P₁ᵀP₂)ᵣ` (`routing_eq_scalarGram`) with `(·)⁻¹`
+continuous away from `0`, and `frontMat`/`deepCol` continuous, so the finite sum is `ContinuousAt`. -/
+theorem continuousAt_smearShift_offpole (u₀ : Fin (routeMAmbient M) → ℝ)
+    (hcol : 0 < M (deepLayer M hL).succ) (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (hne : (∑ i, (frontMat M hL u₀ i ⟨0, hm1⟩) ^ 2) ≠ 0) :
+    ContinuousAt (fun u : Fin (routeMAmbient M) → ℝ => smearShift M hL u hm1 hcol) u₀ := by
+  -- `frontMat i j` and `deepCol i` are continuous in `u`.
+  have hsymm : Continuous (fun u : Fin (routeMAmbient M) → ℝ => baseParams M u) :=
+    continuous_paramsEquivFlat_symm M
+  have hfront : ∀ (i : Fin (M 0)) (j : Fin (M ⟨L - 1, by omega⟩)),
+      Continuous (fun u : Fin (routeMAmbient M) → ℝ => frontMat M hL u i j) := fun i j =>
+    ((continuous_prodAux M (L - 1) (by omega)).comp hsymm).matrix_elem i j
+  have hdeep : ∀ (i : Fin (M (deepLayer M hL).castSucc)),
+      Continuous (fun u : Fin (routeMAmbient M) → ℝ => deepCol M hL u hcol i) := fun i =>
+    ((continuous_apply (deepLayer M hL)).comp hsymm).matrix_elem i ⟨0, hcol⟩
+  -- `smearShift u = ∑ r, [(∑ frontMat²)⁻¹ · (∑ frontMat·frontMat)] · deepCol (residSel r)`.
+  have heq : (fun u : Fin (routeMAmbient M) → ℝ => smearShift M hL u hm1 hcol)
+      = fun u => ∑ r : Fin (M ⟨L - 1, by omega⟩ - 1),
+          ((∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)⁻¹
+            * (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r)))
+          * deepCol M hL u hcol (residSel M hL hm1 r) := by
+    funext u; rw [smearShift]
+    exact Finset.sum_congr rfl (fun r _ => by rw [routing_eq_scalarGram])
+  rw [heq]
+  -- the denominator `∑ frontMat²` is `ContinuousAt` and `≠ 0` at `u₀`, so its inverse is `ContinuousAt`.
+  unfold ContinuousAt
+  refine tendsto_finset_sum _ (fun r _ => ?_)
+  have hden : ContinuousAt (fun u : Fin (routeMAmbient M) → ℝ =>
+      (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2)) u₀ :=
+    (continuous_finset_sum _ (fun i _ => ((hfront i ⟨0, hm1⟩).pow 2))).continuousAt
+  have hnum : ContinuousAt (fun u : Fin (routeMAmbient M) → ℝ =>
+      (∑ i, frontMat M hL u i ⟨0, hm1⟩ * frontMat M hL u i (residSel M hL hm1 r))) u₀ :=
+    (continuous_finset_sum _ (fun i _ => (hfront i ⟨0, hm1⟩).mul (hfront i (residSel M hL hm1 r)))).continuousAt
+  exact ((hden.inv₀ hne).mul hnum).mul (hdeep (residSel M hL hm1 r)).continuousAt
 
 /-! ## The off-pole witness (`frontU > 0` somewhere): the `e₀₀` chain
 
