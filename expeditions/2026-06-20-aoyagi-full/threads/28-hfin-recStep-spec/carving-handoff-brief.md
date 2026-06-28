@@ -49,11 +49,14 @@ radius fix) → the outer bounded-`rest`-box volume is a finite constant.
 
 ## The three sub-bricks (tasks #134, #135, #136 → #137 assembly)
 
-1. **#134 a.e.-positivity** `frobSqShiftG_ne_zero_ae`: generalize `RouteMSchurCorank3.frobSqR2c3_ne_zero_ae`
-   (explicit `MvPolynomial (Fin 12)` + hardwired `!![…]` + flatten `flatR2c3`) to `Fin ((r-1)²+4(r-1))`
-   with generic-r matrices. The witness Δ=I, S=e₁ ⟹ core=1. (Cast-intensive: the MvPolynomial matrices
-   can't be `!![…]` generically — build them as `Matrix.of (fun i k => X (flatten-idx))` and the witness via
-   `Pi.single`s.) NEEDED for the peel's `0 < w` a.e.
+UPDATE (landed since this brief was written): #134 a.e.-positivity is DONE + axiom-clean
+(`frobSqGenJoint_ne_zero_ae`, via `corePolyGen` Sum-indexed + `Fintype.equivFin` rename +
+single composite MP transport — NOT the div/mod flatten). #133 uniform `_le`
+(`coreSchurGenVal`/`schurResidG_translate_le`) is DONE + axiom-clean. So both analytic prereqs banked.
+
+1. **#134 a.e.-positivity** `frobSqGenJoint_ne_zero_ae` — DONE (axiom-clean). The Morse-peel's `0 < w` a.e.;
+   `corePolyGen m` over `(Fin m×Fin m) ⊕ (Fin m×Fin 4)` (Sum-indexed, rfl-clean eval), renamed to `Fin n`
+   via `Fintype.equivFin`, `ae_eval_ne_zero`, transported back via `flatGenJointEquiv.trans (piCongrLeft σ)`.
 2. **#135 the carving reshape** `zEG` + readback `Sc = M22 − Sh(rest)`: generalize corank-3's
    `zσ`/`zE`/`bgShift`/`Δof`/`Δof_eq_zE` (`RouteM334Ratiofin.lean` lines 466-770, ~150 bespoke `Fin 9`/`Fin 8`
    lines keyed to `Rmat334norm`). THE HARDEST. The M22-cells are `{1..r-1}×{1..r-1}` of the pivot-(0,0) R';
