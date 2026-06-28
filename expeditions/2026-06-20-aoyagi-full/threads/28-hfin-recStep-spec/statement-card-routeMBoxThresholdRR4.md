@@ -61,4 +61,15 @@ The whole file is `[propext, Classical.choice, Quot.sound]` (forced). The carve'
 - Green (`lake env lean` EXIT 0 + `scripts/lb` 8285 jobs). Forced `#print axioms` clean on all 5 results.
 - Zero `sorry`/`axiom`/`native_decide`/`#exit` (only docstring string-hits). 13 new top-level names
   clash-free vs the `DLNFibre/` tree.
-- **FIDELITY REVIEW: pending** (reviewer requested).
+- **FIDELITY REVIEW: SURVIVED** (independent `reviewer` seat, decorrelated-Codex-corroborated). All 5
+  checks pass: (1) threshold match sound — Codex independently recomputed `minAdm(r,r,4) = 4r−4 =
+  2·schurLambda r` (r=0..8) via the recursion, `le_antisymm` legs + boundaries valid; D1 reduces the
+  genuine brute-force `minAdm` (not just the recursion); (2) discharge faithful — consumes
+  `schurGen_lt_top_modulo_recStep hstep r` correctly, the D3 reshape equals `SchurCore 4 r c' 1`
+  EXACTLY (Δ↔A0 r×r, S↔A1 r×4, no transpose), `c'=0` sound, no hidden front-peel
+  (`prod_two_layer_rr4` confirms the genuine 2-matrix product); (3) non-vacuous + no overclaim — "ALL
+  r" accurate within the `(r,r,4)` family, broad family honestly named the research wall, `hstep`
+  gating in the signature/name, r=3 reproduces the banked `routeMBoxThresholdFinite_M334` statement;
+  (4) `eParamsRR4` a faithful ∀r generalisation of `eParams334`, correct layer order; (5) axiom-clean
+  under FORCED recompile (olean+ilean deleted, rebuilt) — `[propext, Classical.choice, Quot.sound]`,
+  no `sorryAx`/`native_decide`/`monomial_rlct`. Cosmetic longLine warnings noted, non-blocking.
