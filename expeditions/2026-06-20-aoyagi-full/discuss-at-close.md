@@ -1055,3 +1055,23 @@ teammate report.
    impossible to start silently (genm-capstone got this gate).
 3. Root cause was upstream: the redirect churn itself (Items 47-51 carving oscillation). Fewer base-redirects = fewer
    such stranded worktrees. Net cost here: genm-assemble's sub-step-A wasted (redundant), caught before it diverged far.
+
+### Item 53 — Default to "in-context owner finishes, gated"; reserve fresh-tide for a TRUE valve-trip (2026-06-28)
+Consolidated meta-lesson across Items 47-52 (the carving + L2 coordination churn). Pattern observed repeatedly: a deep
+teammate depth-FLAGS (or checkpoints), I spawn a fresh tide, then the owner RESUMES and delivers — so the fresh tide is
+superseded (duplicate) or, worse, ends up stranded on a now-stale base re-deriving the owner's latest work (genm-assemble
+on the carving; genm-l2leaves on L2). The owner consistently held the decisive advantage: the full in-context knowledge
+of the just-built bricks + the LATEST branch state.
+
+**Revised default:** when a teammate depth-FLAGS but the remaining is (a) intricate wiring of bricks IT built, or (b)
+mechanical-but-large on a toolkit IT holds — **let the owner finish, gated by MANDATORY forced `#print axioms`
+(olean-deleted) per increment + green-only commits + a strict valve.** Those gates make the depth-risk (a masked slip)
+DETECTABLE and recoverable, which is the actual content of the depth concern — so gated-continue is safe, and it avoids
+the duplicate/stale-base churn. **Reserve spawning a fresh tide for a TRUE valve-trip** (the owner attempts and the build
+genuinely won't go green after a real try) — a clean, well-specified handoff at that point — NOT for a depth-flag alone.
+A depth-flag from a productive owner is a signal to TIGHTEN THE GATES, not to immediately hand off.
+
+Caveat (keep): a depth-flag is still real — when the remaining is a genuinely-NEW hard CONSTRUCTION (not wiring of
+already-built bricks), fresh context is the right call (e.g. the zEG carve depth-stop → cleaner Fin-r re-attempt did
+work). The discriminator is construction-vs-wiring + does-the-owner-hold-the-latest. Net: fewer spawns, tighter gates,
+spawn-fresh only on a real wall.
