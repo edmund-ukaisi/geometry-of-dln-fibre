@@ -417,7 +417,9 @@ theorem smearShiftFlat_measurable (hcol : 0 < M (deepLayer M hL).succ)
         (((continuous_apply (deepLayer M hL)).comp hsymm).matrix_elem i ⟨0, hcol⟩)
       exact hc
     exact this.measurable
-  -- `routing 0 r = (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))`.
+  -- `routing 0 r = (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))` (the landed
+  -- `scalarGram` `1×1`-Gram closed form). The closed form makes measurability `measurable_inv` + sums of
+  -- `hfront` products — but its in-place derivation hits the `mul_apply`-nesting friction; isolated WIP.
   have hrouting : ∀ r, Measurable (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r) := by
     sorry
   -- `smearShift = ∑ r, routing 0 r · deepCol (residSel r)`.
