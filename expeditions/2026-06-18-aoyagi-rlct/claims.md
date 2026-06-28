@@ -155,6 +155,18 @@ No such claim is formalisation-ready until both fields are filled.
   origin of `tau`, preserve selected entries or pivot order, construct charts,
   compare source priors or Jacobians, prove source-rank coverage, produce
   normal crossings, compute pole order, or extract RLCT.
+- **Current status addendum, Case 2 endpoint-transport pre-measure from
+  cardinalities, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_card_eq`
+  in `RetainedPassiveCase2LocalJacobianMeasure.lean`.  It replaces the
+  supplied endpoint equivalences in the first Case 2 endpoint-transport
+  fixed-base pre-measure input theorem by explicit endpoint cardinality
+  equalities, constructs the noncanonical equivalences via
+  `case2EndpointTransportEquivs_of_card_eq`, and applies the existing supplied-
+  equivalence theorem.  It does not prove the cardinality equalities, canonical
+  endpoint labels, selected-entry preservation, source-prior transport,
+  Jacobian comparison, positivity/integrability, normal crossings, pole order,
+  or RLCT.
 - **Current status addendum, Case 2 endpoint-transport chart-produced finite
   integral, 2026-06-28.** Lean now exposes
   `ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport`,

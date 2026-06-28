@@ -46,6 +46,33 @@ This is not canonical endpoint labelling, geometric provenance for `tau`,
 selected-entry preservation, chart/source membership, measure transport,
 Jacobian comparison, normal crossings, pole order, or RLCT.
 
+## 2026-06-28 A2 Case 2 pre-measure from cardinalities
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`.
+Review:
+`review-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_card_eq
+```
+
+It constructs the endpoint equivalences with
+`case2EndpointTransportEquivs_of_card_eq` and then applies the existing
+supplied-equivalence pre-measure theorem.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed via the
+worktree-local `scripts/lb` command.  `scripts/sorries`, `git diff --check`,
+touched-Lean-file forbidden-marker search, direct axiom probe, and xhigh
+review passed.
+
+This is not proof of the cardinality equalities, canonical endpoint labels,
+selected-entry preservation, measure transport, Jacobian comparison,
+integrability, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 endpoint-transport chart-produced finite integral
 
 Reproduction:

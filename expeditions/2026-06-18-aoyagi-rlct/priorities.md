@@ -57,6 +57,32 @@ of `tau`, preserve selected entries or pivot order, construct charts, identify
 source priors, compare Jacobians, prove source-rank coverage, produce normal
 crossings, compute pole order, or extract RLCT.
 
+## Latest controller decision - 2026-06-28, Case 2 pre-measure from cardinalities
+
+The first Case 2 endpoint-transport fixed-base pre-measure wrapper now has a
+cardinality-hypothesis variant:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_card_eq
+```
+
+It constructs `eNext` and `e` via `case2EndpointTransportEquivs_of_card_eq`
+from explicit `hNext` and `hEndpoints`, then applies the existing supplied-
+equivalence pre-measure theorem.  The conclusion uses the produced
+noncanonical equivalences in the retained data and residual-coordinate
+equivalence.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-premeasure-from-cardinalities.md`.
+
+This is still a pre-measure input theorem only.  It does not prove the
+cardinality equalities, canonical endpoint labels, selected-entry preservation,
+source-prior transport, Jacobian comparison, positivity, integrability, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, concrete Case 2 all-pivot source-production payload
 
 The selected-entry analytic-atlas Case 2 source-production predicate now has a
