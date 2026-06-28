@@ -1370,6 +1370,70 @@ theorem zEG_box_preimage (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fi
       rwa [show slotCellG r N hN hr p (Sum.inr gb) = i from
         by rw [← cellEquivG_apply]; exact hs] at this
 
+/-! ### The N2b `j=1` Schur-complement readback: `Sc = matOf M22 − bgShiftG (g,b)` -/
+
+/-- **The `j=1` rank-1 Schur reduction.** For a `1×1` pivot block `M11` with `M11 0 0 = 1`,
+`(M21 * M11⁻¹ * M12) a b = M21 a 0 * M12 0 b` (`M11⁻¹ = 1` since `det = 1`, unit). -/
+theorem schurProd_fin_one {r : ℕ} (M11 : Matrix (Fin 1) (Fin 1) ℝ) (hM11 : M11 0 0 = 1)
+    (M21 : Matrix (Fin (r - 1)) (Fin 1) ℝ) (M12 : Matrix (Fin 1) (Fin (r - 1)) ℝ)
+    (a b : Fin (r - 1)) :
+    (M21 * M11⁻¹ * M12) a b = M21 a 0 * M12 0 b := by
+  have hdet : M11.det = 1 := by rw [Matrix.det_fin_one]; exact hM11
+  have hinv : M11⁻¹ = 1 := by
+    rw [Matrix.inv_def, hdet, Matrix.adjugate_fin_one]; simp
+  rw [hinv, Matrix.mul_one, Matrix.mul_apply, Fin.sum_univ_one]
+
+/-- **The Sc readback.** The N2b `j=1` Schur complement of `RmatGnorm` (the explicit formula
+`M22 − M21·M11⁻¹·M12`) equals `(fun a b => (zEG z).1 (a,b)) − bgShiftG ((zEG z).2)` — `M22` the carved
+cube, the rank-1 shift `g·bᵀ` the `(g,b)`-cube. Via `schurProd_fin_one` + `RmatGnorm_eq_slot` per cell
++ `zEG_fst_apply`/`zEG_snd_apply`. -/
+theorem n2b_Sc_eq_carve (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) :
+    (Matrix.of (fun a b : Fin (r - 1) =>
+        RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩))
+      - (Matrix.of (fun (a : Fin (r - 1)) (b : Fin 1) =>
+            RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨b, by omega⟩))
+        * (Matrix.of (fun a b : Fin 1 =>
+            RmatGnorm r N hN hr p z ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+        * (Matrix.of (fun (a : Fin 1) (b : Fin (r - 1)) =>
+            RmatGnorm r N hN hr p z ⟨a, by omega⟩ ⟨1 + b, by omega⟩))
+      = (Matrix.of (fun a b => (zEG r N hN hr p z).1 (a, b)))
+          - bgShiftG (r - 1) (zEG r N hN hr p z).2 := by
+  have hpiv : (Matrix.of (fun a b : Fin 1 =>
+      RmatGnorm r N hN hr p z ⟨a, by omega⟩ ⟨b, by omega⟩)) 0 0 = 1 := by
+    show RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1
+    exact RmatGnorm_pivot r N hN hr p z
+  ext a b
+  rw [Matrix.sub_apply, schurProd_fin_one (r := r) _ hpiv _ _ a b]
+  show RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
+      - RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨0, by omega⟩
+        * RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨1 + b, by omega⟩
+    = ((zEG r N hN hr p z).1 (a, b) - bgShiftG (r - 1) (zEG r N hN hr p z).2 a b)
+  rw [bgShiftG]
+  have hM22 : RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
+      = (zEG r N hN hr p z).1 (a, b) := by
+    rw [show (⟨1 + a, by omega⟩ : Fin r) = succIdxG r hr a from rfl,
+      show (⟨1 + b, by omega⟩ : Fin r) = succIdxG r hr b from rfl,
+      RmatGnorm_eq_slot r N hN hr p z (succIdxG r hr a) (succIdxG r hr b)
+        (by rintro ⟨h, _⟩; exact succIdxG_ne_zero r hr a h),
+      zEG_fst_apply]
+    rfl
+  have hg : RmatGnorm r N hN hr p z ⟨1 + a, by omega⟩ ⟨0, by omega⟩
+      = (zEG r N hN hr p z).2 (Sum.inl a) := by
+    rw [show (⟨1 + a, by omega⟩ : Fin r) = succIdxG r hr a from rfl,
+      RmatGnorm_eq_slot r N hN hr p z (succIdxG r hr a) ⟨0, by omega⟩
+        (by rintro ⟨h, _⟩; exact succIdxG_ne_zero r hr a h),
+      zEG_snd_apply]
+    rfl
+  have hb : RmatGnorm r N hN hr p z ⟨0, by omega⟩ ⟨1 + b, by omega⟩
+      = (zEG r N hN hr p z).2 (Sum.inr b) := by
+    rw [show (⟨1 + b, by omega⟩ : Fin r) = succIdxG r hr b from rfl,
+      RmatGnorm_eq_slot r N hN hr p z ⟨0, by omega⟩ (succIdxG r hr b)
+        (by rintro ⟨_, h⟩; exact succIdxG_ne_zero r hr b h),
+      zEG_snd_apply]
+    rfl
+  rw [hM22, hg, hb]
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
