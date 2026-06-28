@@ -23,8 +23,10 @@ The route is **intrinsic** (thread 38): a directional-derivative pairing against
 one genuinely new content is **R2★** (`mkDerivation_orbitIdeal_eq_zero`): orbit directions `δ⁰ φ`
 kill `I` to first order, proved with the landed dual-number certificate `orbitAction_eps_eq_deformationδ`.
 
-**Typeclass.** The reverse inequality is char-free; `[IsAlgClosed k]` is inherited from M3 (smooth
-point) / L1 (primeness). **Dependency rule:** `Core` only.
+**Typeclass.** The reverse inequality is char-free; `[PerfectField k] [Infinite k]` is inherited from
+M3 (smooth point: `dense_smoothLocus_of_perfectField` + residue-field formal smoothness over a perfect
+field) / L1 (primeness needs only `[Infinite k]`). Algebraic closedness is not used; `ℝ` qualifies
+(`CharZero ⟹ PerfectField`). **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -108,8 +110,8 @@ theorem finrank_eq_finrank_of_residueField_equiv {κ : Type*} [Field κ] [Algebr
 normal-form point `M` is `k`-rational, so the residue field at `m_M` is `k`. The quotient
 `orbitRing M ⧸ m_M` is a field (`m_M` maximal); `IsFractionRing.algEquiv` makes it `k`-isomorphic to
 its fraction field `κ(m_M)`, and `residueFieldNormalFormEquiv` identifies it with `k`. -/
-noncomputable def residueFieldAtPrimeNormalFormEquiv [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
-    (M : Tuple (k := k) d) :
+noncomputable def residueFieldAtPrimeNormalFormEquiv [PerfectField k] [Infinite k]
+    {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     Ideal.ResidueField (normalFormIdeal M) ≃ₐ[k] k := by
   haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
   have hfield : IsField (orbitRing M ⧸ normalFormIdeal M) :=
@@ -513,7 +515,7 @@ theorem ker_cotPairing_le_ker_deformationδ (M : Tuple (k := k) d) :
 finitely-generated `A`-module (`A = orbitRing M` noetherian, `m_M` f.g.), torsion by `m_M`, hence a
 finite-dimensional `κ = A/m_M`-vector space; and `κ ≃ₐ[k] k` (the orbit point is `k`-rational), so it
 is finite over `k`. -/
-instance finiteDimensional_cotangent_normalFormIdeal [IsAlgClosed k] (M : Tuple (k := k) d) :
+instance finiteDimensional_cotangent_normalFormIdeal [PerfectField k] (M : Tuple (k := k) d) :
     FiniteDimensional k ((normalFormIdeal M).Cotangent) := by
   haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
   -- `m_M.Cotangent` is a finite `A`-module (`A` noetherian, `m_M` f.g., cotangent a quotient)
@@ -540,7 +542,7 @@ instance finiteDimensional_cotangent_normalFormIdeal [IsAlgClosed k] (M : Tuple 
 image into the Zariski cotangent space, in finrank form: `ker (cotPairing) ⊆ ker δ⁰` (R4) gives
 `finrank (range δ⁰) ≤ finrank (range cotPairing)`, and `range cotPairing ⊆ Dual k (m_M.Cotangent)`
 has `finrank ≤ finrank (m_M.Cotangent)` (`Subspace.dual_finrank_eq`). -/
-theorem finrank_range_deformationδ_le_finrank_cotangent [IsAlgClosed k] (M : Tuple (k := k) d) :
+theorem finrank_range_deformationδ_le_finrank_cotangent [PerfectField k] (M : Tuple (k := k) d) :
     finrank k (LinearMap.range (deformationδ M M))
       ≤ finrank k ((normalFormIdeal M).Cotangent) := by
   -- rank–nullity for `δ⁰` and `cotPairing` (same domain `C⁰`), with `ker cotPairing ⊆ ker δ⁰`
@@ -566,7 +568,7 @@ theorem finrank_range_deformationδ_le_finrank_cotangent [IsAlgClosed k] (M : Tu
 /-- `ringKrullDim (orbitRing M)` is a finite natural number `n`, equal to `varietyDim Z_M`:
 `A = orbitRing M` is a nontrivial finite-type domain over `k`, with `ringKrullDim` bounded by the
 ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). -/
-theorem exists_ringKrullDim_orbitRing_eq [IsAlgClosed k] (M : Tuple (k := k) d) :
+theorem exists_ringKrullDim_orbitRing_eq [PerfectField k] (M : Tuple (k := k) d) :
     ∃ n : ℕ, ringKrullDim (orbitRing M) = (n : WithBot ℕ∞)
       ∧ varietyDim (canonicalCoord d '' orbitRankLocus M) = (n : ℕ∞) := by
   haveI : Nontrivial (orbitRing M) := inferInstance
@@ -600,7 +602,7 @@ dimension: L2a localization collapse (`m_M.Cotangent ≃ CotangentSpace (AtPrime
 the κ/k bridge (GAP2), M3 (smooth point: `finrank κ (CotangentSpace) = ringKrullDim (AtPrime m_M)`),
 GAP3 (`ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M)`), and `varietyDim Z_M =
 ringKrullDim (orbitRing M)` (L6.4). -/
-theorem finrank_cotangent_eq_varietyDim [IsAlgClosed k] (M : Tuple (k := k) d) :
+theorem finrank_cotangent_eq_varietyDim [PerfectField k] (M : Tuple (k := k) d) :
     (finrank k ((normalFormIdeal M).Cotangent) : ℕ∞)
       = varietyDim (canonicalCoord d '' orbitRankLocus M) := by
   haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
@@ -637,8 +639,9 @@ theorem finrank_cotangent_eq_varietyDim [IsAlgClosed k] (M : Tuple (k := k) d) :
 /-- **A6.1 (the reverse inequality).** `finrank k (range δ⁰) ≤ varietyDim Z_M`: the orbit tangent
 image `range (deformationδ M M)` injects into the Zariski cotangent space at `M` (R2–R5), whose
 `k`-dimension is the variety dimension of the orbit closure `Z_M = canonicalCoord '' orbitRankLocus M`
-(R6). The char-free reverse of the A4 submersion bound; `[IsAlgClosed k]` from M3/L1. -/
-theorem finrank_range_deformationδ_le_varietyDim [IsAlgClosed k] (M : Tuple (k := k) d) :
+(R6). The char-free reverse of the A4 submersion bound; `[PerfectField k] [Infinite k]` from M3/L1
+(no algebraic closedness; `ℝ` qualifies). -/
+theorem finrank_range_deformationδ_le_varietyDim [PerfectField k] (M : Tuple (k := k) d) :
     (finrank k (LinearMap.range (deformationδ M M)) : ℕ∞)
       ≤ varietyDim (canonicalCoord d '' orbitRankLocus M) := by
   rw [← finrank_cotangent_eq_varietyDim M]

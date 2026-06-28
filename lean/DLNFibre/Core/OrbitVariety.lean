@@ -369,7 +369,7 @@ RepCoord d → k` is **prime**: `O_M` is the image of the irreducible group `G_d
 orbit map `μ_M`, so `vanishingIdeal O_M = ker μ_M^*` (`vanishingIdeal_range_orbitMap_eq_ker`) is a
 kernel into the domain `𝒪(G_d) = Localization.Away Δ` (`groupRing_isDomain`), hence prime
 (`RingHom.ker_isPrime`). The foundation L0/L1/L3/L6 stand on. -/
-theorem isPrime_vanishingIdeal_orbitSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem isPrime_vanishingIdeal_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     (MvPolynomial.vanishingIdeal k (orbitSet M) :
       Ideal (MvPolynomial (RepCoord d) k)).IsPrime := by
@@ -379,7 +379,7 @@ theorem isPrime_vanishingIdeal_orbitSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ
 /-- **The orbit is Zariski-irreducible (L1, point-space form).** `O_M` is Zariski-irreducible in the
 sense of the L0 dictionary (`IsZariskiIrreducible`), i.e. its image in `Spec` is irreducible — the
 direct consumer for the L0 codimension bridge. -/
-theorem isZariskiIrreducible_orbitSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+theorem isZariskiIrreducible_orbitSet [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     IsZariskiIrreducible (orbitSet M) :=
   (isZariskiIrreducible_iff_isPrime_vanishingIdeal (orbitSet M)).mpr
@@ -389,14 +389,19 @@ section Witness
 
 /-! ## Non-vacuity witness
 
-The `(2,2,2)/ℚ` full-rank witness `tupleWitnessQ` (`ℚ` is not algebraically closed, so the headline
-needs `IsAlgClosed`; the orbit-set and pullback objects, which do not, are exercised here on the
-concrete tuple). -/
+The `(2,2,2)/ℚ` full-rank witness `tupleWitnessQ` (`ℚ` is infinite, so the primeness headline now
+fires here — it needs only `[Infinite k]`, not `[IsAlgClosed k]`; the orbit-set and pullback objects
+are exercised on the concrete tuple). -/
 
 /-- The orbit set of the `(2,2,2)/ℚ` witness contains the witness's own flattening — the orbit is
 inhabited (`P = 1`). The orbit objects are non-vacuous on a concrete matrix tuple. -/
 example : canonicalCoord dWitness tupleWitnessQ ∈ orbitSet tupleWitnessQ :=
   ⟨tupleWitnessQ, ⟨1, one_smul _ _⟩, rfl⟩
+
+/-- The primeness headline now fires on the `(2,2,2)/ℚ` witness (`ℚ` is infinite): the orbit's
+vanishing ideal is prime, with no algebraic-closedness hypothesis. -/
+example : (MvPolynomial.vanishingIdeal ℚ (orbitSet tupleWitnessQ)).IsPrime :=
+  isPrime_vanishingIdeal_orbitSet tupleWitnessQ
 
 /-- The orbit map of the witness, evaluated at the identity base change, is the witness's own
 flattening. -/
