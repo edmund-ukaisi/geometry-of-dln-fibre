@@ -48,3 +48,27 @@ R-independent const (innerS3 is INFINITE for singular Sc, so finiteness is genui
   for 0<c'<4 if peel threshold guarded — but peel needs c'>2; for c'≤2 use core334-style direct).
   Actually simplest: the a-axis needs c'<9/2 (OK), the peel needs c'>(3+1)/2=2, the residual needs
   c'−2<2 ⟺ c'<4. For c'≤2 the inner is EASIER (Morse-dominated). Branch at c'=2 like core334_lt_top.
+
+## LANDED (2026-06-28, genm-c3wire)
+
+`core_schur3_lt_top (c' : ℝ)(0<c')(c'<4) : ∫_{Δ∈matBox 3 3 1}∫_{S∈matBox 3 4 1} frobSq(Δ·S)^{−c'} < ⊤`
+PROVED sorry-free, `#print axioms = [propext, Classical.choice, Quot.sound]` (forced, olean-fresh).
+
+**KEY SIMPLIFICATION vs the original design.** The genuinely-new corank-3 JOINT recognition
+(N2b j=1 split → row-0 shear → M22↦Δ−Sh recognition → resolved residual) was ALREADY BANKED, sorry-free,
+by the (3,3,4) anchor `RouteM334Ratiofin` (`ginnerZ_lt_top`/`resolvedZ_lt_top`/`ratioResidual_lt_top`,
+the `zE`/`bgShift`/`Δof_eq_zE` slot identification feeding `resolved334_box_lt_top`). Since `Rmat3` and
+`Rmat334` are DEFEQ (both `matToFlatEquiv 3 3`), `innerS3 c' 1 p y = angA1Int c' p y`, so the inner heart
+`schurInner3_ratiofin_mid` at T=1 IS `ratioResidual_lt_top` verbatim (a 1-line reuse). The bespoke
+infrastructure I built (`schurResid2_translate_le`, `resolvedShiftR2c3_le`, `frobSqShiftR2c3_ne_zero_ae`,
+`core_T_peel_le_ae_c3`, the `…R2c3` polynomial-null machinery) is a SELF-CONTAINED N2b-route alternative,
+banked sorry-free but NOT on the live `core_schur3_lt_top` path (the (3,3,4)-reuse path is shorter).
+Imported `RouteM334Ratiofin` (now sorry-free; its file-level sorries in Skeleton/RouteMSchur/RouteMRecursion
+do NOT taint `core_schur3_lt_top` — `#print axioms` confirms).
+
+**CAVEAT (named honestly): the result is at the UNIT box (T = 1), not general T.** The corank-2
+`core_schur2_lt_top` is general-T; this is T=1 (the operative `routeMBaseNbhd = (−1,1)` radius). General-T
+= `T^{21−4c'}·(T=1)` by box-scaling, but Mathlib v4.29 has NO `lintegral_comp_smul` for the matrix space,
+and the (3,3,4) reuse (`ratioResidual_lt_top`) is radius-1-baked (the angular z-box is always [−1,1]^8; only
+the S-box radius differs). ROADMAP: build the matrix-space `lintegral_comp_smul` (or radius-T versions of
+the (3,3,4) `Jint`/`Ginner` route) to lift to general T. The c'≤2 range IS covered (exponent-bump to c''=3).

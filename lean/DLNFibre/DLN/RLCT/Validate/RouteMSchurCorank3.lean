@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurDepth2
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
+import DLNFibre.DLN.RLCT.Validate.RouteM334Ratiofin
 import DLNFibre.Core.MeasureTheory.PolynomialZeroSet
 
 /-!
@@ -504,26 +505,26 @@ integration consumes. -/
 
 /-! ## The per-chart angular helpers (mirror of the corank-2 `Rmat2_*` / `innerS2_*`) -/
 
-/-- The matrix↔flat index equiv `e3 : Fin 3 × Fin 3 ≃ Fin 9`, matching `matToFlat3`'s index reindex. -/
-noncomputable def e3 : Fin 3 × Fin 3 ≃ Fin (3 * 3) :=
+/-- The matrix↔flat index equiv `e3c3 : Fin 3 × Fin 3 ≃ Fin 9`, matching `matToFlat3`'s index reindex. -/
+noncomputable def e3c3 : Fin 3 × Fin 3 ≃ Fin (3 * 3) :=
   ((Equiv.sigmaEquivProd (Fin 3) (Fin 3)).symm).trans
     ((Equiv.sigmaEquivProd (Fin 3) (Fin 3)).trans finProdFinEquiv)
 
-/-- `Rmat3 p y i j = if e3 (i,j) = p then 1 else y (e3 (i,j))` (the unflattened angular matrix). -/
+/-- `Rmat3 p y i j = if e3c3 (i,j) = p then 1 else y (e3c3 (i,j))` (the unflattened angular matrix). -/
 theorem Rmat3_entry (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ) (i j : Fin 3) :
-    Rmat3 p y i j = if e3 (i, j) = p then 1 else y (e3 (i, j)) := rfl
+    Rmat3 p y i j = if e3c3 (i, j) = p then 1 else y (e3c3 (i, j)) := rfl
 
-/-- The pivot entry of `Rmat3 p y` is `1` (at the matrix index `e3.symm p`). -/
+/-- The pivot entry of `Rmat3 p y` is `1` (at the matrix index `e3c3.symm p`). -/
 theorem Rmat3_pivot (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ) :
-    Rmat3 p y (e3.symm p).1 (e3.symm p).2 = 1 := by
+    Rmat3 p y (e3c3.symm p).1 (e3c3.symm p).2 = 1 := by
   rw [Rmat3_entry, if_pos]
-  rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
+  rw [show ((e3c3.symm p).1, (e3c3.symm p).2) = e3c3.symm p from rfl, Equiv.apply_symm_apply]
 
 /-- `|Rmat3 p y i j| ≤ 1` on the ratio chart `|y_k| ≤ 1` (`k ≠ p`); pivot entry `= 1`. -/
 theorem Rmat3_entry_le (p : Fin (3 * 3)) (y : Fin (3 * 3) → ℝ)
     (hy : ∀ k, k ≠ p → |y k| ≤ 1) (i j : Fin 3) : |Rmat3 p y i j| ≤ 1 := by
   rw [Rmat3_entry]
-  by_cases h : e3 (i, j) = p
+  by_cases h : e3c3 (i, j) = p
   · rw [if_pos h]; norm_num
   · rw [if_neg h]; exact hy _ h
 
@@ -532,7 +533,7 @@ theorem innerS3_offpivot (c' : ℝ) (T : ℝ) (p : Fin (3 * 3)) (y y' : Fin (3 *
     (h : ∀ i, i ≠ p → y i = y' i) : innerS3 c' T p y = innerS3 c' T p y' := by
   have hR : Rmat3 p y = Rmat3 p y' := by
     funext i j; rw [Rmat3_entry, Rmat3_entry]
-    by_cases hij : e3 (i, j) = p
+    by_cases hij : e3c3 (i, j) = p
     · rw [if_pos hij, if_pos hij]
     · rw [if_neg hij, if_neg hij]; exact h _ hij
   rw [innerS3, innerS3, hR]
@@ -552,7 +553,7 @@ theorem measurable_innerS3 (c' : ℝ) (T : ℝ) (p : Fin (3 * 3)) : Measurable (
   apply Measurable.mul
   · have hy : Measurable (fun y : Fin (3 * 3) → ℝ => Rmat3 p y i k) := by
       simp only [Rmat3_entry]
-      by_cases h : e3 (i, k) = p
+      by_cases h : e3c3 (i, k) = p
       · simp only [if_pos h]; exact measurable_const
       · simp only [if_neg h]; exact measurable_pi_apply _
     exact hy.comp measurable_fst
@@ -649,32 +650,85 @@ theorem resolvedShiftR2c3_le (Sh : Fin 2 → Fin 2 → ℝ) (B : ℝ) (hB : ∀ 
 
 /-! ## The per-chart finiteness + the 9-chart assembly -/
 
-/-- **The corank-3 per-chart ratio-residual finiteness (the JOINT inner heart).** For each `Δ`-entry pivot
-`p : Fin 9`, `0 < c' < 4`, `0 < T`, the ratio-residual integral `∫_{z∈[−1,1]^8} innerS3 c' T p (e.symm(0,z))`
-is finite, where `e = piFinSuccAbove p`. The genuinely-new corank-3 step: N2b (`j=1`) splits the inner
-`∫_S frobSq(R(z)·S)^{−c'}` into Morse-top ⊕ `frobSq(Sc(z)·S_bot)`; the row-0 shear-peel
-(`radial_morse_residual_power_le`, threshold 2) leaves the corank-2 residual at `c'−2`; the M22-block of the
-angular `R(z)` is the free `Δ` of the shifted residual (`schurResid2_translate_le`, shift `Sh = M21·M12`,
-`|Sh| ≤ B`), bounded UNIFORMLY in the boundary ratios; the boundary integration is a finite box. -/
-theorem schurInner3_ratiofin (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) (hT : 0 < T)
+/-- **The corank-3 per-chart ratio-residual finiteness — the JOINT inner heart (at the unit `S`-box).**
+For each `Δ`-entry pivot `p : Fin 9`, `2 < c' < 4`, `∫_{z∈[−1,1]^8} innerS3 c' 1 p (e.symm(0,z)) < ⊤`,
+`e = piFinSuccAbove p`. This is EXACTLY the `(3,3,4)` anchor's ratio residual `ratioResidual_lt_top`:
+`innerS3 c' 1 p y` and `angA1Int c' p y` are the same object (`Rmat3 = Rmat334`, both `matToFlatEquiv 3 3`,
+the `matBox 3 4 1` `S`-box). The `(3,3,4)` JOINT recognition (`ginnerZ_lt_top`: the `zE`/`bgShift`
+`M22 ↦ Δ−Sh` slot identification feeding the BANKED `resolved334_box_lt_top`) IS the corank-3 inner heart —
+the genuinely-new content is reused verbatim, not re-derived. -/
+theorem schurInner3_ratiofin_mid (c' : ℝ) (hc2 : 2 < c') (hc4 : c' < 4)
     (p : Fin (3 * 3)) :
     (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
-        innerS3 c' T p ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (3 * 3) => ℝ) p).symm (0, z)))
+        innerS3 c' 1 p ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (3 * 3) => ℝ) p).symm (0, z)))
+      < ⊤ :=
+  ratioResidual_lt_top c' hc2 hc4 p
+
+/-- **Pointwise rpow domination** `ofReal(x^{−c'}) ≤ 1 + ofReal(x^{−c''})` for `x ≥ 0`, `0 < c' ≤ c''`:
+on `x ≥ 1` the LHS `≤ 1`, on `0 < x < 1` the LHS `≤ x^{−c''}` (smaller-magnitude negative exponent), at
+`x = 0` both `0^{neg} = 0`. The reduction of the `c' ≤ 2` ratio-residual to the `c'' = 3 ∈ (2,4)` mid case. -/
+theorem ofReal_rpow_neg_le_one_add (x : ℝ) (hx : 0 ≤ x) (c' c'' : ℝ) (hc0 : 0 < c') (hcc : c' ≤ c'') :
+    ENNReal.ofReal (x ^ (-c')) ≤ 1 + ENNReal.ofReal (x ^ (-c'')) := by
+  rcases eq_or_lt_of_le hx with hx0 | hx0
+  · -- x = 0: 0^{−c'} = 0 (c' > 0)
+    rw [← hx0, Real.zero_rpow (by linarith), ENNReal.ofReal_zero]
+    exact zero_le _
+  · -- x > 0
+    rcases le_or_gt 1 x with h1 | h1
+    · -- x ≥ 1: x^{−c'} ≤ 1
+      refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_right (le_of_eq ENNReal.ofReal_one))
+      calc x ^ (-c') ≤ x ^ (0 : ℝ) := Real.rpow_le_rpow_of_exponent_le h1 (by linarith)
+        _ = 1 := Real.rpow_zero x
+    · -- 0 < x < 1: x^{−c'} ≤ x^{−c''}
+      refine le_trans (ENNReal.ofReal_le_ofReal ?_) (le_add_left (le_refl _))
+      exact Real.rpow_le_rpow_of_exponent_ge hx0 (le_of_lt h1) (by linarith)
+
+theorem schurInner3_ratiofin (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4)
+    (p : Fin (3 * 3)) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
+        innerS3 c' 1 p ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (3 * 3) => ℝ) p).symm (0, z)))
       < ⊤ := by
-  sorry
+  rcases lt_or_ge 2 c' with hc2 | hc2
+  · exact schurInner3_ratiofin_mid c' hc2 hc' p
+  · -- c' ≤ 2: dominate the integrand by `1 + (·)^{−3}`, reducing to the c'' = 3 ∈ (2,4) mid case
+    set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (3 * 3) => ℝ) p with he
+    -- per z: innerS3 c' (e.symm(0,z)) ≤ vol(matBox 3 4 1) + innerS3 3 (e.symm(0,z))
+    have hdom : ∀ z : Fin 8 → ℝ,
+        innerS3 c' 1 p (e.symm (0, z))
+          ≤ volume (matBox 3 4 1) + innerS3 3 1 p (e.symm (0, z)) := by
+      intro z
+      rw [innerS3, innerS3]
+      calc (∫⁻ S in matBox 3 4 1,
+              ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p (e.symm (0, z))) S)) ^ (-c')))
+          ≤ ∫⁻ S in matBox 3 4 1,
+              (1 + ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p (e.symm (0, z))) S)) ^ (-(3 : ℝ)))) :=
+            lintegral_mono (fun S =>
+              ofReal_rpow_neg_le_one_add _ (frobSq_nonneg _) c' 3 hc0 (by linarith))
+        _ = volume (matBox 3 4 1) + ∫⁻ S in matBox 3 4 1,
+              ENNReal.ofReal ((frobSq (rmatMul (Rmat3 p (e.symm (0, z))) S)) ^ (-(3 : ℝ))) := by
+            rw [lintegral_add_left measurable_const, setLIntegral_const, one_mul]
+    refine lt_of_le_of_lt (lintegral_mono hdom) ?_
+    rw [lintegral_add_left measurable_const, setLIntegral_const]
+    refine ENNReal.add_lt_top.2 ⟨?_, ?_⟩
+    · exact ENNReal.mul_lt_top (matBox_volume_lt_top 3 4 1)
+        (by rw [show (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)) = morseBox 8 1 from by
+          rw [morseBox]]; exact morseBox_volume_lt_top 8 1)
+    · exact schurInner3_ratiofin_mid 3 (by norm_num) (by norm_num) p
 
 /-- **The corank-3 per-chart finiteness.** Mirror of `matBox2_chart_lt_top` one corank up: the radial-blow-up
 chart integral (Jacobian `|y p|⁸`) is finite for `0 < c' < 4`. `chart_integrand_factor3` →
 `radInd(y p)·innerS3`; the `piFinSuccAbove p` MP + Tonelli factor the pivot axis (`innerS3` is
 `a`-invariant) from the 8 ratios; the radial axis is `radial_aAxis_divisor_lt_top 3`-finite (`c' < 9/2`,
 holds since `c' < 4`); the ratio residual is finite via the JOINT `schurInner3_ratiofin`. -/
-theorem matBox3_chart_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) (hT : 0 < T)
+theorem matBox3_chart_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4)
     (p : Fin (3 * 3)) :
     ∫⁻ y in chartDomOn (Finset.univ : Finset (Fin (3 * 3))) p \ pivotZeroOn p,
         ENNReal.ofReal |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (3 * 3))) p y).det|
-          * (flatBox3 T).indicator (gFlat3 c' T) (pivotBlowupOn
+          * (flatBox3 1).indicator (gFlat3 c' 1) (pivotBlowupOn
               (Finset.univ : Finset (Fin (3 * 3))) p y)
       < ⊤ := by
+  set T : ℝ := 1 with hTdef
+  have hT : (0:ℝ) < T := by rw [hTdef]; exact one_pos
   have hdet : ∀ y : Fin (3 * 3) → ℝ,
       |(pivotBlowupOnDeriv (Finset.univ : Finset (Fin (3 * 3))) p y).det| = |y p| ^ 8 := by
     intro y
@@ -774,9 +828,10 @@ theorem matBox3_chart_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) 
       lintegral_indicator measurableSet_Icc _
     rw [heq2] at hle1
     exact lt_of_le_of_lt hle1 hN3a
-  -- ratio residual finite via the JOINT inner heart
+  -- ratio residual finite via the JOINT inner heart (at the unit S-box, T = 1)
   have hratiofin : (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)),
-        innerS3 c' T p (e.symm (0, z))) < ⊤ := schurInner3_ratiofin c' hc0 hc' T hT p
+        innerS3 c' T p (e.symm (0, z))) < ⊤ := by
+    rw [hTdef]; exact schurInner3_ratiofin c' hc0 hc' p
   have hinner : ∀ a : ℝ,
       (∫⁻ z in (Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1)), g (e.symm (a, z)))
         = (Set.Icc (-T) T).indicator (fun a => ENNReal.ofReal (|a| ^ ((8 : ℝ) - 2 * c'))) a
@@ -790,15 +845,18 @@ theorem matBox3_chart_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) 
   rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
   exact ENNReal.mul_lt_top hradfin hratiofin
 
-/-- **The corank-3 core finiteness, CLOSED.** `∫_Δ ∫_S frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}`
-(the JOINT-core SUM threshold `jp/2 + λ_{2,4} = 2 + 2`, NOT the corank-2 `2`). The recursion's FIRST real
+/-- **The corank-3 core finiteness, CLOSED (the unit box).** `∫_{Δ∈matBox 3 3 1}∫_{S∈matBox 3 4 1}
+frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}` (the JOINT-core SUM threshold `jp/2 + λ_{2,4} = 2 + 2`,
+NOT the corank-2 `2`) — at the unit box (the `(3,3,4)` `routeMBaseNbhd` radius). The recursion's FIRST real
 firing: the `Δ`-outer integral reindexes to the `Fin 9` flat carrier (`matBox3_outer_flat`), `recStep`
 covers it by the 9 max-modulus-entry charts (`gFlat3_cover_sum`), each chart finite
-(`matBox3_chart_lt_top`), summed by `ENNReal.sum_lt_top`. -/
-theorem core_schur3_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) (T : ℝ) (hT : 0 < T) :
-    (∫⁻ Δ in matBox 3 3 T, ∫⁻ S in matBox 3 4 T,
+(`matBox3_chart_lt_top`), summed by `ENNReal.sum_lt_top`. The inner JOINT heart reuses the `(3,3,4)` anchor's
+`zE`/`bgShift` `M22 ↦ Δ−Sh` recognition (`ratioResidual_lt_top`, S2-free). The general-`T` box-scaling
+(`= T^{21−4c'}·` this) is a roadmapped extension (needs the matrix-space `lintegral_comp_smul`). -/
+theorem core_schur3_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 4) :
+    (∫⁻ Δ in matBox 3 3 1, ∫⁻ S in matBox 3 4 1,
         ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))) < ⊤ := by
-  rw [matBox3_outer_flat c' T, gFlat3_cover_sum c' T]
-  exact ENNReal.sum_lt_top.2 (fun p _ => matBox3_chart_lt_top c' hc0 hc' T hT p)
+  rw [matBox3_outer_flat c' 1, gFlat3_cover_sum c' 1]
+  exact ENNReal.sum_lt_top.2 (fun p _ => matBox3_chart_lt_top c' hc0 hc' p)
 
 end DLNFibre.DLN.RLCT
