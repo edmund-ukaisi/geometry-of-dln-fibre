@@ -2639,6 +2639,14 @@ theorem resid_regBlocks_eq_of_mid_agree (H : Fin (L + 1) → ℕ) (r : ℕ)
     hP0fb, hQLfb]
   exact hkey
 
+/-- **Sub-3 — reg-energy invariance under the joint move.** The reg energy reads only the framed
+product's `{11,12,21}` blocks, which the joint move leaves invariant (E2/leak-kill).  Route A
+(telescope-bound): the abstract de-framed tuples `Aψ`/`Aq` + the witnessed frames `hframeψ`/`hframeq` +
+`hinterface` + the B-normalization `hS3b` feed the corner-split entry point
+`deepestEFull_sq_sum_eq_of_resid_blocks`; the residual `{11,12,21}` agreement is the frame-handling
+`resid_regBlocks_eq_of_mid_agree` (hPtri/hQtri) fed by the raw-middle `{11,12,21}` agreement
+`hm11/hm12/hm21` (controller-discharged via `reindex_prod_regBlocks_eq_of_e2` + the S6r readbacks +
+`e2_regPreserve`). -/
 theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2)
     (J : Fin r ↪ Fin (H (Fin.last L)))
@@ -2649,10 +2657,37 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
-    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (Aψ Aq : Params H)
+    (hframeψ : ∀ s : Fin L,
+      framedParamsPivot H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) s = Pf s * Aψ s * Qf s)
+    (hframeq : ∀ s : Fin L, framedParamsPivot H r hr hL J Pf Qf q s = Pf s * Aq s * Qf s)
+    (hinterface : ∀ (s : Fin L) (hs : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ))
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₁)
+    (hm12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₂
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₂)
+    (hm21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₂₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₂₁) :
     (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
-  sorry
+  obtain ⟨h11, h12, h21⟩ :=
+    resid_regBlocks_eq_of_mid_agree H r B hr hL J Pf Qf Aψ Aq hPtri hQtri hm11 hm12 hm21
+  exact deepestEFull_sq_sum_eq_of_resid_blocks H r B hr hL J Pf Qf
+    (psiSplitRawL2 H r hr hL q) q Aψ Aq hframeψ hframeq hinterface hS3b h11 h12 h21
 
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
 -- inner ball (where coreAbsorb = honest Schur). [HARDEST: LDU + the framed Score dictionary]
@@ -2758,6 +2793,12 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    -- **Sub-3 per-`x` reg-energy invariance** (route-A input; the controller discharges it at the final
+    -- wiring by `deepestEFull_sq_sum_psiSplitRawL2_eq` fed the producer's de-framed tuples `A(split x)` +
+    -- the witnessed frames + the raw-middle `{11,12,21}` agreement — all in scope in `DeepestGaugeConstruction`).
+    (hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+      (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
     (hsplit : ∀ w, split w
@@ -2828,7 +2869,7 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hreg : (∑ i, (regStraighten (psiSplitRawL2 H r hr hL (split x))).1 i ^ 2)
       = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
     simp only [hregval]
-    exact deepestEFull_sq_sum_psiSplitRawL2_eq H r hr hL hL2eq J Pf Qf hPtri hQtri (split x)
+    exact hsub3reg x
   -- The core term = Score x (sub-lemma 4 on the inner ball).
   have hcore : deepestCoreF H r
       (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x := by
@@ -2873,6 +2914,12 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
         (endpointQL H hL Qf)).toBlocks₂₁ = 0)
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    -- **Sub-3 per-`x` reg-energy invariance** (route-A input; the controller discharges it at the final
+    -- wiring by `deepestEFull_sq_sum_psiSplitRawL2_eq` fed the producer's de-framed tuples `A(split x)` +
+    -- the witnessed frames + the raw-middle `{11,12,21}` agreement — all in scope in `DeepestGaugeConstruction`).
+    (hsub3reg : ∀ x : Fin (flatDim H) → ℝ,
+      (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
     (coreAbsorb : DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
     (hsplit : ∀ w, split w
@@ -2916,7 +2963,7 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
       + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦcore
   -- S6 comp-identity (germ), S2 (ContDiff), S4 (fderiv at the id CLE), S3 (fixpoint).
   have hcomp : (fun x => Φcore (psiL2 H r B hB hr hL J Pf Qf x)) =ᶠ[nhds wstar] Φscore :=
-    comp_identity_L2 H r B hB hr hL hL2 hpos J hJfront Pf Qf hPtri hQtri split coreAbsorb
+    comp_identity_L2 H r B hB hr hL hL2 hpos J hJfront Pf Qf hPtri hQtri split hsub3reg coreAbsorb
       regStraighten hsplit hregval hcoreabs Score hScoreDef Φscore hΦscore wstar hwstar hL2eq
   exact rlctAtOn_diffeo_bridge_of Φscore Φcore wstar (psiL2 H r B hB hr hL J Pf Qf)
     (ContinuousLinearEquiv.refl ℝ (Fin (flatDim H) → ℝ))
