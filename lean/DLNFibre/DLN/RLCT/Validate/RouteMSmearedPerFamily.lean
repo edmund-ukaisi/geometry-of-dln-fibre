@@ -22,7 +22,7 @@ shapes the L = 2 build needs, BEFORE the cast-heavy fill.
 -/
 
 open MeasureTheory
-open scoped ENNReal BigOperators
+open scoped ENNReal BigOperators Matrix
 
 namespace DLNFibre.DLN.RLCT
 
@@ -127,5 +127,39 @@ theorem measurable_matrixTranspose_entry {X : Type*} [MeasurableSpace X] {n m : 
     (A : X → Fin n → Fin m → ℝ) (hA : ∀ i j, Measurable (fun x => A x i j)) (i : Fin m) (j : Fin n) :
     Measurable (fun x => (Matrix.of (A x)).transpose i j) := by
   simp only [Matrix.transpose_apply, Matrix.of_apply]; exact hA j i
+
+/-! ### Sub-tide 2 — the rational `Λ₀` shift entrywise measurability (the `shiftM` content) -/
+
+/-- **The `Λ₀ = (P₁ᵀP₁)⁻¹·P₁ᵀ·P₂` entrywise measurability** — the rational smeared-chart routing, at OPAQUE
+widths. Given entry-measurable `P₁ : n×r` and `P₂ : n×c`, each entry of `Λ₀ : r×c` is measurable. Composes
+the toolkit: `Gram = P₁ᵀ·P₁` (`r×r`, mul∘transpose), `Gram⁻¹` (`measurable_matrixInv_entry`), then
+`Gram⁻¹·(P₁ᵀ·P₂)` (two muls). The opaque-width replacement for `(2,3,1)`'s explicit-`2×2`-cofactor
+`lam231_measurable` — the `Λ₀` pole is invisible (`(·)⁻¹` totalized, `a⁻¹ = 0` at the pole). -/
+theorem measurable_lamEntry {X : Type*} [MeasurableSpace X] {n r c : ℕ}
+    (P₁ : X → Fin n → Fin r → ℝ) (P₂ : X → Fin n → Fin c → ℝ)
+    (hP₁ : ∀ i j, Measurable (fun x => P₁ x i j)) (hP₂ : ∀ i j, Measurable (fun x => P₂ x i j))
+    (i : Fin r) (j : Fin c) :
+    Measurable (fun x =>
+      (((Matrix.of (P₁ x))ᵀ * Matrix.of (P₁ x))⁻¹ * (Matrix.of (P₁ x))ᵀ * Matrix.of (P₂ x)) i j) := by
+  -- thread BARE entry-functions through the toolkit (Matrix.of f = f definitionally), so each step's
+  -- output entry-function feeds the next lemma's `∀ a b, Measurable (fun x => A x a b)` hypothesis.
+  -- P₁ᵀ as an entry-function
+  set p1t : X → Fin r → Fin n → ℝ := fun x a b => P₁ x b a with hp1t
+  have hp1t_meas : ∀ a b, Measurable (fun x => p1t x a b) := fun a b => hP₁ b a
+  -- Gram = P₁ᵀ·P₁ as an entry-function (∑_l P₁ x l a · P₁ x l b)
+  set gram : X → Fin r → Fin r → ℝ := fun x a b => (Matrix.of (p1t x) * Matrix.of (P₁ x)) a b with hgram
+  have hgram_meas : ∀ a b, Measurable (fun x => gram x a b) :=
+    fun a b => measurable_matrixMul_entry p1t P₁ hp1t_meas hP₁ a b
+  -- Gram⁻¹ as an entry-function
+  set ginv : X → Fin r → Fin r → ℝ := fun x a b => (Matrix.of (gram x))⁻¹ a b with hginv
+  have hginv_meas : ∀ a b, Measurable (fun x => ginv x a b) :=
+    fun a b => measurable_matrixInv_entry gram hgram_meas a b
+  -- Gram⁻¹·P₁ᵀ as an entry-function
+  set gp : X → Fin r → Fin n → ℝ := fun x a b => (Matrix.of (ginv x) * Matrix.of (p1t x)) a b with hgp
+  have hgp_meas : ∀ a b, Measurable (fun x => gp x a b) :=
+    fun a b => measurable_matrixMul_entry ginv p1t hginv_meas hp1t_meas a b
+  -- the final product (Gram⁻¹·P₁ᵀ)·P₂ — entry (i,j) measurable; defeq to the goal
+  have hfin := measurable_matrixMul_entry gp P₂ hgp_meas hP₂ i j
+  exact hfin
 
 end DLNFibre.DLN.RLCT
