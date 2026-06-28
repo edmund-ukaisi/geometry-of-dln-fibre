@@ -1094,3 +1094,38 @@ consumer lemma exists (not just the ones below it).** A teammate (or the control
 "ready-to-flip" pre-stage — turns a future surprise into a parallel work-item. The cost of NOT catching it: a "R1-UPPER
 done!" headline that travels far while routeMCore_le_matBox is still unbuilt. (Also: scope-name precisely — "R1-UPPER hfin"
 ≠ `resolution_charts` Skeleton:1234, the separate higher RLCT layer; conflating them is the same overclaim trap.)
+
+### Item 55 — The carve is the binding p=4 subcase, not the ∀M R1-UPPER engine: the fully-general ∀M headline hinges on RouteMBoxThresholdFinite ∀p (operator scope call) (2026-06-28)
+genm-n4's pre-build substance check (+ decorrelated Codex xhigh; I verified by grep) found that a literal ∀M
+`routeMCore_le_matBox → SchurCore 4 r` is a CATEGORY ERROR — and this reshapes the headline's scope. The carve (the entire
+genm-firing/genm-carving multi-tide effort: zEG, cellR, schurRatioResidGen_mid, schurGen_lt_top_modulo_recStep) closes the
+**binding p=4 Schur residual** (the M334-style core), NOT arbitrary M. Three structural reasons (all verified):
+1. `prod M A` is an **L-fold** product (`prod = prodAux … L`); the r=3 template `routeMCore_M334_le_matBox` works only because
+   M334 has L=2. No single MP reshape collapses L factors to a 2-matrix box for general L.
+2. `SchurCore` is **hardcoded at p=4** (right factor `r×4`; `matBox 2 4`, `morseBox 4`). General output width `M(last)` is arbitrary.
+3. `schurLambda r = 2r−2` (the p=4 thresholds) ≠ `½·minAdm M` in general — the SchurCore radial blow-up only matches the
+   p=4 binding family.
+
+**Honest restatement of the deliverable.** R1-UPPER hfin ∀M = `routeMCore_le_matBox` (the honest ∀M MP open-box⊆cube reduction,
+genm-n4 (a), axiom-clean) + `RouteMBoxThresholdFinite M` (the box-finiteness for c'<½·minAdm, genm-n4 (b)). The carve discharges
+`RouteMBoxThresholdFinite` for the **binding p=4 family** (the (2,2,2)/(3,3,4)/(4,4,2,2) anchors + p=4-binding M). So what the
+expedition has built — once the in-flight legs land — is the binding-p=4-family ∀M (a real, substantial, honest result), with
+the fully-general ∀M gated on TWO precisely-named open analytic pieces:
+- **`RouteMBoxThresholdFinite` ∀p** (general output-width box-finiteness) — the R1 general-p gap.
+- **`3289`** (general-L grouped recursive diffeo) — the L2/D1 general-L gap (already roadmapped).
+
+**OPERATOR STRATEGIC CALL.** Is `RouteMBoxThresholdFinite` ∀p a bounded build or a research wall?
+- Bounded-build route: generalize the carve machinery (cellR/zEG/schurLambda) from fixed p=4 to ∀p — the p=4 case is a worked
+  template, so per the ambition calibration this is "large-but-established → break it down." But it is plausibly comparable in
+  size to the entire carve effort (i.e. very large).
+- Alternative: the **iterated-fibre** route (the paper's other method) — a different substantial machinery.
+My lean: it is large-but-established (the paper proves it), so within reach in principle — but it is the single largest remaining
+piece and a real decision point. Recommend the operator weigh: (i) charge RouteMBoxThresholdFinite ∀p this expedition (commit to
+the general-p lift), (ii) bank the binding-p=4-family ∀M result + named gaps as the expedition deliverable and roadmap the
+general-p + general-L lifts, or (iii) a scoped middle (e.g. ∀p for a stated width-class). No action is being deferred silently:
+genm-n4 is building the honest reduction + named gap NOW; this item is about the general-p discharge, not the structure.
+
+**Lesson (caps Items 51/54):** the bedrock/precision discipline — pre-build substance checks + dependency-chain audits — caught
+three successive overclaims in the R1 chain (the missing routeMCore_le_matBox; the carve≠∀M-engine). A green branch + a worked
+family is NOT the ∀M headline. Always: name the family the result covers, grep that the "generic" consumer actually exists at the
+claimed generality, and check the worked anchor's special structure (here L=2, p=4) isn't load-bearing before calling it ∀M.
