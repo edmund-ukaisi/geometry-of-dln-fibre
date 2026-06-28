@@ -56,7 +56,7 @@ base-side round-trip, LANDED), but it stalls on Lean infrastructure (a kernel-co
 single GLOBAL `Flat π` / `FiberBundle` over all of `rankROpen` additionally needs the triple-overlap
 coherence packaged + a local-to-global flatness assembly; those stay roadmapped (see
 `Core.FibreBundleHeadline`). What this removes is "the target-side transition does not exist" — it does,
-pairwise, transported honestly from the base-side transition.
+pairwise, transported from the base-side transition.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

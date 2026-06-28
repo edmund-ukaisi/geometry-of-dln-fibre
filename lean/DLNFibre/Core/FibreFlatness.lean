@@ -51,10 +51,10 @@ The `SchurLoc`-linear trivialization rung **is now built downstream** in
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
 giving chartwise flatness over the in-chart base direction `SchurLoc`. (`FibreFlatness` cannot
 forward-import it — `FibreOverBaseTriv` imports this module.) That still does **not** close the `Flat π`
-target: the remaining open items are (i) **projection compatibility** — that the in-chart structure map
-`schurToDsigAt` is the pullback of `mult`'s projection from the target/base rank-chart — and (ii)
-R1/global gluing. This module records the two cheap true facts + the cheap-flatness verdict, not the
-payoff.
+target: the remaining open item is (ii) R1/global gluing. (i) **projection compatibility** — that the
+in-chart structure map `schurToDsigAt` is the pullback of `mult`'s projection from the target/base
+rank-chart — is now CLOSED (R5, `Core.FibreProjectionCompat`). This module records the two cheap true
+facts + the cheap-flatness verdict, not the payoff.
 
 **Forward pointer (S4b, downstream).** The `SchurLoc`-linear upgrade IS delivered downstream in
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
