@@ -520,7 +520,8 @@ theorem ker_cotPairing_le_ker_deformationδ (M : Tuple (k := k) d) :
 /-- The orbit-point cotangent space `m_M.Cotangent` is finite-dimensional over `k`. It is a
 finitely-generated `A`-module (`A = orbitRing M` noetherian, `m_M` f.g.), torsion by `m_M`, hence a
 finite-dimensional `κ = A/m_M`-vector space; and `κ ≃ₐ[k] k` (the orbit point is `k`-rational), so it
-is finite over `k`. Carries `[PerfectField k]` (explicit) `[Infinite k]` (from the section). -/
+is finite over `k`. Needs only `[PerfectField k]` (this instance does not depend on `[Infinite k]`; the
+downstream reverse-inequality theorems do carry `[Infinite k] [PerfectField k]`). -/
 instance finiteDimensional_cotangent_normalFormIdeal [PerfectField k] (M : Tuple (k := k) d) :
     FiniteDimensional k ((normalFormIdeal M).Cotangent) := by
   haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1

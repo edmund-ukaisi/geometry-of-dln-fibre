@@ -28,7 +28,14 @@ singular-learning-theory.
   = the well-rounded Phase-1+2 final, ready for operator review/merge. (Threads 08–11; `synthesis.md`
   § PHASE 2 CLOSED.)
 
-## The seam (operator decision, 2026-06-27): thin cited interface + prove all DLN geometry
+## The seam + spine (operator decision, 2026-06-27) — HISTORICAL (pre-pivot Phase-1 plan)
+
+> **HISTORICAL.** This section and *The spine* below are the EARLY Phase-1 plan, since SUPERSEDED — see
+> § Phase status above + `synthesis.md` § PHASE 2 CLOSED for the final shape. In particular: the lower
+> bound `rlct ≥ ½·codim` is the **CITED** Aoyagi analytic input (NOT a formalized resolution/mildness
+> proof on this branch — the "All DLN-geometric content is Proved" / "prove the singular-stratum mildness"
+> framing below did NOT survive); and the real↔complex transfer was proved via the **direct `C+δ` route**
+> (Phase 2), not the resolution geometry sketched here. Final cited boundary = {Watanabe `≤`, Aoyagi `≥`}.
 
 The RLCT is **analytic**: for the loss `K(w) ≥ 0`, `rlct(K)` is the smallest pole of
 `ζ(z) = ∫ K^{−z} φ`, equivalently (Hironaka) `minᵢ (hᵢ+1)/(2kᵢ)` over resolution divisors; for a smooth
@@ -96,8 +103,11 @@ computation; let the sea rise toward the wall.
 - **Still CITED (the analytic core, NOT in scope):** zeta / meromorphic continuation / resolution of
   singularities / Watanabe SLT / rlct-of-a-quadratic — the two analytic bounds (Watanabe `≤`, Aoyagi `≥`)
   stay a thin named cited interface. Faithful to L&R, who cite Aoyagi.
-- **NOW IN SCOPE (Phase 2):** the real-AG *geometry* — real dimension theory + the smooth-real-point/IFT
+- **DONE (Phase 2): `hT` PROVED** — via the DIRECT `C+δ` route (both codims = the field-independent `C+δ`
+  of the relaxed `codimRepCanonical_fibre_eq_cCodim_add_shift`), which dominated/superseded the route this
+  line first anticipated. The win was relaxing a vestigial `[IsAlgClosed]→[CharZero][Infinite]` on the
+  repo's own squeeze. (Originally scoped as: the real-AG *geometry* — real dimension theory + the smooth-real-point/IFT
   or ℚ-unirationality machinery to PROVE the transfer `hT` (`codim_ℝ = codim_K`). This is geometry, not the
-  analytic core; well-established maths Mathlib v4.29 happens to lack. Built in `DLNFibre.Core`.
+  analytic core; well-established maths Mathlib v4.29 happens to lack — that route was dominated.) Built in `DLNFibre.Core`.
 - **Still BLIND:** never import/copy/depend on the parallel aoyagi-paper formalisation
   (`origin/expedition/aoyagi-full`'s `RLCT/*`) — decorrelation; the analytic bounds stay cited.

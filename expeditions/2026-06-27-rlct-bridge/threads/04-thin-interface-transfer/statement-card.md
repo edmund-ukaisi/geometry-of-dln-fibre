@@ -57,7 +57,7 @@ Branch `expedition/rlct-bridge-04-thin-interface`, commit `a3bd2b5f` (tightening
 >   (fields of `RlctRealInterface`, both guarded by `0 < N → B.rank = r → (∀ k', r ≤ d k')` — the
 >   inhabited-fibre scope, load-bearing for soundness on the upper bound); the transfer `hT`
 >   (`codim_ℝ = codim_K`, a standalone explicit hypothesis on each payoff theorem).
-> - **Cited (named, sourced — the permanent boundary `{watanabe_upper, aoyagi_lower, T}`).**
+> - **Cited (named, sourced — the Phase-1 boundary (NOT permanent — T was PROVED + discharged in thread 11; final boundary = 2) `{watanabe_upper, aoyagi_lower, T}`).**
 >   - `cited_watanabe_upper` — Watanabe's universal log-canonical-threshold upper bound `rlct ≤ codim/2`.
 >   - `cited_aoyagi_lower` — Aoyagi Thm 1 / Lehalleur–Rimányi §8 (`thm:aoyagi-rlct`, the `rlct = ½·codim`
 >     theorem; the literal section is the paper's `\ref`, not a hardcoded number).
@@ -78,7 +78,7 @@ Branch `expedition/rlct-bridge-04-thin-interface`, commit `a3bd2b5f` (tightening
 
 ### Caveat next to the claim (precision)
 This is **not** an unconditional `rlct = ½·codim` theorem. The `_via_aoyagi` names signal the cited
-analytic source; the `hT` hypothesis signals the cited geometric transfer; the guard
+analytic source; the `hT` hypothesis signalled the (then-)cited geometric transfer — PROVED + discharged in thread 11; the guard
 `0 < N → B.rank = r → (∀ k', r ≤ d k')` signals the inhabited-fibre scope (without it the upper bound
 is uninhabitable by the true rlct: off `image(mult)` the fibre is empty, `(codim_ℝ).toNat = 0`, forcing
 `rlct ≤ 0`). The real codim `codim_ℝ` is the BARE real-locus codim — the `x² + y²` discriminator (real

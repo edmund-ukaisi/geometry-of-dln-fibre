@@ -11,7 +11,10 @@ unranked; "unclear-but-keep-going" is first-class.
 | R1 | **The decisive computation** — local rlct of the deepest stratum of `(2,2,2,2,2)`, `r=0` | **closed — MILD** | λ=3/2=½·codim (3 ways). Kill-condition does NOT fire. R3-Newton in standard coords DEAD (Newton-degenerate witness) → R3-resolution needed; refined gamble = Newton-nondegenerate in the *resolved* chart. |
 | Rm | **Mathlib-coverage recon** for the local model | **closed** | lci-scheme API is an upstream gap; the conormal-free statement carries R2 (the real wall is the ℝ-seam, not lci). |
 
-## The spine — FINAL OUTCOMES (expedition CLOSED 2026-06-28; superseded the proposed waves below)
+## The spine — PHASE-1 OUTCOMES (intermediate; the FINAL state is the Phase-2 table below — `hT` PROVED, boundary → {Watanabe ≤, Aoyagi ≥})
+
+> NOTE: the rows below are the **Phase-1** end-state (T was CITED then, boundary = 3). **Phase 2
+> (next section) PROVED `hT` and discharged it ⟹ FINAL cited boundary = {Watanabe ≤, Aoyagi ≥}** (2 facts).
 
 The proposed "prove the lower bound" spine was re-routed by the operator's BLIND decision (the analytic
 rlct is CITED, not formalised — fidelity to L&R who cite Aoyagi). Final:
