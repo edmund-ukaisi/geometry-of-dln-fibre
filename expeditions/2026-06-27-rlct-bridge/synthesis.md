@@ -318,3 +318,24 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     honesty, name=content, caveats-next-to-claims, non-vacuity, beauty). Loop findings to equilibrium
     before close.
   - Holding for the two reviews + R5 (06, bundle, still running).
+
+- **tick 12 (hardener verdict — SOLID + 2 tightenings, 2026-06-28):** `hardener-04` (`af1b0a5d`) verdict on
+  04's seam: **SOLID on the L4 gate** — a genuine factorization (one opaque fused field → 3 named cited
+  facts + le_antisymm-proved equality + proved codim_K=C + route-β bundle-shift discharge), name=content
+  holds, codimRealFibre is the right object, runway honest. Technical floor re-verified independently
+  (BundleShiftDischarge green 3731 jobs; #print axioms `[propext, Classical.choice, Quot.sound]` on all 6
+  load-bearing payoffs; monolith genuinely gone). TWO HARDEN-THESE (neither breaks soundness; both → task #8):
+  - **HARDEN-2 (soundness, mine to own):** the bounds quantify `∀ B` (I approved "unconditional upper") —
+    but off `image(mult)` the fibre is ∅ ⟹ `codimRealFibre = height ⊤ = ⊤` ⟹ `(⊤).toNat = 0` ⟹ upper bound
+    collapses to `rlct ≤ 0`, which the true `rlctAt` (∞ on a nowhere-zero loss) CANNOT satisfy ⟹ the
+    unguarded interface is UNINHABITABLE by the intended rlct. **Fix: restore the monolith's attainability
+    guard `B.rank=r → (∀ k', r ≤ d k')` (⟺ fibre nonempty)** on both bounds + thread through the 7
+    consumers. The (2,2,2) witnesses (B=0, rank-1) already satisfy the guard — survive unchanged.
+  - **HARDEN-1 (prose):** docstrings/card say "irreducible cited content = atomic `hdim`" but the reduction
+    lemma `codimRealFibre_eq_codimRepCanonical_of_dimTransfer` is ORPHAN (zero payoffs invoke it; grep +
+    decorrelated Codex confirm); every consumer threads codim-level `hT`. `hT ⟹ hdim` not licensed. Fix:
+    correct prose — the payoff cites `hT`; `hdim`+nonemptiness ⟹ `hT` via the banked reduction, not threaded
+    this tide.
+  - **Held:** dispatch the consolidated tightening (task #8) to tide 04 only AFTER the fidelity reviewer
+    (`a3ed3e41`) lands — integrate both decorrelated reviews, avoid fix-then-contradict. Then re-green-gate
+    + re-#print-axioms + hardener re-review. Holding for fidelity + R5.
