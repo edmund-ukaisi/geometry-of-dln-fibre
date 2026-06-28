@@ -842,3 +842,24 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 > - **Deferred.** The MP/subBox leg (the flat `phiSm` + its MP + measurable embedding + subBox source
 >   cert + `routeMCore_box_diverges_of_MPChart`) → the (1,1) atom. The rate (its load-bearing input) is now in hand.
 > - **Status.** sorry-free (rate leg). The (1,1) atom: gated only on the MP/subBox assembly.
+
+---
+
+> **STEP-4 MP LEG COMPLETE** (the (1,1)-family chart, measure-preservation). `RouteMSmearedGenChart.lean`
+> (@ `e7fb2117`) — ZERO sorries, axiom-clean `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`).
+>
+> - **Lean:** `measurePreserving_phiSm` — the flat chart `phiSm` (a single subtractive shear at the
+>   deepest-`(0,0)` flat coord `smPivotCoord`, by `smearShift`) preserves volume. Supporting (sorry-free):
+>   `measurePreserving_updateSub_of_coordInvariant` (GENERIC width-free wrapper: a coord-`p`-invariant
+>   subtractive shear is MP, reducing to the landed `measurePreserving_shearAt`);
+>   `flatCoordOf_injective`, `baseParams_update_pivot_apply`, `frontMat_update_pivot`,
+>   `deepCol_update_pivot_resid`, `routing_update_pivot`, `smearShift_update_pivot` (the coord-invariance
+>   chain — the front coords + residual deepest-rows never touch the pivot `(0,0)`); `smearShiftFlat_measurable`
+>   (`frontMat`/`deepCol` continuity via `continuous_prodAux ∘ continuous_paramsEquivFlat_symm`; `routing 0 r`
+>   via the `1×1`-Gram closed form `(∑frontMat²)⁻¹·(∑frontMat·frontMat)`).
+> - **Proved.** `phiSm` is measure-preserving (everywhere — the shear is a coord-`p`-invariant transvection).
+> - **Deferred.** The connection `(paramsEquivFlat).symm (phiSm u) = smParams u` (links the rate to `phiSm`);
+>   the measurable embedding (package `phiSm` as a `MeasurableEquiv`); the subBox source cert +
+>   `routeMCore_box_diverges_of_MPChart` (landed) → the (1,1) atom.
+> - **Status.** sorry-free (MP leg + rate leg both complete). The (1,1) atom: gated on the connection +
+>   embedding + subBox assembly.
