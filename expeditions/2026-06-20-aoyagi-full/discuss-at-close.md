@@ -855,3 +855,23 @@ formaliser tide (task #113): enumerate ALL clashes across the two lineages, rena
 ONE systematic pass + single rebuild — NOT whack-a-mole (the iteration cost is ~5-10min/rebuild). **Operator note:** this
 is the first concrete sign that the separately-grown concrete-anchor modules will need a namespacing/deconfliction pass
 to co-exist in the final headline — a known, bounded, mechanical cost, surfaced early.
+
+### Item 43 — The L2 producer's heavy core scoped; 3289 (L≥3) is THE research-risk to flag (2026-06-28)
+genm-l2 completed the L2 KC1 leg (probe + KC2 + row-WLOG + leading-block invertibility + the row-selector — all banked
+axiom-clean) and recon'd the L2 producer. **Finding:** the headline's L2 obligation (1131 `deepest_regular_core_normal_form`)
+routes `1131 ← deepest_normal_form_of_value ← deepest_gauge_squeeze_exists ← deepest_gauge_construction`, and the `sorry`
+at 2915 is the ENTIRE BARE BODY of `deepest_diffeo_bridge_L2` — a multi-hundred-line gauge-slice diffeo-bridge build (the
+g146/#44 non-measure-preserving CoV via `rlctAtOn_unit_invariant_aux`), NOT a wiring. It assembles banked bricks (E1, the
+IFT local-diffeo, the `rlctAtOn_diffeo_bridge_of` interface, the Core normalizers, KC1's [Invertible A11]) + the unbuilt
+Ψ-construction + E2 reg-preservation.
+
+**Controller decision (within the autonomous mandate — charge large-but-established, roadmap genuine walls):**
+- **The L=2 bridge (`deepest_diffeo_bridge_L2`) is large-but-BOUNDED → CHARGED** (genm-l2, #118; SPECIFY-first, diff-gated
+  through the E1/E2 soundness region, g146-design-check first). It's the heavy L2 core on the headline critical path AND the
+  D1 1177(a) lynchpin.
+- **3289 (the L≥3 grouped recursive diffeo) is THE genuine research-risk** (#120) — the one place the (A) "no walls" premise
+  is least secure. Even a perfect L=2 bridge leaves `deepest_gauge_construction` L≥3-sorryAx. **Roadmapped: scope LAST** (after
+  the L=2 bridge + the other legs land, design in hand). **Operator-relevant: the fallback if 3289 is a true wall is the CITED
+  Watanabe `rlct ≤ ½·codim`** (the upper-bound half; the geometric codim is the new content either way) — but that's a
+  citation the brief otherwise avoids, so flag it as the decision point if 3289 doesn't yield. This + N4's 3289-analogue are
+  the two research-risk frontiers; everything else is bounded/landed.
