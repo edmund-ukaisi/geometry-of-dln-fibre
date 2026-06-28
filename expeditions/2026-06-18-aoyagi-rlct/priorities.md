@@ -19,6 +19,32 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` first comparison bridges
+
+The positive-tail post-`Ctop` bridge now has a first green comparison slice in
+`RetainedPassiveCoordinatesJacobian.lean`.  New private helper lemmas:
+
+```text
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_F2C
+rawEdgeTupleA3_retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+retainedPassivePostCtopSourceCAtLinearMapAt_after_T123_eq_targetRecovered
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_after_T123_eq_targetOnly
+```
+
+These establish the basic readouts needed for the later recursive bridge:
+after `T123`, the `(F2,C)` fields are the edge-pair target shear, raw `A3`
+readout is preserved, post-`Ctop` source `C` equals the old target-recovered
+source `C`, and the post-`Ctop` current solved-`A1` tangent agrees with the
+existing target-only current solved-`A1` tangent on actual raw-order derivative
+targets.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+
+This still does not prove the post-`Ctop` solved-`A1` suffix comparison,
+`C` suffix/`Cnext` comparison, lower-left one-step comparison, recursive
+`dEarly_postC` comparison, positive-tail `F3` shear, or any determinant/RLCT
+result.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` lower-left recursion scaffolding
 
 The positive-tail post-`Ctop` helper frontier now has the `C` suffix,

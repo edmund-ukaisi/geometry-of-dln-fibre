@@ -48,6 +48,26 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` First Comparison Bridges
+
+`RetainedPassiveCoordinatesJacobian.lean` now has the first private comparison
+slice for the post-`Ctop` positive-tail bridge.  New helper lemmas prove:
+
+- after `T123`, the `(F2,C)` fields are exactly the edge-pair target shear;
+- after `T123`, raw `A3` readout is preserved;
+- the post-`Ctop` source `C` readout on the rest of `T123(w)` is the old
+  target-recovered source `C` readout on `w`;
+- on actual derivative targets, the post-`Ctop` current solved-`A1` tangent
+  agrees with `retainedPassiveLowerLeftTailCurrentTargetOnlySolvedA1TangentAt`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.
+
+The remaining comparison work is the solved-`A1` suffix bridge, the `C`
+suffix/`Cnext` bridge, the lower-left one-step bridge, and the recursive
+`dEarly_postC` bridge.  No positive-tail `F3` shear or determinant result is
+claimed here.
+
 ## Latest A2 Post-`Ctop` Lower-Left Recursion Scaffolding
 
 `RetainedPassiveCoordinatesJacobian.lean` now has the private post-`Ctop`
