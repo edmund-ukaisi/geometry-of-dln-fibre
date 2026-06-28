@@ -1,12 +1,20 @@
-# Statement card — `RouteMSchurDepth2` (the corank-2 N2b→Morse reduction END-PIECES)
+# Statement card — `RouteMSchurDepth2` (the corank-2 N2b→Morse weld; inner-S CLOSED)
 
-> **Naming note (post-review, 2026-06-28).** An earlier draft called this the "depth-2 composition
-> validator" and `schurSplit_depth2_lt_top` "the composition CLOSED". A fidelity review (reviewer +
-> decorrelated Codex) flagged this as OVERCLAIMING: the three lemmas are NOT chained end-to-end (lemma 3
-> takes the split form as its starting point and does not consume lemmas 1-2 or invoke N2b). Renamed to
-> "END-PIECES" / "the two ends of the reduction"; the missing weld (core → split form) is the deferred
-> N4 radial-blow-up CoV, now stated next to each headline. The Lean math was sound throughout — only the
-> framing was corrected.
+> **UPDATE (2026-06-28, the weld leg).** The INNER-S half of the weld is now built end-to-end:
+> `schurInner_S_le` chains N2b (`j=1`, cell hyps discharged) → END 1 (`schurSplit_lintegral_le`) → the
+> row-0 shear-peel (`schurSplitD_lintegral_lt_top`) → the abstract-`Z` Morse terminal
+> (`radial_morse_dominates_absZ_lt_top`), proving `∫_{S∈matBox 2 4 T} frobSq(R·S)^{−c'} < ⊤` for `c'<2`
+> on a fixed radial-blow-up angular chart (`R 0 0 = 1`, `|R i k| ≤ 1`). This is the GENERIC-N2b version of
+> the bespoke `(3,3,4)` `step3a`/`ratioResidual` chain. All new lemmas axiom-clean
+> `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`), S2-FREE. The REMAINING gap is only
+> the OUTER radial-R blow-up cover (the `recStep` 4-chart fold + radial Jacobian `|a|³`), mirroring
+> `matBox334_chart_lt_top`. See the "Inner-S weld (PROVED)" section below.
+
+> **Naming note (post-review, 2026-06-28).** An earlier draft called the abstract ends a "depth-2
+> composition validator" / "composition CLOSED"; a fidelity review (reviewer + decorrelated Codex) flagged
+> this as OVERCLAIMING (the abstract ends are not chained). Corrected to "reduction ends". With
+> `schurInner_S_le` the INNER-S integral IS now genuinely chained end-to-end (N2b ⟶ Morse); the OUTER
+> radial-R cover remains the deferred weld — stated next to the headline.
 
 > **Module.** `DLNFibre.DLN.RLCT.Validate.RouteMSchurDepth2`
 > (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurDepth2.lean` @ `<uncommitted — controller pins SHA>`;
@@ -81,6 +89,36 @@ over the matrix box into the split form `(P, z)`, summed over the `r²` charts b
 deferred N4 long pole. What IS proven: the two reduction ingredients, each sorry-free, S2-free, and at the
 binding threshold (cross-checked against `core334_lt_top`'s independent `c'' < 2`).
 
+## Inner-S weld (PROVED end-to-end, 2026-06-28 — the weld leg)
+
+The abstract ends are now WELDED for the inner `S`-integral. New lemmas (all axiom-clean
+`[propext, Classical.choice, Quot.sound]`, S2-FREE; forced `#print axioms`):
+
+- **`radial_morse_dominates_absZ_lt_top`** — two-radius Morse dominance over an abstract `z`-domain:
+  `∫_{z∈Z} ∫_{P∈morseBox (m+1) Tp} (∑ⱼ (P j)² + W z)^{−c'} ∂μ ≤ Kbound (m+1) c' Tp · μ Z < ⊤` for
+  `c' < (m+1)/2`, `W ≥ 0`, `μ Z < ⊤`. Generalises `radial_morse_dominates_lt_top` to (i) independent
+  `P`/`z` radii and (ii) an arbitrary finite-volume `z`-domain (so the residual `S`-row over `matBox 1 4 T`
+  feeds it with NO `Fin 1 → Fin 4 ≃ Fin 4` flatten). Tonelli pulls the `z`-independent inner `P`-bound out.
+- **`schurSplitD R Sc S`** — the N2b `r=2,j=1` split form `frobSq (R·S)_row0 + frobSq (Sc · S_row1)`,
+  abbreviated; `schurSplitD_nonneg`, and **`schurSplitD_eq`** (with `R 0 0 = 1`):
+  `schurSplitD R Sc S = (∑ⱼ (S 0 j + R₀₁·S 1 j)²) + Sc₀₀²·(∑ⱼ (S 1 j)²)` — the top-block shear + scaled
+  residual, the shear-peel form. Proof: `frobSq`/`rmatMul` unfold + `Fin.sum_univ_one/two` + `ring`.
+- **`lintegral_translate_le_local`** / **`matBox_volume_lt_top`** — small local atoms (the translate
+  box-enlarge bound, a local copy avoiding the heavy `RouteM334Ratiofin` import; the matrix-box compactness).
+- **`schurSplitD_lintegral_lt_top`** — `∫_{S∈matBox 2 4 T} (schurSplitD R Sc S)^{−c'} < ⊤` for `0<c'<2`.
+  Via `schurSplitD_eq` + row-split `S = (S_row0, S_row1)` (`piFinSuccAbove 0`, MP) + Tonelli (`S_row1`
+  outermost); per fixed `S_row1` the top block is a shear of `S_row0`, peeled by `lintegral_translate_le_local`
+  (box-enlarge `T → 2T` since `|R₀₁·S_row1 j| ≤ T`); `radial_morse_dominates_absZ_lt_top` (`m+1=4`,
+  `Tp=2T`, `Z=matBox 1 4 T`) closes it.
+- **`schurInner_S_le`** — the inner-S weld CHAINED: on a fixed radial-blow-up angular chart (`R 0 0 = 1`,
+  `|R i k| ≤ 1` — the bounded pivot-`(0,0)` cell), `∫_{S∈matBox 2 4 T} frobSq (R·S)^{−c'} < ⊤` for
+  `0 < c' < 2 = λ_{2,4}`. Via N2b (`j=1`; cell hyps discharged: the `1×1` minor `R₀₀ = 1` is max-modulus,
+  `det = R₀₀ = 1 ≠ 0`) → END 1 (`schurSplit_lintegral_le`) → `schurSplitD_lintegral_lt_top`. The Schur
+  complement `Sc` is `R`-determined (extracted once via N2b's uniqueness), so the per-`S` bounds use the
+  same `Sc`. **This is the genuinely-new generic-N2b weld heart** — what the bespoke `(3,3,4)` route does
+  by hand for `angularR`, here via the generic Schur split; it lifts to ∀M. Codex-confirmed: one N2b level
+  closes `∫_S` UNIFORMLY over the chart (the `Sc→0` rank-1 edge does not break it).
+
 ## Hypotheses (the load-bearing ones)
 
 - `schurSplit_integrand_le` / `schurSplit_lintegral_le`: the N2b-shaped two-sided comparison
@@ -92,35 +130,35 @@ binding threshold (cross-checked against `core334_lt_top`'s independent `c'' < 2
   `j·p = 4`-entry Morse block); `W` nonneg + measurable (the corank-1 Schur residual, automatically
   nonneg as a `frobSq`).
 
-## Deferred — the WELD between the two ends (the heavy N4 long pole, NOT this leg)
+## Deferred — the OUTER radial-R blow-up cover (the remaining N4 gap, NOT this leg)
 
-END 2 (`schurSplit_depth2_lt_top`) takes the split-form integral over `(P, z)` as its starting point; END
-1 takes the comparison as a hypothesis. The remaining N4 gap that would CHAIN them is the
-**radial-blow-up change-of-variables** that turns the corank-2 core `∫_R frobSq(R·S)^{−c'}` over the
-matrix box `matBox 2 2 T` INTO that split-form `(P, z)` integral (and, at the same step, produces the N2b
-comparison END 1 consumes):
-- cover `matBox 2 2 T` by the `r² = 4` max-modulus-entry charts (`recStep`/`argmaxCellOn`);
-- per chart, N1 (`radialDelta_loss_factor`) pulls the radial scale `a`, N3a/N3b the a-axis divisor;
+The INNER-S half is now welded (`schurInner_S_le`). The remaining N4 gap is the OUTER radial-R blow-up
+that turns the joint corank-2 core `∫_Δ ∫_S frobSq(Δ·S)^{−c'}` over the `Δ`-box INTO the per-chart
+`∫_a ∫_{R-ang} ∫_S` form that `schurInner_S_le` closes:
+- cover `matBox 2 2 T` (the `Δ`-box) by the `r² = 4` max-modulus-entry charts (`recStep`/`g5_pivotNode`);
+- per chart, N1 (`radialDelta_loss_factor`) pulls the radial scale `a` (Jacobian `|a|³`,
+  `pivotBlowupOnDeriv_det`), N3a/N3b the a-axis divisor; Tonelli separates `a` from the inner `∫_{R-ang}∫_S`;
 - per chart, the angular `R'` (pivot entry `= 1`, others `≤ 1`) → permute the pivot to `(0,0)` (Jacobian
-  `1`), apply N2b with `j = 1` → the split form `D = frobSq (R'·S)_top + frobSq (Sc·S_bot)`;
-- the radial CoV identifies `(R'·S)_top` with a free `Fin 4` Morse block (the genuinely-remaining work).
+  `1`) → `schurInner_S_le` closes the inner `∫_S` (the per-chart constant is `a`-independent and
+  `R-ang`-uniform).
 
-This is the cert §4 N4 HIGH-risk assembly (`routeMCore_threshold_lt_top`, skeleton in `RouteMSchur`).
-The note in N4's docstring now points at these two reduction ends + names the remaining weld precisely.
+This is the cert §4 N4 HIGH-risk assembly (`routeMCore_threshold_lt_top`, skeleton in `RouteMSchur`),
+mirroring `matBox334_chart_lt_top`'s radial-CoV plumbing. The note in N4's docstring points at the
+reduction ends; this leg added the inner-S weld.
 
 ## Build / audit
 
 - `lake build DLNFibre.DLN.RLCT.Validate.RouteMSchurDepth2` green; full `lake build DLNFibre` green
-  (RouteMSchur docstring edits only — N2b/N3b "SKELETON" → "PROVED"; N4 docstring points at this
-  validator).
+  (RouteMSchur docstring edits only — N2b/N3b "SKELETON" → "PROVED"; N4 docstring points at the ends).
 - `scripts/sorries`: ZERO in `RouteMSchurDepth2`. (`RouteMSchur` retains the ONE honest N4 sorry, the
   multi-tide endpoint.)
-- `#print axioms` (forced): all three `[propext, Classical.choice, Quot.sound]`.
+- `#print axioms` (forced): all load-bearing lemmas `[propext, Classical.choice, Quot.sound]` (S2-FREE).
 
 ## Status
 
-`sorry-free` (the three reduction-end lemmas), `reviewed` (fidelity audit 2026-06-28: math sound,
-sorry-free, S2-free, threshold-correct; the earlier "composition CLOSED/validator" framing was flagged as
-overclaiming and has been corrected to "END-PIECES" — the lemmas are not chained, the core→split weld is
-the deferred N4 step; the redundant `hF` hypothesis was dropped). Pending controller wire-in of the
-`RouteMSchurDepth2` import into `DLNFibre.lean`.
+`sorry-free` (the abstract reduction ends + the inner-S weld `schurInner_S_le` + the radial-Morse infra).
+The abstract ends were `reviewed` (fidelity audit 2026-06-28: math sound, S2-free, threshold-correct; the
+earlier "composition CLOSED/validator" framing was corrected to "reduction ends", and `hF` dropped). With
+this leg the inner-S integral IS now welded end-to-end (N2b ⟶ Morse) via `schurInner_S_le`; the OUTER
+radial-R cover remains the deferred N4 step. The inner-S weld is pending a fidelity review. Pending
+controller wire-in of the `RouteMSchurDepth2` import into `DLNFibre.lean`.
