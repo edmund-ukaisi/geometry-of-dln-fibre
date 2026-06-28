@@ -18,6 +18,44 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 Case 2 explicit selected-entry source-family regularity
+
+Reproduction:
+`reproduction-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Statement card:
+`statement-card-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+
+Lean now proves finite-coordinate regularity of the explicit source family:
+
+```text
+continuous_case2SuccessorSelectedEntryMatrix
+continuous_case2PostPivotSelectedEntryRetainedPassiveData
+continuous_case2PostPivotSelectedEntryRetainedPassiveData_detChart_subtype
+continuous_case2PostPivotSelectedEntrySourceEdgeFamily
+measurable_case2PostPivotSelectedEntrySourceEdgeFamily
+```
+
+The successor selected-entry matrix is continuous entrywise because each entry
+is a selected-entry chart-map coordinate.  The constructed retained-passive
+datum has tuple `(1,0,0,C,1,0)`: the first `C` edge is constant and the second
+is the submatrix recovered from the successor residual zero-extension.  The
+source-family continuity is the determinant-chart subtype map composed with
+the existing retained-passive `edgeMatrix` continuity theorem.  Measurability
+follows from continuity.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+Xhigh review by `Gibbs` passed:
+`review-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+touched-Lean-file forbidden-marker search, and direct axiom-footprint probes
+passed; the new endpoints report `[propext, Classical.choice, Quot.sound]`.
+
+This is finite regularity only.  It does not prove source-prior pushforward,
+Jacobian density comparison, arbitrary retained-passive coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 Case 2 explicit selected-entry source chart
 
 Reproduction:

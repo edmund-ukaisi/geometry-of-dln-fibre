@@ -140,6 +140,19 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, explicit selected-entry source-family regularity,
+  2026-06-28.** The constructed Case 2 selected-entry-to-source family now has
+  finite-coordinate regularity.  Lean proves continuity of the successor
+  selected-entry matrix, continuity of the constructed retained-passive datum
+  and its determinant-chart subtype map, and continuity/measurability of
+  `case2PostPivotSelectedEntrySourceEdgeFamily`.  This uses only finite product
+  topology, selected-entry chart-map continuity, submatrix continuity, and the
+  existing retained-passive determinant-chart `edgeMatrix` continuity theorem.
+  Reproduction:
+  `threads/03-block-product-reduction/reproduction-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+  It still does not prove source-prior pushforward, Jacobian density
+  comparison, arbitrary retained-passive coverage, source-rank coverage,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, explicit selected-entry source chart, 2026-06-28.**
   The constructed Case 2 source-production lane now has an explicit parametric
   source-family map.  Lean defines the old residual as a zero-extension of the

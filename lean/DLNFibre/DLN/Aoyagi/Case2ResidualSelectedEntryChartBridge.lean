@@ -524,6 +524,45 @@ noncomputable def case2SuccessorSelectedEntryMatrix
           n S (J + 1) (Equiv.refl _) eNext c))
 
 set_option linter.style.longLine false in
+/-- The successor selected-entry matrix is continuous as a function of the
+successor selected-entry coordinates. -/
+theorem continuous_case2SuccessorSelectedEntryMatrix
+    {τ : Type*}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    Continuous
+      (fun yNext :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ ↦
+        case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) := by
+  let pivotNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} :=
+    ⟨(J + 2, J + 2),
+      case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1)) τ ≃
+        (case2ResidualBlockPivotEntries n S (J + 1) : Type) :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) eNext
+  refine continuous_matrix ?_
+  intro i j
+  have hcoord :
+      (fun yNext :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ ↦
+        case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext i j) =
+        fun yNext ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+            (residualCoordEquiv (i, j)) := by
+    funext yNext
+    simp [case2SuccessorSelectedEntryMatrix, AoyagiResidualBlockCoordinateIndex.matrix,
+      pivotNext, residualCoordEquiv]
+  rw [hcoord]
+  exact
+    (continuous_apply (residualCoordEquiv (i, j))).comp
+      (SelectedEntrySignedBox.CenterCoord.continuous_chartMap pivotNext)
+
+set_option linter.style.longLine false in
 /-- A nonzero successor selected pivot coordinate makes the successor
 selected-entry matrix nonzero. -/
 theorem case2SuccessorSelectedEntryMatrix_ne_zero_of_yNext_pivot_ne_zero

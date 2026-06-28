@@ -19,6 +19,46 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, explicit selected-entry Case 2 source-family regularity
+
+The constructed Case 2 selected-entry-to-source family now has finite-coordinate
+regularity:
+
+```text
+continuous_case2SuccessorSelectedEntryMatrix
+continuous_case2PostPivotSelectedEntryRetainedPassiveData
+continuous_case2PostPivotSelectedEntryRetainedPassiveData_detChart_subtype
+continuous_case2PostPivotSelectedEntrySourceEdgeFamily
+measurable_case2PostPivotSelectedEntrySourceEdgeFamily
+```
+
+The proof is elementary product-topology bookkeeping.  Each successor matrix
+entry is a selected-entry chart-map coordinate; the constructed
+retained-passive datum has constant passive fields, a constant following edge,
+and residual edge equal to the submatrix recovered from the zero-extension of
+the successor matrix.  Composing the determinant-chart subtype map with the
+existing retained-passive `edgeMatrix` continuity theorem gives continuity of
+the explicit source family, and measurability follows from continuity.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.  Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-explicit-selected-entry-source-family-regularity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Xhigh review by `Gibbs` passed:
+`threads/03-block-product-reduction/review-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Full `DLNFibre` build, `scripts/sorries`, `git diff --check`, touched-Lean-file
+forbidden-marker search, and direct axiom-footprint probes also passed; the new
+endpoints report `[propext, Classical.choice, Quot.sound]`.
+
+This proves only finite-coordinate continuity/measurability of the explicit
+constructed source-family map.  It does not prove source-prior pushforward,
+Jacobian density comparison, arbitrary retained-passive coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.  The next source-moving
+frontier is an exact local-measure handoff shape or a chart-produced finite
+integral/pushforward statement with all measure hypotheses explicit.
+
 ## Latest controller decision - 2026-06-28, explicit selected-entry Case 2 source chart
 
 The constructed Case 2 source-production map is now exposed as a parametric

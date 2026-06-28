@@ -48,6 +48,50 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Explicit Selected-Entry Source-Family Regularity
+
+The explicit selected-entry-to-source family from the previous Case 2 source
+chart rung is now continuous, hence measurable, as a finite-coordinate map of
+the successor selected-entry coordinates.
+
+New Lean endpoints:
+
+```text
+continuous_case2SuccessorSelectedEntryMatrix
+continuous_case2PostPivotSelectedEntryRetainedPassiveData
+continuous_case2PostPivotSelectedEntryRetainedPassiveData_detChart_subtype
+continuous_case2PostPivotSelectedEntrySourceEdgeFamily
+measurable_case2PostPivotSelectedEntrySourceEdgeFamily
+```
+
+The successor matrix continuity is entrywise: every entry is a selected-entry
+center-coordinate chart map evaluated at a fixed residual coordinate.  The
+retained-passive datum has product tuple `(1,0,0,C,1,0)`.  The edge `C 0` is
+constant because the constructed `Cprime` tail is the reindexed identity; the
+edge `C 1` is the submatrix of the successor matrix recovered by the
+zero-extension residual-block lemma.  Therefore `C`, the retained-passive
+datum, the determinant-chart subtype map, and the source edge family are
+continuous.  Measurability is immediate from continuity.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed with
+the existing imported warning profile.
+Xhigh review by `Gibbs` passed:
+`threads/03-block-product-reduction/review-a2-case2-explicit-selected-entry-source-family-regularity.md`.
+Full `DLNFibre` build, `scripts/sorries`, `git diff --check`, touched-Lean-file
+forbidden-marker search, and direct axiom-footprint probes passed; the new
+endpoints report `[propext, Classical.choice, Quot.sound]`.
+
+This is finite regularity only.  It does not prove source-prior pushforward,
+Jacobian density comparison, arbitrary retained-passive coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.  The next useful move is a
+local-measure handoff theorem in the exact consumer shape, or a chart-produced
+finite-integral statement with explicit support and measure hypotheses.
+
 ## Latest A2 Case 2 Explicit Selected-Entry Source Chart
 
 The constructed Case 2 source-production theorem now has an explicit
