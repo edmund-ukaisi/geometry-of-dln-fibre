@@ -243,4 +243,51 @@ theorem resolvedShiftRGP_le (r p : ℕ) (hr : 3 ≤ r) (hp : 0 < p)
   rw [hcast]
   exact schurResidGP_translate_le r (pm + 1) hr Sh B hB (c' - ((pm + 1 : ℕ) : ℝ) / 2) K
 
+/-! ## The pivot-normalised form of `innerSGenP` (4 → p of `innerSGen_eq_norm`) -/
+
+/-- **The `S` row-permutation CoV on `matBox r p T`** (`Fin p` analog of `matBox_rowperm_lintegralG`):
+permuting the `Fin r` row-index of `S` by `σc` is measure-preserving (`piCongrLeft`) and the box is
+`σc`-invariant. -/
+theorem matBox_rowperm_lintegralGP {r p : ℕ} (T : ℝ) (σc : Fin r ≃ Fin r)
+    (f : (Fin r → Fin p → ℝ) → ℝ≥0∞) :
+    (∫⁻ S in matBox r p T, f S) = ∫⁻ S in matBox r p T, f (fun k j => S (σc k) j) := by
+  set E := MeasurableEquiv.piCongrLeft (fun _ : Fin r => Fin p → ℝ) σc with hE
+  have hmp : MeasurePreserving E.symm volume volume :=
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin r => Fin p → ℝ) σc).symm E
+  have hpre : matBox r p T = E.symm ⁻¹' (matBox r p T) := by
+    ext S
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k; exact h (σc i) k
+    · intro h i k
+      have := h (σc.symm i) k
+      rw [show E.symm S (σc.symm i) k = S i k from by
+        show S (σc (σc.symm i)) k = S i k; rw [Equiv.apply_symm_apply]] at this
+      exact this
+  have key := hmp.setLIntegral_comp_preimage_emb E.symm.measurableEmbedding f (matBox r p T)
+  have hrhs : (∫⁻ S in matBox r p T, f (fun k j => S (σc k) j))
+      = ∫⁻ S in matBox r p T, f (E.symm S) := rfl
+  rw [hrhs]
+  rw [← hpre] at key
+  exact key.symm
+
+/-- **`innerSGenP` in the pivot-normalised form** (`Fin p` analog of `innerSGen_eq_norm`).
+`innerSGenP r p c' T pivot ((piRatioG …).symm (0,z)) = ∫_{S∈matBox r p T} frobSq(RmatGnorm·S)^{−c'}`:
+row/col-permute `RmatG` by `σr,σc` (`frobSq_rmatMul_permGP`) under the `S`-row-permute CoV
+(`matBox_rowperm_lintegralGP`). -/
+theorem innerSGenP_eq_norm (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (c' : ℝ) (T : ℝ)
+    (pivot : Fin (r * r)) (z : Fin N → ℝ) :
+    innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z))
+      = ∫⁻ S in matBox r p T,
+          ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr pivot z) S)) ^ (-c')) := by
+  set y := (piRatioG r N hN pivot).symm (0, z) with hy
+  set σr := Equiv.swap ((eG r).symm pivot).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm pivot).2 (⟨0, by omega⟩ : Fin r) with hσc
+  rw [innerSGenP]
+  rw [matBox_rowperm_lintegralGP T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr pivot z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  exact frobSq_rmatMul_permGP (RmatG r pivot y) S σr σc
+
 end DLNFibre.DLN.RLCT
