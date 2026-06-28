@@ -84,6 +84,43 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
+## Latest A2 Case 2 Source-Readback Factor Provenance
+
+The fixed-base p.13 source edge family built from the endpoint-transported
+explicit Case 2 selected-entry retained-passive datum now reads back to that
+same transported datum:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_eq_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+The readback's adjacent factors are therefore the displayed Case 2 factors
+after forward endpoint reindexing:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_one_submatrix_eq_displayedPostPivotResidualBlock_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-readback-factor-provenance.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-source-readback-factor-provenance.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-source-readback-factor-provenance.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; the new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is fixed-base source-readback provenance for the constructed
+endpoint-transported datum.  It still leaves `tau`/`hTau`, label-preserving
+endpoint provenance, arbitrary `ofTopologyTuple` factor alignment,
+source-prior transport, Jacobian comparison, normal crossings, pole order, and
+RLCT open.
+
 ## Latest A2 Case 2 Endpoint-Transport Pivot Nonzero Consumer
 
 The endpoint-transported explicit Case 2 selected-entry retained-passive datum

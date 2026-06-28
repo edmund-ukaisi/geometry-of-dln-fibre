@@ -170,6 +170,21 @@ No such claim is formalisation-ready until both fields are filled.
   arbitrary `ofTopologyTuple` factor alignment, fixed-base source-readback
   provenance, source-prior transport, Jacobian comparison, normal crossings,
   pole order, or RLCT.
+- **Current status addendum, Case 2 source-readback factor provenance,
+  2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_eq_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_of_case2EndpointTransport_sourceEdgeFamilyOfData`,
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_one_submatrix_eq_displayedPostPivotResidualBlock_of_case2EndpointTransport_sourceEdgeFamilyOfData`,
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor_of_case2EndpointTransport_sourceEdgeFamilyOfData`
+  in `RetainedPassiveCase2LocalJacobianMeasure.lean`.  The fixed-base source
+  readback of the endpoint-transported explicit Case 2 source edge family is
+  the transported datum itself; its readback `C 1` and `C 0` factors therefore
+  recover the displayed post-pivot residual block and free following factor
+  after forward endpoint reindexing.  This removes a real source-readback
+  factor field for the constructed endpoint-transported datum, but does not
+  construct `tau`, prove `hTau`, give label-preserving endpoint provenance,
+  identify arbitrary `ofTopologyTuple` data, transport source priors, compare
+  Jacobians, prove normal crossings, compute pole order, or extract RLCT.
 - **Current status addendum, Case 2 self-endpoint transport, 2026-06-28.** Lean
   now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_selfEndpoint_sourceEdgeFamilyOfData`

@@ -14284,3 +14284,45 @@ produces some pivot and coordinates; it does not identify them with
 `ofTopologyTuple` factor alignment, fixed-base source-readback provenance,
 source-prior transport, Jacobian comparison, normal crossings, pole order, or
 RLCT.
+
+## 2026-06-28 A2 Case 2 source-readback factor provenance
+
+Reproduction:
+`reproduction-a2-case2-source-readback-factor-provenance.md`.
+Statement card:
+`statement-card-a2-case2-source-readback-factor-provenance.md`.
+Review:
+`review-a2-case2-source-readback-factor-provenance.md`, PASS by xhigh
+read-only checker `Bacon`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_eq_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_one_submatrix_eq_displayedPostPivotResidualBlock_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+The fixed-base source readback of the source edge family built from the
+endpoint-transported explicit Case 2 datum is that transported datum itself.
+Consequently the readback's `C 1` and `C 0` factors recover the displayed
+post-pivot residual block and free following factor after forward endpoint
+reindexing.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; the new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is fixed-base source-readback factor provenance for the constructed
+endpoint-transported datum.  It does not construct `tau`, prove `hTau`, give
+label-preserving endpoint provenance, identify arbitrary `ofTopologyTuple`
+data, transport source priors, compare Jacobians, prove normal crossings,
+compute pole order, or extract RLCT.

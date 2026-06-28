@@ -38,6 +38,40 @@ nonzero/all-pivot source production, or retained-passive p.13
 source-chart/pushforward data.  A4 and A5 remain at the source boundaries
 recorded in `frontier-saturation-audit-2026-06-26.md`.
 
+## Latest controller decision - 2026-06-28, Case 2 source-readback factor provenance
+
+The fixed-base p.13 source edge family built from the endpoint-transported
+explicit Case 2 selected-entry retained-passive datum now has actual
+source-readback adjacent factor provenance:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_eq_case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_one_submatrix_eq_displayedPostPivotResidualBlock_of_case2EndpointTransport_sourceEdgeFamilyOfData
+PaperEndpointFixedBaseRegularCoordinateSourceData.sourceReadback_C_zero_submatrix_eq_displayedPostPivotFreeFollowingFactor_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+This proves that the fixed-base source readback of the constructed source edge
+family is the transported datum itself, then recovers the displayed post-pivot
+residual block and free following factor from the readback's `C 1` and `C 0`
+fields after forward endpoint reindexing.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-readback-factor-provenance.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-readback-factor-provenance.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-readback-factor-provenance.md`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probes passed; the new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  This removes a real
+source-readback factor field for the constructed endpoint-transported datum.
+It does not construct `tau`, prove `hTau`, give label-preserving endpoint
+provenance, identify arbitrary `ofTopologyTuple` data, transport source
+priors, compare Jacobians, prove normal crossings, compute pole order, or
+extract RLCT.
+
 ## Latest controller decision - 2026-06-28, Case 2 endpoint-transport pivot nonzero consumer
 
 The endpoint-transported explicit Case 2 selected-entry retained-passive datum
