@@ -1186,3 +1186,28 @@ wire) is in flight NOW; this item is specifically the L≥3-wall scope decision,
 "is ∀M reachable?" into a precisely-located wall + a sharply-characterized reachable family — exactly the bedrock discipline
 (name the family the result covers; locate the wall before claiming generality). The carve being DONE did not make the
 arbitrary-depth headline a bounded build; the wall is one layer above the carve.
+
+### Item 58 — "Integrate X" must mean "base on the branch that HAS X + wire", not "rebuild X on my branch": the carve-integration drift + the fresh-tide fix (caps Items 47–56) (2026-06-28)
+The R1-UPPER carve closed (quadruply-certified, on capstone @c2777384). The designated #143 integrator (genm-firing)
+then **repeatedly (4×) re-derived the carve close on its own branch** (`b277a6c7`) instead of basing the integration
+on the certified branch — each attempt hitting branch-specific cast/index-fiddle walls ("the cast-fixes don't transfer"
+trap) and valve-stopping. Three controller redirects ("port, don't re-derive"; "base on capstone @c2777384") did not
+break the pattern, because the integrator kept its branch-attachment + build-momentum.
+
+**Root cause.** "Integrate X into canonical DLNFibre" was read as "build X on my branch, then wire," not "checkout the
+branch that already HAS X (certified), then add only the wire." When the integration target already exists certified on a
+branch, *rebuilding* it on a different branch is pure waste + re-incurs the branch-specific proof friction.
+
+**Fix (the resolution).** Hand the integration to a FRESH tide (`genm-wire`) with NO branch-attachment, framed exactly:
+"base on capstone @c2777384 (the whole certified close is there), add ONLY the wire, touch ZERO carve lemmas, STOP+report
+if a carve lemma seems missing." The fresh framing removes the re-derivation temptation entirely — there is nothing to
+build, the close is in the base. Plan-gated (it surfaces the integration plan before the green-gate).
+
+**Lessons (caps the carve multi-lineage saga, Items 47–56).**
+- When an integration target is already certified on a branch, the integrator BASES on that branch — never rebuilds.
+- If an agent shows repeated re-derivation drift after ≥2 clear redirects, REASSIGN to a fresh tide with the
+  base-on-done-branch framing rather than re-instructing the same agent (the momentum doesn't break with words).
+- The cost was bounded by the LOW VALVE THRESHOLD: genm-firing stopped at 2–4 attempts each time, banked a genuine
+  reusable brick (`stepShearG_r`), and never committed a divergent close. The valve discipline contained the drift —
+  without it, this would have been a wasteful divergent-lineage rebuild. (This is the upside of the strict valve from the
+  earlier duplication items: drift is caught early, not after a full wasted close.)
