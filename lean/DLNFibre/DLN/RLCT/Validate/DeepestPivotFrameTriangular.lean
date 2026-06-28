@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrame
 import DLNFibre.DLN.RLCT.Validate.DeepestLeadingBlock
+import DLNFibre.DLN.RLCT.Validate.FrontPivotProducer
 import DLNFibre.Core.Matrix.RankNormalFormTriangular
 
 /-!
@@ -181,10 +182,15 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
-        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
+    -- Front-pivot hypothesis about the producer bundle's `.choose` pivot, threaded so the output `J`
+    -- (which IS that pivot) carries the front-embed identity the consumer needs.
+    (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
     ∃ (J : Fin r ↪ Fin (H ((lastLayer hL).succ)))
       (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
       (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ),
+      J.trans (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr ∧
       (∀ s : Fin L, IsUnit (P s)) ∧ (∀ s : Fin L, IsUnit (Q s)) ∧
       Q (firstLayer hL)
           = (1 : Matrix (Fin (H (firstLayer hL).succ)) (Fin (H (firstLayer hL).succ)) ℝ) ∧
@@ -210,9 +216,11 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (Q (lastLayer hL))).toBlocks₂₁ = 0 := by
   classical
-  -- The (now block-upper-aware) producer bundle.
-  obtain ⟨J, P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper⟩ :=
-    deepestPoint_frame_pivot_exists H r B hB hr hL hL2
+  -- The (now block-upper-aware) producer bundle — use `.choose`/`.choose_spec` so the output `J` IS
+  -- the producer's `.choose` pivot, and the threaded `hJfront` (about `.choose`) is its front-identity.
+  set J := (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJ_def
+  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper⟩ :=
+    (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
   -- The block-LOWER layer-0 frame (htop-conditional).
   obtain ⟨P0new, hP0new_unit, hP0new_tri, hP0new_nf⟩ :=
     deepest_layer0_blockLower_frame H r B hB hr hL hL2 htop
@@ -220,7 +228,7 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
   have hfne : firstLayer hL ≠ lastLayer hL := by
     intro h; have := congrArg Fin.val h; simp only [firstLayer, lastLayer] at this; omega
   -- The new frame family: `P0` with layer-0 overridden by the block-lower frame.
-  refine ⟨J, Function.update P0 (firstLayer hL) P0new, Q0, ?_, hQunit0, hQf0, ?_, ?_, hQf22,
+  refine ⟨J, Function.update P0 (firstLayer hL) P0new, Q0, hJfront, ?_, hQunit0, hQf0, ?_, ?_, hQf22,
     hcorner, ?_, hQUpper⟩
   · -- `IsUnit (P s)`: `P0new` at firstLayer, `P0` elsewhere.
     intro s

@@ -48,9 +48,11 @@ theorem deepest_gauge_squeeze_exists_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
-        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) :=
-  deepest_gauge_chart_construct H r B hB hr hL hL2 hpos hJfront
+  deepest_gauge_chart_construct H r B hB hr hL hL2 hpos hJfront htop
 
 /-- **The VALUE-FREE L2 reduction at front-pivot `B`** (KC2). Mirrors `deepest_regular_core_reduces`
 verbatim, but obtains the gauge chart from the front-pivot producer
@@ -63,6 +65,8 @@ theorem deepest_regular_core_reduces_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
         (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
     (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
       ∀ᵐ z ∂(volume.restrict U),
         dlnLoss (fun s => H s - r)
@@ -75,7 +79,7 @@ theorem deepest_regular_core_reduces_frontPivot (H : Fin (L + 1) → ℕ) (r : �
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
             (fun _ => 0 : Params (fun s => H s - r)) := by
-  obtain ⟨Γ⟩ := deepest_gauge_squeeze_exists_frontPivot H r B hB hr hL hL2 hpos hJfront
+  obtain ⟨Γ⟩ := deepest_gauge_squeeze_exists_frontPivot H r B hB hr hL hL2 hpos hJfront htop
   rw [deepest_squeeze_transport H r B hB hr hL Γ,
     deepest_regular_smooth_split H r B hB hr hL Γ hGne]
 
@@ -90,6 +94,8 @@ theorem deepest_normal_form_of_value_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
         (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
     (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
       ∀ᵐ z ∂(volume.restrict U),
         dlnLoss (fun s => H s - r)
@@ -105,7 +111,7 @@ theorem deepest_normal_form_of_value_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
       = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
         + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
-  rw [deepest_regular_core_reduces_frontPivot H r B hB hr hL hL2 hpos hJfront hGne, hRValue]
+  rw [deepest_regular_core_reduces_frontPivot H r B hB hr hL hL2 hpos hJfront htop hGne, hRValue]
 
 /-- **The headline learning coefficient at front-pivot `B`** (KC2 capstone). For a front-pivot target
 (`hJfront`), with the reduced-core germ-nonvanishing `hGne`, R1's resolution value `hRValue`, the
@@ -122,6 +128,8 @@ theorem aoyagi_learning_coefficient_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     (hpos : ∀ s : Fin (L + 1), r < H s)
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
         (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
     (hGne : ∃ U ∈ 𝓝 (0 : Fin (flatDim (fun s => H s - r)) → ℝ),
       ∀ᵐ z ∂(volume.restrict U),
         dlnLoss (fun s => H s - r)
@@ -137,7 +145,7 @@ theorem aoyagi_learning_coefficient_frontPivot (H : Fin (L + 1) → ℕ) (r : �
     (hD1 : (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w)
         = rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)) :
     (⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r) := by
-  rw [hD1, deepest_normal_form_of_value_frontPivot H r B hB hr hL hL2 hpos hJfront hGne hRValue,
+  rw [hD1, deepest_normal_form_of_value_frontPivot H r B hB hr hL hL2 hpos hJfront htop hGne hRValue,
     reg_shift_add_core_eq_aoyagiLambda H r hr hL]
 
 end DLNFibre.DLN.RLCT

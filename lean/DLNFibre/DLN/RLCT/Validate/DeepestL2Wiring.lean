@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
 import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2
+import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrameTriangular
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring` — the L=2 final-wiring top file (R-A home)
@@ -115,7 +116,13 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- `Π` brings `B`'s pivots to the front and the headline's `⨅ optimalSet` is invariant (b-wlog-spec
     -- lemmas 1-5). Stated about the bundle's `.choose` (the pivot `Jb` the body uses).
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
-        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    -- **ROW-ALIGNMENT (htop, the row-WLOG dual of hJfront, S2).** `B`'s top `r` rows are full rank —
+    -- the `[Invertible A11]` source (`deepestPoint_leadingBlock_isUnit`) for the layer-0 block-LOWER
+    -- endpoint frame the L=2 diffeo bridge needs. Threaded as a hypothesis (parallel to hJfront); the
+    -- headline discharges it by the banked row-permutation WLOG (`rlct_infimum_rowPerm_eq`).
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
       (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
       (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
@@ -168,18 +175,19 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- `deepestPoint_frame_pivot_exists`). The first/interior arms are the threshold `deepestPoint_frame`;
   -- the LAST-layer arm is the pivot frame (with a UNIT `B22` block — the PIN1 input). `split` stays
   -- frameless/MP; the READING side carries this family (#80 frame-wiring).
-  -- Use the bundle's `.choose` for `Jb` (so the signature's `hJfront`, stated about `.choose`,
-  -- connects to the body's `J`), and `.choose_spec` for the rest of the bundle.
-  set Jb : Fin r ↪ Fin (H ((lastLayer hL).succ)) :=
-    (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJb_def
-  obtain ⟨Pf, Qf, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, _hQUpper⟩ :=
-    (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
+  -- **The block-TRIANGULAR pivot bundle (S2, hPtri/hQtri source).** Obtain the triangular frame family
+  -- (block-LOWER layer-0 / block-UPPER layer-1) from `deepestPoint_frame_pivot_triangular_exists` — it
+  -- carries the SAME conclusions as the producer bundle PLUS `hJtri` (front-embed identity, from
+  -- `hJfront`), `hPtri`, `hQtri`. The frame facts the body consumes are frame-generic, so the switch is a
+  -- drop-in; `hPtri`/`hQtri` feed the L=2 diffeo bridge.
+  obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri⟩ :=
+    deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
   -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
   -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).
   set J : Fin r ↪ Fin (H (Fin.last L)) :=
     Jb.trans (finCongr (H_lastLayer_succ H hL)).toEmbedding with hJ
-  -- The body's `J` IS the front embedding (the signature's `hJfront`, via `.choose`).
-  have hJfront' : J = frontEmbed H r hr := by rw [hJ, hJb_def]; exact hJfront
+  -- The body's `J` IS the front embedding (`hJtri`, the triangular bundle's front-embed identity).
+  have hJfront' : J = frontEmbed H r hr := by rw [hJ]; exact hJtri
   have hpivJ : pivotJSucc H r hL J = Jb := by
     apply Function.Embedding.ext; intro k
     simp only [hJ, pivotJSucc, Function.Embedding.trans_apply, Equiv.coe_toEmbedding, finCongr_apply]
@@ -475,11 +483,14 @@ theorem deepest_gauge_chart_construct (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hpos : ∀ s : Fin (L + 1), r < H s)
     -- The front-pivot hypothesis (b-wlog-spec; discharged by the caller's `B·Π` WLOG transfer).
     (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
-        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr) :
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    -- The row-alignment (htop, S2 — discharged by the caller's row-WLOG transfer).
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
     Nonempty (DeepestGaugeChart H r B hB hr hL) := by
   obtain ⟨nGauge, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base, hca_reg,
     hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
-    deepest_gauge_construction H r B hB hr hL hL2 hpos hJfront
+    deepest_gauge_construction H r B hB hr hL hL2 hpos hJfront htop
   exact ⟨{
     nGauge := nGauge
     split := split
