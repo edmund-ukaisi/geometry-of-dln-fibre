@@ -18,7 +18,7 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
-## 2026-06-28 A2 target edge-pair raw-tuple linear inverse
+## 2026-06-28 A2 target edge-pair raw-tuple linear equivalence
 
 Reproduction:
 `reproduction-a2-retained-passive-target-edge-pair-raw-tuple-equivalence.md`.
@@ -27,6 +27,9 @@ Statement card:
 Review:
 `review-a2-retained-passive-target-edge-pair-raw-tuple-linear-inverse.md`,
 PASS by xhigh `Mendel the 2nd`.
+Final equivalence review:
+`review-a2-retained-passive-target-edge-pair-raw-tuple-linear-equivalence.md`,
+PASS by xhigh `Gauss the 2nd`.
 
 Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
 
@@ -36,6 +39,12 @@ retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_apply
 retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_leftInverse
+retainedPassiveTargetRecoveredF2At_rawTupleInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_rightInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_apply
 ```
 
 The forward map is the full raw-tuple lift of the target edge-pair shear:
@@ -43,22 +52,16 @@ The forward map is the full raw-tuple lift of the target edge-pair shear:
 replaced by `retainedPassiveTargetEdgePairShearAt z w`.  The inverse map fixes
 the same side fields, uses only the first formal-inverse component as the
 recovered `X`, and explicitly cancels the raw side-field terms in `F2` and
-`C`.
+`C`.  The two maps are now proved inverse to each other and packaged with
+`LinearEquiv.ofLinear`.
 
 Focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed;
 `scripts/sorries`, `git diff --check`, code-only forbidden-marker search, and
-direct axiom audits for the three proof theorems also passed.  This does not
-yet package a `LinearEquiv` or determinant-one theorem; a naive
-inverse-after-forward proof timed out and was removed.  A later local
-`LinearEquiv` attempt was also trimmed after Carver's xhigh audit: the next
-proof should first add explicit readback lemmas for tuples that replace only
-`(F2,C)`, then rewrite successor recovery from
-`retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst`,
-and only then unfold `retainedPassiveTargetEdgePairShearAt`.  The next
-frontier is that staged manual mutual-inverse proof for these two linear maps,
-followed by determinant control only after an actual unitriangular
-factorization or direct determinant proof.
+direct axiom audits for the new proof surface also passed.  This does not yet
+prove determinant one, determinant equality, measure transport, normal
+crossings, pole order, or RLCT.  The next frontier is determinant control only
+after an actual unitriangular factorization or direct determinant proof.
 
 ## 2026-06-28 A2 target edge-pair linear map
 

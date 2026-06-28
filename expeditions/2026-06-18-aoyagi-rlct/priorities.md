@@ -19,10 +19,10 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
-## Latest controller decision - 2026-06-28, target edge-pair raw-tuple linear inverse
+## Latest controller decision - 2026-06-28, target edge-pair raw-tuple linear equivalence
 
-The target edge-pair branch now has the first full raw-tuple lift and inverse
-linear-map package.  New public Lean names:
+The target edge-pair branch now has the full raw-tuple lift packaged as a
+linear equivalence.  New public Lean names:
 
 ```text
 retainedPassiveTargetEdgePairShearRawTupleLinearMapAt
@@ -30,29 +30,36 @@ retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_apply
 retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_leftInverse
+retainedPassiveTargetRecoveredF2At_rawTupleInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_rightInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_apply
 ```
 
 The forward map fixes `A1passive`, `A3passive`, `Ctop`, and `F3` and replaces
 only `(F2,C)` by `retainedPassiveTargetEdgePairShearAt z w`.  The inverse map
 fixes the same side fields, uses only the first component of the formal
 edge-pair inverse as the recovered `X`, and explicitly subtracts the raw
-side-field contributions from `F2` and `C`.  Lean proves that applying the
-formal edge-pair inverse to the target edge-pair shear recovers the backward
-target `F2` recurrence in first component.
+side-field contributions from `F2` and `C`.  Lean now proves
+inverse-after-forward, proves that the target recovery recurrence on the
+inverse tuple returns the formal inverse's first component, proves
+forward-after-inverse, and packages the two linear maps with
+`LinearEquiv.ofLinear`.
 
 Focused `RetainedPassiveCoordinatesJacobian` build passed.  `scripts/sorries`,
 `git diff --check`, code-only forbidden-marker search, and direct axiom audits
 also passed.  Xhigh review by `Mendel the 2nd` passed for the inverse algebra
-and no-overclaim boundary.
+and no-overclaim boundary; xhigh proof audit by `Pascal the 2nd` identified
+the surgical recurrence-proof route used in the final proof; xhigh final-diff
+review by `Gauss the 2nd` passed the `LinearEquiv` layer and no-determinant
+overclaim boundary.
 
-This is not yet a `LinearEquiv`, determinant-one theorem, full target
-normalizer, determinant equality, source-prior transport, normal crossings,
-pole order, or RLCT.  A naive inverse-after-forward proof timed out; next
-frontier is an explicit, non-simp-heavy mutual-inverse proof, using staged
-`rawEdgeTupleA1/A3` replacement lemmas and successor-family rewrites before
-unfolding `retainedPassiveTargetEdgePairShearAt`; then a
-determinant-one proof only from a real unitriangular factorization or direct
-determinant computation.
+This is not yet a determinant-one theorem, full target normalizer, determinant
+equality, source-prior transport, normal crossings, pole order, or RLCT.  The
+next frontier is determinant control for this equivalence, but only from a
+real unitriangular factorization or direct determinant computation.
 
 Previous controller decision:
 

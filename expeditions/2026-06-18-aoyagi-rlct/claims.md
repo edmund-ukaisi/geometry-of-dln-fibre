@@ -141,11 +141,11 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Status.** partial algebraic Lean artifacts landed and reviewed: the
-  target edge-pair branch now has a full raw-tuple forward linear map, a
-  candidate inverse linear map, and the first-component formal-inverse recovery
-  lemma; these fix `A1passive`, `A3passive`, `Ctop`, and `F3`, use only the
-  formal inverse's first component as recovered `X`, and do not yet package a
-  `LinearEquiv` or determinant-one theorem.  The target-side all-edge
+  target edge-pair branch now has a full raw-tuple linear equivalence fixing
+  `A1passive`, `A3passive`, `Ctop`, and `F3`, replacing only `(F2,C)` by the
+  target edge-pair shear, and using only the formal inverse's first component
+  as recovered `X` in the inverse map.  This does not yet prove determinant
+  one.  The target-side all-edge
   `(F2,C)` branch also has a linear-map package:
   the backward target-recovered `F2` recurrence, its successor family, and
   `retainedPassiveTargetEdgePairShearAt z w` are all packaged as `LinearMap`s

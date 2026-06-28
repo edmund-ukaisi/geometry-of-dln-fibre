@@ -31,8 +31,8 @@ edge-pair inverse is used.
 ## Lean Status
 
 Current checkpoint proves the forward raw-tuple linear map, the inverse
-raw-tuple linear map, their apply formulas, and the first-component recovery
-lemma:
+raw-tuple linear map, their apply formulas, the two direction identities, and
+the resulting `LinearEquiv` package:
 
 ```text
 retainedPassiveTargetEdgePairShearRawTupleLinearMapAt
@@ -40,9 +40,15 @@ retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_apply
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt
 retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_apply
 retainedPassiveFormalRawF2CLinearEquivAt_symm_targetEdgePairShearAt_fst
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_leftInverse
+retainedPassiveTargetRecoveredF2At_rawTupleInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearMapAt_rightInverse
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_apply
 ```
 
-The mutual-inverse `LinearEquiv` package remains the next frontier.
+The determinant-one theorem for this equivalence remains the next frontier.
 
 ## Proof Plan
 
@@ -59,14 +65,18 @@ The mutual-inverse `LinearEquiv` package remains the next frontier.
    formal-inverse first component.
 5. Use these two recovery facts to prove the two linear maps are mutual
    inverses and package them as a `LinearEquiv`.
+6. Later, prove determinant control by a unitriangular factorization or direct
+   determinant computation; do not infer determinant one from the formal
+   edge-pair equivalence.
 
 ## Lean Proof Note
 
-Do not prove the mutual inverses by one broad `simp` pass.  The next attempt
-should add local readback lemmas for tuples that replace only `(F2,C)` while
-fixing `A1passive`, `A3passive`, `Ctop`, and `F3`; rewrite successor recovery
-from the first-component lemma; then unfold `retainedPassiveTargetEdgePairShearAt`
-and close the additive cancellations componentwise.
+The mutual-inverse proof is deliberately not one broad `simp` pass.  It uses
+local readback lemmas for tuples that replace only `(F2,C)` while fixing
+`A1passive`, `A3passive`, `Ctop`, and `F3`; rewrites successor recovery from
+the first-component lemma; unfolds `retainedPassiveTargetEdgePairShearAt` only
+after the relevant component goals are isolated; and closes the additive
+cancellations componentwise.
 
 ## Nonclaims
 
