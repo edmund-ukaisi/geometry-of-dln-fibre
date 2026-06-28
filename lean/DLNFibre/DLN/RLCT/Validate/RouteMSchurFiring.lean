@@ -629,6 +629,36 @@ theorem frobSqG_ne_zero_ae (m n q : ℕ) (hm : 0 < m) (hn : 0 < n) (hq : 0 < q) 
         Finset.single_le_sum (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _))
           (Finset.mem_univ (⟨0, hm⟩ : Fin m))
 
+/-- **The shifted core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq ((Δ − Sh)·S)` for any fixed
+`Sh : Fin m → Fin m → ℝ` (`m,q ≥ 1`): the MP translation `Δ ↦ Δ + Sh` reduces it to the unshifted
+`frobSqG_ne_zero_ae`. Generic analog of `RouteMSchurCorank3.frobSqShiftR2c3_ne_zero_ae`. -/
+theorem frobSqShiftG_ne_zero_ae {m q : ℕ} (hm : 0 < m) (hq : 0 < q) (Sh : Fin m → Fin m → ℝ) :
+    ∀ᵐ p : (Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ) ∂(volume),
+      0 < frobSq (rmatMul (fun i j => p.1 i j - Sh i j) p.2) := by
+  set τ : (Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ) → (Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ) :=
+    fun p => (p.1 + (fun i j => -Sh i j), p.2) with hτ
+  have hmpΔ : MeasurePreserving (fun Δ : Fin m → Fin m → ℝ => Δ + (fun i j => -Sh i j))
+      volume volume :=
+    measurePreserving_add_right volume (fun i j => -Sh i j)
+  have hmp : MeasurePreserving τ volume volume := by
+    rw [show (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ))) = volume.prod volume
+      from rfl]
+    exact hmpΔ.prod (MeasurePreserving.id volume)
+  have hmsSet : MeasurableSet {p : (Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ) |
+      0 < frobSq (rmatMul p.1 p.2)} :=
+    measurableSet_lt measurable_const (by unfold frobSq rmatMul; fun_prop)
+  have hae : ∀ᵐ x ∂(volume.map τ), 0 < frobSq (rmatMul x.1 x.2) := by
+    rw [hmp.map_eq]; exact frobSqG_ne_zero_ae m m q hm hm hq
+  have hpull : ∀ᵐ p ∂(volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin q → ℝ))),
+      0 < frobSq (rmatMul (τ p).1 (τ p).2) :=
+    (ae_map_iff hmp.measurable.aemeasurable hmsSet).1 hae
+  refine hpull.mono (fun p hp => ?_)
+  have hΔeq : (τ p).1 = (fun i j => p.1 i j - Sh i j) := by
+    funext i j; show (p.1 + (fun i j => -Sh i j)) i j = p.1 i j - Sh i j
+    simp [Pi.add_apply, sub_eq_add_neg]
+  rw [hΔeq] at hp
+  exact hp
+
 /-- **Matrix-box translate-enlarge (generic `(r−1)×(r−1)`).** `∫_{Δ∈matBox m m K} f(Δ + Sh) ≤
 ∫_{Δ'∈matBox m m Kg} f Δ'` when `(·+Sh)''(matBox m m K) ⊆ matBox m m Kg`. Measure-preserving matrix-space
 translation (`measurePreserving_add_right`) + `lintegral_mono_set`. Mirror of `matBox2_translate_le`. -/
@@ -755,6 +785,67 @@ theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → 
     constructor <;> [linarith [hΔij.1, hShij.2]; linarith [hΔij.2, hShij.1]]
   refine le_trans (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) (le_of_eq ?_)
   rw [coreSchurGenVal]
+
+/-- **The SHIFTED resolved-form UNIFORM `_le` bound (the JOINT brick, generic corank `r−1`).** For a fixed
+shift `Sh : Fin (r−1) → Fin (r−1) → ℝ` with `|Sh| ≤ B`, `r ≥ 3`, `2 < c'`, `0 < c'−2 < schurLambda (r−1)`,
+`K > 0`, the resolved-form integral over the FREE `M22 = Δ`, `S = S_bot`, and the Morse spectator `T`,
+`∫_{Δ∈matBox (r−1)(r−1) K}∫_{S∈matBox (r−1) 4 K}∫_{T∈morseBox 4 K} (∑T² + frobSq((Δ−Sh)·S))^{−c'}` is
+bounded by `ofReal(Cresid 4 c') · coreSchurGenVal r (c'−2) (K+B)` — INDEPENDENT of `Sh`. The `T`-peel
+(`core_T_peel_le_ae_G`, m=3, threshold 2) on the shifted core (`> 0` a.e. by `frobSqShiftG_ne_zero_ae`)
+leaves the residual at `c'−2`, closed by `schurResidG_translate_le`. Generic analog of
+`RouteMSchurCorank3.resolvedShiftR2c3_le` (peel-AFTER-carve, so a.e.-positivity is over the FREE joint). -/
+theorem resolvedShiftRG_le (r : ℕ) (hr : 3 ≤ r) (Sh : Fin (r - 1) → Fin (r - 1) → ℝ)
+    (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B) (K : ℝ) (hK : 0 < K) (c' : ℝ) (hc2 : 2 < c') :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c')))
+      ≤ ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal r (c' - 2) (K + B) := by
+  have h0r1 : 0 < r - 1 := by omega
+  set w : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) → ℝ :=
+    fun p => frobSq (rmatMul (fun a b => p.1 a b - Sh a b) p.2) with hwdef
+  have hmeasT : Measurable
+      (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ)) × (Fin 4 → ℝ) =>
+        ENNReal.ofReal ((∑ i, (q.2 i) ^ 2 + w q.1) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    show Measurable
+      (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ)) × (Fin 4 → ℝ) =>
+        (∑ i, (q.2 i) ^ 2 + frobSq (rmatMul (fun a b => q.1.1 a b - Sh a b) q.1.2)))
+    unfold frobSq rmatMul; fun_prop
+  -- Step 1: Tonelli ∫_Δ∫_S∫_T = ∫_{(Δ,S)}∫_T over the product box
+  have hstep1 : ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c'))
+      = ∫⁻ p in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K), (∫⁻ T in morseBox 4 K,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w p) ^ (-c'))) ∂volume := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ (Measurable.lintegral_prod_right hmeasT).aemeasurable]
+  rw [hstep1]
+  -- Step 2: the a.e. T-peel (m = 3): bound by Cresid · ∫_{(Δ,S)} w^{−(c'−2)}
+  have hwpos : ∀ᵐ z ∂(volume.restrict (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K)), 0 < w z :=
+    ae_restrict_of_ae (frobSqShiftG_ne_zero_ae h0r1 (by norm_num) Sh)
+  have hpeel := core_T_peel_le_ae_G (m := 3) (volume) c' (by norm_num; linarith) K hK w
+    (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K) hwpos
+  refine le_trans hpeel ?_
+  refine mul_le_mul_left' ?_ _
+  -- Step 3: the residual ∫_{(Δ,S)} w^{−(c'−2)} = ∫_Δ∫_S frobSq((Δ−Sh)·S)^{−(c'−2)} ≤ schurResidG_translate_le
+  have hmeasResid : Measurable
+      (fun p : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        ENNReal.ofReal ((w p) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2)))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))) (by fun_prop)
+    show Measurable (fun p : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        frobSq (rmatMul (fun a b => p.1 a b - Sh a b) p.2))
+    unfold frobSq rmatMul; fun_prop
+  have hresid : (∫⁻ p in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K),
+        ENNReal.ofReal ((w p) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))))
+      = ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-(c' - 2))) := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ hmeasResid.aemeasurable]
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) (r - 1) K) (fun Δ _ => ?_)
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) 4 K) (fun S _ => ?_)
+    rw [hwdef]; norm_num
+  rw [hresid]
+  exact schurResidG_translate_le r hr Sh B hB (c' - 2) K
 
 /-! ### The generic carving — pivot-normalization, N2b+shear+peel, the M22 ⊕ rest reshape
 
