@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanRate
+import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
 
 /-!
 # `RouteMSmearedGenChart` — the ∀M-(1,1)-smeared Option-A chart (rate leg)
@@ -262,5 +263,40 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
         Finset.sum_congr rfl (fun j _ => hbody j)
     _ = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hrow⟩ := hfin
     _ = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hm1⟩ := rfl
+
+/-! ## The MP leg (the flat chart `phiSm` + measure-preservation + measurable embedding) -/
+
+/-- **Width-free single-coordinate subtractive shear is measure-preserving** (the generic wrapper around
+`measurePreserving_shearAt`). For a pivot `p : Fin N` and a function `f` invariant under updating coord
+`p` (`hinv : f (update u p a) = f u`), the map `u ↦ update u p (u p − f u)` preserves volume. Destructures
+`N = n+1` once; `g y := −f ((@Fin.insertNth n (fun _ => ℝ) p 0 y))`, and `g (fun k => u (p.succAbove k)) = −f u` by `hinv`
+(reconstructing `u` from `insertNth p (u p) (removeNth)`). -/
+theorem measurePreserving_updateSub_of_coordInvariant {N : ℕ} (p : Fin N)
+    (f : (Fin N → ℝ) → ℝ) (hf : Measurable f)
+    (hinv : ∀ (u : Fin N → ℝ) (a : ℝ), f (Function.update u p a) = f u) :
+    MeasurePreserving (fun u : Fin N → ℝ => Function.update u p (u p - f u))
+      (volume : Measure (Fin N → ℝ)) volume := by
+  obtain ⟨n, rfl⟩ : ∃ n, N = n + 1 := ⟨N - 1, by have := p.pos; omega⟩
+  -- `g y := − f (insertNth p 0 y)`; `measurePreserving_shearAt p g` adds `g (fun k => u (succAbove k))`.
+  have hins : Measurable (fun y : Fin n → ℝ => (@Fin.insertNth n (fun _ => ℝ) p (0 : ℝ) y)) := by
+    rw [measurable_pi_iff]
+    intro j
+    rcases Fin.eq_self_or_eq_succAbove p j with rfl | ⟨k, rfl⟩
+    · simp only [Fin.insertNth_apply_same]; exact measurable_const
+    · simp only [Fin.insertNth_apply_succAbove]; exact measurable_pi_apply k
+  have hg : Measurable (fun y : Fin n → ℝ => -f ((@Fin.insertNth n (fun _ => ℝ) p 0 y))) := (hf.comp hins).neg
+  have hsh := measurePreserving_shearAt p (fun y : Fin n → ℝ => -f ((@Fin.insertNth n (fun _ => ℝ) p 0 y))) hg
+  -- the two maps are literally equal, so transport `hsh` along a `funext`.
+  have hmap : (fun u : Fin (n + 1) → ℝ =>
+        Function.update u p (u p + -f ((@Fin.insertNth n (fun _ => ℝ) p 0 (fun k => u (p.succAbove k))))))
+      = fun u : Fin (n + 1) → ℝ => Function.update u p (u p - f u) := by
+    funext u
+    have hrec : (@Fin.insertNth n (fun _ => ℝ) p (0 : ℝ) (fun k => u (p.succAbove k))) = Function.update u p 0 := by
+      funext j
+      rcases Fin.eq_self_or_eq_succAbove p j with rfl | ⟨k, rfl⟩
+      · rw [Fin.insertNth_apply_same, Function.update_self]
+      · rw [Fin.insertNth_apply_succAbove, Function.update_of_ne (Fin.succAbove_ne p k)]
+    rw [hrec, hinv u 0, sub_eq_add_neg]
+  rw [← hmap]; exact hsh
 
 end DLNFibre.DLN.RLCT
