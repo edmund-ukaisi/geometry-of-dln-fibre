@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 generic shear/product abs-det wrappers
+
+Reproduction:
+`reproduction-a2-generic-shear-product-abs-det-wrappers.md`.
+Statement card:
+`statement-card-a2-generic-shear-product-abs-det-wrappers.md`.
+Review:
+`review-a2-generic-shear-product-abs-det-wrappers.md`, PASS by xhigh
+`Avicenna the 2nd`.
+
+Lean now proves in `MatrixLinearDeterminant.lean`:
+
+```text
+linearEquiv_prodCongr_abs_det_eq_one
+linearEquiv_skewProd_refl_refl_det_eq_one
+linearEquiv_skewProd_refl_refl_abs_det_eq_one
+linearEquivUpperShear_abs_det_eq_one
+```
+
+The product wrapper requires absolute-determinant-one hypotheses on both
+factors.  The skew and upper wrappers are determinant-one/abs-det-one
+specializations of existing shear determinant lemmas.  The absolute-value
+statements use `[CommRing R] [LinearOrder R] [IsOrderedRing R]`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` passed;
+`scripts/sorries`, `git diff --check`, forbidden-marker search, and direct
+axiom audits passed.
+
+This does not construct the retained-passive target normalizer, prove
+determinant equality, source-prior transport, normal crossings, pole order, or
+RLCT.
+
+Next frontier: package actual retained-passive target-side component shears as
+linear equivalences, then compose them with the generic abs-det wrappers.
+
 ## 2026-06-28 A2 positive-tail `F3` target-only `dEarly`
 
 Reproduction:

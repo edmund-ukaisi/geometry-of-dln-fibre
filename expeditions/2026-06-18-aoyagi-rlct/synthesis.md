@@ -48,6 +48,47 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Generic Shear/Product Abs-Det Wrappers
+
+`MatrixLinearDeterminant.lean` now has four generic determinant infrastructure
+wrappers:
+
+```text
+linearEquiv_prodCongr_abs_det_eq_one
+linearEquiv_skewProd_refl_refl_det_eq_one
+linearEquiv_skewProd_refl_refl_abs_det_eq_one
+linearEquivUpperShear_abs_det_eq_one
+```
+
+The product wrapper takes factor hypotheses
+`|det eM| = 1` and `|det eN| = 1` and proves the product congruence has absolute
+determinant one.  The lower skew wrapper specializes the existing
+`skewProd` determinant formula to identity diagonal factors; the absolute-value
+wrapper and upper-shear wrapper then take absolute values of determinant-one
+statements.  The absolute-value statements use Mathlib v4.29's unbundled
+ordered-ring hypotheses `[CommRing R] [LinearOrder R] [IsOrderedRing R]`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-generic-shear-product-abs-det-wrappers.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-generic-shear-product-abs-det-wrappers.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-generic-shear-product-abs-det-wrappers.md`,
+PASS by xhigh `Avicenna the 2nd`.
+
+Verification: focused build of
+`DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` passed; `scripts/sorries`
+reported zero forbidden markers; `git diff --check` passed; forbidden-marker
+search on the touched Lean and note files was clean; direct axiom audits for
+the four new proof theorems reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a retained-passive target normalizer, determinant equality for the
+raw coordinate map, source-prior transport, inverse-density pushforward, normal
+crossings, pole order, or RLCT.  The next target is to package actual
+retained-passive target-side component shears as linear equivalences, reusing
+these wrappers only after their component identities are proved.
+
 ## Latest A2 F3 Positive-Tail Target-Only dEarly
 
 `RetainedPassiveCoordinatesJacobian.lean` now has target-only wrappers for the

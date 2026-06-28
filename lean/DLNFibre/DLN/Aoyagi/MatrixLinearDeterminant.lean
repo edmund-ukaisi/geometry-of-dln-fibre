@@ -1,3 +1,4 @@
+import Mathlib.Algebra.Order.Ring.Abs
 import Mathlib.Data.Matrix.Bilinear
 import Mathlib.LinearAlgebra.Determinant
 import Mathlib.LinearAlgebra.Matrix.Block
@@ -97,6 +98,20 @@ theorem linearEquiv_prodCongr_det_eq_mul
       LinearMap.det (eM : M →ₗ[R] M) * LinearMap.det (eN : N →ₗ[R] N) := by
   rw [LinearEquiv.coe_prodCongr, linearMap_det_prodMap_eq_mul]
 
+/-- Absolute determinant of a product linear equivalence whose two factors have
+absolute determinant one. -/
+theorem linearEquiv_prodCongr_abs_det_eq_one
+    {R M N : Type*} [CommRing R] [LinearOrder R] [IsOrderedRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (eM : M ≃ₗ[R] M) (eN : N ≃ₗ[R] N)
+    (hM : |LinearMap.det (eM : M →ₗ[R] M)| = 1)
+    (hN : |LinearMap.det (eN : N →ₗ[R] N)| = 1) :
+    |LinearMap.det
+        ((eM.prodCongr eN : (M × N) ≃ₗ[R] (M × N)) : (M × N) →ₗ[R] (M × N))| =
+      1 := by
+  rw [linearEquiv_prodCongr_det_eq_mul, abs_mul, hM, hN, one_mul]
+
 /-- Determinant of a dependent product map. -/
 theorem linearMap_det_piMap_eq_prod
     {R ι : Type*} {M : ι → Type*} [CommRing R]
@@ -151,6 +166,31 @@ theorem linearEquiv_det_skewProd_toLinearMap_eq_mul
     ext (i | i) (j | j) <;>
       simp [LinearMap.toMatrix, LinearEquiv.skewProd_apply, Pi.single_apply]
   rw [hmat, Matrix.det_fromBlocks_zero₁₂]
+
+/-- A lower product shear with identity diagonal factors has determinant one. -/
+theorem linearEquiv_skewProd_refl_refl_det_eq_one
+    {R M N : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : M →ₗ[R] N) :
+    LinearMap.det
+      (((LinearEquiv.refl R M).skewProd
+        (LinearEquiv.refl R N) f : M × N →ₗ[R] M × N)) = 1 := by
+  rw [linearEquiv_det_skewProd_toLinearMap_eq_mul]
+  simp
+
+/-- A lower product shear with identity diagonal factors has absolute
+determinant one. -/
+theorem linearEquiv_skewProd_refl_refl_abs_det_eq_one
+    {R M N : Type*} [CommRing R] [LinearOrder R] [IsOrderedRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : M →ₗ[R] N) :
+    |LinearMap.det
+      (((LinearEquiv.refl R M).skewProd
+        (LinearEquiv.refl R N) f : M × N →ₗ[R] M × N))| = 1 := by
+  rw [linearEquiv_skewProd_refl_refl_det_eq_one]
+  simp
 
 /-- Upper product shear `(x,y) |-> (x + f y, y)`. -/
 def linearEquivUpperShear
@@ -213,6 +253,17 @@ theorem linearEquivUpperShear_det_eq_one
     _ = 1 := by
           rw [linearEquiv_det_skewProd_toLinearMap_eq_mul]
           simp
+
+/-- An upper product shear has absolute determinant one. -/
+theorem linearEquivUpperShear_abs_det_eq_one
+    {R M N : Type*} [CommRing R] [LinearOrder R] [IsOrderedRing R]
+    [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
+    (f : N →ₗ[R] M) :
+    |LinearMap.det ((linearEquivUpperShear f : (M × N) ≃ₗ[R] (M × N)) :
+      (M × N) →ₗ[R] (M × N))| = 1 := by
+  rw [linearEquivUpperShear_det_eq_one]
+  simp
 
 /-- Upper block-triangular linear map on a product:
 `(x,y) ↦ (f x + h y, g y)`. -/

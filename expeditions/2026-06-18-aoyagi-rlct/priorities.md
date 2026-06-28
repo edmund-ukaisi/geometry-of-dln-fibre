@@ -19,6 +19,40 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, generic determinant wrappers
+
+The target-normalizer frontier now has small generic abs-det-one wrappers for
+existing finite-dimensional shear/product determinant infrastructure.  New Lean
+names:
+
+```text
+linearEquiv_prodCongr_abs_det_eq_one
+linearEquiv_skewProd_refl_refl_det_eq_one
+linearEquiv_skewProd_refl_refl_abs_det_eq_one
+linearEquivUpperShear_abs_det_eq_one
+```
+
+The product wrapper assumes the two factor absolute determinants are one; it
+does not assert this for arbitrary product congruences.  The skew and upper
+shear wrappers specialize existing determinant-one lemmas to absolute
+determinant one.  The ordered-ring hypotheses use the Mathlib v4.29 unbundled
+shape `[CommRing R] [LinearOrder R] [IsOrderedRing R]`.
+
+Focused `MatrixLinearDeterminant` build passed, `scripts/sorries`,
+`git diff --check`, forbidden-marker search, and direct axiom audits passed.
+Xhigh review by `Avicenna the 2nd` passed in
+`threads/03-block-product-reduction/review-a2-generic-shear-product-abs-det-wrappers.md`.
+
+This does not construct the retained-passive target normalizer, prove
+determinant equality for `topologyTupleEdgeRawOrder`, source-prior transport,
+inverse-density pushforward, normal crossings, pole order, or RLCT.
+
+Next frontier: package actual retained-passive target-side component shears as
+linear equivalences, using these generic abs-det wrappers only after the
+pointwise component identities are already proved.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28
 
 The positive-tail terminal `F3` bridge now has a target-only `dEarly` wrapper.
