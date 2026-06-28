@@ -334,4 +334,30 @@ theorem frobSq_capB_inner_lt_top (r p : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r
           constructor <;> [linarith [this.1]; linarith [this.2]]
         exact lt_of_le_of_lt (lintegral_mono_set hsub) hmain
 
+/-! ## The cap-B per-chart angular residual + the directMorse cover (WIP) -/
+
+/-- **The cap-B angular residual finiteness (per chart).** For `c' < p/2`, the angular box-integral of the
+inner-`S` integrand over the `r²−1` ratio box is finite. Per `z`, the angular matrix
+`R := RmatGnorm (piRatioG.symm (0,z))` has pivot `1` (`RmatGnorm_pivot`) and `|entries| ≤ 1`
+(`RmatGnorm_offpivot_le`), so `frobSq_capB_inner_lt_top` gives per-`z` finiteness; the bound is `z`-uniform
+(the abstract-`Z` Morse dominator's `Kbound` is `W`-independent, and `c₀` is chosen before `R`), so the
+integral over the finite-volume ratio box is finite. WIP — the `z`-uniform constant bound + box integration.
+The cap-B analog of `schurRatioResidGen` (NO recursion). -/
+theorem schurRatioResidP_capB_lt_top (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < (p : ℝ) / 2) (pivot : Fin (r * r)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z)))
+      < ⊤ := by
+  sorry
+
+/-- **The cap-B directMorse finiteness.** `SchurCore p r c' T` for `0 < c' < min(p, r²)/2` (the cap-B regime,
+where the binding stratum is `t = 0`, so `½·minAdm = r²/2 ≤ p/2`). The `r²`-chart radial-`Δ` cover
+(`matBoxGen_outer_flat` + `gFlatGen_cover_sum`, DONE `(r,p)`-general) reduces to a sum over `r²` charts; each
+chart = the radial axis `|y|^{r²−1−2c'}` (`radial_aAxis_divisor_lt_top`, DONE, `c' < r²/2`) × the angular
+residual (`schurRatioResidP_capB_lt_top`, `c' < p/2`). NO recursion (unlike the cap-A firing). WIP. -/
+theorem schurCoreP_directMorse (p r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (hc0 : 0 < c')
+    (hcp : c' < (p : ℝ) / 2) (hcr : c' < (r ^ 2 : ℝ) / 2) (T : ℝ) (hT : 0 < T) :
+    SchurCore p r c' T := by
+  sorry
+
 end DLNFibre.DLN.RLCT
