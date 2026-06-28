@@ -831,6 +831,99 @@ theorem schurResidG_translate_le (r : ℕ) (hr : 3 ≤ r)
   refine le_trans (matBoxSq_translate_le (fun i j => -Sh i j) K (K + B) g hsub) (le_of_eq ?_)
   rw [coreSchurGenVal]
 
+/-! ### The a.e. Tonelli `T`-peel (the shifted Morse-block peel, local copy of `core_T_peel_le_ae_c3`) -/
+
+/-- **The a.e. Tonelli `T`-peel bound** (local copy of `RouteMSchurCorank3.core_T_peel_le_ae_c3`, built
+on the imported `radial_morse_residual_power_le`). With `w > 0` only a.e. on `Z`, the joint Morse-block
+peel `∫_z ∫_T (∑Tᵢ² + w z)^{−c'} ≤ Cresid·∫_z (w z)^{−(c'−(m+1)/2)}`. -/
+theorem core_T_peel_le_aeG {m : ℕ} {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
+    (c' : ℝ) (hc' : (m + 1 : ℝ) / 2 < c')
+    (Tw : ℝ) (hTw : 0 < Tw) (w : Ω → ℝ) (Z : Set Ω)
+    (hwpos : ∀ᵐ z ∂(μ.restrict Z), 0 < w z) :
+    (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ENNReal.ofReal (Cresid (m + 1) c')
+        * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+  calc (∫⁻ z in Z, (∫⁻ T in morseBox (m + 1) Tw,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w z) ^ (-c'))) ∂μ)
+      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (m + 1) c')
+          * ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        refine lintegral_mono_ae (hwpos.mono (fun z hz => ?_))
+        rw [← ENNReal.ofReal_mul (Cresid_nonneg _ _)]
+        exact radial_morse_residual_power_le m c' hc' Tw hTw (w z) hz
+    _ = ENNReal.ofReal (Cresid (m + 1) c')
+          * ∫⁻ z in Z, ENNReal.ofReal ((w z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        rw [lintegral_const_mul']; exact ENNReal.ofReal_ne_top
+
+/-! ### The SHIFTED resolved-form (the JOINT brick: a.e. peel + uniform shifted residual)
+
+The corank-`r` inner-`S`, after the N2b `j=1` split and the top-row shear, is the SHIFTED resolved form:
+a `Fin 4` Morse spectator `T` disjoint-summed onto the SHIFTED corank-`(r−1)` core
+`frobSq ((Δ − Sh)·S)` (`Δ = M22` the free angular block, `Sh = g·bᵀ` the boundary-ratio rank-1 shift,
+`S = S_bot`). The a.e. peel (`core_T_peel_le_aeG`, threshold `4/2 = 2 < c'`) leaves the shifted residual
+at exponent `c'' = c'−2 < λ_{r−1}`, bounded UNIFORMLY in `Sh` by `coreSchurGenVal (r−1) (c'−2) (K+B)`
+(`schurResidG_translate_le`). Generic analog of `RouteMSchurCorank3.resolvedShiftR2c3_le`. -/
+
+/-- **The SHIFTED resolved-form UNIFORM `_le` bound (the JOINT brick).** For a fixed shift
+`Sh : Fin (r−1) → Fin (r−1) → ℝ` with `|Sh i j| ≤ B`, `2 < c'`, every `K > 0`,
+`∫_{Δ∈matBox (r−1)(r−1) K}∫_{S∈matBox (r−1) 4 K}∫_{T∈morseBox 4 K}(∑T² + frobSq((Δ−Sh)·S))^{−c'}` is
+bounded by `ofReal(Cresid 4 c') · coreSchurGenVal (r−1) (c'−2) (K+B)` — INDEPENDENT of `Sh`. The `T`-peel
+(`core_T_peel_le_aeG`, `m=3`, threshold `2`) on the shifted core (`> 0` a.e. by `frobSqShiftG_ne_zero_ae`)
+leaves the residual at `c'−2`, closed by `schurResidG_translate_le`. Generic analog of `resolvedShiftR2c3_le`. -/
+theorem resolvedShiftRG_le (r : ℕ) (hr : 3 ≤ r)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (K : ℝ) (hK : 0 < K) (c' : ℝ) (hc2 : 2 < c') :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2
+          + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c')))
+      ≤ ENNReal.ofReal (Cresid 4 c') * coreSchurGenVal (r - 1) (c' - 2) (K + B) := by
+  have hm : 0 < r - 1 := by omega
+  set w : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) → ℝ :=
+    fun q => frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2) with hwdef
+  have hmeasT : Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ))
+      × (Fin 4 → ℝ) => ENNReal.ofReal ((∑ i, (q.2 i) ^ 2 + w q.1) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    show Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ))
+        × (Fin 4 → ℝ) =>
+        (∑ i, (q.2 i) ^ 2 + frobSq (rmatMul (fun a b => q.1.1 a b - Sh a b) q.1.2)))
+    unfold frobSq rmatMul; fun_prop
+  -- Step 1: Tonelli ∫_Δ∫_S∫_T = ∫_{(Δ,S)}∫_T over the product box
+  have hstep1 : ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K, ∫⁻ T in morseBox 4 K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c'))
+      = ∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K), (∫⁻ T in morseBox 4 K,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w q) ^ (-c'))) ∂volume := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ (Measurable.lintegral_prod_right hmeasT).aemeasurable]
+  rw [hstep1]
+  -- Step 2: the a.e. T-peel (m = 3): bound by Cresid · ∫_{(Δ,S)} w^{−(c'−2)}
+  have hwpos : ∀ᵐ z ∂(volume.restrict (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K)), 0 < w z :=
+    ae_restrict_of_ae (frobSqShiftG_ne_zero_ae (r - 1) hm Sh)
+  have hpeel := core_T_peel_le_aeG (m := 3) (volume) c' (by norm_num; linarith) K hK w
+    (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K) hwpos
+  refine le_trans hpeel ?_
+  -- Step 3: the residual ∫_{(Δ,S)} w^{−(c'−2)} = ∫_Δ∫_S frobSq((Δ−Sh)·S)^{−(c'−2)} ≤ schurResidG_translate_le
+  refine mul_le_mul_left' ?_ _
+  have hmeasResid : Measurable
+      (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        ENNReal.ofReal ((w q) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2)))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))) (by fun_prop)
+    show Measurable (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin 4 → ℝ) =>
+        frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2))
+    unfold frobSq rmatMul; fun_prop
+  have hresid : (∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) 4 K),
+        ENNReal.ofReal ((w q) ^ (-(c' - ((3 : ℕ) + 1 : ℝ) / 2))))
+      = ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) 4 K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-(c' - 2))) := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin 4 → ℝ),
+      setLIntegral_prod _ hmeasResid.aemeasurable]
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) (r - 1) K) (fun Δ _ => ?_)
+    refine setLIntegral_congr_fun (matBox_measurableSet (r - 1) 4 K) (fun S _ => ?_)
+    rw [hwdef]; norm_num
+  rw [hresid]
+  exact schurResidG_translate_le r hr Sh B hB (c' - 2) K
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
