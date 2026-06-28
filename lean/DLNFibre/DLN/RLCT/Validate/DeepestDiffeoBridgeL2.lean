@@ -385,6 +385,87 @@ theorem hasStrictFDerivAt_matrix_triple_mul_entry_zero
     exact Finset.sum_congr rfl (fun l _ => by rw [Matrix.mul_apply, Finset.sum_mul])]
   simpa using hsum
 
+/-! ### S4a' — `ContDiffAt` det / adjugate / inverse-entry variants + the `W⁻¹` derivative
+
+The landed `contDiffAt_matrix_inv_entry_of_det_ne_zero` (DeepestSchurSmooth) needs GLOBAL entrywise
+`ContDiff`; the joint-action matrices (`W = 1 + Z1·A1⁻¹·A0⁻¹·Y0`) have entries that are only `ContDiffAt`
+(they carry `A_s⁻¹`). These `_at` variants run the same `det⁻¹·adjugate` route with `ContDiffAt`. The
+keystone `hasStrictFDerivAt_winv_sub_one_entry_zero` gives `D(W⁻¹−1)(0) = 0` WITHOUT det/adjugate
+derivative bookkeeping: on `{det W ≠ 0}` (a nbhd of `0`), `W⁻¹ − 1 = −(W⁻¹·(W−1))`, whose entry has
+strict derivative `0` (the right factor `W−1` vanishes value + derivative). -/
+
+/-- `ContDiffAt` determinant of an entrywise-`ContDiffAt` matrix family. -/
+theorem contDiffAt_matrix_det_of_entries {n : Type*} [Fintype n] [DecidableEq n]
+    {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).det) x := by
+  have heq : (fun y => (A y).det)
+      = fun y => ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ i, A y (σ i) i := by
+    funext y; rw [Matrix.det_apply]
+  rw [heq]
+  exact ContDiffAt.sum (fun σ _ => (contDiffAt_prod (fun i _ => hA (σ i) i)).const_smul _)
+
+/-- `ContDiffAt` adjugate entry of an entrywise-`ContDiffAt` matrix family. -/
+theorem contDiffAt_matrix_adjugate_entry_of_entries {n : Type*} [Fintype n] [DecidableEq n]
+    {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).adjugate i j) x := by
+  have heq : (fun y => (A y).adjugate i j)
+      = fun y => ((A y).updateRow j (Pi.single i 1)).det := by
+    funext y; rw [Matrix.adjugate_apply]
+  rw [heq]
+  refine contDiffAt_matrix_det_of_entries (fun a b => ?_)
+  by_cases hab : a = j
+  · subst hab
+    have : (fun y => ((A y).updateRow a (Pi.single i 1)) a b)
+        = fun _ : X => (Pi.single i (1 : ℝ) : n → ℝ) b := by
+      funext y; rw [Matrix.updateRow_self]
+    rw [this]; exact contDiffAt_const
+  · have : (fun y => ((A y).updateRow j (Pi.single i 1)) a b) = fun y => A y a b := by
+      funext y; rw [Matrix.updateRow_ne hab]
+    rw [this]; exact hA a b
+
+/-- `ContDiffAt` inverse entry on the det-nonzero locus (entrywise-`ContDiffAt` family variant). -/
+theorem contDiffAt_matrix_inv_entry_of_det_ne_zero_at {n : Type*} [Fintype n] [DecidableEq n]
+    {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x)
+    (hdet : (A x).det ≠ 0) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y)⁻¹ i j) x := by
+  have hentry : (fun y => (A y)⁻¹ i j) = fun y => (A y).det⁻¹ * (A y).adjugate i j := by
+    funext y; rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]
+  rw [hentry]
+  exact ((contDiffAt_matrix_det_of_entries hA).inv hdet).mul
+    (contDiffAt_matrix_adjugate_entry_of_entries hA i j)
+
+/-- The unit-locus identity `W⁻¹ − 1 = −(W⁻¹·(W−1))`. -/
+theorem winv_sub_one_eq {n : Type*} [Fintype n] [DecidableEq n]
+    (W : Matrix n n ℝ) (h : IsUnit W.det) : W⁻¹ - 1 = -(W⁻¹ * (W - 1)) := by
+  rw [Matrix.mul_sub, Matrix.mul_one, Matrix.nonsing_inv_mul W h, neg_sub]
+
+/-- **`D(W⁻¹ − 1)(x) = 0` entrywise** when `det W x ≠ 0`, `W` entrywise `ContDiffAt`, and `W − 1`
+vanishes value + strict-derivative at `x` (`W = 1 + O(read²)`). On `{det W ≠ 0}` (a nbhd of `x`),
+`W⁻¹ − 1 = −(W⁻¹·(W−1))`, whose entry has strict derivative `0` (the right factor `W−1` vanishes). -/
+theorem hasStrictFDerivAt_winv_sub_one_entry_zero {n : Type*} [Fintype n] [DecidableEq n]
+    {W : X → Matrix n n ℝ} {x : X} (i j : n)
+    (hWentry : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => W y a b) x)
+    (hdet : (W x).det ≠ 0)
+    (hRd : ∀ a b, HasStrictFDerivAt (fun y => (W y - 1) a b) (0 : X →L[ℝ] ℝ) x)
+    (hR0 : ∀ a b, (W x - 1) a b = 0) :
+    HasStrictFDerivAt (fun y => ((W y)⁻¹ - 1) i j) (0 : X →L[ℝ] ℝ) x := by
+  have hWinv : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (W y)⁻¹ a b) x := fun a b =>
+    contDiffAt_matrix_inv_entry_of_det_ne_zero_at hWentry hdet a b
+  have hprod : HasStrictFDerivAt (fun y => ((W y)⁻¹ * (W y - 1)) i j) (0 : X →L[ℝ] ℝ) x :=
+    hasStrictFDerivAt_matrix_mul_entry_of_right_zero i j
+      (fun k => hWinv i k) (fun k => hRd k j) (fun k => hR0 k j)
+  have hneg : HasStrictFDerivAt (fun y => -(((W y)⁻¹ * (W y - 1)) i j)) (0 : X →L[ℝ] ℝ) x := by
+    simpa using hprod.neg
+  refine hneg.congr_of_eventuallyEq ?_
+  have hnbhd : {y | (W y).det ≠ 0} ∈ nhds x :=
+    (contDiffAt_matrix_det_of_entries hWentry).continuousAt.preimage_mem_nhds
+      (isOpen_ne.mem_nhds hdet)
+  filter_upwards [hnbhd] with y hy
+  rw [winv_sub_one_eq (W y) (isUnit_iff_ne_zero.mpr hy), Matrix.neg_apply]
+
 end MatrixEntryDeriv
 
 /-- **`paramsEquivFlat.symm` sends the zero flat-core to the zero core tuple.** -/
