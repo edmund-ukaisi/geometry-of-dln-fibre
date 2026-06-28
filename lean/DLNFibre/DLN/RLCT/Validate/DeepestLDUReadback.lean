@@ -390,4 +390,69 @@ theorem reindex_decode_blocks_split (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [← reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w s]
   rw [← Matrix.reindex_symm, Equiv.apply_symm_apply]
 
+/-- **The dict-match keystone** (the conjugated producer = the reindexed-decode-layer Schur core). For a
+BOUNDARY layer `s` (deepest `(2,2)`-block `deepBlkT_s = 0`, i.e. `hT`), the absorbed core
+`decode(q).core_s + schurCorrectionConj_s` (at the deepest-split point `q = deepestSplit w0 w`) equals the
+`(1,1)`-Schur core of the reindexed decode layer `reindex(decode w)_s` — exactly the `conjCore` the
+standalone's `hC0`/`hC1` read. So the B-threaded conjugated producer discharges those readback
+hypotheses. (`deepBlkT_s = 0` holds at both `L = 2` layers — layer-0 cols ≥ r vanish, layer-(L−1) rows ≥
+r vanish.) -/
+theorem absorbedCoreConj_eq_schurCore (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (w : Fin (flatDim H) → ℝ) (s : Fin L)
+    (hT : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
+    (paramsEquivFlat (deepestM H r)).symm
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.1 s
+      + schurCorrectionConj H r B hB hr hL
+          ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+            (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s
+      = (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+            (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+              (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+                (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₁₁)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+                (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₁₂ := by
+  set q := deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w with hq
+  set MD := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s) with hMD
+  set FB := Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s) with hFB
+  -- The reindexed decode layer's blocks split as `MD + FB` (`reindex_decode_blocks_split`).
+  have hsplit := reindex_decode_blocks_split H r B hB hr hL w s
+  rw [← hMD, ← hFB] at hsplit
+  rw [hsplit]
+  -- The four block reads of `MD + FB` (`MD = reindex deepest` whose `(2,2)` vanishes by `hT`; `FB`'s
+  -- blocks ARE the reads). `toBlocks` is additive entrywise; `FB.toBlocks·· = the read`.
+  have h22 : (MD + FB).toBlocks₂₂ = (paramsEquivFlat (deepestM H r)).symm q.2.1 s := by
+    funext i j
+    have hMD22 : MD.toBlocks₂₂ i j = 0 := by rw [hMD] at hT ⊢; rw [hT]; rfl
+    show MD (Sum.inr i) (Sum.inr j) + FB (Sum.inr i) (Sum.inr j) = _
+    have : MD (Sum.inr i) (Sum.inr j) = 0 := hMD22
+    rw [this, zero_add, hFB, Matrix.fromBlocks_apply₂₂]
+  have h21 : (MD + FB).toBlocks₂₁ = deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s := by
+    funext i j
+    show MD (Sum.inr i) (Sum.inl j) + FB (Sum.inr i) (Sum.inl j) = _
+    rw [hFB, Matrix.fromBlocks_apply₂₁]; rfl
+  have h11 : (MD + FB).toBlocks₁₁ = deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s := by
+    funext i j
+    show MD (Sum.inl i) (Sum.inl j) + FB (Sum.inl i) (Sum.inl j) = _
+    rw [hFB, Matrix.fromBlocks_apply₁₁]; rfl
+  have h12 : (MD + FB).toBlocks₁₂ = deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s := by
+    funext i j
+    show MD (Sum.inl i) (Sum.inr j) + FB (Sum.inl i) (Sum.inr j) = _
+    rw [hFB, Matrix.fromBlocks_apply₁₂]; rfl
+  rw [h22, h21, h11, h12, schurCorrectionConj]
+  -- `decode core + (−Z·A⁻¹·Y) = decode core − Z·A⁻¹·Y` (`neg_mul` twice + `sub_eq_add_neg`).
+  rw [show -(deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s)
+        * (deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s)⁻¹
+        * (deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s)
+      = -((deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s)
+        * (deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s)⁻¹
+        * (deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s)) from by
+    rw [Matrix.neg_mul, Matrix.neg_mul]]
+  rw [← sub_eq_add_neg]
+
 end DLNFibre.DLN.RLCT
