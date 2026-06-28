@@ -885,4 +885,110 @@ theorem exists_rest_box {n : ℕ} (F G : (Fin n → ℝ) → ℝ) (y₀ : Fin n 
     have hge : -|y₀ k| ≤ y₀ k := neg_abs_le _
     constructor <;> [linarith [this.1]; linarith [this.2]]
 
+/-! ## The subBox divergence + the (1,1)-family atom
+
+The reindex `e := arrowCongr' (finCongr hn) (refl ℝ)` (cast-free, measure-preserving) transports the
+opaque ambient `Fin (routeMAmbient M)` to the destructured `Fin (n+1)` the peel needs. The pivot is
+`p := finCongr hn (smPivotCoord)`; `U' v := frontU (e.symm v)`. On the source set the off-pole rate
+`routeMCore (phiSm w) = (w smPivotCoord)² · frontU w` (with `w = e.symm v`, `(e.symm v) smPivotCoord =
+v p` cast-free) turns the integrand into `|v p|^{−2c'}·U'(v)^{−c'}`, feeding `subBox_pivot_peel_diverges`. -/
+
+/-- **The transported source-box divergence.** With a rest box `R'` (from `exists_rest_box`) on which the
+front-`e.symm`-pulled `frontU > 0` (off the pole), the source-box integral of `|routeMCore(phiSm u)|^{−c'}`
+is `⊤`. The reindex `e` is cast-free (`arrowCongr'` with the constant ℝ fibre), so the off-pole rate
+transports without casts. -/
+theorem subBoxGen_diverges (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hc1 : M (deepLayer M hL).succ = 1) (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (pp : ℕ) (hpp : pp < L + 1) (hpp1 : M ⟨pp, hpp⟩ = 1) (hpple : pp ≤ L - 1)
+    (c' : ℝ) (hc' : (1 : ℝ) / 2 ≤ c') (α : ℝ) (hα : 0 < α)
+    (n : ℕ) (hn : routeMAmbient M = n + 1)
+    (R' : Set (Fin n → ℝ)) (hR'meas : MeasurableSet R') (hR'pos : 0 < (volume : Measure (Fin n → ℝ)) R')
+    (hR'U : ∀ y ∈ R', 0 < frontU M hL
+        ((MeasurableEquiv.arrowCongr' (finCongr hn) (MeasurableEquiv.refl ℝ)).symm
+          (Fin.insertNth (finCongr hn (smPivotCoord M hL hrow hcol)) 0 y)) hm1) :
+    ∫⁻ u in
+        (MeasurableEquiv.arrowCongr' (finCongr hn) (MeasurableEquiv.refl ℝ)) ⁻¹'
+          ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => ℝ)
+              (finCongr hn (smPivotCoord M hL hrow hcol))) ⁻¹' (Set.Ioo (0 : ℝ) α ×ˢ R')),
+        ENNReal.ofReal (|routeMCore M (phiSm M hL u hrow hcol hm1)| ^ (-c')) = ⊤ := by
+  set e := MeasurableEquiv.arrowCongr' (finCongr hn) (MeasurableEquiv.refl ℝ) with he
+  set p : Fin (n + 1) := finCongr hn (smPivotCoord M hL hrow hcol) with hp
+  have hmp : MeasurePreserving e (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume :=
+    volume_preserving_arrowCongr' (finCongr hn) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _)
+  set U' := fun v : Fin (n + 1) → ℝ => frontU M hL (e.symm v) hm1 with hU'
+  -- `e.symm v smPivotCoord = v p` (cast-free).
+  have hcoord : ∀ v : Fin (n + 1) → ℝ, e.symm v (smPivotCoord M hL hrow hcol) = v p := fun _ => rfl
+  -- `e.symm (insertNth p x y) = update (e.symm (insertNth p 0 y)) smPivotCoord x`.
+  have hupd : ∀ (x : ℝ) (y : Fin n → ℝ),
+      e.symm (Fin.insertNth p x y)
+        = Function.update (e.symm (Fin.insertNth p 0 y)) (smPivotCoord M hL hrow hcol) x := by
+    intro x y; funext i
+    by_cases hi : i = smPivotCoord M hL hrow hcol
+    · subst hi; rw [Function.update_self]
+      show (@Fin.insertNth n (fun _ => ℝ) p x y) (finCongr hn (smPivotCoord M hL hrow hcol)) = x
+      rw [← hp, Fin.insertNth_apply_same]
+    · rw [Function.update_of_ne hi]
+      show (@Fin.insertNth n (fun _ => ℝ) p x y) (finCongr hn i)
+        = (@Fin.insertNth n (fun _ => ℝ) p 0 y) (finCongr hn i)
+      have hne : finCongr hn i ≠ p := fun h => hi ((finCongr hn).injective h)
+      obtain ⟨k, hk⟩ := (Fin.eq_self_or_eq_succAbove p (finCongr hn i)).resolve_left hne
+      rw [hk, Fin.insertNth_apply_succAbove, Fin.insertNth_apply_succAbove]
+  have hUindep : ∀ (x : ℝ) (y : Fin n → ℝ), U' (Fin.insertNth p x y) = U' (Fin.insertNth p 0 y) := by
+    intro x y
+    show frontU M hL (e.symm (Fin.insertNth p x y)) hm1
+      = frontU M hL (e.symm (Fin.insertNth p 0 y)) hm1
+    rw [hupd x y, frontU_update_pivot]
+  set integ' := fun v : Fin (n + 1) → ℝ =>
+    ENNReal.ofReal (|v p| ^ (-(2 * c'))) * ENNReal.ofReal (U' v ^ (-c')) with hinteg'
+  -- the peel: ∫_{source} integ' = ⊤.
+  have hpeel := subBox_pivot_peel_diverges p α hα (-(2 * c')) c' U'
+    ((continuous_frontU M hL hm1).measurable.comp e.symm.measurable) hUindep R' hR'meas hR'pos
+    hR'U integ' (fun _ => rfl) (abs_rpow_lintegral_Ioo_eq_top _ α hα (by linarith))
+  -- transport the original integrand `g∘e = original`, then `g = integ'` on the source (off-pole rate).
+  rw [setLIntegral_congr_fun (e.measurable ((MeasurableEquiv.piFinSuccAbove _ p).measurable
+      (measurableSet_Ioo.prod hR'meas)))
+    (fun u _ => by
+      show ENNReal.ofReal (|routeMCore M (phiSm M hL u hrow hcol hm1)| ^ (-c'))
+        = (fun v => ENNReal.ofReal (|routeMCore M (phiSm M hL (e.symm v) hrow hcol hm1)| ^ (-c'))) (e u)
+      simp only [MeasurableEquiv.symm_apply_apply])]
+  rw [hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding
+    (fun v => ENNReal.ofReal (|routeMCore M (phiSm M hL (e.symm v) hrow hcol hm1)| ^ (-c'))) _]
+  rw [← hpeel]
+  refine setLIntegral_congr_fun ((MeasurableEquiv.piFinSuccAbove _ p).measurable
+    (measurableSet_Ioo.prod hR'meas)) (fun v hv => ?_)
+  rw [Set.mem_preimage, Set.mem_prod] at hv
+  obtain ⟨_, hvR⟩ := hv
+  -- the rest coords of `v` (= `(piFinSuccAbove p v).2`) lie in `R'`; off-pole holds there.
+  have hrest : (fun k => v (p.succAbove k)) ∈ R' := hvR
+  -- `e.symm v = e.symm (insertNth p (v p) (rest))`, and frontU pivot-indep ⟹ `= frontU(e.symm(insertNth p 0 rest))`.
+  have hveq : v = Fin.insertNth p (v p) (fun k => v (p.succAbove k)) := by
+    funext j; rcases Fin.eq_self_or_eq_succAbove p j with rfl | ⟨k, rfl⟩
+    · rw [Fin.insertNth_apply_same]
+    · rw [Fin.insertNth_apply_succAbove]
+  have hoff : (∑ i, (frontMat M hL (e.symm v) i ⟨0, hm1⟩) ^ 2) ≠ 0 := by
+    have hU : frontU M hL (e.symm v) hm1
+        = frontU M hL (e.symm (Fin.insertNth p 0 (fun k => v (p.succAbove k)))) hm1 := by
+      conv_lhs => rw [hveq]
+      rw [hupd (v p) (fun k => v (p.succAbove k)), frontU_update_pivot]
+    have hpos := hR'U _ hrest
+    rw [← hU] at hpos
+    exact ne_of_gt hpos
+  -- the off-pole rate: integrand = `|v p|^{−2c'}·U'(v)^{−c'}`.
+  rw [hinteg']
+  show ENNReal.ofReal (|routeMCore M (phiSm M hL (e.symm v) hrow hcol hm1)| ^ (-c'))
+    = ENNReal.ofReal (|v p| ^ (-(2 * c'))) * ENNReal.ofReal (U' v ^ (-c'))
+  rw [routeMCore_phiSm_offpole M hL (e.symm v) hrow hcol hc1 pp hpp hpp1 hpple hm1 hoff, hcoord]
+  -- `(|v p|²·U)^{−c'} = |v p|^{−2c'}·U^{−c'}` (off-pole, both factors ≥ 0).
+  set U := ∑ i, (frontMat M hL (e.symm v) i ⟨0, hm1⟩) ^ 2 with hUdef
+  have hUnn : 0 ≤ U := Finset.sum_nonneg (fun i _ => sq_nonneg _)
+  show ENNReal.ofReal (|(v p) ^ 2 * U| ^ (-c'))
+    = ENNReal.ofReal (|v p| ^ (-(2 * c'))) * ENNReal.ofReal (frontU M hL (e.symm v) hm1 ^ (-c'))
+  rw [show frontU M hL (e.symm v) hm1 = U from rfl]
+  rw [abs_of_nonneg (by positivity : (0 : ℝ) ≤ (v p) ^ 2 * U),
+    show (v p) ^ 2 * U = |v p| ^ 2 * U by rw [sq_abs],
+    Real.mul_rpow (by positivity) hUnn, ← Real.rpow_natCast |v p| 2, ← Real.rpow_mul (abs_nonneg _),
+    ← ENNReal.ofReal_mul (by positivity)]
+  congr 2
+  push_cast; ring
+
 end DLNFibre.DLN.RLCT
