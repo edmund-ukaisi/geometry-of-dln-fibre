@@ -48,6 +48,54 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Local Formal/Product-Density Change Of Variables
+
+`RetainedPassiveLocalJacobianMeasure.lean` is now a leaf bridge from the
+computed raw-order formal/product Jacobian COV to the fixed-base p.13
+retained-passive local-source measure socket.  It imports both the old
+local-source measure theorem and the computed Jacobian-measure leaf.
+
+New coordinate-level wrapper names:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_map_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_rawSourceChart
+```
+
+New local-source names:
+
+```text
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_of_realization_of_cov
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_of_realization
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_of_realization
+```
+
+The proof keeps two layers separate.  First, the coordinate-level wrappers
+package the zero-tail and positive-tail COV over arbitrary `M` and compose it
+through an a.e.-measurable downstream `sourceChart`.  Second, the local-source
+helper uses the existing realized local-source restriction theorem: the local
+restriction is the old abstract weighted pushforward, both the old abstract
+COV and the new formal/product COV push forward to `map sourceChart
+(m.restrict T)`, hence the local restriction is also the formal/product
+weighted pushforward.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.  The top-level
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and code-only forbidden-marker search passed.
+
+Xhigh review by `Hypatia the 2nd` passed: density orientation is forward
+source-side, raw-order composition is correct, `hrealize` still gates
+local-source restriction, and the checkpoint does not claim original prior,
+signed-box density, normal crossings, pole order, or RLCT.
+
+Next frontier: add canonical retained-passive source-chart wrappers if useful,
+then decide whether downstream signed-box/source-density sockets can consume
+the realized product-density theorem without adding external prior claims.
+
 ## Latest A2 Formal-Density Change Of Variables
 
 `RetainedPassiveCoordinatesJacobianMeasure.lean` is now a leaf bridge importing

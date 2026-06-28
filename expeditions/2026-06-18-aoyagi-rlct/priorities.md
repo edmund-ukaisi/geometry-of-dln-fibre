@@ -19,6 +19,41 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive local formal/product-density COV
+
+The retained-passive local-source measure socket now has a leaf bridge
+consuming the computed formal/product raw-order COV.  New Lean file:
+
+```text
+RetainedPassiveLocalJacobianMeasure.lean
+```
+
+New Lean names:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_restrict_rawSourceChart
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_eq_map_restrict_rawSourceChart
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_rawSourceChart
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_of_realization_of_cov
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_of_realization
+measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_of_realization
+```
+
+The proof composes the new raw-order formal/product COV through an arbitrary
+downstream map, then uses the old realized local-source restriction theorem to
+identify the local-source restriction with the same `map sourceChart
+(m.restrict T)`.  This is a realized local-source theorem; the canonical
+source-chart wrappers and signed-box source-density handoffs remain separate.
+
+Focused builds for the coordinate and local leaf modules passed.  The top-level
+`DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and the code-only forbidden-marker search passed.  Xhigh
+review by `Hypatia the 2nd` passed.
+
+This still does not construct an original-source prior, prove signed-box
+source-density identification, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive formal-density change of variables
 
 The retained-passive raw-order change-of-variables theorem now has a leaf

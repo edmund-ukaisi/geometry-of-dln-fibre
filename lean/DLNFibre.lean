@@ -512,3 +512,4 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
 import DLNFibre.Core.FibreBundleHeadline
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
