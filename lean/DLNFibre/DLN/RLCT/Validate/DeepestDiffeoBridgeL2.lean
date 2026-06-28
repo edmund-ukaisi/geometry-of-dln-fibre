@@ -2757,15 +2757,21 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
   --     `l2T1p_sub_Z1A1invY1p_eq`, needs `det (l2W q) ≠ 0`).
   --   • `absorbedCore_psiSplitRawL2Core_of_ne` — `c₀ = decode(q).2.1 0 + schurCorr(q) 0` (= the
   --     original layer-0 Schur core S0, layer-0 reads fixed under ψ).
-  -- REMAINING (2 coupled sub-steps, telescope-bound — route A threads the 7 frame hyps at the caller):
-  --   (1) `det (l2W q) ≠ 0` — the keystone's W-pivot unit. NOT immediate from `hball` (`hball`
-  --       constrains `ψq`, the W-pivot reads off `q`); needs the inner-ball ⊆ `l2ExtraUnitSetSplit`
-  --       (`exists_ball_subset_l2ExtraUnitSetSplit`) pulled back along the joint move, OR a cutoff-radius
-  --       coupling `rIn ≤ l2ExtraRadius`. A genuine coupling sub-step (flagged, not bookkeeping).
-  --   (2) `frobSq(c₀·c₁) = Score x` — the frame-transform assembly: `prod_absorbed_eq_schur_ldu`
-  --       (→ the raw-reduced Schur Rcore) + `rcore_eq_schur_of_corner_split` (hS3b) +
-  --       `schur_frame_transform` (hPbr/hQbr, D_P = D_Q = 1) on `M̂ = endpointP0·(prod−B)·endpointQL`.
-  --       Telescope-coupled (same machinery as sub-3); threads hframe/hinterface/hS3b/hPbr/hQbr.
+  -- REMAINING (genm-l2fin scoping, 2026-06-28 — sub-3 CLOSED; sub-4 isolated, NOT gating the assembly:
+  -- comp_identity_L2/_impl now thread the per-`x` core=Score as `hsub4core`, so this `sorry` blocks only
+  -- the standalone sub-4 theorem). The chain, mirroring sub-3's route + the new `resid_*` frame-handling:
+  --   STEP 1-2 (most-banked): `subst hL2`; `prod_deepestM_eq_two_of_L2` → `c₀·c₁`;
+  --     `absorbedCore_psiSplitRawL2Core_of_ne` (c₀ = layer-0 Schur core, the `s = 0 ≠ last` arm) +
+  --     `absorbedCore_psiSplitRawL2Core_last` (c₁ = (1−K)·S1, CONSUMES `hWdet : det (l2W q) ≠ 0`).
+  --   STEP 3 (LDU): `prod_absorbed_eq_schur_ldu` identifies `frobSq(S0·(1−K)S1) = frobSq(Rcore)`, Rcore
+  --     the (2,2)-Schur of `reindex(prod(decode x))` (raw layers = fromBlocks(1+X)YZT, the per-layer block
+  --     bridge `reindex_fromBlocks_reads_eq_deviation`).
+  --   STEP 4 (frame→Score): `rcore_eq_schur_of_corner_split` (hS3b removes the +1) then
+  --     `schur_frame_transform` (D_P = D_Q = 1 from hPbr/hQbr) on `M̂ = endpointP0·(prod−B)·endpointQL`.
+  -- THREAD as route-A inputs (controller discharges at the DeepestGaugeConstruction wiring): `hWdet`
+  --   (the W-det coupling — derivable from `hball` + `ball_l2ExtraRadius_subset` IF `cutoffBump.rIn ≤
+  --   l2ExtraRadius` and `q`-membership; a GENUINE sub-step, not bookkeeping), `hS3b`, `hPbr`/`hQbr`,
+  --   and the raw-layer-block readback ties for `decode x` (so STEP 3's S0/S1/K = the l2* blocks).
   sorry
 
 
