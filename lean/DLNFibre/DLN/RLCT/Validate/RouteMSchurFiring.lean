@@ -1230,22 +1230,31 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
     (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
         innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
       < ⊤ := by
-  -- DEFERRED (the sole remaining R1-UPPER input): the per-`z` N2b → Morse-peel → carve assembly.
-  -- The IH-invoking carving CORE `schurResidG_translate_lt_top` is PROVED above; this lemma is the
-  -- per-`z` glue. Codex (xhigh, decorrelated) confirmed the route — ORDER: CARVE-FIRST:
-  --   pivot-WLOG (frobSq_rmatMul_permG + matBox_rowperm_lintegralG, pivot → (0,0))
-  --   → carve `z` = (M22 ⊕ rest) via a generic `zE_G : (Fin N → ℝ) ≃ᵐ
-  --       ((Fin (r-1) × Fin (r-1) → ℝ) × (Fin (2(r-1)) → ℝ))` with readback `Sc = M22 − Sh(rest)`
-  --       (the HARDEST sub-step — the M22/M21/M12 index bijection + the Schur-formula readback)
-  --   → pointwise N2b/split (`schur_minorPivot_split` j=1 — the TWO-SIDED uniform-constant comparison
-  --       `c₀(frobSq row0 + frobSq(Sc·S_bot)) ≤ frobSq(R·S) ≤ c₁(…)`, NOT a constant-1 bound) + top-row shear
-  --   → Tonelli + a.e. Morse peel over the FREE `(M22, S_bot)` joint core (`radial_morse_residual_power_le`,
-  --       a.e.-positive by the nonzero-`MvPolynomial` argument — peel AFTER carving so positivity is clean)
-  --   → `schurResidG_translate_lt_top` per fixed `rest` at exponent `c' − 2` and residual radius
-  --       `K = max 1 T` (M22 box radius 1, S_bot box radius T — Codex radius fix), `B = 1` (|Sh| ≤ 1)
-  --   → the outer bounded-`rest`-box volume is a finite constant.
-  -- A standalone `resolvedShiftRG_le` (generic analog of `resolvedShiftR2c3_le`) is the recommended next
-  -- brick. ~200 generic-r lines; well-scoped, no design wall (all ingredients PROVED/CONFIRMED).
+  -- DEFERRED (the sole remaining R1-UPPER input): the final carve-reshape + N2b-application + Tonelli
+  -- assembly. ALL analytic bricks + the hardest cast plumbing are now LANDED above (this file):
+  --   • pivot-WLOG: `innerSGen_eq_norm` (innerSGen = ∫_S frobSq(RmatGnorm·S)^{-c'}), pivot/offpivot facts.
+  --   • N2b lower-leg → const: `ofReal_rpow_le_const_mul` (F^{-c'} ≤ c₀^{-c'}·X^{-c'}, zero-coincidence
+  --       FREE from the N2b UPPER leg — Codex Q1). N2b itself: `schur_minorPivot_split` j=1 (M11=[1],
+  --       det 1≠0, complete-pivot from |RmatGnorm|≤1).
+  --   • top-row shear: `stepShearG` (→ free Fin-4 Morse `T'`, box radius (m+1)·T — Codex Q2 radius fix:
+  --       `K = max 1 ((r:ℝ)*T)`, NOT max 1 T).
+  --   • a.e. Morse peel: `core_T_peel_le_aeG` + `frobSqShiftG_ne_zero_ae` (w>0 a.e.).
+  --   • shifted residual → IH: `resolvedShiftRG_le` (uniform `_le` into `coreSchurGenVal`) +
+  --       `coreSchurGenVal_lt_top` (the abstract IH at c''=c'-2 < λ_{r-1}).
+  --   • the carve slot read-back: `RmatGnorm_eq_slot` (RmatGnorm entry = z at `slotMatG`), `cellOfG`
+  --       (off-(0,0) cell enumeration, injective), `bgShiftG` (Sh = g·bᵀ, |·|≤1, = M21·M11⁻¹·M12 at j=1).
+  -- REMAINING glue (Codex Q3/Q4: an EQUALITY by coordinate permutation, NOT a domination):
+  --   (1) `cellEquivG : ((Fin(r-1)×Fin(r-1)) ⊕ (Fin(r-1)⊕Fin(r-1))) ≃ Fin N` via `slotMatG ∘ cellOfG`
+  --       (injective by `cellOfG_injective` + `slotMatG` injective; bijective by card = N);
+  --   (2) reshape `zEG := piCongrLeft cellEquivG ∘ sumPiEquivProdPi` (MP); the box `[-1,1]^N` pulls back
+  --       to (M22-cube [-1,1] × (g,b)-cube [-1,1]);
+  --   (3) Sc readback `Sc(z) = matOf(M22) − bgShiftG(g,b)` (via `RmatGnorm_eq_slot` per cell + the j=1
+  --       `schur_minorPivot_split` `Sc = M22 − M21·M11⁻¹·M12` with M11=[1]);
+  --   (4) per-z: N2b + `ofReal_rpow_le_const_mul` + `stepShearG` → bound innerSGen by
+  --       c₀^{-c'}·∫_{S_bot}∫_{T'} (∑T'²+frobSq(Sc·S_bot))^{-c'}; integrate z, Tonelli to (g,b)-outer,
+  --       feed `resolvedShiftRG_le` (B=1, K=max 1 (r·T)) × finite (g,b)-vol × c₀^{-c'} const.
+  -- The (1)+(2)+(3) reshape is the `Fin.succ`-vs-`⟨1+a,_⟩` index bridge between `cellOfG` and N2b's
+  -- `Sc` blocks. ~120-150 generic-r lines; no design wall (Codex Q1-Q5 confirmed; radius fixed).
   sorry
 
 /-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
