@@ -187,4 +187,36 @@ theorem stepShearP_r (r p : ℕ) (hr : 3 ≤ r) (b : Fin (r - 1) → ℝ) (hb : 
   rw [hcast] at hshear
   exact hshear
 
+/-! ## The `Fin p` inner-S integrand (shared plumbing 3/3) -/
+
+/-- **The `Fin p` inner-S integrand** (`Fin p` analog of `innerSGen`): the inner-`S` integral
+`∫_{S∈matBox r p T} frobSq(RmatG·S)^{−c'}` over the output-width-`p` box. The angular matrix
+`RmatG r pivot y` is `p`-FREE (it reshapes the `r×r` ratio chart); only the `S`-box width is `p`. -/
+noncomputable def innerSGenP (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r * r)) (y : Fin (r * r) → ℝ) :
+    ℝ≥0∞ :=
+  ∫⁻ S in matBox r p T, ENNReal.ofReal ((frobSq (rmatMul (RmatG r pivot y) S)) ^ (-c'))
+
+/-- `innerSGenP r p c' T pivot` is measurable in `y` (the `Fin p` analog of `measurable_innerSGen`;
+verbatim — `RmatG` is `p`-free, only the `S`-box width changes). -/
+theorem measurable_innerSGenP (r p : ℕ) (c' : ℝ) (T : ℝ) (pivot : Fin (r * r)) :
+    Measurable (innerSGenP r p c' T pivot) := by
+  unfold innerSGenP
+  apply Measurable.lintegral_prod_right (f := fun y S =>
+    ENNReal.ofReal ((frobSq (rmatMul (RmatG r pivot y) S)) ^ (-c')))
+  apply ENNReal.measurable_ofReal.comp
+  apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+  unfold frobSq rmatMul
+  apply Finset.measurable_sum; intro i _
+  apply Finset.measurable_sum; intro j _
+  apply Measurable.pow_const
+  apply Finset.measurable_sum; intro k _
+  apply Measurable.mul
+  · have hy : Measurable (fun y : Fin (r * r) → ℝ => RmatG r pivot y i k) := by
+      simp only [RmatG_entry]
+      by_cases h : eG r (i, k) = pivot
+      · simp only [if_pos h]; exact measurable_const
+      · simp only [if_neg h]; exact measurable_pi_apply _
+    exact hy.comp measurable_fst
+  · exact (measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd)
+
 end DLNFibre.DLN.RLCT
