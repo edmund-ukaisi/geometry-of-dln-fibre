@@ -378,3 +378,11 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     Fidelity items spot-verified by controller (lower-value re-review skipped).
   - Tasks: #8 (tightening) → completes on the re-review confirm; #7 (compose+retire) likewise. Holding for
     the hardener re-confirm + R5 (06, bundle).
+
+- **tick 15 (backstop, 2026-06-28):** drift-glance — no operator edit; hardener re-review (`af1b0a5d`)
+  running; R5 (`a8c0b116`, bundle) still working (no branch pushed) — long runtime on a hard target
+  (global `Flat π` needs the residue-field-rank bridge = new math). Sent R5 a gentle check-in reinforcing
+  the honest-ceiling escape hatch (land the strongest honestly-provable bundle headline + name the
+  residual; don't force/overclaim new math) + asked for status (a close-to-green / b at-ceiling /
+  c stuck). Self-check vs corrected plan: vision held; seam core landed+hardened; R5 = the remaining
+  proved-geometry rung; correctly waiting, not busywork. Re-sleep.
