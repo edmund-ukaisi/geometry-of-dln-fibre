@@ -256,3 +256,154 @@ theorem schurCutoffShiftConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
       funext s; exact schurCorrectionConj_zero_boundary H r B hB hr hL s (hbdy s)]
     funext i; rfl
   simp only [schurCutoffShiftConj, hraw0, smul_zero]
+
+/-! ## The conjugated absorb + the MP bare↔conj RLCT bridge (Step Θ)
+
+`deepestCoreAbsorbConj := coreShearHomeo schurCutoffShiftConj` (the conjugated core-shear) is used ONLY
+as a LOCAL RLCT intermediate; its derivative never enters PIN-1, so no atom. The bare↔conjugated RLCT
+equality is the MP-shear step: `Θ := bareAbsorb⁻¹ ∘ conjAbsorb` is a basepoint-fixing MP homeomorphism
+fixing the reg slot, so `rlctAtOn_comp_homeomorph` peels it — `rlctAtOn(reg²+coreF∘bareAbsorb) =
+rlctAtOn(reg²+coreF∘conjAbsorb)` with NO derivative bookkeeping (atom-free). -/
+
+/-- **The conjugated core absorption** `coreShearHomeo schurCutoffShiftConj`. -/
+noncomputable def deepestCoreAbsorbConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
+  coreShearHomeo (schurCutoffShiftConj H r B hB hr hL hDA)
+    (continuous_schurCutoffShiftConj H r B hB hr hL hDA)
+
+/-- `deepestCoreAbsorbConj` is MEASURE-PRESERVING (det-1 core-shear, `measurePreserving_coreShear`). -/
+theorem deepestCoreAbsorbConj_mp (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    MeasurePreserving (deepestCoreAbsorbConj H r B hB hr hL hDA) volume volume :=
+  measurePreserving_coreShear (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
+    (schurCutoffShiftConj H r B hB hr hL hDA) (continuous_schurCutoffShiftConj H r B hB hr hL hDA)
+
+/-- `deepestCoreAbsorbConj` fixes the regular slot. -/
+theorem deepestCoreAbsorbConj_regular (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (deepestCoreAbsorbConj H r B hB hr hL hDA q).1 = q.1 := rfl
+
+/-- `deepestCoreAbsorbConj` fixes the origin (the conjugated cutoff shift vanishes there). -/
+theorem deepestCoreAbsorbConj_basepoint (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0) :
+    deepestCoreAbsorbConj H r B hB hr hL hDA 0 = 0 :=
+  coreShearHomeo_basepoint (schurCutoffShiftConj H r B hB hr hL hDA)
+    (continuous_schurCutoffShiftConj H r B hB hr hL hDA)
+    (by
+      show schurCutoffShiftConj H r B hB hr hL hDA (0, 0) = 0
+      exact schurCutoffShiftConj_zero H r B hB hr hL hDA hbdy)
+
+/-- The bare↔conjugated **core-shift difference** `δ := schurCutoffShiftConj − schurCutoffShift`
+(gauge-only, continuous), the shift of the MP bridge `Θ`. -/
+noncomputable def shiftDiffConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    Fin (flatDim (deepestM H r)) → ℝ :=
+  schurCutoffShiftConj H r B hB hr hL hDA p - schurCutoffShift H r hr hL p
+
+theorem continuous_shiftDiffConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    Continuous (shiftDiffConj H r B hB hr hL hDA) :=
+  (continuous_schurCutoffShiftConj H r B hB hr hL hDA).sub (continuous_schurCutoffShift H r hr hL)
+
+/-- **Θ — the MP core-shear of the shift-difference** `δ`. `coreShearHomeo δ` (det-1 fiber translation,
+MP), the bridge between the bare and conjugated absorbs: `bareAbsorb ∘ Θ = conjAbsorb`. -/
+noncomputable def thetaConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    DeepestSplit H r (deepestNGauge H r) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
+  coreShearHomeo (shiftDiffConj H r B hB hr hL hDA) (continuous_shiftDiffConj H r B hB hr hL hDA)
+
+/-- **`bareAbsorb ∘ Θ = conjAbsorb`** — the core-shear additive composition law: `Θ` fixes the gauge slot
+`(reg, spec)`, so the two shifts add — `δ + schurCutoffShift = schurCutoffShiftConj`. (Pointwise; the
+gauge slot read by `bareAbsorb`'s shift is unchanged by `Θ`.) -/
+theorem bareAbsorb_thetaConj_eq_conjAbsorb (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    deepestCoreAbsorb H r hr hL (thetaConj H r B hB hr hL hDA q)
+      = deepestCoreAbsorbConj H r B hB hr hL hDA q := by
+  show (((thetaConj H r B hB hr hL hDA q).1,
+      ((thetaConj H r B hB hr hL hDA q).2.1
+        + schurCutoffShift H r hr hL ((thetaConj H r B hB hr hL hDA q).1,
+            (thetaConj H r B hB hr hL hDA q).2.2),
+        (thetaConj H r B hB hr hL hDA q).2.2)) : DeepestSplit H r (deepestNGauge H r))
+    = (q.1, (q.2.1 + schurCutoffShiftConj H r B hB hr hL hDA (q.1, q.2.2), q.2.2))
+  -- `Θ q = (q.1, (q.2.1 + δ(q.1,q.2.2), q.2.2))`; its gauge slot `(.1, .2.2) = (q.1, q.2.2)`.
+  refine Prod.ext rfl (Prod.ext ?_ rfl)
+  show (q.2.1 + shiftDiffConj H r B hB hr hL hDA (q.1, q.2.2))
+      + schurCutoffShift H r hr hL (q.1, q.2.2)
+    = q.2.1 + schurCutoffShiftConj H r B hB hr hL hDA (q.1, q.2.2)
+  rw [shiftDiffConj, add_assoc, sub_add_cancel]
+
+/-- `Θ` fixes the regular slot. -/
+theorem thetaConj_regular (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (thetaConj H r B hB hr hL hDA q).1 = q.1 := rfl
+
+/-- **Step Θ — the MP bare↔conjugated RLCT bridge.** The bare and conjugated absorbed-core energies have
+the SAME local RLCT at the origin: `Θ = coreShearHomeo δ` is a basepoint-fixing MP homeomorphism fixing
+the reg slot with `bareAbsorb ∘ Θ = conjAbsorb`, so `rlctAtOn_comp_homeomorph` peels it. Atom-free. -/
+theorem rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) := by
+  set Θ := thetaConj H r B hB hr hL hDA with hΘ
+  set G : DeepestSplit H r (deepestNGauge H r) → ℝ :=
+    fun q => (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1 with hG
+  -- Θ MP (det-1 core-shear).
+  have hΘmp : MeasurePreserving Θ volume volume := by
+    rw [hΘ, thetaConj]
+    exact measurePreserving_coreShear (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
+      (shiftDiffConj H r B hB hr hL hDA) (continuous_shiftDiffConj H r B hB hr hL hDA)
+  -- Θ fixes the origin (δ(0) = 0: both cutoffs vanish at 0).
+  have hΘ0 : Θ 0 = 0 := by
+    rw [hΘ, thetaConj]
+    refine coreShearHomeo_basepoint (shiftDiffConj H r B hB hr hL hDA)
+      (continuous_shiftDiffConj H r B hB hr hL hDA) ?_
+    show shiftDiffConj H r B hB hr hL hDA (0, 0) = 0
+    rw [shiftDiffConj,
+      show ((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))
+        = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
+      schurCutoffShiftConj_zero H r B hB hr hL hDA hbdy, schurCutoffShift_zero H r hr hL, sub_zero]
+  have hkey := rlctAtOn_comp_homeomorph Θ hΘmp Θ.measurableEmbedding G 0
+  rw [hΘ0] at hkey
+  have hGΘ : (fun q => G (Θ q))
+      = fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1 := by
+    funext q
+    show (∑ i, (Θ q).1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorb H r hr hL (Θ q)).2.1
+      = (∑ i, q.1 i ^ 2) + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1
+    rw [hΘ, thetaConj_regular H r B hB hr hL hDA q,
+      bareAbsorb_thetaConj_eq_conjAbsorb H r B hB hr hL hDA q]
+  rw [hGΘ] at hkey
+  exact hkey.symm
