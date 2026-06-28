@@ -31,8 +31,10 @@ concrete general-T `core_schur3`.
 S2-FREE: the radial Jacobian dets, the shifted Morse peel (`radial_ball_iff`-based), the translation
 dominations (measure-preserving), the corank-2 base (S2-free). No `monomial_rlct`, no new axiom.
 
-STATUS: SKELETON — sub-lemmas are `sorry`, filled in dependency order. The deferred content is named in each
-lemma, never hidden in the wrapper.
+STATUS: COMPLETE — sorry-free. The carving heart `schurRatioResidGen_mid` is closed by wiring the landed
+bricks (N2b `j=1` → top-row bridge `frobSqTopRow_eq_shear` → `stepShearG_r` → carve-`Sc` readback
+`ScCarve_eq` → `resolvedShiftRG_le` + the abstract lower IH); forced `#print axioms` (olean-deleted) is
+`[propext, Classical.choice, Quot.sound]` — S2-free, no `sorryAx`/`native_decide`.
 -/
 
 namespace DLNFibre.DLN.RLCT
