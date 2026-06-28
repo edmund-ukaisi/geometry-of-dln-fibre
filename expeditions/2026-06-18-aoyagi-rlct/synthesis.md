@@ -48,6 +48,49 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` Positive-Tail Readout Scaffolding
+
+After VM reorientation, `RetainedPassiveCoordinatesJacobian.lean` now has the
+first private helper layer for the positive-tail post-`Ctop` `F3` bridge.  It
+does not yet define the recursive `dEarly_postC` map or final positive-tail
+`F3` shear.
+
+The new helper layer works on the `F3`-focused rest tuple
+
+```text
+(A1passive, F2, A3passive, C, Ctop)
+```
+
+and adds private linear maps for the post-`Ctop` `A1passive`, `(F2,C)`,
+`A3passive`, and source-`C` readouts, plus a post-`Ctop` passive-tail derivative
+linear map and current solved-`A1` tangent linear map.  The source `C` readout
+uses `(retainedPassiveFormalRawF2CLinearEquivAt hz).symm` on the already
+normalised `(F2,C)` fields, not `retainedPassiveTargetRecoveredSourceCAt`.
+The zero-index current solved-`A1` tangent is the post-`Ctop` expression
+
+```text
+Ctop - Tail⁻¹ * dTail_postC * Tail⁻¹ * coord.Ctop.
+```
+
+The comparison lemma
+`retainedPassivePostCtopTailFDerivLinearMapAt_fderiv_after_T123_eq_targetStaged`
+proves that, on `u = T123 ((fderiv raw z) v)`, the post-`Ctop` passive-tail
+linear map agrees with the existing target-staged passive-tail derivative.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.
+
+Next frontier: define post-`Ctop` solved-`A1` suffix and `Cnext` derivatives,
+then the one-step lower-left core and recursive `dEarly_postC` map.  The target
+bridge to prove remains
+
+```text
+dEarly_postC(T123(Dzv))
+  =
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv 0.
+```
+
 ## Latest A2 Post-`Ctop` `F3` Zero-Tail Bridge
 
 `RetainedPassiveCoordinatesJacobian.lean` now adds the single-edge (`M = 0`)

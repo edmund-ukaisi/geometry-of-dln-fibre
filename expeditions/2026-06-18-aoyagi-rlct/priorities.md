@@ -19,6 +19,53 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` positive-tail readout scaffolding
+
+After VM reorientation, the target-normalizer frontier has a first positive-tail
+post-`Ctop` helper layer in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobian.lean`.  These are
+private Lean helpers only; no new public theorem or final positive-tail `F3`
+bridge is claimed.
+
+New private helpers include:
+
+```text
+retainedPassiveRawF3RestA1passiveLinearMapAt
+retainedPassiveRawF3RestF2CProjectionLinearMapAt
+retainedPassiveRawF3RestA3passiveLinearMapAt
+retainedPassiveRawF3RestA3passiveLinearMapAt_apply_rawTupleRest
+retainedPassivePostCtopTailFDerivLinearMapAt
+retainedPassivePostCtopTailFDerivLinearMapAt_self
+retainedPassivePostCtopTailFDerivLinearMapAt_step_apply
+retainedPassivePostCtopTailFDerivLinearMapAt_fderiv_after_T123_eq_targetStaged
+retainedPassivePostCtopSourcePairLinearMapAt
+retainedPassivePostCtopSourceCLinearMapAt
+retainedPassivePostCtopSourceCLinearMapAt_apply
+retainedPassivePostCtopSourceCAtLinearMapAt
+retainedPassivePostCtopSourceCAtLinearMapAt_apply
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_zero_apply
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_succ_apply
+```
+
+This layer reads the already normalised post-`Ctop` rest tuple
+`(A1passive,F2,A3passive,C,Ctop)` without feeding it to the older pre-edge or
+pre-`Ctop` target-recovery helpers.  In particular, post-`Ctop` source `C` is
+decoded from the formal inverse of the already normalised `(F2,C)` fields, and
+the zero-index solved-`A1` current tangent is
+`Ctop - Tail⁻¹ * dTail_postC * Tail⁻¹ * coord.Ctop`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This still does not construct the positive-tail `dEarly_postC` recursion, the
+positive-tail `F3` shear, full target normalisation, actual Frechet determinant
+equality, measure transport, normal crossings, pole order, or RLCT.  Next
+frontier: build the post-`Ctop` solved-`A1` suffix, `Cnext`, one-step
+lower-left core, and recursive `dEarly_postC` linear map, then prove its bridge
+on `u = T123 ((fderiv raw z) v)`.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` `F3` zero-tail bridge
 
 The target-normalizer frontier now has the single-edge (`M = 0`) `F3` stage

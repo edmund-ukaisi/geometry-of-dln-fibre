@@ -210,6 +210,37 @@ zero-index solved-`A1` readout.  Feeding the existing
 `retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt` directly with `u` is
 not sound, because that helper expects pre-edge-pair target data.
 
+## Implementation Progress
+
+The first post-`Ctop` positive-tail readout layer is now implemented privately
+in `RetainedPassiveCoordinatesJacobian.lean`.  It provides linear maps from the
+`F3`-focused rest tuple
+
+```text
+(A1passive, F2, A3passive, C, Ctop)
+```
+
+for the staged `A1passive`, `(F2,C)`, `A3passive`, decoded source `C`, passive
+tail derivative, and current solved-`A1` tangent fields.
+
+The post-`Ctop` source `C` readout is explicitly
+
+```text
+((retainedPassiveFormalRawF2CLinearEquivAt hz).symm (F2,C)).2 q,
+```
+
+so it does not re-run target edge-pair recovery.  The zero-index current
+solved-`A1` tangent is implemented as
+
+```text
+Ctop - Tail^{-1} * dTail_postC * Tail^{-1} * coord.Ctop.
+```
+
+Lean also proves that this post-`Ctop` passive-tail derivative agrees with the
+existing target-staged passive-tail derivative on
+`u = T123 ((fderiv raw z) v)`.  This is still not the recursive
+`dEarly_postC` map or the positive-tail `F3` shear.
+
 ## Nonclaims
 
 This stage is only target-side raw-tuple normalisation.  It does not prove

@@ -18,6 +18,49 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` positive-tail readout scaffolding
+
+Lean now has the first private post-`Ctop` positive-tail helper layer in
+`RetainedPassiveCoordinatesJacobian.lean`.  This is scaffolding for
+`dEarly_postC`, not a positive-tail `F3` bridge.
+
+New private helpers:
+
+```text
+retainedPassiveRawF3RestA1passiveLinearMapAt
+retainedPassiveRawF3RestF2CProjectionLinearMapAt
+retainedPassiveRawF3RestA3passiveLinearMapAt
+retainedPassiveRawF3RestA3passiveLinearMapAt_apply_rawTupleRest
+retainedPassivePostCtopTailFDerivLinearMapAt
+retainedPassivePostCtopTailFDerivLinearMapAt_self
+retainedPassivePostCtopTailFDerivLinearMapAt_step_apply
+retainedPassivePostCtopTailFDerivLinearMapAt_fderiv_after_T123_eq_targetStaged
+retainedPassivePostCtopSourcePairLinearMapAt
+retainedPassivePostCtopSourceCLinearMapAt
+retainedPassivePostCtopSourceCLinearMapAt_apply
+retainedPassivePostCtopSourceCAtLinearMapAt
+retainedPassivePostCtopSourceCAtLinearMapAt_apply
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_zero_apply
+retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_succ_apply
+```
+
+The source `C` readout is the formal inverse of the already normalised
+post-edge `(F2,C)` fields.  The zero-index solved-`A1` tangent reads the
+post-`Ctop` target coordinate itself:
+
+```text
+Ctop - Tail⁻¹ * dTail_postC * Tail⁻¹ * coord.Ctop.
+```
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no recursive `dEarly_postC`, no positive-tail `F3` shear, no full
+raw-tuple target normalisation, no actual Frechet determinant equality, no
+measure transport, no normal crossings, no pole order, and no RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` `F3` zero-tail bridge
 
 Reproduction:
