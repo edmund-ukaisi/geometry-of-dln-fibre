@@ -1038,3 +1038,20 @@ re-deriving the whole thing on the canonical base. Concretely, before assigning 
 divergent branches: `for b in <branches>; do echo $b; git show $b:<file> | grep -nc sorry; done` and read the sorry
 identities. Cheap; would have saved this tick's mis-spawn. Credit: genm-firing's unprompted read-only diligence (sorry-count
 + lemma inventory per branch) is exactly the audit discipline — bake it into the controller's consolidation routine.
+
+### Item 52 — Redirecting a tide's BASE is not free: an existing worktree stays on its original base (2026-06-28)
+genm-assemble was redirected across bases multiple times (genm-firing → genm-carving → "re-base on e2941aa1"). It had
+created its worktree on the genm-carving base during an early redirect; the later "re-base on e2941aa1" did NOT take —
+it kept building (sub-step-A: re-deriving cellRG/zσG/zEG) on the genm-carving lineage (merge-base 162fc569), re-deriving
+machinery e2941aa1 already had probe-confirmed. Caught by a branch audit (`git merge-base --is-ancestor`), not by a
+teammate report.
+
+**Lesson / mitigation:** a worktree is pinned to the base it was `git worktree add`-ed from; telling an agent to
+"re-base onto X" mid-flight is friction (it must tear down + recreate the worktree, which it may not do). So:
+1. **When the canonical BASE changes, prefer STOP + fresh tide (clean worktree on the new base) over redirecting an
+   in-flight worktree.** A fresh agent with one clear base instruction beats a redirected one with worktree inertia.
+2. **Give base-sensitive spawns a HARD base-verification gate as STEP 0** — `git merge-base --is-ancestor <required-base>
+   HEAD` + a grep that the expected machinery is present, ABORT if either fails. This makes a wrong-base build
+   impossible to start silently (genm-capstone got this gate).
+3. Root cause was upstream: the redirect churn itself (Items 47-51 carving oscillation). Fewer base-redirects = fewer
+   such stranded worktrees. Net cost here: genm-assemble's sub-step-A wasted (redundant), caught before it diverged far.
