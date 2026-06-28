@@ -116,3 +116,68 @@ This skeleton + the OPEN QUESTION (_impl vs in-place). On approval I write the L
 (defs + 6 sub-lemma signatures, sorry-each, typechecking against the banked interface) and send THAT
 diff before filling. Then fill S3→S5→S4→S2→S6→FINAL (light-first to de-risk the assembly early),
 diff-gated per soundness-region sub-lemma (esp. S5/S6).
+
+---
+
+# A2 ADDENDUM — the L=2-specialised producer bypass (controller decision: CHARGE A2)
+
+A2 = the bridge (above) + the `_L2` producer bypass that makes the L2 LEG sorryAx-free at L=2.
+The headline routes through the GENERIC `deepest_gauge_construction` (2925), which textually
+contains 3118/3123 (L≥3 hinterface) + 3289 (L≥3 hstep2) + the 2915 bridge-call. Even with the
+bridge built, the generic producer stays sorryAx-poisoned by 3118/3123/3289. The bypass routes
+the L=2 headline through an L=2-clean producer instead.
+
+## The 3 producer sorries the bypass must discharge at L=2
+- **2915** (hstep2 L=2 branch): the bridge — built by `deepest_diffeo_bridge_L2_impl` (above).
+- **3118** (hinterface, interior `Qf s`): `hspos : 1 ≤ s.val` ∧ `hs : s.val+1 < L`. At L=2 ⟹
+  `s.val < 1` ∧ `s.val ≥ 1`, contradiction ⟹ `omega`.
+- **3123** (hinterface, interior `Pf (s+1)`): `hint : s.val+1 < L−1`. At L=2 ⟹ `s.val+1 < 1`,
+  impossible ⟹ `omega`.
+- **3289** (hstep2 L≥3 branch): UNREACHABLE at L=2 (`rcases Nat.lt_or_ge L 3` takes the `<3` arm).
+  The `_L2` body keeps only the L=2 arm.
+
+## ARCHITECTURE DECISION (for controller — single-writer of the producer)
+`deepest_gauge_construction`'s body is 367 lines, almost all L-generic plumbing; only the 3
+sorry-branches differ at L=2. Two routes to the `_L2`-clean producer:
+
+- **(R-clone) clone the body** into `deepest_gauge_construction_L2` (new, in my module) with
+  `hL2eq : L = 2` added, the 3 branches discharged. COST: ~360-line copy-paste that DRIFTS from
+  the original on any future producer edit. Poor bedrock (duplication). I do NOT recommend this.
+
+- **(R-param) parameterize the 3 discharges as hypotheses on the EXISTING
+  `deepest_gauge_construction`** (a MINIMAL producer edit, controller's hand): add 3 hypotheses
+  `(hbridge : <2915 conclusion>) (hint_qf : <3118 goal>) (hint_pf : <3123 goal>)` and replace the
+  3 `sorry`s with `exact hbridge / hint_qf / hint_pf` (the 3289 hstep2 L≥3 branch stays its own
+  sorry, OR also becomes a hypothesis `(hstep2_ge3 : <3289 goal>)`). Then:
+  - the GENERIC caller (`deepest_gauge_chart_construct`, status quo) passes `sorry` for each — no
+    change to its sorryAx status (unchanged behaviour);
+  - a NEW `deepest_gauge_chart_construct_L2` (my module) passes the bridge `_impl` + `omega` +
+    `omega` (+ for 3289, an `absurd`/`omega` under `hL2eq`), yielding a sorryAx-FREE chart at L=2.
+  COST: a ~6-line producer signature edit (controller's hand, single-writer) + the new `_L2`
+  wrappers in my module. Clean, no duplication, no drift. **RECOMMENDED.**
+
+Under R-param the producer edit is small and the controller makes it (single-writer); I provide
+the exact hypothesis statements + the `_L2` wrappers. Under R-clone I'd own the clone but it's
+ugly. **My recommendation: R-param.** Controller decides (it's the producer owner).
+
+## The `_L2` re-thread (my module, either route)
+- `deepest_gauge_chart_construct_L2 (… hL2eq : L = 2 …) : Nonempty (DeepestGaugeChart …)` —
+  destructures `deepest_gauge_construction(_L2)` with the L=2 discharges, builds the structure
+  (verbatim the 3296 wrapper).
+- `deepest_gauge_squeeze_exists_frontPivot_L2` — the DeepestNormalFormFrontPivot:52 analogue,
+  calling `_chart_construct_L2` (this is in DeepestNormalFormFrontPivot's file, NOT the producer;
+  a clean ~3-line wrapper — but that file is also not mine to durably edit if single-writer; flag
+  to controller whether I add the `_L2` squeeze there or in my new module).
+- Then the headline chain's front-pivot reduction/normal-form consume the `_L2` squeeze at L=2.
+
+## A2 sub-task list (line-count estimate, no wall-clock)
+1. Bridge `deepest_diffeo_bridge_L2_impl` (S0-S6 + FINAL above): the bulk, ~2 tides.
+2. Producer R-param edit (controller's hand): ~6 lines signature + 3-4 `exact`-swaps.
+3. `_L2` chart-construct + squeeze re-thread wrappers: ~30-60 LoC.
+4. The headline-chain `_L2` consumption (which Skeleton:1131 / DeepestNormalFormFrontPivot
+   theorems route through `_L2` at L=2): controller-orchestrated wiring, flag the touch-points.
+
+## What I send the controller now (A2)
+This addendum + the bridge skeleton + the ARCHITECTURE DECISION (R-param vs R-clone) + the
+single-writer question (who adds the `_L2` squeeze in DeepestNormalFormFrontPivot). On approval +
+route choice, I write the bridge skeleton first (defs + 6 sigs, sorry-each), then fill.
