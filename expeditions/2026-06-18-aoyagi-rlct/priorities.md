@@ -19,6 +19,47 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical product-density continuous-density handoff
+
+The canonical retained-passive product-density finite-integral handoff now has
+a radius-shrinking wrapper for a supplied continuous positive transported
+density factor.  New Lean name in `RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density
+```
+
+The theorem replaces the previous local density nonnegativity and local density
+upper-bound hypotheses by:
+
+```text
+ContinuousAt density (base, 0)
+0 < density (base, 0)
+0 < Rmax
+```
+
+It applies the generic density-bounds helper to
+`nhdsWithin base retainedPassiveP13LocalSource`, obtains `R <= Rmax`, restricts
+the local loss lower bound from `Rmax` to `R`, and delegates to the previous
+canonical product-density finite-integral theorem.
+
+The chart-side residual positive-set measurability, chart-side residual
+positivity, chart-side finite residual integral, and local loss lower bound
+remain explicit.  Focused `RetainedPassiveLocalJacobianMeasure` and full
+`DLNFibre` builds passed, the latter with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and the touched-file forbidden-marker
+search passed.  Xhigh review by `Godel the 2nd` passed.
+
+This still does not construct an original-source prior, prove selected-entry
+signed-box source-density identification, prove a monomial residual lower
+bound, produce normal crossings, compute pole order, or extract an RLCT.
+
+Recovery scouts after the VM interruption agree on the next source-moving
+boundary: residual positive-set measurability for the canonical identity
+edge-family source appears dischargeable from existing continuity/measurability
+APIs, while chart-side a.e. residual positivity and finite negative-power
+integrability still need a genuine zero-locus or normal-crossing construction.
+
 ## Latest controller decision - 2026-06-28, canonical product-density finite-integral handoff
 
 The canonical retained-passive solved-`A1` product-density source measure now

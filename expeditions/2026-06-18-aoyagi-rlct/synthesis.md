@@ -48,6 +48,46 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Canonical Product-Density Continuous-Density Handoff
+
+`RetainedPassiveLocalJacobianMeasure.lean` now has a radius-shrinking wrapper
+for the canonical retained-passive product-density finite-integral theorem:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density
+```
+
+The theorem takes the same canonical identity edge-family source data and
+chart-side residual hypotheses as the fixed-radius canonical product-density
+finite-integral theorem.  It replaces the supplied local density nonnegativity
+and local density upper-bound hypotheses by:
+
+```text
+ContinuousAt density (base, 0)
+0 < density (base, 0)
+0 < Rmax
+```
+
+It calls
+`exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos`
+with `s := retainedPassiveP13LocalSource`, producing `R`, `C`, `0 < R`,
+`R <= Rmax`, `0 <= C`, and the local density bounds on the smaller regular
+ball.  The assumed loss lower bound at radius `Rmax` is restricted to radius
+`R` using `Metric.ball_subset_ball hRle`, then the proof delegates to the
+previous canonical product-density finite-integral theorem.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  Full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and touched-file forbidden-marker search
+passed.  Xhigh review by `Godel the 2nd` passed.
+
+Nonclaims: no original source prior, no selected-entry signed-box density, no
+monomial residual lower bound, no normal-crossing production, no pole-order
+theorem, and no RLCT theorem.  Recovery scouts also flagged that residual
+positive-set measurability should be the next removable hypothesis; chart-side
+a.e. positivity and finite negative-power integrability remain real analytic
+frontier hypotheses, not bookkeeping.
+
 ## Latest A2 Canonical Product-Density Finite-Integral Handoff
 
 `RetainedPassiveLocalJacobianMeasure.lean` now has a canonical retained-passive
