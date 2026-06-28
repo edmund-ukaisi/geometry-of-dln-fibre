@@ -821,4 +821,101 @@ theorem schur_matBoxGenP_chart_capA_lt_top (r p : ℕ) (hr : 3 ≤ r) (hp : 0 < 
   rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
   exact ENNReal.mul_lt_top hradfin hratiofin
 
+/-! ## The corank-1 Morse-leaf base (4 → p of `schurCore4_one`) -/
+
+/-- `schurLambdaP p 1 = 1/2` for `p ≥ 1` (the `t = 0` stratum `(1)² + 0·p = 1` binds since
+`min(1, p) = 1`). The `p`-general corank-1 leaf threshold. -/
+theorem schurLambdaP_one (p : ℕ) (hp : 0 < p) : schurLambdaP p 1 = 1 / 2 := by
+  rw [schurLambdaP, minAdm_rrp_eq_inf]
+  rw [show ((Finset.range (1 + 1)).inf' (by simp) (fun t => (1 - t) * (1 - t) + t * p) : ℕ) = 1 from by
+    refine le_antisymm ?_ ?_
+    · have hmem : (0 : ℕ) ∈ Finset.range (1 + 1) := by simp
+      refine le_trans (Finset.inf'_le _ hmem) ?_; norm_num
+    · refine Finset.le_inf' _ _ (fun t ht => ?_)
+      rw [Finset.mem_range] at ht; interval_cases t <;> simp <;> omega]
+  norm_num
+
+/-- The corank-1 loss core `frobSq (Δ·S) = (Δ₀₀)²·∑ⱼ (S₀ⱼ)²` at output width `p` (`Fin p` analog of
+`frobSq_one_eq`). -/
+theorem frobSq_one_eqP (p : ℕ) (Δ : Fin 1 → Fin 1 → ℝ) (S : Fin 1 → Fin p → ℝ) :
+    frobSq (rmatMul Δ S) = (Δ 0 0) ^ 2 * ∑ j, (S 0 j) ^ 2 := by
+  unfold frobSq rmatMul
+  rw [Fin.sum_univ_one, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [Fin.sum_univ_one]; ring
+
+/-- The corank-1 Morse block `∫_{S∈matBox 1 p T} (∑ⱼ (S₀ⱼ)²)^{−c'} < ⊤` for `c' < p/2` (`Fin p` analog of
+`schurOne_morse_lt_top`; the single `S`-row reindexes to `morseBox p T`, a `Fin p = Fin (pm+1)` Morse leaf
+at threshold `p/2`). -/
+theorem schurOneP_morse_lt_top (p : ℕ) (hp : 0 < p) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < (p : ℝ) / 2)
+    (T : ℝ) (hT : 0 < T) :
+    (∫⁻ S in matBox 1 p T, ENNReal.ofReal ((∑ j, (S 0 j) ^ 2) ^ (-c'))) < ⊤ := by
+  obtain ⟨pm, rfl⟩ : ∃ pm, p = pm + 1 := ⟨p - 1, by omega⟩
+  set e : (Fin 1 → Fin (pm + 1) → ℝ) ≃ᵐ (Fin (pm + 1) → ℝ) :=
+    MeasurableEquiv.funUnique (Fin 1) (Fin (pm + 1) → ℝ) with he
+  have hmp : MeasurePreserving e (volume : Measure (Fin 1 → Fin (pm + 1) → ℝ))
+      (volume : Measure (Fin (pm + 1) → ℝ)) :=
+    measurePreserving_funUnique (volume : Measure (Fin (pm + 1) → ℝ)) (Fin 1)
+  have hpre : matBox 1 (pm + 1) T = e ⁻¹' (morseBox (pm + 1) T) := by
+    ext S
+    simp only [matBox, morseBox, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ,
+      true_implies, he, MeasurableEquiv.funUnique_apply]
+    constructor
+    · intro h j; exact h 0 j
+    · intro h i k; rw [show i = 0 from Subsingleton.elim _ _]; exact h k
+  rw [hpre]
+  have key := hmp.setLIntegral_comp_preimage_emb e.measurableEmbedding
+    (fun P => ENNReal.ofReal ((∑ j, (P j) ^ 2) ^ (-c'))) (morseBox (pm + 1) T)
+  rw [show (∫⁻ S in e ⁻¹' (morseBox (pm + 1) T), ENNReal.ofReal ((∑ j, (S 0 j) ^ 2) ^ (-c')))
+      = ∫⁻ S in e ⁻¹' (morseBox (pm + 1) T), ENNReal.ofReal ((∑ j, ((e S) j) ^ 2) ^ (-c')) from by
+    refine setLIntegral_congr_fun (e.measurable (morseBox_measurableSet (pm + 1) T)) (fun S _ => ?_)
+    rfl]
+  rw [key]
+  have hmorse := radial_morse_dominates_lt_top (m := pm) (k := 0) c' (by exact_mod_cast hc')
+    (le_of_lt hc0) T hT (fun _ : Fin 0 → ℝ => (0 : ℝ)) (fun _ => le_refl 0) measurable_const
+  have hk0 : (∫⁻ _z in morseBox 0 T, ∫⁻ P in morseBox (pm + 1) T,
+      ENNReal.ofReal ((∑ i, (P i) ^ 2 + (0 : ℝ)) ^ (-c'))) < ⊤ :=
+    lt_of_le_of_lt hmorse (ENNReal.mul_lt_top (Kbound_lt_top pm T hT c' (by exact_mod_cast hc'))
+      (morseBox_volume_lt_top 0 T))
+  rw [show (morseBox 0 T) = (Set.univ : Set (Fin 0 → ℝ)) from by
+    ext z; simp [morseBox, Set.eq_univ_iff_forall]] at hk0
+  rw [setLIntegral_univ] at hk0
+  have hconst : (∫⁻ _z : Fin 0 → ℝ, ∫⁻ P in morseBox (pm + 1) T,
+      ENNReal.ofReal ((∑ i, (P i) ^ 2 + (0 : ℝ)) ^ (-c')))
+      = (∫⁻ P in morseBox (pm + 1) T,
+          ENNReal.ofReal ((∑ i, (P i) ^ 2 + (0 : ℝ)) ^ (-c'))) * volume (Set.univ : Set (Fin 0 → ℝ)) := by
+    rw [lintegral_const]
+  rw [hconst, show volume (Set.univ : Set (Fin 0 → ℝ)) = 1 from by simp, mul_one] at hk0
+  refine lt_of_le_of_lt (le_of_eq ?_) hk0
+  refine lintegral_congr (fun P => ?_)
+  simp [add_zero]
+
+/-- The corank-1 `Δ`-axis divisor `∫_{Δ∈matBox 1 1 T} ((Δ₀₀)²)^{−c'} < ⊤` for `2c' < 1` (`p`-FREE; reuses
+the firing's `schurOne_delta_divisor_lt_top` directly — the `Δ`-block is `1×1`, no `p`). -/
+theorem schurCoreP_one (p : ℕ) (hp : 0 < p) (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p 1)
+    (T : ℝ) (hT : 0 < T) :
+    SchurCore p 1 c' T := by
+  rw [schurLambdaP_one p hp] at hc'
+  have hcp : c' < (p : ℝ) / 2 := by
+    have h1p : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hp
+    linarith
+  rw [SchurCore]
+  have hpt : ∀ Δ : Fin 1 → Fin 1 → ℝ, ∀ S : Fin 1 → Fin p → ℝ,
+      ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c'))
+        = ENNReal.ofReal (((Δ 0 0) ^ 2) ^ (-c'))
+          * ENNReal.ofReal ((∑ j, (S 0 j) ^ 2) ^ (-c')) := by
+    intro Δ S
+    rw [frobSq_one_eqP p Δ S, Real.mul_rpow (by positivity) (by positivity),
+      ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity) _)]
+  set CS : ℝ≥0∞ := ∫⁻ S in matBox 1 p T, ENNReal.ofReal ((∑ j, (S 0 j) ^ 2) ^ (-c')) with hCS
+  have hinner : ∀ Δ : Fin 1 → Fin 1 → ℝ,
+      (∫⁻ S in matBox 1 p T, ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c')))
+        = ENNReal.ofReal (((Δ 0 0) ^ 2) ^ (-c')) * CS := by
+    intro Δ
+    rw [lintegral_congr (hpt Δ), hCS, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+  rw [lintegral_congr hinner,
+    lintegral_mul_const' _ _ (schurOneP_morse_lt_top p hp c' hc0 hcp T hT).ne]
+  exact ENNReal.mul_lt_top (schurOne_delta_divisor_lt_top c' hc' T hT)
+    (schurOneP_morse_lt_top p hp c' hc0 hcp T hT)
+
 end DLNFibre.DLN.RLCT
