@@ -21,6 +21,17 @@ where `innerSGen r c' T p y = ∫_{S∈matBox r 4 T} frobSq (RmatG r p y · S)^{
 
 ## PROVED prereqs in-file (all axiom-clean — build ON these)
 
+ALL banked at HEAD 14e1f853 (analytic + algebraic). The remaining `schurRatioResidGen_mid` is pure
+INTEGRATION wiring these: the `zEG` MP carve-equiv (Δ-cells M22⊕rest), the pivot-WLOG `Fin r → Fin(m+1)`
+bridge (use the `m`-ambient form — `Fin(m+1)` has `0`/`succ` cleanly, dodges Fin-r friction), the per-z
+`resolvedShiftRG_le` chain (generalize `resolvedShiftR2c3_le`), the assembly (mirror `matBox3_chart_lt_top`
+inner half). The carving algebra is DONE:
+
+- `pivotMinor_inv_one (R : Fin(m+1)→Fin(m+1)→ℝ) (R⟨0⟩⟨0⟩=1)` : the N2b j=1 `M11⁻¹ = [1]`.
+- `schurSc_readback (R) (h00) (a b)` : `Sc a b = R⟨1+a⟩⟨1+b⟩ − R⟨1+a⟩⟨0⟩·R⟨0⟩⟨1+b⟩` — the entrywise
+  `Sc = M22 − M21·M12` de-shift (shift = outer product, `|·|≤1` on the angular chart ⟹ B=1).
+- `frobSqGenJoint_ne_zero_ae (m) (1≤m)` : `∀ᵐ (Δ,S), 0 < frobSq(Δ·S)` (the peel's `0<w`, post-carve).
+- `core_T_peel_le_ae_G` : the generic Morse-peel-under-integral.
 - `schurResidG_translate_lt_top (r) (hr) (hIH) (Sh) (B) (|Sh|≤B) (c'') (0<c'') (c''<schurLambda (r-1)) (K)
   (0<K)` : `∫_{Δ∈matBox(r-1)(r-1) K}∫_{S∈matBox(r-1) 4 K} frobSq((Δ−Sh)·S)^{−c''} < ⊤` — the IH-invoking
   carving CORE (translate Δ↦Δ−Sh into radius K+B, invoke the abstract `SchurLowerIH` at corank r−1).
