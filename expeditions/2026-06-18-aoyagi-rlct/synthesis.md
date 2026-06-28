@@ -124,6 +124,57 @@ original prior or external source measure, compare Jacobians for such a prior,
 prove source-rank coverage, prove normal crossings, compute pole order, or
 extract RLCT.
 
+## Latest A2 Retained-Passive Source-Edge-Family Density Continuous-At Finite Integral
+
+The generic retained-passive source-edge-family chart-produced finite-integral
+handoff now has a radius-shrinking density wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+It replaces the supplied regular radius `Rreg`, density bound `Creg`, and
+eventual density nonnegativity/boundedness hypotheses of the prior generic
+source-edge-family theorem by `Rmax`, `ContinuousAt density (base,0)`, and
+`0 < density (base,0)`.  The conclusion returns a smaller `R`, a bound `C`,
+and an open source neighborhood `U`, with `0 < R`, `R <= Rmax`, and `0 <= C`.
+The proof applies the existing relative density-bounds lemma and then runs the
+generic source-edge-family theorem at radius `R`, shrinking the loss
+lower-bound hypothesis from `Rmax` to `R` via `Metric.ball_subset_ball`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This removes a real density-field burden at the generic retained-passive
+source-edge-family layer.  It still does not construct endpoint equivalences,
+prove endpoint provenance, identify an original prior or external source
+measure, compare Jacobians for such a prior, prove source-rank coverage, prove
+normal crossings, compute pole order, or extract RLCT.
+
+Pauli's read-only source-prior/Jacobian scout found the next feasible A2
+theorem: in `RetainedPassiveLocalJacobianMeasure.lean`, compare `Measure.map`
+of the direct source-edge-family chart on determinant-chart coordinates with
+`Measure.map` of the raw-order p.13 source chart on the raw-order determinant
+chart carrying `topologyTupleEdgeRawOrderInverseJacobianDensity`.
+Dependencies named by the scout:
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac`,
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData`,
+`retainedPassiveP13CanonicalSourceChart_aemeasurable`,
+`nullMeasurableSet_topologyTupleDetChartSet`, `Measure.map_congr`, and
+`ae_restrict_mem₀`.  This would be real retained-passive chart-layer
+Jacobian/source-measure progress, but still not original external DLN-prior
+transport.
+
 ## Latest A2 Case 2 Chart-Produced Density Continuous-At Finite Integral
 
 The endpoint-transported explicit Case 2 chart-produced finite-integral handoff

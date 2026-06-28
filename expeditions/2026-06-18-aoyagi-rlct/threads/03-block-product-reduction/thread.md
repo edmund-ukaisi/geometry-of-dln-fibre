@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive source-edge-family density continuous-at finite integral
+
+Reproduction:
+`reproduction-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+Review:
+`review-a2-retained-passive-source-edge-family-density-continuousat-finite-integral.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+For the generic retained-passive source-edge-family chart-produced measure, a
+positive continuous density at `(base,0)` supplies local density
+nonnegativity and boundedness after shrinking the regular-coordinate radius.
+The theorem removes supplied `Rreg`, `Creg`, `0 <= Creg`, eventual density
+nonnegativity, and eventual density boundedness, and returns `R`, `C`, and an
+open neighborhood `U`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct theorem
+axiom probe, and xhigh review passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not endpoint-equivalence construction, endpoint provenance, original
+source-prior identification, Jacobian comparison for an external prior,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-28 A2 retained-passive source-edge-family chart-produced measure
 
 Reproduction:

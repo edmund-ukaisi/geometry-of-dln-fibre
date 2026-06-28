@@ -140,6 +140,24 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-edge-family density
+  continuous-at finite integral, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density`.
+  For the generic retained-passive source-edge-family chart-produced measure,
+  positive continuity of `density` at `(base,0)` supplies local density
+  nonnegativity and boundedness after shrinking the regular-coordinate radius.
+  The theorem removes supplied `Rreg`, `Creg`, `0 <= Creg`, eventual density
+  nonnegativity, and eventual density boundedness as inputs, returning a
+  smaller `R`, a bound `C`, and an open neighborhood `U`.  It still assumes
+  ambient `EdgeFamily` measurable/open-measurable/Borel structure,
+  determinant-subtype measurable/open-measurable structure, `hdet`,
+  `residualCoordEquiv`, `hdataFactor`, `hretainedData`, source data, positive
+  `Rmax`, `creg`, and `t`, positive residual radii, the selected-entry
+  critical inequality, Haar measure, and the local loss lower bound on
+  `ball 0 Rmax`.  This does not construct endpoint equivalences, prove
+  endpoint provenance, identify an original prior or external source measure,
+  compare Jacobians for such a prior, prove source-rank coverage, prove normal
+  crossings, compute pole order, or extract RLCT.
 - **Current status addendum, retained-passive source-edge-family
   chart-produced measure, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure`.
