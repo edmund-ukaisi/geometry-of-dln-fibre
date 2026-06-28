@@ -1516,11 +1516,40 @@ theorem hasStrictFDerivAt_psiSplitDeltaL2_zero (H : Fin (L + 1) → ℕ) (r : �
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r))
       (0 : DeepestSplit H r (deepestNGauge H r)) := by
   rcases eq_or_ne L 2 with hL2 | hL2
-  · -- **L = 2: the real O(read³) deriv-vanishing (the genuine S4 leaf — NOT yet built).** Each
-    -- correction block (`T1'−T1`, `Y1'−Y1`) is a sum of products with ≥ 2 vanishing-at-`0` read
-    -- factors (`K = O(read²)`, `S1 = O(read)`, `W−I = O(read²)`), so `D(δ)(0) = 0` — componentwise
-    -- product rule through the encode/decode + reindex casts (NOT from the reads, which are linear).
-    sorry
+  · -- **L = 2: the certified `O(read²)` deriv-vanishing.** `δ = psiSplitRawL2Core − id`, which the
+    -- lens decomposition `psiSplitDeltaL2Core_eq_payload` writes as the encoded payloads
+    -- `(regGaugeCLE.symm(gaugeΔ).1, (paramsFlatCLE(coreΔ), regGaugeCLE.symm(gaugeΔ).2))`; each
+    -- payload's strict-`fderiv`-`0` was proven (S4j/S4k), assembled by `.prodMk`.
+    -- Rewrite `δ` to the payload triple (at `L = 2`).
+    have hδeq : psiSplitDeltaL2 H r hr hL
+        = fun q => (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q)).1,
+            (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTuple H r hr hL hL2 q),
+              ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q)).2)) := by
+      funext q
+      rw [psiSplitDeltaL2, psiSplitRawL2, dif_pos hL2]
+      exact psiSplitDeltaL2Core_eq_payload H r hr hL hL2 q
+    rw [hδeq]
+    -- The gauge payload (into `Reg × Spec`) and its two projections.
+    have hgauge := hasStrictFDerivAt_regGaugeSlotCLE_symm_l2GaugeΔ_zero H r hr hL hL2
+    have hg1 : HasStrictFDerivAt
+        (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q)).1)
+        (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+      have := (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ)
+        (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp
+        (x := (0 : DeepestSplit H r (deepestNGauge H r))) hgauge
+      simpa using this
+    have hg2 : HasStrictFDerivAt
+        (fun q => ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔ H r hr hL hL2 q)).2)
+        (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNGauge H r) → ℝ)) 0 := by
+      have := (ContinuousLinearMap.snd ℝ (Fin (deepestNReg H r) → ℝ)
+        (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp
+        (x := (0 : DeepestSplit H r (deepestNGauge H r))) hgauge
+      simpa using this
+    -- The core payload.
+    have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTuple_zero H r hr hL hL2
+    -- Assemble the triple `(g1, (core, g2))`; the derivative is `0.prodMk (0.prodMk 0) = 0`.
+    have hpair := hg1.prodMk (hcore.prodMk hg2)
+    simpa using hpair
   · -- L ≠ 2: `psiSplitRawL2 = id`, so `δ = 0`, strict deriv `0` by `hasStrictFDerivAt_const`.
     have heq : psiSplitDeltaL2 H r hr hL
         = fun _ : DeepestSplit H r (deepestNGauge H r) =>
