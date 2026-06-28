@@ -455,4 +455,32 @@ theorem absorbedCoreConj_eq_schurCore (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [Matrix.neg_mul, Matrix.neg_mul]]
   rw [← sub_eq_add_neg]
 
+/-- The deepest `(2,2)`-block `deepBlkT_s = 0` at **layer 0** (`L ≥ 2`): the deepest layer-0's columns
+`≥ r` vanish (`deepestPoint_layer0_cols_vanish`), and `toBlocks₂₂` reads only such columns. -/
+theorem deepBlkT_layer0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hs : (s : ℕ) = 0) :
+    (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0 := by
+  funext i j
+  show (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inr j)) = 0
+  rw [rThresholdSplit_symm_inr, rThresholdSplit_symm_inr]
+  exact deepestPoint_layer0_cols_vanish H r B hB hr hL s hL2 hs _ _ (by simp)
+
+/-- The deepest `(2,2)`-block `deepBlkT_s = 0` at **layer (L−1)** (`L ≥ 2`): the deepest layer-(L−1)'s
+rows `≥ r` vanish (`deepestPoint_layerLast_rows_vanish`), and `toBlocks₂₂` reads only such rows. -/
+theorem deepBlkT_layerLast_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hs : (s : ℕ) + 1 = L) :
+    (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0 := by
+  funext i j
+  show (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inr j)) = 0
+  rw [rThresholdSplit_symm_inr, rThresholdSplit_symm_inr]
+  exact deepestPoint_layerLast_rows_vanish H r B hB hr hL s hL2 hs _ _ (by simp)
+
 end DLNFibre.DLN.RLCT
