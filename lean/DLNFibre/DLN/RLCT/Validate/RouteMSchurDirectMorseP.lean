@@ -46,6 +46,20 @@ theorem frobSqTopRowP_eq_shearP (r p : ℕ) (hr : 3 ≤ r) (R : Fin r → Fin r 
         = ⟨0, by omega⟩ := rfl
     rw [h0, hpiv, one_mul]
 
+/-- **The `Fin p` row/col permutation of `frobSq(R·S)`** (`Fin p` analog of `frobSq_rmatMul_permG`):
+permuting `R`'s rows by `σr` and both `R`'s cols / `S`'s rows by `σc` leaves `frobSq(R·S)` invariant. The
+`4 → p` swap is verbatim (`p` is the opaque `∑ j : Fin p` column sum). -/
+theorem frobSq_rmatMul_permGP {r p : ℕ} (R : Fin r → Fin r → ℝ) (S : Fin r → Fin p → ℝ)
+    (σr σc : Fin r ≃ Fin r) :
+    frobSq (rmatMul R S)
+      = frobSq (rmatMul (fun a c => R (σr a) (σc c)) (fun k j => S (σc k) j)) := by
+  unfold frobSq rmatMul
+  rw [← Equiv.sum_comp σr (fun a => ∑ j, (∑ k, R a k * S k j) ^ 2)]
+  refine Finset.sum_congr rfl (fun a _ => ?_)
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  congr 1
+  rw [← Equiv.sum_comp σc (fun k => R (σr a) k * S k j)]
+
 /-- **The `Fin p` foundational shear** (`Fin p` analog of `stepShearG`). The top-row shear change of
 variables on the `S`-box: translating the top row `S 0 ↦ T' = S 0 + b·S_bot` (per fixed lower block
 `S_bot`) bounds the sheared integral by the product of the lower-block box and the enlarged `morseBox p`
@@ -451,7 +465,74 @@ theorem schurRatioResidP_capB_lt_top (r N p : ℕ) (hN : r * r = N + 1) (hr : 3 
     (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
         innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z)))
       < ⊤ := by
-  sorry
+  classical
+  -- the z-uniform constant bound (R-free): C := ofReal(c₀^{−c'})·(Kbound p c' (r·T)·vol(matBox(r-1)p(r·T)))
+  set C : ℝ≥0∞ :=
+    ENNReal.ofReal ((schur_minorPivot_split (r := r) (p := p) 1 (by omega)).choose ^ (-c'))
+      * (Kbound p c' ((r : ℕ) * T) * volume (matBox (r - 1) p ((r : ℕ) * T))) with hC
+  -- per z ∈ [−1,1]^N: R := RmatGnorm has pivot 1 + |entries| ≤ 1, so innerSGenP ≤ C (frobSq_capB_inner_le)
+  have hpt : ∀ z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1),
+      innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z)) ≤ C := by
+    intro z hz
+    -- innerSGenP at the carve point = ∫_S frobSq(RmatGnorm·S)^{−c'} (pivot-normalised, Fin p)
+    have heq : innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z))
+        = ∫⁻ S in matBox r p T,
+            ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr pivot z) S)) ^ (-c')) := by
+      rw [innerSGenP]
+      -- the σc row-permutation MP + the frobSq perm identity (Fin p analog of innerSGen_eq_norm)
+      set σr := Equiv.swap ((eG r).symm pivot).1 (⟨0, by omega⟩ : Fin r) with hσr
+      set σc := Equiv.swap ((eG r).symm pivot).2 (⟨0, by omega⟩ : Fin r) with hσc
+      set E := MeasurableEquiv.piCongrLeft (fun _ : Fin r => Fin p → ℝ) σc with hE
+      have hmp : MeasurePreserving E.symm volume volume :=
+        (volume_measurePreserving_piCongrLeft (fun _ : Fin r => Fin p → ℝ) σc).symm E
+      have hpre : matBox r p T = E.symm ⁻¹' (matBox r p T) := by
+        ext S
+        simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+        constructor
+        · intro h i k; exact h (σc i) k
+        · intro h i k
+          have := h (σc.symm i) k
+          rw [show E.symm S (σc.symm i) k = S i k from by
+            show S (σc (σc.symm i)) k = S i k; rw [Equiv.apply_symm_apply]] at this
+          exact this
+      have key := hmp.setLIntegral_comp_preimage_emb E.symm.measurableEmbedding
+        (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm r N hN hr pivot z) S)) ^ (-c')))
+        (matBox r p T)
+      rw [← hpre] at key
+      rw [key.symm]
+      refine lintegral_congr (fun S => ?_)
+      congr 2
+      exact frobSq_rmatMul_permGP (RmatG r pivot ((piRatioG r N hN pivot).symm (0, z))) S σr σc
+    rw [heq]
+    -- RmatGnorm: pivot 1, |entries| ≤ 1 (on the ratio chart z ∈ [−1,1]^N)
+    have hpiv : RmatGnorm r N hN hr pivot z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 :=
+      RmatGnorm_pivot r N hN hr pivot z
+    have hbd : ∀ a b, |RmatGnorm r N hN hr pivot z a b| ≤ 1 := by
+      intro a b
+      by_cases hab : a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩
+      · rw [hab.1, hab.2, hpiv]; norm_num
+      · exact RmatGnorm_offpivot_le r N hN hr pivot z hz a b hab
+    exact frobSq_capB_inner_le r p hr (RmatGnorm r N hN hr pivot z) hpiv hbd c' hc0 hc' T hT
+  -- integrate the uniform bound over the finite-volume ratio box
+  have hbox : (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z)))
+      ≤ ∫⁻ _z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)), C :=
+    setLIntegral_mono_ae' (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+      (ae_of_all _ (fun z hz => hpt z hz))
+  refine lt_of_le_of_lt hbox ?_
+  rw [setLIntegral_const]
+  -- C < ⊤ (Kbound finite for c' < p/2, vol finite) × ratio-box vol finite
+  refine ENNReal.mul_lt_top ?_ ?_
+  · refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+    obtain ⟨pm, hpm⟩ : ∃ pm, p = pm + 1 := by
+      refine ⟨p - 1, ?_⟩
+      have : 0 < p := by by_contra h; push_neg at h; interval_cases p; simp at hc'; linarith
+      omega
+    have hcap : c' < ((pm + 1 : ℝ)) / 2 := by rw [hpm] at hc'; push_cast at hc'; exact hc'
+    have hKfin := Kbound_lt_top pm ((r : ℕ) * T) (by positivity) c' hcap
+    refine ENNReal.mul_lt_top ?_ (matBox_volume_lt_top (r - 1) p ((r : ℕ) * T))
+    rw [hpm]; exact hKfin
+  · exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
 
 /-- **The cap-B directMorse finiteness.** `SchurCore p r c' T` for `0 < c' < min(p, r²)/2` (the cap-B regime,
 where the binding stratum is `t = 0`, so `½·minAdm = r²/2 ≤ p/2`). The `r²`-chart radial-`Δ` cover
