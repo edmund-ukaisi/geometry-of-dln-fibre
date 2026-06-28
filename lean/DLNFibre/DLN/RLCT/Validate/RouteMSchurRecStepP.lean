@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurDirectMorseP
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurThresholdP
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCapACarveP
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchurRecStepP` — the ∀p per-corank dispatch `SchurRecStep p (schurLambdaP p)`
@@ -37,8 +38,8 @@ OPEN: the `4 → p` transcription of `RouteMSchurFiring`'s carve chain (`schurRa
 Documented `sorry` on the WIP branch; the cap-B content it sits beside is real and axiom-clean. -/
 theorem schurCoreP_capA (p r : ℕ) (hIH : SchurLowerIH p (schurLambdaP p) r)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < schurLambdaP p r) (T : ℝ) (hT : 0 < T) :
-    SchurCore p r c' T := by
-  sorry
+    SchurCore p r c' T :=
+  schurCoreP_capA' p r hIH c' hc0 hc' T hT
 
 /-! ## The ∀p per-corank dispatch -/
 
