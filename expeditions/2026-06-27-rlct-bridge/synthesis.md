@@ -214,3 +214,21 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   - **NEXT (on operator nod):** resume tide 04 to finalize the blind thin interface (C1/C2/C3 + T,
     re-derive downstream, delete trap docstring, retire monolith — green/sorry-free/axiom-clean/blind),
     then the proved-geometry rungs (R2 upper bound via Watanabe+T+connector; R5 bundle completion).
+
+- **tick 7 (SCOPE CORRECTED + Wave A LAUNCHED, 2026-06-28, operator "Yes, let's do it!"):** the operator
+  corrected my over-narrow tick-6 framing: "full proof (blind)" is NOT "opaque interface + cite everything
+  analytic + a little geometry" — it is **cite ONLY `rlct = ½·codim_ℝ`, and PROVE all the geometry up to
+  it**. The monolith `cited_aoyagi_dln` cheats by citing `rlct = ½·codim_K` directly — one field that
+  silently swallows three GEOMETRIC facts to reclaim and prove: (1) connector `loss=Σres²`, real zero-set
+  = real fibre; (2) the real codim `codim_ℝ`; (3) **transfer T: `codim_ℝ = codim_K`** (the genuine
+  geometric wall, via `realizerD` density). Interface SHRINKS (drop C1/C3; carry just Watanabe-upper +
+  Aoyagi-lower, or the one equality); proved side GROWS (the full `C/θ` engine [banked] + T + connector +
+  R5, composed → `rlct = ½·C`).
+  - **Wave A LIVE (two tides, parallel):** **04 foundation** (resumed `a756ff2f`): honest `codim_ℝ` def +
+    shrunk cited interface + connector + compose (T as named hole) + re-derive downstream + delete trap
+    docstring; design-proposal-first (codim_ℝ def + T-feasibility verdict). **06/R5 bundle** (`a8c0b116`):
+    projection compatibility + overlap-gluing → `Flat π` over `rankROpen`; independent geometry.
+  - **Wave B (gated on 04 pinning `codim_ℝ`):** **T** transfer tide (the wall); **compose + engine
+    wire/harden** → retire monolith. Tracked tasks #4–#7 (#5 T blocked-by #4; #7 compose blocked-by #4,#5;
+    #6 R5 independent).
+  - Holding for 04's design proposal (codim_ℝ + T-feasibility — controller seam-taste review) + R5's report.

@@ -11,7 +11,19 @@ Index: status / type / one-line subject. `open` / `in-progress` / `blocked` / `r
 | 04 | lean-formaliser (tide) | Wave 1a — thin cited interface (C1/C2/C3) + expose/prove the real↔complex transfer T; re-derive downstream from it | HELD (design + aoyagi-full characterization delivered; awaiting operator nod to finalize the BLIND thin interface) |
 | 05 | pen-and-paper | Wave 1b — R3-route probe: resolved-chart Newton vs Aoyagi bespoke | closed — VIABLE width-2 / NEEDED general; mildness reconfirmed (decorrelated). Resolution-spec out of scope under BLIND/cite |
 
-**PIVOT (tick 6, 2026-06-28):** discovered the parallel **aoyagi-paper** formalisation (`origin/expedition/aoyagi-full`, 183 RLCT files, genuine `rlctAt`, NOT on dev). **Operator: L&R/rlct-bridge stays BLIND to it** — no import/copy/dependency; analytic rlct = thin CITED seam (incl. the lower bound), L&R GEOMETRY = proved. See `synthesis.md` tick 6. Awaiting operator nod to resume tide 04.
+**PIVOT (tick 6, 2026-06-28):** discovered the parallel **aoyagi-paper** formalisation (`origin/expedition/aoyagi-full`, 183 RLCT files, genuine `rlctAt`, NOT on dev). **Operator: L&R/rlct-bridge stays BLIND to it** — no import/copy/dependency; analytic rlct = thin CITED seam (incl. the lower bound), L&R GEOMETRY = proved. See `synthesis.md` tick 6.
+
+**CORRECTED SCOPE (tick 7, 2026-06-28, operator "Yes, let's do it!"):** "full proof (blind)" = cite ONLY
+the analytic `rlct = ½·codim_ℝ`, and PROVE all the geometry up to it. The monolith currently cheats by
+citing `rlct = ½·codim_K` directly — hiding the connector, the real codim, and the transfer. Reclaim them.
+Wave A (live):
+
+| 04 | lean-formaliser (tide, RESUMED) | **Foundation** — honest interface (cite `rlct=½·codim_ℝ`) + honest `codim_ℝ` def + connector (`loss=Σres²`, real zero-set=fibre) + compose with T as named hole + re-derive downstream + delete trap docstring. Design-proposal-first (codim_ℝ def + T-feasibility). | in-progress |
+| 06 | lean-formaliser (tide) | **R5 bundle completion** — projection compatibility + overlap-gluing → `Flat π` over `rankROpen`. Pure L&R geometry, independent. | in-progress |
+
+Gated (Wave B, after 04 pins `codim_ℝ`): **T** transfer `codim_ℝ=codim_K` via `realizerD` (the geometric
+wall); **compose** → `rlct=½·C`, retire monolith + wire/harden the banked `C/θ` engine (three forms + perm
+invariance + θ, all banked). Tracked as tasks #4–#7.
 
 **RECON COMPLETE (2026-06-27).** Verdict MILD — green light. Refined plan in `synthesis.md` (§ RECON
 COMPLETE). Spine re-routed (awaiting operator sign-off before Wave 1):
